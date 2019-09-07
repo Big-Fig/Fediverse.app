@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:phaze/Pages/Messages/ChatPage.dart';
 import 'package:phaze/Pages/Messages/MessagesCell.dart';
 import 'package:phaze/Pleroma/Foundation/Client.dart';
 import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
@@ -20,9 +21,6 @@ class MessagesPage extends StatefulWidget {
 class _MessagesPage extends State<MessagesPage> {
   void initState() {
     super.initState();
-
-
-
 
     if (SchedulerBinding.instance.schedulerPhase ==
         SchedulerPhase.persistentCallbacks) {
@@ -91,7 +89,15 @@ class _MessagesPage extends State<MessagesPage> {
     });
   }
 
-  cellTapped(Conversation conversation) {}
+  cellTapped(Conversation conversation) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ChatPage(
+            conversation: conversation,
+          ),
+        ));
+  }
 
   @override
   Widget build(BuildContext context) {

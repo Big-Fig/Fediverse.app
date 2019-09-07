@@ -37,10 +37,14 @@ class _MessagesCell extends State<MessagesCell> {
     }
   }
 
+  cellTapped(){
+    widget.cellTapped(widget.conversation);
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: widget.cellTapped(widget.conversation),
+      onTap: cellTapped,
       child: Card(
         child: Column(
           children: <Widget>[

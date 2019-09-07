@@ -11,7 +11,7 @@ class VisibilityDropDown extends StatefulWidget {
 }
 
 class _VisibilityDropDown extends State<VisibilityDropDown> {
-  String dropdownValue = "PublicRR";
+  String dropdownValue = "Public";
 
   Map<String, Icon> icons = {
     "Public": Icon(Icons.public),
