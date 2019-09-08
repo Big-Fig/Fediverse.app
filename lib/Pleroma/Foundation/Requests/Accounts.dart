@@ -14,8 +14,16 @@ class Accounts {
     return "/api/v1/accounts/update_credentials";
   }
 
-  static String followers(String id){
+  static String getFollowers(String id){
     return "/api/v1/accounts/$id/followers";
+  }
+
+  static String getFollowing(String id){
+    return "/api/v1/accounts/$id/following";
+  }
+
+  static String search(String q){
+    return "/api/v1/accounts/search?q=$q";
   }
 
 }

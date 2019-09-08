@@ -182,8 +182,6 @@ class _DMMediaPage extends State<DMMediaPage> {
           _pr.hide();
           var alert = Alert(context, "Success!", "You status was posted!",
               () => {
-
-
                 Navigator.of(context).popUntil((route) => route.isFirst)
 
 
