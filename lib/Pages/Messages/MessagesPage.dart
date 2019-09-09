@@ -96,6 +96,7 @@ class _MessagesPage extends State<MessagesPage> {
           builder: (context) => ChatPage(
             conversation: conversation,
           ),
+           settings:RouteSettings(name: "/ChatPage"),
         ));
   }
 
@@ -170,4 +171,6 @@ class _MessagesPage extends State<MessagesPage> {
       ),
     );
   }
+
+
 }

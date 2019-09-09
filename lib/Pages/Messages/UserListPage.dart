@@ -4,23 +4,27 @@ import 'package:flutter/scheduler.dart';
 import 'package:phaze/Pages/Messages/UserCell.dart';
 import 'package:phaze/Pleroma/Foundation/Client.dart';
 import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
-import 'package:phaze/Pleroma/Foundation/Requests/Accounts.dart' as AccountRequests;
+import 'package:phaze/Pleroma/Foundation/Requests/Accounts.dart'
+    as AccountRequests;
 import 'package:phaze/Pleroma/Models/Account.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class UserListPage extends StatefulWidget {
+
+  final Function(Account account) sendMessage;
+
+  UserListPage(this.sendMessage);
+
   @override
-
-
-
   State<StatefulWidget> createState() {
     return _UserListPage();
   }
-
-
 }
 
-class _UserListPage extends State<UserListPage>{
+class _UserListPage extends State<UserListPage> {
+  String searchText;
+  var _controller = TextEditingController();
+
   List<Account> accounts = <Account>[];
   void initState() {
     super.initState();
@@ -42,14 +46,20 @@ class _UserListPage extends State<UserListPage>{
       RefreshController(initialRefresh: false);
 
   void _onRefresh() async {
-    print("ONREFRESH");
+    if (searchText != null) {
+      searchForUser(searchText);
+      return;
+    }
+
+    print(CurrentInstance.instance.currentAccount.id);
     // if failed,use refreshFailed()
     CurrentInstance.instance.currentClient
         .run(
-            path: AccountRequests.Accounts.getFollowers(CurrentInstance.instance.currentAccount.id),
+            path: AccountRequests.Accounts.getFollowing(
+                CurrentInstance.instance.currentAccount.id),
             method: HTTPMethod.GET)
         .then((response) {
-          List<Account> followingAccoutns = accountsFromJson(response.body);
+      List<Account> followingAccoutns = accountsFromJson(response.body);
       accounts.clear();
       accounts.addAll(followingAccoutns);
       if (mounted) setState(() {});
@@ -61,14 +71,11 @@ class _UserListPage extends State<UserListPage>{
     });
   }
 
-
-  searchForUser(String q){
+  searchForUser(String q) {
     CurrentInstance.instance.currentClient
-        .run(
-            path: AccountRequests.Accounts.search(q),
-            method: HTTPMethod.GET)
+        .run(path: AccountRequests.Accounts.search(q), method: HTTPMethod.GET)
         .then((response) {
-          List<Account> followingAccoutns = accountsFromJson(response.body);
+      List<Account> followingAccoutns = accountsFromJson(response.body);
       accounts.clear();
       accounts.addAll(followingAccoutns);
       if (mounted) setState(() {});
@@ -79,88 +86,118 @@ class _UserListPage extends State<UserListPage>{
       _refreshController.refreshFailed();
     });
   }
-
 
   cellTapped(Account account) {
-    // Navigator.push(
-    //     context,
-    //     MaterialPageRoute(
-    //       builder: (context) => ChatPage(
-    //         conversation: conversation,
-    //       ),
-    //     ));
+    widget.sendMessage(account);
   }
 
-
- @override
+  @override
   Widget build(BuildContext context) {
-    return SmartRefresher(
-      key: PageStorageKey<String>("userList"),
-      enablePullDown: true,
-      enablePullUp: false,
-      header: WaterDropHeader(
-        complete: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Icon(
-              Icons.done,
-              color: Colors.grey,
-            ),
-            Container(
-              width: 15.0,
-            ),
-            Text(
-              "Everything up to date",
-              style: TextStyle(color: Colors.grey),
-            )
-          ],
-        ),
-        failed: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Icon(
-              Icons.close,
-              color: Colors.grey,
-            ),
-            Container(
-              width: 15.0,
-            ),
-            Text(
-              "Unable to fetch data",
-              style: TextStyle(color: Colors.grey),
-            ),
-          ],
-        ),
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Send DM"),
       ),
-      footer: CustomFooter(
-        builder: (BuildContext context, LoadStatus mode) {
-          Widget body;
-          if (mode == LoadStatus.idle) {
-            body = Text("No more Messages");
-          } else if (mode == LoadStatus.loading) {
-            body = CupertinoActivityIndicator();
-          } else if (mode == LoadStatus.failed) {
-            body = Text("Load Failed! Click retry!");
-          } else {
-            body = Text("No more Data");
-          }
-          return Container(
-            height: 55.0,
-            child: Center(child: body),
-          );
-        },
-      ),
-      controller: _refreshController,
-      onRefresh: _onRefresh,
-      child: ListView.builder(
-        padding: EdgeInsets.symmetric(horizontal: 2.0, vertical: 10.0),
-        itemBuilder: (c, i) => UserCell(
-          account: accounts[i],
-          cellTapped: cellTapped,
-        ),
-        itemCount: accounts.length,
+      body: Column(
+        children: <Widget>[
+          Container(
+            height: 50,
+            child: TextField(
+                autocorrect: false,
+                controller: _controller,
+                onChanged: (text) {
+                  searchText = text == "" ? null : text;
+                  _refreshController.requestRefresh();
+                },
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.green.withAlpha(150),
+                  hintText: 'Search',
+                  border: InputBorder.none,
+                  helperStyle: TextStyle(color: Colors.white),
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      searchText = null;
+                      _controller.clear();
+                      _refreshController.requestRefresh();
+                    },
+                    icon: Icon(Icons.clear),
+                  ),
+                ),
+              ),
+            
+          ),
+          Expanded(
+            child: SmartRefresher(
+              key: PageStorageKey<String>("userList"),
+              enablePullDown: true,
+              enablePullUp: false,
+              header: WaterDropHeader(
+                complete: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    const Icon(
+                      Icons.done,
+                      color: Colors.grey,
+                    ),
+                    Container(
+                      width: 15.0,
+                    ),
+                    Text(
+                      "Everything up to date",
+                      style: TextStyle(color: Colors.grey),
+                    )
+                  ],
+                ),
+                failed: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    const Icon(
+                      Icons.close,
+                      color: Colors.grey,
+                    ),
+                    Container(
+                      width: 15.0,
+                    ),
+                    Text(
+                      "Unable to fetch data",
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  ],
+                ),
+              ),
+              footer: CustomFooter(
+                builder: (BuildContext context, LoadStatus mode) {
+                  Widget body;
+                  if (mode == LoadStatus.idle) {
+                    body = Text("No more Messages");
+                  } else if (mode == LoadStatus.loading) {
+                    body = CupertinoActivityIndicator();
+                  } else if (mode == LoadStatus.failed) {
+                    body = Text("Load Failed! Click retry!");
+                  } else {
+                    body = Text("No more Data");
+                  }
+                  return Container(
+                    height: 55.0,
+                    child: Center(child: body),
+                  );
+                },
+              ),
+              controller: _refreshController,
+              onRefresh: _onRefresh,
+              child: ListView.builder(
+                padding: EdgeInsets.symmetric(horizontal: 2.0, vertical: 10.0),
+                itemBuilder: (c, i) => UserCell(
+                  account: accounts[i],
+                  cellTapped: cellTapped,
+                ),
+                itemCount: accounts.length,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
-  
 }

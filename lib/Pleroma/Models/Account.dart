@@ -7,7 +7,7 @@ import 'package:hive/hive.dart';
 part 'Account.g.dart';
 
 Account accountFromJson(String str) => Account.fromJson(json.decode(str));
-List<Account> accountsFromJson(String str) => new List<Account>.from(json.decode(str).map((x) => accountFromJson(x)));
+List<Account> accountsFromJson(String str) => new List<Account>.from(json.decode(str).map((x) => Account.fromJson(x)));
 
 
 String accountToJson(Account data) => json.encode(data.toJson());

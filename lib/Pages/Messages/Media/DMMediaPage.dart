@@ -21,8 +21,9 @@ class DMMediaPage extends StatefulWidget {
   final String imageURL;
   final String videoURL;
   final Function popParent;
+  final Function(String) mediaUploaded;
 
-  DMMediaPage({this.asset, this.imageURL, this.videoURL, this.popParent});
+  DMMediaPage({this.asset, this.imageURL, this.videoURL, this.popParent, this.mediaUploaded});
 
   @override
   State<StatefulWidget> createState() {
@@ -55,7 +56,7 @@ class _DMMediaPage extends State<DMMediaPage> {
               Navigator.pop(context);
             },
           ),
-          title: Text("New Post"),
+          title: Text("DM Attachment"),
           actions: <Widget>[
             FlatButton(
               child: Text("Post"),
@@ -73,43 +74,6 @@ class _DMMediaPage extends State<DMMediaPage> {
               height: deviceWidth,
               color: Colors.black,
               child: getMediaPreview(),
-            ),
-            Container(
-              height: 40,
-              child: VisibilityDropDown(visibilityUpdated),
-            ),
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: Container(
-                height: 200,
-                child: new ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxHeight: 200.0,
-                  ),
-                  child: new Scrollbar(
-                    child: new SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      reverse: true,
-                      child: SizedBox(
-                        height: 180.0,
-                        child: new TextField(
-                          onChanged: (text) {
-                            status = text;
-                          },
-                          maxLines: 100,
-                          decoration: new InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12.0),
-                              borderSide: BorderSide(),
-                            ),
-                            labelText: 'Write a caption',
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
             ),
             RaisedButton(
               child: Text("Send!"),
@@ -156,54 +120,28 @@ class _DMMediaPage extends State<DMMediaPage> {
 
   postStatus() {
     _pr = ProgressDialog(context, ProgressDialogType.Normal);
-    _pr.setMessage('Posting status');
+    _pr.setMessage('Uploading');
     _pr.show();
 
     var path = MediaRequest.Media.postNewStatus;
     CurrentInstance.instance.currentClient
         .runUpload(path: path, files: [file]).then((response) {
       response.stream.bytesToString().then((respStr) {
+        print(json.decode(respStr));
+        _pr.hide();
         MediaAttachment attachment =
             MediaAttachment.fromJson(json.decode(respStr));
-        List<String> ids = [attachment.id];
-        var statusPath = StatusRequest.Status.postNewStatus;
-        print(json.encode(ids));
-        Map<String, dynamic> params = {
-          "status": status,
-          "visibility" : "public",
-          "media_ids" : [attachment.id]
-        };
 
-        CurrentInstance.instance.currentClient
-            .run(
-                path: statusPath, method: HTTPMethod.POST, params: params)
-            .then((statusResponse) {
-          print(statusResponse.body);
-          _pr.hide();
-          var alert = Alert(context, "Success!", "You status was posted!",
-              () => {
-                Navigator.of(context).popUntil((route) => route.isFirst)
+        widget.mediaUploaded(attachment.id);
+         
 
-
-              });
-          alert.showAlert();
-        }).catchError((e) {
-          print(e);
-          _pr.hide();
-          var alert = Alert(
-              context,
-              "Opps",
-              "Unable to post status at this time. Please try again later.",
-              () => {});
-          alert.showAlert();
-        });
       }).catchError((e) {
         print(e);
         _pr.hide();
         var alert = Alert(
             context,
             "Opps",
-            "Unable to post status at this time. Please try again later.",
+            "Unable to upload attachment at this time.",
             () => {});
         alert.showAlert();
       });

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:phaze/Pages/Messages/ChatPage.dart';
 import 'package:phaze/Pages/Messages/MessagesPage.dart';
 import 'package:phaze/Pages/Messages/NotificationPage.dart';
+import 'package:phaze/Pages/Messages/UserListPage.dart';
+import 'package:phaze/Pleroma/Models/Account.dart';
 
 class MessageConatiner extends StatefulWidget {
   @override
@@ -25,7 +28,25 @@ class _MessageContainer extends State<MessageConatiner> with TickerProviderState
      _controller.addListener(_controllerChanged);
   }
 
+  sendMessage(Account account){
+    print("test");
+    Navigator.pop(context);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ChatPage(
+            account: account,
+          ),
+        ));
+  }
 
+  _goToUserList(){
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => UserListPage(sendMessage)
+        ));
+  }
 
 
   @override
@@ -38,7 +59,7 @@ class _MessageContainer extends State<MessageConatiner> with TickerProviderState
           IconButton(
             icon: Icon(Icons.send),
             onPressed: () {
-              // TODO: go to followers list
+              _goToUserList();
             },
           )
         ],

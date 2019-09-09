@@ -20,16 +20,20 @@ class UserCell extends StatefulWidget {
 }
 
 class _UserCell extends State<UserCell> {
- 
-
   @override
   void initState() {
     super.initState();
-
   }
 
-  cellTapped(){
+  cellTapped() {
     widget.cellTapped(widget.account);
+  }
+
+  String getUserDomainName(Account account) {
+    var domain = "${account.url}".replaceAll("https://", "@");
+    var url = domain.split("/");
+    print(url);
+    return "${account.acct}";
   }
 
   @override
@@ -40,9 +44,9 @@ class _UserCell extends State<UserCell> {
         child: Column(
           children: <Widget>[
             Container(
-              height: 115,
+              height: 70,
               child: Padding(
-                padding: EdgeInsets.all(12.0),
+                padding: EdgeInsets.all(10.0),
                 child: Row(
                   children: <Widget>[
                     ClipRRect(
@@ -54,21 +58,16 @@ class _UserCell extends State<UserCell> {
                         width: 50.0,
                       ),
                     ),
+                    Container(
+                      width: 10,
+                    ),
                     Expanded(
-                      child: Text(widget.account.username),
+                      child: Text(getUserDomainName(widget.account)),
                     ),
-                    // SizedBox(
-                    //   width: 8,
-                    // ),
-                    // Row(
-                    //   children: getUserName(widget.conversation.lastStatus),
-                    // ),
-                    // Spacer(),
-                    IconButton(
-                      icon: Icon(Icons.chevron_right),
-                      tooltip: 'More',
-                      onPressed: () {},
+                    Container(
+                      width: 10,
                     ),
+                    Icon(Icons.chevron_right),
                   ],
                 ),
               ),
