@@ -11,7 +11,6 @@ import 'Profile/AccountsBottomSheet.dart';
 import 'Profile/ProfilePage.dart';
 
 class TabPage extends StatefulWidget {
-
   final Function addNewInstance;
   final Function loadInstance;
 
@@ -68,9 +67,20 @@ class _TabPage extends State<TabPage> {
         centerTitle: true,
         title: FlatButton(
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(CurrentInstance.instance.currentAccount.username),
-              Icon(Icons.keyboard_arrow_down)
+              Text(
+                CurrentInstance.instance.currentAccount.username,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                ),
+              ),
+              Icon(
+                Icons.keyboard_arrow_down,
+                color: Colors.white,
+              ),
             ],
           ),
           onPressed: () {
@@ -130,7 +140,10 @@ class _TabPage extends State<TabPage> {
   }
 
   showAccountSheet(BuildContext context) {
-    bottomSheet = AccountsBottomSheet(addAccount: addAccount,swapAccount: swapAccount,);
+    bottomSheet = AccountsBottomSheet(
+      addAccount: addAccount,
+      swapAccount: swapAccount,
+    );
     showModalBottomSheet(
         builder: (BuildContext context) {
           return bottomSheet;
@@ -139,16 +152,13 @@ class _TabPage extends State<TabPage> {
   }
 
   addAccount() {
-
     bottomSheet.hide();
     widget.addNewInstance();
-
   }
 
   swapAccount() {
-
+    print("SWAP account");
     bottomSheet.hide();
     widget.loadInstance();
-
   }
 }

@@ -39,6 +39,11 @@ class InstanceStorage {
 
 
   Future<void> saveInstanceData(InstanceStorage instance) async {
+
+    print("SAVING INSTANCE DATA");
+
+
+
     var box = await Hive.openBox('InstanceStorage', lazy: true) as LazyBox;
     await box.put("${instance.account}-account", instance.currentAccount);
     await box.put("${instance.account}-auth", instance.currentAuth);
@@ -73,9 +78,12 @@ class InstanceStorage {
     List<String> stringList = await box.get("InstanceList");
     List<InstanceStorage> instanceStorage = <InstanceStorage>[];
     for(var i = 0; i < stringList.length; i++ ){
+      print("getting instance ${stringList[i]}");
       var instance = await getInstanceStorageByAccount(stringList[i]);
       instanceStorage.add(instance);
     }
+    print("My Length");
+    print(instanceStorage.length);
     return instanceStorage;
   }
 

@@ -47,11 +47,17 @@ class Client {
   launchAuth(sucess(String code), error(String error)) async {
     var successMethod = sucess;
     var errorMethod = error;
+    var success = false;
     var url = Registration.authorize(this);
     if (await canLaunch(url)) {
       await launch(url);
       getUriLinksStream().listen((Uri uri) {
         // Parse the link and warn the user, if it is not correct
+        if (success == true){
+          return;
+        }
+
+        success = true;
         closeWebView();
         print(uri);
         this.clientSettings.code = uri.queryParameters['code'].toString();

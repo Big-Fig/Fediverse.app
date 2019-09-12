@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:phaze/Pleroma/Foundation/Client.dart';
-import 'package:phaze/Pleroma/Models/Account.dart';
 import '../Constants/AppThemeConsts.dart';
 import '../Pleroma/Foundation/CurrentInstance.dart';
-import '../Pleroma/Foundation/Requests/Accounts.dart';
-import '../Pleroma/Foundation/InstanceStorage.dart';
-import '../Views/Alert.dart';
 
 class LoadingInstancePage extends StatelessWidget {
   final Function loadComplete;
@@ -16,8 +11,9 @@ class LoadingInstancePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
-    getAccountStoreNewInstance(context);
 
+    CurrentInstance.newInstance
+        .getAccountStoreNewInstance(context, loadComplete, loadError);
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       backgroundColor: romaGreen,
@@ -39,35 +35,5 @@ class LoadingInstancePage extends StatelessWidget {
             ],
           )),
     );
-  }
-
-  void getAccountStoreNewInstance(BuildContext context) async {
-    CurrentInstance.newInstance.currentClient
-        .run(path: Accounts.currentUser(), method: HTTPMethod.GET)
-        .then((resonse) async {
-      print("RESPONSE");
-      print(resonse.body);
-
-      Account currentAccount = accountFromJson(resonse.body);
-      String account =
-          "${currentAccount.username}@${CurrentInstance.newInstance.currentClient.baseURL}";
-      InstanceStorage currentStorage = InstanceStorage(
-          account: account,
-          currentClient: CurrentInstance.newInstance.currentClient,
-          currentAccount: currentAccount,
-          currentAuth: CurrentInstance.newInstance.currentAuth);
-      currentStorage.saveInstanceData(currentStorage).then((_) async {
-        await InstanceStorage.setCurrentAccount(account);
-        CurrentInstance.instance.setInstanceFromNewInstance();
-        this.loadComplete();
-      });
-    }).catchError((error) {
-      var alert = Alert(
-          context,
-          "Error",
-          "Can't Fetch Account at this time. Please try to log in again.$error",
-          loadError);
-      alert.showAlert();
-    });
   }
 }

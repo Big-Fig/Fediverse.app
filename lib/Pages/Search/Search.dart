@@ -141,7 +141,14 @@ class _Search extends State<Search> {
       child: StaggeredGridView.countBuilder(
         crossAxisCount: 4,
         itemCount: widget.statuses.length,
-        itemBuilder: (BuildContext context, int index) => new Container(
+        itemBuilder: (BuildContext context, int index) => new
+        
+        GestureDetector(
+          onTap: (){
+            var status =  widget.statuses[index];
+            print(status.content);
+            print(status.visibility);
+          },child:Container(
           color: Colors.black.withOpacity(0.2),
           child: SizedBox.expand(
             child: FadeInImage.assetNetwork(
@@ -152,6 +159,8 @@ class _Search extends State<Search> {
             ),
           ),
         ),
+        )
+         ,
         staggeredTileBuilder: (int index) =>
             new StaggeredTile.count(2, index.isEven ? 2 : 1),
         mainAxisSpacing: 4.0,

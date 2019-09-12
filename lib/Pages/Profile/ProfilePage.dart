@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:phaze/Pages/Profile/AccountsBottomSheet.dart';
+import 'package:phaze/Pleroma/Models/Status.dart';
 
 class ProfilePage extends StatefulWidget {
+
   @override
   State<StatefulWidget> createState() {
     return _ProfilePage();
@@ -9,11 +10,15 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePage extends State<ProfilePage> {
-  AccountsBottomSheet bottomSheet;
+
+  List<Status> statuses = <Status>[];
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+
+    return ListView.builder(itemBuilder: (BuildContext context, int index) {
+
+    },itemCount: (statuses.length + 1),);
   }
 
 }

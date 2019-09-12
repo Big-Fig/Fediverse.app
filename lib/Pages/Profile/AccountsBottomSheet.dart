@@ -12,15 +12,13 @@ class AccountsBottomSheet extends StatelessWidget {
 
   AccountsBottomSheet({this.addAccount, this.swapAccount});
 
-  
-
   hide() {
-      Navigator.of(_context).pop();
+    Navigator.of(_context).pop();
   }
-
 
   @override
   Widget build(BuildContext context) {
+    final double deviceWidth = MediaQuery.of(context).size.width;
     _context = context;
     return BottomSheet(
       builder: (BuildContext context) {
@@ -33,9 +31,7 @@ class AccountsBottomSheet extends StatelessWidget {
                   height: 300,
                   child: ListView.builder(
                     itemBuilder: (BuildContext context, int index) {
-                      if (index == (snapshot.data.length - 1)) {
-                       
-
+                      if (index == (snapshot.data.length)) {
                         return GestureDetector(
                           onTap: addAccount,
                           child: Container(
@@ -66,18 +62,20 @@ class AccountsBottomSheet extends StatelessWidget {
                         var thisClient =
                             "${instance.currentAccount.acct}$instanceURL";
                         return GestureDetector(
-                          onTap: () => {
-                            
-                             if (thisClient == client) {
-                               InstanceStorage.setCurrentAccount(instance.account).then(
-                                 swapAccount()
-                               )
-                               
+                          behavior: HitTestBehavior.translucent,
+                          onTap: () {
+                            print("tap");
+                            if (thisClient != client) {
+                              InstanceStorage.setCurrentAccount(
+                                      instance.account)
+                                  .then((future) {
+                                swapAccount();
+                              });
                             }
-
                           },
                           child: SizedBox(
                             height: 80,
+                            width: deviceWidth,
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -102,8 +100,16 @@ class AccountsBottomSheet extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                Center(
-                                  child: Text(thisClient),
+                                Expanded(
+                                  child: FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      thisClient,
+                                      textAlign: TextAlign.left,
+                                      maxLines: 1,
+                                    ),
+                                  ),
                                 ),
                                 if (thisClient == client)
                                   Padding(
@@ -124,7 +130,7 @@ class AccountsBottomSheet extends StatelessWidget {
                         );
                       }
                     },
-                    itemCount: (snapshot.data.length),
+                    itemCount: (snapshot.data.length + 1),
                   ),
                 );
               }

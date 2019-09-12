@@ -63,17 +63,17 @@ class _MessageContainer extends State<MessageConatiner> with TickerProviderState
             },
           )
         ],
-        bottom: TabBar(
-          controller: _controller,
-          tabs: <Widget>[
-            Tab(
-              icon: Icon(Icons.mail_outline),
-            ),
-            Tab(
-              icon: Icon(Icons.notifications_none),
-            )
-          ],
-        ),
+        // bottom: TabBar(
+        //   controller: _controller,
+        //   tabs: <Widget>[
+        //     Tab(
+        //       icon: Icon(Icons.mail_outline),
+        //     ),
+        //     Tab(
+        //       icon: Icon(Icons.notifications_none),
+        //     )
+        //   ],
+        // ),
       ),
     );
   }
