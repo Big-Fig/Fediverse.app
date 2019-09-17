@@ -8,7 +8,7 @@ import 'package:phaze/Transitions/SlideBottomRoute.dart';
 import './Placeholder.dart';
 import 'Messages/MessageContainer.dart';
 import 'Profile/AccountsBottomSheet.dart';
-import 'Profile/ProfilePage.dart';
+import 'Profile/MyProfilePage.dart';
 
 class TabPage extends StatefulWidget {
   final Function addNewInstance;
@@ -31,7 +31,7 @@ class _TabPage extends State<TabPage> {
     Search(),
     PlaceholderWidget(Colors.green),
     MessageConatiner(),
-    ProfilePage(),
+    MyProfilePage(),
   ];
 
   List<AppBar> _appBar;
