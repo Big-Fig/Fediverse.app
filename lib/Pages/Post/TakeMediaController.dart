@@ -1,4 +1,3 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:phaze/Pages/Post/Photo/PhotoCapture.dart';
 import 'package:phaze/Pages/Post/Video/VideoCapture.dart';

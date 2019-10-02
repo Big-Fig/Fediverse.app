@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:html/parser.dart';
-import 'package:phaze/Pleroma/Foundation/Client.dart';
 import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:phaze/Pleroma/Models/Account.dart';
-import 'package:phaze/Pleroma/Models/ClientSettings.dart';
 import 'package:phaze/Pleroma/Models/Conversation.dart';
 import 'package:phaze/Pleroma/Models/Status.dart';
 import 'package:carousel_pro/carousel_pro.dart';

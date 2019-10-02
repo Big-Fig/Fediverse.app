@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_webrtc/webrtc.dart';
+import 'package:phaze/Pages/Messages/VideoChat/WebRTCManager.dart';
 import 'package:phaze/Pages/Post/CaptureController.dart';
 import 'package:phaze/Pages/Search/Search.dart';
 import 'package:phaze/Pages/Timeline/MyTimelinePage.dart';
@@ -7,6 +9,8 @@ import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:phaze/Transitions/SlideBottomRoute.dart';
 import './Placeholder.dart';
 import 'Messages/MessageContainer.dart';
+// import 'Messages/VideoChatPage.dart';
+// import 'Messages/signaling.dart';
 import 'Profile/AccountsBottomSheet.dart';
 import 'Profile/MyProfilePage.dart';
 
@@ -23,6 +27,8 @@ class TabPage extends StatefulWidget {
 }
 
 class _TabPage extends State<TabPage> {
+  WebRTCManager manager = WebRTCManager.instance;
+
   List<String> statuses = [''];
   AccountsBottomSheet bottomSheet;
   int _currentIndex = 0;
@@ -35,6 +41,109 @@ class _TabPage extends State<TabPage> {
   ];
 
   List<AppBar> _appBar;
+
+  @override
+  initState() {
+    super.initState();
+    // _connect();
+  }
+
+  MediaStream currentStream;
+
+  // void _connect() async {
+  //   if (manager.signaling == null) {
+  //     manager.signaling = new Signaling(manager.serverIP, manager.displayName)
+  //       ..connect();
+
+  //     manager.signaling.onStateChange = (SignalingState state) {
+  //       print("State changed $state");
+  //       switch (state) {
+  //         case SignalingState.CallStateNew:
+  //         WebRTCManager.instance.inCalling = true;
+  //           Navigator.push(
+  //                           context,
+  //                           MaterialPageRoute(
+  //                             builder: (context) => VideoChatPage(
+  //                               signaling: WebRTCManager.instance.signaling,
+  //                             ),
+  //                             settings: RouteSettings(name: "/VideoChatPage"),
+  //                           ));
+  //           break;
+  //         case SignalingState.CallStateBye:
+  //           this.setState(() {
+  //             manager.inCalling = false;
+  //           });
+  //           break;
+  //         case SignalingState.CallStateInvite:
+  //           showDialog(
+  //             context: context,
+  //             builder: (BuildContext context) {
+  //               // return object of type Dialog
+  //               return AlertDialog(
+  //                 title: new Text("Incomming Video Call"),
+  //                 content: new Text("Do you want to join the call?"),
+  //                 actions: <Widget>[
+  //                   // usually buttons at the bottom of the dialog
+  //                   new FlatButton(
+  //                     child: new Text("Join"),
+  //                     onPressed: () {
+  //                       Navigator.push(
+  //                           context,
+  //                           MaterialPageRoute(
+  //                             builder: (context) => VideoChatPage(
+  //                               signaling: WebRTCManager.instance.signaling,
+  //                             ),
+  //                             settings: RouteSettings(name: "/VideoChatPage"),
+  //                           ));
+  //                     },
+  //                   ),
+
+  //                   new FlatButton(
+  //                     child: new Text("Close"),
+  //                     onPressed: () {
+  //                       Navigator.of(context).pop();
+  //                     },
+  //                   ),
+  //                 ],
+  //               );
+  //             },
+  //           );
+
+  //           this.setState(() {
+  //             manager.inCalling = true;
+  //           });
+  //           break;
+
+  //         case SignalingState.CallStateConnected:
+  //         case SignalingState.CallStateRinging:
+  //         case SignalingState.ConnectionClosed:
+  //         case SignalingState.ConnectionError:
+  //         case SignalingState.ConnectionOpen:
+  //           break;
+  //       }
+  //     };
+
+  //     manager.signaling.onPeersUpdate = ((event) {
+  //       this.setState(() {
+  //         manager.selfId = event['self'];
+  //         manager.peers = event['peers'];
+  //       });
+  //     });
+
+  //     // manager.signaling.onLocalStream = ((stream) {
+  //     //   currentStream = stream;
+  //     //   // _localRenderer.srcObject = stream;
+  //     // });
+
+  //     // manager.signaling.onAddRemoteStream = ((stream) {
+  //     //   currentStream = stream;
+  //     // });
+
+  //     // manager.signaling.onRemoveRemoteStream = ((stream) {
+  //     //   currentStream = null;
+  //     // });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

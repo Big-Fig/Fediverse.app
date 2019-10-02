@@ -4,6 +4,12 @@ PODS:
   - Flutter (1.0.0)
   - flutter_secure_storage (3.3.1):
     - Flutter
+  - flutter_webrtc (0.1.6):
+    - Flutter
+    - GoogleWebRTC (= 1.1.27299)
+    - libyuv-iOS
+  - GoogleWebRTC (1.1.27299)
+  - libyuv-iOS (1.0.2)
   - path_provider (0.0.1):
     - Flutter
   - photo_manager (0.0.1):
@@ -21,12 +27,18 @@ DEPENDENCIES:
   - camera (from `.symlinks/plugins/camera/ios`)
   - Flutter (from `.symlinks/flutter/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
+  - flutter_webrtc (from `.symlinks/plugins/flutter_webrtc/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - photo_manager (from `.symlinks/plugins/photo_manager/ios`)
   - uni_links (from `.symlinks/plugins/uni_links/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
   - video_player (from `.symlinks/plugins/video_player/ios`)
   - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - GoogleWebRTC
+    - libyuv-iOS
 
 EXTERNAL SOURCES:
   camera:
@@ -35,6 +47,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/flutter/ios"
   flutter_secure_storage:
     :path: ".symlinks/plugins/flutter_secure_storage/ios"
+  flutter_webrtc:
+    :path: ".symlinks/plugins/flutter_webrtc/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
   photo_manager:
@@ -52,6 +66,9 @@ SPEC CHECKSUMS:
   camera: d56ad165545ae5a0ffb892376033760a969c68c8
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_secure_storage: 7953c38a04c3fdbb00571bcd87d8e3b5ceb9daec
+  flutter_webrtc: b4d969a556b246378adb24262375b0204e1e89df
+  GoogleWebRTC: 893a5f2f3635437ec3b05ef240993d5713307804
+  libyuv-iOS: 5a154ccc84ec754029886ecb607512731fe30640
   path_provider: f96fff6166a8867510d2c25fdcc346327cc4b259
   photo_manager: d47ddf6cb25cbfa837dc334540eb9a99b208e191
   uni_links: d97da20c7701486ba192624d99bffaaffcfc298a

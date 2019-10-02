@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:phaze/Pages/Messages/MessagesCell.dart';
-import 'package:phaze/Pages/Timeline/TimelineCell.dart';
+import 'package:phaze/Pages/Messages/VideoChat/WebRTCManager.dart';
+import 'package:phaze/Pages/Messages/VideoChatPage.dart';
 import 'package:phaze/Pleroma/Foundation/Client.dart';
 import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:phaze/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
@@ -33,11 +33,54 @@ class _ChatPage extends State<ChatPage> {
   var txtController = TextEditingController();
   List<Status> statuses = <Status>[];
   String title = "DM";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text(title),
+          actions: <Widget>[
+            // IconButton(
+            //   icon: Icon(Icons.phone),
+            //   onPressed: () {
+            //     if (widget.account != null) {
+            //       print(widget.account.url);
+            //       String currentURL = "${widget.account.url}".split("/")[2];
+
+            //       String client = "${widget.account.acct}@$currentURL";
+            //       var peer;
+            //       var peers = WebRTCManager.instance.peers;
+            //       for (var i = 0; i < peers.length; i++) {
+            //         print(peers[i]['name']);
+            //         String name = peers[i]['name'];
+            //         if (name.toLowerCase() == client.toLowerCase()) {
+            //           peer = peers[i];
+            //         }
+            //       }
+
+            //       WebRTCManager.instance.invitePeer(context, peer['id'], false);
+            //     } else {
+            //       var account = getOtherAccount(widget.conversation.accounts);
+
+            //       String client = "${account.acct}";
+            //       print(client);
+            //       var peer;
+            //       var peers = WebRTCManager.instance.peers;
+            //       for (var i = 0; i < peers.length; i++) {
+            //         String name = peers[i]['name'];
+            //         if (name.toLowerCase() == client.toLowerCase()) {
+            //           peer = peers[i];
+            //           print(peer);
+            //         }
+            //       }
+
+            //       WebRTCManager.instance.invitePeer(context, peer['id'], false);
+            //     }
+            //     WebRTCManager.instance.inCalling = true;
+
+            //   },
+            // ),
+          ],
         ),
         body: Column(
           children: <Widget>[
@@ -134,8 +177,8 @@ class _ChatPage extends State<ChatPage> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(milliseconds: 5000), () {
-        backgroundCheck();
-      });
+      backgroundCheck();
+    });
     if (widget.account != null) {
       title = "DM ${widget.account.acct}";
     }
@@ -178,20 +221,19 @@ class _ChatPage extends State<ChatPage> {
 
     CurrentInstance.instance.currentClient
         .run(
-            path: StatusRequest.Status.getStatusContext(
-                statuses.first.id),
+            path: StatusRequest.Status.getStatusContext(statuses.first.id),
             method: HTTPMethod.GET)
         .then((response) {
       Context context = contextFromJson(response.body);
-      
+
       List<Status> templist = [];
       templist.addAll(context.ancestors);
       templist.add(widget.conversation.lastStatus);
       templist.addAll(context.descendants);
-      if (statuses.length < templist.length ){
+      if (statuses.length < templist.length) {
         statuses.clear();
-      statuses.addAll(templist.reversed);
-      if (mounted) setState(() {});
+        statuses.addAll(templist.reversed);
+        if (mounted) setState(() {});
       }
       Future.delayed(const Duration(milliseconds: 5000), () {
         backgroundCheck();

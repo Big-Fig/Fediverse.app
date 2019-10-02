@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:phaze/Pages/Profile/EditProfile.dart';
 import 'package:phaze/Pages/Profile/ProfileHeader.dart';
 import 'package:phaze/Pages/Timeline/TimelineCell.dart';
 import 'package:phaze/Pleroma/Foundation/Client.dart';
@@ -11,15 +10,18 @@ import 'package:phaze/Pleroma/Models/Account.dart';
 import 'package:phaze/Pleroma/Models/Status.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class MyProfilePage extends StatefulWidget {
+class OtherAccount extends StatefulWidget {
+  final Account account;
+
+  OtherAccount(this.account);
+
   @override
   State<StatefulWidget> createState() {
-    return _MyProfilePage();
+    return _OtherAccount();
   }
 }
 
-class _MyProfilePage extends State<MyProfilePage> {
-  Account myAccount;
+class _OtherAccount extends State<OtherAccount> {
   List<Status> statuses = <Status>[];
   void initState() {
     super.initState();
@@ -36,13 +38,6 @@ class _MyProfilePage extends State<MyProfilePage> {
     }
   }
 
-  void editProfile() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => EditProfile()),
-    );
-  }
-
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
@@ -54,7 +49,7 @@ class _MyProfilePage extends State<MyProfilePage> {
     CurrentInstance.instance.currentClient
         .run(
             path: Accounts.getAccountStatuses(
-                userId: CurrentInstance.instance.currentAccount.id,
+                userId: widget.account.id,
                 minId: "",
                 maxId: "",
                 sinceId: "",
@@ -87,7 +82,7 @@ class _MyProfilePage extends State<MyProfilePage> {
     CurrentInstance.instance.currentClient
         .run(
             path: Accounts.getAccountStatuses(
-                userId: CurrentInstance.instance.currentAccount.id,
+                userId: widget.account.id,
                 minId: "",
                 maxId: lastId,
                 sinceId: "",
@@ -106,73 +101,78 @@ class _MyProfilePage extends State<MyProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SmartRefresher(
-      key: PageStorageKey<String>("MAINTAB"),
-      enablePullDown: true,
-      enablePullUp: true,
-      header: WaterDropHeader(
-          complete: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Icon(
-                Icons.done,
-                color: Colors.grey,
-              ),
-              Container(
-                width: 15.0,
-              ),
-              Text(
-                "Everything up to date",
-                style: TextStyle(color: Colors.grey),
-              )
-            ],
-          ),
-          failed: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Icon(
-                Icons.close,
-                color: Colors.grey,
-              ),
-              Container(
-                width: 15.0,
-              ),
-              Text("Unable to fetch data", style: TextStyle(color: Colors.grey))
-            ],
-          )),
-      footer: CustomFooter(
-        builder: (BuildContext context, LoadStatus mode) {
-          Widget body;
-          if (mode == LoadStatus.idle) {
-            body = Text("pull up load");
-          } else if (mode == LoadStatus.loading) {
-            body = CupertinoActivityIndicator();
-          } else if (mode == LoadStatus.failed) {
-            body = Text("Load Failed!Click retry!");
-          } else {
-            body = Text("No more Data");
-          }
-          return Container(
-            height: 55.0,
-            child: Center(child: body),
-          );
-        },
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.account.username),
       ),
-      controller: _refreshController,
-      onRefresh: _onRefresh,
-      onLoading: _onLoading,
-      child: ListView.builder(
-        itemBuilder: (BuildContext context, int index) {
-          if (index == 0) {
-            return ProfileHeader(
-              profileAccount: CurrentInstance.instance.currentAccount,
-              editAccount: editProfile,
+      body: SmartRefresher(
+        key: PageStorageKey<String>("MAINTAB"),
+        enablePullDown: true,
+        enablePullUp: true,
+        header: WaterDropHeader(
+            complete: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Icon(
+                  Icons.done,
+                  color: Colors.grey,
+                ),
+                Container(
+                  width: 15.0,
+                ),
+                Text(
+                  "Everything up to date",
+                  style: TextStyle(color: Colors.grey),
+                )
+              ],
+            ),
+            failed: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Icon(
+                  Icons.close,
+                  color: Colors.grey,
+                ),
+                Container(
+                  width: 15.0,
+                ),
+                Text("Unable to fetch data",
+                    style: TextStyle(color: Colors.grey))
+              ],
+            )),
+        footer: CustomFooter(
+          builder: (BuildContext context, LoadStatus mode) {
+            Widget body;
+            if (mode == LoadStatus.idle) {
+              body = Text("pull up load");
+            } else if (mode == LoadStatus.loading) {
+              body = CupertinoActivityIndicator();
+            } else if (mode == LoadStatus.failed) {
+              body = Text("Load Failed!Click retry!");
+            } else {
+              body = Text("No more Data");
+            }
+            return Container(
+              height: 55.0,
+              child: Center(child: body),
             );
-          } else {
-            return TimelineCell(statuses[index - 1]);
-          }
-        },
-        itemCount: (statuses.length + 1),
+          },
+        ),
+        controller: _refreshController,
+        onRefresh: _onRefresh,
+        onLoading: _onLoading,
+        child: ListView.builder(
+          itemBuilder: (BuildContext context, int index) {
+            if (index == 0) {
+              return ProfileHeader(
+                profileAccount: widget.account,
+              );
+            } else {
+              return TimelineCell(statuses[index - 1]);
+            }
+          },
+          itemCount: (statuses.length + 1),
+        ),
       ),
     );
   }

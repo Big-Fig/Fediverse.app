@@ -427,6 +427,4 @@ class _VideoCapture extends State<VideoCapture> {
     }
   }
 
-  @override
-  bool get wantKeepAlive => true;
 }

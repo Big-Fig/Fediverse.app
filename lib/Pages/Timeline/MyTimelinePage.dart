@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:phaze/Pages/Profile/OtherAccount.dart';
 import 'package:phaze/Pages/Timeline/TimelineCell.dart';
 import 'package:phaze/Pleroma/Foundation/Client.dart';
 import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:phaze/Pleroma/Models/Account.dart';
 import 'package:phaze/Pleroma/Models/Status.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../Pleroma/Foundation/Requests/Timeline.dart';
@@ -20,6 +22,14 @@ class MyTimelinePage extends StatefulWidget {
 }
 
 class _MyTimelinePage extends State<MyTimelinePage> {
+
+
+  viewAccount(Account account){
+     Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => OtherAccount(account)),
+    );
+  }
 
   void initState() {
     super.initState();
@@ -39,10 +49,9 @@ class _MyTimelinePage extends State<MyTimelinePage> {
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
-  void _onRefresh() async {
+  void _onRefresh() {
     print("ONREFRESH");
     // monitor network fetch
-    await Future.delayed(Duration(milliseconds: 1000));
     // if failed,use refreshFailed()
     CurrentInstance.instance.currentClient
         .run(path: Timeline.getHomeTimeline(minId: "", maxId: "", sinceId: "", limit: "20"), method: HTTPMethod.GET)
@@ -59,10 +68,9 @@ class _MyTimelinePage extends State<MyTimelinePage> {
     });
   }
 
-  void _onLoading() async {
+  void _onLoading() {
     print("ONLOAD");
     // monitor network fetch
-    await Future.delayed(Duration(milliseconds: 1000));
     // if failed,use loadFailed(),if no data return,use LoadNodata()
     var lastId = "";
     Status lastStatus = widget.statuses.last;
@@ -145,7 +153,7 @@ class _MyTimelinePage extends State<MyTimelinePage> {
       child: ListView.builder(
         padding: EdgeInsets.symmetric(horizontal: 2.0, vertical: 10.0),
         itemBuilder: (c, i) =>
-            TimelineCell(widget.statuses[i]),
+            TimelineCell(widget.statuses[i], viewAccount: viewAccount,),
         itemCount: widget.statuses.length,
       ),
     );

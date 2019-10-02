@@ -1,28 +1,51 @@
+import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:phaze/Pages/Profile/OtherAccount.dart';
 import 'package:phaze/Pleroma/Models/Account.dart';
 import 'package:phaze/Pleroma/Models/Status.dart';
-import 'package:carousel_pro/carousel_pro.dart';
 import 'package:phaze/Views/VideoPlayer.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class TimelineCell extends StatefulWidget {
-  final Status status;
-  final Function(Account) viewAccount;
-  final Function(Status) viewStatusContext;
+class StatusDetailPage extends StatefulWidget {
 
-  TimelineCell(this.status, {this.viewAccount, this.viewStatusContext});
+ final Status status;
+ StatusDetailPage(this.status);
 
   @override
   State<StatefulWidget> createState() {
-    return _TimelineCell();
+    return _StatusDetailPage();
   }
 }
 
-class _TimelineCell extends State<TimelineCell> {
+class _StatusDetailPage extends State<StatusDetailPage> {
+
+  List<Status> ancesstors = <Status>[];
+  List<Status> decendants = <Status>[];
+
+
+  viewAccount(Account account){
+     Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => OtherAccount(account)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Comments"),
+      ),
+      body: ListView(children: <Widget>[
+        // original status
+        
+
+      ],),
+    );
+  }
+
+  Widget statusCell(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
 
@@ -39,10 +62,7 @@ class _TimelineCell extends State<TimelineCell> {
                 children: <Widget>[
                   GestureDetector(
                     onTap: () {
-                      print("view account");
-                      if (widget.viewAccount != null) {
-                        widget.viewAccount(widget.status.account);
-                      }
+                      viewAccount(widget.status.account);
                     },
                     behavior: HitTestBehavior.translucent,
                     child: Row(
