@@ -1,3 +1,6 @@
+
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/webrtc.dart';
@@ -14,7 +17,14 @@ import 'Messages/MessageContainer.dart';
 import 'Profile/AccountsBottomSheet.dart';
 import 'Profile/MyProfilePage.dart';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
+
+final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
 class TabPage extends StatefulWidget {
+
+
+
   final Function addNewInstance;
   final Function loadInstance;
 
@@ -27,6 +37,9 @@ class TabPage extends StatefulWidget {
 }
 
 class _TabPage extends State<TabPage> {
+    static FirebaseAnalytics analytics = FirebaseAnalytics();
+  static FirebaseAnalyticsObserver observer =
+      FirebaseAnalyticsObserver(analytics: analytics);
   WebRTCManager manager = WebRTCManager.instance;
 
   List<String> statuses = [''];
@@ -45,6 +58,7 @@ class _TabPage extends State<TabPage> {
   @override
   initState() {
     super.initState();
+    _firebaseMessaging.requestNotificationPermissions();
     // _connect();
   }
 
@@ -270,4 +284,5 @@ class _TabPage extends State<TabPage> {
     bottomSheet.hide();
     widget.loadInstance();
   }
+
 }

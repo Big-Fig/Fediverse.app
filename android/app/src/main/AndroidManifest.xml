@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.fediverse.app">
+     <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />:
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
@@ -8,10 +9,10 @@
          additional functionality it is fine to subclass or reimplement
          FlutterApplication and put your custom class here. -->
     <application
-        android:name="io.flutter.app.FlutterApplication"
+        android:name=".Application"
         android:label="Fediverse"
         android:icon="@mipmap/ic_launcher">
-
+        <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />:
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -39,6 +40,11 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            <intent-filter>
+                <action android:name="FLUTTER_NOTIFICATION_CLICK" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />:
         </activity>
     </application>
 </manifest>
