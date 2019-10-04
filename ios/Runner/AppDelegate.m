@@ -1,5 +1,6 @@
 #include "AppDelegate.h"
 #include "GeneratedPluginRegistrant.h"
+@import Firebase;
 
 @implementation AppDelegate
 
