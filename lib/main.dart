@@ -1,5 +1,4 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:phaze/Pleroma/Models/ClientSettings.dart';
@@ -25,8 +24,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-
-    FirebaseAnalytics analytics = FirebaseAnalytics();
+  final FirebaseAnalytics analytics = FirebaseAnalytics();
   final _currentInstance = CurrentInstance.instance;
   final _newInstance = CurrentInstance.newInstance;
 
@@ -48,8 +46,6 @@ class MyApp extends StatelessWidget {
       },
     );
   }
-
-  
 }
 
 Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {

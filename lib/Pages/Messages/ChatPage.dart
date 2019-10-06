@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:phaze/Pages/Messages/VideoChat/WebRTCManager.dart';
-import 'package:phaze/Pages/Messages/VideoChatPage.dart';
 import 'package:phaze/Pleroma/Foundation/Client.dart';
 import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:phaze/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;

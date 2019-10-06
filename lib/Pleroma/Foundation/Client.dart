@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:async/async.dart';
 import 'package:http/http.dart' as http;
+import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
 import './Requests/Registration.dart';
 import '../Models/ClientSettings.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -34,6 +35,7 @@ class Client {
       "scopes": "read write follow push",
       "website": "https://fediverse.app"
     };
+    
 
     final url = "$baseURL${Registration.register}";
     try {
@@ -53,7 +55,7 @@ class Client {
       await launch(url);
       getUriLinksStream().listen((Uri uri) {
         // Parse the link and warn the user, if it is not correct
-        if (success == true){
+        if (success == true) {
           return;
         }
 
@@ -159,4 +161,153 @@ class Client {
       return e;
     }
   }
+
+  Future<http.Response> subscribeToPush(String token) async {
+    var url = "$baseURL/api/v1/push/subscription";
+    var headers = {
+      HttpHeaders.authorizationHeader: "Bearer $accessToken",
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+    };
+    dynamic params = {
+      "data": {
+        "alerts": {
+          "favourite": true,
+          "follow": true,
+          "mention": true,
+          "reblog": true,
+        },
+      },
+      "subscription": {
+        "keys": {
+          "p256dh":
+              "BEpPCn0cfs3P0E0fY-gyOuahx5dW5N8quUowlrPyfXlMa6tABLqqcSpOpMnC1-o_UB_s4R8NQsqMLbASjnqSbqw=",
+          "auth": "T5bhIIyre5TDC1LyX4mFAQ==",
+        },
+        "endpoint":
+            "http://fedi-relay.herokuapp.com/push/$token?account=${CurrentInstance.instance.currentAccount.acct}&server=${CurrentInstance.instance.currentAccount.displayName}&device=iOS"
+      }
+    };
+
+    print("THIS IS HAPPENING");
+    var jsonData = json.encode(params);
+    print(jsonData);
+    try {
+      final response = await http.post(url,
+          headers: headers,
+          body: jsonData,
+          encoding: Encoding.getByName("utf-8"));
+      print(response.statusCode);
+      print(response.body);
+      return response;
+    } catch (e) {
+      print(e.toString());
+      return e;
+    }
+  }
 }
+
+/*
+let jsonObject = ["data":
+            ["alerts":
+                ["favourite":UserDefaults.standard.object(forKey: "pnlikes") as? Bool ?? true,
+                 "follow":UserDefaults.standard.object(forKey: "pnfollows") as? Bool ?? true,
+                 "mention": UserDefaults.standard.object(forKey: "pnmentions") as? Bool ?? true,
+                 "reblog":UserDefaults.standard.object(forKey: "pnboosts") as? Bool ?? true]
+            ],
+                    "subscription":
+                        ["keys":
+                            ["p256dh":"BEpPCn0cfs3P0E0fY-gyOuahx5dW5N8quUowlrPyfXlMa6tABLqqcSpOpMnC1-o_UB_s4R8NQsqMLbASjnqSbqw=",
+                             "auth":"T5bhIIyre5TDC1LyX4mFAQ=="
+                            ],
+                          "endpoint":"https://pushrelay-roma1-fcm.your.org/push/\(fcmToken)?account=test&server=server&device=iOS"
+                           // "endpoint":"https://rails-toot-test.herokuapp.com/push/\(fcmToken)?account=test&server=server&device=iOS"
+            ]
+        ]
+        //create the url with URL
+
+        let url = URL(string: "https://\(StoreStruct.currentInstance.returnedText)/api/v1/push/subscription")! //change the url
+        //create the session object
+        let session = URLSession.shared
+        //now create the URLRequest object using the url object
+        var request = URLRequest(url: url)
+        
+        do {
+            let jsonData = try JSONSerialization.data(
+                withJSONObject: jsonObject,
+                options: [])
+            let jsonString = String(data: jsonData, encoding: .utf8)
+            
+            request.httpBody = jsonData
+            print("JSON String : " + jsonString!)
+        }
+        catch {
+            print(error.localizedDescription)
+        }
+        request.httpMethod = "DELETE"// "POST" //set http method as POST
+        request.setValue("Bearer \(StoreStruct.currentInstance.accessToken)", forHTTPHeaderField: "Authorization")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        
+        //create dataTask using the session object to send data to the server
+        let task = session.dataTask(with: request as URLRequest, completionHandler: { data, response, error in
+            
+            //create the url with URL
+            let url = URL(string: "https://\(StoreStruct.currentInstance.returnedText)/api/v1/push/subscription")! //change the url
+            
+            //create the session object
+            let session = URLSession.shared
+            
+            //now create the URLRequest object using the url object
+            var request = URLRequest(url: url)
+            
+            request.httpMethod = "POST"// "POST" //set http method as POST
+            
+           
+            
+            // "https://pushrelay-roma1-fcm.your.org/push/\(fcmToken)?account=test&server=server"
+            
+            do {
+                let jsonData = try JSONSerialization.data(
+                    withJSONObject: jsonObject,
+                    options: [])
+                let jsonString = String(data: jsonData, encoding: .utf8)
+                
+                request.httpBody = jsonData
+                print("JSON String : " + jsonString!)
+            }
+            catch {
+                print(error.localizedDescription)
+            }
+            request.setValue("Bearer \(StoreStruct.currentInstance.accessToken)", forHTTPHeaderField: "Authorization")
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.addValue("application/json", forHTTPHeaderField: "Accept")
+            
+            //create dataTask using the session object to send data to the server
+            let task = session.dataTask(with: request as URLRequest, completionHandler: { data, response, error in
+                
+                guard error == nil else {
+                    return
+                }
+                
+                guard let data = data else {
+                    return
+                }
+                
+                do {
+                    //create json object from data
+                    if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any] {
+                        print(json)
+                        // handle json...
+                    }
+                    Account.pushSetSuccess(instance: "\(StoreStruct.currentUser.username)@\(StoreStruct.currentInstance.returnedText)")
+                } catch let error {
+                    print(error.localizedDescription)
+                }
+            })
+            task.resume()
+            
+        })
+        task.resume()
+    }
+    */

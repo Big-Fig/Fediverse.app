@@ -1,9 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
-import 'dart:io';
 import 'dart:core';
 import '../signaling.dart';
-import 'package:flutter_webrtc/webrtc.dart';
 
 class WebRTCManager {
   WebRTCManager._privateConstructor();
@@ -66,9 +63,9 @@ class WebRTCManager {
     }
   }
 
-  invitePeer(context, peerId, use_screen) async {
+  invitePeer(context, peerId, useScreen) async {
     if (signaling != null && peerId != selfId) {
-      signaling.invite(peerId, 'video', use_screen);
+      signaling.invite(peerId, 'video', useScreen);
     }
   }
 

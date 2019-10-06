@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
 import 'dart:core';
 import 'VideoChat/WebRTCManager.dart';
 import 'signaling.dart';
@@ -62,9 +61,9 @@ class _VideoChatPage extends State<VideoChatPage> {
     });
   }
 
-  _invitePeer(context, peerId, use_screen) async {
+  _invitePeer(context, peerId, useScreen) async {
     if (widget.signaling != null && peerId != WebRTCManager.instance.selfId) {
-      widget.signaling.invite(peerId, 'video', use_screen);
+      widget.signaling.invite(peerId, 'video', useScreen);
     }
   }
 

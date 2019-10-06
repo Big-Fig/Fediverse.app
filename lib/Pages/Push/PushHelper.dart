@@ -1,16 +1,27 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
+import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
 
 
 class PushHelper {
 
+PushHelper._privateConstructor();
 
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+static final PushHelper _instance =
+      PushHelper._privateConstructor();
+  static PushHelper get instance {
+    return _instance;
+  }
+
+  static final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   
 
 
-config(BuildContext context) {
+static config() {
+
+
+    print("THIS IS HAPPENING");
+
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
@@ -33,11 +44,12 @@ config(BuildContext context) {
       print("Settings registered: $settings");
     });
 
-    
+
     _firebaseMessaging.getToken().then((String token) {
       assert(token != null);
       print("Token");
       print(token);
+      CurrentInstance.instance.currentClient.subscribeToPush(token);
     });
   }
 
