@@ -21,8 +21,15 @@ class TimelineCell extends StatefulWidget {
 }
 
 class _TimelineCell extends State<TimelineCell> {
+
+
+  
+
   @override
   Widget build(BuildContext context) {
+
+    
+
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
 

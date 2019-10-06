@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:phaze/Pages/Profile/OtherAccount.dart';
+import 'package:phaze/Pages/Push/PushHelper.dart';
 import 'package:phaze/Pages/Timeline/TimelineCell.dart';
 import 'package:phaze/Pleroma/Foundation/Client.dart';
 import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
@@ -24,6 +25,7 @@ class MyTimelinePage extends StatefulWidget {
 class _MyTimelinePage extends State<MyTimelinePage> {
 
 
+
   viewAccount(Account account){
      Navigator.push(
       context,
@@ -33,6 +35,8 @@ class _MyTimelinePage extends State<MyTimelinePage> {
 
   void initState() {
     super.initState();
+    print("HELP");
+      PushHelper.config();
     if (SchedulerBinding.instance.schedulerPhase ==
         SchedulerPhase.persistentCallbacks) {
       SchedulerBinding.instance
