@@ -9,9 +9,12 @@
          additional functionality it is fine to subclass or reimplement
          FlutterApplication and put your custom class here. -->
     <application
-        android:name=".Application"
+        android:name="io.flutter.app.FlutterApplication"
         android:label="Fediverse"
         android:icon="@mipmap/ic_launcher">
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />:
         <activity
             android:name=".MainActivity"
@@ -44,6 +47,22 @@
                 <action android:name="FLUTTER_NOTIFICATION_CLICK" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+            <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
+             See README(https://goo.gl/l4GJaQ) for more. -->
+            <meta-data
+                android:name="com.google.firebase.messaging.default_notification_icon"
+                android:resource="@drawable/launch_background" />
+            <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
+                 notification message. See README(https://goo.gl/6BKBk7) for more. -->
+            <meta-data
+                android:name="com.google.firebase.messaging.default_notification_color"
+                android:resource="@color/green" />
+            <!-- [END fcm_default_icon] -->
+            <!-- [START fcm_default_channel] -->
+            <meta-data
+                android:name="com.google.firebase.messaging.default_notification_channel_id"
+                android:value="@string/default_notification_channel_id" />
+            <!-- [END fcm_default_channel] -->
             <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />:
         </activity>
     </application>

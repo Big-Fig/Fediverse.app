@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:phaze/Pages/Timeline/StatusDetail.dart';
 import 'package:phaze/Pleroma/Foundation/Client.dart';
 import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:phaze/Pleroma/Foundation/Requests/Timeline.dart';
@@ -141,26 +142,30 @@ class _Search extends State<Search> {
       child: StaggeredGridView.countBuilder(
         crossAxisCount: 4,
         itemCount: widget.statuses.length,
-        itemBuilder: (BuildContext context, int index) => new
-        
-        GestureDetector(
-          onTap: (){
-            var status =  widget.statuses[index];
-            print(status.content);
-            print(status.visibility);
-          },child:Container(
-          color: Colors.black.withOpacity(0.2),
-          child: SizedBox.expand(
-            child: FadeInImage.assetNetwork(
-              fit: BoxFit.cover,
-              placeholder: 'assets/images/double_ring_loading_io.gif',
-              image: widget.statuses[index].mediaAttachments[0].previewUrl,
-              width: MediaQuery.of(context).size.width,
+        itemBuilder: (BuildContext context, int index) => new GestureDetector(
+          onTap: () {
+            var status = widget.statuses[index];
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => StatusDetail(
+                  status: status,
+                ),
+              ),
+            );
+          },
+          child: Container(
+            color: Colors.black.withOpacity(0.2),
+            child: SizedBox.expand(
+              child: FadeInImage.assetNetwork(
+                fit: BoxFit.cover,
+                placeholder: 'assets/images/double_ring_loading_io.gif',
+                image: widget.statuses[index].mediaAttachments[0].previewUrl,
+                width: MediaQuery.of(context).size.width,
+              ),
             ),
           ),
         ),
-        )
-         ,
         staggeredTileBuilder: (int index) =>
             new StaggeredTile.count(2, index.isEven ? 2 : 1),
         mainAxisSpacing: 4.0,

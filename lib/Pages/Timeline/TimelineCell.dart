@@ -11,8 +11,9 @@ class TimelineCell extends StatefulWidget {
   final Status status;
   final Function(Account) viewAccount;
   final Function(Status) viewStatusContext;
+  final GlobalKey selectedStatusKey;
 
-  TimelineCell(this.status, {this.viewAccount, this.viewStatusContext});
+  TimelineCell(this.status, {this.viewAccount, this.viewStatusContext, this.selectedStatusKey});
 
   @override
   State<StatefulWidget> createState() {
@@ -21,20 +22,13 @@ class TimelineCell extends StatefulWidget {
 }
 
 class _TimelineCell extends State<TimelineCell> {
-
-
-  
-
   @override
   Widget build(BuildContext context) {
-
-    
-
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
 
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         print("view status");
       },
       child: Card(
@@ -83,45 +77,58 @@ class _TimelineCell extends State<TimelineCell> {
                 ],
               ),
             ),
-            SizedBox(
-              height: 8.0,
-            ),
-            if (widget.status.mediaAttachments.length > 0)
-              Container(
-                height: targetWidth,
-                width: targetWidth,
-                color: Colors.white,
-                child: getMeidaWidget(widget.status),
-              ),
-            Padding(
-              padding:
-                  EdgeInsets.only(bottom: 0, top: 8, left: 12.0, right: 12),
-              child: Html(
-                data: widget.status.content,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(12.0),
-              child: Row(
+            GestureDetector(
+              onTap: () {
+                print("view account");
+                if (widget.viewAccount != null) {
+                  widget.viewStatusContext(widget.status);
+                }
+              },
+              behavior: HitTestBehavior.translucent,
+              child: Column(
                 children: <Widget>[
-                  IconButton(
-                    icon: Icon(Icons.thumb_up),
-                    tooltip: 'Like',
-                    onPressed: () {},
+                  SizedBox(
+                    height: 8.0,
                   ),
-                  if (widget.status.favouritesCount != 0)
-                    Text(widget.status.favouritesCount.toString()),
-                  IconButton(
-                    icon: Icon(Icons.add_comment),
-                    tooltip: 'comment',
-                    onPressed: () {},
+                  if (widget.status.mediaAttachments.length > 0)
+                    Container(
+                      height: targetWidth,
+                      width: targetWidth,
+                      color: Colors.white,
+                      child: getMeidaWidget(widget.status),
+                    ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        bottom: 0, top: 8, left: 12.0, right: 12),
+                    child: Html(
+                      data: widget.status.content,
+                    ),
                   ),
-                  IconButton(
-                    icon: Icon(Icons.cached),
-                    tooltip: 'repost',
-                    onPressed: () {},
+                  Padding(
+                    padding: EdgeInsets.all(12.0),
+                    child: Row(
+                      children: <Widget>[
+                        IconButton(
+                          icon: Icon(Icons.thumb_up),
+                          tooltip: 'Like',
+                          onPressed: () {},
+                        ),
+                        if (widget.status.favouritesCount != 0)
+                          Text(widget.status.favouritesCount.toString()),
+                        IconButton(
+                          icon: Icon(Icons.add_comment),
+                          tooltip: 'comment',
+                          onPressed: () {},
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.cached),
+                          tooltip: 'repost',
+                          onPressed: () {},
+                        ),
+                        Spacer(),
+                      ],
+                    ),
                   ),
-                  Spacer(),
                 ],
               ),
             ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:phaze/Pages/Profile/OtherAccount.dart';
-import 'package:phaze/Pages/Push/PushHelper.dart';
+import 'package:phaze/Pages/Timeline/StatusDetail.dart';
 import 'package:phaze/Pages/Timeline/TimelineCell.dart';
 import 'package:phaze/Pleroma/Foundation/Client.dart';
 import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
@@ -11,32 +11,36 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../Pleroma/Foundation/Requests/Timeline.dart';
 import 'package:flutter/scheduler.dart';
 
-
 class MyTimelinePage extends StatefulWidget {
   final List<Status> statuses = [];
   @override
   State<StatefulWidget> createState() {
     return _MyTimelinePage();
   }
-
-  
 }
 
 class _MyTimelinePage extends State<MyTimelinePage> {
-
-
-
-  viewAccount(Account account){
-     Navigator.push(
+  viewAccount(Account account) {
+    Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => OtherAccount(account)),
+    );
+  }
+
+  viewStatusDetail(Status status) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => StatusDetail(
+          status: status,
+        ),
+      ),
     );
   }
 
   void initState() {
     super.initState();
     print("HELP");
-      PushHelper.config();
     if (SchedulerBinding.instance.schedulerPhase ==
         SchedulerPhase.persistentCallbacks) {
       SchedulerBinding.instance
@@ -44,7 +48,7 @@ class _MyTimelinePage extends State<MyTimelinePage> {
     }
   }
 
-  void fetchStatuses(BuildContext context){
+  void fetchStatuses(BuildContext context) {
     if (widget.statuses.length == 0) {
       _refreshController.requestRefresh();
     }
@@ -58,7 +62,10 @@ class _MyTimelinePage extends State<MyTimelinePage> {
     // monitor network fetch
     // if failed,use refreshFailed()
     CurrentInstance.instance.currentClient
-        .run(path: Timeline.getHomeTimeline(minId: "", maxId: "", sinceId: "", limit: "20"), method: HTTPMethod.GET)
+        .run(
+            path: Timeline.getHomeTimeline(
+                minId: "", maxId: "", sinceId: "", limit: "20"),
+            method: HTTPMethod.GET)
         .then((response) {
       List<Status> newStatuses = statusFromJson(response.body);
       widget.statuses.clear();
@@ -84,7 +91,8 @@ class _MyTimelinePage extends State<MyTimelinePage> {
 
     CurrentInstance.instance.currentClient
         .run(
-            path: Timeline.getHomeTimeline(minId: "", maxId: lastId, sinceId: "", limit: "20"),
+            path: Timeline.getHomeTimeline(
+                minId: "", maxId: lastId, sinceId: "", limit: "20"),
             method: HTTPMethod.GET)
         .then((response) {
       List<Status> newStatuses = statusFromJson(response.body);
@@ -156,8 +164,11 @@ class _MyTimelinePage extends State<MyTimelinePage> {
       onLoading: _onLoading,
       child: ListView.builder(
         padding: EdgeInsets.symmetric(horizontal: 2.0, vertical: 10.0),
-        itemBuilder: (c, i) =>
-            TimelineCell(widget.statuses[i], viewAccount: viewAccount,),
+        itemBuilder: (c, i) => TimelineCell(
+          widget.statuses[i],
+          viewAccount: viewAccount,
+          viewStatusContext: viewStatusDetail,
+        ),
         itemCount: widget.statuses.length,
       ),
     );

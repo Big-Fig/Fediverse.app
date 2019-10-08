@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'dart:io' show Platform;
 import 'package:path/path.dart';
 import 'package:async/async.dart';
 import 'package:http/http.dart' as http;
@@ -169,6 +169,13 @@ class Client {
       "Accept": "application/json",
       "Content-Type": "application/json",
     };
+    String baseUrl = CurrentInstance.instance.currentClient.baseURL.replaceAll("https://", "");
+    String endpoint = "http://fedi-relay.herokuapp.com/push/$token?account=${CurrentInstance.instance.currentAccount.acct}&server=$baseUrl&device=iOS";
+    if (Platform.isAndroid) {
+      endpoint = "http://fedi-relay.herokuapp.com/push/$token?account=${CurrentInstance.instance.currentAccount.acct}&server=$baseUrl";
+    } else {
+
+    }
     dynamic params = {
       "data": {
         "alerts": {
@@ -185,11 +192,10 @@ class Client {
           "auth": "T5bhIIyre5TDC1LyX4mFAQ==",
         },
         "endpoint":
-            "http://fedi-relay.herokuapp.com/push/$token?account=${CurrentInstance.instance.currentAccount.acct}&server=${CurrentInstance.instance.currentAccount.displayName}&device=iOS"
+            endpoint
       }
     };
 
-    print("THIS IS HAPPENING");
     var jsonData = json.encode(params);
     print(jsonData);
     try {

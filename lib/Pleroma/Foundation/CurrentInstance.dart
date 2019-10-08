@@ -6,6 +6,7 @@ import '../Models/Account.dart';
 import '../Models/AccountAuth.dart';
 import 'Requests/Accounts.dart';
 
+
 class CurrentInstance {
   CurrentInstance._privateConstructor();
 
