@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/webrtc.dart';
 import 'package:phaze/Pages/Messages/VideoChat/WebRTCManager.dart';
 import 'package:phaze/Pages/Post/CaptureController.dart';
+import 'package:phaze/Pages/Push/PushHelper.dart';
 import 'package:phaze/Pages/Search/Search.dart';
 import 'package:phaze/Pages/Timeline/MyTimelinePage.dart';
 import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
@@ -37,6 +38,11 @@ class TabPage extends StatefulWidget {
 }
 
 class _TabPage extends State<TabPage> {
+
+
+
+
+
     static FirebaseAnalytics analytics = FirebaseAnalytics();
   static FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);
@@ -161,6 +167,10 @@ class _TabPage extends State<TabPage> {
 
   @override
   Widget build(BuildContext context) {
+
+
+    PushHelper.instance.config(context);
+    
     _appBar = [
       AppBar(
         title: Text('Your Timeline'),

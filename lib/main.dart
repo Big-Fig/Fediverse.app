@@ -1,6 +1,7 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:phaze/Pages/Push/PushHelper.dart';
 import 'package:phaze/Pleroma/Models/ClientSettings.dart';
 import './Pleroma/Foundation/CurrentInstance.dart';
 import './Pages/AppContainerPage.dart';
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
   final FirebaseAnalytics analytics = FirebaseAnalytics();
   final _currentInstance = CurrentInstance.instance;
   final _newInstance = CurrentInstance.newInstance;
-
+  final  push =  PushHelper.instance;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {

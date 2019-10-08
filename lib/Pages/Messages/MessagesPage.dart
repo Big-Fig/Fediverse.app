@@ -38,10 +38,13 @@ class _MessagesPage extends State<MessagesPage> {
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
+
+  refreshMessagesList(){
+    _onRefresh();
+  }
+
   void _onRefresh() async {
     print("ONREFRESH");
-    // monitor network fetch
-    await Future.delayed(Duration(milliseconds: 1000));
     // if failed,use refreshFailed()
     CurrentInstance.instance.currentClient
         .run(
@@ -64,8 +67,6 @@ class _MessagesPage extends State<MessagesPage> {
   void _onLoading() async {
     print("ONLOAD");
 
-    // monitor network fetch
-    await Future.delayed(Duration(milliseconds: 1000));
     // if failed,use loadFailed(),if no data return,use LoadNodata()
     var lastId = "";
     Conversation lastConverstation = widget.conversations.last;
@@ -95,6 +96,7 @@ class _MessagesPage extends State<MessagesPage> {
         MaterialPageRoute(
           builder: (context) => ChatPage(
             conversation: conversation,
+            refreshMasterList: refreshMessagesList,
           ),
            settings:RouteSettings(name: "/ChatPage"),
         ));

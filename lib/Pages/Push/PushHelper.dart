@@ -1,5 +1,7 @@
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
+import 'package:phaze/Notifications/PushNotification.dart';
 import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
 
 
@@ -13,42 +15,48 @@ static final PushHelper _instance =
     return _instance;
   }
 
-  static final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   
+  
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  
+ Function notificationUpdater;
 
+config(BuildContext context) {
 
-static config() {
-
-
-    print("THIS IS HAPPENING");
-
-    _firebaseMessaging.configure(
+    PushHelper.instance._firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
-        print("onMessage: $message");
+        print("onMessage: face $message");
+        var data = message['data'];
+        print("data: $data");
+        PushHelper.instance.notificationUpdater();
         //   _showItemDialog(message);
+
       },
-      onLaunch: (Map<String, dynamic> message) async {
-        print("onLaunch: $message");
+      onLaunch: (Map<String, dynamic> data) async {
+        print("onLaunch: $data");
+        PushNotification notification = PushNotification.fromJson(data["data"]);
         //  _navigateToItemDetail(message);
       },
-      onResume: (Map<String, dynamic> message) async {
-        print("onResume: $message");
+      onResume: (Map<String, dynamic> data) async {
+        print("onResume: $data");
+        PushNotification notification = PushNotification.fromJson(data["data"]);
         //  _navigateToItemDetail(message);
       },
     );
 
-    _firebaseMessaging.requestNotificationPermissions(
+    PushHelper.instance._firebaseMessaging.requestNotificationPermissions(
         const IosNotificationSettings(sound: true, badge: true, alert: true));
     _firebaseMessaging.onIosSettingsRegistered
         .listen((IosNotificationSettings settings) {
-      print("Settings registered: $settings");
     });
 
 
-    _firebaseMessaging.getToken().then((String token) {
+    PushHelper.instance._firebaseMessaging.getToken().then((String token) {
       assert(token != null);
       print("Token");
       print(token);
+
+
       CurrentInstance.instance.currentClient.subscribeToPush(token);
     });
   }

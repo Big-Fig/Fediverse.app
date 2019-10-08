@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:phaze/Notifications/PushNotification.dart';
+import 'package:phaze/Pages/Push/PushHelper.dart';
 import 'package:phaze/Pleroma/Foundation/Client.dart';
 import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:phaze/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
@@ -19,7 +21,8 @@ import 'Media/CaptureDMMedia.dart';
 class ChatPage extends StatefulWidget {
   final Conversation conversation;
   final Account account;
-  ChatPage({this.conversation, this.account});
+  final Function refreshMasterList;
+  ChatPage({this.conversation, this.account, this.refreshMasterList});
 
   @override
   State<StatefulWidget> createState() {
@@ -28,12 +31,28 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPage extends State<ChatPage> {
+
+
+
+  
   var txtController = TextEditingController();
   List<Status> statuses = <Status>[];
   String title = "DM";
 
+  
+  
+
+  update(){
+    print("UPDATING FROM PUSH!!!!!!");
+    widget.refreshMasterList();
+    backgroundCheck();
+  }
+
   @override
   Widget build(BuildContext context) {
+
+
+
     return Scaffold(
         appBar: AppBar(
           title: Text(title),
@@ -185,6 +204,8 @@ class _ChatPage extends State<ChatPage> {
       SchedulerBinding.instance
           .addPostFrameCallback((_) => fetchStatuses(context));
     }
+
+    PushHelper.instance.notificationUpdater = update;
   }
 
   mediaUploaded(String id) {
@@ -420,6 +441,11 @@ class _ChatPage extends State<ChatPage> {
   }
 
   sendMessage() {
+    Account atAccount = statuses.first.account;
+    if (widget.conversation.accounts.length > 0) {
+      atAccount = getOtherAccount(widget.conversation.accounts);
+    }
+    
     if (txtController.text.length == 0) {
       print("too short");
       return;
@@ -427,7 +453,7 @@ class _ChatPage extends State<ChatPage> {
 
     var statusPath = StatusRequest.Status.postNewStatus;
     Map<String, dynamic> params = {
-      "status": "${txtController.text}",
+      "status": "@${atAccount.acct} ${txtController.text}",
       "visibility": "direct",
       "in_reply_to_id": statuses.first.id
     };
