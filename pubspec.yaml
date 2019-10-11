@@ -47,6 +47,7 @@ dependencies:
   percent_indicator: "^2.1.1"
   mime_type: ^0.2.4
   flutter_webrtc: any
+  zefyr: ^0.8.0
   
 
   

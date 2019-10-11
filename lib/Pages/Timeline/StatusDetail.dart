@@ -292,17 +292,18 @@ class _StatusDetail extends State<StatusDetail> {
     var statusPath = StatusRequest.Status.postNewStatus;
     Map<String, dynamic> params = {
       "status": "${txtController.text}",
-      "visibility": widget.status.visibility,
+      "visibility": widget.status.visibility.toString(),
       "in_reply_to_id": widget.status.id
     };
 
+    print(params);
     CurrentInstance.instance.currentClient
         .run(path: statusPath, method: HTTPMethod.POST, params: params)
         .then((statusResponse) {
       print(statusResponse.body);
       txtController.clear();
       var status = Status.fromJson(jsonDecode(statusResponse.body));
-      statuses.insert(0, status);
+      statuses.add(status);
       setState(() {});
     }).catchError((e) {
       print(e);
