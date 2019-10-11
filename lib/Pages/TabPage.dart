@@ -15,6 +15,7 @@ import './Placeholder.dart';
 import 'Messages/MessageContainer.dart';
 // import 'Messages/VideoChatPage.dart';
 // import 'Messages/signaling.dart';
+import 'Post/TextEditor.dart';
 import 'Profile/AccountsBottomSheet.dart';
 import 'Profile/MyProfilePage.dart';
 
@@ -262,10 +263,18 @@ class _TabPage extends State<TabPage> {
   void onTabTapped(int index) {
     setState(() {
       if (index == 2) {
-        Navigator.push(
+
+         Navigator.push(
           context,
-          SlideBottomRoute(page: CaptureController()),
+          SlideBottomRoute(page: TextEditor()),
         );
+
+        
+
+        // Navigator.push(
+        //   context,
+        //   SlideBottomRoute(page: CaptureController()),
+        // );
       } else {
         _currentIndex = index;
       }
