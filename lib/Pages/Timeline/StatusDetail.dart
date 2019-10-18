@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:phaze/Pages/Messages/Media/CaptureDMMedia.dart';
@@ -70,7 +68,7 @@ class _StatusDetail extends State<StatusDetail> {
                       borderRadius: BorderRadius.circular(12.0),
                       borderSide: BorderSide(),
                     ),
-                    labelText: 'Message',
+                    labelText: 'Reply',
                   ),
                 ),
               ),
@@ -144,7 +142,7 @@ class _StatusDetail extends State<StatusDetail> {
     print("MY ID!!! $id");
 
     Navigator.of(context)
-        .popUntil((route) => route.settings.name == "/ChatPage");
+        .popUntil((route) => route.settings.name == "/StatusDetail");
 
     sendMessageWithAttachment(id);
   }

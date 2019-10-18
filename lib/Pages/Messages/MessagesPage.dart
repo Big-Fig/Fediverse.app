@@ -65,7 +65,6 @@ class _MessagesPage extends State<MessagesPage> {
   }
 
   void _onLoading() async {
-    print("ONLOAD");
 
     // if failed,use loadFailed(),if no data return,use LoadNodata()
     var lastId = "";
