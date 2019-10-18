@@ -22,6 +22,7 @@ class CurrentInstance {
     return _newInstance;
   }
 
+  String notificationId;
   Client currentClient;
   Account currentAccount;
   AccountAuth currentAuth;

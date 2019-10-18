@@ -66,6 +66,7 @@ class AccountsBottomSheet extends StatelessWidget {
                           onTap: () {
                             print("tap");
                             if (thisClient != client) {
+                              print(instance.account);
                               InstanceStorage.setCurrentAccount(
                                       instance.account)
                                   .then((future) {

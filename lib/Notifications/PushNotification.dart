@@ -29,14 +29,14 @@ class PushNotification {
   factory PushNotification.fromJson(Map<String, dynamic> json) => new PushNotification(
         notificationType: json["notification_type"],
         notificationId: json["notification_id"],
-        server: json["account"],
-        account: json["server"],
+        server: json["server"],
+        account: json["account"],
       );
 
   Map<String, dynamic> toJson() => {
         "notification_type": notificationType,
         "notification_id": notificationId,
-        "account": server,
-        "server": account,
+        "account": account,
+        "server": server,
       };
 }

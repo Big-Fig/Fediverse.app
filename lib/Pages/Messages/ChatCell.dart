@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:phaze/Pleroma/Foundation/Client.dart';
+import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:phaze/Pleroma/Models/Status.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:phaze/Views/VideoPlayer.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:phaze/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
 
 class ChatCell extends StatefulWidget {
   final Status status;
@@ -47,8 +50,12 @@ class _ChatCell extends State<ChatCell> {
                 Spacer(),
                 IconButton(
                   icon: Icon(Icons.favorite_border),
+                  color: widget.status.favourited ? Colors.redAccent : Colors.grey,
                   tooltip: 'More',
-                  onPressed: () {},
+                  onPressed: () {
+
+                    like();
+                  },
                 ),
               ],
             ),
@@ -72,6 +79,26 @@ class _ChatCell extends State<ChatCell> {
         ],
       ),
     );
+  }
+
+    like() {
+    String path = StatusRequest.Status.favouriteStatus(widget.status.id);
+    if (widget.status.favourited == true) {
+      path = StatusRequest.Status.unfavouriteStatus(widget.status.id);
+      widget.status.favouritesCount = widget.status.favouritesCount - 1;
+    } else {
+      widget.status.favouritesCount = widget.status.favouritesCount + 1;
+    }
+    widget.status.favourited = !widget.status.favourited;
+    
+    CurrentInstance.instance.currentClient
+        .run(path: path, method: HTTPMethod.POST)
+        .then((response) {
+      print(response.body);
+    }).catchError((error) {
+      print(error);
+    });
+    if (mounted) setState(() {});
   }
 
   Widget getMeidaWidget(Status status) {

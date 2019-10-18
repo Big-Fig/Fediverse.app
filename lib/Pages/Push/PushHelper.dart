@@ -3,6 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:phaze/Notifications/PushNotification.dart';
 import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:phaze/Pleroma/Foundation/InstanceStorage.dart';
 
 
 class PushHelper {
@@ -15,14 +16,14 @@ static final PushHelper _instance =
     return _instance;
   }
 
-  
+  Function swapAccount;
   
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-  
+  bool fromResume = false;
  Function notificationUpdater;
 
-config(BuildContext context) {
-
+config(BuildContext context, Function swap) {
+    PushHelper.instance.swapAccount = swap;
     PushHelper.instance._firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: face $message");
@@ -33,14 +34,46 @@ config(BuildContext context) {
 
       },
       onLaunch: (Map<String, dynamic> data) async {
-        print("onLaunch: $data");
-        PushNotification notification = PushNotification.fromJson(data["data"]);
-        //  _navigateToItemDetail(message);
+        
+        
+        //   var d = data["data"];
+        // String acc = d['account'];
+        // String server = d['server'];
+        // var id = d['notification_id'];
+        // String type = d["notification_type"];
+        // print("onLaunch: $d");
+        // //  _navigateToItemDetail(message);
+        // String account = "$acc@https://$server";
+        // print("SWAPPING ACCOUNT $account");
+        // InstanceStorage.setCurrentAccount(
+        //                               account)
+        //                           .then((future) {
+        //                              CurrentInstance.instance.notificationId = type;
+        //                         swapAccount();
+        //                       }).catchError((error){
+        //                         print(error);
+        //                       });
+
       },
       onResume: (Map<String, dynamic> data) async {
-        print("onResume: $data");
-        PushNotification notification = PushNotification.fromJson(data["data"]);
+        var d = data["data"];
+        String acc = d['account'];
+        String server = d['server'];
+        var id = d['notification_id'];
+        print("onResume: $d");
+        String type = d["notification_type"];
         //  _navigateToItemDetail(message);
+        String account = "$acc@https://$server";
+        print("SWAPPING ACCOUNT $account");
+        InstanceStorage.setCurrentAccount(
+                                      account)
+                                  .then((future) {
+                                    CurrentInstance.instance.notificationId = type;
+                                swapAccount();
+                              }).catchError((error){
+                                print(error);
+                              });
+
       },
     );
 
