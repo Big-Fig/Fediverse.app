@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:phaze/Pages/Post/VisibiltyDropDown.dart';
 import 'package:phaze/Pleroma/Foundation/Client.dart';
 import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
@@ -22,7 +23,12 @@ class ComposeStatus extends StatefulWidget {
   final String videoURL;
   final Function popParent;
   final String htmlPost;
-  ComposeStatus({this.asset, this.imageURL, this.videoURL, this.popParent, this.htmlPost});
+  ComposeStatus(
+      {this.asset,
+      this.imageURL,
+      this.videoURL,
+      this.popParent,
+      this.htmlPost});
 
   @override
   State<StatefulWidget> createState() {
@@ -55,7 +61,7 @@ class _ComposeStatus extends State<ComposeStatus> {
               Navigator.pop(context);
             },
           ),
-          title: Text("New Post"),
+          title: Text("Status Preview"),
           actions: <Widget>[
             FlatButton(
               child: Text("Post"),
@@ -69,47 +75,23 @@ class _ComposeStatus extends State<ComposeStatus> {
         ),
         body: ListView(
           children: <Widget>[
-            Container(
-              height: deviceWidth,
-              color: Colors.black,
-              child: getMediaPreview(),
-            ),
+            if (getMediaPreview() != null)
+              Container(
+                height: deviceWidth,
+                color: Colors.black,
+                child: getMediaPreview(),
+              ),
             Container(
               height: 40,
               child: VisibilityDropDown(visibilityUpdated),
             ),
+            Text("Status:"),
             Padding(
               padding: EdgeInsets.all(10),
               child: Container(
-                height: 200,
-                child: new ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxHeight: 200.0,
-                  ),
-                  child: new Scrollbar(
-                    child: new SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      reverse: true,
-                      child: SizedBox(
-                        height: 180.0,
-                        child: new TextField(
-                          onChanged: (text) {
-                            status = text;
-                          },
-                          maxLines: 100,
-                          decoration: new InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12.0),
-                              borderSide: BorderSide(),
-                            ),
-                            labelText: 'Write a caption',
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+                  child: Html(
+                data: widget.htmlPost,
+              )),
             ),
             RaisedButton(
               child: Text("POST!"),
@@ -125,7 +107,7 @@ class _ComposeStatus extends State<ComposeStatus> {
     if (widget.imageURL != null) {
       return _cameraPreviewWidget();
     } else if (widget.videoURL != null) {
-       file = File(widget.videoURL);
+      file = File(widget.videoURL);
       return LocalVideoPlayer(url: widget.videoURL);
     } else if (widget.asset != null) {
       widget.asset.file.then((loadedFile) {
@@ -146,7 +128,7 @@ class _ComposeStatus extends State<ComposeStatus> {
       }
     }
 
-    return Container();
+    return null;
   }
 
   Widget _cameraPreviewWidget() {
@@ -155,6 +137,11 @@ class _ComposeStatus extends State<ComposeStatus> {
   }
 
   postStatus() {
+    if (file == null) {
+      postTextStatus();
+      return;
+    }
+
     _pr = ProgressDialog(context, ProgressDialogType.Normal);
     _pr.setMessage('Posting status');
     _pr.show();
@@ -169,25 +156,18 @@ class _ComposeStatus extends State<ComposeStatus> {
         var statusPath = StatusRequest.Status.postNewStatus;
         print(json.encode(ids));
         Map<String, dynamic> params = {
-          "status": status,
-          "visibility" : "public",
-          "media_ids" : [attachment.id]
+          "status": widget.htmlPost,
+          "visibility": statusVisability,
+          "media_ids": [attachment.id]
         };
 
         CurrentInstance.instance.currentClient
-            .run(
-                path: statusPath, method: HTTPMethod.POST, params: params)
+            .run(path: statusPath, method: HTTPMethod.POST, params: params)
             .then((statusResponse) {
           print(statusResponse.body);
           _pr.hide();
           var alert = Alert(context, "Success!", "You status was posted!",
-              () => {
-
-
-                Navigator.of(context).popUntil((route) => route.isFirst)
-
-
-              });
+              () => {Navigator.of(context).popUntil((route) => route.isFirst)});
           alert.showAlert();
         }).catchError((e) {
           print(e);
@@ -210,18 +190,37 @@ class _ComposeStatus extends State<ComposeStatus> {
         alert.showAlert();
       });
     });
-    // CurrentInstance.instance.currentClient
-    //     .run(
-    //         path: Media.postNewStatus,
-    //         method: HTTPMethod.POST)
-    //     .then((response) {
-    //   List<Status> newStatuses = statusFromJson(response.body);
-    //   widget.statuses.addAll(newStatuses);
-    //   if (mounted) setState(() {});
-    //   _refreshController.loadComplete();
-    // }).catchError((error) {
-    //   if (mounted) setState(() {});
-    //   _refreshController.loadFailed();
-    // });
+  }
+
+  postTextStatus() {
+    _pr = ProgressDialog(context, ProgressDialogType.Normal);
+    _pr.setMessage('Posting status');
+    _pr.show();
+
+    var statusPath = StatusRequest.Status.postNewStatus;
+
+    Map<String, dynamic> params = {
+      "status": widget.htmlPost,
+      "visibility": statusVisability,
+    };
+
+    CurrentInstance.instance.currentClient
+        .run(path: statusPath, method: HTTPMethod.POST, params: params)
+        .then((statusResponse) {
+      print(statusResponse.body);
+      _pr.hide();
+      var alert = Alert(context, "Success!", "You status was posted!",
+          () => {Navigator.of(context).popUntil((route) => route.isFirst)});
+      alert.showAlert();
+    }).catchError((e) {
+      print(e);
+      _pr.hide();
+      var alert = Alert(
+          context,
+          "Opps",
+          "Unable to post status at this time. Please try again later.",
+          () => {});
+      alert.showAlert();
+    });
   }
 }

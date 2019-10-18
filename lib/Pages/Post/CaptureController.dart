@@ -2,14 +2,17 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:phaze/Convert/html.dart';
+import 'package:phaze/Pages/Post/ComposeStatus.dart';
 import 'package:phaze/Pages/Post/Gallery/GalleryCapture.dart';
 import 'package:phaze/Pages/Post/Photo/PhotoCapture.dart';
 import 'package:phaze/Pages/Post/TextCapture.dart';
 import 'package:phaze/Pages/Post/TextEditor.dart';
 import 'package:phaze/Pages/Post/Video/VideoCapture.dart';
 import 'package:photo_manager/photo_manager.dart';
-import 'package:zefyr/zefyr.dart';
+
 import 'package:quill_delta/quill_delta.dart';
+import 'package:zefyr/zefyr.dart';
 
 class CaptureController extends StatefulWidget {
   @override
@@ -23,26 +26,27 @@ class _CaptureController extends State<CaptureController>
   ValueNotifier<int> _showNext = ValueNotifier<int>(0);
   AssetEntity selectedAsset;
   TabController _controller;
-  ZefyrController zefyrController;
+  TextCapture textCaptureController;
+
+   TextEditingController statusController = TextEditingController();
 
   List<AppBar> _appBar;
   List<Widget> _children = <Widget>[];
-  NotusDocument document;
 
   @override
   void initState() {
     super.initState();
-    print("THIS IS THE INITING OF THE CAPTURE CONTROLLER");
-    _loadDocument();
+    textCaptureController = TextCapture(pop, statusController);
     _children = [
       VideoCapture(videoTaken),
       PhotoCapture(photoTaken),
       GalleryCapture(gallerySelected),
-      TextCapture(document)
+      textCaptureController
     ];
     _controller = TabController(vsync: this, length: 3);
     _controller.addListener(_controllerChanged);
     _appBar = [
+      // Video Capture AppBar
       AppBar(
         leading: IconButton(
           icon: Icon(Icons.close),
@@ -52,6 +56,7 @@ class _CaptureController extends State<CaptureController>
         ),
         title: Text("New Post"),
       ),
+      // Camera Capture AppBar
       AppBar(
         leading: IconButton(
           icon: Icon(Icons.close),
@@ -61,6 +66,7 @@ class _CaptureController extends State<CaptureController>
         ),
         title: Text("New Post"),
       ),
+      // Gallery Capture AppBar
       AppBar(
         leading: IconButton(
           icon: Icon(Icons.close),
@@ -78,8 +84,7 @@ class _CaptureController extends State<CaptureController>
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => TextEditor(
-                    document: document,
+                  builder: (context) => ComposeStatus(
                     asset: selectedAsset,
                     popParent: pop,
                   ),
@@ -103,13 +108,12 @@ class _CaptureController extends State<CaptureController>
             textColor: Colors.white,
             color: Colors.transparent,
             onPressed: () {
+              
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => TextEditor(
-                    document: document,
-                    asset: selectedAsset,
-                    popParent: pop,
+                  builder: (context) => ComposeStatus(
+                    htmlPost: statusController.text,
                   ),
                 ),
               );
@@ -143,7 +147,6 @@ class _CaptureController extends State<CaptureController>
       context,
       MaterialPageRoute(
         builder: (context) => TextEditor(
-          document: document,
           videoURL: uri,
           popParent: pop,
         ),
@@ -157,7 +160,6 @@ class _CaptureController extends State<CaptureController>
       context,
       MaterialPageRoute(
         builder: (context) => TextEditor(
-          document: document,
           imageURL: uri,
           popParent: pop,
         ),
@@ -179,26 +181,24 @@ class _CaptureController extends State<CaptureController>
       ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: onTabTapped, // new
-        currentIndex: _currentIndex, // 
+        currentIndex: _currentIndex, //
         selectedItemColor: Colors.green,
         unselectedItemColor: Colors.grey,
         items: [
           new BottomNavigationBarItem(
-            title:Container(height: 0.0),
+            title: Container(height: 0.0),
             icon: Icon(Icons.videocam),
           ),
           new BottomNavigationBarItem(
-            title:Container(height: 0.0),
-            icon:  Icon(Icons.camera_alt),
+            title: Container(height: 0.0),
+            icon: Icon(Icons.camera_alt),
           ),
           new BottomNavigationBarItem(
             title: Container(height: 0.0),
             icon: Icon(Icons.photo_library),
           ),
           new BottomNavigationBarItem(
-            title: Container(height: 0.0),
-            icon: Icon(Icons.text_fields)
-          ),
+              title: Container(height: 0.0), icon: Icon(Icons.text_fields)),
         ],
       ),
     );
@@ -210,20 +210,5 @@ class _CaptureController extends State<CaptureController>
     setState(() {
       _currentIndex = index;
     });
-  }
-
-
-   /// Loads the document asynchronously from a file if it exists, otherwise
-  /// returns default document.
-  Future<NotusDocument> _loadDocument() async {
-    final file = File(Directory.systemTemp.path + "/quick_start.json");
-    if (await file.exists()) {
-      final contents = await file
-          .readAsString()
-          .then((data) => Future.delayed(Duration(seconds: 1), () => data));
-      return NotusDocument.fromJson(jsonDecode(contents));
-    }
-    final Delta delta = Delta()..insert("\n");
-    return NotusDocument.fromDelta(delta);
   }
 }

@@ -64,7 +64,22 @@ class _TabPage extends State<TabPage>
       MessageConatiner(),
       MyProfilePage(),
     ];
-    // _connect();
+
+    if (CurrentInstance.instance.notificationId != null) {
+      loadNotification();
+    }
+  }
+
+  loadNotification() {
+    print("Loading notification ${CurrentInstance.instance.notificationId}");
+
+    // if (CurrentInstance.instance.notificationId == "mention") {
+    //   _currentIndex = 3;
+    // } else {
+    //   _currentIndex = 1;
+    // }
+    // CurrentInstance.instance.notificationId = null;
+    // setState(() {});
   }
 
   MediaStream currentStream;
@@ -72,7 +87,7 @@ class _TabPage extends State<TabPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    PushHelper.instance.config(context);
+    PushHelper.instance.config(context, swapAccount);
 
     _appBar = [
       null,
@@ -186,7 +201,10 @@ class _TabPage extends State<TabPage>
 
   swapAccount() {
     print("SWAP account");
-    bottomSheet.hide();
+    if (bottomSheet != null) {
+      bottomSheet.hide();
+    }
+
     widget.loadInstance();
   }
 
