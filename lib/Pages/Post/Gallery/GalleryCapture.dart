@@ -65,10 +65,11 @@ class _GalleryCapture extends State<GalleryCapture> {
     if (permission == CameraPermisionStatus.waiting) {
       getPermision();
       return Container(
-        color: Colors.teal,
+        color: Colors.black,
         child: new Center(
           child: new Text(
-            "waiting",
+            "Fetching gallery",
+            
           ),
         ),
       );

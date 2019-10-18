@@ -1,11 +1,10 @@
-
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/webrtc.dart';
+import 'package:phaze/Pages/Home/HomeContainerPage.dart';
 import 'package:phaze/Pages/Messages/VideoChat/WebRTCManager.dart';
-import 'package:phaze/Pages/Post/CaptureController.dart';
 import 'package:phaze/Pages/Push/PushHelper.dart';
 import 'package:phaze/Pages/Search/Search.dart';
 import 'package:phaze/Pages/Timeline/MyTimelinePage.dart';
@@ -15,6 +14,8 @@ import './Placeholder.dart';
 import 'Messages/MessageContainer.dart';
 // import 'Messages/VideoChatPage.dart';
 // import 'Messages/signaling.dart';
+import 'Notifications/NotificationPage.dart';
+import 'Post/CaptureController.dart';
 import 'Post/TextEditor.dart';
 import 'Profile/AccountsBottomSheet.dart';
 import 'Profile/MyProfilePage.dart';
@@ -24,9 +25,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
 class TabPage extends StatefulWidget {
-
-
-
   final Function addNewInstance;
   final Function loadInstance;
 
@@ -38,13 +36,9 @@ class TabPage extends StatefulWidget {
   }
 }
 
-class _TabPage extends State<TabPage> {
-
-
-
-
-
-    static FirebaseAnalytics analytics = FirebaseAnalytics();
+class _TabPage extends State<TabPage>
+    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
+  static FirebaseAnalytics analytics = FirebaseAnalytics();
   static FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);
   WebRTCManager manager = WebRTCManager.instance;
@@ -52,146 +46,41 @@ class _TabPage extends State<TabPage> {
   List<String> statuses = [''];
   AccountsBottomSheet bottomSheet;
   int _currentIndex = 0;
-  final List<Widget> _children = [
-    MyTimelinePage(),
-    Search(),
-    PlaceholderWidget(Colors.green),
-    MessageConatiner(),
-    MyProfilePage(),
-  ];
+  List<Widget> _children;
 
   List<AppBar> _appBar;
+  TabController _tabController;
+  final List<Widget> _homeControllers = [MyTimelinePage(), Search()];
 
   @override
   initState() {
     super.initState();
     _firebaseMessaging.requestNotificationPermissions();
+    _tabController = TabController(length: 2, vsync: this);
+    _children = [
+      HomeContainerPage(_tabController, _homeControllers),
+      NotificationPage(),
+      PlaceholderWidget(Colors.green),
+      MessageConatiner(),
+      MyProfilePage(),
+    ];
     // _connect();
   }
 
   MediaStream currentStream;
 
-  // void _connect() async {
-  //   if (manager.signaling == null) {
-  //     manager.signaling = new Signaling(manager.serverIP, manager.displayName)
-  //       ..connect();
-
-  //     manager.signaling.onStateChange = (SignalingState state) {
-  //       print("State changed $state");
-  //       switch (state) {
-  //         case SignalingState.CallStateNew:
-  //         WebRTCManager.instance.inCalling = true;
-  //           Navigator.push(
-  //                           context,
-  //                           MaterialPageRoute(
-  //                             builder: (context) => VideoChatPage(
-  //                               signaling: WebRTCManager.instance.signaling,
-  //                             ),
-  //                             settings: RouteSettings(name: "/VideoChatPage"),
-  //                           ));
-  //           break;
-  //         case SignalingState.CallStateBye:
-  //           this.setState(() {
-  //             manager.inCalling = false;
-  //           });
-  //           break;
-  //         case SignalingState.CallStateInvite:
-  //           showDialog(
-  //             context: context,
-  //             builder: (BuildContext context) {
-  //               // return object of type Dialog
-  //               return AlertDialog(
-  //                 title: new Text("Incomming Video Call"),
-  //                 content: new Text("Do you want to join the call?"),
-  //                 actions: <Widget>[
-  //                   // usually buttons at the bottom of the dialog
-  //                   new FlatButton(
-  //                     child: new Text("Join"),
-  //                     onPressed: () {
-  //                       Navigator.push(
-  //                           context,
-  //                           MaterialPageRoute(
-  //                             builder: (context) => VideoChatPage(
-  //                               signaling: WebRTCManager.instance.signaling,
-  //                             ),
-  //                             settings: RouteSettings(name: "/VideoChatPage"),
-  //                           ));
-  //                     },
-  //                   ),
-
-  //                   new FlatButton(
-  //                     child: new Text("Close"),
-  //                     onPressed: () {
-  //                       Navigator.of(context).pop();
-  //                     },
-  //                   ),
-  //                 ],
-  //               );
-  //             },
-  //           );
-
-  //           this.setState(() {
-  //             manager.inCalling = true;
-  //           });
-  //           break;
-
-  //         case SignalingState.CallStateConnected:
-  //         case SignalingState.CallStateRinging:
-  //         case SignalingState.ConnectionClosed:
-  //         case SignalingState.ConnectionError:
-  //         case SignalingState.ConnectionOpen:
-  //           break;
-  //       }
-  //     };
-
-  //     manager.signaling.onPeersUpdate = ((event) {
-  //       this.setState(() {
-  //         manager.selfId = event['self'];
-  //         manager.peers = event['peers'];
-  //       });
-  //     });
-
-  //     // manager.signaling.onLocalStream = ((stream) {
-  //     //   currentStream = stream;
-  //     //   // _localRenderer.srcObject = stream;
-  //     // });
-
-  //     // manager.signaling.onAddRemoteStream = ((stream) {
-  //     //   currentStream = stream;
-  //     // });
-
-  //     // manager.signaling.onRemoveRemoteStream = ((stream) {
-  //     //   currentStream = null;
-  //     // });
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
-
-
+    super.build(context);
     PushHelper.instance.config(context);
-    
+
     _appBar = [
+      null,
+      // AppBar(
+      //   title: Text('Your Timeline'),
+      // ),
       AppBar(
-        title: Text('Your Timeline'),
-      ),
-      AppBar(
-        title: TextField(
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: Colors.white54,
-            hintText: 'Search',
-            border: InputBorder.none,
-            helperStyle: TextStyle(color: Colors.white),
-          ),
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {},
-          ),
-        ],
+        title: Text("Notifications"),
       ),
       AppBar(
         title: Text('New Post'),
@@ -238,7 +127,7 @@ class _TabPage extends State<TabPage> {
           ),
           new BottomNavigationBarItem(
             backgroundColor: Colors.green,
-            icon: Icon(Icons.search),
+            icon: Icon(Icons.notifications),
             title: Text('Search'),
           ),
           new BottomNavigationBarItem(
@@ -263,18 +152,15 @@ class _TabPage extends State<TabPage> {
   void onTabTapped(int index) {
     setState(() {
       if (index == 2) {
-
-         Navigator.push(
-          context,
-          SlideBottomRoute(page: TextEditor()),
-        );
-
-        
-
         // Navigator.push(
         //   context,
-        //   SlideBottomRoute(page: CaptureController()),
+        //   SlideBottomRoute(page: TextEditor()),
         // );
+
+        Navigator.push(
+          context,
+          SlideBottomRoute(page: CaptureController()),
+        );
       } else {
         _currentIndex = index;
       }
@@ -304,4 +190,6 @@ class _TabPage extends State<TabPage> {
     widget.loadInstance();
   }
 
+  @override
+  bool get wantKeepAlive => true;
 }

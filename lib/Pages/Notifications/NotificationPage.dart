@@ -1,25 +1,29 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:phaze/Pages/Notifications/NotificationCell.dart';
 import 'package:phaze/Pages/Profile/OtherAccount.dart';
 import 'package:phaze/Pages/Timeline/StatusDetail.dart';
-import 'package:phaze/Pages/Timeline/TimelineCell.dart';
 import 'package:phaze/Pleroma/Foundation/Client.dart';
 import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:phaze/Pleroma/Foundation/Requests/Notification.dart'
+    as NotificationRequest;
 import 'package:phaze/Pleroma/Models/Account.dart';
+import 'package:phaze/Pleroma/Models/Notification.dart';
+import 'package:phaze/Pleroma/Models/Notification.dart' as NotificationModel;
 import 'package:phaze/Pleroma/Models/Status.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import '../../Pleroma/Foundation/Requests/Timeline.dart';
-import 'package:flutter/scheduler.dart';
 
-class MyTimelinePage extends StatefulWidget {
-  final List<Status> statuses = [];
+class NotificationPage extends StatefulWidget {
+  final List<NotificationModel.Notification> notifications = [];
+
   @override
   State<StatefulWidget> createState() {
-    return _MyTimelinePage();
+    return _NotificationPage();
   }
 }
 
-class _MyTimelinePage extends State<MyTimelinePage> {
+class _NotificationPage extends State<NotificationPage> {
   viewAccount(Account account) {
     Navigator.push(
       context,
@@ -31,11 +35,9 @@ class _MyTimelinePage extends State<MyTimelinePage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        
         builder: (context) => StatusDetail(
           status: status,
         ),
-        settings:RouteSettings(name: "/StatusDetail"),
       ),
     );
   }
@@ -51,7 +53,7 @@ class _MyTimelinePage extends State<MyTimelinePage> {
   }
 
   void fetchStatuses(BuildContext context) {
-    if (widget.statuses.length == 0) {
+    if (widget.notifications.length == 0) {
       _refreshController.requestRefresh();
     }
   }
@@ -65,13 +67,14 @@ class _MyTimelinePage extends State<MyTimelinePage> {
     // if failed,use refreshFailed()
     CurrentInstance.instance.currentClient
         .run(
-            path: Timeline.getHomeTimeline(
+            path: NotificationRequest.Notification.getNotifications(
                 minId: "", maxId: "", sinceId: "", limit: "20"),
             method: HTTPMethod.GET)
         .then((response) {
-      List<Status> newStatuses = statusFromJson(response.body);
-      widget.statuses.clear();
-      widget.statuses.addAll(newStatuses);
+      List<NotificationModel.Notification> newNotifications =
+          notificationFromJson(response.body);
+      widget.notifications.clear();
+      widget.notifications.addAll(newNotifications);
       if (mounted) setState(() {});
       _refreshController.refreshCompleted();
     }).catchError((error) {
@@ -86,19 +89,20 @@ class _MyTimelinePage extends State<MyTimelinePage> {
     // monitor network fetch
     // if failed,use loadFailed(),if no data return,use LoadNodata()
     var lastId = "";
-    Status lastStatus = widget.statuses.last;
-    if (lastStatus != null) {
-      lastId = lastStatus.id;
+    NotificationModel.Notification lastNotification = widget.notifications.last;
+    if (lastNotification != null) {
+      lastId = lastNotification.id;
     }
 
     CurrentInstance.instance.currentClient
         .run(
-            path: Timeline.getHomeTimeline(
+            path: NotificationRequest.Notification.getNotifications(
                 minId: "", maxId: lastId, sinceId: "", limit: "20"),
             method: HTTPMethod.GET)
         .then((response) {
-      List<Status> newStatuses = statusFromJson(response.body);
-      widget.statuses.addAll(newStatuses);
+      List<NotificationModel.Notification> newNotifications =
+          notificationFromJson(response.body);
+      widget.notifications.addAll(newNotifications);
       if (mounted) setState(() {});
       _refreshController.loadComplete();
     }).catchError((error) {
@@ -166,12 +170,10 @@ class _MyTimelinePage extends State<MyTimelinePage> {
       onLoading: _onLoading,
       child: ListView.builder(
         padding: EdgeInsets.symmetric(horizontal: 2.0, vertical: 10.0),
-        itemBuilder: (c, i) => TimelineCell(
-          widget.statuses[i],
-          viewAccount: viewAccount,
-          viewStatusContext: viewStatusDetail,
+        itemBuilder: (c, i) => NotificationCell(
+          widget.notifications[i],
         ),
-        itemCount: widget.statuses.length,
+        itemCount: widget.notifications.length,
       ),
     );
   }

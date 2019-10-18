@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:phaze/Pleroma/Foundation/Client.dart';
+import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:phaze/Pleroma/Foundation/Requests/Accounts.dart';
+import 'package:phaze/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
 import 'package:phaze/Pleroma/Models/Account.dart';
 import 'package:phaze/Pleroma/Models/Status.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:phaze/Views/VideoPlayer.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter_alert/flutter_alert.dart';
 
 class TimelineCell extends StatefulWidget {
   final Status status;
@@ -13,7 +18,8 @@ class TimelineCell extends StatefulWidget {
   final Function(Status) viewStatusContext;
   final GlobalKey selectedStatusKey;
 
-  TimelineCell(this.status, {this.viewAccount, this.viewStatusContext, this.selectedStatusKey});
+  TimelineCell(this.status,
+      {this.viewAccount, this.viewStatusContext, this.selectedStatusKey});
 
   @override
   State<StatefulWidget> createState() {
@@ -72,7 +78,9 @@ class _TimelineCell extends State<TimelineCell> {
                   IconButton(
                     icon: Icon(Icons.more_horiz),
                     tooltip: 'More',
-                    onPressed: () {},
+                    onPressed: () {
+                      showMoreOptions(context);
+                    },
                   ),
                 ],
               ),
@@ -109,21 +117,34 @@ class _TimelineCell extends State<TimelineCell> {
                     child: Row(
                       children: <Widget>[
                         IconButton(
+                          color: widget.status.favourited
+                              ? Colors.green
+                              : Colors.grey,
                           icon: Icon(Icons.thumb_up),
                           tooltip: 'Like',
-                          onPressed: () {},
+                          onPressed: () {
+                            like();
+                          },
                         ),
                         if (widget.status.favouritesCount != 0)
                           Text(widget.status.favouritesCount.toString()),
                         IconButton(
+                          color: Colors.grey,
                           icon: Icon(Icons.add_comment),
                           tooltip: 'comment',
-                          onPressed: () {},
+                          onPressed: () {
+                            widget.viewStatusContext(widget.status);
+                          },
                         ),
                         IconButton(
+                          color: widget.status.reblogged
+                              ? Colors.green
+                              : Colors.grey,
                           icon: Icon(Icons.cached),
                           tooltip: 'repost',
-                          onPressed: () {},
+                          onPressed: () {
+                            repost();
+                          },
                         ),
                         Spacer(),
                       ],
@@ -135,6 +156,100 @@ class _TimelineCell extends State<TimelineCell> {
           ],
         ),
       ),
+    );
+  }
+
+  like() {
+    String path = StatusRequest.Status.favouriteStatus(widget.status.id);
+    if (widget.status.favourited == true) {
+      path = StatusRequest.Status.unfavouriteStatus(widget.status.id);
+      widget.status.favouritesCount = widget.status.favouritesCount - 1;
+    } else {
+      widget.status.favouritesCount = widget.status.favouritesCount + 1;
+    }
+    widget.status.favourited = !widget.status.favourited;
+    
+    CurrentInstance.instance.currentClient
+        .run(path: path, method: HTTPMethod.POST)
+        .then((response) {
+      print(response.body);
+    }).catchError((error) {
+      print(error);
+    });
+    if (mounted) setState(() {});
+  }
+
+  repost() {
+    String path = StatusRequest.Status.reblogStatus(widget.status.id);
+    if (widget.status.favourited == true) {
+      path = StatusRequest.Status.reblogStatus(widget.status.id);
+      widget.status.reblogsCount = widget.status.reblogsCount - 1;
+    } else {
+       widget.status.reblogsCount = widget.status.reblogsCount + 1;
+    }
+    widget.status.reblogged = !widget.status.favourited;
+    CurrentInstance.instance.currentClient
+        .run(path: path, method: HTTPMethod.POST)
+        .then((response) {
+      print(response.body);
+    }).catchError((error) {
+      print(error);
+    });
+    if (mounted) setState(() {});
+  }
+
+  showMoreOptions(BuildContext context) {
+    showAlert(
+      context: context,
+      title: "More actions for:",
+      body: "${widget.status.account.acct}",
+      actions: [
+        AlertAction(
+          text: "Mute",
+          onPressed: () {
+            CurrentInstance.instance.currentClient
+                .run(
+                    path: Accounts.muteAccount(widget.status.account.id),
+                    method: HTTPMethod.POST)
+                .then((response) {
+              print(response.body);
+            }).catchError((error) {
+              print(error);
+            });
+          },
+        ),
+        AlertAction(
+          text: "Block",
+          onPressed: () {
+            CurrentInstance.instance.currentClient
+                .run(
+                    path: Accounts.blockAccount(widget.status.account.id),
+                    method: HTTPMethod.POST)
+                .then((response) {
+              print(response.body);
+            }).catchError((error) {
+              print(error);
+            });
+          },
+        ),
+        AlertAction(
+          text: "Report",
+          onPressed: () {
+            var params = {"account_id": widget.status.account.id};
+            CurrentInstance.instance.currentClient
+                .run(
+                    path: Accounts.reportAccount(),
+                    params: params,
+                    method: HTTPMethod.POST)
+                .then((response) {
+              print(response.body);
+            }).catchError((error) {
+              print(error);
+            });
+          },
+        ),
+      ],
+      cancelable: true,
     );
   }
 

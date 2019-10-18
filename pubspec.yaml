@@ -47,8 +47,9 @@ dependencies:
   percent_indicator: "^2.1.1"
   mime_type: ^0.2.4
   flutter_webrtc: any
+  material_segmented_control: ^2.0.3
+  flutter_alert: ^0.4.0
   zefyr: ^0.8.0
-  
 
   
 dev_dependencies:

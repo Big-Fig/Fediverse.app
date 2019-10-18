@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:phaze/Pages/Messages/ChatPage.dart';
 import 'package:phaze/Pages/Messages/MessagesPage.dart';
-import 'package:phaze/Pages/Messages/NotificationPage.dart';
 import 'package:phaze/Pages/Messages/UserListPage.dart';
 import 'package:phaze/Pleroma/Models/Account.dart';
 
@@ -18,8 +17,7 @@ class _MessageContainer extends State<MessageConatiner> with TickerProviderState
   int _currentIndex = 0;
 
   List<Widget> _pageControllers = [
-    MessagesPage(),
-    NotificationPage()
+    MessagesPage()
   ];
 
   void initState() {

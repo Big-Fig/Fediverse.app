@@ -195,6 +195,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_alert:
+    dependency: "direct main"
+    description:
+      name: flutter_alert
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.0"
   flutter_html:
     dependency: "direct main"
     description:
@@ -333,6 +340,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.12.5"
+  material_segmented_control:
+    dependency: "direct main"
+    description:
+      name: material_segmented_control
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.3"
   meta:
     dependency: transitive
     description:

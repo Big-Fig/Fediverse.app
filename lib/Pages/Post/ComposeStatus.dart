@@ -21,8 +21,8 @@ class ComposeStatus extends StatefulWidget {
   final String imageURL;
   final String videoURL;
   final Function popParent;
-
-  ComposeStatus({this.asset, this.imageURL, this.videoURL, this.popParent});
+  final String htmlPost;
+  ComposeStatus({this.asset, this.imageURL, this.videoURL, this.popParent, this.htmlPost});
 
   @override
   State<StatefulWidget> createState() {
