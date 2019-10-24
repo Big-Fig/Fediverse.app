@@ -28,12 +28,14 @@ class MyApp extends StatelessWidget {
   final FirebaseAnalytics analytics = FirebaseAnalytics();
   final _currentInstance = CurrentInstance.instance;
   final _newInstance = CurrentInstance.newInstance;
-  final  push =  PushHelper.instance;
+  final push = PushHelper.instance;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    
     print(_currentInstance);
     print(_newInstance);
+    PushHelper.instance.config(context);
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return MaterialApp(
       title: 'Roma',

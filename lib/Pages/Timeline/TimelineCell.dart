@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:phaze/Pages/Web/InAppWebPage.dart';
 import 'package:phaze/Pleroma/Foundation/Client.dart';
 import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:phaze/Pleroma/Foundation/Requests/Accounts.dart';
@@ -92,7 +93,7 @@ class _TimelineCell extends State<TimelineCell> {
                   widget.viewStatusContext(widget.status);
                 }
               },
-              behavior: HitTestBehavior.translucent,
+              // behavior: HitTestBehavior.translucent,
               child: Column(
                 children: <Widget>[
                   SizedBox(
@@ -110,6 +111,19 @@ class _TimelineCell extends State<TimelineCell> {
                         bottom: 0, top: 8, left: 12.0, right: 12),
                     child: Html(
                       data: widget.status.content,
+                      onLinkTap: (String link) {
+                        print("link $link");
+                        if (link.contains("/users/")) {
+                        } else if (link.contains("/media/")) {
+                        } else {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => InAppWebPage(link),
+                            ),
+                          );
+                        }
+                      },
                     ),
                   ),
                   Padding(
@@ -168,7 +182,7 @@ class _TimelineCell extends State<TimelineCell> {
       widget.status.favouritesCount = widget.status.favouritesCount + 1;
     }
     widget.status.favourited = !widget.status.favourited;
-    
+
     CurrentInstance.instance.currentClient
         .run(path: path, method: HTTPMethod.POST)
         .then((response) {
@@ -185,7 +199,7 @@ class _TimelineCell extends State<TimelineCell> {
       path = StatusRequest.Status.reblogStatus(widget.status.id);
       widget.status.reblogsCount = widget.status.reblogsCount - 1;
     } else {
-       widget.status.reblogsCount = widget.status.reblogsCount + 1;
+      widget.status.reblogsCount = widget.status.reblogsCount + 1;
     }
     widget.status.reblogged = !widget.status.favourited;
     CurrentInstance.instance.currentClient

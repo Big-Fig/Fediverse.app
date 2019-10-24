@@ -1,14 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_alert/flutter_alert.dart';
+import 'dart:convert';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:phaze/Pages/Messages/ChatPage.dart';
+import 'package:phaze/Pleroma/Foundation/Client.dart';
+import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:phaze/Pleroma/Foundation/Requests/Accounts.dart';
 import 'package:phaze/Pleroma/Models/Account.dart';
+import 'package:phaze/Pleroma/Models/Relationship.dart';
 
-class ProfileHeader extends StatelessWidget {
+class ProfileHeader extends StatefulWidget {
   final Account profileAccount;
 
   final Function(String) accountAction;
   final Function editAccount;
 
   ProfileHeader({this.profileAccount, this.editAccount, this.accountAction});
+
+  @override
+  State<StatefulWidget> createState() {
+    return _ProfileHeader();
+  }
+}
+
+class _ProfileHeader extends State<ProfileHeader> {
+  Relationship relationship;
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.editAccount == null) {
+      String path = Accounts.getRelationshipById(widget.profileAccount.id);
+      CurrentInstance.instance.currentClient
+          .run(path: path, method: HTTPMethod.GET)
+          .then((response) {
+        Relationship relationship = relationshipFromJson(response.body).first;
+        if (mounted)
+          setState(() {
+            this.relationship = relationship;
+          });
+      }).catchError((onError) {
+        print("$onError");
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +58,7 @@ class ProfileHeader extends StatelessWidget {
               children: <Widget>[
                 FittedBox(
                   child: FadeInImage.assetNetwork(
-                    image: profileAccount.header,
+                    image: widget.profileAccount.header,
                     placeholder: "assets/images/double_ring_loading_io.gif",
                   ),
                   fit: BoxFit.none,
@@ -42,7 +78,7 @@ class ProfileHeader extends StatelessWidget {
                             child: FadeInImage.assetNetwork(
                               placeholder:
                                   'assets/images/double_ring_loading_io.gif',
-                              image: profileAccount.avatar,
+                              image: widget.profileAccount.avatar,
                               height: 80.0,
                               width: 80.0,
                             ),
@@ -52,7 +88,7 @@ class ProfileHeader extends StatelessWidget {
                             child: Padding(
                               padding: EdgeInsets.all(3),
                               child: Text(
-                                "Statuses\n${profileAccount.statusesCount}",
+                                "Statuses\n${widget.profileAccount.statusesCount}",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontSize: 18, color: Colors.white),
@@ -64,7 +100,7 @@ class ProfileHeader extends StatelessWidget {
                             child: Padding(
                               padding: EdgeInsets.all(3),
                               child: Text(
-                                "Following\n${profileAccount.followingCount}",
+                                "Following\n${widget.profileAccount.followingCount}",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontSize: 18, color: Colors.white),
@@ -76,7 +112,7 @@ class ProfileHeader extends StatelessWidget {
                             child: Padding(
                               padding: EdgeInsets.all(3),
                               child: Text(
-                                "Followers\n${profileAccount.followersCount}",
+                                "Followers\n${widget.profileAccount.followersCount}",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontSize: 18, color: Colors.white),
@@ -94,18 +130,26 @@ class ProfileHeader extends StatelessWidget {
           Row(
             children: <Widget>[
               Html(
-                data: profileAccount.note,
+                data: widget.profileAccount.note,
               )
             ],
           ),
-          getButtons(),
+          getButtons(context),
         ],
       ),
     );
   }
 
-  Widget getButtons() {
-    if (editAccount == null) {
+  Widget getButtons(BuildContext context) {
+    if (widget.editAccount == null) {
+      if (relationship == null) {
+        return Container(
+          child: Center(
+            child: Text("Loading..."),
+          ),
+        );
+      }
+
       return Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -113,16 +157,36 @@ class ProfileHeader extends StatelessWidget {
           OutlineButton(
             child: Row(
               children: <Widget>[
-                Text("Follow"),
+                Text(relationship.following ? "Unfollow" : "Follow"),
               ],
             ),
-            onPressed: () {},
+            onPressed: () {
+              String path = Accounts.followAccount(widget.profileAccount.id);
+
+              if (relationship.following) {
+                path = Accounts.unfollowAccount(widget.profileAccount.id);
+                relationship.following = true;
+              }
+              CurrentInstance.instance.currentClient
+                  .run(path: path, method: HTTPMethod.GET)
+                  .then((response) {});
+              relationship.following = true;
+              if (mounted) setState(() {});
+            },
           ),
           OutlineButton(
             child: Row(
               children: <Widget>[Text("Message")],
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ChatPage(
+                      account: widget.profileAccount,
+                    ),
+                  ));
+            },
           ),
           OutlineButton(
             child: Row(
@@ -134,7 +198,9 @@ class ProfileHeader extends StatelessWidget {
                 )
               ],
             ),
-            onPressed: () {},
+            onPressed: () {
+              showMoreOptions(context);
+            },
           ),
         ],
       );
@@ -173,5 +239,66 @@ class ProfileHeader extends StatelessWidget {
       //   ],
       // );
     }
+  }
+
+  showMoreOptions(BuildContext context) {
+    showAlert(
+      context: context,
+      title: "More actions for:",
+      body: "${widget.profileAccount.acct}",
+      actions: [
+        AlertAction(
+          text: relationship.muting ? "Unmute" : "Mute",
+          onPressed: () {
+            String path = Accounts.muteAccount(widget.profileAccount.id);
+            if (relationship.muting) {
+              path = Accounts.unmuteAccount(widget.profileAccount.id);
+            }
+            relationship.muting = !relationship.muting;
+            CurrentInstance.instance.currentClient
+                .run(path: path, method: HTTPMethod.POST)
+                .then((response) {
+              print(response.body);
+            }).catchError((error) {
+              print(error);
+            });
+          },
+        ),
+        AlertAction(
+          text: relationship.blocking ? "Unblock" : "Block",
+          onPressed: () {
+            String path = Accounts.blockAccount(widget.profileAccount.id);
+            if (relationship.blocking) {
+              path = Accounts.unblockAccount(widget.profileAccount.id);
+            }
+            relationship.blocking = !relationship.blocking;
+            CurrentInstance.instance.currentClient
+                .run(path: path, method: HTTPMethod.POST)
+                .then((response) {
+              print(response.body);
+            }).catchError((error) {
+              print(error);
+            });
+          },
+        ),
+        AlertAction(
+          text: "Report",
+          onPressed: () {
+            var params = {"account_id": widget.profileAccount.id};
+            CurrentInstance.instance.currentClient
+                .run(
+                    path: Accounts.reportAccount(),
+                    params: params,
+                    method: HTTPMethod.POST)
+                .then((response) {
+              print(response.body);
+            }).catchError((error) {
+              print(error);
+            });
+          },
+        ),
+      ],
+      cancelable: true,
+    );
   }
 }

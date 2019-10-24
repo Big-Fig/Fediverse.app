@@ -3,6 +3,8 @@
 //     final status = statusFromJson(jsonString);
 
 import 'dart:convert';
+import 'package:phaze/Pleroma/Models/Relationship.dart';
+
 import './Account.dart';
 
 List<Status> statusFromJson(String str) => new List<Status>.from(json.decode(str).map((x) => Status.fromJson(x)));
@@ -210,15 +212,6 @@ class AccountPleroma {
     };
 }
 
-class Relationship {
-    Relationship();
-
-    factory Relationship.fromJson(Map<String, dynamic> json) => new Relationship(
-    );
-
-    Map<String, dynamic> toJson() => {
-    };
-}
 
 class Source {
     String note;

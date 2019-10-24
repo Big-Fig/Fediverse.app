@@ -45,7 +45,7 @@ class _VideoCapture extends State<VideoCapture> {
     availableCameras().then((list) {
       cameras = list;
       controller =
-          CameraController(cameras[currentCamera], ResolutionPreset.low);
+          CameraController(cameras[currentCamera], ResolutionPreset.medium);
       controller.initialize().then((_) {
         print("setting state");
         if (!mounted) {
@@ -115,7 +115,7 @@ class _VideoCapture extends State<VideoCapture> {
               onPressed: () {
                 currentCamera = currentCamera == 0 ? 1 : 0;
                 controller = CameraController(
-                    cameras[currentCamera], ResolutionPreset.low);
+                    cameras[currentCamera], ResolutionPreset.medium);
                 controller.initialize().then((_) {
                   if (!mounted) {
                     return;

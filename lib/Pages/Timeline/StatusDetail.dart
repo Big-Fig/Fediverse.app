@@ -2,9 +2,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:phaze/Pages/Messages/Media/CaptureDMMedia.dart';
+import 'package:phaze/Pages/Profile/OtherAccount.dart';
 import 'package:phaze/Pages/Timeline/TimelineCell.dart';
 import 'package:phaze/Pleroma/Foundation/Client.dart';
 import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:phaze/Pleroma/Models/Account.dart';
 import 'package:phaze/Pleroma/Models/Context.dart';
 import 'package:phaze/Pleroma/Models/Status.dart';
 import 'package:phaze/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
@@ -41,6 +43,12 @@ class _StatusDetail extends State<StatusDetail> {
 
   }
 
+viewAccount(Account account) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => OtherAccount(account)),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -240,9 +248,9 @@ class _StatusDetail extends State<StatusDetail> {
         itemBuilder: (BuildContext context, int index) {
           Status status = statuses[index];
           if(status == widget.status) {
-            return TimelineCell(status, selectedStatusKey: _selectedStatusKey,);
+            return TimelineCell(status, selectedStatusKey: _selectedStatusKey, viewAccount: viewAccount,);
           }
-          return TimelineCell(status);
+          return TimelineCell(status, viewAccount: viewAccount);
         },
       ),
     );

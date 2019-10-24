@@ -49,7 +49,6 @@ dependencies:
   flutter_webrtc: any
   material_segmented_control: ^2.0.3
   flutter_alert: ^0.4.0
-  zefyr: ^0.8.0
 
   
 dev_dependencies:
