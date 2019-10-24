@@ -65,21 +65,23 @@ class _TabPage extends State<TabPage>
       MyProfilePage(),
     ];
 
-    if (CurrentInstance.instance.notificationId != null) {
+    if (PushHelper.instance.notifcationType != null) {
       loadNotification();
     }
   }
 
   loadNotification() {
-    print("Loading notification ${CurrentInstance.instance.notificationId}");
+    print("Loading notification ${PushHelper.instance.notifcationType}");
 
-    // if (CurrentInstance.instance.notificationId == "mention") {
+    // if (PushHelper.instance.notifcationType == "mention") {
     //   _currentIndex = 3;
     // } else {
     //   _currentIndex = 1;
     // }
-    // CurrentInstance.instance.notificationId = null;
-    // setState(() {});
+
+    _currentIndex = 1;
+    PushHelper.instance.notifcationType = null;
+    setState(() {});
   }
 
   MediaStream currentStream;
@@ -87,8 +89,10 @@ class _TabPage extends State<TabPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    PushHelper.instance.config(context, swapAccount);
 
+    
+    PushHelper.instance.swapAccount = swapAccount;
+    PushHelper.instance.register();
     _appBar = [
       null,
       // AppBar(

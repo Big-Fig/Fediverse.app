@@ -6,6 +6,10 @@ class Accounts {
     return "/api/v1/account/$id";
   }
 
+  static String getRelationshipById(String id){
+    return "/api/v1/accounts/relationships?id=$id";
+  }
+
   static String followAccoutn(String id){
     return "/api/v1/accounts/$id/follow";
   }

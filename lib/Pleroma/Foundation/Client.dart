@@ -92,6 +92,7 @@ class Client {
       List<int> bodyBites}) async {
     var url = "$baseURL$path";
 
+    print(url);
     var headers = {
       HttpHeaders.authorizationHeader: "Bearer $accessToken",
       "Accept": "application/json",

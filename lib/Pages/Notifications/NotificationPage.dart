@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:phaze/Pages/Notifications/NotificationCell.dart';
 import 'package:phaze/Pages/Profile/OtherAccount.dart';
+import 'package:phaze/Pages/Push/PushHelper.dart';
 import 'package:phaze/Pages/Timeline/StatusDetail.dart';
 import 'package:phaze/Pleroma/Foundation/Client.dart';
 import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
@@ -49,6 +51,11 @@ class _NotificationPage extends State<NotificationPage> {
         SchedulerPhase.persistentCallbacks) {
       SchedulerBinding.instance
           .addPostFrameCallback((_) => fetchStatuses(context));
+    }
+
+    if (PushHelper.instance.notificationId != null){
+      loadPushNotification(PushHelper.instance.notificationId);
+
     }
   }
 
@@ -111,6 +118,28 @@ class _NotificationPage extends State<NotificationPage> {
     });
   }
 
+  loadPushNotification(String notificationId) {
+    String getnotificationByid =
+        NotificationRequest.Notification.getNotificationById(notificationId);
+    CurrentInstance.instance.currentClient
+        .run(path: getnotificationByid, method: HTTPMethod.GET)
+        .then((response) {
+      NotificationModel.Notification notification =
+          NotificationModel.Notification.fromJson(json.decode(response.body));
+
+      if (notification.type == "follow") {
+        viewAccount(notification.account);
+      } else if (notification.type == "mention") {
+        viewStatusDetail(notification.status);
+      }
+    }).catchError((onError) {
+      print("$onError");
+    });
+
+    PushHelper.instance.notificationId =  null;
+    PushHelper.instance.notifcationType = null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SmartRefresher(
@@ -155,7 +184,7 @@ class _NotificationPage extends State<NotificationPage> {
           } else if (mode == LoadStatus.loading) {
             body = CupertinoActivityIndicator();
           } else if (mode == LoadStatus.failed) {
-            body = Text("Load Failed!Click retry!");
+            body = Text("Load Failed! Click retry!");
           } else {
             body = Text("No more Data");
           }
@@ -172,6 +201,8 @@ class _NotificationPage extends State<NotificationPage> {
         padding: EdgeInsets.symmetric(horizontal: 2.0, vertical: 10.0),
         itemBuilder: (c, i) => NotificationCell(
           widget.notifications[i],
+          viewAccount: viewAccount,
+          viewStatusContext: viewStatusDetail,
         ),
         itemCount: widget.notifications.length,
       ),

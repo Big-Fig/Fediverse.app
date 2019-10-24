@@ -1,98 +1,113 @@
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:phaze/Notifications/PushNotification.dart';
 import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:phaze/Pleroma/Foundation/InstanceStorage.dart';
-
+import 'dart:io' show Platform;
 
 class PushHelper {
+  PushHelper._privateConstructor();
 
-PushHelper._privateConstructor();
-
-static final PushHelper _instance =
-      PushHelper._privateConstructor();
+  static final PushHelper _instance = PushHelper._privateConstructor();
   static PushHelper get instance {
     return _instance;
   }
 
   Function swapAccount;
-  
+  Function onMessage;
+  String notificationId;
+  String notifcationType;
+
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   bool fromResume = false;
- Function notificationUpdater;
+  Function notificationUpdater;
 
-config(BuildContext context, Function swap) {
-    PushHelper.instance.swapAccount = swap;
+  config(BuildContext context) {
     PushHelper.instance._firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
-        print("onMessage: face $message");
+        debugPrint("onMessage: face $message");
         var data = message['data'];
         print("data: $data");
         PushHelper.instance.notificationUpdater();
         //   _showItemDialog(message);
-
       },
       onLaunch: (Map<String, dynamic> data) async {
-        
-        
-        //   var d = data["data"];
-        // String acc = d['account'];
-        // String server = d['server'];
-        // var id = d['notification_id'];
-        // String type = d["notification_type"];
-        // print("onLaunch: $d");
-        // //  _navigateToItemDetail(message);
-        // String account = "$acc@https://$server";
-        // print("SWAPPING ACCOUNT $account");
-        // InstanceStorage.setCurrentAccount(
-        //                               account)
-        //                           .then((future) {
-        //                              CurrentInstance.instance.notificationId = type;
-        //                         swapAccount();
-        //                       }).catchError((error){
-        //                         print(error);
-        //                       });
+        print("onLaunch");
+        print("$data");
+        String server;
+        String acc;
+        String id;
+        String type;
+        if (Platform.isAndroid) {
+          // Android-specific code
+          var d = data["data"];
+          acc = d['account'];
+          server = d['server'];
+          id = d['notification_id'].toString();
+          type = d["notification_type"];
+        } else {
+          // iOS-specific code
+          acc = data['account'];
+          server = data['server'];
+          id = data['notification_id'].toString();
+          type = data["notification_type"];
+        }
 
-      },
-      onResume: (Map<String, dynamic> data) async {
-        var d = data["data"];
-        String acc = d['account'];
-        String server = d['server'];
-        var id = d['notification_id'];
-        print("onResume: $d");
-        String type = d["notification_type"];
+        PushHelper.instance.notificationId = id;
+        PushHelper.instance.notifcationType = type;
         //  _navigateToItemDetail(message);
         String account = "$acc@https://$server";
         print("SWAPPING ACCOUNT $account");
-        InstanceStorage.setCurrentAccount(
-                                      account)
-                                  .then((future) {
-                                    CurrentInstance.instance.notificationId = type;
-                                swapAccount();
-                              }).catchError((error){
-                                print(error);
-                              });
-
+        InstanceStorage.setCurrentAccount(account).then((future) {
+          swapAccount();
+        }).catchError((error) {
+          print(error);
+        });
+      },
+      onResume: (Map<String, dynamic> data) async {
+        String server;
+        String acc;
+        String id;
+        String type;
+        if (Platform.isAndroid) {
+          // Android-specific code
+          var d = data["data"];
+          acc = d['account'];
+          server = d['server'];
+          id = d['notification_id'].toString();
+          type = d["notification_type"];
+        } else {
+          // iOS-specific code
+          acc = data['account'];
+          server = data['server'];
+          id = data['notification_id'].toString();
+          type = data["notification_type"];
+        }
+        //  _navigateToItemDetail(message);
+        String account = "$acc@https://$server";
+        print("SWAPPING ACCOUNT $account");
+        PushHelper.instance.notificationId = id;
+        PushHelper.instance.notifcationType = type;
+        InstanceStorage.setCurrentAccount(account).then((future) {
+          swapAccount();
+        }).catchError((error) {
+          print(error);
+        });
       },
     );
+  }
 
+  register() {
     PushHelper.instance._firebaseMessaging.requestNotificationPermissions(
         const IosNotificationSettings(sound: true, badge: true, alert: true));
     _firebaseMessaging.onIosSettingsRegistered
-        .listen((IosNotificationSettings settings) {
-    });
-
+        .listen((IosNotificationSettings settings) {});
 
     PushHelper.instance._firebaseMessaging.getToken().then((String token) {
       assert(token != null);
       print("Token");
       print(token);
 
-
       CurrentInstance.instance.currentClient.subscribeToPush(token);
     });
   }
-
-
 }

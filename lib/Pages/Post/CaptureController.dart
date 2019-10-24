@@ -1,8 +1,4 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:phaze/Convert/html.dart';
 import 'package:phaze/Pages/Post/ComposeStatus.dart';
 import 'package:phaze/Pages/Post/Gallery/GalleryCapture.dart';
 import 'package:phaze/Pages/Post/Photo/PhotoCapture.dart';
@@ -10,9 +6,6 @@ import 'package:phaze/Pages/Post/TextCapture.dart';
 import 'package:phaze/Pages/Post/TextEditor.dart';
 import 'package:phaze/Pages/Post/Video/VideoCapture.dart';
 import 'package:photo_manager/photo_manager.dart';
-
-import 'package:quill_delta/quill_delta.dart';
-import 'package:zefyr/zefyr.dart';
 
 class CaptureController extends StatefulWidget {
   @override
@@ -28,7 +21,7 @@ class _CaptureController extends State<CaptureController>
   TabController _controller;
   TextCapture textCaptureController;
 
-   TextEditingController statusController = TextEditingController();
+  TextEditingController statusController = TextEditingController();
 
   List<AppBar> _appBar;
   List<Widget> _children = <Widget>[];
@@ -84,7 +77,7 @@ class _CaptureController extends State<CaptureController>
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ComposeStatus(
+                  builder: (context) => TextEditor(
                     asset: selectedAsset,
                     popParent: pop,
                   ),
@@ -108,7 +101,6 @@ class _CaptureController extends State<CaptureController>
             textColor: Colors.white,
             color: Colors.transparent,
             onPressed: () {
-              
               Navigator.push(
                 context,
                 MaterialPageRoute(
