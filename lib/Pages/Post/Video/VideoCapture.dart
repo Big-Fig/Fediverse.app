@@ -20,7 +20,7 @@ class VideoCapture extends StatefulWidget {
 
 class _VideoCapture extends State<VideoCapture> {
   Stopwatch videoLength = Stopwatch();
-  int maxLength = 45;
+  int maxLength = 10;
   Timer timer;
 
   String videoPath;
@@ -45,7 +45,7 @@ class _VideoCapture extends State<VideoCapture> {
     availableCameras().then((list) {
       cameras = list;
       controller =
-          CameraController(cameras[currentCamera], ResolutionPreset.medium);
+          CameraController(cameras[currentCamera], ResolutionPreset.high);
       controller.initialize().then((_) {
         print("setting state");
         if (!mounted) {
@@ -53,11 +53,9 @@ class _VideoCapture extends State<VideoCapture> {
         }
         setState(() {});
       }).catchError((e) {
-        print("OH FUCK");
         print(e);
       });
     }).catchError((e) {
-      print("OH FUCK");
       print(e);
     });
 
@@ -71,7 +69,6 @@ class _VideoCapture extends State<VideoCapture> {
 
   @override
   void dispose() {
-    print("FUCKING DISPOSE");
     controller?.dispose();
     super.dispose();
   }
@@ -104,28 +101,29 @@ class _VideoCapture extends State<VideoCapture> {
             ),
           ],
         ),
-        Padding(
-          padding: EdgeInsets.only(bottom: 60, left: 40),
-          child: Container(
-            alignment: Alignment(-1, 1),
-            child: IconButton(
-              iconSize: 40,
-              color: Colors.white,
-              icon: Icon(Icons.sync),
-              onPressed: () {
-                currentCamera = currentCamera == 0 ? 1 : 0;
-                controller = CameraController(
-                    cameras[currentCamera], ResolutionPreset.medium);
-                controller.initialize().then((_) {
-                  if (!mounted) {
-                    return;
-                  }
-                  setState(() {});
-                });
-              },
+        if (videoLength.elapsedTicks == 0)
+          Padding(
+            padding: EdgeInsets.only(bottom: 60, left: 40),
+            child: Container(
+              alignment: Alignment(-1, 1),
+              child: IconButton(
+                iconSize: 40,
+                color: Colors.white,
+                icon: Icon(Icons.sync),
+                onPressed: () {
+                  currentCamera = currentCamera == 0 ? 1 : 0;
+                  controller = CameraController(
+                      cameras[currentCamera], ResolutionPreset.high);
+                  controller.initialize().then((_) {
+                    if (!mounted) {
+                      return;
+                    }
+                    setState(() {});
+                  });
+                },
+              ),
             ),
           ),
-        ),
         ValueListenableBuilder(
           builder: (BuildContext context, int value, Widget child) {
             print(value);
@@ -193,7 +191,9 @@ class _VideoCapture extends State<VideoCapture> {
                     iconSize: 40,
                     icon: Icon(Icons.stop),
                     onPressed: () async {
-                      onStopButtonPressed();
+                      if (_cameraStatus.value != 3) {
+                        onStopButtonPressed();
+                      }
                     },
                   ),
                 ),
@@ -205,7 +205,7 @@ class _VideoCapture extends State<VideoCapture> {
         ValueListenableBuilder(
           valueListenable: _videoDuration,
           builder: (BuildContext context, int value, Widget child) {
-            if (value >= maxLength) {
+            if (value >= maxLength && _cameraStatus.value != 3) {
               onStopButtonPressed();
             }
             return Padding(
@@ -230,63 +230,118 @@ class _VideoCapture extends State<VideoCapture> {
                         ],
                       ),
                     ),
-                    Container(
-                      width: 15,
-                      child: Opacity(
-                        child: IconButton(
-                          icon: Icon(Icons.close),
-                          color: Colors.red,
-                          onPressed: () {
-                            videoLength.stop();
-                            pauseVideoRecording().then((_) {
-                              if (mounted) setState(() {});
-                              showDialog(
-                                context: this.context,
-                                builder: (BuildContext context) {
-                                  // return object of type Dialog
-                                  return AlertDialog(
-                                    title: new Text("Delete current progress?"),
-                                    content: new Text(
-                                        "Are you sure you want to delete your current video progress?"),
-                                    actions: <Widget>[
-                                      FlatButton(
-                                        child: new Text(
-                                          "Cancel",
-                                          style: TextStyle(
-                                            color: Colors.grey,
-                                          ),
-                                        ),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
+                    GestureDetector(
+                      onTap: () {
+                        if (value == 0) {
+                          return;
+                        }
+                        videoLength.stop();
+                        pauseVideoRecording().then((_) {
+                          if (mounted) setState(() {});
+                          showDialog(
+                            context: this.context,
+                            builder: (BuildContext context) {
+                              // return object of type Dialog
+                              return AlertDialog(
+                                title: new Text("Delete current progress?"),
+                                content: new Text(
+                                    "Are you sure you want to delete your current video progress?"),
+                                actions: <Widget>[
+                                  FlatButton(
+                                    child: new Text(
+                                      "Cancel",
+                                      style: TextStyle(
+                                        color: Colors.grey,
                                       ),
-                                      // usually buttons at the bottom of the dialog
-                                      FlatButton(
-                                        child: new Text(
-                                          "Delete",
-                                          style: TextStyle(
-                                            color: Colors.red,
-                                          ),
-                                        ),
-                                        onPressed: () {
-                                          controller.stopVideoRecording();
-                                          _cameraStatus.value = 0;
-                                          videoLength.stop();
-                                          videoLength.reset();
-                                          if (mounted) {
-                                            setState(() {});
-                                          }
-                                          Navigator.of(context).pop();
-                                        },
+                                    ),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                  // usually buttons at the bottom of the dialog
+                                  FlatButton(
+                                    child: new Text(
+                                      "Delete",
+                                      style: TextStyle(
+                                        color: Colors.red,
                                       ),
-                                    ],
-                                  );
-                                },
+                                    ),
+                                    onPressed: () {
+                                      controller.stopVideoRecording();
+                                      _cameraStatus.value = 0;
+                                      videoLength.stop();
+                                      videoLength.reset();
+                                      if (mounted) {
+                                        setState(() {});
+                                      }
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
                               );
-                            });
-                          },
+                            },
+                          );
+                        });
+                      },
+                      child: Container(
+                        width: 15,
+                        child: Opacity(
+                          child: IconButton(
+                            icon: Icon(Icons.close),
+                            color: Colors.red,
+                            onPressed: () {
+                              videoLength.stop();
+                              pauseVideoRecording().then((_) {
+                                if (mounted) setState(() {});
+                                showDialog(
+                                  context: this.context,
+                                  builder: (BuildContext context) {
+                                    // return object of type Dialog
+                                    return AlertDialog(
+                                      title:
+                                          new Text("Delete current progress?"),
+                                      content: new Text(
+                                          "Are you sure you want to delete your current video progress?"),
+                                      actions: <Widget>[
+                                        FlatButton(
+                                          child: new Text(
+                                            "Cancel",
+                                            style: TextStyle(
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                        // usually buttons at the bottom of the dialog
+                                        FlatButton(
+                                          child: new Text(
+                                            "Delete",
+                                            style: TextStyle(
+                                              color: Colors.red,
+                                            ),
+                                          ),
+                                          onPressed: () {
+                                            controller.stopVideoRecording();
+                                            _cameraStatus.value = 0;
+                                            videoLength.stop();
+                                            videoLength.reset();
+                                            if (mounted) {
+                                              setState(() {});
+                                            }
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              });
+                            },
+                          ),
+                          opacity: _cameraStatus.value == 0 ? 0 : 1,
                         ),
-                        opacity: _cameraStatus.value == 0 ? 0 : 1,
                       ),
                     ),
                   ],
@@ -316,15 +371,14 @@ class _VideoCapture extends State<VideoCapture> {
     });
   }
 
-  void onStopButtonPressed() {
+  Future onStopButtonPressed() async {
+    print("stop");
     _cameraStatus.value = 3;
+    await stopVideoRecording();
     videoLength.stop();
-    stopVideoRecording().then((_) {
-      if (mounted) setState(() {});
 
-      widget.videoTaken(videoPath);
-      showInSnackBar('Video recorded to: $videoPath');
-    });
+    widget.videoTaken(videoPath);
+    if (mounted) setState(() {});
   }
 
   void onPauseButtonPressed() {
@@ -426,5 +480,4 @@ class _VideoCapture extends State<VideoCapture> {
       );
     }
   }
-
 }

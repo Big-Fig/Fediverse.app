@@ -2,9 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:phaze/Pages/Post/Photo/PhotoFile.dart';
+import 'package:phaze/Pages/Post/Video/VideoFIle.dart';
 import 'package:phaze/Pages/Post/VisibiltyDropDown.dart';
 import 'package:phaze/Pleroma/Foundation/Client.dart';
 import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
@@ -18,17 +21,13 @@ import 'package:photo_manager/photo_manager.dart';
 import 'package:video_player/video_player.dart';
 
 class ComposeStatus extends StatefulWidget {
-  final AssetEntity asset;
-  final String imageURL;
-  final String videoURL;
+  final List<dynamic> assets;
+  // final AssetEntity asset;
+  // final String imageURL;
+  // final String videoURL;
   final Function popParent;
   final String htmlPost;
-  ComposeStatus(
-      {this.asset,
-      this.imageURL,
-      this.videoURL,
-      this.popParent,
-      this.htmlPost});
+  ComposeStatus({this.assets, this.popParent, this.htmlPost});
 
   @override
   State<StatefulWidget> createState() {
@@ -42,9 +41,10 @@ class _ComposeStatus extends State<ComposeStatus> {
   VideoPlayerController videoController;
   VoidCallback videoPlayerListener;
   bool enableAudio = true;
-  File file;
   String statusVisability = "";
   String status = "";
+  List<String> attachments = [];
+
   visibilityUpdated(String visibility) {
     statusVisability = visibility.toLowerCase();
   }
@@ -83,7 +83,11 @@ class _ComposeStatus extends State<ComposeStatus> {
               ),
             Container(
               height: 40,
-              child: VisibilityDropDown(visibilityUpdated),
+              child: VisibilityDropDown((string){
+                print(string);
+                visibilityUpdated(string);
+
+              }),
             ),
             Text("Status:"),
             Padding(
@@ -104,40 +108,59 @@ class _ComposeStatus extends State<ComposeStatus> {
   }
 
   Widget getMediaPreview() {
-    if (widget.imageURL != null) {
-      return _cameraPreviewWidget();
-    } else if (widget.videoURL != null) {
-      file = File(widget.videoURL);
-      return LocalVideoPlayer(url: widget.videoURL);
-    } else if (widget.asset != null) {
-      widget.asset.file.then((loadedFile) {
-        file = loadedFile;
-        if (mounted) setState(() {});
-      });
+    if (widget.assets == null) {
+      return null;
+    }
 
-      if (widget.asset.type == AssetType.video) {
-        if (file != null) {
-          return LocalVideoPlayer(
-            file: file,
-          );
-        }
-      } else {
-        if (file != null) {
-          return Image.file(file);
-        }
+    List<Widget> items = [];
+    for (var i = 0; i < widget.assets.length; i++) {
+      dynamic asset = widget.assets[i];
+      if (asset is PhotoFile) {
+        items.add(_cameraPreviewWidget(asset.url));
+      } else if (asset is VideoFile) {
+        items.add(LocalVideoPlayer(url: asset.url));
+      } else if (asset is AssetEntity) {
+        AssetEntity item = asset;
+
+        items.add(FutureBuilder(
+            future: item.file,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (item.type == AssetType.video) {
+                  return LocalVideoPlayer(
+                    file: snapshot.data,
+                  );
+                } else {
+                  return Image.file(snapshot.data);
+                }
+              } else {
+                return Container();
+              }
+            }));
       }
     }
 
-    return null;
+    return Carousel(
+      overlayShadowColors: Colors.transparent,
+      overlayShadowSize: 0.0,
+      images: items,
+      dotIncreasedColor: Colors.green,
+      dotSize: 4.0,
+      dotSpacing: 15.0,
+      dotColor: Colors.green.withOpacity(0.5),
+      indicatorBgPadding: 5.0,
+      dotBgColor: Colors.transparent,
+      borderRadius: true,
+      autoplay: false,
+    );
   }
 
-  Widget _cameraPreviewWidget() {
-    file = File(widget.imageURL);
-    return Image.file(file);
+  Widget _cameraPreviewWidget(String url) {
+    return Image.file(File(url));
   }
 
   postStatus() {
-    if (file == null) {
+    if (widget.assets ==  null) {
       postTextStatus();
       return;
     }
@@ -146,40 +169,42 @@ class _ComposeStatus extends State<ComposeStatus> {
     _pr.setMessage('Posting status');
     _pr.show();
 
+    getFileForUpload(0);
+  }
+
+  getFileForUpload(int index) async {
+    print("getting index $index");
+    dynamic asset = widget.assets[index];
+    if (asset is PhotoFile) {
+      uploadFile(index, File(asset.url));
+    } else if (asset is VideoFile) {
+      uploadFile(index, File(asset.url));
+    } else if (asset is AssetEntity) {
+      AssetEntity item = asset;
+      item.file.then((file){
+         uploadFile(index, file);
+      });
+     
+    }
+  }
+
+  uploadFile(int index, File file) {
     var path = MediaRequest.Media.postNewStatus;
     CurrentInstance.instance.currentClient
         .runUpload(path: path, files: [file]).then((response) {
       response.stream.bytesToString().then((respStr) {
         MediaAttachment attachment =
             MediaAttachment.fromJson(json.decode(respStr));
-        List<String> ids = [attachment.id];
-        var statusPath = StatusRequest.Status.postNewStatus;
-        print(json.encode(ids));
-        Map<String, dynamic> params = {
-          "status": widget.htmlPost,
-          "visibility": statusVisability,
-          "media_ids": [attachment.id]
-        };
-
-        CurrentInstance.instance.currentClient
-            .run(path: statusPath, method: HTTPMethod.POST, params: params)
-            .then((statusResponse) {
-          print(statusResponse.body);
-          _pr.hide();
-          var alert = Alert(context, "Success!", "You status was posted!",
-              () => {Navigator.of(context).popUntil((route) => route.isFirst)});
-          alert.showAlert();
-        }).catchError((e) {
-          print(e);
-          _pr.hide();
-          var alert = Alert(
-              context,
-              "Opps",
-              "Unable to post status at this time. Please try again later.",
-              () => {});
-          alert.showAlert();
-        });
+        attachments.add(attachment.id);
+        int nextIndex = index + 1;
+        print("whats next?");
+        if (nextIndex != widget.assets.length) {
+          getFileForUpload(nextIndex);
+        } else {
+          postStatusAfterUpload();
+        }
       }).catchError((e) {
+        print("THIS IS THE ERROR!!!!");
         print(e);
         _pr.hide();
         var alert = Alert(
@@ -192,13 +217,43 @@ class _ComposeStatus extends State<ComposeStatus> {
     });
   }
 
+  postStatusAfterUpload() {
+    print("my visability!!!! $statusVisability");
+    var statusPath = StatusRequest.Status.postNewStatus;
+    Map<String, dynamic> params = {
+      "status": widget.htmlPost,
+      "visibility": statusVisability,
+      "media_ids": attachments
+    };
+
+    CurrentInstance.instance.currentClient
+        .run(path: statusPath, method: HTTPMethod.POST, params: params)
+        .then((statusResponse) {
+      print(statusResponse.body);
+      _pr.hide();
+      var alert = Alert(context, "Success!", "You status was posted!",
+          () => {Navigator.of(context).popUntil((route) => route.isFirst)});
+      alert.showAlert();
+    }).catchError((e) {
+      print("THIS IS THE ERROR!!!!");
+      print(e);
+      _pr.hide();
+      var alert = Alert(
+          context,
+          "Opps",
+          "Unable to post status at this time. Please try again later.",
+          () => {});
+      alert.showAlert();
+    });
+  }
+
   postTextStatus() {
     _pr = ProgressDialog(context, ProgressDialogType.Normal);
     _pr.setMessage('Posting status');
     _pr.show();
 
     var statusPath = StatusRequest.Status.postNewStatus;
-
+    print("visibility  $statusVisability");
     Map<String, dynamic> params = {
       "status": widget.htmlPost,
       "visibility": statusVisability,

@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:phaze/Pages/Post/ComposeStatus.dart';
 import 'package:phaze/Pages/Post/Gallery/GalleryCapture.dart';
 import 'package:phaze/Pages/Post/Photo/PhotoCapture.dart';
+import 'package:phaze/Pages/Post/Photo/PhotoFile.dart';
 import 'package:phaze/Pages/Post/TextCapture.dart';
 import 'package:phaze/Pages/Post/TextEditor.dart';
 import 'package:phaze/Pages/Post/Video/VideoCapture.dart';
+import 'package:phaze/Pages/Post/Video/VideoFIle.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class CaptureController extends StatefulWidget {
@@ -78,7 +80,7 @@ class _CaptureController extends State<CaptureController>
                 context,
                 MaterialPageRoute(
                   builder: (context) => TextEditor(
-                    asset: selectedAsset,
+                    assets: [selectedAsset],
                     popParent: pop,
                   ),
                 ),
@@ -128,7 +130,6 @@ class _CaptureController extends State<CaptureController>
   }
 
   pop() {
-    print("WE ARE FUCKING POPING");
     Navigator.pop(context);
     Navigator.pop(context);
     Navigator.pop(context);
@@ -139,7 +140,7 @@ class _CaptureController extends State<CaptureController>
       context,
       MaterialPageRoute(
         builder: (context) => TextEditor(
-          videoURL: uri,
+          assets: [VideoFile(uri)],
           popParent: pop,
         ),
       ),
@@ -152,7 +153,7 @@ class _CaptureController extends State<CaptureController>
       context,
       MaterialPageRoute(
         builder: (context) => TextEditor(
-          imageURL: uri,
+          assets: [PhotoFile(uri)],
           popParent: pop,
         ),
       ),

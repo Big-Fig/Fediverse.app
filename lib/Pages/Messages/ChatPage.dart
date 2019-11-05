@@ -452,7 +452,7 @@ class _ChatPage extends State<ChatPage> {
 
     var statusPath = StatusRequest.Status.postNewStatus;
     Map<String, dynamic> params = {
-      "status": "@${atAccount.acct} ${txtController.text}",
+      "status": "${txtController.text}",
       "visibility": "direct",
       "in_reply_to_id": statuses.first.id
     };
