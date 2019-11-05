@@ -1,28 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:phaze/Pages/Messages/Media/DMMediaPage.dart';
 import 'package:phaze/Pages/Post/Gallery/GalleryCapture.dart';
 import 'package:phaze/Pages/Post/Photo/PhotoCapture.dart';
+import 'package:phaze/Pages/Post/Photo/PhotoFile.dart';
+import 'package:phaze/Pages/Post/TextEditor.dart';
 import 'package:phaze/Pages/Post/Video/VideoCapture.dart';
+import 'package:phaze/Pages/Post/Video/VideoFIle.dart';
 import 'package:photo_manager/photo_manager.dart';
 
-class CaptureDMMedia extends StatefulWidget {
+class AddAddtionalMedia extends StatefulWidget {
+  final Function(String) videoTaken;
+  final Function(String) photoTaken;
+  final Function(AssetEntity) gallerySelected;
 
-  final Function(String) mediaUploaded;
-
-  final int selectedIndex;
-  CaptureDMMedia(this.selectedIndex, this.mediaUploaded);
+  AddAddtionalMedia({this.videoTaken, this.photoTaken, this.gallerySelected});
 
   @override
   State<StatefulWidget> createState() {
-    return _CaptureDMMedia();
+    return _AddAddtionalMedia();
   }
 }
 
-class _CaptureDMMedia extends State<CaptureDMMedia>
+class _AddAddtionalMedia extends State<AddAddtionalMedia>
     with TickerProviderStateMixin {
   ValueNotifier<int> _showNext = ValueNotifier<int>(0);
   AssetEntity selectedAsset;
   TabController _controller;
+
+  TextEditingController statusController = TextEditingController();
+
   List<AppBar> _appBar;
   List<Widget> _children = <Widget>[];
 
@@ -35,10 +40,9 @@ class _CaptureDMMedia extends State<CaptureDMMedia>
       GalleryCapture(gallerySelected),
     ];
     _controller = TabController(vsync: this, length: 3);
-    _currentIndex = widget.selectedIndex;
     _controller.addListener(_controllerChanged);
-    
-    _appBar = _appBar = [
+    _appBar = [
+      // Video Capture AppBar
       AppBar(
         leading: IconButton(
           icon: Icon(Icons.close),
@@ -46,8 +50,9 @@ class _CaptureDMMedia extends State<CaptureDMMedia>
             Navigator.pop(context);
           },
         ),
-        title: Text("DM Attachment"),
+        title: Text("Add to post"),
       ),
+      // Camera Capture AppBar
       AppBar(
         leading: IconButton(
           icon: Icon(Icons.close),
@@ -55,33 +60,26 @@ class _CaptureDMMedia extends State<CaptureDMMedia>
             Navigator.pop(context);
           },
         ),
-        title: Text("DM Attachment"),
+        title: Text("Add to post"),
       ),
+      // Gallery Capture AppBar
       AppBar(
         leading: IconButton(
           icon: Icon(Icons.close),
           onPressed: () {
             Navigator.pop(context);
-            
           },
         ),
-        title: Text("New Post"),
+        title: Text("Add to post"),
         actions: <Widget>[
           FlatButton(
-            child: Text("Next"),
+            child: Text("Add"),
             textColor: Colors.white,
             color: Colors.transparent,
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => DMMediaPage(
-                    asset: selectedAsset,
-                    popParent: pop,
-                    mediaUploaded: widget.mediaUploaded
-                  ),
-                ),
-              );
+              widget.gallerySelected(selectedAsset);
+
+              Navigator.pop(context);
             },
           ),
         ],
@@ -107,30 +105,13 @@ class _CaptureDMMedia extends State<CaptureDMMedia>
   }
 
   videoTaken(String uri) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => DMMediaPage(
-          videoURL: uri,
-          popParent: pop,
-          mediaUploaded: widget.mediaUploaded,
-        ),
-      ),
-    );
+    widget.videoTaken(uri);
+    Navigator.pop(context);
   }
 
   photoTaken(String uri) {
-    print(uri);
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => DMMediaPage(
-          imageURL: uri,
-          popParent: pop,
-          mediaUploaded: widget.mediaUploaded
-        ),
-      ),
-    );
+    widget.photoTaken(uri);
+    Navigator.pop(context);
   }
 
   gallerySelected(AssetEntity asset) {
@@ -141,23 +122,27 @@ class _CaptureDMMedia extends State<CaptureDMMedia>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appBar[_currentIndex],
-      body: _children[_currentIndex], // new
+      body: Container(
+        child: _children[_currentIndex],
+        color: Colors.black,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: onTabTapped, // new
-        currentIndex: _currentIndex, // new
+        currentIndex: _currentIndex, //
+        selectedItemColor: Colors.green,
+        unselectedItemColor: Colors.grey,
         items: [
           new BottomNavigationBarItem(
-              backgroundColor: Colors.grey,
-              title: Text('Video'),
-              icon: Container(height: 0.0)),
+            title: Container(height: 0.0),
+            icon: Icon(Icons.videocam),
+          ),
           new BottomNavigationBarItem(
-              backgroundColor: Colors.grey,
-              title: Text('Photo'),
-              icon: Container(height: 0.0)),
+            title: Container(height: 0.0),
+            icon: Icon(Icons.camera_alt),
+          ),
           new BottomNavigationBarItem(
-            backgroundColor: Colors.grey,
-            title: Text('Gallery'),
-            icon: Container(height: 0.0),
+            title: Container(height: 0.0),
+            icon: Icon(Icons.photo_library),
           ),
         ],
       ),

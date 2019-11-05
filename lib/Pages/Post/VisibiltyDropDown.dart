@@ -29,8 +29,10 @@ class _VisibilityDropDown extends State<VisibilityDropDown> {
         DropdownButton<String>(
           value: dropdownValue,
           onChanged: (String newValue) {
+            
             setState(() {
               dropdownValue = newValue;
+              widget.updateVisibility(newValue);
             });
           },
           items: <String>[
