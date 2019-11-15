@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
 
 class HomeContainerPage extends StatefulWidget {
-
   final TabController tabController;
   final List<Widget> children;
 
-  HomeContainerPage(this.tabController, this.children);
+  HomeContainerPage(this.tabController, this.children, {Key key})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return _HomeContainerPage();
+    return HomeContainerPageState();
   }
 }
 
-class _HomeContainerPage extends State<HomeContainerPage>
+class HomeContainerPageState extends State<HomeContainerPage>
     with
         TickerProviderStateMixin,
         AutomaticKeepAliveClientMixin<HomeContainerPage> {
-
   @override
   void initState() {
     super.initState();
   }
 
+  
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +44,7 @@ class _HomeContainerPage extends State<HomeContainerPage>
         ],
         controller: widget.tabController,
         onTap: (index) {
-          setState(() {
-          });
+          setState(() {});
         },
       )),
       body: widget.children[widget.tabController.index],

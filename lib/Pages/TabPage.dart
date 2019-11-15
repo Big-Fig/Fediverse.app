@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/cupertino.dart';
@@ -38,6 +40,9 @@ class TabPage extends StatefulWidget {
 
 class _TabPage extends State<TabPage>
     with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
+  final GlobalKey<MyTimelinePageState> _timelineKey = GlobalKey();
+  final GlobalKey<SearchState> _searchKey = GlobalKey();
+    final GlobalKey<NotificationPageState> _notificationKey = GlobalKey();
   static FirebaseAnalytics analytics = FirebaseAnalytics();
   static FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);
@@ -50,16 +55,24 @@ class _TabPage extends State<TabPage>
 
   List<AppBar> _appBar;
   TabController _tabController;
-  final List<Widget> _homeControllers = [MyTimelinePage(), Search()];
+  List<Widget> _homeControllers = [];
 
   @override
   initState() {
     super.initState();
+    _homeControllers = [
+      MyTimelinePage(
+        key: _timelineKey,
+      ),
+      Search(
+        key: _searchKey,
+      )
+    ];
     _firebaseMessaging.requestNotificationPermissions();
     _tabController = TabController(length: 2, vsync: this);
     _children = [
       HomeContainerPage(_tabController, _homeControllers),
-      NotificationPage(),
+      NotificationPage(key: _notificationKey,),
       PlaceholderWidget(Colors.green),
       MessageConatiner(),
       MyProfilePage(),
@@ -90,7 +103,6 @@ class _TabPage extends State<TabPage>
   Widget build(BuildContext context) {
     super.build(context);
 
-    
     PushHelper.instance.swapAccount = swapAccount;
     PushHelper.instance.register();
     _appBar = [
@@ -136,6 +148,9 @@ class _TabPage extends State<TabPage>
       appBar: _appBar[_currentIndex],
       body: _children[_currentIndex], // new
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
         onTap: onTabTapped, // new
         currentIndex: _currentIndex, // new
         items: [
@@ -147,7 +162,7 @@ class _TabPage extends State<TabPage>
           new BottomNavigationBarItem(
             backgroundColor: Colors.green,
             icon: Icon(Icons.notifications),
-            title: Text('Search'),
+            title: Text('Notifications'),
           ),
           new BottomNavigationBarItem(
               backgroundColor: Colors.green,
@@ -168,7 +183,31 @@ class _TabPage extends State<TabPage>
     );
   }
 
+  void onDoubleDap(int index) {}
+
+  List<int> tabTaps = [0, 0, 0, 0, 0];
+
   void onTabTapped(int index) {
+    tabTaps[index] += 1;
+    int taps = tabTaps[index];
+    if (taps > 1 && index == 0) {
+      if (_timelineKey.currentState != null) {
+        _timelineKey.currentState.refreshEverything();
+      }
+
+      if (_searchKey.currentState != null) {
+        _searchKey.currentState.refreshEverything();
+      }
+    } else if(taps > 1 && index == 1) {
+      if (_notificationKey.currentState != null) {
+        _notificationKey.currentState.refreshEverything();
+      }
+    }
+
+    Timer(Duration(seconds: 1), () {
+      tabTaps[index] = 0;
+    });
+    print("single tap");
     setState(() {
       if (index == 2) {
         // Navigator.push(

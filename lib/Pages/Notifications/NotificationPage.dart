@@ -18,14 +18,20 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class NotificationPage extends StatefulWidget {
   final List<NotificationModel.Notification> notifications = [];
-
+  NotificationPage({Key key}) : super(key: key);
   @override
   State<StatefulWidget> createState() {
-    return _NotificationPage();
+    return NotificationPageState();
   }
 }
 
-class _NotificationPage extends State<NotificationPage> {
+class NotificationPageState extends State<NotificationPage> {
+
+
+  refreshEverything(){
+    _refreshController.requestRefresh();
+  }
+  
   viewAccount(Account account) {
     Navigator.push(
       context,

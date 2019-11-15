@@ -4,6 +4,7 @@ import 'dart:io' show Platform;
 import 'package:path/path.dart';
 import 'package:async/async.dart';
 import 'package:http/http.dart' as http;
+import 'package:phaze/DeepLinks/DeepLinkHelper.dart';
 import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
 import './Requests/Registration.dart';
 import '../Models/ClientSettings.dart';
@@ -18,12 +19,13 @@ enum HTTPMethod { GET, HEAD, POST, PUT, DELETE, PATCH }
 
 @HiveType()
 class Client {
+  Function(String) successMethod;
   @HiveField(0)
   String accessToken;
   @HiveField(1)
   String baseURL;
   ClientSettings clientSettings;
-
+  Stream<Uri> uri;
   Client({baseURL}) {
     this.baseURL = "https://$baseURL";
   }
@@ -35,7 +37,6 @@ class Client {
       "scopes": "read write follow push",
       "website": "https://fediverse.app"
     };
-    
 
     final url = "$baseURL${Registration.register}";
     try {
@@ -46,8 +47,35 @@ class Client {
     }
   }
 
-  launchAuth(sucess(String code), error(String error)) async {
-    var successMethod = sucess;
+  getlink() async {
+    // Uri parsing may fail, so we use a try/catch FormatException.
+    try {
+      Uri initialUri = await getInitialUri();
+      print("GETTING LINK");
+
+      if (initialUri == null) {
+        return;
+      }
+      if (initialUri.queryParameters['code'] == null) {
+        return;
+      }
+      print("success!!! $initialUri");
+      closeWebView();
+      print(uri);
+      var code = initialUri.queryParameters['code'].toString();
+      successMethod(code);
+
+      // Use the uri and warn the user, if it is not correct,
+      // but keep in mind it could be `null`.
+    } on FormatException {
+      print("ERROR");
+      // Handle exception by warning the user their action did not succeed
+      // return?
+    }
+    // ... other exception handling like PlatformException
+  }
+
+  launchAuth(error(String error)) async {
     var errorMethod = error;
     var success = false;
     var url = Registration.authorize(this);
@@ -63,7 +91,7 @@ class Client {
         closeWebView();
         print(uri);
         this.clientSettings.code = uri.queryParameters['code'].toString();
-        successMethod(this.clientSettings.code);
+        DeepLinkHelper.loadNewInstancebycode(this.clientSettings.code);
       }, onError: (err) {
         // Handle exception by warning the user their action did not succeed
         closeWebView();
@@ -170,13 +198,14 @@ class Client {
       "Accept": "application/json",
       "Content-Type": "application/json",
     };
-    String baseUrl = CurrentInstance.instance.currentClient.baseURL.replaceAll("https://", "");
-    String endpoint = "http://fedi-relay.herokuapp.com/push/$token?account=${CurrentInstance.instance.currentAccount.acct}&server=$baseUrl&device=iOS";
+    String baseUrl = CurrentInstance.instance.currentClient.baseURL
+        .replaceAll("https://", "");
+    String endpoint =
+        "http://fedi-relay.herokuapp.com/push/$token?account=${CurrentInstance.instance.currentAccount.acct}&server=$baseUrl&device=iOS";
     if (Platform.isAndroid) {
-      endpoint = "http://fedi-relay.herokuapp.com/push/$token?account=${CurrentInstance.instance.currentAccount.acct}&server=$baseUrl";
-    } else {
-
-    }
+      endpoint =
+          "http://fedi-relay.herokuapp.com/push/$token?account=${CurrentInstance.instance.currentAccount.acct}&server=$baseUrl";
+    } else {}
     dynamic params = {
       "data": {
         "alerts": {
@@ -192,8 +221,7 @@ class Client {
               "BEpPCn0cfs3P0E0fY-gyOuahx5dW5N8quUowlrPyfXlMa6tABLqqcSpOpMnC1-o_UB_s4R8NQsqMLbASjnqSbqw=",
           "auth": "T5bhIIyre5TDC1LyX4mFAQ==",
         },
-        "endpoint":
-            endpoint
+        "endpoint": endpoint
       }
     };
 

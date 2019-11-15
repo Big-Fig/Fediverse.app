@@ -22,6 +22,7 @@ class _InAppWebPage extends State<InAppWebPage> {
         title: Text(widget.url),
       ),
       body: WebView(
+        javascriptMode: JavascriptMode.unrestricted,
         initialUrl: widget.url,
         onWebViewCreated: (WebViewController webViewController) {
           _controller.complete(webViewController);

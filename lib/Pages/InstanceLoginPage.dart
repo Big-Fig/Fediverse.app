@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart' as prefix0;
+import 'package:phaze/Pleroma/Foundation/InstanceStorage.dart';
+import 'package:phaze/Pleroma/Foundation/InstanceStorage.dart' as prefix1;
 import '../Pleroma/Models/ClientSettings.dart';
 import '../Constants/AppThemeConsts.dart';
 import '../Pleroma/Foundation/Client.dart';
-import '../Pleroma/Foundation/CurrentInstance.dart';
 import '../Views/ProgressDialog.dart';
 import 'dart:convert';
 import '../Pleroma/Models/AccountAuth.dart' as Auth;
@@ -120,26 +123,19 @@ class _InstanceLoginPage extends State<InstanceLoginPage> {
                         var client = new ClientSettings.fromJson(bodyJson);
                         CurrentInstance
                             .newInstance.currentClient.clientSettings = client;
-                        CurrentInstance.newInstance.currentClient.launchAuth(
-                            (code) {
+
+                        InstanceStorage.saveNewInstanceClient(CurrentInstance
+                            .newInstance.currentClient).then((_) {
                           CurrentInstance.newInstance.currentClient
-                              .getAuthToken()
-                              .then((authResponse) {
-                            print(authResponse.body);
-                            var newAuth =
-                                Auth.accountAuthFromJson(authResponse.body);
-                            CurrentInstance.newInstance.currentAuth = newAuth;
-                            CurrentInstance.newInstance.currentClient.accessToken = newAuth.accessToken;
-                            widget.instanceSuccess();
+                              .launchAuth((error) {
+                            print(error.toString());
+                            var alert = Alert(
+                                context,
+                                "Not a valid instance (may be closed or dead)",
+                                "Please enter a valid instance name like pleroma.site or mastodon.social",
+                                () => {});
+                            alert.showAlert();
                           });
-                        }, (error) {
-                          print(error.toString());
-                          var alert = Alert(
-                              context,
-                              "Not a valid instance (may be closed or dead)",
-                              "Please enter a valid instance name like pleroma.site or mastodon.social",
-                              () => {});
-                          alert.showAlert();
                         });
                       }
                     }).catchError((error) {

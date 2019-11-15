@@ -63,6 +63,29 @@ class InstanceStorage {
      return data;
   }
 
+  static Future<void> saveNewInstanceClient(Client client) async {
+
+    print("SAVING NEW INSTANCE DATA");
+    var box = await Hive.openBox('InstanceStorage', lazy: true) as LazyBox;
+    await box.put("new-client", client);
+    await box.put("new-clientSettings", client.clientSettings);
+    
+  }
+  
+  static Future<Client> getNewInstanceClient() async {
+     var box = await Hive.openBox('InstanceStorage', lazy: true) as LazyBox;
+     Client client = await box.get("new-client");
+     ClientSettings settings = await box.get("new-clientSettings");
+     client.clientSettings = settings;
+     return client;
+  }
+
+  Future<void> clearAllNewInstance() async {
+     var box = await Hive.openBox('NewInstanceStorage');
+     await box.clear();
+  }
+
+
   Future<void> addAccountToInstanceList(String account) async {
     var box = await Hive.openBox('InstanceStorage', lazy: true) as LazyBox;
     List<String> stringList = await box.get("InstanceList");

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phaze/DeepLinks/DeepLinkHelper.dart';
 import 'dart:core';
 import 'package:phaze/Pages/TabPage.dart';
 import '../Pleroma/Foundation/InstanceStorage.dart';
@@ -17,7 +18,7 @@ class AppContainerPage extends StatefulWidget {
 
 class _AppContainerPage extends State<AppContainerPage> {
   CurrentState appState = CurrentState.NONE;
-
+  DeepLinkHelper links = DeepLinkHelper.instance;
   void instanceSuccess() {
     setState(() {
       this.appState = CurrentState.LOADING;
@@ -50,6 +51,12 @@ class _AppContainerPage extends State<AppContainerPage> {
 
   @override
   Widget build(BuildContext context) {
+
+
+
+    links.instanceSuccess = this.instanceSuccess;
+    DeepLinkHelper.initUniLinks();
+
     if (this.appState == CurrentState.NONE) {
       InstanceStorage.getCurrentAccount().then((account) {
         print(account);

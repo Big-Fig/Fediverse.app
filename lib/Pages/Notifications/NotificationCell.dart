@@ -30,57 +30,64 @@ class _NotificationCell extends State<NotificationCell> {
   Widget build(BuildContext context) {
     deviceWidth = MediaQuery.of(context).size.width;
     targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
-    return Padding(
-      padding: EdgeInsets.all(10),
-      child: Column(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              GestureDetector(
-                onTap: () {
-                  print("view account");
-                  if (widget.viewAccount != null) {
-                    widget.viewAccount(widget.notification.account);
-                  }
-                },
-                behavior: HitTestBehavior.translucent,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    ClipRRect(
-                      borderRadius: new BorderRadius.circular(20.0),
-                      child: FadeInImage.assetNetwork(
-                        placeholder: 'assets/images/double_ring_loading_io.gif',
-                        image: widget.notification.account.avatar,
-                        height: 40.0,
-                        width: 40.0,
+    return Card(
+      child: Padding(
+        padding: EdgeInsets.all(10),
+        child: Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () {
+                    print("view account");
+                    if (widget.viewAccount != null) {
+                      widget.viewAccount(widget.notification.account);
+                    }
+                  },
+                  behavior: HitTestBehavior.translucent,
+                  child:
+                   Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      ClipRRect(
+                        borderRadius: new BorderRadius.circular(20.0),
+                        child: FadeInImage.assetNetwork(
+                          placeholder:
+                              'assets/images/double_ring_loading_io.gif',
+                          image: widget.notification.account.avatar,
+                          height: 40.0,
+                          width: 40.0,
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Text(widget.notification.account.acct)
-                  ],
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text(widget.notification.account.acct)
+                    ],
+                  ),
                 ),
-              ),
-              Spacer(),
-              IconButton(
-                icon: Icon(Icons.more_horiz),
-                tooltip: 'More',
-                onPressed: () {},
-              ),
-            ],
-          ),
-          Row(
-            children: <Widget>[
-              SizedBox(
-                width: 40,
-              ),
-              getActionWiget(widget.notification.type),
-            ],
-          ),
-          getStatus()
-        ],
+                Spacer(),
+                // NO MORE BUTTON
+              ],
+            ),
+            Row(
+              children: <Widget>[
+                SizedBox(
+                  width: 40,
+                ),
+                getActionWiget(widget.notification.type),
+              ],
+            ),
+            GestureDetector(onTap: (){
+               if (widget.notification.status != null){
+                 widget.viewStatusContext(widget.notification.status);
+               }
+            },
+            child: getStatus(),
+            )
+           
+          ],
+        ),
       ),
     );
   }
