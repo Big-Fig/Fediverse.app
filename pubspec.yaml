@@ -50,7 +50,7 @@ dependencies:
   material_segmented_control: ^2.0.3
   flutter_alert: ^0.4.0
   firebase_crashlytics: any
-
+  timeago: ^2.0.22
   
 dev_dependencies:
   flutter_test:

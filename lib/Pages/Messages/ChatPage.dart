@@ -30,18 +30,11 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPage extends State<ChatPage> {
-
-
-
-  
   var txtController = TextEditingController();
   List<Status> statuses = <Status>[];
   String title = "DM";
 
-  
-  
-
-  update(){
+  update() {
     print("UPDATING FROM PUSH!!!!!!");
     widget.refreshMasterList();
     backgroundCheck();
@@ -49,9 +42,6 @@ class _ChatPage extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
-
-
-
     return Scaffold(
         appBar: AppBar(
           title: Text(title),
@@ -416,6 +406,8 @@ class _ChatPage extends State<ChatPage> {
     Map<String, dynamic> params = {
       "status": "@${atAccount.acct}",
       "visibility": "direct",
+      "in_reply_to_conversation_id": widget.conversation.id,
+      "to": atAccount,
       "in_reply_to_id": statuses.first.id,
       "media_ids": [id]
     };
@@ -444,7 +436,7 @@ class _ChatPage extends State<ChatPage> {
     if (widget.conversation.accounts.length > 0) {
       atAccount = getOtherAccount(widget.conversation.accounts);
     }
-    
+
     if (txtController.text.length == 0) {
       print("too short");
       return;
@@ -452,8 +444,10 @@ class _ChatPage extends State<ChatPage> {
 
     var statusPath = StatusRequest.Status.postNewStatus;
     Map<String, dynamic> params = {
-      "status": "${txtController.text}",
+      "status": "@${atAccount.acct} ${txtController.text}",
+      "to": atAccount,
       "visibility": "direct",
+      "in_reply_to_conversation_id": widget.conversation.id,
       "in_reply_to_id": statuses.first.id
     };
 

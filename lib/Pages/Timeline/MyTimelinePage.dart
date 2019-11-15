@@ -12,14 +12,15 @@ import '../../Pleroma/Foundation/Requests/Timeline.dart';
 import 'package:flutter/scheduler.dart';
 
 class MyTimelinePage extends StatefulWidget {
+  MyTimelinePage({Key key}) : super(key: key);
   final List<Status> statuses = [];
   @override
   State<StatefulWidget> createState() {
-    return _MyTimelinePage();
+    return MyTimelinePageState();
   }
 }
 
-class _MyTimelinePage extends State<MyTimelinePage> {
+class MyTimelinePageState extends State<MyTimelinePage> {
   viewAccount(Account account) {
     Navigator.push(
       context,
@@ -48,6 +49,10 @@ class _MyTimelinePage extends State<MyTimelinePage> {
       SchedulerBinding.instance
           .addPostFrameCallback((_) => fetchStatuses(context));
     }
+  }
+
+  refreshEverything(){
+    _refreshController.requestRefresh();
   }
 
   void fetchStatuses(BuildContext context) {

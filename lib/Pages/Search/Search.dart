@@ -10,14 +10,16 @@ import 'package:phaze/Pleroma/Models/Status.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class Search extends StatefulWidget {
+  Search({Key key}) : super(key: key);
+
   final List<Status> statuses = <Status>[];
   @override
   State<StatefulWidget> createState() {
-    return _Search();
+    return SearchState();
   }
 }
 
-class _Search extends State<Search> {
+class SearchState extends State<Search> {
   void initState() {
     super.initState();
     if (SchedulerBinding.instance.schedulerPhase ==
@@ -26,7 +28,12 @@ class _Search extends State<Search> {
           .addPostFrameCallback((_) => fetchStatuses(context));
     }
   }
+  
 
+  refreshEverything(){
+    _refreshController.requestRefresh();
+  }
+  
   void fetchStatuses(BuildContext context) {
     if (widget.statuses.length == 0) {
       _refreshController.requestRefresh();

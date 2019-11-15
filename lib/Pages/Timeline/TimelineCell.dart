@@ -12,6 +12,7 @@ import 'package:carousel_pro/carousel_pro.dart';
 import 'package:phaze/Views/VideoPlayer.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:flutter_alert/flutter_alert.dart';
+import 'package:html/dom.dart' as dom;
 
 class TimelineCell extends StatefulWidget {
   final Status status;
@@ -33,6 +34,8 @@ class _TimelineCell extends State<TimelineCell> {
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
+    Status status =
+        widget.status.reblog != null ? widget.status.reblog : widget.status;
 
     return GestureDetector(
       onTap: () {
@@ -41,6 +44,54 @@ class _TimelineCell extends State<TimelineCell> {
       child: Card(
         child: Column(
           children: <Widget>[
+            // reposted status
+            if (widget.status.reblog != null)
+              GestureDetector(
+                onTap: () {
+                  print("view account");
+                  if (widget.viewAccount != null) {
+                    widget.viewAccount(widget.status.account);
+                  }
+                },
+                behavior: HitTestBehavior.translucent,
+                child: Padding(
+                  padding: EdgeInsets.all(12.0),
+                  child: Row(
+                    children: <Widget>[
+                      ClipRRect(
+                        borderRadius: new BorderRadius.circular(12.0),
+                        child: FadeInImage.assetNetwork(
+                          placeholder:
+                              'assets/images/double_ring_loading_io.gif',
+                          image: widget.status.account.avatar,
+                          height: 24.0,
+                          width: 24.0,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: getUserName(widget.status),
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Icon(Icons.cached),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text("repeated")
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+
             Padding(
               padding: EdgeInsets.all(12.0),
               child: Row(
@@ -49,7 +100,7 @@ class _TimelineCell extends State<TimelineCell> {
                     onTap: () {
                       print("view account");
                       if (widget.viewAccount != null) {
-                        widget.viewAccount(widget.status.account);
+                        widget.viewAccount(status.account);
                       }
                     },
                     behavior: HitTestBehavior.translucent,
@@ -61,7 +112,7 @@ class _TimelineCell extends State<TimelineCell> {
                           child: FadeInImage.assetNetwork(
                             placeholder:
                                 'assets/images/double_ring_loading_io.gif',
-                            image: widget.status.account.avatar,
+                            image: status.account.avatar,
                             height: 40.0,
                             width: 40.0,
                           ),
@@ -69,8 +120,20 @@ class _TimelineCell extends State<TimelineCell> {
                         SizedBox(
                           width: 8,
                         ),
-                        Row(
-                          children: getUserName(widget.status),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: getUserName(status),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Text("${status.account.acct}")
+                              ],
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -110,7 +173,24 @@ class _TimelineCell extends State<TimelineCell> {
                     padding: EdgeInsets.only(
                         bottom: 0, top: 8, left: 12.0, right: 12),
                     child: Html(
-                      data: widget.status.content,
+                      onImageTap: (String source){
+                        print("source $source");
+                      },
+                      customTextStyle: (dom.Node node, TextStyle baseStyle) {
+                        if (node is dom.Element) {
+                          switch (node.localName) {
+                            case "p":
+                              return baseStyle.merge(TextStyle(fontSize: 18));
+                          }
+                        }
+                        return baseStyle.merge(TextStyle(fontSize: 18));
+                      },
+                      onImageError:(dynamic exception, StackTrace stackTrace){
+                        print("Image error!!!");
+                        print(exception);
+                        print(stackTrace);
+                      },
+                      data: getHTMLWithCustomEmoji(widget.status),
                       onLinkTap: (String link) {
                         print("link $link");
                         if (link.contains("/users/")) {
@@ -304,6 +384,20 @@ class _TimelineCell extends State<TimelineCell> {
       borderRadius: true,
       autoplay: false,
     );
+  }
+
+  String getHTMLWithCustomEmoji(Status status) {
+    List customEmoji = status.emojis;
+    String html = status.content;
+    for (int i = 0; i < customEmoji.length; i++) {
+      var emoji = customEmoji[i];
+      String shortcode = emoji["shortcode"];
+      String url = emoji["url"];
+
+      html = html.replaceAll(":$shortcode:", '<img src="$url" width="20">');
+    }
+    html = "<html> <body>$html</body></html>";
+    return html;
   }
 
   List<Widget> getUserName(Status status) {
