@@ -40,7 +40,7 @@ dependencies:
   flutter_staggered_grid_view: any
   video_player: any
   path_provider: any
-  photo_manager: any
+  photo_manager: ^0.4.4
   camera: any
   carousel_pro: ^1.0.0
   scoped_model: any

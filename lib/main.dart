@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:phaze/Pages/Push/PushHelper.dart';
 import 'package:phaze/Pleroma/Models/ClientSettings.dart';
-import 'package:uni_links/uni_links.dart';
 import './Pleroma/Foundation/CurrentInstance.dart';
 import './Pages/AppContainerPage.dart';
 import './Pages/TermsOfService.dart';
@@ -12,12 +11,11 @@ import 'package:path_provider/path_provider.dart';
 import './Pleroma/Foundation/Client.dart';
 import './Pleroma/Models/Account.dart';
 import './Pleroma/Models/AccountAuth.dart';
-import 'DeepLinks/DeepLinkHelper.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 
 void main() async {
-
+  WidgetsFlutterBinding.ensureInitialized();
 
 
   

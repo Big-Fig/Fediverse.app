@@ -46,9 +46,9 @@ class _GalleryCapture extends State<GalleryCapture> {
     }
     if (permission == CameraPermisionStatus.success) {
       List<AssetPathEntity> list =
-          await PhotoManager.getAssetPathList(hasVideo: true);
+          await PhotoManager.getAssetPathList(type: RequestType.all);
       galleryList = await list[0].assetList;
-      selectedEntity.value = galleryList[galleryList.length - 1];
+      selectedEntity.value = galleryList[0];
       widget.assetSelected(selectedEntity.value);
     }
     if (this.mounted) {
@@ -108,12 +108,12 @@ class _GalleryCapture extends State<GalleryCapture> {
   }
 
   Widget _buildItem(BuildContext context, int index) {
-    var i = galleryList.length - 1 - index;
+   // var i = galleryList.length - 1 - index;
 
     ValueNotifier<bool> isSelected = ValueNotifier(false);
     isSelected.value = selectedIndex == index ? true : false;
 
-    AssetEntity entity = galleryList[i];
+    AssetEntity entity = galleryList[index];
     var container = GalleryImageContainer(
         entity: entity,
         index: index,

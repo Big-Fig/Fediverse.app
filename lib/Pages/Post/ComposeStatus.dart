@@ -19,6 +19,7 @@ import 'package:phaze/Views/LocalVideoPlayer.dart';
 import 'package:phaze/Views/ProgressDialog.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:video_player/video_player.dart';
+import 'package:html/dom.dart' as dom;
 
 class ComposeStatus extends StatefulWidget {
   final List<dynamic> assets;
@@ -95,6 +96,15 @@ class _ComposeStatus extends State<ComposeStatus> {
               child: Container(
                   child: Html(
                 data: widget.htmlPost,
+                customTextStyle: (dom.Node node, TextStyle baseStyle) {
+                  if (node is dom.Element) {
+                    switch (node.localName) {
+                      case "p":
+                        return baseStyle.merge(TextStyle(fontSize: 18));
+                    }
+                  }
+                  return baseStyle.merge(TextStyle(fontSize: 18));
+                },
               )),
             ),
             RaisedButton(
