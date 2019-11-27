@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
-import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart' as prefix0;
 import 'package:phaze/Pleroma/Foundation/InstanceStorage.dart';
-import 'package:phaze/Pleroma/Foundation/InstanceStorage.dart' as prefix1;
 import '../Pleroma/Models/ClientSettings.dart';
 import '../Constants/AppThemeConsts.dart';
 import '../Pleroma/Foundation/Client.dart';
 import '../Views/ProgressDialog.dart';
 import 'dart:convert';
-import '../Pleroma/Models/AccountAuth.dart' as Auth;
 import '../Views/Alert.dart';
 
 class InstanceLoginPage extends StatefulWidget {

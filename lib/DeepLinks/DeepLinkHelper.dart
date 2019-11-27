@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:io';
-
 import 'package:phaze/Pleroma/Foundation/InstanceStorage.dart';
 
 import '../Pleroma/Models/AccountAuth.dart' as Auth;

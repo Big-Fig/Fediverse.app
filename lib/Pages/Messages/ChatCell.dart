@@ -8,6 +8,7 @@ import 'package:carousel_pro/carousel_pro.dart';
 import 'package:phaze/Views/VideoPlayer.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:phaze/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
+import 'package:html/dom.dart' as dom;
 
 class ChatCell extends StatefulWidget {
   final Status status;
@@ -74,6 +75,15 @@ class _ChatCell extends State<ChatCell> {
             padding: EdgeInsets.only(bottom: 0, top: 8, left: 12.0, right: 12),
             child: Html(
               data: widget.status.content,
+              customTextStyle: (dom.Node node, TextStyle baseStyle) {
+                  if (node is dom.Element) {
+                    switch (node.localName) {
+                      case "p":
+                        return baseStyle.merge(TextStyle(fontSize: 18));
+                    }
+                  }
+                  return baseStyle.merge(TextStyle(fontSize: 18));
+                },
             ),
           ),
         ],

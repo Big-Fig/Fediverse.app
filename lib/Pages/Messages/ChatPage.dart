@@ -33,6 +33,7 @@ class _ChatPage extends State<ChatPage> {
   var txtController = TextEditingController();
   List<Status> statuses = <Status>[];
   String title = "DM";
+  bool backgroundCheckStatus = true;
 
   update() {
     print("UPDATING FROM PUSH!!!!!!");
@@ -220,10 +221,14 @@ class _ChatPage extends State<ChatPage> {
       RefreshController(initialRefresh: false);
 
   backgroundCheck() {
-    if (statuses.length == 0) {
-      Future.delayed(const Duration(milliseconds: 5000), () {
-        backgroundCheck();
-      });
+    if (this.mounted) {
+      if (statuses.length == 0) {
+        Future.delayed(const Duration(milliseconds: 5000), () {
+          backgroundCheck();
+        });
+        return;
+      }
+    } else {
       return;
     }
 
@@ -483,4 +488,11 @@ class _ChatPage extends State<ChatPage> {
   }
 
   postMediaId(String id) {}
+
+  @override
+  void dispose() {
+    print("DISPOSE");
+    backgroundCheckStatus = false;
+    super.dispose();
+  }
 }

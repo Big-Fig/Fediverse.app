@@ -6,6 +6,7 @@ import 'package:phaze/Pleroma/Models/Notification.dart' as NotificationObject;
 import 'package:phaze/Pleroma/Models/Status.dart';
 import 'package:phaze/Views/VideoPlayer.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:html/dom.dart' as dom;
 
 class NotificationCell extends StatefulWidget {
   final NotificationObject.Notification notification;
@@ -110,6 +111,15 @@ class _NotificationCell extends State<NotificationCell> {
             padding: EdgeInsets.only(bottom: 0, top: 8, left: 12.0, right: 12),
             child: Html(
               data: widget.notification.status.content,
+              customTextStyle: (dom.Node node, TextStyle baseStyle) {
+                  if (node is dom.Element) {
+                    switch (node.localName) {
+                      case "p":
+                        return baseStyle.merge(TextStyle(fontSize: 18));
+                    }
+                  }
+                  return baseStyle.merge(TextStyle(fontSize: 18));
+                },
             ),
           ),
         ],
