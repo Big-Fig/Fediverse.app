@@ -27,6 +27,15 @@ class _GalleryPreview extends State<GalleryPreview> {
     widget.data.addListener(didValueChange);
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _videoController.pause().then((item){
+      _videoController.dispose();
+    });
+
+  }
+
   // Wrap setState in a function so the listener can be disposed
   didValueChange() async {
     if (_videoController != null) {
@@ -40,10 +49,17 @@ class _GalleryPreview extends State<GalleryPreview> {
         _videoController = VideoPlayerController.file(videoFile)
           ..initialize().then((_) {
             // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-            setState(() {
-              _videoController.setLooping(true);
-              _videoController.play();
-            });
+            if (mounted) {
+              setState(() {
+                _videoController.setLooping(true);
+                _videoController.setVolume(0);
+                _videoController.play().then((value){
+
+                }).catchError((error){
+                  print("THERE WAS AN ERROR $error");
+                });
+              });
+            }
           });
       });
     } else {

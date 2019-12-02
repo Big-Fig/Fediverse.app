@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:phaze/Constants/AppThemeConsts.dart';
 import 'package:phaze/Pages/Post/AddAdditionalMedia.dart';
+import 'package:phaze/Pages/Post/CaptureController.dart';
 import 'package:phaze/Pages/Post/ComposeStatus.dart';
+import 'package:phaze/Transitions/SlideRightRoute.dart';
 import 'package:phaze/Views/LocalVideoPlayer.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:phaze/Transitions/SlideBottomRoute.dart';
@@ -55,6 +57,15 @@ class _TextEditor extends State<TextEditor> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Compose status"),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+
+            Navigator.pushReplacement(context,
+            SlideRightRoute(page: CaptureController()));
+
+          },
+        ),
         actions: <Widget>[
           Builder(
               builder: (context) => FlatButton(
@@ -62,7 +73,7 @@ class _TextEditor extends State<TextEditor> {
                     textColor: Colors.white,
                     color: Colors.transparent,
                     onPressed: () {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) => ComposeStatus(

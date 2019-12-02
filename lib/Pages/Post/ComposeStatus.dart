@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:phaze/Pages/Post/Photo/PhotoFile.dart';
+import 'package:phaze/Pages/Post/TextEditor.dart';
 import 'package:phaze/Pages/Post/Video/VideoFIle.dart';
 import 'package:phaze/Pages/Post/VisibiltyDropDown.dart';
 import 'package:phaze/Pleroma/Foundation/Client.dart';
@@ -14,6 +15,7 @@ import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:phaze/Pleroma/Foundation/Requests/Media.dart' as MediaRequest;
 import 'package:phaze/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
 import 'package:phaze/Pleroma/Models/Status.dart';
+import 'package:phaze/Transitions/SlideRightRoute.dart';
 import 'package:phaze/Views/Alert.dart';
 import 'package:phaze/Views/LocalVideoPlayer.dart';
 import 'package:phaze/Views/ProgressDialog.dart';
@@ -39,9 +41,6 @@ class ComposeStatus extends StatefulWidget {
 class _ComposeStatus extends State<ComposeStatus> {
   ProgressDialog _pr;
   CameraController controller;
-  VideoPlayerController videoController;
-  VoidCallback videoPlayerListener;
-  bool enableAudio = true;
   String statusVisability = "";
   String status = "";
   List<String> attachments = [];
@@ -59,7 +58,13 @@ class _ComposeStatus extends State<ComposeStatus> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushReplacement(
+                  context,
+                  SlideRightRoute(
+                      page: TextEditor(
+                    assets: widget.assets,
+                    popParent: widget.popParent,
+                  )));
             },
           ),
           title: Text("Status Preview"),
@@ -84,10 +89,9 @@ class _ComposeStatus extends State<ComposeStatus> {
               ),
             Container(
               height: 40,
-              child: VisibilityDropDown((string){
+              child: VisibilityDropDown((string) {
                 print(string);
                 visibilityUpdated(string);
-
               }),
             ),
             Text("Status:"),
@@ -170,7 +174,7 @@ class _ComposeStatus extends State<ComposeStatus> {
   }
 
   postStatus() {
-    if (widget.assets ==  null) {
+    if (widget.assets == null) {
       postTextStatus();
       return;
     }
@@ -191,10 +195,9 @@ class _ComposeStatus extends State<ComposeStatus> {
       uploadFile(index, File(asset.url));
     } else if (asset is AssetEntity) {
       AssetEntity item = asset;
-      item.file.then((file){
-         uploadFile(index, file);
+      item.file.then((file) {
+        uploadFile(index, file);
       });
-     
     }
   }
 

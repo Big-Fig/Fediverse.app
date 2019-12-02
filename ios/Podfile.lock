@@ -189,14 +189,14 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/webview_flutter/ios"
 
 SPEC CHECKSUMS:
-  camera: d56ad165545ae5a0ffb892376033760a969c68c8
+  camera: 38cc83ae9a5667bb5a71c7d9edaf60a91920fd4e
   Crashlytics: 540b7e5f5da5a042647227a5e3ac51d85eed06df
   Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
   Firebase: 458d109512200d1aca2e1b9b6cf7d68a869a4a46
-  firebase_analytics: 045e7ebe7b8a4d27357168072868ff082dca15a6
-  firebase_core: ae55ea92448ec8675d325da4db22cf3b4d58a54d
-  firebase_crashlytics: 6b8e7358dbac1359c1e29e0796adf48eddef99c9
-  firebase_messaging: 0d5c04cc40f58bd4bf7f2992c91050f9bc01bec3
+  firebase_analytics: 2f3ab38886ff9d915b076d5aae2f964dc5ce7549
+  firebase_core: 15d27cd74b2e40f8c29540707c0486bb561a92e8
+  firebase_crashlytics: a1e30b46a008ada63588f68e7fe2f9a523635354
+  firebase_messaging: b8543d17dd9825f4f24a585477f77db103e5228e
   FirebaseAnalytics: 45f36d9c429fc91d206283900ab75390cd05ee8a
   FirebaseAnalyticsInterop: d48b6ab67bcf016a05e55b71fc39c61c0cb6b7f3
   FirebaseCore: 307ea2508df730c5865334e41965bd9ea344b0e5
@@ -214,13 +214,13 @@ SPEC CHECKSUMS:
   GoogleWebRTC: 893a5f2f3635437ec3b05ef240993d5713307804
   libyuv-iOS: 5a154ccc84ec754029886ecb607512731fe30640
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
-  path_provider: f96fff6166a8867510d2c25fdcc346327cc4b259
+  path_provider: fb74bd0465e96b594bb3b5088ee4a4e7bb1f2a9d
   photo_manager: 47ca9adddeea702246c96c6f67769f03907cd953
   Protobuf: a4dc852ad69c027ca2166ed287b856697814375b
   uni_links: d97da20c7701486ba192624d99bffaaffcfc298a
-  url_launcher: 0067ddb8f10d36786672aa0722a21717dba3a298
-  video_player: 3964090a33353060ed7f58aa6427c7b4b208ec21
-  webview_flutter: 1aa7604e6cdb451a9b7ed2c37d5454c0b440246b
+  url_launcher: a1c0cc845906122c4784c542523d8cacbded5626
+  video_player: 69c5f029fac4ffe4fc8a85ea7f7b793709661549
+  webview_flutter: db3aba222b23e4dc432e0c5882834123dc50ff9f
 
 PODFILE CHECKSUM: 3dbe063e9c90a5d7c9e4e76e70a821b9e2c1d271
 

@@ -48,6 +48,9 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+    aaptOptions {
+        noCompress 'm4a'
+    }
 }
 
 flutter {
