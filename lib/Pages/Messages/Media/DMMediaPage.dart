@@ -11,7 +11,6 @@ import 'package:phaze/Views/Alert.dart';
 import 'package:phaze/Views/LocalVideoPlayer.dart';
 import 'package:phaze/Views/ProgressDialog.dart';
 import 'package:photo_manager/photo_manager.dart';
-import 'package:video_player/video_player.dart';
 
 class DMMediaPage extends StatefulWidget {
   final AssetEntity asset;
@@ -31,9 +30,6 @@ class DMMediaPage extends StatefulWidget {
 class _DMMediaPage extends State<DMMediaPage> {
   ProgressDialog _pr;
   CameraController controller;
-  VideoPlayerController videoController;
-  VoidCallback videoPlayerListener;
-  bool enableAudio = true;
   File file;
   String statusVisability = "";
   String status = "";

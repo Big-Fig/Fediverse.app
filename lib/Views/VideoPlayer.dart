@@ -22,8 +22,12 @@ class _CellVideoPlayer extends State<CellVideoPlayer> {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {
           _controller.setLooping(true);
-          _controller.setVolume(0);
-          _controller.play();
+          _controller.setVolume(1);
+          _controller.play().then((value){
+
+          }).catchError((error){
+            print("THERE WAS AN ERROR $error");
+          });
         });
         
       });

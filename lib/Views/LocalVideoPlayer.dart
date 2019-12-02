@@ -32,7 +32,11 @@ class _LocalVideoPlayer extends State<LocalVideoPlayer> {
         setState(() {
           _controller.setLooping(true);
           _controller.setVolume(0);
-          _controller.play();
+          _controller.play().then((value){
+
+          }).catchError((error){
+            print("THERE WAS AN ERROR $error");
+          });
         });
       });
   }
@@ -64,6 +68,8 @@ class _LocalVideoPlayer extends State<LocalVideoPlayer> {
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
+    _controller.dispose().catchError((error){
+      print("THERE WAS AN ERROR $error");
+    });
   }
 }

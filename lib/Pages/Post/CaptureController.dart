@@ -76,7 +76,7 @@ class _CaptureController extends State<CaptureController>
             textColor: Colors.white,
             color: Colors.transparent,
             onPressed: () {
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => TextEditor(
@@ -103,7 +103,7 @@ class _CaptureController extends State<CaptureController>
             textColor: Colors.white,
             color: Colors.transparent,
             onPressed: () {
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => ComposeStatus(
@@ -136,7 +136,7 @@ class _CaptureController extends State<CaptureController>
   }
 
   videoTaken(String uri) {
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => TextEditor(
@@ -149,7 +149,7 @@ class _CaptureController extends State<CaptureController>
 
   photoTaken(String uri) {
     print(uri);
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => TextEditor(
