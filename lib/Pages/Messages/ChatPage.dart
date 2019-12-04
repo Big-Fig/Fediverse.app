@@ -12,6 +12,7 @@ import 'package:phaze/Pleroma/Models/Context.dart';
 import 'package:phaze/Pleroma/Models/Conversation.dart';
 import 'package:phaze/Pleroma/Models/Status.dart';
 import 'package:phaze/Views/Alert.dart';
+import 'package:timeago/timeago.dart' as timeago;
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'ChatCell.dart';
@@ -34,18 +35,44 @@ class _ChatPage extends State<ChatPage> {
   List<Status> statuses = <Status>[];
   String title = "DM";
   bool backgroundCheckStatus = true;
-
+  Account otherAccount;
   update() {
-    print("UPDATING FROM PUSH!!!!!!");
     widget.refreshMasterList();
     backgroundCheck();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (widget.account != null) {
+      otherAccount = widget.account;
+    } else if (widget.conversation.accounts.length == 0) {
+      otherAccount = widget.conversation.lastStatus.account;
+    } else {
+      otherAccount = getOtherAccount(widget.conversation.accounts);
+    }
+    print("OTHER ACCOUNT HERE");
+    print(otherAccount);
     return Scaffold(
         appBar: AppBar(
-          title: Text(title),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              ClipRRect(
+                borderRadius: new BorderRadius.circular(15.0),
+                child: FadeInImage.assetNetwork(
+                  placeholder: 'assets/images/double_ring_loading_io.gif',
+                  image: otherAccount.avatar,
+                  height: 30.0,
+                  width: 30.0,
+                ),
+              ),
+              SizedBox(
+                width: 8,
+              ),
+              FittedBox(
+                  fit: BoxFit.fitWidth, child: Text(otherAccount.displayName)),
+            ],
+          ),
           actions: <Widget>[
             // IconButton(
             //   icon: Icon(Icons.phone),
@@ -336,7 +363,20 @@ class _ChatPage extends State<ChatPage> {
         itemCount: statuses.length,
         itemBuilder: (BuildContext context, int index) {
           Status status = statuses[index];
-          return ChatCell(status);
+
+          if (index == statuses.length - 1){
+            return ChatCell(status, otherAccount, timeago.format(status.createdAt));
+          } else {
+            Status lastStatus = statuses[index + 1];
+            String lastTime = timeago.format(lastStatus.createdAt);
+            String thisTime = timeago.format(status.createdAt);
+            if (lastTime == thisTime) {
+              return ChatCell(status, otherAccount, null);
+            } else {
+              return ChatCell(status, otherAccount, timeago.format(status.createdAt));
+            }
+          }
+          
         },
       ),
     );

@@ -29,13 +29,12 @@ class _MessagesCell extends State<MessagesCell> {
 
     if (widget.conversation.accounts.length > 0) {
       messageUser = getOtherAccount(widget.conversation.accounts);
-
     } else {
       messageUser = widget.conversation.lastStatus.account;
     }
   }
 
-  cellTapped(){
+  cellTapped() {
     widget.cellTapped(widget.conversation);
   }
 
@@ -47,10 +46,11 @@ class _MessagesCell extends State<MessagesCell> {
         child: Column(
           children: <Widget>[
             Container(
-              height: 115,
+              height: 85,
               child: Padding(
-                padding: EdgeInsets.all(12.0),
+                padding: EdgeInsets.symmetric(horizontal: 10),
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     ClipRRect(
                       borderRadius: new BorderRadius.circular(25.0),
@@ -66,18 +66,17 @@ class _MessagesCell extends State<MessagesCell> {
                         padding: EdgeInsets.all(12.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Row(
                               children: <Widget>[
-                                Text(messageUser.username),
+                                Text(messageUser.username, style: TextStyle(fontSize: 18),),
                               ],
                             ),
-                            Expanded(
-                              child: Text(
-                                getStatusText(widget.conversation.lastStatus),
-                                maxLines: 2,
-                              ),
+                            Text(
+                              getStatusText(widget.conversation.lastStatus),
+                              maxLines: 2,
+                              style: TextStyle(fontSize: 14),
                             ),
                           ],
                         ),
@@ -109,7 +108,7 @@ class _MessagesCell extends State<MessagesCell> {
     var document = parse(status.content);
 
     String parsedString = parse(document.body.text).documentElement.text;
-
+    parsedString = parsedString.replaceAll(RegExp( "(\w*@\w+)"), "");
     return parsedString;
   }
 
