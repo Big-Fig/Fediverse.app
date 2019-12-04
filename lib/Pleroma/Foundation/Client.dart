@@ -201,10 +201,10 @@ class Client {
     String baseUrl = CurrentInstance.instance.currentClient.baseURL
         .replaceAll("https://", "");
     String endpoint =
-        "http://fedi-relay.herokuapp.com/push/$token?account=${CurrentInstance.instance.currentAccount.acct}&server=$baseUrl&device=iOS";
+        "https://pushrelay3.your.org/push/$token?account=${CurrentInstance.instance.currentAccount.acct}&server=$baseUrl&device=iOS";
     if (Platform.isAndroid) {
       endpoint =
-          "http://fedi-relay.herokuapp.com/push/$token?account=${CurrentInstance.instance.currentAccount.acct}&server=$baseUrl";
+          "https://pushrelay3.your.org/push/$token?account=${CurrentInstance.instance.currentAccount.acct}&server=$baseUrl";
     } else {}
     dynamic params = {
       "data": {

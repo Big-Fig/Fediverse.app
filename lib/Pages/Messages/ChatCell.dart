@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:phaze/Pleroma/Foundation/Client.dart';
 import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:phaze/Pleroma/Models/Account.dart';
 import 'package:phaze/Pleroma/Models/Status.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:phaze/Views/VideoPlayer.dart';
@@ -11,8 +12,10 @@ import 'package:phaze/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
 import 'package:html/dom.dart' as dom;
 
 class ChatCell extends StatefulWidget {
+  final Account otherAccount;
   final Status status;
-  ChatCell(this.status);
+  final String timePosted;
+  ChatCell(this.status, this.otherAccount, this.timePosted);
 
   @override
   State<StatefulWidget> createState() {
@@ -21,77 +24,204 @@ class ChatCell extends StatefulWidget {
 }
 
 class _ChatCell extends State<ChatCell> {
+  double deviceWidth;
+  double targetWidth;
+
   @override
   Widget build(BuildContext context) {
-    final double deviceWidth = MediaQuery.of(context).size.width;
-    final double targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
+    deviceWidth = MediaQuery.of(context).size.width;
+    targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
+    print("${widget.status.content}");
+    if (widget.status.account.acct == widget.otherAccount.acct) {
+      return getOtherAccountCell();
+    } else {
+      return getMyCell();
+    }
+  }
 
-    return Container(
-      child: Column(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(top: 12, left: 12, right: 12),
-            child: Row(
+  Widget getMyCell() {
+    return Padding(
+        padding: EdgeInsets.all(10),
+        child: Column(
+          children: <Widget>[
+            if (widget.timePosted != null)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    widget.timePosted,
+                  ),
+                ],
+              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 ClipRRect(
                   borderRadius: new BorderRadius.circular(20.0),
-                  child: FadeInImage.assetNetwork(
-                    placeholder: 'assets/images/double_ring_loading_io.gif',
-                    image: widget.status.account.avatar,
-                    height: 40.0,
-                    width: 40.0,
+                  child: Container(
+                    color: Color(0xffececec),
+                    constraints: BoxConstraints(maxWidth: deviceWidth * 0.80),
+                    child: Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Container(
+                        child: Column(
+                          children: <Widget>[
+                            if (widget.status.mediaAttachments.length > 0)
+                              Container(
+                                height: targetWidth,
+                                width: targetWidth,
+                                color: Colors.white,
+                                child: getMeidaWidget(widget.status),
+                              ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  bottom: 0, top: 0, left: 0, right: 0),
+                              child: Html(
+                                data: removeAccountFromHTML(
+                                    widget.status.content,
+                                    widget.status.account.url),
+                                customTextStyle:
+                                    (dom.Node node, TextStyle baseStyle) {
+                                  if (node is dom.Element) {
+                                    switch (node.localName) {
+                                      case "p":
+                                        return baseStyle
+                                            .merge(TextStyle(fontSize: 18));
+                                    }
+                                  }
+                                  return baseStyle
+                                      .merge(TextStyle(fontSize: 18));
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-                SizedBox(
-                  width: 8,
-                ),
-                Row(
-                  children: getUserName(widget.status),
-                ),
-                Spacer(),
-                IconButton(
-                  icon: Icon(Icons.favorite_border),
-                  color: widget.status.favourited ? Colors.redAccent : Colors.grey,
-                  tooltip: 'More',
-                  onPressed: () {
-
-                    like();
-                  },
                 ),
               ],
             ),
-          ),
-          SizedBox(
-            height: 8.0,
-          ),
-          if (widget.status.mediaAttachments.length > 0)
-            Container(
-              height: targetWidth,
-              width: targetWidth,
-              color: Colors.white,
-              child: getMeidaWidget(widget.status),
+          ],
+        ));
+  }
+
+  Widget getOtherAccountCell() {
+    return Padding(
+      padding: EdgeInsets.all(8),
+      child: Column(
+        children: <Widget>[
+          if (widget.timePosted != null)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  widget.timePosted,
+                ),
+              ],
             ),
-          Padding(
-            padding: EdgeInsets.only(bottom: 0, top: 8, left: 12.0, right: 12),
-            child: Html(
-              data: widget.status.content,
-              customTextStyle: (dom.Node node, TextStyle baseStyle) {
-                  if (node is dom.Element) {
-                    switch (node.localName) {
-                      case "p":
-                        return baseStyle.merge(TextStyle(fontSize: 18));
-                    }
-                  }
-                  return baseStyle.merge(TextStyle(fontSize: 18));
-                },
-            ),
+          Row(
+            children: <Widget>[
+              ClipRRect(
+                borderRadius: new BorderRadius.circular(15.0),
+                child: FadeInImage.assetNetwork(
+                  placeholder: 'assets/images/double_ring_loading_io.gif',
+                  image: widget.status.account.avatar,
+                  height: 30.0,
+                  width: 30.0,
+                ),
+              ),
+              SizedBox(
+                width: 8,
+              ),
+              Stack(
+                children: <Widget>[
+                  Container(
+                    constraints: BoxConstraints(maxWidth: deviceWidth * 0.80),
+                    child: ClipRRect(
+                      borderRadius: new BorderRadius.circular(20.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(20.0)),
+                        child: Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Container(
+                            child: Column(
+                              children: <Widget>[
+                                if (widget.status.mediaAttachments.length > 0)
+                                  Container(
+                                    height: targetWidth,
+                                    width: targetWidth,
+                                    color: Colors.white,
+                                    child: getMeidaWidget(widget.status),
+                                  ),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      bottom: 0, top: 0, left: 0, right: 0),
+                                  child: Html(
+                                    data: removeAccountFromHTML(
+                                        widget.status.content,
+                                        widget.status.account.url),
+                                    customTextStyle:
+                                        (dom.Node node, TextStyle baseStyle) {
+                                      if (node is dom.Element) {
+                                        switch (node.localName) {
+                                          case "p":
+                                            return baseStyle
+                                                .merge(TextStyle(fontSize: 18));
+                                        }
+                                      }
+                                      return baseStyle
+                                          .merge(TextStyle(fontSize: 18));
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: -10,
+                    right: -10,
+                    child: IconButton(
+                      icon: Icon(Icons.favorite_border),
+                      color: widget.status.favourited
+                          ? Colors.redAccent
+                          : Colors.grey,
+                      tooltip: 'More',
+                      onPressed: () {
+                        like();
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ],
       ),
     );
+
+    // Row(
+    //   children: getUserName(widget.status),
+    // ),
+    // Spacer(),
+    // IconButton(
+    //   icon: Icon(Icons.favorite_border),
+    //   color:
+    //       widget.status.favourited ? Colors.redAccent : Colors.grey,
+    //   tooltip: 'More',
+    //   onPressed: () {
+    //     like();
+    //   },
+    // ),R
   }
 
-    like() {
+  like() {
     String path = StatusRequest.Status.favouriteStatus(widget.status.id);
     if (widget.status.favourited == true) {
       path = StatusRequest.Status.unfavouriteStatus(widget.status.id);
@@ -100,7 +230,7 @@ class _ChatCell extends State<ChatCell> {
       widget.status.favouritesCount = widget.status.favouritesCount + 1;
     }
     widget.status.favourited = !widget.status.favourited;
-    
+
     CurrentInstance.instance.currentClient
         .run(path: path, method: HTTPMethod.POST)
         .then((response) {
@@ -148,6 +278,14 @@ class _ChatCell extends State<ChatCell> {
       borderRadius: true,
       autoplay: false,
     );
+  }
+
+  String removeAccountFromHTML(String html, String accountURL) {
+    print("ACCOUNT URL $accountURL");
+    String newHTML =
+        html.replaceAll(RegExp('<\s*a[^>]*>(?=@).*<\s*\/\s*a>'), "");
+    print(newHTML);
+    return newHTML;
   }
 
   List<Widget> getUserName(Status status) {
