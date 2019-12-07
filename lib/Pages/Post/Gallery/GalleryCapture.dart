@@ -6,8 +6,8 @@ import 'package:photo_manager/photo_manager.dart';
 
 class GalleryCapture extends StatefulWidget {
   final Function(AssetEntity) assetSelected;
-
-  GalleryCapture(this.assetSelected);
+  final bool showVideo;
+  GalleryCapture(this.assetSelected, {this.showVideo});
 
   @override
   State<StatefulWidget> createState() {
@@ -45,8 +45,15 @@ class _GalleryCapture extends State<GalleryCapture> {
       return;
     }
     if (permission == CameraPermisionStatus.success) {
-      List<AssetPathEntity> list =
+      List<AssetPathEntity> list;
+      if (widget.showVideo == false){
+        list =
+          await PhotoManager.getAssetPathList(type: RequestType.image);
+      }else {
+       list =
           await PhotoManager.getAssetPathList(type: RequestType.all);
+      }
+       
       galleryList = await list[0].assetList;
       selectedEntity.value = galleryList[0];
       widget.assetSelected(selectedEntity.value);

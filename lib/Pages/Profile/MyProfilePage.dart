@@ -107,7 +107,7 @@ class _MyProfilePage extends State<MyProfilePage> {
   @override
   Widget build(BuildContext context) {
     return SmartRefresher(
-      key: PageStorageKey<String>("MAINTAB"),
+      key: PageStorageKey<String>("myprofilepage"),
       enablePullDown: true,
       enablePullUp: true,
       header: WaterDropHeader(

@@ -318,7 +318,7 @@ class _ChatPage extends State<ChatPage> {
 
   Widget getMessageList() {
     return SmartRefresher(
-      key: PageStorageKey<String>("messages"),
+      key: PageStorageKey<String>("chatPage"),
       enablePullDown: true,
       enablePullUp: false,
       header: WaterDropHeader(

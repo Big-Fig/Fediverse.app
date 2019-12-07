@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:phaze/Pages/Statuses/ImageViewPage.dart';
 import 'package:phaze/Pages/Web/InAppWebPage.dart';
 import 'package:phaze/Pleroma/Foundation/Client.dart';
 import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
@@ -18,10 +19,9 @@ class TimelineCell extends StatefulWidget {
   final Status status;
   final Function(Account) viewAccount;
   final Function(Status) viewStatusContext;
-  final GlobalKey selectedStatusKey;
 
   TimelineCell(this.status,
-      {this.viewAccount, this.viewStatusContext, this.selectedStatusKey});
+      {this.viewAccount, this.viewStatusContext});
 
   @override
   State<StatefulWidget> createState() {
@@ -37,218 +37,211 @@ class _TimelineCell extends State<TimelineCell> {
     Status status =
         widget.status.reblog != null ? widget.status.reblog : widget.status;
 
-    return GestureDetector(
-      onTap: () {
-        print("view status");
-      },
-      child: Card(
-        child: Column(
-          children: <Widget>[
-            // reposted status
-            if (widget.status.reblog != null)
-              GestureDetector(
-                onTap: () {
-                  print("view account");
-                  if (widget.viewAccount != null) {
-                    widget.viewAccount(widget.status.account);
-                  }
-                },
-                behavior: HitTestBehavior.translucent,
-                child: Padding(
-                  padding: EdgeInsets.all(12.0),
-                  child: Row(
-                    children: <Widget>[
-                      ClipRRect(
-                        borderRadius: new BorderRadius.circular(12.0),
-                        child: FadeInImage.assetNetwork(
-                          placeholder:
-                              'assets/images/double_ring_loading_io.gif',
-                          image: widget.status.account.avatar,
-                          height: 24.0,
-                          width: 24.0,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: getUserName(widget.status),
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Icon(Icons.cached),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Text("repeated")
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-              ),
-
-            Padding(
-              padding: EdgeInsets.all(12.0),
-              child: Row(
-                children: <Widget>[
-                  GestureDetector(
-                    onTap: () {
-                      print("view account");
-                      if (widget.viewAccount != null) {
-                        widget.viewAccount(status.account);
-                      }
-                    },
-                    behavior: HitTestBehavior.translucent,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        ClipRRect(
-                          borderRadius: new BorderRadius.circular(20.0),
-                          child: FadeInImage.assetNetwork(
-                            placeholder:
-                                'assets/images/double_ring_loading_io.gif',
-                            image: status.account.avatar,
-                            height: 40.0,
-                            width: 40.0,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: getUserName(status),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                Text("${status.account.acct}")
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  Spacer(),
-                  IconButton(
-                    icon: Icon(Icons.more_horiz),
-                    tooltip: 'More',
-                    onPressed: () {
-                      showMoreOptions(context);
-                    },
-                  ),
-                ],
-              ),
-            ),
+    return Card(
+      child: Column(
+        children: <Widget>[
+          // reposted status
+          if (widget.status.reblog != null)
             GestureDetector(
               onTap: () {
                 print("view account");
                 if (widget.viewAccount != null) {
-                  widget.viewStatusContext(widget.status);
+                  widget.viewAccount(widget.status.account);
                 }
               },
-              // behavior: HitTestBehavior.translucent,
-              child: Column(
-                children: <Widget>[
-                  SizedBox(
-                    height: 8.0,
-                  ),
-                  if (widget.status.mediaAttachments.length > 0)
-                    Container(
-                      height: targetWidth,
-                      width: targetWidth,
-                      color: Colors.white,
-                      child: getMeidaWidget(widget.status),
+              behavior: HitTestBehavior.translucent,
+              child: Padding(
+                padding: EdgeInsets.all(12.0),
+                child: Row(
+                  children: <Widget>[
+                    ClipRRect(
+                      borderRadius: new BorderRadius.circular(12.0),
+                      child: FadeInImage.assetNetwork(
+                        placeholder: 'assets/images/double_ring_loading_io.gif',
+                        image: widget.status.account.avatar,
+                        height: 24.0,
+                        width: 24.0,
+                      ),
                     ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        bottom: 0, top: 8, left: 12.0, right: 12),
-                    child: Html(
-                      onImageTap: (String source){
-                        print("source $source");
-                      },
-                      customTextStyle: (dom.Node node, TextStyle baseStyle) {
-                        if (node is dom.Element) {
-                          switch (node.localName) {
-                            case "p":
-                              return baseStyle.merge(TextStyle(fontSize: 18));
-                          }
-                        }
-                        return baseStyle.merge(TextStyle(fontSize: 18));
-                      },
-                      onImageError:(dynamic exception, StackTrace stackTrace){
-                        print("Image error!!!");
-                        print(exception);
-                        print(stackTrace);
-                      },
-                      data: getHTMLWithCustomEmoji(widget.status),
-                      onLinkTap: (String link) {
-                        print("link $link");
-                        if (link.contains("/users/")) {
-                        } else if (link.contains("/media/")) {
-                        } else {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => InAppWebPage(link),
-                            ),
-                          );
-                        }
-                      },
+                    SizedBox(
+                      width: 8,
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(12.0),
-                    child: Row(
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: getUserName(widget.status),
+                    ),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Row(
                       children: <Widget>[
-                        IconButton(
-                          color: widget.status.favourited
-                              ? Colors.green
-                              : Colors.grey,
-                          icon: Icon(Icons.thumb_up),
-                          tooltip: 'Like',
-                          onPressed: () {
-                            like();
-                          },
+                        Icon(Icons.cached),
+                        SizedBox(
+                          width: 8,
                         ),
-                        if (widget.status.favouritesCount != 0)
-                          Text(widget.status.favouritesCount.toString()),
-                        IconButton(
-                          color: Colors.grey,
-                          icon: Icon(Icons.add_comment),
-                          tooltip: 'comment',
-                          onPressed: () {
-                            widget.viewStatusContext(widget.status);
-                          },
-                        ),
-                        IconButton(
-                          color: widget.status.reblogged
-                              ? Colors.green
-                              : Colors.grey,
-                          icon: Icon(Icons.cached),
-                          tooltip: 'repost',
-                          onPressed: () {
-                            repost();
-                          },
-                        ),
-                        Spacer(),
+                        Text("repeated")
                       ],
-                    ),
-                  ),
-                ],
+                    )
+                  ],
+                ),
               ),
             ),
-          ],
-        ),
+
+          Padding(
+            padding: EdgeInsets.all(12.0),
+            child: Row(
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () {
+                    print("view account");
+                    if (widget.viewAccount != null) {
+                      widget.viewAccount(status.account);
+                    }
+                  },
+                  behavior: HitTestBehavior.translucent,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      ClipRRect(
+                        borderRadius: new BorderRadius.circular(20.0),
+                        child: FadeInImage.assetNetwork(
+                          placeholder:
+                              'assets/images/double_ring_loading_io.gif',
+                          image: status.account.avatar,
+                          height: 40.0,
+                          width: 40.0,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: getUserName(status),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[Text("${status.account.acct}")],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                Spacer(),
+                IconButton(
+                  icon: Icon(Icons.more_horiz),
+                  tooltip: 'More',
+                  onPressed: () {
+                    showMoreOptions(context);
+                  },
+                ),
+              ],
+            ),
+          ),
+
+          GestureDetector(
+            onTap: () {
+              print("view status context");
+              if (widget.viewStatusContext != null) {
+                widget.viewStatusContext(status);
+              }
+            },
+            behavior: HitTestBehavior.translucent,
+            child: Column(
+              children: <Widget>[
+                SizedBox(
+                  height: 8.0,
+                ),
+                if (widget.status.mediaAttachments.length > 0)
+                  Container(
+                    height: targetWidth,
+                    width: targetWidth,
+                    color: Colors.white,
+                    child: getMeidaWidget(widget.status),
+                  ),
+                Padding(
+                  padding:
+                      EdgeInsets.only(bottom: 0, top: 8, left: 12.0, right: 12),
+                  child: Html(
+                    onImageTap: (String source) {
+                      print("source $source");
+                    },
+                    customTextStyle: (dom.Node node, TextStyle baseStyle) {
+                      if (node is dom.Element) {
+                        switch (node.localName) {
+                          case "p":
+                            return baseStyle.merge(TextStyle(fontSize: 18));
+                        }
+                      }
+                      return baseStyle.merge(TextStyle(fontSize: 18));
+                    },
+                    onImageError: (dynamic exception, StackTrace stackTrace) {
+                      print("Image error!!!");
+                      print(exception);
+                      print(stackTrace);
+                    },
+                    data: getHTMLWithCustomEmoji(widget.status),
+                    onLinkTap: (String link) {
+                      print("link $link");
+                      if (link.contains("/users/")) {
+                      } else if (link.contains("/media/")) {
+                      } else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => InAppWebPage(link),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(12.0),
+                  child: Row(
+                    children: <Widget>[
+                      IconButton(
+                        color: widget.status.favourited
+                            ? Colors.green
+                            : Colors.grey,
+                        icon: Icon(Icons.thumb_up),
+                        tooltip: 'Like',
+                        onPressed: () {
+                          like();
+                        },
+                      ),
+                      if (widget.status.favouritesCount != 0)
+                        Text(widget.status.favouritesCount.toString()),
+                      IconButton(
+                        color: Colors.grey,
+                        icon: Icon(Icons.add_comment),
+                        tooltip: 'comment',
+                        onPressed: () {
+                          widget.viewStatusContext(widget.status);
+                        },
+                      ),
+                      IconButton(
+                        color: widget.status.reblogged
+                            ? Colors.green
+                            : Colors.grey,
+                        icon: Icon(Icons.cached),
+                        tooltip: 'repost',
+                        onPressed: () {
+                          repost();
+                        },
+                      ),
+                      Spacer(),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -357,7 +350,16 @@ class _TimelineCell extends State<TimelineCell> {
           placeholder: 'assets/images/double_ring_loading_io.gif',
           image: attachment.url,
         );
-        items.add(image);
+        var container = GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ImageViewPage(image.image)),
+              );
+            },
+            child: image);
+        items.add(container);
       } else if (attachment.type == "video") {
         items.add(
           CellVideoPlayer(

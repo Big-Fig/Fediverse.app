@@ -11,8 +11,12 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../Pleroma/Foundation/Requests/Timeline.dart';
 import 'package:flutter/scheduler.dart';
 
+import '../TabPage.dart';
+
 class MyTimelinePage extends StatefulWidget {
-  MyTimelinePage({Key key}) : super(key: key);
+  final TabPageState tabPage;
+
+  MyTimelinePage(this.tabPage, {Key key}) : super(key: key);
   final List<Status> statuses = [];
   @override
   State<StatefulWidget> createState() {
@@ -21,6 +25,8 @@ class MyTimelinePage extends StatefulWidget {
 }
 
 class MyTimelinePageState extends State<MyTimelinePage> {
+  String path;
+
   viewAccount(Account account) {
     Navigator.push(
       context,
@@ -28,15 +34,35 @@ class MyTimelinePageState extends State<MyTimelinePage> {
     );
   }
 
+  selectTimeline(String timeline) {
+    if (timeline == widget.tabPage.currentTimeline) {
+      return;
+    }
+    widget.tabPage.currentTimeline = timeline;
+    if (widget.tabPage.currentTimeline == "Home") {
+      path = Timeline.getHomeTimeline(
+          minId: "", maxId: "", sinceId: "", limit: "20");
+    } else if (widget.tabPage.currentTimeline == "Local") {
+      path = Timeline.getLocalTimeline(
+          minId: "", maxId: "", sinceId: "", limit: "20");
+    } else {
+      path = Timeline.getPublicTimeline(
+          minId: "", maxId: "", sinceId: "", limit: "20");
+    }
+    if (mounted) {
+      setState(() {});
+    }
+    refreshEverything();
+  }
+
   viewStatusDetail(Status status) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        
         builder: (context) => StatusDetail(
           status: status,
         ),
-        settings:RouteSettings(name: "/StatusDetail"),
+        settings: RouteSettings(name: "/StatusDetail"),
       ),
     );
   }
@@ -49,9 +75,19 @@ class MyTimelinePageState extends State<MyTimelinePage> {
       SchedulerBinding.instance
           .addPostFrameCallback((_) => fetchStatuses(context));
     }
+    if (widget.tabPage.currentTimeline == "Home") {
+      path = Timeline.getHomeTimeline(
+          minId: "", maxId: "", sinceId: "", limit: "20");
+    } else if (widget.tabPage.currentTimeline == "Local") {
+      path = Timeline.getLocalTimeline(
+          minId: "", maxId: "", sinceId: "", limit: "20");
+    } else {
+      path = Timeline.getPublicTimeline(
+          minId: "", maxId: "", sinceId: "", limit: "20");
+    }
   }
 
-  refreshEverything(){
+  refreshEverything() {
     _refreshController.requestRefresh();
   }
 
@@ -69,10 +105,7 @@ class MyTimelinePageState extends State<MyTimelinePage> {
     // monitor network fetch
     // if failed,use refreshFailed()
     CurrentInstance.instance.currentClient
-        .run(
-            path: Timeline.getHomeTimeline(
-                minId: "", maxId: "", sinceId: "", limit: "20"),
-            method: HTTPMethod.GET)
+        .run(path: path, method: HTTPMethod.GET)
         .then((response) {
       List<Status> newStatuses = statusFromJson(response.body);
       widget.statuses.clear();
@@ -96,11 +129,20 @@ class MyTimelinePageState extends State<MyTimelinePage> {
       lastId = lastStatus.id;
     }
 
+    String loadMorePath;
+    if (widget.tabPage.currentTimeline == "Home") {
+      loadMorePath = Timeline.getHomeTimeline(
+          minId: "", maxId: lastId, sinceId: "", limit: "20");
+    } else if (widget.tabPage.currentTimeline == "Local") {
+      loadMorePath = Timeline.getLocalTimeline(
+          minId: "", maxId: lastId, sinceId: "", limit: "20");
+    } else {
+      loadMorePath = Timeline.getPublicTimeline(
+          minId: "", maxId: lastId, sinceId: "", limit: "20");
+    }
+
     CurrentInstance.instance.currentClient
-        .run(
-            path: Timeline.getHomeTimeline(
-                minId: "", maxId: lastId, sinceId: "", limit: "20"),
-            method: HTTPMethod.GET)
+        .run(path: loadMorePath, method: HTTPMethod.GET)
         .then((response) {
       List<Status> newStatuses = statusFromJson(response.body);
       widget.statuses.addAll(newStatuses);

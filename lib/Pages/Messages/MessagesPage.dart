@@ -104,7 +104,7 @@ class _MessagesPage extends State<MessagesPage> {
   @override
   Widget build(BuildContext context) {
     return SmartRefresher(
-      key: PageStorageKey<String>("messages"),
+      key: PageStorageKey<String>("messagesPage"),
       enablePullDown: true,
       enablePullUp: true,
       header: WaterDropHeader(

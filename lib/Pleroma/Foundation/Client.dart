@@ -191,6 +191,36 @@ class Client {
     }
   }
 
+
+  Future<http.StreamedResponse> patchUpload(
+      {String path, String paramName, List<File> files}) async {
+    var url = "$baseURL$path";
+
+    print("TRYING TO UPLOAD");
+    try {
+      var postUri = Uri.parse(url);
+      var request = new http.MultipartRequest(
+        "patch",
+        postUri,
+      );
+      request.headers['authorization'] = "Bearer $accessToken";
+
+      var file = files[0];
+      var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
+      var length = await file.length();
+
+      var multipartFile = new http.MultipartFile(paramName, stream, length,
+          filename: basename(file.path));
+      request.files.add(multipartFile);
+
+      var response = await request.send();
+      return response;
+    } catch (e) {
+      print(e.toString());
+      return e;
+    }
+  }
+
   Future<http.Response> subscribeToPush(String token) async {
     var url = "$baseURL/api/v1/push/subscription";
     var headers = {

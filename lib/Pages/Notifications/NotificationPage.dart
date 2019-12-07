@@ -149,7 +149,7 @@ class NotificationPageState extends State<NotificationPage> {
   @override
   Widget build(BuildContext context) {
     return SmartRefresher(
-      key: PageStorageKey<String>("MyTimelinePage"),
+      key: PageStorageKey<String>("NotificationsPage"),
       enablePullDown: true,
       enablePullUp: true,
       header: WaterDropHeader(
