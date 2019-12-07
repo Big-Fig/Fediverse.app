@@ -56,7 +56,7 @@ class _GalleryImageContainer extends State<GalleryImageContainer> {
 
   Widget _buildItem(int index) {
     return FutureBuilder<Uint8List>(
-      key: PageStorageKey<String>("imagecontainer${widget.index}"),
+      //key: PageStorageKey<String>("imagecontainer${widget.index}"),
       future: getImagedata(),
       builder: (BuildContext context, AsyncSnapshot<Uint8List> snapshot) {
         if (snapshot.connectionState == ConnectionState.done &&

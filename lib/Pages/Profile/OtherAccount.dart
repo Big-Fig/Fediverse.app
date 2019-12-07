@@ -106,7 +106,7 @@ class _OtherAccount extends State<OtherAccount> {
         title: Text(widget.account.username),
       ),
       body: SmartRefresher(
-        key: PageStorageKey<String>("MAINTAB"),
+        key: PageStorageKey<String>("OtherAccountPageStorage"),
         enablePullDown: true,
         enablePullUp: true,
         header: WaterDropHeader(

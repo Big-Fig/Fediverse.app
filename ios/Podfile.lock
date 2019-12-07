@@ -101,6 +101,9 @@ PODS:
   - GoogleUtilities/UserDefaults (6.3.2):
     - GoogleUtilities/Logger
   - GoogleWebRTC (1.1.27299)
+  - image_cropper (0.0.2):
+    - Flutter
+    - TOCropViewController (~> 2.5.2)
   - libyuv-iOS (1.0.2)
   - nanopb (0.3.9011):
     - nanopb/decode (= 0.3.9011)
@@ -112,6 +115,9 @@ PODS:
   - photo_manager (0.0.1):
     - Flutter
   - Protobuf (3.10.0)
+  - screen (0.0.1):
+    - Flutter
+  - TOCropViewController (2.5.2)
   - uni_links (0.0.1):
     - Flutter
   - url_launcher (0.0.1):
@@ -130,8 +136,10 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - flutter_webrtc (from `.symlinks/plugins/flutter_webrtc/ios`)
+  - image_cropper (from `.symlinks/plugins/image_cropper/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - photo_manager (from `.symlinks/plugins/photo_manager/ios`)
+  - screen (from `.symlinks/plugins/screen/ios`)
   - uni_links (from `.symlinks/plugins/uni_links/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
   - video_player (from `.symlinks/plugins/video_player/ios`)
@@ -157,6 +165,7 @@ SPEC REPOS:
     - libyuv-iOS
     - nanopb
     - Protobuf
+    - TOCropViewController
 
 EXTERNAL SOURCES:
   camera:
@@ -175,10 +184,14 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_secure_storage/ios"
   flutter_webrtc:
     :path: ".symlinks/plugins/flutter_webrtc/ios"
+  image_cropper:
+    :path: ".symlinks/plugins/image_cropper/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
   photo_manager:
     :path: ".symlinks/plugins/photo_manager/ios"
+  screen:
+    :path: ".symlinks/plugins/screen/ios"
   uni_links:
     :path: ".symlinks/plugins/uni_links/ios"
   url_launcher:
@@ -212,11 +225,14 @@ SPEC CHECKSUMS:
   GoogleDataTransportCCTSupport: ef79a4728b864946a8aafdbab770d5294faf3b5f
   GoogleUtilities: 547a86735c6f0ee30ad17e94df4fc21f616b71cb
   GoogleWebRTC: 893a5f2f3635437ec3b05ef240993d5713307804
+  image_cropper: 3c16d7651730ffe85897f5a1c4e2547e6b54989a
   libyuv-iOS: 5a154ccc84ec754029886ecb607512731fe30640
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   path_provider: fb74bd0465e96b594bb3b5088ee4a4e7bb1f2a9d
   photo_manager: 47ca9adddeea702246c96c6f67769f03907cd953
   Protobuf: a4dc852ad69c027ca2166ed287b856697814375b
+  screen: abd91ca7bf3426e1cc3646d27e9b2358d6bf07b0
+  TOCropViewController: e9da34f484aedd4e5d5a8ab230ba217cfe16c729
   uni_links: d97da20c7701486ba192624d99bffaaffcfc298a
   url_launcher: a1c0cc845906122c4784c542523d8cacbded5626
   video_player: 69c5f029fac4ffe4fc8a85ea7f7b793709661549
@@ -224,4 +240,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 3dbe063e9c90a5d7c9e4e76e70a821b9e2c1d271
 
-COCOAPODS: 1.8.1
+COCOAPODS: 1.8.4

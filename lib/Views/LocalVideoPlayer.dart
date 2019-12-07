@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chewie/chewie.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +15,7 @@ class LocalVideoPlayer extends StatefulWidget {
 
 class _LocalVideoPlayer extends State<LocalVideoPlayer> {
   VideoPlayerController _controller;
+  ChewieController chewieController;
 
   @override
   void initState() {
@@ -30,26 +32,29 @@ class _LocalVideoPlayer extends State<LocalVideoPlayer> {
       ..initialize().then((_) {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {
-          _controller.setLooping(true);
           _controller.setVolume(0);
-          _controller.play().then((value){
-
-          }).catchError((error){
-            print("THERE WAS AN ERROR $error");
-          });
+          
+          chewieController = ChewieController(
+            aspectRatio: _controller.value.aspectRatio,
+            videoPlayerController: _controller,
+            autoPlay: true,
+            looping: true,
+          );
+          _controller.play();
         });
       });
+    _controller.setVolume(0);
   }
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: _controller.value.initialized
-          ? AspectRatio(
-              aspectRatio: _controller.value.aspectRatio,
-              child: VideoPlayer(_controller),
-            )
-          : Container(),
+      child: AspectRatio(
+        aspectRatio: _controller.value.aspectRatio,
+        child: Chewie(
+          controller: chewieController,
+        ),
+      ),
     );
     // floatingActionButton: FloatingActionButton(
     //   onPressed: () {
@@ -67,9 +72,8 @@ class _LocalVideoPlayer extends State<LocalVideoPlayer> {
 
   @override
   void dispose() {
+    _controller.dispose();
+    chewieController.dispose();
     super.dispose();
-    _controller.dispose().catchError((error){
-      print("THERE WAS AN ERROR $error");
-    });
   }
 }

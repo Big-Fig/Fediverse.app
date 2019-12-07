@@ -14,7 +14,6 @@ import 'package:phaze/Views/Alert.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class StatusDetail extends StatefulWidget {
-
   final Status status;
 
   StatusDetail({this.status});
@@ -23,27 +22,22 @@ class StatusDetail extends StatefulWidget {
   State<StatefulWidget> createState() {
     return _StatusDetail();
   }
-
 }
 
 class _StatusDetail extends State<StatusDetail> {
-
   var txtController = TextEditingController();
   List<Status> statuses = <Status>[];
 
-
   void initState() {
     super.initState();
-    
+
     if (SchedulerBinding.instance.schedulerPhase ==
         SchedulerPhase.persistentCallbacks) {
-      SchedulerBinding.instance
-          .addPostFrameCallback((_) => _onRefresh() );
+      SchedulerBinding.instance.addPostFrameCallback((_) => _onRefresh());
     }
-
   }
 
-viewAccount(Account account) {
+  viewAccount(Account account) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => OtherAccount(account)),
@@ -55,8 +49,7 @@ viewAccount(Account account) {
     return Scaffold(
         appBar: AppBar(
           title: Text("Status Details"),
-          actions: <Widget>[
-          ],
+          actions: <Widget>[],
         ),
         body: Column(
           children: <Widget>[
@@ -145,8 +138,8 @@ viewAccount(Account account) {
           ],
         ));
   }
-  
-   mediaUploaded(String id) {
+
+  mediaUploaded(String id) {
     print("MY ID!!! $id");
 
     Navigator.of(context)
@@ -158,29 +151,30 @@ viewAccount(Account account) {
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
-
   ScrollController _controller = ScrollController();
-
 
   void _onRefresh() async {
     // if failed,use refreshFailed()
     CurrentInstance.instance.currentClient
         .run(
-            path: StatusRequest.Status.getStatusContext(
-                widget.status.id),
+            path: StatusRequest.Status.getStatusContext(widget.status.id),
             method: HTTPMethod.GET)
         .then((response) {
       Context context = contextFromJson(response.body);
       statuses.clear();
       List<Status> templist = [];
+      
       templist.addAll(context.ancestors);
       templist.add(widget.status);
       templist.addAll(context.descendants);
+      // templist.addAll();
       // statuses.addAll(templist.reversed);
-      statuses.addAll(templist);
-      if (mounted) setState(() {});
-      _refreshController.refreshCompleted();
-      jumpToStatus();
+      statuses.addAll(templist.reversed);
+      if (mounted)
+        setState(() {
+          _refreshController.refreshCompleted();
+        });
+
     }).catchError((error) {
       print(error.toString());
       if (mounted) setState(() {});
@@ -188,21 +182,14 @@ viewAccount(Account account) {
     });
   }
 
-  GlobalKey _selectedStatusKey = GlobalKey();
 
-
-  jumpToStatus(){
-    print("jumping");
-    final RenderBox renderBoxRed = _selectedStatusKey.currentContext.findRenderObject();
-    final position = renderBoxRed.globalToLocal(Offset.zero);
-     print("${position.dy}");
-    _controller.jumpTo(position.dy);
+  jumpToStatus() {
+    _controller.jumpTo(_controller.position.maxScrollExtent);
   }
-
 
   Widget getMessageList() {
     return SmartRefresher(
-      key: PageStorageKey<String>("messages"),
+      //key: PageStorageKey<String>("StatusDeatilPage"),
       enablePullDown: true,
       enablePullUp: false,
       header: WaterDropHeader(
@@ -245,21 +232,17 @@ viewAccount(Account account) {
         controller: _controller,
         padding: EdgeInsets.symmetric(horizontal: 2.0, vertical: 10.0),
         itemCount: statuses.length,
+        reverse: true,
         itemBuilder: (BuildContext context, int index) {
           Status status = statuses[index];
-          if(status == widget.status) {
-            return TimelineCell(status, selectedStatusKey: _selectedStatusKey, viewAccount: viewAccount,);
-          }
+          
           return TimelineCell(status, viewAccount: viewAccount);
         },
       ),
     );
   }
 
-
   sendMessageWithAttachment(String id) {
-    
-
     print("sending attachment! $id");
     var statusPath = StatusRequest.Status.postNewStatus;
     Map<String, dynamic> params = {
@@ -289,7 +272,6 @@ viewAccount(Account account) {
   }
 
   sendMessage() {
-    
     if (txtController.text.length == 0) {
       print("too short");
       return;
@@ -309,7 +291,7 @@ viewAccount(Account account) {
       print(statusResponse.body);
       txtController.clear();
       var status = Status.fromJson(jsonDecode(statusResponse.body));
-      statuses.add(status);
+      statuses.insert(0, status);
       setState(() {});
     }).catchError((e) {
       print(e);
@@ -322,8 +304,5 @@ viewAccount(Account account) {
     });
   }
 
-  
-
   postMediaId(String id) {}
-
 }

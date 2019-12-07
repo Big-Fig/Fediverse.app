@@ -92,7 +92,7 @@ class SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return SmartRefresher(
-      key: PageStorageKey<String>("MAINTABSEARCH"),
+      key: PageStorageKey<String>("SearchPage"),
       enablePullDown: true,
       enablePullUp: true,
       header: WaterDropHeader(

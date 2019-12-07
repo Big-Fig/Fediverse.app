@@ -1,6 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.fediverse.app">
-     <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />:
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
@@ -15,7 +14,7 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
-        <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />:
+        <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -63,7 +62,10 @@
                 android:name="com.google.firebase.messaging.default_notification_channel_id"
                 android:value="@string/default_notification_channel_id" />
             <!-- [END fcm_default_channel] -->
-            <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />:
         </activity>
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
     </application>
 </manifest>

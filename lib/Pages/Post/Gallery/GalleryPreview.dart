@@ -30,9 +30,11 @@ class _GalleryPreview extends State<GalleryPreview> {
   @override
   void dispose() {
     super.dispose();
+    if (_videoController != null ){
     _videoController.pause().then((item){
       _videoController.dispose();
     });
+    }
 
   }
 

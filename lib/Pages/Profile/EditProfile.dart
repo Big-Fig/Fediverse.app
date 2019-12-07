@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phaze/Pages/Profile/ProfileImageEditor.dart';
 import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:phaze/Pleroma/Models/Account.dart';
 
@@ -12,9 +13,27 @@ class EditProfile extends StatefulWidget {
 class _EditProfile extends State<EditProfile> {
   Account myAccount = CurrentInstance.instance.currentAccount;
 
+
+
+  mediaUploaded(String id) {
+    // print("MY ID!!! $id");
+
+    // Navigator.of(context)
+    //     .popUntil((route) => route.settings.name == "/StatusDetail");
+
+    // sendMessageWithAttachment(id);
+  }
+
+
+
+  sendMessageWithAttachment(String id) {
+    
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       key: PageStorageKey<String>("editprofilepage"),
       appBar: AppBar(
         title: Text("Edit Account"),
         actions: <Widget>[
@@ -49,7 +68,13 @@ class _EditProfile extends State<EditProfile> {
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
-                    print("edit image");
+
+                     Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                 ProfileImageEditor(1, mediaUploaded, "avatar")));
+                   
                   },
                   child: Container(
                     width: 125,
@@ -94,7 +119,11 @@ class _EditProfile extends State<EditProfile> {
                   right: 10,
                   child: GestureDetector(
                     onTap: (){
-
+                       Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                 ProfileImageEditor(1, mediaUploaded, "header")));
                       print("edit header");
                     },
                     behavior: HitTestBehavior.translucent,
