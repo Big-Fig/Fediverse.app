@@ -1,4 +1,4 @@
-import 'package:phaze/Pleroma/Foundation/Client.dart';
+import 'package:fedi/Pleroma/Foundation/Client.dart';
 
 class Registration {
 // registration urls

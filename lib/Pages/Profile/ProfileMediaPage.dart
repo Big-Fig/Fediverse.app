@@ -4,13 +4,11 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
-import 'package:phaze/Pleroma/Foundation/Requests/Accounts.dart';
-import 'package:phaze/Pleroma/Foundation/Requests/Media.dart' as MediaRequest;
-import 'package:phaze/Pleroma/Models/Status.dart';
-import 'package:phaze/Views/Alert.dart';
-import 'package:phaze/Views/LocalVideoPlayer.dart';
-import 'package:phaze/Views/ProgressDialog.dart';
+import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart';
+import 'package:fedi/Views/Alert.dart';
+import 'package:fedi/Views/LocalVideoPlayer.dart';
+import 'package:fedi/Views/ProgressDialog.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class ProfileMediaPage extends StatefulWidget {
@@ -120,6 +118,7 @@ class _ProfileMediaPage extends State<ProfileMediaPage> {
   }
 
   updateImage() {
+
     _pr = ProgressDialog(context, ProgressDialogType.Normal);
     _pr.setMessage('Uploading ${widget.type} image');
     _pr.show();
@@ -128,12 +127,23 @@ class _ProfileMediaPage extends State<ProfileMediaPage> {
     CurrentInstance.instance.currentClient.patchUpload(
         path: path, paramName: widget.type, files: [file]).then((response) {
       response.stream.bytesToString().then((respStr) {
+        
         print(json.decode(respStr));
         _pr.hide();
-        MediaAttachment attachment =
-            MediaAttachment.fromJson(json.decode(respStr));
-        Navigator.of(context)
-            .popUntil((route) => route.settings.name == "/MyProfile");
+        CurrentInstance.instance.currentAccount
+            .refreshAccount()
+            .then((response) {
+          var alert = Alert(context, "Success!", "Profile updated!", () {
+            widget.mediaUploaded("update");
+            Navigator.of(context)
+                .popUntil((route) => route.settings.name == "/MyProfile");
+          });
+          alert.showAlert();
+        }).catchError((error) {
+          var alert = Alert(context, "Opps",
+              "Unable to upload attachment at this time", () => {});
+          alert.showAlert();
+        });
       }).catchError((e) {
         print(e);
         _pr.hide();

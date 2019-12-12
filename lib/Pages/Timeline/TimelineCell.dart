@@ -1,16 +1,18 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:phaze/Pages/Statuses/ImageViewPage.dart';
-import 'package:phaze/Pages/Web/InAppWebPage.dart';
-import 'package:phaze/Pleroma/Foundation/Client.dart';
-import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
-import 'package:phaze/Pleroma/Foundation/Requests/Accounts.dart';
-import 'package:phaze/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
-import 'package:phaze/Pleroma/Models/Account.dart';
-import 'package:phaze/Pleroma/Models/Status.dart';
+import 'package:fedi/Pages/Statuses/ImageViewPage.dart';
+import 'package:fedi/Pages/Web/InAppWebPage.dart';
+import 'package:fedi/Pleroma/Foundation/Client.dart';
+import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart';
+import 'package:fedi/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
+import 'package:fedi/Pleroma/Models/Account.dart';
+import 'package:fedi/Pleroma/Models/Status.dart';
 import 'package:carousel_pro/carousel_pro.dart';
-import 'package:phaze/Views/VideoPlayer.dart';
+import 'package:fedi/Views/VideoPlayer.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:flutter_alert/flutter_alert.dart';
 import 'package:html/dom.dart' as dom;
@@ -20,8 +22,7 @@ class TimelineCell extends StatefulWidget {
   final Function(Account) viewAccount;
   final Function(Status) viewStatusContext;
 
-  TimelineCell(this.status,
-      {this.viewAccount, this.viewStatusContext});
+  TimelineCell(this.status, {this.viewAccount, this.viewStatusContext});
 
   @override
   State<StatefulWidget> createState() {
@@ -132,17 +133,30 @@ class _TimelineCell extends State<TimelineCell> {
                   ),
                 ),
                 Spacer(),
-                IconButton(
-                  icon: Icon(Icons.more_horiz),
-                  tooltip: 'More',
-                  onPressed: () {
-                    showMoreOptions(context);
-                  },
+                Column(
+                  children: <Widget>[
+                    IconButton(
+                      icon: Icon(Icons.more_horiz),
+                      tooltip: 'More',
+                      onPressed: () {
+                        showMoreOptions(context);
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),
           ),
-
+          Row(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(left: 19),
+                child: Text(
+                  Jiffy(status.createdAt).fromNow(),
+                ),
+              ),
+            ],
+          ),
           GestureDetector(
             onTap: () {
               print("view status context");

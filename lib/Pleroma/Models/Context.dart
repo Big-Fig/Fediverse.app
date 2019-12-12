@@ -1,6 +1,6 @@
 
 import 'dart:convert';
-import 'package:phaze/Pleroma/Models/Status.dart';
+import 'package:fedi/Pleroma/Models/Status.dart';
 
 Context contextFromJson(String str) => Context.fromJson(json.decode(str));
 

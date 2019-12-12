@@ -3,77 +3,82 @@
 //     final account = accountFromJson(jsonString);
 
 import 'dart:convert';
+import 'package:fedi/Pleroma/Foundation/Client.dart';
+import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
+import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart';
 import 'package:hive/hive.dart';
+import 'package:http/http.dart' as http;
+
 part 'Account.g.dart';
 
 Account accountFromJson(String str) => Account.fromJson(json.decode(str));
-List<Account> accountsFromJson(String str) => new List<Account>.from(json.decode(str).map((x) => Account.fromJson(x)));
-
+List<Account> accountsFromJson(String str) =>
+    new List<Account>.from(json.decode(str).map((x) => Account.fromJson(x)));
 
 String accountToJson(Account data) => json.encode(data.toJson());
 
 @HiveType()
 class Account {
-    @HiveField(0)
-    String username;
-    @HiveField(1)
-    String url;
-    @HiveField(2)
-    int statusesCount;
-    @HiveField(3)
-    String note;
-    @HiveField(4)
-    bool locked;
-    @HiveField(5)
-    String id;
-    @HiveField(6)
-    String headerStatic;
-    @HiveField(7)
-    String header;
-    @HiveField(8)
-    int followingCount;
-    @HiveField(9)
-    int followersCount;
-    @HiveField(10)
-    List<dynamic> fields;
-    @HiveField(11)
-    List<dynamic> emojis;
-    @HiveField(12)
-    String displayName;
-    @HiveField(13)
-    DateTime createdAt;
-    @HiveField(14)
-    bool bot;
-    @HiveField(15)
-    String avatarStatic;
-    @HiveField(16)
-    String avatar;
-    @HiveField(17)
-    String acct;
+  @HiveField(0)
+  String username;
+  @HiveField(1)
+  String url;
+  @HiveField(2)
+  int statusesCount;
+  @HiveField(3)
+  String note;
+  @HiveField(4)
+  bool locked;
+  @HiveField(5)
+  String id;
+  @HiveField(6)
+  String headerStatic;
+  @HiveField(7)
+  String header;
+  @HiveField(8)
+  int followingCount;
+  @HiveField(9)
+  int followersCount;
+  @HiveField(10)
+  List<dynamic> fields;
+  @HiveField(11)
+  List<dynamic> emojis;
+  @HiveField(12)
+  String displayName;
+  @HiveField(13)
+  DateTime createdAt;
+  @HiveField(14)
+  bool bot;
+  @HiveField(15)
+  String avatarStatic;
+  @HiveField(16)
+  String avatar;
+  @HiveField(17)
+  String acct;
 
+  Account({
+    this.username,
+    this.url,
+    this.statusesCount,
+    this.note,
+    this.locked,
+    this.id,
+    this.headerStatic,
+    this.header,
+    this.followingCount,
+    this.followersCount,
+    this.fields,
+    this.emojis,
+    this.displayName,
+    this.createdAt,
+    this.bot,
+    this.avatarStatic,
+    this.avatar,
+    this.acct,
+  });
 
-    Account({
-        this.username,
-        this.url,
-        this.statusesCount,
-        this.note,
-        this.locked,
-        this.id,
-        this.headerStatic,
-        this.header,
-        this.followingCount,
-        this.followersCount,
-        this.fields,
-        this.emojis,
-        this.displayName,
-        this.createdAt,
-        this.bot,
-        this.avatarStatic,
-        this.avatar,
-        this.acct,
-    });
-
-    factory Account.fromJson(Map<String, dynamic> json) => new Account(
+  factory Account.fromJson(Map<String, dynamic> json) => new Account(
         username: json["username"],
         url: json["url"],
         statusesCount: json["statuses_count"],
@@ -92,9 +97,9 @@ class Account {
         avatarStatic: json["avatar_static"],
         avatar: json["avatar"],
         acct: json["acct"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "username": username,
         "url": url,
         "statuses_count": statusesCount,
@@ -113,5 +118,25 @@ class Account {
         "avatar_static": avatarStatic,
         "avatar": avatar,
         "acct": acct,
-    };
+      };
+
+  Future<http.Response> refreshAccount() async {
+    try {
+      var response = await CurrentInstance.instance.currentClient.run(
+        path: Accounts.currentUser(),
+        method: HTTPMethod.GET,
+      );
+    
+
+      Account currentAccount = accountFromJson(response.body);
+      String account =
+          "${currentAccount.username}@${CurrentInstance.instance.currentClient.baseURL}";
+      
+      CurrentInstance.instance.currentAccount = currentAccount;
+      await InstanceStorage.updateAccount(account, currentAccount);
+      return response;
+    } catch (e) {
+      return e;
+    }
+  }
 }

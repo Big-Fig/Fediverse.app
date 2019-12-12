@@ -3,15 +3,15 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:phaze/Pages/Push/PushHelper.dart';
-import 'package:phaze/Pleroma/Foundation/Client.dart';
-import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
-import 'package:phaze/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
-import 'package:phaze/Pleroma/Models/Account.dart';
-import 'package:phaze/Pleroma/Models/Context.dart';
-import 'package:phaze/Pleroma/Models/Conversation.dart';
-import 'package:phaze/Pleroma/Models/Status.dart';
-import 'package:phaze/Views/Alert.dart';
+import 'package:fedi/Pages/Push/PushHelper.dart';
+import 'package:fedi/Pleroma/Foundation/Client.dart';
+import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:fedi/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
+import 'package:fedi/Pleroma/Models/Account.dart';
+import 'package:fedi/Pleroma/Models/Context.dart';
+import 'package:fedi/Pleroma/Models/Conversation.dart';
+import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:fedi/Views/Alert.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -318,7 +318,6 @@ class _ChatPage extends State<ChatPage> {
 
   Widget getMessageList() {
     return SmartRefresher(
-      key: PageStorageKey<String>("chatPage"),
       enablePullDown: true,
       enablePullUp: false,
       header: WaterDropHeader(

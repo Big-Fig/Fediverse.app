@@ -1,4 +1,4 @@
-import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'dart:core';
 import '../signaling.dart';
 

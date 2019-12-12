@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:phaze/Pages/Messages/ChatPage.dart';
-import 'package:phaze/Pages/Messages/MessagesPage.dart';
-import 'package:phaze/Pages/Messages/UserListPage.dart';
-import 'package:phaze/Pleroma/Models/Account.dart';
+import 'package:fedi/Pages/Messages/ChatPage.dart';
+import 'package:fedi/Pages/Messages/MessagesPage.dart';
+import 'package:fedi/Pages/Messages/UserListPage.dart';
+import 'package:fedi/Pleroma/Models/Account.dart';
 
 class MessageConatiner extends StatefulWidget {
   @override

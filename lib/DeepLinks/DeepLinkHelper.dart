@@ -1,9 +1,9 @@
 import 'dart:async';
-import 'package:phaze/Pleroma/Foundation/InstanceStorage.dart';
+import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
 
 import '../Pleroma/Models/AccountAuth.dart' as Auth;
 
-import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:flutter/services.dart' show PlatformException;
 

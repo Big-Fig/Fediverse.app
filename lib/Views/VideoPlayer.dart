@@ -23,13 +23,14 @@ class _CellVideoPlayer extends State<CellVideoPlayer> {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {
           _controller.setVolume(0);
-           _controller.play();
           chewieController = ChewieController(
             aspectRatio: _controller.value.aspectRatio,
             videoPlayerController: _controller,
-            autoPlay: true,
+            autoPlay: false,
             looping: true,
           );
+
+
         });
       });
   }

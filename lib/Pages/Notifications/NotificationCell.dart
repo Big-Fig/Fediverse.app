@@ -1,10 +1,10 @@
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:phaze/Pleroma/Models/Account.dart';
-import 'package:phaze/Pleroma/Models/Notification.dart' as NotificationObject;
-import 'package:phaze/Pleroma/Models/Status.dart';
-import 'package:phaze/Views/VideoPlayer.dart';
+import 'package:fedi/Pleroma/Models/Account.dart';
+import 'package:fedi/Pleroma/Models/Notification.dart' as NotificationObject;
+import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:fedi/Views/VideoPlayer.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:html/dom.dart' as dom;
 

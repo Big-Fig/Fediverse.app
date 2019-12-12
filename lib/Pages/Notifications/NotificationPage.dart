@@ -2,18 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:phaze/Pages/Notifications/NotificationCell.dart';
-import 'package:phaze/Pages/Profile/OtherAccount.dart';
-import 'package:phaze/Pages/Push/PushHelper.dart';
-import 'package:phaze/Pages/Timeline/StatusDetail.dart';
-import 'package:phaze/Pleroma/Foundation/Client.dart';
-import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
-import 'package:phaze/Pleroma/Foundation/Requests/Notification.dart'
+import 'package:fedi/Pages/Notifications/NotificationCell.dart';
+import 'package:fedi/Pages/Profile/OtherAccount.dart';
+import 'package:fedi/Pages/Push/PushHelper.dart';
+import 'package:fedi/Pages/Timeline/StatusDetail.dart';
+import 'package:fedi/Pleroma/Foundation/Client.dart';
+import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:fedi/Pleroma/Foundation/Requests/Notification.dart'
     as NotificationRequest;
-import 'package:phaze/Pleroma/Models/Account.dart';
-import 'package:phaze/Pleroma/Models/Notification.dart';
-import 'package:phaze/Pleroma/Models/Notification.dart' as NotificationModel;
-import 'package:phaze/Pleroma/Models/Status.dart';
+import 'package:fedi/Pleroma/Models/Account.dart';
+import 'package:fedi/Pleroma/Models/Notification.dart';
+import 'package:fedi/Pleroma/Models/Notification.dart' as NotificationModel;
+import 'package:fedi/Pleroma/Models/Status.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class NotificationPage extends StatefulWidget {
@@ -26,12 +26,10 @@ class NotificationPage extends StatefulWidget {
 }
 
 class NotificationPageState extends State<NotificationPage> {
-
-
-  refreshEverything(){
+  refreshEverything() {
     _refreshController.requestRefresh();
   }
-  
+
   viewAccount(Account account) {
     Navigator.push(
       context,
@@ -59,9 +57,8 @@ class NotificationPageState extends State<NotificationPage> {
           .addPostFrameCallback((_) => fetchStatuses(context));
     }
 
-    if (PushHelper.instance.notificationId != null){
+    if (PushHelper.instance.notificationId != null) {
       loadPushNotification(PushHelper.instance.notificationId);
-
     }
   }
 
@@ -86,10 +83,13 @@ class NotificationPageState extends State<NotificationPage> {
         .then((response) {
       List<NotificationModel.Notification> newNotifications =
           notificationFromJson(response.body);
-      widget.notifications.clear();
-      widget.notifications.addAll(newNotifications);
-      if (mounted) setState(() {});
-      _refreshController.refreshCompleted();
+
+      if (mounted)
+        setState(() {
+          widget.notifications.clear();
+          widget.notifications.addAll(newNotifications);
+          _refreshController.refreshCompleted();
+        });
     }).catchError((error) {
       print(error.toString());
       if (mounted) setState(() {});
@@ -116,8 +116,10 @@ class NotificationPageState extends State<NotificationPage> {
       List<NotificationModel.Notification> newNotifications =
           notificationFromJson(response.body);
       widget.notifications.addAll(newNotifications);
-      if (mounted) setState(() {});
-      _refreshController.loadComplete();
+      if (mounted)
+        setState(() {
+          _refreshController.loadComplete();
+        });
     }).catchError((error) {
       if (mounted) setState(() {});
       _refreshController.loadFailed();
@@ -142,14 +144,13 @@ class NotificationPageState extends State<NotificationPage> {
       print("$onError");
     });
 
-    PushHelper.instance.notificationId =  null;
+    PushHelper.instance.notificationId = null;
     PushHelper.instance.notifcationType = null;
   }
 
   @override
   Widget build(BuildContext context) {
     return SmartRefresher(
-      key: PageStorageKey<String>("NotificationsPage"),
       enablePullDown: true,
       enablePullUp: true,
       header: WaterDropHeader(

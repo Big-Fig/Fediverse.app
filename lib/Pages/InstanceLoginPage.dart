@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
-import 'package:phaze/Pleroma/Foundation/InstanceStorage.dart';
+import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
 import '../Pleroma/Models/ClientSettings.dart';
 import '../Constants/AppThemeConsts.dart';
 import '../Pleroma/Foundation/Client.dart';

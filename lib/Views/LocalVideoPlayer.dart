@@ -37,10 +37,11 @@ class _LocalVideoPlayer extends State<LocalVideoPlayer> {
           chewieController = ChewieController(
             aspectRatio: _controller.value.aspectRatio,
             videoPlayerController: _controller,
-            autoPlay: true,
+            autoPlay: false,
             looping: true,
           );
-          _controller.play();
+
+          _controller.pause();
         });
       });
     _controller.setVolume(0);

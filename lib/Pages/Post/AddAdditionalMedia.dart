@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:phaze/Pages/Post/Gallery/GalleryCapture.dart';
-import 'package:phaze/Pages/Post/Photo/PhotoCapture.dart';
-import 'package:phaze/Pages/Post/Video/VideoCapture.dart';
+import 'package:fedi/Pages/Post/Gallery/GalleryCapture.dart';
+import 'package:fedi/Pages/Post/Photo/PhotoCapture.dart';
+import 'package:fedi/Pages/Post/Video/VideoCapture.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class AddAddtionalMedia extends StatefulWidget {

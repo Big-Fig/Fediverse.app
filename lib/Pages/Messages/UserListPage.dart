@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:phaze/Pages/Messages/UserCell.dart';
-import 'package:phaze/Pleroma/Foundation/Client.dart';
-import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
-import 'package:phaze/Pleroma/Foundation/Requests/Accounts.dart'
+import 'package:fedi/Pages/Messages/UserCell.dart';
+import 'package:fedi/Pleroma/Foundation/Client.dart';
+import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart'
     as AccountRequests;
-import 'package:phaze/Pleroma/Models/Account.dart';
+import 'package:fedi/Pleroma/Models/Account.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class UserListPage extends StatefulWidget {
@@ -129,7 +129,6 @@ class _UserListPage extends State<UserListPage> {
           ),
           Expanded(
             child: SmartRefresher(
-              key: PageStorageKey<String>("userList"),
               enablePullDown: true,
               enablePullUp: false,
               header: WaterDropHeader(
