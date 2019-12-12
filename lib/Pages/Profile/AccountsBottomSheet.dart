@@ -1,8 +1,8 @@
 import 'dart:core';
 
 import 'package:flutter/material.dart';
-import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
-import 'package:phaze/Pleroma/Foundation/InstanceStorage.dart';
+import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
 
 BuildContext _context;
 

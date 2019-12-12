@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:phaze/Pages/Profile/ProfileHeader.dart';
-import 'package:phaze/Pages/Timeline/TimelineCell.dart';
-import 'package:phaze/Pleroma/Foundation/Client.dart';
-import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
-import 'package:phaze/Pleroma/Foundation/Requests/Accounts.dart';
-import 'package:phaze/Pleroma/Models/Account.dart';
-import 'package:phaze/Pleroma/Models/Status.dart';
+import 'package:fedi/Pages/Profile/ProfileHeader.dart';
+import 'package:fedi/Pages/Timeline/TimelineCell.dart';
+import 'package:fedi/Pleroma/Foundation/Client.dart';
+import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart';
+import 'package:fedi/Pleroma/Models/Account.dart';
+import 'package:fedi/Pleroma/Models/Status.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class OtherAccount extends StatefulWidget {
@@ -106,7 +106,6 @@ class _OtherAccount extends State<OtherAccount> {
         title: Text(widget.account.username),
       ),
       body: SmartRefresher(
-        key: PageStorageKey<String>("OtherAccountPageStorage"),
         enablePullDown: true,
         enablePullUp: true,
         header: WaterDropHeader(

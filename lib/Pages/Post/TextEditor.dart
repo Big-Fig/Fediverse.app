@@ -1,14 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:phaze/Constants/AppThemeConsts.dart';
-import 'package:phaze/Pages/Post/AddAdditionalMedia.dart';
-import 'package:phaze/Pages/Post/CaptureController.dart';
-import 'package:phaze/Pages/Post/ComposeStatus.dart';
-import 'package:phaze/Transitions/SlideRightRoute.dart';
-import 'package:phaze/Views/LocalVideoPlayer.dart';
+import 'package:fedi/Constants/AppThemeConsts.dart';
+import 'package:fedi/Pages/Post/AddAdditionalMedia.dart';
+import 'package:fedi/Pages/Post/CaptureController.dart';
+import 'package:fedi/Pages/Post/ComposeStatus.dart';
+import 'package:fedi/Transitions/SlideRightRoute.dart';
+import 'package:fedi/Views/LocalVideoPlayer.dart';
 import 'package:photo_manager/photo_manager.dart';
-import 'package:phaze/Transitions/SlideBottomRoute.dart';
+import 'package:fedi/Transitions/SlideBottomRoute.dart';
 
 import 'Photo/PhotoFile.dart';
 import 'Video/VideoFIle.dart';

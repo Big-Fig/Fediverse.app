@@ -1,16 +1,16 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:phaze/Pages/Messages/Media/CaptureDMMedia.dart';
-import 'package:phaze/Pages/Profile/OtherAccount.dart';
-import 'package:phaze/Pages/Timeline/TimelineCell.dart';
-import 'package:phaze/Pleroma/Foundation/Client.dart';
-import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
-import 'package:phaze/Pleroma/Models/Account.dart';
-import 'package:phaze/Pleroma/Models/Context.dart';
-import 'package:phaze/Pleroma/Models/Status.dart';
-import 'package:phaze/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
-import 'package:phaze/Views/Alert.dart';
+import 'package:fedi/Pages/Messages/Media/CaptureDMMedia.dart';
+import 'package:fedi/Pages/Profile/OtherAccount.dart';
+import 'package:fedi/Pages/Timeline/TimelineCell.dart';
+import 'package:fedi/Pleroma/Foundation/Client.dart';
+import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:fedi/Pleroma/Models/Account.dart';
+import 'package:fedi/Pleroma/Models/Context.dart';
+import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:fedi/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
+import 'package:fedi/Views/Alert.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class StatusDetail extends StatefulWidget {
@@ -189,7 +189,6 @@ class _StatusDetail extends State<StatusDetail> {
 
   Widget getMessageList() {
     return SmartRefresher(
-      //key: PageStorageKey<String>("StatusDeatilPage"),
       enablePullDown: true,
       enablePullUp: false,
       header: WaterDropHeader(

@@ -4,8 +4,8 @@ import 'dart:io' show Platform;
 import 'package:path/path.dart';
 import 'package:async/async.dart';
 import 'package:http/http.dart' as http;
-import 'package:phaze/DeepLinks/DeepLinkHelper.dart';
-import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:fedi/DeepLinks/DeepLinkHelper.dart';
+import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import './Requests/Registration.dart';
 import '../Models/ClientSettings.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -153,7 +153,7 @@ class Client {
         final respons = await http.delete(url, headers: headers);
         return respons;
       } else {
-        final respons = await http.patch(url, headers: headers, body: params);
+        final respons = await http.patch(url, headers: headers, body: json.encode(params));
         return respons;
       }
     } catch (e) {

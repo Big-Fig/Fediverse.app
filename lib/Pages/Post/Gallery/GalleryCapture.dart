@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:phaze/Pages/Post/Gallery/GalleryImageContainer.dart';
-import 'package:phaze/Pages/Post/Gallery/GalleryPreview.dart';
+import 'package:fedi/Pages/Post/Gallery/GalleryImageContainer.dart';
+import 'package:fedi/Pages/Post/Gallery/GalleryPreview.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class GalleryCapture extends StatefulWidget {

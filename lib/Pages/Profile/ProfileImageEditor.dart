@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:phaze/Pages/Post/Gallery/GalleryCapture.dart';
-import 'package:phaze/Pages/Post/Photo/PhotoCapture.dart';
+import 'package:fedi/Pages/Post/Gallery/GalleryCapture.dart';
+import 'package:fedi/Pages/Post/Photo/PhotoCapture.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:image_cropper/image_cropper.dart';
 
@@ -27,8 +27,6 @@ class _ProfileImageEditor extends State<ProfileImageEditor>
   AssetEntity selectedAsset;
   TabController _controller;
   List<AppBar> _appBar;
-
-  
 
   @override
   void initState() {
@@ -62,11 +60,9 @@ class _ProfileImageEditor extends State<ProfileImageEditor>
             textColor: Colors.white,
             color: Colors.transparent,
             onPressed: () {
-              selectedAsset.file.then((value){
-                 cropImage2(value.path);
+              selectedAsset.file.then((value) {
+                cropImage2(value.path);
               });
-             
-             
             },
           ),
         ],
@@ -92,25 +88,28 @@ class _ProfileImageEditor extends State<ProfileImageEditor>
   }
 
   cropImage(String sourcepath) async {
-  File croppedFile = await ImageCropper.cropImage(
-      sourcePath: sourcepath,
-      aspectRatioPresets: [
-        CropAspectRatioPreset.square,
-        CropAspectRatioPreset.ratio3x2,
-        CropAspectRatioPreset.original,
-        CropAspectRatioPreset.ratio4x3,
-        CropAspectRatioPreset.ratio16x9
-      ],
-      androidUiSettings: AndroidUiSettings(
-          toolbarTitle: 'Crop ${widget.imageType}',
-          toolbarColor: Colors.green,
-          toolbarWidgetColor: Colors.white,
-          initAspectRatio: CropAspectRatioPreset.square,
-          lockAspectRatio: false),
-      iosUiSettings: IOSUiSettings(
-        minimumAspectRatio: 1.0,
-      )
-    );  
+    File croppedFile = await ImageCropper.cropImage(
+        sourcePath: sourcepath,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Crop ${widget.imageType}',
+            toolbarColor: Colors.green,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: false),
+        iosUiSettings: IOSUiSettings(
+          minimumAspectRatio: 1.0,
+        ));
+
+    if (croppedFile == null) {
+      return;
+    }
 
     Navigator.push(
       context,
@@ -125,27 +124,28 @@ class _ProfileImageEditor extends State<ProfileImageEditor>
   }
 
   cropImage2(String sourcepath) async {
-  File croppedFile = await ImageCropper.cropImage(
-      sourcePath: sourcepath,
-      aspectRatioPresets: [
-        CropAspectRatioPreset.square,
-        CropAspectRatioPreset.ratio3x2,
-        CropAspectRatioPreset.original,
-        CropAspectRatioPreset.ratio4x3,
-        CropAspectRatioPreset.ratio16x9
-      ],
-      androidUiSettings: AndroidUiSettings(
-          toolbarTitle: 'Crop ${widget.imageType}',
-          toolbarColor: Colors.green,
-          toolbarWidgetColor: Colors.white,
-          initAspectRatio: CropAspectRatioPreset.square,
-          lockAspectRatio: false),
-      iosUiSettings: IOSUiSettings(
-        minimumAspectRatio: 1.0,
-      )
+    File croppedFile = await ImageCropper.cropImage(
+        sourcePath: sourcepath,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Crop ${widget.imageType}',
+            toolbarColor: Colors.green,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: false),
+        iosUiSettings: IOSUiSettings(
+          minimumAspectRatio: 1.0,
+        ));
 
-      
-    );  
+    if (croppedFile == null) {
+      return;
+    }
 
     Navigator.push(
       context,
@@ -162,11 +162,7 @@ class _ProfileImageEditor extends State<ProfileImageEditor>
   photoTaken(String uri) {
     print(uri);
 
-
-
     cropImage(uri);
-
-    
   }
 
   gallerySelected(AssetEntity asset) {

@@ -1,7 +1,8 @@
+import 'package:fedi/States/MyGlobalStates.dart';
 import 'package:flutter/material.dart';
-import 'package:phaze/DeepLinks/DeepLinkHelper.dart';
+import 'package:fedi/DeepLinks/DeepLinkHelper.dart';
 import 'dart:core';
-import 'package:phaze/Pages/TabPage.dart';
+import 'package:fedi/Pages/TabPage.dart';
 import '../Pleroma/Foundation/InstanceStorage.dart';
 import './InstanceLoginPage.dart';
 import './LoadingInstancePage.dart';
@@ -10,6 +11,8 @@ import '../Pleroma/Foundation/CurrentInstance.dart';
 enum CurrentState { NONE, ADDNEW, LOADING, LOGGEDIN }
 
 class AppContainerPage extends StatefulWidget {
+
+  
   @override
   State<StatefulWidget> createState() {
     return _AppContainerPage();
@@ -17,8 +20,11 @@ class AppContainerPage extends StatefulWidget {
 }
 
 class _AppContainerPage extends State<AppContainerPage> {
+  int initalIndex = 0;
   CurrentState appState = CurrentState.NONE;
   DeepLinkHelper links = DeepLinkHelper.instance;
+  MyGlobalStates states = MyGlobalStates.instance;
+  
   void instanceSuccess() {
     setState(() {
       this.appState = CurrentState.LOADING;
@@ -34,6 +40,14 @@ class _AppContainerPage extends State<AppContainerPage> {
   void loadComplete() {
     setState(() {
       this.appState = CurrentState.NONE;
+    });
+  }
+
+  void refreshInstance() {
+    print("UPDATING STATE UPDATEING STATE");
+    setState(() {
+      this.initalIndex = 4;
+      this.appState = CurrentState.LOGGEDIN;
     });
   }
 
@@ -91,8 +105,9 @@ class _AppContainerPage extends State<AppContainerPage> {
       return LoadingInstancePage(
           loadComplete: this.loadComplete, loadError: this.loadError);
     } else if (this.appState == CurrentState.LOGGEDIN) {
-      return TabPage(
+      return TabPage(initalIndex,
         addNewInstance: addNewInstance,
+        refreshInstance: refreshInstance,
         loadInstance: loadComplete,
       );
     } else {

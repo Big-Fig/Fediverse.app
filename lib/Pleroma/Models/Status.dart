@@ -3,7 +3,7 @@
 //     final status = statusFromJson(jsonString);
 
 import 'dart:convert';
-import 'package:phaze/Pleroma/Models/Relationship.dart';
+import 'package:fedi/Pleroma/Models/Relationship.dart';
 
 import './Account.dart';
 

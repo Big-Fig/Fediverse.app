@@ -20,7 +20,7 @@ class VideoCapture extends StatefulWidget {
 
 class _VideoCapture extends State<VideoCapture> {
   Stopwatch videoLength = Stopwatch();
-  int maxLength = 10;
+  int maxLength = 10000;
   Timer timer;
 
   String videoPath;
@@ -202,6 +202,7 @@ class _VideoCapture extends State<VideoCapture> {
           },
           valueListenable: _cameraStatus,
         ),
+        Visibility(visible: false, child: 
         ValueListenableBuilder(
           valueListenable: _videoDuration,
           builder: (BuildContext context, int value, Widget child) {
@@ -347,7 +348,7 @@ class _VideoCapture extends State<VideoCapture> {
                   ],
                 ));
           },
-        )
+        ),),
       ],
     );
   }

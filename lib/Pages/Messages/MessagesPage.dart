@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:phaze/Pages/Messages/ChatPage.dart';
-import 'package:phaze/Pages/Messages/MessagesCell.dart';
-import 'package:phaze/Pleroma/Foundation/Client.dart';
-import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
-import 'package:phaze/Pleroma/Foundation/Requests/Timeline.dart';
-import 'package:phaze/Pleroma/Models/Conversation.dart';
+import 'package:fedi/Pages/Messages/ChatPage.dart';
+import 'package:fedi/Pages/Messages/MessagesCell.dart';
+import 'package:fedi/Pleroma/Foundation/Client.dart';
+import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:fedi/Pleroma/Foundation/Requests/Timeline.dart';
+import 'package:fedi/Pleroma/Models/Conversation.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class MessagesPage extends StatefulWidget {
@@ -104,7 +104,6 @@ class _MessagesPage extends State<MessagesPage> {
   @override
   Widget build(BuildContext context) {
     return SmartRefresher(
-      key: PageStorageKey<String>("messagesPage"),
       enablePullDown: true,
       enablePullUp: true,
       header: WaterDropHeader(

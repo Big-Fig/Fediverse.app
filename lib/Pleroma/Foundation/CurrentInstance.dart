@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:phaze/Pleroma/Foundation/InstanceStorage.dart';
-import 'package:phaze/Views/Alert.dart';
+import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
+import 'package:fedi/Views/Alert.dart';
 import './Client.dart';
 import '../Models/Account.dart';
 import '../Models/AccountAuth.dart';

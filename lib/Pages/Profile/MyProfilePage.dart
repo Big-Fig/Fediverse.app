@@ -1,24 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:phaze/Pages/Profile/EditProfile.dart';
-import 'package:phaze/Pages/Profile/ProfileHeader.dart';
-import 'package:phaze/Pages/Timeline/TimelineCell.dart';
-import 'package:phaze/Pleroma/Foundation/Client.dart';
-import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
-import 'package:phaze/Pleroma/Foundation/Requests/Accounts.dart';
-import 'package:phaze/Pleroma/Models/Account.dart';
-import 'package:phaze/Pleroma/Models/Status.dart';
+import 'package:fedi/Pages/Profile/EditProfile.dart';
+import 'package:fedi/Pages/Profile/ProfileHeader.dart';
+import 'package:fedi/Pages/Timeline/TimelineCell.dart';
+import 'package:fedi/Pleroma/Foundation/Client.dart';
+import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart';
+import 'package:fedi/Pleroma/Models/Account.dart';
+import 'package:fedi/Pleroma/Models/Status.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class MyProfilePage extends StatefulWidget {
+
+  MyProfilePage({Key key}) : super(key: key);
   @override
   State<StatefulWidget> createState() {
-    return _MyProfilePage();
+    return MyProfilePageState();
   }
 }
 
-class _MyProfilePage extends State<MyProfilePage> {
+class MyProfilePageState extends State<MyProfilePage> {
   Account myAccount;
   List<Status> statuses = <Status>[];
   void initState() {
@@ -30,6 +32,11 @@ class _MyProfilePage extends State<MyProfilePage> {
     }
   }
 
+  refresh(){
+     _refreshController.requestRefresh();
+    _onRefresh();
+  }
+
   void fetchStatuses(BuildContext context) {
     if (statuses.length == 0) {
       _refreshController.requestRefresh();
@@ -39,7 +46,7 @@ class _MyProfilePage extends State<MyProfilePage> {
   void editProfile() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => EditProfile()),
+      MaterialPageRoute(builder: (context) => EditProfile(fetchStatuses)),
     );
   }
 
@@ -107,7 +114,6 @@ class _MyProfilePage extends State<MyProfilePage> {
   @override
   Widget build(BuildContext context) {
     return SmartRefresher(
-      key: PageStorageKey<String>("myprofilepage"),
       enablePullDown: true,
       enablePullUp: true,
       header: WaterDropHeader(

@@ -4,12 +4,12 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
-import 'package:phaze/Pleroma/Foundation/Requests/Media.dart' as MediaRequest;
-import 'package:phaze/Pleroma/Models/Status.dart';
-import 'package:phaze/Views/Alert.dart';
-import 'package:phaze/Views/LocalVideoPlayer.dart';
-import 'package:phaze/Views/ProgressDialog.dart';
+import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:fedi/Pleroma/Foundation/Requests/Media.dart' as MediaRequest;
+import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:fedi/Views/Alert.dart';
+import 'package:fedi/Views/LocalVideoPlayer.dart';
+import 'package:fedi/Views/ProgressDialog.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class DMMediaPage extends StatefulWidget {

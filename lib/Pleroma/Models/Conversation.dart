@@ -3,8 +3,8 @@
 //     final conversation = conversationFromJson(jsonString);
 
 import 'dart:convert';
-import 'package:phaze/Pleroma/Models/Account.dart';
-import 'package:phaze/Pleroma/Models/Status.dart';
+import 'package:fedi/Pleroma/Models/Account.dart';
+import 'package:fedi/Pleroma/Models/Status.dart';
 
 List<Conversation> conversationFromJson(String str) => new List<Conversation>.from(json.decode(str).map((x) => Conversation.fromJson(x)));
 

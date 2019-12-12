@@ -1,5 +1,5 @@
 import 'dart:core';
-import 'package:phaze/Pleroma/Models/ClientSettings.dart';
+import 'package:fedi/Pleroma/Models/ClientSettings.dart';
 
 import './Client.dart';
 import '../Models/Account.dart';
@@ -62,6 +62,12 @@ class InstanceStorage {
      InstanceStorage data = InstanceStorage(currentAuth: auth, currentClient: client, currentAccount: acc, account: account);
      return data;
   }
+
+    static Future<void> updateAccount(String account, Account acc) async {
+       var box = await Hive.openBox('InstanceStorage', lazy: true) as LazyBox;
+        await box.put("$account-account", acc);
+    }
+
 
   static Future<void> saveNewInstanceClient(Client client) async {
 

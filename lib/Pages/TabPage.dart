@@ -1,18 +1,19 @@
 import 'dart:async';
 
+import 'package:fedi/States/MyGlobalStates.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/webrtc.dart';
-import 'package:phaze/Pages/Home/HomeContainerPage.dart';
-import 'package:phaze/Pages/Messages/VideoChat/WebRTCManager.dart';
-import 'package:phaze/Pages/Profile/EditProfile.dart';
-import 'package:phaze/Pages/Push/PushHelper.dart';
-import 'package:phaze/Pages/Search/Search.dart';
-import 'package:phaze/Pages/Timeline/MyTimelinePage.dart';
-import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
-import 'package:phaze/Transitions/SlideBottomRoute.dart';
+import 'package:fedi/Pages/Home/HomeContainerPage.dart';
+import 'package:fedi/Pages/Messages/VideoChat/WebRTCManager.dart';
+import 'package:fedi/Pages/Profile/EditProfile.dart';
+import 'package:fedi/Pages/Push/PushHelper.dart';
+import 'package:fedi/Pages/Search/Search.dart';
+import 'package:fedi/Pages/Timeline/MyTimelinePage.dart';
+import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:fedi/Transitions/SlideBottomRoute.dart';
 import './Placeholder.dart';
 import 'Messages/MessageContainer.dart';
 // import 'Messages/VideoChatPage.dart';
@@ -27,13 +28,20 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
 class TabPage extends StatefulWidget {
-  final GlobalKey<MyTimelinePageState> _timelineKey = GlobalKey();
-  final GlobalKey<SearchState> _searchKey = GlobalKey();
-  final GlobalKey<NotificationPageState> _notificationKey = GlobalKey();
+  final GlobalKey<MyTimelinePageState> _timelineKey =
+      MyGlobalStates.instance.timelineKey;
+  final GlobalKey<SearchState> _searchKey = MyGlobalStates.instance.searchKey;
+  final GlobalKey<NotificationPageState> _notificationKey =
+      MyGlobalStates.instance.notificationKey;
+  final GlobalKey<MyProfilePageState> _profileKey =
+      MyGlobalStates.instance.profileKey;
   final Function addNewInstance;
+  final Function refreshInstance;
   final Function loadInstance;
+  final int initalIndex;
 
-  TabPage({this.addNewInstance, this.loadInstance});
+  TabPage(this.initalIndex,
+      {this.addNewInstance, this.loadInstance, this.refreshInstance});
 
   @override
   State<StatefulWidget> createState() {
@@ -42,8 +50,7 @@ class TabPage extends StatefulWidget {
 }
 
 class TabPageState extends State<TabPage>
-    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
-  
+    with/* AutomaticKeepAliveClientMixin, */TickerProviderStateMixin {
   static FirebaseAnalytics analytics = FirebaseAnalytics();
   static FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);
@@ -62,6 +69,9 @@ class TabPageState extends State<TabPage>
 
   @override
   initState() {
+    if (widget.initalIndex != null) {
+      _currentIndex = widget.initalIndex;
+    }
     super.initState();
     _homeControllers = [
       MyTimelinePage(
@@ -69,19 +79,20 @@ class TabPageState extends State<TabPage>
         key: widget._timelineKey,
       ),
       Search(
-        key:  widget._searchKey,
+        key: widget._searchKey,
       )
     ];
     _firebaseMessaging.requestNotificationPermissions();
     _tabController = TabController(length: 2, vsync: this);
     _children = [
-      HomeContainerPage(_tabController, _homeControllers,  widget._timelineKey, this),
-      NotificationPage(
-        key:  widget._notificationKey,
-      ),
+      HomeContainerPage(
+          _tabController, _homeControllers, widget._timelineKey, this),
+      NotificationPage(),
       PlaceholderWidget(Colors.green),
       MessageConatiner(),
-      MyProfilePage(),
+      MyProfilePage(
+        key: widget._profileKey,
+      ),
     ];
 
     if (PushHelper.instance.notifcationType != null) {
@@ -107,7 +118,6 @@ class TabPageState extends State<TabPage>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
 
     PushHelper.instance.swapAccount = swapAccount;
     PushHelper.instance.register();
@@ -151,8 +161,12 @@ class TabPageState extends State<TabPage>
           IconButton(
             icon: Icon(Icons.edit),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => EditProfile(), settings:RouteSettings(name: "/MyProfile"),));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditProfile(refresh),
+                    settings: RouteSettings(name: "/MyProfile"),
+                  ));
             },
           )
         ],
@@ -160,9 +174,21 @@ class TabPageState extends State<TabPage>
     ];
 
     return Scaffold(
-      key: PageStorageKey<String>("tabpagekey"),
       appBar: _appBar[_currentIndex],
       body: _children[_currentIndex], // new
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            SlideBottomRoute(page: CaptureController()),
+          );
+        },
+        tooltip: 'Increment',
+        child: Icon(Icons.add),
+        elevation: 2.0,
+      ),
+
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         showSelectedLabels: true,
@@ -181,9 +207,7 @@ class TabPageState extends State<TabPage>
             title: Text(''),
           ),
           new BottomNavigationBarItem(
-              backgroundColor: Colors.green,
-              icon: Icon(Icons.add_box),
-              title: Text('')),
+              backgroundColor: Colors.green, icon: Icon(null), title: Text('')),
           new BottomNavigationBarItem(
             backgroundColor: Colors.green,
             icon: Icon(Icons.message),
@@ -211,18 +235,19 @@ class TabPageState extends State<TabPage>
     }
     int taps = tabTaps[index];
     if (taps > 1 && index == 0) {
-      if ( widget._timelineKey.currentState.mounted) {
-         widget._timelineKey.currentState.refreshEverything();
+      if (widget._timelineKey.currentState.mounted != null) {
+        widget._timelineKey.currentState.refreshEverything();
       }
 
-      if ( widget._searchKey.currentState.mounted) {
-         widget._searchKey.currentState.refreshEverything();
+      if (widget._searchKey.currentState.mounted) {
+        widget._searchKey.currentState.refreshEverything();
       }
-    } else if (taps > 1 && index == 1) {
-      if ( widget._notificationKey.currentState.mounted) {
-         widget._notificationKey.currentState.refreshEverything();
-      }
-    }
+    } 
+    // else if (taps > 1 && index == 1) {
+    //   if (widget._notificationKey.currentState.mounted) {
+    //     widget._notificationKey.currentState.refreshEverything();
+    //   }
+    // }
 
     Timer(Duration(seconds: 1), () {
       tabTaps[index] = 0;
@@ -262,6 +287,11 @@ class TabPageState extends State<TabPage>
     widget.addNewInstance();
   }
 
+  refresh(BuildContext viewContext) {
+    Navigator.pop(viewContext);
+    widget._profileKey.currentState.refresh();
+  }
+
   swapAccount() {
     print("SWAP account");
     if (bottomSheet != null) {
@@ -271,6 +301,4 @@ class TabPageState extends State<TabPage>
     widget.loadInstance();
   }
 
-  @override
-  bool get wantKeepAlive => true;
 }

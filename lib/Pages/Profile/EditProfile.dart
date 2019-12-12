@@ -1,49 +1,155 @@
+import 'package:fedi/Pleroma/Foundation/Client.dart';
+import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart';
+import 'package:fedi/Views/Alert.dart';
+import 'package:fedi/Views/ProgressDialog.dart';
 import 'package:flutter/material.dart';
-import 'package:phaze/Pages/Profile/ProfileImageEditor.dart';
-import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
-import 'package:phaze/Pleroma/Models/Account.dart';
+import 'package:fedi/Pages/Profile/ProfileImageEditor.dart';
+import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:fedi/Pleroma/Models/Account.dart';
+import 'package:flutter_alert/flutter_alert.dart';
 
 class EditProfile extends StatefulWidget {
+  final Function(BuildContext) stateUpdated;
+
+  EditProfile(this.stateUpdated);
+
   @override
   State<StatefulWidget> createState() {
     return _EditProfile();
   }
 }
 
+String removeAllHtmlTags(String htmlText) {
+  RegExp exp = RegExp(r"<[^>]*>", multiLine: true, caseSensitive: true);
+
+  return htmlText.replaceAll(exp, '');
+}
+
 class _EditProfile extends State<EditProfile> {
-  Account myAccount = CurrentInstance.instance.currentAccount;
-
-
-
-  mediaUploaded(String id) {
-    // print("MY ID!!! $id");
-
-    // Navigator.of(context)
-    //     .popUntil((route) => route.settings.name == "/StatusDetail");
-
-    // sendMessageWithAttachment(id);
+  refresh() {
+    setState(() {});
   }
 
+  ProgressDialog _pr;
+  Account myAccount = CurrentInstance.instance.currentAccount;
+  var displayNameController = TextEditingController();
+  var bioController = TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    displayNameController.text = myAccount.displayName;
+    bioController.text = removeAllHtmlTags(myAccount.note);
+    setState(() {});
+  }
 
-  sendMessageWithAttachment(String id) {
-    
+  alertDisplayName(BuildContext context) {
+    showAlert(
+      context: context,
+      title: "Unsaved changes",
+      body:
+          "There are unsaved changes to your display name. Are you sure you want to discard them?",
+      actions: [
+        AlertAction(
+          text: "Discard",
+          onPressed: () {
+            widget.stateUpdated(context);
+          },
+        ),
+      ],
+      cancelable: true,
+    );
+  }
+
+  alertBio(BuildContext context) {
+    showAlert(
+      context: context,
+      title: "Unsaved changes",
+      body:
+          "There are unsaved changes to your bio. Are you sure you want to discard them?",
+      actions: [
+        AlertAction(
+          text: "Discard",
+          onPressed: () {
+            widget.stateUpdated(context);
+          },
+        ),
+      ],
+      cancelable: true,
+    );
+  }
+
+  saveProfile(BuildContext context) {
+    _pr = ProgressDialog(context, ProgressDialogType.Normal);
+    _pr.setMessage('Updating Profile');
+    _pr.show();
+
+    CurrentInstance.instance.currentClient.run(
+        path: Accounts.updateCurrentUser(),
+        method: HTTPMethod.PATCH,
+        params: {
+          "display_name": displayNameController.text,
+          "note": bioController.text
+        }).then((response) {
+      _pr.hide();
+      CurrentInstance.instance.currentAccount.refreshAccount().then((response) {
+        var alert = Alert(context, "Success!", "Profile updated!", () {});
+        alert.showAlert();
+      }).catchError((error) {
+        var alert = Alert(
+            context,
+            "Opps",
+            "Unable to update yoru profile at this time. Please try again later.",
+            () => {});
+        alert.showAlert();
+      });
+
+      print(response.body);
+    }).catchError((error) {
+      _pr.hide();
+      var alert = Alert(
+          context,
+          "Opps",
+          "Unable to update yoru profile at this time. Please try again later.",
+          () => {});
+      alert.showAlert();
+    });
+  }
+
+  mediaUploaded(String id) {
+    setState(() {
+      
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       key: PageStorageKey<String>("editprofilepage"),
       appBar: AppBar(
-        title: Text("Edit Account"),
+        leading: IconButton(
+          icon: Icon(Icons.chevron_left),
+          onPressed: () {
+            if (displayNameController.text != myAccount.displayName) {
+              alertDisplayName(context);
+            } else if (bioController.text !=
+                removeAllHtmlTags(myAccount.note)) {
+              alertBio(context);
+            } else {
+              widget.stateUpdated(context);
+            }
+          },
+        ),
+        title: Row(children: <Widget>[Text("Edit Account")]),
         actions: <Widget>[
           FlatButton(
             child: Text(
               "Save",
               style: TextStyle(color: Colors.white),
             ),
-            onPressed: () {},
-          )
+            onPressed: () {
+              saveProfile(context);
+            },
+          ),
         ],
       ),
       body: ListView(
@@ -68,13 +174,11 @@ class _EditProfile extends State<EditProfile> {
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
-
-                     Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                 ProfileImageEditor(1, mediaUploaded, "avatar")));
-                   
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ProfileImageEditor(
+                                1, mediaUploaded, "avatar")));
                   },
                   child: Container(
                     width: 125,
@@ -118,12 +222,12 @@ class _EditProfile extends State<EditProfile> {
                   bottom: 10,
                   right: 10,
                   child: GestureDetector(
-                    onTap: (){
-                       Navigator.push(
+                    onTap: () {
+                      Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                 ProfileImageEditor(1, mediaUploaded, "header")));
+                              builder: (context) => ProfileImageEditor(
+                                  1, mediaUploaded, "header")));
                       print("edit header");
                     },
                     behavior: HitTestBehavior.translucent,
@@ -153,10 +257,50 @@ class _EditProfile extends State<EditProfile> {
                 ),
               ],
             ),
-          )
-          
+          ),
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxHeight: 200, minHeight: 80),
+              child: Padding(
+                padding: EdgeInsets.all(
+                    10), // only( bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: TextField(
+                  controller: displayNameController,
+                  maxLines: 1,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                      borderSide: BorderSide(),
+                    ),
+                    labelText: 'Display Name',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxHeight: 200, minHeight: 80),
+              child: Padding(
+                padding: EdgeInsets.all(
+                    10), // only( bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: TextField(
+                  controller: bioController,
+                  maxLines: null,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                      borderSide: BorderSide(),
+                    ),
+                    labelText: 'Bio',
+                  ),
+                ),
+              ),
+            ),
+          ),
           // Form
-          
         ],
       ),
     );

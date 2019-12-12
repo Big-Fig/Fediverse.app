@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:phaze/Pleroma/Models/Status.dart';
+import 'package:fedi/Pleroma/Models/Status.dart';
 
 class ProfilePage extends StatefulWidget {
 

@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:phaze/Views/SelectedBorder.dart';
+import 'package:fedi/Views/SelectedBorder.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class GalleryImageContainer extends StatefulWidget {

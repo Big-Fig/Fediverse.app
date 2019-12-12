@@ -1,4 +1,4 @@
-# phaze
+# fedi
 
 A new Flutter project.
 

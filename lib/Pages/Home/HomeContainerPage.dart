@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:phaze/Pages/Timeline/MyTimelinePage.dart';
+import 'package:fedi/Pages/Timeline/MyTimelinePage.dart';
 
 import '../TabPage.dart';
 
@@ -40,7 +40,6 @@ class HomeContainerPageState extends State<HomeContainerPage>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      key: PageStorageKey<String>("homeContainerPage"),
       appBar: AppBar(
           bottom: showTimelineOptions == false
               ? null
@@ -65,7 +64,6 @@ class HomeContainerPageState extends State<HomeContainerPage>
                   },
                 ),
           title: TabBar(
-            key: PageStorageKey<String>("hometabs"),
             tabs: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:phaze/Pleroma/Foundation/Client.dart';
-import 'package:phaze/Pleroma/Foundation/CurrentInstance.dart';
-import 'package:phaze/Pleroma/Models/Account.dart';
-import 'package:phaze/Pleroma/Models/Status.dart';
+import 'package:fedi/Pleroma/Foundation/Client.dart';
+import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:fedi/Pleroma/Models/Account.dart';
+import 'package:fedi/Pleroma/Models/Status.dart';
 import 'package:carousel_pro/carousel_pro.dart';
-import 'package:phaze/Views/VideoPlayer.dart';
+import 'package:fedi/Views/VideoPlayer.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:phaze/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
+import 'package:fedi/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
 import 'package:html/dom.dart' as dom;
 
 class ChatCell extends StatefulWidget {
