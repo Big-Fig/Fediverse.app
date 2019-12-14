@@ -12,7 +12,7 @@ List<Status> statusFromJson(String str) => new List<Status>.from(json.decode(str
 String statusToJson(List<Status> data) => json.encode(new List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Status {
-    Account account;
+    Account? account;
     Application application;
     bool bookmarked;
     dynamic card;
