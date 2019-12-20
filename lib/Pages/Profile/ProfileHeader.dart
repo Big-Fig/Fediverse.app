@@ -1,3 +1,4 @@
+import 'package:fedi/Pages/Web/InAppWebPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_alert/flutter_alert.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -127,24 +128,88 @@ class _ProfileHeader extends State<ProfileHeader> {
               ],
             ),
           ),
-          Row(
-            children: <Widget>[
-              Html(
-                data: widget.profileAccount.note,
-                customTextStyle: (dom.Node node, TextStyle baseStyle) {
-                  if (node is dom.Element) {
-                    switch (node.localName) {
-                      case "p":
-                        return baseStyle.merge(TextStyle(fontSize: 18));
+          Container(
+            color: Colors.green[100],
+            child: getButtons(context),
+          ),
+          Container(
+            color: Colors.green[100],
+            child: Row(
+              children: <Widget>[
+                Html(
+                  padding: EdgeInsets.all(10),
+                  data: widget.profileAccount.note,
+                  customTextStyle: (dom.Node node, TextStyle baseStyle) {
+                    if (node is dom.Element) {
+                      switch (node.localName) {
+                        case "p":
+                          return baseStyle.merge(TextStyle(fontSize: 18));
+                      }
                     }
-                  }
-                  return baseStyle.merge(TextStyle(fontSize: 18));
-                },
-              )
+                    return baseStyle.merge(TextStyle(fontSize: 18));
+                  },
+                )
+              ],
+            ),
+          ),
+          getLinks(context)
+        ],
+      ),
+    );
+  }
+
+  Widget getLinks(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        if (widget.profileAccount.fields.length > 0)
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              if (widget.profileAccount.fields.length > 0)
+                getLinkButton(widget.profileAccount.fields[0]),
+              if (widget.profileAccount.fields.length > 1)
+                getLinkButton(widget.profileAccount.fields[1]),
             ],
           ),
-          getButtons(context),
-        ],
+        if (widget.profileAccount.fields.length > 2)
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              if (widget.profileAccount.fields.length > 2)
+                getLinkButton(widget.profileAccount.fields[2]),
+              if (widget.profileAccount.fields.length > 3)
+                getLinkButton(widget.profileAccount.fields[3]),
+            ],
+          ),
+      ],
+    );
+  }
+
+   String getURL(String value) {
+    String string = value.replaceAll(RegExp( "</a>"), "");
+    return  string.replaceAll(RegExp( "<a[^>]*>"), "");
+  }
+
+  Widget getLinkButton(dynamic field) {
+    return Expanded(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10),
+        child: RaisedButton(
+          child: Text(field["name"]),
+          onPressed: () {
+            String link = getURL(field["value"]);
+            print(link);
+             Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => InAppWebPage(link),
+                          ),
+                        );
+
+          },
+        ),
       ),
     );
   }
@@ -177,7 +242,7 @@ class _ProfileHeader extends State<ProfileHeader> {
                 relationship.following = true;
               }
               CurrentInstance.instance.currentClient
-                  .run(path: path, method: HTTPMethod.GET)
+                  .run(path: path, method: HTTPMethod.POST)
                   .then((response) {});
               relationship.following = true;
               if (mounted) setState(() {});

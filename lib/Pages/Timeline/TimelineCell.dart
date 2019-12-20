@@ -238,6 +238,8 @@ class _TimelineCell extends State<TimelineCell> {
                           widget.viewStatusContext(widget.status);
                         },
                       ),
+                       if (widget.status.repliesCount != 0)
+                        Text(widget.status.repliesCount.toString()),
                       IconButton(
                         color: widget.status.reblogged
                             ? Colors.green
@@ -248,6 +250,8 @@ class _TimelineCell extends State<TimelineCell> {
                           repost();
                         },
                       ),
+                       if (widget.status.reblogsCount != 0)
+                        Text(widget.status.reblogsCount.toString()),
                       Spacer(),
                     ],
                   ),

@@ -20,6 +20,9 @@ import 'package:fedi/Views/Alert.dart';
 import 'package:fedi/Views/LocalVideoPlayer.dart';
 import 'package:fedi/Views/ProgressDialog.dart';
 import 'package:photo_manager/photo_manager.dart';
+
+import 'package:intl/intl.dart';
+// import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:html/dom.dart' as dom;
 
 class ComposeStatus extends StatefulWidget {
@@ -43,10 +46,27 @@ class _ComposeStatus extends State<ComposeStatus> {
   String statusVisability = "";
   String status = "";
   List<String> attachments = [];
+  DateTime postAt = DateTime.now();
+  final format = DateFormat("yyyy-MM-dd HH:mm");
+
+  @override
+  void initState() {
+    super.initState();
+
+  }
+
 
   visibilityUpdated(String visibility) {
     statusVisability = visibility.toLowerCase();
   }
+
+  final Map<int, Widget> children = const <int, Widget>{
+    0: Text('Now'),
+    1: Text('Later'),
+  };
+
+  int currentSegment = 0;
+  FocusNode myFocusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -93,23 +113,77 @@ class _ComposeStatus extends State<ComposeStatus> {
                 visibilityUpdated(string);
               }),
             ),
-            Text("Status:"),
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: Container(
-                  child: Html(
-                data: widget.htmlPost,
-                customTextStyle: (dom.Node node, TextStyle baseStyle) {
-                  if (node is dom.Element) {
-                    switch (node.localName) {
-                      case "p":
-                        return baseStyle.merge(TextStyle(fontSize: 18));
+            if (widget.htmlPost != "") Text("Status:"),
+            if (widget.htmlPost != "")
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Container(
+                    child: Html(
+                  data: widget.htmlPost,
+                  customTextStyle: (dom.Node node, TextStyle baseStyle) {
+                    if (node is dom.Element) {
+                      switch (node.localName) {
+                        case "p":
+                          return baseStyle.merge(TextStyle(fontSize: 18));
+                      }
                     }
-                  }
-                  return baseStyle.merge(TextStyle(fontSize: 18));
-                },
-              )),
-            ),
+                    return baseStyle.merge(TextStyle(fontSize: 18));
+                  },
+                )),
+              ),
+            // Padding(
+            //   padding: EdgeInsets.all(10),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //     crossAxisAlignment: CrossAxisAlignment.center,
+            //     children: <Widget>[
+            //       Text("Post Time:"),
+            //       Container(
+            //         width: 175,
+            //         child: CupertinoSegmentedControl<int>(
+            //           children: children,
+            //           groupValue: currentSegment,
+            //           onValueChanged: (int value) {
+            //             setState(() {
+            //               currentSegment = value;
+            //             });
+            //           },
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            if (currentSegment == 1)
+              Padding(
+                  padding: EdgeInsets.all(10),
+                  child: FlatButton(
+                    child: Text(format.format(postAt)),
+                    onPressed: () {
+                      // showDatePicker(
+                      //         context: context,
+                      //         firstDate:
+                      //             DateTime.now().subtract(Duration(days: 1)),
+                      //         initialDate: postAt ?? DateTime.now(),
+                      //         lastDate: DateTime(2100))
+                      //     .then((date) {
+                      //   if (date != null) {
+                      //     showTimePicker(
+                      //       context: context,
+                      //       initialTime: TimeOfDay.fromDateTime(
+                      //           postAt ?? DateTime.now()),
+                      //     ).then((time) {
+                      //       DateTime newTime =
+                      //           DateTimeField.combine(date, time);
+                      //       setState(() {
+                      //         postAt = newTime;
+                      //       });
+                      //     });
+                      //   } else {
+                      //     postAt = DateTime.now();
+                      //   }
+                      // });
+                    },
+                  )),
             RaisedButton(
               child: Text("POST!"),
               onPressed: () {
@@ -238,6 +312,12 @@ class _ComposeStatus extends State<ComposeStatus> {
       "media_ids": attachments
     };
 
+    if (currentSegment == 1) {
+      params["scheduled_at"] = "${postAt.toIso8601String()}";
+    }
+    print("Params");
+    print(params);
+
     CurrentInstance.instance.currentClient
         .run(path: statusPath, method: HTTPMethod.POST, params: params)
         .then((statusResponse) {
@@ -271,6 +351,12 @@ class _ComposeStatus extends State<ComposeStatus> {
       "visibility": statusVisability,
     };
 
+    if (currentSegment == 1) {
+      params["scheduled_at"] = "${postAt.toIso8601String()}";
+    }
+    print("Params");
+    print(params);
+
     CurrentInstance.instance.currentClient
         .run(path: statusPath, method: HTTPMethod.POST, params: params)
         .then((statusResponse) {
@@ -289,5 +375,13 @@ class _ComposeStatus extends State<ComposeStatus> {
           () => {});
       alert.showAlert();
     });
+  }
+
+  @override
+  void dispose() {
+    // Clean up the focus node when the Form is disposed.
+    myFocusNode.dispose();
+
+    super.dispose();
   }
 }

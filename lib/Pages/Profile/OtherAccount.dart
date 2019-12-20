@@ -42,7 +42,10 @@ class _OtherAccount extends State<OtherAccount> {
       RefreshController(initialRefresh: false);
 
   void _onRefresh() async {
-    print("ONREFRESH");
+
+    
+    print("Account!!");
+    print("${widget.account.fields}");
     // monitor network fetch
     await Future.delayed(Duration(milliseconds: 1000));
     // if failed,use refreshFailed()

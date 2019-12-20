@@ -53,7 +53,6 @@ class MyApp extends StatelessWidget {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     FirebaseAnalytics analytics = FirebaseAnalytics();
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       title: 'Fedi',
       theme: ThemeData(
         primarySwatch: Colors.green,

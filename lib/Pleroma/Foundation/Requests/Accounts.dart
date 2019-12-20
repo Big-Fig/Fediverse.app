@@ -71,7 +71,7 @@ class Accounts {
     maxId = maxId == null ? "" : maxId;
     sinceId = sinceId == null ? "" : sinceId;
     minId = minId == null ? "" : minId;
-    return "/api/v1/accounts/$userId/statuses?max_id=$maxId&since_id=$sinceId&min_id=$minId&limit=$limit";
+    return "/api/v1/accounts/$userId/statuses?max_id=$maxId&since_id=$sinceId&min_id=$minId&limit=$limit&exclude_visibilities[]=direct";
   }
 
 

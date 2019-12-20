@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:fedi/States/MyGlobalStates.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/cupertino.dart';
@@ -28,13 +27,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
 class TabPage extends StatefulWidget {
-  final GlobalKey<MyTimelinePageState> _timelineKey =
-      MyGlobalStates.instance.timelineKey;
-  final GlobalKey<SearchState> _searchKey = MyGlobalStates.instance.searchKey;
-  final GlobalKey<NotificationPageState> _notificationKey =
-      MyGlobalStates.instance.notificationKey;
-  final GlobalKey<MyProfilePageState> _profileKey =
-      MyGlobalStates.instance.profileKey;
   final Function addNewInstance;
   final Function refreshInstance;
   final Function loadInstance;
@@ -48,14 +40,17 @@ class TabPage extends StatefulWidget {
     return TabPageState();
   }
 }
-
 class TabPageState extends State<TabPage>
-    with/* AutomaticKeepAliveClientMixin, */TickerProviderStateMixin {
+    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
+  final GlobalKey<MyTimelinePageState> _timelineKey = GlobalKey();
+  final GlobalKey<SearchState> _searchKey = GlobalKey();
+    final GlobalKey<NotificationPageState> _notificationKey = GlobalKey();
   static FirebaseAnalytics analytics = FirebaseAnalytics();
   static FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);
   WebRTCManager manager = WebRTCManager.instance;
 
+  String currentTimeline = "Home";
   List<String> statuses = [''];
   AccountsBottomSheet bottomSheet;
   int _currentIndex = 0;
@@ -64,35 +59,25 @@ class TabPageState extends State<TabPage>
   List<AppBar> _appBar;
   TabController _tabController;
   List<Widget> _homeControllers = [];
-
-  String currentTimeline = "Home";
+  MyProfilePage myProfile = MyProfilePage();
 
   @override
   initState() {
-    if (widget.initalIndex != null) {
-      _currentIndex = widget.initalIndex;
-    }
     super.initState();
     _homeControllers = [
-      MyTimelinePage(
-        this,
-        key: widget._timelineKey,
-      ),
+      MyTimelinePage(this),
       Search(
-        key: widget._searchKey,
+        key: _searchKey,
       )
     ];
     _firebaseMessaging.requestNotificationPermissions();
     _tabController = TabController(length: 2, vsync: this);
     _children = [
-      HomeContainerPage(
-          _tabController, _homeControllers, widget._timelineKey, this),
-      NotificationPage(),
+      HomeContainerPage(_tabController, _homeControllers, this),
+      NotificationPage(key: _notificationKey,),
       PlaceholderWidget(Colors.green),
       MessageConatiner(),
-      MyProfilePage(
-        key: widget._profileKey,
-      ),
+      myProfile,
     ];
 
     if (PushHelper.instance.notifcationType != null) {
@@ -118,6 +103,7 @@ class TabPageState extends State<TabPage>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
 
     PushHelper.instance.swapAccount = swapAccount;
     PushHelper.instance.register();
@@ -157,7 +143,7 @@ class TabPageState extends State<TabPage>
             showAccountSheet(context);
           },
         ),
-        actions: <Widget>[
+         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.edit),
             onPressed: () {
@@ -207,7 +193,9 @@ class TabPageState extends State<TabPage>
             title: Text(''),
           ),
           new BottomNavigationBarItem(
-              backgroundColor: Colors.green, icon: Icon(null), title: Text('')),
+              backgroundColor: Colors.green,
+              icon: Icon(null),
+              title: Text('')),
           new BottomNavigationBarItem(
             backgroundColor: Colors.green,
             icon: Icon(Icons.message),
@@ -226,28 +214,23 @@ class TabPageState extends State<TabPage>
   void onDoubleDap(int index) {}
 
   List<int> tabTaps = [0, 0, 0, 0, 0];
-  int currentIndex = 0;
+
   void onTabTapped(int index) {
-    if (currentIndex != index) {
-      currentIndex = index;
-    } else {
-      tabTaps[index] += 1;
-    }
+    tabTaps[index] += 1;
     int taps = tabTaps[index];
     if (taps > 1 && index == 0) {
-      if (widget._timelineKey.currentState.mounted != null) {
-        widget._timelineKey.currentState.refreshEverything();
+      if (_timelineKey.currentState != null) {
+        _timelineKey.currentState.refreshEverything();
       }
 
-      if (widget._searchKey.currentState.mounted) {
-        widget._searchKey.currentState.refreshEverything();
+      if (_searchKey.currentState != null) {
+        _searchKey.currentState.refreshEverything();
       }
-    } 
-    // else if (taps > 1 && index == 1) {
-    //   if (widget._notificationKey.currentState.mounted) {
-    //     widget._notificationKey.currentState.refreshEverything();
-    //   }
-    // }
+    } else if(taps > 1 && index == 1) {
+      if (_notificationKey.currentState != null) {
+        _notificationKey.currentState.refreshEverything();
+      }
+    }
 
     Timer(Duration(seconds: 1), () {
       tabTaps[index] = 0;
@@ -287,11 +270,6 @@ class TabPageState extends State<TabPage>
     widget.addNewInstance();
   }
 
-  refresh(BuildContext viewContext) {
-    Navigator.pop(viewContext);
-    widget._profileKey.currentState.refresh();
-  }
-
   swapAccount() {
     print("SWAP account");
     if (bottomSheet != null) {
@@ -301,4 +279,13 @@ class TabPageState extends State<TabPage>
     widget.loadInstance();
   }
 
+   refresh(BuildContext viewContext) {
+    Navigator.pop(viewContext);
+    // profileKey.currentState.refresh();
+  }
+
+  @override
+  bool get wantKeepAlive => true;
 }
+
+ 
