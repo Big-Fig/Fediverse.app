@@ -121,6 +121,7 @@ class Client {
     var url = "$baseURL$path";
 
     print(url);
+    print("MY TOKEN Bearer $accessToken");
     var headers = {
       HttpHeaders.authorizationHeader: "Bearer $accessToken",
       "Accept": "application/json",

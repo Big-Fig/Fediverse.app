@@ -1,4 +1,3 @@
-import 'package:fedi/States/MyGlobalStates.dart';
 import 'package:flutter/material.dart';
 import 'package:fedi/DeepLinks/DeepLinkHelper.dart';
 import 'dart:core';
@@ -23,7 +22,6 @@ class _AppContainerPage extends State<AppContainerPage> {
   int initalIndex = 0;
   CurrentState appState = CurrentState.NONE;
   DeepLinkHelper links = DeepLinkHelper.instance;
-  MyGlobalStates states = MyGlobalStates.instance;
   
   void instanceSuccess() {
     setState(() {

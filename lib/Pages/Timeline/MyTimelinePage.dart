@@ -7,6 +7,7 @@ import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Models/Account.dart';
 import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:fedi/Pleroma/Models/Status.dart' as StatusModel;
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../Pleroma/Foundation/Requests/Timeline.dart';
 import 'package:flutter/scheduler.dart';
@@ -69,7 +70,6 @@ class MyTimelinePageState extends State<MyTimelinePage> {
 
   void initState() {
     super.initState();
-    print("HELP");
     if (SchedulerBinding.instance.schedulerPhase ==
         SchedulerPhase.persistentCallbacks) {
       SchedulerBinding.instance
@@ -108,6 +108,10 @@ class MyTimelinePageState extends State<MyTimelinePage> {
         .run(path: path, method: HTTPMethod.GET)
         .then((response) {
       List<Status> newStatuses = statusFromJson(response.body);
+      newStatuses.removeWhere((status){
+          return status.visibility == StatusModel.Visibility.DIRECT;
+        });
+
       widget.statuses.clear();
       widget.statuses.addAll(newStatuses);
       if (mounted) setState(() {});
@@ -145,6 +149,9 @@ class MyTimelinePageState extends State<MyTimelinePage> {
         .run(path: loadMorePath, method: HTTPMethod.GET)
         .then((response) {
       List<Status> newStatuses = statusFromJson(response.body);
+      newStatuses.removeWhere((status){
+          return status.visibility == StatusModel.Visibility.DIRECT;
+        });
       widget.statuses.addAll(newStatuses);
       if (mounted) setState(() {});
       _refreshController.loadComplete();

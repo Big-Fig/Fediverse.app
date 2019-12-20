@@ -12,130 +12,114 @@ List<Status> statusFromJson(String str) => new List<Status>.from(json.decode(str
 String statusToJson(List<Status> data) => json.encode(new List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Status {
-    Account? account;
-    Application application;
-    bool bookmarked;
-    dynamic card;
-    String content;
-    DateTime createdAt;
-    List<dynamic> emojis;
-    bool favourited;
-    int favouritesCount;
     String id;
-    String inReplyToAccountId;
+    DateTime createdAt;
     String inReplyToId;
-    dynamic language;
-    List<MediaAttachment> mediaAttachments;
-    List<Mention> mentions;
-    bool muted;
-    bool pinned;
-    StatusPleroma pleroma;
-    dynamic poll;
-    Status reblog;
-    bool reblogged;
-    int reblogsCount;
-    int repliesCount;
+    String inReplyToAccountId;
     bool sensitive;
     String spoilerText;
-    List<Tag> tags;
+    Visibility visibility;
     String uri;
     String url;
-    Visibility visibility;
+    int repliesCount;
+    int reblogsCount;
+    int favouritesCount;
+    bool favourited;
+    bool reblogged;
+    bool muted;
+    bool bookmarked;
+    String content;
+    Status reblog;
+    Application application;
+    Account account;
+    List<MediaAttachment> mediaAttachments;
+    List<Mention> mentions;
+    List<Tag> tags;
+    List<dynamic> emojis;
+    dynamic poll;
 
     Status({
-        this.account,
-        this.application,
-        this.bookmarked,
-        this.card,
-        this.content,
-        this.createdAt,
-        this.emojis,
-        this.favourited,
-        this.favouritesCount,
         this.id,
-        this.inReplyToAccountId,
+        this.createdAt,
         this.inReplyToId,
-        this.language,
-        this.mediaAttachments,
-        this.mentions,
-        this.muted,
-        this.pinned,
-        this.pleroma,
-        this.poll,
-        this.reblog,
-        this.reblogged,
-        this.reblogsCount,
-        this.repliesCount,
+        this.inReplyToAccountId,
         this.sensitive,
         this.spoilerText,
-        this.tags,
+        this.visibility,
         this.uri,
         this.url,
-        this.visibility,
+        this.repliesCount,
+        this.reblogsCount,
+        this.favouritesCount,
+        this.favourited,
+        this.reblogged,
+        this.muted,
+        this.bookmarked,
+        this.content,
+        this.reblog,
+        this.application,
+        this.account,
+        this.mediaAttachments,
+        this.mentions,
+        this.tags,
+        this.emojis,
+        this.poll,
     });
 
-    factory Status.fromJson(Map<String, dynamic> json) => new Status(
-        account: Account.fromJson(json["account"]),
-        application: Application.fromJson(json["application"]),
-        bookmarked: json["bookmarked"],
-        card: json["card"],
-        content: json["content"],
-        createdAt: DateTime.parse(json["created_at"]),
-        emojis: new List<dynamic>.from(json["emojis"].map((x) => x)),
-        favourited: json["favourited"],
-        favouritesCount: json["favourites_count"],
+    factory Status.fromJson(Map<String, dynamic> json) => Status(
         id: json["id"],
-        inReplyToAccountId: json["in_reply_to_account_id"] == null ? null : json["in_reply_to_account_id"],
+        createdAt: DateTime.parse(json["created_at"]),
         inReplyToId: json["in_reply_to_id"] == null ? null : json["in_reply_to_id"],
-        language: json["language"],
-        mediaAttachments: new List<MediaAttachment>.from(json["media_attachments"].map((x) => MediaAttachment.fromJson(x))),
-        mentions: new List<Mention>.from(json["mentions"].map((x) => Mention.fromJson(x))),
-        muted: json["muted"],
-        pinned: json["pinned"],
-        pleroma: StatusPleroma.fromJson(json["pleroma"]),
-        poll: json["poll"],
-        reblog: json["reblog"] == null ? null : Status.fromJson(json["reblog"]),
-        reblogged: json["reblogged"],
-        reblogsCount: json["reblogs_count"],
-        repliesCount: json["replies_count"],
+        inReplyToAccountId: json["in_reply_to_account_id"] == null ? null : json["in_reply_to_account_id"],
         sensitive: json["sensitive"],
         spoilerText: json["spoiler_text"],
-        tags: new List<Tag>.from(json["tags"].map((x) => Tag.fromJson(x))),
+        visibility: visibilityValues.map[json["visibility"]],
         uri: json["uri"],
         url: json["url"],
-        visibility: visibilityValues.map[json["visibility"]],
+        repliesCount: json["replies_count"],
+        reblogsCount: json["reblogs_count"],
+        favouritesCount: json["favourites_count"],
+        favourited: json["favourited"],
+        reblogged: json["reblogged"],
+        muted: json["muted"],
+        bookmarked: json["bookmarked"],
+        content: json["content"],
+        reblog: json["reblog"] == null ? null : Status.fromJson(json["reblog"]),
+        application: json["application"] == null ? null : Application.fromJson(json["application"]),
+        account: Account.fromJson(json["account"]),
+        mediaAttachments: List<MediaAttachment>.from(json["media_attachments"].map((x) => MediaAttachment.fromJson(x))),
+        mentions: List<Mention>.from(json["mentions"].map((x) => Mention.fromJson(x))),
+        tags: List<Tag>.from(json["tags"].map((x) => Tag.fromJson(x))),
+        emojis: List<dynamic>.from(json["emojis"].map((x) => x)),
+        poll: json["poll"],
     );
 
     Map<String, dynamic> toJson() => {
-        "account": account.toJson(),
-        "application": application.toJson(),
-        "bookmarked": bookmarked,
-        "card": card,
-        "content": content,
-        "created_at": createdAt.toIso8601String(),
-        "emojis": new List<dynamic>.from(emojis.map((x) => x)),
-        "favourited": favourited,
-        "favourites_count": favouritesCount,
         "id": id,
-        "in_reply_to_account_id": inReplyToAccountId == null ? null : inReplyToAccountId,
+        "created_at": createdAt.toIso8601String(),
         "in_reply_to_id": inReplyToId == null ? null : inReplyToId,
-        "language": language,
-        "media_attachments": new List<dynamic>.from(mediaAttachments.map((x) => x.toJson())),
-        "mentions": new List<dynamic>.from(mentions.map((x) => x.toJson())),
-        "muted": muted,
-        "pinned": pinned,
-        "pleroma": pleroma.toJson(),
-        "poll": poll,
-        "reblog": reblog == null ? null : reblog.toJson(),
-        "reblogged": reblogged,
-        "reblogs_count": reblogsCount,
-        "replies_count": repliesCount,
+        "in_reply_to_account_id": inReplyToAccountId == null ? null : inReplyToAccountId,
         "sensitive": sensitive,
         "spoiler_text": spoilerText,
-        "tags": new List<dynamic>.from(tags.map((x) => x.toJson())),
+        "visibility": visibilityValues.reverse[visibility],
         "uri": uri,
         "url": url,
-        "visibility": visibilityValues.reverse[visibility],
+        "replies_count": repliesCount,
+        "reblogs_count": reblogsCount,
+        "favourites_count": favouritesCount,
+        "favourited": favourited,
+        "reblogged": reblogged,
+        "muted": muted,
+        "bookmarked": bookmarked,
+        "content": content,
+        "reblog": reblog == null ? null : reblog.toJson(),
+        "application": application == null ? null : application.toJson(),
+        "account": account.toJson(),
+        "media_attachments": List<dynamic>.from(mediaAttachments.map((x) => x.toJson())),
+        "mentions": List<dynamic>.from(mentions.map((x) => x.toJson())),
+        "tags": List<dynamic>.from(tags.map((x) => x.toJson())),
+        "emojis": List<dynamic>.from(emojis.map((x) => x)),
+        "poll": poll,
     };
 }
 
@@ -287,7 +271,7 @@ class MediaAttachment {
     factory MediaAttachment.fromJson(Map<String, dynamic> json) => new MediaAttachment(
         description: json["description"],
         id: json["id"],
-        pleroma: MediaAttachmentPleroma.fromJson(json["pleroma"]),
+        pleroma: json["pleroma"] == null ? null : MediaAttachmentPleroma.fromJson(json["pleroma"]),
         previewUrl: json["preview_url"],
         remoteUrl: json["remote_url"],
         textUrl: json["text_url"],
@@ -419,11 +403,12 @@ class Tag {
     };
 }
 
-enum Visibility { PUBLIC, UNLISTED }
+enum Visibility { PUBLIC, UNLISTED, DIRECT }
 
 final visibilityValues = new EnumValues({
     "public": Visibility.PUBLIC,
-    "unlisted": Visibility.UNLISTED
+    "unlisted": Visibility.UNLISTED,
+    "direct": Visibility.DIRECT
 });
 
 class EnumValues<T> {

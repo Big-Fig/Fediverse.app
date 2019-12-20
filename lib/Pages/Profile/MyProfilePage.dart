@@ -13,16 +13,16 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class MyProfilePage extends StatefulWidget {
 
-  MyProfilePage({Key key}) : super(key: key);
+  final List<Status> statuses = <Status>[];
   @override
   State<StatefulWidget> createState() {
-    return MyProfilePageState();
+    return _MyProfilePage();
   }
 }
 
-class MyProfilePageState extends State<MyProfilePage> {
+class _MyProfilePage extends State<MyProfilePage> {
   Account myAccount;
-  List<Status> statuses = <Status>[];
+  
   void initState() {
     super.initState();
     if (SchedulerBinding.instance.schedulerPhase ==
@@ -32,13 +32,8 @@ class MyProfilePageState extends State<MyProfilePage> {
     }
   }
 
-  refresh(){
-     _refreshController.requestRefresh();
-    _onRefresh();
-  }
-
   void fetchStatuses(BuildContext context) {
-    if (statuses.length == 0) {
+    if (widget.statuses.length == 0) {
       _refreshController.requestRefresh();
     }
   }
@@ -46,7 +41,7 @@ class MyProfilePageState extends State<MyProfilePage> {
   void editProfile() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => EditProfile(fetchStatuses)),
+      MaterialPageRoute(builder: (context) => EditProfile(updated)),
     );
   }
 
@@ -69,8 +64,8 @@ class MyProfilePageState extends State<MyProfilePage> {
             method: HTTPMethod.GET)
         .then((response) {
       List<Status> newStatuses = statusFromJson(response.body);
-      statuses.clear();
-      statuses.addAll(newStatuses);
+      widget.statuses.clear();
+      widget.statuses.addAll(newStatuses);
       if (mounted) setState(() {});
       _refreshController.refreshCompleted();
     }).catchError((error) {
@@ -86,7 +81,7 @@ class MyProfilePageState extends State<MyProfilePage> {
     await Future.delayed(Duration(milliseconds: 1000));
     // if failed,use loadFailed(),if no data return,use LoadNodata()
     var lastId = "";
-    Status lastStatus = statuses.last;
+    Status lastStatus = widget.statuses.last;
     if (lastStatus != null) {
       lastId = lastStatus.id;
     }
@@ -102,7 +97,7 @@ class MyProfilePageState extends State<MyProfilePage> {
             method: HTTPMethod.GET)
         .then((response) {
       List<Status> newStatuses = statusFromJson(response.body);
-      statuses.addAll(newStatuses);
+      widget.statuses.addAll(newStatuses);
       if (mounted) setState(() {});
       _refreshController.loadComplete();
     }).catchError((error) {
@@ -111,9 +106,14 @@ class MyProfilePageState extends State<MyProfilePage> {
     });
   }
 
+  updated(BuildContext context){
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return SmartRefresher(
+      key: PageStorageKey<String>("MAINTAB"),
       enablePullDown: true,
       enablePullUp: true,
       header: WaterDropHeader(
@@ -175,10 +175,10 @@ class MyProfilePageState extends State<MyProfilePage> {
               editAccount: editProfile,
             );
           } else {
-            return TimelineCell(statuses[index - 1]);
+            return TimelineCell(widget.statuses[index - 1]);
           }
         },
-        itemCount: (statuses.length + 1),
+        itemCount: (widget.statuses.length + 1),
       ),
     );
   }

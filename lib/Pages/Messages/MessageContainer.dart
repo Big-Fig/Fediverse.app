@@ -5,6 +5,11 @@ import 'package:fedi/Pages/Messages/UserListPage.dart';
 import 'package:fedi/Pleroma/Models/Account.dart';
 
 class MessageConatiner extends StatefulWidget {
+
+  final List<Widget> pageControllers = [
+    MessagesPage()
+  ];
+
   @override
   State<StatefulWidget> createState() {
     return _MessageContainer();
@@ -16,9 +21,6 @@ class _MessageContainer extends State<MessageConatiner> with TickerProviderState
   TabController _controller;
   int _currentIndex = 0;
 
-  List<Widget> _pageControllers = [
-    MessagesPage()
-  ];
 
   void initState() {
     super.initState();
@@ -50,7 +52,7 @@ class _MessageContainer extends State<MessageConatiner> with TickerProviderState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pageControllers[_currentIndex],
+      body: widget.pageControllers[_currentIndex],
       appBar: AppBar(
         title: Text(titles[_currentIndex]),
         actions: <Widget>[
