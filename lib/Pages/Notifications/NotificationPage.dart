@@ -25,7 +25,8 @@ class NotificationPage extends StatefulWidget {
   }
 }
 
-class NotificationPageState extends State<NotificationPage> {
+class NotificationPageState extends State<NotificationPage>
+    with TickerProviderStateMixin {
   refreshEverything() {
     _refreshController.requestRefresh();
   }
@@ -51,6 +52,7 @@ class NotificationPageState extends State<NotificationPage> {
   void initState() {
     super.initState();
     print("HELP");
+    _tabController = TabController(length: 3, vsync: this, initialIndex: 0);
     if (SchedulerBinding.instance.schedulerPhase ==
         SchedulerPhase.persistentCallbacks) {
       SchedulerBinding.instance
@@ -110,7 +112,7 @@ class NotificationPageState extends State<NotificationPage> {
     CurrentInstance.instance.currentClient
         .run(
             path: NotificationRequest.Notification.getNotifications(
-                minId: "", maxId: lastId, sinceId: "", limit: "20"),
+                minId: "", maxId: lastId, sinceId: "", limit: "400"),
             method: HTTPMethod.GET)
         .then((response) {
       List<NotificationModel.Notification> newNotifications =
@@ -148,8 +150,44 @@ class NotificationPageState extends State<NotificationPage> {
     PushHelper.instance.notifcationType = null;
   }
 
+  TabController _tabController;
+
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        child: Text("Current Controller"),
+      ),
+      appBar: AppBar(
+        title: Text("Notifications"),
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: <Widget>[
+            Tab(
+              icon: Icon(Icons.reply),
+              text: null,
+            ),
+            Tab(
+              icon: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Icon(Icons.cached),
+                  Text(" / "),
+                  Icon(Icons.thumb_up)
+                ],
+              ),
+              text: null,
+            ),
+            Tab(
+              icon: Icon(Icons.person_add),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget getSmartRefresher() {
     return SmartRefresher(
       enablePullDown: true,
       enablePullUp: true,
