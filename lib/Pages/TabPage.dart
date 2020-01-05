@@ -88,12 +88,6 @@ class TabPageState extends State<TabPage>
   loadNotification() {
     print("Loading notification ${PushHelper.instance.notifcationType}");
 
-    // if (PushHelper.instance.notifcationType == "mention") {
-    //   _currentIndex = 3;
-    // } else {
-    //   _currentIndex = 1;
-    // }
-
     _currentIndex = 1;
     PushHelper.instance.notifcationType = null;
     setState(() {});
@@ -112,9 +106,8 @@ class TabPageState extends State<TabPage>
       // AppBar(
       //   title: Text('Your Timeline'),
       // ),
-      AppBar(
-        title: Text("Notifications"),
-      ),
+      // Notifications Tab is handled by that page
+      null,
       AppBar(
         title: Text('New Post'),
       ),
