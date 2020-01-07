@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/Pages/Web/InAppWebPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_alert/flutter_alert.dart';
@@ -58,11 +59,18 @@ class _ProfileHeader extends State<ProfileHeader> {
               fit: StackFit.expand,
               children: <Widget>[
                 FittedBox(
-                  child: FadeInImage.assetNetwork(
-                    image: widget.profileAccount.header,
-                    placeholder: "assets/images/double_ring_loading_io.gif",
-                  ),
                   fit: BoxFit.none,
+                  child: CachedNetworkImage(
+                    imageUrl: widget.profileAccount.header,
+                    placeholder: (context, url) => Center(
+                      child: Container(
+                        width: 30,
+                        height: 30,
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
+                  ),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -76,10 +84,17 @@ class _ProfileHeader extends State<ProfileHeader> {
                         children: <Widget>[
                           ClipRRect(
                             borderRadius: new BorderRadius.circular(8.0),
-                            child: FadeInImage.assetNetwork(
-                              placeholder:
-                                  'assets/images/double_ring_loading_io.gif',
-                              image: widget.profileAccount.avatar,
+                            child: CachedNetworkImage(
+                              imageUrl: widget.profileAccount.avatar,
+                              placeholder: (context, url) => Center(
+                                child: Container(
+                                  width: 30,
+                                  height: 30,
+                                  child: CircularProgressIndicator(),
+                                ),
+                              ),
+                              errorWidget: (context, url, error) =>
+                                  Icon(Icons.error),
                               height: 80.0,
                               width: 80.0,
                             ),
@@ -187,9 +202,9 @@ class _ProfileHeader extends State<ProfileHeader> {
     );
   }
 
-   String getURL(String value) {
-    String string = value.replaceAll(RegExp( "</a>"), "");
-    return  string.replaceAll(RegExp( "<a[^>]*>"), "");
+  String getURL(String value) {
+    String string = value.replaceAll(RegExp("</a>"), "");
+    return string.replaceAll(RegExp("<a[^>]*>"), "");
   }
 
   Widget getLinkButton(dynamic field) {
@@ -201,13 +216,12 @@ class _ProfileHeader extends State<ProfileHeader> {
           onPressed: () {
             String link = getURL(field["value"]);
             print(link);
-             Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => InAppWebPage(link),
-                          ),
-                        );
-
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => InAppWebPage(link),
+              ),
+            );
           },
         ),
       ),

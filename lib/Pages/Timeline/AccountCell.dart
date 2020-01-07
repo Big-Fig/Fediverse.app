@@ -1,9 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/Pleroma/Models/Account.dart';
 import 'package:fedi/Pleroma/Models/Status.dart';
 import 'package:flutter/material.dart';
 
 class AccountCell extends StatelessWidget {
-
   final Account account;
   final Function(Account) viewAccount;
 
@@ -11,7 +11,7 @@ class AccountCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     return Card(
+    return Card(
       child: Padding(
         padding: EdgeInsets.all(10),
         child: Column(
@@ -25,18 +25,24 @@ class AccountCell extends StatelessWidget {
                     }
                   },
                   behavior: HitTestBehavior.translucent,
-                  child:
-                   Row(
+                  child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       ClipRRect(
                         borderRadius: new BorderRadius.circular(20.0),
-                        child: FadeInImage.assetNetwork(
-                          placeholder:
-                              'assets/images/double_ring_loading_io.gif',
-                          image:account.avatar,
-                          height: 40.0,
-                          width: 40.0,
+                        child: CachedNetworkImage(
+                          imageUrl: account.avatar,
+                          placeholder: (context, url) => Center(
+                            child: Container(
+                              width: 30,
+                              height: 30,
+                              child: CircularProgressIndicator(),
+                            ),
+                          ),
+                          errorWidget: (context, url, error) =>
+                              Icon(Icons.error),
+                          height: 40,
+                          width: 40,
                         ),
                       ),
                       SizedBox(
@@ -55,8 +61,6 @@ class AccountCell extends StatelessWidget {
       ),
     );
   }
-
- 
 
   Widget getActionWiget(String type) {
     print("type $type");
@@ -126,10 +130,13 @@ class AccountCell extends StatelessWidget {
         String shortcode = emoji["shortcode"];
         String url = emoji["url"];
         if (shortcode == emojiOrText) {
-          var image = Image.network(
-            url,
-            height: 15.0,
-            width: 15.0,
+          var image = CachedNetworkImage(
+            imageUrl: url,
+            placeholder: (context, url) =>
+                Center(child: CircularProgressIndicator()),
+            errorWidget: (context, url, error) => Icon(Icons.error),
+            width: 15,
+            height: 15,
           );
           usernameWidget.add(image);
           foundEmoji = true;

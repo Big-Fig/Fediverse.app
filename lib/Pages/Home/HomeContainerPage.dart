@@ -1,3 +1,4 @@
+import 'package:fedi/Pages/Search/SearchPage.dart';
 import 'package:fedi/Pages/Search/SearchResults.dart';
 import 'package:flutter/material.dart';
 
@@ -71,9 +72,13 @@ class HomeContainerPageState extends State<HomeContainerPage>
               IconButton(
                 icon: Icon(Icons.search),
                 onPressed: () {
-                  setState(() {
-                    showSearch = true;
-                  });
+                  // push search view
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SerachPage(),
+                    ),
+                  );
                 },
               )
             ],
@@ -89,7 +94,6 @@ class HomeContainerPageState extends State<HomeContainerPage>
                     IconButton(
                       icon: Icon(Icons.keyboard_arrow_down),
                       onPressed: () {
-                        
                         if (widget.tabController.index == 1) {
                           return;
                         }

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart';
 import 'package:fedi/Views/Alert.dart';
@@ -117,9 +118,7 @@ class _EditProfile extends State<EditProfile> {
   }
 
   mediaUploaded(String id) {
-    setState(() {
-      
-    });
+    setState(() {});
   }
 
   @override
@@ -165,9 +164,16 @@ class _EditProfile extends State<EditProfile> {
                   child: FittedBox(
                     alignment: Alignment.center,
                     fit: BoxFit.none,
-                    child: FadeInImage.assetNetwork(
-                      image: myAccount.header,
-                      placeholder: "assets/images/double_ring_loading_io.gif",
+                    child: CachedNetworkImage(
+                      imageUrl: myAccount.header,
+                      placeholder: (context, url) => Center(
+                        child: Container(
+                          width: 30,
+                          height: 30,
+                          child: CircularProgressIndicator(),
+                        ),
+                      ),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
                     ),
                   ),
                 ),
@@ -188,12 +194,19 @@ class _EditProfile extends State<EditProfile> {
                       children: <Widget>[
                         ClipRRect(
                           borderRadius: new BorderRadius.circular(8.0),
-                          child: FadeInImage.assetNetwork(
-                            placeholder:
-                                'assets/images/double_ring_loading_io.gif',
-                            image: myAccount.avatar,
-                            height: 125.0,
-                            width: 125.0,
+                          child: CachedNetworkImage(
+                            imageUrl: myAccount.avatar,
+                            placeholder: (context, url) => Center(
+                              child: Container(
+                                width: 30,
+                                height: 30,
+                                child: CircularProgressIndicator(),
+                              ),
+                            ),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error),
+                            height: 125,
+                            width: 125,
                           ),
                         ),
                         Container(

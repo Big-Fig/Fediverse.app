@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -9,17 +10,17 @@ import 'package:fedi/Pleroma/Foundation/Requests/Timeline.dart';
 import 'package:fedi/Pleroma/Models/Status.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class Search extends StatefulWidget {
-  Search({Key key}) : super(key: key);
+class GalleryPage extends StatefulWidget {
+  GalleryPage({Key key}) : super(key: key);
 
   final List<Status> statuses = <Status>[];
   @override
   State<StatefulWidget> createState() {
-    return SearchState();
+    return GalleryPageState();
   }
 }
 
-class SearchState extends State<Search> {
+class GalleryPageState extends State<GalleryPage> {
   void initState() {
     super.initState();
     if (SchedulerBinding.instance.schedulerPhase ==
@@ -28,12 +29,11 @@ class SearchState extends State<Search> {
           .addPostFrameCallback((_) => fetchStatuses(context));
     }
   }
-  
 
-  refreshEverything(){
+  refreshEverything() {
     _refreshController.requestRefresh();
   }
-  
+
   void fetchStatuses(BuildContext context) {
     if (widget.statuses.length == 0) {
       _refreshController.requestRefresh();
@@ -131,7 +131,7 @@ class SearchState extends State<Search> {
           if (mode == LoadStatus.idle) {
             body = Text("");
           } else if (mode == LoadStatus.loading) {
-            body = CupertinoActivityIndicator();
+            body = CircularProgressIndicator();
           } else if (mode == LoadStatus.failed) {
             body = Text("Load Failed!Click retry!");
           } else {
@@ -164,11 +164,14 @@ class SearchState extends State<Search> {
           child: Container(
             color: Colors.black.withOpacity(0.2),
             child: SizedBox.expand(
-              child: FadeInImage.assetNetwork(
+              child: CachedNetworkImage(
                 fit: BoxFit.cover,
-                placeholder: 'assets/images/double_ring_loading_io.gif',
-                image: widget.statuses[index].mediaAttachments[0].previewUrl,
+                imageUrl: widget.statuses[index].mediaAttachments[0].previewUrl,
+                placeholder: (context, url) => Center(
+                  child: CircularProgressIndicator(),
+                ),
                 width: MediaQuery.of(context).size.width,
+                errorWidget: (context, url, error) => Icon(Icons.error),
               ),
             ),
           ),
