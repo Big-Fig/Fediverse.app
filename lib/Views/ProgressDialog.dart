@@ -108,9 +108,7 @@ class _MyDialogState extends State<_MyDialog> {
           const SizedBox(width: 15.0),
           SizedBox(
             width: 60.0,
-            child: Image.asset(
-              'assets/images/double_ring_loading_io.gif'
-            ),
+            child: CircularProgressIndicator(),
           ),
           const SizedBox(width: 15.0),
           Expanded(

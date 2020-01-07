@@ -104,12 +104,7 @@ class _NotificationCell extends State<NotificationCell> {
             height: 8.0,
           ),
           if (widget.notification.status.mediaAttachments.length > 0)
-            Container(
-              height: targetWidth,
-              width: targetWidth,
-              color: Colors.white,
-              child: getMeidaWidget(widget.notification.status),
-            ),
+            getMeidaWidget(widget.notification.status),
           Padding(
             padding: EdgeInsets.only(bottom: 0, top: 8, left: 12.0, right: 12),
             child: Html(
@@ -138,35 +133,47 @@ class _NotificationCell extends State<NotificationCell> {
       MediaAttachment attachment = status.mediaAttachments[i];
       if (attachment.type == "image") {
         var image = CachedNetworkImage(
-            imageUrl: attachment.url,
-            placeholder: (context, url) => CircularProgressIndicator(),
-            errorWidget: (context, url, error) => Icon(Icons.error));
+          imageUrl: attachment.url,
+          placeholder: (context, url) => Center(
+            child: Container(
+              width: 30,
+              height: 30,
+              child: CircularProgressIndicator(),
+            ),
+          ),
+          errorWidget: (context, url, error) => Icon(Icons.error),
+        );
         items.add(image);
-      } else if (attachment.type == "video") {
+      } else if (attachment.type == "video" || attachment.type == "audio") {
         items.add(
           CellVideoPlayer(
             attachment.url,
           ),
         );
       } else {
-        items.add(
-          WebView(initialUrl: attachment.url),
-        );
+        if (status.mediaAttachments.length == 1) {
+          return Container();
+        }
       }
     }
 
-    return Carousel(
-      overlayShadowColors: Colors.transparent,
-      overlayShadowSize: 0.0,
-      images: items,
-      dotIncreasedColor: Colors.green,
-      dotSize: 4.0,
-      dotSpacing: 15.0,
-      dotColor: Colors.green.withOpacity(0.5),
-      indicatorBgPadding: 5.0,
-      dotBgColor: Colors.transparent,
-      borderRadius: true,
-      autoplay: false,
+    return Container(
+      height: targetWidth,
+      width: targetWidth,
+      color: Colors.white,
+      child: Carousel(
+        overlayShadowColors: Colors.transparent,
+        overlayShadowSize: 0.0,
+        images: items,
+        dotIncreasedColor: Colors.green,
+        dotSize: 4.0,
+        dotSpacing: 15.0,
+        dotColor: Colors.green.withOpacity(0.5),
+        indicatorBgPadding: 5.0,
+        dotBgColor: Colors.transparent,
+        borderRadius: true,
+        autoplay: false,
+      ),
     );
   }
 

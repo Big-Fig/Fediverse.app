@@ -68,12 +68,7 @@ class _ChatCell extends State<ChatCell> {
                         child: Column(
                           children: <Widget>[
                             if (widget.status.mediaAttachments.length > 0)
-                              Container(
-                                height: targetWidth,
-                                width: targetWidth,
-                                color: Colors.white,
-                                child: getMeidaWidget(widget.status),
-                              ),
+                              getMeidaWidget(widget.status),
                             Padding(
                               padding: EdgeInsets.only(
                                   bottom: 0, top: 0, left: 0, right: 0),
@@ -152,12 +147,7 @@ class _ChatCell extends State<ChatCell> {
                             child: Column(
                               children: <Widget>[
                                 if (widget.status.mediaAttachments.length > 0)
-                                  Container(
-                                    height: targetWidth,
-                                    width: targetWidth,
-                                    color: Colors.white,
-                                    child: getMeidaWidget(widget.status),
-                                  ),
+                                  getMeidaWidget(widget.status),
                                 Padding(
                                   padding: EdgeInsets.only(
                                       bottom: 0, top: 0, left: 0, right: 0),
@@ -250,35 +240,46 @@ class _ChatCell extends State<ChatCell> {
       MediaAttachment attachment = status.mediaAttachments[i];
       if (attachment.type == "image") {
         var image = CachedNetworkImage(
-            imageUrl: attachment.url,
-            placeholder: (context, url) => CircularProgressIndicator(),
-            errorWidget: (context, url, error) => Icon(Icons.error));
+          imageUrl: attachment.url,
+          placeholder: (context, url) => Center(
+            child: Container(
+              width: 30,
+              height: 30,
+              child: CircularProgressIndicator(),
+            ),
+          ),
+          errorWidget: (context, url, error) => Icon(Icons.error),
+        );
         items.add(image);
-      } else if (attachment.type == "video") {
+      } else if (attachment.type == "video" || attachment.type == "audio") {
         items.add(
           CellVideoPlayer(
             attachment.url,
           ),
         );
       } else {
-        items.add(
-          WebView(initialUrl: attachment.url),
-        );
+        if (status.mediaAttachments.length == 1) {
+          return Container();
+        }
       }
     }
-
-    return Carousel(
-      overlayShadowColors: Colors.transparent,
-      overlayShadowSize: 0.0,
-      images: items,
-      dotIncreasedColor: Colors.green,
-      dotSize: 4.0,
-      dotSpacing: 15.0,
-      dotColor: Colors.green.withOpacity(0.5),
-      indicatorBgPadding: 5.0,
-      dotBgColor: Colors.transparent,
-      borderRadius: true,
-      autoplay: false,
+    return Container(
+      height: targetWidth,
+      width: targetWidth,
+      color: Colors.white,
+      child: Carousel(
+        overlayShadowColors: Colors.transparent,
+        overlayShadowSize: 0.0,
+        images: items,
+        dotIncreasedColor: Colors.green,
+        dotSize: 4.0,
+        dotSpacing: 15.0,
+        dotColor: Colors.green.withOpacity(0.5),
+        indicatorBgPadding: 5.0,
+        dotBgColor: Colors.transparent,
+        borderRadius: true,
+        autoplay: false,
+      ),
     );
   }
 

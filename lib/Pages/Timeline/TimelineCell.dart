@@ -1,4 +1,5 @@
-
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fedi/Pages/Notifications/NotificationCell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -57,11 +58,13 @@ class _TimelineCell extends State<TimelineCell> {
                   children: <Widget>[
                     ClipRRect(
                       borderRadius: new BorderRadius.circular(12.0),
-                      child: FadeInImage.assetNetwork(
-                        placeholder: 'assets/images/double_ring_loading_io.gif',
-                        image: widget.status.account.avatar,
-                        height: 24.0,
-                        width: 24.0,
+                      child: CachedNetworkImage(
+                        imageUrl: widget.status.account.avatar,
+                        placeholder: (context, url) =>
+                            CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
+                        height: 24,
+                        width: 24,
                       ),
                     ),
                     SizedBox(
@@ -105,12 +108,15 @@ class _TimelineCell extends State<TimelineCell> {
                     children: <Widget>[
                       ClipRRect(
                         borderRadius: new BorderRadius.circular(20.0),
-                        child: FadeInImage.assetNetwork(
-                          placeholder:
-                              'assets/images/double_ring_loading_io.gif',
-                          image: status.account.avatar,
-                          height: 40.0,
-                          width: 40.0,
+                        child: CachedNetworkImage(
+                          imageUrl: status.account.avatar,
+                          placeholder: (context, url) => Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                          errorWidget: (context, url, error) =>
+                              Icon(Icons.error),
+                          height: 40,
+                          width: 40,
                         ),
                       ),
                       SizedBox(
@@ -171,12 +177,7 @@ class _TimelineCell extends State<TimelineCell> {
                   height: 8.0,
                 ),
                 if (widget.status.mediaAttachments.length > 0)
-                  Container(
-                    height: targetWidth,
-                    width: targetWidth,
-                    color: Colors.white,
-                    child: getMeidaWidget(widget.status),
-                  ),
+                  getMeidaWidget(widget.status),
                 Padding(
                   padding:
                       EdgeInsets.only(bottom: 0, top: 8, left: 12.0, right: 12),
@@ -238,7 +239,7 @@ class _TimelineCell extends State<TimelineCell> {
                           widget.viewStatusContext(widget.status);
                         },
                       ),
-                       if (widget.status.repliesCount != 0)
+                      if (widget.status.repliesCount != 0)
                         Text(widget.status.repliesCount.toString()),
                       IconButton(
                         color: widget.status.reblogged
@@ -250,7 +251,7 @@ class _TimelineCell extends State<TimelineCell> {
                           repost();
                         },
                       ),
-                       if (widget.status.reblogsCount != 0)
+                      if (widget.status.reblogsCount != 0)
                         Text(widget.status.reblogsCount.toString()),
                       Spacer(),
                     ],
@@ -364,45 +365,63 @@ class _TimelineCell extends State<TimelineCell> {
     for (var i = 0; i < status.mediaAttachments.length; i++) {
       MediaAttachment attachment = status.mediaAttachments[i];
       if (attachment.type == "image") {
-        var image = FadeInImage.assetNetwork(
-          placeholder: 'assets/images/double_ring_loading_io.gif',
-          image: attachment.url,
+        var image = CachedNetworkImage(
+          imageUrl: attachment.url,
+          placeholder: (context, url) => Center(
+            child: Container(
+              width: 30,
+              height: 30,
+              child: CircularProgressIndicator(),
+            ),
+          ),
+          errorWidget: (context, url, error) => Icon(Icons.error),
+        );
+
+        var imageprovider = Image.network(
+          attachment.url,
+          height: 15.0,
+          width: 15.0,
         );
         var container = GestureDetector(
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => ImageViewPage(image.image)),
+                    builder: (context) => ImageViewPage(imageprovider.image)),
               );
             },
             child: image);
         items.add(container);
-      } else if (attachment.type == "video") {
+      } else if (attachment.type == "video" || attachment.type == "audio") {
         items.add(
           CellVideoPlayer(
             attachment.url,
           ),
         );
       } else {
-        items.add(
-          WebView(initialUrl: attachment.url),
-        );
+        if (status.mediaAttachments.length == 1) {
+          return Container();
+        }
       }
     }
 
-    return Carousel(
-      overlayShadowColors: Colors.transparent,
-      overlayShadowSize: 0.0,
-      images: items,
-      dotIncreasedColor: Colors.green,
-      dotSize: 4.0,
-      dotSpacing: 15.0,
-      dotColor: Colors.green.withOpacity(0.5),
-      indicatorBgPadding: 5.0,
-      dotBgColor: Colors.transparent,
-      borderRadius: true,
-      autoplay: false,
+    return Container(
+      height: targetWidth,
+      width: targetWidth,
+      color: Colors.white,
+      child: Carousel(
+        overlayShadowColors: Colors.transparent,
+        overlayShadowSize: 0.0,
+        images: items,
+        dotIncreasedColor: Colors.green,
+        dotSize: 4.0,
+        dotSpacing: 15.0,
+        dotColor: Colors.green.withOpacity(0.5),
+        indicatorBgPadding: 5.0,
+        dotBgColor: Colors.transparent,
+        borderRadius: true,
+        autoplay: false,
+      ),
     );
   }
 
@@ -443,10 +462,12 @@ class _TimelineCell extends State<TimelineCell> {
         String shortcode = emoji["shortcode"];
         String url = emoji["url"];
         if (shortcode == emojiOrText) {
-          var image = Image.network(
-            url,
-            height: 15.0,
-            width: 15.0,
+          var image = CachedNetworkImage(
+            imageUrl: url,
+            placeholder: (context, url) => CircularProgressIndicator(),
+            height: 15,
+            width: 15,
+            errorWidget: (context, url, error) => Icon(Icons.error),
           );
           usernameWidget.add(image);
           foundEmoji = true;

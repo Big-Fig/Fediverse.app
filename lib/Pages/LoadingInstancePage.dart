@@ -31,7 +31,7 @@ class LoadingInstancePage extends StatelessWidget {
               SizedBox(
                   width: 60.0,
                   child:
-                      Image.asset('assets/images/double_ring_loading_io.gif'))
+                      CircularProgressIndicator())
             ],
           )),
     );

@@ -9,7 +9,7 @@ import 'package:fedi/Pages/Home/HomeContainerPage.dart';
 import 'package:fedi/Pages/Messages/VideoChat/WebRTCManager.dart';
 import 'package:fedi/Pages/Profile/EditProfile.dart';
 import 'package:fedi/Pages/Push/PushHelper.dart';
-import 'package:fedi/Pages/Search/Search.dart';
+import 'package:fedi/Pages/Gallery/GalleryPage.dart';
 import 'package:fedi/Pages/Timeline/MyTimelinePage.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Transitions/SlideBottomRoute.dart';
@@ -43,7 +43,7 @@ class TabPage extends StatefulWidget {
 class TabPageState extends State<TabPage>
     with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
   final GlobalKey<MyTimelinePageState> _timelineKey = GlobalKey();
-  final GlobalKey<SearchState> _searchKey = GlobalKey();
+  final GlobalKey<GalleryPageState> _galleryKey = GlobalKey();
     final GlobalKey<NotificationPageState> _notificationKey = GlobalKey();
   static FirebaseAnalytics analytics = FirebaseAnalytics();
   static FirebaseAnalyticsObserver observer =
@@ -66,8 +66,8 @@ class TabPageState extends State<TabPage>
     super.initState();
     _homeControllers = [
       MyTimelinePage(this),
-      Search(
-        key: _searchKey,
+      GalleryPage(
+        key: _galleryKey,
       )
     ];
     _firebaseMessaging.requestNotificationPermissions();
@@ -216,8 +216,8 @@ class TabPageState extends State<TabPage>
         _timelineKey.currentState.refreshEverything();
       }
 
-      if (_searchKey.currentState != null) {
-        _searchKey.currentState.refreshEverything();
+      if (_galleryKey.currentState != null) {
+        _galleryKey.currentState.refreshEverything();
       }
     } else if(taps > 1 && index == 1) {
       if (_notificationKey.currentState != null) {

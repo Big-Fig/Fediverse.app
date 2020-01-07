@@ -89,46 +89,6 @@ class _UserCell extends State<UserCell> {
     return parsedString;
   }
 
-  Widget getMeidaWidget(Status status) {
-    List<Widget> items = <Widget>[];
-
-    for (var i = 0; i < status.mediaAttachments.length; i++) {
-      MediaAttachment attachment = status.mediaAttachments[i];
-      if (attachment.type == "image") {
-        var image = CachedNetworkImage(
-          imageUrl: attachment.url,
-          placeholder: (context, url) => CircularProgressIndicator(),
-          errorWidget: (context, url, error) => Icon(Icons.error),
-        );
-        items.add(image);
-      } else if (attachment.type == "video") {
-        items.add(
-          CellVideoPlayer(
-            attachment.url,
-          ),
-        );
-      } else {
-        items.add(
-          WebView(initialUrl: attachment.url),
-        );
-      }
-    }
-
-    return Carousel(
-      overlayShadowColors: Colors.transparent,
-      overlayShadowSize: 0.0,
-      images: items,
-      dotIncreasedColor: Colors.green,
-      dotSize: 4.0,
-      dotSpacing: 15.0,
-      dotColor: Colors.green.withOpacity(0.5),
-      indicatorBgPadding: 5.0,
-      dotBgColor: Colors.transparent,
-      borderRadius: true,
-      autoplay: false,
-    );
-  }
-
   List<Widget> getUserName(Status status) {
     var username = status.account.displayName;
     var emojis = status.account.emojis;
@@ -153,6 +113,9 @@ class _UserCell extends State<UserCell> {
         String url = emoji["url"];
         if (shortcode == emojiOrText) {
           var image = CachedNetworkImage(
+            imageBuilder: (context, imageProvider) => Image(
+              image: imageProvider,
+            ),
             imageUrl: url,
             placeholder: (context, url) => CircularProgressIndicator(),
             errorWidget: (context, url, error) => Icon(Icons.error),

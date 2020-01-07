@@ -174,7 +174,7 @@ class _Mentions extends State<Mentions> {
           if (mode == LoadStatus.idle) {
             body = Text("");
           } else if (mode == LoadStatus.loading) {
-            body = CupertinoActivityIndicator();
+            body = CircularProgressIndicator();
           } else if (mode == LoadStatus.failed) {
             body = Text("Load Failed! Click retry!");
           } else {
