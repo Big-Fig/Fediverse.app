@@ -14,7 +14,7 @@ class Notification {
     maxId = maxId == null ? "" : maxId;
     sinceId = sinceId == null ? "" : sinceId;
     minId = minId == null ? "" : minId;
-    return "/api/v1/notifications?max_id=$maxId&since_id=$sinceId&min_id=$minId&limit=$limit&exclude_types=follow,favourite,reblog,poll";
+    return "/api/v1/notifications?max_id=$maxId&since_id=$sinceId&min_id=$minId&limit=$limit&exclude_types[]=follow&exclude_types[]=favourite&exclude_types[]=reblog&exclude_types[]=poll";
   }
 
    static String getActivityNotifications({ String maxId, String sinceId, String minId, String limit}) {
@@ -22,7 +22,7 @@ class Notification {
     maxId = maxId == null ? "" : maxId;
     sinceId = sinceId == null ? "" : sinceId;
     minId = minId == null ? "" : minId;
-    return "/api/v1/notifications?max_id=$maxId&since_id=$sinceId&min_id=$minId&limit=$limit&exclude_types=follow,mention,poll";
+    return "/api/v1/notifications?max_id=$maxId&since_id=$sinceId&min_id=$minId&limit=$limit&exclude_types[]=follow&exclude_types[]=mention&exclude_types[]=poll";
   }
 
   static String getFollowerNotifications({ String maxId, String sinceId, String minId, String limit}) {
@@ -30,7 +30,7 @@ class Notification {
     maxId = maxId == null ? "" : maxId;
     sinceId = sinceId == null ? "" : sinceId;
     minId = minId == null ? "" : minId;
-    return "/api/v1/notifications?max_id=$maxId&since_id=$sinceId&min_id=$minId&limit=$limit&exclude_types=favourite,reblog,mention,poll";
+    return "/api/v1/notifications?max_id=$maxId&since_id=$sinceId&min_id=$minId&limit=$limit&exclude_types[]=favourite&exclude_types[]=reblog&exclude_types[]=mention&exclude_types[]=poll";
   }
   //follow,favourite,reblog,mention,poll
 

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:html/parser.dart';
@@ -70,7 +71,10 @@ class _MessagesCell extends State<MessagesCell> {
                           children: <Widget>[
                             Row(
                               children: <Widget>[
-                                Text(messageUser.username, style: TextStyle(fontSize: 18),),
+                                Text(
+                                  messageUser.username,
+                                  style: TextStyle(fontSize: 18),
+                                ),
                               ],
                             ),
                             Text(
@@ -108,7 +112,7 @@ class _MessagesCell extends State<MessagesCell> {
     var document = parse(status.content);
 
     String parsedString = parse(document.body.text).documentElement.text;
-    parsedString = parsedString.replaceAll(RegExp( "(\w*@\w+)"), "");
+    parsedString = parsedString.replaceAll(RegExp("(\w*@\w+)"), "");
     return parsedString;
   }
 
@@ -118,10 +122,12 @@ class _MessagesCell extends State<MessagesCell> {
     for (var i = 0; i < status.mediaAttachments.length; i++) {
       MediaAttachment attachment = status.mediaAttachments[i];
       if (attachment.type == "image") {
-        var image = FadeInImage.assetNetwork(
-          placeholder: 'assets/images/double_ring_loading_io.gif',
-          image: attachment.url,
+        var image = CachedNetworkImage(
+          imageUrl: attachment.url,
+          placeholder: (context, url) => CircularProgressIndicator(),
+          errorWidget: (context, url, error) => Icon(Icons.error),
         );
+
         items.add(image);
       } else if (attachment.type == "video") {
         items.add(
@@ -174,11 +180,14 @@ class _MessagesCell extends State<MessagesCell> {
         String shortcode = emoji["shortcode"];
         String url = emoji["url"];
         if (shortcode == emojiOrText) {
-          var image = Image.network(
-            url,
-            height: 15.0,
-            width: 15.0,
+          var image = CachedNetworkImage(
+            imageUrl: url,
+            placeholder: (context, url) => CircularProgressIndicator(),
+            errorWidget: (context, url, error) => Icon(Icons.error),
+            width: 15,
+            height: 15,
           );
+
           usernameWidget.add(image);
           foundEmoji = true;
         }

@@ -1,5 +1,6 @@
 import 'dart:core';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
@@ -90,11 +91,13 @@ class AccountsBottomSheet extends StatelessWidget {
                                     child: ClipRRect(
                                       borderRadius:
                                           new BorderRadius.circular(25.0),
-                                      child: FadeInImage.assetNetwork(
-                                        fit: BoxFit.fitHeight,
-                                        placeholder:
-                                            'assets/images/double_ring_loading_io.gif',
-                                        image: instance.currentAccount.avatar,
+                                      child: CachedNetworkImage(
+                                        imageUrl:
+                                            instance.currentAccount.avatar,
+                                        placeholder: (context, url) =>
+                                            CircularProgressIndicator(),
+                                        errorWidget: (context, url, error) =>
+                                            Icon(Icons.error),
                                         width:
                                             MediaQuery.of(context).size.width,
                                       ),

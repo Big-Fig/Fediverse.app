@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -59,11 +60,12 @@ class _ChatPage extends State<ChatPage> {
             children: <Widget>[
               ClipRRect(
                 borderRadius: new BorderRadius.circular(15.0),
-                child: FadeInImage.assetNetwork(
-                  placeholder: 'assets/images/double_ring_loading_io.gif',
-                  image: otherAccount.avatar,
-                  height: 30.0,
-                  width: 30.0,
+                child: CachedNetworkImage(
+                  imageUrl: otherAccount.avatar,
+                  placeholder: (context, url) => CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                  width: 30,
+                  height: 30,
                 ),
               ),
               SizedBox(
@@ -363,8 +365,9 @@ class _ChatPage extends State<ChatPage> {
         itemBuilder: (BuildContext context, int index) {
           Status status = statuses[index];
 
-          if (index == statuses.length - 1){
-            return ChatCell(status, otherAccount, timeago.format(status.createdAt));
+          if (index == statuses.length - 1) {
+            return ChatCell(
+                status, otherAccount, timeago.format(status.createdAt));
           } else {
             Status lastStatus = statuses[index + 1];
             String lastTime = timeago.format(lastStatus.createdAt);
@@ -372,10 +375,10 @@ class _ChatPage extends State<ChatPage> {
             if (lastTime == thisTime) {
               return ChatCell(status, otherAccount, null);
             } else {
-              return ChatCell(status, otherAccount, timeago.format(status.createdAt));
+              return ChatCell(
+                  status, otherAccount, timeago.format(status.createdAt));
             }
           }
-          
         },
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -5,6 +6,7 @@ import 'package:fedi/Pleroma/Models/Account.dart';
 import 'package:fedi/Pleroma/Models/Notification.dart' as NotificationObject;
 import 'package:fedi/Pleroma/Models/Status.dart';
 import 'package:fedi/Views/VideoPlayer.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:html/dom.dart' as dom;
 
@@ -46,18 +48,19 @@ class _NotificationCell extends State<NotificationCell> {
                     }
                   },
                   behavior: HitTestBehavior.translucent,
-                  child:
-                   Row(
+                  child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       ClipRRect(
                         borderRadius: new BorderRadius.circular(20.0),
-                        child: FadeInImage.assetNetwork(
-                          placeholder:
-                              'assets/images/double_ring_loading_io.gif',
-                          image: widget.notification.account.avatar,
-                          height: 40.0,
-                          width: 40.0,
+                        child: CachedNetworkImage(
+                          imageUrl: widget.notification.account.avatar,
+                          placeholder: (context, url) =>
+                              CircularProgressIndicator(),
+                          errorWidget: (context, url, error) =>
+                              Icon(Icons.error),
+                          width: 40,
+                          height: 40,
                         ),
                       ),
                       SizedBox(
@@ -79,14 +82,14 @@ class _NotificationCell extends State<NotificationCell> {
                 getActionWiget(widget.notification.type),
               ],
             ),
-            GestureDetector(onTap: (){
-               if (widget.notification.status != null){
-                 widget.viewStatusContext(widget.notification.status);
-               }
-            },
-            child: getStatus(),
+            GestureDetector(
+              onTap: () {
+                if (widget.notification.status != null) {
+                  widget.viewStatusContext(widget.notification.status);
+                }
+              },
+              child: getStatus(),
             )
-           
           ],
         ),
       ),
@@ -112,14 +115,14 @@ class _NotificationCell extends State<NotificationCell> {
             child: Html(
               data: widget.notification.status.content,
               customTextStyle: (dom.Node node, TextStyle baseStyle) {
-                  if (node is dom.Element) {
-                    switch (node.localName) {
-                      case "p":
-                        return baseStyle.merge(TextStyle(fontSize: 18));
-                    }
+                if (node is dom.Element) {
+                  switch (node.localName) {
+                    case "p":
+                      return baseStyle.merge(TextStyle(fontSize: 18));
                   }
-                  return baseStyle.merge(TextStyle(fontSize: 18));
-                },
+                }
+                return baseStyle.merge(TextStyle(fontSize: 18));
+              },
             ),
           ),
         ],
@@ -134,10 +137,10 @@ class _NotificationCell extends State<NotificationCell> {
     for (var i = 0; i < status.mediaAttachments.length; i++) {
       MediaAttachment attachment = status.mediaAttachments[i];
       if (attachment.type == "image") {
-        var image = FadeInImage.assetNetwork(
-          placeholder: 'assets/images/double_ring_loading_io.gif',
-          image: attachment.url,
-        );
+        var image = CachedNetworkImage(
+            imageUrl: attachment.url,
+            placeholder: (context, url) => CircularProgressIndicator(),
+            errorWidget: (context, url, error) => Icon(Icons.error));
         items.add(image);
       } else if (attachment.type == "video") {
         items.add(
@@ -176,7 +179,10 @@ class _NotificationCell extends State<NotificationCell> {
           SizedBox(
             width: 8,
           ),
-          Text("Followed You!")
+          Text("Followed You "),
+          Text(
+            Jiffy(widget.notification.createdAt).fromNow(),
+          ),
         ],
       );
     } else if (type == "mention") {
@@ -186,7 +192,10 @@ class _NotificationCell extends State<NotificationCell> {
           SizedBox(
             width: 8,
           ),
-          Text("Mentioned You")
+          Text("Mentioned you "),
+          Text(
+            Jiffy(widget.notification.createdAt).fromNow(),
+          ),
         ],
       );
     } else if (type == "reblog") {
@@ -196,7 +205,10 @@ class _NotificationCell extends State<NotificationCell> {
           SizedBox(
             width: 8,
           ),
-          Text("Reposted Your Status")
+          Text("Reposted your status "),
+          Text(
+            Jiffy(widget.notification.createdAt).fromNow(),
+          ),
         ],
       );
     } else {
@@ -235,11 +247,14 @@ class _NotificationCell extends State<NotificationCell> {
         String shortcode = emoji["shortcode"];
         String url = emoji["url"];
         if (shortcode == emojiOrText) {
-          var image = Image.network(
-            url,
-            height: 15.0,
-            width: 15.0,
+          var image = CachedNetworkImage(
+            imageUrl: url,
+            placeholder: (context, url) => CircularProgressIndicator(),
+            errorWidget: (context, url, error) => Icon(Icons.error),
+            width: 15,
+            height: 15,
           );
+
           usernameWidget.add(image);
           foundEmoji = true;
         }
