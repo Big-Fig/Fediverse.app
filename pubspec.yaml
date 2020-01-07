@@ -55,6 +55,7 @@ dependencies:
   flutter_widgets: ^0.1.7+1
   image_cropper: ^1.1.1
   jiffy: ^2.1.2
+  cached_network_image: ^2.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

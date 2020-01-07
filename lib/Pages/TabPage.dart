@@ -221,7 +221,7 @@ class TabPageState extends State<TabPage>
       }
     } else if(taps > 1 && index == 1) {
       if (_notificationKey.currentState != null) {
-        _notificationKey.currentState.refreshEverything();
+        // _notificationKey.currentState.refreshEverything();
       }
     }
 

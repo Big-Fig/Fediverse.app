@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -123,12 +124,13 @@ class _ChatCell extends State<ChatCell> {
           Row(
             children: <Widget>[
               ClipRRect(
-                borderRadius: new BorderRadius.circular(15.0),
-                child: FadeInImage.assetNetwork(
-                  placeholder: 'assets/images/double_ring_loading_io.gif',
-                  image: widget.status.account.avatar,
-                  height: 30.0,
-                  width: 30.0,
+                borderRadius: BorderRadius.circular(15.0),
+                child: CachedNetworkImage(
+                  imageUrl: widget.status.account.avatar,
+                  placeholder: (context, url) => CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                  width: 30,
+                  height: 30,
                 ),
               ),
               SizedBox(
@@ -247,10 +249,10 @@ class _ChatCell extends State<ChatCell> {
     for (var i = 0; i < status.mediaAttachments.length; i++) {
       MediaAttachment attachment = status.mediaAttachments[i];
       if (attachment.type == "image") {
-        var image = FadeInImage.assetNetwork(
-          placeholder: 'assets/images/double_ring_loading_io.gif',
-          image: attachment.url,
-        );
+        var image = CachedNetworkImage(
+            imageUrl: attachment.url,
+            placeholder: (context, url) => CircularProgressIndicator(),
+            errorWidget: (context, url, error) => Icon(Icons.error));
         items.add(image);
       } else if (attachment.type == "video") {
         items.add(
@@ -311,11 +313,14 @@ class _ChatCell extends State<ChatCell> {
         String shortcode = emoji["shortcode"];
         String url = emoji["url"];
         if (shortcode == emojiOrText) {
-          var image = Image.network(
-            url,
-            height: 15.0,
-            width: 15.0,
+          var image = CachedNetworkImage(
+            imageUrl: url,
+            placeholder: (context, url) => CircularProgressIndicator(),
+            errorWidget: (context, url, error) => Icon(Icons.error),
+            width: 15,
+            height: 15,
           );
+
           usernameWidget.add(image);
           foundEmoji = true;
         }
