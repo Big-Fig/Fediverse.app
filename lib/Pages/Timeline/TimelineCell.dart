@@ -287,7 +287,7 @@ class _TimelineCell extends State<TimelineCell> {
 
   repost() {
     String path = StatusRequest.Status.reblogStatus(widget.status.id);
-    if (widget.status.favourited == true) {
+    if (widget.status.reblogged == true) {
       path = StatusRequest.Status.reblogStatus(widget.status.id);
       widget.status.reblogsCount = widget.status.reblogsCount - 1;
     } else {
