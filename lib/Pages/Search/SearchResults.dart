@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fedi/Pages/Profile/OtherAccount.dart';
 import 'package:fedi/Pages/Timeline/AccountCell.dart';
 import 'package:fedi/Pages/Timeline/StatusDetail.dart';
@@ -26,9 +28,12 @@ class SearchResults extends StatefulWidget {
 }
 
 class _SearchReults extends State<SearchResults> {
+
+  Timer searchOnStoppedTyping;
+
   void initState() {
     super.initState();
-    widget.searchController.addListener(_onRefresh);
+    widget.searchController.addListener(_onChangeHandler);
     if (SchedulerBinding.instance.schedulerPhase ==
         SchedulerPhase.persistentCallbacks) {
       // SchedulerBinding.instance
@@ -63,6 +68,19 @@ class _SearchReults extends State<SearchResults> {
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
+
+
+    _onChangeHandler() {
+        const duration = Duration(milliseconds:800); // set the duration that you want call search() after that.
+        if (searchOnStoppedTyping != null) {
+            setState(() => searchOnStoppedTyping.cancel()); // clear timer
+        }
+        setState(() => searchOnStoppedTyping = new Timer(duration, () => search()));
+    }
+
+    search() {
+        _onRefresh();
+    }
 
   void _onRefresh() async {
     // if failed,use refreshFailed()

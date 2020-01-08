@@ -169,6 +169,12 @@ class _StatusDetail extends State<StatusDetail> {
       templist.addAll(context.descendants);
       // templist.addAll();
       // statuses.addAll(templist.reversed);
+      if (txtController.text == ""){
+      for(int i = 0; i < widget.status.mentions.length; i++){
+        Mention mention = widget.status.mentions[i];
+        txtController.text = "${txtController.text} ${mention.acct}";
+      }
+      }
       statuses.addAll(templist.reversed);
       if (mounted)
         setState(() {

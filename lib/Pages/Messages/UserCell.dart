@@ -5,9 +5,6 @@ import 'package:html/parser.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Models/Account.dart';
 import 'package:fedi/Pleroma/Models/Status.dart';
-import 'package:carousel_pro/carousel_pro.dart';
-import 'package:fedi/Views/VideoPlayer.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class UserCell extends StatefulWidget {
   final Account account;

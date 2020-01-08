@@ -7,7 +7,6 @@ import 'package:fedi/Pleroma/Models/Notification.dart' as NotificationObject;
 import 'package:fedi/Pleroma/Models/Status.dart';
 import 'package:fedi/Views/VideoPlayer.dart';
 import 'package:jiffy/jiffy.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 import 'package:html/dom.dart' as dom;
 
 class NotificationCell extends StatefulWidget {
@@ -25,10 +24,10 @@ class NotificationCell extends StatefulWidget {
   }
 }
 
-double deviceWidth;
-double targetWidth;
-
 class _NotificationCell extends State<NotificationCell> {
+  double deviceWidth;
+  double targetWidth;
+
   @override
   Widget build(BuildContext context) {
     deviceWidth = MediaQuery.of(context).size.width;

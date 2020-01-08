@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fedi/Pages/Notifications/NotificationCell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -14,7 +13,6 @@ import 'package:fedi/Pleroma/Models/Status.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:fedi/Views/VideoPlayer.dart';
 import 'package:jiffy/jiffy.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 import 'package:flutter_alert/flutter_alert.dart';
 import 'package:html/dom.dart' as dom;
 
@@ -32,10 +30,15 @@ class TimelineCell extends StatefulWidget {
 }
 
 class _TimelineCell extends State<TimelineCell> {
+
+  double deviceWidth;
+  double targetWidth;
+
   @override
   Widget build(BuildContext context) {
-    final double deviceWidth = MediaQuery.of(context).size.width;
-    final double targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
+
+    deviceWidth = MediaQuery.of(context).size.width;
+    targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
     Status status =
         widget.status.reblog != null ? widget.status.reblog : widget.status;
 
