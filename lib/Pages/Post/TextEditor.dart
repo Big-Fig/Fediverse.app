@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:fedi/Pleroma/Models/Account.dart';
+import 'package:fedi/Views/MentionPage.dart';
 import 'package:flutter/material.dart';
 import 'package:fedi/Constants/AppThemeConsts.dart';
 import 'package:fedi/Pages/Post/AddAdditionalMedia.dart';
@@ -37,18 +39,58 @@ class _TextEditor extends State<TextEditor> {
 
   List<dynamic> assets;
 
+  accountMentioned(Account acct) {
+    print("$acct");
+    String lastChar =
+        statusController.text.substring(statusController.text.length - 1);
+    if (lastChar == "@") {
+      statusController.text =
+          statusController.text.substring(0, statusController.text.length - 1);
+    }
+    statusController.text = "${statusController.text} @${acct.acct}";
+  }
+
   @override
   Widget build(BuildContext context) {
     final Widget body = Column(
       children: <Widget>[
         Expanded(
           child: TextField(
+            onChanged: (value) {
+              String lastChar = value.substring(value.length - 1);
+              if (lastChar == "@") {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MentionPage(accountMentioned)));
+              }
+            },
             autofocus: true,
             controller: statusController,
             maxLines: null,
             minLines: null,
             expands: true,
           ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            IconButton(
+              icon: Text(
+                "@",
+                style: TextStyle(
+                    color: Colors.green,
+                    fontWeight: FontWeight.w800,
+                    fontSize: 20),
+              ),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MentionPage(accountMentioned)));
+              },
+            ),
+          ],
         ),
         getMediaGrid(),
       ],
@@ -60,10 +102,8 @@ class _TextEditor extends State<TextEditor> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-
-            Navigator.pushReplacement(context,
-            SlideRightRoute(page: CaptureController()));
-
+            Navigator.pushReplacement(
+                context, SlideRightRoute(page: CaptureController()));
           },
         ),
         actions: <Widget>[

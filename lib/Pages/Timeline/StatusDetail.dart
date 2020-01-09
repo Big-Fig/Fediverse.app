@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:fedi/Views/MentionPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:fedi/Pages/Messages/Media/CaptureDMMedia.dart';
@@ -44,6 +45,17 @@ class _StatusDetail extends State<StatusDetail> {
     );
   }
 
+  accountMentioned(Account acct) {
+    print("$acct");
+    String lastChar =
+        txtController.text.substring(txtController.text.length - 1);
+    if (lastChar == "@") {
+      txtController.text =
+          txtController.text.substring(0, txtController.text.length - 1);
+    }
+    txtController.text = "${txtController.text} @${acct.acct}";
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,6 +76,16 @@ class _StatusDetail extends State<StatusDetail> {
                 child: TextField(
                   controller: txtController,
                   maxLines: null,
+                  onChanged: (value) {
+                    String lastChar = value.substring(value.length - 1);
+                    if (lastChar == "@") {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  MentionPage(accountMentioned)));
+                    }
+                  },
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12.0),
@@ -120,6 +142,22 @@ class _StatusDetail extends State<StatusDetail> {
                                   CaptureDMMedia(2, mediaUploaded)));
                     },
                   ),
+                  IconButton(
+                    icon: Text(
+                      "@",
+                      style: TextStyle(
+                          color: Colors.green,
+                          fontWeight: FontWeight.w800,
+                          fontSize: 20),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  MentionPage(accountMentioned)));
+                    },
+                  ),
                   Spacer(),
                   OutlineButton(
                     child: Text(
@@ -163,31 +201,32 @@ class _StatusDetail extends State<StatusDetail> {
       Context context = contextFromJson(response.body);
       statuses.clear();
       List<Status> templist = [];
-      
+
       templist.addAll(context.ancestors);
       templist.add(widget.status);
       templist.addAll(context.descendants);
-      // templist.addAll();
-      // statuses.addAll(templist.reversed);
-      if (txtController.text == ""){
-      for(int i = 0; i < widget.status.mentions.length; i++){
-        Mention mention = widget.status.mentions[i];
-        txtController.text = "${txtController.text} ${mention.acct}";
-      }
+
+      if (txtController.text == "") {
+        if (widget.status.account != null) {
+          txtController.text =
+              "${txtController.text} @${widget.status.account.acct}";
+        }
+        for (int i = 0; i < widget.status.mentions.length; i++) {
+          Mention mention = widget.status.mentions[i];
+          txtController.text = "${txtController.text} @${mention.acct}";
+        }
       }
       statuses.addAll(templist.reversed);
       if (mounted)
         setState(() {
           _refreshController.refreshCompleted();
         });
-
     }).catchError((error) {
       print(error.toString());
       if (mounted) setState(() {});
       _refreshController.refreshFailed();
     });
   }
-
 
   jumpToStatus() {
     _controller.jumpTo(_controller.position.maxScrollExtent);
@@ -240,7 +279,7 @@ class _StatusDetail extends State<StatusDetail> {
         reverse: true,
         itemBuilder: (BuildContext context, int index) {
           Status status = statuses[index];
-          
+
           return TimelineCell(status, viewAccount: viewAccount);
         },
       ),

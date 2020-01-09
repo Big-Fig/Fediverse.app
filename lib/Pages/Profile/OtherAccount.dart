@@ -1,3 +1,4 @@
+import 'package:fedi/Pages/Timeline/StatusDetail.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -41,9 +42,19 @@ class _OtherAccount extends State<OtherAccount> {
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
-  void _onRefresh() async {
+  viewStatusDetail(Status status) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => StatusDetail(
+          status: status,
+        ),
+        settings: RouteSettings(name: "/StatusDetail"),
+      ),
+    );
+  }
 
-    
+  void _onRefresh() async {
     print("Account!!");
     print("${widget.account.fields}");
     // monitor network fetch
@@ -170,7 +181,7 @@ class _OtherAccount extends State<OtherAccount> {
                 profileAccount: widget.account,
               );
             } else {
-              return TimelineCell(statuses[index - 1]);
+              return TimelineCell(statuses[index - 1], viewStatusContext: viewStatusDetail,);
             }
           },
           itemCount: (statuses.length + 1),

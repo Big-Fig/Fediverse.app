@@ -36,6 +36,7 @@ class MyTimelinePageState extends State<MyTimelinePage> {
   }
 
   selectTimeline(String timeline) {
+    print("selectTimeline");
     if (timeline == widget.tabPage.currentTimeline) {
       return;
     }
@@ -54,6 +55,10 @@ class MyTimelinePageState extends State<MyTimelinePage> {
       setState(() {});
     }
     refreshEverything();
+  }
+
+  refresh(){
+
   }
 
   viewStatusDetail(Status status) {
