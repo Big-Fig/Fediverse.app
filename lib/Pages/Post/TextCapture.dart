@@ -1,3 +1,5 @@
+import 'package:fedi/Pleroma/Models/Account.dart';
+import 'package:fedi/Views/MentionPage.dart';
 import 'package:flutter/material.dart';
 
 class TextCapture extends StatefulWidget {
@@ -16,11 +18,32 @@ class _TextCapture extends State<TextCapture> {
     print("Init state");
   }
 
+  accountMentioned(Account acct) {
+    print("$acct");
+    String lastChar =
+        widget.statusController.text.substring(widget.statusController.text.length - 1);
+    if (lastChar == "@") {
+      widget.statusController.text =
+          widget.statusController.text.substring(0, widget.statusController.text.length - 1);
+    }
+    widget.statusController.text =
+        "${widget.statusController.text} @${acct.acct}";
+  }
+
   TextField status;
 
   @override
   Widget build(BuildContext context) {
     status = TextField(
+      onChanged: (value) {
+        String lastChar = value.substring(value.length - 1);
+        if (lastChar == "@") {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => MentionPage(accountMentioned)));
+        }
+      },
       autofocus: true,
       controller: widget.statusController,
       maxLines: null,
@@ -30,6 +53,26 @@ class _TextCapture extends State<TextCapture> {
     final Widget body = Column(
       children: <Widget>[
         Expanded(child: status),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            IconButton(
+              icon: Text(
+                "@",
+                style: TextStyle(
+                    color: Colors.green,
+                    fontWeight: FontWeight.w800,
+                    fontSize: 20),
+              ),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MentionPage(accountMentioned)));
+              },
+            ),
+          ],
+        ),
       ],
     );
 

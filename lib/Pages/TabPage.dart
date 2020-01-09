@@ -61,11 +61,17 @@ class TabPageState extends State<TabPage>
   List<Widget> _homeControllers = [];
   MyProfilePage myProfile = MyProfilePage();
 
+  rebuildWithSelectedTimelien(String timeline){
+    print("updates going on here!!!!");
+    print(currentTimeline);
+    _timelineKey.currentState.selectTimeline(timeline);
+  }
+
   @override
   initState() {
     super.initState();
     _homeControllers = [
-      MyTimelinePage(this),
+      MyTimelinePage(this, key: _timelineKey,),
       GalleryPage(
         key: _galleryKey,
       )

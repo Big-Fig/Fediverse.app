@@ -1,3 +1,4 @@
+import 'package:fedi/Pages/Timeline/StatusDetail.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -12,7 +13,6 @@ import 'package:fedi/Pleroma/Models/Status.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class MyProfilePage extends StatefulWidget {
-
   final List<Status> statuses = <Status>[];
   @override
   State<StatefulWidget> createState() {
@@ -22,7 +22,7 @@ class MyProfilePage extends StatefulWidget {
 
 class _MyProfilePage extends State<MyProfilePage> {
   Account myAccount;
-  
+
   void initState() {
     super.initState();
     if (SchedulerBinding.instance.schedulerPhase ==
@@ -47,6 +47,18 @@ class _MyProfilePage extends State<MyProfilePage> {
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
+
+  viewStatusDetail(Status status) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => StatusDetail(
+          status: status,
+        ),
+        settings: RouteSettings(name: "/StatusDetail"),
+      ),
+    );
+  }
 
   void _onRefresh() async {
     print("ONREFRESH");
@@ -106,9 +118,7 @@ class _MyProfilePage extends State<MyProfilePage> {
     });
   }
 
-  updated(BuildContext context){
-
-  }
+  updated(BuildContext context) {}
 
   @override
   Widget build(BuildContext context) {
@@ -175,7 +185,10 @@ class _MyProfilePage extends State<MyProfilePage> {
               editAccount: editProfile,
             );
           } else {
-            return TimelineCell(widget.statuses[index - 1]);
+            return TimelineCell(
+              widget.statuses[index - 1],
+              viewStatusContext: viewStatusDetail,
+            );
           }
         },
         itemCount: (widget.statuses.length + 1),

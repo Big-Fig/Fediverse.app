@@ -62,9 +62,11 @@ class HomeContainerPageState extends State<HomeContainerPage>
                     ],
                     onTap: (index) {
                       setState(() {
+                        widget.tabPage.rebuildWithSelectedTimelien(timelines[index]);
                         widget.tabPage.currentTimeline = timelines[index];
                         showTimelineOptions = false;
                         showSearch = false;
+                        
                       });
                     },
                   ),
