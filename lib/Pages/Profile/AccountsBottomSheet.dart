@@ -1,6 +1,7 @@
 import 'dart:core';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fedi/Views/Alert.dart';
 import 'package:flutter/material.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
@@ -10,8 +11,9 @@ BuildContext _context;
 class AccountsBottomSheet extends StatelessWidget {
   final Function addAccount;
   final Function swapAccount;
+  final Function(InstanceStorage) logout;
 
-  AccountsBottomSheet({this.addAccount, this.swapAccount});
+  AccountsBottomSheet({this.addAccount, this.swapAccount, this.logout});
 
   hide() {
     Navigator.of(_context).pop();
@@ -83,8 +85,26 @@ class AccountsBottomSheet extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
                                 Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 3),
+                                  child: IconButton(
+                                    icon: Icon(
+                                      Icons.remove_circle_outline,
+                                      color: Colors.red,
+                                    ),
+                                    onPressed: () {
+                                      var alert = Alert(context, "Log Out:", "Log out of $thisClient", (){
+                                        InstanceStorage.removeInstanceData(instance).then((_){
+                                          swapAccount();
+                                        });
+                                        
+                                      }, actionButtonTitle: "Log Out", showCancel: true);
+                                      alert.showAlert();
+                                    },
+                                  ),
+                                ),
+                                Padding(
                                   padding:
-                                      EdgeInsets.symmetric(horizontal: 20.0),
+                                  EdgeInsets.only(left: 0, right: 10),
                                   child: SizedBox(
                                     height: 50,
                                     width: 50,

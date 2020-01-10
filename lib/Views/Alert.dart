@@ -5,9 +5,12 @@ class Alert {
   BuildContext context;
   String title;
   String message;
+  bool showCancel = false;
   Function onPress;
+  String actionButtonTitle = "Ok";
+  String cancelButtonTitle = "Cancel";
 
-  Alert(this.context, this.title, this.message, this.onPress);
+  Alert(this.context, this.title, this.message, this.onPress, {this.showCancel, this.actionButtonTitle, this.cancelButtonTitle});
 
   showAlert() {
     showDialog(
@@ -18,9 +21,16 @@ class Alert {
           title: new Text(this.title),
           content: new Text(this.message),
           actions: <Widget>[
+            if (showCancel == true)
+              FlatButton(
+                child: new Text(cancelButtonTitle ?? "Cancel"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
             // usually buttons at the bottom of the dialog
-            new FlatButton(
-              child: new Text("Ok"),
+            FlatButton(
+              child: new Text(actionButtonTitle ?? "Ok"),
               onPressed: () {
                 Navigator.of(context).pop();
                 this.onPress();
