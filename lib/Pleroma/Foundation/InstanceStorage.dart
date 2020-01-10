@@ -38,12 +38,21 @@ class InstanceStorage {
   }
 
 
+  static Future<void> removeInstanceData(InstanceStorage instance) async {
+
+    print("REMOVING INSTANCE DATA");
+    var box = await Hive.openBox('InstanceStorage', lazy: true) as LazyBox;
+    await InstanceStorage.removeAccountFromInstanceList(instance.account);
+    await box.delete("${instance.account}-account");
+    await box.delete("${instance.account}-auth");
+    await box.delete("${instance.account}-client");
+    await box.delete("${instance.account}-clientSettings");
+    
+  }
+
   Future<void> saveInstanceData(InstanceStorage instance) async {
 
     print("SAVING INSTANCE DATA");
-
-
-
     var box = await Hive.openBox('InstanceStorage', lazy: true) as LazyBox;
     await box.put("${instance.account}-account", instance.currentAccount);
     await box.put("${instance.account}-auth", instance.currentAuth);
@@ -51,6 +60,8 @@ class InstanceStorage {
     await box.put("${instance.account}-clientSettings", instance.currentClient.clientSettings);
     await addAccountToInstanceList(instance.account);
   }
+
+  
   
   static Future<InstanceStorage> getInstanceStorageByAccount(String account) async {
      var box = await Hive.openBox('InstanceStorage', lazy: true) as LazyBox;
@@ -102,6 +113,16 @@ class InstanceStorage {
     await box.put("InstanceList", stringList);
   }
 
+  static Future<void> removeAccountFromInstanceList(String account) async {
+    var box = await Hive.openBox('InstanceStorage', lazy: true) as LazyBox;
+    List<String> stringList = await box.get("InstanceList");
+    if (stringList == null){
+      stringList = <String>[];
+    }
+    stringList.remove(account);
+    await box.put("InstanceList", stringList);
+  }
+
   static Future<List<InstanceStorage>> getInstanceList() async {
     var box = await Hive.openBox('InstanceStorage', lazy: true) as LazyBox;
     List<String> stringList = await box.get("InstanceList");
@@ -114,6 +135,24 @@ class InstanceStorage {
     print("My Length");
     print(instanceStorage.length);
     return instanceStorage;
+  }
+
+  static Future<InstanceStorage> getNextInstance() async {
+    var box = await Hive.openBox('InstanceStorage', lazy: true) as LazyBox;
+    List<String> stringList = await box.get("InstanceList");
+    List<InstanceStorage> instanceStorage = <InstanceStorage>[];
+    for(var i = 0; i < stringList.length; i++ ){
+      print("getting instance ${stringList[i]}");
+      var instance = await getInstanceStorageByAccount(stringList[i]);
+      instanceStorage.add(instance);
+    }
+    if (instanceStorage.length > 0){
+       InstanceStorage.setCurrentAccount( instanceStorage.first.account );
+      return instanceStorage.first;
+    } else {
+      return null;
+    }
+    
   }
 
   Future<void> clearAll() async {
