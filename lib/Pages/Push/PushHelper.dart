@@ -96,6 +96,10 @@ class PushHelper {
     );
   }
 
+  unregister(){
+    CurrentInstance.instance.currentClient.unsubscribeToPush();
+  }
+
   register() {
     PushHelper.instance._firebaseMessaging.requestNotificationPermissions(
         const IosNotificationSettings(sound: true, badge: true, alert: true));
@@ -110,4 +114,6 @@ class PushHelper {
       CurrentInstance.instance.currentClient.subscribeToPush(token);
     });
   }
+
+
 }

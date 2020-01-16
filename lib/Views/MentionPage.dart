@@ -7,10 +7,10 @@ import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart'
     as AccountRequests;
 import 'package:fedi/Pleroma/Models/Account.dart';
+import 'package:flutter_webrtc/get_user_media.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class MentionPage extends StatefulWidget {
-
   final Function(Account account) userSelected;
 
   MentionPage(this.userSelected);
@@ -87,14 +87,8 @@ class _MentionPage extends State<MentionPage> {
     });
   }
 
-  cellTapped(Account account) {
-    widget.userSelected(account);
-    Navigator.pop(context);
-  }
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text("Mention User"),
@@ -104,29 +98,28 @@ class _MentionPage extends State<MentionPage> {
           Container(
             height: 50,
             child: TextField(
-                autocorrect: false,
-                controller: _controller,
-                onChanged: (text) {
-                  searchText = text == "" ? null : text;
-                  _refreshController.requestRefresh();
-                },
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.green.withAlpha(150),
-                  hintText: 'Search',
-                  border: InputBorder.none,
-                  helperStyle: TextStyle(color: Colors.white),
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      searchText = null;
-                      _controller.clear();
-                      _refreshController.requestRefresh();
-                    },
-                    icon: Icon(Icons.clear),
-                  ),
+              autocorrect: false,
+              controller: _controller,
+              onChanged: (text) {
+                searchText = text == "" ? null : text;
+                _refreshController.requestRefresh();
+              },
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.green.withAlpha(150),
+                hintText: 'Search',
+                border: InputBorder.none,
+                helperStyle: TextStyle(color: Colors.white),
+                suffixIcon: IconButton(
+                  onPressed: () {
+                    searchText = null;
+                    _controller.clear();
+                    _refreshController.requestRefresh();
+                  },
+                  icon: Icon(Icons.clear),
                 ),
               ),
-            
+            ),
           ),
           Expanded(
             child: SmartRefresher(
@@ -188,10 +181,17 @@ class _MentionPage extends State<MentionPage> {
               onRefresh: _onRefresh,
               child: ListView.builder(
                 padding: EdgeInsets.symmetric(horizontal: 2.0, vertical: 10.0),
-                itemBuilder: (c, i) => UserCell(
-                  account: accounts[i],
-                  cellTapped: cellTapped,
-                ),
+                itemBuilder: (c, i) {
+                  var acct = accounts[i];
+                  return UserCell(
+                    account: acct,
+                    cellTapped:(Account acct){
+                      print("another layer deep");
+                      widget.userSelected(acct);
+                      Navigator.of(c).pop();
+                    },
+                  );
+                },
                 itemCount: accounts.length,
               ),
             ),

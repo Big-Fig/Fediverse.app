@@ -222,6 +222,28 @@ class Client {
     }
   }
 
+  Future<http.Response> unsubscribeToPush() async {
+   
+    var url = "$baseURL/api/v1/push/subscription";
+    var headers = {
+      HttpHeaders.authorizationHeader: "Bearer $accessToken",
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+    };
+    
+    
+    try {
+      final response = await http.delete(url,
+          headers: headers);
+      print(response.statusCode);
+      print(response.body);
+      return response;
+    } catch (e) {
+      print(e.toString());
+      return e;
+    }
+  }
+
   Future<http.Response> subscribeToPush(String token) async {
     var url = "$baseURL/api/v1/push/subscription";
     var headers = {

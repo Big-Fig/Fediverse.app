@@ -119,8 +119,17 @@ class InstanceStorage {
     if (stringList == null){
       stringList = <String>[];
     }
+    print("BEFORE LIST");
+    for(int i = 0; i < stringList.length; i++){
+      print("${stringList[i]}");
+    }
     stringList.remove(account);
+    print("AFTER LIST");
+    for(int i = 0; i < stringList.length; i++){
+      print("${stringList[i]}");
+    }
     await box.put("InstanceList", stringList);
+    
   }
 
   static Future<List<InstanceStorage>> getInstanceList() async {

@@ -30,10 +30,11 @@ class TabPage extends StatefulWidget {
   final Function addNewInstance;
   final Function refreshInstance;
   final Function loadInstance;
+  final Function logout;
   final int initalIndex;
 
   TabPage(this.initalIndex,
-      {this.addNewInstance, this.loadInstance, this.refreshInstance});
+      {this.addNewInstance, this.loadInstance, this.refreshInstance, this.logout});
 
   @override
   State<StatefulWidget> createState() {
@@ -256,6 +257,7 @@ class TabPageState extends State<TabPage>
     bottomSheet = AccountsBottomSheet(
       addAccount: addAccount,
       swapAccount: swapAccount,
+      logout: widget.logout,
     );
     showModalBottomSheet(
         builder: (BuildContext context) {

@@ -28,6 +28,8 @@ class _TextCapture extends State<TextCapture> {
     }
     widget.statusController.text =
         "${widget.statusController.text} @${acct.acct}";
+
+        Navigator.pop(context);
   }
 
   TextField status;
