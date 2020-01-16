@@ -11,7 +11,7 @@ BuildContext _context;
 class AccountsBottomSheet extends StatelessWidget {
   final Function addAccount;
   final Function swapAccount;
-  final Function(InstanceStorage) logout;
+  final Function logout;
 
   AccountsBottomSheet({this.addAccount, this.swapAccount, this.logout});
 
@@ -92,19 +92,28 @@ class AccountsBottomSheet extends StatelessWidget {
                                       color: Colors.red,
                                     ),
                                     onPressed: () {
-                                      var alert = Alert(context, "Log Out:", "Log out of $thisClient", (){
-                                        InstanceStorage.removeInstanceData(instance).then((_){
-                                          swapAccount();
+                                      var alert = Alert(context, "Log Out:",
+                                          "Log out of $thisClient", () {
+                                        CurrentInstance.instance.currentClient
+                                            .unsubscribeToPush()
+                                            .then((response) {
+                                          if (response.body != null) {
+                                            InstanceStorage.removeInstanceData(
+                                                    instance)
+                                                .then((_) {
+                                              logout();
+                                            });
+                                          }
                                         });
-                                        
-                                      }, actionButtonTitle: "Log Out", showCancel: true);
+                                      },
+                                          actionButtonTitle: "Log Out",
+                                          showCancel: true);
                                       alert.showAlert();
                                     },
                                   ),
                                 ),
                                 Padding(
-                                  padding:
-                                  EdgeInsets.only(left: 0, right: 10),
+                                  padding: EdgeInsets.only(left: 0, right: 10),
                                   child: SizedBox(
                                     height: 50,
                                     width: 50,

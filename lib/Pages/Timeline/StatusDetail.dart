@@ -12,7 +12,9 @@ import 'package:fedi/Pleroma/Models/Context.dart';
 import 'package:fedi/Pleroma/Models/Status.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
 import 'package:fedi/Views/Alert.dart';
+import 'package:flutter_widgets/flutter_widgets.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:flutter/src/widgets/visibility.dart' as Vis;
 
 class StatusDetail extends StatefulWidget {
   final Status status;
@@ -26,7 +28,14 @@ class StatusDetail extends StatefulWidget {
 }
 
 class _StatusDetail extends State<StatusDetail> {
+  List<String> mentionedAccts = [];
+
+  double mentionHeight = 0.0;
+
   var txtController = TextEditingController();
+  final ItemScrollController itemScrollController = ItemScrollController();
+  final ItemPositionsListener itemPositionListener =
+      ItemPositionsListener.create();
   List<Status> statuses = <Status>[];
 
   void initState() {
@@ -34,7 +43,14 @@ class _StatusDetail extends State<StatusDetail> {
 
     if (SchedulerBinding.instance.schedulerPhase ==
         SchedulerPhase.persistentCallbacks) {
-      SchedulerBinding.instance.addPostFrameCallback((_) => _onRefresh());
+      SchedulerBinding.instance
+          .addPostFrameCallback((_) => refreshEverything());
+    }
+  }
+
+  refreshEverything() {
+    if (statuses.length == 0) {
+      _refreshController.requestRefresh();
     }
   }
 
@@ -47,17 +63,30 @@ class _StatusDetail extends State<StatusDetail> {
 
   accountMentioned(Account acct) {
     print("$acct");
-    String lastChar =
-        txtController.text.substring(txtController.text.length - 1);
-    if (lastChar == "@") {
-      txtController.text =
-          txtController.text.substring(0, txtController.text.length - 1);
+    if (txtController.text.length > 0) {
+      String lastChar =
+          txtController.text.substring(txtController.text.length - 1);
+      if (lastChar == "@") {
+        txtController.text =
+            txtController.text.substring(0, txtController.text.length - 1);
+      }
     }
-    txtController.text = "${txtController.text} @${acct.acct}";
+    setState(() {
+      if (!mentionedAccts.contains(acct.acct)) {
+        mentionedAccts.add(acct.acct);
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    String mentionDesc = "1 Mention";
+    if (mentionedAccts.length > 1) {
+      mentionDesc = "${mentionedAccts.length} Mentions";
+    }
+    if (mentionedAccts.length == 0) {
+      mentionHeight = 0;
+    }
     return Scaffold(
         appBar: AppBar(
           title: Text("Status Details"),
@@ -68,6 +97,88 @@ class _StatusDetail extends State<StatusDetail> {
             Expanded(
               child: getMessageList(),
             ),
+            Vis.Visibility(
+              visible: mentionedAccts.length > 0 ? true : false,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Expanded(child: Container()),
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: OutlineButton(
+                        color: Colors.green,
+                        child: Text(
+                          '@ $mentionDesc',
+                          style: TextStyle(color: Colors.green),
+                        ),
+                        onPressed: () {
+                          if (mentionHeight == 0) {
+                            FocusScope.of(context).unfocus();
+                            setState(() {
+                              mentionHeight = 130;
+                            });
+                          } else {
+                            setState(() {
+                              mentionHeight = 0;
+                            });
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            AnimatedContainer(
+              duration: Duration(milliseconds: 275),
+              height: mentionHeight,
+              curve: Curves.bounceInOut,
+              child: ListView.builder(
+                itemCount: mentionedAccts.length + 1,
+                itemBuilder: (BuildContext context, int index) {
+                  if (index == mentionedAccts.length) {
+                    return Card(
+                      child: FlatButton(
+                        child: Text(
+                          " + @ ",
+                          style: TextStyle(color: Colors.green),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      MentionPage(accountMentioned)));
+                        },
+                      ),
+                    );
+                  } else {
+                    String acct = mentionedAccts[index];
+                    return Container(
+                      height: 55,
+                      child: Row(
+                        children: <Widget>[
+                          IconButton(
+                            icon: Icon(
+                              Icons.remove_circle_outline,
+                              color: Colors.red,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                mentionedAccts.removeAt(index);
+                              });
+                            },
+                          ),
+                          Text("@$acct"),
+                        ],
+                      ),
+                    );
+                  }
+                },
+              ),
+            ),
             ConstrainedBox(
               constraints: BoxConstraints(maxHeight: 200, minHeight: 80),
               child: Padding(
@@ -76,7 +187,19 @@ class _StatusDetail extends State<StatusDetail> {
                 child: TextField(
                   controller: txtController,
                   maxLines: null,
+                  onTap: () {
+                    if (mentionHeight != 0) {
+                      setState(() {
+                        mentionHeight = 0;
+                      });
+                    }
+                  },
                   onChanged: (value) {
+                    if (mentionHeight != 0) {
+                      setState(() {
+                        mentionHeight = 0;
+                      });
+                    }
                     String lastChar = value.substring(value.length - 1);
                     if (lastChar == "@") {
                       Navigator.push(
@@ -206,20 +329,23 @@ class _StatusDetail extends State<StatusDetail> {
       templist.add(widget.status);
       templist.addAll(context.descendants);
 
-      if (txtController.text == "") {
-        if (widget.status.account != null) {
-          txtController.text =
-              "${txtController.text} @${widget.status.account.acct}";
-        }
-        for (int i = 0; i < widget.status.mentions.length; i++) {
-          Mention mention = widget.status.mentions[i];
-          txtController.text = "${txtController.text} @${mention.acct}";
-        }
+      if (widget.status.account != null && widget.status.account.acct != CurrentInstance.instance.currentAccount.acct) {
+        mentionedAccts.add(widget.status.account.acct);
+        //txtController.text =
+        //"${txtController.text} @${widget.status.account.acct}";
       }
-      statuses.addAll(templist.reversed);
+      for (int i = 0; i < widget.status.mentions.length; i++) {
+        Mention mention = widget.status.mentions[i];
+        if (!mentionedAccts.contains(mention.acct) && mention.acct != CurrentInstance.instance.currentAccount.acct) {
+          mentionedAccts.add(mention.acct);
+        }
+        // txtController.text = "${txtController.text} @${mention.acct}";
+      }
+      statuses.addAll(templist);
       if (mounted)
         setState(() {
           _refreshController.refreshCompleted();
+          itemScrollController.jumpTo(index: context.ancestors.length);
         });
     }).catchError((error) {
       print(error.toString());
@@ -272,15 +398,21 @@ class _StatusDetail extends State<StatusDetail> {
       ),
       controller: _refreshController,
       onRefresh: _onRefresh,
-      child: ListView.builder(
-        controller: _controller,
+      child: ScrollablePositionedList.builder(
+        itemScrollController: itemScrollController,
+        itemPositionsListener: itemPositionListener,
         padding: EdgeInsets.symmetric(horizontal: 2.0, vertical: 10.0),
         itemCount: statuses.length,
-        reverse: true,
         itemBuilder: (BuildContext context, int index) {
+          if (statuses.length == 0) {
+            return Container();
+          }
           Status status = statuses[index];
-
-          return TimelineCell(status, viewAccount: viewAccount);
+          return TimelineCell(
+            status,
+            viewAccount: viewAccount,
+            showCommentBtn: false,
+          );
         },
       ),
     );
@@ -302,7 +434,7 @@ class _StatusDetail extends State<StatusDetail> {
       print(statusResponse.body);
       txtController.clear();
       var status = Status.fromJson(jsonDecode(statusResponse.body));
-      statuses.insert(0, status);
+      statuses.add(status);
       setState(() {});
     }).catchError((e) {
       print(e);
@@ -321,9 +453,17 @@ class _StatusDetail extends State<StatusDetail> {
       return;
     }
 
+    String mentionListString = "";
+    for (int i = 0; i < mentionedAccts.length; i++) {
+      String acct = mentionedAccts[i];
+      mentionListString = "$mentionListString @$acct";
+    }
+
+    String status = "$mentionListString ${txtController.text}";
+
     var statusPath = StatusRequest.Status.postNewStatus;
     Map<String, dynamic> params = {
-      "status": "${txtController.text}",
+      "status": "$status",
       "visibility": widget.status.visibility.toString(),
       "in_reply_to_id": widget.status.id
     };
@@ -335,7 +475,7 @@ class _StatusDetail extends State<StatusDetail> {
       print(statusResponse.body);
       txtController.clear();
       var status = Status.fromJson(jsonDecode(statusResponse.body));
-      statuses.insert(0, status);
+      statuses.add(status);
       setState(() {});
     }).catchError((e) {
       print(e);

@@ -24,7 +24,10 @@ class _UserCell extends State<UserCell> {
   }
 
   cellTapped() {
+    print("cell tapped");
+    print("${widget.account.acct}");
     widget.cellTapped(widget.account);
+
   }
 
   String getUserDomainName(Account account) {

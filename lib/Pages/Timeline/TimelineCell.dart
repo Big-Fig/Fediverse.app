@@ -20,8 +20,10 @@ class TimelineCell extends StatefulWidget {
   final Status status;
   final Function(Account) viewAccount;
   final Function(Status) viewStatusContext;
+  final bool showCommentBtn;
 
-  TimelineCell(this.status, {this.viewAccount, this.viewStatusContext});
+  TimelineCell(this.status,
+      {this.viewAccount, this.viewStatusContext, this.showCommentBtn});
 
   @override
   State<StatefulWidget> createState() {
@@ -30,13 +32,11 @@ class TimelineCell extends StatefulWidget {
 }
 
 class _TimelineCell extends State<TimelineCell> {
-
   double deviceWidth;
   double targetWidth;
 
   @override
   Widget build(BuildContext context) {
-
     deviceWidth = MediaQuery.of(context).size.width;
     targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
     Status status =
@@ -232,16 +232,17 @@ class _TimelineCell extends State<TimelineCell> {
                           like();
                         },
                       ),
-                      if (widget.status.favouritesCount != 0)
+                      if (widget.status.favouritesCount != 0 && (widget.showCommentBtn == true || widget.showCommentBtn == null))
                         Text(widget.status.favouritesCount.toString()),
-                      IconButton(
-                        color: Colors.grey,
-                        icon: Icon(Icons.add_comment),
-                        tooltip: 'comment',
-                        onPressed: () {
-                          widget.viewStatusContext(widget.status);
-                        },
-                      ),
+                      if (widget.showCommentBtn == true || widget.showCommentBtn == null)
+                        IconButton(
+                          color: Colors.grey,
+                          icon: Icon(Icons.add_comment),
+                          tooltip: 'comment',
+                          onPressed: () {
+                            widget.viewStatusContext(widget.status);
+                          },
+                        ),
                       if (widget.status.repliesCount != 0)
                         Text(widget.status.repliesCount.toString()),
                       IconButton(
