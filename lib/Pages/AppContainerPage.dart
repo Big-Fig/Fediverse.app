@@ -127,6 +127,7 @@ class _AppContainerPage extends State<AppContainerPage> {
         addNewInstance: addNewInstance,
         refreshInstance: refreshInstance,
         loadInstance: loadComplete,
+        logout: logOut,
       );
     } else {
       return InstanceLoginPage(

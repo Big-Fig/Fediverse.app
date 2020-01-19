@@ -94,16 +94,21 @@ class AccountsBottomSheet extends StatelessWidget {
                                     onPressed: () {
                                       var alert = Alert(context, "Log Out:",
                                           "Log out of $thisClient", () {
-                                        CurrentInstance.instance.currentClient
-                                            .unsubscribeToPush()
-                                            .then((response) {
-                                          if (response.body != null) {
-                                            InstanceStorage.removeInstanceData(
-                                                    instance)
-                                                .then((_) {
-                                              logout();
-                                            });
-                                          }
+                                        InstanceStorage.setCurrentAccount(
+                                                instance.account)
+                                            .then((future) {
+                                          CurrentInstance.instance.currentClient
+                                              .unsubscribeToPush()
+                                              .then((response) {
+                                            if (response.body != null) {
+                                              InstanceStorage
+                                                      .removeInstanceData(
+                                                          instance)
+                                                  .then((_) {
+                                                logout();
+                                              });
+                                            }
+                                          });
                                         });
                                       },
                                           actionButtonTitle: "Log Out",
