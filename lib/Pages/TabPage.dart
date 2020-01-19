@@ -4,7 +4,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_webrtc/webrtc.dart';
+// import 'package:flutter_webrtc/webrtc.dart';
 import 'package:fedi/Pages/Home/HomeContainerPage.dart';
 import 'package:fedi/Pages/Messages/VideoChat/WebRTCManager.dart';
 import 'package:fedi/Pages/Profile/EditProfile.dart';
@@ -49,7 +49,7 @@ class TabPageState extends State<TabPage>
   static FirebaseAnalytics analytics = FirebaseAnalytics();
   static FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);
-  WebRTCManager manager = WebRTCManager.instance;
+  // WebRTCManager manager = WebRTCManager.instance;
 
   String currentTimeline = "Home";
   List<String> statuses = [''];
@@ -100,7 +100,7 @@ class TabPageState extends State<TabPage>
     setState(() {});
   }
 
-  MediaStream currentStream;
+  // MediaStream currentStream;
 
   @override
   Widget build(BuildContext context) {
@@ -257,13 +257,18 @@ class TabPageState extends State<TabPage>
     bottomSheet = AccountsBottomSheet(
       addAccount: addAccount,
       swapAccount: swapAccount,
-      logout: widget.logout,
+      logout: logout,
     );
     showModalBottomSheet(
         builder: (BuildContext context) {
           return bottomSheet;
         },
         context: context);
+  }
+
+  logout(){
+    bottomSheet.hide();
+    widget.logout();
   }
 
   addAccount() {

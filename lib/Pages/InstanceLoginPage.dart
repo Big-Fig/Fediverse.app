@@ -152,7 +152,7 @@ class _InstanceLoginPage extends State<InstanceLoginPage> {
                 ),
                 FlatButton(
                   child: Text(
-                      "By using Feddi you agree to our terms. Tap to review"),
+                      "By using Fedi you agree to our terms. Tap to review"),
                   color: Colors.black12,
                   onPressed: () {
                     Navigator.pushNamed(context, '/terms');

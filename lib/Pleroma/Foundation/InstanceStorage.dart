@@ -38,15 +38,23 @@ class InstanceStorage {
   }
 
 
+
+
+
   static Future<void> removeInstanceData(InstanceStorage instance) async {
 
     print("REMOVING INSTANCE DATA");
     var box = await Hive.openBox('InstanceStorage', lazy: true) as LazyBox;
+    String account = await box.get("currentAccount");
+    if (account == instance.account){
+      box.put("currentAccount", null);
+    }
     await InstanceStorage.removeAccountFromInstanceList(instance.account);
     await box.delete("${instance.account}-account");
     await box.delete("${instance.account}-auth");
     await box.delete("${instance.account}-client");
     await box.delete("${instance.account}-clientSettings");
+
     
   }
 
@@ -118,10 +126,6 @@ class InstanceStorage {
     List<String> stringList = await box.get("InstanceList");
     if (stringList == null){
       stringList = <String>[];
-    }
-    print("BEFORE LIST");
-    for(int i = 0; i < stringList.length; i++){
-      print("${stringList[i]}");
     }
     stringList.remove(account);
     print("AFTER LIST");
