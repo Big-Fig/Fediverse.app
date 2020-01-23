@@ -96,12 +96,17 @@ class _InstanceLoginPage extends State<InstanceLoginPage> {
                   color: darkGray,
                   textColor: Colors.white,
                   onPressed: () {
+                    if (_instanceTextController.text == ""){
+                      return;
+                    }
                     _pr =
                         new ProgressDialog(context, ProgressDialogType.Normal);
                     _pr.setMessage('Checking Instance');
                     _pr.show();
+
+                    var instance = _instanceTextController.text.split("/").first;
                     CurrentInstance.newInstance.currentClient =
-                        Client(baseURL: _instanceTextController.text);
+                        Client(baseURL: instance);
 
                     CurrentInstance.newInstance.currentClient
                         .register()

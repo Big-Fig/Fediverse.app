@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/cupertino.dart';
@@ -34,18 +35,22 @@ class TabPage extends StatefulWidget {
   final int initalIndex;
 
   TabPage(this.initalIndex,
-      {this.addNewInstance, this.loadInstance, this.refreshInstance, this.logout});
+      {this.addNewInstance,
+      this.loadInstance,
+      this.refreshInstance,
+      this.logout});
 
   @override
   State<StatefulWidget> createState() {
     return TabPageState();
   }
 }
+
 class TabPageState extends State<TabPage>
     with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
   final GlobalKey<MyTimelinePageState> _timelineKey = GlobalKey();
   final GlobalKey<GalleryPageState> _galleryKey = GlobalKey();
-    final GlobalKey<NotificationPageState> _notificationKey = GlobalKey();
+  final GlobalKey<NotificationPageState> _notificationKey = GlobalKey();
   static FirebaseAnalytics analytics = FirebaseAnalytics();
   static FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);
@@ -62,7 +67,7 @@ class TabPageState extends State<TabPage>
   List<Widget> _homeControllers = [];
   MyProfilePage myProfile = MyProfilePage();
 
-  rebuildWithSelectedTimelien(String timeline){
+  rebuildWithSelectedTimelien(String timeline) {
     print("updates going on here!!!!");
     print(currentTimeline);
     _timelineKey.currentState.selectTimeline(timeline);
@@ -72,7 +77,10 @@ class TabPageState extends State<TabPage>
   initState() {
     super.initState();
     _homeControllers = [
-      MyTimelinePage(this, key: _timelineKey,),
+      MyTimelinePage(
+        this,
+        key: _timelineKey,
+      ),
       GalleryPage(
         key: _galleryKey,
       )
@@ -81,7 +89,9 @@ class TabPageState extends State<TabPage>
     _tabController = TabController(length: 2, vsync: this);
     _children = [
       HomeContainerPage(_tabController, _homeControllers, this),
-      NotificationPage(key: _notificationKey,),
+      NotificationPage(
+        key: _notificationKey,
+      ),
       PlaceholderWidget(Colors.green),
       MessageConatiner(),
       myProfile,
@@ -106,6 +116,10 @@ class TabPageState extends State<TabPage>
   Widget build(BuildContext context) {
     super.build(context);
 
+    var currentURL = "${CurrentInstance.instance.currentClient.baseURL}"
+        .replaceAll("https://", "@");
+    var client = "${CurrentInstance.instance.currentAccount.acct}$currentURL";
+
     PushHelper.instance.swapAccount = swapAccount;
     PushHelper.instance.register();
     _appBar = [
@@ -126,13 +140,14 @@ class TabPageState extends State<TabPage>
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(
-                CurrentInstance.instance.currentAccount.username,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
+              AutoSizeText(
+                  client,
+                  minFontSize:12,
+                  maxFontSize: 20,
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
                 ),
-              ),
               Icon(
                 Icons.keyboard_arrow_down,
                 color: Colors.white,
@@ -143,9 +158,9 @@ class TabPageState extends State<TabPage>
             showAccountSheet(context);
           },
         ),
-         actions: <Widget>[
+        actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.edit),
+            icon: Icon(Icons.settings),
             onPressed: () {
               Navigator.push(
                   context,
@@ -193,9 +208,7 @@ class TabPageState extends State<TabPage>
             title: Text(''),
           ),
           new BottomNavigationBarItem(
-              backgroundColor: Colors.green,
-              icon: Icon(null),
-              title: Text('')),
+              backgroundColor: Colors.green, icon: Icon(null), title: Text('')),
           new BottomNavigationBarItem(
             backgroundColor: Colors.green,
             icon: Icon(Icons.message),
@@ -226,7 +239,7 @@ class TabPageState extends State<TabPage>
       if (_galleryKey.currentState != null) {
         _galleryKey.currentState.refreshEverything();
       }
-    } else if(taps > 1 && index == 1) {
+    } else if (taps > 1 && index == 1) {
       if (_notificationKey.currentState != null) {
         // _notificationKey.currentState.refreshEverything();
       }
@@ -266,7 +279,7 @@ class TabPageState extends State<TabPage>
         context: context);
   }
 
-  logout(){
+  logout() {
     bottomSheet.hide();
     widget.logout();
   }
@@ -285,7 +298,7 @@ class TabPageState extends State<TabPage>
     widget.loadInstance();
   }
 
-   refresh(BuildContext viewContext) {
+  refresh(BuildContext viewContext) {
     Navigator.pop(viewContext);
     // profileKey.currentState.refresh();
   }
@@ -293,5 +306,3 @@ class TabPageState extends State<TabPage>
   @override
   bool get wantKeepAlive => true;
 }
-
- 

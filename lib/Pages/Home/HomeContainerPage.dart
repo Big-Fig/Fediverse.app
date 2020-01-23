@@ -1,3 +1,4 @@
+import 'package:fedi/Pages/Post/QuickPostPage.dart';
 import 'package:fedi/Pages/Search/SearchPage.dart';
 import 'package:fedi/Pages/Search/SearchResults.dart';
 import 'package:flutter/material.dart';
@@ -70,8 +71,7 @@ class HomeContainerPageState extends State<HomeContainerPage>
                       });
                     },
                   ),
-            actions: <Widget>[
-              IconButton(
+            leading:  IconButton(
                 icon: Icon(Icons.search),
                 onPressed: () {
                   // push search view
@@ -79,6 +79,19 @@ class HomeContainerPageState extends State<HomeContainerPage>
                     context,
                     MaterialPageRoute(
                       builder: (context) => SerachPage(),
+                    ),
+                  );
+                },
+              ),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.add,),
+                onPressed: () {
+                  // push search view
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => QuickPostPage(),
                     ),
                   );
                 },

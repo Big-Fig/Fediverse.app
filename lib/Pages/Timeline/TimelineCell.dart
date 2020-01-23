@@ -1,4 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fedi/Pages/Timeline/StatusFavoritePage.dart';
+import 'package:fedi/Pages/Timeline/StatusRepostPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -219,7 +221,7 @@ class _TimelineCell extends State<TimelineCell> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(12.0),
+                  padding: EdgeInsets.symmetric(horizontal: 12.0),
                   child: Row(
                     children: <Widget>[
                       IconButton(
@@ -232,9 +234,8 @@ class _TimelineCell extends State<TimelineCell> {
                           like();
                         },
                       ),
-                      if (widget.status.favouritesCount != 0 && (widget.showCommentBtn == true || widget.showCommentBtn == null))
-                        Text(widget.status.favouritesCount.toString()),
-                      if (widget.showCommentBtn == true || widget.showCommentBtn == null)
+                      if (widget.showCommentBtn == true ||
+                          widget.showCommentBtn == null)
                         IconButton(
                           color: Colors.grey,
                           icon: Icon(Icons.add_comment),
@@ -255,17 +256,109 @@ class _TimelineCell extends State<TimelineCell> {
                           repost();
                         },
                       ),
-                      if (widget.status.reblogsCount != 0)
-                        Text(widget.status.reblogsCount.toString()),
                       Spacer(),
                     ],
                   ),
                 ),
+                if (widget.status.favouritesCount > 0 ||
+                    widget.status.reblogsCount > 0)
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 12.0),
+                    child: Row(
+                      children: <Widget>[
+                        if (widget.status.favouritesCount > 0)
+                          getFavoritesButton(),
+                        if (widget.status.reblogsCount > 0) getRepostsButton()
+                      ],
+                    ),
+                  ),
+                  if (widget.status.reblog != null )
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 12.0),
+                    child: Row(
+                      children: <Widget>[
+                        if (widget.status.reblog .favouritesCount > 0)
+                          getRepostFavoritesButton(),
+                        if (widget.status.reblog.reblogsCount > 0) getRepostRepostsButton()
+                      ],
+                    ),
+                  ),
               ],
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget getFavoritesButton() {
+    String favs = "${widget.status.favouritesCount} Favorites";
+    if (widget.status.favouritesCount == 1) {
+      favs = "${widget.status.favouritesCount} Favorite";
+    }
+    return FlatButton(
+      child: Text(favs),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => StatusFavoritePage(widget.status)),
+        );
+      },
+    );
+  }
+
+  Widget getRepostsButton() {
+    String reposts = "${widget.status.reblogsCount} Reposts";
+    if (widget.status.reblogsCount == 1) {
+      reposts = "${widget.status.reblogsCount} Repost";
+    }
+    return FlatButton(
+      child: Text(reposts),
+      onPressed: () {
+         Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => StatusRepostPage(widget.status)),
+        );
+
+      },
+    );
+  }
+
+
+  Widget getRepostFavoritesButton() {
+    String favs = "${widget.status.reblog.favouritesCount} Favorites";
+    if (widget.status.reblog.favouritesCount == 1) {
+      favs = "${widget.status.reblog.favouritesCount} Favorite";
+    }
+    return FlatButton(
+      child: Text(favs),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => StatusFavoritePage(widget.status.reblog)),
+        );
+      },
+    );
+  }
+
+  Widget getRepostRepostsButton() {
+    String reposts = "${widget.status.reblog.reblogsCount} Reposts";
+    if (widget.status.reblog.reblogsCount == 1) {
+      reposts = "${widget.status.reblog.reblogsCount} Repost";
+    }
+    return FlatButton(
+      child: Text(reposts),
+      onPressed: () {
+         Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => StatusRepostPage(widget.status.reblog)),
+        );
+
+      },
     );
   }
 

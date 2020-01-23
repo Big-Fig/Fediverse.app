@@ -46,7 +46,7 @@ class _CaptureDMMedia extends State<CaptureDMMedia>
             Navigator.pop(context);
           },
         ),
-        title: Text("DM Attachment"),
+        title: Text("Attachment"),
       ),
       AppBar(
         leading: IconButton(
@@ -55,7 +55,7 @@ class _CaptureDMMedia extends State<CaptureDMMedia>
             Navigator.pop(context);
           },
         ),
-        title: Text("DM Attachment"),
+        title: Text("Attachment"),
       ),
       AppBar(
         leading: IconButton(
@@ -65,7 +65,7 @@ class _CaptureDMMedia extends State<CaptureDMMedia>
             
           },
         ),
-        title: Text("New Post"),
+        title: Text("Attachment"),
         actions: <Widget>[
           FlatButton(
             child: Text("Next"),

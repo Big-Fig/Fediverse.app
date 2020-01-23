@@ -329,14 +329,17 @@ class _StatusDetail extends State<StatusDetail> {
       templist.add(widget.status);
       templist.addAll(context.descendants);
 
-      if (widget.status.account != null && widget.status.account.acct != CurrentInstance.instance.currentAccount.acct) {
+      if (widget.status.account != null &&
+          widget.status.account.acct !=
+              CurrentInstance.instance.currentAccount.acct) {
         mentionedAccts.add(widget.status.account.acct);
         //txtController.text =
         //"${txtController.text} @${widget.status.account.acct}";
       }
       for (int i = 0; i < widget.status.mentions.length; i++) {
         Mention mention = widget.status.mentions[i];
-        if (!mentionedAccts.contains(mention.acct) && mention.acct != CurrentInstance.instance.currentAccount.acct) {
+        if (!mentionedAccts.contains(mention.acct) &&
+            mention.acct != CurrentInstance.instance.currentAccount.acct) {
           mentionedAccts.add(mention.acct);
         }
         // txtController.text = "${txtController.text} @${mention.acct}";
@@ -421,9 +424,18 @@ class _StatusDetail extends State<StatusDetail> {
   sendMessageWithAttachment(String id) {
     print("sending attachment! $id");
     var statusPath = StatusRequest.Status.postNewStatus;
+
+    String mentionListString = "";
+    for (int i = 0; i < mentionedAccts.length; i++) {
+      String acct = mentionedAccts[i];
+      mentionListString = "$mentionListString @$acct";
+    }
+
+    String status = "$mentionListString ${txtController.text}";
+
     Map<String, dynamic> params = {
-      "status": "",
-      "visibility": widget.status.visibility,
+      "status": "$status",
+      "to": mentionedAccts,
       "in_reply_to_id": widget.status.id,
       "media_ids": [id]
     };
@@ -464,7 +476,7 @@ class _StatusDetail extends State<StatusDetail> {
     var statusPath = StatusRequest.Status.postNewStatus;
     Map<String, dynamic> params = {
       "status": "$status",
-      "visibility": widget.status.visibility.toString(),
+      "to": mentionedAccts,
       "in_reply_to_id": widget.status.id
     };
 

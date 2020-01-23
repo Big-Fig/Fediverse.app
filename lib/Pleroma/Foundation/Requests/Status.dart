@@ -21,4 +21,12 @@ class Status {
     return "/api/v1/statuses/$id/reblog";
   }
 
+  static String favouritedBy(String id){
+    return "/api/v1/statuses/$id/favourited_by";
+  }
+
+  static String reblogedBy(String id){
+    return "/api/v1/statuses/$id/reblogged_by";
+  }
+
 }

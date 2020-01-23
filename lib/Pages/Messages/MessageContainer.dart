@@ -57,7 +57,7 @@ class _MessageContainer extends State<MessageConatiner> with TickerProviderState
         title: Text(titles[_currentIndex]),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.send),
+            icon: Icon(Icons.add),
             onPressed: () {
               _goToUserList();
             },
