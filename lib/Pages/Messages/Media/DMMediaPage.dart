@@ -49,7 +49,7 @@ class _DMMediaPage extends State<DMMediaPage> {
               Navigator.pop(context);
             },
           ),
-          title: Text("DM Attachment"),
+          title: Text("Attachment"),
           actions: <Widget>[
             FlatButton(
               child: Text("Post"),

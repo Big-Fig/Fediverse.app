@@ -100,7 +100,9 @@ class _MessagesCell extends State<MessagesCell> {
                     IconButton(
                       icon: Icon(Icons.chevron_right),
                       tooltip: 'More',
-                      onPressed: () {},
+                      onPressed: () {
+                        cellTapped();
+                      },
                     ),
                   ],
                 ),
@@ -112,14 +114,21 @@ class _MessagesCell extends State<MessagesCell> {
     );
   }
 
-  String getStatusText(Status status) {
-    var document = parse(status.content);
-
-    String parsedString = parse(document.body.text).documentElement.text;
-    parsedString = parsedString.replaceAll(RegExp("(\w*@\w+)"), "");
+  String getStatusText(Status status) { 
+    print("CONVERSATION ID ${widget.conversation.id}");
+    String parsedString = parse(status.content).documentElement.text;
+    for (var i = 0; i < status.mentions.length; i ++){
+      var mention = status.mentions[i];
+      var account = mention.acct.split("@").first;
+      print(account);
+      parsedString = parsedString.replaceAll("@$account", "");
+    }
+    
+    if (widget.conversation.lastStatus.account.acct == CurrentInstance.instance.currentAccount.acct) {
+      parsedString = "You: $parsedString";
+    }
     return parsedString;
   }
-
 
   List<Widget> getUserName(Status status) {
     var username = status.account.displayName;

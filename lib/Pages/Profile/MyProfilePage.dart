@@ -8,6 +8,8 @@ import 'package:fedi/Pages/Timeline/TimelineCell.dart';
 import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart';
+
+import 'package:fedi/Pleroma/Models/Status.dart' as StatusModel;
 import 'package:fedi/Pleroma/Models/Account.dart';
 import 'package:fedi/Pleroma/Models/Status.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -61,9 +63,7 @@ class _MyProfilePage extends State<MyProfilePage> {
   }
 
   void _onRefresh() async {
-    print("ONREFRESH");
-    // monitor network fetch
-    await Future.delayed(Duration(milliseconds: 1000));
+    refreshAccount();
     // if failed,use refreshFailed()
     CurrentInstance.instance.currentClient
         .run(
@@ -72,10 +72,13 @@ class _MyProfilePage extends State<MyProfilePage> {
                 minId: "",
                 maxId: "",
                 sinceId: "",
-                limit: "20"),
+                limit: "80"),
             method: HTTPMethod.GET)
         .then((response) {
       List<Status> newStatuses = statusFromJson(response.body);
+      newStatuses.removeWhere((status) {
+        return status.visibility == StatusModel.Visibility.DIRECT;
+      });
       widget.statuses.clear();
       widget.statuses.addAll(newStatuses);
       if (mounted) setState(() {});
@@ -87,10 +90,13 @@ class _MyProfilePage extends State<MyProfilePage> {
     });
   }
 
+  refreshAccount() {
+    CurrentInstance.instance.currentAccount.refreshAccount().then((response) {
+      setState(() {});
+    });
+  }
+
   void _onLoading() async {
-    print("ONLOAD");
-    // monitor network fetch
-    await Future.delayed(Duration(milliseconds: 1000));
     // if failed,use loadFailed(),if no data return,use LoadNodata()
     var lastId = "";
     Status lastStatus = widget.statuses.last;
@@ -105,10 +111,13 @@ class _MyProfilePage extends State<MyProfilePage> {
                 minId: "",
                 maxId: lastId,
                 sinceId: "",
-                limit: "20"),
+                limit: "80"),
             method: HTTPMethod.GET)
         .then((response) {
       List<Status> newStatuses = statusFromJson(response.body);
+      newStatuses.removeWhere((status) {
+        return status.visibility == StatusModel.Visibility.DIRECT;
+      });
       widget.statuses.addAll(newStatuses);
       if (mounted) setState(() {});
       _refreshController.loadComplete();
@@ -179,6 +188,7 @@ class _MyProfilePage extends State<MyProfilePage> {
       onLoading: _onLoading,
       child: ListView.builder(
         itemBuilder: (BuildContext context, int index) {
+          print("rebuilding the list $index");
           if (index == 0) {
             return ProfileHeader(
               profileAccount: CurrentInstance.instance.currentAccount,

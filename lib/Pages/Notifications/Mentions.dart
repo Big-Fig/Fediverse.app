@@ -12,6 +12,8 @@ import 'package:fedi/Pleroma/Foundation/Requests/Notification.dart'
     as NotificationRequest;
 import 'package:fedi/Pleroma/Models/Notification.dart';
 import 'package:fedi/Pleroma/Models/Notification.dart' as NotificationModel;
+
+import 'package:fedi/Pleroma/Models/Status.dart' as StatusModel;
 import 'NotificationCell.dart';
 
 
@@ -101,6 +103,9 @@ class _Mentions extends State<Mentions> {
         .then((response) {
       List<NotificationModel.Notification> newNotifications =
           notificationFromJson(response.body);
+          newNotifications.removeWhere((notification) {
+        return notification.status.visibility == StatusModel.Visibility.DIRECT;
+      });
       widget.notifications.addAll(newNotifications);
       if (mounted)
         setState(() {

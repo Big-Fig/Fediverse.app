@@ -27,11 +27,12 @@ class ProfileHeader extends StatefulWidget {
 
 class _ProfileHeader extends State<ProfileHeader> {
   Relationship relationship;
+  bool firstBuildRefresh;
 
   @override
   void initState() {
     super.initState();
-
+    firstBuildRefresh = true;
     if (widget.editAccount == null) {
       String path = Accounts.getRelationshipById(widget.profileAccount.id);
       CurrentInstance.instance.currentClient
@@ -45,8 +46,10 @@ class _ProfileHeader extends State<ProfileHeader> {
       }).catchError((onError) {
         print("$onError");
       });
-    }
+    } 
   }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -294,42 +297,11 @@ class _ProfileHeader extends State<ProfileHeader> {
       );
     } else {
       return Container();
-
-      // Row(
-      //   crossAxisAlignment: CrossAxisAlignment.center,
-      //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      //   children: <Widget>[
-      //     Expanded(
-      //       child: Padding(
-      //         padding: EdgeInsets.all(10),
-      //         child: OutlineButton(
-      //           child: Row(
-      //             children: <Widget>[
-      //               Spacer(),
-      //               Text("Edit Profile"),
-      //               Padding(
-      //                 padding: EdgeInsets.symmetric(horizontal: 10),
-      //               ),
-      //               Icon(
-      //                 Icons.edit,
-      //                 size: 15,
-      //               ),
-      //               Spacer(),
-      //             ],
-      //           ),
-      //           onPressed: () {
-      //             editAccount();
-
-      //           },
-      //         ),
-      //       ),
-      //     ),
-      //   ],
-      // );
     }
   }
 
   showMoreOptions(BuildContext context) {
+
     showAlert(
       context: context,
       title: "More actions for:",
