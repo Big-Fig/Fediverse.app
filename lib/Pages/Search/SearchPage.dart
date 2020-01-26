@@ -34,7 +34,7 @@ class _SerachPageState extends State<SerachPage> {
         Container(
           height: 50,
           width: width,
-          color: Colors.green,
+          color: Colors.blue,
           child: Row(
             children: <Widget>[
               Expanded(

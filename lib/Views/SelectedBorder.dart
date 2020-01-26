@@ -28,7 +28,7 @@ class _SelectedBorder extends State<SelectedBorder> {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(
-            width: widget.isSelected.value ? 4.0 : 0, color: Colors.green),
+            width: widget.isSelected.value ? 4.0 : 0, color: Colors.blue),
       ),
     );
   }

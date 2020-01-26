@@ -62,7 +62,7 @@ class _TextCapture extends State<TextCapture> {
               icon: Text(
                 "@",
                 style: TextStyle(
-                    color: Colors.green,
+                    color: Colors.blue,
                     fontWeight: FontWeight.w800,
                     fontSize: 20),
               ),

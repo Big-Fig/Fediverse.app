@@ -106,7 +106,7 @@ class _MentionPage extends State<MentionPage> {
               },
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Colors.green.withAlpha(150),
+                fillColor: Colors.blue.withAlpha(150),
                 hintText: 'Search',
                 border: InputBorder.none,
                 helperStyle: TextStyle(color: Colors.white),

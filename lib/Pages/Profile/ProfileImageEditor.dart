@@ -99,7 +99,7 @@ class _ProfileImageEditor extends State<ProfileImageEditor>
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Crop ${widget.imageType}',
-            toolbarColor: Colors.green,
+            toolbarColor: Colors.blue,
             toolbarWidgetColor: Colors.white,
             initAspectRatio: CropAspectRatioPreset.square,
             lockAspectRatio: false),
@@ -135,7 +135,7 @@ class _ProfileImageEditor extends State<ProfileImageEditor>
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Crop ${widget.imageType}',
-            toolbarColor: Colors.green,
+            toolbarColor: Colors.blue,
             toolbarWidgetColor: Colors.white,
             initAspectRatio: CropAspectRatioPreset.square,
             lockAspectRatio: false),

@@ -126,7 +126,7 @@ class _AddAddtionalMedia extends State<AddAddtionalMedia>
       bottomNavigationBar: BottomNavigationBar(
         onTap: onTabTapped, // new
         currentIndex: _currentIndex, //
-        selectedItemColor: Colors.green,
+        selectedItemColor: Colors.blue,
         unselectedItemColor: Colors.grey,
         items: [
           new BottomNavigationBarItem(

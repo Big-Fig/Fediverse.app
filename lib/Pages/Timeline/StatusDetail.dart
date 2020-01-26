@@ -108,10 +108,10 @@ class _StatusDetail extends State<StatusDetail> {
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10),
                       child: OutlineButton(
-                        color: Colors.green,
+                        color: Colors.blue,
                         child: Text(
                           '@ $mentionDesc',
-                          style: TextStyle(color: Colors.green),
+                          style: TextStyle(color: Colors.blue),
                         ),
                         onPressed: () {
                           if (mentionHeight == 0) {
@@ -143,7 +143,7 @@ class _StatusDetail extends State<StatusDetail> {
                       child: FlatButton(
                         child: Text(
                           " + @ ",
-                          style: TextStyle(color: Colors.green),
+                          style: TextStyle(color: Colors.blue),
                         ),
                         onPressed: () {
                           Navigator.push(
@@ -229,7 +229,7 @@ class _StatusDetail extends State<StatusDetail> {
                   IconButton(
                     icon: Icon(
                       Icons.videocam,
-                      color: Colors.green,
+                      color: Colors.blue,
                     ),
                     onPressed: () {
                       Navigator.push(
@@ -242,7 +242,7 @@ class _StatusDetail extends State<StatusDetail> {
                   IconButton(
                     icon: Icon(
                       Icons.camera_alt,
-                      color: Colors.green,
+                      color: Colors.blue,
                     ),
                     onPressed: () {
                       Navigator.push(
@@ -255,7 +255,7 @@ class _StatusDetail extends State<StatusDetail> {
                   IconButton(
                     icon: Icon(
                       Icons.image,
-                      color: Colors.green,
+                      color: Colors.blue,
                     ),
                     onPressed: () {
                       Navigator.push(
@@ -269,7 +269,7 @@ class _StatusDetail extends State<StatusDetail> {
                     icon: Text(
                       "@",
                       style: TextStyle(
-                          color: Colors.green,
+                          color: Colors.blue,
                           fontWeight: FontWeight.w800,
                           fontSize: 20),
                     ),
@@ -285,9 +285,9 @@ class _StatusDetail extends State<StatusDetail> {
                   OutlineButton(
                     child: Text(
                       "Send",
-                      style: TextStyle(color: Colors.green),
+                      style: TextStyle(color: Colors.blue),
                     ),
-                    color: Colors.green,
+                    color: Colors.blue,
                     onPressed: () {
                       print("sending");
                       sendMessage();

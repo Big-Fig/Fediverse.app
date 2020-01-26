@@ -92,7 +92,7 @@ class TabPageState extends State<TabPage>
       NotificationPage(
         key: _notificationKey,
       ),
-      PlaceholderWidget(Colors.green),
+      PlaceholderWidget(Colors.blue),
       MessageConatiner(),
       myProfile,
     ];
@@ -198,24 +198,24 @@ class TabPageState extends State<TabPage>
         currentIndex: _currentIndex, // new
         items: [
           new BottomNavigationBarItem(
-            backgroundColor: Colors.green,
+            backgroundColor: Colors.blue,
             icon: Icon(Icons.home),
             title: Text(''),
           ),
           new BottomNavigationBarItem(
-            backgroundColor: Colors.green,
+            backgroundColor: Colors.blue,
             icon: Icon(Icons.notifications),
             title: Text(''),
           ),
           new BottomNavigationBarItem(
-              backgroundColor: Colors.green, icon: Icon(null), title: Text('')),
+              backgroundColor: Colors.blue, icon: Icon(null), title: Text('')),
           new BottomNavigationBarItem(
-            backgroundColor: Colors.green,
+            backgroundColor: Colors.blue,
             icon: Icon(Icons.message),
             title: Text(''),
           ),
           new BottomNavigationBarItem(
-            backgroundColor: Colors.green,
+            backgroundColor: Colors.blue,
             icon: Icon(Icons.person),
             title: Text(''),
           ),
