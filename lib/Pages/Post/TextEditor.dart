@@ -79,7 +79,7 @@ class _TextEditor extends State<TextEditor> {
               icon: Text(
                 "@",
                 style: TextStyle(
-                    color: Colors.green,
+                    color: Colors.blue,
                     fontWeight: FontWeight.w800,
                     fontSize: 20),
               ),

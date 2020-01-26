@@ -175,7 +175,7 @@ class _CaptureController extends State<CaptureController>
       bottomNavigationBar: BottomNavigationBar(
         onTap: onTabTapped, // new
         currentIndex: _currentIndex, //
-        selectedItemColor: Colors.green,
+        selectedItemColor: Colors.blue,
         unselectedItemColor: Colors.grey,
         items: [
           new BottomNavigationBarItem(

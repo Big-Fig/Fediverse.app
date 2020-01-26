@@ -148,7 +148,7 @@ class HomeContainerPageState extends State<HomeContainerPage>
         Container(
           height: 50,
           width: width,
-          color: Colors.green,
+          color: Colors.blue,
           child: Row(
             children: <Widget>[
               Container(

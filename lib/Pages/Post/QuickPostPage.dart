@@ -83,7 +83,7 @@ class _QuickPostPageState extends State<QuickPostPage> {
               icon: Text(
                 "@",
                 style: TextStyle(
-                    color: Colors.green,
+                    color: Colors.blue,
                     fontWeight: FontWeight.w800,
                     fontSize: 20),
               ),
@@ -217,7 +217,7 @@ class _QuickPostPageState extends State<QuickPostPage> {
             OutlineButton(
               child: Text(
                 "Post",
-                style: TextStyle(color: Colors.green),
+                style: TextStyle(color: Colors.blue),
               ),
               onPressed: () {
                 postStatus();
@@ -380,12 +380,12 @@ class _QuickPostPageState extends State<QuickPostPage> {
     if (visibility == "Public") {
       return Icon(
         Icons.public,
-        color: Colors.green,
+        color: Colors.blue,
       );
     } else if (visibility == "Unlisted") {
-      return Icon(Icons.lock_open, color: Colors.green);
+      return Icon(Icons.lock_open, color: Colors.blue);
     } else {
-      return Icon(Icons.lock, color: Colors.green);
+      return Icon(Icons.lock, color: Colors.blue);
     }
   }
 
@@ -408,7 +408,7 @@ class _QuickPostPageState extends State<QuickPostPage> {
       },
       child: Container(
         margin: EdgeInsets.all(8),
-        color: Colors.green,
+        color: Colors.blue,
         child: Center(
           child: IconButton(
             iconSize: 30,

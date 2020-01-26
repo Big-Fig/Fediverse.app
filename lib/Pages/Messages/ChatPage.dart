@@ -151,7 +151,7 @@ class _ChatPage extends State<ChatPage> {
                   IconButton(
                     icon: Icon(
                       Icons.videocam,
-                      color: Colors.green,
+                      color: Colors.blue,
                     ),
                     onPressed: () {
                       Navigator.push(
@@ -164,7 +164,7 @@ class _ChatPage extends State<ChatPage> {
                   IconButton(
                     icon: Icon(
                       Icons.camera_alt,
-                      color: Colors.green,
+                      color: Colors.blue,
                     ),
                     onPressed: () {
                       Navigator.push(
@@ -177,7 +177,7 @@ class _ChatPage extends State<ChatPage> {
                   IconButton(
                     icon: Icon(
                       Icons.image,
-                      color: Colors.green,
+                      color: Colors.blue,
                     ),
                     onPressed: () {
                       Navigator.push(
@@ -191,9 +191,9 @@ class _ChatPage extends State<ChatPage> {
                   OutlineButton(
                     child: Text(
                       "Send",
-                      style: TextStyle(color: Colors.green),
+                      style: TextStyle(color: Colors.blue),
                     ),
-                    color: Colors.green,
+                    color: Colors.blue,
                     onPressed: () {
                       print("sending");
                       if (statuses.length == 0) {

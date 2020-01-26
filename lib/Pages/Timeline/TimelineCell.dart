@@ -226,7 +226,7 @@ class _TimelineCell extends State<TimelineCell> {
                     children: <Widget>[
                       IconButton(
                         color: widget.status.favourited
-                            ? Colors.green
+                            ? Colors.blue
                             : Colors.grey,
                         icon: Icon(Icons.thumb_up),
                         tooltip: 'Like',
@@ -248,7 +248,7 @@ class _TimelineCell extends State<TimelineCell> {
                         Text(widget.status.repliesCount.toString()),
                       IconButton(
                         color: widget.status.reblogged
-                            ? Colors.green
+                            ? Colors.blue
                             : Colors.grey,
                         icon: Icon(Icons.cached),
                         tooltip: 'repost',
@@ -510,10 +510,10 @@ class _TimelineCell extends State<TimelineCell> {
         overlayShadowColors: Colors.transparent,
         overlayShadowSize: 0.0,
         images: items,
-        dotIncreasedColor: Colors.green,
+        dotIncreasedColor: Colors.blue,
         dotSize: 4.0,
         dotSpacing: 15.0,
-        dotColor: Colors.green.withOpacity(0.5),
+        dotColor: Colors.blue.withOpacity(0.5),
         indicatorBgPadding: 5.0,
         dotBgColor: Colors.transparent,
         borderRadius: true,

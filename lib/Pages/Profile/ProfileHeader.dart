@@ -147,11 +147,11 @@ class _ProfileHeader extends State<ProfileHeader> {
             ),
           ),
           Container(
-            color: Colors.green[100],
+            color: Colors.blue[100],
             child: getButtons(context),
           ),
           Container(
-            color: Colors.green[100],
+            color: Colors.blue[100],
             child: Row(
               children: <Widget>[
                 Html(

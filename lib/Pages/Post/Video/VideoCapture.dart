@@ -226,7 +226,7 @@ class _VideoCapture extends State<VideoCapture> {
                             percent:
                                 value / maxLength >= 1 ? 1 : value / maxLength,
                             circularStrokeCap: CircularStrokeCap.round,
-                            progressColor: Colors.green,
+                            progressColor: Colors.blue,
                           ),
                         ],
                       ),
