@@ -2,8 +2,13 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "logo.png",
+      "filename" : "fedi-connect copy.png",
       "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "1x",
+      "graphics-feature-set" : "metal2v2"
     },
     {
       "idiom" : "universal",
@@ -11,7 +16,17 @@
     },
     {
       "idiom" : "universal",
+      "scale" : "2x",
+      "graphics-feature-set" : "metal2v2"
+    },
+    {
+      "idiom" : "universal",
       "scale" : "3x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x",
+      "graphics-feature-set" : "metal2v2"
     }
   ],
   "info" : {
