@@ -71,7 +71,8 @@ class HomeContainerPageState extends State<HomeContainerPage>
                       });
                     },
                   ),
-            leading:  IconButton(
+            actions: <Widget>[
+              IconButton(
                 icon: Icon(Icons.search),
                 onPressed: () {
                   // push search view
@@ -83,19 +84,7 @@ class HomeContainerPageState extends State<HomeContainerPage>
                   );
                 },
               ),
-            actions: <Widget>[
-              IconButton(
-                icon: Icon(Icons.add,),
-                onPressed: () {
-                  // push search view
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => QuickPostPage(),
-                    ),
-                  );
-                },
-              )
+             
             ],
             title: TabBar(
               tabs: <Widget>[

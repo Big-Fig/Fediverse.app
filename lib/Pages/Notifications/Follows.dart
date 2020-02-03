@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:fedi/Pages/Push/PushHelper.dart';
 import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
 import 'package:fedi/Pleroma/Models/Account.dart';
 import 'package:fedi/Pleroma/Models/Status.dart';
 import 'package:flutter/cupertino.dart';
@@ -48,13 +49,17 @@ class _Follows extends State<Follows> {
   }
 
   void fetchStatuses(BuildContext context) {
-    if (widget.notifications.length == 0) {
       _refreshController.requestRefresh();
-    }
   }
 
 
   void _onRefresh() {
+
+     String account =
+        "${CurrentInstance.instance.currentAccount.acct}@${CurrentInstance.instance.currentClient.baseURL}";
+
+    InstanceStorage.clearAccountAlert(account, "follow");
+
     print("ONREFRESH");
     // monitor network fetch
     // if failed,use refreshFailed()

@@ -117,7 +117,7 @@ class _OtherAccount extends State<OtherAccount> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.account.username),
+        title: Text(widget.account.acct),
       ),
       body: SmartRefresher(
         enablePullDown: true,

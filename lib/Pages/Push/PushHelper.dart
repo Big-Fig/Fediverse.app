@@ -4,6 +4,8 @@ import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
 import 'dart:io' show Platform;
 
+import 'package:vibration/vibration.dart';
+
 class PushHelper {
   PushHelper._privateConstructor();
 
@@ -20,14 +22,68 @@ class PushHelper {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   bool fromResume = false;
   Function notificationUpdater;
+  Function updateBadges;
+
+  Future<dynamic> theOnMessage(Map<String, dynamic> message) async {
+    debugPrint("onMessage: face $message");
+    String server;
+    String acc;
+    String type;
+    if (Platform.isAndroid) {
+      // Android-specific code
+      var d = message["data"];
+      acc = d['account'];
+      server = d['server'];
+
+      type = d["notification_type"];
+    } else {
+      // iOS-specific code
+      acc = message['account'];
+      server = message['server'];
+      type = message["notification_type"];
+    }
+
+    //  _navigateToItemDetail(message);
+    String account = "$acc@$server";
+    print("NEW ACCOUNT ALERT $account");
+    await InstanceStorage.addAccountAlert(account, type);
+    Vibration.vibrate();
+    PushHelper.instance.updateBadges();
+    PushHelper.instance.notificationUpdater();
+    //   _showItemDialog(message);
+  }
 
   config(BuildContext context) {
+    print("CONFIGING");
     PushHelper.instance._firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         debugPrint("onMessage: face $message");
-        var data = message['data'];
-        print("data: $data");
-        PushHelper.instance.notificationUpdater();
+        String server;
+        String acc;
+        String type;
+        if (Platform.isAndroid) {
+          // Android-specific code
+          var d = message["data"];
+          acc = d['account'];
+          server = d['server'];
+
+          type = d["notification_type"];
+        } else {
+          // iOS-specific code
+          acc = message['account'];
+          server = message['server'];
+          type = message["notification_type"];
+        }
+
+        //  _navigateToItemDetail(message);
+        String account = "$acc@$server";
+        print("NEW ACCOUNT ALERT $account");
+        InstanceStorage.addAccountAlert(account, type).then((value) {
+          Vibration.vibrate();
+          PushHelper.instance.updateBadges();
+          PushHelper.instance.notificationUpdater();
+        });
+
         //   _showItemDialog(message);
       },
       onLaunch: (Map<String, dynamic> data) async {
@@ -96,7 +152,7 @@ class PushHelper {
     );
   }
 
-  unregister(){
+  unregister() {
     CurrentInstance.instance.currentClient.unsubscribeToPush();
   }
 
@@ -114,6 +170,4 @@ class PushHelper {
       CurrentInstance.instance.currentClient.subscribeToPush(token);
     });
   }
-
-
 }

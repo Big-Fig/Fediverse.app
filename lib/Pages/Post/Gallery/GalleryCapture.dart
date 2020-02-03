@@ -48,13 +48,13 @@ class _GalleryCapture extends State<GalleryCapture> {
       List<AssetPathEntity> list;
       if (widget.showVideo == false){
         list =
-          await PhotoManager.getAssetPathList(type: RequestType.image);
+          await PhotoManager.getAssetPathList(type: RequestType.all);
       }else {
        list =
           await PhotoManager.getAssetPathList(type: RequestType.all);
       }
        
-      galleryList = await list[0].assetList;
+      galleryList = await list[0].getAssetListRange(start:0, end:1500);
       selectedEntity.value = galleryList[0];
       widget.assetSelected(selectedEntity.value);
     }

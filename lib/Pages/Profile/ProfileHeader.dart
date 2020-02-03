@@ -10,6 +10,7 @@ import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart';
 import 'package:fedi/Pleroma/Models/Account.dart';
 import 'package:fedi/Pleroma/Models/Relationship.dart';
 import 'package:html/dom.dart' as dom;
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileHeader extends StatefulWidget {
   final Account profileAccount;
@@ -46,10 +47,8 @@ class _ProfileHeader extends State<ProfileHeader> {
       }).catchError((onError) {
         print("$onError");
       });
-    } 
+    }
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -219,12 +218,9 @@ class _ProfileHeader extends State<ProfileHeader> {
           onPressed: () {
             String link = getURL(field["value"]);
             print(link);
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => InAppWebPage(link),
-              ),
-            );
+            canLaunch(link).then((result) {
+              launch(link);
+            });
           },
         ),
       ),
@@ -301,7 +297,6 @@ class _ProfileHeader extends State<ProfileHeader> {
   }
 
   showMoreOptions(BuildContext context) {
-
     showAlert(
       context: context,
       title: "More actions for:",

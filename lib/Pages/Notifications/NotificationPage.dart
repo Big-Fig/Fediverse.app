@@ -1,6 +1,8 @@
+import 'package:badges/badges.dart';
 import 'package:fedi/Pages/Notifications/Follows.dart';
 import 'package:fedi/Pages/Notifications/LikesReposts.dart';
 import 'package:fedi/Pages/Notifications/Mentions.dart';
+import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -47,6 +49,7 @@ class NotificationPageState extends State<NotificationPage>
 
   void initState() {
     super.initState();
+    checkAlerts();
     print("HELP");
     _tabPages = [
       Mentions(viewAccount, viewStatusDetail),
@@ -83,7 +86,118 @@ class NotificationPageState extends State<NotificationPage>
   }
 
   void onTabTapped(int index) {
-    setState(() {});
+    checkAlerts();
+  }
+
+  Widget mentionTab = Tab(
+    icon: Icon(Icons.reply),
+    text: null,
+  );
+  Widget likeTab = Tab(
+    icon: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[Icon(Icons.cached), Text(" / "), Icon(Icons.thumb_up)],
+    ),
+    text: null,
+  );
+  Widget followTab = Tab(
+    icon: Icon(Icons.person_add),
+    text: null,
+  );
+
+  checkAlerts() async {
+    String account =
+        "${CurrentInstance.instance.currentAccount.acct}@${CurrentInstance.instance.currentClient.baseURL}";
+
+    int mentionAlert =
+        await InstanceStorage.getAccountAlert(account, "mention") ?? 0;
+    int favAlert =
+        await InstanceStorage.getAccountAlert(account, "favourite") ?? 0;
+    favAlert += await InstanceStorage.getAccountAlert(account, "reblog") ?? 0;
+    int followAlert =
+        await InstanceStorage.getAccountAlert(account, "follow") ?? 0;
+
+    setState(() {
+      if (mentionAlert > 0) {
+        mentionTab = Tab(
+          icon: Badge(
+            shape: BadgeShape.circle,
+            borderRadius: 100,
+            badgeContent: Container(
+              height: 5,
+              width: 5,
+              decoration:
+                  BoxDecoration(shape: BoxShape.circle, color: Colors.white),
+            ),
+            child: Icon(Icons.reply),
+          ),
+          text: null,
+        );
+      } else {
+        mentionTab = Tab(
+          icon: Icon(Icons.reply),
+          text: null,
+        );
+      }
+
+      if (followAlert > 0) {
+        followTab = Tab(
+          icon: Badge(
+            shape: BadgeShape.circle,
+            borderRadius: 100,
+            badgeContent: Container(
+              height: 5,
+              width: 5,
+              decoration:
+                  BoxDecoration(shape: BoxShape.circle, color: Colors.white),
+            ),
+            child: Icon(Icons.person_add),
+          ),
+          text: null,
+        );
+      } else {
+        followTab = Tab(
+          icon: Icon(Icons.person_add),
+          text: null,
+        );
+      }
+
+      if (favAlert > 0) {
+        likeTab = Tab(
+          icon: Badge(
+            shape: BadgeShape.circle,
+            borderRadius: 100,
+            badgeContent: Container(
+              height: 5,
+              width: 5,
+              decoration:
+                  BoxDecoration(shape: BoxShape.circle, color: Colors.white),
+            ), //Text(''),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Icon(Icons.cached),
+                Text(" / "),
+                Icon(Icons.thumb_up)
+              ],
+            ),
+          ),
+          text: null,
+        );
+      } else {
+        likeTab = Tab(
+          icon: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Icon(Icons.cached),
+              Text(" / "),
+              Icon(Icons.thumb_up)
+            ],
+          ),
+          text: null,
+        );
+      }
+    });
   }
 
   TabController _tabController;
@@ -98,24 +212,9 @@ class NotificationPageState extends State<NotificationPage>
           onTap: onTabTapped,
           controller: _tabController,
           tabs: <Widget>[
-            Tab(
-              icon: Icon(Icons.reply),
-              text: null,
-            ),
-            Tab(
-              icon: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Icon(Icons.cached),
-                  Text(" / "),
-                  Icon(Icons.thumb_up)
-                ],
-              ),
-              text: null,
-            ),
-            Tab(
-              icon: Icon(Icons.person_add),
-            ),
+            mentionTab,
+            likeTab,
+            followTab,
           ],
         ),
       ),

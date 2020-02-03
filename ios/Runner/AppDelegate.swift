@@ -7,9 +7,10 @@ import Flutter
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-    UNUserNotificationCenter.current().delegate = self as? UNUserNotificationCenterDelegate
 
     GeneratedPluginRegistrant.register(with: self)
+    UNUserNotificationCenter.current().delegate = self
+
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }

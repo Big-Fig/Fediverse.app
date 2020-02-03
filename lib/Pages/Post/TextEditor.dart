@@ -5,9 +5,7 @@ import 'package:fedi/Views/MentionPage.dart';
 import 'package:flutter/material.dart';
 import 'package:fedi/Constants/AppThemeConsts.dart';
 import 'package:fedi/Pages/Post/AddAdditionalMedia.dart';
-import 'package:fedi/Pages/Post/CaptureController.dart';
 import 'package:fedi/Pages/Post/ComposeStatus.dart';
-import 'package:fedi/Transitions/SlideRightRoute.dart';
 import 'package:fedi/Views/LocalVideoPlayer.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:fedi/Transitions/SlideBottomRoute.dart';
@@ -16,6 +14,7 @@ import 'Photo/PhotoFile.dart';
 import 'Video/VideoFIle.dart';
 
 class TextEditor extends StatefulWidget {
+  final Function close;
   final List<dynamic> assets;
 
   // final AssetEntity asset;
@@ -23,7 +22,7 @@ class TextEditor extends StatefulWidget {
   // final String videoURL;
   final Function popParent;
 
-  TextEditor({this.assets, this.popParent});
+  TextEditor({this.assets, this.popParent, this.close});
 
   @override
   _TextEditor createState() => _TextEditor();
@@ -102,8 +101,9 @@ class _TextEditor extends State<TextEditor> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pushReplacement(
-                context, SlideRightRoute(page: CaptureController()));
+            Navigator.of(context).pop();
+            // Navigator.push(
+            //     context, SlideRightRoute(page: CaptureController(widget.popParent)));
           },
         ),
         actions: <Widget>[
@@ -113,13 +113,14 @@ class _TextEditor extends State<TextEditor> {
                     textColor: Colors.white,
                     color: Colors.transparent,
                     onPressed: () {
-                      Navigator.pushReplacement(
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => ComposeStatus(
                             assets: assets,
                             popParent: widget.popParent,
                             htmlPost: statusController.text,
+                            close: widget.close,
                           ),
                         ),
                       );

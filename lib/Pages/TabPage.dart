@@ -1,9 +1,14 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:badges/badges.dart';
+import 'package:fedi/Pages/Post/QuickPostPage.dart';
+import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_webrtc/webrtc.dart';
 import 'package:fedi/Pages/Home/HomeContainerPage.dart';
@@ -14,6 +19,7 @@ import 'package:fedi/Pages/Gallery/GalleryPage.dart';
 import 'package:fedi/Pages/Timeline/MyTimelinePage.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Transitions/SlideBottomRoute.dart';
+import 'package:flutter/rendering.dart';
 import './Placeholder.dart';
 import 'Messages/MessageContainer.dart';
 // import 'Messages/VideoChatPage.dart';
@@ -22,6 +28,7 @@ import 'Notifications/NotificationPage.dart';
 import 'Post/CaptureController.dart';
 import 'Profile/AccountsBottomSheet.dart';
 import 'Profile/MyProfilePage.dart';
+import 'package:web_socket_channel/io.dart';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 
@@ -76,6 +83,8 @@ class TabPageState extends State<TabPage>
   @override
   initState() {
     super.initState();
+    updateBadges();
+    setUpWebSockets();
     _homeControllers = [
       MyTimelinePage(
         this,
@@ -111,11 +120,83 @@ class TabPageState extends State<TabPage>
   }
 
   // MediaStream currentStream;
+  PageController pageController;
+
+  returnTotab() {
+    print("return to tab");
+    pageController.animateToPage(1,
+        curve: Curves.easeIn, duration: Duration(milliseconds: 300));
+  }
+
+  ScrollPhysics currentPhysics;
+
+  updateBadges() {
+    checkAlerts();
+  }
+
+  final channel = IOWebSocketChannel.connect('${CurrentInstance.instance.currentClient.baseURL.replaceAll("https://", "ws://")}/api/v1/streaming/user',
+      headers: {
+      HttpHeaders.authorizationHeader:
+          "Bearer ${CurrentInstance.instance.currentClient.accessToken}",
+    });
+
+  setUpWebSockets() {
+
+    print("BASEURL");
+    String url = CurrentInstance.instance.currentClient.baseURL
+        .replaceAll("https://", "ws://");
+    print(CurrentInstance.instance.currentClient.baseURL);
+
+    StreamBuilder(
+      stream: channel.stream,
+      builder: (context, snapshot) {
+        print("WEBSOCKET");
+        print(snapshot.data);
+        return Container();
+      },
+    );
+  }
+
+  checkAlerts() async {
+    String account =
+        "${CurrentInstance.instance.currentAccount.acct}@${CurrentInstance.instance.currentClient.baseURL}";
+    int alert = 0;
+    alert += await InstanceStorage.getAccountAlert(account, "mention") ?? 0;
+    alert += await InstanceStorage.getAccountAlert(account, "favourite") ?? 0;
+    alert += await InstanceStorage.getAccountAlert(account, "reblog") ?? 0;
+    alert += await InstanceStorage.getAccountAlert(account, "follow") ?? 0;
+
+    setState(() {
+      if (alert > 0) {
+        notificaitonIcon = Badge(
+          shape: BadgeShape.circle,
+          borderRadius: 100,
+          //Text(''),
+          child: Icon(Icons.notifications),
+          badgeContent: Container(
+            height: 5,
+            width: 5,
+            decoration:
+                BoxDecoration(shape: BoxShape.circle, color: Colors.white),
+          ),
+        );
+      } else {
+        notificaitonIcon = Icon(Icons.notifications);
+      }
+    });
+  }
+
+  Widget notificaitonIcon = Icon(Icons.notifications);
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
+    PushHelper.instance.updateBadges = updateBadges;
 
+    super.build(context);
+    pageController = PageController(
+      initialPage: 1,
+      keepPage: true,
+    );
     var currentURL = "${CurrentInstance.instance.currentClient.baseURL}"
         .replaceAll("https://", "@");
     var client = "${CurrentInstance.instance.currentAccount.acct}$currentURL";
@@ -141,13 +222,13 @@ class TabPageState extends State<TabPage>
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               AutoSizeText(
-                  client,
-                  minFontSize:12,
-                  maxFontSize: 20,
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
+                client,
+                minFontSize: 12,
+                maxFontSize: 20,
+                style: TextStyle(
+                  color: Colors.white,
                 ),
+              ),
               Icon(
                 Icons.keyboard_arrow_down,
                 color: Colors.white,
@@ -174,50 +255,67 @@ class TabPageState extends State<TabPage>
       ),
     ];
 
-    return Scaffold(
-      appBar: _appBar[_currentIndex],
-      body: _children[_currentIndex], // new
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            SlideBottomRoute(page: CaptureController()),
-          );
-        },
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-        elevation: 2.0,
-      ),
+    return Container(
+      color: Colors.white,
+      child: PageView(
+        physics: currentPhysics,
+        controller: pageController,
+        children: <Widget>[
+          CaptureController(returnTotab),
+          Scaffold(
+            appBar: _appBar[_currentIndex],
+            body: _children[_currentIndex], // new
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  SlideBottomRoute(page: QuickPostPage()),
+                );
+                // Navigator.push(
+                //   context,
+                //   SlideBottomRoute(page: CaptureController()),
+                // );
+              },
+              tooltip: 'Increment',
+              child: Icon(Icons.add),
+              elevation: 2.0,
+            ),
 
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        onTap: onTabTapped, // new
-        currentIndex: _currentIndex, // new
-        items: [
-          new BottomNavigationBarItem(
-            backgroundColor: Colors.blue,
-            icon: Icon(Icons.home),
-            title: Text(''),
-          ),
-          new BottomNavigationBarItem(
-            backgroundColor: Colors.blue,
-            icon: Icon(Icons.notifications),
-            title: Text(''),
-          ),
-          new BottomNavigationBarItem(
-              backgroundColor: Colors.blue, icon: Icon(null), title: Text('')),
-          new BottomNavigationBarItem(
-            backgroundColor: Colors.blue,
-            icon: Icon(Icons.message),
-            title: Text(''),
-          ),
-          new BottomNavigationBarItem(
-            backgroundColor: Colors.blue,
-            icon: Icon(Icons.person),
-            title: Text(''),
+            bottomNavigationBar: BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              showSelectedLabels: true,
+              showUnselectedLabels: true,
+              onTap: onTabTapped, // new
+              currentIndex: _currentIndex, // new
+              items: [
+                new BottomNavigationBarItem(
+                  backgroundColor: Colors.blue,
+                  icon: Icon(Icons.home),
+                  title: Text(''),
+                ),
+                new BottomNavigationBarItem(
+                  backgroundColor: Colors.blue,
+                  icon: notificaitonIcon,
+                  title: Text(''),
+                ),
+                new BottomNavigationBarItem(
+                    backgroundColor: Colors.blue,
+                    icon: Icon(null),
+                    title: Text('')),
+                new BottomNavigationBarItem(
+                  backgroundColor: Colors.blue,
+                  icon: Icon(Icons.message),
+                  title: Text(''),
+                ),
+                new BottomNavigationBarItem(
+                  backgroundColor: Colors.blue,
+                  icon: Icon(Icons.person),
+                  title: Text(''),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -258,7 +356,7 @@ class TabPageState extends State<TabPage>
 
         Navigator.push(
           context,
-          SlideBottomRoute(page: CaptureController()),
+          SlideBottomRoute(page: QuickPostPage()),
         );
       } else {
         _currentIndex = index;

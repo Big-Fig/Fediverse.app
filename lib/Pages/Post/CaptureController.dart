@@ -10,6 +10,10 @@ import 'package:fedi/Pages/Post/Video/VideoFIle.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class CaptureController extends StatefulWidget {
+  final Function close;
+
+  CaptureController(this.close);
+
   @override
   State<StatefulWidget> createState() {
     return _CaptureController();
@@ -46,7 +50,7 @@ class _CaptureController extends State<CaptureController>
         leading: IconButton(
           icon: Icon(Icons.close),
           onPressed: () {
-            Navigator.pop(context);
+           widget.close();
           },
         ),
         title: Text("New Post"),
@@ -56,7 +60,8 @@ class _CaptureController extends State<CaptureController>
         leading: IconButton(
           icon: Icon(Icons.close),
           onPressed: () {
-            Navigator.pop(context);
+            widget.close();
+           // Navigator.pop(context);
           },
         ),
         title: Text("New Post"),
@@ -66,7 +71,7 @@ class _CaptureController extends State<CaptureController>
         leading: IconButton(
           icon: Icon(Icons.close),
           onPressed: () {
-            Navigator.pop(context);
+             widget.close();
           },
         ),
         title: Text("New Post"),
@@ -76,12 +81,13 @@ class _CaptureController extends State<CaptureController>
             textColor: Colors.white,
             color: Colors.transparent,
             onPressed: () {
-              Navigator.pushReplacement(
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => TextEditor(
                     assets: [selectedAsset],
                     popParent: pop,
+                    close: widget.close,
                   ),
                 ),
               );
@@ -103,11 +109,12 @@ class _CaptureController extends State<CaptureController>
             textColor: Colors.white,
             color: Colors.transparent,
             onPressed: () {
-              Navigator.pushReplacement(
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => ComposeStatus(
                     htmlPost: statusController.text,
+                    close: widget.close,
                   ),
                 ),
               );
@@ -130,18 +137,17 @@ class _CaptureController extends State<CaptureController>
   }
 
   pop() {
-    Navigator.pop(context);
-    Navigator.pop(context);
-    Navigator.pop(context);
+     widget.close();
   }
 
   videoTaken(String uri) {
-    Navigator.pushReplacement(
+    Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => TextEditor(
           assets: [VideoFile(uri)],
           popParent: pop,
+          close: widget.close,
         ),
       ),
     );
@@ -149,12 +155,13 @@ class _CaptureController extends State<CaptureController>
 
   photoTaken(String uri) {
     print(uri);
-    Navigator.pushReplacement(
+    Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => TextEditor(
           assets: [PhotoFile(uri)],
           popParent: pop,
+          close: widget.close,
         ),
       ),
     );

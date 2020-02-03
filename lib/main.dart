@@ -1,5 +1,6 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fedi/Pages/Push/PushHelper.dart';
@@ -13,6 +14,9 @@ import './Pleroma/Foundation/Client.dart';
 import './Pleroma/Models/Account.dart';
 import './Pleroma/Models/AccountAuth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+
+import 'Pleroma/Foundation/InstanceStorage.dart';
+import 'dart:io' show Platform;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,17 +46,18 @@ class MyApp extends StatelessWidget {
   final _currentInstance = CurrentInstance.instance;
   final _newInstance = CurrentInstance.newInstance;
   final push = PushHelper.instance;
-
+  Function myConfig;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
     print(_currentInstance);
     print(_newInstance);
-    PushHelper.instance.config(context);
+
+    myConfig = PushHelper.instance.config(context);
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     FirebaseAnalytics analytics = FirebaseAnalytics();
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Fedi',
       theme: ThemeData(
         primarySwatch: Colors.blue,

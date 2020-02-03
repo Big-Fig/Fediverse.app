@@ -7,7 +7,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:fedi/Pages/Post/Photo/PhotoFile.dart';
-import 'package:fedi/Pages/Post/TextEditor.dart';
 import 'package:fedi/Pages/Post/Video/VideoFIle.dart';
 import 'package:fedi/Pages/Post/VisibiltyDropDown.dart';
 import 'package:fedi/Pleroma/Foundation/Client.dart';
@@ -15,7 +14,6 @@ import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Media.dart' as MediaRequest;
 import 'package:fedi/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
 import 'package:fedi/Pleroma/Models/Status.dart';
-import 'package:fedi/Transitions/SlideRightRoute.dart';
 import 'package:fedi/Views/Alert.dart';
 import 'package:fedi/Views/LocalVideoPlayer.dart';
 import 'package:fedi/Views/ProgressDialog.dart';
@@ -26,13 +24,11 @@ import 'package:intl/intl.dart';
 import 'package:html/dom.dart' as dom;
 
 class ComposeStatus extends StatefulWidget {
+  final Function close;
   final List<dynamic> assets;
-  // final AssetEntity asset;
-  // final String imageURL;
-  // final String videoURL;
   final Function popParent;
   final String htmlPost;
-  ComposeStatus({this.assets, this.popParent, this.htmlPost});
+  ComposeStatus({this.assets, this.popParent, this.htmlPost, this.close});
 
   @override
   State<StatefulWidget> createState() {
@@ -52,9 +48,7 @@ class _ComposeStatus extends State<ComposeStatus> {
   @override
   void initState() {
     super.initState();
-
   }
-
 
   visibilityUpdated(String visibility) {
     statusVisability = visibility.toLowerCase();
@@ -77,13 +71,15 @@ class _ComposeStatus extends State<ComposeStatus> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pushReplacement(
-                  context,
-                  SlideRightRoute(
-                      page: TextEditor(
-                    assets: widget.assets,
-                    popParent: widget.popParent,
-                  )));
+              Navigator.of(context).pop();
+              // Navigator.pushReplacement(
+              //     context,
+              //     SlideRightRoute(
+              //         page: TextEditor(
+              //       assets: widget.assets,
+              //       popParent: widget.popParent,
+              //       close: widget.close,
+              //     )));
             },
           ),
           title: Text("Status Preview"),
@@ -113,7 +109,8 @@ class _ComposeStatus extends State<ComposeStatus> {
                 visibilityUpdated(string);
               }),
             ),
-            if (widget.htmlPost != "") Text("Status:"),
+            if (widget.htmlPost != "")
+              Text("Status:"),
             if (widget.htmlPost != "")
               Padding(
                 padding: EdgeInsets.all(10),
@@ -323,8 +320,11 @@ class _ComposeStatus extends State<ComposeStatus> {
         .then((statusResponse) {
       print(statusResponse.body);
       _pr.hide();
-      var alert = Alert(context, "Success!", "You status was posted!",
-          () => {Navigator.of(context).popUntil((route) => route.isFirst)});
+      var alert = Alert(context, "Success!", "You status was posted!", () {
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+        widget.close();
+      });
       alert.showAlert();
     }).catchError((e) {
       print("THIS IS THE ERROR!!!!");
@@ -362,8 +362,10 @@ class _ComposeStatus extends State<ComposeStatus> {
         .then((statusResponse) {
       print(statusResponse.body);
       _pr.hide();
-      var alert = Alert(context, "Success!", "You status was posted!",
-          () => {Navigator.of(context).popUntil((route) => route.isFirst)});
+      var alert = Alert(context, "Success!", "You status was posted!", () {
+        Navigator.of(context).pop();
+        widget.close();
+      });
       alert.showAlert();
     }).catchError((e) {
       print(e);
@@ -379,9 +381,6 @@ class _ComposeStatus extends State<ComposeStatus> {
 
   @override
   void dispose() {
-    // Clean up the focus node when the Form is disposed.
-    myFocusNode.dispose();
-
     super.dispose();
   }
 }

@@ -5,30 +5,41 @@ import 'package:fedi/Pages/Messages/UserListPage.dart';
 import 'package:fedi/Pleroma/Models/Account.dart';
 
 class MessageConatiner extends StatefulWidget {
-
-  final List<Widget> pageControllers = [
-    MessagesPage()
-  ];
-
   @override
   State<StatefulWidget> createState() {
     return _MessageContainer();
   }
 }
 
-class _MessageContainer extends State<MessageConatiner> with TickerProviderStateMixin {
+class _MessageContainer extends State<MessageConatiner>
+    with TickerProviderStateMixin {
   List<String> titles = ["Messages", "Notifications"];
   TabController _controller;
   int _currentIndex = 0;
+  List<Widget> pageControllers;
 
+  final GlobalKey<MessagesPageState> _messageKey = GlobalKey();
 
   void initState() {
     super.initState();
-    _controller = TabController(length: 2, initialIndex: 0, vsync: this,);
-     _controller.addListener(_controllerChanged);
+    pageControllers = [
+      MessagesPage(
+        key: _messageKey,
+      )
+    ];
+    _controller = TabController(
+      length: 2,
+      initialIndex: 0,
+      vsync: this,
+    );
+    _controller.addListener(_controllerChanged);
   }
 
-  sendMessage(Account account){
+  refreshPage() {
+    _messageKey.currentState.fetchStatuses();
+  }
+
+  sendMessage(Account account) {
     print("test");
     Navigator.pop(context);
     Navigator.push(
@@ -36,23 +47,21 @@ class _MessageContainer extends State<MessageConatiner> with TickerProviderState
         MaterialPageRoute(
           builder: (context) => ChatPage(
             account: account,
+            refreshMasterList: refreshPage,
+            refreshMesagePage: refreshPage,
           ),
         ));
   }
 
-  _goToUserList(){
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => UserListPage(sendMessage)
-        ));
+  _goToUserList() {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => UserListPage(sendMessage)));
   }
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: widget.pageControllers[_currentIndex],
+      body: pageControllers[_currentIndex],
       appBar: AppBar(
         title: Text(titles[_currentIndex]),
         actions: <Widget>[
