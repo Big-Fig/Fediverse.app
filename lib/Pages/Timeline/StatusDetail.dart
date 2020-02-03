@@ -1,20 +1,22 @@
 import 'dart:convert';
-import 'package:fedi/Views/MentionPage.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
+
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pages/Messages/Media/CaptureDMMedia.dart';
 import 'package:fedi/Pages/Profile/OtherAccount.dart';
 import 'package:fedi/Pages/Timeline/TimelineCell.dart';
 import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:fedi/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
 import 'package:fedi/Pleroma/Models/Account.dart';
 import 'package:fedi/Pleroma/Models/Context.dart';
 import 'package:fedi/Pleroma/Models/Status.dart';
-import 'package:fedi/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
 import 'package:fedi/Views/Alert.dart';
+import 'package:fedi/Views/MentionPage.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter/src/widgets/visibility.dart' as Vis;
 import 'package:flutter_widgets/flutter_widgets.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:flutter/src/widgets/visibility.dart' as Vis;
 
 class StatusDetail extends StatefulWidget {
   final Status status;
@@ -89,7 +91,8 @@ class _StatusDetail extends State<StatusDetail> {
     }
     return Scaffold(
         appBar: AppBar(
-          title: Text("Status Details"),
+          title: Text(AppLocalizations.of(context)
+              .tr("timeline.status.details.title")),
           actions: <Widget>[],
         ),
         body: Column(
@@ -182,8 +185,8 @@ class _StatusDetail extends State<StatusDetail> {
             ConstrainedBox(
               constraints: BoxConstraints(maxHeight: 200, minHeight: 80),
               child: Padding(
-                padding: EdgeInsets.all(
-                    10), // only( bottom: MediaQuery.of(context).viewInsets.bottom),
+                padding: EdgeInsets.all(10),
+                // only( bottom: MediaQuery.of(context).viewInsets.bottom),
                 child: TextField(
                   controller: txtController,
                   maxLines: null,
@@ -214,7 +217,8 @@ class _StatusDetail extends State<StatusDetail> {
                       borderRadius: BorderRadius.circular(12.0),
                       borderSide: BorderSide(),
                     ),
-                    labelText: 'Reply',
+                    labelText: AppLocalizations.of(context)
+                        .tr("timeline.status.details.action.reply"),
                   ),
                 ),
               ),
@@ -284,7 +288,8 @@ class _StatusDetail extends State<StatusDetail> {
                   Spacer(),
                   OutlineButton(
                     child: Text(
-                      "Send",
+                      AppLocalizations.of(context)
+                          .tr("timeline.status.details.action.send"),
                       style: TextStyle(color: Colors.blue),
                     ),
                     color: Colors.blue,
@@ -300,7 +305,7 @@ class _StatusDetail extends State<StatusDetail> {
         ));
   }
 
-  mediaUploaded(String id) {
+  mediaUploaded(BuildContext context, String id) {
     print("MY ID!!! $id");
 
     Navigator.of(context)
@@ -393,7 +398,8 @@ class _StatusDetail extends State<StatusDetail> {
               width: 15.0,
             ),
             Text(
-              "Unable to fetch data",
+              AppLocalizations.of(context)
+                  .tr("timeline.status.details.update.unable_to_fetch"),
               style: TextStyle(color: Colors.grey),
             ),
           ],
@@ -452,8 +458,10 @@ class _StatusDetail extends State<StatusDetail> {
       print(e);
       var alert = Alert(
           context,
-          "Opps",
-          "Unable to post status at this time. Please try again later.",
+          AppLocalizations.of(context)
+              .tr("timeline.status.details.update.error.alert.title"),
+          AppLocalizations.of(context)
+              .tr("timeline.status.details.update.error.alert.content"),
           () => {});
       alert.showAlert();
     });
@@ -493,8 +501,10 @@ class _StatusDetail extends State<StatusDetail> {
       print(e);
       var alert = Alert(
           context,
-          "Opps",
-          "Unable to post status at this time. Please try again later.",
+          AppLocalizations.of(context)
+              .tr("timeline.status.details.update.error.alert.title"),
+          AppLocalizations.of(context)
+              .tr("timeline.status.details.update.error.alert.content"),
           () => {});
       alert.showAlert();
     });

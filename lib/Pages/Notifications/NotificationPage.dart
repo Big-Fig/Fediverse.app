@@ -1,4 +1,5 @@
 import 'package:badges/badges.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pages/Notifications/Follows.dart';
 import 'package:fedi/Pages/Notifications/LikesReposts.dart';
 import 'package:fedi/Pages/Notifications/Mentions.dart';
@@ -207,7 +208,7 @@ class NotificationPageState extends State<NotificationPage>
     return Scaffold(
       body: _tabPages[_tabController.index],
       appBar: AppBar(
-        title: Text("Notifications"),
+        title: Text(AppLocalizations.of(context).tr("notifications.page.title")),
         bottom: TabBar(
           onTap: onTabTapped,
           controller: _tabController,

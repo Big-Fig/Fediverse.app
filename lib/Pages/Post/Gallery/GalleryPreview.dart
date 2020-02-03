@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:video_player/video_player.dart';
@@ -73,10 +74,10 @@ class _GalleryPreview extends State<GalleryPreview> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.data.value == null ? _buildLoading() : _buildItem();
+    return widget.data.value == null ? _buildLoading(context) : _buildItem(context);
   }
 
-  Widget _buildLoading() {
+  Widget _buildLoading(BuildContext context) {
     // if (oldImage != null) {
     //   return Center(
     //     child: oldImage,
@@ -84,14 +85,14 @@ class _GalleryPreview extends State<GalleryPreview> {
     // }
 
     return Center(
-      child: Text('loading...'),
+      child: Text(AppLocalizations.of(context).tr("post.gallery.preview.loading")),
     );
   }
 
-  Widget _buildItem() {
+  Widget _buildItem(BuildContext context) {
     if (widget.data.value.type == AssetType.video) {
       if (videoFile == null) {
-        return _buildLoading();
+        return _buildLoading(context);
       }
 
       return Center(
@@ -112,7 +113,7 @@ class _GalleryPreview extends State<GalleryPreview> {
               ),
             );
           }
-          return _buildLoading();
+          return _buildLoading(context);
         },
       );
     }

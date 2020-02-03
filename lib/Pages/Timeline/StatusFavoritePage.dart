@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pages/Profile/OtherAccount.dart';
 import 'package:fedi/Pages/Timeline/AccountCell.dart';
 import 'package:fedi/Pages/Timeline/StatusDetail.dart';
@@ -83,7 +84,10 @@ class _StatusFavoritePage extends State<StatusFavoritePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Favorited by:"),
+        title: Text(
+            AppLocalizations.of(context)
+        .tr("timeline.status.favorite.favorited_by")
+        ),
       ),
       body: SmartRefresher(
         enablePullDown: true,
@@ -99,7 +103,8 @@ class _StatusFavoritePage extends State<StatusFavoritePage> {
                 width: 15.0,
               ),
               Text(
-                "Everything up to date",
+                AppLocalizations.of(context)
+                    .tr("timeline.status.favorite.update.up_to_date"),
                 style: TextStyle(color: Colors.grey),
               )
             ],
@@ -115,7 +120,8 @@ class _StatusFavoritePage extends State<StatusFavoritePage> {
                 width: 15.0,
               ),
               Text(
-                "Unable to fetch data",
+                AppLocalizations.of(context)
+                    .tr("timeline.status.favorite.update.unable_to_fetch"),
                 style: TextStyle(color: Colors.grey),
               ),
             ],
@@ -125,13 +131,16 @@ class _StatusFavoritePage extends State<StatusFavoritePage> {
           builder: (BuildContext context, LoadStatus mode) {
             Widget body;
             if (mode == LoadStatus.idle) {
-              body = Text("No more accounts");
+              body = Text(AppLocalizations.of(context).tr(
+                  "timeline.status.favorite.update.no_more_accounts"));
             } else if (mode == LoadStatus.loading) {
               body = CircularProgressIndicator();
             } else if (mode == LoadStatus.failed) {
-              body = Text("Load Failed!");
+              body = Text(AppLocalizations.of(context).tr(
+                  "timeline.status.favorite.update.failed"));
             } else {
-              body = Text("No more Data");
+              body = Text(AppLocalizations.of(context).tr(
+                  "timeline.status.favorite.update.no_more_data"));
             }
             return Container(
               height: 55.0,

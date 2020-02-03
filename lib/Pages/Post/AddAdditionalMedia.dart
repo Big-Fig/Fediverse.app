@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:fedi/Pages/Post/Gallery/GalleryCapture.dart';
 import 'package:fedi/Pages/Post/Photo/PhotoCapture.dart';
@@ -38,6 +39,15 @@ class _AddAddtionalMedia extends State<AddAddtionalMedia>
     ];
     _controller = TabController(vsync: this, length: 3);
     _controller.addListener(_controllerChanged);
+
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    var addToPostLabel = AppLocalizations.of(context)
+        .tr("post.media.action.add_to_post");
     _appBar = [
       // Video Capture AppBar
       AppBar(
@@ -47,7 +57,7 @@ class _AddAddtionalMedia extends State<AddAddtionalMedia>
             Navigator.pop(context);
           },
         ),
-        title: Text("Add to post"),
+        title: Text(addToPostLabel),
       ),
       // Camera Capture AppBar
       AppBar(
@@ -57,7 +67,7 @@ class _AddAddtionalMedia extends State<AddAddtionalMedia>
             Navigator.pop(context);
           },
         ),
-        title: Text("Add to post"),
+        title: Text(addToPostLabel),
       ),
       // Gallery Capture AppBar
       AppBar(
@@ -67,10 +77,10 @@ class _AddAddtionalMedia extends State<AddAddtionalMedia>
             Navigator.pop(context);
           },
         ),
-        title: Text("Add to post"),
+        title: Text(addToPostLabel),
         actions: <Widget>[
           FlatButton(
-            child: Text("Add"),
+            child: Text(AppLocalizations.of(context).tr("post.media.action.add")),
             textColor: Colors.white,
             color: Colors.transparent,
             onPressed: () {

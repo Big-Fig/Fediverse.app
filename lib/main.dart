@@ -1,22 +1,21 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pages/Push/PushHelper.dart';
 import 'package:fedi/Pleroma/Models/ClientSettings.dart';
-import './Pleroma/Foundation/CurrentInstance.dart';
-import './Pages/AppContainerPage.dart';
-import './Pages/TermsOfService.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
+import './Pages/AppContainerPage.dart';
+import './Pages/TermsOfService.dart';
 import './Pleroma/Foundation/Client.dart';
+import './Pleroma/Foundation/CurrentInstance.dart';
 import './Pleroma/Models/Account.dart';
 import './Pleroma/Models/AccountAuth.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-
-import 'Pleroma/Foundation/InstanceStorage.dart';
-import 'dart:io' show Platform;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,7 +37,7 @@ void main() async {
   // Pass all uncaught errors from the framework to Crashlytics.
   FlutterError.onError = Crashlytics.instance.recordFlutterError;
 
-  runApp(MyApp());
+  runApp(EasyLocalization(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -56,20 +55,36 @@ class MyApp extends StatelessWidget {
     myConfig = PushHelper.instance.config(context);
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     FirebaseAnalytics analytics = FirebaseAnalytics();
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Fedi',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+
+
+    var localizationData = EasyLocalizationProvider.of(context).data;
+    var savedLocale = localizationData.savedLocale;
+    var locale = localizationData.locale;
+    return EasyLocalizationProvider(
+      data: localizationData,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Fedi',
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          EasylocaLizationDelegate(
+              locale: locale, path: "assets/langs")
+        ],
+        locale: savedLocale,
+        supportedLocales: [Locale('en', 'US')],
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        initialRoute: "/",
+        routes: {
+          '/': (context) => AppContainerPage(),
+          '/terms': (context) => TermsOfService(),
+        },
+        navigatorObservers: [
+          FirebaseAnalyticsObserver(analytics: analytics),
+        ],
       ),
-      initialRoute: "/",
-      routes: {
-        '/': (context) => AppContainerPage(),
-        '/terms': (context) => TermsOfService(),
-      },
-      navigatorObservers: [
-        FirebaseAnalyticsObserver(analytics: analytics),
-      ],
     );
   }
 }

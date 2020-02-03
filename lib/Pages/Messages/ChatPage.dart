@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pages/Profile/OtherAccount.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +41,7 @@ class ChatPage extends StatefulWidget {
 class _ChatPage extends State<ChatPage> {
   var txtController = TextEditingController();
   List<Status> statuses = <Status>[];
-  String title = "DM";
+  String title;
   bool backgroundCheckStatus = true;
   Account otherAccount;
   update() {
@@ -209,16 +210,17 @@ class _ChatPage extends State<ChatPage> {
                   Spacer(),
                   OutlineButton(
                     child: Text(
-                      "Send",
+                      AppLocalizations.of(context)
+                          .tr("messages.chat.send_message.action.send"),
                       style: TextStyle(color: Colors.blue),
                     ),
                     color: Colors.blue,
                     onPressed: () {
                       print("sending");
                       if (statuses.length == 0) {
-                        startNewConvo();
+                        startNewConvo(context);
                       } else {
-                        sendMessage();
+                        sendMessage(context);
                       }
                     },
                   ),
@@ -234,9 +236,7 @@ class _ChatPage extends State<ChatPage> {
     Future.delayed(const Duration(milliseconds: 5000), () {
       backgroundCheck();
     });
-    if (widget.account != null) {
-      title = "DM ${widget.account.acct}";
-    }
+
     if (SchedulerBinding.instance.schedulerPhase ==
         SchedulerPhase.persistentCallbacks) {
       SchedulerBinding.instance
@@ -246,16 +246,30 @@ class _ChatPage extends State<ChatPage> {
     PushHelper.instance.notificationUpdater = update;
   }
 
-  mediaUploaded(String id) {
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // similar to init state but with valid context
+
+    if (widget.account != null) {
+      title = AppLocalizations.of(context)
+          .tr("messages.chat.title.with_account", args: [widget.account.acct]);
+    } else {
+      title = AppLocalizations.of(context).tr("messages.chat.title.no_account");
+    }
+  }
+
+  mediaUploaded(BuildContext context, String id) {
     print("MY ID!!! $id");
 
     Navigator.of(context)
         .popUntil((route) => route.settings.name == "/ChatPage");
 
     if (statuses.length == 0) {
-      startNewConvoWithAccatment(id);
+      startNewConvoWithAccatment(context, id);
     } else {
-      sendMessageWithAttachment(id);
+      sendMessageWithAttachment(context, id);
     }
   }
 
@@ -369,7 +383,8 @@ class _ChatPage extends State<ChatPage> {
               width: 15.0,
             ),
             Text(
-              "Unable to fetch data",
+              AppLocalizations.of(context)
+                  .tr("messages.chat.update.unable_to_fetch"),
               style: TextStyle(color: Colors.grey),
             ),
           ],
@@ -403,7 +418,7 @@ class _ChatPage extends State<ChatPage> {
     );
   }
 
-  startNewConvoWithAccatment(String id) {
+  startNewConvoWithAccatment(BuildContext context, String id) {
     var statusPath = StatusRequest.Status.postNewStatus;
     Map<String, dynamic> params = {
       "status": "@${widget.account.acct}",
@@ -420,17 +435,19 @@ class _ChatPage extends State<ChatPage> {
       setState(() {});
     }).catchError((e) {
       print(e);
-
+      var appLocalizations = AppLocalizations.of(context);
       var alert = Alert(
           context,
-          "Opps",
-          "Unable to post status at this time. Please try again later.",
+          appLocalizations
+              .tr("messages.chat.start_new_conversation.error.alert.title"),
+          appLocalizations
+              .tr("messages.chat.start_new_conversation.error.alert.content"),
           () => {});
       alert.showAlert();
     });
   }
 
-  startNewConvo() {
+  startNewConvo(BuildContext context) {
     if (txtController.text.length == 0) {
       print("too short");
       return;
@@ -452,16 +469,20 @@ class _ChatPage extends State<ChatPage> {
       setState(() {});
     }).catchError((e) {
       print(e);
+
+      var appLocalizations = AppLocalizations.of(context);
       var alert = Alert(
           context,
-          "Opps",
-          "Unable to post status at this time. Please try again later.",
+          appLocalizations
+              .tr("messages.chat.start_new_conversation.error.alert.title"),
+          appLocalizations
+              .tr("messages.chat.start_new_conversation.error.alert.content"),
           () => {});
       alert.showAlert();
     });
   }
 
-  sendMessageWithAttachment(String id) {
+  sendMessageWithAttachment(BuildContext context, String id) {
     Account atAccount = statuses.first.account;
     if (widget.conversation.accounts.length > 0) {
       atAccount = getOtherAccount(widget.conversation.accounts);
@@ -488,16 +509,19 @@ class _ChatPage extends State<ChatPage> {
       setState(() {});
     }).catchError((e) {
       print(e);
+      var appLocalizations = AppLocalizations.of(context);
       var alert = Alert(
           context,
-          "Opps",
-          "Unable to post status at this time. Please try again later.",
+          appLocalizations
+              .tr("messages.chat.send_message.error.alert.title"),
+          appLocalizations
+              .tr("messages.chat.send_message.error.alert.content"),
           () => {});
       alert.showAlert();
     });
   }
 
-  sendMessage() {
+  sendMessage(BuildContext context) {
     Account atAccount = statuses.first.account;
     if (widget.conversation.accounts.length > 0) {
       atAccount = getOtherAccount(widget.conversation.accounts);
@@ -527,11 +551,14 @@ class _ChatPage extends State<ChatPage> {
       setState(() {});
     }).catchError((e) {
       print(e);
+      var appLocalizations = AppLocalizations.of(context);
       var alert = Alert(
           context,
-          "Opps",
-          "Unable to post status at this time. Please try again later.",
-          () => {});
+          appLocalizations
+              .tr("messages.chat.send_message.error.alert.title"),
+          appLocalizations
+              .tr("messages.chat.send_message.error.alert.content"),
+              () => {});
       alert.showAlert();
     });
   }
