@@ -1,10 +1,11 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pages/Post/Gallery/GalleryCapture.dart';
 import 'package:fedi/Pages/Post/Photo/PhotoCapture.dart';
-import 'package:photo_manager/photo_manager.dart';
+import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:photo_manager/photo_manager.dart';
 
 import 'ProfileMediaPage.dart';
 
@@ -13,6 +14,7 @@ class ProfileImageEditor extends StatefulWidget {
   final Function(String) mediaUploaded;
 
   final int selectedIndex;
+
   ProfileImageEditor(this.selectedIndex, this.mediaUploaded, this.imageType);
 
   @override
@@ -36,6 +38,14 @@ class _ProfileImageEditor extends State<ProfileImageEditor>
     _currentIndex = widget.selectedIndex;
     _controller.addListener(_controllerChanged);
 
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    var titleText = AppLocalizations.of(context)
+        .tr("profile.image.edit.title", args: [widget.imageType]);
     _appBar = _appBar = [
       AppBar(
         leading: IconButton(
@@ -44,7 +54,7 @@ class _ProfileImageEditor extends State<ProfileImageEditor>
             Navigator.pop(context);
           },
         ),
-        title: Text("Ediit ${widget.imageType}"),
+        title: Text(titleText),
       ),
       AppBar(
         leading: IconButton(
@@ -53,10 +63,11 @@ class _ProfileImageEditor extends State<ProfileImageEditor>
             Navigator.pop(context);
           },
         ),
-        title: Text("Ediit ${widget.imageType}"),
+        title: Text(titleText),
         actions: <Widget>[
           FlatButton(
-            child: Text("Next"),
+            child: Text(AppLocalizations.of(context)
+                .tr("profile.image.edit.action.next")),
             textColor: Colors.white,
             color: Colors.transparent,
             onPressed: () {
@@ -98,7 +109,8 @@ class _ProfileImageEditor extends State<ProfileImageEditor>
           CropAspectRatioPreset.ratio16x9
         ],
         androidUiSettings: AndroidUiSettings(
-            toolbarTitle: 'Crop ${widget.imageType}',
+            toolbarTitle: AppLocalizations.of(context)
+                .tr("profile.image.edit.crop.title", args: [widget.imageType]),
             toolbarColor: Colors.blue,
             toolbarWidgetColor: Colors.white,
             initAspectRatio: CropAspectRatioPreset.square,
@@ -134,7 +146,8 @@ class _ProfileImageEditor extends State<ProfileImageEditor>
           CropAspectRatioPreset.ratio16x9
         ],
         androidUiSettings: AndroidUiSettings(
-            toolbarTitle: 'Crop ${widget.imageType}',
+            toolbarTitle: AppLocalizations.of(context)
+                .tr("profile.image.edit.crop.title", args: [widget.imageType]),
             toolbarColor: Colors.blue,
             toolbarWidgetColor: Colors.white,
             initAspectRatio: CropAspectRatioPreset.square,
@@ -185,11 +198,14 @@ class _ProfileImageEditor extends State<ProfileImageEditor>
         items: [
           BottomNavigationBarItem(
               backgroundColor: Colors.grey,
-              title: Text('Photo'),
+              title: Text(AppLocalizations.of(context)
+                  .tr("profile.image.edit.bottom_nav_bar.photo")
+              ),
               icon: Container(height: 0.0)),
           BottomNavigationBarItem(
             backgroundColor: Colors.grey,
-            title: Text('Gallery'),
+            title: Text(AppLocalizations.of(context)
+                .tr("profile.image.edit.bottom_nav_bar.gallery")),
             icon: Container(height: 0.0),
           ),
         ],

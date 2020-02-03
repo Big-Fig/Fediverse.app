@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:io';
@@ -242,15 +243,22 @@ class _VideoCapture extends State<VideoCapture> {
                           showDialog(
                             context: this.context,
                             builder: (BuildContext context) {
+                              var appLocalizations = AppLocalizations.of(context);
                               // return object of type Dialog
                               return AlertDialog(
-                                title: new Text("Delete current progress?"),
+                                title: new Text(appLocalizations
+                                    .tr("post.video.capture.pause.alert"
+                                    ".title")),
                                 content: new Text(
-                                    "Are you sure you want to delete your current video progress?"),
+                                    appLocalizations
+                                        .tr("post.video.capture.pause.alert"
+                                        ".content")),
                                 actions: <Widget>[
                                   FlatButton(
                                     child: new Text(
-                                      "Cancel",
+                                      appLocalizations
+                                          .tr("post.video.capture.pause.alert"
+                                          ".action.cancel"),
                                       style: TextStyle(
                                         color: Colors.grey,
                                       ),
@@ -262,7 +270,9 @@ class _VideoCapture extends State<VideoCapture> {
                                   // usually buttons at the bottom of the dialog
                                   FlatButton(
                                     child: new Text(
-                                      "Delete",
+                                      appLocalizations
+                                          .tr("post.video.capture.pause.alert"
+                                          ".action.delete"),
                                       style: TextStyle(
                                         color: Colors.red,
                                       ),
@@ -297,16 +307,22 @@ class _VideoCapture extends State<VideoCapture> {
                                 showDialog(
                                   context: this.context,
                                   builder: (BuildContext context) {
+                                    var appLocalizations = AppLocalizations.of(context);
                                     // return object of type Dialog
                                     return AlertDialog(
-                                      title:
-                                          new Text("Delete current progress?"),
+                                      title: new Text(appLocalizations
+                                          .tr("post.video.capture.pause.alert"
+                                          ".title")),
                                       content: new Text(
-                                          "Are you sure you want to delete your current video progress?"),
+                                          appLocalizations
+                                              .tr("post.video.capture.pause.alert"
+                                              ".content")),
                                       actions: <Widget>[
                                         FlatButton(
                                           child: new Text(
-                                            "Cancel",
+                                            appLocalizations
+                                                .tr("post.video.capture.pause.alert"
+                                                ".action.cancel"),
                                             style: TextStyle(
                                               color: Colors.grey,
                                             ),
@@ -318,7 +334,9 @@ class _VideoCapture extends State<VideoCapture> {
                                         // usually buttons at the bottom of the dialog
                                         FlatButton(
                                           child: new Text(
-                                            "Delete",
+                                            appLocalizations
+                                                .tr("post.video.capture.pause.alert"
+                                                ".action.delete"),
                                             style: TextStyle(
                                               color: Colors.red,
                                             ),
@@ -366,7 +384,8 @@ class _VideoCapture extends State<VideoCapture> {
     videoLength.start();
     startVideoRecording().then((String filePath) {
       if (mounted) setState(() {});
-      if (filePath != null) showInSnackBar('Saving video to $filePath');
+      if (filePath != null) showInSnackBar(AppLocalizations.of(context)
+          .tr("post.video.capture.finishing.saving", args: [filePath]));
     }).catchError((e) {
       print(e);
     });
@@ -395,13 +414,15 @@ class _VideoCapture extends State<VideoCapture> {
     videoLength.start();
     resumeVideoRecording().then((_) {
       if (mounted) setState(() {});
-      showInSnackBar('Video recording resumed');
+      showInSnackBar(AppLocalizations.of(context)
+          .tr("post.video.capture.resume.resumed"));
     });
   }
 
   Future<String> startVideoRecording() async {
     if (!controller.value.isInitialized) {
-      showInSnackBar('Error: select a camera first.');
+      showInSnackBar(AppLocalizations.of(context)
+          .tr("post.video.capture.error.select_camera_first"));
       return null;
     }
 
@@ -466,8 +487,9 @@ class _VideoCapture extends State<VideoCapture> {
 
   Widget _cameraPreviewWidget() {
     if (controller == null || !controller.value.isInitialized) {
-      return const Text(
-        'Loading',
+      return Text(
+        AppLocalizations.of(context)
+            .tr("post.video.capture.preview.loading"),
         style: TextStyle(
           color: Colors.white,
           fontSize: 24.0,

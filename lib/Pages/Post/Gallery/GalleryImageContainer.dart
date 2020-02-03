@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:fedi/Views/SelectedBorder.dart';
 import 'package:photo_manager/photo_manager.dart';
@@ -85,7 +86,8 @@ class _GalleryImageContainer extends State<GalleryImageContainer> {
           );
         }
         return Center(
-          child: Text('loading...'),
+          child: Text(AppLocalizations.of(context)
+              .tr("post.gallery.capture.image.loading")),
         );
       },
     );

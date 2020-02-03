@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pages/Web/InAppWebPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_alert/flutter_alert.dart';
@@ -106,7 +107,10 @@ class _ProfileHeader extends State<ProfileHeader> {
                             child: Padding(
                               padding: EdgeInsets.all(3),
                               child: Text(
-                                "Statuses\n${widget.profileAccount.statusesCount}",
+                                AppLocalizations.of(context)
+                                .tr("profile.header.statuses", args:[
+                                  widget.profileAccount.statusesCount.toString()
+                                ]),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontSize: 18, color: Colors.white),
@@ -118,7 +122,10 @@ class _ProfileHeader extends State<ProfileHeader> {
                             child: Padding(
                               padding: EdgeInsets.all(3),
                               child: Text(
-                                "Following\n${widget.profileAccount.followingCount}",
+                                AppLocalizations.of(context)
+                                    .tr("profile.header.following", args:[
+                                  widget.profileAccount.followingCount.toString()
+                                ]),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontSize: 18, color: Colors.white),
@@ -130,7 +137,10 @@ class _ProfileHeader extends State<ProfileHeader> {
                             child: Padding(
                               padding: EdgeInsets.all(3),
                               child: Text(
-                                "Followers\n${widget.profileAccount.followersCount}",
+                                AppLocalizations.of(context)
+                                    .tr("profile.header.followers", args:[
+                                  widget.profileAccount.followersCount.toString()
+                                ]),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontSize: 18, color: Colors.white),
@@ -244,7 +254,13 @@ class _ProfileHeader extends State<ProfileHeader> {
           OutlineButton(
             child: Row(
               children: <Widget>[
-                Text(relationship.following ? "Unfollow" : "Follow"),
+                Text(relationship.following ?
+                AppLocalizations.of(context)
+                    .tr("profile.header.action.unfollow")
+                    :
+                AppLocalizations.of(context)
+                    .tr("profile.header.action.follow")
+                ),
               ],
             ),
             onPressed: () {
@@ -263,7 +279,8 @@ class _ProfileHeader extends State<ProfileHeader> {
           ),
           OutlineButton(
             child: Row(
-              children: <Widget>[Text("Message")],
+              children: <Widget>[Text(AppLocalizations.of(context)
+                  .tr("profile.header.action.message"))],
             ),
             onPressed: () {
               Navigator.push(
@@ -278,7 +295,8 @@ class _ProfileHeader extends State<ProfileHeader> {
           OutlineButton(
             child: Row(
               children: <Widget>[
-                Text("More"),
+                Text(AppLocalizations.of(context)
+                    .tr("profile.header.action.more")),
                 Icon(
                   Icons.keyboard_arrow_down,
                   color: Colors.grey,
@@ -303,7 +321,12 @@ class _ProfileHeader extends State<ProfileHeader> {
       body: "${widget.profileAccount.acct}",
       actions: [
         AlertAction(
-          text: relationship.muting ? "Unmute" : "Mute",
+          text: relationship.muting ?
+          AppLocalizations.of(context)
+              .tr("profile.header.action.unmute")
+              :
+          AppLocalizations.of(context)
+              .tr("profile.header.action.mute"),
           onPressed: () {
             String path = Accounts.muteAccount(widget.profileAccount.id);
             if (relationship.muting) {
@@ -320,7 +343,12 @@ class _ProfileHeader extends State<ProfileHeader> {
           },
         ),
         AlertAction(
-          text: relationship.blocking ? "Unblock" : "Block",
+          text: relationship.blocking ?
+          AppLocalizations.of(context)
+              .tr("profile.header.action.unblock")
+              :
+          AppLocalizations.of(context)
+              .tr("profile.header.action.block"),
           onPressed: () {
             String path = Accounts.blockAccount(widget.profileAccount.id);
             if (relationship.blocking) {
@@ -337,7 +365,8 @@ class _ProfileHeader extends State<ProfileHeader> {
           },
         ),
         AlertAction(
-          text: "Report",
+          text: AppLocalizations.of(context)
+              .tr("profile.header.report.alert.title"),
           onPressed: () {
             var params = {"account_id": widget.profileAccount.id};
             CurrentInstance.instance.currentClient

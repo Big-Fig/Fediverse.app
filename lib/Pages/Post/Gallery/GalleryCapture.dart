@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fedi/Pages/Post/Gallery/GalleryImageContainer.dart';
@@ -75,8 +76,7 @@ class _GalleryCapture extends State<GalleryCapture> {
         color: Colors.black,
         child: new Center(
           child: new Text(
-            "Fetching gallery",
-            
+            AppLocalizations.of(context).tr("post.gallery.capture.fetching")
           ),
         ),
       );
@@ -107,7 +107,8 @@ class _GalleryCapture extends State<GalleryCapture> {
         color: Colors.teal,
         child: new Center(
           child: new Text(
-            "Please update your settings to allow access to gallery",
+            AppLocalizations.of(context)
+                .tr("post.gallery.capture.no_permission")
           ),
         ),
       );
