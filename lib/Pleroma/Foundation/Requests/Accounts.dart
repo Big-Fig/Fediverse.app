@@ -3,7 +3,7 @@
 class Accounts {
 
   static String account({String id}) {
-    return "/api/v1/account/$id";
+    return "/api/v1/accounts/$id";
   }
 
   static String getRelationshipById(String id){

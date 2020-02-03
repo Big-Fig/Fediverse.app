@@ -15,6 +15,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.39.4"
+  archive:
+    dependency: transitive
+    description:
+      name: archive
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.11"
   args:
     dependency: transitive
     description:
@@ -36,6 +43,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  badges:
+    dependency: "direct main"
+    description:
+      name: badges
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0"
+  boolean_selector:
+    dependency: transitive
+    description:
+      name: boolean_selector
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.5"
   build:
     dependency: transitive
     description:
@@ -161,7 +182,7 @@ packages:
       name: crypto
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.4"
+    version: "2.1.3"
   csslib:
     dependency: transitive
     description:
@@ -183,13 +204,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.3.3"
-  firebase:
-    dependency: transitive
-    description:
-      name: firebase
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "7.2.0"
   firebase_analytics:
     dependency: "direct main"
     description:
@@ -203,7 +217,7 @@ packages:
       name: firebase_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.3+2"
+    version: "0.4.2+2"
   firebase_core_platform_interface:
     dependency: transitive
     description:
@@ -211,13 +225,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
-  firebase_core_web:
-    dependency: transitive
-    description:
-      name: firebase_core_web
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.1+2"
   firebase_crashlytics:
     dependency: "direct main"
     description:
@@ -231,7 +238,7 @@ packages:
       name: firebase_messaging
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.1.8"
+    version: "6.0.9"
   fixnum:
     dependency: transitive
     description:
@@ -272,6 +279,11 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.0"
+  flutter_test:
+    dependency: transitive
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -283,7 +295,14 @@ packages:
       name: flutter_widgets
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.9"
+    version: "0.1.8"
+  fluttertoast:
+    dependency: "direct main"
+    description:
+      name: fluttertoast
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.1.3"
   glob:
     dependency: transitive
     description:
@@ -340,6 +359,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.3"
+  image:
+    dependency: transitive
+    description:
+      name: image
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.4"
   image_cropper:
     dependency: "direct main"
     description:
@@ -486,7 +512,7 @@ packages:
       name: pedantic
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.9.0"
+    version: "1.8.0+1"
   percent_indicator:
     dependency: "direct main"
     description:
@@ -494,13 +520,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.1+1"
+  petitparser:
+    dependency: transitive
+    description:
+      name: petitparser
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.4.0"
   photo_manager:
     dependency: "direct main"
     description:
       name: photo_manager
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.6"
+    version: "0.4.8"
   photo_view:
     dependency: "direct main"
     description:
@@ -563,7 +596,7 @@ packages:
       name: quiver
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.2+1"
+    version: "2.0.5"
   rxdart:
     dependency: "direct main"
     description:
@@ -617,7 +650,7 @@ packages:
       name: source_span
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.6.0"
+    version: "1.5.5"
   sqflite:
     dependency: transitive
     description:
@@ -667,6 +700,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
+  test_api:
+    dependency: transitive
+    description:
+      name: test_api
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.11"
   timeago:
     dependency: "direct main"
     description:
@@ -737,13 +777,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.8"
+  vibration:
+    dependency: "direct main"
+    description:
+      name: vibration
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.2"
   video_player:
     dependency: "direct main"
     description:
       name: video_player
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.10.5+2"
+    version: "0.10.4+2"
   video_player_platform_interface:
     dependency: transitive
     description:
@@ -751,13 +798,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
-  video_player_web:
-    dependency: transitive
-    description:
-      name: video_player_web
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.1+1"
   watcher:
     dependency: transitive
     description:
@@ -778,7 +818,14 @@ packages:
       name: webview_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.19+5"
+    version: "0.3.18+1"
+  xml:
+    dependency: transitive
+    description:
+      name: xml
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.5.0"
   yaml:
     dependency: transitive
     description:
@@ -787,5 +834,5 @@ packages:
     source: hosted
     version: "2.2.0"
 sdks:
-  dart: ">=2.7.0-dev <3.0.0"
-  flutter: ">=1.12.13+hotfix.5 <2.0.0"
+  dart: ">=2.6.0 <3.0.0"
+  flutter: ">=1.12.8 <2.0.0"

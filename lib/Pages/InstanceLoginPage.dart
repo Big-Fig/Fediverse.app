@@ -78,6 +78,8 @@ class _InstanceLoginPage extends State<InstanceLoginPage> {
                 Container(
                   width: targetWidth,
                   child: TextFormField(
+                    autocorrect: false,
+                    textCapitalization: TextCapitalization.none,
                     controller: _instanceTextController,
                     decoration: InputDecoration(
                       filled: true,

@@ -11,35 +11,33 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class MessagesPage extends StatefulWidget {
   final List<Conversation> conversations = [];
-
+  MessagesPage({Key key}) : super(key: key);
   @override
   State<StatefulWidget> createState() {
-    return _MessagesPage();
+
+    return MessagesPageState();
   }
 }
 
-class _MessagesPage extends State<MessagesPage> {
+class MessagesPageState extends State<MessagesPage> {
   void initState() {
     super.initState();
 
     if (SchedulerBinding.instance.schedulerPhase ==
         SchedulerPhase.persistentCallbacks) {
       SchedulerBinding.instance
-          .addPostFrameCallback((_) => fetchStatuses(context));
+          .addPostFrameCallback((_) => fetchStatuses());
     }
   }
 
-  void fetchStatuses(BuildContext context) {
-    if (widget.conversations.length == 0) {
-      _refreshController.requestRefresh();
-    }
+  void fetchStatuses() {
+    _refreshController.requestRefresh();
   }
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
-
-  refreshMessagesList(){
+  refreshMessagesList() {
     _onRefresh();
   }
 
@@ -65,7 +63,6 @@ class _MessagesPage extends State<MessagesPage> {
   }
 
   void _onLoading() async {
-
     // if failed,use loadFailed(),if no data return,use LoadNodata()
     var lastId = "";
     Conversation lastConverstation = widget.conversations.last;
@@ -96,8 +93,9 @@ class _MessagesPage extends State<MessagesPage> {
           builder: (context) => ChatPage(
             conversation: conversation,
             refreshMasterList: refreshMessagesList,
+            refreshMesagePage: refreshMessagesList,
           ),
-           settings:RouteSettings(name: "/ChatPage"),
+          settings: RouteSettings(name: "/ChatPage"),
         ));
   }
 
@@ -171,6 +169,4 @@ class _MessagesPage extends State<MessagesPage> {
       ),
     );
   }
-
-
 }

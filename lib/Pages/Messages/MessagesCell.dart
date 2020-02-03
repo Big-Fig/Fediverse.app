@@ -51,13 +51,13 @@ class _MessagesCell extends State<MessagesCell> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     ClipRRect(
-                      borderRadius: new BorderRadius.circular(25.0),
+                      borderRadius: BorderRadius.circular(25.0),
                       child: CachedNetworkImage(
                         imageUrl: messageUser.avatar,
                         placeholder: (context, url) => Center(
                           child: Container(
-                            width: 30,
-                            height: 30,
+                            width: 50,
+                            height: 50,
                             child: CircularProgressIndicator(),
                           ),
                         ),

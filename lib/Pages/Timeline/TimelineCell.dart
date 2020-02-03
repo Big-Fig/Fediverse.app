@@ -3,9 +3,9 @@ import 'package:fedi/Pages/Timeline/StatusFavoritePage.dart';
 import 'package:fedi/Pages/Timeline/StatusRepostPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:fedi/Pages/Statuses/ImageViewPage.dart';
-import 'package:fedi/Pages/Web/InAppWebPage.dart';
 import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart';
@@ -14,9 +14,12 @@ import 'package:fedi/Pleroma/Models/Account.dart';
 import 'package:fedi/Pleroma/Models/Status.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:fedi/Views/VideoPlayer.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jiffy/jiffy.dart';
-import 'package:flutter_alert/flutter_alert.dart';
 import 'package:html/dom.dart' as dom;
+import 'package:url_launcher/url_launcher.dart';
+import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart'
+    as AccountRequests;
 
 class TimelineCell extends StatefulWidget {
   final Status status;
@@ -158,16 +161,7 @@ class _TimelineCell extends State<TimelineCell> {
               ],
             ),
           ),
-          Row(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(left: 19),
-                child: Text(
-                  Jiffy(status.createdAt).fromNow(),
-                ),
-              ),
-            ],
-          ),
+
           GestureDetector(
             onTap: () {
               print("view status context");
@@ -206,17 +200,30 @@ class _TimelineCell extends State<TimelineCell> {
                     },
                     data: getHTMLWithCustomEmoji(widget.status),
                     onLinkTap: (String link) {
-                      print("link $link");
-                      if (link.contains("/users/")) {
-                      } else if (link.contains("/media/")) {
-                      } else {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => InAppWebPage(link),
-                          ),
-                        );
+                      for (int i = 0; i < widget.status.mentions.length; i++) {
+                        Mention mention = widget.status.mentions[i];
+                        print("MENTIONS: ${mention.url} == $link");
+                        if (mention.url == link) {
+                          CurrentInstance.instance.currentClient
+                              .run(
+                                  path: AccountRequests.Accounts.account(
+                                      id: mention.id),
+                                  method: HTTPMethod.GET)
+                              .then((response) {
+                            Account account = accountFromJson(response.body);
+                            widget.viewAccount(account);
+                          }).catchError((error) {
+                            print(error.toString());
+                          });
+
+                          return;
+                        }
                       }
+
+                      print("link $link");
+                      canLaunch(link).then((result) {
+                        launch(link);
+                      });
                     },
                   ),
                 ),
@@ -244,12 +251,13 @@ class _TimelineCell extends State<TimelineCell> {
                             widget.viewStatusContext(widget.status);
                           },
                         ),
-                      if (widget.status.repliesCount != 0)
+                      if (widget.status.repliesCount != 0 &&
+                          (widget.showCommentBtn == true ||
+                              widget.showCommentBtn == null))
                         Text(widget.status.repliesCount.toString()),
                       IconButton(
-                        color: widget.status.reblogged
-                            ? Colors.blue
-                            : Colors.grey,
+                        color:
+                            widget.status.reblogged ? Colors.blue : Colors.grey,
                         icon: Icon(Icons.cached),
                         tooltip: 'repost',
                         onPressed: () {
@@ -257,11 +265,18 @@ class _TimelineCell extends State<TimelineCell> {
                         },
                       ),
                       Spacer(),
+                      Padding(
+                        padding: EdgeInsets.only(left: 19),
+                        child: Text(
+                          Jiffy(status.createdAt).fromNow(),
+                        ),
+                      ),
                     ],
                   ),
                 ),
                 if (widget.status.favouritesCount > 0 ||
-                    widget.status.reblogsCount > 0)
+                    widget.status.reblogsCount > 0 ||
+                    widget.status.reblog != null)
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 12.0),
                     child: Row(
@@ -269,17 +284,6 @@ class _TimelineCell extends State<TimelineCell> {
                         if (widget.status.favouritesCount > 0)
                           getFavoritesButton(),
                         if (widget.status.reblogsCount > 0) getRepostsButton()
-                      ],
-                    ),
-                  ),
-                  if (widget.status.reblog != null )
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12.0),
-                    child: Row(
-                      children: <Widget>[
-                        if (widget.status.reblog .favouritesCount > 0)
-                          getRepostFavoritesButton(),
-                        if (widget.status.reblog.reblogsCount > 0) getRepostRepostsButton()
                       ],
                     ),
                   ),
@@ -292,9 +296,15 @@ class _TimelineCell extends State<TimelineCell> {
   }
 
   Widget getFavoritesButton() {
-    String favs = "${widget.status.favouritesCount} Favorites";
-    if (widget.status.favouritesCount == 1) {
-      favs = "${widget.status.favouritesCount} Favorite";
+    int count = 0;
+    if (widget.status.reblog != null) {
+      count += widget.status.reblog.favouritesCount ?? 0;
+    }
+    count += widget.status.favouritesCount ?? 0;
+
+    String favs = "$count Favorites";
+    if (count == 1) {
+      favs = "$count Favorite";
     }
     return FlatButton(
       child: Text(favs),
@@ -309,55 +319,23 @@ class _TimelineCell extends State<TimelineCell> {
   }
 
   Widget getRepostsButton() {
-    String reposts = "${widget.status.reblogsCount} Reposts";
+    int count = 0;
+    count += widget.status.reblogsCount ?? 0;
+    if (widget.status.reblog != null) {
+      count += widget.status.reblog.reblogsCount ?? 0;
+    }
+    String reposts = "$count Reposts";
     if (widget.status.reblogsCount == 1) {
-      reposts = "${widget.status.reblogsCount} Repost";
+      reposts = "$count Repost";
     }
     return FlatButton(
       child: Text(reposts),
-      onPressed: () {
-         Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => StatusRepostPage(widget.status)),
-        );
-
-      },
-    );
-  }
-
-
-  Widget getRepostFavoritesButton() {
-    String favs = "${widget.status.reblog.favouritesCount} Favorites";
-    if (widget.status.reblog.favouritesCount == 1) {
-      favs = "${widget.status.reblog.favouritesCount} Favorite";
-    }
-    return FlatButton(
-      child: Text(favs),
       onPressed: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => StatusFavoritePage(widget.status.reblog)),
+              builder: (context) => StatusRepostPage(widget.status)),
         );
-      },
-    );
-  }
-
-  Widget getRepostRepostsButton() {
-    String reposts = "${widget.status.reblog.reblogsCount} Reposts";
-    if (widget.status.reblog.reblogsCount == 1) {
-      reposts = "${widget.status.reblog.reblogsCount} Repost";
-    }
-    return FlatButton(
-      child: Text(reposts),
-      onPressed: () {
-         Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => StatusRepostPage(widget.status.reblog)),
-        );
-
       },
     );
   }
@@ -402,58 +380,254 @@ class _TimelineCell extends State<TimelineCell> {
   }
 
   showMoreOptions(BuildContext context) {
-    showAlert(
-      context: context,
-      title: "More actions for:",
-      body: "${widget.status.account.acct}",
-      actions: [
-        AlertAction(
-          text: "Mute",
-          onPressed: () {
-            CurrentInstance.instance.currentClient
-                .run(
-                    path: Accounts.muteAccount(widget.status.account.id),
-                    method: HTTPMethod.POST)
-                .then((response) {
-              print(response.body);
-            }).catchError((error) {
-              print(error);
-            });
-          },
-        ),
-        AlertAction(
-          text: "Block",
-          onPressed: () {
-            CurrentInstance.instance.currentClient
-                .run(
-                    path: Accounts.blockAccount(widget.status.account.id),
-                    method: HTTPMethod.POST)
-                .then((response) {
-              print(response.body);
-            }).catchError((error) {
-              print(error);
-            });
-          },
-        ),
-        AlertAction(
-          text: "Report",
-          onPressed: () {
-            var params = {"account_id": widget.status.account.id};
-            CurrentInstance.instance.currentClient
-                .run(
-                    path: Accounts.reportAccount(),
-                    params: params,
-                    method: HTTPMethod.POST)
-                .then((response) {
-              print(response.body);
-            }).catchError((error) {
-              print(error);
-            });
-          },
-        ),
-      ],
-      cancelable: true,
-    );
+    Status status = widget.status;
+    if (widget.status.reblog != null) {
+      status = widget.status.reblog;
+    }
+
+    showModalBottomSheet(
+        builder: (BuildContext context) {
+          return Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 10, left: 10, right: 10),
+                  child: Center(
+                    child: Text(
+                      "Status Actions",
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: OutlineButton(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[Text("Copy status link")],
+                          ),
+                          onPressed: () {
+                            print(status.uri);
+                            Clipboard.setData(ClipboardData(text: status.uri));
+                            Navigator.of(context).pop();
+                            Fluttertoast.showToast(
+                                msg: "Copied",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.CENTER,
+                                timeInSecForIos: 1,
+                                backgroundColor: Colors.blue,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: OutlineButton(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[Text("Open in browser")],
+                          ),
+                          onPressed: () {
+                            canLaunch(status.uri).then((result) {
+                              launch(status.uri);
+                            });
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 10, left: 10, right: 10),
+                  child: Center(
+                    child: Text(
+                      "More actions for:",
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Center(
+                    child: Text(
+                      "${status.account.acct}",
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                  ),
+                ),
+                // public button
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: OutlineButton(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[Text("Follow")],
+                          ),
+                          onPressed: () {
+                            CurrentInstance.instance.currentClient
+                                .run(
+                                    path:
+                                        Accounts.account(id: status.account.id),
+                                    method: HTTPMethod.GET)
+                                .then((response) {
+                              Account account = accountFromJson(response.body);
+                              CurrentInstance.instance.currentClient
+                                  .run(
+                                      path: Accounts.followAccount(account.id),
+                                      method: HTTPMethod.POST)
+                                  .then((response) {
+                                print("following response");
+                                print("following ${response.statusCode}");
+                                print(response.body);
+                              }).catchError((error) {
+                                print(error);
+                              });
+                            }).catchError((error) {
+                              print(error);
+                            });
+
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // public button
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: OutlineButton(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[Text("Mute")],
+                          ),
+                          onPressed: () {
+                            CurrentInstance.instance.currentClient
+                                .run(
+                                    path:
+                                        Accounts.muteAccount(status.account.id),
+                                    method: HTTPMethod.POST)
+                                .then((response) {
+                              print(response.body);
+                            }).catchError((error) {
+                              print(error);
+                            });
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // Unlisted
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: OutlineButton(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[Text("Block")],
+                          ),
+                          onPressed: () {
+                            CurrentInstance.instance.currentClient
+                                .run(
+                                    path: Accounts.blockAccount(
+                                        status.account.id),
+                                    method: HTTPMethod.POST)
+                                .then((response) {
+                              print(response.body);
+                            }).catchError((error) {
+                              print(error);
+                            });
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // Private
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: OutlineButton(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[Text("Report")],
+                          ),
+                          onPressed: () {
+                            var params = {"account_id": status.account.id};
+                            CurrentInstance.instance.currentClient
+                                .run(
+                                    path: Accounts.reportAccount(),
+                                    params: params,
+                                    method: HTTPMethod.POST)
+                                .then((response) {
+                              print(response.body);
+                            }).catchError((error) {
+                              print(error);
+                            });
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  height: 30,
+                ),
+                // Cancel
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: OutlineButton(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                " Cancel",
+                                style: TextStyle(color: Colors.red),
+                              )
+                            ],
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+        context: context);
   }
 
   Widget getMeidaWidget(Status status) {

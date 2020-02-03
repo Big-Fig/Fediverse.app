@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fedi/Pages/Profile/OtherAccount.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -20,10 +21,15 @@ import 'ChatCell.dart';
 import 'Media/CaptureDMMedia.dart';
 
 class ChatPage extends StatefulWidget {
+  final Function refreshMesagePage;
   final Conversation conversation;
   final Account account;
   final Function refreshMasterList;
-  ChatPage({this.conversation, this.account, this.refreshMasterList});
+  ChatPage(
+      {this.conversation,
+      this.account,
+      this.refreshMasterList,
+      this.refreshMesagePage});
 
   @override
   State<StatefulWidget> createState() {
@@ -55,7 +61,20 @@ class _ChatPage extends State<ChatPage> {
     print(otherAccount);
     return Scaffold(
         appBar: AppBar(
-          title: Row(
+          leading: IconButton(
+            icon: Icon(Icons.chevron_left),
+            onPressed: () {
+              widget.refreshMesagePage();
+              Navigator.of(context).pop();
+            },
+          ),
+          title: GestureDetector(onTap:(){
+            Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => OtherAccount(otherAccount)),
+    );
+
+          },  child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               ClipRRect(
@@ -74,7 +93,7 @@ class _ChatPage extends State<ChatPage> {
               FittedBox(
                   fit: BoxFit.fitWidth, child: Text(otherAccount.displayName)),
             ],
-          ),
+          ),),
           actions: <Widget>[
             // IconButton(
             //   icon: Icon(Icons.phone),
