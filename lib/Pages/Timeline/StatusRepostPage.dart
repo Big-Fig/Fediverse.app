@@ -67,7 +67,7 @@ class _StatusRepostPage extends State<StatusRepostPage> {
             path: StatusRequests.Status.reblogedBy(widget.status.id),
             method: HTTPMethod.GET)
         .then((response) {
-      accounts = accountsFromJson(response.body);
+      accounts = Account.listFromJsonString(response.body);
 
       if (mounted) setState(() {});
       _refreshController.refreshCompleted();

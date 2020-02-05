@@ -68,3 +68,33 @@ class ClientSettingsAdapter extends TypeAdapter<ClientSettings> {
     writer.write(obj.code);
   }
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+ClientSettings _$ClientSettingsFromJson(Map<String, dynamic> json) {
+  return ClientSettings(
+    clientId: json['client_id'] as String,
+    clientSecret: json['client_secret'] as String,
+    id: json['id'] as String,
+    name: json['name'] as String,
+    redirectUri: json['redirect_uri'] as String,
+    website: json['website'] as String,
+    vapidKey: json['vapid_key'] as String,
+    code: json['code'] as String,
+  )..account = json['account'] as String;
+}
+
+Map<String, dynamic> _$ClientSettingsToJson(ClientSettings instance) =>
+    <String, dynamic>{
+      'client_id': instance.clientId,
+      'client_secret': instance.clientSecret,
+      'id': instance.id,
+      'name': instance.name,
+      'redirect_uri': instance.redirectUri,
+      'website': instance.website,
+      'vapid_key': instance.vapidKey,
+      'account': instance.account,
+      'code': instance.code,
+    };

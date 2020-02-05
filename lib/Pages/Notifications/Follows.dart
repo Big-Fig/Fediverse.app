@@ -1,18 +1,19 @@
 import 'dart:convert';
+
 import 'package:fedi/Pages/Push/PushHelper.dart';
 import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
+import 'package:fedi/Pleroma/Foundation/Requests/Notification.dart'
+    as NotificationRequest;
 import 'package:fedi/Pleroma/Models/Account.dart';
+import 'package:fedi/Pleroma/Models/Notification.dart' as NotificationModel;
 import 'package:fedi/Pleroma/Models/Status.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:fedi/Pleroma/Foundation/Requests/Notification.dart'
-    as NotificationRequest;
-import 'package:fedi/Pleroma/Models/Notification.dart';
-import 'package:fedi/Pleroma/Models/Notification.dart' as NotificationModel;
+
 import 'NotificationCell.dart';
 
 class Follows extends StatefulWidget {
@@ -70,7 +71,7 @@ class _Follows extends State<Follows> {
             method: HTTPMethod.GET)
         .then((response) {
       List<NotificationModel.Notification> newNotifications =
-          notificationFromJson(response.body);
+        NotificationModel.Notification.listFromJsonString(response.body);
 
       if (mounted)
         setState(() {
@@ -102,7 +103,7 @@ class _Follows extends State<Follows> {
             method: HTTPMethod.GET)
         .then((response) {
       List<NotificationModel.Notification> newNotifications =
-          notificationFromJson(response.body);
+      NotificationModel.Notification.listFromJsonString(response.body);
       widget.notifications.addAll(newNotifications);
       if (mounted)
         setState(() {

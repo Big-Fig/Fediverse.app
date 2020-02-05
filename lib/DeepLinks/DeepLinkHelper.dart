@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
 
-import '../Pleroma/Models/AccountAuth.dart' as Auth;
 
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:flutter/services.dart' show PlatformException;
+
+import '../Pleroma/Models/AccountAuth.dart';
 
 class DeepLinkHelper {
 
@@ -60,7 +61,7 @@ class DeepLinkHelper {
           .getAuthToken()
           .then((authResponse) {
         print(authResponse.body);
-        var newAuth = Auth.accountAuthFromJson(authResponse.body);
+        var newAuth = AccountAuth.fromJsonString(authResponse.body);
         CurrentInstance.newInstance.currentAuth = newAuth;
         CurrentInstance.newInstance.currentClient.accessToken =
             newAuth.accessToken;
@@ -79,7 +80,7 @@ class DeepLinkHelper {
           .getAuthToken()
           .then((authResponse) {
         print(authResponse.body);
-        var newAuth = Auth.accountAuthFromJson(authResponse.body);
+        var newAuth = AccountAuth.fromJsonString(authResponse.body);
         CurrentInstance.newInstance.currentAuth = newAuth;
         CurrentInstance.newInstance.currentClient.accessToken =
             newAuth.accessToken;

@@ -4,28 +4,31 @@
 
 import 'dart:convert';
 import 'package:hive/hive.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'AccountAuth.g.dart';
-AccountAuth accountAuthFromJson(String str) =>
-    AccountAuth.fromJson(json.decode(str));
 
-String accountAuthToJson(AccountAuth data) => json.encode(data.toJson());
-
+@JsonSerializable()
 @HiveType()
 class AccountAuth {
   @HiveField(0)
+  @JsonKey(name: "token_type")
   String tokenType;
   @HiveField(1)
   String scope;
   @HiveField(2)
+  @JsonKey(name: "refresh_token")
   String refreshToken;
   @HiveField(3)
   String me;
   @HiveField(4)
+  @JsonKey(name: "expires_in")
   int expiresIn;
   @HiveField(5)
+  @JsonKey(name: "created_at")
   int createdAt;
   @HiveField(6)
+  @JsonKey(name: "access_token")
   String accessToken;
 
   AccountAuth({
@@ -38,23 +41,14 @@ class AccountAuth {
     this.accessToken,
   });
 
-  factory AccountAuth.fromJson(Map<String, dynamic> json) => new AccountAuth(
-        tokenType: json["token_type"],
-        scope: json["scope"],
-        refreshToken: json["refresh_token"],
-        me: json["me"],
-        expiresIn: json["expires_in"],
-        createdAt: json["created_at"],
-        accessToken: json["access_token"],
-      );
 
-  Map<String, dynamic> toJson() => {
-        "token_type": tokenType,
-        "scope": scope,
-        "refresh_token": refreshToken,
-        "me": me,
-        "expires_in": expiresIn,
-        "created_at": createdAt,
-        "access_token": accessToken,
-      };
+  factory AccountAuth.fromJson(Map<String, dynamic> json) =>
+      _$AccountAuthFromJson(json);
+
+  factory AccountAuth.fromJsonString(String jsonString) =>
+      _$AccountAuthFromJson(jsonDecode(jsonString));
+
+  Map<String, dynamic> toJson() => _$AccountAuthToJson(this);
+  String toJsonString() => jsonEncode(_$AccountAuthToJson(this));
+
 }
