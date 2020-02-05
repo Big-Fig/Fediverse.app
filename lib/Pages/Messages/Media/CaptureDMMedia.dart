@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:fedi/Pages/Messages/Media/DMMediaPage.dart';
 import 'package:fedi/Pages/Post/Gallery/GalleryCapture.dart';
@@ -7,7 +8,7 @@ import 'package:photo_manager/photo_manager.dart';
 
 class CaptureDMMedia extends StatefulWidget {
 
-  final Function(String) mediaUploaded;
+  final Function(BuildContext context, String) mediaUploaded;
 
   final int selectedIndex;
   CaptureDMMedia(this.selectedIndex, this.mediaUploaded);
@@ -37,7 +38,15 @@ class _CaptureDMMedia extends State<CaptureDMMedia>
     _controller = TabController(vsync: this, length: 3);
     _currentIndex = widget.selectedIndex;
     _controller.addListener(_controllerChanged);
-    
+
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // similar to init state but have valid context
+
+    var attachmentLabel = AppLocalizations.of(context).tr("media.capture.title");
     _appBar = _appBar = [
       AppBar(
         leading: IconButton(
@@ -46,7 +55,7 @@ class _CaptureDMMedia extends State<CaptureDMMedia>
             Navigator.pop(context);
           },
         ),
-        title: Text("Attachment"),
+        title: Text(attachmentLabel),
       ),
       AppBar(
         leading: IconButton(
@@ -55,17 +64,17 @@ class _CaptureDMMedia extends State<CaptureDMMedia>
             Navigator.pop(context);
           },
         ),
-        title: Text("Attachment"),
+        title: Text(attachmentLabel),
       ),
       AppBar(
         leading: IconButton(
           icon: Icon(Icons.close),
           onPressed: () {
             Navigator.pop(context);
-            
+
           },
         ),
-        title: Text("Attachment"),
+        title: Text(attachmentLabel),
         actions: <Widget>[
           FlatButton(
             child: Text("Next"),
@@ -76,9 +85,9 @@ class _CaptureDMMedia extends State<CaptureDMMedia>
                 context,
                 MaterialPageRoute(
                   builder: (context) => DMMediaPage(
-                    asset: selectedAsset,
-                    popParent: pop,
-                    mediaUploaded: widget.mediaUploaded
+                      asset: selectedAsset,
+                      popParent: pop,
+                      mediaUploaded: widget.mediaUploaded
                   ),
                 ),
               );
@@ -139,6 +148,7 @@ class _CaptureDMMedia extends State<CaptureDMMedia>
 
   @override
   Widget build(BuildContext context) {
+    var appLocalizations = AppLocalizations.of(context);
     return Scaffold(
       appBar: _appBar[_currentIndex],
       body: _children[_currentIndex], // new
@@ -148,15 +158,18 @@ class _CaptureDMMedia extends State<CaptureDMMedia>
         items: [
           new BottomNavigationBarItem(
               backgroundColor: Colors.grey,
-              title: Text('Video'),
+              title: Text(appLocalizations
+                  .tr("media.capture.bottom_nav_bar.video")),
               icon: Container(height: 0.0)),
           new BottomNavigationBarItem(
               backgroundColor: Colors.grey,
-              title: Text('Photo'),
+              title: Text(appLocalizations
+                  .tr("media.capture.bottom_nav_bar.photo")),
               icon: Container(height: 0.0)),
           new BottomNavigationBarItem(
             backgroundColor: Colors.grey,
-            title: Text('Gallery'),
+            title: Text(appLocalizations
+                .tr("media.capture.bottom_nav_bar.gallery")),
             icon: Container(height: 0.0),
           ),
         ],

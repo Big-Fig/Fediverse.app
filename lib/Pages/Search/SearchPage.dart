@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import 'SearchResults.dart';
@@ -19,7 +20,7 @@ class _SerachPageState extends State<SerachPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Search"),
+        title: Text(AppLocalizations.of(context).tr("search.title")),
       ),
       body: Container(
         child: getSearchContainer(),
@@ -45,7 +46,8 @@ class _SerachPageState extends State<SerachPage> {
                     controller: _searchController,
                     style: TextStyle(color: Colors.white),
                     decoration: InputDecoration(
-                      hintText: 'Search...',
+                      hintText: AppLocalizations.of(context)
+                          .tr("search.input.hint"),
                       hintStyle: TextStyle(color: Colors.white30),
                     ),
                   ),

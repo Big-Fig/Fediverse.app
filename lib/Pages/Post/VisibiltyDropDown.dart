@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class VisibilityDropDown extends StatefulWidget {
@@ -13,6 +14,8 @@ class VisibilityDropDown extends StatefulWidget {
 class _VisibilityDropDown extends State<VisibilityDropDown> {
   String dropdownValue = "Public";
 
+  // TODO: Should be refactored to enums
+  // It is not possible to localize it as is
   Map<String, Icon> icons = {
     "Public": Icon(Icons.public),
     "Unlisted": Icon(Icons.lock_open),
@@ -25,7 +28,7 @@ class _VisibilityDropDown extends State<VisibilityDropDown> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Text("Visibility:"),
+        Text(AppLocalizations.of(context).tr("post.visibility_dropdown.label")),
         DropdownButton<String>(
           value: dropdownValue,
           onChanged: (String newValue) {

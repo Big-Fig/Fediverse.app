@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -183,7 +184,8 @@ class _ChatCell extends State<ChatCell> {
                       color: widget.status.favourited
                           ? Colors.redAccent
                           : Colors.grey,
-                      tooltip: 'More',
+                      tooltip: AppLocalizations.of(context)
+                          .tr("messages.chat.cell.tooltip.more"),
                       onPressed: () {
                         like();
                       },

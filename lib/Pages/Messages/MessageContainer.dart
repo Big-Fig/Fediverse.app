@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:fedi/Pages/Messages/ChatPage.dart';
 import 'package:fedi/Pages/Messages/MessagesPage.dart';
@@ -13,7 +14,7 @@ class MessageConatiner extends StatefulWidget {
 
 class _MessageContainer extends State<MessageConatiner>
     with TickerProviderStateMixin {
-  List<String> titles = ["Messages", "Notifications"];
+
   TabController _controller;
   int _currentIndex = 0;
   List<Widget> pageControllers;
@@ -60,6 +61,14 @@ class _MessageContainer extends State<MessageConatiner>
 
   @override
   Widget build(BuildContext context) {
+
+    var appLocalizations = AppLocalizations.of(context);
+
+    List<String> titles = [
+      appLocalizations.tr("message.tabs.messages"),
+      appLocalizations.tr("message.tabs.notifications"),
+    ];
+
     return Scaffold(
       body: pageControllers[_currentIndex],
       appBar: AppBar(

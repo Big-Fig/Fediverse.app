@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_pro/carousel_pro.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:fedi/Pleroma/Models/Account.dart';
@@ -198,7 +199,8 @@ class _NotificationCell extends State<NotificationCell> {
           SizedBox(
             width: 8,
           ),
-          Text("Mentioned you "),
+          Text(AppLocalizations.of(context)
+              .tr("notifications.cell.mention.mentioned_you")),
           Text(
             Jiffy(widget.notification.createdAt).fromNow(),
           ),
@@ -211,7 +213,8 @@ class _NotificationCell extends State<NotificationCell> {
           SizedBox(
             width: 8,
           ),
-          Text("Reposted your status "),
+          Text(AppLocalizations.of(context)
+              .tr("notifications.cell.reblog.reposted_your_status")),
           Text(
             Jiffy(widget.notification.createdAt).fromNow(),
           ),
@@ -224,7 +227,8 @@ class _NotificationCell extends State<NotificationCell> {
           SizedBox(
             width: 8,
           ),
-          Text("Liked Your Status")
+          Text(AppLocalizations.of(context)
+              .tr("notifications.cell.like.liked_your_status"))
         ],
       );
     }

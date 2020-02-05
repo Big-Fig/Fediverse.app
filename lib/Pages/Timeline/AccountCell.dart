@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pleroma/Models/Account.dart';
 import 'package:fedi/Pleroma/Models/Status.dart';
 import 'package:flutter/material.dart';
@@ -62,7 +63,7 @@ class AccountCell extends StatelessWidget {
     );
   }
 
-  Widget getActionWiget(String type) {
+  Widget getActionWiget(BuildContext context, String type) {
     print("type $type");
     if (type == "follow") {
       return Row(
@@ -71,7 +72,8 @@ class AccountCell extends StatelessWidget {
           SizedBox(
             width: 8,
           ),
-          Text("Followed You!")
+          Text(AppLocalizations.of(context)
+              .tr("timeline.follow.followed_you"))
         ],
       );
     } else if (type == "mention") {
@@ -81,7 +83,8 @@ class AccountCell extends StatelessWidget {
           SizedBox(
             width: 8,
           ),
-          Text("Mentioned You")
+          Text(AppLocalizations.of(context)
+              .tr("timeline.mention.mentioned_you"))
         ],
       );
     } else if (type == "reblog") {
@@ -91,7 +94,8 @@ class AccountCell extends StatelessWidget {
           SizedBox(
             width: 8,
           ),
-          Text("Reposted Your Status")
+          Text(AppLocalizations.of(context)
+              .tr("timeline.reblog.reposted_your_status"))
         ],
       );
     } else {
@@ -101,7 +105,8 @@ class AccountCell extends StatelessWidget {
           SizedBox(
             width: 8,
           ),
-          Text("Liked Your Status")
+          Text(AppLocalizations.of(context)
+              .tr("timeline.like.liked_your_status"))
         ],
       );
     }

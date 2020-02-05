@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:convert';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Models/Account.dart';
@@ -114,7 +115,9 @@ class _QuickPostPageState extends State<QuickPostPage> {
                                       child: Row(
                                         children: <Widget>[
                                           getVisibilityIcon("Public"),
-                                          Text(" Public - Everyone can see")
+                                          Text(AppLocalizations.of(context)
+                                              .tr("post.quick_post.visibility"
+                                              ".public"))
                                         ],
                                       ),
                                       onPressed: () {
@@ -139,7 +142,9 @@ class _QuickPostPageState extends State<QuickPostPage> {
                                         children: <Widget>[
                                           getVisibilityIcon("Unlisted"),
                                           Text(
-                                              " Unlisted - Doesn't post to public timeline")
+                                              AppLocalizations.of(context)
+                                                  .tr("post.quick_post.visibility"
+                                                  ".unlisted"))
                                         ],
                                       ),
                                       onPressed: () {
@@ -163,8 +168,9 @@ class _QuickPostPageState extends State<QuickPostPage> {
                                       child: Row(
                                         children: <Widget>[
                                           getVisibilityIcon("Private"),
-                                          Text(
-                                              " Private - Only followers can see")
+                                          Text(AppLocalizations.of(context)
+                                              .tr("post.quick_post.visibility"
+                                              ".private"))
                                         ],
                                       ),
                                       onPressed: () {
@@ -192,8 +198,9 @@ class _QuickPostPageState extends State<QuickPostPage> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: <Widget>[
-                                          Text(
-                                            " Cancel",
+                                          Text(AppLocalizations.of(context)
+                                              .tr("post.quick_post.action"
+                                              ".cancel"),
                                             style: TextStyle(color: Colors.red),
                                           )
                                         ],
@@ -216,7 +223,8 @@ class _QuickPostPageState extends State<QuickPostPage> {
             Spacer(),
             OutlineButton(
               child: Text(
-                "Post",
+                AppLocalizations.of(context)
+                    .tr("post.quick_post.action.post"),
                 style: TextStyle(color: Colors.blue),
               ),
               onPressed: () {
@@ -233,7 +241,9 @@ class _QuickPostPageState extends State<QuickPostPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("New Status"),
+        title: Text(
+            AppLocalizations.of(context)
+                .tr("post.quick_post.title")),
         leading: IconButton(
           icon: Icon(Icons.close),
           onPressed: () {
@@ -243,7 +253,8 @@ class _QuickPostPageState extends State<QuickPostPage> {
         actions: <Widget>[
           FlatButton(
             child: Text(
-              "Post",
+              AppLocalizations.of(context)
+                  .tr("post.quick_post.action.post"),
               style: TextStyle(color: Colors.white),
             ),
             onPressed: () {
@@ -316,17 +327,26 @@ class _QuickPostPageState extends State<QuickPostPage> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          content: new Text("Are you sure you want to remove the attachment?"),
+          content: new Text(
+              AppLocalizations.of(context)
+                  .tr("post.quick_post.attachment.remove.alert.content")
+          ),
           actions: <Widget>[
             new FlatButton(
-              child: new Text("Cancel"),
+              child: new Text(
+                  AppLocalizations.of(context)
+                      .tr("post.quick_post.attachment.remove.alert.action"
+                      ".cancel")
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             // usually buttons at the bottom of the dialog
             new FlatButton(
-              child: new Text("Remove"),
+              child: new Text(AppLocalizations.of(context)
+                  .tr("post.quick_post.attachment.remove.alert.action"
+                  ".remove")),
               onPressed: () {
                 assets.removeAt(index);
                 setState(() {});
@@ -439,8 +459,10 @@ class _QuickPostPageState extends State<QuickPostPage> {
     if (assets.length == 0 && statusController.text == "" ){
       var alert = Alert(
             context,
-            "Opps",
-            "Please enter text or add media to post a new status!",
+          AppLocalizations.of(context)
+              .tr("post.quick_post.posting.error.alert.title"),
+          AppLocalizations.of(context)
+              .tr("post.quick_post.posting.error.alert.content"),
             () => {});
         alert.showAlert();
         return;
@@ -452,7 +474,8 @@ class _QuickPostPageState extends State<QuickPostPage> {
     }
 
     _pr = ProgressDialog(context, ProgressDialogType.Normal);
-    _pr.setMessage('Posting status');
+    _pr.setMessage(AppLocalizations.of(context)
+        .tr("post.quick_post.posting.progress"),);
     _pr.show();
 
     getFileForUpload(0);
@@ -494,8 +517,10 @@ class _QuickPostPageState extends State<QuickPostPage> {
         _pr.hide();
         var alert = Alert(
             context,
-            "Opps",
-            "Unable to post status at this time. Please try again later.",
+            AppLocalizations.of(context)
+                .tr("post.quick_post.posting.error.alert.title"),
+            AppLocalizations.of(context)
+                .tr("post.quick_post.posting.error.alert.content"),
             () => {});
         alert.showAlert();
       });
@@ -519,7 +544,10 @@ class _QuickPostPageState extends State<QuickPostPage> {
         .then((statusResponse) {
       print(statusResponse.body);
       _pr.hide();
-      var alert = Alert(context, "Success!", "You status was posted!",
+      var alert = Alert(context, AppLocalizations.of(context)
+          .tr("post.quick_post.posting.success.alert.title"),
+          AppLocalizations.of(context)
+              .tr("post.quick_post.posting.success.alert.content"),
           () => {Navigator.of(context).popUntil((route) => route.isFirst)});
       alert.showAlert();
     }).catchError((e) {
@@ -528,8 +556,10 @@ class _QuickPostPageState extends State<QuickPostPage> {
       _pr.hide();
       var alert = Alert(
           context,
-          "Opps",
-          "Unable to post status at this time. Please try again later.",
+          AppLocalizations.of(context)
+              .tr("post.quick_post.posting.error.alert.title"),
+          AppLocalizations.of(context)
+              .tr("post.quick_post.posting.error.alert.content"),
           () => {});
       alert.showAlert();
     });
@@ -537,7 +567,8 @@ class _QuickPostPageState extends State<QuickPostPage> {
 
   postTextStatus() {
     _pr = ProgressDialog(context, ProgressDialogType.Normal);
-    _pr.setMessage('Posting status');
+    _pr.setMessage(AppLocalizations.of(context)
+        .tr("post.quick_post.posting.progress"));
     _pr.show();
 
     var statusPath = StatusRequest.Status.postNewStatus;
@@ -555,7 +586,11 @@ class _QuickPostPageState extends State<QuickPostPage> {
         .then((statusResponse) {
       print(statusResponse.body);
       _pr.hide();
-      var alert = Alert(context, "Success!", "You status was posted!",
+      var alert = Alert(context,
+          AppLocalizations.of(context)
+          .tr("post.quick_post.posting.success.alert.title"),
+          AppLocalizations.of(context)
+              .tr("post.quick_post.posting.success.alert.content"),
           () => {Navigator.of(context).popUntil((route) => route.isFirst)});
       alert.showAlert();
     }).catchError((e) {
@@ -563,8 +598,10 @@ class _QuickPostPageState extends State<QuickPostPage> {
       _pr.hide();
       var alert = Alert(
           context,
-          "Opps",
-          "Unable to post status at this time. Please try again later.",
+          AppLocalizations.of(context)
+              .tr("post.quick_post.posting.error.alert.title"),
+          AppLocalizations.of(context)
+              .tr("post.quick_post.posting.error.alert.content"),
           () => {});
       alert.showAlert();
     });

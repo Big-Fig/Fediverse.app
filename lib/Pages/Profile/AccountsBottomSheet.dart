@@ -1,6 +1,7 @@
 import 'dart:core';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Views/Alert.dart';
 import 'package:flutter/material.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
@@ -47,7 +48,8 @@ class AccountsBottomSheet extends StatelessWidget {
                                   Icons.add,
                                   color: Colors.black,
                                 ),
-                                Text("Add Account"),
+                                Text(AppLocalizations.of(context)
+                                    .tr("profile.accounts.action.add")),
                               ],
                             ),
                           ),
@@ -92,8 +94,15 @@ class AccountsBottomSheet extends StatelessWidget {
                                       color: Colors.red,
                                     ),
                                     onPressed: () {
-                                      var alert = Alert(context, "Log Out:",
-                                          "Log out of $thisClient", () {
+                                      var alert = Alert(context,
+                                          AppLocalizations.of(context)
+                                              .tr("profile.accounts"
+                                              ".log_out.alert.title"),
+                                          AppLocalizations.of(context)
+                                              .tr("profile.accounts"
+                                              ".log_out.alert.content", args:[
+                                            thisClient
+                                          ]), () {
                                         InstanceStorage.setCurrentAccount(
                                                 instance.account)
                                             .then((future) {
@@ -111,7 +120,10 @@ class AccountsBottomSheet extends StatelessWidget {
                                           });
                                         });
                                       },
-                                          actionButtonTitle: "Log Out",
+                                          actionButtonTitle:
+                                          AppLocalizations.of(context)
+                                              .tr("profile.accounts.action"
+                                              ".log_out"),
                                           showCancel: true);
                                       alert.showAlert();
                                     },
@@ -174,7 +186,9 @@ class AccountsBottomSheet extends StatelessWidget {
               }
               return Container(
                 child: Center(
-                  child: Text("Getting account list"),
+                  child: Text(
+                      AppLocalizations.of(context)
+                          .tr("profile.accounts.accounts_list")),
                 ),
               );
             },

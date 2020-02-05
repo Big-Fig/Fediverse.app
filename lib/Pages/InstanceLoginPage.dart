@@ -1,12 +1,15 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
+
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
-import '../Pleroma/Models/ClientSettings.dart';
+import 'package:flutter/material.dart';
+
 import '../Constants/AppThemeConsts.dart';
 import '../Pleroma/Foundation/Client.dart';
-import '../Views/ProgressDialog.dart';
-import 'dart:convert';
+import '../Pleroma/Models/ClientSettings.dart';
 import '../Views/Alert.dart';
+import '../Views/ProgressDialog.dart';
 
 class InstanceLoginPage extends StatefulWidget {
   final Function() instanceSuccess;
@@ -84,8 +87,10 @@ class _InstanceLoginPage extends State<InstanceLoginPage> {
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.white54,
-                      hintText: 'Pleroma.site',
-                      helperText: 'Pleroma or Mastodon Instance',
+                      hintText: AppLocalizations.of(context)
+                      .tr("login.field.host.hint"),
+                      helperText: AppLocalizations.of(context)
+                      .tr("login.field.host.helper_text"),
                       border: InputBorder.none,
                       helperStyle: TextStyle(color: Colors.white),
                     ),
@@ -94,7 +99,10 @@ class _InstanceLoginPage extends State<InstanceLoginPage> {
                 ),
                 Spacer(),
                 FlatButton(
-                  child: Text('Login to Instance'),
+                  child: Text(
+                      AppLocalizations.of(context)
+                          .tr("login.action.login_to_instance")
+                      ),
                   color: darkGray,
                   textColor: Colors.white,
                   onPressed: () {
@@ -103,7 +111,8 @@ class _InstanceLoginPage extends State<InstanceLoginPage> {
                     }
                     _pr =
                         new ProgressDialog(context, ProgressDialogType.Normal);
-                    _pr.setMessage('Checking Instance');
+                    _pr.setMessage(AppLocalizations.of(context).tr(
+                        "login.check.progress"));
                     _pr.show();
 
                     var instance = _instanceTextController.text.split("/").first;
@@ -118,8 +127,10 @@ class _InstanceLoginPage extends State<InstanceLoginPage> {
                         print(response.statusCode);
                         var alert = Alert(
                             context,
-                            "Not a valid instance (may be closed or dead)",
-                            "Please enter a valid instance name like pleroma.site or mastodon.social",
+                            AppLocalizations.of(context).tr(
+                                "login.check.error.alert.title"),
+                            AppLocalizations.of(context).tr(
+                                "login.check.error.alert.content"),
                             () => {});
                         alert.showAlert();
                       } else {
@@ -135,8 +146,10 @@ class _InstanceLoginPage extends State<InstanceLoginPage> {
                             print(error.toString());
                             var alert = Alert(
                                 context,
-                                "Not a valid instance (may be closed or dead)",
-                                "Please enter a valid instance name like pleroma.site or mastodon.social",
+                                AppLocalizations.of(context).tr(
+                                    "login.check.error.alert.title"),
+                                AppLocalizations.of(context).tr(
+                                    "login.check.error.alert.content"),
                                 () => {});
                             alert.showAlert();
                           });
@@ -147,8 +160,10 @@ class _InstanceLoginPage extends State<InstanceLoginPage> {
                       _pr.hide();
                       var alert = Alert(
                           context,
-                          "Not a valid instance (may be closed or dead)",
-                          "Please enter a valid instance name like pleroma.site or mastodon.social",
+                          AppLocalizations.of(context).tr(
+                              "login.check.error.alert.title"),
+                          AppLocalizations.of(context).tr(
+                              "login.check.error.alert.content"),
                           () => {});
                       alert.showAlert();
                     });
@@ -159,7 +174,8 @@ class _InstanceLoginPage extends State<InstanceLoginPage> {
                 ),
                 FlatButton(
                   child: Text(
-                      "By using Fedi you agree to our terms. Tap to review"),
+                      AppLocalizations.of(context).tr(
+                          "login.action.terms")),
                   color: Colors.black12,
                   onPressed: () {
                     Navigator.pushNamed(context, '/terms');

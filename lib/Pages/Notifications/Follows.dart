@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pages/Push/PushHelper.dart';
 import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
@@ -152,7 +153,8 @@ class _Follows extends State<Follows> {
                 width: 15.0,
               ),
               Text(
-                "Everything up to date",
+               AppLocalizations.of(context)
+                   .tr("notifications.follows.update.up_to_date"),
                 style: TextStyle(color: Colors.grey),
               )
             ],
@@ -167,7 +169,9 @@ class _Follows extends State<Follows> {
               Container(
                 width: 15.0,
               ),
-              Text("Unable to fetch data", style: TextStyle(color: Colors.grey))
+              Text(AppLocalizations.of(context)
+                  .tr("notifications.follows.update.unable_to_fetch"),
+                  style: TextStyle(color: Colors.grey))
             ],
           )),
       footer: CustomFooter(
@@ -178,9 +182,11 @@ class _Follows extends State<Follows> {
           } else if (mode == LoadStatus.loading) {
             body = CircularProgressIndicator();
           } else if (mode == LoadStatus.failed) {
-            body = Text("Load Failed! Click retry!");
+            body = Text(AppLocalizations.of(context)
+                .tr("notifications.follows.update.failed"));
           } else {
-            body = Text("No more Data");
+            body = Text(AppLocalizations.of(context)
+                .tr("notifications.follows.update.no_more_data"));
           }
           return Container(
             height: 55.0,

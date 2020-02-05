@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class Alert {
@@ -7,8 +8,8 @@ class Alert {
   String message;
   bool showCancel = false;
   Function onPress;
-  String actionButtonTitle = "Ok";
-  String cancelButtonTitle = "Cancel";
+  String actionButtonTitle;
+  String cancelButtonTitle;
 
   Alert(this.context, this.title, this.message, this.onPress, {this.showCancel, this.actionButtonTitle, this.cancelButtonTitle});
 
@@ -23,14 +24,20 @@ class Alert {
           actions: <Widget>[
             if (showCancel == true)
               FlatButton(
-                child: new Text(cancelButtonTitle ?? "Cancel"),
+                child: new Text(cancelButtonTitle ??
+                    AppLocalizations.of(context)
+                        .tr("alert.action.cancel")
+                ),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
             // usually buttons at the bottom of the dialog
             FlatButton(
-              child: new Text(actionButtonTitle ?? "Ok"),
+              child: new Text(actionButtonTitle ??
+                  AppLocalizations.of(context)
+                      .tr("alert.action.ok")
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
                 this.onPress();
