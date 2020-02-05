@@ -5,13 +5,14 @@
 import 'dart:convert';
 import 'package:fedi/Pleroma/Models/Account.dart';
 import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-List<Conversation> conversationFromJson(String str) => new List<Conversation>.from(json.decode(str).map((x) => Conversation.fromJson(x)));
+part 'Conversation.g.dart';
 
-String conversationToJson(List<Conversation> data) => json.encode(new List<dynamic>.from(data.map((x) => x.toJson())));
-
+@JsonSerializable()
 class Conversation {
     bool unread;
+    @JsonKey(name: "last_status")
     Status lastStatus;
     String id;
     List<Account> accounts;
@@ -23,17 +24,17 @@ class Conversation {
         this.accounts,
     });
 
-    factory Conversation.fromJson(Map<String, dynamic> json) => new Conversation(
-        unread: json["unread"],
-        lastStatus: Status.fromJson(json["last_status"]),
-        id: json["id"],
-        accounts: new List<Account>.from(json["accounts"].map((x) => Account.fromJson(x))),
-    );
+    factory Conversation.fromJson(Map<String, dynamic> json) =>
+        _$ConversationFromJson(json);
 
-    Map<String, dynamic> toJson() => {
-        "unread": unread,
-        "last_status": lastStatus.toJson(),
-        "id": id,
-        "accounts": new List<dynamic>.from(accounts.map((x) => x.toJson())),
-    };
+    factory Conversation.fromJsonString(String jsonString) =>
+        _$ConversationFromJson(jsonDecode(jsonString));
+
+    static List<Conversation> listFromJsonString(String str) =>
+        new List<Conversation>.from(json.decode(str).map((x) => Conversation.fromJson(x)));
+
+
+    Map<String, dynamic> toJson() => _$ConversationToJson(this);
+    String toJsonString() => jsonEncode(_$ConversationToJson(this));
+
 }

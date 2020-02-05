@@ -58,3 +58,30 @@ class AccountAuthAdapter extends TypeAdapter<AccountAuth> {
     writer.write(obj.accessToken);
   }
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+AccountAuth _$AccountAuthFromJson(Map<String, dynamic> json) {
+  return AccountAuth(
+    tokenType: json['token_type'] as String,
+    scope: json['scope'] as String,
+    refreshToken: json['refresh_token'] as String,
+    me: json['me'] as String,
+    expiresIn: json['expires_in'] as int,
+    createdAt: json['created_at'] as int,
+    accessToken: json['access_token'] as String,
+  );
+}
+
+Map<String, dynamic> _$AccountAuthToJson(AccountAuth instance) =>
+    <String, dynamic>{
+      'token_type': instance.tokenType,
+      'scope': instance.scope,
+      'refresh_token': instance.refreshToken,
+      'me': instance.me,
+      'expires_in': instance.expiresIn,
+      'created_at': instance.createdAt,
+      'access_token': instance.accessToken,
+    };

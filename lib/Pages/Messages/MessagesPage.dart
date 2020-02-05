@@ -51,7 +51,7 @@ class MessagesPageState extends State<MessagesPage> {
                 minId: "", maxId: "", sinceId: "", limit: "20"),
             method: HTTPMethod.GET)
         .then((response) {
-      List<Conversation> newConversations = conversationFromJson(response.body);
+      List<Conversation> newConversations = Conversation.listFromJsonString(response.body);
       widget.conversations.clear();
       widget.conversations.addAll(newConversations);
       if (mounted) setState(() {});
@@ -77,7 +77,7 @@ class MessagesPageState extends State<MessagesPage> {
                 minId: "", maxId: lastId, sinceId: "", limit: "20"),
             method: HTTPMethod.GET)
         .then((response) {
-      List<Conversation> newConversations = conversationFromJson(response.body);
+      List<Conversation> newConversations = Conversation.listFromJsonString(response.body);
       widget.conversations.addAll(newConversations);
       if (mounted) setState(() {});
       _refreshController.loadComplete();

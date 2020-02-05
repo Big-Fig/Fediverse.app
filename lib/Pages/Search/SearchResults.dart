@@ -93,7 +93,7 @@ class _SearchReults extends State<SearchResults> {
             ),
             method: HTTPMethod.GET)
         .then((response) {
-      Results newResult = resultsFromJson(response.body);
+      Results newResult = Results.fromJsonString(response.body);
       widget.results.accounts = newResult.accounts;
       widget.results.statuses = newResult.statuses;
       if (mounted) setState(() {});

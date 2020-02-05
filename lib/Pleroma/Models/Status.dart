@@ -3,424 +3,377 @@
 //     final status = statusFromJson(jsonString);
 
 import 'dart:convert';
+
 import 'package:fedi/Pleroma/Models/Relationship.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 import './Account.dart';
+import './Emoji.dart';
 
-List<Status> statusFromJson(String str) => new List<Status>.from(json.decode(str).map((x) => Status.fromJson(x)));
+part 'Status.g.dart';
 
-String statusToJson(List<Status> data) => json.encode(new List<dynamic>.from(data.map((x) => x.toJson())));
-
+@JsonSerializable()
+@VisibilityTypeConverter()
 class Status {
-    String id;
-    DateTime createdAt;
-    String inReplyToId;
-    String inReplyToAccountId;
-    bool sensitive;
-    String spoilerText;
-    Visibility visibility;
-    String uri;
-    String url;
-    int repliesCount;
-    int reblogsCount;
-    int favouritesCount;
-    bool favourited;
-    bool reblogged;
-    bool muted;
-    bool bookmarked;
-    String content;
-    Status reblog;
-    Application application;
-    Account account;
-    List<MediaAttachment> mediaAttachments;
-    List<Mention> mentions;
-    List<Tag> tags;
-    List<dynamic> emojis;
-    dynamic poll;
+  String id;
+  @JsonKey(name: "created_at")
+  DateTime createdAt;
+  @JsonKey(name: "in_reply_to_id")
+  String inReplyToId;
+  @JsonKey(name: "in_reply_to_account_id")
+  String inReplyToAccountId;
+  bool sensitive;
+  @JsonKey(name: "spoiler_text")
+  String spoilerText;
+  Visibility visibility;
+  String uri;
+  String url;
+  @JsonKey(name: "replies_count")
+  int repliesCount;
+  @JsonKey(name: "reblogs_count")
+  int reblogsCount;
+  @JsonKey(name: "favourites_count")
+  int favouritesCount;
+  bool favourited;
+  bool reblogged;
+  bool muted;
+  bool bookmarked;
+  String content;
+  Status reblog;
+  Application application;
+  Account account;
+  @JsonKey(name: "media_attachments")
+  List<MediaAttachment> mediaAttachments;
+  List<Mention> mentions;
+  List<Tag> tags;
+  List<Emoji> emojis;
+  dynamic poll;
 
-    Status({
-        this.id,
-        this.createdAt,
-        this.inReplyToId,
-        this.inReplyToAccountId,
-        this.sensitive,
-        this.spoilerText,
-        this.visibility,
-        this.uri,
-        this.url,
-        this.repliesCount,
-        this.reblogsCount,
-        this.favouritesCount,
-        this.favourited,
-        this.reblogged,
-        this.muted,
-        this.bookmarked,
-        this.content,
-        this.reblog,
-        this.application,
-        this.account,
-        this.mediaAttachments,
-        this.mentions,
-        this.tags,
-        this.emojis,
-        this.poll,
-    });
+  Status({
+    this.id,
+    this.createdAt,
+    this.inReplyToId,
+    this.inReplyToAccountId,
+    this.sensitive,
+    this.spoilerText,
+    this.visibility,
+    this.uri,
+    this.url,
+    this.repliesCount,
+    this.reblogsCount,
+    this.favouritesCount,
+    this.favourited,
+    this.reblogged,
+    this.muted,
+    this.bookmarked,
+    this.content,
+    this.reblog,
+    this.application,
+    this.account,
+    this.mediaAttachments,
+    this.mentions,
+    this.tags,
+    this.emojis,
+    this.poll,
+  });
 
-    factory Status.fromJson(Map<String, dynamic> json) => Status(
-        id: json["id"],
-        createdAt: DateTime.parse(json["created_at"]),
-        inReplyToId: json["in_reply_to_id"] == null ? null : json["in_reply_to_id"],
-        inReplyToAccountId: json["in_reply_to_account_id"] == null ? null : json["in_reply_to_account_id"],
-        sensitive: json["sensitive"],
-        spoilerText: json["spoiler_text"],
-        visibility: visibilityValues.map[json["visibility"]],
-        uri: json["uri"],
-        url: json["url"],
-        repliesCount: json["replies_count"],
-        reblogsCount: json["reblogs_count"],
-        favouritesCount: json["favourites_count"],
-        favourited: json["favourited"],
-        reblogged: json["reblogged"],
-        muted: json["muted"],
-        bookmarked: json["bookmarked"],
-        content: json["content"],
-        reblog: json["reblog"] == null ? null : Status.fromJson(json["reblog"]),
-        application: json["application"] == null ? null : Application.fromJson(json["application"]),
-        account: Account.fromJson(json["account"]),
-        mediaAttachments: List<MediaAttachment>.from(json["media_attachments"].map((x) => MediaAttachment.fromJson(x))),
-        mentions: List<Mention>.from(json["mentions"].map((x) => Mention.fromJson(x))),
-        tags: List<Tag>.from(json["tags"].map((x) => Tag.fromJson(x))),
-        emojis: List<dynamic>.from(json["emojis"].map((x) => x)),
-        poll: json["poll"],
-    );
+  factory Status.fromJson(Map<String, dynamic> json) => _$StatusFromJson(json);
 
-    Map<String, dynamic> toJson() => {
-        "id": id,
-        "created_at": createdAt.toIso8601String(),
-        "in_reply_to_id": inReplyToId == null ? null : inReplyToId,
-        "in_reply_to_account_id": inReplyToAccountId == null ? null : inReplyToAccountId,
-        "sensitive": sensitive,
-        "spoiler_text": spoilerText,
-        "visibility": visibilityValues.reverse[visibility],
-        "uri": uri,
-        "url": url,
-        "replies_count": repliesCount,
-        "reblogs_count": reblogsCount,
-        "favourites_count": favouritesCount,
-        "favourited": favourited,
-        "reblogged": reblogged,
-        "muted": muted,
-        "bookmarked": bookmarked,
-        "content": content,
-        "reblog": reblog == null ? null : reblog.toJson(),
-        "application": application == null ? null : application.toJson(),
-        "account": account.toJson(),
-        "media_attachments": List<dynamic>.from(mediaAttachments.map((x) => x.toJson())),
-        "mentions": List<dynamic>.from(mentions.map((x) => x.toJson())),
-        "tags": List<dynamic>.from(tags.map((x) => x.toJson())),
-        "emojis": List<dynamic>.from(emojis.map((x) => x)),
-        "poll": poll,
-    };
+  factory Status.fromJsonString(String jsonString) =>
+      _$StatusFromJson(jsonDecode(jsonString));
+
+  static List<Status> listFromJsonString(String str) =>
+      new List<Status>.from(json.decode(str).map((x) => Status.fromJson(x)));
+
+  Map<String, dynamic> toJson() => _$StatusToJson(this);
+
+  String toJsonString() => jsonEncode(_$StatusToJson(this));
 }
 
-
-class Field {
-    String name;
-    String value;
-
-    Field({
-        this.name,
-        this.value,
-    });
-
-    factory Field.fromJson(Map<String, dynamic> json) => new Field(
-        name: json["name"],
-        value: json["value"],
-    );
-
-    Map<String, dynamic> toJson() => {
-        "name": name,
-        "value": value,
-    };
-}
-
+@JsonSerializable()
 class AccountPleroma {
-    dynamic backgroundImage;
-    bool confirmationPending;
-    bool hideFavorites;
-    bool hideFollowers;
-    bool hideFollows;
-    bool isAdmin;
-    bool isModerator;
-    Relationship relationship;
-    bool skipThreadContainment;
-    List<dynamic> tags;
+  @JsonKey(name: "background_image")
+  dynamic backgroundImage;
+  @JsonKey(name: "confirmation_pending")
+  bool confirmationPending;
+  @JsonKey(name: "hide_favorites")
+  bool hideFavorites;
+  @JsonKey(name: "hide_followers")
+  bool hideFollowers;
+  @JsonKey(name: "hide_follows")
+  bool hideFollows;
+  @JsonKey(name: "is_admin")
+  bool isAdmin;
+  @JsonKey(name: "is_moderator")
+  bool isModerator;
+  Relationship relationship;
+  @JsonKey(name: "skip_thread_containment")
+  bool skipThreadContainment;
+  List<dynamic> tags;
 
-    AccountPleroma({
-        this.backgroundImage,
-        this.confirmationPending,
-        this.hideFavorites,
-        this.hideFollowers,
-        this.hideFollows,
-        this.isAdmin,
-        this.isModerator,
-        this.relationship,
-        this.skipThreadContainment,
-        this.tags,
-    });
+  AccountPleroma({
+    this.backgroundImage,
+    this.confirmationPending,
+    this.hideFavorites,
+    this.hideFollowers,
+    this.hideFollows,
+    this.isAdmin,
+    this.isModerator,
+    this.relationship,
+    this.skipThreadContainment,
+    this.tags,
+  });
 
-    factory AccountPleroma.fromJson(Map<String, dynamic> json) => new AccountPleroma(
-        backgroundImage: json["background_image"],
-        confirmationPending: json["confirmation_pending"],
-        hideFavorites: json["hide_favorites"],
-        hideFollowers: json["hide_followers"],
-        hideFollows: json["hide_follows"],
-        isAdmin: json["is_admin"],
-        isModerator: json["is_moderator"],
-        relationship: Relationship.fromJson(json["relationship"]),
-        skipThreadContainment: json["skip_thread_containment"],
-        tags: new List<dynamic>.from(json["tags"].map((x) => x)),
-    );
+  factory AccountPleroma.fromJson(Map<String, dynamic> json) =>
+      _$AccountPleromaFromJson(json);
 
-    Map<String, dynamic> toJson() => {
-        "background_image": backgroundImage,
-        "confirmation_pending": confirmationPending,
-        "hide_favorites": hideFavorites,
-        "hide_followers": hideFollowers,
-        "hide_follows": hideFollows,
-        "is_admin": isAdmin,
-        "is_moderator": isModerator,
-        "relationship": relationship.toJson(),
-        "skip_thread_containment": skipThreadContainment,
-        "tags": new List<dynamic>.from(tags.map((x) => x)),
-    };
+  factory AccountPleroma.fromJsonString(String jsonString) =>
+      _$AccountPleromaFromJson(jsonDecode(jsonString));
+
+  Map<String, dynamic> toJson() => _$AccountPleromaToJson(this);
+
+  String toJsonString() => jsonEncode(_$AccountPleromaToJson(this));
 }
 
-
+@JsonSerializable()
 class Source {
-    String note;
-    Relationship pleroma;
-    bool sensitive;
+  String note;
+  Relationship pleroma;
+  bool sensitive;
 
-    Source({
-        this.note,
-        this.pleroma,
-        this.sensitive,
-    });
+  Source({
+    this.note,
+    this.pleroma,
+    this.sensitive,
+  });
 
-    factory Source.fromJson(Map<String, dynamic> json) => new Source(
-        note: json["note"],
-        pleroma: Relationship.fromJson(json["pleroma"]),
-        sensitive: json["sensitive"],
-    );
+  factory Source.fromJson(Map<String, dynamic> json) => _$SourceFromJson(json);
 
-    Map<String, dynamic> toJson() => {
-        "note": note,
-        "pleroma": pleroma.toJson(),
-        "sensitive": sensitive,
-    };
+  factory Source.fromJsonString(String jsonString) =>
+      _$SourceFromJson(jsonDecode(jsonString));
+
+  Map<String, dynamic> toJson() => _$SourceToJson(this);
+
+  String toJsonString() => jsonEncode(_$SourceToJson(this));
 }
 
+@JsonSerializable()
+@NameTypeConverter()
 class Application {
-    Name name;
-    dynamic website;
+  Name name;
+  dynamic website;
 
-    Application({
-        this.name,
-        this.website,
-    });
+  Application({
+    this.name,
+    this.website,
+  });
 
-    factory Application.fromJson(Map<String, dynamic> json) => new Application(
-        name: nameValues.map[json["name"]],
-        website: json["website"],
-    );
+  factory Application.fromJson(Map<String, dynamic> json) =>
+      _$ApplicationFromJson(json);
 
-    Map<String, dynamic> toJson() => {
-        "name": nameValues.reverse[name],
-        "website": website,
-    };
+  factory Application.fromJsonString(String jsonString) =>
+      _$ApplicationFromJson(jsonDecode(jsonString));
+
+  Map<String, dynamic> toJson() => _$ApplicationToJson(this);
+
+  String toJsonString() => jsonEncode(_$ApplicationToJson(this));
 }
 
 enum Name { WEB }
 
-final nameValues = new EnumValues({
-    "Web": Name.WEB
-});
+final nameValues = new EnumValues({"Web": Name.WEB});
 
+
+class NameTypeConverter implements JsonConverter<Name, String> {
+  const NameTypeConverter();
+
+  @override
+  Name fromJson(String value) => nameValues.map[value];
+  @override
+  String toJson(Name value) => nameValues.reverseMap[value];
+
+}
+
+
+@JsonSerializable()
 class MediaAttachment {
-    String description;
-    String id;
-    MediaAttachmentPleroma pleroma;
-    String previewUrl;
-    String remoteUrl;
-    String textUrl;
-    String type;
-    String url;
+  String description;
+  String id;
+  MediaAttachmentPleroma pleroma;
+  @JsonKey(name: "preview_url")
+  String previewUrl;
+  @JsonKey(name: "remote_url")
+  String remoteUrl;
+  @JsonKey(name: "text_url")
+  String textUrl;
+  String type;
+  String url;
 
-    MediaAttachment({
-        this.description,
-        this.id,
-        this.pleroma,
-        this.previewUrl,
-        this.remoteUrl,
-        this.textUrl,
-        this.type,
-        this.url,
-    });
+  MediaAttachment({
+    this.description,
+    this.id,
+    this.pleroma,
+    this.previewUrl,
+    this.remoteUrl,
+    this.textUrl,
+    this.type,
+    this.url,
+  });
 
-    factory MediaAttachment.fromJson(Map<String, dynamic> json) => new MediaAttachment(
-        description: json["description"],
-        id: json["id"],
-        pleroma: json["pleroma"] == null ? null : MediaAttachmentPleroma.fromJson(json["pleroma"]),
-        previewUrl: json["preview_url"],
-        remoteUrl: json["remote_url"],
-        textUrl: json["text_url"],
-        type: json["type"],
-        url: json["url"],
-    );
+  factory MediaAttachment.fromJson(Map<String, dynamic> json) =>
+      _$MediaAttachmentFromJson(json);
 
-    Map<String, dynamic> toJson() => {
-        "description": description,
-        "id": id,
-        "pleroma": pleroma.toJson(),
-        "preview_url": previewUrl,
-        "remote_url": remoteUrl,
-        "text_url": textUrl,
-        "type": type,
-        "url": url,
-    };
+  factory MediaAttachment.fromJsonString(String jsonString) =>
+      _$MediaAttachmentFromJson(jsonDecode(jsonString));
+
+  Map<String, dynamic> toJson() => _$MediaAttachmentToJson(this);
+
+  String toJsonString() => jsonEncode(_$MediaAttachmentToJson(this));
 }
 
+@JsonSerializable()
 class MediaAttachmentPleroma {
-    String mimeType;
+  @JsonKey(name: "mime_type")
+  String mimeType;
 
-    MediaAttachmentPleroma({
-        this.mimeType,
-    });
+  MediaAttachmentPleroma({
+    this.mimeType,
+  });
 
-    factory MediaAttachmentPleroma.fromJson(Map<String, dynamic> json) => new MediaAttachmentPleroma(
-        mimeType: json["mime_type"],
-    );
+  factory MediaAttachmentPleroma.fromJson(Map<String, dynamic> json) =>
+      _$MediaAttachmentPleromaFromJson(json);
 
-    Map<String, dynamic> toJson() => {
-        "mime_type": mimeType,
-    };
+  factory MediaAttachmentPleroma.fromJsonString(String jsonString) =>
+      _$MediaAttachmentPleromaFromJson(jsonDecode(jsonString));
+
+  Map<String, dynamic> toJson() => _$MediaAttachmentPleromaToJson(this);
+
+  String toJsonString() => jsonEncode(_$MediaAttachmentPleromaToJson(this));
 }
 
+@JsonSerializable()
 class Mention {
-    String acct;
-    String id;
-    String url;
-    String username;
+  String acct;
+  String id;
+  String url;
+  String username;
 
-    Mention({
-        this.acct,
-        this.id,
-        this.url,
-        this.username,
-    });
+  Mention({
+    this.acct,
+    this.id,
+    this.url,
+    this.username,
+  });
 
-    factory Mention.fromJson(Map<String, dynamic> json) => new Mention(
-        acct: json["acct"],
-        id: json["id"],
-        url: json["url"],
-        username: json["username"],
-    );
+  factory Mention.fromJson(Map<String, dynamic> json) =>
+      _$MentionFromJson(json);
 
-    Map<String, dynamic> toJson() => {
-        "acct": acct,
-        "id": id,
-        "url": url,
-        "username": username,
-    };
+  factory Mention.fromJsonString(String jsonString) =>
+      _$MentionFromJson(jsonDecode(jsonString));
+
+  Map<String, dynamic> toJson() => _$MentionToJson(this);
+
+  String toJsonString() => jsonEncode(_$MentionToJson(this));
 }
 
+@JsonSerializable()
 class StatusPleroma {
-    Content content;
-    int conversationId;
-    String inReplyToAccountAcct;
-    bool local;
-    Content spoilerText;
+  Content content;
+  @JsonKey(name: "conversation_id")
+  int conversationId;
+  @JsonKey(name: "in_reply_to_account_acct")
+  String inReplyToAccountAcct;
+  bool local;
+  @JsonKey(name: "spoiler_text")
+  Content spoilerText;
 
-    StatusPleroma({
-        this.content,
-        this.conversationId,
-        this.inReplyToAccountAcct,
-        this.local,
-        this.spoilerText,
-    });
+  StatusPleroma({
+    this.content,
+    this.conversationId,
+    this.inReplyToAccountAcct,
+    this.local,
+    this.spoilerText,
+  });
 
-    factory StatusPleroma.fromJson(Map<String, dynamic> json) => new StatusPleroma(
-        content: json["content"] == null ? null : Content.fromJson(json["content"]),
-        conversationId: json["conversation_id"] == null ? null : json["conversation_id"],
-        inReplyToAccountAcct: json["in_reply_to_account_acct"] == null ? null : json["in_reply_to_account_acct"],
-        local: json["local"],
-        spoilerText: json["spoiler_text"] == null ? null : Content.fromJson(json["spoiler_text"]),
-    );
+  factory StatusPleroma.fromJson(Map<String, dynamic> json) =>
+      _$StatusPleromaFromJson(json);
 
-    Map<String, dynamic> toJson() => {
-        "content": content == null ? null : content.toJson(),
-        "conversation_id": conversationId == null ? null : conversationId,
-        "in_reply_to_account_acct": inReplyToAccountAcct == null ? null : inReplyToAccountAcct,
-        "local": local,
-        "spoiler_text": spoilerText == null ? null : spoilerText.toJson(),
-    };
+  factory StatusPleroma.fromJsonString(String jsonString) =>
+      _$StatusPleromaFromJson(jsonDecode(jsonString));
+
+  Map<String, dynamic> toJson() => _$StatusPleromaToJson(this);
+
+  String toJsonString() => jsonEncode(_$StatusPleromaToJson(this));
 }
 
+@JsonSerializable()
 class Content {
-    String textPlain;
+  @JsonKey(name: "text/plain")
+  String textPlain;
 
-    Content({
-        this.textPlain,
-    });
+  Content({
+    this.textPlain,
+  });
 
-    factory Content.fromJson(Map<String, dynamic> json) => new Content(
-        textPlain: json["text/plain"],
-    );
+  factory Content.fromJson(Map<String, dynamic> json) =>
+      _$ContentFromJson(json);
 
-    Map<String, dynamic> toJson() => {
-        "text/plain": textPlain,
-    };
+  factory Content.fromJsonString(String jsonString) =>
+      _$ContentFromJson(jsonDecode(jsonString));
+
+  Map<String, dynamic> toJson() => _$ContentToJson(this);
+
+  String toJsonString() => jsonEncode(_$ContentToJson(this));
 }
 
+@JsonSerializable()
 class Tag {
-    String name;
-    String url;
+  String name;
+  String url;
 
-    Tag({
-        this.name,
-        this.url,
-    });
+  Tag({
+    this.name,
+    this.url,
+  });
 
-    factory Tag.fromJson(Map<String, dynamic> json) => new Tag(
-        name: json["name"],
-        url: json["url"],
-    );
+  factory Tag.fromJson(Map<String, dynamic> json) => _$TagFromJson(json);
 
-    Map<String, dynamic> toJson() => {
-        "name": name,
-        "url": url,
-    };
+  factory Tag.fromJsonString(String jsonString) =>
+      _$TagFromJson(jsonDecode(jsonString));
+
+  Map<String, dynamic> toJson() => _$TagToJson(this);
+
+  String toJsonString() => jsonEncode(_$TagToJson(this));
 }
 
 enum Visibility { PUBLIC, UNLISTED, DIRECT }
 
 final visibilityValues = new EnumValues({
-    "public": Visibility.PUBLIC,
-    "unlisted": Visibility.UNLISTED,
-    "direct": Visibility.DIRECT
+  "public": Visibility.PUBLIC,
+  "unlisted": Visibility.UNLISTED,
+  "direct": Visibility.DIRECT
 });
 
 class EnumValues<T> {
-    Map<String, T> map;
-    Map<T, String> reverseMap;
+  Map<String, T> map;
+  Map<T, String> reverseMap;
 
-    EnumValues(this.map);
+  EnumValues(this.map);
 
-    Map<T, String> get reverse {
-        if (reverseMap == null) {
-            reverseMap = map.map((k, v) => new MapEntry(v, k));
-        }
-        return reverseMap;
+  Map<T, String> get reverse {
+    if (reverseMap == null) {
+      reverseMap = map.map((k, v) => new MapEntry(v, k));
     }
+    return reverseMap;
+  }
+}
+
+class VisibilityTypeConverter implements JsonConverter<Visibility, String> {
+  const VisibilityTypeConverter();
+
+  @override
+  Visibility fromJson(String value) => visibilityValues.map[value];
+  @override
+  String toJson(Visibility value) => visibilityValues.reverseMap[value];
+
 }

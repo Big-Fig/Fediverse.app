@@ -4,20 +4,25 @@
 
 import 'dart:convert';
 
-List<Relationship> relationshipFromJson(String str) => List<Relationship>.from(json.decode(str).map((x) => Relationship.fromJson(x)));
+import 'package:json_annotation/json_annotation.dart';
 
-String relationshipToJson(List<Relationship> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+part 'Relationship.g.dart';
 
+@JsonSerializable()
 class Relationship {
     bool blocking;
+    @JsonKey(name: "domain_blocking")
     bool domainBlocking;
     bool endorsed;
+    @JsonKey(name: "followed_by")
     bool followedBy;
     bool following;
     String id;
     bool muting;
+    @JsonKey(name: "muting_notifications")
     bool mutingNotifications;
     bool requested;
+    @JsonKey(name: "showing_reblogs")
     bool showingReblogs;
     bool subscribing;
 
@@ -35,31 +40,16 @@ class Relationship {
         this.subscribing,
     });
 
-    factory Relationship.fromJson(Map<String, dynamic> json) => Relationship(
-        blocking: json["blocking"],
-        domainBlocking: json["domain_blocking"],
-        endorsed: json["endorsed"],
-        followedBy: json["followed_by"],
-        following: json["following"],
-        id: json["id"],
-        muting: json["muting"],
-        mutingNotifications: json["muting_notifications"],
-        requested: json["requested"],
-        showingReblogs: json["showing_reblogs"],
-        subscribing: json["subscribing"],
-    );
+    factory Relationship.fromJson(Map<String, dynamic> json) =>
+        _$RelationshipFromJson(json);
 
-    Map<String, dynamic> toJson() => {
-        "blocking": blocking,
-        "domain_blocking": domainBlocking,
-        "endorsed": endorsed,
-        "followed_by": followedBy,
-        "following": following,
-        "id": id,
-        "muting": muting,
-        "muting_notifications": mutingNotifications,
-        "requested": requested,
-        "showing_reblogs": showingReblogs,
-        "subscribing": subscribing,
-    };
+    factory Relationship.fromJsonString(String jsonString) =>
+        _$RelationshipFromJson(jsonDecode(jsonString));
+
+    static List<Relationship> listFromJsonString(String str) =>
+        new List<Relationship>.from(json.decode(str).map((x) => Relationship.fromJson(x)));
+
+
+    Map<String, dynamic> toJson() => _$RelationshipToJson(this);
+    String toJsonString() => jsonEncode(_$RelationshipToJson(this));
 }

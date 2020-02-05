@@ -1,15 +1,17 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
-import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
-import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
 import 'dart:io' show Platform;
 
+import 'package:fedi/Notifications/PushNotification.dart';
+import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:vibration/vibration.dart';
 
 class PushHelper {
   PushHelper._privateConstructor();
 
   static final PushHelper _instance = PushHelper._privateConstructor();
+
   static PushHelper get instance {
     return _instance;
   }
@@ -26,27 +28,13 @@ class PushHelper {
 
   Future<dynamic> theOnMessage(Map<String, dynamic> message) async {
     debugPrint("onMessage: face $message");
-    String server;
-    String acc;
-    String type;
-    if (Platform.isAndroid) {
-      // Android-specific code
-      var d = message["data"];
-      acc = d['account'];
-      server = d['server'];
-
-      type = d["notification_type"];
-    } else {
-      // iOS-specific code
-      acc = message['account'];
-      server = message['server'];
-      type = message["notification_type"];
-    }
+    var pushNotification = _parsePushNotification(message);
 
     //  _navigateToItemDetail(message);
-    String account = "$acc@$server";
+    String account = "${pushNotification.account}@${pushNotification.server}";
     print("NEW ACCOUNT ALERT $account");
-    await InstanceStorage.addAccountAlert(account, type);
+    await InstanceStorage.addAccountAlert(
+        account, pushNotification.notificationType);
     Vibration.vibrate();
     PushHelper.instance.updateBadges();
     PushHelper.instance.notificationUpdater();
@@ -58,27 +46,15 @@ class PushHelper {
     PushHelper.instance._firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         debugPrint("onMessage: face $message");
-        String server;
-        String acc;
-        String type;
-        if (Platform.isAndroid) {
-          // Android-specific code
-          var d = message["data"];
-          acc = d['account'];
-          server = d['server'];
-
-          type = d["notification_type"];
-        } else {
-          // iOS-specific code
-          acc = message['account'];
-          server = message['server'];
-          type = message["notification_type"];
-        }
+        var pushNotification = _parsePushNotification(message);
 
         //  _navigateToItemDetail(message);
-        String account = "$acc@$server";
+        String account =
+            "${pushNotification.account}@${pushNotification.server}";
         print("NEW ACCOUNT ALERT $account");
-        InstanceStorage.addAccountAlert(account, type).then((value) {
+        InstanceStorage.addAccountAlert(
+                account, pushNotification.notificationType)
+            .then((value) {
           Vibration.vibrate();
           PushHelper.instance.updateBadges();
           PushHelper.instance.notificationUpdater();
@@ -86,32 +62,17 @@ class PushHelper {
 
         //   _showItemDialog(message);
       },
-      onLaunch: (Map<String, dynamic> data) async {
+      onLaunch: (Map<String, dynamic> message) async {
         print("onLaunch");
-        print("$data");
-        String server;
-        String acc;
-        String id;
-        String type;
-        if (Platform.isAndroid) {
-          // Android-specific code
-          var d = data["data"];
-          acc = d['account'];
-          server = d['server'];
-          id = d['notification_id'].toString();
-          type = d["notification_type"];
-        } else {
-          // iOS-specific code
-          acc = data['account'];
-          server = data['server'];
-          id = data['notification_id'].toString();
-          type = data["notification_type"];
-        }
+        print("$message");
+        var pushNotification = _parsePushNotification(message);
 
-        PushHelper.instance.notificationId = id;
-        PushHelper.instance.notifcationType = type;
+        PushHelper.instance.notificationId =
+            pushNotification.notificationId.toString();
+        PushHelper.instance.notifcationType = pushNotification.notificationType;
         //  _navigateToItemDetail(message);
-        String account = "$acc@https://$server";
+        String account =
+            "${pushNotification.account}@https://${pushNotification.server}";
         print("SWAPPING ACCOUNT $account");
         InstanceStorage.setCurrentAccount(account).then((future) {
           swapAccount();
@@ -119,30 +80,16 @@ class PushHelper {
           print(error);
         });
       },
-      onResume: (Map<String, dynamic> data) async {
-        String server;
-        String acc;
-        String id;
-        String type;
-        if (Platform.isAndroid) {
-          // Android-specific code
-          var d = data["data"];
-          acc = d['account'];
-          server = d['server'];
-          id = d['notification_id'].toString();
-          type = d["notification_type"];
-        } else {
-          // iOS-specific code
-          acc = data['account'];
-          server = data['server'];
-          id = data['notification_id'].toString();
-          type = data["notification_type"];
-        }
+      onResume: (Map<String, dynamic> message) async {
+
+        var pushNotification = _parsePushNotification(message);
         //  _navigateToItemDetail(message);
-        String account = "$acc@https://$server";
+        String account =
+            "${pushNotification.account}@https://${pushNotification.server}";
         print("SWAPPING ACCOUNT $account");
-        PushHelper.instance.notificationId = id;
-        PushHelper.instance.notifcationType = type;
+        PushHelper.instance.notificationId =
+            pushNotification.notificationId.toString();
+        PushHelper.instance.notifcationType = pushNotification.notificationType;
         InstanceStorage.setCurrentAccount(account).then((future) {
           swapAccount();
         }).catchError((error) {
@@ -170,4 +117,16 @@ class PushHelper {
       CurrentInstance.instance.currentClient.subscribeToPush(token);
     });
   }
+}
+
+PushNotification _parsePushNotification(Map<String, dynamic> message) {
+  Map<String, dynamic> data;
+  if (Platform.isAndroid) {
+    data = message["data"];
+  } else {
+    data = message;
+  }
+
+  PushNotification pushNotification = PushNotification.fromJson(data);
+  return pushNotification;
 }

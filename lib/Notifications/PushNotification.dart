@@ -4,6 +4,10 @@
 
 import 'dart:convert';
 
+import 'package:json_annotation/json_annotation.dart';
+
+part 'PushNotification.g.dart';
+
 List<PushNotification> pushNotificationFromJson(String str) =>
     new List<PushNotification>.from(
         json.decode(str).map((x) => PushNotification.fromJson(x)));
@@ -11,8 +15,11 @@ List<PushNotification> pushNotificationFromJson(String str) =>
 String pushNotificationToJson(List<PushNotification> data) =>
     json.encode(new List<dynamic>.from(data.map((x) => x.toJson())));
 
+@JsonSerializable()
 class PushNotification {
+  @JsonKey(name: "notification_type")
   String notificationType;
+  @JsonKey(name: "notification_id")
   int notificationId;
   String server;
   String account;
@@ -26,17 +33,8 @@ class PushNotification {
     this.account,
   });
 
-  factory PushNotification.fromJson(Map<String, dynamic> json) => new PushNotification(
-        notificationType: json["notification_type"],
-        notificationId: json["notification_id"],
-        server: json["server"],
-        account: json["account"],
-      );
+  factory PushNotification.fromJson(Map<String, dynamic> json) =>
+      _$PushNotificationFromJson(json);
 
-  Map<String, dynamic> toJson() => {
-        "notification_type": notificationType,
-        "notification_id": notificationId,
-        "account": account,
-        "server": server,
-      };
+  Map<String, dynamic> toJson() => _$PushNotificationToJson(this);
 }

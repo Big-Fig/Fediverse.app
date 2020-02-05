@@ -213,7 +213,7 @@ class _TimelineCell extends State<TimelineCell> {
                                       id: mention.id),
                                   method: HTTPMethod.GET)
                               .then((response) {
-                            Account account = accountFromJson(response.body);
+                            Account account = Account.fromJsonString(response.body);
                             widget.viewAccount(account);
                           }).catchError((error) {
                             print(error.toString());
@@ -515,7 +515,7 @@ class _TimelineCell extends State<TimelineCell> {
                                         Accounts.account(id: status.account.id),
                                     method: HTTPMethod.GET)
                                 .then((response) {
-                              Account account = accountFromJson(response.body);
+                              Account account = Account.fromJsonString(response.body);
                               CurrentInstance.instance.currentClient
                                   .run(
                                       path: Accounts.followAccount(account.id),
@@ -770,8 +770,8 @@ class _TimelineCell extends State<TimelineCell> {
       var foundEmoji = false;
       for (var j = 0; j < emojis.length; j++) {
         var emoji = emojis[j];
-        String shortcode = emoji["shortcode"];
-        String url = emoji["url"];
+        String shortcode = emoji.shortcode;
+        String url = emoji.url;
         if (shortcode == emojiOrText) {
           var image = CachedNetworkImage(
             imageUrl: url,

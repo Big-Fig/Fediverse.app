@@ -13,6 +13,9 @@ import 'package:fedi/Pleroma/Models/Relationship.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../Pleroma/Models/Account.dart';
+import 'package:fedi/Pleroma/Models/Field.dart';
+
 class ProfileHeader extends StatefulWidget {
   final Account profileAccount;
 
@@ -40,7 +43,7 @@ class _ProfileHeader extends State<ProfileHeader> {
       CurrentInstance.instance.currentClient
           .run(path: path, method: HTTPMethod.GET)
           .then((response) {
-        Relationship relationship = relationshipFromJson(response.body).first;
+        Relationship relationship = Relationship.listFromJsonString(response.body).first;
         if (mounted)
           setState(() {
             this.relationship = relationship;
@@ -219,14 +222,14 @@ class _ProfileHeader extends State<ProfileHeader> {
     return string.replaceAll(RegExp("<a[^>]*>"), "");
   }
 
-  Widget getLinkButton(dynamic field) {
+  Widget getLinkButton(Field field) {
     return Expanded(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10),
         child: RaisedButton(
-          child: Text(field["name"]),
+          child: Text(field.name),
           onPressed: () {
-            String link = getURL(field["value"]);
+            String link = getURL(field.value);
             print(link);
             canLaunch(link).then((result) {
               launch(link);

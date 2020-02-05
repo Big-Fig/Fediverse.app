@@ -2,11 +2,11 @@ import 'dart:convert';
 
 import 'package:fedi/Pleroma/Models/Account.dart';
 import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-Results resultsFromJson(String str) => Results.fromJson(json.decode(str));
+part 'Results.g.dart';
 
-String resultsToJson(Results data) => json.encode(data.toJson());
-
+@JsonSerializable()
 class Results {
     List<Account> accounts = [];
     List<Status> statuses = [];
@@ -18,15 +18,14 @@ class Results {
         // this.hashtags,
     });
 
-    factory Results.fromJson(Map<String, dynamic> json) => Results(
-        accounts: json["accounts"] == null ? <Account>[] : List<Account>.from(json["accounts"].map((x) => Account.fromJson(x))),
-        statuses: json["statuses"] == null ? <Status>[] : List<Status>.from(json["statuses"].map((x) => Status.fromJson(x))),
-        // hashtags: List<Hashtag>.from(json["hashtags"].map((x) => Hashtag.fromJson(x))),
-    );
 
-    Map<String, dynamic> toJson() => {
-        "accounts": List<dynamic>.from(accounts.map((x) => x.toJson())),
-        "statuses": List<dynamic>.from(statuses.map((x) => x.toJson())),
-        // "hashtags": List<dynamic>.from(hashtags.map((x) => x.toJson())),
-    };
+    factory Results.fromJson(Map<String, dynamic> json) =>
+        _$ResultsFromJson(json);
+
+    factory Results.fromJsonString(String jsonString) =>
+        _$ResultsFromJson(jsonDecode(jsonString));
+
+    Map<String, dynamic> toJson() => _$ResultsToJson(this);
+    String toJsonString() => jsonEncode(_$ResultsToJson(this));
+
 }
