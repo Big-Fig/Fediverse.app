@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart';
 import 'package:fedi/Views/Alert.dart';
@@ -47,12 +48,14 @@ class _EditProfile extends State<EditProfile> {
   alertDisplayName(BuildContext context) {
     showAlert(
       context: context,
-      title: "Unsaved changes",
-      body:
-          "There are unsaved changes to your display name. Are you sure you want to discard them?",
+      title: AppLocalizations.of(context)
+          .tr("profile.edit.display_name.alert.title"),
+      body: AppLocalizations.of(context)
+          .tr("profile.edit.display_name.alert.body"),
       actions: [
         AlertAction(
-          text: "Discard",
+          text: AppLocalizations.of(context)
+              .tr("profile.edit.action.discard"),
           onPressed: () {
             widget.stateUpdated(context);
           },
@@ -65,12 +68,14 @@ class _EditProfile extends State<EditProfile> {
   alertBio(BuildContext context) {
     showAlert(
       context: context,
-      title: "Unsaved changes",
-      body:
-          "There are unsaved changes to your bio. Are you sure you want to discard them?",
+      title: AppLocalizations.of(context)
+          .tr("profile.edit.bio.alert.title"),
+      body: AppLocalizations.of(context)
+          .tr("profile.edit.bio.alert.body"),
       actions: [
         AlertAction(
-          text: "Discard",
+          text: AppLocalizations.of(context)
+              .tr("profile.edit.action.discard"),
           onPressed: () {
             widget.stateUpdated(context);
           },
@@ -82,7 +87,9 @@ class _EditProfile extends State<EditProfile> {
 
   saveProfile(BuildContext context) {
     _pr = ProgressDialog(context, ProgressDialogType.Normal);
-    _pr.setMessage('Updating Profile');
+    _pr.setMessage(AppLocalizations.of(context)
+        .tr("profile.edit.update.progress")
+    );
     _pr.show();
 
     CurrentInstance.instance.currentClient.run(
@@ -94,13 +101,19 @@ class _EditProfile extends State<EditProfile> {
         }).then((response) {
       _pr.hide();
       CurrentInstance.instance.currentAccount.refreshAccount().then((response) {
-        var alert = Alert(context, "Success!", "Profile updated!", () {});
+        var alert = Alert(context,
+            AppLocalizations.of(context)
+                .tr("profile.edit.update.success.alert.title"),
+            AppLocalizations.of(context)
+                .tr("profile.edit.update.success.alert.content"), () {});
         alert.showAlert();
       }).catchError((error) {
         var alert = Alert(
             context,
-            "Opps",
-            "Unable to update yoru profile at this time. Please try again later.",
+            AppLocalizations.of(context)
+                .tr("profile.edit.update.error.alert.title"),
+            AppLocalizations.of(context)
+                .tr("profile.edit.update.error.alert.content"),
             () => {});
         alert.showAlert();
       });
@@ -110,8 +123,10 @@ class _EditProfile extends State<EditProfile> {
       _pr.hide();
       var alert = Alert(
           context,
-          "Opps",
-          "Unable to update yoru profile at this time. Please try again later.",
+          AppLocalizations.of(context)
+              .tr("profile.edit.update.error.alert.title"),
+          AppLocalizations.of(context)
+              .tr("profile.edit.update.error.alert.content"),
           () => {});
       alert.showAlert();
     });
@@ -138,11 +153,13 @@ class _EditProfile extends State<EditProfile> {
             }
           },
         ),
-        title: Row(children: <Widget>[Text("Edit Account")]),
+        title: Row(children: <Widget>[Text(
+            AppLocalizations.of(context).tr("profile.edit.title")
+        )]),
         actions: <Widget>[
           FlatButton(
             child: Text(
-              "Save",
+              AppLocalizations.of(context).tr("profile.edit.action.save"),
               style: TextStyle(color: Colors.white),
             ),
             onPressed: () {
@@ -252,7 +269,8 @@ class _EditProfile extends State<EditProfile> {
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
                             Text(
-                              "Header",
+                              AppLocalizations.of(context)
+                                  .tr("profile.edit.header"),
                               style: TextStyle(color: Colors.white),
                             ),
                             Padding(
@@ -286,7 +304,8 @@ class _EditProfile extends State<EditProfile> {
                       borderRadius: BorderRadius.circular(12.0),
                       borderSide: BorderSide(),
                     ),
-                    labelText: 'Display Name',
+                    labelText: AppLocalizations.of(context)
+                        .tr("profile.edit.display_name.label"),
                   ),
                 ),
               ),
@@ -307,7 +326,8 @@ class _EditProfile extends State<EditProfile> {
                       borderRadius: BorderRadius.circular(12.0),
                       borderSide: BorderSide(),
                     ),
-                    labelText: 'Bio',
+                    labelText: AppLocalizations.of(context)
+                        .tr("profile.edit.bio.label"),
                   ),
                 ),
               ),

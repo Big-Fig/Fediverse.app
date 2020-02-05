@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fedi/Pages/Profile/OtherAccount.dart';
@@ -184,7 +185,8 @@ class MyTimelinePageState extends State<MyTimelinePage> {
                 width: 15.0,
               ),
               Text(
-                "Everything up to date",
+                AppLocalizations.of(context)
+                .tr("timeline.my.update.up_to_date"),
                 style: TextStyle(color: Colors.grey),
               )
             ],
@@ -199,7 +201,10 @@ class MyTimelinePageState extends State<MyTimelinePage> {
               Container(
                 width: 15.0,
               ),
-              Text("Unable to fetch data", style: TextStyle(color: Colors.grey))
+              Text(
+                  AppLocalizations.of(context)
+                      .tr("timeline.my.update.unable_to_fetch"),
+                  style: TextStyle(color: Colors.grey))
             ],
           )),
       footer: CustomFooter(
@@ -210,7 +215,8 @@ class MyTimelinePageState extends State<MyTimelinePage> {
           } else if (mode == LoadStatus.loading) {
             body = CircularProgressIndicator();
           } else if (mode == LoadStatus.failed) {
-            body = Text("Load Failed!Click retry!");
+            body = Text(  AppLocalizations.of(context)
+                .tr("timeline.my.update.failed"));
           } else {
             body = Text("");
           }

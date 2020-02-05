@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pleroma/Models/Account.dart';
 import 'package:fedi/Views/MentionPage.dart';
 import 'package:flutter/material.dart';
@@ -97,7 +98,7 @@ class _TextEditor extends State<TextEditor> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Compose status"),
+        title: Text(AppLocalizations.of(context).tr("post.text_editor.title")),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -109,7 +110,8 @@ class _TextEditor extends State<TextEditor> {
         actions: <Widget>[
           Builder(
               builder: (context) => FlatButton(
-                    child: Text("Next"),
+                    child: Text(AppLocalizations.of(context)
+                        .tr("post.text_editor.action.next")),
                     textColor: Colors.white,
                     color: Colors.transparent,
                     onPressed: () {
@@ -195,17 +197,22 @@ class _TextEditor extends State<TextEditor> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          content: new Text("Are you sure you want to remove the attachment?"),
+          content: new Text(AppLocalizations.of(context)
+              .tr("post.text_editor.attachment.remove.alert.content")),
           actions: <Widget>[
             new FlatButton(
-              child: new Text("Cancel"),
+              child: new Text(AppLocalizations.of(context)
+                  .tr("post.text_editor.attachment.remove.alert.action"
+                  ".cancel")),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             // usually buttons at the bottom of the dialog
             new FlatButton(
-              child: new Text("Remove"),
+              child: new Text(AppLocalizations.of(context)
+                  .tr("post.text_editor.attachment.remove.alert.action"
+                  ".remove")),
               onPressed: () {
                 assets.removeAt(index);
                 setState(() {});

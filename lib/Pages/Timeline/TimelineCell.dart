@@ -1,25 +1,26 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_pro/carousel_pro.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/Pages/Statuses/ImageViewPage.dart';
 import 'package:fedi/Pages/Timeline/StatusFavoritePage.dart';
 import 'package:fedi/Pages/Timeline/StatusRepostPage.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_html/flutter_html.dart';
-import 'package:fedi/Pages/Statuses/ImageViewPage.dart';
 import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart';
+import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart'
+    as AccountRequests;
 import 'package:fedi/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
 import 'package:fedi/Pleroma/Models/Account.dart';
 import 'package:fedi/Pleroma/Models/Status.dart';
-import 'package:carousel_pro/carousel_pro.dart';
 import 'package:fedi/Views/VideoPlayer.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:jiffy/jiffy.dart';
 import 'package:html/dom.dart' as dom;
+import 'package:jiffy/jiffy.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart'
-    as AccountRequests;
 
 class TimelineCell extends StatefulWidget {
   final Status status;
@@ -91,7 +92,8 @@ class _TimelineCell extends State<TimelineCell> {
                         SizedBox(
                           width: 8,
                         ),
-                        Text("repeated")
+                        Text(AppLocalizations.of(context)
+                            .tr("timeline.status.cell.repeated"))
                       ],
                     )
                   ],
@@ -151,7 +153,8 @@ class _TimelineCell extends State<TimelineCell> {
                   children: <Widget>[
                     IconButton(
                       icon: Icon(Icons.more_horiz),
-                      tooltip: 'More',
+                      tooltip: AppLocalizations.of(context)
+                          .tr("timeline.status.cell.tooltip.more"),
                       onPressed: () {
                         showMoreOptions(context);
                       },
@@ -236,7 +239,8 @@ class _TimelineCell extends State<TimelineCell> {
                             ? Colors.blue
                             : Colors.grey,
                         icon: Icon(Icons.thumb_up),
-                        tooltip: 'Like',
+                        tooltip: AppLocalizations.of(context)
+                            .tr("timeline.status.cell.tooltip.like"),
                         onPressed: () {
                           like();
                         },
@@ -246,7 +250,8 @@ class _TimelineCell extends State<TimelineCell> {
                         IconButton(
                           color: Colors.grey,
                           icon: Icon(Icons.add_comment),
-                          tooltip: 'comment',
+                          tooltip: AppLocalizations.of(context)
+                              .tr("timeline.status.cell.tooltip.comment"),
                           onPressed: () {
                             widget.viewStatusContext(widget.status);
                           },
@@ -259,7 +264,8 @@ class _TimelineCell extends State<TimelineCell> {
                         color:
                             widget.status.reblogged ? Colors.blue : Colors.grey,
                         icon: Icon(Icons.cached),
-                        tooltip: 'repost',
+                        tooltip: AppLocalizations.of(context)
+                            .tr("timeline.status.cell.tooltip.repost"),
                         onPressed: () {
                           repost();
                         },
@@ -282,7 +288,7 @@ class _TimelineCell extends State<TimelineCell> {
                     child: Row(
                       children: <Widget>[
                         if (widget.status.favouritesCount > 0)
-                          getFavoritesButton(),
+                          getFavoritesButton(context),
                         if (widget.status.reblogsCount > 0) getRepostsButton()
                       ],
                     ),
@@ -295,16 +301,21 @@ class _TimelineCell extends State<TimelineCell> {
     );
   }
 
-  Widget getFavoritesButton() {
+  Widget getFavoritesButton(BuildContext context) {
     int count = 0;
     if (widget.status.reblog != null) {
       count += widget.status.reblog.favouritesCount ?? 0;
     }
     count += widget.status.favouritesCount ?? 0;
 
-    String favs = "$count Favorites";
+
+    String favs;
     if (count == 1) {
-      favs = "$count Favorite";
+      favs = AppLocalizations.of(context).tr(
+          "timeline.status.cell.favorites.one", args: [count.toString()]);
+    } else {
+      favs = AppLocalizations.of(context).tr(
+          "timeline.status.cell.favorites.many", args: [count.toString()]);
     }
     return FlatButton(
       child: Text(favs),
@@ -324,10 +335,16 @@ class _TimelineCell extends State<TimelineCell> {
     if (widget.status.reblog != null) {
       count += widget.status.reblog.reblogsCount ?? 0;
     }
-    String reposts = "$count Reposts";
-    if (widget.status.reblogsCount == 1) {
-      reposts = "$count Repost";
+
+    String reposts;
+    if (count == 1) {
+      reposts = AppLocalizations.of(context).tr(
+          "timeline.status.cell.reposts.one", args: [count.toString()]);
+    } else {
+      reposts = AppLocalizations.of(context).tr(
+          "timeline.status.cell.reposts.many", args: [count.toString()]);
     }
+
     return FlatButton(
       child: Text(reposts),
       onPressed: () {
@@ -395,7 +412,8 @@ class _TimelineCell extends State<TimelineCell> {
                   padding: EdgeInsets.only(top: 10, left: 10, right: 10),
                   child: Center(
                     child: Text(
-                      "Status Actions",
+                      AppLocalizations.of(context)
+                          .tr("timeline.status.cell.status_actions.title"),
                       style: TextStyle(color: Colors.blue),
                     ),
                   ),
@@ -408,14 +426,20 @@ class _TimelineCell extends State<TimelineCell> {
                         child: OutlineButton(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[Text("Copy status link")],
+                            children: <Widget>[Text(
+                                AppLocalizations.of(context)
+                                    .tr("timeline.status.cell.status_actions.action"
+                                    ".copy_status_link"),
+                            )],
                           ),
                           onPressed: () {
                             print(status.uri);
                             Clipboard.setData(ClipboardData(text: status.uri));
                             Navigator.of(context).pop();
                             Fluttertoast.showToast(
-                                msg: "Copied",
+                                msg: AppLocalizations.of(context)
+                                    .tr("timeline.status.cell.status_actions.toast"
+                                    ".copied"),
                                 toastLength: Toast.LENGTH_SHORT,
                                 gravity: ToastGravity.CENTER,
                                 timeInSecForIos: 1,
@@ -436,7 +460,9 @@ class _TimelineCell extends State<TimelineCell> {
                         child: OutlineButton(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[Text("Open in browser")],
+                            children: <Widget>[Text(AppLocalizations.of(context)
+                                .tr("timeline.status.cell.status_actions.action"
+                                ".open_in_browser"))],
                           ),
                           onPressed: () {
                             canLaunch(status.uri).then((result) {
@@ -452,8 +478,8 @@ class _TimelineCell extends State<TimelineCell> {
                 Padding(
                   padding: EdgeInsets.only(top: 10, left: 10, right: 10),
                   child: Center(
-                    child: Text(
-                      "More actions for:",
+                    child: Text(AppLocalizations.of(context).tr(
+                        "timeline.status.cell.status_actions.more_actions_for"),
                       style: TextStyle(color: Colors.blue),
                     ),
                   ),
@@ -476,7 +502,11 @@ class _TimelineCell extends State<TimelineCell> {
                         child: OutlineButton(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[Text("Follow")],
+                            children: <Widget>[Text(
+                                AppLocalizations.of(context).tr(
+                                    "timeline.status.cell.status_actions.action"
+                                        ".follow"))
+                            ],
                           ),
                           onPressed: () {
                             CurrentInstance.instance.currentClient
@@ -517,7 +547,11 @@ class _TimelineCell extends State<TimelineCell> {
                         child: OutlineButton(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[Text("Mute")],
+                            children: <Widget>[Text(
+                                AppLocalizations.of(context).tr(
+                                    "timeline.status.cell.status_actions.action"
+                                        ".mute"))
+                            ],
                           ),
                           onPressed: () {
                             CurrentInstance.instance.currentClient
@@ -546,7 +580,9 @@ class _TimelineCell extends State<TimelineCell> {
                         child: OutlineButton(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[Text("Block")],
+                            children: <Widget>[Text(AppLocalizations.of(context).tr(
+                                "timeline.status.cell.status_actions.action"
+                                    ".block"))],
                           ),
                           onPressed: () {
                             CurrentInstance.instance.currentClient
@@ -575,7 +611,9 @@ class _TimelineCell extends State<TimelineCell> {
                         child: OutlineButton(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[Text("Report")],
+                            children: <Widget>[Text(AppLocalizations.of(context).tr(
+                                "timeline.status.cell.status_actions.action"
+                                    ".report"))],
                           ),
                           onPressed: () {
                             var params = {"account_id": status.account.id};
@@ -610,7 +648,9 @@ class _TimelineCell extends State<TimelineCell> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Text(
-                                " Cancel",
+                                AppLocalizations.of(context).tr(
+                                    "timeline.status.cell.status_actions.action"
+                                        ".cancel"),
                                 style: TextStyle(color: Colors.red),
                               )
                             ],

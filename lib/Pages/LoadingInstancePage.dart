@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../Constants/AppThemeConsts.dart';
 import '../Pleroma/Foundation/CurrentInstance.dart';
@@ -26,7 +27,8 @@ class LoadingInstancePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Text("Fetching account and instance data",
+              Text(
+                  AppLocalizations.of(context).tr("loading_instance.progress"),
                   style: TextStyle(color: Colors.white.withOpacity(0.6))),
               SizedBox(
                   width: 60.0,
