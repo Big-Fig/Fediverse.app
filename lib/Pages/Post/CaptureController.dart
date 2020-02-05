@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:fedi/Pages/Post/ComposeStatus.dart';
 import 'package:fedi/Pages/Post/Gallery/GalleryCapture.dart';
@@ -44,6 +45,8 @@ class _CaptureController extends State<CaptureController>
     ];
     _controller = TabController(vsync: this, length: 3);
     _controller.addListener(_controllerChanged);
+    var newPostLabel = AppLocalizations.of(context)
+        .tr("post.capture.action.new_post");
     _appBar = [
       // Video Capture AppBar
       AppBar(
@@ -53,7 +56,7 @@ class _CaptureController extends State<CaptureController>
            widget.close();
           },
         ),
-        title: Text("New Post"),
+        title: Text(newPostLabel),
       ),
       // Camera Capture AppBar
       AppBar(
@@ -64,7 +67,7 @@ class _CaptureController extends State<CaptureController>
            // Navigator.pop(context);
           },
         ),
-        title: Text("New Post"),
+        title: Text(newPostLabel),
       ),
       // Gallery Capture AppBar
       AppBar(
@@ -74,10 +77,11 @@ class _CaptureController extends State<CaptureController>
              widget.close();
           },
         ),
-        title: Text("New Post"),
+        title: Text(newPostLabel),
         actions: <Widget>[
           FlatButton(
-            child: Text("Next"),
+            child: Text(AppLocalizations.of(context)
+                .tr("post.capture.action.next")),
             textColor: Colors.white,
             color: Colors.transparent,
             onPressed: () {
@@ -102,7 +106,7 @@ class _CaptureController extends State<CaptureController>
             Navigator.pop(context);
           },
         ),
-        title: Text("New Post"),
+        title: Text(newPostLabel),
         actions: <Widget>[
           FlatButton(
             child: Text("Next"),

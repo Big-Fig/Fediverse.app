@@ -1,7 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-String _dialogMessage = "Loading...";
+
 enum ProgressDialogType { Normal, Download }
 
 ProgressDialogType _progressDialogType = ProgressDialogType.Normal;
@@ -11,7 +12,7 @@ bool _isShowing = false;
 
 class ProgressDialog {
   _MyDialog _dialog;
-
+  String _dialogMessage;
   BuildContext _buildContext, _context;
 
   ProgressDialog(
@@ -52,7 +53,7 @@ class ProgressDialog {
 
   void show() {
     if (!_isShowing) {
-      _dialog = new _MyDialog();
+      _dialog = new _MyDialog(_dialogMessage);
       _isShowing = true;
       debugPrint('ProgressDialog shown');
       showDialog<dynamic>(
@@ -75,6 +76,11 @@ class ProgressDialog {
 
 // ignore: must_be_immutable
 class _MyDialog extends StatefulWidget {
+  String message;
+
+
+  _MyDialog(this.message);
+
   var _dialog = new _MyDialogState();
 
   update() {
@@ -112,17 +118,17 @@ class _MyDialogState extends State<_MyDialog> {
           ),
           const SizedBox(width: 15.0),
           Expanded(
-            child: _progressDialogType == ProgressDialogType.Normal
-                ? Text(_dialogMessage,
-                    textAlign: TextAlign.justify,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 22.0,
-                        fontWeight: FontWeight.w700))
-                : Stack(
+            child: _progressDialogType == ProgressDialogType.Normal ? Text(
+                widget.message ??
+                    AppLocalizations.of(context).tr("progress_dialog.progress"),
+                textAlign: TextAlign.justify,
+                style: TextStyle(color: Colors.black,
+                    fontSize: 22.0,
+                    fontWeight: FontWeight.w700)) : Stack(
                     children: <Widget>[
                       Positioned(
-                        child: Text(_dialogMessage,
+                        child: Text( widget.message ??
+                            AppLocalizations.of(context).tr("progress_dialog.progress"),
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 22.0,
@@ -164,7 +170,10 @@ class MessageBox {
           title: Text('$title'),
           actions: <Widget>[
             FlatButton(
-              child: Text('Ok'),
+              child: Text(
+                AppLocalizations.of(context)
+                    .tr("progress_dialog.action.ok")
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },

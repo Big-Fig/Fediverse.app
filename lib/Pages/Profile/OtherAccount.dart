@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization_delegate.dart';
 import 'package:fedi/Pages/Timeline/StatusDetail.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -134,7 +135,8 @@ class _OtherAccount extends State<OtherAccount> {
                   width: 15.0,
                 ),
                 Text(
-                  "Everything up to date",
+                  AppLocalizations.of(context)
+                      .tr("profile.other.update.up_to_date"),
                   style: TextStyle(color: Colors.grey),
                 )
               ],
@@ -149,7 +151,8 @@ class _OtherAccount extends State<OtherAccount> {
                 Container(
                   width: 15.0,
                 ),
-                Text("Unable to fetch data",
+                Text(AppLocalizations.of(context)
+                    .tr("profile.other.update.unable_to_fetch"),
                     style: TextStyle(color: Colors.grey))
               ],
             )),
@@ -161,9 +164,14 @@ class _OtherAccount extends State<OtherAccount> {
             } else if (mode == LoadStatus.loading) {
               body = CircularProgressIndicator();
             } else if (mode == LoadStatus.failed) {
-              body = Text("Load Failed!Click retry!");
+              body = Text(
+                AppLocalizations.of(context).tr("profile.other.update"
+                    ".failed"),);
             } else {
-              body = Text("No more Data");
+              body = Text(
+                AppLocalizations.of(context).tr("profile.other.update"
+                    ".no_more_data"),
+              );
             }
             return Container(
               height: 55.0,

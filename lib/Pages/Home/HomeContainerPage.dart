@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pages/Post/QuickPostPage.dart';
 import 'package:fedi/Pages/Search/SearchPage.dart';
 import 'package:fedi/Pages/Search/SearchResults.dart';
@@ -31,17 +32,26 @@ class HomeContainerPageState extends State<HomeContainerPage>
   @override
   void initState() {
     super.initState();
+
+  }
+
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // similar to initState but have valid Context
+    List<String> timelines = _createTimelinesLabels(context);
     _tabController = TabController(
         length: 3,
         vsync: this,
         initialIndex: timelines.indexOf(widget.tabPage.currentTimeline));
   }
 
-  List<String> timelines = ["Home", "Local", "All"];
   bool showSearch = false;
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    List<String> timelines = _createTimelinesLabels(context);
     width = MediaQuery.of(context).size.width;
     return Scaffold(
         key: PageStorageKey<String>("HomeContainerPage"),
@@ -120,17 +130,28 @@ class HomeContainerPageState extends State<HomeContainerPage>
                 });
               },
             )),
-        body: homeContainer());
+        body: homeContainer(context));
   }
 
-  Widget homeContainer() {
+  List<String> _createTimelinesLabels(BuildContext context) {
+    var appLocalizations = AppLocalizations.of(context);
+
+    List<String> timelines = [
+      appLocalizations.tr("home.timeline.tabs.home"),
+      appLocalizations.tr("home.timeline.tabs.local"),
+      appLocalizations.tr("home.timeline.tabs.all"),
+    ];
+    return timelines;
+  }
+
+  Widget homeContainer(BuildContext context) {
     if (showSearch)
-      return getSearchContainer();
+      return getSearchContainer(context);
     else
       return widget.children[widget.tabController.index];
   }
 
-  Widget getSearchContainer() {
+  Widget getSearchContainer(BuildContext context) {
     return Container(
         child: Column(
       children: <Widget>[
@@ -159,7 +180,8 @@ class HomeContainerPageState extends State<HomeContainerPage>
                   controller: _searchController,
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
-                    hintText: 'Search...',
+                    hintText: AppLocalizations.of(context)
+                        .tr("home.search.input.hint"),
                     hintStyle: TextStyle(color: Colors.white30),
                   ),
                 ),

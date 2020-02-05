@@ -2,13 +2,14 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart';
 import 'package:fedi/Views/Alert.dart';
 import 'package:fedi/Views/LocalVideoPlayer.dart';
 import 'package:fedi/Views/ProgressDialog.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class ProfileMediaPage extends StatefulWidget {
@@ -39,6 +40,7 @@ class _ProfileMediaPage extends State<ProfileMediaPage> {
   File file;
   String statusVisability = "";
   String status = "";
+
   visibilityUpdated(String visibility) {
     statusVisability = visibility.toLowerCase();
   }
@@ -55,10 +57,12 @@ class _ProfileMediaPage extends State<ProfileMediaPage> {
               Navigator.pop(context);
             },
           ),
-          title: Text("Edit $widget.type"),
+          title: Text(AppLocalizations.of(context)
+              .tr("profile.media.edit.title", args: [widget.type])),
           actions: <Widget>[
             FlatButton(
-              child: Text("Save"),
+              child: Text(AppLocalizations.of(context)
+                  .tr("profile.media.edit.action.save")),
               textColor: Colors.white,
               color: Colors.transparent,
               onPressed: () {
@@ -75,7 +79,8 @@ class _ProfileMediaPage extends State<ProfileMediaPage> {
               child: getMediaPreview(),
             ),
             RaisedButton(
-              child: Text("Save!"),
+              child: Text(AppLocalizations.of(context)
+                  .tr("profile.media.edit.action.save")),
               onPressed: () {
                 updateImage();
               },
@@ -118,37 +123,49 @@ class _ProfileMediaPage extends State<ProfileMediaPage> {
   }
 
   updateImage() {
-
     _pr = ProgressDialog(context, ProgressDialogType.Normal);
-    _pr.setMessage('Uploading ${widget.type} image');
+    _pr.setMessage(AppLocalizations.of(context)
+        .tr("profile.media.edit.update.progress", args: [widget.type]));
     _pr.show();
 
     var path = Accounts.updateCurrentUser();
     CurrentInstance.instance.currentClient.patchUpload(
         path: path, paramName: widget.type, files: [file]).then((response) {
       response.stream.bytesToString().then((respStr) {
-        
         print(json.decode(respStr));
         _pr.hide();
         CurrentInstance.instance.currentAccount
             .refreshAccount()
             .then((response) {
-          var alert = Alert(context, "Success!", "Profile updated!", () {
+          var alert = Alert(context,
+              AppLocalizations.of(context)
+                  .tr("profile.media.edit.update.success.alert.title"),
+              AppLocalizations.of(context)
+                  .tr("profile.media.edit.update.success.alert.content"),
+                  () {
             widget.mediaUploaded("update");
             Navigator.of(context)
                 .popUntil((route) => route.settings.name == "/MyProfile");
           });
           alert.showAlert();
         }).catchError((error) {
-          var alert = Alert(context, "Opps",
-              "Unable to upload attachment at this time", () => {});
+          var alert = Alert(context,
+              AppLocalizations.of(context)
+                  .tr("profile.media.edit.update.error.alert.title"),
+              AppLocalizations.of(context)
+                  .tr("profile.media.edit.update.error.alert.content"),
+                  () => {});
           alert.showAlert();
         });
       }).catchError((e) {
         print(e);
         _pr.hide();
-        var alert = Alert(context, "Opps",
-            "Unable to upload attachment at this time.", () => {});
+        var alert = Alert(context,
+            AppLocalizations.of(context)
+                .tr("profile.media.edit.update.error.alert.title"),
+            AppLocalizations.of(context)
+                .tr("profile.media.edit.update.error.alert.content"),
+                () => {});
         alert.showAlert();
       });
     });

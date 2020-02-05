@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:html/parser.dart';
@@ -82,7 +83,8 @@ class _MessagesCell extends State<MessagesCell> {
                               ],
                             ),
                             Text(
-                              getStatusText(widget.conversation.lastStatus),
+                              getStatusText(context,
+                                  widget.conversation.lastStatus),
                               maxLines: 2,
                               style: TextStyle(fontSize: 14),
                             ),
@@ -99,7 +101,8 @@ class _MessagesCell extends State<MessagesCell> {
                     // Spacer(),
                     IconButton(
                       icon: Icon(Icons.chevron_right),
-                      tooltip: 'More',
+                      tooltip: AppLocalizations.of(context)
+                          .tr("messages.cell.action.more"),
                       onPressed: () {
                         cellTapped();
                       },
@@ -114,7 +117,7 @@ class _MessagesCell extends State<MessagesCell> {
     );
   }
 
-  String getStatusText(Status status) { 
+  String getStatusText(BuildContext context, Status status) {
     print("CONVERSATION ID ${widget.conversation.id}");
     String parsedString = parse(status.content).documentElement.text;
     for (var i = 0; i < status.mentions.length; i ++){
@@ -125,7 +128,8 @@ class _MessagesCell extends State<MessagesCell> {
     }
     
     if (widget.conversation.lastStatus.account.acct == CurrentInstance.instance.currentAccount.acct) {
-      parsedString = "You: $parsedString";
+      parsedString = AppLocalizations.of(context)
+          .tr("messages.cell.status.you", args: [parsedString]);
     }
     return parsedString;
   }
