@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pages/Post/QuickPostPage.dart';
 import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -63,6 +64,7 @@ class TabPageState extends State<TabPage>
       FirebaseAnalyticsObserver(analytics: analytics);
   // WebRTCManager manager = WebRTCManager.instance;
 
+  // Should be refactored to enums
   String currentTimeline = "Home";
   List<String> statuses = [''];
   AccountsBottomSheet bottomSheet;
@@ -211,7 +213,7 @@ class TabPageState extends State<TabPage>
       // Notifications Tab is handled by that page
       null,
       AppBar(
-        title: Text('New Post'),
+        title: Text(AppLocalizations.of(context).tr("tab_page.title")),
       ),
       null,
       AppBar(
@@ -278,7 +280,8 @@ class TabPageState extends State<TabPage>
                 //   SlideBottomRoute(page: CaptureController()),
                 // );
               },
-              tooltip: 'Increment',
+              tooltip: AppLocalizations.of(context)
+                  .tr("tab_page.tooltip.increment"),
               child: Icon(Icons.add),
               elevation: 2.0,
             ),

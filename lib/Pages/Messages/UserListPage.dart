@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -96,7 +97,8 @@ class _UserListPage extends State<UserListPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Send DM"),
+        title: Text(AppLocalizations.of(context)
+            .tr("messages.user_list.title")),
       ),
       body: Column(
         children: <Widget>[
@@ -112,7 +114,8 @@ class _UserListPage extends State<UserListPage> {
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.blue.withAlpha(150),
-                  hintText: 'Search',
+                  hintText: AppLocalizations.of(context)
+                      .tr("messages.user_list.field.search.hint"),
                   border: InputBorder.none,
                   helperStyle: TextStyle(color: Colors.white),
                   suffixIcon: IconButton(
@@ -143,7 +146,8 @@ class _UserListPage extends State<UserListPage> {
                       width: 15.0,
                     ),
                     Text(
-                      "Everything up to date",
+                      AppLocalizations.of(context)
+                          .tr("messages.user_list.update.up_to_date"),
                       style: TextStyle(color: Colors.grey),
                     )
                   ],
@@ -169,13 +173,16 @@ class _UserListPage extends State<UserListPage> {
                 builder: (BuildContext context, LoadStatus mode) {
                   Widget body;
                   if (mode == LoadStatus.idle) {
-                    body = Text("No more Messages");
+                    body = Text(AppLocalizations.of(context)
+                        .tr("messages.user_list.update.no_more_messages"));
                   } else if (mode == LoadStatus.loading) {
                     body = CircularProgressIndicator();
                   } else if (mode == LoadStatus.failed) {
-                    body = Text("Load Failed! Click retry!");
+                    body = Text(AppLocalizations.of(context)
+                        .tr("messages.user_list.update.failed"));
                   } else {
-                    body = Text("No more Data");
+                    body = Text(AppLocalizations.of(context)
+                        .tr("messages.user_list.update.no_more_data"));
                   }
                   return Container(
                     height: 55.0,

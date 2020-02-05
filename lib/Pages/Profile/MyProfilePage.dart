@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pages/Timeline/StatusDetail.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -147,7 +148,7 @@ class _MyProfilePage extends State<MyProfilePage> {
                 width: 15.0,
               ),
               Text(
-                "Everything up to date",
+                AppLocalizations.of(context).tr("profile.my.update.up_to_date"),
                 style: TextStyle(color: Colors.grey),
               )
             ],
@@ -162,7 +163,9 @@ class _MyProfilePage extends State<MyProfilePage> {
               Container(
                 width: 15.0,
               ),
-              Text("Unable to fetch data", style: TextStyle(color: Colors.grey))
+              Text(
+                  AppLocalizations.of(context).tr("profile.my.update.unable_to_fetch"),
+                  style: TextStyle(color: Colors.grey))
             ],
           )),
       footer: CustomFooter(
@@ -173,9 +176,12 @@ class _MyProfilePage extends State<MyProfilePage> {
           } else if (mode == LoadStatus.loading) {
             body = CircularProgressIndicator();
           } else if (mode == LoadStatus.failed) {
-            body = Text("Load Failed!Click retry!");
+            body = Text(
+              AppLocalizations.of(context).tr("profile.my.update.failed"),);
           } else {
-            body = Text("No more Data");
+            body = Text(
+              AppLocalizations.of(context).tr("profile.my.update.no_more_data"),
+            );
           }
           return Container(
             height: 55.0,

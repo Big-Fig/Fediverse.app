@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -115,8 +116,8 @@ class MessagesPageState extends State<MessagesPage> {
             Container(
               width: 15.0,
             ),
-            Text(
-              "Everything up to date",
+          Text( AppLocalizations.of(context)
+              .tr("messages.page.update.up_to_date"),
               style: TextStyle(color: Colors.grey),
             )
           ],
@@ -132,7 +133,8 @@ class MessagesPageState extends State<MessagesPage> {
               width: 15.0,
             ),
             Text(
-              "Unable to fetch data",
+              AppLocalizations.of(context)
+                .tr("messages.page.update.unable_to_fetch"),
               style: TextStyle(color: Colors.grey),
             ),
           ],
@@ -142,13 +144,16 @@ class MessagesPageState extends State<MessagesPage> {
         builder: (BuildContext context, LoadStatus mode) {
           Widget body;
           if (mode == LoadStatus.idle) {
-            body = Text("No more Messages");
+            body = Text( AppLocalizations.of(context)
+                .tr("messages.page.update.no_more_messages"));
           } else if (mode == LoadStatus.loading) {
             body = CircularProgressIndicator();
           } else if (mode == LoadStatus.failed) {
-            body = Text("Load Failed! Click retry!");
+            body = Text( AppLocalizations.of(context)
+                .tr("messages.page.update.failed"));
           } else {
-            body = Text("No more Data");
+            body = Text( AppLocalizations.of(context)
+                .tr("messages.page.update.no_more_data"));
           }
           return Container(
             height: 55.0,

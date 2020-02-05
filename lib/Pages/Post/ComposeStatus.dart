@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:carousel_pro/carousel_pro.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -82,10 +83,11 @@ class _ComposeStatus extends State<ComposeStatus> {
               //     )));
             },
           ),
-          title: Text("Status Preview"),
+          title: Text(AppLocalizations.of(context).tr("post.status.title")),
           actions: <Widget>[
             FlatButton(
-              child: Text("Post"),
+              child: Text(AppLocalizations.of(context)
+                  .tr("post.status.action.post")),
               textColor: Colors.white,
               color: Colors.transparent,
               onPressed: () {
@@ -110,7 +112,7 @@ class _ComposeStatus extends State<ComposeStatus> {
               }),
             ),
             if (widget.htmlPost != "")
-              Text("Status:"),
+              Text(AppLocalizations.of(context).tr("post.status.status")),
             if (widget.htmlPost != "")
               Padding(
                 padding: EdgeInsets.all(10),
@@ -182,7 +184,8 @@ class _ComposeStatus extends State<ComposeStatus> {
                     },
                   )),
             RaisedButton(
-              child: Text("POST!"),
+              child: Text(AppLocalizations.of(context)
+                  .tr("post.status.action.post")),
               onPressed: () {
                 postStatus();
               },
@@ -250,7 +253,7 @@ class _ComposeStatus extends State<ComposeStatus> {
     }
 
     _pr = ProgressDialog(context, ProgressDialogType.Normal);
-    _pr.setMessage('Posting status');
+    _pr.setMessage(AppLocalizations.of(context).tr("post.status.posting.progress"));
     _pr.show();
 
     getFileForUpload(0);
@@ -292,8 +295,10 @@ class _ComposeStatus extends State<ComposeStatus> {
         _pr.hide();
         var alert = Alert(
             context,
-            "Opps",
-            "Unable to post status at this time. Please try again later.",
+            AppLocalizations.of(context)
+                .tr("post.status.upload.error.alert.title"),
+            AppLocalizations.of(context)
+                .tr("post.status.upload.error.alert.content"),
             () => {});
         alert.showAlert();
       });
@@ -320,7 +325,11 @@ class _ComposeStatus extends State<ComposeStatus> {
         .then((statusResponse) {
       print(statusResponse.body);
       _pr.hide();
-      var alert = Alert(context, "Success!", "You status was posted!", () {
+      var alert = Alert(context,
+          AppLocalizations.of(context)
+              .tr("post.status.posting.success.alert.title"),
+          AppLocalizations.of(context)
+              .tr("post.status.posting.success.alert.content"), () {
         Navigator.of(context).pop();
         Navigator.of(context).pop();
         widget.close();
@@ -332,8 +341,10 @@ class _ComposeStatus extends State<ComposeStatus> {
       _pr.hide();
       var alert = Alert(
           context,
-          "Opps",
-          "Unable to post status at this time. Please try again later.",
+          AppLocalizations.of(context)
+              .tr("post.status.posting.error.alert.title"),
+          AppLocalizations.of(context)
+              .tr("post.status.posting.error.alert.content"),
           () => {});
       alert.showAlert();
     });
@@ -362,7 +373,11 @@ class _ComposeStatus extends State<ComposeStatus> {
         .then((statusResponse) {
       print(statusResponse.body);
       _pr.hide();
-      var alert = Alert(context, "Success!", "You status was posted!", () {
+      var alert = Alert(context,
+          AppLocalizations.of(context)
+          .tr("post.status.posting.success.alert.title"),
+          AppLocalizations.of(context)
+              .tr("post.status.posting.success.alert.content"), () {
         Navigator.of(context).pop();
         widget.close();
       });
@@ -372,8 +387,10 @@ class _ComposeStatus extends State<ComposeStatus> {
       _pr.hide();
       var alert = Alert(
           context,
-          "Opps",
-          "Unable to post status at this time. Please try again later.",
+          AppLocalizations.of(context)
+              .tr("post.status.posting.error.alert.title"),
+          AppLocalizations.of(context)
+              .tr("post.status.posting.error.alert.content"),
           () => {});
       alert.showAlert();
     });

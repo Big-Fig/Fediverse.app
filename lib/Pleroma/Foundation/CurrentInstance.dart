@@ -1,6 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
 import 'package:fedi/Views/Alert.dart';
+import 'package:flutter/material.dart';
+
 import './Client.dart';
 import '../Models/Account.dart';
 import '../Models/AccountAuth.dart';
@@ -64,10 +66,11 @@ class CurrentInstance {
             });
           }).catchError((error) {
             var alert = Alert(
-                context,
-                "Error",
-                "Can't Fetch Account at this time. Please try to log in again.$error",
-                loadError);
+                context, AppLocalizations.of(context).tr(
+                "current_instance.error.alert.title"),
+                AppLocalizations.of(context).tr(
+                    "current_instance.error.alert.content",
+                    args: [error.toString()]), loadError);
             alert.showAlert();
           });
         }

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
@@ -17,7 +18,7 @@ class DMMediaPage extends StatefulWidget {
   final String imageURL;
   final String videoURL;
   final Function popParent;
-  final Function(String) mediaUploaded;
+  final Function(BuildContext context, String) mediaUploaded;
 
   DMMediaPage({this.asset, this.imageURL, this.videoURL, this.popParent, this.mediaUploaded});
 
@@ -41,6 +42,7 @@ class _DMMediaPage extends State<DMMediaPage> {
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
 
+    var appLocalizations = AppLocalizations.of(context);
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -49,14 +51,14 @@ class _DMMediaPage extends State<DMMediaPage> {
               Navigator.pop(context);
             },
           ),
-          title: Text("Attachment"),
+          title: Text(appLocalizations.tr("media.dm.title")),
           actions: <Widget>[
             FlatButton(
-              child: Text("Post"),
+              child: Text(appLocalizations.tr("media.dm.action.post")),
               textColor: Colors.white,
               color: Colors.transparent,
               onPressed: () {
-                postStatus();
+                postStatus(context);
               },
             ),
           ],
@@ -69,9 +71,9 @@ class _DMMediaPage extends State<DMMediaPage> {
               child: getMediaPreview(),
             ),
             RaisedButton(
-              child: Text("Send!"),
+              child: Text(appLocalizations.tr("media.dm.action.send")),
               onPressed: () {
-                postStatus();
+                postStatus(context);
               },
             )
           ],
@@ -111,9 +113,10 @@ class _DMMediaPage extends State<DMMediaPage> {
     return Image.file(file);
   }
 
-  postStatus() {
+  postStatus(BuildContext context) {
     _pr = ProgressDialog(context, ProgressDialogType.Normal);
-    _pr.setMessage('Uploading');
+    var appLocalizations = AppLocalizations.of(context);
+    _pr.setMessage(appLocalizations.tr("media.dm.uploading.dialog.content"));
     _pr.show();
 
     var path = MediaRequest.Media.postNewStatus;
@@ -125,7 +128,7 @@ class _DMMediaPage extends State<DMMediaPage> {
         MediaAttachment attachment =
             MediaAttachment.fromJson(json.decode(respStr));
 
-        widget.mediaUploaded(attachment.id);
+        widget.mediaUploaded(context, attachment.id);
          
 
       }).catchError((e) {
@@ -133,8 +136,8 @@ class _DMMediaPage extends State<DMMediaPage> {
         _pr.hide();
         var alert = Alert(
             context,
-            "Opps",
-            "Unable to upload attachment at this time.",
+            appLocalizations.tr("media.dm.uploading.error.title"),
+            appLocalizations.tr("media.dm.uploading.error.content"),
             () => {});
         alert.showAlert();
       });

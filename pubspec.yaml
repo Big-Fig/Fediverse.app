@@ -60,10 +60,21 @@ dependencies:
   badges: ^1.1.0
   vibration: ^1.2.2
   fluttertoast: ^3.1.3
+  
+  # localization via .json files
+  #easy_localization: ^1.3.1
+  # Actually it is 1.3.1 with minor fix from me (Yevhenii Zapletin)
+  easy_localization:
+    git:
+      url: https://github.com/xal/easy_localization.git
+      ref: xal/fixQuickSwitchLocaleException
+  
   # annotations to generate json from & to methods
   json_annotation: ^3.0.1
 
 dev_dependencies:
+  flutter_test:
+    sdk: flutter
   # build tools runner
   # usage example
   # flutter pub run build_runner build --delete-conflicting-outputs
@@ -90,6 +101,7 @@ flutter:
     - assets/terms/terms.rtf
     - assets/images/theme/logo.png
     - assets/images/double_ring_loading_io.gif
+    - assets/langs/en-US.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

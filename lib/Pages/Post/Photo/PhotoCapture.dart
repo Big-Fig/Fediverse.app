@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:camera/camera.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -113,7 +115,7 @@ class _PhotoCapture extends State<PhotoCapture> {
                     if (value > 0) {
                       return;
                     }
-                    onTakePictureButtonPressed();
+                    onTakePictureButtonPressed(context);
                     _cameraStatus.value = 1;
                   },
                 ),
@@ -132,9 +134,10 @@ class _PhotoCapture extends State<PhotoCapture> {
     //. Scaffold.of(context).showSnackBar(SnackBar(content: Text(message)));
   }
 
-  Future<String> takePicture() async {
+  Future<String> takePicture(BuildContext context) async {
     if (!controller.value.isInitialized) {
-      showInSnackBar('Error: select a camera first.');
+      showInSnackBar(AppLocalizations.of(context)
+          .tr("post.photo.take_picture.error.select_camera_first"));
       return null;
     }
     final Directory extDir = await getApplicationDocumentsDirectory();
@@ -157,15 +160,17 @@ class _PhotoCapture extends State<PhotoCapture> {
     return filePath;
   }
 
-  void onTakePictureButtonPressed() {
-    takePicture().then((String filePath) {
+  void onTakePictureButtonPressed(BuildContext context) {
+    takePicture(context).then((String filePath) {
       if (mounted) {
         setState(() {
           // imagePath = filePath;
           // videoController?.dispose();
           // videoController = null;
         });
-        if (filePath != null) showInSnackBar('Picture saved to $filePath');
+        if (filePath != null)
+          showInSnackBar(AppLocalizations.of(context)
+              .tr("post.photo.take_picture.saved", args: [filePath]));
         _cameraStatus.value = 0;
         widget.photoTaken(filePath);
       }
@@ -177,7 +182,7 @@ class _PhotoCapture extends State<PhotoCapture> {
     if (controller == null || !controller.value.isInitialized) {
       return Center(
         child: Text(
-          'Loading',
+          AppLocalizations.of(context).tr("post.photo.preview.loading"),
           style: TextStyle(
             color: Colors.white,
             fontSize: 24.0,
@@ -192,5 +197,4 @@ class _PhotoCapture extends State<PhotoCapture> {
       );
     }
   }
-
 }
