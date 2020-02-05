@@ -299,7 +299,7 @@ class _ChatPage extends State<ChatPage> {
             path: StatusRequest.Status.getStatusContext(statuses.first.id),
             method: HTTPMethod.GET)
         .then((response) {
-      Context context = contextFromJson(response.body);
+      Context context = Context.fromJsonString(response.body);
 
       List<Status> templist = [];
       templist.addAll(context.ancestors);
@@ -335,7 +335,7 @@ class _ChatPage extends State<ChatPage> {
                 widget.conversation.lastStatus.id),
             method: HTTPMethod.GET)
         .then((response) {
-      Context context = contextFromJson(response.body);
+      Context context = Context.fromJsonString(response.body);
       statuses.clear();
       List<Status> templist = [];
       templist.addAll(context.ancestors);

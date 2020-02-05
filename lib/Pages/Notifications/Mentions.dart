@@ -12,7 +12,6 @@ import 'package:flutter/scheduler.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Notification.dart'
     as NotificationRequest;
-import 'package:fedi/Pleroma/Models/Notification.dart';
 import 'package:fedi/Pleroma/Models/Notification.dart' as NotificationModel;
 
 import 'package:fedi/Pleroma/Models/Status.dart' as StatusModel;
@@ -73,7 +72,7 @@ class _Mentions extends State<Mentions> {
             method: HTTPMethod.GET)
         .then((response) {
       List<NotificationModel.Notification> newNotifications =
-          notificationFromJson(response.body);
+      NotificationModel.Notification.listFromJsonString(response.body);
 
       if (mounted)
         setState(() {
@@ -105,7 +104,7 @@ class _Mentions extends State<Mentions> {
             method: HTTPMethod.GET)
         .then((response) {
       List<NotificationModel.Notification> newNotifications =
-          notificationFromJson(response.body);
+      NotificationModel.Notification.listFromJsonString(response.body);
           newNotifications.removeWhere((notification) {
         return notification.status.visibility == StatusModel.Visibility.DIRECT;
       });

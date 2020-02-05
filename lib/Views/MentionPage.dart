@@ -60,7 +60,7 @@ class _MentionPage extends State<MentionPage> {
                 CurrentInstance.instance.currentAccount.id),
             method: HTTPMethod.GET)
         .then((response) {
-      List<Account> followingAccoutns = accountsFromJson(response.body);
+      List<Account> followingAccoutns = Account.listFromJsonString(response.body);
       accounts.clear();
       accounts.addAll(followingAccoutns);
       if (mounted) setState(() {});
@@ -76,7 +76,7 @@ class _MentionPage extends State<MentionPage> {
     CurrentInstance.instance.currentClient
         .run(path: AccountRequests.Accounts.search(q), method: HTTPMethod.GET)
         .then((response) {
-      List<Account> followingAccoutns = accountsFromJson(response.body);
+      List<Account> followingAccoutns = Account.listFromJsonString(response.body);
       accounts.clear();
       accounts.addAll(followingAccoutns);
       if (mounted) setState(() {});

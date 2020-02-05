@@ -12,7 +12,6 @@ import 'package:flutter/scheduler.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Notification.dart'
     as NotificationRequest;
-import 'package:fedi/Pleroma/Models/Notification.dart';
 import 'package:fedi/Pleroma/Models/Notification.dart' as NotificationModel;
 
 import 'NotificationCell.dart';
@@ -75,7 +74,7 @@ class _LikesReposts extends State<LikesReposts> {
             method: HTTPMethod.GET)
         .then((response) {
       List<NotificationModel.Notification> newNotifications =
-          notificationFromJson(response.body);
+      NotificationModel.Notification.listFromJsonString(response.body);
 
       if (mounted)
         setState(() {
@@ -107,7 +106,7 @@ class _LikesReposts extends State<LikesReposts> {
             method: HTTPMethod.GET)
         .then((response) {
       List<NotificationModel.Notification> newNotifications =
-          notificationFromJson(response.body);
+      NotificationModel.Notification.listFromJsonString(response.body);
       widget.notifications.addAll(newNotifications);
       if (mounted)
         setState(() {

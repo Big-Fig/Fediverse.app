@@ -312,8 +312,8 @@ class _ChatCell extends State<ChatCell> {
       var foundEmoji = false;
       for (var j = 0; j < emojis.length; j++) {
         var emoji = emojis[j];
-        String shortcode = emoji["shortcode"];
-        String url = emoji["url"];
+        String shortcode = emoji.shortcode;
+        String url = emoji.url;
         if (shortcode == emojiOrText) {
           var image = CachedNetworkImage(
             imageUrl: url,

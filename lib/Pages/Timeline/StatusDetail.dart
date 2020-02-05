@@ -326,7 +326,7 @@ class _StatusDetail extends State<StatusDetail> {
             path: StatusRequest.Status.getStatusContext(widget.status.id),
             method: HTTPMethod.GET)
         .then((response) {
-      Context context = contextFromJson(response.body);
+      Context context = Context.fromJsonString(response.body);
       statuses.clear();
       List<Status> templist = [];
 

@@ -6,13 +6,14 @@ import 'dart:convert';
 
 import 'package:fedi/Pleroma/Models/Account.dart';
 import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-List<Notification> notificationFromJson(String str) => List<Notification>.from(json.decode(str).map((x) => Notification.fromJson(x)));
+part 'Notification.g.dart';
 
-String notificationToJson(List<Notification> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
+@JsonSerializable()
 class Notification {
     Account account;
+    @JsonKey(name: "created_at")
     DateTime createdAt;
     String id;
     String type;
@@ -26,21 +27,19 @@ class Notification {
         this.status,
     });
 
-    factory Notification.fromJson(Map<String, dynamic> json) => Notification(
-        account: Account.fromJson(json["account"]),
-        createdAt: DateTime.parse(json["created_at"]),
-        id: json["id"],
-        type: json["type"],
-        status: json["status"] == null ? null : Status.fromJson(json["status"]),
-    );
+    factory Notification.fromJson(Map<String, dynamic> json) =>
+        _$NotificationFromJson(json);
 
-    Map<String, dynamic> toJson() => {
-        "account": account.toJson(),
-        "created_at": createdAt.toIso8601String(),
-        "id": id,
-        "type": type,
-        "status": status == null ? null : status.toJson(),
-    };
+    factory Notification.fromJsonString(String jsonString) =>
+        _$NotificationFromJson(jsonDecode(jsonString));
+
+    static List<Notification> listFromJsonString(String str) =>
+        new List<Notification>.from(json.decode(str).map((x) => Notification.fromJson(x)));
+
+
+    Map<String, dynamic> toJson() => _$NotificationToJson(this);
+    String toJsonString() => jsonEncode(_$NotificationToJson(this));
+
 }
 
 

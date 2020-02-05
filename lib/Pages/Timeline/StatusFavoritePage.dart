@@ -68,7 +68,7 @@ class _StatusFavoritePage extends State<StatusFavoritePage> {
             path: StatusRequests.Status.favouritedBy(widget.status.id),
             method: HTTPMethod.GET)
         .then((response) {
-      accounts = accountsFromJson(response.body);
+      accounts = Account.listFromJsonString(response.body);
 
       if (mounted) setState(() {});
       _refreshController.refreshCompleted();
