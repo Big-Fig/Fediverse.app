@@ -51,7 +51,7 @@ class GalleryPageState extends State<GalleryPage> {
     CurrentInstance.instance.currentClient
         .run(path: Timeline.getPublicMediaTimeline(""), method: HTTPMethod.GET)
         .then((response) {
-      List<Status> newStatuses = statusFromJson(response.body);
+      List<Status> newStatuses = Status.listFromJsonString(response.body);
       widget.statuses.clear();
       widget.statuses.addAll(newStatuses);
       if (mounted) setState(() {});
@@ -79,7 +79,7 @@ class GalleryPageState extends State<GalleryPage> {
             path: Timeline.getPublicMediaTimeline(lastId),
             method: HTTPMethod.GET)
         .then((response) {
-      List<Status> newStatuses = statusFromJson(response.body);
+      List<Status> newStatuses = Status.listFromJsonString(response.body);
       widget.statuses.addAll(newStatuses);
       if (mounted) setState(() {});
       _refreshController.loadComplete();

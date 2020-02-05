@@ -70,7 +70,7 @@ class _OtherAccount extends State<OtherAccount> {
                 limit: "20"),
             method: HTTPMethod.GET)
         .then((response) {
-      List<Status> newStatuses = statusFromJson(response.body);
+      List<Status> newStatuses = Status.listFromJsonString(response.body);
       statuses.clear();
       statuses.addAll(newStatuses);
       if (mounted) setState(() {});
@@ -103,7 +103,7 @@ class _OtherAccount extends State<OtherAccount> {
                 limit: "20"),
             method: HTTPMethod.GET)
         .then((response) {
-      List<Status> newStatuses = statusFromJson(response.body);
+      List<Status> newStatuses = Status.listFromJsonString(response.body);
       statuses.addAll(newStatuses);
       if (mounted) setState(() {});
       _refreshController.loadComplete();

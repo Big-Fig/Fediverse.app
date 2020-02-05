@@ -44,12 +44,10 @@ class AccountAdapter extends TypeAdapter<Account> {
           obj.followersCount = reader.read() as int;
           break;
         case 10:
-          obj.fields =
-              reader.read()?.map((dynamic e) => e as dynamic)?.toList();
+          obj.fields = (reader.read() as List)?.cast<Field>();
           break;
         case 11:
-          obj.emojis =
-              reader.read()?.map((dynamic e) => e as dynamic)?.toList();
+          obj.emojis = (reader.read() as List)?.cast<Emoji>();
           break;
         case 12:
           obj.displayName = reader.read() as String;
@@ -115,3 +113,59 @@ class AccountAdapter extends TypeAdapter<Account> {
     writer.write(obj.acct);
   }
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+Account _$AccountFromJson(Map<String, dynamic> json) {
+  return Account(
+    username: json['username'] as String,
+    url: json['url'] as String,
+    statusesCount: json['statuses_count'] as int,
+    note: json['note'] as String,
+    locked: json['locked'] as bool,
+    id: json['id'] as String,
+    headerStatic: json['header_static'] as String,
+    header: json['header'] as String,
+    followingCount: json['following_count'] as int,
+    followersCount: json['followers_count'] as int,
+    fields: (json['fields'] as List)
+        ?.map(
+            (e) => e == null ? null : Field.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+    emojis: (json['emojis'] as List)
+        ?.map(
+            (e) => e == null ? null : Emoji.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+    displayName: json['display_name'] as String,
+    createdAt: json['created_at'] == null
+        ? null
+        : DateTime.parse(json['created_at'] as String),
+    bot: json['bot'] as bool,
+    avatarStatic: json['avatar_static'] as String,
+    avatar: json['avatar'] as String,
+    acct: json['acct'] as String,
+  );
+}
+
+Map<String, dynamic> _$AccountToJson(Account instance) => <String, dynamic>{
+      'username': instance.username,
+      'url': instance.url,
+      'statuses_count': instance.statusesCount,
+      'note': instance.note,
+      'locked': instance.locked,
+      'id': instance.id,
+      'header_static': instance.headerStatic,
+      'header': instance.header,
+      'following_count': instance.followingCount,
+      'followers_count': instance.followersCount,
+      'fields': instance.fields,
+      'emojis': instance.emojis,
+      'display_name': instance.displayName,
+      'created_at': instance.createdAt?.toIso8601String(),
+      'bot': instance.bot,
+      'avatar_static': instance.avatarStatic,
+      'avatar': instance.avatar,
+      'acct': instance.acct,
+    };

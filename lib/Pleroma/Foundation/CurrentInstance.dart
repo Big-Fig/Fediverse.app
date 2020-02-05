@@ -47,7 +47,7 @@ class CurrentInstance {
     CurrentInstance.newInstance.currentClient
         .run(path: Accounts.currentUser(), method: HTTPMethod.GET)
         .then((resonse) {
-      Account currentAccount = accountFromJson(resonse.body);
+      Account currentAccount = Account.fromJsonString(resonse.body);
       String account =
           "${currentAccount.username}@${CurrentInstance.newInstance.currentClient.baseURL}";
       InstanceStorage currentStorage = InstanceStorage(

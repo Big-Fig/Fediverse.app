@@ -112,7 +112,7 @@ class MyTimelinePageState extends State<MyTimelinePage> {
     CurrentInstance.instance.currentClient
         .run(path: path, method: HTTPMethod.GET)
         .then((response) {
-      List<Status> newStatuses = statusFromJson(response.body);
+      List<Status> newStatuses = Status.listFromJsonString(response.body);
       newStatuses.removeWhere((status){
           return status.visibility == StatusModel.Visibility.DIRECT;
         });
@@ -153,7 +153,7 @@ class MyTimelinePageState extends State<MyTimelinePage> {
     CurrentInstance.instance.currentClient
         .run(path: loadMorePath, method: HTTPMethod.GET)
         .then((response) {
-      List<Status> newStatuses = statusFromJson(response.body);
+      List<Status> newStatuses = Status.listFromJsonString(response.body);
       newStatuses.removeWhere((status){
           return status.visibility == StatusModel.Visibility.DIRECT;
         });
