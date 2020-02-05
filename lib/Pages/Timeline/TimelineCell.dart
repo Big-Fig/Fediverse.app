@@ -11,6 +11,7 @@ import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart'
     as AccountRequests;
 import 'package:fedi/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
 import 'package:fedi/Pleroma/Models/Account.dart';
+import 'package:fedi/Pleroma/Models/Emoji.dart';
 import 'package:fedi/Pleroma/Models/Status.dart';
 import 'package:fedi/Views/VideoPlayer.dart';
 import 'package:flutter/cupertino.dart';
@@ -737,12 +738,12 @@ class _TimelineCell extends State<TimelineCell> {
   }
 
   String getHTMLWithCustomEmoji(Status status) {
-    List customEmoji = status.emojis;
+    List<Emoji> customEmoji = status.emojis;
     String html = status.content;
     for (int i = 0; i < customEmoji.length; i++) {
       var emoji = customEmoji[i];
-      String shortcode = emoji["shortcode"];
-      String url = emoji["url"];
+      String shortcode = emoji.shortcode;
+      String url = emoji.url;
 
       html = html.replaceAll(":$shortcode:", '<img src="$url" width="20">');
     }
