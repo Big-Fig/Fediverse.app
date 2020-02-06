@@ -40,264 +40,281 @@ class TimelineCell extends StatefulWidget {
 
 class _TimelineCell extends State<TimelineCell> {
   double deviceWidth;
-  double targetWidth;
+  double targetHeight;
+  double imageHeight;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     deviceWidth = MediaQuery.of(context).size.width;
-    targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
+    if (targetHeight == null) {
+      targetHeight = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
+    }
+
     Status status =
         widget.status.reblog != null ? widget.status.reblog : widget.status;
 
     return Card(
-      child: Column(
-        children: <Widget>[
-          // reposted status
-          if (widget.status.reblog != null)
-            GestureDetector(
-              onTap: () {
-                print("view account");
-                if (widget.viewAccount != null) {
-                  widget.viewAccount(widget.status.account);
-                }
-              },
-              behavior: HitTestBehavior.translucent,
-              child: Padding(
-                padding: EdgeInsets.all(12.0),
-                child: Row(
-                  children: <Widget>[
-                    ClipRRect(
-                      borderRadius: new BorderRadius.circular(12.0),
-                      child: CachedNetworkImage(
-                        imageUrl: widget.status.account.avatar,
-                        placeholder: (context, url) =>
-                            CircularProgressIndicator(),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
-                        height: 24,
-                        width: 24,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: getUserName(widget.status),
-                    ),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Icon(Icons.cached),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Text(AppLocalizations.of(context)
-                            .tr("timeline.status.cell.repeated"))
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ),
-
-          Padding(
-            padding: EdgeInsets.all(12.0),
-            child: Row(
-              children: <Widget>[
-                GestureDetector(
-                  onTap: () {
-                    print("view account");
-                    if (widget.viewAccount != null) {
-                      widget.viewAccount(status.account);
-                    }
-                  },
-                  behavior: HitTestBehavior.translucent,
+      elevation: 0,
+      child: Padding(
+        padding: EdgeInsets.all(3),
+        child: Column(
+          children: <Widget>[
+            // reposted status
+            if (widget.status.reblog != null)
+              GestureDetector(
+                onTap: () {
+                  print("view account");
+                  if (widget.viewAccount != null) {
+                    widget.viewAccount(widget.status.account);
+                  }
+                },
+                behavior: HitTestBehavior.translucent,
+                child: Padding(
+                  padding: EdgeInsets.all(0.0),
                   child: Row(
-                    mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       ClipRRect(
-                        borderRadius: new BorderRadius.circular(20.0),
+                        borderRadius: new BorderRadius.circular(12.0),
                         child: CachedNetworkImage(
-                          imageUrl: status.account.avatar,
-                          placeholder: (context, url) => Center(
-                            child: CircularProgressIndicator(),
-                          ),
+                          imageUrl: widget.status.account.avatar,
+                          placeholder: (context, url) =>
+                              CircularProgressIndicator(),
                           errorWidget: (context, url, error) =>
                               Icon(Icons.error),
-                          height: 40,
-                          width: 40,
+                          height: 24,
+                          width: 24,
                         ),
                       ),
                       SizedBox(
                         width: 8,
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: getUserName(status),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[Text("${status.account.acct}")],
-                          ),
-                        ],
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: getUserName(widget.status),
                       ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Icon(Icons.cached),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text(AppLocalizations.of(context)
+                              .tr("timeline.status.cell.repeated"))
+                        ],
+                      )
                     ],
                   ),
                 ),
-                Spacer(),
-                Column(
-                  children: <Widget>[
-                    IconButton(
-                      icon: Icon(Icons.more_horiz),
-                      tooltip: AppLocalizations.of(context)
-                          .tr("timeline.status.cell.tooltip.more"),
-                      onPressed: () {
-                        showMoreOptions(context);
-                      },
+              ),
+
+            Padding(
+              padding: EdgeInsets.all(12.0),
+              child: Row(
+                children: <Widget>[
+                  GestureDetector(
+                    onTap: () {
+                      print("view account");
+                      if (widget.viewAccount != null) {
+                        widget.viewAccount(status.account);
+                      }
+                    },
+                    behavior: HitTestBehavior.translucent,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        ClipRRect(
+                          borderRadius: new BorderRadius.circular(20.0),
+                          child: CachedNetworkImage(
+                            imageUrl: status.account.avatar,
+                            placeholder: (context, url) => Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error),
+                            height: 40,
+                            width: 40,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: getUserName(status),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Text("${status.account.acct}")
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-
-          GestureDetector(
-            onTap: () {
-              print("view status context");
-              if (widget.viewStatusContext != null) {
-                widget.viewStatusContext(status);
-              }
-            },
-            behavior: HitTestBehavior.translucent,
-            child: Column(
-              children: <Widget>[
-                SizedBox(
-                  height: 8.0,
-                ),
-                if (widget.status.mediaAttachments.length > 0)
-                  getMeidaWidget(widget.status),
-                Padding(
-                  padding:
-                      EdgeInsets.only(bottom: 0, top: 8, left: 12.0, right: 12),
-                  child: Html(
-                    onImageTap: (String source) {
-                      print("source $source");
-                    },
-                    customTextStyle: (dom.Node node, TextStyle baseStyle) {
-                      if (node is dom.Element) {
-                        switch (node.localName) {
-                          case "p":
-                            return baseStyle.merge(TextStyle(fontSize: 18));
-                        }
-                      }
-                      return baseStyle.merge(TextStyle(fontSize: 18));
-                    },
-                    onImageError: (dynamic exception, StackTrace stackTrace) {
-                      print("Image error!!!");
-                      print(exception);
-                      print(stackTrace);
-                    },
-                    data: getHTMLWithCustomEmoji(widget.status),
-                    onLinkTap: (String link) {
-                      for (int i = 0; i < widget.status.mentions.length; i++) {
-                        Mention mention = widget.status.mentions[i];
-                        print("MENTIONS: ${mention.url} == $link");
-                        if (mention.url == link) {
-                          CurrentInstance.instance.currentClient
-                              .run(
-                                  path: AccountRequests.Accounts.account(
-                                      id: mention.id),
-                                  method: HTTPMethod.GET)
-                              .then((response) {
-                            Account account = Account.fromJsonString(response.body);
-                            widget.viewAccount(account);
-                          }).catchError((error) {
-                            print(error.toString());
-                          });
-
-                          return;
-                        }
-                      }
-
-                      print("link $link");
-                      canLaunch(link).then((result) {
-                        launch(link);
-                      });
-                    },
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.0),
-                  child: Row(
+                  Spacer(),
+                  Column(
                     children: <Widget>[
                       IconButton(
-                        color: widget.status.favourited
-                            ? Colors.blue
-                            : Colors.grey,
-                        icon: Icon(Icons.thumb_up),
+                        icon: Icon(Icons.more_horiz),
                         tooltip: AppLocalizations.of(context)
-                            .tr("timeline.status.cell.tooltip.like"),
+                            .tr("timeline.status.cell.tooltip.more"),
                         onPressed: () {
-                          like();
+                          showMoreOptions(context);
                         },
-                      ),
-                      if (widget.showCommentBtn == true ||
-                          widget.showCommentBtn == null)
-                        IconButton(
-                          color: Colors.grey,
-                          icon: Icon(Icons.add_comment),
-                          tooltip: AppLocalizations.of(context)
-                              .tr("timeline.status.cell.tooltip.comment"),
-                          onPressed: () {
-                            widget.viewStatusContext(widget.status);
-                          },
-                        ),
-                      if (widget.status.repliesCount != 0 &&
-                          (widget.showCommentBtn == true ||
-                              widget.showCommentBtn == null))
-                        Text(widget.status.repliesCount.toString()),
-                      IconButton(
-                        color:
-                            widget.status.reblogged ? Colors.blue : Colors.grey,
-                        icon: Icon(Icons.cached),
-                        tooltip: AppLocalizations.of(context)
-                            .tr("timeline.status.cell.tooltip.repost"),
-                        onPressed: () {
-                          repost();
-                        },
-                      ),
-                      Spacer(),
-                      Padding(
-                        padding: EdgeInsets.only(left: 19),
-                        child: Text(
-                          Jiffy(status.createdAt).fromNow(),
-                        ),
                       ),
                     ],
                   ),
-                ),
-                if (widget.status.favouritesCount > 0 ||
-                    widget.status.reblogsCount > 0 ||
-                    widget.status.reblog != null)
+                ],
+              ),
+            ),
+
+            GestureDetector(
+              onTap: () {
+                print("view status context");
+                if (widget.viewStatusContext != null) {
+                  widget.viewStatusContext(status);
+                }
+              },
+              behavior: HitTestBehavior.translucent,
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding:
+                        EdgeInsets.only(bottom: 0, top: 0, left: 0, right: 0),
+                    child: Html(
+                      onImageTap: (String source) {
+                        print("source $source");
+                      },
+                      customTextStyle: (dom.Node node, TextStyle baseStyle) {
+                        if (node is dom.Element) {
+                          switch (node.localName) {
+                            case "p":
+                              return baseStyle.merge(TextStyle(fontSize: 18));
+                          }
+                        }
+                        return baseStyle.merge(TextStyle(fontSize: 18));
+                      },
+                      onImageError: (dynamic exception, StackTrace stackTrace) {
+                        print("Image error!!!");
+                        print(exception);
+                        print(stackTrace);
+                      },
+                      data: getHTMLWithCustomEmoji(widget.status),
+                      onLinkTap: (String link) {
+                        for (int i = 0;
+                            i < widget.status.mentions.length;
+                            i++) {
+                          Mention mention = widget.status.mentions[i];
+                          print("MENTIONS: ${mention.url} == $link");
+                          if (mention.url == link) {
+                            CurrentInstance.instance.currentClient
+                                .run(
+                                    path: AccountRequests.Accounts.account(
+                                        id: mention.id),
+                                    method: HTTPMethod.GET)
+                                .then((response) {
+                              Account account =
+                                  Account.fromJsonString(response.body);
+                              widget.viewAccount(account);
+                            }).catchError((error) {
+                              print(error.toString());
+                            });
+
+                            return;
+                          }
+                        }
+
+                        print("link $link");
+                        canLaunch(link).then((result) {
+                          launch(link);
+                        });
+                      },
+                    ),
+                  ),
+                  if (widget.status.mediaAttachments.length > 0)
+                    getMeidaWidget(widget.status),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 12.0),
                     child: Row(
                       children: <Widget>[
-                        if (widget.status.favouritesCount > 0)
-                          getFavoritesButton(context),
-                        if (widget.status.reblogsCount > 0) getRepostsButton()
+                        IconButton(
+                          color: widget.status.favourited
+                              ? Colors.blue
+                              : Colors.grey,
+                          icon: Icon(Icons.thumb_up),
+                          tooltip: AppLocalizations.of(context)
+                              .tr("timeline.status.cell.tooltip.like"),
+                          onPressed: () {
+                            like();
+                          },
+                        ),
+                        if (widget.showCommentBtn == true ||
+                            widget.showCommentBtn == null)
+                          IconButton(
+                            color: Colors.grey,
+                            icon: Icon(Icons.add_comment),
+                            tooltip: AppLocalizations.of(context)
+                                .tr("timeline.status.cell.tooltip.comment"),
+                            onPressed: () {
+                              widget.viewStatusContext(widget.status);
+                            },
+                          ),
+                        if (widget.status.repliesCount != 0 &&
+                            (widget.showCommentBtn == true ||
+                                widget.showCommentBtn == null))
+                          Text(widget.status.repliesCount.toString()),
+                        IconButton(
+                          color: widget.status.reblogged
+                              ? Colors.blue
+                              : Colors.grey,
+                          icon: Icon(Icons.cached),
+                          tooltip: AppLocalizations.of(context)
+                              .tr("timeline.status.cell.tooltip.repost"),
+                          onPressed: () {
+                            repost();
+                          },
+                        ),
+                        Spacer(),
+                        Padding(
+                          padding: EdgeInsets.only(left: 19),
+                          child: Text(
+                            Jiffy(status.createdAt).fromNow(),
+                          ),
+                        ),
                       ],
                     ),
                   ),
-              ],
+                  if (widget.status.favouritesCount > 0 ||
+                      widget.status.reblogsCount > 0 ||
+                      widget.status.reblog != null)
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 12.0),
+                      child: Row(
+                        children: <Widget>[
+                          if (widget.status.favouritesCount > 0)
+                            getFavoritesButton(context),
+                          if (widget.status.reblogsCount > 0) getRepostsButton()
+                        ],
+                      ),
+                    ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -309,14 +326,13 @@ class _TimelineCell extends State<TimelineCell> {
     }
     count += widget.status.favouritesCount ?? 0;
 
-
     String favs;
     if (count == 1) {
-      favs = AppLocalizations.of(context).tr(
-          "timeline.status.cell.favorites.one", args: [count.toString()]);
+      favs = AppLocalizations.of(context)
+          .tr("timeline.status.cell.favorites.one", args: [count.toString()]);
     } else {
-      favs = AppLocalizations.of(context).tr(
-          "timeline.status.cell.favorites.many", args: [count.toString()]);
+      favs = AppLocalizations.of(context)
+          .tr("timeline.status.cell.favorites.many", args: [count.toString()]);
     }
     return FlatButton(
       child: Text(favs),
@@ -339,11 +355,11 @@ class _TimelineCell extends State<TimelineCell> {
 
     String reposts;
     if (count == 1) {
-      reposts = AppLocalizations.of(context).tr(
-          "timeline.status.cell.reposts.one", args: [count.toString()]);
+      reposts = AppLocalizations.of(context)
+          .tr("timeline.status.cell.reposts.one", args: [count.toString()]);
     } else {
-      reposts = AppLocalizations.of(context).tr(
-          "timeline.status.cell.reposts.many", args: [count.toString()]);
+      reposts = AppLocalizations.of(context)
+          .tr("timeline.status.cell.reposts.many", args: [count.toString()]);
     }
 
     return FlatButton(
@@ -427,19 +443,21 @@ class _TimelineCell extends State<TimelineCell> {
                         child: OutlineButton(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[Text(
-                                AppLocalizations.of(context)
-                                    .tr("timeline.status.cell.status_actions.action"
+                            children: <Widget>[
+                              Text(
+                                AppLocalizations.of(context).tr(
+                                    "timeline.status.cell.status_actions.action"
                                     ".copy_status_link"),
-                            )],
+                              )
+                            ],
                           ),
                           onPressed: () {
                             print(status.uri);
                             Clipboard.setData(ClipboardData(text: status.uri));
                             Navigator.of(context).pop();
                             Fluttertoast.showToast(
-                                msg: AppLocalizations.of(context)
-                                    .tr("timeline.status.cell.status_actions.toast"
+                                msg: AppLocalizations.of(context).tr(
+                                    "timeline.status.cell.status_actions.toast"
                                     ".copied"),
                                 toastLength: Toast.LENGTH_SHORT,
                                 gravity: ToastGravity.CENTER,
@@ -461,9 +479,11 @@ class _TimelineCell extends State<TimelineCell> {
                         child: OutlineButton(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[Text(AppLocalizations.of(context)
-                                .tr("timeline.status.cell.status_actions.action"
-                                ".open_in_browser"))],
+                            children: <Widget>[
+                              Text(AppLocalizations.of(context).tr(
+                                  "timeline.status.cell.status_actions.action"
+                                  ".open_in_browser"))
+                            ],
                           ),
                           onPressed: () {
                             canLaunch(status.uri).then((result) {
@@ -479,8 +499,9 @@ class _TimelineCell extends State<TimelineCell> {
                 Padding(
                   padding: EdgeInsets.only(top: 10, left: 10, right: 10),
                   child: Center(
-                    child: Text(AppLocalizations.of(context).tr(
-                        "timeline.status.cell.status_actions.more_actions_for"),
+                    child: Text(
+                      AppLocalizations.of(context).tr(
+                          "timeline.status.cell.status_actions.more_actions_for"),
                       style: TextStyle(color: Colors.blue),
                     ),
                   ),
@@ -503,10 +524,10 @@ class _TimelineCell extends State<TimelineCell> {
                         child: OutlineButton(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[Text(
-                                AppLocalizations.of(context).tr(
-                                    "timeline.status.cell.status_actions.action"
-                                        ".follow"))
+                            children: <Widget>[
+                              Text(AppLocalizations.of(context).tr(
+                                  "timeline.status.cell.status_actions.action"
+                                  ".follow"))
                             ],
                           ),
                           onPressed: () {
@@ -516,7 +537,8 @@ class _TimelineCell extends State<TimelineCell> {
                                         Accounts.account(id: status.account.id),
                                     method: HTTPMethod.GET)
                                 .then((response) {
-                              Account account = Account.fromJsonString(response.body);
+                              Account account =
+                                  Account.fromJsonString(response.body);
                               CurrentInstance.instance.currentClient
                                   .run(
                                       path: Accounts.followAccount(account.id),
@@ -548,10 +570,10 @@ class _TimelineCell extends State<TimelineCell> {
                         child: OutlineButton(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[Text(
-                                AppLocalizations.of(context).tr(
-                                    "timeline.status.cell.status_actions.action"
-                                        ".mute"))
+                            children: <Widget>[
+                              Text(AppLocalizations.of(context).tr(
+                                  "timeline.status.cell.status_actions.action"
+                                  ".mute"))
                             ],
                           ),
                           onPressed: () {
@@ -581,9 +603,11 @@ class _TimelineCell extends State<TimelineCell> {
                         child: OutlineButton(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[Text(AppLocalizations.of(context).tr(
-                                "timeline.status.cell.status_actions.action"
-                                    ".block"))],
+                            children: <Widget>[
+                              Text(AppLocalizations.of(context).tr(
+                                  "timeline.status.cell.status_actions.action"
+                                  ".block"))
+                            ],
                           ),
                           onPressed: () {
                             CurrentInstance.instance.currentClient
@@ -612,9 +636,11 @@ class _TimelineCell extends State<TimelineCell> {
                         child: OutlineButton(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[Text(AppLocalizations.of(context).tr(
-                                "timeline.status.cell.status_actions.action"
-                                    ".report"))],
+                            children: <Widget>[
+                              Text(AppLocalizations.of(context).tr(
+                                  "timeline.status.cell.status_actions.action"
+                                  ".report"))
+                            ],
                           ),
                           onPressed: () {
                             var params = {"account_id": status.account.id};
@@ -651,7 +677,7 @@ class _TimelineCell extends State<TimelineCell> {
                               Text(
                                 AppLocalizations.of(context).tr(
                                     "timeline.status.cell.status_actions.action"
-                                        ".cancel"),
+                                    ".cancel"),
                                 style: TextStyle(color: Colors.red),
                               )
                             ],
@@ -717,18 +743,20 @@ class _TimelineCell extends State<TimelineCell> {
       }
     }
 
-    return Container(
-      height: targetWidth,
-      width: targetWidth,
-      color: Colors.white,
+    return LimitedBox(
+      maxWidth: deviceWidth,
+      maxHeight: targetHeight,
       child: Carousel(
+        animationDuration: Duration(seconds: 0),
         overlayShadowColors: Colors.transparent,
         overlayShadowSize: 0.0,
         images: items,
-        dotIncreasedColor: Colors.blue,
+        dotIncreasedColor: items.length == 1 ? Colors.transparent : Colors.blue,
         dotSize: 4.0,
         dotSpacing: 15.0,
-        dotColor: Colors.blue.withOpacity(0.5),
+        dotColor: items.length == 1
+            ? Colors.transparent
+            : Colors.blue.withOpacity(0.5),
         indicatorBgPadding: 5.0,
         dotBgColor: Colors.transparent,
         borderRadius: true,
