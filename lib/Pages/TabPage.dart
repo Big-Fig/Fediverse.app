@@ -73,7 +73,6 @@ class TabPageState extends State<TabPage>
 
   List<AppBar> _appBar;
   TabController _tabController;
-  List<Widget> _homeControllers = [];
   MyProfilePage myProfile = MyProfilePage();
 
   rebuildWithSelectedTimelien(String timeline) {
@@ -87,19 +86,14 @@ class TabPageState extends State<TabPage>
     super.initState();
     updateBadges();
     setUpWebSockets();
-    _homeControllers = [
+    
+    _firebaseMessaging.requestNotificationPermissions();
+    _tabController = TabController(length: 2, vsync: this);
+    _children = [
       MyTimelinePage(
         this,
         key: _timelineKey,
       ),
-      GalleryPage(
-        key: _galleryKey,
-      )
-    ];
-    _firebaseMessaging.requestNotificationPermissions();
-    _tabController = TabController(length: 2, vsync: this);
-    _children = [
-      HomeContainerPage(_tabController, _homeControllers, this),
       NotificationPage(
         key: _notificationKey,
       ),
@@ -257,14 +251,7 @@ class TabPageState extends State<TabPage>
       ),
     ];
 
-    return Container(
-      color: Colors.white,
-      child: PageView(
-        physics: currentPhysics,
-        controller: pageController,
-        children: <Widget>[
-          CaptureController(returnTotab),
-          Scaffold(
+    return Scaffold(
             appBar: _appBar[_currentIndex],
             body: _children[_currentIndex], // new
             floatingActionButtonLocation:
@@ -319,10 +306,7 @@ class TabPageState extends State<TabPage>
                 ),
               ],
             ),
-          ),
-        ],
-      ),
-    );
+          );
   }
 
   void onDoubleDap(int index) {}

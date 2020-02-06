@@ -26,9 +26,10 @@ class MyTimelinePage extends StatefulWidget {
   }
 }
 
-class MyTimelinePageState extends State<MyTimelinePage> {
+class MyTimelinePageState extends State<MyTimelinePage>  with
+        TickerProviderStateMixin {
   String path;
-
+  TabController _homeTabController;
   viewAccount(Account account) {
     Navigator.push(
       context,
@@ -76,6 +77,8 @@ class MyTimelinePageState extends State<MyTimelinePage> {
 
   void initState() {
     super.initState();
+
+    _homeTabController = TabController(vsync: this, length: 5, );
     if (SchedulerBinding.instance.schedulerPhase ==
         SchedulerPhase.persistentCallbacks) {
       SchedulerBinding.instance
@@ -166,9 +169,48 @@ class MyTimelinePageState extends State<MyTimelinePage> {
       _refreshController.loadFailed();
     });
   }
+  
+  int previousIndex = 0;
+
+  tabChanged(int index){
+
+    if(index == 3){
+      // go to search
+      _homeTabController.index = previousIndex;
+    } else if (index == 4){
+      // go to settings
+      _homeTabController.index = previousIndex;
+    } else{
+      _homeTabController.index = index;
+    }
+
+  }
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+          appBar: AppBar(
+            title: TabBar(
+              onTap: tabChanged,
+              controller: _homeTabController,
+              tabs: [
+                Tab(text:AppLocalizations.of(context)
+                .tr("home.timeline.tabs.home"), icon: null,),
+                Tab(text:AppLocalizations.of(context)
+                .tr("home.timeline.tabs.local"), icon: null,),
+                Tab(text:AppLocalizations.of(context)
+                .tr("home.timeline.tabs.all"), icon: null,),
+                Tab(icon: Icon(Icons.search)),
+                Tab(icon: Icon(Icons.settings)),
+              ],
+            ),
+          ),
+          body: getTimeline()
+        );
+  }
+
+
+  Widget getTimeline(){
     return SmartRefresher(
       key: PageStorageKey<String>("MyTimelinePage"),
       enablePullDown: true,
