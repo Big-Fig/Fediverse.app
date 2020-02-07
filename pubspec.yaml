@@ -72,6 +72,9 @@ dependencies:
   # annotations to generate json from & to methods
   json_annotation: ^3.0.1
 
+  # di provider framework
+  provider: ^4.0.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
