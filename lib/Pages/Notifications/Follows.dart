@@ -43,9 +43,15 @@ class _Follows extends State<Follows> {
       SchedulerBinding.instance
           .addPostFrameCallback((_) => fetchStatuses(context));
     }
+  }
 
-    if (PushHelper.instance.notificationId != null) {
-      loadPushNotification(PushHelper.instance.notificationId);
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    PushHelper pushHelper = PushHelper.of(context, listen: false);
+    if (pushHelper.notificationId != null) {
+      loadPushNotification(context, pushHelper.notificationId);
     }
   }
 
@@ -115,7 +121,7 @@ class _Follows extends State<Follows> {
     });
   }
 
-  loadPushNotification(String notificationId) {
+  loadPushNotification(BuildContext context, String notificationId) {
     String getnotificationByid =
         NotificationRequest.Notification.getNotificationById(notificationId);
     CurrentInstance.instance.currentClient
@@ -132,9 +138,9 @@ class _Follows extends State<Follows> {
     }).catchError((onError) {
       print("$onError");
     });
-
-    PushHelper.instance.notificationId = null;
-    PushHelper.instance.notifcationType = null;
+    PushHelper pushHelper = PushHelper.of(context, listen: false);
+    pushHelper.notificationId = null;
+    pushHelper.notifcationType = null;
   }
 
   Widget getSmartRefresher() {

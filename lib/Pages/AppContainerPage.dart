@@ -19,7 +19,6 @@ class AppContainerPage extends StatefulWidget {
 class _AppContainerPage extends State<AppContainerPage> {
   int initalIndex = 0;
   CurrentState appState = CurrentState.NONE;
-  DeepLinkHelper links = DeepLinkHelper.instance;
 
   void instanceSuccess() {
     setState(() {
@@ -67,8 +66,9 @@ class _AppContainerPage extends State<AppContainerPage> {
 
   @override
   Widget build(BuildContext context) {
-    links.instanceSuccess = this.instanceSuccess;
-    DeepLinkHelper.initUniLinks();
+    DeepLinkHelper deepLinkHelper = DeepLinkHelper.of(context, listen: false);
+    deepLinkHelper.instanceSuccess = this.instanceSuccess;
+    deepLinkHelper.initUniLinks();
 
     if (this.appState == CurrentState.LOGGEDOUT) {
       InstanceStorage.getNextInstance().then((instanceStorage){

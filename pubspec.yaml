@@ -74,6 +74,7 @@ dependencies:
 
   # advanced logging
   logging: ^0.11.4
+  # dependency injection framework
   provider: ^4.0.3
 
 dev_dependencies:
