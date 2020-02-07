@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:io' show Platform;
+import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
 import 'package:async/async.dart';
 import 'package:http/http.dart' as http;
@@ -75,7 +76,7 @@ class Client {
     // ... other exception handling like PlatformException
   }
 
-  launchAuth(error(String error)) async {
+  launchAuth(BuildContext context, error(String error)) async {
     var errorMethod = error;
     var success = false;
     var url = Registration.authorize(this);
@@ -91,7 +92,8 @@ class Client {
         closeWebView();
         print(uri);
         this.clientSettings.code = uri.queryParameters['code'].toString();
-        DeepLinkHelper.loadNewInstancebycode(this.clientSettings.code);
+        DeepLinkHelper deepLinkHelper = DeepLinkHelper.of(context, listen: false);
+        deepLinkHelper.loadNewInstancebycode(this.clientSettings.code);
       }, onError: (err) {
         // Handle exception by warning the user their action did not succeed
         closeWebView();

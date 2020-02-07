@@ -102,16 +102,24 @@ class TabPageState extends State<TabPage>
       myProfile,
     ];
 
-    if (PushHelper.instance.notifcationType != null) {
-      loadNotification();
+  }
+
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    PushHelper pushHelper = PushHelper.of(context, listen: false);
+    if (pushHelper.notifcationType != null) {
+      loadNotification(context);
     }
   }
 
-  loadNotification() {
-    print("Loading notification ${PushHelper.instance.notifcationType}");
+  loadNotification(BuildContext context) {
+    PushHelper pushHelper = PushHelper.of(context, listen: false);
+    print("Loading notification ${pushHelper.notifcationType}");
 
     _currentIndex = 1;
-    PushHelper.instance.notifcationType = null;
+    pushHelper.notifcationType = null;
     setState(() {});
   }
 
@@ -186,7 +194,8 @@ class TabPageState extends State<TabPage>
 
   @override
   Widget build(BuildContext context) {
-    PushHelper.instance.updateBadges = updateBadges;
+    PushHelper pushHelper = PushHelper.of(context, listen: false);
+    pushHelper.updateBadges = updateBadges;
 
     super.build(context);
     pageController = PageController(
@@ -197,8 +206,8 @@ class TabPageState extends State<TabPage>
         .replaceAll("https://", "@");
     var client = "${CurrentInstance.instance.currentAccount.acct}$currentURL";
 
-    PushHelper.instance.swapAccount = swapAccount;
-    PushHelper.instance.register();
+    pushHelper.swapAccount = swapAccount;
+    pushHelper.register();
     _appBar = [
       null,
       // AppBar(
