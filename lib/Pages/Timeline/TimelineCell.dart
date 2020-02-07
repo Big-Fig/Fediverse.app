@@ -42,14 +42,63 @@ class _TimelineCell extends State<TimelineCell> {
   double deviceWidth;
   double targetHeight;
   double imageHeight;
+  Account replyAccount;
 
   @override
   void initState() {
     super.initState();
   }
 
+  getReply() {
+    if (widget.status.inReplyToAccountId != null && replyAccount == null) {
+      CurrentInstance.instance.currentClient
+          .run(
+              path: Accounts.account(id: widget.status.inReplyToAccountId),
+              method: HTTPMethod.GET)
+          .then((response) {
+        Account account = Account.fromJsonString(response.body);
+        setState(() {
+          replyAccount = account;
+        });
+      }).catchError((error) {
+        print(error);
+      });
+    }
+  }
+
+  String getLikeCounts() {
+    var count = 0;
+    count += widget.status.favouritesCount;
+
+    if (widget.status.reblog != null) {
+      count += widget.status.reblog.favouritesCount;
+    }
+
+    if (count == 0) {
+      return "";
+    } else {
+      return "$count";
+    }
+  }
+
+  getRepostCounts() {
+    var count = 0;
+    count += widget.status.reblogsCount;
+
+    if (widget.status.reblog != null) {
+      count += widget.status.reblog.reblogsCount;
+    }
+
+    if (count == 0) {
+      return "";
+    } else {
+      return "$count";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    getReply();
     deviceWidth = MediaQuery.of(context).size.width;
     if (targetHeight == null) {
       targetHeight = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
@@ -61,9 +110,61 @@ class _TimelineCell extends State<TimelineCell> {
     return Card(
       elevation: 0,
       child: Padding(
-        padding: EdgeInsets.all(3),
+        padding: EdgeInsets.all(8),
         child: Column(
           children: <Widget>[
+            if (replyAccount != null)
+              GestureDetector(
+                onTap: () {
+                  if (widget.viewAccount != null) {
+                    widget.viewAccount(replyAccount);
+                  }
+                },
+                behavior: HitTestBehavior.translucent,
+                child: Padding(
+                  padding: EdgeInsets.all(0.0),
+                  child: Row(
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          Icon(Icons.reply),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text(AppLocalizations.of(context)
+                              .tr("timeline.status.cell.reply_to"))
+                        ],
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      ClipRRect(
+                        borderRadius: new BorderRadius.circular(12.0),
+                        child: CachedNetworkImage(
+                          imageUrl: replyAccount.avatar,
+                          placeholder: (context, url) =>
+                              CircularProgressIndicator(),
+                          errorWidget: (context, url, error) =>
+                              Icon(Icons.error),
+                          height: 24,
+                          width: 24,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: getUserName(widget.status),
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
             // reposted status
             if (widget.status.reblog != null)
               GestureDetector(
@@ -236,7 +337,6 @@ class _TimelineCell extends State<TimelineCell> {
                             return;
                           }
                         }
-
                         print("link $link");
                         canLaunch(link).then((result) {
                           launch(link);
@@ -250,22 +350,11 @@ class _TimelineCell extends State<TimelineCell> {
                     padding: EdgeInsets.symmetric(horizontal: 12.0),
                     child: Row(
                       children: <Widget>[
-                        IconButton(
-                          color: widget.status.favourited
-                              ? Colors.blue
-                              : Colors.grey,
-                          icon: Icon(Icons.thumb_up),
-                          tooltip: AppLocalizations.of(context)
-                              .tr("timeline.status.cell.tooltip.like"),
-                          onPressed: () {
-                            like();
-                          },
-                        ),
                         if (widget.showCommentBtn == true ||
                             widget.showCommentBtn == null)
                           IconButton(
                             color: Colors.grey,
-                            icon: Icon(Icons.add_comment),
+                            icon: Icon(Icons.reply),
                             tooltip: AppLocalizations.of(context)
                                 .tr("timeline.status.cell.tooltip.comment"),
                             onPressed: () {
@@ -277,6 +366,18 @@ class _TimelineCell extends State<TimelineCell> {
                                 widget.showCommentBtn == null))
                           Text(widget.status.repliesCount.toString()),
                         IconButton(
+                          color: widget.status.favourited
+                              ? Colors.blue
+                              : Colors.grey,
+                          icon: Icon(Icons.favorite_border),
+                          tooltip: AppLocalizations.of(context)
+                              .tr("timeline.status.cell.tooltip.like"),
+                          onPressed: () {
+                            like();
+                          },
+                        ),
+                        Text(getLikeCounts()),
+                        IconButton(
                           color: widget.status.reblogged
                               ? Colors.blue
                               : Colors.grey,
@@ -287,6 +388,7 @@ class _TimelineCell extends State<TimelineCell> {
                             repost();
                           },
                         ),
+                        Text(getRepostCounts()),
                         Spacer(),
                         Padding(
                           padding: EdgeInsets.only(left: 19),
@@ -397,12 +499,12 @@ class _TimelineCell extends State<TimelineCell> {
   repost() {
     String path = StatusRequest.Status.reblogStatus(widget.status.id);
     if (widget.status.reblogged == true) {
-      path = StatusRequest.Status.reblogStatus(widget.status.id);
+      path = StatusRequest.Status.unreblogStatus(widget.status.id);
       widget.status.reblogsCount = widget.status.reblogsCount - 1;
     } else {
       widget.status.reblogsCount = widget.status.reblogsCount + 1;
     }
-    widget.status.reblogged = !widget.status.favourited;
+    widget.status.reblogged = !widget.status.reblogged;
     CurrentInstance.instance.currentClient
         .run(path: path, method: HTTPMethod.POST)
         .then((response) {

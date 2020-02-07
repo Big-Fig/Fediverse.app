@@ -18,7 +18,7 @@ class Status {
   }
 
   static String unreblogStatus(String id){
-    return "/api/v1/statuses/$id/reblog";
+    return "/api/v1/statuses/$id/unreblog";
   }
 
   static String favouritedBy(String id){

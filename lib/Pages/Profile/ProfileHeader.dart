@@ -276,7 +276,7 @@ class _ProfileHeader extends State<ProfileHeader> {
               CurrentInstance.instance.currentClient
                   .run(path: path, method: HTTPMethod.POST)
                   .then((response) {});
-              relationship.following = true;
+              relationship.following = !relationship.following;
               if (mounted) setState(() {});
             },
           ),

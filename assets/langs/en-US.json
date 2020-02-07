@@ -19,6 +19,14 @@
       "input": {
         "hint": "Search"
       }
+    },
+    "drawer":{
+      "settings":{
+        "header":"Timeline Settings",
+        "hide_replies": "Hide Replies",
+        "media_only": "Display Media Grid",
+        "hide_nsfw": "Hide NSFW"
+      }
     }
   },
   "media": {
@@ -515,6 +523,7 @@
         }
       },
       "cell": {
+        "reply_to":"Reply to",
         "repeated": "repeated",
         "tooltip": {
           "more": "More",
