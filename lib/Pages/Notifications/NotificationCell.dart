@@ -9,6 +9,7 @@ import 'package:fedi/Pleroma/Models/Status.dart';
 import 'package:fedi/Views/VideoPlayer.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:html/dom.dart' as dom;
+import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_model.dart';
 
 class NotificationCell extends StatefulWidget {
   final NotificationObject.Notification notification;

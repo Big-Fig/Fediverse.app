@@ -1,16 +1,13 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
-import 'package:fedi/Pleroma/Foundation/Requests/Media.dart' as MediaRequest;
-import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_service.dart';
 import 'package:fedi/Views/Alert.dart';
 import 'package:fedi/Views/LocalVideoPlayer.dart';
 import 'package:fedi/Views/ProgressDialog.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class DMMediaPage extends StatefulWidget {
@@ -119,29 +116,23 @@ class _DMMediaPage extends State<DMMediaPage> {
     _pr.setMessage(appLocalizations.tr("media.dm.uploading.dialog.content"));
     _pr.show();
 
-    var path = MediaRequest.Media.postNewStatus;
-    CurrentInstance.instance.currentClient
-        .runUpload(path: path, files: [file]).then((response) {
-      response.stream.bytesToString().then((respStr) {
-        print(json.decode(respStr));
-        _pr.hide();
-        MediaAttachment attachment =
-            MediaAttachment.fromJson(json.decode(respStr));
+    var mediaAttachmentService = IPleromaMediaAttachmentService.of(
+        context, listen: false);
 
+    mediaAttachmentService.uploadMedia(file: file).then((attachment) {
+        _pr.hide();
         widget.mediaUploaded(context, attachment.id);
-         
-
-      }).catchError((e) {
-        print(e);
-        _pr.hide();
-        var alert = Alert(
-            context,
-            appLocalizations.tr("media.dm.uploading.error.title"),
-            appLocalizations.tr("media.dm.uploading.error.content"),
-            () => {});
-        alert.showAlert();
-      });
+    }).catchError((e) {
+      print(e);
+      _pr.hide();
+      var alert = Alert(
+          context,
+          appLocalizations.tr("media.dm.uploading.error.title"),
+          appLocalizations.tr("media.dm.uploading.error.content"),
+              () => {});
+      alert.showAlert();
     });
+
     // CurrentInstance.instance.currentClient
     //     .run(
     //         path: Media.postNewStatus,
