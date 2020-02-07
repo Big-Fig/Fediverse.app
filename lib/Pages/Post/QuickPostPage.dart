@@ -1,11 +1,10 @@
 import 'dart:io';
-import 'dart:convert';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Models/Account.dart';
-import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_service.dart';
 import 'package:fedi/Transitions/SlideBottomRoute.dart';
 import 'package:fedi/Views/Alert.dart';
 import 'package:fedi/Views/LocalVideoPlayer.dart';
@@ -13,8 +12,6 @@ import 'package:fedi/Views/MentionPage.dart';
 import 'package:fedi/Views/ProgressDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
-
-import 'package:fedi/Pleroma/Foundation/Requests/Media.dart' as MediaRequest;
 import 'package:fedi/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
 import 'AddAdditionalMedia.dart';
 import 'Photo/PhotoFile.dart';
@@ -478,52 +475,51 @@ class _QuickPostPageState extends State<QuickPostPage> {
         .tr("post.quick_post.posting.progress"),);
     _pr.show();
 
-    getFileForUpload(0);
+    getFileForUpload(context, 0);
   }
 
-  getFileForUpload(int index) async {
+  getFileForUpload(BuildContext context, int index) async {
     print("getting index $index");
     dynamic asset = assets[index];
     if (asset is PhotoFile) {
-      uploadFile(index, File(asset.url));
+      uploadFile(context, index, File(asset.url));
     } else if (asset is VideoFile) {
-      uploadFile(index, File(asset.url));
+      uploadFile(context, index, File(asset.url));
     } else if (asset is AssetEntity) {
       AssetEntity item = asset;
       item.file.then((file) {
-        uploadFile(index, file);
+        uploadFile(context, index, file);
       });
     }
   }
 
-  uploadFile(int index, File file) {
-    var path = MediaRequest.Media.postNewStatus;
-    CurrentInstance.instance.currentClient
-        .runUpload(path: path, files: [file]).then((response) {
-      response.stream.bytesToString().then((respStr) {
-        MediaAttachment attachment =
-            MediaAttachment.fromJson(json.decode(respStr));
-        attachments.add(attachment.id);
-        int nextIndex = index + 1;
-        print("whats next?");
-        if (nextIndex != assets.length) {
-          getFileForUpload(nextIndex);
-        } else {
-          postStatusAfterUpload();
-        }
-      }).catchError((e) {
-        print("THIS IS THE ERROR!!!!");
-        print(e);
-        _pr.hide();
-        var alert = Alert(
-            context,
-            AppLocalizations.of(context)
-                .tr("post.quick_post.posting.error.alert.title"),
-            AppLocalizations.of(context)
-                .tr("post.quick_post.posting.error.alert.content"),
-            () => {});
-        alert.showAlert();
-      });
+  uploadFile(BuildContext context, int index, File file) {
+
+
+    var mediaAttachmentService = IPleromaMediaAttachmentService.of(
+        context, listen: false);
+
+    mediaAttachmentService.uploadMedia(file: file).then((attachment) {
+      attachments.add(attachment.id);
+      int nextIndex = index + 1;
+      print("whats next?");
+      if (nextIndex != assets.length) {
+        getFileForUpload(context, nextIndex);
+      } else {
+        postStatusAfterUpload();
+      }
+    }).catchError((e) {
+      print("THIS IS THE ERROR!!!!");
+      print(e);
+      _pr.hide();
+      var alert = Alert(
+          context,
+          AppLocalizations.of(context)
+              .tr("post.quick_post.posting.error.alert.title"),
+          AppLocalizations.of(context)
+              .tr("post.quick_post.posting.error.alert.content"),
+              () => {});
+      alert.showAlert();
     });
   }
 

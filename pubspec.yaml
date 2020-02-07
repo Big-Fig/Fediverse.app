@@ -72,6 +72,10 @@ dependencies:
   # annotations to generate json from & to methods
   json_annotation: ^3.0.1
 
+  # advanced logging
+  logging: ^0.11.4
+  provider: ^4.0.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
-import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart';
+import 'package:fedi/Pleroma/profile/edit/pleroma_profile_edit_service.dart';
 import 'package:fedi/Views/Alert.dart';
 import 'package:fedi/Views/LocalVideoPlayer.dart';
 import 'package:fedi/Views/ProgressDialog.dart';
@@ -66,7 +66,7 @@ class _ProfileMediaPage extends State<ProfileMediaPage> {
               textColor: Colors.white,
               color: Colors.transparent,
               onPressed: () {
-                updateImage();
+                updateImage(context);
               },
             ),
           ],
@@ -82,7 +82,7 @@ class _ProfileMediaPage extends State<ProfileMediaPage> {
               child: Text(AppLocalizations.of(context)
                   .tr("profile.media.edit.action.save")),
               onPressed: () {
-                updateImage();
+                updateImage(context);
               },
             )
           ],
@@ -122,44 +122,45 @@ class _ProfileMediaPage extends State<ProfileMediaPage> {
     return Image.file(file);
   }
 
-  updateImage() {
+  updateImage(BuildContext context) {
     _pr = ProgressDialog(context, ProgressDialogType.Normal);
     _pr.setMessage(AppLocalizations.of(context)
         .tr("profile.media.edit.update.progress", args: [widget.type]));
     _pr.show();
 
-    var path = Accounts.updateCurrentUser();
-    CurrentInstance.instance.currentClient.patchUpload(
-        path: path, paramName: widget.type, files: [file]).then((response) {
-      response.stream.bytesToString().then((respStr) {
-        print(json.decode(respStr));
-        _pr.hide();
-        CurrentInstance.instance.currentAccount
-            .refreshAccount()
-            .then((response) {
-          var alert = Alert(context,
-              AppLocalizations.of(context)
-                  .tr("profile.media.edit.update.success.alert.title"),
-              AppLocalizations.of(context)
-                  .tr("profile.media.edit.update.success.alert.content"),
-                  () {
-            widget.mediaUploaded("update");
-            Navigator.of(context)
-                .popUntil((route) => route.settings.name == "/MyProfile");
-          });
-          alert.showAlert();
-        }).catchError((error) {
-          var alert = Alert(context,
-              AppLocalizations.of(context)
-                  .tr("profile.media.edit.update.error.alert.title"),
-              AppLocalizations.of(context)
-                  .tr("profile.media.edit.update.error.alert.content"),
-                  () => {});
-          alert.showAlert();
-        });
-      }).catchError((e) {
-        print(e);
-        _pr.hide();
+
+    var pleromaProfileEditService = IPleromaProfileEditService.of(
+        context, listen: false);
+
+    Future<String> future;
+    // TODO: widget type should bre refactored
+    switch (widget.type) {
+      case "header":
+        future = pleromaProfileEditService.changeHeaderImage(file: file);
+        break;
+      case "avatar":
+        future = pleromaProfileEditService.changeAvatarImage(file: file);
+        break;
+    }
+
+    future.then((responseBody) {
+      print(json.decode(responseBody));
+      _pr.hide();
+      CurrentInstance.instance.currentAccount
+          .refreshAccount()
+          .then((response) {
+        var alert = Alert(context,
+            AppLocalizations.of(context)
+                .tr("profile.media.edit.update.success.alert.title"),
+            AppLocalizations.of(context)
+                .tr("profile.media.edit.update.success.alert.content"),
+                () {
+              widget.mediaUploaded("update");
+              Navigator.of(context)
+                  .popUntil((route) => route.settings.name == "/MyProfile");
+            });
+        alert.showAlert();
+      }).catchError((error) {
         var alert = Alert(context,
             AppLocalizations.of(context)
                 .tr("profile.media.edit.update.error.alert.title"),
@@ -168,7 +169,16 @@ class _ProfileMediaPage extends State<ProfileMediaPage> {
                 () => {});
         alert.showAlert();
       });
+    }).catchError((error) {
+      var alert = Alert(context,
+          AppLocalizations.of(context)
+              .tr("profile.media.edit.update.error.alert.title"),
+          AppLocalizations.of(context)
+              .tr("profile.media.edit.update.error.alert.content"),
+              () => {});
+      alert.showAlert();
     });
+
     // CurrentInstance.instance.currentClient
     //     .run(
     //         path: Media.postNewStatus,

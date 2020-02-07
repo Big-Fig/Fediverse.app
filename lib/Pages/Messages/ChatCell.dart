@@ -11,6 +11,7 @@ import 'package:carousel_pro/carousel_pro.dart';
 import 'package:fedi/Views/VideoPlayer.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
 import 'package:html/dom.dart' as dom;
+import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_model.dart';
 
 class ChatCell extends StatefulWidget {
   final Account otherAccount;
