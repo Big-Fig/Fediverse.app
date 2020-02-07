@@ -142,7 +142,7 @@ class _InstanceLoginPage extends State<InstanceLoginPage> {
                         InstanceStorage.saveNewInstanceClient(CurrentInstance
                             .newInstance.currentClient).then((_) {
                           CurrentInstance.newInstance.currentClient
-                              .launchAuth((error) {
+                              .launchAuth(context, (error) {
                             print(error.toString());
                             var alert = Alert(
                                 context,
