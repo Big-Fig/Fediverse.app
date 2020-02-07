@@ -49,13 +49,19 @@ class _Mentions extends State<Mentions> {
       SchedulerBinding.instance
           .addPostFrameCallback((_) => fetchStatuses(context));
     }
-
-    if (PushHelper.instance.notificationId != null) {
-      loadPushNotification(PushHelper.instance.notificationId);
-    }
   }
 
-  void fetchStatuses(BuildContext context) {
+
+   @override
+   void didChangeDependencies() {
+     super.didChangeDependencies();
+    PushHelper pushHelper = PushHelper.of(context, listen: false);
+    if (pushHelper.notificationId != null) {
+      loadPushNotification(context, pushHelper.notificationId);
+    }
+   }
+
+   void fetchStatuses(BuildContext context) {
       _refreshController.requestRefresh();
       InstanceStorage.clearAccountAlert(account, "mention");
   }
@@ -119,7 +125,7 @@ class _Mentions extends State<Mentions> {
     });
   }
 
-  loadPushNotification(String notificationId) {
+  loadPushNotification(BuildContext context, String notificationId) {
     String getnotificationByid =
         NotificationRequest.Notification.getNotificationById(notificationId);
     CurrentInstance.instance.currentClient
@@ -136,9 +142,9 @@ class _Mentions extends State<Mentions> {
     }).catchError((onError) {
       print("$onError");
     });
-
-    PushHelper.instance.notificationId = null;
-    PushHelper.instance.notifcationType = null;
+    PushHelper pushHelper = PushHelper.of(context, listen: false);
+    pushHelper.notificationId = null;
+    pushHelper.notifcationType = null;
   }
 
   Widget getSmartRefresher() {

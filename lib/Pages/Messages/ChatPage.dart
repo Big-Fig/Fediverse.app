@@ -243,7 +243,8 @@ class _ChatPage extends State<ChatPage> {
           .addPostFrameCallback((_) => fetchStatuses(context));
     }
 
-    PushHelper.instance.notificationUpdater = update;
+    PushHelper pushHelper = PushHelper.of(context, listen: false);
+    pushHelper.notificationUpdater = update;
   }
 
 

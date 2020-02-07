@@ -5,16 +5,13 @@ import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:vibration/vibration.dart';
 
 class PushHelper {
-  PushHelper._privateConstructor();
 
-  static final PushHelper _instance = PushHelper._privateConstructor();
-
-  static PushHelper get instance {
-    return _instance;
-  }
+  static PushHelper of(BuildContext context, {listen: true}) => 
+      Provider.of<PushHelper>(context, listen: listen);
 
   Function swapAccount;
   Function onMessage;
@@ -36,14 +33,14 @@ class PushHelper {
     await InstanceStorage.addAccountAlert(
         account, pushNotification.notificationType);
     Vibration.vibrate();
-    PushHelper.instance.updateBadges();
-    PushHelper.instance.notificationUpdater();
+    updateBadges();
+    notificationUpdater();
     //   _showItemDialog(message);
   }
 
   config(BuildContext context) {
     print("CONFIGING");
-    PushHelper.instance._firebaseMessaging.configure(
+    _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         debugPrint("onMessage: face $message");
         var pushNotification = _parsePushNotification(message);
@@ -56,8 +53,8 @@ class PushHelper {
                 account, pushNotification.notificationType)
             .then((value) {
           Vibration.vibrate();
-          PushHelper.instance.updateBadges();
-          PushHelper.instance.notificationUpdater();
+          updateBadges();
+          notificationUpdater();
         });
 
         //   _showItemDialog(message);
@@ -67,9 +64,9 @@ class PushHelper {
         print("$message");
         var pushNotification = _parsePushNotification(message);
 
-        PushHelper.instance.notificationId =
+        notificationId =
             pushNotification.notificationId.toString();
-        PushHelper.instance.notifcationType = pushNotification.notificationType;
+        notifcationType = pushNotification.notificationType;
         //  _navigateToItemDetail(message);
         String account =
             "${pushNotification.account}@https://${pushNotification.server}";
@@ -86,9 +83,9 @@ class PushHelper {
         String account =
             "${pushNotification.account}@https://${pushNotification.server}";
         print("SWAPPING ACCOUNT $account");
-        PushHelper.instance.notificationId =
+        notificationId =
             pushNotification.notificationId.toString();
-        PushHelper.instance.notifcationType = pushNotification.notificationType;
+        notifcationType = pushNotification.notificationType;
         InstanceStorage.setCurrentAccount(account).then((future) {
           swapAccount();
         }).catchError((error) {
@@ -103,12 +100,12 @@ class PushHelper {
   }
 
   register() {
-    PushHelper.instance._firebaseMessaging.requestNotificationPermissions(
+    _firebaseMessaging.requestNotificationPermissions(
         const IosNotificationSettings(sound: true, badge: true, alert: true));
     _firebaseMessaging.onIosSettingsRegistered
         .listen((IosNotificationSettings settings) {});
 
-    PushHelper.instance._firebaseMessaging.getToken().then((String token) {
+    _firebaseMessaging.getToken().then((String token) {
       assert(token != null);
       print("Token");
       print(token);

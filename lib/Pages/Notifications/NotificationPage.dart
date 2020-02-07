@@ -59,12 +59,20 @@ class NotificationPageState extends State<NotificationPage>
     ];
     _tabController = TabController(length: 3, vsync: this, initialIndex: 0);
 
-    if (PushHelper.instance.notificationId != null) {
-      loadPushNotification(PushHelper.instance.notificationId);
-    }
   }
 
-  loadPushNotification(String notificationId) {
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    PushHelper pushHelper = PushHelper.of(context, listen: false);
+    if (pushHelper.notificationId != null) {
+      loadPushNotification(context, pushHelper.notificationId);
+    }
+    
+  }
+
+  loadPushNotification(BuildContext context, String notificationId) {
     String getnotificationByid =
         NotificationRequest.Notification.getNotificationById(notificationId);
     CurrentInstance.instance.currentClient
@@ -82,8 +90,9 @@ class NotificationPageState extends State<NotificationPage>
       print("$onError");
     });
 
-    PushHelper.instance.notificationId = null;
-    PushHelper.instance.notifcationType = null;
+    PushHelper pushHelper = PushHelper.of(context, listen: false);
+    pushHelper.notificationId = null;
+    pushHelper.notifcationType = null;
   }
 
   void onTabTapped(int index) {
