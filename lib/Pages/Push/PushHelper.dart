@@ -81,7 +81,6 @@ class PushHelper {
         });
       },
       onResume: (Map<String, dynamic> message) async {
-
         var pushNotification = _parsePushNotification(message);
         //  _navigateToItemDetail(message);
         String account =
@@ -114,7 +113,22 @@ class PushHelper {
       print("Token");
       print(token);
 
-      CurrentInstance.instance.currentClient.subscribeToPush(token);
+      String account =
+          "${CurrentInstance.instance.currentAccount.acct}@${CurrentInstance.instance.currentClient.baseURL}";
+
+      InstanceStorage.getAccountSubscribedToNotifications(account)
+          .then((subbed) {
+        if (subbed == false) {
+          CurrentInstance.instance.currentClient
+              .subscribeToPush(token)
+              .then((_) {
+            String account =
+                "${CurrentInstance.instance.currentAccount.acct}@${CurrentInstance.instance.currentClient.baseURL}";
+
+            InstanceStorage.addAccountSubscribedToNotifications(account, true);
+          });
+        }
+      });
     });
   }
 }

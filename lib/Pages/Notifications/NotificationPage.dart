@@ -179,7 +179,7 @@ class NotificationPageState extends State<NotificationPage>
               children: <Widget>[
                 Icon(Icons.cached),
                 Text(" / "),
-                Icon(Icons.thumb_up)
+                Icon(Icons.favorite_border)
               ],
             ),
           ),
@@ -192,7 +192,7 @@ class NotificationPageState extends State<NotificationPage>
             children: <Widget>[
               Icon(Icons.cached),
               Text(" / "),
-              Icon(Icons.thumb_up)
+              Icon(Icons.favorite_border)
             ],
           ),
           text: null,

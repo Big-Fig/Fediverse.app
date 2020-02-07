@@ -25,7 +25,7 @@ class InstanceStorage {
   Account currentAccount;
   AccountAuth currentAuth;
 
-
+  
   static Future<void> setCurrentAccount(String account) async {
     var box = await Hive.openBox('InstanceStorage', lazy: true) as LazyBox;
     await box.put("currentAccount", account);
@@ -42,6 +42,21 @@ class InstanceStorage {
     var box = await Hive.openBox('InstanceStorage', lazy: true) as LazyBox;
     await box.put("$account-$type", 1);
     return print("done");
+  }
+
+  static Future<void> addAccountSubscribedToNotifications(String account, bool subscribed) async {
+    var box = await Hive.openBox('InstanceStorage', lazy: true) as LazyBox;
+    await box.put("$account-notifications-subscribed", true);
+    return print("done");
+  }
+
+  static Future<bool> getAccountSubscribedToNotifications(String account) async {
+     var box = await Hive.openBox('InstanceStorage', lazy: true) as LazyBox;
+     bool status = await box.get("$account-notifications-subscribed");
+     if (status == null){
+       return false;
+     }
+    return status;
   }
 
   static Future<int> getAccountAlert(String account, String type) async {

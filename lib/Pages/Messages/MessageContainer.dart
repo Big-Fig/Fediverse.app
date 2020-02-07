@@ -41,7 +41,6 @@ class _MessageContainer extends State<MessageConatiner>
   }
 
   sendMessage(Account account) {
-    print("test");
     Navigator.pop(context);
     Navigator.push(
         context,
