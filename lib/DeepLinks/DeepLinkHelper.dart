@@ -3,6 +3,8 @@ import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
 
 
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:flutter/services.dart' show PlatformException;
 
@@ -10,23 +12,19 @@ import '../Pleroma/Models/AccountAuth.dart';
 
 class DeepLinkHelper {
 
+  static DeepLinkHelper of(BuildContext context, {listen: true}) =>
+      Provider.of(context, listen: listen);
+  
   bool isLoading = false;
   Function() instanceSuccess;
 
-  DeepLinkHelper._privateConstructor();
+  Future<Null> initUniLinks() async {
 
-  static final DeepLinkHelper _instance = DeepLinkHelper._privateConstructor();
-  static DeepLinkHelper get instance {
-    return _instance;
-  }
-
-  static Future<Null> initUniLinks() async {
-
-    if (DeepLinkHelper.instance.isLoading == true){
+    if (isLoading == true){
       return;
     }
 
-    DeepLinkHelper.instance.isLoading = true;
+    isLoading = true;
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
       Uri initialUri = await getInitialUri();
@@ -38,7 +36,7 @@ class DeepLinkHelper {
         print(initialUri);
         print("All done with link data");
         if (initialUri.host == "addnewinstance") {
-          DeepLinkHelper.loadNewInstance(initialUri);
+          loadNewInstance(initialUri);
         }
       }
     } on PlatformException {
@@ -47,7 +45,7 @@ class DeepLinkHelper {
     }
   }
 
-  static loadNewInstance(Uri uri) {
+  loadNewInstance(Uri uri) {
     if (uri.queryParameters['code'] == null) {
       return;
     }
@@ -65,12 +63,12 @@ class DeepLinkHelper {
         CurrentInstance.newInstance.currentAuth = newAuth;
         CurrentInstance.newInstance.currentClient.accessToken =
             newAuth.accessToken;
-        DeepLinkHelper.instance.instanceSuccess();
+        instanceSuccess();
       });
     });
   }
 
-  static loadNewInstancebycode(String code){
+  loadNewInstancebycode(String code){
 
 
     InstanceStorage.getNewInstanceClient().then((client) {
@@ -84,7 +82,7 @@ class DeepLinkHelper {
         CurrentInstance.newInstance.currentAuth = newAuth;
         CurrentInstance.newInstance.currentClient.accessToken =
             newAuth.accessToken;
-        DeepLinkHelper.instance.instanceSuccess();
+        instanceSuccess();
       });
     });
   }

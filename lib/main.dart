@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/DeepLinks/DeepLinkHelper.dart';
 import 'package:fedi/Pages/Push/PushHelper.dart';
 import 'package:fedi/Pleroma/Models/ClientSettings.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -6,9 +7,10 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
 
 import './Pages/AppContainerPage.dart';
 import './Pages/TermsOfService.dart';
@@ -44,23 +46,20 @@ class MyApp extends StatelessWidget {
   final FirebaseAnalytics analytics = FirebaseAnalytics();
   final _currentInstance = CurrentInstance.instance;
   final _newInstance = CurrentInstance.newInstance;
-  final push = PushHelper.instance;
-  Function myConfig;
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     print(_currentInstance);
     print(_newInstance);
 
-    myConfig = PushHelper.instance.config(context);
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     FirebaseAnalytics analytics = FirebaseAnalytics();
-
 
     var localizationData = EasyLocalizationProvider.of(context).data;
     var savedLocale = localizationData.savedLocale;
     var locale = localizationData.locale;
-    return EasyLocalizationProvider(
+    var app = EasyLocalizationProvider(
       data: localizationData,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -68,8 +67,7 @@ class MyApp extends StatelessWidget {
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
-          EasylocaLizationDelegate(
-              locale: locale, path: "assets/langs")
+          EasylocaLizationDelegate(locale: locale, path: "assets/langs")
         ],
         locale: savedLocale,
         supportedLocales: [Locale('en', 'US')],
@@ -86,7 +84,13 @@ class MyApp extends StatelessWidget {
         ],
       ),
     );
+    return provideGlobalContext(app);
   }
+
+  Widget provideGlobalContext(Widget app) =>
+      Provider(create: (BuildContext context) => PushHelper(),
+          child: Provider(
+              create: (BuildContext context) => DeepLinkHelper(), child: app));
 }
 
 Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
