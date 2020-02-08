@@ -37,7 +37,11 @@ Status _$StatusFromJson(Map<String, dynamic> json) {
     account: json['account'] == null
         ? null
         : Account.fromJson(json['account'] as Map<String, dynamic>),
-    mediaAttachments: json['media_attachments'] as List,
+    mediaAttachments: (json['media_attachments'] as List)
+        ?.map((e) => e == null
+            ? null
+            : MediaAttachment.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
     mentions: (json['mentions'] as List)
         ?.map((e) =>
             e == null ? null : Mention.fromJson(e as Map<String, dynamic>))

@@ -2,6 +2,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/DeepLinks/DeepLinkHelper.dart';
 import 'package:fedi/Pages/Push/PushHelper.dart';
 import 'package:fedi/Pleroma/Models/ClientSettings.dart';
+import 'package:fedi/Pleroma/account/edit/pleroma_account_edit_service.dart';
+import 'package:fedi/Pleroma/account/edit/pleroma_account_edit_service_impl.dart';
+import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_service.dart';
+import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_service_impl.dart';
+import 'package:fedi/Pleroma/rest/pleroma_rest_service.dart';
+import 'package:fedi/Pleroma/rest/pleroma_rest_service_impl.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -9,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive/hive.dart';
+import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -21,6 +28,7 @@ import './Pleroma/Models/AccountAuth.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  initLog();
 
   final directory = await getApplicationDocumentsDirectory();
   Hive.registerAdapter(AccountAuthAdapter(), 33);
@@ -87,12 +95,34 @@ class MyApp extends StatelessWidget {
     return provideGlobalContext(app);
   }
 
-  Widget provideGlobalContext(Widget app) =>
-      Provider(create: (BuildContext context) => PushHelper(),
-          child: Provider(
-              create: (BuildContext context) => DeepLinkHelper(), child: app));
+  Widget provideGlobalContext(Widget app) => Provider(
+      create: (BuildContext context) => PushHelper(),
+      child: Provider(
+          create: (BuildContext context) => DeepLinkHelper(),
+          child: providePleromaContext(app)));
+
+  Widget providePleromaContext(Widget app) => Provider<IPleromaRestService>(
+      create: (BuildContext context) => PleromaRestService(),
+      child: MultiProvider(
+        providers: [
+          Provider<IPleromaMediaAttachmentService>(
+              create: (context) => PleromaMediaAttachmentService(
+                  restService: IPleromaRestService.of(context, listen: false))),
+          Provider<IPleromaAccountEditService>(
+              create: (context) => PleromaAccountEditService(
+                  restService: IPleromaRestService.of(context, listen: false))),
+        ],
+        child: app,
+      ));
 }
 
 Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
   return Future<void>.value();
+}
+
+initLog() {
+  Logger.root.level = Level.ALL; // defaults to Level.INFO
+  Logger.root.onRecord.listen((record) {
+    print('${record.level.name}: ${record.time}: ${record.message}');
+  });
 }

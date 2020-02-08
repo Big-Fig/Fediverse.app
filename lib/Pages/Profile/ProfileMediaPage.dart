@@ -1,10 +1,10 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
-import 'package:fedi/Pleroma/profile/edit/pleroma_profile_edit_service.dart';
+import 'package:fedi/Pleroma/Models/Account.dart';
+import 'package:fedi/Pleroma/account/edit/pleroma_account_edit_service.dart';
 import 'package:fedi/Views/Alert.dart';
 import 'package:fedi/Views/LocalVideoPlayer.dart';
 import 'package:fedi/Views/ProgressDialog.dart';
@@ -129,22 +129,21 @@ class _ProfileMediaPage extends State<ProfileMediaPage> {
     _pr.show();
 
 
-    var pleromaProfileEditService = IPleromaProfileEditService.of(
+    var editService = IPleromaAccountEditService.of(
         context, listen: false);
 
-    Future<String> future;
+    Future<Account> future;
     // TODO: widget type should bre refactored
     switch (widget.type) {
       case "header":
-        future = pleromaProfileEditService.changeHeaderImage(file: file);
+        future = editService.changeHeaderImage(file: file);
         break;
       case "avatar":
-        future = pleromaProfileEditService.changeAvatarImage(file: file);
+        future = editService.changeAvatarImage(file: file);
         break;
     }
 
-    future.then((responseBody) {
-      print(json.decode(responseBody));
+    future.then((account) {
       _pr.hide();
       CurrentInstance.instance.currentAccount
           .refreshAccount()
