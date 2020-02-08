@@ -1,9 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:fedi/Pages/Messages/Media/DMMediaPage.dart';
-import 'package:fedi/Pages/Post/Gallery/GalleryCapture.dart';
-import 'package:fedi/Pages/Post/Photo/PhotoCapture.dart';
-import 'package:fedi/Pages/Post/Video/VideoCapture.dart';
+import 'package:fedi/media/gallery/GalleryCapture.dart';
+import 'package:fedi/media/image/capture/PhotoCapture.dart';
+import 'package:fedi/media/video/capture/VideoCapture.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class CaptureDMMedia extends StatefulWidget {

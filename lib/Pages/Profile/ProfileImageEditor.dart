@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/Pages/Post/Gallery/GalleryCapture.dart';
-import 'package:fedi/Pages/Post/Photo/PhotoCapture.dart';
+import 'package:fedi/media/gallery/GalleryCapture.dart';
+import 'package:fedi/media/image/capture/PhotoCapture.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:photo_manager/photo_manager.dart';
