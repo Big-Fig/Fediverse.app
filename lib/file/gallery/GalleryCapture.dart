@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:fedi/Pages/Post/Gallery/GalleryImageContainer.dart';
-import 'package:fedi/Pages/Post/Gallery/GalleryPreview.dart';
+import 'package:fedi/media/gallery/GalleryImageContainer.dart';
+import 'package:fedi/media/gallery/GalleryPreview.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class GalleryCapture extends StatefulWidget {

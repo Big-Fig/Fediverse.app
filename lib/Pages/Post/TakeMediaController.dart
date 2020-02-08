@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fedi/Pages/Post/Photo/PhotoCapture.dart';
-import 'package:fedi/Pages/Post/Video/VideoCapture.dart';
+import 'package:fedi/media/image/capture/PhotoCapture.dart';
+import 'package:fedi/media/video/capture/VideoCapture.dart';
 
 class TakeMediaController extends StatefulWidget {
   final Function(String) videoTaken;
