@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:fedi/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
 import 'package:fedi/Pleroma/Models/Account.dart';
 import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_service.dart';
 import 'package:fedi/Transitions/SlideBottomRoute.dart';
@@ -10,12 +11,10 @@ import 'package:fedi/Views/Alert.dart';
 import 'package:fedi/Views/LocalVideoPlayer.dart';
 import 'package:fedi/Views/MentionPage.dart';
 import 'package:fedi/Views/ProgressDialog.dart';
+import 'package:fedi/app/status/edit/status_edit_attach_media_page.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
-import 'package:fedi/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
-import 'AddAdditionalMedia.dart';
-import 'Photo/PhotoFile.dart';
-import 'Video/VideoFIle.dart';
+
 
 class QuickPostPage extends StatefulWidget {
   @override
@@ -356,17 +355,17 @@ class _QuickPostPageState extends State<QuickPostPage> {
     );
   }
 
-  videoTaken(String uri) {
-    VideoFile video = VideoFile(uri);
-    assets.add(video);
-    if (mounted) setState(() {});
-  }
-
-  photoTaken(String uri) {
-    PhotoFile photo = PhotoFile(uri);
-    assets.add(photo);
-    if (mounted) setState(() {});
-  }
+//  videoTaken(String uri) {
+//    VideoFile video = VideoFile(uri);
+//    assets.add(video);
+//    if (mounted) setState(() {});
+//  }
+//
+//  photoTaken(String uri) {
+//    PhotoFile photo = PhotoFile(uri);
+//    assets.add(photo);
+//    if (mounted) setState(() {});
+//  }
 
   gallerySelected(AssetEntity asset) {
     AssetEntity newAsset = asset;
@@ -375,22 +374,25 @@ class _QuickPostPageState extends State<QuickPostPage> {
   }
 
   Future<Widget> getMediaPreview(dynamic asset) async {
-    if (asset is PhotoFile) {
-      return _cameraPreviewWidget(asset.url);
-    } else if (asset is VideoFile) {
-      return LocalVideoPlayer(url: asset.url);
-    } else if (asset is AssetEntity) {
-      AssetEntity item = asset;
-      File file = await item.file;
-      if (item.type == AssetType.video) {
-        return LocalVideoPlayer(
-          file: file,
-        );
-      } else {
-        return Image.file(file);
-      }
-    }
-    return Container();
+
+    return Text("Preview");
+//
+//    if (asset is PhotoFile) {
+//      return _cameraPreviewWidget(asset.url);
+//    } else if (asset is VideoFile) {
+//      return LocalVideoPlayer(url: asset.url);
+//    } else if (asset is AssetEntity) {
+//      AssetEntity item = asset;
+//      File file = await item.file;
+//      if (item.type == AssetType.video) {
+//        return LocalVideoPlayer(
+//          file: file,
+//        );
+//      } else {
+//        return Image.file(file);
+//      }
+//    }
+//    return Container();
   }
 
   Icon getVisibilityIcon(String visibility) {
@@ -411,17 +413,8 @@ class _QuickPostPageState extends State<QuickPostPage> {
   }
 
   Widget getAddButton() {
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: () {
-        Navigator.push(
-          context,
-          SlideBottomRoute(
-              page: AddAddtionalMedia(
-                  videoTaken: videoTaken,
-                  photoTaken: photoTaken,
-                  gallerySelected: gallerySelected)),
-        );
+    return GestureDetector(behavior: HitTestBehavior.opaque, onTap: () {
+      _openAttachPage();
       },
       child: Container(
         margin: EdgeInsets.all(8),
@@ -434,14 +427,7 @@ class _QuickPostPageState extends State<QuickPostPage> {
               color: Colors.white,
             ),
             onPressed: () {
-              Navigator.push(
-                context,
-                SlideBottomRoute(
-                    page: AddAddtionalMedia(
-                        videoTaken: videoTaken,
-                        photoTaken: photoTaken,
-                        gallerySelected: gallerySelected)),
-              );
+              _openAttachPage();
             },
           ),
         ),
@@ -449,6 +435,20 @@ class _QuickPostPageState extends State<QuickPostPage> {
         height: 100,
       ),
     );
+  }
+
+  void _openAttachPage() {
+    Navigator.push(
+      context, SlideBottomRoute(page: StatusEditAttachImagePage()));
+
+    //        Navigator.push(
+    //          context,
+    //          SlideBottomRoute(
+    //              page: AddAddtionalMedia(
+    //                  videoTaken: videoTaken,
+    //                  photoTaken: photoTaken,
+    //                  gallerySelected: gallerySelected)),
+    //        );
   }
 
   postStatus() {
@@ -475,53 +475,53 @@ class _QuickPostPageState extends State<QuickPostPage> {
         .tr("post.quick_post.posting.progress"),);
     _pr.show();
 
-    getFileForUpload(context, 0);
+//    getFileForUpload(context, 0);
   }
 
-  getFileForUpload(BuildContext context, int index) async {
-    print("getting index $index");
-    dynamic asset = assets[index];
-    if (asset is PhotoFile) {
-      uploadFile(context, index, File(asset.url));
-    } else if (asset is VideoFile) {
-      uploadFile(context, index, File(asset.url));
-    } else if (asset is AssetEntity) {
-      AssetEntity item = asset;
-      item.file.then((file) {
-        uploadFile(context, index, file);
-      });
-    }
-  }
-
-  uploadFile(BuildContext context, int index, File file) {
-
-
-    var mediaAttachmentService = IPleromaMediaAttachmentService.of(
-        context, listen: false);
-
-    mediaAttachmentService.uploadMedia(file: file).then((attachment) {
-      attachments.add(attachment.id);
-      int nextIndex = index + 1;
-      print("whats next?");
-      if (nextIndex != assets.length) {
-        getFileForUpload(context, nextIndex);
-      } else {
-        postStatusAfterUpload();
-      }
-    }).catchError((e) {
-      print("THIS IS THE ERROR!!!!");
-      print(e);
-      _pr.hide();
-      var alert = Alert(
-          context,
-          AppLocalizations.of(context)
-              .tr("post.quick_post.posting.error.alert.title"),
-          AppLocalizations.of(context)
-              .tr("post.quick_post.posting.error.alert.content"),
-              () => {});
-      alert.showAlert();
-    });
-  }
+//  getFileForUpload(BuildContext context, int index) async {
+//    print("getting index $index");
+//    dynamic asset = assets[index];
+//    if (asset is PhotoFile) {
+//      uploadFile(context, index, File(asset.url));
+//    } else if (asset is VideoFile) {
+//      uploadFile(context, index, File(asset.url));
+//    } else if (asset is AssetEntity) {
+//      AssetEntity item = asset;
+//      item.file.then((file) {
+//        uploadFile(context, index, file);
+//      });
+//    }
+//  }
+//
+//  uploadFile(BuildContext context, int index, File file) {
+//
+//
+//    var mediaAttachmentService = IPleromaMediaAttachmentService.of(
+//        context, listen: false);
+//
+//    mediaAttachmentService.uploadMedia(file: file).then((attachment) {
+//      attachments.add(attachment.id);
+//      int nextIndex = index + 1;
+//      print("whats next?");
+//      if (nextIndex != assets.length) {
+//        getFileForUpload(context, nextIndex);
+//      } else {
+//        postStatusAfterUpload();
+//      }
+//    }).catchError((e) {
+//      print("THIS IS THE ERROR!!!!");
+//      print(e);
+//      _pr.hide();
+//      var alert = Alert(
+//          context,
+//          AppLocalizations.of(context)
+//              .tr("post.quick_post.posting.error.alert.title"),
+//          AppLocalizations.of(context)
+//              .tr("post.quick_post.posting.error.alert.content"),
+//              () => {});
+//      alert.showAlert();
+//    });
+//  }
 
   postStatusAfterUpload() {
     print("my visability!!!! $statusVisability");

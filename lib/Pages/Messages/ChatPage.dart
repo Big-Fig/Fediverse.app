@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pages/Profile/OtherAccount.dart';
+import 'package:fedi/Transitions/SlideBottomRoute.dart';
+import 'package:fedi/app/status/edit/status_edit_attach_media_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -19,7 +21,6 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'ChatCell.dart';
-import 'Media/CaptureDMMedia.dart';
 
 class ChatPage extends StatefulWidget {
   final Function refreshMesagePage;
@@ -174,11 +175,12 @@ class _ChatPage extends State<ChatPage> {
                       color: Colors.blue,
                     ),
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  CaptureDMMedia(0, mediaUploaded)));
+                      _openAttachPage();
+//                      Navigator.push(
+//                          context,
+//                          MaterialPageRoute(
+//                              builder: (context) =>
+//                                  CaptureDMMedia(0, mediaUploaded)));
                     },
                   ),
                   IconButton(
@@ -187,11 +189,12 @@ class _ChatPage extends State<ChatPage> {
                       color: Colors.blue,
                     ),
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  CaptureDMMedia(1, mediaUploaded)));
+                      _openAttachPage();
+//                      Navigator.push(
+//                          context,
+//                          MaterialPageRoute(
+//                              builder: (context) =>
+//                                  CaptureDMMedia(1, mediaUploaded)));
                     },
                   ),
                   IconButton(
@@ -200,11 +203,12 @@ class _ChatPage extends State<ChatPage> {
                       color: Colors.blue,
                     ),
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  CaptureDMMedia(2, mediaUploaded)));
+                      _openAttachPage();
+//                      Navigator.push(
+//                          context,
+//                          MaterialPageRoute(
+//                              builder: (context) =>
+//                                  CaptureDMMedia(2, mediaUploaded)));
                     },
                   ),
                   Spacer(),
@@ -583,5 +587,19 @@ class _ChatPage extends State<ChatPage> {
     print("DISPOSE");
     backgroundCheckStatus = false;
     super.dispose();
+  }
+
+  void _openAttachPage() {
+    Navigator.push(
+        context, SlideBottomRoute(page: StatusEditAttachImagePage()));
+
+    //        Navigator.push(
+    //          context,
+    //          SlideBottomRoute(
+    //              page: AddAddtionalMedia(
+    //                  videoTaken: videoTaken,
+    //                  photoTaken: photoTaken,
+    //                  gallerySelected: gallerySelected)),
+    //        );
   }
 }

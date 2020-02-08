@@ -10,8 +10,10 @@ import 'package:fedi/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
 import 'package:fedi/Pleroma/Models/Account.dart';
 import 'package:fedi/Pleroma/Models/Context.dart';
 import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:fedi/Transitions/SlideBottomRoute.dart';
 import 'package:fedi/Views/Alert.dart';
 import 'package:fedi/Views/MentionPage.dart';
+import 'package:fedi/app/status/edit/status_edit_attach_media_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/src/widgets/visibility.dart' as Vis;
@@ -236,11 +238,12 @@ class _StatusDetail extends State<StatusDetail> {
                       color: Colors.blue,
                     ),
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  CaptureDMMedia(0, mediaUploaded)));
+                      _openAttachPage();
+//                      Navigator.push(
+//                          context,
+//                          MaterialPageRoute(
+//                              builder: (context) =>
+//                                  CaptureDMMedia(0, mediaUploaded)));
                     },
                   ),
                   IconButton(
@@ -249,11 +252,12 @@ class _StatusDetail extends State<StatusDetail> {
                       color: Colors.blue,
                     ),
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  CaptureDMMedia(1, mediaUploaded)));
+                      _openAttachPage();
+//                      Navigator.push(
+//                          context,
+//                          MaterialPageRoute(
+//                              builder: (context) =>
+//                                  CaptureDMMedia(1, mediaUploaded)));
                     },
                   ),
                   IconButton(
@@ -262,11 +266,12 @@ class _StatusDetail extends State<StatusDetail> {
                       color: Colors.blue,
                     ),
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  CaptureDMMedia(2, mediaUploaded)));
+                      _openAttachPage();
+//                      Navigator.push(
+//                          context,
+//                          MaterialPageRoute(
+//                              builder: (context) =>
+//                                  CaptureDMMedia(2, mediaUploaded)));
                     },
                   ),
                   IconButton(
@@ -511,4 +516,18 @@ class _StatusDetail extends State<StatusDetail> {
   }
 
   postMediaId(String id) {}
+
+  void _openAttachPage() {
+    Navigator.push(
+        context, SlideBottomRoute(page: StatusEditAttachImagePage()));
+
+    //        Navigator.push(
+    //          context,
+    //          SlideBottomRoute(
+    //              page: AddAddtionalMedia(
+    //                  videoTaken: videoTaken,
+    //                  photoTaken: photoTaken,
+    //                  gallerySelected: gallerySelected)),
+    //        );
+  }
 }

@@ -1,17 +1,19 @@
-import 'dart:io';
+import 'package:fedi/disposable/disposable.dart';
+import 'package:fedi/file/picker/file_picker_model.dart';
+import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
-import 'package:fedi/media/picker/media_picker_model.dart';
+abstract class IFilePickerBloc implements Disposable {
+  static IFilePickerBloc of(BuildContext context, {listen: true}) =>
+      Provider.of<IFilePickerBloc>(context, listen: listen);
 
-class IFilePickerBloc {
+  FilePickerTab get selectedTab;
 
-  List<File> selectedFiles;
-  Stream<List<File>> selectedFilesStream;
+  Stream<FilePickerTab> get selectedTabStream;
 
-  MediaPickerTab selectedTab;
-  Stream<MediaPickerTab> selectedTabStream;
+  List<FilePickerTab> get availableTabs;
 
+  Stream<List<FilePickerTab>> get availableTabsStream;
 
-  List<MediaPickerTab> availableTabs;
-  Stream<List<MediaPickerTab>> availableTabsStream;
-
+  onTabSelected(FilePickerTab tab);
 }

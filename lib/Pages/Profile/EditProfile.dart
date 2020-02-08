@@ -1,13 +1,16 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/Pages/Profile/ProfileImageEditor.dart';
 import 'package:fedi/Pleroma/Foundation/Client.dart';
+import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart';
+import 'package:fedi/Pleroma/Models/Account.dart';
 import 'package:fedi/Views/Alert.dart';
 import 'package:fedi/Views/ProgressDialog.dart';
+import 'package:fedi/app/profile/edit/profile_edit_select_avatar_page.dart';
 import 'package:flutter/material.dart';
-import 'package:fedi/Pages/Profile/ProfileImageEditor.dart';
-import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
-import 'package:fedi/Pleroma/Models/Account.dart';
 import 'package:flutter_alert/flutter_alert.dart';
 
 class EditProfile extends StatefulWidget {
@@ -197,11 +200,16 @@ class _EditProfile extends State<EditProfile> {
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ProfileImageEditor(
-                                1, mediaUploaded, "avatar")));
+                    Navigator.push(context, MaterialPageRoute(
+                        builder: (context) =>
+                            ProfileEditSelectAvatarPage(selectedCallback: (
+                                File file) {},)));
+
+//                    Navigator.push(
+//                        context,
+//                        MaterialPageRoute(
+//                            builder: (context) => ProfileImageEditor(
+//                                1, mediaUploaded, "avatar")));
                   },
                   child: Container(
                     width: 125,
@@ -253,11 +261,16 @@ class _EditProfile extends State<EditProfile> {
                   right: 10,
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ProfileImageEditor(
-                                  1, mediaUploaded, "header")));
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context) =>
+                              ProfileEditSelectAvatarPage(selectedCallback: (
+                                  File file) {},)));
+//
+//                      Navigator.push(
+//                          context,
+//                          MaterialPageRoute(
+//                              builder: (context) => ProfileImageEditor(
+//                                  1, mediaUploaded, "header")));
                       print("edit header");
                     },
                     behavior: HitTestBehavior.translucent,
