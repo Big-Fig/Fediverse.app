@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:fedi/Pleroma/Foundation/Client.dart';
-import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_error.dart';
+import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_exception.dart';
 import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_service.dart';
 import 'package:fedi/Pleroma/rest/pleroma_rest_service.dart';
@@ -23,7 +23,7 @@ class PleromaMediaAttachmentService implements IPleromaMediaAttachmentService {
     if (httpResponse.statusCode == 200) {
       return MediaAttachment.fromJsonString(httpResponse.body);
     } else {
-      throw new PleromaMediaAttachmentUploadError(
+      throw new PleromaMediaAttachmentUploadException(
           file: file,
           statusCode: httpResponse.statusCode,
           body: httpResponse.body);

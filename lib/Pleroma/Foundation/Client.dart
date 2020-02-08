@@ -2,8 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:io' show Platform;
 import 'package:flutter/widgets.dart';
-import 'package:path/path.dart';
-import 'package:async/async.dart';
 import 'package:http/http.dart' as http;
 import 'package:fedi/DeepLinks/DeepLinkHelper.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
@@ -17,6 +15,15 @@ import 'package:hive/hive.dart';
 part 'Client.g.dart';
 
 enum HTTPMethod { GET, HEAD, POST, PUT, DELETE, PATCH }
+
+Map<HTTPMethod, String> httpMethodToStringMap = {
+  HTTPMethod.GET: "get",
+  HTTPMethod.HEAD: "head",
+  HTTPMethod.POST: "post",
+  HTTPMethod.PUT: "put",
+  HTTPMethod.DELETE: "delete",
+  HTTPMethod.PATCH: "patch",
+};
 
 @HiveType()
 class Client {

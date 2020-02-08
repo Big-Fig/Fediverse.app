@@ -1,20 +1,21 @@
 import 'dart:io';
 
 import 'package:fedi/Pleroma/Foundation/Client.dart';
-import 'package:fedi/Pleroma/profile/edit/pleroma_profile_edit_error.dart';
-import 'package:fedi/Pleroma/profile/edit/pleroma_profile_edit_service.dart';
+import 'package:fedi/Pleroma/Models/Account.dart';
+import 'package:fedi/Pleroma/account/edit/pleroma_account_edit_exception.dart';
+import 'package:fedi/Pleroma/account/edit/pleroma_account_edit_service.dart';
 import 'package:fedi/Pleroma/rest/pleroma_rest_service.dart';
 import 'package:flutter/widgets.dart';
-import 'package:http/src/response.dart';
+import 'package:http/http.dart';
 
-class PleromaProfileEditService implements IPleromaProfileEditService {
+class PleromaAccountEditService implements IPleromaAccountEditService {
   final editProfileRelativeUrlPath = "/api/v1/accounts/update_credentials";
   final IPleromaRestService restService;
 
-  PleromaProfileEditService(this.restService);
+  PleromaAccountEditService({@required this.restService});
 
   @override
-  Future<String> changeAvatarImage({@required File file}) async {
+  Future<Account> changeAvatarImage({@required File file}) async {
     var httpResponse = await restService.uploadFileMultipartRequest(
         httpMethod: HTTPMethod.PATCH,
         file: file,
@@ -25,7 +26,7 @@ class PleromaProfileEditService implements IPleromaProfileEditService {
   }
 
   @override
-  Future<String> changeHeaderImage({@required File file}) async {
+  Future<Account> changeHeaderImage({@required File file}) async {
     var httpResponse = await restService.uploadFileMultipartRequest(
         httpMethod: HTTPMethod.PATCH,
         file: file,
@@ -35,11 +36,11 @@ class PleromaProfileEditService implements IPleromaProfileEditService {
     return parseResponse(httpResponse);
   }
 
-  String parseResponse(Response httpResponse) {
+  Account parseResponse(Response httpResponse) {
     if (httpResponse.statusCode == 200) {
-      return httpResponse.body;
+      return Account.fromJsonString(httpResponse.body);
     } else {
-      throw new PleromaProfileEditError(
+      throw new PleromaAccountEditException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
   }
