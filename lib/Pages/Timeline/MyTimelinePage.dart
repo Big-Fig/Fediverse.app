@@ -186,6 +186,19 @@ class MyTimelinePageState extends State<MyTimelinePage>
       newStatuses.removeWhere((status) {
         return status.visibility == StatusModel.Visibility.DIRECT;
       });
+
+      if (hideReplies) {
+        newStatuses.removeWhere((status) {
+          return status.inReplyToId != null;
+        });
+      }
+
+      if (hideNSFW) {
+        newStatuses.removeWhere((status) {
+          return status.sensitive;
+        });
+      }
+
       widget.statuses.addAll(newStatuses);
       if (mounted) setState(() {});
       _refreshController.loadComplete();
@@ -229,16 +242,18 @@ class MyTimelinePageState extends State<MyTimelinePage>
   Widget build(BuildContext context) {
     return Scaffold(
       key: _drawerKey,
-      drawer: getDrawer(),
+      endDrawer: getDrawer(),
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.settings),
-          onPressed: () {
-            _drawerKey.currentState.openDrawer();
-          },
-        ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {
+              _drawerKey.currentState.openEndDrawer();
+            },
+          ),
+        ],
         title: TabBar(
-          labelStyle: TextStyle(fontSize: 12),
+          labelStyle: TextStyle(fontSize: 14),
           onTap: tabChanged,
           controller: _homeTabController,
           tabs: [
@@ -293,6 +308,9 @@ class MyTimelinePageState extends State<MyTimelinePage>
                   onChanged: (value) {
                     setState(() {
                       mediaOnly = value;
+                      if (mediaOnly == true){
+                        widget.statuses.clear();
+                      }
                       AppSettings.setTimelineMediaGridSetting(mediaOnly)
                           .then((_) {
                         selectTimeline(widget.tabPage.currentTimeline);
