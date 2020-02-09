@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pages/Post/QuickPostPage.dart';
 import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
@@ -86,7 +87,7 @@ class TabPageState extends State<TabPage>
     super.initState();
     updateBadges();
     setUpWebSockets();
-    
+
     _firebaseMessaging.requestNotificationPermissions();
     _tabController = TabController(length: 2, vsync: this);
     _children = [
@@ -101,9 +102,7 @@ class TabPageState extends State<TabPage>
       MessageConatiner(),
       myProfile,
     ];
-
   }
-
 
   @override
   void didChangeDependencies() {
@@ -138,14 +137,14 @@ class TabPageState extends State<TabPage>
     checkAlerts();
   }
 
-  final channel = IOWebSocketChannel.connect('${CurrentInstance.instance.currentClient.baseURL.replaceAll("https://", "ws://")}/api/v1/streaming/user',
+  final channel = IOWebSocketChannel.connect(
+      '${CurrentInstance.instance.currentClient.baseURL.replaceAll("https://", "ws://")}/api/v1/streaming/user',
       headers: {
-      HttpHeaders.authorizationHeader:
-          "Bearer ${CurrentInstance.instance.currentClient.accessToken}",
-    });
+        HttpHeaders.authorizationHeader:
+            "Bearer ${CurrentInstance.instance.currentClient.accessToken}",
+      });
 
   setUpWebSockets() {
-
     print("BASEURL");
     String url = CurrentInstance.instance.currentClient.baseURL
         .replaceAll("https://", "ws://");
@@ -261,61 +260,75 @@ class TabPageState extends State<TabPage>
     ];
 
     return Scaffold(
-            appBar: _appBar[_currentIndex],
-            body: _children[_currentIndex], // new
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerDocked,
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  SlideBottomRoute(page: QuickPostPage()),
-                );
-                // Navigator.push(
-                //   context,
-                //   SlideBottomRoute(page: CaptureController()),
-                // );
-              },
-              tooltip: AppLocalizations.of(context)
-                  .tr("tab_page.tooltip.increment"),
-              child: Icon(Icons.add),
-              elevation: 2.0,
-            ),
-
-            bottomNavigationBar: BottomNavigationBar(
-              type: BottomNavigationBarType.fixed,
-              showSelectedLabels: true,
-              showUnselectedLabels: true,
-              onTap: onTabTapped, // new
-              currentIndex: _currentIndex, // new
-              items: [
-                new BottomNavigationBarItem(
-                  backgroundColor: Colors.blue,
-                  icon: Icon(Icons.home),
-                  title: Text(''),
-                ),
-                new BottomNavigationBarItem(
-                  backgroundColor: Colors.blue,
-                  icon: notificaitonIcon,
-                  title: Text(''),
-                ),
-                new BottomNavigationBarItem(
-                    backgroundColor: Colors.blue,
-                    icon: Icon(null),
-                    title: Text('')),
-                new BottomNavigationBarItem(
-                  backgroundColor: Colors.blue,
-                  icon: Icon(Icons.message),
-                  title: Text(''),
-                ),
-                new BottomNavigationBarItem(
-                  backgroundColor: Colors.blue,
-                  icon: Icon(Icons.person),
-                  title: Text(''),
-                ),
-              ],
-            ),
+      appBar: _appBar[_currentIndex],
+      body: _children[_currentIndex], // new
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            SlideBottomRoute(page: QuickPostPage()),
           );
+          // Navigator.push(
+          //   context,
+          //   SlideBottomRoute(page: CaptureController()),
+          // );
+        },
+        tooltip: AppLocalizations.of(context).tr("tab_page.tooltip.increment"),
+        child: Icon(Icons.add),
+        elevation: 2.0,
+      ),
+
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
+        onTap: onTabTapped, // new
+        currentIndex: _currentIndex, // new
+        items: [
+          new BottomNavigationBarItem(
+            backgroundColor: Colors.blue,
+            icon: Icon(Icons.home),
+            title: Text(''),
+          ),
+          new BottomNavigationBarItem(
+            backgroundColor: Colors.blue,
+            icon: notificaitonIcon,
+            title: Text(''),
+          ),
+          new BottomNavigationBarItem(
+              backgroundColor: Colors.blue, icon: Icon(null), title: Text('')),
+          new BottomNavigationBarItem(
+            backgroundColor: Colors.blue,
+            icon: Icon(Icons.message),
+            title: Text(''),
+          ),
+          new BottomNavigationBarItem(
+            backgroundColor: Colors.blue,
+            icon: GestureDetector(
+              onLongPress: () {
+                showAccountSheet(context);
+              },
+              child: ClipRRect(
+                borderRadius: new BorderRadius.circular(12.0),
+                child: CachedNetworkImage(
+                  imageUrl: CurrentInstance.instance.currentAccount.avatar,
+                  placeholder: (context, url) => Container(
+                    height: 24,
+                    width: 24,
+                    child: CircularProgressIndicator(),
+                  ),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                  height: 24,
+                  width: 24,
+                ),
+              ),
+            ),
+            title: Text(''),
+          ),
+        ],
+      ),
+    );
   }
 
   void onDoubleDap(int index) {}
