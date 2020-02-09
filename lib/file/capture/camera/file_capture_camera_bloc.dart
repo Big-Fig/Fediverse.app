@@ -18,6 +18,10 @@ abstract class IFileCaptureCameraBloc {
   switchFrontBackCamera();
   chooseCameraByType(FileCaptureCameraType type);
   chooseCameraByIndex(int index);
+  Future<String> captureImage();
+  Future startVideoRecording();
+  Future pauseVideoRecording();
+  Future<String> stopVideoRecording();
 
 
 }

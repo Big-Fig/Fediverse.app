@@ -2,5 +2,5 @@ enum FileCaptureCameraType {
   front, back, other
 }
 enum FileCaptureCameraState {
-  error, saving, initializing, recordingVideo, capturingImage
+  error, initializing, videoRecording, videoPaused, imageCapturing
 }
