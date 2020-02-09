@@ -1,55 +1,101 @@
-import 'package:camera/camera.dart';
+import 'package:camera/camera.dart' as Camera;
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/file/capture/camera/file_capture_camera_bloc.dart';
 import 'package:fedi/file/capture/camera/file_capture_camera_model.dart';
+import 'package:rxdart/rxdart.dart';
 
+// It should be always true, at least on all popular devices
 const _frontCameraTypeIndex = 1;
 const _backCameraTypeIndex = 0;
 
-_calculateCameraIndexByType(FileCaptureCameraType cameraType) {
-  switch (cameraType) {
-    case FileCaptureCameraType.front:
-      return _frontCameraTypeIndex;
-      break;
-    case FileCaptureCameraType.back:
-      return _backCameraTypeIndex;
-      break;
-    default:
-      throw "Invalid cameraType $cameraType";
-      break;
-  }
-}
-
 class FileCaptureCameraBloc extends AsyncInitLoadingBloc
     implements IFileCaptureCameraBloc {
+  final int startCameraIndex;
+
   FileCaptureCameraBloc() : this.byCameraType();
 
   FileCaptureCameraBloc.byCameraType(
       {FileCaptureCameraType startCameraType = FileCaptureCameraType.back})
       : this.byCameraIndex(
-            startCameraIndex: _calculateCameraIndexByType(startCameraType));
+            startCameraIndex: mapCameraTypeToIndex(startCameraType));
 
   FileCaptureCameraBloc.byCameraIndex(
-      {int startCameraIndex = _backCameraTypeIndex});
+      {this.startCameraIndex = _backCameraTypeIndex});
 
   @override
-  Future internalAsyncInit() {
+  Future internalAsyncInit() async {
+    List<Camera.CameraDescription> availableCameras;
+    try {
+      availableCameras = await Camera.availableCameras();
+    } on Exception {
+      throw "Can't init. error during fetching available cameras";
+    }
 
-    controller = CameraController(availableCameras[selectedCameraIndex], ResolutionPreset
-        .high);
+    if (availableCameras.isEmpty) {
+      throw "Can't init. availableCameras is empty";
+    }
+
+    if (availableCameras.length <= startCameraIndex) {
+      throw "Can't init."
+          " Start camera index($startCameraIndex) is more than"
+          " availableCameras.length = ${availableCameras.length}";
+    }
+
+    availableCamerasSubject = BehaviorSubject.seeded(availableCameras);
+    addDisposable(subject: availableCamerasSubject);
+    this.controller = Camera.CameraController(
+        availableCameras[startCameraIndex], Camera.ResolutionPreset.high);
+
+    await controller.initialize();
   }
 
   @override
-  CameraController controller;
+  Camera.CameraController controller;
+
+  // ignore: close_sinks
+  BehaviorSubject<List<Camera.CameraDescription>> availableCamerasSubject;
 
   @override
-  List<CameraDescription> get availableCameras =>
-      throw UnimplementedError();
+  Stream<List<Camera.CameraDescription>> get availableCamerasStream =>
+      availableCamerasSubject.stream;
 
   @override
-  // TODO: implement availableCamerasStream
-  Stream<List<CameraDescription>> get availableCamerasStream =>
-      throw UnimplementedError();
+  List<Camera.CameraDescription> get availableCameras =>
+      availableCamerasSubject.value;
+
+  // ignore: close_sinks
+  BehaviorSubject<int> selectedCameraIndexSubject;
+
+  @override
+  Stream<int> get selectedCameraIndexStream =>
+      selectedCameraIndexSubject.stream;
+
+  @override
+  int get selectedCameraIndex => selectedCameraIndexSubject.value;
+
+  // ignore: close_sinks
+  BehaviorSubject<FileCaptureCameraState> selectedCameraStateSubject;
+
+  @override
+  Stream<FileCaptureCameraState> get selectedCameraStateStream =>
+      selectedCameraStateSubject.stream;
+
+  @override
+  FileCaptureCameraState get selectedCameraState =>
+      selectedCameraStateSubject.value;
+
+  @override
+  Stream<FileCaptureCameraType> get selectedCameraTypeStream =>
+      selectedCameraIndexStream.map(mapCameraIndexToType);
+
+  @override
+  FileCaptureCameraType get selectedCameraType =>
+      mapCameraIndexToType(selectedCameraIndexSubject.value);
+
+  @override
+  switchFrontBackCamera() {
+    throw UnimplementedError();
+  }
 
   @override
   chooseCameraByIndex(int index) {
@@ -63,35 +109,35 @@ class FileCaptureCameraBloc extends AsyncInitLoadingBloc
     throw UnimplementedError();
   }
 
-  @override
-  // TODO: implement selectedCameraIndex
-  int get selectedCameraIndex => throw UnimplementedError();
+  static FileCaptureCameraType mapCameraIndexToType(int cameraIndex) {
+    FileCaptureCameraType type;
+    switch (cameraIndex) {
+      case _frontCameraTypeIndex:
+        type = FileCaptureCameraType.front;
+        break;
+      case _backCameraTypeIndex:
+        type = FileCaptureCameraType.back;
+        break;
+      default:
+        type = FileCaptureCameraType.other;
+        break;
+    }
+    return type;
+  }
 
-  @override
-  // TODO: implement selectedCameraIndexStream
-  Stream<int> get selectedCameraIndexStream => throw UnimplementedError();
-
-  @override
-  // TODO: implement selectedCameraState
-  FileCaptureCameraState get selectedCameraState => throw UnimplementedError();
-
-  @override
-  // TODO: implement selectedCameraStateStream
-  Stream<FileCaptureCameraState> get selectedCameraStateStream =>
-      throw UnimplementedError();
-
-  @override
-  // TODO: implement selectedCameraType
-  FileCaptureCameraType get selectedCameraType => throw UnimplementedError();
-
-  @override
-  // TODO: implement selectedCameraTypeStream
-  Stream<FileCaptureCameraType> get selectedCameraTypeStream =>
-      throw UnimplementedError();
-
-  @override
-  switchFrontBackCamera() {
-    // TODO: implement switchFrontBackCamera
-    throw UnimplementedError();
+  static mapCameraTypeToIndex(FileCaptureCameraType cameraType) {
+    int index;
+    switch (cameraType) {
+      case FileCaptureCameraType.front:
+        index = _frontCameraTypeIndex;
+        break;
+      case FileCaptureCameraType.back:
+        index = _backCameraTypeIndex;
+        break;
+      default:
+        throw "Invalid cameraType $cameraType";
+        break;
+    }
+    return index;
   }
 }
