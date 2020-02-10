@@ -1,15 +1,17 @@
-import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/Pages/Profile/ProfileImageEditor.dart';
 import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart';
 import 'package:fedi/Pleroma/Models/Account.dart';
+import 'package:fedi/Pleroma/account/edit/pleroma_account_edit_service.dart';
 import 'package:fedi/Views/Alert.dart';
 import 'package:fedi/Views/ProgressDialog.dart';
 import 'package:fedi/app/profile/edit/profile_edit_select_avatar_page.dart';
+import 'package:fedi/app/profile/edit/profile_edit_select_header_page.dart';
+import 'package:fedi/async/async_dialog.dart';
+import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_alert/flutter_alert.dart';
 
@@ -203,13 +205,43 @@ class _EditProfile extends State<EditProfile> {
                     Navigator.push(context, MaterialPageRoute(
                         builder: (context) =>
                             ProfileEditSelectAvatarPage(selectedCallback: (
-                                File file) {},)));
+                                FilePickerFile filePickerFile) async {
+                              var
+                              accountEditService = IPleromaAccountEditService
+                                  .of(context, listen: false);
 
-//                    Navigator.push(
-//                        context,
-//                        MaterialPageRoute(
-//                            builder: (context) => ProfileImageEditor(
-//                                1, mediaUploaded, "avatar")));
+
+                              try {
+                                var dialogResult = await
+                                doAsyncOperationWithDialog(
+                                    title: Text("Updating avatar"),
+                                    context: context,
+                                    asyncCode: () async => accountEditService.changeAvatarImage
+                                        (file:
+                                      filePickerFile.file), isDismissible: true, cancellationValue:
+                                    null);
+
+                                if(dialogResult.result != null) {
+                                  this.myAccount = dialogResult.result;
+                                  String account =
+                                      "${myAccount.username}@${CurrentInstance.instance.currentClient.baseURL}";
+
+                                  CurrentInstance.instance.currentAccount = myAccount;
+                                  await InstanceStorage.updateAccount(account, myAccount);
+                                  setState(() {
+
+                                  });
+                                }
+
+                                // exit file picker
+                                Navigator.pop(context);
+
+                              } on Exception catch(e) {
+                                showDialog(context: context, child:
+                                AlertDialog(title: Text("error $e"),));
+                              }
+
+                            },)));
                   },
                   child: Container(
                     width: 125,
@@ -263,8 +295,42 @@ class _EditProfile extends State<EditProfile> {
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(
                           builder: (context) =>
-                              ProfileEditSelectAvatarPage(selectedCallback: (
-                                  File file) {},)));
+                              ProfileEditSelectHeaderPage(selectedCallback: (
+                                  FilePickerFile filePickerFile) async {
+                                var
+                                accountEditService = IPleromaAccountEditService
+                                    .of(context, listen: false);
+
+                                try {
+                                  var dialogResult = await
+                                  doAsyncOperationWithDialog(
+                                      title: Text("Updating header"),
+                                      context: context,
+                                      asyncCode: () async => accountEditService.changeHeaderImage
+                                          (file:
+                                        filePickerFile.file), isDismissible: true, cancellationValue:
+                                  null);
+
+                                  if(dialogResult.result != null) {
+                                    this.myAccount = dialogResult.result;
+                                    String account =
+                                        "${myAccount.username}@${CurrentInstance.instance.currentClient.baseURL}";
+
+                                    CurrentInstance.instance.currentAccount = myAccount;
+                                    await InstanceStorage.updateAccount(account, myAccount);
+                                    setState(() {
+
+                                    });
+                                  }
+                                  // exit file picker
+                                  Navigator.pop(context);
+
+                                } on Exception catch(e) {
+                                  showDialog(context: context, child:
+                                  AlertDialog(title: Text("error $e"),));
+                                }
+
+                              },)));
 //
 //                      Navigator.push(
 //                          context,

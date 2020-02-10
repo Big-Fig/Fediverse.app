@@ -7,7 +7,7 @@ import 'package:rxdart/subjects.dart';
 
 abstract class FilePickerBloc extends DisposableOwner
     implements IFilePickerBloc {
-  final List<FileType> fileTypesToPick;
+  final List<FilePickerFileType> fileTypesToPick;
   final bool captureEnabled;
 
   // ignore: close_sinks
@@ -48,23 +48,26 @@ abstract class FilePickerBloc extends DisposableOwner
   }
 
   static List<FilePickerTab> calculateFilePickerTabs(
-      {@required List<FileType> fileTypesToPick,
+      {@required List<FilePickerFileType> fileTypesToPick,
       @required bool captureEnabled}) {
     var tabs = Set<FilePickerTab>();
 
     fileTypesToPick.forEach((type) {
       switch (type) {
-        case FileType.image:
+        case FilePickerFileType.image:
           tabs.add(FilePickerTab.gallery);
           if (captureEnabled) {
             tabs.add(FilePickerTab.captureImage);
           }
           break;
-        case FileType.video:
+        case FilePickerFileType.video:
           tabs.add(FilePickerTab.gallery);
           if (captureEnabled) {
             tabs.add(FilePickerTab.captureVideo);
           }
+          break;
+        case FilePickerFileType.other:
+         // TODO: not implemented yet
           break;
       }
     });

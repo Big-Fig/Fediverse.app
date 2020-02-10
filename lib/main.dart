@@ -8,6 +8,13 @@ import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_service.d
 import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_service_impl.dart';
 import 'package:fedi/Pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/Pleroma/rest/pleroma_rest_service_impl.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/permission/camera_permission_bloc.dart';
+import 'package:fedi/permission/camera_permission_bloc_impl.dart';
+import 'package:fedi/permission/mic_permission_bloc.dart';
+import 'package:fedi/permission/mic_permission_bloc_impl.dart';
+import 'package:fedi/permission/permissions_service.dart';
+import 'package:fedi/permission/permissions_service_impl.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -95,11 +102,15 @@ class MyApp extends StatelessWidget {
     return provideGlobalContext(app);
   }
 
-  Widget provideGlobalContext(Widget app) => Provider(
-      create: (BuildContext context) => PushHelper(),
-      child: Provider(
-          create: (BuildContext context) => DeepLinkHelper(),
-          child: providePleromaContext(app)));
+  Widget provideGlobalContext(Widget app) => MultiProvider(
+        providers: [
+          DisposableProvider<IPermissionsService>(
+              create: (BuildContext context) => PermissionsService()),
+          Provider(create: (BuildContext context) => DeepLinkHelper()),
+          Provider(create: (BuildContext context) => PushHelper())
+        ],
+        child: providePermissionsContext(child: providePleromaContext(app)),
+      );
 
   Widget providePleromaContext(Widget app) => Provider<IPleromaRestService>(
       create: (BuildContext context) => PleromaRestService(),
@@ -114,6 +125,19 @@ class MyApp extends StatelessWidget {
         ],
         child: app,
       ));
+  Widget providePermissionsContext({@required Widget child}) => MultiProvider(
+        providers: [
+          Provider<ICameraPermissionBloc>(
+            create: (context) => CameraPermissionBloc(
+                IPermissionsService.of(context, listen: false)),
+          ),
+          Provider<IMicPermissionBloc>(
+            create: (context) => MicPermissionBloc(
+                IPermissionsService.of(context, listen: false)),
+          ),
+        ],
+        child: child,
+      );
 }
 
 Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {

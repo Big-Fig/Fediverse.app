@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:flutter/widgets.dart';
@@ -16,4 +18,5 @@ abstract class IFilePickerBloc implements Disposable {
   Stream<List<FilePickerTab>> get availableTabsStream;
 
   onTabSelected(FilePickerTab tab);
+  onFileSelected(FilePickerFile filePickerFile);
 }

@@ -620,5 +620,13 @@
     "action": {
       "ok": "OL"
     }
+  },
+  "dialog": {
+    "async": {
+      "title": "Performing...",
+      "action": {
+        "cancel": "Cancel"
+      }
+    }
   }
 }

@@ -2,6 +2,9 @@ import 'package:async/async.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
+
+Logger _logger = Logger("async_dialog.dart");
 
 Future<AsyncDialogResult<T>> doAsyncOperationWithDialog<T>(
     {   @required BuildContext context,
@@ -51,7 +54,8 @@ class _AsyncProgressDialog {
         _isShowing = false;
         Navigator.of(context).pop();
         result = true;
-      } catch (_) {
+      } catch (e) {
+        _logger.shout(() => "failed to dismiss dialog $e");
         result = false;
       }
     } else {
