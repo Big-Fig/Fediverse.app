@@ -1,9 +1,103 @@
+import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/file/gallery/file_gallery_bloc.dart';
+import 'package:fedi/file/gallery/file_gallery_model.dart';
+import 'package:fedi/file/gallery/folder/file_gallery_folder_bloc.dart';
+import 'package:fedi/file/gallery/folder/file_gallery_folder_bloc_impl.dart';
+import 'package:fedi/file/gallery/folder/file_gallery_folder_widget.dart';
+import 'package:fedi/permission/grant_permission_widget.dart';
+import 'package:fedi/permission/storage_permission_bloc.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:photo_manager/photo_manager.dart';
 
 class FileGalleryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Text("Not implemented yet");
+    var fileGalleryBloc = IFileGalleryBloc.of(context);
+
+    return AsyncInitLoadingWidget(
+      loadingFinishedBuilder: (context) => GrantPermissionWidget(
+        grantedBuilder: (context) =>
+            buildPermissionGrantedView(context, fileGalleryBloc),
+        permissionBloc: fileGalleryBloc,
+      ),
+      asyncInitLoadingBloc: fileGalleryBloc,
+    );
   }
 
+  Widget buildPermissionGrantedView(
+      BuildContext context, IFileGalleryBloc fileGalleryBloc) {
+    return StreamBuilder<FileGalleryState>(
+        stream: fileGalleryBloc.galleryStateStream,
+        initialData: fileGalleryBloc.galleryState,
+        builder: (context, snapshot) {
+          var galleryState = snapshot.data;
+
+          switch (galleryState) {
+            case FileGalleryState.notStarted:
+              return Text("Loading not started");
+              break;
+            case FileGalleryState.loading:
+              return Center(child: CircularProgressIndicator());
+              break;
+            case FileGalleryState.loaded:
+              return buildFoldersWidget(context, fileGalleryBloc);
+              break;
+            default:
+              // null
+              return Center(child: CircularProgressIndicator());
+              break;
+          }
+        });
+  }
+
+  Widget buildFoldersWidget(
+      BuildContext context, IFileGalleryBloc fileGalleryBloc) {
+    return StreamBuilder<List<AssetPathEntity>>(
+        stream: fileGalleryBloc.foldersStream,
+        initialData: fileGalleryBloc.folders,
+        builder: (context, snapshot) {
+          var folders = snapshot.data;
+
+          if (folders.isEmpty) {
+            return Text("You don't have any media");
+          } else {
+            return DefaultTabController(
+              length: folders.length,
+              child: Column(
+                children: <Widget>[
+                  TabBar(
+                    tabs: folders
+                        .map((folder) => Tab(
+                              child: Text(folder.name, style: TextStyle
+                                (color:  Colors.blue),),
+                            ))
+                        .toList(),
+                  ),
+                  Expanded(
+                    child: TabBarView(
+                      // Lazy load
+                      children:
+                          List<Widget>.generate(folders.length, (int index) {
+                        var folder = folders[index];
+                        return DisposableProvider<IFileGalleryFolderBloc>(
+                            create: (BuildContext context) {
+                              var folderBloc = FileGalleryFolderBloc(folder: folder,
+                                    storagePermissionBloc:
+                                    IStoragePermissionBloc.of(context,
+                                        listen: false));
+                              folderBloc.performAsyncInit();
+                              return folderBloc;
+                            },
+                            child: FileGalleryFolderWidget());
+                      }),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+        });
+  }
 }

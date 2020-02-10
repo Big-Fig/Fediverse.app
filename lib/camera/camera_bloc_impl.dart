@@ -7,7 +7,6 @@ import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/camera/camera_bloc.dart';
 import 'package:fedi/camera/camera_exception.dart';
 import 'package:fedi/camera/camera_model.dart';
-import 'package:fedi/file/file_model.dart';
 import 'package:fedi/permission/camera_permission_bloc.dart';
 import 'package:fedi/permission/group_permission_bloc_impl.dart';
 import 'package:fedi/permission/mic_permission_bloc.dart';

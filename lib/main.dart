@@ -15,6 +15,8 @@ import 'package:fedi/permission/mic_permission_bloc.dart';
 import 'package:fedi/permission/mic_permission_bloc_impl.dart';
 import 'package:fedi/permission/permissions_service.dart';
 import 'package:fedi/permission/permissions_service_impl.dart';
+import 'package:fedi/permission/storage_permission_bloc.dart';
+import 'package:fedi/permission/storage_permission_bloc_impl.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -133,6 +135,10 @@ class MyApp extends StatelessWidget {
           ),
           Provider<IMicPermissionBloc>(
             create: (context) => MicPermissionBloc(
+                IPermissionsService.of(context, listen: false)),
+          ),
+          Provider<IStoragePermissionBloc>(
+            create: (context) => StoragePermissionBloc(
                 IPermissionsService.of(context, listen: false)),
           ),
         ],

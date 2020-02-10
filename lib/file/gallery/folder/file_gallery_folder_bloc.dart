@@ -6,16 +6,16 @@ import 'package:flutter/widgets.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:provider/provider.dart';
 
-abstract class IFileGalleryBloc
+abstract class IFileGalleryFolderBloc
     implements Disposable, IPermissionBloc, IAsyncInitLoadingBloc {
-  static IFileGalleryBloc of(BuildContext context, {listen: true}) =>
-      Provider.of<IFileGalleryBloc>(context, listen: listen);
+  static IFileGalleryFolderBloc of(BuildContext context, {listen: true}) =>
+      Provider.of<IFileGalleryFolderBloc>(context, listen: listen);
 
   Stream<FileGalleryState> get galleryStateStream;
 
   FileGalleryState get galleryState;
 
-  Stream<List<AssetPathEntity>> get foldersStream;
+  Stream<List<AssetEntity>> get filesStream;
 
-  List<AssetPathEntity> get folders;
+  List<AssetEntity> get files;
 }

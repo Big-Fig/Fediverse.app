@@ -5,7 +5,6 @@ import 'package:fedi/camera/camera_photo_widget.dart';
 import 'package:fedi/camera/camera_video_widget.dart';
 import 'package:fedi/camera/camera_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:fedi/file/file_model.dart';
 import 'package:fedi/file/picker/file_picker_bloc.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:fedi/permission/camera_permission_bloc.dart';

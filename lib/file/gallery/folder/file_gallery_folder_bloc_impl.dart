@@ -1,29 +1,33 @@
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/file/gallery/file_gallery_bloc.dart';
 import 'package:fedi/file/gallery/file_gallery_model.dart';
-import 'package:fedi/permission/permission_bloc.dart';
+import 'package:fedi/file/gallery/folder/file_gallery_folder_bloc.dart';
 import 'package:fedi/permission/storage_permission_bloc.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:rxdart/rxdart.dart';
 
-abstract class AbstractFileGalleryBloc extends AsyncInitLoadingBloc
-    implements Disposable, IPermissionBloc, IFileGalleryBloc {
+abstract class AbstractFileGalleryFolderBloc extends AsyncInitLoadingBloc
+    implements IFileGalleryFolderBloc {
   final IStoragePermissionBloc storagePermissionBloc;
-  AbstractFileGalleryBloc({@required this.storagePermissionBloc}) {
-    addDisposable(subject: foldersSubject);
+
+  final AssetPathEntity folder;
+
+  AbstractFileGalleryFolderBloc({
+    @required this.folder,
+    @required this.storagePermissionBloc,
+  }) {
+    addDisposable(subject: filesSubject);
     addDisposable(subject: galleryStateSubject);
   }
 
   // ignore: close_sinks
-  BehaviorSubject<List<AssetPathEntity>> foldersSubject = BehaviorSubject();
+  BehaviorSubject<List<AssetEntity>> filesSubject = BehaviorSubject();
 
   @override
-  Stream<List<AssetPathEntity>> get foldersStream => foldersSubject.stream;
+  Stream<List<AssetEntity>> get filesStream => filesSubject.stream;
   @override
-  List<AssetPathEntity> get folders => foldersSubject.value;
+  List<AssetEntity> get files => filesSubject.value;
 
   // ignore: close_sinks
   BehaviorSubject<FileGalleryState> galleryStateSubject =
@@ -33,7 +37,6 @@ abstract class AbstractFileGalleryBloc extends AsyncInitLoadingBloc
 
   @override
   FileGalleryState get galleryState => galleryStateSubject.value;
-
   @override
   Future internalAsyncInit() async {
     await storagePermissionBloc.checkPermissionStatus();
@@ -45,7 +48,7 @@ abstract class AbstractFileGalleryBloc extends AsyncInitLoadingBloc
           streamSubscription: storagePermissionBloc.permissionGrantedStream
               .distinct()
               .listen((granted) {
-        if (granted && folders?.isNotEmpty != true) {
+        if (granted && files?.isNotEmpty != true) {
           _initAfterPermissionGranted();
         }
       }));
@@ -53,18 +56,18 @@ abstract class AbstractFileGalleryBloc extends AsyncInitLoadingBloc
   }
 
   Future _initAfterPermissionGranted() async {
-    return await reloadFolders();
+    return await reloadFiles();
   }
 
-  reloadFolders() async {
+  reloadFiles() async {
     assert(permissionGranted);
     galleryStateSubject.add(FileGalleryState.loading);
-    var folders = await loadFolders();
-    foldersSubject.add(folders);
+    var files = await loadFiles();
+    filesSubject.add(files);
     galleryStateSubject.add(FileGalleryState.loaded);
   }
 
-  Future<List<AssetPathEntity>> loadFolders();
+  Future<List<AssetEntity>> loadFiles();
 
   @override
   Future<PermissionStatus> checkPermissionStatus() =>
@@ -90,14 +93,14 @@ abstract class AbstractFileGalleryBloc extends AsyncInitLoadingBloc
       storagePermissionBloc.requestPermission();
 }
 
-class FileGalleryBloc extends AbstractFileGalleryBloc {
-  FileGalleryBloc({@required IStoragePermissionBloc storagePermissionBloc})
-      : super(storagePermissionBloc: storagePermissionBloc) {
-    addDisposable(disposable: CustomDisposable(() {
-      PhotoManager.releaseCache();
-    }));
-  }
+class FileGalleryFolderBloc extends AbstractFileGalleryFolderBloc {
+  FileGalleryFolderBloc({
+    @required AssetPathEntity folder,
+    @required IStoragePermissionBloc storagePermissionBloc,
+  }) : super(folder: folder, storagePermissionBloc: storagePermissionBloc);
 
-  Future<List<AssetPathEntity>> loadFolders() async =>
-      await PhotoManager.getAssetPathList();
+  @override
+  Future<List<AssetEntity>> loadFiles() async {
+    return await folder.assetList;
+  }
 }

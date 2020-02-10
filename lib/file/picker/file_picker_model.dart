@@ -1,7 +1,8 @@
 import 'dart:io';
 
-import 'package:fedi/file/file_model.dart';
 import 'package:flutter/widgets.dart';
+
+enum FilePickerFileType { image, video, other }
 
 enum FilePickerTab { captureVideo, captureImage, gallery }
 
