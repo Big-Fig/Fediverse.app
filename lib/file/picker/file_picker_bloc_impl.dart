@@ -1,5 +1,4 @@
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/file/file_model.dart';
 import 'package:fedi/file/picker/file_picker_bloc.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:flutter/widgets.dart';

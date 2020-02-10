@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:fedi/file/file_model.dart';
 import 'package:fedi/file/picker/file_picker_bloc_impl.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:fedi/file/picker/multi/multi_file_picker_bloc.dart';
