@@ -10,24 +10,30 @@ import 'package:rxdart/rxdart.dart';
 class MultiFilePickerBloc extends FilePickerBloc
     implements IMultiFilePickerBloc {
   // ignore: close_sinks
-  BehaviorSubject<List<File>> selectedFilesSubject;
+  BehaviorSubject<List<FilePickerFile>> selectedFilesSubject;
 
   @override
-  List<File> get selectedFiles => selectedFilesSubject.value;
+  List<FilePickerFile> get selectedFiles => selectedFilesSubject.value;
 
   @override
-  Stream<List<File>> get selectedFilesStream => selectedFilesSubject.stream;
+  Stream<List<FilePickerFile>> get selectedFilesStream => selectedFilesSubject.stream;
 
   MultiFilePickerBloc(
-      {@required List<FileType> fileTypesToPick,
+      {@required List<FilePickerFileType> fileTypesToPick,
       @required bool captureEnabled,
       @required FilePickerTab startActiveTab,
-      List<File> initialSelection = const []})
+      List<FilePickerFile> initialSelectedFiles = const []})
       : super(
             fileTypesToPick: fileTypesToPick,
             captureEnabled: captureEnabled,
             startActiveTab: startActiveTab) {
-    selectedFilesSubject = BehaviorSubject.seeded(initialSelection);
+    selectedFilesSubject = BehaviorSubject.seeded(initialSelectedFiles);
     addDisposable(subject: selectedFilesSubject);
+  }
+
+  @override
+  onFileSelected(FilePickerFile filePickerFile) {
+   selectedFiles.add(filePickerFile);
+   selectedFilesSubject.add(selectedFiles);
   }
 }

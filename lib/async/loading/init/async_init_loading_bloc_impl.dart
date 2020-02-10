@@ -22,6 +22,9 @@ abstract class AsyncInitLoadingBloc extends AsyncLoadingService
   @override
   AsyncInitLoadingState get initLoadingState => _isInitLoadingSubject.value;
 
+  @override
+  dynamic initLoadingException;
+
   AsyncInitLoadingBloc() {
     addDisposable(subject: _isInitLoadingSubject);
   }
@@ -36,6 +39,7 @@ abstract class AsyncInitLoadingBloc extends AsyncLoadingService
         }
       }).catchError((err) {
         _logger.shout(() => "Error during init $err");
+        initLoadingException = err;
         if (!_isInitLoadingSubject.isClosed) {
           _isInitLoadingSubject.add(AsyncInitLoadingState.failed);
         }

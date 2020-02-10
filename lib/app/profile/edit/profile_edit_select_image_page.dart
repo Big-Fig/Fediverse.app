@@ -1,9 +1,9 @@
 import 'dart:io';
 
+import 'package:fedi/app/profile/edit/profile_edit_select_image_dialog.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/file/file_model.dart';
 import 'package:fedi/file/picker/file_picker_bloc.dart';
-import 'package:fedi/file/picker/file_picker_bloc_impl.dart';
 import 'package:fedi/file/picker/file_picker_bottom_nav_bar_widget.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:fedi/file/picker/single/single_file_picker_bloc.dart';
@@ -13,7 +13,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-typedef ImageFileSelectedCallback(File file);
+typedef ImageFileSelectedCallback(FilePickerFile file);
 
 abstract class ProfileEditSelectImagePage extends StatelessWidget {
   final ImageFileSelectedCallback selectedCallback;
@@ -23,9 +23,9 @@ abstract class ProfileEditSelectImagePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return DisposableProvider<ISingleFilePickerBloc>(
         create: (context) => SingleFilePickerBloc(
-            fileTypesToPick: [FileType.image],
+            fileTypesToPick: [FilePickerFileType.image],
             captureEnabled: true,
-            fileSelectedCallback: selectedCallback,
+            fileSelectedCallback: (file) => onFileSelected(context, file),
             startActiveTab: FilePickerTab.gallery),
         // provide parent abstract implementation by type
         child: ProxyProvider<ISingleFilePickerBloc, IFilePickerBloc>(
@@ -45,4 +45,6 @@ abstract class ProfileEditSelectImagePage extends StatelessWidget {
   }
 
   Widget createAppBarTitle(BuildContext context);
+
+  onFileSelected(BuildContext context, FilePickerFile filePickerFile);
 }

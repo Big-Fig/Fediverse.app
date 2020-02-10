@@ -1,1 +1,1 @@
-enum FileType { image, video }
+enum FilePickerFileType { image, video, other }

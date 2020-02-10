@@ -20,7 +20,7 @@ class StatusEditAttachImagePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return DisposableProvider<IMultiFilePickerBloc>(
         create: (context) => MultiFilePickerBloc(
-            fileTypesToPick: [FileType.image],
+            fileTypesToPick: [FilePickerFileType.image],
             captureEnabled: true,
             startActiveTab: FilePickerTab.gallery),
         // provide parent abstract implementation by type

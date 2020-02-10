@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:fedi/file/file_model.dart';
 import 'package:fedi/file/picker/file_picker_bloc_impl.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';
@@ -8,14 +6,21 @@ import 'package:flutter/widgets.dart';
 
 class SingleFilePickerBloc extends FilePickerBloc
     implements ISingleFilePickerBloc {
-  final Function(File file) fileSelectedCallback;
+  final Function(FilePickerFile filePickerFile) fileSelectedCallback;
   SingleFilePickerBloc(
       {@required this.fileSelectedCallback,
-      @required List<FileType> fileTypesToPick,
+      @required List<FilePickerFileType> fileTypesToPick,
       @required bool captureEnabled,
       @required FilePickerTab startActiveTab})
       : super(
             fileTypesToPick: fileTypesToPick,
             captureEnabled: captureEnabled,
             startActiveTab: startActiveTab);
+
+  @override
+  onFileSelected(FilePickerFile filePickerFile) {
+    if (fileSelectedCallback != null) {
+      fileSelectedCallback(filePickerFile);
+    }
+  }
 }
