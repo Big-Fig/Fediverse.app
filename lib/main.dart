@@ -2,6 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/DeepLinks/DeepLinkHelper.dart';
 import 'package:fedi/Pages/Push/PushHelper.dart';
 import 'package:fedi/Pleroma/Models/ClientSettings.dart';
+import 'package:fedi/Pleroma/Models/Emoji.dart';
+import 'package:fedi/Pleroma/Models/Field.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -27,6 +29,8 @@ void main() async {
   Hive.registerAdapter(ClientAdapter(), 34);
   Hive.registerAdapter(AccountAdapter(), 35);
   Hive.registerAdapter(ClientSettingsAdapter(), 36);
+  Hive.registerAdapter(FieldAdapter(), 37);
+  Hive.registerAdapter(EmojiAdapter(), 38);
 
   Hive.init(directory.path);
 
@@ -87,10 +91,10 @@ class MyApp extends StatelessWidget {
     return provideGlobalContext(app);
   }
 
-  Widget provideGlobalContext(Widget app) =>
-      Provider(create: (BuildContext context) => PushHelper(),
-          child: Provider(
-              create: (BuildContext context) => DeepLinkHelper(), child: app));
+  Widget provideGlobalContext(Widget app) => Provider(
+      create: (BuildContext context) => PushHelper(),
+      child: Provider(
+          create: (BuildContext context) => DeepLinkHelper(), child: app));
 }
 
 Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
