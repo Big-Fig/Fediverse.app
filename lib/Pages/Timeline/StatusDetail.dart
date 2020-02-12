@@ -318,8 +318,14 @@ class _StatusDetail extends State<StatusDetail> {
   mediaUploaded(BuildContext context, String id) {
     print("MY ID!!! $id");
 
-    Navigator.of(context)
-        .popUntil((route) => route.settings.name == "/StatusDetail");
+
+    // should be refactored
+    Navigator.pop(context);
+    Navigator.pop(context);
+    // below strings throw strange exceptions
+
+//    Navigator.of(context)
+//        .popUntil((route) => route.settings.name == "/StatusDetail");
 
     sendMessageWithAttachment(id);
   }

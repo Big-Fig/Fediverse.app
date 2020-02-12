@@ -236,14 +236,20 @@ class _ChatPage extends State<ChatPage> {
   mediaUploaded(BuildContext context, String id) {
     print("MY ID!!! $id");
 
-    Navigator.of(context)
-        .popUntil((route) => route.settings.name == "/ChatPage");
+    // should be refactored
+    Navigator.pop(context);
+    Navigator.pop(context);
+    // below strings throw strange exceptions
+//    Navigator.of(context)
+//        .popUntil((route) => route.settings.name == "/ChatPage");
 
     if (statuses.length == 0) {
       startNewConvoWithAccatment(context, id);
     } else {
       sendMessageWithAttachment(context, id);
     }
+
+
   }
 
   void fetchStatuses(BuildContext context) {

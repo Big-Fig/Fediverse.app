@@ -1,14 +1,12 @@
-import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_service.dart';
-import 'package:fedi/file/picker/file_picker_model.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:fedi/Views/Alert.dart';
 import 'package:fedi/Views/LocalVideoPlayer.dart';
 import 'package:fedi/Views/ProgressDialog.dart';
+import 'package:fedi/file/picker/file_picker_model.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class DMMediaPage extends StatefulWidget {
   final FilePickerFile filePickerFile;
@@ -26,7 +24,7 @@ class DMMediaPage extends StatefulWidget {
 class _DMMediaPage extends State<DMMediaPage> {
   ProgressDialog _pr;
   CameraController controller;
-  File file;
+
   String statusVisability = "";
   String status = "";
   visibilityUpdated(String visibility) {
@@ -96,7 +94,7 @@ class _DMMediaPage extends State<DMMediaPage> {
   }
 
 
-  postStatus(BuildContext context) {
+  postStatus(BuildContext context) async {
     _pr = ProgressDialog(context, ProgressDialogType.Normal);
     var appLocalizations = AppLocalizations.of(context);
     _pr.setMessage(appLocalizations.tr("media.dm.uploading.dialog.content"));
@@ -106,9 +104,12 @@ class _DMMediaPage extends State<DMMediaPage> {
         context, listen: false);
 
 
-    mediaAttachmentService.uploadMedia(file: file).then((attachment) {
+    try {
+      var attachment = await mediaAttachmentService.uploadMedia(file: widget
+          .filePickerFile.file);
+      _pr.hide();
       widget.mediaUploaded(context, attachment.id);
-    }).catchError((e) {
+    } on Exception catch (e) {
       print(e);
       _pr.hide();
       var alert = Alert(
@@ -117,7 +118,8 @@ class _DMMediaPage extends State<DMMediaPage> {
           appLocalizations.tr("media.dm.uploading.error.content"),
               () => {});
       alert.showAlert();
-    });
+    }
+
 
     // CurrentInstance.instance.currentClient
     //     .run(
