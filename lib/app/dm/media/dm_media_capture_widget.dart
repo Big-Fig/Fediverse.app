@@ -28,13 +28,19 @@ class CaptureDMMediaWidget extends StatelessWidget {
             captureEnabled: true,
             startActiveTab: selectedTab,
         fileSelectedCallback: (filePickerFile) {
-          DMMediaPage(filePickerFile: filePickerFile,
+          ;
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DMMediaPage(filePickerFile: filePickerFile,
             popParent: () {
               Navigator.pop(context);
               Navigator.pop(context);
               Navigator.pop(context);
             },
-            mediaUploaded: mediaUploaded,);
+            mediaUploaded: mediaUploaded,),
+          ));
         }),
         // provide parent abstract implementation by type
         child: ProxyProvider<ISingleFilePickerBloc, IFilePickerBloc>(
