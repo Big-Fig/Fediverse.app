@@ -71,8 +71,16 @@ dependencies:
   # annotations to generate json from & to methods
   json_annotation: ^3.0.1
 
-  # di provider framework
-  provider: ^4.0.2
+  # advanced logging
+  logging: ^0.11.4
+  # dependency injection framework
+  provider: ^4.0.3
+
+  # fancy permission handler
+  permission_handler: ^4.2.0+hotfix.3
+
+  # better tab indicator
+  md2_tab_indicator: ^1.0.2
 
 dev_dependencies:
   flutter_test:

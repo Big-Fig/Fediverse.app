@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pages/Profile/OtherAccount.dart';
+import 'package:fedi/app/dm/media/dm_media_capture_widget.dart';
+import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -19,7 +21,6 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'ChatCell.dart';
-import 'Media/CaptureDMMedia.dart';
 
 class ChatPage extends StatefulWidget {
   final Function refreshMesagePage;
@@ -142,7 +143,10 @@ class _ChatPage extends State<ChatPage> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  CaptureDMMedia(0, mediaUploaded)));
+                                  CaptureDMMediaWidget(
+                                    mediaUploaded: mediaUploaded,
+                                    selectedTab: FilePickerTab
+                                        .captureVideo,)));
                     },
                   ),
                   IconButton(
@@ -155,7 +159,10 @@ class _ChatPage extends State<ChatPage> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  CaptureDMMedia(1, mediaUploaded)));
+                                  CaptureDMMediaWidget(
+                                    mediaUploaded: mediaUploaded,
+                                    selectedTab: FilePickerTab
+                                        .captureImage,)));
                     },
                   ),
                   IconButton(
@@ -168,7 +175,10 @@ class _ChatPage extends State<ChatPage> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  CaptureDMMedia(2, mediaUploaded)));
+                                  CaptureDMMediaWidget(
+                                    mediaUploaded: mediaUploaded,
+                                    selectedTab: FilePickerTab
+                                        .gallery,)));
                     },
                   ),
                   Spacer(),
@@ -226,14 +236,20 @@ class _ChatPage extends State<ChatPage> {
   mediaUploaded(BuildContext context, String id) {
     print("MY ID!!! $id");
 
-    Navigator.of(context)
-        .popUntil((route) => route.settings.name == "/ChatPage");
+    // should be refactored
+    Navigator.pop(context);
+    Navigator.pop(context);
+    // below strings throw strange exceptions
+//    Navigator.of(context)
+//        .popUntil((route) => route.settings.name == "/ChatPage");
 
     if (statuses.length == 0) {
       startNewConvoWithAccatment(context, id);
     } else {
       sendMessageWithAttachment(context, id);
     }
+
+
   }
 
   void fetchStatuses(BuildContext context) {

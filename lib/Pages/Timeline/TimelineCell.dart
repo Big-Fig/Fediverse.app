@@ -23,6 +23,7 @@ import 'package:html/dom.dart' as dom;
 
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
+import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_model.dart';
 
 class TimelineCell extends StatefulWidget {
   final Status status;

@@ -1,24 +1,19 @@
 import 'dart:io';
-import 'dart:convert';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:fedi/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
 import 'package:fedi/Pleroma/Models/Account.dart';
-import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_service.dart';
 import 'package:fedi/Transitions/SlideBottomRoute.dart';
 import 'package:fedi/Views/Alert.dart';
 import 'package:fedi/Views/LocalVideoPlayer.dart';
 import 'package:fedi/Views/MentionPage.dart';
 import 'package:fedi/Views/ProgressDialog.dart';
+import 'package:fedi/app/status/edit/attach/status_edit_attach_media_page.dart';
+import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:flutter/material.dart';
-import 'package:photo_manager/photo_manager.dart';
-
-import 'package:fedi/Pleroma/Foundation/Requests/Media.dart' as MediaRequest;
-import 'package:fedi/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
-import 'AddAdditionalMedia.dart';
-import 'Photo/PhotoFile.dart';
-import 'Video/VideoFIle.dart';
 
 class QuickPostPage extends StatefulWidget {
   @override
@@ -33,7 +28,7 @@ class _QuickPostPageState extends State<QuickPostPage> {
   ProgressDialog _pr;
   String oldText = "";
   TextEditingController statusController = TextEditingController();
-  List<dynamic> assets = [];
+  List<FilePickerFile> assets = [];
   Widget status;
 
   accountMentioned(Account acct) {
@@ -117,7 +112,7 @@ class _QuickPostPageState extends State<QuickPostPage> {
                                           getVisibilityIcon("Public"),
                                           Text(AppLocalizations.of(context)
                                               .tr("post.quick_post.visibility"
-                                              ".public"))
+                                                  ".public"))
                                         ],
                                       ),
                                       onPressed: () {
@@ -130,8 +125,7 @@ class _QuickPostPageState extends State<QuickPostPage> {
                                   ),
                                 ],
                               ),
-                            ),
-                            // Unlisted
+                            ), // Unlisted
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 10),
                               child: Row(
@@ -141,9 +135,8 @@ class _QuickPostPageState extends State<QuickPostPage> {
                                       child: Row(
                                         children: <Widget>[
                                           getVisibilityIcon("Unlisted"),
-                                          Text(
-                                              AppLocalizations.of(context)
-                                                  .tr("post.quick_post.visibility"
+                                          Text(AppLocalizations.of(context)
+                                              .tr("post.quick_post.visibility"
                                                   ".unlisted"))
                                         ],
                                       ),
@@ -157,8 +150,7 @@ class _QuickPostPageState extends State<QuickPostPage> {
                                   ),
                                 ],
                               ),
-                            ),
-                            // Private
+                            ), // Private
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 10),
                               child: Row(
@@ -170,7 +162,7 @@ class _QuickPostPageState extends State<QuickPostPage> {
                                           getVisibilityIcon("Private"),
                                           Text(AppLocalizations.of(context)
                                               .tr("post.quick_post.visibility"
-                                              ".private"))
+                                                  ".private"))
                                         ],
                                       ),
                                       onPressed: () {
@@ -186,8 +178,7 @@ class _QuickPostPageState extends State<QuickPostPage> {
                             ),
                             Container(
                               height: 30,
-                            ),
-                            // Cancel
+                            ), // Cancel
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 10),
                               child: Row(
@@ -198,9 +189,10 @@ class _QuickPostPageState extends State<QuickPostPage> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: <Widget>[
-                                          Text(AppLocalizations.of(context)
-                                              .tr("post.quick_post.action"
-                                              ".cancel"),
+                                          Text(
+                                            AppLocalizations.of(context)
+                                                .tr("post.quick_post.action"
+                                                    ".cancel"),
                                             style: TextStyle(color: Colors.red),
                                           )
                                         ],
@@ -223,8 +215,7 @@ class _QuickPostPageState extends State<QuickPostPage> {
             Spacer(),
             OutlineButton(
               child: Text(
-                AppLocalizations.of(context)
-                    .tr("post.quick_post.action.post"),
+                AppLocalizations.of(context).tr("post.quick_post.action.post"),
                 style: TextStyle(color: Colors.blue),
               ),
               onPressed: () {
@@ -241,9 +232,7 @@ class _QuickPostPageState extends State<QuickPostPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-            AppLocalizations.of(context)
-                .tr("post.quick_post.title")),
+        title: Text(AppLocalizations.of(context).tr("post.quick_post.title")),
         leading: IconButton(
           icon: Icon(Icons.close),
           onPressed: () {
@@ -253,8 +242,7 @@ class _QuickPostPageState extends State<QuickPostPage> {
         actions: <Widget>[
           FlatButton(
             child: Text(
-              AppLocalizations.of(context)
-                  .tr("post.quick_post.action.post"),
+              AppLocalizations.of(context).tr("post.quick_post.action.post"),
               style: TextStyle(color: Colors.white),
             ),
             onPressed: () {
@@ -327,17 +315,13 @@ class _QuickPostPageState extends State<QuickPostPage> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          content: new Text(
-              AppLocalizations.of(context)
-                  .tr("post.quick_post.attachment.remove.alert.content")
-          ),
+          content: new Text(AppLocalizations.of(context)
+              .tr("post.quick_post.attachment.remove.alert.content")),
           actions: <Widget>[
             new FlatButton(
-              child: new Text(
-                  AppLocalizations.of(context)
-                      .tr("post.quick_post.attachment.remove.alert.action"
-                      ".cancel")
-              ),
+              child: new Text(AppLocalizations.of(context)
+                  .tr("post.quick_post.attachment.remove.alert.action"
+                      ".cancel")),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -346,7 +330,7 @@ class _QuickPostPageState extends State<QuickPostPage> {
             new FlatButton(
               child: new Text(AppLocalizations.of(context)
                   .tr("post.quick_post.attachment.remove.alert.action"
-                  ".remove")),
+                      ".remove")),
               onPressed: () {
                 assets.removeAt(index);
                 setState(() {});
@@ -359,41 +343,25 @@ class _QuickPostPageState extends State<QuickPostPage> {
     );
   }
 
-  videoTaken(String uri) {
-    VideoFile video = VideoFile(uri);
-    assets.add(video);
-    if (mounted) setState(() {});
-  }
 
-  photoTaken(String uri) {
-    PhotoFile photo = PhotoFile(uri);
-    assets.add(photo);
-    if (mounted) setState(() {});
-  }
+  Future<Widget> getMediaPreview(FilePickerFile asset) async {
 
-  gallerySelected(AssetEntity asset) {
-    AssetEntity newAsset = asset;
-    assets.add(newAsset);
-    if (mounted) setState(() {});
-  }
+    var type = asset.type;
+    switch(type) {
 
-  Future<Widget> getMediaPreview(dynamic asset) async {
-    if (asset is PhotoFile) {
-      return _cameraPreviewWidget(asset.url);
-    } else if (asset is VideoFile) {
-      return LocalVideoPlayer(url: asset.url);
-    } else if (asset is AssetEntity) {
-      AssetEntity item = asset;
-      File file = await item.file;
-      if (item.type == AssetType.video) {
+      case FilePickerFileType.image:
+        return Image.file(asset.file);
+        break;
+      case FilePickerFileType.video:
         return LocalVideoPlayer(
-          file: file,
+          file: asset.file,
         );
-      } else {
-        return Image.file(file);
-      }
+        break;
+      case FilePickerFileType.other:
+      default:
+        throw "Not supported FilePickerFileType $type";
+        break;
     }
-    return Container();
   }
 
   Icon getVisibilityIcon(String visibility) {
@@ -409,22 +377,11 @@ class _QuickPostPageState extends State<QuickPostPage> {
     }
   }
 
-  Widget _cameraPreviewWidget(String url) {
-    return Image.file(File(url));
-  }
-
   Widget getAddButton() {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        Navigator.push(
-          context,
-          SlideBottomRoute(
-              page: AddAddtionalMedia(
-                  videoTaken: videoTaken,
-                  photoTaken: photoTaken,
-                  gallerySelected: gallerySelected)),
-        );
+        _openAttachPage();
       },
       child: Container(
         margin: EdgeInsets.all(8),
@@ -437,14 +394,7 @@ class _QuickPostPageState extends State<QuickPostPage> {
               color: Colors.white,
             ),
             onPressed: () {
-              Navigator.push(
-                context,
-                SlideBottomRoute(
-                    page: AddAddtionalMedia(
-                        videoTaken: videoTaken,
-                        photoTaken: photoTaken,
-                        gallerySelected: gallerySelected)),
-              );
+              _openAttachPage();
             },
           ),
         ),
@@ -454,76 +404,80 @@ class _QuickPostPageState extends State<QuickPostPage> {
     );
   }
 
-  postStatus() {
+  void _openAttachPage() {
+    Navigator.push(
+        context,
+        SlideBottomRoute(
+            page: StatusEditAttachImagePage(
+          fileSelectedCallback: (FilePickerFile filePickerFile) {
+            assets.add(filePickerFile);
+            Navigator.pop(context);
+            setState(() {});
+          },
+        )));
+  }
 
-    if (assets.length == 0 && statusController.text == "" ){
+  postStatus() {
+    if (assets.length == 0 && statusController.text == "") {
       var alert = Alert(
-            context,
+          context,
           AppLocalizations.of(context)
               .tr("post.quick_post.posting.error.alert.title"),
           AppLocalizations.of(context)
               .tr("post.quick_post.posting.error.alert.content"),
-            () => {});
-        alert.showAlert();
-        return;
+          () => {});
+      alert.showAlert();
+      return;
     }
 
-    if (assets.length == 0 ) {
+    if (assets.length == 0) {
       postTextStatus();
       return;
     }
 
     _pr = ProgressDialog(context, ProgressDialogType.Normal);
-    _pr.setMessage(AppLocalizations.of(context)
-        .tr("post.quick_post.posting.progress"),);
+    _pr.setMessage(
+      AppLocalizations.of(context).tr("post.quick_post.posting.progress"),
+    );
     _pr.show();
 
-    getFileForUpload(0);
+    getFileForUpload(context, 0);
   }
 
-  getFileForUpload(int index) async {
+  getFileForUpload(BuildContext context, int index) async {
     print("getting index $index");
-    dynamic asset = assets[index];
-    if (asset is PhotoFile) {
-      uploadFile(index, File(asset.url));
-    } else if (asset is VideoFile) {
-      uploadFile(index, File(asset.url));
-    } else if (asset is AssetEntity) {
-      AssetEntity item = asset;
-      item.file.then((file) {
-        uploadFile(index, file);
-      });
-    }
+    FilePickerFile asset = assets[index];
+
+    uploadFile(context, index, asset.file);
   }
 
-  uploadFile(int index, File file) {
-    var path = MediaRequest.Media.postNewStatus;
-    CurrentInstance.instance.currentClient
-        .runUpload(path: path, files: [file]).then((response) {
-      response.stream.bytesToString().then((respStr) {
-        MediaAttachment attachment =
-            MediaAttachment.fromJson(json.decode(respStr));
-        attachments.add(attachment.id);
-        int nextIndex = index + 1;
-        print("whats next?");
-        if (nextIndex != assets.length) {
-          getFileForUpload(nextIndex);
-        } else {
-          postStatusAfterUpload();
-        }
-      }).catchError((e) {
-        print("THIS IS THE ERROR!!!!");
-        print(e);
-        _pr.hide();
-        var alert = Alert(
-            context,
-            AppLocalizations.of(context)
-                .tr("post.quick_post.posting.error.alert.title"),
-            AppLocalizations.of(context)
-                .tr("post.quick_post.posting.error.alert.content"),
-            () => {});
-        alert.showAlert();
-      });
+  uploadFile(BuildContext context, int index, File file) {
+
+
+    var mediaAttachmentService = IPleromaMediaAttachmentService.of(
+        context, listen: false);
+
+    mediaAttachmentService.uploadMedia(file: file).then((attachment) {
+      attachments.add(attachment.id);
+      int nextIndex = index + 1;
+      print("whats next?");
+      if (nextIndex != assets.length) {
+        getFileForUpload(context, nextIndex);
+      } else {
+        postStatusAfterUpload();
+      }
+    }).catchError((e) {
+      print("THIS IS THE ERROR!!!!");
+      print(e);
+      _pr.hide();
+      var alert = Alert(
+          context,
+          AppLocalizations.of(context)
+              .tr("post.quick_post.posting.error.alert.title"),
+          AppLocalizations.of(context)
+              .tr("post.quick_post.posting.error.alert.content"),
+              () => {});
+      alert.showAlert();
     });
   }
 
@@ -544,8 +498,10 @@ class _QuickPostPageState extends State<QuickPostPage> {
         .then((statusResponse) {
       print(statusResponse.body);
       _pr.hide();
-      var alert = Alert(context, AppLocalizations.of(context)
-          .tr("post.quick_post.posting.success.alert.title"),
+      var alert = Alert(
+          context,
+          AppLocalizations.of(context)
+              .tr("post.quick_post.posting.success.alert.title"),
           AppLocalizations.of(context)
               .tr("post.quick_post.posting.success.alert.content"),
           () => {Navigator.of(context).popUntil((route) => route.isFirst)});
@@ -567,8 +523,8 @@ class _QuickPostPageState extends State<QuickPostPage> {
 
   postTextStatus() {
     _pr = ProgressDialog(context, ProgressDialogType.Normal);
-    _pr.setMessage(AppLocalizations.of(context)
-        .tr("post.quick_post.posting.progress"));
+    _pr.setMessage(
+        AppLocalizations.of(context).tr("post.quick_post.posting.progress"));
     _pr.show();
 
     var statusPath = StatusRequest.Status.postNewStatus;
@@ -586,9 +542,10 @@ class _QuickPostPageState extends State<QuickPostPage> {
         .then((statusResponse) {
       print(statusResponse.body);
       _pr.hide();
-      var alert = Alert(context,
+      var alert = Alert(
+          context,
           AppLocalizations.of(context)
-          .tr("post.quick_post.posting.success.alert.title"),
+              .tr("post.quick_post.posting.success.alert.title"),
           AppLocalizations.of(context)
               .tr("post.quick_post.posting.success.alert.content"),
           () => {Navigator.of(context).popUntil((route) => route.isFirst)});

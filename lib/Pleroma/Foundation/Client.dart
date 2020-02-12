@@ -2,8 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:io' show Platform;
 import 'package:flutter/widgets.dart';
-import 'package:path/path.dart';
-import 'package:async/async.dart';
 import 'package:http/http.dart' as http;
 import 'package:fedi/DeepLinks/DeepLinkHelper.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
@@ -17,6 +15,15 @@ import 'package:hive/hive.dart';
 part 'Client.g.dart';
 
 enum HTTPMethod { GET, HEAD, POST, PUT, DELETE, PATCH }
+
+Map<HTTPMethod, String> httpMethodToStringMap = {
+  HTTPMethod.GET: "get",
+  HTTPMethod.HEAD: "head",
+  HTTPMethod.POST: "post",
+  HTTPMethod.PUT: "put",
+  HTTPMethod.DELETE: "delete",
+  HTTPMethod.PATCH: "patch",
+};
 
 @HiveType()
 class Client {
@@ -159,65 +166,6 @@ class Client {
         final respons = await http.patch(url, headers: headers, body: json.encode(params));
         return respons;
       }
-    } catch (e) {
-      print(e.toString());
-      return e;
-    }
-  }
-
-  Future<http.StreamedResponse> runUpload(
-      {String path, List<File> files}) async {
-    var url = "$baseURL$path";
-
-    print("TRYING TO UPLOAD");
-    try {
-      var postUri = Uri.parse(url);
-      var request = new http.MultipartRequest(
-        "POST",
-        postUri,
-      );
-      request.headers['authorization'] = "Bearer $accessToken";
-
-      var file = files[0];
-      var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
-      var length = await file.length();
-
-      var multipartFile = new http.MultipartFile('file', stream, length,
-          filename: basename(file.path));
-      request.files.add(multipartFile);
-
-      var response = await request.send();
-      return response;
-    } catch (e) {
-      print(e.toString());
-      return e;
-    }
-  }
-
-
-  Future<http.StreamedResponse> patchUpload(
-      {String path, String paramName, List<File> files}) async {
-    var url = "$baseURL$path";
-
-    print("TRYING TO UPLOAD");
-    try {
-      var postUri = Uri.parse(url);
-      var request = new http.MultipartRequest(
-        "patch",
-        postUri,
-      );
-      request.headers['authorization'] = "Bearer $accessToken";
-
-      var file = files[0];
-      var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
-      var length = await file.length();
-
-      var multipartFile = new http.MultipartFile(paramName, stream, length,
-          filename: basename(file.path));
-      request.files.add(multipartFile);
-
-      var response = await request.send();
-      return response;
     } catch (e) {
       print(e.toString());
       return e;
