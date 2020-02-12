@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/file/image/crop/file_image_crop_helper.dart';
 import 'package:fedi/app/profile/edit/profile_edit_select_image_page.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';
@@ -13,7 +14,8 @@ class ProfileEditSelectAvatarPage extends ProfileEditSelectImagePage {
 
   @override
   Widget createAppBarTitle(BuildContext context) {
-    return Text("Select avatar");
+    return Text(AppLocalizations.of(context)
+        .tr("app.profile.edit.select.avatar.title"));
   }
 
   @override
@@ -21,7 +23,8 @@ class ProfileEditSelectAvatarPage extends ProfileEditSelectImagePage {
     showDialog(
         context: context,
         child: AlertDialog(
-          title: Text("Confirm selection?"),
+          title: Text(AppLocalizations.of(context)
+              .tr("app.profile.edit.select.avatar.dialog.title")),
           content: Image.file(filePickerFile.file),
           actions: <Widget>[
             FlatButton(
@@ -43,17 +46,19 @@ class ProfileEditSelectAvatarPage extends ProfileEditSelectImagePage {
                     selectedCallback(filePickerFile);
                   }
                 },
-                child: Text("Select & Crop")),
+                child: Text(AppLocalizations.of(context).tr(
+                    "app.profile.edit.select.avatar.dialog.action.select_and_crop"))),
             FlatButton(
                 onPressed: () {
                   dismissDialog(context);
                 },
-                child: Text("Cancel")),
+                child: Text(AppLocalizations.of(context).tr(
+                    "app.profile.edit.select.avatar.dialog.action.cancel"))),
           ],
         ));
   }
 
   void dismissDialog(BuildContext context) {
-        Navigator.pop(context);
+    Navigator.pop(context);
   }
 }

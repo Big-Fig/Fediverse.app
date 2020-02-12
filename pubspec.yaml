@@ -80,6 +80,9 @@ dependencies:
   # fancy permission handler
   permission_handler: ^4.2.0+hotfix.3
 
+  # better tab indicator
+  md2_tab_indicator: ^1.0.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

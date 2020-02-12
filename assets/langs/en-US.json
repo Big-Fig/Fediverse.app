@@ -615,37 +615,56 @@
       "no_more_messages": "No more Messages"
     }
   },
-  "profile": {
-    "edit": {
-      "select": {
-        "image": {
-          "dialog": {
-            "title": "",
-            "action": {
-              "ok": "",
-              "edit": "",
-              "cancel": ""
+  "app": {
+    "dm": {
+      "media": {
+        "capture": {
+          "title": "Choose media"
+        }
+      }
+    },
+    "profile": {
+      "edit": {
+        "select": {
+          "image": {
+            "dialog": {
+              "title": "Confirm selection?",
+              "action": {
+                "ok": "OK",
+                "edit": "Edit",
+                "cancel": "Cancel"
+              }
             }
           },
           "avatar": {
-            "title": "",
+            "title": "Select avatar",
             "dialog": {
-              "title": "",
+              "title": "Confirm selection?",
               "action": {
-                "ok": "",
-                "edit": "",
-                "cancel": ""
+                "select_and_crop": "Select & crop",
+                "cancel": "Cancel"
+              }
+            }
+          },
+          "header": {
+            "title": "Header",
+            "dialog": {
+              "title": "Confirm selection?",
+              "action": {
+                "select": "Select",
+                "crop": "Crop",
+                "cancel": "Cancel"
               }
             }
           }
         }
       }
-    }
-  },
-  "status": {
-    "edit": {
-      "attach_media": {
-        "title": "Attach media"
+    },
+    "status": {
+      "edit": {
+        "attach_media": {
+          "title": "Attach media"
+        }
       }
     }
   },
