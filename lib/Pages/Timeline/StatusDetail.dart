@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/Pages/Messages/Media/CaptureDMMedia.dart';
 import 'package:fedi/Pages/Profile/OtherAccount.dart';
 import 'package:fedi/Pages/Timeline/TimelineCell.dart';
 import 'package:fedi/Pleroma/Foundation/Client.dart';
@@ -10,10 +9,10 @@ import 'package:fedi/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
 import 'package:fedi/Pleroma/Models/Account.dart';
 import 'package:fedi/Pleroma/Models/Context.dart';
 import 'package:fedi/Pleroma/Models/Status.dart';
-import 'package:fedi/Transitions/SlideBottomRoute.dart';
 import 'package:fedi/Views/Alert.dart';
 import 'package:fedi/Views/MentionPage.dart';
-import 'package:fedi/app/status/edit/status_edit_attach_media_page.dart';
+import 'package:fedi/app/dm/media/dm_media_capture_widget.dart';
+import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/src/widgets/visibility.dart' as Vis;
@@ -39,7 +38,7 @@ class _StatusDetail extends State<StatusDetail> {
   var txtController = TextEditingController();
   final ItemScrollController itemScrollController = ItemScrollController();
   final ItemPositionsListener itemPositionListener =
-      ItemPositionsListener.create();
+  ItemPositionsListener.create();
   List<Status> statuses = <Status>[];
 
   void initState() {
@@ -69,7 +68,7 @@ class _StatusDetail extends State<StatusDetail> {
     print("$acct");
     if (txtController.text.length > 0) {
       String lastChar =
-          txtController.text.substring(txtController.text.length - 1);
+      txtController.text.substring(txtController.text.length - 1);
       if (lastChar == "@") {
         txtController.text =
             txtController.text.substring(0, txtController.text.length - 1);
@@ -238,12 +237,14 @@ class _StatusDetail extends State<StatusDetail> {
                       color: Colors.blue,
                     ),
                     onPressed: () {
-                      _openAttachPage();
-//                      Navigator.push(
-//                          context,
-//                          MaterialPageRoute(
-//                              builder: (context) =>
-//                                  CaptureDMMedia(0, mediaUploaded)));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  CaptureDMMediaWidget(
+                                    mediaUploaded: mediaUploaded,
+                                    selectedTab: FilePickerTab
+                                        .captureVideo,)));
                     },
                   ),
                   IconButton(
@@ -252,12 +253,14 @@ class _StatusDetail extends State<StatusDetail> {
                       color: Colors.blue,
                     ),
                     onPressed: () {
-                      _openAttachPage();
-//                      Navigator.push(
-//                          context,
-//                          MaterialPageRoute(
-//                              builder: (context) =>
-//                                  CaptureDMMedia(1, mediaUploaded)));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  CaptureDMMediaWidget(
+                                    mediaUploaded: mediaUploaded,
+                                    selectedTab: FilePickerTab
+                                        .captureImage,)));
                     },
                   ),
                   IconButton(
@@ -266,12 +269,14 @@ class _StatusDetail extends State<StatusDetail> {
                       color: Colors.blue,
                     ),
                     onPressed: () {
-                      _openAttachPage();
-//                      Navigator.push(
-//                          context,
-//                          MaterialPageRoute(
-//                              builder: (context) =>
-//                                  CaptureDMMedia(2, mediaUploaded)));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  CaptureDMMediaWidget(
+                                    mediaUploaded: mediaUploaded,
+                                    selectedTab: FilePickerTab
+                                        .gallery,)));
                     },
                   ),
                   IconButton(
@@ -320,7 +325,7 @@ class _StatusDetail extends State<StatusDetail> {
   }
 
   RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
+  RefreshController(initialRefresh: false);
 
   ScrollController _controller = ScrollController();
 
@@ -328,8 +333,8 @@ class _StatusDetail extends State<StatusDetail> {
     // if failed,use refreshFailed()
     CurrentInstance.instance.currentClient
         .run(
-            path: StatusRequest.Status.getStatusContext(widget.status.id),
-            method: HTTPMethod.GET)
+        path: StatusRequest.Status.getStatusContext(widget.status.id),
+        method: HTTPMethod.GET)
         .then((response) {
       Context context = Context.fromJsonString(response.body);
       statuses.clear();
@@ -467,7 +472,7 @@ class _StatusDetail extends State<StatusDetail> {
               .tr("timeline.status.details.update.error.alert.title"),
           AppLocalizations.of(context)
               .tr("timeline.status.details.update.error.alert.content"),
-          () => {});
+              () => {});
       alert.showAlert();
     });
   }
@@ -510,24 +515,10 @@ class _StatusDetail extends State<StatusDetail> {
               .tr("timeline.status.details.update.error.alert.title"),
           AppLocalizations.of(context)
               .tr("timeline.status.details.update.error.alert.content"),
-          () => {});
+              () => {});
       alert.showAlert();
     });
   }
 
   postMediaId(String id) {}
-
-  void _openAttachPage() {
-    Navigator.push(
-        context, SlideBottomRoute(page: StatusEditAttachImagePage()));
-
-    //        Navigator.push(
-    //          context,
-    //          SlideBottomRoute(
-    //              page: AddAddtionalMedia(
-    //                  videoTaken: videoTaken,
-    //                  photoTaken: photoTaken,
-    //                  gallerySelected: gallerySelected)),
-    //        );
-  }
 }

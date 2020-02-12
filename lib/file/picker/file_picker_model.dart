@@ -15,3 +15,5 @@ class FilePickerFile {
       @required this.type,
       @required this.isNeedDeleteAfterUsage});
 }
+
+typedef FilePickerSelectedFileCallback(FilePickerFile filePickerFile);
