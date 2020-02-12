@@ -5,6 +5,10 @@ class Status {
     return "/api/v1/statuses/$id/context";
   }
 
+  static String getConversationStatuses(String id){
+    return "/api/v1/pleroma/conversations/$id/statuses?limit=100";
+  }
+
    static String favouriteStatus(String id){
     return "/api/v1/statuses/$id/favourite";
   }

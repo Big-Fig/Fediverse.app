@@ -3,6 +3,11 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pages/Profile/OtherAccount.dart';
+import 'package:fedi/app/dm/media/dm_media_capture_widget.dart';
+import 'package:fedi/file/picker/file_picker_model.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:fedi/Pages/Push/PushHelper.dart';
 import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
@@ -12,14 +17,9 @@ import 'package:fedi/Pleroma/Models/Context.dart';
 import 'package:fedi/Pleroma/Models/Conversation.dart';
 import 'package:fedi/Pleroma/Models/Status.dart';
 import 'package:fedi/Views/Alert.dart';
-import 'package:fedi/file/picker/file_picker_model.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import '../../app/dm/media/dm_media_capture_widget.dart';
 import 'ChatCell.dart';
 
 class ChatPage extends StatefulWidget {
@@ -29,9 +29,9 @@ class ChatPage extends StatefulWidget {
   final Function refreshMasterList;
   ChatPage(
       {this.conversation,
-        this.account,
-        this.refreshMasterList,
-        this.refreshMesagePage});
+      this.account,
+      this.refreshMasterList,
+      this.refreshMesagePage});
 
   @override
   State<StatefulWidget> createState() {
@@ -40,6 +40,8 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPage extends State<ChatPage> {
+  bool fetchByContext = false;
+
   var txtController = TextEditingController();
   List<Status> statuses = <Status>[];
   String title;
@@ -70,74 +72,37 @@ class _ChatPage extends State<ChatPage> {
               Navigator.of(context).pop();
             },
           ),
-          title: GestureDetector(onTap:(){
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => OtherAccount(otherAccount)),
-            );
-
-          },  child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              ClipRRect(
-                borderRadius: new BorderRadius.circular(15.0),
-                child: CachedNetworkImage(
-                  imageUrl: otherAccount.avatar,
-                  placeholder: (context, url) => CircularProgressIndicator(),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
-                  width: 30,
-                  height: 30,
+          title: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => OtherAccount(otherAccount)),
+              );
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                ClipRRect(
+                  borderRadius: new BorderRadius.circular(15.0),
+                  child: CachedNetworkImage(
+                    imageUrl: otherAccount.avatar,
+                    placeholder: (context, url) => CircularProgressIndicator(),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
+                    width: 30,
+                    height: 30,
+                  ),
                 ),
-              ),
-              SizedBox(
-                width: 8,
-              ),
-              FittedBox(
-                  fit: BoxFit.fitWidth, child: Text(otherAccount.displayName)),
-            ],
-          ),),
-          actions: <Widget>[
-            // IconButton(
-            //   icon: Icon(Icons.phone),
-            //   onPressed: () {
-            //     if (widget.account != null) {
-            //       print(widget.account.url);
-            //       String currentURL = "${widget.account.url}".split("/")[2];
-
-            //       String client = "${widget.account.acct}@$currentURL";
-            //       var peer;
-            //       var peers = WebRTCManager.instance.peers;
-            //       for (var i = 0; i < peers.length; i++) {
-            //         print(peers[i]['name']);
-            //         String name = peers[i]['name'];
-            //         if (name.toLowerCase() == client.toLowerCase()) {
-            //           peer = peers[i];
-            //         }
-            //       }
-
-            //       WebRTCManager.instance.invitePeer(context, peer['id'], false);
-            //     } else {
-            //       var account = getOtherAccount(widget.conversation.accounts);
-
-            //       String client = "${account.acct}";
-            //       print(client);
-            //       var peer;
-            //       var peers = WebRTCManager.instance.peers;
-            //       for (var i = 0; i < peers.length; i++) {
-            //         String name = peers[i]['name'];
-            //         if (name.toLowerCase() == client.toLowerCase()) {
-            //           peer = peers[i];
-            //           print(peer);
-            //         }
-            //       }
-
-            //       WebRTCManager.instance.invitePeer(context, peer['id'], false);
-            //     }
-            //     WebRTCManager.instance.inCalling = true;
-
-            //   },
-            // ),
-          ],
+                SizedBox(
+                  width: 8,
+                ),
+                FittedBox(
+                    fit: BoxFit.fitWidth,
+                    child: Text(otherAccount.displayName)),
+              ],
+            ),
+          ),
+          actions: <Widget>[],
         ),
         body: Column(
           children: <Widget>[
@@ -147,8 +112,7 @@ class _ChatPage extends State<ChatPage> {
             ConstrainedBox(
               constraints: BoxConstraints(maxHeight: 200, minHeight: 80),
               child: Padding(
-                padding: EdgeInsets.all(
-                    10), // only( bottom: MediaQuery.of(context).viewInsets.bottom),
+                padding: EdgeInsets.all(10),
                 child: TextField(
                   controller: txtController,
                   maxLines: null,
@@ -226,7 +190,6 @@ class _ChatPage extends State<ChatPage> {
                     ),
                     color: Colors.blue,
                     onPressed: () {
-                      print("sending");
                       if (statuses.length == 0) {
                         startNewConvo(context);
                       } else {
@@ -256,7 +219,6 @@ class _ChatPage extends State<ChatPage> {
     PushHelper pushHelper = PushHelper.of(context, listen: false);
     pushHelper.notificationUpdater = update;
   }
-
 
   @override
   void didChangeDependencies() {
@@ -291,27 +253,35 @@ class _ChatPage extends State<ChatPage> {
   }
 
   RefreshController _refreshController =
-  RefreshController(initialRefresh: false);
+      RefreshController(initialRefresh: false);
 
   backgroundCheck() {
-    if (this.mounted) {
-      if (statuses.length == 0) {
-        Future.delayed(const Duration(milliseconds: 5000), () {
-          backgroundCheck();
-        });
-        return;
+    if (widget.conversation != null && fetchByContext == false ) {
+      refreshFromConversation();
+    } else {
+      if (widget.conversation == null) {
+        refreshFromContext();
       }
+    }
+
+    if (this.mounted) {
+      Future.delayed(const Duration(milliseconds: 5000), () {
+        backgroundCheck();
+      });
     } else {
       return;
     }
+  }
 
+  fetchFromContext() {
     CurrentInstance.instance.currentClient
         .run(
-        path: StatusRequest.Status.getStatusContext(statuses.first.id),
-        method: HTTPMethod.GET)
+            path: StatusRequest.Status.getStatusContext(statuses.first.id),
+            method: HTTPMethod.GET)
         .then((response) {
+         
+      _refreshController.refreshCompleted();
       Context context = Context.fromJsonString(response.body);
-
       List<Status> templist = [];
       templist.addAll(context.ancestors);
       templist.add(widget.conversation.lastStatus);
@@ -334,17 +304,44 @@ class _ChatPage extends State<ChatPage> {
     });
   }
 
-  void _onRefresh() async {
-    if (widget.conversation == null) {
-      _refreshController.refreshCompleted();
-      return;
-    }
-    // if failed,use refreshFailed()
+  fetchFromConversation() {
     CurrentInstance.instance.currentClient
         .run(
-        path: StatusRequest.Status.getStatusContext(
-            widget.conversation.lastStatus.id),
-        method: HTTPMethod.GET)
+            path: StatusRequest.Status.getConversationStatuses(
+                widget.conversation.id),
+            method: HTTPMethod.GET)
+        .then((response) {
+
+           if (response.statusCode == 404) {
+        fetchByContext = true;
+        _refreshController.requestRefresh();
+        return;
+
+      }
+      _refreshController.refreshCompleted();
+      List<Status> templist = Status.listFromJsonString(response.body);
+      statuses.clear();
+      statuses.addAll(templist.reversed);
+      if (mounted) setState(() {});
+      Future.delayed(const Duration(milliseconds: 5000), () {
+        backgroundCheck();
+      });
+    }).catchError((error) {
+      Future.delayed(const Duration(milliseconds: 5000), () {
+        backgroundCheck();
+      });
+      print(error.toString());
+      if (mounted) setState(() {});
+      _refreshController.refreshFailed();
+    });
+  }
+
+  refreshFromContext() {
+    CurrentInstance.instance.currentClient
+        .run(
+            path: StatusRequest.Status.getStatusContext(
+                widget.conversation.lastStatus.id),
+            method: HTTPMethod.GET)
         .then((response) {
       Context context = Context.fromJsonString(response.body);
       statuses.clear();
@@ -360,6 +357,38 @@ class _ChatPage extends State<ChatPage> {
       if (mounted) setState(() {});
       _refreshController.refreshFailed();
     });
+  }
+
+  refreshFromConversation() {
+    CurrentInstance.instance.currentClient
+        .run(
+            path: StatusRequest.Status.getConversationStatuses(
+                widget.conversation.id),
+            method: HTTPMethod.GET)
+        .then((response) {
+      _refreshController.refreshCompleted();
+      if (response.statusCode == 404) {
+        fetchByContext = true;
+      }
+      List<Status> templist = Status.listFromJsonString(response.body);
+      statuses.clear();
+      statuses.addAll(templist.reversed);
+      if (mounted) setState(() {});
+    }).catchError((error) {
+      print(error.toString());
+      if (mounted) setState(() {});
+      _refreshController.refreshFailed();
+    });
+  }
+
+  void _onRefresh() async {
+    if (widget.conversation == null || fetchByContext == true) {
+      fetchFromContext();
+    } else {
+      fetchFromConversation();
+    }
+
+    // if failed,use refreshFailed()
   }
 
   Widget getMessageList() {
@@ -453,7 +482,7 @@ class _ChatPage extends State<ChatPage> {
               .tr("messages.chat.start_new_conversation.error.alert.title"),
           appLocalizations
               .tr("messages.chat.start_new_conversation.error.alert.content"),
-              () => {});
+          () => {});
       alert.showAlert();
     });
   }
@@ -488,7 +517,7 @@ class _ChatPage extends State<ChatPage> {
               .tr("messages.chat.start_new_conversation.error.alert.title"),
           appLocalizations
               .tr("messages.chat.start_new_conversation.error.alert.content"),
-              () => {});
+          () => {});
       alert.showAlert();
     });
   }
@@ -523,11 +552,9 @@ class _ChatPage extends State<ChatPage> {
       var appLocalizations = AppLocalizations.of(context);
       var alert = Alert(
           context,
-          appLocalizations
-              .tr("messages.chat.send_message.error.alert.title"),
-          appLocalizations
-              .tr("messages.chat.send_message.error.alert.content"),
-              () => {});
+          appLocalizations.tr("messages.chat.send_message.error.alert.title"),
+          appLocalizations.tr("messages.chat.send_message.error.alert.content"),
+          () => {});
       alert.showAlert();
     });
   }
@@ -565,11 +592,9 @@ class _ChatPage extends State<ChatPage> {
       var appLocalizations = AppLocalizations.of(context);
       var alert = Alert(
           context,
-          appLocalizations
-              .tr("messages.chat.send_message.error.alert.title"),
-          appLocalizations
-              .tr("messages.chat.send_message.error.alert.content"),
-              () => {});
+          appLocalizations.tr("messages.chat.send_message.error.alert.title"),
+          appLocalizations.tr("messages.chat.send_message.error.alert.content"),
+          () => {});
       alert.showAlert();
     });
   }

@@ -62,7 +62,11 @@ class CurrentInstance {
                 CurrentInstance.instance.setInstanceFromNewInstance();
                 CurrentInstance.newInstance.loading = false;
                 loadComplete();
+              }).catchError((error){
+                print(error);
               });
+            }).catchError((error){
+              print(error);
             });
           }).catchError((error) {
             var alert = Alert(

@@ -7,7 +7,7 @@ import 'package:fedi/Pleroma/Models/Account.dart';
 import 'package:fedi/Pleroma/Models/Notification.dart' as NotificationObject;
 import 'package:fedi/Pleroma/Models/Status.dart';
 import 'package:fedi/Views/VideoPlayer.dart';
-import 'package:jiffy/jiffy.dart';
+import 'package:timeago/timeago.dart' as timeago;
 import 'package:html/dom.dart' as dom;
 import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_model.dart';
 
@@ -189,7 +189,7 @@ class _NotificationCell extends State<NotificationCell> {
           ),
           Text("Followed You "),
           Text(
-            Jiffy(widget.notification.createdAt).fromNow(),
+            timeago.format(widget.notification.createdAt, locale: 'en_short')
           ),
         ],
       );
@@ -203,7 +203,7 @@ class _NotificationCell extends State<NotificationCell> {
           Text(AppLocalizations.of(context)
               .tr("notifications.cell.mention.mentioned_you")),
           Text(
-            Jiffy(widget.notification.createdAt).fromNow(),
+            timeago.format(widget.notification.createdAt, locale: 'en_short'),
           ),
         ],
       );
@@ -217,7 +217,7 @@ class _NotificationCell extends State<NotificationCell> {
           Text(AppLocalizations.of(context)
               .tr("notifications.cell.reblog.reposted_your_status")),
           Text(
-            Jiffy(widget.notification.createdAt).fromNow(),
+            timeago.format(widget.notification.createdAt, locale: 'en_short'),
           ),
         ],
       );

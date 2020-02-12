@@ -20,7 +20,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:html/dom.dart' as dom;
-import 'package:jiffy/jiffy.dart';
+
+import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_model.dart';
 
@@ -132,8 +133,11 @@ class _TimelineCell extends State<TimelineCell> {
                           SizedBox(
                             width: 8,
                           ),
-                          Text(AppLocalizations.of(context)
-                              .tr("timeline.status.cell.reply_to"))
+                          Text(
+                            AppLocalizations.of(context)
+                                .tr("timeline.status.cell.reply_to"),
+                            style: TextStyle(fontSize: 12),
+                          )
                         ],
                       ),
                       SizedBox(
@@ -154,9 +158,9 @@ class _TimelineCell extends State<TimelineCell> {
                       SizedBox(
                         width: 8,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: getUserName(widget.status),
+                      Text(
+                        replyAccount.acct,
+                        style: TextStyle(fontSize: 12),
                       ),
                       SizedBox(
                         width: 8,
@@ -195,9 +199,9 @@ class _TimelineCell extends State<TimelineCell> {
                       SizedBox(
                         width: 8,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: getUserName(widget.status),
+                      Text(
+                        widget.status.account.acct,
+                        style: TextStyle(fontSize: 12),
                       ),
                       SizedBox(
                         width: 8,
@@ -208,8 +212,11 @@ class _TimelineCell extends State<TimelineCell> {
                           SizedBox(
                             width: 8,
                           ),
-                          Text(AppLocalizations.of(context)
-                              .tr("timeline.status.cell.repeated"))
+                          Text(
+                            AppLocalizations.of(context)
+                                .tr("timeline.status.cell.repeated"),
+                            style: TextStyle(fontSize: 12),
+                          )
                         ],
                       )
                     ],
@@ -269,13 +276,11 @@ class _TimelineCell extends State<TimelineCell> {
                   Spacer(),
                   Column(
                     children: <Widget>[
-                      IconButton(
-                        icon: Icon(Icons.more_horiz),
-                        tooltip: AppLocalizations.of(context)
-                            .tr("timeline.status.cell.tooltip.more"),
-                        onPressed: () {
-                          showMoreOptions(context);
-                        },
+                      Padding(
+                        padding: EdgeInsets.only(left: 19),
+                        child: Text(
+                          timeago.format(status.createdAt, locale: 'en_short'),
+                        ),
                       ),
                     ],
                   ),
@@ -350,59 +355,73 @@ class _TimelineCell extends State<TimelineCell> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 12.0),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        if (widget.showCommentBtn == true ||
-                            widget.showCommentBtn == null)
-                          IconButton(
-                            color: Colors.grey,
-                            icon: Icon(Icons.reply),
-                            tooltip: AppLocalizations.of(context)
-                                .tr("timeline.status.cell.tooltip.comment"),
-                            onPressed: () {
-                              widget.viewStatusContext(widget.status);
-                            },
-                          ),
-                        if (widget.status.repliesCount != 0 &&
-                            (widget.showCommentBtn == true ||
-                                widget.showCommentBtn == null))
-                          Text(widget.status.repliesCount.toString()),
-                        IconButton(
-                          color: widget.status.favourited
-                              ? Colors.blue
-                              : Colors.grey,
-                          icon: Icon(Icons.favorite_border),
-                          tooltip: AppLocalizations.of(context)
-                              .tr("timeline.status.cell.tooltip.like"),
-                          onPressed: () {
-                            like();
-                          },
+                        Row(
+                          children: <Widget>[
+                            if (widget.showCommentBtn == true ||
+                                widget.showCommentBtn == null)
+                              IconButton(
+                                color: Colors.grey,
+                                icon: Icon(Icons.mode_comment),
+                                tooltip: AppLocalizations.of(context)
+                                    .tr("timeline.status.cell.tooltip.comment"),
+                                onPressed: () {
+                                  widget.viewStatusContext(widget.status);
+                                },
+                              ),
+                            if (widget.status.repliesCount != 0 &&
+                                (widget.showCommentBtn == true ||
+                                    widget.showCommentBtn == null))
+                              Text(widget.status.repliesCount.toString()),
+                          ],
                         ),
-                        Text(getLikeCounts()),
-                        IconButton(
-                          color: widget.status.reblogged
-                              ? Colors.blue
-                              : Colors.grey,
-                          icon: Icon(Icons.cached),
-                          tooltip: AppLocalizations.of(context)
-                              .tr("timeline.status.cell.tooltip.repost"),
-                          onPressed: () {
-                            repost();
-                          },
+                        Row(
+                          children: <Widget>[
+                            IconButton(
+                              color: widget.status.favourited
+                                  ? Colors.blue
+                                  : Colors.grey,
+                              icon: Icon(Icons.favorite_border),
+                              tooltip: AppLocalizations.of(context)
+                                  .tr("timeline.status.cell.tooltip.like"),
+                              onPressed: () {
+                                like();
+                              },
+                            ),
+                            Text(getLikeCounts()),
+                          ],
                         ),
-                        Text(getRepostCounts()),
-                        Spacer(),
-                        Padding(
-                          padding: EdgeInsets.only(left: 19),
-                          child: Text(
-                            Jiffy(status.createdAt).fromNow(),
-                          ),
+                        Row(
+                          children: <Widget>[
+                            IconButton(
+                              color: widget.status.reblogged
+                                  ? Colors.blue
+                                  : Colors.grey,
+                              icon: Icon(Icons.cached),
+                              tooltip: AppLocalizations.of(context)
+                                  .tr("timeline.status.cell.tooltip.repost"),
+                              onPressed: () {
+                                repost();
+                              },
+                            ),
+                            Text(getRepostCounts()),
+                          ],
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.more_horiz),
+                          tooltip: AppLocalizations.of(context)
+                              .tr("timeline.status.cell.tooltip.more"),
+                          onPressed: () {
+                            showMoreOptions(context);
+                          },
                         ),
                       ],
                     ),
                   ),
                   if (widget.status.favouritesCount > 0 ||
                       widget.status.reblogsCount > 0 ||
-                      widget.status.reblog != null)
+                      widget.status.reblog != null && widget.showCommentBtn != null)
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 12.0),
                       child: Row(
@@ -629,8 +648,7 @@ class _TimelineCell extends State<TimelineCell> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Text(AppLocalizations.of(context).tr(
-                                  "timeline.status.cell.status_actions.action"
-                                  ".follow"))
+                                  "timeline.status.cell.status_actions.action.follow"))
                             ],
                           ),
                           onPressed: () {

@@ -112,6 +112,7 @@ class _Mentions extends State<Mentions> {
       List<NotificationModel.Notification> newNotifications =
       NotificationModel.Notification.listFromJsonString(response.body);
           newNotifications.removeWhere((notification) {
+            print(notification.status.visibility);
         return notification.status.visibility == StatusModel.Visibility.DIRECT;
       });
       widget.notifications.addAll(newNotifications);
