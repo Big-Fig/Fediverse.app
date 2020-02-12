@@ -2,6 +2,7 @@ import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/file/gallery/file_gallery_bloc.dart';
 import 'package:fedi/file/gallery/file_gallery_model.dart';
+import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:fedi/permission/permission_bloc.dart';
 import 'package:fedi/permission/storage_permission_bloc.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,7 +13,11 @@ import 'package:rxdart/rxdart.dart';
 abstract class AbstractFileGalleryBloc extends AsyncInitLoadingBloc
     implements Disposable, IPermissionBloc, IFileGalleryBloc {
   final IStoragePermissionBloc storagePermissionBloc;
-  AbstractFileGalleryBloc({@required this.storagePermissionBloc}) {
+  final List<FilePickerFileType> fileTypesToPick;
+  AbstractFileGalleryBloc({
+    @required this.storagePermissionBloc,
+    @required this.fileTypesToPick,
+  }) {
     addDisposable(subject: foldersSubject);
     addDisposable(subject: galleryStateSubject);
   }
@@ -91,13 +96,35 @@ abstract class AbstractFileGalleryBloc extends AsyncInitLoadingBloc
 }
 
 class FileGalleryBloc extends AbstractFileGalleryBloc {
-  FileGalleryBloc({@required IStoragePermissionBloc storagePermissionBloc})
-      : super(storagePermissionBloc: storagePermissionBloc) {
+  FileGalleryBloc(
+      {@required IStoragePermissionBloc storagePermissionBloc,
+      @required List<FilePickerFileType> fileTypesToPick})
+      : super(
+            storagePermissionBloc: storagePermissionBloc,
+            fileTypesToPick: fileTypesToPick) {
     addDisposable(disposable: CustomDisposable(() {
       PhotoManager.releaseCache();
     }));
   }
 
   Future<List<AssetPathEntity>> loadFolders() async =>
-      await PhotoManager.getAssetPathList();
+      await PhotoManager.getAssetPathList(
+          type: mapFileTypesToPickToRequestType(fileTypesToPick));
+}
+
+RequestType mapFileTypesToPickToRequestType(
+    List<FilePickerFileType> fileTypesToPick) {
+  var isNeedImage = fileTypesToPick.contains(FilePickerFileType.image);
+  var isNeedVideo = fileTypesToPick.contains(FilePickerFileType.video);
+  if (isNeedImage && isNeedVideo) {
+    return RequestType.all;
+  }
+  if (isNeedImage && !isNeedVideo) {
+    return RequestType.image;
+  }
+  if (!isNeedImage && isNeedVideo) {
+    return RequestType.video;
+  }
+
+  throw "fileTypesToPick should containe image or video type";
 }

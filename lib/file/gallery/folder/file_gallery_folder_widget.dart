@@ -11,6 +11,11 @@ import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class FileGalleryFolderWidget extends StatelessWidget {
+
+  final FileGalleryFileCallback galleryFileTapped;
+
+  FileGalleryFolderWidget({@required this.galleryFileTapped});
+
   @override
   Widget build(BuildContext context) {
     var folderBloc = IFileGalleryFolderBloc.of(context);
@@ -76,9 +81,9 @@ class FileGalleryFolderWidget extends StatelessWidget {
   Widget _buildItem(BuildContext context, AssetEntity assetEntity) =>
       DisposableProvider<IFileGalleryFileBloc>(
           create: (BuildContext context) {
-            var galleryFileBloc = FileGalleryFileBloc(file: assetEntity);
+            var galleryFileBloc = FileGalleryFileBloc(assetEntity: assetEntity);
             galleryFileBloc.performAsyncInit();
             return galleryFileBloc;
           },
-          child: FileGalleryFolderGridItemWidget());
+          child: FileGalleryFolderGridItemWidget(galleryFileTapped: galleryFileTapped));
 }

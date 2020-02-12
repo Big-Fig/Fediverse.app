@@ -17,6 +17,7 @@ class MultiFilePickerBodyWidget extends FilePickerBodyWidget {
     return DisposableProvider<IFileGalleryBloc>(
         create: (BuildContext context) {
           var fileGalleryBloc = FileGalleryBloc(
+            fileTypesToPick: filePickerBloc.fileTypesToPick,
               storagePermissionBloc: IStoragePermissionBloc.of(context));
 
           fileGalleryBloc.performAsyncInit();
