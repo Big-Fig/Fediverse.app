@@ -7,6 +7,8 @@ abstract class IFilePickerBloc implements Disposable {
   static IFilePickerBloc of(BuildContext context, {listen: true}) =>
       Provider.of<IFilePickerBloc>(context, listen: listen);
 
+  List<FilePickerFileType> get fileTypesToPick;
+
   FilePickerTab get selectedTab;
 
   Stream<FilePickerTab> get selectedTabStream;

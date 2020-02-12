@@ -12,6 +12,10 @@ import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class FileGalleryWidget extends StatelessWidget {
+  final FileGalleryFileCallback galleryFileTapped;
+
+  FileGalleryWidget({@required this.galleryFileTapped});
+
   @override
   Widget build(BuildContext context) {
     var fileGalleryBloc = IFileGalleryBloc.of(context);
@@ -70,8 +74,10 @@ class FileGalleryWidget extends StatelessWidget {
                   TabBar(
                     tabs: folders
                         .map((folder) => Tab(
-                              child: Text(folder.name, style: TextStyle
-                                (color:  Colors.blue),),
+                              child: Text(
+                                folder.name,
+                                style: TextStyle(color: Colors.blue),
+                              ),
                             ))
                         .toList(),
                   ),
@@ -83,14 +89,17 @@ class FileGalleryWidget extends StatelessWidget {
                         var folder = folders[index];
                         return DisposableProvider<IFileGalleryFolderBloc>(
                             create: (BuildContext context) {
-                              var folderBloc = FileGalleryFolderBloc(folder: folder,
-                                    storagePermissionBloc:
-                                    IStoragePermissionBloc.of(context,
-                                        listen: false));
+                              var folderBloc = FileGalleryFolderBloc(
+                                  folder: folder,
+                                  storagePermissionBloc:
+                                      IStoragePermissionBloc.of(context,
+                                          listen: false));
                               folderBloc.performAsyncInit();
                               return folderBloc;
                             },
-                            child: FileGalleryFolderWidget());
+                            child: FileGalleryFolderWidget(
+                              galleryFileTapped: galleryFileTapped,
+                            ));
                       }),
                     ),
                   ),

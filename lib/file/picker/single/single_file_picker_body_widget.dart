@@ -1,9 +1,12 @@
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/file/gallery/file_gallery_bloc.dart';
 import 'package:fedi/file/gallery/file_gallery_bloc_impl.dart';
+import 'package:fedi/file/gallery/file_gallery_model.dart';
 import 'package:fedi/file/gallery/file_gallery_widget.dart';
 import 'package:fedi/file/picker/file_picker_bloc.dart';
 import 'package:fedi/file/picker/file_picker_body_widget.dart';
+import 'package:fedi/file/picker/file_picker_model.dart';
+import 'package:fedi/file/picker/gallery/file_picker_gallery_adapter.dart';
 import 'package:fedi/permission/storage_permission_bloc.dart';
 import 'package:flutter/widgets.dart';
 
@@ -17,6 +20,7 @@ class SingleFilePickerBodyWidget extends FilePickerBodyWidget {
     return DisposableProvider<IFileGalleryBloc>(
         create: (BuildContext context) {
           var fileGalleryBloc = FileGalleryBloc(
+              fileTypesToPick: filePickerBloc.fileTypesToPick,
               storagePermissionBloc: IStoragePermissionBloc.of(context,
                   listen: false));
 
@@ -24,6 +28,11 @@ class SingleFilePickerBodyWidget extends FilePickerBodyWidget {
 
           return fileGalleryBloc;
         },
-        child: FileGalleryWidget());
+        child: FileGalleryWidget(galleryFileTapped: (galleryFile) {
+          FilePickerFile filePickerFile = mapGalleryToFilePickerFIle(galleryFile);
+          filePickerBloc.onFileSelected(filePickerFile = filePickerFile);
+        },));
   }
+
+
 }
