@@ -10,6 +10,7 @@ import 'package:fedi/permission/grant_permission_widget.dart';
 import 'package:fedi/permission/storage_permission_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:md2_tab_indicator/md2_tab_indicator.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class FileGalleryWidget extends StatelessWidget {
@@ -70,18 +71,27 @@ class FileGalleryWidget extends StatelessWidget {
             return Center(child: Text(AppLocalizations.of(context)
                 .tr("file.gallery.empty")));
           } else {
+
+
             return DefaultTabController(
               length: folders.length,
               child: Column(
                 children: <Widget>[
                   TabBar(
+                    indicatorSize: TabBarIndicatorSize.label, //makes it better
+                    isScrollable: true, //up to your taste
+                    indicator: MD2Indicator( //it begins here
+                        indicatorHeight: 3,
+                        indicatorColor: Color(0xff1a73e8),
+                        indicatorSize: MD2IndicatorSize.normal //3 different modes tiny-normal-full
+                    ),
                     tabs: folders
                         .map((folder) => Tab(
-                              child: Text(
-                                folder.name,
-                                style: TextStyle(color: Colors.blue),
-                              ),
-                            ))
+                      child: Text(
+                        folder.name,
+                        style: TextStyle(color: Colors.blue),
+                      ),
+                    ))
                         .toList(),
                   ),
                   Expanded(

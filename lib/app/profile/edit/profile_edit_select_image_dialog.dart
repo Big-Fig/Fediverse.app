@@ -6,18 +6,25 @@ import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 
 AlertDialog createProfileEditSelectImageDialog({
+  @required BuildContext context,
   @required FilePickerFile filePickerFile,
   @required VoidCallback cancelCallback,
   @required VoidCallback editCallback,
   @required VoidCallback okCallback,
 }) {
   return AlertDialog(
-    title: Text("Confirm selection?"),
+    title: Text(AppLocalizations.of(context)
+        .tr("app.profile.edit.select.image.dialog.title")),
     content: Image.file(filePickerFile.file),
     actions: <Widget>[
-      FlatButton(onPressed: okCallback, child: Text("ok")),
-      FlatButton(onPressed: editCallback, child: Text("edit")),
-      FlatButton(onPressed: cancelCallback, child: Text("cancel")),
+      FlatButton(
+          onPressed: okCallback,
+          child: Text(AppLocalizations.of(context)
+              .tr("app.profile.edit.select.image.dialog.action.ok"))),
+      FlatButton(onPressed: editCallback, child: Text(AppLocalizations.of(context)
+      .tr("app.profile.edit.select.image.dialog.action.edit"))),
+      FlatButton(onPressed: cancelCallback, child: Text(AppLocalizations.of(context)
+      .tr("app.profile.edit.select.image.dialog.action.cancel"))),
     ],
   );
 }
@@ -57,7 +64,7 @@ Future<AlertDialog> showProfileEditSelectImageDialog({
               iosUiSettings: IOSUiSettings(
                 minimumAspectRatio: 1.0,
               ));
-        },
+        }, context: context,
       ));
   return dialog;
 }

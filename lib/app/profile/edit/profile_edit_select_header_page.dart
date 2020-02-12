@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/file/image/crop/file_image_crop_helper.dart';
 import 'package:fedi/app/profile/edit/profile_edit_select_image_page.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';
@@ -13,7 +14,8 @@ class ProfileEditSelectHeaderPage extends ProfileEditSelectImagePage {
 
   @override
   Widget createAppBarTitle(BuildContext context) {
-    return Text("Select header");
+    return Text(AppLocalizations.of(context)
+        .tr("app.profile.edit.select.header.title"));
   }
 
   @override
@@ -21,7 +23,8 @@ class ProfileEditSelectHeaderPage extends ProfileEditSelectImagePage {
     showDialog(
         context: context,
         child: AlertDialog(
-          title: Text("Confirm selection?"),
+          title: Text(AppLocalizations.of(context)
+              .tr("app.profile.edit.select.header.dialog.title")),
           content: Image.file(filePickerFile.file),
           actions: <Widget>[
             FlatButton(
@@ -29,7 +32,9 @@ class ProfileEditSelectHeaderPage extends ProfileEditSelectImagePage {
                   dismissDialog(context);
                   selectedCallback(filePickerFile);
                 },
-                child: Text("Ok")),
+                child: Text(AppLocalizations.of(context).tr(
+                    "app.profile.edit.select.header.dialog.action"
+                        ".select"))),
             FlatButton(
                 onPressed: () async {
                   File croppedFile =
@@ -49,12 +54,16 @@ class ProfileEditSelectHeaderPage extends ProfileEditSelectImagePage {
                     selectedCallback(filePickerFile);
                   }
                 },
-                child: Text("Crop")),
+                child: Text(AppLocalizations.of(context).tr(
+                    "app.profile.edit.select.header.dialog.action"
+                        ".crop"))),
             FlatButton(
                 onPressed: () {
                   dismissDialog(context);
                 },
-                child: Text("Cancel")),
+                child: Text(AppLocalizations.of(context).tr(
+                    "app.profile.edit.select.header.dialog.action"
+                        ".cancel"))),
           ],
         ));
   }

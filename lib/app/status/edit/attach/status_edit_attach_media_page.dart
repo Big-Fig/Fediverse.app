@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/file/picker/file_picker_bloc.dart';
 import 'package:fedi/file/picker/file_picker_bottom_nav_bar_widget.dart';
@@ -34,7 +35,8 @@ class StatusEditAttachImagePage extends StatelessWidget {
                 icon: Icon(Icons.arrow_back),
                 onPressed: () => Navigator.pop(context),
               ),
-              title: Text("Attach media"),
+              title: Text(AppLocalizations.of(context)
+                  .tr("app.status.edit.attach_media.title")),
             ),
             body: SingleFilePickerBodyWidget(),
             bottomNavigationBar: FilePickerBottomNavBarWidget(),
