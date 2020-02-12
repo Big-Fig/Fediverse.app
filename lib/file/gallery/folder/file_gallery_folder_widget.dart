@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/file/gallery/file/file_gallery_file_bloc.dart';
@@ -39,8 +40,9 @@ class FileGalleryFolderWidget extends StatelessWidget {
           var galleryState = snapshot.data;
 
           switch (galleryState) {
-            case FileGalleryState.notStarted:
-              return Text("Loading not started");
+            case FileGalleryState.loadingNotStarted:
+              return Center(child: Text(AppLocalizations.of(context)
+                  .tr("file.gallery.state.loading_not_started")));
               break;
             case FileGalleryState.loading:
               return Center(child: CircularProgressIndicator());
@@ -65,7 +67,10 @@ class FileGalleryFolderWidget extends StatelessWidget {
           var files = snapshot.data;
 
           if (files.isEmpty) {
-            return Text("This folder doesn't have media");
+            return Center(
+              child: Text(AppLocalizations.of(context)
+                  .tr("file.gallery.folder.empty")),
+            );
           } else {
             return GridView.builder(
               itemCount: files.length,

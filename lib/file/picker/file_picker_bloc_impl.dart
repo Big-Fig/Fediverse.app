@@ -77,21 +77,4 @@ abstract class FilePickerBloc extends DisposableOwner
   onTabSelected(FilePickerTab tab) {
     selectedTabSubject.add(tab);
   }
-
-//  FilePickerBloc._private(this.fileTypesToPick, this.captureEnabled,
-//      this.mode);
-//
-//  final List<FileType> fileTypesToPick;
-//  final bool captureEnabled;
-//  final FilePickerMode mode;
-//  FilePickerBloc.singlePicker({
-//    @required List<FileType> fileTypesToPick,
-//    @required bool captureEnabled,
-//  }) : this._private(fileTypesToPick, captureEnabled, FilePickerMode.single);
-//
-//  FilePickerBloc.multiPicker({
-//    @required List<FileType> fileTypesToPick,
-//    @required bool captureEnabled,
-//  }) : this._private(fileTypesToPick, captureEnabled, FilePickerMode.single);
-
 }

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,8 +24,8 @@ class AsyncInitLoadingWidget extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
-                  child: Text("Async loading not started, don't "
-                      "forget to call performAsynInit();"),
+                  child: Text(AppLocalizations.of(context)
+                      .tr("async.init.state.not_started")),
                 ),
               );
               break;
@@ -36,11 +37,12 @@ class AsyncInitLoadingWidget extends StatelessWidget {
               break;
             case AsyncInitLoadingState.failed:
               return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(
-                    child: Text(
-                        "Init failed with error: ${asyncInitLoadingBloc.initLoadingException}")),
-              );
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                    child: Text(AppLocalizations.of(context).tr(
+                        "async.init.state.failed",
+                        args: [asyncInitLoadingBloc.initLoadingException])),
+                  ));
               break;
           }
 
