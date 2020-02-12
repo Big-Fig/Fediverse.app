@@ -34,4 +34,7 @@ class FileGalleryFileBloc extends AbstractFileGalleryFileBloc {
   @override
   Future<FileGalleryFile> retrieveFile() async =>
       FileGalleryFile(await assetEntity.file, assetEntity.type);
+
+  @override
+  AssetType get type => assetEntity.type;
 }
