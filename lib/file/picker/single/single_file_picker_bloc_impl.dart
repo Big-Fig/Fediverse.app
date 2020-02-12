@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 
 class SingleFilePickerBloc extends FilePickerBloc
     implements ISingleFilePickerBloc {
-  final Function(FilePickerFile filePickerFile) fileSelectedCallback;
+  final FilePickerSelectedFileCallback fileSelectedCallback;
   SingleFilePickerBloc(
       {@required this.fileSelectedCallback,
       @required List<FilePickerFileType> fileTypesToPick,

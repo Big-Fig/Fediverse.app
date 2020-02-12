@@ -3,11 +3,6 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pages/Profile/OtherAccount.dart';
-import 'package:fedi/Transitions/SlideBottomRoute.dart';
-import 'package:fedi/app/status/edit/status_edit_attach_media_page.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:fedi/Pages/Push/PushHelper.dart';
 import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
@@ -17,9 +12,14 @@ import 'package:fedi/Pleroma/Models/Context.dart';
 import 'package:fedi/Pleroma/Models/Conversation.dart';
 import 'package:fedi/Pleroma/Models/Status.dart';
 import 'package:fedi/Views/Alert.dart';
-import 'package:timeago/timeago.dart' as timeago;
+import 'package:fedi/file/picker/file_picker_model.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
+import '../../app/dm/media/dm_media_capture_widget.dart';
 import 'ChatCell.dart';
 
 class ChatPage extends StatefulWidget {
@@ -29,9 +29,9 @@ class ChatPage extends StatefulWidget {
   final Function refreshMasterList;
   ChatPage(
       {this.conversation,
-      this.account,
-      this.refreshMasterList,
-      this.refreshMesagePage});
+        this.account,
+        this.refreshMasterList,
+        this.refreshMesagePage});
 
   @override
   State<StatefulWidget> createState() {
@@ -72,9 +72,9 @@ class _ChatPage extends State<ChatPage> {
           ),
           title: GestureDetector(onTap:(){
             Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => OtherAccount(otherAccount)),
-    );
+              context,
+              MaterialPageRoute(builder: (context) => OtherAccount(otherAccount)),
+            );
 
           },  child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -175,12 +175,14 @@ class _ChatPage extends State<ChatPage> {
                       color: Colors.blue,
                     ),
                     onPressed: () {
-                      _openAttachPage();
-//                      Navigator.push(
-//                          context,
-//                          MaterialPageRoute(
-//                              builder: (context) =>
-//                                  CaptureDMMedia(0, mediaUploaded)));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  CaptureDMMediaWidget(
+                                    mediaUploaded: mediaUploaded,
+                                    selectedTab: FilePickerTab
+                                        .captureVideo,)));
                     },
                   ),
                   IconButton(
@@ -189,12 +191,14 @@ class _ChatPage extends State<ChatPage> {
                       color: Colors.blue,
                     ),
                     onPressed: () {
-                      _openAttachPage();
-//                      Navigator.push(
-//                          context,
-//                          MaterialPageRoute(
-//                              builder: (context) =>
-//                                  CaptureDMMedia(1, mediaUploaded)));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  CaptureDMMediaWidget(
+                                    mediaUploaded: mediaUploaded,
+                                    selectedTab: FilePickerTab
+                                        .captureImage,)));
                     },
                   ),
                   IconButton(
@@ -203,12 +207,14 @@ class _ChatPage extends State<ChatPage> {
                       color: Colors.blue,
                     ),
                     onPressed: () {
-                      _openAttachPage();
-//                      Navigator.push(
-//                          context,
-//                          MaterialPageRoute(
-//                              builder: (context) =>
-//                                  CaptureDMMedia(2, mediaUploaded)));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  CaptureDMMediaWidget(
+                                    mediaUploaded: mediaUploaded,
+                                    selectedTab: FilePickerTab
+                                        .gallery,)));
                     },
                   ),
                   Spacer(),
@@ -285,7 +291,7 @@ class _ChatPage extends State<ChatPage> {
   }
 
   RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
+  RefreshController(initialRefresh: false);
 
   backgroundCheck() {
     if (this.mounted) {
@@ -301,8 +307,8 @@ class _ChatPage extends State<ChatPage> {
 
     CurrentInstance.instance.currentClient
         .run(
-            path: StatusRequest.Status.getStatusContext(statuses.first.id),
-            method: HTTPMethod.GET)
+        path: StatusRequest.Status.getStatusContext(statuses.first.id),
+        method: HTTPMethod.GET)
         .then((response) {
       Context context = Context.fromJsonString(response.body);
 
@@ -336,9 +342,9 @@ class _ChatPage extends State<ChatPage> {
     // if failed,use refreshFailed()
     CurrentInstance.instance.currentClient
         .run(
-            path: StatusRequest.Status.getStatusContext(
-                widget.conversation.lastStatus.id),
-            method: HTTPMethod.GET)
+        path: StatusRequest.Status.getStatusContext(
+            widget.conversation.lastStatus.id),
+        method: HTTPMethod.GET)
         .then((response) {
       Context context = Context.fromJsonString(response.body);
       statuses.clear();
@@ -447,7 +453,7 @@ class _ChatPage extends State<ChatPage> {
               .tr("messages.chat.start_new_conversation.error.alert.title"),
           appLocalizations
               .tr("messages.chat.start_new_conversation.error.alert.content"),
-          () => {});
+              () => {});
       alert.showAlert();
     });
   }
@@ -482,7 +488,7 @@ class _ChatPage extends State<ChatPage> {
               .tr("messages.chat.start_new_conversation.error.alert.title"),
           appLocalizations
               .tr("messages.chat.start_new_conversation.error.alert.content"),
-          () => {});
+              () => {});
       alert.showAlert();
     });
   }
@@ -521,7 +527,7 @@ class _ChatPage extends State<ChatPage> {
               .tr("messages.chat.send_message.error.alert.title"),
           appLocalizations
               .tr("messages.chat.send_message.error.alert.content"),
-          () => {});
+              () => {});
       alert.showAlert();
     });
   }
@@ -587,19 +593,5 @@ class _ChatPage extends State<ChatPage> {
     print("DISPOSE");
     backgroundCheckStatus = false;
     super.dispose();
-  }
-
-  void _openAttachPage() {
-    Navigator.push(
-        context, SlideBottomRoute(page: StatusEditAttachImagePage()));
-
-    //        Navigator.push(
-    //          context,
-    //          SlideBottomRoute(
-    //              page: AddAddtionalMedia(
-    //                  videoTaken: videoTaken,
-    //                  photoTaken: photoTaken,
-    //                  gallerySelected: gallerySelected)),
-    //        );
   }
 }

@@ -3,21 +3,19 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_service.dart';
+import 'package:fedi/file/picker/file_picker_model.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:fedi/Views/Alert.dart';
 import 'package:fedi/Views/LocalVideoPlayer.dart';
 import 'package:fedi/Views/ProgressDialog.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:photo_manager/photo_manager.dart';
 
 class DMMediaPage extends StatefulWidget {
-  final AssetEntity asset;
-  final String imageURL;
-  final String videoURL;
+  final FilePickerFile filePickerFile;
   final Function popParent;
   final Function(BuildContext context, String) mediaUploaded;
 
-  DMMediaPage({this.asset, this.imageURL, this.videoURL, this.popParent, this.mediaUploaded});
+  DMMediaPage({this.filePickerFile, this.popParent, this.mediaUploaded});
 
   @override
   State<StatefulWidget> createState() {
@@ -65,7 +63,7 @@ class _DMMediaPage extends State<DMMediaPage> {
             Container(
               height: deviceWidth,
               color: Colors.black,
-              child: getMediaPreview(),
+              child: getMediaPreview(widget.filePickerFile),
             ),
             RaisedButton(
               child: Text(appLocalizations.tr("media.dm.action.send")),
@@ -77,38 +75,26 @@ class _DMMediaPage extends State<DMMediaPage> {
         ));
   }
 
-  Widget getMediaPreview() {
-    if (widget.imageURL != null) {
-      return _cameraPreviewWidget();
-    } else if (widget.videoURL != null) {
-       file = File(widget.videoURL);
-      return LocalVideoPlayer(url: widget.videoURL);
-    } else if (widget.asset != null) {
-      widget.asset.file.then((loadedFile) {
-        file = loadedFile;
-        if (mounted) setState(() {});
-      });
+  Widget getMediaPreview(FilePickerFile asset) {
 
-      if (widget.asset.type == AssetType.video) {
-        if (file != null) {
-          return LocalVideoPlayer(
-            file: file,
-          );
-        }
-      } else {
-        if (file != null) {
-          return Image.file(file);
-        }
-      }
+    var type = asset.type;
+    switch(type) {
+
+      case FilePickerFileType.image:
+        return Image.file(asset.file);
+        break;
+      case FilePickerFileType.video:
+        return LocalVideoPlayer(
+          file: asset.file,
+        );
+        break;
+      case FilePickerFileType.other:
+      default:
+        throw "Not supported FilePickerFileType $type";
+        break;
     }
-
-    return Container();
   }
 
-  Widget _cameraPreviewWidget() {
-    file = File(widget.imageURL);
-    return Image.file(file);
-  }
 
   postStatus(BuildContext context) {
     _pr = ProgressDialog(context, ProgressDialogType.Normal);
@@ -119,9 +105,9 @@ class _DMMediaPage extends State<DMMediaPage> {
     var mediaAttachmentService = IPleromaMediaAttachmentService.of(
         context, listen: false);
 
+
     mediaAttachmentService.uploadMedia(file: file).then((attachment) {
-        _pr.hide();
-        widget.mediaUploaded(context, attachment.id);
+      widget.mediaUploaded(context, attachment.id);
     }).catchError((e) {
       print(e);
       _pr.hide();
