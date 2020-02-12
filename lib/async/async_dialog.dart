@@ -78,7 +78,7 @@ class _AsyncProgressDialog {
             actions.add(FlatButton(
                 child: cancelAction ??
                     Text(AppLocalizations.of(context)
-                        .tr("dialog.async.action.cancel")),
+                        .tr("async.dialog.action.cancel")),
                 onPressed: () {
                   cancelableOperation.cancel();
                   hide(context);
@@ -88,7 +88,7 @@ class _AsyncProgressDialog {
           return AlertDialog(
             title: title ??
                 Text(AppLocalizations.of(context)
-                    .tr("dialog.async.title")),
+                    .tr("async.dialog.title")),
             content: content ??
                 Row(
                     mainAxisAlignment: MainAxisAlignment.center,

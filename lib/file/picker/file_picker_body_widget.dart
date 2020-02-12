@@ -40,39 +40,46 @@ abstract class FilePickerBodyWidget extends StatelessWidget {
   }
 
   @protected
-  Widget buildBodyCaptureVideoWidget(BuildContext context,
-      IFilePickerBloc filePickerBloc) =>
-      buildCameraBlocWithChild(context: context,
+  Widget buildBodyCaptureVideoWidget(
+          BuildContext context, IFilePickerBloc filePickerBloc) =>
+      buildCameraBlocWithChild(
+          context: context,
           config: defaultVideoConfig,
           filePickerBloc: filePickerBloc,
           child: CameraVideoWidget());
 
   @protected
-  Widget buildBodyCaptureImageWidget(BuildContext context,
-      IFilePickerBloc filePickerBloc) =>
-      buildCameraBlocWithChild(context: context,
+  Widget buildBodyCaptureImageWidget(
+          BuildContext context, IFilePickerBloc filePickerBloc) =>
+      buildCameraBlocWithChild(
+          context: context,
           config: defaultImageConfig,
           filePickerBloc: filePickerBloc,
           child: CameraPhotoWidget());
 
   DisposableProvider<ICameraBloc> buildCameraBlocWithChild(
-      {@required BuildContext context, @required CameraConfig config, @required IFilePickerBloc filePickerBloc, @required CameraWidget child}) {
-    return DisposableProvider<ICameraBloc>(create: (BuildContext context) {
-      var cameraBloc = CameraBloc(
-          cameraPermissionBloc: ICameraPermissionBloc.of(
-              context, listen: false),
-          micPermissionBloc: IMicPermissionBloc.of(context, listen: false),
-          startConfig: config);
-      cameraBloc.performAsyncInit();
-      cameraBloc.addDisposable(
-          streamSubscription: cameraBloc.latestCapturedFileStream.listen((
-              cameraFile) {
-            filePickerBloc.onFileSelected(FilePickerFile(file: cameraFile.file,
+      {@required BuildContext context,
+      @required CameraConfig config,
+      @required IFilePickerBloc filePickerBloc,
+      @required CameraWidget child}) {
+    return DisposableProvider<ICameraBloc>(
+        create: (BuildContext context) {
+          var cameraBloc = CameraBloc(
+              cameraPermissionBloc:
+                  ICameraPermissionBloc.of(context, listen: false),
+              micPermissionBloc: IMicPermissionBloc.of(context, listen: false),
+              startConfig: config);
+          cameraBloc.performAsyncInit();
+          cameraBloc.addDisposable(streamSubscription:
+              cameraBloc.latestCapturedFileStream.listen((cameraFile) {
+            filePickerBloc.onFileSelected(FilePickerFile(
+                file: cameraFile.file,
                 type: mapToPickerType(cameraFile.type),
                 isNeedDeleteAfterUsage: true));
           }));
-      return cameraBloc;
-    }, child: child);
+          return cameraBloc;
+        },
+        child: child);
   }
 
   FilePickerFileType mapToPickerType(CameraFileType cameraFileType) {
@@ -88,9 +95,7 @@ abstract class FilePickerBodyWidget extends StatelessWidget {
     }
   }
 
-
-
   @protected
-  Widget buildBodyGalleryWidget(BuildContext context,
-      IFilePickerBloc filePickerBloc);
+  Widget buildBodyGalleryWidget(
+      BuildContext context, IFilePickerBloc filePickerBloc);
 }

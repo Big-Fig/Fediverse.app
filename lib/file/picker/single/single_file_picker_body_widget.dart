@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Views/LocalVideoPlayer.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/file/gallery/file_gallery_bloc.dart';
@@ -35,13 +36,16 @@ class SingleFilePickerBodyWidget extends FilePickerBodyWidget {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                  title: Text("Video"),
+                  title: Text(AppLocalizations.of(context)
+                      .tr("file.picker.single.video.confirm.dialog.title")),
                   content: LocalVideoPlayer(
                     file: filePickerFile.file,
                   ),
                   actions: [
                     FlatButton(
-                      child: Text("Select"),
+                      child: Text(AppLocalizations.of(context)
+                          .tr("file.picker.single.video.confirm.dialog"
+                              ".action.select")),
                       onPressed: () {
                         Navigator.pop(context);
                         filePickerBloc
@@ -49,7 +53,9 @@ class SingleFilePickerBodyWidget extends FilePickerBodyWidget {
                       },
                     ),
                     FlatButton(
-                      child: Text("Cancel"),
+                      child: Text(AppLocalizations.of(context)
+                          .tr("file.picker.single.video.confirm.dialog"
+                              ".action.cancel")),
                       onPressed: () {
                         Navigator.pop(context);
                       },

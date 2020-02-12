@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:photo_manager/photo_manager.dart';
 
 enum FileGalleryState {
-  notStarted, loading, loaded
+  loadingNotStarted, loading, loaded
 }
 
 typedef FileGalleryFileCallback(FileGalleryFile galleryFile);

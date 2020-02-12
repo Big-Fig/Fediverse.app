@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
 import 'package:fedi/camera/camera_bloc.dart';
 import 'package:fedi/permission/grant_permission_widget.dart';
@@ -94,7 +95,6 @@ abstract class CameraWidget extends StatelessWidget {
                 );
               } else {
                 return SizedBox.shrink();
-//                return Text("camera controller is null");
               }
             }),
         Align(
@@ -109,10 +109,12 @@ abstract class CameraWidget extends StatelessWidget {
 
                 switch (state) {
                   case CameraState.error:
-                    widget = Text("Error");
+                    widget = Text(AppLocalizations.of(context)
+                        .tr("camera.state.error"));
                     break;
                   case CameraState.initializing:
-                    widget = Text("initializing");
+                    widget = Text(AppLocalizations.of(context)
+                        .tr("camera.state.initializing"));
                     break;
                   case CameraState.videoRecording:
                     widget = SizedBox.shrink();
@@ -127,7 +129,8 @@ abstract class CameraWidget extends StatelessWidget {
                     widget = SizedBox.shrink();
                     break;
                   default:
-                    widget = Text("Not initialized");
+                    widget = Text(AppLocalizations.of(context)
+                        .tr("camera.state.not_initialized"));
                     break;
                 }
 

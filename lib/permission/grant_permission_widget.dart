@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/permission/permission_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,8 @@ class GrantPermissionWidget extends StatelessWidget {
           if (!permissionGranted) {
             return Center(
               child: RaisedButton(
-                child: Text("Ask permissions"),
+                child: Text(AppLocalizations.of(context)
+                    .tr("permissions.grant_permission.action.grant")),
                 onPressed: () {
                   permissionBloc.requestPermission();
                 },

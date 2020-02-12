@@ -31,7 +31,7 @@ abstract class AbstractFileGalleryFolderBloc extends AsyncInitLoadingBloc
 
   // ignore: close_sinks
   BehaviorSubject<FileGalleryState> galleryStateSubject =
-      BehaviorSubject.seeded(FileGalleryState.notStarted);
+      BehaviorSubject.seeded(FileGalleryState.loadingNotStarted);
   @override
   Stream<FileGalleryState> get galleryStateStream => galleryStateSubject.stream;
 
