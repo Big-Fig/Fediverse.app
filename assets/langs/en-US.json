@@ -20,9 +20,9 @@
         "hint": "Search"
       }
     },
-    "drawer":{
-      "settings":{
-        "header":"Timeline Settings",
+    "drawer": {
+      "settings": {
+        "header": "Timeline Settings",
         "hide_replies": "Hide Replies",
         "media_only": "Display Media Grid",
         "hide_nsfw": "Hide NSFW"
@@ -523,7 +523,7 @@
         }
       },
       "cell": {
-        "reply_to":"Reply to",
+        "reply_to": "Reply to",
         "repeated": "repeated",
         "tooltip": {
           "more": "More",
@@ -615,10 +615,117 @@
       "no_more_messages": "No more Messages"
     }
   },
+  "app": {
+    "dm": {
+      "media": {
+        "capture": {
+          "title": "Choose media"
+        }
+      }
+    },
+    "profile": {
+      "edit": {
+        "select": {
+          "image": {
+            "dialog": {
+              "title": "Confirm selection?",
+              "action": {
+                "ok": "OK",
+                "edit": "Edit",
+                "cancel": "Cancel"
+              }
+            }
+          },
+          "avatar": {
+            "title": "Select avatar",
+            "dialog": {
+              "title": "Confirm selection?",
+              "action": {
+                "select_and_crop": "Select & crop",
+                "cancel": "Cancel"
+              }
+            }
+          },
+          "header": {
+            "title": "Header",
+            "dialog": {
+              "title": "Confirm selection?",
+              "action": {
+                "select": "Select",
+                "crop": "Crop",
+                "cancel": "Cancel"
+              }
+            }
+          }
+        }
+      }
+    },
+    "status": {
+      "edit": {
+        "attach_media": {
+          "title": "Attach media"
+        }
+      }
+    }
+  },
   "progress_dialog": {
     "progress": "Loading...",
     "action": {
-      "ok": "OL"
+      "ok": "OK"
+    }
+  },
+  "async": {
+    "init": {
+      "state": {
+        "not_started": "Async loading not started",
+        "failed": "Init failed with error: {}"
+      }
+    },
+    "dialog": {
+      "title": "Performing...",
+      "action": {
+        "cancel": "Cancel"
+      }
+    }
+  },
+  "permissions": {
+    "grant_permission": {
+      "action": {
+        "grant": "Grant permission"
+      }
+    }
+  },
+  "camera": {
+    "state": {
+      "error": "Error: {}",
+      "initializing": "Initializing",
+      "not_initialized": "Non initialized"
+    }
+  },
+  "file": {
+    "picker": {
+      "single": {
+        "video": {
+          "confirm": {
+            "dialog": {
+              "title": "Video",
+              "action": {
+                "select": "Select",
+                "cancel": "Cancel"
+              }
+            }
+          }
+        }
+      }
+    },
+    "gallery": {
+      "empty": "You don't have media",
+      "state": {
+        "loading_not_started": "Loading not started"
+      },
+      "folder": {
+        "empty": "This folder doesn't have media"
+      }
     }
   }
 }
