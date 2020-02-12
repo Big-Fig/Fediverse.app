@@ -27,13 +27,20 @@ abstract class ICameraBloc
 
   Stream<CameraController> get cameraControllerStream;
 
-  Stream<CameraState> get selectedCameraStateStream;
+  Stream<CameraState> get cameraStateStream;
 
   CameraState get cameraState;
 
-  Stream<bool> get cameraReadyForActionStream;
+  Stream<bool> get isReadyForActionStream;
 
-  bool get selectedCameraReadyForAction;
+  bool get isReadyForAction;
+
+  Stream<bool> get isVideoRecordingInProgressStream;
+
+  bool get isVideoRecordingInProgress;
+  Stream<bool> get isVideoRecordingInProgressOrPausedStream;
+
+  bool get isVideoRecordingInProgressOrPaused;
 
   Stream<CameraLensDirection> get cameraLensDirectionStream;
 

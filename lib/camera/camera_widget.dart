@@ -36,8 +36,8 @@ abstract class CameraWidget extends StatelessWidget {
 
   Widget buildSwitchCameraButtonWidget(ICameraBloc cameraBloc) =>
       StreamBuilder<bool>(
-          stream: cameraBloc.cameraReadyForActionStream,
-          initialData: cameraBloc.selectedCameraReadyForAction,
+          stream: cameraBloc.isReadyForActionStream,
+          initialData: cameraBloc.isReadyForAction,
           builder: (context, snapshot) {
             var readyForAction = snapshot.data;
 
@@ -100,7 +100,7 @@ abstract class CameraWidget extends StatelessWidget {
         Align(
           alignment: Alignment.center,
           child: StreamBuilder<CameraState>(
-              stream: cameraBloc.selectedCameraStateStream,
+              stream: cameraBloc.cameraStateStream,
               initialData: cameraBloc.cameraState,
               builder: (context, snapshot) {
                 var state = snapshot.data;
@@ -118,7 +118,7 @@ abstract class CameraWidget extends StatelessWidget {
                     widget = SizedBox.shrink();
                     break;
                   case CameraState.videoPaused:
-                    widget = Text("videoPaused");
+                    widget = SizedBox.shrink();
                     break;
                   case CameraState.imageCapturing:
                     widget = CircularProgressIndicator();

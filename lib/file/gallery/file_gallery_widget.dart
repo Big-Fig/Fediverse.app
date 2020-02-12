@@ -40,7 +40,7 @@ class FileGalleryWidget extends StatelessWidget {
 
           switch (galleryState) {
             case FileGalleryState.notStarted:
-              return Text("Loading not started");
+              return Center(child: Text("Loading not started"));
               break;
             case FileGalleryState.loading:
               return Center(child: CircularProgressIndicator());
@@ -65,7 +65,7 @@ class FileGalleryWidget extends StatelessWidget {
           var folders = snapshot.data;
 
           if (folders.isEmpty) {
-            return Text("You don't have any media");
+            return Center(child: Text("You don't have any media"));
           } else {
             return DefaultTabController(
               length: folders.length,
