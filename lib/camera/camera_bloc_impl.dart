@@ -81,11 +81,11 @@ abstract class AbstractCameraBloc extends AsyncInitLoadingBloc
     addDisposable(subject: cameraConfigSubject);
     addDisposable(subject: availableCamerasSubject);
     addDisposable(subject: selectedCameraIndexSubject);
-    addDisposable(subject: cameraStateSubject);
+    addDisposable(subject: stateSubject);
   }
+
   // ignore: close_sinks
-  BehaviorSubject<CameraFile> latestCapturedFileSubject =
-  BehaviorSubject();
+  BehaviorSubject<CameraFile> latestCapturedFileSubject = BehaviorSubject();
 
   CameraFile get latestCapturedFile => latestCapturedFileSubject.value;
 
@@ -151,20 +151,29 @@ abstract class AbstractCameraBloc extends AsyncInitLoadingBloc
       cameraController?.description;
 
   // ignore: close_sinks
-  BehaviorSubject<CameraState> cameraStateSubject = BehaviorSubject();
+  BehaviorSubject<CameraState> stateSubject = BehaviorSubject();
 
   @override
-  Stream<CameraState> get selectedCameraStateStream =>
-      cameraStateSubject.stream;
+  Stream<CameraState> get cameraStateStream => stateSubject.stream;
 
   @override
-  CameraState get cameraState => cameraStateSubject.value;
+  CameraState get cameraState => stateSubject.value;
 
-  Stream<bool> get cameraReadyForActionStream =>
-      selectedCameraStateStream.map(mapCameraStateToReadyForAction);
+  Stream<bool> get isReadyForActionStream =>
+      cameraStateStream.map(mapCameraStateToReadyForAction);
 
-  bool get selectedCameraReadyForAction =>
-      mapCameraStateToReadyForAction(cameraState);
+  bool get isReadyForAction => mapCameraStateToReadyForAction(cameraState);
+
+  Stream<bool> get isVideoRecordingInProgressStream =>
+      cameraStateStream.map(mapCameraStateToVideoRecordingInProgress);
+
+  bool get isVideoRecordingInProgress =>
+      mapCameraStateToVideoRecordingInProgress(cameraState);
+  Stream<bool> get isVideoRecordingInProgressOrPausedStream =>
+      cameraStateStream.map(mapCameraStateToVideoRecordingInProgressOrPaused);
+
+  bool get isVideoRecordingInProgressOrPaused =>
+      mapCameraStateToVideoRecordingInProgressOrPaused(cameraState);
 
   @override
   Stream<CameraLensDirection> get cameraLensDirectionStream =>
@@ -246,7 +255,7 @@ abstract class AbstractCameraBloc extends AsyncInitLoadingBloc
       return oldCameraController;
     }
     await _reset();
-    cameraStateSubject.add(CameraState.initializing);
+    stateSubject.add(CameraState.initializing);
 
     var newCameraController = createCameraController(cameraDescription, config);
     await performCameraOperation(newCameraController.initialize);
@@ -257,7 +266,7 @@ abstract class AbstractCameraBloc extends AsyncInitLoadingBloc
     cameraConfigSubject.add(config);
     selectedCameraIndexSubject.add(availableCameras.indexOf(cameraDescription));
 
-    cameraStateSubject.add(CameraState.readyForAction);
+    stateSubject.add(CameraState.readyForAction);
     return newCameraController;
   }
 
@@ -269,7 +278,7 @@ abstract class AbstractCameraBloc extends AsyncInitLoadingBloc
     } on Exception catch (e) {
       _logger.shout(() => "performCameraOperation error "
           "$e");
-      cameraStateSubject.add(CameraState.error);
+      stateSubject.add(CameraState.error);
       throw CameraErrorException(cameraDescription, selectedCameraIndex,
           cameraLensDirection, cameraState, e);
     }
@@ -336,30 +345,35 @@ abstract class AbstractCameraBloc extends AsyncInitLoadingBloc
 
   static bool mapCameraStateToReadyForAction(CameraState state) =>
       state == CameraState.readyForAction;
+  static bool mapCameraStateToVideoRecordingInProgress(CameraState state) =>
+      state == CameraState.videoRecording;
+  static bool mapCameraStateToVideoRecordingInProgressOrPaused(
+          CameraState state) =>
+      state == CameraState.videoRecording || state == CameraState.videoPaused;
 
   @override
   Future captureImage(String absolutePathToSave) async {
     _logger.fine(() => "captureImage start \n"
         "\t absolutePathToSave $absolutePathToSave");
     ensureCameraReadyForAction();
-    cameraStateSubject.add(CameraState.imageCapturing);
+    stateSubject.add(CameraState.imageCapturing);
     await performCameraOperation(
         () => cameraController.takePicture(absolutePathToSave));
 
-    latestCapturedFileSubject.add(CameraFile(File(absolutePathToSave),
-        CameraFileType.photo));
+    latestCapturedFileSubject
+        .add(CameraFile(File(absolutePathToSave), CameraFileType.photo));
 
     _logger.fine(() => "captureImage finish \n"
         "\t absolutePathToSave $absolutePathToSave");
-    cameraStateSubject.add(CameraState.readyForAction);
+    stateSubject.add(CameraState.readyForAction);
   }
 
   @override
   Future pauseVideoRecording() async {
     if (cameraState == CameraState.videoRecording) {
-      await performCameraOperation(() => cameraController.stopVideoRecording());
+      await performCameraOperation(() => cameraController.pauseVideoRecording());
 
-      cameraStateSubject.add(CameraState.videoPaused);
+      stateSubject.add(CameraState.videoPaused);
     } else {
       throw CameraNotReadyException(cameraDescription, selectedCameraIndex,
           cameraLensDirection, cameraState, [CameraState.videoRecording]);
@@ -372,7 +386,7 @@ abstract class AbstractCameraBloc extends AsyncInitLoadingBloc
       await performCameraOperation(
           () => cameraController.resumeVideoRecording());
 
-      cameraStateSubject.add(CameraState.videoRecording);
+      stateSubject.add(CameraState.videoRecording);
     } else {
       throw CameraNotReadyException(cameraDescription, selectedCameraIndex,
           cameraLensDirection, cameraState, [CameraState.videoPaused]);
@@ -387,7 +401,8 @@ abstract class AbstractCameraBloc extends AsyncInitLoadingBloc
         () => cameraController.startVideoRecording(absolutePathToSave));
     _videoRecordingTimer = Timer.periodic(
         videoRecordingTimerRepeatDuration, videoRecordingPeriodicCallback);
-    cameraStateSubject.add(CameraState.videoRecording);
+    videoRecordingTimeInSecondsSubject.add(0);
+    stateSubject.add(CameraState.videoRecording);
   }
 
   void videoRecordingPeriodicCallback(Timer timer) {
@@ -413,10 +428,10 @@ abstract class AbstractCameraBloc extends AsyncInitLoadingBloc
         cameraState == CameraState.videoPaused) {
       await performCameraOperation(() => cameraController.stopVideoRecording());
 
-      latestCapturedFileSubject.add(CameraFile(File(_videoRecordingPath),
-          CameraFileType.video));
+      latestCapturedFileSubject
+          .add(CameraFile(File(_videoRecordingPath), CameraFileType.video));
       _resetVideoRecording();
-      cameraStateSubject.add(CameraState.readyForAction);
+      stateSubject.add(CameraState.readyForAction);
     } else {
       throw CameraNotReadyException(
           cameraDescription,
@@ -428,14 +443,14 @@ abstract class AbstractCameraBloc extends AsyncInitLoadingBloc
   }
 
   void ensureCameraReadyForAction() {
-    if (!selectedCameraReadyForAction) {
+    if (!isReadyForAction) {
       throw CameraNotReadyException(cameraDescription, selectedCameraIndex,
           cameraLensDirection, cameraState, [CameraState.readyForAction]);
     }
   }
 
   Future _reset() async {
-    cameraStateSubject.add(CameraState.disposed);
+    stateSubject.add(CameraState.disposed);
     var controller = cameraController;
     _logger.fine(() => "_reset controller = $controller");
     cameraControllerSubject.add(null);
