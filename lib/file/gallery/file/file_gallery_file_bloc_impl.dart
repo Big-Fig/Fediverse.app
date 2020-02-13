@@ -44,19 +44,18 @@ class FileGalleryFileBloc extends AbstractFileGalleryFileBloc {
     var file = await assetEntity.file;
     var isNeedDeleteAfterUsage = false;
 
-      var filePath = file.absolute.path;
+    var filePath = file.absolute.path;
     _logger.fine(() => "retrieveFile \n"
-        "\t file $filePath"
-    );
+        "\t file $filePath");
 
-    var extension = path.extension(filePath);
-
-
-    if (extension == heicExtension || Platform.isIOS) {
-      // gallery may return photos in HEIC format from iOS gallery
-      // in this case we should re-compress them to jpg
-      file = await _compressToJpeg(file);
-      isNeedDeleteAfterUsage = true;
+    if (type == AssetType.image) {
+      var extension = path.extension(filePath);
+      if (extension == heicExtension || Platform.isIOS) {
+        // gallery may return photos in HEIC format from iOS gallery
+        // in this case we should re-compress them to jpg
+        file = await _compressToJpeg(file);
+        isNeedDeleteAfterUsage = true;
+      }
     }
 
     return FileGalleryFile(
@@ -68,14 +67,15 @@ class FileGalleryFileBloc extends AbstractFileGalleryFileBloc {
   Future<File> _compressToJpeg(File file) async {
     var originPath = file.absolute.path;
     final Directory extDir = await getTemporaryDirectory();
-    final String dirPath = path.join(extDir.path, "gallery_picker");
-    await Directory(dirPath).create(recursive: true);
     var timestamp = DateTime.now().millisecondsSinceEpoch.toString();
-    final String resultPath = path.join(dirPath, "$timestamp.jpg");
+    final String dirPath = path.join(extDir.path, "gallery_picker", timestamp);
+    await Directory(dirPath).create(recursive: true);
+    var originalFileNameWithoutExtension = path.basenameWithoutExtension(file.path);
+    final String resultPath = path.join(dirPath,
+        "$originalFileNameWithoutExtension.jpg");
     _logger.fine(() => "_compressToJpeg \n"
         "\t originPath $originPath"
-        "\t resultPath $resultPath"
-    );
+        "\t resultPath $resultPath");
     file = await FlutterImageCompress.compressAndGetFile(
       originPath,
       resultPath,
