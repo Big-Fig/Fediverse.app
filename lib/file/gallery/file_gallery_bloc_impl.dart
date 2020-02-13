@@ -6,14 +6,18 @@ import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:fedi/permission/permission_bloc.dart';
 import 'package:fedi/permission/storage_permission_bloc.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:logging/logging.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:rxdart/rxdart.dart';
+
+var _logger = Logger("file_gallery_bloc_impl.dart");
 
 abstract class AbstractFileGalleryBloc extends AsyncInitLoadingBloc
     implements Disposable, IPermissionBloc, IFileGalleryBloc {
   final IStoragePermissionBloc storagePermissionBloc;
   final List<FilePickerFileType> fileTypesToPick;
+
   AbstractFileGalleryBloc({
     @required this.storagePermissionBloc,
     @required this.fileTypesToPick,
@@ -27,12 +31,14 @@ abstract class AbstractFileGalleryBloc extends AsyncInitLoadingBloc
 
   @override
   Stream<List<AssetPathEntity>> get foldersStream => foldersSubject.stream;
+
   @override
   List<AssetPathEntity> get folders => foldersSubject.value;
 
   // ignore: close_sinks
   BehaviorSubject<FileGalleryState> galleryStateSubject =
       BehaviorSubject.seeded(FileGalleryState.loadingNotStarted);
+
   @override
   Stream<FileGalleryState> get galleryStateStream => galleryStateSubject.stream;
 
@@ -65,6 +71,8 @@ abstract class AbstractFileGalleryBloc extends AsyncInitLoadingBloc
     assert(permissionGranted);
     galleryStateSubject.add(FileGalleryState.loading);
     var folders = await loadFolders();
+    _logger.fine(() => "loadFolders $folders");
+    folders.sort(FileGalleryBloc.compareAlbumsAlphabeticallyAndFeatured);
     foldersSubject.add(folders);
     galleryStateSubject.add(FileGalleryState.loaded);
   }
@@ -110,21 +118,51 @@ class FileGalleryBloc extends AbstractFileGalleryBloc {
   Future<List<AssetPathEntity>> loadFolders() async =>
       await PhotoManager.getAssetPathList(
           type: mapFileTypesToPickToRequestType(fileTypesToPick));
-}
 
-RequestType mapFileTypesToPickToRequestType(
-    List<FilePickerFileType> fileTypesToPick) {
-  var isNeedImage = fileTypesToPick.contains(FilePickerFileType.image);
-  var isNeedVideo = fileTypesToPick.contains(FilePickerFileType.video);
-  if (isNeedImage && isNeedVideo) {
-    return RequestType.all;
-  }
-  if (isNeedImage && !isNeedVideo) {
-    return RequestType.image;
-  }
-  if (!isNeedImage && isNeedVideo) {
-    return RequestType.video;
+  static int compareAlbumsAlphabeticallyAndFeatured(
+      AssetPathEntity a, AssetPathEntity b) {
+    var aName = a.name;
+    var bName = b.name;
+
+    // TODO: refactor for android & different languages
+    // or wait until photo_manager lib will return album type
+    return compareAlbumTitlesAlphabeticallyAndFeatured(aName, bName);
   }
 
-  throw "fileTypesToPick should containe image or video type";
+  static int compareAlbumTitlesAlphabeticallyAndFeatured(String aName, String bName) {
+
+    // TODO: refactor for android & different languages
+    // or wait until photo_manager lib will return album type
+    const List<String> iosLatestEnNames = ["Recently Added", "Recents"];
+    List<String> featuredNames = [...iosLatestEnNames];
+
+    var isANameFeatured = featuredNames.contains(aName);
+    var isBNameFeatured = featuredNames.contains(bName);
+
+    if (isANameFeatured && !isBNameFeatured) {
+      return -1;
+    } else if (!isANameFeatured && isBNameFeatured) {
+      return 1;
+    } else {
+      // both featured or both not
+      return aName.compareTo(bName);
+    }
+  }
+
+  static RequestType mapFileTypesToPickToRequestType(
+      List<FilePickerFileType> fileTypesToPick) {
+    var isNeedImage = fileTypesToPick.contains(FilePickerFileType.image);
+    var isNeedVideo = fileTypesToPick.contains(FilePickerFileType.video);
+    if (isNeedImage && isNeedVideo) {
+      return RequestType.all;
+    }
+    if (isNeedImage && !isNeedVideo) {
+      return RequestType.image;
+    }
+    if (!isNeedImage && isNeedVideo) {
+      return RequestType.video;
+    }
+
+    throw "fileTypesToPick should containe image or video type";
+  }
 }
