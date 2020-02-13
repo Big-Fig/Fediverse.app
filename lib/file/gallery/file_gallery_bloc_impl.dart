@@ -129,12 +129,13 @@ class FileGalleryBloc extends AbstractFileGalleryBloc {
     return compareAlbumTitlesAlphabeticallyAndFeatured(aName, bName);
   }
 
-  static int compareAlbumTitlesAlphabeticallyAndFeatured(String aName, String bName) {
-
-    // TODO: refactor for android & different languages
+  static int compareAlbumTitlesAlphabeticallyAndFeatured(
+      String aName, String bName) {
+    // TODO: refactor for different languages
     // or wait until photo_manager lib will return album type
     const List<String> iosLatestEnNames = ["Recently Added", "Recents"];
-    List<String> featuredNames = [...iosLatestEnNames];
+    const List<String> androidLatestEnNames = ["Recent"];
+    List<String> featuredNames = [...iosLatestEnNames, ...androidLatestEnNames];
 
     var isANameFeatured = featuredNames.contains(aName);
     var isBNameFeatured = featuredNames.contains(bName);
