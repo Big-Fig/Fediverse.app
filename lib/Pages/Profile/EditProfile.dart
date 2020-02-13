@@ -228,10 +228,14 @@ class _EditProfile extends State<EditProfile> {
 
                                   CurrentInstance.instance.currentAccount = myAccount;
                                   await InstanceStorage.updateAccount(account, myAccount);
+                                  if (filePickerFile.isNeedDeleteAfterUsage) {
+                                    filePickerFile.file.delete();
+                                  }
                                   setState(() {
 
                                   });
                                 }
+
 
                                 // exit file picker
                                 Navigator.pop(context);
@@ -318,10 +322,14 @@ class _EditProfile extends State<EditProfile> {
 
                                     CurrentInstance.instance.currentAccount = myAccount;
                                     await InstanceStorage.updateAccount(account, myAccount);
+                                    if (filePickerFile.isNeedDeleteAfterUsage) {
+                                      filePickerFile.file.delete();
+                                    }
                                     setState(() {
 
                                     });
                                   }
+
                                   // exit file picker
                                   Navigator.pop(context);
 

@@ -446,21 +446,26 @@ class _QuickPostPageState extends State<QuickPostPage> {
 
   getFileForUpload(BuildContext context, int index) async {
     print("getting index $index");
-    FilePickerFile asset = assets[index];
+    FilePickerFile filePickerFile = assets[index];
 
-    uploadFile(context, index, asset.file);
+    uploadFile(context, index, filePickerFile);
   }
 
-  uploadFile(BuildContext context, int index, File file) {
+  uploadFile(BuildContext context, int index, FilePickerFile filePickerFile) {
 
 
     var mediaAttachmentService = IPleromaMediaAttachmentService.of(
         context, listen: false);
 
-    mediaAttachmentService.uploadMedia(file: file).then((attachment) {
+    var file = filePickerFile.file;
+    mediaAttachmentService.uploadMedia(file: file).then(
+            (attachment) {
       attachments.add(attachment.id);
       int nextIndex = index + 1;
       print("whats next?");
+      if (filePickerFile.isNeedDeleteAfterUsage) {
+        filePickerFile.file.delete();
+      }
       if (nextIndex != assets.length) {
         getFileForUpload(context, nextIndex);
       } else {
