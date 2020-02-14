@@ -19,3 +19,22 @@ class Emoji {
 
   Map<String, dynamic> toJson() => _$EmojiToJson(this);
 }
+
+
+
+@JsonSerializable()
+class EmojiReactions {
+  String name;
+  int count;
+  bool me;
+
+  EmojiReactions({this.name, this.count, this.me});
+
+
+  factory EmojiReactions.fromJson(Map<String, dynamic> json) =>
+      _$EmojiReactionsFromJson(json);
+
+  Map<String, dynamic> toJson() => _$EmojiReactionsToJson(this);
+
+
+}

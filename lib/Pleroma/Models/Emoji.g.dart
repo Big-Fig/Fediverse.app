@@ -49,3 +49,18 @@ Map<String, dynamic> _$EmojiToJson(Emoji instance) => <String, dynamic>{
       'shortcode': instance.shortcode,
       'url': instance.url,
     };
+
+EmojiReactions _$EmojiReactionsFromJson(Map<String, dynamic> json) {
+  return EmojiReactions(
+    name: json['name'] as String,
+    count: json['count'] as int,
+    me: json['me'] as bool,
+  );
+}
+
+Map<String, dynamic> _$EmojiReactionsToJson(EmojiReactions instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'count': instance.count,
+      'me': instance.me,
+    };

@@ -5,8 +5,9 @@
 import 'dart:convert';
 
 import 'package:fedi/Pleroma/Models/Relationship.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_model.dart';
+import 'package:flutter/widgets.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 import './Account.dart';
 import './Emoji.dart';
@@ -15,7 +16,7 @@ part 'Status.g.dart';
 
 @JsonSerializable()
 @VisibilityTypeConverter()
-class Status {
+class MastodonStatus {
   String id;
   @JsonKey(name: "created_at")
   DateTime createdAt;
@@ -26,7 +27,8 @@ class Status {
   bool sensitive;
   @JsonKey(name: "spoiler_text")
   String spoilerText;
-  Visibility visibility;
+  @JsonKey(name: "visibility")
+  String visibilityRaw;
   String uri;
   String url;
   @JsonKey(name: "replies_count")
@@ -51,34 +53,116 @@ class Status {
   List<Emoji> emojis;
   dynamic poll;
 
-  Status({
-    this.id,
-    this.createdAt,
-    this.inReplyToId,
-    this.inReplyToAccountId,
-    this.sensitive,
-    this.spoilerText,
-    this.visibility,
-    this.uri,
-    this.url,
-    this.repliesCount,
-    this.reblogsCount,
-    this.favouritesCount,
-    this.favourited,
-    this.reblogged,
-    this.muted,
-    this.bookmarked,
-    this.pinned,
-    this.content,
-    this.reblog,
-    this.application,
-    this.account,
-    this.mediaAttachments,
-    this.mentions,
-    this.tags,
-    this.emojis,
-    this.poll,
+  VisibilityMastodon get visibilityMastodon => const VisibilityMastodonTypeConverter().fromJson
+    (visibilityRaw);
+
+
+  MastodonStatus({
+    @required this.id,
+    @required this.createdAt,
+    @required this.inReplyToId,
+    @required this.inReplyToAccountId,
+    @required this.sensitive,
+    @required this.spoilerText,
+    @required this.visibilityRaw,
+    @required this.uri,
+    @required this.url,
+    @required this.repliesCount,
+    @required this.reblogsCount,
+    @required this.favouritesCount,
+    @required this.favourited,
+    @required this.reblogged,
+    @required this.muted,
+    @required this.bookmarked,
+    @required this.pinned,
+    @required this.content,
+    @required this.reblog,
+    @required this.application,
+    @required this.account,
+    @required this.mediaAttachments,
+    @required this.mentions,
+    @required this.tags,
+    @required this.emojis,
+    @required this.poll,
   });
+
+  factory MastodonStatus.fromJson(Map<String, dynamic> json) => _$MastodonStatusFromJson(json);
+
+  factory MastodonStatus.fromJsonString(String jsonString) =>
+      _$MastodonStatusFromJson(jsonDecode(jsonString));
+
+  static List<Status> listFromJsonString(String str) =>
+      new List<Status>.from(json.decode(str).map((x) => Status.fromJson(x)));
+
+  Map<String, dynamic> toJson() => _$MastodonStatusToJson(this);
+
+  String toJsonString() => jsonEncode(_$MastodonStatusToJson(this));
+}
+
+@JsonSerializable()
+class Status extends MastodonStatus {
+
+  final StatusPleroma pleroma;
+
+  Status({
+    String id,
+    DateTime createdAt,
+    String inReplyToId,
+    String inReplyToAccountId,
+    bool sensitive,
+    String spoilerText,
+    String visibilityRaw,
+    String uri,
+    String url,
+    int repliesCount,
+    int reblogsCount,
+    int favouritesCount,
+    bool favourited,
+    bool reblogged,
+    bool muted,
+    bool bookmarked,
+    bool pinned,
+    String content,
+    Status reblog,
+    Application application,
+    Account account,
+    List<MediaAttachment> mediaAttachments,
+    List<Mention> mentions,
+    List<Tag> tags,
+    List<Emoji> emojis,
+    dynamic poll,
+    this.pleroma,
+  }) :super(
+      id: id,
+      createdAt: createdAt,
+      inReplyToId: inReplyToId,
+      inReplyToAccountId: inReplyToAccountId,
+      sensitive: sensitive,
+      spoilerText: spoilerText,
+      visibilityRaw: visibilityRaw,
+      uri: uri,
+      url: url,
+      repliesCount: repliesCount,
+      reblogsCount: reblogsCount,
+      favouritesCount: favouritesCount,
+      favourited: favourited,
+      reblogged: reblogged,
+      muted: muted,
+      pinned: pinned,
+      bookmarked: bookmarked,
+      content: content,
+      reblog: reblog,
+      application: application,
+      account: account,
+      mediaAttachments: mediaAttachments,
+      mentions: mentions,
+      tags: tags,
+      emojis: emojis,
+      poll: poll
+  );
+
+
+  Visibility get visibility => const VisibilityTypeConverter().fromJson(visibilityRaw);
 
   factory Status.fromJson(Map<String, dynamic> json) => _$StatusFromJson(json);
 
@@ -227,11 +311,23 @@ class StatusPleroma {
   Content content;
   @JsonKey(name: "conversation_id")
   int conversationId;
+  @JsonKey(name: "direct_conversation_id")
+  int directConversationId;
   @JsonKey(name: "in_reply_to_account_acct")
   String inReplyToAccountAcct;
   bool local;
   @JsonKey(name: "spoiler_text")
   Content spoilerText;
+  @JsonKey(name: "expires_at")
+  // TODO: fix when https://git.pleroma.social/pleroma/pleroma/issues/1573
+  //  will be resolved
+//  DateTime expiresAt;
+  dynamic expiresAt;
+  @JsonKey(name: "thread_muted")
+  bool threadMuted;
+  @JsonKey(name: "emoji_reactions")
+  List<EmojiReactions> emojiReactions;
+
 
   StatusPleroma({
     this.content,
@@ -292,12 +388,20 @@ class Tag {
   String toJsonString() => jsonEncode(_$TagToJson(this));
 }
 
-enum Visibility { PUBLIC, UNLISTED, DIRECT }
+enum Visibility { PUBLIC, UNLISTED, DIRECT, LIST }
+enum VisibilityMastodon { PUBLIC, UNLISTED, DIRECT }
 
 final visibilityValues = new EnumValues({
   "public": Visibility.PUBLIC,
   "unlisted": Visibility.UNLISTED,
-  "direct": Visibility.DIRECT
+  "direct": Visibility.DIRECT,
+  "list": Visibility.LIST
+});
+
+final visibilityMastodonValues = new EnumValues({
+  "public": VisibilityMastodon.PUBLIC,
+  "unlisted": VisibilityMastodon.UNLISTED,
+  "direct": VisibilityMastodon.DIRECT
 });
 
 class EnumValues<T> {
@@ -321,5 +425,15 @@ class VisibilityTypeConverter implements JsonConverter<Visibility, String> {
   Visibility fromJson(String value) => visibilityValues.map[value];
   @override
   String toJson(Visibility value) => visibilityValues.reverseMap[value];
+
+}
+
+class VisibilityMastodonTypeConverter implements JsonConverter<VisibilityMastodon, String> {
+  const VisibilityMastodonTypeConverter();
+
+  @override
+  VisibilityMastodon fromJson(String value) => visibilityMastodonValues.map[value];
+  @override
+  String toJson(VisibilityMastodon value) => visibilityMastodonValues.reverseMap[value];
 
 }
