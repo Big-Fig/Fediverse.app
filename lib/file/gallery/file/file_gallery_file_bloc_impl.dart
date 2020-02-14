@@ -1,10 +1,18 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/file/gallery/file/file_gallery_file_bloc.dart';
 import 'package:fedi/file/gallery/file_gallery_model.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:logging/logging.dart';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
 import 'package:photo_manager/photo_manager.dart';
+
+const heicExtension = ".heic";
+var _logger = Logger("file_gallery_file_bloc_impl.dart");
 
 abstract class AbstractFileGalleryFileBloc extends AsyncInitLoadingBloc
     implements IFileGalleryFileBloc {
@@ -32,8 +40,50 @@ class FileGalleryFileBloc extends AbstractFileGalleryFileBloc {
       assetEntity.thumbDataWithSize(width, height);
 
   @override
-  Future<FileGalleryFile> retrieveFile() async =>
-      FileGalleryFile(await assetEntity.file, assetEntity.type);
+  Future<FileGalleryFile> retrieveFile() async {
+    var file = await assetEntity.file;
+    var isNeedDeleteAfterUsage = false;
+
+      var filePath = file.absolute.path;
+    _logger.fine(() => "retrieveFile \n"
+        "\t file $filePath"
+    );
+
+    var extension = path.extension(filePath);
+
+
+    if (extension == heicExtension || Platform.isIOS) {
+      // gallery may return photos in HEIC format from iOS gallery
+      // in this case we should re-compress them to jpg
+      file = await _compressToJpeg(file);
+      isNeedDeleteAfterUsage = true;
+    }
+
+    return FileGalleryFile(
+        file: file,
+        type: assetEntity.type,
+        isNeedDeleteAfterUsage: isNeedDeleteAfterUsage);
+  }
+
+  Future<File> _compressToJpeg(File file) async {
+    var originPath = file.absolute.path;
+    final Directory extDir = await getTemporaryDirectory();
+    final String dirPath = path.join(extDir.path, "gallery_picker");
+    await Directory(dirPath).create(recursive: true);
+    var timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+    final String resultPath = path.join(dirPath, "$timestamp.jpg");
+    _logger.fine(() => "_compressToJpeg \n"
+        "\t originPath $originPath"
+        "\t resultPath $resultPath"
+    );
+    file = await FlutterImageCompress.compressAndGetFile(
+      originPath,
+      resultPath,
+      format: CompressFormat.jpeg,
+      quality: 88,
+    );
+    return file;
+  }
 
   @override
   AssetType get type => assetEntity.type;
