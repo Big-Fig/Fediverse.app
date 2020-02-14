@@ -108,6 +108,9 @@ class _DMMediaPage extends State<DMMediaPage> {
       var attachment = await mediaAttachmentService.uploadMedia(file: widget
           .filePickerFile.file);
       _pr.hide();
+      if (widget.filePickerFile.isNeedDeleteAfterUsage) {
+        widget.filePickerFile.file.delete();
+      }
       widget.mediaUploaded(context, attachment.id);
     } on Exception catch (e) {
       print(e);
