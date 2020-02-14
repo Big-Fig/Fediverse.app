@@ -38,12 +38,26 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Need appel mustic access</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Need to acces your caledar to update events</string>
 	<key>NSCameraUsageDescription</key>
 	<string>We need access to your camera to post to your instance</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Need to see your contacts to share with</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Need to use location for features</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>need location when using the app</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>We need access to your microphone to post to your instanc</string>
+	<key>NSMotionUsageDescription</key>
+	<string>need access to motion</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We need access to your photos to post to your instance</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>need to recoginize speech</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

@@ -17,30 +17,27 @@ import 'package:fedi/Pleroma/Models/Notification.dart' as NotificationModel;
 import 'package:fedi/Pleroma/Models/Status.dart' as StatusModel;
 import 'NotificationCell.dart';
 
-
 class Mentions extends StatefulWidget {
   final Function(Account) viewAccount;
   final Function(Status) viewStatusDetail;
   final List<NotificationModel.Notification> notifications = [];
-  Mentions(this.viewAccount, this.viewStatusDetail, {Key key}) : super(key: key);
+  Mentions(this.viewAccount, this.viewStatusDetail, {Key key})
+      : super(key: key);
 
   @override
   _Mentions createState() => _Mentions();
 }
 
 class _Mentions extends State<Mentions> {
-
-   RefreshController _refreshController =
+  RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
   get account => null;
-
 
   @override
   Widget build(BuildContext context) {
     return getSmartRefresher();
   }
-
 
   void initState() {
     super.initState();
@@ -51,21 +48,19 @@ class _Mentions extends State<Mentions> {
     }
   }
 
-
-   @override
-   void didChangeDependencies() {
-     super.didChangeDependencies();
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     PushHelper pushHelper = PushHelper.of(context, listen: false);
     if (pushHelper.notificationId != null) {
       loadPushNotification(context, pushHelper.notificationId);
     }
-   }
-
-   void fetchStatuses(BuildContext context) {
-      _refreshController.requestRefresh();
-      InstanceStorage.clearAccountAlert(account, "mention");
   }
 
+  void fetchStatuses(BuildContext context) {
+    _refreshController.requestRefresh();
+    InstanceStorage.clearAccountAlert(account, "mention");
+  }
 
   void _onRefresh() {
     print("ONREFRESH");
@@ -78,8 +73,13 @@ class _Mentions extends State<Mentions> {
             method: HTTPMethod.GET)
         .then((response) {
       List<NotificationModel.Notification> newNotifications =
-      NotificationModel.Notification.listFromJsonString(response.body);
-
+          NotificationModel.Notification.listFromJsonString(response.body);
+      newNotifications.removeWhere((notification) {
+        print(notification.status.visibility);
+        return notification.status.visibility ==
+                StatusModel.Visibility.PRIVATE ||
+            notification.status.visibility == StatusModel.Visibility.DIRECT;
+      });
       if (mounted)
         setState(() {
           widget.notifications.clear();
@@ -110,10 +110,12 @@ class _Mentions extends State<Mentions> {
             method: HTTPMethod.GET)
         .then((response) {
       List<NotificationModel.Notification> newNotifications =
-      NotificationModel.Notification.listFromJsonString(response.body);
-          newNotifications.removeWhere((notification) {
-            print(notification.status.visibility);
-        return notification.status.visibility == StatusModel.Visibility.DIRECT;
+          NotificationModel.Notification.listFromJsonString(response.body);
+      newNotifications.removeWhere((notification) {
+        print(notification.status.visibility);
+        return notification.status.visibility ==
+                StatusModel.Visibility.PRIVATE ||
+            notification.status.visibility == StatusModel.Visibility.DIRECT;
       });
       widget.notifications.addAll(newNotifications);
       if (mounted)
@@ -180,8 +182,9 @@ class _Mentions extends State<Mentions> {
               Container(
                 width: 15.0,
               ),
-              Text(AppLocalizations.of(context)
-                  .tr("notifications.mentions.update.unable_to_fetch"),
+              Text(
+                  AppLocalizations.of(context)
+                      .tr("notifications.mentions.update.unable_to_fetch"),
                   style: TextStyle(color: Colors.grey))
             ],
           )),
@@ -219,5 +222,4 @@ class _Mentions extends State<Mentions> {
       ),
     );
   }
-
 }

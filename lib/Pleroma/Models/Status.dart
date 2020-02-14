@@ -290,12 +290,13 @@ class Tag {
   String toJsonString() => jsonEncode(_$TagToJson(this));
 }
 
-enum Visibility { PUBLIC, UNLISTED, DIRECT }
+enum Visibility { PUBLIC, UNLISTED, DIRECT, PRIVATE }
 
 final visibilityValues = new EnumValues({
   "public": Visibility.PUBLIC,
   "unlisted": Visibility.UNLISTED,
-  "direct": Visibility.DIRECT
+  "direct": Visibility.DIRECT,
+  "private" : Visibility.PRIVATE
 });
 
 class EnumValues<T> {

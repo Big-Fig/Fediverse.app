@@ -29,10 +29,11 @@ class TimelineCell extends StatefulWidget {
   final Status status;
   final Function(Account) viewAccount;
   final Function(Status) viewStatusContext;
+  final Function(Status) mentionOtherStatusContext;
   final bool showCommentBtn;
 
   TimelineCell(this.status,
-      {this.viewAccount, this.viewStatusContext, this.showCommentBtn});
+      {this.viewAccount, this.viewStatusContext, this.showCommentBtn, this.mentionOtherStatusContext});
 
   @override
   State<StatefulWidget> createState() {
@@ -59,9 +60,11 @@ class _TimelineCell extends State<TimelineCell> {
               method: HTTPMethod.GET)
           .then((response) {
         Account account = Account.fromJsonString(response.body);
-        setState(() {
+        if(mounted){
+          setState(() {
           replyAccount = account;
         });
+        }
       }).catchError((error) {
         print(error);
       });
@@ -115,60 +118,7 @@ class _TimelineCell extends State<TimelineCell> {
         padding: EdgeInsets.all(8),
         child: Column(
           children: <Widget>[
-            if (replyAccount != null)
-              GestureDetector(
-                onTap: () {
-                  if (widget.viewAccount != null) {
-                    widget.viewAccount(replyAccount);
-                  }
-                },
-                behavior: HitTestBehavior.translucent,
-                child: Padding(
-                  padding: EdgeInsets.all(0.0),
-                  child: Row(
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Icon(Icons.reply),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Text(
-                            AppLocalizations.of(context)
-                                .tr("timeline.status.cell.reply_to"),
-                            style: TextStyle(fontSize: 12),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      ClipRRect(
-                        borderRadius: new BorderRadius.circular(12.0),
-                        child: CachedNetworkImage(
-                          imageUrl: replyAccount.avatar,
-                          placeholder: (context, url) =>
-                              CircularProgressIndicator(),
-                          errorWidget: (context, url, error) =>
-                              Icon(Icons.error),
-                          height: 24,
-                          width: 24,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Text(
-                        replyAccount.acct,
-                        style: TextStyle(fontSize: 12),
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+            
 
             // reposted status
             if (widget.status.reblog != null)
@@ -288,6 +238,46 @@ class _TimelineCell extends State<TimelineCell> {
               ),
             ),
 
+            if (replyAccount != null)
+              GestureDetector(
+                onTap: () {
+                  if (widget.viewAccount != null) {
+                    widget.viewAccount(replyAccount);
+                  }
+                },
+                behavior: HitTestBehavior.translucent,
+                child: Padding(
+                  padding: EdgeInsets.all(0.0),
+                  child: Row(
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          Icon(Icons.reply),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text(
+                            AppLocalizations.of(context)
+                                .tr("timeline.status.cell.reply_to"),
+                            style: TextStyle(fontSize: 12),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        width: 4,
+                      ),
+                      Text(
+                        replyAccount.acct,
+                        style: TextStyle(fontSize: 12),
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
             GestureDetector(
               onTap: () {
                 print("view status context");
@@ -355,19 +345,29 @@ class _TimelineCell extends State<TimelineCell> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 12.0),
                     child: Row(
+                    
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         Row(
                           children: <Widget>[
-                            if (widget.showCommentBtn == true ||
-                                widget.showCommentBtn == null)
                               IconButton(
                                 color: Colors.grey,
-                                icon: Icon(Icons.mode_comment),
+                                icon: Image(
+                                  height: 25,
+                                  width: 25,
+                                  color: Colors.grey,
+                                  image: AssetImage(
+                                      "assets/images/comment-icon.png"),
+                                ),
                                 tooltip: AppLocalizations.of(context)
                                     .tr("timeline.status.cell.tooltip.comment"),
                                 onPressed: () {
+                                   if (widget.showCommentBtn == null) {
+                                  widget.mentionOtherStatusContext(widget.status);
+                                }else {
                                   widget.viewStatusContext(widget.status);
+                                }
+                                  
                                 },
                               ),
                             if (widget.status.repliesCount != 0 &&
@@ -421,7 +421,8 @@ class _TimelineCell extends State<TimelineCell> {
                   ),
                   if (widget.status.favouritesCount > 0 ||
                       widget.status.reblogsCount > 0 ||
-                      widget.status.reblog != null && widget.showCommentBtn != null)
+                      widget.status.reblog != null &&
+                          widget.showCommentBtn != null)
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 12.0),
                       child: Row(

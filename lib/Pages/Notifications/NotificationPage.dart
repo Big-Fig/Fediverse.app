@@ -1,8 +1,9 @@
 import 'package:badges/badges.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pages/Notifications/Follows.dart';
-import 'package:fedi/Pages/Notifications/LikesReposts.dart';
 import 'package:fedi/Pages/Notifications/Mentions.dart';
+import 'package:fedi/Pages/Notifications/likes_page.dart';
+import 'package:fedi/Pages/Notifications/reposts_page.dart';
 import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:convert';
@@ -50,17 +51,15 @@ class NotificationPageState extends State<NotificationPage>
 
   void initState() {
     super.initState();
-    checkAlerts();
     print("HELP");
     _tabPages = [
       Mentions(viewAccount, viewStatusDetail),
-      LikesReposts(viewAccount, viewStatusDetail),
+      RepostsPage(viewAccount, viewStatusDetail),
+      LikesPage(viewAccount, viewStatusDetail),
       Follows(viewAccount, viewStatusDetail)
     ];
-    _tabController = TabController(length: 3, vsync: this, initialIndex: 0);
-
+    _tabController = TabController(length: 4, vsync: this, initialIndex: 0);
   }
-
 
   @override
   void didChangeDependencies() {
@@ -69,7 +68,6 @@ class NotificationPageState extends State<NotificationPage>
     if (pushHelper.notificationId != null) {
       loadPushNotification(context, pushHelper.notificationId);
     }
-    
   }
 
   loadPushNotification(BuildContext context, String notificationId) {
@@ -96,7 +94,9 @@ class NotificationPageState extends State<NotificationPage>
   }
 
   void onTabTapped(int index) {
-    checkAlerts();
+    setState(() {
+      
+    });
   }
 
   Widget mentionTab = Tab(
@@ -106,7 +106,14 @@ class NotificationPageState extends State<NotificationPage>
   Widget likeTab = Tab(
     icon: Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[Icon(Icons.cached), Text(" / "), Icon(Icons.thumb_up)],
+      children: <Widget>[Icon(Icons.favorite_border)],
+    ),
+    text: null,
+  );
+  Widget repostTab = Tab(
+    icon: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[Icon(Icons.cached)],
     ),
     text: null,
   );
@@ -217,12 +224,12 @@ class NotificationPageState extends State<NotificationPage>
     return Scaffold(
       body: _tabPages[_tabController.index],
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).tr("notifications.page.title")),
-        bottom: TabBar(
+        title: TabBar(
           onTap: onTabTapped,
           controller: _tabController,
           tabs: <Widget>[
             mentionTab,
+            repostTab,
             likeTab,
             followTab,
           ],
