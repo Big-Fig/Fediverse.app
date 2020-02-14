@@ -82,6 +82,9 @@ dependencies:
   # better tab indicator
   md2_tab_indicator: ^1.0.2
 
+  # native kotlin/swift image convert & compress
+  flutter_image_compress: ^0.6.5+1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
