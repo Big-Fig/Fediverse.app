@@ -85,6 +85,9 @@ dependencies:
   # native kotlin/swift image convert & compress
   flutter_image_compress: ^0.6.5+1
 
+  # sqlite orm
+  moor: ^2.4.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -94,6 +97,8 @@ dev_dependencies:
   build_runner: ^1.7.3
   # build tool to generate json from & to methods
   json_serializable: ^3.2.5
+  # sql orm generator
+  moor_generator: ^2.4.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

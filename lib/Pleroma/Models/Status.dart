@@ -39,6 +39,7 @@ class Status {
   bool reblogged;
   bool muted;
   bool bookmarked;
+  bool pinned;
   String content;
   Status reblog;
   Application application;
@@ -67,6 +68,7 @@ class Status {
     this.reblogged,
     this.muted,
     this.bookmarked,
+    this.pinned,
     this.content,
     this.reblog,
     this.application,

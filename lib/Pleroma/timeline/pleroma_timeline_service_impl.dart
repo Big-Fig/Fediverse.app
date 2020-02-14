@@ -1,6 +1,6 @@
 import 'package:fedi/Pleroma/Foundation/Client.dart';
-import 'package:fedi/Pleroma/Models/Status.dart';
 import 'package:fedi/Pleroma/rest/pleroma_rest_service.dart';
+import 'package:fedi/Pleroma/Models/Status.dart';
 import 'package:fedi/Pleroma/timeline/pleroma_timeline_exception.dart';
 import 'package:fedi/Pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:flutter/widgets.dart';

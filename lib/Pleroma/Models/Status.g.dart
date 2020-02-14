@@ -27,6 +27,7 @@ Status _$StatusFromJson(Map<String, dynamic> json) {
     reblogged: json['reblogged'] as bool,
     muted: json['muted'] as bool,
     bookmarked: json['bookmarked'] as bool,
+    pinned: json['pinned'] as bool,
     content: json['content'] as String,
     reblog: json['reblog'] == null
         ? null
@@ -74,6 +75,7 @@ Map<String, dynamic> _$StatusToJson(Status instance) => <String, dynamic>{
       'reblogged': instance.reblogged,
       'muted': instance.muted,
       'bookmarked': instance.bookmarked,
+      'pinned': instance.pinned,
       'content': instance.content,
       'reblog': instance.reblog,
       'application': instance.application,
