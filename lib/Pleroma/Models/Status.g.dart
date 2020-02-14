@@ -171,53 +171,6 @@ Map<String, dynamic> _$StatusToJson(Status instance) => <String, dynamic>{
       'pleroma': instance.pleroma,
     };
 
-AccountPleroma _$AccountPleromaFromJson(Map<String, dynamic> json) {
-  return AccountPleroma(
-    backgroundImage: json['background_image'],
-    confirmationPending: json['confirmation_pending'] as bool,
-    hideFavorites: json['hide_favorites'] as bool,
-    hideFollowers: json['hide_followers'] as bool,
-    hideFollows: json['hide_follows'] as bool,
-    isAdmin: json['is_admin'] as bool,
-    isModerator: json['is_moderator'] as bool,
-    relationship: json['relationship'] == null
-        ? null
-        : Relationship.fromJson(json['relationship'] as Map<String, dynamic>),
-    skipThreadContainment: json['skip_thread_containment'] as bool,
-    tags: json['tags'] as List,
-  );
-}
-
-Map<String, dynamic> _$AccountPleromaToJson(AccountPleroma instance) =>
-    <String, dynamic>{
-      'background_image': instance.backgroundImage,
-      'confirmation_pending': instance.confirmationPending,
-      'hide_favorites': instance.hideFavorites,
-      'hide_followers': instance.hideFollowers,
-      'hide_follows': instance.hideFollows,
-      'is_admin': instance.isAdmin,
-      'is_moderator': instance.isModerator,
-      'relationship': instance.relationship,
-      'skip_thread_containment': instance.skipThreadContainment,
-      'tags': instance.tags,
-    };
-
-Source _$SourceFromJson(Map<String, dynamic> json) {
-  return Source(
-    note: json['note'] as String,
-    pleroma: json['pleroma'] == null
-        ? null
-        : Relationship.fromJson(json['pleroma'] as Map<String, dynamic>),
-    sensitive: json['sensitive'] as bool,
-  );
-}
-
-Map<String, dynamic> _$SourceToJson(Source instance) => <String, dynamic>{
-      'note': instance.note,
-      'pleroma': instance.pleroma,
-      'sensitive': instance.sensitive,
-    };
-
 Application _$ApplicationFromJson(Map<String, dynamic> json) {
   return Application(
     name: const NameTypeConverter().fromJson(json['name'] as String),

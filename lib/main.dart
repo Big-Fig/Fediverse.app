@@ -4,6 +4,7 @@ import 'package:fedi/Pages/Push/PushHelper.dart';
 import 'package:fedi/Pleroma/Models/ClientSettings.dart';
 import 'package:fedi/Pleroma/Models/Emoji.dart';
 import 'package:fedi/Pleroma/Models/Field.dart';
+import 'package:fedi/Pleroma/Models/Source.dart';
 import 'package:fedi/Pleroma/account/edit/pleroma_account_edit_service.dart';
 import 'package:fedi/Pleroma/account/edit/pleroma_account_edit_service_impl.dart';
 import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_service.dart';
@@ -37,6 +38,7 @@ import './Pages/TermsOfService.dart';
 import './Pleroma/Foundation/Client.dart';
 import './Pleroma/Foundation/CurrentInstance.dart';
 import './Pleroma/Models/Account.dart';
+import './Pleroma/Models/Relationship.dart';
 import './Pleroma/Models/AccountAuth.dart';
 
 void main() async {
@@ -50,6 +52,13 @@ void main() async {
   Hive.registerAdapter(ClientSettingsAdapter(), 36);
   Hive.registerAdapter(FieldAdapter(), 37);
   Hive.registerAdapter(EmojiAdapter(), 38);
+  Hive.registerAdapter(MastodonAccountAdapter(), 39);
+  Hive.registerAdapter(AccountPleromaAdapter(), 40);
+  Hive.registerAdapter(AccountPleromaNotificationsSettingsAdapter(), 41);
+  Hive.registerAdapter(RelationshipAdapter(), 42);
+  Hive.registerAdapter(MastodonSourceAdapter(), 43);
+  Hive.registerAdapter(SourcePleromaAdapter(), 44);
+  Hive.registerAdapter(SourceAdapter(), 45);
 
   Hive.init(directory.path);
 

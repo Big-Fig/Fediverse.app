@@ -177,72 +177,7 @@ class Status extends MastodonStatus {
   String toJsonString() => jsonEncode(_$StatusToJson(this));
 }
 
-@JsonSerializable()
-class AccountPleroma {
-  @JsonKey(name: "background_image")
-  dynamic backgroundImage;
-  @JsonKey(name: "confirmation_pending")
-  bool confirmationPending;
-  @JsonKey(name: "hide_favorites")
-  bool hideFavorites;
-  @JsonKey(name: "hide_followers")
-  bool hideFollowers;
-  @JsonKey(name: "hide_follows")
-  bool hideFollows;
-  @JsonKey(name: "is_admin")
-  bool isAdmin;
-  @JsonKey(name: "is_moderator")
-  bool isModerator;
-  Relationship relationship;
-  @JsonKey(name: "skip_thread_containment")
-  bool skipThreadContainment;
-  List<dynamic> tags;
 
-  AccountPleroma({
-    this.backgroundImage,
-    this.confirmationPending,
-    this.hideFavorites,
-    this.hideFollowers,
-    this.hideFollows,
-    this.isAdmin,
-    this.isModerator,
-    this.relationship,
-    this.skipThreadContainment,
-    this.tags,
-  });
-
-  factory AccountPleroma.fromJson(Map<String, dynamic> json) =>
-      _$AccountPleromaFromJson(json);
-
-  factory AccountPleroma.fromJsonString(String jsonString) =>
-      _$AccountPleromaFromJson(jsonDecode(jsonString));
-
-  Map<String, dynamic> toJson() => _$AccountPleromaToJson(this);
-
-  String toJsonString() => jsonEncode(_$AccountPleromaToJson(this));
-}
-
-@JsonSerializable()
-class Source {
-  String note;
-  Relationship pleroma;
-  bool sensitive;
-
-  Source({
-    this.note,
-    this.pleroma,
-    this.sensitive,
-  });
-
-  factory Source.fromJson(Map<String, dynamic> json) => _$SourceFromJson(json);
-
-  factory Source.fromJsonString(String jsonString) =>
-      _$SourceFromJson(jsonDecode(jsonString));
-
-  Map<String, dynamic> toJson() => _$SourceToJson(this);
-
-  String toJsonString() => jsonEncode(_$SourceToJson(this));
-}
 
 @JsonSerializable()
 @NameTypeConverter()
@@ -308,16 +243,29 @@ class Mention {
 
 @JsonSerializable()
 class StatusPleroma {
+  // a map consisting of alternate representations of the content property with
+  // the key being it's mimetype.
+  // Currently the only alternate representation supported is text/plain
   Content content;
+  // the ID of the AP context the status is associated with (if any)
   @JsonKey(name: "conversation_id")
   int conversationId;
+  // the ID of the Mastodon direct message conversation the status
+  // is associated with (if any)
   @JsonKey(name: "direct_conversation_id")
   int directConversationId;
+  // the acct property of User entity for replied user (if any)
   @JsonKey(name: "in_reply_to_account_acct")
   String inReplyToAccountAcct;
   bool local;
   @JsonKey(name: "spoiler_text")
+  // a map consisting of alternate representations of the spoiler_text property
+  // with the key being it's mimetype. Currently the only alternate
+  // representation supported is text/plain
   Content spoilerText;
+  // a datetime (iso8601) that states when
+  // the post will expire (be deleted automatically),
+  // or empty if the post won't expire
   @JsonKey(name: "expires_at")
   // TODO: fix when https://git.pleroma.social/pleroma/pleroma/issues/1573
   //  will be resolved
@@ -325,6 +273,10 @@ class StatusPleroma {
   dynamic expiresAt;
   @JsonKey(name: "thread_muted")
   bool threadMuted;
+  // A list with emoji / reaction maps. The format is
+  // {name: "☕", count: 1, me: true}.
+  // Contains no information about the reacting users,
+  // for that use the /statuses/:id/reactions endpoint.
   @JsonKey(name: "emoji_reactions")
   List<EmojiReactions> emojiReactions;
 
