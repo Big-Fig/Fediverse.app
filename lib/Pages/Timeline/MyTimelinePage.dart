@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pages/Search/SearchPage.dart';
+import 'package:fedi/Pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:fedi/Settings/AppSettings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -32,7 +33,6 @@ class MyTimelinePage extends StatefulWidget {
 
 class MyTimelinePageState extends State<MyTimelinePage>
     with TickerProviderStateMixin {
-  String path;
   TabController _homeTabController;
   DrawerController drawerController;
   bool hideReplies = false;
@@ -53,16 +53,7 @@ class MyTimelinePageState extends State<MyTimelinePage>
     print("selectTimeline");
 
     widget.tabPage.currentTimeline = timeline;
-    if (widget.tabPage.currentTimeline == "Home") {
-      path = Timeline.getHomeTimeline(
-          minId: "", maxId: "", sinceId: "", limit: "50", mediaOnly: mediaOnly);
-    } else if (widget.tabPage.currentTimeline == "Local") {
-      path = Timeline.getLocalTimeline(
-          minId: "", maxId: "", sinceId: "", limit: "50", mediaOnly: mediaOnly);
-    } else {
-      path = Timeline.getPublicTimeline(
-          minId: "", maxId: "", sinceId: "", limit: "50", mediaOnly: mediaOnly);
-    }
+
     if (mounted) {
       setState(() {});
     }
@@ -110,14 +101,28 @@ class MyTimelinePageState extends State<MyTimelinePage>
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
-  _onRefresh() {
+  _onRefresh(BuildContext context) {
     print("ONREFRESH");
+
+    IPleromaTimelineService pleromaTimelineService = IPleromaTimelineService.of
+      (context, listen: false);
+    Future<List<Status>> future;
+    if (widget.tabPage.currentTimeline == "Home") {
+      future = pleromaTimelineService.getHomeTimeline(onlyMedia: mediaOnly,
+          limit: 50);
+    } else if (widget.tabPage.currentTimeline == "Local") {
+      future = pleromaTimelineService.getPublicTimeline(onlyMedia: mediaOnly,
+          onlyLocal: true,
+          limit: 50);
+    } else {
+      future = pleromaTimelineService.getPublicTimeline(onlyMedia: mediaOnly,
+          limit: 50);
+    }
+
     // monitor network fetch
     // if failed,use refreshFailed()
-    CurrentInstance.instance.currentClient
-        .run(path: path, method: HTTPMethod.GET)
-        .then((response) {
-      List<Status> newStatuses = Status.listFromJsonString(response.body);
+    future
+        .then((newStatuses) {
       newStatuses.removeWhere((status) {
         return status.visibility == StatusModel.Visibility.DIRECT;
       });
@@ -145,7 +150,7 @@ class MyTimelinePageState extends State<MyTimelinePage>
     });
   }
 
-  void _onLoading() {
+  void _onLoading(BuildContext context) {
     print("ONLOAD");
     // monitor network fetch
     // if failed,use loadFailed(),if no data return,use LoadNodata()
@@ -154,35 +159,26 @@ class MyTimelinePageState extends State<MyTimelinePage>
     if (lastStatus != null) {
       lastId = lastStatus.id;
     }
-
-    String loadMorePath;
+    IPleromaTimelineService pleromaTimelineService = IPleromaTimelineService.of
+      (context, listen: false);
+    Future<List<Status>> future;
     if (widget.tabPage.currentTimeline == "Home") {
-      loadMorePath = Timeline.getHomeTimeline(
-          minId: "",
+      future = pleromaTimelineService.getHomeTimeline(onlyMedia: mediaOnly,
           maxId: lastId,
-          sinceId: "",
-          limit: "50",
-          mediaOnly: mediaOnly);
+          limit: 50);
     } else if (widget.tabPage.currentTimeline == "Local") {
-      loadMorePath = Timeline.getLocalTimeline(
-          minId: "",
+      future = pleromaTimelineService.getPublicTimeline(onlyMedia: mediaOnly,
           maxId: lastId,
-          sinceId: "",
-          limit: "50",
-          mediaOnly: mediaOnly);
+          onlyLocal: true,
+          limit: 50);
     } else {
-      loadMorePath = Timeline.getPublicTimeline(
-          minId: "",
+      future = pleromaTimelineService.getPublicTimeline(onlyMedia: mediaOnly,
           maxId: lastId,
-          sinceId: "",
-          limit: "50",
-          mediaOnly: mediaOnly);
+          limit: 50);
     }
 
-    CurrentInstance.instance.currentClient
-        .run(path: loadMorePath, method: HTTPMethod.GET)
-        .then((response) {
-      List<Status> newStatuses = Status.listFromJsonString(response.body);
+    future
+        .then((newStatuses) {
       newStatuses.removeWhere((status) {
         return status.visibility == StatusModel.Visibility.DIRECT;
       });
@@ -457,8 +453,8 @@ class MyTimelinePageState extends State<MyTimelinePage>
         },
       ),
       controller: _refreshController,
-      onRefresh: _onRefresh,
-      onLoading: _onLoading,
+      onRefresh: () => _onRefresh(context),
+      onLoading: () => _onLoading(context),
       child: ListView.builder(
         padding: EdgeInsets.symmetric(horizontal: 2.0, vertical: 10.0),
         itemBuilder: (c, i) => TimelineCell(
@@ -530,8 +526,8 @@ class MyTimelinePageState extends State<MyTimelinePage>
         },
       ),
       controller: _refreshController,
-      onRefresh: _onRefresh,
-      onLoading: _onLoading,
+      onRefresh: () => _onRefresh(context),
+      onLoading: () => _onLoading(context),
       child: StaggeredGridView.countBuilder(
         crossAxisCount: 4,
         itemCount: widget.statuses.length,

@@ -11,26 +11,54 @@ import 'package:path/path.dart' as p;
 var urlPath = p.Context(style: p.Style.url);
 var _logger = Logger("pleroma_rest_service_impl.dart");
 
+Map<HTTPMethod, String> httpMethodToStringMap = {
+  HTTPMethod.GET: "get",
+  HTTPMethod.HEAD: "head",
+  HTTPMethod.POST: "post",
+  HTTPMethod.PUT: "put",
+  HTTPMethod.DELETE: "delete",
+  HTTPMethod.PATCH: "patch",
+};
+
 class PleromaRestService extends IPleromaRestService {
   static final authHeaderKey = "authorization";
   static final authHeaderValuePrefix = "Bearer";
 
   // Should be reworked to final config fields
   String get accessToken => CurrentInstance.instance.currentClient.accessToken;
+
   String get baseUrl => CurrentInstance.instance.currentClient.baseURL;
 
   Map<String, String> createAuthHeaders() =>
       {"authorization": "Bearer $accessToken"};
 
-  Uri createUrl({@required String relativeUrlPath}) =>
-      Uri.parse(urlPath.join(baseUrl, relativeUrlPath));
+  static Uri createUrl(
+      {@required baseUrl,
+      @required String relativeUrlPath,
+      Map<String, String> queryArgs}) {
+    var urlWithoutArgs = urlPath.join(baseUrl, relativeUrlPath);
+
+    var filteredQueryArgs =
+        queryArgs?.entries?.where((entry) => entry.value?.isNotEmpty == true);
+
+    var url;
+    if (filteredQueryArgs?.isNotEmpty == true) {
+      var queryString =
+          "${filteredQueryArgs.map((entry) => "${entry.key}=${entry.value}").join("&")}";
+      url = "$urlWithoutArgs?$queryString";
+    } else {
+      url = urlWithoutArgs;
+    }
+
+    return Uri.parse(url);
+  }
 
   Future<http.Response> uploadFileMultipartRequest(
       {@required String relativeUrlPath,
       @required HTTPMethod httpMethod,
       @required File file,
       @required String fileParamKey}) async {
-    var url = createUrl(relativeUrlPath: relativeUrlPath);
+    var url = createUrl(baseUrl: baseUrl, relativeUrlPath: relativeUrlPath);
     var httpMethodString = httpMethodToStringMap[httpMethod];
     var request = new http.MultipartRequest(
       httpMethodString,
@@ -69,7 +97,63 @@ class PleromaRestService extends IPleromaRestService {
   }
 
   @override
-  Future<http.Response> httpRequest({@required HTTPMethod httpMethod}) {
-    throw UnimplementedError();
+  Future<http.Response> httpRequest({
+    @required String relativeUrlPath,
+    @required HTTPMethod httpMethod,
+    Map<String, String> queryArgs,
+    Map<String, String> bodyArgs,
+  }) async {
+    assert(relativeUrlPath != null);
+    assert(httpMethod != null);
+
+    var url = createUrl(
+        baseUrl: baseUrl,
+        relativeUrlPath: relativeUrlPath,
+        queryArgs: queryArgs);
+
+    var headers = createAuthHeaders();
+
+    _logger.fine(() => "start httpRequest \n"
+        "\t url($httpMethod): $url \n"
+        "\t headers: $headers \n"
+        "\t bodyArgs: $bodyArgs \n");
+
+    var response;
+    switch (httpMethod) {
+      case HTTPMethod.GET:
+        assert(bodyArgs?.isNotEmpty != true);
+        response = await http.get(url, headers: headers);
+        break;
+      case HTTPMethod.HEAD:
+        assert(bodyArgs?.isNotEmpty != true);
+        response = await http.head(url, headers: headers);
+        break;
+      case HTTPMethod.POST:
+        response = await http.post(url, headers: headers, body: bodyArgs);
+        break;
+      case HTTPMethod.PUT:
+        response = await http.put(url, headers: headers, body: bodyArgs);
+        break;
+      case HTTPMethod.DELETE:
+        assert(bodyArgs?.isNotEmpty != true);
+        response = await http.delete(url, headers: headers);
+        break;
+      case HTTPMethod.PATCH:
+        response = await http.patch(url, headers: headers, body: bodyArgs);
+        break;
+    }
+
+    var log = () => "response httpRequest \n"
+        "\t url($httpMethod): $url \n"
+        "\t response(${response.statusCode}): ${response.body}";
+
+    if (response.statusCode == 200) {
+      _logger.fine(log);
+    } else {
+      _logger.shout(log);
+    }
+
+
+    return response;
   }
 }

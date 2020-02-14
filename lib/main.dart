@@ -10,6 +10,8 @@ import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_service.d
 import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_service_impl.dart';
 import 'package:fedi/Pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/Pleroma/rest/pleroma_rest_service_impl.dart';
+import 'package:fedi/Pleroma/timeline/pleroma_timeline_service.dart';
+import 'package:fedi/Pleroma/timeline/pleroma_timeline_service_impl.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/permission/camera_permission_bloc.dart';
 import 'package:fedi/permission/camera_permission_bloc_impl.dart';
@@ -127,6 +129,9 @@ class MyApp extends StatelessWidget {
                   restService: IPleromaRestService.of(context, listen: false))),
           Provider<IPleromaAccountEditService>(
               create: (context) => PleromaAccountEditService(
+                  restService: IPleromaRestService.of(context, listen: false))),
+          Provider<IPleromaTimelineService>(
+              create: (context) => PleromaTimelineService(
                   restService: IPleromaRestService.of(context, listen: false))),
         ],
         child: app,

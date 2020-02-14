@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/Pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -48,11 +49,11 @@ class GalleryPageState extends State<GalleryPage> {
     print("ONREFRESH");
     // monitor network fetch
     await Future.delayed(Duration(milliseconds: 1000));
-    // if failed,use refreshFailed()
-    CurrentInstance.instance.currentClient
-        .run(path: Timeline.getPublicMediaTimeline(""), method: HTTPMethod.GET)
-        .then((response) {
-      List<Status> newStatuses = Status.listFromJsonString(response.body);
+
+    IPleromaTimelineService pleromaTimelineService = IPleromaTimelineService.of
+      (context, listen: false);
+    pleromaTimelineService.getPublicTimeline(onlyMedia: true).then(
+        (newStatuses) {
       widget.statuses.clear();
       widget.statuses.addAll(newStatuses);
       if (mounted) setState(() {});
@@ -62,6 +63,7 @@ class GalleryPageState extends State<GalleryPage> {
       if (mounted) setState(() {});
       _refreshController.refreshFailed();
     });
+    // if failed,use refreshFailed()
   }
 
   void _onLoading() async {
@@ -75,16 +77,15 @@ class GalleryPageState extends State<GalleryPage> {
       lastId = lastStatus.id;
     }
 
-    CurrentInstance.instance.currentClient
-        .run(
-            path: Timeline.getPublicMediaTimeline(lastId),
-            method: HTTPMethod.GET)
-        .then((response) {
-      List<Status> newStatuses = Status.listFromJsonString(response.body);
-      widget.statuses.addAll(newStatuses);
-      if (mounted) setState(() {});
-      _refreshController.loadComplete();
-    }).catchError((error) {
+    IPleromaTimelineService pleromaTimelineService = IPleromaTimelineService.of
+      (context, listen: false);
+    pleromaTimelineService.getPublicTimeline(onlyMedia: true).then(
+            (newStatuses) {
+              widget.statuses.addAll(newStatuses);
+              if (mounted) setState(() {});
+              _refreshController.loadComplete();
+        }).catchError((error) {
+      print(error.toString());
       if (mounted) setState(() {});
       _refreshController.loadFailed();
     });

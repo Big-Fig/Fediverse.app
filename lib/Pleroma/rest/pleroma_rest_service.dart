@@ -11,7 +11,12 @@ abstract class IPleromaRestService {
       {listen: true}) =>
       Provider.of<IPleromaRestService>(context, listen: listen);
 
-  Future<http.Response> httpRequest({@required HTTPMethod httpMethod});
+  Future<http.Response> httpRequest({
+    @required String relativeUrlPath,
+    @required HTTPMethod httpMethod,
+    Map<String, String> queryArgs,
+    Map<String, String> bodyArgs,
+  });
 
   Future<http.Response> uploadFileMultipartRequest(
       {@required String relativeUrlPath,

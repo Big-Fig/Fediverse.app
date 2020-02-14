@@ -16,15 +16,6 @@ part 'Client.g.dart';
 
 enum HTTPMethod { GET, HEAD, POST, PUT, DELETE, PATCH }
 
-Map<HTTPMethod, String> httpMethodToStringMap = {
-  HTTPMethod.GET: "get",
-  HTTPMethod.HEAD: "head",
-  HTTPMethod.POST: "post",
-  HTTPMethod.PUT: "put",
-  HTTPMethod.DELETE: "delete",
-  HTTPMethod.PATCH: "patch",
-};
-
 @HiveType()
 class Client {
   Function(String) successMethod;
