@@ -105,7 +105,7 @@ abstract class ICameraBloc
       DateTime.now().millisecondsSinceEpoch.toString();
 
   static Future<String> calculateDirToSaveFiles() async {
-    final Directory extDir = await getApplicationDocumentsDirectory();
+    final Directory extDir = await getTemporaryDirectory();
     final String dirPath = path.join(extDir.path, "camera_media");
     await Directory(dirPath).create(recursive: true);
     return dirPath;
