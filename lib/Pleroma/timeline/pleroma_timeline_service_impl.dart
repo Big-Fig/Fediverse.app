@@ -1,11 +1,11 @@
-import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Models/Status.dart';
 import 'package:fedi/Pleroma/Models/Status.dart' as pleroma;
 import 'package:fedi/Pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/Pleroma/timeline/pleroma_timeline_exception.dart';
 import 'package:fedi/Pleroma/timeline/pleroma_timeline_service.dart';
+import 'package:fedi/rest/rest_request_model.dart';
+import 'package:fedi/rest/rest_response_model.dart';
 import 'package:flutter/widgets.dart';
-import 'package:http/http.dart';
 import 'package:path/path.dart';
 
 class PleromaTimelineService implements IPleromaTimelineService {
@@ -136,14 +136,14 @@ class PleromaTimelineService implements IPleromaTimelineService {
       @required bool onlyLocal,
       @required bool withMuted,
       @required List<pleroma.Visibility> excludeVisibilities}) async {
-
     // we should duplicate exclude_visibilities[] keys for each value
-    String additionalQueryArgsString = excludeVisibilities?.map((visibility) =>
-    "exclude_visibilities[]="
-        "${visibilityValues.reverse[visibility]}")?.join("&");
+    String additionalQueryArgsString = excludeVisibilities
+        ?.map((visibility) => "exclude_visibilities[]="
+            "${visibilityValues.reverse[visibility]}")
+        ?.join("&");
 
-    var httpResponse = await restService.httpRequest(
-        httpMethod: HTTPMethod.GET,
+    var request = RestRequest.get(
+        relativePath: join("/api/v1/timelines/", relativeTimeLineUrlPath),
         queryArgs: {
           "min_id": minId,
           "max_id": maxId,
@@ -153,15 +153,16 @@ class PleromaTimelineService implements IPleromaTimelineService {
           "only_media": onlyMedia.toString(),
           "with_muted": withMuted.toString(),
         },
-        additionalQueryArgsString: additionalQueryArgsString,
-        relativeUrlPath: join("/api/v1/timelines/", relativeTimeLineUrlPath));
+        additionalQueryArgsString: additionalQueryArgsString);
+    var httpResponse = await restService.sendHttpRequest(request);
 
-    return parseResponse(httpResponse);
-  }
+    RestResponse<List<Status>> restResponse = RestResponse.fromResponse(
+      response: httpResponse,
+      resultParser: (body) => Status.listFromJsonString(httpResponse.body),
+    );
 
-  List<Status> parseResponse(Response httpResponse) {
-    if (httpResponse.statusCode == 200) {
-      return Status.listFromJsonString(httpResponse.body);
+    if (restResponse.isSuccess) {
+      return restResponse.body;
     } else {
       throw new PleromaTimelineException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);

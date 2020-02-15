@@ -22,6 +22,8 @@ import 'package:fedi/permission/permissions_service.dart';
 import 'package:fedi/permission/permissions_service_impl.dart';
 import 'package:fedi/permission/storage_permission_bloc.dart';
 import 'package:fedi/permission/storage_permission_bloc_impl.dart';
+import 'package:fedi/rest/rest_service.dart';
+import 'package:fedi/rest/rest_service_impl.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -38,8 +40,8 @@ import './Pages/TermsOfService.dart';
 import './Pleroma/Foundation/Client.dart';
 import './Pleroma/Foundation/CurrentInstance.dart';
 import './Pleroma/Models/Account.dart';
-import './Pleroma/Models/Relationship.dart';
 import './Pleroma/Models/AccountAuth.dart';
+import './Pleroma/Models/Relationship.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -120,17 +122,20 @@ class MyApp extends StatelessWidget {
   }
 
   Widget provideGlobalContext(Widget app) => MultiProvider(
-    providers: [
-      DisposableProvider<IPermissionsService>(
-          create: (BuildContext context) => PermissionsService()),
-      Provider(create: (BuildContext context) => DeepLinkHelper()),
-      Provider(create: (BuildContext context) => PushHelper())
-    ],
-    child: providePermissionsContext(child: providePleromaContext(app)),
-  );
+        providers: [
+          DisposableProvider<IPermissionsService>(
+              create: (BuildContext context) => PermissionsService()),
+          DisposableProvider<IRestService>(
+              create: (BuildContext context) => RestService()),
+          Provider(create: (BuildContext context) => DeepLinkHelper()),
+          Provider(create: (BuildContext context) => PushHelper())
+        ],
+        child: providePermissionsContext(child: providePleromaContext(app)),
+      );
 
   Widget providePleromaContext(Widget app) => Provider<IPleromaRestService>(
-      create: (BuildContext context) => PleromaRestService(),
+      create: (BuildContext context) => PleromaRestService(
+          restService: IRestService.of(context, listen: false)),
       child: MultiProvider(
         providers: [
           Provider<IPleromaMediaAttachmentService>(
@@ -146,22 +151,22 @@ class MyApp extends StatelessWidget {
         child: app,
       ));
   Widget providePermissionsContext({@required Widget child}) => MultiProvider(
-    providers: [
-      Provider<ICameraPermissionBloc>(
-        create: (context) => CameraPermissionBloc(
-            IPermissionsService.of(context, listen: false)),
-      ),
-      Provider<IMicPermissionBloc>(
-        create: (context) => MicPermissionBloc(
-            IPermissionsService.of(context, listen: false)),
-      ),
-      Provider<IStoragePermissionBloc>(
-        create: (context) => StoragePermissionBloc(
-            IPermissionsService.of(context, listen: false)),
-      ),
-    ],
-    child: child,
-  );
+        providers: [
+          Provider<ICameraPermissionBloc>(
+            create: (context) => CameraPermissionBloc(
+                IPermissionsService.of(context, listen: false)),
+          ),
+          Provider<IMicPermissionBloc>(
+            create: (context) => MicPermissionBloc(
+                IPermissionsService.of(context, listen: false)),
+          ),
+          Provider<IStoragePermissionBloc>(
+            create: (context) => StoragePermissionBloc(
+                IPermissionsService.of(context, listen: false)),
+          ),
+        ],
+        child: child,
+      );
 }
 
 Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
