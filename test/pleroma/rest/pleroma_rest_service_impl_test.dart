@@ -43,4 +43,24 @@ void main() {
             }),
         Uri.parse("https://pleroma.com/one?arg1=value1&arg2=value2"));
   });
+  test('createUrl additionalQueryArgsString', () {
+    expect(
+        PleromaRestService.createUrl(
+            baseUrl: "https://pleroma.com",
+            relativeUrlPath: "one",
+            queryArgs: {
+              "arg1": "value1",
+              "arg2": "value2",
+            },
+            additionalQueryArgsString: "arg3=value3"
+        ),
+        Uri.parse("https://pleroma.com/one?arg1=value1&arg2=value2&arg3=value3"));
+    expect(
+        PleromaRestService.createUrl(
+            baseUrl: "https://pleroma.com",
+            relativeUrlPath: "one",
+            additionalQueryArgsString: "arg3=value3"
+        ),
+        Uri.parse("https://pleroma.com/one?arg3=value3"));
+  });
 }

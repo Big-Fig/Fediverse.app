@@ -35,6 +35,7 @@ class PleromaRestService extends IPleromaRestService {
   static Uri createUrl(
       {@required baseUrl,
       @required String relativeUrlPath,
+      String additionalQueryArgsString,
       Map<String, String> queryArgs}) {
     var urlWithoutArgs = urlPath.join(baseUrl, relativeUrlPath);
 
@@ -42,9 +43,24 @@ class PleromaRestService extends IPleromaRestService {
         queryArgs?.entries?.where((entry) => entry.value?.isNotEmpty == true);
 
     var url;
-    if (filteredQueryArgs?.isNotEmpty == true) {
-      var queryString =
-          "${filteredQueryArgs.map((entry) => "${entry.key}=${entry.value}").join("&")}";
+    if (filteredQueryArgs?.isNotEmpty == true ||
+        additionalQueryArgsString != null) {
+      String queryString;
+      if (filteredQueryArgs != null) {
+        queryString =
+            "${filteredQueryArgs.map((entry) => "${entry.key}=${entry.value}").join("&")}";
+      } else {
+        queryString = "";
+      }
+
+      if (additionalQueryArgsString != null) {
+        if (queryString?.isNotEmpty == true) {
+          queryString += "&";
+        }
+
+        queryString += additionalQueryArgsString;
+      }
+
       url = "$urlWithoutArgs?$queryString";
     } else {
       url = urlWithoutArgs;
@@ -101,6 +117,7 @@ class PleromaRestService extends IPleromaRestService {
     @required String relativeUrlPath,
     @required HTTPMethod httpMethod,
     Map<String, String> queryArgs,
+    String additionalQueryArgsString,
     Map<String, String> bodyArgs,
   }) async {
     assert(relativeUrlPath != null);
@@ -109,7 +126,8 @@ class PleromaRestService extends IPleromaRestService {
     var url = createUrl(
         baseUrl: baseUrl,
         relativeUrlPath: relativeUrlPath,
-        queryArgs: queryArgs);
+        queryArgs: queryArgs,
+        additionalQueryArgsString: additionalQueryArgsString);
 
     var headers = createAuthHeaders();
 
@@ -152,7 +170,6 @@ class PleromaRestService extends IPleromaRestService {
     } else {
       _logger.shout(log);
     }
-
 
     return response;
   }

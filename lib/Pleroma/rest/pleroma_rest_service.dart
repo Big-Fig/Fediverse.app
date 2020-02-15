@@ -15,6 +15,7 @@ abstract class IPleromaRestService {
     @required String relativeUrlPath,
     @required HTTPMethod httpMethod,
     Map<String, String> queryArgs,
+    String additionalQueryArgsString,
     Map<String, String> bodyArgs,
   });
 

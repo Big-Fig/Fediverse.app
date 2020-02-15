@@ -1,4 +1,5 @@
 import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:fedi/Pleroma/Models/Status.dart' as pleroma;
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -21,7 +22,14 @@ abstract class IPleromaTimelineService {
     // Show only local statuses?
     bool onlyMedia = false,
     // Show only statuses with media attached?
-    bool onlyLocal = false});
+    bool onlyLocal = false,
+    // also return activities by muted (not by blocked!) users
+    bool withMuted = false,
+    // queries will exclude the statuses with the given visibilities
+    List<pleroma.Visibility> excludeVisibilities = const [pleroma.Visibility
+        .DIRECT],
+
+  });
 
 
   Future<List<Status>> getHashTagTimeline({
@@ -38,7 +46,12 @@ abstract class IPleromaTimelineService {
     // Show only local statuses?
     bool onlyMedia = false,
     // Show only statuses with media attached?
-    bool onlyLocal = false});
+    bool onlyLocal = false,
+    // also return activities by muted (not by blocked!) users
+    bool withMuted = false,
+    // queries will exclude the statuses with the given visibilities
+    List<pleroma.Visibility> excludeVisibilities = const [pleroma.Visibility
+        .DIRECT],});
 
   Future<List<Status>> getHomeTimeline({
     // Return results older than id
@@ -51,6 +64,11 @@ abstract class IPleromaTimelineService {
     int limit = 20,
     // Show only local statuses?
     bool onlyMedia = false,
+    // also return activities by muted (not by blocked!) users
+    bool withMuted = false,
+    // queries will exclude the statuses with the given visibilities
+    List<pleroma.Visibility> excludeVisibilities = const [pleroma.Visibility
+        .DIRECT],
   });
 
 
@@ -64,6 +82,11 @@ abstract class IPleromaTimelineService {
     // Return results immediately newer than id
     String minId,
     // Maximum number of results to return
-    int limit = 20});
+    int limit = 20,
+    // also return activities by muted (not by blocked!) users
+    bool withMuted = false,
+    // queries will exclude the statuses with the given visibilities
+    List<pleroma.Visibility> excludeVisibilities = const [pleroma.Visibility
+        .DIRECT],});
 
 }
