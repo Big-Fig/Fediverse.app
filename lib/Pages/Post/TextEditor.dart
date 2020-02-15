@@ -1,7 +1,7 @@
 //import 'dart:io';
 //
 //import 'package:easy_localization/easy_localization.dart';
-//import 'package:fedi/Pleroma/Models/Account.dart';
+//import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
 //import 'package:fedi/Views/MentionPage.dart';
 //import 'package:flutter/material.dart';
 //import 'package:fedi/Constants/AppThemeConsts.dart';

@@ -10,7 +10,7 @@ import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart'
     as AccountRequests;
 import 'package:fedi/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
-import 'package:fedi/Pleroma/Models/Account.dart';
+import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/Pleroma/Models/Emoji.dart';
 import 'package:fedi/Pleroma/Models/Status.dart';
 import 'package:fedi/Views/VideoPlayer.dart';

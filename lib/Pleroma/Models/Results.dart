@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:fedi/Pleroma/Models/Account.dart';
+import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/Pleroma/Models/Status.dart';
 import 'package:json_annotation/json_annotation.dart';
 

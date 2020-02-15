@@ -7,7 +7,7 @@ import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart'
     as AccountRequests;
-import 'package:fedi/Pleroma/Models/Account.dart';
+import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
 // import 'package:flutter_webrtc/get_user_media.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 

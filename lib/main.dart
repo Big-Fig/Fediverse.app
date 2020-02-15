@@ -39,7 +39,8 @@ import './Pages/AppContainerPage.dart';
 import './Pages/TermsOfService.dart';
 import './Pleroma/Foundation/Client.dart';
 import './Pleroma/Foundation/CurrentInstance.dart';
-import './Pleroma/Models/Account.dart';
+import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
+import 'package:fedi/mastodon/account/mastodon_account_model.dart';
 import './Pleroma/Models/AccountAuth.dart';
 import './Pleroma/Models/Relationship.dart';
 

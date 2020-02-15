@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
-import 'package:fedi/Pleroma/Models/Account.dart';
+import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/Pleroma/Models/Status.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:fedi/Views/VideoPlayer.dart';

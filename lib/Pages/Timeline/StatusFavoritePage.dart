@@ -5,7 +5,7 @@ import 'package:fedi/Pages/Timeline/StatusDetail.dart';
 import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Status.dart' as StatusRequests;
-import 'package:fedi/Pleroma/Models/Account.dart';
+import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/Pleroma/Models/Status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';

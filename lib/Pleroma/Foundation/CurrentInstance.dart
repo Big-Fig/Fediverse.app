@@ -4,7 +4,7 @@ import 'package:fedi/Views/Alert.dart';
 import 'package:flutter/material.dart';
 
 import './Client.dart';
-import '../Models/Account.dart';
+import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
 import '../Models/AccountAuth.dart';
 import 'Requests/Accounts.dart';
 

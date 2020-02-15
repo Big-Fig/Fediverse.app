@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:fedi/Pleroma/Models/Account.dart';
+import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 

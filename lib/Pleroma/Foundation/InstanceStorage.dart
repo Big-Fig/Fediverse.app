@@ -2,7 +2,7 @@ import 'dart:core';
 import 'package:fedi/Pleroma/Models/ClientSettings.dart';
 
 import './Client.dart';
-import '../Models/Account.dart';
+import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
 import '../Models/AccountAuth.dart';
 import 'package:hive/hive.dart';
 

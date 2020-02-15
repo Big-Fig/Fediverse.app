@@ -12,7 +12,7 @@ import 'package:fedi/Pages/Push/PushHelper.dart';
 import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
-import 'package:fedi/Pleroma/Models/Account.dart';
+import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/Pleroma/Models/Context.dart';
 import 'package:fedi/Pleroma/Models/Conversation.dart';
 import 'package:fedi/Pleroma/Models/Status.dart';

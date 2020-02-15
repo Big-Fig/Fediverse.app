@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fedi/Pages/Messages/ChatPage.dart';
 import 'package:fedi/Pages/Messages/MessagesPage.dart';
 import 'package:fedi/Pages/Messages/UserListPage.dart';
-import 'package:fedi/Pleroma/Models/Account.dart';
+import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
 
 class MessageConatiner extends StatefulWidget {
   @override

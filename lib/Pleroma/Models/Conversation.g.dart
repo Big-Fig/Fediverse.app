@@ -9,9 +9,7 @@ part of 'Conversation.dart';
 Conversation _$ConversationFromJson(Map<String, dynamic> json) {
   return Conversation(
     unread: json['unread'] as bool,
-    lastStatus: json['last_status'] == null
-        ? null
-        : Status.fromJson(json['last_status'] as Map<String, dynamic>),
+    lastStatus: json['last_status'],
     id: json['id'] as String,
     accounts: (json['accounts'] as List)
         ?.map((e) =>

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:fedi/Pleroma/Models/Account.dart';
+import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/Pleroma/account/edit/pleroma_account_edit_exception.dart';
 import 'package:fedi/Pleroma/account/edit/pleroma_account_edit_service.dart';
 import 'package:fedi/Pleroma/rest/pleroma_rest_service.dart';

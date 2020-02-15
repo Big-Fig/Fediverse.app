@@ -12,10 +12,7 @@ Results _$ResultsFromJson(Map<String, dynamic> json) {
         ?.map((e) =>
             e == null ? null : Account.fromJson(e as Map<String, dynamic>))
         ?.toList(),
-    statuses: (json['statuses'] as List)
-        ?.map((e) =>
-            e == null ? null : Status.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    statuses: json['statuses'] as List,
   );
 }
 

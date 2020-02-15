@@ -4,7 +4,7 @@ import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart';
-import 'package:fedi/Pleroma/Models/Account.dart';
+import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/Pleroma/account/edit/pleroma_account_edit_service.dart';
 import 'package:fedi/Views/Alert.dart';
 import 'package:fedi/Views/ProgressDialog.dart';

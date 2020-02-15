@@ -3,7 +3,7 @@
 //import 'package:camera/camera.dart';
 //import 'package:easy_localization/easy_localization.dart';
 //import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
-//import 'package:fedi/Pleroma/Models/Account.dart';
+//import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
 //import 'package:fedi/Pleroma/account/edit/pleroma_account_edit_service.dart';
 //import 'package:fedi/Views/Alert.dart';
 //import 'package:fedi/Views/LocalVideoPlayer.dart';
