@@ -139,7 +139,7 @@ class PleromaTimelineService implements IPleromaTimelineService {
     // we should duplicate exclude_visibilities[] keys for each value
     String additionalQueryArgsString = excludeVisibilities
         ?.map((visibility) => "exclude_visibilities[]="
-            "${visibilityValues.reverse[visibility]}")
+            "${pleromaVisibilityValues.reverse[visibility]}")
         ?.join("&");
 
     var request = RestRequest.get(

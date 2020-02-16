@@ -1,0 +1,4 @@
+
+enum StatusSortType {
+  remoteId,
+}

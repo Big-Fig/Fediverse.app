@@ -31,7 +31,8 @@ mixin _$StatusDaoMixin on DatabaseAccessor<AppDatabase> {
       inReplyToAccountRemoteId: row.readString('in_reply_to_account_remote_id'),
       sensitive: row.readBool('sensitive'),
       spoilerText: row.readString('spoiler_text'),
-      visibility: row.readString('visibility'),
+      visibility:
+          $DbStatusesTable.$converter0.mapToDart(row.readString('visibility')),
       uri: row.readString('uri'),
       url: row.readString('url'),
       repliesCount: row.readInt('replies_count'),
@@ -41,16 +42,33 @@ mixin _$StatusDaoMixin on DatabaseAccessor<AppDatabase> {
       reblogged: row.readBool('reblogged'),
       muted: row.readBool('muted'),
       bookmarked: row.readBool('bookmarked'),
-      pinned: row.readBool('pinned'),
       content: row.readString('content'),
-      reblogLocalId: row.readInt('reblog_local_id'),
-      application: row.readString('application'),
-      account: row.readString('account'),
-      mediaAttachments: row.readString('media_attachments'),
-      mentions: row.readString('mentions'),
-      tags: row.readString('tags'),
-      emojis: row.readString('emojis'),
-      poll: row.readString('poll'),
+      reblog: $DbStatusesTable.$converter1.mapToDart(row.readString('reblog')),
+      application:
+          $DbStatusesTable.$converter2.mapToDart(row.readString('application')),
+      account:
+          $DbStatusesTable.$converter3.mapToDart(row.readString('account')),
+      mediaAttachments: $DbStatusesTable.$converter4
+          .mapToDart(row.readString('media_attachments')),
+      mentions:
+          $DbStatusesTable.$converter5.mapToDart(row.readString('mentions')),
+      tags: $DbStatusesTable.$converter6.mapToDart(row.readString('tags')),
+      emojis: $DbStatusesTable.$converter7.mapToDart(row.readString('emojis')),
+      poll: $DbStatusesTable.$converter8.mapToDart(row.readString('poll')),
+      pleromaContent: $DbStatusesTable.$converter9
+          .mapToDart(row.readString('pleroma_content')),
+      pleromaConversationId: row.readInt('pleroma_conversation_id'),
+      pleromaDirectConversationId:
+          row.readInt('pleroma_direct_conversation_id'),
+      pleromaInReplyToAccountAcct:
+          row.readString('pleroma_in_reply_to_account_acct'),
+      pleromaLocal: row.readBool('pleroma_local'),
+      pleromaSpoilerText: $DbStatusesTable.$converter10
+          .mapToDart(row.readString('pleroma_spoiler_text')),
+      pleromaExpiresAt: row.readDateTime('pleroma_expires_at'),
+      pleromaThreadMuted: row.readBool('pleroma_thread_muted'),
+      pleromaEmojiReactions: $DbStatusesTable.$converter11
+          .mapToDart(row.readString('pleroma_emoji_reactions')),
     );
   }
 
