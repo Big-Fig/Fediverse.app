@@ -3,7 +3,6 @@ import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_model.dar
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/Pleroma/Models/Emoji.dart';
 
 abstract class IStatus {
 //

@@ -77,13 +77,16 @@ class PleromaAccount implements IPleromaAccount {
   PleromaSource source;
   @HiveField(19)
   PleromaAccountPleromaPart pleroma;
+  @HiveField(20)
+  @JsonKey(name: "last_status_at")
+  DateTime lastStatusAt;
 
 
   PleromaAccount({this.username, this.url, this.statusesCount, this.note,
     this.locked, this.id, this.headerStatic, this.header, this.followingCount,
     this.followersCount, this.fields, this.emojis, this.displayName,
     this.createdAt, this.bot, this.avatarStatic, this.avatar, this.acct,
-    this.source, this.pleroma});
+    this.source, this.pleroma, this.lastStatusAt});
 
   factory PleromaAccount.fromJson(Map<String, dynamic> json) =>
       _$PleromaAccountFromJson(json);

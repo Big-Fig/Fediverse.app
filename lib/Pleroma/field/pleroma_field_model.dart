@@ -16,8 +16,12 @@ class PleromaField implements IPleromaField {
   String name;
   @HiveField(1)
   String value;
+  @HiveField(2)
+  @JsonKey(name:"verified_at")
+  DateTime verifiedAt;
 
-  PleromaField({this.name, this.value});
+
+  PleromaField({this.name, this.value, this.verifiedAt});
 
   factory PleromaField.fromJson(Map<String, dynamic> json) =>
       _$PleromaFieldFromJson(json);

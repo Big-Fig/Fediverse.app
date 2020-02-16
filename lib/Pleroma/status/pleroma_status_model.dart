@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/Pleroma/application/pleroma_application_model.dart';
+import 'package:fedi/Pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/Pleroma/content/pleroma_content_model.dart';
 import 'package:fedi/Pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_model.dart';
@@ -49,6 +50,9 @@ abstract class IPleromaStatus implements IMastodonStatus {
   @override
   IPleromaPoll get poll;
 
+  @override
+  IPleromaCard get card;
+
   PleromaVisibility get visibilityPleroma;
 }
 
@@ -77,7 +81,6 @@ class PleromaStatus extends IPleromaStatus {
   bool reblogged;
   final bool muted;
   final bool bookmarked;
-  final bool pinned;
   final String content;
   final PleromaStatus reblog;
   final PleromaApplication application;
@@ -88,6 +91,7 @@ class PleromaStatus extends IPleromaStatus {
   final List<PleromaTag> tags;
   final List<PleromaEmoji> emojis;
   final PleromaPoll poll;
+  final PleromaCard card;
 
   @override
   @JsonKey(name: "visbility")
@@ -115,7 +119,6 @@ class PleromaStatus extends IPleromaStatus {
       this.reblogged,
       this.muted,
       this.bookmarked,
-      this.pinned,
       this.content,
       this.reblog,
       this.application,
@@ -125,6 +128,7 @@ class PleromaStatus extends IPleromaStatus {
       this.tags,
       this.emojis,
       this.poll,
+      this.card,
       this.visibilityRaw});
 
   factory PleromaStatus.fromJson(Map<String, dynamic> json) =>

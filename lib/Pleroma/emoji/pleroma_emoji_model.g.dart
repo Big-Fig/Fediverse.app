@@ -19,6 +19,15 @@ class PleromaEmojiAdapter extends TypeAdapter<PleromaEmoji> {
         case 1:
           obj.url = reader.read() as String;
           break;
+        case 2:
+          obj.staticUrl = reader.read() as String;
+          break;
+        case 3:
+          obj.visibleInPicker = reader.read() as bool;
+          break;
+        case 4:
+          obj.category = reader.read() as String;
+          break;
       }
     }
     return obj;
@@ -26,11 +35,17 @@ class PleromaEmojiAdapter extends TypeAdapter<PleromaEmoji> {
 
   @override
   void write(BinaryWriter writer, PleromaEmoji obj) {
-    writer.writeByte(2);
+    writer.writeByte(5);
     writer.writeByte(0);
     writer.write(obj.shortcode);
     writer.writeByte(1);
     writer.write(obj.url);
+    writer.writeByte(2);
+    writer.write(obj.staticUrl);
+    writer.writeByte(3);
+    writer.write(obj.visibleInPicker);
+    writer.writeByte(4);
+    writer.write(obj.category);
   }
 }
 
@@ -42,13 +57,18 @@ PleromaEmoji _$PleromaEmojiFromJson(Map<String, dynamic> json) {
   return PleromaEmoji(
     shortcode: json['shortcode'] as String,
     url: json['url'] as String,
-  );
+    staticUrl: json['static_url'] as String,
+    visibleInPicker: json['visible_in_picker'] as bool,
+  )..category = json['category'] as String;
 }
 
 Map<String, dynamic> _$PleromaEmojiToJson(PleromaEmoji instance) =>
     <String, dynamic>{
       'shortcode': instance.shortcode,
       'url': instance.url,
+      'static_url': instance.staticUrl,
+      'visible_in_picker': instance.visibleInPicker,
+      'category': instance.category,
     };
 
 PleromaEmojiReactions _$PleromaEmojiReactionsFromJson(

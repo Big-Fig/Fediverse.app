@@ -19,6 +19,9 @@ class PleromaFieldAdapter extends TypeAdapter<PleromaField> {
         case 1:
           obj.value = reader.read() as String;
           break;
+        case 2:
+          obj.verifiedAt = reader.read() as DateTime;
+          break;
       }
     }
     return obj;
@@ -26,11 +29,13 @@ class PleromaFieldAdapter extends TypeAdapter<PleromaField> {
 
   @override
   void write(BinaryWriter writer, PleromaField obj) {
-    writer.writeByte(2);
+    writer.writeByte(3);
     writer.writeByte(0);
     writer.write(obj.name);
     writer.writeByte(1);
     writer.write(obj.value);
+    writer.writeByte(2);
+    writer.write(obj.verifiedAt);
   }
 }
 
@@ -42,6 +47,9 @@ PleromaField _$PleromaFieldFromJson(Map<String, dynamic> json) {
   return PleromaField(
     name: json['name'] as String,
     value: json['value'] as String,
+    verifiedAt: json['verified_at'] == null
+        ? null
+        : DateTime.parse(json['verified_at'] as String),
   );
 }
 
@@ -49,4 +57,5 @@ Map<String, dynamic> _$PleromaFieldToJson(PleromaField instance) =>
     <String, dynamic>{
       'name': instance.name,
       'value': instance.value,
+      'verified_at': instance.verifiedAt?.toIso8601String(),
     };

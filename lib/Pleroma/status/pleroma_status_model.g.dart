@@ -25,7 +25,6 @@ PleromaStatus _$PleromaStatusFromJson(Map<String, dynamic> json) {
     reblogged: json['reblogged'] as bool,
     muted: json['muted'] as bool,
     bookmarked: json['bookmarked'] as bool,
-    pinned: json['pinned'] as bool,
     content: json['content'] as String,
     reblog: json['reblog'] == null
         ? null
@@ -58,6 +57,9 @@ PleromaStatus _$PleromaStatusFromJson(Map<String, dynamic> json) {
     poll: json['poll'] == null
         ? null
         : PleromaPoll.fromJson(json['poll'] as Map<String, dynamic>),
+    card: json['card'] == null
+        ? null
+        : PleromaCard.fromJson(json['card'] as Map<String, dynamic>),
     visibilityRaw: json['visbility'] as String,
   );
 }
@@ -79,7 +81,6 @@ Map<String, dynamic> _$PleromaStatusToJson(PleromaStatus instance) =>
       'reblogged': instance.reblogged,
       'muted': instance.muted,
       'bookmarked': instance.bookmarked,
-      'pinned': instance.pinned,
       'content': instance.content,
       'reblog': instance.reblog,
       'application': instance.application,
@@ -89,6 +90,7 @@ Map<String, dynamic> _$PleromaStatusToJson(PleromaStatus instance) =>
       'tags': instance.tags,
       'emojis': instance.emojis,
       'poll': instance.poll,
+      'card': instance.card,
       'visbility': instance.visibilityRaw,
     };
 

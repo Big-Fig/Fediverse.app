@@ -9,12 +9,14 @@ final visibilityMastodonValues = new EnumValues({
   "direct": MastodonVisibility.DIRECT
 });
 
-class MastodonVisibilityTypeConverter implements JsonConverter<MastodonVisibility, String> {
+class MastodonVisibilityTypeConverter
+    implements JsonConverter<MastodonVisibility, String> {
   const MastodonVisibilityTypeConverter();
 
   @override
-  MastodonVisibility fromJson(String value) => visibilityMastodonValues.map[value];
+  MastodonVisibility fromJson(String value) =>
+      visibilityMastodonValues.map[value];
   @override
-  String toJson(MastodonVisibility value) => visibilityMastodonValues.reverseMap[value];
-
+  String toJson(MastodonVisibility value) =>
+      visibilityMastodonValues.reverse[value];
 }

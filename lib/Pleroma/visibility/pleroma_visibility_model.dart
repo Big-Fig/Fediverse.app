@@ -18,6 +18,6 @@ class PleromaVisibilityTypeConverter implements JsonConverter<PleromaVisibility,
   @override
   PleromaVisibility fromJson(String value) => visibilityValues.map[value];
   @override
-  String toJson(PleromaVisibility value) => visibilityValues.reverseMap[value];
+  String toJson(PleromaVisibility value) => visibilityValues.reverse[value];
 
 }

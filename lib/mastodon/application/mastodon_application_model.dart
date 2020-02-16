@@ -18,5 +18,5 @@ class MastodonApplicationNameTypeConverter
   @override
   MastodonApplicationName fromJson(String value) => nameValues.map[value];
   @override
-  String toJson(MastodonApplicationName value) => nameValues.reverseMap[value];
+  String toJson(MastodonApplicationName value) => nameValues.reverse[value];
 }

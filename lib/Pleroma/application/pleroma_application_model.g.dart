@@ -11,6 +11,7 @@ PleromaApplication _$PleromaApplicationFromJson(Map<String, dynamic> json) {
     name: const MastodonApplicationNameTypeConverter()
         .fromJson(json['name'] as String),
     website: json['website'],
+    vapidKey: json['vapid_key'] as String,
   );
 }
 
@@ -19,4 +20,5 @@ Map<String, dynamic> _$PleromaApplicationToJson(PleromaApplication instance) =>
       'name':
           const MastodonApplicationNameTypeConverter().toJson(instance.name),
       'website': instance.website,
+      'vapid_key': instance.vapidKey,
     };

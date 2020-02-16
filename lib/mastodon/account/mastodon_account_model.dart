@@ -44,4 +44,6 @@ abstract class IMastodonAccount {
   // Also note that plain-text is used within source and
   // HTML is used for their corresponding properties such as note and fields.
   IMastodonSource get source;
+
+  DateTime get lastStatusAt;
 }

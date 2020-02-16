@@ -3,10 +3,15 @@ import 'dart:convert';
 import 'package:fedi/mastodon/tag/mastodon_tag_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:fedi/Pleroma/history/pleroma_history_model.dart';
 
 part 'pleroma_tag_model.g.dart';
 
-abstract class IPleromaTag implements IMastodonTag {}
+abstract class IPleromaTag implements IMastodonTag {
+  @override
+  List<IPleromaHistory> get history;
+
+}
 
 @HiveType()
 @JsonSerializable()
@@ -15,10 +20,12 @@ class PleromaTag implements IPleromaTag {
   String name;
   @HiveField(1)
   String url;
-
+  @HiveField(2)
+  List<PleromaHistory> history;
   PleromaTag({
     this.name,
     this.url,
+    this.history,
   });
 
   factory PleromaTag.fromJson(Map<String, dynamic> json) =>

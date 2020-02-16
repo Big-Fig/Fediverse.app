@@ -73,6 +73,9 @@ class PleromaAccountAdapter extends TypeAdapter<PleromaAccount> {
         case 19:
           obj.pleroma = reader.read() as PleromaAccountPleromaPart;
           break;
+        case 20:
+          obj.lastStatusAt = reader.read() as DateTime;
+          break;
       }
     }
     return obj;
@@ -80,7 +83,7 @@ class PleromaAccountAdapter extends TypeAdapter<PleromaAccount> {
 
   @override
   void write(BinaryWriter writer, PleromaAccount obj) {
-    writer.writeByte(20);
+    writer.writeByte(21);
     writer.writeByte(0);
     writer.write(obj.username);
     writer.writeByte(1);
@@ -121,6 +124,8 @@ class PleromaAccountAdapter extends TypeAdapter<PleromaAccount> {
     writer.write(obj.source);
     writer.writeByte(19);
     writer.write(obj.pleroma);
+    writer.writeByte(20);
+    writer.write(obj.lastStatusAt);
   }
 }
 
@@ -181,7 +186,8 @@ class PleromaAccountPleromaPartAdapter
           obj.unreadConversationCount = reader.read() as int;
           break;
         case 19:
-          obj.notificationSettings = reader.read() as dynamic;
+          obj.notificationSettings =
+              reader.read() as PleromaAccountPleromaPartNotificationsSettings;
           break;
       }
     }
@@ -287,6 +293,9 @@ PleromaAccount _$PleromaAccountFromJson(Map<String, dynamic> json) {
         ? null
         : PleromaAccountPleromaPart.fromJson(
             json['pleroma'] as Map<String, dynamic>),
+    lastStatusAt: json['last_status_at'] == null
+        ? null
+        : DateTime.parse(json['last_status_at'] as String),
   );
 }
 
@@ -312,6 +321,7 @@ Map<String, dynamic> _$PleromaAccountToJson(PleromaAccount instance) =>
       'acct': instance.acct,
       'source': instance.source,
       'pleroma': instance.pleroma,
+      'last_status_at': instance.lastStatusAt?.toIso8601String(),
     };
 
 PleromaAccountPleromaPart _$PleromaAccountPleromaPartFromJson(
@@ -339,7 +349,10 @@ PleromaAccountPleromaPart _$PleromaAccountPleromaPartFromJson(
         ?.map((e) =>
             e == null ? null : PleromaTag.fromJson(e as Map<String, dynamic>))
         ?.toList(),
-  )..notificationSettings = json['notifications_settings'];
+  )..notificationSettings = json['notifications_settings'] == null
+      ? null
+      : PleromaAccountPleromaPartNotificationsSettings.fromJson(
+          json['notifications_settings'] as Map<String, dynamic>);
 }
 
 Map<String, dynamic> _$PleromaAccountPleromaPartToJson(

@@ -1,5 +1,6 @@
 import 'package:fedi/mastodon/account/mastodon_account_model.dart';
 import 'package:fedi/mastodon/application/mastodon_application_model.dart';
+import 'package:fedi/mastodon/card/mastodon_card_model.dart';
 import 'package:fedi/mastodon/emoji/mastodon_emoji_model.dart';
 import 'package:fedi/mastodon/media/attachment/mastodon_media_attachment_model.dart';
 import 'package:fedi/mastodon/mention/mastodon_mention_model.dart';
@@ -40,8 +41,6 @@ abstract class IMastodonStatus {
 
   bool get bookmarked;
 
-  bool get pinned;
-
   String get content;
 
   IMastodonStatus get reblog;
@@ -59,7 +58,9 @@ abstract class IMastodonStatus {
   List<IMastodonEmoji> get emojis;
 
   IMastodonPoll get poll;
+  IMastodonCard get card;
 
   MastodonVisibility get visibilityMastodon =>
       const MastodonVisibilityTypeConverter().fromJson(visibilityRaw);
 }
+
