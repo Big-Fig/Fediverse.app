@@ -50,9 +50,10 @@ class PleromaTimelineService implements IPleromaTimelineService {
     String maxId, // Return results newer than id
     String sinceId, // Return results immediately newer than id
     String minId, // Maximum number of results to return
-    int limit = 20, // Show only local statuses?
-    bool onlyMedia =
-        false, // also return activities by muted (not by blocked!) users
+    int limit = 20,// Show only statuses with media attached?
+    bool onlyMedia = false, // Show only local statuses?
+    bool onlyLocal =
+    false, // also return activities by muted (not by blocked!) users
     bool withMuted =
         false, // queries will exclude the statuses with the given visibilities
     List<PleromaVisibility> excludeVisibilities = const [
@@ -66,7 +67,7 @@ class PleromaTimelineService implements IPleromaTimelineService {
         minId: minId,
         limit: limit,
         onlyMedia: onlyMedia,
-        onlyLocal: null,
+        onlyLocal: onlyLocal,
         withMuted: withMuted,
         excludeVisibilities: excludeVisibilities);
   }
@@ -77,7 +78,10 @@ class PleromaTimelineService implements IPleromaTimelineService {
     @required String listId, // Return results older than id
     String maxId, // Return results newer than id
     String sinceId, // Return results immediately newer than id
-    String minId, // Maximum number of results to return
+    String minId,// Show only statuses with media attached?
+    bool onlyMedia = false, // Show only local statuses?
+    bool onlyLocal =
+    false, // Maximum number of results to return
     int limit = 20, // also return activities by muted (not by blocked!) users
     bool withMuted =
         false, // queries will exclude the statuses with the given visibilities
@@ -92,8 +96,8 @@ class PleromaTimelineService implements IPleromaTimelineService {
         sinceId: sinceId,
         minId: minId,
         limit: limit,
-        onlyMedia: null,
-        onlyLocal: null,
+        onlyMedia: onlyMedia,
+        onlyLocal: onlyLocal,
         withMuted: withMuted,
         excludeVisibilities: excludeVisibilities);
   }

@@ -12,8 +12,8 @@ abstract class IPleromaTimelineService {
     String maxId, // Return results newer than id
     String sinceId, // Return results immediately newer than id
     String minId, // Maximum number of results to return
-    int limit = 20, // Show only local statuses?
-    bool onlyMedia = false, // Show only statuses with media attached?
+    int limit = 20, // Show only statuses with media attached?
+    bool onlyMedia = false, // Show only local statuses?
     bool onlyLocal =
         false, // also return activities by muted (not by blocked!) users
     bool withMuted =
@@ -45,8 +45,9 @@ abstract class IPleromaTimelineService {
     String maxId, // Return results newer than id
     String sinceId, // Return results immediately newer than id
     String minId, // Maximum number of results to return
-    int limit = 20, // Show only local statuses?
-    bool onlyMedia =
+    int limit = 20, // Show only statuses with media attached?
+    bool onlyMedia = false, // Show only local statuses?
+    bool onlyLocal =
         false, // also return activities by muted (not by blocked!) users
     bool withMuted =
         false, // queries will exclude the statuses with the given visibilities
@@ -61,7 +62,10 @@ abstract class IPleromaTimelineService {
     String maxId, // Return results newer than id
     String sinceId, // Return results immediately newer than id
     String minId, // Maximum number of results to return
-    int limit = 20, // also return activities by muted (not by blocked!) users
+    int limit = 20, // Show only statuses with media attached?
+    bool onlyMedia = false, // Show only local statuses?
+    bool onlyLocal =
+        false, // also return activities by muted (not by blocked!) users
     bool withMuted =
         false, // queries will exclude the statuses with the given visibilities
     List<PleromaVisibility> excludeVisibilities = const [

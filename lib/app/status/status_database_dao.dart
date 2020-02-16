@@ -27,7 +27,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
       into(dbStatuses).insert(entity);
 
 
-  Future insertAll(Iterable<Insertable<DbStatus>> entities) async =>
+  Future insertAll(Iterable<Insertable<DbStatus>> entities, InsertMode mode) async =>
       await batch((batch) {
         batch.insertAll(dbStatuses, entities);
       });

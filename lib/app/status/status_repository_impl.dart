@@ -1,122 +1,485 @@
+import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
+import 'package:fedi/Pleroma/timeline/pleroma_timeline_service.dart';
+import 'package:fedi/Pleroma/visibility/pleroma_visibility_model.dart';
+import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/status/status_database_dao.dart';
+import 'package:fedi/app/status/status_database_model.dart';
+import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_repository.dart';
+import 'package:fedi/app/status/status_repository_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
+import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 
 var _logger = Logger("status_repository_impl.dart");
 
-abstract class StatusRepository extends AsyncInitLoadingBloc
+class StatusRepository extends AsyncInitLoadingBloc
     implements IStatusRepository {
-//  final ProfileDao dao;
-//  final ConversationsRepository conversationsRepository;
-//  final ConversationItemsRepository conversationItemsRepository;
-//  final INumberAccountApi remoteAccountApi;
-//  final INumberProfileApi remoteProfileApi;
-//  final INumberConversationApi remoteConversationApi;
-//
-//  TimelineRepository({
-//    @required this.dao,
-//    @required this.remoteAccountApi,
-//    @required this.remoteProfileApi,
-//    @required this.conversationsRepository,
-//    @required this.conversationItemsRepository,
-//    @required this.remoteConversationApi,
-//  });
-//
-//  DbProfileWrapper mapDataClassToItem(DbProfile dataClass) =>
-//      DbProfileWrapper(dataClass);
-//
-//  Insertable<DbProfile> mapItemToDataClass(DbProfileWrapper item) =>
-//      item.dbStatus;
-//
-//  @override
-//  Future internalAsyncInit() {
-//    addDisposable(
-//        disposable: remoteProfileApi.subscribeForConversationUpdate(
-//            callback: upsertConversationFromPush));
-//    return null;
-//  }
-//
-//  @override
-//  Future askForUpdateFromRemote() async {
-//    _logger.e(() => "askForUpdateFromRemote");
-//    var restResponse = (await remoteAccountApi.getProfiles());
-//
-//    if (restResponse.isSuccess) {
-//      var numberProfiles = restResponse.body;
-//
-//      clear();
-//      insertAll(numberProfiles.map(
-//          (numberProfile) => DbProfileWrapper(numberProfile.toDbProfile())));
-//    } else {
-//      _logger.e(() => "askForUpdateFromRemote error ${restResponse.error}");
-//    }
-//  }
-//
-//  @override
-//  Future clear() => dao.clear();
-//
-//  @override
-//  Future<bool> deleteById(int id) async {
-//    var affectedRows = await dao.deleteById(id);
-//    assert(affectedRows == 0 || affectedRows == 1);
-//    return (affectedRows) == 1;
-//  }
-//
-//  @override
-//  Future<IProfile> findById(int id) =>
-//      dao.findById(id).map(mapDataClassToItem).getSingle();
-//
-//  @override
-//  Stream<IProfile> watchById(int id) =>
-//      dao.findById(id).map(mapDataClassToItem).watchSingle();
-//
-//  @override
-//  Future<bool> isExistWithId(int id) =>
-//      dao.countById(id).map((count) => count > 0).getSingle();
-//
-//  @override
-//  Future<List<IProfile>> getAll() => dao.getAll().map(mapDataClassToItem).get();
-//
-//  @override
-//  Stream<List<IProfile>> watchAll() =>
-//      dao.getAll().map(mapDataClassToItem).watch();
-//
-//  @override
-//  Future<int> insert(IProfile item) => dao.insert(mapItemToDataClass(item));
-//
-//  @override
-//  Future insertAll(Iterable<DbProfileWrapper> items) =>
-//      dao.insertAll(items.map(mapItemToDataClass).toList());
-//
-//  @override
-//  Future<bool> updateById(int id, DbProfileWrapper item) {
-//    var dbProfile = item.dbStatus;
-//    if (item.localId != id) {
-//      dbProfile = dbProfile.copyWith(id: id);
-//    }
-//    return dao.replace(dbProfile);
-//  }
-//
-//  Future upsertConversationFromPush(
-//      NumberConversationWithLatestItem numberConversationWithLatestItem) async {
-//
-//    var numberConversation = numberConversationWithLatestItem.conversation;
-//
-//    var localProfile = await dao
-//        .findByRemoteId(numberConversation.profileRemoteId)
-//        .getSingle();
-//
-//    int conversationId = await conversationsRepository
-//        .insertOrUpdateFromBackend(
-//        profileId: localProfile.id, numberConversation: numberConversation);
-//
-//    if (numberConversationWithLatestItem.latestItem != null) {
-//      conversationItemsRepository.insertOrUpdateFromBackend(
-//          profileId: localProfile.id,
-//          conversationId: conversationId,
-//          numberConversationItem: numberConversationWithLatestItem.latestItem);
-//    }
-//  }
+  final StatusDao dao;
+  final IPleromaTimelineService pleromaTimelineService;
+
+  StatusRepository({@required this.dao, @required this.pleromaTimelineService});
+
+  @override
+  Future internalAsyncInit() async {
+    // nothing to init now
+    return null;
+  }
+
+  Future updateRemoteStatuses(List<IPleromaStatus> remoteStatuses) async {
+    await upsertAll(remoteStatuses.map(mapRemoteStatusToDbStatus));
+  }
+
+  Query<DbStatuses, DbStatus> getHashTagStatusesQuery(
+      {@required String hashTag,
+        @required bool onlyLocal,
+        @required bool onlyMedia,
+        @required bool withMuted,
+        @required List<PleromaVisibility> excludeVisibilities,
+        @required IStatus notNewerThanStatus,
+        @required IStatus notOlderThanStatus,
+        @required int limit,
+        @required StatusSortType sortType,
+        @required RepositorySortDirection sortDirection}) {
+    // TODO: implement getHashTagStatuses
+    throw UnimplementedError();
+  }
+
+
+  Query<DbStatuses, DbStatus> getHomeStatusesQuery(
+      {@required bool onlyLocal,
+        @required bool onlyMedia,
+        @required bool withMuted,
+        @required List<PleromaVisibility> excludeVisibilities,
+        @required IStatus notNewerThanStatus,
+        @required IStatus notOlderThanStatus,
+        @required int limit,
+        @required StatusSortType sortType,
+        @required RepositorySortDirection sortDirection}) {
+    // TODO: implement getHomeStatuses
+    throw UnimplementedError();
+  }
+
+  Query<DbStatuses, DbStatus> getListStatusesQuery(
+      {@required String listRemoteId,
+        @required bool onlyLocal,
+        @required bool onlyMedia,
+        @required bool withMuted,
+        @required List<PleromaVisibility> excludeVisibilities,
+        @required IStatus notNewerThanStatus,
+        @required IStatus notOlderThanStatus,
+        @required int limit,
+        @required StatusSortType sortType,
+        @required RepositorySortDirection sortDirection}) {
+    // TODO: implement getListStatuses
+    throw UnimplementedError();
+  }
+
+  Query<DbStatuses, DbStatus> getPublicStatusesQuery(
+      {@required bool onlyLocal,
+        @required bool onlyMedia,
+        @required bool withMuted,
+        @required List<PleromaVisibility> excludeVisibilities,
+        @required IStatus notNewerThanStatus,
+        @required IStatus notOlderThanStatus,
+        @required int limit,
+        @required StatusSortType sortType,
+        @required RepositorySortDirection sortDirection}) {
+    // TODO: implement getPublicStatuses
+    throw UnimplementedError();
+  }
+
+
+  @override
+  Future<List<DbStatusWrapper>> getHashTagStatuses(
+      {@required String hashTag,
+      @required bool onlyLocal,
+      @required bool onlyMedia,
+      @required bool withMuted,
+      @required List<PleromaVisibility> excludeVisibilities,
+      @required IStatus notNewerThanStatus,
+      @required IStatus notOlderThanStatus,
+      @required int limit,
+      @required StatusSortType sortType,
+      @required RepositorySortDirection sortDirection}) {
+    // TODO: implement getHomeStatuses
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<DbStatusWrapper>> getHomeStatuses(
+      {@required bool onlyLocal,
+      @required bool onlyMedia,
+      @required bool withMuted,
+      @required List<PleromaVisibility> excludeVisibilities,
+      @required IStatus notNewerThanStatus,
+      @required IStatus notOlderThanStatus,
+      @required int limit,
+      @required StatusSortType sortType,
+      @required RepositorySortDirection sortDirection}) {
+    // TODO: implement getHomeStatuses
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<DbStatusWrapper>> getListStatuses(
+      {@required String listRemoteId,
+      @required bool onlyLocal,
+      @required bool onlyMedia,
+      @required bool withMuted,
+      @required List<PleromaVisibility> excludeVisibilities,
+      @required IStatus notNewerThanStatus,
+      @required IStatus notOlderThanStatus,
+      @required int limit,
+      @required StatusSortType sortType,
+      @required RepositorySortDirection sortDirection}) {
+    // TODO: implement getListStatuses
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<DbStatusWrapper>> getPublicStatuses(
+      {@required bool onlyLocal,
+      @required bool onlyMedia,
+      @required bool withMuted,
+      @required List<PleromaVisibility> excludeVisibilities,
+      @required IStatus notNewerThanStatus,
+      @required IStatus notOlderThanStatus,
+      @required int limit,
+      @required StatusSortType sortType,
+      @required RepositorySortDirection sortDirection}) {
+    // TODO: implement getPublicStatuses
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<DbStatusWrapper>> watchHashTagStatuses(
+      {@required String hashTag,
+      @required bool onlyLocal,
+      @required bool onlyMedia,
+      @required bool withMuted,
+      @required List<PleromaVisibility> excludeVisibilities,
+      @required IStatus notNewerThanStatus,
+      @required IStatus notOlderThanStatus,
+      @required int limit,
+      @required StatusSortType sortType,
+      @required RepositorySortDirection sortDirection}) {
+    // TODO: implement watchHashTagStatuses
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<DbStatusWrapper>> watchHomeStatuses(
+      {@required bool onlyLocal,
+      @required bool onlyMedia,
+      @required bool withMuted,
+      @required List<PleromaVisibility> excludeVisibilities,
+      @required IStatus notNewerThanStatus,
+      @required IStatus notOlderThanStatus,
+      @required int limit,
+      @required StatusSortType sortType,
+      @required RepositorySortDirection sortDirection}) {
+    // TODO: implement watchHomeStatuses
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<DbStatusWrapper>> watchListStatuses(
+      {@required String listRemoteId,
+      @required bool onlyLocal,
+      @required bool onlyMedia,
+      @required bool withMuted,
+      @required List<PleromaVisibility> excludeVisibilities,
+      @required IStatus notNewerThanStatus,
+      @required IStatus notOlderThanStatus,
+      @required int limit,
+      @required StatusSortType sortType,
+      @required RepositorySortDirection sortDirection}) {
+    // TODO: implement watchListStatuses
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<DbStatusWrapper>> watchPublicStatuses(
+      {@required bool onlyLocal,
+      @required bool onlyMedia,
+      @required bool withMuted,
+      @required List<PleromaVisibility> excludeVisibilities,
+      @required IStatus notNewerThanStatus,
+      @required IStatus notOlderThanStatus,
+      @required int limit,
+      @required StatusSortType sortType,
+      @required RepositorySortDirection sortDirection}) {
+    // TODO: implement watchPublicStatuses
+    throw UnimplementedError();
+  }
+
+  @override
+  Future refreshHashTagStatuses({
+    @required String hashTag,
+    @required bool onlyLocal,
+    @required bool onlyMedia,
+    @required bool withMuted,
+    @required List<PleromaVisibility> excludeVisibilities,
+    @required int limit,
+  }) async {
+    var statuses = await getHashTagStatuses(
+        hashTag: hashTag,
+        onlyLocal: onlyLocal,
+        onlyMedia: onlyMedia,
+        withMuted: withMuted,
+        excludeVisibilities: excludeVisibilities,
+        notNewerThanStatus: null,
+        notOlderThanStatus: null,
+        limit: 1,
+        sortType: StatusSortType.remoteId,
+        sortDirection: RepositorySortDirection.descendant);
+
+    IStatus latestStatus;
+    if (statuses.isNotEmpty) {
+      latestStatus = statuses.first;
+    }
+    List<IPleromaStatus> loadedRemoteStatuses =
+        await pleromaTimelineService.getHashTagTimeline(
+      limit: limit,
+      minId: latestStatus?.remoteId,
+      hashTag: hashTag,
+      onlyLocal: onlyLocal,
+      onlyMedia: onlyMedia,
+      withMuted: withMuted,
+      excludeVisibilities: excludeVisibilities,
+    );
+
+    await updateRemoteStatuses(loadedRemoteStatuses);
+  }
+
+  @override
+  Future refreshHomeStatuses(
+      {@required bool onlyLocal,
+      @required bool onlyMedia,
+      @required bool withMuted,
+      @required List<PleromaVisibility> excludeVisibilities,
+      @required int limit}) async {
+    var statuses = await getHomeStatuses(
+        onlyLocal: onlyLocal,
+        onlyMedia: null,
+        withMuted: withMuted,
+        excludeVisibilities: excludeVisibilities,
+        notNewerThanStatus: null,
+        notOlderThanStatus: null,
+        limit: 1,
+        sortType: StatusSortType.remoteId,
+        sortDirection: RepositorySortDirection.descendant);
+
+    IStatus latestStatus;
+    if (statuses.isNotEmpty) {
+      latestStatus = statuses.first;
+    }
+    List<IPleromaStatus> loadedRemoteStatuses =
+        await pleromaTimelineService.getHomeTimeline(
+      limit: limit,
+      minId: latestStatus?.remoteId,
+      onlyLocal: onlyLocal,
+      onlyMedia: onlyMedia,
+      withMuted: withMuted,
+      excludeVisibilities: excludeVisibilities,
+    );
+
+    await updateRemoteStatuses(loadedRemoteStatuses);
+  }
+
+  @override
+  Future refreshListStatuses({
+    @required String listRemoteId,
+    @required bool onlyLocal,
+    @required bool onlyMedia,
+    @required bool withMuted,
+    @required List<PleromaVisibility> excludeVisibilities,
+    @required int limit,
+  }) async {
+    var statuses = await getListStatuses(
+        listRemoteId: listRemoteId,
+        onlyLocal: onlyLocal,
+        onlyMedia: null,
+        withMuted: withMuted,
+        excludeVisibilities: excludeVisibilities,
+        notNewerThanStatus: null,
+        notOlderThanStatus: null,
+        limit: 1,
+        sortType: StatusSortType.remoteId,
+        sortDirection: RepositorySortDirection.descendant);
+
+    IStatus latestStatus;
+    if (statuses.isNotEmpty) {
+      latestStatus = statuses.first;
+    }
+    List<IPleromaStatus> loadedRemoteStatuses =
+        await pleromaTimelineService.getListTimeline(
+      listId: listRemoteId,
+      limit: limit,
+      minId: latestStatus?.remoteId,
+      onlyLocal: onlyLocal,
+      onlyMedia: onlyMedia,
+      withMuted: withMuted,
+      excludeVisibilities: excludeVisibilities,
+    );
+
+    await updateRemoteStatuses(loadedRemoteStatuses);
+  }
+
+  @override
+  Future refreshPublicStatuses({
+    @required bool onlyLocal,
+    @required bool onlyMedia,
+    @required bool withMuted,
+    @required List<PleromaVisibility> excludeVisibilities,
+    @required int limit,
+  }) async {
+    var statuses = await getPublicStatuses(
+        onlyLocal: onlyLocal,
+        onlyMedia: null,
+        withMuted: withMuted,
+        excludeVisibilities: excludeVisibilities,
+        notNewerThanStatus: null,
+        notOlderThanStatus: null,
+        limit: 1,
+        sortType: StatusSortType.remoteId,
+        sortDirection: RepositorySortDirection.descendant);
+
+    IStatus latestStatus;
+    if (statuses.isNotEmpty) {
+      latestStatus = statuses.first;
+    }
+    List<IPleromaStatus> loadedRemoteStatuses =
+        await pleromaTimelineService.getPublicTimeline(
+      limit: limit,
+      minId: latestStatus?.remoteId,
+      onlyLocal: onlyLocal,
+      onlyMedia: onlyMedia,
+      withMuted: withMuted,
+      excludeVisibilities: excludeVisibilities,
+    );
+
+    await updateRemoteStatuses(loadedRemoteStatuses);
+  }
+
+  @override
+  Future upsertAll(Iterable<DbStatusWrapper> items) async {
+    // insertOrReplace
+    // if a row with the same primary or unique key already
+    // exists, it will be deleted and re-created with the row being inserted.
+    // We declared remoteId as unique so it possible to insertOrReplace by it too
+    await dao.insertAll(
+        items.map((item) => item.dbStatus), InsertMode.insertOrReplace);
+  }
+
+  @override
+  Future insertAll(Iterable<DbStatusWrapper> items) async {
+    // if item already exist rollback changes
+    // call this only if you sure that items not exist instead user upsertAll
+    return await dao.insertAll(
+        items.map((item) => item.dbStatus), InsertMode.insertOrRollback);
+  }
+
+  @override
+  Future clear() => dao.clear();
+
+  @override
+  Future<bool> deleteById(int id) async {
+    var affectedRows = await dao.deleteById(id);
+    assert(affectedRows == 0 || affectedRows == 1);
+    return (affectedRows) == 1;
+  }
+
+  @override
+  Future<IStatus> findById(int id) =>
+      dao.findByIdQuery(id).map(mapDataClassToItem).getSingle();
+
+  @override
+  Stream<IStatus> watchById(int id) =>
+      dao.findByIdQuery(id).map(mapDataClassToItem).watchSingle();
+
+  @override
+  Future<bool> isExistWithId(int id) =>
+      dao.countByIdQuery(id).map((count) => count > 0).getSingle();
+
+  @override
+  Future<List<IStatus>> getAll() =>
+      dao.getAllQuery().map(mapDataClassToItem).get();
+
+  @override
+  Stream<List<IStatus>> watchAll() =>
+      dao.getAllQuery().map(mapDataClassToItem).watch();
+
+  @override
+  Future<int> insert(IStatus item) => dao.insert(mapItemToDataClass(item));
+
+  @override
+  Future<bool> updateById(int id, DbStatusWrapper item) {
+    var dbProfile = item.dbStatus;
+    if (item.localId != id) {
+      dbProfile = dbProfile.copyWith(id: id);
+    }
+    return dao.replace(dbProfile);
+  }
+
+  DbStatusWrapper mapDataClassToItem(DbStatus dataClass) =>
+      DbStatusWrapper(dataClass);
+
+  Insertable<DbStatus> mapItemToDataClass(DbStatusWrapper item) =>
+      item.dbStatus;
+
+  static DbStatusWrapper mapRemoteStatusToDbStatus(
+      IPleromaStatus remoteStatus) {
+    // TODO: fix when https://git.pleroma.social/pleroma/pleroma/issues/1573  will be resolved
+    DateTime expiresAt;
+    try {
+      if (remoteStatus.pleroma.expiresAt is DateTime) {
+        expiresAt = remoteStatus.pleroma.expiresAt;
+      } else {
+        expiresAt = DateTime.parse(remoteStatus.pleroma.expiresAt);
+      }
+    } catch (e) {
+      _logger.shout(() => "Error during parsing expiresAt $e");
+    }
+    return DbStatusWrapper(DbStatus(
+        id: null,
+        remoteId: remoteStatus.id,
+        createdAt: remoteStatus.createdAt,
+        inReplyToRemoteId: remoteStatus.inReplyToId,
+        inReplyToAccountRemoteId: remoteStatus.inReplyToAccountId,
+        sensitive: remoteStatus.sensitive,
+        spoilerText: remoteStatus.spoilerText,
+        visibility: remoteStatus.visibilityPleroma,
+        uri: remoteStatus.uri,
+        url: remoteStatus.url,
+        repliesCount: remoteStatus.repliesCount,
+        reblogsCount: remoteStatus.reblogsCount,
+        favouritesCount: remoteStatus.favouritesCount,
+        favourited: remoteStatus.favourited,
+        reblogged: remoteStatus.reblogged,
+        muted: remoteStatus.muted,
+        bookmarked: remoteStatus.bookmarked,
+        content: remoteStatus.content,
+        reblog: remoteStatus.reblog,
+        application: remoteStatus.application,
+        account: remoteStatus.account,
+        mediaAttachments: remoteStatus.mediaAttachments,
+        mentions: remoteStatus.mentions,
+        tags: remoteStatus.tags,
+        emojis: remoteStatus.emojis,
+        poll: remoteStatus.poll,
+        card: remoteStatus.card,
+        pleromaContent: remoteStatus.pleroma.content,
+        pleromaConversationId: remoteStatus.pleroma.conversationId,
+        pleromaDirectConversationId: remoteStatus.pleroma.directConversationId,
+        pleromaInReplyToAccountAcct: remoteStatus.pleroma.inReplyToAccountAcct,
+        pleromaLocal: remoteStatus.pleroma.local,
+        pleromaSpoilerText: remoteStatus.pleroma.spoilerText,
+        pleromaExpiresAt: expiresAt,
+        pleromaThreadMuted: remoteStatus.pleroma.threadMuted,
+        pleromaEmojiReactions: remoteStatus.pleroma.emojiReactions));
+  }
 }

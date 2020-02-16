@@ -11,7 +11,6 @@ abstract class IWriteListRepository<Item> {
 
   Future insertAll(Iterable<Item> items);
   Future upsertAll(Iterable<Item> items);
-  Future updateAll(Iterable<Item> items);
 }
 
 abstract class IReadIdListRepository<Item, Id>

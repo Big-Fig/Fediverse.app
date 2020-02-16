@@ -55,7 +55,8 @@ mixin _$StatusDaoMixin on DatabaseAccessor<AppDatabase> {
       tags: $DbStatusesTable.$converter6.mapToDart(row.readString('tags')),
       emojis: $DbStatusesTable.$converter7.mapToDart(row.readString('emojis')),
       poll: $DbStatusesTable.$converter8.mapToDart(row.readString('poll')),
-      pleromaContent: $DbStatusesTable.$converter9
+      card: $DbStatusesTable.$converter9.mapToDart(row.readString('card')),
+      pleromaContent: $DbStatusesTable.$converter10
           .mapToDart(row.readString('pleroma_content')),
       pleromaConversationId: row.readInt('pleroma_conversation_id'),
       pleromaDirectConversationId:
@@ -63,11 +64,11 @@ mixin _$StatusDaoMixin on DatabaseAccessor<AppDatabase> {
       pleromaInReplyToAccountAcct:
           row.readString('pleroma_in_reply_to_account_acct'),
       pleromaLocal: row.readBool('pleroma_local'),
-      pleromaSpoilerText: $DbStatusesTable.$converter10
+      pleromaSpoilerText: $DbStatusesTable.$converter11
           .mapToDart(row.readString('pleroma_spoiler_text')),
       pleromaExpiresAt: row.readDateTime('pleroma_expires_at'),
       pleromaThreadMuted: row.readBool('pleroma_thread_muted'),
-      pleromaEmojiReactions: $DbStatusesTable.$converter11
+      pleromaEmojiReactions: $DbStatusesTable.$converter12
           .mapToDart(row.readString('pleroma_emoji_reactions')),
     );
   }

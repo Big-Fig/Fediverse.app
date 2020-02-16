@@ -10,6 +10,7 @@ import 'package:fedi/Pleroma/tag/pleroma_tag_model.dart';
 import 'package:fedi/Pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/app/status/status_database_dao.dart';
 import 'package:fedi/app/status/status_database_model.dart';
+import 'package:fedi/Pleroma/card/pleroma_card_model.dart';
 import 'package:moor/moor.dart';
 
 part 'app_database.g.dart';

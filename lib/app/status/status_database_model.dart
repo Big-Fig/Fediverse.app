@@ -5,6 +5,7 @@ import 'package:fedi/Pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/Pleroma/mention/pleroma_mention_model.dart';
 import 'package:fedi/Pleroma/poll/pleroma_poll_model.dart';
+import 'package:fedi/Pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/Pleroma/tag/pleroma_tag_model.dart';
 import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/Pleroma/visibility/pleroma_visibility_model.dart';
@@ -43,12 +44,13 @@ class DbStatuses extends Table {
   // TODO: rework with join
   TextColumn get account => text().map(PleromaAccountDatabaseConverter())();
   TextColumn get mediaAttachments =>
-      text().map(PleromaMediaAttachmentDatabaseConverter())();
-  TextColumn get mentions => text().map(PleromaMentionDatabaseConverter())();
+      text().map(PleromaMediaAttachmentListDatabaseConverter())();
+  TextColumn get mentions => text().map(PleromaMentionListDatabaseConverter())();
   // TODO: rework with join
-  TextColumn get tags => text().map(PleromaTagDatabaseConverter())();
-  TextColumn get emojis => text().map(PleromaEmojiDatabaseConverter())();
+  TextColumn get tags => text().map(PleromaTagListDatabaseConverter())();
+  TextColumn get emojis => text().map(PleromaEmojiListDatabaseConverter())();
   TextColumn get poll => text().map(PleromaPollDatabaseConverter())();
+  TextColumn get card => text().map(PleromaCardDatabaseConverter())();
 
   //  expanded pleroma object fields
   TextColumn get pleromaContent =>
@@ -63,7 +65,7 @@ class DbStatuses extends Table {
   BoolColumn get pleromaThreadMuted => boolean()();
 
   TextColumn get pleromaEmojiReactions =>
-      text().map(PleromaEmojiReactionsDatabaseConverter())();
+      text().map(PleromaEmojiReactionsListDatabaseConverter())();
 }
 
 class PleromaVisibilityDatabaseConverter
@@ -114,9 +116,9 @@ class PleromaAccountDatabaseConverter
   Map<String, dynamic> toJson(PleromaAccount obj) => obj.toJson();
 }
 
-class PleromaMediaAttachmentDatabaseConverter
+class PleromaMediaAttachmentListDatabaseConverter
     extends JsonListDatabaseConverter<PleromaMediaAttachment> {
-  const PleromaMediaAttachmentDatabaseConverter() : super();
+  const PleromaMediaAttachmentListDatabaseConverter() : super();
 
   @override
   PleromaMediaAttachment fromJson(Map<String, dynamic> json) =>
@@ -126,9 +128,9 @@ class PleromaMediaAttachmentDatabaseConverter
   Map<String, dynamic> toJson(PleromaMediaAttachment obj) => obj.toJson();
 }
 
-class PleromaMentionDatabaseConverter
+class PleromaMentionListDatabaseConverter
     extends JsonListDatabaseConverter<PleromaMention> {
-  const PleromaMentionDatabaseConverter() : super();
+  const PleromaMentionListDatabaseConverter() : super();
 
   @override
   PleromaMention fromJson(Map<String, dynamic> json) =>
@@ -138,9 +140,9 @@ class PleromaMentionDatabaseConverter
   Map<String, dynamic> toJson(PleromaMention obj) => obj.toJson();
 }
 
-class PleromaTagDatabaseConverter
+class PleromaTagListDatabaseConverter
     extends JsonListDatabaseConverter<PleromaTag> {
-  const PleromaTagDatabaseConverter() : super();
+  const PleromaTagListDatabaseConverter() : super();
 
   @override
   PleromaTag fromJson(Map<String, dynamic> json) => PleromaTag.fromJson(json);
@@ -149,9 +151,9 @@ class PleromaTagDatabaseConverter
   Map<String, dynamic> toJson(PleromaTag obj) => obj.toJson();
 }
 
-class PleromaEmojiDatabaseConverter
+class PleromaEmojiListDatabaseConverter
     extends JsonListDatabaseConverter<PleromaEmoji> {
-  const PleromaEmojiDatabaseConverter() : super();
+  const PleromaEmojiListDatabaseConverter() : super();
 
   @override
   PleromaEmoji fromJson(Map<String, dynamic> json) =>
@@ -162,7 +164,7 @@ class PleromaEmojiDatabaseConverter
 }
 
 class PleromaPollDatabaseConverter
-    extends JsonListDatabaseConverter<PleromaPoll> {
+    extends JsonDatabaseConverter<PleromaPoll> {
   const PleromaPollDatabaseConverter() : super();
 
   @override
@@ -171,9 +173,19 @@ class PleromaPollDatabaseConverter
   @override
   Map<String, dynamic> toJson(PleromaPoll obj) => obj.toJson();
 }
+class PleromaCardDatabaseConverter
+    extends JsonDatabaseConverter<PleromaCard> {
+  const PleromaCardDatabaseConverter() : super();
+
+  @override
+  PleromaCard fromJson(Map<String, dynamic> json) => PleromaCard.fromJson(json);
+
+  @override
+  Map<String, dynamic> toJson(PleromaCard obj) => obj.toJson();
+}
 
 class PleromaContentDatabaseConverter
-    extends JsonListDatabaseConverter<PleromaContent> {
+    extends JsonDatabaseConverter<PleromaContent> {
   const PleromaContentDatabaseConverter() : super();
 
   @override
@@ -184,9 +196,9 @@ class PleromaContentDatabaseConverter
   Map<String, dynamic> toJson(PleromaContent obj) => obj.toJson();
 }
 
-class PleromaEmojiReactionsDatabaseConverter
+class PleromaEmojiReactionsListDatabaseConverter
     extends JsonListDatabaseConverter<PleromaEmojiReactions> {
-  const PleromaEmojiReactionsDatabaseConverter() : super();
+  const PleromaEmojiReactionsListDatabaseConverter() : super();
 
   @override
   PleromaEmojiReactions fromJson(Map<String, dynamic> json) =>

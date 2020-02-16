@@ -13,7 +13,15 @@ abstract class IStatusRepository
   static IStatusRepository of(BuildContext context, {bool listen = true}) =>
       Provider.of<IStatusRepository>(context, listen: listen);
 
-  Future refreshPublicStatuses();
+  Future refreshPublicStatuses({
+    @required bool onlyLocal,
+    @required bool onlyMedia,
+    @required bool withMuted,
+    @required List<PleromaVisibility> excludeVisibilities,
+    @required int limit,
+  });
+
+
 
   Future<List<DbStatusWrapper>> getPublicStatuses(
       {@required bool onlyLocal,
@@ -37,7 +45,13 @@ abstract class IStatusRepository
       @required StatusSortType sortType,
       @required RepositorySortDirection sortDirection});
 
-  Future refreshHomeStatuses();
+  Future refreshHomeStatuses({
+    @required bool onlyLocal,
+    @required bool onlyMedia,
+    @required bool withMuted,
+    @required List<PleromaVisibility> excludeVisibilities,
+    @required int limit,
+  });
 
   Future<List<DbStatusWrapper>> getHomeStatuses(
       {@required bool onlyLocal,
@@ -61,7 +75,14 @@ abstract class IStatusRepository
       @required StatusSortType sortType,
       @required RepositorySortDirection sortDirection});
 
-  Future refreshHashTagStatuses({@required String hashTag});
+  Future refreshHashTagStatuses({
+    @required String hashTag,
+    @required bool onlyLocal,
+    @required bool onlyMedia,
+    @required bool withMuted,
+    @required List<PleromaVisibility> excludeVisibilities,
+    @required int limit,
+  });
 
   Future<List<DbStatusWrapper>> getHashTagStatuses(
       {@required String hashTag,
@@ -87,7 +108,14 @@ abstract class IStatusRepository
       @required StatusSortType sortType,
       @required RepositorySortDirection sortDirection});
 
-  Future refreshListStatuses({@required String listRemoteId});
+  Future refreshListStatuses({
+    @required String listRemoteId,
+    @required bool onlyLocal,
+    @required bool onlyMedia,
+    @required bool withMuted,
+    @required List<PleromaVisibility> excludeVisibilities,
+    @required int limit,
+  });
 
   Future<List<DbStatusWrapper>> getListStatuses(
       {@required String listRemoteId,
