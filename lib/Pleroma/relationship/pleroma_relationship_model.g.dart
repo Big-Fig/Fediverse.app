@@ -1,15 +1,15 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'Relationship.dart';
+part of 'pleroma_relationship_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class RelationshipAdapter extends TypeAdapter<Relationship> {
+class PleromaRelationshipAdapter extends TypeAdapter<PleromaRelationship> {
   @override
-  Relationship read(BinaryReader reader) {
-    var obj = Relationship();
+  PleromaRelationship read(BinaryReader reader) {
+    var obj = PleromaRelationship();
     var numOfFields = reader.readByte();
     for (var i = 0; i < numOfFields; i++) {
       switch (reader.readByte()) {
@@ -52,7 +52,7 @@ class RelationshipAdapter extends TypeAdapter<Relationship> {
   }
 
   @override
-  void write(BinaryWriter writer, Relationship obj) {
+  void write(BinaryWriter writer, PleromaRelationship obj) {
     writer.writeByte(11);
     writer.writeByte(1);
     writer.write(obj.blocking);
@@ -83,8 +83,8 @@ class RelationshipAdapter extends TypeAdapter<Relationship> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-Relationship _$RelationshipFromJson(Map<String, dynamic> json) {
-  return Relationship(
+PleromaRelationship _$PleromaRelationshipFromJson(Map<String, dynamic> json) {
+  return PleromaRelationship(
     blocking: json['blocking'] as bool,
     domainBlocking: json['domain_blocking'] as bool,
     endorsed: json['endorsed'] as bool,
@@ -99,7 +99,8 @@ Relationship _$RelationshipFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$RelationshipToJson(Relationship instance) =>
+Map<String, dynamic> _$PleromaRelationshipToJson(
+        PleromaRelationship instance) =>
     <String, dynamic>{
       'blocking': instance.blocking,
       'domain_blocking': instance.domainBlocking,

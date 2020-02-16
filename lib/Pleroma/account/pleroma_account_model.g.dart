@@ -144,7 +144,7 @@ class PleromaAccountPleromaPartAdapter
           obj.tags = (reader.read() as List)?.cast<PleromaTag>();
           break;
         case 3:
-          obj.relationship = reader.read() as Relationship;
+          obj.relationship = reader.read() as PleromaRelationship;
           break;
         case 4:
           obj.isAdmin = reader.read() as bool;
@@ -327,6 +327,21 @@ Map<String, dynamic> _$PleromaAccountToJson(PleromaAccount instance) =>
 PleromaAccountPleromaPart _$PleromaAccountPleromaPartFromJson(
     Map<String, dynamic> json) {
   return PleromaAccountPleromaPart(
+    backgroundImage: json['background_image'],
+    tags: (json['tags'] as List)
+        ?.map((e) =>
+            e == null ? null : PleromaTag.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+    relationship: json['relationship'] == null
+        ? null
+        : PleromaRelationship.fromJson(
+            json['relationship'] as Map<String, dynamic>),
+    isAdmin: json['is_admin'] as bool,
+    isModerator: json['is_moderator'] as bool,
+    confirmationPending: json['confirmation_pending'] as bool,
+    hideFavorites: json['hide_favorites'] as bool,
+    hideFollowers: json['hide_followers'] as bool,
+    hideFollows: json['hide_follows'] as bool,
     hideFollowersCount: json['hide_followers_count'] as bool,
     hideFollowsCount: json['hide_follows_count'] as bool,
     settingsStore: json['settings_store'],
@@ -334,25 +349,12 @@ PleromaAccountPleromaPart _$PleromaAccountPleromaPartFromJson(
     deactivated: json['deactivated'] as bool,
     allowFollowingMove: json['allow_following_move'] as bool,
     unreadConversationCount: json['unread_conversation_count'] as int,
-    backgroundImage: json['background_image'],
-    confirmationPending: json['confirmation_pending'] as bool,
-    hideFavorites: json['hide_favorites'] as bool,
-    hideFollowers: json['hide_followers'] as bool,
-    hideFollows: json['hide_follows'] as bool,
-    isAdmin: json['is_admin'] as bool,
-    isModerator: json['is_moderator'] as bool,
-    relationship: json['relationship'] == null
-        ? null
-        : Relationship.fromJson(json['relationship'] as Map<String, dynamic>),
     skipThreadContainment: json['skip_thread_containment'] as bool,
-    tags: (json['tags'] as List)
-        ?.map((e) =>
-            e == null ? null : PleromaTag.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-  )..notificationSettings = json['notifications_settings'] == null
-      ? null
-      : PleromaAccountPleromaPartNotificationsSettings.fromJson(
-          json['notifications_settings'] as Map<String, dynamic>);
+    notificationSettings: json['notifications_settings'] == null
+        ? null
+        : PleromaAccountPleromaPartNotificationsSettings.fromJson(
+            json['notifications_settings'] as Map<String, dynamic>),
+  );
 }
 
 Map<String, dynamic> _$PleromaAccountPleromaPartToJson(

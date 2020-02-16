@@ -8,11 +8,3 @@ abstract class IMastodonEmoji {
   bool get visibleInPicker;
   String get category;
 }
-
-abstract class IMastodonEmojiReactions {
-  String get name;
-
-  int get count;
-
-  bool get me;
-}

@@ -6,7 +6,13 @@ part 'pleroma_emoji_model.g.dart';
 
 abstract class IPleromaEmoji implements IMastodonEmoji {}
 
-abstract class IPleromaEmojiReactions implements IMastodonEmojiReactions {}
+abstract class IPleromaEmojiReactions {
+  String get name;
+
+  int get count;
+
+  bool get me;
+}
 
 @HiveType()
 @JsonSerializable()

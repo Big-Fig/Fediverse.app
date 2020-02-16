@@ -40,8 +40,8 @@ import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/Pleroma/field/pleroma_field_model.dart';
 import 'package:fedi/Pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/Pleroma/source/pleroma_source_model.dart';
+import 'package:fedi/Pleroma/relationship/pleroma_relationship_model.dart';
 import './Pleroma/Models/AccountAuth.dart';
-import './Pleroma/Models/Relationship.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -56,7 +56,7 @@ void main() async {
   Hive.registerAdapter(PleromaEmojiAdapter(), 38);
   Hive.registerAdapter(PleromaAccountPleromaPartAdapter(), 40);
   Hive.registerAdapter(PleromaAccountPleromaPartNotificationsSettingsAdapter(), 41);
-  Hive.registerAdapter(RelationshipAdapter(), 42);
+  Hive.registerAdapter(PleromaRelationshipAdapter(), 42);
   Hive.registerAdapter(PleromaSourceAdapter(), 43);
   Hive.registerAdapter(PleromaSourcePleromaPartAdapter(), 44);
   Hive.registerAdapter(PleromaSourceAdapter(), 45);

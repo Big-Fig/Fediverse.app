@@ -4,8 +4,8 @@ import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart';
-import 'package:fedi/Pleroma/Models/Relationship.dart';
 import 'package:fedi/Pleroma/emoji/pleroma_emoji_model.dart';
+import 'package:fedi/Pleroma/relationship/pleroma_relationship_model.dart';
 import 'package:fedi/Pleroma/tag/pleroma_tag_model.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
@@ -137,7 +137,7 @@ class PleromaAccountPleromaPart {
   // Includes fields as documented for
   // Mastodon API https://docs.joinmastodon.org/entities/relationship/
   @HiveField(3)
-  Relationship relationship;
+  PleromaRelationship relationship;
   @HiveField(4)
   @JsonKey(name: "is_admin")
   // boolean, nullable, true if user is an admin
@@ -203,25 +203,14 @@ class PleromaAccountPleromaPart {
   @JsonKey(name: "notifications_settings")
   PleromaAccountPleromaPartNotificationsSettings notificationSettings;
 
-  PleromaAccountPleromaPart({
-    this.hideFollowersCount,
-    this.hideFollowsCount,
-    this.settingsStore,
-    this.chatToken,
-    this.deactivated,
-    this.allowFollowingMove,
-    this.unreadConversationCount,
-    this.backgroundImage,
-    this.confirmationPending,
-    this.hideFavorites,
-    this.hideFollowers,
-    this.hideFollows,
-    this.isAdmin,
-    this.isModerator,
-    this.relationship,
-    this.skipThreadContainment,
-    this.tags,
-  });
+
+  PleromaAccountPleromaPart({this.backgroundImage, this.tags, this.relationship,
+    this.isAdmin, this.isModerator, this.confirmationPending,
+    this.hideFavorites, this.hideFollowers, this.hideFollows,
+    this.hideFollowersCount, this.hideFollowsCount, this.settingsStore,
+    this.chatToken, this.deactivated, this.allowFollowingMove,
+    this.unreadConversationCount, this.skipThreadContainment,
+    this.notificationSettings});
 
   factory PleromaAccountPleromaPart.fromJson(Map<String, dynamic> json) =>
       _$PleromaAccountPleromaPartFromJson(json);

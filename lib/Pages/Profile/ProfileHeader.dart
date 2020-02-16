@@ -8,8 +8,8 @@ import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart';
 import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
+import 'package:fedi/Pleroma/relationship/pleroma_relationship_model.dart';
 import 'package:fedi/Pleroma/field/pleroma_field_model.dart';
-import 'package:fedi/Pleroma/Models/Relationship.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:url_launcher/url_launcher.dart';
 
@@ -28,7 +28,7 @@ class ProfileHeader extends StatefulWidget {
 }
 
 class _ProfileHeader extends State<ProfileHeader> {
-  Relationship relationship;
+  IPleromaRelationship relationship;
   bool firstBuildRefresh;
 
   @override
@@ -40,7 +40,9 @@ class _ProfileHeader extends State<ProfileHeader> {
       CurrentInstance.instance.currentClient
           .run(path: path, method: HTTPMethod.GET)
           .then((response) {
-        Relationship relationship = Relationship.listFromJsonString(response.body).first;
+        IPleromaRelationship relationship = PleromaRelationship.listFromJsonString
+          (response
+            .body).first;
         if (mounted)
           setState(() {
             this.relationship = relationship;

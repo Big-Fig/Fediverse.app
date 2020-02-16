@@ -60,6 +60,10 @@ PleromaStatus _$PleromaStatusFromJson(Map<String, dynamic> json) {
     card: json['card'] == null
         ? null
         : PleromaCard.fromJson(json['card'] as Map<String, dynamic>),
+    pleroma: json['pleroma'] == null
+        ? null
+        : PleromaStatusPleromaPart.fromJson(
+            json['pleroma'] as Map<String, dynamic>),
     visibilityRaw: json['visbility'] as String,
   );
 }
@@ -91,6 +95,7 @@ Map<String, dynamic> _$PleromaStatusToJson(PleromaStatus instance) =>
       'emojis': instance.emojis,
       'poll': instance.poll,
       'card': instance.card,
+      'pleroma': instance.pleroma,
       'visbility': instance.visibilityRaw,
     };
 

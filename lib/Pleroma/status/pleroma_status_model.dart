@@ -53,6 +53,8 @@ abstract class IPleromaStatus implements IMastodonStatus {
   @override
   IPleromaCard get card;
 
+  PleromaStatusPleromaPart get pleroma;
+
   PleromaVisibility get visibilityPleroma;
 }
 
@@ -92,6 +94,7 @@ class PleromaStatus extends IPleromaStatus {
   final List<PleromaEmoji> emojis;
   final PleromaPoll poll;
   final PleromaCard card;
+  final PleromaStatusPleromaPart pleroma;
 
   @override
   @JsonKey(name: "visbility")
@@ -129,6 +132,7 @@ class PleromaStatus extends IPleromaStatus {
       this.emojis,
       this.poll,
       this.card,
+      this.pleroma,
       this.visibilityRaw});
 
   factory PleromaStatus.fromJson(Map<String, dynamic> json) =>

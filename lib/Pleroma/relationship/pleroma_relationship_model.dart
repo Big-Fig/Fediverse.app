@@ -1,17 +1,18 @@
-// To parse this JSON data, do
-//
-//     final relationship = relationshipFromJson(jsonString);
-
 import 'dart:convert';
 
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:fedi/mastodon/relationship/mastodon_relationship_model.dart';
 
-part 'Relationship.g.dart';
+part 'pleroma_relationship_model.g.dart';
+
+abstract class IPleromaRelationship implements IMastodonRelationship {
+
+}
 
 @HiveType()
 @JsonSerializable()
-class Relationship {
+class PleromaRelationship implements IPleromaRelationship {
   @HiveField(1)
   bool blocking;
   @JsonKey(name: "domain_blocking")
@@ -40,7 +41,7 @@ class Relationship {
   @HiveField(12)
   bool subscribing;
 
-  Relationship({
+  PleromaRelationship({
     this.blocking,
     this.domainBlocking,
     this.endorsed,
@@ -54,17 +55,17 @@ class Relationship {
     this.subscribing,
   });
 
-  factory Relationship.fromJson(Map<String, dynamic> json) =>
-      _$RelationshipFromJson(json);
+  factory PleromaRelationship.fromJson(Map<String, dynamic> json) =>
+      _$PleromaRelationshipFromJson(json);
 
-  factory Relationship.fromJsonString(String jsonString) =>
-      _$RelationshipFromJson(jsonDecode(jsonString));
+  factory PleromaRelationship.fromJsonString(String jsonString) =>
+      _$PleromaRelationshipFromJson(jsonDecode(jsonString));
 
-  static List<Relationship> listFromJsonString(String str) =>
-      new List<Relationship>.from(
-          json.decode(str).map((x) => Relationship.fromJson(x)));
+  static List<PleromaRelationship> listFromJsonString(String str) =>
+      new List<PleromaRelationship>.from(
+          json.decode(str).map((x) => PleromaRelationship.fromJson(x)));
 
-  Map<String, dynamic> toJson() => _$RelationshipToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaRelationshipToJson(this);
 
-  String toJsonString() => jsonEncode(_$RelationshipToJson(this));
+  String toJsonString() => jsonEncode(_$PleromaRelationshipToJson(this));
 }
