@@ -4,11 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:html/parser.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 
 class UserCell extends StatefulWidget {
-  final Account account;
-  final Function(Account account) cellTapped;
+  final PleromaAccount account;
+  final Function(PleromaAccount account) cellTapped;
   UserCell({this.account, this.cellTapped});
 
   @override
@@ -30,7 +30,7 @@ class _UserCell extends State<UserCell> {
 
   }
 
-  String getUserDomainName(Account account) {
+  String getUserDomainName(PleromaAccount account) {
     var domain = "${account.url}".replaceAll("https://", "@");
     var url = domain.split("/");
     print(url);
@@ -81,7 +81,7 @@ class _UserCell extends State<UserCell> {
     );
   }
 
-  String getStatusText(Status status) {
+  String getStatusText(PleromaStatus status) {
     var document = parse(status.content);
 
     String parsedString = parse(document.body.text).documentElement.text;
@@ -89,7 +89,7 @@ class _UserCell extends State<UserCell> {
     return parsedString;
   }
 
-  List<Widget> getUserName(Status status) {
+  List<Widget> getUserName(PleromaStatus status) {
     var username = status.account.displayName;
     var emojis = status.account.emojis;
     emojis.addAll(status.emojis);
@@ -140,7 +140,7 @@ class _UserCell extends State<UserCell> {
     return usernameWidget;
   }
 
-  Account getOtherAccount(List<Account> accounts) {
+  PleromaAccount getOtherAccount(List<PleromaAccount> accounts) {
     for (var i = 0; i < accounts.length; i++) {
       var currentAccount = CurrentInstance.instance.currentAccount;
       var account = accounts[i];

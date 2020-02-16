@@ -5,19 +5,19 @@
 import 'dart:convert';
 
 import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'Notification.g.dart';
 
 @JsonSerializable()
 class Notification {
-    Account account;
+    PleromaAccount account;
     @JsonKey(name: "created_at")
     DateTime createdAt;
     String id;
     String type;
-    Status status;
+    PleromaStatus status;
 
     Notification({
         this.account,

@@ -25,7 +25,7 @@ class CurrentInstance {
   }
 
   Client currentClient;
-  Account currentAccount;
+  PleromaAccount currentAccount;
   AccountAuth currentAuth;
 
   bool loading = false;
@@ -49,7 +49,8 @@ class CurrentInstance {
     CurrentInstance.newInstance.currentClient
         .run(path: Accounts.currentUser(), method: HTTPMethod.GET)
         .then((resonse) {
-      Account currentAccount = Account.fromJsonString(resonse.body);
+      PleromaAccount currentAccount = PleromaAccount.fromJsonString(resonse
+          .body);
       String account =
           "${currentAccount.username}@${CurrentInstance.newInstance.currentClient.baseURL}";
       InstanceStorage currentStorage = InstanceStorage(

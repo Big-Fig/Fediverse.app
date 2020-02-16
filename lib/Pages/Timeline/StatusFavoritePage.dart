@@ -6,13 +6,13 @@ import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Status.dart' as StatusRequests;
 import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class StatusFavoritePage extends StatefulWidget {
-  final Status status;
+  final IPleromaStatus status;
 
   StatusFavoritePage(this.status);
 
@@ -23,7 +23,7 @@ class StatusFavoritePage extends StatefulWidget {
 }
 
 class _StatusFavoritePage extends State<StatusFavoritePage> {
-  List<Account> accounts = [];
+  List<IPleromaAccount> accounts = [];
 
   void initState() {
     super.initState();
@@ -40,14 +40,14 @@ class _StatusFavoritePage extends State<StatusFavoritePage> {
     }
   }
 
-  viewAccount(Account account) {
+  viewAccount(IPleromaAccount account) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => OtherAccount(account)),
     );
   }
 
-  viewStatusDetail(Status status) {
+  viewStatusDetail(IPleromaStatus status) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -68,7 +68,7 @@ class _StatusFavoritePage extends State<StatusFavoritePage> {
             path: StatusRequests.Status.favouritedBy(widget.status.id),
             method: HTTPMethod.GET)
         .then((response) {
-      accounts = Account.listFromJsonString(response.body);
+      accounts = PleromaAccount.listFromJsonString(response.body);
 
       if (mounted) setState(() {});
       _refreshController.refreshCompleted();
@@ -79,7 +79,7 @@ class _StatusFavoritePage extends State<StatusFavoritePage> {
     });
   }
 
-  viewStatus(Status status) {}
+  viewStatus(IPleromaStatus status) {}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -153,7 +153,7 @@ class _StatusFavoritePage extends State<StatusFavoritePage> {
         child: ListView.builder(
           padding: EdgeInsets.symmetric(horizontal: 2.0, vertical: 10.0),
           itemBuilder: (c, i) {
-            Account account = accounts[i];
+            IPleromaAccount account = accounts[i];
             return AccountCell(viewAccount, account);
           },
           itemCount: accounts.length,

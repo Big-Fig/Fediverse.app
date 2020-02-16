@@ -7,8 +7,9 @@ import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
 import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
+import 'package:fedi/Pleroma/mention/pleroma_mention_model.dart';
 import 'package:fedi/Pleroma/Models/Context.dart';
-import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/Views/Alert.dart';
 import 'package:fedi/Views/MentionPage.dart';
 import 'package:fedi/app/dm/media/dm_media_capture_widget.dart';
@@ -20,7 +21,7 @@ import 'package:flutter_widgets/flutter_widgets.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class StatusDetail extends StatefulWidget {
-  final Status status;
+  final IPleromaStatus status;
 
   StatusDetail({this.status});
 
@@ -39,7 +40,7 @@ class _StatusDetail extends State<StatusDetail> {
   final ItemScrollController itemScrollController = ItemScrollController();
   final ItemPositionsListener itemPositionListener =
   ItemPositionsListener.create();
-  List<Status> statuses = <Status>[];
+  List<IPleromaStatus> statuses = <IPleromaStatus>[];
 
   void initState() {
     super.initState();
@@ -57,14 +58,14 @@ class _StatusDetail extends State<StatusDetail> {
     }
   }
 
-  viewAccount(Account account) {
+  viewAccount(IPleromaAccount account) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => OtherAccount(account)),
     );
   }
 
-  accountMentioned(Account acct) {
+  accountMentioned(IPleromaAccount acct) {
     print("$acct");
     if (txtController.text.length > 0) {
       String lastChar =
@@ -344,7 +345,7 @@ class _StatusDetail extends State<StatusDetail> {
         .then((response) {
       Context context = Context.fromJsonString(response.body);
       statuses.clear();
-      List<Status> templist = [];
+      List<IPleromaStatus> templist = [];
 
       templist.addAll(context.ancestors);
       templist.add(widget.status);
@@ -358,7 +359,7 @@ class _StatusDetail extends State<StatusDetail> {
         //"${txtController.text} @${widget.status.account.acct}";
       }
       for (int i = 0; i < widget.status.mentions.length; i++) {
-        Mention mention = widget.status.mentions[i];
+        IPleromaMention mention = widget.status.mentions[i];
         if (!mentionedAccts.contains(mention.acct) &&
             mention.acct != CurrentInstance.instance.currentAccount.acct) {
           mentionedAccts.add(mention.acct);
@@ -432,7 +433,7 @@ class _StatusDetail extends State<StatusDetail> {
           if (statuses.length == 0) {
             return Container();
           }
-          Status status = statuses[index];
+          IPleromaStatus status = statuses[index];
           return TimelineCell(
             status,
             viewAccount: viewAccount,
@@ -467,7 +468,7 @@ class _StatusDetail extends State<StatusDetail> {
         .then((statusResponse) {
       print(statusResponse.body);
       txtController.clear();
-      var status = Status.fromJson(jsonDecode(statusResponse.body));
+      var status = PleromaStatus.fromJson(jsonDecode(statusResponse.body));
       statuses.add(status);
       setState(() {});
     }).catchError((e) {
@@ -510,7 +511,7 @@ class _StatusDetail extends State<StatusDetail> {
         .then((statusResponse) {
       print(statusResponse.body);
       txtController.clear();
-      var status = Status.fromJson(jsonDecode(statusResponse.body));
+      var status = PleromaStatus.fromJson(jsonDecode(statusResponse.body));
       statuses.add(status);
       setState(() {});
     }).catchError((e) {

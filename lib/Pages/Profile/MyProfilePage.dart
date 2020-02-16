@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pages/Timeline/StatusDetail.dart';
+import 'package:fedi/Pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -9,14 +10,12 @@ import 'package:fedi/Pages/Timeline/TimelineCell.dart';
 import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart';
-
-import 'package:fedi/Pleroma/Models/Status.dart' as StatusModel;
 import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class MyProfilePage extends StatefulWidget {
-  final List<Status> statuses = <Status>[];
+  final List<IPleromaStatus> statuses = <IPleromaStatus>[];
   @override
   State<StatefulWidget> createState() {
     return _MyProfilePage();
@@ -24,7 +23,7 @@ class MyProfilePage extends StatefulWidget {
 }
 
 class _MyProfilePage extends State<MyProfilePage> {
-  Account myAccount;
+  IPleromaAccount myAccount;
 
   void initState() {
     super.initState();
@@ -51,7 +50,7 @@ class _MyProfilePage extends State<MyProfilePage> {
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
-  viewStatusDetail(Status status) {
+  viewStatusDetail(IPleromaStatus status) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -76,9 +75,11 @@ class _MyProfilePage extends State<MyProfilePage> {
                 limit: "80"),
             method: HTTPMethod.GET)
         .then((response) {
-      List<Status> newStatuses = Status.listFromJsonString(response.body);
+      List<IPleromaStatus> newStatuses = PleromaStatus.listFromJsonString
+        (response
+          .body);
       newStatuses.removeWhere((status) {
-        return status.visibility == StatusModel.Visibility.DIRECT;
+        return status.visibilityPleroma == PleromaVisibility.DIRECT;
       });
       widget.statuses.clear();
       widget.statuses.addAll(newStatuses);
@@ -100,7 +101,7 @@ class _MyProfilePage extends State<MyProfilePage> {
   void _onLoading() async {
     // if failed,use loadFailed(),if no data return,use LoadNodata()
     var lastId = "";
-    Status lastStatus = widget.statuses.last;
+    IPleromaStatus lastStatus = widget.statuses.last;
     if (lastStatus != null) {
       lastId = lastStatus.id;
     }
@@ -115,9 +116,9 @@ class _MyProfilePage extends State<MyProfilePage> {
                 limit: "80"),
             method: HTTPMethod.GET)
         .then((response) {
-      List<Status> newStatuses = Status.listFromJsonString(response.body);
+      List<IPleromaStatus> newStatuses = PleromaStatus.listFromJsonString(response.body);
       newStatuses.removeWhere((status) {
-        return status.visibility == StatusModel.Visibility.DIRECT;
+        return status.visibilityPleroma == PleromaVisibility.DIRECT;
       });
       widget.statuses.addAll(newStatuses);
       if (mounted) setState(() {});

@@ -6,16 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:fedi/Pages/Timeline/StatusDetail.dart';
-import 'package:fedi/Pleroma/Foundation/Client.dart';
-import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
-import 'package:fedi/Pleroma/Foundation/Requests/Timeline.dart';
-import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class GalleryPage extends StatefulWidget {
   GalleryPage({Key key}) : super(key: key);
 
-  final List<Status> statuses = <Status>[];
+  final List<IPleromaStatus> statuses = <IPleromaStatus>[];
   @override
   State<StatefulWidget> createState() {
     return GalleryPageState();
@@ -72,14 +69,14 @@ class GalleryPageState extends State<GalleryPage> {
     await Future.delayed(Duration(milliseconds: 1000));
     // if failed,use loadFailed(),if no data return,use LoadNodata()
     var lastId = "";
-    Status lastStatus = widget.statuses.last;
+    IPleromaStatus lastStatus = widget.statuses.last;
     if (lastStatus != null) {
       lastId = lastStatus.id;
     }
 
     IPleromaTimelineService pleromaTimelineService = IPleromaTimelineService.of
       (context, listen: false);
-    pleromaTimelineService.getPublicTimeline(onlyMedia: true).then(
+    pleromaTimelineService.getPublicTimeline(onlyMedia: true, maxId: lastId).then(
             (newStatuses) {
               widget.statuses.addAll(newStatuses);
               if (mounted) setState(() {});

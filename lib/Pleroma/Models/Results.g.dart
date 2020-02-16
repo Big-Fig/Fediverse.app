@@ -9,10 +9,15 @@ part of 'Results.dart';
 Results _$ResultsFromJson(Map<String, dynamic> json) {
   return Results(
     accounts: (json['accounts'] as List)
-        ?.map((e) =>
-            e == null ? null : Account.fromJson(e as Map<String, dynamic>))
+        ?.map((e) => e == null
+            ? null
+            : PleromaAccount.fromJson(e as Map<String, dynamic>))
         ?.toList(),
-    statuses: json['statuses'] as List,
+    statuses: (json['statuses'] as List)
+        ?.map((e) => e == null
+            ? null
+            : PleromaStatus.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
   );
 }
 

@@ -1,15 +1,15 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'Field.dart';
+part of 'pleroma_field_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class FieldAdapter extends TypeAdapter<Field> {
+class PleromaFieldAdapter extends TypeAdapter<PleromaField> {
   @override
-  Field read(BinaryReader reader) {
-    var obj = Field();
+  PleromaField read(BinaryReader reader) {
+    var obj = PleromaField();
     var numOfFields = reader.readByte();
     for (var i = 0; i < numOfFields; i++) {
       switch (reader.readByte()) {
@@ -25,7 +25,7 @@ class FieldAdapter extends TypeAdapter<Field> {
   }
 
   @override
-  void write(BinaryWriter writer, Field obj) {
+  void write(BinaryWriter writer, PleromaField obj) {
     writer.writeByte(2);
     writer.writeByte(0);
     writer.write(obj.name);
@@ -38,14 +38,15 @@ class FieldAdapter extends TypeAdapter<Field> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-Field _$FieldFromJson(Map<String, dynamic> json) {
-  return Field(
+PleromaField _$PleromaFieldFromJson(Map<String, dynamic> json) {
+  return PleromaField(
     name: json['name'] as String,
     value: json['value'] as String,
   );
 }
 
-Map<String, dynamic> _$FieldToJson(Field instance) => <String, dynamic>{
+Map<String, dynamic> _$PleromaFieldToJson(PleromaField instance) =>
+    <String, dynamic>{
       'name': instance.name,
       'value': instance.value,
     };

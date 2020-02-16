@@ -22,7 +22,7 @@ class InstanceStorage {
 
   String account;
   Client currentClient;
-  Account currentAccount;
+  PleromaAccount currentAccount;
   AccountAuth currentAuth;
 
   
@@ -110,7 +110,7 @@ class InstanceStorage {
   
   static Future<InstanceStorage> getInstanceStorageByAccount(String account) async {
      var box = await Hive.openBox('InstanceStorage', lazy: true) as LazyBox;
-     Account acc = await box.get("$account-account");
+     PleromaAccount acc = await box.get("$account-account");
      AccountAuth auth = await box.get("$account-auth");
      Client client = await box.get("$account-client");
      ClientSettings settings = await box.get("$account-clientSettings");
@@ -119,7 +119,7 @@ class InstanceStorage {
      return data;
   }
 
-    static Future<void> updateAccount(String account, Account acc) async {
+    static Future<void> updateAccount(String account, PleromaAccount acc) async {
        var box = await Hive.openBox('InstanceStorage', lazy: true) as LazyBox;
         await box.put("$account-account", acc);
     }

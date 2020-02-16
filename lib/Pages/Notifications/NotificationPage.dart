@@ -16,7 +16,7 @@ import 'package:fedi/Pleroma/Foundation/Requests/Notification.dart'
     as NotificationRequest;
 import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/Pleroma/Models/Notification.dart' as NotificationModel;
-import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 
 class NotificationPage extends StatefulWidget {
   NotificationPage({Key key}) : super(key: key);
@@ -30,14 +30,14 @@ class NotificationPageState extends State<NotificationPage>
     with TickerProviderStateMixin {
   List<Widget> _tabPages = [];
 
-  viewAccount(Account account) {
+  viewAccount(IPleromaAccount account) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => OtherAccount(account)),
     );
   }
 
-  viewStatusDetail(Status status) {
+  viewStatusDetail(IPleromaStatus status) {
     Navigator.push(
       context,
       MaterialPageRoute(

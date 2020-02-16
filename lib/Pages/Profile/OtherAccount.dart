@@ -9,11 +9,11 @@ import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart';
 import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class OtherAccount extends StatefulWidget {
-  final Account account;
+  final IPleromaAccount account;
 
   OtherAccount(this.account);
 
@@ -24,7 +24,7 @@ class OtherAccount extends StatefulWidget {
 }
 
 class _OtherAccount extends State<OtherAccount> {
-  List<Status> statuses = <Status>[];
+  List<IPleromaStatus> statuses = <IPleromaStatus>[];
   void initState() {
     super.initState();
     if (SchedulerBinding.instance.schedulerPhase ==
@@ -43,7 +43,7 @@ class _OtherAccount extends State<OtherAccount> {
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
-  viewStatusDetail(Status status) {
+  viewStatusDetail(IPleromaStatus status) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -71,7 +71,7 @@ class _OtherAccount extends State<OtherAccount> {
                 limit: "20"),
             method: HTTPMethod.GET)
         .then((response) {
-      List<Status> newStatuses = Status.listFromJsonString(response.body);
+      List<IPleromaStatus> newStatuses = PleromaStatus.listFromJsonString(response.body);
       statuses.clear();
       statuses.addAll(newStatuses);
       if (mounted) setState(() {});
@@ -89,7 +89,7 @@ class _OtherAccount extends State<OtherAccount> {
     await Future.delayed(Duration(milliseconds: 1000));
     // if failed,use loadFailed(),if no data return,use LoadNodata()
     var lastId = "";
-    Status lastStatus = statuses.last;
+    IPleromaStatus lastStatus = statuses.last;
     if (lastStatus != null) {
       lastId = lastStatus.id;
     }
@@ -104,7 +104,7 @@ class _OtherAccount extends State<OtherAccount> {
                 limit: "20"),
             method: HTTPMethod.GET)
         .then((response) {
-      List<Status> newStatuses = Status.listFromJsonString(response.body);
+      List<IPleromaStatus> newStatuses = PleromaStatus.listFromJsonString(response.body);
       statuses.addAll(newStatuses);
       if (mounted) setState(() {});
       _refreshController.loadComplete();

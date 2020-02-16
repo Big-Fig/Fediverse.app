@@ -18,7 +18,7 @@ class _TextCapture extends State<TextCapture> {
     print("Init state");
   }
 
-  accountMentioned(Account acct) {
+  accountMentioned(IPleromaAccount acct) {
     print("$acct");
     String lastChar =
         widget.statusController.text.substring(widget.statusController.text.length - 1);

@@ -1,14 +1,13 @@
-
 import 'dart:convert';
-import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'Context.g.dart';
 
 @JsonSerializable()
 class Context {
-    List<Status> descendants;
-    List<Status> ancestors;
+    List<PleromaStatus> descendants;
+    List<PleromaStatus> ancestors;
 
     Context({
         this.descendants,

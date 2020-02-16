@@ -1,92 +1,51 @@
-
-import 'package:fedi/Pleroma/Models/Status.dart' as mastodon;
+import 'package:fedi/mastodon/status/mastodon_status_model.dart';
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
 
 abstract class IMastodonTimelineService {
-
-  static IMastodonTimelineService of(BuildContext context,
-      {listen: true}) =>
-      Provider.of<IMastodonTimelineService>(context, listen: listen);
-
-
-  Future<List<Status>> getPublicTimeline({
+  Future<List<IMastodonStatus>> getPublicTimeline({
     // Return results older than id
-    String maxId,
-    // Return results newer than id
-    String sinceId,
-    // Return results immediately newer than id
-    String minId,
-    // Maximum number of results to return
-    int limit = 20,
-    // Show only local statuses?
-    bool onlyMedia = false,
-    // Show only statuses with media attached?
+    String maxId, // Return results newer than id
+    String sinceId, // Return results immediately newer than id
+    String minId, // Maximum number of results to return
+    int limit = 20, // Show only local statuses?
+    bool onlyMedia = false, // Show only statuses with media attached?
     bool onlyLocal = false,
-    // also return activities by muted (not by blocked!) users
-    bool withMuted = false,
-    // queries will exclude the statuses with the given visibilities
-    List<mastodon.Visibility> excludeVisibilities = const [mastodon.Visibility
-        .DIRECT],
-
   });
 
+  Future<List<IMastodonStatus>> getHashTagTimeline(
+      {
+      // for example '#cats'
+      @required String hashTag, // Return results older than id
+      String maxId, // Return results newer than id
+      String sinceId, // Return results immediately newer than id
+      String minId, // Maximum number of results to return
+      int limit = 20, // Show only local statuses?
+      bool onlyMedia = false, // Show only statuses with media attached?
+      bool onlyLocal = false});
 
-  Future<List<Status>> getHashTagTimeline({
-    // for example '#cats'
-    @required String hashTag,
-    // Return results older than id
-    String maxId,
-    // Return results newer than id
-    String sinceId,
-    // Return results immediately newer than id
-    String minId,
-    // Maximum number of results to return
-    int limit = 20,
-    // Show only local statuses?
-    bool onlyMedia = false,
-    // Show only statuses with media attached?
-    bool onlyLocal = false,
-    // also return activities by muted (not by blocked!) users
-    bool withMuted = false,
-    // queries will exclude the statuses with the given visibilities
-    List<mastodon.Visibility> excludeVisibilities = const [mastodon.Visibility
-        .DIRECT],});
+  Future<List<IMastodonStatus>> getHomeTimeline(
+      {
+      // Return results older than id
+      String maxId, // Return results newer than id
+      String sinceId, // Return results immediately newer than id
+      String minId, // Maximum number of results to return
+      int limit = 20, // Show only local statuses?
+      bool onlyMedia = false});
 
-  Future<List<Status>> getHomeTimeline({
-    // Return results older than id
-    String maxId,
-    // Return results newer than id
-    String sinceId,
-    // Return results immediately newer than id
-    String minId,
-    // Maximum number of results to return
-    int limit = 20,
-    // Show only local statuses?
-    bool onlyMedia = false,
-    // also return activities by muted (not by blocked!) users
-    bool withMuted = false,
-    // queries will exclude the statuses with the given visibilities
-    List<mastodon.Visibility> excludeVisibilities = const [mastodon.Visibility
-        .DIRECT],
-  });
-
-
-  Future<List<Status>> getListTimeline({
+  Future<List<IMastodonStatus>> getListTimeline({
     // list id
     @required String listId,
+
     // Return results older than id
     String maxId,
+
     // Return results newer than id
     String sinceId,
+
     // Return results immediately newer than id
     String minId,
+
     // Maximum number of results to return
     int limit = 20,
-    // also return activities by muted (not by blocked!) users
-    bool withMuted = false,
-    // queries will exclude the statuses with the given visibilities
-    List<mastodon.Visibility> excludeVisibilities = const [mastodon.Visibility
-        .DIRECT],});
-
+  });
 }

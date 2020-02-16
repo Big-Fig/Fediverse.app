@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 
 class ProfilePage extends StatefulWidget {
 
@@ -11,7 +11,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePage extends State<ProfilePage> {
 
-  List<Status> statuses = <Status>[];
+  List<IPleromaStatus> statuses = <IPleromaStatus>[];
 
   @override
   Widget build(BuildContext context) {

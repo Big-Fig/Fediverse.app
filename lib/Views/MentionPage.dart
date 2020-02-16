@@ -12,7 +12,7 @@ import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class MentionPage extends StatefulWidget {
-  final Function(Account account) userSelected;
+  final Function(PleromaAccount account) userSelected;
 
   MentionPage(this.userSelected);
 
@@ -26,7 +26,7 @@ class _MentionPage extends State<MentionPage> {
   String searchText;
   var _controller = TextEditingController();
 
-  List<Account> accounts = <Account>[];
+  List<PleromaAccount> accounts = <PleromaAccount>[];
   void initState() {
     super.initState();
 
@@ -60,7 +60,7 @@ class _MentionPage extends State<MentionPage> {
                 CurrentInstance.instance.currentAccount.id),
             method: HTTPMethod.GET)
         .then((response) {
-      List<Account> followingAccoutns = Account.listFromJsonString(response.body);
+      List<PleromaAccount> followingAccoutns = PleromaAccount.listFromJsonString(response.body);
       accounts.clear();
       accounts.addAll(followingAccoutns);
       if (mounted) setState(() {});
@@ -76,7 +76,7 @@ class _MentionPage extends State<MentionPage> {
     CurrentInstance.instance.currentClient
         .run(path: AccountRequests.Accounts.search(q), method: HTTPMethod.GET)
         .then((response) {
-      List<Account> followingAccoutns = Account.listFromJsonString(response.body);
+      List<PleromaAccount> followingAccoutns = PleromaAccount.listFromJsonString(response.body);
       accounts.clear();
       accounts.addAll(followingAccoutns);
       if (mounted) setState(() {});
@@ -191,7 +191,7 @@ class _MentionPage extends State<MentionPage> {
                   var acct = accounts[i];
                   return UserCell(
                     account: acct,
-                    cellTapped:(Account acct){
+                    cellTapped:(PleromaAccount acct){
                       print("another layer deep");
                       widget.userSelected(acct);
                       Navigator.of(c).pop();

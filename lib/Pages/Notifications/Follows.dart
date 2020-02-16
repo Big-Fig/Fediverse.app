@@ -8,7 +8,7 @@ import 'package:fedi/Pleroma/Foundation/Requests/Notification.dart'
     as NotificationRequest;
 import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/Pleroma/Models/Notification.dart' as NotificationModel;
-import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -17,8 +17,8 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'NotificationCell.dart';
 
 class Follows extends StatefulWidget {
-  final Function(Account) viewAccount;
-  final Function(Status) viewStatusDetail;
+  final Function(IPleromaAccount) viewAccount;
+  final Function(IPleromaStatus) viewStatusDetail;
   final List<NotificationModel.Notification> notifications = [];
   Follows(this.viewAccount, this.viewStatusDetail, {Key key}) : super(key: key);
   @override

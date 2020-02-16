@@ -2,9 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/DeepLinks/DeepLinkHelper.dart';
 import 'package:fedi/Pages/Push/PushHelper.dart';
 import 'package:fedi/Pleroma/Models/ClientSettings.dart';
-import 'package:fedi/Pleroma/Models/Emoji.dart';
-import 'package:fedi/Pleroma/Models/Field.dart';
-import 'package:fedi/Pleroma/Models/Source.dart';
 import 'package:fedi/Pleroma/account/edit/pleroma_account_edit_service.dart';
 import 'package:fedi/Pleroma/account/edit/pleroma_account_edit_service_impl.dart';
 import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_service.dart';
@@ -40,7 +37,9 @@ import './Pages/TermsOfService.dart';
 import './Pleroma/Foundation/Client.dart';
 import './Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/mastodon/account/mastodon_account_model.dart';
+import 'package:fedi/Pleroma/field/pleroma_field_model.dart';
+import 'package:fedi/Pleroma/emoji/pleroma_emoji_model.dart';
+import 'package:fedi/Pleroma/source/pleroma_source_model.dart';
 import './Pleroma/Models/AccountAuth.dart';
 import './Pleroma/Models/Relationship.dart';
 
@@ -51,17 +50,16 @@ void main() async {
   final directory = await getApplicationDocumentsDirectory();
   Hive.registerAdapter(AccountAuthAdapter(), 33);
   Hive.registerAdapter(ClientAdapter(), 34);
-  Hive.registerAdapter(AccountAdapter(), 35);
+  Hive.registerAdapter(PleromaAccountAdapter(), 35);
   Hive.registerAdapter(ClientSettingsAdapter(), 36);
-  Hive.registerAdapter(FieldAdapter(), 37);
-  Hive.registerAdapter(EmojiAdapter(), 38);
-  Hive.registerAdapter(MastodonAccountAdapter(), 39);
-  Hive.registerAdapter(AccountPleromaAdapter(), 40);
-  Hive.registerAdapter(AccountPleromaNotificationsSettingsAdapter(), 41);
+  Hive.registerAdapter(PleromaFieldAdapter(), 37);
+  Hive.registerAdapter(PleromaEmojiAdapter(), 38);
+  Hive.registerAdapter(PleromaAccountPleromaPartAdapter(), 40);
+  Hive.registerAdapter(PleromaAccountPleromaPartNotificationsSettingsAdapter(), 41);
   Hive.registerAdapter(RelationshipAdapter(), 42);
-  Hive.registerAdapter(MastodonSourceAdapter(), 43);
-  Hive.registerAdapter(SourcePleromaAdapter(), 44);
-  Hive.registerAdapter(SourceAdapter(), 45);
+  Hive.registerAdapter(PleromaSourceAdapter(), 43);
+  Hive.registerAdapter(PleromaSourcePleromaPartAdapter(), 44);
+  Hive.registerAdapter(PleromaSourceAdapter(), 45);
 
   Hive.init(directory.path);
 

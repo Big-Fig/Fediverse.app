@@ -6,24 +6,24 @@ import 'package:json_annotation/json_annotation.dart';
 part 'pleroma_media_attachment_model.g.dart';
 
 abstract class IPleromaMediaAttachment extends IMastodonMediaAttachment {
-  MediaAttachmentPleromaPart get pleroma;
+  PleromaMediaAttachmentPleromaPart get pleroma;
 }
 
 @JsonSerializable()
-class MediaAttachment implements IPleromaMediaAttachment {
-  String description;
-  String id;
+class PleromaMediaAttachment implements IPleromaMediaAttachment {
+  final String description;
+  final String id;
   @JsonKey(name: "preview_url")
-  String previewUrl;
+  final String previewUrl;
   @JsonKey(name: "remote_url")
-  String remoteUrl;
+  final String remoteUrl;
   @JsonKey(name: "text_url")
-  String textUrl;
-  String type;
-  String url;
-  MediaAttachmentPleromaPart pleroma;
+  final String textUrl;
+  final String type;
+  final String url;
+  PleromaMediaAttachmentPleromaPart pleroma;
 
-  MediaAttachment(
+  PleromaMediaAttachment(
       {this.description,
       this.id,
       this.previewUrl,
@@ -33,33 +33,33 @@ class MediaAttachment implements IPleromaMediaAttachment {
       this.url,
       this.pleroma});
 
-  factory MediaAttachment.fromJson(Map<String, dynamic> json) =>
-      _$MediaAttachmentFromJson(json);
+  factory PleromaMediaAttachment.fromJson(Map<String, dynamic> json) =>
+      _$PleromaMediaAttachmentFromJson(json);
 
-  factory MediaAttachment.fromJsonString(String jsonString) =>
-      _$MediaAttachmentFromJson(jsonDecode(jsonString));
+  factory PleromaMediaAttachment.fromJsonString(String jsonString) =>
+      _$PleromaMediaAttachmentFromJson(jsonDecode(jsonString));
 
-  Map<String, dynamic> toJson() => _$MediaAttachmentToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaMediaAttachmentToJson(this);
 
-  String toJsonString() => jsonEncode(_$MediaAttachmentToJson(this));
+  String toJsonString() => jsonEncode(_$PleromaMediaAttachmentToJson(this));
 }
 
 @JsonSerializable()
-class MediaAttachmentPleromaPart {
+class PleromaMediaAttachmentPleromaPart {
   @JsonKey(name: "mime_type")
-  String mimeType;
+  final String mimeType;
 
-  MediaAttachmentPleromaPart({
+  PleromaMediaAttachmentPleromaPart({
     this.mimeType,
   });
 
-  factory MediaAttachmentPleromaPart.fromJson(Map<String, dynamic> json) =>
-      _$MediaAttachmentPleromaPartFromJson(json);
+  factory PleromaMediaAttachmentPleromaPart.fromJson(Map<String, dynamic> json) =>
+      _$PleromaMediaAttachmentPleromaPartFromJson(json);
 
-  factory MediaAttachmentPleromaPart.fromJsonString(String jsonString) =>
-      _$MediaAttachmentPleromaPartFromJson(jsonDecode(jsonString));
+  factory PleromaMediaAttachmentPleromaPart.fromJsonString(String jsonString) =>
+      _$PleromaMediaAttachmentPleromaPartFromJson(jsonDecode(jsonString));
 
-  Map<String, dynamic> toJson() => _$MediaAttachmentPleromaPartToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaMediaAttachmentPleromaPartToJson(this);
 
-  String toJsonString() => jsonEncode(_$MediaAttachmentPleromaPartToJson(this));
+  String toJsonString() => jsonEncode(_$PleromaMediaAttachmentPleromaPartToJson(this));
 }

@@ -1,8 +1,8 @@
-import 'package:fedi/Pleroma/Models/Status.dart';
-import 'package:fedi/Pleroma/Models/Status.dart' as pleroma;
 import 'package:fedi/Pleroma/rest/pleroma_rest_service.dart';
+import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/Pleroma/timeline/pleroma_timeline_exception.dart';
 import 'package:fedi/Pleroma/timeline/pleroma_timeline_service.dart';
+import 'package:fedi/Pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/rest/rest_request_model.dart';
 import 'package:fedi/rest/rest_response_model.dart';
 import 'package:flutter/widgets.dart';
@@ -15,7 +15,7 @@ class PleromaTimelineService implements IPleromaTimelineService {
   PleromaTimelineService({@required this.restService});
 
   @override
-  Future<List<Status>> getHashTagTimeline({
+  Future<List<IPleromaStatus>> getHashTagTimeline({
     // for example '#cats'
     @required String hashTag, // Return results older than id
     String maxId, // Return results newer than id
@@ -27,8 +27,8 @@ class PleromaTimelineService implements IPleromaTimelineService {
         false, // also return activities by muted (not by blocked!) users
     bool withMuted =
         false, // queries will exclude the statuses with the given visibilities
-    List<pleroma.Visibility> excludeVisibilities = const [
-      pleroma.Visibility.DIRECT
+    List<PleromaVisibility> excludeVisibilities = const [
+      PleromaVisibility.DIRECT
     ],
   }) {
     assert(hashTag != null);
@@ -45,7 +45,7 @@ class PleromaTimelineService implements IPleromaTimelineService {
   }
 
   @override
-  Future<List<Status>> getHomeTimeline({
+  Future<List<IPleromaStatus>> getHomeTimeline({
     // Return results older than id
     String maxId, // Return results newer than id
     String sinceId, // Return results immediately newer than id
@@ -55,8 +55,8 @@ class PleromaTimelineService implements IPleromaTimelineService {
         false, // also return activities by muted (not by blocked!) users
     bool withMuted =
         false, // queries will exclude the statuses with the given visibilities
-    List<pleroma.Visibility> excludeVisibilities = const [
-      pleroma.Visibility.DIRECT
+    List<PleromaVisibility> excludeVisibilities = const [
+      PleromaVisibility.DIRECT
     ],
   }) {
     return getTimeline(
@@ -72,7 +72,7 @@ class PleromaTimelineService implements IPleromaTimelineService {
   }
 
   @override
-  Future<List<Status>> getListTimeline({
+  Future<List<IPleromaStatus>> getListTimeline({
     // list id
     @required String listId, // Return results older than id
     String maxId, // Return results newer than id
@@ -81,8 +81,8 @@ class PleromaTimelineService implements IPleromaTimelineService {
     int limit = 20, // also return activities by muted (not by blocked!) users
     bool withMuted =
         false, // queries will exclude the statuses with the given visibilities
-    List<pleroma.Visibility> excludeVisibilities = const [
-      pleroma.Visibility.DIRECT
+    List<PleromaVisibility> excludeVisibilities = const [
+      PleromaVisibility.DIRECT
     ],
   }) {
     assert(listId != null);
@@ -99,7 +99,7 @@ class PleromaTimelineService implements IPleromaTimelineService {
   }
 
   @override
-  Future<List<Status>> getPublicTimeline({
+  Future<List<IPleromaStatus>> getPublicTimeline({
     // Return results older than id
     String maxId, // Return results newer than id
     String sinceId, // Return results immediately newer than id
@@ -110,8 +110,8 @@ class PleromaTimelineService implements IPleromaTimelineService {
         false, // also return activities by muted (not by blocked!) users
     bool withMuted =
         false, // queries will exclude the statuses with the given visibilities
-    List<pleroma.Visibility> excludeVisibilities = const [
-      pleroma.Visibility.DIRECT
+    List<PleromaVisibility> excludeVisibilities = const [
+      PleromaVisibility.DIRECT
     ],
   }) {
     return getTimeline(
@@ -126,7 +126,7 @@ class PleromaTimelineService implements IPleromaTimelineService {
         excludeVisibilities: excludeVisibilities);
   }
 
-  Future<List<Status>> getTimeline(
+  Future<List<IPleromaStatus>> getTimeline(
       {@required String relativeTimeLineUrlPath,
       @required String maxId,
       @required String sinceId,
@@ -135,7 +135,7 @@ class PleromaTimelineService implements IPleromaTimelineService {
       @required bool onlyMedia,
       @required bool onlyLocal,
       @required bool withMuted,
-      @required List<pleroma.Visibility> excludeVisibilities}) async {
+      @required List<PleromaVisibility> excludeVisibilities}) async {
     // we should duplicate exclude_visibilities[] keys for each value
     String additionalQueryArgsString = excludeVisibilities
         ?.map((visibility) => "exclude_visibilities[]="
@@ -156,9 +156,10 @@ class PleromaTimelineService implements IPleromaTimelineService {
         additionalQueryArgsString: additionalQueryArgsString);
     var httpResponse = await restService.sendHttpRequest(request);
 
-    RestResponse<List<Status>> restResponse = RestResponse.fromResponse(
+    RestResponse<List<IPleromaStatus>> restResponse = RestResponse.fromResponse(
       response: httpResponse,
-      resultParser: (body) => Status.listFromJsonString(httpResponse.body),
+      resultParser: (body) =>
+          PleromaStatus.listFromJsonString(httpResponse.body),
     );
 
     if (restResponse.isSuccess) {

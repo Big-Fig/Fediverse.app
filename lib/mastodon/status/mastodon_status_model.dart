@@ -1,96 +1,65 @@
-import 'dart:convert';
-
-import 'package:fedi/Pleroma/Models/Emoji.dart';
-import 'package:fedi/Pleroma/Models/Status.dart';
-import 'package:fedi/mastodon/media/attachment/mastodon_media_attachment_model.dart';
-import 'package:flutter/widgets.dart';
-
 import 'package:fedi/mastodon/account/mastodon_account_model.dart';
-import 'package:json_annotation/json_annotation.dart';
+import 'package:fedi/mastodon/application/mastodon_application_model.dart';
+import 'package:fedi/mastodon/emoji/mastodon_emoji_model.dart';
+import 'package:fedi/mastodon/media/attachment/mastodon_media_attachment_model.dart';
+import 'package:fedi/mastodon/mention/mastodon_mention_model.dart';
+import 'package:fedi/mastodon/poll/mastodon_poll_model.dart';
+import 'package:fedi/mastodon/tag/mastodon_tag_model.dart';
+import 'package:fedi/mastodon/visibility/mastodon_visibility_model.dart';
 
-part 'mastodon_status_model.g.dart';
+abstract class IMastodonStatus {
+  String get id;
 
-@JsonSerializable()
-@VisibilityTypeConverter()
-class MastodonStatus {
-  String id;
-  @JsonKey(name: "created_at")
-  DateTime createdAt;
-  @JsonKey(name: "in_reply_to_id")
-  String inReplyToId;
-  @JsonKey(name: "in_reply_to_account_id")
-  String inReplyToAccountId;
-  bool sensitive;
-  @JsonKey(name: "spoiler_text")
-  String spoilerText;
-  @JsonKey(name: "visibility")
-  String visibilityRaw;
-  String uri;
-  String url;
-  @JsonKey(name: "replies_count")
-  int repliesCount;
-  @JsonKey(name: "reblogs_count")
-  int reblogsCount;
-  @JsonKey(name: "favourites_count")
-  int favouritesCount;
-  bool favourited;
-  bool reblogged;
-  bool muted;
-  bool bookmarked;
-  bool pinned;
-  String content;
-  MastodonStatus reblog;
-  Application application;
-  MastodonAccount account;
-  @JsonKey(name: "media_attachments")
-  List<MastodonMediaAttachment> mediaAttachments;
-  List<Mention> mentions;
-  List<Tag> tags;
-  List<Emoji> emojis;
-  dynamic poll;
+  DateTime get createdAt;
 
-  VisibilityMastodon get visibilityMastodon => const VisibilityMastodonTypeConverter().fromJson
-    (visibilityRaw);
+  String get inReplyToId;
 
+  String get inReplyToAccountId;
 
-  MastodonStatus({
-    @required this.id,
-    @required this.createdAt,
-    @required this.inReplyToId,
-    @required this.inReplyToAccountId,
-    @required this.sensitive,
-    @required this.spoilerText,
-    @required this.visibilityRaw,
-    @required this.uri,
-    @required this.url,
-    @required this.repliesCount,
-    @required this.reblogsCount,
-    @required this.favouritesCount,
-    @required this.favourited,
-    @required this.reblogged,
-    @required this.muted,
-    @required this.bookmarked,
-    @required this.pinned,
-    @required this.content,
-    @required this.reblog,
-    @required this.application,
-    @required this.account,
-    @required this.mediaAttachments,
-    @required this.mentions,
-    @required this.tags,
-    @required this.emojis,
-    @required this.poll,
-  });
+  bool get sensitive;
 
-  factory MastodonStatus.fromJson(Map<String, dynamic> json) => _$MastodonStatusFromJson(json);
+  String get spoilerText;
 
-  factory MastodonStatus.fromJsonString(String jsonString) =>
-      _$MastodonStatusFromJson(jsonDecode(jsonString));
+  String get visibilityRaw;
 
-  static List<MastodonStatus> listFromJsonString(String str) =>
-      new List<MastodonStatus>.from(json.decode(str).map((x) => MastodonStatus.fromJson(x)));
+  String get uri;
 
-  Map<String, dynamic> toJson() => _$MastodonStatusToJson(this);
+  String get url;
 
-  String toJsonString() => jsonEncode(_$MastodonStatusToJson(this));
+  int get repliesCount;
+
+  int get reblogsCount;
+
+  int get favouritesCount;
+
+  bool get favourited;
+
+  bool get reblogged;
+
+  bool get muted;
+
+  bool get bookmarked;
+
+  bool get pinned;
+
+  String get content;
+
+  IMastodonStatus get reblog;
+
+  IMastodonApplication get application;
+
+  IMastodonAccount get account;
+
+  List<IMastodonMediaAttachment> get mediaAttachments;
+
+  List<IMastodonMention> get mentions;
+
+  List<IMastodonTag> get tags;
+
+  List<IMastodonEmoji> get emojis;
+
+  IMastodonPoll get poll;
+
+  MastodonVisibility get visibilityMastodon =>
+      const MastodonVisibilityTypeConverter().fromJson(visibilityRaw);
 }

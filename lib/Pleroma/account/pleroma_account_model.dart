@@ -4,79 +4,99 @@ import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart';
-import 'package:fedi/Pleroma/Models/Emoji.dart';
-import 'package:fedi/Pleroma/Models/Field.dart';
 import 'package:fedi/Pleroma/Models/Relationship.dart';
-import 'package:fedi/Pleroma/Models/Source.dart';
-import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:fedi/Pleroma/emoji/pleroma_emoji_model.dart';
+import 'package:fedi/Pleroma/tag/pleroma_tag_model.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:json_annotation/json_annotation.dart';
 import 'package:fedi/mastodon/account/mastodon_account_model.dart';
+import 'package:fedi/Pleroma/source/pleroma_source_model.dart';
+import 'package:fedi/Pleroma/field/pleroma_field_model.dart';
+
 
 part 'pleroma_account_model.g.dart';
 
+abstract class IPleromaAccount implements IMastodonAccount {
+  @override
+  List<IPleromaField> get fields;
+  @override
+  List<IPleromaEmoji> get emojis;
+  @override
+  IPleromaSource get source;
+  PleromaAccountPleromaPart get pleroma;
+}
+
+@HiveType()
 @JsonSerializable()
-class Account extends MastodonAccount {
-  @HiveField(19)
-  AccountPleroma pleroma;
-
+class PleromaAccount implements IPleromaAccount {
+  @HiveField(0)
+  String username;
+  @HiveField(1)
+  String url;
+  @HiveField(2)
+  @JsonKey(name: "statuses_count")
+  int statusesCount;
+  @HiveField(3)
+  String note;
+  @HiveField(4)
+  bool locked;
+  @HiveField(5)
+  String id;
+  @HiveField(6)
+  @JsonKey(name: "header_static")
+  String headerStatic;
+  @HiveField(7)
+  String header;
+  @HiveField(8)
+  @JsonKey(name: "following_count")
+  int followingCount;
+  @HiveField(9)
+  @JsonKey(name: "followers_count")
+  int followersCount;
+  @HiveField(10)
+  List<PleromaField> fields;
+  @HiveField(11)
+  List<PleromaEmoji> emojis;
+  @HiveField(12)
+  @JsonKey(name: "display_name")
+  String displayName;
+  @HiveField(13)
+  @JsonKey(name: "created_at")
+  DateTime createdAt;
+  @HiveField(14)
+  bool bot;
+  @HiveField(15)
+  @JsonKey(name: "avatar_static")
+  String avatarStatic;
+  @HiveField(16)
+  String avatar;
+  @HiveField(17)
+  String acct;
   @HiveField(18)
-  Source source;
+  PleromaSource source;
+  @HiveField(19)
+  PleromaAccountPleromaPart pleroma;
 
-  Account({
-    String username,
-    String url,
-    int statusesCount,
-    String note,
-    bool locked,
-    String id,
-    String headerStatic,
-    String header,
-    int followingCount,
-    int followersCount,
-    List<Field> fields,
-    List<Emoji> emojis,
-    String displayName,
-    DateTime createdAt,
-    bool bot,
-    String avatarStatic,
-    String avatar,
-    String acct,
-    this.pleroma,
-  }) : super(
-    username: username,
-    url: url,
-    statusesCount: statusesCount,
-    note: note,
-    locked: locked,
-    id: id,
-    headerStatic: headerStatic,
-    header: header,
-    followingCount: followingCount,
-    followersCount: followersCount,
-    fields: fields,
-    emojis: emojis,
-    displayName: displayName,
-    createdAt: createdAt,
-    bot: bot,
-    avatarStatic: avatarStatic,
-    avatar: avatar,
-    acct: acct,
-  );
 
-  factory Account.fromJson(Map<String, dynamic> json) =>
-      _$AccountFromJson(json);
+  PleromaAccount({this.username, this.url, this.statusesCount, this.note,
+    this.locked, this.id, this.headerStatic, this.header, this.followingCount,
+    this.followersCount, this.fields, this.emojis, this.displayName,
+    this.createdAt, this.bot, this.avatarStatic, this.avatar, this.acct,
+    this.source, this.pleroma});
 
-  factory Account.fromJsonString(String jsonString) =>
-      _$AccountFromJson(jsonDecode(jsonString));
+  factory PleromaAccount.fromJson(Map<String, dynamic> json) =>
+      _$PleromaAccountFromJson(json);
 
-  static List<Account> listFromJsonString(String str) =>
-      new List<Account>.from(json.decode(str).map((x) => Account.fromJson(x)));
+  factory PleromaAccount.fromJsonString(String jsonString) =>
+      _$PleromaAccountFromJson(jsonDecode(jsonString));
 
-  Map<String, dynamic> toJson() => _$AccountToJson(this);
+  static List<PleromaAccount> listFromJsonString(String str) =>
+      new List<PleromaAccount>.from(json.decode(str).map((x) => PleromaAccount.fromJson(x)));
 
-  String toJsonString() => jsonEncode(_$AccountToJson(this));
+  Map<String, dynamic> toJson() => _$PleromaAccountToJson(this);
+
+  String toJsonString() => jsonEncode(_$PleromaAccountToJson(this));
 
   Future<http.Response> refreshAccount() async {
     try {
@@ -85,7 +105,7 @@ class Account extends MastodonAccount {
         method: HTTPMethod.GET,
       );
 
-      Account currentAccount = Account.fromJson(jsonDecode(response.body));
+      PleromaAccount currentAccount = PleromaAccount.fromJson(jsonDecode(response.body));
       String account =
           "${currentAccount.username}@${CurrentInstance.instance.currentClient.baseURL}";
 
@@ -98,40 +118,10 @@ class Account extends MastodonAccount {
   }
 }
 
-@HiveType()
-@JsonSerializable()
-class AccountPleromaNotificationsSettings {
-  bool followers;
-  bool follows;
-  @JsonKey(name:"non_followers")
-  bool nonFollowers;
-  @JsonKey(name:"non_follows")
-  bool nonFollows;
-
-  AccountPleromaNotificationsSettings({this.followers, this.follows,
-    this.nonFollowers, this.nonFollows});
-
-
-  factory AccountPleromaNotificationsSettings.fromJson(Map<String, dynamic> json) =>
-      _$AccountPleromaNotificationsSettingsFromJson(json);
-
-  factory AccountPleromaNotificationsSettings.fromJsonString(String jsonString) =>
-      _$AccountPleromaNotificationsSettingsFromJson(jsonDecode(jsonString));
-
-  static List<AccountPleromaNotificationsSettings> listFromJsonString(String str) =>
-      new List<AccountPleromaNotificationsSettings>.from(json.decode(str).map((x) => AccountPleromaNotificationsSettings.fromJson(x)));
-
-  Map<String, dynamic> toJson() => _$AccountPleromaNotificationsSettingsToJson(this);
-
-  String toJsonString() => jsonEncode(_$AccountPleromaNotificationsSettingsToJson(this));
-
-
-
-}
 
 @HiveType()
 @JsonSerializable()
-class AccountPleroma {
+class PleromaAccountPleromaPart {
   // TODO: CHECK, was in previous implementation, but not exist at https://docs-develop.pleroma.social/backend/API/differences_in_mastoapi_responses/
   @HiveField(1)
   @JsonKey(name: "background_image")
@@ -139,7 +129,7 @@ class AccountPleroma {
 
   @HiveField(2)
   //  Lists an array of tags for the user
-  List<Tag> tags;
+  List<PleromaTag> tags;
 
   // Includes fields as documented for
   // Mastodon API https://docs.joinmastodon.org/entities/relationship/
@@ -208,9 +198,9 @@ class AccountPleroma {
 
   @HiveField(19)
   @JsonKey(name: "notifications_settings")
-  dynamic notificationSettings;
+  PleromaAccountPleromaPartNotificationsSettings notificationSettings;
 
-  AccountPleroma({
+  PleromaAccountPleromaPart({
     this.hideFollowersCount,
     this.hideFollowsCount,
     this.settingsStore,
@@ -230,134 +220,46 @@ class AccountPleroma {
     this.tags,
   });
 
-  factory AccountPleroma.fromJson(Map<String, dynamic> json) =>
-      _$AccountPleromaFromJson(json);
+  factory PleromaAccountPleromaPart.fromJson(Map<String, dynamic> json) =>
+      _$PleromaAccountPleromaPartFromJson(json);
 
-  factory AccountPleroma.fromJsonString(String jsonString) =>
-      _$AccountPleromaFromJson(jsonDecode(jsonString));
+  factory PleromaAccountPleromaPart.fromJsonString(String jsonString) =>
+      _$PleromaAccountPleromaPartFromJson(jsonDecode(jsonString));
 
-  Map<String, dynamic> toJson() => _$AccountPleromaToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaAccountPleromaPartToJson(this);
 
-  String toJsonString() => jsonEncode(_$AccountPleromaToJson(this));
+  String toJsonString() => jsonEncode(_$PleromaAccountPleromaPartToJson(this));
 }
 
 
 
-// TODO: HIVE doesn't supported inheritance
-class AccountAdapter extends TypeAdapter<Account> {
-  @override
-  Account read(BinaryReader reader) {
-    var obj = Account();
-    var numOfFields = reader.readByte();
-    for (var i = 0; i < numOfFields; i++) {
-      switch (reader.readByte()) {
-        case 0:
-          obj.username = reader.read() as String;
-          break;
-        case 1:
-          obj.url = reader.read() as String;
-          break;
-        case 2:
-          obj.statusesCount = reader.read() as int;
-          break;
-        case 3:
-          obj.note = reader.read() as String;
-          break;
-        case 4:
-          obj.locked = reader.read() as bool;
-          break;
-        case 5:
-          obj.id = reader.read() as String;
-          break;
-        case 6:
-          obj.headerStatic = reader.read() as String;
-          break;
-        case 7:
-          obj.header = reader.read() as String;
-          break;
-        case 8:
-          obj.followingCount = reader.read() as int;
-          break;
-        case 9:
-          obj.followersCount = reader.read() as int;
-          break;
-        case 10:
-          obj.fields = (reader.read() as List)?.cast<Field>();
-          break;
-        case 11:
-          obj.emojis = (reader.read() as List)?.cast<Emoji>();
-          break;
-        case 12:
-          obj.displayName = reader.read() as String;
-          break;
-        case 13:
-          obj.createdAt = reader.read() as DateTime;
-          break;
-        case 14:
-          obj.bot = reader.read() as bool;
-          break;
-        case 15:
-          obj.avatarStatic = reader.read() as String;
-          break;
-        case 16:
-          obj.avatar = reader.read() as String;
-          break;
-        case 17:
-          obj.acct = reader.read() as String;
-          break;
-        case 18:
-          obj.source = reader.read() as Source;
-          break;
-        case 19:
-          obj.pleroma = reader.read() as AccountPleroma;
-          break;
-      }
-    }
-    return obj;
-  }
+@HiveType()
+@JsonSerializable()
+class PleromaAccountPleromaPartNotificationsSettings {
+  bool followers;
+  bool follows;
+  @JsonKey(name:"non_followers")
+  bool nonFollowers;
+  @JsonKey(name:"non_follows")
+  bool nonFollows;
 
-  @override
-  void write(BinaryWriter writer, Account obj) {
-    writer.writeByte(20);
-    writer.writeByte(0);
-    writer.write(obj.username);
-    writer.writeByte(1);
-    writer.write(obj.url);
-    writer.writeByte(2);
-    writer.write(obj.statusesCount);
-    writer.writeByte(3);
-    writer.write(obj.note);
-    writer.writeByte(4);
-    writer.write(obj.locked);
-    writer.writeByte(5);
-    writer.write(obj.id);
-    writer.writeByte(6);
-    writer.write(obj.headerStatic);
-    writer.writeByte(7);
-    writer.write(obj.header);
-    writer.writeByte(8);
-    writer.write(obj.followingCount);
-    writer.writeByte(9);
-    writer.write(obj.followersCount);
-    writer.writeByte(10);
-    writer.write(obj.fields);
-    writer.writeByte(11);
-    writer.write(obj.emojis);
-    writer.writeByte(12);
-    writer.write(obj.displayName);
-    writer.writeByte(13);
-    writer.write(obj.createdAt);
-    writer.writeByte(14);
-    writer.write(obj.bot);
-    writer.writeByte(15);
-    writer.write(obj.avatarStatic);
-    writer.writeByte(16);
-    writer.write(obj.avatar);
-    writer.writeByte(17);
-    writer.write(obj.acct);
-    writer.writeByte(18);
-    writer.write(obj.source);
-    writer.writeByte(19);
-    writer.write(obj.pleroma);
-  }
+  PleromaAccountPleromaPartNotificationsSettings({this.followers, this.follows,
+    this.nonFollowers, this.nonFollows});
+
+
+  factory PleromaAccountPleromaPartNotificationsSettings.fromJson(Map<String, dynamic> json) =>
+      _$PleromaAccountPleromaPartNotificationsSettingsFromJson(json);
+
+  factory PleromaAccountPleromaPartNotificationsSettings.fromJsonString(String jsonString) =>
+      _$PleromaAccountPleromaPartNotificationsSettingsFromJson(jsonDecode(jsonString));
+
+  static List<PleromaAccountPleromaPartNotificationsSettings> listFromJsonString(String str) =>
+      new List<PleromaAccountPleromaPartNotificationsSettings>.from(json.decode(str).map((x) => PleromaAccountPleromaPartNotificationsSettings.fromJson(x)));
+
+  Map<String, dynamic> toJson() => _$PleromaAccountPleromaPartNotificationsSettingsToJson(this);
+
+  String toJsonString() => jsonEncode(_$PleromaAccountPleromaPartNotificationsSettingsToJson(this));
+
+
+
 }

@@ -5,7 +5,8 @@ import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
 import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
+import 'package:fedi/Pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -14,13 +15,12 @@ import 'package:fedi/Pleroma/Foundation/Requests/Notification.dart'
     as NotificationRequest;
 import 'package:fedi/Pleroma/Models/Notification.dart' as NotificationModel;
 
-import 'package:fedi/Pleroma/Models/Status.dart' as StatusModel;
 import 'NotificationCell.dart';
 
 
 class Mentions extends StatefulWidget {
-  final Function(Account) viewAccount;
-  final Function(Status) viewStatusDetail;
+  final Function(IPleromaAccount) viewAccount;
+  final Function(IPleromaStatus) viewStatusDetail;
   final List<NotificationModel.Notification> notifications = [];
   Mentions(this.viewAccount, this.viewStatusDetail, {Key key}) : super(key: key);
 
@@ -112,8 +112,9 @@ class _Mentions extends State<Mentions> {
       List<NotificationModel.Notification> newNotifications =
       NotificationModel.Notification.listFromJsonString(response.body);
           newNotifications.removeWhere((notification) {
-            print(notification.status.visibility);
-        return notification.status.visibility == StatusModel.Visibility.DIRECT;
+            print(notification.status.visibilityPleroma);
+        return notification.status.visibilityPleroma == PleromaVisibility
+            .DIRECT;
       });
       widget.notifications.addAll(newNotifications);
       if (mounted)

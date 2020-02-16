@@ -2,20 +2,17 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pages/Search/SearchPage.dart';
 import 'package:fedi/Pleroma/timeline/pleroma_timeline_service.dart';
+import 'package:fedi/Pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/Settings/AppSettings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fedi/Pages/Profile/OtherAccount.dart';
 import 'package:fedi/Pages/Timeline/StatusDetail.dart';
 import 'package:fedi/Pages/Timeline/TimelineCell.dart';
-import 'package:fedi/Pleroma/Foundation/Client.dart';
-import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/Pleroma/Models/Status.dart';
-import 'package:fedi/Pleroma/Models/Status.dart' as StatusModel;
+import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import '../../Pleroma/Foundation/Requests/Timeline.dart';
 import 'package:flutter/scheduler.dart';
 
 import '../TabPage.dart';
@@ -24,7 +21,7 @@ class MyTimelinePage extends StatefulWidget {
   final TabPageState tabPage;
 
   MyTimelinePage(this.tabPage, {Key key}) : super(key: key);
-  final List<Status> statuses = [];
+  final List<IPleromaStatus> statuses = [];
   @override
   State<StatefulWidget> createState() {
     return MyTimelinePageState();
@@ -39,7 +36,7 @@ class MyTimelinePageState extends State<MyTimelinePage>
   bool mediaOnly = false;
   bool hideNSFW = false;
 
-  viewAccount(Account account) {
+  viewAccount(IPleromaAccount account) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => OtherAccount(account)),
@@ -62,7 +59,7 @@ class MyTimelinePageState extends State<MyTimelinePage>
 
   refresh() {}
 
-  viewStatusDetail(Status status) {
+  viewStatusDetail(IPleromaStatus status) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -106,7 +103,7 @@ class MyTimelinePageState extends State<MyTimelinePage>
 
     IPleromaTimelineService pleromaTimelineService = IPleromaTimelineService.of
       (context, listen: false);
-    Future<List<Status>> future;
+    Future<List<IPleromaStatus>> future;
     if (widget.tabPage.currentTimeline == "Home") {
       future = pleromaTimelineService.getHomeTimeline(onlyMedia: mediaOnly,
           limit: 50);
@@ -124,7 +121,7 @@ class MyTimelinePageState extends State<MyTimelinePage>
     future
         .then((newStatuses) {
       newStatuses.removeWhere((status) {
-        return status.visibility == StatusModel.Visibility.DIRECT;
+        return status.visibilityPleroma == PleromaVisibility.DIRECT;
       });
 
       if (hideReplies) {
@@ -155,13 +152,13 @@ class MyTimelinePageState extends State<MyTimelinePage>
     // monitor network fetch
     // if failed,use loadFailed(),if no data return,use LoadNodata()
     var lastId = "";
-    Status lastStatus = widget.statuses.last;
+    IPleromaStatus lastStatus = widget.statuses.last;
     if (lastStatus != null) {
       lastId = lastStatus.id;
     }
     IPleromaTimelineService pleromaTimelineService = IPleromaTimelineService.of
       (context, listen: false);
-    Future<List<Status>> future;
+    Future<List<IPleromaStatus>> future;
     if (widget.tabPage.currentTimeline == "Home") {
       future = pleromaTimelineService.getHomeTimeline(onlyMedia: mediaOnly,
           maxId: lastId,
@@ -180,7 +177,7 @@ class MyTimelinePageState extends State<MyTimelinePage>
     future
         .then((newStatuses) {
       newStatuses.removeWhere((status) {
-        return status.visibility == StatusModel.Visibility.DIRECT;
+        return status.visibilityPleroma == PleromaVisibility.DIRECT;
       });
 
       if (hideReplies) {

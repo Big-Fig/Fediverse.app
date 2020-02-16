@@ -6,7 +6,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:fedi/Views/VideoPlayer.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
@@ -14,8 +14,8 @@ import 'package:html/dom.dart' as dom;
 import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_model.dart';
 
 class ChatCell extends StatefulWidget {
-  final Account otherAccount;
-  final Status status;
+  final IPleromaAccount otherAccount;
+  final IPleromaStatus status;
   final String timePosted;
   ChatCell(this.status, this.otherAccount, this.timePosted);
 
@@ -235,11 +235,11 @@ class _ChatCell extends State<ChatCell> {
     if (mounted) setState(() {});
   }
 
-  Widget getMeidaWidget(Status status) {
+  Widget getMeidaWidget(IPleromaStatus status) {
     List<Widget> items = <Widget>[];
 
     for (var i = 0; i < status.mediaAttachments.length; i++) {
-      MediaAttachment attachment = status.mediaAttachments[i];
+      PleromaMediaAttachment attachment = status.mediaAttachments[i];
       if (attachment.type == "image") {
         var image = CachedNetworkImage(
           imageUrl: attachment.url,
@@ -293,7 +293,7 @@ class _ChatCell extends State<ChatCell> {
     return newHTML;
   }
 
-  List<Widget> getUserName(Status status) {
+  List<Widget> getUserName(IPleromaStatus status) {
     var username = status.account.displayName;
     var emojis = status.account.emojis;
     emojis.addAll(status.emojis);

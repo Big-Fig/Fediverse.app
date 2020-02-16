@@ -10,13 +10,15 @@ Notification _$NotificationFromJson(Map<String, dynamic> json) {
   return Notification(
     account: json['account'] == null
         ? null
-        : Account.fromJson(json['account'] as Map<String, dynamic>),
+        : PleromaAccount.fromJson(json['account'] as Map<String, dynamic>),
     createdAt: json['created_at'] == null
         ? null
         : DateTime.parse(json['created_at'] as String),
     id: json['id'] as String,
     type: json['type'] as String,
-    status: json['status'],
+    status: json['status'] == null
+        ? null
+        : PleromaStatus.fromJson(json['status'] as Map<String, dynamic>),
   );
 }
 

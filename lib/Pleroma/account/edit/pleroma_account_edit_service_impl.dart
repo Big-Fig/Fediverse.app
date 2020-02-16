@@ -15,7 +15,7 @@ class PleromaAccountEditService implements IPleromaAccountEditService {
   PleromaAccountEditService({@required this.restService});
 
   @override
-  Future<Account> changeAvatarImage({@required File file}) async {
+  Future<IPleromaAccount> changeAvatarImage({@required File file}) async {
     var httpResponse = await restService.uploadFileMultipartRequest(
         UploadMultipartRestRequest.patch(
             relativePath: editProfileRelativeUrlPath, files: {"avatar": file}));
@@ -24,7 +24,7 @@ class PleromaAccountEditService implements IPleromaAccountEditService {
   }
 
   @override
-  Future<Account> changeHeaderImage({@required File file}) async {
+  Future<IPleromaAccount> changeHeaderImage({@required File file}) async {
     var httpResponse = await restService.uploadFileMultipartRequest(
         UploadMultipartRestRequest.patch(
             relativePath: editProfileRelativeUrlPath, files: {"header": file}));
@@ -32,9 +32,9 @@ class PleromaAccountEditService implements IPleromaAccountEditService {
     return parseResponse(httpResponse);
   }
 
-  Account parseResponse(Response httpResponse) {
+  IPleromaAccount parseResponse(Response httpResponse) {
     if (httpResponse.statusCode == 200) {
-      return Account.fromJsonString(httpResponse.body);
+      return PleromaAccount.fromJsonString(httpResponse.body);
     } else {
       throw new PleromaAccountEditException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);

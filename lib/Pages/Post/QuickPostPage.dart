@@ -31,7 +31,7 @@ class _QuickPostPageState extends State<QuickPostPage> {
   List<FilePickerFile> assets = [];
   Widget status;
 
-  accountMentioned(Account acct) {
+  accountMentioned(IPleromaAccount acct) {
     if (statusController.text.length > 0) {
       print("$acct");
       String lastChar =

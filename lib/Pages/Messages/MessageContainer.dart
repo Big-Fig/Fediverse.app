@@ -40,7 +40,7 @@ class _MessageContainer extends State<MessageConatiner>
     _messageKey.currentState.fetchStatuses();
   }
 
-  sendMessage(Account account) {
+  sendMessage(IPleromaAccount account) {
     Navigator.pop(context);
     Navigator.push(
         context,

@@ -10,6 +10,6 @@ abstract class IPleromaAccountEditService {
       {listen: true}) =>
       Provider.of<IPleromaAccountEditService>(context, listen: listen);
 
-  Future<Account> changeAvatarImage({@required File file});
-  Future<Account> changeHeaderImage({@required File file});
+  Future<IPleromaAccount> changeAvatarImage({@required File file});
+  Future<IPleromaAccount> changeHeaderImage({@required File file});
 }

@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'Conversation.g.dart';
@@ -13,9 +13,9 @@ part 'Conversation.g.dart';
 class Conversation {
     bool unread;
     @JsonKey(name: "last_status")
-    Status lastStatus;
+    PleromaStatus lastStatus;
     String id;
-    List<Account> accounts;
+    List<PleromaAccount> accounts;
 
     Conversation({
         this.unread,

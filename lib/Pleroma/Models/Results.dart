@@ -1,15 +1,15 @@
 import 'dart:convert';
 
 import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'Results.g.dart';
 
 @JsonSerializable()
 class Results {
-    List<Account> accounts = [];
-    List<Status> statuses = [];
+    List<PleromaAccount> accounts = [];
+    List<PleromaStatus> statuses = [];
     // List<Hashtag> hashtags;
 
     Results({

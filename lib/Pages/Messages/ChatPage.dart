@@ -15,7 +15,7 @@ import 'package:fedi/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
 import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/Pleroma/Models/Context.dart';
 import 'package:fedi/Pleroma/Models/Conversation.dart';
-import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/Views/Alert.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -25,7 +25,7 @@ import 'ChatCell.dart';
 class ChatPage extends StatefulWidget {
   final Function refreshMesagePage;
   final Conversation conversation;
-  final Account account;
+  final IPleromaAccount account;
   final Function refreshMasterList;
   ChatPage(
       {this.conversation,
@@ -43,10 +43,10 @@ class _ChatPage extends State<ChatPage> {
   bool fetchByContext = false;
 
   var txtController = TextEditingController();
-  List<Status> statuses = <Status>[];
+  List<IPleromaStatus> statuses = <IPleromaStatus>[];
   String title;
   bool backgroundCheckStatus = true;
-  Account otherAccount;
+  IPleromaAccount otherAccount;
   update() {
     widget.refreshMasterList();
     backgroundCheck();
@@ -288,7 +288,7 @@ class _ChatPage extends State<ChatPage> {
          
       _refreshController.refreshCompleted();
       Context context = Context.fromJsonString(response.body);
-      List<Status> templist = [];
+      List<IPleromaStatus> templist = [];
       templist.addAll(context.ancestors);
       templist.add(widget.conversation.lastStatus);
       templist.addAll(context.descendants);
@@ -325,7 +325,8 @@ class _ChatPage extends State<ChatPage> {
 
       }
       _refreshController.refreshCompleted();
-      List<Status> templist = Status.listFromJsonString(response.body);
+      List<IPleromaStatus> templist = PleromaStatus.listFromJsonString(response
+          .body);
       statuses.clear();
       statuses.addAll(templist.reversed);
       if (mounted) setState(() {});
@@ -351,7 +352,7 @@ class _ChatPage extends State<ChatPage> {
         .then((response) {
       Context context = Context.fromJsonString(response.body);
       statuses.clear();
-      List<Status> templist = [];
+      List<IPleromaStatus> templist = [];
       templist.addAll(context.ancestors);
       templist.add(widget.conversation.lastStatus);
       templist.addAll(context.descendants);
@@ -376,7 +377,8 @@ class _ChatPage extends State<ChatPage> {
       if (response.statusCode == 404) {
         fetchByContext = true;
       }
-      List<Status> templist = Status.listFromJsonString(response.body);
+      List<IPleromaStatus> templist = PleromaStatus.listFromJsonString(response
+          .body);
       statuses.clear();
       statuses.addAll(templist.reversed);
       if (mounted) setState(() {});
@@ -443,13 +445,13 @@ class _ChatPage extends State<ChatPage> {
         padding: EdgeInsets.symmetric(horizontal: 2.0, vertical: 10.0),
         itemCount: statuses.length,
         itemBuilder: (BuildContext context, int index) {
-          Status status = statuses[index];
+          IPleromaStatus status = statuses[index];
 
           if (index == statuses.length - 1) {
             return ChatCell(
                 status, otherAccount, timeago.format(status.createdAt));
           } else {
-            Status lastStatus = statuses[index + 1];
+            IPleromaStatus lastStatus = statuses[index + 1];
             String lastTime = timeago.format(lastStatus.createdAt);
             String thisTime = timeago.format(status.createdAt);
             if (lastTime == thisTime) {
@@ -476,7 +478,7 @@ class _ChatPage extends State<ChatPage> {
         .run(path: statusPath, method: HTTPMethod.POST, params: params)
         .then((statusResponse) {
       print(statusResponse.body);
-      var status = Status.fromJson(jsonDecode(statusResponse.body));
+      var status = PleromaStatus.fromJson(jsonDecode(statusResponse.body));
       statuses.insert(0, status);
       setState(() {});
     }).catchError((e) {
@@ -510,7 +512,7 @@ class _ChatPage extends State<ChatPage> {
         .then((statusResponse) {
       print(statusResponse.body);
       txtController.clear();
-      var status = Status.fromJson(jsonDecode(statusResponse.body));
+      var status = PleromaStatus.fromJson(jsonDecode(statusResponse.body));
       statuses.insert(0, status);
       setState(() {});
     }).catchError((e) {
@@ -529,7 +531,7 @@ class _ChatPage extends State<ChatPage> {
   }
 
   sendMessageWithAttachment(BuildContext context, String id) {
-    Account atAccount = statuses.first.account;
+    IPleromaAccount atAccount = statuses.first.account;
     if (widget.conversation.accounts.length > 0) {
       atAccount = getOtherAccount(widget.conversation.accounts);
     }
@@ -550,7 +552,7 @@ class _ChatPage extends State<ChatPage> {
         .then((statusResponse) {
       print(statusResponse.body);
       txtController.clear();
-      var status = Status.fromJson(jsonDecode(statusResponse.body));
+      var status = PleromaStatus.fromJson(jsonDecode(statusResponse.body));
       statuses.insert(0, status);
       setState(() {});
     }).catchError((e) {
@@ -566,7 +568,7 @@ class _ChatPage extends State<ChatPage> {
   }
 
   sendMessage(BuildContext context) {
-    Account atAccount = statuses.first.account;
+    PleromaAccount atAccount = statuses.first.account;
     if (widget.conversation.accounts.length > 0) {
       atAccount = getOtherAccount(widget.conversation.accounts);
     }
@@ -590,7 +592,7 @@ class _ChatPage extends State<ChatPage> {
         .then((statusResponse) {
       print(statusResponse.body);
       txtController.clear();
-      var status = Status.fromJson(jsonDecode(statusResponse.body));
+      var status = PleromaStatus.fromJson(jsonDecode(statusResponse.body));
       statuses.insert(0, status);
       setState(() {});
     }).catchError((e) {
@@ -605,7 +607,7 @@ class _ChatPage extends State<ChatPage> {
     });
   }
 
-  Account getOtherAccount(List<Account> accounts) {
+  IPleromaAccount getOtherAccount(List<IPleromaAccount> accounts) {
     for (var i = 0; i < accounts.length; i++) {
       var currentAccount = CurrentInstance.instance.currentAccount;
       var account = accounts[i];

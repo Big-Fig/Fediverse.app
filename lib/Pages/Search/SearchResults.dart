@@ -10,7 +10,7 @@ import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Search.dart';
 import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/Pleroma/Models/Results.dart';
-import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -49,14 +49,14 @@ class _SearchReults extends State<SearchResults> {
     }
   }
 
-  viewAccount(Account account) {
+  viewAccount(IPleromaAccount account) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => OtherAccount(account)),
     );
   }
 
-  viewStatusDetail(Status status) {
+  viewStatusDetail(IPleromaStatus status) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -105,7 +105,7 @@ class _SearchReults extends State<SearchResults> {
     });
   }
 
-  viewStatus(Status status) {}
+  viewStatus(IPleromaStatus status) {}
 
   @override
   Widget build(BuildContext context) {
@@ -174,11 +174,11 @@ class _SearchReults extends State<SearchResults> {
         padding: EdgeInsets.symmetric(horizontal: 2.0, vertical: 10.0),
         itemBuilder: (c, i) {
           if (i < widget.results.accounts.length) {
-            Account account = widget.results.accounts[i];
+            IPleromaAccount account = widget.results.accounts[i];
             return AccountCell(viewAccount, account);
           } else {
             var index = i - widget.results.accounts.length;
-            Status status = widget.results.statuses[index];
+            IPleromaStatus status = widget.results.statuses[index];
             return TimelineCell(
               status,
               viewAccount: viewAccount,

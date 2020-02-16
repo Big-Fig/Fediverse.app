@@ -5,7 +5,7 @@ import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
 import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -17,8 +17,8 @@ import 'package:fedi/Pleroma/Models/Notification.dart' as NotificationModel;
 import 'NotificationCell.dart';
 
 class LikesReposts extends StatefulWidget {
-  final Function(Account) viewAccount;
-  final Function(Status) viewStatusDetail;
+  final Function(IPleromaAccount) viewAccount;
+  final Function(IPleromaStatus) viewStatusDetail;
   final List<NotificationModel.Notification> notifications = [];
   LikesReposts(this.viewAccount, this.viewStatusDetail, {Key key})
       : super(key: key);

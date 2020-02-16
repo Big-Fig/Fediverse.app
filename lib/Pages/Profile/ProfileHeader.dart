@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/Pages/Web/InAppWebPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_alert/flutter_alert.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -9,15 +8,13 @@ import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart';
 import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
+import 'package:fedi/Pleroma/field/pleroma_field_model.dart';
 import 'package:fedi/Pleroma/Models/Relationship.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../Pleroma/Models/Account.dart';
-import 'package:fedi/Pleroma/Models/Field.dart';
-
 class ProfileHeader extends StatefulWidget {
-  final Account profileAccount;
+  final IPleromaAccount profileAccount;
 
   final Function(String) accountAction;
   final Function editAccount;
@@ -222,7 +219,7 @@ class _ProfileHeader extends State<ProfileHeader> {
     return string.replaceAll(RegExp("<a[^>]*>"), "");
   }
 
-  Widget getLinkButton(Field field) {
+  Widget getLinkButton(IPleromaField field) {
     return Expanded(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10),

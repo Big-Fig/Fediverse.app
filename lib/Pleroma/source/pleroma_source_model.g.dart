@@ -1,15 +1,15 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'Source.dart';
+part of 'pleroma_source_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class MastodonSourceAdapter extends TypeAdapter<MastodonSource> {
+class PleromaSourceAdapter extends TypeAdapter<PleromaSource> {
   @override
-  MastodonSource read(BinaryReader reader) {
-    var obj = MastodonSource();
+  PleromaSource read(BinaryReader reader) {
+    var obj = PleromaSource();
     var numOfFields = reader.readByte();
     for (var i = 0; i < numOfFields; i++) {
       switch (reader.readByte()) {
@@ -26,10 +26,13 @@ class MastodonSourceAdapter extends TypeAdapter<MastodonSource> {
           obj.note = reader.read() as String;
           break;
         case 5:
-          obj.fields = (reader.read() as List)?.cast<Field>();
+          obj.fields = (reader.read() as List)?.cast<PleromaField>();
           break;
         case 6:
           obj.followRequestsCount = reader.read() as int;
+          break;
+        case 7:
+          obj.pleroma = reader.read() as PleromaSourcePleromaPart;
           break;
       }
     }
@@ -37,8 +40,8 @@ class MastodonSourceAdapter extends TypeAdapter<MastodonSource> {
   }
 
   @override
-  void write(BinaryWriter writer, MastodonSource obj) {
-    writer.writeByte(6);
+  void write(BinaryWriter writer, PleromaSource obj) {
+    writer.writeByte(7);
     writer.writeByte(1);
     writer.write(obj.privacy);
     writer.writeByte(2);
@@ -51,13 +54,16 @@ class MastodonSourceAdapter extends TypeAdapter<MastodonSource> {
     writer.write(obj.fields);
     writer.writeByte(6);
     writer.write(obj.followRequestsCount);
+    writer.writeByte(7);
+    writer.write(obj.pleroma);
   }
 }
 
-class SourcePleromaAdapter extends TypeAdapter<SourcePleroma> {
+class PleromaSourcePleromaPartAdapter
+    extends TypeAdapter<PleromaSourcePleromaPart> {
   @override
-  SourcePleroma read(BinaryReader reader) {
-    var obj = SourcePleroma();
+  PleromaSourcePleromaPart read(BinaryReader reader) {
+    var obj = PleromaSourcePleromaPart();
     var numOfFields = reader.readByte();
     for (var i = 0; i < numOfFields; i++) {
       switch (reader.readByte()) {
@@ -79,7 +85,7 @@ class SourcePleromaAdapter extends TypeAdapter<SourcePleroma> {
   }
 
   @override
-  void write(BinaryWriter writer, SourcePleroma obj) {
+  void write(BinaryWriter writer, PleromaSourcePleromaPart obj) {
     writer.writeByte(4);
     writer.writeByte(1);
     writer.write(obj.showRole);
@@ -96,48 +102,26 @@ class SourcePleromaAdapter extends TypeAdapter<SourcePleroma> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-MastodonSource _$MastodonSourceFromJson(Map<String, dynamic> json) {
-  return MastodonSource(
+PleromaSource _$PleromaSourceFromJson(Map<String, dynamic> json) {
+  return PleromaSource(
     privacy: json['privacy'] as String,
     sensitive: json['sensitive'] as bool,
     language: json['language'] as String,
     note: json['note'] as String,
     fields: (json['fields'] as List)
-        ?.map(
-            (e) => e == null ? null : Field.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    followRequestsCount: json['follow_requests_count'] as int,
-  );
-}
-
-Map<String, dynamic> _$MastodonSourceToJson(MastodonSource instance) =>
-    <String, dynamic>{
-      'privacy': instance.privacy,
-      'sensitive': instance.sensitive,
-      'language': instance.language,
-      'note': instance.note,
-      'fields': instance.fields,
-      'follow_requests_count': instance.followRequestsCount,
-    };
-
-Source _$SourceFromJson(Map<String, dynamic> json) {
-  return Source(
-    privacy: json['privacy'] as String,
-    sensitive: json['sensitive'] as bool,
-    language: json['language'] as String,
-    note: json['note'] as String,
-    fields: (json['fields'] as List)
-        ?.map(
-            (e) => e == null ? null : Field.fromJson(e as Map<String, dynamic>))
+        ?.map((e) =>
+            e == null ? null : PleromaField.fromJson(e as Map<String, dynamic>))
         ?.toList(),
     followRequestsCount: json['follow_requests_count'] as int,
     pleroma: json['pleroma'] == null
         ? null
-        : SourcePleroma.fromJson(json['pleroma'] as Map<String, dynamic>),
+        : PleromaSourcePleromaPart.fromJson(
+            json['pleroma'] as Map<String, dynamic>),
   );
 }
 
-Map<String, dynamic> _$SourceToJson(Source instance) => <String, dynamic>{
+Map<String, dynamic> _$PleromaSourceToJson(PleromaSource instance) =>
+    <String, dynamic>{
       'privacy': instance.privacy,
       'sensitive': instance.sensitive,
       'language': instance.language,
@@ -147,8 +131,9 @@ Map<String, dynamic> _$SourceToJson(Source instance) => <String, dynamic>{
       'pleroma': instance.pleroma,
     };
 
-SourcePleroma _$SourcePleromaFromJson(Map<String, dynamic> json) {
-  return SourcePleroma(
+PleromaSourcePleromaPart _$PleromaSourcePleromaPartFromJson(
+    Map<String, dynamic> json) {
+  return PleromaSourcePleromaPart(
     showRole: json['show_role'] as bool,
     noRichText: json['no_rich_text'] as bool,
     discoverable: json['discoverable'] as bool,
@@ -156,7 +141,8 @@ SourcePleroma _$SourcePleromaFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$SourcePleromaToJson(SourcePleroma instance) =>
+Map<String, dynamic> _$PleromaSourcePleromaPartToJson(
+        PleromaSourcePleromaPart instance) =>
     <String, dynamic>{
       'show_role': instance.showRole,
       'no_rich_text': instance.noRichText,

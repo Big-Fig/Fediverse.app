@@ -12,7 +12,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class UserListPage extends StatefulWidget {
 
-  final Function(Account account) sendMessage;
+  final Function(IPleromaAccount account) sendMessage;
 
   UserListPage(this.sendMessage);
 
@@ -26,7 +26,7 @@ class _UserListPage extends State<UserListPage> {
   String searchText;
   var _controller = TextEditingController();
 
-  List<Account> accounts = <Account>[];
+  List<IPleromaAccount> accounts = <IPleromaAccount>[];
   void initState() {
     super.initState();
 
@@ -60,7 +60,7 @@ class _UserListPage extends State<UserListPage> {
                 CurrentInstance.instance.currentAccount.id),
             method: HTTPMethod.GET)
         .then((response) {
-      List<Account> followingAccoutns = Account.listFromJsonString(response.body);
+      List<IPleromaAccount> followingAccoutns = PleromaAccount.listFromJsonString(response.body);
       accounts.clear();
       accounts.addAll(followingAccoutns);
       if (mounted) setState(() {});
@@ -76,7 +76,7 @@ class _UserListPage extends State<UserListPage> {
     CurrentInstance.instance.currentClient
         .run(path: AccountRequests.Accounts.search(q), method: HTTPMethod.GET)
         .then((response) {
-      List<Account> followingAccoutns = Account.listFromJsonString(response.body);
+      List<IPleromaAccount> followingAccoutns = PleromaAccount.listFromJsonString(response.body);
       accounts.clear();
       accounts.addAll(followingAccoutns);
       if (mounted) setState(() {});
@@ -88,7 +88,7 @@ class _UserListPage extends State<UserListPage> {
     });
   }
 
-  cellTapped(Account account) {
+  cellTapped(IPleromaAccount account) {
     widget.sendMessage(account);
   }
 

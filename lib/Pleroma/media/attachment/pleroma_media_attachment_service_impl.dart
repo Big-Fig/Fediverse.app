@@ -13,13 +13,13 @@ class PleromaMediaAttachmentService implements IPleromaMediaAttachmentService {
   PleromaMediaAttachmentService({@required this.restService});
 
   @override
-  Future<MediaAttachment> uploadMedia({@required File file}) async {
+  Future<PleromaMediaAttachment> uploadMedia({@required File file}) async {
     var httpResponse = await restService.uploadFileMultipartRequest(
         UploadMultipartRestRequest.post(
             relativePath: "/api/v1/media", files: {"file": file}));
 
     if (httpResponse.statusCode == 200) {
-      return MediaAttachment.fromJsonString(httpResponse.body);
+      return PleromaMediaAttachment.fromJsonString(httpResponse.body);
     } else {
       throw PleromaMediaAttachmentUploadException(
           file: file,

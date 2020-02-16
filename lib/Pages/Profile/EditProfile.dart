@@ -38,7 +38,7 @@ class _EditProfile extends State<EditProfile> {
   }
 
   ProgressDialog _pr;
-  Account myAccount = CurrentInstance.instance.currentAccount;
+  IPleromaAccount myAccount = CurrentInstance.instance.currentAccount;
   var displayNameController = TextEditingController();
   var bioController = TextEditingController();
 

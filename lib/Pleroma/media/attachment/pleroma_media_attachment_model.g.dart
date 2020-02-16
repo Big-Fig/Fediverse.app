@@ -6,8 +6,9 @@ part of 'pleroma_media_attachment_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-MediaAttachment _$MediaAttachmentFromJson(Map<String, dynamic> json) {
-  return MediaAttachment(
+PleromaMediaAttachment _$PleromaMediaAttachmentFromJson(
+    Map<String, dynamic> json) {
+  return PleromaMediaAttachment(
     description: json['description'] as String,
     id: json['id'] as String,
     previewUrl: json['preview_url'] as String,
@@ -17,12 +18,13 @@ MediaAttachment _$MediaAttachmentFromJson(Map<String, dynamic> json) {
     url: json['url'] as String,
     pleroma: json['pleroma'] == null
         ? null
-        : MediaAttachmentPleromaPart.fromJson(
+        : PleromaMediaAttachmentPleromaPart.fromJson(
             json['pleroma'] as Map<String, dynamic>),
   );
 }
 
-Map<String, dynamic> _$MediaAttachmentToJson(MediaAttachment instance) =>
+Map<String, dynamic> _$PleromaMediaAttachmentToJson(
+        PleromaMediaAttachment instance) =>
     <String, dynamic>{
       'description': instance.description,
       'id': instance.id,
@@ -34,15 +36,15 @@ Map<String, dynamic> _$MediaAttachmentToJson(MediaAttachment instance) =>
       'pleroma': instance.pleroma,
     };
 
-MediaAttachmentPleromaPart _$MediaAttachmentPleromaPartFromJson(
+PleromaMediaAttachmentPleromaPart _$PleromaMediaAttachmentPleromaPartFromJson(
     Map<String, dynamic> json) {
-  return MediaAttachmentPleromaPart(
+  return PleromaMediaAttachmentPleromaPart(
     mimeType: json['mime_type'] as String,
   );
 }
 
-Map<String, dynamic> _$MediaAttachmentPleromaPartToJson(
-        MediaAttachmentPleromaPart instance) =>
+Map<String, dynamic> _$PleromaMediaAttachmentPleromaPartToJson(
+        PleromaMediaAttachmentPleromaPart instance) =>
     <String, dynamic>{
       'mime_type': instance.mimeType,
     };

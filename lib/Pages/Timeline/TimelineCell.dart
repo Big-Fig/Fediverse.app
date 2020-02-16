@@ -11,8 +11,9 @@ import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart'
     as AccountRequests;
 import 'package:fedi/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
 import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/Pleroma/Models/Emoji.dart';
-import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:fedi/Pleroma/emoji/pleroma_emoji_model.dart';
+import 'package:fedi/Pleroma/mention/pleroma_mention_model.dart';
+import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/Views/VideoPlayer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,9 +27,9 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_model.dart';
 
 class TimelineCell extends StatefulWidget {
-  final Status status;
-  final Function(Account) viewAccount;
-  final Function(Status) viewStatusContext;
+  final IPleromaStatus status;
+  final Function(IPleromaAccount) viewAccount;
+  final Function(IPleromaStatus) viewStatusContext;
   final bool showCommentBtn;
 
   TimelineCell(this.status,
@@ -44,7 +45,7 @@ class _TimelineCell extends State<TimelineCell> {
   double deviceWidth;
   double targetHeight;
   double imageHeight;
-  Account replyAccount;
+  IPleromaAccount replyAccount;
 
   @override
   void initState() {
@@ -58,7 +59,7 @@ class _TimelineCell extends State<TimelineCell> {
               path: Accounts.account(id: widget.status.inReplyToAccountId),
               method: HTTPMethod.GET)
           .then((response) {
-        Account account = Account.fromJsonString(response.body);
+        IPleromaAccount account = PleromaAccount.fromJsonString(response.body);
         setState(() {
           replyAccount = account;
         });
@@ -106,7 +107,7 @@ class _TimelineCell extends State<TimelineCell> {
       targetHeight = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
     }
 
-    Status status =
+    IPleromaStatus status =
         widget.status.reblog != null ? widget.status.reblog : widget.status;
 
     return Card(
@@ -324,7 +325,7 @@ class _TimelineCell extends State<TimelineCell> {
                         for (int i = 0;
                             i < widget.status.mentions.length;
                             i++) {
-                          Mention mention = widget.status.mentions[i];
+                          IPleromaMention mention = widget.status.mentions[i];
                           print("MENTIONS: ${mention.url} == $link");
                           if (mention.url == link) {
                             CurrentInstance.instance.currentClient
@@ -333,8 +334,8 @@ class _TimelineCell extends State<TimelineCell> {
                                         id: mention.id),
                                     method: HTTPMethod.GET)
                                 .then((response) {
-                              Account account =
-                                  Account.fromJsonString(response.body);
+                              IPleromaAccount account =
+                              PleromaAccount.fromJsonString(response.body);
                               widget.viewAccount(account);
                             }).catchError((error) {
                               print(error.toString());
@@ -536,7 +537,7 @@ class _TimelineCell extends State<TimelineCell> {
   }
 
   showMoreOptions(BuildContext context) {
-    Status status = widget.status;
+    IPleromaStatus status = widget.status;
     if (widget.status.reblog != null) {
       status = widget.status.reblog;
     }
@@ -658,8 +659,8 @@ class _TimelineCell extends State<TimelineCell> {
                                         Accounts.account(id: status.account.id),
                                     method: HTTPMethod.GET)
                                 .then((response) {
-                              Account account =
-                                  Account.fromJsonString(response.body);
+                              IPleromaAccount account =
+                              PleromaAccount.fromJsonString(response.body);
                               CurrentInstance.instance.currentClient
                                   .run(
                                       path: Accounts.followAccount(account.id),
@@ -818,11 +819,11 @@ class _TimelineCell extends State<TimelineCell> {
         context: context);
   }
 
-  Widget getMeidaWidget(Status status) {
+  Widget getMeidaWidget(IPleromaStatus status) {
     List<Widget> items = <Widget>[];
 
     for (var i = 0; i < status.mediaAttachments.length; i++) {
-      MediaAttachment attachment = status.mediaAttachments[i];
+      PleromaMediaAttachment attachment = status.mediaAttachments[i];
       if (attachment.type == "image") {
         var image = CachedNetworkImage(
           imageUrl: attachment.url,
@@ -886,8 +887,8 @@ class _TimelineCell extends State<TimelineCell> {
     );
   }
 
-  String getHTMLWithCustomEmoji(Status status) {
-    List<Emoji> customEmoji = status.emojis;
+  String getHTMLWithCustomEmoji(IPleromaStatus status) {
+    List<IPleromaEmoji> customEmoji = status.emojis;
     String html = status.content;
     for (int i = 0; i < customEmoji.length; i++) {
       var emoji = customEmoji[i];
@@ -900,7 +901,7 @@ class _TimelineCell extends State<TimelineCell> {
     return html;
   }
 
-  List<Widget> getUserName(Status status) {
+  List<Widget> getUserName(IPleromaStatus status) {
     var username = status.account.displayName;
     var emojis = status.account.emojis;
     emojis.addAll(status.emojis);

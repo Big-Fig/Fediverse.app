@@ -6,7 +6,7 @@ import 'package:html/parser.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/Pleroma/Models/Conversation.dart';
-import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 
 class MessagesCell extends StatefulWidget {
   final Conversation conversation;
@@ -20,7 +20,7 @@ class MessagesCell extends StatefulWidget {
 }
 
 class _MessagesCell extends State<MessagesCell> {
-  Account messageUser;
+  IPleromaAccount messageUser;
 
   @override
   void initState() {
@@ -117,7 +117,7 @@ class _MessagesCell extends State<MessagesCell> {
     );
   }
 
-  String getStatusText(BuildContext context, Status status) {
+  String getStatusText(BuildContext context, IPleromaStatus status) {
     print("CONVERSATION ID ${widget.conversation.id}");
     String parsedString = parse(status.content).documentElement.text;
     for (var i = 0; i < status.mentions.length; i ++){
@@ -134,7 +134,7 @@ class _MessagesCell extends State<MessagesCell> {
     return parsedString;
   }
 
-  List<Widget> getUserName(Status status) {
+  List<Widget> getUserName(IPleromaStatus status) {
     var username = status.account.displayName;
     var emojis = status.account.emojis;
     emojis.addAll(status.emojis);
@@ -182,7 +182,7 @@ class _MessagesCell extends State<MessagesCell> {
     return usernameWidget;
   }
 
-  Account getOtherAccount(List<Account> accounts) {
+  IPleromaAccount getOtherAccount(List<IPleromaAccount> accounts) {
     for (var i = 0; i < accounts.length; i++) {
       var currentAccount = CurrentInstance.instance.currentAccount;
       var account = accounts[i];

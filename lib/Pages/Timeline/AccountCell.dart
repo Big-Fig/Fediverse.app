@@ -1,12 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 import 'package:flutter/material.dart';
 
 class AccountCell extends StatelessWidget {
-  final Account account;
-  final Function(Account) viewAccount;
+  final IPleromaAccount account;
+  final Function(IPleromaAccount) viewAccount;
 
   AccountCell(this.viewAccount, this.account);
 
@@ -112,7 +112,7 @@ class AccountCell extends StatelessWidget {
     }
   }
 
-  List<Widget> getUserName(Status status) {
+  List<Widget> getUserName(IPleromaStatus status) {
     var username = status.account.displayName;
     var emojis = status.account.emojis;
     emojis.addAll(status.emojis);

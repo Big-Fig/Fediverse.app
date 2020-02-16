@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/Pleroma/Models/Notification.dart' as NotificationObject;
-import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/Views/VideoPlayer.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:html/dom.dart' as dom;
@@ -14,8 +14,8 @@ import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_model.dar
 class NotificationCell extends StatefulWidget {
   final NotificationObject.Notification notification;
 
-  final Function(Account) viewAccount;
-  final Function(Status) viewStatusContext;
+  final Function(IPleromaAccount) viewAccount;
+  final Function(IPleromaStatus) viewStatusContext;
 
   NotificationCell(this.notification,
       {this.viewAccount, this.viewStatusContext});
@@ -127,11 +127,11 @@ class _NotificationCell extends State<NotificationCell> {
     return Container();
   }
 
-  Widget getMeidaWidget(Status status) {
+  Widget getMeidaWidget(IPleromaStatus status) {
     List<Widget> items = <Widget>[];
 
     for (var i = 0; i < status.mediaAttachments.length; i++) {
-      MediaAttachment attachment = status.mediaAttachments[i];
+      PleromaMediaAttachment attachment = status.mediaAttachments[i];
       if (attachment.type == "image") {
         var image = CachedNetworkImage(
           imageUrl: attachment.url,
@@ -235,7 +235,7 @@ class _NotificationCell extends State<NotificationCell> {
     }
   }
 
-  List<Widget> getUserName(Status status) {
+  List<Widget> getUserName(IPleromaStatus status) {
     var username = status.account.displayName;
     var emojis = status.account.emojis;
     emojis.addAll(status.emojis);

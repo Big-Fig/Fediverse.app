@@ -9,5 +9,5 @@ abstract class IPleromaMediaAttachmentService {
           {listen: true}) =>
       Provider.of<IPleromaMediaAttachmentService>(context, listen: listen);
 
-  Future<MediaAttachment> uploadMedia({@required File file});
+  Future<IPleromaMediaAttachment> uploadMedia({@required File file});
 }
