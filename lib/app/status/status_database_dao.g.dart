@@ -56,6 +56,7 @@ mixin _$StatusDaoMixin on DatabaseAccessor<AppDatabase> {
       emojis: $DbStatusesTable.$converter7.mapToDart(row.readString('emojis')),
       poll: $DbStatusesTable.$converter8.mapToDart(row.readString('poll')),
       card: $DbStatusesTable.$converter9.mapToDart(row.readString('card')),
+      language: row.readString('language'),
       pleromaContent: $DbStatusesTable.$converter10
           .mapToDart(row.readString('pleroma_content')),
       pleromaConversationId: row.readInt('pleroma_conversation_id'),

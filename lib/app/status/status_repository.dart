@@ -2,7 +2,6 @@ import 'package:fedi/Pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_repository_model.dart';
 import 'package:fedi/repository/repository.dart';
-import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -21,8 +20,6 @@ abstract class IStatusRepository
     @required int limit,
   });
 
-
-
   Future<List<DbStatusWrapper>> getPublicStatuses(
       {@required bool onlyLocal,
       @required bool onlyMedia,
@@ -31,10 +28,9 @@ abstract class IStatusRepository
       @required IStatus notNewerThanStatus,
       @required IStatus notOlderThanStatus,
       @required int limit,
-      @required StatusSortType sortType,
-      @required RepositorySortDirection sortDirection});
+      @required StatusOrderingTermData orderingTermData});
 
-  Future<List<DbStatusWrapper>> watchPublicStatuses(
+  Stream<List<DbStatusWrapper>> watchPublicStatuses(
       {@required bool onlyLocal,
       @required bool onlyMedia,
       @required bool withMuted,
@@ -42,8 +38,7 @@ abstract class IStatusRepository
       @required IStatus notNewerThanStatus,
       @required IStatus notOlderThanStatus,
       @required int limit,
-      @required StatusSortType sortType,
-      @required RepositorySortDirection sortDirection});
+      @required StatusOrderingTermData orderingTermData});
 
   Future refreshHomeStatuses({
     @required bool onlyLocal,
@@ -61,10 +56,9 @@ abstract class IStatusRepository
       @required IStatus notNewerThanStatus,
       @required IStatus notOlderThanStatus,
       @required int limit,
-      @required StatusSortType sortType,
-      @required RepositorySortDirection sortDirection});
+      @required StatusOrderingTermData orderingTermData});
 
-  Future<List<DbStatusWrapper>> watchHomeStatuses(
+  Stream<List<DbStatusWrapper>> watchHomeStatuses(
       {@required bool onlyLocal,
       @required bool onlyMedia,
       @required bool withMuted,
@@ -72,8 +66,7 @@ abstract class IStatusRepository
       @required IStatus notNewerThanStatus,
       @required IStatus notOlderThanStatus,
       @required int limit,
-      @required StatusSortType sortType,
-      @required RepositorySortDirection sortDirection});
+      @required StatusOrderingTermData orderingTermData});
 
   Future refreshHashTagStatuses({
     @required String hashTag,
@@ -93,10 +86,9 @@ abstract class IStatusRepository
       @required IStatus notNewerThanStatus,
       @required IStatus notOlderThanStatus,
       @required int limit,
-      @required StatusSortType sortType,
-      @required RepositorySortDirection sortDirection});
+      @required StatusOrderingTermData orderingTermData});
 
-  Future<List<DbStatusWrapper>> watchHashTagStatuses(
+  Stream<List<DbStatusWrapper>> watchHashTagStatuses(
       {@required String hashTag,
       @required bool onlyLocal,
       @required bool onlyMedia,
@@ -105,8 +97,7 @@ abstract class IStatusRepository
       @required IStatus notNewerThanStatus,
       @required IStatus notOlderThanStatus,
       @required int limit,
-      @required StatusSortType sortType,
-      @required RepositorySortDirection sortDirection});
+      @required StatusOrderingTermData orderingTermData});
 
   Future refreshListStatuses({
     @required String listRemoteId,
@@ -126,10 +117,9 @@ abstract class IStatusRepository
       @required IStatus notNewerThanStatus,
       @required IStatus notOlderThanStatus,
       @required int limit,
-      @required StatusSortType sortType,
-      @required RepositorySortDirection sortDirection});
+      @required StatusOrderingTermData orderingTermData});
 
-  Future<List<DbStatusWrapper>> watchListStatuses(
+  Stream<List<DbStatusWrapper>> watchListStatuses(
       {@required String listRemoteId,
       @required bool onlyLocal,
       @required bool onlyMedia,
@@ -138,6 +128,5 @@ abstract class IStatusRepository
       @required IStatus notNewerThanStatus,
       @required IStatus notOlderThanStatus,
       @required int limit,
-      @required StatusSortType sortType,
-      @required RepositorySortDirection sortDirection});
+      @required StatusOrderingTermData orderingTermData});
 }

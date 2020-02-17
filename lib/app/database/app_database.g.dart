@@ -35,6 +35,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
   final List<PleromaEmoji> emojis;
   final PleromaPoll poll;
   final PleromaCard card;
+  final String language;
   final PleromaContent pleromaContent;
   final int pleromaConversationId;
   final int pleromaDirectConversationId;
@@ -48,13 +49,13 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
       {@required this.id,
       @required this.remoteId,
       @required this.createdAt,
-      @required this.inReplyToRemoteId,
-      @required this.inReplyToAccountRemoteId,
+      this.inReplyToRemoteId,
+      this.inReplyToAccountRemoteId,
       @required this.sensitive,
       @required this.spoilerText,
       @required this.visibility,
       @required this.uri,
-      @required this.url,
+      this.url,
       @required this.repliesCount,
       @required this.reblogsCount,
       @required this.favouritesCount,
@@ -62,25 +63,26 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
       @required this.reblogged,
       @required this.muted,
       @required this.bookmarked,
-      @required this.content,
-      @required this.reblog,
+      this.content,
+      this.reblog,
       @required this.application,
       @required this.account,
-      @required this.mediaAttachments,
-      @required this.mentions,
-      @required this.tags,
-      @required this.emojis,
-      @required this.poll,
-      @required this.card,
-      @required this.pleromaContent,
-      @required this.pleromaConversationId,
-      @required this.pleromaDirectConversationId,
-      @required this.pleromaInReplyToAccountAcct,
-      @required this.pleromaLocal,
-      @required this.pleromaSpoilerText,
-      @required this.pleromaExpiresAt,
-      @required this.pleromaThreadMuted,
-      @required this.pleromaEmojiReactions});
+      this.mediaAttachments,
+      this.mentions,
+      this.tags,
+      this.emojis,
+      this.poll,
+      this.card,
+      this.language,
+      this.pleromaContent,
+      this.pleromaConversationId,
+      this.pleromaDirectConversationId,
+      this.pleromaInReplyToAccountAcct,
+      this.pleromaLocal,
+      this.pleromaSpoilerText,
+      this.pleromaExpiresAt,
+      this.pleromaThreadMuted,
+      this.pleromaEmojiReactions});
   factory DbStatus.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -140,6 +142,8 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}poll'])),
       card: $DbStatusesTable.$converter9.mapToDart(
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}card'])),
+      language: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}language']),
       pleromaContent: $DbStatusesTable.$converter10.mapToDart(stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}pleroma_content'])),
       pleromaConversationId: intType.mapFromDatabaseResponse(
@@ -195,6 +199,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
       emojis: serializer.fromJson<List<PleromaEmoji>>(json['emojis']),
       poll: serializer.fromJson<PleromaPoll>(json['poll']),
       card: serializer.fromJson<PleromaCard>(json['card']),
+      language: serializer.fromJson<String>(json['language']),
       pleromaContent:
           serializer.fromJson<PleromaContent>(json['pleromaContent']),
       pleromaConversationId:
@@ -245,6 +250,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
       'emojis': serializer.toJson<List<PleromaEmoji>>(emojis),
       'poll': serializer.toJson<PleromaPoll>(poll),
       'card': serializer.toJson<PleromaCard>(card),
+      'language': serializer.toJson<String>(language),
       'pleromaContent': serializer.toJson<PleromaContent>(pleromaContent),
       'pleromaConversationId': serializer.toJson<int>(pleromaConversationId),
       'pleromaDirectConversationId':
@@ -330,6 +336,9 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           emojis == null && nullToAbsent ? const Value.absent() : Value(emojis),
       poll: poll == null && nullToAbsent ? const Value.absent() : Value(poll),
       card: card == null && nullToAbsent ? const Value.absent() : Value(card),
+      language: language == null && nullToAbsent
+          ? const Value.absent()
+          : Value(language),
       pleromaContent: pleromaContent == null && nullToAbsent
           ? const Value.absent()
           : Value(pleromaContent),
@@ -390,6 +399,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           List<PleromaEmoji> emojis,
           PleromaPoll poll,
           PleromaCard card,
+          String language,
           PleromaContent pleromaContent,
           int pleromaConversationId,
           int pleromaDirectConversationId,
@@ -428,6 +438,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
         emojis: emojis ?? this.emojis,
         poll: poll ?? this.poll,
         card: card ?? this.card,
+        language: language ?? this.language,
         pleromaContent: pleromaContent ?? this.pleromaContent,
         pleromaConversationId:
             pleromaConversationId ?? this.pleromaConversationId,
@@ -472,6 +483,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           ..write('emojis: $emojis, ')
           ..write('poll: $poll, ')
           ..write('card: $card, ')
+          ..write('language: $language, ')
           ..write('pleromaContent: $pleromaContent, ')
           ..write('pleromaConversationId: $pleromaConversationId, ')
           ..write('pleromaDirectConversationId: $pleromaDirectConversationId, ')
@@ -528,7 +540,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
                                                                               .hashCode,
                                                                           $mrjc(
                                                                               reblog.hashCode,
-                                                                              $mrjc(application.hashCode, $mrjc(account.hashCode, $mrjc(mediaAttachments.hashCode, $mrjc(mentions.hashCode, $mrjc(tags.hashCode, $mrjc(emojis.hashCode, $mrjc(poll.hashCode, $mrjc(card.hashCode, $mrjc(pleromaContent.hashCode, $mrjc(pleromaConversationId.hashCode, $mrjc(pleromaDirectConversationId.hashCode, $mrjc(pleromaInReplyToAccountAcct.hashCode, $mrjc(pleromaLocal.hashCode, $mrjc(pleromaSpoilerText.hashCode, $mrjc(pleromaExpiresAt.hashCode, $mrjc(pleromaThreadMuted.hashCode, pleromaEmojiReactions.hashCode))))))))))))))))))))))))))))))))))));
+                                                                              $mrjc(application.hashCode, $mrjc(account.hashCode, $mrjc(mediaAttachments.hashCode, $mrjc(mentions.hashCode, $mrjc(tags.hashCode, $mrjc(emojis.hashCode, $mrjc(poll.hashCode, $mrjc(card.hashCode, $mrjc(language.hashCode, $mrjc(pleromaContent.hashCode, $mrjc(pleromaConversationId.hashCode, $mrjc(pleromaDirectConversationId.hashCode, $mrjc(pleromaInReplyToAccountAcct.hashCode, $mrjc(pleromaLocal.hashCode, $mrjc(pleromaSpoilerText.hashCode, $mrjc(pleromaExpiresAt.hashCode, $mrjc(pleromaThreadMuted.hashCode, pleromaEmojiReactions.hashCode)))))))))))))))))))))))))))))))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -560,6 +572,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           other.emojis == this.emojis &&
           other.poll == this.poll &&
           other.card == this.card &&
+          other.language == this.language &&
           other.pleromaContent == this.pleromaContent &&
           other.pleromaConversationId == this.pleromaConversationId &&
           other.pleromaDirectConversationId ==
@@ -601,6 +614,7 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
   final Value<List<PleromaEmoji>> emojis;
   final Value<PleromaPoll> poll;
   final Value<PleromaCard> card;
+  final Value<String> language;
   final Value<PleromaContent> pleromaContent;
   final Value<int> pleromaConversationId;
   final Value<int> pleromaDirectConversationId;
@@ -638,6 +652,7 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
     this.emojis = const Value.absent(),
     this.poll = const Value.absent(),
     this.card = const Value.absent(),
+    this.language = const Value.absent(),
     this.pleromaContent = const Value.absent(),
     this.pleromaConversationId = const Value.absent(),
     this.pleromaDirectConversationId = const Value.absent(),
@@ -652,13 +667,13 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
     this.id = const Value.absent(),
     @required String remoteId,
     @required DateTime createdAt,
-    @required String inReplyToRemoteId,
-    @required String inReplyToAccountRemoteId,
+    this.inReplyToRemoteId = const Value.absent(),
+    this.inReplyToAccountRemoteId = const Value.absent(),
     @required bool sensitive,
     @required String spoilerText,
     @required PleromaVisibility visibility,
     @required String uri,
-    @required String url,
+    this.url = const Value.absent(),
     @required int repliesCount,
     @required int reblogsCount,
     @required int favouritesCount,
@@ -666,34 +681,32 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
     @required bool reblogged,
     @required bool muted,
     @required bool bookmarked,
-    @required String content,
-    @required PleromaStatus reblog,
+    this.content = const Value.absent(),
+    this.reblog = const Value.absent(),
     @required PleromaApplication application,
     @required PleromaAccount account,
-    @required List<PleromaMediaAttachment> mediaAttachments,
-    @required List<PleromaMention> mentions,
-    @required List<PleromaTag> tags,
-    @required List<PleromaEmoji> emojis,
-    @required PleromaPoll poll,
-    @required PleromaCard card,
-    @required PleromaContent pleromaContent,
-    @required int pleromaConversationId,
-    @required int pleromaDirectConversationId,
-    @required String pleromaInReplyToAccountAcct,
-    @required bool pleromaLocal,
-    @required PleromaContent pleromaSpoilerText,
-    @required DateTime pleromaExpiresAt,
-    @required bool pleromaThreadMuted,
-    @required List<PleromaEmojiReactions> pleromaEmojiReactions,
+    this.mediaAttachments = const Value.absent(),
+    this.mentions = const Value.absent(),
+    this.tags = const Value.absent(),
+    this.emojis = const Value.absent(),
+    this.poll = const Value.absent(),
+    this.card = const Value.absent(),
+    this.language = const Value.absent(),
+    this.pleromaContent = const Value.absent(),
+    this.pleromaConversationId = const Value.absent(),
+    this.pleromaDirectConversationId = const Value.absent(),
+    this.pleromaInReplyToAccountAcct = const Value.absent(),
+    this.pleromaLocal = const Value.absent(),
+    this.pleromaSpoilerText = const Value.absent(),
+    this.pleromaExpiresAt = const Value.absent(),
+    this.pleromaThreadMuted = const Value.absent(),
+    this.pleromaEmojiReactions = const Value.absent(),
   })  : remoteId = Value(remoteId),
         createdAt = Value(createdAt),
-        inReplyToRemoteId = Value(inReplyToRemoteId),
-        inReplyToAccountRemoteId = Value(inReplyToAccountRemoteId),
         sensitive = Value(sensitive),
         spoilerText = Value(spoilerText),
         visibility = Value(visibility),
         uri = Value(uri),
-        url = Value(url),
         repliesCount = Value(repliesCount),
         reblogsCount = Value(reblogsCount),
         favouritesCount = Value(favouritesCount),
@@ -701,25 +714,8 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
         reblogged = Value(reblogged),
         muted = Value(muted),
         bookmarked = Value(bookmarked),
-        content = Value(content),
-        reblog = Value(reblog),
         application = Value(application),
-        account = Value(account),
-        mediaAttachments = Value(mediaAttachments),
-        mentions = Value(mentions),
-        tags = Value(tags),
-        emojis = Value(emojis),
-        poll = Value(poll),
-        card = Value(card),
-        pleromaContent = Value(pleromaContent),
-        pleromaConversationId = Value(pleromaConversationId),
-        pleromaDirectConversationId = Value(pleromaDirectConversationId),
-        pleromaInReplyToAccountAcct = Value(pleromaInReplyToAccountAcct),
-        pleromaLocal = Value(pleromaLocal),
-        pleromaSpoilerText = Value(pleromaSpoilerText),
-        pleromaExpiresAt = Value(pleromaExpiresAt),
-        pleromaThreadMuted = Value(pleromaThreadMuted),
-        pleromaEmojiReactions = Value(pleromaEmojiReactions);
+        account = Value(account);
   DbStatusesCompanion copyWith(
       {Value<int> id,
       Value<String> remoteId,
@@ -748,6 +744,7 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
       Value<List<PleromaEmoji>> emojis,
       Value<PleromaPoll> poll,
       Value<PleromaCard> card,
+      Value<String> language,
       Value<PleromaContent> pleromaContent,
       Value<int> pleromaConversationId,
       Value<int> pleromaDirectConversationId,
@@ -786,6 +783,7 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
       emojis: emojis ?? this.emojis,
       poll: poll ?? this.poll,
       card: card ?? this.card,
+      language: language ?? this.language,
       pleromaContent: pleromaContent ?? this.pleromaContent,
       pleromaConversationId:
           pleromaConversationId ?? this.pleromaConversationId,
@@ -851,7 +849,7 @@ class $DbStatusesTable extends DbStatuses
     return GeneratedTextColumn(
       'in_reply_to_remote_id',
       $tableName,
-      false,
+      true,
     );
   }
 
@@ -865,7 +863,7 @@ class $DbStatusesTable extends DbStatuses
     return GeneratedTextColumn(
       'in_reply_to_account_remote_id',
       $tableName,
-      false,
+      true,
     );
   }
 
@@ -924,7 +922,7 @@ class $DbStatusesTable extends DbStatuses
     return GeneratedTextColumn(
       'url',
       $tableName,
-      false,
+      true,
     );
   }
 
@@ -1026,7 +1024,7 @@ class $DbStatusesTable extends DbStatuses
     return GeneratedTextColumn(
       'content',
       $tableName,
-      false,
+      true,
     );
   }
 
@@ -1038,7 +1036,7 @@ class $DbStatusesTable extends DbStatuses
     return GeneratedTextColumn(
       'reblog',
       $tableName,
-      false,
+      true,
     );
   }
 
@@ -1078,7 +1076,7 @@ class $DbStatusesTable extends DbStatuses
     return GeneratedTextColumn(
       'media_attachments',
       $tableName,
-      false,
+      true,
     );
   }
 
@@ -1090,7 +1088,7 @@ class $DbStatusesTable extends DbStatuses
     return GeneratedTextColumn(
       'mentions',
       $tableName,
-      false,
+      true,
     );
   }
 
@@ -1102,7 +1100,7 @@ class $DbStatusesTable extends DbStatuses
     return GeneratedTextColumn(
       'tags',
       $tableName,
-      false,
+      true,
     );
   }
 
@@ -1114,7 +1112,7 @@ class $DbStatusesTable extends DbStatuses
     return GeneratedTextColumn(
       'emojis',
       $tableName,
-      false,
+      true,
     );
   }
 
@@ -1126,7 +1124,7 @@ class $DbStatusesTable extends DbStatuses
     return GeneratedTextColumn(
       'poll',
       $tableName,
-      false,
+      true,
     );
   }
 
@@ -1138,7 +1136,19 @@ class $DbStatusesTable extends DbStatuses
     return GeneratedTextColumn(
       'card',
       $tableName,
-      false,
+      true,
+    );
+  }
+
+  final VerificationMeta _languageMeta = const VerificationMeta('language');
+  GeneratedTextColumn _language;
+  @override
+  GeneratedTextColumn get language => _language ??= _constructLanguage();
+  GeneratedTextColumn _constructLanguage() {
+    return GeneratedTextColumn(
+      'language',
+      $tableName,
+      true,
     );
   }
 
@@ -1152,7 +1162,7 @@ class $DbStatusesTable extends DbStatuses
     return GeneratedTextColumn(
       'pleroma_content',
       $tableName,
-      false,
+      true,
     );
   }
 
@@ -1166,7 +1176,7 @@ class $DbStatusesTable extends DbStatuses
     return GeneratedIntColumn(
       'pleroma_conversation_id',
       $tableName,
-      false,
+      true,
     );
   }
 
@@ -1180,7 +1190,7 @@ class $DbStatusesTable extends DbStatuses
     return GeneratedIntColumn(
       'pleroma_direct_conversation_id',
       $tableName,
-      false,
+      true,
     );
   }
 
@@ -1194,7 +1204,7 @@ class $DbStatusesTable extends DbStatuses
     return GeneratedTextColumn(
       'pleroma_in_reply_to_account_acct',
       $tableName,
-      false,
+      true,
     );
   }
 
@@ -1208,7 +1218,7 @@ class $DbStatusesTable extends DbStatuses
     return GeneratedBoolColumn(
       'pleroma_local',
       $tableName,
-      false,
+      true,
     );
   }
 
@@ -1222,7 +1232,7 @@ class $DbStatusesTable extends DbStatuses
     return GeneratedTextColumn(
       'pleroma_spoiler_text',
       $tableName,
-      false,
+      true,
     );
   }
 
@@ -1236,7 +1246,7 @@ class $DbStatusesTable extends DbStatuses
     return GeneratedDateTimeColumn(
       'pleroma_expires_at',
       $tableName,
-      false,
+      true,
     );
   }
 
@@ -1250,7 +1260,7 @@ class $DbStatusesTable extends DbStatuses
     return GeneratedBoolColumn(
       'pleroma_thread_muted',
       $tableName,
-      false,
+      true,
     );
   }
 
@@ -1264,7 +1274,7 @@ class $DbStatusesTable extends DbStatuses
     return GeneratedTextColumn(
       'pleroma_emoji_reactions',
       $tableName,
-      false,
+      true,
     );
   }
 
@@ -1297,6 +1307,7 @@ class $DbStatusesTable extends DbStatuses
         emojis,
         poll,
         card,
+        language,
         pleromaContent,
         pleromaConversationId,
         pleromaDirectConversationId,
@@ -1337,16 +1348,12 @@ class $DbStatusesTable extends DbStatuses
           _inReplyToRemoteIdMeta,
           inReplyToRemoteId.isAcceptableValue(
               d.inReplyToRemoteId.value, _inReplyToRemoteIdMeta));
-    } else if (isInserting) {
-      context.missing(_inReplyToRemoteIdMeta);
     }
     if (d.inReplyToAccountRemoteId.present) {
       context.handle(
           _inReplyToAccountRemoteIdMeta,
           inReplyToAccountRemoteId.isAcceptableValue(
               d.inReplyToAccountRemoteId.value, _inReplyToAccountRemoteIdMeta));
-    } else if (isInserting) {
-      context.missing(_inReplyToAccountRemoteIdMeta);
     }
     if (d.sensitive.present) {
       context.handle(_sensitiveMeta,
@@ -1368,8 +1375,6 @@ class $DbStatusesTable extends DbStatuses
     }
     if (d.url.present) {
       context.handle(_urlMeta, url.isAcceptableValue(d.url.value, _urlMeta));
-    } else if (isInserting) {
-      context.missing(_urlMeta);
     }
     if (d.repliesCount.present) {
       context.handle(
@@ -1422,8 +1427,6 @@ class $DbStatusesTable extends DbStatuses
     if (d.content.present) {
       context.handle(_contentMeta,
           content.isAcceptableValue(d.content.value, _contentMeta));
-    } else if (isInserting) {
-      context.missing(_contentMeta);
     }
     context.handle(_reblogMeta, const VerificationResult.success());
     context.handle(_applicationMeta, const VerificationResult.success());
@@ -1434,14 +1437,16 @@ class $DbStatusesTable extends DbStatuses
     context.handle(_emojisMeta, const VerificationResult.success());
     context.handle(_pollMeta, const VerificationResult.success());
     context.handle(_cardMeta, const VerificationResult.success());
+    if (d.language.present) {
+      context.handle(_languageMeta,
+          language.isAcceptableValue(d.language.value, _languageMeta));
+    }
     context.handle(_pleromaContentMeta, const VerificationResult.success());
     if (d.pleromaConversationId.present) {
       context.handle(
           _pleromaConversationIdMeta,
           pleromaConversationId.isAcceptableValue(
               d.pleromaConversationId.value, _pleromaConversationIdMeta));
-    } else if (isInserting) {
-      context.missing(_pleromaConversationIdMeta);
     }
     if (d.pleromaDirectConversationId.present) {
       context.handle(
@@ -1449,8 +1454,6 @@ class $DbStatusesTable extends DbStatuses
           pleromaDirectConversationId.isAcceptableValue(
               d.pleromaDirectConversationId.value,
               _pleromaDirectConversationIdMeta));
-    } else if (isInserting) {
-      context.missing(_pleromaDirectConversationIdMeta);
     }
     if (d.pleromaInReplyToAccountAcct.present) {
       context.handle(
@@ -1458,16 +1461,12 @@ class $DbStatusesTable extends DbStatuses
           pleromaInReplyToAccountAcct.isAcceptableValue(
               d.pleromaInReplyToAccountAcct.value,
               _pleromaInReplyToAccountAcctMeta));
-    } else if (isInserting) {
-      context.missing(_pleromaInReplyToAccountAcctMeta);
     }
     if (d.pleromaLocal.present) {
       context.handle(
           _pleromaLocalMeta,
           pleromaLocal.isAcceptableValue(
               d.pleromaLocal.value, _pleromaLocalMeta));
-    } else if (isInserting) {
-      context.missing(_pleromaLocalMeta);
     }
     context.handle(_pleromaSpoilerTextMeta, const VerificationResult.success());
     if (d.pleromaExpiresAt.present) {
@@ -1475,16 +1474,12 @@ class $DbStatusesTable extends DbStatuses
           _pleromaExpiresAtMeta,
           pleromaExpiresAt.isAcceptableValue(
               d.pleromaExpiresAt.value, _pleromaExpiresAtMeta));
-    } else if (isInserting) {
-      context.missing(_pleromaExpiresAtMeta);
     }
     if (d.pleromaThreadMuted.present) {
       context.handle(
           _pleromaThreadMutedMeta,
           pleromaThreadMuted.isAcceptableValue(
               d.pleromaThreadMuted.value, _pleromaThreadMutedMeta));
-    } else if (isInserting) {
-      context.missing(_pleromaThreadMutedMeta);
     }
     context.handle(
         _pleromaEmojiReactionsMeta, const VerificationResult.success());
@@ -1604,6 +1599,9 @@ class $DbStatusesTable extends DbStatuses
       final converter = $DbStatusesTable.$converter9;
       map['card'] =
           Variable<String, StringType>(converter.mapToSql(d.card.value));
+    }
+    if (d.language.present) {
+      map['language'] = Variable<String, StringType>(d.language.value);
     }
     if (d.pleromaContent.present) {
       final converter = $DbStatusesTable.$converter10;

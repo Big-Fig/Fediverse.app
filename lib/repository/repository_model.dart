@@ -1,3 +1,0 @@
-enum RepositorySortDirection {
-  ascendant, descendant
-}

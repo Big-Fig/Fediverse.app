@@ -3,12 +3,10 @@ import 'package:fedi/Pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:fedi/Pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/status_database_dao.dart';
-import 'package:fedi/app/status/status_database_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_repository.dart';
 import 'package:fedi/app/status/status_repository_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -17,10 +15,15 @@ var _logger = Logger("status_repository_impl.dart");
 
 class StatusRepository extends AsyncInitLoadingBloc
     implements IStatusRepository {
+  final String localDomain;
   final StatusDao dao;
   final IPleromaTimelineService pleromaTimelineService;
 
-  StatusRepository({@required this.dao, @required this.pleromaTimelineService});
+  StatusRepository({
+    @required this.dao,
+    @required this.pleromaTimelineService,
+    @required this.localDomain,
+  });
 
   @override
   Future internalAsyncInit() async {
@@ -32,23 +35,74 @@ class StatusRepository extends AsyncInitLoadingBloc
     await upsertAll(remoteStatuses.map(mapRemoteStatusToDbStatus));
   }
 
-  Query<DbStatuses, DbStatus> getHashTagStatusesQuery(
-      {@required String hashTag,
-        @required bool onlyLocal,
-        @required bool onlyMedia,
-        @required bool withMuted,
-        @required List<PleromaVisibility> excludeVisibilities,
-        @required IStatus notNewerThanStatus,
-        @required IStatus notOlderThanStatus,
-        @required int limit,
-        @required StatusSortType sortType,
-        @required RepositorySortDirection sortDirection}) {
-    // TODO: implement getHashTagStatuses
-    throw UnimplementedError();
+  SimpleSelectStatement<$DbStatusesTable, DbStatus> createQuery(
+      {@required bool onlyLocal,
+      @required bool onlyMedia,
+      @required bool withMuted,
+      @required List<PleromaVisibility> excludeVisibilities,
+      @required IStatus notNewerThanStatus,
+      @required IStatus notOlderThanStatus,
+      @required int limit,
+      @required StatusOrderingTermData orderingTermData}) {
+    var query = dao.selectQuery();
+    if (onlyLocal != null) {
+      dao.addLocalOnlyWhere(query, localDomain);
+    }
+
+    if (onlyMedia != null) {
+      dao.addMediaOnlyWhere(query);
+    }
+
+    if (withMuted != true) {
+      dao.addNotMutedWhere(query);
+    }
+    if (excludeVisibilities?.isNotEmpty == true) {
+      dao.addExcludeVisibilitiesWhere(query, excludeVisibilities);
+    }
+
+    if (notNewerThanStatus != null || notOlderThanStatus != null) {
+      // TODO: rework to remote ids ordering
+      dao.addDateBoundsWhere(
+          query, notOlderThanStatus.createdAt, notNewerThanStatus.createdAt);
+    }
+
+    // TODO: add offset
+    if (limit != null) {
+      query.limit(limit);
+    }
+
+    if (orderingTermData != null) {
+      dao.orderBy(query, [orderingTermData]);
+    }
+    return query;
+  }
+
+  @override
+  Future<List<DbStatusWrapper>> getPublicStatuses(
+      {@required bool onlyLocal,
+      @required bool onlyMedia,
+      @required bool withMuted,
+      @required List<PleromaVisibility> excludeVisibilities,
+      @required IStatus notNewerThanStatus,
+      @required IStatus notOlderThanStatus,
+      @required int limit,
+      @required StatusOrderingTermData orderingTermData}) {
+    return createQuery(
+            onlyLocal: onlyLocal,
+            onlyMedia: onlyMedia,
+            withMuted: withMuted,
+            excludeVisibilities: excludeVisibilities,
+            notNewerThanStatus: notNewerThanStatus,
+            notOlderThanStatus: notOlderThanStatus,
+            limit: limit,
+            orderingTermData: orderingTermData)
+        .map(mapDataClassToItem)
+        .get();
   }
 
 
-  Query<DbStatuses, DbStatus> getHomeStatusesQuery(
+  @override
+  Stream<List<DbStatusWrapper>> watchPublicStatuses(
       {@required bool onlyLocal,
         @required bool onlyMedia,
         @required bool withMuted,
@@ -56,28 +110,23 @@ class StatusRepository extends AsyncInitLoadingBloc
         @required IStatus notNewerThanStatus,
         @required IStatus notOlderThanStatus,
         @required int limit,
-        @required StatusSortType sortType,
-        @required RepositorySortDirection sortDirection}) {
-    // TODO: implement getHomeStatuses
-    throw UnimplementedError();
+        @required StatusOrderingTermData orderingTermData}) {
+    return createQuery(
+        onlyLocal: onlyLocal,
+        onlyMedia: onlyMedia,
+        withMuted: withMuted,
+        excludeVisibilities: excludeVisibilities,
+        notNewerThanStatus: notNewerThanStatus,
+        notOlderThanStatus: notOlderThanStatus,
+        limit: limit,
+        orderingTermData: orderingTermData)
+        .map(mapDataClassToItem)
+        .watch();
   }
 
-  Query<DbStatuses, DbStatus> getListStatusesQuery(
-      {@required String listRemoteId,
-        @required bool onlyLocal,
-        @required bool onlyMedia,
-        @required bool withMuted,
-        @required List<PleromaVisibility> excludeVisibilities,
-        @required IStatus notNewerThanStatus,
-        @required IStatus notOlderThanStatus,
-        @required int limit,
-        @required StatusSortType sortType,
-        @required RepositorySortDirection sortDirection}) {
-    // TODO: implement getListStatuses
-    throw UnimplementedError();
-  }
 
-  Query<DbStatuses, DbStatus> getPublicStatusesQuery(
+  @override
+  Future<List<DbStatusWrapper>> getHomeStatuses(
       {@required bool onlyLocal,
         @required bool onlyMedia,
         @required bool withMuted,
@@ -85,11 +134,43 @@ class StatusRepository extends AsyncInitLoadingBloc
         @required IStatus notNewerThanStatus,
         @required IStatus notOlderThanStatus,
         @required int limit,
-        @required StatusSortType sortType,
-        @required RepositorySortDirection sortDirection}) {
-    // TODO: implement getPublicStatuses
-    throw UnimplementedError();
+        @required StatusOrderingTermData orderingTermData}) {
+    return createQuery(
+        onlyLocal: onlyLocal,
+        onlyMedia: onlyMedia,
+        withMuted: withMuted,
+        excludeVisibilities: excludeVisibilities,
+        notNewerThanStatus: notNewerThanStatus,
+        notOlderThanStatus: notOlderThanStatus,
+        limit: limit,
+        orderingTermData: orderingTermData)
+        .map(mapDataClassToItem)
+        .get();
   }
+
+  @override
+  Stream<List<DbStatusWrapper>> watchHomeStatuses(
+      {@required bool onlyLocal,
+      @required bool onlyMedia,
+      @required bool withMuted,
+      @required List<PleromaVisibility> excludeVisibilities,
+      @required IStatus notNewerThanStatus,
+      @required IStatus notOlderThanStatus,
+      @required int limit,
+      @required StatusOrderingTermData orderingTermData}) {
+    return createQuery(
+        onlyLocal: onlyLocal,
+        onlyMedia: onlyMedia,
+        withMuted: withMuted,
+        excludeVisibilities: excludeVisibilities,
+        notNewerThanStatus: notNewerThanStatus,
+        notOlderThanStatus: notOlderThanStatus,
+        limit: limit,
+        orderingTermData: orderingTermData)
+        .map(mapDataClassToItem)
+        .watch();
+  }
+
 
 
   @override
@@ -102,24 +183,23 @@ class StatusRepository extends AsyncInitLoadingBloc
       @required IStatus notNewerThanStatus,
       @required IStatus notOlderThanStatus,
       @required int limit,
-      @required StatusSortType sortType,
-      @required RepositorySortDirection sortDirection}) {
+      @required StatusOrderingTermData orderingTermData}) {
     // TODO: implement getHomeStatuses
     throw UnimplementedError();
   }
 
   @override
-  Future<List<DbStatusWrapper>> getHomeStatuses(
-      {@required bool onlyLocal,
+  Stream<List<DbStatusWrapper>> watchHashTagStatuses(
+      {@required String hashTag,
+      @required bool onlyLocal,
       @required bool onlyMedia,
       @required bool withMuted,
       @required List<PleromaVisibility> excludeVisibilities,
       @required IStatus notNewerThanStatus,
       @required IStatus notOlderThanStatus,
       @required int limit,
-      @required StatusSortType sortType,
-      @required RepositorySortDirection sortDirection}) {
-    // TODO: implement getHomeStatuses
+      @required StatusOrderingTermData orderingTermData}) {
+    // TODO: implement watchHashTagStatuses
     throw UnimplementedError();
   }
 
@@ -133,60 +213,13 @@ class StatusRepository extends AsyncInitLoadingBloc
       @required IStatus notNewerThanStatus,
       @required IStatus notOlderThanStatus,
       @required int limit,
-      @required StatusSortType sortType,
-      @required RepositorySortDirection sortDirection}) {
+      @required StatusOrderingTermData orderingTermData}) {
     // TODO: implement getListStatuses
     throw UnimplementedError();
   }
 
   @override
-  Future<List<DbStatusWrapper>> getPublicStatuses(
-      {@required bool onlyLocal,
-      @required bool onlyMedia,
-      @required bool withMuted,
-      @required List<PleromaVisibility> excludeVisibilities,
-      @required IStatus notNewerThanStatus,
-      @required IStatus notOlderThanStatus,
-      @required int limit,
-      @required StatusSortType sortType,
-      @required RepositorySortDirection sortDirection}) {
-    // TODO: implement getPublicStatuses
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<DbStatusWrapper>> watchHashTagStatuses(
-      {@required String hashTag,
-      @required bool onlyLocal,
-      @required bool onlyMedia,
-      @required bool withMuted,
-      @required List<PleromaVisibility> excludeVisibilities,
-      @required IStatus notNewerThanStatus,
-      @required IStatus notOlderThanStatus,
-      @required int limit,
-      @required StatusSortType sortType,
-      @required RepositorySortDirection sortDirection}) {
-    // TODO: implement watchHashTagStatuses
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<DbStatusWrapper>> watchHomeStatuses(
-      {@required bool onlyLocal,
-      @required bool onlyMedia,
-      @required bool withMuted,
-      @required List<PleromaVisibility> excludeVisibilities,
-      @required IStatus notNewerThanStatus,
-      @required IStatus notOlderThanStatus,
-      @required int limit,
-      @required StatusSortType sortType,
-      @required RepositorySortDirection sortDirection}) {
-    // TODO: implement watchHomeStatuses
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<DbStatusWrapper>> watchListStatuses(
+  Stream<List<DbStatusWrapper>> watchListStatuses(
       {@required String listRemoteId,
       @required bool onlyLocal,
       @required bool onlyMedia,
@@ -195,24 +228,8 @@ class StatusRepository extends AsyncInitLoadingBloc
       @required IStatus notNewerThanStatus,
       @required IStatus notOlderThanStatus,
       @required int limit,
-      @required StatusSortType sortType,
-      @required RepositorySortDirection sortDirection}) {
+      @required StatusOrderingTermData orderingTermData}) {
     // TODO: implement watchListStatuses
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<DbStatusWrapper>> watchPublicStatuses(
-      {@required bool onlyLocal,
-      @required bool onlyMedia,
-      @required bool withMuted,
-      @required List<PleromaVisibility> excludeVisibilities,
-      @required IStatus notNewerThanStatus,
-      @required IStatus notOlderThanStatus,
-      @required int limit,
-      @required StatusSortType sortType,
-      @required RepositorySortDirection sortDirection}) {
-    // TODO: implement watchPublicStatuses
     throw UnimplementedError();
   }
 
@@ -234,8 +251,9 @@ class StatusRepository extends AsyncInitLoadingBloc
         notNewerThanStatus: null,
         notOlderThanStatus: null,
         limit: 1,
-        sortType: StatusSortType.remoteId,
-        sortDirection: RepositorySortDirection.descendant);
+        orderingTermData: StatusOrderingTermData(
+            orderByType: StatusOrderByType.remoteId,
+            orderingMode: OrderingMode.desc));
 
     IStatus latestStatus;
     if (statuses.isNotEmpty) {
@@ -270,8 +288,9 @@ class StatusRepository extends AsyncInitLoadingBloc
         notNewerThanStatus: null,
         notOlderThanStatus: null,
         limit: 1,
-        sortType: StatusSortType.remoteId,
-        sortDirection: RepositorySortDirection.descendant);
+        orderingTermData: StatusOrderingTermData(
+            orderByType: StatusOrderByType.remoteId,
+            orderingMode: OrderingMode.desc));
 
     IStatus latestStatus;
     if (statuses.isNotEmpty) {
@@ -308,8 +327,9 @@ class StatusRepository extends AsyncInitLoadingBloc
         notNewerThanStatus: null,
         notOlderThanStatus: null,
         limit: 1,
-        sortType: StatusSortType.remoteId,
-        sortDirection: RepositorySortDirection.descendant);
+        orderingTermData: StatusOrderingTermData(
+            orderByType: StatusOrderByType.remoteId,
+            orderingMode: OrderingMode.desc));
 
     IStatus latestStatus;
     if (statuses.isNotEmpty) {
@@ -345,8 +365,9 @@ class StatusRepository extends AsyncInitLoadingBloc
         notNewerThanStatus: null,
         notOlderThanStatus: null,
         limit: 1,
-        sortType: StatusSortType.remoteId,
-        sortDirection: RepositorySortDirection.descendant);
+        orderingTermData: StatusOrderingTermData(
+            orderByType: StatusOrderByType.remoteId,
+            orderingMode: OrderingMode.desc));
 
     IStatus latestStatus;
     if (statuses.isNotEmpty) {

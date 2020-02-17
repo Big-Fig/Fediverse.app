@@ -66,6 +66,9 @@ abstract class IStatus {
 
   PleromaVisibility get visibility;
 
+  String get language;
+
+
   // expanded pleroma object fields
 
   // a map consisting of alternate representations of the content property with
@@ -222,4 +225,7 @@ class DbStatusWrapper implements IStatus {
 
   @override
   PleromaVisibility get visibility => dbStatus.visibility;
+
+  @override
+  String get language => dbStatus.language;
 }

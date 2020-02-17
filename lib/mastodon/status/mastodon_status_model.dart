@@ -60,6 +60,8 @@ abstract class IMastodonStatus {
   IMastodonPoll get poll;
   IMastodonCard get card;
 
+  String get language;
+
   MastodonVisibility get visibilityMastodon =>
       const MastodonVisibilityTypeConverter().fromJson(visibilityRaw);
 }

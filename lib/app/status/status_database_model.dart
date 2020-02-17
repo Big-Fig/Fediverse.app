@@ -1,13 +1,13 @@
 import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/Pleroma/application/pleroma_application_model.dart';
+import 'package:fedi/Pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/Pleroma/content/pleroma_content_model.dart';
 import 'package:fedi/Pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/Pleroma/mention/pleroma_mention_model.dart';
 import 'package:fedi/Pleroma/poll/pleroma_poll_model.dart';
-import 'package:fedi/Pleroma/card/pleroma_card_model.dart';
-import 'package:fedi/Pleroma/tag/pleroma_tag_model.dart';
 import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
+import 'package:fedi/Pleroma/tag/pleroma_tag_model.dart';
 import 'package:fedi/Pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/moor/moor_json_type_converter.dart';
 import 'package:moor/moor.dart';
@@ -19,15 +19,15 @@ class DbStatuses extends Table {
 
   TextColumn get remoteId => text()();
   DateTimeColumn get createdAt => dateTime()();
-  TextColumn get inReplyToRemoteId => text()();
-  TextColumn get inReplyToAccountRemoteId => text()();
+  TextColumn get inReplyToRemoteId => text().nullable()();
+  TextColumn get inReplyToAccountRemoteId => text().nullable()();
   BoolColumn get sensitive => boolean()();
   TextColumn get spoilerText => text()();
   TextColumn get visibility => text()
       .customConstraint("UNIQUE NOT NULL")
       .map(PleromaVisibilityDatabaseConverter())();
   TextColumn get uri => text()();
-  TextColumn get url => text()();
+  TextColumn get url => text().nullable()();
   IntColumn get repliesCount => integer()();
   IntColumn get reblogsCount => integer()();
   IntColumn get favouritesCount => integer()();
@@ -35,37 +35,46 @@ class DbStatuses extends Table {
   BoolColumn get reblogged => boolean()();
   BoolColumn get muted => boolean()();
   BoolColumn get bookmarked => boolean()();
-  TextColumn get content => text()();
+  TextColumn get content => text().nullable()();
+
   // TODO: rework with join
-  TextColumn get reblog =>
-      text().map(PleromaStatusDatabaseConverter())();
+  TextColumn get reblog => text().map(PleromaStatusDatabaseConverter()).nullable()();
   TextColumn get application =>
       text().map(PleromaApplicationDatabaseConverter())();
+
   // TODO: rework with join
   TextColumn get account => text().map(PleromaAccountDatabaseConverter())();
   TextColumn get mediaAttachments =>
-      text().map(PleromaMediaAttachmentListDatabaseConverter())();
-  TextColumn get mentions => text().map(PleromaMentionListDatabaseConverter())();
+      text().map(PleromaMediaAttachmentListDatabaseConverter()).nullable()();
+  TextColumn get mentions =>
+      text().map(PleromaMentionListDatabaseConverter()).nullable()();
+
   // TODO: rework with join
-  TextColumn get tags => text().map(PleromaTagListDatabaseConverter())();
-  TextColumn get emojis => text().map(PleromaEmojiListDatabaseConverter())();
-  TextColumn get poll => text().map(PleromaPollDatabaseConverter())();
-  TextColumn get card => text().map(PleromaCardDatabaseConverter())();
+  TextColumn get tags =>
+      text().map(PleromaTagListDatabaseConverter()).nullable()();
+  TextColumn get emojis =>
+      text().map(PleromaEmojiListDatabaseConverter()).nullable()();
+  TextColumn get poll =>
+      text().map(PleromaPollDatabaseConverter()).nullable()();
+  TextColumn get card =>
+      text().map(PleromaCardDatabaseConverter()).nullable()();
+  TextColumn get language =>
+      text().nullable()();
 
   //  expanded pleroma object fields
   TextColumn get pleromaContent =>
-      text().map(PleromaContentDatabaseConverter())();
-  IntColumn get pleromaConversationId => integer()();
-  IntColumn get pleromaDirectConversationId => integer()();
-  TextColumn get pleromaInReplyToAccountAcct => text()();
-  BoolColumn get pleromaLocal => boolean()();
+      text().map(PleromaContentDatabaseConverter()).nullable()();
+  IntColumn get pleromaConversationId => integer().nullable()();
+  IntColumn get pleromaDirectConversationId => integer().nullable()();
+  TextColumn get pleromaInReplyToAccountAcct => text().nullable()();
+  BoolColumn get pleromaLocal => boolean().nullable()();
   TextColumn get pleromaSpoilerText =>
-      text().map(PleromaContentDatabaseConverter())();
-  DateTimeColumn get pleromaExpiresAt => dateTime()();
-  BoolColumn get pleromaThreadMuted => boolean()();
+      text().map(PleromaContentDatabaseConverter()).nullable()();
+  DateTimeColumn get pleromaExpiresAt => dateTime().nullable()();
+  BoolColumn get pleromaThreadMuted => boolean().nullable()();
 
   TextColumn get pleromaEmojiReactions =>
-      text().map(PleromaEmojiReactionsListDatabaseConverter())();
+      text().map(PleromaEmojiReactionsListDatabaseConverter()).nullable()();
 }
 
 class PleromaVisibilityDatabaseConverter
@@ -92,6 +101,7 @@ class PleromaApplicationDatabaseConverter
   @override
   Map<String, dynamic> toJson(PleromaApplication obj) => obj.toJson();
 }
+
 class PleromaStatusDatabaseConverter
     extends JsonDatabaseConverter<PleromaStatus> {
   const PleromaStatusDatabaseConverter() : super();
@@ -163,8 +173,7 @@ class PleromaEmojiListDatabaseConverter
   Map<String, dynamic> toJson(PleromaEmoji obj) => obj.toJson();
 }
 
-class PleromaPollDatabaseConverter
-    extends JsonDatabaseConverter<PleromaPoll> {
+class PleromaPollDatabaseConverter extends JsonDatabaseConverter<PleromaPoll> {
   const PleromaPollDatabaseConverter() : super();
 
   @override
@@ -173,8 +182,8 @@ class PleromaPollDatabaseConverter
   @override
   Map<String, dynamic> toJson(PleromaPoll obj) => obj.toJson();
 }
-class PleromaCardDatabaseConverter
-    extends JsonDatabaseConverter<PleromaCard> {
+
+class PleromaCardDatabaseConverter extends JsonDatabaseConverter<PleromaCard> {
   const PleromaCardDatabaseConverter() : super();
 
   @override

@@ -96,6 +96,8 @@ class PleromaStatus extends IPleromaStatus {
   final PleromaCard card;
   final PleromaStatusPleromaPart pleroma;
 
+  final String language;
+
   @override
   @JsonKey(name: "visbility")
   String visibilityRaw;
@@ -133,7 +135,9 @@ class PleromaStatus extends IPleromaStatus {
       this.poll,
       this.card,
       this.pleroma,
-      this.visibilityRaw});
+      this.visibilityRaw,
+      this.language,
+      });
 
   factory PleromaStatus.fromJson(Map<String, dynamic> json) =>
       _$PleromaStatusFromJson(json);
