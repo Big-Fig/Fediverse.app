@@ -383,21 +383,19 @@ class StatusRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future upsertAll(Iterable<DbStatusWrapper> items) async {
+  Future upsertAll(Iterable<DbStatus> items) async {
     // insertOrReplace
     // if a row with the same primary or unique key already
     // exists, it will be deleted and re-created with the row being inserted.
     // We declared remoteId as unique so it possible to insertOrReplace by it too
-    await dao.insertAll(
-        items.map((item) => item.dbStatus), InsertMode.insertOrReplace);
+    await dao.insertAll(items, InsertMode.insertOrReplace);
   }
 
   @override
-  Future insertAll(Iterable<DbStatusWrapper> items) async {
+  Future insertAll(Iterable<DbStatus> items) async {
     // if item already exist rollback changes
     // call this only if you sure that items not exist instead user upsertAll
-    return await dao.insertAll(
-        items.map((item) => item.dbStatus), InsertMode.insertOrRollback);
+    return await dao.insertAll(items, InsertMode.insertOrRollback);
   }
 
   @override
@@ -431,15 +429,14 @@ class StatusRepository extends AsyncInitLoadingBloc
       dao.getAllQuery().map(mapDataClassToItem).watch();
 
   @override
-  Future<int> insert(IStatus item) => dao.insert(mapItemToDataClass(item));
+  Future<int> insert(DbStatus item) => dao.insert(item);
 
   @override
-  Future<bool> updateById(int id, DbStatusWrapper item) {
-    var dbProfile = item.dbStatus;
-    if (item.localId != id) {
-      dbProfile = dbProfile.copyWith(id: id);
+  Future<bool> updateById(int id, DbStatus dbStatus) {
+    if (dbStatus.id != id) {
+      dbStatus = dbStatus.copyWith(id: id);
     }
-    return dao.replace(dbProfile);
+    return dao.replace(dbStatus);
   }
 
   DbStatusWrapper mapDataClassToItem(DbStatus dataClass) =>
@@ -448,7 +445,7 @@ class StatusRepository extends AsyncInitLoadingBloc
   Insertable<DbStatus> mapItemToDataClass(DbStatusWrapper item) =>
       item.dbStatus;
 
-  static DbStatusWrapper mapRemoteStatusToDbStatus(
+  static DbStatus mapRemoteStatusToDbStatus(
       IPleromaStatus remoteStatus) {
     // TODO: fix when https://git.pleroma.social/pleroma/pleroma/issues/1573  will be resolved
     DateTime expiresAt;
@@ -461,7 +458,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     } catch (e) {
       _logger.shout(() => "Error during parsing expiresAt $e");
     }
-    return DbStatusWrapper(DbStatus(
+    return DbStatus(
         id: null,
         remoteId: remoteStatus.id,
         createdAt: remoteStatus.createdAt,
@@ -497,7 +494,7 @@ class StatusRepository extends AsyncInitLoadingBloc
         pleromaSpoilerText: remoteStatus.pleroma.spoilerText,
         pleromaExpiresAt: expiresAt,
         pleromaThreadMuted: remoteStatus.pleroma.threadMuted,
-        pleromaEmojiReactions: remoteStatus.pleroma.emojiReactions));
+        pleromaEmojiReactions: remoteStatus.pleroma.emojiReactions);
   }
 
   static String extractHost(String url) => Uri.parse(url).host;

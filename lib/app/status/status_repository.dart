@@ -1,4 +1,5 @@
 import 'package:fedi/Pleroma/visibility/pleroma_visibility_model.dart';
+import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_repository_model.dart';
 import 'package:fedi/repository/repository.dart';
@@ -8,7 +9,7 @@ import 'package:provider/provider.dart';
 abstract class IStatusRepository
     implements
         IReadIdListRepository<IStatus, int>,
-        IWriteIdListRepository<DbStatusWrapper, int> {
+        IWriteIdListRepository<DbStatus, int> {
   static IStatusRepository of(BuildContext context, {bool listen = true}) =>
       Provider.of<IStatusRepository>(context, listen: listen);
 

@@ -39,10 +39,10 @@ abstract class IMastodonAccount {
 
   String get acct;
 
-  // Note the extra source property,
-  // which is not visible on accounts other than your own.
-  // Also note that plain-text is used within source and
-  // HTML is used for their corresponding properties such as note and fields.
+  /// Note the extra source property,
+  /// which is not visible on accounts other than your own.
+  /// Also note that plain-text is used within source and
+  /// HTML is used for their corresponding properties such as note and fields.
   IMastodonSource get source;
 
   DateTime get lastStatusAt;

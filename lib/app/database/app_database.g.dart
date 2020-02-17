@@ -820,11 +820,8 @@ class $DbStatusesTable extends DbStatuses
   @override
   GeneratedTextColumn get remoteId => _remoteId ??= _constructRemoteId();
   GeneratedTextColumn _constructRemoteId() {
-    return GeneratedTextColumn(
-      'remote_id',
-      $tableName,
-      false,
-    );
+    return GeneratedTextColumn('remote_id', $tableName, false,
+        $customConstraints: 'UNIQUE NOT NULL');
   }
 
   final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
@@ -1677,14 +1674,1750 @@ class $DbStatusesTable extends DbStatuses
       PleromaEmojiReactionsListDatabaseConverter();
 }
 
+class DbAccount extends DataClass implements Insertable<DbAccount> {
+  final int id;
+  final String remoteId;
+  final String username;
+  final String url;
+  final String note;
+  final bool locked;
+  final String headerStatic;
+  final String header;
+  final int followingCount;
+  final int followersCount;
+  final int statusesCount;
+  final String displayName;
+  final DateTime createdAt;
+  final bool bot;
+  final String avatarStatic;
+  final String avatar;
+  final String acct;
+  final DateTime lastStatusAt;
+  final List<PleromaField> fields;
+  final List<PleromaEmoji> emojis;
+  final PleromaSource source;
+  final List<PleromaTag> pleromaTags;
+  final PleromaRelationship pleromaRelationship;
+  final bool pleromaIsAdmin;
+  final bool pleromaIsModerator;
+  final bool pleromaConfirmationPending;
+  final bool pleromaHideFavorites;
+  final bool pleromaHideFollowers;
+  final bool pleromaHideFollows;
+  final bool pleromaHideFollowersCount;
+  final bool pleromaHideFollowsCount;
+  final String pleromaChatToken;
+  final bool pleromaDeactivated;
+  final bool pleromaAllowFollowingMove;
+  final int pleromaUnreadConversationCount;
+  final bool pleromaSkipThreadContainment;
+  final PleromaAccountPleromaPartNotificationsSettings
+      pleromaNotificationSettings;
+  DbAccount(
+      {@required this.id,
+      @required this.remoteId,
+      @required this.username,
+      @required this.url,
+      @required this.note,
+      @required this.locked,
+      @required this.headerStatic,
+      @required this.header,
+      @required this.followingCount,
+      @required this.followersCount,
+      @required this.statusesCount,
+      @required this.displayName,
+      @required this.createdAt,
+      this.bot,
+      @required this.avatarStatic,
+      @required this.avatar,
+      @required this.acct,
+      @required this.lastStatusAt,
+      this.fields,
+      this.emojis,
+      this.source,
+      this.pleromaTags,
+      this.pleromaRelationship,
+      this.pleromaIsAdmin,
+      this.pleromaIsModerator,
+      this.pleromaConfirmationPending,
+      this.pleromaHideFavorites,
+      this.pleromaHideFollowers,
+      this.pleromaHideFollows,
+      this.pleromaHideFollowersCount,
+      this.pleromaHideFollowsCount,
+      this.pleromaChatToken,
+      this.pleromaDeactivated,
+      this.pleromaAllowFollowingMove,
+      this.pleromaUnreadConversationCount,
+      this.pleromaSkipThreadContainment,
+      this.pleromaNotificationSettings});
+  factory DbAccount.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final stringType = db.typeSystem.forDartType<String>();
+    final boolType = db.typeSystem.forDartType<bool>();
+    final dateTimeType = db.typeSystem.forDartType<DateTime>();
+    return DbAccount(
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      remoteId: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}remote_id']),
+      username: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}username']),
+      url: stringType.mapFromDatabaseResponse(data['${effectivePrefix}url']),
+      note: stringType.mapFromDatabaseResponse(data['${effectivePrefix}note']),
+      locked:
+          boolType.mapFromDatabaseResponse(data['${effectivePrefix}locked']),
+      headerStatic: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}header_static']),
+      header:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}header']),
+      followingCount: intType
+          .mapFromDatabaseResponse(data['${effectivePrefix}following_count']),
+      followersCount: intType
+          .mapFromDatabaseResponse(data['${effectivePrefix}followers_count']),
+      statusesCount: intType
+          .mapFromDatabaseResponse(data['${effectivePrefix}statuses_count']),
+      displayName: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}display_name']),
+      createdAt: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}created_at']),
+      bot: boolType.mapFromDatabaseResponse(data['${effectivePrefix}bot']),
+      avatarStatic: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}avatar_static']),
+      avatar:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}avatar']),
+      acct: stringType.mapFromDatabaseResponse(data['${effectivePrefix}acct']),
+      lastStatusAt: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}last_status_at']),
+      fields: $DbAccountsTable.$converter0.mapToDart(
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}fields'])),
+      emojis: $DbAccountsTable.$converter1.mapToDart(
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}emojis'])),
+      source: $DbAccountsTable.$converter2.mapToDart(
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}source'])),
+      pleromaTags: $DbAccountsTable.$converter3.mapToDart(stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}pleroma_tags'])),
+      pleromaRelationship: $DbAccountsTable.$converter4.mapToDart(
+          stringType.mapFromDatabaseResponse(
+              data['${effectivePrefix}pleroma_relationship'])),
+      pleromaIsAdmin: boolType
+          .mapFromDatabaseResponse(data['${effectivePrefix}pleroma_is_admin']),
+      pleromaIsModerator: boolType.mapFromDatabaseResponse(
+          data['${effectivePrefix}pleroma_is_moderator']),
+      pleromaConfirmationPending: boolType.mapFromDatabaseResponse(
+          data['${effectivePrefix}pleroma_confirmation_pending']),
+      pleromaHideFavorites: boolType.mapFromDatabaseResponse(
+          data['${effectivePrefix}pleroma_hide_favorites']),
+      pleromaHideFollowers: boolType.mapFromDatabaseResponse(
+          data['${effectivePrefix}pleroma_hide_followers']),
+      pleromaHideFollows: boolType.mapFromDatabaseResponse(
+          data['${effectivePrefix}pleroma_hide_follows']),
+      pleromaHideFollowersCount: boolType.mapFromDatabaseResponse(
+          data['${effectivePrefix}pleroma_hide_followers_count']),
+      pleromaHideFollowsCount: boolType.mapFromDatabaseResponse(
+          data['${effectivePrefix}pleroma_hide_follows_count']),
+      pleromaChatToken: stringType.mapFromDatabaseResponse(
+          data['${effectivePrefix}pleroma_chat_token']),
+      pleromaDeactivated: boolType.mapFromDatabaseResponse(
+          data['${effectivePrefix}pleroma_deactivated']),
+      pleromaAllowFollowingMove: boolType.mapFromDatabaseResponse(
+          data['${effectivePrefix}pleroma_allow_following_move']),
+      pleromaUnreadConversationCount: intType.mapFromDatabaseResponse(
+          data['${effectivePrefix}pleroma_unread_conversation_count']),
+      pleromaSkipThreadContainment: boolType.mapFromDatabaseResponse(
+          data['${effectivePrefix}pleroma_skip_thread_containment']),
+      pleromaNotificationSettings: $DbAccountsTable.$converter5.mapToDart(
+          stringType.mapFromDatabaseResponse(
+              data['${effectivePrefix}pleroma_notification_settings'])),
+    );
+  }
+  factory DbAccount.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return DbAccount(
+      id: serializer.fromJson<int>(json['id']),
+      remoteId: serializer.fromJson<String>(json['remoteId']),
+      username: serializer.fromJson<String>(json['username']),
+      url: serializer.fromJson<String>(json['url']),
+      note: serializer.fromJson<String>(json['note']),
+      locked: serializer.fromJson<bool>(json['locked']),
+      headerStatic: serializer.fromJson<String>(json['headerStatic']),
+      header: serializer.fromJson<String>(json['header']),
+      followingCount: serializer.fromJson<int>(json['followingCount']),
+      followersCount: serializer.fromJson<int>(json['followersCount']),
+      statusesCount: serializer.fromJson<int>(json['statusesCount']),
+      displayName: serializer.fromJson<String>(json['displayName']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      bot: serializer.fromJson<bool>(json['bot']),
+      avatarStatic: serializer.fromJson<String>(json['avatarStatic']),
+      avatar: serializer.fromJson<String>(json['avatar']),
+      acct: serializer.fromJson<String>(json['acct']),
+      lastStatusAt: serializer.fromJson<DateTime>(json['lastStatusAt']),
+      fields: serializer.fromJson<List<PleromaField>>(json['fields']),
+      emojis: serializer.fromJson<List<PleromaEmoji>>(json['emojis']),
+      source: serializer.fromJson<PleromaSource>(json['source']),
+      pleromaTags: serializer.fromJson<List<PleromaTag>>(json['pleromaTags']),
+      pleromaRelationship:
+          serializer.fromJson<PleromaRelationship>(json['pleromaRelationship']),
+      pleromaIsAdmin: serializer.fromJson<bool>(json['pleromaIsAdmin']),
+      pleromaIsModerator: serializer.fromJson<bool>(json['pleromaIsModerator']),
+      pleromaConfirmationPending:
+          serializer.fromJson<bool>(json['pleromaConfirmationPending']),
+      pleromaHideFavorites:
+          serializer.fromJson<bool>(json['pleromaHideFavorites']),
+      pleromaHideFollowers:
+          serializer.fromJson<bool>(json['pleromaHideFollowers']),
+      pleromaHideFollows: serializer.fromJson<bool>(json['pleromaHideFollows']),
+      pleromaHideFollowersCount:
+          serializer.fromJson<bool>(json['pleromaHideFollowersCount']),
+      pleromaHideFollowsCount:
+          serializer.fromJson<bool>(json['pleromaHideFollowsCount']),
+      pleromaChatToken: serializer.fromJson<String>(json['pleromaChatToken']),
+      pleromaDeactivated: serializer.fromJson<bool>(json['pleromaDeactivated']),
+      pleromaAllowFollowingMove:
+          serializer.fromJson<bool>(json['pleromaAllowFollowingMove']),
+      pleromaUnreadConversationCount:
+          serializer.fromJson<int>(json['pleromaUnreadConversationCount']),
+      pleromaSkipThreadContainment:
+          serializer.fromJson<bool>(json['pleromaSkipThreadContainment']),
+      pleromaNotificationSettings:
+          serializer.fromJson<PleromaAccountPleromaPartNotificationsSettings>(
+              json['pleromaNotificationSettings']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'remoteId': serializer.toJson<String>(remoteId),
+      'username': serializer.toJson<String>(username),
+      'url': serializer.toJson<String>(url),
+      'note': serializer.toJson<String>(note),
+      'locked': serializer.toJson<bool>(locked),
+      'headerStatic': serializer.toJson<String>(headerStatic),
+      'header': serializer.toJson<String>(header),
+      'followingCount': serializer.toJson<int>(followingCount),
+      'followersCount': serializer.toJson<int>(followersCount),
+      'statusesCount': serializer.toJson<int>(statusesCount),
+      'displayName': serializer.toJson<String>(displayName),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'bot': serializer.toJson<bool>(bot),
+      'avatarStatic': serializer.toJson<String>(avatarStatic),
+      'avatar': serializer.toJson<String>(avatar),
+      'acct': serializer.toJson<String>(acct),
+      'lastStatusAt': serializer.toJson<DateTime>(lastStatusAt),
+      'fields': serializer.toJson<List<PleromaField>>(fields),
+      'emojis': serializer.toJson<List<PleromaEmoji>>(emojis),
+      'source': serializer.toJson<PleromaSource>(source),
+      'pleromaTags': serializer.toJson<List<PleromaTag>>(pleromaTags),
+      'pleromaRelationship':
+          serializer.toJson<PleromaRelationship>(pleromaRelationship),
+      'pleromaIsAdmin': serializer.toJson<bool>(pleromaIsAdmin),
+      'pleromaIsModerator': serializer.toJson<bool>(pleromaIsModerator),
+      'pleromaConfirmationPending':
+          serializer.toJson<bool>(pleromaConfirmationPending),
+      'pleromaHideFavorites': serializer.toJson<bool>(pleromaHideFavorites),
+      'pleromaHideFollowers': serializer.toJson<bool>(pleromaHideFollowers),
+      'pleromaHideFollows': serializer.toJson<bool>(pleromaHideFollows),
+      'pleromaHideFollowersCount':
+          serializer.toJson<bool>(pleromaHideFollowersCount),
+      'pleromaHideFollowsCount':
+          serializer.toJson<bool>(pleromaHideFollowsCount),
+      'pleromaChatToken': serializer.toJson<String>(pleromaChatToken),
+      'pleromaDeactivated': serializer.toJson<bool>(pleromaDeactivated),
+      'pleromaAllowFollowingMove':
+          serializer.toJson<bool>(pleromaAllowFollowingMove),
+      'pleromaUnreadConversationCount':
+          serializer.toJson<int>(pleromaUnreadConversationCount),
+      'pleromaSkipThreadContainment':
+          serializer.toJson<bool>(pleromaSkipThreadContainment),
+      'pleromaNotificationSettings':
+          serializer.toJson<PleromaAccountPleromaPartNotificationsSettings>(
+              pleromaNotificationSettings),
+    };
+  }
+
+  @override
+  DbAccountsCompanion createCompanion(bool nullToAbsent) {
+    return DbAccountsCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      remoteId: remoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(remoteId),
+      username: username == null && nullToAbsent
+          ? const Value.absent()
+          : Value(username),
+      url: url == null && nullToAbsent ? const Value.absent() : Value(url),
+      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
+      locked:
+          locked == null && nullToAbsent ? const Value.absent() : Value(locked),
+      headerStatic: headerStatic == null && nullToAbsent
+          ? const Value.absent()
+          : Value(headerStatic),
+      header:
+          header == null && nullToAbsent ? const Value.absent() : Value(header),
+      followingCount: followingCount == null && nullToAbsent
+          ? const Value.absent()
+          : Value(followingCount),
+      followersCount: followersCount == null && nullToAbsent
+          ? const Value.absent()
+          : Value(followersCount),
+      statusesCount: statusesCount == null && nullToAbsent
+          ? const Value.absent()
+          : Value(statusesCount),
+      displayName: displayName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(displayName),
+      createdAt: createdAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(createdAt),
+      bot: bot == null && nullToAbsent ? const Value.absent() : Value(bot),
+      avatarStatic: avatarStatic == null && nullToAbsent
+          ? const Value.absent()
+          : Value(avatarStatic),
+      avatar:
+          avatar == null && nullToAbsent ? const Value.absent() : Value(avatar),
+      acct: acct == null && nullToAbsent ? const Value.absent() : Value(acct),
+      lastStatusAt: lastStatusAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastStatusAt),
+      fields:
+          fields == null && nullToAbsent ? const Value.absent() : Value(fields),
+      emojis:
+          emojis == null && nullToAbsent ? const Value.absent() : Value(emojis),
+      source:
+          source == null && nullToAbsent ? const Value.absent() : Value(source),
+      pleromaTags: pleromaTags == null && nullToAbsent
+          ? const Value.absent()
+          : Value(pleromaTags),
+      pleromaRelationship: pleromaRelationship == null && nullToAbsent
+          ? const Value.absent()
+          : Value(pleromaRelationship),
+      pleromaIsAdmin: pleromaIsAdmin == null && nullToAbsent
+          ? const Value.absent()
+          : Value(pleromaIsAdmin),
+      pleromaIsModerator: pleromaIsModerator == null && nullToAbsent
+          ? const Value.absent()
+          : Value(pleromaIsModerator),
+      pleromaConfirmationPending:
+          pleromaConfirmationPending == null && nullToAbsent
+              ? const Value.absent()
+              : Value(pleromaConfirmationPending),
+      pleromaHideFavorites: pleromaHideFavorites == null && nullToAbsent
+          ? const Value.absent()
+          : Value(pleromaHideFavorites),
+      pleromaHideFollowers: pleromaHideFollowers == null && nullToAbsent
+          ? const Value.absent()
+          : Value(pleromaHideFollowers),
+      pleromaHideFollows: pleromaHideFollows == null && nullToAbsent
+          ? const Value.absent()
+          : Value(pleromaHideFollows),
+      pleromaHideFollowersCount:
+          pleromaHideFollowersCount == null && nullToAbsent
+              ? const Value.absent()
+              : Value(pleromaHideFollowersCount),
+      pleromaHideFollowsCount: pleromaHideFollowsCount == null && nullToAbsent
+          ? const Value.absent()
+          : Value(pleromaHideFollowsCount),
+      pleromaChatToken: pleromaChatToken == null && nullToAbsent
+          ? const Value.absent()
+          : Value(pleromaChatToken),
+      pleromaDeactivated: pleromaDeactivated == null && nullToAbsent
+          ? const Value.absent()
+          : Value(pleromaDeactivated),
+      pleromaAllowFollowingMove:
+          pleromaAllowFollowingMove == null && nullToAbsent
+              ? const Value.absent()
+              : Value(pleromaAllowFollowingMove),
+      pleromaUnreadConversationCount:
+          pleromaUnreadConversationCount == null && nullToAbsent
+              ? const Value.absent()
+              : Value(pleromaUnreadConversationCount),
+      pleromaSkipThreadContainment:
+          pleromaSkipThreadContainment == null && nullToAbsent
+              ? const Value.absent()
+              : Value(pleromaSkipThreadContainment),
+      pleromaNotificationSettings:
+          pleromaNotificationSettings == null && nullToAbsent
+              ? const Value.absent()
+              : Value(pleromaNotificationSettings),
+    );
+  }
+
+  DbAccount copyWith(
+          {int id,
+          String remoteId,
+          String username,
+          String url,
+          String note,
+          bool locked,
+          String headerStatic,
+          String header,
+          int followingCount,
+          int followersCount,
+          int statusesCount,
+          String displayName,
+          DateTime createdAt,
+          bool bot,
+          String avatarStatic,
+          String avatar,
+          String acct,
+          DateTime lastStatusAt,
+          List<PleromaField> fields,
+          List<PleromaEmoji> emojis,
+          PleromaSource source,
+          List<PleromaTag> pleromaTags,
+          PleromaRelationship pleromaRelationship,
+          bool pleromaIsAdmin,
+          bool pleromaIsModerator,
+          bool pleromaConfirmationPending,
+          bool pleromaHideFavorites,
+          bool pleromaHideFollowers,
+          bool pleromaHideFollows,
+          bool pleromaHideFollowersCount,
+          bool pleromaHideFollowsCount,
+          String pleromaChatToken,
+          bool pleromaDeactivated,
+          bool pleromaAllowFollowingMove,
+          int pleromaUnreadConversationCount,
+          bool pleromaSkipThreadContainment,
+          PleromaAccountPleromaPartNotificationsSettings
+              pleromaNotificationSettings}) =>
+      DbAccount(
+        id: id ?? this.id,
+        remoteId: remoteId ?? this.remoteId,
+        username: username ?? this.username,
+        url: url ?? this.url,
+        note: note ?? this.note,
+        locked: locked ?? this.locked,
+        headerStatic: headerStatic ?? this.headerStatic,
+        header: header ?? this.header,
+        followingCount: followingCount ?? this.followingCount,
+        followersCount: followersCount ?? this.followersCount,
+        statusesCount: statusesCount ?? this.statusesCount,
+        displayName: displayName ?? this.displayName,
+        createdAt: createdAt ?? this.createdAt,
+        bot: bot ?? this.bot,
+        avatarStatic: avatarStatic ?? this.avatarStatic,
+        avatar: avatar ?? this.avatar,
+        acct: acct ?? this.acct,
+        lastStatusAt: lastStatusAt ?? this.lastStatusAt,
+        fields: fields ?? this.fields,
+        emojis: emojis ?? this.emojis,
+        source: source ?? this.source,
+        pleromaTags: pleromaTags ?? this.pleromaTags,
+        pleromaRelationship: pleromaRelationship ?? this.pleromaRelationship,
+        pleromaIsAdmin: pleromaIsAdmin ?? this.pleromaIsAdmin,
+        pleromaIsModerator: pleromaIsModerator ?? this.pleromaIsModerator,
+        pleromaConfirmationPending:
+            pleromaConfirmationPending ?? this.pleromaConfirmationPending,
+        pleromaHideFavorites: pleromaHideFavorites ?? this.pleromaHideFavorites,
+        pleromaHideFollowers: pleromaHideFollowers ?? this.pleromaHideFollowers,
+        pleromaHideFollows: pleromaHideFollows ?? this.pleromaHideFollows,
+        pleromaHideFollowersCount:
+            pleromaHideFollowersCount ?? this.pleromaHideFollowersCount,
+        pleromaHideFollowsCount:
+            pleromaHideFollowsCount ?? this.pleromaHideFollowsCount,
+        pleromaChatToken: pleromaChatToken ?? this.pleromaChatToken,
+        pleromaDeactivated: pleromaDeactivated ?? this.pleromaDeactivated,
+        pleromaAllowFollowingMove:
+            pleromaAllowFollowingMove ?? this.pleromaAllowFollowingMove,
+        pleromaUnreadConversationCount: pleromaUnreadConversationCount ??
+            this.pleromaUnreadConversationCount,
+        pleromaSkipThreadContainment:
+            pleromaSkipThreadContainment ?? this.pleromaSkipThreadContainment,
+        pleromaNotificationSettings:
+            pleromaNotificationSettings ?? this.pleromaNotificationSettings,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('DbAccount(')
+          ..write('id: $id, ')
+          ..write('remoteId: $remoteId, ')
+          ..write('username: $username, ')
+          ..write('url: $url, ')
+          ..write('note: $note, ')
+          ..write('locked: $locked, ')
+          ..write('headerStatic: $headerStatic, ')
+          ..write('header: $header, ')
+          ..write('followingCount: $followingCount, ')
+          ..write('followersCount: $followersCount, ')
+          ..write('statusesCount: $statusesCount, ')
+          ..write('displayName: $displayName, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('bot: $bot, ')
+          ..write('avatarStatic: $avatarStatic, ')
+          ..write('avatar: $avatar, ')
+          ..write('acct: $acct, ')
+          ..write('lastStatusAt: $lastStatusAt, ')
+          ..write('fields: $fields, ')
+          ..write('emojis: $emojis, ')
+          ..write('source: $source, ')
+          ..write('pleromaTags: $pleromaTags, ')
+          ..write('pleromaRelationship: $pleromaRelationship, ')
+          ..write('pleromaIsAdmin: $pleromaIsAdmin, ')
+          ..write('pleromaIsModerator: $pleromaIsModerator, ')
+          ..write('pleromaConfirmationPending: $pleromaConfirmationPending, ')
+          ..write('pleromaHideFavorites: $pleromaHideFavorites, ')
+          ..write('pleromaHideFollowers: $pleromaHideFollowers, ')
+          ..write('pleromaHideFollows: $pleromaHideFollows, ')
+          ..write('pleromaHideFollowersCount: $pleromaHideFollowersCount, ')
+          ..write('pleromaHideFollowsCount: $pleromaHideFollowsCount, ')
+          ..write('pleromaChatToken: $pleromaChatToken, ')
+          ..write('pleromaDeactivated: $pleromaDeactivated, ')
+          ..write('pleromaAllowFollowingMove: $pleromaAllowFollowingMove, ')
+          ..write(
+              'pleromaUnreadConversationCount: $pleromaUnreadConversationCount, ')
+          ..write(
+              'pleromaSkipThreadContainment: $pleromaSkipThreadContainment, ')
+          ..write('pleromaNotificationSettings: $pleromaNotificationSettings')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(
+      id.hashCode,
+      $mrjc(
+          remoteId.hashCode,
+          $mrjc(
+              username.hashCode,
+              $mrjc(
+                  url.hashCode,
+                  $mrjc(
+                      note.hashCode,
+                      $mrjc(
+                          locked.hashCode,
+                          $mrjc(
+                              headerStatic.hashCode,
+                              $mrjc(
+                                  header.hashCode,
+                                  $mrjc(
+                                      followingCount.hashCode,
+                                      $mrjc(
+                                          followersCount.hashCode,
+                                          $mrjc(
+                                              statusesCount.hashCode,
+                                              $mrjc(
+                                                  displayName.hashCode,
+                                                  $mrjc(
+                                                      createdAt.hashCode,
+                                                      $mrjc(
+                                                          bot.hashCode,
+                                                          $mrjc(
+                                                              avatarStatic
+                                                                  .hashCode,
+                                                              $mrjc(
+                                                                  avatar
+                                                                      .hashCode,
+                                                                  $mrjc(
+                                                                      acct
+                                                                          .hashCode,
+                                                                      $mrjc(
+                                                                          lastStatusAt
+                                                                              .hashCode,
+                                                                          $mrjc(
+                                                                              fields.hashCode,
+                                                                              $mrjc(emojis.hashCode, $mrjc(source.hashCode, $mrjc(pleromaTags.hashCode, $mrjc(pleromaRelationship.hashCode, $mrjc(pleromaIsAdmin.hashCode, $mrjc(pleromaIsModerator.hashCode, $mrjc(pleromaConfirmationPending.hashCode, $mrjc(pleromaHideFavorites.hashCode, $mrjc(pleromaHideFollowers.hashCode, $mrjc(pleromaHideFollows.hashCode, $mrjc(pleromaHideFollowersCount.hashCode, $mrjc(pleromaHideFollowsCount.hashCode, $mrjc(pleromaChatToken.hashCode, $mrjc(pleromaDeactivated.hashCode, $mrjc(pleromaAllowFollowingMove.hashCode, $mrjc(pleromaUnreadConversationCount.hashCode, $mrjc(pleromaSkipThreadContainment.hashCode, pleromaNotificationSettings.hashCode)))))))))))))))))))))))))))))))))))));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is DbAccount &&
+          other.id == this.id &&
+          other.remoteId == this.remoteId &&
+          other.username == this.username &&
+          other.url == this.url &&
+          other.note == this.note &&
+          other.locked == this.locked &&
+          other.headerStatic == this.headerStatic &&
+          other.header == this.header &&
+          other.followingCount == this.followingCount &&
+          other.followersCount == this.followersCount &&
+          other.statusesCount == this.statusesCount &&
+          other.displayName == this.displayName &&
+          other.createdAt == this.createdAt &&
+          other.bot == this.bot &&
+          other.avatarStatic == this.avatarStatic &&
+          other.avatar == this.avatar &&
+          other.acct == this.acct &&
+          other.lastStatusAt == this.lastStatusAt &&
+          other.fields == this.fields &&
+          other.emojis == this.emojis &&
+          other.source == this.source &&
+          other.pleromaTags == this.pleromaTags &&
+          other.pleromaRelationship == this.pleromaRelationship &&
+          other.pleromaIsAdmin == this.pleromaIsAdmin &&
+          other.pleromaIsModerator == this.pleromaIsModerator &&
+          other.pleromaConfirmationPending == this.pleromaConfirmationPending &&
+          other.pleromaHideFavorites == this.pleromaHideFavorites &&
+          other.pleromaHideFollowers == this.pleromaHideFollowers &&
+          other.pleromaHideFollows == this.pleromaHideFollows &&
+          other.pleromaHideFollowersCount == this.pleromaHideFollowersCount &&
+          other.pleromaHideFollowsCount == this.pleromaHideFollowsCount &&
+          other.pleromaChatToken == this.pleromaChatToken &&
+          other.pleromaDeactivated == this.pleromaDeactivated &&
+          other.pleromaAllowFollowingMove == this.pleromaAllowFollowingMove &&
+          other.pleromaUnreadConversationCount ==
+              this.pleromaUnreadConversationCount &&
+          other.pleromaSkipThreadContainment ==
+              this.pleromaSkipThreadContainment &&
+          other.pleromaNotificationSettings ==
+              this.pleromaNotificationSettings);
+}
+
+class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
+  final Value<int> id;
+  final Value<String> remoteId;
+  final Value<String> username;
+  final Value<String> url;
+  final Value<String> note;
+  final Value<bool> locked;
+  final Value<String> headerStatic;
+  final Value<String> header;
+  final Value<int> followingCount;
+  final Value<int> followersCount;
+  final Value<int> statusesCount;
+  final Value<String> displayName;
+  final Value<DateTime> createdAt;
+  final Value<bool> bot;
+  final Value<String> avatarStatic;
+  final Value<String> avatar;
+  final Value<String> acct;
+  final Value<DateTime> lastStatusAt;
+  final Value<List<PleromaField>> fields;
+  final Value<List<PleromaEmoji>> emojis;
+  final Value<PleromaSource> source;
+  final Value<List<PleromaTag>> pleromaTags;
+  final Value<PleromaRelationship> pleromaRelationship;
+  final Value<bool> pleromaIsAdmin;
+  final Value<bool> pleromaIsModerator;
+  final Value<bool> pleromaConfirmationPending;
+  final Value<bool> pleromaHideFavorites;
+  final Value<bool> pleromaHideFollowers;
+  final Value<bool> pleromaHideFollows;
+  final Value<bool> pleromaHideFollowersCount;
+  final Value<bool> pleromaHideFollowsCount;
+  final Value<String> pleromaChatToken;
+  final Value<bool> pleromaDeactivated;
+  final Value<bool> pleromaAllowFollowingMove;
+  final Value<int> pleromaUnreadConversationCount;
+  final Value<bool> pleromaSkipThreadContainment;
+  final Value<PleromaAccountPleromaPartNotificationsSettings>
+      pleromaNotificationSettings;
+  const DbAccountsCompanion({
+    this.id = const Value.absent(),
+    this.remoteId = const Value.absent(),
+    this.username = const Value.absent(),
+    this.url = const Value.absent(),
+    this.note = const Value.absent(),
+    this.locked = const Value.absent(),
+    this.headerStatic = const Value.absent(),
+    this.header = const Value.absent(),
+    this.followingCount = const Value.absent(),
+    this.followersCount = const Value.absent(),
+    this.statusesCount = const Value.absent(),
+    this.displayName = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.bot = const Value.absent(),
+    this.avatarStatic = const Value.absent(),
+    this.avatar = const Value.absent(),
+    this.acct = const Value.absent(),
+    this.lastStatusAt = const Value.absent(),
+    this.fields = const Value.absent(),
+    this.emojis = const Value.absent(),
+    this.source = const Value.absent(),
+    this.pleromaTags = const Value.absent(),
+    this.pleromaRelationship = const Value.absent(),
+    this.pleromaIsAdmin = const Value.absent(),
+    this.pleromaIsModerator = const Value.absent(),
+    this.pleromaConfirmationPending = const Value.absent(),
+    this.pleromaHideFavorites = const Value.absent(),
+    this.pleromaHideFollowers = const Value.absent(),
+    this.pleromaHideFollows = const Value.absent(),
+    this.pleromaHideFollowersCount = const Value.absent(),
+    this.pleromaHideFollowsCount = const Value.absent(),
+    this.pleromaChatToken = const Value.absent(),
+    this.pleromaDeactivated = const Value.absent(),
+    this.pleromaAllowFollowingMove = const Value.absent(),
+    this.pleromaUnreadConversationCount = const Value.absent(),
+    this.pleromaSkipThreadContainment = const Value.absent(),
+    this.pleromaNotificationSettings = const Value.absent(),
+  });
+  DbAccountsCompanion.insert({
+    this.id = const Value.absent(),
+    @required String remoteId,
+    @required String username,
+    @required String url,
+    @required String note,
+    @required bool locked,
+    @required String headerStatic,
+    @required String header,
+    @required int followingCount,
+    @required int followersCount,
+    @required int statusesCount,
+    @required String displayName,
+    @required DateTime createdAt,
+    this.bot = const Value.absent(),
+    @required String avatarStatic,
+    @required String avatar,
+    @required String acct,
+    @required DateTime lastStatusAt,
+    this.fields = const Value.absent(),
+    this.emojis = const Value.absent(),
+    this.source = const Value.absent(),
+    this.pleromaTags = const Value.absent(),
+    this.pleromaRelationship = const Value.absent(),
+    this.pleromaIsAdmin = const Value.absent(),
+    this.pleromaIsModerator = const Value.absent(),
+    this.pleromaConfirmationPending = const Value.absent(),
+    this.pleromaHideFavorites = const Value.absent(),
+    this.pleromaHideFollowers = const Value.absent(),
+    this.pleromaHideFollows = const Value.absent(),
+    this.pleromaHideFollowersCount = const Value.absent(),
+    this.pleromaHideFollowsCount = const Value.absent(),
+    this.pleromaChatToken = const Value.absent(),
+    this.pleromaDeactivated = const Value.absent(),
+    this.pleromaAllowFollowingMove = const Value.absent(),
+    this.pleromaUnreadConversationCount = const Value.absent(),
+    this.pleromaSkipThreadContainment = const Value.absent(),
+    this.pleromaNotificationSettings = const Value.absent(),
+  })  : remoteId = Value(remoteId),
+        username = Value(username),
+        url = Value(url),
+        note = Value(note),
+        locked = Value(locked),
+        headerStatic = Value(headerStatic),
+        header = Value(header),
+        followingCount = Value(followingCount),
+        followersCount = Value(followersCount),
+        statusesCount = Value(statusesCount),
+        displayName = Value(displayName),
+        createdAt = Value(createdAt),
+        avatarStatic = Value(avatarStatic),
+        avatar = Value(avatar),
+        acct = Value(acct),
+        lastStatusAt = Value(lastStatusAt);
+  DbAccountsCompanion copyWith(
+      {Value<int> id,
+      Value<String> remoteId,
+      Value<String> username,
+      Value<String> url,
+      Value<String> note,
+      Value<bool> locked,
+      Value<String> headerStatic,
+      Value<String> header,
+      Value<int> followingCount,
+      Value<int> followersCount,
+      Value<int> statusesCount,
+      Value<String> displayName,
+      Value<DateTime> createdAt,
+      Value<bool> bot,
+      Value<String> avatarStatic,
+      Value<String> avatar,
+      Value<String> acct,
+      Value<DateTime> lastStatusAt,
+      Value<List<PleromaField>> fields,
+      Value<List<PleromaEmoji>> emojis,
+      Value<PleromaSource> source,
+      Value<List<PleromaTag>> pleromaTags,
+      Value<PleromaRelationship> pleromaRelationship,
+      Value<bool> pleromaIsAdmin,
+      Value<bool> pleromaIsModerator,
+      Value<bool> pleromaConfirmationPending,
+      Value<bool> pleromaHideFavorites,
+      Value<bool> pleromaHideFollowers,
+      Value<bool> pleromaHideFollows,
+      Value<bool> pleromaHideFollowersCount,
+      Value<bool> pleromaHideFollowsCount,
+      Value<String> pleromaChatToken,
+      Value<bool> pleromaDeactivated,
+      Value<bool> pleromaAllowFollowingMove,
+      Value<int> pleromaUnreadConversationCount,
+      Value<bool> pleromaSkipThreadContainment,
+      Value<PleromaAccountPleromaPartNotificationsSettings>
+          pleromaNotificationSettings}) {
+    return DbAccountsCompanion(
+      id: id ?? this.id,
+      remoteId: remoteId ?? this.remoteId,
+      username: username ?? this.username,
+      url: url ?? this.url,
+      note: note ?? this.note,
+      locked: locked ?? this.locked,
+      headerStatic: headerStatic ?? this.headerStatic,
+      header: header ?? this.header,
+      followingCount: followingCount ?? this.followingCount,
+      followersCount: followersCount ?? this.followersCount,
+      statusesCount: statusesCount ?? this.statusesCount,
+      displayName: displayName ?? this.displayName,
+      createdAt: createdAt ?? this.createdAt,
+      bot: bot ?? this.bot,
+      avatarStatic: avatarStatic ?? this.avatarStatic,
+      avatar: avatar ?? this.avatar,
+      acct: acct ?? this.acct,
+      lastStatusAt: lastStatusAt ?? this.lastStatusAt,
+      fields: fields ?? this.fields,
+      emojis: emojis ?? this.emojis,
+      source: source ?? this.source,
+      pleromaTags: pleromaTags ?? this.pleromaTags,
+      pleromaRelationship: pleromaRelationship ?? this.pleromaRelationship,
+      pleromaIsAdmin: pleromaIsAdmin ?? this.pleromaIsAdmin,
+      pleromaIsModerator: pleromaIsModerator ?? this.pleromaIsModerator,
+      pleromaConfirmationPending:
+          pleromaConfirmationPending ?? this.pleromaConfirmationPending,
+      pleromaHideFavorites: pleromaHideFavorites ?? this.pleromaHideFavorites,
+      pleromaHideFollowers: pleromaHideFollowers ?? this.pleromaHideFollowers,
+      pleromaHideFollows: pleromaHideFollows ?? this.pleromaHideFollows,
+      pleromaHideFollowersCount:
+          pleromaHideFollowersCount ?? this.pleromaHideFollowersCount,
+      pleromaHideFollowsCount:
+          pleromaHideFollowsCount ?? this.pleromaHideFollowsCount,
+      pleromaChatToken: pleromaChatToken ?? this.pleromaChatToken,
+      pleromaDeactivated: pleromaDeactivated ?? this.pleromaDeactivated,
+      pleromaAllowFollowingMove:
+          pleromaAllowFollowingMove ?? this.pleromaAllowFollowingMove,
+      pleromaUnreadConversationCount:
+          pleromaUnreadConversationCount ?? this.pleromaUnreadConversationCount,
+      pleromaSkipThreadContainment:
+          pleromaSkipThreadContainment ?? this.pleromaSkipThreadContainment,
+      pleromaNotificationSettings:
+          pleromaNotificationSettings ?? this.pleromaNotificationSettings,
+    );
+  }
+}
+
+class $DbAccountsTable extends DbAccounts
+    with TableInfo<$DbAccountsTable, DbAccount> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $DbAccountsTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
+  @override
+  GeneratedIntColumn get id => _id ??= _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn('id', $tableName, false,
+        hasAutoIncrement: true, declaredAsPrimaryKey: true);
+  }
+
+  final VerificationMeta _remoteIdMeta = const VerificationMeta('remoteId');
+  GeneratedTextColumn _remoteId;
+  @override
+  GeneratedTextColumn get remoteId => _remoteId ??= _constructRemoteId();
+  GeneratedTextColumn _constructRemoteId() {
+    return GeneratedTextColumn('remote_id', $tableName, false,
+        $customConstraints: 'UNIQUE NOT NULL');
+  }
+
+  final VerificationMeta _usernameMeta = const VerificationMeta('username');
+  GeneratedTextColumn _username;
+  @override
+  GeneratedTextColumn get username => _username ??= _constructUsername();
+  GeneratedTextColumn _constructUsername() {
+    return GeneratedTextColumn(
+      'username',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _urlMeta = const VerificationMeta('url');
+  GeneratedTextColumn _url;
+  @override
+  GeneratedTextColumn get url => _url ??= _constructUrl();
+  GeneratedTextColumn _constructUrl() {
+    return GeneratedTextColumn(
+      'url',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _noteMeta = const VerificationMeta('note');
+  GeneratedTextColumn _note;
+  @override
+  GeneratedTextColumn get note => _note ??= _constructNote();
+  GeneratedTextColumn _constructNote() {
+    return GeneratedTextColumn(
+      'note',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _lockedMeta = const VerificationMeta('locked');
+  GeneratedBoolColumn _locked;
+  @override
+  GeneratedBoolColumn get locked => _locked ??= _constructLocked();
+  GeneratedBoolColumn _constructLocked() {
+    return GeneratedBoolColumn(
+      'locked',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _headerStaticMeta =
+      const VerificationMeta('headerStatic');
+  GeneratedTextColumn _headerStatic;
+  @override
+  GeneratedTextColumn get headerStatic =>
+      _headerStatic ??= _constructHeaderStatic();
+  GeneratedTextColumn _constructHeaderStatic() {
+    return GeneratedTextColumn(
+      'header_static',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _headerMeta = const VerificationMeta('header');
+  GeneratedTextColumn _header;
+  @override
+  GeneratedTextColumn get header => _header ??= _constructHeader();
+  GeneratedTextColumn _constructHeader() {
+    return GeneratedTextColumn(
+      'header',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _followingCountMeta =
+      const VerificationMeta('followingCount');
+  GeneratedIntColumn _followingCount;
+  @override
+  GeneratedIntColumn get followingCount =>
+      _followingCount ??= _constructFollowingCount();
+  GeneratedIntColumn _constructFollowingCount() {
+    return GeneratedIntColumn(
+      'following_count',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _followersCountMeta =
+      const VerificationMeta('followersCount');
+  GeneratedIntColumn _followersCount;
+  @override
+  GeneratedIntColumn get followersCount =>
+      _followersCount ??= _constructFollowersCount();
+  GeneratedIntColumn _constructFollowersCount() {
+    return GeneratedIntColumn(
+      'followers_count',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _statusesCountMeta =
+      const VerificationMeta('statusesCount');
+  GeneratedIntColumn _statusesCount;
+  @override
+  GeneratedIntColumn get statusesCount =>
+      _statusesCount ??= _constructStatusesCount();
+  GeneratedIntColumn _constructStatusesCount() {
+    return GeneratedIntColumn(
+      'statuses_count',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _displayNameMeta =
+      const VerificationMeta('displayName');
+  GeneratedTextColumn _displayName;
+  @override
+  GeneratedTextColumn get displayName =>
+      _displayName ??= _constructDisplayName();
+  GeneratedTextColumn _constructDisplayName() {
+    return GeneratedTextColumn(
+      'display_name',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  GeneratedDateTimeColumn _createdAt;
+  @override
+  GeneratedDateTimeColumn get createdAt => _createdAt ??= _constructCreatedAt();
+  GeneratedDateTimeColumn _constructCreatedAt() {
+    return GeneratedDateTimeColumn(
+      'created_at',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _botMeta = const VerificationMeta('bot');
+  GeneratedBoolColumn _bot;
+  @override
+  GeneratedBoolColumn get bot => _bot ??= _constructBot();
+  GeneratedBoolColumn _constructBot() {
+    return GeneratedBoolColumn(
+      'bot',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _avatarStaticMeta =
+      const VerificationMeta('avatarStatic');
+  GeneratedTextColumn _avatarStatic;
+  @override
+  GeneratedTextColumn get avatarStatic =>
+      _avatarStatic ??= _constructAvatarStatic();
+  GeneratedTextColumn _constructAvatarStatic() {
+    return GeneratedTextColumn(
+      'avatar_static',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _avatarMeta = const VerificationMeta('avatar');
+  GeneratedTextColumn _avatar;
+  @override
+  GeneratedTextColumn get avatar => _avatar ??= _constructAvatar();
+  GeneratedTextColumn _constructAvatar() {
+    return GeneratedTextColumn(
+      'avatar',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _acctMeta = const VerificationMeta('acct');
+  GeneratedTextColumn _acct;
+  @override
+  GeneratedTextColumn get acct => _acct ??= _constructAcct();
+  GeneratedTextColumn _constructAcct() {
+    return GeneratedTextColumn(
+      'acct',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _lastStatusAtMeta =
+      const VerificationMeta('lastStatusAt');
+  GeneratedDateTimeColumn _lastStatusAt;
+  @override
+  GeneratedDateTimeColumn get lastStatusAt =>
+      _lastStatusAt ??= _constructLastStatusAt();
+  GeneratedDateTimeColumn _constructLastStatusAt() {
+    return GeneratedDateTimeColumn(
+      'last_status_at',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _fieldsMeta = const VerificationMeta('fields');
+  GeneratedTextColumn _fields;
+  @override
+  GeneratedTextColumn get fields => _fields ??= _constructFields();
+  GeneratedTextColumn _constructFields() {
+    return GeneratedTextColumn(
+      'fields',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _emojisMeta = const VerificationMeta('emojis');
+  GeneratedTextColumn _emojis;
+  @override
+  GeneratedTextColumn get emojis => _emojis ??= _constructEmojis();
+  GeneratedTextColumn _constructEmojis() {
+    return GeneratedTextColumn(
+      'emojis',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _sourceMeta = const VerificationMeta('source');
+  GeneratedTextColumn _source;
+  @override
+  GeneratedTextColumn get source => _source ??= _constructSource();
+  GeneratedTextColumn _constructSource() {
+    return GeneratedTextColumn(
+      'source',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _pleromaTagsMeta =
+      const VerificationMeta('pleromaTags');
+  GeneratedTextColumn _pleromaTags;
+  @override
+  GeneratedTextColumn get pleromaTags =>
+      _pleromaTags ??= _constructPleromaTags();
+  GeneratedTextColumn _constructPleromaTags() {
+    return GeneratedTextColumn(
+      'pleroma_tags',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _pleromaRelationshipMeta =
+      const VerificationMeta('pleromaRelationship');
+  GeneratedTextColumn _pleromaRelationship;
+  @override
+  GeneratedTextColumn get pleromaRelationship =>
+      _pleromaRelationship ??= _constructPleromaRelationship();
+  GeneratedTextColumn _constructPleromaRelationship() {
+    return GeneratedTextColumn(
+      'pleroma_relationship',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _pleromaIsAdminMeta =
+      const VerificationMeta('pleromaIsAdmin');
+  GeneratedBoolColumn _pleromaIsAdmin;
+  @override
+  GeneratedBoolColumn get pleromaIsAdmin =>
+      _pleromaIsAdmin ??= _constructPleromaIsAdmin();
+  GeneratedBoolColumn _constructPleromaIsAdmin() {
+    return GeneratedBoolColumn(
+      'pleroma_is_admin',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _pleromaIsModeratorMeta =
+      const VerificationMeta('pleromaIsModerator');
+  GeneratedBoolColumn _pleromaIsModerator;
+  @override
+  GeneratedBoolColumn get pleromaIsModerator =>
+      _pleromaIsModerator ??= _constructPleromaIsModerator();
+  GeneratedBoolColumn _constructPleromaIsModerator() {
+    return GeneratedBoolColumn(
+      'pleroma_is_moderator',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _pleromaConfirmationPendingMeta =
+      const VerificationMeta('pleromaConfirmationPending');
+  GeneratedBoolColumn _pleromaConfirmationPending;
+  @override
+  GeneratedBoolColumn get pleromaConfirmationPending =>
+      _pleromaConfirmationPending ??= _constructPleromaConfirmationPending();
+  GeneratedBoolColumn _constructPleromaConfirmationPending() {
+    return GeneratedBoolColumn(
+      'pleroma_confirmation_pending',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _pleromaHideFavoritesMeta =
+      const VerificationMeta('pleromaHideFavorites');
+  GeneratedBoolColumn _pleromaHideFavorites;
+  @override
+  GeneratedBoolColumn get pleromaHideFavorites =>
+      _pleromaHideFavorites ??= _constructPleromaHideFavorites();
+  GeneratedBoolColumn _constructPleromaHideFavorites() {
+    return GeneratedBoolColumn(
+      'pleroma_hide_favorites',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _pleromaHideFollowersMeta =
+      const VerificationMeta('pleromaHideFollowers');
+  GeneratedBoolColumn _pleromaHideFollowers;
+  @override
+  GeneratedBoolColumn get pleromaHideFollowers =>
+      _pleromaHideFollowers ??= _constructPleromaHideFollowers();
+  GeneratedBoolColumn _constructPleromaHideFollowers() {
+    return GeneratedBoolColumn(
+      'pleroma_hide_followers',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _pleromaHideFollowsMeta =
+      const VerificationMeta('pleromaHideFollows');
+  GeneratedBoolColumn _pleromaHideFollows;
+  @override
+  GeneratedBoolColumn get pleromaHideFollows =>
+      _pleromaHideFollows ??= _constructPleromaHideFollows();
+  GeneratedBoolColumn _constructPleromaHideFollows() {
+    return GeneratedBoolColumn(
+      'pleroma_hide_follows',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _pleromaHideFollowersCountMeta =
+      const VerificationMeta('pleromaHideFollowersCount');
+  GeneratedBoolColumn _pleromaHideFollowersCount;
+  @override
+  GeneratedBoolColumn get pleromaHideFollowersCount =>
+      _pleromaHideFollowersCount ??= _constructPleromaHideFollowersCount();
+  GeneratedBoolColumn _constructPleromaHideFollowersCount() {
+    return GeneratedBoolColumn(
+      'pleroma_hide_followers_count',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _pleromaHideFollowsCountMeta =
+      const VerificationMeta('pleromaHideFollowsCount');
+  GeneratedBoolColumn _pleromaHideFollowsCount;
+  @override
+  GeneratedBoolColumn get pleromaHideFollowsCount =>
+      _pleromaHideFollowsCount ??= _constructPleromaHideFollowsCount();
+  GeneratedBoolColumn _constructPleromaHideFollowsCount() {
+    return GeneratedBoolColumn(
+      'pleroma_hide_follows_count',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _pleromaChatTokenMeta =
+      const VerificationMeta('pleromaChatToken');
+  GeneratedTextColumn _pleromaChatToken;
+  @override
+  GeneratedTextColumn get pleromaChatToken =>
+      _pleromaChatToken ??= _constructPleromaChatToken();
+  GeneratedTextColumn _constructPleromaChatToken() {
+    return GeneratedTextColumn(
+      'pleroma_chat_token',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _pleromaDeactivatedMeta =
+      const VerificationMeta('pleromaDeactivated');
+  GeneratedBoolColumn _pleromaDeactivated;
+  @override
+  GeneratedBoolColumn get pleromaDeactivated =>
+      _pleromaDeactivated ??= _constructPleromaDeactivated();
+  GeneratedBoolColumn _constructPleromaDeactivated() {
+    return GeneratedBoolColumn(
+      'pleroma_deactivated',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _pleromaAllowFollowingMoveMeta =
+      const VerificationMeta('pleromaAllowFollowingMove');
+  GeneratedBoolColumn _pleromaAllowFollowingMove;
+  @override
+  GeneratedBoolColumn get pleromaAllowFollowingMove =>
+      _pleromaAllowFollowingMove ??= _constructPleromaAllowFollowingMove();
+  GeneratedBoolColumn _constructPleromaAllowFollowingMove() {
+    return GeneratedBoolColumn(
+      'pleroma_allow_following_move',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _pleromaUnreadConversationCountMeta =
+      const VerificationMeta('pleromaUnreadConversationCount');
+  GeneratedIntColumn _pleromaUnreadConversationCount;
+  @override
+  GeneratedIntColumn get pleromaUnreadConversationCount =>
+      _pleromaUnreadConversationCount ??=
+          _constructPleromaUnreadConversationCount();
+  GeneratedIntColumn _constructPleromaUnreadConversationCount() {
+    return GeneratedIntColumn(
+      'pleroma_unread_conversation_count',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _pleromaSkipThreadContainmentMeta =
+      const VerificationMeta('pleromaSkipThreadContainment');
+  GeneratedBoolColumn _pleromaSkipThreadContainment;
+  @override
+  GeneratedBoolColumn get pleromaSkipThreadContainment =>
+      _pleromaSkipThreadContainment ??=
+          _constructPleromaSkipThreadContainment();
+  GeneratedBoolColumn _constructPleromaSkipThreadContainment() {
+    return GeneratedBoolColumn(
+      'pleroma_skip_thread_containment',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _pleromaNotificationSettingsMeta =
+      const VerificationMeta('pleromaNotificationSettings');
+  GeneratedTextColumn _pleromaNotificationSettings;
+  @override
+  GeneratedTextColumn get pleromaNotificationSettings =>
+      _pleromaNotificationSettings ??= _constructPleromaNotificationSettings();
+  GeneratedTextColumn _constructPleromaNotificationSettings() {
+    return GeneratedTextColumn(
+      'pleroma_notification_settings',
+      $tableName,
+      true,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        remoteId,
+        username,
+        url,
+        note,
+        locked,
+        headerStatic,
+        header,
+        followingCount,
+        followersCount,
+        statusesCount,
+        displayName,
+        createdAt,
+        bot,
+        avatarStatic,
+        avatar,
+        acct,
+        lastStatusAt,
+        fields,
+        emojis,
+        source,
+        pleromaTags,
+        pleromaRelationship,
+        pleromaIsAdmin,
+        pleromaIsModerator,
+        pleromaConfirmationPending,
+        pleromaHideFavorites,
+        pleromaHideFollowers,
+        pleromaHideFollows,
+        pleromaHideFollowersCount,
+        pleromaHideFollowsCount,
+        pleromaChatToken,
+        pleromaDeactivated,
+        pleromaAllowFollowingMove,
+        pleromaUnreadConversationCount,
+        pleromaSkipThreadContainment,
+        pleromaNotificationSettings
+      ];
+  @override
+  $DbAccountsTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'db_accounts';
+  @override
+  final String actualTableName = 'db_accounts';
+  @override
+  VerificationContext validateIntegrity(DbAccountsCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.id.present) {
+      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    }
+    if (d.remoteId.present) {
+      context.handle(_remoteIdMeta,
+          remoteId.isAcceptableValue(d.remoteId.value, _remoteIdMeta));
+    } else if (isInserting) {
+      context.missing(_remoteIdMeta);
+    }
+    if (d.username.present) {
+      context.handle(_usernameMeta,
+          username.isAcceptableValue(d.username.value, _usernameMeta));
+    } else if (isInserting) {
+      context.missing(_usernameMeta);
+    }
+    if (d.url.present) {
+      context.handle(_urlMeta, url.isAcceptableValue(d.url.value, _urlMeta));
+    } else if (isInserting) {
+      context.missing(_urlMeta);
+    }
+    if (d.note.present) {
+      context.handle(
+          _noteMeta, note.isAcceptableValue(d.note.value, _noteMeta));
+    } else if (isInserting) {
+      context.missing(_noteMeta);
+    }
+    if (d.locked.present) {
+      context.handle(
+          _lockedMeta, locked.isAcceptableValue(d.locked.value, _lockedMeta));
+    } else if (isInserting) {
+      context.missing(_lockedMeta);
+    }
+    if (d.headerStatic.present) {
+      context.handle(
+          _headerStaticMeta,
+          headerStatic.isAcceptableValue(
+              d.headerStatic.value, _headerStaticMeta));
+    } else if (isInserting) {
+      context.missing(_headerStaticMeta);
+    }
+    if (d.header.present) {
+      context.handle(
+          _headerMeta, header.isAcceptableValue(d.header.value, _headerMeta));
+    } else if (isInserting) {
+      context.missing(_headerMeta);
+    }
+    if (d.followingCount.present) {
+      context.handle(
+          _followingCountMeta,
+          followingCount.isAcceptableValue(
+              d.followingCount.value, _followingCountMeta));
+    } else if (isInserting) {
+      context.missing(_followingCountMeta);
+    }
+    if (d.followersCount.present) {
+      context.handle(
+          _followersCountMeta,
+          followersCount.isAcceptableValue(
+              d.followersCount.value, _followersCountMeta));
+    } else if (isInserting) {
+      context.missing(_followersCountMeta);
+    }
+    if (d.statusesCount.present) {
+      context.handle(
+          _statusesCountMeta,
+          statusesCount.isAcceptableValue(
+              d.statusesCount.value, _statusesCountMeta));
+    } else if (isInserting) {
+      context.missing(_statusesCountMeta);
+    }
+    if (d.displayName.present) {
+      context.handle(_displayNameMeta,
+          displayName.isAcceptableValue(d.displayName.value, _displayNameMeta));
+    } else if (isInserting) {
+      context.missing(_displayNameMeta);
+    }
+    if (d.createdAt.present) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableValue(d.createdAt.value, _createdAtMeta));
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (d.bot.present) {
+      context.handle(_botMeta, bot.isAcceptableValue(d.bot.value, _botMeta));
+    }
+    if (d.avatarStatic.present) {
+      context.handle(
+          _avatarStaticMeta,
+          avatarStatic.isAcceptableValue(
+              d.avatarStatic.value, _avatarStaticMeta));
+    } else if (isInserting) {
+      context.missing(_avatarStaticMeta);
+    }
+    if (d.avatar.present) {
+      context.handle(
+          _avatarMeta, avatar.isAcceptableValue(d.avatar.value, _avatarMeta));
+    } else if (isInserting) {
+      context.missing(_avatarMeta);
+    }
+    if (d.acct.present) {
+      context.handle(
+          _acctMeta, acct.isAcceptableValue(d.acct.value, _acctMeta));
+    } else if (isInserting) {
+      context.missing(_acctMeta);
+    }
+    if (d.lastStatusAt.present) {
+      context.handle(
+          _lastStatusAtMeta,
+          lastStatusAt.isAcceptableValue(
+              d.lastStatusAt.value, _lastStatusAtMeta));
+    } else if (isInserting) {
+      context.missing(_lastStatusAtMeta);
+    }
+    context.handle(_fieldsMeta, const VerificationResult.success());
+    context.handle(_emojisMeta, const VerificationResult.success());
+    context.handle(_sourceMeta, const VerificationResult.success());
+    context.handle(_pleromaTagsMeta, const VerificationResult.success());
+    context.handle(
+        _pleromaRelationshipMeta, const VerificationResult.success());
+    if (d.pleromaIsAdmin.present) {
+      context.handle(
+          _pleromaIsAdminMeta,
+          pleromaIsAdmin.isAcceptableValue(
+              d.pleromaIsAdmin.value, _pleromaIsAdminMeta));
+    }
+    if (d.pleromaIsModerator.present) {
+      context.handle(
+          _pleromaIsModeratorMeta,
+          pleromaIsModerator.isAcceptableValue(
+              d.pleromaIsModerator.value, _pleromaIsModeratorMeta));
+    }
+    if (d.pleromaConfirmationPending.present) {
+      context.handle(
+          _pleromaConfirmationPendingMeta,
+          pleromaConfirmationPending.isAcceptableValue(
+              d.pleromaConfirmationPending.value,
+              _pleromaConfirmationPendingMeta));
+    }
+    if (d.pleromaHideFavorites.present) {
+      context.handle(
+          _pleromaHideFavoritesMeta,
+          pleromaHideFavorites.isAcceptableValue(
+              d.pleromaHideFavorites.value, _pleromaHideFavoritesMeta));
+    }
+    if (d.pleromaHideFollowers.present) {
+      context.handle(
+          _pleromaHideFollowersMeta,
+          pleromaHideFollowers.isAcceptableValue(
+              d.pleromaHideFollowers.value, _pleromaHideFollowersMeta));
+    }
+    if (d.pleromaHideFollows.present) {
+      context.handle(
+          _pleromaHideFollowsMeta,
+          pleromaHideFollows.isAcceptableValue(
+              d.pleromaHideFollows.value, _pleromaHideFollowsMeta));
+    }
+    if (d.pleromaHideFollowersCount.present) {
+      context.handle(
+          _pleromaHideFollowersCountMeta,
+          pleromaHideFollowersCount.isAcceptableValue(
+              d.pleromaHideFollowersCount.value,
+              _pleromaHideFollowersCountMeta));
+    }
+    if (d.pleromaHideFollowsCount.present) {
+      context.handle(
+          _pleromaHideFollowsCountMeta,
+          pleromaHideFollowsCount.isAcceptableValue(
+              d.pleromaHideFollowsCount.value, _pleromaHideFollowsCountMeta));
+    }
+    if (d.pleromaChatToken.present) {
+      context.handle(
+          _pleromaChatTokenMeta,
+          pleromaChatToken.isAcceptableValue(
+              d.pleromaChatToken.value, _pleromaChatTokenMeta));
+    }
+    if (d.pleromaDeactivated.present) {
+      context.handle(
+          _pleromaDeactivatedMeta,
+          pleromaDeactivated.isAcceptableValue(
+              d.pleromaDeactivated.value, _pleromaDeactivatedMeta));
+    }
+    if (d.pleromaAllowFollowingMove.present) {
+      context.handle(
+          _pleromaAllowFollowingMoveMeta,
+          pleromaAllowFollowingMove.isAcceptableValue(
+              d.pleromaAllowFollowingMove.value,
+              _pleromaAllowFollowingMoveMeta));
+    }
+    if (d.pleromaUnreadConversationCount.present) {
+      context.handle(
+          _pleromaUnreadConversationCountMeta,
+          pleromaUnreadConversationCount.isAcceptableValue(
+              d.pleromaUnreadConversationCount.value,
+              _pleromaUnreadConversationCountMeta));
+    }
+    if (d.pleromaSkipThreadContainment.present) {
+      context.handle(
+          _pleromaSkipThreadContainmentMeta,
+          pleromaSkipThreadContainment.isAcceptableValue(
+              d.pleromaSkipThreadContainment.value,
+              _pleromaSkipThreadContainmentMeta));
+    }
+    context.handle(
+        _pleromaNotificationSettingsMeta, const VerificationResult.success());
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  DbAccount map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return DbAccount.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(DbAccountsCompanion d) {
+    final map = <String, Variable>{};
+    if (d.id.present) {
+      map['id'] = Variable<int, IntType>(d.id.value);
+    }
+    if (d.remoteId.present) {
+      map['remote_id'] = Variable<String, StringType>(d.remoteId.value);
+    }
+    if (d.username.present) {
+      map['username'] = Variable<String, StringType>(d.username.value);
+    }
+    if (d.url.present) {
+      map['url'] = Variable<String, StringType>(d.url.value);
+    }
+    if (d.note.present) {
+      map['note'] = Variable<String, StringType>(d.note.value);
+    }
+    if (d.locked.present) {
+      map['locked'] = Variable<bool, BoolType>(d.locked.value);
+    }
+    if (d.headerStatic.present) {
+      map['header_static'] = Variable<String, StringType>(d.headerStatic.value);
+    }
+    if (d.header.present) {
+      map['header'] = Variable<String, StringType>(d.header.value);
+    }
+    if (d.followingCount.present) {
+      map['following_count'] = Variable<int, IntType>(d.followingCount.value);
+    }
+    if (d.followersCount.present) {
+      map['followers_count'] = Variable<int, IntType>(d.followersCount.value);
+    }
+    if (d.statusesCount.present) {
+      map['statuses_count'] = Variable<int, IntType>(d.statusesCount.value);
+    }
+    if (d.displayName.present) {
+      map['display_name'] = Variable<String, StringType>(d.displayName.value);
+    }
+    if (d.createdAt.present) {
+      map['created_at'] = Variable<DateTime, DateTimeType>(d.createdAt.value);
+    }
+    if (d.bot.present) {
+      map['bot'] = Variable<bool, BoolType>(d.bot.value);
+    }
+    if (d.avatarStatic.present) {
+      map['avatar_static'] = Variable<String, StringType>(d.avatarStatic.value);
+    }
+    if (d.avatar.present) {
+      map['avatar'] = Variable<String, StringType>(d.avatar.value);
+    }
+    if (d.acct.present) {
+      map['acct'] = Variable<String, StringType>(d.acct.value);
+    }
+    if (d.lastStatusAt.present) {
+      map['last_status_at'] =
+          Variable<DateTime, DateTimeType>(d.lastStatusAt.value);
+    }
+    if (d.fields.present) {
+      final converter = $DbAccountsTable.$converter0;
+      map['fields'] =
+          Variable<String, StringType>(converter.mapToSql(d.fields.value));
+    }
+    if (d.emojis.present) {
+      final converter = $DbAccountsTable.$converter1;
+      map['emojis'] =
+          Variable<String, StringType>(converter.mapToSql(d.emojis.value));
+    }
+    if (d.source.present) {
+      final converter = $DbAccountsTable.$converter2;
+      map['source'] =
+          Variable<String, StringType>(converter.mapToSql(d.source.value));
+    }
+    if (d.pleromaTags.present) {
+      final converter = $DbAccountsTable.$converter3;
+      map['pleroma_tags'] =
+          Variable<String, StringType>(converter.mapToSql(d.pleromaTags.value));
+    }
+    if (d.pleromaRelationship.present) {
+      final converter = $DbAccountsTable.$converter4;
+      map['pleroma_relationship'] = Variable<String, StringType>(
+          converter.mapToSql(d.pleromaRelationship.value));
+    }
+    if (d.pleromaIsAdmin.present) {
+      map['pleroma_is_admin'] =
+          Variable<bool, BoolType>(d.pleromaIsAdmin.value);
+    }
+    if (d.pleromaIsModerator.present) {
+      map['pleroma_is_moderator'] =
+          Variable<bool, BoolType>(d.pleromaIsModerator.value);
+    }
+    if (d.pleromaConfirmationPending.present) {
+      map['pleroma_confirmation_pending'] =
+          Variable<bool, BoolType>(d.pleromaConfirmationPending.value);
+    }
+    if (d.pleromaHideFavorites.present) {
+      map['pleroma_hide_favorites'] =
+          Variable<bool, BoolType>(d.pleromaHideFavorites.value);
+    }
+    if (d.pleromaHideFollowers.present) {
+      map['pleroma_hide_followers'] =
+          Variable<bool, BoolType>(d.pleromaHideFollowers.value);
+    }
+    if (d.pleromaHideFollows.present) {
+      map['pleroma_hide_follows'] =
+          Variable<bool, BoolType>(d.pleromaHideFollows.value);
+    }
+    if (d.pleromaHideFollowersCount.present) {
+      map['pleroma_hide_followers_count'] =
+          Variable<bool, BoolType>(d.pleromaHideFollowersCount.value);
+    }
+    if (d.pleromaHideFollowsCount.present) {
+      map['pleroma_hide_follows_count'] =
+          Variable<bool, BoolType>(d.pleromaHideFollowsCount.value);
+    }
+    if (d.pleromaChatToken.present) {
+      map['pleroma_chat_token'] =
+          Variable<String, StringType>(d.pleromaChatToken.value);
+    }
+    if (d.pleromaDeactivated.present) {
+      map['pleroma_deactivated'] =
+          Variable<bool, BoolType>(d.pleromaDeactivated.value);
+    }
+    if (d.pleromaAllowFollowingMove.present) {
+      map['pleroma_allow_following_move'] =
+          Variable<bool, BoolType>(d.pleromaAllowFollowingMove.value);
+    }
+    if (d.pleromaUnreadConversationCount.present) {
+      map['pleroma_unread_conversation_count'] =
+          Variable<int, IntType>(d.pleromaUnreadConversationCount.value);
+    }
+    if (d.pleromaSkipThreadContainment.present) {
+      map['pleroma_skip_thread_containment'] =
+          Variable<bool, BoolType>(d.pleromaSkipThreadContainment.value);
+    }
+    if (d.pleromaNotificationSettings.present) {
+      final converter = $DbAccountsTable.$converter5;
+      map['pleroma_notification_settings'] = Variable<String, StringType>(
+          converter.mapToSql(d.pleromaNotificationSettings.value));
+    }
+    return map;
+  }
+
+  @override
+  $DbAccountsTable createAlias(String alias) {
+    return $DbAccountsTable(_db, alias);
+  }
+
+  static TypeConverter<List<PleromaField>, String> $converter0 =
+      PleromaFieldListDatabaseConverter();
+  static TypeConverter<List<PleromaEmoji>, String> $converter1 =
+      PleromaEmojiListDatabaseConverter();
+  static TypeConverter<PleromaSource, String> $converter2 =
+      PleromaSourceDatabaseConverter();
+  static TypeConverter<List<PleromaTag>, String> $converter3 =
+      PleromaTagListDatabaseConverter();
+  static TypeConverter<PleromaRelationship, String> $converter4 =
+      PleromaRelationshipDatabaseConverter();
+  static TypeConverter<PleromaAccountPleromaPartNotificationsSettings, String>
+      $converter5 =
+      PleromaAccountPleromaPartNotificationsSettingsDatabaseConverter();
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $DbStatusesTable _dbStatuses;
   $DbStatusesTable get dbStatuses => _dbStatuses ??= $DbStatusesTable(this);
+  $DbAccountsTable _dbAccounts;
+  $DbAccountsTable get dbAccounts => _dbAccounts ??= $DbAccountsTable(this);
   StatusDao _statusDao;
   StatusDao get statusDao => _statusDao ??= StatusDao(this as AppDatabase);
+  AccountDao _accountDao;
+  AccountDao get accountDao => _accountDao ??= AccountDao(this as AppDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [dbStatuses];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [dbStatuses, dbAccounts];
 }
