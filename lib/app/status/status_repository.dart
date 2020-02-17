@@ -13,6 +13,9 @@ abstract class IStatusRepository
   static IStatusRepository of(BuildContext context, {bool listen = true}) =>
       Provider.of<IStatusRepository>(context, listen: listen);
 
+  Future<IStatus> findByRemoteId(String remoteId);
+  Future<int> upsertByRemoteId(DbStatus dbStatus);
+
   Future refreshPublicStatuses({
     @required bool onlyLocal,
     @required bool onlyMedia,
@@ -21,7 +24,7 @@ abstract class IStatusRepository
     @required int limit,
   });
 
-  Future<List<DbStatusWrapper>> getPublicStatuses(
+  Future<List<DbStatusPopulatedWrapper>> getPublicStatuses(
       {@required bool onlyLocal,
       @required bool onlyMedia,
       @required bool withMuted,
@@ -31,7 +34,7 @@ abstract class IStatusRepository
       @required int limit,
       @required StatusOrderingTermData orderingTermData});
 
-  Stream<List<DbStatusWrapper>> watchPublicStatuses(
+  Stream<List<DbStatusPopulatedWrapper>> watchPublicStatuses(
       {@required bool onlyLocal,
       @required bool onlyMedia,
       @required bool withMuted,
@@ -49,7 +52,7 @@ abstract class IStatusRepository
     @required int limit,
   });
 
-  Future<List<DbStatusWrapper>> getHomeStatuses(
+  Future<List<DbStatusPopulatedWrapper>> getHomeStatuses(
       {@required bool onlyLocal,
       @required bool onlyMedia,
       @required bool withMuted,
@@ -59,7 +62,7 @@ abstract class IStatusRepository
       @required int limit,
       @required StatusOrderingTermData orderingTermData});
 
-  Stream<List<DbStatusWrapper>> watchHomeStatuses(
+  Stream<List<DbStatusPopulatedWrapper>> watchHomeStatuses(
       {@required bool onlyLocal,
       @required bool onlyMedia,
       @required bool withMuted,
@@ -78,7 +81,7 @@ abstract class IStatusRepository
     @required int limit,
   });
 
-  Future<List<DbStatusWrapper>> getHashTagStatuses(
+  Future<List<DbStatusPopulatedWrapper>> getHashTagStatuses(
       {@required String hashTag,
       @required bool onlyLocal,
       @required bool onlyMedia,
@@ -89,7 +92,7 @@ abstract class IStatusRepository
       @required int limit,
       @required StatusOrderingTermData orderingTermData});
 
-  Stream<List<DbStatusWrapper>> watchHashTagStatuses(
+  Stream<List<DbStatusPopulatedWrapper>> watchHashTagStatuses(
       {@required String hashTag,
       @required bool onlyLocal,
       @required bool onlyMedia,
@@ -109,7 +112,7 @@ abstract class IStatusRepository
     @required int limit,
   });
 
-  Future<List<DbStatusWrapper>> getListStatuses(
+  Future<List<DbStatusPopulatedWrapper>> getListStatuses(
       {@required String listRemoteId,
       @required bool onlyLocal,
       @required bool onlyMedia,
@@ -120,7 +123,7 @@ abstract class IStatusRepository
       @required int limit,
       @required StatusOrderingTermData orderingTermData});
 
-  Stream<List<DbStatusWrapper>> watchListStatuses(
+  Stream<List<DbStatusPopulatedWrapper>> watchListStatuses(
       {@required String listRemoteId,
       @required bool onlyLocal,
       @required bool onlyMedia,

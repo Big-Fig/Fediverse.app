@@ -90,12 +90,12 @@ mixin _$AccountDaoMixin on DatabaseAccessor<AppDatabase> {
         readsFrom: {dbAccounts}).map(_rowToDbAccount);
   }
 
-  Future<List<DbAccount>> findByRemoteId(String remoteId) {
-    return findByRemoteIdQuery(remoteId).get();
+  Future<DbAccount> findByRemoteId(String remoteId) {
+    return findByRemoteIdQuery(remoteId).getSingle();
   }
 
-  Stream<List<DbAccount>> watchFindByRemoteId(String remoteId) {
-    return findByRemoteIdQuery(remoteId).watch();
+  Stream<DbAccount> watchFindByRemoteId(String remoteId) {
+    return findByRemoteIdQuery(remoteId).watchSingle();
   }
 
   Selectable<int> countByIdQuery(int id) {

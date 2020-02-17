@@ -6,8 +6,11 @@ import 'package:provider/provider.dart';
 
 abstract class IAccountRepository
     implements
-        IReadIdListRepository<IAccount, int>,
+        IReadIdListRepository<DbAccountWrapper, int>,
         IWriteIdListRepository<DbAccount, int> {
   static IAccountRepository of(BuildContext context, {bool listen = true}) =>
       Provider.of<IAccountRepository>(context, listen: listen);
+
+  Future<DbAccountWrapper> findByRemoteId(String remoteId);
+  Future<int> upsertByRemoteId(DbAccount dbAccount);
 }

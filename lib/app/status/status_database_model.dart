@@ -32,8 +32,7 @@ class DbStatuses extends Table {
   TextColumn get application =>
       text().map(PleromaApplicationDatabaseConverter())();
 
-  // TODO: rework with join
-  TextColumn get account => text().map(PleromaAccountDatabaseConverter())();
+  TextColumn get accountRemoteId => text()();
   TextColumn get mediaAttachments =>
       text().map(PleromaMediaAttachmentListDatabaseConverter()).nullable()();
   TextColumn get mentions =>

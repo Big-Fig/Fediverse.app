@@ -4,61 +4,52 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor_ffi/moor_ffi.dart';
 
-var dbAccount1 = DbAccount(
-    id: null,
-    remoteId: "remoteId1",
-    username: "username1",
-    url: "url1",
-    note: "note1",
-    locked: true,
-    headerStatic: "headerStatic1",
-    header: "header1",
-    followingCount: 11,
-    followersCount: 12,
-    statusesCount: 13,
-    displayName: "displayName1",
-    createdAt: DateTime(11),
-    avatarStatic: "avatarStatic1",
-    avatar: "avatar1",
-    acct: "acct1",
-    lastStatusAt: DateTime(12));
-var dbAccount2 = DbAccount(
-    id: null,
-    remoteId: "remoteId2",
-    username: "username2",
-    url: "url2",
-    note: "note2",
-    locked: true,
-    headerStatic: "headerStatic2",
-    header: "header2",
-    followingCount: 22,
-    followersCount: 22,
-    statusesCount: 23,
-    displayName: "displayName2",
-    createdAt: DateTime(22),
-    avatarStatic: "avatarStatic2",
-    avatar: "avatar2",
-    acct: "acct2",
-    lastStatusAt: DateTime(22));
+import 'account_repository_model_helper.dart';
+
+var dbAccount1 = createTestAccount("seed1");
+var dbAccount2 = createTestAccount("seed2");
 
 
-expectDbAccount(IAccount actual, DbAccount except) {
+expectDbAccount(IAccount actual, DbAccount expected) {
   expect(actual.localId != null, true);
-  expect(actual.remoteId, except.remoteId);
-  expect(actual.username, except.username);
-  expect(actual.url, except.url);
-  expect(actual.note, except.note);
-  expect(actual.locked, except.locked);
-  expect(actual.headerStatic, except.headerStatic);
-  expect(actual.header, except.header);
-  expect(actual.followingCount, except.followingCount);
-  expect(actual.followersCount, except.followersCount);
-  expect(actual.statusesCount, except.statusesCount);
-  expect(actual.displayName, except.displayName);
-  expect(actual.avatarStatic, except.avatarStatic);
-  expect(actual.avatar, except.avatar);
-  expect(actual.acct, except.acct);
-  expect(actual.lastStatusAt, except.lastStatusAt);
+  expect(actual.remoteId, expected.remoteId);
+  expect(actual.username, expected.username);
+  expect(actual.url, expected.url);
+  expect(actual.note, expected.note);
+  expect(actual.locked, expected.locked);
+  expect(actual.headerStatic, expected.headerStatic);
+  expect(actual.header, expected.header);
+  expect(actual.followingCount, expected.followingCount);
+  expect(actual.followersCount, expected.followersCount);
+  expect(actual.statusesCount, expected.statusesCount);
+  expect(actual.displayName, expected.displayName);
+  expect(actual.avatarStatic, expected.avatarStatic);
+  expect(actual.avatar, expected.avatar);
+  expect(actual.acct, expected.acct);
+  expect(actual.lastStatusAt, expected.lastStatusAt);
+
+  expect(actual.bot, expected.bot);
+  expect(actual.fields, expected.fields);
+  expect(actual.emojis, expected.emojis);
+  expect(actual.source, expected.source);
+
+  expect(actual.pleromaTags, expected.pleromaTags);
+  expect(actual.pleromaRelationship, expected.pleromaRelationship);
+  expect(actual.pleromaIsAdmin, expected.pleromaIsAdmin);
+  expect(actual.pleromaIsModerator, expected.pleromaIsModerator);
+  expect(actual.pleromaConfirmationPending, expected.pleromaConfirmationPending);
+  expect(actual.pleromaHideFavorites, expected.pleromaHideFavorites);
+  expect(actual.pleromaHideFollowers, expected.pleromaHideFollowers);
+  expect(actual.pleromaHideFollows, expected.pleromaHideFollows);
+  expect(actual.pleromaHideFollowersCount, expected.pleromaHideFollowersCount);
+  expect(actual.pleromaHideFollowsCount, expected.pleromaHideFollowsCount);
+  expect(actual.pleromaChatToken, expected.pleromaChatToken);
+  expect(actual.pleromaDeactivated, expected.pleromaDeactivated);
+  expect(actual.pleromaAllowFollowingMove, expected.pleromaAllowFollowingMove);
+  expect(actual.pleromaUnreadConversationCount, expected.pleromaUnreadConversationCount);
+  expect(actual.pleromaSkipThreadContainment, expected.pleromaSkipThreadContainment);
+  expect(actual.pleromaNotificationSettings, expected.pleromaNotificationSettings);
+
 }
 
 void main() {
@@ -87,3 +78,4 @@ void main() {
     expectDbAccount(await accountRepository.findById(id), dbAccount2);
   });
 }
+

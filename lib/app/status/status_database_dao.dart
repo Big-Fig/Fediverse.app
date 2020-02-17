@@ -1,6 +1,7 @@
 import 'package:fedi/Pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/status_database_model.dart';
+import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_repository_model.dart';
 import 'package:moor/moor.dart';
 
@@ -10,8 +11,6 @@ part 'status_database_dao.g.dart';
   DbStatuses
 ], queries: {
   "countAll": "SELECT Count(*) FROM db_statuses;",
-  "findById": "SELECT * FROM db_statuses WHERE id = :id;",
-  "findByRemoteId": "SELECT * FROM db_statuses WHERE remote_id LIKE :remoteId;",
   "countById": "SELECT COUNT(*) FROM db_statuses WHERE id = :id;",
   "deleteById": "DELETE FROM db_statuses WHERE id = :id;",
   "clear": "DELETE FROM db_statuses",
@@ -21,27 +20,113 @@ part 'status_database_dao.g.dart';
 })
 class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   final AppDatabase db;
+  $DbAccountsTable accountAlias;
 
   // Called by the AppDatabase class
-  StatusDao(this.db) : super(db);
+  StatusDao(this.db) : super(db) {
+    accountAlias = alias(db.dbAccounts, 'account');
+  }
+
+
+  JoinedSelectStatement createQuery(
+      {@required String baseUrl,
+        @required bool onlyMedia,
+        @required bool withMuted,
+        @required List<PleromaVisibility> excludeVisibilities,
+        @required IStatus notNewerThanStatus,
+        @required IStatus notOlderThanStatus,
+        @required int limit,
+        @required StatusOrderingTermData orderingTermData}) {
+    var query = selectQuery();
+    if (baseUrl != null) {
+      addLocalOnlyWhere(query, baseUrl);
+    }
+
+    if (onlyMedia != null) {
+      addMediaOnlyWhere(query);
+    }
+
+    if (withMuted != true) {
+      addNotMutedWhere(query);
+    }
+    if (excludeVisibilities?.isNotEmpty == true) {
+      addExcludeVisibilitiesWhere(query, excludeVisibilities);
+    }
+
+    if (notNewerThanStatus != null || notOlderThanStatus != null) {
+      // TODO: rework to remote ids ordering
+      addDateBoundsWhere(
+          query, notOlderThanStatus.createdAt, notNewerThanStatus.createdAt);
+    }
+
+    // TODO: add offset
+    if (limit != null) {
+      query.limit(limit);
+    }
+
+    if (orderingTermData != null) {
+      orderBy(query, [orderingTermData]);
+    }
+    return query .join(
+      populateStatusJoin(),
+    );
+  }
+
+  Future<List<DbStatusPopulated>> findAll() async {
+    JoinedSelectStatement<Table, DataClass> statusQuery = _findAll();
+
+    return typedResultListToPopulated(await statusQuery.get());
+  }
+
+  Stream<List<DbStatusPopulated>> watchAll() {
+    JoinedSelectStatement<Table, DataClass> statusQuery = _findAll();
+
+    return statusQuery.watch().map(typedResultListToPopulated);
+  }
+
+  Future<DbStatusPopulated> findById(int id) async =>
+      typedResultToPopulated(await _findById(id).getSingle());
+
+  Future<DbStatusPopulated> findByRemoteId(String remoteId) async =>
+      typedResultToPopulated(await _findByRemoteId(remoteId).getSingle());
+
+
+  Stream<DbStatusPopulated> watchById(int id) =>
+      (_findById(id).watchSingle().map(typedResultToPopulated));
+
+  JoinedSelectStatement<Table, DataClass> _findAll() {
+    var sqlQuery = (select(db.dbStatuses).join(
+      populateStatusJoin(),
+    ));
+    return sqlQuery;
+  }
+
+  JoinedSelectStatement<Table, DataClass> _findById(int id) =>
+      (select(db.dbStatuses)..where((status) => status.id.equals(id)))
+          .join(populateStatusJoin());
+
+  JoinedSelectStatement<Table, DataClass> _findByRemoteId(String remoteId) =>
+      (select(db.dbStatuses)
+        ..where((status) => status.remoteId.like(remoteId)))
+          .join(populateStatusJoin());
 
   Future<int> insert(Insertable<DbStatus> entity) async =>
-      into(dbStatuses).insert(entity);
+      into(db.dbStatuses).insert(entity);
 
   Future insertAll(
           Iterable<Insertable<DbStatus>> entities, InsertMode mode) async =>
       await batch((batch) {
-        batch.insertAll(dbStatuses, entities);
+        batch.insertAll(db.dbStatuses, entities);
       });
   Future<bool> replace(Insertable<DbStatus> entity) async =>
-      await update(dbStatuses).replace(entity);
+      await update(db.dbStatuses).replace(entity);
 
   Future<int> updateByRemoteId(
       String remoteId, Insertable<DbStatus> entity) async {
     var localId = await findLocalIdByRemoteIdQuery(remoteId).getSingle();
 
     if (localId != null && localId >= 0) {
-      await (update(dbStatuses)..where((i) => i.id.equals(localId)))
+      await (update(db.dbStatuses)..where((i) => i.id.equals(localId)))
           .write(entity);
     } else {
       localId = await insert(entity);
@@ -73,15 +158,15 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
           String domain) =>
       query
-        ..where((message) =>
-            message.pleromaLocal.equals(true) | message.url.like("%$domain%"));
+        ..where((status) =>
+            status.pleromaLocal.equals(true) | status.url.like("%$domain%"));
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addNotMutedWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
       query
-        ..where((message) =>
-            message.muted.equals(false) &
-            message.pleromaThreadMuted.equals(true).not());
+        ..where((status) =>
+            status.muted.equals(false) &
+            status.pleromaThreadMuted.equals(true).not());
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addDateBoundsWhere(
     SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
@@ -92,11 +177,11 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
 
     if (minimumDate != null) {
       query = query
-        ..where((message) => message.createdAt.isBiggerThanValue(minimumDate));
+        ..where((status) => status.createdAt.isBiggerThanValue(minimumDate));
     }
     if (maximumDate != null) {
       query = query
-        ..where((message) => message.createdAt.isSmallerThanValue(maximumDate));
+        ..where((status) => status.createdAt.isSmallerThanValue(maximumDate));
     }
 
     return query;
@@ -113,7 +198,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
 
     return query
       ..where(
-          (message) => message.visibility.isNotIn(excludeVisibilityStrings));
+          (status) => status.visibility.isNotIn(excludeVisibilityStrings));
   }
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> orderBy(
@@ -132,4 +217,41 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
                       expression: expression, mode: orderTerm.orderingMode);
                 })
             .toList());
+
+  List<DbStatusPopulated> typedResultListToPopulated(
+      List<TypedResult> typedResult) {
+    if (typedResult == null) {
+      return null;
+    }
+    return typedResult.map(typedResultToPopulated).toList();
+  }
+  
+  DbStatusPopulated typedResultToPopulated(TypedResult typedResult) {
+    if (typedResult == null) {
+      return null;
+    }
+
+    return DbStatusPopulated(
+        status: typedResult.readTable(db.dbStatuses),
+        account: typedResult.readTable(accountAlias));
+  }
+
+  List<Join<Table, DataClass>> populateStatusJoin() {
+    return statusPopulateJoin(
+        dbStatusesTable: db.dbStatuses,
+        accountAlias: accountAlias);
+  }
+
+
+  static List<Join<Table, DataClass>> statusPopulateJoin({
+    @required $DbStatusesTable dbStatusesTable,
+    @required $DbAccountsTable accountAlias,
+  }) {
+    return [
+      innerJoin(
+        accountAlias,
+        accountAlias.remoteId.equalsExp(dbStatusesTable.accountRemoteId),
+      ),
+    ];
+  }
 }

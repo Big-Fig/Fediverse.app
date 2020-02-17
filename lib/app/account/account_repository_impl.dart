@@ -25,6 +25,11 @@ class AccountRepository extends AsyncInitLoadingBloc
   }
 
   @override
+  Future<DbAccountWrapper> findByRemoteId(String remoteId) async =>
+      mapDataClassToItem(await dao.findByRemoteId(remoteId));
+
+
+  @override
   Future upsertAll(Iterable<DbAccount> items) async {
     // insertOrReplace
     // if a row with the same primary or unique key already
@@ -51,11 +56,11 @@ class AccountRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<IAccount> findById(int id) =>
+  Future<DbAccountWrapper> findById(int id) =>
       dao.findByIdQuery(id).map(mapDataClassToItem).getSingle();
 
   @override
-  Stream<IAccount> watchById(int id) =>
+  Stream<DbAccountWrapper> watchById(int id) =>
       dao.findByIdQuery(id).map(mapDataClassToItem).watchSingle();
 
   @override
@@ -63,11 +68,11 @@ class AccountRepository extends AsyncInitLoadingBloc
       dao.countByIdQuery(id).map((count) => count > 0).getSingle();
 
   @override
-  Future<List<IAccount>> getAll() =>
+  Future<List<DbAccountWrapper>> getAll() =>
       dao.getAllQuery().map(mapDataClassToItem).get();
 
   @override
-  Stream<List<IAccount>> watchAll() =>
+  Stream<List<DbAccountWrapper>> watchAll() =>
       dao.getAllQuery().map(mapDataClassToItem).watch();
 
   @override
@@ -109,4 +114,9 @@ class AccountRepository extends AsyncInitLoadingBloc
         acct: remoteAccount.acct,
         lastStatusAt: remoteAccount.lastStatusAt);
   }
+
+  @override
+  Future<int> upsertByRemoteId(DbAccount dbAccount) =>
+      dao.updateByRemoteId(dbAccount.remoteId, dbAccount);
+
 }
