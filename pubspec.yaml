@@ -100,6 +100,9 @@ dev_dependencies:
   # sql orm generator
   moor_generator: ^2.4.0
 
+  # in memory moor SQLite database for tests
+  moor_ffi: ^0.4.0
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

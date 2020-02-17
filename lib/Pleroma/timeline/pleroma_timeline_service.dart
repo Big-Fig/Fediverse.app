@@ -4,6 +4,8 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPleromaTimelineService {
+  String get baseUrl;
+
   static IPleromaTimelineService of(BuildContext context, {listen: true}) =>
       Provider.of<IPleromaTimelineService>(context, listen: listen);
 

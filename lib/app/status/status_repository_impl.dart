@@ -15,14 +15,14 @@ var _logger = Logger("status_repository_impl.dart");
 
 class StatusRepository extends AsyncInitLoadingBloc
     implements IStatusRepository {
-  final String localDomain;
   final StatusDao dao;
   final IPleromaTimelineService pleromaTimelineService;
+  String get baseUrl => pleromaTimelineService.baseUrl;
+  String get baseHost => extractHost(baseUrl);
 
   StatusRepository({
     @required this.dao,
     @required this.pleromaTimelineService,
-    @required this.localDomain,
   });
 
   @override
@@ -46,7 +46,7 @@ class StatusRepository extends AsyncInitLoadingBloc
       @required StatusOrderingTermData orderingTermData}) {
     var query = dao.selectQuery();
     if (onlyLocal != null) {
-      dao.addLocalOnlyWhere(query, localDomain);
+      dao.addLocalOnlyWhere(query, baseUrl);
     }
 
     if (onlyMedia != null) {
@@ -100,50 +100,48 @@ class StatusRepository extends AsyncInitLoadingBloc
         .get();
   }
 
-
   @override
   Stream<List<DbStatusWrapper>> watchPublicStatuses(
       {@required bool onlyLocal,
-        @required bool onlyMedia,
-        @required bool withMuted,
-        @required List<PleromaVisibility> excludeVisibilities,
-        @required IStatus notNewerThanStatus,
-        @required IStatus notOlderThanStatus,
-        @required int limit,
-        @required StatusOrderingTermData orderingTermData}) {
+      @required bool onlyMedia,
+      @required bool withMuted,
+      @required List<PleromaVisibility> excludeVisibilities,
+      @required IStatus notNewerThanStatus,
+      @required IStatus notOlderThanStatus,
+      @required int limit,
+      @required StatusOrderingTermData orderingTermData}) {
     return createQuery(
-        onlyLocal: onlyLocal,
-        onlyMedia: onlyMedia,
-        withMuted: withMuted,
-        excludeVisibilities: excludeVisibilities,
-        notNewerThanStatus: notNewerThanStatus,
-        notOlderThanStatus: notOlderThanStatus,
-        limit: limit,
-        orderingTermData: orderingTermData)
+            onlyLocal: onlyLocal,
+            onlyMedia: onlyMedia,
+            withMuted: withMuted,
+            excludeVisibilities: excludeVisibilities,
+            notNewerThanStatus: notNewerThanStatus,
+            notOlderThanStatus: notOlderThanStatus,
+            limit: limit,
+            orderingTermData: orderingTermData)
         .map(mapDataClassToItem)
         .watch();
   }
 
-
   @override
   Future<List<DbStatusWrapper>> getHomeStatuses(
       {@required bool onlyLocal,
-        @required bool onlyMedia,
-        @required bool withMuted,
-        @required List<PleromaVisibility> excludeVisibilities,
-        @required IStatus notNewerThanStatus,
-        @required IStatus notOlderThanStatus,
-        @required int limit,
-        @required StatusOrderingTermData orderingTermData}) {
+      @required bool onlyMedia,
+      @required bool withMuted,
+      @required List<PleromaVisibility> excludeVisibilities,
+      @required IStatus notNewerThanStatus,
+      @required IStatus notOlderThanStatus,
+      @required int limit,
+      @required StatusOrderingTermData orderingTermData}) {
     return createQuery(
-        onlyLocal: onlyLocal,
-        onlyMedia: onlyMedia,
-        withMuted: withMuted,
-        excludeVisibilities: excludeVisibilities,
-        notNewerThanStatus: notNewerThanStatus,
-        notOlderThanStatus: notOlderThanStatus,
-        limit: limit,
-        orderingTermData: orderingTermData)
+            onlyLocal: onlyLocal,
+            onlyMedia: onlyMedia,
+            withMuted: withMuted,
+            excludeVisibilities: excludeVisibilities,
+            notNewerThanStatus: notNewerThanStatus,
+            notOlderThanStatus: notOlderThanStatus,
+            limit: limit,
+            orderingTermData: orderingTermData)
         .map(mapDataClassToItem)
         .get();
   }
@@ -159,19 +157,17 @@ class StatusRepository extends AsyncInitLoadingBloc
       @required int limit,
       @required StatusOrderingTermData orderingTermData}) {
     return createQuery(
-        onlyLocal: onlyLocal,
-        onlyMedia: onlyMedia,
-        withMuted: withMuted,
-        excludeVisibilities: excludeVisibilities,
-        notNewerThanStatus: notNewerThanStatus,
-        notOlderThanStatus: notOlderThanStatus,
-        limit: limit,
-        orderingTermData: orderingTermData)
+            onlyLocal: onlyLocal,
+            onlyMedia: onlyMedia,
+            withMuted: withMuted,
+            excludeVisibilities: excludeVisibilities,
+            notNewerThanStatus: notNewerThanStatus,
+            notOlderThanStatus: notOlderThanStatus,
+            limit: limit,
+            orderingTermData: orderingTermData)
         .map(mapDataClassToItem)
         .watch();
   }
-
-
 
   @override
   Future<List<DbStatusWrapper>> getHashTagStatuses(
@@ -503,4 +499,6 @@ class StatusRepository extends AsyncInitLoadingBloc
         pleromaThreadMuted: remoteStatus.pleroma.threadMuted,
         pleromaEmojiReactions: remoteStatus.pleroma.emojiReactions));
   }
+
+  static String extractHost(String url) => Uri.parse(url).host;
 }

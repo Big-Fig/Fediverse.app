@@ -9,6 +9,11 @@ import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
 
 class PleromaTimelineService implements IPleromaTimelineService {
+
+
+  @override
+  String get baseUrl => restService.baseUrl;
+
   final timelineRelativeUrlPath = "/api/v1/timelines/";
   final IPleromaRestService restService;
 
@@ -173,4 +178,5 @@ class PleromaTimelineService implements IPleromaTimelineService {
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
   }
+
 }
