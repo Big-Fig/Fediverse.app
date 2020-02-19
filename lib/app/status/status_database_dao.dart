@@ -27,49 +27,50 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
     accountAlias = alias(db.dbAccounts, 'account');
   }
 
-
   JoinedSelectStatement createQuery(
-      {@required String baseUrl,
-        @required bool onlyMedia,
-        @required bool withMuted,
-        @required List<PleromaVisibility> excludeVisibilities,
-        @required IStatus notNewerThanStatus,
-        @required IStatus notOlderThanStatus,
-        @required int limit,
-        @required StatusOrderingTermData orderingTermData}) {
+      {@required String containsBaseUrlOrIsPleromaLocal,
+      @required bool onlyMedia,
+      @required bool notMuted,
+      @required List<PleromaVisibility> excludeVisibilities,
+      @required String notNewerThanStatusRemoteId,
+      @required String newerThanStatusRemoteId,
+      @required int limit,
+      @required int offset,
+      @required StatusOrderingTermData orderingTermData}) {
     var query = selectQuery();
-    if (baseUrl != null) {
-      addLocalOnlyWhere(query, baseUrl);
+    if (containsBaseUrlOrIsPleromaLocal != null) {
+      addLocalOnlyWhere(query, containsBaseUrlOrIsPleromaLocal);
     }
 
-    if (onlyMedia != null) {
+    if (onlyMedia == true) {
       addMediaOnlyWhere(query);
     }
 
-    if (withMuted != true) {
+    if (notMuted == true) {
       addNotMutedWhere(query);
     }
     if (excludeVisibilities?.isNotEmpty == true) {
       addExcludeVisibilitiesWhere(query, excludeVisibilities);
     }
 
-    if (notNewerThanStatus != null || notOlderThanStatus != null) {
-      // TODO: rework to remote ids ordering
-      addDateBoundsWhere(
-          query, notOlderThanStatus.createdAt, notNewerThanStatus.createdAt);
+    if (notNewerThanStatusRemoteId != null || newerThanStatusRemoteId != null) {
+      addRemoteIdBoundsWhere(query,
+          maximumRemoteIdExcluding: notNewerThanStatusRemoteId,
+          minimumRemoteIdExcluding: newerThanStatusRemoteId);
     }
 
-    // TODO: add offset
-    if (limit != null) {
-      query.limit(limit);
-    }
 
     if (orderingTermData != null) {
       orderBy(query, [orderingTermData]);
     }
-    return query .join(
+    var joinQuery = query.join(
       populateStatusJoin(),
     );
+    assert(!(limit == null && offset != null));
+    if (limit != null) {
+      joinQuery.limit(limit, offset: offset);
+    }
+    return joinQuery;
   }
 
   Future<List<DbStatusPopulated>> findAll() async {
@@ -90,7 +91,6 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   Future<DbStatusPopulated> findByRemoteId(String remoteId) async =>
       typedResultToPopulated(await _findByRemoteId(remoteId).getSingle());
 
-
   Stream<DbStatusPopulated> watchById(int id) =>
       (_findById(id).watchSingle().map(typedResultToPopulated));
 
@@ -106,8 +106,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
           .join(populateStatusJoin());
 
   JoinedSelectStatement<Table, DataClass> _findByRemoteId(String remoteId) =>
-      (select(db.dbStatuses)
-        ..where((status) => status.remoteId.like(remoteId)))
+      (select(db.dbStatuses)..where((status) => status.remoteId.like(remoteId)))
           .join(populateStatusJoin());
 
   Future<int> insert(Insertable<DbStatus> entity) async =>
@@ -135,21 +134,18 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
     return localId;
   }
 
-  SimpleSelectStatement<$DbStatusesTable, DbStatus> selectQuery() => (select(db.dbStatuses));
+  SimpleSelectStatement<$DbStatusesTable, DbStatus> selectQuery() =>
+      (select(db.dbStatuses));
 
-  SimpleSelectStatement<$DbStatusesTable, DbStatus> addPublicWhere(
-      SimpleSelectStatement<$DbStatusesTable, DbStatus> query) {
-  // TODO: check
-    // return all saved statuses for now
-  return query;
-  }
-  SimpleSelectStatement<$DbStatusesTable, DbStatus> addHomeWhere(
+
+  SimpleSelectStatement<$DbStatusesTable, DbStatus> addFollowingWhere(
       SimpleSelectStatement<$DbStatusesTable, DbStatus> query) {
     // TODO: implement filtering by following account ids
     // return all saved statuses for now
     return query;
   }
 
+  // TODO: separate media in own table & use join
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addMediaOnlyWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
       query..where((status) => isNotNull(status.mediaAttachments));
@@ -168,20 +164,26 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
             status.muted.equals(false) &
             status.pleromaThreadMuted.equals(true).not());
 
-  SimpleSelectStatement<$DbStatusesTable, DbStatus> addDateBoundsWhere(
-    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
-    DateTime minimumDate,
-    DateTime maximumDate,
-  ) {
-    assert(minimumDate != null || maximumDate != null);
+  /// remote ids are strings but it is possible to compare them in
+  /// chronological order
+  SimpleSelectStatement<$DbStatusesTable, DbStatus> addRemoteIdBoundsWhere(
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query, {
+    @required String minimumRemoteIdExcluding,
+    @required String maximumRemoteIdExcluding,
+  }) {
+    var minimumExist = minimumRemoteIdExcluding?.isNotEmpty == true;
+    var maximumExist = maximumRemoteIdExcluding?.isNotEmpty == true;
+    assert(minimumExist || maximumExist);
 
-    if (minimumDate != null) {
-      query = query
-        ..where((status) => status.createdAt.isBiggerThanValue(minimumDate));
+    if (minimumExist) {
+      var biggerExp = CustomExpression<bool, BoolType>(
+          "db_statuses.remote_id > '$minimumRemoteIdExcluding'");
+      query = query..where((status) => biggerExp);
     }
-    if (maximumDate != null) {
-      query = query
-        ..where((status) => status.createdAt.isSmallerThanValue(maximumDate));
+    if (maximumExist) {
+      var smallerExp = CustomExpression<bool, BoolType>(
+          "db_statuses.remote_id < '$maximumRemoteIdExcluding'");
+      query = query..where((status) => smallerExp);
     }
 
     return query;
@@ -197,8 +199,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
         .toList();
 
     return query
-      ..where(
-          (status) => status.visibility.isNotIn(excludeVisibilityStrings));
+      ..where((status) => status.visibility.isNotIn(excludeVisibilityStrings));
   }
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> orderBy(
@@ -225,7 +226,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
     }
     return typedResult.map(typedResultToPopulated).toList();
   }
-  
+
   DbStatusPopulated typedResultToPopulated(TypedResult typedResult) {
     if (typedResult == null) {
       return null;
@@ -238,10 +239,8 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
 
   List<Join<Table, DataClass>> populateStatusJoin() {
     return statusPopulateJoin(
-        dbStatusesTable: db.dbStatuses,
-        accountAlias: accountAlias);
+        dbStatusesTable: db.dbStatuses, accountAlias: accountAlias);
   }
-
 
   static List<Join<Table, DataClass>> statusPopulateJoin({
     @required $DbStatusesTable dbStatusesTable,

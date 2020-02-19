@@ -14,6 +14,7 @@ abstract class IStatusRepository
       Provider.of<IStatusRepository>(context, listen: listen);
 
   Future<IStatus> findByRemoteId(String remoteId);
+
   Future<int> upsertByRemoteId(DbStatus dbStatus);
 
   Future refreshPublicStatuses({

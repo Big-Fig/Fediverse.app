@@ -6,15 +6,14 @@ class DbStatuses extends Table {
   // integer ids works much better in SQLite
   IntColumn get id => integer().autoIncrement()();
 
-  TextColumn get remoteId => text()   .customConstraint("UNIQUE NOT NULL")();
+  TextColumn get remoteId => text().customConstraint("UNIQUE NOT NULL")();
   DateTimeColumn get createdAt => dateTime()();
   TextColumn get inReplyToRemoteId => text().nullable()();
   TextColumn get inReplyToAccountRemoteId => text().nullable()();
   BoolColumn get sensitive => boolean()();
   TextColumn get spoilerText => text()();
-  TextColumn get visibility => text()
-      .customConstraint("UNIQUE NOT NULL")
-      .map(PleromaVisibilityDatabaseConverter())();
+  TextColumn get visibility =>
+      text().nullable().map(PleromaVisibilityDatabaseConverter())();
   TextColumn get uri => text()();
   TextColumn get url => text().nullable()();
   IntColumn get repliesCount => integer()();

@@ -51,18 +51,19 @@ class StatusRepository extends AsyncInitLoadingBloc
       @required IStatus notNewerThanStatus,
       @required IStatus notOlderThanStatus,
       @required int limit,
+      @required int offset,
       @required StatusOrderingTermData orderingTermData}) async {
-    var query = dao.createQuery(
-        baseUrl: baseUrl,
-        onlyMedia: onlyMedia,
-        withMuted: withMuted,
-        excludeVisibilities: excludeVisibilities,
-        notNewerThanStatus: notNewerThanStatus,
-        notOlderThanStatus: notOlderThanStatus,
-        limit: limit,
-        orderingTermData: orderingTermData);
-    return dao.typedResultListToPopulated(await query
-        .get()).map(mapDataClassToItem);
+    var query = createPublicQuery(
+        onlyMedia,
+        withMuted,
+        excludeVisibilities,
+        notNewerThanStatus,
+        notOlderThanStatus,
+        limit,
+        orderingTermData);
+    return dao
+        .typedResultListToPopulated(await query.get())
+        .map(mapDataClassToItem);
   }
 
   @override
@@ -74,19 +75,48 @@ class StatusRepository extends AsyncInitLoadingBloc
       @required IStatus notNewerThanStatus,
       @required IStatus notOlderThanStatus,
       @required int limit,
+      @required int offset,
       @required StatusOrderingTermData orderingTermData}) {
-    var query = dao.createQuery(
-        baseUrl: baseUrl,
-        onlyMedia: onlyMedia,
-        withMuted: withMuted,
-        excludeVisibilities: excludeVisibilities,
-        notNewerThanStatus: notNewerThanStatus,
-        notOlderThanStatus: notOlderThanStatus,
-        limit: limit,
-        orderingTermData: orderingTermData);
-    Stream<List<DbStatusPopulated>> stream = query
-        .watch().map(dao.typedResultListToPopulated);
+    var query = createPublicQuery(
+        onlyMedia,
+        withMuted,
+        excludeVisibilities,
+        notNewerThanStatus,
+        notOlderThanStatus,
+        limit,
+        orderingTermData);
+    Stream<List<DbStatusPopulated>> stream =
+        query.watch().map(dao.typedResultListToPopulated);
     return stream.map((list) => list.map(mapDataClassToItem).toList());
+  }
+
+  JoinedSelectStatement createPublicQuery(
+      bool onlyMedia,
+      bool withMuted,
+      List<PleromaVisibility> excludeVisibilities,
+      IStatus notNewerThanStatus,
+      IStatus notOlderThanStatus,
+      int limit,
+      StatusOrderingTermData orderingTermData) {
+    assert(excludeVisibilities?.contains(PleromaVisibility.PUBLIC) != true);
+    excludeVisibilities = excludeVisibilities ?? [];
+    excludeVisibilities.addAll([
+      PleromaVisibility.UNLISTED,
+      PleromaVisibility.LIST,
+      PleromaVisibility.DIRECT
+    ]);
+    excludeVisibilities = excludeVisibilities.toSet().toList();
+    var query = dao.createQuery(
+        containsBaseUrlOrIsPleromaLocal: baseUrl,
+        onlyMedia: onlyMedia,
+        notMuted: withMuted,
+        excludeVisibilities: excludeVisibilities,
+        notNewerThanStatusRemoteId: notNewerThanStatus.remoteId,
+        newerThanStatusRemoteId: notOlderThanStatus.remoteId,
+        limit: limit,
+        offset: null,
+        orderingTermData: orderingTermData);
+    return query;
   }
 
   @override
@@ -98,18 +128,21 @@ class StatusRepository extends AsyncInitLoadingBloc
       @required IStatus notNewerThanStatus,
       @required IStatus notOlderThanStatus,
       @required int limit,
+      @required int offset,
       @required StatusOrderingTermData orderingTermData}) async {
     var query = dao.createQuery(
-        baseUrl: baseUrl,
-            onlyMedia: onlyMedia,
-            withMuted: withMuted,
-            excludeVisibilities: excludeVisibilities,
-            notNewerThanStatus: notNewerThanStatus,
-            notOlderThanStatus: notOlderThanStatus,
-            limit: limit,
-            orderingTermData: orderingTermData);
-    return dao.typedResultListToPopulated(await query
-        .get()).map(mapDataClassToItem);
+        containsBaseUrlOrIsPleromaLocal: baseUrl,
+        onlyMedia: onlyMedia,
+        notMuted: withMuted,
+        excludeVisibilities: excludeVisibilities,
+        notNewerThanStatusRemoteId: notNewerThanStatus.remoteId,
+        newerThanStatusRemoteId: notOlderThanStatus.remoteId,
+        limit: limit,
+        offset: null,
+        orderingTermData: orderingTermData);
+    return dao
+        .typedResultListToPopulated(await query.get())
+        .map(mapDataClassToItem);
   }
 
   @override
@@ -121,20 +154,21 @@ class StatusRepository extends AsyncInitLoadingBloc
       @required IStatus notNewerThanStatus,
       @required IStatus notOlderThanStatus,
       @required int limit,
+      @required int offset,
       @required StatusOrderingTermData orderingTermData}) {
     var query = dao.createQuery(
-        baseUrl: baseUrl,
+        containsBaseUrlOrIsPleromaLocal: baseUrl,
         onlyMedia: onlyMedia,
-        withMuted: withMuted,
+        notMuted: withMuted,
         excludeVisibilities: excludeVisibilities,
-        notNewerThanStatus: notNewerThanStatus,
-        notOlderThanStatus: notOlderThanStatus,
+        notNewerThanStatusRemoteId: notNewerThanStatus.remoteId,
+        newerThanStatusRemoteId: notOlderThanStatus.remoteId,
         limit: limit,
+        offset: null,
         orderingTermData: orderingTermData);
-    Stream<List<DbStatusPopulated>> stream = query
-        .watch().map(dao.typedResultListToPopulated);
+    Stream<List<DbStatusPopulated>> stream =
+        query.watch().map(dao.typedResultListToPopulated);
     return stream.map((list) => list.map(mapDataClassToItem).toList());
-
   }
 
   @override
@@ -147,6 +181,7 @@ class StatusRepository extends AsyncInitLoadingBloc
       @required IStatus notNewerThanStatus,
       @required IStatus notOlderThanStatus,
       @required int limit,
+      @required int offset,
       @required StatusOrderingTermData orderingTermData}) {
     // TODO: implement getHomeStatuses
     throw UnimplementedError();
@@ -162,6 +197,7 @@ class StatusRepository extends AsyncInitLoadingBloc
       @required IStatus notNewerThanStatus,
       @required IStatus notOlderThanStatus,
       @required int limit,
+      @required int offset,
       @required StatusOrderingTermData orderingTermData}) {
     // TODO: implement watchHashTagStatuses
     throw UnimplementedError();
@@ -177,6 +213,7 @@ class StatusRepository extends AsyncInitLoadingBloc
       @required IStatus notNewerThanStatus,
       @required IStatus notOlderThanStatus,
       @required int limit,
+      @required int offset,
       @required StatusOrderingTermData orderingTermData}) {
     // TODO: implement getListStatuses
     throw UnimplementedError();
@@ -192,6 +229,7 @@ class StatusRepository extends AsyncInitLoadingBloc
       @required IStatus notNewerThanStatus,
       @required IStatus notOlderThanStatus,
       @required int limit,
+      @required int offset,
       @required StatusOrderingTermData orderingTermData}) {
     // TODO: implement watchListStatuses
     throw UnimplementedError();
@@ -205,6 +243,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
     @required int limit,
+    @required int offset,
   }) async {
     var statuses = await getHashTagStatuses(
         hashTag: hashTag,
@@ -215,6 +254,7 @@ class StatusRepository extends AsyncInitLoadingBloc
         notNewerThanStatus: null,
         notOlderThanStatus: null,
         limit: 1,
+        offset: null,
         orderingTermData: StatusOrderingTermData(
             orderByType: StatusOrderByType.remoteId,
             orderingMode: OrderingMode.desc));
@@ -252,6 +292,7 @@ class StatusRepository extends AsyncInitLoadingBloc
         notNewerThanStatus: null,
         notOlderThanStatus: null,
         limit: 1,
+        offset: null,
         orderingTermData: StatusOrderingTermData(
             orderByType: StatusOrderByType.remoteId,
             orderingMode: OrderingMode.desc));
@@ -281,6 +322,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
     @required int limit,
+    @required int offset,
   }) async {
     var statuses = await getListStatuses(
         listRemoteId: listRemoteId,
@@ -291,6 +333,7 @@ class StatusRepository extends AsyncInitLoadingBloc
         notNewerThanStatus: null,
         notOlderThanStatus: null,
         limit: 1,
+        offset: null,
         orderingTermData: StatusOrderingTermData(
             orderByType: StatusOrderByType.remoteId,
             orderingMode: OrderingMode.desc));
@@ -320,6 +363,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
     @required int limit,
+    @required int offset,
   }) async {
     var statuses = await getPublicStatuses(
         onlyLocal: onlyLocal,
@@ -329,6 +373,7 @@ class StatusRepository extends AsyncInitLoadingBloc
         notNewerThanStatus: null,
         notOlderThanStatus: null,
         limit: 1,
+        offset: null,
         orderingTermData: StatusOrderingTermData(
             orderByType: StatusOrderByType.remoteId,
             orderingMode: OrderingMode.desc));
@@ -380,7 +425,6 @@ class StatusRepository extends AsyncInitLoadingBloc
   Future<IStatus> findById(int id) async =>
       mapDataClassToItem(await dao.findById(id));
 
-
   @override
   Stream<DbStatusPopulatedWrapper> watchById(int id) =>
       (dao.watchById(id)).map(mapDataClassToItem);
@@ -397,11 +441,9 @@ class StatusRepository extends AsyncInitLoadingBloc
   Stream<List<DbStatusPopulatedWrapper>> watchAll() =>
       (dao.watchAll()).map((list) => list.map(mapDataClassToItem).toList());
 
-
   @override
   Future<int> upsertByRemoteId(DbStatus dbStatus) =>
       dao.updateByRemoteId(dbStatus.remoteId, dbStatus);
-
 
   @override
   Future<int> insert(DbStatus item) => dao.insert(item);
@@ -470,8 +512,6 @@ class StatusRepository extends AsyncInitLoadingBloc
         pleromaEmojiReactions: remoteStatus.pleroma.emojiReactions,
         accountRemoteId: remoteStatus.account.id);
   }
-
-
 
   static String extractHost(String url) => Uri.parse(url).host;
 }

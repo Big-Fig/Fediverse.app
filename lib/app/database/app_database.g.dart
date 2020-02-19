@@ -53,7 +53,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
       this.inReplyToAccountRemoteId,
       @required this.sensitive,
       @required this.spoilerText,
-      @required this.visibility,
+      this.visibility,
       @required this.uri,
       this.url,
       @required this.repliesCount,
@@ -671,7 +671,7 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
     this.inReplyToAccountRemoteId = const Value.absent(),
     @required bool sensitive,
     @required String spoilerText,
-    @required PleromaVisibility visibility,
+    this.visibility = const Value.absent(),
     @required String uri,
     this.url = const Value.absent(),
     @required int repliesCount,
@@ -705,7 +705,6 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
         createdAt = Value(createdAt),
         sensitive = Value(sensitive),
         spoilerText = Value(spoilerText),
-        visibility = Value(visibility),
         uri = Value(uri),
         repliesCount = Value(repliesCount),
         reblogsCount = Value(reblogsCount),
@@ -895,8 +894,11 @@ class $DbStatusesTable extends DbStatuses
   @override
   GeneratedTextColumn get visibility => _visibility ??= _constructVisibility();
   GeneratedTextColumn _constructVisibility() {
-    return GeneratedTextColumn('visibility', $tableName, false,
-        $customConstraints: 'UNIQUE NOT NULL');
+    return GeneratedTextColumn(
+      'visibility',
+      $tableName,
+      true,
+    );
   }
 
   final VerificationMeta _uriMeta = const VerificationMeta('uri');

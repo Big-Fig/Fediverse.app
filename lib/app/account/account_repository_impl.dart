@@ -5,10 +5,7 @@ import 'package:fedi/app/account/account_repository.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
-import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
-
-var _logger = Logger("account_repository_impl.dart");
 
 class AccountRepository extends AsyncInitLoadingBloc
     implements IAccountRepository {
@@ -26,8 +23,7 @@ class AccountRepository extends AsyncInitLoadingBloc
 
   @override
   Future<DbAccountWrapper> findByRemoteId(String remoteId) async =>
-      mapDataClassToItem(await dao.findByRemoteId(remoteId));
-
+      mapDataClassToItem(await dao.findByRemoteIdQuery(remoteId).getSingle());
 
   @override
   Future upsertAll(Iterable<DbAccount> items) async {
@@ -80,7 +76,6 @@ class AccountRepository extends AsyncInitLoadingBloc
 
   @override
   Future<bool> updateById(int id, DbAccount dbAccount) {
-
     if (dbAccount.id != id) {
       dbAccount = dbAccount.copyWith(id: id);
     }
@@ -93,8 +88,7 @@ class AccountRepository extends AsyncInitLoadingBloc
   Insertable<DbAccount> mapItemToDataClass(DbAccountWrapper item) =>
       item.dbAccount;
 
-  static DbAccount mapRemoteAccountToDbAccount(
-      IPleromaAccount remoteAccount) {
+  static DbAccount mapRemoteAccountToDbAccount(IPleromaAccount remoteAccount) {
     return DbAccount(
         id: null,
         remoteId: remoteAccount.id,
@@ -118,5 +112,4 @@ class AccountRepository extends AsyncInitLoadingBloc
   @override
   Future<int> upsertByRemoteId(DbAccount dbAccount) =>
       dao.updateByRemoteId(dbAccount.remoteId, dbAccount);
-
 }
