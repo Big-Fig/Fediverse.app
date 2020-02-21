@@ -1,33 +1,66 @@
 import 'package:fedi/pagination/network/cached_network_pagination_bloc.dart';
 import 'package:fedi/pagination/network/cached_network_pagination_model.dart';
 import 'package:fedi/pagination/pagination_bloc_impl.dart';
-import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/widgets.dart';
 
-class CachedNetworkPaginationBloc<TPage extends CachedNetworkPaginationPage<TItem>, TItem>  extends PaginationBloc<TPage, TItem>
+abstract class CachedNetworkPaginationBloc<
+        TPage extends CachedNetworkPaginationPage<TItem>,
+        TItem> extends PaginationBloc<TPage, TItem>
     implements ICachedNetworkPaginationBloc<TPage, TItem> {
-  CachedNetworkPaginationBloc.notCachePages({@required int itemsPerPage})
-      : super.notCachePages(itemsPerPage: itemsPerPage);
+  CachedNetworkPaginationBloc(
+      {@required int itemsCountPerPage, @required int maximumCachedPagesCount})
+      : super(
+            maximumCachedPagesCount: maximumCachedPagesCount,
+            itemsCountPerPage: itemsCountPerPage);
 
-  CachedNetworkPaginationBloc.cachePages(
-      {@required int cachedPagesCount, @required int itemsPerPage})
-      : super.cachePages(
-            cachedPagesCount: cachedPagesCount, itemsPerPage: itemsPerPage);
+  bool get isPossibleToLoadFromNetwork;
 
   @override
-  Future<TPage> loadPage({@required int pageIndex}) {
-    // TODO: implement loadPage
-    throw UnimplementedError();
+  Future<TPage> loadPage({
+    @required int pageIndex,
+    @required TPage previousPage,
+    @required TPage nextPage,
+  }) async {
+    var isActuallyRefreshed;
+
+    if (isPossibleToLoadFromNetwork) {
+      isActuallyRefreshed = refreshItemsFromRemoteForPage(
+          pageIndex: pageIndex,
+          previousPage: previousPage,
+          nextPage: nextPage,
+          itemsCountPerPage: itemsCountPerPage);
+    } else {
+      isActuallyRefreshed = false;
+    }
+
+    List<TItem> loadedItems = await loadLocalItems(
+        pageIndex: pageIndex,
+        itemsCountPerPage: itemsCountPerPage,
+        previousPage: previousPage,
+        nextPage: nextPage);
+
+    return createPage(
+        pageIndex: pageIndex,
+        loadedItems: loadedItems,
+        isActuallyRefreshed: isActuallyRefreshed);
   }
 
+  Future<bool> refreshItemsFromRemoteForPage({
+    @required int pageIndex,
+    @required int itemsCountPerPage,
+    @required TPage previousPage,
+    @required TPage nextPage,
+  });
 
-  Future refreshData() async {
-    clearCachePages();
-  }
+  Future<List<TItem>> loadLocalItems({
+    @required int pageIndex,
+    @required int itemsCountPerPage,
+    @required TPage previousPage,
+    @required TPage nextPage,
+  });
 
-//  @override
-//  Future<CachedNetworkPaginationPage<T>> loadPage({pageIndex}) {
-//    // TODO: implement loadPage
-//    throw UnimplementedError();
-//  }
+  TPage createPage(
+      {@required int pageIndex,
+      @required List<TItem> loadedItems,
+      @required bool isActuallyRefreshed});
 }

@@ -31,8 +31,7 @@ abstract class ILocalPreferencesService extends DisposableOwner
 
   int getIntPreference(String key);
 
-  T getObjectPreference<T>(
-      String key, T jsonConverter(Map<String, dynamic> jsonData));
+  T getObjectPreference<T>(String key);
 
   static ILocalPreferencesService of(BuildContext context,
           {bool listen = true}) =>

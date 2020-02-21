@@ -7,5 +7,5 @@ import 'package:flutter/widgets.dart';
 abstract class ICachedNetworkPaginationBloc<TPage extends CachedNetworkPaginationPage<TItem>, TItem>
     implements IPaginationBloc<TPage, TItem> {
   @override
-  Future<TPage> getPage({@required pageIndex});
+  Future<TPage> requestPage({@required pageIndex});
 }

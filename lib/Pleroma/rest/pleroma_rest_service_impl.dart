@@ -30,11 +30,11 @@ class PleromaRestService implements IPleromaRestService {
   @override
   Stream<bool> get isConnectedStream => connectionService.isConnectedStream;
 
-  Stream<bool> get isPleromaApiReadyStream => Rx.combineLatest2(
+  Stream<bool> get isApiReadyToUseStream => Rx.combineLatest2(
       pleromaStateStream, isConnectedStream, mapIsReady)
       .distinct();
 
-  bool get isPleromaApiReady => mapIsReady(pleromaState, isConnected);
+  bool get isApiReadyoUse => mapIsReady(pleromaState, isConnected);
 
 
   final IRestService restService;

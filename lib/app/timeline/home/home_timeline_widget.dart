@@ -1,14 +1,20 @@
 import 'package:fedi/Pleroma/timeline/pleroma_timeline_service.dart';
+import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
+import 'package:fedi/app/timeline/home/home_timeline_service_impl.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preferences_model.dart';
 import 'package:fedi/app/timeline/public/public_timeline_service_impl.dart';
 import 'package:fedi/app/timeline/timeline_service.dart';
 import 'package:fedi/app/timeline/timeline_widget.dart';
 import 'package:flutter/widgets.dart';
 
-class PublicTimelineWidget extends TimelineWidget {
-  PublicTimelineWidget(
-      {@required bool onlyLocal, @required String localUrlHost})
+class HomeTimelineWidget extends TimelineWidget {
+  final IAccount homeAccount;
+
+  HomeTimelineWidget(
+      {@required bool onlyLocal,
+      @required String localUrlHost,
+      this.homeAccount})
       : super(localUrlHost: localUrlHost, onlyLocal: onlyLocal);
 
   @override
@@ -17,11 +23,12 @@ class PublicTimelineWidget extends TimelineWidget {
       @required TimelineLocalPreferences timelinePreferences,
       @required IStatusRepository statusRepository,
       @required IPleromaTimelineService pleromaTimelineService}) {
-    return PublicTimelineService(
+    return HomeTimelineService(
         pleromaTimelineService: pleromaTimelineService,
         timelineLocalPreferences: timelinePreferences,
         statusRepository: statusRepository,
         localUrlHost: localUrlHost,
-        onlyLocal: onlyLocal);
+        onlyLocal: onlyLocal,
+        homeAccount: homeAccount);
   }
 }

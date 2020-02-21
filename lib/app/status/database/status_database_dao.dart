@@ -27,51 +27,6 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
     accountAlias = alias(db.dbAccounts, 'account');
   }
 
-  JoinedSelectStatement createQuery(
-      {@required String containsBaseUrlOrIsPleromaLocal,
-      @required bool onlyMedia,
-      @required bool notMuted,
-      @required List<PleromaVisibility> excludeVisibilities,
-      @required String notNewerThanStatusRemoteId,
-      @required String newerThanStatusRemoteId,
-      @required int limit,
-      @required int offset,
-      @required StatusOrderingTermData orderingTermData}) {
-    var query = selectQuery();
-    if (containsBaseUrlOrIsPleromaLocal != null) {
-      addLocalOnlyWhere(query, containsBaseUrlOrIsPleromaLocal);
-    }
-
-    if (onlyMedia == true) {
-      addMediaOnlyWhere(query);
-    }
-
-    if (notMuted == true) {
-      addNotMutedWhere(query);
-    }
-    if (excludeVisibilities?.isNotEmpty == true) {
-      addExcludeVisibilitiesWhere(query, excludeVisibilities);
-    }
-
-    if (notNewerThanStatusRemoteId != null || newerThanStatusRemoteId != null) {
-      addRemoteIdBoundsWhere(query,
-          maximumRemoteIdExcluding: notNewerThanStatusRemoteId,
-          minimumRemoteIdExcluding: newerThanStatusRemoteId);
-    }
-
-
-    if (orderingTermData != null) {
-      orderBy(query, [orderingTermData]);
-    }
-    var joinQuery = query.join(
-      populateStatusJoin(),
-    );
-    assert(!(limit == null && offset != null));
-    if (limit != null) {
-      joinQuery.limit(limit, offset: offset);
-    }
-    return joinQuery;
-  }
 
   Future<List<DbStatusPopulated>> findAll() async {
     JoinedSelectStatement<Table, DataClass> statusQuery = _findAll();
@@ -134,7 +89,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
     return localId;
   }
 
-  SimpleSelectStatement<$DbStatusesTable, DbStatus> selectQuery() =>
+  SimpleSelectStatement<$DbStatusesTable, DbStatus> startSelectQuery() =>
       (select(db.dbStatuses));
 
 
@@ -152,10 +107,20 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addLocalOnlyWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
-          String domain) =>
+          String localDomain) =>
       query
         ..where((status) =>
-            status.pleromaLocal.equals(true) | status.url.like("%$domain%"));
+            status.pleromaLocal.equals(true) | status.url.like("%$localDomain%"));
+
+  SimpleSelectStatement<$DbStatusesTable, DbStatus> addHashTagWhere(
+          SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+          String hashTag) {
+    throw UnimplementedError();
+    return query
+      // We can use text search because it is json string
+      // todo: refactor to join
+        ..where((status) => status.tags.like("%$hashTag%"));
+  }
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addNotMutedWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
@@ -163,6 +128,18 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
         ..where((status) =>
             status.muted.equals(false) &
             status.pleromaThreadMuted.equals(true).not());
+
+  SimpleSelectStatement<$DbStatusesTable, DbStatus> addNoNsfwSensitiveWhere(
+          SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
+      query
+        ..where((status) =>
+            status.sensitive.equals(true).not());
+
+  SimpleSelectStatement<$DbStatusesTable, DbStatus> addNoRepliesWhere(
+          SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
+      query
+        ..where((status) =>
+            isNull(status.inReplyToRemoteId));
 
   /// remote ids are strings but it is possible to compare them in
   /// chronological order

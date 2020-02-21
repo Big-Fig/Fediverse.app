@@ -1,69 +1,70 @@
-
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_model.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hive/hive.dart';
 import 'package:logging/logging.dart';
 
 var _logger = Logger("local_preferences_service_hive_impl.dart");
 
 class PreferencesService extends AsyncInitLoadingBloc
     implements ILocalPreferencesService {
-  SharedPreferences preferences;
+  Box preferences;
 
   @override
   Future internalAsyncInit() async {
-    preferences = await SharedPreferences.getInstance();
-    _logger.d(() => "loaded preferences = $preferences");
+    _logger.fine(() => "internalAsyncInit");
+    preferences = await Hive.openBox("local_preferences");
   }
 
-  Future<bool> clear() => preferences.clear();
+  Future<bool> clear() async {
+    var clearedKeysCount = await preferences.clear();
+    return clearedKeysCount > 0;
+  }
 
   bool isKeyExist(String key) {
-    Set<String> keys = preferences.getKeys();
-    _logger.d(() => "isKeyExist $keys");
-    var contains = keys.contains(key);
-    _logger.d(() => "isKeyExist $key => $contains");
+    var contains = preferences.containsKey(key);
+    _logger.fine(() => "isKeyExist $key => $contains");
     return contains;
   }
 
-  Future<bool> clearValue(String key) async => preferences.remove(key);
+  Future<bool> clearValue(String key) async {
+    await preferences.delete(key);
+    return true;
+  }
 
-  Future<bool> setString(String key, String value) async =>
-      await preferences.setString(key, value);
+  Future<bool> setString(String key, String value) async {
+    await preferences.put(key, value);
+    return true;
+  }
 
-  Future<bool> setIntPreference(String key, int value) async =>
-      await preferences.setInt(key, value);
+  Future<bool> setIntPreference(String key, int value) async {
+    await preferences.put(key, value);
+    return true;
+  }
 
-  Future<bool> setBoolPreference(String key, bool value) async =>
-      await preferences.setBool(key, value);
+  Future<bool> setBoolPreference(String key, bool value) async {
+    await preferences.put(key, value);
+    return true;
+  }
 
   Future<bool> setObjectPreference(
-      String key, IPreferencesObject preferencesObject) async =>
-      await setJsonObjectAsString(key, preferencesObject?.toJson());
-
-  Future<bool> setJsonObjectAsString(
-      String key, Map<String, dynamic> jsonObject) async =>
-      await setString(key, json.encode(jsonObject));
+      String key, IPreferencesObject preferencesObject) async {
+    await preferences.put(key, preferencesObject);
+    return true;
+  }
 
   bool getBoolPreference(
-      String key,
-      ) =>
-      preferences.getBool(key);
+    String key,
+  ) =>
+      preferences.get(key);
 
-  String getStringPreference(String key) => preferences.getString(key);
+  String getStringPreference(String key) => preferences.get(key);
 
   int getIntPreference(String key, {@required int defaultValue}) =>
-      preferences.getInt(key);
+      preferences.get(key);
 
-  T getObjectPreference<T>(
-      String key, T jsonConverter(Map<String, dynamic> jsonData),
-      {@required IPreferencesObject defaultValue}) {
-    var stringPreference = getStringPreference(key);
-    if (stringPreference == null) {
-      return null;
-    }
-    var jsonObject = json.decode(stringPreference);
-    return jsonObject != null ? jsonConverter(jsonObject) : null;
+  T getObjectPreference<T>(String key) {
+    return preferences.get(key);
   }
 }

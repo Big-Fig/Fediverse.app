@@ -22,9 +22,9 @@ class PleromaAccountEditService implements IPleromaAccountEditService {
   PleromaApiState get pleromaState => restService.pleromaState;
 
   @override
-  Stream<bool> get isPleromaApiReadyStream => restService.isPleromaApiReadyStream;
+  Stream<bool> get isApiReadyToUseStream => restService.isApiReadyToUseStream;
   @override
-  bool get isPleromaApiReady => restService.isPleromaApiReady;
+  bool get isApiReadyoUse => restService.isApiReadyoUse;
 
   @override
   bool get isConnected => restService.isConnected;

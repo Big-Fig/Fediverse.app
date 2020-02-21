@@ -12,8 +12,12 @@ class TimelinePaginationSimpleListWidget extends TimelinePaginationListBase {
         var status = statuses[index];
         return StatusListItemSimpleWidget(
           initialStatusData: status,
-          viewAccount: viewAccount,
-          viewStatusContext: viewStatusDetail,
+          viewAccount: (account) {
+            viewAccount(context, account);
+          },
+          viewStatusContext: (account) {
+            viewStatusDetail(context, account);
+          },
         );
       },
       itemCount: statuses.length,

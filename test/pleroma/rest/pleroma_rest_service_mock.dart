@@ -55,11 +55,11 @@ class PleromaRestServiceMock extends IPleromaRestService {
 
   @override
   // TODO: implement isPleromaApiReady
-  bool get isPleromaApiReady => throw UnimplementedError();
+  bool get isApiReadyoUse => throw UnimplementedError();
 
   @override
   // TODO: implement isPleromaApiReadyStream
-  Stream<bool> get isPleromaApiReadyStream => throw UnimplementedError();
+  Stream<bool> get isApiReadyToUseStream => throw UnimplementedError();
 
   @override
   // TODO: implement pleromaState

@@ -1,18 +1,17 @@
 import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
-import 'package:fedi/Pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:fedi/Pleroma/visibility/pleroma_visibility_model.dart';
+import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_repository.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/database/status_database_dao.dart';
-import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
+import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
-
 
 var _logger = Logger("status_repository_impl.dart");
 
@@ -20,14 +19,10 @@ class StatusRepository extends AsyncInitLoadingBloc
     implements IStatusRepository {
   final StatusDao dao;
   final IAccountRepository accountRepository;
-  final IPleromaTimelineService pleromaTimelineService;
-  String get baseUrl => pleromaTimelineService.baseUrl;
-  String get baseHost => extractHost(baseUrl);
 
   StatusRepository({
     @required this.dao,
     @required this.accountRepository,
-    @required this.pleromaTimelineService,
   });
 
   @override
@@ -44,357 +39,154 @@ class StatusRepository extends AsyncInitLoadingBloc
   Future<DbStatusPopulatedWrapper> findByRemoteId(String remoteId) async =>
       mapDataClassToItem(await dao.findByRemoteId(remoteId));
 
-  @override
-  Future<List<DbStatusPopulatedWrapper>> getPublicStatuses(
-      {@required bool onlyLocal,
+  Future<List<DbStatusPopulatedWrapper>> getStatuses(
+      {@required String inListWithRemoteId,
+      @required String withHashTag,
+      @required IAccount onlyFollowingByAccount,
+      @required String localUrlHost,
+      @required bool onlyLocal,
       @required bool onlyMedia,
-      @required bool withMuted,
+      @required bool notMuted,
       @required List<PleromaVisibility> excludeVisibilities,
-      @required IStatus notNewerThanStatus,
-      @required IStatus notOlderThanStatus,
+      @required String olderThanStatusRemoteId,
+      @required String newerThanStatusRemoteId,
+      @required bool noNsfwSensitive,
+      @required bool noReplies,
       @required int limit,
       @required int offset,
       @required StatusOrderingTermData orderingTermData}) async {
-    var query = createPublicQuery(
-        onlyMedia,
-        withMuted,
-        excludeVisibilities,
-        notNewerThanStatus,
-        notOlderThanStatus,
-        limit,
-        orderingTermData);
+    var query = createQuery(
+        inListWithRemoteId: inListWithRemoteId,
+        withHashTag: withHashTag,
+        onlyFollowingByAccount: onlyFollowingByAccount,
+        localUrlHost: localUrlHost,
+        onlyLocal: onlyLocal,
+        onlyMedia: onlyMedia,
+        notMuted: notMuted,
+        excludeVisibilities: excludeVisibilities,
+        olderThanStatusRemoteId: olderThanStatusRemoteId,
+        newerThanStatusRemoteId: newerThanStatusRemoteId,
+        noNsfwSensitive: noNsfwSensitive,
+        noReplies: noNsfwSensitive,
+        limit: limit,
+        offset: offset,
+        orderingTermData: orderingTermData);
+
     return dao
         .typedResultListToPopulated(await query.get())
         .map(mapDataClassToItem);
   }
 
-  @override
-  Stream<List<DbStatusPopulatedWrapper>> watchPublicStatuses(
-      {@required bool onlyLocal,
+  Stream<List<DbStatusPopulatedWrapper>> watchStatuses(
+      {@required String inListWithRemoteId,
+      @required String withHashTag,
+      @required IAccount onlyFollowingByAccount,
+      @required String localUrlHost,
+      @required bool onlyLocal,
       @required bool onlyMedia,
-      @required bool withMuted,
+      @required bool notMuted,
       @required List<PleromaVisibility> excludeVisibilities,
-      @required IStatus notNewerThanStatus,
-      @required IStatus notOlderThanStatus,
+      @required String olderThanStatusRemoteId,
+      @required String newerThanStatusRemoteId,
+      @required bool noNsfwSensitive,
+      @required bool noReplies,
       @required int limit,
       @required int offset,
       @required StatusOrderingTermData orderingTermData}) {
-    var query = createPublicQuery(
-        onlyMedia,
-        withMuted,
-        excludeVisibilities,
-        notNewerThanStatus,
-        notOlderThanStatus,
-        limit,
-        orderingTermData);
+    var query = createQuery(
+        inListWithRemoteId: inListWithRemoteId,
+        withHashTag: withHashTag,
+        onlyFollowingByAccount: onlyFollowingByAccount,
+        localUrlHost: localUrlHost,
+        onlyLocal: onlyLocal,
+        onlyMedia: onlyMedia,
+        notMuted: notMuted,
+        excludeVisibilities: excludeVisibilities,
+        olderThanStatusRemoteId: olderThanStatusRemoteId,
+        newerThanStatusRemoteId: newerThanStatusRemoteId,
+        noNsfwSensitive: noNsfwSensitive,
+        noReplies: noNsfwSensitive,
+        limit: limit,
+        offset: offset,
+        orderingTermData: orderingTermData);
+
     Stream<List<DbStatusPopulated>> stream =
         query.watch().map(dao.typedResultListToPopulated);
     return stream.map((list) => list.map(mapDataClassToItem).toList());
   }
 
-  JoinedSelectStatement createPublicQuery(
-      bool onlyMedia,
-      bool withMuted,
-      List<PleromaVisibility> excludeVisibilities,
-      IStatus notNewerThanStatus,
-      IStatus notOlderThanStatus,
-      int limit,
-      StatusOrderingTermData orderingTermData) {
-    assert(excludeVisibilities?.contains(PleromaVisibility.PUBLIC) != true);
-    excludeVisibilities = excludeVisibilities ?? [];
-    excludeVisibilities.addAll([
-      PleromaVisibility.UNLISTED,
-      PleromaVisibility.LIST,
-      PleromaVisibility.DIRECT
-    ]);
-    excludeVisibilities = excludeVisibilities.toSet().toList();
-    var query = dao.createQuery(
-        containsBaseUrlOrIsPleromaLocal: baseUrl,
-        onlyMedia: onlyMedia,
-        notMuted: withMuted,
-        excludeVisibilities: excludeVisibilities,
-        notNewerThanStatusRemoteId: notNewerThanStatus.remoteId,
-        newerThanStatusRemoteId: notOlderThanStatus.remoteId,
-        limit: limit,
-        offset: null,
-        orderingTermData: orderingTermData);
-    return query;
-  }
-
-  @override
-  Future<List<DbStatusPopulatedWrapper>> getHomeStatuses(
-      {@required bool onlyLocal,
-      @required bool onlyMedia,
-      @required bool withMuted,
-      @required List<PleromaVisibility> excludeVisibilities,
-      @required IStatus notNewerThanStatus,
-      @required IStatus notOlderThanStatus,
-      @required int limit,
-      @required int offset,
-      @required StatusOrderingTermData orderingTermData}) async {
-    var query = dao.createQuery(
-        containsBaseUrlOrIsPleromaLocal: baseUrl,
-        onlyMedia: onlyMedia,
-        notMuted: withMuted,
-        excludeVisibilities: excludeVisibilities,
-        notNewerThanStatusRemoteId: notNewerThanStatus.remoteId,
-        newerThanStatusRemoteId: notOlderThanStatus.remoteId,
-        limit: limit,
-        offset: null,
-        orderingTermData: orderingTermData);
-    return dao
-        .typedResultListToPopulated(await query.get())
-        .map(mapDataClassToItem);
-  }
-
-  @override
-  Stream<List<DbStatusPopulatedWrapper>> watchHomeStatuses(
-      {@required bool onlyLocal,
-      @required bool onlyMedia,
-      @required bool withMuted,
-      @required List<PleromaVisibility> excludeVisibilities,
-      @required IStatus notNewerThanStatus,
-      @required IStatus notOlderThanStatus,
-      @required int limit,
-      @required int offset,
-      @required StatusOrderingTermData orderingTermData}) {
-    var query = dao.createQuery(
-        containsBaseUrlOrIsPleromaLocal: baseUrl,
-        onlyMedia: onlyMedia,
-        notMuted: withMuted,
-        excludeVisibilities: excludeVisibilities,
-        notNewerThanStatusRemoteId: notNewerThanStatus.remoteId,
-        newerThanStatusRemoteId: notOlderThanStatus.remoteId,
-        limit: limit,
-        offset: null,
-        orderingTermData: orderingTermData);
-    Stream<List<DbStatusPopulated>> stream =
-        query.watch().map(dao.typedResultListToPopulated);
-    return stream.map((list) => list.map(mapDataClassToItem).toList());
-  }
-
-  @override
-  Future<List<DbStatusPopulatedWrapper>> getHashTagStatuses(
-      {@required String hashTag,
+  JoinedSelectStatement createQuery(
+      {@required String inListWithRemoteId,
+      @required String withHashTag,
+      @required IAccount onlyFollowingByAccount,
+      @required String localUrlHost,
       @required bool onlyLocal,
       @required bool onlyMedia,
-      @required bool withMuted,
+      @required bool notMuted,
       @required List<PleromaVisibility> excludeVisibilities,
-      @required IStatus notNewerThanStatus,
-      @required IStatus notOlderThanStatus,
+      @required String olderThanStatusRemoteId,
+      @required String newerThanStatusRemoteId,
+      @required bool noNsfwSensitive,
+      @required bool noReplies,
       @required int limit,
       @required int offset,
       @required StatusOrderingTermData orderingTermData}) {
-    // TODO: implement getHomeStatuses
-    throw UnimplementedError();
-  }
+    var query = dao.startSelectQuery();
 
-  @override
-  Stream<List<DbStatusPopulatedWrapper>> watchHashTagStatuses(
-      {@required String hashTag,
-      @required bool onlyLocal,
-      @required bool onlyMedia,
-      @required bool withMuted,
-      @required List<PleromaVisibility> excludeVisibilities,
-      @required IStatus notNewerThanStatus,
-      @required IStatus notOlderThanStatus,
-      @required int limit,
-      @required int offset,
-      @required StatusOrderingTermData orderingTermData}) {
-    // TODO: implement watchHashTagStatuses
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<DbStatusPopulatedWrapper>> getListStatuses(
-      {@required String listRemoteId,
-      @required bool onlyLocal,
-      @required bool onlyMedia,
-      @required bool withMuted,
-      @required List<PleromaVisibility> excludeVisibilities,
-      @required IStatus notNewerThanStatus,
-      @required IStatus notOlderThanStatus,
-      @required int limit,
-      @required int offset,
-      @required StatusOrderingTermData orderingTermData}) {
-    // TODO: implement getListStatuses
-    throw UnimplementedError();
-  }
-
-  @override
-  Stream<List<DbStatusPopulatedWrapper>> watchListStatuses(
-      {@required String listRemoteId,
-      @required bool onlyLocal,
-      @required bool onlyMedia,
-      @required bool withMuted,
-      @required List<PleromaVisibility> excludeVisibilities,
-      @required IStatus notNewerThanStatus,
-      @required IStatus notOlderThanStatus,
-      @required int limit,
-      @required int offset,
-      @required StatusOrderingTermData orderingTermData}) {
-    // TODO: implement watchListStatuses
-    throw UnimplementedError();
-  }
-
-  @override
-  Future refreshHashTagStatuses({
-    @required String hashTag,
-    @required bool onlyLocal,
-    @required bool onlyMedia,
-    @required bool withMuted,
-    @required List<PleromaVisibility> excludeVisibilities,
-    @required int limit,
-    @required int offset,
-  }) async {
-    var statuses = await getHashTagStatuses(
-        hashTag: hashTag,
-        onlyLocal: onlyLocal,
-        onlyMedia: onlyMedia,
-        withMuted: withMuted,
-        excludeVisibilities: excludeVisibilities,
-        notNewerThanStatus: null,
-        notOlderThanStatus: null,
-        limit: 1,
-        offset: null,
-        orderingTermData: StatusOrderingTermData(
-            orderByType: StatusOrderByType.remoteId,
-            orderingMode: OrderingMode.desc));
-
-    IStatus latestStatus;
-    if (statuses.isNotEmpty) {
-      latestStatus = statuses.first;
+    if (inListWithRemoteId?.isNotEmpty == true) {
+      throw UnimplementedError();
     }
-    List<IPleromaStatus> loadedRemoteStatuses =
-        await pleromaTimelineService.getHashTagTimeline(
-      limit: limit,
-      minId: latestStatus?.remoteId,
-      hashTag: hashTag,
-      onlyLocal: onlyLocal,
-      onlyMedia: onlyMedia,
-      withMuted: withMuted,
-      excludeVisibilities: excludeVisibilities,
-    );
 
-    await updateRemoteStatuses(loadedRemoteStatuses);
-  }
-
-  @override
-  Future refreshHomeStatuses(
-      {@required bool onlyLocal,
-      @required bool onlyMedia,
-      @required bool withMuted,
-      @required List<PleromaVisibility> excludeVisibilities,
-      @required int limit}) async {
-    var statuses = await getHomeStatuses(
-        onlyLocal: onlyLocal,
-        onlyMedia: null,
-        withMuted: withMuted,
-        excludeVisibilities: excludeVisibilities,
-        notNewerThanStatus: null,
-        notOlderThanStatus: null,
-        limit: 1,
-        offset: null,
-        orderingTermData: StatusOrderingTermData(
-            orderByType: StatusOrderByType.remoteId,
-            orderingMode: OrderingMode.desc));
-
-    IStatus latestStatus;
-    if (statuses.isNotEmpty) {
-      latestStatus = statuses.first;
+    if (withHashTag?.isNotEmpty == true) {
+      dao.addHashTagWhere(query, withHashTag);
     }
-    List<IPleromaStatus> loadedRemoteStatuses =
-        await pleromaTimelineService.getHomeTimeline(
-      limit: limit,
-      minId: latestStatus?.remoteId,
-      onlyLocal: onlyLocal,
-      onlyMedia: onlyMedia,
-      withMuted: withMuted,
-      excludeVisibilities: excludeVisibilities,
-    );
-
-    await updateRemoteStatuses(loadedRemoteStatuses);
-  }
-
-  @override
-  Future refreshListStatuses({
-    @required String listRemoteId,
-    @required bool onlyLocal,
-    @required bool onlyMedia,
-    @required bool withMuted,
-    @required List<PleromaVisibility> excludeVisibilities,
-    @required int limit,
-    @required int offset,
-  }) async {
-    var statuses = await getListStatuses(
-        listRemoteId: listRemoteId,
-        onlyLocal: onlyLocal,
-        onlyMedia: null,
-        withMuted: withMuted,
-        excludeVisibilities: excludeVisibilities,
-        notNewerThanStatus: null,
-        notOlderThanStatus: null,
-        limit: 1,
-        offset: null,
-        orderingTermData: StatusOrderingTermData(
-            orderByType: StatusOrderByType.remoteId,
-            orderingMode: OrderingMode.desc));
-
-    IStatus latestStatus;
-    if (statuses.isNotEmpty) {
-      latestStatus = statuses.first;
+    if (onlyFollowingByAccount != null) {
+      throw UnimplementedError();
     }
-    List<IPleromaStatus> loadedRemoteStatuses =
-        await pleromaTimelineService.getListTimeline(
-      listId: listRemoteId,
-      limit: limit,
-      minId: latestStatus?.remoteId,
-      onlyLocal: onlyLocal,
-      onlyMedia: onlyMedia,
-      withMuted: withMuted,
-      excludeVisibilities: excludeVisibilities,
-    );
 
-    await updateRemoteStatuses(loadedRemoteStatuses);
-  }
+    if (onlyLocal == true) {
+      assert(localUrlHost?.isNotEmpty == true);
 
-  @override
-  Future refreshPublicStatuses({
-    @required bool onlyLocal,
-    @required bool onlyMedia,
-    @required bool withMuted,
-    @required List<PleromaVisibility> excludeVisibilities,
-    @required int limit,
-    @required int offset,
-  }) async {
-    var statuses = await getPublicStatuses(
-        onlyLocal: onlyLocal,
-        onlyMedia: null,
-        withMuted: withMuted,
-        excludeVisibilities: excludeVisibilities,
-        notNewerThanStatus: null,
-        notOlderThanStatus: null,
-        limit: 1,
-        offset: null,
-        orderingTermData: StatusOrderingTermData(
-            orderByType: StatusOrderByType.remoteId,
-            orderingMode: OrderingMode.desc));
-
-    IStatus latestStatus;
-    if (statuses.isNotEmpty) {
-      latestStatus = statuses.first;
+      dao.addLocalOnlyWhere(query, localUrlHost);
     }
-    List<IPleromaStatus> loadedRemoteStatuses =
-        await pleromaTimelineService.getPublicTimeline(
-      limit: limit,
-      minId: latestStatus?.remoteId,
-      onlyLocal: onlyLocal,
-      onlyMedia: onlyMedia,
-      withMuted: withMuted,
-      excludeVisibilities: excludeVisibilities,
-    );
 
-    await updateRemoteStatuses(loadedRemoteStatuses);
+    if (onlyMedia == true) {
+      dao.addMediaOnlyWhere(query);
+    }
+
+    if (notMuted == true) {
+      dao.addNotMutedWhere(query);
+    }
+
+    if (noNsfwSensitive == true) {
+      dao.addNoNsfwSensitiveWhere(query);
+    }
+
+    if (noReplies == true) {
+      dao.addNoRepliesWhere(query);
+    }
+
+    if (excludeVisibilities?.isNotEmpty == true) {
+      dao.addExcludeVisibilitiesWhere(query, excludeVisibilities);
+    }
+
+    if (olderThanStatusRemoteId != null || newerThanStatusRemoteId != null) {
+      dao.addRemoteIdBoundsWhere(query,
+          maximumRemoteIdExcluding: olderThanStatusRemoteId,
+          minimumRemoteIdExcluding: newerThanStatusRemoteId);
+    }
+
+    if (orderingTermData != null) {
+      dao.orderBy(query, [orderingTermData]);
+    }
+    var joinQuery = query.join(
+      dao.populateStatusJoin(),
+    );
+    assert(!(limit == null && offset != null));
+    if (limit != null) {
+      joinQuery.limit(limit, offset: offset);
+    }
+    return joinQuery;
   }
 
   @override
@@ -463,7 +255,6 @@ class StatusRepository extends AsyncInitLoadingBloc
 
   Insertable<DbStatus> mapItemToDataClass(DbStatusPopulatedWrapper item) =>
       item.dbStatusPopulated.status;
-
 
   static String extractHost(String url) => Uri.parse(url).host;
 }

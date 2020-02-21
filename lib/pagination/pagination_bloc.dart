@@ -4,7 +4,29 @@ import 'package:flutter/widgets.dart';
 
 abstract class IPaginationBloc<TPage extends PaginationPage<TItem>, TItem>
     implements DisposableOwner {
-  Future<TPage> getPage({@required pageIndex});
+  int get loadedPagesMinimumIndex;
 
-  Stream<bool> get dataInvalidatedStream;
+  Stream<bool> get isLoadedPagesInSequenceStream;
+
+  bool get isLoadedPagesInSequence;
+
+  Stream<int> get loadedPagesMinimumIndexStream;
+
+  int get loadedPagesMaximumIndex;
+
+  Stream<int> get loadedPagesMaximumIndexStream;
+
+  List<TPage> get loadedPagesSortedByIndex;
+
+  Stream<List<TPage>> get loadedPagesSortedByIndexStream;
+
+  List<int> get loadedPageIndexesSorted;
+
+  Stream<List<int>> get loadedPageIndexesSortedStream;
+
+  Future<TPage> requestPage({@required int pageIndex});
+
+  Future<TPage> refresh();
+
+  int get itemsCountPerPage;
 }

@@ -1,4 +1,5 @@
 import 'package:fedi/Pleroma/timeline/pleroma_timeline_service.dart';
+import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preferences_model.dart';
 import 'package:fedi/app/timeline/pagination/list/timeline_pagination_list_media_widget.dart';
@@ -8,6 +9,11 @@ import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/widgets.dart';
 
 abstract class TimelineWidget extends StatelessWidget {
+  final bool onlyLocal;
+  final String localUrlHost;
+
+  TimelineWidget({@required this.onlyLocal, @required this.localUrlHost});
+
   @override
   Widget build(BuildContext context) {
     var timelinePreferencesBloc =
@@ -21,7 +27,7 @@ abstract class TimelineWidget extends StatelessWidget {
 
           var bodyWidget;
 
-          if (timelinePreferences.showStatusesWithMediaOnly == true) {
+          if (timelinePreferences.onlyMedia == true) {
             bodyWidget = TimelinePaginationMediaListWidget();
           } else {
             bodyWidget = TimelinePaginationSimpleListWidget();
@@ -35,7 +41,9 @@ abstract class TimelineWidget extends StatelessWidget {
                 return createTimelineService(
                     context: context,
                     timelinePreferences: timelinePreferences,
-                    pleromaTimelineService: pleromaTimelineService);
+                    pleromaTimelineService: pleromaTimelineService,
+                    statusRepository:
+                        IStatusRepository.of(context, listen: false));
               },
               child: bodyWidget);
         });
@@ -44,5 +52,6 @@ abstract class TimelineWidget extends StatelessWidget {
   ITimelineService createTimelineService(
       {@required BuildContext context,
       @required TimelineLocalPreferences timelinePreferences,
+      @required IStatusRepository statusRepository,
       @required IPleromaTimelineService pleromaTimelineService});
 }

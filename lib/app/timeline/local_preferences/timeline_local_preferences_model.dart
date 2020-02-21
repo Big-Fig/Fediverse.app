@@ -6,9 +6,9 @@ part 'timeline_local_preferences_model.g.dart';
 @HiveType()
 class TimelineLocalPreferences extends IPreferencesObject {
   @HiveField(1)
-  bool showStatusesWithMediaOnly;
+  bool onlyMedia;
   @HiveField(2)
-  bool hideRepliesSetting;
+  bool noReplies;
   @HiveField(3)
-  bool hideNsfwSensitiveContent;
+  bool noNsfwSensitive;
 }

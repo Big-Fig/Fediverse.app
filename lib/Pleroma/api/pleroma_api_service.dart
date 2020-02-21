@@ -9,11 +9,11 @@ abstract class IPleromaApi {
 
   bool get isConnected;
 
-  Stream<bool> get isPleromaApiReadyStream =>
+  Stream<bool> get isApiReadyToUseStream =>
       Rx.combineLatest2(pleromaStateStream, isConnectedStream,
           mapIsReady).distinct();
 
-  bool get isPleromaApiReady => mapIsReady(pleromaState, isConnected);
+  bool get isApiReadyoUse => mapIsReady(pleromaState, isConnected);
 
 }
 

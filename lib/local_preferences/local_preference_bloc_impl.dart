@@ -61,7 +61,7 @@ abstract class ObjectLocalPreferenceBloc<T extends IPreferencesObject>
   }
 
   Future<T> getValueInternal() async =>
-      _preferenceService.getObjectPreference(key, jsonConverter);
+      _preferenceService.getObjectPreference(key);
 }
 
 abstract class SimplePreferencesBloc<T> extends LocalPreferenceBloc<T> {

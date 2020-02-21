@@ -1,13 +1,26 @@
 import 'package:fedi/Pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/app/pagination/cached_pleroma_pagination_bloc.dart';
 import 'package:fedi/pagination/network/cached_network_pagination_bloc_impl.dart';
+import 'package:fedi/pagination/network/cached_network_pagination_model.dart';
+import 'package:flutter/widgets.dart';
 
-class CachedPleromaPaginationBloc extends CachedNetworkPaginationBloc
-    implements ICachedPleromaPaginationBloc {
+abstract class CachedPleromaPaginationBloc<TItem>
+    extends CachedNetworkPaginationBloc<CachedNetworkPaginationPage<TItem>,
+        TItem> implements ICachedPleromaPaginationBloc<TItem> {
+  IPleromaApi get pleromaApi;
 
-//  final IPleromaApi pleromaApi;
+  @override
+  bool get isPossibleToLoadFromNetwork => pleromaApi.isApiReadyoUse;
 
-  CachedNetworkPaginationBloc cachedNetworkPaginationBloc;
-
-  CachedPleromaPaginationBloc.cachePages() : super.cachePages();
+  @override
+  CachedNetworkPaginationPage<TItem> createPage(
+      {@required int pageIndex,
+      @required List<TItem> loadedItems,
+      @required bool isActuallyRefreshed}) {
+    return CachedNetworkPaginationPage(
+        requestedLimitPerPage: itemsCountPerPage,
+        pageIndex: pageIndex,
+        values: loadedItems,
+        isActuallyRefreshedFromRemote: isActuallyRefreshed);
+  }
 }

@@ -15,13 +15,13 @@ class TimelineLocalPreferencesAdapter
     for (var i = 0; i < numOfFields; i++) {
       switch (reader.readByte()) {
         case 1:
-          obj.showStatusesWithMediaOnly = reader.read() as bool;
+          obj.onlyMedia = reader.read() as bool;
           break;
         case 2:
-          obj.hideRepliesSetting = reader.read() as bool;
+          obj.noReplies = reader.read() as bool;
           break;
         case 3:
-          obj.hideNsfwSensitiveContent = reader.read() as bool;
+          obj.noNsfwSensitive = reader.read() as bool;
           break;
       }
     }
@@ -32,10 +32,10 @@ class TimelineLocalPreferencesAdapter
   void write(BinaryWriter writer, TimelineLocalPreferences obj) {
     writer.writeByte(3);
     writer.writeByte(1);
-    writer.write(obj.showStatusesWithMediaOnly);
+    writer.write(obj.onlyMedia);
     writer.writeByte(2);
-    writer.write(obj.hideRepliesSetting);
+    writer.write(obj.noReplies);
     writer.writeByte(3);
-    writer.write(obj.hideNsfwSensitiveContent);
+    writer.write(obj.noNsfwSensitive);
   }
 }
