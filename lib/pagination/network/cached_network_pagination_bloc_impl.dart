@@ -4,8 +4,8 @@ import 'package:fedi/pagination/pagination_bloc_impl.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/widgets.dart';
 
-class CachedNetworkPaginationBloc<T> extends PaginationBloc<T>
-    implements ICachedNetworkPaginationBloc<T> {
+class CachedNetworkPaginationBloc<TPage extends CachedNetworkPaginationPage<TItem>, TItem>  extends PaginationBloc<TPage, TItem>
+    implements ICachedNetworkPaginationBloc<TPage, TItem> {
   CachedNetworkPaginationBloc.notCachePages({@required int itemsPerPage})
       : super.notCachePages(itemsPerPage: itemsPerPage);
 
@@ -15,9 +15,14 @@ class CachedNetworkPaginationBloc<T> extends PaginationBloc<T>
             cachedPagesCount: cachedPagesCount, itemsPerPage: itemsPerPage);
 
   @override
-  Future<PaginationPage<T>> loadPage({pageIndex}) {
+  Future<TPage> loadPage({@required int pageIndex}) {
     // TODO: implement loadPage
     throw UnimplementedError();
+  }
+
+
+  Future refreshData() async {
+    clearCachePages();
   }
 
 //  @override

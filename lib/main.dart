@@ -6,10 +6,14 @@ import 'package:fedi/Pleroma/account/edit/pleroma_account_edit_service.dart';
 import 'package:fedi/Pleroma/account/edit/pleroma_account_edit_service_impl.dart';
 import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_service.dart';
 import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_service_impl.dart';
+import 'package:fedi/Pleroma/rest/auth/pleroma_auth_rest_service.dart';
+import 'package:fedi/Pleroma/rest/auth/pleroma_auth_rest_service_impl.dart';
 import 'package:fedi/Pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/Pleroma/rest/pleroma_rest_service_impl.dart';
 import 'package:fedi/Pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:fedi/Pleroma/timeline/pleroma_timeline_service_impl.dart';
+import 'package:fedi/connection/connection_service.dart';
+import 'package:fedi/connection/connection_service_impl.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/permission/camera_permission_bloc.dart';
 import 'package:fedi/permission/camera_permission_bloc_impl.dart';
@@ -126,6 +130,8 @@ class MyApp extends StatelessWidget {
               create: (BuildContext context) => PermissionsService()),
           DisposableProvider<IRestService>(
               create: (BuildContext context) => RestService()),
+          DisposableProvider<IConnectionService>(
+              create: (BuildContext context) => ConnectionService()),
           Provider(create: (BuildContext context) => DeepLinkHelper()),
           Provider(create: (BuildContext context) => PushHelper())
         ],
@@ -134,20 +140,26 @@ class MyApp extends StatelessWidget {
 
   Widget providePleromaContext(Widget app) => Provider<IPleromaRestService>(
       create: (BuildContext context) => PleromaRestService(
-          restService: IRestService.of(context, listen: false)),
-      child: MultiProvider(
-        providers: [
-          Provider<IPleromaMediaAttachmentService>(
-              create: (context) => PleromaMediaAttachmentService(
-                  restService: IPleromaRestService.of(context, listen: false))),
-          Provider<IPleromaAccountEditService>(
-              create: (context) => PleromaAccountEditService(
-                  restService: IPleromaRestService.of(context, listen: false))),
-          Provider<IPleromaTimelineService>(
-              create: (context) => PleromaTimelineService(
-                  restService: IPleromaRestService.of(context, listen: false))),
-        ],
-        child: app,
+          restService: IRestService.of(context, listen: false),
+          connectionService: IConnectionService.of(context, listen: false)),
+      child:  Provider<IPleromaAuthRestService>(
+          create: (BuildContext context) => PleromaAuthRestService(
+              restService: IRestService.of(context, listen: false),
+              connectionService: IConnectionService.of(context, listen: false)),
+        child: MultiProvider(
+          providers: [
+            Provider<IPleromaMediaAttachmentService>(
+                create: (context) => PleromaMediaAttachmentService(
+                    restService: IPleromaAuthRestService.of(context, listen: false))),
+            Provider<IPleromaAccountEditService>(
+                create: (context) => PleromaAccountEditService(
+                    restService: IPleromaAuthRestService.of(context, listen: false))),
+            Provider<IPleromaTimelineService>(
+                create: (context) => PleromaTimelineService(
+                    restService: IPleromaAuthRestService.of(context, listen: false))),
+          ],
+          child: app,
+        ),
       ));
   Widget providePermissionsContext({@required Widget child}) => MultiProvider(
         providers: [

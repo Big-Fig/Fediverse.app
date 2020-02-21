@@ -2,9 +2,9 @@ import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_model.dar
 import 'package:fedi/Pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/app/account/account_database_dao.dart';
 import 'package:fedi/app/database/app_database.dart';
-import 'package:fedi/app/status/status_database_dao.dart';
+import 'package:fedi/app/status/database/status_database_dao.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/app/status/status_repository_model.dart';
+import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/moor.dart';
 import 'package:moor_ffi/moor_ffi.dart';

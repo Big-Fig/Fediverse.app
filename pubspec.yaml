@@ -88,6 +88,9 @@ dependencies:
   # sqlite orm
   moor: ^2.4.0
 
+  # check internet connection state
+  connectivity: ^0.4.8
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

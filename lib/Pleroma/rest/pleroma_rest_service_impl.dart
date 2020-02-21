@@ -1,16 +1,41 @@
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:fedi/Pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/Pleroma/rest/pleroma_rest_service.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
 import 'package:fedi/rest/rest_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 import 'package:path/path.dart' as path;
+import 'package:rxdart/rxdart.dart';
 
 var urlPath = path.Context(style: path.Style.url);
 
 class PleromaRestService implements IPleromaRestService {
-  static final authHeaderKey = "authorization";
-  static final authHeaderValuePrefix = "Bearer";
+  final IConnectionService connectionService;
+
+  // ignore: close_sinks
+  BehaviorSubject<PleromaApiState> _stateSubject;
+
+  @override
+  PleromaApiState get pleromaState => _stateSubject.value;
+
+  @override
+  Stream<PleromaApiState> get pleromaStateStream => _stateSubject.stream;
+
+
+  @override
+  bool get isConnected => connectionService.isConnected;
+
+  @override
+  Stream<bool> get isConnectedStream => connectionService.isConnectedStream;
+
+  Stream<bool> get isPleromaApiReadyStream => Rx.combineLatest2(
+      pleromaStateStream, isConnectedStream, mapIsReady)
+      .distinct();
+
+  bool get isPleromaApiReady => mapIsReady(pleromaState, isConnected);
+
 
   final IRestService restService;
 
@@ -20,22 +45,15 @@ class PleromaRestService implements IPleromaRestService {
 
   PleromaRestService(
       {@required
-          this.restService}); // Should be reworked to final config fields
-  String get accessToken => CurrentInstance.instance.currentClient.accessToken;
-
-
-  Map<String, String> createAuthHeaders() =>
-      {"authorization": "Bearer $accessToken"};
+          this.restService, @required this.connectionService});
 
   @override
   Future<Response> sendHttpRequest<T extends RestRequest, K>(T request) {
-    request.headers.addAll(createAuthHeaders());
     return restService.sendHttpRequest(request);
   }
 
   @override
   Future<Response> uploadFileMultipartRequest<T extends UploadMultipartRestRequest, K>(T request) {
-    request.headers.addAll(createAuthHeaders());
     return restService.uploadFileMultipartRequest(request);
   }
 

@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/Pleroma/account/edit/pleroma_account_edit_exception.dart';
 import 'package:fedi/Pleroma/account/edit/pleroma_account_edit_service.dart';
+import 'package:fedi/Pleroma/api/pleroma_api_service.dart';
+import 'package:fedi/Pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/Pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
 import 'package:flutter/widgets.dart';
@@ -10,7 +12,25 @@ import 'package:http/http.dart';
 
 class PleromaAccountEditService implements IPleromaAccountEditService {
   final editProfileRelativeUrlPath = "/api/v1/accounts/update_credentials";
-  final IPleromaRestService restService;
+  final IPleromaAuthRestService restService;
+
+
+  @override
+  Stream<PleromaApiState> get pleromaStateStream => restService.pleromaStateStream;
+
+  @override
+  PleromaApiState get pleromaState => restService.pleromaState;
+
+  @override
+  Stream<bool> get isPleromaApiReadyStream => restService.isPleromaApiReadyStream;
+  @override
+  bool get isPleromaApiReady => restService.isPleromaApiReady;
+
+  @override
+  bool get isConnected => restService.isConnected;
+
+  @override
+  Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
   PleromaAccountEditService({@required this.restService});
 

@@ -1,9 +1,10 @@
+import 'package:fedi/Pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/Pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IPleromaTimelineService {
+abstract class IPleromaTimelineService implements IPleromaApi {
   String get baseUrl;
 
   static IPleromaTimelineService of(BuildContext context, {listen: true}) =>

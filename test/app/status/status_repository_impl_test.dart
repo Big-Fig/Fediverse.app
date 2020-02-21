@@ -2,10 +2,11 @@ import 'package:fedi/Pleroma/timeline/pleroma_timeline_service_impl.dart';
 import 'package:fedi/app/account/account_repository_impl.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/app/status/status_repository_impl.dart';
+import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor_ffi/moor_ffi.dart';
 
+import '../../pleroma/rest/auth/pleroma_auth_rest_service_mock.dart';
 import '../../pleroma/rest/pleroma_rest_service_mock.dart';
 import '../account/account_repository_model_helper.dart';
 import 'status_repository_model_helper.dart';
@@ -29,7 +30,7 @@ void main() {
         dao: database.statusDao,
         accountRepository: accountRepository,
         pleromaTimelineService: PleromaTimelineService(
-            restService: PleromaRestServiceMock(baseUrl: baseUrl)));
+            restService: PleromaAuthRestServiceMock(baseUrl: baseUrl)));
 
     dbAccount = createTestAccount("seed1");
 

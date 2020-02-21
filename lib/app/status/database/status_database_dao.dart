@@ -1,8 +1,8 @@
 import 'package:fedi/Pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/app/database/app_database.dart';
-import 'package:fedi/app/status/status_database_model.dart';
+import 'package:fedi/app/status/database/status_database_model.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/app/status/status_repository_model.dart';
+import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:moor/moor.dart';
 
 part 'status_database_dao.g.dart';

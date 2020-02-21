@@ -198,13 +198,10 @@ class PleromaStatusPleromaPart {
   @JsonKey(name: "emoji_reactions")
   List<PleromaEmojiReactions> emojiReactions;
 
-  PleromaStatusPleromaPart({
-    this.content,
-    this.conversationId,
-    this.inReplyToAccountAcct,
-    this.local,
-    this.spoilerText,
-  });
+
+  PleromaStatusPleromaPart({this.content, this.conversationId,
+    this.directConversationId, this.inReplyToAccountAcct, this.local,
+    this.spoilerText, this.expiresAt, this.threadMuted, this.emojiReactions});
 
   factory PleromaStatusPleromaPart.fromJson(Map<String, dynamic> json) =>
       _$PleromaStatusPleromaPartFromJson(json);

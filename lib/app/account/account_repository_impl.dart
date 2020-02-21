@@ -88,26 +88,6 @@ class AccountRepository extends AsyncInitLoadingBloc
   Insertable<DbAccount> mapItemToDataClass(DbAccountWrapper item) =>
       item.dbAccount;
 
-  static DbAccount mapRemoteAccountToDbAccount(IPleromaAccount remoteAccount) {
-    return DbAccount(
-        id: null,
-        remoteId: remoteAccount.id,
-        username: remoteAccount.username,
-        url: remoteAccount.url,
-        note: remoteAccount.note,
-        locked: remoteAccount.locked,
-        headerStatic: remoteAccount.headerStatic,
-        header: remoteAccount.header,
-        followingCount: remoteAccount.followingCount,
-        followersCount: remoteAccount.followersCount,
-        statusesCount: remoteAccount.statusesCount,
-        displayName: remoteAccount.displayName,
-        createdAt: remoteAccount.createdAt,
-        avatarStatic: remoteAccount.avatarStatic,
-        avatar: remoteAccount.avatar,
-        acct: remoteAccount.acct,
-        lastStatusAt: remoteAccount.lastStatusAt);
-  }
 
   @override
   Future<int> upsertByRemoteId(DbAccount dbAccount) =>

@@ -6,8 +6,8 @@ import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/widgets.dart';
 
-abstract class PaginationBloc<T> extends DisposableOwner
-    implements IPaginationBloc<T> {
+abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem> extends DisposableOwner
+    implements IPaginationBloc<TPage, TItem> {
   final int maximumCachedPagesCount;
   bool get isCacheEnabled =>
       maximumCachedPagesCount != null && maximumCachedPagesCount > 0;
@@ -15,7 +15,7 @@ abstract class PaginationBloc<T> extends DisposableOwner
       cachedPagesCount >= maximumCachedPagesCount;
   int get cachedPagesCount => indexToCachedPageMap.length;
   final int itemsPerPage;
-  final Map<int, PaginationPage<T>> indexToCachedPageMap = {};
+  final Map<int, TPage> indexToCachedPageMap = {};
 
   // ignore: close_sinks
   StreamController<bool> dataInvalidatedStreamController = StreamController();
@@ -40,8 +40,8 @@ abstract class PaginationBloc<T> extends DisposableOwner
             maximumCachedPagesCount: null, itemsPerPage: itemsPerPage);
 
   @override
-  Future<PaginationPage<T>> getPage({@required pageIndex}) async {
-    PaginationPage<T> page;
+  Future<TPage> getPage({@required pageIndex}) async {
+    TPage page;
     if (isCacheEnabled) {
       if (indexToCachedPageMap.containsKey(pageIndex)) {
         page = indexToCachedPageMap[pageIndex];
@@ -79,5 +79,5 @@ abstract class PaginationBloc<T> extends DisposableOwner
     dataInvalidatedStreamController.add(true);
   }
 
-  Future<PaginationPage<T>> loadPage({@required pageIndex});
+  Future<TPage> loadPage({@required int pageIndex});
 }

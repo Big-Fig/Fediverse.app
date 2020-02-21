@@ -1,3 +1,5 @@
+import 'package:fedi/Pleroma/api/pleroma_api_service.dart';
+import 'package:fedi/Pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/Pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/Pleroma/timeline/pleroma_timeline_exception.dart';
@@ -15,7 +17,26 @@ class PleromaTimelineService implements IPleromaTimelineService {
   String get baseUrl => restService.baseUrl;
 
   final timelineRelativeUrlPath = "/api/v1/timelines/";
-  final IPleromaRestService restService;
+  final IPleromaAuthRestService restService;
+
+
+
+  @override
+  Stream<PleromaApiState> get pleromaStateStream => restService.pleromaStateStream;
+
+  @override
+  PleromaApiState get pleromaState => restService.pleromaState;
+
+  @override
+  Stream<bool> get isPleromaApiReadyStream => restService.isPleromaApiReadyStream;
+  @override
+  bool get isPleromaApiReady => restService.isPleromaApiReady;
+
+  @override
+  bool get isConnected => restService.isConnected;
+
+  @override
+  Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
   PleromaTimelineService({@required this.restService});
 

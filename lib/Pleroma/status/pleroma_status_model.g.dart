@@ -108,20 +108,20 @@ PleromaStatusPleromaPart _$PleromaStatusPleromaPartFromJson(
         ? null
         : PleromaContent.fromJson(json['content'] as Map<String, dynamic>),
     conversationId: json['conversation_id'] as int,
+    directConversationId: json['direct_conversation_id'] as int,
     inReplyToAccountAcct: json['in_reply_to_account_acct'] as String,
     local: json['local'] as bool,
     spoilerText: json['spoiler_text'] == null
         ? null
         : PleromaContent.fromJson(json['spoiler_text'] as Map<String, dynamic>),
-  )
-    ..directConversationId = json['direct_conversation_id'] as int
-    ..expiresAt = json['expires_at']
-    ..threadMuted = json['thread_muted'] as bool
-    ..emojiReactions = (json['emoji_reactions'] as List)
+    expiresAt: json['expires_at'],
+    threadMuted: json['thread_muted'] as bool,
+    emojiReactions: (json['emoji_reactions'] as List)
         ?.map((e) => e == null
             ? null
             : PleromaEmojiReactions.fromJson(e as Map<String, dynamic>))
-        ?.toList();
+        ?.toList(),
+  );
 }
 
 Map<String, dynamic> _$PleromaStatusPleromaPartToJson(

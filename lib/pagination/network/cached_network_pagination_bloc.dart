@@ -4,7 +4,8 @@ import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/widgets.dart';
 
-abstract class ICachedNetworkPaginationBloc<T> implements IPaginationBloc<T> {
+abstract class ICachedNetworkPaginationBloc<TPage extends CachedNetworkPaginationPage<TItem>, TItem>
+    implements IPaginationBloc<TPage, TItem> {
   @override
-  Future<CachedNetworkPaginationPage<T>> getPage({@required pageIndex});
+  Future<TPage> getPage({@required pageIndex});
 }
