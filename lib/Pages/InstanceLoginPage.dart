@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/Pages/SignUp/sign_up_page.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
 import 'package:flutter/material.dart';
@@ -88,9 +89,9 @@ class _InstanceLoginPage extends State<InstanceLoginPage> {
                       filled: true,
                       fillColor: Colors.white54,
                       hintText: AppLocalizations.of(context)
-                      .tr("login.field.host.hint"),
+                          .tr("login.field.host.hint"),
                       helperText: AppLocalizations.of(context)
-                      .tr("login.field.host.helper_text"),
+                          .tr("login.field.host.helper_text"),
                       border: InputBorder.none,
                       helperStyle: TextStyle(color: Colors.white),
                     ),
@@ -99,23 +100,22 @@ class _InstanceLoginPage extends State<InstanceLoginPage> {
                 ),
                 Spacer(),
                 FlatButton(
-                  child: Text(
-                      AppLocalizations.of(context)
-                          .tr("login.action.login_to_instance")
-                      ),
+                  child: Text(AppLocalizations.of(context)
+                      .tr("login.action.login_to_instance")),
                   color: darkGray,
                   textColor: Colors.white,
                   onPressed: () {
-                    if (_instanceTextController.text == ""){
+                    if (_instanceTextController.text == "") {
                       return;
                     }
                     _pr =
                         new ProgressDialog(context, ProgressDialogType.Normal);
-                    _pr.setMessage(AppLocalizations.of(context).tr(
-                        "login.check.progress"));
+                    _pr.setMessage(AppLocalizations.of(context)
+                        .tr("login.check.progress"));
                     _pr.show();
 
-                    var instance = _instanceTextController.text.split("/").first;
+                    var instance =
+                        _instanceTextController.text.split("/").first;
                     CurrentInstance.newInstance.currentClient =
                         Client(baseURL: instance);
 
@@ -127,10 +127,10 @@ class _InstanceLoginPage extends State<InstanceLoginPage> {
                         print(response.statusCode);
                         var alert = Alert(
                             context,
-                            AppLocalizations.of(context).tr(
-                                "login.check.error.alert.title"),
-                            AppLocalizations.of(context).tr(
-                                "login.check.error.alert.content"),
+                            AppLocalizations.of(context)
+                                .tr("login.check.error.alert.title"),
+                            AppLocalizations.of(context)
+                                .tr("login.check.error.alert.content"),
                             () => {});
                         alert.showAlert();
                       } else {
@@ -139,17 +139,18 @@ class _InstanceLoginPage extends State<InstanceLoginPage> {
                         CurrentInstance
                             .newInstance.currentClient.clientSettings = client;
 
-                        InstanceStorage.saveNewInstanceClient(CurrentInstance
-                            .newInstance.currentClient).then((_) {
+                        InstanceStorage.saveNewInstanceClient(
+                                CurrentInstance.newInstance.currentClient)
+                            .then((_) {
                           CurrentInstance.newInstance.currentClient
                               .launchAuth(context, (error) {
                             print(error.toString());
                             var alert = Alert(
                                 context,
-                                AppLocalizations.of(context).tr(
-                                    "login.check.error.alert.title"),
-                                AppLocalizations.of(context).tr(
-                                    "login.check.error.alert.content"),
+                                AppLocalizations.of(context)
+                                    .tr("login.check.error.alert.title"),
+                                AppLocalizations.of(context)
+                                    .tr("login.check.error.alert.content"),
                                 () => {});
                             alert.showAlert();
                           });
@@ -160,22 +161,64 @@ class _InstanceLoginPage extends State<InstanceLoginPage> {
                       _pr.hide();
                       var alert = Alert(
                           context,
-                          AppLocalizations.of(context).tr(
-                              "login.check.error.alert.title"),
-                          AppLocalizations.of(context).tr(
-                              "login.check.error.alert.content"),
+                          AppLocalizations.of(context)
+                              .tr("login.check.error.alert.title"),
+                          AppLocalizations.of(context)
+                              .tr("login.check.error.alert.content"),
                           () => {});
                       alert.showAlert();
                     });
                   },
                 ),
+                Spacer(),
+                Container(
+                  child: Text(
+                    "- " +
+                        AppLocalizations.of(context).tr("login.text.or") +
+                        " -",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                Spacer(),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                  child: Text(
+                    AppLocalizations.of(context)
+                        .tr("login.text.join_explaination"),
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                OutlineButton(
+                  textColor: Colors.white,
+                  borderSide: BorderSide(
+                    width: 2.0,
+                    color: Colors.white,
+                    style: BorderStyle.solid,
+                  ),
+                  child: Text(
+                    AppLocalizations.of(context)
+                        .tr("login.action.join_instance"),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SignUpPage(),
+                    // settings: RouteSettings(name: "/MyProfile"),
+                  ));
+                  },
+                ),
                 Spacer(
-                  flex: 2,
+                  flex: 3,
                 ),
                 FlatButton(
                   child: Text(
-                      AppLocalizations.of(context).tr(
-                          "login.action.terms")),
+                      AppLocalizations.of(context).tr("login.action.terms")),
                   color: Colors.black12,
                   onPressed: () {
                     Navigator.pushNamed(context, '/terms');
