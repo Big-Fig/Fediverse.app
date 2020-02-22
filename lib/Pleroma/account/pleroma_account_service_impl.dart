@@ -62,4 +62,10 @@ class PleromaAccountService implements IPleromaAccountService {
 
     return parseAccountListResponse(httpResponse);
   }
+
+
+  @override
+  void dispose() {
+    // nothing
+  }
 }

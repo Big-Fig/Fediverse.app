@@ -3,12 +3,13 @@ import 'dart:io' show Platform;
 import 'package:fedi/Notifications/PushNotification.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
+import 'package:fedi/disposable/disposable.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vibration/vibration.dart';
 
-class PushHelper {
+class PushHelper implements Disposable {
 
   static PushHelper of(BuildContext context, {listen: true}) => 
       Provider.of<PushHelper>(context, listen: listen);
@@ -127,6 +128,11 @@ class PushHelper {
         }
       });
     });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
   }
 }
 

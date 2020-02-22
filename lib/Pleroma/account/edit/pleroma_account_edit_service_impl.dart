@@ -59,4 +59,9 @@ class PleromaAccountEditService implements IPleromaAccountEditService {
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
   }
+
+  @override
+  void dispose() {
+    // nothing
+  }
 }

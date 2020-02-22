@@ -1,44 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/DeepLinks/DeepLinkHelper.dart';
-import 'package:fedi/Pages/Push/PushHelper.dart';
 import 'package:fedi/Pleroma/Models/ClientSettings.dart';
-import 'package:fedi/Pleroma/account/edit/pleroma_account_edit_service.dart';
-import 'package:fedi/Pleroma/account/edit/pleroma_account_edit_service_impl.dart';
 import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/Pleroma/account/pleroma_account_service.dart';
-import 'package:fedi/Pleroma/account/pleroma_account_service_impl.dart';
 import 'package:fedi/Pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/Pleroma/field/pleroma_field_model.dart';
-import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_service.dart';
-import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_service_impl.dart';
 import 'package:fedi/Pleroma/relationship/pleroma_relationship_model.dart';
-import 'package:fedi/Pleroma/rest/auth/pleroma_auth_rest_service.dart';
-import 'package:fedi/Pleroma/rest/auth/pleroma_auth_rest_service_impl.dart';
-import 'package:fedi/Pleroma/rest/pleroma_rest_service.dart';
-import 'package:fedi/Pleroma/rest/pleroma_rest_service_impl.dart';
 import 'package:fedi/Pleroma/source/pleroma_source_model.dart';
-import 'package:fedi/Pleroma/timeline/pleroma_timeline_service.dart';
-import 'package:fedi/Pleroma/timeline/pleroma_timeline_service_impl.dart';
-import 'package:fedi/app/account/repository/account_repository.dart';
-import 'package:fedi/app/account/repository/account_repository_impl.dart';
-import 'package:fedi/app/status/repository/status_repository.dart';
-import 'package:fedi/app/status/repository/status_repository_impl.dart';
-import 'package:fedi/connection/connection_service.dart';
-import 'package:fedi/connection/connection_service_impl.dart';
-import 'package:fedi/database/moor/moor_database_service_impl.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:fedi/local_preferences/local_preferences_service_hive_impl.dart';
-import 'package:fedi/permission/camera_permission_bloc.dart';
-import 'package:fedi/permission/camera_permission_bloc_impl.dart';
-import 'package:fedi/permission/mic_permission_bloc.dart';
-import 'package:fedi/permission/mic_permission_bloc_impl.dart';
-import 'package:fedi/permission/permissions_service.dart';
-import 'package:fedi/permission/permissions_service_impl.dart';
-import 'package:fedi/permission/storage_permission_bloc.dart';
-import 'package:fedi/permission/storage_permission_bloc_impl.dart';
-import 'package:fedi/rest/rest_service.dart';
-import 'package:fedi/rest/rest_service_impl.dart';
+import 'package:fedi/app/context/app_context_bloc_impl.dart';
+import 'package:fedi/app/splash/app_splash_widget.dart';
+import 'package:fedi/async/loading/init/async_init_loading_model.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -48,13 +17,14 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:provider/provider.dart';
 
 import './Pages/AppContainerPage.dart';
 import './Pages/TermsOfService.dart';
 import './Pleroma/Foundation/Client.dart';
 import './Pleroma/Foundation/CurrentInstance.dart';
 import './Pleroma/Models/AccountAuth.dart';
+
+var _logger = Logger("main.dart");
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -86,13 +56,28 @@ void main() async {
   // Pass all uncaught errors from the framework to Crashlytics.
   FlutterError.onError = Crashlytics.instance.recordFlutterError;
 
-  runApp(EasyLocalization(child: MyApp()));
+  AppContextBloc appContextBloc = AppContextBloc();
+
+  runApp(EasyLocalization(child: AppSplashWidget(appContextBloc)));
+
+  appContextBloc.initLoadingStateStream.listen((newState) {
+    _logger.fine(() => "appContextBloc.initLoadingStateStream.newState "
+        "$newState");
+
+    if (newState == AsyncInitLoadingState.finished) {
+      runApp(EasyLocalization(child: MyApp(appContextBloc)));
+    }
+  });
 }
 
 class MyApp extends StatelessWidget {
   final FirebaseAnalytics analytics = FirebaseAnalytics();
   final _currentInstance = CurrentInstance.instance;
   final _newInstance = CurrentInstance.newInstance;
+
+  final AppContextBloc appContextBloc;
+
+  MyApp(this.appContextBloc);
 
   // This widget is the root of your application.
   @override
@@ -131,111 +116,8 @@ class MyApp extends StatelessWidget {
         ],
       ),
     );
-    return provideGlobalContext(app);
+    return appContextBloc.provideContextToChild(child: app);
   }
-
-  Widget provideGlobalContext(Widget app) => MultiProvider(
-          providers: [
-            DisposableProvider<IPermissionsService>(
-                create: (BuildContext context) => PermissionsService()),
-            DisposableProvider<IRestService>(
-                create: (BuildContext context) => RestService()),
-            DisposableProvider<IConnectionService>(
-                create: (BuildContext context) => ConnectionService()),
-            DisposableProvider<MoorDatabaseService>(
-                create: (BuildContext context) {
-                  var moorDatabaseService = MoorDatabaseService();
-                  // todo: rework to splash page async init
-                  moorDatabaseService.performAsyncInit();
-                  return moorDatabaseService;
-                }),
-            DisposableProvider<ILocalPreferencesService>(
-                create: (BuildContext context) {
-              var hiveLocalPreferencesService = HiveLocalPreferencesService();
-              // todo: rework to splash page async init
-              hiveLocalPreferencesService.performAsyncInit();
-              return hiveLocalPreferencesService;
-            }),
-            Provider(create: (BuildContext context) => DeepLinkHelper()),
-            Provider(create: (BuildContext context) => PushHelper())
-          ],
-          child: Provider<IPleromaRestService>(
-              create: (BuildContext context) => PleromaRestService(
-                  restService: IRestService.of(context, listen: false),
-                  connectionService:
-                      IConnectionService.of(context, listen: false)),
-              child: Provider<IPleromaAuthRestService>(
-                create: (BuildContext context) => PleromaAuthRestService(
-                    restService: IRestService.of(context, listen: false),
-                    connectionService:
-                        IConnectionService.of(context, listen: false)),
-                child: MultiProvider(
-                  child: app,
-                  providers: [
-                    providePleromaApiContext(),
-                    providePermissionsContext(),
-                    provideRepositoryContext()
-                  ],
-                ),
-              )));
-
-  MultiProvider provideRepositoryContext() {
-    return MultiProvider(
-      providers: [
-        DisposableProvider<IAccountRepository>(
-          create: (context) => AccountRepository(
-              appDatabase:
-                  MoorDatabaseService.of(context, listen: false).appDatabase),
-        ),
-        MultiProvider(providers: [
-          DisposableProvider<IStatusRepository>(
-              create: (context) => StatusRepository(
-                  appDatabase: MoorDatabaseService.of(context, listen: false)
-                      .appDatabase,
-                  accountRepository:
-                      IAccountRepository.of(context, listen: false))),
-        ])
-      ],
-    );
-  }
-
-  MultiProvider providePleromaApiContext() => MultiProvider(
-        providers: [
-          Provider<IPleromaMediaAttachmentService>(
-              create: (context) => PleromaMediaAttachmentService(
-                  restService:
-                      IPleromaAuthRestService.of(context, listen: false))),
-          Provider<IPleromaAccountEditService>(
-              create: (context) => PleromaAccountEditService(
-                  restService:
-                      IPleromaAuthRestService.of(context, listen: false))),
-          Provider<IPleromaAccountService>(
-              create: (context) => PleromaAccountService(
-                  restService:
-                      IPleromaAuthRestService.of(context, listen: false))),
-          Provider<IPleromaTimelineService>(
-              create: (context) => PleromaTimelineService(
-                  restService:
-                      IPleromaAuthRestService.of(context, listen: false))),
-        ],
-      );
-
-  MultiProvider providePermissionsContext() => MultiProvider(
-        providers: [
-          Provider<ICameraPermissionBloc>(
-            create: (context) => CameraPermissionBloc(
-                IPermissionsService.of(context, listen: false)),
-          ),
-          Provider<IMicPermissionBloc>(
-            create: (context) => MicPermissionBloc(
-                IPermissionsService.of(context, listen: false)),
-          ),
-          Provider<IStoragePermissionBloc>(
-            create: (context) => StoragePermissionBloc(
-                IPermissionsService.of(context, listen: false)),
-          ),
-        ],
-      );
 }
 
 Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {

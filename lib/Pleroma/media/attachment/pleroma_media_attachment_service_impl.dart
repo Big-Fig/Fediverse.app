@@ -47,4 +47,10 @@ class PleromaMediaAttachmentService implements IPleromaMediaAttachmentService {
           body: httpResponse.body);
     }
   }
+
+
+  @override
+  void dispose() {
+    // nothing
+  }
 }

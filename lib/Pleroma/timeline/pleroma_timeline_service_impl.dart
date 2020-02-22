@@ -10,24 +10,22 @@ import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
 
 class PleromaTimelineService implements IPleromaTimelineService {
-
-
   @override
   String get baseUrl => restService.baseUrl;
 
   final timelineRelativeUrlPath = "/api/v1/timelines/";
   final IPleromaAuthRestService restService;
 
-
-
   @override
-  Stream<PleromaApiState> get pleromaStateStream => restService.pleromaStateStream;
+  Stream<PleromaApiState> get pleromaStateStream =>
+      restService.pleromaStateStream;
 
   @override
   PleromaApiState get pleromaState => restService.pleromaState;
 
   @override
   Stream<bool> get isApiReadyToUseStream => restService.isApiReadyToUseStream;
+
   @override
   bool get isApiReadyoUse => restService.isApiReadyoUse;
 
@@ -43,22 +41,28 @@ class PleromaTimelineService implements IPleromaTimelineService {
   Future<List<IPleromaStatus>> getHashtagTimeline({
     /// for example '#cats'
     @required String hashtag,
+
     /// Return results older than id
     String maxId,
+
     /// Return results newer than id
     String sinceId,
+
     /// Return results immediately newer than id
     String minId,
+
     /// Maximum number of results to return
     int limit = 20,
+
     /// Show only local statuses?
     bool onlyMedia = false,
+
     /// Show only statuses with media attached?
-    bool onlyLocal =
-        false,
+    bool onlyLocal = false,
+
     /// also return activities by muted (not by blocked!) users
-    bool withMuted =
-        false,
+    bool withMuted = false,
+
     /// queries will exclude the statuses with the given visibilities
     List<PleromaVisibility> excludeVisibilities = const [
       PleromaVisibility.DIRECT
@@ -81,20 +85,25 @@ class PleromaTimelineService implements IPleromaTimelineService {
   Future<List<IPleromaStatus>> getHomeTimeline({
     /// Return results older than id
     String maxId,
+
     /// Return results newer than id
     String sinceId,
+
     /// Return results immediately newer than id
     String minId,
+
     /// Maximum number of results to return
     int limit = 20,
+
     /// Show only statuses with media attached?
     bool onlyMedia = false,
+
     /// Show only local statuses?
-    bool onlyLocal =
-    false,
+    bool onlyLocal = false,
+
     /// also return activities by muted (not by blocked!) users
-    bool withMuted =
-        false,
+    bool withMuted = false,
+
     /// queries will exclude the statuses with the given visibilities
     List<PleromaVisibility> excludeVisibilities = const [
       PleromaVisibility.DIRECT
@@ -116,22 +125,28 @@ class PleromaTimelineService implements IPleromaTimelineService {
   Future<List<IPleromaStatus>> getListTimeline({
     /// list id
     @required String listId,
+
     /// Return results older than id
     String maxId,
+
     /// Return results newer than id
     String sinceId,
+
     /// Return results immediately newer than id
     String minId,
+
     /// Show only statuses with media attached?
     bool onlyMedia = false,
+
     /// Show only local statuses?
-    bool onlyLocal =
-    false,
+    bool onlyLocal = false,
+
     /// Maximum number of results to return
     int limit = 20,
+
     /// also return activities by muted (not by blocked!) users
-    bool withMuted =
-        false,
+    bool withMuted = false,
+
     /// queries will exclude the statuses with the given visibilities
     List<PleromaVisibility> excludeVisibilities = const [
       PleromaVisibility.DIRECT
@@ -154,20 +169,25 @@ class PleromaTimelineService implements IPleromaTimelineService {
   Future<List<IPleromaStatus>> getPublicTimeline({
     /// Return results older than id
     String maxId,
+
     /// Return results newer than id
     String sinceId,
+
     /// Return results immediately newer than id
     String minId,
+
     /// Maximum number of results to return
     int limit = 20,
+
     /// Show only local statuses?
     bool onlyMedia = false,
+
     /// Show only statuses with media attached?
-    bool onlyLocal =
-        false,
+    bool onlyLocal = false,
+
     /// also return activities by muted (not by blocked!) users
-    bool withMuted =
-        false,
+    bool withMuted = false,
+
     /// queries will exclude the statuses with the given visibilities
     List<PleromaVisibility> excludeVisibilities = const [
       PleromaVisibility.DIRECT
@@ -229,4 +249,8 @@ class PleromaTimelineService implements IPleromaTimelineService {
     }
   }
 
+  @override
+  void dispose() {
+    // nothing
+  }
 }

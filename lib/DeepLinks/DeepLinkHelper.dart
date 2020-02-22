@@ -3,6 +3,7 @@ import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
 
 
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:fedi/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:uni_links/uni_links.dart';
@@ -10,7 +11,7 @@ import 'package:flutter/services.dart' show PlatformException;
 
 import '../Pleroma/Models/AccountAuth.dart';
 
-class DeepLinkHelper {
+class DeepLinkHelper implements Disposable {
 
   static DeepLinkHelper of(BuildContext context, {listen: true}) =>
       Provider.of(context, listen: listen);
@@ -85,5 +86,10 @@ class DeepLinkHelper {
         instanceSuccess();
       });
     });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
   }
 }

@@ -1,6 +1,7 @@
+import 'package:fedi/disposable/disposable.dart';
 import 'package:rxdart/rxdart.dart';
 
-abstract class IPleromaApi {
+abstract class IPleromaApi implements Disposable {
   Stream<PleromaApiState> get pleromaStateStream;
 
   PleromaApiState get pleromaState;
