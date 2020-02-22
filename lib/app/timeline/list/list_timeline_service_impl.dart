@@ -38,4 +38,10 @@ class ListTimelineService extends TimelineService
             pleromaTimelineService: pleromaTimelineService,
             timelineLocalPreferences: timelineLocalPreferences,
             statusRepository: statusRepository);
+
+
+  @override
+  Future refresh() async {
+    // nothing
+  }
 }

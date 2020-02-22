@@ -1,6 +1,8 @@
+import 'package:fedi/Pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/Pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:fedi/Pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preferences_model.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
@@ -14,6 +16,8 @@ class HomeTimelineService extends TimelineService
   final bool onlyLocal;
   final String localUrlHost;
   final IAccount homeAccount;
+  final IAccountRepository accountRepository;
+  final IPleromaAccountService pleromaAccountService;
 
   @override
   ITimelineSettings get settings => TimelineSettings.home(
@@ -35,8 +39,19 @@ class HomeTimelineService extends TimelineService
     @required this.onlyLocal,
     @required this.localUrlHost,
     @required this.homeAccount,
+    @required this.accountRepository,
+    @required this.pleromaAccountService,
   }) : super(
             pleromaTimelineService: pleromaTimelineService,
             timelineLocalPreferences: timelineLocalPreferences,
             statusRepository: statusRepository);
+
+  @override
+  Future refresh() async {
+    var followingAccounts = await pleromaAccountService.getAccountFollowings(
+        accountRemoteId: homeAccount.remoteId);
+
+    await accountRepository.updateAccountFollowings(homeAccount.remoteId,
+        followingAccounts);
+  }
 }

@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pages/Search/SearchPage.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/home/page/timelines/timelines_home_page_bloc.dart';
 import 'package:fedi/app/home/page/timelines/timelines_home_page_model.dart';
 import 'package:fedi/app/timeline/home/home_timeline_widget.dart';
@@ -88,7 +90,13 @@ class TimelinesHomePage extends StatelessWidget {
               return PublicTimelineWidget(onlyLocal: false, localUrlHost: null);
               break;
             case TimelinesHomePageTab.home:
-              return HomeTimelineWidget(onlyLocal: false, localUrlHost: null);
+              return HomeTimelineWidget(
+                onlyLocal: false,
+                localUrlHost: null,
+                // todo: rework
+                homeAccount: DbAccountWrapper(mapRemoteAccountToDbAccount(
+                    CurrentInstance.instance.currentAccount)),
+              );
               break;
             case TimelinesHomePageTab.local:
               var baseURL = CurrentInstance.instance.currentClient.baseURL;

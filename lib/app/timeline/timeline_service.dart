@@ -17,4 +17,6 @@ abstract class ITimelineService implements DisposableOwner {
       @required IStatus newerThanStatus,
       @required IStatus olderThanStatus
       });
+
+  Future refresh();
 }

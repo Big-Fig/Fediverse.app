@@ -1,5 +1,7 @@
+import 'package:fedi/Pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/Pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/timeline/home/home_timeline_service_impl.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preferences_model.dart';
@@ -13,7 +15,7 @@ class HomeTimelineWidget extends TimelineWidget {
   HomeTimelineWidget(
       {@required bool onlyLocal,
       @required String localUrlHost,
-      this.homeAccount})
+        @required this.homeAccount})
       : super(localUrlHost: localUrlHost, onlyLocal: onlyLocal);
 
   @override
@@ -28,6 +30,9 @@ class HomeTimelineWidget extends TimelineWidget {
         statusRepository: statusRepository,
         localUrlHost: localUrlHost,
         onlyLocal: onlyLocal,
-        homeAccount: homeAccount);
+        homeAccount: homeAccount,
+        pleromaAccountService:
+            IPleromaAccountService.of(context, listen: false),
+        accountRepository: IAccountRepository.of(context, listen: false));
   }
 }

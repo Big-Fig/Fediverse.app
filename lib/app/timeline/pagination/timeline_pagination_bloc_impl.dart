@@ -33,7 +33,10 @@ class TimelinePaginationBloc extends CachedPleromaPaginationBloc<IStatus>
       {@required int pageIndex,
       @required int itemsCountPerPage,
       @required CachedNetworkPaginationPage<IStatus> previousPage,
-      @required CachedNetworkPaginationPage<IStatus> nextPage}) {
+      @required CachedNetworkPaginationPage<IStatus> nextPage}) async{
+
+    await timelineService.refresh();
+
     // can't refresh not first page without actual items bounds
     assert(!(pageIndex > 0 && previousPage == null && nextPage == null));
 
