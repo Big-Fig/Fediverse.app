@@ -80,7 +80,6 @@ class StatusRepository extends AsyncInitLoadingBloc
         await updateStatusTags(statusRemoteId, tags);
       }
     }
-    ;
   }
 
   Future addStatusesToList(

@@ -11,4 +11,7 @@ class TimelineLocalPreferences extends IPreferencesObject {
   bool noReplies;
   @HiveField(3)
   bool noNsfwSensitive;
+
+
+
 }
