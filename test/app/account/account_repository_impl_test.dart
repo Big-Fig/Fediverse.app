@@ -16,7 +16,7 @@ void main() {
   setUp(() {
     database = AppDatabase(VmDatabase.memory());
     accountRepository = AccountRepository(
-        dao: database.accountDao, followingsDao: database.accountFollowingsDao);
+        appDatabase: database);
   });
 
   tearDown(() async {

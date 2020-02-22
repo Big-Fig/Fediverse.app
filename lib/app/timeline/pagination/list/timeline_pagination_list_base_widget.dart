@@ -5,9 +5,6 @@ import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/timeline/pagination/list/timeline_pagination_list_bloc.dart';
-import 'package:fedi/app/timeline/pagination/list/timeline_pagination_list_bloc_impl.dart';
-import 'package:fedi/app/timeline/pagination/timeline_pagination_bloc.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -18,32 +15,25 @@ abstract class TimelinePaginationListBase extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var timelinePaginationBloc =
-        ITimelinePaginationBloc.of(context, listen: true);
+    ITimelinePaginationListBloc timelinePaginationListBloc =
+        ITimelinePaginationListBloc.of(context, listen: false);
 
-    var timelinePaginationListBloc =
-        ITimelinePaginationListBloc.of(context, listen: true);
-
-    return DisposableProvider<ITimelinePaginationListBloc>(
-      create: (BuildContext context) => TimelinePaginationListBloc(
-          timelinePaginationBloc: timelinePaginationBloc),
-      child: SmartRefresher(
-        key: PageStorageKey<String>("mediaTimeline"),
-        enablePullDown: true,
-        enablePullUp: true,
-        header: buildWaterDropHeader(context),
-        footer: buildCustomFooter(),
-        controller: refreshController,
-        onRefresh: () => onRefresh(context),
-        onLoading: () => onLoading(context),
-        child: StreamBuilder<List<IStatus>>(
-            stream: timelinePaginationListBloc.itemsStream,
-            initialData: timelinePaginationListBloc.items,
-            builder: (context, snapshot) {
-              var statuses = snapshot.data;
-              return buildChildCollectionView(statuses);
-            }),
-      ),
+    return SmartRefresher(
+      key: PageStorageKey<String>("mediaTimeline"),
+      enablePullDown: true,
+      enablePullUp: true,
+      header: buildWaterDropHeader(context),
+      footer: buildCustomFooter(),
+      controller: refreshController,
+      onRefresh: () => onRefresh(context),
+      onLoading: () => onLoading(context),
+      child: StreamBuilder<List<IStatus>>(
+          stream: timelinePaginationListBloc.itemsStream,
+          initialData: timelinePaginationListBloc.items,
+          builder: (context, snapshot) {
+            var statuses = snapshot.data;
+            return buildChildCollectionView(statuses);
+          }),
     );
   }
 

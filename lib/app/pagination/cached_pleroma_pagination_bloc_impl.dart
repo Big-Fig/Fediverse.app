@@ -7,6 +7,13 @@ import 'package:flutter/widgets.dart';
 abstract class CachedPleromaPaginationBloc<TItem>
     extends CachedNetworkPaginationBloc<CachedNetworkPaginationPage<TItem>,
         TItem> implements ICachedPleromaPaginationBloc<TItem> {
+
+  CachedPleromaPaginationBloc(
+      {@required int itemsCountPerPage, @required int maximumCachedPagesCount})
+      : super(
+      maximumCachedPagesCount: maximumCachedPagesCount,
+      itemsCountPerPage: itemsCountPerPage);
+
   IPleromaApi get pleromaApi;
 
   @override

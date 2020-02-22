@@ -5,34 +5,31 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/Pages/Gallery/GalleryPage.dart';
 import 'package:fedi/Pages/Post/QuickPostPage.dart';
-import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
-// import 'package:flutter_webrtc/webrtc.dart';
-import 'package:fedi/Pages/Home/HomeContainerPage.dart';
-import 'package:fedi/Pages/Messages/VideoChat/WebRTCManager.dart';
 import 'package:fedi/Pages/Profile/EditProfile.dart';
 import 'package:fedi/Pages/Push/PushHelper.dart';
-import 'package:fedi/Pages/Gallery/GalleryPage.dart';
 import 'package:fedi/Pages/Timeline/MyTimelinePage.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
 import 'package:fedi/Transitions/SlideBottomRoute.dart';
+import 'package:fedi/app/home/page/timelines/timelines_home_page.dart';
+import 'package:fedi/app/home/page/timelines/timelines_home_page_bloc.dart';
+import 'package:fedi/app/home/page/timelines/timelines_home_page_bloc_impl.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import './Placeholder.dart';
-import 'Messages/MessageContainer.dart';
-// import 'Messages/VideoChatPage.dart';
-// import 'Messages/signaling.dart';
-import 'Notifications/NotificationPage.dart';
-import 'Post/CaptureController.dart';
-import 'Profile/AccountsBottomSheet.dart';
-import 'Profile/MyProfilePage.dart';
+import 'package:provider/provider.dart';
 import 'package:web_socket_channel/io.dart';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
+import './Placeholder.dart';
+import 'Messages/MessageContainer.dart';
+import 'Notifications/NotificationPage.dart';
+import 'Profile/AccountsBottomSheet.dart';
+import 'Profile/MyProfilePage.dart';
 
 final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
@@ -63,6 +60,7 @@ class TabPageState extends State<TabPage>
   static FirebaseAnalytics analytics = FirebaseAnalytics();
   static FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);
+
   // WebRTCManager manager = WebRTCManager.instance;
 
   // Should be refactored to enums
@@ -91,12 +89,9 @@ class TabPageState extends State<TabPage>
     _firebaseMessaging.requestNotificationPermissions();
     _tabController = TabController(length: 2, vsync: this);
     _children = [
-      MyTimelinePage(
-        this,
-        key: _timelineKey,
-      ),
-      NotificationPage(
-        key: _notificationKey,
+      Provider<ITimelinesHomePageBloc>(
+        create: (BuildContext context) => TimelinesHomePageBloc(tickerProvider: this),
+        child: TimelinesHomePage(),
       ),
       PlaceholderWidget(Colors.blue),
       MessageConatiner(),
@@ -261,7 +256,8 @@ class TabPageState extends State<TabPage>
 
     return Scaffold(
       appBar: _appBar[_currentIndex],
-      body: _children[_currentIndex], // new
+      body: _children[_currentIndex],
+      // new
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -283,8 +279,10 @@ class TabPageState extends State<TabPage>
         type: BottomNavigationBarType.fixed,
         showSelectedLabels: true,
         showUnselectedLabels: true,
-        onTap: onTabTapped, // new
-        currentIndex: _currentIndex, // new
+        onTap: onTabTapped,
+        // new
+        currentIndex: _currentIndex,
+        // new
         items: [
           new BottomNavigationBarItem(
             backgroundColor: Colors.blue,

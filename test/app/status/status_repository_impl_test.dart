@@ -30,12 +30,10 @@ void main() {
   setUp(() async {
     database = AppDatabase(VmDatabase.memory());
     accountRepository = AccountRepository(
-        dao: database.accountDao, followingsDao: database.accountFollowingsDao);
+        appDatabase:  database);
     statusRepository = StatusRepository(
-        dao: database.statusDao,
-        accountRepository: accountRepository,
-        listsDao: database.statusListsDao,
-        hashtagsDao: database.statusHashtagsDao);
+        appDatabase: database,
+        accountRepository: accountRepository);
 
     dbAccount = createTestAccount("seed1");
 

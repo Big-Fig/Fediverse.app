@@ -17,17 +17,20 @@ import 'package:moor/moor.dart';
 
 class StatusRepository extends AsyncInitLoadingBloc
     implements IStatusRepository {
-  final StatusDao dao;
-  final StatusHashtagsDao hashtagsDao;
-  final StatusListsDao listsDao;
-  final IAccountRepository accountRepository;
+  StatusDao dao;
+  StatusHashtagsDao hashtagsDao;
+  StatusListsDao listsDao;
+  IAccountRepository accountRepository;
+
 
   StatusRepository({
-    @required this.dao,
-    @required this.hashtagsDao,
-    @required this.listsDao,
-    @required this.accountRepository,
-  });
+    @required AppDatabase appDatabase,
+    @required this.accountRepository
+  }) {
+    dao = appDatabase.statusDao;
+    hashtagsDao = appDatabase.statusHashtagsDao;
+    listsDao = appDatabase.statusListsDao;
+  }
 
   @override
   Future internalAsyncInit() async {

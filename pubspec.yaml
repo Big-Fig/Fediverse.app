@@ -88,6 +88,9 @@ dependencies:
   # sqlite orm
   moor: ^2.4.0
 
+  # moor bindings for flutter
+  moor_flutter: ^2.1.0
+
   # check internet connection state
   connectivity: ^0.4.8
 

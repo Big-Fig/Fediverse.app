@@ -7,7 +7,7 @@ import 'package:logging/logging.dart';
 
 var _logger = Logger("local_preferences_service_hive_impl.dart");
 
-class PreferencesService extends AsyncInitLoadingBloc
+class HiveLocalPreferencesService extends AsyncInitLoadingBloc
     implements ILocalPreferencesService {
   Box preferences;
 

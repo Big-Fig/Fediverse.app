@@ -4,17 +4,31 @@ import 'package:fedi/Pages/Push/PushHelper.dart';
 import 'package:fedi/Pleroma/Models/ClientSettings.dart';
 import 'package:fedi/Pleroma/account/edit/pleroma_account_edit_service.dart';
 import 'package:fedi/Pleroma/account/edit/pleroma_account_edit_service_impl.dart';
+import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
+import 'package:fedi/Pleroma/account/pleroma_account_service.dart';
+import 'package:fedi/Pleroma/account/pleroma_account_service_impl.dart';
+import 'package:fedi/Pleroma/emoji/pleroma_emoji_model.dart';
+import 'package:fedi/Pleroma/field/pleroma_field_model.dart';
 import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_service.dart';
 import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_service_impl.dart';
+import 'package:fedi/Pleroma/relationship/pleroma_relationship_model.dart';
 import 'package:fedi/Pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/Pleroma/rest/auth/pleroma_auth_rest_service_impl.dart';
 import 'package:fedi/Pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/Pleroma/rest/pleroma_rest_service_impl.dart';
+import 'package:fedi/Pleroma/source/pleroma_source_model.dart';
 import 'package:fedi/Pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:fedi/Pleroma/timeline/pleroma_timeline_service_impl.dart';
+import 'package:fedi/app/account/repository/account_repository.dart';
+import 'package:fedi/app/account/repository/account_repository_impl.dart';
+import 'package:fedi/app/status/repository/status_repository.dart';
+import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/connection/connection_service_impl.dart';
+import 'package:fedi/database/moor/moor_database_service_impl.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/local_preferences/local_preferences_service.dart';
+import 'package:fedi/local_preferences/local_preferences_service_hive_impl.dart';
 import 'package:fedi/permission/camera_permission_bloc.dart';
 import 'package:fedi/permission/camera_permission_bloc_impl.dart';
 import 'package:fedi/permission/mic_permission_bloc.dart';
@@ -40,11 +54,6 @@ import './Pages/AppContainerPage.dart';
 import './Pages/TermsOfService.dart';
 import './Pleroma/Foundation/Client.dart';
 import './Pleroma/Foundation/CurrentInstance.dart';
-import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/Pleroma/field/pleroma_field_model.dart';
-import 'package:fedi/Pleroma/emoji/pleroma_emoji_model.dart';
-import 'package:fedi/Pleroma/source/pleroma_source_model.dart';
-import 'package:fedi/Pleroma/relationship/pleroma_relationship_model.dart';
 import './Pleroma/Models/AccountAuth.dart';
 
 void main() async {
@@ -59,7 +68,8 @@ void main() async {
   Hive.registerAdapter(PleromaFieldAdapter(), 37);
   Hive.registerAdapter(PleromaEmojiAdapter(), 38);
   Hive.registerAdapter(PleromaAccountPleromaPartAdapter(), 40);
-  Hive.registerAdapter(PleromaAccountPleromaPartNotificationsSettingsAdapter(), 41);
+  Hive.registerAdapter(
+      PleromaAccountPleromaPartNotificationsSettingsAdapter(), 41);
   Hive.registerAdapter(PleromaRelationshipAdapter(), 42);
   Hive.registerAdapter(PleromaSourceAdapter(), 43);
   Hive.registerAdapter(PleromaSourcePleromaPartAdapter(), 44);
@@ -125,43 +135,92 @@ class MyApp extends StatelessWidget {
   }
 
   Widget provideGlobalContext(Widget app) => MultiProvider(
+          providers: [
+            DisposableProvider<IPermissionsService>(
+                create: (BuildContext context) => PermissionsService()),
+            DisposableProvider<IRestService>(
+                create: (BuildContext context) => RestService()),
+            DisposableProvider<IConnectionService>(
+                create: (BuildContext context) => ConnectionService()),
+            DisposableProvider<MoorDatabaseService>(
+                create: (BuildContext context) {
+                  var moorDatabaseService = MoorDatabaseService();
+                  // todo: rework to splash page async init
+                  moorDatabaseService.performAsyncInit();
+                  return moorDatabaseService;
+                }),
+            DisposableProvider<ILocalPreferencesService>(
+                create: (BuildContext context) {
+              var hiveLocalPreferencesService = HiveLocalPreferencesService();
+              // todo: rework to splash page async init
+              hiveLocalPreferencesService.performAsyncInit();
+              return hiveLocalPreferencesService;
+            }),
+            Provider(create: (BuildContext context) => DeepLinkHelper()),
+            Provider(create: (BuildContext context) => PushHelper())
+          ],
+          child: Provider<IPleromaRestService>(
+              create: (BuildContext context) => PleromaRestService(
+                  restService: IRestService.of(context, listen: false),
+                  connectionService:
+                      IConnectionService.of(context, listen: false)),
+              child: Provider<IPleromaAuthRestService>(
+                create: (BuildContext context) => PleromaAuthRestService(
+                    restService: IRestService.of(context, listen: false),
+                    connectionService:
+                        IConnectionService.of(context, listen: false)),
+                child: MultiProvider(
+                  child: app,
+                  providers: [
+                    providePleromaApiContext(),
+                    providePermissionsContext(),
+                    provideRepositoryContext()
+                  ],
+                ),
+              )));
+
+  MultiProvider provideRepositoryContext() {
+    return MultiProvider(
+      providers: [
+        DisposableProvider<IAccountRepository>(
+          create: (context) => AccountRepository(
+              appDatabase:
+                  MoorDatabaseService.of(context, listen: false).appDatabase),
+        ),
+        MultiProvider(providers: [
+          DisposableProvider<IStatusRepository>(
+              create: (context) => StatusRepository(
+                  appDatabase: MoorDatabaseService.of(context, listen: false)
+                      .appDatabase,
+                  accountRepository:
+                      IAccountRepository.of(context, listen: false))),
+        ])
+      ],
+    );
+  }
+
+  MultiProvider providePleromaApiContext() => MultiProvider(
         providers: [
-          DisposableProvider<IPermissionsService>(
-              create: (BuildContext context) => PermissionsService()),
-          DisposableProvider<IRestService>(
-              create: (BuildContext context) => RestService()),
-          DisposableProvider<IConnectionService>(
-              create: (BuildContext context) => ConnectionService()),
-          Provider(create: (BuildContext context) => DeepLinkHelper()),
-          Provider(create: (BuildContext context) => PushHelper())
+          Provider<IPleromaMediaAttachmentService>(
+              create: (context) => PleromaMediaAttachmentService(
+                  restService:
+                      IPleromaAuthRestService.of(context, listen: false))),
+          Provider<IPleromaAccountEditService>(
+              create: (context) => PleromaAccountEditService(
+                  restService:
+                      IPleromaAuthRestService.of(context, listen: false))),
+          Provider<IPleromaAccountService>(
+              create: (context) => PleromaAccountService(
+                  restService:
+                      IPleromaAuthRestService.of(context, listen: false))),
+          Provider<IPleromaTimelineService>(
+              create: (context) => PleromaTimelineService(
+                  restService:
+                      IPleromaAuthRestService.of(context, listen: false))),
         ],
-        child: providePermissionsContext(child: providePleromaContext(app)),
       );
 
-  Widget providePleromaContext(Widget app) => Provider<IPleromaRestService>(
-      create: (BuildContext context) => PleromaRestService(
-          restService: IRestService.of(context, listen: false),
-          connectionService: IConnectionService.of(context, listen: false)),
-      child:  Provider<IPleromaAuthRestService>(
-          create: (BuildContext context) => PleromaAuthRestService(
-              restService: IRestService.of(context, listen: false),
-              connectionService: IConnectionService.of(context, listen: false)),
-        child: MultiProvider(
-          providers: [
-            Provider<IPleromaMediaAttachmentService>(
-                create: (context) => PleromaMediaAttachmentService(
-                    restService: IPleromaAuthRestService.of(context, listen: false))),
-            Provider<IPleromaAccountEditService>(
-                create: (context) => PleromaAccountEditService(
-                    restService: IPleromaAuthRestService.of(context, listen: false))),
-            Provider<IPleromaTimelineService>(
-                create: (context) => PleromaTimelineService(
-                    restService: IPleromaAuthRestService.of(context, listen: false))),
-          ],
-          child: app,
-        ),
-      ));
-  Widget providePermissionsContext({@required Widget child}) => MultiProvider(
+  MultiProvider providePermissionsContext() => MultiProvider(
         providers: [
           Provider<ICameraPermissionBloc>(
             create: (context) => CameraPermissionBloc(
@@ -176,7 +235,6 @@ class MyApp extends StatelessWidget {
                 IPermissionsService.of(context, listen: false)),
           ),
         ],
-        child: child,
       );
 }
 

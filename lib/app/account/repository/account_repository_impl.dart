@@ -11,13 +11,15 @@ import 'package:moor/moor.dart';
 
 class AccountRepository extends AsyncInitLoadingBloc
     implements IAccountRepository {
-  final AccountDao dao;
-  final AccountFollowingsDao followingsDao;
+  AccountDao dao;
+  AccountFollowingsDao followingsDao;
 
   AccountRepository({
-    @required this.dao,
-    @required this.followingsDao,
-  });
+    @required AppDatabase appDatabase
+  }) {
+    dao = appDatabase.accountDao;
+    followingsDao = appDatabase.accountFollowingsDao;
+  }
 
   @override
   Future internalAsyncInit() async {

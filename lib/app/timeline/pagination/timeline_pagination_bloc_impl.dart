@@ -10,7 +10,13 @@ class TimelinePaginationBloc extends CachedPleromaPaginationBloc<IStatus>
     implements ITimelinePaginationBloc {
   final ITimelineService timelineService;
 
-  TimelinePaginationBloc({@required this.timelineService});
+  TimelinePaginationBloc(
+      {
+        @required this.timelineService,
+        @required int itemsCountPerPage, @required int maximumCachedPagesCount})
+      : super(
+      maximumCachedPagesCount: maximumCachedPagesCount,
+      itemsCountPerPage: itemsCountPerPage);
 
   @override
   IPleromaApi get pleromaApi => timelineService.pleromaApi;
