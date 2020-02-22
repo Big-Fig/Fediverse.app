@@ -45,7 +45,7 @@ class StatusListItemSimpleWidget extends StatusWidget {
 
     var targetHeight = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
 
-    status.reblog != null ? status.reblog : status;
+    status = status.reblog != null ? status.reblog : status;
 
     return Card(
       elevation: 0,

@@ -1,27 +1,31 @@
 import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
+import 'package:fedi/Pleroma/tag/pleroma_tag_model.dart';
 import 'package:fedi/Pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/account/account_repository.dart';
+import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/database/status_database_dao.dart';
+import 'package:fedi/app/status/database/status_hashtags_database_dao.dart';
+import 'package:fedi/app/status/database/status_lists_database_dao.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
-import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
-
-var _logger = Logger("status_repository_impl.dart");
 
 class StatusRepository extends AsyncInitLoadingBloc
     implements IStatusRepository {
   final StatusDao dao;
+  final StatusHashtagsDao hashtagsDao;
+  final StatusListsDao listsDao;
   final IAccountRepository accountRepository;
 
   StatusRepository({
     @required this.dao,
+    @required this.hashtagsDao,
+    @required this.listsDao,
     @required this.accountRepository,
   });
 
@@ -31,8 +35,80 @@ class StatusRepository extends AsyncInitLoadingBloc
     return null;
   }
 
-  Future updateRemoteStatuses(List<IPleromaStatus> remoteStatuses) async {
+  @override
+  Future upsertRemoteStatus(IPleromaStatus remoteStatus,
+      {@required String listRemoteId}) async {
+    var remoteAccount = remoteStatus.account;
+
+    accountRepository.upsertRemoteAccount(remoteAccount);
+
+    await upsert(mapRemoteStatusToDbStatus(remoteStatus));
+
+    var statusRemoteId = remoteStatus.id;
+    if (listRemoteId != null) {
+      await addStatusesToList([remoteStatus.id], listRemoteId);
+    }
+
+    var tags = remoteStatus.tags;
+
+    if (tags?.isNotEmpty == true) {
+      await updateStatusTags(statusRemoteId, tags);
+    }
+  }
+
+  @override
+  Future upsertRemoteStatuses(List<IPleromaStatus> remoteStatuses,
+      {@required String listRemoteId}) async {
+    var remoteAccounts =
+        remoteStatuses.map((remoteStatus) => remoteStatus.account);
+
+    accountRepository.upsertRemoteAccounts(remoteAccounts);
+
     await upsertAll(remoteStatuses.map(mapRemoteStatusToDbStatus));
+
+    if (listRemoteId != null) {
+      await addStatusesToList(
+          remoteStatuses.map((remoteStatus) => remoteStatus.id).toList(),
+          listRemoteId);
+    }
+
+    // todo: rework with batch update
+    for (var remoteStatus in remoteStatuses) {
+      var statusRemoteId = remoteStatus.id;
+      var tags = remoteStatus.tags;
+      if (tags?.isNotEmpty == true) {
+        await updateStatusTags(statusRemoteId, tags);
+      }
+    }
+    ;
+  }
+
+  Future addStatusesToList(
+      List<String> statusRemoteIds, String listRemoteId) async {
+    if (listRemoteId?.isNotEmpty == true) {
+      await listsDao.insertAll(
+          statusRemoteIds
+              .map((statusRemoteId) => DbStatusList(
+                  id: null,
+                  statusRemoteId: statusRemoteId,
+                  listRemoteId: listRemoteId))
+              .toList(),
+          InsertMode.insertOrReplace);
+    }
+  }
+
+  Future updateStatusTags(String statusRemoteId, List<IPleromaTag> tags) async {
+    if (tags != null) {
+      await hashtagsDao.deleteByStatusRemoteId(statusRemoteId);
+      await hashtagsDao.insertAll(
+          tags
+              .map((remoteTag) => DbStatusHashtag(
+                  id: null,
+                  statusRemoteId: statusRemoteId,
+                  hashtag: remoteTag.name))
+              .toList(),
+          InsertMode.insertOrReplace);
+    }
   }
 
   @override
@@ -41,7 +117,7 @@ class StatusRepository extends AsyncInitLoadingBloc
 
   Future<List<DbStatusPopulatedWrapper>> getStatuses(
       {@required String inListWithRemoteId,
-      @required String withHashTag,
+      @required String withHashtag,
       @required IAccount onlyFollowingByAccount,
       @required String localUrlHost,
       @required bool onlyLocal,
@@ -57,7 +133,7 @@ class StatusRepository extends AsyncInitLoadingBloc
       @required StatusOrderingTermData orderingTermData}) async {
     var query = createQuery(
         inListWithRemoteId: inListWithRemoteId,
-        withHashTag: withHashTag,
+        withHashtag: withHashtag,
         onlyFollowingByAccount: onlyFollowingByAccount,
         localUrlHost: localUrlHost,
         onlyLocal: onlyLocal,
@@ -79,7 +155,7 @@ class StatusRepository extends AsyncInitLoadingBloc
 
   Stream<List<DbStatusPopulatedWrapper>> watchStatuses(
       {@required String inListWithRemoteId,
-      @required String withHashTag,
+      @required String withHashtag,
       @required IAccount onlyFollowingByAccount,
       @required String localUrlHost,
       @required bool onlyLocal,
@@ -95,7 +171,7 @@ class StatusRepository extends AsyncInitLoadingBloc
       @required StatusOrderingTermData orderingTermData}) {
     var query = createQuery(
         inListWithRemoteId: inListWithRemoteId,
-        withHashTag: withHashTag,
+        withHashtag: withHashtag,
         onlyFollowingByAccount: onlyFollowingByAccount,
         localUrlHost: localUrlHost,
         onlyLocal: onlyLocal,
@@ -117,7 +193,7 @@ class StatusRepository extends AsyncInitLoadingBloc
 
   JoinedSelectStatement createQuery(
       {@required String inListWithRemoteId,
-      @required String withHashTag,
+      @required String withHashtag,
       @required IAccount onlyFollowingByAccount,
       @required String localUrlHost,
       @required bool onlyLocal,
@@ -132,17 +208,6 @@ class StatusRepository extends AsyncInitLoadingBloc
       @required int offset,
       @required StatusOrderingTermData orderingTermData}) {
     var query = dao.startSelectQuery();
-
-    if (inListWithRemoteId?.isNotEmpty == true) {
-      throw UnimplementedError();
-    }
-
-    if (withHashTag?.isNotEmpty == true) {
-      dao.addHashTagWhere(query, withHashTag);
-    }
-    if (onlyFollowingByAccount != null) {
-      throw UnimplementedError();
-    }
 
     if (onlyLocal == true) {
       assert(localUrlHost?.isNotEmpty == true);
@@ -179,14 +244,34 @@ class StatusRepository extends AsyncInitLoadingBloc
     if (orderingTermData != null) {
       dao.orderBy(query, [orderingTermData]);
     }
+    var needFilterByFollowing = onlyFollowingByAccount != null;
+    var needFilterByList = inListWithRemoteId?.isNotEmpty == true;
+    var needFilterByTag = withHashtag?.isNotEmpty == true;
     var joinQuery = query.join(
-      dao.populateStatusJoin(),
+      dao.populateStatusJoin(
+          includeAccountFollowing: needFilterByFollowing,
+          includeStatusLists: needFilterByList,
+          includeStatusHashtags: needFilterByTag),
     );
+
+    var finalQuery = joinQuery;
+    if (needFilterByFollowing) {
+      finalQuery =
+          dao.addFollowingWhere(joinQuery, onlyFollowingByAccount.remoteId);
+    }
+    if (needFilterByList) {
+      finalQuery = dao.addListWhere(finalQuery, inListWithRemoteId);
+    }
+
+    if (needFilterByTag) {
+      finalQuery = dao.addHashtagWhere(finalQuery, withHashtag);
+    }
+
     assert(!(limit == null && offset != null));
     if (limit != null) {
-      joinQuery.limit(limit, offset: offset);
+      finalQuery.limit(limit, offset: offset);
     }
-    return joinQuery;
+    return finalQuery;
   }
 
   @override
@@ -236,11 +321,10 @@ class StatusRepository extends AsyncInitLoadingBloc
       (dao.watchAll()).map((list) => list.map(mapDataClassToItem).toList());
 
   @override
-  Future<int> upsertByRemoteId(DbStatus dbStatus) =>
-      dao.updateByRemoteId(dbStatus.remoteId, dbStatus);
+  Future<int> insert(DbStatus item) => dao.insert(item);
 
   @override
-  Future<int> insert(DbStatus item) => dao.insert(item);
+  Future<int> upsert(DbStatus item) => dao.upsert(item);
 
   @override
   Future<bool> updateById(int id, DbStatus dbStatus) {
@@ -255,6 +339,4 @@ class StatusRepository extends AsyncInitLoadingBloc
 
   Insertable<DbStatus> mapItemToDataClass(DbStatusPopulatedWrapper item) =>
       item.dbStatusPopulated.status;
-
-  static String extractHost(String url) => Uri.parse(url).host;
 }

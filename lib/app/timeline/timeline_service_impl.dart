@@ -74,8 +74,8 @@ abstract class TimelineService extends DisposableOwner
           );
           break;
         case TimelineRemoteType.hashtag:
-          loadedStatuses = await pleromaTimelineService.getHashTagTimeline(
-            hashTag: settings.withHashTag,
+          loadedStatuses = await pleromaTimelineService.getHashtagTimeline(
+            hashtag: settings.withHashtag,
             maxId: olderThanStatus?.remoteId,
             sinceId: newerThanStatus?.remoteId,
             limit: limit,
@@ -109,7 +109,7 @@ abstract class TimelineService extends DisposableOwner
       @required IStatus olderThanStatus}) {
     return statusRepository.getStatuses(
         inListWithRemoteId: settings.inListWithRemoteId,
-        withHashTag: settings.withHashTag,
+        withHashtag: settings.withHashtag,
         onlyFollowingByAccount: settings.homeAccount,
         localUrlHost: settings.localUrlHost,
         onlyLocal: settings.onlyLocal,

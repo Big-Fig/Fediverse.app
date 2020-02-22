@@ -5,7 +5,6 @@ import 'package:fedi/Pleroma/account/edit/pleroma_account_edit_exception.dart';
 import 'package:fedi/Pleroma/account/edit/pleroma_account_edit_service.dart';
 import 'package:fedi/Pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/Pleroma/rest/auth/pleroma_auth_rest_service.dart';
-import 'package:fedi/Pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';

@@ -1,4 +1,4 @@
-import 'package:fedi/app/account/account_database_model.dart';
+import 'package:fedi/app/account/database/account_database_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:moor/moor.dart';
 
@@ -25,6 +25,9 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
 
   Future<int> insert(Insertable<DbAccount> entity) async =>
       into(dbAccounts).insert(entity);
+
+  Future<int> upsert(Insertable<DbAccount> entity) async =>
+      into(dbAccounts).insert(entity, mode: InsertMode.insertOrReplace);
 
   Future insertAll(
           Iterable<Insertable<DbAccount>> entities, InsertMode mode) async =>

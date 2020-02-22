@@ -12,10 +12,10 @@ abstract class IMastodonTimelineService {
     bool onlyLocal = false,
   });
 
-  Future<List<IMastodonStatus>> getHashTagTimeline(
+  Future<List<IMastodonStatus>> getHashtagTimeline(
       {
       // for example '#cats'
-      @required String hashTag, // Return results older than id
+      @required String hashtag, // Return results older than id
       String maxId, // Return results newer than id
       String sinceId, // Return results immediately newer than id
       String minId, // Maximum number of results to return

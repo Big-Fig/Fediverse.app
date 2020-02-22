@@ -8,7 +8,7 @@ enum TimelineRemoteType { public, list, home, hashtag }
 abstract class ITimelineSettings {
   String get inListWithRemoteId;
 
-  String get withHashTag;
+  String get withHashtag;
 
   IAccount get homeAccount;
 
@@ -66,7 +66,7 @@ class TimelineSettings implements ITimelineSettings {
   final TimelineRemoteType remoteType;
 
   @override
-  final String withHashTag;
+  final String withHashtag;
 
   TimelineSettings._private(
       {@required this.localPreferences,
@@ -77,7 +77,7 @@ class TimelineSettings implements ITimelineSettings {
       @required this.localUrlHost,
       @required this.homeAccount,
       @required this.remoteType,
-      @required this.withHashTag}) {
+      @required this.withHashtag}) {
     assert(remoteType != null);
     switch (remoteType) {
       case TimelineRemoteType.public:
@@ -89,7 +89,7 @@ class TimelineSettings implements ITimelineSettings {
         assert(homeAccount != null);
         break;
       case TimelineRemoteType.hashtag:
-        assert(withHashTag != null);
+        assert(withHashtag != null);
         break;
     }
 
@@ -115,7 +115,7 @@ class TimelineSettings implements ITimelineSettings {
             localUrlHost: localUrlHost,
             homeAccount: homeAccount,
             remoteType: TimelineRemoteType.home,
-            withHashTag: null,
+            withHashtag: null,
             inListWithRemoteId: null);
 
   TimelineSettings.list({
@@ -133,16 +133,16 @@ class TimelineSettings implements ITimelineSettings {
             localUrlHost: localUrlHost,
             homeAccount: null,
             remoteType: TimelineRemoteType.list,
-            withHashTag: null,
+            withHashtag: null,
             inListWithRemoteId: inListWithRemoteId);
 
-  TimelineSettings.hashTag({
+  TimelineSettings.hashtag({
     @required TimelineLocalPreferences localPreferences,
     @required List<PleromaVisibility> excludeVisibilities,
     @required bool onlyLocal,
     @required bool notMuted,
     @required String localUrlHost,
-    @required String withHashTag,
+    @required String withHashtag,
   }) : this._private(
             localPreferences: localPreferences,
             excludeVisibilities: excludeVisibilities,
@@ -151,7 +151,7 @@ class TimelineSettings implements ITimelineSettings {
             localUrlHost: localUrlHost,
             homeAccount: null,
             remoteType: TimelineRemoteType.hashtag,
-            withHashTag: withHashTag,
+            withHashtag: withHashtag,
             inListWithRemoteId: null);
 
   TimelineSettings.public({
@@ -169,6 +169,6 @@ class TimelineSettings implements ITimelineSettings {
             localUrlHost: localUrlHost,
             homeAccount: null,
             remoteType: TimelineRemoteType.public,
-            withHashTag: null,
+            withHashtag: null,
             inListWithRemoteId: null);
 }

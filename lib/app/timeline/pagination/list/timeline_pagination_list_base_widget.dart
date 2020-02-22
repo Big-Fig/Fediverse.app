@@ -1,50 +1,32 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pages/Profile/OtherAccount.dart';
-import 'package:fedi/Pages/Search/SearchPage.dart';
 import 'package:fedi/Pages/Timeline/StatusDetail.dart';
-import 'package:fedi/Pages/Timeline/TimelineCell.dart';
 import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
-import 'package:fedi/Pleroma/timeline/pleroma_timeline_service.dart';
-import 'package:fedi/Pleroma/timeline/pleroma_timeline_service.dart';
-import 'package:fedi/Pleroma/visibility/pleroma_visibility_model.dart';
-import 'package:fedi/Settings/AppSettings.dart';
-import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/app/timeline/local_preferences/timeline_local_preferences_bloc.dart';
-import 'package:fedi/app/timeline/local_preferences/timeline_local_preferences_model.dart';
 import 'package:fedi/app/timeline/pagination/list/timeline_pagination_list_bloc.dart';
 import 'package:fedi/app/timeline/pagination/list/timeline_pagination_list_bloc_impl.dart';
 import 'package:fedi/app/timeline/pagination/timeline_pagination_bloc.dart';
-import 'package:fedi/app/timeline/timeline_service.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 abstract class TimelinePaginationListBase extends StatelessWidget {
   final RefreshController refreshController =
-  RefreshController(initialRefresh: false);
+      RefreshController(initialRefresh: false);
 
   @override
   Widget build(BuildContext context) {
-    var timelinePaginationBloc = ITimelinePaginationBloc.of(
-        context, listen: true);
+    var timelinePaginationBloc =
+        ITimelinePaginationBloc.of(context, listen: true);
 
     var timelinePaginationListBloc =
-    ITimelinePaginationListBloc.of(context, listen: true);
+        ITimelinePaginationListBloc.of(context, listen: true);
 
     return DisposableProvider<ITimelinePaginationListBloc>(
-      create: (BuildContext context) => TimelinePaginationListBloc
-          (timelinePaginationBloc: timelinePaginationBloc),
+      create: (BuildContext context) => TimelinePaginationListBloc(
+          timelinePaginationBloc: timelinePaginationBloc),
       child: SmartRefresher(
         key: PageStorageKey<String>("mediaTimeline"),
         enablePullDown: true,
@@ -126,7 +108,7 @@ abstract class TimelinePaginationListBase extends StatelessWidget {
 
   onRefresh(BuildContext context) async {
     var timelinePaginationBloc =
-    ITimelinePaginationListBloc.of(context, listen: true);
+        ITimelinePaginationListBloc.of(context, listen: true);
     var newFirstPage = await timelinePaginationBloc.refresh();
 
 //    print("ONREFRESH");
@@ -178,9 +160,8 @@ abstract class TimelinePaginationListBase extends StatelessWidget {
   }
 
   void onLoading(BuildContext context) async {
-
     var timelinePaginationBloc =
-    ITimelinePaginationListBloc.of(context, listen: true);
+        ITimelinePaginationListBloc.of(context, listen: true);
     var newFirstPage = await timelinePaginationBloc.loadMore();
 
 //    print("ONLOAD");
@@ -264,10 +245,9 @@ abstract class TimelinePaginationListBase extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            StatusDetail(
-              status: status,
-            ),
+        builder: (context) => StatusDetail(
+          status: status,
+        ),
         settings: RouteSettings(name: "/StatusDetail"),
       ),
     );

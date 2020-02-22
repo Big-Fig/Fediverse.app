@@ -1,6 +1,5 @@
 import 'package:fedi/Pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/Pleroma/rest/auth/pleroma_auth_rest_service.dart';
-import 'package:fedi/Pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/Pleroma/timeline/pleroma_timeline_exception.dart';
 import 'package:fedi/Pleroma/timeline/pleroma_timeline_service.dart';
@@ -41,9 +40,9 @@ class PleromaTimelineService implements IPleromaTimelineService {
   PleromaTimelineService({@required this.restService});
 
   @override
-  Future<List<IPleromaStatus>> getHashTagTimeline({
+  Future<List<IPleromaStatus>> getHashtagTimeline({
     /// for example '#cats'
-    @required String hashTag,
+    @required String hashtag,
     /// Return results older than id
     String maxId,
     /// Return results newer than id
@@ -65,9 +64,9 @@ class PleromaTimelineService implements IPleromaTimelineService {
       PleromaVisibility.DIRECT
     ],
   }) {
-    assert(hashTag != null);
+    assert(hashtag != null);
     return getTimeline(
-        relativeTimeLineUrlPath: "tag/$hashTag",
+        relativeTimeLineUrlPath: "tag/$hashtag",
         maxId: maxId,
         sinceId: sinceId,
         minId: minId,

@@ -1,9 +1,10 @@
 import 'package:fedi/app/moor/moor_converters.dart';
 import 'package:moor/moor.dart';
 
+// todo: add foreign keys
 @DataClassName("DbAccount")
 class DbAccounts extends Table {
-  // integer ids works much better in SQLite
+  // integer ids works better in SQLite
   IntColumn get id => integer().autoIncrement()();
 
   TextColumn get remoteId => text().customConstraint("UNIQUE NOT NULL")();

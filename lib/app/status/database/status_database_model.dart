@@ -1,6 +1,7 @@
 import 'package:fedi/app/moor/moor_converters.dart';
 import 'package:moor/moor.dart';
 
+// todo: add foreign keys
 @DataClassName("DbStatus")
 class DbStatuses extends Table {
   // integer ids works much better in SQLite

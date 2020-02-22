@@ -1,7 +1,9 @@
 import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/app/account/account_database_dao.dart';
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/account/account_repository.dart';
+import 'package:fedi/app/account/account_model_adapter.dart';
+import 'package:fedi/app/account/database/account_database_dao.dart';
+import 'package:fedi/app/account/database/account_following_database_dao.dart';
+import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
@@ -10,9 +12,11 @@ import 'package:moor/moor.dart';
 class AccountRepository extends AsyncInitLoadingBloc
     implements IAccountRepository {
   final AccountDao dao;
+  final AccountFollowingsDao followingsDao;
 
   AccountRepository({
     @required this.dao,
+    @required this.followingsDao,
   });
 
   @override
@@ -75,6 +79,9 @@ class AccountRepository extends AsyncInitLoadingBloc
   Future<int> insert(DbAccount item) => dao.insert(item);
 
   @override
+  Future<int> upsert(DbAccount item) => dao.upsert(item);
+
+  @override
   Future<bool> updateById(int id, DbAccount dbAccount) {
     if (dbAccount.id != id) {
       dbAccount = dbAccount.copyWith(id: id);
@@ -88,8 +95,32 @@ class AccountRepository extends AsyncInitLoadingBloc
   Insertable<DbAccount> mapItemToDataClass(DbAccountWrapper item) =>
       item.dbAccount;
 
+  @override
+  Future upsertRemoteAccount(IPleromaAccount remoteAccount) async {
+    await upsert(mapRemoteAccountToDbAccount(remoteAccount));
+  }
 
   @override
-  Future<int> upsertByRemoteId(DbAccount dbAccount) =>
-      dao.updateByRemoteId(dbAccount.remoteId, dbAccount);
+  Future upsertRemoteAccounts(List<IPleromaAccount> remoteAccounts) async {
+    await upsertAll(remoteAccounts.map(mapRemoteAccountToDbAccount));
+  }
+
+  @override
+  Future updateAccountFollowings(
+      String accountRemoteId, List<PleromaAccount> followings) async {
+    await followingsDao.deleteByAccountRemoteId(accountRemoteId);
+    await followingsDao.insertAll(
+        followings.map((followingAccount) => DbAccountFollowing(
+            id: null,
+            accountRemoteId: accountRemoteId,
+            followingAccountRemoteId: followingAccount.id)).toList(),
+        InsertMode.insertOrReplace);
+  }
+
+  @override
+  Future<List<String>> getAccountFollowingsRemoteIds(
+      String accountRemoteId) async {
+    return (await followingsDao.findByAccountRemoteId(accountRemoteId))
+        .map((accountFollowing) => accountFollowing.followingAccountRemoteId).toList();
+  }
 }

@@ -1,11 +1,15 @@
 import 'package:fedi/Pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/database/status_database_model.dart';
-import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
+import 'package:fedi/app/status/status_model.dart';
 import 'package:moor/moor.dart';
 
 part 'status_database_dao.g.dart';
+
+var _accountFollowingsAliasId = "accountFollowings";
+var _statusHashtagsAliasId = "statusHashtags";
+var _statusListsAliasId = "statusLists";
 
 @UseDao(tables: [
   DbStatuses
@@ -21,12 +25,20 @@ part 'status_database_dao.g.dart';
 class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   final AppDatabase db;
   $DbAccountsTable accountAlias;
+  $DbStatusesTable statusAlias;
+  $DbStatusHashtagsTable statusHashtagsAlias;
+  $DbStatusListsTable statusListsAlias;
+  $DbAccountFollowingsTable accountFollowingsAlias;
 
   // Called by the AppDatabase class
   StatusDao(this.db) : super(db) {
-    accountAlias = alias(db.dbAccounts, 'account');
+    accountAlias = alias(db.dbAccounts, "account");
+    statusAlias = alias(db.dbStatuses, "status");
+    accountFollowingsAlias =
+        alias(db.dbAccountFollowings, _accountFollowingsAliasId);
+    statusHashtagsAlias = alias(db.dbStatusHashtags, _statusHashtagsAliasId);
+    statusListsAlias = alias(db.dbStatusLists, _statusListsAliasId);
   }
-
 
   Future<List<DbStatusPopulated>> findAll() async {
     JoinedSelectStatement<Table, DataClass> statusQuery = _findAll();
@@ -51,27 +63,40 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
 
   JoinedSelectStatement<Table, DataClass> _findAll() {
     var sqlQuery = (select(db.dbStatuses).join(
-      populateStatusJoin(),
+      populateStatusJoin(
+          includeAccountFollowing: false,
+          includeStatusLists: false,
+          includeStatusHashtags: false),
     ));
     return sqlQuery;
   }
 
   JoinedSelectStatement<Table, DataClass> _findById(int id) =>
-      (select(db.dbStatuses)..where((status) => status.id.equals(id)))
-          .join(populateStatusJoin());
+      (select(db.dbStatuses)..where((status) => status.id.equals(id))).join(
+          populateStatusJoin(
+              includeAccountFollowing: false,
+              includeStatusLists: false,
+              includeStatusHashtags: false));
 
   JoinedSelectStatement<Table, DataClass> _findByRemoteId(String remoteId) =>
       (select(db.dbStatuses)..where((status) => status.remoteId.like(remoteId)))
-          .join(populateStatusJoin());
+          .join(populateStatusJoin(
+              includeAccountFollowing: false,
+              includeStatusLists: false,
+              includeStatusHashtags: false));
 
   Future<int> insert(Insertable<DbStatus> entity) async =>
       into(db.dbStatuses).insert(entity);
 
+  Future<int> upsert(Insertable<DbStatus> entity) async =>
+      into(db.dbStatuses).insert(entity,mode: InsertMode.insertOrReplace);
+
   Future insertAll(
           Iterable<Insertable<DbStatus>> entities, InsertMode mode) async =>
       await batch((batch) {
-        batch.insertAll(db.dbStatuses, entities);
+        batch.insertAll(db.dbStatuses, entities, mode: mode);
       });
+
   Future<bool> replace(Insertable<DbStatus> entity) async =>
       await update(db.dbStatuses).replace(entity);
 
@@ -92,14 +117,6 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   SimpleSelectStatement<$DbStatusesTable, DbStatus> startSelectQuery() =>
       (select(db.dbStatuses));
 
-
-  SimpleSelectStatement<$DbStatusesTable, DbStatus> addFollowingWhere(
-      SimpleSelectStatement<$DbStatusesTable, DbStatus> query) {
-    // TODO: implement filtering by following account ids
-    // return all saved statuses for now
-    return query;
-  }
-
   // TODO: separate media in own table & use join
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addMediaOnlyWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
@@ -110,17 +127,26 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
           String localDomain) =>
       query
         ..where((status) =>
-            status.pleromaLocal.equals(true) | status.url.like("%$localDomain%"));
+            status.pleromaLocal.equals(true) |
+            status.url.like("%$localDomain%"));
 
-  SimpleSelectStatement<$DbStatusesTable, DbStatus> addHashTagWhere(
-          SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
-          String hashTag) {
-    throw UnimplementedError();
-    return query
-      // We can use text search because it is json string
-      // todo: refactor to join
-        ..where((status) => status.tags.like("%$hashTag%"));
-  }
+  JoinedSelectStatement addFollowingWhere(
+          JoinedSelectStatement query, String accountRemoteId) =>
+      query
+        ..where(CustomExpression<bool, BoolType>(
+            "$_accountFollowingsAliasId.account_remote_id = '$accountRemoteId'"));
+
+  JoinedSelectStatement addHashtagWhere(
+      JoinedSelectStatement query, String hashtag) =>
+      query
+        ..where(CustomExpression<bool, BoolType>(
+            "$_statusHashtagsAliasId.hashtag = '$hashtag'"));
+
+  JoinedSelectStatement addListWhere(
+      JoinedSelectStatement query, String listRemoteId) =>
+      query
+        ..where(CustomExpression<bool, BoolType>(
+            "$_statusListsAliasId.list_remote_id = '$listRemoteId'"));
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addNotMutedWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
@@ -131,15 +157,11 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addNoNsfwSensitiveWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
-      query
-        ..where((status) =>
-            status.sensitive.equals(true).not());
+      query..where((status) => status.sensitive.equals(true).not());
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addNoRepliesWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
-      query
-        ..where((status) =>
-            isNull(status.inReplyToRemoteId));
+      query..where((status) => isNull(status.inReplyToRemoteId));
 
   /// remote ids are strings but it is possible to compare them in
   /// chronological order
@@ -214,20 +236,40 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
         account: typedResult.readTable(accountAlias));
   }
 
-  List<Join<Table, DataClass>> populateStatusJoin() {
-    return statusPopulateJoin(
-        dbStatusesTable: db.dbStatuses, accountAlias: accountAlias);
-  }
-
-  static List<Join<Table, DataClass>> statusPopulateJoin({
-    @required $DbStatusesTable dbStatusesTable,
-    @required $DbAccountsTable accountAlias,
+  List<Join<Table, DataClass>> populateStatusJoin({
+    @required includeAccountFollowing,
+    @required includeStatusHashtags,
+    @required includeStatusLists,
   }) {
     return [
       innerJoin(
         accountAlias,
-        accountAlias.remoteId.equalsExp(dbStatusesTable.accountRemoteId),
+        accountAlias.remoteId.equalsExp(dbStatuses.accountRemoteId),
       ),
+      ...(includeAccountFollowing
+          ? [
+              innerJoin(
+                  accountFollowingsAlias,
+                  accountFollowingsAlias.followingAccountRemoteId
+                      .equalsExp(dbStatuses.accountRemoteId))
+            ]
+          : []),
+      ...(includeStatusHashtags
+          ? [
+              innerJoin(
+                  statusHashtagsAlias,
+                  statusHashtagsAlias.statusRemoteId
+                      .equalsExp(dbStatuses.remoteId))
+            ]
+          : []),
+      ...(includeStatusLists
+          ? [
+              innerJoin(
+                  statusListsAlias,
+                  statusListsAlias.statusRemoteId
+                      .equalsExp(dbStatuses.remoteId))
+            ]
+          : [])
     ];
   }
 }

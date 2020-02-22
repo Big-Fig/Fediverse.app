@@ -5,9 +5,6 @@ import 'package:fedi/app/timeline/pagination/timeline_pagination_bloc.dart';
 import 'package:fedi/app/timeline/timeline_service.dart';
 import 'package:fedi/pagination/network/cached_network_pagination_model.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:logging/logging.dart';
-
-var _logger = Logger("timeline_pagination_bloc_impl.dart");
 
 class TimelinePaginationBloc extends CachedPleromaPaginationBloc<IStatus>
     implements ITimelinePaginationBloc {

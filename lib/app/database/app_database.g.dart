@@ -3414,18 +3414,689 @@ class $DbAccountsTable extends DbAccounts
       PleromaAccountPleromaPartNotificationsSettingsDatabaseConverter();
 }
 
+class DbAccountFollowing extends DataClass
+    implements Insertable<DbAccountFollowing> {
+  final int id;
+  final String accountRemoteId;
+  final String followingAccountRemoteId;
+  DbAccountFollowing(
+      {@required this.id,
+      @required this.accountRemoteId,
+      @required this.followingAccountRemoteId});
+  factory DbAccountFollowing.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final stringType = db.typeSystem.forDartType<String>();
+    return DbAccountFollowing(
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      accountRemoteId: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}account_remote_id']),
+      followingAccountRemoteId: stringType.mapFromDatabaseResponse(
+          data['${effectivePrefix}following_account_remote_id']),
+    );
+  }
+  factory DbAccountFollowing.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return DbAccountFollowing(
+      id: serializer.fromJson<int>(json['id']),
+      accountRemoteId: serializer.fromJson<String>(json['accountRemoteId']),
+      followingAccountRemoteId:
+          serializer.fromJson<String>(json['followingAccountRemoteId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'accountRemoteId': serializer.toJson<String>(accountRemoteId),
+      'followingAccountRemoteId':
+          serializer.toJson<String>(followingAccountRemoteId),
+    };
+  }
+
+  @override
+  DbAccountFollowingsCompanion createCompanion(bool nullToAbsent) {
+    return DbAccountFollowingsCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      accountRemoteId: accountRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(accountRemoteId),
+      followingAccountRemoteId: followingAccountRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(followingAccountRemoteId),
+    );
+  }
+
+  DbAccountFollowing copyWith(
+          {int id, String accountRemoteId, String followingAccountRemoteId}) =>
+      DbAccountFollowing(
+        id: id ?? this.id,
+        accountRemoteId: accountRemoteId ?? this.accountRemoteId,
+        followingAccountRemoteId:
+            followingAccountRemoteId ?? this.followingAccountRemoteId,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('DbAccountFollowing(')
+          ..write('id: $id, ')
+          ..write('accountRemoteId: $accountRemoteId, ')
+          ..write('followingAccountRemoteId: $followingAccountRemoteId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(id.hashCode,
+      $mrjc(accountRemoteId.hashCode, followingAccountRemoteId.hashCode)));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is DbAccountFollowing &&
+          other.id == this.id &&
+          other.accountRemoteId == this.accountRemoteId &&
+          other.followingAccountRemoteId == this.followingAccountRemoteId);
+}
+
+class DbAccountFollowingsCompanion extends UpdateCompanion<DbAccountFollowing> {
+  final Value<int> id;
+  final Value<String> accountRemoteId;
+  final Value<String> followingAccountRemoteId;
+  const DbAccountFollowingsCompanion({
+    this.id = const Value.absent(),
+    this.accountRemoteId = const Value.absent(),
+    this.followingAccountRemoteId = const Value.absent(),
+  });
+  DbAccountFollowingsCompanion.insert({
+    this.id = const Value.absent(),
+    @required String accountRemoteId,
+    @required String followingAccountRemoteId,
+  })  : accountRemoteId = Value(accountRemoteId),
+        followingAccountRemoteId = Value(followingAccountRemoteId);
+  DbAccountFollowingsCompanion copyWith(
+      {Value<int> id,
+      Value<String> accountRemoteId,
+      Value<String> followingAccountRemoteId}) {
+    return DbAccountFollowingsCompanion(
+      id: id ?? this.id,
+      accountRemoteId: accountRemoteId ?? this.accountRemoteId,
+      followingAccountRemoteId:
+          followingAccountRemoteId ?? this.followingAccountRemoteId,
+    );
+  }
+}
+
+class $DbAccountFollowingsTable extends DbAccountFollowings
+    with TableInfo<$DbAccountFollowingsTable, DbAccountFollowing> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $DbAccountFollowingsTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
+  @override
+  GeneratedIntColumn get id => _id ??= _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn('id', $tableName, false,
+        hasAutoIncrement: true, declaredAsPrimaryKey: true);
+  }
+
+  final VerificationMeta _accountRemoteIdMeta =
+      const VerificationMeta('accountRemoteId');
+  GeneratedTextColumn _accountRemoteId;
+  @override
+  GeneratedTextColumn get accountRemoteId =>
+      _accountRemoteId ??= _constructAccountRemoteId();
+  GeneratedTextColumn _constructAccountRemoteId() {
+    return GeneratedTextColumn(
+      'account_remote_id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _followingAccountRemoteIdMeta =
+      const VerificationMeta('followingAccountRemoteId');
+  GeneratedTextColumn _followingAccountRemoteId;
+  @override
+  GeneratedTextColumn get followingAccountRemoteId =>
+      _followingAccountRemoteId ??= _constructFollowingAccountRemoteId();
+  GeneratedTextColumn _constructFollowingAccountRemoteId() {
+    return GeneratedTextColumn(
+      'following_account_remote_id',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, accountRemoteId, followingAccountRemoteId];
+  @override
+  $DbAccountFollowingsTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'db_account_followings';
+  @override
+  final String actualTableName = 'db_account_followings';
+  @override
+  VerificationContext validateIntegrity(DbAccountFollowingsCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.id.present) {
+      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    }
+    if (d.accountRemoteId.present) {
+      context.handle(
+          _accountRemoteIdMeta,
+          accountRemoteId.isAcceptableValue(
+              d.accountRemoteId.value, _accountRemoteIdMeta));
+    } else if (isInserting) {
+      context.missing(_accountRemoteIdMeta);
+    }
+    if (d.followingAccountRemoteId.present) {
+      context.handle(
+          _followingAccountRemoteIdMeta,
+          followingAccountRemoteId.isAcceptableValue(
+              d.followingAccountRemoteId.value, _followingAccountRemoteIdMeta));
+    } else if (isInserting) {
+      context.missing(_followingAccountRemoteIdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  DbAccountFollowing map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return DbAccountFollowing.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(DbAccountFollowingsCompanion d) {
+    final map = <String, Variable>{};
+    if (d.id.present) {
+      map['id'] = Variable<int, IntType>(d.id.value);
+    }
+    if (d.accountRemoteId.present) {
+      map['account_remote_id'] =
+          Variable<String, StringType>(d.accountRemoteId.value);
+    }
+    if (d.followingAccountRemoteId.present) {
+      map['following_account_remote_id'] =
+          Variable<String, StringType>(d.followingAccountRemoteId.value);
+    }
+    return map;
+  }
+
+  @override
+  $DbAccountFollowingsTable createAlias(String alias) {
+    return $DbAccountFollowingsTable(_db, alias);
+  }
+}
+
+class DbStatusHashtag extends DataClass implements Insertable<DbStatusHashtag> {
+  final int id;
+  final String statusRemoteId;
+  final String hashtag;
+  DbStatusHashtag(
+      {@required this.id,
+      @required this.statusRemoteId,
+      @required this.hashtag});
+  factory DbStatusHashtag.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final stringType = db.typeSystem.forDartType<String>();
+    return DbStatusHashtag(
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      statusRemoteId: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}status_remote_id']),
+      hashtag:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}hashtag']),
+    );
+  }
+  factory DbStatusHashtag.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return DbStatusHashtag(
+      id: serializer.fromJson<int>(json['id']),
+      statusRemoteId: serializer.fromJson<String>(json['statusRemoteId']),
+      hashtag: serializer.fromJson<String>(json['hashtag']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'statusRemoteId': serializer.toJson<String>(statusRemoteId),
+      'hashtag': serializer.toJson<String>(hashtag),
+    };
+  }
+
+  @override
+  DbStatusHashtagsCompanion createCompanion(bool nullToAbsent) {
+    return DbStatusHashtagsCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      statusRemoteId: statusRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(statusRemoteId),
+      hashtag: hashtag == null && nullToAbsent
+          ? const Value.absent()
+          : Value(hashtag),
+    );
+  }
+
+  DbStatusHashtag copyWith({int id, String statusRemoteId, String hashtag}) =>
+      DbStatusHashtag(
+        id: id ?? this.id,
+        statusRemoteId: statusRemoteId ?? this.statusRemoteId,
+        hashtag: hashtag ?? this.hashtag,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('DbStatusHashtag(')
+          ..write('id: $id, ')
+          ..write('statusRemoteId: $statusRemoteId, ')
+          ..write('hashtag: $hashtag')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf(
+      $mrjc(id.hashCode, $mrjc(statusRemoteId.hashCode, hashtag.hashCode)));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is DbStatusHashtag &&
+          other.id == this.id &&
+          other.statusRemoteId == this.statusRemoteId &&
+          other.hashtag == this.hashtag);
+}
+
+class DbStatusHashtagsCompanion extends UpdateCompanion<DbStatusHashtag> {
+  final Value<int> id;
+  final Value<String> statusRemoteId;
+  final Value<String> hashtag;
+  const DbStatusHashtagsCompanion({
+    this.id = const Value.absent(),
+    this.statusRemoteId = const Value.absent(),
+    this.hashtag = const Value.absent(),
+  });
+  DbStatusHashtagsCompanion.insert({
+    this.id = const Value.absent(),
+    @required String statusRemoteId,
+    @required String hashtag,
+  })  : statusRemoteId = Value(statusRemoteId),
+        hashtag = Value(hashtag);
+  DbStatusHashtagsCompanion copyWith(
+      {Value<int> id, Value<String> statusRemoteId, Value<String> hashtag}) {
+    return DbStatusHashtagsCompanion(
+      id: id ?? this.id,
+      statusRemoteId: statusRemoteId ?? this.statusRemoteId,
+      hashtag: hashtag ?? this.hashtag,
+    );
+  }
+}
+
+class $DbStatusHashtagsTable extends DbStatusHashtags
+    with TableInfo<$DbStatusHashtagsTable, DbStatusHashtag> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $DbStatusHashtagsTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
+  @override
+  GeneratedIntColumn get id => _id ??= _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn('id', $tableName, false,
+        hasAutoIncrement: true, declaredAsPrimaryKey: true);
+  }
+
+  final VerificationMeta _statusRemoteIdMeta =
+      const VerificationMeta('statusRemoteId');
+  GeneratedTextColumn _statusRemoteId;
+  @override
+  GeneratedTextColumn get statusRemoteId =>
+      _statusRemoteId ??= _constructStatusRemoteId();
+  GeneratedTextColumn _constructStatusRemoteId() {
+    return GeneratedTextColumn(
+      'status_remote_id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _hashtagMeta = const VerificationMeta('hashtag');
+  GeneratedTextColumn _hashtag;
+  @override
+  GeneratedTextColumn get hashtag => _hashtag ??= _constructHashtag();
+  GeneratedTextColumn _constructHashtag() {
+    return GeneratedTextColumn(
+      'hashtag',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [id, statusRemoteId, hashtag];
+  @override
+  $DbStatusHashtagsTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'db_status_hashtags';
+  @override
+  final String actualTableName = 'db_status_hashtags';
+  @override
+  VerificationContext validateIntegrity(DbStatusHashtagsCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.id.present) {
+      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    }
+    if (d.statusRemoteId.present) {
+      context.handle(
+          _statusRemoteIdMeta,
+          statusRemoteId.isAcceptableValue(
+              d.statusRemoteId.value, _statusRemoteIdMeta));
+    } else if (isInserting) {
+      context.missing(_statusRemoteIdMeta);
+    }
+    if (d.hashtag.present) {
+      context.handle(_hashtagMeta,
+          hashtag.isAcceptableValue(d.hashtag.value, _hashtagMeta));
+    } else if (isInserting) {
+      context.missing(_hashtagMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  DbStatusHashtag map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return DbStatusHashtag.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(DbStatusHashtagsCompanion d) {
+    final map = <String, Variable>{};
+    if (d.id.present) {
+      map['id'] = Variable<int, IntType>(d.id.value);
+    }
+    if (d.statusRemoteId.present) {
+      map['status_remote_id'] =
+          Variable<String, StringType>(d.statusRemoteId.value);
+    }
+    if (d.hashtag.present) {
+      map['hashtag'] = Variable<String, StringType>(d.hashtag.value);
+    }
+    return map;
+  }
+
+  @override
+  $DbStatusHashtagsTable createAlias(String alias) {
+    return $DbStatusHashtagsTable(_db, alias);
+  }
+}
+
+class DbStatusList extends DataClass implements Insertable<DbStatusList> {
+  final int id;
+  final String statusRemoteId;
+  final String listRemoteId;
+  DbStatusList(
+      {@required this.id,
+      @required this.statusRemoteId,
+      @required this.listRemoteId});
+  factory DbStatusList.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final stringType = db.typeSystem.forDartType<String>();
+    return DbStatusList(
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      statusRemoteId: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}status_remote_id']),
+      listRemoteId: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}list_remote_id']),
+    );
+  }
+  factory DbStatusList.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return DbStatusList(
+      id: serializer.fromJson<int>(json['id']),
+      statusRemoteId: serializer.fromJson<String>(json['statusRemoteId']),
+      listRemoteId: serializer.fromJson<String>(json['listRemoteId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'statusRemoteId': serializer.toJson<String>(statusRemoteId),
+      'listRemoteId': serializer.toJson<String>(listRemoteId),
+    };
+  }
+
+  @override
+  DbStatusListsCompanion createCompanion(bool nullToAbsent) {
+    return DbStatusListsCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      statusRemoteId: statusRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(statusRemoteId),
+      listRemoteId: listRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(listRemoteId),
+    );
+  }
+
+  DbStatusList copyWith({int id, String statusRemoteId, String listRemoteId}) =>
+      DbStatusList(
+        id: id ?? this.id,
+        statusRemoteId: statusRemoteId ?? this.statusRemoteId,
+        listRemoteId: listRemoteId ?? this.listRemoteId,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('DbStatusList(')
+          ..write('id: $id, ')
+          ..write('statusRemoteId: $statusRemoteId, ')
+          ..write('listRemoteId: $listRemoteId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(
+      id.hashCode, $mrjc(statusRemoteId.hashCode, listRemoteId.hashCode)));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is DbStatusList &&
+          other.id == this.id &&
+          other.statusRemoteId == this.statusRemoteId &&
+          other.listRemoteId == this.listRemoteId);
+}
+
+class DbStatusListsCompanion extends UpdateCompanion<DbStatusList> {
+  final Value<int> id;
+  final Value<String> statusRemoteId;
+  final Value<String> listRemoteId;
+  const DbStatusListsCompanion({
+    this.id = const Value.absent(),
+    this.statusRemoteId = const Value.absent(),
+    this.listRemoteId = const Value.absent(),
+  });
+  DbStatusListsCompanion.insert({
+    this.id = const Value.absent(),
+    @required String statusRemoteId,
+    @required String listRemoteId,
+  })  : statusRemoteId = Value(statusRemoteId),
+        listRemoteId = Value(listRemoteId);
+  DbStatusListsCompanion copyWith(
+      {Value<int> id,
+      Value<String> statusRemoteId,
+      Value<String> listRemoteId}) {
+    return DbStatusListsCompanion(
+      id: id ?? this.id,
+      statusRemoteId: statusRemoteId ?? this.statusRemoteId,
+      listRemoteId: listRemoteId ?? this.listRemoteId,
+    );
+  }
+}
+
+class $DbStatusListsTable extends DbStatusLists
+    with TableInfo<$DbStatusListsTable, DbStatusList> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $DbStatusListsTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
+  @override
+  GeneratedIntColumn get id => _id ??= _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn('id', $tableName, false,
+        hasAutoIncrement: true, declaredAsPrimaryKey: true);
+  }
+
+  final VerificationMeta _statusRemoteIdMeta =
+      const VerificationMeta('statusRemoteId');
+  GeneratedTextColumn _statusRemoteId;
+  @override
+  GeneratedTextColumn get statusRemoteId =>
+      _statusRemoteId ??= _constructStatusRemoteId();
+  GeneratedTextColumn _constructStatusRemoteId() {
+    return GeneratedTextColumn(
+      'status_remote_id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _listRemoteIdMeta =
+      const VerificationMeta('listRemoteId');
+  GeneratedTextColumn _listRemoteId;
+  @override
+  GeneratedTextColumn get listRemoteId =>
+      _listRemoteId ??= _constructListRemoteId();
+  GeneratedTextColumn _constructListRemoteId() {
+    return GeneratedTextColumn(
+      'list_remote_id',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [id, statusRemoteId, listRemoteId];
+  @override
+  $DbStatusListsTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'db_status_lists';
+  @override
+  final String actualTableName = 'db_status_lists';
+  @override
+  VerificationContext validateIntegrity(DbStatusListsCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.id.present) {
+      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    }
+    if (d.statusRemoteId.present) {
+      context.handle(
+          _statusRemoteIdMeta,
+          statusRemoteId.isAcceptableValue(
+              d.statusRemoteId.value, _statusRemoteIdMeta));
+    } else if (isInserting) {
+      context.missing(_statusRemoteIdMeta);
+    }
+    if (d.listRemoteId.present) {
+      context.handle(
+          _listRemoteIdMeta,
+          listRemoteId.isAcceptableValue(
+              d.listRemoteId.value, _listRemoteIdMeta));
+    } else if (isInserting) {
+      context.missing(_listRemoteIdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  DbStatusList map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return DbStatusList.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(DbStatusListsCompanion d) {
+    final map = <String, Variable>{};
+    if (d.id.present) {
+      map['id'] = Variable<int, IntType>(d.id.value);
+    }
+    if (d.statusRemoteId.present) {
+      map['status_remote_id'] =
+          Variable<String, StringType>(d.statusRemoteId.value);
+    }
+    if (d.listRemoteId.present) {
+      map['list_remote_id'] =
+          Variable<String, StringType>(d.listRemoteId.value);
+    }
+    return map;
+  }
+
+  @override
+  $DbStatusListsTable createAlias(String alias) {
+    return $DbStatusListsTable(_db, alias);
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $DbStatusesTable _dbStatuses;
   $DbStatusesTable get dbStatuses => _dbStatuses ??= $DbStatusesTable(this);
   $DbAccountsTable _dbAccounts;
   $DbAccountsTable get dbAccounts => _dbAccounts ??= $DbAccountsTable(this);
+  $DbAccountFollowingsTable _dbAccountFollowings;
+  $DbAccountFollowingsTable get dbAccountFollowings =>
+      _dbAccountFollowings ??= $DbAccountFollowingsTable(this);
+  $DbStatusHashtagsTable _dbStatusHashtags;
+  $DbStatusHashtagsTable get dbStatusHashtags =>
+      _dbStatusHashtags ??= $DbStatusHashtagsTable(this);
+  $DbStatusListsTable _dbStatusLists;
+  $DbStatusListsTable get dbStatusLists =>
+      _dbStatusLists ??= $DbStatusListsTable(this);
   StatusDao _statusDao;
   StatusDao get statusDao => _statusDao ??= StatusDao(this as AppDatabase);
   AccountDao _accountDao;
   AccountDao get accountDao => _accountDao ??= AccountDao(this as AppDatabase);
+  AccountFollowingsDao _accountFollowingsDao;
+  AccountFollowingsDao get accountFollowingsDao =>
+      _accountFollowingsDao ??= AccountFollowingsDao(this as AppDatabase);
+  StatusHashtagsDao _statusHashtagsDao;
+  StatusHashtagsDao get statusHashtagsDao =>
+      _statusHashtagsDao ??= StatusHashtagsDao(this as AppDatabase);
+  StatusListsDao _statusListsDao;
+  StatusListsDao get statusListsDao =>
+      _statusListsDao ??= StatusListsDao(this as AppDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [dbStatuses, dbAccounts];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [
+        dbStatuses,
+        dbAccounts,
+        dbAccountFollowings,
+        dbStatusHashtags,
+        dbStatusLists
+      ];
 }

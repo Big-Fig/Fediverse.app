@@ -8,14 +8,14 @@ import 'package:flutter/widgets.dart';
 
 import 'hashtag_timeline_service.dart';
 
-class HashTagTimelineService extends TimelineService
-    implements IHashTagTimelineService {
+class HashtagTimelineService extends TimelineService
+    implements IHashtagTimelineService {
   final bool onlyLocal;
   final String localUrlHost;
-  final String hashTag;
+  final String hashtag;
 
   @override
-  ITimelineSettings get settings => TimelineSettings.hashTag(
+  ITimelineSettings get settings => TimelineSettings.hashtag(
       localPreferences: null,
       excludeVisibilities: [
         PleromaVisibility.DIRECT,
@@ -25,15 +25,15 @@ class HashTagTimelineService extends TimelineService
       onlyLocal: onlyLocal,
       notMuted: true,
       localUrlHost: localUrlHost,
-      withHashTag: hashTag);
+      withHashtag: hashtag);
 
-  HashTagTimelineService({
+  HashtagTimelineService({
     @required IPleromaTimelineService pleromaTimelineService,
     @required IStatusRepository statusRepository,
     @required TimelineLocalPreferences timelineLocalPreferences,
     @required this.onlyLocal,
     @required this.localUrlHost,
-    @required this.hashTag,
+    @required this.hashtag,
   }) : super(
             pleromaTimelineService: pleromaTimelineService,
             timelineLocalPreferences: timelineLocalPreferences,

@@ -1,3 +1,4 @@
+import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/Pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/database/app_database.dart';
@@ -16,11 +17,14 @@ abstract class IStatusRepository
 
   Future<IStatus> findByRemoteId(String remoteId);
 
-  Future<int> upsertByRemoteId(DbStatus dbStatus);
+  Future upsertRemoteStatuses(List<IPleromaStatus> remoteStatuses,
+      {@required String listRemoteId});
+
+  Future upsertRemoteStatus(IPleromaStatus remoteStatus, {@required String listRemoteId});
 
   Future<List<DbStatusPopulatedWrapper>> getStatuses(
       {@required String inListWithRemoteId,
-      @required String withHashTag,
+      @required String withHashtag,
       @required IAccount onlyFollowingByAccount,
       @required String localUrlHost,
       @required bool onlyLocal,
@@ -37,7 +41,7 @@ abstract class IStatusRepository
 
   Stream<List<DbStatusPopulatedWrapper>> watchStatuses(
       {@required String inListWithRemoteId,
-      @required String withHashTag,
+      @required String withHashtag,
       @required IAccount onlyFollowingByAccount,
       @required String localUrlHost,
       @required bool onlyLocal,

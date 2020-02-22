@@ -33,9 +33,9 @@ abstract class IPleromaTimelineService implements IPleromaApi {
     ],
   });
 
-  Future<List<IPleromaStatus>> getHashTagTimeline({
+  Future<List<IPleromaStatus>> getHashtagTimeline({
     /// for example '#cats'
-    @required String hashTag, /// Return results older than id
+    @required String hashtag, /// Return results older than id
     String maxId,
     /// Return results newer than id
     String sinceId,

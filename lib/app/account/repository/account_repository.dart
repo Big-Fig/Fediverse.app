@@ -1,3 +1,4 @@
+import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/repository/repository.dart';
@@ -12,5 +13,15 @@ abstract class IAccountRepository
       Provider.of<IAccountRepository>(context, listen: listen);
 
   Future<DbAccountWrapper> findByRemoteId(String remoteId);
-  Future<int> upsertByRemoteId(DbAccount dbAccount);
+
+  Future upsertRemoteAccounts(List<IPleromaAccount> remoteAccounts);
+
+  Future upsertRemoteAccount(IPleromaAccount remoteAccount);
+
+  Future updateAccountFollowings(
+      String accountRemoteId, List<PleromaAccount> followings);
+
+
+  Future<List<String>> getAccountFollowingsRemoteIds(
+      String accountRemoteId);
 }

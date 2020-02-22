@@ -1,7 +1,9 @@
+import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/Pleroma/tag/pleroma_tag_model.dart';
 import 'package:fedi/Pleroma/visibility/pleroma_visibility_model.dart';
-import 'package:fedi/app/account/account_repository_impl.dart';
+import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
@@ -27,9 +29,13 @@ void main() {
 
   setUp(() async {
     database = AppDatabase(VmDatabase.memory());
-    accountRepository = AccountRepository(dao: database.accountDao);
+    accountRepository = AccountRepository(
+        dao: database.accountDao, followingsDao: database.accountFollowingsDao);
     statusRepository = StatusRepository(
-        dao: database.statusDao, accountRepository: accountRepository);
+        dao: database.statusDao,
+        accountRepository: accountRepository,
+        listsDao: database.statusListsDao,
+        hashtagsDao: database.statusHashtagsDao);
 
     dbAccount = createTestAccount("seed1");
 
@@ -51,6 +57,24 @@ void main() {
     assert(id != null, true);
     expectDbStatusPopulated(
         await statusRepository.findById(id), dbStatusPopulated);
+  });
+
+  test('upsertAll', () async {
+    var dbStatus1 = (await createTestStatus("seed5", dbAccount))
+        .copyWith(remoteId: "remoteId1");
+    // same remote id
+    var dbStatus2 = (await createTestStatus("seed6", dbAccount))
+        .copyWith(remoteId: "remoteId1");
+
+    await statusRepository.upsertAll([dbStatus1]);
+
+    expect((await statusRepository.getAll()).length, 1);
+
+    await statusRepository.upsertAll([dbStatus2]);
+    expect((await statusRepository.getAll()).length, 1);
+
+    expectDbStatusPopulated((await statusRepository.getAll()).first,
+        await createTestStatusPopulated(dbStatus2, accountRepository));
   });
 
   test('updateById', () async {
@@ -82,7 +106,7 @@ void main() {
         noNsfwSensitive: null,
         onlyLocal: null,
         noReplies: null,
-        withHashTag: null,
+        withHashtag: null,
         onlyFollowingByAccount: null,
         localUrlHost: null,
         olderThanStatusRemoteId: null,
@@ -109,7 +133,7 @@ void main() {
         noNsfwSensitive: null,
         onlyLocal: true,
         noReplies: null,
-        withHashTag: null,
+        withHashtag: null,
         onlyFollowingByAccount: null,
         localUrlHost: "pleroma.com",
         olderThanStatusRemoteId: null,
@@ -157,7 +181,7 @@ void main() {
         noNsfwSensitive: null,
         onlyLocal: null,
         noReplies: null,
-        withHashTag: null,
+        withHashtag: null,
         onlyFollowingByAccount: null,
         localUrlHost: null,
         olderThanStatusRemoteId: null,
@@ -197,7 +221,7 @@ void main() {
         noNsfwSensitive: null,
         onlyLocal: null,
         noReplies: null,
-        withHashTag: null,
+        withHashtag: null,
         onlyFollowingByAccount: null,
         localUrlHost: null,
         olderThanStatusRemoteId: null,
@@ -261,7 +285,7 @@ void main() {
         noNsfwSensitive: null,
         onlyLocal: null,
         noReplies: null,
-        withHashTag: null,
+        withHashtag: null,
         onlyFollowingByAccount: null,
         localUrlHost: null,
         olderThanStatusRemoteId: null,
@@ -308,7 +332,7 @@ void main() {
         noNsfwSensitive: null,
         onlyLocal: null,
         noReplies: null,
-        withHashTag: null,
+        withHashtag: null,
         onlyFollowingByAccount: null,
         localUrlHost: null,
         olderThanStatusRemoteId: null,
@@ -354,7 +378,7 @@ void main() {
         noNsfwSensitive: null,
         onlyLocal: null,
         noReplies: null,
-        withHashTag: null,
+        withHashtag: null,
         onlyFollowingByAccount: null,
         localUrlHost: null,
         olderThanStatusRemoteId: "remoteId5",
@@ -401,7 +425,7 @@ void main() {
         noNsfwSensitive: null,
         onlyLocal: null,
         noReplies: null,
-        withHashTag: null,
+        withHashtag: null,
         onlyFollowingByAccount: null,
         localUrlHost: null,
         olderThanStatusRemoteId: "remoteId5",
@@ -463,7 +487,7 @@ void main() {
         noNsfwSensitive: null,
         onlyLocal: null,
         noReplies: null,
-        withHashTag: null,
+        withHashtag: null,
         onlyFollowingByAccount: null,
         localUrlHost: null,
         olderThanStatusRemoteId: null,
@@ -505,7 +529,7 @@ void main() {
         noNsfwSensitive: null,
         onlyLocal: null,
         noReplies: null,
-        withHashTag: null,
+        withHashtag: null,
         onlyFollowingByAccount: null,
         localUrlHost: null,
         olderThanStatusRemoteId: null,
@@ -547,7 +571,7 @@ void main() {
         noNsfwSensitive: null,
         onlyLocal: null,
         noReplies: null,
-        withHashTag: null,
+        withHashtag: null,
         onlyFollowingByAccount: null,
         localUrlHost: null,
         olderThanStatusRemoteId: null,
@@ -573,7 +597,6 @@ void main() {
     expectActualStatus(actualList[0], status2, dbAccount);
   });
 
-
   test('createQuery noNsfwSensitive', () async {
     var query = statusRepository.createQuery(
         onlyMedia: null,
@@ -586,26 +609,23 @@ void main() {
         noNsfwSensitive: true,
         onlyLocal: null,
         noReplies: null,
-        withHashTag: null,
+        withHashtag: null,
         onlyFollowingByAccount: null,
         localUrlHost: null,
         olderThanStatusRemoteId: null,
         inListWithRemoteId: null);
 
-    await insertDbStatus(statusRepository,
-        (await createTestStatus("seed1", dbAccount)).copyWith(
-          sensitive: false
-        ));
+    await insertDbStatus(
+        statusRepository,
+        (await createTestStatus("seed1", dbAccount))
+            .copyWith(sensitive: false));
 
     expect((await query.get()).length, 1);
 
     await insertDbStatus(statusRepository,
-        (await createTestStatus("seed2", dbAccount)).copyWith(
-          sensitive:  true
-        ));
+        (await createTestStatus("seed2", dbAccount)).copyWith(sensitive: true));
     expect((await query.get()).length, 1);
   });
-
 
   test('createQuery noReplies', () async {
     var query = statusRepository.createQuery(
@@ -619,16 +639,16 @@ void main() {
         noNsfwSensitive: null,
         onlyLocal: null,
         noReplies: true,
-        withHashTag: null,
+        withHashtag: null,
         onlyFollowingByAccount: null,
         localUrlHost: null,
         olderThanStatusRemoteId: null,
         inListWithRemoteId: null);
 
-    await insertDbStatus(statusRepository,
-        (await createTestStatus("seed1", dbAccount)).copyWith(
-            inReplyToRemoteId: "inReplyToRemoteId"
-        ));
+    await insertDbStatus(
+        statusRepository,
+        (await createTestStatus("seed1", dbAccount))
+            .copyWith(inReplyToRemoteId: "inReplyToRemoteId"));
 
     expect((await query.get()).length, 0);
 
@@ -643,52 +663,187 @@ void main() {
     expect((await query.get()).length, 1);
   });
 
-//  test('createQuery withHashTag', () async {
-//    var query = statusRepository.createQuery(
-//        onlyMedia: null,
-//        notMuted: null,
-//        excludeVisibilities: null,
-//        newerThanStatusRemoteId: null,
-//        limit: null,
-//        offset: null,
-//        orderingTermData: null,
-//        noNsfwSensitive: null,
-//        onlyLocal: null,
-//        noReplies: null,
-//        withHashTag: "#cats",
-//        onlyFollowingByAccount: null,
-//        localUrlHost: null,
-//        olderThanStatusRemoteId: null,
-//        inListWithRemoteId: null);
-//
-//    await insertDbStatus(statusRepository,
-//        (await createTestStatus("seed1", dbAccount)).copyWith(
-//            tags: null
-//        ));
-//
-//    expect((await query.get()).length, 0);
-//    await insertDbStatus(statusRepository,
-//        (await createTestStatus("seed1", dbAccount)).copyWith(
-//            tags: []
-//        ));
-//
-//    expect((await query.get()).length, 0);
-//    await insertDbStatus(statusRepository,
-//        (await createTestStatus("seed1", dbAccount)).copyWith(
-//            tags: [PleromaTag(name: "#dogs")]
-//        ));
-//
-//    expect((await query.get()).length, 0);
-//    await insertDbStatus(statusRepository,
-//        (await createTestStatus("seed1", dbAccount)).copyWith(
-//            tags: [
-//              PleromaTag(name: "#cats"),
-//            ]
-//        ));
-//
-//    expect((await query.get()).length, 1);
-//
-//  });
+  test('createQuery onlyFollowingByAccount', () async {
+    var accountRemoteId = "accountRemoteId";
+    var accountInvalidRemoteId = "accountInvalidRemoteId";
+    var followingAccountRemoteId = "followingAccountRemoteId";
+
+    await accountRepository.updateAccountFollowings(
+        accountRemoteId, [PleromaAccount(id: "followingAccountRemoteId")]);
+
+    var query = statusRepository.createQuery(
+        onlyMedia: null,
+        notMuted: null,
+        excludeVisibilities: null,
+        newerThanStatusRemoteId: null,
+        limit: null,
+        offset: null,
+        orderingTermData: null,
+        noNsfwSensitive: null,
+        onlyLocal: null,
+        noReplies: null,
+        withHashtag: null,
+        onlyFollowingByAccount: DbAccountWrapper(DbAccount(
+            id: null,
+            remoteId: followingAccountRemoteId,
+            username: null,
+            url: null,
+            note: null,
+            locked: null,
+            headerStatic: null,
+            header: null,
+            followingCount: null,
+            followersCount: null,
+            statusesCount: null,
+            displayName: null,
+            createdAt: null,
+            avatarStatic: null,
+            avatar: null,
+            acct: null,
+            lastStatusAt: null)),
+        localUrlHost: null,
+        olderThanStatusRemoteId: null,
+        inListWithRemoteId: null);
+
+    await insertDbStatus(
+        statusRepository,
+        (await createTestStatus(
+                "seed1", dbAccount.copyWith(remoteId: accountInvalidRemoteId)))
+            .copyWith());
+
+    expect((await query.get()).length, 0);
+
+    await insertDbStatus(
+        statusRepository,
+        (await createTestStatus(
+                "seed2", dbAccount.copyWith(remoteId: accountRemoteId)))
+            .copyWith());
+
+    expect((await query.get()).length, 0);
+  });
+
+  test('createQuery withHashtag', () async {
+    var query = statusRepository.createQuery(
+        onlyMedia: null,
+        notMuted: null,
+        excludeVisibilities: null,
+        newerThanStatusRemoteId: null,
+        limit: null,
+        offset: null,
+        orderingTermData: null,
+        noNsfwSensitive: null,
+        onlyLocal: null,
+        noReplies: null,
+        withHashtag: "#cats",
+        onlyFollowingByAccount: null,
+        localUrlHost: null,
+        olderThanStatusRemoteId: null,
+        inListWithRemoteId: null);
+
+    var dbStatus1 = (await createTestStatus("seed1", dbAccount)).copyWith(tags: null);
+    await statusRepository.updateStatusTags(dbStatus1.remoteId, dbStatus1.tags);
+    await insertDbStatus(statusRepository,
+        dbStatus1);
+
+    expect((await query.get()).length, 0);
+
+    var dbStatus2 = (await createTestStatus("seed2", dbAccount)).copyWith(tags: []);
+    await statusRepository.updateStatusTags(dbStatus2.remoteId, dbStatus2.tags);
+    await insertDbStatus(statusRepository,
+        dbStatus2);
+
+    expect((await query.get()).length, 0);
+    
+    var dbStatus3 = (await createTestStatus("seed3", dbAccount))
+            .copyWith(tags: [PleromaTag(name: "#dogs")]);
+    await statusRepository.updateStatusTags(dbStatus3.remoteId, dbStatus3.tags);
+    await insertDbStatus(
+        statusRepository,
+        dbStatus3);
+
+    expect((await query.get()).length, 0);
+    
+    var dbStatus4 = (await createTestStatus("seed4", dbAccount)).copyWith(tags: [
+          PleromaTag(name: "#cats"),
+        ]);
+    await statusRepository.updateStatusTags(dbStatus4.remoteId, dbStatus4.tags);
+    await insertDbStatus(
+        statusRepository,
+        dbStatus4);
+
+    expect((await query.get()).length, 1);
+
+    var dbStatus5 = (await createTestStatus("seed5", dbAccount)).copyWith(tags: [
+          PleromaTag(name: "#dogs"),
+          PleromaTag(name: "#cats"),
+        ]);
+    await statusRepository.updateStatusTags(dbStatus5.remoteId, dbStatus5.tags);
+    await insertDbStatus(
+        statusRepository,
+        dbStatus5);
+
+    expect((await query.get()).length, 2);
+
+    var dbStatus6 = (await createTestStatus("seed6", dbAccount)).copyWith(tags: [
+          PleromaTag(name: "#ca"),
+        ]);
+    await statusRepository.updateStatusTags(dbStatus6.remoteId, dbStatus6.tags);
+    await insertDbStatus(
+        statusRepository,
+        dbStatus6);
+
+    expect((await query.get()).length, 2);
+  });
+
+
+  test('createQuery inListWithRemoteId', () async {
+    var listWithRemoteId = "listRemoteId";
+    var query = statusRepository.createQuery(
+        onlyMedia: null,
+        notMuted: null,
+        excludeVisibilities: null,
+        newerThanStatusRemoteId: null,
+        limit: null,
+        offset: null,
+        orderingTermData: null,
+        noNsfwSensitive: null,
+        onlyLocal: null,
+        noReplies: null,
+        withHashtag: null,
+        onlyFollowingByAccount: null,
+        localUrlHost: null,
+        olderThanStatusRemoteId: null,
+        inListWithRemoteId: listWithRemoteId);
+
+    var dbStatus1 = (await createTestStatus("seed1", dbAccount)).copyWith();
+    await insertDbStatus(statusRepository,
+        dbStatus1);
+    statusRepository.addStatusesToList([dbStatus1.remoteId], null);
+
+    expect((await query.get()).length, 0);
+    
+    var dbStatus2 = (await createTestStatus("seed2", dbAccount)).copyWith();
+    await insertDbStatus(statusRepository,
+        dbStatus2);
+    statusRepository.addStatusesToList([dbStatus2.remoteId], "");
+
+    expect((await query.get()).length, 0);
+    
+    var dbStatus3 = (await createTestStatus("seed3", dbAccount)).copyWith();
+    await insertDbStatus(statusRepository,
+        dbStatus3);
+    statusRepository.addStatusesToList([dbStatus2.remoteId], listWithRemoteId);
+
+    expect((await query.get()).length, 1);    
+    
+    var dbStatus4 = (await createTestStatus("seed4", dbAccount)).copyWith();
+    await insertDbStatus(statusRepository,
+        dbStatus4);
+    statusRepository.addStatusesToList([dbStatus2.remoteId], listWithRemoteId);
+
+    expect((await query.get()).length, 2);
+
+  });
 }
 
 Future<DbStatusPopulated> createTestStatusPopulated(
@@ -712,6 +867,7 @@ Future<DbStatus> insertDbStatus(
   StatusRepository statusRepository,
   DbStatus statusData,
 ) async {
+
   var id = await statusRepository.insert(statusData);
   assert(id != null, true);
   var dbStatus = statusData.copyWith(id: id);
