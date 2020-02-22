@@ -10,7 +10,7 @@ import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 
 class PleromaAccountEditService implements IPleromaAccountEditService {
-  final editProfileRelativeUrlPath = "/api/v1/accounts/update_credentials";
+  final editAccountRelativeUrlPath = "/api/v1/accounts/update_credentials";
   final IPleromaAuthRestService restService;
 
 
@@ -37,7 +37,7 @@ class PleromaAccountEditService implements IPleromaAccountEditService {
   Future<IPleromaAccount> changeAvatarImage({@required File file}) async {
     var httpResponse = await restService.uploadFileMultipartRequest(
         UploadMultipartRestRequest.patch(
-            relativePath: editProfileRelativeUrlPath, files: {"avatar": file}));
+            relativePath: editAccountRelativeUrlPath, files: {"avatar": file}));
 
     return parseResponse(httpResponse);
   }
@@ -46,7 +46,7 @@ class PleromaAccountEditService implements IPleromaAccountEditService {
   Future<IPleromaAccount> changeHeaderImage({@required File file}) async {
     var httpResponse = await restService.uploadFileMultipartRequest(
         UploadMultipartRestRequest.patch(
-            relativePath: editProfileRelativeUrlPath, files: {"header": file}));
+            relativePath: editAccountRelativeUrlPath, files: {"header": file}));
 
     return parseResponse(httpResponse);
   }
