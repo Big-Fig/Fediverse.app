@@ -65,8 +65,10 @@ abstract class TimelineWidget extends StatelessWidget {
                       var timelinePaginationBloc =
                           ITimelinePaginationBloc.of(context, listen: false);
 
-                      return TimelinePaginationListBloc(
+                      var timelinePaginationListBloc = TimelinePaginationListBloc(
                           timelinePaginationBloc: timelinePaginationBloc);
+                      timelinePaginationListBloc.loadMore();
+                      return timelinePaginationListBloc;
                     },
                     child: bodyWidget),
               ));

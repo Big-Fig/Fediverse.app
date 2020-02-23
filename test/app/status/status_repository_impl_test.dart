@@ -117,6 +117,7 @@ void main() {
 
     await insertDbStatus(statusRepository,
         (await createTestStatus("seed2", dbAccount)).copyWith());
+    expect((await query.get()).length, 2);
   });
 
   test('createQuery containsBaseUrlOrIsPleromaLocal', () async {

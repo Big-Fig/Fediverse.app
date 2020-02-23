@@ -11,10 +11,14 @@ DbStatus mapRemoteStatusToDbStatus(IPleromaStatus remoteStatus) {
 // TODO: fix when https://git.pleroma.social/pleroma/pleroma/issues/1573  will be resolved
   DateTime expiresAt;
   try {
-    if (remoteStatus.pleroma.expiresAt is DateTime) {
-      expiresAt = remoteStatus.pleroma.expiresAt;
+    if (remoteStatus.pleroma.expiresAt == false) {
+      expiresAt = null;
     } else {
-      expiresAt = DateTime.parse(remoteStatus.pleroma.expiresAt);
+      if (remoteStatus.pleroma.expiresAt is DateTime) {
+        expiresAt = remoteStatus.pleroma.expiresAt;
+      } else {
+        expiresAt = DateTime.parse(remoteStatus.pleroma.expiresAt);
+      }
     }
   } catch (e) {
     _logger.shout(() => "Error during parsing expiresAt $e");

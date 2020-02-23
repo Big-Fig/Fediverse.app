@@ -16,8 +16,13 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
   bool get isCacheEnabled =>
       maximumCachedPagesCount == null || maximumCachedPagesCount > 0;
 
-  bool get isMaximumPagesInCacheReached =>
-      cachedPagesCount >= maximumCachedPagesCount;
+  bool get isMaximumPagesInCacheReached {
+    if (maximumCachedPagesCount != null) {
+      return cachedPagesCount >= maximumCachedPagesCount;
+    } else {
+      return false;
+    }
+  }
 
   int get cachedPagesCount => indexToCachedPageMap.length;
   final int itemsCountPerPage;
@@ -51,7 +56,7 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
 
   @override
   List<int> get loadedPageIndexesSorted =>
-      pagesSubject.value.map((page) => page.pageIndex);
+      pagesSubject.value.map((page) => page.pageIndex).toList();
 
   @override
   Stream<List<int>> get loadedPageIndexesSortedStream => pagesSubject.stream

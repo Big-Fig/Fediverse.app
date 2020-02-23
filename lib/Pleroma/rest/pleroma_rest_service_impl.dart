@@ -1,6 +1,7 @@
 import 'package:fedi/Pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/Pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/connection/connection_service.dart';
+import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/rest/rest_request_model.dart';
 import 'package:fedi/rest/rest_service.dart';
 import 'package:flutter/widgets.dart';
@@ -10,11 +11,13 @@ import 'package:rxdart/rxdart.dart';
 
 var urlPath = path.Context(style: path.Style.url);
 
-class PleromaRestService implements IPleromaRestService {
+class PleromaRestService extends DisposableOwner implements IPleromaRestService {
   final IConnectionService connectionService;
 
+  // TODO: rework seed state
   // ignore: close_sinks
-  BehaviorSubject<PleromaApiState> _stateSubject;
+  BehaviorSubject<PleromaApiState> _stateSubject = BehaviorSubject.seeded
+    (PleromaApiState.validAuth);
 
   @override
   PleromaApiState get pleromaState => _stateSubject.value;
@@ -44,7 +47,9 @@ class PleromaRestService implements IPleromaRestService {
 
   PleromaRestService(
       {@required
-          this.restService, @required this.connectionService});
+          this.restService, @required this.connectionService}) {
+    addDisposable(subject: _stateSubject);
+  }
 
   @override
   Future<Response> sendHttpRequest<T extends RestRequest, K>(T request) {
@@ -56,9 +61,5 @@ class PleromaRestService implements IPleromaRestService {
     return restService.uploadFileMultipartRequest(request);
   }
 
-  @override
-  void dispose() {
-    // nothing
-  }
 
 }

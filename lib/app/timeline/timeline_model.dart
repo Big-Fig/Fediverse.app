@@ -20,13 +20,13 @@ abstract class ITimelineSettings {
 
   TimelineRemoteType get remoteType;
 
-  String get localUrlHost => null;
+  String get localUrlHost;
 
-  bool get onlyMedia => null;
+  bool get onlyMedia;
 
-  bool get noNsfwSensitive => null;
+  bool get noNsfwSensitive;
 
-  bool get noReplies => null;
+  bool get noReplies;
 }
 
 class TimelineSettings implements ITimelineSettings {
@@ -43,14 +43,14 @@ class TimelineSettings implements ITimelineSettings {
 
   @override
   bool get noNsfwSensitive =>
-      localPreferences.noNsfwSensitive;
+      localPreferences?.noNsfwSensitive ?? false;
 
   @override
-  bool get noReplies => localPreferences.noReplies;
+  bool get noReplies => localPreferences?.noReplies ?? false;
 
   @override
   bool get onlyMedia =>
-      localPreferences.onlyMedia;
+      localPreferences?.onlyMedia ?? false;
 
   @override
   final String inListWithRemoteId;

@@ -32,7 +32,7 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
   Future insertAll(
           Iterable<Insertable<DbAccount>> entities, InsertMode mode) async =>
       await batch((batch) {
-        batch.insertAll(dbAccounts, entities);
+        batch.insertAll(dbAccounts, entities, mode: mode);
       });
   Future<bool> replace(Insertable<DbAccount> entity) async =>
       await update(dbAccounts).replace(entity);

@@ -152,7 +152,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
       query
         ..where((status) =>
-            status.muted.equals(false) &
+            status.muted.equals(true).not() &
             status.pleromaThreadMuted.equals(true).not());
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addNoNsfwSensitiveWhere(

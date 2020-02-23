@@ -13,7 +13,11 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
+import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
+
+var _logger = Logger("status_repository_impl.dart");
 
 class StatusRepository extends AsyncInitLoadingBloc
     implements IStatusRepository {
@@ -62,12 +66,12 @@ class StatusRepository extends AsyncInitLoadingBloc
   @override
   Future upsertRemoteStatuses(List<IPleromaStatus> remoteStatuses,
       {@required String listRemoteId}) async {
-    var remoteAccounts =
-        remoteStatuses.map((remoteStatus) => remoteStatus.account);
+    List<IPleromaAccount> remoteAccounts =
+        remoteStatuses.map((remoteStatus) => remoteStatus.account).toList();
 
     accountRepository.upsertRemoteAccounts(remoteAccounts);
 
-    await upsertAll(remoteStatuses.map(mapRemoteStatusToDbStatus));
+    await upsertAll(remoteStatuses.map(mapRemoteStatusToDbStatus).toList());
 
     if (listRemoteId != null) {
       await addStatusesToList(
@@ -152,7 +156,7 @@ class StatusRepository extends AsyncInitLoadingBloc
 
     return dao
         .typedResultListToPopulated(await query.get())
-        .map(mapDataClassToItem);
+        .map(mapDataClassToItem).toList();
   }
 
   Stream<List<DbStatusPopulatedWrapper>> watchStatuses(
@@ -209,6 +213,24 @@ class StatusRepository extends AsyncInitLoadingBloc
       @required int limit,
       @required int offset,
       @required StatusOrderingTermData orderingTermData}) {
+
+    _logger.fine(() => "createQuery \n"
+        "\t inListWithRemoteId=$inListWithRemoteId\n"
+        "\t withHashtag=$withHashtag\n"
+        "\t onlyFollowingByAccount=$onlyFollowingByAccount\n"
+        "\t localUrlHost=$localUrlHost\n"
+        "\t onlyLocal=$onlyLocal\n"
+        "\t notMuted=$notMuted\n"
+        "\t excludeVisibilities=$excludeVisibilities\n"
+        "\t olderThanStatusRemoteId=$olderThanStatusRemoteId\n"
+        "\t newerThanStatusRemoteId=$newerThanStatusRemoteId\n"
+        "\t noNsfwSensitive=$noNsfwSensitive\n"
+        "\t noReplies=$noReplies\n"
+        "\t limit=$limit\n"
+        "\t offset=$offset\n"
+        "\t orderingTermData=$orderingTermData\n"
+    );
+
     var query = dao.startSelectQuery();
 
     if (onlyLocal == true) {

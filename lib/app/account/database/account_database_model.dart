@@ -23,7 +23,7 @@ class DbAccounts extends Table {
   TextColumn get avatarStatic => text()();
   TextColumn get avatar => text()();
   TextColumn get acct => text()();
-  DateTimeColumn get lastStatusAt => dateTime()();
+  DateTimeColumn get lastStatusAt => dateTime().nullable()();
 
   TextColumn get fields =>
       text().nullable().map(PleromaFieldListDatabaseConverter()).nullable()();

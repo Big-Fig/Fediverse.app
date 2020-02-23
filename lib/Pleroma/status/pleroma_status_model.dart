@@ -99,7 +99,7 @@ class PleromaStatus extends IPleromaStatus {
   final String language;
 
   @override
-  @JsonKey(name: "visbility")
+  @JsonKey(name: "visibility")
   String visibilityRaw;
   @override
   MastodonVisibility get visibilityMastodon =>

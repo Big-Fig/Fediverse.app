@@ -16,7 +16,7 @@ class PublicTimelineService extends TimelineService
 
   @override
   ITimelineSettings get settings => TimelineSettings.public(
-      localPreferences: null,
+      localPreferences: timelineLocalPreferences,
       excludeVisibilities: [
         PleromaVisibility.DIRECT,
         PleromaVisibility.LIST,
@@ -24,7 +24,8 @@ class PublicTimelineService extends TimelineService
       ],
       onlyLocal: onlyLocal,
       notMuted: true,
-      localUrlHost: localUrlHost);
+      localUrlHost: localUrlHost
+  );
 
   PublicTimelineService({
     @required IPleromaTimelineService pleromaTimelineService,

@@ -11,7 +11,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 abstract class TimelinePaginationListBase extends StatelessWidget {
   final RefreshController refreshController =
-      RefreshController(initialRefresh: false);
+      RefreshController(initialRefresh: true);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,12 @@ abstract class TimelinePaginationListBase extends StatelessWidget {
           initialData: timelinePaginationListBloc.items,
           builder: (context, snapshot) {
             var statuses = snapshot.data;
+            if(statuses?.isNotEmpty == true) {
             return buildChildCollectionView(statuses);
+
+            } else {
+              return Center(child: Text("Empty list"));
+            }
           }),
     );
   }

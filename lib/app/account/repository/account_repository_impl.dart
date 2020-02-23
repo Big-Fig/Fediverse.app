@@ -104,7 +104,7 @@ class AccountRepository extends AsyncInitLoadingBloc
 
   @override
   Future upsertRemoteAccounts(List<IPleromaAccount> remoteAccounts) async {
-    await upsertAll(remoteAccounts.map(mapRemoteAccountToDbAccount));
+    await upsertAll(remoteAccounts.map(mapRemoteAccountToDbAccount).toList());
   }
 
   @override

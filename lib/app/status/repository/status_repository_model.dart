@@ -9,4 +9,9 @@ class StatusOrderingTermData {
   final OrderingMode orderingMode;
   StatusOrderingTermData(
       {@required this.orderByType, @required this.orderingMode});
+
+  @override
+  String toString() {
+    return 'StatusOrderingTermData{orderByType: $orderByType, orderingMode: $orderingMode}';
+  }
 }

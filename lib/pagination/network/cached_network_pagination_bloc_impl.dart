@@ -24,7 +24,7 @@ abstract class CachedNetworkPaginationBloc<
     var isActuallyRefreshed;
 
     if (isPossibleToLoadFromNetwork) {
-      isActuallyRefreshed = refreshItemsFromRemoteForPage(
+      isActuallyRefreshed = await refreshItemsFromRemoteForPage(
           pageIndex: pageIndex,
           previousPage: previousPage,
           nextPage: nextPage,

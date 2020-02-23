@@ -1739,7 +1739,7 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
       @required this.avatarStatic,
       @required this.avatar,
       @required this.acct,
-      @required this.lastStatusAt,
+      this.lastStatusAt,
       this.fields,
       this.emojis,
       this.source,
@@ -2371,7 +2371,7 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
     @required String avatarStatic,
     @required String avatar,
     @required String acct,
-    @required DateTime lastStatusAt,
+    this.lastStatusAt = const Value.absent(),
     this.fields = const Value.absent(),
     this.emojis = const Value.absent(),
     this.source = const Value.absent(),
@@ -2405,8 +2405,7 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
         createdAt = Value(createdAt),
         avatarStatic = Value(avatarStatic),
         avatar = Value(avatar),
-        acct = Value(acct),
-        lastStatusAt = Value(lastStatusAt);
+        acct = Value(acct);
   DbAccountsCompanion copyWith(
       {Value<int> id,
       Value<String> remoteId,
@@ -2720,7 +2719,7 @@ class $DbAccountsTable extends DbAccounts
     return GeneratedDateTimeColumn(
       'last_status_at',
       $tableName,
-      false,
+      true,
     );
   }
 
@@ -3146,8 +3145,6 @@ class $DbAccountsTable extends DbAccounts
           _lastStatusAtMeta,
           lastStatusAt.isAcceptableValue(
               d.lastStatusAt.value, _lastStatusAtMeta));
-    } else if (isInserting) {
-      context.missing(_lastStatusAtMeta);
     }
     context.handle(_fieldsMeta, const VerificationResult.success());
     context.handle(_emojisMeta, const VerificationResult.success());
