@@ -294,7 +294,7 @@ class StatusListItemSimpleWidget extends StatusWidget {
                       },
                     ),
                   ),
-                  if (status.mediaAttachments.length > 0)
+                  if (status.mediaAttachments?.isNotEmpty == true)
                     getMeidaWidget(context, status, deviceWidth, targetHeight),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 12.0),
@@ -888,7 +888,7 @@ class StatusListItemSimpleWidget extends StatusWidget {
   }
 
   String getHTMLWithCustomEmoji(IStatus status) {
-    List<IPleromaEmoji> customEmoji = status.emojis;
+    List<IPleromaEmoji> customEmoji = status.emojis ?? [];
     String html = status.content;
     for (int i = 0; i < customEmoji.length; i++) {
       var emoji = customEmoji[i];
@@ -903,8 +903,8 @@ class StatusListItemSimpleWidget extends StatusWidget {
 
   List<Widget> getUserName(IPleromaStatus status) {
     var username = status.account.displayName;
-    var emojis = status.account.emojis;
-    emojis.addAll(status.emojis);
+    var emojis = status.account.emojis ?? [];
+    emojis.addAll(status.emojis ?? []);
     List<Widget> usernameWidget = [];
     var emojiUsername = username.split(":");
 

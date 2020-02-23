@@ -51,10 +51,10 @@ class PleromaAccountService implements IPleromaAccountService {
       String maxId,
       int limit = 20}) async {
     assert(accountRemoteId?.isNotEmpty == true);
-    var httpResponse = await restService.sendHttpRequest(RestRequest.patch(
+    var httpResponse = await restService.sendHttpRequest(RestRequest.get(
         relativePath:
             urlPath.join(accountRelativeUrlPath, accountRemoteId, "following"),
-        bodyJson: {
+        queryArgs: {
           "since_id": sinceId,
           "max_id": maxId,
           "limit": limit.toString(),
