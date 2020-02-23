@@ -5,7 +5,7 @@ import 'package:photo_manager/photo_manager.dart';
 FilePickerFile mapGalleryToFilePickerFIle(FileGalleryFile galleryFile) {
   FilePickerFile filePickerFile = FilePickerFile(file: galleryFile.file,
       type: mapFileGalleryToPickerType(galleryFile.type),
-      isNeedDeleteAfterUsage: false);
+      isNeedDeleteAfterUsage: galleryFile.isNeedDeleteAfterUsage);
   return filePickerFile;
 }
 
