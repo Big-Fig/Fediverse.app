@@ -756,7 +756,7 @@
       "confirm_password":{
         "hint": "Password confimation",
         "label": "Password confirmation",
-        "error": "Password and password confimation must match"
+        "error": "Password and password confirmation must match"
       }
     },
     "buttons":{

@@ -6,7 +6,10 @@ import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Registration.dart';
+import 'package:fedi/Pleroma/Foundation/Requests/captcha.dart'
+    as CaptchaRequest;
 import 'package:fedi/Pleroma/Models/ClientSettings.dart';
+import 'package:fedi/Pleroma/Models/captcha.dart';
 import 'package:fedi/Views/Alert.dart';
 import 'package:fedi/Views/ProgressDialog.dart';
 import 'package:fedi/disposable/disposable.dart';
@@ -16,11 +19,12 @@ import 'package:rxdart/rxdart.dart';
 
 class SignUpBloc implements Disposable {
   ProgressDialog _pr;
+  final _captcha = BehaviorSubject<Captcha>.seeded(null);
   final _username = BehaviorSubject<String>.seeded("");
   final _email = BehaviorSubject<String>.seeded("");
   final _password = BehaviorSubject<String>.seeded("");
   final _confirmPassword = BehaviorSubject<String>.seeded("");
-
+  final _userCatpchaValue = BehaviorSubject<String>.seeded("");
   final validateUsername = StreamTransformer<String, String>.fromHandlers(
       handleData: (username, sink) {
     if (username == "") {
@@ -97,9 +101,11 @@ class SignUpBloc implements Disposable {
         }
       }).transform(validatePasswordMatch);
 
+  Stream<Captcha> get captcha => _captcha.stream;
+
   // once validation passes allow registration
   Stream<bool> get register =>
-      CombineLatestStream([username, email, passwordsMatch], (values) {
+      CombineLatestStream([username, email, passwordsMatch, captcha, _userCatpchaValue], (values) {
         return true;
       });
 
@@ -108,20 +114,42 @@ class SignUpBloc implements Disposable {
   Function(String) get changeEmail => _email.sink.add;
   Function(String) get changePassword => _password.sink.add;
   Function(String) get changeConfirmpassword => _confirmPassword.sink.add;
+  Function(String) get changeCaptch => _userCatpchaValue.sink.add;
+
+
+  fetchCaptcha() {
+    _captcha.add(null);
+    String path = CaptchaRequest.Captcha.getNewCaptcha();
+    CurrentInstance.newInstance.currentClient = Client(baseURL: "fedi.app");
+    CurrentInstance.newInstance.currentClient
+        .run(
+      path: path,
+      method: HTTPMethod.GET,
+    )
+        .then((response) {
+      if (response.statusCode == 200) {
+        Captcha resopsneCaptcha = Captcha.fromJson(jsonDecode(response.body));
+        _captcha.sink.add(resopsneCaptcha);
+      } else {
+        _captcha.sink.addError('Password must be at least 4 characters');
+      }
+    }).catchError((error) {
+      print(error);
+    });
+  }
 
   submit(BuildContext context) {
     final validUsername = _username.value;
     final validEmail = _email.value;
     final validPassword = _password.value;
-
+    final captcha = _captcha.value;
+    final userCaptcha = _userCatpchaValue.value;
     print(validUsername);
     print(validEmail);
     print(validPassword);
-    CurrentInstance.newInstance.currentClient = Client(baseURL: "bikeshed.party");
+    CurrentInstance.newInstance.currentClient = Client(baseURL: "fedi.app");
 
     CurrentInstance.newInstance.currentClient.register().then((response) {
-      print(response.body);
-
       if (response.statusCode != 200) {
         print(response.statusCode);
         var alert = Alert(
@@ -147,9 +175,9 @@ class SignUpBloc implements Disposable {
             "email": validEmail,
             "password": validPassword,
             "agreement": true,
-            "locale": "en",
-            // "captcha_token": "sUlis-bcgwpdeg",
-            // "captcha_solution": "rpfdn"
+            "locale": "fr",
+            "captcha_token": captcha.token,
+            "captcha_solution": userCaptcha
           };
           print(params);
           String path = Accounts.register();
@@ -182,5 +210,7 @@ class SignUpBloc implements Disposable {
     _email.close();
     _password.close();
     _confirmPassword.close();
+    _captcha.close();
+    _userCatpchaValue.close();
   }
 }
