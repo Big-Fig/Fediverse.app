@@ -11,7 +11,8 @@ DbStatus mapRemoteStatusToDbStatus(IPleromaStatus remoteStatus) {
 // TODO: fix when https://git.pleroma.social/pleroma/pleroma/issues/1573  will be resolved
   DateTime expiresAt;
   try {
-    if (remoteStatus.pleroma.expiresAt == false) {
+    if (remoteStatus.pleroma.expiresAt == false || remoteStatus.pleroma
+        .expiresAt == null) {
       expiresAt = null;
     } else {
       if (remoteStatus.pleroma.expiresAt is DateTime) {
