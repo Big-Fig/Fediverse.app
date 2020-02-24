@@ -7,13 +7,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
-class TimelinePaginationMediaListWidget extends TimelinePaginationListBaseWidget {
-  ScrollView buildChildCollectionView(List<IStatus> statuses) {
+class TimelinePaginationMediaListWidget
+    extends TimelinePaginationListBaseWidget {
+  ScrollView buildChildCollectionView(
+      BuildContext context, List<IStatus> statuses) {
+    // filter only items with attachments
+    var filteredStatuses = statuses
+        .where((status) => status.mediaAttachments?.isNotEmpty == true)
+        .toList();
+
     return StaggeredGridView.countBuilder(
       crossAxisCount: 4,
-      itemCount: statuses.length,
+      itemCount: filteredStatuses.length,
       itemBuilder: (BuildContext context, int index) {
-        var status = statuses[index];
+        var status = filteredStatuses[index];
         return new GestureDetector(
           onTap: () {
             Navigator.push(
@@ -25,7 +32,7 @@ class TimelinePaginationMediaListWidget extends TimelinePaginationListBaseWidget
               ),
             );
           },
-          child: StatusListItemMediaWidget(initialStatusData: status),
+          child: StatusListItemMediaWidget(status: status),
         );
       },
       staggeredTileBuilder: (int index) =>

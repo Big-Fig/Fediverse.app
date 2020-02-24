@@ -352,7 +352,8 @@ class _TimelineCell extends State<TimelineCell> {
                       },
                     ),
                   ),
-                  if (widget.status.mediaAttachments.length > 0)
+                  if (widget.status.mediaAttachments != null && widget.status
+                      .mediaAttachments.length > 0)
                     getMeidaWidget(widget.status),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 12.0),
@@ -914,7 +915,7 @@ class _TimelineCell extends State<TimelineCell> {
   }
 
   String getHTMLWithCustomEmoji(IPleromaStatus status) {
-    List<IPleromaEmoji> customEmoji = status.emojis;
+    List<IPleromaEmoji> customEmoji = status.emojis ?? [];
     String html = status.content;
     for (int i = 0; i < customEmoji.length; i++) {
       var emoji = customEmoji[i];
@@ -929,8 +930,8 @@ class _TimelineCell extends State<TimelineCell> {
 
   List<Widget> getUserName(IPleromaStatus status) {
     var username = status.account.displayName;
-    var emojis = status.account.emojis;
-    emojis.addAll(status.emojis);
+    var emojis = status.account.emojis ?? [];
+    emojis.addAll(status.emojis ?? []);
     List<Widget> usernameWidget = [];
     var emojiUsername = username.split(":");
 

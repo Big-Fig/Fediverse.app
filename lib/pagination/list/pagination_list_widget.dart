@@ -60,7 +60,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
                         controller: refreshController,
                         onRefresh: () => onRefresh(context),
                         onLoading: () => onLoading(context),
-                        child: buildChildCollectionView(items),
+                        child: buildChildCollectionView(context, items),
                       );
                     } else {
                       return Center(
@@ -175,7 +175,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
     });
   }
 
-  ScrollView buildChildCollectionView(List<T> statuses);
+  ScrollView buildChildCollectionView(BuildContext context, List<T> statuses);
 
   IPaginationListBloc<PaginationPage<T>, T> retrievePaginationListBloc(
       BuildContext context, {@required bool
