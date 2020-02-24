@@ -77,7 +77,7 @@ class _MessagesCell extends State<MessagesCell> {
                             Row(
                               children: <Widget>[
                                 Text(
-                                  messageUser.username,
+                                  messageUser.acct,
                                   style: TextStyle(fontSize: 18),
                                 ),
                               ],

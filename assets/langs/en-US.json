@@ -734,6 +734,15 @@
     }
   },
   "sign_up":{
+    "check": {
+      "progress": "Createing account",
+      "error": {
+        "alert": {
+          "title": "Server Error:",
+          "content": "Unable to create account at this time."
+        }
+      }
+    },
     "title":{
       "sign_up":"Sign Up to Fedi.app"
     },

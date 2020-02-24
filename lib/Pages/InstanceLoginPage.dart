@@ -208,7 +208,7 @@ class _InstanceLoginPage extends State<InstanceLoginPage> {
                     Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SignUpPage(),
+                    builder: (context) => SignUpPage(widget.instanceSuccess),
                     // settings: RouteSettings(name: "/MyProfile"),
                   ));
                   },
