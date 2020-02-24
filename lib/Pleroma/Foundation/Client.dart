@@ -99,7 +99,8 @@ class Client {
         closeWebView();
         print(uri);
         this.clientSettings.code = uri.queryParameters['code'].toString();
-        DeepLinkHelper deepLinkHelper = DeepLinkHelper.of(context, listen: false);
+        DeepLinkHelper deepLinkHelper =
+            DeepLinkHelper.of(context, listen: false);
         deepLinkHelper.loadNewInstancebycode(this.clientSettings.code);
       }, onError: (err) {
         // Handle exception by warning the user their action did not succeed
@@ -122,20 +123,42 @@ class Client {
     }
   }
 
+  Future<http.Response> getAppAuthToken() async {
+    final url = Registration.getAppToken(this);
+    try {
+      final response = await http.post(url);
+      return response;
+    } catch (e) {
+      return e;
+    }
+  }
+
   Future<http.Response> run(
       {String path,
       dynamic params,
       HTTPMethod method,
-      List<int> bodyBites}) async {
+      List<int> bodyBites,
+      String overrideAccessToken}) async {
     var url = "$baseURL$path";
 
     print(url);
     print("MY TOKEN Bearer $accessToken");
+
     var headers = {
       HttpHeaders.authorizationHeader: "Bearer $accessToken",
       "Accept": "application/json",
       "Content-Type": "application/json",
     };
+
+    if (overrideAccessToken != null) {
+      headers = {
+        HttpHeaders.authorizationHeader: "Bearer $overrideAccessToken",
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      };
+    }
+
+    print(headers);
 
     try {
       if (method == HTTPMethod.GET) {
@@ -163,7 +186,8 @@ class Client {
         final respons = await http.delete(url, headers: headers);
         return respons;
       } else {
-        final respons = await http.patch(url, headers: headers, body: json.encode(params));
+        final respons =
+            await http.patch(url, headers: headers, body: json.encode(params));
         return respons;
       }
     } catch (e) {
@@ -173,18 +197,15 @@ class Client {
   }
 
   Future<http.Response> unsubscribeToPush() async {
-   
     var url = "$baseURL/api/v1/push/subscription";
     var headers = {
       HttpHeaders.authorizationHeader: "Bearer $accessToken",
       "Accept": "application/json",
       "Content-Type": "application/json",
     };
-    
-    
+
     try {
-      final response = await http.delete(url,
-          headers: headers);
+      final response = await http.delete(url, headers: headers);
       print(response.statusCode);
       print(response.body);
       return response;

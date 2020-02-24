@@ -188,15 +188,19 @@ class _NotificationCell extends State<NotificationCell> {
             width: 8,
           ),
           Text("Followed You "),
-          Text(
-            timeago.format(widget.notification.createdAt, locale: 'en_short')
-          ),
+          Text(timeago.format(widget.notification.createdAt,
+              locale: 'en_short')),
         ],
       );
     } else if (type == "mention") {
       return Row(
         children: <Widget>[
-          Icon(Icons.reply),
+          Image(
+                                height: 15,
+                                width: 15,
+                                color: Colors.grey,
+                                image: AssetImage("assets/images/comment.png"),
+                              ),
           SizedBox(
             width: 8,
           ),
@@ -210,7 +214,13 @@ class _NotificationCell extends State<NotificationCell> {
     } else if (type == "reblog") {
       return Row(
         children: <Widget>[
-          Icon(Icons.cached),
+          Image(
+                                  height: 20,
+                                  width: 20,
+                                  color: Colors.grey,
+                                  image: AssetImage(
+                                      "assets/images/repost.png"),
+                                ),
           SizedBox(
             width: 8,
           ),

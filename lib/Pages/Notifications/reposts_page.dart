@@ -69,7 +69,6 @@ class _RepostPage extends State<RepostsPage> {
     String account =
         "${CurrentInstance.instance.currentAccount.acct}@${CurrentInstance.instance.currentClient.baseURL}";
 
-    InstanceStorage.clearAccountAlert(account, "favourite");
     InstanceStorage.clearAccountAlert(account, "reblog");
 
     // monitor network fetch

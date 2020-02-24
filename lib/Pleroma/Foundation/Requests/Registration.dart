@@ -9,4 +9,8 @@ class Registration {
   static String getAuthToken(Client client) {
     return "${client.baseURL}/oauth/token?grant_type=authorization_code&code=${client.clientSettings.code}&redirect_uri=${client.clientSettings.redirectUri}&client_id=${client.clientSettings.clientId}&client_secret=${client.clientSettings.clientSecret}&scope=read%20write%20follow%20push";
   }
+
+  static String getAppToken(Client client) {
+    return "${client.baseURL}/oauth/token?grant_type=client_credentials&code=${client.clientSettings.code}&redirect_uri=${client.clientSettings.redirectUri}&client_id=${client.clientSettings.clientId}&client_secret=${client.clientSettings.clientSecret}&scope=read%20write%20follow%20push";
+  }
 }
