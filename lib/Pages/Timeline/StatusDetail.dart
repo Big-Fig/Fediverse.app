@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pages/Profile/OtherAccount.dart';
@@ -6,10 +7,10 @@ import 'package:fedi/Pages/Timeline/TimelineCell.dart';
 import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
-import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/Pleroma/mention/pleroma_mention_model.dart';
 import 'package:fedi/Pleroma/Models/Context.dart';
+import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
+import 'package:fedi/Pleroma/mention/pleroma_mention_model.dart';
 import 'package:fedi/Views/Alert.dart';
 import 'package:fedi/Views/MentionPage.dart';
 import 'package:fedi/app/dm/media/dm_media_capture_widget.dart';
@@ -364,8 +365,9 @@ class _StatusDetail extends State<StatusDetail> {
         //txtController.text =
         //"${txtController.text} @${widget.status.account.acct}";
       }
-      for (int i = 0; i < widget.status.mentions.length; i++) {
-        IPleromaMention mention = widget.status.mentions[i];
+      var mentions = widget.status.mentions ?? [];
+      for (int i = 0; i < mentions.length; i++) {
+        IPleromaMention mention = mentions[i];
         if (!mentionedAccts.contains(mention.acct) &&
             mention.acct != CurrentInstance.instance.currentAccount.acct) {
           mentionedAccts.add(mention.acct);
@@ -441,10 +443,10 @@ class _StatusDetail extends State<StatusDetail> {
           }
           IPleromaStatus status = statuses[index];
           return TimelineCell(
-            status,
-            viewAccount: viewAccount,
-            showCommentBtn: false,
-            mentionOtherStatusContext:swapResponseStatus
+              status,
+              viewAccount: viewAccount,
+              showCommentBtn: false,
+              mentionOtherStatusContext:swapResponseStatus
           );
         },
       ),
