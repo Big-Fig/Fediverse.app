@@ -254,6 +254,12 @@ class TabPageState extends State<TabPage>
       ),
     ];
 
+    // hack for cases when selected index is invalid
+    // not sure what cause this
+    if(_currentIndex >= _children.length) {
+      _currentIndex = _children.length - 1;
+    }
+
     return Scaffold(
       appBar: _appBar[_currentIndex],
       body: _children[_currentIndex],
