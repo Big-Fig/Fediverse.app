@@ -74,6 +74,10 @@ class Accounts {
     return "/api/v1/accounts/$userId/statuses?max_id=$maxId&since_id=$sinceId&min_id=$minId&limit=$limit&exclude_visibilities[]=direct";
   }
 
+  static String register(){
+    return "/api/v1/accounts";
+  }
+
 
 
 }
