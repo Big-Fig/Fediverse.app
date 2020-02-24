@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
-class TimelinePaginationMediaListWidget extends TimelinePaginationListBase {
+class TimelinePaginationMediaListWidget extends TimelinePaginationListBaseWidget {
   ScrollView buildChildCollectionView(List<IStatus> statuses) {
     return StaggeredGridView.countBuilder(
       crossAxisCount: 4,

@@ -727,5 +727,22 @@
         "empty": "This folder doesn't have media"
       }
     }
+  },
+  "pagination": {
+    "list": {
+      "empty": "Empty list",
+      "refresh": {
+        "not_refreshed": "Not refreshed. Don't forget to call refresh() on init"
+      },
+      "header": {
+        "complete": "Everything up to date",
+        "failed": "Failed to update"
+      },
+      "footer": {
+        "can_loading": "Scroll to load more",
+        "no_more": "More data not available",
+        "failed": "Failed to load"
+      }
+    }
   }
 }
