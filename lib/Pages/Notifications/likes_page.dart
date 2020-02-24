@@ -4,7 +4,8 @@ import 'package:fedi/Pages/Push/PushHelper.dart';
 import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
-import 'package:fedi/Pleroma/visibility/pleroma_visibility_model.dart';
+import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
+import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -12,31 +13,31 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Notification.dart'
     as NotificationRequest;
 import 'package:fedi/Pleroma/Models/Notification.dart' as NotificationModel;
-import 'NotificationCell.dart';
-import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 
-class Mentions extends StatefulWidget {
+import 'NotificationCell.dart';
+
+class LikesPage extends StatefulWidget {
   final Function(IPleromaAccount) viewAccount;
   final Function(IPleromaStatus) viewStatusDetail;
   final List<NotificationModel.Notification> notifications = [];
-  Mentions(this.viewAccount, this.viewStatusDetail, {Key key})
+  LikesPage(this.viewAccount, this.viewStatusDetail, {Key key})
       : super(key: key);
 
   @override
-  _Mentions createState() => _Mentions();
+  _LikesPage createState() => _LikesPage();
 }
 
-class _Mentions extends State<Mentions> {
-  RefreshController _refreshController =
+class _LikesPage extends State<LikesPage> {
+ 
+   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
-  get account => null;
 
   @override
   Widget build(BuildContext context) {
     return getSmartRefresher();
   }
+
 
   void initState() {
     super.initState();
@@ -47,38 +48,40 @@ class _Mentions extends State<Mentions> {
     }
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+
+   @override
+   void didChangeDependencies() {
+     super.didChangeDependencies();
     PushHelper pushHelper = PushHelper.of(context, listen: false);
     if (pushHelper.notificationId != null) {
       loadPushNotification(context, pushHelper.notificationId);
     }
+     
+   }
+
+   void fetchStatuses(BuildContext context) {
+      _refreshController.requestRefresh();
   }
 
-  void fetchStatuses(BuildContext context) {
-    _refreshController.requestRefresh();
-    InstanceStorage.clearAccountAlert(account, "mention");
-  }
 
   void _onRefresh() {
-    print("ONREFRESH");
+
+    String account =
+        "${CurrentInstance.instance.currentAccount.acct}@${CurrentInstance.instance.currentClient.baseURL}";
+
+    InstanceStorage.clearAccountAlert(account, "favourite");
+
     // monitor network fetch
     // if failed,use refreshFailed()
     CurrentInstance.instance.currentClient
         .run(
-            path: NotificationRequest.Notification.getMentionsNotifications(
+            path: NotificationRequest.Notification.getLikesNotifications(
                 minId: "", maxId: "", sinceId: "", limit: "20"),
             method: HTTPMethod.GET)
         .then((response) {
       List<NotificationModel.Notification> newNotifications =
-          NotificationModel.Notification.listFromJsonString(response.body);
-      newNotifications.removeWhere((notification) {
-        print(notification.status.visibilityPleroma);
-        return notification.status.visibilityPleroma ==
-                PleromaVisibility.PRIVATE ||
-            notification.status.visibilityPleroma == PleromaVisibility.DIRECT;
-      });
+      NotificationModel.Notification.listFromJsonString(response.body);
+
       if (mounted)
         setState(() {
           widget.notifications.clear();
@@ -104,18 +107,12 @@ class _Mentions extends State<Mentions> {
 
     CurrentInstance.instance.currentClient
         .run(
-            path: NotificationRequest.Notification.getMentionsNotifications(
+            path: NotificationRequest.Notification.getLikesNotifications(
                 minId: "", maxId: lastId, sinceId: "", limit: "400"),
             method: HTTPMethod.GET)
         .then((response) {
       List<NotificationModel.Notification> newNotifications =
-          NotificationModel.Notification.listFromJsonString(response.body);
-      newNotifications.removeWhere((notification) {
-        print(notification.status.visibilityPleroma);
-        return notification.status.visibilityPleroma ==
-                PleromaVisibility.PRIVATE ||
-            notification.status.visibilityPleroma == PleromaVisibility.DIRECT;
-      });
+      NotificationModel.Notification.listFromJsonString(response.body);
       widget.notifications.addAll(newNotifications);
       if (mounted)
         setState(() {
@@ -166,7 +163,7 @@ class _Mentions extends State<Mentions> {
               ),
               Text(
                 AppLocalizations.of(context)
-                    .tr("notifications.mentions.update.up_to_date"),
+                    .tr("notifications.likes.update.up_to_date"),
                 style: TextStyle(color: Colors.grey),
               )
             ],
@@ -181,9 +178,8 @@ class _Mentions extends State<Mentions> {
               Container(
                 width: 15.0,
               ),
-              Text(
-                  AppLocalizations.of(context)
-                      .tr("notifications.mentions.update.unable_to_fetch"),
+              Text(AppLocalizations.of(context)
+                  .tr("notifications.likes.update.unable_to_fetch"),
                   style: TextStyle(color: Colors.grey))
             ],
           )),
@@ -196,10 +192,10 @@ class _Mentions extends State<Mentions> {
             body = CircularProgressIndicator();
           } else if (mode == LoadStatus.failed) {
             body = Text(AppLocalizations.of(context)
-                .tr("notifications.mentions.update.failed"));
+                .tr("notifications.likes.update.failed"));
           } else {
             body = Text(AppLocalizations.of(context)
-                .tr("notifications.mentions.update.no_more_data"));
+                .tr("notifications.likes.update.no_more_data"));
           }
           return Container(
             height: 55.0,
@@ -221,4 +217,5 @@ class _Mentions extends State<Mentions> {
       ),
     );
   }
+
 }

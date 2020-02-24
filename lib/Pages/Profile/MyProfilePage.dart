@@ -205,6 +205,7 @@ class _MyProfilePage extends State<MyProfilePage> {
             return TimelineCell(
               widget.statuses[index - 1],
               viewStatusContext: viewStatusDetail,
+              showCommentBtn: true,
             );
           }
         },

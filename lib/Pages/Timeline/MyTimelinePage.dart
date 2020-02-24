@@ -458,6 +458,7 @@ class MyTimelinePageState extends State<MyTimelinePage>
           widget.statuses[i],
           viewAccount: viewAccount,
           viewStatusContext: viewStatusDetail,
+          showCommentBtn: true,
         ),
         itemCount: widget.statuses.length,
       ),

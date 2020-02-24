@@ -12,6 +12,7 @@ import 'package:fedi/Views/VideoPlayer.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
 import 'package:html/dom.dart' as dom;
 import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ChatCell extends StatefulWidget {
   final IPleromaAccount otherAccount;
@@ -88,6 +89,12 @@ class _ChatCell extends State<ChatCell> {
                                   }
                                   return baseStyle
                                       .merge(TextStyle(fontSize: 18));
+                                },
+                                onLinkTap: (String link) {
+                                  print("link $link");
+                                  canLaunch(link).then((result) {
+                                    launch(link);
+                                  });
                                 },
                               ),
                             ),
@@ -181,7 +188,13 @@ class _ChatCell extends State<ChatCell> {
                     bottom: -10,
                     right: -10,
                     child: IconButton(
-                      icon: Icon(Icons.favorite_border),
+                      icon: Image(
+                                  height: 20,
+                                  width: 20,
+                                  color: Colors.grey,
+                                  image: AssetImage(
+                                      "assets/images/favorites.png"),
+                                ),
                       color: widget.status.favourited
                           ? Colors.redAccent
                           : Colors.grey,
@@ -288,8 +301,11 @@ class _ChatCell extends State<ChatCell> {
   String removeAccountFromHTML(String html, String accountURL) {
     print("ACCOUNT URL $accountURL");
     String newHTML =
-        html.replaceAll(RegExp('<\s*a[^>]*>(?=@).*<\s*\/\s*a>'), "");
-    print(newHTML);
+        html.replaceFirst(RegExp('@<span>.*<\/span>'), "</a>");
+    print("PRINT HTML" + html);
+    // String newHTML =
+    //     html.replaceAll(RegExp('<\s*a[^>]*>(?=@).*<\s*\/\s*a>'), "");
+    // print(newHTML);
     return newHTML;
   }
 

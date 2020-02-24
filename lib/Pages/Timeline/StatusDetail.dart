@@ -32,6 +32,8 @@ class StatusDetail extends StatefulWidget {
 }
 
 class _StatusDetail extends State<StatusDetail> {
+  IPleromaStatus responseStatus;
+
   List<String> mentionedAccts = [];
 
   double mentionHeight = 0.0;
@@ -50,6 +52,10 @@ class _StatusDetail extends State<StatusDetail> {
       SchedulerBinding.instance
           .addPostFrameCallback((_) => refreshEverything());
     }
+  }
+
+  swapResponseStatus(IPleromaStatus status){
+    responseStatus = status;
   }
 
   refreshEverything() {
@@ -438,6 +444,7 @@ class _StatusDetail extends State<StatusDetail> {
             status,
             viewAccount: viewAccount,
             showCommentBtn: false,
+            mentionOtherStatusContext:swapResponseStatus
           );
         },
       ),
@@ -455,11 +462,11 @@ class _StatusDetail extends State<StatusDetail> {
     }
 
     String status = "$mentionListString ${txtController.text}";
-
+    String inReplyToId = responseStatus != null ? responseStatus.id : widget.status.id;
     Map<String, dynamic> params = {
       "status": "$status",
       "to": mentionedAccts,
-      "in_reply_to_id": widget.status.id,
+      "in_reply_to_id": inReplyToId,
       "media_ids": [id]
     };
 
@@ -497,12 +504,12 @@ class _StatusDetail extends State<StatusDetail> {
     }
 
     String status = "$mentionListString ${txtController.text}";
-
+    String inReplyToId = responseStatus != null ? responseStatus.id : widget.status.id;
     var statusPath = StatusRequest.Status.postNewStatus;
     Map<String, dynamic> params = {
       "status": "$status",
       "to": mentionedAccts,
-      "in_reply_to_id": widget.status.id
+      "in_reply_to_id": inReplyToId
     };
 
     print(params);

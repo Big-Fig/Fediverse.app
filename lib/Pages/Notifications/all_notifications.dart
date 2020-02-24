@@ -1,46 +1,54 @@
-import 'dart:convert';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/Pages/Push/PushHelper.dart';
-import 'package:fedi/Pleroma/Foundation/Client.dart';
-import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
-import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
-import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 import 'package:flutter/cupertino.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:fedi/Pages/Notifications/NotificationCell.dart';
+import 'package:fedi/Pages/Profile/OtherAccount.dart';
+import 'package:fedi/Pages/Timeline/StatusDetail.dart';
+import 'package:fedi/Pleroma/Foundation/Client.dart';
+import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Notification.dart'
     as NotificationRequest;
 import 'package:fedi/Pleroma/Models/Notification.dart' as NotificationModel;
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
+import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 
-import 'NotificationCell.dart';
-
-class LikesReposts extends StatefulWidget {
-  final Function(IPleromaAccount) viewAccount;
-  final Function(IPleromaStatus) viewStatusDetail;
+class AllNotifications extends StatefulWidget {
   final List<NotificationModel.Notification> notifications = [];
-  LikesReposts(this.viewAccount, this.viewStatusDetail, {Key key})
-      : super(key: key);
-
+  AllNotifications({Key key}) : super(key: key);
   @override
-  _LikesReposts createState() => _LikesReposts();
+  State<StatefulWidget> createState() {
+    return _AllNotificationsState();
+  }
 }
 
-class _LikesReposts extends State<LikesReposts> {
- 
-   RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
-
-
-  @override
-  Widget build(BuildContext context) {
-    return getSmartRefresher();
+class _AllNotificationsState extends State<AllNotifications> {
+  refreshEverything() {
+    _refreshController.requestRefresh();
   }
 
+  viewAccount(IPleromaAccount account) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => OtherAccount(account)),
+    );
+  }
+
+  viewStatusDetail(IPleromaStatus status) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => StatusDetail(
+          status: status,
+        ),
+      ),
+    );
+  }
 
   void initState() {
     super.initState();
+    print("HELP");
     if (SchedulerBinding.instance.schedulerPhase ==
         SchedulerPhase.persistentCallbacks) {
       SchedulerBinding.instance
@@ -48,40 +56,25 @@ class _LikesReposts extends State<LikesReposts> {
     }
   }
 
-
-   @override
-   void didChangeDependencies() {
-     super.didChangeDependencies();
-    PushHelper pushHelper = PushHelper.of(context, listen: false);
-    if (pushHelper.notificationId != null) {
-      loadPushNotification(context, pushHelper.notificationId);
-    }
-     
-   }
-
-   void fetchStatuses(BuildContext context) {
+  void fetchStatuses(BuildContext context) {
+    if (widget.notifications.length == 0) {
       _refreshController.requestRefresh();
+    }
   }
 
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
 
   void _onRefresh() {
-
-    String account =
-        "${CurrentInstance.instance.currentAccount.acct}@${CurrentInstance.instance.currentClient.baseURL}";
-
-    InstanceStorage.clearAccountAlert(account, "favourite");
-    InstanceStorage.clearAccountAlert(account, "reblog");
-
-    // monitor network fetch
-    // if failed,use refreshFailed()
+    print("ONREFRESH");
     CurrentInstance.instance.currentClient
         .run(
-            path: NotificationRequest.Notification.getActivityNotifications(
+            path: NotificationRequest.Notification.getNotifications(
                 minId: "", maxId: "", sinceId: "", limit: "20"),
             method: HTTPMethod.GET)
         .then((response) {
       List<NotificationModel.Notification> newNotifications =
-      NotificationModel.Notification.listFromJsonString(response.body);
+          NotificationModel.Notification.listFromJsonString(response.body);
 
       if (mounted)
         setState(() {
@@ -108,12 +101,13 @@ class _LikesReposts extends State<LikesReposts> {
 
     CurrentInstance.instance.currentClient
         .run(
-            path: NotificationRequest.Notification.getActivityNotifications(
-                minId: "", maxId: lastId, sinceId: "", limit: "400"),
+            path: NotificationRequest.Notification.getNotifications(
+                minId: "", maxId: lastId, sinceId: "", limit: "20"),
             method: HTTPMethod.GET)
         .then((response) {
       List<NotificationModel.Notification> newNotifications =
-      NotificationModel.Notification.listFromJsonString(response.body);
+          NotificationModel.Notification.listFromJsonString(response.body);
+
       widget.notifications.addAll(newNotifications);
       if (mounted)
         setState(() {
@@ -125,7 +119,7 @@ class _LikesReposts extends State<LikesReposts> {
     });
   }
 
-  loadPushNotification(BuildContext context, String notificationId) {
+  loadPushNotification(String notificationId) {
     String getnotificationByid =
         NotificationRequest.Notification.getNotificationById(notificationId);
     CurrentInstance.instance.currentClient
@@ -135,19 +129,18 @@ class _LikesReposts extends State<LikesReposts> {
           NotificationModel.Notification.fromJson(json.decode(response.body));
 
       if (notification.type == "follow") {
-        widget.viewAccount(notification.account);
+        viewAccount(notification.account);
       } else if (notification.type == "mention") {
-        widget.viewStatusDetail(notification.status);
+        viewStatusDetail(notification.status);
       }
     }).catchError((onError) {
       print("$onError");
     });
-    PushHelper pushHelper = PushHelper.of(context, listen: false);
-    pushHelper.notificationId = null;
-    pushHelper.notifcationType = null;
+
   }
 
-  Widget getSmartRefresher() {
+  @override
+  Widget build(BuildContext context) {
     return SmartRefresher(
       enablePullDown: true,
       enablePullUp: true,
@@ -163,8 +156,7 @@ class _LikesReposts extends State<LikesReposts> {
                 width: 15.0,
               ),
               Text(
-                AppLocalizations.of(context)
-                    .tr("notifications.likes.update.up_to_date"),
+                "Everything up to date",
                 style: TextStyle(color: Colors.grey),
               )
             ],
@@ -179,24 +171,20 @@ class _LikesReposts extends State<LikesReposts> {
               Container(
                 width: 15.0,
               ),
-              Text(AppLocalizations.of(context)
-                  .tr("notifications.likes.update.unable_to_fetch"),
-                  style: TextStyle(color: Colors.grey))
+              Text("Unable to fetch data", style: TextStyle(color: Colors.grey))
             ],
           )),
       footer: CustomFooter(
         builder: (BuildContext context, LoadStatus mode) {
           Widget body;
           if (mode == LoadStatus.idle) {
-            body = Text("");
+            body = Text("pull up load");
           } else if (mode == LoadStatus.loading) {
-            body = CircularProgressIndicator();
+            body = CupertinoActivityIndicator();
           } else if (mode == LoadStatus.failed) {
-            body = Text(AppLocalizations.of(context)
-                .tr("notifications.likes.update.failed"));
+            body = Text("Load Failed! Click retry!");
           } else {
-            body = Text(AppLocalizations.of(context)
-                .tr("notifications.likes.update.no_more_data"));
+            body = Text("No more Data");
           }
           return Container(
             height: 55.0,
@@ -211,12 +199,11 @@ class _LikesReposts extends State<LikesReposts> {
         padding: EdgeInsets.symmetric(horizontal: 2.0, vertical: 10.0),
         itemBuilder: (c, i) => NotificationCell(
           widget.notifications[i],
-          viewAccount: widget.viewAccount,
-          viewStatusContext: widget.viewStatusDetail,
+          viewAccount: viewAccount,
+          viewStatusContext: viewStatusDetail,
         ),
         itemCount: widget.notifications.length,
       ),
     );
   }
-
 }

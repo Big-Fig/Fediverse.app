@@ -96,9 +96,7 @@ class _ChatPage extends State<ChatPage> {
                 SizedBox(
                   width: 8,
                 ),
-                FittedBox(
-                    fit: BoxFit.fitWidth,
-                    child: Text(otherAccount.displayName)),
+                FittedBox(fit: BoxFit.fitWidth, child: Text(otherAccount.acct)),
               ],
             ),
           ),
@@ -142,11 +140,10 @@ class _ChatPage extends State<ChatPage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  CaptureDMMediaWidget(
+                              builder: (context) => CaptureDMMediaWidget(
                                     mediaUploaded: mediaUploaded,
-                                    selectedTab: FilePickerTab
-                                        .captureVideo,)));
+                                    selectedTab: FilePickerTab.captureVideo,
+                                  )));
                     },
                   ),
                   IconButton(
@@ -158,11 +155,10 @@ class _ChatPage extends State<ChatPage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  CaptureDMMediaWidget(
+                              builder: (context) => CaptureDMMediaWidget(
                                     mediaUploaded: mediaUploaded,
-                                    selectedTab: FilePickerTab
-                                        .captureImage,)));
+                                    selectedTab: FilePickerTab.captureImage,
+                                  )));
                     },
                   ),
                   IconButton(
@@ -174,11 +170,10 @@ class _ChatPage extends State<ChatPage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  CaptureDMMediaWidget(
+                              builder: (context) => CaptureDMMediaWidget(
                                     mediaUploaded: mediaUploaded,
-                                    selectedTab: FilePickerTab
-                                        .gallery,)));
+                                    selectedTab: FilePickerTab.gallery,
+                                  )));
                     },
                   ),
                   Spacer(),
@@ -248,8 +243,6 @@ class _ChatPage extends State<ChatPage> {
     } else {
       sendMessageWithAttachment(context, id);
     }
-
-
   }
 
   void fetchStatuses(BuildContext context) {
@@ -262,7 +255,7 @@ class _ChatPage extends State<ChatPage> {
       RefreshController(initialRefresh: false);
 
   backgroundCheck() {
-    if (widget.conversation != null && fetchByContext == false ) {
+    if (widget.conversation != null && fetchByContext == false) {
       refreshFromConversation();
     } else {
       if (widget.conversation == null) {
@@ -280,12 +273,16 @@ class _ChatPage extends State<ChatPage> {
   }
 
   fetchFromContext() {
+    if(statuses.length == 0){
+      _refreshController.refreshCompleted();
+      return;
+    }
+
     CurrentInstance.instance.currentClient
         .run(
             path: StatusRequest.Status.getStatusContext(statuses.first.id),
             method: HTTPMethod.GET)
         .then((response) {
-         
       _refreshController.refreshCompleted();
       Context context = Context.fromJsonString(response.body);
       List<IPleromaStatus> templist = [];
@@ -295,12 +292,14 @@ class _ChatPage extends State<ChatPage> {
       if (statuses.length < templist.length) {
         statuses.clear();
         statuses.addAll(templist.reversed);
-        if (mounted) setState(() {});
+       
       }
+       if (mounted) setState(() {});
       Future.delayed(const Duration(milliseconds: 5000), () {
         backgroundCheck();
       });
     }).catchError((error) {
+      _refreshController.refreshCompleted();
       Future.delayed(const Duration(milliseconds: 5000), () {
         backgroundCheck();
       });
@@ -317,12 +316,10 @@ class _ChatPage extends State<ChatPage> {
                 widget.conversation.id),
             method: HTTPMethod.GET)
         .then((response) {
-
-           if (response.statusCode == 404) {
+      _refreshController.refreshCompleted();
+      if (response.statusCode == 404) {
         fetchByContext = true;
-        _refreshController.requestRefresh();
         return;
-
       }
       _refreshController.refreshCompleted();
       List<IPleromaStatus> templist = PleromaStatus.listFromJsonString(response
@@ -480,6 +477,7 @@ class _ChatPage extends State<ChatPage> {
       print(statusResponse.body);
       var status = PleromaStatus.fromJson(jsonDecode(statusResponse.body));
       statuses.insert(0, status);
+      _refreshController.refreshCompleted();
       setState(() {});
     }).catchError((e) {
       print(e);
@@ -511,6 +509,7 @@ class _ChatPage extends State<ChatPage> {
         .run(path: statusPath, method: HTTPMethod.POST, params: params)
         .then((statusResponse) {
       print(statusResponse.body);
+      _refreshController.refreshCompleted();
       txtController.clear();
       var status = PleromaStatus.fromJson(jsonDecode(statusResponse.body));
       statuses.insert(0, status);
@@ -551,6 +550,7 @@ class _ChatPage extends State<ChatPage> {
         .run(path: statusPath, method: HTTPMethod.POST, params: params)
         .then((statusResponse) {
       print(statusResponse.body);
+      _refreshController.refreshCompleted();
       txtController.clear();
       var status = PleromaStatus.fromJson(jsonDecode(statusResponse.body));
       statuses.insert(0, status);

@@ -298,7 +298,7 @@ class TabPageState extends State<TabPage>
               backgroundColor: Colors.blue, icon: Icon(null), title: Text('')),
           new BottomNavigationBarItem(
             backgroundColor: Colors.blue,
-            icon: Icon(Icons.message),
+            icon: Icon(Icons.mail),
             title: Text(''),
           ),
           new BottomNavigationBarItem(

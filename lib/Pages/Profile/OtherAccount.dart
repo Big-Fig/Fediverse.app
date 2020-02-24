@@ -151,8 +151,9 @@ class _OtherAccount extends State<OtherAccount> {
                 Container(
                   width: 15.0,
                 ),
-                Text(AppLocalizations.of(context)
-                    .tr("profile.other.update.unable_to_fetch"),
+                Text(
+                    AppLocalizations.of(context)
+                        .tr("profile.other.update.unable_to_fetch"),
                     style: TextStyle(color: Colors.grey))
               ],
             )),
@@ -166,7 +167,8 @@ class _OtherAccount extends State<OtherAccount> {
             } else if (mode == LoadStatus.failed) {
               body = Text(
                 AppLocalizations.of(context).tr("profile.other.update"
-                    ".failed"),);
+                    ".failed"),
+              );
             } else {
               body = Text(
                 AppLocalizations.of(context).tr("profile.other.update"
@@ -189,7 +191,11 @@ class _OtherAccount extends State<OtherAccount> {
                 profileAccount: widget.account,
               );
             } else {
-              return TimelineCell(statuses[index - 1], viewStatusContext: viewStatusDetail,);
+              return TimelineCell(
+                statuses[index - 1],
+                viewStatusContext: viewStatusDetail,
+                showCommentBtn: true,
+              );
             }
           },
           itemCount: (statuses.length + 1),

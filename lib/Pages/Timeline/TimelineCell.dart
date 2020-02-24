@@ -11,9 +11,9 @@ import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart'
     as AccountRequests;
 import 'package:fedi/Pleroma/Foundation/Requests/Status.dart' as StatusRequest;
 import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
+import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/Pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/Pleroma/mention/pleroma_mention_model.dart';
-import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/Views/VideoPlayer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -30,10 +30,14 @@ class TimelineCell extends StatefulWidget {
   final IPleromaStatus status;
   final Function(IPleromaAccount) viewAccount;
   final Function(IPleromaStatus) viewStatusContext;
+  final Function(IPleromaStatus) mentionOtherStatusContext;
   final bool showCommentBtn;
 
   TimelineCell(this.status,
-      {this.viewAccount, this.viewStatusContext, this.showCommentBtn});
+      {this.viewAccount,
+      this.viewStatusContext,
+      this.showCommentBtn,
+      this.mentionOtherStatusContext});
 
   @override
   State<StatefulWidget> createState() {
@@ -60,9 +64,11 @@ class _TimelineCell extends State<TimelineCell> {
               method: HTTPMethod.GET)
           .then((response) {
         IPleromaAccount account = PleromaAccount.fromJsonString(response.body);
-        setState(() {
-          replyAccount = account;
-        });
+        if (mounted) {
+          setState(() {
+            replyAccount = account;
+          });
+        }
       }).catchError((error) {
         print(error);
       });
@@ -116,61 +122,6 @@ class _TimelineCell extends State<TimelineCell> {
         padding: EdgeInsets.all(8),
         child: Column(
           children: <Widget>[
-            if (replyAccount != null)
-              GestureDetector(
-                onTap: () {
-                  if (widget.viewAccount != null) {
-                    widget.viewAccount(replyAccount);
-                  }
-                },
-                behavior: HitTestBehavior.translucent,
-                child: Padding(
-                  padding: EdgeInsets.all(0.0),
-                  child: Row(
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Icon(Icons.reply),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Text(
-                            AppLocalizations.of(context)
-                                .tr("timeline.status.cell.reply_to"),
-                            style: TextStyle(fontSize: 12),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      ClipRRect(
-                        borderRadius: new BorderRadius.circular(12.0),
-                        child: CachedNetworkImage(
-                          imageUrl: replyAccount.avatar,
-                          placeholder: (context, url) =>
-                              CircularProgressIndicator(),
-                          errorWidget: (context, url, error) =>
-                              Icon(Icons.error),
-                          height: 24,
-                          width: 24,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Text(
-                        replyAccount.acct,
-                        style: TextStyle(fontSize: 12),
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-
             // reposted status
             if (widget.status.reblog != null)
               GestureDetector(
@@ -209,7 +160,12 @@ class _TimelineCell extends State<TimelineCell> {
                       ),
                       Row(
                         children: <Widget>[
-                          Icon(Icons.cached),
+                          Image(
+                            height: 20,
+                            width: 20,
+                            color: Colors.grey,
+                            image: AssetImage("assets/images/repost.png"),
+                          ),
                           SizedBox(
                             width: 8,
                           ),
@@ -289,6 +245,51 @@ class _TimelineCell extends State<TimelineCell> {
               ),
             ),
 
+            if (replyAccount != null)
+              GestureDetector(
+                onTap: () {
+                  if (widget.viewAccount != null) {
+                    widget.viewAccount(replyAccount);
+                  }
+                },
+                behavior: HitTestBehavior.translucent,
+                child: Padding(
+                  padding: EdgeInsets.all(0.0),
+                  child: Row(
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          Image(
+                                height: 15,
+                                width: 15,
+                                color: Colors.grey,
+                                image: AssetImage("assets/images/comment.png"),
+                              ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text(
+                            AppLocalizations.of(context)
+                                .tr("timeline.status.cell.reply_to"),
+                            style: TextStyle(fontSize: 12),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        width: 4,
+                      ),
+                      Text(
+                        replyAccount.acct,
+                        style: TextStyle(fontSize: 12),
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
             GestureDetector(
               onTap: () {
                 print("view status context");
@@ -360,17 +361,25 @@ class _TimelineCell extends State<TimelineCell> {
                       children: <Widget>[
                         Row(
                           children: <Widget>[
-                            if (widget.showCommentBtn == true ||
-                                widget.showCommentBtn == null)
-                              IconButton(
+                            IconButton(
+                              color: Colors.grey,
+                              icon: Image(
+                                height: 20,
+                                width: 20,
                                 color: Colors.grey,
-                                icon: Icon(Icons.mode_comment),
-                                tooltip: AppLocalizations.of(context)
-                                    .tr("timeline.status.cell.tooltip.comment"),
-                                onPressed: () {
-                                  widget.viewStatusContext(widget.status);
-                                },
+                                image: AssetImage("assets/images/comment.png"),
                               ),
+                              tooltip: AppLocalizations.of(context)
+                                  .tr("timeline.status.cell.tooltip.comment"),
+                              onPressed: () {
+                                if (widget.showCommentBtn == null) {
+                                  widget
+                                      .mentionOtherStatusContext(widget.status);
+                                } else {
+                                  widget.viewStatusContext(widget.status);
+                                }
+                              },
+                            ),
                             if (widget.status.repliesCount != 0 &&
                                 (widget.showCommentBtn == true ||
                                     widget.showCommentBtn == null))
@@ -383,7 +392,13 @@ class _TimelineCell extends State<TimelineCell> {
                               color: widget.status.favourited
                                   ? Colors.blue
                                   : Colors.grey,
-                              icon: Icon(Icons.favorite_border),
+                              icon: Image(
+                                height: 20,
+                                width: 20,
+                                color: Colors.grey,
+                                image:
+                                    AssetImage("assets/images/favorites.png"),
+                              ),
                               tooltip: AppLocalizations.of(context)
                                   .tr("timeline.status.cell.tooltip.like"),
                               onPressed: () {
@@ -399,7 +414,12 @@ class _TimelineCell extends State<TimelineCell> {
                               color: widget.status.reblogged
                                   ? Colors.blue
                                   : Colors.grey,
-                              icon: Icon(Icons.cached),
+                              icon: Image(
+                                height: 20,
+                                width: 20,
+                                color: Colors.grey,
+                                image: AssetImage("assets/images/repost.png"),
+                              ),
                               tooltip: AppLocalizations.of(context)
                                   .tr("timeline.status.cell.tooltip.repost"),
                               onPressed: () {
@@ -410,7 +430,12 @@ class _TimelineCell extends State<TimelineCell> {
                           ],
                         ),
                         IconButton(
-                          icon: Icon(Icons.more_horiz),
+                          icon: Image(
+                                height: 20,
+                                width: 20,
+                                color: Colors.grey,
+                                image: AssetImage("assets/images/share.png"),
+                              ),
                           tooltip: AppLocalizations.of(context)
                               .tr("timeline.status.cell.tooltip.more"),
                           onPressed: () {
@@ -422,7 +447,8 @@ class _TimelineCell extends State<TimelineCell> {
                   ),
                   if (widget.status.favouritesCount > 0 ||
                       widget.status.reblogsCount > 0 ||
-                      widget.status.reblog != null && widget.showCommentBtn != null)
+                      widget.status.reblog != null &&
+                          widget.showCommentBtn != null)
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 12.0),
                       child: Row(
@@ -660,7 +686,7 @@ class _TimelineCell extends State<TimelineCell> {
                                     method: HTTPMethod.GET)
                                 .then((response) {
                               IPleromaAccount account =
-                              PleromaAccount.fromJsonString(response.body);
+                                  PleromaAccount.fromJsonString(response.body);
                               CurrentInstance.instance.currentClient
                                   .run(
                                       path: Accounts.followAccount(account.id),
@@ -823,7 +849,7 @@ class _TimelineCell extends State<TimelineCell> {
     List<Widget> items = <Widget>[];
 
     for (var i = 0; i < status.mediaAttachments.length; i++) {
-      PleromaMediaAttachment attachment = status.mediaAttachments[i];
+      IPleromaMediaAttachment attachment = status.mediaAttachments[i];
       if (attachment.type == "image") {
         var image = CachedNetworkImage(
           imageUrl: attachment.url,

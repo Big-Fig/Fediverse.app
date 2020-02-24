@@ -561,13 +561,18 @@
   "login": {
     "action": {
       "login_to_instance": "Login to instance",
-      "terms": "By using Fedi you agree to our terms. Tap to review"
+      "terms": "By using Fedi you agree to our terms. Tap to review",
+      "join_instance":"Join fedi.app"
     },
     "field": {
       "host": {
         "hint": "Pleroma.site",
         "helper_text": "Pleroma or Mastodon Instance"
       }
+    },
+    "text":{
+      "or":"or",
+      "join_explaination": "Don't have an account or instance to log into?\n Create an account."
     },
     "check": {
       "progress": "Checking instance",
@@ -742,6 +747,47 @@
         "can_loading": "Scroll to load more",
         "no_more": "More data not available",
         "failed": "Failed to load"
+      }
+    }
+  },
+  "sign_up":{
+    "check": {
+      "progress": "Createing account",
+      "error": {
+        "alert": {
+          "title": "Server Error:",
+          "content": "Unable to create account at this time."
+        }
+      }
+    },
+    "title":{
+      "sign_up":"Sign Up to Fedi.app"
+    },
+    "fields":{
+      "username":{
+        "hint":"e.g. lain",
+        "label": "Username",
+        "error": "Please enter a valid username"
+      },
+      "email":{
+        "hint":"you@example.com",
+        "label": "Email Address",
+        "error": "Please enter a valid email"
+      },
+      "password":{
+        "hint":"Passowrd",
+        "label": "Password",
+        "error": "Password must be at least 4 characters"
+      },
+      "confirm_password":{
+        "hint": "Password confimation",
+        "label": "Password confirmation",
+        "error": "Password and password confirmation must match"
+      }
+    },
+    "buttons":{
+      "sign_up":{
+        "text": "Create Account"
       }
     }
   }
