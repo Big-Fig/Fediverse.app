@@ -21,50 +21,60 @@ abstract class TimelinePaginationListBase extends StatelessWidget {
   Widget build(BuildContext context) {
     ITimelinePaginationListBloc timelinePaginationListBloc =
         ITimelinePaginationListBloc.of(context, listen: true);
+    _logger.fine(() => "build");
 
-    return SmartRefresher(
-      key: PageStorageKey<String>("TimelinePaginationListBase"),
-      enablePullDown: true,
-      enablePullUp: true,
-      header: buildWaterDropHeader(context),
-      footer: buildCustomFooter(),
-      controller: refreshController,
-      onRefresh: () => onRefresh(context),
-      onLoading: () => onLoading(context),
-      child: StreamBuilder<PaginationRefreshState>(
-          stream: timelinePaginationListBloc.refreshStateStream,
-          initialData: timelinePaginationListBloc.refreshState,
-          builder: (context, snapshot) {
-            var refreshState = snapshot.data;
+    return StreamBuilder<PaginationRefreshState>(
+        stream: timelinePaginationListBloc.refreshStateStream,
+        initialData: timelinePaginationListBloc.refreshState,
+        builder: (context, snapshot) {
+//          var refreshState = snapshot.data;
+          // hack to avoid rebuild on disposing. Sometimes stream not updated
+          // yet but actually refreshState is new
+          var refreshState = timelinePaginationListBloc.refreshState;
 
-            _logger.fine(() => "refreshState $refreshState");
+          _logger.fine(() => "refreshState $refreshState");
 
-            switch (refreshState) {
-              case PaginationRefreshState.notRefreshed:
-                return Center(child: Text("Don't forget to call refresh()"));
-                break;
-              case PaginationRefreshState.refreshing:
-                return Center(child: CircularProgressIndicator());
-                break;
-              case PaginationRefreshState.refreshed:
-                return StreamBuilder<List<IStatus>>(
-                    stream: timelinePaginationListBloc.itemsStream.distinct(),
-                    initialData: timelinePaginationListBloc.items,
-                    builder: (context, snapshot) {
-                      var statuses = snapshot.data;
-                      _logger.fine(() => "statuses ${statuses?.length}");
-                      if (statuses?.isNotEmpty == true) {
-                        return buildChildCollectionView(statuses);
-                      } else {
-                        return Center(child: Text("Empty list"));
-                      }
-                    });
-                break;
-            }
+          switch (refreshState) {
+            case PaginationRefreshState.notRefreshed:
+              return Center(child: Text("Don't forget to call refresh()"));
+              break;
+            case PaginationRefreshState.refreshing:
+              return Center(child: CircularProgressIndicator());
+              break;
+            case PaginationRefreshState.refreshed:
+              return StreamBuilder<List<IStatus>>(
+                  stream: timelinePaginationListBloc.itemsStream.distinct(),
+                  // initialData is null to avoid twice redraw on init
+                  initialData: null,
+                  builder: (context, snapshot) {
+                    var statuses = snapshot.data;
 
-            throw "Invalid refreshState $refreshState";
-          }),
-    );
+                    _logger.fine(() => "statuses ${statuses?.length}");
+                    if (statuses == null) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    if (statuses?.isNotEmpty == true) {
+                      return SmartRefresher(
+                        key: PageStorageKey<String>(
+                            "TimelinePaginationListBase"),
+                        enablePullDown: true,
+                        enablePullUp: true,
+                        header: buildWaterDropHeader(context),
+                        footer: buildCustomFooter(),
+                        controller: refreshController,
+                        onRefresh: () => onRefresh(context),
+                        onLoading: () => onLoading(context),
+                        child: buildChildCollectionView(statuses),
+                      );
+                    } else {
+                      return Center(child: Text("Empty list"));
+                    }
+                  });
+              break;
+          }
+
+          throw "Invalid refreshState $refreshState";
+        });
   }
 
   CustomFooter buildCustomFooter() {
@@ -142,7 +152,7 @@ abstract class TimelinePaginationListBase extends StatelessWidget {
     _logger.fine(() => "onLoading");
     var timelinePaginationBloc =
         ITimelinePaginationListBloc.of(context, listen: false);
-    timelinePaginationBloc.refresh().then((page) {
+    timelinePaginationBloc.loadMore().then((page) {
       if (page.items?.isNotEmpty == true) {
         refreshController.loadComplete();
       } else {
@@ -173,5 +183,5 @@ abstract class TimelinePaginationListBase extends StatelessWidget {
     );
   }
 
-  Widget buildChildCollectionView(List<IStatus> statuses);
+  ScrollView buildChildCollectionView(List<IStatus> statuses);
 }

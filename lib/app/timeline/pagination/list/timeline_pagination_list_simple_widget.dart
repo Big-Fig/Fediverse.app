@@ -7,7 +7,7 @@ import 'package:logging/logging.dart';
 var _logger = Logger("timeline_pagination_list_simple_widget.dart");
 
 class TimelinePaginationSimpleListWidget extends TimelinePaginationListBase {
-  Widget buildChildCollectionView(List<IStatus> statuses) {
+  ScrollView buildChildCollectionView(List<IStatus> statuses) {
     return ListView.builder(
       padding: EdgeInsets.symmetric(horizontal: 2.0, vertical: 10.0),
       itemBuilder: (context, index) {

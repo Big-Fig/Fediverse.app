@@ -23,8 +23,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:html/dom.dart' as dom;
+import 'package:logging/logging.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
+
+var _logger = Logger("status_list_item_simple_widget.dart");
 
 class StatusListItemSimpleWidget extends StatusWidget {
   final Function(IPleromaAccount) viewAccount;
@@ -40,12 +43,15 @@ class StatusListItemSimpleWidget extends StatusWidget {
 
   @override
   Widget buildStatusWidget(BuildContext context, IStatus status) {
+    _logger.finer(() => "buildStatusWidget $status");
+
     var replyAccount = getReply(status);
     var deviceWidth = MediaQuery.of(context).size.width;
 
     var targetHeight = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
 
     status = status.reblog != null ? status.reblog : status;
+
 
     return Card(
       elevation: 0,

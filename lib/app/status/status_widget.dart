@@ -12,7 +12,7 @@ abstract class StatusWidget extends StatelessWidget {
     var statusRepository = IStatusRepository.of(context, listen: true);
 
     return StreamBuilder<IStatus>(
-        stream: statusRepository.watchById(initialStatusData.localId),
+        stream: statusRepository.watchByRemoteId(initialStatusData.remoteId),
         initialData: initialStatusData,
         builder: (context, snapshot) {
           var status = snapshot.data;

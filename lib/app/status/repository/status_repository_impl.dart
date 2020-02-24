@@ -334,6 +334,11 @@ class StatusRepository extends AsyncInitLoadingBloc
       (dao.watchById(id)).map(mapDataClassToItem);
 
   @override
+  Stream<IStatus> watchByRemoteId(String remoteId) {
+    return (dao.watchByRemoteId(remoteId)).map(mapDataClassToItem);
+  }
+
+  @override
   Future<bool> isExistWithId(int id) =>
       dao.countByIdQuery(id).map((count) => count > 0).getSingle();
 
@@ -364,4 +369,6 @@ class StatusRepository extends AsyncInitLoadingBloc
 
   Insertable<DbStatus> mapItemToDataClass(DbStatusPopulatedWrapper item) =>
       item.dbStatusPopulated.status;
+
+
 }

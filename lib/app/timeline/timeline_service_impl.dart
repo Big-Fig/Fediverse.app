@@ -35,11 +35,14 @@ abstract class TimelineService extends DisposableOwner
       {@required int limit,
       @required IStatus newerThanStatus,
       @required IStatus olderThanStatus}) async {
+      var timelineSettings = settings;
+      _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
+          "\t timelineSettings = $timelineSettings"
+          "\t newerThanStatus = $newerThanStatus"
+          "\t olderThanStatus = $olderThanStatus"
+      );
     try {
       List<IPleromaStatus> remoteStatuses;
-      var timelineSettings = settings;
-      _logger.fine(() => "start refreshItemsFromRemoteForPage for "
-          "$timelineSettings");
       switch (timelineSettings.remoteType) {
         case TimelineRemoteType.public:
           remoteStatuses = await pleromaTimelineService.getPublicTimeline(
@@ -111,7 +114,10 @@ abstract class TimelineService extends DisposableOwner
       @required IStatus newerThanStatus,
       @required IStatus olderThanStatus}) async {
     var timelineSettings = settings;
-    _logger.finest(() => "start loadLocalItems");
+    _logger.finest(() => "start loadLocalItems \n"
+        "\t newerThanStatus=$newerThanStatus"
+        "\t olderThanStatus=$olderThanStatus"
+    );
 
     var statuses = await statusRepository.getStatuses(
         inListWithRemoteId: timelineSettings.inListWithRemoteId,
@@ -131,6 +137,7 @@ abstract class TimelineService extends DisposableOwner
         orderingTermData: StatusOrderingTermData(
             orderingMode: OrderingMode.desc,
             orderByType: StatusOrderByType.remoteId));
+
 
     _logger.finer(
         () => "finish loadLocalItems for $timelineSettings statuses ${statuses

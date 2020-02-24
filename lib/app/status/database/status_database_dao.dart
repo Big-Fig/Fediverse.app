@@ -60,6 +60,9 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
 
   Stream<DbStatusPopulated> watchById(int id) =>
       (_findById(id).watchSingle().map(typedResultToPopulated));
+  Stream<DbStatusPopulated> watchByRemoteId(String remoteId) =>
+      (_findByRemoteId(remoteId).watchSingle().map(typedResultToPopulated));
+
 
   JoinedSelectStatement<Table, DataClass> _findAll() {
     var sqlQuery = (select(db.dbStatuses).join(

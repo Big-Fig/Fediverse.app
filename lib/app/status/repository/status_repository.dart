@@ -21,6 +21,9 @@ abstract class IStatusRepository
   Future upsertRemoteStatuses(List<IPleromaStatus> remoteStatuses,
       {@required String listRemoteId});
 
+
+  Stream<IStatus> watchByRemoteId(String remoteId);
+
   Future upsertRemoteStatus(IPleromaStatus remoteStatus, {@required String listRemoteId});
 
   Future<List<DbStatusPopulatedWrapper>> getStatuses(

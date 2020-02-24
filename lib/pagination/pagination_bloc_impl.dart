@@ -8,7 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("pagination_list_bloc_impl.dart");
+var _logger = Logger("pagination_bloc_impl.dart");
 
 abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
     extends DisposableOwner implements IPaginationBloc<TPage, TItem> {
@@ -97,6 +97,9 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
 
   @override
   Future<TPage> requestPage({@required pageIndex}) async {
+
+    _logger.finest(() => "requestPage $pageIndex");
+
     TPage page;
     if (isCacheEnabled) {
       if (indexToCachedPageMap.containsKey(pageIndex)) {

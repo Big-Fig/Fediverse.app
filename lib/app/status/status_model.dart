@@ -164,7 +164,8 @@ class DbStatusPopulatedWrapper implements IStatus {
   PleromaContent get pleromaContent => dbStatusPopulated.status.pleromaContent;
 
   @override
-  int get pleromaConversationId => dbStatusPopulated.status.pleromaConversationId;
+  int get pleromaConversationId =>
+      dbStatusPopulated.status.pleromaConversationId;
 
   @override
   int get pleromaDirectConversationId =>
@@ -185,7 +186,8 @@ class DbStatusPopulatedWrapper implements IStatus {
   bool get pleromaLocal => dbStatusPopulated.status.pleromaLocal;
 
   @override
-  PleromaContent get pleromaSpoilerText => dbStatusPopulated.status.pleromaSpoilerText;
+  PleromaContent get pleromaSpoilerText =>
+      dbStatusPopulated.status.pleromaSpoilerText;
 
   @override
   bool get pleromaThreadMuted => dbStatusPopulated.status.pleromaThreadMuted;
@@ -232,13 +234,16 @@ class DbStatusPopulatedWrapper implements IStatus {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is DbStatusPopulatedWrapper &&
-              runtimeType == other.runtimeType &&
-              dbStatusPopulated == other.dbStatusPopulated;
+      other is DbStatusPopulatedWrapper &&
+          runtimeType == other.runtimeType &&
+          dbStatusPopulated == other.dbStatusPopulated;
 
   @override
   int get hashCode => dbStatusPopulated.hashCode;
-
+  @override
+  String toString() {
+    return 'DbStatusPopulatedWrapper{dbStatusPopulated: $dbStatusPopulated}';
+  }
 
 
 }
@@ -251,16 +256,15 @@ class DbStatusPopulated {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is DbStatusPopulated &&
-              runtimeType == other.runtimeType &&
-              status == other.status &&
-              account == other.account;
+      other is DbStatusPopulated &&
+          runtimeType == other.runtimeType &&
+          status == other.status &&
+          account == other.account;
 
   @override
-  int get hashCode =>
-      status.hashCode ^
-      account.hashCode;
-
-
-
+  int get hashCode => status.hashCode ^ account.hashCode;
+  @override
+  String toString() {
+    return 'DbStatusPopulated{status: $status, account: $account}';
+  }
 }
