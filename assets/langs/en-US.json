@@ -255,11 +255,6 @@
             "content": "Unable to post status at this time. Please try again later"
           }
         }
-      },
-      "media": {
-        "preview": {
-          "not_supported": "Preview for {} not supported"
-        }
       }
     },
     "upload": {

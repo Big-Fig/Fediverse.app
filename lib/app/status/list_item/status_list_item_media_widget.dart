@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_pro/carousel_pro.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pages/Statuses/ImageViewPage.dart';
 import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/Views/VideoPlayer.dart';
@@ -34,9 +33,8 @@ class StatusListItemMediaWidget extends StatusWidget {
           break;
       }
 
-      if (item != null) {
-        item = Text(AppLocalizations.of(context)
-            .tr("status.media.preview.not_supported"));
+      if (item == null) {
+        item = SizedBox.shrink();
       }
 
       return item;
