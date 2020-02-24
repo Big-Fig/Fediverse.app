@@ -5,31 +5,39 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/Pages/Gallery/GalleryPage.dart';
 import 'package:fedi/Pages/Post/QuickPostPage.dart';
-import 'package:fedi/Pages/Profile/EditProfile.dart';
-import 'package:fedi/Pages/Push/PushHelper.dart';
-import 'package:fedi/Pages/Timeline/MyTimelinePage.dart';
-import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
-import 'package:fedi/Transitions/SlideBottomRoute.dart';
 import 'package:fedi/app/home/page/timelines/timelines_home_page.dart';
 import 'package:fedi/app/home/page/timelines/timelines_home_page_bloc.dart';
 import 'package:fedi/app/home/page/timelines/timelines_home_page_bloc_impl.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+// import 'package:flutter_webrtc/webrtc.dart';
+import 'package:fedi/Pages/Home/HomeContainerPage.dart';
+import 'package:fedi/Pages/Messages/VideoChat/WebRTCManager.dart';
+import 'package:fedi/Pages/Profile/EditProfile.dart';
+import 'package:fedi/Pages/Push/PushHelper.dart';
+import 'package:fedi/Pages/Gallery/GalleryPage.dart';
+import 'package:fedi/Pages/Timeline/MyTimelinePage.dart';
+import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:fedi/Transitions/SlideBottomRoute.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
-import 'package:web_socket_channel/io.dart';
-
 import './Placeholder.dart';
 import 'Messages/MessageContainer.dart';
+// import 'Messages/VideoChatPage.dart';
+// import 'Messages/signaling.dart';
 import 'Notifications/NotificationPage.dart';
+import 'Post/CaptureController.dart';
 import 'Profile/AccountsBottomSheet.dart';
 import 'Profile/MyProfilePage.dart';
+import 'package:web_socket_channel/io.dart';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
@@ -42,9 +50,9 @@ class TabPage extends StatefulWidget {
 
   TabPage(this.initalIndex,
       {this.addNewInstance,
-      this.loadInstance,
-      this.refreshInstance,
-      this.logout});
+        this.loadInstance,
+        this.refreshInstance,
+        this.logout});
 
   @override
   State<StatefulWidget> createState() {
@@ -59,8 +67,7 @@ class TabPageState extends State<TabPage>
   final GlobalKey<NotificationPageState> _notificationKey = GlobalKey();
   static FirebaseAnalytics analytics = FirebaseAnalytics();
   static FirebaseAnalyticsObserver observer =
-      FirebaseAnalyticsObserver(analytics: analytics);
-
+  FirebaseAnalyticsObserver(analytics: analytics);
   // WebRTCManager manager = WebRTCManager.instance;
 
   // Should be refactored to enums
@@ -89,9 +96,12 @@ class TabPageState extends State<TabPage>
     _firebaseMessaging.requestNotificationPermissions();
     _tabController = TabController(length: 2, vsync: this);
     _children = [
-      Provider<ITimelinesHomePageBloc>(
-        create: (BuildContext context) => TimelinesHomePageBloc(tickerProvider: this),
-        child: TimelinesHomePage(),
+      Provider<ITimelinesHomePageBloc>(create: (BuildContext context) {
+        return TimelinesHomePageBloc(tickerProvider: this);
+      },
+      child: TimelinesHomePage()),
+      NotificationPage(
+        key: _notificationKey,
       ),
       PlaceholderWidget(Colors.blue),
       MessageConatiner(),
@@ -136,7 +146,7 @@ class TabPageState extends State<TabPage>
       '${CurrentInstance.instance.currentClient.baseURL.replaceAll("https://", "ws://")}/api/v1/streaming/user',
       headers: {
         HttpHeaders.authorizationHeader:
-            "Bearer ${CurrentInstance.instance.currentClient.accessToken}",
+        "Bearer ${CurrentInstance.instance.currentClient.accessToken}",
       });
 
   setUpWebSockets() {
@@ -175,7 +185,7 @@ class TabPageState extends State<TabPage>
             height: 5,
             width: 5,
             decoration:
-                BoxDecoration(shape: BoxShape.circle, color: Colors.white),
+            BoxDecoration(shape: BoxShape.circle, color: Colors.white),
           ),
         );
       } else {
@@ -254,16 +264,9 @@ class TabPageState extends State<TabPage>
       ),
     ];
 
-    // hack for cases when selected index is invalid
-    // not sure what cause this
-    if(_currentIndex >= _children.length) {
-      _currentIndex = _children.length - 1;
-    }
-
     return Scaffold(
       appBar: _appBar[_currentIndex],
-      body: _children[_currentIndex],
-      // new
+      body: _children[_currentIndex], // new
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -285,10 +288,8 @@ class TabPageState extends State<TabPage>
         type: BottomNavigationBarType.fixed,
         showSelectedLabels: true,
         showUnselectedLabels: true,
-        onTap: onTabTapped,
-        // new
-        currentIndex: _currentIndex,
-        // new
+        onTap: onTabTapped, // new
+        currentIndex: _currentIndex, // new
         items: [
           new BottomNavigationBarItem(
             backgroundColor: Colors.blue,
