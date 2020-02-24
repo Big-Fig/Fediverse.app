@@ -5,21 +5,25 @@ import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/timeline/pagination/list/timeline_pagination_list_bloc.dart';
+import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+
+var _logger = Logger("timeline_pagination_list_base_widget.dart");
 
 abstract class TimelinePaginationListBase extends StatelessWidget {
   final RefreshController refreshController =
-      RefreshController(initialRefresh: true);
+      RefreshController(initialRefresh: false);
 
   @override
   Widget build(BuildContext context) {
     ITimelinePaginationListBloc timelinePaginationListBloc =
-        ITimelinePaginationListBloc.of(context, listen: false);
+        ITimelinePaginationListBloc.of(context, listen: true);
 
     return SmartRefresher(
-      key: PageStorageKey<String>("mediaTimeline"),
+      key: PageStorageKey<String>("TimelinePaginationListBase"),
       enablePullDown: true,
       enablePullUp: true,
       header: buildWaterDropHeader(context),
@@ -27,17 +31,38 @@ abstract class TimelinePaginationListBase extends StatelessWidget {
       controller: refreshController,
       onRefresh: () => onRefresh(context),
       onLoading: () => onLoading(context),
-      child: StreamBuilder<List<IStatus>>(
-          stream: timelinePaginationListBloc.itemsStream,
-          initialData: timelinePaginationListBloc.items,
+      child: StreamBuilder<PaginationRefreshState>(
+          stream: timelinePaginationListBloc.refreshStateStream,
+          initialData: timelinePaginationListBloc.refreshState,
           builder: (context, snapshot) {
-            var statuses = snapshot.data;
-            if(statuses?.isNotEmpty == true) {
-            return buildChildCollectionView(statuses);
+            var refreshState = snapshot.data;
 
-            } else {
-              return Center(child: Text("Empty list"));
+            _logger.fine(() => "refreshState $refreshState");
+
+            switch (refreshState) {
+              case PaginationRefreshState.notRefreshed:
+                return Center(child: Text("Don't forget to call refresh()"));
+                break;
+              case PaginationRefreshState.refreshing:
+                return Center(child: CircularProgressIndicator());
+                break;
+              case PaginationRefreshState.refreshed:
+                return StreamBuilder<List<IStatus>>(
+                    stream: timelinePaginationListBloc.itemsStream.distinct(),
+                    initialData: timelinePaginationListBloc.items,
+                    builder: (context, snapshot) {
+                      var statuses = snapshot.data;
+                      _logger.fine(() => "statuses ${statuses?.length}");
+                      if (statuses?.isNotEmpty == true) {
+                        return buildChildCollectionView(statuses);
+                      } else {
+                        return Center(child: Text("Empty list"));
+                      }
+                    });
+                break;
             }
+
+            throw "Invalid refreshState $refreshState";
           }),
     );
   }
@@ -102,139 +127,39 @@ abstract class TimelinePaginationListBase extends StatelessWidget {
   }
 
   onRefresh(BuildContext context) async {
+    _logger.fine(() => "onRefresh");
     var timelinePaginationBloc =
-        ITimelinePaginationListBloc.of(context, listen: true);
-    var newFirstPage = await timelinePaginationBloc.refresh();
-
-//    print("ONREFRESH");
-//
-//    IPleromaTimelineService pleromaTimelineService = IPleromaTimelineService.of
-//      (context, listen: false);
-//    Future<List<IPleromaStatus>> future;
-//    if (widget.tabPage.currentTimeline == "Home") {
-//      future = pleromaTimelineService.getHomeTimeline(onlyMedia: mediaOnly,
-//          limit: 50);
-//    } else if (widget.tabPage.currentTimeline == "Local") {
-//      future = pleromaTimelineService.getPublicTimeline(onlyMedia: mediaOnly,
-//          onlyLocal: true,
-//          limit: 50);
-//    } else {
-//      future = pleromaTimelineService.getPublicTimeline(onlyMedia: mediaOnly,
-//          limit: 50);
-//    }
-//
-//    // monitor network fetch
-//    // if failed,use refreshFailed()
-//    future
-//        .then((newStatuses) {
-//      newStatuses.removeWhere((status) {
-//        return status.visibilityPleroma == PleromaVisibility.DIRECT;
-//      });
-//
-//      if (hideReplies) {
-//        newStatuses.removeWhere((status) {
-//          return status.inReplyToId != null;
-//        });
-//      }
-//
-//      if (hideNSFW) {
-//        newStatuses.removeWhere((status) {
-//          return status.sensitive;
-//        });
-//      }
-//
-//      widget.statuses.clear();
-//      widget.statuses.addAll(newStatuses);
-//      if (mounted) setState(() {});
-//      refreshController.refreshCompleted();
-//    }).catchError((error) {
-//      print(error.toString());
-//      if (mounted) setState(() {});
-//      refreshController.refreshFailed();
-//    });
+        ITimelinePaginationListBloc.of(context, listen: false);
+    timelinePaginationBloc.refresh().then((page) {
+      refreshController.refreshCompleted(resetFooterState: true);
+    }).catchError((error) {
+      _logger.shout(() => "Error during onRefresh", error);
+      refreshController.refreshFailed();
+    });
   }
 
   void onLoading(BuildContext context) async {
+    _logger.fine(() => "onLoading");
     var timelinePaginationBloc =
-        ITimelinePaginationListBloc.of(context, listen: true);
-    var newFirstPage = await timelinePaginationBloc.loadMore();
-
-//    print("ONLOAD");
-//    // monitor network fetch
-//    // if failed,use loadFailed(),if no data return,use LoadNodata()
-//    var lastId = "";
-//    IPleromaStatus lastStatus = widget.statuses.last;
-//    if (lastStatus != null) {
-//      lastId = lastStatus.id;
-//    }
-//    IPleromaTimelineService pleromaTimelineService = IPleromaTimelineService.of
-//      (context, listen: false);
-//    Future<List<IPleromaStatus>> future;
-//    if (widget.tabPage.currentTimeline == "Home") {
-//      future = pleromaTimelineService.getHomeTimeline(onlyMedia: mediaOnly,
-//          maxId: lastId,
-//          limit: 50);
-//    } else if (widget.tabPage.currentTimeline == "Local") {
-//      future = pleromaTimelineService.getPublicTimeline(onlyMedia: mediaOnly,
-//          maxId: lastId,
-//          onlyLocal: true,
-//          limit: 50);
-//    } else {
-//      future = pleromaTimelineService.getPublicTimeline(onlyMedia: mediaOnly,
-//          maxId: lastId,
-//          limit: 50);
-//    }
-//
-//    future
-//        .then((newStatuses) {
-//      newStatuses.removeWhere((status) {
-//        return status.visibilityPleroma == PleromaVisibility.DIRECT;
-//      });
-//
-//      if (hideReplies) {
-//        newStatuses.removeWhere((status) {
-//          return status.inReplyToId != null;
-//        });
-//      }
-//
-//      if (hideNSFW) {
-//        newStatuses.removeWhere((status) {
-//          return status.sensitive;
-//        });
-//      }
-//
-//      widget.statuses.addAll(newStatuses);
-//      if (mounted) setState(() {});
-//      refreshController.loadComplete();
-//    }).catchError((error) {
-//      if (mounted) setState(() {});
-//      refreshController.loadFailed();
-//    });
+        ITimelinePaginationListBloc.of(context, listen: false);
+    timelinePaginationBloc.refresh().then((page) {
+      if (page.items?.isNotEmpty == true) {
+        refreshController.loadComplete();
+      } else {
+        refreshController.loadNoData();
+      }
+    }).catchError((error) {
+      _logger.shout(() => "Error during onLoading", error);
+      refreshController.loadFailed();
+    });
   }
 
   viewAccount(BuildContext context, IPleromaAccount account) {
-    // todo: fix
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => OtherAccount(account)),
     );
   }
-
-//  selectTimeline(String timeline) async {
-//    hideReplies = await AppSettings.getTimelineRepliesSetting();
-//    hideNSFW = await AppSettings.getTimelineHideNSFWSetting();
-//    mediaOnly = await AppSettings.getTimelineMediaGridSetting();
-//    print("selectTimeline");
-//
-//    widget.tabPage.currentTimeline = timeline;
-//
-//    if (mounted) {
-//      setState(() {});
-//    }
-//    refreshEverything();
-//  }
-
-  refresh() {}
 
   viewStatusDetail(BuildContext context, IPleromaStatus status) {
     Navigator.push(

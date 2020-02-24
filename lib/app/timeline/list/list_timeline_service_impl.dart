@@ -15,17 +15,7 @@ class ListTimelineService extends TimelineService
   final String listRemoteId;
 
   @override
-  ITimelineSettings get settings => TimelineSettings.list(
-      localPreferences: null,
-      excludeVisibilities: [
-        PleromaVisibility.DIRECT,
-        PleromaVisibility.LIST,
-        PleromaVisibility.UNLISTED
-      ],
-      onlyLocal: onlyLocal,
-      notMuted: true,
-      localUrlHost: localUrlHost,
-      inListWithRemoteId: listRemoteId);
+  ITimelineSettings settings;
 
   ListTimelineService({
     @required IPleromaTimelineService pleromaTimelineService,
@@ -37,8 +27,19 @@ class ListTimelineService extends TimelineService
   }) : super(
             pleromaTimelineService: pleromaTimelineService,
             timelineLocalPreferences: timelineLocalPreferences,
-            statusRepository: statusRepository);
-
+            statusRepository: statusRepository) {
+    settings = TimelineSettings.list(
+        localPreferences: null,
+        excludeVisibilities: [
+          PleromaVisibility.DIRECT,
+          PleromaVisibility.LIST,
+          PleromaVisibility.UNLISTED
+        ],
+        onlyLocal: onlyLocal,
+        notMuted: true,
+        localUrlHost: localUrlHost,
+        inListWithRemoteId: listRemoteId);
+  }
 
   @override
   Future refresh() async {

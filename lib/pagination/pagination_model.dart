@@ -10,3 +10,8 @@ class PaginationPage<T> {
       @required this.pageIndex,
       @required this.items});
 }
+
+
+enum PaginationRefreshState {
+  notRefreshed, refreshing, refreshed
+}

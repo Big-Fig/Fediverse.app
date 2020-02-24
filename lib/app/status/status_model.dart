@@ -228,10 +228,39 @@ class DbStatusPopulatedWrapper implements IStatus {
 
   @override
   String get language => dbStatusPopulated.status.language;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is DbStatusPopulatedWrapper &&
+              runtimeType == other.runtimeType &&
+              dbStatusPopulated == other.dbStatusPopulated;
+
+  @override
+  int get hashCode => dbStatusPopulated.hashCode;
+
+
+
 }
 
 class DbStatusPopulated {
   final DbStatus status;
   final DbAccount account;
   DbStatusPopulated({@required this.status, @required this.account});
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is DbStatusPopulated &&
+              runtimeType == other.runtimeType &&
+              status == other.status &&
+              account == other.account;
+
+  @override
+  int get hashCode =>
+      status.hashCode ^
+      account.hashCode;
+
+
+
 }

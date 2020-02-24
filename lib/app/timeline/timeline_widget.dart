@@ -73,7 +73,8 @@ abstract class TimelineHomePage extends StatelessWidget {
 
             var timelinePaginationListBloc =
                 TimelinePaginationListBloc(timelinePaginationBloc: value);
-            timelinePaginationListBloc.loadMore();
+            // initial async refresh
+            timelinePaginationListBloc.refresh();
             return timelinePaginationListBloc;
           },
           child: bodyWidget,

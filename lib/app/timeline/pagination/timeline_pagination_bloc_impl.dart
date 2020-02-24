@@ -26,13 +26,11 @@ class TimelinePaginationBloc extends CachedPleromaPaginationBloc<IStatus>
       {@required int pageIndex,
       @required int itemsCountPerPage,
       @required CachedNetworkPaginationPage<IStatus> previousPage,
-      @required CachedNetworkPaginationPage<IStatus> nextPage}) {
-    return timelineService.loadLocalItems(
+      @required CachedNetworkPaginationPage<IStatus> nextPage}) => timelineService.loadLocalItems(
       limit: itemsCountPerPage,
       newerThanStatus: previousPage?.items?.last,
       olderThanStatus: nextPage?.items?.first,
     );
-  }
 
   @override
   Future<bool> refreshItemsFromRemoteForPage(

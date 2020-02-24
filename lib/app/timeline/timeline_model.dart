@@ -171,4 +171,17 @@ class TimelineSettings implements ITimelineSettings {
             remoteType: TimelineRemoteType.public,
             withHashtag: null,
             inListWithRemoteId: null);
+
+  @override
+  String toString() {
+    return 'TimelineSettings{localPreferences: $localPreferences,'
+        ' excludeVisibilities: $excludeVisibilities,'
+        ' onlyLocal: $onlyLocal, notMuted: $notMuted,'
+        ' inListWithRemoteId: $inListWithRemoteId,'
+        ' localUrlHost: $localUrlHost,'
+        ' homeAccount: $homeAccount,'
+        ' remoteType: $remoteType, withHashtag: $withHashtag}';
+  }
+
+
 }

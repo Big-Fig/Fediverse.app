@@ -5,10 +5,22 @@ import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
+
+var _logger = Logger("pagination_list_bloc_impl.dart");
 
 abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
     extends DisposableOwner implements IPaginationBloc<TPage, TItem> {
+  // ignore: close_sinks
+  BehaviorSubject<PaginationRefreshState> refreshStateSubject =
+      BehaviorSubject.seeded(PaginationRefreshState.notRefreshed);
+
+  Stream<PaginationRefreshState> get refreshStateStream =>
+      refreshStateSubject.stream;
+
+  PaginationRefreshState get refreshState => refreshStateSubject.value;
+
   final int maximumCachedPagesCount;
 
   static final int undefinedPageIndex = -1;
@@ -73,6 +85,14 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
       @required this.itemsCountPerPage}) {
     assert(itemsCountPerPage != null && itemsCountPerPage > 0);
     addDisposable(subject: pagesSubject);
+    addDisposable(subject: refreshStateSubject);
+    _logger.finest(() => "constructor");
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _logger.finest(() => "dispose");
   }
 
   @override
@@ -128,18 +148,26 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
   }
 
   void onPagesChanged(List<TPage> pages) {
+    _logger.finer(() => "onPagesChanged pages ${pages.length}");
     pages.sort((a, b) => a.pageIndex.compareTo(b.pageIndex));
-    pagesSubject.add(pages);
+    _logger.finest(() =>
+        "onPagesChanged pagesSubject.isClosed = ${pagesSubject.isClosed}");
+    if (!pagesSubject.isClosed) {
+      pagesSubject.add(pages);
+    }
   }
 
   @override
   Future<TPage> refresh() async {
-    var newFirstPage = await requestPage(pageIndex: 0);
-    if (newFirstPage != null) {
-      indexToCachedPageMap.clear();
-      pagesSubject.add([]);
-    }
+    refreshStateSubject.add(PaginationRefreshState.refreshing);
+    indexToCachedPageMap.clear();
+    onPagesChanged([]);
 
+    var newFirstPage = await requestPage(pageIndex: 0);
+
+    if (!refreshStateSubject.isClosed) {
+      refreshStateSubject.add(PaginationRefreshState.refreshed);
+    }
     return newFirstPage;
   }
 

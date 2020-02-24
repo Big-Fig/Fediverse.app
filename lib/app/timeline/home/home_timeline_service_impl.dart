@@ -20,17 +20,7 @@ class HomeTimelineService extends TimelineService
   final IPleromaAccountService pleromaAccountService;
 
   @override
-  ITimelineSettings get settings => TimelineSettings.home(
-      localPreferences: null,
-      excludeVisibilities: [
-        PleromaVisibility.DIRECT,
-        PleromaVisibility.LIST,
-        PleromaVisibility.UNLISTED
-      ],
-      onlyLocal: onlyLocal,
-      notMuted: true,
-      localUrlHost: localUrlHost,
-      homeAccount: homeAccount);
+  ITimelineSettings settings;
 
   HomeTimelineService({
     @required IPleromaTimelineService pleromaTimelineService,
@@ -44,7 +34,19 @@ class HomeTimelineService extends TimelineService
   }) : super(
             pleromaTimelineService: pleromaTimelineService,
             timelineLocalPreferences: timelineLocalPreferences,
-            statusRepository: statusRepository);
+            statusRepository: statusRepository) {
+    settings = TimelineSettings.home(
+        localPreferences: null,
+        excludeVisibilities: [
+          PleromaVisibility.DIRECT,
+          PleromaVisibility.LIST,
+          PleromaVisibility.UNLISTED
+        ],
+        onlyLocal: onlyLocal,
+        notMuted: true,
+        localUrlHost: localUrlHost,
+        homeAccount: homeAccount);
+  }
 
   @override
   Future refresh() async {

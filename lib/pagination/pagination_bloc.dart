@@ -14,6 +14,11 @@ abstract class IPaginationBloc<TPage extends PaginationPage<TItem>, TItem>
 
   int get loadedPagesMaximumIndex;
 
+
+  Stream<PaginationRefreshState> get refreshStateStream;
+
+  PaginationRefreshState get refreshState;
+
   Stream<int> get loadedPagesMaximumIndexStream;
 
   List<TPage> get loadedPagesSortedByIndex;

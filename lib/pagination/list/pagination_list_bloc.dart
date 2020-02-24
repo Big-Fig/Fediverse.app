@@ -13,6 +13,10 @@ abstract class IPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   List<TPage> get sortedPages;
   Stream<List<TPage>> get sortedPagesStream;
 
+  Stream<PaginationRefreshState> get refreshStateStream;
+
+  PaginationRefreshState get refreshState;
+
   Future<TPage> refresh();
 
   Future<TPage> loadMore();

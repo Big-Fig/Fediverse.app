@@ -1,3 +1,4 @@
+import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/Pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/Pleroma/tag/pleroma_tag_model.dart';
 import 'package:fedi/Pleroma/visibility/pleroma_visibility_model.dart';
@@ -15,7 +16,6 @@ import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
-import 'package:fedi/Pleroma/account/pleroma_account_model.dart';
 
 var _logger = Logger("status_repository_impl.dart");
 
@@ -26,11 +26,8 @@ class StatusRepository extends AsyncInitLoadingBloc
   StatusListsDao listsDao;
   IAccountRepository accountRepository;
 
-
-  StatusRepository({
-    @required AppDatabase appDatabase,
-    @required this.accountRepository
-  }) {
+  StatusRepository(
+      {@required AppDatabase appDatabase, @required this.accountRepository}) {
     dao = appDatabase.statusDao;
     hashtagsDao = appDatabase.statusHashtagsDao;
     listsDao = appDatabase.statusListsDao;
@@ -45,6 +42,8 @@ class StatusRepository extends AsyncInitLoadingBloc
   @override
   Future upsertRemoteStatus(IPleromaStatus remoteStatus,
       {@required String listRemoteId}) async {
+    _logger.finer(() => "upsertRemoteStatus $remoteStatus listRemoteId=> "
+        "$listRemoteId");
     var remoteAccount = remoteStatus.account;
 
     accountRepository.upsertRemoteAccount(remoteAccount);
@@ -66,6 +65,9 @@ class StatusRepository extends AsyncInitLoadingBloc
   @override
   Future upsertRemoteStatuses(List<IPleromaStatus> remoteStatuses,
       {@required String listRemoteId}) async {
+    _logger.finer(() => "upsertRemoteStatuses ${remoteStatuses.length} "
+        "listRemoteId => $listRemoteId");
+
     List<IPleromaAccount> remoteAccounts =
         remoteStatuses.map((remoteStatus) => remoteStatus.account).toList();
 
@@ -156,7 +158,8 @@ class StatusRepository extends AsyncInitLoadingBloc
 
     return dao
         .typedResultListToPopulated(await query.get())
-        .map(mapDataClassToItem).toList();
+        .map(mapDataClassToItem)
+        .toList();
   }
 
   Stream<List<DbStatusPopulatedWrapper>> watchStatuses(
@@ -213,7 +216,6 @@ class StatusRepository extends AsyncInitLoadingBloc
       @required int limit,
       @required int offset,
       @required StatusOrderingTermData orderingTermData}) {
-
     _logger.fine(() => "createQuery \n"
         "\t inListWithRemoteId=$inListWithRemoteId\n"
         "\t withHashtag=$withHashtag\n"
@@ -228,8 +230,7 @@ class StatusRepository extends AsyncInitLoadingBloc
         "\t noReplies=$noReplies\n"
         "\t limit=$limit\n"
         "\t offset=$offset\n"
-        "\t orderingTermData=$orderingTermData\n"
-    );
+        "\t orderingTermData=$orderingTermData\n");
 
     var query = dao.startSelectQuery();
 

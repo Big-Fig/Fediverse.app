@@ -15,17 +15,7 @@ class HashtagTimelineService extends TimelineService
   final String hashtag;
 
   @override
-  ITimelineSettings get settings => TimelineSettings.hashtag(
-      localPreferences: null,
-      excludeVisibilities: [
-        PleromaVisibility.DIRECT,
-        PleromaVisibility.LIST,
-        PleromaVisibility.UNLISTED
-      ],
-      onlyLocal: onlyLocal,
-      notMuted: true,
-      localUrlHost: localUrlHost,
-      withHashtag: hashtag);
+  ITimelineSettings settings;
 
   HashtagTimelineService({
     @required IPleromaTimelineService pleromaTimelineService,
@@ -37,7 +27,20 @@ class HashtagTimelineService extends TimelineService
   }) : super(
             pleromaTimelineService: pleromaTimelineService,
             timelineLocalPreferences: timelineLocalPreferences,
-            statusRepository: statusRepository);
+            statusRepository: statusRepository) {
+    settings = TimelineSettings.hashtag(
+        localPreferences: null,
+        excludeVisibilities: [
+          PleromaVisibility.DIRECT,
+          PleromaVisibility.LIST,
+          PleromaVisibility.UNLISTED
+        ],
+        onlyLocal: onlyLocal,
+        notMuted: true,
+        localUrlHost: localUrlHost,
+        withHashtag: hashtag);
+
+  }
 
 
   @override

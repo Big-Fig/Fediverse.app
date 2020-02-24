@@ -28,6 +28,10 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   @override
   int get itemsCountPerPage => paginationBloc.itemsCountPerPage;
 
+  Stream<PaginationRefreshState> get refreshStateStream => paginationBloc.refreshStateStream;
+
+  PaginationRefreshState get refreshState => paginationBloc.refreshState;
+
   @override
   Future<TPage> loadMore() {
     var nextPageIndex = paginationBloc.loadedPagesMaximumIndex + 1;

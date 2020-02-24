@@ -38,7 +38,8 @@ abstract class TimelineService extends DisposableOwner
     try {
       List<IPleromaStatus> remoteStatuses;
       var timelineSettings = settings;
-      _logger.fine(() => "refreshItemsFromRemoteForPage for $timelineSettings");
+      _logger.fine(() => "start refreshItemsFromRemoteForPage for "
+          "$timelineSettings");
       switch (timelineSettings.remoteType) {
         case TimelineRemoteType.public:
           remoteStatuses = await pleromaTimelineService.getPublicTimeline(
@@ -94,12 +95,12 @@ abstract class TimelineService extends DisposableOwner
 
         return true;
       } else {
-        _logger.shout(() => "error during refreshItemsFromRemoteForPage: "
+        _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
             "statuses is null");
         return false;
       }
     } catch (e) {
-      _logger.shout(() => "error during refreshItemsFromRemoteForPage $e");
+      _logger.severe(() => "error during refreshItemsFromRemoteForPage", e);
       return false;
     }
   }
@@ -110,7 +111,7 @@ abstract class TimelineService extends DisposableOwner
       @required IStatus newerThanStatus,
       @required IStatus olderThanStatus}) async {
     var timelineSettings = settings;
-    _logger.fine(() => "loadLocalItems for $timelineSettings");
+    _logger.finest(() => "start loadLocalItems");
 
     var statuses = await statusRepository.getStatuses(
         inListWithRemoteId: timelineSettings.inListWithRemoteId,
@@ -130,6 +131,10 @@ abstract class TimelineService extends DisposableOwner
         orderingTermData: StatusOrderingTermData(
             orderingMode: OrderingMode.desc,
             orderByType: StatusOrderByType.remoteId));
+
+    _logger.finer(
+        () => "finish loadLocalItems for $timelineSettings statuses ${statuses
+            .length}");
     return statuses;
   }
 }
