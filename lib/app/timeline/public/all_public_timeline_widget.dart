@@ -4,19 +4,18 @@ import 'package:fedi/app/timeline/local_preferences/timeline_local_preferences_m
 import 'package:fedi/app/timeline/public/public_timeline_service_impl.dart';
 import 'package:fedi/app/timeline/public/public_timeline_widget.dart';
 import 'package:fedi/app/timeline/timeline_service.dart';
-import 'package:fedi/app/timeline/timeline_widget.dart';
 import 'package:flutter/widgets.dart';
 
 class AllPublicTimelineWidget extends PublicTimelineWidget {
-  AllPublicTimelineWidget()
-      : super(localUrlHost: null, onlyLocal: null);
+  AllPublicTimelineWidget({@required Key key})
+      : super(localUrlHost: null, onlyLocal: null, key: key);
 
   @override
   ITimelineService createTimelineService(
       {@required BuildContext context,
-        @required TimelineLocalPreferences timelinePreferences,
-        @required IStatusRepository statusRepository,
-        @required IPleromaTimelineService pleromaTimelineService}) {
+      @required TimelineLocalPreferences timelinePreferences,
+      @required IStatusRepository statusRepository,
+      @required IPleromaTimelineService pleromaTimelineService}) {
     return PublicTimelineService(
         pleromaTimelineService: pleromaTimelineService,
         timelineLocalPreferences: timelinePreferences,

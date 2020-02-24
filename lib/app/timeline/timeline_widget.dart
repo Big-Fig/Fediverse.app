@@ -15,26 +15,32 @@ import 'package:provider/provider.dart';
 
 var _logger = Logger("timeline_widget.dart");
 
-abstract class TimelineHomePage extends StatelessWidget {
+abstract class TimelineWidget extends StatelessWidget {
   final bool onlyLocal;
   final String localUrlHost;
 
-  TimelineHomePage({@required this.onlyLocal, @required this.localUrlHost});
+  TimelineWidget(
+      {@required this.onlyLocal, @required this.localUrlHost, Key key})
+      : super(key:key);
 
   @override
   Widget build(BuildContext context) {
-    TimelineLocalPreferences timelinePreferences =
+    TimelineLocalPreferences timelineLocalPreferences =
         Provider.of<TimelineLocalPreferences>(context, listen: true);
 
     Widget bodyWidget;
 
-    if (timelinePreferences?.onlyMedia == true) {
-      bodyWidget = TimelinePaginationMediaListWidget();
+    if (timelineLocalPreferences?.onlyMedia == true) {
+      bodyWidget = TimelinePaginationListMediaWidget(
+          key: PageStorageKey<String>(
+              this.key.toString() + "TimelinePaginationListMediaWidget"));
     } else {
-      bodyWidget = TimelinePaginationSimpleListWidget();
+      bodyWidget = TimelinePaginationListSimpleWidget(
+          key: PageStorageKey<String>(
+              this.key.toString() + "TimelinePaginationListSimpleWidget"));
     }
 
-    _logger.fine(() => "build timelinePreferences=$timelinePreferences");
+    _logger.fine(() => "build timelineLocalPreferences=$timelineLocalPreferences");
 
     var pleromaTimelineService =
         IPleromaTimelineService.of(context, listen: false);

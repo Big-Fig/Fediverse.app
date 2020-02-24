@@ -9,14 +9,15 @@ import 'package:fedi/app/timeline/timeline_service.dart';
 import 'package:fedi/app/timeline/timeline_widget.dart';
 import 'package:flutter/widgets.dart';
 
-class HomeTimelineWidget extends TimelineHomePage {
+class HomeTimelineWidget extends TimelineWidget {
   final IAccount homeAccount;
 
   HomeTimelineWidget(
       {@required bool onlyLocal,
       @required String localUrlHost,
+        @required Key key,
         @required this.homeAccount})
-      : super(localUrlHost: localUrlHost, onlyLocal: onlyLocal);
+      : super(localUrlHost: localUrlHost, onlyLocal: onlyLocal, key:key);
 
   @override
   ITimelineService createTimelineService(

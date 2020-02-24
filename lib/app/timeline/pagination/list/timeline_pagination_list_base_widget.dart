@@ -7,6 +7,9 @@ import 'package:flutter/widgets.dart';
 
 abstract class TimelinePaginationListBaseWidget
     extends PaginationListWidget<IStatus> {
+
+  TimelinePaginationListBaseWidget({ @required Key key }) : super(key: key);
+
   @override
   IPaginationListBloc<PaginationPage<IStatus>, IStatus>
       retrievePaginationListBloc(BuildContext context,

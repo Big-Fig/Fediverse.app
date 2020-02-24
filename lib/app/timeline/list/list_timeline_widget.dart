@@ -6,14 +6,15 @@ import 'package:fedi/app/timeline/timeline_service.dart';
 import 'package:fedi/app/timeline/timeline_widget.dart';
 import 'package:flutter/widgets.dart';
 
-class ListTimelineWidget extends TimelineHomePage {
+class ListTimelineWidget extends TimelineWidget {
   final String listRemoteId;
 
   ListTimelineWidget(
       {@required bool onlyLocal,
       @required String localUrlHost,
-      this.listRemoteId})
-      : super(localUrlHost: localUrlHost, onlyLocal: onlyLocal);
+        @required Key key,
+      @required this.listRemoteId})
+      : super(localUrlHost: localUrlHost, onlyLocal: onlyLocal, key: key);
 
   @override
   ITimelineService createTimelineService(

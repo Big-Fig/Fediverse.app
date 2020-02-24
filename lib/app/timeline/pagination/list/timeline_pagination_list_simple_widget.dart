@@ -12,8 +12,11 @@ import 'package:logging/logging.dart';
 
 var _logger = Logger("timeline_pagination_list_simple_widget.dart");
 
-class TimelinePaginationSimpleListWidget
+class TimelinePaginationListSimpleWidget
     extends TimelinePaginationListBaseWidget {
+
+  TimelinePaginationListSimpleWidget({ @required Key key }) : super(key: key);
+
   ScrollView buildChildCollectionView(BuildContext context, List<IStatus>
   statuses) {
 

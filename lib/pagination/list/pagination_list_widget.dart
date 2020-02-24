@@ -12,6 +12,8 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
   final RefreshController refreshController =
       RefreshController(initialRefresh: false);
 
+  PaginationListWidget({ Key key }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     IPaginationListBloc<PaginationPage<T>, T> paginationListBloc =
@@ -52,7 +54,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
                     }
                     if (items?.isNotEmpty == true) {
                       return SmartRefresher(
-                        key: PageStorageKey<String>("PaginationListWidget"),
+                        key: this.key,
                         enablePullDown: true,
                         enablePullUp: true,
                         header: buildWaterDropHeader(context),
@@ -178,6 +180,6 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
   ScrollView buildChildCollectionView(BuildContext context, List<T> statuses);
 
   IPaginationListBloc<PaginationPage<T>, T> retrievePaginationListBloc(
-      BuildContext context, {@required bool
-      listen});
+      BuildContext context,
+      {@required bool listen});
 }

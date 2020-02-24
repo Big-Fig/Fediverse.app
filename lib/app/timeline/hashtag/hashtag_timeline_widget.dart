@@ -6,14 +6,15 @@ import 'package:fedi/app/timeline/timeline_service.dart';
 import 'package:fedi/app/timeline/timeline_widget.dart';
 import 'package:flutter/widgets.dart';
 
-class HashtagTimelineWidget extends TimelineHomePage {
+class HashtagTimelineWidget extends TimelineWidget {
   final String hashtag;
 
   HashtagTimelineWidget(
       {@required bool onlyLocal,
       @required String localUrlHost,
-      this.hashtag})
-      : super(localUrlHost: localUrlHost, onlyLocal: onlyLocal);
+        @required Key key,
+      @required this.hashtag})
+      : super(localUrlHost: localUrlHost, onlyLocal: onlyLocal, key:key);
 
   @override
   ITimelineService createTimelineService(

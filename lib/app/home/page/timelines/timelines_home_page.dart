@@ -127,10 +127,11 @@ class TimelinesHomePage extends StatelessWidget {
 
                 switch (tab) {
                   case TimelinesHomePageTab.all:
-                    child = AllPublicTimelineWidget();
+                    child = AllPublicTimelineWidget(key: PageStorageKey("AllPublicTimelineWidget"),);
                     break;
                   case TimelinesHomePageTab.home:
                     child = HomeTimelineWidget(
+                      key: PageStorageKey("HomeTimelineWidget"),
                       onlyLocal: false,
                       localUrlHost: null,
                       // todo: rework
@@ -143,6 +144,7 @@ class TimelinesHomePage extends StatelessWidget {
                         CurrentInstance.instance.currentClient.baseURL;
                     var localUrlHost = Uri.parse(baseURL).host;
                     child = LocalPublicTimelineWidget(
+                        key: PageStorageKey("LocalPublicTimelineWidget"),
                         onlyLocal: true, localUrlHost: localUrlHost);
                     break;
                 }

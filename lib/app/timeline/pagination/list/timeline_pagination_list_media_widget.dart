@@ -7,8 +7,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
-class TimelinePaginationMediaListWidget
+class TimelinePaginationListMediaWidget
     extends TimelinePaginationListBaseWidget {
+
+  TimelinePaginationListMediaWidget({ @required Key key }) : super(key: key);
+
   ScrollView buildChildCollectionView(
       BuildContext context, List<IStatus> statuses) {
     // filter only items with attachments
