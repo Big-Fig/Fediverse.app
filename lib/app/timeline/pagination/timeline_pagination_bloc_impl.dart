@@ -25,29 +25,29 @@ class TimelinePaginationBloc extends CachedPleromaPaginationBloc<IStatus>
   Future<List<IStatus>> loadLocalItems(
       {@required int pageIndex,
       @required int itemsCountPerPage,
-      @required CachedNetworkPaginationPage<IStatus> previousPage,
-      @required CachedNetworkPaginationPage<IStatus> nextPage}) => timelineService.loadLocalItems(
+      @required CachedNetworkPaginationPage<IStatus> olderPage,
+      @required CachedNetworkPaginationPage<IStatus> newerPage}) => timelineService.loadLocalItems(
       limit: itemsCountPerPage,
-      newerThanStatus: previousPage?.items?.last,
-      olderThanStatus: nextPage?.items?.first,
+      newerThanStatus: olderPage?.items?.first,
+      olderThanStatus: newerPage?.items?.last,
     );
 
   @override
   Future<bool> refreshItemsFromRemoteForPage(
       {@required int pageIndex,
       @required int itemsCountPerPage,
-      @required CachedNetworkPaginationPage<IStatus> previousPage,
-      @required CachedNetworkPaginationPage<IStatus> nextPage}) async{
+      @required CachedNetworkPaginationPage<IStatus> olderPage,
+      @required CachedNetworkPaginationPage<IStatus> newerPage}) async{
 
     await timelineService.refresh();
 
     // can't refresh not first page without actual items bounds
-    assert(!(pageIndex > 0 && previousPage == null && nextPage == null));
+    assert(!(pageIndex > 0 && olderPage == null && newerPage == null));
 
     return timelineService.refreshItemsFromRemoteForPage(
       limit: itemsCountPerPage,
-      newerThanStatus: previousPage?.items?.last,
-      olderThanStatus: nextPage?.items?.first,
+      newerThanStatus: olderPage?.items?.first,
+      olderThanStatus: newerPage?.items?.last,
     );
   }
 }

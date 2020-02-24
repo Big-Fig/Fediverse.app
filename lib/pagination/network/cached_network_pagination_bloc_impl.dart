@@ -26,8 +26,8 @@ abstract class CachedNetworkPaginationBloc<
     if (isPossibleToLoadFromNetwork) {
       isActuallyRefreshed = await refreshItemsFromRemoteForPage(
           pageIndex: pageIndex,
-          previousPage: previousPage,
-          nextPage: nextPage,
+          olderPage: nextPage,
+          newerPage: previousPage,
           itemsCountPerPage: itemsCountPerPage);
     } else {
       isActuallyRefreshed = false;
@@ -36,8 +36,9 @@ abstract class CachedNetworkPaginationBloc<
     List<TItem> loadedItems = await loadLocalItems(
         pageIndex: pageIndex,
         itemsCountPerPage: itemsCountPerPage,
-        previousPage: previousPage,
-        nextPage: nextPage);
+        olderPage: nextPage,
+        newerPage: previousPage
+    );
 
     return createPage(
         pageIndex: pageIndex,
@@ -48,15 +49,15 @@ abstract class CachedNetworkPaginationBloc<
   Future<bool> refreshItemsFromRemoteForPage({
     @required int pageIndex,
     @required int itemsCountPerPage,
-    @required TPage previousPage,
-    @required TPage nextPage,
+    @required TPage olderPage,
+    @required TPage newerPage,
   });
 
   Future<List<TItem>> loadLocalItems({
     @required int pageIndex,
     @required int itemsCountPerPage,
-    @required TPage previousPage,
-    @required TPage nextPage,
+    @required TPage olderPage,
+    @required TPage newerPage,
   });
 
   TPage createPage(
