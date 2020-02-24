@@ -13,9 +13,9 @@ class TimelinesHomePageBloc extends DisposableOwner
 
   @override
   List<TimelinesHomePageTab> tabs = [
+    TimelinesHomePageTab.home,
     TimelinesHomePageTab.all,
     TimelinesHomePageTab.local,
-    TimelinesHomePageTab.home
   ];
 
   @override
