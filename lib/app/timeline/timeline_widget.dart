@@ -1,6 +1,5 @@
 import 'package:fedi/Pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
-import 'package:fedi/app/timeline/local_preferences/timeline_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preferences_model.dart';
 import 'package:fedi/app/timeline/pagination/list/timeline_pagination_list_bloc.dart';
 import 'package:fedi/app/timeline/pagination/list/timeline_pagination_list_bloc_impl.dart';
@@ -11,68 +10,76 @@ import 'package:fedi/app/timeline/pagination/timeline_pagination_bloc_impl.dart'
 import 'package:fedi/app/timeline/timeline_service.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-abstract class TimelineWidget extends StatelessWidget {
+var _logger = Logger("timeline_widget.dart");
+
+abstract class TimelineHomePage extends StatelessWidget {
   final bool onlyLocal;
   final String localUrlHost;
 
-  TimelineWidget({@required this.onlyLocal, @required this.localUrlHost});
+  TimelineHomePage({@required this.onlyLocal, @required this.localUrlHost});
 
   @override
   Widget build(BuildContext context) {
-    var timelinePreferencesBloc =
-        ITimelineLocalPreferencesBloc.of(context, listen: true);
+    TimelineLocalPreferences timelinePreferences =
+        Provider.of<TimelineLocalPreferences>(context, listen: true);
 
-    return StreamBuilder<TimelineLocalPreferences>(
-        stream: timelinePreferencesBloc.stream,
-        initialData: timelinePreferencesBloc.value,
-        builder: (context, snapshot) {
-          var timelinePreferences = snapshot.data;
+    Widget bodyWidget;
 
-          Widget bodyWidget;
+    if (timelinePreferences?.onlyMedia == true) {
+      bodyWidget = TimelinePaginationMediaListWidget();
+    } else {
+      bodyWidget = TimelinePaginationSimpleListWidget();
+    }
 
-          if (timelinePreferences?.onlyMedia == true) {
-            bodyWidget = TimelinePaginationMediaListWidget();
-          } else {
-            bodyWidget = TimelinePaginationSimpleListWidget();
-          }
+    _logger.fine(() => "build timelinePreferences=$timelinePreferences");
 
-          return DisposableProvider<ITimelineService>(
-              create: (BuildContext context) {
-                var pleromaTimelineService =
-                    IPleromaTimelineService.of(context, listen: false);
+    var pleromaTimelineService =
+        IPleromaTimelineService.of(context, listen: false);
 
-                return createTimelineService(
-                    context: context,
-                    timelinePreferences: timelinePreferences,
-                    pleromaTimelineService: pleromaTimelineService,
-                    statusRepository:
-                        IStatusRepository.of(context, listen: false));
-              },
-              child: Provider<ITimelinePaginationBloc>(
-                create: (BuildContext context) {
-                  var timelineService =
-                      ITimelineService.of(context, listen: false);
+    return DisposableProxyProvider<TimelineLocalPreferences, ITimelineService>(
+      update: (
+        BuildContext context,
+        TimelineLocalPreferences value,
+        ITimelineService previous,
+      ) {
+        _logger.fine(() => "DisposableProxyProvider pleromaTimelineService "
+            "rebuild \n"
+            "\t value $value"
+            "\t previous $previous");
 
-                  return TimelinePaginationBloc(
-                      timelineService: timelineService,
-                      itemsCountPerPage: 20,
-                      maximumCachedPagesCount: null);
-                },
-                child: Provider<ITimelinePaginationListBloc>(
-                    create: (BuildContext context) {
-                      var timelinePaginationBloc =
-                          ITimelinePaginationBloc.of(context, listen: false);
+        return createTimelineService(
+            context: context,
+            timelinePreferences: value,
+            pleromaTimelineService: pleromaTimelineService,
+            statusRepository: IStatusRepository.of(context, listen: false));
+      },
+      child: DisposableProxyProvider<ITimelineService, ITimelinePaginationBloc>(
+        update: (BuildContext context, ITimelineService value,
+            ITimelinePaginationBloc previous) {
+          _logger.fine(() => "timelineService rebuild");
 
-                      var timelinePaginationListBloc = TimelinePaginationListBloc(
-                          timelinePaginationBloc: timelinePaginationBloc);
-                      timelinePaginationListBloc.loadMore();
-                      return timelinePaginationListBloc;
-                    },
-                    child: bodyWidget),
-              ));
-        });
+          return TimelinePaginationBloc(
+              timelineService: value,
+              itemsCountPerPage: 20,
+              maximumCachedPagesCount: null);
+        },
+        child: DisposableProxyProvider<ITimelinePaginationBloc,
+            ITimelinePaginationListBloc>(
+          update: (BuildContext context, value, previous) {
+            _logger.fine(() => "timelinePaginationBloc rebuild");
+
+            var timelinePaginationListBloc =
+                TimelinePaginationListBloc(timelinePaginationBloc: value);
+            timelinePaginationListBloc.loadMore();
+            return timelinePaginationListBloc;
+          },
+          child: bodyWidget,
+        ),
+      ),
+    );
   }
 
   ITimelineService createTimelineService(
@@ -81,3 +88,8 @@ abstract class TimelineWidget extends StatelessWidget {
       @required IStatusRepository statusRepository,
       @required IPleromaTimelineService pleromaTimelineService});
 }
+
+//class TimelineWidget extends StatelessWidget {
+//
+//
+//}

@@ -35,73 +35,73 @@ abstract class TimelineService extends DisposableOwner
       {@required int limit,
       @required IStatus newerThanStatus,
       @required IStatus olderThanStatus}) async {
-//    try {
-    List<IPleromaStatus> remoteStatuses;
-    switch (settings.remoteType) {
-      case TimelineRemoteType.public:
-        remoteStatuses = await pleromaTimelineService.getPublicTimeline(
-          maxId: olderThanStatus?.remoteId,
-          sinceId: newerThanStatus?.remoteId,
-          limit: limit,
-          onlyLocal: settings.onlyLocal,
-          onlyMedia: settings.onlyMedia,
-          withMuted: !settings.notMuted,
-          excludeVisibilities: settings.excludeVisibilities,
-        );
-        break;
-      case TimelineRemoteType.list:
-        remoteStatuses = await pleromaTimelineService.getListTimeline(
-          listId: settings.inListWithRemoteId,
-          maxId: olderThanStatus?.remoteId,
-          sinceId: newerThanStatus?.remoteId,
-          limit: limit,
-          onlyLocal: settings.onlyLocal,
-          onlyMedia: settings.onlyMedia,
-          withMuted: !settings.notMuted,
-          excludeVisibilities: settings.excludeVisibilities,
-        );
-        break;
-      case TimelineRemoteType.home:
-        remoteStatuses = await pleromaTimelineService.getHomeTimeline(
-          maxId: olderThanStatus?.remoteId,
-          sinceId: newerThanStatus?.remoteId,
-          limit: limit,
-          onlyLocal: settings.onlyLocal,
-          onlyMedia: settings.onlyMedia,
-          withMuted: !settings.notMuted,
-          excludeVisibilities: settings.excludeVisibilities,
-        );
-        break;
-      case TimelineRemoteType.hashtag:
-        remoteStatuses = await pleromaTimelineService.getHashtagTimeline(
-          hashtag: settings.withHashtag,
-          maxId: olderThanStatus?.remoteId,
-          sinceId: newerThanStatus?.remoteId,
-          limit: limit,
-          onlyLocal: settings.onlyLocal,
-          onlyMedia: settings.onlyMedia,
-          withMuted: !settings.notMuted,
-          excludeVisibilities: settings.excludeVisibilities,
-        );
-        break;
-    }
+    try {
+      List<IPleromaStatus> remoteStatuses;
+      var timelineSettings = settings;
+      _logger.fine(() => "refreshItemsFromRemoteForPage for $timelineSettings");
+      switch (timelineSettings.remoteType) {
+        case TimelineRemoteType.public:
+          remoteStatuses = await pleromaTimelineService.getPublicTimeline(
+            maxId: olderThanStatus?.remoteId,
+            sinceId: newerThanStatus?.remoteId,
+            limit: limit,
+            onlyLocal: timelineSettings.onlyLocal,
+            onlyMedia: timelineSettings.onlyMedia,
+            withMuted: !timelineSettings.notMuted,
+            excludeVisibilities: timelineSettings.excludeVisibilities,
+          );
+          break;
+        case TimelineRemoteType.list:
+          remoteStatuses = await pleromaTimelineService.getListTimeline(
+            listId: timelineSettings.inListWithRemoteId,
+            maxId: olderThanStatus?.remoteId,
+            sinceId: newerThanStatus?.remoteId,
+            limit: limit,
+            onlyLocal: timelineSettings.onlyLocal,
+            onlyMedia: timelineSettings.onlyMedia,
+            withMuted: !timelineSettings.notMuted,
+            excludeVisibilities: timelineSettings.excludeVisibilities,
+          );
+          break;
+        case TimelineRemoteType.home:
+          remoteStatuses = await pleromaTimelineService.getHomeTimeline(
+            maxId: olderThanStatus?.remoteId,
+            sinceId: newerThanStatus?.remoteId,
+            limit: limit,
+            onlyLocal: timelineSettings.onlyLocal,
+            onlyMedia: timelineSettings.onlyMedia,
+            withMuted: !timelineSettings.notMuted,
+            excludeVisibilities: timelineSettings.excludeVisibilities,
+          );
+          break;
+        case TimelineRemoteType.hashtag:
+          remoteStatuses = await pleromaTimelineService.getHashtagTimeline(
+            hashtag: timelineSettings.withHashtag,
+            maxId: olderThanStatus?.remoteId,
+            sinceId: newerThanStatus?.remoteId,
+            limit: limit,
+            onlyLocal: timelineSettings.onlyLocal,
+            onlyMedia: timelineSettings.onlyMedia,
+            withMuted: !timelineSettings.notMuted,
+            excludeVisibilities: timelineSettings.excludeVisibilities,
+          );
+          break;
+      }
 
-    if (remoteStatuses != null) {
-      await statusRepository.upsertRemoteStatuses(remoteStatuses,
-          listRemoteId: null);
-//         var statuses = await statusRepository.getAll();
-//         _logger.fine(() => "statuses = ${statuses.length}");
+      if (remoteStatuses != null) {
+        await statusRepository.upsertRemoteStatuses(remoteStatuses,
+            listRemoteId: null);
 
-      return true;
-    } else {
-      _logger.shout(() => "error during refreshItemsFromRemoteForPage: "
-          "statuses is null");
+        return true;
+      } else {
+        _logger.shout(() => "error during refreshItemsFromRemoteForPage: "
+            "statuses is null");
+        return false;
+      }
+    } catch (e) {
+      _logger.shout(() => "error during refreshItemsFromRemoteForPage $e");
       return false;
     }
-//    } catch (e) {
-//      _logger.shout(() => "error during refreshItemsFromRemoteForPage $e");
-//      return false;
-//    }
   }
 
   @override
@@ -110,6 +110,7 @@ abstract class TimelineService extends DisposableOwner
       @required IStatus newerThanStatus,
       @required IStatus olderThanStatus}) async {
     var timelineSettings = settings;
+    _logger.fine(() => "loadLocalItems for $timelineSettings");
 
     var statuses = await statusRepository.getStatuses(
         inListWithRemoteId: timelineSettings.inListWithRemoteId,

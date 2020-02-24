@@ -6,7 +6,7 @@ import 'package:fedi/app/timeline/timeline_service.dart';
 import 'package:fedi/app/timeline/timeline_widget.dart';
 import 'package:flutter/widgets.dart';
 
-class ListTimelineWidget extends TimelineWidget {
+class ListTimelineWidget extends TimelineHomePage {
   final String listRemoteId;
 
   ListTimelineWidget(

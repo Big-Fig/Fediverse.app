@@ -7,6 +7,7 @@ import 'package:fedi/Pleroma/relationship/pleroma_relationship_model.dart';
 import 'package:fedi/Pleroma/source/pleroma_source_model.dart';
 import 'package:fedi/app/context/app_context_bloc_impl.dart';
 import 'package:fedi/app/splash/app_splash_widget.dart';
+import 'package:fedi/app/timeline/local_preferences/timeline_local_preferences_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_model.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
@@ -44,6 +45,7 @@ void main() async {
   Hive.registerAdapter(PleromaSourceAdapter(), 43);
   Hive.registerAdapter(PleromaSourcePleromaPartAdapter(), 44);
   Hive.registerAdapter(PleromaSourceAdapter(), 45);
+  Hive.registerAdapter(TimelineLocalPreferencesAdapter(), 46);
 
   Hive.init(directory.path);
 
@@ -127,6 +129,10 @@ Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
 initLog() {
   Logger.root.level = Level.ALL; // defaults to Level.INFO
   Logger.root.onRecord.listen((record) {
-    print('${record.level.name}: ${record.time}: ${record.message}');
+    print('${record.loggerName}(${record.level.name}): ${record.time}: '
+        '${record.message}');
+    if(record.stackTrace != null) {
+      print(record.stackTrace);
+    }
   });
 }

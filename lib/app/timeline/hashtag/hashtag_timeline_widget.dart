@@ -6,7 +6,7 @@ import 'package:fedi/app/timeline/timeline_service.dart';
 import 'package:fedi/app/timeline/timeline_widget.dart';
 import 'package:flutter/widgets.dart';
 
-class HashtagTimelineWidget extends TimelineWidget {
+class HashtagTimelineWidget extends TimelineHomePage {
   final String hashtag;
 
   HashtagTimelineWidget(

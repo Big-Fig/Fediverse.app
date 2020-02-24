@@ -36,19 +36,22 @@ class TimelinesHomePageDrawerBloc implements ITimelinesHomePageDrawerBloc {
 
   @override
   changeNoNsfwSensitive(bool value) {
-    preferences.noNsfwSensitive = value;
-    localPreferencesBloc.setValue(preferences);
+    var localPreferences = preferences ?? TimelineLocalPreferences();
+    localPreferences.noNsfwSensitive = value;
+    localPreferencesBloc.setValue(localPreferences);
   }
 
   @override
   changeNoReplies(bool value) {
-    preferences.noReplies = value;
-    localPreferencesBloc.setValue(preferences);
+    var localPreferences = preferences ?? TimelineLocalPreferences();
+    localPreferences.noReplies = value;
+    localPreferencesBloc.setValue(localPreferences);
   }
 
   @override
   changeOnlyMedia(bool value) {
-    preferences.onlyMedia = value;
-    localPreferencesBloc.setValue(preferences);
+    var localPreferences = preferences ?? TimelineLocalPreferences();
+    localPreferences.onlyMedia = value;
+    localPreferencesBloc.setValue(localPreferences);
   }
 }

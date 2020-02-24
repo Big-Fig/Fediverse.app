@@ -229,4 +229,11 @@ class DbAccountWrapper implements IAccount {
 
   @override
   String get username => dbAccount.username;
+
+  @override
+  String toString() {
+    return 'DbAccountWrapper{dbAccount: $dbAccount}';
+  }
+
+
 }

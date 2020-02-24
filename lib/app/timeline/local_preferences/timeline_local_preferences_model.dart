@@ -12,6 +12,9 @@ class TimelineLocalPreferences extends IPreferencesObject {
   @HiveField(3)
   bool noNsfwSensitive;
 
-
-
+  @override
+  String toString() {
+    return 'TimelineLocalPreferences{onlyMedia: $onlyMedia,'
+        ' noReplies: $noReplies, noNsfwSensitive: $noNsfwSensitive}';
+  }
 }
