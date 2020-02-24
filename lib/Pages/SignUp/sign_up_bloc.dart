@@ -6,10 +6,8 @@ import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Registration.dart';
-import 'package:fedi/Pleroma/Foundation/Requests/captcha.dart'
-    as CaptchaRequest;
+import 'package:fedi/Pleroma/Models/AccountAuth.dart';
 import 'package:fedi/Pleroma/Models/ClientSettings.dart';
-import 'package:fedi/Pleroma/Models/captcha.dart';
 import 'package:fedi/Views/Alert.dart';
 import 'package:fedi/Views/ProgressDialog.dart';
 import 'package:fedi/disposable/disposable.dart';
@@ -17,14 +15,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
+enum SignUpBlocNetworkState { success, inProgress, error, waiting }
+
 class SignUpBloc implements Disposable {
   ProgressDialog _pr;
-  final _captcha = BehaviorSubject<Captcha>.seeded(null);
+  Function() instanceSuccess;
+  final _widgetStatus = BehaviorSubject<SignUpBlocNetworkState>();
   final _username = BehaviorSubject<String>.seeded("");
   final _email = BehaviorSubject<String>.seeded("");
   final _password = BehaviorSubject<String>.seeded("");
   final _confirmPassword = BehaviorSubject<String>.seeded("");
-  final _userCatpchaValue = BehaviorSubject<String>.seeded("");
   final validateUsername = StreamTransformer<String, String>.fromHandlers(
       handleData: (username, sink) {
     if (username == "") {
@@ -87,6 +87,7 @@ class SignUpBloc implements Disposable {
   });
 
   // validate email
+  Stream<SignUpBlocNetworkState> get widgetStatus => _widgetStatus.stream;
   Stream<String> get username => _username.stream.transform(validateUsername);
   Stream<String> get email => _email.stream.transform(validateEmail);
   Stream<String> get password => _password.stream.transform(validatePassword);
@@ -101,11 +102,9 @@ class SignUpBloc implements Disposable {
         }
       }).transform(validatePasswordMatch);
 
-  Stream<Captcha> get captcha => _captcha.stream;
-
   // once validation passes allow registration
   Stream<bool> get register =>
-      CombineLatestStream([username, email, passwordsMatch, captcha, _userCatpchaValue], (values) {
+      CombineLatestStream([username, email, passwordsMatch], (values) {
         return true;
       });
 
@@ -114,74 +113,36 @@ class SignUpBloc implements Disposable {
   Function(String) get changeEmail => _email.sink.add;
   Function(String) get changePassword => _password.sink.add;
   Function(String) get changeConfirmpassword => _confirmPassword.sink.add;
-  Function(String) get changeCaptch => _userCatpchaValue.sink.add;
-
-
-  fetchCaptcha() {
-    _captcha.add(null);
-    String path = CaptchaRequest.Captcha.getNewCaptcha();
-    CurrentInstance.newInstance.currentClient = Client(baseURL: "fedi.app");
-    CurrentInstance.newInstance.currentClient
-        .run(
-      path: path,
-      method: HTTPMethod.GET,
-    )
-        .then((response) {
-      if (response.statusCode == 200) {
-        Captcha resopsneCaptcha = Captcha.fromJson(jsonDecode(response.body));
-        _captcha.sink.add(resopsneCaptcha);
-      } else {
-        _captcha.sink.addError('Password must be at least 4 characters');
-      }
-    }).catchError((error) {
-      print(error);
-    });
-  }
 
   submit(BuildContext context) {
     final validUsername = _username.value;
     final validEmail = _email.value;
     final validPassword = _password.value;
-    final captcha = _captcha.value;
-    final userCaptcha = _userCatpchaValue.value;
-    print(validUsername);
-    print(validEmail);
-    print(validPassword);
-    CurrentInstance.newInstance.currentClient = Client(baseURL: "fedi.app");
 
+    _pr = ProgressDialog(context, ProgressDialogType.Normal);
+    _pr.setMessage(AppLocalizations.of(context).tr("sign_up.check.progress"));
+    _pr.show();
+
+    CurrentInstance.newInstance.currentClient = Client(baseURL: "fedi.app");
     CurrentInstance.newInstance.currentClient.register().then((response) {
       if (response.statusCode != 200) {
-        print(response.statusCode);
-        var alert = Alert(
-            context,
-            AppLocalizations.of(context).tr("login.check.error.alert.title"),
-            AppLocalizations.of(context).tr("login.check.error.alert.content"),
-            () => {});
-        alert.showAlert();
+        showError(context);
       } else {
         var bodyJson = json.decode(response.body);
         var client = new ClientSettings.fromJson(bodyJson);
-
         CurrentInstance.newInstance.currentClient.clientSettings = client;
         CurrentInstance.newInstance.currentClient
             .getAppAuthToken()
             .then((appResponse) {
-          print("hey ${appResponse.body}");
           var appJson = json.decode(appResponse.body);
-          print("THE AuTH RESPONSE  $appJson");
-          print(appJson["access_token"]);
           Map<String, dynamic> params = {
             "username": validUsername,
             "email": validEmail,
             "password": validPassword,
             "agreement": true,
-            "locale": "fr",
-            "captcha_token": captcha.token,
-            "captcha_solution": userCaptcha
+            "locale": "en",
           };
-          print(params);
           String path = Accounts.register();
-
           CurrentInstance.newInstance.currentClient
               .run(
                   path: path,
@@ -189,17 +150,60 @@ class SignUpBloc implements Disposable {
                   params: params,
                   overrideAccessToken: appJson["access_token"])
               .then((registerResopnse) {
-            print("respone::: ${registerResopnse.body}");
+            if (registerResopnse.statusCode != 200) {
+              String error;
+              if (registerResopnse.statusCode == 400){
+                var response = json.decode(registerResopnse.body);
+                error = response["error"];
+                error = error.replaceAll("{\"", "");
+                error = error.replaceAll("\":[\"", " : ");
+                error = error.replaceAll("\"],\"", "\n");
+                error = error.replaceAll("\"]}", "");
+              }
+              showError(context, error:error);
+            } else {
+              InstanceStorage.saveNewInstanceClient(
+                      CurrentInstance.newInstance.currentClient)
+                  .then((_) {
+                String body =
+                    registerResopnse.body.replaceAll("scope", "scopes");
+                var newAuth = AccountAuth.fromJsonString(body);
+                CurrentInstance.newInstance.currentAuth = newAuth;
+                CurrentInstance.newInstance.currentClient.accessToken =
+                    newAuth.accessToken;
+                _pr.hide();
+                Navigator.of(context).pop();
+                instanceSuccess();
+              }).catchError((error) {
+                print(error);
+                showError(context);
+              });
+            }
           }).catchError((error) {
             print(error);
+            showError(context);
           });
         }).catchError((error) {
           print(error);
+          showError(context);
         });
       }
     }).catchError((onError) {
       print(onError);
+      showError(context);
     });
+  }
+
+  showError(BuildContext context,{String error}) {
+    String content = error == null ? AppLocalizations.of(context).tr("sign_up.check.error.alert.content") : error;
+    
+    _pr.hide();
+    var alert = Alert(
+        context,
+        AppLocalizations.of(context).tr("sign_up.check.error.alert.title"),
+        content,
+        () => {});
+    alert.showAlert();
   }
 
   static SignUpBloc of(BuildContext context) =>
@@ -210,7 +214,6 @@ class SignUpBloc implements Disposable {
     _email.close();
     _password.close();
     _confirmPassword.close();
-    _captcha.close();
-    _userCatpchaValue.close();
+    _widgetStatus.close();
   }
 }

@@ -79,7 +79,12 @@ class AccountCell extends StatelessWidget {
     } else if (type == "mention") {
       return Row(
         children: <Widget>[
-          Icon(Icons.reply),
+          Image(
+                                height: 15,
+                                width: 15,
+                                color: Colors.grey,
+                                image: AssetImage("assets/images/comment.png"),
+                              ),
           SizedBox(
             width: 8,
           ),
@@ -90,7 +95,13 @@ class AccountCell extends StatelessWidget {
     } else if (type == "reblog") {
       return Row(
         children: <Widget>[
-          Icon(Icons.cached),
+          Image(
+                                  height: 20,
+                                  width: 20,
+                                  color: Colors.grey,
+                                  image: AssetImage(
+                                      "assets/images/repost.png"),
+                                ),
           SizedBox(
             width: 8,
           ),

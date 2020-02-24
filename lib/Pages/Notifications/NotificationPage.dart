@@ -2,6 +2,7 @@ import 'package:badges/badges.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pages/Notifications/Follows.dart';
 import 'package:fedi/Pages/Notifications/Mentions.dart';
+import 'package:fedi/Pages/Notifications/all_notifications.dart';
 import 'package:fedi/Pages/Notifications/likes_page.dart';
 import 'package:fedi/Pages/Notifications/reposts_page.dart';
 import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
@@ -53,12 +54,13 @@ class NotificationPageState extends State<NotificationPage>
     super.initState();
     print("HELP");
     _tabPages = [
+      AllNotifications(),
       Mentions(viewAccount, viewStatusDetail),
       RepostsPage(viewAccount, viewStatusDetail),
       LikesPage(viewAccount, viewStatusDetail),
       Follows(viewAccount, viewStatusDetail)
     ];
-    _tabController = TabController(length: 4, vsync: this, initialIndex: 0);
+    _tabController = TabController(length: 5, vsync: this, initialIndex: 0);
   }
 
   @override
@@ -94,26 +96,46 @@ class NotificationPageState extends State<NotificationPage>
   }
 
   void onTabTapped(int index) {
-    setState(() {
-      
-    });
+    setState(() {});
   }
 
+  Widget allTab = Tab(
+    icon: Icon(Icons.notifications_none),
+    text: null,
+  );
+
   Widget mentionTab = Tab(
-    icon: Icon(Icons.reply),
+    icon: Image(
+          height: 20,
+          width: 20,
+          color: Colors.white,
+          image: AssetImage("assets/images/comment.png"),
+        ),
     text: null,
   );
   Widget likeTab = Tab(
     icon: Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[Icon(Icons.favorite_border)],
+      children: <Widget>[Image(
+          height: 20,
+          width: 20,
+          color: Colors.white,
+          image: AssetImage("assets/images/favorites.png"),
+        ),],
     ),
     text: null,
   );
   Widget repostTab = Tab(
     icon: Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[Icon(Icons.cached)],
+      children: <Widget>[
+        Image(
+          height: 20,
+          width: 20,
+          color: Colors.white,
+          image: AssetImage("assets/images/repost.png"),
+        ),
+      ],
     ),
     text: null,
   );
@@ -146,13 +168,23 @@ class NotificationPageState extends State<NotificationPage>
               decoration:
                   BoxDecoration(shape: BoxShape.circle, color: Colors.white),
             ),
-            child: Icon(Icons.reply),
+            child: Image(
+                                height: 15,
+                                width: 15,
+                                color: Colors.grey,
+                                image: AssetImage("assets/images/comment.png"),
+                              ),
           ),
           text: null,
         );
       } else {
         mentionTab = Tab(
-          icon: Icon(Icons.reply),
+          icon: Image(
+                                height: 15,
+                                width: 15,
+                                color: Colors.grey,
+                                image: AssetImage("assets/images/comment.png"),
+                              ),
           text: null,
         );
       }
@@ -193,9 +225,19 @@ class NotificationPageState extends State<NotificationPage>
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Icon(Icons.cached),
+                Image(
+                  height: 20,
+                  width: 20,
+                  color: Colors.grey,
+                  image: AssetImage("assets/images/favorites.png"),
+                ),
                 Text(" / "),
-                Icon(Icons.favorite_border)
+                Image(
+                  height: 20,
+                  width: 20,
+                  color: Colors.grey,
+                  image: AssetImage("assets/images/favorites.png"),
+                ),
               ],
             ),
           ),
@@ -206,9 +248,19 @@ class NotificationPageState extends State<NotificationPage>
           icon: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Icon(Icons.cached),
+              Image(
+                height: 20,
+                width: 20,
+                color: Colors.grey,
+                image: AssetImage("assets/images/favorites.png"),
+              ),
               Text(" / "),
-              Icon(Icons.favorite_border)
+              Image(
+                height: 20,
+                width: 20,
+                color: Colors.grey,
+                image: AssetImage("assets/images/favorites.png"),
+              ),
             ],
           ),
           text: null,
@@ -228,6 +280,7 @@ class NotificationPageState extends State<NotificationPage>
           onTap: onTabTapped,
           controller: _tabController,
           tabs: <Widget>[
+            allTab,
             mentionTab,
             repostTab,
             likeTab,

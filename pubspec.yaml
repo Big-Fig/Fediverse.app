@@ -119,6 +119,10 @@ flutter:
     - assets/images/double_ring_loading_io.gif
     - assets/langs/en-US.json
     - assets/images/comment-icon.png
+    - assets/images/comment.png
+    - assets/images/favorites.png
+    - assets/images/repost.png
+    - assets/images/share.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
