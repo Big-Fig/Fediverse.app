@@ -511,14 +511,14 @@ class _StatusDetail extends State<StatusDetail> {
       "in_reply_to_id": inReplyToId
     };
 
-    print(params);
     CurrentInstance.instance.currentClient
         .run(path: statusPath, method: HTTPMethod.POST, params: params)
         .then((statusResponse) {
-      print(statusResponse.body);
       txtController.clear();
       var status = Status.fromJson(jsonDecode(statusResponse.body));
       statuses.add(status);
+      int lastIndex =  statuses.length - 1;
+      itemScrollController.jumpTo(index:lastIndex);
       setState(() {});
     }).catchError((e) {
       print(e);

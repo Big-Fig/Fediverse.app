@@ -43,7 +43,8 @@ class _ProfileHeader extends State<ProfileHeader> {
       CurrentInstance.instance.currentClient
           .run(path: path, method: HTTPMethod.GET)
           .then((response) {
-        Relationship relationship = Relationship.listFromJsonString(response.body).first;
+        Relationship relationship =
+            Relationship.listFromJsonString(response.body).first;
         if (mounted)
           setState(() {
             this.relationship = relationship;
@@ -111,7 +112,7 @@ class _ProfileHeader extends State<ProfileHeader> {
                               padding: EdgeInsets.all(3),
                               child: Text(
                                 AppLocalizations.of(context)
-                                .tr("profile.header.statuses", args:[
+                                    .tr("profile.header.statuses", args: [
                                   widget.profileAccount.statusesCount.toString()
                                 ]),
                                 textAlign: TextAlign.center,
@@ -126,8 +127,9 @@ class _ProfileHeader extends State<ProfileHeader> {
                               padding: EdgeInsets.all(3),
                               child: Text(
                                 AppLocalizations.of(context)
-                                    .tr("profile.header.following", args:[
-                                  widget.profileAccount.followingCount.toString()
+                                    .tr("profile.header.following", args: [
+                                  widget.profileAccount.followingCount
+                                      .toString()
                                 ]),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
@@ -141,8 +143,9 @@ class _ProfileHeader extends State<ProfileHeader> {
                               padding: EdgeInsets.all(3),
                               child: Text(
                                 AppLocalizations.of(context)
-                                    .tr("profile.header.followers", args:[
-                                  widget.profileAccount.followersCount.toString()
+                                    .tr("profile.header.followers", args: [
+                                  widget.profileAccount.followersCount
+                                      .toString()
                                 ]),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
@@ -177,6 +180,12 @@ class _ProfileHeader extends State<ProfileHeader> {
                       }
                     }
                     return baseStyle.merge(TextStyle(fontSize: 18));
+                  },
+                  onLinkTap: (url) {
+                    
+                    canLaunch(url).then((result) {
+                      launch(url);
+                    });
                   },
                 )
               ],
@@ -250,65 +259,83 @@ class _ProfileHeader extends State<ProfileHeader> {
         );
       }
 
-      return Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      return Column(
         children: <Widget>[
-          OutlineButton(
-            child: Row(
+          if (relationship.followedBy)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text(relationship.following ?
-                AppLocalizations.of(context)
-                    .tr("profile.header.action.unfollow")
-                    :
-                AppLocalizations.of(context)
-                    .tr("profile.header.action.follow")
+                Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Text(
+                    AppLocalizations.of(context)
+                        .tr("profile.header.follows_you"),
+                  ),
                 ),
               ],
             ),
-            onPressed: () {
-              String path = Accounts.followAccount(widget.profileAccount.id);
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              OutlineButton(
+                child: Row(
+                  children: <Widget>[
+                    Text(relationship.following
+                        ? AppLocalizations.of(context)
+                            .tr("profile.header.action.unfollow")
+                        : AppLocalizations.of(context)
+                            .tr("profile.header.action.follow")),
+                  ],
+                ),
+                onPressed: () {
+                  String path =
+                      Accounts.followAccount(widget.profileAccount.id);
 
-              if (relationship.following) {
-                path = Accounts.unfollowAccount(widget.profileAccount.id);
-                relationship.following = true;
-              }
-              CurrentInstance.instance.currentClient
-                  .run(path: path, method: HTTPMethod.POST)
-                  .then((response) {});
-              relationship.following = !relationship.following;
-              if (mounted) setState(() {});
-            },
-          ),
-          OutlineButton(
-            child: Row(
-              children: <Widget>[Text(AppLocalizations.of(context)
-                  .tr("profile.header.action.message"))],
-            ),
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ChatPage(
-                      account: widget.profileAccount,
-                    ),
-                  ));
-            },
-          ),
-          OutlineButton(
-            child: Row(
-              children: <Widget>[
-                Text(AppLocalizations.of(context)
-                    .tr("profile.header.action.more")),
-                Icon(
-                  Icons.keyboard_arrow_down,
-                  color: Colors.grey,
-                )
-              ],
-            ),
-            onPressed: () {
-              showMoreOptions(context);
-            },
+                  if (relationship.following) {
+                    path = Accounts.unfollowAccount(widget.profileAccount.id);
+                    relationship.following = true;
+                  }
+                  CurrentInstance.instance.currentClient
+                      .run(path: path, method: HTTPMethod.POST)
+                      .then((response) {});
+                  relationship.following = !relationship.following;
+                  if (mounted) setState(() {});
+                },
+              ),
+              OutlineButton(
+                child: Row(
+                  children: <Widget>[
+                    Text(AppLocalizations.of(context)
+                        .tr("profile.header.action.message"))
+                  ],
+                ),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ChatPage(
+                          account: widget.profileAccount,
+                        ),
+                      ));
+                },
+              ),
+              OutlineButton(
+                child: Row(
+                  children: <Widget>[
+                    Text(AppLocalizations.of(context)
+                        .tr("profile.header.action.more")),
+                    Icon(
+                      Icons.keyboard_arrow_down,
+                      color: Colors.grey,
+                    )
+                  ],
+                ),
+                onPressed: () {
+                  showMoreOptions(context);
+                },
+              ),
+            ],
           ),
         ],
       );
@@ -324,12 +351,9 @@ class _ProfileHeader extends State<ProfileHeader> {
       body: "${widget.profileAccount.acct}",
       actions: [
         AlertAction(
-          text: relationship.muting ?
-          AppLocalizations.of(context)
-              .tr("profile.header.action.unmute")
-              :
-          AppLocalizations.of(context)
-              .tr("profile.header.action.mute"),
+          text: relationship.muting
+              ? AppLocalizations.of(context).tr("profile.header.action.unmute")
+              : AppLocalizations.of(context).tr("profile.header.action.mute"),
           onPressed: () {
             String path = Accounts.muteAccount(widget.profileAccount.id);
             if (relationship.muting) {
@@ -346,12 +370,9 @@ class _ProfileHeader extends State<ProfileHeader> {
           },
         ),
         AlertAction(
-          text: relationship.blocking ?
-          AppLocalizations.of(context)
-              .tr("profile.header.action.unblock")
-              :
-          AppLocalizations.of(context)
-              .tr("profile.header.action.block"),
+          text: relationship.blocking
+              ? AppLocalizations.of(context).tr("profile.header.action.unblock")
+              : AppLocalizations.of(context).tr("profile.header.action.block"),
           onPressed: () {
             String path = Accounts.blockAccount(widget.profileAccount.id);
             if (relationship.blocking) {

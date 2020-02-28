@@ -70,6 +70,8 @@ class _ChatPage extends State<ChatPage> {
             onPressed: () {
               widget.refreshMesagePage();
               Navigator.of(context).pop();
+              
+              
             },
           ),
           title: GestureDetector(
@@ -621,7 +623,6 @@ class _ChatPage extends State<ChatPage> {
 
   @override
   void dispose() {
-    print("DISPOSE");
     backgroundCheckStatus = false;
     super.dispose();
   }

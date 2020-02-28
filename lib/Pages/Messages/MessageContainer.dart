@@ -37,6 +37,7 @@ class _MessageContainer extends State<MessageConatiner>
   }
 
   refreshPage() {
+    print("REFRESHING");
     _messageKey.currentState.fetchStatuses();
   }
 

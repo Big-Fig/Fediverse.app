@@ -15,7 +15,6 @@ class MessagesPage extends StatefulWidget {
   MessagesPage({Key key}) : super(key: key);
   @override
   State<StatefulWidget> createState() {
-
     return MessagesPageState();
   }
 }
@@ -26,12 +25,17 @@ class MessagesPageState extends State<MessagesPage> {
 
     if (SchedulerBinding.instance.schedulerPhase ==
         SchedulerPhase.persistentCallbacks) {
-      SchedulerBinding.instance
-          .addPostFrameCallback((_) => fetchStatuses());
+      SchedulerBinding.instance.addPostFrameCallback((_) => fetchStatuses());
     }
   }
 
   void fetchStatuses() {
+    print("teh fetch");
+
+    if (mounted)
+      setState(() {
+        widget.conversations.clear();
+      });
     _refreshController.requestRefresh();
   }
 
@@ -51,7 +55,8 @@ class MessagesPageState extends State<MessagesPage> {
                 minId: "", maxId: "", sinceId: "", limit: "20"),
             method: HTTPMethod.GET)
         .then((response) {
-      List<Conversation> newConversations = Conversation.listFromJsonString(response.body);
+      List<Conversation> newConversations =
+          Conversation.listFromJsonString(response.body);
       widget.conversations.clear();
       widget.conversations.addAll(newConversations);
       if (mounted) setState(() {});
@@ -77,7 +82,8 @@ class MessagesPageState extends State<MessagesPage> {
                 minId: "", maxId: lastId, sinceId: "", limit: "20"),
             method: HTTPMethod.GET)
         .then((response) {
-      List<Conversation> newConversations = Conversation.listFromJsonString(response.body);
+      List<Conversation> newConversations =
+          Conversation.listFromJsonString(response.body);
       widget.conversations.addAll(newConversations);
       if (mounted) setState(() {});
       _refreshController.loadComplete();
@@ -93,8 +99,8 @@ class MessagesPageState extends State<MessagesPage> {
         MaterialPageRoute(
           builder: (context) => ChatPage(
             conversation: conversation,
-            refreshMasterList: refreshMessagesList,
-            refreshMesagePage: refreshMessagesList,
+            refreshMasterList: fetchStatuses,
+            refreshMesagePage: fetchStatuses,
           ),
           settings: RouteSettings(name: "/ChatPage"),
         ));
@@ -116,8 +122,9 @@ class MessagesPageState extends State<MessagesPage> {
             Container(
               width: 15.0,
             ),
-          Text( AppLocalizations.of(context)
-              .tr("messages.page.update.up_to_date"),
+            Text(
+              AppLocalizations.of(context)
+                  .tr("messages.page.update.up_to_date"),
               style: TextStyle(color: Colors.grey),
             )
           ],
@@ -134,7 +141,7 @@ class MessagesPageState extends State<MessagesPage> {
             ),
             Text(
               AppLocalizations.of(context)
-                .tr("messages.page.update.unable_to_fetch"),
+                  .tr("messages.page.update.unable_to_fetch"),
               style: TextStyle(color: Colors.grey),
             ),
           ],
@@ -144,15 +151,15 @@ class MessagesPageState extends State<MessagesPage> {
         builder: (BuildContext context, LoadStatus mode) {
           Widget body;
           if (mode == LoadStatus.idle) {
-            body = Text( AppLocalizations.of(context)
+            body = Text(AppLocalizations.of(context)
                 .tr("messages.page.update.no_more_messages"));
           } else if (mode == LoadStatus.loading) {
             body = CircularProgressIndicator();
           } else if (mode == LoadStatus.failed) {
-            body = Text( AppLocalizations.of(context)
-                .tr("messages.page.update.failed"));
+            body = Text(
+                AppLocalizations.of(context).tr("messages.page.update.failed"));
           } else {
-            body = Text( AppLocalizations.of(context)
+            body = Text(AppLocalizations.of(context)
                 .tr("messages.page.update.no_more_data"));
           }
           return Container(
