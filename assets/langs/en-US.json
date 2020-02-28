@@ -392,6 +392,7 @@
       }
     },
     "header": {
+      "follows_you": "Follows You",
       "statuses": "Statuses\n{}",
       "following": "Following\n{}",
       "followers": "Followers\n{}",
@@ -562,11 +563,12 @@
     "action": {
       "login_to_instance": "Login to instance",
       "terms": "By using Fedi you agree to our terms. Tap to review",
-      "join_instance":"Join fedi.app"
+      "join_instance":"Join fedi.app",
+      "sign_up": "Sign Up"
     },
     "field": {
       "host": {
-        "hint": "Pleroma.site",
+        "hint": "Fedi.app",
         "helper_text": "Pleroma or Mastodon Instance"
       }
     },
@@ -579,7 +581,7 @@
       "error": {
         "alert": {
           "title": "Not a valid instance (may be closed or dead)",
-          "content": "Please enter a valid instance name like pleroma.site or mastodon.social"
+          "content": "Please enter a valid instance name like fedi.app or pleroma.com"
         }
       }
     }

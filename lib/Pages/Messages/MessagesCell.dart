@@ -57,8 +57,8 @@ class _MessagesCell extends State<MessagesCell> {
                         imageUrl: messageUser.avatar,
                         placeholder: (context, url) => Center(
                           child: Container(
-                            width: 50,
-                            height: 50,
+                            width: 30,
+                            height: 30,
                             child: CircularProgressIndicator(),
                           ),
                         ),

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/Pages/Profile/OtherAccount.dart';
 import 'package:fedi/Pages/Statuses/ImageViewPage.dart';
 import 'package:fedi/Pages/Timeline/StatusFavoritePage.dart';
 import 'package:fedi/Pages/Timeline/StatusRepostPage.dart';
@@ -193,7 +194,7 @@ class _TimelineCell extends State<TimelineCell> {
                     },
                     behavior: HitTestBehavior.translucent,
                     child: Row(
-                      mainAxisSize: MainAxisSize.min,
+                      mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
                         ClipRRect(
                           borderRadius: new BorderRadius.circular(20.0),
@@ -211,35 +212,49 @@ class _TimelineCell extends State<TimelineCell> {
                         SizedBox(
                           width: 8,
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: getUserName(status),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                Text("${status.account.acct}")
-                              ],
-                            ),
-                          ],
+                        Container(
+                          constraints:
+                              BoxConstraints(maxWidth: deviceWidth * 0.6),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: getUserName(status),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Text("${status.account.acct}")
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
                   ),
                   Spacer(),
-                  Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(left: 19),
-                        child: Text(
-                          timeago.format(status.createdAt, locale: 'en_short'),
+                  GestureDetector(
+                    onTap: () {
+                      print("view status context");
+                      if (widget.viewStatusContext != null) {
+                        widget.viewStatusContext(status);
+                      }
+                    },
+                    behavior: HitTestBehavior.translucent,
+                    child: Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(left: 19),
+                          child: Text(
+                            timeago.format(status.createdAt,
+                                locale: 'en_short'),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),
@@ -259,11 +274,11 @@ class _TimelineCell extends State<TimelineCell> {
                       Row(
                         children: <Widget>[
                           Image(
-                                height: 15,
-                                width: 15,
-                                color: Colors.grey,
-                                image: AssetImage("assets/images/comment.png"),
-                              ),
+                            height: 15,
+                            width: 15,
+                            color: Colors.grey,
+                            image: AssetImage("assets/images/comment.png"),
+                          ),
                           SizedBox(
                             width: 8,
                           ),
@@ -326,16 +341,26 @@ class _TimelineCell extends State<TimelineCell> {
                             i < widget.status.mentions.length;
                             i++) {
                           Mention mention = widget.status.mentions[i];
+                          String id = mention.id;
                           print("MENTIONS: ${mention.url} == $link");
                           if (mention.url == link) {
                             CurrentInstance.instance.currentClient
                                 .run(
                                     path: AccountRequests.Accounts.account(
-                                        id: mention.id),
+                                        id: id),
                                     method: HTTPMethod.GET)
                                 .then((response) {
                               Account account =
                                   Account.fromJsonString(response.body);
+                              if (widget.viewAccount == null) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          OtherAccount(account)),
+                                );
+                                return;
+                              }
                               widget.viewAccount(account);
                             }).catchError((error) {
                               print(error.toString());
@@ -394,7 +419,9 @@ class _TimelineCell extends State<TimelineCell> {
                               icon: Image(
                                 height: 20,
                                 width: 20,
-                                color: Colors.grey,
+                                color: widget.status.favourited
+                                    ? Colors.blue
+                                    : Colors.grey,
                                 image:
                                     AssetImage("assets/images/favorites.png"),
                               ),
@@ -416,7 +443,9 @@ class _TimelineCell extends State<TimelineCell> {
                               icon: Image(
                                 height: 20,
                                 width: 20,
-                                color: Colors.grey,
+                                color: widget.status.reblogged
+                                    ? Colors.blue
+                                    : Colors.grey,
                                 image: AssetImage("assets/images/repost.png"),
                               ),
                               tooltip: AppLocalizations.of(context)
@@ -430,11 +459,11 @@ class _TimelineCell extends State<TimelineCell> {
                         ),
                         IconButton(
                           icon: Image(
-                                height: 20,
-                                width: 20,
-                                color: Colors.grey,
-                                image: AssetImage("assets/images/share.png"),
-                              ),
+                            height: 20,
+                            width: 20,
+                            color: Colors.grey,
+                            image: AssetImage("assets/images/share.png"),
+                          ),
                           tooltip: AppLocalizations.of(context)
                               .tr("timeline.status.cell.tooltip.more"),
                           onPressed: () {
@@ -971,5 +1000,11 @@ class _TimelineCell extends State<TimelineCell> {
     }
 
     return usernameWidget;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    replyAccount = null;
   }
 }

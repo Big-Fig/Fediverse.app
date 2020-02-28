@@ -5,6 +5,7 @@ import 'package:fedi/Pages/SignUp/sign_up_page.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../Constants/AppThemeConsts.dart';
 import '../Pleroma/Foundation/Client.dart';
@@ -99,76 +100,38 @@ class _InstanceLoginPage extends State<InstanceLoginPage> {
                   ),
                 ),
                 Spacer(),
-                FlatButton(
-                  child: Text(AppLocalizations.of(context)
-                      .tr("login.action.login_to_instance")),
-                  color: darkGray,
-                  textColor: Colors.white,
-                  onPressed: () {
-                    if (_instanceTextController.text == "") {
-                      return;
-                    }
-                    _pr =
-                        new ProgressDialog(context, ProgressDialogType.Normal);
-                    _pr.setMessage(AppLocalizations.of(context)
-                        .tr("login.check.progress"));
-                    _pr.show();
-
-                    var instance =
-                        _instanceTextController.text.split("/").first;
-                    CurrentInstance.newInstance.currentClient =
-                        Client(baseURL: instance);
-
-                    CurrentInstance.newInstance.currentClient
-                        .register()
-                        .then((response) {
-                      _pr.hide();
-                      if (response.statusCode != 200) {
-                        print(response.statusCode);
-                        var alert = Alert(
-                            context,
-                            AppLocalizations.of(context)
-                                .tr("login.check.error.alert.title"),
-                            AppLocalizations.of(context)
-                                .tr("login.check.error.alert.content"),
-                            () => {});
-                        alert.showAlert();
-                      } else {
-                        var bodyJson = json.decode(response.body);
-                        var client = new ClientSettings.fromJson(bodyJson);
-                        CurrentInstance
-                            .newInstance.currentClient.clientSettings = client;
-
-                        InstanceStorage.saveNewInstanceClient(
-                                CurrentInstance.newInstance.currentClient)
-                            .then((_) {
-                          CurrentInstance.newInstance.currentClient
-                              .launchAuth(context, (error) {
-                            print(error.toString());
-                            var alert = Alert(
-                                context,
-                                AppLocalizations.of(context)
-                                    .tr("login.check.error.alert.title"),
-                                AppLocalizations.of(context)
-                                    .tr("login.check.error.alert.content"),
-                                () => {});
-                            alert.showAlert();
-                          });
-                        });
-                      }
-                    }).catchError((error) {
-                      print(error.toString());
-                      _pr.hide();
-                      var alert = Alert(
-                          context,
-                          AppLocalizations.of(context)
-                              .tr("login.check.error.alert.title"),
-                          AppLocalizations.of(context)
-                              .tr("login.check.error.alert.content"),
-                          () => {});
-                      alert.showAlert();
-                    });
-                  },
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 10, right: 5),
+                        child: FlatButton(
+                            child: Text(AppLocalizations.of(context)
+                                .tr("login.action.sign_up")),
+                            color: darkGray,
+                            textColor: Colors.white,
+                            onPressed: () {
+                              signUpToInstance(context);
+                            }),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 5, right: 10),
+                        child: FlatButton(
+                            child: Text(AppLocalizations.of(context)
+                                .tr("login.action.login_to_instance")),
+                            color: darkGray,
+                            textColor: Colors.white,
+                            onPressed: () {
+                              logInToInstance(context);
+                            }),
+                      ),
+                    ),
+                  ],
                 ),
                 Spacer(),
                 Container(
@@ -206,11 +169,12 @@ class _InstanceLoginPage extends State<InstanceLoginPage> {
                   ),
                   onPressed: () {
                     Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SignUpPage(widget.instanceSuccess),
-                    // settings: RouteSettings(name: "/MyProfile"),
-                  ));
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              SignUpPage(widget.instanceSuccess),
+                          // settings: RouteSettings(name: "/MyProfile"),
+                        ));
                   },
                 ),
                 Spacer(
@@ -231,4 +195,105 @@ class _InstanceLoginPage extends State<InstanceLoginPage> {
       ),
     );
   }
+
+  signUpToInstance(BuildContext context) {
+    if (_instanceTextController.text == "" ||
+        _instanceTextController.text.contains("fedi.app")) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SignUpPage(widget.instanceSuccess),
+            // settings: RouteSettings(name: "/MyProfile"),
+          ));
+          return;
+    }
+    _pr = new ProgressDialog(context, ProgressDialogType.Normal);
+    _pr.setMessage(AppLocalizations.of(context).tr("login.check.progress"));
+    _pr.show();
+
+     var instance = _instanceTextController.text.split("/").first;
+    CurrentInstance.newInstance.currentClient = Client(baseURL: instance);
+
+
+    CurrentInstance.newInstance.currentClient.register().then((response) {
+      _pr.hide();
+      if (response.statusCode != 200) {
+        print(response.statusCode);
+        var alert = Alert(
+            context,
+            AppLocalizations.of(context).tr("login.check.error.alert.title"),
+            AppLocalizations.of(context).tr("login.check.error.alert.content"),
+            () => {});
+        alert.showAlert();
+      } else {
+        canLaunch(CurrentInstance.newInstance.currentClient.baseURL).then((result) {
+          launch(CurrentInstance.newInstance.currentClient.baseURL);
+        });
+      }
+    });
+  }
+
+  logInToInstance(BuildContext context) {
+    if (_instanceTextController.text == "") {
+      _instanceTextController.text = "fedi.app";
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SignUpPage(widget.instanceSuccess),
+            // settings: RouteSettings(name: "/MyProfile"),
+          ));
+      return;
+    }
+    _pr = new ProgressDialog(context, ProgressDialogType.Normal);
+    _pr.setMessage(AppLocalizations.of(context).tr("login.check.progress"));
+    _pr.show();
+
+    var instance = _instanceTextController.text.split("/").first;
+    CurrentInstance.newInstance.currentClient = Client(baseURL: instance);
+
+    CurrentInstance.newInstance.currentClient.register().then((response) {
+      _pr.hide();
+      if (response.statusCode != 200) {
+        print(response.statusCode);
+        var alert = Alert(
+            context,
+            AppLocalizations.of(context).tr("login.check.error.alert.title"),
+            AppLocalizations.of(context).tr("login.check.error.alert.content"),
+            () => {});
+        alert.showAlert();
+      } else {
+        var bodyJson = json.decode(response.body);
+        var client = new ClientSettings.fromJson(bodyJson);
+        CurrentInstance.newInstance.currentClient.clientSettings = client;
+
+        InstanceStorage.saveNewInstanceClient(
+                CurrentInstance.newInstance.currentClient)
+            .then((_) {
+          CurrentInstance.newInstance.currentClient.launchAuth(context,
+              (error) {
+            print(error.toString());
+            var alert = Alert(
+                context,
+                AppLocalizations.of(context)
+                    .tr("login.check.error.alert.title"),
+                AppLocalizations.of(context)
+                    .tr("login.check.error.alert.content"),
+                () => {});
+            alert.showAlert();
+          });
+        });
+      }
+    }).catchError((error) {
+      print(error.toString());
+      _pr.hide();
+      var alert = Alert(
+          context,
+          AppLocalizations.of(context).tr("login.check.error.alert.title"),
+          AppLocalizations.of(context).tr("login.check.error.alert.content"),
+          () => {});
+      alert.showAlert();
+    });
+  }
+
+  joinInstance() {}
 }
