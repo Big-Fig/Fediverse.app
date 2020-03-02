@@ -88,6 +88,9 @@ dependencies:
   # native kotlin/swift image convert & compress
   flutter_image_compress: ^0.6.5+1
 
+  # WebSockets API mobile implementation
+  web_socket_channel: ^1.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

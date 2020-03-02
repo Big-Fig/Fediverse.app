@@ -40,6 +40,13 @@ class Notification {
     Map<String, dynamic> toJson() => _$NotificationToJson(this);
     String toJsonString() => jsonEncode(_$NotificationToJson(this));
 
+    @override
+    String toString() {
+        return 'Notification{account: $account, createdAt: $createdAt, id: $id,'
+            ' type: $type, status: $status}';
+    }
+
+
 }
 
 
