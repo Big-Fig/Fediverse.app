@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/DeepLinks/DeepLinkHelper.dart';
 import 'package:fedi/Pages/Push/PushHelper.dart';
+import 'package:fedi/Pages/Push/relay/push_relay_service.dart';
+import 'package:fedi/Pages/Push/relay/push_relay_service_impl.dart';
 import 'package:fedi/Pleroma/Models/ClientSettings.dart';
 import 'package:fedi/Pleroma/Models/Emoji.dart';
 import 'package:fedi/Pleroma/Models/Field.dart';
@@ -8,6 +10,9 @@ import 'package:fedi/Pleroma/account/edit/pleroma_account_edit_service.dart';
 import 'package:fedi/Pleroma/account/edit/pleroma_account_edit_service_impl.dart';
 import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_service.dart';
 import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_service_impl.dart';
+import 'package:fedi/Pleroma/push/pleroma_push_model.dart';
+import 'package:fedi/Pleroma/push/pleroma_push_service.dart';
+import 'package:fedi/Pleroma/push/pleroma_push_service_impl.dart';
 import 'package:fedi/Pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/Pleroma/rest/pleroma_rest_service_impl.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -48,6 +53,8 @@ void main() async {
   Hive.registerAdapter(ClientSettingsAdapter(), 36);
   Hive.registerAdapter(FieldAdapter(), 37);
   Hive.registerAdapter(EmojiAdapter(), 38);
+  Hive.registerAdapter(PleromaPushSubscribeDataAdapter(), 39);
+  Hive.registerAdapter(PleromaPushSettingsDataAlertsAdapter(), 40);
 
   Hive.init(directory.path);
 
@@ -109,14 +116,16 @@ class MyApp extends StatelessWidget {
   }
 
   Widget provideGlobalContext(Widget app) => MultiProvider(
-    providers: [
-      DisposableProvider<IPermissionsService>(
-          create: (BuildContext context) => PermissionsService()),
-      Provider(create: (BuildContext context) => DeepLinkHelper()),
-      Provider(create: (BuildContext context) => PushHelper())
-    ],
-    child: providePermissionsContext(child: providePleromaContext(app)),
-  );
+        providers: [
+          DisposableProvider<IPermissionsService>(
+              create: (BuildContext context) => PermissionsService()),
+          Provider(create: (BuildContext context) => DeepLinkHelper()),
+          Provider<IPushRelayService>(
+              create: (BuildContext context) => PushRelayService(
+                  pushRelayBaseUrl: "https://pushrelay3.your.org/push/")),
+        ],
+        child: providePermissionsContext(child: providePleromaContext(app)),
+      );
 
   Widget providePleromaContext(Widget app) => Provider<IPleromaRestService>(
       create: (BuildContext context) => PleromaRestService(),
@@ -128,26 +137,37 @@ class MyApp extends StatelessWidget {
           Provider<IPleromaAccountEditService>(
               create: (context) => PleromaAccountEditService(
                   restService: IPleromaRestService.of(context, listen: false))),
-        ],
-        child: app,
+          Provider<IPleromaPushService>(
+            create: (context) => PleromaPushService(
+                keys: PleromaPushSettingsSubscriptionKeys(
+                    p256dh:
+                        "BEpPCn0cfs3P0E0fY-gyOuahx5dW5N8quUowlrPyfXlMa6tABLqqcSpOpMnC1-o_UB_s4R8NQsqMLbASjnqSbqw=",
+                    auth: "T5bhIIyre5TDC1LyX4mFAQ=="),
+                restService: IPleromaRestService.of(context, listen: false)),
+          )
+        ], child: Provider(create: (BuildContext context) =>
+          PushHelper(pleromaPushService: IPleromaPushService.of(
+              context, listen: false),
+              pushRelayService: IPushRelayService.of(context, listen: false)),
+          child: app),
       ));
   Widget providePermissionsContext({@required Widget child}) => MultiProvider(
-    providers: [
-      Provider<ICameraPermissionBloc>(
-        create: (context) => CameraPermissionBloc(
-            IPermissionsService.of(context, listen: false)),
-      ),
-      Provider<IMicPermissionBloc>(
-        create: (context) => MicPermissionBloc(
-            IPermissionsService.of(context, listen: false)),
-      ),
-      Provider<IStoragePermissionBloc>(
-        create: (context) => StoragePermissionBloc(
-            IPermissionsService.of(context, listen: false)),
-      ),
-    ],
-    child: child,
-  );
+        providers: [
+          Provider<ICameraPermissionBloc>(
+            create: (context) => CameraPermissionBloc(
+                IPermissionsService.of(context, listen: false)),
+          ),
+          Provider<IMicPermissionBloc>(
+            create: (context) => MicPermissionBloc(
+                IPermissionsService.of(context, listen: false)),
+          ),
+          Provider<IStoragePermissionBloc>(
+            create: (context) => StoragePermissionBloc(
+                IPermissionsService.of(context, listen: false)),
+          ),
+        ],
+        child: child,
+      );
 }
 
 Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
