@@ -6,6 +6,8 @@ import 'package:fedi/Pages/Push/relay/push_relay_service_impl.dart';
 import 'package:fedi/Pleroma/Models/ClientSettings.dart';
 import 'package:fedi/Pleroma/Models/Emoji.dart';
 import 'package:fedi/Pleroma/Models/Field.dart';
+import 'package:fedi/Pleroma/Models/Relationship.dart';
+import 'package:fedi/Pleroma/Models/Status.dart';
 import 'package:fedi/Pleroma/account/edit/pleroma_account_edit_service.dart';
 import 'package:fedi/Pleroma/account/edit/pleroma_account_edit_service_impl.dart';
 import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_service.dart';
@@ -55,6 +57,11 @@ void main() async {
   Hive.registerAdapter(EmojiAdapter(), 38);
   Hive.registerAdapter(PleromaPushSubscribeDataAdapter(), 39);
   Hive.registerAdapter(PleromaPushSettingsDataAlertsAdapter(), 40);
+  Hive.registerAdapter(AccountPleromaPartAdapter(), 41);
+  Hive.registerAdapter(TagAdapter(), 42);
+  Hive.registerAdapter(RelationshipAdapter(), 43);
+  Hive.registerAdapter(SourceAdapter(), 44);
+  Hive.registerAdapter(SourcePleromaPartAdapter(), 45);
 
   Hive.init(directory.path);
 

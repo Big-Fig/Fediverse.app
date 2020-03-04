@@ -381,6 +381,13 @@
           "title": "Unsaved changes",
           "body": "There are unsaved changes to your bio. Are you sure you want to discard them?"
         }
+      },
+      "locked": {
+        "label": "Restrict account to approved followers only"
+      },
+      "field": {
+        "label": "Field",
+        "value": "Value"
       }
     },
     "my": {
