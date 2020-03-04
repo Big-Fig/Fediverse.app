@@ -5,6 +5,7 @@
 import 'dart:convert';
 
 import 'package:fedi/Pleroma/Models/Relationship.dart';
+import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_model.dart';
 
@@ -152,10 +153,14 @@ class AccountPleroma {
   String toJsonString() => jsonEncode(_$AccountPleromaToJson(this));
 }
 
+@HiveType()
 @JsonSerializable()
 class Source {
+  @HiveField(1)
   String note;
-  Relationship pleroma;
+  @HiveField(2)
+  SourcePleromaPart pleroma;
+  @HiveField(3)
   bool sensitive;
 
   Source({
@@ -172,6 +177,46 @@ class Source {
   Map<String, dynamic> toJson() => _$SourceToJson(this);
 
   String toJsonString() => jsonEncode(_$SourceToJson(this));
+}
+
+
+@HiveType()
+@JsonSerializable()
+class SourcePleromaPart {
+  //  show_role: boolean, nullable, true when the user wants his role (e.g admin, moderator) to be shown
+  @HiveField(1)
+  @JsonKey(name: "show_role")
+  bool showRole;
+
+  //  no_rich_text - boolean, nullable, true when html tags are stripped from all statuses requested from the API
+  @HiveField(2)
+  @JsonKey(name: "no_rich_text")
+  bool noRichText;
+
+  //  discoverable: boolean, true when the user allows discovery of the account in search results and other services.
+  @HiveField(3)
+  bool discoverable;
+
+  // actor_type: string, the type of this account.
+  @HiveField(4)
+  @JsonKey(name: "actor_type")
+  String actorType;
+
+  SourcePleromaPart(
+      {this.showRole, this.noRichText, this.discoverable, this.actorType});
+
+  factory SourcePleromaPart.fromJson(
+      Map<String, dynamic> json) =>
+      _$SourcePleromaPartFromJson(json);
+
+  factory SourcePleromaPart.fromJsonString(String jsonString) =>
+      _$SourcePleromaPartFromJson(jsonDecode(jsonString));
+
+  Map<String, dynamic> toJson() =>
+      _$SourcePleromaPartToJson(this);
+
+  String toJsonString() =>
+      jsonEncode(_$SourcePleromaPartToJson(this));
 }
 
 @JsonSerializable()
@@ -286,9 +331,12 @@ class Content {
   String toJsonString() => jsonEncode(_$ContentToJson(this));
 }
 
+@HiveType()
 @JsonSerializable()
 class Tag {
+  @HiveField(1)
   String name;
+  @HiveField(2)
   String url;
 
   Tag({

@@ -22,9 +22,6 @@ class Accounts {
       return "/api/v1/accounts/verify_credentials";
   }
 
-  static String updateCurrentUser(){
-    return "/api/v1/accounts/update_credentials";
-  }
 
   static String getFollowers(String id){
     return "/api/v1/accounts/$id/followers";
