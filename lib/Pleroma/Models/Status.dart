@@ -92,6 +92,22 @@ class Status {
   Map<String, dynamic> toJson() => _$StatusToJson(this);
 
   String toJsonString() => jsonEncode(_$StatusToJson(this));
+
+  @override
+  String toString() {
+    return 'Status{id: $id, createdAt: $createdAt, inReplyToId: $inReplyToId,'
+        ' inReplyToAccountId: $inReplyToAccountId, sensitive: $sensitive,'
+        ' spoilerText: $spoilerText, visibility: $visibility,'
+        ' uri: $uri, url: $url, repliesCount: $repliesCount,'
+        ' reblogsCount: $reblogsCount, favouritesCount: $favouritesCount,'
+        ' favourited: $favourited, reblogged: $reblogged, muted: $muted,'
+        ' bookmarked: $bookmarked, content: $content, reblog: $reblog,'
+        ' application: $application, account: $account,'
+        ' mediaAttachments: $mediaAttachments, mentions: $mentions,'
+        ' tags: $tags, emojis: $emojis, poll: $poll}';
+  }
+
+
 }
 
 @JsonSerializable()
