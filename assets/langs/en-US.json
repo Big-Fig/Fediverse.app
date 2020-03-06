@@ -504,7 +504,7 @@
         }
       },
       "favorite": {
-        "favorited_by:": "Favorited by:",
+        "favorited_by": "Favorited by:",
         "update": {
           "up_to_date": "Everything up to date",
           "unable_to_fetch": "Unable to fetch data",
@@ -514,7 +514,7 @@
         }
       },
       "repost": {
-        "reposted_by:": "Reposted by:",
+        "reposted_by": "Reposted by:",
         "update": {
           "up_to_date": "Everything up to date",
           "unable_to_fetch": "Unable to fetch data",
