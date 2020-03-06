@@ -5,6 +5,7 @@
 import 'dart:convert';
 
 import 'package:fedi/Pleroma/Models/Relationship.dart';
+import 'package:fedi/Pleroma/Models/card.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_model.dart';
 
@@ -48,6 +49,7 @@ class Status {
   List<Mention> mentions;
   List<Tag> tags;
   List<Emoji> emojis;
+  Card card;
   dynamic poll;
 
   Status({
@@ -75,6 +77,7 @@ class Status {
     this.mentions,
     this.tags,
     this.emojis,
+    this.card,
     this.poll,
   });
 

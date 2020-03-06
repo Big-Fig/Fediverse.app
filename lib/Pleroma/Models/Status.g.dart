@@ -53,6 +53,9 @@ Status _$StatusFromJson(Map<String, dynamic> json) {
         ?.map(
             (e) => e == null ? null : Emoji.fromJson(e as Map<String, dynamic>))
         ?.toList(),
+    card: json['card'] == null
+        ? null
+        : Card.fromJson(json['card'] as Map<String, dynamic>),
     poll: json['poll'],
   );
 }
@@ -82,6 +85,7 @@ Map<String, dynamic> _$StatusToJson(Status instance) => <String, dynamic>{
       'mentions': instance.mentions,
       'tags': instance.tags,
       'emojis': instance.emojis,
+      'card': instance.card,
       'poll': instance.poll,
     };
 

@@ -3,6 +3,7 @@ import 'package:carousel_pro/carousel_pro.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pages/Profile/OtherAccount.dart';
 import 'package:fedi/Pages/Statuses/ImageViewPage.dart';
+import 'package:fedi/Pages/Statuses/card_widget.dart';
 import 'package:fedi/Pages/Timeline/StatusFavoritePage.dart';
 import 'package:fedi/Pages/Timeline/StatusRepostPage.dart';
 import 'package:fedi/Pleroma/Foundation/Client.dart';
@@ -376,8 +377,16 @@ class _TimelineCell extends State<TimelineCell> {
                       },
                     ),
                   ),
+                  // image carousel
                   if (widget.status.mediaAttachments.length > 0)
                     getMeidaWidget(widget.status),
+                  // card widget
+                  if (widget.status.card != null)
+                    CardWidget(widget.status.card)
+                  else if (widget.status.reblog != null)
+                    if (widget.status.reblog.card != null)
+                      CardWidget(widget.status.reblog.card),
+
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 12.0),
                     child: Row(
@@ -431,7 +440,23 @@ class _TimelineCell extends State<TimelineCell> {
                                 like();
                               },
                             ),
-                            Text(getLikeCounts()),
+                            GestureDetector(
+                              onTap: () {
+                                // go to likes page
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          StatusFavoritePage(widget.status)),
+                                );
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.all(10),
+                                child: Text(
+                                  getLikeCounts(),
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                         Row(
@@ -454,7 +479,23 @@ class _TimelineCell extends State<TimelineCell> {
                                 repost();
                               },
                             ),
-                            Text(getRepostCounts()),
+                            GestureDetector(
+                              onTap: () {
+                                // go to reposts
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          StatusRepostPage(widget.status)),
+                                );
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.all(10),
+                                child: Text(
+                                  getRepostCounts(),
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                         IconButton(
@@ -473,20 +514,6 @@ class _TimelineCell extends State<TimelineCell> {
                       ],
                     ),
                   ),
-                  if (widget.status.favouritesCount > 0 ||
-                      widget.status.reblogsCount > 0 ||
-                      widget.status.reblog != null &&
-                          widget.showCommentBtn != null)
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12.0),
-                      child: Row(
-                        children: <Widget>[
-                          if (widget.status.favouritesCount > 0)
-                            getFavoritesButton(context),
-                          if (widget.status.reblogsCount > 0) getRepostsButton()
-                        ],
-                      ),
-                    ),
                 ],
               ),
             ),
