@@ -1,16 +1,26 @@
 import 'dart:io' show Platform;
 
 import 'package:fedi/Notifications/PushNotification.dart';
+import 'package:fedi/Pages/Push/relay/push_relay_service.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
+import 'package:fedi/Pleroma/push/pleroma_push_model.dart';
+import 'package:fedi/Pleroma/push/pleroma_push_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vibration/vibration.dart';
 
 class PushHelper {
+  final IPleromaPushService pleromaPushService;
+  final IPushRelayService pushRelayService;
 
-  static PushHelper of(BuildContext context, {listen: true}) => 
+  PushHelper({
+    @required this.pleromaPushService,
+    @required this.pushRelayService,
+  });
+
+  static PushHelper of(BuildContext context, {listen: true}) =>
       Provider.of<PushHelper>(context, listen: listen);
 
   Function swapAccount;
@@ -64,8 +74,7 @@ class PushHelper {
         print("$message");
         var pushNotification = _parsePushNotification(message);
 
-        notificationId =
-            pushNotification.notificationId.toString();
+        notificationId = pushNotification.notificationId.toString();
         notifcationType = pushNotification.notificationType;
         //  _navigateToItemDetail(message);
         String account =
@@ -83,8 +92,7 @@ class PushHelper {
         String account =
             "${pushNotification.account}@https://${pushNotification.server}";
         print("SWAPPING ACCOUNT $account");
-        notificationId =
-            pushNotification.notificationId.toString();
+        notificationId = pushNotification.notificationId.toString();
         notifcationType = pushNotification.notificationType;
         InstanceStorage.setCurrentAccount(account).then((future) {
           swapAccount();
@@ -96,7 +104,11 @@ class PushHelper {
   }
 
   unregister() {
-    CurrentInstance.instance.currentClient.unsubscribeToPush();
+    pleromaPushService.unsubscribe().then((success) {
+      String account =
+          "${CurrentInstance.instance.currentAccount.acct}@${CurrentInstance.instance.currentClient.baseURL}";
+      InstanceStorage.setAccountNotificationsSettings(account, null);
+    });
   }
 
   register() {
@@ -105,26 +117,37 @@ class PushHelper {
     _firebaseMessaging.onIosSettingsRegistered
         .listen((IosNotificationSettings settings) {});
 
-    _firebaseMessaging.getToken().then((String token) {
-      assert(token != null);
+    _firebaseMessaging.getToken().then((String fcmToken) {
+      assert(fcmToken != null);
       print("Token");
-      print(token);
+      print(fcmToken);
 
       String account =
           "${CurrentInstance.instance.currentAccount.acct}@${CurrentInstance.instance.currentClient.baseURL}";
 
-      InstanceStorage.getAccountSubscribedToNotifications(account)
-          .then((subbed) {
-        if (subbed == false) {
-          CurrentInstance.instance.currentClient
-              .subscribeToPush(token)
-              .then((_) {
-            String account =
-                "${CurrentInstance.instance.currentAccount.acct}@${CurrentInstance.instance.currentClient.baseURL}";
-
-            InstanceStorage.addAccountSubscribedToNotifications(account, true);
-          });
+      InstanceStorage.getAccountNotificationsSettings(account).then((settings) {
+        if (settings == null) {
+          // subscribe to all by default
+          settings = PleromaPushSubscribeData(
+              alerts: PleromaPushSettingsDataAlerts.defaultAllEnabled());
         }
+        String account =
+            "${CurrentInstance.instance.currentAccount.acct}@${CurrentInstance.instance.currentClient.baseURL}";
+
+        pleromaPushService
+            .subscribe(
+                endpointCallbackUrl:
+                    pushRelayService.createPushRelayEndPointUrl(
+                        account: CurrentInstance.instance.currentAccount.acct,
+                        baseServerUrl:
+                            CurrentInstance.instance.currentClient.baseURL,
+                        fcmToken: fcmToken),
+                data: settings)
+            .then((success) {
+          if (success) {
+            InstanceStorage.setAccountNotificationsSettings(account, settings);
+          }
+        });
       });
     });
   }
@@ -141,3 +164,56 @@ PushNotification _parsePushNotification(Map<String, dynamic> message) {
   PushNotification pushNotification = PushNotification.fromJson(data);
   return pushNotification;
 }
+
+//
+
+//
+//Future<http.Response> subscribeToPush(String token) async {
+//  var url = "$baseURL/api/v1/push/subscription";
+//  var headers = {
+//    HttpHeaders.authorizationHeader: "Bearer $accessToken",
+//    "Accept": "application/json",
+//    "Content-Type": "application/json",
+//  };
+//  String baseUrl = CurrentInstance.instance.currentClient.baseURL
+//      .replaceAll("https://", "");
+//  String endpoint =
+//      "https://pushrelay3.your.org/push/$token?account=${CurrentInstance.instance.currentAccount.acct}&server=$baseUrl&device=iOS";
+//  if (Platform.isAndroid) {
+//    endpoint =
+//    "https://pushrelay3.your.org/push/$token?account=${CurrentInstance.instance.currentAccount.acct}&server=$baseUrl";
+//  } else {}
+//  dynamic params = {
+//    "data": {
+//      "alerts": {
+//        "favourite": true,
+//        "follow": true,
+//        "mention": true,
+//        "reblog": true,
+//      },
+//    },
+//    "subscription": {
+//      "keys": {
+//        "p256dh":
+//        "BEpPCn0cfs3P0E0fY-gyOuahx5dW5N8quUowlrPyfXlMa6tABLqqcSpOpMnC1-o_UB_s4R8NQsqMLbASjnqSbqw=",
+//        "auth": "T5bhIIyre5TDC1LyX4mFAQ==",
+//      },
+//      "endpoint": endpoint
+//    }
+//  };
+//
+//  var jsonData = json.encode(params);
+//  print(jsonData);
+//  try {
+//    final response = await http.post(url,
+//        headers: headers,
+//        body: jsonData,
+//        encoding: Encoding.getByName("utf-8"));
+//    print(response.statusCode);
+//    print(response.body);
+//    return response;
+//  } catch (e) {
+//    print(e.toString());
+//    return e;
+//  }
+//}
