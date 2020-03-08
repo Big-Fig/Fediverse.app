@@ -2,6 +2,7 @@ import 'dart:core';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/Pages/Push/PushHelper.dart';
 import 'package:fedi/Views/Alert.dart';
 import 'package:flutter/material.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
@@ -106,18 +107,17 @@ class AccountsBottomSheet extends StatelessWidget {
                                         InstanceStorage.setCurrentAccount(
                                                 instance.account)
                                             .then((future) {
-                                          CurrentInstance.instance.currentClient
-                                              .unsubscribeToPush()
-                                              .then((response) {
-                                            if (response.body != null) {
-                                              InstanceStorage
-                                                      .removeInstanceData(
-                                                          instance)
-                                                  .then((_) {
-                                                logout();
-                                              });
-                                            }
-                                          });
+
+                                              PushHelper.of(context, listen:
+                                              false).unregister();
+
+
+                                                InstanceStorage
+                                                    .removeInstanceData(
+                                                    instance)
+                                                    .then((_) {
+                                                  logout();
+                                                });
                                         });
                                       },
                                           actionButtonTitle:

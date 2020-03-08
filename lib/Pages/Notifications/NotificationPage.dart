@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:badges/badges.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pages/Notifications/Follows.dart';
@@ -5,20 +7,20 @@ import 'package:fedi/Pages/Notifications/Mentions.dart';
 import 'package:fedi/Pages/Notifications/all_notifications.dart';
 import 'package:fedi/Pages/Notifications/likes_page.dart';
 import 'package:fedi/Pages/Notifications/reposts_page.dart';
-import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
-import 'package:flutter/cupertino.dart';
-import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'package:fedi/Pages/Profile/OtherAccount.dart';
 import 'package:fedi/Pages/Push/PushHelper.dart';
 import 'package:fedi/Pages/Timeline/StatusDetail.dart';
 import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Notification.dart'
     as NotificationRequest;
 import 'package:fedi/Pleroma/Models/Account.dart';
 import 'package:fedi/Pleroma/Models/Notification.dart' as NotificationModel;
 import 'package:fedi/Pleroma/Models/Status.dart';
+import 'package:fedi/Pleroma/push/pleroma_push_model.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class NotificationPage extends StatefulWidget {
   NotificationPage({Key key}) : super(key: key);
@@ -106,22 +108,24 @@ class NotificationPageState extends State<NotificationPage>
 
   Widget mentionTab = Tab(
     icon: Image(
-          height: 20,
-          width: 20,
-          color: Colors.white,
-          image: AssetImage("assets/images/comment.png"),
-        ),
+      height: 20,
+      width: 20,
+      color: Colors.white,
+      image: AssetImage("assets/images/comment.png"),
+    ),
     text: null,
   );
   Widget likeTab = Tab(
     icon: Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[Image(
+      children: <Widget>[
+        Image(
           height: 20,
           width: 20,
           color: Colors.white,
           image: AssetImage("assets/images/favorites.png"),
-        ),],
+        ),
+      ],
     ),
     text: null,
   );
@@ -169,22 +173,22 @@ class NotificationPageState extends State<NotificationPage>
                   BoxDecoration(shape: BoxShape.circle, color: Colors.white),
             ),
             child: Image(
-                                height: 15,
-                                width: 15,
-                                color: Colors.grey,
-                                image: AssetImage("assets/images/comment.png"),
-                              ),
+              height: 15,
+              width: 15,
+              color: Colors.grey,
+              image: AssetImage("assets/images/comment.png"),
+            ),
           ),
           text: null,
         );
       } else {
         mentionTab = Tab(
           icon: Image(
-                                height: 15,
-                                width: 15,
-                                color: Colors.grey,
-                                image: AssetImage("assets/images/comment.png"),
-                              ),
+            height: 15,
+            width: 15,
+            color: Colors.grey,
+            image: AssetImage("assets/images/comment.png"),
+          ),
           text: null,
         );
       }
@@ -221,7 +225,8 @@ class NotificationPageState extends State<NotificationPage>
               width: 5,
               decoration:
                   BoxDecoration(shape: BoxShape.circle, color: Colors.white),
-            ), //Text(''),
+            ),
+            //Text(''),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -270,12 +275,22 @@ class NotificationPageState extends State<NotificationPage>
   }
 
   TabController _tabController;
+  GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _drawerKey,
+      endDrawer: NotificationsPagePushSettingsDrawer(),
       body: _tabPages[_tabController.index],
       appBar: AppBar(
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.settings),
+              onPressed: () {
+                _drawerKey.currentState.openEndDrawer();
+              })
+        ],
         title: TabBar(
           onTap: onTabTapped,
           controller: _tabController,
@@ -289,5 +304,175 @@ class NotificationPageState extends State<NotificationPage>
         ),
       ),
     );
+  }
+}
+
+class NotificationsPagePushSettingsDrawer extends StatefulWidget {
+  @override
+  _NotificationsPagePushSettingsDrawerState createState() =>
+      _NotificationsPagePushSettingsDrawerState();
+}
+
+class _NotificationsPagePushSettingsDrawerState
+    extends State<NotificationsPagePushSettingsDrawer> {
+  PleromaPushSubscribeData settings;
+
+  String get account =>
+      "${CurrentInstance.instance.currentAccount.acct}@${CurrentInstance.instance.currentClient.baseURL}";
+  @override
+  void initState() {
+    super.initState();
+
+    InstanceStorage.getAccountNotificationsSettings(account)
+        .then((loadedSettings) {
+      setState(() {
+        this.settings = loadedSettings ??
+            PleromaPushSubscribeData(
+                alerts: PleromaPushSettingsDataAlerts.defaultAllEnabled());
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) => Drawer(
+        child: SafeArea(child: buildDrawerBody(context)),
+      );
+
+  Widget buildDrawerBody(BuildContext context) {
+    if (settings == null) {
+      return Center(child: CircularProgressIndicator());
+    } else {
+      return ListView(padding: EdgeInsets.zero, children: <Widget>[
+        Container(
+          height: 110,
+          width: 50,
+          child: DrawerHeader(
+            child: Text(
+              AppLocalizations.of(context).tr("home.drawer"
+                  ".notifications_settings.header"),
+              style: TextStyle(color: Colors.white),
+            ),
+            decoration: BoxDecoration(
+              color: Colors.blue,
+            ),
+          ),
+        ),
+        ListTile(
+          title: Row(
+            children: <Widget>[
+              Text(
+                AppLocalizations.of(context)
+                    .tr("home.drawer.notifications_settings.favourite"),
+              ),
+              Spacer(),
+              Switch(
+                value: settings.alerts.favourite,
+                onChanged: (value) async {
+                  settings.alerts.favourite = value;
+                  await InstanceStorage.setAccountNotificationsSettings(
+                      account, settings);
+                  PushHelper.of(context, listen: false).register();
+                  setState(() {});
+                },
+                activeTrackColor: Colors.lightBlueAccent,
+                activeColor: Colors.blue,
+              ),
+            ],
+          ),
+        ),
+        ListTile(
+          title: Row(
+            children: <Widget>[
+              Text(
+                AppLocalizations.of(context)
+                    .tr("home.drawer.notifications_settings.follow"),
+              ),
+              Spacer(),
+              Switch(
+                value: settings.alerts.follow,
+                onChanged: (value) async {
+                  settings.alerts.follow = value;
+                  await InstanceStorage.setAccountNotificationsSettings(
+                      account, settings);
+                  PushHelper.of(context, listen: false).register();
+                  setState(() {});
+                },
+                activeTrackColor: Colors.lightBlueAccent,
+                activeColor: Colors.blue,
+              ),
+            ],
+          ),
+        ),
+        ListTile(
+          title: Row(
+            children: <Widget>[
+              Text(
+                AppLocalizations.of(context)
+                    .tr("home.drawer.notifications_settings.mention"),
+              ),
+              Spacer(),
+              Switch(
+                value: settings.alerts.mention,
+                onChanged: (value) async {
+                  settings.alerts.mention = value;
+                  await InstanceStorage.setAccountNotificationsSettings(
+                      account, settings);
+                  PushHelper.of(context, listen: false).register();
+                  setState(() {});
+                },
+                activeTrackColor: Colors.lightBlueAccent,
+                activeColor: Colors.blue,
+              ),
+            ],
+          ),
+        ),
+        ListTile(
+          title: Row(
+            children: <Widget>[
+              Text(
+                AppLocalizations.of(context)
+                    .tr("home.drawer.notifications_settings.reblog"),
+              ),
+              Spacer(),
+              Switch(
+                value: settings.alerts.reblog,
+                onChanged: (value) async {
+                  settings.alerts.reblog = value;
+                  await InstanceStorage.setAccountNotificationsSettings(
+                      account, settings);
+                  PushHelper.of(context, listen: false).register();
+                  setState(() {});
+                },
+                activeTrackColor: Colors.lightBlueAccent,
+                activeColor: Colors.blue,
+              ),
+            ],
+          ),
+        ),
+        ListTile(
+          title: Row(
+            children: <Widget>[
+              Text(
+                AppLocalizations.of(context)
+                    .tr("home.drawer.notifications_settings.poll"),
+              ),
+              Spacer(),
+              Switch(
+                value: settings.alerts.poll,
+                onChanged: (value) async {
+                  settings.alerts.poll = value;
+                  await InstanceStorage.setAccountNotificationsSettings(
+                      account, settings);
+                  PushHelper.of(context, listen: false).register();
+                  setState(() {});
+                },
+                activeTrackColor: Colors.lightBlueAccent,
+                activeColor: Colors.blue,
+              ),
+            ],
+          ),
+        )
+      ]);
+    }
   }
 }
