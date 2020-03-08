@@ -1,8 +1,7 @@
-import 'dart:io';
-
 import 'package:fedi/Pleroma/Models/Account.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:fedi/Pleroma/account/edit/pleroma_account_edit_model.dart';
 
 abstract class IPleromaAccountEditService {
 
@@ -10,6 +9,7 @@ abstract class IPleromaAccountEditService {
       {listen: true}) =>
       Provider.of<IPleromaAccountEditService>(context, listen: listen);
 
-  Future<Account> changeAvatarImage({@required File file});
-  Future<Account> changeHeaderImage({@required File file});
+  Future<Account> updateCredentials(PleromaAccountEdit accountData);
+  Future<Account> updateFiles(PleromaAccountFiles accountFiles);
+
 }

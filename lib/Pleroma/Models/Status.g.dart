@@ -3,6 +3,109 @@
 part of 'Status.dart';
 
 // **************************************************************************
+// TypeAdapterGenerator
+// **************************************************************************
+
+class SourceAdapter extends TypeAdapter<Source> {
+  @override
+  Source read(BinaryReader reader) {
+    var obj = Source();
+    var numOfFields = reader.readByte();
+    for (var i = 0; i < numOfFields; i++) {
+      switch (reader.readByte()) {
+        case 1:
+          obj.note = reader.read() as String;
+          break;
+        case 2:
+          obj.pleroma = reader.read() as SourcePleromaPart;
+          break;
+        case 3:
+          obj.sensitive = reader.read() as bool;
+          break;
+      }
+    }
+    return obj;
+  }
+
+  @override
+  void write(BinaryWriter writer, Source obj) {
+    writer.writeByte(3);
+    writer.writeByte(1);
+    writer.write(obj.note);
+    writer.writeByte(2);
+    writer.write(obj.pleroma);
+    writer.writeByte(3);
+    writer.write(obj.sensitive);
+  }
+}
+
+class SourcePleromaPartAdapter extends TypeAdapter<SourcePleromaPart> {
+  @override
+  SourcePleromaPart read(BinaryReader reader) {
+    var obj = SourcePleromaPart();
+    var numOfFields = reader.readByte();
+    for (var i = 0; i < numOfFields; i++) {
+      switch (reader.readByte()) {
+        case 1:
+          obj.showRole = reader.read() as bool;
+          break;
+        case 2:
+          obj.noRichText = reader.read() as bool;
+          break;
+        case 3:
+          obj.discoverable = reader.read() as bool;
+          break;
+        case 4:
+          obj.actorType = reader.read() as String;
+          break;
+      }
+    }
+    return obj;
+  }
+
+  @override
+  void write(BinaryWriter writer, SourcePleromaPart obj) {
+    writer.writeByte(4);
+    writer.writeByte(1);
+    writer.write(obj.showRole);
+    writer.writeByte(2);
+    writer.write(obj.noRichText);
+    writer.writeByte(3);
+    writer.write(obj.discoverable);
+    writer.writeByte(4);
+    writer.write(obj.actorType);
+  }
+}
+
+class TagAdapter extends TypeAdapter<Tag> {
+  @override
+  Tag read(BinaryReader reader) {
+    var obj = Tag();
+    var numOfFields = reader.readByte();
+    for (var i = 0; i < numOfFields; i++) {
+      switch (reader.readByte()) {
+        case 1:
+          obj.name = reader.read() as String;
+          break;
+        case 2:
+          obj.url = reader.read() as String;
+          break;
+      }
+    }
+    return obj;
+  }
+
+  @override
+  void write(BinaryWriter writer, Tag obj) {
+    writer.writeByte(2);
+    writer.writeByte(1);
+    writer.write(obj.name);
+    writer.writeByte(2);
+    writer.write(obj.url);
+  }
+}
+
+// **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
@@ -125,7 +228,7 @@ Source _$SourceFromJson(Map<String, dynamic> json) {
     note: json['note'] as String,
     pleroma: json['pleroma'] == null
         ? null
-        : Relationship.fromJson(json['pleroma'] as Map<String, dynamic>),
+        : SourcePleromaPart.fromJson(json['pleroma'] as Map<String, dynamic>),
     sensitive: json['sensitive'] as bool,
   );
 }
@@ -134,6 +237,23 @@ Map<String, dynamic> _$SourceToJson(Source instance) => <String, dynamic>{
       'note': instance.note,
       'pleroma': instance.pleroma,
       'sensitive': instance.sensitive,
+    };
+
+SourcePleromaPart _$SourcePleromaPartFromJson(Map<String, dynamic> json) {
+  return SourcePleromaPart(
+    showRole: json['show_role'] as bool,
+    noRichText: json['no_rich_text'] as bool,
+    discoverable: json['discoverable'] as bool,
+    actorType: json['actor_type'] as String,
+  );
+}
+
+Map<String, dynamic> _$SourcePleromaPartToJson(SourcePleromaPart instance) =>
+    <String, dynamic>{
+      'show_role': instance.showRole,
+      'no_rich_text': instance.noRichText,
+      'discoverable': instance.discoverable,
+      'actor_type': instance.actorType,
     };
 
 Application _$ApplicationFromJson(Map<String, dynamic> json) {

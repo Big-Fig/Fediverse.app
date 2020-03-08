@@ -1,10 +1,12 @@
 import 'dart:core';
+
 import 'package:fedi/Pleroma/Models/ClientSettings.dart';
+import 'package:fedi/Pleroma/push/pleroma_push_model.dart';
+import 'package:hive/hive.dart';
 
 import './Client.dart';
 import '../Models/Account.dart';
 import '../Models/AccountAuth.dart';
-import 'package:hive/hive.dart';
 
 class InstanceStorage {
 
@@ -44,19 +46,19 @@ class InstanceStorage {
     return print("done");
   }
 
-  static Future<void> addAccountSubscribedToNotifications(String account, bool subscribed) async {
+  static Future<void> setAccountNotificationsSettings(String account, PleromaPushSubscribeData
+  data) async {
     var box = await Hive.openBox('InstanceStorage', lazy: true) as LazyBox;
-    await box.put("$account-notifications-subscribed", true);
+    await box.put("$account-notifications-settings", data);
     return print("done");
   }
 
-  static Future<bool> getAccountSubscribedToNotifications(String account) async {
-     var box = await Hive.openBox('InstanceStorage', lazy: true) as LazyBox;
-     bool status = await box.get("$account-notifications-subscribed");
-     if (status == null){
-       return false;
-     }
-    return status;
+  static Future<PleromaPushSubscribeData> getAccountNotificationsSettings
+      (String account) async {
+    var box = await Hive.openBox('InstanceStorage', lazy: true) as LazyBox;
+    PleromaPushSubscribeData settings = await box.get
+      ("$account-notifications-settings");
+    return settings;
   }
 
   static Future<int> getAccountAlert(String account, String type) async {
