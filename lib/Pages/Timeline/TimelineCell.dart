@@ -1,9 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:emoji_picker/emoji_picker.dart' as EmojiWidget;
 import 'package:fedi/Pages/Profile/OtherAccount.dart';
 import 'package:fedi/Pages/Statuses/ImageViewPage.dart';
 import 'package:fedi/Pages/Statuses/card_widget.dart';
+import 'package:fedi/Pages/Statuses/emoji_reaction_bloc.dart';
+import 'package:fedi/Pages/Statuses/emoji_reaction_widget.dart';
+import 'package:fedi/Pages/Statuses/emoji_readtion_provider.dart';
 import 'package:fedi/Pages/Timeline/StatusFavoritePage.dart';
 import 'package:fedi/Pages/Timeline/StatusRepostPage.dart';
 import 'package:fedi/Pleroma/Foundation/Client.dart';
@@ -22,6 +26,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:html/dom.dart' as dom;
+import 'package:provider/provider.dart';
 
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
@@ -51,10 +56,14 @@ class _TimelineCell extends State<TimelineCell> {
   double targetHeight;
   double imageHeight;
   Account replyAccount;
+  bool showEmojiPicker = false;
 
   @override
   void initState() {
     super.initState();
+    emojiBloc = EmojiReactionBloc(
+      status: widget.status,
+    );
   }
 
   getReply() {
@@ -106,6 +115,8 @@ class _TimelineCell extends State<TimelineCell> {
     }
   }
 
+  var emojiBloc;
+
   @override
   Widget build(BuildContext context) {
     getReply();
@@ -117,407 +128,452 @@ class _TimelineCell extends State<TimelineCell> {
     Status status =
         widget.status.reblog != null ? widget.status.reblog : widget.status;
 
-    return Card(
-      elevation: 0,
-      child: Padding(
-        padding: EdgeInsets.all(8),
-        child: Column(
-          children: <Widget>[
-            // reposted status
-            if (widget.status.reblog != null)
-              GestureDetector(
-                onTap: () {
-                  print("view account");
-                  if (widget.viewAccount != null) {
-                    widget.viewAccount(widget.status.account);
-                  }
-                },
-                behavior: HitTestBehavior.translucent,
-                child: Padding(
-                  padding: EdgeInsets.all(0.0),
-                  child: Row(
-                    children: <Widget>[
-                      ClipRRect(
-                        borderRadius: new BorderRadius.circular(12.0),
-                        child: CachedNetworkImage(
-                          imageUrl: widget.status.account.avatar,
-                          placeholder: (context, url) =>
-                              CircularProgressIndicator(),
-                          errorWidget: (context, url, error) =>
-                              Icon(Icons.error),
-                          height: 24,
-                          width: 24,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Text(
-                        widget.status.account.acct,
-                        style: TextStyle(fontSize: 12),
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Image(
-                            height: 20,
-                            width: 20,
-                            color: Colors.grey,
-                            image: AssetImage("assets/images/repost.png"),
-                          ),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Text(
-                            AppLocalizations.of(context)
-                                .tr("timeline.status.cell.repeated"),
-                            style: TextStyle(fontSize: 12),
-                          )
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-              ),
-
-            Padding(
-              padding: EdgeInsets.all(12.0),
-              child: Row(
-                children: <Widget>[
-                  GestureDetector(
-                    onTap: () {
-                      print("view account");
-                      if (widget.viewAccount != null) {
-                        widget.viewAccount(status.account);
-                      }
-                    },
-                    behavior: HitTestBehavior.translucent,
+    return MultiProvider(
+      providers: [
+        Provider<EmojiReactionProvider>(
+            create: (context) => EmojiReactionProvider(
+                  emojiBloc,
+                )),
+      ],
+      child: Card(
+        elevation: 0,
+        child: Padding(
+          padding: EdgeInsets.all(8),
+          child: Column(
+            children: <Widget>[
+              // reposted status
+              if (widget.status.reblog != null)
+                GestureDetector(
+                  onTap: () {
+                    print("view account");
+                    if (widget.viewAccount != null) {
+                      widget.viewAccount(widget.status.account);
+                    }
+                  },
+                  behavior: HitTestBehavior.translucent,
+                  child: Padding(
+                    padding: EdgeInsets.all(0.0),
                     child: Row(
-                      mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
                         ClipRRect(
-                          borderRadius: new BorderRadius.circular(20.0),
+                          borderRadius: new BorderRadius.circular(12.0),
                           child: CachedNetworkImage(
-                            imageUrl: status.account.avatar,
-                            placeholder: (context, url) => Center(
-                              child: CircularProgressIndicator(),
-                            ),
+                            imageUrl: widget.status.account.avatar,
+                            placeholder: (context, url) =>
+                                CircularProgressIndicator(),
                             errorWidget: (context, url, error) =>
                                 Icon(Icons.error),
-                            height: 40,
-                            width: 40,
+                            height: 24,
+                            width: 24,
                           ),
                         ),
                         SizedBox(
                           width: 8,
                         ),
-                        Container(
-                          constraints:
-                              BoxConstraints(maxWidth: deviceWidth * 0.6),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: getUserName(status),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  Text("${status.account.acct}")
-                                ],
-                              ),
-                            ],
-                          ),
+                        Text(
+                          widget.status.account.acct,
+                          style: TextStyle(fontSize: 12),
                         ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Image(
+                              height: 20,
+                              width: 20,
+                              color: Colors.grey,
+                              image: AssetImage("assets/images/repost.png"),
+                            ),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            Text(
+                              AppLocalizations.of(context)
+                                  .tr("timeline.status.cell.repeated"),
+                              style: TextStyle(fontSize: 12),
+                            )
+                          ],
+                        )
                       ],
                     ),
                   ),
-                  Spacer(),
-                  GestureDetector(
-                    onTap: () {
-                      print("view status context");
-                      if (widget.viewStatusContext != null) {
-                        widget.viewStatusContext(status);
-                      }
-                    },
-                    behavior: HitTestBehavior.translucent,
-                    child: Column(
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(left: 19),
-                          child: Text(
-                            timeago.format(status.createdAt,
-                                locale: 'en_short'),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
+                ),
 
-            if (replyAccount != null)
-              GestureDetector(
-                onTap: () {
-                  if (widget.viewAccount != null) {
-                    widget.viewAccount(replyAccount);
-                  }
-                },
-                behavior: HitTestBehavior.translucent,
-                child: Padding(
-                  padding: EdgeInsets.all(0.0),
-                  child: Row(
-                    children: <Widget>[
-                      Row(
+              Padding(
+                padding: EdgeInsets.all(12.0),
+                child: Row(
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: () {
+                        print("view account");
+                        if (widget.viewAccount != null) {
+                          widget.viewAccount(status.account);
+                        }
+                      },
+                      behavior: HitTestBehavior.translucent,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
-                          Image(
-                            height: 15,
-                            width: 15,
-                            color: Colors.grey,
-                            image: AssetImage("assets/images/comment.png"),
+                          ClipRRect(
+                            borderRadius: new BorderRadius.circular(20.0),
+                            child: CachedNetworkImage(
+                              imageUrl: status.account.avatar,
+                              placeholder: (context, url) => Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                              errorWidget: (context, url, error) =>
+                                  Icon(Icons.error),
+                              height: 40,
+                              width: 40,
+                            ),
                           ),
                           SizedBox(
                             width: 8,
                           ),
-                          Text(
-                            AppLocalizations.of(context)
-                                .tr("timeline.status.cell.reply_to"),
-                            style: TextStyle(fontSize: 12),
-                          )
+                          Container(
+                            constraints:
+                                BoxConstraints(maxWidth: deviceWidth * 0.6),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: getUserName(status),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text("${status.account.acct}")
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
-                      SizedBox(
-                        width: 4,
+                    ),
+                    Spacer(),
+                    GestureDetector(
+                      onTap: () {
+                        print("view status context");
+                        if (widget.viewStatusContext != null) {
+                          widget.viewStatusContext(status);
+                        }
+                      },
+                      behavior: HitTestBehavior.translucent,
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(left: 19),
+                            child: Text(
+                              timeago.format(status.createdAt,
+                                  locale: 'en_short'),
+                            ),
+                          ),
+                        ],
                       ),
-                      Text(
-                        replyAccount.acct,
-                        style: TextStyle(fontSize: 12),
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                    ],
-                  ),
+                    )
+                  ],
                 ),
               ),
 
-            GestureDetector(
-              onTap: () {
-                print("view status context");
-                if (widget.viewStatusContext != null) {
-                  widget.viewStatusContext(status);
-                }
-              },
-              behavior: HitTestBehavior.translucent,
-              child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding:
-                        EdgeInsets.only(bottom: 0, top: 0, left: 0, right: 0),
-                    child: Html(
-                      onImageTap: (String source) {
-                        print("source $source");
-                      },
-                      customTextStyle: (dom.Node node, TextStyle baseStyle) {
-                        if (node is dom.Element) {
-                          switch (node.localName) {
-                            case "p":
-                              return baseStyle.merge(TextStyle(fontSize: 18));
-                          }
-                        }
-                        return baseStyle.merge(TextStyle(fontSize: 18));
-                      },
-                      onImageError: (dynamic exception, StackTrace stackTrace) {
-                        print("Image error!!!");
-                        print(exception);
-                        print(stackTrace);
-                      },
-                      data: getHTMLWithCustomEmoji(widget.status),
-                      onLinkTap: (String link) {
-                        for (int i = 0;
-                            i < widget.status.mentions.length;
-                            i++) {
-                          Mention mention = widget.status.mentions[i];
-                          String id = mention.id;
-                          print("MENTIONS: ${mention.url} == $link");
-                          if (mention.url == link) {
-                            CurrentInstance.instance.currentClient
-                                .run(
-                                    path: AccountRequests.Accounts.account(
-                                        id: id),
-                                    method: HTTPMethod.GET)
-                                .then((response) {
-                              Account account =
-                                  Account.fromJsonString(response.body);
-                              if (widget.viewAccount == null) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          OtherAccount(account)),
-                                );
-                                return;
-                              }
-                              widget.viewAccount(account);
-                            }).catchError((error) {
-                              print(error.toString());
-                            });
-
-                            return;
-                          }
-                        }
-                        print("link $link");
-                        canLaunch(link).then((result) {
-                          launch(link);
-                        });
-                      },
-                    ),
-                  ),
-                  // image carousel
-                  if (widget.status.mediaAttachments.length > 0)
-                    getMeidaWidget(widget.status),
-                  // card widget
-                  if (widget.status.card != null)
-                    CardWidget(widget.status.card)
-                  else if (widget.status.reblog != null)
-                    if (widget.status.reblog.card != null)
-                      CardWidget(widget.status.reblog.card),
-
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12.0),
+              if (replyAccount != null)
+                GestureDetector(
+                  onTap: () {
+                    if (widget.viewAccount != null) {
+                      widget.viewAccount(replyAccount);
+                    }
+                  },
+                  behavior: HitTestBehavior.translucent,
+                  child: Padding(
+                    padding: EdgeInsets.all(0.0),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         Row(
                           children: <Widget>[
-                            IconButton(
+                            Image(
+                              height: 15,
+                              width: 15,
                               color: Colors.grey,
-                              icon: Image(
-                                height: 20,
-                                width: 20,
-                                color: Colors.grey,
-                                image: AssetImage("assets/images/comment.png"),
-                              ),
-                              tooltip: AppLocalizations.of(context)
-                                  .tr("timeline.status.cell.tooltip.comment"),
-                              onPressed: () {
-                                if (widget.showCommentBtn == null) {
-                                  widget
-                                      .mentionOtherStatusContext(widget.status);
-                                } else {
-                                  widget.viewStatusContext(widget.status);
-                                }
-                              },
+                              image: AssetImage("assets/images/comment.png"),
                             ),
-                            if (widget.status.repliesCount != 0 &&
-                                (widget.showCommentBtn == true ||
-                                    widget.showCommentBtn == null))
-                              Text(widget.status.repliesCount.toString()),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            Text(
+                              AppLocalizations.of(context)
+                                  .tr("timeline.status.cell.reply_to"),
+                              style: TextStyle(fontSize: 12),
+                            )
                           ],
                         ),
-                        Row(
-                          children: <Widget>[
-                            IconButton(
-                              color: widget.status.favourited
-                                  ? Colors.blue
-                                  : Colors.grey,
-                              icon: Image(
-                                height: 20,
-                                width: 20,
-                                color: widget.status.favourited
-                                    ? Colors.blue
-                                    : Colors.grey,
-                                image:
-                                    AssetImage("assets/images/favorites.png"),
-                              ),
-                              tooltip: AppLocalizations.of(context)
-                                  .tr("timeline.status.cell.tooltip.like"),
-                              onPressed: () {
-                                like();
-                              },
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                // go to likes page
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          StatusFavoritePage(widget.status)),
-                                );
-                              },
-                              child: Padding(
-                                padding: EdgeInsets.all(10),
-                                child: Text(
-                                  getLikeCounts(),
-                                ),
-                              ),
-                            ),
-                          ],
+                        SizedBox(
+                          width: 4,
                         ),
-                        Row(
-                          children: <Widget>[
-                            IconButton(
-                              color: widget.status.reblogged
-                                  ? Colors.blue
-                                  : Colors.grey,
-                              icon: Image(
-                                height: 20,
-                                width: 20,
-                                color: widget.status.reblogged
-                                    ? Colors.blue
-                                    : Colors.grey,
-                                image: AssetImage("assets/images/repost.png"),
-                              ),
-                              tooltip: AppLocalizations.of(context)
-                                  .tr("timeline.status.cell.tooltip.repost"),
-                              onPressed: () {
-                                repost();
-                              },
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                // go to reposts
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          StatusRepostPage(widget.status)),
-                                );
-                              },
-                              child: Padding(
-                                padding: EdgeInsets.all(10),
-                                child: Text(
-                                  getRepostCounts(),
-                                ),
-                              ),
-                            ),
-                          ],
+                        Text(
+                          replyAccount.acct,
+                          style: TextStyle(fontSize: 12),
                         ),
-                        IconButton(
-                          icon: Image(
-                            height: 20,
-                            width: 20,
-                            color: Colors.grey,
-                            image: AssetImage("assets/images/share.png"),
-                          ),
-                          tooltip: AppLocalizations.of(context)
-                              .tr("timeline.status.cell.tooltip.more"),
-                          onPressed: () {
-                            showMoreOptions(context);
-                          },
+                        SizedBox(
+                          width: 8,
                         ),
                       ],
                     ),
                   ),
-                ],
+                ),
+
+              GestureDetector(
+                onTap: () {
+                  print("view status context");
+                  if (widget.viewStatusContext != null) {
+                    widget.viewStatusContext(status);
+                  }
+                },
+                behavior: HitTestBehavior.translucent,
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding:
+                          EdgeInsets.only(bottom: 0, top: 0, left: 0, right: 0),
+                      child: Html(
+                        onImageTap: (String source) {
+                          print("source $source");
+                        },
+                        customTextStyle: (dom.Node node, TextStyle baseStyle) {
+                          if (node is dom.Element) {
+                            switch (node.localName) {
+                              case "p":
+                                return baseStyle.merge(TextStyle(fontSize: 18));
+                            }
+                          }
+                          return baseStyle.merge(TextStyle(fontSize: 18));
+                        },
+                        onImageError:
+                            (dynamic exception, StackTrace stackTrace) {
+                          print("Image error!!!");
+                          print(exception);
+                          print(stackTrace);
+                        },
+                        data: getHTMLWithCustomEmoji(widget.status),
+                        onLinkTap: (String link) {
+                          for (int i = 0;
+                              i < widget.status.mentions.length;
+                              i++) {
+                            Mention mention = widget.status.mentions[i];
+                            String id = mention.id;
+                            print("MENTIONS: ${mention.url} == $link");
+                            if (mention.url == link) {
+                              CurrentInstance.instance.currentClient
+                                  .run(
+                                      path: AccountRequests.Accounts.account(
+                                          id: id),
+                                      method: HTTPMethod.GET)
+                                  .then((response) {
+                                Account account =
+                                    Account.fromJsonString(response.body);
+                                if (widget.viewAccount == null) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            OtherAccount(account)),
+                                  );
+                                  return;
+                                }
+                                widget.viewAccount(account);
+                              }).catchError((error) {
+                                print(error.toString());
+                              });
+
+                              return;
+                            }
+                          }
+                          print("link $link");
+                          canLaunch(link).then((result) {
+                            launch(link);
+                          });
+                        },
+                      ),
+                    ),
+                    // image carousel
+                    if (widget.status.mediaAttachments.length > 0)
+                      getMeidaWidget(widget.status),
+                    // card widget
+                    if (widget.status.card != null)
+                      CardWidget(widget.status.card)
+                    else if (widget.status.reblog != null)
+                      if (widget.status.reblog.card != null)
+                        CardWidget(widget.status.reblog.card),
+
+                    // emoji reactions
+                    if (widget.status.statusPleroma != null)
+                      if (widget.status.statusPleroma.emojiReactions != null)
+                        EmojiReactionWidget(),
+                    // counts favs and other goodies
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 12.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              IconButton(
+                                color: Colors.grey,
+                                icon: Image(
+                                  height: 20,
+                                  width: 20,
+                                  color: Colors.grey,
+                                  image:
+                                      AssetImage("assets/images/comment.png"),
+                                ),
+                                tooltip: AppLocalizations.of(context)
+                                    .tr("timeline.status.cell.tooltip.comment"),
+                                onPressed: () {
+                                  if (widget.showCommentBtn == null) {
+                                    widget.mentionOtherStatusContext(
+                                        widget.status);
+                                  } else {
+                                    widget.viewStatusContext(widget.status);
+                                  }
+                                },
+                              ),
+                              if (widget.status.repliesCount != 0 &&
+                                  (widget.showCommentBtn == true ||
+                                      widget.showCommentBtn == null))
+                                Text(widget.status.repliesCount.toString()),
+                            ],
+                          ),
+                          Row(
+                            children: <Widget>[
+                              IconButton(
+                                color: widget.status.favourited
+                                    ? Colors.blue
+                                    : Colors.grey,
+                                icon: Image(
+                                  height: 20,
+                                  width: 20,
+                                  color: widget.status.favourited
+                                      ? Colors.blue
+                                      : Colors.grey,
+                                  image:
+                                      AssetImage("assets/images/favorites.png"),
+                                ),
+                                tooltip: AppLocalizations.of(context)
+                                    .tr("timeline.status.cell.tooltip.like"),
+                                onPressed: () {
+                                  like();
+                                },
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  // go to likes page
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            StatusFavoritePage(widget.status)),
+                                  );
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: Text(
+                                    getLikeCounts(),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          IconButton(
+                            color: Colors.grey,
+                            icon: Image(
+                              height: 20,
+                              width: 20,
+                              color: widget.status.reblogged
+                                  ? Colors.blue
+                                  : Colors.grey,
+                              image: AssetImage("assets/images/happy.png"),
+                            ),
+                            tooltip: AppLocalizations.of(context)
+                                .tr("timeline.status.cell.tooltip.repost"),
+                            onPressed: () {
+                              setState(() {
+                                showEmojiPicker = !showEmojiPicker;
+                              });
+                            },
+                          ),
+                          Row(
+                            children: <Widget>[
+                              IconButton(
+                                color: widget.status.reblogged
+                                    ? Colors.blue
+                                    : Colors.grey,
+                                icon: Image(
+                                  height: 20,
+                                  width: 20,
+                                  color: widget.status.reblogged
+                                      ? Colors.blue
+                                      : Colors.grey,
+                                  image: AssetImage("assets/images/repost.png"),
+                                ),
+                                tooltip: AppLocalizations.of(context)
+                                    .tr("timeline.status.cell.tooltip.repost"),
+                                onPressed: () {
+                                  repost();
+                                },
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  // go to reposts
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            StatusRepostPage(widget.status)),
+                                  );
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: Text(
+                                    getRepostCounts(),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          IconButton(
+                            icon: Image(
+                              height: 20,
+                              width: 20,
+                              color: Colors.grey,
+                              image: AssetImage("assets/images/share.png"),
+                            ),
+                            tooltip: AppLocalizations.of(context)
+                                .tr("timeline.status.cell.tooltip.more"),
+                            onPressed: () {
+                              showMoreOptions(context);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    if (showEmojiPicker)
+                      EmojiWidget.EmojiPicker(
+                        rows: 3,
+                        columns: 7,
+                        numRecommended: 0,
+                        selectedCategory: EmojiWidget.Category.RECENT,
+                        recommendKeywords: null,
+                        onEmojiSelected: (emoji, category) {
+                          print(emoji.emoji);
+                          emojiBloc.addRemoveReaction(emoji.emoji);
+                        },
+                      ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

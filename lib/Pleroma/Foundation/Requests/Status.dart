@@ -33,4 +33,12 @@ class Status {
     return "/api/v1/statuses/$id/reblogged_by";
   }
 
+  static String putReaction(String statusId, String emoji){
+    return "/api/v1/pleroma/statuses/$statusId/reactions/$emoji";
+  }
+
+  static String deleteReaction(String statusId, String emoji){
+    return "/api/v1/pleroma/statuses/$statusId/reactions/$emoji";
+  }
+
 }

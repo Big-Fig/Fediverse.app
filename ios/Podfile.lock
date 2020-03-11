@@ -3,6 +3,8 @@ PODS:
     - Flutter
   - Crashlytics (3.14.0):
     - Fabric (~> 1.10.2)
+  - emoji_picker (0.0.3):
+    - Flutter
   - Fabric (1.10.2)
   - Firebase/Analytics (6.13.0):
     - Firebase/Core
@@ -163,6 +165,7 @@ PODS:
 
 DEPENDENCIES:
   - camera (from `.symlinks/plugins/camera/ios`)
+  - emoji_picker (from `.symlinks/plugins/emoji_picker/ios`)
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_crashlytics (from `.symlinks/plugins/firebase_crashlytics/ios`)
@@ -215,6 +218,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   camera:
     :path: ".symlinks/plugins/camera/ios"
+  emoji_picker:
+    :path: ".symlinks/plugins/emoji_picker/ios"
   firebase_analytics:
     :path: ".symlinks/plugins/firebase_analytics/ios"
   firebase_core:
@@ -265,6 +270,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   camera: 38cc83ae9a5667bb5a71c7d9edaf60a91920fd4e
   Crashlytics: 540b7e5f5da5a042647227a5e3ac51d85eed06df
+  emoji_picker: 0e868059aa18f9473d234f3d0701fbd4d5fd310c
   Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
   Firebase: 458d109512200d1aca2e1b9b6cf7d68a869a4a46
   firebase_analytics: d83001d25b9a58ca5eda8db0ef566c02d7af5258
