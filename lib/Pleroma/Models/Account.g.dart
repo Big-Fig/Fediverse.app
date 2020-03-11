@@ -140,7 +140,7 @@ class AccountPleromaPartAdapter extends TypeAdapter<AccountPleromaPart> {
           obj.backgroundImage = reader.read() as dynamic;
           break;
         case 2:
-          obj.tags = (reader.read() as List)?.cast<Tag>();
+          obj.tags = (reader.read() as List)?.cast<dynamic>();
           break;
         case 3:
           obj.relationship = reader.read() as Relationship;
@@ -320,9 +320,7 @@ Map<String, dynamic> _$AccountToJson(Account instance) => <String, dynamic>{
 AccountPleromaPart _$AccountPleromaPartFromJson(Map<String, dynamic> json) {
   return AccountPleromaPart(
     backgroundImage: json['background_image'],
-    tags: (json['tags'] as List)
-        ?.map((e) => e == null ? null : Tag.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    tags: json['tags'] as List,
     relationship: json['relationship'] == null
         ? null
         : Relationship.fromJson(json['relationship'] as Map<String, dynamic>),
