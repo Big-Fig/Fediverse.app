@@ -6,6 +6,7 @@ import 'dart:convert';
 
 import 'package:fedi/Pleroma/Models/Relationship.dart';
 import 'package:fedi/Pleroma/Models/card.dart';
+import 'package:fedi/Pleroma/Models/status_pleroma.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:fedi/Pleroma/media/attachment/pleroma_media_attachment_model.dart';
@@ -52,6 +53,8 @@ class Status {
   List<Emoji> emojis;
   Card card;
   dynamic poll;
+  @JsonKey(name: "pleroma")
+  StatusPleroma statusPleroma;
 
   Status({
     this.id,
@@ -284,35 +287,6 @@ class Mention {
   String toJsonString() => jsonEncode(_$MentionToJson(this));
 }
 
-@JsonSerializable()
-class StatusPleroma {
-  Content content;
-  @JsonKey(name: "conversation_id")
-  int conversationId;
-  @JsonKey(name: "in_reply_to_account_acct")
-  String inReplyToAccountAcct;
-  bool local;
-  @JsonKey(name: "spoiler_text")
-  Content spoilerText;
-
-  StatusPleroma({
-    this.content,
-    this.conversationId,
-    this.inReplyToAccountAcct,
-    this.local,
-    this.spoilerText,
-  });
-
-  factory StatusPleroma.fromJson(Map<String, dynamic> json) =>
-      _$StatusPleromaFromJson(json);
-
-  factory StatusPleroma.fromJsonString(String jsonString) =>
-      _$StatusPleromaFromJson(jsonDecode(jsonString));
-
-  Map<String, dynamic> toJson() => _$StatusPleromaToJson(this);
-
-  String toJsonString() => jsonEncode(_$StatusPleromaToJson(this));
-}
 
 @JsonSerializable()
 class Content {

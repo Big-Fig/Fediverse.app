@@ -160,7 +160,9 @@ Status _$StatusFromJson(Map<String, dynamic> json) {
         ? null
         : Card.fromJson(json['card'] as Map<String, dynamic>),
     poll: json['poll'],
-  );
+  )..statusPleroma = json['pleroma'] == null
+      ? null
+      : StatusPleroma.fromJson(json['pleroma'] as Map<String, dynamic>);
 }
 
 Map<String, dynamic> _$StatusToJson(Status instance) => <String, dynamic>{
@@ -190,6 +192,7 @@ Map<String, dynamic> _$StatusToJson(Status instance) => <String, dynamic>{
       'emojis': instance.emojis,
       'card': instance.card,
       'poll': instance.poll,
+      'pleroma': instance.statusPleroma,
     };
 
 AccountPleroma _$AccountPleromaFromJson(Map<String, dynamic> json) {
@@ -283,29 +286,6 @@ Map<String, dynamic> _$MentionToJson(Mention instance) => <String, dynamic>{
       'id': instance.id,
       'url': instance.url,
       'username': instance.username,
-    };
-
-StatusPleroma _$StatusPleromaFromJson(Map<String, dynamic> json) {
-  return StatusPleroma(
-    content: json['content'] == null
-        ? null
-        : Content.fromJson(json['content'] as Map<String, dynamic>),
-    conversationId: json['conversation_id'] as int,
-    inReplyToAccountAcct: json['in_reply_to_account_acct'] as String,
-    local: json['local'] as bool,
-    spoilerText: json['spoiler_text'] == null
-        ? null
-        : Content.fromJson(json['spoiler_text'] as Map<String, dynamic>),
-  );
-}
-
-Map<String, dynamic> _$StatusPleromaToJson(StatusPleroma instance) =>
-    <String, dynamic>{
-      'content': instance.content,
-      'conversation_id': instance.conversationId,
-      'in_reply_to_account_acct': instance.inReplyToAccountAcct,
-      'local': instance.local,
-      'spoiler_text': instance.spoilerText,
     };
 
 Content _$ContentFromJson(Map<String, dynamic> json) {

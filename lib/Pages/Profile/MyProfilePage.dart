@@ -105,6 +105,13 @@ class _MyProfilePage extends State<MyProfilePage> {
       lastId = lastStatus.id;
     }
 
+    var path = Accounts.getAccountStatuses(
+                userId: CurrentInstance.instance.currentAccount.id,
+                minId: "",
+                maxId: lastId,
+                sinceId: "",
+                limit: "80");
+                print(path);
     CurrentInstance.instance.currentClient
         .run(
             path: Accounts.getAccountStatuses(
