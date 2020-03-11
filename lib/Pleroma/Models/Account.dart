@@ -137,7 +137,7 @@ class AccountPleromaPart {
 
   @HiveField(2)
   ///  Lists an array of tags for the user
-  List<Tag> tags;
+  List<dynamic> tags;
 
   /// Includes fields as documented for
   /// Mastodon API https://docs.joinmastodon.org/entities/relationship/
