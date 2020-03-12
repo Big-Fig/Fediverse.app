@@ -27,6 +27,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
@@ -558,16 +559,32 @@ class _TimelineCell extends State<TimelineCell> {
                       ),
                     ),
                     if (showEmojiPicker)
-                      EmojiWidget.EmojiPicker(
-                        rows: 3,
-                        columns: 7,
-                        numRecommended: 0,
-                        selectedCategory: EmojiWidget.Category.RECENT,
-                        recommendKeywords: null,
-                        onEmojiSelected: (emoji, category) {
-                          print(emoji.emoji);
-                          emojiBloc.addRemoveReaction(emoji.emoji);
-                        },
+                      Container(
+                        width: deviceWidth * 0.9,
+                        child: new EmojiWidget.EmojiPicker(
+                          bgColor: Colors.transparent,
+                          rows: 3,
+                          columns: 7,
+                          numRecommended: 0,
+                          selectedCategory: EmojiWidget.Category.RECENT,
+                          recommendKeywords: null,
+                          buttonMode: EmojiWidget.ButtonMode.MATERIAL,
+                          onEmojiSelected: (emoji, category) {
+                            print(emoji.emoji);
+                            emojiBloc.addRemoveReaction(emoji.emoji);
+                            SharedPreferences.getInstance().then((prefs) {
+                              final key = "recents";
+                              var recentEmojis =
+                                  prefs.getStringList(key) ?? new List();
+                              recentEmojis.insert(0, emoji.name);
+                              prefs.setStringList(key, recentEmojis);
+                            });
+
+                            setState(() {
+                              showEmojiPicker = !showEmojiPicker;
+                            });
+                          },
+                        ),
                       ),
                   ],
                 ),

@@ -13,11 +13,14 @@ class EmojiReactionWidget extends StatelessWidget {
       builder:
           (BuildContext context, AsyncSnapshot<List<EmojiReaction>> snapshot) {
         if (snapshot.hasData) {
-          return Wrap(
+          return Container(
+            alignment: Alignment.topLeft,
+              child: Wrap(
             runSpacing: 0,
             alignment: WrapAlignment.start,
+            crossAxisAlignment: WrapCrossAlignment.start,
             children: getButtons(emojiBloc.bloc, snapshot.data),
-          );
+          ));
         } else {
           return Container();
         }
@@ -35,6 +38,7 @@ class EmojiReactionWidget extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 3),
           child: FlatButton(
+            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
             padding: EdgeInsets.all(0),
             color: reaction.me ? Colors.blue : Colors.black12,
             onPressed: () {
@@ -43,12 +47,13 @@ class EmojiReactionWidget extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text(reaction.name),
-                Text(
-                  " : ${reaction.count}",
-                  style: TextStyle(
-                      color: reaction.me ? Colors.white : Colors.black),
-                ),
+                Text(reaction.name, style: TextStyle(fontSize: 22),),
+                if (reaction.count > 1)
+                  Text(
+                    " : ${reaction.count}",
+                    style: TextStyle(
+                        color: reaction.me ? Colors.white : Colors.black),
+                  ),
               ],
             ),
           ),
