@@ -31,7 +31,7 @@ class MyTimelinePage extends StatefulWidget {
 }
 
 class MyTimelinePageState extends State<MyTimelinePage>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   String path;
   TabController _homeTabController;
   DrawerController drawerController;
@@ -126,6 +126,7 @@ class MyTimelinePageState extends State<MyTimelinePage>
         newStatuses.removeWhere((status) {
           return status.inReplyToId != null;
         });
+        return;
       }
 
       if (hideNSFW) {
@@ -570,4 +571,7 @@ class MyTimelinePageState extends State<MyTimelinePage>
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

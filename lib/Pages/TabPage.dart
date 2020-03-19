@@ -10,11 +10,7 @@ import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_webrtc/webrtc.dart';
-import 'package:fedi/Pages/Home/HomeContainerPage.dart';
-import 'package:fedi/Pages/Messages/VideoChat/WebRTCManager.dart';
 import 'package:fedi/Pages/Profile/EditProfile.dart';
 import 'package:fedi/Pages/Push/PushHelper.dart';
 import 'package:fedi/Pages/Gallery/GalleryPage.dart';
@@ -24,10 +20,7 @@ import 'package:fedi/Transitions/SlideBottomRoute.dart';
 import 'package:flutter/rendering.dart';
 import './Placeholder.dart';
 import 'Messages/MessageContainer.dart';
-// import 'Messages/VideoChatPage.dart';
-// import 'Messages/signaling.dart';
 import 'Notifications/NotificationPage.dart';
-import 'Post/CaptureController.dart';
 import 'Profile/AccountsBottomSheet.dart';
 import 'Profile/MyProfilePage.dart';
 import 'package:web_socket_channel/io.dart';
@@ -86,7 +79,6 @@ class TabPageState extends State<TabPage>
   initState() {
     super.initState();
     updateBadges();
-    setUpWebSockets();
 
     _firebaseMessaging.requestNotificationPermissions();
     _tabController = TabController(length: 2, vsync: this);
@@ -102,19 +94,21 @@ class TabPageState extends State<TabPage>
       MessageConatiner(),
       myProfile,
     ];
-  }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    PushHelper pushHelper = PushHelper.of(context, listen: false);
+    PushHelper pushHelper = PushHelper.instance;
+    pushHelper.swapAccount = swapAccount;
     if (pushHelper.notifcationType != null) {
       loadNotification(context);
     }
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
   loadNotification(BuildContext context) {
-    PushHelper pushHelper = PushHelper.of(context, listen: false);
+    PushHelper pushHelper = PushHelper.instance;
     print("Loading notification ${pushHelper.notifcationType}");
 
     _currentIndex = 1;
@@ -193,10 +187,8 @@ class TabPageState extends State<TabPage>
 
   @override
   Widget build(BuildContext context) {
-    PushHelper pushHelper = PushHelper.of(context, listen: false);
-    pushHelper.updateBadges = updateBadges;
-
     super.build(context);
+    checkNotifications();
     pageController = PageController(
       initialPage: 1,
       keepPage: true,
@@ -205,14 +197,8 @@ class TabPageState extends State<TabPage>
         .replaceAll("https://", "@");
     var client = "${CurrentInstance.instance.currentAccount.acct}$currentURL";
 
-    pushHelper.swapAccount = swapAccount;
-    pushHelper.register();
     _appBar = [
       null,
-      // AppBar(
-      //   title: Text('Your Timeline'),
-      // ),
-      // Notifications Tab is handled by that page
       null,
       AppBar(
         title: Text(AppLocalizations.of(context).tr("tab_page.title")),
@@ -269,10 +255,6 @@ class TabPageState extends State<TabPage>
             context,
             SlideBottomRoute(page: QuickPostPage()),
           );
-          // Navigator.push(
-          //   context,
-          //   SlideBottomRoute(page: CaptureController()),
-          // );
         },
         tooltip: AppLocalizations.of(context).tr("tab_page.tooltip.increment"),
         child: Icon(Icons.add),
@@ -358,11 +340,6 @@ class TabPageState extends State<TabPage>
     print("single tap");
     setState(() {
       if (index == 2) {
-        // Navigator.push(
-        //   context,
-        //   SlideBottomRoute(page: TextEditor()),
-        // );
-
         Navigator.push(
           context,
           SlideBottomRoute(page: QuickPostPage()),
@@ -408,6 +385,16 @@ class TabPageState extends State<TabPage>
   refresh(BuildContext viewContext) {
     Navigator.pop(viewContext);
     // profileKey.currentState.refresh();
+  }
+
+  checkNotifications(){
+    String account =
+          "${CurrentInstance.instance.currentAccount.acct}@${CurrentInstance.instance.currentClient.baseURL}";
+    InstanceStorage.getAccountSubscribedToNotifications(account).then((subbed) {
+      if (subbed == false) {
+        PushHelper.instance.register();
+      }
+    });
   }
 
   @override

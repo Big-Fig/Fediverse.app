@@ -108,8 +108,7 @@ class AccountsBottomSheet extends StatelessWidget {
                                                 instance.account)
                                             .then((future) {
 
-                                              PushHelper.of(context, listen:
-                                              false).unregister();
+                                              PushHelper.instance.unregister();
 
 
                                                 InstanceStorage

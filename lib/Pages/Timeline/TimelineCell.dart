@@ -65,6 +65,13 @@ class _TimelineCell extends State<TimelineCell> {
     emojiBloc = EmojiReactionBloc(
       status: widget.status,
     );
+    getReply();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    
   }
 
   getReply() {
@@ -120,7 +127,7 @@ class _TimelineCell extends State<TimelineCell> {
 
   @override
   Widget build(BuildContext context) {
-    getReply();
+    
     deviceWidth = MediaQuery.of(context).size.width;
     if (targetHeight == null) {
       targetHeight = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
