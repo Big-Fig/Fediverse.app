@@ -39,6 +39,21 @@ class InstanceStorage {
     return account;
   }
 
+  static Future<void> addAccountSubscribedToNotifications(String account, bool subscribed) async {
+    var box = await Hive.openBox('InstanceStorage', lazy: true) as LazyBox;
+    await box.put("$account-notifications-subscribed", true);
+    return print("done");
+  }
+
+  static Future<bool> getAccountSubscribedToNotifications(String account) async {
+     var box = await Hive.openBox('InstanceStorage', lazy: true) as LazyBox;
+     bool status = await box.get("$account-notifications-subscribed");
+     if (status == null){
+       return false;
+     }
+    return status;
+  }
+
   static Future<void> addAccountAlert(String account, String type) async {
     print("PUTTING ALERT");
     var box = await Hive.openBox('InstanceStorage', lazy: true) as LazyBox;

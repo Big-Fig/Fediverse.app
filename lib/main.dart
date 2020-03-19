@@ -29,6 +29,7 @@ import 'package:fedi/permission/storage_permission_bloc_impl.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -78,6 +79,8 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+    final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  PushHelper pushHelper = PushHelper.instance;
   final FirebaseAnalytics analytics = FirebaseAnalytics();
   final _currentInstance = CurrentInstance.instance;
   final _newInstance = CurrentInstance.newInstance;
@@ -87,9 +90,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     print(_currentInstance);
     print(_newInstance);
+    pushHelper.config(context);
 
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     FirebaseAnalytics analytics = FirebaseAnalytics();
+
+    
 
     var localizationData = EasyLocalizationProvider.of(context).data;
     var savedLocale = localizationData.savedLocale;
@@ -152,12 +158,9 @@ class MyApp extends StatelessWidget {
                     auth: "T5bhIIyre5TDC1LyX4mFAQ=="),
                 restService: IPleromaRestService.of(context, listen: false)),
           )
-        ], child: Provider(create: (BuildContext context) =>
-          PushHelper(pleromaPushService: IPleromaPushService.of(
-              context, listen: false),
-              pushRelayService: IPushRelayService.of(context, listen: false)),
-          child: app),
-      ));
+        ], 
+        child: app),
+      );
   Widget providePermissionsContext({@required Widget child}) => MultiProvider(
         providers: [
           Provider<ICameraPermissionBloc>(
@@ -177,7 +180,10 @@ class MyApp extends StatelessWidget {
       );
 }
 
+
 Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
+  print("onBackgroundMessage: $message");
+  //_showBigPictureNotification(message);
   return Future<void>.value();
 }
 

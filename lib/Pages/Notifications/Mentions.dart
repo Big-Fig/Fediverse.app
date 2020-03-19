@@ -51,7 +51,7 @@ class _Mentions extends State<Mentions> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    PushHelper pushHelper = PushHelper.of(context, listen: false);
+    PushHelper pushHelper = PushHelper.instance;
     if (pushHelper.notificationId != null) {
       loadPushNotification(context, pushHelper.notificationId);
     }
@@ -64,8 +64,6 @@ class _Mentions extends State<Mentions> {
 
   void _onRefresh() {
     print("ONREFRESH");
-    // monitor network fetch
-    // if failed,use refreshFailed()
     CurrentInstance.instance.currentClient
         .run(
             path: NotificationRequest.Notification.getMentionsNotifications(
@@ -145,7 +143,7 @@ class _Mentions extends State<Mentions> {
     }).catchError((onError) {
       print("$onError");
     });
-    PushHelper pushHelper = PushHelper.of(context, listen: false);
+    PushHelper pushHelper = PushHelper.instance;
     pushHelper.notificationId = null;
     pushHelper.notifcationType = null;
   }

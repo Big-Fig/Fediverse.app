@@ -68,7 +68,7 @@ class NotificationPageState extends State<NotificationPage>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    PushHelper pushHelper = PushHelper.of(context, listen: false);
+    PushHelper pushHelper = PushHelper.instance;
     if (pushHelper.notificationId != null) {
       loadPushNotification(context, pushHelper.notificationId);
     }
@@ -92,7 +92,7 @@ class NotificationPageState extends State<NotificationPage>
       print("$onError");
     });
 
-    PushHelper pushHelper = PushHelper.of(context, listen: false);
+    PushHelper pushHelper = PushHelper.instance;
     pushHelper.notificationId = null;
     pushHelper.notifcationType = null;
   }
@@ -371,7 +371,7 @@ class _NotificationsPagePushSettingsDrawerState
                   settings.alerts.favourite = value;
                   await InstanceStorage.setAccountNotificationsSettings(
                       account, settings);
-                  PushHelper.of(context, listen: false).register();
+                  PushHelper.instance.register();
                   setState(() {});
                 },
                 activeTrackColor: Colors.lightBlueAccent,
@@ -394,7 +394,7 @@ class _NotificationsPagePushSettingsDrawerState
                   settings.alerts.follow = value;
                   await InstanceStorage.setAccountNotificationsSettings(
                       account, settings);
-                  PushHelper.of(context, listen: false).register();
+                  PushHelper.instance.register();
                   setState(() {});
                 },
                 activeTrackColor: Colors.lightBlueAccent,
@@ -417,7 +417,7 @@ class _NotificationsPagePushSettingsDrawerState
                   settings.alerts.mention = value;
                   await InstanceStorage.setAccountNotificationsSettings(
                       account, settings);
-                  PushHelper.of(context, listen: false).register();
+                  PushHelper.instance.register();
                   setState(() {});
                 },
                 activeTrackColor: Colors.lightBlueAccent,
@@ -440,7 +440,7 @@ class _NotificationsPagePushSettingsDrawerState
                   settings.alerts.reblog = value;
                   await InstanceStorage.setAccountNotificationsSettings(
                       account, settings);
-                  PushHelper.of(context, listen: false).register();
+                  PushHelper.instance.register();
                   setState(() {});
                 },
                 activeTrackColor: Colors.lightBlueAccent,
@@ -463,7 +463,7 @@ class _NotificationsPagePushSettingsDrawerState
                   settings.alerts.poll = value;
                   await InstanceStorage.setAccountNotificationsSettings(
                       account, settings);
-                  PushHelper.of(context, listen: false).register();
+                  PushHelper.instance.register();
                   setState(() {});
                 },
                 activeTrackColor: Colors.lightBlueAccent,

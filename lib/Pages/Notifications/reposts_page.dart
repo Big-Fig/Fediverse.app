@@ -52,7 +52,7 @@ class _RepostPage extends State<RepostsPage> {
    @override
    void didChangeDependencies() {
      super.didChangeDependencies();
-    PushHelper pushHelper = PushHelper.of(context, listen: false);
+    PushHelper pushHelper = PushHelper.instance;
     if (pushHelper.notificationId != null) {
       loadPushNotification(context, pushHelper.notificationId);
     }
@@ -141,7 +141,7 @@ class _RepostPage extends State<RepostsPage> {
     }).catchError((onError) {
       print("$onError");
     });
-    PushHelper pushHelper = PushHelper.of(context, listen: false);
+    PushHelper pushHelper = PushHelper.instance;
     pushHelper.notificationId = null;
     pushHelper.notifcationType = null;
   }

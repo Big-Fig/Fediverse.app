@@ -6,6 +6,7 @@ import '../Pleroma/Foundation/InstanceStorage.dart';
 import './InstanceLoginPage.dart';
 import './LoadingInstancePage.dart';
 import '../Pleroma/Foundation/CurrentInstance.dart';
+import 'Push/PushHelper.dart';
 
 enum CurrentState { NONE, ADDNEW, LOADING, LOGGEDIN, LOGGEDOUT }
 
@@ -19,7 +20,7 @@ class AppContainerPage extends StatefulWidget {
 class _AppContainerPage extends State<AppContainerPage> {
   int initalIndex = 0;
   CurrentState appState = CurrentState.NONE;
-
+  
   void instanceSuccess() {
     setState(() {
       this.appState = CurrentState.LOADING;
@@ -66,10 +67,15 @@ class _AppContainerPage extends State<AppContainerPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    
+
     DeepLinkHelper deepLinkHelper = DeepLinkHelper.of(context, listen: false);
     deepLinkHelper.instanceSuccess = this.instanceSuccess;
     deepLinkHelper.initUniLinks();
 
+    // set listener
+    
     if (this.appState == CurrentState.LOGGEDOUT) {
       InstanceStorage.getNextInstance().then((instanceStorage){
           print("WE GOT NEXT INSTANCE!!!!!!!");

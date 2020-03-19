@@ -49,10 +49,7 @@ class _Follows extends State<Follows> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    PushHelper pushHelper = PushHelper.of(context, listen: false);
-    if (pushHelper.notificationId != null) {
-      loadPushNotification(context, pushHelper.notificationId);
-    }
+    
   }
 
   void fetchStatuses(BuildContext context) {
@@ -138,9 +135,7 @@ class _Follows extends State<Follows> {
     }).catchError((onError) {
       print("$onError");
     });
-    PushHelper pushHelper = PushHelper.of(context, listen: false);
-    pushHelper.notificationId = null;
-    pushHelper.notifcationType = null;
+   
   }
 
   Widget getSmartRefresher() {

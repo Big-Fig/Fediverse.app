@@ -68,10 +68,8 @@ class _ChatPage extends State<ChatPage> {
           leading: IconButton(
             icon: Icon(Icons.chevron_left),
             onPressed: () {
-              widget.refreshMesagePage();
+              if (widget.refreshMesagePage != null) widget.refreshMesagePage();
               Navigator.of(context).pop();
-              
-              
             },
           ),
           title: GestureDetector(
@@ -213,7 +211,7 @@ class _ChatPage extends State<ChatPage> {
           .addPostFrameCallback((_) => fetchStatuses(context));
     }
 
-    PushHelper pushHelper = PushHelper.of(context, listen: false);
+    PushHelper pushHelper = PushHelper.instance;
     pushHelper.notificationUpdater = update;
   }
 
@@ -275,7 +273,7 @@ class _ChatPage extends State<ChatPage> {
   }
 
   fetchFromContext() {
-    if(statuses.length == 0){
+    if (statuses.length == 0) {
       _refreshController.refreshCompleted();
       return;
     }
@@ -294,9 +292,8 @@ class _ChatPage extends State<ChatPage> {
       if (statuses.length < templist.length) {
         statuses.clear();
         statuses.addAll(templist.reversed);
-       
       }
-       if (mounted) setState(() {});
+      if (mounted) setState(() {});
       Future.delayed(const Duration(milliseconds: 5000), () {
         backgroundCheck();
       });

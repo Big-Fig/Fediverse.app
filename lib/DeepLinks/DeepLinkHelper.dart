@@ -20,7 +20,7 @@ class DeepLinkHelper {
 
   Future<Null> initUniLinks() async {
 
-    if (isLoading == true){
+    if (  isLoading == true){
       return;
     }
 
