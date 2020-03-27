@@ -41,7 +41,7 @@ class CaptureDMMediaWidget extends StatelessWidget {
             },
             mediaUploaded: mediaUploaded,),
           ));
-        }),
+        }, galleryEnabled: false),
         // provide parent abstract implementation by type
         child: ProxyProvider<ISingleFilePickerBloc, IFilePickerBloc>(
           update: (_, ISingleFilePickerBloc value, __) => value,

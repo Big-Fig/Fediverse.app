@@ -65,13 +65,13 @@ class _TimelineCell extends State<TimelineCell> {
     emojiBloc = EmojiReactionBloc(
       status: widget.status,
     );
+    replyAccount = null;
     getReply();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    
   }
 
   getReply() {
@@ -127,7 +127,25 @@ class _TimelineCell extends State<TimelineCell> {
 
   @override
   Widget build(BuildContext context) {
-    
+    if (widget.status.reblog != null) {
+      if (widget.status.reblog.emojis != null &&
+          widget.status.emojis.length > 0) {
+        if (widget.status.emojis == null) widget.status.emojis = [];
+        widget.status.emojis.addAll(widget.status.reblog.emojis);
+      }
+
+      if (widget.status.reblog.statusPleroma != null &&
+          widget.status.statusPleroma != null) {
+        if (widget.status.reblog.statusPleroma.emojiReactions != null &&
+            widget.status.reblog.statusPleroma.emojiReactions.length > 0) {
+          if (widget.status.statusPleroma.emojiReactions == null)
+            widget.status.statusPleroma.emojiReactions = [];
+          widget.status.statusPleroma.emojiReactions
+              .addAll(widget.status.reblog.statusPleroma.emojiReactions);
+        }
+      }
+    }
+
     deviceWidth = MediaQuery.of(context).size.width;
     if (targetHeight == null) {
       targetHeight = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
@@ -139,9 +157,10 @@ class _TimelineCell extends State<TimelineCell> {
     return MultiProvider(
       providers: [
         Provider<EmojiReactionProvider>(
-            create: (context) => EmojiReactionProvider(
-                  emojiBloc,
-                )),
+          create: (context) => EmojiReactionProvider(
+            emojiBloc,
+          ),
+        ),
       ],
       child: Card(
         elevation: 0,
@@ -492,24 +511,25 @@ class _TimelineCell extends State<TimelineCell> {
                               ),
                             ],
                           ),
-                          IconButton(
-                            color: Colors.grey,
-                            icon: Image(
-                              height: 20,
-                              width: 20,
-                              color: widget.status.reblogged
-                                  ? Colors.blue
-                                  : Colors.grey,
-                              image: AssetImage("assets/images/happy.png"),
+                          if (widget.status.statusPleroma != null)
+                            IconButton(
+                              color: Colors.grey,
+                              icon: Image(
+                                height: 20,
+                                width: 20,
+                                color: widget.status.reblogged
+                                    ? Colors.blue
+                                    : Colors.grey,
+                                image: AssetImage("assets/images/happy.png"),
+                              ),
+                              tooltip: AppLocalizations.of(context)
+                                  .tr("timeline.status.cell.tooltip.repost"),
+                              onPressed: () {
+                                setState(() {
+                                  showEmojiPicker = !showEmojiPicker;
+                                });
+                              },
                             ),
-                            tooltip: AppLocalizations.of(context)
-                                .tr("timeline.status.cell.tooltip.repost"),
-                            onPressed: () {
-                              setState(() {
-                                showEmojiPicker = !showEmojiPicker;
-                              });
-                            },
-                          ),
                           Row(
                             children: <Widget>[
                               IconButton(
@@ -1112,6 +1132,7 @@ class _TimelineCell extends State<TimelineCell> {
   @override
   void dispose() {
     super.dispose();
+    print("displose");
     replyAccount = null;
   }
 }

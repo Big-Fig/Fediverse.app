@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/file/gallery/file/file_gallery_file_bloc.dart';
 import 'package:fedi/file/gallery/file_gallery_model.dart';
@@ -43,7 +42,6 @@ class FileGalleryFileBloc extends AbstractFileGalleryFileBloc {
   Future<FileGalleryFile> retrieveFile() async {
     var file = await assetEntity.file;
     var isNeedDeleteAfterUsage = false;
-
     var filePath = file.absolute.path;
     _logger.fine(() => "retrieveFile \n"
         "\t file $filePath");
@@ -53,6 +51,7 @@ class FileGalleryFileBloc extends AbstractFileGalleryFileBloc {
       if (extension == heicExtension || Platform.isIOS) {
         // gallery may return photos in HEIC format from iOS gallery
         // in this case we should re-compress them to jpg
+        // gallery on iOS is selecting the old 
         file = await _compressToJpeg(file);
         isNeedDeleteAfterUsage = true;
       }
@@ -63,6 +62,8 @@ class FileGalleryFileBloc extends AbstractFileGalleryFileBloc {
         type: assetEntity.type,
         isNeedDeleteAfterUsage: isNeedDeleteAfterUsage);
   }
+
+  
 
   Future<File> _compressToJpeg(File file) async {
     var originPath = file.absolute.path;

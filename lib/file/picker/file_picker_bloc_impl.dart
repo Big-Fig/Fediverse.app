@@ -8,6 +8,7 @@ abstract class FilePickerBloc extends DisposableOwner
     implements IFilePickerBloc {
   final List<FilePickerFileType> fileTypesToPick;
   final bool captureEnabled;
+  final bool galleryEnabled;
 
   // ignore: close_sinks
   BehaviorSubject<FilePickerTab> selectedTabSubject;
@@ -30,9 +31,10 @@ abstract class FilePickerBloc extends DisposableOwner
   FilePickerBloc(
       {@required this.fileTypesToPick,
       @required this.captureEnabled,
+      @required this.galleryEnabled,
       @required FilePickerTab startActiveTab}) {
     var tabs = calculateFilePickerTabs(
-        fileTypesToPick: fileTypesToPick, captureEnabled: captureEnabled);
+        fileTypesToPick: fileTypesToPick, captureEnabled: captureEnabled, galleryEnabled:galleryEnabled);
 
     if (!tabs.contains(startActiveTab)) {
       throw "Can't select startActiveTab $startActiveTab, because it don't "
@@ -48,25 +50,30 @@ abstract class FilePickerBloc extends DisposableOwner
 
   static List<FilePickerTab> calculateFilePickerTabs(
       {@required List<FilePickerFileType> fileTypesToPick,
-      @required bool captureEnabled}) {
+      @required bool captureEnabled,
+      @required bool galleryEnabled}) {
     var tabs = Set<FilePickerTab>();
 
     fileTypesToPick.forEach((type) {
       switch (type) {
         case FilePickerFileType.image:
-          tabs.add(FilePickerTab.gallery);
+          if (galleryEnabled) {
+            tabs.add(FilePickerTab.gallery);
+          }
           if (captureEnabled) {
             tabs.add(FilePickerTab.captureImage);
           }
           break;
         case FilePickerFileType.video:
-          tabs.add(FilePickerTab.gallery);
+           if (galleryEnabled) {
+            tabs.add(FilePickerTab.gallery);
+          }
           if (captureEnabled) {
             tabs.add(FilePickerTab.captureVideo);
           }
           break;
         case FilePickerFileType.other:
-         // TODO: not implemented yet
+          // TODO: not implemented yet
           break;
       }
     });

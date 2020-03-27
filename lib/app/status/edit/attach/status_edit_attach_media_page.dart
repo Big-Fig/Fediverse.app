@@ -24,8 +24,8 @@ class StatusEditAttachImagePage extends StatelessWidget {
         create: (context) => SingleFilePickerBloc(
             fileTypesToPick: [FilePickerFileType.image, FilePickerFileType.video],
             captureEnabled: true,
-            startActiveTab: FilePickerTab.gallery,
-            fileSelectedCallback: fileSelectedCallback),
+            startActiveTab: FilePickerTab.captureImage,
+            fileSelectedCallback: fileSelectedCallback, galleryEnabled: false),
         // provide parent abstract implementation by type
         child: ProxyProvider<ISingleFilePickerBloc, IFilePickerBloc>(
           update: (_, ISingleFilePickerBloc value, __) => value,

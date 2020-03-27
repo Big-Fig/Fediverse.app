@@ -10,11 +10,13 @@ class SingleFilePickerBloc extends FilePickerBloc
       {@required this.fileSelectedCallback,
       @required List<FilePickerFileType> fileTypesToPick,
       @required bool captureEnabled,
+      @required bool galleryEnabled,
       @required FilePickerTab startActiveTab})
       : super(
             fileTypesToPick: fileTypesToPick,
             captureEnabled: captureEnabled,
-            startActiveTab: startActiveTab);
+            startActiveTab: startActiveTab,
+            galleryEnabled: galleryEnabled);
 
   @override
   onFileSelected(FilePickerFile filePickerFile) {

@@ -300,6 +300,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_plugin_android_lifecycle:
+    dependency: transitive
+    description:
+      name: flutter_plugin_android_lifecycle
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.6"
   flutter_staggered_grid_view:
     dependency: "direct main"
     description:
@@ -401,6 +408,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.2"
+  image_picker:
+    dependency: "direct main"
+    description:
+      name: image_picker
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.6.3+4"
   indexed_list_view:
     dependency: "direct main"
     description:
@@ -579,12 +593,10 @@ packages:
   photo_manager:
     dependency: "direct main"
     description:
-      path: "."
-      ref: f3331b6584609984574bd11cd93fc91ae485de72
-      resolved-ref: f3331b6584609984574bd11cd93fc91ae485de72
-      url: "https://github.com/CaiJingLong/flutter_photo_manager.git"
-    source: git
-    version: "0.5.0-dev.1"
+      name: photo_manager
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.8"
   photo_view:
     dependency: "direct main"
     description:
