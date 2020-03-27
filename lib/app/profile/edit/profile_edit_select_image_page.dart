@@ -22,7 +22,7 @@ abstract class ProfileEditSelectImagePage extends StatelessWidget {
             fileTypesToPick: [FilePickerFileType.image],
             captureEnabled: true,
             fileSelectedCallback: (file) => onFileSelected(context, file),
-            startActiveTab: FilePickerTab.gallery),
+            startActiveTab: FilePickerTab.gallery, galleryEnabled: true),
         // provide parent abstract implementation by type
         child: ProxyProvider<ISingleFilePickerBloc, IFilePickerBloc>(
           update: (_, ISingleFilePickerBloc value, __) => value,

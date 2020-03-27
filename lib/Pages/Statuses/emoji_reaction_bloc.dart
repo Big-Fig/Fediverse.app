@@ -10,6 +10,7 @@ import 'package:fedi/disposable/disposable.dart';
 class EmojiReactionBloc implements Disposable {
   final Status status;
   EmojiReactionBloc({this.status}) {
+    if(this.status.statusPleroma == null) return;
     _reactions.sink.add(this.status.statusPleroma.emojiReactions);
   }
 
@@ -18,6 +19,9 @@ class EmojiReactionBloc implements Disposable {
   Function(List<EmojiReaction>) get updateReactions => _reactions.sink.add;
 
   addRemoveReaction(String emoji) {
+    if (status.statusPleroma == null){
+      return;
+    }
     int firstIndex;
     if (status.statusPleroma.emojiReactions != null) {
       firstIndex =

@@ -12,8 +12,18 @@ import 'package:fedi/Views/LocalVideoPlayer.dart';
 import 'package:fedi/Views/MentionPage.dart';
 import 'package:fedi/Views/ProgressDialog.dart';
 import 'package:fedi/app/status/edit/attach/status_edit_attach_media_page.dart';
+import 'package:fedi/file/gallery/file_gallery_model.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:logging/logging.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as path;
+import 'package:photo_manager/photo_manager.dart';
+
+const heicExtension = ".heic";
+var _logger = Logger("QuickPostPage.dart");
 
 class QuickPostPage extends StatefulWidget {
   @override
@@ -259,7 +269,7 @@ class _QuickPostPageState extends State<QuickPostPage> {
     var count = assets.length < 4 ? assets.length + 1 : assets.length;
     print("COUNT: $count");
     return Container(
-      height: 100,
+      height: 125,
       child: GridView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: count,
@@ -343,12 +353,9 @@ class _QuickPostPageState extends State<QuickPostPage> {
     );
   }
 
-
   Future<Widget> getMediaPreview(FilePickerFile asset) async {
-
     var type = asset.type;
-    switch(type) {
-
+    switch (type) {
       case FilePickerFileType.image:
         return Image.file(asset.file);
         break;
@@ -378,43 +385,153 @@ class _QuickPostPageState extends State<QuickPostPage> {
   }
 
   Widget getAddButton() {
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: () {
-        _openAttachPage();
-      },
-      child: Container(
-        margin: EdgeInsets.all(8),
-        color: Colors.blue,
-        child: Center(
-          child: IconButton(
-            iconSize: 30,
-            icon: Icon(
-              Icons.add_photo_alternate,
-              color: Colors.white,
-            ),
-            onPressed: () {
+    return Container(
+      width: 150,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
               _openAttachPage();
             },
+            child: Center(
+              child: Container(
+                margin: EdgeInsets.all(2),
+                color: Colors.blue,
+                child: IconButton(
+                  iconSize: 30,
+                  icon: Icon(
+                    Icons.camera_alt,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    _openAttachPage();
+                  },
+                ),
+                height: 125,
+              ),
+            ),
           ),
-        ),
-        width: 100,
-        height: 100,
+          Column(
+            children: <Widget>[
+              Center(
+                child: Container(
+                  // margin: EdgeInsets.all(5),
+                  color: Colors.blue,
+                  child: IconButton(
+                    iconSize: 30,
+                    icon: Image(
+                      height: 30,
+                      width: 30,
+                      color: Colors.white,
+                      image: AssetImage("assets/images/addVideoFileIcon.png"),
+                    ),
+                    onPressed: () {
+                      _openVideoMediaPicker();
+                    },
+                  ),
+                  height: 60,
+                ),
+              ),
+              Container(
+                height: 5,
+              ),
+              Center(
+                child: Container(
+                  // margin: EdgeInsets.all(5),
+                  color: Colors.blue,
+                  child: IconButton(
+                    iconSize: 30,
+                    icon: Icon(
+                      Icons.add_photo_alternate,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      _openMediaPicker();
+                    },
+                  ),
+                  height: 60,
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
 
+  Future<void> _openMediaPicker() async {
+    var file = await ImagePicker.pickImage(source: ImageSource.gallery);
+    // var file = FilePickerFile(file: image, type: )
+    var isNeedDeleteAfterUsage = false;
+    var filePath = file.absolute.path;
+    _logger.fine(() => "retrieveFile \n"
+        "\t file $filePath");
+
+    var extension = path.extension(filePath);
+    if (extension == heicExtension || Platform.isIOS) {
+      // gallery may return photos in HEIC format from iOS gallery
+      // in this case we should re-compress them to jpg
+      // gallery on iOS is selecting the old
+      file = await _compressToJpeg(file);
+      isNeedDeleteAfterUsage = true;
+    }
+    var newFile = FilePickerFile(
+        file: file,
+        type: FilePickerFileType.image,
+        isNeedDeleteAfterUsage: isNeedDeleteAfterUsage);
+
+    assets.add(newFile);
+    setState(() {});
+  }
+
+  Future<void> _openVideoMediaPicker() async {
+    var file = await ImagePicker.pickVideo(source: ImageSource.gallery);
+    // var file = FilePickerFile(file: image, type: )
+    var isNeedDeleteAfterUsage = false;
+    var filePath = file.absolute.path;
+    _logger.fine(() => "retrieveFile \n"
+        "\t file $filePath");
+
+    var newFile = FilePickerFile(
+        file: file,
+        type: FilePickerFileType.video,
+        isNeedDeleteAfterUsage: isNeedDeleteAfterUsage);
+    assets.add(newFile);
+    setState(() {});
+  }
+
+  Future<File> _compressToJpeg(File file) async {
+    var originPath = file.absolute.path;
+    final Directory extDir = await getTemporaryDirectory();
+    var timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+    final String dirPath = path.join(extDir.path, "gallery_picker", timestamp);
+    await Directory(dirPath).create(recursive: true);
+    var originalFileNameWithoutExtension =
+        path.basenameWithoutExtension(file.path);
+    final String resultPath =
+        path.join(dirPath, "$originalFileNameWithoutExtension.jpg");
+    _logger.fine(() => "_compressToJpeg \n"
+        "\t originPath $originPath"
+        "\t resultPath $resultPath");
+    file = await FlutterImageCompress.compressAndGetFile(
+      originPath,
+      resultPath,
+      format: CompressFormat.jpeg,
+      quality: 88,
+    );
+    return file;
+  }
+
   void _openAttachPage() {
-    Navigator.push(
-        context,
-        SlideBottomRoute(
-            page: StatusEditAttachImagePage(
-          fileSelectedCallback: (FilePickerFile filePickerFile) {
-            assets.add(filePickerFile);
-            Navigator.pop(context);
-            setState(() {});
-          },
-        )));
+    Navigator.push(context, SlideBottomRoute(page: StatusEditAttachImagePage(
+      fileSelectedCallback: (FilePickerFile filePickerFile) {
+        assets.add(filePickerFile);
+        Navigator.pop(context);
+        setState(() {});
+      },
+    )));
   }
 
   postStatus() {
@@ -452,14 +569,11 @@ class _QuickPostPageState extends State<QuickPostPage> {
   }
 
   uploadFile(BuildContext context, int index, FilePickerFile filePickerFile) {
-
-
-    var mediaAttachmentService = IPleromaMediaAttachmentService.of(
-        context, listen: false);
+    var mediaAttachmentService =
+        IPleromaMediaAttachmentService.of(context, listen: false);
 
     var file = filePickerFile.file;
-    mediaAttachmentService.uploadMedia(file: file).then(
-            (attachment) {
+    mediaAttachmentService.uploadMedia(file: file).then((attachment) {
       attachments.add(attachment.id);
       int nextIndex = index + 1;
       print("whats next?");
@@ -481,7 +595,7 @@ class _QuickPostPageState extends State<QuickPostPage> {
               .tr("post.quick_post.posting.error.alert.title"),
           AppLocalizations.of(context)
               .tr("post.quick_post.posting.error.alert.content"),
-              () => {});
+          () => {});
       alert.showAlert();
     });
   }
