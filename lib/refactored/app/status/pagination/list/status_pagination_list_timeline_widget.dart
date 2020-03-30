@@ -1,0 +1,36 @@
+import 'package:fedi/refactored/app/status/list/status_list_item_timeline_widget.dart';
+import 'package:fedi/refactored/app/status/pagination/list/status_pagination_list_base_widget.dart';
+import 'package:fedi/refactored/app/status/status_bloc.dart';
+import 'package:fedi/refactored/app/status/status_bloc_impl.dart';
+import 'package:fedi/refactored/app/status/status_model.dart';
+import 'package:fedi/refactored/disposable/disposable_provider.dart';
+import 'package:fedi/refactored/pagination/list/pagination_list_widget.dart';
+import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
+import 'package:provider/provider.dart';
+
+var _logger = Logger("timeline_pagination_list_simple_widget.dart");
+
+class StatusPaginationListTimelineWidget
+    extends StatusPaginationListBaseWidget {
+  StatusPaginationListTimelineWidget({@required Key key}) : super(key: key);
+
+  @override
+  ScrollView buildItemsCollectionView(
+          {@required BuildContext context,
+          @required List<IStatus> items,
+          @required Widget header,
+          @required Widget footer}) =>
+      PaginationListWidget.buildItemsListView(
+          context: context,
+          items: items,
+          header: header,
+          footer: footer,
+          itemBuilder: (context, index) => Provider<IStatus>.value(
+            value: items[index],
+            child: DisposableProxyProvider<IStatus, IStatusBloc>(
+                update: (context, status, oldValue) =>
+                    StatusBloc.createFromContext(context, status),
+                child: StatusListItemTimelineWidget()),
+          ));
+}
