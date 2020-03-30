@@ -1,11 +1,11 @@
 import 'package:fedi/refactored/pagination/pagination_model.dart';
 import 'package:flutter/widgets.dart';
 
-class CachedNetworkPaginationPage<T> extends PaginationPage<T> {
+class CachedPaginationPage<T> extends PaginationPage<T> {
 
   final bool isActuallyRefreshedFromRemote;
 
-  CachedNetworkPaginationPage(
+  CachedPaginationPage(
       {@required int requestedLimitPerPage,
       @required int pageIndex,
       @required List<T> values,

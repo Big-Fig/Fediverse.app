@@ -1,10 +1,8 @@
+import 'package:fedi/refactored/app/account/cached/account_cached_list_service.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/refactored/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/refactored/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/refactored/pleroma/status/pleroma_status_service.dart';
 import 'package:fedi/refactored/app/account/account_model.dart';
-import 'package:fedi/refactored/app/account/list/account_list_service.dart';
-import 'package:fedi/refactored/app/account/my/my_account_model.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository_model.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
@@ -16,7 +14,7 @@ import 'package:moor/moor.dart';
 var _logger = Logger("status_favourite_account_list_service_impl.dart");
 
 class StatusFavouriteAccountListService extends DisposableOwner
-    implements IAccountListService {
+    implements IAccountCachedListService {
   final IPleromaStatusService pleromaStatusService;
   final IAccountRepository accountRepository;
   final IStatus status;

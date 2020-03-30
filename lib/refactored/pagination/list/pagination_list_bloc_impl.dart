@@ -1,6 +1,5 @@
 import 'package:fedi/refactored/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/refactored/pagination/list/pagination_list_bloc.dart';
-import 'package:fedi/refactored/pagination/network/cached_network_pagination_model.dart';
 import 'package:fedi/refactored/pagination/pagination_bloc.dart';
 import 'package:fedi/refactored/pagination/pagination_model.dart';
 import 'package:flutter/widgets.dart';
@@ -9,8 +8,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 var _logger = Logger("pagination_list_bloc_impl.dart");
 
-abstract class PaginationListBloc<
-        TPage extends CachedNetworkPaginationPage<TItem>, TItem>
+abstract class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     extends AsyncInitLoadingBloc implements IPaginationListBloc<TPage, TItem> {
   final IPaginationBloc<TPage, TItem> paginationBloc;
   final RefreshController refreshController =
@@ -75,9 +73,7 @@ abstract class PaginationListBloc<
     isRefreshedAtLeastOnce = true;
     var newPage = await paginationBloc.refresh();
 
-    var success = newPage?.isActuallyRefreshedFromRemote == true;
-    _logger.finest(() => "refresh success=$success");
-    return success;
+    return newPage != null;
   }
 
   static List<TItem> mapToItemsList<TPage extends PaginationPage<TItem>, TItem>(

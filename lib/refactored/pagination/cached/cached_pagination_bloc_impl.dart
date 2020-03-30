@@ -1,13 +1,13 @@
-import 'package:fedi/refactored/pagination/network/cached_network_pagination_bloc.dart';
-import 'package:fedi/refactored/pagination/network/cached_network_pagination_model.dart';
+import 'package:fedi/refactored/pagination/cached/cached_pagination_bloc.dart';
+import 'package:fedi/refactored/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/refactored/pagination/pagination_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
 
-abstract class CachedNetworkPaginationBloc<
-        TPage extends CachedNetworkPaginationPage<TItem>,
+abstract class CachedPaginationBloc<
+        TPage extends CachedPaginationPage<TItem>,
         TItem> extends PaginationBloc<TPage, TItem>
-    implements ICachedNetworkPaginationBloc<TPage, TItem> {
-  CachedNetworkPaginationBloc(
+    implements ICachedPaginationBloc<TPage, TItem> {
+  CachedPaginationBloc(
       {@required int itemsCountPerPage, @required int maximumCachedPagesCount})
       : super(
             maximumCachedPagesCount: maximumCachedPagesCount,

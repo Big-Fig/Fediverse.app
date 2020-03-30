@@ -1,4 +1,4 @@
-import 'package:fedi/refactored/app/pagination/cached_pleroma_pagination_bloc.dart';
+import 'package:fedi/refactored/app/pagination/cached/cached_pleroma_pagination_bloc.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';

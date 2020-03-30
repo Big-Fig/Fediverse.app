@@ -7,3 +7,4 @@ abstract class IMastodonTag {
 
   List<IMastodonHistory> get history;
 }
+
