@@ -6,6 +6,7 @@ import 'package:fedi/refactored/app/account/avatar/account_avatar_widget.dart';
 import 'package:fedi/refactored/app/account/details/account_details_page.dart';
 import 'package:fedi/refactored/app/account/display_name/account_display_name_widget.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
+import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,25 +16,25 @@ import 'package:provider/provider.dart';
 var _logger = Logger("status_account_widget.dart");
 
 class StatusAccountWidget extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: true);
 
-    return FutureBuilder<IAccount>(
-        future: statusBloc.loadReblogOrOriginalAccount(),
+    return StreamBuilder<IAccount>(
+        stream: statusBloc.accountReblogOrOriginalStream,
+        initialData: statusBloc.accountReblogOrOriginalAccount,
         builder: (context, snapshot) {
-//          _logger.finest(() => " snapshot ${snapshot.data}");
-          if (snapshot.hasData) {
             var reblogOrOriginalAccount = snapshot.data;
             return buildBody(context, reblogOrOriginalAccount, statusBloc);
-          } else {
-            if (snapshot.error != null) {
-              _logger.severe(() => " error ${snapshot.error}");
-            }
-//            return SizedBox.shrink();
-            return CircularProgressIndicator();
-          }
+//          _logger.finest(() => " snapshot ${snapshot.data}");
+//          if (snapshot.hasData) {
+//          } else {
+//            if (snapshot.error != null) {
+//              _logger.severe(() => " error ${snapshot.error}");
+//            }
+////            return SizedBox.shrink();
+//            return CircularProgressIndicator();
+//          }
         });
   }
 

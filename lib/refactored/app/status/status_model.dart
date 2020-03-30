@@ -1,3 +1,5 @@
+import 'package:fedi/refactored/app/account/account_model.dart';
+import 'package:fedi/refactored/app/database/app_database.dart';
 import 'package:fedi/refactored/pleroma/application/pleroma_application_model.dart';
 import 'package:fedi/refactored/pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/refactored/pleroma/content/pleroma_content_model.dart';
@@ -8,11 +10,11 @@ import 'package:fedi/refactored/pleroma/poll/pleroma_poll_model.dart';
 import 'package:fedi/refactored/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/refactored/pleroma/tag/pleroma_tag_model.dart';
 import 'package:fedi/refactored/pleroma/visibility/pleroma_visibility_model.dart';
-import 'package:fedi/refactored/app/account/account_model.dart';
-import 'package:fedi/refactored/app/database/app_database.dart';
 import 'package:flutter/widgets.dart';
 
 abstract class IStatus {
+  IStatus get reblog;
+
   int get localId;
 
   String get remoteId;
@@ -198,7 +200,8 @@ class DbStatusPopulatedWrapper implements IStatus {
   PleromaPoll get poll => dbStatusPopulated.status.poll;
 
   @override
-  String get reblogStatusRemoteId =>  dbStatusPopulated.status.reblogStatusRemoteId;
+  String get reblogStatusRemoteId =>
+      dbStatusPopulated.status.reblogStatusRemoteId;
 
   @override
   bool get reblogged => dbStatusPopulated.status.reblogged;
@@ -250,13 +253,33 @@ class DbStatusPopulatedWrapper implements IStatus {
   @override
   bool get pinned => dbStatusPopulated.status.pinned;
 
-
+  @override
+  IStatus get reblog {
+    if (dbStatusPopulated.rebloggedStatus != null &&
+        dbStatusPopulated.rebloggedStatusAccount != null) {
+      return DbStatusPopulatedWrapper(DbStatusPopulated(
+          status: dbStatusPopulated.rebloggedStatus,
+          account: dbStatusPopulated.rebloggedStatusAccount,
+          rebloggedStatus: null,
+          rebloggedStatusAccount: null));
+    } else {
+      return null;
+    }
+  }
 }
 
 class DbStatusPopulated {
   final DbStatus status;
   final DbAccount account;
-  DbStatusPopulated({@required this.status, @required this.account});
+  final DbStatus rebloggedStatus;
+  final DbAccount rebloggedStatusAccount;
+
+  DbStatusPopulated({
+    @required this.status,
+    @required this.account,
+    @required this.rebloggedStatus,
+    @required this.rebloggedStatusAccount,
+  });
 
   @override
   bool operator ==(Object other) =>
@@ -264,10 +287,15 @@ class DbStatusPopulated {
       other is DbStatusPopulated &&
           runtimeType == other.runtimeType &&
           status == other.status &&
-          account == other.account;
-
+          account == other.account &&
+          rebloggedStatus == other.rebloggedStatus &&
+          rebloggedStatusAccount == other.rebloggedStatusAccount;
   @override
-  int get hashCode => status.hashCode ^ account.hashCode;
+  int get hashCode =>
+      status.hashCode ^
+      account.hashCode ^
+      rebloggedStatus.hashCode ^
+      rebloggedStatusAccount.hashCode;
   @override
   String toString() {
     return 'DbStatusPopulated{status: $status, account: $account}';

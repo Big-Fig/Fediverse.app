@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:fedi/refactored/mastodon/status/mastodon_status_model.dart';
+import 'package:fedi/refactored/mastodon/visibility/mastodon_visibility_model.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/refactored/pleroma/application/pleroma_application_model.dart';
 import 'package:fedi/refactored/pleroma/card/pleroma_card_model.dart';
@@ -10,9 +12,6 @@ import 'package:fedi/refactored/pleroma/mention/pleroma_mention_model.dart';
 import 'package:fedi/refactored/pleroma/poll/pleroma_poll_model.dart';
 import 'package:fedi/refactored/pleroma/tag/pleroma_tag_model.dart';
 import 'package:fedi/refactored/pleroma/visibility/pleroma_visibility_model.dart';
-import 'package:fedi/refactored/mastodon/status/mastodon_status_model.dart';
-import 'package:fedi/refactored/mastodon/visibility/mastodon_visibility_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_status_model.g.dart';
@@ -654,4 +653,36 @@ class PleromaStatusEmojiReaction implements IPleromaStatusEmojiReaction {
     return 'PleromaStatusEmojiReaction{name: $name, count: $count,'
         ' me: $me, accounts: $accounts}';
   }
+}
+
+List<IPleromaStatusEmojiReaction> mergeEmojiReactionsLists(
+    List<IPleromaStatusEmojiReaction> emojiReactionsOriginal,
+    List<IPleromaStatusEmojiReaction> emojiReactionsReblog) {
+  var mergedList = <IPleromaStatusEmojiReaction>[];
+
+  mergedList.addAll(emojiReactionsOriginal ?? []);
+
+  emojiReactionsReblog?.forEach((emojiReaction) {
+    var alreadyExistEmojiReaction = mergedList.firstWhere(
+        (currentEmojiReaction) =>
+            currentEmojiReaction.name == emojiReaction.name,
+        orElse: () => null);
+
+    if (alreadyExistEmojiReaction != null) {
+      mergedList.remove(alreadyExistEmojiReaction);
+      var mergedEmojiReaction = PleromaStatusEmojiReaction(
+          name: alreadyExistEmojiReaction.name,
+          me: alreadyExistEmojiReaction.me || emojiReaction.me,
+          count: alreadyExistEmojiReaction.count + emojiReaction.count,
+          accounts: [
+            ...alreadyExistEmojiReaction.accounts,
+            ...emojiReaction.accounts,
+          ]);
+      mergedList.add(mergedEmojiReaction);
+    } else {
+      mergedList.add(emojiReaction);
+    }
+  });
+
+  return mergedList;
 }

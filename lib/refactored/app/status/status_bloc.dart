@@ -1,20 +1,27 @@
+import 'package:fedi/refactored/app/account/account_model.dart';
+import 'package:fedi/refactored/app/status/status_model.dart';
+import 'package:fedi/refactored/disposable/disposable.dart';
 import 'package:fedi/refactored/pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/refactored/pleroma/mention/pleroma_mention_model.dart';
 import 'package:fedi/refactored/pleroma/status/pleroma_status_model.dart';
-import 'package:fedi/refactored/app/account/account_model.dart';
-import 'package:fedi/refactored/app/status/status_model.dart';
-import 'package:fedi/refactored/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IStatusBloc implements Disposable {
   static IStatusBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IStatusBloc>(context, listen: listen);
-
-  Future<IAccount> loadReblogOrOriginalAccount();
-
   IStatus get status;
+
+  Stream<IStatus> get statusStream;
+
+  IStatus get reblog;
+
+  Stream<IStatus> get reblogStream;
+
+  IStatus get reblogOrOriginal;
+
+  Stream<IStatus> get reblogOrOriginalStream;
 
   Stream<String> get contentStream;
 
@@ -26,17 +33,26 @@ abstract class IStatusBloc implements Disposable {
 
   Stream<String> get contentWithEmojisStream;
 
-  IPleromaCard get card;
+  IPleromaCard get cardOriginal;
 
-  Stream<IPleromaCard> get cardStream;
+  Stream<IPleromaCard> get cardOriginalStream;
+  IPleromaCard get cardReblog;
+
+  Stream<IPleromaCard> get cardReblogStream;
+
+  IPleromaCard get cardReblogOrOriginal;
+
+  Stream<IPleromaCard> get cardReblogOrOriginalStream;
 
   String get contentWithEmojis;
-
-  Stream<IStatus> get statusStream;
 
   IAccount get account;
 
   Stream<IAccount> get accountStream;
+
+  IAccount get accountReblogOrOriginalAccount;
+
+  Stream<IAccount> get accountReblogOrOriginalStream;
 
   DateTime get createdAt;
 
@@ -58,10 +74,6 @@ abstract class IStatusBloc implements Disposable {
 
   Stream<bool> get isHaveReblogStream;
 
-  Future<IStatus> loadRebloggedStatus();
-
-  Stream<IStatus> watchRebloggedStatus();
-
   Future<IAccount> findMentionAccountByUrl({@required String url});
 
   bool get isFromMyAccount;
@@ -72,9 +84,18 @@ abstract class IStatusBloc implements Disposable {
 
   Stream<List<IPleromaMediaAttachment>> get mediaAttachmentsStream;
 
-  List<IPleromaStatusEmojiReaction> get emojiReactions;
+  List<IPleromaStatusEmojiReaction> get emojiReactionsOriginal;
 
-  Stream<List<IPleromaStatusEmojiReaction>> get emojiReactionsStream;
+  Stream<List<IPleromaStatusEmojiReaction>> get emojiReactionsOriginalStream;
+
+  List<IPleromaStatusEmojiReaction> get emojiReactionsReblog;
+
+  Stream<List<IPleromaStatusEmojiReaction>> get emojiReactionsReblogStream;
+
+  List<IPleromaStatusEmojiReaction> get emojiReactionOriginalPlusReblog;
+
+  Stream<List<IPleromaStatusEmojiReaction>>
+      get emojiReactionsOriginalPlusReblogStream;
 
   Future updateFromNetwork();
 
@@ -94,13 +115,29 @@ abstract class IStatusBloc implements Disposable {
 
   Stream<bool> get rebloggedStream;
 
-  int get favouritesCount;
+  int get favouritesOriginalCount;
 
-  Stream<int> get favouritesCountStream;
+  Stream<int> get favouritesOriginalCountStream;
 
-  int get reblogsCount;
+  int get favouritesReblogCount;
 
-  Stream<int> get reblogsCountStream;
+  Stream<int> get favouritesReblogCountStream;
+
+  int get favouritesReblogPlusOriginalCount;
+
+  Stream<int> get favouritesReblogPlusOriginalCountStream;
+
+  int get reblogsOriginalCount;
+
+  Stream<int> get reblogsOriginalCountStream;
+
+  int get reblogsReblogCount;
+
+  Stream<int> get reblogsReblogCountStream;
+
+  int get reblogsReblogPlusOriginalCount;
+
+  Stream<int> get reblogsReblogPlusOriginalCountStream;
 
   int get repliesCount;
 
@@ -116,6 +153,5 @@ abstract class IStatusBloc implements Disposable {
 
   Future<IStatus> requestTogglePin();
 
-  Future<IPleromaStatus> requestToggleEmojiReaction(
-      {@required String emoji});
+  Future<IPleromaStatus> requestToggleEmojiReaction({@required String emoji});
 }

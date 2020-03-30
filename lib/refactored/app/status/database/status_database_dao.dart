@@ -3,16 +3,21 @@ import 'package:fedi/refactored/app/database/app_database.dart';
 import 'package:fedi/refactored/app/status/database/status_database_model.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository_model.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
+import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 
 part 'status_database_dao.g.dart';
 
 var _accountAliasId = "account";
+var _reblogAliasId = "reblog";
+var _reblogAccountAliasId = "reblogAccount";
 var _statusAliasId = "status";
 var _accountFollowingsAliasId = "accountFollowings";
 var _statusHashtagsAliasId = "statusHashtags";
 var _statusListsAliasId = "statusLists";
 var _conversationStatusesAliasId = "conversationStatuses";
+
+var _logger = Logger("status_database_dao.dart");
 
 @UseDao(tables: [
   DbStatuses
@@ -28,6 +33,8 @@ var _conversationStatusesAliasId = "conversationStatuses";
 class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   final AppDatabase db;
   $DbAccountsTable accountAlias;
+  $DbStatusesTable reblogAlias;
+  $DbAccountsTable reblogAccountAlias;
   $DbStatusesTable statusAlias;
   $DbStatusHashtagsTable statusHashtagsAlias;
   $DbStatusListsTable statusListsAlias;
@@ -37,6 +44,8 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   // Called by the AppDatabase class
   StatusDao(this.db) : super(db) {
     accountAlias = alias(db.dbAccounts, _accountAliasId);
+    reblogAlias = alias(db.dbStatuses, _reblogAliasId);
+    reblogAccountAlias = alias(db.dbAccounts, _reblogAccountAliasId);
     statusAlias = alias(db.dbStatuses, _statusAliasId);
     accountFollowingsAlias =
         alias(db.dbAccountFollowings, _accountFollowingsAliasId);
@@ -258,8 +267,16 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
     if (typedResult == null) {
       return null;
     }
-
+    DbStatus rebloggedStatus;
+    DbAccount rebloggedStatusAccount;
+    rebloggedStatus = typedResult.readTable(reblogAlias);
+    rebloggedStatusAccount = typedResult.readTable(reblogAccountAlias);
+//
+//    _logger.finest(() => "rebloggedStatus $rebloggedStatus");
+//    _logger.finest(() => "rebloggedStatusAccount $rebloggedStatusAccount");
     return DbStatusPopulated(
+      rebloggedStatus: rebloggedStatus,
+        rebloggedStatusAccount: rebloggedStatusAccount,
         status: typedResult.readTable(db.dbStatuses),
         account: typedResult.readTable(accountAlias));
   }
@@ -274,6 +291,14 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
       innerJoin(
         accountAlias,
         accountAlias.remoteId.equalsExp(dbStatuses.accountRemoteId),
+      ),
+      leftOuterJoin(
+        reblogAlias,
+        reblogAlias.remoteId.equalsExp(dbStatuses.reblogStatusRemoteId),
+      ),
+      leftOuterJoin(
+        reblogAccountAlias,
+        reblogAccountAlias.remoteId.equalsExp(reblogAlias.accountRemoteId),
       ),
       ...(includeAccountFollowing
           ? [

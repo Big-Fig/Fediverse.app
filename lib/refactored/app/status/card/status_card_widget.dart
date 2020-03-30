@@ -11,8 +11,8 @@ class StatusCardWidget extends StatelessWidget {
     var statusBloc = IStatusBloc.of(context, listen: true);
 
     return StreamBuilder<IPleromaCard>(
-        stream: statusBloc.cardStream,
-        initialData: statusBloc.card,
+        stream: statusBloc.cardReblogOrOriginalStream,
+        initialData: statusBloc.cardReblogOrOriginal,
         builder: (context, snapshot) {
           var card = snapshot.data;
 
