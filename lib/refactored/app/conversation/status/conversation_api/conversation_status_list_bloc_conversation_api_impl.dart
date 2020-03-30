@@ -1,0 +1,61 @@
+import 'package:fedi/refactored/pleroma/api/pleroma_api_service.dart';
+import 'package:fedi/refactored/pleroma/conversation/pleroma_conversation_service.dart';
+import 'package:fedi/refactored/app/conversation/conversation_model.dart';
+import 'package:fedi/refactored/app/conversation/status/conversation_status_list_bloc_impl.dart';
+import 'package:fedi/refactored/app/status/repository/status_repository.dart';
+import 'package:fedi/refactored/app/status/status_model.dart';
+import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
+import 'package:moor/moor.dart';
+
+var _logger =
+    Logger("conversation_statuses_list_bloc_conversation_api_impl.dart");
+
+class ConversationStatusListConversationApiService
+    extends ConversationStatusListService {
+  final IPleromaConversationService pleromaConversationService;
+
+  ConversationStatusListConversationApiService(
+      {@required IConversation conversation,
+      @required this.pleromaConversationService,
+      @required IStatusRepository statusRepository})
+      : super(conversation: conversation, statusRepository: statusRepository);
+
+  @override
+  IPleromaApi get pleromaApi => pleromaConversationService;
+
+  @override
+  Future<bool> refreshItemsFromRemoteForPage(
+      {@required int limit,
+      @required IStatus newerThanStatus,
+      @required IStatus olderThanStatus}) async {
+
+    _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
+        "\t conversation = $conversation"
+        "\t newerThanStatus = $newerThanStatus"
+        "\t olderThanStatus = $olderThanStatus");
+    try {
+      var remoteStatuses =
+          await pleromaConversationService.getConversationStatuses(
+              conversationRemoteId: conversation.remoteId,
+              maxId: olderThanStatus?.remoteId,
+              sinceId: newerThanStatus?.remoteId,
+              limit: limit);
+
+      if (remoteStatuses != null) {
+        await statusRepository.upsertRemoteStatuses(remoteStatuses,
+            listRemoteId: null, conversationRemoteId: conversation.remoteId);
+
+        return true;
+      } else {
+        _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
+            "statuses is null");
+        return false;
+      }
+    } catch (e, stackTrace) {
+      _logger.severe(
+          () => "error during refreshItemsFromRemoteForPage", e, stackTrace);
+      return false;
+    }
+  }
+}

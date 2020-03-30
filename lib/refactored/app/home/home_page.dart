@@ -1,0 +1,185 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/refactored/pleroma/account/pleroma_account_service.dart';
+import 'package:fedi/refactored/pleroma/timeline/pleroma_timeline_service.dart';
+import 'package:fedi/refactored/app/account/my/actions/my_account_actions_bottom_sheet_dialog.dart';
+import 'package:fedi/refactored/app/account/my/avatar/my_account_avatar_widget.dart';
+import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
+import 'package:fedi/refactored/app/account/repository/account_repository.dart';
+import 'package:fedi/refactored/app/auth/instance/current/current_instance_bloc.dart';
+import 'package:fedi/refactored/app/home/home_model.dart';
+import 'package:fedi/refactored/app/home/tab/account/account_home_tab_page.dart';
+import 'package:fedi/refactored/app/home/tab/conversations/conversations_home_tab_bloc.dart';
+import 'package:fedi/refactored/app/home/tab/conversations/conversations_home_tab_bloc_impl.dart';
+import 'package:fedi/refactored/app/home/tab/conversations/conversations_home_tab_page.dart';
+import 'package:fedi/refactored/app/home/tab/notifications/notifications_home_tab_page.dart';
+import 'package:fedi/refactored/app/home/tab/timelines/timelines_home_tab_bloc.dart';
+import 'package:fedi/refactored/app/home/tab/timelines/timelines_home_tab_bloc_impl.dart';
+import 'package:fedi/refactored/app/home/tab/timelines/timelines_home_tab_model.dart';
+import 'package:fedi/refactored/app/home/tab/timelines/timelines_home_tab_page.dart';
+import 'package:fedi/refactored/app/status/post/new/new_post_status_page.dart';
+import 'package:fedi/refactored/app/status/repository/status_repository.dart';
+import 'package:fedi/refactored/app/timeline/local_preferences/timeline_local_preferences_bloc.dart';
+import 'package:fedi/refactored/disposable/disposable_provider.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
+
+var _logger = Logger("home_page.dart");
+
+const List<AppHomeTab> tabs = [
+  AppHomeTab.timelines,
+  AppHomeTab.notifications,
+  null,
+  // spacer
+  AppHomeTab.conversations,
+  AppHomeTab.account,
+];
+
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+
+  const HomePage();
+}
+
+class _HomePageState extends State<HomePage> with
+    AutomaticKeepAliveClientMixin<HomePage> {
+  AppHomeTab selectedTab = AppHomeTab.timelines;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+//    var appHomeBloc = IAppHomeBloc.of(context, listen: true);
+
+    _logger.finest(() => "build");
+    _logger.finest(() => "selectedTab $selectedTab");
+    if (selectedTab == null) {
+      return SizedBox.shrink();
+    }
+    return Scaffold(
+      body: buildBody(context, selectedTab),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: buildNewPostFloatingActionButton(context),
+      bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          showSelectedLabels: true,
+          showUnselectedLabels: true,
+          currentIndex: tabs.indexOf(selectedTab),
+          onTap: (index) {
+            var tab = tabs[index];
+
+            if (tab != null) {
+              setState(() {
+                selectedTab = tab;
+              });
+//              appHomeBloc.selectTab(tab);
+            }
+          },
+          items: tabs.map((tab) {
+            if (tab != null) {
+              return buildTabNavBarItem(context, tab);
+            } else {
+              return buildSpacerNavBarItem();
+            }
+          }).toList()),
+    );
+
+//    return StreamBuilder<AppHomeTab>(
+//        stream: appHomeBloc.selectedTabStream.distinct((a, b) {
+//          _logger.finest(() => "distinct a=$a b=$b");
+//          return a == b;
+//        }),
+//        initialData: null,
+//        builder: (context, snapshot) {
+//          var selectedTab = snapshot.data;
+//
+//        });
+  }
+
+  BottomNavigationBarItem buildSpacerNavBarItem() => BottomNavigationBarItem(
+      backgroundColor: Colors.blue, icon: Icon(null), title: Text(''));
+
+  BottomNavigationBarItem buildTabNavBarItem(
+          BuildContext context, AppHomeTab tab) =>
+      BottomNavigationBarItem(
+        backgroundColor: Colors.blue,
+        icon: mapTabToIcon(context, tab),
+        title: Text(''),
+      );
+
+  Widget mapTabToIcon(BuildContext context, AppHomeTab tab) {
+    switch (tab) {
+      case AppHomeTab.timelines:
+        return Icon(Icons.home);
+        break;
+      case AppHomeTab.notifications:
+        return Icon(Icons.notifications);
+        break;
+      case AppHomeTab.conversations:
+        return Icon(Icons.mail);
+        break;
+      case AppHomeTab.account:
+        return GestureDetector(
+          onLongPress: () {
+            showMyAccountActionsBottomSheetDialog(context);
+          },
+          child: MyAccountAvatarWidget(),
+        );
+        break;
+    }
+
+    throw "mapTabToIcon invalid tab=$tab";
+  }
+
+  FloatingActionButton buildNewPostFloatingActionButton(BuildContext context) =>
+      FloatingActionButton(
+        onPressed: () {
+          goToNewPostStatusPage(context);
+        },
+        tooltip: AppLocalizations.of(context).tr("tab_page.tooltip.increment"),
+        child: Icon(Icons.add),
+        elevation: 2.0,
+      );
+
+  Widget buildBody(BuildContext context, AppHomeTab selectedTab) {
+    switch (selectedTab) {
+      case AppHomeTab.timelines:
+        return DisposableProvider<ITimelinesHomeTabBloc>(
+            create: (BuildContext context) => TimelinesHomeTabBloc(
+                startTab: TimelineTab.home,
+                pleromaTimelineService:
+                    IPleromaTimelineService.of(context, listen: false),
+                pleromaAccountService:
+                    IPleromaAccountService.of(context, listen: false),
+                statusRepository: IStatusRepository.of(context, listen: false),
+                accountRepository:
+                    IAccountRepository.of(context, listen: false),
+                myAccountBloc: IMyAccountBloc.of(context, listen: false),
+                currentInstanceBloc:
+                    ICurrentInstanceBloc.of(context, listen: false),
+                timelineLocalPreferencesBloc:
+                    ITimelineLocalPreferencesBloc.of(context, listen: false)),
+            child: TimelinesHomeTabPage(
+              key: PageStorageKey<String>("TimelinesHomeTabPage"),
+            ));
+        break;
+      case AppHomeTab.notifications:
+        return NotificationsHomeTabPage();
+        break;
+      case AppHomeTab.conversations:
+        return DisposableProvider<IConversationsHomeTabBloc>(
+            create: (context) =>
+                ConversationsHomeTabBloc.createFromContext(context),
+            child: ConversationsHomeTabPage());
+        break;
+      case AppHomeTab.account:
+        return AccountHomeTabPage();
+        break;
+    }
+
+    throw "buildBody invalid selectedTab = $selectedTab";
+  }
+
+  @override
+  bool get wantKeepAlive => true;
+}

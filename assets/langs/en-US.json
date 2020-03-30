@@ -244,7 +244,20 @@
       }
     },
     "status": {
+      "thread": {
+        "title": "Status thread"
+      },
       "title": "Status preview",
+      "favourited_by": {
+        "title": "Favourited by"
+      },
+      "reblogged_by": {
+        "title": "Reblogged by"
+      },
+      "mention": {
+        "one": "1 mention",
+        "many": "{} mentions"
+      },
       "status": "Status:",
       "action": {
         "post": "Post"
@@ -275,6 +288,7 @@
     },
     "quick_post": {
       "title": "New status",
+      "message": "Message",
       "visibility": {
         "public": " Public - Everyone can see",
         "unlisted": " Unlisted - Doesn't post to public timeline",
@@ -747,6 +761,23 @@
       },
       "folder": {
         "empty": "This folder doesn't have media"
+      }
+    }
+  },
+  "pagination": {
+    "list": {
+      "empty": "Empty list",
+      "refresh": {
+        "not_refreshed": "Not refreshed. Don't forget to call refresh() on init"
+      },
+      "header": {
+        "complete": "Everything up to date",
+        "failed": "Failed to update"
+      },
+      "footer": {
+        "can_loading": "Scroll to load more",
+        "no_more": "More data not available",
+        "failed": "Failed to load"
       }
     }
   },
