@@ -24,6 +24,9 @@ FilePickerFileType mapFileGalleryToPickerType(AssetType galleryType) {
     case AssetType.video:
       return FilePickerFileType.video;
       break;
+    case AssetType.audio:
+      // not supported
+      break;
   }
   throw "Invalid AssetType $galleryType";
 }
