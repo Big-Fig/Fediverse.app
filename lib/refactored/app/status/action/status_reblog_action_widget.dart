@@ -35,13 +35,11 @@ class StatusReblogActionWidget extends StatelessWidget {
                   asyncButtonAction: statusBloc.requestToggleReblog);
             }),
         StreamBuilder<int>(
-            stream: statusBloc.reblogsCountStream,
-//            initialData: statusBloc.reblogsCount,
+            stream: statusBloc.reblogsReblogPlusOriginalCountStream,
+            initialData: statusBloc.reblogsReblogPlusOriginalCount,
             builder: (context, snapshot) {
               var reblogsCount = snapshot.data;
-              if(reblogsCount == null) {
-                return SizedBox.shrink();
-              }
+
               return GestureDetector(
                   onTap: () {
                     goToStatusReblogAccountListPage(context, statusBloc.status);
