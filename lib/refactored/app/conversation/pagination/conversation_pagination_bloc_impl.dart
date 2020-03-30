@@ -1,9 +1,9 @@
+import 'package:fedi/refactored/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/refactored/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/refactored/app/conversation/conversation_model.dart';
 import 'package:fedi/refactored/app/conversation/list/conversation_list_service.dart';
 import 'package:fedi/refactored/app/conversation/pagination/conversation_pagination_bloc.dart';
-import 'package:fedi/refactored/app/pagination/cached_pleroma_pagination_bloc_impl.dart';
-import 'package:fedi/refactored/pagination/network/cached_network_pagination_model.dart';
+import 'package:fedi/refactored/app/pagination/cached/cached_pleroma_pagination_bloc_impl.dart';
 import 'package:flutter/cupertino.dart';
 
 class ConversationPaginationBloc
@@ -26,8 +26,8 @@ class ConversationPaginationBloc
   Future<List<IConversation>> loadLocalItems(
           {@required int pageIndex,
           @required int itemsCountPerPage,
-          @required CachedNetworkPaginationPage<IConversation> olderPage,
-          @required CachedNetworkPaginationPage<IConversation> newerPage}) =>
+          @required CachedPaginationPage<IConversation> olderPage,
+          @required CachedPaginationPage<IConversation> newerPage}) =>
       listService.loadLocalItems(
         limit: itemsCountPerPage,
         newerThanConversation: olderPage?.items?.first,
@@ -38,8 +38,8 @@ class ConversationPaginationBloc
   Future<bool> refreshItemsFromRemoteForPage(
       {@required int pageIndex,
       @required int itemsCountPerPage,
-      @required CachedNetworkPaginationPage<IConversation> olderPage,
-      @required CachedNetworkPaginationPage<IConversation> newerPage}) async {
+      @required CachedPaginationPage<IConversation> olderPage,
+      @required CachedPaginationPage<IConversation> newerPage}) async {
     // can't refresh not first page without actual items bounds
     assert(!(pageIndex > 0 && olderPage == null && newerPage == null));
 

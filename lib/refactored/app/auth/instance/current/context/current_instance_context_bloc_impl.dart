@@ -1,26 +1,3 @@
-import 'package:fedi/refactored/pleroma/account/my/pleroma_my_account_service.dart';
-import 'package:fedi/refactored/pleroma/account/my/pleroma_my_account_service_impl.dart';
-import 'package:fedi/refactored/pleroma/account/pleroma_account_service.dart';
-import 'package:fedi/refactored/pleroma/account/pleroma_account_service_impl.dart';
-import 'package:fedi/refactored/pleroma/account/public/pleroma_account_public_service.dart';
-import 'package:fedi/refactored/pleroma/account/public/pleroma_account_public_service_impl.dart';
-import 'package:fedi/refactored/pleroma/conversation/pleroma_conversation_service.dart';
-import 'package:fedi/refactored/pleroma/conversation/pleroma_conversation_service_impl.dart';
-import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_service.dart';
-import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_service_impl.dart';
-import 'package:fedi/refactored/pleroma/push/pleroma_push_model.dart';
-import 'package:fedi/refactored/pleroma/push/pleroma_push_service.dart';
-import 'package:fedi/refactored/pleroma/push/pleroma_push_service_impl.dart';
-import 'package:fedi/refactored/pleroma/rest/auth/pleroma_auth_rest_service.dart';
-import 'package:fedi/refactored/pleroma/rest/auth/pleroma_auth_rest_service_impl.dart';
-import 'package:fedi/refactored/pleroma/rest/pleroma_rest_service.dart';
-import 'package:fedi/refactored/pleroma/rest/pleroma_rest_service_impl.dart';
-import 'package:fedi/refactored/pleroma/status/emoji_reaction/pleroma_status_emoji_reaction_service.dart';
-import 'package:fedi/refactored/pleroma/status/emoji_reaction/pleroma_status_emoji_reaction_service_impl.dart';
-import 'package:fedi/refactored/pleroma/status/pleroma_status_service.dart';
-import 'package:fedi/refactored/pleroma/status/pleroma_status_service_impl.dart';
-import 'package:fedi/refactored/pleroma/timeline/pleroma_timeline_service.dart';
-import 'package:fedi/refactored/pleroma/timeline/pleroma_timeline_service_impl.dart';
 import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
 import 'package:fedi/refactored/app/account/my/my_account_bloc_impl.dart';
 import 'package:fedi/refactored/app/account/my/my_account_local_preference_bloc.dart';
@@ -38,9 +15,32 @@ import 'package:fedi/refactored/app/timeline/local_preferences/timeline_local_pr
 import 'package:fedi/refactored/connection/connection_service.dart';
 import 'package:fedi/refactored/database/moor/moor_database_service_impl.dart';
 import 'package:fedi/refactored/local_preferences/local_preferences_service.dart';
+import 'package:fedi/refactored/pleroma/account/my/pleroma_my_account_service.dart';
+import 'package:fedi/refactored/pleroma/account/my/pleroma_my_account_service_impl.dart';
+import 'package:fedi/refactored/pleroma/account/pleroma_account_service.dart';
+import 'package:fedi/refactored/pleroma/account/pleroma_account_service_impl.dart';
+import 'package:fedi/refactored/pleroma/account/public/pleroma_account_public_service.dart';
+import 'package:fedi/refactored/pleroma/account/public/pleroma_account_public_service_impl.dart';
+import 'package:fedi/refactored/pleroma/conversation/pleroma_conversation_service.dart';
+import 'package:fedi/refactored/pleroma/conversation/pleroma_conversation_service_impl.dart';
+import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_service.dart';
+import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_service_impl.dart';
+import 'package:fedi/refactored/pleroma/push/pleroma_push_model.dart';
+import 'package:fedi/refactored/pleroma/push/pleroma_push_service.dart';
+import 'package:fedi/refactored/pleroma/push/pleroma_push_service_impl.dart';
+import 'package:fedi/refactored/pleroma/rest/auth/pleroma_auth_rest_service.dart';
+import 'package:fedi/refactored/pleroma/rest/auth/pleroma_auth_rest_service_impl.dart';
+import 'package:fedi/refactored/pleroma/rest/pleroma_rest_service.dart';
+import 'package:fedi/refactored/pleroma/rest/pleroma_rest_service_impl.dart';
+import 'package:fedi/refactored/pleroma/search/pleroma_search_service.dart';
+import 'package:fedi/refactored/pleroma/search/pleroma_search_service_impl.dart';
+import 'package:fedi/refactored/pleroma/status/emoji_reaction/pleroma_status_emoji_reaction_service.dart';
+import 'package:fedi/refactored/pleroma/status/emoji_reaction/pleroma_status_emoji_reaction_service_impl.dart';
+import 'package:fedi/refactored/pleroma/status/pleroma_status_service.dart';
+import 'package:fedi/refactored/pleroma/status/pleroma_status_service_impl.dart';
+import 'package:fedi/refactored/pleroma/timeline/pleroma_timeline_service.dart';
+import 'package:fedi/refactored/pleroma/timeline/pleroma_timeline_service_impl.dart';
 import 'package:fedi/refactored/provider/provider_context_bloc_impl.dart';
-import 'package:fedi/refactored/push/relay/push_relay_service.dart';
-import 'package:fedi/refactored/push/relay/push_relay_service_impl.dart';
 import 'package:fedi/refactored/rest/rest_service.dart';
 import 'package:fedi/refactored/rest/rest_service_impl.dart';
 import 'package:flutter/material.dart';
@@ -141,9 +141,9 @@ class CurrentInstanceContextBloc extends ProviderContextBloc
         pleromaMyAccountService);
     addDisposable(disposable: pleromaMyAccountService);
     var pleromaAccountPublicService =
-    PleromaAccountPublicService(restService: pleromaAuthRestService);
-    await globalProviderService.asyncInitAndRegister<IPleromaAccountPublicService>(
-        pleromaAccountPublicService);
+        PleromaAccountPublicService(restService: pleromaAuthRestService);
+    await globalProviderService.asyncInitAndRegister<
+        IPleromaAccountPublicService>(pleromaAccountPublicService);
     addDisposable(disposable: pleromaAccountPublicService);
     var pleromaAccountService =
         PleromaAccountService(restService: pleromaAuthRestService);
@@ -170,6 +170,11 @@ class CurrentInstanceContextBloc extends ProviderContextBloc
     await globalProviderService.asyncInitAndRegister<
         IPleromaConversationService>(pleromaConversationService);
     addDisposable(disposable: pleromaConversationService);
+    var pleromaSearchService =
+        PleromaSearchService(restService: pleromaAuthRestService);
+    await globalProviderService
+        .asyncInitAndRegister<IPleromaSearchService>(pleromaSearchService);
+    addDisposable(disposable: pleromaSearchService);
 
     var myAccountLocalPreferenceBloc =
         MyAccountLocalPreferenceBloc(preferencesService, userAtHost);

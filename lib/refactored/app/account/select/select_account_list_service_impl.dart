@@ -1,3 +1,5 @@
+import 'package:fedi/refactored/app/search/input/search_input_bloc.dart';
+import 'package:fedi/refactored/app/search/input/search_input_bloc_impl.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/refactored/pleroma/api/pleroma_api_service.dart';
@@ -6,12 +8,10 @@ import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository_model.dart';
 import 'package:fedi/refactored/app/account/select/select_account_list_service.dart';
-import 'package:fedi/refactored/disposable/disposable.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
-import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger("account_list_service_impl.dart");
 
@@ -21,35 +21,20 @@ class SelectAccountListService extends DisposableOwner
   final IAccountRepository accountRepository;
   final IMyAccountBloc myAccountBloc;
   final bool excludeMyAccount;
-  final TextEditingController searchTextEditingController =
-      TextEditingController();
-
-  // ignore: close_sinks
-  final BehaviorSubject<String> searchTextSubject = BehaviorSubject.seeded("");
-
   @override
-  String get searchText => searchTextSubject.value;
+  ISearchInputBloc searchInputBloc;
 
-  @override
-  Stream<String> get searchTextStream => searchTextSubject.stream;
+  String get searchText => searchInputBloc.searchText;
 
   SelectAccountListService({
     @required this.pleromaAccountService,
     @required this.accountRepository,
     @required this.myAccountBloc,
     @required this.excludeMyAccount,
-  }) {
-    addDisposable(subject: searchTextSubject);
-    addDisposable(textEditingController: searchTextEditingController);
+  }) : searchInputBloc = SearchInputBloc() {
+    addDisposable(disposable: searchInputBloc);
 
-    var listener = () {
-      onSearchTextChanged();
-    };
-    searchTextEditingController.addListener(listener);
-    addDisposable(disposable: CustomDisposable(() {
-      searchTextEditingController.removeListener(listener);
-    }));
-
+    // todo: listen search query
   }
 
   @override
@@ -146,17 +131,4 @@ class SelectAccountListService extends DisposableOwner
           accountRepository: IAccountRepository.of(context, listen: false),
           pleromaAccountService:
               IPleromaAccountService.of(context, listen: false));
-
-  @override
-  clearSearch() {
-    searchTextEditingController.text = "";
-  }
-
-  void onSearchTextChanged() {
-    var oldText = searchTextSubject.value ?? "";
-    var newText = searchTextEditingController.text ?? "";
-    if (newText != oldText) {
-      searchTextSubject.add(newText);
-    }
-  }
 }

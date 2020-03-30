@@ -5,6 +5,7 @@ import 'package:fedi/refactored/app/home/tab/timelines/drawer/timelines_home_tab
 import 'package:fedi/refactored/app/home/tab/timelines/drawer/timelines_home_tab_page_drawer_widget.dart';
 import 'package:fedi/refactored/app/home/tab/timelines/timelines_home_tab_model.dart';
 import 'package:fedi/refactored/app/home/tab/timelines/timelines_home_tab_bloc.dart';
+import 'package:fedi/refactored/app/search/search_page.dart';
 import 'package:fedi/refactored/app/timeline/local_preferences/timeline_local_preferences_bloc.dart';
 import 'package:fedi/refactored/app/timeline/timeline_widget.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
@@ -15,6 +16,12 @@ import 'package:provider/provider.dart';
 
 var _logger = Logger("timelines_home_tab_page.dart");
 
+List<TimelineTab> tabs = [
+  TimelineTab.home,
+  TimelineTab.public,
+  TimelineTab.local,
+];
+
 class TimelinesHomeTabPage extends StatelessWidget {
   final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
@@ -23,7 +30,6 @@ class TimelinesHomeTabPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var timelinesHomePageBloc = ITimelinesHomeTabBloc.of(context, listen: true);
-    List<TimelineTab> tabs = timelinesHomePageBloc.tabs;
 
     _logger.finest(() => "build");
 
@@ -62,7 +68,7 @@ class TimelinesHomeTabPage extends StatelessWidget {
                 return buildTab(context, tab);
               }).toList(),
               onTap: (index) {
-                timelinesHomePageBloc.selectTab(index);
+                timelinesHomePageBloc.selectTab(tabs[index]);
               },
             ),
           ),
@@ -90,13 +96,7 @@ class TimelinesHomeTabPage extends StatelessWidget {
         icon: Icon(Icons.search),
         color: Colors.white,
         onPressed: () {
-          // push search view
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => SerachPage(),
-            ),
-          );
+          goToSearchPage(context);
         },
       );
 
@@ -123,7 +123,6 @@ class TimelinesHomeTabPage extends StatelessWidget {
     var timelinesHomePageBloc = ITimelinesHomeTabBloc.of(context, listen: true);
     _logger.finest(() => "buildBodyWidget");
 
-    var tabs = timelinesHomePageBloc.tabs;
 
     return TabBarView(
         children: List<Widget>.generate(

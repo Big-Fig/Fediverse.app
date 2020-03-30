@@ -1,12 +1,12 @@
+import 'package:fedi/refactored/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/refactored/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/account/statuses/account_statuses_bloc.dart';
-import 'package:fedi/refactored/app/pagination/cached_pleroma_pagination_bloc_impl.dart';
+import 'package:fedi/refactored/app/pagination/cached/cached_pleroma_pagination_bloc_impl.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository_model.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
-import 'package:fedi/refactored/pagination/network/cached_network_pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -36,8 +36,8 @@ class AccountStatusesBloc extends CachedPleromaPaginationBloc<IStatus>
   Future<List<IStatus>> loadLocalItems(
       {@required int pageIndex,
       @required int itemsCountPerPage,
-      @required CachedNetworkPaginationPage<IStatus> olderPage,
-      @required CachedNetworkPaginationPage<IStatus> newerPage}) async {
+      @required CachedPaginationPage<IStatus> olderPage,
+      @required CachedPaginationPage<IStatus> newerPage}) async {
     var statuses = await statusRepository.getStatuses(
         onlyInListWithRemoteId: null,
         onlyWithHashtag: null,
@@ -65,8 +65,8 @@ class AccountStatusesBloc extends CachedPleromaPaginationBloc<IStatus>
   Future<bool> refreshItemsFromRemoteForPage(
       {@required int pageIndex,
       @required int itemsCountPerPage,
-      @required CachedNetworkPaginationPage<IStatus> olderPage,
-      @required CachedNetworkPaginationPage<IStatus> newerPage}) async {
+      @required CachedPaginationPage<IStatus> olderPage,
+      @required CachedPaginationPage<IStatus> newerPage}) async {
     // can't refresh not first page without actual items bounds
     assert(!(pageIndex > 0 && olderPage == null && newerPage == null));
 

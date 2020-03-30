@@ -24,16 +24,9 @@ var _logger = Logger("timelines_home_tab_page_bloc_impl.dart");
 
 class TimelinesHomeTabBloc extends DisposableOwner
     implements ITimelinesHomeTabBloc {
-  @override
-  List<TimelineTab> tabs = [
-    TimelineTab.home,
-    TimelineTab.public,
-    TimelineTab.local,
-  ];
 
   @override
-  void selectTab(int index) {
-    var tab = tabs[index];
+  void selectTab(TimelineTab tab) {
     selectedTabSubject.add(tab);
   }
 

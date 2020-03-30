@@ -8,7 +8,6 @@ abstract class ITimelinesHomeTabBloc extends Disposable {
   static ITimelinesHomeTabBloc of(BuildContext context, {listen: true}) =>
       Provider.of<ITimelinesHomeTabBloc>(context, listen: listen);
 
-  List<TimelineTab> get tabs;
 
   TimelineTab get selectedTab;
 
@@ -17,5 +16,5 @@ abstract class ITimelinesHomeTabBloc extends Disposable {
   IStatusPaginationListBloc retrieveTimelineTabPaginationListBloc(
       TimelineTab tab);
 
-  void selectTab(int index);
+  void selectTab(TimelineTab tab);
 }
