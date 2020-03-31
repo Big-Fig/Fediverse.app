@@ -1,16 +1,25 @@
-import 'package:fedi/refactored/pleroma/status/pleroma_status_model.dart';
-import 'package:fedi/refactored/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/refactored/app/account/account_model_adapter.dart';
 import 'package:fedi/refactored/app/database/app_database.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
+import 'package:fedi/refactored/pleroma/status/pleroma_status_model.dart';
+import 'package:fedi/refactored/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:logging/logging.dart';
 
 var _logger = Logger("status_model_adapter.dart");
 
 IStatus mapRemoteStatusToLocalStatus(IPleromaStatus remoteStatus) {
+  DbStatus rebloggedStatus;
+  DbAccount rebloggedStatusAccount;
+  if (remoteStatus.reblog != null) {
+    rebloggedStatus = mapRemoteStatusToDbStatus(remoteStatus.reblog);
+    rebloggedStatusAccount =
+        mapRemoteAccountToDbAccount(remoteStatus.reblog.account);
+  }
   return DbStatusPopulatedWrapper(DbStatusPopulated(
       status: mapRemoteStatusToDbStatus(remoteStatus),
-      account: mapRemoteAccountToDbAccount(remoteStatus.account)));
+      account: mapRemoteAccountToDbAccount(remoteStatus.account),
+      rebloggedStatus: rebloggedStatus,
+      rebloggedStatusAccount: rebloggedStatusAccount));
 }
 
 DbStatus mapRemoteStatusToDbStatus(IPleromaStatus remoteStatus) {
@@ -72,6 +81,10 @@ DbStatus mapRemoteStatusToDbStatus(IPleromaStatus remoteStatus) {
 
 // TODO: temporary solution for refactoring period
 PleromaStatus mapLocalStatusToRemoteStatus(IStatus localStatus) {
+  PleromaStatus reblog;
+  if (localStatus.reblog != null) {
+    reblog = mapLocalStatusToRemoteStatus(localStatus.reblog);
+  }
   return PleromaStatus(
     id: localStatus.remoteId,
     createdAt: localStatus.createdAt,
@@ -91,8 +104,7 @@ PleromaStatus mapLocalStatusToRemoteStatus(IStatus localStatus) {
     bookmarked: localStatus.bookmarked,
     pinned: localStatus.pinned,
     content: localStatus.content,
-    // todo: not supported
-    reblog: null,
+    reblog: reblog,
     application: localStatus.application,
     mediaAttachments: localStatus.mediaAttachments,
     mentions: localStatus.mentions,

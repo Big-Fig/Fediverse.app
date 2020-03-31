@@ -55,7 +55,8 @@ class StatusCachedPaginationBloc extends CachedPleromaPaginationBloc<IStatus>
   static StatusCachedPaginationBloc createFromContext(BuildContext context,
           {int itemsCountPerPage = 20, int maximumCachedPagesCount}) =>
       StatusCachedPaginationBloc(
-          statusListService: Provider.of<IStatusCachedListService>(context),
+          statusListService:
+              Provider.of<IStatusCachedListService>(context, listen: false),
           itemsCountPerPage: itemsCountPerPage,
           maximumCachedPagesCount: maximumCachedPagesCount);
 }

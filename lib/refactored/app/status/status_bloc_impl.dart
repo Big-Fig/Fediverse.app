@@ -59,17 +59,18 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   }) : _statusSubject = BehaviorSubject.seeded(status) {
     addDisposable(subject: _statusSubject);
 
-      assert(needRefreshFromNetworkOnInit != null);
-      assert(needWatchLocalRepositoryForUpdates != null);
+    assert(needRefreshFromNetworkOnInit != null);
+    assert(needWatchLocalRepositoryForUpdates != null);
     Future.delayed(Duration(seconds: 1), () {
-
       if (!disposed) {
         if (needWatchLocalRepositoryForUpdates) {
           addDisposable(
               streamSubscription: statusRepository
                   .watchByRemoteId(status.remoteId)
                   .listen((updatedStatus) {
-            _statusSubject.add(updatedStatus);
+            if (updatedStatus != null) {
+              _statusSubject.add(updatedStatus);
+            }
           }));
         }
         if (needRefreshFromNetworkOnInit) {

@@ -73,8 +73,12 @@ class AccountStatusesBloc extends IStatusCachedListService
   Future<bool> refreshItemsFromRemoteForPage(
       {@required int limit, @required IStatus newerThan, @required  IStatus
       olderThan}) async {
-    // can't refresh not first page without actual items bounds
-    assert(!( newerThan == null && olderThan == null));
+    _logger.finest(() => "refreshItemsFromRemoteForPage \n"
+        "\t limit=$limit"
+        "\t newerThan=$newerThan"
+        "\t olderThan=$olderThan"
+    );
+
 
     try {
       var remoteStatuses = await pleromaAccountService.getAccountStatuses(

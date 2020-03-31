@@ -31,18 +31,21 @@ class PleromaOAuthToken implements IPreferencesObject {
         ' tokenType: $tokenType, scope: $scope, createdAt: $createdAt}';
   }
 
-
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is PleromaOAuthToken && runtimeType == other.runtimeType &&
-              accessToken == other.accessToken &&
-              tokenType == other.tokenType && scope == other.scope &&
-              createdAt == other.createdAt;
+      other is PleromaOAuthToken &&
+          runtimeType == other.runtimeType &&
+          accessToken == other.accessToken &&
+          tokenType == other.tokenType &&
+          scope == other.scope &&
+          createdAt == other.createdAt;
   @override
   int get hashCode =>
-      accessToken.hashCode ^ tokenType.hashCode ^ scope.hashCode ^ createdAt
-          .hashCode;
+      accessToken.hashCode ^
+      tokenType.hashCode ^
+      scope.hashCode ^
+      createdAt.hashCode;
 
   factory PleromaOAuthToken.fromJson(Map<String, dynamic> json) =>
       _$PleromaOAuthTokenFromJson(json);
@@ -65,7 +68,7 @@ class PleromaOAuthAuthorizeRequest {
 
   ///  should be always code for this request
 
-  final String responseType = "code";
+  final String responseType;
 
   /// from application object
   @JsonKey(name: "client_id")
@@ -87,7 +90,8 @@ class PleromaOAuthAuthorizeRequest {
       {@required this.forceLogin,
       @required this.clientId,
       @required this.redirectUri,
-      @required this.scope});
+      @required this.scope,
+      this.responseType = "code"});
 
   factory PleromaOAuthAuthorizeRequest.fromJsonString(String jsonString) =>
       _$PleromaOAuthAuthorizeRequestFromJson(jsonDecode(jsonString));
