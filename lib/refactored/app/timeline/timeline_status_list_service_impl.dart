@@ -1,8 +1,8 @@
+import 'package:fedi/refactored/app/status/list/cached/status_cached_list_service.dart';
 import 'package:fedi/refactored/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/refactored/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/refactored/pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:fedi/refactored/app/auth/instance/current/current_instance_bloc.dart';
-import 'package:fedi/refactored/app/status/list/status_list_service.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository_model.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
@@ -16,7 +16,7 @@ import 'package:moor/moor.dart';
 var _logger = Logger("timeline_status_list_service_impl.dart");
 
 abstract class TimelineStatusListService extends DisposableOwner
-    implements IStatusListService {
+    implements IStatusCachedListService {
   final IPleromaTimelineService pleromaTimelineService;
   final IStatusRepository statusRepository;
   final ICurrentInstanceBloc currentInstanceBloc;
@@ -36,20 +36,20 @@ abstract class TimelineStatusListService extends DisposableOwner
   @override
   Future<bool> refreshItemsFromRemoteForPage(
       {@required int limit,
-      @required IStatus newerThanStatus,
-      @required IStatus olderThanStatus}) async {
+      @required IStatus newerThan,
+      @required IStatus olderThan}) async {
     var timelineSettings = retrieveTimelineSettings();
     _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
         "\t timelineSettings = $timelineSettings"
-        "\t newerThanStatus = $newerThanStatus"
-        "\t olderThanStatus = $olderThanStatus");
+        "\t newerThan = $newerThan"
+        "\t olderThan = $olderThan");
     try {
       List<IPleromaStatus> remoteStatuses;
       switch (timelineSettings.remoteType) {
         case TimelineRemoteType.public:
           remoteStatuses = await pleromaTimelineService.getPublicTimeline(
-            maxId: olderThanStatus?.remoteId,
-            sinceId: newerThanStatus?.remoteId,
+            maxId: olderThan?.remoteId,
+            sinceId: newerThan?.remoteId,
             limit: limit,
             onlyLocal: timelineSettings.onlyLocal != null,
             onlyWithMedia: timelineLocalPreferencesBloc.value.onlyWithMedia,
@@ -60,8 +60,8 @@ abstract class TimelineStatusListService extends DisposableOwner
         case TimelineRemoteType.list:
           remoteStatuses = await pleromaTimelineService.getListTimeline(
             listId: timelineSettings.onlyInListWithRemoteId,
-            maxId: olderThanStatus?.remoteId,
-            sinceId: newerThanStatus?.remoteId,
+            maxId: olderThan?.remoteId,
+            sinceId: newerThan?.remoteId,
             limit: limit,
             onlyLocal: timelineSettings.onlyLocal != null,
             onlyWithMedia: timelineLocalPreferencesBloc.value.onlyWithMedia,
@@ -71,8 +71,8 @@ abstract class TimelineStatusListService extends DisposableOwner
           break;
         case TimelineRemoteType.home:
           remoteStatuses = await pleromaTimelineService.getHomeTimeline(
-            maxId: olderThanStatus?.remoteId,
-            sinceId: newerThanStatus?.remoteId,
+            maxId: olderThan?.remoteId,
+            sinceId: newerThan?.remoteId,
             limit: limit,
             onlyLocal: timelineSettings.onlyLocal != null,
             onlyWithMedia: timelineLocalPreferencesBloc.value.onlyWithMedia,
@@ -83,8 +83,8 @@ abstract class TimelineStatusListService extends DisposableOwner
         case TimelineRemoteType.hashtag:
           remoteStatuses = await pleromaTimelineService.getHashtagTimeline(
             hashtag: timelineSettings.withHashtag,
-            maxId: olderThanStatus?.remoteId,
-            sinceId: newerThanStatus?.remoteId,
+            maxId: olderThan?.remoteId,
+            sinceId: newerThan?.remoteId,
             limit: limit,
             onlyLocal: timelineSettings.onlyLocal != null,
             onlyWithMedia: timelineLocalPreferencesBloc.value.onlyWithMedia,
@@ -114,12 +114,12 @@ abstract class TimelineStatusListService extends DisposableOwner
   @override
   Future<List<IStatus>> loadLocalItems(
       {@required int limit,
-      @required IStatus newerThanStatus,
-      @required IStatus olderThanStatus}) async {
+      @required IStatus newerThan,
+      @required IStatus olderThan}) async {
     var timelineSettings = retrieveTimelineSettings();
     _logger.finest(() => "start loadLocalItems \n"
-        "\t newerThanStatus=$newerThanStatus"
-        "\t olderThanStatus=$olderThanStatus");
+        "\t newerThan=$newerThan"
+        "\t olderThan=$olderThan");
 
     var onlyLocalFilter;
     if (timelineSettings.onlyLocal == true) {
@@ -137,8 +137,8 @@ abstract class TimelineStatusListService extends DisposableOwner
         onlyWithMedia: timelineLocalPreferences.onlyWithMedia,
         onlyNotMuted: timelineSettings.onlyNotMuted,
         excludeVisibilities: timelineSettings.excludeVisibilities,
-        olderThanStatus: olderThanStatus,
-        newerThanStatus: newerThanStatus,
+        olderThanStatus: olderThan,
+        newerThanStatus: newerThan,
         onlyNoNsfwSensitive: timelineLocalPreferences.onlyNoNsfwSensitive,
         onlyNoReplies: timelineLocalPreferences.onlyNoReplies,
         limit: limit,

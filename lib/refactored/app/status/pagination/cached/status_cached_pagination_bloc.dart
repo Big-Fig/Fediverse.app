@@ -3,9 +3,9 @@ import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IStatusPaginationBloc
+abstract class IStatusCachedPaginationBloc
     implements ICachedPleromaPaginationBloc<IStatus> {
-  static IStatusPaginationBloc of(BuildContext context,
+  static IStatusCachedPaginationBloc of(BuildContext context,
           {bool listen = true}) =>
-      Provider.of<IStatusPaginationBloc>(context, listen: listen);
+      Provider.of<IStatusCachedPaginationBloc>(context, listen: listen);
 }

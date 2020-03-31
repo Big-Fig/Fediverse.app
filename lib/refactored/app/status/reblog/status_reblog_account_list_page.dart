@@ -5,7 +5,7 @@ import 'package:fedi/refactored/app/account/pagination/cached/account_cached_pag
 import 'package:fedi/refactored/app/account/pagination/list/account_pagination_list_bloc.dart';
 import 'package:fedi/refactored/app/account/pagination/list/account_pagination_list_bloc_impl.dart';
 import 'package:fedi/refactored/app/account/pagination/list/account_pagination_list_widget.dart';
-import 'package:fedi/refactored/app/cached/cached_list_service.dart';
+import 'package:fedi/refactored/app/list/cached/cached_list_service.dart';
 import 'package:fedi/refactored/app/status/favourite/status_favourite_account_list_service_impl.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';

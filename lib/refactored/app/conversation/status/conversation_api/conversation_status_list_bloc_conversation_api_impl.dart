@@ -1,9 +1,9 @@
-import 'package:fedi/refactored/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/refactored/pleroma/conversation/pleroma_conversation_service.dart';
 import 'package:fedi/refactored/app/conversation/conversation_model.dart';
-import 'package:fedi/refactored/app/conversation/status/conversation_status_list_bloc_impl.dart';
+import 'package:fedi/refactored/app/conversation/status/list/cached/conversation_status_list_bloc_impl.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
+import 'package:fedi/refactored/pleroma/api/pleroma_api_service.dart';
+import 'package:fedi/refactored/pleroma/conversation/pleroma_conversation_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -27,19 +27,18 @@ class ConversationStatusListConversationApiService
   @override
   Future<bool> refreshItemsFromRemoteForPage(
       {@required int limit,
-      @required IStatus newerThanStatus,
-      @required IStatus olderThanStatus}) async {
-
+      @required IStatus newerThan,
+      @required IStatus olderThan}) async {
     _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
         "\t conversation = $conversation"
-        "\t newerThanStatus = $newerThanStatus"
-        "\t olderThanStatus = $olderThanStatus");
+        "\t newerThan = $newerThan"
+        "\t olderThan = $olderThan");
     try {
       var remoteStatuses =
           await pleromaConversationService.getConversationStatuses(
               conversationRemoteId: conversation.remoteId,
-              maxId: olderThanStatus?.remoteId,
-              sinceId: newerThanStatus?.remoteId,
+              maxId: olderThan?.remoteId,
+              sinceId: newerThan?.remoteId,
               limit: limit);
 
       if (remoteStatuses != null) {
@@ -58,4 +57,13 @@ class ConversationStatusListConversationApiService
       return false;
     }
   }
+
+  static ConversationStatusListConversationApiService createFromContext(
+          BuildContext context,
+          {@required IConversation conversation}) =>
+      ConversationStatusListConversationApiService(
+          conversation: conversation,
+          pleromaConversationService:
+              IPleromaConversationService.of(context, listen: false),
+          statusRepository: IStatusRepository.of(context, listen: false));
 }

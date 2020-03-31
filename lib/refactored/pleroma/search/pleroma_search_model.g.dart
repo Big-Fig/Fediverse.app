@@ -15,7 +15,7 @@ PleromaSearchRequest _$PleromaSearchRequestFromJson(Map<String, dynamic> json) {
     maxId: json['max_id'] as String,
     minId: json['min_id'] as String,
     offset: json['offset'] as int,
-    query: json['query'] as String,
+    query: json['q'] as String,
     resolve: json['resolve'] as bool,
     type: const MastodonSearchRequestTypeConverter()
         .fromJson(json['type'] as String),
@@ -32,7 +32,7 @@ Map<String, dynamic> _$PleromaSearchRequestToJson(
       'max_id': instance.maxId,
       'min_id': instance.minId,
       'offset': instance.offset,
-      'query': instance.query,
+      'q': instance.query,
       'resolve': instance.resolve,
       'type': const MastodonSearchRequestTypeConverter().toJson(instance.type),
     };
