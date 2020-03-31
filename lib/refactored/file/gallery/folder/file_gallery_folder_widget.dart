@@ -7,6 +7,7 @@ import 'package:fedi/refactored/file/gallery/file/file_gallery_file_grid_item_wi
 import 'package:fedi/refactored/file/gallery/file_gallery_model.dart';
 import 'package:fedi/refactored/file/gallery/folder/file_gallery_folder_bloc.dart';
 import 'package:fedi/refactored/permission/grant_permission_widget.dart';
+import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
@@ -33,7 +34,7 @@ class FileGalleryFolderWidget extends StatelessWidget {
 
   Widget buildPermissionGrantedView(
       BuildContext context, IFileGalleryFolderBloc folderBloc) {
-    return StreamBuilder<FileGalleryState>(
+    return InitialDataStreamBuilder<FileGalleryState>(
         stream: folderBloc.galleryStateStream,
         initialData: folderBloc.galleryState,
         builder: (context, snapshot) {
@@ -60,7 +61,7 @@ class FileGalleryFolderWidget extends StatelessWidget {
 
   Widget buildFilesWidget(
       BuildContext context, IFileGalleryFolderBloc folderBloc) {
-    return StreamBuilder<List<AssetEntity>>(
+    return InitialDataStreamBuilder<List<AssetEntity>>(
         stream: folderBloc.filesStream,
         initialData: folderBloc.files,
         builder: (context, snapshot) {

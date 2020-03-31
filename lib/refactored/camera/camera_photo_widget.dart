@@ -3,6 +3,7 @@ import 'package:fedi/refactored/async/loading/init/async_init_loading_widget.dar
 import 'package:fedi/refactored/camera/camera_bloc.dart';
 import 'package:fedi/refactored/camera/camera_widget.dart';
 import 'package:fedi/refactored/permission/grant_permission_widget.dart';
+import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -31,7 +32,7 @@ class CameraPhotoWidget extends CameraWidget {
 
   Widget buildCameraCaptureImageButtonWidget(
           BuildContext context, ICameraBloc cameraBloc) =>
-      StreamBuilder<bool>(
+      InitialDataStreamBuilder<bool>(
           stream: cameraBloc.isReadyForActionStream,
           initialData: cameraBloc.isReadyForAction,
           builder: (context, snapshot) {

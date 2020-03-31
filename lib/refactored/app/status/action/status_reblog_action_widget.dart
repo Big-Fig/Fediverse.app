@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/async/async_button_widget.dart';
 import 'package:fedi/refactored/app/status/reblog/status_reblog_account_list_page.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
+import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +13,7 @@ class StatusReblogActionWidget extends StatelessWidget {
 
     return Row(
       children: <Widget>[
-        StreamBuilder<bool>(
+        InitialDataStreamBuilder<bool>(
             stream: statusBloc.rebloggedStream,
             initialData: statusBloc.reblogged,
             builder: (context, snapshot) {
@@ -34,7 +35,7 @@ class StatusReblogActionWidget extends StatelessWidget {
                       ),
                   asyncButtonAction: statusBloc.requestToggleReblog);
             }),
-        StreamBuilder<int>(
+        InitialDataStreamBuilder<int>(
             stream: statusBloc.reblogsReblogPlusOriginalCountStream,
             initialData: statusBloc.reblogsReblogPlusOriginalCount,
             builder: (context, snapshot) {

@@ -10,6 +10,7 @@ import 'package:fedi/refactored/pleroma/notification/websockets/pleroma_notifica
 import 'package:fedi/refactored/pleroma/notification/websockets/pleroma_notification_websockets_service_impl.dart';
 import 'package:fedi/refactored/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/refactored/disposable/disposable.dart';
+import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -182,12 +183,13 @@ class _NotificationsWebSocketsChannelExampleWidgetState
         });
   }
 
-  StreamBuilder<PleromaNotificationWebSocketsEvent>
+  InitialDataStreamBuilder<PleromaNotificationWebSocketsEvent>
       buildLatestEventStringBuilderExample(
           StreamController<PleromaNotificationWebSocketsEvent>
               streamController) {
-    return StreamBuilder<PleromaNotificationWebSocketsEvent>(
+    return InitialDataStreamBuilder<PleromaNotificationWebSocketsEvent>(
         stream: streamController.stream,
+        initialData: null,
         builder: (context, snapshot) {
           var latestEvent = snapshot.data;
           if (latestEvent == null) {

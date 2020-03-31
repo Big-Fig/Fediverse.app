@@ -4,6 +4,7 @@ import 'package:fedi/refactored/app/status/media/status_media_attachment_image_w
 import 'package:fedi/refactored/app/status/media/status_media_attachment_video_widget.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
 import 'package:fedi/refactored/mastodon/media/attachment/mastodon_media_attachment_model.dart';
+import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -14,15 +15,11 @@ class StatusMediaAttachmentsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: false);
-    return StreamBuilder<List<IPleromaMediaAttachment>>(
+    return InitialDataStreamBuilder<List<IPleromaMediaAttachment>>(
         stream: statusBloc.mediaAttachmentsStream.distinct(),
-//        initialData: statusBloc.mediaAttachments,
+        initialData: statusBloc.mediaAttachments,
         builder: (context, snapshot) {
           var mediaAttachments = snapshot.data;
-
-          if (mediaAttachments == null) {
-            return SizedBox.shrink();
-          }
 
           if (mediaAttachments?.isNotEmpty == true) {
             return buildChildren(context, mediaAttachments);

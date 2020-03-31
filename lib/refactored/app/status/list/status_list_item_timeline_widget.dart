@@ -15,6 +15,7 @@ import 'package:fedi/refactored/app/status/reply/status_reply_header_widget.dart
 import 'package:fedi/refactored/app/status/status_bloc.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/app/status/thread/status_thread_page.dart';
+import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -79,9 +80,9 @@ class _StatusListItemTimelineWidgetState
         },
         child: Column(
           children: [
-            StreamBuilder<bool>(
+            InitialDataStreamBuilder<bool>(
                 stream: statusBloc.isHaveReblogStream,
-//                initialData: statusBloc.isHaveReblog,
+                initialData: statusBloc.isHaveReblog,
                 builder: (context, snapshot) {
                   var isHaveReblogStream = snapshot.data;
                   if (isHaveReblogStream == true) {
@@ -90,9 +91,9 @@ class _StatusListItemTimelineWidgetState
                     return SizedBox.shrink();
                   }
                 }),
-            StreamBuilder<bool>(
+            InitialDataStreamBuilder<bool>(
                 stream: statusBloc.isHaveInReplyToAccountStream,
-//                initialData: statusBloc.isHaveInReplyToAccount,
+                initialData: statusBloc.isHaveInReplyToAccount,
                 builder: (context, snapshot) {
                   var isHaveInReplyToAccount = snapshot.data;
                   if (isHaveInReplyToAccount == true) {

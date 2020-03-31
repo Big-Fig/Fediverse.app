@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 
 // same behaviour like StreamBuilder but with better performance
 // don't rebuild twice with initial data on first build
@@ -16,14 +16,15 @@ class InitialDataStreamBuilder<T> extends StatefulWidget {
 
   @override
   _InitialDataStreamBuilderState createState() =>
-      _InitialDataStreamBuilderState(initialData);
+      _InitialDataStreamBuilderState<T>(initialData, builder);
 }
 
 class _InitialDataStreamBuilderState<T>
     extends State<InitialDataStreamBuilder<T>> {
-  final T currentData;
+  T currentData;
+  final AsyncWidgetBuilder<T> builder;
 
-  _InitialDataStreamBuilderState(this.currentData);
+  _InitialDataStreamBuilderState(this.currentData, this.builder);
 
   StreamSubscription subscription;
 
@@ -33,7 +34,7 @@ class _InitialDataStreamBuilderState<T>
     subscription = widget.stream.listen((newData) {
       if (newData != currentData) {
         setState(() {
-          newData = currentData;
+          currentData = newData;
         });
       }
     });
@@ -46,6 +47,6 @@ class _InitialDataStreamBuilderState<T>
   }
 
   @override
-  Widget build(BuildContext context) => widget.builder(
-        context, AsyncSnapshot.withData(ConnectionState.done, currentData));
+  Widget build(BuildContext context) => builder(
+      context, AsyncSnapshot<T>.withData(ConnectionState.done, currentData));
 }

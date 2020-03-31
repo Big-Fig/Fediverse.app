@@ -92,7 +92,7 @@ abstract class IStatusBloc implements Disposable {
 
   Stream<List<IPleromaStatusEmojiReaction>> get emojiReactionsReblogStream;
 
-  List<IPleromaStatusEmojiReaction> get emojiReactionOriginalPlusReblog;
+  List<IPleromaStatusEmojiReaction> get emojiReactionsOriginalPlusReblog;
 
   Stream<List<IPleromaStatusEmojiReaction>>
       get emojiReactionsOriginalPlusReblogStream;

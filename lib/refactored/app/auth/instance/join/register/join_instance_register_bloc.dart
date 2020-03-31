@@ -22,7 +22,7 @@ abstract class IJoinInstanceRegisterBloc implements Disposable {
   Stream<String> get passwordsMatchStream;
 
 
-  Stream<bool> get register;
+  Stream<bool> get registerStream;
 
   Function(String) get changeUsername;
   Function(String) get changeEmail;

@@ -2,6 +2,7 @@ import 'package:fedi/Views/LocalVideoPlayer.dart';
 import 'package:fedi/refactored/app/media/attachment/upload/upload_media_attachment_bloc.dart';
 import 'package:fedi/refactored/app/media/attachment/upload/upload_media_attachment_model.dart';
 import 'package:fedi/refactored/file/picker/file_picker_model.dart';
+import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,7 @@ class UploadMediaAttachmentGridItem extends StatelessWidget {
     return Stack(
       children: <Widget>[
         buildMediaPreview(uploadMediaAttachmentBloc.filePickerFile),
-        StreamBuilder<UploadMediaAttachmentState>(
+        InitialDataStreamBuilder<UploadMediaAttachmentState>(
             stream: uploadMediaAttachmentBloc.uploadStateStream,
             initialData: uploadMediaAttachmentBloc.uploadState,
             builder: (context, snapshot) {

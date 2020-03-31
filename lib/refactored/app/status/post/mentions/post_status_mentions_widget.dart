@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/account/select/select_account_page.dart';
 import 'package:fedi/refactored/app/status/post/post_status_bloc.dart';
+import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +19,7 @@ class _PostStatusMentionsWidgetState extends State<PostStatusMentionsWidget> {
     var postStatusBloc = IPostStatusBloc.of(context, listen: true);
 
     return Column(mainAxisSize: MainAxisSize.min, children: [
-      StreamBuilder<List<String>>(
+      InitialDataStreamBuilder<List<String>>(
           stream: postStatusBloc.mentionedAcctsStream,
           initialData: postStatusBloc.mentionedAccts,
           builder: (context, snapshot) {
@@ -46,7 +47,7 @@ class _PostStatusMentionsWidgetState extends State<PostStatusMentionsWidget> {
               ),
             );
           }),
-      StreamBuilder<List<String>>(
+      InitialDataStreamBuilder<List<String>>(
           stream: postStatusBloc.mentionedAcctsStream,
           initialData: postStatusBloc.mentionedAccts,
           builder: (context, snapshot) {

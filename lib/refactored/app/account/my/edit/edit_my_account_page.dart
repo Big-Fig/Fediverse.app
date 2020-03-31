@@ -3,6 +3,7 @@ import 'package:fedi/refactored/app/account/my/edit/edit_my_account_bloc.dart';
 import 'package:fedi/refactored/app/account/my/edit/edit_my_account_bloc_impl.dart';
 import 'package:fedi/refactored/app/account/my/edit/edit_my_account_widget.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
+import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_alert/flutter_alert.dart';
 
@@ -28,7 +29,7 @@ class EditMyAccountPage extends StatelessWidget {
             Text(AppLocalizations.of(context).tr("profile.edit.title"))
           ]),
           actions: <Widget>[
-            StreamBuilder<bool>(
+            InitialDataStreamBuilder<bool>(
                 stream: editMyAccountBloc.isSomethingChangedStream,
                 initialData: editMyAccountBloc.isSomethingChanged,
                 builder: (context, snapshot) {

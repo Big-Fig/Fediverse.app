@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/account/details/account_details_page.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
+import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -9,8 +10,9 @@ class StatusReplyHeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: true);
-    return StreamBuilder<IAccount>(
+    return InitialDataStreamBuilder<IAccount>(
         stream: statusBloc.watchInReplyToAccount(),
+        initialData: null,
         builder: (context, snapshot) {
           var account = snapshot.data;
 

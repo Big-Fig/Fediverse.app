@@ -4,6 +4,7 @@ import 'package:fedi/Views/Alert.dart';
 import 'package:fedi/Views/ProgressDialog.dart';
 import 'package:fedi/refactored/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/refactored/app/auth/instance/join/register/join_instance_register_bloc.dart';
+import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -26,8 +27,9 @@ class JoinInstanceRegisterWidget extends StatelessWidget {
   }
 
   Widget userNameField(BuildContext context, IJoinInstanceRegisterBloc bloc) {
-    return StreamBuilder(
+    return InitialDataStreamBuilder(
       stream: bloc.usernameStream,
+      initialData: bloc.username,
       builder: (context, snapshot) {
         return Padding(
           padding: EdgeInsets.all(10),
@@ -47,8 +49,9 @@ class JoinInstanceRegisterWidget extends StatelessWidget {
   }
 
   Widget emailField(BuildContext context, IJoinInstanceRegisterBloc bloc) {
-    return StreamBuilder(
+    return InitialDataStreamBuilder(
       stream: bloc.emailStream,
+      initialData: bloc.email,
       builder: (context, snapshot) {
         return Padding(
           padding: EdgeInsets.all(10),
@@ -69,8 +72,9 @@ class JoinInstanceRegisterWidget extends StatelessWidget {
   }
 
   Widget passwordField(BuildContext context, IJoinInstanceRegisterBloc bloc) {
-    return StreamBuilder(
+    return InitialDataStreamBuilder(
       stream: bloc.passwordStream,
+      initialData: bloc.password,
       builder: (context, snapshot) {
         return Padding(
           padding: EdgeInsets.all(10),
@@ -91,8 +95,9 @@ class JoinInstanceRegisterWidget extends StatelessWidget {
 
   Widget confirmPasswordField(
       BuildContext context, IJoinInstanceRegisterBloc bloc) {
-    return StreamBuilder(
+    return InitialDataStreamBuilder(
       stream: bloc.passwordsMatchStream,
+      initialData: null,
       builder: (context, snapshot) {
         return Padding(
           padding: EdgeInsets.all(10),
@@ -112,8 +117,9 @@ class JoinInstanceRegisterWidget extends StatelessWidget {
   }
 
   Widget submitButton(BuildContext context, IJoinInstanceRegisterBloc bloc) {
-    return StreamBuilder(
-      stream: bloc.register,
+    return InitialDataStreamBuilder(
+      stream: bloc.registerStream,
+      initialData: null,
       builder: (context, snapshot) {
         return Padding(
           padding: EdgeInsets.all(10),

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/refactored/app/account/account_bloc.dart';
+import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +9,7 @@ class AccountHeaderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: true);
 
-    return StreamBuilder<String>(
+    return InitialDataStreamBuilder<String>(
         stream: accountBloc.headerStream,
         initialData: accountBloc.header,
         builder: (context, snapshot) {

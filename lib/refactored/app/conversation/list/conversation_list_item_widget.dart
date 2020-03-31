@@ -6,6 +6,7 @@ import 'package:fedi/refactored/app/conversation/conversation_page.dart';
 import 'package:fedi/refactored/app/conversation/title/conversation_title_widget.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/async/loading/init/async_init_loading_widget.dart';
+import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
@@ -78,7 +79,7 @@ class ConversationListItemWidget extends StatelessWidget {
 
   Widget buildLastStatusText(BuildContext context,
       IConversationBloc conversationBloc) {
-    return StreamBuilder<IStatus>(
+    return InitialDataStreamBuilder<IStatus>(
         stream: conversationBloc.lastStatusStream,
         initialData: conversationBloc.lastStatus,
         builder: (context, snapshot) {
