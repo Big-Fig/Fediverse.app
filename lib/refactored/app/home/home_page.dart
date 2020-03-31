@@ -1,4 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/refactored/app/home/tab/notifications/notifications_home_tab_bloc.dart';
+import 'package:fedi/refactored/app/home/tab/notifications/notifications_home_tab_bloc_impl.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/refactored/pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:fedi/refactored/app/account/my/actions/my_account_actions_bottom_sheet_dialog.dart';
@@ -145,26 +147,17 @@ class _HomePageState extends State<HomePage> with
     switch (selectedTab) {
       case AppHomeTab.timelines:
         return DisposableProvider<ITimelinesHomeTabBloc>(
-            create: (BuildContext context) => TimelinesHomeTabBloc(
-                startTab: TimelineTab.home,
-                pleromaTimelineService:
-                    IPleromaTimelineService.of(context, listen: false),
-                pleromaAccountService:
-                    IPleromaAccountService.of(context, listen: false),
-                statusRepository: IStatusRepository.of(context, listen: false),
-                accountRepository:
-                    IAccountRepository.of(context, listen: false),
-                myAccountBloc: IMyAccountBloc.of(context, listen: false),
-                currentInstanceBloc:
-                    ICurrentInstanceBloc.of(context, listen: false),
-                timelineLocalPreferencesBloc:
-                    ITimelineLocalPreferencesBloc.of(context, listen: false)),
+            create: (BuildContext context) => TimelinesHomeTabBloc
+                .createFromContext(context),
             child: TimelinesHomeTabPage(
               key: PageStorageKey<String>("TimelinesHomeTabPage"),
             ));
         break;
       case AppHomeTab.notifications:
-        return NotificationsHomeTabPage();
+        return DisposableProvider<INotificationsHomeTabBloc>(
+            create: (context) =>
+                NotificationsHomeTabBloc.createFromContext(context),
+            child: NotificationsHomeTabPage());
         break;
       case AppHomeTab.conversations:
         return DisposableProvider<IConversationsHomeTabBloc>(

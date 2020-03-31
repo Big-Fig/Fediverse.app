@@ -47,16 +47,8 @@ class TimelinesHomeTabBloc extends DisposableOwner
   final ICurrentInstanceBloc currentInstanceBloc;
   final ITimelineLocalPreferencesBloc timelineLocalPreferencesBloc;
 
-  TimelinesHomeTabBloc({
-    @required TimelineTab startTab,
-    @required this.pleromaTimelineService,
-    @required this.pleromaAccountService,
-    @required this.statusRepository,
-    @required this.accountRepository,
-    @required this.myAccountBloc,
-    @required this.currentInstanceBloc,
-    @required this.timelineLocalPreferencesBloc,
-  }) {
+  TimelinesHomeTabBloc(
+      {@required TimelineTab startTab, @required this.pleromaTimelineService, @required this.pleromaAccountService, @required this.statusRepository, @required this.accountRepository, @required this.myAccountBloc, @required this.currentInstanceBloc, @required this.timelineLocalPreferencesBloc,}) {
     selectedTabSubject = BehaviorSubject.seeded(startTab);
 
     addDisposable(subject: selectedTabSubject);
@@ -160,4 +152,17 @@ class TimelinesHomeTabBloc extends DisposableOwner
 
     throw "retrieveTimelineTabPaginationListBloc unsupported tab = $tab";
   }
+
+  static TimelinesHomeTabBloc createFromContext(BuildContext context) =>
+      TimelinesHomeTabBloc(startTab: TimelineTab.home,
+          pleromaTimelineService: IPleromaTimelineService.of(
+              context, listen: false),
+          pleromaAccountService: IPleromaAccountService.of(
+              context, listen: false),
+          statusRepository: IStatusRepository.of(context, listen: false),
+          accountRepository: IAccountRepository.of(context, listen: false),
+          myAccountBloc: IMyAccountBloc.of(context, listen: false),
+          currentInstanceBloc: ICurrentInstanceBloc.of(context, listen: false),
+          timelineLocalPreferencesBloc: ITimelineLocalPreferencesBloc.of(
+              context, listen: false));
 }

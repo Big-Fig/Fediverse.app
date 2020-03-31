@@ -1,23 +1,26 @@
 import 'dart:async';
 
-import 'package:fedi/refactored/pleroma/notifications/websockets/pleroma_notifications_websockets_model.dart';
 import 'package:fedi/refactored/disposable/disposable.dart';
-import 'package:fedi/refactored/disposable/disposable_owner.dart';
+import 'package:fedi/refactored/pleroma/notification/websockets/pleroma_notification_websockets_model.dart';
 import 'package:flutter/widgets.dart';
 
-abstract class IPleromaNotificationsWebSocketsChannel  {
+abstract class IPleromaNotificationWebSocketsChannel {
   replaceBaseUrlAndAuth(
       {@required String baseUrl, @required String accessToken});
-  PleromaNotificationsWebSocketsChannelSettings get settings;
 
-  StreamController<PleromaNotificationsWebSocketsEvent> createEventsStreamController();
-  Disposable listenEvents(Function
-      (PleromaNotificationsWebSocketsEvent event) callback);
+  PleromaNotificationWebSocketsChannelSettings get settings;
+
+  StreamController<PleromaNotificationWebSocketsEvent>
+      createEventsStreamController();
+
+  Disposable listenEvents(
+      Function(PleromaNotificationWebSocketsEvent event) callback);
 }
 
-class PleromaNotificationsWebSocketsChannelSettings {
+class PleromaNotificationWebSocketsChannelSettings {
   final String baseUrl;
   final String accessToken;
+
   /// Stream name:
   /// user
   /// public
@@ -29,7 +32,7 @@ class PleromaNotificationsWebSocketsChannelSettings {
   final String stream;
   final Map<String, String> additionalQueryArgs;
 
-  PleromaNotificationsWebSocketsChannelSettings(
+  PleromaNotificationWebSocketsChannelSettings(
       {@required this.baseUrl,
       @required this.accessToken,
       @required this.stream,
@@ -37,7 +40,7 @@ class PleromaNotificationsWebSocketsChannelSettings {
 
   @override
   String toString() {
-    return 'PleromaNotificationsWebSocketsChannelSettings{'
+    return 'PleromaNotificationWebSocketsChannelSettings{'
         'baseUrl: $baseUrl, accessToken: $accessToken,'
         ' stream: $stream, additionalQueryArgs: $additionalQueryArgs}';
   }
@@ -45,12 +48,12 @@ class PleromaNotificationsWebSocketsChannelSettings {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is PleromaNotificationsWebSocketsChannelSettings &&
-              runtimeType == other.runtimeType &&
-              baseUrl == other.baseUrl &&
-              accessToken == other.accessToken &&
-              stream == other.stream &&
-              additionalQueryArgs == other.additionalQueryArgs;
+      other is PleromaNotificationWebSocketsChannelSettings &&
+          runtimeType == other.runtimeType &&
+          baseUrl == other.baseUrl &&
+          accessToken == other.accessToken &&
+          stream == other.stream &&
+          additionalQueryArgs == other.additionalQueryArgs;
 
   @override
   int get hashCode =>
@@ -58,8 +61,4 @@ class PleromaNotificationsWebSocketsChannelSettings {
       accessToken.hashCode ^
       stream.hashCode ^
       additionalQueryArgs.hashCode;
-
-
-
-
 }
