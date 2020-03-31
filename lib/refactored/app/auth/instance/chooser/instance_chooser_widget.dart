@@ -1,6 +1,7 @@
 import 'package:fedi/refactored/app/auth/instance/chooser/instance_chooser_bloc.dart';
 import 'package:fedi/refactored/app/auth/instance/instance_model.dart';
 import 'package:fedi/refactored/app/auth/instance/join/new/join_new_instance_page.dart';
+import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -14,8 +15,9 @@ class InstanceChooserWidget extends StatelessWidget {
 
     _logger.finest(() => "build");
 
-    return StreamBuilder<List<Instance>>(
+    return InitialDataStreamBuilder<List<Instance>>(
         stream: instanceChooserBloc.instancesAvailableToChooseStream,
+        initialData: instanceChooserBloc.instancesAvailableToChoose,
         builder: (context, snapshot) {
           var instancesAvailableToChoose = snapshot.data;
 

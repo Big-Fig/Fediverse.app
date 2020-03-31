@@ -5,6 +5,7 @@ import 'package:fedi/refactored/app/media/attachment/upload/upload_media_attachm
 import 'package:fedi/refactored/file/picker/single/single_file_picker_page.dart';
 import 'package:fedi/refactored/app/status/post/post_status_bloc.dart';
 import 'package:fedi/refactored/file/picker/file_picker_model.dart';
+import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +14,7 @@ class UploadMediaAttachmentGridWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var postStatusBloc = IPostStatusBloc.of(context, listen: false);
-    return StreamBuilder<List<IUploadMediaAttachmentBloc>>(
+    return InitialDataStreamBuilder<List<IUploadMediaAttachmentBloc>>(
         stream: postStatusBloc.mediaAttachmentBlocsStream,
         initialData: postStatusBloc.mediaAttachmentBlocs,
         builder: (context, snapshot) {

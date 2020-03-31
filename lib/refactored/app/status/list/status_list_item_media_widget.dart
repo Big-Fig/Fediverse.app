@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
+import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -35,7 +36,7 @@ class StatusListItemMediaWidget extends StatelessWidget {
     _logger.finest(() =>
         "build ${statusBloc.remoteId} media ${statusBloc.mediaAttachments?.length}");
 
-    return StreamBuilder<List<IPleromaMediaAttachment>>(
+    return InitialDataStreamBuilder<List<IPleromaMediaAttachment>>(
         stream: statusBloc.mediaAttachmentsStream,
         initialData: statusBloc.mediaAttachments,
         builder: (context, snapshot) {

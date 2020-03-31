@@ -1,5 +1,6 @@
 import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/conversation/conversation_bloc.dart';
+import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 
 class ConversationTitleWidget extends StatelessWidget {
@@ -7,7 +8,7 @@ class ConversationTitleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var conversationBloc = IConversationBloc.of(context, listen: false);
 
-    return StreamBuilder<List<IAccount>>(
+    return InitialDataStreamBuilder<List<IAccount>>(
         stream: conversationBloc.accountsWithoutMeStream,
         initialData: conversationBloc.accountsWithoutMe,
         builder: (context, snapshot) {

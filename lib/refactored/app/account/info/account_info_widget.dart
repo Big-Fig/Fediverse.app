@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/account/account_bloc.dart';
 import 'package:fedi/refactored/app/account/avatar/account_avatar_widget.dart';
 import 'package:fedi/refactored/app/account/header/account_header_widget.dart';
+import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -42,8 +43,8 @@ class AccountInfoWidget extends StatelessWidget {
     );
   }
 
-  StreamBuilder<int> buildFollowersCountWidget(IAccountBloc accountBloc) {
-    return StreamBuilder<int>(
+  InitialDataStreamBuilder<int> buildFollowersCountWidget(IAccountBloc accountBloc) {
+    return InitialDataStreamBuilder<int>(
                       stream: accountBloc.followersCountStream,
                       initialData: accountBloc.followersCount,
                       builder: (context, snapshot) {
@@ -55,8 +56,8 @@ class AccountInfoWidget extends StatelessWidget {
                       });
   }
 
-  StreamBuilder<int> buildFollowingCountWidget(IAccountBloc accountBloc) {
-    return StreamBuilder<int>(
+  InitialDataStreamBuilder<int> buildFollowingCountWidget(IAccountBloc accountBloc) {
+    return InitialDataStreamBuilder<int>(
                       stream: accountBloc.followingCountStream,
                       initialData: accountBloc.followingCount,
                       builder: (context, snapshot) {
@@ -68,8 +69,8 @@ class AccountInfoWidget extends StatelessWidget {
                       });
   }
 
-  StreamBuilder<int> buildStatusesCountWidget(IAccountBloc accountBloc) {
-    return StreamBuilder<int>(
+  InitialDataStreamBuilder<int> buildStatusesCountWidget(IAccountBloc accountBloc) {
+    return InitialDataStreamBuilder<int>(
                       stream: accountBloc.statusesCountStream,
                       initialData: accountBloc.statusesCount,
                       builder: (context, snapshot) {

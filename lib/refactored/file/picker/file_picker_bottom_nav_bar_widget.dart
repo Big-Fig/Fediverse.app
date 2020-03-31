@@ -1,5 +1,6 @@
 import 'package:fedi/refactored/file/picker/file_picker_bloc.dart';
 import 'package:fedi/refactored/file/picker/file_picker_model.dart';
+import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -8,13 +9,13 @@ class FilePickerBottomNavBarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var filePickerBloc = IFilePickerBloc.of(context);
 
-    return StreamBuilder<List<FilePickerTab>>(
+    return InitialDataStreamBuilder<List<FilePickerTab>>(
         stream: filePickerBloc.availableTabsStream,
         initialData: filePickerBloc.availableTabs,
         builder: (context, snapshot) {
           var tabs = snapshot.data;
 
-          return StreamBuilder<FilePickerTab>(
+          return InitialDataStreamBuilder<FilePickerTab>(
               stream: filePickerBloc.selectedTabStream,
               initialData: filePickerBloc.selectedTab,
               builder: (context, snapshot) {

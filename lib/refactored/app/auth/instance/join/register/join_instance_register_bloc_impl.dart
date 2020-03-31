@@ -99,7 +99,7 @@ class JoinInstanceRegisterBloc extends DisposableOwner
       }).transform(validatePasswordMatch);
 
   // once validation passes allow registration
-  Stream<bool> get register =>
+  Stream<bool> get registerStream =>
       CombineLatestStream([usernameStream, emailStream, passwordsMatchStream],
           (values) {
         return true;

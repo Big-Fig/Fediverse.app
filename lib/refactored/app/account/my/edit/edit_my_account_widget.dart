@@ -4,6 +4,7 @@ import 'package:fedi/refactored/app/account/my/edit/edit_my_account_bloc.dart';
 import 'package:fedi/refactored/app/account/my/edit/edit_my_account_model.dart';
 import 'package:fedi/refactored/file/picker/file_picker_model.dart';
 import 'package:fedi/refactored/file/picker/single/single_file_picker_page.dart';
+import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/material.dart';
 
 class EditMyAccountWidget extends StatelessWidget {
@@ -134,7 +135,7 @@ class EditMyAccountWidget extends StatelessWidget {
 
   Widget buildAvatarFieldImage(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    return StreamBuilder<String>(
+    return InitialDataStreamBuilder<String>(
         stream: editMyAccountBloc.avatarImageUrlStream,
         initialData: editMyAccountBloc.avatarImageUrl,
         builder: (context, snapshot) {
@@ -181,7 +182,7 @@ class EditMyAccountWidget extends StatelessWidget {
     return FittedBox(
       alignment: Alignment.center,
       fit: BoxFit.none,
-      child: StreamBuilder<String>(
+      child: InitialDataStreamBuilder<String>(
           stream: editMyAccountBloc.headerImageUrlStream,
           initialData: editMyAccountBloc.headerImageUrl,
           builder: (context, snapshot) {
@@ -259,7 +260,7 @@ class EditMyAccountWidget extends StatelessWidget {
             label,
           ),
           Spacer(),
-          StreamBuilder<bool>(
+          InitialDataStreamBuilder<bool>(
               stream: field.currentValueStream,
               initialData: field.currentValue,
               builder: (context, snapshot) {

@@ -1,6 +1,7 @@
 
 import 'package:fedi/refactored/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/refactored/app/status/emoji_reaction/status_emoji_reaction_bloc.dart';
+import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +9,7 @@ class StatusEmojiReactionListItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusEmojiReactionBloc = IStatusEmojiReactionBloc.of(context, listen: true);
-    return StreamBuilder<IPleromaStatusEmojiReaction>(
+    return InitialDataStreamBuilder<IPleromaStatusEmojiReaction>(
       stream: statusEmojiReactionBloc.emojiReactionStream,
       initialData: statusEmojiReactionBloc.emojiReaction,
       builder: (context, snapshot) {

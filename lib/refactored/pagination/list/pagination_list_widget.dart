@@ -5,6 +5,7 @@ import 'package:fedi/refactored/app/list/list_refresh_header_widget.dart';
 import 'package:fedi/refactored/async/loading/init/async_init_loading_widget.dart';
 import 'package:fedi/refactored/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/refactored/pagination/pagination_model.dart';
+import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -149,12 +150,11 @@ class _PaginationListWidgetState<T> extends State<PaginationListWidget<T>> {
         _logger.finest(() => "build AsyncInitLoadingWidget stream");
         // Stream builder outside SmartRefresher because
         // SmartRefresher require ScrollView as child
-        // If child is StreamBuilder SmartRefresher builds all items widget
+        // If child is InitialDataStreamBuilder SmartRefresher builds all items widget
         // instead visible only
-        return StreamBuilder<List<T>>(
+        return InitialDataStreamBuilder<List<T>>(
             stream: paginationListBloc.itemsStream,
-            // initialData is null to avoid twice redraw on init
-            initialData: null,
+            initialData: paginationListBloc.items,
             builder: (context, snapshot) {
               var items = snapshot.data;
 

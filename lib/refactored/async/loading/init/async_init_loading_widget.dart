@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/async/loading/init/async_init_loading_bloc.dart';
 import 'package:fedi/refactored/async/loading/init/async_init_loading_model.dart';
+import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -19,14 +20,11 @@ class AsyncInitLoadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<AsyncInitLoadingState>(
+    return InitialDataStreamBuilder<AsyncInitLoadingState>(
         stream: asyncInitLoadingBloc.initLoadingStateStream,
+        initialData: asyncInitLoadingBloc.initLoadingState,
         builder: (context, snapshot) {
           var loadingState = snapshot.data;
-
-          if (loadingState == null) {
-            return Center(child: CircularProgressIndicator());
-          }
 
           switch (loadingState) {
             case AsyncInitLoadingState.notStarted:

@@ -6,6 +6,7 @@ import 'package:fedi/refactored/app/status/emoji_reaction/status_emoji_reaction_
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
+import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -14,9 +15,9 @@ class StatusEmojiReactionListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: false);
 
-    return StreamBuilder<List<IPleromaStatusEmojiReaction>>(
+    return InitialDataStreamBuilder<List<IPleromaStatusEmojiReaction>>(
       stream: statusBloc.emojiReactionsOriginalPlusReblogStream,
-//      initialData: statusBloc.emojiReactionsOriginalPlusReblog,
+      initialData: statusBloc.emojiReactionsOriginalPlusReblog,
       builder: (context, snapshot) {
         var emojiReactions = snapshot.data;
         if (emojiReactions?.isNotEmpty == true) {

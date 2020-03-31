@@ -5,6 +5,7 @@ import 'package:fedi/refactored/app/status/card/status_card_widget.dart';
 import 'package:fedi/refactored/app/status/content/status_content_without_accounts_widget.dart';
 import 'package:fedi/refactored/app/status/media/status_media_attachments_widget.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
+import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -65,7 +66,7 @@ class ConversationStatusListItemWidget extends StatelessWidget {
               onTap: () {
                 goToAccountDetailsPage(context, statusBloc.account);
               },
-              child: StreamBuilder<String>(
+              child: InitialDataStreamBuilder<String>(
                   stream: statusBloc.accountAvatarStream,
                   initialData: statusBloc.accountAvatar,
                   builder: (context, snapshot) {

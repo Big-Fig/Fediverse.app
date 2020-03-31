@@ -1,6 +1,7 @@
 import 'package:fedi/refactored/pleroma/field/pleroma_field_model.dart';
 import 'package:fedi/refactored/app/account/account_bloc.dart';
 import 'package:fedi/refactored/app/account/field/account_field_grid_item_widget.dart';
+import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/widgets.dart';
 
 class AccountFieldGridWidget extends StatelessWidget {
@@ -8,7 +9,7 @@ class AccountFieldGridWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: true);
 
-    return StreamBuilder<List<IPleromaField>>(
+    return InitialDataStreamBuilder<List<IPleromaField>>(
         stream: accountBloc.fieldsStream,
         initialData: accountBloc.fields,
         builder: (context, snapshot) {

@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/refactored/app/status/post/post_status_bloc.dart';
+import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +11,7 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
     var postStatusBloc = IPostStatusBloc.of(context, listen: false);
 
     return IconButton(
-      icon: StreamBuilder<PleromaVisibility>(
+      icon: InitialDataStreamBuilder<PleromaVisibility>(
           stream: postStatusBloc.visibilityStream,
           initialData: postStatusBloc.visibility,
           builder: (context, snapshot) {

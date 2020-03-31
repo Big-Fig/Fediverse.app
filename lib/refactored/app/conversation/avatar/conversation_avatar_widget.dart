@@ -1,14 +1,12 @@
 import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/account/avatar/account_avatar_widget.dart';
 import 'package:fedi/refactored/app/conversation/conversation_bloc.dart';
+import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-
-
 class ConversationAvatarWidget extends StatelessWidget {
   final double baseAvatarSize;
-
 
   ConversationAvatarWidget({this.baseAvatarSize = 50.0});
 
@@ -19,15 +17,11 @@ class ConversationAvatarWidget extends StatelessWidget {
     return SizedBox(
       width: baseAvatarSize,
       height: baseAvatarSize,
-      child: StreamBuilder<List<IAccount>>(
-                    stream: conversationBloc.accountsWithoutMeStream,
+      child: InitialDataStreamBuilder<List<IAccount>>(
+          stream: conversationBloc.accountsWithoutMeStream,
           initialData: conversationBloc.accountsWithoutMe,
           builder: (context, snapshot) {
             var accounts = snapshot.data;
-
-            if (accounts?.isNotEmpty != true) {
-              return Text("No accounts");
-            }
 
             switch (accounts.length) {
               case 1:
@@ -134,22 +128,21 @@ class ConversationAvatarWidget extends StatelessWidget {
       width: baseAvatarSize * sizeMultiplier,
       height: baseAvatarSize * sizeMultiplier,
       decoration: BoxDecoration(
-
-        borderRadius:  BorderRadius.all(
-             Radius.circular(baseAvatarSize * sizeMultiplier / 2)),
+        borderRadius: BorderRadius.all(
+            Radius.circular(baseAvatarSize * sizeMultiplier / 2)),
         border: Border.all(
           color: Colors.white.withOpacity(0.5),
           width: 2.0,
         ),
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(baseAvatarSize / 2 * sizeMultiplier),
+        borderRadius:
+            BorderRadius.circular(baseAvatarSize / 2 * sizeMultiplier),
         child: AccountAvatarWidget.buildAccountAvatarWidget(
             avatarUrl: account.avatar,
             progressSize: baseAvatarSize / 2 * sizeMultiplier,
             imageSize: baseAvatarSize * sizeMultiplier),
       ),
     );
-
   }
 }

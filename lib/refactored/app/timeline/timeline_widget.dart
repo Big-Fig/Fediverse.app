@@ -1,6 +1,7 @@
 import 'package:fedi/refactored/app/status/pagination/list/status_pagination_list_media_widget.dart';
 import 'package:fedi/refactored/app/status/pagination/list/status_pagination_list_timeline_widget.dart';
 import 'package:fedi/refactored/app/timeline/local_preferences/timeline_local_preferences_bloc.dart';
+import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
@@ -14,11 +15,12 @@ class TimelineWidget extends StatelessWidget {
     var timelineLocalPreferencesBloc =
         ITimelineLocalPreferencesBloc.of(context, listen: false);
 
-    return StreamBuilder<bool>(
+    return InitialDataStreamBuilder<bool>(
         stream: timelineLocalPreferencesBloc.stream
             .map((timelineLocalPreferences) =>
                 timelineLocalPreferences?.onlyWithMedia == true)
             .distinct(),
+        initialData: timelineLocalPreferencesBloc.value?.onlyWithMedia,
         builder: (context, snapshot) {
           var onlyWithMedia = snapshot.data;
 

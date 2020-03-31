@@ -1,6 +1,7 @@
 import 'package:fedi/refactored/camera/camera_bloc.dart';
 import 'package:fedi/refactored/camera/camera_model.dart';
 import 'package:fedi/refactored/camera/camera_widget.dart';
+import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -36,7 +37,7 @@ class CameraVideoWidget extends CameraWidget {
 
   Widget buildVideoLengthCounterText(
           BuildContext context, ICameraBloc cameraBloc) =>
-      StreamBuilder<bool>(
+      InitialDataStreamBuilder<bool>(
           stream: cameraBloc.isVideoRecordingInProgressOrPausedStream,
           initialData: cameraBloc.isVideoRecordingInProgressOrPaused,
           builder: (context, snapshot) {
@@ -51,7 +52,7 @@ class CameraVideoWidget extends CameraWidget {
                         BoxDecoration(color: Colors.black.withOpacity(0.5)),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: StreamBuilder<int>(
+                      child: InitialDataStreamBuilder<int>(
                           stream: cameraBloc.videoRecordingTimeInSecondsStream,
                           initialData: cameraBloc.videoRecordingTimeInSeconds,
                           builder: (context, snapshot) {
@@ -81,7 +82,7 @@ class CameraVideoWidget extends CameraWidget {
 
   Widget buildCameraVideoRecordingStartStopButtonWidget(
           BuildContext context, ICameraBloc cameraBloc) =>
-      StreamBuilder<CameraState>(
+      InitialDataStreamBuilder<CameraState>(
           stream: cameraBloc.cameraStateStream,
           initialData: cameraBloc.cameraState,
           builder: (context, snapshot) {
@@ -144,7 +145,7 @@ class CameraVideoWidget extends CameraWidget {
         },
       );
 
-  Widget buildStopButtonWidget(ICameraBloc cameraBloc) => StreamBuilder<bool>(
+  Widget buildStopButtonWidget(ICameraBloc cameraBloc) => InitialDataStreamBuilder<bool>(
       stream: cameraBloc.isVideoRecordingInProgressOrPausedStream,
       initialData: cameraBloc.isVideoRecordingInProgressOrPaused,
       builder: (context, snapshot) {

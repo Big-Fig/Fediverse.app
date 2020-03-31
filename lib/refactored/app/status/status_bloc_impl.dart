@@ -459,7 +459,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   Stream<List<IPleromaStatusEmojiReaction>> get emojiReactionsReblogStream =>
       reblogStream.map((status) => status?.pleromaEmojiReactions).distinct();
 
-  List<IPleromaStatusEmojiReaction> get emojiReactionOriginalPlusReblog =>
+  List<IPleromaStatusEmojiReaction> get emojiReactionsOriginalPlusReblog =>
       mergeEmojiReactionsLists(emojiReactionsOriginal, emojiReactionsReblog);
 
   Stream<List<IPleromaStatusEmojiReaction>>

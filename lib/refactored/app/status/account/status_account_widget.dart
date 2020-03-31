@@ -8,6 +8,7 @@ import 'package:fedi/refactored/app/account/display_name/account_display_name_wi
 import 'package:fedi/refactored/app/status/status_bloc.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
+import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -20,7 +21,7 @@ class StatusAccountWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: true);
 
-    return StreamBuilder<IAccount>(
+    return InitialDataStreamBuilder<IAccount>(
         stream: statusBloc.accountReblogOrOriginalStream,
         initialData: statusBloc.accountReblogOrOriginalAccount,
         builder: (context, snapshot) {

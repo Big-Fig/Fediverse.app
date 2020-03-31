@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/refactored/app/account/account_bloc.dart';
 import 'package:fedi/refactored/app/async/async_button_widget.dart';
+import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_alert/flutter_alert.dart';
@@ -14,7 +15,7 @@ class AccountActionsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);
     assert(!accountBloc.isMyAccount);
-    return StreamBuilder<IPleromaAccountRelationship>(
+    return InitialDataStreamBuilder<IPleromaAccountRelationship>(
         stream: accountBloc.accountRelationshipStream,
         initialData: accountBloc.accountRelationship,
         builder: (context, snapshot) {
