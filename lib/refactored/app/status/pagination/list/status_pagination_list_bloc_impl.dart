@@ -21,5 +21,5 @@ class StatusPaginationListBloc
       StatusPaginationListBloc(
           paginationBloc:
               Provider.of<IPaginationBloc<PaginationPage<IStatus>, IStatus>>(
-                  context));
+                  context, listen: false));
 }

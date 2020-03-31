@@ -111,8 +111,12 @@ class AccountRepository extends AsyncInitLoadingBloc
     return dao.replace(dbAccount);
   }
 
-  DbAccountWrapper mapDataClassToItem(DbAccount dataClass) =>
-      DbAccountWrapper(dataClass);
+  DbAccountWrapper mapDataClassToItem(DbAccount dataClass) {
+    if(dataClass == null) {
+      return null;
+    }
+    return DbAccountWrapper(dataClass);
+  }
 
   Insertable<DbAccount> mapItemToDataClass(DbAccountWrapper item) =>
       item.dbAccount;

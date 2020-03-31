@@ -13,7 +13,10 @@ var _logger = Logger("timeline_pagination_list_simple_widget.dart");
 
 class StatusPaginationListTimelineWidget
     extends StatusPaginationListBaseWidget {
-  StatusPaginationListTimelineWidget({@required Key key}) : super(key: key);
+  final bool needWatchLocalRepositoryForUpdates;
+  StatusPaginationListTimelineWidget(
+      {@required Key key, @required this.needWatchLocalRepositoryForUpdates})
+      : super(key: key);
 
   @override
   ScrollView buildItemsCollectionView(
@@ -27,10 +30,12 @@ class StatusPaginationListTimelineWidget
           header: header,
           footer: footer,
           itemBuilder: (context, index) => Provider<IStatus>.value(
-            value: items[index],
-            child: DisposableProxyProvider<IStatus, IStatusBloc>(
-                update: (context, status, oldValue) =>
-                    StatusBloc.createFromContext(context, status),
-                child: StatusListItemTimelineWidget()),
-          ));
+                value: items[index],
+                child: DisposableProxyProvider<IStatus, IStatusBloc>(
+                    update: (context, status, oldValue) =>
+                        StatusBloc.createFromContext(context, status,
+                            needWatchLocalRepositoryForUpdates:
+                                needWatchLocalRepositoryForUpdates),
+                    child: StatusListItemTimelineWidget()),
+              ));
 }

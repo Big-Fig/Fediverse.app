@@ -21,7 +21,8 @@ import 'package:rxdart/rxdart.dart';
 var _logger = Logger("status_bloc_impl.dart");
 
 class StatusBloc extends DisposableOwner implements IStatusBloc {
-  static StatusBloc createFromContext(BuildContext context, IStatus status) =>
+  static StatusBloc createFromContext(BuildContext context, IStatus status,
+          {bool needWatchLocalRepositoryForUpdates = true}) =>
       StatusBloc(
         pleromaStatusService: IPleromaStatusService.of(context, listen: false),
         pleromaAccountService:
@@ -31,6 +32,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
         accountRepository: IAccountRepository.of(context, listen: false),
         status: status,
         needRefreshFromNetworkOnInit: false,
+        needWatchLocalRepositoryForUpdates: needWatchLocalRepositoryForUpdates,
         pleromaStatusEmojiReactionService:
             IPleromaStatusEmojiReactionService.of(context, listen: false),
       );
@@ -53,17 +55,23 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
     @required this.accountRepository,
     @required IStatus status,
     @required bool needRefreshFromNetworkOnInit,
+    @required bool needWatchLocalRepositoryForUpdates,
   }) : _statusSubject = BehaviorSubject.seeded(status) {
     addDisposable(subject: _statusSubject);
 
+      assert(needRefreshFromNetworkOnInit != null);
+      assert(needWatchLocalRepositoryForUpdates != null);
     Future.delayed(Duration(seconds: 1), () {
+
       if (!disposed) {
-        addDisposable(
-            streamSubscription: statusRepository
-                .watchByRemoteId(status.remoteId)
-                .listen((updatedStatus) {
-          _statusSubject.add(updatedStatus);
-        }));
+        if (needWatchLocalRepositoryForUpdates) {
+          addDisposable(
+              streamSubscription: statusRepository
+                  .watchByRemoteId(status.remoteId)
+                  .listen((updatedStatus) {
+            _statusSubject.add(updatedStatus);
+          }));
+        }
         if (needRefreshFromNetworkOnInit) {
           updateFromNetwork();
         }

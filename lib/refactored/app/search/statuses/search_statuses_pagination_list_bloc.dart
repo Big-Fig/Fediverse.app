@@ -30,7 +30,7 @@ class SearchStatusesPaginationListBloc extends StatusPaginationListBloc {
       SearchStatusesPaginationListBloc(
           paginationBloc:
           Provider.of<IPaginationBloc<PaginationPage<IStatus>, IStatus>>(
-              context),
+              context, listen: false),
           searchInputBloc: ISearchInputBloc.of(context, listen: false)
       );
 }

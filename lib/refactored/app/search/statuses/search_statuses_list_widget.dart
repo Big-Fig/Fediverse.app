@@ -6,6 +6,7 @@ class SearchStatusesListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return StatusPaginationListTimelineWidget(
       key: PageStorageKey("SearchStatusesListWidget"),
+      needWatchLocalRepositoryForUpdates: false,
     );
   }
 }

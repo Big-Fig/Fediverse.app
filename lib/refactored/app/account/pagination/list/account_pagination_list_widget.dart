@@ -16,6 +16,7 @@ var _logger = Logger("account_pagination_list_simple_widget.dart");
 class AccountPaginationListWidget extends PaginationListWidget<IAccount> {
   final AccountSelectedCallback accountSelectedCallback;
 
+  final bool needWatchLocalRepositoryForUpdates;
   AccountPaginationListWidget({
     @required Key key,
     Widget header,
@@ -23,6 +24,7 @@ class AccountPaginationListWidget extends PaginationListWidget<IAccount> {
     bool alwaysShowHeader,
     bool alwaysShowFooter,
     RefreshAction additionalRefreshAction,
+    this.needWatchLocalRepositoryForUpdates  =true,
     @required this.accountSelectedCallback,
   }) : super(
             key: key,
@@ -48,7 +50,7 @@ class AccountPaginationListWidget extends PaginationListWidget<IAccount> {
                 child: DisposableProxyProvider<IAccount, IAccountBloc>(
                     update: (context, account, oldValue) =>
                         AccountBloc.createFromContext(context,
-                            needWatchLocalRepositoryForUpdates: true,
+                            needWatchLocalRepositoryForUpdates: needWatchLocalRepositoryForUpdates,
                             account: account,
                             needRefreshFromNetworkOnInit: false),
                     child: AccountListItemWidget(

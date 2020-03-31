@@ -7,6 +7,7 @@ class SearchAccountsListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AccountPaginationListWidget(
+      needWatchLocalRepositoryForUpdates: false,
       accountSelectedCallback: (account) {
         goToAccountDetailsPage(context, account);
       },
