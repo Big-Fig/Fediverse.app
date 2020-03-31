@@ -7,11 +7,11 @@ abstract class IPleromaCachedListService<T> extends DisposableOwner {
   IPleromaApi get pleromaApi;
   Future<List<T>> loadLocalItems(
       {@required int limit,
-      @required T newerThanAccount,
-      @required T olderThanAccount});
+      @required T newerThan,
+      @required T olderThan});
 
   Future<bool> refreshItemsFromRemoteForPage(
       {@required int limit,
-      @required T newerThanAccount,
-      @required T olderThanAccount});
+      @required T newerThan,
+      @required T olderThan});
 }

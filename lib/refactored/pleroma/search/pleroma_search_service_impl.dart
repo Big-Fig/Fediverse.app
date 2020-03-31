@@ -45,7 +45,7 @@ class PleromaSearchService implements IPleromaSearchService {
         .toJson()
         .entries
         .where((entry) => entry.value != null)
-        .map((entry) => RestRequestQueryArg(entry.key, entry.value))
+        .map((entry) => RestRequestQueryArg(entry.key, entry.value.toString()))
         .toList();
 
     var httpResponse = await restService.sendHttpRequest(

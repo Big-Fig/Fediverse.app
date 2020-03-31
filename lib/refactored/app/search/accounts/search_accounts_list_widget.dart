@@ -3,14 +3,14 @@ import 'package:fedi/refactored/app/account/pagination/list/account_pagination_l
 import 'package:flutter/widgets.dart';
 
 
-class SearchAccountsTabWidget extends StatelessWidget {
+class SearchAccountsListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AccountPaginationListWidget(
       accountSelectedCallback: (account) {
         goToAccountDetailsPage(context, account);
       },
-      key: PageStorageKey("SearchAccountsTabWidget"),
+      key: PageStorageKey("SearchAccountsListWidget"),
     );
   }
 

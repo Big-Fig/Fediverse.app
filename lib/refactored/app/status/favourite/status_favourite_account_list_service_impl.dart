@@ -1,4 +1,4 @@
-import 'package:fedi/refactored/app/account/cached/account_cached_list_service.dart';
+import 'package:fedi/refactored/app/account/list/cached/account_cached_list_service.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/refactored/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/refactored/pleroma/status/pleroma_status_service.dart';
@@ -31,11 +31,11 @@ class StatusFavouriteAccountListService extends DisposableOwner
   @override
   Future<bool> refreshItemsFromRemoteForPage(
       {@required int limit,
-      @required IAccount newerThanAccount,
-      @required IAccount olderThanAccount}) async {
+      @required IAccount newerThan,
+      @required IAccount olderThan}) async {
     _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
-        "\t newerThanAccount = $newerThanAccount"
-        "\t olderThanAccount = $olderThanAccount");
+        "\t newerThanAccount = $newerThan"
+        "\t olderThanAccount = $olderThan");
 
     try {
       List<IPleromaAccount> remoteAccounts;
@@ -71,16 +71,16 @@ class StatusFavouriteAccountListService extends DisposableOwner
   @override
   Future<List<IAccount>> loadLocalItems(
       {@required int limit,
-      @required IAccount newerThanAccount,
-      @required IAccount olderThanAccount}) async {
+      @required IAccount newerThan,
+      @required IAccount olderThan}) async {
     _logger.finest(() => "start loadLocalItems \n"
-        "\t newerThanAccount=$newerThanAccount"
-        "\t olderThanAccount=$olderThanAccount");
+        "\t newerThanAccount=$newerThan"
+        "\t olderThanAccount=$olderThan");
 
     var accounts = await accountRepository.getAccounts(
         searchQuery: null,
-        olderThanAccount: olderThanAccount,
-        newerThanAccount: newerThanAccount,
+        olderThanAccount: olderThan,
+        newerThanAccount: newerThan,
         limit: limit,
         offset: null,
         orderingTermData: AccountOrderingTermData(

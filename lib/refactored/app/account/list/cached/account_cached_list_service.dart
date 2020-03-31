@@ -1,5 +1,5 @@
 import 'package:fedi/refactored/app/account/account_model.dart';
-import 'package:fedi/refactored/app/cached/cached_list_service.dart';
+import 'package:fedi/refactored/app/list/cached/cached_list_service.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:fedi/refactored/pleroma/api/pleroma_api_service.dart';
 import 'package:flutter/widgets.dart';
@@ -15,11 +15,11 @@ abstract class IAccountCachedListService extends DisposableOwner
 
   Future<List<IAccount>> loadLocalItems(
       {@required int limit,
-      @required IAccount newerThanAccount,
-      @required IAccount olderThanAccount});
+      @required IAccount newerThan,
+      @required IAccount olderThan});
 
   Future<bool> refreshItemsFromRemoteForPage(
       {@required int limit,
-      @required IAccount newerThanAccount,
-      @required IAccount olderThanAccount});
+      @required IAccount newerThan,
+      @required IAccount olderThan});
 }

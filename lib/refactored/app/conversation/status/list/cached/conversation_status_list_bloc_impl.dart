@@ -1,7 +1,5 @@
-import 'package:fedi/refactored/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/refactored/pleroma/conversation/pleroma_conversation_service.dart';
 import 'package:fedi/refactored/app/conversation/conversation_model.dart';
-import 'package:fedi/refactored/app/status/list/status_list_service.dart';
+import 'package:fedi/refactored/app/status/list/cached/status_cached_list_service.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository_model.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
@@ -13,26 +11,23 @@ import 'package:moor/moor.dart';
 var _logger = Logger("conversation_statuses_list_bloc_impl.dart");
 
 abstract class ConversationStatusListService extends DisposableOwner
-    implements IStatusListService {
-
+    implements IStatusCachedListService {
   final IStatusRepository statusRepository;
   final IConversation conversation;
 
   ConversationStatusListService(
-      {@required this.conversation,
-      @required this.statusRepository}) {
+      {@required this.conversation, @required this.statusRepository}) {
     assert(conversation != null);
   }
-
 
   @override
   Future<List<IStatus>> loadLocalItems(
       {@required int limit,
-      @required IStatus newerThanStatus,
-      @required IStatus olderThanStatus}) async {
+      @required IStatus newerThan,
+      @required IStatus olderThan}) async {
     _logger.finest(() => "start loadLocalItems \n"
-        "\t newerThanStatus=$newerThanStatus"
-        "\t olderThanStatus=$olderThanStatus");
+        "\t newerThan=$newerThan"
+        "\t olderThan=$olderThan");
 
     var statuses = await statusRepository.getStatuses(
         onlyInConversation: conversation,
@@ -44,8 +39,8 @@ abstract class ConversationStatusListService extends DisposableOwner
         onlyWithMedia: null,
         onlyNotMuted: null,
         excludeVisibilities: null,
-        olderThanStatus: olderThanStatus,
-        newerThanStatus: newerThanStatus,
+        olderThanStatus: olderThan,
+        newerThanStatus: newerThan,
         onlyNoNsfwSensitive: null,
         onlyNoReplies: null,
         limit: limit,
@@ -59,10 +54,8 @@ abstract class ConversationStatusListService extends DisposableOwner
     return statuses;
   }
 
-
   @override
   Future preRefreshAllAction() async {
     // nothing
   }
-
 }

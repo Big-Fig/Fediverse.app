@@ -43,11 +43,11 @@ class SelectAccountListService extends DisposableOwner
   @override
   Future<bool> refreshItemsFromRemoteForPage(
       {@required int limit,
-      @required IAccount newerThanAccount,
-      @required IAccount olderThanAccount}) async {
+      @required IAccount newerThan,
+      @required IAccount olderThan}) async {
     _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
-        "\t newerThanAccount = $newerThanAccount"
-        "\t olderThanAccount = $olderThanAccount");
+        "\t newerThan = $newerThan"
+        "\t olderThan = $olderThan");
 
     try {
       List<IPleromaAccount> remoteAccounts;
@@ -56,8 +56,8 @@ class SelectAccountListService extends DisposableOwner
         remoteAccounts = await pleromaAccountService.search(query: searchText);
       } else {
         remoteAccounts = await pleromaAccountService.getAccountFollowings(
-            maxId: olderThanAccount?.remoteId,
-            sinceId: newerThanAccount?.remoteId,
+            maxId: olderThan?.remoteId,
+            sinceId: newerThan?.remoteId,
             limit: limit,
             accountRemoteId: myAccountBloc.account.remoteId);
       }
@@ -82,15 +82,15 @@ class SelectAccountListService extends DisposableOwner
   @override
   Future<List<IAccount>> loadLocalItems(
       {@required int limit,
-      @required IAccount newerThanAccount,
-      @required IAccount olderThanAccount}) async {
+      @required IAccount newerThan,
+      @required IAccount olderThan}) async {
     _logger.finest(() => "start loadLocalItems \n"
-        "\t newerThanAccount=$newerThanAccount"
-        "\t olderThanAccount=$olderThanAccount");
+        "\t newerThan=$newerThan"
+        "\t olderThan=$olderThan");
 
     var accounts = await accountRepository.getAccounts(
-        olderThanAccount: olderThanAccount,
-        newerThanAccount: newerThanAccount,
+        olderThanAccount: olderThan,
+        newerThanAccount: newerThan,
         limit: limit,
         offset: null,
         orderingTermData: AccountOrderingTermData(

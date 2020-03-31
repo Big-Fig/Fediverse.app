@@ -1,3 +1,6 @@
+import 'package:fedi/refactored/app/status/list/cached/status_cached_list_service.dart';
+import 'package:fedi/refactored/app/status/pagination/cached/status_cached_pagination_bloc.dart';
+import 'package:fedi/refactored/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/refactored/pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
@@ -5,11 +8,8 @@ import 'package:fedi/refactored/app/account/repository/account_repository.dart';
 import 'package:fedi/refactored/app/auth/instance/current/current_instance_bloc.dart';
 import 'package:fedi/refactored/app/home/tab/timelines/timelines_home_tab_bloc.dart';
 import 'package:fedi/refactored/app/home/tab/timelines/timelines_home_tab_model.dart';
-import 'package:fedi/refactored/app/status/list/status_list_service.dart';
 import 'package:fedi/refactored/app/status/pagination/list/status_pagination_list_bloc.dart';
 import 'package:fedi/refactored/app/status/pagination/list/status_pagination_list_bloc_impl.dart';
-import 'package:fedi/refactored/app/status/pagination/status_pagination_bloc.dart';
-import 'package:fedi/refactored/app/status/pagination/status_pagination_bloc_impl.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/app/timeline/home/home_timeline_service_impl.dart';
 import 'package:fedi/refactored/app/timeline/local/local_timeline_service_impl.dart';
@@ -73,7 +73,7 @@ class TimelinesHomeTabBloc extends DisposableOwner
         pleromaAccountService: pleromaAccountService);
     addDisposable(disposable: homeTimelineService);
 
-    homeTimelinePaginationBloc = StatusPaginationBloc(
+    homeTimelinePaginationBloc = StatusCachedPaginationBloc(
         itemsCountPerPage: 20,
         maximumCachedPagesCount: null,
         statusListService: homeTimelineService);
@@ -89,7 +89,7 @@ class TimelinesHomeTabBloc extends DisposableOwner
         timelineLocalPreferencesBloc: timelineLocalPreferencesBloc);
     addDisposable(disposable: localTimelineService);
 
-    localTimelinePaginationBloc = StatusPaginationBloc(
+    localTimelinePaginationBloc = StatusCachedPaginationBloc(
         itemsCountPerPage: 20,
         maximumCachedPagesCount: null,
         statusListService: localTimelineService);
@@ -105,7 +105,7 @@ class TimelinesHomeTabBloc extends DisposableOwner
         timelineLocalPreferencesBloc: timelineLocalPreferencesBloc);
     addDisposable(disposable: publicTimelineService);
 
-    publicTimelinePaginationBloc = StatusPaginationBloc(
+    publicTimelinePaginationBloc = StatusCachedPaginationBloc(
         itemsCountPerPage: 20,
         maximumCachedPagesCount: null,
         statusListService: publicTimelineService);
@@ -131,16 +131,16 @@ class TimelinesHomeTabBloc extends DisposableOwner
     });
   }
 
-  IStatusListService homeTimelineService;
-  IStatusPaginationBloc homeTimelinePaginationBloc;
+  IStatusCachedListService homeTimelineService;
+  IStatusCachedPaginationBloc homeTimelinePaginationBloc;
   IStatusPaginationListBloc homeTimelinePaginationListBloc;
 
-  IStatusListService localTimelineService;
-  IStatusPaginationBloc localTimelinePaginationBloc;
+  IStatusCachedListService localTimelineService;
+  IStatusCachedPaginationBloc localTimelinePaginationBloc;
   IStatusPaginationListBloc localTimelinePaginationListBloc;
 
-  IStatusListService publicTimelineService;
-  IStatusPaginationBloc publicTimelinePaginationBloc;
+  IStatusCachedListService publicTimelineService;
+  IStatusCachedPaginationBloc publicTimelinePaginationBloc;
   IStatusPaginationListBloc publicTimelinePaginationListBloc;
 
   @override

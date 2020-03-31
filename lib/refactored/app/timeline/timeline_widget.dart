@@ -1,8 +1,6 @@
-import 'package:fedi/refactored/app/status/list/status_list_service.dart';
 import 'package:fedi/refactored/app/status/pagination/list/status_pagination_list_media_widget.dart';
 import 'package:fedi/refactored/app/status/pagination/list/status_pagination_list_timeline_widget.dart';
 import 'package:fedi/refactored/app/timeline/local_preferences/timeline_local_preferences_bloc.dart';
-import 'package:fedi/refactored/app/timeline/local_preferences/timeline_local_preferences_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 

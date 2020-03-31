@@ -1,6 +1,6 @@
 import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/account/pagination/cached/account_cached_pagination_bloc.dart';
-import 'package:fedi/refactored/app/cached/cached_list_service.dart';
+import 'package:fedi/refactored/app/list/cached/cached_list_service.dart';
 import 'package:fedi/refactored/app/pagination/cached/cached_pleroma_pagination_bloc_impl.dart';
 import 'package:fedi/refactored/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/refactored/pleroma/api/pleroma_api_service.dart';
@@ -30,8 +30,8 @@ class AccountCachedPaginationBloc extends CachedPleromaPaginationBloc<IAccount>
           @required CachedPaginationPage<IAccount> newerPage}) =>
       listService.loadLocalItems(
         limit: itemsCountPerPage,
-        newerThanAccount: olderPage?.items?.first,
-        olderThanAccount: newerPage?.items?.last,
+        newerThan: olderPage?.items?.first,
+        olderThan: newerPage?.items?.last,
       );
 
   @override
@@ -45,8 +45,8 @@ class AccountCachedPaginationBloc extends CachedPleromaPaginationBloc<IAccount>
 
     return listService.refreshItemsFromRemoteForPage(
       limit: itemsCountPerPage,
-      newerThanAccount: olderPage?.items?.first,
-      olderThanAccount: newerPage?.items?.last,
+      newerThan: olderPage?.items?.first,
+      olderThan: newerPage?.items?.last,
     );
   }
 
