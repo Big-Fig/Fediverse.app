@@ -41,15 +41,9 @@ class PleromaSearchService implements IPleromaSearchService {
       assert(request.limit <= 40, "Server-side limit");
     }
 
-    var queryArgs = request
-        .toJson()
-        .entries
-        .where((entry) => entry.value != null)
-        .map((entry) => RestRequestQueryArg(entry.key, entry.value.toString()))
-        .toList();
-
-    var httpResponse = await restService.sendHttpRequest(
-        RestRequest.get(relativePath: "/api/v2/search", queryArgs: queryArgs));
+    var httpResponse = await restService.sendHttpRequest(RestRequest.get(
+        relativePath: "/api/v2/search",
+        queryArgs: RestRequestQueryArg.listFromJson(request.toJson())));
 
     if (httpResponse.statusCode == 200) {
       return PleromaSearchResult.fromJsonString(httpResponse.body);

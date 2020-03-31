@@ -8,6 +8,8 @@ import 'package:fedi/refactored/app/auth/instance/current/context/current_instan
 import 'package:fedi/refactored/app/auth/instance/instance_model.dart';
 import 'package:fedi/refactored/app/conversation/repository/conversation_repository.dart';
 import 'package:fedi/refactored/app/conversation/repository/conversation_repository_impl.dart';
+import 'package:fedi/refactored/app/push/local_preferences/push_local_preferences_bloc.dart';
+import 'package:fedi/refactored/app/push/local_preferences/push_local_preferences_bloc_impl.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/refactored/app/timeline/local_preferences/timeline_local_preferences_bloc.dart';
@@ -25,6 +27,8 @@ import 'package:fedi/refactored/pleroma/conversation/pleroma_conversation_servic
 import 'package:fedi/refactored/pleroma/conversation/pleroma_conversation_service_impl.dart';
 import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_service.dart';
 import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_service_impl.dart';
+import 'package:fedi/refactored/pleroma/notification/pleroma_notification_service.dart';
+import 'package:fedi/refactored/pleroma/notification/pleroma_notification_service_impl.dart';
 import 'package:fedi/refactored/pleroma/push/pleroma_push_model.dart';
 import 'package:fedi/refactored/pleroma/push/pleroma_push_service.dart';
 import 'package:fedi/refactored/pleroma/push/pleroma_push_service_impl.dart';
@@ -176,6 +180,12 @@ class CurrentInstanceContextBloc extends ProviderContextBloc
         .asyncInitAndRegister<IPleromaSearchService>(pleromaSearchService);
     addDisposable(disposable: pleromaSearchService);
 
+    var pleromaNotificationService =
+    PleromaNotificationService(restService: pleromaAuthRestService);
+    await globalProviderService
+        .asyncInitAndRegister<IPleromaNotificationService>(pleromaNotificationService);
+    addDisposable(disposable: pleromaNotificationService);
+
     var myAccountLocalPreferenceBloc =
         MyAccountLocalPreferenceBloc(preferencesService, userAtHost);
     addDisposable(disposable: myAccountLocalPreferenceBloc);
@@ -187,6 +197,11 @@ class CurrentInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: timelineLocalPreferenceBloc);
     await globalProviderService.asyncInitAndRegister<
         ITimelineLocalPreferencesBloc>(timelineLocalPreferenceBloc);
+    var pushLocalPreferenceBloc =
+        PushLocalPreferencesBloc(preferencesService, userAtHost);
+    addDisposable(disposable: pushLocalPreferenceBloc);
+    await globalProviderService.asyncInitAndRegister<
+        IPushLocalPreferencesBloc>(pushLocalPreferenceBloc);
 
     var myAccountBloc = MyAccountBloc(
         pleromaMyAccountService: pleromaMyAccountService,

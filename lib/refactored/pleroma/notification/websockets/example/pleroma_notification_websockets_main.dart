@@ -4,10 +4,10 @@ import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Models/Notification.dart' as NotificationModel;
 import 'package:fedi/refactored/pleroma/conversation/pleroma_conversation_model.dart';
-import 'package:fedi/refactored/pleroma/notifications/websockets/channel/pleroma_notifications_websockets_channel.dart';
-import 'package:fedi/refactored/pleroma/notifications/websockets/pleroma_notifications_websockets_model.dart';
-import 'package:fedi/refactored/pleroma/notifications/websockets/pleroma_notifications_websockets_service.dart';
-import 'package:fedi/refactored/pleroma/notifications/websockets/pleroma_notifications_websockets_service_impl.dart';
+import 'package:fedi/refactored/pleroma/notification/websockets/channel/pleroma_notification_websockets_channel.dart';
+import 'package:fedi/refactored/pleroma/notification/websockets/pleroma_notification_websockets_model.dart';
+import 'package:fedi/refactored/pleroma/notification/websockets/pleroma_notification_websockets_service.dart';
+import 'package:fedi/refactored/pleroma/notification/websockets/pleroma_notification_websockets_service_impl.dart';
 import 'package:fedi/refactored/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/refactored/disposable/disposable.dart';
 import 'package:flutter/material.dart';
@@ -25,13 +25,13 @@ void main() async {
   initLog();
   runApp(MaterialApp(
       home: SafeArea(
-          child: Provider<IPleromaNotificationsWebSocketsService>(
-              create: (context) => PleromaNotificationsWebSocketsService(),
+          child: Provider<IPleromaNotificationWebSocketsService>(
+              create: (context) => PleromaNotificationWebSocketsService(),
               child: NotificationsWebSocketsExampleWidget()))));
 }
 
-typedef IPleromaNotificationsWebSocketsChannel BodyBuilder(
-    IPleromaNotificationsWebSocketsService service);
+typedef IPleromaNotificationWebSocketsChannel BodyBuilder(
+    IPleromaNotificationWebSocketsService service);
 
 class TabInfo {
   final String title;
@@ -44,7 +44,7 @@ class NotificationsWebSocketsExampleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var notificationsWebSocketsService =
-        IPleromaNotificationsWebSocketsService.of(context, listen: true);
+        IPleromaNotificationWebSocketsService.of(context, listen: true);
 
     var tabs = [
       TabInfo("User", (service) => service.getUserChannel()),
@@ -89,7 +89,7 @@ class NotificationsWebSocketsExampleWidget extends StatelessWidget {
               child: TabBarView(
                 children: tabs.map((tab) {
                   // provide notification channel to child
-                  return Provider<IPleromaNotificationsWebSocketsChannel>(
+                  return Provider<IPleromaNotificationWebSocketsChannel>(
                     // provide channel stream controller to child
                     child: buildSocketsChannelWidget(),
                     // create notifications channel
@@ -105,12 +105,12 @@ class NotificationsWebSocketsExampleWidget extends StatelessWidget {
     );
   }
 
-  Provider<StreamController<PleromaNotificationsWebSocketsEvent>>
+  Provider<StreamController<PleromaNotificationWebSocketsEvent>>
       buildSocketsChannelWidget() {
-    return Provider<StreamController<PleromaNotificationsWebSocketsEvent>>(
+    return Provider<StreamController<PleromaNotificationWebSocketsEvent>>(
       child: NotificationsWebSocketsChannelExampleWidget(),
       create: (BuildContext context) {
-        var channel = Provider.of<IPleromaNotificationsWebSocketsChannel>(
+        var channel = Provider.of<IPleromaNotificationWebSocketsChannel>(
             context,
             listen: false);
 
@@ -132,7 +132,7 @@ class NotificationsWebSocketsChannelExampleWidget extends StatefulWidget {
 
 class _NotificationsWebSocketsChannelExampleWidgetState
     extends State<NotificationsWebSocketsChannelExampleWidget> {
-  final List<PleromaNotificationsWebSocketsEvent> allEvents = [];
+  final List<PleromaNotificationWebSocketsEvent> allEvents = [];
 
   Disposable disposable;
 
@@ -140,7 +140,7 @@ class _NotificationsWebSocketsChannelExampleWidgetState
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    disposable = Provider.of<IPleromaNotificationsWebSocketsChannel>(context,
+    disposable = Provider.of<IPleromaNotificationWebSocketsChannel>(context,
             listen: false)
         .listenEvents((event) {
       setState(() {
@@ -160,7 +160,7 @@ class _NotificationsWebSocketsChannelExampleWidgetState
     // Get current stream controller from widget tree
     // ignore: close_sinks
     var streamController =
-        Provider.of<StreamController<PleromaNotificationsWebSocketsEvent>>(
+        Provider.of<StreamController<PleromaNotificationWebSocketsEvent>>(
             context,
             listen: true);
     return Column(
@@ -182,11 +182,11 @@ class _NotificationsWebSocketsChannelExampleWidgetState
         });
   }
 
-  StreamBuilder<PleromaNotificationsWebSocketsEvent>
+  StreamBuilder<PleromaNotificationWebSocketsEvent>
       buildLatestEventStringBuilderExample(
-          StreamController<PleromaNotificationsWebSocketsEvent>
+          StreamController<PleromaNotificationWebSocketsEvent>
               streamController) {
-    return StreamBuilder<PleromaNotificationsWebSocketsEvent>(
+    return StreamBuilder<PleromaNotificationWebSocketsEvent>(
         stream: streamController.stream,
         builder: (context, snapshot) {
           var latestEvent = snapshot.data;
@@ -198,24 +198,24 @@ class _NotificationsWebSocketsChannelExampleWidgetState
         });
   }
 
-  Text mapEventToTextWidget(PleromaNotificationsWebSocketsEvent latestEvent) {
+  Text mapEventToTextWidget(PleromaNotificationWebSocketsEvent latestEvent) {
     switch (latestEvent.eventType) {
-      case PleromaNotificationsWebSocketsEventType.update:
+      case PleromaNotificationWebSocketsEventType.update:
         return Text(
             "Latest(Status): ${PleromaStatus.fromJsonString(latestEvent.payload)
             }");
         break;
-      case PleromaNotificationsWebSocketsEventType.notification:
+      case PleromaNotificationWebSocketsEventType.notification:
         return Text("Latest(Notification): "
             "${NotificationModel.Notification.fromJsonString(latestEvent.payload)}");
         break;
-      case PleromaNotificationsWebSocketsEventType.delete:
+      case PleromaNotificationWebSocketsEventType.delete:
         return Text("Latest(delete): ${latestEvent.payload}");
         break;
-      case PleromaNotificationsWebSocketsEventType.filtersChanged:
+      case PleromaNotificationWebSocketsEventType.filtersChanged:
         return Text("Latest(filtersChanged)");
         break;
-      case PleromaNotificationsWebSocketsEventType.conversation:
+      case PleromaNotificationWebSocketsEventType.conversation:
         return Text(
             "Latest(conversation): ${PleromaConversation.fromJsonString
               (latestEvent

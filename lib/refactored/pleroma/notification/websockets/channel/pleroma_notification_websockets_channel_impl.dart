@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:fedi/refactored/pleroma/notifications/websockets/channel/pleroma_notifications_websockets_channel.dart';
-import 'package:fedi/refactored/pleroma/notifications/websockets/pleroma_notifications_websockets_model.dart';
 import 'package:fedi/refactored/disposable/disposable.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
+import 'package:fedi/refactored/pleroma/notification/websockets/channel/pleroma_notification_websockets_channel.dart';
+import 'package:fedi/refactored/pleroma/notification/websockets/pleroma_notification_websockets_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:web_socket_channel/io.dart';
@@ -11,19 +11,19 @@ import 'package:web_socket_channel/status.dart' as status;
 
 var _logger = Logger("pleroma_notifications_websockets_channel_impl.dart");
 
-class PleromaNotificationsWebSocketsChannel extends DisposableOwner
-    implements IPleromaNotificationsWebSocketsChannel {
-  final List<StreamController<PleromaNotificationsWebSocketsEvent>>
+class PleromaNotificationWebSocketsChannel extends DisposableOwner
+    implements IPleromaNotificationWebSocketsChannel {
+  final List<StreamController<PleromaNotificationWebSocketsEvent>>
       streamControllers = List();
 
   @override
-  PleromaNotificationsWebSocketsChannelSettings settings;
+  PleromaNotificationWebSocketsChannelSettings settings;
 
   IOWebSocketChannel _channel;
 
   DisposableOwner _channelDisposable;
 
-  PleromaNotificationsWebSocketsChannel({@required this.settings}) {
+  PleromaNotificationWebSocketsChannel({@required this.settings}) {
     addDisposable(disposable: CustomDisposable(() {
       // disconnect
       _channelDisposable?.dispose();
@@ -46,7 +46,7 @@ class PleromaNotificationsWebSocketsChannel extends DisposableOwner
         if (data?.isNotEmpty == true) {
           try {
             var event =
-                PleromaNotificationsWebSocketsEvent.fromJsonString(data);
+                PleromaNotificationWebSocketsEvent.fromJsonString(data);
             _logger.finest(() => "$uri event $event");
 
             streamControllers.forEach((streamController) {
@@ -73,7 +73,7 @@ class PleromaNotificationsWebSocketsChannel extends DisposableOwner
   @override
   replaceBaseUrlAndAuth(
       {@required String baseUrl, @required String accessToken}) {
-    settings = PleromaNotificationsWebSocketsChannelSettings(
+    settings = PleromaNotificationWebSocketsChannelSettings(
         baseUrl: baseUrl,
         accessToken: accessToken,
         stream: settings.stream,
@@ -89,7 +89,7 @@ class PleromaNotificationsWebSocketsChannel extends DisposableOwner
   }
 
   static Uri createNotificationsWebSocketsUrl(
-      {@required PleromaNotificationsWebSocketsChannelSettings settings}) {
+      {@required PleromaNotificationWebSocketsChannelSettings settings}) {
     var host = Uri.parse(settings.baseUrl).host;
 
     var queryArgs = {
@@ -111,15 +111,15 @@ class PleromaNotificationsWebSocketsChannel extends DisposableOwner
   }
 
   @override
-  StreamController<PleromaNotificationsWebSocketsEvent>
+  StreamController<PleromaNotificationWebSocketsEvent>
       createEventsStreamController() {
     if (streamControllers.isEmpty) {
       createChannel();
     }
 
-    StreamController<PleromaNotificationsWebSocketsEvent> streamController;
+    StreamController<PleromaNotificationWebSocketsEvent> streamController;
     streamController =
-        StreamController<PleromaNotificationsWebSocketsEvent>(onCancel: () {
+        StreamController<PleromaNotificationWebSocketsEvent>(onCancel: () {
       streamControllers.remove(streamController);
 
       if (streamControllers.isEmpty) {
@@ -141,7 +141,7 @@ class PleromaNotificationsWebSocketsChannel extends DisposableOwner
 
   @override
   Disposable listenEvents(
-      Function(PleromaNotificationsWebSocketsEvent event) callback) {
+      Function(PleromaNotificationWebSocketsEvent event) callback) {
     var streamController = createEventsStreamController();
 
     var disposable = DisposableOwner();
