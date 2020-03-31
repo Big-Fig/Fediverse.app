@@ -35,7 +35,7 @@ class TimelineWidget extends StatelessWidget {
           } else {
             bodyWidget = StatusPaginationListTimelineWidget(
                 key: PageStorageKey<String>(this.key.toString() +
-                    "TimelinePaginationListSimpleWidget"));
+                    "TimelinePaginationListSimpleWidget"), needWatchLocalRepositoryForUpdates: true,);
           }
 
           _logger.fine(

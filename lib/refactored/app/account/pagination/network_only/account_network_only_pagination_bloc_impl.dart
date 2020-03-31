@@ -41,7 +41,7 @@ class AccountNetworkOnlyPaginationBloc
       @required PaginationPage<IAccount> olderPage,
       @required PaginationPage<IAccount> newerPage}) => listService.loadItemsFromRemoteForPage(
       itemsCountPerPage: itemsCountPerPage,
-      minId: olderPage?.items?.last?.remoteId,
-      maxId: newerPage?.items?.first?.remoteId,
+      maxId: newerPage?.items?.last?.remoteId,
+      minId: olderPage?.items?.first?.remoteId
     );
 }

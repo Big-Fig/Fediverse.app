@@ -1,6 +1,3 @@
-import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/refactored/pleroma/account/pleroma_account_service.dart';
-import 'package:fedi/refactored/pleroma/field/pleroma_field_model.dart';
 import 'package:fedi/refactored/app/account/account_bloc.dart';
 import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/account/account_model_adapter.dart';
@@ -8,6 +5,9 @@ import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
 import 'package:fedi/refactored/app/emoji/emoji_text_model.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
+import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
+import 'package:fedi/refactored/pleroma/account/pleroma_account_service.dart';
+import 'package:fedi/refactored/pleroma/field/pleroma_field_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -52,14 +52,16 @@ class AccountBloc extends DisposableOwner implements IAccountBloc {
     addDisposable(subject: _accountSubject);
     Future.delayed(Duration(seconds: 1), () {
       if (!disposed) {
-        addDisposable(
-            streamSubscription: accountRepository
-                .watchByRemoteId(account.remoteId)
-                .listen((updatedAccount) {
+        if (needWatchLocalRepositoryForUpdates) {
+          addDisposable(
+              streamSubscription: accountRepository
+                  .watchByRemoteId(account.remoteId)
+                  .listen((updatedAccount) {
 //      _logger.finest(() => "oldAccount ${account.acct} updatedAccount "
 //          "$updatedAccount");
-          _accountSubject.add(updatedAccount);
-        }));
+            _accountSubject.add(updatedAccount);
+          }));
+        }
 
         if (needRefreshFromNetworkOnInit == true) {
           requestRefreshFromNetwork();
@@ -265,8 +267,7 @@ class AccountBloc extends DisposableOwner implements IAccountBloc {
   static AccountBloc createFromContext(BuildContext context,
       {@required IAccount account,
       @required bool needRefreshFromNetworkOnInit,
-      @required bool needWatchLocalRepositoryForUpdates
-      }) {
+      @required bool needWatchLocalRepositoryForUpdates}) {
     return AccountBloc(
         account: account,
         needRefreshFromNetworkOnInit: needRefreshFromNetworkOnInit,

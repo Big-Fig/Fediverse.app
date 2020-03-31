@@ -4,6 +4,9 @@ import 'package:fedi/refactored/pagination/pagination_bloc.dart';
 import 'package:fedi/refactored/pagination/pagination_bloc_impl.dart';
 import 'package:fedi/refactored/pagination/pagination_model.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
+
+var _logger = Logger("network_only_pagination_bloc_impl.dart");
 
 abstract class NetworkOnlyPaginationBloc<
         TPage extends PaginationPage<TItem>,
@@ -25,6 +28,11 @@ abstract class NetworkOnlyPaginationBloc<
     @required TPage nextPage,
   }) async {
 
+    _logger.finest(() => "loadPage \n"
+        "\t pageIndex=$pageIndex"
+        "\t previousPage=$previousPage"
+        "\t nextPage=$nextPage"
+    );
 
     List<TItem> loadedItems = await loadItemsFromRemoteForPage(
         pageIndex: pageIndex,

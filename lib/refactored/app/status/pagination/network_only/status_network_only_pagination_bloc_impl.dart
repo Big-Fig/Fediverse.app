@@ -31,7 +31,8 @@ class StatusNetworkOnlyPaginationBloc
           maximumCachedPagesCount: maximumCachedPagesCount,
           itemsCountPerPage: itemsCountPerPage,
           listService:
-              Provider.of<IPleromaNetworkOnlyListService<IStatus>>(context));
+              Provider.of<IPleromaNetworkOnlyListService<IStatus>>(context,
+                  listen: false));
 
   @override
   Future<List<IStatus>> loadItemsFromRemoteForPage(
@@ -40,7 +41,7 @@ class StatusNetworkOnlyPaginationBloc
       @required PaginationPage<IStatus> olderPage,
       @required PaginationPage<IStatus> newerPage}) => listService.loadItemsFromRemoteForPage(
       itemsCountPerPage: itemsCountPerPage,
-      minId: olderPage?.items?.last?.remoteId,
-      maxId: newerPage?.items?.first?.remoteId,
+      minId: newerPage?.items?.last?.remoteId,
+      maxId: olderPage?.items?.first?.remoteId,
     );
 }
