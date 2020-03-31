@@ -59,7 +59,9 @@ class AccountBloc extends DisposableOwner implements IAccountBloc {
                   .listen((updatedAccount) {
 //      _logger.finest(() => "oldAccount ${account.acct} updatedAccount "
 //          "$updatedAccount");
-            _accountSubject.add(updatedAccount);
+            if (updatedAccount != null) {
+              _accountSubject.add(updatedAccount);
+            }
           }));
         }
 
@@ -195,8 +197,15 @@ class AccountBloc extends DisposableOwner implements IAccountBloc {
         "newRelationship=$newRelationship");
     _logger.finest(() => "_updateRelationship newRemoteAccount.relationship"
         "${newRemoteAccount?.pleroma?.relationship}");
-    await accountRepository.updateLocalAccountByRemoteAccount(
-        oldLocalAccount: account, newRemoteAccount: newRemoteAccount);
+    if (account.localId != null) {
+      await accountRepository.updateLocalAccountByRemoteAccount(
+          oldLocalAccount: account, newRemoteAccount: newRemoteAccount);
+    } else {
+      // sometimes we don't have local account id, for example go from search
+      // to account page
+      await accountRepository.upsertRemoteAccount(newRemoteAccount,
+          conversationRemoteId: null);
+    }
   }
 
   @override
@@ -243,8 +252,17 @@ class AccountBloc extends DisposableOwner implements IAccountBloc {
       if (remoteAccount != null) {
         _logger.finest(
             () => "requestRefreshFromNetwork remoteAccount  $remoteAccount");
-        await accountRepository.updateLocalAccountByRemoteAccount(
-            oldLocalAccount: account, newRemoteAccount: remoteAccount);
+
+        if (account.localId != null) {
+          await accountRepository.updateLocalAccountByRemoteAccount(
+              oldLocalAccount: account, newRemoteAccount: remoteAccount);
+        } else {
+          // sometimes we don't have local account id, for example go from search
+          // to account page
+          await accountRepository.upsertRemoteAccount(remoteAccount,
+              conversationRemoteId: null);
+        }
+
         success = true;
       } else {
         _logger.severe(

@@ -72,6 +72,7 @@ PleromaOAuthAuthorizeRequest _$PleromaOAuthAuthorizeRequestFromJson(
     clientId: json['client_id'] as String,
     redirectUri: json['redirect_uri'] as String,
     scope: json['scope'] as String,
+    responseType: json['response_type'] as String,
   );
 }
 
@@ -79,6 +80,7 @@ Map<String, dynamic> _$PleromaOAuthAuthorizeRequestToJson(
         PleromaOAuthAuthorizeRequest instance) =>
     <String, dynamic>{
       'force_login': instance.forceLogin,
+      'response_type': instance.responseType,
       'client_id': instance.clientId,
       'redirect_uri': instance.redirectUri,
       'scope': instance.scope,

@@ -30,18 +30,19 @@ class AccountNetworkOnlyPaginationBloc
       AccountNetworkOnlyPaginationBloc(
           maximumCachedPagesCount: maximumCachedPagesCount,
           itemsCountPerPage: itemsCountPerPage,
-          listService:
-              Provider.of<IPleromaNetworkOnlyListService<IAccount>>(context,
-                  listen: false));
+          listService: Provider.of<IPleromaNetworkOnlyListService<IAccount>>(
+              context,
+              listen: false));
 
   @override
   Future<List<IAccount>> loadItemsFromRemoteForPage(
-      {@required int pageIndex,
-      @required int itemsCountPerPage,
-      @required PaginationPage<IAccount> olderPage,
-      @required PaginationPage<IAccount> newerPage}) => listService.loadItemsFromRemoteForPage(
-      itemsCountPerPage: itemsCountPerPage,
-      maxId: newerPage?.items?.last?.remoteId,
-      minId: olderPage?.items?.first?.remoteId
-    );
+          {@required int pageIndex,
+          @required int itemsCountPerPage,
+          @required PaginationPage<IAccount> olderPage,
+          @required PaginationPage<IAccount> newerPage}) =>
+      listService.loadItemsFromRemoteForPage(
+          itemsCountPerPage: itemsCountPerPage,
+          maxId: newerPage?.items?.last?.remoteId,
+          minId: olderPage?.items?.first?.remoteId,
+          pageIndex: pageIndex);
 }

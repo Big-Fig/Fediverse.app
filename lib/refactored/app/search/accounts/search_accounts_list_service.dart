@@ -14,20 +14,30 @@ class SearchAccountsListService extends IAccountNetworkOnlyListService {
 
   final ISearchInputBloc searchInputBloc;
 
-  SearchAccountsListService(
-      {@required this.pleromaSearchService, @required this.searchInputBloc,});
+  SearchAccountsListService({
+    @required this.pleromaSearchService,
+    @required this.searchInputBloc,
+  });
 
   @override
   Future<List<IAccount>> loadItemsFromRemoteForPage(
-      {@required int itemsCountPerPage, @required String minId, @required String maxId}) async {
+      {@required int pageIndex,
+      @required int itemsCountPerPage,
+      @required String minId,
+      @required String maxId}) async {
     var query = searchInputBloc.searchText;
     List<IPleromaAccount> accounts;
 
-    if(query?.isNotEmpty == true) {
+    if (query?.isNotEmpty == true) {
+      var offset = pageIndex * itemsCountPerPage;
+      if(offset > 0) {
+        //hack because backend include last item in next page too
+        offset +=1;
+      }
       var searchResult = await pleromaSearchService.search(
-          request: PleromaSearchRequest(type: MastodonSearchRequestType.accounts,
-              minId: minId,
-              maxId: maxId,
+          request: PleromaSearchRequest(
+              type: MastodonSearchRequestType.accounts,
+              offset: offset,
               limit: itemsCountPerPage,
               query: query));
 
@@ -42,10 +52,9 @@ class SearchAccountsListService extends IAccountNetworkOnlyListService {
   @override
   IPleromaApi get pleromaApi => pleromaSearchService;
 
-
   static SearchAccountsListService createFromContext(BuildContext context) =>
       SearchAccountsListService(
           searchInputBloc: ISearchInputBloc.of(context, listen: false),
-          pleromaSearchService: IPleromaSearchService.of(
-              context, listen: false));
+          pleromaSearchService:
+              IPleromaSearchService.of(context, listen: false));
 }
