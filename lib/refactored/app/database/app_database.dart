@@ -1,3 +1,5 @@
+import 'package:fedi/refactored/app/notification/database/notification_database_dao.dart';
+import 'package:fedi/refactored/app/notification/database/notification_database_model.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/refactored/pleroma/application/pleroma_application_model.dart';
 import 'package:fedi/refactored/pleroma/card/pleroma_card_model.dart';
@@ -50,6 +52,7 @@ part 'app_database.g.dart';
     DbConversations,
     DbConversationAccounts,
     DbConversationStatuses,
+    DbNotifications,
   ],
   daos: [
     StatusDao,
@@ -63,6 +66,7 @@ part 'app_database.g.dart';
     ConversationStatusesDao,
     StatusFavouritedAccountsDao,
     StatusRebloggedAccountsDao,
+    NotificationDao,
   ],
 )
 class AppDatabase extends _$AppDatabase {

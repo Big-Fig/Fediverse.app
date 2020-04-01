@@ -5215,6 +5215,344 @@ class $DbConversationStatusesTable extends DbConversationStatuses
   }
 }
 
+class DbNotification extends DataClass implements Insertable<DbNotification> {
+  final int id;
+  final String remoteId;
+  final String accountRemoteId;
+  final String statusRemoteId;
+  final MastodonNotificationType type;
+  final DateTime createdAt;
+  DbNotification(
+      {@required this.id,
+      @required this.remoteId,
+      @required this.accountRemoteId,
+      this.statusRemoteId,
+      this.type,
+      @required this.createdAt});
+  factory DbNotification.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final stringType = db.typeSystem.forDartType<String>();
+    final dateTimeType = db.typeSystem.forDartType<DateTime>();
+    return DbNotification(
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      remoteId: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}remote_id']),
+      accountRemoteId: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}account_remote_id']),
+      statusRemoteId: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}status_remote_id']),
+      type: $DbNotificationsTable.$converter0.mapToDart(
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}type'])),
+      createdAt: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}created_at']),
+    );
+  }
+  factory DbNotification.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return DbNotification(
+      id: serializer.fromJson<int>(json['id']),
+      remoteId: serializer.fromJson<String>(json['remoteId']),
+      accountRemoteId: serializer.fromJson<String>(json['accountRemoteId']),
+      statusRemoteId: serializer.fromJson<String>(json['statusRemoteId']),
+      type: serializer.fromJson<MastodonNotificationType>(json['type']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'remoteId': serializer.toJson<String>(remoteId),
+      'accountRemoteId': serializer.toJson<String>(accountRemoteId),
+      'statusRemoteId': serializer.toJson<String>(statusRemoteId),
+      'type': serializer.toJson<MastodonNotificationType>(type),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  @override
+  DbNotificationsCompanion createCompanion(bool nullToAbsent) {
+    return DbNotificationsCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      remoteId: remoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(remoteId),
+      accountRemoteId: accountRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(accountRemoteId),
+      statusRemoteId: statusRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(statusRemoteId),
+      type: type == null && nullToAbsent ? const Value.absent() : Value(type),
+      createdAt: createdAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(createdAt),
+    );
+  }
+
+  DbNotification copyWith(
+          {int id,
+          String remoteId,
+          String accountRemoteId,
+          String statusRemoteId,
+          MastodonNotificationType type,
+          DateTime createdAt}) =>
+      DbNotification(
+        id: id ?? this.id,
+        remoteId: remoteId ?? this.remoteId,
+        accountRemoteId: accountRemoteId ?? this.accountRemoteId,
+        statusRemoteId: statusRemoteId ?? this.statusRemoteId,
+        type: type ?? this.type,
+        createdAt: createdAt ?? this.createdAt,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('DbNotification(')
+          ..write('id: $id, ')
+          ..write('remoteId: $remoteId, ')
+          ..write('accountRemoteId: $accountRemoteId, ')
+          ..write('statusRemoteId: $statusRemoteId, ')
+          ..write('type: $type, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(
+      id.hashCode,
+      $mrjc(
+          remoteId.hashCode,
+          $mrjc(
+              accountRemoteId.hashCode,
+              $mrjc(statusRemoteId.hashCode,
+                  $mrjc(type.hashCode, createdAt.hashCode))))));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is DbNotification &&
+          other.id == this.id &&
+          other.remoteId == this.remoteId &&
+          other.accountRemoteId == this.accountRemoteId &&
+          other.statusRemoteId == this.statusRemoteId &&
+          other.type == this.type &&
+          other.createdAt == this.createdAt);
+}
+
+class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
+  final Value<int> id;
+  final Value<String> remoteId;
+  final Value<String> accountRemoteId;
+  final Value<String> statusRemoteId;
+  final Value<MastodonNotificationType> type;
+  final Value<DateTime> createdAt;
+  const DbNotificationsCompanion({
+    this.id = const Value.absent(),
+    this.remoteId = const Value.absent(),
+    this.accountRemoteId = const Value.absent(),
+    this.statusRemoteId = const Value.absent(),
+    this.type = const Value.absent(),
+    this.createdAt = const Value.absent(),
+  });
+  DbNotificationsCompanion.insert({
+    this.id = const Value.absent(),
+    @required String remoteId,
+    @required String accountRemoteId,
+    this.statusRemoteId = const Value.absent(),
+    this.type = const Value.absent(),
+    @required DateTime createdAt,
+  })  : remoteId = Value(remoteId),
+        accountRemoteId = Value(accountRemoteId),
+        createdAt = Value(createdAt);
+  DbNotificationsCompanion copyWith(
+      {Value<int> id,
+      Value<String> remoteId,
+      Value<String> accountRemoteId,
+      Value<String> statusRemoteId,
+      Value<MastodonNotificationType> type,
+      Value<DateTime> createdAt}) {
+    return DbNotificationsCompanion(
+      id: id ?? this.id,
+      remoteId: remoteId ?? this.remoteId,
+      accountRemoteId: accountRemoteId ?? this.accountRemoteId,
+      statusRemoteId: statusRemoteId ?? this.statusRemoteId,
+      type: type ?? this.type,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
+}
+
+class $DbNotificationsTable extends DbNotifications
+    with TableInfo<$DbNotificationsTable, DbNotification> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $DbNotificationsTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
+  @override
+  GeneratedIntColumn get id => _id ??= _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn('id', $tableName, false,
+        hasAutoIncrement: true, declaredAsPrimaryKey: true);
+  }
+
+  final VerificationMeta _remoteIdMeta = const VerificationMeta('remoteId');
+  GeneratedTextColumn _remoteId;
+  @override
+  GeneratedTextColumn get remoteId => _remoteId ??= _constructRemoteId();
+  GeneratedTextColumn _constructRemoteId() {
+    return GeneratedTextColumn('remote_id', $tableName, false,
+        $customConstraints: 'UNIQUE NOT NULL');
+  }
+
+  final VerificationMeta _accountRemoteIdMeta =
+      const VerificationMeta('accountRemoteId');
+  GeneratedTextColumn _accountRemoteId;
+  @override
+  GeneratedTextColumn get accountRemoteId =>
+      _accountRemoteId ??= _constructAccountRemoteId();
+  GeneratedTextColumn _constructAccountRemoteId() {
+    return GeneratedTextColumn(
+      'account_remote_id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _statusRemoteIdMeta =
+      const VerificationMeta('statusRemoteId');
+  GeneratedTextColumn _statusRemoteId;
+  @override
+  GeneratedTextColumn get statusRemoteId =>
+      _statusRemoteId ??= _constructStatusRemoteId();
+  GeneratedTextColumn _constructStatusRemoteId() {
+    return GeneratedTextColumn(
+      'status_remote_id',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _typeMeta = const VerificationMeta('type');
+  GeneratedTextColumn _type;
+  @override
+  GeneratedTextColumn get type => _type ??= _constructType();
+  GeneratedTextColumn _constructType() {
+    return GeneratedTextColumn(
+      'type',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  GeneratedDateTimeColumn _createdAt;
+  @override
+  GeneratedDateTimeColumn get createdAt => _createdAt ??= _constructCreatedAt();
+  GeneratedDateTimeColumn _constructCreatedAt() {
+    return GeneratedDateTimeColumn(
+      'created_at',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, remoteId, accountRemoteId, statusRemoteId, type, createdAt];
+  @override
+  $DbNotificationsTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'db_notifications';
+  @override
+  final String actualTableName = 'db_notifications';
+  @override
+  VerificationContext validateIntegrity(DbNotificationsCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.id.present) {
+      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    }
+    if (d.remoteId.present) {
+      context.handle(_remoteIdMeta,
+          remoteId.isAcceptableValue(d.remoteId.value, _remoteIdMeta));
+    } else if (isInserting) {
+      context.missing(_remoteIdMeta);
+    }
+    if (d.accountRemoteId.present) {
+      context.handle(
+          _accountRemoteIdMeta,
+          accountRemoteId.isAcceptableValue(
+              d.accountRemoteId.value, _accountRemoteIdMeta));
+    } else if (isInserting) {
+      context.missing(_accountRemoteIdMeta);
+    }
+    if (d.statusRemoteId.present) {
+      context.handle(
+          _statusRemoteIdMeta,
+          statusRemoteId.isAcceptableValue(
+              d.statusRemoteId.value, _statusRemoteIdMeta));
+    }
+    context.handle(_typeMeta, const VerificationResult.success());
+    if (d.createdAt.present) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableValue(d.createdAt.value, _createdAtMeta));
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  DbNotification map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return DbNotification.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(DbNotificationsCompanion d) {
+    final map = <String, Variable>{};
+    if (d.id.present) {
+      map['id'] = Variable<int, IntType>(d.id.value);
+    }
+    if (d.remoteId.present) {
+      map['remote_id'] = Variable<String, StringType>(d.remoteId.value);
+    }
+    if (d.accountRemoteId.present) {
+      map['account_remote_id'] =
+          Variable<String, StringType>(d.accountRemoteId.value);
+    }
+    if (d.statusRemoteId.present) {
+      map['status_remote_id'] =
+          Variable<String, StringType>(d.statusRemoteId.value);
+    }
+    if (d.type.present) {
+      final converter = $DbNotificationsTable.$converter0;
+      map['type'] =
+          Variable<String, StringType>(converter.mapToSql(d.type.value));
+    }
+    if (d.createdAt.present) {
+      map['created_at'] = Variable<DateTime, DateTimeType>(d.createdAt.value);
+    }
+    return map;
+  }
+
+  @override
+  $DbNotificationsTable createAlias(String alias) {
+    return $DbNotificationsTable(_db, alias);
+  }
+
+  static TypeConverter<MastodonNotificationType, String> $converter0 =
+      MastodonNotificationTypeDatabaseConverter();
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $DbStatusesTable _dbStatuses;
@@ -5248,6 +5586,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   $DbConversationStatusesTable _dbConversationStatuses;
   $DbConversationStatusesTable get dbConversationStatuses =>
       _dbConversationStatuses ??= $DbConversationStatusesTable(this);
+  $DbNotificationsTable _dbNotifications;
+  $DbNotificationsTable get dbNotifications =>
+      _dbNotifications ??= $DbNotificationsTable(this);
   StatusDao _statusDao;
   StatusDao get statusDao => _statusDao ??= StatusDao(this as AppDatabase);
   StatusHashtagsDao _statusHashtagsDao;
@@ -5281,6 +5622,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   StatusRebloggedAccountsDao get statusRebloggedAccountsDao =>
       _statusRebloggedAccountsDao ??=
           StatusRebloggedAccountsDao(this as AppDatabase);
+  NotificationDao _notificationDao;
+  NotificationDao get notificationDao =>
+      _notificationDao ??= NotificationDao(this as AppDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
@@ -5295,6 +5639,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         dbAccountFollowers,
         dbConversations,
         dbConversationAccounts,
-        dbConversationStatuses
+        dbConversationStatuses,
+        dbNotifications
       ];
 }
