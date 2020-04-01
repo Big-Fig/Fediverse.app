@@ -42,11 +42,11 @@ class PleromaNotificationService implements IPleromaNotificationService {
   }
 
   @override
-  Future<IPleromaNotification> getNotificationById({@required String id})
+  Future<IPleromaNotification> getNotification({@required String notificationRemoteId})
   async {
     var httpResponse = await restService.sendHttpRequest(
         RestRequest.get(
-            relativePath: join(notificationRelativeUrlPath, id)));
+            relativePath: join(notificationRelativeUrlPath, notificationRemoteId)));
 
     return parseNotificationResponse(httpResponse);
   }
