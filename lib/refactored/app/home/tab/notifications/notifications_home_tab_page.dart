@@ -3,9 +3,19 @@ import 'package:fedi/refactored/app/home/tab/notifications/drawer/notifications_
 import 'package:fedi/refactored/app/home/tab/notifications/drawer/notifications_home_tab_page_drawer_widget.dart';
 import 'package:fedi/refactored/app/home/tab/notifications/notifications_home_tab_bloc.dart';
 import 'package:fedi/refactored/app/home/tab/notifications/notifications_home_tab_model.dart';
+import 'package:fedi/refactored/app/notification/list/cached/notification_cached_list_service.dart';
+import 'package:fedi/refactored/app/notification/list/cached/notification_cached_list_service_impl.dart';
+import 'package:fedi/refactored/app/notification/notification_model.dart';
+import 'package:fedi/refactored/app/notification/pagination/cached/notification_cached_pagination_bloc_impl.dart';
+import 'package:fedi/refactored/app/notification/pagination/list/notification_pagination_list_bloc.dart';
+import 'package:fedi/refactored/app/notification/pagination/list/notification_pagination_list_bloc_impl.dart';
+import 'package:fedi/refactored/app/notification/pagination/list/notification_pagination_list_widget.dart';
 import 'package:fedi/refactored/app/push/local_preferences/push_local_preferences_bloc.dart';
 import 'package:fedi/refactored/app/search/search_page.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
+import 'package:fedi/refactored/mastodon/notification/mastodon_notification_model.dart';
+import 'package:fedi/refactored/pagination/pagination_bloc.dart';
+import 'package:fedi/refactored/pagination/pagination_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -23,7 +33,7 @@ List<NotificationTab> tabs = [
 class NotificationsHomeTabPage extends StatelessWidget {
   final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
-  NotificationsHomeTabPage({ Key key}) : super(key: key);
+  NotificationsHomeTabPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -141,15 +151,41 @@ class NotificationsHomeTabPage extends StatelessWidget {
 
   Widget buildTabBody(BuildContext context, NotificationTab tab,
       INotificationsHomeTabBloc notificationsHomePageBloc) {
-    _logger.finest(() => "new tab $tab");
-    return Center(child: Text("$tab"));
 
-//    return Provider(
-//      create: (_) => notificationsHomePageBloc
-//          .retrieveNotificationTabPaginationListBloc(tab),
-//      child: NotificationWidget(
-//        key: PageStorageKey(tab.toString()),
-//      ),
-//    );
+    MastodonNotificationType onlyWithType;
+
+    switch(tab) {
+
+      case NotificationTab.all:
+        onlyWithType = null;
+        break;
+      case NotificationTab.mentions:
+        onlyWithType = MastodonNotificationType.mention;
+        break;
+      case NotificationTab.reblogs:
+        onlyWithType = MastodonNotificationType.reblog;
+        break;
+      case NotificationTab.favourites:
+        onlyWithType = MastodonNotificationType.favourite;
+        break;
+      case NotificationTab.follows:
+        onlyWithType = MastodonNotificationType.follow;
+        break;
+    }
+
+    return DisposableProvider<INotificationCachedListService>(
+      create: (context) => NotificationCachedListService.createFromContext
+        (context, onlyWithType: onlyWithType),
+      child: DisposableProvider<IPaginationBloc<PaginationPage<INotification>, INotification>>(
+        create: (context) => NotificationCachedPaginationBloc.createFromContext(context),
+        child: DisposableProvider<INotificationPaginationListBloc>(
+          create: (context) => NotificationPaginationListBloc.createFromContext(context),
+          child: NotificationPaginationListWidget(
+            needWatchLocalRepositoryForUpdates: true,
+            key: PageStorageKey("${tab.toString()}"),
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -8,6 +8,8 @@ import 'package:fedi/refactored/app/auth/instance/current/context/current_instan
 import 'package:fedi/refactored/app/auth/instance/instance_model.dart';
 import 'package:fedi/refactored/app/conversation/repository/conversation_repository.dart';
 import 'package:fedi/refactored/app/conversation/repository/conversation_repository_impl.dart';
+import 'package:fedi/refactored/app/notification/repository/notification_repository.dart';
+import 'package:fedi/refactored/app/notification/repository/notification_repository_impl.dart';
 import 'package:fedi/refactored/app/push/local_preferences/push_local_preferences_bloc.dart';
 import 'package:fedi/refactored/app/push/local_preferences/push_local_preferences_bloc_impl.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
@@ -92,10 +94,17 @@ class CurrentInstanceContextBloc extends ProviderContextBloc
         appDatabase: moorDatabaseService.appDatabase,
         accountRepository: accountRepository,
         statusRepository: statusRepository);
-
     addDisposable(disposable: conversationRepository);
     await globalProviderService
         .asyncInitAndRegister<IConversationRepository>(conversationRepository);
+
+    var notificationRepository = NotificationRepository(
+        appDatabase: moorDatabaseService.appDatabase,
+        accountRepository: accountRepository,
+        statusRepository: statusRepository);
+    addDisposable(disposable: notificationRepository);
+    await globalProviderService
+        .asyncInitAndRegister<INotificationRepository>(notificationRepository);
 
     var restService = RestService(baseUrl: currentInstance.url);
     addDisposable(disposable: restService);

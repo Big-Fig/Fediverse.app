@@ -20,9 +20,7 @@ abstract class INotificationRepository
   Future<INotification> findByRemoteId(String remoteId);
 
   Future upsertRemoteNotifications(
-      List<IPleromaNotification> remoteNotifications,
-      {@required String listRemoteId,
-      @required String conversationRemoteId});
+      List<IPleromaNotification> remoteNotifications);
 
   Stream<INotification> watchByRemoteId(String remoteId);
 
@@ -30,8 +28,7 @@ abstract class INotificationRepository
       {@required INotification oldLocalNotification,
       @required IPleromaNotification newRemoteNotification});
 
-  Future upsertRemoteNotification(IPleromaNotification remoteNotification,
-      {@required String listRemoteId, @required String conversationRemoteId});
+  Future upsertRemoteNotification(IPleromaNotification remoteNotification);
 
   Future<List<DbNotificationPopulatedWrapper>> getNotifications(
       {@required MastodonNotificationType onlyWithType,
