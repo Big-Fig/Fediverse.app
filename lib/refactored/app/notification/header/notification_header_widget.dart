@@ -14,26 +14,20 @@ abstract class NotificationHeaderWidget extends StatelessWidget {
 
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            DisposableProvider<IAccountBloc>(
-                create: (context) => AccountBloc.createFromContext(context,
-                    account: notificationBloc.account,
-                    needRefreshFromNetworkOnInit: false,
-                    needWatchLocalRepositoryForUpdates: true),
-                child: Row(
-                  children: <Widget>[
-                    AccountAvatarWidget(imageSize: 30, progressSize: 15),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    AccountDisplayNameWidget()
-                  ],
-                )),
-            NotificationCreatedAtWidget()
-          ],
-        ),
+        DisposableProvider<IAccountBloc>(
+            create: (context) => AccountBloc.createFromContext(context,
+                account: notificationBloc.account,
+                needRefreshFromNetworkOnInit: false,
+                needWatchLocalRepositoryForUpdates: true),
+            child: Row(
+              children: <Widget>[
+                AccountAvatarWidget(imageSize: 30, progressSize: 15),
+                SizedBox(
+                  width: 10,
+                ),
+                AccountDisplayNameWidget()
+              ],
+            )),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
           child: buildNotificationHeaderContext(context),
@@ -52,7 +46,11 @@ abstract class NotificationHeaderWidget extends StatelessWidget {
           SizedBox(
             width: 8,
           ),
-          Text(text)
+          Text(text),
+          SizedBox(
+            width: 8,
+          ),
+          NotificationCreatedAtWidget()
         ],
       );
 
