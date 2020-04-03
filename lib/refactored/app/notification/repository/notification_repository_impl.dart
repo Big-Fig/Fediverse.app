@@ -22,14 +22,15 @@ var _logger = Logger("notification_repository_impl.dart");
 
 class NotificationRepository extends AsyncInitLoadingBloc
     implements INotificationRepository {
-  NotificationDao dao;
-  IAccountRepository accountRepository;
-  IStatusRepository statusRepository;
+  final NotificationDao dao;
+  final IAccountRepository accountRepository;
+  final IStatusRepository statusRepository;
 
   NotificationRepository(
-      {@required AppDatabase appDatabase, @required this.accountRepository}) {
-    dao = appDatabase.notificationDao;
-  }
+      {@required AppDatabase appDatabase,
+        @required this.accountRepository,
+        @required this.statusRepository,
+      }):   dao = appDatabase.notificationDao;
 
   @override
   Future internalAsyncInit() async {
@@ -79,6 +80,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
 
     List<IPleromaStatus> remoteStatuses = remoteNotifications
         .map((remoteNotification) => remoteNotification.status)
+        .where((remoteStatus) => remoteStatus != null)
         .toList();
 
     await statusRepository.upsertRemoteStatuses(remoteStatuses,

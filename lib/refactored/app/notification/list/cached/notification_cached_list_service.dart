@@ -23,5 +23,4 @@ abstract class INotificationCachedListService extends DisposableOwner
       @required INotification newerThan,
       @required INotification olderThan});
 
-  Future preRefreshAllAction();
 }

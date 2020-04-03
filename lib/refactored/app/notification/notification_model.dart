@@ -40,8 +40,9 @@ class DbNotificationPopulatedWrapper implements INotification {
       dbNotificationPopulated.notification.type;
 
   @override
-  IStatus get status =>
-      DbStatusPopulatedWrapper(dbNotificationPopulated.statusPopulated);
+  IStatus get status => dbNotificationPopulated.statusPopulated != null
+      ? DbStatusPopulatedWrapper(dbNotificationPopulated.statusPopulated)
+      : null;
 }
 
 class DbNotificationPopulated {
