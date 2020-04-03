@@ -83,7 +83,6 @@ class NotificationsHomeTabPage extends StatelessWidget {
           ),
           Row(
             children: <Widget>[
-              buildSearchActionButton(context),
               buildSettingsActionButton(),
             ],
           )
@@ -99,14 +98,6 @@ class NotificationsHomeTabPage extends StatelessWidget {
         color: Colors.white,
         onPressed: () {
           _drawerKey.currentState.openEndDrawer();
-        },
-      );
-
-  IconButton buildSearchActionButton(BuildContext context) => IconButton(
-        icon: Icon(Icons.search),
-        color: Colors.white,
-        onPressed: () {
-          goToSearchPage(context);
         },
       );
 
