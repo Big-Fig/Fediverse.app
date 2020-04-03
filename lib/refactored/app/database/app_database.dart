@@ -1,6 +1,8 @@
 import 'package:fedi/refactored/app/notification/database/notification_database_dao.dart';
 import 'package:fedi/refactored/app/notification/database/notification_database_model.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
+import 'package:fedi/refactored/mastodon/notification'
+    '/mastodon_notification_model.dart';
 import 'package:fedi/refactored/pleroma/application/pleroma_application_model.dart';
 import 'package:fedi/refactored/pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/refactored/pleroma/content/pleroma_content_model.dart';

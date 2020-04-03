@@ -1,9 +1,9 @@
-import 'package:fedi/refactored/app/status/status_model.dart';
-import 'package:fedi/refactored/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/refactored/app/database/app_database.dart';
 import 'package:fedi/refactored/app/notification/database/notification_database_model.dart';
-import 'package:fedi/refactored/app/notification/repository/notification_repository_model.dart';
 import 'package:fedi/refactored/app/notification/notification_model.dart';
+import 'package:fedi/refactored/app/notification/repository/notification_repository_model.dart';
+import 'package:fedi/refactored/app/status/status_model.dart';
+import 'package:fedi/refactored/mastodon/notification/mastodon_notification_model.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 
@@ -11,6 +11,9 @@ part 'notification_database_dao.g.dart';
 
 var _accountAliasId = "account";
 var _statusAliasId = "status";
+var _statusAccountAliasId = "status_account";
+var _statusReblogAliasId = "status_reblog";
+var _statusReblogAccountAliasId = "status_reblog_account";
 
 var _logger = Logger("notification_database_dao.dart");
 
@@ -25,17 +28,22 @@ var _logger = Logger("notification_database_dao.dart");
   "findLocalIdByRemoteId": "SELECT id FROM db_notifications WHERE remote_id = "
       ":remoteId;",
 })
-class NotificationDao extends DatabaseAccessor<AppDatabase> with _$NotificationDaoMixin {
+class NotificationDao extends DatabaseAccessor<AppDatabase>
+    with _$NotificationDaoMixin {
   final AppDatabase db;
   $DbAccountsTable accountAlias;
   $DbStatusesTable statusAlias;
-
+  $DbAccountsTable statusAccountAlias;
+  $DbStatusesTable statusReblogAlias;
+  $DbAccountsTable statusReblogAccountAlias;
 
   // Called by the AppDatabase class
   NotificationDao(this.db) : super(db) {
     accountAlias = alias(db.dbAccounts, _accountAliasId);
     statusAlias = alias(db.dbStatuses, _statusAliasId);
-
+    statusAccountAlias = alias(db.dbAccounts, _statusAccountAliasId);
+    statusReblogAlias = alias(db.dbStatuses, _statusReblogAliasId);
+    statusReblogAccountAlias = alias(db.dbAccounts, _statusReblogAccountAliasId);
   }
 
   Future<List<DbNotificationPopulated>> findAll() async {
@@ -70,11 +78,13 @@ class NotificationDao extends DatabaseAccessor<AppDatabase> with _$NotificationD
   }
 
   JoinedSelectStatement<Table, DataClass> _findById(int id) =>
-      (select(db.dbNotifications)..where((notification) => notification.id.equals(id))).join(
-          populateNotificationJoin());
+      (select(db.dbNotifications)
+            ..where((notification) => notification.id.equals(id)))
+          .join(populateNotificationJoin());
 
   JoinedSelectStatement<Table, DataClass> _findByRemoteId(String remoteId) =>
-      (select(db.dbNotifications)..where((notification) => notification.remoteId.like(remoteId)))
+      (select(db.dbNotifications)
+            ..where((notification) => notification.remoteId.like(remoteId)))
           .join(populateNotificationJoin());
 
   Future<int> insert(Insertable<DbNotification> entity) async =>
@@ -83,8 +93,8 @@ class NotificationDao extends DatabaseAccessor<AppDatabase> with _$NotificationD
   Future<int> upsert(Insertable<DbNotification> entity) async =>
       into(db.dbNotifications).insert(entity, mode: InsertMode.insertOrReplace);
 
-  Future insertAll(
-          Iterable<Insertable<DbNotification>> entities, InsertMode mode) async =>
+  Future insertAll(Iterable<Insertable<DbNotification>> entities,
+          InsertMode mode) async =>
       await batch((batch) {
         batch.insertAll(db.dbNotifications, entities, mode: mode);
       });
@@ -106,15 +116,20 @@ class NotificationDao extends DatabaseAccessor<AppDatabase> with _$NotificationD
     return localId;
   }
 
-  SimpleSelectStatement<$DbNotificationsTable, DbNotification> startSelectQuery() =>
-      (select(db.dbNotifications));
+  SimpleSelectStatement<$DbNotificationsTable, DbNotification> addOnlyTypeWhere(
+      SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
+      MastodonNotificationType type) =>
+      query
+        ..where((notification) =>
+        (notification.type.equals(mastodonNotificationTypeValues.reverse[type])));
 
-
-
+  SimpleSelectStatement<$DbNotificationsTable, DbNotification>
+      startSelectQuery() => (select(db.dbNotifications));
 
   /// remote ids are strings but it is possible to compare them in
   /// chronological order
-  SimpleSelectStatement<$DbNotificationsTable, DbNotification> addRemoteIdBoundsWhere(
+  SimpleSelectStatement<$DbNotificationsTable, DbNotification>
+      addRemoteIdBoundsWhere(
     SimpleSelectStatement<$DbNotificationsTable, DbNotification> query, {
     @required String minimumRemoteIdExcluding,
     @required String maximumRemoteIdExcluding,
@@ -167,17 +182,29 @@ class NotificationDao extends DatabaseAccessor<AppDatabase> with _$NotificationD
       return null;
     }
 
-    var status = typedResult.readTable(statusAlias);
+    var notificationAccount = typedResult.readTable(accountAlias);
+    var notificationStatus = typedResult.readTable(statusAlias);
 
     DbStatusPopulated statusPopulated;
-    if(status?.remoteId != null) {
-      sad
+    if (notificationStatus?.remoteId != null) {
+
+      var notificationStatusAccount = typedResult.readTable(statusAccountAlias);
+      var rebloggedStatus = typedResult.readTable(statusReblogAlias);
+      var rebloggedStatusAccount = typedResult.readTable
+        (statusReblogAccountAlias);
+
+      statusPopulated = DbStatusPopulated(
+          rebloggedStatus: rebloggedStatus,
+          rebloggedStatusAccount: rebloggedStatusAccount,
+          status: notificationStatus,
+          account: notificationStatusAccount
+      );
     }
 
     return DbNotificationPopulated(
-        notification: typedResult.readTable(db.dbNotifications),
-        account: typedResult.readTable(accountAlias),
-        statusPopulated: statusPopulated,
+      notification: typedResult.readTable(db.dbNotifications),
+      account: notificationAccount,
+      statusPopulated: statusPopulated,
     );
   }
 
@@ -191,7 +218,18 @@ class NotificationDao extends DatabaseAccessor<AppDatabase> with _$NotificationD
         statusAlias,
         statusAlias.remoteId.equalsExp(dbNotifications.statusRemoteId),
       ),
-
+      leftOuterJoin(
+        statusAccountAlias,
+        statusAccountAlias.remoteId.equalsExp(statusAlias.accountRemoteId),
+      ),
+      leftOuterJoin(
+        statusReblogAlias,
+        statusReblogAlias.remoteId.equalsExp(statusAlias.reblogStatusRemoteId),
+      ),
+      leftOuterJoin(
+        statusReblogAccountAlias,
+        statusReblogAccountAlias.remoteId.equalsExp(statusReblogAlias.accountRemoteId),
+      ),
     ];
   }
 }
