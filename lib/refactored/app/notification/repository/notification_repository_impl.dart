@@ -1,18 +1,19 @@
-import 'package:fedi/refactored/app/status/repository/status_repository.dart';
-import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/refactored/pleroma/notification/pleroma_notification_model.dart';
-import 'package:fedi/refactored/pleroma/tag/pleroma_tag_model.dart';
-import 'package:fedi/refactored/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
 import 'package:fedi/refactored/app/conversation/conversation_model.dart';
 import 'package:fedi/refactored/app/database/app_database.dart';
 import 'package:fedi/refactored/app/notification/database/notification_database_dao.dart';
-import 'package:fedi/refactored/app/notification/repository/notification_repository.dart';
-import 'package:fedi/refactored/app/notification/repository/notification_repository_model.dart';
 import 'package:fedi/refactored/app/notification/notification_model.dart';
 import 'package:fedi/refactored/app/notification/notification_model_adapter.dart';
+import 'package:fedi/refactored/app/notification/repository/notification_repository.dart';
+import 'package:fedi/refactored/app/notification/repository/notification_repository_model.dart';
+import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/async/loading/init/async_init_loading_bloc_impl.dart';
+import 'package:fedi/refactored/mastodon/notification/mastodon_notification_model.dart';
+import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
+import 'package:fedi/refactored/pleroma/notification/pleroma_notification_model.dart';
+import 'package:fedi/refactored/pleroma/status/pleroma_status_model.dart';
+import 'package:fedi/refactored/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -40,177 +41,73 @@ class NotificationRepository extends AsyncInitLoadingBloc
   Future upsertRemoteNotification(IPleromaNotification remoteNotification,
       {@required String listRemoteId,
       @required String conversationRemoteId}) async {
-    _logger.finer(() => "upsertRemoteNotification $remoteNotification listRemoteId=> "
-        "$listRemoteId");
+    _logger.finer(
+        () => "upsertRemoteNotification $remoteNotification listRemoteId=> "
+            "$listRemoteId");
     var remoteAccount = remoteNotification.account;
 
     await accountRepository.upsertRemoteAccount(remoteAccount,
         conversationRemoteId: conversationRemoteId);
 
-    await upsert(mapRemoteNotificationToDbNotification(remoteNotification));
-
-    var notificationRemoteId = remoteNotification.id;
-    if (listRemoteId != null) {
-      await addNotificationsToList([remoteNotification.id], listRemoteId);
-    }
-    if (conversationRemoteId != null) {
-      await addNotificationsToConversation([remoteNotification.id], conversationRemoteId);
-    }
-
-    var tags = remoteNotification.tags;
-
-    if (tags?.isNotEmpty == true) {
-      await updateNotificationTags(notificationRemoteId, tags);
-    }
-
-    var reblog = remoteNotification.reblog;
-    if (reblog != null) {
-      // list & conversation should be null. We don't need reblogs in
-      // conversations & lists
-      upsertRemoteNotification(reblog,
+    var remoteStatus = remoteNotification.status;
+    if (remoteStatus != null) {
+      await statusRepository.upsertRemoteStatus(remoteStatus,
           listRemoteId: null, conversationRemoteId: null);
     }
+
+    await upsert(mapRemoteNotificationToDbNotification(remoteNotification));
   }
 
   @override
-  Future upsertRemoteNotifications(List<IPleromaNotification> remoteNotifications,
+  Future upsertRemoteNotifications(
+      List<IPleromaNotification> remoteNotifications,
       {@required String listRemoteId,
       @required String conversationRemoteId}) async {
-    _logger.finer(() => "upsertRemoteNotifications ${remoteNotifications.length} "
-        "listRemoteId => $listRemoteId");
+    _logger
+        .finer(() => "upsertRemoteNotifications ${remoteNotifications.length} "
+            "listRemoteId => $listRemoteId");
     if (remoteNotifications.isEmpty) {
       return;
     }
 
-    List<IPleromaAccount> remoteAccounts =
-        remoteNotifications.map((remoteNotification) => remoteNotification.account).toList();
+    List<IPleromaAccount> remoteAccounts = remoteNotifications
+        .map((remoteNotification) => remoteNotification.account)
+        .toList();
 
     await accountRepository.upsertRemoteAccounts(remoteAccounts,
         conversationRemoteId: conversationRemoteId);
 
-    await upsertAll(remoteNotifications.map(mapRemoteNotificationToDbNotification).toList());
-
-    if (listRemoteId != null) {
-      await addNotificationsToList(
-          remoteNotifications.map((remoteNotification) => remoteNotification.id).toList(),
-          listRemoteId);
-    }
-    if (conversationRemoteId != null) {
-      await addNotificationsToConversation(
-          remoteNotifications.map((remoteNotification) => remoteNotification.id).toList(),
-          conversationRemoteId);
-    }
-
-    // todo: rework with batch update
-    for (var remoteNotification in remoteNotifications) {
-      var notificationRemoteId = remoteNotification.id;
-      var tags = remoteNotification.tags;
-      if (tags?.isNotEmpty == true) {
-        await updateNotificationTags(notificationRemoteId, tags);
-      }
-    }
-
-    var reblogs = remoteNotifications
-        .where((remoteNotification) => remoteNotification.reblog != null)
-        .map((remoteNotification) => remoteNotification.reblog)
+    List<IPleromaStatus> remoteStatuses = remoteNotifications
+        .map((remoteNotification) => remoteNotification.status)
         .toList();
-    // list & conversation should be null. We don't need reblogs in
-    // conversations & lists
-    upsertRemoteNotifications(reblogs,
-        listRemoteId: null, conversationRemoteId: null);
-  }
 
-  Future addNotificationsToList(
-      List<String> notificationRemoteIds, String listRemoteId) async {
-    if (listRemoteId?.isNotEmpty == true) {
-      await listsDao.insertAll(
-          notificationRemoteIds
-              .map((notificationRemoteId) => DbNotificationList(
-                  id: null,
-                  notificationRemoteId: notificationRemoteId,
-                  listRemoteId: listRemoteId))
-              .toList(),
-          InsertMode.insertOrReplace);
-    }
-  }
+    await statusRepository.upsertRemoteStatuses(remoteStatuses,
+        conversationRemoteId: conversationRemoteId, listRemoteId: null);
 
-  Future addNotificationsToConversation(
-      List<String> notificationRemoteIds, String conversationRemoteId) async {
-
-    var alreadyAddedConversationNotifications = await conversationNotificationsDao
-        .findByConversationRemoteId
-    (conversationRemoteId);
-    var alreadyAddedConversationNotificationsIds =
-        alreadyAddedConversationNotifications.map((conversationNotification) =>
-        conversationNotification.notificationRemoteId);
-    var notAddedYetNotificationRemoteIds = notificationRemoteIds.where((notificationRemoteId) {
-      return !alreadyAddedConversationNotificationsIds.contains(notificationRemoteId);
-    });
-
-    if (notAddedYetNotificationRemoteIds?.isNotEmpty == true) {
-      await conversationNotificationsDao.insertAll(
-          notAddedYetNotificationRemoteIds
-              .map((notificationRemoteId) => DbConversationNotification(
-                  id: null,
-                  notificationRemoteId: notificationRemoteId,
-                  conversationRemoteId: conversationRemoteId))
-              .toList(),
-          InsertMode.insertOrReplace);
-    }
-  }
-
-  Future updateNotificationTags(String notificationRemoteId, List<IPleromaTag> tags) async {
-    if (tags != null) {
-      await hashtagsDao.deleteByNotificationRemoteId(notificationRemoteId);
-      await hashtagsDao.insertAll(
-          tags
-              .map((remoteTag) => DbNotificationHashtag(
-                  id: null,
-                  notificationRemoteId: notificationRemoteId,
-                  hashtag: remoteTag.name))
-              .toList(),
-          InsertMode.insertOrReplace);
-    }
+    await upsertAll(remoteNotifications
+        .map(mapRemoteNotificationToDbNotification)
+        .toList());
   }
 
   @override
-  Future<DbNotificationPopulatedWrapper> findByRemoteId(String remoteId) async =>
+  Future<DbNotificationPopulatedWrapper> findByRemoteId(
+          String remoteId) async =>
       mapDataClassToItem(await dao.findByRemoteId(remoteId));
 
   Future<List<DbNotificationPopulatedWrapper>> getNotifications(
-      {@required String onlyInListWithRemoteId,
-      @required IAccount onlyFromAccount,
-      @required String onlyWithHashtag,
-      @required IAccount onlyFromAccountsFollowingByAccount,
-      @required IConversation onlyInConversation,
-      @required OnlyLocalNotificationFilter onlyLocal,
-      @required bool onlyWithMedia,
-      @required bool onlyNotMuted,
-      @required List<PleromaVisibility> excludeVisibilities,
+      {@required MastodonNotificationType onlyWithType,
       @required INotification olderThanNotification,
       @required INotification newerThanNotification,
-      @required bool onlyNoNsfwSensitive,
-      @required bool onlyNoReplies,
       @required int limit,
       @required int offset,
       @required NotificationOrderingTermData orderingTermData}) async {
     var query = createQuery(
-        onlyFromAccount: onlyFromAccount,
-        onlyInListWithRemoteId: onlyInListWithRemoteId,
-        onlyWithHashtag: onlyWithHashtag,
-        onlyFromAccountsFollowingByAccount: onlyFromAccountsFollowingByAccount,
-        onlyLocal: onlyLocal,
-        onlyWithMedia: onlyWithMedia,
-        onlyNotMuted: onlyNotMuted,
-        excludeVisibilities: excludeVisibilities,
+        onlyWithType: onlyWithType,
         olderThanNotification: olderThanNotification,
         newerThanNotification: newerThanNotification,
-        onlyNoNsfwSensitive: onlyNoNsfwSensitive,
-        onlyNoReplies: onlyNoReplies,
         limit: limit,
         offset: offset,
-        orderingTermData: orderingTermData,
-        onlyInConversation: onlyInConversation);
+        orderingTermData: orderingTermData);
 
     return dao
         .typedResultListToPopulated(await query.get())
@@ -219,39 +116,19 @@ class NotificationRepository extends AsyncInitLoadingBloc
   }
 
   Stream<List<DbNotificationPopulatedWrapper>> watchNotifications(
-      {@required String onlyInListWithRemoteId,
-      @required String onlyWithHashtag,
-      @required IAccount onlyFromAccountsFollowingByAccount,
-      @required IAccount onlyFromAccount,
-      @required IConversation onlyInConversation,
-      @required OnlyLocalNotificationFilter onlyLocal,
-      @required bool onlyWithMedia,
-      @required bool onlyNotMuted,
-      @required List<PleromaVisibility> excludeVisibilities,
+      {@required MastodonNotificationType onlyWithType,
       @required INotification olderThanNotification,
       @required INotification newerThanNotification,
-      @required bool onlyNoNsfwSensitive,
-      @required bool onlyNoReplies,
       @required int limit,
       @required int offset,
       @required NotificationOrderingTermData orderingTermData}) {
     var query = createQuery(
-        onlyInListWithRemoteId: onlyInListWithRemoteId,
-        onlyWithHashtag: onlyWithHashtag,
-        onlyFromAccountsFollowingByAccount: onlyFromAccountsFollowingByAccount,
-        onlyInConversation: onlyInConversation,
-        onlyLocal: onlyLocal,
-        onlyWithMedia: onlyWithMedia,
-        onlyNotMuted: onlyNotMuted,
-        excludeVisibilities: excludeVisibilities,
+        onlyWithType: onlyWithType,
         olderThanNotification: olderThanNotification,
         newerThanNotification: newerThanNotification,
-        onlyNoNsfwSensitive: onlyNoNsfwSensitive,
-        onlyNoReplies: onlyNoReplies,
         limit: limit,
         offset: offset,
-        orderingTermData: orderingTermData,
-        onlyFromAccount: onlyFromAccount);
+        orderingTermData: orderingTermData);
 
     Stream<List<DbNotificationPopulated>> stream =
         query.watch().map(dao.typedResultListToPopulated);
@@ -259,71 +136,21 @@ class NotificationRepository extends AsyncInitLoadingBloc
   }
 
   JoinedSelectStatement createQuery(
-      {@required String onlyInListWithRemoteId,
-      @required String onlyWithHashtag,
-      @required IAccount onlyFromAccount,
-      @required IAccount onlyFromAccountsFollowingByAccount,
-      @required IConversation onlyInConversation,
-      @required OnlyLocalNotificationFilter onlyLocal,
-      @required bool onlyWithMedia,
-      @required bool onlyNotMuted,
-      @required List<PleromaVisibility> excludeVisibilities,
+      {@required MastodonNotificationType onlyWithType,
       @required INotification olderThanNotification,
       @required INotification newerThanNotification,
-      @required bool onlyNoNsfwSensitive,
-      @required bool onlyNoReplies,
       @required int limit,
       @required int offset,
       @required NotificationOrderingTermData orderingTermData}) {
     _logger.fine(() => "createQuery \n"
-        "\t onlyInListWithRemoteId=$onlyInListWithRemoteId\n"
-        "\t onlyWithHashtag=$onlyWithHashtag\n"
-        "\t onlyFromAccountsFollowingByAccount=$onlyFromAccountsFollowingByAccount\n"
-        "\t onlyFromAccount=$onlyFromAccount\n"
-        "\t onlyInConversation=$onlyInConversation\n"
-        "\t onlyLocal=$onlyLocal\n"
-        "\t onlyWithMedia=$onlyWithMedia\n"
-        "\t onlyNotMuted=$onlyNotMuted\n"
-        "\t excludeVisibilities=$excludeVisibilities\n"
+        "\t onlyWithType=$onlyWithType\n"
         "\t olderThanNotification=$olderThanNotification\n"
         "\t newerThanNotification=$newerThanNotification\n"
-        "\t onlyNoNsfwSensitive=$onlyNoNsfwSensitive\n"
-        "\t onlyNoReplies=$onlyNoReplies\n"
         "\t limit=$limit\n"
         "\t offset=$offset\n"
         "\t orderingTermData=$orderingTermData\n");
 
     var query = dao.startSelectQuery();
-
-    if (onlyLocal != null) {
-      assert(onlyLocal.localUrlHost?.isNotEmpty == true);
-
-      dao.addOnlyLocalWhere(query, onlyLocal.localUrlHost);
-    }
-
-    if (onlyWithMedia == true) {
-      dao.addOnlyMediaWhere(query);
-    }
-
-    if (onlyFromAccount != null) {
-      dao.addOnlyFromAccountWhere(query, onlyFromAccount.remoteId);
-    }
-
-    if (onlyNotMuted == true) {
-      dao.addOnlyNotMutedWhere(query);
-    }
-
-    if (onlyNoNsfwSensitive == true) {
-      dao.addOnlyNoNsfwSensitiveWhere(query);
-    }
-
-    if (onlyNoReplies == true) {
-      dao.addOnlyNoRepliesWhere(query);
-    }
-
-    if (excludeVisibilities?.isNotEmpty == true) {
-      dao.addExcludeVisibilitiesWhere(query, excludeVisibilities);
-    }
 
     if (olderThanNotification != null || newerThanNotification != null) {
       dao.addRemoteIdBoundsWhere(query,
@@ -331,37 +158,19 @@ class NotificationRepository extends AsyncInitLoadingBloc
           minimumRemoteIdExcluding: newerThanNotification?.remoteId);
     }
 
+    if (onlyWithType != null) {
+      dao.addOnlyTypeWhere(query, onlyWithType);
+    }
+
+
     if (orderingTermData != null) {
       dao.orderBy(query, [orderingTermData]);
     }
-    var needFilterByFollowing = onlyFromAccountsFollowingByAccount != null;
-    var needFilterByList = onlyInListWithRemoteId?.isNotEmpty == true;
-    var needFilterByTag = onlyWithHashtag?.isNotEmpty == true;
-    var needFilterByConversation = onlyInConversation != null;
     var joinQuery = query.join(
-      dao.populateNotificationJoin(
-          includeAccountFollowing: needFilterByFollowing,
-          includeNotificationLists: needFilterByList,
-          includeNotificationHashtags: needFilterByTag,
-          includeConversations: needFilterByConversation),
+      dao.populateNotificationJoin(),
     );
 
     var finalQuery = joinQuery;
-    if (needFilterByFollowing) {
-      finalQuery = dao.addFollowingWhere(
-          joinQuery, onlyFromAccountsFollowingByAccount.remoteId);
-    }
-    if (needFilterByList) {
-      finalQuery = dao.addListWhere(finalQuery, onlyInListWithRemoteId);
-    }
-    if (needFilterByConversation) {
-      finalQuery =
-          dao.addConversationWhere(finalQuery, onlyInConversation.remoteId);
-    }
-
-    if (needFilterByTag) {
-      finalQuery = dao.addHashtagWhere(finalQuery, onlyWithHashtag);
-    }
 
     assert(!(limit == null && offset != null));
     if (limit != null) {
@@ -436,14 +245,16 @@ class NotificationRepository extends AsyncInitLoadingBloc
     return dao.replace(dbNotification);
   }
 
-  DbNotificationPopulatedWrapper mapDataClassToItem(DbNotificationPopulated dataClass) {
+  DbNotificationPopulatedWrapper mapDataClassToItem(
+      DbNotificationPopulated dataClass) {
     if (dataClass == null) {
       return null;
     }
     return DbNotificationPopulatedWrapper(dataClass);
   }
 
-  Insertable<DbNotification> mapItemToDataClass(DbNotificationPopulatedWrapper item) {
+  Insertable<DbNotification> mapItemToDataClass(
+      DbNotificationPopulatedWrapper item) {
     if (item == null) {
       return null;
     }
@@ -460,58 +271,32 @@ class NotificationRepository extends AsyncInitLoadingBloc
 
     var remoteAccount = newRemoteNotification.account;
 
-    await accountRepository.upsertRemoteAccount(remoteAccount, conversationRemoteId: null);
+    await accountRepository.upsertRemoteAccount(remoteAccount,
+        conversationRemoteId: null);
 
-    await updateById(
-        oldLocalNotification.localId, mapRemoteNotificationToDbNotification(newRemoteNotification));
+    var remoteStatus = newRemoteNotification.status;
 
-    var notificationRemoteId = newRemoteNotification.id;
+    await statusRepository.upsertRemoteStatus(remoteStatus,
+        conversationRemoteId: null, listRemoteId: null);
 
-    var tags = newRemoteNotification.tags;
-
-    if (tags?.isNotEmpty == true) {
-      await updateNotificationTags(notificationRemoteId, tags);
-    }
-
-    if (newRemoteNotification.reblog != null) {
-      upsertRemoteNotification(newRemoteNotification,
-          listRemoteId: null, conversationRemoteId: null);
-    }
+    await updateById(oldLocalNotification.localId,
+        mapRemoteNotificationToDbNotification(newRemoteNotification));
   }
 
   @override
   Future<DbNotificationPopulatedWrapper> getNotification(
-      {@required String onlyInListWithRemoteId,
-      @required String onlyWithHashtag,
-      @required IAccount onlyFromAccountsFollowingByAccount,
-      @required IAccount onlyFromAccount,
-      @required IConversation onlyInConversation,
-      @required OnlyLocalNotificationFilter onlyLocal,
-      @required bool onlyWithMedia,
-      @required bool onlyNotMuted,
-      @required List<PleromaVisibility> excludeVisibilities,
+      {
+        @required MastodonNotificationType onlyWithType,
       @required INotification olderThanNotification,
       @required INotification newerThanNotification,
-      @required bool onlyNoNsfwSensitive,
-      @required bool onlyNoReplies,
       @required NotificationOrderingTermData orderingTermData}) async {
     var query = createQuery(
-        onlyFromAccount: onlyFromAccount,
-        onlyInListWithRemoteId: onlyInListWithRemoteId,
-        onlyWithHashtag: onlyWithHashtag,
-        onlyFromAccountsFollowingByAccount: onlyFromAccountsFollowingByAccount,
-        onlyLocal: onlyLocal,
-        onlyWithMedia: onlyWithMedia,
-        onlyNotMuted: onlyNotMuted,
-        excludeVisibilities: excludeVisibilities,
+        onlyWithType: onlyWithType,
         olderThanNotification: olderThanNotification,
         newerThanNotification: newerThanNotification,
-        onlyNoNsfwSensitive: onlyNoNsfwSensitive,
-        onlyNoReplies: onlyNoReplies,
         limit: 1,
         offset: null,
-        orderingTermData: orderingTermData,
-        onlyInConversation: onlyInConversation);
+        orderingTermData: orderingTermData);
 
     return mapDataClassToItem(
         dao.typedResultToPopulated(await query.getSingle()));
@@ -519,37 +304,18 @@ class NotificationRepository extends AsyncInitLoadingBloc
 
   @override
   Stream<DbNotificationPopulatedWrapper> watchNotification(
-      {@required String onlyInListWithRemoteId,
-      @required String onlyWithHashtag,
-      @required IAccount onlyFromAccount,
-      @required IAccount onlyFromAccountsFollowingByAccount,
-      @required IConversation onlyInConversation,
-      @required OnlyLocalNotificationFilter onlyLocal,
-      @required bool onlyWithMedia,
-      @required bool onlyNotMuted,
-      @required List<PleromaVisibility> excludeVisibilities,
+      {
+        @required MastodonNotificationType onlyWithType,
       @required INotification olderThanNotification,
       @required INotification newerThanNotification,
-      @required bool onlyNoNsfwSensitive,
-      @required bool onlyNoReplies,
       @required NotificationOrderingTermData orderingTermData}) {
     var query = createQuery(
-        onlyInListWithRemoteId: onlyInListWithRemoteId,
-        onlyWithHashtag: onlyWithHashtag,
-        onlyFromAccountsFollowingByAccount: onlyFromAccountsFollowingByAccount,
-        onlyInConversation: onlyInConversation,
-        onlyLocal: onlyLocal,
-        onlyWithMedia: onlyWithMedia,
-        onlyNotMuted: onlyNotMuted,
-        excludeVisibilities: excludeVisibilities,
+        onlyWithType: onlyWithType,
         olderThanNotification: olderThanNotification,
         newerThanNotification: newerThanNotification,
-        onlyNoNsfwSensitive: onlyNoNsfwSensitive,
-        onlyNoReplies: onlyNoReplies,
         limit: 1,
         offset: null,
-        orderingTermData: orderingTermData,
-        onlyFromAccount: onlyFromAccount);
+        orderingTermData: orderingTermData);
 
     Stream<DbNotificationPopulated> stream = query
         .watchSingle()
