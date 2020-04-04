@@ -1,12 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
-import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_push_model.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class PleromaPushSubscribeRequest {
   PleromaPushSubscribeData data;
   PleromaPushSubscribeRequestSubscription subscription;
@@ -38,10 +37,58 @@ class PleromaPushSubscribeRequest {
       jsonEncode(_$PleromaPushSubscribeRequestToJson(this));
 }
 
-@JsonSerializable()
-@HiveType()
+@JsonSerializable(explicitToJson: true)
+class PleromaPushSubscription {
+  final String id;
+  final String endpoint;
+  final PleromaPushSettingsDataAlerts alerts;
+  @JsonKey(name: "server_key")
+  final String serverKey;
+  PleromaPushSubscribeRequestSubscription subscription;
+
+  PleromaPushSubscription(
+      {@required this.id,
+      @required this.endpoint,
+      @required this.alerts,
+      @required this.serverKey,
+      @required this.subscription});
+
+  @override
+  String toString() {
+    return 'PleromaPushSubscription{id: $id, endpoint: $endpoint,'
+        ' alerts: $alerts, serverKey: $serverKey, subscription: $subscription}';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaPushSubscription &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          endpoint == other.endpoint &&
+          alerts == other.alerts &&
+          serverKey == other.serverKey &&
+          subscription == other.subscription;
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      endpoint.hashCode ^
+      alerts.hashCode ^
+      serverKey.hashCode ^
+      subscription.hashCode;
+
+  factory PleromaPushSubscription.fromJson(Map<String, dynamic> json) =>
+      _$PleromaPushSubscriptionFromJson(json);
+
+  factory PleromaPushSubscription.fromJsonString(String jsonString) =>
+      _$PleromaPushSubscriptionFromJson(jsonDecode(jsonString));
+
+  Map<String, dynamic> toJson() => _$PleromaPushSubscriptionToJson(this);
+  String toJsonString() => jsonEncode(_$PleromaPushSubscriptionToJson(this));
+}
+
+@JsonSerializable(explicitToJson: true)
 class PleromaPushSubscribeData {
-  @HiveField(1)
   PleromaPushSettingsDataAlerts alerts;
   PleromaPushSubscribeData({this.alerts});
 
@@ -69,24 +116,22 @@ class PleromaPushSubscribeData {
 }
 
 @JsonSerializable()
-@HiveType()
 class PleromaPushSettingsDataAlerts {
-  @HiveField(1)
-  bool favourite;
-  @HiveField(2)
-  bool follow;
-  @HiveField(3)
-  bool mention;
-  @HiveField(4)
-  bool reblog;
-  @HiveField(5)
-  bool poll;
+  final bool favourite;
+
+  final bool follow;
+
+  final bool mention;
+
+  final bool reblog;
+
+  final bool poll;
   PleromaPushSettingsDataAlerts({
-    this.favourite,
-    this.follow,
-    this.mention,
-    this.reblog,
-    this.poll,
+    @required this.favourite,
+    @required this.follow,
+    @required this.mention,
+    @required this.reblog,
+    @required this.poll,
   });
 
   PleromaPushSettingsDataAlerts.defaultAllEnabled()
@@ -128,7 +173,7 @@ class PleromaPushSettingsDataAlerts {
       jsonEncode(_$PleromaPushSettingsDataAlertsToJson(this));
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class PleromaPushSubscribeRequestSubscription {
   /// Endpoint URL that is called when a notification event occurs.
   String endpoint;

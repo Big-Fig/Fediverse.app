@@ -1,6 +1,7 @@
 import 'dart:io';
 
-import 'package:fedi/disposable/disposable_owner.dart';
+
+import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:fedi/refactored/push/relay/push_relay_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';

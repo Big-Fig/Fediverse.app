@@ -1,9 +1,10 @@
+
+import 'package:fedi/refactored/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/refactored/pleroma/push/pleroma_push_model.dart';
-import 'package:fedi/refactored/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IPleromaPushService implements Disposable {
+abstract class IPleromaPushService extends IPleromaApi {
 
   static IPleromaPushService of(BuildContext context,
       {listen: true}) =>
@@ -14,11 +15,14 @@ abstract class IPleromaPushService implements Disposable {
   /// If you create a new subscription, the old subscription is deleted.
   /// It's based on access token
   /// return success or not
-  Future<bool> subscribe({
+  Future<PleromaPushSubscription> subscribe({
     /// WebPush callback url, on mobile it may be created via PushRelayService
     @required String endpointCallbackUrl,
     @required PleromaPushSubscribeData data,
   });
+
+  Future<PleromaPushSubscription> retrieveCurrentSubscription();
+
 
 
   /// Remove subscription for current access token

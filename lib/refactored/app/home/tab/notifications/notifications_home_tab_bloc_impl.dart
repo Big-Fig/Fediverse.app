@@ -1,18 +1,12 @@
-import 'package:fedi/refactored/app/push/local_preferences/push_local_preferences_bloc.dart';
-import 'package:fedi/refactored/app/status/list/cached/status_cached_list_service.dart';
-import 'package:fedi/refactored/app/status/pagination/cached/status_cached_pagination_bloc.dart';
-import 'package:fedi/refactored/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
-import 'package:fedi/refactored/pleroma/account/pleroma_account_service.dart';
-import 'package:fedi/refactored/pleroma/notification/pleroma_notification_service.dart';
 import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
 import 'package:fedi/refactored/app/auth/instance/current/current_instance_bloc.dart';
 import 'package:fedi/refactored/app/home/tab/notifications/notifications_home_tab_bloc.dart';
 import 'package:fedi/refactored/app/home/tab/notifications/notifications_home_tab_model.dart';
-import 'package:fedi/refactored/app/status/pagination/list/status_pagination_list_bloc.dart';
-import 'package:fedi/refactored/app/status/pagination/list/status_pagination_list_bloc_impl.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
+import 'package:fedi/refactored/pleroma/account/pleroma_account_service.dart';
+import 'package:fedi/refactored/pleroma/notification/pleroma_notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -21,7 +15,6 @@ var _logger = Logger("notifications_home_tab_page_bloc_impl.dart");
 
 class NotificationsHomeTabBloc extends DisposableOwner
     implements INotificationsHomeTabBloc {
-
   @override
   void selectTab(NotificationTab tab) {
     selectedTabSubject.add(tab);
@@ -42,7 +35,6 @@ class NotificationsHomeTabBloc extends DisposableOwner
   final IAccountRepository accountRepository;
   final IMyAccountBloc myAccountBloc;
   final ICurrentInstanceBloc currentInstanceBloc;
-  final IPushLocalPreferencesBloc pushLocalPreferencesBloc;
 
   NotificationsHomeTabBloc({
     @required NotificationTab startTab,
@@ -52,28 +44,26 @@ class NotificationsHomeTabBloc extends DisposableOwner
     @required this.accountRepository,
     @required this.myAccountBloc,
     @required this.currentInstanceBloc,
-    @required this.pushLocalPreferencesBloc,
   }) {
     selectedTabSubject = BehaviorSubject.seeded(startTab);
 
     addDisposable(subject: selectedTabSubject);
 
     _logger.finest(() => "constructor");
-
   }
 
   static NotificationsHomeTabBloc createFromContext(BuildContext context) =>
-      NotificationsHomeTabBloc(startTab: NotificationTab.all,
-          pleromaNotificationService: IPleromaNotificationService.of(
-              context, listen: false),
-          pleromaAccountService: IPleromaAccountService.of(
-              context, listen: false),
-          statusRepository: IStatusRepository.of(context, listen: false),
-          accountRepository: IAccountRepository.of(context, listen: false),
-          myAccountBloc: IMyAccountBloc.of(context, listen: false),
-          currentInstanceBloc: ICurrentInstanceBloc.of(context, listen: false),
-          pushLocalPreferencesBloc: IPushLocalPreferencesBloc.of(
-              context, listen: false));
+      NotificationsHomeTabBloc(
+        startTab: NotificationTab.all,
+        pleromaNotificationService:
+            IPleromaNotificationService.of(context, listen: false),
+        pleromaAccountService:
+            IPleromaAccountService.of(context, listen: false),
+        statusRepository: IStatusRepository.of(context, listen: false),
+        accountRepository: IAccountRepository.of(context, listen: false),
+        myAccountBloc: IMyAccountBloc.of(context, listen: false),
+        currentInstanceBloc: ICurrentInstanceBloc.of(context, listen: false),
+      );
 //
 //
 //  @override

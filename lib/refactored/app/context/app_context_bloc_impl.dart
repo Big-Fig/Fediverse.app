@@ -20,6 +20,8 @@ import 'package:fedi/refactored/permission/permissions_service_impl.dart';
 import 'package:fedi/refactored/permission/storage_permission_bloc.dart';
 import 'package:fedi/refactored/permission/storage_permission_bloc_impl.dart';
 import 'package:fedi/refactored/provider/provider_context_bloc_impl.dart';
+import 'package:fedi/refactored/push/relay/push_relay_service.dart';
+import 'package:fedi/refactored/push/relay/push_relay_service_impl.dart';
 import 'package:logging/logging.dart';
 
 var _logger = Logger("app_context_bloc_impl.dart");
@@ -33,7 +35,6 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     var connectionService = ConnectionService();
     await globalProviderService
         .asyncInitAndRegister<IConnectionService>(connectionService);
-
 
     await globalProviderService
         .asyncInitAndRegister<IPermissionsService>(PermissionsService());
@@ -71,5 +72,11 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
             instanceListBloc: instanceListBloc,
             currentInstanceLocalPreferenceBloc:
                 currentInstanceLocalPreferenceBloc));
+
+    var pushRelayService =
+        PushRelayService(pushRelayBaseUrl: "https://pushrelay3.your.org/push/");
+    addDisposable(disposable: pushRelayService);
+    await globalProviderService
+        .asyncInitAndRegister<IPushRelayService>(pushRelayService);
   }
 }

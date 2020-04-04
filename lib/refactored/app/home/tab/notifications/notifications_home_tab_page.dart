@@ -10,8 +10,7 @@ import 'package:fedi/refactored/app/notification/pagination/cached/notification_
 import 'package:fedi/refactored/app/notification/pagination/list/notification_pagination_list_bloc.dart';
 import 'package:fedi/refactored/app/notification/pagination/list/notification_pagination_list_bloc_impl.dart';
 import 'package:fedi/refactored/app/notification/pagination/list/notification_pagination_list_widget.dart';
-import 'package:fedi/refactored/app/push/local_preferences/push_local_preferences_bloc.dart';
-import 'package:fedi/refactored/app/search/search_page.dart';
+import 'package:fedi/refactored/app/push/subscription/push_subscription_bloc.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:fedi/refactored/mastodon/notification/mastodon_notification_model.dart';
 import 'package:fedi/refactored/pagination/pagination_bloc.dart';
@@ -46,8 +45,8 @@ class NotificationsHomeTabPage extends StatelessWidget {
       key: _drawerKey,
       endDrawer: DisposableProvider<INotificationsHomeTabPageDrawerBloc>(
         create: (BuildContext context) => NotificationsHomeTabPageDrawerBloc(
-            localPreferencesBloc:
-                IPushLocalPreferencesBloc.of(context, listen: false)),
+            pushSettingsBloc:
+                IPushSubscriptionBloc.of(context, listen: false)),
         child: NotificationsHomeTabPageDrawerWidget(),
       ),
       body: SafeArea(

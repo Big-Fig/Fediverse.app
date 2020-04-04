@@ -1,11 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pages/Push/PushHelper.dart';
 import 'package:fedi/Pleroma/Models/ClientSettings.dart';
-import 'package:fedi/refactored/pleroma/account/my/pleroma_my_account_model.dart';
-import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/refactored/pleroma/emoji/pleroma_emoji_model.dart';
-import 'package:fedi/refactored/pleroma/field/pleroma_field_model.dart';
-import 'package:fedi/refactored/pleroma/push/pleroma_push_model.dart';
 import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
 import 'package:fedi/refactored/app/account/my/my_account_model.dart';
 import 'package:fedi/refactored/app/auth/instance/current/context/current_instance_context_bloc_impl.dart';
@@ -19,10 +14,17 @@ import 'package:fedi/refactored/app/auth/instance/join/join_instance_bloc_impl.d
 import 'package:fedi/refactored/app/auth/instance/join/join_instance_page.dart';
 import 'package:fedi/refactored/app/auth/instance/list/instance_list_model.dart';
 import 'package:fedi/refactored/app/context/app_context_bloc_impl.dart';
+import 'package:fedi/refactored/app/push/subscription/local_preferences/push_subscription_local_preferences_model.dart';
 import 'package:fedi/refactored/app/splash/app_splash_widget.dart';
 import 'package:fedi/refactored/app/timeline/local_preferences/timeline_local_preferences_model.dart';
 import 'package:fedi/refactored/async/loading/init/async_init_loading_model.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
+import 'package:fedi/refactored/pleroma/account/my/pleroma_my_account_model.dart';
+import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
+import 'package:fedi/refactored/pleroma/application/pleroma_application_model.dart';
+import 'package:fedi/refactored/pleroma/emoji/pleroma_emoji_model.dart';
+import 'package:fedi/refactored/pleroma/field/pleroma_field_model.dart';
+import 'package:fedi/refactored/pleroma/oauth/pleroma_oauth_model.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -34,8 +36,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:fedi/refactored/pleroma/oauth/pleroma_oauth_model.dart';
-import 'package:fedi/refactored/pleroma/application/pleroma_application_model.dart';
 
 import '../Pages/AppContainerPage.dart';
 import '../Pages/TermsOfService.dart';
@@ -62,8 +62,7 @@ void main() async {
   Hive.registerAdapter(PleromaMyAccountSourceAdapter(), 43);
   Hive.registerAdapter(PleromaMyAccountSourcePleromaPartAdapter(), 44);
   Hive.registerAdapter(TimelineLocalPreferencesAdapter(), 46);
-  Hive.registerAdapter(PleromaPushSubscribeDataAdapter(), 47);
-  Hive.registerAdapter(PleromaPushSettingsDataAlertsAdapter(), 48);
+  Hive.registerAdapter(PushSubscriptionLocalPreferencesAdapter(), 47);
 
   Hive.registerAdapter(InstanceListAdapter(), 49);
   Hive.registerAdapter(InstanceAdapter(), 50);
@@ -94,7 +93,9 @@ void main() async {
     if (newState == AsyncInitLoadingState.finished) {
       var currentInstanceBloc = appContextBloc.get<ICurrentInstanceBloc>();
 
-      currentInstanceBloc.currentInstanceStream.distinct().listen((currentInstance) {
+      currentInstanceBloc.currentInstanceStream
+          .distinct()
+          .listen((currentInstance) {
         buildCurrentInstanceApp(appContextBloc, currentInstance);
       });
     }
@@ -120,7 +121,8 @@ void buildCurrentInstanceApp(
         preferencesService: appContextBloc.get(),
         connectionService: appContextBloc.get());
     await currentInstanceContextBloc.performAsyncInit();
-    _logger.finest(() => "buildCurrentInstanceApp CurrentInstanceContextLoadingPage");
+    _logger.finest(
+        () => "buildCurrentInstanceApp CurrentInstanceContextLoadingPage");
     runApp(EasyLocalization(
         child: appContextBloc.provideContextToChild(
             child: currentInstanceContextBloc.provideContextToChild(

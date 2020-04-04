@@ -1,4 +1,4 @@
-import 'package:fedi/disposable/disposable.dart';
+import 'package:fedi/refactored/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -10,7 +10,7 @@ abstract class IPushRelayService extends Disposable {
   /// Create Url to forward WebPushSubscription to FCM
   String createPushRelayEndPointUrl({
     @required String account,
-    @required String baseServerUrl,
+    @required Uri baseServerUrl,
     @required String fcmToken,
   });
 

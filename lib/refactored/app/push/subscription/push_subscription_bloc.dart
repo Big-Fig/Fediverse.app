@@ -2,10 +2,12 @@ import 'package:fedi/refactored/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class INotificationsHomeTabPageDrawerBloc extends Disposable {
-  static INotificationsHomeTabPageDrawerBloc of(BuildContext context,
-          {listen: true}) =>
-      Provider.of<INotificationsHomeTabPageDrawerBloc>(context, listen: listen);
+abstract class IPushSubscriptionBloc extends Disposable {
+
+  static IPushSubscriptionBloc of(BuildContext context, {listen: true}) =>
+      Provider.of<IPushSubscriptionBloc>(context, listen: listen);
+
+
 
   bool get favourite;
 
@@ -17,19 +19,19 @@ abstract class INotificationsHomeTabPageDrawerBloc extends Disposable {
 
   Stream<bool> get followStream;
 
-  Future<bool> changeFollow(bool value);
+  Future<bool>changeFollow(bool value);
 
   bool get mention;
 
   Stream<bool> get mentionStream;
 
-  Future<bool> changeMention(bool value);
+  Future<bool>changeMention(bool value);
 
   bool get reblog;
 
   Stream<bool> get reblogStream;
 
-  Future<bool> changeReblog(bool value);
+  Future<bool>changeReblog(bool value);
 
   bool get poll;
 
