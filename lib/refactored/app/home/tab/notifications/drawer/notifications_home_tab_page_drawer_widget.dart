@@ -7,34 +7,52 @@ import 'package:flutter/material.dart';
 class NotificationsHomeTabPageDrawerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SizedBox.shrink();
-//    var drawerBloc = INotificationsHomeTabPageDrawerBloc.of(context, listen: true);
+    var drawerBloc = INotificationsHomeTabPageDrawerBloc.of(context, listen: true);
 
-//    return Drawer(
-//      child: ListView(
-//        padding: EdgeInsets.zero,
-//        children: <Widget>[
-//          buildHeaderWidget(context),
-//          buildOptionListTile(
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          buildHeaderWidget(context),
+          buildOptionListTile(
+            // todo: localization
 //              AppLocalizations.of(context)
 //                  .tr("home.drawer.settings.media_only"),
-//              drawerBloc.onlyWithMediaStream,
-//              drawerBloc.onlyWithMedia,
-//              drawerBloc.changeOnlyWithMedia),
-//          buildOptionListTile(
+              "Favourites",
+              drawerBloc.favouriteStream,
+              drawerBloc.favourite,
+              drawerBloc.changeFavourite),
+          buildOptionListTile(
 //              AppLocalizations.of(context)
-//                  .tr("home.drawer.settings.hide_replies"),
-//              drawerBloc.onlyNoRepliesStream,
-//              drawerBloc.onlyNoReplies,
-//              drawerBloc.changeOnlyNoReplies),
-//          buildOptionListTile(
-//              AppLocalizations.of(context).tr("home.drawer.settings.hide_nsfw"),
-//              drawerBloc.onlyNoNsfwSensitiveStream,
-//              drawerBloc.onlyNoNsfwSensitive,
-//              drawerBloc.changeOnlyNoNsfwSensitive),
-//        ],
-//      ),
-//    );
+//                  .tr("home.drawer.settings.media_only"),
+              "Follows",
+              drawerBloc.followStream,
+              drawerBloc.follow,
+              drawerBloc.changeFollow),
+          buildOptionListTile(
+//              AppLocalizations.of(context)
+//                  .tr("home.drawer.settings.media_only"),
+              "Mentions",
+              drawerBloc.mentionStream,
+              drawerBloc.mention,
+              drawerBloc.changeMention),
+          buildOptionListTile(
+//              AppLocalizations.of(context)
+//                  .tr("home.drawer.settings.media_only"),
+              "Reblogs",
+              drawerBloc.reblogStream,
+              drawerBloc.reblog,
+              drawerBloc.changeReblog),
+          buildOptionListTile(
+//              AppLocalizations.of(context)
+//                  .tr("home.drawer.settings.media_only"),
+              "Pools",
+              drawerBloc.pollStream,
+              drawerBloc.poll,
+              drawerBloc.changePoll),
+        ],
+      ),
+    );
   }
 
   ListTile buildOptionListTile(String optionLabel, Stream<bool> optionStream,
@@ -73,7 +91,9 @@ class NotificationsHomeTabPageDrawerWidget extends StatelessWidget {
       width: 50,
       child: DrawerHeader(
         child: Text(
-          AppLocalizations.of(context).tr("home.drawer.settings.header"),
+          // todo: localization
+//          AppLocalizations.of(context).tr("home.drawer.settings.header"),
+        "Push notifications settings",
           style: TextStyle(color: Colors.white),
         ),
         decoration: BoxDecoration(

@@ -3,78 +3,6 @@
 part of 'pleroma_push_model.dart';
 
 // **************************************************************************
-// TypeAdapterGenerator
-// **************************************************************************
-
-class PleromaPushSubscribeDataAdapter
-    extends TypeAdapter<PleromaPushSubscribeData> {
-  @override
-  PleromaPushSubscribeData read(BinaryReader reader) {
-    var obj = PleromaPushSubscribeData();
-    var numOfFields = reader.readByte();
-    for (var i = 0; i < numOfFields; i++) {
-      switch (reader.readByte()) {
-        case 1:
-          obj.alerts = reader.read() as PleromaPushSettingsDataAlerts;
-          break;
-      }
-    }
-    return obj;
-  }
-
-  @override
-  void write(BinaryWriter writer, PleromaPushSubscribeData obj) {
-    writer.writeByte(1);
-    writer.writeByte(1);
-    writer.write(obj.alerts);
-  }
-}
-
-class PleromaPushSettingsDataAlertsAdapter
-    extends TypeAdapter<PleromaPushSettingsDataAlerts> {
-  @override
-  PleromaPushSettingsDataAlerts read(BinaryReader reader) {
-    var obj = PleromaPushSettingsDataAlerts();
-    var numOfFields = reader.readByte();
-    for (var i = 0; i < numOfFields; i++) {
-      switch (reader.readByte()) {
-        case 1:
-          obj.favourite = reader.read() as bool;
-          break;
-        case 2:
-          obj.follow = reader.read() as bool;
-          break;
-        case 3:
-          obj.mention = reader.read() as bool;
-          break;
-        case 4:
-          obj.reblog = reader.read() as bool;
-          break;
-        case 5:
-          obj.poll = reader.read() as bool;
-          break;
-      }
-    }
-    return obj;
-  }
-
-  @override
-  void write(BinaryWriter writer, PleromaPushSettingsDataAlerts obj) {
-    writer.writeByte(5);
-    writer.writeByte(1);
-    writer.write(obj.favourite);
-    writer.writeByte(2);
-    writer.write(obj.follow);
-    writer.writeByte(3);
-    writer.write(obj.mention);
-    writer.writeByte(4);
-    writer.write(obj.reblog);
-    writer.writeByte(5);
-    writer.write(obj.poll);
-  }
-}
-
-// **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
@@ -95,8 +23,35 @@ PleromaPushSubscribeRequest _$PleromaPushSubscribeRequestFromJson(
 Map<String, dynamic> _$PleromaPushSubscribeRequestToJson(
         PleromaPushSubscribeRequest instance) =>
     <String, dynamic>{
-      'data': instance.data,
-      'subscription': instance.subscription,
+      'data': instance.data?.toJson(),
+      'subscription': instance.subscription?.toJson(),
+    };
+
+PleromaPushSubscription _$PleromaPushSubscriptionFromJson(
+    Map<String, dynamic> json) {
+  return PleromaPushSubscription(
+    id: json['id'] as String,
+    endpoint: json['endpoint'] as String,
+    alerts: json['alerts'] == null
+        ? null
+        : PleromaPushSettingsDataAlerts.fromJson(
+            json['alerts'] as Map<String, dynamic>),
+    serverKey: json['server_key'] as String,
+    subscription: json['subscription'] == null
+        ? null
+        : PleromaPushSubscribeRequestSubscription.fromJson(
+            json['subscription'] as Map<String, dynamic>),
+  );
+}
+
+Map<String, dynamic> _$PleromaPushSubscriptionToJson(
+        PleromaPushSubscription instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'endpoint': instance.endpoint,
+      'alerts': instance.alerts?.toJson(),
+      'server_key': instance.serverKey,
+      'subscription': instance.subscription?.toJson(),
     };
 
 PleromaPushSubscribeData _$PleromaPushSubscribeDataFromJson(
@@ -112,7 +67,7 @@ PleromaPushSubscribeData _$PleromaPushSubscribeDataFromJson(
 Map<String, dynamic> _$PleromaPushSubscribeDataToJson(
         PleromaPushSubscribeData instance) =>
     <String, dynamic>{
-      'alerts': instance.alerts,
+      'alerts': instance.alerts?.toJson(),
     };
 
 PleromaPushSettingsDataAlerts _$PleromaPushSettingsDataAlertsFromJson(
@@ -152,7 +107,7 @@ Map<String, dynamic> _$PleromaPushSubscribeRequestSubscriptionToJson(
         PleromaPushSubscribeRequestSubscription instance) =>
     <String, dynamic>{
       'endpoint': instance.endpoint,
-      'keys': instance.keys,
+      'keys': instance.keys?.toJson(),
     };
 
 PleromaPushSettingsSubscriptionKeys
