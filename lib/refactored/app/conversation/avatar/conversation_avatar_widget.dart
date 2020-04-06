@@ -17,11 +17,13 @@ class ConversationAvatarWidget extends StatelessWidget {
     return SizedBox(
       width: baseAvatarSize,
       height: baseAvatarSize,
-      child: InitialDataStreamBuilder<List<IAccount>>(
-          stream: conversationBloc.accountsWithoutMeStream,
-          initialData: conversationBloc.accountsWithoutMe,
+      child: StreamBuilder<List<IAccount>>(
+          stream: conversationBloc.accountsWithoutMeStream.distinct(),
           builder: (context, snapshot) {
             var accounts = snapshot.data;
+            if(accounts?.isNotEmpty != true) {
+              return SizedBox.shrink();
+            }
 
             switch (accounts.length) {
               case 1:
