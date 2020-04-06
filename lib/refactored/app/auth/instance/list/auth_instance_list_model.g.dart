@@ -1,21 +1,20 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'push_handler_unhandled_local_preferences_model.dart';
+part of 'auth_instance_list_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class PushHandlerUnhandledListAdapter
-    extends TypeAdapter<PushHandlerUnhandledList> {
+class AuthInstanceListAdapter extends TypeAdapter<AuthInstanceList> {
   @override
-  PushHandlerUnhandledList read(BinaryReader reader) {
-    var obj = PushHandlerUnhandledList();
+  AuthInstanceList read(BinaryReader reader) {
+    var obj = AuthInstanceList();
     var numOfFields = reader.readByte();
     for (var i = 0; i < numOfFields; i++) {
       switch (reader.readByte()) {
         case 0:
-          obj.messages = (reader.read() as List)?.cast<PleromaPushMessage>();
+          obj.instances = (reader.read() as List)?.cast<AuthInstance>();
           break;
       }
     }
@@ -23,9 +22,9 @@ class PushHandlerUnhandledListAdapter
   }
 
   @override
-  void write(BinaryWriter writer, PushHandlerUnhandledList obj) {
+  void write(BinaryWriter writer, AuthInstanceList obj) {
     writer.writeByte(1);
     writer.writeByte(0);
-    writer.write(obj.messages);
+    writer.write(obj.instances);
   }
 }

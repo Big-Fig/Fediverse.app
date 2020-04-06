@@ -1,3 +1,0 @@
-enum InstanceState {
-  notLogged, logged
-}

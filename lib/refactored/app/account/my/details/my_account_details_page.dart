@@ -5,7 +5,7 @@ import 'package:fedi/refactored/app/account/details/account_details_widget.dart'
 import 'package:fedi/refactored/app/account/my/actions/my_account_actions_bottom_sheet_dialog.dart';
 import 'package:fedi/refactored/app/account/my/edit/edit_my_account_page.dart';
 import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
-import 'package:fedi/refactored/app/auth/instance/current/current_instance_bloc.dart';
+import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -55,7 +55,7 @@ class MyAccountDetailsPage extends StatelessWidget {
       );
 
   Widget buildCurrentInstanceNameWidget(BuildContext context) {
-    var currentInstanceBloc = ICurrentInstanceBloc.of(context, listen: false);
+    var currentInstanceBloc = ICurrentAuthInstanceBloc.of(context, listen: false);
     return AutoSizeText(
       currentInstanceBloc.currentInstance.userAtHost,
       minFontSize: 12,

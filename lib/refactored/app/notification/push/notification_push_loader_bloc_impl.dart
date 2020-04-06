@@ -1,4 +1,4 @@
-import 'package:fedi/refactored/app/auth/instance/instance_model.dart';
+import 'package:fedi/refactored/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/refactored/app/notification/push/notification_push_loader_bloc.dart';
 import 'package:fedi/refactored/app/notification/repository/notification_repository.dart';
 import 'package:fedi/refactored/app/push/handler/push_handler_bloc.dart';
@@ -10,7 +10,7 @@ import 'package:flutter/widgets.dart';
 
 abstract class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
     implements INotificationPushLoaderBloc {
-  final Instance currentInstance;
+  final AuthInstance currentInstance;
   final IPushHandlerBloc pushHandlerBloc;
   final IPleromaNotificationService pleromaNotificationService;
   final INotificationRepository notificationRepository;

@@ -3,8 +3,8 @@ import 'package:fedi/refactored/app/auth/host/auth_host_access_token_local_prefe
 import 'package:fedi/refactored/app/auth/host/auth_host_application_local_preference_bloc.dart';
 import 'package:fedi/refactored/app/auth/host/auth_host_application_local_preference_bloc_impl.dart';
 import 'package:fedi/refactored/app/auth/host/auth_host_bloc.dart';
-import 'package:fedi/refactored/app/auth/instance/current/current_instance_bloc.dart';
-import 'package:fedi/refactored/app/auth/instance/instance_model.dart';
+import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/refactored/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/refactored/connection/connection_service.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:fedi/refactored/local_preferences/local_preferences_service.dart';
@@ -46,7 +46,7 @@ class AuthHostBloc extends DisposableOwner implements IAuthHostBloc {
       authHostApplicationLocalPreferenceBloc;
   IAuthHostAccessTokenLocalPreferenceBloc
       authHostAccessTokenLocalPreferenceBloc;
-  ICurrentInstanceBloc currentInstanceBloc;
+  ICurrentAuthInstanceBloc currentInstanceBloc;
   final IConnectionService connectionService;
 
   AuthHostBloc({
@@ -138,7 +138,7 @@ class AuthHostBloc extends DisposableOwner implements IAuthHostBloc {
 
   @override
   Future<bool> launchLoginToAccount(
-      {@required InstanceCallback successCallback,
+      {@required AuthInstanceCallback successCallback,
       @required Function(dynamic error) errorCallback}) async {
     await checkApplicationRegistration();
     return pleromaOAuthService.launchAuthorizeFormAndExtractAuthorizationCode(
@@ -167,7 +167,7 @@ class AuthHostBloc extends DisposableOwner implements IAuthHostBloc {
 
           var myAccount = await pleromaMyAccountService.verifyCredentials();
 
-          var instance = Instance(
+          var instance = AuthInstance(
               urlHost: instanceBaseUrlHost.toLowerCase(),
               urlSchema: instanceBaseUrlSchema,
               authCode: authCode,
@@ -217,7 +217,7 @@ class AuthHostBloc extends DisposableOwner implements IAuthHostBloc {
           preferencesService:
               ILocalPreferencesService.of(context, listen: false),
           connectionService: IConnectionService.of(context, listen: false),
-          currentInstanceBloc: ICurrentInstanceBloc.of(context, listen: false));
+          currentInstanceBloc: ICurrentAuthInstanceBloc.of(context, listen: false));
 
   @override
   Future logout() async {

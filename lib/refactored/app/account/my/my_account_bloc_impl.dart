@@ -10,7 +10,7 @@ import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
 import 'package:fedi/refactored/app/account/my/my_account_local_preference_bloc.dart';
 import 'package:fedi/refactored/app/account/my/my_account_model.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
-import 'package:fedi/refactored/app/auth/instance/instance_model.dart';
+import 'package:fedi/refactored/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/refactored/app/emoji/emoji_text_model.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
@@ -25,7 +25,7 @@ class MyAccountBloc extends DisposableOwner implements IMyAccountBloc {
   final IAccountRepository accountRepository;
 
   @override
-  final Instance instance;
+  final AuthInstance instance;
 
   @override
   bool get isLocalCacheExist => account != null;

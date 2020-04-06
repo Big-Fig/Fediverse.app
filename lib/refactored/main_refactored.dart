@@ -1,16 +1,16 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
 import 'package:fedi/refactored/app/account/my/my_account_model.dart';
-import 'package:fedi/refactored/app/auth/instance/current/context/current_instance_context_bloc_impl.dart';
-import 'package:fedi/refactored/app/auth/instance/current/context/loading/current_instance_context_loading_bloc.dart';
-import 'package:fedi/refactored/app/auth/instance/current/context/loading/current_instance_context_loading_bloc_impl.dart';
-import 'package:fedi/refactored/app/auth/instance/current/context/loading/current_instance_context_loading_page.dart';
-import 'package:fedi/refactored/app/auth/instance/current/current_instance_bloc.dart';
-import 'package:fedi/refactored/app/auth/instance/instance_model.dart';
-import 'package:fedi/refactored/app/auth/instance/join/join_instance_bloc.dart';
-import 'package:fedi/refactored/app/auth/instance/join/join_instance_bloc_impl.dart';
-import 'package:fedi/refactored/app/auth/instance/join/join_instance_page.dart';
-import 'package:fedi/refactored/app/auth/instance/list/instance_list_model.dart';
+import 'package:fedi/refactored/app/auth/instance/current/context/current_auth_instance_context_bloc_impl.dart';
+import 'package:fedi/refactored/app/auth/instance/current/context/loading/current_auth_instance_context_loading_bloc.dart';
+import 'package:fedi/refactored/app/auth/instance/current/context/loading/current_auth_instance_context_loading_bloc_impl.dart';
+import 'package:fedi/refactored/app/auth/instance/current/context/loading/current_auth_instance_context_loading_page.dart';
+import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/refactored/app/auth/instance/auth_instance_model.dart';
+import 'package:fedi/refactored/app/auth/instance/join/join_auth_instance_bloc.dart';
+import 'package:fedi/refactored/app/auth/instance/join/join_auth_instance_bloc_impl.dart';
+import 'package:fedi/refactored/app/auth/instance/join/join_auth_instance_page.dart';
+import 'package:fedi/refactored/app/auth/instance/list/auth_instance_list_model.dart';
 import 'package:fedi/refactored/app/context/app_context_bloc_impl.dart';
 import 'package:fedi/refactored/app/home/home_page.dart';
 import 'package:fedi/refactored/app/push/subscription/local_preferences/push_subscription_local_preferences_model.dart';
@@ -55,8 +55,8 @@ void main() async {
   Hive.registerAdapter(TimelineLocalPreferencesAdapter(), 46);
   Hive.registerAdapter(PushSubscriptionLocalPreferencesAdapter(), 47);
 
-  Hive.registerAdapter(InstanceListAdapter(), 49);
-  Hive.registerAdapter(InstanceAdapter(), 50);
+  Hive.registerAdapter(AuthInstanceListAdapter(), 49);
+  Hive.registerAdapter(AuthInstanceAdapter(), 50);
   Hive.registerAdapter(PleromaOAuthTokenAdapter(), 51);
   Hive.registerAdapter(PleromaClientApplicationAdapter(), 52);
   Hive.registerAdapter(MyAccountRemoteWrapperAdapter(), 53);
@@ -82,7 +82,7 @@ void main() async {
         "$newState");
 
     if (newState == AsyncInitLoadingState.finished) {
-      var currentInstanceBloc = appContextBloc.get<ICurrentInstanceBloc>();
+      var currentInstanceBloc = appContextBloc.get<ICurrentAuthInstanceBloc>();
 
       currentInstanceBloc.currentInstanceStream
           .distinct()
@@ -93,7 +93,7 @@ void main() async {
   });
 }
 
-CurrentInstanceContextBloc currentInstanceContextBloc;
+CurrentAuthInstanceContextBloc currentInstanceContextBloc;
 
 void showSplashPage(AppContextBloc appContextBloc) {
   runApp(
@@ -101,13 +101,13 @@ void showSplashPage(AppContextBloc appContextBloc) {
 }
 
 void buildCurrentInstanceApp(
-    AppContextBloc appContextBloc, Instance currentInstance) async {
+    AppContextBloc appContextBloc, AuthInstance currentInstance) async {
   _logger.finest(() => "buildCurrentInstanceApp $buildCurrentInstanceApp");
   if (currentInstance != null) {
     showSplashPage(appContextBloc);
     currentInstanceContextBloc?.dispose();
 
-    currentInstanceContextBloc = CurrentInstanceContextBloc(
+    currentInstanceContextBloc = CurrentAuthInstanceContextBloc(
         currentInstance: currentInstance,
         preferencesService: appContextBloc.get(),
         connectionService: appContextBloc.get(),
@@ -119,20 +119,20 @@ void buildCurrentInstanceApp(
     runApp(EasyLocalization(
         child: appContextBloc.provideContextToChild(
             child: currentInstanceContextBloc.provideContextToChild(
-                child: DisposableProvider<ICurrentInstanceContextLoadingBloc>(
-                    create: (context) => CurrentInstanceContextLoadingBloc(
+                child: DisposableProvider<ICurrentAuthInstanceContextLoadingBloc>(
+                    create: (context) => CurrentAuthInstanceContextLoadingBloc(
                         myAccountBloc:
                             IMyAccountBloc.of(context, listen: false)),
                     child: MyApp(
-                        child: CurrentInstanceContextLoadingPage(
+                        child: CurrentAuthInstanceContextLoadingPage(
                       child: const HomePage(),
                     )))))));
   } else {
     runApp(EasyLocalization(
         child: appContextBloc.provideContextToChild(
-            child: DisposableProvider<IJoinInstanceBloc>(
-                create: (context) => JoinInstanceBloc(),
-                child: MyApp(child: JoinInstancePage())))));
+            child: DisposableProvider<IJoinAuthInstanceBloc>(
+                create: (context) => JoinAuthInstanceBloc(),
+                child: MyApp(child: JoinAuthInstancePage())))));
   }
 }
 

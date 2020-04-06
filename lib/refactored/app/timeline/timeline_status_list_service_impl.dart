@@ -2,7 +2,7 @@ import 'package:fedi/refactored/app/status/list/cached/status_cached_list_servic
 import 'package:fedi/refactored/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/refactored/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/refactored/pleroma/timeline/pleroma_timeline_service.dart';
-import 'package:fedi/refactored/app/auth/instance/current/current_instance_bloc.dart';
+import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository_model.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
@@ -19,7 +19,7 @@ abstract class TimelineStatusListService extends DisposableOwner
     implements IStatusCachedListService {
   final IPleromaTimelineService pleromaTimelineService;
   final IStatusRepository statusRepository;
-  final ICurrentInstanceBloc currentInstanceBloc;
+  final ICurrentAuthInstanceBloc currentInstanceBloc;
   final TimelineLocalPreferencesBloc timelineLocalPreferencesBloc;
 
   TimelineStatusListService(
