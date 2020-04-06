@@ -36,8 +36,6 @@ class PleromaStatusEmojiReactionService
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  @override
-  bool get isPleromaInstance => restService.isPleromaInstance;
 
   PleromaStatusEmojiReactionService({@required this.restService});
 

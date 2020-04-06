@@ -1,4 +1,3 @@
-import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/refactored/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/refactored/pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/refactored/connection/connection_service.dart';
@@ -61,11 +60,5 @@ class PleromaRestService extends DisposableOwner implements IPleromaRestService 
   Future<Response> uploadFileMultipartRequest<T extends UploadMultipartRestRequest, K>(T request) {
     return restService.uploadFileMultipartRequest(request);
   }
-
-  // TODO: should be removed after current instance swap refactoring
-  @override
-  bool get isPleromaInstance => CurrentInstance.instance.currentAccount
-      .pleroma != null;
-
 
 }

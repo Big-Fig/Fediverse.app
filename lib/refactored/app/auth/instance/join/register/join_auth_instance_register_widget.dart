@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/refactored/app/dialog/alert_dialog.dart';
+import 'package:fedi/refactored/app/dialog/progress_dialog.dart';
 import 'package:fedi/refactored/pleroma/account/public/pleroma_account_public_model.dart';
-import 'package:fedi/Views/Alert.dart';
-import 'package:fedi/Views/ProgressDialog.dart';
 import 'package:fedi/refactored/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/refactored/app/auth/instance/join/register/join_auth_instance_register_bloc.dart';
 import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';

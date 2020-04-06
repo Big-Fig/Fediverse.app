@@ -1,9 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/Views/Alert.dart';
-import 'package:fedi/Views/ProgressDialog.dart';
 import 'package:fedi/refactored/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/refactored/app/auth/instance/join/join_auth_instance_bloc.dart';
 import 'package:fedi/refactored/app/auth/instance/join/register/join_auth_instance_register_page.dart';
+import 'package:fedi/refactored/app/dialog/alert_dialog.dart';
+import 'package:fedi/refactored/app/dialog/progress_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -163,6 +163,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
     var joinInstanceBloc = IJoinAuthInstanceBloc.of(context, listen: false);
 
     var hostTextController = joinInstanceBloc.hostTextController;
+    // todo: fix hardcode
     if (hostTextController.text == "" ||
         hostTextController.text.contains("fedi.app")) {
       goToJoinAuthInstanceRegisterPage(context);

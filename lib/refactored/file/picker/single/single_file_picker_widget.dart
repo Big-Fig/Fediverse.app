@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/Views/LocalVideoPlayer.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:fedi/refactored/file/gallery/file_gallery_bloc.dart';
 import 'package:fedi/refactored/file/gallery/file_gallery_bloc_impl.dart';
@@ -8,6 +7,7 @@ import 'package:fedi/refactored/file/picker/file_picker_bloc.dart';
 import 'package:fedi/refactored/file/picker/file_picker_body_widget.dart';
 import 'package:fedi/refactored/file/picker/file_picker_model.dart';
 import 'package:fedi/refactored/file/picker/gallery/file_picker_gallery_adapter.dart';
+import 'package:fedi/refactored/media/video/media_video_player_widget.dart';
 import 'package:fedi/refactored/permission/storage_permission_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -38,7 +38,7 @@ class SingleFilePickerWidget extends FilePickerBodyWidget {
               return AlertDialog(
                   title: Text(AppLocalizations.of(context)
                       .tr("file.picker.single.video.confirm.dialog.title")),
-                  content: LocalVideoPlayer(
+                  content: MediaVideoPlayerWidget(
                     file: filePickerFile.file,
                   ),
                   actions: [

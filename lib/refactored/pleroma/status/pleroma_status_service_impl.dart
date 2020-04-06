@@ -34,9 +34,6 @@ class PleromaStatusService implements IPleromaStatusService {
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  @override
-  bool get isPleromaInstance => restService.isPleromaInstance;
-
   PleromaStatusService({@required this.restService});
 
   @override

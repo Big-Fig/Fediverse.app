@@ -36,9 +36,6 @@ class PleromaAccountService implements IPleromaAccountService {
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  @override
-  bool get isPleromaInstance => restService.isPleromaInstance;
-
   PleromaAccountService({@required this.restService});
 
   List<IPleromaAccount> parseAccountListResponse(Response httpResponse) {

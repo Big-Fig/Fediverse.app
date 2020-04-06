@@ -34,9 +34,6 @@ class PleromaConversationService implements IPleromaConversationService {
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  @override
-  bool get isPleromaInstance => restService.isPleromaInstance;
-
   PleromaConversationService({@required this.restService});
 
   @override

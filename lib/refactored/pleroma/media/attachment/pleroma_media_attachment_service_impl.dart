@@ -33,9 +33,6 @@ class PleromaMediaAttachmentService implements IPleromaMediaAttachmentService {
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
   @override
-  bool get isPleromaInstance => restService.isPleromaInstance;
-
-  @override
   Future<PleromaMediaAttachment> uploadMedia({@required File file}) async {
     var httpResponse = await restService.uploadFileMultipartRequest(
         UploadMultipartRestRequest.post(

@@ -1,7 +1,7 @@
-import 'package:fedi/Views/LocalVideoPlayer.dart';
 import 'package:fedi/refactored/app/media/attachment/upload/upload_media_attachment_bloc.dart';
 import 'package:fedi/refactored/app/media/attachment/upload/upload_media_attachment_model.dart';
 import 'package:fedi/refactored/file/picker/file_picker_model.dart';
+import 'package:fedi/refactored/media/video/media_video_player_widget.dart';
 import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +56,7 @@ class UploadMediaAttachmentGridItem extends StatelessWidget {
         return Image.file(asset.file);
         break;
       case FilePickerFileType.video:
-        return LocalVideoPlayer(
+        return MediaVideoPlayerWidget(
           file: asset.file,
         );
         break;
