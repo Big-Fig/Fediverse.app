@@ -137,6 +137,7 @@ flutter:
     - assets/images/theme/logo.png
     - assets/images/double_ring_loading_io.gif
     - assets/langs/en-US.json
+    - assets/langs/refactored/en-US.json
     - assets/images/comment-icon.png
     - assets/images/comment.png
     - assets/images/favorites.png
