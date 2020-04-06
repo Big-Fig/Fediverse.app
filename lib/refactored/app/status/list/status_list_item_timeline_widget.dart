@@ -91,9 +91,9 @@ class _StatusListItemTimelineWidgetState
                     return SizedBox.shrink();
                   }
                 }),
-            InitialDataStreamBuilder<bool>(
+            StreamBuilder<bool>(
                 stream: statusBloc.isHaveInReplyToAccountStream,
-                initialData: statusBloc.isHaveInReplyToAccount,
+//                initialData: statusBloc.isHaveInReplyToAccount,
                 builder: (context, snapshot) {
                   var isHaveInReplyToAccount = snapshot.data;
                   if (isHaveInReplyToAccount == true) {

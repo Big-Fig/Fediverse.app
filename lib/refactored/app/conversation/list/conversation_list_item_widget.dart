@@ -79,9 +79,9 @@ class ConversationListItemWidget extends StatelessWidget {
 
   Widget buildLastStatusText(BuildContext context,
       IConversationBloc conversationBloc) {
-    return InitialDataStreamBuilder<IStatus>(
+    return StreamBuilder<IStatus>(
         stream: conversationBloc.lastStatusStream,
-        initialData: conversationBloc.lastStatus,
+
         builder: (context, snapshot) {
           var lastStatus = snapshot.data;
 

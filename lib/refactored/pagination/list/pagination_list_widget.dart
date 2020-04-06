@@ -126,16 +126,21 @@ class _PaginationListWidgetState<T> extends State<PaginationListWidget<T>> {
   void initState() {
     super.initState();
 
-    Future.delayed(Duration(milliseconds: 500), () {
-      IPaginationListBloc<PaginationPage<T>, T> paginationListBloc =
-          widget.retrievePaginationListBloc(context, listen: false);
+    Future.delayed(Duration(milliseconds: 100), () {
+      try {
+        IPaginationListBloc<PaginationPage<T>, T> paginationListBloc =
+        widget.retrievePaginationListBloc(context, listen: false);
 
-      if (!paginationListBloc.isRefreshedAtLeastOnce) {
-        var refreshController = paginationListBloc.refreshController;
-        if (refreshController.position != null) {
-          refreshController.requestRefresh();
+        if (!paginationListBloc.isRefreshedAtLeastOnce) {
+          var refreshController = paginationListBloc.refreshController;
+          if (refreshController.position != null) {
+            refreshController.requestRefresh();
+          }
         }
+      } catch(e, stackTrace) {
+        _logger.warning(() => "error during refreshing", e,stackTrace);
       }
+
     });
   }
 
