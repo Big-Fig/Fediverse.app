@@ -4,7 +4,7 @@ import 'package:fedi/refactored/pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:fedi/refactored/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
-import 'package:fedi/refactored/app/auth/instance/current/current_instance_bloc.dart';
+import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/app/timeline/local_preferences/timeline_local_preferences_bloc_impl.dart';
 import 'package:fedi/refactored/app/timeline/timeline_model.dart';
@@ -35,7 +35,7 @@ class HomeTimelineService extends TimelineStatusListService
     @required IPleromaTimelineService pleromaTimelineService,
     @required IStatusRepository statusRepository,
     @required TimelineLocalPreferencesBloc timelineLocalPreferencesBloc,
-    @required ICurrentInstanceBloc currentInstanceBloc,
+    @required ICurrentAuthInstanceBloc currentInstanceBloc,
     @required this.homeAccount,
     @required this.accountRepository,
     @required this.pleromaAccountService,

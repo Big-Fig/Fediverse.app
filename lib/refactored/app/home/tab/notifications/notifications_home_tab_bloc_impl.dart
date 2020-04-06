@@ -1,6 +1,6 @@
 import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
-import 'package:fedi/refactored/app/auth/instance/current/current_instance_bloc.dart';
+import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/refactored/app/home/tab/notifications/notifications_home_tab_bloc.dart';
 import 'package:fedi/refactored/app/home/tab/notifications/notifications_home_tab_model.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
@@ -34,7 +34,7 @@ class NotificationsHomeTabBloc extends DisposableOwner
   final IStatusRepository statusRepository;
   final IAccountRepository accountRepository;
   final IMyAccountBloc myAccountBloc;
-  final ICurrentInstanceBloc currentInstanceBloc;
+  final ICurrentAuthInstanceBloc currentInstanceBloc;
 
   NotificationsHomeTabBloc({
     @required NotificationTab startTab,
@@ -62,7 +62,7 @@ class NotificationsHomeTabBloc extends DisposableOwner
         statusRepository: IStatusRepository.of(context, listen: false),
         accountRepository: IAccountRepository.of(context, listen: false),
         myAccountBloc: IMyAccountBloc.of(context, listen: false),
-        currentInstanceBloc: ICurrentInstanceBloc.of(context, listen: false),
+        currentInstanceBloc: ICurrentAuthInstanceBloc.of(context, listen: false),
       );
 //
 //

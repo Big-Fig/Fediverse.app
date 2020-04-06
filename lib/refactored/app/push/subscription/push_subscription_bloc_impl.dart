@@ -1,4 +1,4 @@
-import 'package:fedi/refactored/app/auth/instance/instance_model.dart';
+import 'package:fedi/refactored/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/refactored/app/push/subscription/local_preferences/push_subscription_local_preferences_bloc.dart';
 import 'package:fedi/refactored/app/push/subscription/local_preferences/push_subscription_local_preferences_model.dart';
 import 'package:fedi/refactored/app/push/subscription/push_subscription_bloc.dart';
@@ -15,7 +15,7 @@ class PushSubscriptionBloc extends DisposableOwner
       pushSubscriptionLocalPreferencesBloc;
   final IPleromaPushService pleromaPushService;
   final IPushRelayService pushRelayService;
-  final Instance currentInstance;
+  final AuthInstance currentInstance;
   final IFcmPushService fcmPushService;
 
   PushSubscriptionBloc({

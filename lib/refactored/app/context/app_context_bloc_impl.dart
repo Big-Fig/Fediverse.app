@@ -1,11 +1,11 @@
-import 'package:fedi/refactored/app/auth/instance/current/current_instance_bloc.dart';
-import 'package:fedi/refactored/app/auth/instance/current/current_instance_bloc_impl.dart';
-import 'package:fedi/refactored/app/auth/instance/current/current_instance_local_preference_bloc.dart';
-import 'package:fedi/refactored/app/auth/instance/current/current_instance_local_preference_bloc_impl.dart';
-import 'package:fedi/refactored/app/auth/instance/list/instance_list_bloc.dart';
-import 'package:fedi/refactored/app/auth/instance/list/instance_list_bloc_impl.dart';
-import 'package:fedi/refactored/app/auth/instance/list/instance_list_local_preference_bloc.dart';
-import 'package:fedi/refactored/app/auth/instance/list/instance_list_local_preference_bloc_impl.dart';
+import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_bloc_impl.dart';
+import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_local_preference_bloc.dart';
+import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_local_preference_bloc_impl.dart';
+import 'package:fedi/refactored/app/auth/instance/list/auth_instance_list_bloc.dart';
+import 'package:fedi/refactored/app/auth/instance/list/auth_instance_list_bloc_impl.dart';
+import 'package:fedi/refactored/app/auth/instance/list/auth_instance_list_local_preference_bloc.dart';
+import 'package:fedi/refactored/app/auth/instance/list/auth_instance_list_local_preference_bloc_impl.dart';
 import 'package:fedi/refactored/app/context/app_context_bloc.dart';
 import 'package:fedi/refactored/app/push/handler/push_handler_bloc.dart';
 import 'package:fedi/refactored/app/push/handler/push_handler_bloc_impl.dart';
@@ -58,26 +58,26 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
             globalProviderService.get<IPermissionsService>()));
 
     var instanceListLocalPreferenceBloc =
-        InstanceListLocalPreferenceBloc(preferencesService);
+        AuthInstanceListLocalPreferenceBloc(preferencesService);
     await globalProviderService.asyncInitAndRegister<
-        IInstanceListLocalPreferenceBloc>(instanceListLocalPreferenceBloc);
+        IAuthInstanceListLocalPreferenceBloc>(instanceListLocalPreferenceBloc);
 
-    var instanceListBloc = InstanceListBloc(
+    var instanceListBloc = AuthInstanceListBloc(
         instanceListLocalPreferenceBloc: instanceListLocalPreferenceBloc);
     await globalProviderService
-        .asyncInitAndRegister<IInstanceListBloc>(instanceListBloc);
+        .asyncInitAndRegister<IAuthInstanceListBloc>(instanceListBloc);
 
     var currentInstanceLocalPreferenceBloc =
-        CurrentInstanceLocalPreferenceBloc(preferencesService);
+        CurrentAuthInstanceLocalPreferenceBloc(preferencesService);
     await globalProviderService
-        .asyncInitAndRegister<ICurrentInstanceLocalPreferenceBloc>(
+        .asyncInitAndRegister<ICurrentAuthInstanceLocalPreferenceBloc>(
             currentInstanceLocalPreferenceBloc);
 
-    var currentInstanceBloc = CurrentInstanceBloc(
+    var currentInstanceBloc = CurrentAuthInstanceBloc(
         instanceListBloc: instanceListBloc,
         currentInstanceLocalPreferenceBloc: currentInstanceLocalPreferenceBloc);
     await globalProviderService
-        .asyncInitAndRegister<ICurrentInstanceBloc>(currentInstanceBloc);
+        .asyncInitAndRegister<ICurrentAuthInstanceBloc>(currentInstanceBloc);
 
     var pushRelayService =
         PushRelayService(pushRelayBaseUrl: "https://pushrelay3.your.org/push/");

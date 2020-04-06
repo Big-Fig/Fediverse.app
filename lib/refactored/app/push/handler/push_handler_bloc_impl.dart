@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:fedi/refactored/app/auth/instance/current/current_instance_bloc.dart';
-import 'package:fedi/refactored/app/auth/instance/instance_model.dart';
-import 'package:fedi/refactored/app/auth/instance/list/instance_list_bloc.dart';
+import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/refactored/app/auth/instance/auth_instance_model.dart';
+import 'package:fedi/refactored/app/auth/instance/list/auth_instance_list_bloc.dart';
 import 'package:fedi/refactored/app/push/handler/push_handler_bloc.dart';
 import 'package:fedi/refactored/app/push/handler/unhandled/push_handler_unhandled_local_preferences_bloc.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
@@ -17,8 +17,8 @@ var _logger = Logger("push_handler_bloc_impl.dart");
 class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
   final IPushHandlerUnhandledLocalPreferencesBloc unhandledLocalPreferencesBloc;
   final IFcmPushService fcmPushService;
-  final IInstanceListBloc instanceListBloc;
-  final ICurrentInstanceBloc currentInstanceBloc;
+  final IAuthInstanceListBloc instanceListBloc;
+  final ICurrentAuthInstanceBloc currentInstanceBloc;
 
   final List<IPushRealTimeHandler> realTimeHandlers = [];
 
@@ -78,7 +78,7 @@ class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
 
   @override
   List<PleromaPushMessage> loadUnhandledMessagesForInstance(
-          Instance instance) =>
+          AuthInstance instance) =>
       unhandledLocalPreferencesBloc.loadUnhandledMessagesForInstance(instance);
 
   @override

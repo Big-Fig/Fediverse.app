@@ -6,9 +6,9 @@ import 'package:fedi/Pages/Push/PushHelper.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
 import 'package:fedi/Views/Alert.dart';
-import 'package:fedi/refactored/app/auth/instance/chooser/instance_chooser_bloc.dart';
-import 'package:fedi/refactored/app/auth/instance/chooser/instance_chooser_bloc_impl.dart';
-import 'package:fedi/refactored/app/auth/instance/chooser/instance_chooser_widget.dart';
+import 'package:fedi/refactored/app/auth/instance/chooser/auth_instance_chooser_bloc.dart';
+import 'package:fedi/refactored/app/auth/instance/chooser/auth_instance_chooser_bloc_impl.dart';
+import 'package:fedi/refactored/app/auth/instance/chooser/auth_instance_chooser_widget.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:flutter/material.dart';
 
@@ -210,10 +210,10 @@ showMyAccountActionsBottomSheetDialog(BuildContext context) {
           builder: (BuildContext context) {
             return Container(
               height: 300,
-              child: DisposableProvider<IInstanceChooserBloc>(
+              child: DisposableProvider<IAuthInstanceChooserBloc>(
                   create: (context) =>
-                      InstanceChooserBloc.createFromContext(context),
-                  child: InstanceChooserWidget()),
+                      AuthInstanceChooserBloc.createFromContext(context),
+                  child: AuthInstanceChooserWidget()),
             );
           },
         ),

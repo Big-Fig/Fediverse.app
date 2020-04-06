@@ -1,4 +1,4 @@
-import 'package:fedi/refactored/app/auth/instance/current/current_instance_bloc.dart';
+import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/refactored/app/conversation/conversation_bloc.dart';
 import 'package:fedi/refactored/app/conversation/status/context_api/conversation_status_list_bloc_context_api_impl.dart';
 import 'package:fedi/refactored/app/conversation/status/conversation_api/conversation_status_list_bloc_conversation_api_impl.dart';
@@ -33,7 +33,7 @@ class ConversationWidget extends StatelessWidget {
                   child: Provider<IStatusCachedListService>(
                 create: (context) {
                   var currentInstanceBloc =
-                      ICurrentInstanceBloc.of(context, listen: false);
+                      ICurrentAuthInstanceBloc.of(context, listen: false);
 
                   if (currentInstanceBloc.currentInstance.isPleromaInstance) {
                     // pleroma instances support loading by conversation id
