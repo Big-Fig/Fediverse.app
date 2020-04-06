@@ -1,7 +1,6 @@
-import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:fedi/refactored/connection/connection_service.dart';
 import 'package:fedi/refactored/pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/refactored/pleroma/rest/pleroma_rest_service_impl.dart';
-import 'package:fedi/refactored/connection/connection_service.dart';
 import 'package:fedi/refactored/rest/rest_request_model.dart';
 import 'package:fedi/refactored/rest/rest_service.dart';
 import 'package:flutter/widgets.dart';
@@ -17,10 +16,8 @@ class PleromaAuthRestService extends PleromaRestService
   PleromaAuthRestService(
       {@required IRestService restService,
       @required IConnectionService connectionService,
-      @required this.accessToken
-      })
+      @required this.accessToken})
       : super(restService: restService, connectionService: connectionService);
-
 
   Map<String, String> createAuthHeaders() =>
       {"authorization": "Bearer $accessToken"};

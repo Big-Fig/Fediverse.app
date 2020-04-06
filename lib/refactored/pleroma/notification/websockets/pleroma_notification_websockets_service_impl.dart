@@ -1,4 +1,3 @@
-import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/refactored/pleroma/notification/websockets/channel/pleroma_notification_websockets_channel.dart';
 import 'package:fedi/refactored/pleroma/notification/websockets/channel/pleroma_notification_websockets_channel_impl.dart';
 import 'package:fedi/refactored/pleroma/notification/websockets/pleroma_notification_websockets_service.dart';
@@ -6,13 +5,12 @@ import 'package:flutter/widgets.dart';
 
 class PleromaNotificationWebSocketsService
     extends IPleromaNotificationWebSocketsService {
-  // TODO: should be refactored as constructor argument
-  // after current instance swap refactoring
-  String get baseUrl => CurrentInstance.instance.currentClient.baseURL;
+  final String baseUrl;
 
-  // TODO: should be refactored as constructor argument
-  // after current instance swap refactoring
-  String get accessToken => CurrentInstance.instance.currentClient.accessToken;
+  final String accessToken;
+
+  PleromaNotificationWebSocketsService(
+      {@required this.baseUrl, @required this.accessToken});
 
   final Map<PleromaNotificationWebSocketsChannelSettings,
       PleromaNotificationWebSocketsChannel> urlToChannel = Map();

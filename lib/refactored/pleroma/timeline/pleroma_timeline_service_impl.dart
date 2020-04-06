@@ -35,8 +35,6 @@ class PleromaTimelineService implements IPleromaTimelineService {
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  @override
-  bool get isPleromaInstance => restService.isPleromaInstance;
 
   PleromaTimelineService({@required this.restService});
 

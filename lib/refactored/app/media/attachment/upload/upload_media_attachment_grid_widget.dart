@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/Transitions/SlideBottomRoute.dart';
 import 'package:fedi/refactored/app/media/attachment/upload/upload_media_attachment_bloc.dart';
 import 'package:fedi/refactored/app/media/attachment/upload/upload_media_attachment_grid_item_widget.dart';
 import 'package:fedi/refactored/file/picker/single/single_file_picker_page.dart';

@@ -6,5 +6,4 @@ abstract class IPleromaAuthRestService implements IPleromaRestService {
   static IPleromaAuthRestService of(BuildContext context, {listen: true}) =>
       Provider.of<IPleromaAuthRestService>(context, listen: listen);
 
-  bool get isPleromaInstance;
 }

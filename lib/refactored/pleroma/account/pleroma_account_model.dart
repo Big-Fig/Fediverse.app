@@ -1,15 +1,10 @@
 import 'dart:convert';
 
-import 'package:fedi/Pleroma/Foundation/Client.dart';
-import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
-import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
-import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart';
 import 'package:fedi/refactored/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/refactored/pleroma/field/pleroma_field_model.dart';
 import 'package:fedi/refactored/mastodon/account/mastodon_account_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
-import 'package:http/http.dart' as http;
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_account_model.g.dart';

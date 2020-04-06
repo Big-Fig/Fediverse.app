@@ -1,10 +1,8 @@
-import 'package:fedi/Pages/Timeline/StatusDetail.dart';
 import 'package:fedi/refactored/app/status/list/status_list_item_media_widget.dart';
 import 'package:fedi/refactored/app/status/pagination/list/status_pagination_list_base_widget.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
 import 'package:fedi/refactored/app/status/status_bloc_impl.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
-import 'package:fedi/refactored/app/status/status_model_adapter.dart';
 import 'package:fedi/refactored/app/status/thread/status_thread_page.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';

@@ -1,5 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/Transitions/SlideBottomRoute.dart';
+import 'package:fedi/refactored/app/navigation/navigation_slide_bottom_route_builder.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:fedi/refactored/file/picker/file_picker_bloc.dart';
 import 'package:fedi/refactored/file/picker/file_picker_bottom_nav_bar_widget.dart';
@@ -12,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SingleFilePickerPage extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,18 +29,17 @@ class SingleFilePickerPage extends StatelessWidget {
   }
 }
 
-
-goToSingleFilePickerPage(BuildContext context, {@required
-FilePickerSelectedFileCallback fileSelectedCallback,
-  List<FilePickerFileType> fileTypesToPick = const [
-    FilePickerFileType.image,
-    FilePickerFileType.video
-  ],
-  @required FilePickerTab startActiveTab,
-  bool captureEnabled = true}) {
+goToSingleFilePickerPage(BuildContext context,
+    {@required FilePickerSelectedFileCallback fileSelectedCallback,
+    List<FilePickerFileType> fileTypesToPick = const [
+      FilePickerFileType.image,
+      FilePickerFileType.video
+    ],
+    @required FilePickerTab startActiveTab,
+    bool captureEnabled = true}) {
   Navigator.push(
     context,
-    SlideBottomRoute(
+    NavigationSlideBottomRouteBuilder(
         page: DisposableProvider<ISingleFilePickerBloc>(
             create: (context) {
               return SingleFilePickerBloc(
@@ -49,8 +47,7 @@ FilePickerSelectedFileCallback fileSelectedCallback,
                   captureEnabled: captureEnabled,
                   startActiveTab: startActiveTab,
                   fileSelectedCallback: fileSelectedCallback);
-            },
-            // provide parent abstract implementation by type
+            }, // provide parent abstract implementation by type
             child: ProxyProvider<ISingleFilePickerBloc, IFilePickerBloc>(
               update: (_, ISingleFilePickerBloc value, __) => value,
               child: SingleFilePickerPage(),

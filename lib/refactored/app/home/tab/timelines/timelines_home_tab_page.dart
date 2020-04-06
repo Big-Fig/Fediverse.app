@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/Pages/Search/SearchPage.dart';
 import 'package:fedi/refactored/app/home/tab/timelines/drawer/timelines_home_tab_page_drawer_bloc.dart';
 import 'package:fedi/refactored/app/home/tab/timelines/drawer/timelines_home_tab_page_drawer_bloc_impl.dart';
 import 'package:fedi/refactored/app/home/tab/timelines/drawer/timelines_home_tab_page_drawer_widget.dart';
