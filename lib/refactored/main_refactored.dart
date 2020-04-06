@@ -156,7 +156,8 @@ class MyApp extends StatelessWidget {
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
-          EasylocaLizationDelegate(locale: locale, path: "assets/langs")
+          EasylocaLizationDelegate(locale: locale,
+              path: "assets/langs/refactored")
         ],
         locale: savedLocale,
         supportedLocales: [Locale('en', 'US')],
