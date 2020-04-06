@@ -5,6 +5,7 @@ import 'package:fedi/refactored/app/status/post/action/post_status_mention_actio
 import 'package:fedi/refactored/app/status/post/action/post_status_post_action_widget.dart';
 import 'package:fedi/refactored/app/media/attachment/upload/upload_media_attachment_grid_widget.dart';
 import 'package:fedi/refactored/app/status/post/mentions/post_status_mentions_widget.dart';
+import 'package:fedi/refactored/app/status/post/message/message_post_status_widget.dart';
 import 'package:fedi/refactored/app/status/post/post_status_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,13 +13,13 @@ import 'package:flutter/material.dart';
 class ConversationPostStatusWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var postStatusBloc = IPostStatusBloc.of(context, listen: true);
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: <Widget>[
           PostStatusMentionsWidget(),
-          buildTextField(context, postStatusBloc),
+          MessagePostStatusWidget(expanded: true,),
           UploadMediaAttachmentGridWidget(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -41,21 +42,4 @@ class ConversationPostStatusWidget extends StatelessWidget {
     );
   }
 
-  Widget buildTextField(BuildContext context, IPostStatusBloc postStatusBloc) {
-    return TextField(
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12.0),
-          borderSide: BorderSide(),
-        ),
-        // todo: localization
-        labelText: "Message",
-      ),
-      autofocus: false,
-      controller: postStatusBloc.inputTextController,
-      maxLines: null,
-      minLines: null,
-      expands: false,
-    );
-  }
 }

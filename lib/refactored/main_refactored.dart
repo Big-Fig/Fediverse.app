@@ -132,7 +132,7 @@ void buildCurrentInstanceApp(
         child: appContextBloc.provideContextToChild(
             child: DisposableProvider<IJoinAuthInstanceBloc>(
                 create: (context) => JoinAuthInstanceBloc(),
-                child: MyApp(child: JoinAuthInstancePage())))));
+                child: MyApp(child: FromScratchJoinAuthInstancePage())))));
   }
 }
 

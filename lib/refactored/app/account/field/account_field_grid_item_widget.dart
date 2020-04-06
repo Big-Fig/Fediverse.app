@@ -12,6 +12,7 @@ class AccountFieldGridItemWidget extends StatelessWidget {
     return RaisedButton(
       child: Text(field.name),
       onPressed: () {
+        // todo: refactore
         String link = extractUrl(field.value);
         print(link);
         canLaunch(link).then((result) {

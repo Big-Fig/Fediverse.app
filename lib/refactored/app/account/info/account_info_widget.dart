@@ -51,7 +51,7 @@ class AccountInfoWidget extends StatelessWidget {
                         var followersCount = snapshot.data;
                         return buildStatisticValueWidget(
                             AppLocalizations.of(context).tr(
-                                "profile.header.followers",
+                                "app.account.info.followers",
                                 args: [followersCount.toString()]));
                       });
   }
@@ -64,7 +64,7 @@ class AccountInfoWidget extends StatelessWidget {
                         var followingCount = snapshot.data;
                         return buildStatisticValueWidget(
                             AppLocalizations.of(context).tr(
-                                "profile.header.following",
+                                "app.account.info.following",
                                 args: [followingCount.toString()]));
                       });
   }
@@ -77,7 +77,7 @@ class AccountInfoWidget extends StatelessWidget {
                         var statusesCount = snapshot.data;
                         return buildStatisticValueWidget(
                             AppLocalizations.of(context).tr(
-                                "profile.header.statuses",
+                                "app.account.info.statuses",
                                 args: [statusesCount.toString()]));
                       });
   }

@@ -2,7 +2,7 @@ import 'package:fedi/refactored/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IJoinAuthInstanceRegisterBloc implements Disposable {
+abstract class IRegisterAuthInstanceBloc implements Disposable {
   String get username;
 
   String get email;
@@ -10,8 +10,8 @@ abstract class IJoinAuthInstanceRegisterBloc implements Disposable {
   String get password;
 
 
-  static IJoinAuthInstanceRegisterBloc of(BuildContext context, {bool listen = true}) =>
-      Provider.of<IJoinAuthInstanceRegisterBloc>(context, listen: listen);
+  static IRegisterAuthInstanceBloc of(BuildContext context, {bool listen = true}) =>
+      Provider.of<IRegisterAuthInstanceBloc>(context, listen: listen);
 
 
 

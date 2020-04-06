@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization_delegate.dart';
 import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/conversation/start/status/post_status_start_conversation_bloc_impl.dart';
 import 'package:fedi/refactored/app/status/post/new/new_post_status_widget.dart';
@@ -11,8 +12,7 @@ class PostStatusStartConversationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // todo: localization
-        title: Text("Start conversation"),
+        title: Text(AppLocalizations.of(context).tr("app.conversation.start.title")),
         leading: IconButton(
           icon: Icon(Icons.chevron_left),
           onPressed: () {

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/account/pagination/cached/account_cached_pagination_bloc_impl.dart';
 import 'package:fedi/refactored/app/account/pagination/list/account_pagination_list_bloc.dart';
@@ -17,17 +18,14 @@ class SelectAccountPage extends StatelessWidget {
   SelectAccountPage({@required this.accountSelectedCallback});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      // todo: localization
-      appBar: AppBar(title: Text("Select user")),
+  Widget build(BuildContext context) => Scaffold(
+      appBar: AppBar(title: Text(AppLocalizations.of(context).tr("app.account.select.title"))),
       body: SafeArea(
         child: SelectAccountWidget(
           accountSelectedCallback: accountSelectedCallback,
         ),
       ),
     );
-  }
 }
 
 void goToSelectAccountPage(BuildContext context,

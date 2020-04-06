@@ -21,6 +21,7 @@ class _AsyncButtonWidgetState extends State<AsyncButtonWidget> {
 
   @override
   Widget build(BuildContext context) {
+    // todo: alert on fail
     return widget.builder(
         context,
         asyncOperationInProgress

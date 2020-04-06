@@ -14,9 +14,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AccountDetailsWidget extends StatelessWidget {
-  // field to avoid unnecessary recreating
-  final accountWidget = AccountWidget();
-
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: true);

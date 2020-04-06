@@ -1,5 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/refactored/app/account/my/actions/my_account_actions_bottom_sheet_dialog.dart';
+import 'package:fedi/refactored/app/account/my/action/my_account_action_list_bottom_sheet_dialog.dart';
 import 'package:fedi/refactored/app/account/my/avatar/my_account_avatar_widget.dart';
 import 'package:fedi/refactored/app/home/home_model.dart';
 import 'package:fedi/refactored/app/home/tab/account/account_home_tab_page.dart';
@@ -104,7 +103,7 @@ class _HomePageState extends State<HomePage>
       case AppHomeTab.account:
         return GestureDetector(
           onLongPress: () {
-            showMyAccountActionsBottomSheetDialog(context);
+            showMyAccountActionListBottomSheetDialog(context);
           },
           child: MyAccountAvatarWidget(),
         );
@@ -119,7 +118,6 @@ class _HomePageState extends State<HomePage>
         onPressed: () {
           goToNewPostStatusPage(context);
         },
-        tooltip: AppLocalizations.of(context).tr("tab_page.tooltip.increment"),
         child: Icon(Icons.add),
         elevation: 2.0,
       );

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/account/pagination/cached/account_cached_pagination_bloc_impl.dart';
 import 'package:fedi/refactored/app/account/pagination/list/account_pagination_list_bloc.dart';
@@ -16,7 +17,9 @@ class StartConversationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Start conversation with user")),
+      appBar: AppBar(
+          title: Text(
+              AppLocalizations.of(context).tr("app.conversation.start.title"))),
       body: SafeArea(
         child: SelectAccountWidget(
           accountSelectedCallback: (account) {
