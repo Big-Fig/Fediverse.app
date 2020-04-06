@@ -20,15 +20,26 @@ abstract class INotificationRepository
   Future<INotification> findByRemoteId(String remoteId);
 
   Future upsertRemoteNotifications(
-      List<IPleromaNotification> remoteNotifications);
+      List<IPleromaNotification> remoteNotifications,
+      {@required bool unread});
 
   Stream<INotification> watchByRemoteId(String remoteId);
 
   Future updateLocalNotificationByRemoteNotification(
       {@required INotification oldLocalNotification,
-      @required IPleromaNotification newRemoteNotification});
+      @required IPleromaNotification newRemoteNotification,
+      @required bool unread});
 
-  Future upsertRemoteNotification(IPleromaNotification remoteNotification);
+  Future upsertRemoteNotification(IPleromaNotification remoteNotification,
+      {@required bool unread});
+
+  Future<int> countUnreadAll();
+
+  Future<int> countUnreadByType({@required MastodonNotificationType type});
+
+  Stream<int> watchUnreadAll();
+
+  Stream<int> watchUnreadByType({@required MastodonNotificationType type});
 
   Future<List<DbNotificationPopulatedWrapper>> getNotifications(
       {@required MastodonNotificationType onlyWithType,

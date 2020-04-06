@@ -1,3 +1,4 @@
+import 'package:fedi/refactored/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/refactored/app/auth/instance/chooser/instance_chooser_bloc.dart';
 import 'package:fedi/refactored/app/auth/instance/instance_model.dart';
 import 'package:fedi/refactored/app/auth/instance/join/new/join_new_instance_page.dart';
@@ -99,7 +100,10 @@ class InstanceChooserWidget extends StatelessWidget {
                     color: Colors.grey,
                   ),
                   onPressed: () {
-                    instanceChooserBloc.logoutCurrentInstance();
+                    var authHostBloc = AuthHostBloc.createFromContext(context,
+                        instanceBaseUrl: instance.url);
+
+                    authHostBloc.logout();
                   },
                 ),
                 Text(instance.userAtHost),

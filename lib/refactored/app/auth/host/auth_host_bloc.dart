@@ -27,4 +27,6 @@ abstract class IAuthHostBloc extends Disposable {
 
   Future<bool> registerAccount(
       {@required IPleromaAccountRegisterRequest request});
+
+  Future logout();
 }

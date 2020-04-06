@@ -38,8 +38,7 @@ class InstanceChooserBloc extends DisposableOwner
   Stream<Instance> get selectedInstanceStream =>
       currentInstanceBloc.currentInstanceStream;
 
-  @override
-  logoutCurrentInstance() => currentInstanceBloc.logout();
+
 
   @override
   removeInstance(Instance instance) =>

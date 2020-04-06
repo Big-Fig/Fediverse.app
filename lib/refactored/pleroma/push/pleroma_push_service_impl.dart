@@ -14,7 +14,7 @@ var _logger = Logger("pleroma_push_service_impl.dart");
 class PleromaPushService implements IPleromaPushService {
   final subscriptionRelativeUrlPath = "api/v1/push/subscription";
   final IPleromaAuthRestService restService;
-  final PleromaPushSettingsSubscriptionKeys keys;
+  final PleromaPushSubscriptionKeys keys;
 
   @override
   Stream<PleromaApiState> get pleromaStateStream =>

@@ -7,6 +7,10 @@ import 'package:fedi/refactored/app/auth/instance/list/instance_list_bloc_impl.d
 import 'package:fedi/refactored/app/auth/instance/list/instance_list_local_preference_bloc.dart';
 import 'package:fedi/refactored/app/auth/instance/list/instance_list_local_preference_bloc_impl.dart';
 import 'package:fedi/refactored/app/context/app_context_bloc.dart';
+import 'package:fedi/refactored/app/push/handler/push_handler_bloc.dart';
+import 'package:fedi/refactored/app/push/handler/push_handler_bloc_impl.dart';
+import 'package:fedi/refactored/app/push/handler/unhandled/push_handler_unhandled_local_preferences_bloc.dart';
+import 'package:fedi/refactored/app/push/handler/unhandled/push_handler_unhandled_local_preferences_bloc_impl.dart';
 import 'package:fedi/refactored/connection/connection_service.dart';
 import 'package:fedi/refactored/connection/connection_service_impl.dart';
 import 'package:fedi/refactored/local_preferences/local_preferences_service.dart';
@@ -20,6 +24,8 @@ import 'package:fedi/refactored/permission/permissions_service_impl.dart';
 import 'package:fedi/refactored/permission/storage_permission_bloc.dart';
 import 'package:fedi/refactored/permission/storage_permission_bloc_impl.dart';
 import 'package:fedi/refactored/provider/provider_context_bloc_impl.dart';
+import 'package:fedi/refactored/push/fcm/fcm_push_service.dart';
+import 'package:fedi/refactored/push/fcm/fcm_push_service_impl.dart';
 import 'package:fedi/refactored/push/relay/push_relay_service.dart';
 import 'package:fedi/refactored/push/relay/push_relay_service_impl.dart';
 import 'package:logging/logging.dart';
@@ -67,16 +73,34 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         .asyncInitAndRegister<ICurrentInstanceLocalPreferenceBloc>(
             currentInstanceLocalPreferenceBloc);
 
-    await globalProviderService.asyncInitAndRegister<ICurrentInstanceBloc>(
-        CurrentInstanceBloc(
-            instanceListBloc: instanceListBloc,
-            currentInstanceLocalPreferenceBloc:
-                currentInstanceLocalPreferenceBloc));
+    var currentInstanceBloc = CurrentInstanceBloc(
+        instanceListBloc: instanceListBloc,
+        currentInstanceLocalPreferenceBloc: currentInstanceLocalPreferenceBloc);
+    await globalProviderService
+        .asyncInitAndRegister<ICurrentInstanceBloc>(currentInstanceBloc);
 
     var pushRelayService =
         PushRelayService(pushRelayBaseUrl: "https://pushrelay3.your.org/push/");
     addDisposable(disposable: pushRelayService);
     await globalProviderService
         .asyncInitAndRegister<IPushRelayService>(pushRelayService);
+
+    var fcmPushService = FcmPushService();
+    await globalProviderService
+        .asyncInitAndRegister<IFcmPushService>(fcmPushService);
+
+    var pushHandlerUnhandledLocalPreferencesBloc =
+        PushHandlerUnhandledLocalPreferencesBloc(preferencesService);
+
+    await globalProviderService
+        .asyncInitAndRegister<IPushHandlerUnhandledLocalPreferencesBloc>(
+            pushHandlerUnhandledLocalPreferencesBloc);
+
+    var pushHandler = PushHandlerBloc(
+        currentInstanceBloc: currentInstanceBloc,
+        instanceListBloc: instanceListBloc,
+        unhandledLocalPreferencesBloc: pushHandlerUnhandledLocalPreferencesBloc,
+        fcmPushService: fcmPushService);
+    await globalProviderService.asyncInitAndRegister<IPushHandlerBloc>(pushHandler);
   }
 }

@@ -58,7 +58,7 @@ class NotificationCachedListService extends INotificationCachedListService {
 
     if (remoteNotifications != null) {
       await notificationRepository
-          .upsertRemoteNotifications(remoteNotifications);
+          .upsertRemoteNotifications(remoteNotifications, unread: false);
       return true;
     } else {
       return false;

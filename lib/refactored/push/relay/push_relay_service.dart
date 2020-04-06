@@ -11,7 +11,7 @@ abstract class IPushRelayService extends Disposable {
   String createPushRelayEndPointUrl({
     @required String account,
     @required Uri baseServerUrl,
-    @required String fcmToken,
+    @required String fcmDeviceToken,
   });
 
 }

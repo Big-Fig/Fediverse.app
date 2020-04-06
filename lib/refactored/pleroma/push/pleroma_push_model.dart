@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
+import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_push_model.g.dart';
@@ -9,6 +10,7 @@ part 'pleroma_push_model.g.dart';
 class PleromaPushSubscribeRequest {
   PleromaPushSubscribeData data;
   PleromaPushSubscribeRequestSubscription subscription;
+
   PleromaPushSubscribeRequest(
       {@required this.data, @required this.subscription});
 
@@ -19,8 +21,10 @@ class PleromaPushSubscribeRequest {
           runtimeType == other.runtimeType &&
           data == other.data &&
           subscription == other.subscription;
+
   @override
   int get hashCode => data.hashCode ^ subscription.hashCode;
+
   @override
   String toString() {
     return 'PleromaPushSettings{data: $data, subscription: $subscription}';
@@ -33,6 +37,7 @@ class PleromaPushSubscribeRequest {
       _$PleromaPushSubscribeRequestFromJson(jsonDecode(jsonString));
 
   Map<String, dynamic> toJson() => _$PleromaPushSubscribeRequestToJson(this);
+
   String toJsonString() =>
       jsonEncode(_$PleromaPushSubscribeRequestToJson(this));
 }
@@ -69,6 +74,7 @@ class PleromaPushSubscription {
           alerts == other.alerts &&
           serverKey == other.serverKey &&
           subscription == other.subscription;
+
   @override
   int get hashCode =>
       id.hashCode ^
@@ -84,12 +90,14 @@ class PleromaPushSubscription {
       _$PleromaPushSubscriptionFromJson(jsonDecode(jsonString));
 
   Map<String, dynamic> toJson() => _$PleromaPushSubscriptionToJson(this);
+
   String toJsonString() => jsonEncode(_$PleromaPushSubscriptionToJson(this));
 }
 
 @JsonSerializable(explicitToJson: true)
 class PleromaPushSubscribeData {
   PleromaPushSettingsDataAlerts alerts;
+
   PleromaPushSubscribeData({this.alerts});
 
   @override
@@ -98,8 +106,10 @@ class PleromaPushSubscribeData {
       other is PleromaPushSubscribeData &&
           runtimeType == other.runtimeType &&
           alerts == other.alerts;
+
   @override
   int get hashCode => alerts.hashCode;
+
   @override
   String toString() {
     return 'PleromaPushSettingsData{alerts: $alerts}';
@@ -112,6 +122,7 @@ class PleromaPushSubscribeData {
       _$PleromaPushSubscribeDataFromJson(jsonDecode(jsonString));
 
   Map<String, dynamic> toJson() => _$PleromaPushSubscribeDataToJson(this);
+
   String toJsonString() => jsonEncode(_$PleromaPushSubscribeDataToJson(this));
 }
 
@@ -126,6 +137,7 @@ class PleromaPushSettingsDataAlerts {
   final bool reblog;
 
   final bool poll;
+
   PleromaPushSettingsDataAlerts({
     @required this.favourite,
     @required this.follow,
@@ -152,6 +164,7 @@ class PleromaPushSettingsDataAlerts {
           follow == other.follow &&
           mention == other.mention &&
           reblog == other.reblog;
+
   @override
   int get hashCode =>
       favourite.hashCode ^ follow.hashCode ^ mention.hashCode ^ reblog.hashCode;
@@ -169,6 +182,7 @@ class PleromaPushSettingsDataAlerts {
       _$PleromaPushSettingsDataAlertsFromJson(jsonDecode(jsonString));
 
   Map<String, dynamic> toJson() => _$PleromaPushSettingsDataAlertsToJson(this);
+
   String toJsonString() =>
       jsonEncode(_$PleromaPushSettingsDataAlertsToJson(this));
 }
@@ -177,7 +191,8 @@ class PleromaPushSettingsDataAlerts {
 class PleromaPushSubscribeRequestSubscription {
   /// Endpoint URL that is called when a notification event occurs.
   String endpoint;
-  PleromaPushSettingsSubscriptionKeys keys;
+  PleromaPushSubscriptionKeys keys;
+
   PleromaPushSubscribeRequestSubscription(
       {@required this.endpoint, @required this.keys});
 
@@ -194,6 +209,7 @@ class PleromaPushSubscribeRequestSubscription {
           runtimeType == other.runtimeType &&
           endpoint == other.endpoint &&
           keys == other.keys;
+
   @override
   int get hashCode => endpoint.hashCode ^ keys.hashCode;
 
@@ -207,46 +223,99 @@ class PleromaPushSubscribeRequestSubscription {
 
   Map<String, dynamic> toJson() =>
       _$PleromaPushSubscribeRequestSubscriptionToJson(this);
+
   String toJsonString() =>
       jsonEncode(_$PleromaPushSubscribeRequestSubscriptionToJson(this));
 }
 
 @JsonSerializable()
-class PleromaPushSettingsSubscriptionKeys {
+class PleromaPushSubscriptionKeys {
   /// User agent public key.
   /// Base64 encoded string of public key of ECDH key using prime256v1 curve.
   String p256dh;
 
   /// Auth secret. Base64 encoded string of 16 bytes of random data.
   String auth;
-  PleromaPushSettingsSubscriptionKeys(
-      {@required this.p256dh, @required this.auth});
+
+  PleromaPushSubscriptionKeys({@required this.p256dh, @required this.auth});
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaPushSettingsSubscriptionKeys &&
+      other is PleromaPushSubscriptionKeys &&
           runtimeType == other.runtimeType &&
           p256dh == other.p256dh &&
           auth == other.auth;
+
   @override
   int get hashCode => p256dh.hashCode ^ auth.hashCode;
+
   @override
   String toString() {
-    return 'PleromaPushSettingsSubscriptionKeys{p256dh: $p256dh,'
+    return 'PleromaPushSubscriptionKeys{p256dh: $p256dh,'
         ' auth: $auth}';
   }
 
-  factory PleromaPushSettingsSubscriptionKeys.fromJson(
-          Map<String, dynamic> json) =>
-      _$PleromaPushSettingsSubscriptionKeysFromJson(json);
+  factory PleromaPushSubscriptionKeys.fromJson(Map<String, dynamic> json) =>
+      _$PleromaPushSubscriptionKeysFromJson(json);
 
-  factory PleromaPushSettingsSubscriptionKeys.fromJsonString(
-          String jsonString) =>
-      _$PleromaPushSettingsSubscriptionKeysFromJson(jsonDecode(jsonString));
+  factory PleromaPushSubscriptionKeys.fromJsonString(String jsonString) =>
+      _$PleromaPushSubscriptionKeysFromJson(jsonDecode(jsonString));
 
-  Map<String, dynamic> toJson() =>
-      _$PleromaPushSettingsSubscriptionKeysToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaPushSubscriptionKeysToJson(this);
+
   String toJsonString() =>
-      jsonEncode(_$PleromaPushSettingsSubscriptionKeysToJson(this));
+      jsonEncode(_$PleromaPushSubscriptionKeysToJson(this));
+}
+
+@HiveType()
+@JsonSerializable()
+class PleromaPushMessage {
+  @HiveField(0)
+  @JsonKey(name: "notification_id")
+  String notificationId;
+  @HiveField(1)
+  String server;
+  @HiveField(2)
+  String account;
+  @JsonKey(name: "notification_type")
+  @HiveField(3)
+  String notificationType;
+
+  PleromaPushMessage(
+      {this.notificationId, this.server, this.account, this.notificationType});
+
+  factory PleromaPushMessage.fromJson(Map<String, dynamic> json) =>
+      _$PleromaPushMessageFromJson(json);
+
+  factory PleromaPushMessage.fromJsonString(String jsonString) =>
+      _$PleromaPushMessageFromJson(jsonDecode(jsonString));
+
+  Map<String, dynamic> toJson() => _$PleromaPushMessageToJson(this);
+
+  String toJsonString() => jsonEncode(_$PleromaPushMessageToJson(this));
+
+  @override
+  String toString() {
+    return 'PleromaPushMessage{notificationId: $notificationId,'
+        ' server: $server, account: $account,'
+        ' notificationType: $notificationType}';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaPushMessage &&
+          runtimeType == other.runtimeType &&
+          notificationId == other.notificationId &&
+          server == other.server &&
+          account == other.account &&
+          notificationType == other.notificationType;
+
+  @override
+  int get hashCode =>
+      notificationId.hashCode ^
+      server.hashCode ^
+      account.hashCode ^
+      notificationType.hashCode;
 }

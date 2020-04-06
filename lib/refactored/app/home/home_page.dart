@@ -1,26 +1,19 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/refactored/app/home/tab/notifications/notifications_home_tab_bloc.dart';
-import 'package:fedi/refactored/app/home/tab/notifications/notifications_home_tab_bloc_impl.dart';
-import 'package:fedi/refactored/pleroma/account/pleroma_account_service.dart';
-import 'package:fedi/refactored/pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:fedi/refactored/app/account/my/actions/my_account_actions_bottom_sheet_dialog.dart';
 import 'package:fedi/refactored/app/account/my/avatar/my_account_avatar_widget.dart';
-import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
-import 'package:fedi/refactored/app/account/repository/account_repository.dart';
-import 'package:fedi/refactored/app/auth/instance/current/current_instance_bloc.dart';
 import 'package:fedi/refactored/app/home/home_model.dart';
 import 'package:fedi/refactored/app/home/tab/account/account_home_tab_page.dart';
 import 'package:fedi/refactored/app/home/tab/conversations/conversations_home_tab_bloc.dart';
 import 'package:fedi/refactored/app/home/tab/conversations/conversations_home_tab_bloc_impl.dart';
 import 'package:fedi/refactored/app/home/tab/conversations/conversations_home_tab_page.dart';
+import 'package:fedi/refactored/app/home/tab/notifications/notifications_home_tab_bloc.dart';
+import 'package:fedi/refactored/app/home/tab/notifications/notifications_home_tab_bloc_impl.dart';
 import 'package:fedi/refactored/app/home/tab/notifications/notifications_home_tab_page.dart';
 import 'package:fedi/refactored/app/home/tab/timelines/timelines_home_tab_bloc.dart';
 import 'package:fedi/refactored/app/home/tab/timelines/timelines_home_tab_bloc_impl.dart';
-import 'package:fedi/refactored/app/home/tab/timelines/timelines_home_tab_model.dart';
 import 'package:fedi/refactored/app/home/tab/timelines/timelines_home_tab_page.dart';
+import 'package:fedi/refactored/app/notification/unread/notification_unread_all_badge_count_widget.dart';
 import 'package:fedi/refactored/app/status/post/new/new_post_status_page.dart';
-import 'package:fedi/refactored/app/status/repository/status_repository.dart';
-import 'package:fedi/refactored/app/timeline/local_preferences/timeline_local_preferences_bloc.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -44,14 +37,13 @@ class HomePage extends StatefulWidget {
   const HomePage();
 }
 
-class _HomePageState extends State<HomePage> with
-    AutomaticKeepAliveClientMixin<HomePage> {
+class _HomePageState extends State<HomePage>
+    with AutomaticKeepAliveClientMixin<HomePage> {
   AppHomeTab selectedTab = AppHomeTab.timelines;
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-//    var appHomeBloc = IAppHomeBloc.of(context, listen: true);
 
     _logger.finest(() => "build");
     _logger.finest(() => "selectedTab $selectedTab");
@@ -74,7 +66,6 @@ class _HomePageState extends State<HomePage> with
               setState(() {
                 selectedTab = tab;
               });
-//              appHomeBloc.selectTab(tab);
             }
           },
           items: tabs.map((tab) {
@@ -85,17 +76,6 @@ class _HomePageState extends State<HomePage> with
             }
           }).toList()),
     );
-
-//    return InitialDataStreamBuilder<AppHomeTab>(
-//        stream: appHomeBloc.selectedTabStream.distinct((a, b) {
-//          _logger.finest(() => "distinct a=$a b=$b");
-//          return a == b;
-//        }),
-//        initialData: null,
-//        builder: (context, snapshot) {
-//          var selectedTab = snapshot.data;
-//
-//        });
   }
 
   BottomNavigationBarItem buildSpacerNavBarItem() => BottomNavigationBarItem(
@@ -115,7 +95,8 @@ class _HomePageState extends State<HomePage> with
         return Icon(Icons.home);
         break;
       case AppHomeTab.notifications:
-        return Icon(Icons.notifications);
+        return NotificationUnreadAllBadgeCountWidget(
+            child: Icon(Icons.notifications));
         break;
       case AppHomeTab.conversations:
         return Icon(Icons.mail);
@@ -147,8 +128,8 @@ class _HomePageState extends State<HomePage> with
     switch (selectedTab) {
       case AppHomeTab.timelines:
         return DisposableProvider<ITimelinesHomeTabBloc>(
-            create: (BuildContext context) => TimelinesHomeTabBloc
-                .createFromContext(context),
+            create: (BuildContext context) =>
+                TimelinesHomeTabBloc.createFromContext(context),
             child: TimelinesHomeTabPage(
               key: PageStorageKey<String>("TimelinesHomeTabPage"),
             ));

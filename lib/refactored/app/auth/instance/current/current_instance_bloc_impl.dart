@@ -13,17 +13,7 @@ class CurrentInstanceBloc extends DisposableOwner
   CurrentInstanceBloc({
     @required this.instanceListBloc,
     @required this.currentInstanceLocalPreferenceBloc,
-  }) {
-    addDisposable(streamSubscription:
-        instanceListBloc.availableInstancesStream.listen((instanceList) {
-      if (currentInstance != null) {
-        if (!instanceList.contains(currentInstance)) {
-          // logout when current instance removed
-          logout();
-        }
-      }
-    }));
-  }
+  });
 
   @override
   Instance get currentInstance => currentInstanceLocalPreferenceBloc.value;
@@ -33,19 +23,20 @@ class CurrentInstanceBloc extends DisposableOwner
       currentInstanceLocalPreferenceBloc.stream;
 
   @override
-  logout() {
-    assert(currentInstance != null);
-    var instance = currentInstance;
-    currentInstanceLocalPreferenceBloc.setValue(null);
-    instanceListBloc.removeInstance(instance);
-  }
-
-  @override
   changeCurrentInstance(Instance instance) {
     if (!instanceListBloc.availableInstances.contains(instance)) {
       instanceListBloc.addInstance(instance);
     }
 
     currentInstanceLocalPreferenceBloc.setValue(instance);
+  }
+
+  @override
+  bool isCurrentInstance(Instance instance) => currentInstance == instance;
+
+  @override
+  Future logoutCurrentInstance() async {
+    instanceListBloc.removeInstance(currentInstance);
+    await currentInstanceLocalPreferenceBloc.setValue(null);
   }
 }

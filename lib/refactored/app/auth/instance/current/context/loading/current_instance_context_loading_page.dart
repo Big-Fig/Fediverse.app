@@ -7,14 +7,12 @@ var _logger = Logger("current_instance_context_loading_page.dart");
 
 class CurrentInstanceContextLoadingPage extends StatelessWidget {
 
-
+  final Widget child;
+  CurrentInstanceContextLoadingPage({@required this.child});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(child: CurrentInstanceContextLoadingWidget()));
+        body: SafeArea(child: CurrentInstanceContextLoadingWidget(child:child)));
   }
 
-  CurrentInstanceContextLoadingPage() {
-    _logger.finest(() => "constructor");
-  }
 }
