@@ -45,4 +45,15 @@ class InstanceListBloc extends DisposableOwner implements IInstanceListBloc {
           .setValue(InstanceList(instances: instances));
     }
   }
+
+  @override
+  Instance findInstanceByCredentials(
+      {@required String host, @required String acct}) {
+    var instanceList = instanceListLocalPreferenceBloc.value;
+    var foundInstance = instanceList.instances.firstWhere(
+        (instance) => instance.urlHost == host && instance.acct == acct,
+        orElse: () => null);
+
+    return foundInstance;
+  }
 }

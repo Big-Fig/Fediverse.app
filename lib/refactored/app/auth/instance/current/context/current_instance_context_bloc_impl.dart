@@ -10,8 +10,8 @@ import 'package:fedi/refactored/app/conversation/repository/conversation_reposit
 import 'package:fedi/refactored/app/conversation/repository/conversation_repository_impl.dart';
 import 'package:fedi/refactored/app/notification/repository/notification_repository.dart';
 import 'package:fedi/refactored/app/notification/repository/notification_repository_impl.dart';
-import 'package:fedi/refactored/app/push/settings/local_preferences/push_settings_local_preferences_bloc.dart';
-import 'package:fedi/refactored/app/push/settings/local_preferences/push_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/refactored/app/push/subscription/local_preferences/push_subscription_local_preferences_bloc.dart';
+import 'package:fedi/refactored/app/push/subscription/local_preferences/push_subscription_local_preferences_bloc_impl.dart';
 import 'package:fedi/refactored/app/push/subscription/push_subscription_bloc.dart';
 import 'package:fedi/refactored/app/push/subscription/push_subscription_bloc_impl.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
@@ -49,6 +49,7 @@ import 'package:fedi/refactored/pleroma/status/pleroma_status_service_impl.dart'
 import 'package:fedi/refactored/pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:fedi/refactored/pleroma/timeline/pleroma_timeline_service_impl.dart';
 import 'package:fedi/refactored/provider/provider_context_bloc_impl.dart';
+import 'package:fedi/refactored/push/fcm/fcm_push_service.dart';
 import 'package:fedi/refactored/push/relay/push_relay_service.dart';
 import 'package:fedi/refactored/rest/rest_service.dart';
 import 'package:fedi/refactored/rest/rest_service_impl.dart';
@@ -64,17 +65,22 @@ class CurrentInstanceContextBloc extends ProviderContextBloc
   final ILocalPreferencesService preferencesService;
   final IConnectionService connectionService;
   final IPushRelayService pushRelayService;
+  final IFcmPushService fcmPushService;
 
   CurrentInstanceContextBloc({
     @required this.currentInstance,
     @required this.preferencesService,
     @required this.connectionService,
     @required this.pushRelayService,
+    @required this.fcmPushService,
   });
 
   @override
   Future internalAsyncInit() async {
     _logger.fine(() => "internalAsyncInit");
+
+    await fcmPushService.askPermissions();
+
     var globalProviderService = this;
 
     var userAtHost = currentInstance.userAtHost;
@@ -182,7 +188,7 @@ class CurrentInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: pleromaNotificationService);
 
     var pleromaPushService = PleromaPushService(
-        keys: PleromaPushSettingsSubscriptionKeys(
+        keys: PleromaPushSubscriptionKeys(
             p256dh:
                 "BEpPCn0cfs3P0E0fY-gyOuahx5dW5N8quUowlrPyfXlMa6tABLqqcSpOpMnC1-o_UB_s4R8NQsqMLbASjnqSbqw=",
             auth: "T5bhIIyre5TDC1LyX4mFAQ=="),
@@ -202,11 +208,12 @@ class CurrentInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: timelineLocalPreferenceBloc);
     await globalProviderService.asyncInitAndRegister<
         ITimelineLocalPreferencesBloc>(timelineLocalPreferenceBloc);
-    var pushSettingsLocalPreferenceBloc =
-        PushSettingsLocalPreferencesBloc(preferencesService, userAtHost);
-    addDisposable(disposable: pushSettingsLocalPreferenceBloc);
-    await globalProviderService.asyncInitAndRegister<
-        IPushSettingsLocalPreferencesBloc>(pushSettingsLocalPreferenceBloc);
+    var pushSubscriptionLocalPreferenceBloc =
+        PushSubscriptionLocalPreferencesBloc(preferencesService, userAtHost);
+    addDisposable(disposable: pushSubscriptionLocalPreferenceBloc);
+    await globalProviderService
+        .asyncInitAndRegister<IPushSubscriptionLocalPreferencesBloc>(
+            pushSubscriptionLocalPreferenceBloc);
 
     var myAccountBloc = MyAccountBloc(
         pleromaMyAccountService: pleromaMyAccountService,
@@ -218,13 +225,16 @@ class CurrentInstanceContextBloc extends ProviderContextBloc
     await globalProviderService
         .asyncInitAndRegister<IMyAccountBloc>(myAccountBloc);
 
-    var pushSettingsBloc = PushSubscriptionBloc(
+    var pushSubscriptionBloc = PushSubscriptionBloc(
         pushRelayService: pushRelayService,
-        pushSettingsLocalPreferencesBloc: pushSettingsLocalPreferenceBloc,
-        pleromaPushService: pleromaPushService);
+        pushSubscriptionLocalPreferencesBloc:
+            pushSubscriptionLocalPreferenceBloc,
+        pleromaPushService: pleromaPushService,
+        currentInstance: currentInstance,
+        fcmPushService: fcmPushService);
 
-    addDisposable(disposable: pushSettingsBloc);
+    addDisposable(disposable: pushSubscriptionBloc);
     await globalProviderService
-        .asyncInitAndRegister<IPushSubscriptionBloc>(pushSettingsBloc);
+        .asyncInitAndRegister<IPushSubscriptionBloc>(pushSubscriptionBloc);
   }
 }

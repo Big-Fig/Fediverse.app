@@ -22,6 +22,7 @@ class PleromaOAuthToken implements IPreferencesObject {
   @JsonKey(name: "created_at")
   @HiveField(3)
   dynamic createdAt;
+
   PleromaOAuthToken(
       {this.accessToken, this.tokenType, this.scope, this.createdAt});
 
@@ -40,6 +41,7 @@ class PleromaOAuthToken implements IPreferencesObject {
           tokenType == other.tokenType &&
           scope == other.scope &&
           createdAt == other.createdAt;
+
   @override
   int get hashCode =>
       accessToken.hashCode ^
@@ -86,6 +88,7 @@ class PleromaOAuthAuthorizeRequest {
   /// if using query parameters). Must be a subset of scopes declared during
   /// app registration. If not provided, defaults to read.
   final String scope;
+
   PleromaOAuthAuthorizeRequest(
       {@required this.forceLogin,
       @required this.clientId,
@@ -119,6 +122,7 @@ class PleromaOAuthAccountTokenRequest {
   String clientId;
   @JsonKey(name: "client_secret")
   String clientSecret;
+
   PleromaOAuthAccountTokenRequest(
       {@required this.code,
       @required this.scope,
@@ -158,6 +162,7 @@ class PleromaOAuthAppTokenRequest {
   String clientId;
   @JsonKey(name: "client_secret")
   String clientSecret;
+
   PleromaOAuthAppTokenRequest(
       {this.scope,
       this.redirectUri,
@@ -191,7 +196,9 @@ class PleromaOAuthAppTokenRevokeRequest {
   String token;
 
   PleromaOAuthAppTokenRevokeRequest(
-      {this.clientId, this.clientSecret, this.token});
+      {@required this.clientId,
+      @required this.clientSecret,
+      @required this.token});
 
   @override
   String toString() {

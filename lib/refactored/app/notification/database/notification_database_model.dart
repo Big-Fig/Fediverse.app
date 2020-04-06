@@ -10,6 +10,7 @@ class DbNotifications extends Table {
   TextColumn get remoteId => text().customConstraint("UNIQUE NOT NULL")();
   TextColumn get accountRemoteId => text()();
   TextColumn get statusRemoteId => text().nullable()();
+  BoolColumn get unread => boolean().nullable()();
   TextColumn get type =>  text().nullable().map(MastodonNotificationTypeDatabaseConverter())();
 
   DateTimeColumn get createdAt => dateTime()();

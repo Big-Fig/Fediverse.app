@@ -1,6 +1,4 @@
-import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
-import 'package:fedi/refactored/app/conversation/conversation_model.dart';
 import 'package:fedi/refactored/app/database/app_database.dart';
 import 'package:fedi/refactored/app/notification/database/notification_database_dao.dart';
 import 'package:fedi/refactored/app/notification/notification_model.dart';
@@ -13,7 +11,6 @@ import 'package:fedi/refactored/mastodon/notification/mastodon_notification_mode
 import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/refactored/pleroma/notification/pleroma_notification_model.dart';
 import 'package:fedi/refactored/pleroma/status/pleroma_status_model.dart';
-import 'package:fedi/refactored/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -26,11 +23,11 @@ class NotificationRepository extends AsyncInitLoadingBloc
   final IAccountRepository accountRepository;
   final IStatusRepository statusRepository;
 
-  NotificationRepository(
-      {@required AppDatabase appDatabase,
-        @required this.accountRepository,
-        @required this.statusRepository,
-      }):   dao = appDatabase.notificationDao;
+  NotificationRepository({
+    @required AppDatabase appDatabase,
+    @required this.accountRepository,
+    @required this.statusRepository,
+  }) : dao = appDatabase.notificationDao;
 
   @override
   Future internalAsyncInit() async {
@@ -41,7 +38,8 @@ class NotificationRepository extends AsyncInitLoadingBloc
   @override
   Future upsertRemoteNotification(IPleromaNotification remoteNotification,
       {@required String listRemoteId,
-      @required String conversationRemoteId}) async {
+      @required String conversationRemoteId,
+      @required bool unread}) async {
     _logger.finer(
         () => "upsertRemoteNotification $remoteNotification listRemoteId=> "
             "$listRemoteId");
@@ -56,14 +54,16 @@ class NotificationRepository extends AsyncInitLoadingBloc
           listRemoteId: null, conversationRemoteId: null);
     }
 
-    await upsert(mapRemoteNotificationToDbNotification(remoteNotification));
+    await upsert(mapRemoteNotificationToDbNotification(remoteNotification,
+        unread:  unread));
   }
 
   @override
   Future upsertRemoteNotifications(
       List<IPleromaNotification> remoteNotifications,
       {@required String listRemoteId,
-      @required String conversationRemoteId}) async {
+      @required String conversationRemoteId,
+      @required bool unread}) async {
     _logger
         .finer(() => "upsertRemoteNotifications ${remoteNotifications.length} "
             "listRemoteId => $listRemoteId");
@@ -163,7 +163,6 @@ class NotificationRepository extends AsyncInitLoadingBloc
     if (onlyWithType != null) {
       dao.addOnlyTypeWhere(query, onlyWithType);
     }
-
 
     if (orderingTermData != null) {
       dao.orderBy(query, [orderingTermData]);
@@ -266,7 +265,8 @@ class NotificationRepository extends AsyncInitLoadingBloc
   @override
   Future updateLocalNotificationByRemoteNotification(
       {@required INotification oldLocalNotification,
-      @required IPleromaNotification newRemoteNotification}) async {
+      @required IPleromaNotification newRemoteNotification,
+      @required bool unread}) async {
     _logger.finer(() => "updateLocalNotificationByRemoteNotification \n"
         "\t old: $oldLocalNotification \n"
         "\t newRemoteNotification: $newRemoteNotification");
@@ -282,13 +282,13 @@ class NotificationRepository extends AsyncInitLoadingBloc
         conversationRemoteId: null, listRemoteId: null);
 
     await updateById(oldLocalNotification.localId,
-        mapRemoteNotificationToDbNotification(newRemoteNotification));
+        mapRemoteNotificationToDbNotification(newRemoteNotification, unread:
+        unread));
   }
 
   @override
   Future<DbNotificationPopulatedWrapper> getNotification(
-      {
-        @required MastodonNotificationType onlyWithType,
+      {@required MastodonNotificationType onlyWithType,
       @required INotification olderThanNotification,
       @required INotification newerThanNotification,
       @required NotificationOrderingTermData orderingTermData}) async {
@@ -306,8 +306,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
 
   @override
   Stream<DbNotificationPopulatedWrapper> watchNotification(
-      {
-        @required MastodonNotificationType onlyWithType,
+      {@required MastodonNotificationType onlyWithType,
       @required INotification olderThanNotification,
       @required INotification newerThanNotification,
       @required NotificationOrderingTermData orderingTermData}) {
@@ -323,5 +322,25 @@ class NotificationRepository extends AsyncInitLoadingBloc
         .watchSingle()
         .map((typedResult) => dao.typedResultToPopulated(typedResult));
     return stream.map((dbNotification) => mapDataClassToItem(dbNotification));
+  }
+
+  Future<int> countUnreadAll() {
+    return dao.countUnreadAllQuery().getSingle();
+  }
+
+  Future<int> countUnreadByType({@required MastodonNotificationType type}) {
+    return dao
+        .countUnreadByTypeQuery(mastodonNotificationTypeValues.reverse[type])
+        .getSingle();
+  }
+
+  Stream<int> watchUnreadAll() {
+    return dao.countUnreadAllQuery().watchSingle();
+  }
+
+  Stream<int> watchUnreadByType({@required MastodonNotificationType type}) {
+    return dao
+        .countUnreadByTypeQuery(mastodonNotificationTypeValues.reverse[type])
+        .watchSingle();
   }
 }

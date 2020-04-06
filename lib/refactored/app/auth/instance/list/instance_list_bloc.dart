@@ -17,4 +17,7 @@ abstract class IInstanceListBloc implements Disposable {
 
   addInstance(Instance instance);
   removeInstance(Instance instance);
+
+  Instance findInstanceByCredentials({@required String host, @required String
+  acct});
 }

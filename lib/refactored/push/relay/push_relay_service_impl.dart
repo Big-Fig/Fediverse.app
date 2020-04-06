@@ -18,23 +18,21 @@ class PushRelayService extends DisposableOwner implements IPushRelayService {
 
   String createPushRelayEndPointUrl({
     @required String account,
-    @required String baseServerUrl,
-    @required String fcmToken,
+    @required Uri baseServerUrl,
+    @required String fcmDeviceToken,
   }) {
     _logger.finest("createPushRelayEndPointUrl start \n"
         "\t account=$account"
         "\t webPushSubscriptionUrl=$baseServerUrl"
-        "\t accessToken=$fcmToken");
+        "\t accessToken=$fcmDeviceToken");
 
-    // remove protocol if exist
-    String baseUrl =
-        baseServerUrl.replaceAll("https://", "").replaceAll("http://", "");
+    String host = baseServerUrl.host;
 
     String endpoint = urlPath.join(
         pushRelayBaseUrl,
-        "$fcmToken"
+        "$fcmDeviceToken"
         "?account=$account"
-        "&server=$baseUrl");
+        "&server=$host");
 
     if (Platform.isIOS) {
       endpoint += "&device=iOS";

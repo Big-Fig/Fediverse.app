@@ -15,7 +15,6 @@ abstract class IInstanceChooserBloc implements Disposable {
 
   chooseInstance(Instance instance);
 
-  logoutCurrentInstance();
 
   removeInstance(Instance instance);
 

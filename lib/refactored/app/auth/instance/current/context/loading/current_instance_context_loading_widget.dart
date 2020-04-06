@@ -11,6 +11,9 @@ import 'package:logging/logging.dart';
 var _logger = Logger("current_instance_context_loading_widget.dart");
 
 class CurrentInstanceContextLoadingWidget extends StatelessWidget {
+  final Widget child;
+  CurrentInstanceContextLoadingWidget({@required this.child});
+
   @override
   Widget build(BuildContext context) {
     var currentInstanceContextLoadingBloc =
@@ -34,7 +37,7 @@ class CurrentInstanceContextLoadingWidget extends StatelessWidget {
                   child: Text("Loading ${myAccountBloc.instance.userAtHost}"));
               break;
             case CurrentInstanceContextLoadingState.localCacheExist:
-              return const HomePage();
+              return child;
             case CurrentInstanceContextLoadingState
                 .cantFetchAndLocalCacheNotExist:
               return Column(

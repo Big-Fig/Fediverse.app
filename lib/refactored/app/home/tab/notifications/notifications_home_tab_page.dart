@@ -10,6 +10,7 @@ import 'package:fedi/refactored/app/notification/pagination/cached/notification_
 import 'package:fedi/refactored/app/notification/pagination/list/notification_pagination_list_bloc.dart';
 import 'package:fedi/refactored/app/notification/pagination/list/notification_pagination_list_bloc_impl.dart';
 import 'package:fedi/refactored/app/notification/pagination/list/notification_pagination_list_widget.dart';
+import 'package:fedi/refactored/app/notification/unread/notification_unread_type_badge_count_widget.dart';
 import 'package:fedi/refactored/app/push/subscription/push_subscription_bloc.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:fedi/refactored/mastodon/notification/mastodon_notification_model.dart';
@@ -45,8 +46,7 @@ class NotificationsHomeTabPage extends StatelessWidget {
       key: _drawerKey,
       endDrawer: DisposableProvider<INotificationsHomeTabPageDrawerBloc>(
         create: (BuildContext context) => NotificationsHomeTabPageDrawerBloc(
-            pushSettingsBloc:
-                IPushSubscriptionBloc.of(context, listen: false)),
+            pushSettingsBloc: IPushSubscriptionBloc.of(context, listen: false)),
         child: NotificationsHomeTabPageDrawerWidget(),
       ),
       body: SafeArea(
@@ -88,9 +88,14 @@ class NotificationsHomeTabPage extends StatelessWidget {
         ],
       );
 
-  Tab buildTab(BuildContext context, NotificationTab tab) => Tab(
-        icon: Icon(mapTabToIconData(context, tab)),
-      );
+  Tab buildTab(BuildContext context, NotificationTab tab) {
+    MastodonNotificationType type = mapTabToType(tab);
+    return Tab(
+      icon: NotificationUnreadTypeBadgeCountWidget(
+        child: Icon(mapTabToIconData(context, tab)), type: type,
+      ),
+    );
+  }
 
   IconButton buildSettingsActionButton() => IconButton(
         icon: Icon(Icons.settings),
@@ -141,11 +146,32 @@ class NotificationsHomeTabPage extends StatelessWidget {
 
   Widget buildTabBody(BuildContext context, NotificationTab tab,
       INotificationsHomeTabBloc notificationsHomePageBloc) {
+    MastodonNotificationType onlyWithType = mapTabToType(tab);
 
+    return DisposableProvider<INotificationCachedListService>(
+      create: (context) => NotificationCachedListService.createFromContext(
+          context,
+          onlyWithType: onlyWithType),
+      child: DisposableProvider<
+          IPaginationBloc<PaginationPage<INotification>, INotification>>(
+        create: (context) =>
+            NotificationCachedPaginationBloc.createFromContext(context),
+        child: DisposableProvider<INotificationPaginationListBloc>(
+          create: (context) =>
+              NotificationPaginationListBloc.createFromContext(context),
+          child: NotificationPaginationListWidget(
+            needWatchLocalRepositoryForUpdates: true,
+            key: PageStorageKey("${tab.toString()}"),
+          ),
+        ),
+      ),
+    );
+  }
+
+  MastodonNotificationType mapTabToType(NotificationTab tab) {
     MastodonNotificationType onlyWithType;
-
-    switch(tab) {
-
+    
+    switch (tab) {
       case NotificationTab.all:
         onlyWithType = null;
         break;
@@ -162,20 +188,6 @@ class NotificationsHomeTabPage extends StatelessWidget {
         onlyWithType = MastodonNotificationType.follow;
         break;
     }
-
-    return DisposableProvider<INotificationCachedListService>(
-      create: (context) => NotificationCachedListService.createFromContext
-        (context, onlyWithType: onlyWithType),
-      child: DisposableProvider<IPaginationBloc<PaginationPage<INotification>, INotification>>(
-        create: (context) => NotificationCachedPaginationBloc.createFromContext(context),
-        child: DisposableProvider<INotificationPaginationListBloc>(
-          create: (context) => NotificationPaginationListBloc.createFromContext(context),
-          child: NotificationPaginationListWidget(
-            needWatchLocalRepositoryForUpdates: true,
-            key: PageStorageKey("${tab.toString()}"),
-          ),
-        ),
-      ),
-    );
+    return onlyWithType;
   }
 }

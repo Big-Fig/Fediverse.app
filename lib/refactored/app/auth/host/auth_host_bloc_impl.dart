@@ -1,3 +1,14 @@
+import 'package:fedi/refactored/app/auth/host/auth_host_access_token_local_preference_bloc.dart';
+import 'package:fedi/refactored/app/auth/host/auth_host_access_token_local_preference_bloc_impl.dart';
+import 'package:fedi/refactored/app/auth/host/auth_host_application_local_preference_bloc.dart';
+import 'package:fedi/refactored/app/auth/host/auth_host_application_local_preference_bloc_impl.dart';
+import 'package:fedi/refactored/app/auth/host/auth_host_bloc.dart';
+import 'package:fedi/refactored/app/auth/instance/current/current_instance_bloc.dart';
+import 'package:fedi/refactored/app/auth/instance/instance_model.dart';
+import 'package:fedi/refactored/connection/connection_service.dart';
+import 'package:fedi/refactored/disposable/disposable_owner.dart';
+import 'package:fedi/refactored/local_preferences/local_preferences_service.dart';
+import 'package:fedi/refactored/mastodon/application/mastodon_application_model.dart';
 import 'package:fedi/refactored/pleroma/account/my/pleroma_my_account_service_impl.dart';
 import 'package:fedi/refactored/pleroma/account/public/pleroma_account_public_model.dart';
 import 'package:fedi/refactored/pleroma/account/public/pleroma_account_public_service.dart';
@@ -11,17 +22,6 @@ import 'package:fedi/refactored/pleroma/oauth/pleroma_oauth_service_impl.dart';
 import 'package:fedi/refactored/pleroma/rest/auth/pleroma_auth_rest_service_impl.dart';
 import 'package:fedi/refactored/pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/refactored/pleroma/rest/pleroma_rest_service_impl.dart';
-import 'package:fedi/refactored/app/auth/host/auth_host_access_token_local_preference_bloc.dart';
-import 'package:fedi/refactored/app/auth/host/auth_host_access_token_local_preference_bloc_impl.dart';
-import 'package:fedi/refactored/app/auth/host/auth_host_application_local_preference_bloc.dart';
-import 'package:fedi/refactored/app/auth/host/auth_host_application_local_preference_bloc_impl.dart';
-import 'package:fedi/refactored/app/auth/host/auth_host_bloc.dart';
-import 'package:fedi/refactored/app/auth/instance/current/current_instance_bloc.dart';
-import 'package:fedi/refactored/app/auth/instance/instance_model.dart';
-import 'package:fedi/refactored/connection/connection_service.dart';
-import 'package:fedi/refactored/disposable/disposable_owner.dart';
-import 'package:fedi/refactored/local_preferences/local_preferences_service.dart';
-import 'package:fedi/refactored/mastodon/application/mastodon_application_model.dart';
 import 'package:fedi/refactored/rest/rest_service.dart';
 import 'package:fedi/refactored/rest/rest_service_impl.dart';
 import 'package:flutter/cupertino.dart';
@@ -173,6 +173,7 @@ class AuthHostBloc extends DisposableOwner implements IAuthHostBloc {
               authCode: authCode,
               token: token,
               acct: myAccount.acct,
+              application: hostApplication,
               isPleromaInstance: myAccount.pleroma != null);
           currentInstanceBloc.changeCurrentInstance(instance);
         },
@@ -217,4 +218,19 @@ class AuthHostBloc extends DisposableOwner implements IAuthHostBloc {
               ILocalPreferencesService.of(context, listen: false),
           connectionService: IConnectionService.of(context, listen: false),
           currentInstanceBloc: ICurrentInstanceBloc.of(context, listen: false));
+
+  @override
+  Future logout() async {
+    var currentInstance = currentInstanceBloc.currentInstance;
+    assert(currentInstance != null);
+
+    var instance = currentInstance;
+    await pleromaOAuthService.revokeToken(
+        revokeRequest: PleromaOAuthAppTokenRevokeRequest(
+            clientId: instance.application.clientId,
+            clientSecret: instance.application.clientSecret,
+            token: instance.token.accessToken));
+    await currentInstanceBloc.logoutCurrentInstance();
+
+  }
 }

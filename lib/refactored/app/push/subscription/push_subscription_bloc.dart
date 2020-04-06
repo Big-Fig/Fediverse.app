@@ -3,39 +3,36 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPushSubscriptionBloc extends Disposable {
-
   static IPushSubscriptionBloc of(BuildContext context, {listen: true}) =>
       Provider.of<IPushSubscriptionBloc>(context, listen: listen);
 
+  bool get favouritePushesEnabled;
 
+  Stream<bool> get favouritePushesEnabledStream;
 
-  bool get favourite;
+  Future<bool> changeFavouritePushesEnabled(bool value);
 
-  Stream<bool> get favouriteStream;
+  bool get followPushesEnabled;
 
-  Future<bool> changeFavourite(bool value);
+  Stream<bool> get followPushesEnabledStream;
 
-  bool get follow;
+  Future<bool> changeFollowPushesEnabled(bool value);
 
-  Stream<bool> get followStream;
+  bool get mentionPushesEnabled;
 
-  Future<bool>changeFollow(bool value);
+  Stream<bool> get mentionPushesEnabledStream;
 
-  bool get mention;
+  Future<bool> changeMentionPushesEnabled(bool value);
 
-  Stream<bool> get mentionStream;
+  bool get reblogPushesEnabled;
 
-  Future<bool>changeMention(bool value);
+  Stream<bool> get reblogPushesEnabledStream;
 
-  bool get reblog;
+  Future<bool> changeReblogPushesEnabled(bool value);
 
-  Stream<bool> get reblogStream;
+  bool get pollPushesEnabled;
 
-  Future<bool>changeReblog(bool value);
+  Stream<bool> get pollPushesEnabledStream;
 
-  bool get poll;
-
-  Stream<bool> get pollStream;
-
-  Future<bool> changePoll(bool value);
+  Future<bool> changePollPushesEnabled(bool value);
 }

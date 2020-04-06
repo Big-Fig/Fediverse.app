@@ -22,6 +22,10 @@ var _logger = Logger("notification_database_dao.dart");
 ], queries: {
   "countAll": "SELECT Count(*) FROM db_notifications;",
   "countById": "SELECT COUNT(*) FROM db_notifications WHERE id = :id;",
+  "countUnreadAll": "SELECT COUNT(*) FROM db_notifications"
+      " WHERE unread = 1;",
+  "countUnreadByType": "SELECT COUNT(*) FROM db_notifications"
+      " WHERE unread = 1 AND type = :type;",
   "deleteById": "DELETE FROM db_notifications WHERE id = :id;",
   "clear": "DELETE FROM db_notifications",
   "getAll": "SELECT * FROM db_notifications",

@@ -1,97 +1,108 @@
-import 'package:fedi/refactored/app/auth/instance/current/current_instance_bloc.dart';
+import 'package:fedi/refactored/app/auth/instance/instance_model.dart';
 import 'package:fedi/refactored/app/push/subscription/local_preferences/push_subscription_local_preferences_bloc.dart';
 import 'package:fedi/refactored/app/push/subscription/local_preferences/push_subscription_local_preferences_model.dart';
 import 'package:fedi/refactored/app/push/subscription/push_subscription_bloc.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:fedi/refactored/pleroma/push/pleroma_push_model.dart';
 import 'package:fedi/refactored/pleroma/push/pleroma_push_service.dart';
+import 'package:fedi/refactored/push/fcm/fcm_push_service.dart';
 import 'package:fedi/refactored/push/relay/push_relay_service.dart';
 import 'package:flutter/widgets.dart';
 
-class PushSubscriptionBloc extends DisposableOwner implements IPushSubscriptionBloc {
-  final IPushSubscriptionLocalPreferencesBloc pushSettingsLocalPreferencesBloc;
+class PushSubscriptionBloc extends DisposableOwner
+    implements IPushSubscriptionBloc {
+  final IPushSubscriptionLocalPreferencesBloc
+      pushSubscriptionLocalPreferencesBloc;
   final IPleromaPushService pleromaPushService;
   final IPushRelayService pushRelayService;
-  final ICurrentInstanceBloc currentInstanceBloc;
+  final Instance currentInstance;
+  final IFcmPushService fcmPushService;
+
   PushSubscriptionBloc({
-    @required this.pushSettingsLocalPreferencesBloc,
+    @required this.pushSubscriptionLocalPreferencesBloc,
     @required this.pleromaPushService,
     @required this.pushRelayService,
-    @required this.currentInstanceBloc,
+    @required this.currentInstance,
+    @required this.fcmPushService,
   });
 
   @override
-  bool get favourite => pushSettingsLocalPreferencesBloc.value.favourite;
+  bool get favouritePushesEnabled => pushSubscriptionLocalPreferencesBloc.value.favourite;
 
   @override
-  Stream<bool> get favouriteStream => pushSettingsLocalPreferencesBloc.stream
-      .map((preferences) => pushSettingsLocalPreferencesBloc.value.favourite);
+  Stream<bool> get favouritePushesEnabledStream =>
+      pushSubscriptionLocalPreferencesBloc.stream.map((preferences) =>
+          pushSubscriptionLocalPreferencesBloc.value.favourite);
 
   @override
-  Future<bool> changeFavourite(bool value) {
+  Future<bool> changeFavouritePushesEnabled(bool value) {
     return updatePreferences(
-        pushSettingsLocalPreferencesBloc.value.copyWith(favourite: value));
+        pushSubscriptionLocalPreferencesBloc.value.copyWith(favourite: value));
   }
 
   @override
-  bool get follow => pushSettingsLocalPreferencesBloc.value.follow;
+  bool get followPushesEnabled => pushSubscriptionLocalPreferencesBloc.value.follow;
 
   @override
-  Stream<bool> get followStream => pushSettingsLocalPreferencesBloc.stream
-      .map((preferences) => pushSettingsLocalPreferencesBloc.value.follow);
+  Stream<bool> get followPushesEnabledStream => pushSubscriptionLocalPreferencesBloc.stream
+      .map((preferences) => pushSubscriptionLocalPreferencesBloc.value.follow);
 
   @override
-  Future<bool> changeFollow(bool value) {
+  Future<bool> changeFollowPushesEnabled(bool value) {
     return updatePreferences(
-        pushSettingsLocalPreferencesBloc.value.copyWith(follow: value));
+        pushSubscriptionLocalPreferencesBloc.value.copyWith(follow: value));
   }
 
   @override
-  bool get mention => pushSettingsLocalPreferencesBloc.value.mention;
+  bool get mentionPushesEnabled => pushSubscriptionLocalPreferencesBloc.value.mention;
 
   @override
-  Stream<bool> get mentionStream => pushSettingsLocalPreferencesBloc.stream
-      .map((preferences) => pushSettingsLocalPreferencesBloc.value.mention);
+  Stream<bool> get mentionPushesEnabledStream => pushSubscriptionLocalPreferencesBloc.stream
+      .map((preferences) => pushSubscriptionLocalPreferencesBloc.value.mention);
 
   @override
-  Future<bool> changeMention(bool value) {
+  Future<bool> changeMentionPushesEnabled(bool value) {
     return updatePreferences(
-        pushSettingsLocalPreferencesBloc.value.copyWith(mention: value));
+        pushSubscriptionLocalPreferencesBloc.value.copyWith(mention: value));
   }
 
   @override
-  bool get reblog => pushSettingsLocalPreferencesBloc.value.reblog;
+  bool get reblogPushesEnabled => pushSubscriptionLocalPreferencesBloc.value.reblog;
 
   @override
-  Stream<bool> get reblogStream => pushSettingsLocalPreferencesBloc.stream
-      .map((preferences) => pushSettingsLocalPreferencesBloc.value.reblog);
+  Stream<bool> get reblogPushesEnabledStream => pushSubscriptionLocalPreferencesBloc.stream
+      .map((preferences) => pushSubscriptionLocalPreferencesBloc.value.reblog);
 
   @override
-  Future<bool> changeReblog(bool value) {
+  Future<bool> changeReblogPushesEnabled(bool value) {
     return updatePreferences(
-        pushSettingsLocalPreferencesBloc.value.copyWith(reblog: value));
+        pushSubscriptionLocalPreferencesBloc.value.copyWith(reblog: value));
   }
 
   @override
-  bool get poll => pushSettingsLocalPreferencesBloc.value.poll;
+  bool get pollPushesEnabled => pushSubscriptionLocalPreferencesBloc.value.poll;
 
   @override
-  Stream<bool> get pollStream => pushSettingsLocalPreferencesBloc.stream
-      .map((preferences) => pushSettingsLocalPreferencesBloc.value.poll);
+  Stream<bool> get pollPushesEnabledStream => pushSubscriptionLocalPreferencesBloc.stream
+      .map((preferences) => pushSubscriptionLocalPreferencesBloc.value.poll);
 
   @override
-  Future<bool> changePoll(bool value) {
+  Future<bool> changePollPushesEnabled(bool value) {
     return updatePreferences(
-        pushSettingsLocalPreferencesBloc.value.copyWith(poll: value));
+        pushSubscriptionLocalPreferencesBloc.value.copyWith(poll: value));
   }
 
   Future<bool> updatePreferences(
       PushSubscriptionLocalPreferences newPreferences) async {
-    var currentInstance = currentInstanceBloc.currentInstance;
+    var deviceToken = fcmPushService.deviceToken;
+
+
+
     var subscription = await pleromaPushService.subscribe(
         endpointCallbackUrl: pushRelayService.createPushRelayEndPointUrl(
             account: currentInstance.acct,
-            baseServerUrl: currentInstance.url, fcmToken: null),
+            baseServerUrl: currentInstance.url,
+            fcmDeviceToken: deviceToken),
         data: PleromaPushSubscribeData(
             alerts: PleromaPushSettingsDataAlerts(
                 favourite: newPreferences.favourite,
@@ -103,7 +114,7 @@ class PushSubscriptionBloc extends DisposableOwner implements IPushSubscriptionB
     var success = subscription != null;
 
     if (success) {
-      await pushSettingsLocalPreferencesBloc.setValue(newPreferences);
+      await pushSubscriptionLocalPreferencesBloc.setValue(newPreferences);
     }
     return success;
   }

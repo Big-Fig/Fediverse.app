@@ -110,7 +110,7 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
   Future _updateByRemoteNotification(IPleromaNotification remoteNotification) {
     return notificationRepository.updateLocalNotificationByRemoteNotification(
         oldLocalNotification: notification,
-        newRemoteNotification: remoteNotification);
+        newRemoteNotification: remoteNotification, unread: notification.unread);
   }
 
   @override

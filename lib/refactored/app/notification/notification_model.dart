@@ -8,6 +8,8 @@ abstract class INotification {
   int get localId;
 
   String get remoteId;
+  bool get unread;
+
 
   DateTime get createdAt;
 
@@ -43,6 +45,9 @@ class DbNotificationPopulatedWrapper implements INotification {
   IStatus get status => dbNotificationPopulated.statusPopulated != null
       ? DbStatusPopulatedWrapper(dbNotificationPopulated.statusPopulated)
       : null;
+
+  @override
+  bool get unread => dbNotificationPopulated.notification.unread == true;
 }
 
 class DbNotificationPopulated {

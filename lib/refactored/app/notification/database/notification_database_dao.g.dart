@@ -38,6 +38,41 @@ mixin _$NotificationDaoMixin on DatabaseAccessor<AppDatabase> {
     return countByIdQuery(id).watch();
   }
 
+  Selectable<int> countUnreadAllQuery() {
+    return customSelectQuery(
+            'SELECT COUNT(*) FROM db_notifications WHERE unread = 1;',
+            variables: [],
+            readsFrom: {dbNotifications})
+        .map((QueryRow row) => row.readInt('COUNT(*)'));
+  }
+
+  Future<List<int>> countUnreadAll() {
+    return countUnreadAllQuery().get();
+  }
+
+  Stream<List<int>> watchCountUnreadAll() {
+    return countUnreadAllQuery().watch();
+  }
+
+  Selectable<int> countUnreadByTypeQuery(String type) {
+    return customSelectQuery(
+        'SELECT COUNT(*) FROM db_notifications WHERE unread = 1 AND type = :type;',
+        variables: [
+          Variable.withString(type)
+        ],
+        readsFrom: {
+          dbNotifications
+        }).map((QueryRow row) => row.readInt('COUNT(*)'));
+  }
+
+  Future<List<int>> countUnreadByType(String type) {
+    return countUnreadByTypeQuery(type).get();
+  }
+
+  Stream<List<int>> watchCountUnreadByType(String type) {
+    return countUnreadByTypeQuery(type).watch();
+  }
+
   Future<int> deleteById(int id) {
     return customUpdate(
       'DELETE FROM db_notifications WHERE id = :id;',
@@ -60,6 +95,7 @@ mixin _$NotificationDaoMixin on DatabaseAccessor<AppDatabase> {
       remoteId: row.readString('remote_id'),
       accountRemoteId: row.readString('account_remote_id'),
       statusRemoteId: row.readString('status_remote_id'),
+      unread: row.readBool('unread'),
       type: $DbNotificationsTable.$converter0.mapToDart(row.readString('type')),
       createdAt: row.readDateTime('created_at'),
     );

@@ -11,53 +11,53 @@ class NotificationsHomeTabPageDrawerBloc extends DisposableOwner
   
 
   @override
-  bool get favourite => pushSettingsBloc.favourite;
+  bool get favourite => pushSettingsBloc.favouritePushesEnabled;
 
   @override
-  Stream<bool> get favouriteStream => pushSettingsBloc.favouriteStream;
+  Stream<bool> get favouriteStream => pushSettingsBloc.favouritePushesEnabledStream;
 
   @override
   Future<bool> changeFavourite(bool value) => pushSettingsBloc
-      .changeFavourite(value);
+      .changeFavouritePushesEnabled(value);
 
   @override
-  bool get follow => pushSettingsBloc.follow;
+  bool get follow => pushSettingsBloc.followPushesEnabled;
 
   @override
-  Stream<bool> get followStream => pushSettingsBloc.followStream;
+  Stream<bool> get followStream => pushSettingsBloc.followPushesEnabledStream;
 
   @override
   Future<bool> changeFollow(bool value) => pushSettingsBloc
-      .changeFollow(value);
+      .changeFollowPushesEnabled(value);
 
   @override
-  bool get mention => pushSettingsBloc.mention;
+  bool get mention => pushSettingsBloc.mentionPushesEnabled;
 
   @override
-  Stream<bool> get mentionStream => pushSettingsBloc.mentionStream;
+  Stream<bool> get mentionStream => pushSettingsBloc.mentionPushesEnabledStream;
 
   @override
   Future<bool> changeMention(bool value) => pushSettingsBloc
-      .changeMention(value);
+      .changeMentionPushesEnabled(value);
 
   @override
-  bool get reblog => pushSettingsBloc.reblog;
+  bool get reblog => pushSettingsBloc.reblogPushesEnabled;
 
   @override
-  Stream<bool> get reblogStream => pushSettingsBloc.reblogStream;
+  Stream<bool> get reblogStream => pushSettingsBloc.reblogPushesEnabledStream;
 
   @override
   Future<bool> changeReblog(bool value) => pushSettingsBloc
-      .changeReblog(value);
+      .changeReblogPushesEnabled(value);
 
   @override
-  bool get poll => pushSettingsBloc.poll;
+  bool get poll => pushSettingsBloc.pollPushesEnabled;
 
   @override
-  Stream<bool> get pollStream => pushSettingsBloc.pollStream;
+  Stream<bool> get pollStream => pushSettingsBloc.pollPushesEnabledStream;
 
   @override
   Future<bool> changePoll(bool value) => pushSettingsBloc
-      .changePoll(value);
+      .changePollPushesEnabled(value);
 
 }
