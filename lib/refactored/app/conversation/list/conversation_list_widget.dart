@@ -8,10 +8,7 @@ import 'package:fedi/refactored/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/refactored/pagination/list/pagination_list_widget.dart';
 import 'package:fedi/refactored/pagination/pagination_model.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
-
-var _logger = Logger("account_conversationes_widget.dart");
 
 class ConversationListWidget extends PaginationListWidget<IConversation> {
   ConversationListWidget({

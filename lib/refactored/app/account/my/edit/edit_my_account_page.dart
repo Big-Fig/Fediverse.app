@@ -25,9 +25,8 @@ class EditMyAccountPage extends StatelessWidget {
               handleBackPressed(context, editMyAccountBloc);
             },
           ),
-          title: Row(children: <Widget>[
-            Text(AppLocalizations.of(context).tr("profile.edit.title"))
-          ]),
+          title: Text(AppLocalizations.of(context)
+              .tr("app.account.action.my.edit.title")),
           actions: <Widget>[
             InitialDataStreamBuilder<bool>(
                 stream: editMyAccountBloc.isSomethingChangedStream,
@@ -77,12 +76,15 @@ class EditMyAccountPage extends StatelessWidget {
   }
 
   alertUnsaved(BuildContext context) {
-    // todo localization
+
     showAlert(
-      context: context, title: "You have unsaved changed", //      body: "",
+      context: context, title: AppLocalizations.of(context)
+        .tr("app.account.action.my.edit.unsaved.dialog.title"), //      body:
+      // "",
       actions: [
         AlertAction(
-          text: "Discard & Exit",
+          text:AppLocalizations.of(context)
+              .tr("app.account.action.my.edit.unsaved.dialog.action.discard"),
           onPressed: () {
             Navigator.pop(context);
           },

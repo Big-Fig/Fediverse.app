@@ -11,7 +11,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-var _logger = Logger("account_statuses_widget.dart");
 
 class AccountStatusesWidget extends PaginationListWidget<IStatus> {
   AccountStatusesWidget({

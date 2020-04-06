@@ -1,18 +1,18 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/refactored/app/auth/host/auth_host_bloc_impl.dart';
+import 'package:fedi/refactored/app/auth/instance/register/register_auth_instance_bloc.dart';
 import 'package:fedi/refactored/app/dialog/alert_dialog.dart';
 import 'package:fedi/refactored/app/dialog/progress_dialog.dart';
 import 'package:fedi/refactored/pleroma/account/public/pleroma_account_public_model.dart';
-import 'package:fedi/refactored/app/auth/host/auth_host_bloc_impl.dart';
-import 'package:fedi/refactored/app/auth/instance/join/register/join_auth_instance_register_bloc.dart';
 import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class JoinAuthInstanceRegisterWidget extends StatelessWidget {
+class RegisterAuthInstanceWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var joinInstanceRegisterBloc =
-        IJoinAuthInstanceRegisterBloc.of(context, listen: false);
+        IRegisterAuthInstanceBloc.of(context, listen: false);
 
     return ListView(
       children: <Widget>[
@@ -26,7 +26,8 @@ class JoinAuthInstanceRegisterWidget extends StatelessWidget {
     );
   }
 
-  Widget userNameField(BuildContext context, IJoinAuthInstanceRegisterBloc bloc) {
+  Widget userNameField(
+      BuildContext context, IRegisterAuthInstanceBloc bloc) {
     return InitialDataStreamBuilder(
       stream: bloc.usernameStream,
       initialData: bloc.username,
@@ -37,9 +38,9 @@ class JoinAuthInstanceRegisterWidget extends StatelessWidget {
             onChanged: bloc.changeUsername,
             decoration: InputDecoration(
               hintText: AppLocalizations.of(context)
-                  .tr("sign_up.fields.username.hint"),
+                  .tr("app.auth.instance.register.field.username.hint"),
               labelText: AppLocalizations.of(context)
-                  .tr("sign_up.fields.username.label"),
+                  .tr("app.auth.instance.register.field.username.label"),
               errorText: snapshot.error,
             ),
           ),
@@ -48,7 +49,7 @@ class JoinAuthInstanceRegisterWidget extends StatelessWidget {
     );
   }
 
-  Widget emailField(BuildContext context, IJoinAuthInstanceRegisterBloc bloc) {
+  Widget emailField(BuildContext context, IRegisterAuthInstanceBloc bloc) {
     return InitialDataStreamBuilder(
       stream: bloc.emailStream,
       initialData: bloc.email,
@@ -59,10 +60,10 @@ class JoinAuthInstanceRegisterWidget extends StatelessWidget {
             onChanged: bloc.changeEmail,
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
-              hintText:
-                  AppLocalizations.of(context).tr("sign_up.fields.email.hint"),
-              labelText:
-                  AppLocalizations.of(context).tr("sign_up.fields.email.label"),
+              hintText: AppLocalizations.of(context)
+                  .tr("app.auth.instance.register.field.email.hint"),
+              labelText: AppLocalizations.of(context)
+                  .tr("app.auth.instance.register.field.email.label"),
               errorText: snapshot.error,
             ),
           ),
@@ -71,7 +72,8 @@ class JoinAuthInstanceRegisterWidget extends StatelessWidget {
     );
   }
 
-  Widget passwordField(BuildContext context, IJoinAuthInstanceRegisterBloc bloc) {
+  Widget passwordField(
+      BuildContext context, IRegisterAuthInstanceBloc bloc) {
     return InitialDataStreamBuilder(
       stream: bloc.passwordStream,
       initialData: bloc.password,
@@ -82,9 +84,9 @@ class JoinAuthInstanceRegisterWidget extends StatelessWidget {
             onChanged: bloc.changePassword,
             decoration: InputDecoration(
               hintText: AppLocalizations.of(context)
-                  .tr("sign_up.fields.password.hint"),
+                  .tr("app.auth.instance.register.field.password.hint"),
               labelText: AppLocalizations.of(context)
-                  .tr("sign_up.fields.password.label"),
+                  .tr("app.auth.instance.register.field.password.label"),
               errorText: snapshot.error,
             ),
           ),
@@ -94,7 +96,7 @@ class JoinAuthInstanceRegisterWidget extends StatelessWidget {
   }
 
   Widget confirmPasswordField(
-      BuildContext context, IJoinAuthInstanceRegisterBloc bloc) {
+      BuildContext context, IRegisterAuthInstanceBloc bloc) {
     return InitialDataStreamBuilder(
       stream: bloc.passwordsMatchStream,
       initialData: null,
@@ -104,10 +106,10 @@ class JoinAuthInstanceRegisterWidget extends StatelessWidget {
           child: TextField(
             onChanged: bloc.changeConfirmPassword,
             decoration: InputDecoration(
-              hintText: AppLocalizations.of(context)
-                  .tr("sign_up.fields.confirm_password.hint"),
-              labelText: AppLocalizations.of(context)
-                  .tr("sign_up.fields.confirm_password.label"),
+              hintText: AppLocalizations.of(context).tr(
+                  "app.auth.instance.register.field.confirm_password.hint"),
+              labelText: AppLocalizations.of(context).tr(
+                  "app.auth.instance.register.field.confirm_password.label"),
               errorText: snapshot.error,
             ),
           ),
@@ -116,7 +118,8 @@ class JoinAuthInstanceRegisterWidget extends StatelessWidget {
     );
   }
 
-  Widget submitButton(BuildContext context, IJoinAuthInstanceRegisterBloc bloc) {
+  Widget submitButton(
+      BuildContext context, IRegisterAuthInstanceBloc bloc) {
     return InitialDataStreamBuilder(
       stream: bloc.registerStream,
       initialData: null,
@@ -125,7 +128,7 @@ class JoinAuthInstanceRegisterWidget extends StatelessWidget {
           padding: EdgeInsets.all(10),
           child: RaisedButton(
             child: Text(AppLocalizations.of(context)
-                .tr("sign_up.buttons.sign_up.text")),
+                .tr("app.auth.instance.register.action.create_account")),
             color: Colors.blue,
             onPressed: () {
               if (snapshot.hasData) {
@@ -140,15 +143,18 @@ class JoinAuthInstanceRegisterWidget extends StatelessWidget {
     );
   }
 
-  submit(BuildContext context, IJoinAuthInstanceRegisterBloc bloc) async {
+  submit(BuildContext context, IRegisterAuthInstanceBloc bloc) async {
     final validUsername = bloc.username;
     final validEmail = bloc.email;
     final validPassword = bloc.password;
 
+    // todo rework progress
     var _pr = ProgressDialog(context, ProgressDialogType.Normal);
-    _pr.setMessage(AppLocalizations.of(context).tr("sign_up.check.progress"));
+    _pr.setMessage(AppLocalizations.of(context)
+        .tr("app.auth.instance.register.progress.dialog.content"));
     _pr.show();
 
+    // todo: refactor domain
     var authApplicationBloc = AuthHostBloc.createFromContext(context,
         instanceBaseUrl: Uri.parse("https://fedi.app"));
     var success;
@@ -156,8 +162,10 @@ class JoinAuthInstanceRegisterWidget extends StatelessWidget {
     try {
       success = await authApplicationBloc.registerAccount(
           request: PleromaAccountRegisterRequest(
+              //todo: popup ToS before register
               agreement: true,
               email: validEmail,
+              // todo: add locale chooser
               locale: "en",
               password: validPassword,
               username: validUsername));
@@ -169,8 +177,13 @@ class JoinAuthInstanceRegisterWidget extends StatelessWidget {
     }
     if (success == true) {
       // TODO: localization
-      var alert = Alert(context, "Success registration",
-          "You can now login with given credentials", () {
+      var alert = Alert(
+          context,
+          AppLocalizations.of(context)
+              .tr("app.auth.instance.register.success.dialog.title"),
+          AppLocalizations.of(context)
+              .tr("app.auth.instance.register.success.dialog.content"),
+          () {
         Navigator.of(context).pop();
       });
       alert.showAlert();
@@ -181,14 +194,14 @@ class JoinAuthInstanceRegisterWidget extends StatelessWidget {
   }
 
   showError(BuildContext context, {@required String error}) {
-    String content = error == null
-        ? AppLocalizations.of(context).tr("sign_up.check.error.alert.content")
-        : error;
 
     var alert = Alert(
         context,
-        AppLocalizations.of(context).tr("sign_up.check.error.alert.title"),
-        content,
+        AppLocalizations.of(context)
+            .tr("app.auth.instance.register.success.dialog.title"),
+        AppLocalizations.of(context)
+            .tr("app.auth.instance.register.success.dialog.content",
+            args: [error]),
         () => {});
     alert.showAlert();
   }

@@ -1,8 +1,8 @@
-import 'package:fedi/refactored/app/account/my/actions/my_account_actions_bottom_sheet_dialog.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/refactored/app/account/my/action/my_account_action_list_bottom_sheet_dialog.dart';
 import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
 import 'package:fedi/refactored/app/auth/instance/current/context/loading/current_auth_instance_context_loading_bloc.dart';
 import 'package:fedi/refactored/app/auth/instance/current/context/loading/current_auth_instance_context_loading_model.dart';
-import 'package:fedi/refactored/app/home/home_page.dart';
 import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +34,10 @@ class CurrentAuthInstanceContextLoadingWidget extends StatelessWidget {
 
               // todo: localization
               return Center(
-                  child: Text("Loading ${myAccountBloc.instance.userAtHost}"));
+                  child: Text(AppLocalizations.of(context).tr(
+                      "app.auth.instance.current.context.loading.loading"
+                      ".content",
+                      args: [myAccountBloc.instance.userAtHost])));
               break;
             case CurrentAuthInstanceContextLoadingState.localCacheExist:
               return child;
@@ -42,18 +45,23 @@ class CurrentAuthInstanceContextLoadingWidget extends StatelessWidget {
                 .cantFetchAndLocalCacheNotExist:
               return Column(
                 children: <Widget>[
-                  // todo: localization
-                  Text("Can't load current instance"),
+                  Text(AppLocalizations.of(context)
+                      .tr("app.auth.instance.current.context.loading.cant_load"
+                          ".content")),
                   RaisedButton(
-                    child: Text("Refresh"),
+                    child: Text(AppLocalizations.of(context).tr(
+                        "app.auth.instance.current.context.loading.cant_load"
+                        ".action.refresh")),
                     onPressed: () {
                       currentInstanceContextLoadingBloc.refresh();
                     },
                   ),
                   RaisedButton(
-                    child: Text("Choose different account"),
+                    child: Text(AppLocalizations.of(context).tr(
+                        "app.auth.instance.current.context.loading.cant_load"
+                        ".action.choose_different_account")),
                     onPressed: () {
-                      showMyAccountActionsBottomSheetDialog(context);
+                      showMyAccountActionListBottomSheetDialog(context);
                     },
                   ),
                 ],
@@ -63,10 +71,5 @@ class CurrentAuthInstanceContextLoadingWidget extends StatelessWidget {
 
           throw "Invalid state $state";
         });
-  }
-
-  HomePage buildHomePage() {
-    _logger.finest(() => "buildHomePage");
-    return HomePage();
   }
 }

@@ -1,5 +1,5 @@
 import 'package:fedi/refactored/app/account/account_bloc.dart';
-import 'package:fedi/refactored/app/account/actions/account_actions_widget.dart';
+import 'package:fedi/refactored/app/account/action/account_action_list_widget.dart';
 import 'package:fedi/refactored/app/account/field/account_field_grid_widget.dart';
 import 'package:fedi/refactored/app/account/info/account_info_widget.dart';
 import 'package:fedi/refactored/app/account/note/account_note_widget.dart';
@@ -16,7 +16,7 @@ class AccountWidget extends StatelessWidget {
           if (!accountBloc.isMyAccount)
             Container(
               color: Colors.blue[100],
-              child: AccountActionsWidget(),
+              child: AccountActionListWidget(),
             ),
           AccountNoteWidget(),
           AccountFieldGridWidget(),

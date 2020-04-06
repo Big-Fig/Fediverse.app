@@ -5,8 +5,6 @@ import 'package:fedi/refactored/app/conversation/conversation_bloc.dart';
 import 'package:fedi/refactored/app/conversation/conversation_page.dart';
 import 'package:fedi/refactored/app/conversation/title/conversation_title_widget.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
-import 'package:fedi/refactored/async/loading/init/async_init_loading_widget.dart';
-import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
@@ -18,13 +16,11 @@ class ConversationListItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var conversationBloc = IConversationBloc.of(context, listen: true);
 
-
     return GestureDetector(
       onTap: () {
         goToConversationPage(context,
             conversation: conversationBloc.conversation,
-            conversationAccountsWithoutMe:
-            conversationBloc.accountsWithoutMe);
+            conversationAccountsWithoutMe: conversationBloc.accountsWithoutMe);
       },
       child: Card(
         child: Padding(
@@ -39,8 +35,7 @@ class ConversationListItemWidget extends StatelessWidget {
                   ConversationAvatarWidget(),
                   Padding(
                     padding: EdgeInsets.all(12.0),
-                    child: buildConversationPreview(
-                        context, conversationBloc),
+                    child: buildConversationPreview(context, conversationBloc),
                   ),
                 ],
               ),
@@ -52,8 +47,8 @@ class ConversationListItemWidget extends StatelessWidget {
     );
   }
 
-  Column buildConversationPreview(BuildContext context,
-      IConversationBloc conversationBloc) {
+  Column buildConversationPreview(
+      BuildContext context, IConversationBloc conversationBloc) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -64,11 +59,12 @@ class ConversationListItemWidget extends StatelessWidget {
     );
   }
 
-  IconButton buildGoToConversationButton(BuildContext context,
-      IConversationBloc conversationBloc) {
+  IconButton buildGoToConversationButton(
+      BuildContext context, IConversationBloc conversationBloc) {
     return IconButton(
       icon: Icon(Icons.chevron_right),
-      tooltip: AppLocalizations.of(context).tr("messages.cell.action.more"),
+      tooltip: AppLocalizations.of(context).tr("app.conversation."
+          ".action.more"),
       onPressed: () {
         goToConversationPage(context,
             conversation: conversationBloc.conversation,
@@ -77,11 +73,10 @@ class ConversationListItemWidget extends StatelessWidget {
     );
   }
 
-  Widget buildLastStatusText(BuildContext context,
-      IConversationBloc conversationBloc) {
+  Widget buildLastStatusText(
+      BuildContext context, IConversationBloc conversationBloc) {
     return StreamBuilder<IStatus>(
         stream: conversationBloc.lastStatusStream,
-
         builder: (context, snapshot) {
           var lastStatus = snapshot.data;
 
@@ -100,9 +95,7 @@ class ConversationListItemWidget extends StatelessWidget {
     String formattedText = parse(status.content).documentElement.text;
     for (var i = 0; i < status.mentions.length; i++) {
       var mention = status.mentions[i];
-      var account = mention.acct
-          .split("@")
-          .first;
+      var account = mention.acct.split("@").first;
       print(account);
       formattedText = formattedText.replaceAll("@$account", "");
     }
@@ -111,7 +104,8 @@ class ConversationListItemWidget extends StatelessWidget {
 
     if (myAccountBloc.checkStatusIsFromMe(status)) {
       formattedText = AppLocalizations.of(context)
-          .tr("messages.cell.status.you", args: [formattedText]);
+          .tr("app.conversation."
+          ".preview.you", args: [formattedText]);
     }
     return formattedText;
   }

@@ -1,13 +1,15 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/refactored/app/auth/instance/join/join_auth_instance_bloc.dart';
-import 'package:fedi/refactored/app/auth/instance/join/register/join_auth_instance_register_page.dart';
+import 'package:fedi/refactored/app/auth/instance/register/register_auth_instance_page.dart';
 import 'package:fedi/refactored/app/dialog/alert_dialog.dart';
 import 'package:fedi/refactored/app/dialog/progress_dialog.dart';
+import 'package:fedi/refactored/app/tos/tos_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+// Todo: refactor colors
 final Color darkGray = Color.fromARGB(175, 40, 40, 35);
 final Color romaGreen = Colors.blue; // Color.fromARGB(255, 146, 196, 78);
 
@@ -43,10 +45,11 @@ class JoinAuthInstanceWidget extends StatelessWidget {
 
   FlatButton buildTermsOfServiceButton(BuildContext context) {
     return FlatButton(
-      child: Text(AppLocalizations.of(context).tr("login.action.terms")),
+      child: Text(
+          AppLocalizations.of(context).tr("app.auth.instance.join.action.tos")),
       color: Colors.black12,
       onPressed: () {
-        Navigator.pushNamed(context, '/terms');
+        goToTosPage(context);
       },
     );
   }
@@ -60,10 +63,11 @@ class JoinAuthInstanceWidget extends StatelessWidget {
         style: BorderStyle.solid,
       ),
       child: Text(
-        AppLocalizations.of(context).tr("login.action.join_instance"),
+        AppLocalizations.of(context).tr("app.auth.instance.join.action"
+            ".join_fedi"),
       ),
       onPressed: () {
-        goToJoinAuthInstanceRegisterPage(context);
+        goToRegisterAuthInstancePage(context);
       },
     );
   }
@@ -72,7 +76,8 @@ class JoinAuthInstanceWidget extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
       child: Text(
-        AppLocalizations.of(context).tr("login.text.join_explaination"),
+        AppLocalizations.of(context).tr("app.auth.instance.join.no_account"
+            ".content"),
         style: TextStyle(
           color: Colors.white,
         ),
@@ -84,7 +89,8 @@ class JoinAuthInstanceWidget extends StatelessWidget {
   Container buildOrText(BuildContext context) {
     return Container(
       child: Text(
-        "- " + AppLocalizations.of(context).tr("login.text.or") + " -",
+        AppLocalizations.of(context).tr("app.auth.instance.join.no_account"
+            ".prefix"),
         style: TextStyle(
           color: Colors.white,
         ),
@@ -102,7 +108,9 @@ class JoinAuthInstanceWidget extends StatelessWidget {
             padding: EdgeInsets.only(left: 10, right: 5),
             child: FlatButton(
                 child: Text(
-                    AppLocalizations.of(context).tr("login.action.sign_up")),
+                    AppLocalizations.of(context).tr("app.auth.instance.join"
+                        ".action"
+                        ".sign_up")),
                 color: darkGray,
                 textColor: Colors.white,
                 onPressed: () {
@@ -115,8 +123,10 @@ class JoinAuthInstanceWidget extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.only(left: 5, right: 10),
             child: FlatButton(
-                child: Text(AppLocalizations.of(context)
-                    .tr("login.action.login_to_instance")),
+                child: Text(
+                    AppLocalizations.of(context).tr("app.auth.instance.join"
+                        ".action"
+                        ".login")),
                 color: darkGray,
                 textColor: Colors.white,
                 onPressed: () {
@@ -139,9 +149,10 @@ class JoinAuthInstanceWidget extends StatelessWidget {
         decoration: InputDecoration(
           filled: true,
           fillColor: Colors.white54,
-          hintText: AppLocalizations.of(context).tr("login.field.host.hint"),
-          helperText:
-              AppLocalizations.of(context).tr("login.field.host.helper_text"),
+          hintText: AppLocalizations.of(context).tr("app.auth.instance.join"
+              ".field.host.hint"),
+          helperText: AppLocalizations.of(context).tr("app.auth.instance.join"
+              ".field.host.helper"),
           border: InputBorder.none,
           helperStyle: TextStyle(color: Colors.white),
         ),
@@ -166,18 +177,18 @@ class JoinAuthInstanceWidget extends StatelessWidget {
     // todo: fix hardcode
     if (hostTextController.text == "" ||
         hostTextController.text.contains("fedi.app")) {
-      goToJoinAuthInstanceRegisterPage(context);
+      goToRegisterAuthInstancePage(context);
       return;
     }
     var _pr = new ProgressDialog(context, ProgressDialogType.Normal);
-    _pr.setMessage(AppLocalizations.of(context).tr("login.check.progress"));
+    _pr.setMessage(AppLocalizations.of(context).tr("app.auth.instance.join"
+        ".progress.dialog.content"));
     _pr.show();
 
     var host = hostTextController.text.split("/").first;
     if (await canLaunch(host)) {
       launch(host);
     }
-
   }
 
   logInToInstance(BuildContext context) {
@@ -189,7 +200,8 @@ class JoinAuthInstanceWidget extends StatelessWidget {
       return;
     }
     var _pr = new ProgressDialog(context, ProgressDialogType.Normal);
-    _pr.setMessage(AppLocalizations.of(context).tr("login.check.progress"));
+    _pr.setMessage(AppLocalizations.of(context).tr("app.auth.instance.join"
+        ".progress.dialog.content"));
     _pr.show();
 
     var host = hostTextController.text.split("/").first;
@@ -208,8 +220,10 @@ class JoinAuthInstanceWidget extends StatelessWidget {
       if (instance != null) {
         var alert = Alert(
             context,
-            AppLocalizations.of(context).tr("login.check.error.alert.title"),
-            AppLocalizations.of(context).tr("login.check.error.alert.content"),
+            AppLocalizations.of(context).tr("app.auth.instance.join"
+                ".fail.dialog.title"),
+            AppLocalizations.of(context).tr("app.auth.instance.join"
+                ".fail.dialog.content"),
             () => {});
         alert.showAlert();
       }
@@ -218,8 +232,10 @@ class JoinAuthInstanceWidget extends StatelessWidget {
       bloc.dispose();
       var alert = Alert(
           context,
-          AppLocalizations.of(context).tr("login.check.error.alert.title"),
-          AppLocalizations.of(context).tr("login.check.error.alert.content"),
+          AppLocalizations.of(context).tr("app.auth.instance.join"
+              ".fail.dialog.title"),
+          AppLocalizations.of(context).tr("app.auth.instance.join"
+              ".fail.dialog.content"),
           () => {});
       alert.showAlert();
     });

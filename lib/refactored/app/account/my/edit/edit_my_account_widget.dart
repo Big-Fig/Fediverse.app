@@ -47,7 +47,8 @@ class EditMyAccountWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Text(
-                AppLocalizations.of(context).tr("profile.edit.header"),
+                AppLocalizations.of(context)
+                    .tr("app.account.action.my.edit.field.header.label"),
                 style: TextStyle(color: Colors.white),
               ),
               Padding(
@@ -141,7 +142,7 @@ class EditMyAccountWidget extends StatelessWidget {
         builder: (context, snapshot) {
           var url = snapshot.data;
           return ClipRRect(
-            borderRadius: new BorderRadius.circular(8.0),
+            borderRadius: BorderRadius.circular(8.0),
             child: CachedNetworkImage(
               imageUrl: url,
               placeholder: (context, url) => Center(
@@ -205,7 +206,8 @@ class EditMyAccountWidget extends StatelessWidget {
   Widget buildDisplayNameField(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
     var label =
-        AppLocalizations.of(context).tr("profile.edit.display_name.label");
+        AppLocalizations.of(context)
+            .tr("app.account.action.my.edit.field.display_name.label");
     var textEditingController =
         editMyAccountBloc.displayNameField.textEditingController;
     return buildTextField(textEditingController, label);
@@ -214,7 +216,8 @@ class EditMyAccountWidget extends StatelessWidget {
   Widget buildNoteField(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
     var label =
-        AppLocalizations.of(context).tr("profile.edit.display_name.label");
+        AppLocalizations.of(context)
+            .tr("app.account.action.my.edit.field.note.label");
     var textEditingController =
         editMyAccountBloc.noteField.textEditingController;
     return buildTextField(textEditingController, label);
@@ -246,7 +249,8 @@ class EditMyAccountWidget extends StatelessWidget {
 
   Widget buildLockedField(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    var label = AppLocalizations.of(context).tr("profile.edit.locked.label");
+    var label = AppLocalizations.of(context)
+        .tr("app.account.action.my.edit.field.locked.label");
     var field = editMyAccountBloc.lockedField;
     return buildBooleanField(label, field);
   }
@@ -286,7 +290,8 @@ class EditMyAccountWidget extends StatelessWidget {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.all(10.0), // todo: localization
-          child: Text("Fields"),
+          child: Text(AppLocalizations.of(context)
+              .tr("app.account.action.my.edit.group.custom_field.label")),
         ),
         ...editMyAccountBloc.customFields.map((customField) =>
             buildField(context, editMyAccountBloc, customField))
@@ -303,14 +308,18 @@ class EditMyAccountWidget extends StatelessWidget {
           Flexible(
             child: buildCustomFieldTextField(
                 customField.nameField.textEditingController,
-                AppLocalizations.of(context).tr("profile.edit.field"
-                    ".label")),
+                AppLocalizations.of(context)
+                    .tr("app.account.action.my.edit.field.custom_field.label"
+                    ".label")
+            ),
           ),
           Flexible(
             child: buildCustomFieldTextField(
                 customField.valueField.textEditingController,
-                AppLocalizations.of(context).tr("profile.edit.field"
-                    ".value")),
+                AppLocalizations.of(context)
+                    .tr("app.account.action.my.edit.field.custom_field.value"
+                    ".label")
+            ),
           ),
         ],
       ),

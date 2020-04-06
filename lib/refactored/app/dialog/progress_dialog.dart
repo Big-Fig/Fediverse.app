@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 
 enum ProgressDialogType { Normal, Download }
-
+// todo: refactor
 ProgressDialogType _progressDialogType = ProgressDialogType.Normal;
 double _progress = 0.0;
 

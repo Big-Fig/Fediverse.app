@@ -11,8 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-var _logger = Logger("account_pagination_list_simple_widget.dart");
-
 class AccountPaginationListWidget extends PaginationListWidget<IAccount> {
   final AccountSelectedCallback accountSelectedCallback;
 

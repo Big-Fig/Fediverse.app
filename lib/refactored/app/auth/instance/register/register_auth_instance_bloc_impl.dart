@@ -1,14 +1,15 @@
 import 'dart:async';
 
-import 'package:fedi/refactored/app/auth/instance/join/register/join_auth_instance_register_bloc.dart';
-import 'package:fedi/refactored/app/auth/instance/join/register/join_auth_instance_register_model.dart';
+import 'package:fedi/refactored/app/auth/instance/register/register_auth_instance_bloc.dart';
+import 'package:fedi/refactored/app/auth/instance/register/register_auth_instance_model.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/subjects.dart';
 
 class JoinAuthInstanceRegisterBloc extends DisposableOwner
-    implements IJoinAuthInstanceRegisterBloc {
-  final _widgetStatusSubject = BehaviorSubject<JoinAuthInstanceRegisterNetworkState>();
+    implements IRegisterAuthInstanceBloc {
+  // todo: refactor errors
+  final _widgetStatusSubject = BehaviorSubject<RegisterAuthInstanceNetworkState>();
   final _usernameSubject = BehaviorSubject<String>.seeded("");
   final _emailSubject = BehaviorSubject<String>.seeded("");
   final _passwordSuject = BehaviorSubject<String>.seeded("");
@@ -75,7 +76,7 @@ class JoinAuthInstanceRegisterBloc extends DisposableOwner
   });
 
   // validate email
-  Stream<JoinAuthInstanceRegisterNetworkState> get widgetStatus =>
+  Stream<RegisterAuthInstanceNetworkState> get widgetStatus =>
       _widgetStatusSubject.stream;
 
   Stream<String> get usernameStream =>

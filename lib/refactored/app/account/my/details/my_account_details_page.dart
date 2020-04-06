@@ -2,7 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fedi/refactored/app/account/account_bloc.dart';
 import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/account/details/account_details_widget.dart';
-import 'package:fedi/refactored/app/account/my/actions/my_account_actions_bottom_sheet_dialog.dart';
+import 'package:fedi/refactored/app/account/my/action/my_account_action_list_bottom_sheet_dialog.dart';
 import 'package:fedi/refactored/app/account/my/edit/edit_my_account_page.dart';
 import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
 import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_bloc.dart';
@@ -50,12 +50,13 @@ class MyAccountDetailsPage extends StatelessWidget {
           ],
         ),
         onPressed: () {
-          showMyAccountActionsBottomSheetDialog(context);
+          showMyAccountActionListBottomSheetDialog(context);
         },
       );
 
   Widget buildCurrentInstanceNameWidget(BuildContext context) {
-    var currentInstanceBloc = ICurrentAuthInstanceBloc.of(context, listen: false);
+    var currentInstanceBloc =
+        ICurrentAuthInstanceBloc.of(context, listen: false);
     return AutoSizeText(
       currentInstanceBloc.currentInstance.userAtHost,
       minFontSize: 12,

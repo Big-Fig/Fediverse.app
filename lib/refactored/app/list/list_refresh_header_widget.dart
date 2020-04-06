@@ -19,7 +19,7 @@ class ListRefreshHeaderWidget extends StatelessWidget {
             ),
             Text(
               AppLocalizations.of(context)
-                  .tr("profile.other.update.up_to_date"),
+                  .tr("app.list.refresh.up_to_date"),
               style: TextStyle(color: Colors.grey),
             )
           ],
@@ -36,7 +36,7 @@ class ListRefreshHeaderWidget extends StatelessWidget {
             ),
             Text(
                 AppLocalizations.of(context)
-                    .tr("profile.other.update.unable_to_fetch"),
+                    .tr("app.list.refresh.unable_to_fetch"),
                 style: TextStyle(color: Colors.grey))
           ],
         ));

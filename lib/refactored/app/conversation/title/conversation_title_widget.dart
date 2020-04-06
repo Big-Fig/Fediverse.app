@@ -1,6 +1,5 @@
 import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/conversation/conversation_bloc.dart';
-import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +14,6 @@ class ConversationTitleWidget extends StatelessWidget {
           var accounts = snapshot.data;
 
           if (accounts?.isNotEmpty != true) {
-
             return CircularProgressIndicator();
           }
           return Row(

@@ -1,7 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/refactored/app/auth/instance/chooser/auth_instance_chooser_bloc.dart';
 import 'package:fedi/refactored/app/auth/instance/auth_instance_model.dart';
-import 'package:fedi/refactored/app/auth/instance/join/new/join_new_auth_instance_page.dart';
+import 'package:fedi/refactored/app/auth/instance/join/add_more/add_more_join_auth_instance_page.dart';
 import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -52,14 +53,14 @@ class AuthInstanceChooserWidget extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: GestureDetector(
           onTap: () {
-            goToJoinNewInstancePage(context);
+            goToAddMoreJoinAuthInstancePage(context);
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Icon(Icons.add),
-              // todo: localization
-              Text("Add account"),
+              Text(AppLocalizations.of(context)
+              .tr("auth.instance.chooser.action.add_account")),
             ],
           ),
         ),
@@ -77,6 +78,7 @@ class AuthInstanceChooserWidget extends StatelessWidget {
                 color: Colors.red,
               ),
               onPressed: () {
+                // todo: alert dialog
                 instanceChooserBloc.removeInstance(instance);
               },
             ),
@@ -100,9 +102,10 @@ class AuthInstanceChooserWidget extends StatelessWidget {
                     color: Colors.grey,
                   ),
                   onPressed: () {
+
                     var authHostBloc = AuthHostBloc.createFromContext(context,
                         instanceBaseUrl: instance.url);
-
+// todo: alert dialog
                     authHostBloc.logout();
                   },
                 ),

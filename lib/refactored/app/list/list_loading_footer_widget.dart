@@ -9,21 +9,33 @@ class ListLoadingFooterWidget extends StatelessWidget {
     return CustomFooter(
       builder: (BuildContext context, LoadStatus mode) {
         Widget body;
-        if (mode == LoadStatus.idle) {
-          body = Text("");
-        } else if (mode == LoadStatus.loading) {
-          body = CircularProgressIndicator();
-        } else if (mode == LoadStatus.failed) {
-          body = Text(
-            AppLocalizations.of(context).tr("profile.other.update"
-                ".failed"),
-          );
-        } else {
-          body = Text(
-            AppLocalizations.of(context).tr("profile.other.update"
-                ".no_more_data"),
-          );
+
+        switch(mode) {
+
+          case LoadStatus.idle:
+            body = Text("");
+            break;
+          case LoadStatus.canLoading:
+            body = Text(
+              AppLocalizations.of(context).tr("list.loading.state.can_loading"),
+            );
+            break;
+          case LoadStatus.loading:
+            body = CircularProgressIndicator();
+            break;
+          case LoadStatus.noMore:
+            body = Text(
+              AppLocalizations.of(context).tr("list.loading.state"
+                  ".no_more_data"),
+            );
+            break;
+          case LoadStatus.failed:
+            body = Text(
+              AppLocalizations.of(context).tr("list.loading.state.failed"),
+            );
+            break;
         }
+
         return Container(
           height: 55.0,
           child: Center(child: body),
