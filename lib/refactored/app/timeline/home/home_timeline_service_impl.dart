@@ -23,9 +23,7 @@ class HomeTimelineService extends TimelineStatusListService
   ITimelineSettings retrieveTimelineSettings() =>
       TimelineSettings.home(excludeVisibilities: [
         PleromaVisibility.DIRECT,
-        PleromaVisibility.LIST,
-        PleromaVisibility.UNLISTED
-      ], onlyLocal: true, onlyNotMuted: true, homeAccount: homeAccount);
+      ], onlyLocal: null, onlyNotMuted: true, homeAccount: homeAccount);
 
   HomeTimelineService({
     @required IPleromaTimelineService pleromaTimelineService,
