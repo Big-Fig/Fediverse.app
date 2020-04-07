@@ -23,6 +23,7 @@ class JoinAuthInstanceRegisterBloc extends DisposableOwner
     if (username.length > 0) {
       sink.add(username);
     } else {
+      // todo: localization
       sink.addError('Enter a valid username');
     }
   });
@@ -38,6 +39,7 @@ class JoinAuthInstanceRegisterBloc extends DisposableOwner
     if (emailValid) {
       sink.add(email);
     } else {
+      // todo: localization
       sink.addError('Enter a valid email');
     }
   });
@@ -50,6 +52,7 @@ class JoinAuthInstanceRegisterBloc extends DisposableOwner
     if (password.length > 3) {
       sink.add(password);
     } else {
+      // todo: localization
       sink.addError('Password must be at least 4 characters');
     }
   });
@@ -63,6 +66,7 @@ class JoinAuthInstanceRegisterBloc extends DisposableOwner
     if (password.length > 3) {
       sink.add(password);
     } else {
+      // todo: localization
       sink.addError('Password must be at least 4 characters');
     }
   });
@@ -72,6 +76,7 @@ class JoinAuthInstanceRegisterBloc extends DisposableOwner
     if (password != null) {
       sink.add(password);
     } else {
+      // todo: localization
       sink.addError('Password and confirm password must match');
     }
   });
