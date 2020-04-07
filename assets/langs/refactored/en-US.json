@@ -33,8 +33,25 @@
             }
           },
           "field": {
+            "avatar": {
+              "dialog": {
+                "title": "Confirm selection?",
+                "action": {
+                  "select_and_crop": "Select & crop",
+                  "cancel": "Cancel"
+                }
+              }
+            },
             "header": {
-              "label": "Header"
+              "label": "Header",
+              "dialog": {
+                "title": "Confirm selection?",
+                "action": {
+                  "select": "Select",
+                  "crop": "Crop",
+                  "cancel": "Cancel"
+                }
+              }
             },
             "display_name": {
               "label": "Display name"
@@ -394,6 +411,7 @@
   "file": {
     "picker": {
       "single": {
+        "title": "Choose media",
         "video": {
           "confirm": {
             "dialog": {

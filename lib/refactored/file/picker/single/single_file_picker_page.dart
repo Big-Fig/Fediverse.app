@@ -21,7 +21,7 @@ class SingleFilePickerPage extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(AppLocalizations.of(context)
-            .tr("app.status.edit.attach_media.title")),
+            .tr("file.picker.single.title")),
       ),
       body: SingleFilePickerWidget(),
       bottomNavigationBar: FilePickerBottomNavBarWidget(),

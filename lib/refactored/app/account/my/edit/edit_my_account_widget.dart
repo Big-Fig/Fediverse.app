@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/account/my/edit/edit_my_account_bloc.dart';
 import 'package:fedi/refactored/app/account/my/edit/edit_my_account_model.dart';
+import 'package:fedi/refactored/app/account/my/edit/header/edit_my_account_header_dialog.dart';
 import 'package:fedi/refactored/file/picker/file_picker_model.dart';
 import 'package:fedi/refactored/file/picker/single/single_file_picker_page.dart';
 import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
@@ -67,14 +68,16 @@ class EditMyAccountWidget extends StatelessWidget {
 
   startChoosingFileToUploadHeader(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    // todo: add dialog
     goToSingleFilePickerPage(context,
         fileSelectedCallback: (FilePickerFile filePickerFile) async {
-      Navigator.of(context).pop();
-      await editMyAccountBloc.uploadHeaderImage(filePickerFile.file);
-      if (filePickerFile.isNeedDeleteAfterUsage) {
-        filePickerFile.file.delete();
-      }
+      showEditMyAccountHeaderDialog(context, filePickerFile,
+          (filePickerFile) async {
+        Navigator.of(context).pop();
+        await editMyAccountBloc.uploadHeaderImage(filePickerFile.file);
+        if (filePickerFile.isNeedDeleteAfterUsage) {
+          filePickerFile.file.delete();
+        }
+      });
     }, startActiveTab: FilePickerTab.gallery);
   }
 
@@ -101,14 +104,16 @@ class EditMyAccountWidget extends StatelessWidget {
 
   startChoosingFileToUploadAvatar(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    // todo: add dialog
     goToSingleFilePickerPage(context,
         fileSelectedCallback: (FilePickerFile filePickerFile) async {
-      Navigator.of(context).pop();
-      await editMyAccountBloc.uploadAvatarImage(filePickerFile.file);
-      if (filePickerFile.isNeedDeleteAfterUsage) {
-        filePickerFile.file.delete();
-      }
+      showEditMyAccountHeaderDialog(context, filePickerFile,
+          (filePickerFile) async {
+        Navigator.of(context).pop();
+        await editMyAccountBloc.uploadAvatarImage(filePickerFile.file);
+        if (filePickerFile.isNeedDeleteAfterUsage) {
+          filePickerFile.file.delete();
+        }
+      });
     }, startActiveTab: FilePickerTab.gallery);
   }
 
