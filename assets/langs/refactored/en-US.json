@@ -377,10 +377,10 @@
         }
       },
       "reblog": {
-        "header": "reblogged"
+        "header": "reblogged by"
       },
       "reply": {
-        "header": "replied"
+        "header": "replied to"
       },
       "thread": {
         "title": "Status thread"

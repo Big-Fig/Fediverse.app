@@ -89,6 +89,7 @@ class StatusThreadBloc extends DisposableOwner implements IStatusThreadBloc {
   @override
   Future<bool> refresh() async {
     try {
+      _logger.finest(() => "refresh");
       // update start status
       var updatedStartRemoteStatus = await this
           .pleromaStatusService
