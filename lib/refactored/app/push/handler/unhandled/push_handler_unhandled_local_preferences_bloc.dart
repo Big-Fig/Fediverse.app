@@ -16,5 +16,6 @@ abstract class IPushHandlerUnhandledLocalPreferencesBloc
 
   Future<bool> markAsHandled(List<PleromaPushMessage> messages);
 
-  List<PleromaPushMessage> loadUnhandledMessagesForInstance(AuthInstance instance);
+  List<PleromaPushMessage> loadUnhandledMessagesForInstance(
+      AuthInstance instance);
 }

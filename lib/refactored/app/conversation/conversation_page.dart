@@ -73,4 +73,3 @@ void goToConversationPage(BuildContext context,
                 child: ConversationPage()))),
   );
 }
-

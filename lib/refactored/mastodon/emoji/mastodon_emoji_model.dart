@@ -6,5 +6,6 @@ abstract class IMastodonEmoji {
   String get staticUrl;
 
   bool get visibleInPicker;
+
   String get category;
 }

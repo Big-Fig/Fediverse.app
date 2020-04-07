@@ -1,5 +1,3 @@
-import 'package:fedi/refactored/app/database/app_database.dart';
-import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:moor/moor.dart';
 
 // todo: add foreign keys

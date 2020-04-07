@@ -62,7 +62,8 @@ class NotificationsHomeTabBloc extends DisposableOwner
         statusRepository: IStatusRepository.of(context, listen: false),
         accountRepository: IAccountRepository.of(context, listen: false),
         myAccountBloc: IMyAccountBloc.of(context, listen: false),
-        currentInstanceBloc: ICurrentAuthInstanceBloc.of(context, listen: false),
+        currentInstanceBloc:
+            ICurrentAuthInstanceBloc.of(context, listen: false),
       );
 //
 //

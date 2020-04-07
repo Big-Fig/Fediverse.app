@@ -5,7 +5,8 @@ import 'package:fedi/refactored/app/auth/instance/list/auth_instance_list_model.
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:flutter/widgets.dart';
 
-class AuthInstanceListBloc extends DisposableOwner implements IAuthInstanceListBloc {
+class AuthInstanceListBloc extends DisposableOwner
+    implements IAuthInstanceListBloc {
   final IAuthInstanceListLocalPreferenceBloc instanceListLocalPreferenceBloc;
 
   AuthInstanceListBloc({@required this.instanceListLocalPreferenceBloc});

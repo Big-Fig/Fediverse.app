@@ -5,9 +5,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_mastodon_list_model.g.dart';
 
-abstract class IPleromaList extends IMastodonList {
-
-}
+abstract class IPleromaList extends IMastodonList {}
 
 @JsonSerializable()
 class PleromaList extends IPleromaList {
@@ -17,7 +15,6 @@ class PleromaList extends IPleromaList {
   @override
   String title;
   PleromaList({this.id, this.title});
-
 
   factory PleromaList.fromJson(Map<String, dynamic> json) =>
       _$PleromaListFromJson(json);

@@ -1,7 +1,6 @@
 import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/account/avatar/account_avatar_widget.dart';
 import 'package:fedi/refactored/app/conversation/conversation_bloc.dart';
-import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +20,7 @@ class ConversationAvatarWidget extends StatelessWidget {
           stream: conversationBloc.accountsWithoutMeStream.distinct(),
           builder: (context, snapshot) {
             var accounts = snapshot.data;
-            if(accounts?.isNotEmpty != true) {
+            if (accounts?.isNotEmpty != true) {
               return SizedBox.shrink();
             }
 

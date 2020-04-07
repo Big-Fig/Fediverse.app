@@ -11,7 +11,4 @@ class PaginationPage<T> {
       @required this.items});
 }
 
-
-enum PaginationRefreshState {
-  notRefreshed, refreshing, refreshed
-}
+enum PaginationRefreshState { notRefreshed, refreshing, refreshed }

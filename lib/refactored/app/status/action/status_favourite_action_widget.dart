@@ -37,7 +37,7 @@ class StatusFavouriteActionWidget extends StatelessWidget {
               initialData: statusBloc.favouritesReblogPlusOriginalCount,
               builder: (context, snapshot) {
                 var favouritesCount = snapshot.data;
-                if(favouritesCount == null) {
+                if (favouritesCount == null) {
                   return SizedBox.shrink();
                 }
                 return GestureDetector(

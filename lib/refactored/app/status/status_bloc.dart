@@ -36,6 +36,7 @@ abstract class IStatusBloc implements Disposable {
   IPleromaCard get cardOriginal;
 
   Stream<IPleromaCard> get cardOriginalStream;
+
   IPleromaCard get cardReblog;
 
   Stream<IPleromaCard> get cardReblogStream;

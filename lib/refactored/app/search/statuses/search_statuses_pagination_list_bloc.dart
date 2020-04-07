@@ -1,6 +1,6 @@
-import 'package:fedi/refactored/app/status/status_model.dart';
-import 'package:fedi/refactored/app/status/pagination/list/status_pagination_list_bloc_impl.dart';
 import 'package:fedi/refactored/app/search/input/search_input_bloc.dart';
+import 'package:fedi/refactored/app/status/pagination/list/status_pagination_list_bloc_impl.dart';
+import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/pagination/pagination_bloc.dart';
 import 'package:fedi/refactored/pagination/pagination_model.dart';
 import 'package:flutter/widgets.dart';
@@ -26,11 +26,11 @@ class SearchStatusesPaginationListBloc extends StatusPaginationListBloc {
   }
 
   static SearchStatusesPaginationListBloc createFromContext(
-      BuildContext context) =>
+          BuildContext context) =>
       SearchStatusesPaginationListBloc(
           paginationBloc:
-          Provider.of<IPaginationBloc<PaginationPage<IStatus>, IStatus>>(
-              context, listen: false),
-          searchInputBloc: ISearchInputBloc.of(context, listen: false)
-      );
+              Provider.of<IPaginationBloc<PaginationPage<IStatus>, IStatus>>(
+                  context,
+                  listen: false),
+          searchInputBloc: ISearchInputBloc.of(context, listen: false));
 }

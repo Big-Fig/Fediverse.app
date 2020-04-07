@@ -4,8 +4,8 @@ import 'package:fedi/refactored/app/account/my/my_account_local_preference_bloc.
 import 'package:fedi/refactored/app/account/my/my_account_local_preference_bloc_impl.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository_impl.dart';
-import 'package:fedi/refactored/app/auth/instance/current/context/current_auth_instance_context_bloc.dart';
 import 'package:fedi/refactored/app/auth/instance/auth_instance_model.dart';
+import 'package:fedi/refactored/app/auth/instance/current/context/current_auth_instance_context_bloc.dart';
 import 'package:fedi/refactored/app/conversation/repository/conversation_repository.dart';
 import 'package:fedi/refactored/app/conversation/repository/conversation_repository_impl.dart';
 import 'package:fedi/refactored/app/notification/repository/notification_repository.dart';

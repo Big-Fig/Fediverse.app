@@ -1,12 +1,12 @@
-import 'package:fedi/refactored/app/account/list/cached/account_cached_list_service.dart';
-import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/refactored/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/refactored/pleroma/status/pleroma_status_service.dart';
 import 'package:fedi/refactored/app/account/account_model.dart';
+import 'package:fedi/refactored/app/account/list/cached/account_cached_list_service.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository_model.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
+import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
+import 'package:fedi/refactored/pleroma/api/pleroma_api_service.dart';
+import 'package:fedi/refactored/pleroma/status/pleroma_status_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -19,11 +19,11 @@ class StatusFavouriteAccountListService extends DisposableOwner
   final IAccountRepository accountRepository;
   final IStatus status;
 
-  StatusFavouriteAccountListService(
-      {@required this.pleromaStatusService,
-        @required this.accountRepository,
-        @required this.status,
-      });
+  StatusFavouriteAccountListService({
+    @required this.pleromaStatusService,
+    @required this.accountRepository,
+    @required this.status,
+  });
 
   @override
   IPleromaApi get pleromaApi => pleromaStatusService;
@@ -41,19 +41,20 @@ class StatusFavouriteAccountListService extends DisposableOwner
       List<IPleromaAccount> remoteAccounts;
 
       remoteAccounts = await pleromaStatusService.favouritedBy(
-        statusRemoteId: status.remoteId
-        // pagination not supported
+          statusRemoteId: status.remoteId
+          // pagination not supported
 //          maxId: olderThanAccount?.remoteId,
 //          sinceId: newerThanAccount?.remoteId,
 //          limit: limit
-      );
+          );
 
       if (remoteAccounts != null) {
         await accountRepository.upsertRemoteAccounts(remoteAccounts,
             conversationRemoteId: null);
 
-        await accountRepository.updateStatusFavouritedBy(statusRemoteId: status
-            .remoteId, favouritedByAccounts: remoteAccounts);
+        await accountRepository.updateStatusFavouritedBy(
+            statusRemoteId: status.remoteId,
+            favouritedByAccounts: remoteAccounts);
 
         return true;
       } else {
@@ -96,11 +97,12 @@ class StatusFavouriteAccountListService extends DisposableOwner
     return accounts;
   }
 
-
-  static StatusFavouriteAccountListService createFromContext(BuildContext context,
-      {@required IStatus status}) =>
+  static StatusFavouriteAccountListService createFromContext(
+          BuildContext context,
+          {@required IStatus status}) =>
       StatusFavouriteAccountListService(
           accountRepository: IAccountRepository.of(context, listen: false),
           pleromaStatusService:
-          IPleromaStatusService.of(context, listen: false), status: status);
+              IPleromaStatusService.of(context, listen: false),
+          status: status);
 }

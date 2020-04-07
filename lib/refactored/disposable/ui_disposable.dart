@@ -11,6 +11,5 @@ class TextEditingControllerDisposable extends CustomDisposable {
 class FocusNodeDisposable extends CustomDisposable {
   final FocusNode focusNode;
 
-  FocusNodeDisposable(this.focusNode)
-      : super(() => focusNode.dispose());
+  FocusNodeDisposable(this.focusNode) : super(() => focusNode.dispose());
 }

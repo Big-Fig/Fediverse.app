@@ -40,6 +40,7 @@ abstract class IMastodonStatus {
   bool get muted;
 
   bool get bookmarked;
+
   bool get pinned;
 
   String get content;
@@ -72,6 +73,7 @@ abstract class IMastodonScheduledStatus {
   String get id;
 
   DateTime get scheduledAt;
+
   IMastodonScheduledStatusParams get params;
 
   List<IMastodonMediaAttachment> get mediaAttachments;
@@ -100,7 +102,6 @@ abstract class IMastodonScheduledStatusParams {
   String get inReplyToId;
 
   int get applicationId;
-
 
   MastodonVisibility get visibilityMastodon =>
       const MastodonVisibilityTypeConverter().fromJson(visibility);

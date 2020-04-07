@@ -8,6 +8,4 @@ class DbAccountFollowers extends Table {
 
   TextColumn get accountRemoteId => text()();
   TextColumn get followerAccountRemoteId => text()();
-
-
 }

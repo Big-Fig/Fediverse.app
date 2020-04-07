@@ -1,18 +1,18 @@
 import 'package:fedi/refactored/mastodon/notification/mastodon_notification_model.dart';
+import 'package:fedi/refactored/moor/moor_json_type_converter.dart';
 import 'package:fedi/refactored/pleroma/account/my/pleroma_my_account_model.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/refactored/pleroma/application/pleroma_application_model.dart';
 import 'package:fedi/refactored/pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/refactored/pleroma/content/pleroma_content_model.dart';
 import 'package:fedi/refactored/pleroma/emoji/pleroma_emoji_model.dart';
+import 'package:fedi/refactored/pleroma/field/pleroma_field_model.dart';
 import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/refactored/pleroma/mention/pleroma_mention_model.dart';
 import 'package:fedi/refactored/pleroma/poll/pleroma_poll_model.dart';
 import 'package:fedi/refactored/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/refactored/pleroma/tag/pleroma_tag_model.dart';
-import 'package:fedi/refactored/pleroma/field/pleroma_field_model.dart';
 import 'package:fedi/refactored/pleroma/visibility/pleroma_visibility_model.dart';
-import 'package:fedi/refactored/moor/moor_json_type_converter.dart';
 import 'package:moor/moor.dart';
 
 class PleromaVisibilityDatabaseConverter
@@ -27,6 +27,7 @@ class PleromaVisibilityDatabaseConverter
   String mapToSql(PleromaVisibility value) =>
       pleromaVisibilityValues.reverse[value];
 }
+
 class MastodonNotificationTypeDatabaseConverter
     extends TypeConverter<MastodonNotificationType, String> {
   const MastodonNotificationTypeDatabaseConverter();
@@ -51,18 +52,24 @@ class PleromaApplicationDatabaseConverter
   @override
   Map<String, dynamic> toJson(PleromaApplication obj) => obj.toJson();
 }
+
 class PleromaMyAccountPleromaPartNotificationsSettingsDatabaseConverter
-    extends JsonDatabaseConverter
-    <PleromaMyAccountPleromaPartNotificationsSettings> {
-  const PleromaMyAccountPleromaPartNotificationsSettingsDatabaseConverter() : super();
+    extends JsonDatabaseConverter<
+        PleromaMyAccountPleromaPartNotificationsSettings> {
+  const PleromaMyAccountPleromaPartNotificationsSettingsDatabaseConverter()
+      : super();
 
   @override
-  PleromaMyAccountPleromaPartNotificationsSettings fromJson(Map<String, dynamic> json) =>
+  PleromaMyAccountPleromaPartNotificationsSettings fromJson(
+          Map<String, dynamic> json) =>
       PleromaMyAccountPleromaPartNotificationsSettings.fromJson(json);
 
   @override
-  Map<String, dynamic> toJson(PleromaMyAccountPleromaPartNotificationsSettings obj) => obj.toJson();
+  Map<String, dynamic> toJson(
+          PleromaMyAccountPleromaPartNotificationsSettings obj) =>
+      obj.toJson();
 }
+
 class PleromaAccountRelationshipDatabaseConverter
     extends JsonDatabaseConverter<PleromaAccountRelationship> {
   const PleromaAccountRelationshipDatabaseConverter() : super();
@@ -74,6 +81,7 @@ class PleromaAccountRelationshipDatabaseConverter
   @override
   Map<String, dynamic> toJson(PleromaAccountRelationship obj) => obj.toJson();
 }
+
 class PleromaMyAccountSourceDatabaseConverter
     extends JsonDatabaseConverter<PleromaMyAccountSource> {
   const PleromaMyAccountSourceDatabaseConverter() : super();

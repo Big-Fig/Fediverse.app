@@ -7,8 +7,6 @@ typedef AuthorizationCodeSuccessCallback(String code);
 typedef AuthorizationCodeErrorCallback(error);
 
 abstract class IPleromaOAuthService extends IPleromaApi {
-
-
   static IPleromaOAuthService of(BuildContext context, {bool listen = true}) =>
       Provider.of<IPleromaOAuthService>(context, listen: listen);
 

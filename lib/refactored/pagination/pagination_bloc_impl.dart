@@ -96,9 +96,10 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
   }
 
   @override
-  Future<TPage> requestPage({@required pageIndex, @required bool forceToUpdateFromNetwork}) async {
-
-    _logger.finest(() => "requestPage $pageIndex, forceToUpdateFromNetwork $forceToUpdateFromNetwork");
+  Future<TPage> requestPage(
+      {@required pageIndex, @required bool forceToUpdateFromNetwork}) async {
+    _logger.finest(() =>
+        "requestPage $pageIndex, forceToUpdateFromNetwork $forceToUpdateFromNetwork");
 
     TPage page;
     if (isCacheEnabled) {
@@ -116,7 +117,7 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
           nextPage = indexToCachedPageMap[nextIndex];
         }
         page = await loadPage(
-            forceToUpdateFromNetwork:forceToUpdateFromNetwork,
+            forceToUpdateFromNetwork: forceToUpdateFromNetwork,
             pageIndex: pageIndex,
             previousPage: previousPage,
             nextPage: nextPage);
@@ -145,8 +146,10 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
       }
     } else {
       page = await loadPage(
-          forceToUpdateFromNetwork:forceToUpdateFromNetwork,
-          pageIndex: pageIndex, previousPage: null, nextPage: null);
+          forceToUpdateFromNetwork: forceToUpdateFromNetwork,
+          pageIndex: pageIndex,
+          previousPage: null,
+          nextPage: null);
     }
 
     return page;
@@ -169,8 +172,8 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
     pagesSubject.value.clear();
 //    onPagesChanged([newFirstPage]);
 
-    var newFirstPage = await requestPage(pageIndex: 0,
-        forceToUpdateFromNetwork: true);
+    var newFirstPage =
+        await requestPage(pageIndex: 0, forceToUpdateFromNetwork: true);
 
     if (!refreshStateSubject.isClosed) {
       refreshStateSubject.add(PaginationRefreshState.refreshed);

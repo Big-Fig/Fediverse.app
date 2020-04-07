@@ -8,6 +8,4 @@ class DbStatusLists extends Table {
 
   TextColumn get statusRemoteId => text()();
   TextColumn get listRemoteId => text()();
-
-
 }

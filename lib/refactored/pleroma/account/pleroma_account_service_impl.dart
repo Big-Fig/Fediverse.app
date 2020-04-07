@@ -95,7 +95,6 @@ class PleromaAccountService implements IPleromaAccountService {
     }
   }
 
-
   @override
   Future<List<IPleromaAccountRelationship>> relationshipWithAccounts(
       List<String> remoteAccountIds) async {

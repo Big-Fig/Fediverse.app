@@ -11,7 +11,8 @@ class PleromaNotificationWebSocketsEvent {
   final String event;
 
   PleromaNotificationWebSocketsEventType get eventType =>
-      PleromaNotificationWebSocketsEventTypeValues.map[event];
+      pleromaNotificationWebSocketsEventTypeValues.map[event];
+
   /// Could be Status or Notification
   final String payload;
 
@@ -41,17 +42,21 @@ class PleromaNotificationWebSocketsEvent {
 enum PleromaNotificationWebSocketsEventType {
   /// update	A new status has appeared	Status
   update,
+
   /// notification	A new notification has appeared	Notification
   notification,
+
   /// delete	A status has been deleted	ID of the deleted status
   delete,
+
   /// filters_changed	Keyword filters have been changed
   filtersChanged,
+
   /// not exist in documentation but looks like conversation update
   conversation,
 }
 
-final PleromaNotificationWebSocketsEventTypeValues = new EnumValues({
+final pleromaNotificationWebSocketsEventTypeValues = new EnumValues({
   "update": PleromaNotificationWebSocketsEventType.update,
   "notification": PleromaNotificationWebSocketsEventType.notification,
   "delete": PleromaNotificationWebSocketsEventType.delete,

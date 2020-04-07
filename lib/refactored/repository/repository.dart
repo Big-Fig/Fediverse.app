@@ -7,16 +7,14 @@ abstract class IReadListRepository<Item> {
 abstract class IWriteListRepository<Item> {
   Future clear();
 
-
-
   Future insertAll(Iterable<Item> items);
+
   Future upsertAll(Iterable<Item> items);
 }
 
 abstract class IReadIdListRepository<Item, Id>
     implements IReadListRepository<Item> {
   Future<Item> findById(Id id);
-
 
   Stream<Item> watchById(Id id);
 
@@ -26,7 +24,10 @@ abstract class IReadIdListRepository<Item, Id>
 abstract class IWriteIdListRepository<Item, Id>
     implements IWriteListRepository<Item> {
   Future<int> insert(Item item);
+
   Future<int> upsert(Item item);
+
   Future<bool> deleteById(Id id);
+
   Future<bool> updateById(Id id, Item item);
 }

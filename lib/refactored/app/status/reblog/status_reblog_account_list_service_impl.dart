@@ -1,13 +1,12 @@
-
-import 'package:fedi/refactored/app/account/list/cached/account_cached_list_service.dart';
-import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/refactored/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/refactored/pleroma/status/pleroma_status_service.dart';
 import 'package:fedi/refactored/app/account/account_model.dart';
+import 'package:fedi/refactored/app/account/list/cached/account_cached_list_service.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository_model.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
+import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
+import 'package:fedi/refactored/pleroma/api/pleroma_api_service.dart';
+import 'package:fedi/refactored/pleroma/status/pleroma_status_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -20,11 +19,11 @@ class StatusReblogAccountListService extends DisposableOwner
   final IAccountRepository accountRepository;
   final IStatus status;
 
-  StatusReblogAccountListService(
-      {@required this.pleromaStatusService,
-        @required this.accountRepository,
-        @required this.status,
-      });
+  StatusReblogAccountListService({
+    @required this.pleromaStatusService,
+    @required this.accountRepository,
+    @required this.status,
+  });
 
   @override
   IPleromaApi get pleromaApi => pleromaStatusService;
@@ -41,20 +40,21 @@ class StatusReblogAccountListService extends DisposableOwner
     try {
       List<IPleromaAccount> remoteAccounts;
 
-      remoteAccounts = await pleromaStatusService.reblogedBy(
-        statusRemoteId: status.remoteId
-        // pagination not supported
+      remoteAccounts =
+          await pleromaStatusService.reblogedBy(statusRemoteId: status.remoteId
+              // pagination not supported
 //          maxId: olderThanAccount?.remoteId,
 //          sinceId: newerThanAccount?.remoteId,
 //          limit: limit
-      );
+              );
 
       if (remoteAccounts != null) {
         await accountRepository.upsertRemoteAccounts(remoteAccounts,
             conversationRemoteId: null);
 
-        await accountRepository.updateStatusRebloggedBy(statusRemoteId: status
-            .remoteId, rebloggedByAccounts: remoteAccounts);
+        await accountRepository.updateStatusRebloggedBy(
+            statusRemoteId: status.remoteId,
+            rebloggedByAccounts: remoteAccounts);
 
         return true;
       } else {
@@ -90,16 +90,18 @@ class StatusReblogAccountListService extends DisposableOwner
         onlyInAccountFollowers: null,
         onlyInStatusFavouritedBy: status,
         onlyInAccountFollowing: null,
-        onlyInStatusRebloggedBy: status, searchQuery: null);
+        onlyInStatusRebloggedBy: status,
+        searchQuery: null);
 
     _logger.finer(() => "finish loadLocalItems accounts ${accounts.length}");
     return accounts;
   }
 
   static StatusReblogAccountListService createFromContext(BuildContext context,
-      {@required IStatus status}) =>
+          {@required IStatus status}) =>
       StatusReblogAccountListService(
           accountRepository: IAccountRepository.of(context, listen: false),
           pleromaStatusService:
-          IPleromaStatusService.of(context, listen: false), status: status);
+              IPleromaStatusService.of(context, listen: false),
+          status: status);
 }

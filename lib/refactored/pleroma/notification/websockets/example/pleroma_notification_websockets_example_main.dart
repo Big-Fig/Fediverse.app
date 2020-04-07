@@ -16,7 +16,6 @@ import 'package:md2_tab_indicator/md2_tab_indicator.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
-
   initLog();
   runApp(MaterialApp(
       home: SafeArea(
@@ -170,7 +169,6 @@ class _NotificationsWebSocketsChannelExampleWidgetState
         Expanded(child: buildAllEventsExample())
       ],
     );
-    ;
   }
 
   ListView buildAllEventsExample() {

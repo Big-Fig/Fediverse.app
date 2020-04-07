@@ -7,13 +7,20 @@ import 'package:flutter/widgets.dart';
 
 abstract class ConversationPaginationListBaseWidget
     extends PaginationListWidget<IConversation> {
-  ConversationPaginationListBaseWidget(
-      {@required Key key, Widget header, Widget footer,
-  bool alwaysShowHeader,
-      bool alwaysShowFooter, RefreshAction additionalRefreshAction,})
-      : super(key: key, header: header, footer: footer,
-alwaysShowHeader: alwaysShowHeader,
-alwaysShowFooter: alwaysShowFooter, additionalRefreshAction: additionalRefreshAction);
+  ConversationPaginationListBaseWidget({
+    @required Key key,
+    Widget header,
+    Widget footer,
+    bool alwaysShowHeader,
+    bool alwaysShowFooter,
+    RefreshAction additionalRefreshAction,
+  }) : super(
+            key: key,
+            header: header,
+            footer: footer,
+            alwaysShowHeader: alwaysShowHeader,
+            alwaysShowFooter: alwaysShowFooter,
+            additionalRefreshAction: additionalRefreshAction);
 
   @override
   IPaginationListBloc<PaginationPage<IConversation>, IConversation>

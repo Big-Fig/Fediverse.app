@@ -12,7 +12,8 @@ class Alert {
   String actionButtonTitle;
   String cancelButtonTitle;
 
-  Alert(this.context, this.title, this.message, this.onPress, {this.showCancel, this.actionButtonTitle, this.cancelButtonTitle});
+  Alert(this.context, this.title, this.message, this.onPress,
+      {this.showCancel, this.actionButtonTitle, this.cancelButtonTitle});
 
   showAlert() {
     showDialog(
@@ -26,9 +27,7 @@ class Alert {
             if (showCancel == true)
               FlatButton(
                 child: new Text(cancelButtonTitle ??
-                    AppLocalizations.of(context)
-                        .tr("alert.action.cancel")
-                ),
+                    AppLocalizations.of(context).tr("alert.action.cancel")),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -36,9 +35,7 @@ class Alert {
             // usually buttons at the bottom of the dialog
             FlatButton(
               child: new Text(actionButtonTitle ??
-                  AppLocalizations.of(context)
-                      .tr("alert.action.ok")
-              ),
+                  AppLocalizations.of(context).tr("alert.action.ok")),
               onPressed: () {
                 Navigator.of(context).pop();
                 this.onPress();

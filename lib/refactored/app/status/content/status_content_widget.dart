@@ -16,8 +16,6 @@ class StatusContentWidget extends StatelessWidget {
         builder: (context, snapshot) {
           var contentWithCustomEmojis = snapshot.data;
 
-
-
           return HtmlTextWidget(
               data: contentWithCustomEmojis,
               onLinkTap: (String link) async {

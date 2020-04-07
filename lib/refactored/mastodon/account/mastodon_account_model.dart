@@ -11,6 +11,7 @@ abstract class IMastodonAccount {
   String get note;
 
   bool get bot;
+
   bool get locked;
 
   String get id;
@@ -30,8 +31,6 @@ abstract class IMastodonAccount {
   String get displayName;
 
   DateTime get createdAt;
-
-
 
   String get avatarStatic;
 

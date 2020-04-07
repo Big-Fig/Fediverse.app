@@ -1,8 +1,8 @@
 import 'dart:convert';
 
+import 'package:fedi/refactored/mastodon/account/mastodon_account_model.dart';
 import 'package:fedi/refactored/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/refactored/pleroma/field/pleroma_field_model.dart';
-import 'package:fedi/refactored/mastodon/account/mastodon_account_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -132,8 +132,6 @@ abstract class IPleromaAccountPleromaPart {
 
   bool get hideFollowsCount;
 
-
-
   bool get deactivated;
 
   bool get allowFollowingMove;
@@ -148,12 +146,10 @@ class PleromaAccountPleromaPart implements IPleromaAccountPleromaPart {
   @JsonKey(name: "background_image")
   dynamic backgroundImage;
 
-
   // todo: remove hack, Pleroma return List<String> instead of List<PleromaTag>
   // for example at accounts/verify_credentials endpoint
 //  List<PleromaTag> tags;
   List<dynamic> tags;
-
 
   PleromaAccountRelationship relationship;
 
@@ -161,20 +157,16 @@ class PleromaAccountPleromaPart implements IPleromaAccountPleromaPart {
   bool isAdmin;
 
   @JsonKey(name: "is_moderator")
-
   bool isModerator;
 
   @JsonKey(name: "confirmation_pending")
   bool confirmationPending;
 
-
   // TODO: CHECK, was in previous implementation, but not exist at
   @JsonKey(name: "hide_favorites")
   bool hideFavorites;
 
-
   @JsonKey(name: "hide_followers")
-
   bool hideFollowers;
 
   @JsonKey(name: "hide_follows")
@@ -202,7 +194,6 @@ class PleromaAccountPleromaPart implements IPleromaAccountPleromaPart {
   /// TODO: CHECK, was in previous implementation, but not exist at
   /// https://docs-develop.pleroma.social/backend/API/differences_in_mastoapi_responses/
   @JsonKey(name: "skip_thread_containment")
-
   bool skipThreadContainment;
 
   PleromaAccountPleromaPart(
@@ -243,10 +234,7 @@ class PleromaAccountPleromaPart implements IPleromaAccountPleromaPart {
         ' deactivated: $deactivated, allowFollowingMove: $allowFollowingMove,'
         ' skipThreadContainment: $skipThreadContainment}';
   }
-
-
 }
-
 
 abstract class IPleromaAccountRelationship
     implements IMastodonAccountRelationship {}

@@ -2,8 +2,7 @@ import 'package:camera/camera.dart' as Camera;
 import 'package:camera/camera.dart';
 import 'package:fedi/refactored/camera/camera_model.dart';
 
-class CameraByLensDirectionNotExistException
-    implements Exception {
+class CameraByLensDirectionNotExistException implements Exception {
   final CameraLensDirection requiredLensDirection;
   final List<Camera.CameraDescription> availableCameras;
 
@@ -16,15 +15,12 @@ class CameraByLensDirectionNotExistException
         'requiredLensDirection: $requiredLensDirection,'
         ' availableCameras: $availableCameras}';
   }
-
-
 }
 
 class CameraByIndexNotExistException implements Exception {
   final List<Camera.CameraDescription> availableCameras;
   final int requiredIndex;
-  CameraByIndexNotExistException(
-      this.availableCameras, this.requiredIndex);
+  CameraByIndexNotExistException(this.availableCameras, this.requiredIndex);
 
   @override
   String toString() {
@@ -84,12 +80,8 @@ class CameraErrorException extends CameraException {
 
 class CameraNotReadyException extends CameraException {
   final List<CameraState> desiredStates;
-  CameraNotReadyException(
-      Camera.CameraDescription cameraDescription,
-      int index,
-      CameraLensDirection lensDirection,
-      CameraState state,
-      this.desiredStates)
+  CameraNotReadyException(Camera.CameraDescription cameraDescription, int index,
+      CameraLensDirection lensDirection, CameraState state, this.desiredStates)
       : super(cameraDescription, index, lensDirection, state);
   @override
   String toString() {

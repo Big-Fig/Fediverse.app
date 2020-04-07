@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/auth/host/auth_host_bloc_impl.dart';
-import 'package:fedi/refactored/app/auth/instance/chooser/auth_instance_chooser_bloc.dart';
 import 'package:fedi/refactored/app/auth/instance/auth_instance_model.dart';
+import 'package:fedi/refactored/app/auth/instance/chooser/auth_instance_chooser_bloc.dart';
 import 'package:fedi/refactored/app/auth/instance/join/add_more/add_more_join_auth_instance_page.dart';
 import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,7 +13,8 @@ var _logger = Logger("instance_chooser_widget.dart");
 class AuthInstanceChooserWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var instanceChooserBloc = IAuthInstanceChooserBloc.of(context, listen: false);
+    var instanceChooserBloc =
+        IAuthInstanceChooserBloc.of(context, listen: false);
 
     _logger.finest(() => "build");
 
@@ -60,14 +61,16 @@ class AuthInstanceChooserWidget extends StatelessWidget {
             children: <Widget>[
               Icon(Icons.add),
               Text(AppLocalizations.of(context)
-              .tr("auth.instance.chooser.action.add_account")),
+                  .tr("auth.instance.chooser.action.add_account")),
             ],
           ),
         ),
       );
 
-  Widget buildInstanceToChooseRow(BuildContext context,
-          IAuthInstanceChooserBloc instanceChooserBloc, AuthInstance instance) =>
+  Widget buildInstanceToChooseRow(
+          BuildContext context,
+          IAuthInstanceChooserBloc instanceChooserBloc,
+          AuthInstance instance) =>
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
@@ -87,8 +90,10 @@ class AuthInstanceChooserWidget extends StatelessWidget {
         ),
       );
 
-  Widget buildCurrentInstanceRow(BuildContext context,
-          IAuthInstanceChooserBloc instanceChooserBloc, AuthInstance instance) =>
+  Widget buildCurrentInstanceRow(
+          BuildContext context,
+          IAuthInstanceChooserBloc instanceChooserBloc,
+          AuthInstance instance) =>
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
@@ -102,7 +107,6 @@ class AuthInstanceChooserWidget extends StatelessWidget {
                     color: Colors.grey,
                   ),
                   onPressed: () {
-
                     var authHostBloc = AuthHostBloc.createFromContext(context,
                         instanceBaseUrl: instance.url);
 // todo: alert dialog

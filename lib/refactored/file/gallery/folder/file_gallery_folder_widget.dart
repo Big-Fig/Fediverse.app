@@ -13,7 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class FileGalleryFolderWidget extends StatelessWidget {
-
   final FileGalleryFileCallback galleryFileTapped;
 
   FileGalleryFolderWidget({@required this.galleryFileTapped});
@@ -42,8 +41,9 @@ class FileGalleryFolderWidget extends StatelessWidget {
 
           switch (galleryState) {
             case FileGalleryState.loadingNotStarted:
-              return Center(child: Text(AppLocalizations.of(context)
-                  .tr("file.gallery.state.loading_not_started")));
+              return Center(
+                  child: Text(AppLocalizations.of(context)
+                      .tr("file.gallery.state.loading_not_started")));
               break;
             case FileGalleryState.loading:
               return Center(child: CircularProgressIndicator());
@@ -69,8 +69,8 @@ class FileGalleryFolderWidget extends StatelessWidget {
 
           if (files.isEmpty) {
             return Center(
-              child: Text(AppLocalizations.of(context)
-                  .tr("file.gallery.folder.empty")),
+              child: Text(
+                  AppLocalizations.of(context).tr("file.gallery.folder.empty")),
             );
           } else {
             return GridView.builder(
@@ -91,5 +91,6 @@ class FileGalleryFolderWidget extends StatelessWidget {
             galleryFileBloc.performAsyncInit();
             return galleryFileBloc;
           },
-          child: FileGalleryFolderGridItemWidget(galleryFileTapped: galleryFileTapped));
+          child: FileGalleryFolderGridItemWidget(
+              galleryFileTapped: galleryFileTapped));
 }

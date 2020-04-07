@@ -6,12 +6,10 @@ import 'package:fedi/refactored/app/status/status_model_adapter.dart';
 import 'package:fedi/refactored/pleroma/notification/pleroma_notification_model.dart';
 import 'package:fedi/refactored/pleroma/status/pleroma_status_model.dart';
 import 'package:flutter/widgets.dart';
-import 'package:logging/logging.dart';
-
-var _logger = Logger("notification_model_adapter.dart");
 
 INotification mapRemoteNotificationToLocalNotification(
-    IPleromaNotification remoteNotification, {@required bool unread}) {
+    IPleromaNotification remoteNotification,
+    {@required bool unread}) {
   DbStatusPopulated statusPopulated;
   if (remoteNotification.status != null) {
     statusPopulated = mapRemoteStatusToLocalStatus(remoteNotification.status)
@@ -25,16 +23,16 @@ INotification mapRemoteNotificationToLocalNotification(
 }
 
 DbNotification mapRemoteNotificationToDbNotification(
-    IPleromaNotification remoteNotification, {@required bool unread}) {
+    IPleromaNotification remoteNotification,
+    {@required bool unread}) {
   return DbNotification(
-    id: null,
-    remoteId: remoteNotification.id,
-    createdAt: remoteNotification.createdAt,
-    accountRemoteId: remoteNotification.account.id,
-    statusRemoteId: remoteNotification.status?.id,
-    type: remoteNotification.type,
-    unread: unread
-  );
+      id: null,
+      remoteId: remoteNotification.id,
+      createdAt: remoteNotification.createdAt,
+      accountRemoteId: remoteNotification.account.id,
+      statusRemoteId: remoteNotification.status?.id,
+      type: remoteNotification.type,
+      unread: unread);
 }
 
 PleromaNotification mapLocalNotificationToRemoteNotification(

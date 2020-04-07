@@ -10,6 +10,5 @@ class NotificationFavouriteTypeHeaderWidget extends NotificationHeaderWidget {
           context: context,
           iconData: Icons.favorite_border,
           text: AppLocalizations.of(context)
-              .tr("app.notification.header.favourite")
-      );
+              .tr("app.notification.header.favourite"));
 }

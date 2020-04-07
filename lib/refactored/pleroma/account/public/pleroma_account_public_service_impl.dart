@@ -4,7 +4,6 @@ import 'package:fedi/refactored/pleroma/account/public/pleroma_account_public_ex
 import 'package:fedi/refactored/pleroma/account/public/pleroma_account_public_model.dart';
 import 'package:fedi/refactored/pleroma/account/public/pleroma_account_public_service.dart';
 import 'package:fedi/refactored/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/refactored/pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/refactored/pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/refactored/rest/rest_request_model.dart';
 import 'package:flutter/widgets.dart';
@@ -35,12 +34,12 @@ class PleromaAccountPublicService extends IPleromaAccountPublicService {
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-
   PleromaAccountPublicService({@required this.restService});
 
   @override
-  Future<bool> registerAccount({@required IPleromaAccountRegisterRequest
-  request, @required String appAccessToken}) async {
+  Future<bool> registerAccount(
+      {@required IPleromaAccountRegisterRequest request,
+      @required String appAccessToken}) async {
     assert(request != null);
     var httpResponse = await restService.sendHttpRequest(RestRequest.post(
         relativePath: urlPath.join(accountRelativeUrlPath),

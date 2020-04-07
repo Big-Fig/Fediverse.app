@@ -1,8 +1,8 @@
+import 'package:fedi/refactored/app/auth/instance/auth_instance_model.dart';
+import 'package:fedi/refactored/disposable/disposable.dart';
 import 'package:fedi/refactored/pleroma/account/public/pleroma_account_public_model.dart';
 import 'package:fedi/refactored/pleroma/application/pleroma_application_model.dart';
 import 'package:fedi/refactored/pleroma/oauth/pleroma_oauth_model.dart';
-import 'package:fedi/refactored/app/auth/instance/auth_instance_model.dart';
-import 'package:fedi/refactored/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
 
 abstract class IAuthHostBloc extends Disposable {
@@ -19,6 +19,7 @@ abstract class IAuthHostBloc extends Disposable {
   Stream<PleromaOAuthToken> get hostAccessTokenStream;
 
   Future<bool> registerApplication();
+
   Future<bool> retrieveAppAccessToken();
 
   Future<bool> launchLoginToAccount(

@@ -18,7 +18,6 @@ class PleromaPollOption implements IPleromaPollOption {
   @JsonKey(name: "votes_count")
   int votesCount;
 
-
   PleromaPollOption({this.title, this.votesCount});
 
   factory PleromaPollOption.fromJson(Map<String, dynamic> json) =>

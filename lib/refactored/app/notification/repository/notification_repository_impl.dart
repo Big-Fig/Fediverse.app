@@ -55,7 +55,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
     }
 
     await upsert(mapRemoteNotificationToDbNotification(remoteNotification,
-        unread:  unread));
+        unread: unread));
   }
 
   @override
@@ -281,9 +281,10 @@ class NotificationRepository extends AsyncInitLoadingBloc
     await statusRepository.upsertRemoteStatus(remoteStatus,
         conversationRemoteId: null, listRemoteId: null);
 
-    await updateById(oldLocalNotification.localId,
-        mapRemoteNotificationToDbNotification(newRemoteNotification, unread:
-        unread));
+    await updateById(
+        oldLocalNotification.localId,
+        mapRemoteNotificationToDbNotification(newRemoteNotification,
+            unread: unread));
   }
 
   @override

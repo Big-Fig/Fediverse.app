@@ -53,10 +53,20 @@ class PleromaCard implements IPleromaCard {
   @override
   int width;
 
-
-  PleromaCard({this.authorName, this.authorUrl, this.description, this.embedUrl,
-    this.height, this.html, this.image, this.providerName, this.providerUrl,
-    this.title, this.type, this.url, this.width});
+  PleromaCard(
+      {this.authorName,
+      this.authorUrl,
+      this.description,
+      this.embedUrl,
+      this.height,
+      this.html,
+      this.image,
+      this.providerName,
+      this.providerUrl,
+      this.title,
+      this.type,
+      this.url,
+      this.width});
 
   factory PleromaCard.fromJson(Map<String, dynamic> json) =>
       _$PleromaCardFromJson(json);
@@ -75,21 +85,21 @@ class PleromaCard implements IPleromaCard {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is PleromaCard &&
-              runtimeType == other.runtimeType &&
-              authorName == other.authorName &&
-              authorUrl == other.authorUrl &&
-              description == other.description &&
-              embedUrl == other.embedUrl &&
-              height == other.height &&
-              html == other.html &&
-              image == other.image &&
-              providerName == other.providerName &&
-              providerUrl == other.providerUrl &&
-              title == other.title &&
-              type == other.type &&
-              url == other.url &&
-              width == other.width;
+      other is PleromaCard &&
+          runtimeType == other.runtimeType &&
+          authorName == other.authorName &&
+          authorUrl == other.authorUrl &&
+          description == other.description &&
+          embedUrl == other.embedUrl &&
+          height == other.height &&
+          html == other.html &&
+          image == other.image &&
+          providerName == other.providerName &&
+          providerUrl == other.providerUrl &&
+          title == other.title &&
+          type == other.type &&
+          url == other.url &&
+          width == other.width;
 
   @override
   int get hashCode =>
@@ -106,7 +116,4 @@ class PleromaCard implements IPleromaCard {
       type.hashCode ^
       url.hashCode ^
       width.hashCode;
-
-
-
 }

@@ -1,16 +1,15 @@
 import 'dart:convert';
 
 import 'package:fedi/refactored/mastodon/tag/mastodon_tag_model.dart';
+import 'package:fedi/refactored/pleroma/history/pleroma_history_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:fedi/refactored/pleroma/history/pleroma_history_model.dart';
 
 part 'pleroma_tag_model.g.dart';
 
 abstract class IPleromaTag implements IMastodonTag {
   @override
   List<IPleromaHistory> get history;
-
 }
 
 @HiveType()

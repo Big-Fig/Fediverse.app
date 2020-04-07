@@ -8,6 +8,4 @@ class DbConversationStatuses extends Table {
 
   TextColumn get conversationRemoteId => text()();
   TextColumn get statusRemoteId => text()();
-
-
 }

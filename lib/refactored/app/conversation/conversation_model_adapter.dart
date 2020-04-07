@@ -1,8 +1,5 @@
-import 'package:fedi/refactored/pleroma/conversation/pleroma_conversation_model.dart';
 import 'package:fedi/refactored/app/database/app_database.dart';
-import 'package:logging/logging.dart';
-
-var _logger = Logger("conversation_model_adapter.dart");
+import 'package:fedi/refactored/pleroma/conversation/pleroma_conversation_model.dart';
 
 DbConversation mapRemoteConversationToDbConversation(
     IPleromaConversation remoteConversation) {

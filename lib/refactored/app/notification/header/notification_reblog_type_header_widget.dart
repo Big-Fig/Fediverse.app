@@ -9,6 +9,5 @@ class NotificationReblogTypeHeaderWidget extends NotificationHeaderWidget {
           context: context,
           iconData: Icons.repeat,
           text: AppLocalizations.of(context)
-              .tr("app.notification.header.reblog")
-      );
+              .tr("app.notification.header.reblog"));
 }

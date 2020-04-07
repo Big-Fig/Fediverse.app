@@ -6,6 +6,7 @@ import 'package:fedi/refactored/local_preferences/local_preferences_service.dart
 class AuthInstanceListLocalPreferenceBloc
     extends ObjectLocalPreferenceBloc<AuthInstanceList>
     implements IAuthInstanceListLocalPreferenceBloc {
-  AuthInstanceListLocalPreferenceBloc(ILocalPreferencesService preferencesService)
+  AuthInstanceListLocalPreferenceBloc(
+      ILocalPreferencesService preferencesService)
       : super(preferencesService, "instance.list", 1);
 }

@@ -1,6 +1,6 @@
+import 'package:fedi/refactored/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_local_preference_bloc.dart';
-import 'package:fedi/refactored/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/refactored/app/auth/instance/list/auth_instance_list_bloc.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:flutter/widgets.dart';
@@ -8,7 +8,8 @@ import 'package:flutter/widgets.dart';
 class CurrentAuthInstanceBloc extends DisposableOwner
     implements ICurrentAuthInstanceBloc {
   final IAuthInstanceListBloc instanceListBloc;
-  final ICurrentAuthInstanceLocalPreferenceBloc currentInstanceLocalPreferenceBloc;
+  final ICurrentAuthInstanceLocalPreferenceBloc
+      currentInstanceLocalPreferenceBloc;
 
   CurrentAuthInstanceBloc({
     @required this.instanceListBloc,

@@ -1,12 +1,12 @@
 import 'dart:io';
 
-import 'package:fedi/refactored/pleroma/account/my/pleroma_my_account_model.dart';
-import 'package:fedi/refactored/pleroma/account/my/pleroma_my_account_service.dart';
 import 'package:fedi/refactored/app/account/my/edit/edit_my_account_bloc.dart';
 import 'package:fedi/refactored/app/account/my/edit/edit_my_account_model.dart';
 import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
 import 'package:fedi/refactored/disposable/disposable.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
+import 'package:fedi/refactored/pleroma/account/my/pleroma_my_account_model.dart';
+import 'package:fedi/refactored/pleroma/account/my/pleroma_my_account_service.dart';
 import 'package:fedi/refactored/pleroma/field/pleroma_field_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
@@ -104,17 +104,17 @@ class EditMyAccountBloc extends DisposableOwner implements IEditMyAccountBloc {
   @override
   Future<bool> submitChanges() async {
     Map<int, PleromaField> fieldsAttributes = {};
-    customFields.forEach((customField) => fieldsAttributes[customField.index]
-    = PleromaField(name: customField.nameField.currentValue, value:
-        customField.valueField.currentValue));
+    customFields.forEach((customField) => fieldsAttributes[customField.index] =
+        PleromaField(
+            name: customField.nameField.currentValue,
+            value: customField.valueField.currentValue));
     var remoteMyAccount =
         await pleromaMyAccountService.updateCredentials(PleromaMyAccountEdit(
-          displayName: displayNameField.currentValue,
-          note: noteField.currentValue,
-          fieldsAttributes: fieldsAttributes,
-          locked: lockedField.currentValue,
-
-        ));
+      displayName: displayNameField.currentValue,
+      note: noteField.currentValue,
+      fieldsAttributes: fieldsAttributes,
+      locked: lockedField.currentValue,
+    ));
 
     if (remoteMyAccount != null) {
       await myAccountBloc.updateMyAccountByRemote(remoteMyAccount);

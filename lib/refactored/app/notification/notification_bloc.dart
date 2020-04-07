@@ -26,5 +26,6 @@ abstract class INotificationBloc implements Disposable {
   MastodonNotificationType get type;
 
   DateTime get createdAt;
+
   Stream<DateTime> get createdAtStream;
 }

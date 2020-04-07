@@ -43,18 +43,14 @@ class AuthHostBloc extends DisposableOwner implements IAuthHostBloc {
   IPleromaOAuthService pleromaOAuthService;
   IPleromaAccountPublicService pleromaAccountPublicService;
   IAuthHostApplicationLocalPreferenceBloc
-      authHostApplicationLocalPreferenceBloc;
+  authHostApplicationLocalPreferenceBloc;
   IAuthHostAccessTokenLocalPreferenceBloc
-      authHostAccessTokenLocalPreferenceBloc;
+  authHostAccessTokenLocalPreferenceBloc;
   ICurrentAuthInstanceBloc currentInstanceBloc;
   final IConnectionService connectionService;
 
-  AuthHostBloc({
-    @required this.instanceBaseUrl,
-    @required ILocalPreferencesService preferencesService,
-    @required this.connectionService,
-    @required this.currentInstanceBloc,
-  }) {
+  AuthHostBloc(
+      {@required this.instanceBaseUrl, @required ILocalPreferencesService preferencesService, @required this.connectionService, @required this.currentInstanceBloc,}) {
     assert(instanceBaseUrlSchema?.isNotEmpty == true);
     assert(instanceBaseUrlHost?.isNotEmpty == true);
     authHostApplicationLocalPreferenceBloc =
@@ -121,12 +117,10 @@ class AuthHostBloc extends DisposableOwner implements IAuthHostBloc {
 
   Future<bool> retrieveAppAccessToken() async {
     var accessToken = await pleromaOAuthService.retrieveAppAccessToken(
-        tokenRequest: PleromaOAuthAppTokenRequest(
-      redirectUri: redirectUri,
-      scope: scopes,
-      clientSecret: hostApplication.clientSecret,
-      clientId: hostApplication.clientId,
-    ));
+        tokenRequest: PleromaOAuthAppTokenRequest(redirectUri: redirectUri,
+          scope: scopes,
+          clientSecret: hostApplication.clientSecret,
+          clientId: hostApplication.clientId,));
 
     if (accessToken != null) {
       authHostAccessTokenLocalPreferenceBloc.setValue(accessToken);
@@ -138,32 +132,30 @@ class AuthHostBloc extends DisposableOwner implements IAuthHostBloc {
 
   @override
   Future<bool> launchLoginToAccount(
-      {@required AuthInstanceCallback successCallback,
-      @required Function(dynamic error) errorCallback}) async {
+      {@required AuthInstanceCallback successCallback, @required Function(
+          dynamic error) errorCallback}) async {
     await checkApplicationRegistration();
     return pleromaOAuthService.launchAuthorizeFormAndExtractAuthorizationCode(
-        authorizeRequest: PleromaOAuthAuthorizeRequest(
-            redirectUri: redirectUri,
+        authorizeRequest: PleromaOAuthAuthorizeRequest(redirectUri: redirectUri,
             scope: scopes,
             forceLogin: true,
             clientId: hostApplication.clientId),
         successCallback: (authCode) async {
           var token = await pleromaOAuthService.retrieveAccountAccessToken(
               tokenRequest: PleromaOAuthAccountTokenRequest(
-            redirectUri: redirectUri,
-            scope: scopes,
-            code: authCode,
-            clientSecret: hostApplication.clientSecret,
-            clientId: hostApplication.clientId,
-          ));
+                redirectUri: redirectUri,
+                scope: scopes,
+                code: authCode,
+                clientSecret: hostApplication.clientSecret,
+                clientId: hostApplication.clientId,));
 
           var restService = RestService(baseUrl: instanceBaseUrl);
           var pleromaAuthRestService = PleromaAuthRestService(
               accessToken: token.accessToken,
               connectionService: connectionService,
               restService: restService);
-          var pleromaMyAccountService =
-              PleromaMyAccountService(restService: pleromaAuthRestService);
+          var pleromaMyAccountService = PleromaMyAccountService(
+              restService: pleromaAuthRestService);
 
           var myAccount = await pleromaMyAccountService.verifyCredentials();
 
@@ -211,13 +203,13 @@ class AuthHostBloc extends DisposableOwner implements IAuthHostBloc {
   }
 
   static AuthHostBloc createFromContext(BuildContext context,
-          {@required Uri instanceBaseUrl}) =>
-      AuthHostBloc(
-          instanceBaseUrl: instanceBaseUrl,
-          preferencesService:
-              ILocalPreferencesService.of(context, listen: false),
+      {@required Uri instanceBaseUrl}) =>
+      AuthHostBloc(instanceBaseUrl: instanceBaseUrl,
+          preferencesService: ILocalPreferencesService.of(
+              context, listen: false),
           connectionService: IConnectionService.of(context, listen: false),
-          currentInstanceBloc: ICurrentAuthInstanceBloc.of(context, listen: false));
+          currentInstanceBloc: ICurrentAuthInstanceBloc.of(
+              context, listen: false));
 
   @override
   Future logout() async {
@@ -231,6 +223,5 @@ class AuthHostBloc extends DisposableOwner implements IAuthHostBloc {
             clientSecret: instance.application.clientSecret,
             token: instance.token.accessToken));
     await currentInstanceBloc.logoutCurrentInstance();
-
   }
 }

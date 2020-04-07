@@ -1,3 +1,1 @@
-enum AuthInstanceState {
-  notLogged, logged
-}
+enum AuthInstanceState { notLogged, logged }

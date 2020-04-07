@@ -7,29 +7,28 @@ class HtmlTextWidget extends StatelessWidget {
   final String data;
   final OnLinkTap onLinkTap;
 
-  HtmlTextWidget({@required this.data,@required  this.onLinkTap});
+  HtmlTextWidget({@required this.data, @required this.onLinkTap});
 
   @override
   Widget build(BuildContext context) => Html(
-      onImageTap: (String source) {
-        print("source $source");
-      },
-      customTextStyle: (dom.Node node, TextStyle baseStyle) {
-        if (node is dom.Element) {
-          switch (node.localName) {
-            case "p":
-              return baseStyle.merge(TextStyle(fontSize: 18));
+        onImageTap: (String source) {
+          print("source $source");
+        },
+        customTextStyle: (dom.Node node, TextStyle baseStyle) {
+          if (node is dom.Element) {
+            switch (node.localName) {
+              case "p":
+                return baseStyle.merge(TextStyle(fontSize: 18));
+            }
           }
-        }
-        return baseStyle.merge(TextStyle(fontSize: 18));
-      },
-      onImageError: (dynamic exception, StackTrace stackTrace) {
-        print("Image error!!!");
-        print(exception);
-        print(stackTrace);
-      },
-      data: data,
-      onLinkTap: onLinkTap,
-    );
-
+          return baseStyle.merge(TextStyle(fontSize: 18));
+        },
+        onImageError: (dynamic exception, StackTrace stackTrace) {
+          print("Image error!!!");
+          print(exception);
+          print(stackTrace);
+        },
+        data: data,
+        onLinkTap: onLinkTap,
+      );
 }

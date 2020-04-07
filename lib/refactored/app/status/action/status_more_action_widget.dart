@@ -25,7 +25,7 @@ class StatusShareActionWidget extends StatelessWidget {
     showModalBottomSheet(
         builder: (BuildContext context) {
           return Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               buildTitleSeparator(context),
               buildCopyAction(context, status),

@@ -6,7 +6,6 @@ part 'pleroma_emoji_model.g.dart';
 
 abstract class IPleromaEmoji implements IMastodonEmoji {}
 
-
 @HiveType()
 @JsonSerializable()
 class PleromaEmoji implements IPleromaEmoji {
@@ -31,4 +30,3 @@ class PleromaEmoji implements IPleromaEmoji {
 
   Map<String, dynamic> toJson() => _$PleromaEmojiToJson(this);
 }
-

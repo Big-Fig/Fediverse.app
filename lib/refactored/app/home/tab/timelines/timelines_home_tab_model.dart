@@ -1,3 +1,1 @@
-enum TimelineTab {
-  public, home, local
-}
+enum TimelineTab { public, home, local }

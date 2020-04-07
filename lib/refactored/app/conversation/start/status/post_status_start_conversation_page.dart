@@ -12,7 +12,8 @@ class PostStatusStartConversationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).tr("app.conversation.start.title")),
+        title: Text(
+            AppLocalizations.of(context).tr("app.conversation.start.title")),
         leading: IconButton(
           icon: Icon(Icons.chevron_left),
           onPressed: () {

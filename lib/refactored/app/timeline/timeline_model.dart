@@ -1,6 +1,5 @@
-import 'package:fedi/refactored/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/refactored/app/account/account_model.dart';
-import 'package:fedi/refactored/app/timeline/local_preferences/timeline_local_preferences_model.dart';
+import 'package:fedi/refactored/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 
 enum TimelineRemoteType { public, list, home, hashtag }

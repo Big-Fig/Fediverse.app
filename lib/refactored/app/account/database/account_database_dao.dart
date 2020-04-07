@@ -105,8 +105,6 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
     return query;
   }
 
-
-
   SimpleSelectStatement<$DbAccountsTable, DbAccount> orderBy(
           SimpleSelectStatement<$DbAccountsTable, DbAccount> query,
           List<AccountOrderingTermData> orderTerms) =>
@@ -176,11 +174,9 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
   }
 
   SimpleSelectStatement<$DbAccountsTable, DbAccount> addSearchWhere(
-      SimpleSelectStatement<$DbAccountsTable, DbAccount> query,
-      String searchQuery) =>
-      query
-        ..where((account) =>
-            account.acct.like("%$searchQuery%"));
+          SimpleSelectStatement<$DbAccountsTable, DbAccount> query,
+          String searchQuery) =>
+      query..where((account) => account.acct.like("%$searchQuery%"));
 
   JoinedSelectStatement addConversationWhere(
           JoinedSelectStatement query, String conversationRemoteId) =>
@@ -214,10 +210,7 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
             "$_accountFollowersAliasId.follower_account_remote_id"
             " = '$followerAccountRemoteId'"));
 
-
-
-  List<DbAccount> typedResultListToPopulated(
-      List<TypedResult> typedResult) {
+  List<DbAccount> typedResultListToPopulated(List<TypedResult> typedResult) {
     if (typedResult == null) {
       return null;
     }
@@ -230,4 +223,5 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
     }
 
     return typedResult.readTable(db.dbAccounts);
-  }}
+  }
+}

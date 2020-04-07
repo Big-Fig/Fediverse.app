@@ -92,7 +92,8 @@ class NotificationsHomeTabPage extends StatelessWidget {
     MastodonNotificationType type = mapTabToType(tab);
     return Tab(
       icon: NotificationUnreadTypeBadgeCountWidget(
-        child: Icon(mapTabToIconData(context, tab)), type: type,
+        child: Icon(mapTabToIconData(context, tab)),
+        type: type,
       ),
     );
   }
@@ -170,7 +171,7 @@ class NotificationsHomeTabPage extends StatelessWidget {
 
   MastodonNotificationType mapTabToType(NotificationTab tab) {
     MastodonNotificationType onlyWithType;
-    
+
     switch (tab) {
       case NotificationTab.all:
         onlyWithType = null;

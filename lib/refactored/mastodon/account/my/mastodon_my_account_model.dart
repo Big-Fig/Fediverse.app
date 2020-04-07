@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:fedi/refactored/mastodon/account/mastodon_account_model.dart';
 import 'package:fedi/refactored/mastodon/field/mastodon_field_model.dart';
 import 'package:fedi/refactored/mastodon/visibility/mastodon_visibility_model.dart';

@@ -11,5 +11,6 @@ abstract class IPleromaNotificationService implements IPleromaApi {
   Future<List<IPleromaNotification>> getNotifications(
       {@required MastodonNotificationsRequest request});
 
-  Future<IPleromaNotification> getNotification({@required String notificationRemoteId});
+  Future<IPleromaNotification> getNotification(
+      {@required String notificationRemoteId});
 }

@@ -1,12 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
 import 'package:fedi/refactored/app/account/my/my_account_model.dart';
+import 'package:fedi/refactored/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/refactored/app/auth/instance/current/context/current_auth_instance_context_bloc_impl.dart';
 import 'package:fedi/refactored/app/auth/instance/current/context/loading/current_auth_instance_context_loading_bloc.dart';
 import 'package:fedi/refactored/app/auth/instance/current/context/loading/current_auth_instance_context_loading_bloc_impl.dart';
 import 'package:fedi/refactored/app/auth/instance/current/context/loading/current_auth_instance_context_loading_page.dart';
 import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/refactored/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/refactored/app/auth/instance/join/from_scratch/from_scratch_join_auth_instance_page.dart';
 import 'package:fedi/refactored/app/auth/instance/join/join_auth_instance_bloc.dart';
 import 'package:fedi/refactored/app/auth/instance/join/join_auth_instance_bloc_impl.dart';
@@ -119,14 +119,16 @@ void buildCurrentInstanceApp(
     runApp(EasyLocalization(
         child: appContextBloc.provideContextToChild(
             child: currentInstanceContextBloc.provideContextToChild(
-                child: DisposableProvider<ICurrentAuthInstanceContextLoadingBloc>(
-                    create: (context) => CurrentAuthInstanceContextLoadingBloc(
-                        myAccountBloc:
-                            IMyAccountBloc.of(context, listen: false)),
-                    child: MyApp(
-                        child: CurrentAuthInstanceContextLoadingPage(
-                      child: const HomePage(),
-                    )))))));
+                child:
+                    DisposableProvider<ICurrentAuthInstanceContextLoadingBloc>(
+                        create: (context) =>
+                            CurrentAuthInstanceContextLoadingBloc(
+                                myAccountBloc:
+                                    IMyAccountBloc.of(context, listen: false)),
+                        child: MyApp(
+                            child: CurrentAuthInstanceContextLoadingPage(
+                          child: const HomePage(),
+                        )))))));
   } else {
     runApp(EasyLocalization(
         child: appContextBloc.provideContextToChild(
@@ -156,8 +158,8 @@ class MyApp extends StatelessWidget {
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
-          EasylocaLizationDelegate(locale: locale,
-              path: "assets/langs/refactored")
+          EasylocaLizationDelegate(
+              locale: locale, path: "assets/langs/refactored")
         ],
         locale: savedLocale,
         supportedLocales: [Locale('en', 'US')],

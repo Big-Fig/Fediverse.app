@@ -1,4 +1,3 @@
-import 'package:fedi/refactored/pleroma/conversation/pleroma_conversation_model.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
 import 'package:fedi/refactored/app/conversation/conversation_model.dart';
 import 'package:fedi/refactored/app/conversation/conversation_model_adapter.dart';
@@ -8,6 +7,7 @@ import 'package:fedi/refactored/app/conversation/repository/conversation_reposit
 import 'package:fedi/refactored/app/database/app_database.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/async/loading/init/async_init_loading_bloc_impl.dart';
+import 'package:fedi/refactored/pleroma/conversation/pleroma_conversation_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -211,8 +211,7 @@ class ConversationRepository extends AsyncInitLoadingBloc
 
     var query = dao.startSelectQuery();
 
-    if (olderThanConversation != null ||
-        newerThanConversation != null) {
+    if (olderThanConversation != null || newerThanConversation != null) {
       dao.addRemoteIdBoundsWhere(query,
           maximumRemoteIdExcluding: olderThanConversation?.remoteId,
           minimumRemoteIdExcluding: newerThanConversation?.remoteId);

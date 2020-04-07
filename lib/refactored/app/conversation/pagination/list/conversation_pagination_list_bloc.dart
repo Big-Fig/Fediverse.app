@@ -6,7 +6,8 @@ import 'package:provider/provider.dart';
 
 abstract class IConversationPaginationListBloc
     implements
-        IPaginationListBloc<CachedPaginationPage<IConversation>, IConversation> {
+        IPaginationListBloc<CachedPaginationPage<IConversation>,
+            IConversation> {
   static IConversationPaginationListBloc of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<IConversationPaginationListBloc>(context, listen: listen);

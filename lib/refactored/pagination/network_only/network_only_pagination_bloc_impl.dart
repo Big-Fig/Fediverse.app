@@ -1,5 +1,3 @@
-import 'package:fedi/refactored/pagination/cached/cached_pagination_bloc.dart';
-import 'package:fedi/refactored/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/refactored/pagination/pagination_bloc.dart';
 import 'package:fedi/refactored/pagination/pagination_bloc_impl.dart';
 import 'package:fedi/refactored/pagination/pagination_model.dart';
@@ -8,8 +6,7 @@ import 'package:logging/logging.dart';
 
 var _logger = Logger("network_only_pagination_bloc_impl.dart");
 
-abstract class NetworkOnlyPaginationBloc<
-        TPage extends PaginationPage<TItem>,
+abstract class NetworkOnlyPaginationBloc<TPage extends PaginationPage<TItem>,
         TItem> extends PaginationBloc<TPage, TItem>
     implements IPaginationBloc<TPage, TItem> {
   NetworkOnlyPaginationBloc(
@@ -27,12 +24,10 @@ abstract class NetworkOnlyPaginationBloc<
     @required TPage previousPage,
     @required TPage nextPage,
   }) async {
-
     _logger.finest(() => "loadPage \n"
         "\t pageIndex=$pageIndex"
         "\t previousPage=$previousPage"
-        "\t nextPage=$nextPage"
-    );
+        "\t nextPage=$nextPage");
 
     List<TItem> loadedItems = await loadItemsFromRemoteForPage(
         pageIndex: pageIndex,
@@ -53,9 +48,8 @@ abstract class NetworkOnlyPaginationBloc<
     @required TPage newerPage,
   });
 
-
   TPage createPage(
       {@required int pageIndex,
-        @required List<TItem> loadedItems,  @required int itemsCountPerPage});
-
+      @required List<TItem> loadedItems,
+      @required int itemsCountPerPage});
 }

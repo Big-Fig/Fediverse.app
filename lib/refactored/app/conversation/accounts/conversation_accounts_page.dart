@@ -24,14 +24,14 @@ class ConversationAccountsPage extends StatelessWidget {
   }
 }
 
-
-void goToConversationAccountsPage(BuildContext context, IConversation conversation) {
+void goToConversationAccountsPage(
+    BuildContext context, IConversation conversation) {
   Navigator.push(
     context,
     MaterialPageRoute(
         builder: (context) => DisposableProvider<IConversationBloc>(
             create: (context) => ConversationBloc.createFromContext(context,
-                conversation:conversation),
+                conversation: conversation),
             child: ConversationAccountsPage())),
   );
 }

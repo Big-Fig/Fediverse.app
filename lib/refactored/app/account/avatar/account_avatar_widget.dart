@@ -20,7 +20,6 @@ class AccountAvatarWidget extends StatelessWidget {
         builder: (context, snapshot) {
           var avatar = snapshot.data;
 
-
           return buildAccountAvatarWidget(
               avatarUrl: avatar,
               progressSize: progressSize,

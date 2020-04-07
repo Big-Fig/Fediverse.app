@@ -27,7 +27,6 @@ class DbStatuses extends Table {
   BoolColumn get pinned => boolean().nullable()();
   TextColumn get content => text().nullable()();
 
-
   TextColumn get reblogStatusRemoteId => text().nullable()();
   TextColumn get application =>
       text().map(PleromaApplicationDatabaseConverter()).nullable()();

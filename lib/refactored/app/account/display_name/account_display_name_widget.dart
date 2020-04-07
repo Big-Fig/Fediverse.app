@@ -17,5 +17,4 @@ class AccountDisplayNameWidget extends StatelessWidget {
           return EmojiTextWidget(emojiText: accountDisplayNameEmojiText);
         });
   }
-
 }

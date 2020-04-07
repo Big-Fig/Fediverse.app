@@ -36,19 +36,20 @@ void goToStatusReblogAccountListPage(BuildContext context, IStatus status) {
   Navigator.push(
     context,
     MaterialPageRoute(
-        builder: (context) => DisposableProvider<IPleromaCachedListService<IAccount>>(
-            create: (context) =>
-                StatusFavouriteAccountListService.createFromContext(context,
-                    status: status),
-            child: DisposableProvider<
-                IPaginationBloc<PaginationPage<IAccount>, IAccount>>(
-              create: (context) =>
-                  AccountCachedPaginationBloc.createFromContext(context),
-              child: DisposableProvider<IAccountPaginationListBloc>(
+        builder: (context) =>
+            DisposableProvider<IPleromaCachedListService<IAccount>>(
                 create: (context) =>
-                    AccountPaginationListBloc.createFromContext(context),
-                child: StatusReblogAccountListPage(),
-              ),
-            ))),
+                    StatusFavouriteAccountListService.createFromContext(context,
+                        status: status),
+                child: DisposableProvider<
+                    IPaginationBloc<PaginationPage<IAccount>, IAccount>>(
+                  create: (context) =>
+                      AccountCachedPaginationBloc.createFromContext(context),
+                  child: DisposableProvider<IAccountPaginationListBloc>(
+                    create: (context) =>
+                        AccountPaginationListBloc.createFromContext(context),
+                    child: StatusReblogAccountListPage(),
+                  ),
+                ))),
   );
 }

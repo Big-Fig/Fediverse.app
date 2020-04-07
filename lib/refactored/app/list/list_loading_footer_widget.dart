@@ -10,8 +10,7 @@ class ListLoadingFooterWidget extends StatelessWidget {
       builder: (BuildContext context, LoadStatus mode) {
         Widget body;
 
-        switch(mode) {
-
+        switch (mode) {
           case LoadStatus.idle:
             body = Text("");
             break;

@@ -66,7 +66,7 @@ abstract class FilePickerBloc extends DisposableOwner
           }
           break;
         case FilePickerFileType.other:
-         // TODO: not implemented yet
+          // TODO: not implemented yet
           break;
       }
     });

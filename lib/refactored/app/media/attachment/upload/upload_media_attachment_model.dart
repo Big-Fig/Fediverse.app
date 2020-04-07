@@ -1,4 +1,6 @@
 enum UploadMediaAttachmentState {
-  notUploaded, uploading, uploaded,
+  notUploaded,
+  uploading,
+  uploaded,
   failed,
 }

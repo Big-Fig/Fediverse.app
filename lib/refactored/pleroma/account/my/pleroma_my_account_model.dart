@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:fedi/refactored/local_preferences/local_preferences_model.dart';
+import 'package:fedi/refactored/mastodon/account/my/mastodon_my_account_model.dart';
+import 'package:fedi/refactored/mastodon/visibility/mastodon_visibility_model.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/refactored/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/refactored/pleroma/field/pleroma_field_model.dart';
 import 'package:fedi/refactored/pleroma/visibility/pleroma_visibility_model.dart';
-import 'package:fedi/refactored/local_preferences/local_preferences_model.dart';
-import 'package:fedi/refactored/mastodon/account/my/mastodon_my_account_model.dart';
-import 'package:fedi/refactored/mastodon/visibility/mastodon_visibility_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 

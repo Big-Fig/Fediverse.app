@@ -1,3 +1,1 @@
-enum SearchTab {
-  accounts, statuses
-}
+enum SearchTab { accounts, statuses }

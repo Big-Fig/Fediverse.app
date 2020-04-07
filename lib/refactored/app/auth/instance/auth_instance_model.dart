@@ -10,8 +10,6 @@ typedef AuthInstanceCallback(AuthInstance instance);
 
 @HiveType()
 class AuthInstance extends IPreferencesObject {
-
-
   @HiveField(0)
   String urlSchema;
   @HiveField(1)
@@ -43,19 +41,18 @@ class AuthInstance extends IPreferencesObject {
     this.application,
   });
 
-
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is AuthInstance &&
-              runtimeType == other.runtimeType &&
-              urlSchema == other.urlSchema &&
-              urlHost == other.urlHost &&
-              acct == other.acct &&
-              token == other.token &&
-              authCode == other.authCode &&
-              isPleromaInstance == other.isPleromaInstance &&
-              application == other.application;
+      other is AuthInstance &&
+          runtimeType == other.runtimeType &&
+          urlSchema == other.urlSchema &&
+          urlHost == other.urlHost &&
+          acct == other.acct &&
+          token == other.token &&
+          authCode == other.authCode &&
+          isPleromaInstance == other.isPleromaInstance &&
+          application == other.application;
 
   @override
   int get hashCode =>

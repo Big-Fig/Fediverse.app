@@ -4,8 +4,8 @@ import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IConnectionService implements DisposableOwner,
-    IAsyncInitLoadingBloc {
+abstract class IConnectionService
+    implements DisposableOwner, IAsyncInitLoadingBloc {
   Stream<ConnectivityResult> get connectionStateStream;
 
   ConnectivityResult get connectionState;

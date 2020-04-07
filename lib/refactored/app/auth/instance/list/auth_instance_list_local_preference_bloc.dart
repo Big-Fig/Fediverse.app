@@ -1,4 +1,3 @@
-
 import 'package:fedi/refactored/app/auth/instance/list/auth_instance_list_model.dart';
 import 'package:fedi/refactored/local_preferences/local_preference_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
@@ -8,5 +7,6 @@ abstract class IAuthInstanceListLocalPreferenceBloc
     implements LocalPreferenceBloc<AuthInstanceList> {
   static IAuthInstanceListLocalPreferenceBloc of(BuildContext context,
           {bool listen = true}) =>
-      Provider.of<IAuthInstanceListLocalPreferenceBloc>(context, listen: listen);
+      Provider.of<IAuthInstanceListLocalPreferenceBloc>(context,
+          listen: listen);
 }

@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:fedi/refactored/disposable/async_disposable.dart';
 import 'package:fedi/refactored/disposable/disposable.dart';
 import 'package:fedi/refactored/disposable/rx_disposable.dart';
@@ -12,11 +13,11 @@ class DisposableOwner extends Disposable {
 
   void addDisposable(
       {Disposable disposable,
-        StreamSubscription streamSubscription,
-        TextEditingController textEditingController,
-        FocusNode focusNode,
-        Subject subject,
-        Timer timer}) {
+      StreamSubscription streamSubscription,
+      TextEditingController textEditingController,
+      FocusNode focusNode,
+      Subject subject,
+      Timer timer}) {
     if (disposable != null) {
       _compositeDisposable.children.add(disposable);
     }
@@ -39,8 +40,7 @@ class DisposableOwner extends Disposable {
           .add(TextEditingControllerDisposable(textEditingController));
     }
     if (focusNode != null) {
-      _compositeDisposable.children
-          .add(FocusNodeDisposable(focusNode));
+      _compositeDisposable.children.add(FocusNodeDisposable(focusNode));
     }
   }
 

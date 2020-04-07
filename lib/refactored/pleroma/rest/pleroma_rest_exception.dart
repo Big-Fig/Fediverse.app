@@ -9,6 +9,4 @@ class PleromaRestException implements Exception {
   String toString() {
     return 'PleromaRestException{statusCode: $statusCode, body: $body}';
   }
-
-
 }

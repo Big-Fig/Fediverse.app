@@ -20,5 +20,4 @@ class NotificationCreatedAtWidget extends StatelessWidget {
           );
         });
   }
-
 }

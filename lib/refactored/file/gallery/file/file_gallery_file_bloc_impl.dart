@@ -70,9 +70,10 @@ class FileGalleryFileBloc extends AbstractFileGalleryFileBloc {
     var timestamp = DateTime.now().millisecondsSinceEpoch.toString();
     final String dirPath = path.join(extDir.path, "gallery_picker", timestamp);
     await Directory(dirPath).create(recursive: true);
-    var originalFileNameWithoutExtension = path.basenameWithoutExtension(file.path);
-    final String resultPath = path.join(dirPath,
-        "$originalFileNameWithoutExtension.jpg");
+    var originalFileNameWithoutExtension =
+        path.basenameWithoutExtension(file.path);
+    final String resultPath =
+        path.join(dirPath, "$originalFileNameWithoutExtension.jpg");
     _logger.fine(() => "_compressToJpeg \n"
         "\t originPath $originPath"
         "\t resultPath $resultPath");

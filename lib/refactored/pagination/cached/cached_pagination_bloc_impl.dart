@@ -3,8 +3,7 @@ import 'package:fedi/refactored/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/refactored/pagination/pagination_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
 
-abstract class CachedPaginationBloc<
-        TPage extends CachedPaginationPage<TItem>,
+abstract class CachedPaginationBloc<TPage extends CachedPaginationPage<TItem>,
         TItem> extends PaginationBloc<TPage, TItem>
     implements ICachedPaginationBloc<TPage, TItem> {
   CachedPaginationBloc(

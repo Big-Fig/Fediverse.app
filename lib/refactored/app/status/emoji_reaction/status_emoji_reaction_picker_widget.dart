@@ -6,12 +6,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 typedef EmojiReactionSelectedCallback(String emojiName, String emoji);
 
 class StatusEmojiReactionPickerWidget extends StatelessWidget {
-
   final EmojiReactionSelectedCallback emojiReactionSelectedCallback;
 
-
-  StatusEmojiReactionPickerWidget({@required this
-      .emojiReactionSelectedCallback});
+  StatusEmojiReactionPickerWidget(
+      {@required this.emojiReactionSelectedCallback});
 
   @override
   Widget build(BuildContext context) {
@@ -35,5 +33,4 @@ class StatusEmojiReactionPickerWidget extends StatelessWidget {
       },
     );
   }
-
 }

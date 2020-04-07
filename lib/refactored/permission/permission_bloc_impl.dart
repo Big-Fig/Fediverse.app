@@ -4,16 +4,15 @@ import 'package:fedi/refactored/permission/permissions_service.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rxdart/rxdart.dart';
 
-abstract class PermissionBloc extends DisposableOwner implements IPermissionBloc {
+abstract class PermissionBloc extends DisposableOwner
+    implements IPermissionBloc {
   final IPermissionsService permissionsService;
   final PermissionGroup permission;
 
   PermissionBloc(this.permissionsService, this.permission); // ignore:
 
-
   Stream<bool> get permissionGrantedStream =>
-      permissionStatusStream
-          .map(IPermissionBloc.mapPermissionStatusToBool);
+      permissionStatusStream.map(IPermissionBloc.mapPermissionStatusToBool);
 
   bool get permissionGranted =>
       IPermissionBloc.mapPermissionStatusToBool(permissionStatus);
@@ -40,5 +39,4 @@ abstract class PermissionBloc extends DisposableOwner implements IPermissionBloc
     _permissionStatusSubject.add(permissionStatus);
     return permissionStatus;
   }
-
 }

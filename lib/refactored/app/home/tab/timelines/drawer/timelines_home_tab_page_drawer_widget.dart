@@ -17,7 +17,7 @@ class TimelinesHomeTabPageDrawerWidget extends StatelessWidget {
           buildOptionListTile(
               AppLocalizations.of(context)
                   .tr("app.timeline.display.settings.field.only_with_media"
-                  ".label"),
+                      ".label"),
               drawerBloc.onlyWithMediaStream,
               drawerBloc.onlyWithMedia,
               drawerBloc.changeOnlyWithMedia),

@@ -2,8 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/home/tab/timelines/drawer/timelines_home_tab_page_drawer_bloc.dart';
 import 'package:fedi/refactored/app/home/tab/timelines/drawer/timelines_home_tab_page_drawer_bloc_impl.dart';
 import 'package:fedi/refactored/app/home/tab/timelines/drawer/timelines_home_tab_page_drawer_widget.dart';
-import 'package:fedi/refactored/app/home/tab/timelines/timelines_home_tab_model.dart';
 import 'package:fedi/refactored/app/home/tab/timelines/timelines_home_tab_bloc.dart';
+import 'package:fedi/refactored/app/home/tab/timelines/timelines_home_tab_model.dart';
 import 'package:fedi/refactored/app/search/search_page.dart';
 import 'package:fedi/refactored/app/timeline/local_preferences/timeline_local_preferences_bloc.dart';
 import 'package:fedi/refactored/app/timeline/timeline_widget.dart';
@@ -121,7 +121,6 @@ class TimelinesHomeTabPage extends StatelessWidget {
   Widget buildBodyWidget(BuildContext context) {
     var timelinesHomePageBloc = ITimelinesHomeTabBloc.of(context, listen: true);
     _logger.finest(() => "buildBodyWidget");
-
 
     return TabBarView(
         children: List<Widget>.generate(

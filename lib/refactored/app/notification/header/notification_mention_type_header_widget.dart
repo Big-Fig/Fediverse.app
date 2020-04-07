@@ -10,6 +10,5 @@ class NotificationMentionTypeHeaderWidget extends NotificationHeaderWidget {
           context: context,
           iconData: Icons.alternate_email,
           text: AppLocalizations.of(context)
-              .tr("app.notification.header.mention")
-      );
+              .tr("app.notification.header.mention"));
 }

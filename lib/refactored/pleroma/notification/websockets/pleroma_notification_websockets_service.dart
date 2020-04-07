@@ -1,4 +1,3 @@
-
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:fedi/refactored/pleroma/notification/websockets/channel/pleroma_notification_websockets_channel.dart';
 import 'package:flutter/widgets.dart';

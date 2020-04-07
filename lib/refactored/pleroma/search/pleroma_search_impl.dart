@@ -21,8 +21,7 @@ class PleromaSearchService implements IPleromaMediaAttachmentService {
   PleromaApiState get pleromaState => restService.pleromaState;
 
   @override
-  Stream<bool> get isApiReadyToUseStream =>
-      restService.isApiReadyToUseStream;
+  Stream<bool> get isApiReadyToUseStream => restService.isApiReadyToUseStream;
   @override
   bool get isApiReadyToUse => restService.isApiReadyToUse;
 
@@ -47,7 +46,6 @@ class PleromaSearchService implements IPleromaMediaAttachmentService {
           body: httpResponse.body);
     }
   }
-
 
   @override
   void dispose() {

@@ -7,8 +7,8 @@ class NotificationFollowTypeHeaderWidget extends NotificationHeaderWidget {
   @override
   Widget buildNotificationHeaderContext(BuildContext context) =>
       NotificationHeaderWidget.buildIconAndTextContext(
-          context: context, iconData: Icons.person_add, text:
-          AppLocalizations.of(context).tr("app.notification.header.follow")
-
-  );
+          context: context,
+          iconData: Icons.person_add,
+          text: AppLocalizations.of(context)
+              .tr("app.notification.header.follow"));
 }

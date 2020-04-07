@@ -10,13 +10,12 @@ class MoorDatabaseService extends AsyncInitLoadingBloc
     implements IDatabaseService {
   final String dbName;
 
-
   MoorDatabaseService({@required this.dbName});
 
   AppDatabase appDatabase;
 
   @override
-  Future internalAsyncInit() async  {
+  Future internalAsyncInit() async {
 //    appDatabase = AppDatabase(LazyDatabase(() async {
 //      final dbFolder = await getApplicationDocumentsDirectory();
 //      final file = File(p.join(dbFolder.path, 'app.db'));
@@ -28,11 +27,9 @@ class MoorDatabaseService extends AsyncInitLoadingBloc
     appDatabase = AppDatabase(FlutterQueryExecutor.inDatabaseFolder(
         path: '$dbName.sqlite', logStatements: false));
 
-
     addDisposable(disposable: CustomDisposable(() {
       appDatabase.close();
     }));
-
   }
 
   @override

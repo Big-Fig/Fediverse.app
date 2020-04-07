@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fedi/refactored/pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
+import 'package:fedi/refactored/pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +17,7 @@ class StatusCardWidget extends StatelessWidget {
         builder: (context, snapshot) {
           var card = snapshot.data;
 
-          if(card == null) {
+          if (card == null) {
             return SizedBox.shrink();
           }
 
@@ -52,11 +52,10 @@ class StatusCardWidget extends StatelessWidget {
                           child: CachedNetworkImage(
                             imageUrl: card.image,
                             fit: BoxFit.cover,
-                            placeholder: (context, url) =>
-                                Padding(
-                                  padding: const EdgeInsets.all(20.0),
-                                  child: CircularProgressIndicator(),
-                                ),
+                            placeholder: (context, url) => Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: CircularProgressIndicator(),
+                            ),
                             errorWidget: (context, url, error) =>
                                 Icon(Icons.error),
                           ),

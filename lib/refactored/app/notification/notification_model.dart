@@ -8,8 +8,8 @@ abstract class INotification {
   int get localId;
 
   String get remoteId;
-  bool get unread;
 
+  bool get unread;
 
   DateTime get createdAt;
 

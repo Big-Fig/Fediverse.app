@@ -11,8 +11,8 @@ class DbNotifications extends Table {
   TextColumn get accountRemoteId => text()();
   TextColumn get statusRemoteId => text().nullable()();
   BoolColumn get unread => boolean().nullable()();
-  TextColumn get type =>  text().nullable().map(MastodonNotificationTypeDatabaseConverter())();
+  TextColumn get type =>
+      text().nullable().map(MastodonNotificationTypeDatabaseConverter())();
 
   DateTimeColumn get createdAt => dateTime()();
-
 }

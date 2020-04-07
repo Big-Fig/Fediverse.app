@@ -1,8 +1,8 @@
+import 'package:fedi/refactored/app/database/app_database.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/refactored/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/refactored/pleroma/field/pleroma_field_model.dart';
 import 'package:fedi/refactored/pleroma/tag/pleroma_tag_model.dart';
-import 'package:fedi/refactored/app/database/app_database.dart';
 
 typedef AccountSelectedCallback(IAccount account);
 
@@ -245,38 +245,38 @@ class DbAccountWrapper implements IAccount {
   @override
   IAccount copyWith(
           {int id,
-            String remoteId,
-            String username,
-            String url,
-            String note,
-            bool locked,
-            String headerStatic,
-            String header,
-            int followingCount,
-            int followersCount,
-            int statusesCount,
-            String displayName,
-            DateTime createdAt,
-            bool bot,
-            String avatarStatic,
-            String avatar,
-            String acct,
-            DateTime lastStatusAt,
-            List<PleromaField> fields,
-            List<PleromaEmoji> emojis,
-            List<PleromaTag> pleromaTags,
-            PleromaAccountRelationship pleromaRelationship,
-            bool pleromaIsAdmin,
-            bool pleromaIsModerator,
-            bool pleromaConfirmationPending,
-            bool pleromaHideFavorites,
-            bool pleromaHideFollowers,
-            bool pleromaHideFollows,
-            bool pleromaHideFollowersCount,
-            bool pleromaHideFollowsCount,
-            bool pleromaDeactivated,
-            bool pleromaAllowFollowingMove,
-            bool pleromaSkipThreadContainment}) =>
+          String remoteId,
+          String username,
+          String url,
+          String note,
+          bool locked,
+          String headerStatic,
+          String header,
+          int followingCount,
+          int followersCount,
+          int statusesCount,
+          String displayName,
+          DateTime createdAt,
+          bool bot,
+          String avatarStatic,
+          String avatar,
+          String acct,
+          DateTime lastStatusAt,
+          List<PleromaField> fields,
+          List<PleromaEmoji> emojis,
+          List<PleromaTag> pleromaTags,
+          PleromaAccountRelationship pleromaRelationship,
+          bool pleromaIsAdmin,
+          bool pleromaIsModerator,
+          bool pleromaConfirmationPending,
+          bool pleromaHideFavorites,
+          bool pleromaHideFollowers,
+          bool pleromaHideFollows,
+          bool pleromaHideFollowersCount,
+          bool pleromaHideFollowsCount,
+          bool pleromaDeactivated,
+          bool pleromaAllowFollowingMove,
+          bool pleromaSkipThreadContainment}) =>
       DbAccountWrapper(dbAccount.copyWith(
         id: id,
         remoteId: remoteId,

@@ -6,7 +6,8 @@ typedef Future<bool> IPushRealTimeHandler(
     PleromaPushMessage pleromaPushMessage);
 
 abstract class IPushHandlerBloc extends Disposable {
-  List<PleromaPushMessage> loadUnhandledMessagesForInstance(AuthInstance instance);
+  List<PleromaPushMessage> loadUnhandledMessagesForInstance(
+      AuthInstance instance);
 
   Future<bool> markAsHandled(List<PleromaPushMessage> messages);
 

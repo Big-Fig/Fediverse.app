@@ -3,6 +3,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 abstract class IPermissionBloc implements Disposable {
   PermissionStatus get permissionStatus;
+
   Stream<PermissionStatus> get permissionStatusStream;
 
   Future<PermissionStatus> checkPermissionStatus();

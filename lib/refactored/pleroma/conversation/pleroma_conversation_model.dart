@@ -1,8 +1,8 @@
 import 'dart:convert';
 
+import 'package:fedi/refactored/mastodon/conversation/mastodon_conversation_model.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/refactored/pleroma/status/pleroma_status_model.dart';
-import 'package:fedi/refactored/mastodon/conversation/mastodon_conversation_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_conversation_model.g.dart';

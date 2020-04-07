@@ -1,4 +1,3 @@
-import 'package:fedi/refactored/pleroma/conversation/pleroma_conversation_service.dart';
 import 'package:fedi/refactored/app/conversation/list/conversation_list_service.dart';
 import 'package:fedi/refactored/app/conversation/list/conversation_list_service_impl.dart';
 import 'package:fedi/refactored/app/conversation/pagination/conversation_pagination_bloc.dart';
@@ -8,6 +7,7 @@ import 'package:fedi/refactored/app/conversation/pagination/list/conversation_pa
 import 'package:fedi/refactored/app/conversation/repository/conversation_repository.dart';
 import 'package:fedi/refactored/app/home/tab/conversations/conversations_home_tab_bloc.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
+import 'package:fedi/refactored/pleroma/conversation/pleroma_conversation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
