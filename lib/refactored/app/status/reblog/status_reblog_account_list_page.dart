@@ -20,7 +20,7 @@ class StatusReblogAccountListPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
           title: Text(AppLocalizations.of(context)
-              .tr("post.status.reblogged_by.title"))),
+              .tr("app.status.reblogged_by.title"))),
       body: SafeArea(
         child: AccountPaginationListWidget(
           accountSelectedCallback: (account) =>

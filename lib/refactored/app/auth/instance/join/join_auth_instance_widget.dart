@@ -22,7 +22,10 @@ class JoinAuthInstanceWidget extends StatelessWidget {
       key: _formKey,
       child: Column(
         children: <Widget>[
-          buildLogoWidget(),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: buildLogoWidget(),
+          ),
           SizedBox(
             height: 60,
           ),
@@ -165,7 +168,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
     return Container(
       child: Image(
         image: AssetImage("assets/images/theme/logo.png"),
-        width: 60,
+        width: 100,
       ),
     );
   }

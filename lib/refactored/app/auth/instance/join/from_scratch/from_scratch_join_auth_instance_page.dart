@@ -6,22 +6,12 @@ import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class JoinNewAuthInstancePage extends StatelessWidget {
+class FromScratchJoinAuthInstancePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       backgroundColor: romaGreen,
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context).tr("app.auth.instance.join.new"
-            ".title")),
-        leading: IconButton(
-          icon: Icon(Icons.chevron_left),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      ),
       body: SafeArea(
         child: JoinAuthInstanceWidget(),
       ),
@@ -35,6 +25,6 @@ void goToJoinNewInstancePage(BuildContext context) {
     MaterialPageRoute(
         builder: (context) => DisposableProvider<IJoinAuthInstanceBloc>(
             create: (context) => JoinAuthInstanceBloc(),
-            child: JoinNewAuthInstancePage())),
+            child: FromScratchJoinAuthInstancePage())),
   );
 }

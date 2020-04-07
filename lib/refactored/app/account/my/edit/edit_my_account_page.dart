@@ -26,7 +26,7 @@ class EditMyAccountPage extends StatelessWidget {
             },
           ),
           title: Text(AppLocalizations.of(context)
-              .tr("app.account.action.my.edit.title")),
+              .tr("app.account.my.edit.title")),
           actions: <Widget>[
             InitialDataStreamBuilder<bool>(
                 stream: editMyAccountBloc.isSomethingChangedStream,
@@ -50,7 +50,7 @@ class EditMyAccountPage extends StatelessWidget {
                   return FlatButton(
                     child: Text(
                       AppLocalizations.of(context)
-                          .tr("profile.edit.action.save"),
+                          .tr("app.account.my.edit.action.save"),
                       style: TextStyle(
                           color:
                               isSomethingChanged ? Colors.white : Colors
@@ -79,12 +79,12 @@ class EditMyAccountPage extends StatelessWidget {
 
     showAlert(
       context: context, title: AppLocalizations.of(context)
-        .tr("app.account.action.my.edit.unsaved.dialog.title"), //      body:
+        .tr("app.account.my.edit.unsaved.dialog.title"), //      body:
       // "",
       actions: [
         AlertAction(
           text:AppLocalizations.of(context)
-              .tr("app.account.action.my.edit.unsaved.dialog.action.discard"),
+              .tr("app.account.my.edit.unsaved.dialog.action.discard"),
           onPressed: () {
             Navigator.pop(context);
           },

@@ -13,15 +13,9 @@ class StatusCommentActionWidget extends StatelessWidget {
       children: <Widget>[
         IconButton(
           color: Colors.black,
-//          icon: Image(
-//            height: 20,
-//            width: 20,
-//            color: Colors.black,
-//            image: AssetImage("assets/images/comment.png"),
-//          ),
           icon: Icon(Icons.comment),
           tooltip: AppLocalizations.of(context)
-              .tr("timeline.status.cell.tooltip.comment"),
+              .tr("app.status.action.comment"),
           onPressed: () {
             goToStatusThreadPage(context, statusBloc.status);
           },

@@ -55,5 +55,6 @@ class AccountCachedPaginationBloc extends CachedPleromaPaginationBloc<IAccount>
       AccountCachedPaginationBloc(
           maximumCachedPagesCount: maximumCachedPagesCount,
           itemsCountPerPage: itemsCountPerPage,
-          listService: Provider.of<IPleromaCachedListService<IAccount>>(context));
+          listService: Provider.of<IPleromaCachedListService<IAccount>>
+            (context, listen: false));
 }

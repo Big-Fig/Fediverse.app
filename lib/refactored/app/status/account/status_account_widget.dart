@@ -27,15 +27,6 @@ class StatusAccountWidget extends StatelessWidget {
         builder: (context, snapshot) {
             var reblogOrOriginalAccount = snapshot.data;
             return buildBody(context, reblogOrOriginalAccount, statusBloc);
-//          _logger.finest(() => " snapshot ${snapshot.data}");
-//          if (snapshot.hasData) {
-//          } else {
-//            if (snapshot.error != null) {
-//              _logger.severe(() => " error ${snapshot.error}");
-//            }
-////            return SizedBox.shrink();
-//            return CircularProgressIndicator();
-//          }
         });
   }
 

@@ -22,15 +22,9 @@ class StatusReblogActionWidget extends StatelessWidget {
               return AsyncButtonWidget(
                   builder: (context, onPressed) => IconButton(
                         color: reblogged ? Colors.blue : Colors.black,
-//                        icon: Image(
-//                          height: 20,
-//                          width: 20,
-//                          color: Colors.black,
-//                          image: AssetImage("assets/images/repost.png"),
-//                        ),
                         icon: Icon(Icons.repeat),
                         tooltip: AppLocalizations.of(context)
-                            .tr("timeline.status.cell.tooltip.repost"),
+                            .tr("app.status.action.reblog"),
                         onPressed: onPressed,
                       ),
                   asyncButtonAction: statusBloc.requestToggleReblog);
@@ -45,7 +39,7 @@ class StatusReblogActionWidget extends StatelessWidget {
                   onTap: () {
                     goToStatusReblogAccountListPage(context, statusBloc.status);
                   },
-                  child: Text("$reblogsCount"));
+                  child: Text(reblogsCount.toString()));
             }),
       ],
     );

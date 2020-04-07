@@ -11,7 +11,8 @@ class NewPostStatusPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).tr("post.quick_post.title")),
+        title: Text(AppLocalizations.of(context)
+            .tr("app.status.post.new.title")),
         leading: IconButton(
           icon: Icon(Icons.chevron_left),
           onPressed: () {

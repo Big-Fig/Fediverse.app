@@ -22,7 +22,7 @@ class GrantPermissionWidget extends StatelessWidget {
             return Center(
               child: RaisedButton(
                 child: Text(AppLocalizations.of(context)
-                    .tr("permissions.grant_permission.action.grant")),
+                    .tr("permission.grant.action.grant")),
                 onPressed: () {
                   permissionBloc.requestPermission();
                 },

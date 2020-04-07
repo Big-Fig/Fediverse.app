@@ -16,31 +16,31 @@ class NotificationsHomeTabPageDrawerWidget extends StatelessWidget {
           buildHeaderWidget(context),
           buildOptionListTile(
               AppLocalizations.of(context)
-                  .tr("notification.push.settings.field.favourites.label"),
+                  .tr("app.notification.push.settings.field.favourites.label"),
               drawerBloc.favouriteStream,
               drawerBloc.favourite,
               drawerBloc.changeFavourite),
           buildOptionListTile(
               AppLocalizations.of(context)
-                  .tr("notification.push.settings.field.follows.label"),
+                  .tr("app.notification.push.settings.field.follows.label"),
               drawerBloc.followStream,
               drawerBloc.follow,
               drawerBloc.changeFollow),
           buildOptionListTile(
               AppLocalizations.of(context)
-                  .tr("notification.push.settings.field.mentions.label"),
+                  .tr("app.notification.push.settings.field.mentions.label"),
               drawerBloc.mentionStream,
               drawerBloc.mention,
               drawerBloc.changeMention),
           buildOptionListTile(
               AppLocalizations.of(context)
-                  .tr("notification.push.settings.field.reblogs.label"),
+                  .tr("app.notification.push.settings.field.reblogs.label"),
               drawerBloc.reblogStream,
               drawerBloc.reblog,
               drawerBloc.changeReblog),
           buildOptionListTile(
               AppLocalizations.of(context)
-                  .tr("notification.push.settings.field.polls.label"),
+                  .tr("app.notification.push.settings.field.polls.label"),
               drawerBloc.pollStream,
               drawerBloc.poll,
               drawerBloc.changePoll),
@@ -86,7 +86,7 @@ class NotificationsHomeTabPageDrawerWidget extends StatelessWidget {
       child: DrawerHeader(
         child: Text(
           AppLocalizations.of(context)
-              .tr("notification.push.settings.title"),
+              .tr("app.notification.push.settings.title"),
           style: TextStyle(color: Colors.white),
         ),
         decoration: BoxDecoration(

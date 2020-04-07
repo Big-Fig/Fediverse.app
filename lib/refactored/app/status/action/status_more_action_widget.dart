@@ -1,9 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/refactored/app/status/action/status_favourite_action_widget.dart';
-import 'package:fedi/refactored/app/status/action/status_reblog_action_widget.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
-import 'package:fedi/refactored/app/status/thread/status_thread_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,21 +8,12 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class StatusShareActionWidget extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: true);
     return IconButton(
-      //      icon: Image(
-//        height: 20,
-//        width: 20,
-//        color: Colors.black,
-//        image: AssetImage("assets/images/share.png"),
-//      ),
       icon: Icon(Icons.more_vert),
-      tooltip:
-      AppLocalizations.of(context).tr("timeline.status.cell.tooltip.more"),
+      tooltip: AppLocalizations.of(context).tr("app.status.action.more"),
       onPressed: () {
         showMoreOptions(context, statusBloc);
       },
@@ -34,37 +22,25 @@ class StatusShareActionWidget extends StatelessWidget {
 
   showMoreOptions(BuildContext context, IStatusBloc statusBloc) {
     IStatus status = statusBloc.status;
-//    = statusBloc.;
-//    if (widget.status.reblog != null) {
-//      status = widget.status.reblog;
-//    }
-
     showModalBottomSheet(
         builder: (BuildContext context) {
-          return Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                buildTitleSeparator(context),
-                buildCopyAction(context, status),
-                buildOpenInBrowserAction(context, status),
-                buildAccountDescSeparator(context),
-                buildAccountNameSeparator(status),
-                // public button
-                buildAccountFollowAction(context, status),
-                // public button
-                buildAccountMuteAction(context, status),
-                // Unlisted
-                buildAccountBlockAction(context, status),
-                // Private
-                buildAccountReportAction(context, status),
-                Container(
-                  height: 30,
-                ),
-                // Cancel
-                buildCancelAction(context),
-              ],
-            ),
+          return Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              buildTitleSeparator(context),
+              buildCopyAction(context, status),
+              buildOpenInBrowserAction(context, status),
+              buildAccountDescSeparator(context),
+              buildAccountNameSeparator(status),
+              // public button
+              buildAccountFollowAction(context, status),
+              // public button
+              buildAccountMuteAction(context, status),
+              // Unlisted
+              buildAccountBlockAction(context, status),
+              // Private
+              buildAccountReportAction(context, status),
+            ],
           );
         },
         context: context);
@@ -75,7 +51,7 @@ class StatusShareActionWidget extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: Center(
         child: Text(
-          "${status.account.acct}",
+          status.account.acct,
           style: TextStyle(color: Colors.blue),
         ),
       ),
@@ -88,7 +64,7 @@ class StatusShareActionWidget extends StatelessWidget {
       child: Center(
         child: Text(
           AppLocalizations.of(context)
-              .tr("timeline.status.cell.status_actions.more_actions_for"),
+              .tr("app.status.action.popup.more_actions_for"),
           style: TextStyle(color: Colors.blue),
         ),
       ),
@@ -100,38 +76,9 @@ class StatusShareActionWidget extends StatelessWidget {
       padding: EdgeInsets.only(top: 10, left: 10, right: 10),
       child: Center(
         child: Text(
-          AppLocalizations.of(context)
-              .tr("timeline.status.cell.status_actions.title"),
+          AppLocalizations.of(context).tr("app.status.action.popup.title"),
           style: TextStyle(color: Colors.blue),
         ),
-      ),
-    );
-  }
-
-  Padding buildCancelAction(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: OutlineButton(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    AppLocalizations.of(context)
-                        .tr("timeline.status.cell.status_actions.action"
-                        ".cancel"),
-                    style: TextStyle(color: Colors.red),
-                  )
-                ],
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -147,11 +94,11 @@ class StatusShareActionWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(AppLocalizations.of(context)
-                      .tr("timeline.status.cell.status_actions.action"
-                      ".report"))
+                      .tr("app.status.action.report"))
                 ],
               ),
               onPressed: () {
+                // todo: implement report
 //                          var params = {"account_id": status.account.id};
 //                          CurrentInstance.instance.currentClient
 //                              .run(
@@ -183,11 +130,11 @@ class StatusShareActionWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(AppLocalizations.of(context)
-                      .tr("timeline.status.cell.status_actions.action"
-                      ".block"))
+                      .tr("app.status.action.block"))
                 ],
               ),
               onPressed: () {
+                // todo: implement report
 //                          CurrentInstance.instance.currentClient
 //                              .run(
 //                              path: Accounts.blockAccount(
@@ -217,12 +164,12 @@ class StatusShareActionWidget extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text(AppLocalizations.of(context)
-                      .tr("timeline.status.cell.status_actions.action"
-                      ".mute"))
+                  Text(
+                      AppLocalizations.of(context).tr("app.status.action.mute"))
                 ],
               ),
               onPressed: () {
+                // todo: implement mute
 //                          CurrentInstance.instance.currentClient
 //                              .run(
 //                              path:
@@ -253,10 +200,11 @@ class StatusShareActionWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(AppLocalizations.of(context)
-                      .tr("timeline.status.cell.status_actions.action.follow"))
+                      .tr("app.status.action.follow"))
                 ],
               ),
               onPressed: () {
+                // todo: follow
 //                          CurrentInstance.instance.currentClient
 //                              .run(
 //                              path:
@@ -300,8 +248,7 @@ class StatusShareActionWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(AppLocalizations.of(context)
-                      .tr("timeline.status.cell.status_actions.action"
-                      ".open_in_browser"))
+                      .tr("app.status.action.open_in_browser"))
                 ],
               ),
               onPressed: () {
@@ -327,11 +274,8 @@ class StatusShareActionWidget extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text(
-                    AppLocalizations.of(context)
-                        .tr("timeline.status.cell.status_actions.action"
-                        ".copy_status_link"),
-                  )
+                  Text(AppLocalizations.of(context)
+                      .tr("app.status.action.copy_link"))
                 ],
               ),
               onPressed: () {
@@ -340,8 +284,7 @@ class StatusShareActionWidget extends StatelessWidget {
                 Navigator.of(context).pop();
                 Fluttertoast.showToast(
                     msg: AppLocalizations.of(context)
-                        .tr("timeline.status.cell.status_actions.toast"
-                        ".copied"),
+                        .tr("app.status.copy_link.toast"),
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.CENTER,
                     timeInSecForIos: 1,
@@ -355,5 +298,4 @@ class StatusShareActionWidget extends StatelessWidget {
       ),
     );
   }
-
 }

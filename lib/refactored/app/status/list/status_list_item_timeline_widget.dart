@@ -3,7 +3,7 @@ import 'package:fedi/refactored/app/status/account/status_account_widget.dart';
 import 'package:fedi/refactored/app/status/action/status_comment_action_widget.dart';
 import 'package:fedi/refactored/app/status/action/status_favourite_action_widget.dart';
 import 'package:fedi/refactored/app/status/action/status_reblog_action_widget.dart';
-import 'package:fedi/refactored/app/status/action/status_share_action_widget.dart';
+import 'package:fedi/refactored/app/status/action/status_more_action_widget.dart';
 import 'package:fedi/refactored/app/status/card/status_card_widget.dart';
 import 'package:fedi/refactored/app/status/content/status_content_widget.dart';
 import 'package:fedi/refactored/app/status/created_at/status_created_at_widget.dart';
@@ -136,8 +136,6 @@ class _StatusListItemTimelineWidgetState
   IconButton buildEmojiPickerButton(BuildContext context) => IconButton(
         color: Colors.grey,
         icon: Icon(Icons.insert_emoticon),
-        tooltip: AppLocalizations.of(context)
-            .tr("timeline.status.cell.tooltip.repost"),
         onPressed: () {
           setState(() {
             showEmojiPicker = !showEmojiPicker;

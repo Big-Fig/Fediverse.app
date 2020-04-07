@@ -16,19 +16,20 @@ class TimelinesHomeTabPageDrawerWidget extends StatelessWidget {
           buildHeaderWidget(context),
           buildOptionListTile(
               AppLocalizations.of(context)
-                  .tr("app.timeline.display.settings.field.only_with_media"),
+                  .tr("app.timeline.display.settings.field.only_with_media"
+                  ".label"),
               drawerBloc.onlyWithMediaStream,
               drawerBloc.onlyWithMedia,
               drawerBloc.changeOnlyWithMedia),
           buildOptionListTile(
               AppLocalizations.of(context)
-                  .tr("app.timeline.display.settings.field.hide_replies"),
+                  .tr("app.timeline.display.settings.field.hide_replies.label"),
               drawerBloc.onlyNoRepliesStream,
               drawerBloc.onlyNoReplies,
               drawerBloc.changeOnlyNoReplies),
           buildOptionListTile(
               AppLocalizations.of(context)
-                  .tr("app.timeline.display.settings.field.only_nsfw"),
+                  .tr("app.timeline.display.settings.field.only_nsfw.label"),
               drawerBloc.onlyNoNsfwSensitiveStream,
               drawerBloc.onlyNoNsfwSensitive,
               drawerBloc.changeOnlyNoNsfwSensitive),

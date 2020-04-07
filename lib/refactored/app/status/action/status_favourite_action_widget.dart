@@ -24,15 +24,9 @@ class StatusFavouriteActionWidget extends StatelessWidget {
               return AsyncButtonWidget(
                   builder: (context, onPressed) => IconButton(
                         color: favourited ? Colors.blue : Colors.black,
-//                        icon: Image(
-//                          height: 20,
-//                          width: 20,
-//                          color: Colors.black,
-//                          image: AssetImage("assets/images/favorites.png"),
-//                        ),
                         icon: Icon(Icons.favorite_border),
                         tooltip: AppLocalizations.of(context)
-                            .tr("timeline.status.cell.tooltip.like"),
+                            .tr("app.status.action.favourite"),
                         onPressed: onPressed,
                       ),
                   asyncButtonAction: statusBloc.requestToggleFavourite);
@@ -51,7 +45,7 @@ class StatusFavouriteActionWidget extends StatelessWidget {
                       goToStatusFavouriteAccountListPage(
                           context, statusBloc.status);
                     },
-                    child: Text("$favouritesCount"));
+                    child: Text(favouritesCount.toString()));
               }),
       ],
     );
