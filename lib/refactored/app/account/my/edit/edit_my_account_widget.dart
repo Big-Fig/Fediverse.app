@@ -292,7 +292,7 @@ class EditMyAccountWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.all(10.0), // todo: localization
+          padding: const EdgeInsets.all(10.0),
           child: Text(AppLocalizations.of(context)
               .tr("app.account.my.edit.group.custom_field.label")),
         ),

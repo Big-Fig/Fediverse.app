@@ -193,6 +193,9 @@
       }
     },
     "conversation": {
+      "accounts": {
+        "title": "Conversation accounts"
+      },
       "action": {
         "more": "More"
       },

@@ -3,6 +3,9 @@ import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/account/account_model_adapter.dart';
 import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
+import 'package:fedi/refactored/app/conversation/conversation_model.dart';
+import 'package:fedi/refactored/app/conversation/repository/conversation_repository.dart';
+import 'package:fedi/refactored/app/conversation/repository/conversation_repository_model.dart';
 import 'package:fedi/refactored/app/emoji/emoji_text_model.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
@@ -10,6 +13,7 @@ import 'package:fedi/refactored/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/refactored/pleroma/field/pleroma_field_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:moor/moor.dart';
 import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger("account_bloc_impl.dart");
@@ -35,12 +39,14 @@ class AccountBloc extends DisposableOwner implements IAccountBloc {
   final IMyAccountBloc myAccountBloc;
   final IPleromaAccountService pleromaAccountService;
   final IAccountRepository accountRepository;
+  final IConversationRepository conversationRepository;
   final bool needRefreshRelationship;
   final bool needWatchLocalRepositoryForUpdates;
   bool refreshAccountRelationshipInProgress = false;
 
   AccountBloc({
     @required this.accountRepository,
+    @required this.conversationRepository,
     @required this.pleromaAccountService,
     @required this.myAccountBloc,
     @required IAccount account,
@@ -293,6 +299,17 @@ class AccountBloc extends DisposableOwner implements IAccountBloc {
         myAccountBloc: IMyAccountBloc.of(context, listen: false),
         accountRepository: IAccountRepository.of(context, listen: false),
         pleromaAccountService:
-            IPleromaAccountService.of(context, listen: false));
+            IPleromaAccountService.of(context, listen: false),
+        conversationRepository: IConversationRepository.of(context, listen:
+        false));
   }
+
+  @override
+  Future<IConversation> findRelatedConversation() => conversationRepository.getConversation(
+        withAccount: account,
+        olderThanConversation: null,
+        newerThanConversation: null,
+        orderingTermData: ConversationOrderingTermData(
+            orderByType: ConversationOrderByType.remoteId,
+            orderingMode: OrderingMode.desc));
 }

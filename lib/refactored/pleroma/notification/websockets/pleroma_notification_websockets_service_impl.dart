@@ -79,13 +79,4 @@ class PleromaNotificationWebSocketsService
 
     urlToChannel.clear();
   }
-
-  /// Should be called after client changes CurrentInstance.instance.currentClient
-  @override
-  void onClientChanged() {
-    // TODO: should be removed after current instance swap refactoring
-    urlToChannel.values.forEach((channel) {
-      channel.replaceBaseUrlAndAuth(baseUrl: baseUrl, accessToken: accessToken);
-    });
-  }
 }

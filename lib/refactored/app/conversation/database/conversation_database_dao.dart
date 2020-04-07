@@ -109,4 +109,11 @@ class ConversationDao extends DatabaseAccessor<AppDatabase>
                       expression: expression, mode: orderTerm.orderingMode);
                 })
             .toList());
+
+  SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyMediaWhere(
+      SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
+      query
+        ..where((status) =>
+        isNotNull(status.mediaAttachments) |
+        status.mediaAttachments.equals(""));
 }

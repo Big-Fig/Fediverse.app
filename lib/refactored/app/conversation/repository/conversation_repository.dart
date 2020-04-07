@@ -1,3 +1,4 @@
+import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/conversation/conversation_model.dart';
 import 'package:fedi/refactored/app/conversation/repository/conversation_repository_model.dart';
 import 'package:fedi/refactored/app/database/app_database.dart';
@@ -26,26 +27,30 @@ abstract class IConversationRepository
   Future upsertRemoteConversation(IPleromaConversation remoteConversation);
 
   Future<List<DbConversationWrapper>> getConversations(
-      {@required IConversation olderThanConversation,
+      {@required IAccount withAccount,
+      @required IConversation olderThanConversation,
       @required IConversation newerThanConversation,
       @required int limit,
       @required int offset,
       @required ConversationOrderingTermData orderingTermData});
 
   Stream<List<DbConversationWrapper>> watchConversations(
-      {@required IConversation olderThanConversation,
+      {@required IAccount withAccount,
+      @required IConversation olderThanConversation,
       @required IConversation newerThanConversation,
       @required int limit,
       @required int offset,
       @required ConversationOrderingTermData orderingTermData});
 
   Future<DbConversationWrapper> getConversation(
-      {@required IConversation olderThanConversation,
+      {@required IAccount withAccount,
+      @required IConversation olderThanConversation,
       @required IConversation newerThanConversation,
       @required ConversationOrderingTermData orderingTermData});
 
   Stream<DbConversationWrapper> watchConversation(
-      {@required IConversation olderThanConversation,
+      {@required IAccount withAccount,
+      @required IConversation olderThanConversation,
       @required IConversation newerThanConversation,
       @required ConversationOrderingTermData orderingTermData});
 
