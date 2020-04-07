@@ -371,7 +371,8 @@ abstract class AbstractCameraBloc extends AsyncInitLoadingBloc
   @override
   Future pauseVideoRecording() async {
     if (cameraState == CameraState.videoRecording) {
-      await performCameraOperation(() => cameraController.pauseVideoRecording());
+      await performCameraOperation(
+          () => cameraController.pauseVideoRecording());
 
       stateSubject.add(CameraState.videoPaused);
     } else {

@@ -48,8 +48,8 @@ abstract class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
   }
 
   Future<bool> handlePush(PleromaPushMessage pleromaPushMessage) async {
-    var isForCurrentInstance = currentInstance.isInstanceWithHostAndAcct
-      (host: pleromaPushMessage.server, acct: pleromaPushMessage.account);
+    var isForCurrentInstance = currentInstance.isInstanceWithHostAndAcct(
+        host: pleromaPushMessage.server, acct: pleromaPushMessage.account);
     bool handled;
     if (isForCurrentInstance) {
       var remoteNotification = await pleromaNotificationService.getNotification(

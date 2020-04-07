@@ -7,9 +7,6 @@ import 'package:fedi/refactored/rest/rest_request_model.dart';
 import 'package:fedi/refactored/rest/rest_response_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
-import 'package:logging/logging.dart';
-
-var _logger = Logger("pleroma_push_service_impl.dart");
 
 class PleromaPushService implements IPleromaPushService {
   final subscriptionRelativeUrlPath = "api/v1/push/subscription";
@@ -35,8 +32,7 @@ class PleromaPushService implements IPleromaPushService {
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  PleromaPushService(
-      {@required this.restService, @required this.keys});
+  PleromaPushService({@required this.restService, @required this.keys});
 
   @override
   void dispose() {

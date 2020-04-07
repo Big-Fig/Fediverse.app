@@ -36,7 +36,6 @@ class PleromaStatusEmojiReactionService
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-
   PleromaStatusEmojiReactionService({@required this.restService});
 
   @override
@@ -46,8 +45,7 @@ class PleromaStatusEmojiReactionService
 
   @override
   Future<IPleromaStatus> addReaction(
-      {@required String statusRemoteId,
-      @required String emoji}) async {
+      {@required String statusRemoteId, @required String emoji}) async {
     var request = RestRequest.put(
         relativePath: urlPath.join(pleromaStatusesRelativeUrlPath,
             statusRemoteId, reactionsRelativeUrlPath, emoji));
@@ -58,8 +56,7 @@ class PleromaStatusEmojiReactionService
 
   @override
   Future<IPleromaStatusEmojiReaction> getReaction(
-      {@required String statusRemoteId,
-      @required String emoji}) async {
+      {@required String statusRemoteId, @required String emoji}) async {
     var request = RestRequest.get(
         relativePath: urlPath.join(pleromaStatusesRelativeUrlPath,
             statusRemoteId, reactionsRelativeUrlPath, emoji));
@@ -82,8 +79,7 @@ class PleromaStatusEmojiReactionService
 
   @override
   Future<IPleromaStatus> removeReaction(
-      {@required String statusRemoteId,
-      @required String emoji}) async {
+      {@required String statusRemoteId, @required String emoji}) async {
     var request = RestRequest.delete(
         relativePath: urlPath.join(pleromaStatusesRelativeUrlPath,
             statusRemoteId, reactionsRelativeUrlPath, emoji));

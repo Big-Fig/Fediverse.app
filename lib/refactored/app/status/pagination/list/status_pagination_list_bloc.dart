@@ -5,8 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IStatusPaginationListBloc
-    implements
-        IPaginationListBloc<PaginationPage<IStatus>, IStatus> {
+    implements IPaginationListBloc<PaginationPage<IStatus>, IStatus> {
   static IStatusPaginationListBloc of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<IStatusPaginationListBloc>(context, listen: listen);

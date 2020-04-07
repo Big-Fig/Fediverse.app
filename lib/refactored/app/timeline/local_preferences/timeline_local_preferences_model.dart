@@ -18,7 +18,7 @@ class TimelineLocalPreferences extends IPreferencesObject {
   TimelineLocalPreferences copyWith(
       {bool onlyWithMedia, bool onlyNoReplies, bool onlyNoNsfwSensitive}) {
     return TimelineLocalPreferences(
-        onlyWithMedia: onlyWithMedia ?? this.onlyWithMedia,
+      onlyWithMedia: onlyWithMedia ?? this.onlyWithMedia,
       onlyNoReplies: onlyNoReplies ?? this.onlyNoReplies,
       onlyNoNsfwSensitive: onlyNoNsfwSensitive ?? this.onlyNoNsfwSensitive,
     );

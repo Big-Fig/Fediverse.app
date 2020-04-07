@@ -1,9 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/media/attachment/upload/upload_media_attachment_bloc.dart';
 import 'package:fedi/refactored/app/media/attachment/upload/upload_media_attachment_grid_item_widget.dart';
-import 'package:fedi/refactored/file/picker/single/single_file_picker_page.dart';
 import 'package:fedi/refactored/app/status/post/post_status_bloc.dart';
 import 'package:fedi/refactored/file/picker/file_picker_model.dart';
+import 'package:fedi/refactored/file/picker/single/single_file_picker_page.dart';
 import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -57,7 +57,7 @@ class UploadMediaAttachmentGridWidget extends StatelessWidget {
                           child: Container(
                             width: 30,
                             height: 30,
-                            decoration: BoxDecoration(color:  Colors.blue),
+                            decoration: BoxDecoration(color: Colors.blue),
                             child: IconButton(
                               icon: Icon(Icons.close),
                               iconSize: 15,
@@ -110,11 +110,10 @@ class UploadMediaAttachmentGridWidget extends StatelessWidget {
 
   void _openAttachPage(BuildContext context, IPostStatusBloc postStatusBloc) {
     goToSingleFilePickerPage(context,
-      fileSelectedCallback: (FilePickerFile filePickerFile) {
-        postStatusBloc.attachMedia(filePickerFile);
-        Navigator.of(context).pop();
-      },
-      startActiveTab: FilePickerTab.gallery);
+        fileSelectedCallback: (FilePickerFile filePickerFile) {
+      postStatusBloc.attachMedia(filePickerFile);
+      Navigator.of(context).pop();
+    }, startActiveTab: FilePickerTab.gallery);
   }
 
   askToRemoveAsset(BuildContext context, IPostStatusBloc postStatusBloc,
@@ -130,17 +129,16 @@ class UploadMediaAttachmentGridWidget extends StatelessWidget {
             FlatButton(
               child: new Text(AppLocalizations.of(context)
                   .tr("app.media.attachment.upload.remove.dialog.content"
-                  ".action.cancel")
-              ),
+                      ".action.cancel")),
               onPressed: () {
                 Navigator.of(context).pop();
               },
-            ), // usually buttons at the bottom of the dialog
+            ),
+            // usually buttons at the bottom of the dialog
             FlatButton(
               child: new Text(AppLocalizations.of(context)
                   .tr("app.media.attachment.upload.remove.dialog.content"
-                  ".action.remove")
-              ),
+                      ".action.remove")),
               onPressed: () {
                 postStatusBloc.detachMedia(mediaItemBloc.filePickerFile);
                 Navigator.of(context).pop();

@@ -16,7 +16,8 @@ class DisposableEntry<T extends Disposable> {
   DisposableEntry(this.disposable, this.providerBuilder);
 }
 
-abstract class ProviderContextBloc extends AsyncInitLoadingBloc implements IProviderContextBloc {
+abstract class ProviderContextBloc extends AsyncInitLoadingBloc
+    implements IProviderContextBloc {
   Map<Type, DisposableEntry> _storage = Map();
 
   @override
@@ -55,11 +56,11 @@ abstract class ProviderContextBloc extends AsyncInitLoadingBloc implements IProv
   }
 
   @override
-  Widget provideContextToChild(
-      {@required Widget child}) {
+  Widget provideContextToChild({@required Widget child}) {
     _logger.fine(() => "provideToChildContext ${_storage.length}");
 
-    var providers = _storage.values.map((entry) => entry.providerBuilder()).toList();
+    var providers =
+        _storage.values.map((entry) => entry.providerBuilder()).toList();
     return ProviderLib.MultiProvider(
       providers: providers,
       child: child,

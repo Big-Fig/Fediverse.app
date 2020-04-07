@@ -14,7 +14,7 @@ class PostStatusMentionActionWidget extends StatelessWidget {
         color: Colors.blue,
       ),
       onPressed: () {
-        goToSelectAccountPage(context,excludeMyAccount: true,
+        goToSelectAccountPage(context, excludeMyAccount: true,
             accountSelectedCallback: (account) {
           postStatusBloc.addMentionByAccount(account);
           Navigator.of(context).pop();

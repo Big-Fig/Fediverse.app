@@ -48,9 +48,11 @@ void goToStartConversationPage(BuildContext context) {
                       ISelectAccountListService.of(context, listen: false),
                   child: Provider<ISearchInputBloc>(
                     create: (context) =>
-                        ISelectAccountListService.of(context, listen: false).searchInputBloc,
+                        ISelectAccountListService.of(context, listen: false)
+                            .searchInputBloc,
                     child: DisposableProvider<
-                            IPaginationBloc<PaginationPage<IAccount>, IAccount>>(
+                            IPaginationBloc<PaginationPage<IAccount>,
+                                IAccount>>(
                         create: (context) =>
                             AccountCachedPaginationBloc.createFromContext(
                                 context),

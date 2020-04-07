@@ -10,15 +10,16 @@ part 'status_favourited_accounts_database_dao.g.dart';
 ], queries: {
   "countAll": "SELECT Count(*) FROM db_status_favourited_accounts;",
   "findById": "SELECT * FROM db_status_favourited_accounts WHERE id = :id;",
-  "countById": "SELECT COUNT(*) FROM db_status_favourited_accounts WHERE id = :id;",
+  "countById":
+      "SELECT COUNT(*) FROM db_status_favourited_accounts WHERE id = :id;",
   "deleteById": "DELETE FROM db_status_favourited_accounts WHERE id = :id;",
   "deleteByStatusRemoteId": "DELETE FROM db_status_favourited_accounts WHERE "
       "status_remote_id = :statusRemoteId;",
   "clear": "DELETE FROM db_status_favourited_accounts",
   "getAll": "SELECT * FROM db_status_favourited_accounts"
 })
-class StatusFavouritedAccountsDao extends DatabaseAccessor<AppDatabase> with
-    _$StatusFavouritedAccountsDaoMixin {
+class StatusFavouritedAccountsDao extends DatabaseAccessor<AppDatabase>
+    with _$StatusFavouritedAccountsDaoMixin {
   final AppDatabase db;
 
   // Called by the AppDatabase class
@@ -27,12 +28,11 @@ class StatusFavouritedAccountsDao extends DatabaseAccessor<AppDatabase> with
   Future<int> insert(Insertable<DbStatusFavouritedAccount> entity) async =>
       into(dbStatusFavouritedAccounts).insert(entity);
 
-  Future insertAll(
-          Iterable<Insertable<DbStatusFavouritedAccount>> entities, InsertMode mode) async =>
+  Future insertAll(Iterable<Insertable<DbStatusFavouritedAccount>> entities,
+          InsertMode mode) async =>
       await batch((batch) {
         batch.insertAll(dbStatusFavouritedAccounts, entities);
       });
   Future<bool> replace(Insertable<DbStatusFavouritedAccount> entity) async =>
       await update(dbStatusFavouritedAccounts).replace(entity);
-
 }

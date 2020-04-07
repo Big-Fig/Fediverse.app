@@ -1,7 +1,7 @@
 import 'package:fedi/refactored/app/list/network_only/network_only_list_service.dart';
-import 'package:fedi/refactored/app/pagination/network_only/network_only_pleroma_pagination_bloc_impl.dart';
-import 'package:fedi/refactored/app/notification/pagination/network_only/notification_network_only_pagination_bloc.dart';
 import 'package:fedi/refactored/app/notification/notification_model.dart';
+import 'package:fedi/refactored/app/notification/pagination/network_only/notification_network_only_pagination_bloc.dart';
+import 'package:fedi/refactored/app/pagination/network_only/network_only_pleroma_pagination_bloc_impl.dart';
 import 'package:fedi/refactored/pagination/pagination_model.dart';
 import 'package:fedi/refactored/pleroma/api/pleroma_api_service.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,14 +23,17 @@ class NotificationNetworkOnlyPaginationBloc
   @override
   IPleromaApi get pleromaApi => listService.pleromaApi;
 
-  static NotificationNetworkOnlyPaginationBloc createFromContext(BuildContext context,
-          {int itemsCountPerPage = 20, int maximumCachedPagesCount}) =>
+  static NotificationNetworkOnlyPaginationBloc createFromContext(
+          BuildContext context,
+          {int itemsCountPerPage = 20,
+          int maximumCachedPagesCount}) =>
       NotificationNetworkOnlyPaginationBloc(
           maximumCachedPagesCount: maximumCachedPagesCount,
           itemsCountPerPage: itemsCountPerPage,
-          listService: Provider.of<IPleromaNetworkOnlyListService<INotification>>(
-              context,
-              listen: false));
+          listService:
+              Provider.of<IPleromaNetworkOnlyListService<INotification>>(
+                  context,
+                  listen: false));
 
   @override
   Future<List<INotification>> loadItemsFromRemoteForPage(

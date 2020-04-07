@@ -10,14 +10,11 @@ abstract class IPleromaApi implements Disposable {
 
   bool get isConnected;
 
-
-
   Stream<bool> get isApiReadyToUseStream =>
-      Rx.combineLatest2(pleromaStateStream, isConnectedStream,
-          mapIsReady).distinct();
+      Rx.combineLatest2(pleromaStateStream, isConnectedStream, mapIsReady)
+          .distinct();
 
   bool get isApiReadyToUse => mapIsReady(pleromaState, isConnected);
-
 }
 
 bool mapIsReady(PleromaApiState pleromaState, bool isConnected) =>

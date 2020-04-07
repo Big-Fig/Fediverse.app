@@ -27,5 +27,4 @@ class AccountHeaderWidget extends StatelessWidget {
           );
         });
   }
-
 }

@@ -29,15 +29,19 @@ class MastodonApplicationRegistrationRequest {
       this.scopes,
       this.website});
 
-  factory MastodonApplicationRegistrationRequest.fromJson(Map<String, dynamic> json) =>
+  factory MastodonApplicationRegistrationRequest.fromJson(
+          Map<String, dynamic> json) =>
       _$MastodonApplicationRegistrationRequestFromJson(json);
 
-  factory MastodonApplicationRegistrationRequest.fromJsonString(String jsonString) =>
+  factory MastodonApplicationRegistrationRequest.fromJsonString(
+          String jsonString) =>
       _$MastodonApplicationRegistrationRequestFromJson(jsonDecode(jsonString));
 
-  Map<String, dynamic> toJson() => _$MastodonApplicationRegistrationRequestToJson(this);
+  Map<String, dynamic> toJson() =>
+      _$MastodonApplicationRegistrationRequestToJson(this);
 
-  String toJsonString() => jsonEncode(_$MastodonApplicationRegistrationRequestToJson(this));
+  String toJsonString() =>
+      jsonEncode(_$MastodonApplicationRegistrationRequestToJson(this));
 }
 
 abstract class IMastodonApplication {

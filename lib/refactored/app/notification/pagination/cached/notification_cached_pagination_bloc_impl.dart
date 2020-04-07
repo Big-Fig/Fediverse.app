@@ -1,13 +1,14 @@
-import 'package:fedi/refactored/app/pagination/cached/cached_pleroma_pagination_bloc_impl.dart';
 import 'package:fedi/refactored/app/notification/list/cached/notification_cached_list_service.dart';
-import 'package:fedi/refactored/app/notification/pagination/cached/notification_cached_pagination_bloc.dart';
 import 'package:fedi/refactored/app/notification/notification_model.dart';
+import 'package:fedi/refactored/app/notification/pagination/cached/notification_cached_pagination_bloc.dart';
+import 'package:fedi/refactored/app/pagination/cached/cached_pleroma_pagination_bloc_impl.dart';
 import 'package:fedi/refactored/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/refactored/pleroma/api/pleroma_api_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-class NotificationCachedPaginationBloc extends CachedPleromaPaginationBloc<INotification>
+class NotificationCachedPaginationBloc
+    extends CachedPleromaPaginationBloc<INotification>
     implements INotificationCachedPaginationBloc {
   final INotificationCachedListService notificationListService;
 
@@ -40,7 +41,6 @@ class NotificationCachedPaginationBloc extends CachedPleromaPaginationBloc<INoti
       @required int itemsCountPerPage,
       @required CachedPaginationPage<INotification> olderPage,
       @required CachedPaginationPage<INotification> newerPage}) async {
-
     // can't refresh not first page without actual items bounds
     assert(!(pageIndex > 0 && olderPage == null && newerPage == null));
 
@@ -51,11 +51,14 @@ class NotificationCachedPaginationBloc extends CachedPleromaPaginationBloc<INoti
     );
   }
 
-  static NotificationCachedPaginationBloc createFromContext(BuildContext context,
-          {int itemsCountPerPage = 20, int maximumCachedPagesCount}) =>
+  static NotificationCachedPaginationBloc createFromContext(
+          BuildContext context,
+          {int itemsCountPerPage = 20,
+          int maximumCachedPagesCount}) =>
       NotificationCachedPaginationBloc(
-          notificationListService:
-              Provider.of<INotificationCachedListService>(context, listen: false),
+          notificationListService: Provider.of<INotificationCachedListService>(
+              context,
+              listen: false),
           itemsCountPerPage: itemsCountPerPage,
           maximumCachedPagesCount: maximumCachedPagesCount);
 }

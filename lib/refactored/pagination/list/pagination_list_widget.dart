@@ -129,7 +129,7 @@ class _PaginationListWidgetState<T> extends State<PaginationListWidget<T>> {
     Future.delayed(Duration(milliseconds: 100), () {
       try {
         IPaginationListBloc<PaginationPage<T>, T> paginationListBloc =
-        widget.retrievePaginationListBloc(context, listen: false);
+            widget.retrievePaginationListBloc(context, listen: false);
 
         if (!paginationListBloc.isRefreshedAtLeastOnce) {
           var refreshController = paginationListBloc.refreshController;
@@ -137,10 +137,9 @@ class _PaginationListWidgetState<T> extends State<PaginationListWidget<T>> {
             refreshController.requestRefresh();
           }
         }
-      } catch(e, stackTrace) {
-        _logger.warning(() => "error during refreshing", e,stackTrace);
+      } catch (e, stackTrace) {
+        _logger.warning(() => "error during refreshing", e, stackTrace);
       }
-
     });
   }
 

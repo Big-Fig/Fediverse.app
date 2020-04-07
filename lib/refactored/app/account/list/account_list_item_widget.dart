@@ -45,7 +45,8 @@ class AccountListItemWidget extends StatelessWidget {
                       AccountAcctWidget()
                     ],
                   ),
-                  Spacer(), // NO MORE BUTTON
+                  Spacer(),
+                  // NO MORE BUTTON
                 ],
               ),
             ],

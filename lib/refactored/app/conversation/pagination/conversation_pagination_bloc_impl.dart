@@ -1,9 +1,9 @@
-import 'package:fedi/refactored/pagination/cached/cached_pagination_model.dart';
-import 'package:fedi/refactored/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/refactored/app/conversation/conversation_model.dart';
 import 'package:fedi/refactored/app/conversation/list/conversation_list_service.dart';
 import 'package:fedi/refactored/app/conversation/pagination/conversation_pagination_bloc.dart';
 import 'package:fedi/refactored/app/pagination/cached/cached_pleroma_pagination_bloc_impl.dart';
+import 'package:fedi/refactored/pagination/cached/cached_pagination_model.dart';
+import 'package:fedi/refactored/pleroma/api/pleroma_api_service.dart';
 import 'package:flutter/cupertino.dart';
 
 class ConversationPaginationBloc

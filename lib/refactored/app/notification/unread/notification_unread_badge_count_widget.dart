@@ -7,7 +7,6 @@ abstract class NotificationUnreadBadgeCountWidget extends StatelessWidget {
 
   NotificationUnreadBadgeCountWidget({@required this.child});
 
-
   Stream<int> retrieveUnreadBadgeCountStream(BuildContext context);
 
   @override

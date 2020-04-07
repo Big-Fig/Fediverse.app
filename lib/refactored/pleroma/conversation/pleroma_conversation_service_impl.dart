@@ -48,8 +48,8 @@ class PleromaConversationService implements IPleromaConversationService {
       @required String maxId,
       @required String sinceId}) async {
     var request = RestRequest.get(
-        relativePath: join(pleromaConversationRelativeUrlPath, conversationRemoteId,
-            conversationStatusesRelativeUrlPath),
+        relativePath: join(pleromaConversationRelativeUrlPath,
+            conversationRemoteId, conversationStatusesRelativeUrlPath),
         queryArgs: [
           RestRequestQueryArg("since_id", sinceId),
           RestRequestQueryArg("max_id", maxId),
@@ -100,6 +100,7 @@ class PleromaConversationService implements IPleromaConversationService {
 
       /// Pleroma only
       /// Only return conversations with the given recipients
+
       List<String> recipientsIds,
       int limit}) async {
     var queryArgs = [

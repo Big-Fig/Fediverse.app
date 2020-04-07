@@ -36,12 +36,13 @@ class TimelineWidget extends StatelessWidget {
                     this.key.toString() + "TimelinePaginationListMediaWidget"));
           } else {
             bodyWidget = StatusPaginationListTimelineWidget(
-                key: PageStorageKey<String>(this.key.toString() +
-                    "TimelinePaginationListSimpleWidget"), needWatchLocalRepositoryForUpdates: true,);
+              key: PageStorageKey<String>(
+                  this.key.toString() + "TimelinePaginationListSimpleWidget"),
+              needWatchLocalRepositoryForUpdates: true,
+            );
           }
 
-          _logger.fine(
-              () => "build onlyWithMedia=$onlyWithMedia");
+          _logger.fine(() => "build onlyWithMedia=$onlyWithMedia");
 
           return bodyWidget;
         });

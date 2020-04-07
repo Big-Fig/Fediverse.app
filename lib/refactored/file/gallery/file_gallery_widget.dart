@@ -43,8 +43,9 @@ class FileGalleryWidget extends StatelessWidget {
 
           switch (galleryState) {
             case FileGalleryState.loadingNotStarted:
-              return Center(child: Text(AppLocalizations.of(context)
-                  .tr("file.gallery.state.loading_not_started")));
+              return Center(
+                  child: Text(AppLocalizations.of(context)
+                      .tr("file.gallery.state.loading_not_started")));
               break;
             case FileGalleryState.loading:
               return Center(child: CircularProgressIndicator());
@@ -69,30 +70,33 @@ class FileGalleryWidget extends StatelessWidget {
           var folders = snapshot.data;
 
           if (folders.isEmpty) {
-            return Center(child: Text(AppLocalizations.of(context)
-                .tr("file.gallery.empty")));
+            return Center(
+                child: Text(
+                    AppLocalizations.of(context).tr("file.gallery.empty")));
           } else {
-
-
             return DefaultTabController(
               length: folders.length,
               child: Column(
                 children: <Widget>[
                   TabBar(
-                    indicatorSize: TabBarIndicatorSize.label, //makes it better
-                    isScrollable: true, //up to your taste
-                    indicator: MD2Indicator( //it begins here
+                    indicatorSize: TabBarIndicatorSize.label,
+                    //makes it better
+                    isScrollable: true,
+                    //up to your taste
+                    indicator: MD2Indicator(
+                        //it begins here
                         indicatorHeight: 3,
                         indicatorColor: Color(0xff1a73e8),
-                        indicatorSize: MD2IndicatorSize.normal //3 different modes tiny-normal-full
-                    ),
+                        indicatorSize: MD2IndicatorSize
+                            .normal //3 different modes tiny-normal-full
+                        ),
                     tabs: folders
                         .map((folder) => Tab(
-                      child: Text(
-                        folder.name,
-                        style: TextStyle(color: Colors.blue),
-                      ),
-                    ))
+                              child: Text(
+                                folder.name,
+                                style: TextStyle(color: Colors.blue),
+                              ),
+                            ))
                         .toList(),
                   ),
                   Expanded(

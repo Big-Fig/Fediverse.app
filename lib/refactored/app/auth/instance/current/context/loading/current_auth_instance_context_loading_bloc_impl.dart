@@ -15,14 +15,14 @@ class CurrentAuthInstanceContextLoadingBloc extends DisposableOwner
   }
 
   void refresh() {
-    stateSubject.add(
-        CurrentAuthInstanceContextLoadingState.loading);
+    stateSubject.add(CurrentAuthInstanceContextLoadingState.loading);
     myAccountBloc.requestRefreshFromNetwork().then((_) {
       if (myAccountBloc.isLocalCacheExist) {
-        stateSubject.add(CurrentAuthInstanceContextLoadingState.localCacheExist);
+        stateSubject
+            .add(CurrentAuthInstanceContextLoadingState.localCacheExist);
       } else {
-        stateSubject.add(
-            CurrentAuthInstanceContextLoadingState.cantFetchAndLocalCacheNotExist);
+        stateSubject.add(CurrentAuthInstanceContextLoadingState
+            .cantFetchAndLocalCacheNotExist);
       }
     });
   }

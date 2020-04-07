@@ -1,9 +1,8 @@
-import 'package:fedi/refactored/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/refactored/app/database/app_database.dart';
 import 'package:fedi/refactored/app/status/database/status_database_model.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository_model.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
-import 'package:logging/logging.dart';
+import 'package:fedi/refactored/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:moor/moor.dart';
 
 part 'status_database_dao.g.dart';
@@ -16,8 +15,6 @@ var _accountFollowingsAliasId = "accountFollowings";
 var _statusHashtagsAliasId = "statusHashtags";
 var _statusListsAliasId = "statusLists";
 var _conversationStatusesAliasId = "conversationStatuses";
-
-var _logger = Logger("status_database_dao.dart");
 
 @UseDao(tables: [
   DbStatuses
@@ -275,7 +272,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
 //    _logger.finest(() => "rebloggedStatus $rebloggedStatus");
 //    _logger.finest(() => "rebloggedStatusAccount $rebloggedStatusAccount");
     return DbStatusPopulated(
-      rebloggedStatus: rebloggedStatus,
+        rebloggedStatus: rebloggedStatus,
         rebloggedStatusAccount: rebloggedStatusAccount,
         status: typedResult.readTable(db.dbStatuses),
         account: typedResult.readTable(accountAlias));

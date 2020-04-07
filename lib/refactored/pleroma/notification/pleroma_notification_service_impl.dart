@@ -33,7 +33,6 @@ class PleromaNotificationService implements IPleromaNotificationService {
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-
   PleromaNotificationService({@required this.restService});
 
   @override
@@ -42,21 +41,20 @@ class PleromaNotificationService implements IPleromaNotificationService {
   }
 
   @override
-  Future<IPleromaNotification> getNotification({@required String notificationRemoteId})
-  async {
-    var httpResponse = await restService.sendHttpRequest(
-        RestRequest.get(
-            relativePath: join(notificationRelativeUrlPath, notificationRemoteId)));
+  Future<IPleromaNotification> getNotification(
+      {@required String notificationRemoteId}) async {
+    var httpResponse = await restService.sendHttpRequest(RestRequest.get(
+        relativePath: join(notificationRelativeUrlPath, notificationRemoteId)));
 
     return parseNotificationResponse(httpResponse);
   }
 
   @override
-  Future<List<IPleromaNotification>> getNotifications({@required
-  MastodonNotificationsRequest request}) async {
-    var httpResponse = await restService.sendHttpRequest(
-        RestRequest.get(
-            relativePath: notificationRelativeUrlPath, queryArgs: RestRequestQueryArg.listFromJson(request.toJson())));
+  Future<List<IPleromaNotification>> getNotifications(
+      {@required MastodonNotificationsRequest request}) async {
+    var httpResponse = await restService.sendHttpRequest(RestRequest.get(
+        relativePath: notificationRelativeUrlPath,
+        queryArgs: RestRequestQueryArg.listFromJson(request.toJson())));
 
     return parseNotificationListResponse(httpResponse);
   }
@@ -64,7 +62,8 @@ class PleromaNotificationService implements IPleromaNotificationService {
   PleromaNotification parseNotificationResponse(Response httpResponse) {
     RestResponse<PleromaNotification> restResponse = RestResponse.fromResponse(
       response: httpResponse,
-      resultParser: (body) => PleromaNotification.fromJsonString(httpResponse.body),
+      resultParser: (body) =>
+          PleromaNotification.fromJsonString(httpResponse.body),
     );
 
     if (restResponse.isSuccess) {
@@ -74,10 +73,14 @@ class PleromaNotificationService implements IPleromaNotificationService {
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
   }
-  List<PleromaNotification> parseNotificationListResponse(Response httpResponse) {
-    RestResponse<List<PleromaNotification>> restResponse = RestResponse.fromResponse(
+
+  List<PleromaNotification> parseNotificationListResponse(
+      Response httpResponse) {
+    RestResponse<List<PleromaNotification>> restResponse =
+        RestResponse.fromResponse(
       response: httpResponse,
-      resultParser: (body) => PleromaNotification.listFromJsonString(httpResponse.body),
+      resultParser: (body) =>
+          PleromaNotification.listFromJsonString(httpResponse.body),
     );
 
     if (restResponse.isSuccess) {

@@ -30,9 +30,9 @@ class SearchAccountsListService extends IAccountNetworkOnlyListService {
 
     if (query?.isNotEmpty == true) {
       var offset = pageIndex * itemsCountPerPage;
-      if(offset > 0) {
+      if (offset > 0) {
         //hack because backend include last item in next page too
-        offset +=1;
+        offset += 1;
       }
       var searchResult = await pleromaSearchService.search(
           request: PleromaSearchRequest(

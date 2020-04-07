@@ -7,5 +7,6 @@ abstract class INotificationNetworkOnlyPaginationBloc
     implements INetworkOnlyPleromaPaginationBloc<INotification> {
   static INotificationNetworkOnlyPaginationBloc of(BuildContext context,
           {bool listen = true}) =>
-      Provider.of<INotificationNetworkOnlyPaginationBloc>(context, listen: listen);
+      Provider.of<INotificationNetworkOnlyPaginationBloc>(context,
+          listen: listen);
 }

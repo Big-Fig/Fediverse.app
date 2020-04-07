@@ -1,3 +1,1 @@
-enum NotificationTab {
-  all, mentions, reblogs, favourites, follows
-}
+enum NotificationTab { all, mentions, reblogs, favourites, follows }

@@ -8,6 +8,4 @@ class DbStatusHashtags extends Table {
 
   TextColumn get statusRemoteId => text()();
   TextColumn get hashtag => text()();
-
-
 }

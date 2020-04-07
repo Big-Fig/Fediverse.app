@@ -12,7 +12,7 @@ import 'package:flutter/widgets.dart';
 class PushSubscriptionBloc extends DisposableOwner
     implements IPushSubscriptionBloc {
   final IPushSubscriptionLocalPreferencesBloc
-      pushSubscriptionLocalPreferencesBloc;
+  pushSubscriptionLocalPreferencesBloc;
   final IPleromaPushService pleromaPushService;
   final IPushRelayService pushRelayService;
   final AuthInstance currentInstance;
@@ -27,7 +27,8 @@ class PushSubscriptionBloc extends DisposableOwner
   });
 
   @override
-  bool get favouritePushesEnabled => pushSubscriptionLocalPreferencesBloc.value.favourite;
+  bool get favouritePushesEnabled =>
+      pushSubscriptionLocalPreferencesBloc.value.favourite;
 
   @override
   Stream<bool> get favouritePushesEnabledStream =>
@@ -41,11 +42,13 @@ class PushSubscriptionBloc extends DisposableOwner
   }
 
   @override
-  bool get followPushesEnabled => pushSubscriptionLocalPreferencesBloc.value.follow;
+  bool get followPushesEnabled =>
+      pushSubscriptionLocalPreferencesBloc.value.follow;
 
   @override
-  Stream<bool> get followPushesEnabledStream => pushSubscriptionLocalPreferencesBloc.stream
-      .map((preferences) => pushSubscriptionLocalPreferencesBloc.value.follow);
+  Stream<bool> get followPushesEnabledStream =>
+      pushSubscriptionLocalPreferencesBloc.stream.map(
+          (preferences) => pushSubscriptionLocalPreferencesBloc.value.follow);
 
   @override
   Future<bool> changeFollowPushesEnabled(bool value) {
@@ -54,11 +57,13 @@ class PushSubscriptionBloc extends DisposableOwner
   }
 
   @override
-  bool get mentionPushesEnabled => pushSubscriptionLocalPreferencesBloc.value.mention;
+  bool get mentionPushesEnabled =>
+      pushSubscriptionLocalPreferencesBloc.value.mention;
 
   @override
-  Stream<bool> get mentionPushesEnabledStream => pushSubscriptionLocalPreferencesBloc.stream
-      .map((preferences) => pushSubscriptionLocalPreferencesBloc.value.mention);
+  Stream<bool> get mentionPushesEnabledStream =>
+      pushSubscriptionLocalPreferencesBloc.stream.map(
+          (preferences) => pushSubscriptionLocalPreferencesBloc.value.mention);
 
   @override
   Future<bool> changeMentionPushesEnabled(bool value) {
@@ -67,11 +72,13 @@ class PushSubscriptionBloc extends DisposableOwner
   }
 
   @override
-  bool get reblogPushesEnabled => pushSubscriptionLocalPreferencesBloc.value.reblog;
+  bool get reblogPushesEnabled =>
+      pushSubscriptionLocalPreferencesBloc.value.reblog;
 
   @override
-  Stream<bool> get reblogPushesEnabledStream => pushSubscriptionLocalPreferencesBloc.stream
-      .map((preferences) => pushSubscriptionLocalPreferencesBloc.value.reblog);
+  Stream<bool> get reblogPushesEnabledStream =>
+      pushSubscriptionLocalPreferencesBloc.stream.map(
+          (preferences) => pushSubscriptionLocalPreferencesBloc.value.reblog);
 
   @override
   Future<bool> changeReblogPushesEnabled(bool value) {
@@ -83,8 +90,9 @@ class PushSubscriptionBloc extends DisposableOwner
   bool get pollPushesEnabled => pushSubscriptionLocalPreferencesBloc.value.poll;
 
   @override
-  Stream<bool> get pollPushesEnabledStream => pushSubscriptionLocalPreferencesBloc.stream
-      .map((preferences) => pushSubscriptionLocalPreferencesBloc.value.poll);
+  Stream<bool> get pollPushesEnabledStream =>
+      pushSubscriptionLocalPreferencesBloc.stream.map(
+          (preferences) => pushSubscriptionLocalPreferencesBloc.value.poll);
 
   @override
   Future<bool> changePollPushesEnabled(bool value) {
@@ -95,8 +103,6 @@ class PushSubscriptionBloc extends DisposableOwner
   Future<bool> updatePreferences(
       PushSubscriptionLocalPreferences newPreferences) async {
     var deviceToken = fcmPushService.deviceToken;
-
-
 
     var subscription = await pleromaPushService.subscribe(
         endpointCallbackUrl: pushRelayService.createPushRelayEndPointUrl(

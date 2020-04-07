@@ -1,5 +1,3 @@
-import 'package:fedi/refactored/pleroma/conversation/pleroma_conversation_model.dart';
-import 'package:fedi/refactored/pleroma/conversation/pleroma_conversation_service.dart';
 import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
@@ -10,6 +8,8 @@ import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository_model.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/async/loading/init/async_init_loading_bloc_impl.dart';
+import 'package:fedi/refactored/pleroma/conversation/pleroma_conversation_model.dart';
+import 'package:fedi/refactored/pleroma/conversation/pleroma_conversation_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:moor/moor.dart';
 import 'package:rxdart/rxdart.dart';
@@ -151,8 +151,8 @@ class ConversationBloc extends AsyncInitLoadingBloc
       myAccountBloc.excludeMyAccountFromList(accounts);
 
   @override
-  Stream<List<IAccount>> get accountsWithoutMeStream =>
-      accountsStream.map((accounts) => myAccountBloc.excludeMyAccountFromList(accounts));
+  Stream<List<IAccount>> get accountsWithoutMeStream => accountsStream
+      .map((accounts) => myAccountBloc.excludeMyAccountFromList(accounts));
 
   @override
   IConversation get conversation => _conversationSubject.value;

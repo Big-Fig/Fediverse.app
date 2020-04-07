@@ -1,8 +1,8 @@
-import 'package:fedi/refactored/pleroma/conversation/pleroma_conversation_model.dart';
 import 'package:fedi/refactored/app/conversation/conversation_model.dart';
 import 'package:fedi/refactored/app/conversation/repository/conversation_repository_model.dart';
 import 'package:fedi/refactored/app/database/app_database.dart';
 import 'package:fedi/refactored/disposable/disposable.dart';
+import 'package:fedi/refactored/pleroma/conversation/pleroma_conversation_model.dart';
 import 'package:fedi/refactored/repository/repository.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';

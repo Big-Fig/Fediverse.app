@@ -10,6 +10,8 @@ abstract class IConversationsHomeTabBloc extends Disposable {
       Provider.of<IConversationsHomeTabBloc>(context, listen: listen);
 
   IConversationListService get conversationListService;
+
   IConversationPaginationBloc get conversationPaginationBloc;
+
   IConversationPaginationListBloc get conversationPaginationListBloc;
 }

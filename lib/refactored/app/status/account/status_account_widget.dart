@@ -6,15 +6,11 @@ import 'package:fedi/refactored/app/account/avatar/account_avatar_widget.dart';
 import 'package:fedi/refactored/app/account/details/account_details_page.dart';
 import 'package:fedi/refactored/app/account/display_name/account_display_name_widget.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
-import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
-
-var _logger = Logger("status_account_widget.dart");
 
 class StatusAccountWidget extends StatelessWidget {
   @override
@@ -25,8 +21,8 @@ class StatusAccountWidget extends StatelessWidget {
         stream: statusBloc.accountReblogOrOriginalStream,
         initialData: statusBloc.accountReblogOrOriginalAccount,
         builder: (context, snapshot) {
-            var reblogOrOriginalAccount = snapshot.data;
-            return buildBody(context, reblogOrOriginalAccount, statusBloc);
+          var reblogOrOriginalAccount = snapshot.data;
+          return buildBody(context, reblogOrOriginalAccount, statusBloc);
         });
   }
 

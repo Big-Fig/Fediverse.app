@@ -43,43 +43,43 @@ class AccountInfoWidget extends StatelessWidget {
     );
   }
 
-  InitialDataStreamBuilder<int> buildFollowersCountWidget(IAccountBloc accountBloc) {
+  InitialDataStreamBuilder<int> buildFollowersCountWidget(
+      IAccountBloc accountBloc) {
     return InitialDataStreamBuilder<int>(
-                      stream: accountBloc.followersCountStream,
-                      initialData: accountBloc.followersCount,
-                      builder: (context, snapshot) {
-                        var followersCount = snapshot.data;
-                        return buildStatisticValueWidget(
-                            AppLocalizations.of(context).tr(
-                                "app.account.info.followers",
-                                args: [followersCount.toString()]));
-                      });
+        stream: accountBloc.followersCountStream,
+        initialData: accountBloc.followersCount,
+        builder: (context, snapshot) {
+          var followersCount = snapshot.data;
+          return buildStatisticValueWidget(AppLocalizations.of(context).tr(
+              "app.account.info.followers",
+              args: [followersCount.toString()]));
+        });
   }
 
-  InitialDataStreamBuilder<int> buildFollowingCountWidget(IAccountBloc accountBloc) {
+  InitialDataStreamBuilder<int> buildFollowingCountWidget(
+      IAccountBloc accountBloc) {
     return InitialDataStreamBuilder<int>(
-                      stream: accountBloc.followingCountStream,
-                      initialData: accountBloc.followingCount,
-                      builder: (context, snapshot) {
-                        var followingCount = snapshot.data;
-                        return buildStatisticValueWidget(
-                            AppLocalizations.of(context).tr(
-                                "app.account.info.following",
-                                args: [followingCount.toString()]));
-                      });
+        stream: accountBloc.followingCountStream,
+        initialData: accountBloc.followingCount,
+        builder: (context, snapshot) {
+          var followingCount = snapshot.data;
+          return buildStatisticValueWidget(AppLocalizations.of(context).tr(
+              "app.account.info.following",
+              args: [followingCount.toString()]));
+        });
   }
 
-  InitialDataStreamBuilder<int> buildStatusesCountWidget(IAccountBloc accountBloc) {
+  InitialDataStreamBuilder<int> buildStatusesCountWidget(
+      IAccountBloc accountBloc) {
     return InitialDataStreamBuilder<int>(
-                      stream: accountBloc.statusesCountStream,
-                      initialData: accountBloc.statusesCount,
-                      builder: (context, snapshot) {
-                        var statusesCount = snapshot.data;
-                        return buildStatisticValueWidget(
-                            AppLocalizations.of(context).tr(
-                                "app.account.info.statuses",
-                                args: [statusesCount.toString()]));
-                      });
+        stream: accountBloc.statusesCountStream,
+        initialData: accountBloc.statusesCount,
+        builder: (context, snapshot) {
+          var statusesCount = snapshot.data;
+          return buildStatisticValueWidget(AppLocalizations.of(context).tr(
+              "app.account.info.statuses",
+              args: [statusesCount.toString()]));
+        });
   }
 
   Container buildStatisticValueWidget(String formattedValue) {

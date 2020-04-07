@@ -50,7 +50,8 @@ class PleromaApplication implements IPleromaApplication {
 
 @HiveType()
 @JsonSerializable()
-class PleromaClientApplication implements IPleromaClientApplication, IPreferencesObject {
+class PleromaClientApplication
+    implements IPleromaClientApplication, IPreferencesObject {
   @HiveField(0)
   String name;
   @HiveField(1)

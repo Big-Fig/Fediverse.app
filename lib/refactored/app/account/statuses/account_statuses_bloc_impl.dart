@@ -27,7 +27,6 @@ class AccountStatusesBloc extends IStatusCachedListService
   @override
   IPleromaApi get pleromaApi => pleromaAccountService;
 
-
   static AccountStatusesBloc createFromContext(BuildContext context,
       {@required IAccount account}) {
     return AccountStatusesBloc(
@@ -44,8 +43,9 @@ class AccountStatusesBloc extends IStatusCachedListService
 
   @override
   Future<List<IStatus>> loadLocalItems(
-      {@required int limit, @required IStatus newerThan,@required  IStatus
-      olderThan})  async {
+      {@required int limit,
+      @required IStatus newerThan,
+      @required IStatus olderThan}) async {
     var statuses = await statusRepository.getStatuses(
         onlyInListWithRemoteId: null,
         onlyWithHashtag: null,
@@ -71,14 +71,13 @@ class AccountStatusesBloc extends IStatusCachedListService
 
   @override
   Future<bool> refreshItemsFromRemoteForPage(
-      {@required int limit, @required IStatus newerThan, @required  IStatus
-      olderThan}) async {
+      {@required int limit,
+      @required IStatus newerThan,
+      @required IStatus olderThan}) async {
     _logger.finest(() => "refreshItemsFromRemoteForPage \n"
         "\t limit=$limit"
         "\t newerThan=$newerThan"
-        "\t olderThan=$olderThan"
-    );
-
+        "\t olderThan=$olderThan");
 
     try {
       var remoteStatuses = await pleromaAccountService.getAccountStatuses(
@@ -88,8 +87,8 @@ class AccountStatusesBloc extends IStatusCachedListService
           maxId: olderThan?.remoteId);
 
       if (remoteStatuses != null) {
-        await statusRepository.upsertRemoteStatuses(
-            remoteStatuses, listRemoteId: null, conversationRemoteId: null);
+        await statusRepository.upsertRemoteStatuses(remoteStatuses,
+            listRemoteId: null, conversationRemoteId: null);
 
         return true;
       } else {
@@ -98,8 +97,8 @@ class AccountStatusesBloc extends IStatusCachedListService
         return false;
       }
     } catch (e, stackTrace) {
-      _logger.severe(() => "error during refreshItemsFromRemoteForPage", e,
-          stackTrace);
+      _logger.severe(
+          () => "error during refreshItemsFromRemoteForPage", e, stackTrace);
       return false;
     }
   }

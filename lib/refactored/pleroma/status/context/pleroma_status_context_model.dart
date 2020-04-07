@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:fedi/refactored/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/refactored/mastodon/status/context/mastodon_status_context_model.dart';
+import 'package:fedi/refactored/pleroma/status/pleroma_status_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_status_context_model.g.dart';
@@ -39,6 +39,4 @@ class PleromaStatusContext implements IPleromaStatusContext {
   String toString() {
     return 'PleromaStatusContext{descendants: $descendants, ancestors: $ancestors}';
   }
-
-
 }

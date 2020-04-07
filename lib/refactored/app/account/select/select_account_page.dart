@@ -19,13 +19,15 @@ class SelectAccountPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context).tr("app.account.select.title"))),
-      body: SafeArea(
-        child: SelectAccountWidget(
-          accountSelectedCallback: accountSelectedCallback,
+        appBar: AppBar(
+            title: Text(
+                AppLocalizations.of(context).tr("app.account.select.title"))),
+        body: SafeArea(
+          child: SelectAccountWidget(
+            accountSelectedCallback: accountSelectedCallback,
+          ),
         ),
-      ),
-    );
+      );
 }
 
 void goToSelectAccountPage(BuildContext context,

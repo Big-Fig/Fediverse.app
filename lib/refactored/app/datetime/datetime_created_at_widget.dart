@@ -8,5 +8,6 @@ class DateTimeCreatedAtWidget extends StatelessWidget {
 
   @override
   // todo: date locale
-  Widget build(BuildContext context) => Text(timeago.format(createdAt, locale: 'en_short'));
+  Widget build(BuildContext context) =>
+      Text(timeago.format(createdAt, locale: 'en_short'));
 }

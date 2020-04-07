@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 class NotificationsHomeTabPageDrawerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var drawerBloc = INotificationsHomeTabPageDrawerBloc.of(context, listen: true);
+    var drawerBloc =
+        INotificationsHomeTabPageDrawerBloc.of(context, listen: true);
 
     return Drawer(
       child: ListView(

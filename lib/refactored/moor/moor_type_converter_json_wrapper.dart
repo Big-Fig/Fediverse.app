@@ -10,6 +10,4 @@ class MoorTypeConverterJsonWrapper<T> extends TypeConverter<T, String> {
 
   @override
   String mapToSql(T value) => jsonConverter.toJson(value);
-
-
 }

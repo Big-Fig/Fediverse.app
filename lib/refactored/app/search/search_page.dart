@@ -19,12 +19,14 @@ class SearchPage extends StatelessWidget {
   }
 }
 
-void goToSearchPage(BuildContext context, {SearchTab startTab = SearchTab.accounts}) {
+void goToSearchPage(BuildContext context,
+    {SearchTab startTab = SearchTab.accounts}) {
   Navigator.push(
     context,
     MaterialPageRoute(
         builder: (context) => DisposableProvider<ISearchBloc>(
-            create: (context) => SearchBloc.createFromContext(context, startTab: startTab),
+            create: (context) =>
+                SearchBloc.createFromContext(context, startTab: startTab),
             child: SearchPage())),
   );
 }

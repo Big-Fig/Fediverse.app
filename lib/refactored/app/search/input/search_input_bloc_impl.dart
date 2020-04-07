@@ -1,4 +1,3 @@
-
 import 'package:fedi/refactored/app/search/input/search_input_bloc.dart';
 import 'package:fedi/refactored/disposable/disposable.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
@@ -7,11 +6,10 @@ import 'package:rxdart/rxdart.dart';
 
 class SearchInputBloc extends DisposableOwner implements ISearchInputBloc {
   final TextEditingController searchTextEditingController =
-  TextEditingController();
+      TextEditingController();
 
   // ignore: close_sinks
   final BehaviorSubject<String> searchTextSubject = BehaviorSubject.seeded("");
-
 
   SearchInputBloc() {
     addDisposable(subject: searchTextSubject);
@@ -31,7 +29,6 @@ class SearchInputBloc extends DisposableOwner implements ISearchInputBloc {
 
   @override
   Stream<String> get searchTextStream => searchTextSubject.stream;
-
 
   @override
   clearSearch() {

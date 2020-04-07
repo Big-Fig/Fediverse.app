@@ -8,6 +8,4 @@ class DbStatusFavouritedAccounts extends Table {
 
   TextColumn get statusRemoteId => text()();
   TextColumn get accountRemoteId => text()();
-
-
 }

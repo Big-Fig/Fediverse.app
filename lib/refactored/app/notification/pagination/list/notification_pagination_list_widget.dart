@@ -1,15 +1,12 @@
 import 'package:fedi/refactored/app/notification/list/notification_list_item_widget.dart';
-import 'package:fedi/refactored/app/notification/pagination/list/notification_pagination_list_base_widget.dart';
 import 'package:fedi/refactored/app/notification/notification_bloc.dart';
 import 'package:fedi/refactored/app/notification/notification_bloc_impl.dart';
 import 'package:fedi/refactored/app/notification/notification_model.dart';
+import 'package:fedi/refactored/app/notification/pagination/list/notification_pagination_list_base_widget.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:fedi/refactored/pagination/list/pagination_list_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
-
-var _logger = Logger("timeline_pagination_list_simple_widget.dart");
 
 class NotificationPaginationListWidget
     extends NotificationPaginationListBaseWidget {
@@ -31,11 +28,13 @@ class NotificationPaginationListWidget
           footer: footer,
           itemBuilder: (context, index) => Provider<INotification>.value(
                 value: items[index],
-                child: DisposableProxyProvider<INotification, INotificationBloc>(
-                    update: (context, notification, oldValue) =>
-                        NotificationBloc.createFromContext(context, notification,
-                            needWatchLocalRepositoryForUpdates:
-                                needWatchLocalRepositoryForUpdates),
-                    child: NotificationListItemWidget()),
+                child:
+                    DisposableProxyProvider<INotification, INotificationBloc>(
+                        update: (context, notification, oldValue) =>
+                            NotificationBloc.createFromContext(
+                                context, notification,
+                                needWatchLocalRepositoryForUpdates:
+                                    needWatchLocalRepositoryForUpdates),
+                        child: NotificationListItemWidget()),
               ));
 }

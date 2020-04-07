@@ -1,11 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/refactored/pleroma/status/pleroma_status_service.dart';
 import 'package:fedi/refactored/app/status/post/post_status_bloc.dart';
 import 'package:fedi/refactored/app/status/post/thread/thread_post_status_bloc_impl.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/app/status/thread/status_thread_widget.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
+import 'package:fedi/refactored/pleroma/status/pleroma_status_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -16,9 +16,7 @@ class StatusThreadPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
-        title:
-            Text(AppLocalizations.of(context)
-                .tr("app.status.thread.title")),
+        title: Text(AppLocalizations.of(context).tr("app.status.thread.title")),
       ),
       body: SafeArea(child: StatusThreadWidget()));
 }

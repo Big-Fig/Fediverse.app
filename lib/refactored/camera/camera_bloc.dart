@@ -38,6 +38,7 @@ abstract class ICameraBloc
   Stream<bool> get isVideoRecordingInProgressStream;
 
   bool get isVideoRecordingInProgress;
+
   Stream<bool> get isVideoRecordingInProgressOrPausedStream;
 
   bool get isVideoRecordingInProgressOrPaused;
@@ -89,9 +90,8 @@ abstract class ICameraBloc
       await _calculateUniquePath(extension);
 
   static Future calculateUniquePathForVideo(BuildContext context,
-      {String extension = ".mp4"}) async =>
+          {String extension = ".mp4"}) async =>
       await _calculateUniquePath(extension);
-
 
   static Future<String> _calculateUniquePath(String extension) async {
     String dirPath = await calculateDirToSaveFiles();

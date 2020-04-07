@@ -10,7 +10,6 @@ abstract class ISearchBloc extends Disposable {
 
   ISearchInputBloc get searchInputBloc;
 
-
   SearchTab get selectedTab;
 
   Stream<SearchTab> get selectedTabStream;

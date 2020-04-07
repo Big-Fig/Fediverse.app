@@ -205,9 +205,8 @@ class EditMyAccountWidget extends StatelessWidget {
 
   Widget buildDisplayNameField(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    var label =
-        AppLocalizations.of(context)
-            .tr("app.account.my.edit.field.display_name.label");
+    var label = AppLocalizations.of(context)
+        .tr("app.account.my.edit.field.display_name.label");
     var textEditingController =
         editMyAccountBloc.displayNameField.textEditingController;
     return buildTextField(textEditingController, label);
@@ -216,8 +215,7 @@ class EditMyAccountWidget extends StatelessWidget {
   Widget buildNoteField(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
     var label =
-        AppLocalizations.of(context)
-            .tr("app.account.my.edit.field.note.label");
+        AppLocalizations.of(context).tr("app.account.my.edit.field.note.label");
     var textEditingController =
         editMyAccountBloc.noteField.textEditingController;
     return buildTextField(textEditingController, label);
@@ -310,16 +308,14 @@ class EditMyAccountWidget extends StatelessWidget {
                 customField.nameField.textEditingController,
                 AppLocalizations.of(context)
                     .tr("app.account.my.edit.field.custom_field.label"
-                    ".label")
-            ),
+                        ".label")),
           ),
           Flexible(
             child: buildCustomFieldTextField(
                 customField.valueField.textEditingController,
                 AppLocalizations.of(context)
                     .tr("app.account.my.edit.field.custom_field.value"
-                    ".label")
-            ),
+                        ".label")),
           ),
         ],
       ),

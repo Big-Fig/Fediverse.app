@@ -26,8 +26,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
     );
   }
 
-  Widget userNameField(
-      BuildContext context, IRegisterAuthInstanceBloc bloc) {
+  Widget userNameField(BuildContext context, IRegisterAuthInstanceBloc bloc) {
     return InitialDataStreamBuilder(
       stream: bloc.usernameStream,
       initialData: bloc.username,
@@ -72,8 +71,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
     );
   }
 
-  Widget passwordField(
-      BuildContext context, IRegisterAuthInstanceBloc bloc) {
+  Widget passwordField(BuildContext context, IRegisterAuthInstanceBloc bloc) {
     return InitialDataStreamBuilder(
       stream: bloc.passwordStream,
       initialData: bloc.password,
@@ -106,8 +104,8 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
           child: TextField(
             onChanged: bloc.changeConfirmPassword,
             decoration: InputDecoration(
-              hintText: AppLocalizations.of(context).tr(
-                  "app.auth.instance.register.field.confirm_password.hint"),
+              hintText: AppLocalizations.of(context)
+                  .tr("app.auth.instance.register.field.confirm_password.hint"),
               labelText: AppLocalizations.of(context).tr(
                   "app.auth.instance.register.field.confirm_password.label"),
               errorText: snapshot.error,
@@ -118,8 +116,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
     );
   }
 
-  Widget submitButton(
-      BuildContext context, IRegisterAuthInstanceBloc bloc) {
+  Widget submitButton(BuildContext context, IRegisterAuthInstanceBloc bloc) {
     return InitialDataStreamBuilder(
       stream: bloc.registerStream,
       initialData: null,
@@ -182,8 +179,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
           AppLocalizations.of(context)
               .tr("app.auth.instance.register.success.dialog.title"),
           AppLocalizations.of(context)
-              .tr("app.auth.instance.register.success.dialog.content"),
-          () {
+              .tr("app.auth.instance.register.success.dialog.content"), () {
         Navigator.of(context).pop();
       });
       alert.showAlert();
@@ -194,13 +190,12 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
   }
 
   showError(BuildContext context, {@required String error}) {
-
     var alert = Alert(
         context,
         AppLocalizations.of(context)
             .tr("app.auth.instance.register.success.dialog.title"),
-        AppLocalizations.of(context)
-            .tr("app.auth.instance.register.success.dialog.content",
+        AppLocalizations.of(context).tr(
+            "app.auth.instance.register.success.dialog.content",
             args: [error]),
         () => {});
     alert.showAlert();

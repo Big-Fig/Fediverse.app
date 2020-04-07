@@ -14,7 +14,6 @@ abstract class IPaginationBloc<TPage extends PaginationPage<TItem>, TItem>
 
   int get loadedPagesMaximumIndex;
 
-
   Stream<PaginationRefreshState> get refreshStateStream;
 
   PaginationRefreshState get refreshState;
@@ -29,7 +28,8 @@ abstract class IPaginationBloc<TPage extends PaginationPage<TItem>, TItem>
 
   Stream<List<int>> get loadedPageIndexesSortedStream;
 
-  Future<TPage> requestPage({@required int pageIndex, @required bool forceToUpdateFromNetwork});
+  Future<TPage> requestPage(
+      {@required int pageIndex, @required bool forceToUpdateFromNetwork});
 
   Future<TPage> refresh();
 

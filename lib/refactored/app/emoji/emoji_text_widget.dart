@@ -9,9 +9,7 @@ class EmojiTextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    if(emojiText.emojis?.isNotEmpty == true) {
-
+    if (emojiText.emojis?.isNotEmpty == true) {
       return buildEmojifiedText(context);
     } else {
       return Text(
@@ -22,10 +20,9 @@ class EmojiTextWidget extends StatelessWidget {
   }
 
   Row buildEmojifiedText(BuildContext context) {
-    
     var emojiUsername = emojiText.text.split(":");
     List<Widget> usernameWidget = [];
-    
+
     for (var i = 0; i < emojiUsername.length; i++) {
       var emojiOrText = emojiUsername[i];
       var foundEmoji = false;
@@ -48,7 +45,7 @@ class EmojiTextWidget extends StatelessWidget {
           foundEmoji = true;
         }
       }
-    
+
       if (foundEmoji == false) {
         var text = Text(
           emojiOrText,

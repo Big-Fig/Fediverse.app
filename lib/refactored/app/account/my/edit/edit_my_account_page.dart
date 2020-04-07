@@ -25,8 +25,8 @@ class EditMyAccountPage extends StatelessWidget {
               handleBackPressed(context, editMyAccountBloc);
             },
           ),
-          title: Text(AppLocalizations.of(context)
-              .tr("app.account.my.edit.title")),
+          title: Text(
+              AppLocalizations.of(context).tr("app.account.my.edit.title")),
           actions: <Widget>[
             InitialDataStreamBuilder<bool>(
                 stream: editMyAccountBloc.isSomethingChangedStream,
@@ -36,11 +36,11 @@ class EditMyAccountPage extends StatelessWidget {
                   var onPressed;
 
                   if (isSomethingChanged) {
-                    onPressed = ()  async {
+                    onPressed = () async {
                       // todo: progress dialog
                       var success = await editMyAccountBloc.submitChanges();
 
-                      if(success) {
+                      if (success) {
                         Navigator.pop(context);
                       } else {
                         showAlert(context: null, title: "error");
@@ -52,9 +52,9 @@ class EditMyAccountPage extends StatelessWidget {
                       AppLocalizations.of(context)
                           .tr("app.account.my.edit.action.save"),
                       style: TextStyle(
-                          color:
-                              isSomethingChanged ? Colors.white : Colors
-                                  .white70),
+                          color: isSomethingChanged
+                              ? Colors.white
+                              : Colors.white70),
                     ),
                     onPressed: onPressed,
                   );
@@ -76,14 +76,15 @@ class EditMyAccountPage extends StatelessWidget {
   }
 
   alertUnsaved(BuildContext context) {
-
     showAlert(
-      context: context, title: AppLocalizations.of(context)
-        .tr("app.account.my.edit.unsaved.dialog.title"), //      body:
+      context: context,
+      title: AppLocalizations.of(context)
+          .tr("app.account.my.edit.unsaved.dialog.title"),
+      //      body:
       // "",
       actions: [
         AlertAction(
-          text:AppLocalizations.of(context)
+          text: AppLocalizations.of(context)
               .tr("app.account.my.edit.unsaved.dialog.action.discard"),
           onPressed: () {
             Navigator.pop(context);

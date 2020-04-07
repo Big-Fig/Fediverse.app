@@ -1,9 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/status/account/status_account_widget.dart';
 import 'package:fedi/refactored/app/status/action/status_comment_action_widget.dart';
 import 'package:fedi/refactored/app/status/action/status_favourite_action_widget.dart';
-import 'package:fedi/refactored/app/status/action/status_reblog_action_widget.dart';
 import 'package:fedi/refactored/app/status/action/status_more_action_widget.dart';
+import 'package:fedi/refactored/app/status/action/status_reblog_action_widget.dart';
 import 'package:fedi/refactored/app/status/card/status_card_widget.dart';
 import 'package:fedi/refactored/app/status/content/status_content_widget.dart';
 import 'package:fedi/refactored/app/status/created_at/status_created_at_widget.dart';
@@ -13,7 +12,6 @@ import 'package:fedi/refactored/app/status/media/status_media_attachments_widget
 import 'package:fedi/refactored/app/status/reblog/status_reblog_header_widget.dart';
 import 'package:fedi/refactored/app/status/reply/status_reply_header_widget.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
-import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/app/status/thread/status_thread_page.dart';
 import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/material.dart';

@@ -18,5 +18,6 @@ abstract class IFilePickerBloc implements Disposable {
   Stream<List<FilePickerTab>> get availableTabsStream;
 
   onTabSelected(FilePickerTab tab);
+
   onFileSelected(FilePickerFile filePickerFile);
 }

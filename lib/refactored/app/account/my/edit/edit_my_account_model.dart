@@ -3,14 +3,14 @@ import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
-abstract class IEditMyAccountField{
-  bool get isChanged ;
+abstract class IEditMyAccountField {
+  bool get isChanged;
 
   Stream<bool> get isChangedStream;
-
 }
 
-abstract class EditMyAccountField extends DisposableOwner implements IEditMyAccountField{
+abstract class EditMyAccountField extends DisposableOwner
+    implements IEditMyAccountField {
   bool get isChanged => isChangedSubject.value;
 
   Stream<bool> get isChangedStream => isChangedSubject.stream;
@@ -20,13 +20,11 @@ abstract class EditMyAccountField extends DisposableOwner implements IEditMyAcco
   EditMyAccountField() {
     addDisposable(subject: isChangedSubject);
   }
-
-
 }
 
-class EditMyAccountStringField  extends EditMyAccountField {
+class EditMyAccountStringField extends EditMyAccountField {
   final String originValue;
-   String get currentValue => textEditingController.text;
+  String get currentValue => textEditingController.text;
   final TextEditingController textEditingController;
 
   EditMyAccountStringField({@required this.originValue})
@@ -43,8 +41,6 @@ class EditMyAccountStringField  extends EditMyAccountField {
       textEditingController.removeListener(listener);
     }));
   }
-
-
 }
 
 class EditMyAccountBoolField extends EditMyAccountField {
@@ -53,8 +49,8 @@ class EditMyAccountBoolField extends EditMyAccountField {
   bool get currentValue => currentValueSubject.value;
   Stream<bool> get currentValueStream => currentValueSubject.stream;
 
-  EditMyAccountBoolField(
-      { @required this.originValue}): currentValueSubject = BehaviorSubject.seeded(originValue) {
+  EditMyAccountBoolField({@required this.originValue})
+      : currentValueSubject = BehaviorSubject.seeded(originValue) {
     addDisposable(subject: currentValueSubject);
     addDisposable(streamSubscription: currentValueSubject.listen((newValue) {
       var isChanged = newValue != originValue;
@@ -67,8 +63,8 @@ class EditMyAccountBoolField extends EditMyAccountField {
   }
 }
 
-class EditMyAccountCustomField extends DisposableOwner implements
-    IEditMyAccountField{
+class EditMyAccountCustomField extends DisposableOwner
+    implements IEditMyAccountField {
   final int index;
   final EditMyAccountStringField nameField;
   final EditMyAccountStringField valueField;
@@ -91,7 +87,8 @@ class EditMyAccountCustomField extends DisposableOwner implements
   bool get isChanged => nameField.isChanged || valueField.isChanged;
 
   @override
-  Stream<bool> get isChangedStream => Rx.combineLatest2(nameField
-      .isChangedStream, valueField.isChangedStream, (nameIsChanged,
-      valueIsChanged) => nameIsChanged || valueIsChanged);
+  Stream<bool> get isChangedStream => Rx.combineLatest2(
+      nameField.isChangedStream,
+      valueField.isChangedStream,
+      (nameIsChanged, valueIsChanged) => nameIsChanged || valueIsChanged);
 }

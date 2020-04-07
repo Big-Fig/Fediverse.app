@@ -1,10 +1,11 @@
-import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/database/app_database.dart';
+import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
 
 DbAccountWrapper mapRemoteAccountToLocalAccount(IPleromaAccount remoteAccount) {
   return DbAccountWrapper(mapRemoteAccountToDbAccount(remoteAccount));
 }
+
 DbAccount mapRemoteAccountToDbAccount(IPleromaAccount remoteAccount) {
   return DbAccount(
     id: null,

@@ -8,7 +8,6 @@ class NotificationPollTypeHeaderWidget extends NotificationHeaderWidget {
       NotificationHeaderWidget.buildIconAndTextContext(
           context: context,
           iconData: Icons.repeat,
-          text: AppLocalizations.of(context)
-              .tr("app.notification.header.poll")
-      );
+          text:
+              AppLocalizations.of(context).tr("app.notification.header.poll"));
 }

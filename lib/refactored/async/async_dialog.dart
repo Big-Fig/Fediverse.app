@@ -6,8 +6,8 @@ import 'package:logging/logging.dart';
 
 Logger _logger = Logger("async_dialog.dart");
 
-Future<AsyncDialogResult<T>> doAsyncOperationWithDialog<T>(
-    {   @required BuildContext context,
+Future<AsyncDialogResult<T>> doAsyncOperationWithDialog<T>({
+  @required BuildContext context,
   @required Future<T> asyncCode(),
   @required T cancellationValue,
   @required bool isDismissible,
@@ -27,7 +27,6 @@ Future<AsyncDialogResult<T>> doAsyncOperationWithDialog<T>(
     result = await cancelableOperation.valueOrCancellation(cancellationValue);
   } finally {
     progressDialog.hide(context);
-
   }
 
   var dialogResult = AsyncDialogResult(result, cancelableOperation.isCanceled);
@@ -87,8 +86,7 @@ class _AsyncProgressDialog {
 
           return AlertDialog(
             title: title ??
-                Text(AppLocalizations.of(context)
-                    .tr("async.dialog.title")),
+                Text(AppLocalizations.of(context).tr("async.dialog.title")),
             content: content ??
                 Row(
                     mainAxisAlignment: MainAxisAlignment.center,

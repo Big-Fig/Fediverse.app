@@ -69,12 +69,15 @@ class PushSubscriptionLocalPreferences extends IPreferencesObject {
         ' follow: $follow, mention: $mention, reblog: $reblog, poll: $poll}';
   }
 
-  factory PushSubscriptionLocalPreferences.fromJson(Map<String, dynamic> json) =>
+  factory PushSubscriptionLocalPreferences.fromJson(
+          Map<String, dynamic> json) =>
       _$PushSubscriptionLocalPreferencesFromJson(json);
 
   factory PushSubscriptionLocalPreferences.fromJsonString(String jsonString) =>
       _$PushSubscriptionLocalPreferencesFromJson(jsonDecode(jsonString));
 
-  Map<String, dynamic> toJson() => _$PushSubscriptionLocalPreferencesToJson(this);
-  String toJsonString() => jsonEncode(_$PushSubscriptionLocalPreferencesToJson(this));
+  Map<String, dynamic> toJson() =>
+      _$PushSubscriptionLocalPreferencesToJson(this);
+  String toJsonString() =>
+      jsonEncode(_$PushSubscriptionLocalPreferencesToJson(this));
 }

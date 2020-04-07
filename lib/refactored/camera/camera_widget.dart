@@ -2,12 +2,11 @@ import 'package:camera/camera.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/async/loading/init/async_init_loading_widget.dart';
 import 'package:fedi/refactored/camera/camera_bloc.dart';
+import 'package:fedi/refactored/camera/camera_model.dart';
 import 'package:fedi/refactored/permission/grant_permission_widget.dart';
 import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'package:fedi/refactored/camera/camera_model.dart';
 
 abstract class CameraWidget extends StatelessWidget {
   @override
@@ -110,8 +109,8 @@ abstract class CameraWidget extends StatelessWidget {
 
                 switch (state) {
                   case CameraState.error:
-                    widget = Text(AppLocalizations.of(context)
-                        .tr("camera.state.error"));
+                    widget = Text(
+                        AppLocalizations.of(context).tr("camera.state.error"));
                     break;
                   case CameraState.initializing:
                     widget = Text(AppLocalizations.of(context)

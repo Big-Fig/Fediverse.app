@@ -1,11 +1,11 @@
-import 'package:fedi/refactored/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/refactored/pleroma/conversation/pleroma_conversation_model.dart';
-import 'package:fedi/refactored/pleroma/conversation/pleroma_conversation_service.dart';
 import 'package:fedi/refactored/app/conversation/conversation_model.dart';
 import 'package:fedi/refactored/app/conversation/list/conversation_list_service.dart';
 import 'package:fedi/refactored/app/conversation/repository/conversation_repository.dart';
 import 'package:fedi/refactored/app/conversation/repository/conversation_repository_model.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
+import 'package:fedi/refactored/pleroma/api/pleroma_api_service.dart';
+import 'package:fedi/refactored/pleroma/conversation/pleroma_conversation_model.dart';
+import 'package:fedi/refactored/pleroma/conversation/pleroma_conversation_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -52,7 +52,8 @@ class ConversationListService extends DisposableOwner
         return false;
       }
     } catch (e, stackTrace) {
-      _logger.severe(() => "error during refreshItemsFromRemoteForPage", e, stackTrace);
+      _logger.severe(
+          () => "error during refreshItemsFromRemoteForPage", e, stackTrace);
       return false;
     }
   }

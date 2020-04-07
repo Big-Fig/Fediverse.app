@@ -71,13 +71,13 @@ class ConversationStatusListContextApiService
   }
 
   static ConversationStatusListContextApiService createFromContext(
-          BuildContext context, {@required IConversation conversation,
-  @required IStatus statusToFetchContext}) =>
+          BuildContext context,
+          {@required IConversation conversation,
+          @required IStatus statusToFetchContext}) =>
       ConversationStatusListContextApiService(
           conversation: conversation,
           pleromaStatusService:
-          IPleromaStatusService.of(context, listen: false),
-          statusRepository:
-          IStatusRepository.of(context, listen: false),
+              IPleromaStatusService.of(context, listen: false),
+          statusRepository: IStatusRepository.of(context, listen: false),
           statusToFetchContext: statusToFetchContext);
 }

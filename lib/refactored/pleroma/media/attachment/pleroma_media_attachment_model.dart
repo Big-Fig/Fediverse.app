@@ -50,16 +50,16 @@ class PleromaMediaAttachment implements IPleromaMediaAttachment {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is PleromaMediaAttachment &&
-              runtimeType == other.runtimeType &&
-              description == other.description &&
-              id == other.id &&
-              previewUrl == other.previewUrl &&
-              remoteUrl == other.remoteUrl &&
-              textUrl == other.textUrl &&
-              type == other.type &&
-              url == other.url &&
-              pleroma == other.pleroma;
+      other is PleromaMediaAttachment &&
+          runtimeType == other.runtimeType &&
+          description == other.description &&
+          id == other.id &&
+          previewUrl == other.previewUrl &&
+          remoteUrl == other.remoteUrl &&
+          textUrl == other.textUrl &&
+          type == other.type &&
+          url == other.url &&
+          pleroma == other.pleroma;
 
   @override
   int get hashCode =>
@@ -71,9 +71,6 @@ class PleromaMediaAttachment implements IPleromaMediaAttachment {
       type.hashCode ^
       url.hashCode ^
       pleroma.hashCode;
-
-
-
 }
 
 @JsonSerializable()
@@ -101,14 +98,10 @@ class PleromaMediaAttachmentPleromaPart {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is PleromaMediaAttachmentPleromaPart &&
-              runtimeType == other.runtimeType &&
-              mimeType == other.mimeType;
+      other is PleromaMediaAttachmentPleromaPart &&
+          runtimeType == other.runtimeType &&
+          mimeType == other.mimeType;
 
   @override
   int get hashCode => mimeType.hashCode;
-
-
-
-
 }

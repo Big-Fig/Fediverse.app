@@ -7,7 +7,8 @@ import 'package:logging/logging.dart';
 
 var _logger = Logger("status_model_adapter.dart");
 
-DbStatusPopulatedWrapper mapRemoteStatusToLocalStatus(IPleromaStatus remoteStatus) {
+DbStatusPopulatedWrapper mapRemoteStatusToLocalStatus(
+    IPleromaStatus remoteStatus) {
   DbStatus rebloggedStatus;
   DbAccount rebloggedStatusAccount;
   if (remoteStatus.reblog != null) {

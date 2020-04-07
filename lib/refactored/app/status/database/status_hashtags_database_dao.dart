@@ -16,8 +16,8 @@ part 'status_hashtags_database_dao.g.dart';
   "clear": "DELETE FROM db_status_hashtags",
   "getAll": "SELECT * FROM db_status_hashtags"
 })
-class StatusHashtagsDao extends DatabaseAccessor<AppDatabase> with
-    _$StatusHashtagsDaoMixin {
+class StatusHashtagsDao extends DatabaseAccessor<AppDatabase>
+    with _$StatusHashtagsDaoMixin {
   final AppDatabase db;
 
   // Called by the AppDatabase class
@@ -26,12 +26,11 @@ class StatusHashtagsDao extends DatabaseAccessor<AppDatabase> with
   Future<int> insert(Insertable<DbStatusHashtag> entity) async =>
       into(dbStatusHashtags).insert(entity);
 
-  Future insertAll(
-          Iterable<Insertable<DbStatusHashtag>> entities, InsertMode mode) async =>
+  Future insertAll(Iterable<Insertable<DbStatusHashtag>> entities,
+          InsertMode mode) async =>
       await batch((batch) {
         batch.insertAll(dbStatusHashtags, entities);
       });
   Future<bool> replace(Insertable<DbStatusHashtag> entity) async =>
       await update(dbStatusHashtags).replace(entity);
-
 }

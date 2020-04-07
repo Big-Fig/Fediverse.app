@@ -8,10 +8,8 @@ import 'package:provider/provider.dart';
 abstract class IStatusNetworkOnlyListService extends DisposableOwner
     implements IPleromaNetworkOnlyListService<IStatus> {
   static IStatusNetworkOnlyListService of(BuildContext context,
-      {bool listen = true}) =>
+          {bool listen = true}) =>
       Provider.of<IStatusNetworkOnlyListService>(context, listen: listen);
 
   IPleromaApi get pleromaApi;
-
-
 }

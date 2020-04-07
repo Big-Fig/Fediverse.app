@@ -1,11 +1,11 @@
 import 'dart:io';
 
+import 'package:fedi/refactored/mastodon/application/mastodon_application_model.dart';
 import 'package:fedi/refactored/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/refactored/pleroma/application/pleroma_application_exception.dart';
 import 'package:fedi/refactored/pleroma/application/pleroma_application_model.dart';
 import 'package:fedi/refactored/pleroma/application/pleroma_application_service.dart';
 import 'package:fedi/refactored/pleroma/rest/pleroma_rest_service.dart';
-import 'package:fedi/refactored/mastodon/application/mastodon_application_model.dart';
 import 'package:fedi/refactored/rest/rest_request_model.dart';
 import 'package:fedi/refactored/rest/rest_response_model.dart';
 import 'package:flutter/widgets.dart';
@@ -34,7 +34,6 @@ class PleromaApplicationService implements IPleromaApplicationService {
 
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
-
 
   PleromaApplicationService({@required this.restService});
 

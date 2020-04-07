@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-
 enum ProgressDialogType { Normal, Download }
 // todo: refactor
 ProgressDialogType _progressDialogType = ProgressDialogType.Normal;
@@ -78,7 +77,6 @@ class ProgressDialog {
 class _MyDialog extends StatefulWidget {
   String message;
 
-
   _MyDialog(this.message);
 
   var _dialog = new _MyDialogState();
@@ -118,34 +116,40 @@ class _MyDialogState extends State<_MyDialog> {
           ),
           const SizedBox(width: 15.0),
           Expanded(
-            child: _progressDialogType == ProgressDialogType.Normal ? Text(
-                widget.message ??
-                    AppLocalizations.of(context).tr("progress_dialog.progress"),
-                textAlign: TextAlign.justify,
-                style: TextStyle(color: Colors.black,
-                    fontSize: 22.0,
-                    fontWeight: FontWeight.w700)) : Stack(
-              children: <Widget>[
-                Positioned(
-                  child: Text( widget.message ??
-                      AppLocalizations.of(context).tr("progress_dialog.progress"),
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 22.0,
-                          fontWeight: FontWeight.w700)),
-                  top: 35.0,
-                ),
-                Positioned(
-                  child: Text("$_progress/100",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w400)),
-                  bottom: 15.0,
-                  right: 15.0,
-                ),
-              ],
-            ),
+            child: _progressDialogType == ProgressDialogType.Normal
+                ? Text(
+                    widget.message ??
+                        AppLocalizations.of(context)
+                            .tr("progress_dialog.progress"),
+                    textAlign: TextAlign.justify,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 22.0,
+                        fontWeight: FontWeight.w700))
+                : Stack(
+                    children: <Widget>[
+                      Positioned(
+                        child: Text(
+                            widget.message ??
+                                AppLocalizations.of(context)
+                                    .tr("progress_dialog.progress"),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 22.0,
+                                fontWeight: FontWeight.w700)),
+                        top: 35.0,
+                      ),
+                      Positioned(
+                        child: Text("$_progress/100",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.w400)),
+                        bottom: 15.0,
+                        right: 15.0,
+                      ),
+                    ],
+                  ),
           )
         ]));
   }
@@ -171,9 +175,7 @@ class MessageBox {
           actions: <Widget>[
             FlatButton(
               child: Text(
-                  AppLocalizations.of(context)
-                      .tr("progress_dialog.action.ok")
-              ),
+                  AppLocalizations.of(context).tr("progress_dialog.action.ok")),
               onPressed: () {
                 Navigator.of(context).pop();
               },

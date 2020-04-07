@@ -14,8 +14,7 @@ class StatusCommentActionWidget extends StatelessWidget {
         IconButton(
           color: Colors.black,
           icon: Icon(Icons.comment),
-          tooltip: AppLocalizations.of(context)
-              .tr("app.status.action.comment"),
+          tooltip: AppLocalizations.of(context).tr("app.status.action.comment"),
           onPressed: () {
             goToStatusThreadPage(context, statusBloc.status);
           },
@@ -25,7 +24,7 @@ class StatusCommentActionWidget extends StatelessWidget {
             initialData: statusBloc.repliesCount,
             builder: (context, snapshot) {
               var repliesCount = snapshot.data;
-              if(repliesCount == null) {
+              if (repliesCount == null) {
                 return SizedBox.shrink();
               }
               return Text(repliesCount.toString());

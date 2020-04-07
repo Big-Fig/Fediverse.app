@@ -8,9 +8,7 @@ import 'package:fedi/refactored/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/refactored/pagination/list/pagination_list_widget.dart';
 import 'package:fedi/refactored/pagination/pagination_model.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
-
 
 class AccountStatusesWidget extends PaginationListWidget<IStatus> {
   AccountStatusesWidget({
@@ -40,12 +38,12 @@ class AccountStatusesWidget extends PaginationListWidget<IStatus> {
           header: header,
           footer: footer,
           itemBuilder: (context, index) => Provider<IStatus>.value(
-            value: items[index],
-            child: DisposableProxyProvider<IStatus, IStatusBloc>(
-                update: (context, status, oldValue) =>
-                    StatusBloc.createFromContext(context, status),
-                child: StatusListItemTimelineWidget()),
-          ));
+                value: items[index],
+                child: DisposableProxyProvider<IStatus, IStatusBloc>(
+                    update: (context, status, oldValue) =>
+                        StatusBloc.createFromContext(context, status),
+                    child: StatusListItemTimelineWidget()),
+              ));
 
   @override
   IPaginationListBloc<PaginationPage<IStatus>, IStatus>

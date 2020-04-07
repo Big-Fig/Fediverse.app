@@ -9,7 +9,8 @@ import 'package:rxdart/subjects.dart';
 class JoinAuthInstanceRegisterBloc extends DisposableOwner
     implements IRegisterAuthInstanceBloc {
   // todo: refactor errors
-  final _widgetStatusSubject = BehaviorSubject<RegisterAuthInstanceNetworkState>();
+  final _widgetStatusSubject =
+      BehaviorSubject<RegisterAuthInstanceNetworkState>();
   final _usernameSubject = BehaviorSubject<String>.seeded("");
   final _emailSubject = BehaviorSubject<String>.seeded("");
   final _passwordSuject = BehaviorSubject<String>.seeded("");
@@ -82,7 +83,8 @@ class JoinAuthInstanceRegisterBloc extends DisposableOwner
   Stream<String> get usernameStream =>
       _usernameSubject.stream.transform(validateUsername);
 
-  Stream<String> get emailStream => _emailSubject.stream.transform(validateEmail);
+  Stream<String> get emailStream =>
+      _emailSubject.stream.transform(validateEmail);
 
   Stream<String> get passwordStream =>
       _passwordSuject.stream.transform(validatePassword);
@@ -113,7 +115,8 @@ class JoinAuthInstanceRegisterBloc extends DisposableOwner
 
   Function(String) get changePassword => _passwordSuject.sink.add;
 
-  Function(String) get changeConfirmPassword => _confirmPasswordSubject.sink.add;
+  Function(String) get changeConfirmPassword =>
+      _confirmPasswordSubject.sink.add;
 
   String get username => _usernameSubject.value;
 

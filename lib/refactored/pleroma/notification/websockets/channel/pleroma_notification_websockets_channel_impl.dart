@@ -45,8 +45,7 @@ class PleromaNotificationWebSocketsChannel extends DisposableOwner
       if (data is String) {
         if (data?.isNotEmpty == true) {
           try {
-            var event =
-                PleromaNotificationWebSocketsEvent.fromJsonString(data);
+            var event = PleromaNotificationWebSocketsEvent.fromJsonString(data);
             _logger.finest(() => "$uri event $event");
 
             streamControllers.forEach((streamController) {

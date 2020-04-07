@@ -101,6 +101,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         instanceListBloc: instanceListBloc,
         unhandledLocalPreferencesBloc: pushHandlerUnhandledLocalPreferencesBloc,
         fcmPushService: fcmPushService);
-    await globalProviderService.asyncInitAndRegister<IPushHandlerBloc>(pushHandler);
+    await globalProviderService
+        .asyncInitAndRegister<IPushHandlerBloc>(pushHandler);
   }
 }

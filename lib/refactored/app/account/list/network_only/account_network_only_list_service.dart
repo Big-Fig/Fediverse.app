@@ -8,10 +8,8 @@ import 'package:provider/provider.dart';
 abstract class IAccountNetworkOnlyListService extends DisposableOwner
     implements IPleromaNetworkOnlyListService<IAccount> {
   static IAccountNetworkOnlyListService of(BuildContext context,
-      {bool listen = true}) =>
+          {bool listen = true}) =>
       Provider.of<IAccountNetworkOnlyListService>(context, listen: listen);
 
   IPleromaApi get pleromaApi;
-
-
 }

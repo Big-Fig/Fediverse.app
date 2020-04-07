@@ -4,7 +4,6 @@ import 'package:fedi/refactored/app/notification/notification_model.dart';
 import 'package:fedi/refactored/app/notification/repository/notification_repository_model.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/mastodon/notification/mastodon_notification_model.dart';
-import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 
 part 'notification_database_dao.g.dart';
@@ -14,8 +13,6 @@ var _statusAliasId = "status";
 var _statusAccountAliasId = "status_account";
 var _statusReblogAliasId = "status_reblog";
 var _statusReblogAccountAliasId = "status_reblog_account";
-
-var _logger = Logger("notification_database_dao.dart");
 
 @UseDao(tables: [
   DbNotifications
@@ -47,7 +44,8 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
     statusAlias = alias(db.dbStatuses, _statusAliasId);
     statusAccountAlias = alias(db.dbAccounts, _statusAccountAliasId);
     statusReblogAlias = alias(db.dbStatuses, _statusReblogAliasId);
-    statusReblogAccountAlias = alias(db.dbAccounts, _statusReblogAccountAliasId);
+    statusReblogAccountAlias =
+        alias(db.dbAccounts, _statusReblogAccountAliasId);
   }
 
   Future<List<DbNotificationPopulated>> findAll() async {
@@ -121,11 +119,11 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
   }
 
   SimpleSelectStatement<$DbNotificationsTable, DbNotification> addOnlyTypeWhere(
-      SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
-      MastodonNotificationType type) =>
+          SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
+          MastodonNotificationType type) =>
       query
-        ..where((notification) =>
-        (notification.type.equals(mastodonNotificationTypeValues.reverse[type])));
+        ..where((notification) => (notification.type
+            .equals(mastodonNotificationTypeValues.reverse[type])));
 
   SimpleSelectStatement<$DbNotificationsTable, DbNotification>
       startSelectQuery() => (select(db.dbNotifications));
@@ -191,18 +189,16 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
 
     DbStatusPopulated statusPopulated;
     if (notificationStatus?.remoteId != null) {
-
       var notificationStatusAccount = typedResult.readTable(statusAccountAlias);
       var rebloggedStatus = typedResult.readTable(statusReblogAlias);
-      var rebloggedStatusAccount = typedResult.readTable
-        (statusReblogAccountAlias);
+      var rebloggedStatusAccount =
+          typedResult.readTable(statusReblogAccountAlias);
 
       statusPopulated = DbStatusPopulated(
           rebloggedStatus: rebloggedStatus,
           rebloggedStatusAccount: rebloggedStatusAccount,
           status: notificationStatus,
-          account: notificationStatusAccount
-      );
+          account: notificationStatusAccount);
     }
 
     return DbNotificationPopulated(
@@ -232,7 +228,8 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
       ),
       leftOuterJoin(
         statusReblogAccountAlias,
-        statusReblogAccountAlias.remoteId.equalsExp(statusReblogAlias.accountRemoteId),
+        statusReblogAccountAlias.remoteId
+            .equalsExp(statusReblogAlias.accountRemoteId),
       ),
     ];
   }

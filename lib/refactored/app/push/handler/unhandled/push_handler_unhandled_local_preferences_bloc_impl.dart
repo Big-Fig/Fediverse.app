@@ -32,7 +32,8 @@ class PushHandlerUnhandledLocalPreferencesBloc
   }
 
   @override
-  List<PleromaPushMessage> loadUnhandledMessagesForInstance(AuthInstance instance) {
+  List<PleromaPushMessage> loadUnhandledMessagesForInstance(
+      AuthInstance instance) {
     var pleromaUnhandledList = this.value;
 
     var messagesForInstances = pleromaUnhandledList.messages

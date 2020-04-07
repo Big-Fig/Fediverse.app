@@ -20,5 +20,4 @@ class StatusCreatedAtWidget extends StatelessWidget {
           );
         });
   }
-
 }

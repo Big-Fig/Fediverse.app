@@ -1,6 +1,6 @@
-import 'package:fedi/refactored/pleroma/field/pleroma_field_model.dart';
 import 'package:fedi/refactored/app/account/account_bloc.dart';
 import 'package:fedi/refactored/app/account/field/account_field_grid_item_widget.dart';
+import 'package:fedi/refactored/pleroma/field/pleroma_field_model.dart';
 import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/widgets.dart';
 
@@ -21,16 +21,14 @@ class AccountFieldGridWidget extends StatelessWidget {
 
           if (nonEmptyFields?.isNotEmpty == true) {
             return GridView.count(
-              shrinkWrap: true,
+                shrinkWrap: true,
                 childAspectRatio: 4,
                 crossAxisCount: 2,
                 children: nonEmptyFields
-                    .map((field) =>
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: AccountFieldGridItemWidget(field: field),
-                    )
-                )
+                    .map((field) => Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: AccountFieldGridItemWidget(field: field),
+                        ))
                     .toList());
           } else {
             return SizedBox.shrink();

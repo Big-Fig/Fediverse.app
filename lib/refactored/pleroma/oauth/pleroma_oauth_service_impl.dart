@@ -1,11 +1,11 @@
 import 'dart:async';
 
+import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:fedi/refactored/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/refactored/pleroma/oauth/pleroma_oauth_exception.dart';
 import 'package:fedi/refactored/pleroma/oauth/pleroma_oauth_model.dart';
 import 'package:fedi/refactored/pleroma/oauth/pleroma_oauth_service.dart';
 import 'package:fedi/refactored/pleroma/rest/pleroma_rest_service.dart';
-import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:fedi/refactored/rest/rest_request_model.dart';
 import 'package:fedi/refactored/rest/rest_response_model.dart';
 import 'package:flutter/widgets.dart';
@@ -100,13 +100,14 @@ class PleromaOAuthService extends DisposableOwner
   @override
   Future<PleromaOAuthToken> retrieveAccountAccessToken(
       {@required PleromaOAuthAccountTokenRequest tokenRequest}) async {
-
-    var queryArgs = tokenRequest.toJson().entries.map((entry) =>
-        RestRequestQueryArg(entry.key, entry.value)).toList();
+    var queryArgs = tokenRequest
+        .toJson()
+        .entries
+        .map((entry) => RestRequestQueryArg(entry.key, entry.value))
+        .toList();
 
     var request = RestRequest.post(
-        relativePath: join(oauthRelativeUrlPath, "token"),
-        queryArgs: queryArgs,
+      relativePath: join(oauthRelativeUrlPath, "token"), queryArgs: queryArgs,
 //        bodyJson: tokenRequest.toJson()
     );
     var httpResponse = await restService.sendHttpRequest(request);

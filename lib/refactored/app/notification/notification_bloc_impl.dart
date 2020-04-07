@@ -1,18 +1,10 @@
 import 'package:fedi/refactored/app/account/account_model.dart';
-import 'package:fedi/refactored/app/account/account_model_adapter.dart';
-import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
-import 'package:fedi/refactored/app/account/repository/account_repository.dart';
 import 'package:fedi/refactored/app/notification/notification_bloc.dart';
 import 'package:fedi/refactored/app/notification/notification_model.dart';
 import 'package:fedi/refactored/app/notification/repository/notification_repository.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:fedi/refactored/mastodon/notification/mastodon_notification_model.dart';
-import 'package:fedi/refactored/pleroma/account/pleroma_account_service.dart';
-import 'package:fedi/refactored/pleroma/card/pleroma_card_model.dart';
-import 'package:fedi/refactored/pleroma/emoji/pleroma_emoji_model.dart';
-import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_model.dart';
-import 'package:fedi/refactored/pleroma/mention/pleroma_mention_model.dart';
 import 'package:fedi/refactored/pleroma/notification/pleroma_notification_model.dart';
 import 'package:fedi/refactored/pleroma/notification/pleroma_notification_service.dart';
 import 'package:flutter/widgets.dart';
@@ -99,7 +91,7 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
       .map((notification) => notification?.createdAt)
       .distinct();
 
-  @override
+
   Future updateFromNetwork() async {
     var remoteNotification = await pleromaNotificationService.getNotification(
         notificationRemoteId: remoteId);
@@ -110,7 +102,8 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
   Future _updateByRemoteNotification(IPleromaNotification remoteNotification) {
     return notificationRepository.updateLocalNotificationByRemoteNotification(
         oldLocalNotification: notification,
-        newRemoteNotification: remoteNotification, unread: notification.unread);
+        newRemoteNotification: remoteNotification,
+        unread: notification.unread);
   }
 
   @override
@@ -125,5 +118,4 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
 
   @override
   MastodonNotificationType get type => notification.type;
-
 }

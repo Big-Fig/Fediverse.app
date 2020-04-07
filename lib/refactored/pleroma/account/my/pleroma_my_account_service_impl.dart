@@ -50,7 +50,8 @@ class PleromaMyAccountService implements IPleromaMyAccountService {
   }
 
   @override
-  Future<IPleromaMyAccount> updateCredentials(IPleromaMyAccountEdit data) async {
+  Future<IPleromaMyAccount> updateCredentials(
+      IPleromaMyAccountEdit data) async {
     var httpResponse = await restService.sendHttpRequest(RestRequest.patch(
       relativePath: editProfileRelativeUrlPath,
       bodyJson: data.toJson(),

@@ -31,8 +31,6 @@ class TosPage extends StatelessWidget {
 void goToTosPage(BuildContext context) {
   Navigator.push(
     context,
-    MaterialPageRoute(
-        builder: (context) => TosPage()),
+    MaterialPageRoute(builder: (context) => TosPage()),
   );
 }
-

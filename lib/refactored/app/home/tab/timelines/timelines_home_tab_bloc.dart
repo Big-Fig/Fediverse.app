@@ -8,7 +8,6 @@ abstract class ITimelinesHomeTabBloc extends Disposable {
   static ITimelinesHomeTabBloc of(BuildContext context, {listen: true}) =>
       Provider.of<ITimelinesHomeTabBloc>(context, listen: listen);
 
-
   TimelineTab get selectedTab;
 
   Stream<TimelineTab> get selectedTabStream;

@@ -1,3 +1,1 @@
-enum AppHomeTab {
-  timelines, notifications, conversations, account
-}
+enum AppHomeTab { timelines, notifications, conversations, account }

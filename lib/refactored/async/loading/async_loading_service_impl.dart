@@ -4,18 +4,16 @@ import 'package:rxdart/rxdart.dart';
 
 typedef Future LoadingFunction();
 
-abstract class AsyncLoadingService extends DisposableOwner implements
-    IAsyncLoadingService {
+abstract class AsyncLoadingService extends DisposableOwner
+    implements IAsyncLoadingService {
   // ignore: close_sinks
-  BehaviorSubject<bool> _isLoadingSubject =
-      BehaviorSubject<bool>.seeded(false);
+  BehaviorSubject<bool> _isLoadingSubject = BehaviorSubject<bool>.seeded(false);
 
   @override
   Stream<bool> get isLoadingStream => _isLoadingSubject.stream;
 
   @override
   bool get isLoading => _isLoadingSubject.value;
-
 
   AsyncLoadingService() {
     addDisposable(subject: _isLoadingSubject);
@@ -24,7 +22,7 @@ abstract class AsyncLoadingService extends DisposableOwner implements
   Future performLoading(LoadingFunction loadingFunction) async {
     _isLoadingSubject.add(true);
     await loadingFunction();
-    if(!_isLoadingSubject.isClosed) {
+    if (!_isLoadingSubject.isClosed) {
       _isLoadingSubject.add(false);
     }
   }

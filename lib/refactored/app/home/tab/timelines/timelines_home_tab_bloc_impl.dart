@@ -1,13 +1,11 @@
-import 'package:fedi/refactored/app/status/list/cached/status_cached_list_service.dart';
-import 'package:fedi/refactored/app/status/pagination/cached/status_cached_pagination_bloc.dart';
-import 'package:fedi/refactored/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
-import 'package:fedi/refactored/pleroma/account/pleroma_account_service.dart';
-import 'package:fedi/refactored/pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
 import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/refactored/app/home/tab/timelines/timelines_home_tab_bloc.dart';
 import 'package:fedi/refactored/app/home/tab/timelines/timelines_home_tab_model.dart';
+import 'package:fedi/refactored/app/status/list/cached/status_cached_list_service.dart';
+import 'package:fedi/refactored/app/status/pagination/cached/status_cached_pagination_bloc.dart';
+import 'package:fedi/refactored/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
 import 'package:fedi/refactored/app/status/pagination/list/status_pagination_list_bloc.dart';
 import 'package:fedi/refactored/app/status/pagination/list/status_pagination_list_bloc_impl.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
@@ -16,6 +14,8 @@ import 'package:fedi/refactored/app/timeline/local/local_timeline_service_impl.d
 import 'package:fedi/refactored/app/timeline/local_preferences/timeline_local_preferences_bloc.dart';
 import 'package:fedi/refactored/app/timeline/public/public_timeline_service_impl.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
+import 'package:fedi/refactored/pleroma/account/pleroma_account_service.dart';
+import 'package:fedi/refactored/pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -24,7 +24,6 @@ var _logger = Logger("timelines_home_tab_page_bloc_impl.dart");
 
 class TimelinesHomeTabBloc extends DisposableOwner
     implements ITimelinesHomeTabBloc {
-
   @override
   void selectTab(TimelineTab tab) {
     selectedTabSubject.add(tab);
@@ -47,8 +46,16 @@ class TimelinesHomeTabBloc extends DisposableOwner
   final ICurrentAuthInstanceBloc currentInstanceBloc;
   final ITimelineLocalPreferencesBloc timelineLocalPreferencesBloc;
 
-  TimelinesHomeTabBloc(
-      {@required TimelineTab startTab, @required this.pleromaTimelineService, @required this.pleromaAccountService, @required this.statusRepository, @required this.accountRepository, @required this.myAccountBloc, @required this.currentInstanceBloc, @required this.timelineLocalPreferencesBloc,}) {
+  TimelinesHomeTabBloc({
+    @required TimelineTab startTab,
+    @required this.pleromaTimelineService,
+    @required this.pleromaAccountService,
+    @required this.statusRepository,
+    @required this.accountRepository,
+    @required this.myAccountBloc,
+    @required this.currentInstanceBloc,
+    @required this.timelineLocalPreferencesBloc,
+  }) {
     selectedTabSubject = BehaviorSubject.seeded(startTab);
 
     addDisposable(subject: selectedTabSubject);
@@ -153,16 +160,19 @@ class TimelinesHomeTabBloc extends DisposableOwner
     throw "retrieveTimelineTabPaginationListBloc unsupported tab = $tab";
   }
 
-  static TimelinesHomeTabBloc createFromContext(BuildContext context) =>
-      TimelinesHomeTabBloc(startTab: TimelineTab.home,
-          pleromaTimelineService: IPleromaTimelineService.of(
-              context, listen: false),
-          pleromaAccountService: IPleromaAccountService.of(
-              context, listen: false),
+  static TimelinesHomeTabBloc createFromContext(
+          BuildContext context) =>
+      TimelinesHomeTabBloc(
+          startTab: TimelineTab.home,
+          pleromaTimelineService:
+              IPleromaTimelineService.of(context, listen: false),
+          pleromaAccountService:
+              IPleromaAccountService.of(context, listen: false),
           statusRepository: IStatusRepository.of(context, listen: false),
           accountRepository: IAccountRepository.of(context, listen: false),
           myAccountBloc: IMyAccountBloc.of(context, listen: false),
-          currentInstanceBloc: ICurrentAuthInstanceBloc.of(context, listen: false),
-          timelineLocalPreferencesBloc: ITimelineLocalPreferencesBloc.of(
-              context, listen: false));
+          currentInstanceBloc:
+              ICurrentAuthInstanceBloc.of(context, listen: false),
+          timelineLocalPreferencesBloc:
+              ITimelineLocalPreferencesBloc.of(context, listen: false));
 }

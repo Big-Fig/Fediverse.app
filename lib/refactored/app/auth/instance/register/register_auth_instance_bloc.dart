@@ -9,24 +9,27 @@ abstract class IRegisterAuthInstanceBloc implements Disposable {
 
   String get password;
 
-
-  static IRegisterAuthInstanceBloc of(BuildContext context, {bool listen = true}) =>
+  static IRegisterAuthInstanceBloc of(BuildContext context,
+          {bool listen = true}) =>
       Provider.of<IRegisterAuthInstanceBloc>(context, listen: listen);
 
+  Stream<String> get usernameStream;
 
-
-  Stream<String> get usernameStream ;
   Stream<String> get emailStream;
-  Stream<String> get passwordStream;
-  Stream<String> get confirmPasswordStream;
-  Stream<String> get passwordsMatchStream;
 
+  Stream<String> get passwordStream;
+
+  Stream<String> get confirmPasswordStream;
+
+  Stream<String> get passwordsMatchStream;
 
   Stream<bool> get registerStream;
 
   Function(String) get changeUsername;
-  Function(String) get changeEmail;
-  Function(String) get changePassword;
-  Function(String) get changeConfirmPassword;
 
+  Function(String) get changeEmail;
+
+  Function(String) get changePassword;
+
+  Function(String) get changeConfirmPassword;
 }

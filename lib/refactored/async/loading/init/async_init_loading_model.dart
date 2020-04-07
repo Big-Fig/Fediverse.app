@@ -1,3 +1,1 @@
-enum AsyncInitLoadingState {
-  notStarted, loading, finished, failed
-}
+enum AsyncInitLoadingState { notStarted, loading, finished, failed }

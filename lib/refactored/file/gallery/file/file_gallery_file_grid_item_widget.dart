@@ -36,11 +36,11 @@ class FileGalleryFolderGridItemWidget extends StatelessWidget {
 
   Widget buildIcon(IFileGalleryFileBloc fileBloc) {
     return fileBloc.type == AssetType.video
-            ? Icon(
-                Icons.play_circle_outline,
-                color: Colors.white,
-              )
-            : SizedBox.shrink();
+        ? Icon(
+            Icons.play_circle_outline,
+            color: Colors.white,
+          )
+        : SizedBox.shrink();
   }
 
   Image buildPreviewImage(IFileGalleryFileBloc fileBloc) {

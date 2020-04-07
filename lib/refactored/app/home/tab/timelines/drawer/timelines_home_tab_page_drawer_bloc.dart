@@ -3,10 +3,9 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class ITimelinesHomeTabPageDrawerBloc extends Disposable {
-
-  static ITimelinesHomeTabPageDrawerBloc of(BuildContext context, {listen: true}) =>
+  static ITimelinesHomeTabPageDrawerBloc of(BuildContext context,
+          {listen: true}) =>
       Provider.of<ITimelinesHomeTabPageDrawerBloc>(context, listen: listen);
-
 
   bool get onlyNoReplies;
 
@@ -17,6 +16,7 @@ abstract class ITimelinesHomeTabPageDrawerBloc extends Disposable {
   bool get onlyWithMedia;
 
   Stream<bool> get onlyWithMediaStream;
+
   changeOnlyWithMedia(bool value);
 
   bool get onlyNoNsfwSensitive;

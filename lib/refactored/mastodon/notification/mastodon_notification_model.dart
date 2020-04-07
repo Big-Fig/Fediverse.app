@@ -22,8 +22,6 @@ abstract class IMastodonNotification {
 @JsonSerializable()
 @MastodonMediaNotificationTypeTypeConverter()
 class MastodonNotificationsRequest {
-
-
   @JsonKey(name: "max_id")
   final String maxId;
   @JsonKey(name: "since_id")
@@ -35,8 +33,13 @@ class MastodonNotificationsRequest {
   final List<MastodonNotificationType> excludeTypes;
   @JsonKey(name: "account_id")
   final String accountId;
-  MastodonNotificationsRequest({this.maxId, this.sinceId, this.minId, this.limit,
-    this.excludeTypes, this.accountId});
+  MastodonNotificationsRequest(
+      {this.maxId,
+      this.sinceId,
+      this.minId,
+      this.limit,
+      this.excludeTypes,
+      this.accountId});
 
   @override
   String toString() {
@@ -47,17 +50,23 @@ class MastodonNotificationsRequest {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || other is MastodonNotificationsRequest &&
-          runtimeType == other.runtimeType && maxId == other.maxId &&
-          sinceId == other.sinceId && minId == other.minId &&
-          limit == other.limit && excludeTypes == other.excludeTypes &&
+      identical(this, other) ||
+      other is MastodonNotificationsRequest &&
+          runtimeType == other.runtimeType &&
+          maxId == other.maxId &&
+          sinceId == other.sinceId &&
+          minId == other.minId &&
+          limit == other.limit &&
+          excludeTypes == other.excludeTypes &&
           accountId == other.accountId;
   @override
   int get hashCode =>
-      maxId.hashCode ^ sinceId.hashCode ^ minId.hashCode ^ limit
-          .hashCode ^ excludeTypes.hashCode ^ accountId.hashCode;
-
-
+      maxId.hashCode ^
+      sinceId.hashCode ^
+      minId.hashCode ^
+      limit.hashCode ^
+      excludeTypes.hashCode ^
+      accountId.hashCode;
 
   factory MastodonNotificationsRequest.fromJson(Map<String, dynamic> json) =>
       _$MastodonNotificationsRequestFromJson(json);
@@ -67,10 +76,9 @@ class MastodonNotificationsRequest {
 
   Map<String, dynamic> toJson() => _$MastodonNotificationsRequestToJson(this);
 
-  String toJsonString() => jsonEncode(_$MastodonNotificationsRequestToJson(this));
-
+  String toJsonString() =>
+      jsonEncode(_$MastodonNotificationsRequestToJson(this));
 }
-
 
 enum MastodonNotificationType {
   follow,

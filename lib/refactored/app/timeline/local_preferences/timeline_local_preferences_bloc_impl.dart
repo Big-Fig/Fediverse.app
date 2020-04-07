@@ -6,10 +6,10 @@ import 'package:fedi/refactored/local_preferences/local_preferences_service.dart
 class TimelineLocalPreferencesBloc
     extends ObjectLocalPreferenceBloc<TimelineLocalPreferences>
     implements ITimelineLocalPreferencesBloc {
-  TimelineLocalPreferencesBloc(ILocalPreferencesService preferencesService,
-      String userAtHost)
+  TimelineLocalPreferencesBloc(
+      ILocalPreferencesService preferencesService, String userAtHost)
       : super(preferencesService, "$userAtHost.timeline.display", 1);
 
-  TimelineLocalPreferences get defaultValue => TimelineLocalPreferences
-    (onlyNoReplies: false, onlyWithMedia: false, onlyNoNsfwSensitive: false);
+  TimelineLocalPreferences get defaultValue => TimelineLocalPreferences(
+      onlyNoReplies: false, onlyWithMedia: false, onlyNoNsfwSensitive: false);
 }

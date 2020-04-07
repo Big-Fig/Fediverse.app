@@ -32,8 +32,8 @@ class NotificationListItemWidget extends StatelessWidget {
             buildHeaderWidget(context, notificationBloc),
             if (status != null)
               DisposableProvider<IStatusBloc>(
-                  create: (context) => StatusBloc.createFromContext(
-                      context, status),
+                  create: (context) =>
+                      StatusBloc.createFromContext(context, status),
                   child: StatusListItemTimelineWidget())
           ],
         ),

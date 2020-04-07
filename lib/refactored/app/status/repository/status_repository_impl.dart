@@ -1,7 +1,3 @@
-import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/refactored/pleroma/status/pleroma_status_model.dart';
-import 'package:fedi/refactored/pleroma/tag/pleroma_tag_model.dart';
-import 'package:fedi/refactored/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
 import 'package:fedi/refactored/app/conversation/conversation_model.dart';
@@ -15,6 +11,10 @@ import 'package:fedi/refactored/app/status/repository/status_repository_model.da
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/app/status/status_model_adapter.dart';
 import 'package:fedi/refactored/async/loading/init/async_init_loading_bloc_impl.dart';
+import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
+import 'package:fedi/refactored/pleroma/status/pleroma_status_model.dart';
+import 'package:fedi/refactored/pleroma/tag/pleroma_tag_model.dart';
+import 'package:fedi/refactored/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -143,13 +143,10 @@ class StatusRepository extends AsyncInitLoadingBloc
 
   Future addStatusesToConversation(
       List<String> statusRemoteIds, String conversationRemoteId) async {
-
     var alreadyAddedConversationStatuses = await conversationStatusesDao
-        .findByConversationRemoteId
-    (conversationRemoteId);
-    var alreadyAddedConversationStatusesIds =
-        alreadyAddedConversationStatuses.map((conversationStatus) =>
-        conversationStatus.statusRemoteId);
+        .findByConversationRemoteId(conversationRemoteId);
+    var alreadyAddedConversationStatusesIds = alreadyAddedConversationStatuses
+        .map((conversationStatus) => conversationStatus.statusRemoteId);
     var notAddedYetStatusRemoteIds = statusRemoteIds.where((statusRemoteId) {
       return !alreadyAddedConversationStatusesIds.contains(statusRemoteId);
     });
@@ -467,7 +464,8 @@ class StatusRepository extends AsyncInitLoadingBloc
 
     var remoteAccount = newRemoteStatus.account;
 
-    await accountRepository.upsertRemoteAccount(remoteAccount, conversationRemoteId: null);
+    await accountRepository.upsertRemoteAccount(remoteAccount,
+        conversationRemoteId: null);
 
     await updateById(
         oldLocalStatus.localId, mapRemoteStatusToDbStatus(newRemoteStatus));

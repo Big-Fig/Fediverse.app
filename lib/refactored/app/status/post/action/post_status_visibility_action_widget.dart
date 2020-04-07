@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/refactored/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/refactored/app/status/post/post_status_bloc.dart';
+import 'package:fedi/refactored/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,50 +25,50 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
       onPressed: () {
         showModalBottomSheet(
             builder: (BuildContext context) => Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  // TODO: why only 3 options when 5 visibilities available
-                  buildVisibilityButton(
-                      context, postStatusBloc, PleromaVisibility.PUBLIC),
-                  buildVisibilityButton(
-                      context, postStatusBloc, PleromaVisibility.UNLISTED),
-                  buildVisibilityButton(
-                      context, postStatusBloc, PleromaVisibility.PRIVATE),
-                  Container(
-                    height: 30,
-                  ),
-                  buildCancelButton(context),
-                ],
-              ),
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    // TODO: why only 3 options when 5 visibilities available
+                    buildVisibilityButton(
+                        context, postStatusBloc, PleromaVisibility.PUBLIC),
+                    buildVisibilityButton(
+                        context, postStatusBloc, PleromaVisibility.UNLISTED),
+                    buildVisibilityButton(
+                        context, postStatusBloc, PleromaVisibility.PRIVATE),
+                    Container(
+                      height: 30,
+                    ),
+                    buildCancelButton(context),
+                  ],
+                ),
             context: context);
       },
     );
   }
 
   Padding buildCancelButton(BuildContext context) => Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: OutlineButton(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    AppLocalizations.of(context)
-                        .tr("app.status.post.visibility.action.cancel"),
-                    style: TextStyle(color: Colors.red),
-                  )
-                ],
+        padding: EdgeInsets.symmetric(horizontal: 10),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: OutlineButton(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      AppLocalizations.of(context)
+                          .tr("app.status.post.visibility.action.cancel"),
+                      style: TextStyle(color: Colors.red),
+                    )
+                  ],
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
               ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
 
   Padding buildVisibilityButton(
     BuildContext context,

@@ -1,7 +1,3 @@
-import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_service.dart';
-import 'package:fedi/refactored/pleroma/status/pleroma_status_model.dart';
-import 'package:fedi/refactored/pleroma/status/pleroma_status_service.dart';
-import 'package:fedi/refactored/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/media/attachment/upload/upload_media_attachment_bloc.dart';
 import 'package:fedi/refactored/app/media/attachment/upload/upload_media_attachment_bloc_impl.dart';
@@ -11,6 +7,10 @@ import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/disposable/disposable.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:fedi/refactored/file/picker/file_picker_model.dart';
+import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_service.dart';
+import 'package:fedi/refactored/pleroma/status/pleroma_status_model.dart';
+import 'package:fedi/refactored/pleroma/status/pleroma_status_service.dart';
+import 'package:fedi/refactored/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -165,7 +165,6 @@ abstract class PostStatusBloc extends DisposableOwner
         addMentionByAccount(account);
       });
     }
-
   }
 
   void onMentionedAccountsChanged() {

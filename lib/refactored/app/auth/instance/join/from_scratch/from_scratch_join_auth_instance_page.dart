@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/auth/instance/join/join_auth_instance_bloc.dart';
 import 'package:fedi/refactored/app/auth/instance/join/join_auth_instance_bloc_impl.dart';
 import 'package:fedi/refactored/app/auth/instance/join/join_auth_instance_widget.dart';

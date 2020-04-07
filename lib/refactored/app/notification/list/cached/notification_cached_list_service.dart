@@ -22,5 +22,4 @@ abstract class INotificationCachedListService extends DisposableOwner
       {@required int limit,
       @required INotification newerThan,
       @required INotification olderThan});
-
 }

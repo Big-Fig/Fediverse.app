@@ -54,8 +54,8 @@ abstract class ObjectLocalPreferenceBloc<T extends IPreferencesObject>
     extends LocalPreferenceBloc<T> {
   final int schemaVersion;
 
-  ObjectLocalPreferenceBloc(ILocalPreferencesService preferencesService, String key,
-      this.schemaVersion)
+  ObjectLocalPreferenceBloc(ILocalPreferencesService preferencesService,
+      String key, this.schemaVersion)
       : super(preferencesService, "$key.$schemaVersion");
 
   Future<bool> setValueInternal(T newValue) async {

@@ -1,11 +1,11 @@
-import 'package:fedi/refactored/pleroma/mention/pleroma_mention_model.dart';
-import 'package:fedi/refactored/pleroma/status/pleroma_status_model.dart';
-import 'package:fedi/refactored/pleroma/status/pleroma_status_service.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/app/status/status_model_adapter.dart';
 import 'package:fedi/refactored/app/status/thread/status_thread_bloc.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
+import 'package:fedi/refactored/pleroma/mention/pleroma_mention_model.dart';
+import 'package:fedi/refactored/pleroma/status/pleroma_status_model.dart';
+import 'package:fedi/refactored/pleroma/status/pleroma_status_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -76,7 +76,8 @@ class StatusThreadBloc extends DisposableOwner implements IStatusThreadBloc {
             inReplyToId: inReplyToId,
             idempotencyKey: idempotencyKey));
 
-    await statusRepository.upsertRemoteStatus(remoteStatus, listRemoteId: null, conversationRemoteId: null);
+    await statusRepository.upsertRemoteStatus(remoteStatus,
+        listRemoteId: null, conversationRemoteId: null);
     var localStatus = await statusRepository.findByRemoteId(remoteStatus.id);
 
     statuses.add(localStatus);

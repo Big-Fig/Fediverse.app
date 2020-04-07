@@ -1,9 +1,5 @@
 import 'dart:async';
 
-import 'package:fedi/refactored/pleroma/account/my/pleroma_my_account_model.dart';
-import 'package:fedi/refactored/pleroma/account/my/pleroma_my_account_service.dart';
-import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/refactored/pleroma/field/pleroma_field_model.dart';
 import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/account/account_model_adapter.dart';
 import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
@@ -14,6 +10,10 @@ import 'package:fedi/refactored/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/refactored/app/emoji/emoji_text_model.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
+import 'package:fedi/refactored/pleroma/account/my/pleroma_my_account_model.dart';
+import 'package:fedi/refactored/pleroma/account/my/pleroma_my_account_service.dart';
+import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
+import 'package:fedi/refactored/pleroma/field/pleroma_field_model.dart';
 import 'package:flutter/widgets.dart';
 
 final _selfActionError =

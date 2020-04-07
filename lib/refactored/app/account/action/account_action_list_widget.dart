@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/refactored/app/account/account_bloc.dart';
 import 'package:fedi/refactored/app/async/async_button_widget.dart';
+import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -43,39 +43,36 @@ class AccountActionListWidget extends StatelessWidget {
               ),
             );
           }
-
-
         });
   }
 
-  OutlineButton buildMoreButton(BuildContext context, IAccountBloc accountBloc, IPleromaAccountRelationship relationship) {
+  OutlineButton buildMoreButton(BuildContext context, IAccountBloc accountBloc,
+      IPleromaAccountRelationship relationship) {
     return OutlineButton(
-                  child: Row(
-                    children: <Widget>[
-                      Text(AppLocalizations.of(context)
-                          .tr("app.account.action.more")),
-                      Icon(
-                        Icons.keyboard_arrow_down,
-                        color: Colors.grey,
-                      )
-                    ],
-                  ),
-                  onPressed: () {
-                    showMoreOptions(context, accountBloc, relationship);
-                  },
-                );
+      child: Row(
+        children: <Widget>[
+          Text(AppLocalizations.of(context).tr("app.account.action.more")),
+          Icon(
+            Icons.keyboard_arrow_down,
+            color: Colors.grey,
+          )
+        ],
+      ),
+      onPressed: () {
+        showMoreOptions(context, accountBloc, relationship);
+      },
+    );
   }
 
   OutlineButton buildMessageButton(BuildContext context) {
     return OutlineButton(
-                  child: Row(
-                    children: <Widget>[
-                      Text(AppLocalizations.of(context)
-                          .tr("app.account.action.message"))
-                    ],
-                  ),
-                  onPressed: () {
-                    // todo: go to conversation
+      child: Row(
+        children: <Widget>[
+          Text(AppLocalizations.of(context).tr("app.account.action.message"))
+        ],
+      ),
+      onPressed: () {
+        // todo: go to conversation
 //                  Navigator.push(
 //                      context,
 //                      MaterialPageRoute(
@@ -83,28 +80,29 @@ class AccountActionListWidget extends StatelessWidget {
 //                          account: widget.profileAccount,
 //                        ),
 //                      ));
-                  },
-                );
+      },
+    );
   }
 
-  AsyncButtonWidget buildFollowButton(IAccountBloc accountBloc, IPleromaAccountRelationship relationship) {
+  AsyncButtonWidget buildFollowButton(
+      IAccountBloc accountBloc, IPleromaAccountRelationship relationship) {
     return AsyncButtonWidget(
-                  asyncButtonAction: accountBloc.requestToggleFollow,
-                  builder: (BuildContext context, VoidCallback onPressed) {
-                    return OutlineButton(
-                      child: Row(
-                        children: <Widget>[
-                          Text(relationship.following
-                              ? AppLocalizations.of(context)
-                              .tr("app.account.action.unfollow")
-                              : AppLocalizations.of(context)
-                              .tr("app.account.action.follow")),
-                        ],
-                      ),
-                      onPressed: onPressed,
-                    );
-                  },
-                );
+      asyncButtonAction: accountBloc.requestToggleFollow,
+      builder: (BuildContext context, VoidCallback onPressed) {
+        return OutlineButton(
+          child: Row(
+            children: <Widget>[
+              Text(relationship.following
+                  ? AppLocalizations.of(context)
+                      .tr("app.account.action.unfollow")
+                  : AppLocalizations.of(context)
+                      .tr("app.account.action.follow")),
+            ],
+          ),
+          onPressed: onPressed,
+        );
+      },
+    );
   }
 
   showMoreOptions(BuildContext context, IAccountBloc accountBloc,
@@ -112,26 +110,22 @@ class AccountActionListWidget extends StatelessWidget {
     var appLocalizations = AppLocalizations.of(context);
     showAlert(
       context: context,
-      title: appLocalizations.tr("app.account.action.popup.title", args:
-          [accountBloc.acct]),
+      title: appLocalizations
+          .tr("app.account.action.popup.title", args: [accountBloc.acct]),
       body: "${accountBloc.acct}",
       actions: [
         AlertAction(
             text: relationship.muting
-                ? appLocalizations
-                    .tr("app.account.action.unmute")
+                ? appLocalizations.tr("app.account.action.unmute")
                 : appLocalizations.tr("app.account.action.mute"),
             onPressed: accountBloc.requestToggleMute),
         AlertAction(
             text: relationship.blocking
-                ? appLocalizations
-                    .tr("app.account.action.unblock")
-                : appLocalizations
-                    .tr("app.account.action.block"),
+                ? appLocalizations.tr("app.account.action.unblock")
+                : appLocalizations.tr("app.account.action.block"),
             onPressed: accountBloc.requestToggleBlock),
         AlertAction(
-            text: appLocalizations
-                .tr("app.account.action.report"),
+            text: appLocalizations.tr("app.account.action.report"),
             onPressed: accountBloc.requestReport),
       ],
       cancelable: true,

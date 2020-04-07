@@ -1,14 +1,14 @@
-import 'package:fedi/refactored/app/status/list/cached/status_cached_list_service.dart';
-import 'package:fedi/refactored/pleroma/account/pleroma_account_service.dart';
-import 'package:fedi/refactored/pleroma/timeline/pleroma_timeline_service.dart';
-import 'package:fedi/refactored/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
 import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/refactored/app/status/list/cached/status_cached_list_service.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/app/timeline/local_preferences/timeline_local_preferences_bloc_impl.dart';
 import 'package:fedi/refactored/app/timeline/timeline_model.dart';
 import 'package:fedi/refactored/app/timeline/timeline_status_list_service_impl.dart';
+import 'package:fedi/refactored/pleroma/account/pleroma_account_service.dart';
+import 'package:fedi/refactored/pleroma/timeline/pleroma_timeline_service.dart';
+import 'package:fedi/refactored/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 
 class HomeTimelineService extends TimelineStatusListService
@@ -20,16 +20,12 @@ class HomeTimelineService extends TimelineStatusListService
   DateTime lastPreRefreshAllTime;
 
   @override
-  ITimelineSettings retrieveTimelineSettings() => TimelineSettings.home(
-
-      excludeVisibilities: [
+  ITimelineSettings retrieveTimelineSettings() =>
+      TimelineSettings.home(excludeVisibilities: [
         PleromaVisibility.DIRECT,
         PleromaVisibility.LIST,
         PleromaVisibility.UNLISTED
-      ],
-      onlyLocal: true,
-      onlyNotMuted: true,
-      homeAccount: homeAccount);
+      ], onlyLocal: true, onlyNotMuted: true, homeAccount: homeAccount);
 
   HomeTimelineService({
     @required IPleromaTimelineService pleromaTimelineService,

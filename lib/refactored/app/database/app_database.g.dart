@@ -85,6 +85,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
       this.pleromaExpiresAt,
       this.pleromaThreadMuted,
       this.pleromaEmojiReactions});
+
   factory DbStatus.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -170,6 +171,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
               data['${effectivePrefix}pleroma_emoji_reactions'])),
     );
   }
+
   factory DbStatus.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -224,6 +226,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
               json['pleromaEmojiReactions']),
     );
   }
+
   @override
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -680,6 +683,7 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
     this.pleromaThreadMuted = const Value.absent(),
     this.pleromaEmojiReactions = const Value.absent(),
   });
+
   DbStatusesCompanion.insert({
     this.id = const Value.absent(),
     @required String remoteId,
@@ -823,6 +827,7 @@ class $DbStatusesTable extends DbStatuses
   final GeneratedDatabase _db;
   final String _alias;
   $DbStatusesTable(this._db, [this._alias]);
+
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
   @override
@@ -1730,6 +1735,7 @@ class DbStatusHashtag extends DataClass implements Insertable<DbStatusHashtag> {
       {@required this.id,
       @required this.statusRemoteId,
       @required this.hashtag});
+
   factory DbStatusHashtag.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -1744,6 +1750,7 @@ class DbStatusHashtag extends DataClass implements Insertable<DbStatusHashtag> {
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}hashtag']),
     );
   }
+
   factory DbStatusHashtag.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -1753,6 +1760,7 @@ class DbStatusHashtag extends DataClass implements Insertable<DbStatusHashtag> {
       hashtag: serializer.fromJson<String>(json['hashtag']),
     );
   }
+
   @override
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -1813,6 +1821,7 @@ class DbStatusHashtagsCompanion extends UpdateCompanion<DbStatusHashtag> {
     this.statusRemoteId = const Value.absent(),
     this.hashtag = const Value.absent(),
   });
+
   DbStatusHashtagsCompanion.insert({
     this.id = const Value.absent(),
     @required String statusRemoteId,
@@ -1834,6 +1843,7 @@ class $DbStatusHashtagsTable extends DbStatusHashtags
   final GeneratedDatabase _db;
   final String _alias;
   $DbStatusHashtagsTable(this._db, [this._alias]);
+
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
   @override
@@ -1939,6 +1949,7 @@ class DbStatusList extends DataClass implements Insertable<DbStatusList> {
       {@required this.id,
       @required this.statusRemoteId,
       @required this.listRemoteId});
+
   factory DbStatusList.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -1952,6 +1963,7 @@ class DbStatusList extends DataClass implements Insertable<DbStatusList> {
           .mapFromDatabaseResponse(data['${effectivePrefix}list_remote_id']),
     );
   }
+
   factory DbStatusList.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -1961,6 +1973,7 @@ class DbStatusList extends DataClass implements Insertable<DbStatusList> {
       listRemoteId: serializer.fromJson<String>(json['listRemoteId']),
     );
   }
+
   @override
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -2021,6 +2034,7 @@ class DbStatusListsCompanion extends UpdateCompanion<DbStatusList> {
     this.statusRemoteId = const Value.absent(),
     this.listRemoteId = const Value.absent(),
   });
+
   DbStatusListsCompanion.insert({
     this.id = const Value.absent(),
     @required String statusRemoteId,
@@ -2044,6 +2058,7 @@ class $DbStatusListsTable extends DbStatusLists
   final GeneratedDatabase _db;
   final String _alias;
   $DbStatusListsTable(this._db, [this._alias]);
+
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
   @override
@@ -2155,6 +2170,7 @@ class DbStatusFavouritedAccount extends DataClass
       {@required this.id,
       @required this.statusRemoteId,
       @required this.accountRemoteId});
+
   factory DbStatusFavouritedAccount.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -2169,6 +2185,7 @@ class DbStatusFavouritedAccount extends DataClass
           .mapFromDatabaseResponse(data['${effectivePrefix}account_remote_id']),
     );
   }
+
   factory DbStatusFavouritedAccount.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -2178,6 +2195,7 @@ class DbStatusFavouritedAccount extends DataClass
       accountRemoteId: serializer.fromJson<String>(json['accountRemoteId']),
     );
   }
+
   @override
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -2240,6 +2258,7 @@ class DbStatusFavouritedAccountsCompanion
     this.statusRemoteId = const Value.absent(),
     this.accountRemoteId = const Value.absent(),
   });
+
   DbStatusFavouritedAccountsCompanion.insert({
     this.id = const Value.absent(),
     @required String statusRemoteId,
@@ -2264,6 +2283,7 @@ class $DbStatusFavouritedAccountsTable extends DbStatusFavouritedAccounts
   final GeneratedDatabase _db;
   final String _alias;
   $DbStatusFavouritedAccountsTable(this._db, [this._alias]);
+
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
   @override
@@ -2377,6 +2397,7 @@ class DbStatusRebloggedAccount extends DataClass
       {@required this.id,
       @required this.statusRemoteId,
       @required this.accountRemoteId});
+
   factory DbStatusRebloggedAccount.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -2391,6 +2412,7 @@ class DbStatusRebloggedAccount extends DataClass
           .mapFromDatabaseResponse(data['${effectivePrefix}account_remote_id']),
     );
   }
+
   factory DbStatusRebloggedAccount.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -2400,6 +2422,7 @@ class DbStatusRebloggedAccount extends DataClass
       accountRemoteId: serializer.fromJson<String>(json['accountRemoteId']),
     );
   }
+
   @override
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -2462,6 +2485,7 @@ class DbStatusRebloggedAccountsCompanion
     this.statusRemoteId = const Value.absent(),
     this.accountRemoteId = const Value.absent(),
   });
+
   DbStatusRebloggedAccountsCompanion.insert({
     this.id = const Value.absent(),
     @required String statusRemoteId,
@@ -2485,6 +2509,7 @@ class $DbStatusRebloggedAccountsTable extends DbStatusRebloggedAccounts
   final GeneratedDatabase _db;
   final String _alias;
   $DbStatusRebloggedAccountsTable(this._db, [this._alias]);
+
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
   @override
@@ -2657,6 +2682,7 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
       this.pleromaDeactivated,
       this.pleromaAllowFollowingMove,
       this.pleromaSkipThreadContainment});
+
   factory DbAccount.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -2729,6 +2755,7 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           data['${effectivePrefix}pleroma_skip_thread_containment']),
     );
   }
+
   factory DbAccount.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -2776,6 +2803,7 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           serializer.fromJson<bool>(json['pleromaSkipThreadContainment']),
     );
   }
+
   @override
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -3183,6 +3211,7 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
     this.pleromaAllowFollowingMove = const Value.absent(),
     this.pleromaSkipThreadContainment = const Value.absent(),
   });
+
   DbAccountsCompanion.insert({
     this.id = const Value.absent(),
     @required String remoteId,
@@ -3314,6 +3343,7 @@ class $DbAccountsTable extends DbAccounts
   final GeneratedDatabase _db;
   final String _alias;
   $DbAccountsTable(this._db, [this._alias]);
+
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
   @override
@@ -4137,6 +4167,7 @@ class DbAccountFollowing extends DataClass
       {@required this.id,
       @required this.accountRemoteId,
       @required this.followingAccountRemoteId});
+
   factory DbAccountFollowing.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -4151,6 +4182,7 @@ class DbAccountFollowing extends DataClass
           data['${effectivePrefix}following_account_remote_id']),
     );
   }
+
   factory DbAccountFollowing.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -4161,6 +4193,7 @@ class DbAccountFollowing extends DataClass
           serializer.fromJson<String>(json['followingAccountRemoteId']),
     );
   }
+
   @override
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -4224,6 +4257,7 @@ class DbAccountFollowingsCompanion extends UpdateCompanion<DbAccountFollowing> {
     this.accountRemoteId = const Value.absent(),
     this.followingAccountRemoteId = const Value.absent(),
   });
+
   DbAccountFollowingsCompanion.insert({
     this.id = const Value.absent(),
     @required String accountRemoteId,
@@ -4248,6 +4282,7 @@ class $DbAccountFollowingsTable extends DbAccountFollowings
   final GeneratedDatabase _db;
   final String _alias;
   $DbAccountFollowingsTable(this._db, [this._alias]);
+
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
   @override
@@ -4360,6 +4395,7 @@ class DbAccountFollower extends DataClass
       {@required this.id,
       @required this.accountRemoteId,
       @required this.followerAccountRemoteId});
+
   factory DbAccountFollower.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -4374,6 +4410,7 @@ class DbAccountFollower extends DataClass
           data['${effectivePrefix}follower_account_remote_id']),
     );
   }
+
   factory DbAccountFollower.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -4384,6 +4421,7 @@ class DbAccountFollower extends DataClass
           serializer.fromJson<String>(json['followerAccountRemoteId']),
     );
   }
+
   @override
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -4447,6 +4485,7 @@ class DbAccountFollowersCompanion extends UpdateCompanion<DbAccountFollower> {
     this.accountRemoteId = const Value.absent(),
     this.followerAccountRemoteId = const Value.absent(),
   });
+
   DbAccountFollowersCompanion.insert({
     this.id = const Value.absent(),
     @required String accountRemoteId,
@@ -4471,6 +4510,7 @@ class $DbAccountFollowersTable extends DbAccountFollowers
   final GeneratedDatabase _db;
   final String _alias;
   $DbAccountFollowersTable(this._db, [this._alias]);
+
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
   @override
@@ -4580,6 +4620,7 @@ class DbConversation extends DataClass implements Insertable<DbConversation> {
   final bool unread;
   DbConversation(
       {@required this.id, @required this.remoteId, @required this.unread});
+
   factory DbConversation.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -4595,6 +4636,7 @@ class DbConversation extends DataClass implements Insertable<DbConversation> {
           boolType.mapFromDatabaseResponse(data['${effectivePrefix}unread']),
     );
   }
+
   factory DbConversation.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -4604,6 +4646,7 @@ class DbConversation extends DataClass implements Insertable<DbConversation> {
       unread: serializer.fromJson<bool>(json['unread']),
     );
   }
+
   @override
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -4663,6 +4706,7 @@ class DbConversationsCompanion extends UpdateCompanion<DbConversation> {
     this.remoteId = const Value.absent(),
     this.unread = const Value.absent(),
   });
+
   DbConversationsCompanion.insert({
     this.id = const Value.absent(),
     @required String remoteId,
@@ -4684,6 +4728,7 @@ class $DbConversationsTable extends DbConversations
   final GeneratedDatabase _db;
   final String _alias;
   $DbConversationsTable(this._db, [this._alias]);
+
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
   @override
@@ -4782,6 +4827,7 @@ class DbConversationAccount extends DataClass
       {@required this.id,
       @required this.conversationRemoteId,
       @required this.accountRemoteId});
+
   factory DbConversationAccount.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -4796,6 +4842,7 @@ class DbConversationAccount extends DataClass
           .mapFromDatabaseResponse(data['${effectivePrefix}account_remote_id']),
     );
   }
+
   factory DbConversationAccount.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -4806,6 +4853,7 @@ class DbConversationAccount extends DataClass
       accountRemoteId: serializer.fromJson<String>(json['accountRemoteId']),
     );
   }
+
   @override
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -4868,6 +4916,7 @@ class DbConversationAccountsCompanion
     this.conversationRemoteId = const Value.absent(),
     this.accountRemoteId = const Value.absent(),
   });
+
   DbConversationAccountsCompanion.insert({
     this.id = const Value.absent(),
     @required String conversationRemoteId,
@@ -4891,6 +4940,7 @@ class $DbConversationAccountsTable extends DbConversationAccounts
   final GeneratedDatabase _db;
   final String _alias;
   $DbConversationAccountsTable(this._db, [this._alias]);
+
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
   @override
@@ -5003,6 +5053,7 @@ class DbConversationStatus extends DataClass
       {@required this.id,
       @required this.conversationRemoteId,
       @required this.statusRemoteId});
+
   factory DbConversationStatus.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -5017,6 +5068,7 @@ class DbConversationStatus extends DataClass
           .mapFromDatabaseResponse(data['${effectivePrefix}status_remote_id']),
     );
   }
+
   factory DbConversationStatus.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -5027,6 +5079,7 @@ class DbConversationStatus extends DataClass
       statusRemoteId: serializer.fromJson<String>(json['statusRemoteId']),
     );
   }
+
   @override
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -5089,6 +5142,7 @@ class DbConversationStatusesCompanion
     this.conversationRemoteId = const Value.absent(),
     this.statusRemoteId = const Value.absent(),
   });
+
   DbConversationStatusesCompanion.insert({
     this.id = const Value.absent(),
     @required String conversationRemoteId,
@@ -5112,6 +5166,7 @@ class $DbConversationStatusesTable extends DbConversationStatuses
   final GeneratedDatabase _db;
   final String _alias;
   $DbConversationStatusesTable(this._db, [this._alias]);
+
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
   @override
@@ -5231,6 +5286,7 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
       this.unread,
       this.type,
       @required this.createdAt});
+
   factory DbNotification.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -5255,6 +5311,7 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
           .mapFromDatabaseResponse(data['${effectivePrefix}created_at']),
     );
   }
+
   factory DbNotification.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -5268,6 +5325,7 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
     );
   }
+
   @override
   Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -5376,6 +5434,7 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
     this.type = const Value.absent(),
     this.createdAt = const Value.absent(),
   });
+
   DbNotificationsCompanion.insert({
     this.id = const Value.absent(),
     @required String remoteId,
@@ -5412,6 +5471,7 @@ class $DbNotificationsTable extends DbNotifications
   final GeneratedDatabase _db;
   final String _alias;
   $DbNotificationsTable(this._db, [this._alias]);
+
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
   @override

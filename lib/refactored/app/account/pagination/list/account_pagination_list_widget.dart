@@ -8,7 +8,6 @@ import 'package:fedi/refactored/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/refactored/pagination/list/pagination_list_widget.dart';
 import 'package:fedi/refactored/pagination/pagination_model.dart';
 import 'package:flutter/material.dart';
-import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
 class AccountPaginationListWidget extends PaginationListWidget<IAccount> {
@@ -22,7 +21,7 @@ class AccountPaginationListWidget extends PaginationListWidget<IAccount> {
     bool alwaysShowHeader,
     bool alwaysShowFooter,
     RefreshAction additionalRefreshAction,
-    this.needWatchLocalRepositoryForUpdates  =true,
+    this.needWatchLocalRepositoryForUpdates = true,
     @required this.accountSelectedCallback,
   }) : super(
             key: key,
@@ -48,7 +47,8 @@ class AccountPaginationListWidget extends PaginationListWidget<IAccount> {
                 child: DisposableProxyProvider<IAccount, IAccountBloc>(
                     update: (context, account, oldValue) =>
                         AccountBloc.createFromContext(context,
-                            needWatchLocalRepositoryForUpdates: needWatchLocalRepositoryForUpdates,
+                            needWatchLocalRepositoryForUpdates:
+                                needWatchLocalRepositoryForUpdates,
                             account: account,
                             needRefreshFromNetworkOnInit: false),
                     child: AccountListItemWidget(

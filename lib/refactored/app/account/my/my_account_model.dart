@@ -1,11 +1,10 @@
+import 'package:fedi/refactored/app/account/account_model.dart';
+import 'package:fedi/refactored/local_preferences/local_preferences_model.dart';
 import 'package:fedi/refactored/pleroma/account/my/pleroma_my_account_model.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/refactored/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/refactored/pleroma/field/pleroma_field_model.dart';
 import 'package:fedi/refactored/pleroma/tag/pleroma_tag_model.dart';
-import 'package:fedi/refactored/app/account/account_model.dart';
-import 'package:fedi/refactored/local_preferences/local_preferences_model.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 
 part 'my_account_model.g.dart';
@@ -24,7 +23,7 @@ class MyAccountRemoteWrapper extends IMyAccount {
   @HiveField(0)
   PleromaMyAccount remoteAccount;
 
-  MyAccountRemoteWrapper({ this.remoteAccount});
+  MyAccountRemoteWrapper({this.remoteAccount});
 
   @override
   String get acct => remoteAccount.acct;

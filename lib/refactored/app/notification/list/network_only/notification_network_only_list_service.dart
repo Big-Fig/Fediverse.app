@@ -8,10 +8,8 @@ import 'package:provider/provider.dart';
 abstract class INotificationNetworkOnlyListService extends DisposableOwner
     implements IPleromaNetworkOnlyListService<INotification> {
   static INotificationNetworkOnlyListService of(BuildContext context,
-      {bool listen = true}) =>
+          {bool listen = true}) =>
       Provider.of<INotificationNetworkOnlyListService>(context, listen: listen);
 
   IPleromaApi get pleromaApi;
-
-
 }
