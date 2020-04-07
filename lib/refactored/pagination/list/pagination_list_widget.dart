@@ -126,7 +126,9 @@ class _PaginationListWidgetState<T> extends State<PaginationListWidget<T>> {
   void initState() {
     super.initState();
 
-    Future.delayed(Duration(milliseconds: 100), () {
+    // 500 delay required to be sure that widget will be built during initial
+    // refresh
+    Future.delayed(Duration(milliseconds: 500), () {
       try {
         IPaginationListBloc<PaginationPage<T>, T> paginationListBloc =
             widget.retrievePaginationListBloc(context, listen: false);
