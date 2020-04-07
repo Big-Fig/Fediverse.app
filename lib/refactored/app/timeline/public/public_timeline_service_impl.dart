@@ -13,10 +13,7 @@ class PublicTimelineService extends TimelineStatusListService
   @override
   ITimelineSettings retrieveTimelineSettings() => TimelineSettings.public(
         excludeVisibilities: [
-          PleromaVisibility.DIRECT,
-          PleromaVisibility.PRIVATE,
-          PleromaVisibility.LIST,
-          PleromaVisibility.UNLISTED
+          PleromaVisibility.DIRECT
         ],
         onlyLocal: false,
         onlyNotMuted: true,

@@ -45,13 +45,14 @@ abstract class TimelineStatusListService extends DisposableOwner
         "\t olderThan = $olderThan");
     try {
       List<IPleromaStatus> remoteStatuses;
+      var onlyLocal = timelineSettings.onlyLocal == true;
       switch (timelineSettings.remoteType) {
         case TimelineRemoteType.public:
           remoteStatuses = await pleromaTimelineService.getPublicTimeline(
             maxId: olderThan?.remoteId,
             sinceId: newerThan?.remoteId,
             limit: limit,
-            onlyLocal: timelineSettings.onlyLocal != null,
+            onlyLocal: onlyLocal,
             onlyWithMedia: timelineLocalPreferencesBloc.value.onlyWithMedia,
             withMuted: !timelineSettings.onlyNotMuted,
             excludeVisibilities: timelineSettings.excludeVisibilities,
@@ -63,7 +64,7 @@ abstract class TimelineStatusListService extends DisposableOwner
             maxId: olderThan?.remoteId,
             sinceId: newerThan?.remoteId,
             limit: limit,
-            onlyLocal: timelineSettings.onlyLocal != null,
+            onlyLocal: onlyLocal,
             onlyWithMedia: timelineLocalPreferencesBloc.value.onlyWithMedia,
             withMuted: !timelineSettings.onlyNotMuted,
             excludeVisibilities: timelineSettings.excludeVisibilities,
@@ -74,7 +75,7 @@ abstract class TimelineStatusListService extends DisposableOwner
             maxId: olderThan?.remoteId,
             sinceId: newerThan?.remoteId,
             limit: limit,
-            onlyLocal: timelineSettings.onlyLocal != null,
+            onlyLocal: onlyLocal,
             onlyWithMedia: timelineLocalPreferencesBloc.value.onlyWithMedia,
             withMuted: !timelineSettings.onlyNotMuted,
             excludeVisibilities: timelineSettings.excludeVisibilities,
@@ -86,7 +87,7 @@ abstract class TimelineStatusListService extends DisposableOwner
             maxId: olderThan?.remoteId,
             sinceId: newerThan?.remoteId,
             limit: limit,
-            onlyLocal: timelineSettings.onlyLocal != null,
+            onlyLocal: onlyLocal,
             onlyWithMedia: timelineLocalPreferencesBloc.value.onlyWithMedia,
             withMuted: !timelineSettings.onlyNotMuted,
             excludeVisibilities: timelineSettings.excludeVisibilities,
