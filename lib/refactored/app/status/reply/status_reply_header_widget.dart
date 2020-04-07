@@ -32,12 +32,6 @@ class StatusReplyHeaderWidget extends StatelessWidget {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-//                      Image(
-//                        height: 15,
-//                        width: 15,
-//                        color: Colors.grey,
-//                        image: AssetImage("assets/images/comment.png"),
-//                      ),
                       Icon(
                         Icons.reply,
                         color: Colors.grey,
@@ -47,7 +41,7 @@ class StatusReplyHeaderWidget extends StatelessWidget {
                       ),
                       Text(
                         AppLocalizations.of(context)
-                            .tr("timeline.status.cell.reply_to"),
+                            .tr("app.status.reply.header"),
                         style: TextStyle(fontSize: 12),
                       )
                     ],

@@ -14,6 +14,7 @@ class StatusCreatedAtWidget extends StatelessWidget {
         builder: (context, snapshot) {
           var createdAt = snapshot.data;
 
+          // todo: locale
           return Text(
             timeago.format(createdAt, locale: 'en_short'),
           );

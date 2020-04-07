@@ -226,6 +226,13 @@
             }
           }
         }
+      },
+      "header": {
+        "favourite": "Favourited your status",
+        "follow": "Followed you",
+        "mention": "Mentioned you",
+        "reblog": "Reblogged your status",
+        "poll": "Poll notification"
       }
     },
     "timeline": {
@@ -247,6 +254,7 @@
       }
     },
     "list": {
+      "empty": "Items not found",
       "loading": {
         "state": {
           "can_loading": "Can loading",
@@ -256,9 +264,169 @@
       },
       "refresh": {
         "unable_to_fetch": "Unable to fetch",
-        "up_to_date": "Everything up to date",
+        "up_to_date": "Everything up to date"
+      }
+    },
+    "media": {
+      "attachment": {
+        "upload": {
+          "remove": {
+            "dialog": {
+              "content": "Are you sure you want to remove the attachment?",
+              "action": {
+                "remove": "Remove",
+                "cancel": "Cancel"
+              }
+            }
+          }
+        }
+      }
+    },
+    "search": {
+      "title": "Search",
+      "tab": {
+        "accounts": "Accounts",
+        "statuses": "Statuses"
+      },
+      "field": {
+        "input": {
+          "hint": "Search"
+        }
+      }
+    },
+    "splash": {
+      "state": {
+        "error": "Error during initialization. Try to re-install app"
+      }
+    },
+    "status": {
+      "action": {
+        "comment": "Comment",
+        "favourite": "Favourite",
+        "reblog": "Reblog",
+        "report": "Report",
+        "mute": "Mute",
+        "block": "Block",
+        "follow": "Follow",
+        "open_in_browser": "Open in browser",
+        "copy_link": "Copy link",
+        "more": "More",
+        "popup": {
+          "title": "Status Actions",
+          "more_actions_for": "More actions for"
+        }
+      },
+      "copy_link": {
+        "toast": "Copied"
+      },
+      "favourited_by": {
+        "title": "Favourited by"
+      },
+      "reblogged_by": {
+        "title": "Reblogged by"
+      },
+      "post": {
+        "action": {
+          "post": "Post"
+        },
+        "visibility": {
+          "state": {
+            "public": "Public",
+            "unlisted": "Unlisted",
+            "direct": "Direct",
+            "list": "List",
+            "private": "Private"
+          },
+          "action": {
+            "cancel": "Cancel"
+          }
+        },
+        "mention": {
+          "content": {
+            "one": "1 mention",
+            "many": "{} mentions"
+          }
+        },
+        "field": {
+          "message": {
+            "label": "Message"
+          }
+        },
+        "new": {
+          "title": "Compose new status"
+        }
+      },
+      "reblog": {
+        "header": "reblogged"
+      },
+      "reply": {
+        "header": "replied"
+      },
+      "thread": {
+        "title": "Status thread"
+      }
+    },
+    "tos": {
+      "title": "Terms of service"
+    }
+  },
+  "async": {
+    "dialog": {
+      "title": "Performing...",
+      "action": {
+        "cancel": "Cancel"
+      }
+    },
+    "init": {
+      "state": {
+        "not_started": "Async init not started",
+        "failed": "Failed to init {}"
       }
     }
-
+  },
+  "camera": {
+    "state": {
+      "error": "Error: {}",
+      "initializing": "Initializing",
+      "not_initialized": "Non initialized"
+    }
+  },
+  "file": {
+    "picker": {
+      "single": {
+        "video": {
+          "confirm": {
+            "dialog": {
+              "title": "Video",
+              "action": {
+                "select": "Select",
+                "cancel": "Cancel"
+              }
+            }
+          }
+        }
+      }
+    },
+    "gallery": {
+      "empty": "You don't have media",
+      "state": {
+        "loading_not_started": "Loading not started"
+      },
+      "folder": {
+        "empty": "This folder doesn't have media"
+      }
+    }
+  },
+  "pagination": {
+    "list":{
+      "empty": "Nothing found"
+    }
+  },
+  "permission": {
+    "grant": {
+      "action": {
+        "grant": "Grant permission"
+      }
+    }
   }
 }

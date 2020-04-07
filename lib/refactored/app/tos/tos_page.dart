@@ -7,7 +7,7 @@ class TosPage extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).tr("terms.title")),
+        title: Text(AppLocalizations.of(context).tr("app.tos.title")),
       ),
       body: SafeArea(
         child: SingleChildScrollView(

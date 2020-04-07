@@ -17,8 +17,8 @@ class StatusThreadPage extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
         title:
-            Text(AppLocalizations.of(context).tr("post.status.thread.title")),
-        actions: <Widget>[],
+            Text(AppLocalizations.of(context)
+                .tr("app.status.thread.title")),
       ),
       body: SafeArea(child: StatusThreadWidget()));
 }

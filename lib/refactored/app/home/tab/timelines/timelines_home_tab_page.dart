@@ -104,14 +104,14 @@ class TimelinesHomeTabPage extends StatelessWidget {
 
     switch (tab) {
       case TimelineTab.public:
-        return appLocalizations.tr("app.home.timelines.tab.public");
+        return appLocalizations.tr("app.home.tab.timelines.tab.public");
         break;
       case TimelineTab.home:
-        return appLocalizations.tr("app.home.timelines.tab.home");
+        return appLocalizations.tr("app.home.tab.timelines.tab.home");
 
         break;
       case TimelineTab.local:
-        return appLocalizations.tr("app.home.timelines.tab.local");
+        return appLocalizations.tr("app.home.tab.timelines.tab.local");
         break;
     }
 

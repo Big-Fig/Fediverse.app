@@ -45,7 +45,8 @@ class AppSplashWidget extends StatelessWidget {
               return MaterialApp(
                   home: Scaffold(
                       body: Text(
-                          AppLocalizations.of(context).tr("app.init.error"))));
+                          AppLocalizations.of(context)
+                              .tr("app.splash.state.error"))));
 
               break;
           }

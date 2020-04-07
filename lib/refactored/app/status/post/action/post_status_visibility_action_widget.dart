@@ -55,8 +55,8 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    AppLocalizations.of(context).tr("post.quick_post.action"
-                        ".cancel"),
+                    AppLocalizations.of(context)
+                        .tr("app.status.post.visibility.action.cancel"),
                     style: TextStyle(color: Colors.red),
                   )
                 ],
@@ -168,19 +168,19 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
     var appLocalizations = AppLocalizations.of(context);
     switch (visibility) {
       case PleromaVisibility.PUBLIC:
-        return appLocalizations.tr("post.quick_post.visibility.public");
+        return appLocalizations.tr("app.post.action.visibility.state.public");
         break;
       case PleromaVisibility.UNLISTED:
-        return appLocalizations.tr("post.quick_post.visibility.unlisted");
+        return appLocalizations.tr("app.post.action.visibility.state.unlisted");
         break;
       case PleromaVisibility.DIRECT:
-        return appLocalizations.tr("post.quick_post.visibility.direct");
+        return appLocalizations.tr("app.post.action.visibility.state.direct");
         break;
       case PleromaVisibility.LIST:
-        return appLocalizations.tr("post.quick_post.visibility.list");
+        return appLocalizations.tr("app.post.action.visibility.state.list");
         break;
       case PleromaVisibility.PRIVATE:
-        return appLocalizations.tr("post.quick_post.visibility.private");
+        return appLocalizations.tr("app.post.action.visibility.state.private");
         break;
     }
     throw "Not supported visibility $visibility";

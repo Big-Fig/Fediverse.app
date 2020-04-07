@@ -35,7 +35,7 @@ class PostStatusPostActionWidget extends StatelessWidget {
 
           return OutlineButton(
             child: Text(
-              AppLocalizations.of(context).tr("post.quick_post.action.post"),
+              AppLocalizations.of(context).tr("app.status.post.action.post"),
               style: TextStyle(color: isReadyToPost ? Colors.blue : null),
             ),
             onPressed: onPressed,

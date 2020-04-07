@@ -54,7 +54,7 @@ class ConversationWidget extends StatelessWidget {
                         StatusPaginationListBloc.createFromContext(context),
                     child: ConversationStatusListWidget(
                       key: PageStorageKey(
-                          "${conversationBloc.conversation.remoteId}"),
+                          conversationBloc.conversation.remoteId),
                     ),
                   ),
                 ),

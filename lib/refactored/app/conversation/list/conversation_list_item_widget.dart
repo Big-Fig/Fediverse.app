@@ -104,8 +104,7 @@ class ConversationListItemWidget extends StatelessWidget {
 
     if (myAccountBloc.checkStatusIsFromMe(status)) {
       formattedText = AppLocalizations.of(context)
-          .tr("app.conversation."
-          ".preview.you", args: [formattedText]);
+          .tr("app.conversation.preview.you", args: [formattedText]);
     }
     return formattedText;
   }

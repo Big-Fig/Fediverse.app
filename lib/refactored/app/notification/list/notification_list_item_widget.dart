@@ -1,6 +1,7 @@
 import 'package:fedi/refactored/app/notification/header/notification_favourite_type_header_widget.dart';
 import 'package:fedi/refactored/app/notification/header/notification_follow_type_header_widget.dart';
 import 'package:fedi/refactored/app/notification/header/notification_mention_type_header_widget.dart';
+import 'package:fedi/refactored/app/notification/header/notification_poll_type_header_widget.dart';
 import 'package:fedi/refactored/app/notification/header/notification_reblog_type_header_widget.dart';
 import 'package:fedi/refactored/app/notification/notification_bloc.dart';
 import 'package:fedi/refactored/app/status/list/status_list_item_timeline_widget.dart';
@@ -58,8 +59,7 @@ class NotificationListItemWidget extends StatelessWidget {
         headerWidget = NotificationFavouriteTypeHeaderWidget();
         break;
       case MastodonNotificationType.poll:
-        // TODO: Poll not implemented yet.
-        headerWidget = SizedBox.shrink();
+        headerWidget = NotificationPollTypeHeaderWidget();
         break;
       default:
         throw "Invalid type ${notificationBloc.type}";

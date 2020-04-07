@@ -48,12 +48,6 @@ class StatusReblogHeaderWidget extends StatelessWidget {
                   ),
                   Row(
                     children: <Widget>[
-//                      Image(
-//                        height: 20,
-//                        width: 20,
-//                        color: Colors.grey,
-//                        image: AssetImage("assets/images/repost.png"),
-//                      ),
                       Icon(
                         Icons.repeat,
                         color: Colors.grey,
@@ -63,7 +57,7 @@ class StatusReblogHeaderWidget extends StatelessWidget {
                       ),
                       Text(
                         AppLocalizations.of(context)
-                            .tr("timeline.status.cell.repeated"),
+                            .tr("app.status.reblog.header"),
                         style: TextStyle(fontSize: 12),
                       )
                     ],

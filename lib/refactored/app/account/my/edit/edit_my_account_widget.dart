@@ -48,7 +48,7 @@ class EditMyAccountWidget extends StatelessWidget {
             children: <Widget>[
               Text(
                 AppLocalizations.of(context)
-                    .tr("app.account.action.my.edit.field.header.label"),
+                    .tr("app.account.my.edit.field.header.label"),
                 style: TextStyle(color: Colors.white),
               ),
               Padding(
@@ -207,7 +207,7 @@ class EditMyAccountWidget extends StatelessWidget {
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
     var label =
         AppLocalizations.of(context)
-            .tr("app.account.action.my.edit.field.display_name.label");
+            .tr("app.account.my.edit.field.display_name.label");
     var textEditingController =
         editMyAccountBloc.displayNameField.textEditingController;
     return buildTextField(textEditingController, label);
@@ -217,7 +217,7 @@ class EditMyAccountWidget extends StatelessWidget {
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
     var label =
         AppLocalizations.of(context)
-            .tr("app.account.action.my.edit.field.note.label");
+            .tr("app.account.my.edit.field.note.label");
     var textEditingController =
         editMyAccountBloc.noteField.textEditingController;
     return buildTextField(textEditingController, label);
@@ -250,7 +250,7 @@ class EditMyAccountWidget extends StatelessWidget {
   Widget buildLockedField(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
     var label = AppLocalizations.of(context)
-        .tr("app.account.action.my.edit.field.locked.label");
+        .tr("app.account.my.edit.field.locked.label");
     var field = editMyAccountBloc.lockedField;
     return buildBooleanField(label, field);
   }
@@ -291,7 +291,7 @@ class EditMyAccountWidget extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(10.0), // todo: localization
           child: Text(AppLocalizations.of(context)
-              .tr("app.account.action.my.edit.group.custom_field.label")),
+              .tr("app.account.my.edit.group.custom_field.label")),
         ),
         ...editMyAccountBloc.customFields.map((customField) =>
             buildField(context, editMyAccountBloc, customField))
@@ -309,7 +309,7 @@ class EditMyAccountWidget extends StatelessWidget {
             child: buildCustomFieldTextField(
                 customField.nameField.textEditingController,
                 AppLocalizations.of(context)
-                    .tr("app.account.action.my.edit.field.custom_field.label"
+                    .tr("app.account.my.edit.field.custom_field.label"
                     ".label")
             ),
           ),
@@ -317,7 +317,7 @@ class EditMyAccountWidget extends StatelessWidget {
             child: buildCustomFieldTextField(
                 customField.valueField.textEditingController,
                 AppLocalizations.of(context)
-                    .tr("app.account.action.my.edit.field.custom_field.value"
+                    .tr("app.account.my.edit.field.custom_field.value"
                     ".label")
             ),
           ),

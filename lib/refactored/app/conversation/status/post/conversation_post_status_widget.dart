@@ -19,7 +19,7 @@ class ConversationPostStatusWidget extends StatelessWidget {
       child: Column(
         children: <Widget>[
           PostStatusMentionsWidget(),
-          MessagePostStatusWidget(expanded: true,),
+          MessagePostStatusWidget(expanded: false),
           UploadMediaAttachmentGridWidget(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

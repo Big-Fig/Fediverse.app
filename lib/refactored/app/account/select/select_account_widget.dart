@@ -13,13 +13,8 @@ class SelectAccountWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var selectAccountListService =
-        ISelectAccountListService.of(context, listen: true);
-
     return Column(
       children: <Widget>[
-        Provider<ISearchInputBloc>.value(
-            value: selectAccountListService.searchInputBloc),
         Expanded(
           child: AccountPaginationListWidget(
             accountSelectedCallback: accountSelectedCallback,

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/status/post/post_status_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,14 +18,14 @@ class MessagePostStatusWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(12.0),
           borderSide: BorderSide(),
         ),
-        // todo: localization
-        labelText: "Message",
+        labelText: AppLocalizations.of(context)
+            .tr("app.status.post.field.message.label"),
       ),
-      autofocus: expanded ? true : null,
+      autofocus: expanded,
       controller: postStatusBloc.inputTextController,
-      minLines: expanded ? null : null,
-      maxLines: expanded ? null : null,
-      expands: expanded ? true : null,
+      minLines: null,
+      maxLines: null,
+      expands: expanded,
     );
   }
 }

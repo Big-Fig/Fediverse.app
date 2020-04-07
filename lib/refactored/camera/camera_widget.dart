@@ -7,7 +7,7 @@ import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart'
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'camera_model.dart';
+import 'package:fedi/refactored/camera/camera_model.dart';
 
 abstract class CameraWidget extends StatelessWidget {
   @override

@@ -7,9 +7,9 @@ import 'package:fedi/refactored/app/auth/instance/current/context/loading/curren
 import 'package:fedi/refactored/app/auth/instance/current/context/loading/current_auth_instance_context_loading_page.dart';
 import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/refactored/app/auth/instance/auth_instance_model.dart';
+import 'package:fedi/refactored/app/auth/instance/join/from_scratch/from_scratch_join_auth_instance_page.dart';
 import 'package:fedi/refactored/app/auth/instance/join/join_auth_instance_bloc.dart';
 import 'package:fedi/refactored/app/auth/instance/join/join_auth_instance_bloc_impl.dart';
-import 'package:fedi/refactored/app/auth/instance/join/join_auth_instance_page.dart';
 import 'package:fedi/refactored/app/auth/instance/list/auth_instance_list_model.dart';
 import 'package:fedi/refactored/app/context/app_context_bloc_impl.dart';
 import 'package:fedi/refactored/app/home/home_page.dart';

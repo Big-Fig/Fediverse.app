@@ -20,7 +20,7 @@ class StatusFavouriteAccountListPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
           title: Text(AppLocalizations.of(context)
-              .tr("post.status.favourited_by.title"))),
+              .tr("app.status.favourited_by.title"))),
       body: SafeArea(
         child: AccountPaginationListWidget(
           accountSelectedCallback: (account) =>

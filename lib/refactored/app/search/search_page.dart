@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/search/search_bloc.dart';
 import 'package:fedi/refactored/app/search/search_bloc_impl.dart';
 import 'package:fedi/refactored/app/search/search_model.dart';
@@ -10,9 +11,8 @@ class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // todo: localization
       appBar: AppBar(
-        title: Text("Search"),
+        title: Text(AppLocalizations.of(context).tr("app.search.title")),
       ),
       body: SafeArea(child: SearchWidget()),
     );
