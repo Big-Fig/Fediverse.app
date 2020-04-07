@@ -4,7 +4,6 @@ import 'package:fedi/refactored/app/auth/instance/register/register_auth_instanc
 import 'package:fedi/refactored/app/dialog/alert_dialog.dart';
 import 'package:fedi/refactored/app/dialog/progress_dialog.dart';
 import 'package:fedi/refactored/pleroma/account/public/pleroma_account_public_model.dart';
-import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +26,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
   }
 
   Widget userNameField(BuildContext context, IRegisterAuthInstanceBloc bloc) {
-    return InitialDataStreamBuilder(
+    return StreamBuilder(
       stream: bloc.usernameStream,
       initialData: bloc.username,
       builder: (context, snapshot) {
@@ -49,7 +48,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
   }
 
   Widget emailField(BuildContext context, IRegisterAuthInstanceBloc bloc) {
-    return InitialDataStreamBuilder(
+    return StreamBuilder(
       stream: bloc.emailStream,
       initialData: bloc.email,
       builder: (context, snapshot) {
@@ -72,7 +71,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
   }
 
   Widget passwordField(BuildContext context, IRegisterAuthInstanceBloc bloc) {
-    return InitialDataStreamBuilder(
+    return StreamBuilder(
       stream: bloc.passwordStream,
       initialData: bloc.password,
       builder: (context, snapshot) {
@@ -95,9 +94,8 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
 
   Widget confirmPasswordField(
       BuildContext context, IRegisterAuthInstanceBloc bloc) {
-    return InitialDataStreamBuilder(
+    return StreamBuilder(
       stream: bloc.passwordsMatchStream,
-      initialData: null,
       builder: (context, snapshot) {
         return Padding(
           padding: EdgeInsets.all(10),
@@ -117,9 +115,8 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
   }
 
   Widget submitButton(BuildContext context, IRegisterAuthInstanceBloc bloc) {
-    return InitialDataStreamBuilder(
+    return StreamBuilder(
       stream: bloc.registerStream,
-      initialData: null,
       builder: (context, snapshot) {
         return Padding(
           padding: EdgeInsets.all(10),
