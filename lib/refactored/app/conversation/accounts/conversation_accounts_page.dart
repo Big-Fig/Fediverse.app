@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/conversation/accounts/conversation_accounts_widget.dart';
 import 'package:fedi/refactored/app/conversation/conversation_bloc.dart';
 import 'package:fedi/refactored/app/conversation/conversation_bloc_impl.dart';
@@ -16,8 +17,9 @@ class ConversationAccountsPage extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pop();
           },
-        ), // todo: localization
-        title: Text("Conversation users"),
+        ),
+        title: Text(AppLocalizations.of(context)
+            .tr("app.conversation.accounts.title")),
       ),
       body: ConversationAccountsWidget(),
     );

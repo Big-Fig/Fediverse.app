@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/account/account_bloc.dart';
+import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/async/async_button_widget.dart';
+import 'package:fedi/refactored/app/conversation/start/status/post_status_start_conversation_page.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +39,7 @@ class AccountActionListWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   buildFollowButton(accountBloc, relationship),
-                  buildMessageButton(context),
+                  buildMessageButton(context, accountBloc),
                   buildMoreButton(context, accountBloc, relationship),
                 ],
               ),
@@ -64,22 +66,17 @@ class AccountActionListWidget extends StatelessWidget {
     );
   }
 
-  OutlineButton buildMessageButton(BuildContext context) {
+  OutlineButton buildMessageButton(
+      BuildContext context, IAccountBloc accountBloc) {
     return OutlineButton(
       child: Row(
         children: <Widget>[
           Text(AppLocalizations.of(context).tr("app.account.action.message"))
         ],
       ),
-      onPressed: () {
-        // todo: go to conversation
-//                  Navigator.push(
-//                      context,
-//                      MaterialPageRoute(
-//                        builder: (context) => ChatPage(
-//                          account: widget.profileAccount,
-//                        ),
-//                      ));
+      onPressed: () async {
+        goToPostStatusStartConversationPage(context,
+            conversationAccountsWithoutMe: <IAccount>[accountBloc.account]);
       },
     );
   }

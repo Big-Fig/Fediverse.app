@@ -29,7 +29,7 @@ DbAccount mapRemoteAccountToDbAccount(IPleromaAccount remoteAccount) {
     fields: remoteAccount.fields,
     emojis: remoteAccount.emojis,
 // tags have invalid schema
-// todo: revert when after tags fix in Pleroma
+// todo: revert when bug will be fixed in Pleroma
 //    pleromaTags: remoteAccount.pleroma?.tags,
     pleromaRelationship: remoteAccount.pleroma?.relationship,
     pleromaIsAdmin: remoteAccount.pleroma?.isAdmin,

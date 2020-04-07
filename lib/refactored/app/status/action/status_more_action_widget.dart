@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/refactored/app/account/account_bloc.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -98,18 +99,8 @@ class StatusShareActionWidget extends StatelessWidget {
                 ],
               ),
               onPressed: () {
-                // todo: implement report
-//                          var params = {"account_id": status.account.id};
-//                          CurrentInstance.instance.currentClient
-//                              .run(
-//                              path: Accounts.reportAccount(),
-//                              params: params,
-//                              method: HTTPMethod.POST)
-//                              .then((response) {
-//                            print(response.body);
-//                          }).catchError((error) {
-//                            print(error);
-//                          });
+                // todo: progress dialog
+                IAccountBloc.of(context, listen: false).requestReport();
                 Navigator.of(context).pop();
               },
             ),
@@ -129,22 +120,14 @@ class StatusShareActionWidget extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  // todo: localization toggle
                   Text(AppLocalizations.of(context)
                       .tr("app.status.action.block"))
                 ],
               ),
               onPressed: () {
-                // todo: implement report
-//                          CurrentInstance.instance.currentClient
-//                              .run(
-//                              path: Accounts.blockAccount(
-//                                  status.account.id),
-//                              method: HTTPMethod.POST)
-//                              .then((response) {
-//                            print(response.body);
-//                          }).catchError((error) {
-//                            print(error);
-//                          });
+                // todo: progress dialog
+                IAccountBloc.of(context, listen: false).requestToggleBlock();
                 Navigator.of(context).pop();
               },
             ),
@@ -164,22 +147,14 @@ class StatusShareActionWidget extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  // todo: localization toggle
                   Text(
                       AppLocalizations.of(context).tr("app.status.action.mute"))
                 ],
               ),
               onPressed: () {
-                // todo: implement mute
-//                          CurrentInstance.instance.currentClient
-//                              .run(
-//                              path:
-//                              Accounts.muteAccount(status.account.id),
-//                              method: HTTPMethod.POST)
-//                              .then((response) {
-//                            print(response.body);
-//                          }).catchError((error) {
-//                            print(error);
-//                          });
+                // todo: progress dialog
+                IAccountBloc.of(context, listen: false).requestToggleMute();
                 Navigator.of(context).pop();
               },
             ),
@@ -199,35 +174,14 @@ class StatusShareActionWidget extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  // todo: localization toggle
                   Text(AppLocalizations.of(context)
                       .tr("app.status.action.follow"))
                 ],
               ),
               onPressed: () {
-                // todo: follow
-//                          CurrentInstance.instance.currentClient
-//                              .run(
-//                              path:
-//                              Accounts.account(id: status.account.id),
-//                              method: HTTPMethod.GET)
-//                              .then((response) {
-//                            Account account =
-//                            Account.fromJsonString(response.body);
-//                            CurrentInstance.instance.currentClient
-//                                .run(
-//                                path: Accounts.followAccount(account.id),
-//                                method: HTTPMethod.POST)
-//                                .then((response) {
-//                              print("following response");
-//                              print("following ${response.statusCode}");
-//                              print(response.body);
-//                            }).catchError((error) {
-//                              print(error);
-//                            });
-//                          }).catchError((error) {
-//                            print(error);
-//                          });
-
+                // todo: progress dialog
+                IAccountBloc.of(context, listen: false).requestToggleFollow();
                 Navigator.of(context).pop();
               },
             ),
@@ -279,7 +233,6 @@ class StatusShareActionWidget extends StatelessWidget {
                 ],
               ),
               onPressed: () {
-                print(status.uri);
                 Clipboard.setData(ClipboardData(text: status.uri));
                 Navigator.of(context).pop();
                 Fluttertoast.showToast(

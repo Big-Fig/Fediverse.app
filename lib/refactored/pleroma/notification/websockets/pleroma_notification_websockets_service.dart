@@ -8,9 +8,6 @@ abstract class IPleromaNotificationWebSocketsService extends DisposableOwner {
           {listen: true}) =>
       Provider.of(context, listen: listen);
 
-  /// Must be called when current client changed
-  void onClientChanged();
-
   /// Returns events that are relevant to the authorized user,
   /// i.e. home timeline and notifications
   IPleromaNotificationWebSocketsChannel getUserChannel();

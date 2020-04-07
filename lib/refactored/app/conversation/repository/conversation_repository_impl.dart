@@ -1,3 +1,4 @@
+import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
 import 'package:fedi/refactored/app/conversation/conversation_model.dart';
 import 'package:fedi/refactored/app/conversation/conversation_model_adapter.dart';
@@ -159,12 +160,14 @@ class ConversationRepository extends AsyncInitLoadingBloc
 
   @override
   Future<List<DbConversationWrapper>> getConversations(
-      {@required IConversation olderThanConversation,
+      {@required IAccount withAccount,
+      @required IConversation olderThanConversation,
       @required IConversation newerThanConversation,
       @required int limit,
       @required int offset,
       @required ConversationOrderingTermData orderingTermData}) async {
     var query = createQuery(
+        withAccount: withAccount,
         olderThanConversation: olderThanConversation,
         newerThanConversation: newerThanConversation,
         limit: limit,
@@ -179,12 +182,14 @@ class ConversationRepository extends AsyncInitLoadingBloc
 
   @override
   Stream<List<DbConversationWrapper>> watchConversations(
-      {@required IConversation olderThanConversation,
+      {@required IAccount withAccount,
+      @required IConversation olderThanConversation,
       @required IConversation newerThanConversation,
       @required int limit,
       @required int offset,
       @required ConversationOrderingTermData orderingTermData}) {
     var query = createQuery(
+      withAccount: withAccount,
       olderThanConversation: olderThanConversation,
       newerThanConversation: newerThanConversation,
       limit: limit,
@@ -197,12 +202,14 @@ class ConversationRepository extends AsyncInitLoadingBloc
   }
 
   SimpleSelectStatement createQuery(
-      {@required IConversation olderThanConversation,
+      {@required IAccount withAccount,
+      @required IConversation olderThanConversation,
       @required IConversation newerThanConversation,
       @required int limit,
       @required int offset,
       @required ConversationOrderingTermData orderingTermData}) {
     _logger.fine(() => "createQuery \n"
+        "\t withAccount=$withAccount\n"
         "\t olderThanConversation=$olderThanConversation\n"
         "\t newerThanConversation=$newerThanConversation\n"
         "\t limit=$limit\n"
@@ -215,6 +222,10 @@ class ConversationRepository extends AsyncInitLoadingBloc
       dao.addRemoteIdBoundsWhere(query,
           maximumRemoteIdExcluding: olderThanConversation?.remoteId,
           minimumRemoteIdExcluding: newerThanConversation?.remoteId);
+    }
+
+    if(withAccount != null) {
+      throw "Not implemented yet";
     }
 
     if (orderingTermData != null) {
@@ -230,10 +241,12 @@ class ConversationRepository extends AsyncInitLoadingBloc
 
   @override
   Future<DbConversationWrapper> getConversation(
-      {@required IConversation olderThanConversation,
+      {@required IAccount withAccount,
+      @required IConversation olderThanConversation,
       @required IConversation newerThanConversation,
       @required ConversationOrderingTermData orderingTermData}) async {
     var conversations = await getConversations(
+        withAccount: withAccount,
         olderThanConversation: olderThanConversation,
         newerThanConversation: newerThanConversation,
         orderingTermData: orderingTermData,
@@ -244,10 +257,12 @@ class ConversationRepository extends AsyncInitLoadingBloc
 
   @override
   Stream<DbConversationWrapper> watchConversation(
-      {@required IConversation olderThanConversation,
+      {@required IAccount withAccount,
+      @required IConversation olderThanConversation,
       @required IConversation newerThanConversation,
       @required ConversationOrderingTermData orderingTermData}) {
     var conversationsStream = watchConversations(
+        withAccount: withAccount,
         olderThanConversation: olderThanConversation,
         newerThanConversation: newerThanConversation,
         orderingTermData: orderingTermData,

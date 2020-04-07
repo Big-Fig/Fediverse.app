@@ -35,7 +35,6 @@ class CurrentAuthInstanceContextLoadingWidget extends StatelessWidget {
               case CurrentAuthInstanceContextLoadingState.loading:
                 var myAccountBloc = IMyAccountBloc.of(context, listen: true);
 
-                // todo: localization
                 return Center(
                     child: Text(
                         AppLocalizations.of(context).tr(

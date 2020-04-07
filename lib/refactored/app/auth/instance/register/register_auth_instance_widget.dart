@@ -173,7 +173,6 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
       authApplicationBloc.dispose();
     }
     if (success == true) {
-      // TODO: localization
       var alert = Alert(
           context,
           AppLocalizations.of(context)

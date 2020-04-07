@@ -59,8 +59,6 @@ void goToConversationPage(BuildContext context,
             create: (context) {
               var conversationBloc = ConversationBloc.createFromContext(context,
                   conversation: conversation);
-              // todo: remove
-              conversationBloc.performAsyncInit();
               return conversationBloc;
             },
             child: DisposableProvider<IPostStatusBloc>(
