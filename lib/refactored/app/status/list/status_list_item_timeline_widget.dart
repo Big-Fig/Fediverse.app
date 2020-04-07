@@ -12,6 +12,7 @@ import 'package:fedi/refactored/app/status/media/status_media_attachments_widget
 import 'package:fedi/refactored/app/status/reblog/status_reblog_header_widget.dart';
 import 'package:fedi/refactored/app/status/reply/status_reply_header_widget.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
+import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/app/status/thread/status_thread_page.dart';
 import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/material.dart';
@@ -21,12 +22,12 @@ import 'package:logging/logging.dart';
 var _logger = Logger("status_list_item_timeline_widget.dart");
 
 class StatusListItemTimelineWidget extends StatefulWidget {
-  final bool navigateToStatusThreadOnClick;
+  final IStatusCallback statusCallback;
   final bool displayActions;
 
   StatusListItemTimelineWidget({
     this.displayActions = true,
-    this.navigateToStatusThreadOnClick = true,
+    this.statusCallback = goToStatusThreadPage,
   }) : super();
 
   @override
@@ -72,8 +73,8 @@ class _StatusListItemTimelineWidgetState
       GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () {
-          if (widget.navigateToStatusThreadOnClick == true) {
-            goToStatusThreadPage(context, statusBloc.status);
+          if (widget.statusCallback != null) {
+            widget.statusCallback(context, statusBloc.status);
           }
         },
         child: Column(

@@ -7,11 +7,13 @@ import 'package:fedi/refactored/app/status/status_bloc.dart';
 import 'package:fedi/refactored/app/status/status_bloc_impl.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/app/status/thread/status_thread_bloc.dart';
+import 'package:fedi/refactored/app/status/thread/status_thread_page.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widgets/flutter_widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class StatusThreadWidget extends StatefulWidget {
@@ -90,22 +92,20 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
         padding: EdgeInsets.symmetric(horizontal: 2.0, vertical: 10.0),
         itemCount: statuses.length,
         itemBuilder: (BuildContext context, int index) {
-          var status = statuses[index];
-
-          var isStatusToReply =
-              statusThreadBloc.startStatus.remoteId == status.remoteId;
-          var decoration;
-          if (isStatusToReply) {
-            decoration = BoxDecoration(color: Colors.blue);
-          }
-          return DisposableProvider<IStatusBloc>(
-              create: (context) =>
-                  StatusBloc.createFromContext(context, status),
-              child: Container(
-                decoration: decoration,
+          return Provider.value(
+            value: statuses[index],
+            child: DisposableProxyProvider<IStatus, IStatusBloc>(
+                update: (context, status, oldValue) =>
+                    StatusBloc.createFromContext(context, status,
+                        needWatchLocalRepositoryForUpdates: true),
                 child: StatusListItemTimelineWidget(
-                    navigateToStatusThreadOnClick: false),
-              ));
+                    statusCallback: (context, status) {
+                  if (status.remoteId !=
+                      statusThreadBloc.startStatus.remoteId) {
+                    goToStatusThreadPage(context, status);
+                  }
+                })),
+          );
         },
       );
     }
