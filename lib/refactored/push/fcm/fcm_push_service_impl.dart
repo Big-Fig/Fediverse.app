@@ -9,11 +9,6 @@ import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger("fcm_push_service_impl.dart");
 
-Future onBackgroundMessage(Map<String, dynamic> message) async {
-  _logger.warning(() => "onBackgroundMessage Unhandled background messages "
-      "$message");
-}
-
 final String _iosCloudMessageNotificationKey = "notification";
 
 class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
@@ -69,7 +64,6 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
     }));
 
     _fcm.configure(
-        onBackgroundMessage: onBackgroundMessage,
         onMessage: (data) async =>
             _onNewMessage(parseCloudMessage(PushMessageType.foreground, data)),
         onLaunch: (data) async =>
