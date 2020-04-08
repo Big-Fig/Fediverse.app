@@ -9,7 +9,7 @@ class StatusEmojiReactionListItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var statusEmojiReactionBloc =
         IStatusEmojiReactionBloc.of(context, listen: true);
-    return InitialDataStreamBuilder<IPleromaStatusEmojiReaction>(
+    return StreamBuilder<IPleromaStatusEmojiReaction>(
         stream: statusEmojiReactionBloc.emojiReactionStream,
         initialData: statusEmojiReactionBloc.emojiReaction,
         builder: (context, snapshot) {

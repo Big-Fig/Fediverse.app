@@ -51,7 +51,7 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
 
   Widget buildMessageList(
       BuildContext context, IStatusThreadBloc statusThreadBloc) {
-    return InitialDataStreamBuilder<List<IStatus>>(
+    return StreamBuilder<List<IStatus>>(
         stream: statusThreadBloc.statusesStream,
         initialData: statusThreadBloc.statuses,
         builder: (context, snapshot) {

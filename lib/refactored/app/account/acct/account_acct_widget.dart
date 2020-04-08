@@ -6,7 +6,7 @@ class AccountAcctWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: true);
-    return InitialDataStreamBuilder<String>(
+    return StreamBuilder<String>(
         stream: accountBloc.acctStream,
         initialData: accountBloc.acct,
         builder: (context, snapshot) {

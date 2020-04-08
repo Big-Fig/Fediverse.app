@@ -17,7 +17,7 @@ abstract class FilePickerBodyWidget extends StatelessWidget {
   Widget buildBody(BuildContext context) {
     var filePickerBloc = IFilePickerBloc.of(context);
 
-    return InitialDataStreamBuilder<FilePickerTab>(
+    return StreamBuilder<FilePickerTab>(
         stream: filePickerBloc.selectedTabStream.distinct(),
         initialData: filePickerBloc.selectedTab,
         builder: (context, snapshot) {

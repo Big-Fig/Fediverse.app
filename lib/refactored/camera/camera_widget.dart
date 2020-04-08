@@ -36,7 +36,7 @@ abstract class CameraWidget extends StatelessWidget {
   }
 
   Widget buildSwitchCameraButtonWidget(ICameraBloc cameraBloc) =>
-      InitialDataStreamBuilder<bool>(
+      StreamBuilder<bool>(
           stream: cameraBloc.isReadyForActionStream,
           initialData: cameraBloc.isReadyForAction,
           builder: (context, snapshot) {
@@ -81,7 +81,7 @@ abstract class CameraWidget extends StatelessWidget {
   Widget buildCameraPreviewWidget(ICameraBloc cameraBloc) {
     return Stack(
       children: <Widget>[
-        InitialDataStreamBuilder<CameraController>(
+        StreamBuilder<CameraController>(
             stream: cameraBloc.cameraControllerStream,
             initialData: cameraBloc.cameraController,
             builder: (context, snapshot) {
@@ -99,7 +99,7 @@ abstract class CameraWidget extends StatelessWidget {
             }),
         Align(
           alignment: Alignment.center,
-          child: InitialDataStreamBuilder<CameraState>(
+          child: StreamBuilder<CameraState>(
               stream: cameraBloc.cameraStateStream,
               initialData: cameraBloc.cameraState,
               builder: (context, snapshot) {

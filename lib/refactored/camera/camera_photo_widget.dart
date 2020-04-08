@@ -26,7 +26,7 @@ class CameraPhotoWidget extends CameraWidget {
 
   Widget buildCameraCaptureImageButtonWidget(
           BuildContext context, ICameraBloc cameraBloc) =>
-      InitialDataStreamBuilder<bool>(
+      StreamBuilder<bool>(
           stream: cameraBloc.isReadyForActionStream,
           initialData: cameraBloc.isReadyForAction,
           builder: (context, snapshot) {

@@ -79,7 +79,7 @@ class _StatusListItemTimelineWidgetState
         },
         child: Column(
           children: [
-            InitialDataStreamBuilder<bool>(
+            StreamBuilder<bool>(
                 stream: statusBloc.isHaveReblogStream,
                 initialData: statusBloc.isHaveReblog,
                 builder: (context, snapshot) {

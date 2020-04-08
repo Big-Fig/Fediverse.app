@@ -14,7 +14,7 @@ class AccountAvatarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: true);
 
-    return InitialDataStreamBuilder<String>(
+    return StreamBuilder<String>(
         stream: accountBloc.avatarStream,
         initialData: accountBloc.avatar,
         builder: (context, snapshot) {

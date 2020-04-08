@@ -19,7 +19,7 @@ class StatusCommentActionWidget extends StatelessWidget {
             goToStatusThreadPage(context, statusBloc.status);
           },
         ),
-        InitialDataStreamBuilder<int>(
+        StreamBuilder<int>(
             stream: statusBloc.repliesCountStream,
             initialData: statusBloc.repliesCount,
             builder: (context, snapshot) {

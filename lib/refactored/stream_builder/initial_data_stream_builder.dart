@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 
-// same behaviour like StreamBuilder but with better performance
+// same behaviour like InitialDataStreamBuilder but with better performance
 // don't rebuild twice with initial data on first build
 class InitialDataStreamBuilder<T> extends StatefulWidget {
   final T initialData;

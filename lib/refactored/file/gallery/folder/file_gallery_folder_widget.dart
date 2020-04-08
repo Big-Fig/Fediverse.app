@@ -33,7 +33,7 @@ class FileGalleryFolderWidget extends StatelessWidget {
 
   Widget buildPermissionGrantedView(
       BuildContext context, IFileGalleryFolderBloc folderBloc) {
-    return InitialDataStreamBuilder<FileGalleryState>(
+    return StreamBuilder<FileGalleryState>(
         stream: folderBloc.galleryStateStream,
         initialData: folderBloc.galleryState,
         builder: (context, snapshot) {
@@ -61,7 +61,7 @@ class FileGalleryFolderWidget extends StatelessWidget {
 
   Widget buildFilesWidget(
       BuildContext context, IFileGalleryFolderBloc folderBloc) {
-    return InitialDataStreamBuilder<List<AssetEntity>>(
+    return StreamBuilder<List<AssetEntity>>(
         stream: folderBloc.filesStream,
         initialData: folderBloc.files,
         builder: (context, snapshot) {

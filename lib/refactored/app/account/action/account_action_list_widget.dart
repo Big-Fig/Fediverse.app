@@ -17,7 +17,7 @@ class AccountActionListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);
     assert(!accountBloc.isMyAccount);
-    return InitialDataStreamBuilder<IPleromaAccountRelationship>(
+    return StreamBuilder<IPleromaAccountRelationship>(
         stream: accountBloc.accountRelationshipStream,
         initialData: accountBloc.accountRelationship,
         builder: (context, snapshot) {

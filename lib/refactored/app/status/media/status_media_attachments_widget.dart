@@ -15,7 +15,7 @@ class StatusMediaAttachmentsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: false);
-    return InitialDataStreamBuilder<List<IPleromaMediaAttachment>>(
+    return StreamBuilder<List<IPleromaMediaAttachment>>(
         stream: statusBloc.mediaAttachmentsStream.distinct(),
         initialData: statusBloc.mediaAttachments,
         builder: (context, snapshot) {

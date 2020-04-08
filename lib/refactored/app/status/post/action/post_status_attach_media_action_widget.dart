@@ -10,7 +10,7 @@ class PostStatusAttachMediaActionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var postStatusBloc = IPostStatusBloc.of(context, listen: false);
 
-    return InitialDataStreamBuilder<bool>(
+    return StreamBuilder<bool>(
         stream: postStatusBloc.isPossibleToAttachMediaStream,
         initialData: postStatusBloc.isPossibleToAttachMedia,
         builder: (context, snapshot) {

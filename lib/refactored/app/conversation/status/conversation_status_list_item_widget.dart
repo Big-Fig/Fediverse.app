@@ -66,7 +66,7 @@ class ConversationStatusListItemWidget extends StatelessWidget {
               onTap: () {
                 goToAccountDetailsPage(context, statusBloc.account);
               },
-              child: InitialDataStreamBuilder<String>(
+              child: StreamBuilder<String>(
                   stream: statusBloc.accountAvatarStream,
                   initialData: statusBloc.accountAvatar,
                   builder: (context, snapshot) {

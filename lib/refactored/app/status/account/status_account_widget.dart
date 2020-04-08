@@ -17,7 +17,7 @@ class StatusAccountWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: true);
 
-    return InitialDataStreamBuilder<IAccount>(
+    return StreamBuilder<IAccount>(
         stream: statusBloc.accountReblogOrOriginalStream,
         initialData: statusBloc.accountReblogOrOriginalAccount,
         builder: (context, snapshot) {

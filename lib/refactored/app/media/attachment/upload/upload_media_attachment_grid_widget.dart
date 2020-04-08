@@ -13,7 +13,7 @@ class UploadMediaAttachmentGridWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var postStatusBloc = IPostStatusBloc.of(context, listen: false);
-    return InitialDataStreamBuilder<List<IUploadMediaAttachmentBloc>>(
+    return StreamBuilder<List<IUploadMediaAttachmentBloc>>(
         stream: postStatusBloc.mediaAttachmentBlocsStream,
         initialData: postStatusBloc.mediaAttachmentBlocs,
         builder: (context, snapshot) {

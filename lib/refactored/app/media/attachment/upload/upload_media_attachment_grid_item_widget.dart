@@ -15,7 +15,7 @@ class UploadMediaAttachmentGridItem extends StatelessWidget {
     return Stack(
       children: <Widget>[
         buildMediaPreview(uploadMediaAttachmentBloc.filePickerFile),
-        InitialDataStreamBuilder<UploadMediaAttachmentState>(
+        StreamBuilder<UploadMediaAttachmentState>(
             stream: uploadMediaAttachmentBloc.uploadStateStream,
             initialData: uploadMediaAttachmentBloc.uploadState,
             builder: (context, snapshot) {

@@ -19,7 +19,7 @@ class _PostStatusMentionsWidgetState extends State<PostStatusMentionsWidget> {
     var postStatusBloc = IPostStatusBloc.of(context, listen: true);
 
     return Column(mainAxisSize: MainAxisSize.min, children: [
-      InitialDataStreamBuilder<List<String>>(
+      StreamBuilder<List<String>>(
           stream: postStatusBloc.mentionedAcctsStream,
           initialData: postStatusBloc.mentionedAccts,
           builder: (context, snapshot) {
@@ -47,7 +47,7 @@ class _PostStatusMentionsWidgetState extends State<PostStatusMentionsWidget> {
               ),
             );
           }),
-      InitialDataStreamBuilder<List<String>>(
+      StreamBuilder<List<String>>(
           stream: postStatusBloc.mentionedAcctsStream,
           initialData: postStatusBloc.mentionedAccts,
           builder: (context, snapshot) {

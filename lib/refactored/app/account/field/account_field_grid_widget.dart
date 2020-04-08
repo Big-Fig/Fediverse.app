@@ -9,7 +9,7 @@ class AccountFieldGridWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: true);
 
-    return InitialDataStreamBuilder<List<IPleromaField>>(
+    return StreamBuilder<List<IPleromaField>>(
         stream: accountBloc.fieldsStream,
         initialData: accountBloc.fields,
         builder: (context, snapshot) {

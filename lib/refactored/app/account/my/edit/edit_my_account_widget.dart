@@ -141,7 +141,7 @@ class EditMyAccountWidget extends StatelessWidget {
 
   Widget buildAvatarFieldImage(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    return InitialDataStreamBuilder<String>(
+    return StreamBuilder<String>(
         stream: editMyAccountBloc.avatarImageUrlStream,
         initialData: editMyAccountBloc.avatarImageUrl,
         builder: (context, snapshot) {
@@ -188,7 +188,7 @@ class EditMyAccountWidget extends StatelessWidget {
     return FittedBox(
       alignment: Alignment.center,
       fit: BoxFit.none,
-      child: InitialDataStreamBuilder<String>(
+      child: StreamBuilder<String>(
           stream: editMyAccountBloc.headerImageUrlStream,
           initialData: editMyAccountBloc.headerImageUrl,
           builder: (context, snapshot) {
@@ -267,7 +267,7 @@ class EditMyAccountWidget extends StatelessWidget {
             label,
           ),
           Spacer(),
-          InitialDataStreamBuilder<bool>(
+          StreamBuilder<bool>(
               stream: field.currentValueStream,
               initialData: field.currentValue,
               builder: (context, snapshot) {

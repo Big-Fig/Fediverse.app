@@ -59,7 +59,7 @@ class NotificationsHomeTabPageDrawerWidget extends StatelessWidget {
             optionLabel,
           ),
           Spacer(),
-          InitialDataStreamBuilder<bool>(
+          StreamBuilder<bool>(
               stream: optionStream.distinct(),
               initialData: optionValue,
               builder: (context, snapshot) {

@@ -15,7 +15,7 @@ class TimelineWidget extends StatelessWidget {
     var timelineLocalPreferencesBloc =
         ITimelineLocalPreferencesBloc.of(context, listen: false);
 
-    return InitialDataStreamBuilder<bool>(
+    return StreamBuilder<bool>(
         stream: timelineLocalPreferencesBloc.stream
             .map((timelineLocalPreferences) =>
                 timelineLocalPreferences?.onlyWithMedia == true)

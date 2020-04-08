@@ -16,7 +16,7 @@ class StatusFavouriteActionWidget extends StatelessWidget {
     var statusBloc = IStatusBloc.of(context, listen: true);
     return Row(
       children: <Widget>[
-        InitialDataStreamBuilder<bool>(
+        StreamBuilder<bool>(
             stream: statusBloc.favouritedStream,
             initialData: statusBloc.favourited,
             builder: (context, snapshot) {
@@ -32,7 +32,7 @@ class StatusFavouriteActionWidget extends StatelessWidget {
                   asyncButtonAction: statusBloc.requestToggleFavourite);
             }),
         if (displayCounter)
-          InitialDataStreamBuilder<int>(
+          StreamBuilder<int>(
               stream: statusBloc.favouritesReblogPlusOriginalCountStream,
               initialData: statusBloc.favouritesReblogPlusOriginalCount,
               builder: (context, snapshot) {

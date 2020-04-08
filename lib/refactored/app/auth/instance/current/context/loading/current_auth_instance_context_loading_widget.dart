@@ -24,7 +24,7 @@ class CurrentAuthInstanceContextLoadingWidget extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(color: romaGreen),
-      child: InitialDataStreamBuilder<CurrentAuthInstanceContextLoadingState>(
+      child: StreamBuilder<CurrentAuthInstanceContextLoadingState>(
           stream: currentInstanceContextLoadingBloc.stateStream.distinct(),
           initialData: currentInstanceContextLoadingBloc.state,
           builder: (context, snapshot) {

@@ -11,7 +11,7 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
     var postStatusBloc = IPostStatusBloc.of(context, listen: false);
 
     return IconButton(
-      icon: InitialDataStreamBuilder<PleromaVisibility>(
+      icon: StreamBuilder<PleromaVisibility>(
           stream: postStatusBloc.visibilityStream,
           initialData: postStatusBloc.visibility,
           builder: (context, snapshot) {

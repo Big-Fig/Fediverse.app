@@ -37,7 +37,7 @@ class CameraVideoWidget extends CameraWidget {
 
   Widget buildVideoLengthCounterText(
           BuildContext context, ICameraBloc cameraBloc) =>
-      InitialDataStreamBuilder<bool>(
+      StreamBuilder<bool>(
           stream: cameraBloc.isVideoRecordingInProgressOrPausedStream,
           initialData: cameraBloc.isVideoRecordingInProgressOrPaused,
           builder: (context, snapshot) {
@@ -52,7 +52,7 @@ class CameraVideoWidget extends CameraWidget {
                         BoxDecoration(color: Colors.black.withOpacity(0.5)),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: InitialDataStreamBuilder<int>(
+                      child: StreamBuilder<int>(
                           stream: cameraBloc.videoRecordingTimeInSecondsStream,
                           initialData: cameraBloc.videoRecordingTimeInSeconds,
                           builder: (context, snapshot) {
@@ -82,7 +82,7 @@ class CameraVideoWidget extends CameraWidget {
 
   Widget buildCameraVideoRecordingStartStopButtonWidget(
           BuildContext context, ICameraBloc cameraBloc) =>
-      InitialDataStreamBuilder<CameraState>(
+      StreamBuilder<CameraState>(
           stream: cameraBloc.cameraStateStream,
           initialData: cameraBloc.cameraState,
           builder: (context, snapshot) {
@@ -146,7 +146,7 @@ class CameraVideoWidget extends CameraWidget {
       );
 
   Widget buildStopButtonWidget(ICameraBloc cameraBloc) =>
-      InitialDataStreamBuilder<bool>(
+      StreamBuilder<bool>(
           stream: cameraBloc.isVideoRecordingInProgressOrPausedStream,
           initialData: cameraBloc.isVideoRecordingInProgressOrPaused,
           builder: (context, snapshot) {

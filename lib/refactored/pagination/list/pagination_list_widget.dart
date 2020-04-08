@@ -156,9 +156,9 @@ class _PaginationListWidgetState<T> extends State<PaginationListWidget<T>> {
         _logger.finest(() => "build AsyncInitLoadingWidget stream");
         // Stream builder outside SmartRefresher because
         // SmartRefresher require ScrollView as child
-        // If child is InitialDataStreamBuilder SmartRefresher builds all items widget
+        // If child is StreamBuilder SmartRefresher builds all items widget
         // instead visible only
-        return InitialDataStreamBuilder<List<T>>(
+        return StreamBuilder<List<T>>(
             stream: paginationListBloc.itemsStream,
             initialData: paginationListBloc.items,
             builder: (context, snapshot) {
