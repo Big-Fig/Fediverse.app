@@ -214,6 +214,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
       host = "https://$host";
     }
 
+
     var bloc = AuthHostBloc.createFromContext(context,
         instanceBaseUrl: Uri.parse(host));
 

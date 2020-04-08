@@ -10,9 +10,11 @@ import 'package:fedi/refactored/rest/rest_request_model.dart';
 import 'package:fedi/refactored/rest/rest_response_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
+import 'package:logging/logging.dart';
 import 'package:path/path.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:url_launcher/url_launcher.dart';
+var _logger = Logger("pleroma_oauth_service_impl.dart");
 
 class PleromaOAuthService extends DisposableOwner
     implements IPleromaOAuthService {
@@ -66,6 +68,7 @@ class PleromaOAuthService extends DisposableOwner
       {@required PleromaOAuthAuthorizeRequest authorizeRequest,
       @required AuthorizationCodeSuccessCallback successCallback,
       @required AuthorizationCodeErrorCallback errorCallback}) async {
+    _logger.finest(() => "launchAuthorizeFormAndExtractAuthorizationCode");
     var host = restService.baseUrl;
     var baseUrl = join(oauthRelativeUrlPath, "authorize");
 
@@ -75,11 +78,15 @@ class PleromaOAuthService extends DisposableOwner
         .map((entry) => "${entry.key}=${entry.value}")
         .join("&");
 
-    queryArgs.replaceAll(" ", "%20");
+    queryArgs = queryArgs.replaceAll(" ", "%20");
 
     var url = "$host/$baseUrl?$queryArgs";
+    var isCanLaunch = await canLaunch(url);
 
-    if (await canLaunch(url)) {
+    _logger.finest(() => "launchAuthorizeFormAndExtractAuthorizationCode \n"
+        "\t url = $url\n"
+        "\t canLaunch=$isCanLaunch");
+    if (isCanLaunch) {
       StreamSubscription<Uri> subscription;
       subscription = getUriLinksStream().listen((Uri uri) {
         subscription.cancel();
@@ -91,6 +98,7 @@ class PleromaOAuthService extends DisposableOwner
         closeWebView();
         errorCallback(e);
       });
+      _logger.finest(() => "launch url=$url");
       return await launch(url);
     } else {
       throw "Can't launch $url";
