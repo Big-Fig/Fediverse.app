@@ -42,6 +42,10 @@ abstract class CachedPaginationBloc<TPage extends CachedPaginationPage<TItem>,
         olderPage: nextPage,
         newerPage: previousPage);
 
+    if(forceToUpdateFromNetwork && !isActuallyRefreshed) {
+      return null;
+    }
+
     return createPage(
         pageIndex: pageIndex,
         loadedItems: loadedItems,
