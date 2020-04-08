@@ -62,7 +62,9 @@ class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
           await unhandledLocalPreferencesBloc
               .addUnhandledMessage(pleromaPushMessage);
     
-          if (pushMessage.type == PushMessageType.launch) {
+          if (pushMessage.type == PushMessageType.launch ||
+              pushMessage.type == PushMessageType.resume
+          ) {
             // launch after click on notification
             if (currentInstanceBloc.currentInstance != instanceForMessage) {
               currentInstanceBloc.changeCurrentInstance(instanceForMessage);
