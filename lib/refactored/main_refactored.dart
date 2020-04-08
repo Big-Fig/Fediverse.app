@@ -25,6 +25,7 @@ import 'package:fedi/refactored/pleroma/application/pleroma_application_model.da
 import 'package:fedi/refactored/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/refactored/pleroma/field/pleroma_field_model.dart';
 import 'package:fedi/refactored/pleroma/oauth/pleroma_oauth_model.dart';
+import 'package:fedi/refactored/pleroma/push/pleroma_push_model.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -67,6 +68,7 @@ void main() async {
   Hive.registerAdapter(MyAccountRemoteWrapperAdapter(), 53);
   Hive.registerAdapter(PleromaMyAccountAdapter(), 54);
   Hive.registerAdapter(PushHandlerUnhandledListAdapter(), 55);
+  Hive.registerAdapter(PleromaPushMessageAdapter(), 56);
 
   Hive.init(directory.path);
 
