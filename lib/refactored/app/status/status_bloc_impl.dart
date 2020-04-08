@@ -361,8 +361,13 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
           statusRemoteId: status.remoteId);
     }
 
-    await statusRepository.updateLocalStatusByRemoteStatus(
-        oldLocalStatus: status, newRemoteStatus: remoteStatus);
+    await statusRepository.upsertRemoteStatus(remoteStatus, listRemoteId:
+    null, conversationRemoteId: null);
+
+    // todo: check local status update
+//
+//    await statusRepository.updateLocalStatusByRemoteStatus(
+//        oldLocalStatus: status, newRemoteStatus: remoteStatus);
 
     return statusRepository.findByRemoteId(status.remoteId);
   }
@@ -380,8 +385,13 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
           statusRemoteId: status.remoteId);
     }
 
-    await statusRepository.updateLocalStatusByRemoteStatus(
-        oldLocalStatus: status, newRemoteStatus: remoteStatus);
+    await statusRepository.upsertRemoteStatus(remoteStatus, listRemoteId:
+    null, conversationRemoteId: null);
+
+    // todo: check local status update
+//
+//    await statusRepository.updateLocalStatusByRemoteStatus(
+//        oldLocalStatus: status, newRemoteStatus: remoteStatus);
 
     return statusRepository.findByRemoteId(status.remoteId);
   }
@@ -397,8 +407,13 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
           statusRemoteId: status.remoteId);
     }
 
-    await statusRepository.updateLocalStatusByRemoteStatus(
-        oldLocalStatus: status, newRemoteStatus: remoteStatus);
+    await statusRepository.upsertRemoteStatus(remoteStatus, listRemoteId:
+    null, conversationRemoteId: null);
+
+    // todo: check local status update
+//
+//    await statusRepository.updateLocalStatusByRemoteStatus(
+//        oldLocalStatus: status, newRemoteStatus: remoteStatus);
 
     return statusRepository.findByRemoteId(status.remoteId);
   }
@@ -414,8 +429,13 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
           statusRemoteId: status.remoteId);
     }
 
-    await statusRepository.updateLocalStatusByRemoteStatus(
-        oldLocalStatus: status, newRemoteStatus: remoteStatus);
+    await statusRepository.upsertRemoteStatus(remoteStatus, listRemoteId:
+    null, conversationRemoteId: null);
+
+    // todo: check local status update
+//
+//    await statusRepository.updateLocalStatusByRemoteStatus(
+//        oldLocalStatus: status, newRemoteStatus: remoteStatus);
 
     return statusRepository.findByRemoteId(status.remoteId);
   }
@@ -437,8 +457,13 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
       }
     }
 
-    await statusRepository.updateLocalStatusByRemoteStatus(
-        oldLocalStatus: status, newRemoteStatus: remoteStatus);
+    await statusRepository.upsertRemoteStatus(remoteStatus, listRemoteId:
+    null, conversationRemoteId: null);
+
+    // todo: check local status update
+//
+//    await statusRepository.updateLocalStatusByRemoteStatus(
+//        oldLocalStatus: status, newRemoteStatus: remoteStatus);
 
     return statusRepository.findByRemoteId(status.remoteId);
   }
