@@ -91,11 +91,14 @@ class NotificationsHomeTabPage extends StatelessWidget {
   Tab buildTab(BuildContext context, NotificationTab tab) {
     MastodonNotificationType type = mapTabToType(tab);
     return Tab(
-      icon: NotificationUnreadTypeBadgeCountWidget(
-        child: Icon(mapTabToIconData(context, tab)),
-        type: type,
-      ),
+      icon: Icon(mapTabToIconData(context, tab)),
     );
+//    return Tab(
+//      icon: NotificationUnreadTypeBadgeCountWidget(
+//        child: Icon(mapTabToIconData(context, tab)),
+//        type: type,
+//      ),
+//    );
   }
 
   IconButton buildSettingsActionButton() => IconButton(

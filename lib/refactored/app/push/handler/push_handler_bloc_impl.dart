@@ -29,41 +29,51 @@ class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
       @required this.fcmPushService}) {
     addDisposable(streamSubscription:
         fcmPushService.messageStream.listen((pushMessage) async {
-      var pleromaPushMessage = PleromaPushMessage.fromJson(pushMessage.data);
+      await handlePushMessage(pushMessage);
+    }));
+  }
 
-      bool handled = false;
-      for (var handler in realTimeHandlers) {
-        handled = await handler(pleromaPushMessage);
-        if (handled) {
-          break;
-        }
+  Future handlePushMessage(PushMessage pushMessage) async {
+    
+    var pleromaPushMessage = PleromaPushMessage.fromJson(pushMessage.data);
+    
+    bool handled = false;
+    for (var handler in realTimeHandlers) {
+      handled = await handler(pleromaPushMessage);
+      if (handled) {
+        break;
       }
-
-      if (!handled) {
-        var instanceForMessage = instanceListBloc.findInstanceByCredentials(
-            host: pleromaPushMessage.server, acct: pleromaPushMessage.account);
-
-        if (instanceForMessage != null) {
-          _logger.finest(() => "pleromaPushMessage = $pleromaPushMessage by \n"
-              "\t instanceForMessage=$instanceForMessage");
-
-          if (!currentInstanceBloc.isCurrentInstance(instanceForMessage)) {
-            await unhandledLocalPreferencesBloc
-                .addUnhandledMessage(pleromaPushMessage);
-
-            if (pushMessage.type == PushMessageType.launch) {
-              // launch after click on notification
-              if (currentInstanceBloc.currentInstance != instanceForMessage) {
-                currentInstanceBloc.changeCurrentInstance(instanceForMessage);
-              }
+    }
+    
+    _logger.finest(()=>"handlePushMessage \n"
+        "\t pleromaPushMessage =$pleromaPushMessage"
+        "\t handled =$handled"
+    );
+    
+    if (!handled) {
+      var instanceForMessage = instanceListBloc.findInstanceByCredentials(
+          host: pleromaPushMessage.server, acct: pleromaPushMessage.account);
+    
+      if (instanceForMessage != null) {
+        _logger.finest(() => "pleromaPushMessage = $pleromaPushMessage by \n"
+            "\t instanceForMessage=$instanceForMessage");
+    
+        if (!currentInstanceBloc.isCurrentInstance(instanceForMessage)) {
+          await unhandledLocalPreferencesBloc
+              .addUnhandledMessage(pleromaPushMessage);
+    
+          if (pushMessage.type == PushMessageType.launch) {
+            // launch after click on notification
+            if (currentInstanceBloc.currentInstance != instanceForMessage) {
+              currentInstanceBloc.changeCurrentInstance(instanceForMessage);
             }
           }
-        } else {
-          _logger.severe(() => "Can't handle pleromaPushMessage = "
-              "$pleromaPushMessage, because instance for message not found");
         }
+      } else {
+        _logger.severe(() => "Can't handle pleromaPushMessage = "
+            "$pleromaPushMessage, because instance for message not found");
       }
-    }));
+    }
   }
 
   @override

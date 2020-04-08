@@ -7,8 +7,11 @@ import 'package:fedi/refactored/disposable/disposable.dart';
 import 'package:fedi/refactored/pleroma/notification/pleroma_notification_service.dart';
 import 'package:fedi/refactored/pleroma/push/pleroma_push_model.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
 
-abstract class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
+var _logger = Logger("notification_push_loader_bloc_impl.dart");
+
+class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
     implements INotificationPushLoaderBloc {
   final AuthInstance currentInstance;
   final IPushHandlerBloc pushHandlerBloc;
@@ -21,17 +24,42 @@ abstract class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
     @required this.pleromaNotificationService,
     @required this.notificationRepository,
   }) {
-    IPushRealTimeHandler pushHandler;
-    pushHandlerBloc.addRealTimeHandler(pushHandler);
+    pushHandlerBloc.addRealTimeHandler(handlePush);
     addDisposable(disposable: CustomDisposable(() {
-      pushHandlerBloc.removeRealTimeHandler(pushHandler);
+      pushHandlerBloc.removeRealTimeHandler(handlePush);
     }));
   }
 
-  @override
-  Future performAsyncInit() async {
-    await super.performAsyncInit();
+  Future<bool> handlePush(PleromaPushMessage pleromaPushMessage) async {
+    var isForCurrentInstance = currentInstance.isInstanceWithHostAndAcct(
+        host: pleromaPushMessage.server, acct: pleromaPushMessage.account);
 
+    _logger.finest(() => "handlePush \n"
+        "\t isForCurrentInstance = $isForCurrentInstance"
+        "\t pleromaPushMessage = $pleromaPushMessage");
+    bool handled;
+    if (isForCurrentInstance) {
+      var remoteNotification = await pleromaNotificationService.getNotification(
+          notificationRemoteId: pleromaPushMessage.notificationId);
+
+      handled = remoteNotification != null;
+
+      _logger.finest(() => "handlePush \n"
+          "\t remoteNotification = $remoteNotification");
+
+      if (handled) {
+        await notificationRepository
+            .upsertRemoteNotification(remoteNotification, unread: true);
+      }
+    } else {
+      handled = false;
+    }
+
+    return handled;
+  }
+
+  @override
+  Future internalAsyncInit() async {
     var unhandledMessages =
         pushHandlerBloc.loadUnhandledMessagesForInstance(currentInstance);
 
@@ -45,25 +73,5 @@ abstract class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
     }
 
     await pushHandlerBloc.markAsHandled(handledMessages);
-  }
-
-  Future<bool> handlePush(PleromaPushMessage pleromaPushMessage) async {
-    var isForCurrentInstance = currentInstance.isInstanceWithHostAndAcct(
-        host: pleromaPushMessage.server, acct: pleromaPushMessage.account);
-    bool handled;
-    if (isForCurrentInstance) {
-      var remoteNotification = await pleromaNotificationService.getNotification(
-          notificationRemoteId: pleromaPushMessage.notificationId);
-
-      handled = remoteNotification != null;
-      if (handled) {
-        await notificationRepository
-            .upsertRemoteNotification(remoteNotification, unread: true);
-      }
-    } else {
-      handled = false;
-    }
-
-    return handled;
   }
 }

@@ -11,5 +11,5 @@ class PushSubscriptionLocalPreferencesBloc
       : super(preferencesService, "$userAtHost.push.subscription", 1);
 
   PushSubscriptionLocalPreferences get defaultValue =>
-      PushSubscriptionLocalPreferences.defaultAllDisabled();
+      PushSubscriptionLocalPreferences.defaultAllEnabled();
 }

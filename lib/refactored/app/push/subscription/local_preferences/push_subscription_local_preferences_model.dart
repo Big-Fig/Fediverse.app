@@ -27,13 +27,13 @@ class PushSubscriptionLocalPreferences extends IPreferencesObject {
     this.poll,
   });
 
-  PushSubscriptionLocalPreferences.defaultAllDisabled()
+  PushSubscriptionLocalPreferences.defaultAllEnabled()
       : this(
-          favourite: false,
-          follow: false,
-          mention: false,
-          reblog: false,
-          poll: false,
+          favourite: true,
+          follow: true,
+          mention: true,
+          reblog: true,
+          poll: true,
         );
 
   PushSubscriptionLocalPreferences copyWith(

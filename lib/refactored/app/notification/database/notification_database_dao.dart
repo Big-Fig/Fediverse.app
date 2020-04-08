@@ -165,6 +165,9 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
                     case NotificationOrderByType.remoteId:
                       expression = item.remoteId;
                       break;
+                    case NotificationOrderByType.createdAt:
+                      expression = item.createdAt;
+                      break;
                   }
                   return OrderingTerm(
                       expression: expression, mode: orderTerm.orderingMode);

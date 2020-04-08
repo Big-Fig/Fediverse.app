@@ -8,6 +8,9 @@ import 'package:fedi/refactored/pleroma/push/pleroma_push_service.dart';
 import 'package:fedi/refactored/push/fcm/fcm_push_service.dart';
 import 'package:fedi/refactored/push/relay/push_relay_service.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
+
+var _logger = Logger("push_subscription_bloc_impl.dart");
 
 class PushSubscriptionBloc extends DisposableOwner
     implements IPushSubscriptionBloc {
@@ -37,7 +40,7 @@ class PushSubscriptionBloc extends DisposableOwner
 
   @override
   Future<bool> changeFavouritePushesEnabled(bool value) {
-    return updatePreferences(
+    return updateSubscriptionPreferences(
         pushSubscriptionLocalPreferencesBloc.value.copyWith(favourite: value));
   }
 
@@ -52,7 +55,7 @@ class PushSubscriptionBloc extends DisposableOwner
 
   @override
   Future<bool> changeFollowPushesEnabled(bool value) {
-    return updatePreferences(
+    return updateSubscriptionPreferences(
         pushSubscriptionLocalPreferencesBloc.value.copyWith(follow: value));
   }
 
@@ -67,7 +70,7 @@ class PushSubscriptionBloc extends DisposableOwner
 
   @override
   Future<bool> changeMentionPushesEnabled(bool value) {
-    return updatePreferences(
+    return updateSubscriptionPreferences(
         pushSubscriptionLocalPreferencesBloc.value.copyWith(mention: value));
   }
 
@@ -82,7 +85,7 @@ class PushSubscriptionBloc extends DisposableOwner
 
   @override
   Future<bool> changeReblogPushesEnabled(bool value) {
-    return updatePreferences(
+    return updateSubscriptionPreferences(
         pushSubscriptionLocalPreferencesBloc.value.copyWith(reblog: value));
   }
 
@@ -96,32 +99,61 @@ class PushSubscriptionBloc extends DisposableOwner
 
   @override
   Future<bool> changePollPushesEnabled(bool value) {
-    return updatePreferences(
+    return updateSubscriptionPreferences(
         pushSubscriptionLocalPreferencesBloc.value.copyWith(poll: value));
   }
 
-  Future<bool> updatePreferences(
+  Future<bool> updateSubscriptionPreferences(
       PushSubscriptionLocalPreferences newPreferences) async {
     var deviceToken = fcmPushService.deviceToken;
 
-    var subscription = await pleromaPushService.subscribe(
-        endpointCallbackUrl: pushRelayService.createPushRelayEndPointUrl(
-            account: currentInstance.acct,
-            baseServerUrl: currentInstance.url,
-            fcmDeviceToken: deviceToken),
-        data: PleromaPushSubscribeData(
-            alerts: PleromaPushSettingsDataAlerts(
-                favourite: newPreferences.favourite,
-                follow: newPreferences.follow,
-                mention: newPreferences.mention,
-                reblog: newPreferences.reblog,
-                poll: newPreferences.poll)));
+    bool success;
+    if (deviceToken != null) {
+      var subscription = await pleromaPushService.subscribe(
+          endpointCallbackUrl: pushRelayService.createPushRelayEndPointUrl(
+              account: currentInstance.acct,
+              baseServerUrl: currentInstance.url,
+              fcmDeviceToken: deviceToken),
+          data: PleromaPushSubscribeData(
+              alerts: PleromaPushSettingsDataAlerts(
+                  favourite: newPreferences.favourite,
+                  follow: newPreferences.follow,
+                  mention: newPreferences.mention,
+                  reblog: newPreferences.reblog,
+                  poll: newPreferences.poll)));
 
-    var success = subscription != null;
+      success = subscription != null;
 
-    if (success) {
-      await pushSubscriptionLocalPreferencesBloc.setValue(newPreferences);
+      if (success) {
+        await pushSubscriptionLocalPreferencesBloc.setValue(newPreferences);
+      }
+    } else {
+      success = false;
     }
+
+    if(success) {
+      _logger.finest(() => "updateSubscriptionPreferences \n"
+          "\t newPreferences = $newPreferences"
+          "\t deviceToken = $deviceToken"
+          "\t success = $success"
+      );
+    } else {
+      _logger.severe(() => "updateSubscriptionPreferences \n"
+          "\t newPreferences = $newPreferences"
+          "\t deviceToken = $deviceToken"
+          "\t success = $success"
+      );
+    }
+
     return success;
   }
+
+  @override
+  bool get isHaveSubscription => pushSubscriptionLocalPreferencesBloc.isSavedPreferenceExist;
+
+  @override
+  Future subscribeWithDefaultPreferences() => updateSubscriptionPreferences(PushSubscriptionLocalPreferences
+        .defaultAllEnabled());
+
+
 }

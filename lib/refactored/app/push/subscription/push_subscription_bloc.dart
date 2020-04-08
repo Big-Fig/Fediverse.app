@@ -6,6 +6,10 @@ abstract class IPushSubscriptionBloc extends Disposable {
   static IPushSubscriptionBloc of(BuildContext context, {listen: true}) =>
       Provider.of<IPushSubscriptionBloc>(context, listen: listen);
 
+  bool get isHaveSubscription;
+
+  Future subscribeWithDefaultPreferences();
+
   bool get favouritePushesEnabled;
 
   Stream<bool> get favouritePushesEnabledStream;
