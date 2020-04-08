@@ -38,7 +38,7 @@ class StatusAccountWidget extends StatelessWidget {
             needRefreshFromNetworkOnInit: false),
         child: GestureDetector(
           onTap: () {
-            goToAccountDetailsPage(context, statusBloc.account);
+            goToAccountDetailsPage(context, reblogOrOriginalAccount);
           },
           behavior: HitTestBehavior.translucent,
           child: Row(

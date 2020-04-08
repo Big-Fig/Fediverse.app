@@ -18,7 +18,7 @@ class PostStatusStartConversationBloc extends PostStatusBloc {
             pleromaStatusService: pleromaStatusService,
             statusRepository: statusRepository,
             pleromaMediaAttachmentService: pleromaMediaAttachmentService,
-            initialVisibility: PleromaVisibility.PRIVATE,
+            initialVisibility: PleromaVisibility.DIRECT,
             initialAccountsToMention: conversationAccountsWithoutMe);
 
   static PostStatusStartConversationBloc createFromContext(BuildContext context,
