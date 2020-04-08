@@ -20,6 +20,7 @@ import 'package:fedi/Pleroma/Models/Account.dart';
 import 'package:fedi/Pleroma/Models/Emoji.dart';
 import 'package:fedi/Pleroma/Models/Status.dart';
 import 'package:fedi/Views/VideoPlayer.dart';
+import 'package:fedi/app/emoji/emoji_bottom_sheet_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -62,19 +63,17 @@ class _TimelineCell extends State<TimelineCell> {
   @override
   void initState() {
     super.initState();
-    emojiBloc = EmojiReactionBloc(
-      status: widget.status,
-    );
-    replyAccount = null;
-    getReply();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    print("did change dependencies");
+    getReply();
   }
 
   getReply() {
+    print("GETTTING reply");
     if (widget.status.inReplyToAccountId != null && replyAccount == null) {
       CurrentInstance.instance.currentClient
           .run(
@@ -123,7 +122,7 @@ class _TimelineCell extends State<TimelineCell> {
     }
   }
 
-  var emojiBloc;
+  EmojiReactionBloc emojiBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -154,6 +153,9 @@ class _TimelineCell extends State<TimelineCell> {
     Status status =
         widget.status.reblog != null ? widget.status.reblog : widget.status;
 
+    emojiBloc = EmojiReactionBloc(
+      status: status,
+    );
     return MultiProvider(
       providers: [
         Provider<EmojiReactionProvider>(
@@ -305,50 +307,7 @@ class _TimelineCell extends State<TimelineCell> {
                 ),
               ),
 
-              if (replyAccount != null)
-                GestureDetector(
-                  onTap: () {
-                    if (widget.viewAccount != null) {
-                      widget.viewAccount(replyAccount);
-                    }
-                  },
-                  behavior: HitTestBehavior.translucent,
-                  child: Padding(
-                    padding: EdgeInsets.all(0.0),
-                    child: Row(
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Image(
-                              height: 15,
-                              width: 15,
-                              color: Colors.grey,
-                              image: AssetImage("assets/images/comment.png"),
-                            ),
-                            SizedBox(
-                              width: 8,
-                            ),
-                            Text(
-                              AppLocalizations.of(context)
-                                  .tr("timeline.status.cell.reply_to"),
-                              style: TextStyle(fontSize: 12),
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          width: 4,
-                        ),
-                        Text(
-                          replyAccount.acct,
-                          style: TextStyle(fontSize: 12),
-                        ),
-                        SizedBox(
-                          width: 8,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+              getReplyAccountWidget(),
 
               GestureDetector(
                 onTap: () {
@@ -436,7 +395,8 @@ class _TimelineCell extends State<TimelineCell> {
                     // emoji reactions
                     if (widget.status.statusPleroma != null)
                       if (widget.status.statusPleroma.emojiReactions != null)
-                        EmojiReactionWidget(),
+                        EmojiReactionWidget(status),
+
                     // counts favs and other goodies
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 12.0),
@@ -517,17 +477,26 @@ class _TimelineCell extends State<TimelineCell> {
                               icon: Image(
                                 height: 20,
                                 width: 20,
-                                color: widget.status.reblogged
-                                    ? Colors.blue
-                                    : Colors.grey,
+                                color: Colors.grey,
                                 image: AssetImage("assets/images/happy.png"),
                               ),
                               tooltip: AppLocalizations.of(context)
                                   .tr("timeline.status.cell.tooltip.repost"),
                               onPressed: () {
-                                setState(() {
-                                  showEmojiPicker = !showEmojiPicker;
-                                });
+                                var emojiProvider =
+                                    Provider.of<EmojiBottomSheetProvider>(
+                                        context,
+                                        listen: false);
+                                print(emojiProvider);
+                                emojiProvider.bloc
+                                    .addUpdateFunction(updatedEmoji);
+                                if (widget.status.reblog != null) {
+                                  emojiProvider.bloc.addReactionToBottom(
+                                      widget.status.reblog);
+                                } else {
+                                  emojiProvider.bloc
+                                      .addReactionToBottom(widget.status);
+                                }
                               },
                             ),
                           Row(
@@ -585,34 +554,7 @@ class _TimelineCell extends State<TimelineCell> {
                         ],
                       ),
                     ),
-                    if (showEmojiPicker)
-                      Container(
-                        width: deviceWidth * 0.9,
-                        child: new EmojiWidget.EmojiPicker(
-                          bgColor: Colors.transparent,
-                          rows: 3,
-                          columns: 7,
-                          numRecommended: 0,
-                          selectedCategory: EmojiWidget.Category.RECENT,
-                          recommendKeywords: null,
-                          buttonMode: EmojiWidget.ButtonMode.MATERIAL,
-                          onEmojiSelected: (emoji, category) {
-                            print(emoji.emoji);
-                            emojiBloc.addRemoveReaction(emoji.emoji);
-                            SharedPreferences.getInstance().then((prefs) {
-                              final key = "recents";
-                              var recentEmojis =
-                                  prefs.getStringList(key) ?? new List();
-                              recentEmojis.insert(0, emoji.name);
-                              prefs.setStringList(key, recentEmojis);
-                            });
-
-                            setState(() {
-                              showEmojiPicker = !showEmojiPicker;
-                            });
-                          },
-                        ),
-                      ),
+                   
                   ],
                 ),
               ),
@@ -621,6 +563,72 @@ class _TimelineCell extends State<TimelineCell> {
         ),
       ),
     );
+  }
+
+  Widget getReplyAccountWidget() {
+    if (widget.status.inReplyToAccountId != null) {
+      return FutureBuilder(
+        future: CurrentInstance.instance.currentClient.run(
+            path: Accounts.account(id: widget.status.inReplyToAccountId),
+            method: HTTPMethod.GET),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
+            Account account = Account.fromJsonString(snapshot.data.body);
+            return GestureDetector(
+              onTap: () {
+                if (widget.viewAccount != null) {
+                  widget.viewAccount(account);
+                }
+              },
+              behavior: HitTestBehavior.translucent,
+              child: Padding(
+                padding: EdgeInsets.all(0.0),
+                child: Row(
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Image(
+                          height: 15,
+                          width: 15,
+                          color: Colors.grey,
+                          image: AssetImage("assets/images/comment.png"),
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Text(
+                          AppLocalizations.of(context)
+                              .tr("timeline.status.cell.reply_to"),
+                          style: TextStyle(fontSize: 12),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      width: 4,
+                    ),
+                    Text(
+                      account.acct,
+                      style: TextStyle(fontSize: 12),
+                    ),
+                    SizedBox(
+                      width: 8,
+                    ),
+                  ],
+                ),
+              ),
+            );
+          } else {
+            return Container();
+          }
+        },
+      );
+    } else {
+      return Container();
+    }
+  }
+
+  updatedEmoji() {
+    setState(() {});
   }
 
   Widget getFavoritesButton(BuildContext context) {
@@ -765,7 +773,6 @@ class _TimelineCell extends State<TimelineCell> {
                                     ".copied"),
                                 toastLength: Toast.LENGTH_SHORT,
                                 gravity: ToastGravity.CENTER,
-                                timeInSecForIos: 1,
                                 backgroundColor: Colors.blue,
                                 textColor: Colors.white,
                                 fontSize: 16.0);

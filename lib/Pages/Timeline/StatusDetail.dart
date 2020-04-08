@@ -12,11 +12,15 @@ import 'package:fedi/Pleroma/Models/Status.dart';
 import 'package:fedi/Views/Alert.dart';
 import 'package:fedi/Views/MentionPage.dart';
 import 'package:fedi/app/dm/media/dm_media_capture_widget.dart';
+import 'package:fedi/app/emoji/emoji_bottom_picker.dart';
+import 'package:fedi/app/emoji/emoji_bottom_sheet_bloc.dart';
+import 'package:fedi/app/emoji/emoji_bottom_sheet_provider.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/src/widgets/visibility.dart' as Vis;
 import 'package:flutter_widgets/flutter_widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class StatusDetail extends StatefulWidget {
@@ -32,7 +36,7 @@ class StatusDetail extends StatefulWidget {
 
 class _StatusDetail extends State<StatusDetail> {
   Status responseStatus;
-
+  EmojiBottomSheetBloc emojiBloc = EmojiBottomSheetBloc();
   List<String> mentionedAccts = [];
 
   double mentionHeight = 0.0;
@@ -40,7 +44,7 @@ class _StatusDetail extends State<StatusDetail> {
   var txtController = TextEditingController();
   final ItemScrollController itemScrollController = ItemScrollController();
   final ItemPositionsListener itemPositionListener =
-  ItemPositionsListener.create();
+      ItemPositionsListener.create();
   List<Status> statuses = <Status>[];
 
   void initState() {
@@ -53,7 +57,7 @@ class _StatusDetail extends State<StatusDetail> {
     }
   }
 
-  swapResponseStatus(Status status){
+  swapResponseStatus(Status status) {
     responseStatus = status;
   }
 
@@ -74,7 +78,7 @@ class _StatusDetail extends State<StatusDetail> {
     print("$acct");
     if (txtController.text.length > 0) {
       String lastChar =
-      txtController.text.substring(txtController.text.length - 1);
+          txtController.text.substring(txtController.text.length - 1);
       if (lastChar == "@") {
         txtController.text =
             txtController.text.substring(0, txtController.text.length - 1);
@@ -87,8 +91,20 @@ class _StatusDetail extends State<StatusDetail> {
     });
   }
 
+  var emojiPickerShown = false;
+
   @override
   Widget build(BuildContext context) {
+    emojiBloc.getStatus.listen((status) {
+      if (status == null) {
+        return;
+      }
+      if (emojiPickerShown) {
+        return;
+      }
+      showEmoji(context, status);
+      print(status);
+    });
     String mentionDesc = "1 Mention";
     if (mentionedAccts.length > 1) {
       mentionDesc = "${mentionedAccts.length} Mentions";
@@ -96,10 +112,18 @@ class _StatusDetail extends State<StatusDetail> {
     if (mentionedAccts.length == 0) {
       mentionHeight = 0;
     }
-    return Scaffold(
+    return MultiProvider(
+      providers: [
+        Provider<EmojiBottomSheetProvider>(
+          create: (context) => EmojiBottomSheetProvider(
+            emojiBloc,
+          ),
+        ),
+      ],
+      child: Scaffold(
         appBar: AppBar(
-          title: Text(AppLocalizations.of(context)
-              .tr("timeline.status.details.title")),
+          title: Text(
+              AppLocalizations.of(context).tr("timeline.status.details.title")),
           actions: <Widget>[],
         ),
         body: Column(
@@ -246,11 +270,10 @@ class _StatusDetail extends State<StatusDetail> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  CaptureDMMediaWidget(
+                              builder: (context) => CaptureDMMediaWidget(
                                     mediaUploaded: mediaUploaded,
-                                    selectedTab: FilePickerTab
-                                        .captureVideo,)));
+                                    selectedTab: FilePickerTab.captureVideo,
+                                  )));
                     },
                   ),
                   IconButton(
@@ -262,11 +285,10 @@ class _StatusDetail extends State<StatusDetail> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  CaptureDMMediaWidget(
+                              builder: (context) => CaptureDMMediaWidget(
                                     mediaUploaded: mediaUploaded,
-                                    selectedTab: FilePickerTab
-                                        .captureImage,)));
+                                    selectedTab: FilePickerTab.captureImage,
+                                  )));
                     },
                   ),
                   IconButton(
@@ -278,11 +300,10 @@ class _StatusDetail extends State<StatusDetail> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  CaptureDMMediaWidget(
+                              builder: (context) => CaptureDMMediaWidget(
                                     mediaUploaded: mediaUploaded,
-                                    selectedTab: FilePickerTab
-                                        .gallery,)));
+                                    selectedTab: FilePickerTab.gallery,
+                                  )));
                     },
                   ),
                   IconButton(
@@ -318,12 +339,13 @@ class _StatusDetail extends State<StatusDetail> {
               ),
             ),
           ],
-        ));
+        ),
+      ),
+    );
   }
 
   mediaUploaded(BuildContext context, String id) {
     print("MY ID!!! $id");
-
 
     // should be refactored
     Navigator.pop(context);
@@ -337,7 +359,7 @@ class _StatusDetail extends State<StatusDetail> {
   }
 
   RefreshController _refreshController =
-  RefreshController(initialRefresh: false);
+      RefreshController(initialRefresh: false);
 
   ScrollController _controller = ScrollController();
 
@@ -345,8 +367,8 @@ class _StatusDetail extends State<StatusDetail> {
     // if failed,use refreshFailed()
     CurrentInstance.instance.currentClient
         .run(
-        path: StatusRequest.Status.getStatusContext(widget.status.id),
-        method: HTTPMethod.GET)
+            path: StatusRequest.Status.getStatusContext(widget.status.id),
+            method: HTTPMethod.GET)
         .then((response) {
       Context context = Context.fromJsonString(response.body);
       statuses.clear();
@@ -439,15 +461,28 @@ class _StatusDetail extends State<StatusDetail> {
             return Container();
           }
           Status status = statuses[index];
-          return TimelineCell(
-            status,
-            viewAccount: viewAccount,
-            showCommentBtn: false,
-            mentionOtherStatusContext:swapResponseStatus
-          );
+          return TimelineCell(status,
+              viewAccount: viewAccount,
+              showCommentBtn: false,
+              mentionOtherStatusContext: swapResponseStatus);
         },
       ),
     );
+  }
+
+  showEmoji(BuildContext context, Status status) {
+    emojiPickerShown = true;
+    showModalBottomSheet(
+            builder: (BuildContext context) {
+              return EmojiBottomPicker(
+                emojiBloc: emojiBloc,
+              );
+            },
+            context: context,
+            elevation: 1)
+        .whenComplete(() {
+      emojiPickerShown = false;
+    });
   }
 
   sendMessageWithAttachment(String id) {
@@ -461,7 +496,8 @@ class _StatusDetail extends State<StatusDetail> {
     }
 
     String status = "$mentionListString ${txtController.text}";
-    String inReplyToId = responseStatus != null ? responseStatus.id : widget.status.id;
+    String inReplyToId =
+        responseStatus != null ? responseStatus.id : widget.status.id;
     Map<String, dynamic> params = {
       "status": "$status",
       "to": mentionedAccts,
@@ -485,7 +521,7 @@ class _StatusDetail extends State<StatusDetail> {
               .tr("timeline.status.details.update.error.alert.title"),
           AppLocalizations.of(context)
               .tr("timeline.status.details.update.error.alert.content"),
-              () => {});
+          () => {});
       alert.showAlert();
     });
   }
@@ -503,7 +539,8 @@ class _StatusDetail extends State<StatusDetail> {
     }
 
     String status = "$mentionListString ${txtController.text}";
-    String inReplyToId = responseStatus != null ? responseStatus.id : widget.status.id;
+    String inReplyToId =
+        responseStatus != null ? responseStatus.id : widget.status.id;
     var statusPath = StatusRequest.Status.postNewStatus;
     Map<String, dynamic> params = {
       "status": "$status",
@@ -517,8 +554,8 @@ class _StatusDetail extends State<StatusDetail> {
       txtController.clear();
       var status = Status.fromJson(jsonDecode(statusResponse.body));
       statuses.add(status);
-      int lastIndex =  statuses.length - 1;
-      itemScrollController.jumpTo(index:lastIndex);
+      int lastIndex = statuses.length - 1;
+      itemScrollController.jumpTo(index: lastIndex);
       setState(() {});
     }).catchError((e) {
       print(e);
@@ -528,7 +565,7 @@ class _StatusDetail extends State<StatusDetail> {
               .tr("timeline.status.details.update.error.alert.title"),
           AppLocalizations.of(context)
               .tr("timeline.status.details.update.error.alert.content"),
-              () => {});
+          () => {});
       alert.showAlert();
     });
   }

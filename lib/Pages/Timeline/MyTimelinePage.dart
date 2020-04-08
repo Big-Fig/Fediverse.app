@@ -134,8 +134,11 @@ class MyTimelinePageState extends State<MyTimelinePage>
           return status.sensitive;
         });
       }
+      if (mounted)
+        setState(() {
+          widget.statuses.clear();
+        });
 
-      widget.statuses.clear();
       widget.statuses.addAll(newStatuses);
       if (mounted) setState(() {});
       _refreshController.refreshCompleted();
@@ -241,6 +244,8 @@ class MyTimelinePageState extends State<MyTimelinePage>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Scaffold(
       key: _drawerKey,
       endDrawer: getDrawer(),
@@ -309,7 +314,7 @@ class MyTimelinePageState extends State<MyTimelinePage>
                   onChanged: (value) {
                     setState(() {
                       mediaOnly = value;
-                      if (mediaOnly == true){
+                      if (mediaOnly == true) {
                         widget.statuses.clear();
                       }
                       AppSettings.setTimelineMediaGridSetting(mediaOnly)
@@ -461,13 +466,16 @@ class MyTimelinePageState extends State<MyTimelinePage>
       onRefresh: _onRefresh,
       onLoading: _onLoading,
       child: ListView.builder(
+        addAutomaticKeepAlives:false,
         padding: EdgeInsets.symmetric(horizontal: 2.0, vertical: 10.0),
-        itemBuilder: (c, i) => TimelineCell(
+        itemBuilder: (c, i){
+          return  TimelineCell(
           widget.statuses[i],
           viewAccount: viewAccount,
           viewStatusContext: viewStatusDetail,
           showCommentBtn: true,
-        ),
+        );
+        },
         itemCount: widget.statuses.length,
       ),
     );
@@ -573,5 +581,5 @@ class MyTimelinePageState extends State<MyTimelinePage>
   }
 
   @override
-  bool get wantKeepAlive => true;
+  bool get wantKeepAlive => false;
 }

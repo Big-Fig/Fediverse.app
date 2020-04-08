@@ -1,17 +1,24 @@
 import 'package:fedi/Pages/Statuses/emoji_reaction_bloc.dart';
 import 'package:fedi/Pages/Statuses/emoji_readtion_provider.dart';
+import 'package:fedi/Pleroma/Models/Status.dart';
 import 'package:fedi/Pleroma/Models/emoji_reaction.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class EmojiReactionWidget extends StatelessWidget {
+
+  final Status status;
+  EmojiReactionWidget(this.status);
   @override
   Widget build(BuildContext context) {
-    final emojiBloc = Provider.of<EmojiReactionProvider>(context);
+    print("building emojireaction");
+    final emojiBloc = Provider.of<EmojiReactionProvider>(context, listen: true);
+    emojiBloc.bloc.updateReactions(status.statusPleroma.emojiReactions);
     return StreamBuilder(
       stream: emojiBloc.bloc.getReactions,
       builder:
           (BuildContext context, AsyncSnapshot<List<EmojiReaction>> snapshot) {
+            print(snapshot.data);
         if (snapshot.hasData) {
           return Container(
             alignment: Alignment.topLeft,
