@@ -37,8 +37,6 @@ class StatusListItemTimelineWidget extends StatefulWidget {
 
 class _StatusListItemTimelineWidgetState
     extends State<StatusListItemTimelineWidget> {
-  bool showEmojiPicker = false;
-
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: true);
@@ -49,21 +47,7 @@ class _StatusListItemTimelineWidgetState
       elevation: 0,
       child: Padding(
         padding: EdgeInsets.all(8),
-        child: Column(
-          children: <Widget>[
-            buildMainContentWidget(context, statusBloc),
-            if (showEmojiPicker)
-              StatusEmojiReactionPickerWidget(
-                emojiReactionSelectedCallback:
-                    (String emojiName, String emoji) {
-                  setState(() {
-                    showEmojiPicker = !showEmojiPicker;
-                  });
-                  statusBloc.requestToggleEmojiReaction(emoji: emoji);
-                },
-              ),
-          ],
-        ),
+        child: buildMainContentWidget(context, statusBloc),
       ),
     );
   }
@@ -122,7 +106,7 @@ class _StatusListItemTimelineWidgetState
                 children: <Widget>[
                   StatusCommentActionWidget(),
                   StatusFavouriteActionWidget(),
-                  buildEmojiPickerButton(context),
+                  buildEmojiPickerButton(context, statusBloc),
                   StatusReblogActionWidget(),
                   StatusShareActionWidget(),
                 ],
@@ -132,13 +116,23 @@ class _StatusListItemTimelineWidgetState
         ),
       );
 
-  IconButton buildEmojiPickerButton(BuildContext context) => IconButton(
+  IconButton buildEmojiPickerButton(BuildContext context, IStatusBloc statusBloc) {
+    return IconButton(
         color: Colors.grey,
         icon: Icon(Icons.insert_emoticon),
         onPressed: () {
-          setState(() {
-            showEmojiPicker = !showEmojiPicker;
-          });
+          showModalBottomSheet(
+              context: context,
+              builder: (context) => StatusEmojiReactionPickerWidget(
+                    emojiReactionSelectedCallback:
+                        (String emojiName, String emoji) {
+                      setState(() {
+                        Navigator.of(context).pop();
+                      });
+                      statusBloc.requestToggleEmojiReaction(emoji: emoji);
+                    },
+                  ));
         },
       );
+  }
 }
