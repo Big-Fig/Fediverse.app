@@ -27,9 +27,11 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
             builder: (BuildContext context) => Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    // TODO: why only 3 options when 5 visibilities available
+                    // TODO: why only 4 options when 5 visibilities available
                     buildVisibilityButton(
                         context, postStatusBloc, PleromaVisibility.PUBLIC),
+                    buildVisibilityButton(
+                        context, postStatusBloc, PleromaVisibility.DIRECT),
                     buildVisibilityButton(
                         context, postStatusBloc, PleromaVisibility.UNLISTED),
                     buildVisibilityButton(
@@ -168,19 +170,20 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
     var appLocalizations = AppLocalizations.of(context);
     switch (visibility) {
       case PleromaVisibility.PUBLIC:
-        return appLocalizations.tr("app.post.action.visibility.state.public");
+        return appLocalizations.tr("app.status.post.action.visibility.state"
+            ".public");
         break;
       case PleromaVisibility.UNLISTED:
-        return appLocalizations.tr("app.post.action.visibility.state.unlisted");
+        return appLocalizations.tr("app.status.post.action.visibility.state.unlisted");
         break;
       case PleromaVisibility.DIRECT:
-        return appLocalizations.tr("app.post.action.visibility.state.direct");
+        return appLocalizations.tr("app.status.post.action.visibility.state.direct");
         break;
       case PleromaVisibility.LIST:
-        return appLocalizations.tr("app.post.action.visibility.state.list");
+        return appLocalizations.tr("app.status.post.action.visibility.state.list");
         break;
       case PleromaVisibility.PRIVATE:
-        return appLocalizations.tr("app.post.action.visibility.state.private");
+        return appLocalizations.tr("app.status.post.action.visibility.state.private");
         break;
     }
     throw "Not supported visibility $visibility";
