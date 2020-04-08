@@ -4,6 +4,9 @@ import 'package:fedi/refactored/app/auth/instance/list/auth_instance_list_local_
 import 'package:fedi/refactored/app/auth/instance/list/auth_instance_list_model.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
+
+var _logger = Logger("auth_instance_list_bloc_impl.dart");
 
 class AuthInstanceListBloc extends DisposableOwner
     implements IAuthInstanceListBloc {
@@ -29,6 +32,7 @@ class AuthInstanceListBloc extends DisposableOwner
 
   @override
   addInstance(AuthInstance instance) {
+    _logger.finest(() => "addInstance $instance");
     var instances = this.availableInstances;
     if (!instances.contains(instance)) {
       instances.add(instance);
@@ -39,6 +43,7 @@ class AuthInstanceListBloc extends DisposableOwner
 
   @override
   removeInstance(AuthInstance instance) {
+    _logger.finest(() => "removeInstance $instance");
     var instances = this.availableInstances;
     if (instances.contains(instance)) {
       instances.remove(instance);
