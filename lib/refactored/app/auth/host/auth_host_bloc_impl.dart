@@ -25,9 +25,12 @@ import 'package:fedi/refactored/pleroma/rest/pleroma_rest_service_impl.dart';
 import 'package:fedi/refactored/rest/rest_service.dart';
 import 'package:fedi/refactored/rest/rest_service_impl.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:logging/logging.dart';
 
 final redirectUri = "com.fediverse.app://addNewInstance";
 final scopes = "read write follow push";
+
+var _logger = Logger("auth_host_bloc_impl.dart");
 
 class AuthHostBloc extends DisposableOwner implements IAuthHostBloc {
   final Uri instanceBaseUrl;
@@ -100,6 +103,7 @@ class AuthHostBloc extends DisposableOwner implements IAuthHostBloc {
 
   @override
   Future<bool> registerApplication() async {
+    _logger.finest(() => "registerApplication");
     var application = await pleromaApplicationService.registerApp(
         registrationRequest: MastodonApplicationRegistrationRequest(
             clientName: "Fediverse",
@@ -107,6 +111,7 @@ class AuthHostBloc extends DisposableOwner implements IAuthHostBloc {
             scopes: scopes,
             website: "https://fediverse.app"));
 
+    _logger.finest(() => "registerApplication application =$application");
     if (application != null) {
       authHostApplicationLocalPreferenceBloc.setValue(application);
       return true;
@@ -134,6 +139,7 @@ class AuthHostBloc extends DisposableOwner implements IAuthHostBloc {
   Future<bool> launchLoginToAccount(
       {@required AuthInstanceCallback successCallback, @required Function(
           dynamic error) errorCallback}) async {
+    _logger.finest(() => "launchLoginToAccount");
     await checkApplicationRegistration();
     return pleromaOAuthService.launchAuthorizeFormAndExtractAuthorizationCode(
         authorizeRequest: PleromaOAuthAuthorizeRequest(redirectUri: redirectUri,
@@ -183,9 +189,11 @@ class AuthHostBloc extends DisposableOwner implements IAuthHostBloc {
   }
 
   Future checkApplicationRegistration() async {
+    _logger.finest(() => "checkApplicationRegistration $isHostApplicationRegistered");
     if (!isHostApplicationRegistered) {
       var success = await registerApplication();
-
+      _logger.finest(() => "checkApplicationRegistration "
+          "success=$success");
       if (!success) {
         throw "Can't register app";
       }
