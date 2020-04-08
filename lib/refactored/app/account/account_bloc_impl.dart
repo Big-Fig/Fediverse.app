@@ -205,8 +205,11 @@ class AccountBloc extends DisposableOwner implements IAccountBloc {
     _logger.finest(() => "_updateRelationship newRemoteAccount.relationship"
         "${newRemoteAccount?.pleroma?.relationship}");
     if (account.localId != null) {
-      await accountRepository.updateLocalAccountByRemoteAccount(
-          oldLocalAccount: account, newRemoteAccount: newRemoteAccount);
+      await accountRepository.upsertRemoteAccount(newRemoteAccount,
+          conversationRemoteId: null);
+      // todo: check update local
+//      await accountRepository.updateLocalAccountByRemoteAccount(
+//          oldLocalAccount: account, newRemoteAccount: newRemoteAccount);
     } else {
       // sometimes we don't have local account id, for example go from search
       // to account page
@@ -220,10 +223,10 @@ class AccountBloc extends DisposableOwner implements IAccountBloc {
     assert(accountRelationship != null);
     var newRelationship;
     if (accountRelationship.following) {
-      newRelationship = pleromaAccountService.unFollowAccount(
+      newRelationship = await pleromaAccountService.unFollowAccount(
           accountRemoteId: account.remoteId);
     } else {
-      newRelationship = pleromaAccountService.followAccount(
+      newRelationship = await pleromaAccountService.followAccount(
           accountRemoteId: account.remoteId);
     }
     await _updateRelationship(newRelationship);
