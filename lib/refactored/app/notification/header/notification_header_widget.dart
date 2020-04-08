@@ -1,6 +1,7 @@
 import 'package:fedi/refactored/app/account/account_bloc.dart';
 import 'package:fedi/refactored/app/account/account_bloc_impl.dart';
 import 'package:fedi/refactored/app/account/avatar/account_avatar_widget.dart';
+import 'package:fedi/refactored/app/account/details/account_details_page.dart';
 import 'package:fedi/refactored/app/account/display_name/account_display_name_widget.dart';
 import 'package:fedi/refactored/app/notification/created_at/notification_created_at_widget.dart';
 import 'package:fedi/refactored/app/notification/notification_bloc.dart';
@@ -19,14 +20,19 @@ abstract class NotificationHeaderWidget extends StatelessWidget {
                 account: notificationBloc.account,
                 needRefreshFromNetworkOnInit: false,
                 needWatchLocalRepositoryForUpdates: true),
-            child: Row(
-              children: <Widget>[
-                AccountAvatarWidget(imageSize: 30, progressSize: 15),
-                SizedBox(
-                  width: 10,
-                ),
-                AccountDisplayNameWidget()
-              ],
+            child: GestureDetector(
+              onTap: () {
+                goToAccountDetailsPage(context, notificationBloc.account);
+              },
+              child: Row(
+                children: <Widget>[
+                  AccountAvatarWidget(imageSize: 30, progressSize: 15),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  AccountDisplayNameWidget()
+                ],
+              ),
             )),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
