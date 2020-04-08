@@ -55,6 +55,7 @@ class AccountBloc extends DisposableOwner implements IAccountBloc {
     this.needWatchLocalRepositoryForUpdates = true,
   }) : _accountSubject = BehaviorSubject.seeded(account) {
     assert(account != null);
+    _logger.finest(() => "AccountBloc ${account.remoteId}");
     addDisposable(subject: _accountSubject);
     Future.delayed(Duration(seconds: 1), () {
       if (!disposed) {
@@ -291,8 +292,7 @@ class AccountBloc extends DisposableOwner implements IAccountBloc {
   static AccountBloc createFromContext(BuildContext context,
       {@required IAccount account,
       @required bool needRefreshFromNetworkOnInit,
-      @required bool needWatchLocalRepositoryForUpdates}) {
-    return AccountBloc(
+      @required bool needWatchLocalRepositoryForUpdates}) => AccountBloc(
         account: account,
         needRefreshFromNetworkOnInit: needRefreshFromNetworkOnInit,
         needWatchLocalRepositoryForUpdates: needWatchLocalRepositoryForUpdates,
@@ -302,7 +302,6 @@ class AccountBloc extends DisposableOwner implements IAccountBloc {
             IPleromaAccountService.of(context, listen: false),
         conversationRepository: IConversationRepository.of(context, listen:
         false));
-  }
 
   @override
   Future<IConversation> findRelatedConversation() => conversationRepository.getConversation(
