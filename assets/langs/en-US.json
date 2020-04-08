@@ -775,5 +775,8 @@
         "text": "Create Account"
       }
     }
+  },
+  "emoji_reaction":{
+    "title": "Add reaction"
   }
 }

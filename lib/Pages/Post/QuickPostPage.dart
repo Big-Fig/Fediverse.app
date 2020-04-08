@@ -12,20 +12,26 @@ import 'package:fedi/Views/LocalVideoPlayer.dart';
 import 'package:fedi/Views/MentionPage.dart';
 import 'package:fedi/Views/ProgressDialog.dart';
 import 'package:fedi/app/status/edit/attach/status_edit_attach_media_page.dart';
-import 'package:fedi/file/gallery/file_gallery_model.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
-import 'package:photo_manager/photo_manager.dart';
 
 const heicExtension = ".heic";
 var _logger = Logger("QuickPostPage.dart");
 
 class QuickPostPage extends StatefulWidget {
+
+  final String sharedText;
+  final List<dynamic> sharedFiles;
+
+  const QuickPostPage(this.sharedText, this.sharedFiles);
+  
+
   @override
   State<StatefulWidget> createState() {
     return _QuickPostPageState();
@@ -617,17 +623,16 @@ class _QuickPostPageState extends State<QuickPostPage> {
         .then((statusResponse) {
       print(statusResponse.body);
       _pr.hide();
-      var alert = Alert(
-          context,
-          AppLocalizations.of(context)
-              .tr("post.quick_post.posting.success.alert.title"),
-          AppLocalizations.of(context)
+      Navigator.of(context).popUntil((route) => route.isFirst);
+      Fluttertoast.showToast(
+          msg: AppLocalizations.of(context)
               .tr("post.quick_post.posting.success.alert.content"),
-          () => {Navigator.of(context).popUntil((route) => route.isFirst)});
-      alert.showAlert();
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          backgroundColor: Colors.blue,
+          textColor: Colors.white,
+          fontSize: 16.0);
     }).catchError((e) {
-      print("THIS IS THE ERROR!!!!");
-      print(e);
       _pr.hide();
       var alert = Alert(
           context,
