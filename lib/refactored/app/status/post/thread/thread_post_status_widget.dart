@@ -34,7 +34,7 @@ class ThreadPostStatusWidget extends StatelessWidget {
                   PostStatusAttachMediaActionWidget(),
                 ],
               ),
-              PostStatusPostActionWidget(successCallback: (status) {
+              PostStatusPostActionWidget(successCallback: () {
                 // nothing
               })
             ],

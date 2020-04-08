@@ -314,7 +314,7 @@ abstract class PostStatusBloc extends DisposableOwner
   }
 
   @override
-  Future<IStatus> postStatus() async {
+  Future<bool> postStatus() async {
     var remoteStatus = await pleromaStatusService.postStatus(
         data: PleromaPostStatus(
             mediaIds: mediaAttachmentBlocs
@@ -331,6 +331,7 @@ abstract class PostStatusBloc extends DisposableOwner
       await statusRepository.upsertRemoteStatus(remoteStatus,
           listRemoteId: null, conversationRemoteId: conversationRemoteId);
       success = true;
+      inputTextController.clear();
     } else {
       success = false;
     }

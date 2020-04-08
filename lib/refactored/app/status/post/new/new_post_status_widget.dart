@@ -35,7 +35,7 @@ class NewPostStatusWidget extends StatelessWidget {
                   PostStatusAttachMediaActionWidget(),
                 ],
               ),
-              PostStatusPostActionWidget(successCallback: (status) {
+              PostStatusPostActionWidget(successCallback: () {
                 Navigator.of(context).pop();
               })
             ],
