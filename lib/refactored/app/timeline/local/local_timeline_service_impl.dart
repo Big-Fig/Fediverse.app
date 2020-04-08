@@ -9,7 +9,7 @@ import 'package:fedi/refactored/pleroma/visibility/pleroma_visibility_model.dart
 import 'package:flutter/widgets.dart';
 
 class LocalTimelineService extends TimelineStatusListService
-    implements IStatusCachedListService {
+    implements IStatusCachedListBloc {
   @override
   ITimelineSettings retrieveTimelineSettings() => TimelineSettings.public(
         excludeVisibilities: [

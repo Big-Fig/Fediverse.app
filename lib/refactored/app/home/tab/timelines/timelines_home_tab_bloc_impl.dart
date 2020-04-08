@@ -130,15 +130,15 @@ class TimelinesHomeTabBloc extends DisposableOwner
     });
   }
 
-  IStatusCachedListService homeTimelineService;
+  IStatusCachedListBloc homeTimelineService;
   IStatusCachedPaginationBloc homeTimelinePaginationBloc;
   IStatusPaginationListBloc homeTimelinePaginationListBloc;
 
-  IStatusCachedListService localTimelineService;
+  IStatusCachedListBloc localTimelineService;
   IStatusCachedPaginationBloc localTimelinePaginationBloc;
   IStatusPaginationListBloc localTimelinePaginationListBloc;
 
-  IStatusCachedListService publicTimelineService;
+  IStatusCachedListBloc publicTimelineService;
   IStatusCachedPaginationBloc publicTimelinePaginationBloc;
   IStatusPaginationListBloc publicTimelinePaginationListBloc;
 

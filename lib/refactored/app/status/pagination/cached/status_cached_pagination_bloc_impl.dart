@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 class StatusCachedPaginationBloc extends CachedPleromaPaginationBloc<IStatus>
     implements IStatusCachedPaginationBloc {
-  final IStatusCachedListService statusListService;
+  final IStatusCachedListBloc statusListService;
 
   StatusCachedPaginationBloc(
       {@required this.statusListService,
@@ -56,7 +56,7 @@ class StatusCachedPaginationBloc extends CachedPleromaPaginationBloc<IStatus>
           {int itemsCountPerPage = 20, int maximumCachedPagesCount}) =>
       StatusCachedPaginationBloc(
           statusListService:
-              Provider.of<IStatusCachedListService>(context, listen: false),
+              Provider.of<IStatusCachedListBloc>(context, listen: false),
           itemsCountPerPage: itemsCountPerPage,
           maximumCachedPagesCount: maximumCachedPagesCount);
 }

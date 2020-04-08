@@ -5,11 +5,11 @@ import 'package:fedi/refactored/pleroma/api/pleroma_api_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IStatusCachedListService extends DisposableOwner
+abstract class IStatusCachedListBloc extends DisposableOwner
     implements IPleromaCachedListService<IStatus> {
-  static IStatusCachedListService of(BuildContext context,
+  static IStatusCachedListBloc of(BuildContext context,
           {bool listen = true}) =>
-      Provider.of<IStatusCachedListService>(context, listen: listen);
+      Provider.of<IStatusCachedListBloc>(context, listen: listen);
 
   IPleromaApi get pleromaApi;
 
