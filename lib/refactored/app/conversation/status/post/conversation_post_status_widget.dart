@@ -10,6 +10,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ConversationPostStatusWidget extends StatelessWidget {
+  final IPostStatusCallback successCallback;
+
+
+  ConversationPostStatusWidget({@required this.successCallback});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -30,9 +35,7 @@ class ConversationPostStatusWidget extends StatelessWidget {
                   PostStatusAttachMediaActionWidget(),
                 ],
               ),
-              PostStatusPostActionWidget(successCallback: () {
-                // nothing
-              })
+              PostStatusPostActionWidget(successCallback:successCallback)
             ],
           )
         ],

@@ -12,7 +12,7 @@ import 'package:moor/moor.dart';
 
 var _logger = Logger("account_statuses_bloc_impl.dart");
 
-class AccountStatusesBloc extends IStatusCachedListService
+class AccountStatusesBloc extends IStatusCachedListBloc
     implements IAccountStatusesBloc {
   final IAccount account;
   final IPleromaAccountService pleromaAccountService;

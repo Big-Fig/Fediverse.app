@@ -16,7 +16,7 @@ import 'package:moor/moor.dart';
 var _logger = Logger("timeline_status_list_service_impl.dart");
 
 abstract class TimelineStatusListService extends DisposableOwner
-    implements IStatusCachedListService {
+    implements IStatusCachedListBloc {
   final IPleromaTimelineService pleromaTimelineService;
   final IStatusRepository statusRepository;
   final ICurrentAuthInstanceBloc currentInstanceBloc;

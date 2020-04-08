@@ -5,9 +5,10 @@ import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart'
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+typedef IPostStatusCallback(BuildContext context);
 
 class PostStatusPostActionWidget extends StatelessWidget {
-  final VoidCallback successCallback;
+  final IPostStatusCallback successCallback;
 
   PostStatusPostActionWidget({this.successCallback});
 
@@ -27,7 +28,7 @@ class PostStatusPostActionWidget extends StatelessWidget {
             onPressed = () async {
               var success = await postStatusBloc.postStatus();
               if (success && successCallback != null) {
-                successCallback();
+                successCallback(context);
               }
             };
           }

@@ -14,7 +14,6 @@ import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:fedi/refactored/pagination/pagination_bloc.dart';
 import 'package:fedi/refactored/pagination/pagination_model.dart';
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
 
 class ConversationWidget extends StatelessWidget {
   @override
@@ -23,45 +22,50 @@ class ConversationWidget extends StatelessWidget {
     return AsyncInitLoadingWidget(
         asyncInitLoadingBloc: conversationBloc,
         loadingFinishedBuilder: (context) {
-          return Column(
-            children: <Widget>[
-              Expanded(
-                  child: Provider<IStatusCachedListService>(
-                create: (context) {
-                  var currentInstanceBloc =
-                      ICurrentAuthInstanceBloc.of(context, listen: false);
+          return DisposableProvider<IStatusCachedListBloc>(
+              create: (context) {
+                var currentInstanceBloc =
+                    ICurrentAuthInstanceBloc.of(context, listen: false);
 
-                  if (currentInstanceBloc.currentInstance.isPleromaInstance) {
-                    // pleroma instances support loading by conversation id
-                    return ConversationStatusListConversationApiService
-                        .createFromContext(context,
-                            conversation: conversationBloc.conversation);
-                  } else {
-                    // mastodon instances support conversation
-                    // only by status context
-                    return ConversationStatusListContextApiService
-                        .createFromContext(context,
-                            conversation: conversationBloc.conversation,
-                            statusToFetchContext: conversationBloc.lastStatus);
-                  }
-                },
-                child: DisposableProvider<
-                    IPaginationBloc<PaginationPage<IStatus>, IStatus>>(
+                if (currentInstanceBloc.currentInstance.isPleromaInstance) {
+                  // pleroma instances support loading by conversation id
+                  return ConversationStatusListConversationApiService
+                      .createFromContext(context,
+                          conversation: conversationBloc.conversation);
+                } else {
+                  // mastodon instances support conversation
+                  // only by status context
+                  return ConversationStatusListContextApiService
+                      .createFromContext(context,
+                          conversation: conversationBloc.conversation,
+                          statusToFetchContext: conversationBloc.lastStatus);
+                }
+              },
+              child: DisposableProvider<
+                  IPaginationBloc<PaginationPage<IStatus>, IStatus>>(
+                create: (context) =>
+                    StatusCachedPaginationBloc.createFromContext(context),
+                child: DisposableProvider<IStatusPaginationListBloc>(
                   create: (context) =>
-                      StatusCachedPaginationBloc.createFromContext(context),
-                  child: DisposableProvider<IStatusPaginationListBloc>(
-                    create: (context) =>
-                        StatusPaginationListBloc.createFromContext(context),
-                    child: ConversationStatusListWidget(
-                      key: PageStorageKey(
-                          conversationBloc.conversation.remoteId),
-                    ),
+                      StatusPaginationListBloc.createFromContext(context),
+                  child: Column(
+                    children: <Widget>[
+                      Expanded(
+                        child: ConversationStatusListWidget(
+                          key: PageStorageKey(
+                              conversationBloc.conversation.remoteId),
+                        ),
+                      ),
+                      ConversationPostStatusWidget(successCallback: (context) {
+                        var paginationListBloc = IStatusPaginationListBloc.of(
+                            context,
+                            listen: false);
+                        paginationListBloc.refresh();
+                      })
+                    ],
                   ),
                 ),
-              )),
-              ConversationPostStatusWidget()
-            ],
-          );
+              ));
         });
   }
 }

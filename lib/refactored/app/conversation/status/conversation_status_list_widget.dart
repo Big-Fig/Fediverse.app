@@ -9,6 +9,7 @@ import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:fedi/refactored/pagination/list/pagination_list_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -75,10 +76,13 @@ class ConversationStatusListWidget extends StatusPaginationListBaseWidget {
         if (nextStatus != null) {
           nextTimeString = timeago.format(nextStatus?.createdAt);
         }
-        var statusWidget = DisposableProvider<IStatusBloc>(
-            create: (context) =>
-                StatusBloc.createFromContext(context, currentStatus),
-            child: ConversationStatusListItemWidget());
+        var statusWidget = Provider.value(
+          value: currentStatus,
+          child: DisposableProxyProvider<IStatus, IStatusBloc>(
+              update: (context, value, previous) =>
+                  StatusBloc.createFromContext(context, value),
+              child: ConversationStatusListItemWidget()),
+        );
 
         if (currentTimeString == nextTimeString) {
           return statusWidget;

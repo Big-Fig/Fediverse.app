@@ -35,7 +35,7 @@ class PostStatusStartConversationWidget extends StatelessWidget {
                   PostStatusAttachMediaActionWidget(),
                 ],
               ),
-              PostStatusPostActionWidget(successCallback: () {
+              PostStatusPostActionWidget(successCallback: (context) {
                 Navigator.of(context).pop();
               })
             ],

@@ -12,7 +12,7 @@ import 'package:fedi/refactored/pleroma/visibility/pleroma_visibility_model.dart
 import 'package:flutter/widgets.dart';
 
 class HomeTimelineService extends TimelineStatusListService
-    implements IStatusCachedListService {
+    implements IStatusCachedListBloc {
   final IAccount homeAccount;
   final IAccountRepository accountRepository;
   final IPleromaAccountService pleromaAccountService;

@@ -12,7 +12,7 @@ var _logger =
     Logger("conversation_statuses_list_bloc_conversation_api_impl.dart");
 
 class ConversationStatusListConversationApiService
-    extends ConversationStatusListService {
+    extends ConversationStatusListBloc {
   final IPleromaConversationService pleromaConversationService;
 
   ConversationStatusListConversationApiService(

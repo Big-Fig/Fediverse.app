@@ -18,7 +18,7 @@ class AccountDetailsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: true);
 
-    return DisposableProvider<IStatusCachedListService>(
+    return DisposableProvider<IStatusCachedListBloc>(
       create: (context) => AccountStatusesBloc.createFromContext(context,
           account: accountBloc.account),
       child:

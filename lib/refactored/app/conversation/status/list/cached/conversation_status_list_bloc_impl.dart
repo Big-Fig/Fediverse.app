@@ -10,12 +10,12 @@ import 'package:moor/moor.dart';
 
 var _logger = Logger("conversation_statuses_list_bloc_impl.dart");
 
-abstract class ConversationStatusListService extends DisposableOwner
-    implements IStatusCachedListService {
+abstract class ConversationStatusListBloc extends DisposableOwner
+    implements IStatusCachedListBloc {
   final IStatusRepository statusRepository;
   final IConversation conversation;
 
-  ConversationStatusListService(
+  ConversationStatusListBloc(
       {@required this.conversation, @required this.statusRepository}) {
     assert(conversation != null);
   }
