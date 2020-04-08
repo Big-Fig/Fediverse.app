@@ -25,7 +25,7 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
 
   static final int undefinedPageIndex = -1;
 
-  bool get isCacheEnabled =>
+  bool get isPageCacheEnabled =>
       maximumCachedPagesCount == null || maximumCachedPagesCount > 0;
 
   bool get isMaximumPagesInCacheReached {
@@ -95,6 +95,7 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
     _logger.finest(() => "dispose");
   }
 
+  // todo: move forceToUpdateFromNetwork to nested clasess 
   @override
   Future<TPage> requestPage(
       {@required pageIndex, @required bool forceToUpdateFromNetwork}) async {
@@ -102,7 +103,7 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
         "requestPage $pageIndex, forceToUpdateFromNetwork $forceToUpdateFromNetwork");
 
     TPage page;
-    if (isCacheEnabled) {
+    if (isPageCacheEnabled) {
       if (indexToCachedPageMap.containsKey(pageIndex)) {
         page = indexToCachedPageMap[pageIndex];
       } else {
@@ -174,7 +175,7 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
 
     var newFirstPage =
         await requestPage(pageIndex: 0, forceToUpdateFromNetwork: true);
-
+    
     if (!refreshStateSubject.isClosed) {
       refreshStateSubject.add(PaginationRefreshState.refreshed);
     }
