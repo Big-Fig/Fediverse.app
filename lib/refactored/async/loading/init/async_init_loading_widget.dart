@@ -20,7 +20,7 @@ class AsyncInitLoadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InitialDataStreamBuilder<AsyncInitLoadingState>(
+    return StreamBuilder<AsyncInitLoadingState>(
         stream: asyncInitLoadingBloc.initLoadingStateStream,
         initialData: asyncInitLoadingBloc.initLoadingState,
         builder: (context, snapshot) {

@@ -9,13 +9,13 @@ class FilePickerBottomNavBarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var filePickerBloc = IFilePickerBloc.of(context);
 
-    return InitialDataStreamBuilder<List<FilePickerTab>>(
+    return StreamBuilder<List<FilePickerTab>>(
         stream: filePickerBloc.availableTabsStream,
         initialData: filePickerBloc.availableTabs,
         builder: (context, snapshot) {
           var tabs = snapshot.data;
 
-          return InitialDataStreamBuilder<FilePickerTab>(
+          return StreamBuilder<FilePickerTab>(
               stream: filePickerBloc.selectedTabStream,
               initialData: filePickerBloc.selectedTab,
               builder: (context, snapshot) {

@@ -18,7 +18,7 @@ class AuthInstanceChooserWidget extends StatelessWidget {
 
     _logger.finest(() => "build");
 
-    return InitialDataStreamBuilder<List<AuthInstance>>(
+    return StreamBuilder<List<AuthInstance>>(
         stream: instanceChooserBloc.instancesAvailableToChooseStream,
         initialData: instanceChooserBloc.instancesAvailableToChoose,
         builder: (context, snapshot) {

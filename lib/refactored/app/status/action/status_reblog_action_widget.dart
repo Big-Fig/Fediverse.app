@@ -13,7 +13,7 @@ class StatusReblogActionWidget extends StatelessWidget {
 
     return Row(
       children: <Widget>[
-        InitialDataStreamBuilder<bool>(
+        StreamBuilder<bool>(
             stream: statusBloc.rebloggedStream,
             initialData: statusBloc.reblogged,
             builder: (context, snapshot) {
@@ -29,7 +29,7 @@ class StatusReblogActionWidget extends StatelessWidget {
                       ),
                   asyncButtonAction: statusBloc.requestToggleReblog);
             }),
-        InitialDataStreamBuilder<int>(
+        StreamBuilder<int>(
             stream: statusBloc.reblogsReblogPlusOriginalCountStream,
             initialData: statusBloc.reblogsReblogPlusOriginalCount,
             builder: (context, snapshot) {

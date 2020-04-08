@@ -14,7 +14,7 @@ class ConversationAccountsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var conversationBloc = IConversationBloc.of(context, listen: false);
 
-    return InitialDataStreamBuilder<List<IAccount>>(
+    return StreamBuilder<List<IAccount>>(
         stream: conversationBloc.accountsStream,
         initialData: conversationBloc.accounts,
         builder: (context, snapshot) {

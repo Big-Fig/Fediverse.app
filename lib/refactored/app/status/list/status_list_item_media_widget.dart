@@ -36,7 +36,7 @@ class StatusListItemMediaWidget extends StatelessWidget {
     _logger.finest(() =>
         "build ${statusBloc.remoteId} media ${statusBloc.mediaAttachments?.length}");
 
-    return InitialDataStreamBuilder<List<IPleromaMediaAttachment>>(
+    return StreamBuilder<List<IPleromaMediaAttachment>>(
         stream: statusBloc.mediaAttachmentsStream,
         initialData: statusBloc.mediaAttachments,
         builder: (context, snapshot) {

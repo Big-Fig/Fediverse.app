@@ -28,7 +28,7 @@ class EditMyAccountPage extends StatelessWidget {
           title: Text(
               AppLocalizations.of(context).tr("app.account.my.edit.title")),
           actions: <Widget>[
-            InitialDataStreamBuilder<bool>(
+            StreamBuilder<bool>(
                 stream: editMyAccountBloc.isSomethingChangedStream,
                 initialData: editMyAccountBloc.isSomethingChanged,
                 builder: (context, snapshot) {

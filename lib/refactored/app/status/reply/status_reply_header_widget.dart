@@ -10,7 +10,7 @@ class StatusReplyHeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: true);
-    return InitialDataStreamBuilder<IAccount>(
+    return StreamBuilder<IAccount>(
         stream: statusBloc.watchInReplyToAccount(),
         initialData: null,
         builder: (context, snapshot) {

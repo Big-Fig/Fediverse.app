@@ -16,7 +16,7 @@ class PostStatusPostActionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var postStatusBloc = IPostStatusBloc.of(context, listen: true);
 
-    return InitialDataStreamBuilder<bool>(
+    return StreamBuilder<bool>(
         stream: postStatusBloc.isReadyToPostStream,
         initialData: postStatusBloc.isReadyToPost,
         builder: (context, snapshot) {

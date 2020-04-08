@@ -179,11 +179,11 @@ class _NotificationsWebSocketsChannelExampleWidgetState
         });
   }
 
-  InitialDataStreamBuilder<PleromaNotificationWebSocketsEvent>
+  StreamBuilder<PleromaNotificationWebSocketsEvent>
       buildLatestEventStringBuilderExample(
           StreamController<PleromaNotificationWebSocketsEvent>
               streamController) {
-    return InitialDataStreamBuilder<PleromaNotificationWebSocketsEvent>(
+    return StreamBuilder<PleromaNotificationWebSocketsEvent>(
         stream: streamController.stream,
         initialData: null,
         builder: (context, snapshot) {

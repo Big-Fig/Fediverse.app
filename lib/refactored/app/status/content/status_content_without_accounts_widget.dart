@@ -10,7 +10,7 @@ class StatusContentWithoutAccountsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: true);
 
-    return InitialDataStreamBuilder<String>(
+    return StreamBuilder<String>(
         stream: statusBloc.contentWithEmojisWithoutAccountStream,
         initialData: statusBloc.contentWithEmojisWithoutAccount,
         builder: (context, snapshot) {

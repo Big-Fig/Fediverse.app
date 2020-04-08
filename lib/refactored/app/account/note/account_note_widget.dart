@@ -9,7 +9,7 @@ class AccountNoteWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);
-    return InitialDataStreamBuilder<String>(
+    return StreamBuilder<String>(
         stream: accountBloc.noteStream,
         initialData: accountBloc.note,
         builder: (context, snapshot) {

@@ -8,7 +8,7 @@ class StatusCreatedAtWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: false);
 
-    return InitialDataStreamBuilder<DateTime>(
+    return StreamBuilder<DateTime>(
         stream: statusBloc.createdAtStream,
         initialData: statusBloc.createdAt,
         builder: (context, snapshot) {

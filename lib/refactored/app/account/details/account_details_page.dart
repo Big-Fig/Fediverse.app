@@ -13,7 +13,7 @@ class AccountDetailsPage extends StatelessWidget {
     var accountBloc = IAccountBloc.of(context, listen: true);
     return Scaffold(
       appBar: AppBar(
-        title: InitialDataStreamBuilder<String>(
+        title: StreamBuilder<String>(
             stream: accountBloc.acctStream,
             initialData: accountBloc.acct,
             builder: (context, snapshot) {

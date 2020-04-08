@@ -20,7 +20,7 @@ class AppSplashWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     _logger.fine(() => "build");
 
-    return InitialDataStreamBuilder<AsyncInitLoadingState>(
+    return StreamBuilder<AsyncInitLoadingState>(
         stream: initBloc.initLoadingStateStream,
         initialData: initBloc.initLoadingState,
         builder: (context, snapshot) {

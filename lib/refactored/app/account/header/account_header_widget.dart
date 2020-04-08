@@ -9,7 +9,7 @@ class AccountHeaderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: true);
 
-    return InitialDataStreamBuilder<String>(
+    return StreamBuilder<String>(
         stream: accountBloc.headerStream,
         initialData: accountBloc.header,
         builder: (context, snapshot) {

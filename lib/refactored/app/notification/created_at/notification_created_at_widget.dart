@@ -8,7 +8,7 @@ class NotificationCreatedAtWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var notificationBloc = INotificationBloc.of(context, listen: false);
 
-    return InitialDataStreamBuilder<DateTime>(
+    return StreamBuilder<DateTime>(
         stream: notificationBloc.createdAtStream,
         initialData: notificationBloc.createdAt,
         builder: (context, snapshot) {

@@ -12,7 +12,7 @@ class GrantPermissionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InitialDataStreamBuilder<bool>(
+    return StreamBuilder<bool>(
         stream: permissionBloc.permissionGrantedStream.distinct(),
         initialData: permissionBloc.permissionGranted,
         builder: (context, snapshot) {

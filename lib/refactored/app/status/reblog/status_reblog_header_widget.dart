@@ -11,7 +11,7 @@ class StatusReblogHeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: false);
-    return InitialDataStreamBuilder<IAccount>(
+    return StreamBuilder<IAccount>(
         stream: statusBloc.accountStream,
         initialData: statusBloc.account,
         builder: (context, snapshot) {
