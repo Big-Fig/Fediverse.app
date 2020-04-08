@@ -8,7 +8,10 @@ import 'package:fedi/refactored/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/refactored/pagination/list/pagination_list_widget.dart';
 import 'package:fedi/refactored/pagination/pagination_model.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+
+var _logger = Logger("account_pagination_list_widget.dart");
 
 class AccountPaginationListWidget extends PaginationListWidget<IAccount> {
   final AccountSelectedCallback accountSelectedCallback;
@@ -42,8 +45,11 @@ class AccountPaginationListWidget extends PaginationListWidget<IAccount> {
           items: items,
           header: header,
           footer: footer,
-          itemBuilder: (context, index) => Provider<IAccount>.value(
-                value: items[index],
+          itemBuilder: (context, index) {
+            var item = items[index];
+            _logger.finest(() => "itemBuilder ${item.remoteId}");
+            return Provider<IAccount>.value(
+                value: item,
                 child: DisposableProxyProvider<IAccount, IAccountBloc>(
                     update: (context, account, oldValue) =>
                         AccountBloc.createFromContext(context,
@@ -53,7 +59,8 @@ class AccountPaginationListWidget extends PaginationListWidget<IAccount> {
                             needRefreshFromNetworkOnInit: false),
                     child: AccountListItemWidget(
                         accountSelectedCallback: accountSelectedCallback)),
-              ));
+              );
+          });
 
   @override
   IPaginationListBloc<PaginationPage<IAccount>, IAccount>
