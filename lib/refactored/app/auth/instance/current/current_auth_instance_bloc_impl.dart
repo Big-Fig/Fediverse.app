@@ -4,6 +4,9 @@ import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_
 import 'package:fedi/refactored/app/auth/instance/list/auth_instance_list_bloc.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
+
+var _logger = Logger("current_auth_instance_bloc_impl.dart");
 
 class CurrentAuthInstanceBloc extends DisposableOwner
     implements ICurrentAuthInstanceBloc {
@@ -25,6 +28,7 @@ class CurrentAuthInstanceBloc extends DisposableOwner
 
   @override
   changeCurrentInstance(AuthInstance instance) {
+    _logger.finest(() => "changeCurrentInstance $instance");
     if (!instanceListBloc.availableInstances.contains(instance)) {
       instanceListBloc.addInstance(instance);
     }
@@ -37,6 +41,7 @@ class CurrentAuthInstanceBloc extends DisposableOwner
 
   @override
   Future logoutCurrentInstance() async {
+    _logger.finest(() => "logoutCurrentInstance $currentInstance");
     instanceListBloc.removeInstance(currentInstance);
     await currentInstanceLocalPreferenceBloc.setValue(null);
   }

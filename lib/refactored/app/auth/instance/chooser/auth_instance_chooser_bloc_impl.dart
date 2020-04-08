@@ -4,6 +4,9 @@ import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_
 import 'package:fedi/refactored/app/auth/instance/list/auth_instance_list_bloc.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
+
+var _logger = Logger("auth_instance_chooser_bloc_impl.dart");
 
 class AuthInstanceChooserBloc extends DisposableOwner
     implements IAuthInstanceChooserBloc {
@@ -28,10 +31,16 @@ class AuthInstanceChooserBloc extends DisposableOwner
       instanceListBloc.availableInstancesStream
           .map((availableInstances) => filterNotSelected(availableInstances));
 
-  List<AuthInstance> filterNotSelected(List<AuthInstance> availableInstances) =>
-      availableInstances
-          .where((instance) => instance != selectedInstance)
-          .toList();
+  List<AuthInstance> filterNotSelected(List<AuthInstance> availableInstances) {
+    var selectedInstance = this.selectedInstance;
+    var filtered = availableInstances.where((instance) {
+      return instance.userAtHost != selectedInstance.userAtHost;
+    }).toList();
+    _logger.finest(() => "filterNotSelected \n"
+        "\t availableInstances = ${availableInstances.length} \n"
+        "\t filtered = ${filtered.length} \n");
+    return filtered;
+  }
 
   @override
   AuthInstance get selectedInstance => currentInstanceBloc.currentInstance;

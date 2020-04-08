@@ -3,7 +3,6 @@ import 'package:fedi/refactored/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/refactored/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/refactored/app/auth/instance/chooser/auth_instance_chooser_bloc.dart';
 import 'package:fedi/refactored/app/auth/instance/join/add_more/add_more_join_auth_instance_page.dart';
-import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -85,7 +84,12 @@ class AuthInstanceChooserWidget extends StatelessWidget {
                 instanceChooserBloc.removeInstance(instance);
               },
             ),
-            Text(instance.userAtHost),
+            GestureDetector(
+              onTap: () {
+                // todo: alert dialog
+                instanceChooserBloc.chooseInstance(instance);
+              },
+                child: Text(instance.userAtHost)),
           ],
         ),
       );
