@@ -240,7 +240,7 @@ class StatusShareActionWidget extends StatelessWidget {
                         .tr("app.status.copy_link.toast"),
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.CENTER,
-                    timeInSecForIos: 1,
+                    timeInSecForIosWeb: 1,
                     backgroundColor: Colors.blue,
                     textColor: Colors.white,
                     fontSize: 16.0);
