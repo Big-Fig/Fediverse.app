@@ -23,7 +23,8 @@ abstract class NotificationUnreadBadgeCountWidget extends StatelessWidget {
             shape: BadgeShape.circle,
             borderRadius: 100,
             child: child,
-            badgeContent: Text(unreadCount.toString()),
+            badgeContent: Text(unreadCount.toString(),style: TextStyle(color:
+            Colors.white, fontWeight: FontWeight.bold),),
           );
         });
   }

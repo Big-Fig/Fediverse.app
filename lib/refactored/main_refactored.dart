@@ -13,6 +13,7 @@ import 'package:fedi/refactored/app/auth/instance/join/join_auth_instance_bloc_i
 import 'package:fedi/refactored/app/auth/instance/list/auth_instance_list_model.dart';
 import 'package:fedi/refactored/app/context/app_context_bloc_impl.dart';
 import 'package:fedi/refactored/app/home/home_page.dart';
+import 'package:fedi/refactored/app/push/handler/unhandled/push_handler_unhandled_local_preferences_model.dart';
 import 'package:fedi/refactored/app/push/subscription/local_preferences/push_subscription_local_preferences_model.dart';
 import 'package:fedi/refactored/app/splash/app_splash_widget.dart';
 import 'package:fedi/refactored/app/timeline/local_preferences/timeline_local_preferences_model.dart';
@@ -61,6 +62,7 @@ void main() async {
   Hive.registerAdapter(PleromaClientApplicationAdapter(), 52);
   Hive.registerAdapter(MyAccountRemoteWrapperAdapter(), 53);
   Hive.registerAdapter(PleromaMyAccountAdapter(), 54);
+  Hive.registerAdapter(PushHandlerUnhandledListAdapter(), 55);
 
   Hive.init(directory.path);
 
@@ -112,6 +114,7 @@ void buildCurrentInstanceApp(
         preferencesService: appContextBloc.get(),
         connectionService: appContextBloc.get(),
         pushRelayService: appContextBloc.get(),
+        pushHandlerBloc: appContextBloc.get(),
         fcmPushService: appContextBloc.get());
     await currentInstanceContextBloc.performAsyncInit();
     _logger.finest(

@@ -10,14 +10,14 @@ class PushMessage {
   final PushNotification notification;
   final Map<String, dynamic> data;
 
-  PushMessage(this.type, this.notification, this.data);
-
-  PushMessage.name(
+  PushMessage(
       {@required this.type, @required this.notification, @required this.data});
 
   @override
   String toString() {
-    return 'PushMessage{type: $type, data: $data}';
+    return 'PushMessage{type: $type,'
+        ' notification: $notification,'
+        ' data: $data}';
   }
 }
 

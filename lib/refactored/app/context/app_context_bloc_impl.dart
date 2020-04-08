@@ -7,6 +7,8 @@ import 'package:fedi/refactored/app/auth/instance/list/auth_instance_list_bloc_i
 import 'package:fedi/refactored/app/auth/instance/list/auth_instance_list_local_preference_bloc.dart';
 import 'package:fedi/refactored/app/auth/instance/list/auth_instance_list_local_preference_bloc_impl.dart';
 import 'package:fedi/refactored/app/context/app_context_bloc.dart';
+import 'package:fedi/refactored/app/notification/pagination/list/notification_pagination_list_bloc_impl.dart';
+import 'package:fedi/refactored/app/notification/push/notification_push_loader_bloc_impl.dart';
 import 'package:fedi/refactored/app/push/handler/push_handler_bloc.dart';
 import 'package:fedi/refactored/app/push/handler/push_handler_bloc_impl.dart';
 import 'package:fedi/refactored/app/push/handler/unhandled/push_handler_unhandled_local_preferences_bloc.dart';
@@ -96,12 +98,12 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         .asyncInitAndRegister<IPushHandlerUnhandledLocalPreferencesBloc>(
             pushHandlerUnhandledLocalPreferencesBloc);
 
-    var pushHandler = PushHandlerBloc(
+    var pushHandlerBloc = PushHandlerBloc(
         currentInstanceBloc: currentInstanceBloc,
         instanceListBloc: instanceListBloc,
         unhandledLocalPreferencesBloc: pushHandlerUnhandledLocalPreferencesBloc,
         fcmPushService: fcmPushService);
     await globalProviderService
-        .asyncInitAndRegister<IPushHandlerBloc>(pushHandler);
+        .asyncInitAndRegister<IPushHandlerBloc>(pushHandlerBloc);
   }
 }

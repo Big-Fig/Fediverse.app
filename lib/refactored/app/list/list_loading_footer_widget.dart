@@ -24,13 +24,13 @@ class ListLoadingFooterWidget extends StatelessWidget {
             break;
           case LoadStatus.noMore:
             body = Text(
-              AppLocalizations.of(context).tr("list.loading.state"
+              AppLocalizations.of(context).tr("app.list.loading.state"
                   ".no_more_data"),
             );
             break;
           case LoadStatus.failed:
             body = Text(
-              AppLocalizations.of(context).tr("list.loading.state.failed"),
+              AppLocalizations.of(context).tr("app.list.loading.state.failed"),
             );
             break;
         }

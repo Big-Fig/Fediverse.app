@@ -8,8 +8,10 @@ import 'package:fedi/refactored/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/refactored/app/auth/instance/current/context/current_auth_instance_context_bloc.dart';
 import 'package:fedi/refactored/app/conversation/repository/conversation_repository.dart';
 import 'package:fedi/refactored/app/conversation/repository/conversation_repository_impl.dart';
+import 'package:fedi/refactored/app/notification/push/notification_push_loader_bloc_impl.dart';
 import 'package:fedi/refactored/app/notification/repository/notification_repository.dart';
 import 'package:fedi/refactored/app/notification/repository/notification_repository_impl.dart';
+import 'package:fedi/refactored/app/push/handler/push_handler_bloc.dart';
 import 'package:fedi/refactored/app/push/subscription/local_preferences/push_subscription_local_preferences_bloc.dart';
 import 'package:fedi/refactored/app/push/subscription/local_preferences/push_subscription_local_preferences_bloc_impl.dart';
 import 'package:fedi/refactored/app/push/subscription/push_subscription_bloc.dart';
@@ -66,6 +68,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
   final IConnectionService connectionService;
   final IPushRelayService pushRelayService;
   final IFcmPushService fcmPushService;
+  final IPushHandlerBloc pushHandlerBloc;
 
   CurrentAuthInstanceContextBloc({
     @required this.currentInstance,
@@ -73,6 +76,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     @required this.connectionService,
     @required this.pushRelayService,
     @required this.fcmPushService,
+    @required this.pushHandlerBloc,
   });
 
   @override
@@ -80,6 +84,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     _logger.fine(() => "internalAsyncInit");
 
     await fcmPushService.askPermissions();
+
+
 
     var globalProviderService = this;
 
@@ -237,5 +243,19 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: pushSubscriptionBloc);
     await globalProviderService
         .asyncInitAndRegister<IPushSubscriptionBloc>(pushSubscriptionBloc);
+
+    var isHaveSubscription = pushSubscriptionBloc.isHaveSubscription;
+    if(!isHaveSubscription) {
+      await pushSubscriptionBloc.subscribeWithDefaultPreferences();
+    }
+
+
+    var notificationPushLoaderBloc = NotificationPushLoaderBloc(
+        currentInstance: currentInstance,
+        pushHandlerBloc: pushHandlerBloc,
+        notificationRepository: notificationRepository, pleromaNotificationService:
+    pleromaNotificationService);
+
+    addDisposable(disposable: notificationPushLoaderBloc);
   }
 }

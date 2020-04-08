@@ -61,7 +61,7 @@ class AuthInstanceChooserWidget extends StatelessWidget {
             children: <Widget>[
               Icon(Icons.add),
               Text(AppLocalizations.of(context)
-                  .tr("auth.instance.chooser.action.add_account")),
+                  .tr("app.auth.instance.chooser.action.add_account")),
             ],
           ),
         ),

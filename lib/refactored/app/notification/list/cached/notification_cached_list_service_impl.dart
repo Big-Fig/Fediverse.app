@@ -34,7 +34,7 @@ class NotificationCachedListService extends INotificationCachedListService {
         offset: null,
         orderingTermData: NotificationOrderingTermData(
             orderingMode: OrderingMode.desc,
-            orderByType: NotificationOrderByType.remoteId));
+            orderByType: NotificationOrderByType.createdAt));
   }
 
   @override

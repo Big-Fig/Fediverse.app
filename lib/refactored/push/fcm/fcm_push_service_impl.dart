@@ -9,7 +9,8 @@ import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger("fcm_push_service_impl.dart");
 
-final String _iosCloudMessageNotificationKey = "notification";
+final String _notificationKey = "notification";
+final String _dataKey = "data";
 
 class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
   final FirebaseMessaging _fcm;
@@ -29,8 +30,6 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
   FcmPushService() : _fcm = FirebaseMessaging() {
     addDisposable(subject: _deviceTokenSubject);
     addDisposable(subject: _messageSubject);
-
-    performAsyncInit();
   }
 
   void _onNewToken(String newToken) {
@@ -83,13 +82,16 @@ PushMessage parseCloudMessage(
 
   data = _remapToStringObjectMap(data);
   _logger.finest(() => "parseCloudMessage after remap $data");
+  PushMessage parsed;
   if (Platform.isAndroid) {
-    return _parsePushMessageOnAndroid(cloudMessageType, data);
+    parsed = _parsePushMessageOnAndroid(cloudMessageType, data);
   } else if (Platform.isIOS) {
-    return _parsePushMessageOnIos(cloudMessageType, data);
+    parsed = _parsePushMessageOnIos(cloudMessageType, data);
   } else {
     throw "Invalid platform ${Platform.operatingSystem}";
   }
+
+  return parsed;
 }
 
 // Json serialization accepts Map<String, dynamic>
@@ -97,8 +99,19 @@ PushMessage parseCloudMessage(
 Map<String, dynamic> _remapForJson(raw) => (raw as Map)
     ?.map((key, value) => MapEntry<String, dynamic>(key.toString(), value));
 
-Map<String, dynamic> _remapToStringObjectMap(Map<String, dynamic> data) {
-  return data.map((key, value) => MapEntry(key.toString(), value));
+Map<String, dynamic> _remapToStringObjectMap(Map data) {
+
+  var remappedData  = Map<String, dynamic>();
+
+  data.entries.forEach((entry) {
+    var remappedValue = entry.value;
+    if(entry.value is Map) {
+      remappedValue = _remapToStringObjectMap(entry.value);
+    }
+    remappedData[entry.key.toString()] = remappedValue;
+  });
+
+  return remappedData;
 }
 
 PushMessage _parsePushMessageOnIos(
@@ -107,8 +120,7 @@ PushMessage _parsePushMessageOnIos(
 
   _logger.finest(() => "_parseChatCloudMessageOnIos $data");
 
-  var messageNotification =
-      _remapForJson(data[_iosCloudMessageNotificationKey]);
+  var messageNotification = _remapForJson(data[_notificationKey]);
 
   _logger.finest(() =>
       "_parseChatCloudMessageOnIos  messageNotification $messageNotification");
@@ -116,17 +128,28 @@ PushMessage _parsePushMessageOnIos(
   var messageData = _remapForJson(data);
   _logger.finest(() => "_parseChatCloudMessageOnIos  messageData $messageData");
   return PushMessage(
-      cloudMessageType,
-      messageNotification?.isNotEmpty == true
-          ? PushNotification.fromJson(messageNotification)
-          : null,
-      messageData ?? {});
+      notification:
+          data?.isNotEmpty == true ? PushNotification.fromJson(data) : null,
+      data: data ?? {},
+      type: cloudMessageType);
 }
 
 PushMessage _parsePushMessageOnAndroid(
-    PushMessageType cloudMessageType, Map<String, dynamic> data) {
+    PushMessageType cloudMessageType, Map<String, dynamic> rawData) {
+  _logger.finest(() => "_parsePushMessageOnAndroid rawData $rawData");
+  var dataJson =
+      rawData.containsKey(_dataKey) ? rawData[_dataKey] : null;
+  var notificationJson =
+      rawData.containsKey(_notificationKey) ? rawData[_notificationKey] : null;
+
+  _logger.finest(() => "_parsePushMessageOnAndroid \n"
+      "\t dataJson $dataJson \n"
+      "\t notificationJson $notificationJson"
+  );
   return PushMessage(
-      cloudMessageType,
-      data?.isNotEmpty == true ? PushNotification.fromJson(data) : null,
-      data ?? {});
+      notification: notificationJson != null
+          ? PushNotification.fromJson(notificationJson)
+          : null,
+      data: dataJson,
+      type: cloudMessageType);
 }
