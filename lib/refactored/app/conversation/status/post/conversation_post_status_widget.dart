@@ -30,7 +30,7 @@ class ConversationPostStatusWidget extends StatelessWidget {
                   PostStatusAttachMediaActionWidget(),
                 ],
               ),
-              PostStatusPostActionWidget(successCallback: (status) {
+              PostStatusPostActionWidget(successCallback: () {
                 // nothing
               })
             ],

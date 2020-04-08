@@ -34,6 +34,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:logging/logging.dart';
+import 'package:moor/moor.dart';
 import 'package:path_provider/path_provider.dart';
 
 var _logger = Logger("main.dart");
@@ -41,6 +42,9 @@ var _logger = Logger("main.dart");
 FirebaseAnalytics analytics = FirebaseAnalytics();
 
 void main() async {
+  // todo: improve re-opening new database during account switch
+  moorRuntimeOptions.dontWarnAboutMultipleDatabases = true;
+
   WidgetsFlutterBinding.ensureInitialized();
   initLog();
 
