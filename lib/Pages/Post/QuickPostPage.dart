@@ -25,12 +25,10 @@ const heicExtension = ".heic";
 var _logger = Logger("QuickPostPage.dart");
 
 class QuickPostPage extends StatefulWidget {
-
   final String sharedText;
   final List<dynamic> sharedFiles;
 
   const QuickPostPage(this.sharedText, this.sharedFiles);
-  
 
   @override
   State<StatefulWidget> createState() {
@@ -39,6 +37,7 @@ class QuickPostPage extends StatefulWidget {
 }
 
 class _QuickPostPageState extends State<QuickPostPage> {
+  bool isChecked = false;
   String statusVisability = "Public";
   List<String> attachments = [];
   ProgressDialog _pr;
@@ -227,6 +226,24 @@ class _QuickPostPageState extends State<QuickPostPage> {
                     },
                     context: context);
               },
+            ),
+            Container(
+              child: Row(
+                children: <Widget>[
+                  Checkbox(
+                    value: isChecked,
+                    onChanged: (value) {
+                      setState(() {
+                        isChecked = value;
+                      });
+                    },
+                  ),
+                  Text(
+                    "NSFW",
+                    style: TextStyle(color: isChecked ? Colors.blue : Colors.grey),
+                  ),
+                ],
+              ),
             ),
             Spacer(),
             OutlineButton(
@@ -611,6 +628,7 @@ class _QuickPostPageState extends State<QuickPostPage> {
     var statusPath = StatusRequest.Status.postNewStatus;
     Map<String, dynamic> params = {
       "status": statusController.text,
+      "sensitive": isChecked,
       "visibility": statusVisability,
       "media_ids": attachments
     };
@@ -655,6 +673,7 @@ class _QuickPostPageState extends State<QuickPostPage> {
     print("visibility  $statusVisability");
     Map<String, dynamic> params = {
       "status": statusController.text,
+      "sensitive": isChecked,
       "visibility": statusVisability,
     };
 
@@ -666,14 +685,15 @@ class _QuickPostPageState extends State<QuickPostPage> {
         .then((statusResponse) {
       print(statusResponse.body);
       _pr.hide();
-      var alert = Alert(
-          context,
-          AppLocalizations.of(context)
-              .tr("post.quick_post.posting.success.alert.title"),
-          AppLocalizations.of(context)
+      Navigator.of(context).popUntil((route) => route.isFirst);
+      Fluttertoast.showToast(
+          msg: AppLocalizations.of(context)
               .tr("post.quick_post.posting.success.alert.content"),
-          () => {Navigator.of(context).popUntil((route) => route.isFirst)});
-      alert.showAlert();
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          backgroundColor: Colors.blue,
+          textColor: Colors.white,
+          fontSize: 16.0);
     }).catchError((e) {
       print(e);
       _pr.hide();
