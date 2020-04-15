@@ -547,6 +547,7 @@
           "comment": "Comment",
           "repost": "Repost"
         },
+        "tap_to_view":"Content warning: Tap to view",
         "favorites": {
           "one": "{} Favorite",
           "many": "{} Favorites"

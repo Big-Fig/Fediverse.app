@@ -28,7 +28,7 @@ class EmojiBottomPicker extends StatelessWidget {
                   Spacer(flex: 2,),
                   Text(
                    AppLocalizations.of(context)
-                .tr("emoji_reation.title"),
+                .tr("emoji_reaction.title"),
                     style: TextStyle(color: Colors.black54),
                   ),
                    Spacer(flex: 1,),
