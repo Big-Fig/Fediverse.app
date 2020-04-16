@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/refactored/app/auth/instance/join/join_auth_instance_bloc.dart';
 import 'package:fedi/refactored/app/auth/instance/register/register_auth_instance_page.dart';
-import 'package:fedi/refactored/app/dialog/alert_dialog.dart';
+import 'package:fedi/refactored/app/dialog/my_alert_dialog.dart';
 import 'package:fedi/refactored/app/dialog/progress_dialog.dart';
 import 'package:fedi/refactored/app/tos/tos_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -214,7 +214,6 @@ class JoinAuthInstanceWidget extends StatelessWidget {
       host = "https://$host";
     }
 
-
     var bloc = AuthHostBloc.createFromContext(context,
         instanceBaseUrl: Uri.parse(host));
 
@@ -222,26 +221,23 @@ class JoinAuthInstanceWidget extends StatelessWidget {
       _pr.hide();
       bloc.dispose();
       if (instance != null) {
-        var alert = Alert(
-            context,
-            AppLocalizations.of(context).tr("app.auth.instance.join"
+        var alertDialog = MyAlertDialog(
+            title: AppLocalizations.of(context).tr("app.auth.instance.join"
                 ".fail.dialog.title"),
-            AppLocalizations.of(context).tr("app.auth.instance.join"
-                ".fail.dialog.content"),
-            () => {});
-        alert.showAlert();
+            content: AppLocalizations.of(context).tr("app.auth.instance.join"
+                ".fail.dialog.content"));
+        alertDialog.show(context);
       }
     }, errorCallback: (error) {
       _pr.hide();
       bloc.dispose();
-      var alert = Alert(
-          context,
-          AppLocalizations.of(context).tr("app.auth.instance.join"
+      var alert = MyAlertDialog(
+
+          title:AppLocalizations.of(context).tr("app.auth.instance.join"
               ".fail.dialog.title"),
-          AppLocalizations.of(context).tr("app.auth.instance.join"
-              ".fail.dialog.content"),
-          () => {});
-      alert.showAlert();
+          content:AppLocalizations.of(context).tr("app.auth.instance.join"
+              ".fail.dialog.content"));
+      alert.show(context);
     });
   }
 }
