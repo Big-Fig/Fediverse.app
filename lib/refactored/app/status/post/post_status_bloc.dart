@@ -1,6 +1,5 @@
 import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/media/attachment/upload/upload_media_attachment_bloc.dart';
-import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/disposable/disposable.dart';
 import 'package:fedi/refactored/file/picker/file_picker_model.dart';
 import 'package:fedi/refactored/pleroma/visibility/pleroma_visibility_model.dart';
@@ -27,6 +26,10 @@ abstract class IPostStatusBloc implements Disposable {
 
   Stream<PleromaVisibility> get visibilityStream;
 
+  bool get nsfwSensitive;
+
+  Stream<bool> get nsfwSensitiveStream;
+
   addMentionByAccount(IAccount account);
 
   removeMentionByAccount(IAccount account);
@@ -34,6 +37,8 @@ abstract class IPostStatusBloc implements Disposable {
   removeMentionByAcct(String acct);
 
   changeVisibility(PleromaVisibility visibility);
+
+  changeNsfwSensitive(bool nsfwSensitive);
 
   attachMedia(FilePickerFile filePickerFile);
 

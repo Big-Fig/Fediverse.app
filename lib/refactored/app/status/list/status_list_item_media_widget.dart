@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fedi/refactored/app/status/nsfw/status_nsfw_warning_widget.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
 import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_model.dart';
-import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -43,10 +43,21 @@ class StatusListItemMediaWidget extends StatelessWidget {
           var mediaAttachments = snapshot.data;
 
           if (mediaAttachments?.isNotEmpty == true) {
-            // todo: display all medias in list
             var mediaAttachment = mediaAttachments.first;
             var previewUrl = mediaAttachment.previewUrl;
-            return mediaAttachmentPreviewUrlWidget(previewUrl, context);
+            return StreamBuilder<bool>(
+                stream: statusBloc.nsfwSensitiveAndDisplayEnabledStream,
+                initialData: statusBloc.nsfwSensitiveAndDisplayEnabled,
+                builder: (context, snapshot) {
+                  var nsfwSensitiveAndDisplayEnabled = snapshot.data;
+
+                  if (nsfwSensitiveAndDisplayEnabled) {
+                    // todo: display all medias in list
+                    return mediaAttachmentPreviewUrlWidget(previewUrl, context);
+                  } else {
+                    return StatusNsfwWarningWidget();
+                  }
+                });
           } else {
             // TODO: remove hack
             return SizedBox.shrink();

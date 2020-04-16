@@ -25,4 +25,5 @@ class NewPostStatusBloc extends PostStatusBloc {
               IPleromaMediaAttachmentService.of(context, listen: false));
   @override
   bool get isPossibleToChangeVisibility => true;
+
 }
