@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/refactored/app/auth/instance/register/register_auth_instance_bloc.dart';
-import 'package:fedi/refactored/app/dialog/alert_dialog.dart';
+import 'package:fedi/refactored/app/dialog/my_alert_dialog.dart';
 import 'package:fedi/refactored/app/dialog/progress_dialog.dart';
 import 'package:fedi/refactored/pleroma/account/public/pleroma_account_public_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -170,15 +170,13 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
       authApplicationBloc.dispose();
     }
     if (success == true) {
-      var alert = Alert(
-          context,
-          AppLocalizations.of(context)
+      var alert = MyAlertDialog(
+
+          title:AppLocalizations.of(context)
               .tr("app.auth.instance.register.success.dialog.title"),
-          AppLocalizations.of(context)
-              .tr("app.auth.instance.register.success.dialog.content"), () {
-        Navigator.of(context).pop();
-      });
-      alert.showAlert();
+          content:AppLocalizations.of(context)
+              .tr("app.auth.instance.register.success.dialog.content"));
+      alert.show(context);
     } else {
       // todo: handle error by type
       showError(context, error: e.toString());
@@ -186,14 +184,13 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
   }
 
   showError(BuildContext context, {@required String error}) {
-    var alert = Alert(
-        context,
-        AppLocalizations.of(context)
+    var alert = MyAlertDialog(
+
+        title:AppLocalizations.of(context)
             .tr("app.auth.instance.register.success.dialog.title"),
-        AppLocalizations.of(context).tr(
+        content:AppLocalizations.of(context).tr(
             "app.auth.instance.register.success.dialog.content",
-            args: [error]),
-        () => {});
-    alert.showAlert();
+            args: [error]));
+    alert.show(context);
   }
 }
