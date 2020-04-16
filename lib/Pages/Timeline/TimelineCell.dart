@@ -59,7 +59,7 @@ class _TimelineCell extends State<TimelineCell> {
   double imageHeight;
   Account replyAccount;
   bool showEmojiPicker = false;
-
+  bool showSensitive = false;
   @override
   void initState() {
     super.initState();
@@ -149,6 +149,14 @@ class _TimelineCell extends State<TimelineCell> {
     if (targetHeight == null) {
       targetHeight = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
     }
+
+    var sensitive = widget.status.reblog != null ? widget.status.reblog.sensitive : widget.status.sensitive;
+    var contentWarning = widget.status.reblog != null ? widget.status.reblog.spoilerText : widget.status.spoilerText;
+    if (contentWarning == null || contentWarning == "") {
+      contentWarning = AppLocalizations.of(context).tr("timeline.status.cell.tap_to_view");
+    }
+    print("CONTENT WARNING");
+    print(contentWarning);
 
     Status status =
         widget.status.reblog != null ? widget.status.reblog : widget.status;
@@ -384,11 +392,35 @@ class _TimelineCell extends State<TimelineCell> {
                     ),
                     // image carousel
                     if (widget.status.mediaAttachments.length > 0)
-                      getMeidaWidget(widget.status),
+                      Stack(
+                        children: <Widget>[
+                          getMeidaWidget(widget.status),
+                          if (sensitive && showSensitive == false)
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  showSensitive = true;
+                                });
+                              },
+                              child: Container(
+                                color: Colors.blue,
+                                width: deviceWidth,
+                                height: targetHeight,
+                                child: Center(
+                                  child: Text(
+                                    contentWarning,
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+
                     // card widget
                     if (widget.status.card != null)
                       CardWidget(widget.status.card)
-                    else if (widget.status.reblog != null)
+                     else if (widget.status.reblog != null)
                       if (widget.status.reblog.card != null)
                         CardWidget(widget.status.reblog.card),
 
@@ -554,7 +586,6 @@ class _TimelineCell extends State<TimelineCell> {
                         ],
                       ),
                     ),
-                   
                   ],
                 ),
               ),

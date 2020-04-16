@@ -124,9 +124,9 @@ class MyTimelinePageState extends State<MyTimelinePage>
 
       if (hideReplies) {
         newStatuses.removeWhere((status) {
-          return status.inReplyToId != null;
+          
+          return status.reblog != null ? (status.reblog.inReplyToId != null || status.reblog.inReplyToAccountId != null) : (status.inReplyToId != null || status.inReplyToAccountId != null);
         });
-        return;
       }
 
       if (hideNSFW) {
