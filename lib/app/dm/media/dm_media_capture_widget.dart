@@ -23,12 +23,11 @@ class CaptureDMMediaWidget extends StatelessWidget {
     return DisposableProvider<ISingleFilePickerBloc>(create: (context) =>
         SingleFilePickerBloc(fileTypesToPick: [
           FilePickerFileType.image,
-          FilePickerFileType.video
+          FilePickerFileType.video,
         ],
             captureEnabled: true,
             startActiveTab: selectedTab,
         fileSelectedCallback: (filePickerFile) {
-          ;
 
           Navigator.push(
             context,

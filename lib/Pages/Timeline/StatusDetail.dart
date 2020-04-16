@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pages/Profile/OtherAccount.dart';
@@ -12,6 +13,7 @@ import 'package:fedi/Pleroma/Models/Status.dart';
 import 'package:fedi/Views/Alert.dart';
 import 'package:fedi/Views/MentionPage.dart';
 import 'package:fedi/app/dm/media/dm_media_capture_widget.dart';
+import 'package:fedi/app/dm/media/dm_media_page.dart';
 import 'package:fedi/app/emoji/emoji_bottom_picker.dart';
 import 'package:fedi/app/emoji/emoji_bottom_sheet_bloc.dart';
 import 'package:fedi/app/emoji/emoji_bottom_sheet_provider.dart';
@@ -19,9 +21,17 @@ import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/src/widgets/visibility.dart' as Vis;
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_widgets/flutter_widgets.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:logging/logging.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:path/path.dart' as path;
+
+const heicExtension = ".heic";
+var _logger = Logger("StatusDetail.dart");
 
 class StatusDetail extends StatefulWidget {
   final Status status;
@@ -297,13 +307,14 @@ class _StatusDetail extends State<StatusDetail> {
                       color: Colors.blue,
                     ),
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => CaptureDMMediaWidget(
-                                    mediaUploaded: mediaUploaded,
-                                    selectedTab: FilePickerTab.gallery,
-                                  )));
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => CaptureDMMediaWidget(
+                      //               mediaUploaded: mediaUploaded,
+                      //               selectedTab: FilePickerTab.gallery,
+                      //             )));
+                      _openMediaPicker();
                     },
                   ),
                   IconButton(
@@ -344,6 +355,60 @@ class _StatusDetail extends State<StatusDetail> {
     );
   }
 
+
+  Future<void> _openMediaPicker() async {
+    var file = await ImagePicker.pickImage(source: ImageSource.gallery);
+    // var file = FilePickerFile(file: image, type: )
+    var isNeedDeleteAfterUsage = false;
+    var filePath = file.absolute.path;
+    _logger.fine(() => "retrieveFile \n"
+        "\t file $filePath");
+
+    var extension = path.extension(filePath);
+    if (extension == heicExtension || Platform.isIOS) {
+      // gallery may return photos in HEIC format from iOS gallery
+      // in this case we should re-compress them to jpg
+      // gallery on iOS is selecting the old
+      file = await _compressToJpeg(file);
+      isNeedDeleteAfterUsage = true;
+    }
+    var newFile = FilePickerFile(
+        file: file,
+        type: FilePickerFileType.image,
+        isNeedDeleteAfterUsage: isNeedDeleteAfterUsage);
+
+    Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DMMediaPage(filePickerFile: newFile,
+            popParent: () {
+            },
+            mediaUploaded: gallerySelectedUploaded,),
+          ));
+  }
+
+   Future<File> _compressToJpeg(File file) async {
+    var originPath = file.absolute.path;
+    final Directory extDir = await getTemporaryDirectory();
+    var timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+    final String dirPath = path.join(extDir.path, "gallery_picker", timestamp);
+    await Directory(dirPath).create(recursive: true);
+    var originalFileNameWithoutExtension =
+        path.basenameWithoutExtension(file.path);
+    final String resultPath =
+        path.join(dirPath, "$originalFileNameWithoutExtension.jpg");
+    _logger.fine(() => "_compressToJpeg \n"
+        "\t originPath $originPath"
+        "\t resultPath $resultPath");
+    file = await FlutterImageCompress.compressAndGetFile(
+      originPath,
+      resultPath,
+      format: CompressFormat.jpeg,
+      quality: 88,
+    );
+    return file;
+  }
+
   mediaUploaded(BuildContext context, String id) {
     print("MY ID!!! $id");
 
@@ -355,6 +420,11 @@ class _StatusDetail extends State<StatusDetail> {
 //    Navigator.of(context)
 //        .popUntil((route) => route.settings.name == "/StatusDetail");
 
+    sendMessageWithAttachment(id);
+  }
+
+  gallerySelectedUploaded(BuildContext context, String id) {
+    Navigator.of(context).pop();
     sendMessageWithAttachment(id);
   }
 
