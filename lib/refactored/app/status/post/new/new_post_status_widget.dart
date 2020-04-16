@@ -3,6 +3,7 @@ import 'package:fedi/refactored/app/status/post/action/post_status_attach_camera
 import 'package:fedi/refactored/app/status/post/action/post_status_attach_camera_video_action_widget.dart';
 import 'package:fedi/refactored/app/status/post/action/post_status_attach_media_action_widget.dart';
 import 'package:fedi/refactored/app/status/post/action/post_status_mention_action_widget.dart';
+import 'package:fedi/refactored/app/status/post/action/post_status_nsfw_action_widget.dart';
 import 'package:fedi/refactored/app/status/post/action/post_status_post_action_widget.dart';
 import 'package:fedi/refactored/app/status/post/action/post_status_visibility_action_widget.dart';
 import 'package:fedi/refactored/app/status/post/mentions/post_status_mentions_widget.dart';
@@ -33,6 +34,7 @@ class NewPostStatusWidget extends StatelessWidget {
                   PostStatusAttachCameraVideoActionWidget(),
                   PostStatusAttachCameraImageActionWidget(),
                   PostStatusAttachMediaActionWidget(),
+                  PostStatusNsfwActionWidget()
                 ],
               ),
               PostStatusPostActionWidget(successCallback: (context) {

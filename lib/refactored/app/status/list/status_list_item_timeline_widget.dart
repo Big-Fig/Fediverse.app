@@ -9,12 +9,14 @@ import 'package:fedi/refactored/app/status/created_at/status_created_at_widget.d
 import 'package:fedi/refactored/app/status/emoji_reaction/status_emoji_reaction_list_widget.dart';
 import 'package:fedi/refactored/app/status/emoji_reaction/status_emoji_reaction_picker_widget.dart';
 import 'package:fedi/refactored/app/status/media/status_media_attachments_widget.dart';
+import 'package:fedi/refactored/app/status/nsfw/status_nsfw_warning_widget.dart';
 import 'package:fedi/refactored/app/status/reblog/status_reblog_header_widget.dart';
 import 'package:fedi/refactored/app/status/reply/status_reply_header_widget.dart';
+import 'package:fedi/refactored/app/status/spoiler/status_spoiler_alert_widget.dart';
+import 'package:fedi/refactored/app/status/spoiler/status_spoiler_widget.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/app/status/thread/status_thread_page.dart';
-import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -95,10 +97,8 @@ class _StatusListItemTimelineWidgetState
                 ],
               ),
             ),
-            StatusContentWidget(),
-            StatusCardWidget(),
+            buildStatusContent(context, statusBloc),
             StatusEmojiReactionListWidget(),
-            StatusMediaAttachmentsWidget(),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 12.0),
               child: Row(
@@ -116,23 +116,63 @@ class _StatusListItemTimelineWidgetState
         ),
       );
 
-  IconButton buildEmojiPickerButton(BuildContext context, IStatusBloc statusBloc) {
+  IconButton buildEmojiPickerButton(
+      BuildContext context, IStatusBloc statusBloc) {
     return IconButton(
-        color: Colors.grey,
-        icon: Icon(Icons.insert_emoticon),
-        onPressed: () {
-          showModalBottomSheet(
-              context: context,
-              builder: (context) => StatusEmojiReactionPickerWidget(
-                    emojiReactionSelectedCallback:
-                        (String emojiName, String emoji) {
-                      setState(() {
-                        Navigator.of(context).pop();
-                      });
-                      statusBloc.requestToggleEmojiReaction(emoji: emoji);
-                    },
-                  ));
-        },
-      );
+      color: Colors.grey,
+      icon: Icon(Icons.insert_emoticon),
+      onPressed: () {
+        showModalBottomSheet(
+            context: context,
+            builder: (context) => StatusEmojiReactionPickerWidget(
+                  emojiReactionSelectedCallback:
+                      (String emojiName, String emoji) {
+                    setState(() {
+                      Navigator.of(context).pop();
+                    });
+                    statusBloc.requestToggleEmojiReaction(emoji: emoji);
+                  },
+                ));
+      },
+    );
+  }
+
+  Widget buildStatusContent(BuildContext context, IStatusBloc statusBloc) {
+    return StreamBuilder<bool>(
+        stream: statusBloc.nsfwSensitiveAndDisplayEnabledStream,
+        initialData: statusBloc.nsfwSensitiveAndDisplayEnabled,
+        builder: (context, snapshot) {
+          var nsfwSensitiveAndDisplayEnabled = snapshot.data;
+
+          if (nsfwSensitiveAndDisplayEnabled) {
+            return StreamBuilder<bool>(
+              stream: statusBloc.containsSpoilerAndDisplayEnabledStream,
+                initialData: statusBloc.containsSpoilerAndDisplayEnabled,
+              builder: (context, snapshot) {
+                var containsSpoilerAndDisplayEnabled = snapshot.data;
+                if(containsSpoilerAndDisplayEnabled) {
+                  return Column(
+                    children: <Widget>[
+                      StatusSpoilerWidget(),
+                      StatusContentWidget(),
+                      StatusCardWidget(),
+                      StatusMediaAttachmentsWidget(),
+                    ],
+                  );
+                } else {
+                 return Column(
+                   children: <Widget>[
+                     StatusSpoilerWidget(),
+                     StatusSpoilerAlertWidget(),
+                   ],
+                 );
+                }
+
+              }
+            );
+          } else {
+            return StatusNsfwWarningWidget();
+          }
+        });
   }
 }

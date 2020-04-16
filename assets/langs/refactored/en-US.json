@@ -336,6 +336,17 @@
           "more_actions_for": "More actions for"
         }
       },
+      "nsfw": {
+        "content": "Status contains NSFW content",
+        "action": {
+          "view": "Tap to view"
+        }
+      },
+      "spoiler": {
+        "action": {
+          "view": "Tap to view"
+        }
+      },
       "copy_link": {
         "toast": "Copied"
       },
@@ -360,6 +371,9 @@
           "action": {
             "cancel": "Cancel"
           }
+        },
+        "nsfw": {
+          "title": "NSFW"
         },
         "mention": {
           "content": {

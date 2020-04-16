@@ -155,4 +155,26 @@ abstract class IStatusBloc implements Disposable {
   Future<IStatus> requestTogglePin();
 
   Future<IPleromaStatus> requestToggleEmojiReaction({@required String emoji});
+
+
+  String get spoilerText;
+
+  Stream<String> get spoilerTextStream;
+
+
+  bool get nsfwSensitive;
+  Stream<bool> get nsfwSensitiveStream;
+
+  bool get nsfwSensitiveAndDisplayEnabled;
+  Stream<bool> get nsfwSensitiveAndDisplayEnabledStream;
+
+  bool get containsSpoiler;
+  Stream<bool> get containsSpoilerStream;
+
+  bool get containsSpoilerAndDisplayEnabled;
+  Stream<bool> get containsSpoilerAndDisplayEnabledStream;
+
+  changeDisplayNsfwSensitive(bool display);
+
+  changeDisplaySpoiler(bool display);
 }

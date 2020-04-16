@@ -3,7 +3,6 @@ import 'package:fedi/refactored/app/media/attachment/upload/upload_media_attachm
 import 'package:fedi/refactored/app/media/attachment/upload/upload_media_attachment_bloc_impl.dart';
 import 'package:fedi/refactored/app/status/post/post_status_bloc.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
-import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/disposable/disposable.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:fedi/refactored/file/picker/file_picker_model.dart';
@@ -69,6 +68,15 @@ abstract class PostStatusBloc extends DisposableOwner
 
   @override
   Stream<PleromaVisibility> get visibilityStream => visibilitySubject.stream;
+
+  // ignore: close_sinks
+  BehaviorSubject<bool> nsfwSensitiveSubject;
+
+  @override
+  bool get nsfwSensitive => nsfwSensitiveSubject.value;
+
+  @override
+  Stream<bool> get nsfwSensitiveStream => nsfwSensitiveSubject.stream;
 
   @override
   bool get isMaximumMediaAttachmentCountReached => isMaximumAttachmentReached(
@@ -138,6 +146,7 @@ abstract class PostStatusBloc extends DisposableOwner
   }) {
     assert(pleromaMediaAttachmentService != null);
     visibilitySubject = BehaviorSubject.seeded(initialVisibility);
+    nsfwSensitiveSubject = BehaviorSubject.seeded(false);
 
     addDisposable(subject: mediaAttachmentBlocsSubject);
     addDisposable(subject: mentionedAcctsSubject);
@@ -298,6 +307,11 @@ abstract class PostStatusBloc extends DisposableOwner
     visibilitySubject.add(visibility);
   }
 
+  @override
+  changeNsfwSensitive(bool nsfwSensitive) {
+    nsfwSensitiveSubject.add(nsfwSensitive);
+  }
+
   bool isMaximumAttachmentReached(
       {@required List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs,
       @required int maximumMediaAttachmentCount}) {
@@ -321,6 +335,7 @@ abstract class PostStatusBloc extends DisposableOwner
                 ?.map((bloc) => bloc.pleromaMediaAttachment.id)
                 ?.toList(),
             status: inputText,
+            sensitive: nsfwSensitive,
             visibility: pleromaVisibilityValues.reverse[visibility],
             inReplyToId: inReplyToStatusRemoteId,
             inReplyToConversationId: conversationRemoteId,
