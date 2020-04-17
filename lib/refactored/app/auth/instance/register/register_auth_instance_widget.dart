@@ -3,6 +3,8 @@ import 'package:fedi/refactored/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/refactored/app/auth/instance/register/register_auth_instance_bloc.dart';
 import 'package:fedi/refactored/app/dialog/alert/my_alert_dialog.dart';
 import 'package:fedi/refactored/app/dialog/progress/indeterminate_progress_dialog.dart';
+import 'package:fedi/refactored/app/form/form_field_error_model.dart';
+import 'package:fedi/refactored/app/form/form_model.dart';
 import 'package:fedi/refactored/pleroma/account/public/pleroma_account_public_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,122 +17,102 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
 
     return ListView(
       children: <Widget>[
-        userNameField(context, joinInstanceRegisterBloc),
-        emailField(context, joinInstanceRegisterBloc),
-        passwordField(context, joinInstanceRegisterBloc),
-        confirmPasswordField(context, joinInstanceRegisterBloc),
-        Container(margin: EdgeInsets.only(top: 25.0)),
-        submitButton(context, joinInstanceRegisterBloc),
+        buildUsernameField(context, joinInstanceRegisterBloc),
+        buildEmailField(context, joinInstanceRegisterBloc),
+        buildPasswordField(context, joinInstanceRegisterBloc),
+        buildConfirmPasswordField(context, joinInstanceRegisterBloc),
+        SizedBox(height: 25),
+        buildSubmitButton(context, joinInstanceRegisterBloc),
       ],
     );
   }
 
-  Widget userNameField(BuildContext context, IRegisterAuthInstanceBloc bloc) {
-    return StreamBuilder(
-      stream: bloc.usernameStream,
-      initialData: bloc.username,
-      builder: (context, snapshot) {
-        return Padding(
-          padding: EdgeInsets.all(10),
-          child: TextField(
-            onChanged: bloc.changeUsername,
-            decoration: InputDecoration(
-              hintText: AppLocalizations.of(context)
-                  .tr("app.auth.instance.register.field.username.hint"),
-              labelText: AppLocalizations.of(context)
-                  .tr("app.auth.instance.register.field.username.label"),
-              errorText: snapshot.error,
-            ),
-          ),
-        );
-      },
-    );
+  Padding buildTextField(
+      {@required BuildContext context,
+      @required FormTextField formTextField,
+      @required String hintText,
+      @required String labelText}) {
+    return Padding(
+        padding: EdgeInsets.all(10),
+        child: StreamBuilder<FormFieldError>(
+            stream: formTextField.errorStream,
+            initialData: formTextField.error,
+            builder: (context, snapshot) {
+              var error = snapshot.data;
+
+              return TextField(
+                  controller: formTextField.textEditingController,
+                  decoration: InputDecoration(
+                      hintText: hintText,
+                      labelText: labelText,
+                      errorText: error?.createErrorDescription(context)));
+            }));
   }
 
-  Widget emailField(BuildContext context, IRegisterAuthInstanceBloc bloc) {
-    return StreamBuilder(
-      stream: bloc.emailStream,
-      initialData: bloc.email,
-      builder: (context, snapshot) {
-        return Padding(
-          padding: EdgeInsets.all(10),
-          child: TextField(
-            onChanged: bloc.changeEmail,
-            keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(
-              hintText: AppLocalizations.of(context)
-                  .tr("app.auth.instance.register.field.email.hint"),
-              labelText: AppLocalizations.of(context)
-                  .tr("app.auth.instance.register.field.email.label"),
-              errorText: snapshot.error,
-            ),
-          ),
-        );
-      },
-    );
-  }
+  Widget buildUsernameField(
+          BuildContext context, IRegisterAuthInstanceBloc bloc) =>
+      buildTextField(
+        context: context,
+        formTextField: bloc.usernameField,
+        labelText: AppLocalizations.of(context)
+            .tr("app.auth.instance.register.field.username.label"),
+        hintText: AppLocalizations.of(context)
+            .tr("app.auth.instance.register.field.username.hint"),
+      );
 
-  Widget passwordField(BuildContext context, IRegisterAuthInstanceBloc bloc) {
-    return StreamBuilder(
-      stream: bloc.passwordStream,
-      initialData: bloc.password,
-      builder: (context, snapshot) {
-        return Padding(
-          padding: EdgeInsets.all(10),
-          child: TextField(
-            onChanged: bloc.changePassword,
-            decoration: InputDecoration(
-              hintText: AppLocalizations.of(context)
-                  .tr("app.auth.instance.register.field.password.hint"),
-              labelText: AppLocalizations.of(context)
-                  .tr("app.auth.instance.register.field.password.label"),
-              errorText: snapshot.error,
-            ),
-          ),
-        );
-      },
-    );
-  }
+  Widget buildEmailField(
+          BuildContext context, IRegisterAuthInstanceBloc bloc) =>
+      buildTextField(
+        context: context,
+        formTextField: bloc.emailField,
+        labelText: AppLocalizations.of(context)
+            .tr("app.auth.instance.register.field.email.label"),
+        hintText: AppLocalizations.of(context)
+            .tr("app.auth.instance.register.field.email.hint"),
+      );
 
-  Widget confirmPasswordField(
+  Widget buildPasswordField(
+          BuildContext context, IRegisterAuthInstanceBloc bloc) =>
+      buildTextField(
+        context: context,
+        formTextField: bloc.passwordField,
+        labelText: AppLocalizations.of(context)
+            .tr("app.auth.instance.register.field.password.label"),
+        hintText: AppLocalizations.of(context)
+            .tr("app.auth.instance.register.field.password.hint"),
+      );
+
+  Widget buildConfirmPasswordField(
+          BuildContext context, IRegisterAuthInstanceBloc bloc) =>
+      buildTextField(
+        context: context,
+        formTextField: bloc.confirmPasswordField,
+        labelText: AppLocalizations.of(context)
+            .tr("app.auth.instance.register.field.confirm_password.label"),
+        hintText: AppLocalizations.of(context)
+            .tr("app.auth.instance.register.field.confirm_password.hint"),
+      );
+
+  Widget buildSubmitButton(
       BuildContext context, IRegisterAuthInstanceBloc bloc) {
-    return StreamBuilder(
-      stream: bloc.passwordsMatchStream,
+    return StreamBuilder<bool>(
+      stream: bloc.readyToSubmitStream,
+      initialData: bloc.readyToSubmit,
       builder: (context, snapshot) {
-        return Padding(
-          padding: EdgeInsets.all(10),
-          child: TextField(
-            onChanged: bloc.changeConfirmPassword,
-            decoration: InputDecoration(
-              hintText: AppLocalizations.of(context)
-                  .tr("app.auth.instance.register.field.confirm_password.hint"),
-              labelText: AppLocalizations.of(context).tr(
-                  "app.auth.instance.register.field.confirm_password.label"),
-              errorText: snapshot.error,
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget submitButton(BuildContext context, IRegisterAuthInstanceBloc bloc) {
-    return StreamBuilder(
-      stream: bloc.registerStream,
-      builder: (context, snapshot) {
+        var readyToSubmit = snapshot.data;
+        Null Function() onPressed;
+        if (readyToSubmit) {
+          onPressed = () {
+            submit(context, bloc);
+          };
+        }
         return Padding(
           padding: EdgeInsets.all(10),
           child: RaisedButton(
             child: Text(AppLocalizations.of(context)
                 .tr("app.auth.instance.register.action.create_account")),
             color: Colors.blue,
-            onPressed: () {
-              if (snapshot.hasData) {
-                submit(context, bloc);
-              } else {
-                return null;
-              }
-            },
+            onPressed: onPressed,
           ),
         );
       },
@@ -138,9 +120,9 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
   }
 
   submit(BuildContext context, IRegisterAuthInstanceBloc bloc) async {
-    final validUsername = bloc.username;
-    final validEmail = bloc.email;
-    final validPassword = bloc.password;
+    final validUsername = bloc.usernameField.value;
+    final validEmail = bloc.emailField.value;
+    final validPassword = bloc.passwordField.value;
 
     var progressDialog = IndeterminateProgressDialog(
         contentMessage: AppLocalizations.of(context)
