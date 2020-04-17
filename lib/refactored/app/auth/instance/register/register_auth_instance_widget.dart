@@ -10,6 +10,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class RegisterAuthInstanceWidget extends StatelessWidget {
+  final Uri instanceBaseUrl;
+
+
+  RegisterAuthInstanceWidget({@required this.instanceBaseUrl});
+
   @override
   Widget build(BuildContext context) {
     var joinInstanceRegisterBloc =
@@ -129,9 +134,8 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
             .tr("app.auth.instance.register.progress.dialog.content"));
     progressDialog.show(context);
 
-    // todo: refactor domain
     var authApplicationBloc = AuthHostBloc.createFromContext(context,
-        instanceBaseUrl: Uri.parse("https://fedi.app"));
+        instanceBaseUrl: instanceBaseUrl);
     var success;
     var e;
     try {
