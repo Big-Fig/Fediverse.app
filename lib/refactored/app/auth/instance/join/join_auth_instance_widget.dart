@@ -70,7 +70,8 @@ class JoinAuthInstanceWidget extends StatelessWidget {
             ".join_fedi"),
       ),
       onPressed: () {
-        goToRegisterAuthInstancePage(context);
+        goToRegisterAuthInstancePage(context,
+            instanceBaseUrl: Uri.parse("https://fedi.app"));
       },
     );
   }
@@ -173,48 +174,35 @@ class JoinAuthInstanceWidget extends StatelessWidget {
     );
   }
 
+  Uri extractCurrentUri(IJoinAuthInstanceBloc joinInstanceBloc) {
+    var uri = Uri.parse(joinInstanceBloc.hostTextController.text);
+
+    var scheme = uri.scheme ?? "http";
+    var host = uri.host;
+
+    return Uri(scheme: scheme, host: host);
+  }
+
   signUpToInstance(BuildContext context) async {
     var joinInstanceBloc = IJoinAuthInstanceBloc.of(context, listen: false);
 
-    var hostTextController = joinInstanceBloc.hostTextController;
-    // todo: fix hardcode
-    if (hostTextController.text == "" ||
-        hostTextController.text.contains("fedi.app")) {
-      goToRegisterAuthInstancePage(context);
-      return;
-    }
-    var progressDialog = IndeterminateProgressDialog(
-        contentMessage: AppLocalizations.of(context).tr("app.auth.instance.join"
-            ".progress.dialog.content"));
-    progressDialog.show(context);
+    var hostUri = extractCurrentUri(joinInstanceBloc);
 
-    var host = hostTextController.text.split("/").first;
-    if (await canLaunch(host)) {
-      launch(host);
-    }
+    goToRegisterAuthInstancePage(context,
+        instanceBaseUrl: hostUri);
   }
 
   logInToInstance(BuildContext context) {
     var joinInstanceBloc = IJoinAuthInstanceBloc.of(context, listen: false);
 
-    var hostTextController = joinInstanceBloc.hostTextController;
-    if (hostTextController.text == "") {
-      hostTextController.text = "fedi.app";
-      return;
-    }
-    var progressDialog = IndeterminateProgressDialog(contentMessage: AppLocalizations.of(context).tr("app.auth.instance.join"
-        ".progress.dialog.content"));
+    var progressDialog = IndeterminateProgressDialog(
+        contentMessage: AppLocalizations.of(context).tr("app.auth.instance.join"
+            ".progress.dialog.content"));
     progressDialog.show(context);
 
-    var host = hostTextController.text.split("/").first;
-
-    if (!host.startsWith("http")) {
-      // todo: remove hack
-      host = "https://$host";
-    }
-
+    var hostUri = extractCurrentUri(joinInstanceBloc);
     var bloc = AuthHostBloc.createFromContext(context,
-        instanceBaseUrl: Uri.parse(host));
+        instanceBaseUrl: hostUri);
 
     bloc.launchLoginToAccount(successCallback: (instance) {
       progressDialog.hide(context);
