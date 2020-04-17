@@ -453,7 +453,7 @@
     }
   },
   "pagination": {
-    "list":{
+    "list": {
       "empty": "Nothing found"
     }
   },
@@ -471,6 +471,42 @@
     "action": {
       "ok": "Ok",
       "cancel": "Cancel"
+    }
+  },
+  "form": {
+    "field": {
+      "text": {
+        "email": {
+          "error": {
+            "invalid": {
+              "desc": "Invalid email"
+            }
+          }
+        },
+        "password": {
+          "error": {
+            "not_match": {
+              "desc": "Password and confirm password must match"
+            }
+          }
+        },
+        "error": {
+          "empty": {
+            "desc": "Must be not empty"
+          },
+          "length": {
+            "min_only": {
+              "desc": "Must be at least {} characters"
+            },
+            "max_only": {
+              "desc": "Must be less than {} characters"
+            },
+            "min_and_max": {
+              "desc": "Must be between {} and {} characters"
+            }
+          }
+        }
+      }
     }
   }
 }
