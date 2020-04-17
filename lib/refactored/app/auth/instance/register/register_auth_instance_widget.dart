@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/refactored/app/auth/instance/register/register_auth_instance_bloc.dart';
-import 'package:fedi/refactored/app/dialog/my_alert_dialog.dart';
-import 'package:fedi/refactored/app/dialog/progress_dialog.dart';
+import 'package:fedi/refactored/app/dialog/alert/my_alert_dialog.dart';
+import 'package:fedi/refactored/app/dialog/progress/indeterminate_progress_dialog.dart';
 import 'package:fedi/refactored/pleroma/account/public/pleroma_account_public_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -142,11 +142,10 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
     final validEmail = bloc.email;
     final validPassword = bloc.password;
 
-    // todo rework progress
-    var _pr = ProgressDialog(context, ProgressDialogType.Normal);
-    _pr.setMessage(AppLocalizations.of(context)
-        .tr("app.auth.instance.register.progress.dialog.content"));
-    _pr.show();
+    var progressDialog = IndeterminateProgressDialog(
+        contentMessage: AppLocalizations.of(context)
+            .tr("app.auth.instance.register.progress.dialog.content"));
+    progressDialog.show(context);
 
     // todo: refactor domain
     var authApplicationBloc = AuthHostBloc.createFromContext(context,
@@ -166,15 +165,14 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
     } catch (error) {
       e = error;
     } finally {
-      _pr.hide();
+      progressDialog.hide(context);
       authApplicationBloc.dispose();
     }
     if (success == true) {
       var alert = MyAlertDialog(
-
-          title:AppLocalizations.of(context)
+          title: AppLocalizations.of(context)
               .tr("app.auth.instance.register.success.dialog.title"),
-          content:AppLocalizations.of(context)
+          content: AppLocalizations.of(context)
               .tr("app.auth.instance.register.success.dialog.content"));
       alert.show(context);
     } else {
@@ -185,10 +183,9 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
 
   showError(BuildContext context, {@required String error}) {
     var alert = MyAlertDialog(
-
-        title:AppLocalizations.of(context)
+        title: AppLocalizations.of(context)
             .tr("app.auth.instance.register.success.dialog.title"),
-        content:AppLocalizations.of(context).tr(
+        content: AppLocalizations.of(context).tr(
             "app.auth.instance.register.success.dialog.content",
             args: [error]));
     alert.show(context);

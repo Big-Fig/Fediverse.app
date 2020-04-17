@@ -2,8 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/refactored/app/auth/instance/join/join_auth_instance_bloc.dart';
 import 'package:fedi/refactored/app/auth/instance/register/register_auth_instance_page.dart';
-import 'package:fedi/refactored/app/dialog/my_alert_dialog.dart';
-import 'package:fedi/refactored/app/dialog/progress_dialog.dart';
+import 'package:fedi/refactored/app/dialog/alert/my_alert_dialog.dart';
+import 'package:fedi/refactored/app/dialog/progress/indeterminate_progress_dialog.dart';
 import 'package:fedi/refactored/app/tos/tos_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -183,10 +183,10 @@ class JoinAuthInstanceWidget extends StatelessWidget {
       goToRegisterAuthInstancePage(context);
       return;
     }
-    var _pr = new ProgressDialog(context, ProgressDialogType.Normal);
-    _pr.setMessage(AppLocalizations.of(context).tr("app.auth.instance.join"
-        ".progress.dialog.content"));
-    _pr.show();
+    var progressDialog = IndeterminateProgressDialog(
+        contentMessage: AppLocalizations.of(context).tr("app.auth.instance.join"
+            ".progress.dialog.content"));
+    progressDialog.show(context);
 
     var host = hostTextController.text.split("/").first;
     if (await canLaunch(host)) {
@@ -202,10 +202,9 @@ class JoinAuthInstanceWidget extends StatelessWidget {
       hostTextController.text = "fedi.app";
       return;
     }
-    var _pr = new ProgressDialog(context, ProgressDialogType.Normal);
-    _pr.setMessage(AppLocalizations.of(context).tr("app.auth.instance.join"
+    var progressDialog = IndeterminateProgressDialog(contentMessage: AppLocalizations.of(context).tr("app.auth.instance.join"
         ".progress.dialog.content"));
-    _pr.show();
+    progressDialog.show(context);
 
     var host = hostTextController.text.split("/").first;
 
@@ -218,7 +217,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
         instanceBaseUrl: Uri.parse(host));
 
     bloc.launchLoginToAccount(successCallback: (instance) {
-      _pr.hide();
+      progressDialog.hide(context);
       bloc.dispose();
       if (instance != null) {
         var alertDialog = MyAlertDialog(
@@ -229,13 +228,12 @@ class JoinAuthInstanceWidget extends StatelessWidget {
         alertDialog.show(context);
       }
     }, errorCallback: (error) {
-      _pr.hide();
+      progressDialog.hide(context);
       bloc.dispose();
       var alert = MyAlertDialog(
-
-          title:AppLocalizations.of(context).tr("app.auth.instance.join"
+          title: AppLocalizations.of(context).tr("app.auth.instance.join"
               ".fail.dialog.title"),
-          content:AppLocalizations.of(context).tr("app.auth.instance.join"
+          content: AppLocalizations.of(context).tr("app.auth.instance.join"
               ".fail.dialog.content"));
       alert.show(context);
     });
