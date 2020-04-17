@@ -463,5 +463,14 @@
         "grant": "Grant permission"
       }
     }
+  },
+  "dialog": {
+    "progress": {
+      "content": "Loading..."
+    },
+    "action": {
+      "ok": "Ok",
+      "cancel": "Cancel"
+    }
   }
 }
