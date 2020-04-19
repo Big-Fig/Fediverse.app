@@ -6,8 +6,8 @@ import 'package:moor_ffi/moor_ffi.dart';
 
 import 'account_repository_model_helper.dart';
 
-var dbAccount1 = createTestAccount("seed1");
-var dbAccount2 = createTestAccount("seed2");
+var dbAccount1 = createTestAccount(seed:"seed1");
+var dbAccount2 = createTestAccount(seed:"seed2");
 
 void main() {
   AppDatabase database;
@@ -63,18 +63,18 @@ void main() {
     expect((await query.get()).length, 0);
 
     await accountRepository
-        .insert(createTestAccount("seed1").copyWith(acct: "qu"));
+        .insert(createTestAccount(seed:"seed1").copyWith(acct: "qu"));
 
 
     expect((await query.get()).length, 1);
 
     await accountRepository
-        .insert(createTestAccount("seed2").copyWith(acct: "qur"));
+        .insert(createTestAccount(seed:"seed2").copyWith(acct: "qur"));
 
     expect((await query.get()).length, 2);
 
     await accountRepository
-        .insert(createTestAccount("seed3").copyWith(acct: "q"));
+        .insert(createTestAccount(seed:"seed3").copyWith(acct: "q"));
 
     expect((await query.get()).length, 2);
   });
