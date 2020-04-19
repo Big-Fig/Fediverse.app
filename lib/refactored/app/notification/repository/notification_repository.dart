@@ -33,13 +33,13 @@ abstract class INotificationRepository
   Future upsertRemoteNotification(IPleromaNotification remoteNotification,
       {@required bool unread});
 
-  Future<int> countUnreadAll();
+  Future<int> countUnreadAnyType();
 
   Future<int> countUnreadByType({@required MastodonNotificationType type});
 
-  Stream<int> watchUnreadAll();
+  Stream<int> watchUnreadCountAnyType();
 
-  Stream<int> watchUnreadByType({@required MastodonNotificationType type});
+  Stream<int> watchUnreadCountByType({@required MastodonNotificationType type});
 
   Future<List<DbNotificationPopulatedWrapper>> getNotifications(
       {@required MastodonNotificationType onlyWithType,

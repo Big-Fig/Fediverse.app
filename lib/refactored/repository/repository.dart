@@ -1,6 +1,8 @@
 abstract class IReadListRepository<Item> {
   Future<List<Item>> getAll();
 
+  Future<int> countAll();
+
   Stream<List<Item>> watchAll();
 }
 

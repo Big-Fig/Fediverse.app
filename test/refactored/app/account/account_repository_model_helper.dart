@@ -83,3 +83,24 @@ expectDbAccount(IAccount actual, DbAccount expected) {
   expect(actual.pleromaSkipThreadContainment,
       expected.pleromaSkipThreadContainment);
 }
+
+
+DbAccountWrapper createFakeAccountWithRemoteId(String remoteId) {
+  return DbAccountWrapper(DbAccount(
+      id: null,
+      remoteId: remoteId,
+      username: null,
+      url: null,
+      note: null,
+      locked: null,
+      headerStatic: null,
+      header: null,
+      followingCount: null,
+      followersCount: null,
+      statusesCount: null,
+      displayName: null,
+      createdAt: null,
+      avatarStatic: null,
+      avatar: null,
+      acct: null));
+}

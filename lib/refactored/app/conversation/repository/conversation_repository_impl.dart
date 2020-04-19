@@ -55,8 +55,11 @@ class ConversationRepository extends AsyncInitLoadingBloc
         .finer(() => "upsertRemoteConversations ${remoteConversations.length}");
 
     for (var remoteConversation in remoteConversations) {
-      await statusRepository.upsertRemoteStatus(remoteConversation.lastStatus,
-          listRemoteId: null, conversationRemoteId: remoteConversation.id);
+      var lastStatus = remoteConversation.lastStatus;
+      if (lastStatus != null) {
+        await statusRepository.upsertRemoteStatus(lastStatus,
+            listRemoteId: null, conversationRemoteId: remoteConversation.id);
+      }
 
       await accountRepository.upsertRemoteAccounts(remoteConversation.accounts,
           conversationRemoteId: remoteConversation.id);
@@ -118,6 +121,9 @@ class ConversationRepository extends AsyncInitLoadingBloc
       dao.getAllQuery().map(mapDataClassToItem).get();
 
   @override
+  Future<int> countAll() => dao.countAllQuery().getSingle();
+
+  @override
   Stream<List<DbConversationWrapper>> watchAll() =>
       dao.getAllQuery().map(mapDataClassToItem).watch();
 
@@ -167,7 +173,6 @@ class ConversationRepository extends AsyncInitLoadingBloc
       @required int offset,
       @required ConversationOrderingTermData orderingTermData}) async {
     var query = createQuery(
-        withAccount: withAccount,
         olderThanConversation: olderThanConversation,
         newerThanConversation: newerThanConversation,
         limit: limit,
@@ -182,14 +187,12 @@ class ConversationRepository extends AsyncInitLoadingBloc
 
   @override
   Stream<List<DbConversationWrapper>> watchConversations(
-      {@required IAccount withAccount,
-      @required IConversation olderThanConversation,
+      {@required IConversation olderThanConversation,
       @required IConversation newerThanConversation,
       @required int limit,
       @required int offset,
       @required ConversationOrderingTermData orderingTermData}) {
     var query = createQuery(
-      withAccount: withAccount,
       olderThanConversation: olderThanConversation,
       newerThanConversation: newerThanConversation,
       limit: limit,
@@ -202,14 +205,12 @@ class ConversationRepository extends AsyncInitLoadingBloc
   }
 
   SimpleSelectStatement createQuery(
-      {@required IAccount withAccount,
-      @required IConversation olderThanConversation,
+      {@required IConversation olderThanConversation,
       @required IConversation newerThanConversation,
       @required int limit,
       @required int offset,
       @required ConversationOrderingTermData orderingTermData}) {
     _logger.fine(() => "createQuery \n"
-        "\t withAccount=$withAccount\n"
         "\t olderThanConversation=$olderThanConversation\n"
         "\t newerThanConversation=$newerThanConversation\n"
         "\t limit=$limit\n"
@@ -222,10 +223,6 @@ class ConversationRepository extends AsyncInitLoadingBloc
       dao.addRemoteIdBoundsWhere(query,
           maximumRemoteIdExcluding: olderThanConversation?.remoteId,
           minimumRemoteIdExcluding: newerThanConversation?.remoteId);
-    }
-
-    if(withAccount != null) {
-      throw "Not implemented yet";
     }
 
     if (orderingTermData != null) {
@@ -262,7 +259,6 @@ class ConversationRepository extends AsyncInitLoadingBloc
       @required IConversation newerThanConversation,
       @required ConversationOrderingTermData orderingTermData}) {
     var conversationsStream = watchConversations(
-        withAccount: withAccount,
         olderThanConversation: olderThanConversation,
         newerThanConversation: newerThanConversation,
         orderingTermData: orderingTermData,

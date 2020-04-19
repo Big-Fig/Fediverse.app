@@ -129,23 +129,22 @@ class StatusRepository extends AsyncInitLoadingBloc
 
   Future addStatusesToList(
       List<String> statusRemoteIds, String listRemoteId) async {
-    List<DbStatusList> alreadyAddedListStatuses = await listsDao
-        .findByListRemoteId(listRemoteId);
+    List<DbStatusList> alreadyAddedListStatuses =
+        await listsDao.findByListRemoteId(listRemoteId);
     Iterable<String> alreadyAddedListStatusesIds =
-    alreadyAddedListStatuses
-        .map((listStatus) => listStatus.statusRemoteId);
-    Iterable<String> notAddedYetStatusRemoteIds = statusRemoteIds.where(
-            (statusRemoteId) {
-          return !alreadyAddedListStatusesIds.contains(statusRemoteId);
-        });
+        alreadyAddedListStatuses.map((listStatus) => listStatus.statusRemoteId);
+    Iterable<String> notAddedYetStatusRemoteIds =
+        statusRemoteIds.where((statusRemoteId) {
+      return !alreadyAddedListStatusesIds.contains(statusRemoteId);
+    });
 
     if (notAddedYetStatusRemoteIds?.isNotEmpty == true) {
       await listsDao.insertAll(
           notAddedYetStatusRemoteIds
               .map((statusRemoteId) => DbStatusList(
-              id: null,
-              statusRemoteId: statusRemoteId,
-              listRemoteId: listRemoteId))
+                  id: null,
+                  statusRemoteId: statusRemoteId,
+                  listRemoteId: listRemoteId))
               .toList(),
           InsertMode.insertOrReplace);
     }
@@ -153,13 +152,14 @@ class StatusRepository extends AsyncInitLoadingBloc
 
   Future addStatusesToConversation(
       List<String> statusRemoteIds, String conversationRemoteId) async {
-    List<DbConversationStatus> alreadyAddedConversationStatuses = await conversationStatusesDao
-        .findByConversationRemoteId(conversationRemoteId);
+    List<DbConversationStatus> alreadyAddedConversationStatuses =
+        await conversationStatusesDao
+            .findByConversationRemoteId(conversationRemoteId);
     Iterable<String> alreadyAddedConversationStatusesIds =
-    alreadyAddedConversationStatuses
-        .map((conversationStatus) => conversationStatus.statusRemoteId);
-    Iterable<String> notAddedYetStatusRemoteIds = statusRemoteIds.where(
-            (statusRemoteId) {
+        alreadyAddedConversationStatuses
+            .map((conversationStatus) => conversationStatus.statusRemoteId);
+    Iterable<String> notAddedYetStatusRemoteIds =
+        statusRemoteIds.where((statusRemoteId) {
       return !alreadyAddedConversationStatusesIds.contains(statusRemoteId);
     });
 
@@ -433,6 +433,9 @@ class StatusRepository extends AsyncInitLoadingBloc
   @override
   Future<List<DbStatusPopulatedWrapper>> getAll() async =>
       (await dao.findAll()).map(mapDataClassToItem).toList();
+
+  @override
+  Future<int> countAll() => dao.countAllQuery().getSingle();
 
   @override
   Stream<List<DbStatusPopulatedWrapper>> watchAll() =>

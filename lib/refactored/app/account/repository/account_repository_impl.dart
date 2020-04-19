@@ -94,6 +94,10 @@ class AccountRepository extends AsyncInitLoadingBloc
       dao.getAllQuery().map(mapDataClassToItem).get();
 
   @override
+  Future<int> countAll() =>
+      dao.countAllQuery().getSingle();
+
+  @override
   Stream<List<DbAccountWrapper>> watchAll() =>
       dao.getAllQuery().map(mapDataClassToItem).watch();
 
