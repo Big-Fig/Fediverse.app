@@ -6,6 +6,7 @@ import 'package:fedi/refactored/app/database/app_database.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository_model.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
+import 'package:fedi/refactored/app/status/status_model_adapter.dart';
 import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/refactored/pleroma/tag/pleroma_tag_model.dart';
 import 'package:fedi/refactored/pleroma/visibility/pleroma_visibility_model.dart';
@@ -80,6 +81,62 @@ void main() {
         await statusRepository.findById(id), dbStatusPopulated);
   });
 
+  test('upsertRemoteStatus', () async {
+    expect(await statusRepository.countAll(), 0);
+
+    await statusRepository.upsertRemoteStatus(
+        mapLocalStatusToRemoteStatus(
+            DbStatusPopulatedWrapper(dbStatusPopulated)),
+        conversationRemoteId: null,
+        listRemoteId: null);
+
+    expect(await statusRepository.countAll(), 1);
+    expect(await accountRepository.countAll(), 1);
+    expectDbStatus(
+        await statusRepository.findByRemoteId(dbStatus.remoteId), dbStatus);
+    expectDbAccount(
+        await accountRepository.findByRemoteId(dbAccount.remoteId), dbAccount);
+
+    // item with same id updated
+    await statusRepository.upsertRemoteStatus(
+        mapLocalStatusToRemoteStatus(
+            DbStatusPopulatedWrapper(dbStatusPopulated)),
+        conversationRemoteId: null,
+        listRemoteId: null);
+    expect(await statusRepository.countAll(), 1);
+    expect(await accountRepository.countAll(), 1);
+    expectDbStatus(
+        await statusRepository.findByRemoteId(dbStatus.remoteId), dbStatus);
+    expectDbAccount(
+        await accountRepository.findByRemoteId(dbAccount.remoteId), dbAccount);
+  });
+
+  test('upsertRemoteStatuses', () async {
+    expect(await statusRepository.countAll(), 0);
+    await statusRepository.upsertRemoteStatuses([
+      mapLocalStatusToRemoteStatus(DbStatusPopulatedWrapper(dbStatusPopulated)),
+    ], conversationRemoteId: null, listRemoteId: null);
+
+    expect(await statusRepository.countAll(), 1);
+    expect(await accountRepository.countAll(), 1);
+    expectDbStatus(
+        await statusRepository.findByRemoteId(dbStatus.remoteId), dbStatus);
+    expectDbAccount(
+        await accountRepository.findByRemoteId(dbAccount.remoteId), dbAccount);
+
+    await statusRepository.upsertRemoteStatuses([
+      mapLocalStatusToRemoteStatus(DbStatusPopulatedWrapper(dbStatusPopulated)),
+    ], conversationRemoteId: null, listRemoteId: null);
+
+    // update item with same id
+    expect(await statusRepository.countAll(), 1);
+    expect(await accountRepository.countAll(), 1);
+    expectDbStatus(
+        await statusRepository.findByRemoteId(dbStatus.remoteId), dbStatus);
+    expectDbAccount(
+        await accountRepository.findByRemoteId(dbAccount.remoteId), dbAccount);
+  });
+
   test('upsertAll', () async {
     var dbStatus1 =
         (await createTestStatus(seed: "seed5", dbAccount: dbAccount))
@@ -108,6 +165,33 @@ void main() {
         id, dbStatus.copyWith(remoteId: "newRemoteId"));
 
     expect((await statusRepository.findById(id)).remoteId, "newRemoteId");
+  });
+
+  test('updateLocalStatusByRemoteStatus', () async {
+    var id =
+        await statusRepository.insert(dbStatus.copyWith(content: "oldContent"));
+    assert(id != null, true);
+
+    var oldLocalStatus = DbStatusPopulatedWrapper(DbStatusPopulated(
+        status: dbStatus.copyWith(id: id),
+        account: dbAccount,
+        rebloggedStatus: null,
+        rebloggedStatusAccount: null));
+    var newContent = "newContent";
+    var newAcct = "newAcct";
+    var newRemoteStatus = mapLocalStatusToRemoteStatus(DbStatusPopulatedWrapper(
+        DbStatusPopulated(
+            status: dbStatus.copyWith(id: id, content: newContent),
+            account: dbAccount.copyWith(acct: newAcct),
+            rebloggedStatus: null,
+            rebloggedStatusAccount: null)));
+    await statusRepository.updateLocalStatusByRemoteStatus(
+      oldLocalStatus: oldLocalStatus,
+      newRemoteStatus: newRemoteStatus,
+    );
+
+    expect((await statusRepository.findById(id)).content, newContent);
+    expect((await statusRepository.findById(id)).account.acct, newAcct);
   });
 
   test('findByRemoteId', () async {

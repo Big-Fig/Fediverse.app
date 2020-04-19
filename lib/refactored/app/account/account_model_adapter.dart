@@ -36,6 +36,7 @@ DbAccount mapRemoteAccountToDbAccount(IPleromaAccount remoteAccount) {
     pleromaIsModerator: remoteAccount.pleroma?.isModerator,
     pleromaConfirmationPending: remoteAccount.pleroma?.confirmationPending,
     pleromaHideFavorites: remoteAccount.pleroma?.hideFavorites,
+    pleromaHideFollows: remoteAccount.pleroma?.hideFollows,
     pleromaHideFollowers: remoteAccount.pleroma?.hideFollowers,
     pleromaHideFollowersCount: remoteAccount.pleroma?.hideFollowersCount,
     pleromaHideFollowsCount: remoteAccount.pleroma?.hideFollowsCount,
@@ -45,7 +46,6 @@ DbAccount mapRemoteAccountToDbAccount(IPleromaAccount remoteAccount) {
   );
 }
 
-// TODO: temporary solution for refactoring period
 PleromaAccount mapLocalAccountToRemoteAccount(IAccount localAccount) {
   return PleromaAccount(
       pleroma: PleromaAccountPleromaPart(

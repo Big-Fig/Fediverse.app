@@ -1,6 +1,7 @@
 import 'package:fedi/refactored/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/refactored/app/database/app_database.dart';
 import 'package:fedi/refactored/app/notification/notification_model.dart';
+import 'package:fedi/refactored/app/notification/notification_model_adapter.dart';
 import 'package:fedi/refactored/app/notification/repository/notification_repository_impl.dart';
 import 'package:fedi/refactored/app/notification/repository/notification_repository_model.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository_impl.dart';
@@ -73,7 +74,6 @@ void main() {
         notification: dbNotification,
         account: dbAccount,
         statusPopulated: dbStatusPopulated);
-
   });
 
   tearDown(() async {
@@ -119,11 +119,126 @@ void main() {
     expect((await notificationRepository.findById(id)).remoteId, "newRemoteId");
   });
 
+  test('updateLocalNotificationByRemoteNotification', () async {
+    var id = await notificationRepository
+        .insert(dbNotification.copyWith(type: MastodonNotificationType.follow));
+    assert(id != null, true);
+
+    var oldLocalNotification = DbNotificationPopulatedWrapper(
+        DbNotificationPopulated(
+            notification: dbNotification.copyWith(id: id),
+            account: dbAccount,
+            statusPopulated: dbStatusPopulated));
+    var newContent = "newContent";
+    var newAcct = "newAcct";
+    var newType = MastodonNotificationType.reblog;
+    var newRemoteNotification = mapLocalNotificationToRemoteNotification(
+        DbNotificationPopulatedWrapper(DbNotificationPopulated(
+            notification: dbNotification.copyWith(id: id),
+            account: dbAccount.copyWith(acct: newAcct),
+            statusPopulated: DbStatusPopulated(
+              status: dbStatus.copyWith(content: newContent),
+              account: dbAccount.copyWith(acct: newAcct),
+              rebloggedStatusAccount: null,
+              rebloggedStatus: null,
+            ))));
+    await notificationRepository.updateLocalNotificationByRemoteNotification(
+      oldLocalNotification: oldLocalNotification,
+      newRemoteNotification: newRemoteNotification,
+      unread: true,
+    );
+
+    expect(
+        (await notificationRepository.findById(id)).status.content, newContent);
+    expect((await notificationRepository.findById(id)).type, newType);
+    expect((await notificationRepository.findById(id)).account.acct, newAcct);
+  });
+
   test('findByRemoteId', () async {
     await notificationRepository.insert(dbNotification);
     expectDbNotificationPopulated(
         await notificationRepository.findByRemoteId(dbNotification.remoteId),
         dbNotificationPopulated);
+  });
+
+  test('upsertRemoteNotification', () async {
+    expect(await notificationRepository.countAll(), 0);
+
+    await notificationRepository.upsertRemoteNotification(
+        mapLocalNotificationToRemoteNotification(
+            DbNotificationPopulatedWrapper(dbNotificationPopulated)),
+        conversationRemoteId: null,
+        listRemoteId: null,
+        unread: false);
+
+    expect(await notificationRepository.countAll(), 1);
+    // with reblog
+    expect(await statusRepository.countAll(), 2);
+    expect(await accountRepository.countAll(), 2);
+    expectDbNotification(
+        await notificationRepository.findByRemoteId(dbNotification.remoteId),
+        dbNotification);
+    expectDbAccount(
+        await accountRepository.findByRemoteId(dbAccount.remoteId), dbAccount);
+    expectDbStatus(
+        await statusRepository.findByRemoteId(dbStatus.remoteId), dbStatus);
+
+    // item with same id updated
+    await notificationRepository.upsertRemoteNotification(
+        mapLocalNotificationToRemoteNotification(
+            DbNotificationPopulatedWrapper(dbNotificationPopulated)),
+        conversationRemoteId: null,
+        listRemoteId: null,
+        unread: false);
+    expect(await notificationRepository.countAll(), 1);
+    // with reblog
+    expect(await statusRepository.countAll(), 2);
+    expect(await accountRepository.countAll(), 2);
+    expectDbNotification(
+        await notificationRepository.findByRemoteId(dbNotification.remoteId),
+        dbNotification);
+    expectDbAccount(
+        await accountRepository.findByRemoteId(dbAccount.remoteId), dbAccount);
+    expectDbStatus(
+        await statusRepository.findByRemoteId(dbStatus.remoteId), dbStatus);
+  });
+
+  test('upsertRemoteNotifications', () async {
+    expect(await notificationRepository.countAll(), 0);
+    await notificationRepository.upsertRemoteNotifications([
+      mapLocalNotificationToRemoteNotification(
+          DbNotificationPopulatedWrapper(dbNotificationPopulated)),
+    ], conversationRemoteId: null, listRemoteId: null, unread: false);
+
+    expect(await notificationRepository.countAll(), 1);
+    // with reblog
+    expect(await statusRepository.countAll(), 2);
+    expect(await accountRepository.countAll(), 2);
+    expectDbNotification(
+        await notificationRepository.findByRemoteId(dbNotification.remoteId),
+        dbNotification);
+    expectDbAccount(
+        await accountRepository.findByRemoteId(dbAccount.remoteId), dbAccount);
+    expectDbStatus(
+        await statusRepository.findByRemoteId(dbStatus.remoteId), dbStatus);
+
+    await notificationRepository.upsertRemoteNotifications([
+      mapLocalNotificationToRemoteNotification(
+          DbNotificationPopulatedWrapper(dbNotificationPopulated)),
+    ], conversationRemoteId: null, listRemoteId: null, unread: false);
+
+    // update item with same id
+    expect(await notificationRepository.countAll(), 1);
+    // with reblog
+    expect(await statusRepository.countAll(), 2);
+    expect(await accountRepository.countAll(), 2);
+    expectDbNotification(
+        await notificationRepository.findByRemoteId(dbNotification.remoteId),
+        dbNotification);
+    expectDbAccount(
+        await accountRepository.findByRemoteId(dbAccount.remoteId), dbAccount);
+    expectDbStatus(
+        await statusRepository.findByRemoteId(dbStatus.remoteId), dbStatus);
   });
 
   test('createQuery empty', () async {
@@ -172,6 +287,53 @@ void main() {
         (await createTestNotification(seed: "seed2", dbAccount: dbAccount))
             .copyWith(type: MastodonNotificationType.reblog));
     expect((await query.get()).length, 1);
+  });
+  test('countUnread', () async {
+    expect((await notificationRepository.countUnreadAnyType()), 0);
+    await insertDbNotification(
+        notificationRepository,
+        (await createTestNotification(seed: "seed1", dbAccount: dbAccount))
+            .copyWith(type: MastodonNotificationType.follow, unread: true));
+
+    expect(
+        (await notificationRepository.countUnreadByType(
+            type: MastodonNotificationType.reblog)),
+        0);
+    expect(
+        (await notificationRepository.countUnreadByType(
+            type: MastodonNotificationType.follow)),
+        1);
+    expect((await notificationRepository.countUnreadAnyType()), 1);
+
+    await insertDbNotification(
+        notificationRepository,
+        (await createTestNotification(seed: "seed2", dbAccount: dbAccount))
+            .copyWith(type: MastodonNotificationType.follow, unread: false));
+
+    expect(
+        (await notificationRepository.countUnreadByType(
+            type: MastodonNotificationType.reblog)),
+        0);
+    expect(
+        (await notificationRepository.countUnreadByType(
+            type: MastodonNotificationType.follow)),
+        1);
+    expect((await notificationRepository.countUnreadAnyType()), 1);
+
+    await insertDbNotification(
+        notificationRepository,
+        (await createTestNotification(seed: "seed3", dbAccount: dbAccount))
+            .copyWith(type: MastodonNotificationType.reblog, unread: true));
+
+    expect(
+        (await notificationRepository.countUnreadByType(
+            type: MastodonNotificationType.reblog)),
+        1);
+    expect(
+        (await notificationRepository.countUnreadByType(
+            type: MastodonNotificationType.follow)),
+        1);
+    expect((await notificationRepository.countUnreadAnyType()), 2);
   });
 
   test('createQuery newerThanNotification', () async {
@@ -395,6 +557,39 @@ void main() {
         notificationRepository,
         (await createTestNotification(seed: "seed3", dbAccount: dbAccount))
             .copyWith(remoteId: "remoteId3"));
+
+    List<DbNotificationPopulated> actualList = (await query
+        .map(notificationRepository.dao.typedResultToPopulated)
+        .get());
+    expect(actualList.length, 1);
+
+    expectActualNotification(actualList[0], notification2, dbAccount);
+  });
+
+  test('createQuery orderingTermData createdAt desc & limit & offset',
+      () async {
+    var query = notificationRepository.createQuery(
+        newerThanNotification: null,
+        limit: 1,
+        offset: 1,
+        orderingTermData: NotificationOrderingTermData(
+            orderByType: NotificationOrderByType.createdAt,
+            orderingMode: OrderingMode.desc),
+        olderThanNotification: null,
+        onlyWithType: null);
+
+    var notification2 = await insertDbNotification(
+        notificationRepository,
+        (await createTestNotification(seed: "seed2", dbAccount: dbAccount))
+            .copyWith(createdAt: DateTime(2)));
+    await insertDbNotification(
+        notificationRepository,
+        (await createTestNotification(seed: "seed1", dbAccount: dbAccount))
+            .copyWith(createdAt: DateTime(1)));
+    await insertDbNotification(
+        notificationRepository,
+        (await createTestNotification(seed: "seed3", dbAccount: dbAccount))
+            .copyWith(createdAt: DateTime(3)));
 
     List<DbNotificationPopulated> actualList = (await query
         .map(notificationRepository.dao.typedResultToPopulated)

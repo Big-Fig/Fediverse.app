@@ -35,7 +35,7 @@ abstract class IConversationRepository
       @required ConversationOrderingTermData orderingTermData});
 
   Stream<List<DbConversationWrapper>> watchConversations(
-      {@required IAccount withAccount,
+      {
       @required IConversation olderThanConversation,
       @required IConversation newerThanConversation,
       @required int limit,
