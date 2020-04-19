@@ -5,7 +5,6 @@ import 'package:fedi/refactored/app/list/list_refresh_header_widget.dart';
 import 'package:fedi/refactored/async/loading/init/async_init_loading_widget.dart';
 import 'package:fedi/refactored/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/refactored/pagination/pagination_model.dart';
-import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -126,30 +125,22 @@ class _PaginationListWidgetState<T> extends State<PaginationListWidget<T>> {
   void initState() {
     super.initState();
 
-    // 500 delay required to be sure that widget will be built during initial
-    // refresh
-    Future.delayed(Duration(milliseconds: 500), () {
-      try {
-        IPaginationListBloc<PaginationPage<T>, T> paginationListBloc =
-            widget.retrievePaginationListBloc(context, listen: false);
-
-        if (!paginationListBloc.isRefreshedAtLeastOnce) {
-          var refreshController = paginationListBloc.refreshController;
-          if (refreshController.position != null) {
-            refreshController.requestRefresh();
-          }
-        }
-      } catch (e, stackTrace) {
-        _logger.warning(() => "error during refreshing", e, stackTrace);
-      }
-    });
+    _logger.finest(() => "initState");
   }
 
   @override
   Widget build(BuildContext context) {
-    _logger.finest(() => "build");
     IPaginationListBloc<PaginationPage<T>, T> paginationListBloc =
         widget.retrievePaginationListBloc(context, listen: true);
+    _logger.finest(() => "build "
+        "paginationListBloc.isRefreshedAtLeastOnce=${paginationListBloc.isRefreshedAtLeastOnce}");
+
+    if (!paginationListBloc.isRefreshedAtLeastOnce) {
+      // 500 delay required to be sure that widget will be built during initial
+      // refresh
+      askToRefresh(context);
+    }
+
     return AsyncInitLoadingWidget(
       asyncInitLoadingBloc: paginationListBloc,
       loadingFinishedBuilder: (BuildContext context) {
@@ -176,6 +167,33 @@ class _PaginationListWidgetState<T> extends State<PaginationListWidget<T>> {
             });
       },
     );
+  }
+
+  void askToRefresh(BuildContext context) {
+    // 500 delay required to be sure that widget will be built during initial
+    // refresh
+    Future.delayed(Duration(milliseconds: 500), () {
+      _logger.finest(() => "initState delayed");
+      try {
+        IPaginationListBloc<PaginationPage<T>, T> paginationListBloc =
+            widget.retrievePaginationListBloc(context, listen: false);
+
+        var isRefreshedAtLeastOnce = paginationListBloc.isRefreshedAtLeastOnce;
+        _logger.finest(
+            () => "initState isRefreshedAtLeastOnce = $isRefreshedAtLeastOnce");
+        if (!isRefreshedAtLeastOnce) {
+          var refreshController = paginationListBloc.refreshController;
+          var position = refreshController.position;
+
+          _logger.finest(() => "initState position = $position");
+          if (position != null) {
+            refreshController.requestRefresh();
+          }
+        }
+      } catch (e, stackTrace) {
+        _logger.warning(() => "error during refreshing", e, stackTrace);
+      }
+    });
   }
 
   Widget buildNotListBody(Widget child) {
