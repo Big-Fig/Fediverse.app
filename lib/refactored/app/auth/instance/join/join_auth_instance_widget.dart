@@ -4,14 +4,11 @@ import 'package:fedi/refactored/app/auth/instance/join/join_auth_instance_bloc.d
 import 'package:fedi/refactored/app/auth/instance/register/register_auth_instance_page.dart';
 import 'package:fedi/refactored/app/dialog/alert/my_alert_dialog.dart';
 import 'package:fedi/refactored/app/dialog/progress/indeterminate_progress_dialog.dart';
+import 'package:fedi/refactored/app/theme/theme.dart';
 import 'package:fedi/refactored/app/tos/tos_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-// Todo: refactor colors
-final Color darkGray = Color.fromARGB(175, 40, 40, 35);
-final Color romaGreen = Colors.blue; // Color.fromARGB(255, 146, 196, 78);
 
 class JoinAuthInstanceWidget extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -115,7 +112,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
                     AppLocalizations.of(context).tr("app.auth.instance.join"
                         ".action"
                         ".sign_up")),
-                color: darkGray,
+                color: romaDarkGrayColor,
                 textColor: Colors.white,
                 onPressed: () {
                   signUpToInstance(context);
@@ -131,7 +128,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
                     AppLocalizations.of(context).tr("app.auth.instance.join"
                         ".action"
                         ".login")),
-                color: darkGray,
+                color: romaDarkGrayColor,
                 textColor: Colors.white,
                 onPressed: () {
                   logInToInstance(context);
