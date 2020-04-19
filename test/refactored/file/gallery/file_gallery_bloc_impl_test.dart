@@ -1,4 +1,4 @@
-import 'package:fedi/file/gallery/file_gallery_bloc_impl.dart';
+import 'package:fedi/refactored/file/gallery/file_gallery_bloc_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

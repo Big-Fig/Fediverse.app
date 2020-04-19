@@ -1,5 +1,5 @@
-import 'package:fedi/camera/camera_bloc_impl.dart';
-import 'package:fedi/camera/camera_model.dart';
+import 'package:fedi/refactored/camera/camera_bloc_impl.dart';
+import 'package:fedi/refactored/camera/camera_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
