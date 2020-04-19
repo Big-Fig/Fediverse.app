@@ -129,13 +129,23 @@ class StatusRepository extends AsyncInitLoadingBloc
 
   Future addStatusesToList(
       List<String> statusRemoteIds, String listRemoteId) async {
-    if (listRemoteId?.isNotEmpty == true) {
+    List<DbStatusList> alreadyAddedListStatuses = await listsDao
+        .findByListRemoteId(listRemoteId);
+    Iterable<String> alreadyAddedListStatusesIds =
+    alreadyAddedListStatuses
+        .map((listStatus) => listStatus.statusRemoteId);
+    Iterable<String> notAddedYetStatusRemoteIds = statusRemoteIds.where(
+            (statusRemoteId) {
+          return !alreadyAddedListStatusesIds.contains(statusRemoteId);
+        });
+
+    if (notAddedYetStatusRemoteIds?.isNotEmpty == true) {
       await listsDao.insertAll(
-          statusRemoteIds
+          notAddedYetStatusRemoteIds
               .map((statusRemoteId) => DbStatusList(
-                  id: null,
-                  statusRemoteId: statusRemoteId,
-                  listRemoteId: listRemoteId))
+              id: null,
+              statusRemoteId: statusRemoteId,
+              listRemoteId: listRemoteId))
               .toList(),
           InsertMode.insertOrReplace);
     }
@@ -143,11 +153,13 @@ class StatusRepository extends AsyncInitLoadingBloc
 
   Future addStatusesToConversation(
       List<String> statusRemoteIds, String conversationRemoteId) async {
-    var alreadyAddedConversationStatuses = await conversationStatusesDao
+    List<DbConversationStatus> alreadyAddedConversationStatuses = await conversationStatusesDao
         .findByConversationRemoteId(conversationRemoteId);
-    var alreadyAddedConversationStatusesIds = alreadyAddedConversationStatuses
+    Iterable<String> alreadyAddedConversationStatusesIds =
+    alreadyAddedConversationStatuses
         .map((conversationStatus) => conversationStatus.statusRemoteId);
-    var notAddedYetStatusRemoteIds = statusRemoteIds.where((statusRemoteId) {
+    Iterable<String> notAddedYetStatusRemoteIds = statusRemoteIds.where(
+            (statusRemoteId) {
       return !alreadyAddedConversationStatusesIds.contains(statusRemoteId);
     });
 

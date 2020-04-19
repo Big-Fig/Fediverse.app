@@ -88,4 +88,19 @@ mixin _$StatusListsDaoMixin on DatabaseAccessor<AppDatabase> {
   Stream<List<DbStatusList>> watchGetAll() {
     return getAllQuery().watch();
   }
+
+  Selectable<DbStatusList> findByListRemoteIdQuery(String listRemoteId) {
+    return customSelectQuery(
+        'SELECT * FROM db_status_lists WHERE list_remote_id = :listRemoteId;',
+        variables: [Variable.withString(listRemoteId)],
+        readsFrom: {dbStatusLists}).map(_rowToDbStatusList);
+  }
+
+  Future<List<DbStatusList>> findByListRemoteId(String listRemoteId) {
+    return findByListRemoteIdQuery(listRemoteId).get();
+  }
+
+  Stream<List<DbStatusList>> watchFindByListRemoteId(String listRemoteId) {
+    return findByListRemoteIdQuery(listRemoteId).watch();
+  }
 }
