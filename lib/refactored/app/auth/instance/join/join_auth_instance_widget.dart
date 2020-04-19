@@ -8,7 +8,9 @@ import 'package:fedi/refactored/app/theme/theme.dart';
 import 'package:fedi/refactored/app/tos/tos_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:logging/logging.dart';
+
+var _logger = Logger("join_auth_instance_widget.dart");
 
 class JoinAuthInstanceWidget extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -172,12 +174,19 @@ class JoinAuthInstanceWidget extends StatelessWidget {
   }
 
   Uri extractCurrentUri(IJoinAuthInstanceBloc joinInstanceBloc) {
-    var uri = Uri.parse(joinInstanceBloc.hostTextController.text);
+    var uriText = joinInstanceBloc.hostTextController.text;
+    var parsedUri = Uri.parse(uriText);
 
-    var scheme = uri.scheme ?? "http";
-    var host = uri.host;
+    Uri uri;
+    var scheme = parsedUri.scheme;
+    if (scheme?.isNotEmpty != true) {
+      uri = Uri.parse("https://$uriText");
+    } else {
+      uri = parsedUri;
+    }
 
-    return Uri(scheme: scheme, host: host);
+    _logger.finest(() => "extractCurrentUri $uri");
+    return uri;
   }
 
   signUpToInstance(BuildContext context) async {
@@ -185,8 +194,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
 
     var hostUri = extractCurrentUri(joinInstanceBloc);
 
-    goToRegisterAuthInstancePage(context,
-        instanceBaseUrl: hostUri);
+    goToRegisterAuthInstancePage(context, instanceBaseUrl: hostUri);
   }
 
   logInToInstance(BuildContext context) {
@@ -198,8 +206,8 @@ class JoinAuthInstanceWidget extends StatelessWidget {
     progressDialog.show(context);
 
     var hostUri = extractCurrentUri(joinInstanceBloc);
-    var bloc = AuthHostBloc.createFromContext(context,
-        instanceBaseUrl: hostUri);
+    var bloc =
+        AuthHostBloc.createFromContext(context, instanceBaseUrl: hostUri);
 
     bloc.launchLoginToAccount(successCallback: (instance) {
       progressDialog.hide(context);
