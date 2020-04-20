@@ -1,5 +1,5 @@
-import 'package:fedi/refactored/app/dialog/base_dialog.dart';
-import 'package:fedi/refactored/app/dialog/dialog_model.dart';
+import 'package:fedi/refactored/dialog/base_dialog.dart';
+import 'package:fedi/refactored/dialog/dialog_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
