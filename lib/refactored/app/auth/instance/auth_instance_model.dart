@@ -6,8 +6,6 @@ import 'package:hive/hive.dart';
 
 part 'auth_instance_model.g.dart';
 
-typedef AuthInstanceCallback(AuthInstance instance);
-
 @HiveType()
 class AuthInstance extends IPreferencesObject {
   @HiveField(0)

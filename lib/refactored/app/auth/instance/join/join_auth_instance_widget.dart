@@ -4,8 +4,8 @@ import 'package:fedi/refactored/app/auth/instance/join/join_auth_instance_bloc.d
 import 'package:fedi/refactored/app/auth/instance/register/register_auth_instance_page.dart';
 import 'package:fedi/refactored/app/theme/theme.dart';
 import 'package:fedi/refactored/app/tos/tos_page.dart';
-import 'package:fedi/refactored/dialog/alert/simple_alert_dialog.dart';
-import 'package:fedi/refactored/dialog/progress/indeterminate_progress_dialog.dart';
+import 'package:fedi/refactored/dialog/alert/base_alert_dialog.dart';
+import 'package:fedi/refactored/dialog/async/async_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -199,36 +199,32 @@ class JoinAuthInstanceWidget extends StatelessWidget {
 
   logInToInstance(BuildContext context) {
     var joinInstanceBloc = IJoinAuthInstanceBloc.of(context, listen: false);
-
-    var progressDialog = IndeterminateProgressDialog(
+    doAsyncOperationWithProgressDialog(
+        context: context,
         contentMessage: AppLocalizations.of(context).tr("app.auth.instance.join"
-            ".progress.dialog.content"));
-    progressDialog.show(context);
+            ".progress.dialog.content"),
+        asyncCode: () async {
+          var hostUri = extractCurrentUri(joinInstanceBloc);
+          AuthHostBloc bloc;
+          try {
+            bloc = AuthHostBloc.createFromContext(context,
+                instanceBaseUrl: hostUri);
+          } finally {
+            bloc.dispose();
+          }
 
-    var hostUri = extractCurrentUri(joinInstanceBloc);
-    var bloc =
-        AuthHostBloc.createFromContext(context, instanceBaseUrl: hostUri);
-
-    bloc.launchLoginToAccount(successCallback: (instance) {
-      progressDialog.hide(context);
-      bloc.dispose();
-      if (instance != null) {
-        var alertDialog = SimpleAlertDialog(
-            title: AppLocalizations.of(context).tr("app.auth.instance.join"
-                ".fail.dialog.title"),
-            content: AppLocalizations.of(context).tr("app.auth.instance.join"
-                ".fail.dialog.content"));
-        alertDialog.show(context);
-      }
-    }, errorCallback: (error) {
-      progressDialog.hide(context);
-      bloc.dispose();
-      var alert = SimpleAlertDialog(
-          title: AppLocalizations.of(context).tr("app.auth.instance.join"
-              ".fail.dialog.title"),
-          content: AppLocalizations.of(context).tr("app.auth.instance.join"
-              ".fail.dialog.content"));
-      alert.show(context);
-    });
+          await bloc.launchLoginToAccount();
+        },
+        errorAlertDialogHandlers: [
+          (error) {
+            // todo: handle specific error
+            return BaseAlertDialog(
+                title: AppLocalizations.of(context).tr("app.auth.instance.join"
+                    ".fail.dialog.title"),
+                content:
+                    AppLocalizations.of(context).tr("app.auth.instance.join"
+                        ".fail.dialog.content"));
+          }
+        ]);
   }
 }

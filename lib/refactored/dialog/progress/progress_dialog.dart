@@ -1,12 +1,29 @@
+import 'package:async/async.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/dialog/base_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:rxdart/rxdart.dart';
 
 abstract class ProgressDialog extends BaseDialog {
   final String contentMessage;
 
-  ProgressDialog({this.contentMessage}) : super(cancelable: false);
+  // ignore: close_sinks
+  BehaviorSubject<bool> _isCanceledSubject = BehaviorSubject.seeded(false);
+
+  bool get isCanceled => _isCanceledSubject.value;
+
+  Stream<bool> get isCanceledStream => _isCanceledSubject.stream;
+
+  CancelableOperation cancelableOperation;
+
+  ProgressDialog({
+    this.contentMessage,
+    @required this.cancelableOperation,
+    @required bool cancelable,
+  }) : super(cancelable: cancelable) {
+    addDisposable(subject: _isCanceledSubject);
+  }
 
   Widget buildDialogContent(BuildContext context);
 
@@ -30,19 +47,47 @@ abstract class ProgressDialog extends BaseDialog {
 
   Widget buildDialogContainer(BuildContext context) => SizedBox(
       height: 100.0,
-      child: Row(children: <Widget>[
-        const SizedBox(width: 15.0),
-        Padding(
-          padding: const EdgeInsets.all(2.0),
-          child: SizedBox(
-            width: 60.0,
-            height: 60.0,
-            child: CircularProgressIndicator(),
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: SizedBox(
+                    width: 50.0,
+                    height: 50.0,
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+                SizedBox(width: 10),
+                Expanded(
+                  child: buildDialogContent(context),
+                )
+              ]),
+              if (this.cancelable)
+                StreamBuilder<bool>(
+                    stream: this.isCanceledStream,
+                    initialData: this.isCanceled,
+                    builder: (context, snapshot) {
+                      var canceled = snapshot.data;
+                      Future<Null> Function() onPressed;
+
+                      if (!canceled) {
+                        onPressed = () async {
+                          _isCanceledSubject.add(true);
+                          await cancelableOperation.cancel();
+                          hide(context);
+                        };
+                      }
+                      return RaisedButton(
+                        onPressed: onPressed,
+                      );
+                    })
+            ],
           ),
         ),
-        const SizedBox(width: 15.0),
-        Expanded(
-          child: buildDialogContent(context),
-        )
-      ]));
+      ));
 }

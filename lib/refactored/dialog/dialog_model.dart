@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 
 class DialogAction {
-  final String title;
+  final String label;
   final VoidCallback onAction;
 
-  DialogAction({@required this.title, @required this.onAction});
+  DialogAction({@required this.label, @required this.onAction});
 
   @override
   String toString() {
-    return 'DialogAction{title: $title, onAction: $onAction}';
+    return 'DialogAction{title: $label, onAction: $onAction}';
   }
 }

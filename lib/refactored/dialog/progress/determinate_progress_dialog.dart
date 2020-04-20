@@ -1,13 +1,20 @@
 import 'package:fedi/refactored/dialog/progress/progress_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:async/async.dart';
 
 class DeterminateProgressDialog extends ProgressDialog {
   final Stream<int> progressStream;
 
   DeterminateProgressDialog(
-      {@required this.progressStream, String contentMessage})
-      : super(contentMessage: contentMessage);
+      {@required this.progressStream,
+      String contentMessage,
+      bool cancelable = false,
+      @required CancelableOperation cancelableOperation})
+      : super(
+            contentMessage: contentMessage,
+            cancelable: cancelable,
+            cancelableOperation: cancelableOperation);
 
   @override
   Widget buildDialogContent(BuildContext context) {
