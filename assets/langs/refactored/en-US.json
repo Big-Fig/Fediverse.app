@@ -421,12 +421,6 @@
     }
   },
   "async": {
-    "dialog": {
-      "title": "Performing...",
-      "action": {
-        "cancel": "Cancel"
-      }
-    },
     "init": {
       "state": {
         "not_started": "Async init not started",
@@ -483,6 +477,10 @@
   "dialog": {
     "progress": {
       "content": "Loading..."
+    },
+    "error": {
+      "title": "Something wrong",
+      "content": "Please report about this error"
     },
     "action": {
       "ok": "Ok",
