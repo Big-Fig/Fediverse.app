@@ -266,8 +266,8 @@
             "hide_replies": {
               "label": "Hide replies"
             },
-            "only_nsfw": {
-              "label": "Only NSFW"
+            "hide_nsfw": {
+              "label": "Hide NSFW"
             }
           }
         }

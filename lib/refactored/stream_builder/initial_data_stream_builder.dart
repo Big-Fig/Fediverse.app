@@ -32,7 +32,7 @@ class _InitialDataStreamBuilderState<T>
   void initState() {
     super.initState();
     subscription = widget.stream.listen((newData) {
-      if (newData != currentData) {
+      if (currentData != newData) {
         setState(() {
           currentData = newData;
         });
