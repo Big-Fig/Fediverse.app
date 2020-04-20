@@ -43,18 +43,22 @@ part 'app_database.g.dart';
 
 @UseMoor(
   tables: [
-    DbStatuses,
+    // todo: remove hack
+    // bug in moor - https://github.com/simolus3/moor/issues/447
+    // we should exclude tables here because we use this tables in
+    // app_database.moor
+//    DbStatuses,
+//    DbConversations,
+//    DbNotifications,
+//    DbAccounts,
     DbStatusHashtags,
     DbStatusLists,
     DbStatusFavouritedAccounts,
     DbStatusRebloggedAccounts,
-    DbAccounts,
     DbAccountFollowings,
     DbAccountFollowers,
-    DbConversations,
     DbConversationAccounts,
     DbConversationStatuses,
-    DbNotifications,
   ],
   daos: [
     StatusDao,
@@ -70,6 +74,7 @@ part 'app_database.g.dart';
     StatusRebloggedAccountsDao,
     NotificationDao,
   ],
+  include: {'app_database.moor'}
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase(QueryExecutor e) : super(e);
