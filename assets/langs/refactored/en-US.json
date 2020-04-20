@@ -84,9 +84,25 @@
     },
     "auth": {
       "instance": {
+        "logout": {
+          "dialog": {
+            "title": "Logging out",
+            "content": "Are you sure?"
+          }
+        },
+        "remove": {
+          "dialog": {
+            "title": "Logging out",
+            "content": "Are you sure?"
+          }
+        },
         "chooser": {
           "action": {
             "add_account": "Add account"
+          },
+          "dialog": {
+            "title": "Change active instance?",
+            "content": "Are you sure?"
           }
         },
         "current": {

@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/refactored/app/auth/instance/join/join_auth_instance_bloc.dart';
 import 'package:fedi/refactored/app/auth/instance/register/register_auth_instance_page.dart';
-import 'package:fedi/refactored/app/dialog/alert/my_alert_dialog.dart';
+import 'package:fedi/refactored/app/dialog/alert/simple_alert_dialog.dart';
 import 'package:fedi/refactored/app/dialog/progress/indeterminate_progress_dialog.dart';
 import 'package:fedi/refactored/app/theme/theme.dart';
 import 'package:fedi/refactored/app/tos/tos_page.dart';
@@ -213,7 +213,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
       progressDialog.hide(context);
       bloc.dispose();
       if (instance != null) {
-        var alertDialog = MyAlertDialog(
+        var alertDialog = SimpleAlertDialog(
             title: AppLocalizations.of(context).tr("app.auth.instance.join"
                 ".fail.dialog.title"),
             content: AppLocalizations.of(context).tr("app.auth.instance.join"
@@ -223,7 +223,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
     }, errorCallback: (error) {
       progressDialog.hide(context);
       bloc.dispose();
-      var alert = MyAlertDialog(
+      var alert = SimpleAlertDialog(
           title: AppLocalizations.of(context).tr("app.auth.instance.join"
               ".fail.dialog.title"),
           content: AppLocalizations.of(context).tr("app.auth.instance.join"

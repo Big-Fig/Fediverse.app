@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/refactored/app/auth/instance/register/register_auth_instance_bloc.dart';
-import 'package:fedi/refactored/app/dialog/alert/my_alert_dialog.dart';
+import 'package:fedi/refactored/app/dialog/alert/simple_alert_dialog.dart';
 import 'package:fedi/refactored/app/dialog/progress/indeterminate_progress_dialog.dart';
 import 'package:fedi/refactored/app/form/form_field_error_model.dart';
 import 'package:fedi/refactored/app/form/form_model.dart';
@@ -155,7 +155,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
       authApplicationBloc.dispose();
     }
     if (success == true) {
-      var alert = MyAlertDialog(
+      var alert = SimpleAlertDialog(
           title: AppLocalizations.of(context)
               .tr("app.auth.instance.register.success.dialog.title"),
           content: AppLocalizations.of(context)
@@ -168,7 +168,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
   }
 
   showError(BuildContext context, {@required String error}) {
-    var alert = MyAlertDialog(
+    var alert = SimpleAlertDialog(
         title: AppLocalizations.of(context)
             .tr("app.auth.instance.register.success.dialog.title"),
         content: AppLocalizations.of(context).tr(
