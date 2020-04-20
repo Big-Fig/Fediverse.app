@@ -576,4 +576,46 @@ class StatusRepository extends AsyncInitLoadingBloc
         .map((typedResult) => dao.typedResultToPopulated(typedResult));
     return stream.map((dbStatus) => mapDataClassToItem(dbStatus));
   }
+
+  @override
+  Future<IStatus> getConversationLastStatus(
+          {@required IConversation conversation}) =>
+      getStatus(
+          onlyInListWithRemoteId: null,
+          onlyWithHashtag: null,
+          onlyFromAccountsFollowingByAccount: null,
+          onlyFromAccount: null,
+          onlyInConversation: conversation,
+          onlyLocal: null,
+          onlyWithMedia: null,
+          onlyNotMuted: null,
+          excludeVisibilities: null,
+          olderThanStatus: null,
+          newerThanStatus: null,
+          onlyNoNsfwSensitive: null,
+          onlyNoReplies: null,
+          orderingTermData: StatusOrderingTermData(
+              orderingMode: OrderingMode.desc,
+              orderByType: StatusOrderByType.remoteId));
+
+  @override
+  Stream<IStatus> watchConversationLastStatus(
+          {@required IConversation conversation}) =>
+      watchStatus(
+          onlyInListWithRemoteId: null,
+          onlyWithHashtag: null,
+          onlyFromAccountsFollowingByAccount: null,
+          onlyFromAccount: null,
+          onlyInConversation: conversation,
+          onlyLocal: null,
+          onlyWithMedia: null,
+          onlyNotMuted: null,
+          excludeVisibilities: null,
+          olderThanStatus: null,
+          newerThanStatus: null,
+          onlyNoNsfwSensitive: null,
+          onlyNoReplies: null,
+          orderingTermData: StatusOrderingTermData(
+              orderingMode: OrderingMode.desc,
+              orderByType: StatusOrderByType.remoteId));
 }

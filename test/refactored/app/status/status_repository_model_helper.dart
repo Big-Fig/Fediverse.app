@@ -117,7 +117,7 @@ void expectDbStatus(IStatus actual, DbStatus dbStatus) {
 
 
 DbStatusPopulatedWrapper createFakePopulatedStatusWithRemoteId(
-    String remoteId) {
+    String remoteId, DbAccount account) {
   return DbStatusPopulatedWrapper(DbStatusPopulated(
       status: DbStatus(
           remoteId: remoteId,
@@ -135,7 +135,7 @@ DbStatusPopulatedWrapper createFakePopulatedStatusWithRemoteId(
           application: null,
           createdAt: null,
           uri: null),
-      account: null,
+      account: account,
       rebloggedStatusAccount: null,
       rebloggedStatus: null));
 }

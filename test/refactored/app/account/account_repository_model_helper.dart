@@ -1,9 +1,10 @@
 import 'package:fedi/refactored/app/account/account_model.dart';
+import 'package:fedi/refactored/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/refactored/app/database/app_database.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-DbAccount createTestAccount({@required String seed}) => DbAccount(
+Future<DbAccount> createTestAccount({@required String seed}) async => DbAccount(
       id: null,
       remoteId: seed + "remoteId1",
       username: seed + "username1",
@@ -84,7 +85,6 @@ expectDbAccount(IAccount actual, DbAccount expected) {
       expected.pleromaSkipThreadContainment);
 }
 
-
 DbAccountWrapper createFakeAccountWithRemoteId(String remoteId) {
   return DbAccountWrapper(DbAccount(
       id: null,
@@ -103,4 +103,14 @@ DbAccountWrapper createFakeAccountWithRemoteId(String remoteId) {
       avatarStatic: null,
       avatar: null,
       acct: null));
+}
+
+Future<DbAccount> insertDbAccount(
+  AccountRepository accountRepository,
+  DbAccount accountData,
+) async {
+  var id = await accountRepository.insert(accountData);
+  assert(id != null, true);
+  var dbAccount = accountData.copyWith(id: id);
+  return dbAccount;
 }

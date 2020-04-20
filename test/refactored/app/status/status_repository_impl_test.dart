@@ -15,6 +15,7 @@ import 'package:moor/moor.dart';
 import 'package:moor_ffi/moor_ffi.dart';
 
 import '../account/account_repository_model_helper.dart';
+import '../conversation/conversation_repository_model_helper.dart';
 import 'status_repository_model_helper.dart';
 
 final String baseUrl = "https://pleroma.com";
@@ -35,7 +36,7 @@ void main() {
     statusRepository = StatusRepository(
         appDatabase: database, accountRepository: accountRepository);
 
-    dbAccount = createTestAccount(seed: "seed1");
+    dbAccount = await createTestAccount(seed: "seed1");
 
     var accountId = await accountRepository.insert(dbAccount);
     // assign local id for further equal with data retrieved from db
@@ -59,7 +60,7 @@ void main() {
   });
 
   test('reblog join', () async {
-    var reblogDbAccount = createTestAccount(seed: "seed11");
+    var reblogDbAccount = await createTestAccount(seed: "seed11");
     accountRepository.insert(reblogDbAccount);
     var reblogDbStatus =
         await createTestStatus(seed: "seed33", dbAccount: reblogDbAccount);
@@ -450,7 +451,8 @@ void main() {
         onlyWithMedia: null,
         onlyNotMuted: null,
         excludeVisibilities: null,
-        newerThanStatus: createFakePopulatedStatusWithRemoteId("remoteId5"),
+        newerThanStatus:
+            createFakePopulatedStatusWithRemoteId("remoteId5", dbAccount),
         limit: null,
         offset: null,
         orderingTermData: null,
@@ -506,7 +508,8 @@ void main() {
         onlyNoReplies: null,
         onlyWithHashtag: null,
         onlyFromAccountsFollowingByAccount: null,
-        olderThanStatus: createFakePopulatedStatusWithRemoteId("remoteId5"),
+        olderThanStatus:
+            createFakePopulatedStatusWithRemoteId("remoteId5", dbAccount),
         onlyInListWithRemoteId: null);
 
     await insertDbStatus(
@@ -544,7 +547,8 @@ void main() {
         onlyWithMedia: null,
         onlyNotMuted: null,
         excludeVisibilities: null,
-        newerThanStatus: createFakePopulatedStatusWithRemoteId("remoteId2"),
+        newerThanStatus:
+            createFakePopulatedStatusWithRemoteId("remoteId2", dbAccount),
         limit: null,
         offset: null,
         orderingTermData: null,
@@ -553,7 +557,8 @@ void main() {
         onlyNoReplies: null,
         onlyWithHashtag: null,
         onlyFromAccountsFollowingByAccount: null,
-        olderThanStatus: createFakePopulatedStatusWithRemoteId("remoteId5"),
+        olderThanStatus:
+            createFakePopulatedStatusWithRemoteId("remoteId5", dbAccount),
         onlyInListWithRemoteId: null);
 
     await insertDbStatus(
@@ -802,7 +807,7 @@ void main() {
 
     await accountRepository.updateAccountFollowings(accountRemoteId, [
       mapLocalAccountToRemoteAccount(DbAccountWrapper(
-          createTestAccount(seed: followingAccountRemoteId)
+          (await createTestAccount(seed: followingAccountRemoteId))
               .copyWith(remoteId: followingAccountRemoteId)))
     ]);
 
@@ -1097,5 +1102,65 @@ void main() {
                 dbAccount: dbAccount.copyWith(remoteId: "newAccountRetmotId")))
             .copyWith());
     expect((await query.get()).length, 2);
+  });
+
+  test('createQuery onlyInConversation', () async {
+    var conversationRemoteId = "conversationRemoteId";
+
+    var conversation = createFakeConversationWithRemoteId(conversationRemoteId);
+
+    // 1 is not related to conversation
+    await statusRepository.upsertRemoteStatus(
+        mapLocalStatusToRemoteStatus(DbStatusPopulatedWrapper(
+            await createTestStatusPopulated(
+                dbStatus.copyWith(remoteId: "status1"), accountRepository))),
+        listRemoteId: null,
+        conversationRemoteId: null);
+
+    expect(
+        await statusRepository.getConversationLastStatus(
+            conversation: conversation),
+        null);
+
+    // 2 is related to conversation
+    await statusRepository.upsertRemoteStatus(
+        mapLocalStatusToRemoteStatus(DbStatusPopulatedWrapper(
+            await createTestStatusPopulated(
+                dbStatus.copyWith(remoteId: "status2"), accountRepository))),
+        listRemoteId: null,
+        conversationRemoteId: conversationRemoteId);
+
+    expect(
+        (await statusRepository.getConversationLastStatus(
+                conversation: conversation))
+            .remoteId,
+        "status2");
+
+    // 4 is newer than 2
+    await statusRepository.upsertRemoteStatus(
+        mapLocalStatusToRemoteStatus(DbStatusPopulatedWrapper(
+            await createTestStatusPopulated(
+                dbStatus.copyWith(remoteId: "status4"), accountRepository))),
+        listRemoteId: null,
+        conversationRemoteId: conversationRemoteId);
+    expect(
+        (await statusRepository.getConversationLastStatus(
+                conversation: conversation))
+            .remoteId,
+        "status4");
+
+    // remain 4
+    await statusRepository.upsertRemoteStatus(
+        mapLocalStatusToRemoteStatus(DbStatusPopulatedWrapper(
+            await createTestStatusPopulated(
+                dbStatus.copyWith(remoteId: "status3"), accountRepository))),
+        listRemoteId: null,
+        conversationRemoteId: conversationRemoteId);
+
+    expect(
+        (await statusRepository.getConversationLastStatus(
+                conversation: conversation))
+            .remoteId,
+        "status4");
   });
 }

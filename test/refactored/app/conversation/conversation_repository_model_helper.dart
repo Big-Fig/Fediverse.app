@@ -1,4 +1,5 @@
 import 'package:fedi/refactored/app/conversation/conversation_model.dart';
+import 'package:fedi/refactored/app/conversation/repository/conversation_repository_impl.dart';
 import 'package:fedi/refactored/app/database/app_database.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -26,3 +27,14 @@ DbConversationWrapper createFakeConversationWithRemoteId(String remoteId) {
   return DbConversationWrapper(
       DbConversation(id: null, remoteId: remoteId, unread: false));
 }
+
+Future<DbConversation> insertDbConversation(
+    ConversationRepository conversationRepository,
+    DbConversation conversationData,
+    ) async {
+  var id = await conversationRepository.insert(conversationData);
+  assert(id != null, true);
+  var dbConversation = conversationData.copyWith(id: id);
+  return dbConversation;
+}
+
