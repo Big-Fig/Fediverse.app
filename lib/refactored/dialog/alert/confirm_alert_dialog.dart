@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/refactored/app/dialog/alert/simple_alert_dialog.dart';
-import 'package:fedi/refactored/app/dialog/dialog_model.dart';
+import 'package:fedi/refactored/dialog/alert/simple_alert_dialog.dart';
+import 'package:fedi/refactored/dialog/dialog_model.dart';
 import 'package:flutter/cupertino.dart';
 
 class ConfirmAlertDialog extends SimpleAlertDialog {

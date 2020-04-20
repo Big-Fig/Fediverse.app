@@ -1,10 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/refactored/app/auth/instance/register/register_auth_instance_bloc.dart';
-import 'package:fedi/refactored/app/dialog/alert/simple_alert_dialog.dart';
-import 'package:fedi/refactored/app/dialog/progress/indeterminate_progress_dialog.dart';
 import 'package:fedi/refactored/app/form/form_field_error_model.dart';
 import 'package:fedi/refactored/app/form/form_model.dart';
+import 'package:fedi/refactored/dialog/alert/simple_alert_dialog.dart';
+import 'package:fedi/refactored/dialog/progress/indeterminate_progress_dialog.dart';
 import 'package:fedi/refactored/pleroma/account/public/pleroma_account_public_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

@@ -1,13 +1,15 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/refactored/app/dialog/dialog_model.dart';
+import 'package:fedi/refactored/dialog/dialog_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 abstract class BaseDialog {
   final bool cancelable;
+
   BaseDialog({this.cancelable = true});
 
   bool _isShowing = false;
+
   bool get isShowing => _isShowing;
 
   show(BuildContext context) {

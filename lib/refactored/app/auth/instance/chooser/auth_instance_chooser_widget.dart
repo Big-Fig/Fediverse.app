@@ -3,7 +3,7 @@ import 'package:fedi/refactored/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/refactored/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/refactored/app/auth/instance/chooser/auth_instance_chooser_bloc.dart';
 import 'package:fedi/refactored/app/auth/instance/join/add_more/add_more_join_auth_instance_page.dart';
-import 'package:fedi/refactored/app/dialog/alert/confirm_alert_dialog.dart';
+import 'package:fedi/refactored/dialog/alert/confirm_alert_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
