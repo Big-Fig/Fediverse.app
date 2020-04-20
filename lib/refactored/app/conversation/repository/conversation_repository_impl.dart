@@ -160,6 +160,13 @@ class ConversationRepository extends AsyncInitLoadingBloc
     await accountRepository.upsertRemoteAccounts(remoteAccounts,
         conversationRemoteId: oldLocalConversation.remoteId);
 
+    var lastStatus = newRemoteConversation.lastStatus;
+    if (lastStatus != null) {
+      await statusRepository.upsertRemoteStatus(lastStatus,
+          listRemoteId: null,
+          conversationRemoteId: oldLocalConversation.remoteId);
+    }
+
     await updateById(oldLocalConversation.localId,
         mapRemoteConversationToDbConversation(newRemoteConversation));
   }

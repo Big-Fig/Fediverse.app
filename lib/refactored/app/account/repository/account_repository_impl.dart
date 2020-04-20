@@ -94,8 +94,7 @@ class AccountRepository extends AsyncInitLoadingBloc
       dao.getAllQuery().map(mapDataClassToItem).get();
 
   @override
-  Future<int> countAll() =>
-      dao.countAllQuery().getSingle();
+  Future<int> countAll() => dao.countAllQuery().getSingle();
 
   @override
   Stream<List<DbAccountWrapper>> watchAll() =>
@@ -456,4 +455,36 @@ class AccountRepository extends AsyncInitLoadingBloc
             .toList(),
         InsertMode.insertOrReplace);
   }
+
+  @override
+  Future<List<IAccount>> getConversationAccounts(
+          {@required IConversation conversation}) =>
+      getAccounts(
+          searchQuery: null,
+          olderThanAccount: null,
+          newerThanAccount: null,
+          onlyInConversation: conversation,
+          onlyInStatusRebloggedBy: null,
+          onlyInStatusFavouritedBy: null,
+          onlyInAccountFollowers: null,
+          onlyInAccountFollowing: null,
+          limit: null,
+          offset: null,
+          orderingTermData: null);
+
+  @override
+  Stream<List<IAccount>> watchConversationAccounts(
+          {@required IConversation conversation}) =>
+      watchAccounts(
+          searchQuery: null,
+          olderThanAccount: null,
+          newerThanAccount: null,
+          onlyInConversation: conversation,
+          onlyInStatusRebloggedBy: null,
+          onlyInStatusFavouritedBy: null,
+          onlyInAccountFollowers: null,
+          onlyInAccountFollowing: null,
+          limit: null,
+          offset: null,
+          orderingTermData: null);
 }

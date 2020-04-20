@@ -41,7 +41,7 @@ void main() {
         accountRepository: accountRepository,
         statusRepository: statusRepository);
 
-    dbAccount = createTestAccount(seed: "seed1");
+    dbAccount = await createTestAccount(seed: "seed1");
     var accountId = await accountRepository.insert(dbAccount);
     // assign local id for further equal with data retrieved from db
     dbAccount = dbAccount.copyWith(id: accountId);
@@ -51,7 +51,7 @@ void main() {
     dbStatusPopulated =
         await createTestStatusPopulated(dbStatus, accountRepository);
 
-    var reblogDbAccount = createTestAccount(seed: "seed11");
+    var reblogDbAccount = await createTestAccount(seed: "seed11");
     accountRepository.insert(reblogDbAccount);
     var reblogDbStatus =
         await createTestStatus(seed: "seed33", dbAccount: reblogDbAccount);

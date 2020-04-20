@@ -12,14 +12,14 @@ import 'package:provider/provider.dart';
 abstract class IAccountRepository
     implements
         Disposable,
-        IReadIdListRepository<DbAccountWrapper, int>,
+        IReadIdListRepository<IAccount, int>,
         IWriteIdListRepository<DbAccount, int> {
   static IAccountRepository of(BuildContext context, {bool listen = true}) =>
       Provider.of<IAccountRepository>(context, listen: listen);
 
-  Future<DbAccountWrapper> findByRemoteId(String remoteId);
+  Future<IAccount> findByRemoteId(String remoteId);
 
-  Stream<DbAccountWrapper> watchByRemoteId(String remoteId);
+  Stream<IAccount> watchByRemoteId(String remoteId);
 
   Future upsertRemoteAccounts(List<IPleromaAccount> remoteAccounts,
       {@required conversationRemoteId});
@@ -27,69 +27,68 @@ abstract class IAccountRepository
   Future upsertRemoteAccount(IPleromaAccount remoteAccount,
       {@required conversationRemoteId});
 
-  Future updateAccountFollowings(
-      String accountRemoteId, List<PleromaAccount> followings);
+  Future updateAccountFollowings(String accountRemoteId,
+      List<PleromaAccount> followings);
 
-  Future updateAccountFollowers(
-      String accountRemoteId, List<PleromaAccount> followers);
+  Future updateAccountFollowers(String accountRemoteId,
+      List<PleromaAccount> followers);
 
-  Future updateStatusRebloggedBy(
-      {@required String statusRemoteId,
-      @required List<PleromaAccount> rebloggedByAccounts});
+  Future updateStatusRebloggedBy({@required String statusRemoteId,
+    @required List<PleromaAccount> rebloggedByAccounts});
 
-  Future updateStatusFavouritedBy(
-      {@required String statusRemoteId,
-      @required List<PleromaAccount> favouritedByAccounts});
+  Future updateStatusFavouritedBy({@required String statusRemoteId,
+    @required List<PleromaAccount> favouritedByAccounts});
 
-  Future updateLocalAccountByRemoteAccount(
-      {@required IAccount oldLocalAccount,
-      @required IPleromaAccount newRemoteAccount});
+  Future updateLocalAccountByRemoteAccount({@required IAccount oldLocalAccount,
+    @required IPleromaAccount newRemoteAccount});
 
-  Future<List<DbAccountWrapper>> getAccounts(
-      {@required IAccount olderThanAccount,
-      @required IAccount newerThanAccount,
-      @required IConversation onlyInConversation,
-      @required IStatus onlyInStatusRebloggedBy,
-      @required IStatus onlyInStatusFavouritedBy,
-      @required IAccount onlyInAccountFollowers,
-      @required IAccount onlyInAccountFollowing,
-      @required String searchQuery,
-      @required int limit,
-      @required int offset,
-      @required AccountOrderingTermData orderingTermData});
+  Future<List<IAccount>> getAccounts({@required IAccount olderThanAccount,
+    @required IAccount newerThanAccount,
+    @required IConversation onlyInConversation,
+    @required IStatus onlyInStatusRebloggedBy,
+    @required IStatus onlyInStatusFavouritedBy,
+    @required IAccount onlyInAccountFollowers,
+    @required IAccount onlyInAccountFollowing,
+    @required String searchQuery,
+    @required int limit,
+    @required int offset,
+    @required AccountOrderingTermData orderingTermData});
 
-  Stream<List<DbAccountWrapper>> watchAccounts(
-      {@required IAccount olderThanAccount,
-      @required IAccount newerThanAccount,
-      @required IConversation onlyInConversation,
-      @required IStatus onlyInStatusRebloggedBy,
-      @required IStatus onlyInStatusFavouritedBy,
-      @required IAccount onlyInAccountFollowers,
-      @required IAccount onlyInAccountFollowing,
-      @required String searchQuery,
-      @required int limit,
-      @required int offset,
-      @required AccountOrderingTermData orderingTermData});
+  Stream<List<IAccount>> watchAccounts({@required IAccount olderThanAccount,
+    @required IAccount newerThanAccount,
+    @required IConversation onlyInConversation,
+    @required IStatus onlyInStatusRebloggedBy,
+    @required IStatus onlyInStatusFavouritedBy,
+    @required IAccount onlyInAccountFollowers,
+    @required IAccount onlyInAccountFollowing,
+    @required String searchQuery,
+    @required int limit,
+    @required int offset,
+    @required AccountOrderingTermData orderingTermData});
 
-  Future<DbAccountWrapper> getAccount(
-      {@required IAccount olderThanAccount,
-      @required IAccount newerThanAccount,
-      @required IConversation onlyInConversation,
-      @required IStatus onlyInStatusRebloggedBy,
-      @required IStatus onlyInStatusFavouritedBy,
-      @required IAccount onlyInAccountFollowers,
-      @required IAccount onlyInAccountFollowing,
-      @required String searchQuery,
-      @required AccountOrderingTermData orderingTermData});
+  Future<IAccount> getAccount({@required IAccount olderThanAccount,
+    @required IAccount newerThanAccount,
+    @required IConversation onlyInConversation,
+    @required IStatus onlyInStatusRebloggedBy,
+    @required IStatus onlyInStatusFavouritedBy,
+    @required IAccount onlyInAccountFollowers,
+    @required IAccount onlyInAccountFollowing,
+    @required String searchQuery,
+    @required AccountOrderingTermData orderingTermData});
 
-  Stream<DbAccountWrapper> watchAccount(
-      {@required IAccount olderThanAccount,
-      @required IAccount newerThanAccount,
-      @required IConversation onlyInConversation,
-      @required IStatus onlyInStatusRebloggedBy,
-      @required IStatus onlyInStatusFavouritedBy,
-      @required IAccount onlyInAccountFollowers,
-      @required IAccount onlyInAccountFollowing,
-      @required String searchQuery,
-      @required AccountOrderingTermData orderingTermData});
+  Stream<IAccount> watchAccount({@required IAccount olderThanAccount,
+    @required IAccount newerThanAccount,
+    @required IConversation onlyInConversation,
+    @required IStatus onlyInStatusRebloggedBy,
+    @required IStatus onlyInStatusFavouritedBy,
+    @required IAccount onlyInAccountFollowers,
+    @required IAccount onlyInAccountFollowing,
+    @required String searchQuery,
+    @required AccountOrderingTermData orderingTermData});
+
+  Future<List<IAccount>> getConversationAccounts(
+      {@required IConversation conversation});
+
+  Stream<List<IAccount>> watchConversationAccounts(
+      {@required IConversation conversation});
 }

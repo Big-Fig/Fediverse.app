@@ -60,40 +60,13 @@ class ConversationBloc extends AsyncInitLoadingBloc
 
     addDisposable(
         streamSubscription: statusRepository
-            .watchStatus(
-                onlyInListWithRemoteId: null,
-                onlyWithHashtag: null,
-                onlyFromAccountsFollowingByAccount: null,
-                onlyFromAccount: null,
-                onlyInConversation: conversation,
-                onlyLocal: null,
-                onlyWithMedia: null,
-                onlyNotMuted: null,
-                excludeVisibilities: null,
-                olderThanStatus: null,
-                newerThanStatus: null,
-                onlyNoNsfwSensitive: null,
-                onlyNoReplies: null,
-                orderingTermData: StatusOrderingTermData(
-                    orderingMode: OrderingMode.desc,
-                    orderByType: StatusOrderByType.remoteId))
+            .watchConversationLastStatus(conversation: conversation)
             .listen((lastStatus) {
       _lastStatusSubject.add(lastStatus);
     }));
     addDisposable(
         streamSubscription: accountRepository
-            .watchAccounts(
-                searchQuery: null,
-                olderThanAccount: null,
-                newerThanAccount: null,
-                onlyInConversation: conversation,
-                onlyInStatusRebloggedBy: null,
-                onlyInStatusFavouritedBy: null,
-                onlyInAccountFollowers: null,
-                onlyInAccountFollowing: null,
-                limit: null,
-                offset: null,
-                orderingTermData: null)
+            .watchConversationAccounts(conversation: conversation)
             .listen((accounts) {
       _accountsSubject.add(accounts);
     }));
@@ -101,39 +74,12 @@ class ConversationBloc extends AsyncInitLoadingBloc
 
   @override
   Future internalAsyncInit() async {
-    var status = await statusRepository.getStatus(
-        onlyInListWithRemoteId: null,
-        onlyWithHashtag: null,
-        onlyFromAccountsFollowingByAccount: null,
-        onlyFromAccount: null,
-        onlyInConversation: conversation,
-        onlyLocal: null,
-        onlyWithMedia: null,
-        onlyNotMuted: null,
-        excludeVisibilities: null,
-        olderThanStatus: null,
-        newerThanStatus: null,
-        onlyNoNsfwSensitive: null,
-        onlyNoReplies: null,
-        orderingTermData: StatusOrderingTermData(
-            orderingMode: OrderingMode.desc,
-            orderByType: StatusOrderByType.remoteId));
+    var status = await statusRepository.getConversationLastStatus(conversation: conversation);
     if (!_lastStatusSubject.isClosed) {
       _lastStatusSubject.add(status);
     }
 
-    var accounts = await accountRepository.getAccounts(
-        searchQuery: null,
-        olderThanAccount: null,
-        newerThanAccount: null,
-        onlyInConversation: conversation,
-        onlyInStatusRebloggedBy: null,
-        onlyInStatusFavouritedBy: null,
-        onlyInAccountFollowers: null,
-        onlyInAccountFollowing: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null);
+    var accounts = await accountRepository.getConversationAccounts(conversation: conversation);
 
     if (!_accountsSubject.isClosed) {
       _accountsSubject.add(accounts);
