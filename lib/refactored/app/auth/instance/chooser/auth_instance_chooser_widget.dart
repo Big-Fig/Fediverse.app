@@ -3,6 +3,7 @@ import 'package:fedi/refactored/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/refactored/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/refactored/app/auth/instance/chooser/auth_instance_chooser_bloc.dart';
 import 'package:fedi/refactored/app/auth/instance/join/add_more/add_more_join_auth_instance_page.dart';
+import 'package:fedi/refactored/app/dialog/alert/confirm_alert_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -80,15 +81,31 @@ class AuthInstanceChooserWidget extends StatelessWidget {
                 color: Colors.red,
               ),
               onPressed: () {
-                // todo: alert dialog
-                instanceChooserBloc.removeInstance(instance);
+                ConfirmAlertDialog(
+                  context: context,
+                  title: AppLocalizations.of(context)
+                      .tr("app.auth.instance.remove.dialog.title"),
+                  content: AppLocalizations.of(context)
+                      .tr("app.auth.instance.remove.dialog.title"),
+                  onAction: () {
+                    instanceChooserBloc.removeInstance(instance);
+                  },
+                ).show(context);
               },
             ),
             GestureDetector(
-              onTap: () {
-                // todo: alert dialog
-                instanceChooserBloc.chooseInstance(instance);
-              },
+                onTap: () {
+                  ConfirmAlertDialog(
+                    context: context,
+                    title: AppLocalizations.of(context)
+                        .tr("app.auth.instance.chooser.dialog.title"),
+                    content: AppLocalizations.of(context)
+                        .tr("app.auth.instance.chooser.dialog.title"),
+                    onAction: () {
+                      instanceChooserBloc.chooseInstance(instance);
+                    },
+                  ).show(context);
+                },
                 child: Text(instance.userAtHost)),
           ],
         ),
@@ -113,8 +130,17 @@ class AuthInstanceChooserWidget extends StatelessWidget {
                   onPressed: () {
                     var authHostBloc = AuthHostBloc.createFromContext(context,
                         instanceBaseUrl: instance.url);
-// todo: alert dialog
-                    authHostBloc.logout();
+
+                    ConfirmAlertDialog(
+                      context: context,
+                      title: AppLocalizations.of(context)
+                          .tr("app.auth.instance.logout.dialog.title"),
+                      content: AppLocalizations.of(context)
+                          .tr("app.auth.instance.logout.dialog.title"),
+                      onAction: () {
+                        authHostBloc.logout();
+                      },
+                    ).show(context);
                   },
                 ),
                 Text(instance.userAtHost),

@@ -3,13 +3,12 @@ import 'package:fedi/refactored/app/dialog/dialog_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-// My prefix added to avoid naming conflict with AlertDialog from material.dart
-class MyAlertDialog extends BaseDialog {
+class SimpleAlertDialog extends BaseDialog {
   final String title;
   final String content;
   final List<DialogAction> actions;
 
-  MyAlertDialog(
+  SimpleAlertDialog(
       {this.title, this.content, this.actions, bool cancelable = true})
       : super(cancelable: cancelable);
 
@@ -25,9 +24,9 @@ class MyAlertDialog extends BaseDialog {
         content: Text(this.content),
         actions: <Widget>[
           if (cancelable)
-            buildButton(
-                context, createdDefaultCancelAction(context)),
-          actions?.map((action) => buildButton(context, action)) ?? []
+            buildButton(context, createdDefaultCancelAction(context)),
+          ...actions?.map((action) => buildButton(context, action))?.toList() ??
+              []
         ],
       );
 }
