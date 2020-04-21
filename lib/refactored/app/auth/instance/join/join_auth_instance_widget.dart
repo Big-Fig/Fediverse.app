@@ -5,6 +5,7 @@ import 'package:fedi/refactored/app/auth/instance/register/register_auth_instanc
 import 'package:fedi/refactored/app/theme/theme.dart';
 import 'package:fedi/refactored/app/tos/tos_page.dart';
 import 'package:fedi/refactored/dialog/alert/base_alert_dialog.dart';
+import 'package:fedi/refactored/dialog/alert/simple_alert_dialog.dart';
 import 'package:fedi/refactored/dialog/async/async_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -190,12 +191,42 @@ class JoinAuthInstanceWidget extends StatelessWidget {
   }
 
   signUpToInstance(BuildContext context) async {
-    var joinInstanceBloc = IJoinAuthInstanceBloc.of(context, listen: false);
+    doAsyncOperationWithProgressDialog(
+        context: context,
+        contentMessage: AppLocalizations.of(context).tr("app.auth.instance.join"
+            ".progress.dialog.content"),
+        asyncCode: () async {
+          var joinInstanceBloc =
+              IJoinAuthInstanceBloc.of(context, listen: false);
 
-    var hostUri = extractCurrentUri(joinInstanceBloc);
+          var hostUri = extractCurrentUri(joinInstanceBloc);
 
-    goToRegisterAuthInstancePage(context, instanceBaseUrl: hostUri);
+          AuthHostBloc authHostBloc;
+          try {
+            authHostBloc = AuthHostBloc.createFromContext(context,
+                instanceBaseUrl: hostUri);
+            await authHostBloc.checkApplicationRegistration();
+          } finally {
+            authHostBloc?.dispose();
+          }
+
+          goToRegisterAuthInstancePage(context, instanceBaseUrl: hostUri);
+        },
+        errorAlertDialogHandlers: [
+          (error) {
+            // todo: handle specific error
+            return createInstanceDeadErrorAlertDialog(context);
+          }
+        ]);
   }
+
+  BaseAlertDialog createInstanceDeadErrorAlertDialog(BuildContext context) =>
+      SimpleAlertDialog(
+          title: AppLocalizations.of(context).tr("app.auth.instance.join"
+              ".fail.dialog.title"),
+          content: AppLocalizations.of(context).tr("app.auth.instance.join"
+              ".fail.dialog.content"),
+          context: context);
 
   logInToInstance(BuildContext context) {
     var joinInstanceBloc = IJoinAuthInstanceBloc.of(context, listen: false);
@@ -209,21 +240,15 @@ class JoinAuthInstanceWidget extends StatelessWidget {
           try {
             bloc = AuthHostBloc.createFromContext(context,
                 instanceBaseUrl: hostUri);
+            await bloc.launchLoginToAccount();
           } finally {
             bloc.dispose();
           }
-
-          await bloc.launchLoginToAccount();
         },
         errorAlertDialogHandlers: [
           (error) {
             // todo: handle specific error
-            return BaseAlertDialog(
-                title: AppLocalizations.of(context).tr("app.auth.instance.join"
-                    ".fail.dialog.title"),
-                content:
-                    AppLocalizations.of(context).tr("app.auth.instance.join"
-                        ".fail.dialog.content"));
+            return createInstanceDeadErrorAlertDialog(context);
           }
         ]);
   }

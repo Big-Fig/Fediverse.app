@@ -373,6 +373,18 @@
         "title": "Reblogged by"
       },
       "post": {
+        "dialog": {
+          "async": {
+            "content": "Posting..."
+          },
+          "error": {
+            "title": "Status not posted",
+            "content": "Error: {}"
+          }
+        },
+        "toast": {
+          "success": "Status posted"
+        },
         "action": {
           "post": "Post"
         },
@@ -480,7 +492,7 @@
     },
     "error": {
       "title": "Something wrong",
-      "content": "Please report about this error"
+      "content": "Please report about this error: {}"
     },
     "action": {
       "ok": "Ok",

@@ -4,6 +4,7 @@ import 'package:fedi/refactored/app/auth/instance/register/register_auth_instanc
 import 'package:fedi/refactored/app/form/form_field_error_model.dart';
 import 'package:fedi/refactored/app/form/form_model.dart';
 import 'package:fedi/refactored/dialog/alert/base_alert_dialog.dart';
+import 'package:fedi/refactored/dialog/alert/simple_alert_dialog.dart';
 import 'package:fedi/refactored/dialog/async/async_dialog.dart';
 import 'package:fedi/refactored/dialog/progress/indeterminate_progress_dialog.dart';
 import 'package:fedi/refactored/pleroma/account/public/pleroma_account_public_model.dart';
@@ -153,12 +154,12 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
     }, errorAlertDialogHandlers: [
           (error) {
         // todo: handle specific error
-        return BaseAlertDialog(
+        return SimpleAlertDialog(
             title: AppLocalizations.of(context)
                 .tr("app.auth.instance.register.fail.dialog.title"),
             content: AppLocalizations.of(context).tr(
                 "app.auth.instance.register.fail.dialog.content",
-                args: [error]));
+                args: [error]), context: context);
       }
     ]);
   }
