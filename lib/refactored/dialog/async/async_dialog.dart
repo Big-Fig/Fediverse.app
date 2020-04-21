@@ -50,7 +50,8 @@ Future<AsyncDialogResult<T>> doAsyncOperationWithProgressDialog<T>({
       errorDialog = SimpleAlertDialog(
         context: context,
         title: AppLocalizations.of(context).tr("dialog.error.title"),
-        content: AppLocalizations.of(context).tr("dialog.error.content"),
+        content: AppLocalizations.of(context).tr("dialog.error.content",
+            args:[error]),
       );
     }
 
@@ -70,7 +71,7 @@ Future<AsyncDialogResult<T>> doAsyncOperationWithProgressDialog<T>({
 
   AsyncDialogResult dialogResult;
   if (progressDialog.isCanceled) {
-    dialogResult = AsyncDialogResult.canceled();
+    dialogResult = AsyncDialogResult<T>.canceled();
     _logger.fine(() => "canceled doAsyncOperationWithProgressDialog");
   } else if (error != null) {
     if (errorDialog != null) {
@@ -80,11 +81,11 @@ Future<AsyncDialogResult<T>> doAsyncOperationWithProgressDialog<T>({
     if (needRethrow) {
       throw error;
     }
-    dialogResult = AsyncDialogResult.withError(error);
+    dialogResult = AsyncDialogResult<T>.withError(error);
   } else {
     _logger
         .finest(() => "success doAsyncOperationWithProgressDialog =$result}");
-    dialogResult = AsyncDialogResult.success(result);
+    dialogResult = AsyncDialogResult<T>.success(result);
   }
 
   return dialogResult;

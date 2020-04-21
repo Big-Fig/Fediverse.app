@@ -1,9 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/status/post/post_status_bloc.dart';
-import 'package:fedi/refactored/app/status/status_model.dart';
-import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
+import 'package:fedi/refactored/dialog/alert/base_alert_dialog.dart';
+import 'package:fedi/refactored/dialog/alert/simple_alert_dialog.dart';
+import 'package:fedi/refactored/dialog/async/async_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 typedef IPostStatusCallback(BuildContext context);
 
@@ -26,10 +28,35 @@ class PostStatusPostActionWidget extends StatelessWidget {
 
           if (isReadyToPost) {
             onPressed = () async {
-              var success = await postStatusBloc.postStatus();
-              if (success && successCallback != null) {
-                successCallback(context);
-              }
+              doAsyncOperationWithProgressDialog(
+                  context: context,
+                  contentMessage: AppLocalizations.of(context)
+                      .tr("app.status.post.dialog.async.content"),
+                  asyncCode: () async {
+                    var success = await postStatusBloc.postStatus();
+                    if (success) {
+                      Fluttertoast.showToast(
+                          msg: AppLocalizations.of(context)
+                              .tr("app.status.post.toast.success"),
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.blue,
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    }
+                    if (success && successCallback != null) {
+                      successCallback(context);
+                    }
+                  },
+                  errorAlertDialogHandlers: [
+                    (error) => SimpleAlertDialog(
+                        title: AppLocalizations.of(context)
+                            .tr("app.status.post.dialog.error.title"),
+                        content: AppLocalizations.of(context).tr(
+                            "app.status.post.dialog.error.content",
+                            args: [error]), context: context)
+                  ]);
             };
           }
 
