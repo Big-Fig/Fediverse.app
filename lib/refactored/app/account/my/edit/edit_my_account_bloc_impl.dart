@@ -102,7 +102,7 @@ class EditMyAccountBloc extends DisposableOwner implements IEditMyAccountBloc {
   Stream<String> get headerImageUrlStream => myAccountBloc.headerStream;
 
   @override
-  Future<bool> submitChanges() async {
+  Future submitChanges() async {
     Map<int, PleromaField> fieldsAttributes = {};
     customFields.forEach((customField) => fieldsAttributes[customField.index] =
         PleromaField(
@@ -116,12 +116,7 @@ class EditMyAccountBloc extends DisposableOwner implements IEditMyAccountBloc {
       locked: lockedField.currentValue,
     ));
 
-    if (remoteMyAccount != null) {
-      await myAccountBloc.updateMyAccountByRemote(remoteMyAccount);
-      return true;
-    } else {
-      return false;
-    }
+    await myAccountBloc.updateMyAccountByRemote(remoteMyAccount);
   }
 
   @override

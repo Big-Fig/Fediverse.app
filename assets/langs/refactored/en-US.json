@@ -29,7 +29,9 @@
           "unsaved": {
             "dialog": {
               "title": "You have unsaved changed",
-              "action": "Discard"
+              "action": {
+                "discard": "Discard"
+              }
             }
           },
           "field": {
@@ -80,6 +82,24 @@
       },
       "select": {
         "title": "Select account"
+      }
+    },
+    "async": {
+      "pleroma": {
+        "error": {
+          "dialog": {
+            "title": "Pleroma API error",
+            "content": "Message: {}"
+          }
+        }
+      },
+      "socket": {
+        "error": {
+          "dialog": {
+            "title": "Socket error",
+            "content": "Check your connection: {}"
+          }
+        }
       }
     },
     "auth": {
