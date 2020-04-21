@@ -151,15 +151,15 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
         authApplicationBloc?.dispose();
       }
 
-    }, errorAlertDialogHandlers: [
-          (error) {
+    }, errorAlertDialogBuilders: [
+          (context, error) {
         // todo: handle specific error
         return SimpleAlertDialog(
             title: AppLocalizations.of(context)
                 .tr("app.auth.instance.register.fail.dialog.title"),
             content: AppLocalizations.of(context).tr(
                 "app.auth.instance.register.fail.dialog.content",
-                args: [error]), context: context);
+                args: [error.toString()]), context: context);
       }
     ]);
   }

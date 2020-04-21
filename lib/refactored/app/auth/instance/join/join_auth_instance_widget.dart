@@ -212,8 +212,8 @@ class JoinAuthInstanceWidget extends StatelessWidget {
 
           goToRegisterAuthInstancePage(context, instanceBaseUrl: hostUri);
         },
-        errorAlertDialogHandlers: [
-          (error) {
+        errorAlertDialogBuilders: [
+          (context, error) {
             // todo: handle specific error
             return createInstanceDeadErrorAlertDialog(context);
           }
@@ -245,8 +245,8 @@ class JoinAuthInstanceWidget extends StatelessWidget {
             bloc.dispose();
           }
         },
-        errorAlertDialogHandlers: [
-          (error) {
+        errorAlertDialogBuilders: [
+          (context, error) {
             // todo: handle specific error
             return createInstanceDeadErrorAlertDialog(context);
           }

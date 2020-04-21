@@ -10,13 +10,13 @@ import 'package:logging/logging.dart';
 
 Logger _logger = Logger("async_dialog.dart");
 
-typedef BaseDialog ErrorAlertDialogHandler(dynamic error);
+typedef BaseDialog ErrorAlertDialogBuilder(BuildContext context, dynamic error);
 
 Future<AsyncDialogResult<T>> doAsyncOperationWithDialog<T>({
   @required BuildContext context,
   @required Future<T> asyncCode(),
   String contentMessage,
-  List<ErrorAlertDialogHandler> errorAlertDialogHandlers: const [],
+  List<ErrorAlertDialogBuilder> errorAlertDialogBuilders: const [],
   bool showDefaultErrorAlertDialogOnUnhandledError: true,
   bool showProgressDialog = true,
   bool cancelable = false,
@@ -44,8 +44,8 @@ Future<AsyncDialogResult<T>> doAsyncOperationWithDialog<T>({
     result = await cancelableOperation.valueOrCancellation(null);
   } catch (e, stackTrace) {
     error = e;
-    for (var handler in errorAlertDialogHandlers ?? []) {
-      errorDialog = handler(e);
+    for (var builder in errorAlertDialogBuilders ?? []) {
+      errorDialog = builder(context, e);
       if (errorDialog != null) {
         needRethrow = false;
         break;
@@ -57,7 +57,7 @@ Future<AsyncDialogResult<T>> doAsyncOperationWithDialog<T>({
         context: context,
         title: AppLocalizations.of(context).tr("dialog.error.title"),
         content: AppLocalizations.of(context)
-            .tr("dialog.error.content", args: [error]),
+            .tr("dialog.error.content", args: [error.toString()]),
       );
     }
 
@@ -89,8 +89,7 @@ Future<AsyncDialogResult<T>> doAsyncOperationWithDialog<T>({
     }
     dialogResult = AsyncDialogResult<T>.withError(error);
   } else {
-    _logger
-        .finest(() => "success doAsyncOperationWithDialog =$result}");
+    _logger.finest(() => "success doAsyncOperationWithDialog =$result}");
     dialogResult = AsyncDialogResult<T>.success(result);
   }
 

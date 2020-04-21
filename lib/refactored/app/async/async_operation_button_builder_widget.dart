@@ -12,14 +12,14 @@ class AsyncOperationButtonBuilderWidget extends StatefulWidget {
   final ButtonBuilder builder;
   final bool showProgressDialog;
   final String progressContentMessage;
-  final List<ErrorAlertDialogHandler> errorAlertDialogHandlers;
+  final List<ErrorAlertDialogBuilder> errorAlertDialogBuilders;
 
   AsyncOperationButtonBuilderWidget({
     @required this.builder,
     @required this.asyncButtonAction,
     this.showProgressDialog = true,
     this.progressContentMessage,
-    this.errorAlertDialogHandlers = const [],
+    this.errorAlertDialogBuilders = const [],
   });
 
   @override
@@ -44,8 +44,8 @@ class _AsyncOperationButtonBuilderWidgetState
                 doAsyncOperationWithDialog(
                         context: context,
                         contentMessage: widget.progressContentMessage,
-                        errorAlertDialogHandlers:
-                            widget.errorAlertDialogHandlers,
+                        errorAlertDialogBuilders:
+                            widget.errorAlertDialogBuilders,
                         showProgressDialog: widget.showProgressDialog,
                         asyncCode: widget.asyncButtonAction)
                     .then((_) {

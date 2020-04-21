@@ -35,5 +35,5 @@ abstract class IEditMyAccountBloc implements Disposable {
 
   EditMyAccountBoolField get lockedField;
 
-  Future<bool> submitChanges();
+  Future submitChanges();
 }
