@@ -1,5 +1,4 @@
 import 'package:fedi/refactored/app/account/account_model.dart';
-import 'package:fedi/refactored/app/conversation/conversation_model.dart';
 import 'package:fedi/refactored/app/emoji/emoji_text_model.dart';
 import 'package:fedi/refactored/disposable/disposable.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
@@ -10,6 +9,7 @@ import 'package:provider/provider.dart';
 abstract class IAccountBloc extends Disposable {
   static IAccountBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IAccountBloc>(context, listen: listen);
+
   IAccount get account;
 
   Stream<IAccount> get accountStream;
@@ -30,9 +30,9 @@ abstract class IAccountBloc extends Disposable {
 
   Stream<String> get avatarStream;
 
-  EmojiText get displayNameEmojiText;
+  String get displayName;
 
-  Stream<EmojiText> get displayNameEmojiTextStream;
+  Stream<String> get displayNameStream;
 
   List<IPleromaField> get fields;
 
@@ -63,4 +63,8 @@ abstract class IAccountBloc extends Disposable {
   Future requestReport();
 
   Future<bool> requestRefreshFromNetwork();
+
+  EmojiText get displayNameEmojiText;
+
+  Stream<EmojiText> get displayNameEmojiTextStream;
 }

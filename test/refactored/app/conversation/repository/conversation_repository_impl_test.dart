@@ -11,6 +11,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/moor.dart';
 import 'package:moor_ffi/moor_ffi.dart';
 
+import '../../account/database/account_database_model_helper.dart';
 import '../../account/repository/account_repository_model_helper.dart';
 import '../../status/repository/status_repository_model_helper.dart';
 import 'conversation_repository_model_helper.dart';
@@ -38,7 +39,7 @@ void main() {
         statusRepository: statusRepository,
         accountRepository: accountRepository);
 
-    dbAccount = await createTestAccount(seed: "seed1");
+    dbAccount = await createTestDbAccount(seed: "seed1");
     var accountId = await accountRepository.insert(dbAccount);
     // assign local id for further equal with data retrieved from db
     dbAccount = dbAccount.copyWith(id: accountId);
@@ -48,7 +49,7 @@ void main() {
     dbStatusPopulated =
         await createTestStatusPopulated(dbStatus, accountRepository);
 
-    var reblogDbAccount = await createTestAccount(seed: "seed11");
+    var reblogDbAccount = await createTestDbAccount(seed: "seed11");
     accountRepository.insert(reblogDbAccount);
     var reblogDbStatus =
         await createTestStatus(seed: "seed33", dbAccount: reblogDbAccount);

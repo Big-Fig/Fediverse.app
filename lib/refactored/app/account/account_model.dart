@@ -127,6 +127,7 @@ abstract class IAccount {
       bool pleromaDeactivated,
       bool pleromaAllowFollowingMove,
       bool pleromaSkipThreadContainment});
+
 }
 
 class DbAccountWrapper implements IAccount {

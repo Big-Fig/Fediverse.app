@@ -105,6 +105,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  # easy mock for tests
+  mockito: ^4.1.1
   # build tools runner
   # usage example
   # flutter pub run build_runner build --delete-conflicting-outputs
