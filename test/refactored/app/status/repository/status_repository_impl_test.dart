@@ -14,8 +14,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/moor.dart';
 import 'package:moor_ffi/moor_ffi.dart';
 
-import '../account/account_repository_model_helper.dart';
-import '../conversation/conversation_repository_model_helper.dart';
+import '../../account/repository/account_repository_model_helper.dart';
+import '../../conversation/repository/conversation_repository_model_helper.dart';
 import 'status_repository_model_helper.dart';
 
 final String baseUrl = "https://pleroma.com";

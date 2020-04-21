@@ -6,8 +6,9 @@ import 'package:fedi/refactored/mastodon/notification/mastodon_notification_mode
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../account/account_repository_model_helper.dart';
-import '../status/status_repository_model_helper.dart';
+import '../../account/repository/account_repository_model_helper.dart';
+import '../../status/repository/status_repository_model_helper.dart';
+
 
 Future<DbNotification> createTestNotification({
   @required String seed,
