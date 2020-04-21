@@ -188,11 +188,9 @@ class MyAccountBloc extends DisposableOwner implements IMyAccountBloc {
   }
 
   @override
-  Future<IConversation> findRelatedConversation() => conversationRepository.getConversation(
-      withAccount: account,
-      olderThanConversation: null,
-      newerThanConversation: null,
-      orderingTermData: ConversationOrderingTermData(
-          orderByType: ConversationOrderByType.remoteId,
-          orderingMode: OrderingMode.desc));
+  String get displayName => account.displayName;
+
+  @override
+  Stream<String> get displayNameStream =>
+      accountStream.map((account) => account.displayName);
 }

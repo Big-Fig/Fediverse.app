@@ -285,6 +285,37 @@ class PleromaAccountRelationship implements IPleromaAccountRelationship {
   });
 
   @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaAccountRelationship &&
+          runtimeType == other.runtimeType &&
+          blocking == other.blocking &&
+          domainBlocking == other.domainBlocking &&
+          endorsed == other.endorsed &&
+          followedBy == other.followedBy &&
+          following == other.following &&
+          id == other.id &&
+          muting == other.muting &&
+          mutingNotifications == other.mutingNotifications &&
+          requested == other.requested &&
+          showingReblogs == other.showingReblogs &&
+          subscribing == other.subscribing;
+
+  @override
+  int get hashCode =>
+      blocking.hashCode ^
+      domainBlocking.hashCode ^
+      endorsed.hashCode ^
+      followedBy.hashCode ^
+      following.hashCode ^
+      id.hashCode ^
+      muting.hashCode ^
+      mutingNotifications.hashCode ^
+      requested.hashCode ^
+      showingReblogs.hashCode ^
+      subscribing.hashCode;
+
+  @override
   String toString() {
     return 'PleromaAccountRelationship{blocking: $blocking,'
         ' domainBlocking: $domainBlocking, endorsed: $endorsed,'

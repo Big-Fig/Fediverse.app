@@ -135,7 +135,7 @@ class AccountRepository extends AsyncInitLoadingBloc
           .get();
 
       if (found?.isNotEmpty != true) {
-        conversationAccountsDao.insert(DbConversationAccount(
+        await conversationAccountsDao.insert(DbConversationAccount(
             id: null,
             conversationRemoteId: conversationRemoteId,
             accountRemoteId: accountRemoteId));

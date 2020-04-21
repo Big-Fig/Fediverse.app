@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../pleroma/application/pleroma_application_model_helper.dart';
+import '../../account/database/account_database_model_helper.dart';
 import '../../account/repository/account_repository_model_helper.dart';
 
 

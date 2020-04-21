@@ -2,9 +2,6 @@ import 'package:fedi/refactored/app/account/account_bloc.dart';
 import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/account/account_model_adapter.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
-import 'package:fedi/refactored/app/conversation/conversation_model.dart';
-import 'package:fedi/refactored/app/conversation/repository/conversation_repository.dart';
-import 'package:fedi/refactored/app/conversation/repository/conversation_repository_model.dart';
 import 'package:fedi/refactored/app/emoji/emoji_text_model.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
@@ -26,6 +23,7 @@ class AccountBloc extends DisposableOwner implements IAccountBloc {
   @override
   Stream<IPleromaAccountRelationship> get accountRelationshipStream {
     // load from network if relationship not exist locally
+    // API require additional request to retrieve relationship
     if (accountRelationship == null) {
       // don't await
       refreshAccountRelationship();
@@ -47,31 +45,43 @@ class AccountBloc extends DisposableOwner implements IAccountBloc {
     @required IAccount account,
     bool needRefreshFromNetworkOnInit = false,
     this.needRefreshRelationship = true,
+    // todo: remove hack. Don't init when bloc quickly disposed. Help
+    //  improve performance in timeline unnecessary recreations
+    bool delayInit = true,
     this.needWatchLocalRepositoryForUpdates = true,
   }) : _accountSubject = BehaviorSubject.seeded(account) {
     assert(account != null);
     _logger.finest(() => "AccountBloc ${account.remoteId}");
     addDisposable(subject: _accountSubject);
-    Future.delayed(Duration(seconds: 1), () {
-      if (!disposed) {
-        if (needWatchLocalRepositoryForUpdates) {
-          addDisposable(
-              streamSubscription: accountRepository
-                  .watchByRemoteId(account.remoteId)
-                  .listen((updatedAccount) {
-//      _logger.finest(() => "oldAccount ${account.acct} updatedAccount "
-//          "$updatedAccount");
-            if (updatedAccount != null) {
-              _accountSubject.add(updatedAccount);
-            }
-          }));
-        }
+    if (delayInit) {
+      Future.delayed(Duration(seconds: 1), () {
+        _init(account, needRefreshFromNetworkOnInit);
+      });
+    } else {
+      _init(account, needRefreshFromNetworkOnInit);
+    }
+  }
 
-        if (needRefreshFromNetworkOnInit == true) {
-          requestRefreshFromNetwork();
-        }
+  void _init(IAccount account, bool needRefreshFromNetworkOnInit) {
+    if (!disposed) {
+      if (needWatchLocalRepositoryForUpdates) {
+        addDisposable(
+            streamSubscription: accountRepository
+                .watchByRemoteId(account.remoteId)
+                .listen((updatedAccount) {
+//                _logger.finest(() => "oldAccount ${account
+//                    .acct} updatedAccount "
+//                    "$updatedAccount");
+          if (updatedAccount != null) {
+            _accountSubject.add(updatedAccount);
+          }
+        }));
       }
-    });
+
+      if (needRefreshFromNetworkOnInit == true) {
+        requestRefreshFromNetwork();
+      }
+    }
   }
 
   void refreshAccountRelationship() {
@@ -285,15 +295,22 @@ class AccountBloc extends DisposableOwner implements IAccountBloc {
   }
 
   static AccountBloc createFromContext(BuildContext context,
-      {@required IAccount account,
-      @required bool needRefreshFromNetworkOnInit,
-      @required bool needWatchLocalRepositoryForUpdates}) => AccountBloc(
-        account: account,
-        needRefreshFromNetworkOnInit: needRefreshFromNetworkOnInit,
-        needWatchLocalRepositoryForUpdates: needWatchLocalRepositoryForUpdates,
-        accountRepository: IAccountRepository.of(context, listen: false),
-        pleromaAccountService:
-            IPleromaAccountService.of(context, listen: false));
+          {@required IAccount account,
+          @required bool needRefreshFromNetworkOnInit,
+          @required bool needWatchLocalRepositoryForUpdates}) =>
+      AccountBloc(
+          account: account,
+          needRefreshFromNetworkOnInit: needRefreshFromNetworkOnInit,
+          needWatchLocalRepositoryForUpdates:
+              needWatchLocalRepositoryForUpdates,
+          accountRepository: IAccountRepository.of(context, listen: false),
+          pleromaAccountService:
+              IPleromaAccountService.of(context, listen: false));
 
+  @override
+  String get displayName => account.displayName;
 
+  @override
+  Stream<String> get displayNameStream =>
+      accountStream.map((account) => account.displayName);
 }

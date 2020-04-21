@@ -25,6 +25,18 @@ class PleromaField implements IPleromaField {
   Map<String, dynamic> toJson() => _$PleromaFieldToJson(this);
 
   @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaField &&
+          runtimeType == other.runtimeType &&
+          name == other.name &&
+          value == other.value &&
+          verifiedAt == other.verifiedAt;
+
+  @override
+  int get hashCode => name.hashCode ^ value.hashCode ^ verifiedAt.hashCode;
+
+  @override
   String toString() {
     return 'PleromaField{name: $name, value: $value}';
   }
