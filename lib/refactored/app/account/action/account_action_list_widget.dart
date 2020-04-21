@@ -5,7 +5,6 @@ import 'package:fedi/refactored/app/async/async_operation_button_builder_widget.
 import 'package:fedi/refactored/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/refactored/app/conversation/start/status/post_status_start_conversation_page.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_alert/flutter_alert.dart';
@@ -17,7 +16,6 @@ class AccountActionListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);
-    assert(!accountBloc.isMyAccount);
     return StreamBuilder<IPleromaAccountRelationship>(
         stream: accountBloc.accountRelationshipStream,
         initialData: accountBloc.accountRelationship,
