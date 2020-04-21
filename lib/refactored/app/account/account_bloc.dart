@@ -10,9 +10,6 @@ import 'package:provider/provider.dart';
 abstract class IAccountBloc extends Disposable {
   static IAccountBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IAccountBloc>(context, listen: listen);
-
-  bool get isMyAccount;
-
   IAccount get account;
 
   Stream<IAccount> get accountStream;
@@ -66,6 +63,4 @@ abstract class IAccountBloc extends Disposable {
   Future requestReport();
 
   Future<bool> requestRefreshFromNetwork();
-
-  Future<IConversation> findRelatedConversation();
 }

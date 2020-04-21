@@ -273,4 +273,15 @@ class ConversationRepository extends AsyncInitLoadingBloc
         offset: null);
     return conversationsStream.map((conversations) => conversations?.first);
   }
+
+  @override
+  Future<IConversation> findConversationWithAccount(
+          {@required IAccount account}) =>
+      getConversation(
+          withAccount: account,
+          olderThanConversation: null,
+          newerThanConversation: null,
+          orderingTermData: ConversationOrderingTermData(
+              orderByType: ConversationOrderByType.remoteId,
+              orderingMode: OrderingMode.desc));
 }

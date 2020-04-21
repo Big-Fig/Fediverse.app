@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 abstract class IStatusBloc implements Disposable {
   static IStatusBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IStatusBloc>(context, listen: listen);
+
   IStatus get status;
 
   Stream<IStatus> get statusStream;
@@ -76,8 +77,6 @@ abstract class IStatusBloc implements Disposable {
   Stream<bool> get isHaveReblogStream;
 
   Future<IAccount> findMentionAccountByUrl({@required String url});
-
-  bool get isFromMyAccount;
 
   String get remoteId;
 
@@ -156,22 +155,24 @@ abstract class IStatusBloc implements Disposable {
 
   Future<IPleromaStatus> requestToggleEmojiReaction({@required String emoji});
 
-
   String get spoilerText;
 
   Stream<String> get spoilerTextStream;
 
-
   bool get nsfwSensitive;
+
   Stream<bool> get nsfwSensitiveStream;
 
   bool get nsfwSensitiveAndDisplayEnabled;
+
   Stream<bool> get nsfwSensitiveAndDisplayEnabledStream;
 
   bool get containsSpoiler;
+
   Stream<bool> get containsSpoilerStream;
 
   bool get containsSpoilerAndDisplayEnabled;
+
   Stream<bool> get containsSpoilerAndDisplayEnabledStream;
 
   changeDisplayNsfwSensitive(bool display);
