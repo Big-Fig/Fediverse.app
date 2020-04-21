@@ -191,7 +191,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
   }
 
   signUpToInstance(BuildContext context) async {
-    doAsyncOperationWithProgressDialog(
+    doAsyncOperationWithDialog(
         context: context,
         contentMessage: AppLocalizations.of(context).tr("app.auth.instance.join"
             ".progress.dialog.content"),
@@ -230,7 +230,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
 
   logInToInstance(BuildContext context) {
     var joinInstanceBloc = IJoinAuthInstanceBloc.of(context, listen: false);
-    doAsyncOperationWithProgressDialog(
+    doAsyncOperationWithDialog(
         context: context,
         contentMessage: AppLocalizations.of(context).tr("app.auth.instance.join"
             ".progress.dialog.content"),

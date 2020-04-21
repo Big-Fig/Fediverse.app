@@ -132,7 +132,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
     final validPassword = bloc.passwordField.value;
 
 
-    doAsyncOperationWithProgressDialog(context: context, asyncCode: () async {
+    doAsyncOperationWithDialog(context: context, asyncCode: () async {
         AuthHostBloc authApplicationBloc;
       try {
         authApplicationBloc = AuthHostBloc.createFromContext(context,

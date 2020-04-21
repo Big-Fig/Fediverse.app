@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/account/account_bloc.dart';
 import 'package:fedi/refactored/app/account/account_model.dart';
-import 'package:fedi/refactored/app/async/async_button_widget.dart';
+import 'package:fedi/refactored/app/async/async_operation_button_builder_widget.dart';
 import 'package:fedi/refactored/app/conversation/start/status/post_status_start_conversation_page.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
@@ -81,9 +81,9 @@ class AccountActionListWidget extends StatelessWidget {
     );
   }
 
-  AsyncButtonWidget buildFollowButton(
+  AsyncOperationButtonBuilderWidget buildFollowButton(
       IAccountBloc accountBloc, IPleromaAccountRelationship relationship) {
-    return AsyncButtonWidget(
+    return AsyncOperationButtonBuilderWidget(
       asyncButtonAction: accountBloc.requestToggleFollow,
       builder: (BuildContext context, VoidCallback onPressed) {
         return OutlineButton(

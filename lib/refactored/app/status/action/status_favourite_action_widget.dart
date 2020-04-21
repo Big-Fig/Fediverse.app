@@ -1,5 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/refactored/app/async/async_button_widget.dart';
+import 'package:fedi/refactored/app/async/async_operation_button_builder_widget.dart';
 import 'package:fedi/refactored/app/status/favourite/status_favourite_account_list_page.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
 import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
@@ -21,7 +21,7 @@ class StatusFavouriteActionWidget extends StatelessWidget {
             initialData: statusBloc.favourited,
             builder: (context, snapshot) {
               var favourited = snapshot.data;
-              return AsyncButtonWidget(
+              return AsyncOperationButtonBuilderWidget(
                   builder: (context, onPressed) => IconButton(
                         color: favourited ? Colors.blue : Colors.black,
                         icon: Icon(Icons.favorite_border),
