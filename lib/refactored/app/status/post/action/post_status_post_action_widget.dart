@@ -28,7 +28,7 @@ class PostStatusPostActionWidget extends StatelessWidget {
 
           if (isReadyToPost) {
             onPressed = () async {
-              doAsyncOperationWithProgressDialog(
+              doAsyncOperationWithDialog(
                   context: context,
                   contentMessage: AppLocalizations.of(context)
                       .tr("app.status.post.dialog.async.content"),

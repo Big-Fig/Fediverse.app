@@ -12,23 +12,29 @@ Logger _logger = Logger("async_dialog.dart");
 
 typedef BaseDialog ErrorAlertDialogHandler(dynamic error);
 
-Future<AsyncDialogResult<T>> doAsyncOperationWithProgressDialog<T>({
+Future<AsyncDialogResult<T>> doAsyncOperationWithDialog<T>({
   @required BuildContext context,
   @required Future<T> asyncCode(),
   String contentMessage,
   List<ErrorAlertDialogHandler> errorAlertDialogHandlers: const [],
   bool showDefaultErrorAlertDialogOnUnhandledError: true,
+  bool showProgressDialog = true,
   bool cancelable = false,
 }) async {
   T result;
   CancelableOperation<T> cancelableOperation =
       CancelableOperation.fromFuture(asyncCode());
-  var progressDialog = IndeterminateProgressDialog(
-      cancelable: cancelable,
-      contentMessage: contentMessage ??
-          AppLocalizations.of(context).tr("dialog.progress.content"),
-      cancelableOperation: cancelableOperation);
-  progressDialog.show(context);
+
+  var progressDialog;
+  if (showProgressDialog) {
+    progressDialog = IndeterminateProgressDialog(
+        cancelable: cancelable,
+        contentMessage: contentMessage ??
+            AppLocalizations.of(context).tr("dialog.progress.content"),
+        cancelableOperation: cancelableOperation);
+    progressDialog.show(context);
+  }
+
   var error;
   BaseDialog errorDialog;
 
@@ -50,29 +56,29 @@ Future<AsyncDialogResult<T>> doAsyncOperationWithProgressDialog<T>({
       errorDialog = SimpleAlertDialog(
         context: context,
         title: AppLocalizations.of(context).tr("dialog.error.title"),
-        content: AppLocalizations.of(context).tr("dialog.error.content",
-            args:[error]),
+        content: AppLocalizations.of(context)
+            .tr("dialog.error.content", args: [error]),
       );
     }
 
     if (needRethrow) {
       _logger.severe(() => "rethrow error during "
-          "doAsyncOperationWithProgressDialog");
+          "doAsyncOperationWithDialog");
     } else {
       _logger.warning(
           () => "handled error during "
-              "doAsyncOperationWithProgressDialog",
+              "doAsyncOperationWithDialog",
           error,
           stackTrace);
     }
   } finally {
-    progressDialog.hide(context);
+    progressDialog?.hide(context);
   }
 
   AsyncDialogResult dialogResult;
   if (progressDialog.isCanceled) {
     dialogResult = AsyncDialogResult<T>.canceled();
-    _logger.fine(() => "canceled doAsyncOperationWithProgressDialog");
+    _logger.fine(() => "canceled doAsyncOperationWithDialog");
   } else if (error != null) {
     if (errorDialog != null) {
       await errorDialog.show(context);
@@ -84,7 +90,7 @@ Future<AsyncDialogResult<T>> doAsyncOperationWithProgressDialog<T>({
     dialogResult = AsyncDialogResult<T>.withError(error);
   } else {
     _logger
-        .finest(() => "success doAsyncOperationWithProgressDialog =$result}");
+        .finest(() => "success doAsyncOperationWithDialog =$result}");
     dialogResult = AsyncDialogResult<T>.success(result);
   }
 
