@@ -9,18 +9,20 @@ Future<IAccount> createTestAccount(
         {@required String seed, String remoteId}) async =>
     DbAccountWrapper(await createTestDbAccount(seed: seed, remoteId: remoteId));
 
-PleromaAccountRelationship createTestAccountRelationship() => PleromaAccountRelationship(
-    blocking: true,
-    domainBlocking: false,
-    endorsed: true,
-    followedBy: false,
-    following: true,
-    muting: false,
-    mutingNotifications: true,
-    requested: false,
-    showingReblogs: true,
-    subscribing: false,
-  );
+PleromaAccountRelationship createTestAccountRelationship(
+        {@required String seed}) =>
+    PleromaAccountRelationship(
+      blocking: seed.hashCode % 2 == 0,
+      domainBlocking: seed.hashCode % 3 == 0,
+      endorsed: seed.hashCode % 4 == 0,
+      followedBy: seed.hashCode % 2 == 0,
+      following: seed.hashCode % 3 == 0,
+      muting: seed.hashCode % 4 == 0,
+      mutingNotifications: seed.hashCode % 2 == 0,
+      requested: seed.hashCode % 3 == 0,
+      showingReblogs: seed.hashCode % 4 == 0,
+      subscribing: seed.hashCode % 2 == 0,
+    );
 
 expectAccount(IAccount actual, IAccount expected) {
   if (actual == null && expected == null) {

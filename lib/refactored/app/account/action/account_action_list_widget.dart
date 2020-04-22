@@ -84,7 +84,7 @@ class AccountActionListWidget extends StatelessWidget {
       IAccountBloc accountBloc, IPleromaAccountRelationship relationship) {
     return PleromaAsyncOperationButtonBuilderWidget(
       showProgressDialog: false,
-      asyncButtonAction: accountBloc.requestToggleFollow,
+      asyncButtonAction: accountBloc.toggleFollow,
       builder: (BuildContext context, VoidCallback onPressed) {
         return OutlineButton(
           child: Row(
@@ -115,15 +115,15 @@ class AccountActionListWidget extends StatelessWidget {
             text: relationship.muting
                 ? appLocalizations.tr("app.account.action.unmute")
                 : appLocalizations.tr("app.account.action.mute"),
-            onPressed: accountBloc.requestToggleMute),
+            onPressed: accountBloc.toggleMute),
         AlertAction(
             text: relationship.blocking
                 ? appLocalizations.tr("app.account.action.unblock")
                 : appLocalizations.tr("app.account.action.block"),
-            onPressed: accountBloc.requestToggleBlock),
+            onPressed: accountBloc.toggleBlock),
         AlertAction(
             text: appLocalizations.tr("app.account.action.report"),
-            onPressed: accountBloc.requestReport),
+            onPressed: accountBloc.report),
       ],
       cancelable: true,
     );

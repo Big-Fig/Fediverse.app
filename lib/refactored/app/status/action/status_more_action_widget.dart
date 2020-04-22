@@ -100,7 +100,7 @@ class StatusShareActionWidget extends StatelessWidget {
               ),
               onPressed: () {
                 // todo: progress dialog
-                IAccountBloc.of(context, listen: false).requestReport();
+                IAccountBloc.of(context, listen: false).report();
                 Navigator.of(context).pop();
               },
             ),
@@ -127,7 +127,7 @@ class StatusShareActionWidget extends StatelessWidget {
               ),
               onPressed: () {
                 // todo: progress dialog
-                IAccountBloc.of(context, listen: false).requestToggleBlock();
+                IAccountBloc.of(context, listen: false).toggleBlock();
                 Navigator.of(context).pop();
               },
             ),
@@ -154,7 +154,7 @@ class StatusShareActionWidget extends StatelessWidget {
               ),
               onPressed: () {
                 // todo: progress dialog
-                IAccountBloc.of(context, listen: false).requestToggleMute();
+                IAccountBloc.of(context, listen: false).toggleMute();
                 Navigator.of(context).pop();
               },
             ),
@@ -181,7 +181,7 @@ class StatusShareActionWidget extends StatelessWidget {
               ),
               onPressed: () {
                 // todo: progress dialog
-                IAccountBloc.of(context, listen: false).requestToggleFollow();
+                IAccountBloc.of(context, listen: false).toggleFollow();
                 Navigator.of(context).pop();
               },
             ),
