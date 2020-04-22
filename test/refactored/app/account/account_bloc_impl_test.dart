@@ -29,6 +29,8 @@ void main() {
 
     pleromaAccountServiceMock = PleromaAccountServiceMock();
 
+    when(pleromaAccountServiceMock.isApiReadyToUse).thenReturn(true);
+
     account = await createTestAccount(seed: "seed1");
 
     accountBloc = AccountBloc(
@@ -39,6 +41,8 @@ void main() {
   });
 
   tearDown(() async {
+    accountBloc.dispose();
+    accountRepository.dispose();
     await database.close();
   });
 

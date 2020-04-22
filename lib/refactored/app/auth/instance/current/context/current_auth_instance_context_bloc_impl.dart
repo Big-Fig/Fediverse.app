@@ -225,7 +225,6 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         pleromaMyAccountService: pleromaMyAccountService,
         myAccountLocalPreferenceBloc: myAccountLocalPreferenceBloc,
         accountRepository: accountRepository,
-        conversationRepository: conversationRepository,
         instance: currentInstance);
 
     addDisposable(disposable: myAccountBloc);

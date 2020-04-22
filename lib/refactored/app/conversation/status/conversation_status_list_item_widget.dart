@@ -16,7 +16,7 @@ class ConversationStatusListItemWidget extends StatelessWidget {
 
     var myAccountBloc = IMyAccountBloc.of(context, listen: true);
 
-    if (myAccountBloc.checkStatusIsFromMe(statusBloc.status)) {
+    if (myAccountBloc.checkIsStatusFromMe(statusBloc.status)) {
       return buildFromMeBody(context, statusBloc);
     } else {
       return buildNotFromMeBody(context, statusBloc);
