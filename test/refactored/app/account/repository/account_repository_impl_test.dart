@@ -29,6 +29,7 @@ void main() {
   });
 
   tearDown(() async {
+    accountRepository.dispose();
     await database.close();
   });
 

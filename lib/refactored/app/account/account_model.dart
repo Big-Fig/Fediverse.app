@@ -94,7 +94,7 @@ abstract class IAccount {
   bool get pleromaSkipThreadContainment;
 
   IAccount copyWith(
-      {int id,
+      {
       String remoteId,
       String username,
       String url,

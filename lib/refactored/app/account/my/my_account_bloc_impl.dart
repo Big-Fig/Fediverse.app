@@ -7,7 +7,6 @@ import 'package:fedi/refactored/app/account/my/my_account_local_preference_bloc.
 import 'package:fedi/refactored/app/account/my/my_account_model.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
 import 'package:fedi/refactored/app/auth/instance/auth_instance_model.dart';
-import 'package:fedi/refactored/app/conversation/repository/conversation_repository.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/pleroma/account/my/pleroma_my_account_model.dart';
 import 'package:fedi/refactored/pleroma/account/my/pleroma_my_account_service.dart';
@@ -15,14 +14,12 @@ import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 
-final _selfActionError =
-    UnimplementedError("You can't perform this action by yourself");
-
 class MyAccountBloc extends IMyAccountBloc {
+  static final selfActionError = SelfActionNotPossibleException();
+
   final IMyAccountLocalPreferenceBloc myAccountLocalPreferenceBloc;
   final IPleromaMyAccountService pleromaMyAccountService;
   final IAccountRepository accountRepository;
-  final IConversationRepository conversationRepository;
 
   @override
   final AuthInstance instance;
@@ -34,7 +31,6 @@ class MyAccountBloc extends IMyAccountBloc {
     @required this.myAccountLocalPreferenceBloc,
     @required this.pleromaMyAccountService,
     @required this.accountRepository,
-    @required this.conversationRepository,
     @required this.instance,
   }) {
     addDisposable(streamSubscription: accountStream.listen((myAccount) {
@@ -56,22 +52,22 @@ class MyAccountBloc extends IMyAccountBloc {
 
   @override
   Future report() {
-    throw _selfActionError;
+    throw selfActionError;
   }
 
   @override
   Future<IPleromaAccountRelationship> toggleBlock() {
-    throw _selfActionError;
+    throw selfActionError;
   }
 
   @override
   Future<IPleromaAccountRelationship> toggleFollow() {
-    throw _selfActionError;
+    throw selfActionError;
   }
 
   @override
   Future<IPleromaAccountRelationship> toggleMute() {
-    throw _selfActionError;
+    throw selfActionError;
   }
 
   @override
@@ -95,7 +91,7 @@ class MyAccountBloc extends IMyAccountBloc {
   }
 
   @override
-  bool checkStatusIsFromMe(IStatus status) {
+  bool checkIsStatusFromMe(IStatus status) {
     return myAccount.remoteId == status.account.remoteId;
   }
 
@@ -104,14 +100,14 @@ class MyAccountBloc extends IMyAccountBloc {
       accounts?.where((account) => !checkAccountIsMe(account))?.toList();
 
   @override
-  IPleromaAccountRelationship get accountRelationship => throw _selfActionError;
+  IPleromaAccountRelationship get accountRelationship => throw selfActionError;
 
   @override
   Stream<IPleromaAccountRelationship> get accountRelationshipStream =>
-      throw _selfActionError;
+      throw selfActionError;
 
   @override
-  Future<IPleromaAccountRelationship> togglePin() => throw _selfActionError;
+  Future<IPleromaAccountRelationship> togglePin() => throw selfActionError;
 
   @override
   updateMyAccountByRemote(IPleromaMyAccount remoteMyAccount) {

@@ -80,6 +80,9 @@ void main() {
   });
 
   tearDown(() async {
+    accountRepository.dispose();
+    statusRepository.dispose();
+    notificationRepository.dispose();
     await database.close();
   });
 

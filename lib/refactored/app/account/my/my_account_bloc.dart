@@ -16,7 +16,7 @@ abstract class IMyAccountBloc extends IAccountBloc {
 
   bool checkAccountIsMe(IAccount account);
 
-  bool checkStatusIsFromMe(IStatus status);
+  bool checkIsStatusFromMe(IStatus status);
 
   updateMyAccountByRemote(IPleromaMyAccount remoteMyAccount);
 
