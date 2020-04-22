@@ -1,8 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/DeepLinks/DeepLinkHelper.dart';
 import 'package:fedi/Pages/Push/PushHelper.dart';
-import 'package:fedi/Pages/Push/relay/push_relay_service.dart';
-import 'package:fedi/Pages/Push/relay/push_relay_service_impl.dart';
 import 'package:fedi/Pleroma/Models/ClientSettings.dart';
 import 'package:fedi/Pleroma/Models/Emoji.dart';
 import 'package:fedi/Pleroma/Models/Field.dart';
@@ -26,6 +24,8 @@ import 'package:fedi/permission/permissions_service.dart';
 import 'package:fedi/permission/permissions_service_impl.dart';
 import 'package:fedi/permission/storage_permission_bloc.dart';
 import 'package:fedi/permission/storage_permission_bloc_impl.dart';
+import 'package:fedi/refactored/push/relay/push_relay_service.dart';
+import 'package:fedi/refactored/push/relay/push_relay_service_impl.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';

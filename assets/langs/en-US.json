@@ -26,14 +26,6 @@
         "hide_replies": "Hide Replies",
         "media_only": "Display Media Grid",
         "hide_nsfw": "Hide NSFW"
-      },
-      "notifications_settings": {
-        "header": "Push notifications settings",
-        "favourite": "Favourite",
-        "follow": "Follow",
-        "mention": "Mention",
-        "reblog": "Reblog",
-        "poll": "Poll"
       }
     }
   },
@@ -381,13 +373,6 @@
           "title": "Unsaved changes",
           "body": "There are unsaved changes to your bio. Are you sure you want to discard them?"
         }
-      },
-      "locked": {
-        "label": "Restrict account to approved followers only"
-      },
-      "field": {
-        "label": "Field",
-        "value": "Value"
       }
     },
     "my": {
@@ -519,7 +504,7 @@
         }
       },
       "favorite": {
-        "favorited_by": "Favorited by:",
+        "favorited_by:": "Favorited by:",
         "update": {
           "up_to_date": "Everything up to date",
           "unable_to_fetch": "Unable to fetch data",
@@ -529,7 +514,7 @@
         }
       },
       "repost": {
-        "reposted_by": "Reposted by:",
+        "reposted_by:": "Reposted by:",
         "update": {
           "up_to_date": "Everything up to date",
           "unable_to_fetch": "Unable to fetch data",

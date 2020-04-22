@@ -1,0 +1,10 @@
+import 'package:fedi/refactored/pleroma/rest/auth/pleroma_auth_rest_service.dart';
+import 'package:flutter/widgets.dart';
+
+import '../pleroma_rest_service_mock.dart';
+
+class PleromaAuthRestServiceMock extends PleromaRestServiceMock implements
+    IPleromaAuthRestService {
+
+  PleromaAuthRestServiceMock({@required Uri baseUrl}):super(baseUrl: baseUrl);
+}

@@ -1,0 +1,512 @@
+{
+  "app": {
+    "account": {
+      "action": {
+        "follow": "Follow",
+        "unfollow": "Unfollow",
+        "message": "Message",
+        "block": "Block",
+        "unblock": "Unblock",
+        "mute": "Mute",
+        "unmute": "Unmute",
+        "report": "Report",
+        "more": "More",
+        "popup": {
+          "title": "More actions for {}"
+        }
+      },
+      "info": {
+        "followers": "Followers",
+        "following": "Following",
+        "statuses": "Statuses"
+      },
+      "my": {
+        "edit": {
+          "title": "Edit account",
+          "action": {
+            "save": "Save"
+          },
+          "unsaved": {
+            "dialog": {
+              "title": "You have unsaved changed",
+              "action": "Discard"
+            }
+          },
+          "field": {
+            "avatar": {
+              "dialog": {
+                "title": "Confirm selection?",
+                "action": {
+                  "select_and_crop": "Select & crop",
+                  "cancel": "Cancel"
+                }
+              }
+            },
+            "header": {
+              "label": "Header",
+              "dialog": {
+                "title": "Confirm selection?",
+                "action": {
+                  "select": "Select",
+                  "crop": "Crop",
+                  "cancel": "Cancel"
+                }
+              }
+            },
+            "display_name": {
+              "label": "Display name"
+            },
+            "note": {
+              "label": "Note"
+            },
+            "locked": {
+              "label": "Locked"
+            },
+            "custom_field": {
+              "label": {
+                "label": "Label"
+              },
+              "value": {
+                "label": "Value"
+              }
+            }
+          },
+          "group": {
+            "custom_field": {
+              "label": "Fields"
+            }
+          }
+        }
+      },
+      "select": {
+        "title": "Select account"
+      }
+    },
+    "auth": {
+      "instance": {
+        "chooser": {
+          "action": {
+            "add_account": "Add account"
+          }
+        },
+        "current": {
+          "context": {
+            "loading": {
+              "loading": {
+                "content": "Loading {}"
+              },
+              "cant_load": {
+                "content": "Can't load current instance",
+                "action": {
+                  "refresh": "Refresh",
+                  "choose_different_account": "Choose different account"
+                }
+              }
+            }
+          }
+        },
+        "join": {
+          "new": {
+            "title": "Join new instance"
+          },
+          "action": {
+            "tos": "By using Fedi you agree to our terms. Tap to review",
+            "join_fedi": "Join fedi.app",
+            "login": "Login",
+            "sign_up": "Sign up"
+          },
+          "field": {
+            "host": {
+              "hint": "Fedi.app",
+              "helper": "Pleroma or Mastodon Instance"
+            }
+          },
+          "progress": {
+            "dialog": {
+              "content": "Checking instance"
+            }
+          },
+          "fail": {
+            "dialog": {
+              "title": "Not a valid instance (may be closed or dead)",
+              "content": "Please enter a valid instance name like fedi.app or pleroma.com"
+            }
+          },
+          "no_account": {
+            "prefix": "- or -",
+            "content": "Don't have an account or instance to log into?\n Create an account."
+          }
+        },
+        "register": {
+          "title": "Register new account",
+          "field": {
+            "username": {
+              "label": "Username",
+              "hint": "e.g. lain",
+              "error": {
+                "invalid": "Please enter a valid username"
+              }
+            },
+            "email": {
+              "label": "Email Address",
+              "hint": "you@example.com",
+              "error": {
+                "invalid": "Please enter a valid email"
+              }
+            },
+            "password": {
+              "label": "Password",
+              "hint": "Password",
+              "error": {
+                "too_small": "Password must be at least 4 characters"
+              }
+            },
+            "confirm_password": {
+              "label": "Password confirmation",
+              "hint": "Password",
+              "error": {
+                "not_match": "Password and password confirmation must match"
+              }
+            }
+          },
+          "progress": {
+            "dialog": {
+              "content": "Creating account"
+            }
+          },
+          "success": {
+            "dialog": {
+              "title": "Success",
+              "content": "You can now login with given credentials"
+            }
+          },
+          "fail": {
+            "dialog": {
+              "title": "Server Error",
+              "content": "Response: {}"
+            }
+          },
+          "action": {
+            "create_account": "Create account"
+          }
+        }
+      }
+    },
+    "conversation": {
+      "accounts": {
+        "title": "Conversation accounts"
+      },
+      "action": {
+        "more": "More"
+      },
+      "preview": {
+        "you": "You: {}"
+      },
+      "start": {
+        "title": "Start conversation"
+      }
+    },
+    "file": {
+      "image": {
+        "crop": {
+          "title": "Crop as"
+        }
+      }
+    },
+    "home": {
+      "tab": {
+        "timelines": {
+          "tab": {
+            "public": "All",
+            "home": "Home",
+            "local": "Local"
+          }
+        }
+      }
+    },
+    "notification": {
+      "push": {
+        "settings": {
+          "title": "Push notifications settings",
+          "field": {
+            "favourites": {
+              "label": "Favourites"
+            },
+            "follows": {
+              "label": "Follows"
+            },
+            "mentions": {
+              "label": "Mentions"
+            },
+            "reblogs": {
+              "label": "Reblogs"
+            },
+            "polls": {
+              "label": "Polls"
+            }
+          }
+        }
+      },
+      "header": {
+        "favourite": "Favourited your status",
+        "follow": "Followed you",
+        "mention": "Mentioned you",
+        "reblog": "Reblogged your status",
+        "poll": "Poll notification"
+      }
+    },
+    "timeline": {
+      "display": {
+        "settings": {
+          "title": "Timeline settings",
+          "field": {
+            "only_with_media": {
+              "label": "Only with media"
+            },
+            "hide_replies": {
+              "label": "Hide replies"
+            },
+            "only_nsfw": {
+              "label": "Only NSFW"
+            }
+          }
+        }
+      }
+    },
+    "list": {
+      "empty": "Items not found",
+      "loading": {
+        "state": {
+          "can_loading": "Can loading",
+          "no_more_data": "No more data",
+          "failed": "Failed to load"
+        }
+      },
+      "refresh": {
+        "unable_to_fetch": "Unable to fetch",
+        "up_to_date": "Everything up to date"
+      }
+    },
+    "media": {
+      "attachment": {
+        "upload": {
+          "remove": {
+            "dialog": {
+              "content": "Are you sure you want to remove the attachment?",
+              "action": {
+                "remove": "Remove",
+                "cancel": "Cancel"
+              }
+            }
+          }
+        }
+      }
+    },
+    "search": {
+      "title": "Search",
+      "tab": {
+        "accounts": "Accounts",
+        "statuses": "Statuses"
+      },
+      "field": {
+        "input": {
+          "hint": "Search"
+        }
+      }
+    },
+    "splash": {
+      "state": {
+        "error": "Error during initialization. Try to re-install app"
+      }
+    },
+    "status": {
+      "action": {
+        "comment": "Comment",
+        "favourite": "Favourite",
+        "reblog": "Reblog",
+        "report": "Report",
+        "mute": "Mute",
+        "block": "Block",
+        "follow": "Follow",
+        "open_in_browser": "Open in browser",
+        "copy_link": "Copy link",
+        "more": "More",
+        "popup": {
+          "title": "Status Actions",
+          "more_actions_for": "More actions for"
+        }
+      },
+      "nsfw": {
+        "content": "Status contains NSFW content",
+        "action": {
+          "view": "Tap to view"
+        }
+      },
+      "spoiler": {
+        "action": {
+          "view": "Tap to view"
+        }
+      },
+      "copy_link": {
+        "toast": "Copied"
+      },
+      "favourited_by": {
+        "title": "Favourited by"
+      },
+      "reblogged_by": {
+        "title": "Reblogged by"
+      },
+      "post": {
+        "action": {
+          "post": "Post"
+        },
+        "visibility": {
+          "state": {
+            "public": "Public",
+            "unlisted": "Unlisted",
+            "direct": "Direct",
+            "list": "List",
+            "private": "Private"
+          },
+          "action": {
+            "cancel": "Cancel"
+          }
+        },
+        "nsfw": {
+          "title": "NSFW"
+        },
+        "mention": {
+          "content": {
+            "one": "1 mention",
+            "many": "{} mentions"
+          }
+        },
+        "field": {
+          "message": {
+            "label": "Message"
+          }
+        },
+        "new": {
+          "title": "Compose new status"
+        }
+      },
+      "reblog": {
+        "header": "reblogged by"
+      },
+      "reply": {
+        "header": "replied to"
+      },
+      "thread": {
+        "title": "Status thread"
+      }
+    },
+    "tos": {
+      "title": "Terms of service"
+    }
+  },
+  "async": {
+    "dialog": {
+      "title": "Performing...",
+      "action": {
+        "cancel": "Cancel"
+      }
+    },
+    "init": {
+      "state": {
+        "not_started": "Async init not started",
+        "failed": "Failed to init {}"
+      }
+    }
+  },
+  "camera": {
+    "state": {
+      "error": "Error: {}",
+      "initializing": "Initializing",
+      "not_initialized": "Non initialized"
+    }
+  },
+  "file": {
+    "picker": {
+      "single": {
+        "title": "Choose media",
+        "video": {
+          "confirm": {
+            "dialog": {
+              "title": "Video",
+              "action": {
+                "select": "Select",
+                "cancel": "Cancel"
+              }
+            }
+          }
+        }
+      }
+    },
+    "gallery": {
+      "empty": "You don't have media",
+      "state": {
+        "loading_not_started": "Loading not started"
+      },
+      "folder": {
+        "empty": "This folder doesn't have media"
+      }
+    }
+  },
+  "pagination": {
+    "list": {
+      "empty": "Nothing found"
+    }
+  },
+  "permission": {
+    "grant": {
+      "action": {
+        "grant": "Grant permission"
+      }
+    }
+  },
+  "dialog": {
+    "progress": {
+      "content": "Loading..."
+    },
+    "action": {
+      "ok": "Ok",
+      "cancel": "Cancel"
+    }
+  },
+  "form": {
+    "field": {
+      "text": {
+        "email": {
+          "error": {
+            "invalid": {
+              "desc": "Invalid email"
+            }
+          }
+        },
+        "password": {
+          "error": {
+            "not_match": {
+              "desc": "Password and confirm password must match"
+            }
+          }
+        },
+        "error": {
+          "empty": {
+            "desc": "Must be not empty"
+          },
+          "length": {
+            "min_only": {
+              "desc": "Must be at least {} characters"
+            },
+            "max_only": {
+              "desc": "Must be less than {} characters"
+            },
+            "min_and_max": {
+              "desc": "Must be between {} and {} characters"
+            }
+          }
+        }
+      }
+    }
+  }
+}
