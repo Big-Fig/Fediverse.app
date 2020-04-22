@@ -1,0 +1,1 @@
+enum SearchTab { accounts, statuses }
