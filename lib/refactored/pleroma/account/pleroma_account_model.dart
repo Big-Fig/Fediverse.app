@@ -284,6 +284,31 @@ class PleromaAccountRelationship implements IPleromaAccountRelationship {
     this.subscribing,
   });
 
+  PleromaAccountRelationship copyWith(
+      {int id,
+      bool blocking,
+      bool domainBlocking,
+      bool endorsed,
+      bool followedBy,
+      bool following,
+      bool muting,
+      bool mutingNotifications,
+      bool requested,
+      bool showingReblogs,
+      bool subscribing}) => PleromaAccountRelationship(
+      id: id ?? this.id,
+      blocking: blocking ?? this.blocking,
+      domainBlocking: domainBlocking ?? this.domainBlocking,
+      endorsed: endorsed ?? this.endorsed,
+      followedBy: followedBy ?? this.followedBy,
+      following: following ?? this.following,
+      muting: muting ?? this.muting,
+      mutingNotifications: mutingNotifications ?? this.mutingNotifications,
+      requested: requested ?? this.requested,
+      showingReblogs: showingReblogs ?? this.showingReblogs,
+      subscribing: subscribing ?? this.subscribing,
+    );
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -410,6 +435,24 @@ class PleromaAccountReportRequest implements IPleromaAccountReportRequest {
   @JsonKey(name: "status_ids")
   @override
   final List<String> statusIds;
+
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is PleromaAccountReportRequest &&
+              runtimeType == other.runtimeType &&
+              accountId == other.accountId &&
+              comment == other.comment &&
+              forward == other.forward &&
+              statusIds == other.statusIds;
+
+  @override
+  int get hashCode =>
+      accountId.hashCode ^
+      comment.hashCode ^
+      forward.hashCode ^
+      statusIds.hashCode;
 
   PleromaAccountReportRequest(
       {@required this.accountId, this.comment, this.forward, this.statusIds});

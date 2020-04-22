@@ -6,9 +6,11 @@ import 'package:fedi/refactored/app/account/repository/account_repository.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/refactored/app/database/app_database.dart';
 import 'package:fedi/refactored/app/emoji/emoji_text_model.dart';
+import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/refactored/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/refactored/pleroma/field/pleroma_field_model.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 import 'package:moor_ffi/moor_ffi.dart';
 
 import '../../pleroma/account/pleroma_account_service_mock.dart';
@@ -320,7 +322,7 @@ void main() {
   test('accountRelationship', () async {
     expect(accountBloc.accountRelationship, account.pleromaRelationship);
 
-    var newValue = createTestAccountRelationship();
+    var newValue = createTestAccountRelationship(seed: "seed0");
 
     var listenedValue;
 
@@ -336,5 +338,219 @@ void main() {
     expect(accountBloc.accountRelationship, newValue);
     expect(listenedValue, newValue);
     subscription.cancel();
+  });
+
+  test('refreshFromNetwork', () async {
+    expectAccount(accountBloc.account, account);
+
+    var newValue =
+        await createTestAccount(seed: "seed2", remoteId: account.remoteId);
+
+    var listenedValue;
+
+    var subscription = accountBloc.accountStream.listen((newValue) {
+      listenedValue = newValue;
+    });
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+    expectAccount(listenedValue, account);
+
+    when(pleromaAccountServiceMock.getAccount(
+            accountRemoteId: account.remoteId))
+        .thenAnswer((_) async => mapLocalAccountToRemoteAccount(newValue));
+
+    var newRelationship = createTestAccountRelationship(seed: "seed11");
+    when(pleromaAccountServiceMock
+            .getRelationshipWithAccounts(remoteAccountIds: [account.remoteId]))
+        .thenAnswer((_) async => [newRelationship]);
+
+    await accountBloc.refreshFromNetwork();
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+
+    expectAccount(accountBloc.account,
+        newValue.copyWith(pleromaRelationship: newRelationship));
+    expectAccount(
+        listenedValue, newValue.copyWith(pleromaRelationship: newRelationship));
+    subscription.cancel();
+  });
+
+  test('toggleBlock', () async {
+    expect(accountBloc.accountRelationship, account.pleromaRelationship);
+
+    IPleromaAccountRelationship listenedValue;
+
+    var subscription = accountBloc.accountRelationshipStream.listen((newValue) {
+      listenedValue = newValue;
+    });
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+    expect(accountBloc.accountRelationship, account.pleromaRelationship);
+
+    when(pleromaAccountServiceMock.blockAccount(
+            accountRemoteId: account.remoteId))
+        .thenAnswer(
+            (_) async => account.pleromaRelationship.copyWith(blocking: true));
+
+    when(pleromaAccountServiceMock.unBlockAccount(
+            accountRemoteId: account.remoteId))
+        .thenAnswer(
+            (_) async => account.pleromaRelationship.copyWith(blocking: false));
+
+    var initialValue = account.pleromaRelationship.blocking;
+
+    await accountBloc.toggleBlock();
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+
+    expect(accountBloc.accountRelationship.blocking, !initialValue);
+    expect(listenedValue.blocking, !initialValue);
+
+    await accountBloc.toggleBlock();
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+
+    expect(accountBloc.accountRelationship.blocking, initialValue);
+    expect(listenedValue.blocking, initialValue);
+
+    subscription.cancel();
+  });
+  test('toggleFollow', () async {
+    expect(accountBloc.accountRelationship, account.pleromaRelationship);
+
+    IPleromaAccountRelationship listenedValue;
+
+    var subscription = accountBloc.accountRelationshipStream.listen((newValue) {
+      listenedValue = newValue;
+    });
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+    expect(accountBloc.accountRelationship, account.pleromaRelationship);
+
+    when(pleromaAccountServiceMock.followAccount(
+            accountRemoteId: account.remoteId))
+        .thenAnswer(
+            (_) async => account.pleromaRelationship.copyWith(following: true));
+
+    when(pleromaAccountServiceMock.unFollowAccount(
+            accountRemoteId: account.remoteId))
+        .thenAnswer((_) async =>
+            account.pleromaRelationship.copyWith(following: false));
+
+    var initialValue = account.pleromaRelationship.following;
+
+    await accountBloc.toggleFollow();
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+
+    expect(accountBloc.accountRelationship.following, !initialValue);
+    expect(listenedValue.following, !initialValue);
+
+    await accountBloc.toggleFollow();
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+
+    expect(accountBloc.accountRelationship.following, initialValue);
+    expect(listenedValue.following, initialValue);
+
+    subscription.cancel();
+  });
+  test('toggleMute', () async {
+    expect(accountBloc.accountRelationship, account.pleromaRelationship);
+
+    IPleromaAccountRelationship listenedValue;
+
+    var subscription = accountBloc.accountRelationshipStream.listen((newValue) {
+      listenedValue = newValue;
+    });
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+    expect(accountBloc.accountRelationship, account.pleromaRelationship);
+
+    when(pleromaAccountServiceMock.muteAccount(
+            accountRemoteId: account.remoteId))
+        .thenAnswer(
+            (_) async => account.pleromaRelationship.copyWith(muting: true));
+
+    when(pleromaAccountServiceMock.unMuteAccount(
+            accountRemoteId: account.remoteId))
+        .thenAnswer(
+            (_) async => account.pleromaRelationship.copyWith(muting: false));
+
+    var initialValue = account.pleromaRelationship.muting;
+
+    await accountBloc.toggleMute();
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+
+    expect(accountBloc.accountRelationship.muting, !initialValue);
+    expect(listenedValue.muting, !initialValue);
+
+    await accountBloc.toggleMute();
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+
+    expect(accountBloc.accountRelationship.muting, initialValue);
+    expect(listenedValue.muting, initialValue);
+
+    subscription.cancel();
+  });
+  test('togglePin', () async {
+    expect(accountBloc.accountRelationship, account.pleromaRelationship);
+
+    IPleromaAccountRelationship listenedValue;
+
+    var subscription = accountBloc.accountRelationshipStream.listen((newValue) {
+      listenedValue = newValue;
+    });
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+    expect(accountBloc.accountRelationship, account.pleromaRelationship);
+
+    when(pleromaAccountServiceMock.pinAccount(
+            accountRemoteId: account.remoteId))
+        .thenAnswer(
+            (_) async => account.pleromaRelationship.copyWith(muting: true));
+
+    when(pleromaAccountServiceMock.unPinAccount(
+            accountRemoteId: account.remoteId))
+        .thenAnswer(
+            (_) async => account.pleromaRelationship.copyWith(muting: false));
+
+    var initialValue = account.pleromaRelationship.muting;
+
+    await accountBloc.togglePin();
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+
+    expect(accountBloc.accountRelationship.muting, !initialValue);
+    expect(listenedValue.muting, !initialValue);
+
+    await accountBloc.togglePin();
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+
+    expect(accountBloc.accountRelationship.muting, initialValue);
+    expect(listenedValue.muting, initialValue);
+
+    subscription.cancel();
+  });
+
+  test('report', () async {
+    var handled = false;
+
+    when(pleromaAccountServiceMock.reportAccount(
+            reportRequest:
+                PleromaAccountReportRequest(accountId: account.remoteId)))
+        .thenAnswer((_) async {
+      handled = true;
+      return true;
+    });
+
+    await accountBloc.report();
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+
+    expect(handled, true);
   });
 }

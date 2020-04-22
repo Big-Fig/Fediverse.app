@@ -3,6 +3,8 @@ import 'package:fedi/refactored/app/database/app_database.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../account_model_helper.dart';
+
 Future<DbAccount> createTestDbAccount(
         {@required String seed, String remoteId}) async =>
     DbAccount(
@@ -27,7 +29,7 @@ Future<DbAccount> createTestDbAccount(
       fields: null,
       emojis: null,
       pleromaTags: null,
-      pleromaRelationship: null,
+      pleromaRelationship: createTestAccountRelationship(seed: seed),
       pleromaIsAdmin: true,
       pleromaIsModerator: false,
       pleromaConfirmationPending: true,

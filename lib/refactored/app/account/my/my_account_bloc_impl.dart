@@ -7,23 +7,18 @@ import 'package:fedi/refactored/app/account/my/my_account_local_preference_bloc.
 import 'package:fedi/refactored/app/account/my/my_account_model.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
 import 'package:fedi/refactored/app/auth/instance/auth_instance_model.dart';
-import 'package:fedi/refactored/app/conversation/conversation_model.dart';
 import 'package:fedi/refactored/app/conversation/repository/conversation_repository.dart';
-import 'package:fedi/refactored/app/conversation/repository/conversation_repository_model.dart';
-import 'package:fedi/refactored/app/emoji/emoji_text_model.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
-import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:fedi/refactored/pleroma/account/my/pleroma_my_account_model.dart';
 import 'package:fedi/refactored/pleroma/account/my/pleroma_my_account_service.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/refactored/pleroma/field/pleroma_field_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 
 final _selfActionError =
     UnimplementedError("You can't perform this action by yourself");
 
-class MyAccountBloc extends DisposableOwner implements IMyAccountBloc {
+class MyAccountBloc extends IMyAccountBloc {
   final IMyAccountLocalPreferenceBloc myAccountLocalPreferenceBloc;
   final IPleromaMyAccountService pleromaMyAccountService;
   final IAccountRepository accountRepository;
@@ -60,93 +55,27 @@ class MyAccountBloc extends DisposableOwner implements IMyAccountBloc {
   IAccount get account => myAccount;
 
   @override
-  String get acct => account.acct;
-
-  @override
-  Stream<String> get acctStream => accountStream.map((account) => account.acct);
-
-  @override
-  String get avatar => account.avatar;
-
-  @override
-  Stream<String> get avatarStream =>
-      accountStream.map((account) => account.avatar);
-
-  @override
-  List<IPleromaField> get fields => account.fields;
-
-  @override
-  Stream<List<IPleromaField>> get fieldsStream =>
-      accountStream.map((account) => account.fields);
-
-  @override
-  int get followersCount => account.followersCount;
-
-  @override
-  Stream<int> get followersCountStream =>
-      accountStream.map((account) => account.followersCount);
-
-  @override
-  int get followingCount => account.followingCount;
-
-  @override
-  Stream<int> get followingCountStream =>
-      accountStream.map((account) => account.followingCount);
-
-  @override
-  String get header => account.header;
-
-  @override
-  Stream<String> get headerStream =>
-      accountStream.map((account) => account.header);
-
-  @override
-  String get note => account.note;
-
-  @override
-  Stream<String> get noteStream => accountStream.map((account) => account.note);
-
-  @override
-  int get statusesCount => account.statusesCount;
-
-  @override
-  Stream<int> get statusesCountStream =>
-      accountStream.map((account) => account.statusesCount);
-
-  @override
-  EmojiText get displayNameEmojiText =>
-      EmojiText(text: account.displayName, emojis: account.emojis);
-
-  @override
-  Stream<EmojiText> get displayNameEmojiTextStream =>
-      accountStream.map((account) =>
-          EmojiText(text: account.displayName, emojis: account.emojis));
-
-  @override
-  bool get isMyAccount => true;
-
-  @override
-  Future requestReport() {
+  Future report() {
     throw _selfActionError;
   }
 
   @override
-  Future<IPleromaAccountRelationship> requestToggleBlock() {
+  Future<IPleromaAccountRelationship> toggleBlock() {
     throw _selfActionError;
   }
 
   @override
-  Future<IPleromaAccountRelationship> requestToggleFollow() {
+  Future<IPleromaAccountRelationship> toggleFollow() {
     throw _selfActionError;
   }
 
   @override
-  Future<IPleromaAccountRelationship> requestToggleMute() {
+  Future<IPleromaAccountRelationship> toggleMute() {
     throw _selfActionError;
   }
 
   @override
-  Future<bool> requestRefreshFromNetwork() async {
+  Future<bool> refreshFromNetwork() async {
     if (pleromaMyAccountService.isApiReadyToUse) {
       var remoteMyAccount = await pleromaMyAccountService.verifyCredentials();
 
@@ -182,15 +111,11 @@ class MyAccountBloc extends DisposableOwner implements IMyAccountBloc {
       throw _selfActionError;
 
   @override
+  Future<IPleromaAccountRelationship> togglePin() => throw _selfActionError;
+
+  @override
   updateMyAccountByRemote(IPleromaMyAccount remoteMyAccount) {
     myAccountLocalPreferenceBloc
         .setValue(MyAccountRemoteWrapper(remoteAccount: remoteMyAccount));
   }
-
-  @override
-  String get displayName => account.displayName;
-
-  @override
-  Stream<String> get displayNameStream =>
-      accountStream.map((account) => account.displayName);
 }
