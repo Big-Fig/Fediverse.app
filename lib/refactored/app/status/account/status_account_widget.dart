@@ -18,8 +18,8 @@ class StatusAccountWidget extends StatelessWidget {
     var statusBloc = IStatusBloc.of(context, listen: true);
 
     return StreamBuilder<IAccount>(
-        stream: statusBloc.accountReblogOrOriginalStream,
-        initialData: statusBloc.accountReblogOrOriginalAccount,
+        stream: statusBloc.reblogOrOriginalAccountStream,
+        initialData: statusBloc.reblogOrOriginalAccount,
         builder: (context, snapshot) {
           var reblogOrOriginalAccount = snapshot.data;
           return buildBody(context, reblogOrOriginalAccount, statusBloc);
@@ -34,8 +34,8 @@ class StatusAccountWidget extends StatelessWidget {
         update: (context, account, oldValue) => AccountBloc.createFromContext(
             context,
             account: account,
-            needWatchLocalRepositoryForUpdates: false,
-            needRefreshFromNetworkOnInit: false),
+            isNeedWatchLocalRepositoryForUpdates: false,
+            isNeedRefreshFromNetworkOnInit: false),
         child: GestureDetector(
           onTap: () {
             goToAccountDetailsPage(context, reblogOrOriginalAccount);

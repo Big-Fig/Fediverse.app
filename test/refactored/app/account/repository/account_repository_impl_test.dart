@@ -9,6 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/moor.dart';
 import 'package:moor_ffi/moor_ffi.dart';
 
+import '../../status/database/status_database_model_helper.dart';
 import '../../status/repository/status_repository_model_helper.dart';
 import '../account_model_helper.dart';
 import '../database/account_database_model_helper.dart';
@@ -182,7 +183,7 @@ void main() {
     await accountRepository.insert(dbAccount2);
 
     var dbStatus =
-        await createTestStatus(seed: "seedStatus", dbAccount: dbAccount1);
+        await createTestDbStatus(seed: "seedStatus", dbAccount: dbAccount1);
     var status = await createTestStatusPopulated(dbStatus, accountRepository);
     var query = accountRepository.createQuery(
         olderThanAccount: null,
@@ -229,7 +230,7 @@ void main() {
     await accountRepository.insert(dbAccount2);
 
     var dbStatus =
-        await createTestStatus(seed: "seedStatus", dbAccount: dbAccount1);
+        await createTestDbStatus(seed: "seedStatus", dbAccount: dbAccount1);
     var status = await createTestStatusPopulated(dbStatus, accountRepository);
     var query = accountRepository.createQuery(
         olderThanAccount: null,

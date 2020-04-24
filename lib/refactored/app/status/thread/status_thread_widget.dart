@@ -97,7 +97,7 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
             child: DisposableProxyProvider<IStatus, IStatusBloc>(
                 update: (context, status, oldValue) =>
                     StatusBloc.createFromContext(context, status,
-                        needWatchLocalRepositoryForUpdates: true),
+                        isNeedWatchLocalRepositoryForUpdates: true),
                 child: StatusListItemTimelineWidget(
                     statusCallback: (context, status) {
                   if (status.remoteId !=

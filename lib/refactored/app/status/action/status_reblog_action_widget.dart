@@ -32,8 +32,8 @@ class StatusReblogActionWidget extends StatelessWidget {
                   asyncButtonAction: statusBloc.requestToggleReblog);
             }),
         StreamBuilder<int>(
-            stream: statusBloc.reblogsReblogPlusOriginalCountStream,
-            initialData: statusBloc.reblogsReblogPlusOriginalCount,
+            stream: statusBloc.reblogPlusOriginalReblogsCountStream,
+            initialData: statusBloc.reblogPlusOriginalReblogsCount,
             builder: (context, snapshot) {
               var reblogsCount = snapshot.data;
 

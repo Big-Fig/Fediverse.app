@@ -14,6 +14,7 @@ import 'package:moor_ffi/moor_ffi.dart';
 
 import '../../account/database/account_database_model_helper.dart';
 import '../../account/repository/account_repository_model_helper.dart';
+import '../../status/database/status_database_model_helper.dart';
 import '../../status/repository/status_repository_model_helper.dart';
 import 'notification_repository_model_helper.dart';
 
@@ -49,7 +50,7 @@ void main() {
     // assign local id for further equal with data retrieved from db
     dbAccount = dbAccount.copyWith(id: accountId);
 
-    dbStatus = await createTestStatus(seed: "seed3", dbAccount: dbAccount);
+    dbStatus = await createTestDbStatus(seed: "seed3", dbAccount: dbAccount);
 
     dbStatusPopulated =
         await createTestStatusPopulated(dbStatus, accountRepository);
@@ -57,16 +58,16 @@ void main() {
     var reblogDbAccount = await createTestDbAccount(seed: "seed11");
     accountRepository.insert(reblogDbAccount);
     var reblogDbStatus =
-        await createTestStatus(seed: "seed33", dbAccount: reblogDbAccount);
+        await createTestDbStatus(seed: "seed33", dbAccount: reblogDbAccount);
     await statusRepository.insert(reblogDbStatus);
 
     dbStatus = dbStatus.copyWith(reblogStatusRemoteId: reblogDbStatus.remoteId);
 
     dbStatusPopulated = DbStatusPopulated(
-        status: dbStatus,
-        account: dbAccount,
-        rebloggedStatus: reblogDbStatus,
-        rebloggedStatusAccount: reblogDbAccount);
+        dbStatus: dbStatus,
+        dbAccount: dbAccount,
+        reblogDbStatus: reblogDbStatus,
+        reblogDbStatusAccount: reblogDbAccount);
 
     await statusRepository.insert(dbStatus);
 
@@ -143,10 +144,10 @@ void main() {
             notification: dbNotification.copyWith(id: id),
             account: dbAccount.copyWith(acct: newAcct),
             statusPopulated: DbStatusPopulated(
-              status: dbStatus.copyWith(content: newContent),
-              account: dbAccount.copyWith(acct: newAcct),
-              rebloggedStatusAccount: null,
-              rebloggedStatus: null,
+              dbStatus: dbStatus.copyWith(content: newContent),
+              dbAccount: dbAccount.copyWith(acct: newAcct),
+              reblogDbStatusAccount: null,
+              reblogDbStatus: null,
             ))));
     await notificationRepository.updateLocalNotificationByRemoteNotification(
       oldLocalNotification: oldLocalNotification,

@@ -43,7 +43,7 @@ class AccountBloc extends IAccountBloc {
     @required this.pleromaAccountService,
     @required IAccount account,
     // for better performance we don't update account too often
-    bool needRefreshFromNetworkOnInit = false,
+    bool isNeedRefreshFromNetworkOnInit = false,
     // sometimes we don't need relationship
     this.isNeedPreFetchRelationship = true,
     // todo: remove hack. Don't init when bloc quickly disposed. Help
@@ -56,10 +56,10 @@ class AccountBloc extends IAccountBloc {
     addDisposable(subject: _accountSubject);
     if (delayInit) {
       Future.delayed(Duration(seconds: 1), () {
-        _init(account, needRefreshFromNetworkOnInit);
+        _init(account, isNeedRefreshFromNetworkOnInit);
       });
     } else {
-      _init(account, needRefreshFromNetworkOnInit);
+      _init(account, isNeedRefreshFromNetworkOnInit);
     }
   }
 
@@ -238,13 +238,13 @@ class AccountBloc extends IAccountBloc {
 
   static AccountBloc createFromContext(BuildContext context,
           {@required IAccount account,
-          @required bool needRefreshFromNetworkOnInit,
-          @required bool needWatchLocalRepositoryForUpdates}) =>
+          @required bool isNeedRefreshFromNetworkOnInit,
+          @required bool isNeedWatchLocalRepositoryForUpdates}) =>
       AccountBloc(
           account: account,
-          needRefreshFromNetworkOnInit: needRefreshFromNetworkOnInit,
+          isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
           isNeedWatchLocalRepositoryForUpdates:
-              needWatchLocalRepositoryForUpdates,
+              isNeedWatchLocalRepositoryForUpdates,
           accountRepository: IAccountRepository.of(context, listen: false),
           pleromaAccountService:
               IPleromaAccountService.of(context, listen: false));

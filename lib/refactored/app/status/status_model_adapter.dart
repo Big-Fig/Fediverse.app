@@ -17,10 +17,10 @@ DbStatusPopulatedWrapper mapRemoteStatusToLocalStatus(
         mapRemoteAccountToDbAccount(remoteStatus.reblog.account);
   }
   return DbStatusPopulatedWrapper(DbStatusPopulated(
-      status: mapRemoteStatusToDbStatus(remoteStatus),
-      account: mapRemoteAccountToDbAccount(remoteStatus.account),
-      rebloggedStatus: rebloggedStatus,
-      rebloggedStatusAccount: rebloggedStatusAccount));
+      dbStatus: mapRemoteStatusToDbStatus(remoteStatus),
+      dbAccount: mapRemoteAccountToDbAccount(remoteStatus.account),
+      reblogDbStatus: rebloggedStatus,
+      reblogDbStatusAccount: rebloggedStatusAccount));
 }
 
 DbStatus mapRemoteStatusToDbStatus(IPleromaStatus remoteStatus) {
@@ -81,7 +81,6 @@ DbStatus mapRemoteStatusToDbStatus(IPleromaStatus remoteStatus) {
       accountRemoteId: remoteStatus.account.id);
 }
 
-// TODO: temporary solution for refactoring period
 PleromaStatus mapLocalStatusToRemoteStatus(IStatus localStatus) {
   PleromaStatus reblog;
   if (localStatus.reblog != null) {
@@ -92,7 +91,7 @@ PleromaStatus mapLocalStatusToRemoteStatus(IStatus localStatus) {
     createdAt: localStatus.createdAt,
     inReplyToId: localStatus.inReplyToRemoteId,
     inReplyToAccountId: localStatus.inReplyToAccountRemoteId,
-    sensitive: localStatus.sensitive,
+    sensitive: localStatus.nsfwSensitive,
     spoilerText: localStatus.spoilerText,
     visibility: pleromaVisibilityValues.reverse[localStatus.visibility],
     uri: localStatus.uri,

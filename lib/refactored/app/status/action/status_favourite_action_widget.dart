@@ -35,8 +35,8 @@ class StatusFavouriteActionWidget extends StatelessWidget {
             }),
         if (displayCounter)
           StreamBuilder<int>(
-              stream: statusBloc.favouritesReblogPlusOriginalCountStream,
-              initialData: statusBloc.favouritesReblogPlusOriginalCount,
+              stream: statusBloc.reblogPlusOriginalFavouritesCountStream,
+              initialData: statusBloc.reblogPlusOriginalFavouritesCount,
               builder: (context, snapshot) {
                 var favouritesCount = snapshot.data;
                 if (favouritesCount == null) {

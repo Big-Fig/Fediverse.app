@@ -17,7 +17,7 @@ import 'package:mockito/mockito.dart';
 import 'package:moor_ffi/moor_ffi.dart';
 
 import '../../../pleroma/account/my/pleroma_my_account_service_mock.dart';
-import '../../status/repository/status_repository_model_helper.dart';
+import '../../status/database/status_database_model_helper.dart';
 import '../account_model_helper.dart';
 import '../database/account_database_model_helper.dart';
 import 'my_acount_model_helper.dart';
@@ -430,24 +430,24 @@ void main() {
 
   test('checkIsStatusFromMe', () async {
     var dbAccount = await createTestDbAccount(seed: "seed3");
-    var dbStatus = await createTestStatus(seed: "seed4", dbAccount: dbAccount);
+    var dbStatus = await createTestDbStatus(seed: "seed4", dbAccount: dbAccount);
 
     expect(
         myAccountBloc.checkIsStatusFromMe(DbStatusPopulatedWrapper(
             DbStatusPopulated(
-                status: dbStatus,
-                account: dbAccount.copyWith(remoteId: myAccount.remoteId),
-                rebloggedStatusAccount: null,
-                rebloggedStatus: null))),
+                dbStatus: dbStatus,
+                dbAccount: dbAccount.copyWith(remoteId: myAccount.remoteId),
+                reblogDbStatusAccount: null,
+                reblogDbStatus: null))),
         true);
 
     expect(
         myAccountBloc.checkIsStatusFromMe(DbStatusPopulatedWrapper(
             DbStatusPopulated(
-                status: dbStatus,
-                account: dbAccount.copyWith(remoteId: "invalidRemoteId"),
-                rebloggedStatus: null,
-                rebloggedStatusAccount: null))),
+                dbStatus: dbStatus,
+                dbAccount: dbAccount.copyWith(remoteId: "invalidRemoteId"),
+                reblogDbStatus: null,
+                reblogDbStatusAccount: null))),
         false);
   });
   test('excludeMyAccountFromList', () async {
