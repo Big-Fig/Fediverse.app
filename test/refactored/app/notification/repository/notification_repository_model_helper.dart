@@ -8,6 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../../account/database/account_database_model_helper.dart';
 import '../../account/repository/account_repository_model_helper.dart';
+import '../../status/database/status_database_model_helper.dart';
 import '../../status/repository/status_repository_model_helper.dart';
 
 

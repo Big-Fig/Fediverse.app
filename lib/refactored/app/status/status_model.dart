@@ -27,7 +27,7 @@ abstract class IStatus {
 
   String get inReplyToAccountRemoteId;
 
-  bool get sensitive;
+  bool get nsfwSensitive;
 
   String get spoilerText;
 
@@ -112,6 +112,48 @@ abstract class IStatus {
   /// Contains no information about the reacting users,
   /// for that use the /statuses/:id/reactions endpoint.
   List<PleromaStatusEmojiReaction> get pleromaEmojiReactions;
+
+  IStatus copyWith(
+      {IAccount account,
+      IStatus reblog,
+      int id,
+      String remoteId,
+      DateTime createdAt,
+      String inReplyToRemoteId,
+      String inReplyToAccountRemoteId,
+      bool nsfwSensitive,
+      String spoilerText,
+      PleromaVisibility visibility,
+      String uri,
+      String url,
+      int repliesCount,
+      int reblogsCount,
+      int favouritesCount,
+      bool favourited,
+      bool reblogged,
+      bool muted,
+      bool bookmarked,
+      bool pinned,
+      String content,
+      String reblogStatusRemoteId,
+      PleromaApplication application,
+      String accountRemoteId,
+      List<PleromaMediaAttachment> mediaAttachments,
+      List<PleromaMention> mentions,
+      List<PleromaTag> tags,
+      List<PleromaEmoji> emojis,
+      PleromaPoll poll,
+      PleromaCard card,
+      String language,
+      PleromaContent pleromaContent,
+      int pleromaConversationId,
+      int pleromaDirectConversationId,
+      String pleromaInReplyToAccountAcct,
+      bool pleromaLocal,
+      PleromaContent pleromaSpoilerText,
+      DateTime pleromaExpiresAt,
+      bool pleromaThreadMuted,
+      List<PleromaStatusEmojiReaction> pleromaEmojiReactions});
 }
 
 class DbStatusPopulatedWrapper implements IStatus {
@@ -120,123 +162,124 @@ class DbStatusPopulatedWrapper implements IStatus {
   DbStatusPopulatedWrapper(this.dbStatusPopulated);
 
   @override
-  DbAccountWrapper get account => DbAccountWrapper(dbStatusPopulated.account);
+  DbAccountWrapper get account => DbAccountWrapper(dbStatusPopulated.dbAccount);
 
   @override
-  PleromaApplication get application => dbStatusPopulated.status.application;
+  PleromaApplication get application => dbStatusPopulated.dbStatus.application;
 
   @override
-  bool get bookmarked => dbStatusPopulated.status.bookmarked;
+  bool get bookmarked => dbStatusPopulated.dbStatus.bookmarked;
 
   @override
-  PleromaCard get card => dbStatusPopulated.status.card;
+  PleromaCard get card => dbStatusPopulated.dbStatus.card;
 
   @override
-  String get content => dbStatusPopulated.status.content;
+  String get content => dbStatusPopulated.dbStatus.content;
 
   @override
-  DateTime get createdAt => dbStatusPopulated.status.createdAt;
+  DateTime get createdAt => dbStatusPopulated.dbStatus.createdAt;
 
   @override
-  List<PleromaEmoji> get emojis => dbStatusPopulated.status.emojis;
+  List<PleromaEmoji> get emojis => dbStatusPopulated.dbStatus.emojis;
 
   @override
-  bool get favourited => dbStatusPopulated.status.favourited;
+  bool get favourited => dbStatusPopulated.dbStatus.favourited;
 
   @override
-  int get favouritesCount => dbStatusPopulated.status.favouritesCount;
+  int get favouritesCount => dbStatusPopulated.dbStatus.favouritesCount;
 
   @override
   String get inReplyToAccountRemoteId =>
-      dbStatusPopulated.status.inReplyToAccountRemoteId;
+      dbStatusPopulated.dbStatus.inReplyToAccountRemoteId;
 
   @override
-  String get inReplyToRemoteId => dbStatusPopulated.status.inReplyToRemoteId;
+  String get inReplyToRemoteId => dbStatusPopulated.dbStatus.inReplyToRemoteId;
 
   @override
-  int get localId => dbStatusPopulated.status.id;
+  int get localId => dbStatusPopulated.dbStatus.id;
 
   @override
   List<PleromaMediaAttachment> get mediaAttachments =>
-      dbStatusPopulated.status.mediaAttachments;
+      dbStatusPopulated.dbStatus.mediaAttachments;
 
   @override
-  List<PleromaMention> get mentions => dbStatusPopulated.status.mentions;
+  List<PleromaMention> get mentions => dbStatusPopulated.dbStatus.mentions;
 
   @override
-  bool get muted => dbStatusPopulated.status.muted;
+  bool get muted => dbStatusPopulated.dbStatus.muted;
 
   @override
-  PleromaContent get pleromaContent => dbStatusPopulated.status.pleromaContent;
+  PleromaContent get pleromaContent =>
+      dbStatusPopulated.dbStatus.pleromaContent;
 
   @override
   int get pleromaConversationId =>
-      dbStatusPopulated.status.pleromaConversationId;
+      dbStatusPopulated.dbStatus.pleromaConversationId;
 
   @override
   int get pleromaDirectConversationId =>
-      dbStatusPopulated.status.pleromaDirectConversationId;
+      dbStatusPopulated.dbStatus.pleromaDirectConversationId;
 
   @override
   List<PleromaStatusEmojiReaction> get pleromaEmojiReactions =>
-      dbStatusPopulated.status.pleromaEmojiReactions;
+      dbStatusPopulated.dbStatus.pleromaEmojiReactions;
 
   @override
-  DateTime get pleromaExpiresAt => dbStatusPopulated.status.pleromaExpiresAt;
+  DateTime get pleromaExpiresAt => dbStatusPopulated.dbStatus.pleromaExpiresAt;
 
   @override
   String get pleromaInReplyToAccountAcct =>
-      dbStatusPopulated.status.pleromaInReplyToAccountAcct;
+      dbStatusPopulated.dbStatus.pleromaInReplyToAccountAcct;
 
   @override
-  bool get pleromaLocal => dbStatusPopulated.status.pleromaLocal;
+  bool get pleromaLocal => dbStatusPopulated.dbStatus.pleromaLocal;
 
   @override
   PleromaContent get pleromaSpoilerText =>
-      dbStatusPopulated.status.pleromaSpoilerText;
+      dbStatusPopulated.dbStatus.pleromaSpoilerText;
 
   @override
-  bool get pleromaThreadMuted => dbStatusPopulated.status.pleromaThreadMuted;
+  bool get pleromaThreadMuted => dbStatusPopulated.dbStatus.pleromaThreadMuted;
 
   @override
-  PleromaPoll get poll => dbStatusPopulated.status.poll;
+  PleromaPoll get poll => dbStatusPopulated.dbStatus.poll;
 
   @override
   String get reblogStatusRemoteId =>
-      dbStatusPopulated.status.reblogStatusRemoteId;
+      dbStatusPopulated.dbStatus.reblogStatusRemoteId;
 
   @override
-  bool get reblogged => dbStatusPopulated.status.reblogged;
+  bool get reblogged => dbStatusPopulated.dbStatus.reblogged;
 
   @override
-  int get reblogsCount => dbStatusPopulated.status.reblogsCount;
+  int get reblogsCount => dbStatusPopulated.dbStatus.reblogsCount;
 
   @override
-  String get remoteId => dbStatusPopulated.status.remoteId;
+  String get remoteId => dbStatusPopulated.dbStatus.remoteId;
 
   @override
-  int get repliesCount => dbStatusPopulated.status.repliesCount;
+  int get repliesCount => dbStatusPopulated.dbStatus.repliesCount;
 
   @override
-  bool get sensitive => dbStatusPopulated.status.sensitive;
+  bool get nsfwSensitive => dbStatusPopulated.dbStatus.sensitive;
 
   @override
-  String get spoilerText => dbStatusPopulated.status.spoilerText;
+  String get spoilerText => dbStatusPopulated.dbStatus.spoilerText;
 
   @override
-  List<PleromaTag> get tags => dbStatusPopulated.status.tags;
+  List<PleromaTag> get tags => dbStatusPopulated.dbStatus.tags;
 
   @override
-  String get uri => dbStatusPopulated.status.uri;
+  String get uri => dbStatusPopulated.dbStatus.uri;
 
   @override
-  String get url => dbStatusPopulated.status.url;
+  String get url => dbStatusPopulated.dbStatus.url;
 
   @override
-  PleromaVisibility get visibility => dbStatusPopulated.status.visibility;
+  PleromaVisibility get visibility => dbStatusPopulated.dbStatus.visibility;
 
   @override
-  String get language => dbStatusPopulated.status.language;
+  String get language => dbStatusPopulated.dbStatus.language;
 
   @override
   bool operator ==(Object other) =>
@@ -247,40 +290,245 @@ class DbStatusPopulatedWrapper implements IStatus {
 
   @override
   int get hashCode => dbStatusPopulated.hashCode;
+
   @override
   String toString() {
     return 'DbStatusPopulatedWrapper{dbStatusPopulated: $dbStatusPopulated}';
   }
 
   @override
-  bool get pinned => dbStatusPopulated.status.pinned;
+  bool get pinned => dbStatusPopulated.dbStatus.pinned;
 
   @override
   IStatus get reblog {
-    if (dbStatusPopulated.rebloggedStatus != null &&
-        dbStatusPopulated.rebloggedStatusAccount != null) {
+    if (dbStatusPopulated.reblogDbStatus != null &&
+        dbStatusPopulated.reblogDbStatusAccount != null) {
       return DbStatusPopulatedWrapper(DbStatusPopulated(
-          status: dbStatusPopulated.rebloggedStatus,
-          account: dbStatusPopulated.rebloggedStatusAccount,
-          rebloggedStatus: null,
-          rebloggedStatusAccount: null));
+          dbStatus: dbStatusPopulated.reblogDbStatus,
+          dbAccount: dbStatusPopulated.reblogDbStatusAccount,
+          reblogDbStatus: null,
+          reblogDbStatusAccount: null));
     } else {
       return null;
     }
   }
+
+  DbStatusPopulatedWrapper copyWith(
+      {IAccount account,
+      IStatus reblog,
+      int id,
+      String remoteId,
+      DateTime createdAt,
+      String inReplyToRemoteId,
+      String inReplyToAccountRemoteId,
+      bool nsfwSensitive,
+      String spoilerText,
+      PleromaVisibility visibility,
+      String uri,
+      String url,
+      int repliesCount,
+      int reblogsCount,
+      int favouritesCount,
+      bool favourited,
+      bool reblogged,
+      bool muted,
+      bool bookmarked,
+      bool pinned,
+      String content,
+      String reblogStatusRemoteId,
+      PleromaApplication application,
+      String accountRemoteId,
+      List<PleromaMediaAttachment> mediaAttachments,
+      List<PleromaMention> mentions,
+      List<PleromaTag> tags,
+      List<PleromaEmoji> emojis,
+      PleromaPoll poll,
+      PleromaCard card,
+      String language,
+      PleromaContent pleromaContent,
+      int pleromaConversationId,
+      int pleromaDirectConversationId,
+      String pleromaInReplyToAccountAcct,
+      bool pleromaLocal,
+      PleromaContent pleromaSpoilerText,
+      DateTime pleromaExpiresAt,
+      bool pleromaThreadMuted,
+      List<PleromaStatusEmojiReaction> pleromaEmojiReactions}) {
+    DbStatus reblogStatus;
+    DbAccount reblogStatusAccount;
+
+    if (reblog != null) {
+      reblogStatus = DbStatus(
+        id: reblog.localId,
+        remoteId: reblog.remoteId,
+        createdAt: reblog.createdAt,
+        inReplyToRemoteId: reblog.inReplyToRemoteId,
+        inReplyToAccountRemoteId: reblog.inReplyToAccountRemoteId,
+        sensitive: reblog.nsfwSensitive,
+        spoilerText: reblog.spoilerText,
+        visibility: reblog.visibility,
+        uri: reblog.uri,
+        url: reblog.url,
+        repliesCount: reblog.repliesCount,
+        reblogsCount: reblog.reblogsCount,
+        favouritesCount: reblog.favouritesCount,
+        favourited: reblog.favourited,
+        reblogged: reblog.reblogged,
+        muted: reblog.muted,
+        bookmarked: reblog.bookmarked,
+        pinned: reblog.pinned,
+        content: reblog.content,
+        reblogStatusRemoteId: reblog.reblogStatusRemoteId,
+        application: reblog.application,
+        accountRemoteId: reblog.account.remoteId,
+        mediaAttachments: reblog.mediaAttachments,
+        mentions: reblog.mentions,
+        tags: reblog.tags,
+        emojis: reblog.emojis,
+        poll: reblog.poll,
+        card: reblog.card,
+        language: reblog.language,
+        pleromaContent: reblog.pleromaContent,
+        pleromaConversationId: reblog.pleromaConversationId,
+        pleromaDirectConversationId: reblog.pleromaDirectConversationId,
+        pleromaInReplyToAccountAcct: reblog.pleromaInReplyToAccountAcct,
+        pleromaLocal: reblog.pleromaLocal,
+        pleromaSpoilerText: reblog.pleromaSpoilerText,
+        pleromaExpiresAt: reblog.pleromaExpiresAt,
+        pleromaThreadMuted: reblog.pleromaThreadMuted,
+        pleromaEmojiReactions: reblog.pleromaEmojiReactions,
+      );
+
+      reblogStatusAccount = DbAccount(
+          id: reblog.account?.localId,
+          remoteId: reblog.account?.remoteId,
+          username: reblog.account?.username,
+          url: reblog.account?.url,
+          note: reblog.account?.note,
+          locked: reblog.account?.locked,
+          headerStatic: reblog.account?.headerStatic,
+          header: reblog.account?.header,
+          followingCount: reblog.account?.followingCount,
+          followersCount: reblog.account?.followersCount,
+          statusesCount: reblog.account?.statusesCount,
+          displayName: reblog.account?.displayName,
+          createdAt: reblog.account?.createdAt,
+          bot: reblog.account?.bot,
+          avatarStatic: reblog.account?.avatarStatic,
+          avatar: reblog.account?.avatar,
+          acct: reblog.account?.acct,
+          lastStatusAt: reblog.account?.lastStatusAt,
+          fields: reblog.account?.fields,
+          emojis: reblog.account?.emojis,
+          pleromaRelationship: reblog.account?.pleromaRelationship,
+          pleromaTags: reblog.account?.pleromaTags,
+          pleromaIsAdmin: reblog.account?.pleromaIsAdmin,
+          pleromaIsModerator: reblog.account?.pleromaIsModerator,
+          pleromaConfirmationPending:
+              reblog.account?.pleromaConfirmationPending,
+          pleromaHideFavorites: reblog.account?.pleromaHideFavorites,
+          pleromaHideFollowers: reblog.account?.pleromaHideFollowers,
+          pleromaHideFollows: reblog.account?.pleromaHideFollows,
+          pleromaHideFollowersCount: reblog.account?.pleromaHideFollowersCount,
+          pleromaHideFollowsCount: reblog.account?.pleromaHideFollowsCount,
+          pleromaDeactivated: reblog.account?.pleromaDeactivated,
+          pleromaAllowFollowingMove: reblog.account?.pleromaAllowFollowingMove,
+          pleromaSkipThreadContainment:
+              reblog.account?.pleromaSkipThreadContainment);
+    }
+
+    return DbStatusPopulatedWrapper(dbStatusPopulated.copyWith(
+        status: dbStatusPopulated.dbStatus.copyWith(
+          id: id,
+          remoteId: remoteId,
+          createdAt: createdAt,
+          inReplyToRemoteId: inReplyToRemoteId,
+          inReplyToAccountRemoteId: inReplyToAccountRemoteId,
+          sensitive: nsfwSensitive,
+          spoilerText: spoilerText,
+          visibility: visibility,
+          uri: uri,
+          url: url,
+          repliesCount: repliesCount,
+          reblogsCount: reblogsCount,
+          favouritesCount: favouritesCount,
+          favourited: favourited,
+          reblogged: reblogged,
+          muted: muted,
+          bookmarked: bookmarked,
+          pinned: pinned,
+          content: content,
+          reblogStatusRemoteId: reblogStatusRemoteId,
+          application: application,
+          accountRemoteId: accountRemoteId,
+          mediaAttachments: mediaAttachments,
+          mentions: mentions,
+          tags: tags,
+          emojis: emojis,
+          poll: poll,
+          card: card,
+          language: language,
+          pleromaContent: pleromaContent,
+          pleromaConversationId: pleromaConversationId,
+          pleromaDirectConversationId: pleromaDirectConversationId,
+          pleromaInReplyToAccountAcct: pleromaInReplyToAccountAcct,
+          pleromaLocal: pleromaLocal,
+          pleromaSpoilerText: pleromaSpoilerText,
+          pleromaExpiresAt: pleromaExpiresAt,
+          pleromaThreadMuted: pleromaThreadMuted,
+          pleromaEmojiReactions: pleromaEmojiReactions,
+        ),
+        account: dbStatusPopulated.dbAccount.copyWith(
+            id: account?.localId,
+            remoteId: account?.remoteId,
+            username: account?.username,
+            url: account?.url,
+            note: account?.note,
+            locked: account?.locked,
+            headerStatic: account?.headerStatic,
+            header: account?.header,
+            followingCount: account?.followingCount,
+            followersCount: account?.followersCount,
+            statusesCount: account?.statusesCount,
+            displayName: account?.displayName,
+            createdAt: account?.createdAt,
+            bot: account?.bot,
+            avatarStatic: account?.avatarStatic,
+            avatar: account?.avatar,
+            acct: account?.acct,
+            lastStatusAt: account?.lastStatusAt,
+            fields: account?.fields,
+            emojis: account?.emojis,
+            pleromaRelationship: account?.pleromaRelationship,
+            pleromaTags: account?.pleromaTags,
+            pleromaIsAdmin: account?.pleromaIsAdmin,
+            pleromaIsModerator: account?.pleromaIsModerator,
+            pleromaConfirmationPending: account?.pleromaConfirmationPending,
+            pleromaHideFavorites: account?.pleromaHideFavorites,
+            pleromaHideFollowers: account?.pleromaHideFollowers,
+            pleromaHideFollows: account?.pleromaHideFollows,
+            pleromaHideFollowersCount: account?.pleromaHideFollowersCount,
+            pleromaHideFollowsCount: account?.pleromaHideFollowsCount,
+            pleromaDeactivated: account?.pleromaDeactivated,
+            pleromaAllowFollowingMove: account?.pleromaAllowFollowingMove,
+            pleromaSkipThreadContainment:
+                account?.pleromaSkipThreadContainment),
+        reblogDbStatus: reblogStatus,
+        reblogDbStatusAccount: reblogStatusAccount));
+  }
 }
 
 class DbStatusPopulated {
-  final DbStatus status;
-  final DbAccount account;
-  final DbStatus rebloggedStatus;
-  final DbAccount rebloggedStatusAccount;
+  final DbStatus dbStatus;
+  final DbAccount dbAccount;
+  final DbStatus reblogDbStatus;
+  final DbAccount reblogDbStatusAccount;
 
   DbStatusPopulated({
-    @required this.status,
-    @required this.account,
-    @required this.rebloggedStatus,
-    @required this.rebloggedStatusAccount,
+    @required this.dbStatus,
+    @required this.dbAccount,
+    @required this.reblogDbStatus,
+    @required this.reblogDbStatusAccount,
   });
 
   @override
@@ -288,18 +536,34 @@ class DbStatusPopulated {
       identical(this, other) ||
       other is DbStatusPopulated &&
           runtimeType == other.runtimeType &&
-          status == other.status &&
-          account == other.account &&
-          rebloggedStatus == other.rebloggedStatus &&
-          rebloggedStatusAccount == other.rebloggedStatusAccount;
+          dbStatus == other.dbStatus &&
+          dbAccount == other.dbAccount &&
+          reblogDbStatus == other.reblogDbStatus &&
+          reblogDbStatusAccount == other.reblogDbStatusAccount;
+
   @override
   int get hashCode =>
-      status.hashCode ^
-      account.hashCode ^
-      rebloggedStatus.hashCode ^
-      rebloggedStatusAccount.hashCode;
+      dbStatus.hashCode ^
+      dbAccount.hashCode ^
+      reblogDbStatus.hashCode ^
+      reblogDbStatusAccount.hashCode;
+
   @override
   String toString() {
-    return 'DbStatusPopulated{status: $status, account: $account}';
+    return 'DbStatusPopulated{dbStatus: $dbStatus, dbAccount: $dbAccount,'
+        ' reblogDbStatus: $reblogDbStatus,'
+        ' reblogDbStatusAccount: $reblogDbStatusAccount}';
   }
+
+  DbStatusPopulated copyWith({
+    DbStatus status,
+    DbAccount account,
+    DbStatus reblogDbStatus,
+    DbAccount reblogDbStatusAccount,
+  }) =>
+      DbStatusPopulated(
+          dbStatus: status,
+          dbAccount: account,
+          reblogDbStatus: reblogDbStatus,
+          reblogDbStatusAccount: reblogDbStatusAccount);
 }

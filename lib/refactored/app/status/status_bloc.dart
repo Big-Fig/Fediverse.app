@@ -24,37 +24,33 @@ abstract class IStatusBloc implements Disposable {
 
   Stream<IStatus> get reblogOrOriginalStream;
 
-  Stream<String> get contentStream;
-
   String get content;
 
-  Stream<String> get contentWithEmojisWithoutAccountStream;
+  Stream<String> get contentStream;
 
   String get contentWithEmojisWithoutAccount;
 
-  Stream<String> get contentWithEmojisStream;
-
-  IPleromaCard get cardOriginal;
-
-  Stream<IPleromaCard> get cardOriginalStream;
-
-  IPleromaCard get cardReblog;
-
-  Stream<IPleromaCard> get cardReblogStream;
-
-  IPleromaCard get cardReblogOrOriginal;
-
-  Stream<IPleromaCard> get cardReblogOrOriginalStream;
+  Stream<String> get contentWithEmojisWithoutAccountStream;
 
   String get contentWithEmojis;
+
+  Stream<String> get contentWithEmojisStream;
+
+  IPleromaCard get card;
+
+  Stream<IPleromaCard> get cardStream;
+
+  IPleromaCard get reblogOrOriginalCard;
+
+  Stream<IPleromaCard> get reblogOrOriginalCardStream;
 
   IAccount get account;
 
   Stream<IAccount> get accountStream;
 
-  IAccount get accountReblogOrOriginalAccount;
+  IAccount get reblogOrOriginalAccount;
 
-  Stream<IAccount> get accountReblogOrOriginalStream;
+  Stream<IAccount> get reblogOrOriginalAccountStream;
 
   DateTime get createdAt;
 
@@ -64,19 +60,9 @@ abstract class IStatusBloc implements Disposable {
 
   Stream<bool> get isHaveInReplyToAccountStream;
 
-  Future<IAccount> loadInReplyToAccount();
-
-  Stream<IAccount> watchInReplyToAccount();
-
-  Future<List<IAccount>> loadFavouritedByAccounts();
-
-  Future<List<IAccount>> loadRebloggedByAccounts();
-
   bool get isHaveReblog;
 
   Stream<bool> get isHaveReblogStream;
-
-  Future<IAccount> findMentionAccountByUrl({@required String url});
 
   String get remoteId;
 
@@ -84,20 +70,14 @@ abstract class IStatusBloc implements Disposable {
 
   Stream<List<IPleromaMediaAttachment>> get mediaAttachmentsStream;
 
-  List<IPleromaStatusEmojiReaction> get emojiReactionsOriginal;
+  List<IPleromaStatusEmojiReaction> get pleromaEmojiReactions;
 
-  Stream<List<IPleromaStatusEmojiReaction>> get emojiReactionsOriginalStream;
+  Stream<List<IPleromaStatusEmojiReaction>> get pleromaEmojiReactionsStream;
 
-  List<IPleromaStatusEmojiReaction> get emojiReactionsReblog;
-
-  Stream<List<IPleromaStatusEmojiReaction>> get emojiReactionsReblogStream;
-
-  List<IPleromaStatusEmojiReaction> get emojiReactionsOriginalPlusReblog;
+  List<IPleromaStatusEmojiReaction> get reblogPlusOriginalPleromaEmojiReactions;
 
   Stream<List<IPleromaStatusEmojiReaction>>
-      get emojiReactionsOriginalPlusReblogStream;
-
-  Future updateFromNetwork();
+      get reblogPlusOriginalEmojiReactionsStream;
 
   String get accountAvatar;
 
@@ -115,45 +95,25 @@ abstract class IStatusBloc implements Disposable {
 
   Stream<bool> get rebloggedStream;
 
-  int get favouritesOriginalCount;
+  int get favouritesCount;
 
-  Stream<int> get favouritesOriginalCountStream;
+  Stream<int> get favouritesCountStream;
 
-  int get favouritesReblogCount;
+  int get reblogPlusOriginalFavouritesCount;
 
-  Stream<int> get favouritesReblogCountStream;
+  Stream<int> get reblogPlusOriginalFavouritesCountStream;
 
-  int get favouritesReblogPlusOriginalCount;
+  int get reblogsCount;
 
-  Stream<int> get favouritesReblogPlusOriginalCountStream;
+  Stream<int> get reblogsCountStream;
 
-  int get reblogsOriginalCount;
+  int get reblogPlusOriginalReblogsCount;
 
-  Stream<int> get reblogsOriginalCountStream;
-
-  int get reblogsReblogCount;
-
-  Stream<int> get reblogsReblogCountStream;
-
-  int get reblogsReblogPlusOriginalCount;
-
-  Stream<int> get reblogsReblogPlusOriginalCountStream;
+  Stream<int> get reblogPlusOriginalReblogsCountStream;
 
   int get repliesCount;
 
   Stream<int> get repliesCountStream;
-
-  Future<IStatus> requestToggleReblog();
-
-  Future<IStatus> requestToggleFavourite();
-
-  Future<IStatus> requestToggleMute();
-
-  Future<IStatus> requestToggleBookmark();
-
-  Future<IStatus> requestTogglePin();
-
-  Future<IPleromaStatus> requestToggleEmojiReaction({@required String emoji});
 
   String get spoilerText;
 
@@ -178,4 +138,28 @@ abstract class IStatusBloc implements Disposable {
   changeDisplayNsfwSensitive(bool display);
 
   changeDisplaySpoiler(bool display);
+
+  Future refreshFromNetwork();
+
+  Future<IAccount> loadAccountByMentionUrl({@required String url});
+
+  Future<IAccount> loadInReplyToAccount();
+
+  Stream<IAccount> watchInReplyToAccount();
+
+  Future<List<IAccount>> loadFavouritedByAccounts();
+
+  Future<List<IAccount>> loadRebloggedByAccounts();
+
+  Future<IStatus> requestToggleReblog();
+
+  Future<IStatus> requestToggleFavourite();
+
+  Future<IStatus> requestToggleMute();
+
+  Future<IStatus> requestToggleBookmark();
+
+  Future<IStatus> requestTogglePin();
+
+  Future<IPleromaStatus> requestToggleEmojiReaction({@required String emoji});
 }

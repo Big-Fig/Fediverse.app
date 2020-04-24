@@ -53,10 +53,10 @@ class AccountPaginationListWidget extends PaginationListWidget<IAccount> {
                 child: DisposableProxyProvider<IAccount, IAccountBloc>(
                     update: (context, account, oldValue) =>
                         AccountBloc.createFromContext(context,
-                            needWatchLocalRepositoryForUpdates:
+                            isNeedWatchLocalRepositoryForUpdates:
                                 needWatchLocalRepositoryForUpdates,
                             account: account,
-                            needRefreshFromNetworkOnInit: false),
+                            isNeedRefreshFromNetworkOnInit: false),
                     child: AccountListItemWidget(
                         accountSelectedCallback: accountSelectedCallback)),
               );

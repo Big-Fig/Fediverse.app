@@ -116,4 +116,15 @@ class PleromaCard implements IPleromaCard {
       type.hashCode ^
       url.hashCode ^
       width.hashCode;
+
+  @override
+  String toString() {
+    return 'PleromaCard{authorName: $authorName, authorUrl: $authorUrl,'
+        ' description: $description, embedUrl: $embedUrl, height: $height,'
+        ' html: $html, image: $image, providerName: $providerName,'
+        ' providerUrl: $providerUrl, title: $title, type: $type,'
+        ' url: $url, width: $width}';
+  }
+
+
 }

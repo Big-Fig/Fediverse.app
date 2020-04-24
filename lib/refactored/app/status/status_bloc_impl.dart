@@ -20,8 +20,12 @@ import 'package:rxdart/rxdart.dart';
 var _logger = Logger("status_bloc_impl.dart");
 
 class StatusBloc extends DisposableOwner implements IStatusBloc {
-  static StatusBloc createFromContext(BuildContext context, IStatus status,
-          {bool needWatchLocalRepositoryForUpdates = true}) =>
+  static StatusBloc createFromContext(
+    BuildContext context,
+    IStatus status, {
+    bool isNeedWatchLocalRepositoryForUpdates = true,
+    bool delayInit = true,
+  }) =>
       StatusBloc(
         pleromaStatusService: IPleromaStatusService.of(context, listen: false),
         pleromaAccountService:
@@ -30,7 +34,9 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
         accountRepository: IAccountRepository.of(context, listen: false),
         status: status,
         needRefreshFromNetworkOnInit: false,
-        needWatchLocalRepositoryForUpdates: needWatchLocalRepositoryForUpdates,
+        delayInit: delayInit,
+        isNeedWatchLocalRepositoryForUpdates:
+            isNeedWatchLocalRepositoryForUpdates,
         pleromaStatusEmojiReactionService:
             IPleromaStatusEmojiReactionService.of(context, listen: false),
       );
@@ -50,6 +56,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   final IPleromaStatusEmojiReactionService pleromaStatusEmojiReactionService;
   final IStatusRepository statusRepository;
   final IAccountRepository accountRepository;
+  final bool isNeedWatchLocalRepositoryForUpdates;
 
   StatusBloc({
     @required this.pleromaStatusService,
@@ -58,32 +65,44 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
     @required this.statusRepository,
     @required this.accountRepository,
     @required IStatus status,
-    @required bool needRefreshFromNetworkOnInit,
-    @required bool needWatchLocalRepositoryForUpdates,
+    // for better performance we don't update account too often
+    bool needRefreshFromNetworkOnInit = false,
+    // todo: remove hack. Don't init when bloc quickly disposed. Help
+    //  improve performance in timeline unnecessary recreations
+    bool delayInit = true,
+    this.isNeedWatchLocalRepositoryForUpdates = true,
   }) : _statusSubject = BehaviorSubject.seeded(status) {
     addDisposable(subject: _statusSubject);
     addDisposable(subject: _displayNsfwSensitiveSubject);
     addDisposable(subject: _displaySpoilerSubject);
 
     assert(needRefreshFromNetworkOnInit != null);
-    assert(needWatchLocalRepositoryForUpdates != null);
-    Future.delayed(Duration(seconds: 1), () {
-      if (!disposed) {
-        if (needWatchLocalRepositoryForUpdates) {
-          addDisposable(
-              streamSubscription: statusRepository
-                  .watchByRemoteId(status.remoteId)
-                  .listen((updatedStatus) {
-            if (updatedStatus != null) {
-              _statusSubject.add(updatedStatus);
-            }
-          }));
-        }
-        if (needRefreshFromNetworkOnInit) {
-          updateFromNetwork();
-        }
+    assert(isNeedWatchLocalRepositoryForUpdates != null);
+    if (delayInit) {
+      Future.delayed(Duration(seconds: 1), () {
+        _init(status, needRefreshFromNetworkOnInit);
+      });
+    } else {
+      _init(status, needRefreshFromNetworkOnInit);
+    }
+  }
+
+  void _init(IStatus status, bool needRefreshFromNetworkOnInit) {
+    if (!disposed) {
+      if (isNeedWatchLocalRepositoryForUpdates) {
+        addDisposable(
+            streamSubscription: statusRepository
+                .watchByRemoteId(status.remoteId)
+                .listen((updatedStatus) {
+          if (updatedStatus != null) {
+            _statusSubject.add(updatedStatus);
+          }
+        }));
       }
-    });
+      if (needRefreshFromNetworkOnInit) {
+        refreshFromNetwork();
+      }
+    }
   }
 
   @override
@@ -113,10 +132,10 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
       statusStream.map((status) => status.account).distinct();
 
   @override
-  IAccount get accountReblogOrOriginalAccount => reblogOrOriginal?.account;
+  IAccount get reblogOrOriginalAccount => reblogOrOriginal?.account;
 
   @override
-  Stream<IAccount> get accountReblogOrOriginalStream =>
+  Stream<IAccount> get reblogOrOriginalAccountStream =>
       reblogOrOriginalStream.map((status) => status.account).distinct();
 
   @override
@@ -162,26 +181,24 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
       statusStream.map((status) => status?.content).distinct();
 
   @override
-  IPleromaCard get cardOriginal => status?.card;
+  IPleromaCard get card => status?.card;
 
   @override
-  Stream<IPleromaCard> get cardOriginalStream =>
+  Stream<IPleromaCard> get cardStream =>
       statusStream.map((status) => status?.card).distinct();
 
-  @override
-  IPleromaCard get cardReblog => status?.card;
+  IPleromaCard get reblogCard => reblog?.card;
+
+  Stream<IPleromaCard> get reblogCardStream =>
+      reblogStream.map((status) => status?.card).distinct();
 
   @override
-  Stream<IPleromaCard> get cardReblogStream =>
-      statusStream.map((status) => status?.card).distinct();
+  IPleromaCard get reblogOrOriginalCard => reblogCard ?? card;
 
   @override
-  IPleromaCard get cardReblogOrOriginal => cardReblog ?? cardOriginal;
-
-  @override
-  Stream<IPleromaCard> get cardReblogOrOriginalStream => Rx.combineLatest2(
-      cardOriginalStream,
-      cardReblogStream,
+  Stream<IPleromaCard> get reblogOrOriginalCardStream => Rx.combineLatest2(
+      cardStream,
+      reblogCardStream,
       (originalCard, reblogCard) => reblogCard ?? originalCard);
 
   @override
@@ -217,7 +234,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
       statusStream.map((status) => status?.favourited).distinct();
 
   @override
-  Future updateFromNetwork() async {
+  Future refreshFromNetwork() async {
     var remoteStatus =
         await pleromaStatusService.getStatus(statusRemoteId: remoteId);
 
@@ -246,7 +263,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
       statusStream.map((status) => status.reblogged).distinct();
 
   @override
-  Future<IAccount> findMentionAccountByUrl({@required String url}) async {
+  Future<IAccount> loadAccountByMentionUrl({@required String url}) async {
     var foundMention = mentions?.firstWhere((mention) => mention.url == url,
         orElse: () => null);
 
@@ -270,6 +287,10 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
     var remoteAccounts = await pleromaStatusService.favouritedBy(
         statusRemoteId: status.remoteId);
 
+    if(remoteAccounts?.isNotEmpty != true) {
+      return [];
+    }
+
     // don't await because we don't actually need this, just update local
     // storage with new info
     accountRepository.upsertRemoteAccounts(remoteAccounts,
@@ -287,6 +308,10 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
     var remoteAccounts =
         await pleromaStatusService.reblogedBy(statusRemoteId: status.remoteId);
 
+    if(remoteAccounts?.isNotEmpty != true) {
+      return [];
+    }
+
     // don't await because we don't actually need this, just update local
     // storage with new info
     accountRepository.upsertRemoteAccounts(remoteAccounts,
@@ -300,51 +325,51 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   }
 
   @override
-  int get favouritesOriginalCount => status.favouritesCount;
+  int get favouritesCount => status.favouritesCount;
 
   @override
-  Stream<int> get favouritesOriginalCountStream =>
+  Stream<int> get favouritesCountStream =>
       statusStream.map((status) => status.favouritesCount).distinct();
 
-  @override
-  int get favouritesReblogCount => reblog?.favouritesCount;
 
-  @override
-  Stream<int> get favouritesReblogCountStream =>
+  int get reblogFavouritesCount => reblog?.favouritesCount;
+
+
+  Stream<int> get reblogFavouritesCountStream =>
       reblogStream.map((status) => status?.favouritesCount).distinct();
 
   @override
-  int get favouritesReblogPlusOriginalCount =>
-      favouritesOriginalCount + (favouritesReblogCount ?? 0);
+  int get reblogPlusOriginalFavouritesCount =>
+      favouritesCount + (reblogFavouritesCount ?? 0);
 
   @override
-  Stream<int> get favouritesReblogPlusOriginalCountStream => Rx.combineLatest2(
-      favouritesOriginalCountStream,
-      favouritesReblogCountStream,
+  Stream<int> get reblogPlusOriginalFavouritesCountStream => Rx.combineLatest2(
+      favouritesCountStream,
+      reblogFavouritesCountStream,
       (originalCount, reblogCount) => originalCount + (reblogCount ?? 0));
 
   @override
-  int get reblogsOriginalCount => status.reblogsCount;
+  int get reblogsCount => status.reblogsCount;
 
   @override
-  Stream<int> get reblogsOriginalCountStream =>
+  Stream<int> get reblogsCountStream =>
       statusStream.map((status) => status.reblogsCount).distinct();
 
   @override
-  int get reblogsReblogCount => reblog?.reblogsCount;
+  int get reblogReblogsCount => reblog?.reblogsCount;
 
   @override
-  Stream<int> get reblogsReblogCountStream =>
+  Stream<int> get reblogReblogsCountStream =>
       reblogStream.map((status) => status?.reblogsCount).distinct();
 
   @override
-  int get reblogsReblogPlusOriginalCount =>
-      reblogsOriginalCount + (reblogsReblogCount ?? 0);
+  int get reblogPlusOriginalReblogsCount =>
+      reblogsCount + (reblogReblogsCount ?? 0);
 
   @override
-  Stream<int> get reblogsReblogPlusOriginalCountStream => Rx.combineLatest2(
-      reblogsOriginalCountStream,
-      reblogsReblogCountStream,
+  Stream<int> get reblogPlusOriginalReblogsCountStream => Rx.combineLatest2(
+      reblogsCountStream,
+      reblogReblogsCountStream,
       (originalCount, reblogCount) => originalCount + (reblogCount ?? 0));
 
   @override
@@ -365,13 +390,8 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
           statusRemoteId: status.remoteId);
     }
 
-    await statusRepository.upsertRemoteStatus(remoteStatus,
-        listRemoteId: null, conversationRemoteId: null);
-
-    // todo: check local status update
-//
-//    await statusRepository.updateLocalStatusByRemoteStatus(
-//        oldLocalStatus: status, newRemoteStatus: remoteStatus);
+    await statusRepository.updateLocalStatusByRemoteStatus(
+        oldLocalStatus: status, newRemoteStatus: remoteStatus);
 
     return statusRepository.findByRemoteId(status.remoteId);
   }
@@ -389,13 +409,8 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
           statusRemoteId: status.remoteId);
     }
 
-    await statusRepository.upsertRemoteStatus(remoteStatus,
-        listRemoteId: null, conversationRemoteId: null);
-
-    // todo: check local status update
-//
-//    await statusRepository.updateLocalStatusByRemoteStatus(
-//        oldLocalStatus: status, newRemoteStatus: remoteStatus);
+    await statusRepository.updateLocalStatusByRemoteStatus(
+        oldLocalStatus: status, newRemoteStatus: remoteStatus);
 
     return statusRepository.findByRemoteId(status.remoteId);
   }
@@ -411,13 +426,8 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
           statusRemoteId: status.remoteId);
     }
 
-    await statusRepository.upsertRemoteStatus(remoteStatus,
-        listRemoteId: null, conversationRemoteId: null);
-
-    // todo: check local status update
-//
-//    await statusRepository.updateLocalStatusByRemoteStatus(
-//        oldLocalStatus: status, newRemoteStatus: remoteStatus);
+    await statusRepository.updateLocalStatusByRemoteStatus(
+        oldLocalStatus: status, newRemoteStatus: remoteStatus);
 
     return statusRepository.findByRemoteId(status.remoteId);
   }
@@ -433,13 +443,8 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
           statusRemoteId: status.remoteId);
     }
 
-    await statusRepository.upsertRemoteStatus(remoteStatus,
-        listRemoteId: null, conversationRemoteId: null);
-
-    // todo: check local status update
-//
-//    await statusRepository.updateLocalStatusByRemoteStatus(
-//        oldLocalStatus: status, newRemoteStatus: remoteStatus);
+    await statusRepository.updateLocalStatusByRemoteStatus(
+        oldLocalStatus: status, newRemoteStatus: remoteStatus);
 
     return statusRepository.findByRemoteId(status.remoteId);
   }
@@ -461,40 +466,36 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
       }
     }
 
-    await statusRepository.upsertRemoteStatus(remoteStatus,
-        listRemoteId: null, conversationRemoteId: null);
-
-    // todo: check local status update
-//
-//    await statusRepository.updateLocalStatusByRemoteStatus(
-//        oldLocalStatus: status, newRemoteStatus: remoteStatus);
+    await statusRepository.updateLocalStatusByRemoteStatus(
+        oldLocalStatus: status, newRemoteStatus: remoteStatus);
 
     return statusRepository.findByRemoteId(status.remoteId);
   }
 
   @override
-  List<IPleromaStatusEmojiReaction> get emojiReactionsOriginal =>
+  List<IPleromaStatusEmojiReaction> get pleromaEmojiReactions =>
       status.pleromaEmojiReactions;
 
   @override
-  Stream<List<IPleromaStatusEmojiReaction>> get emojiReactionsOriginalStream =>
+  Stream<List<IPleromaStatusEmojiReaction>> get pleromaEmojiReactionsStream =>
       statusStream.map((status) => status.pleromaEmojiReactions).distinct();
 
-  @override
-  List<IPleromaStatusEmojiReaction> get emojiReactionsReblog =>
+  List<IPleromaStatusEmojiReaction> get reblogPleromaEmojiReactions =>
       reblog?.pleromaEmojiReactions;
 
-  @override
-  Stream<List<IPleromaStatusEmojiReaction>> get emojiReactionsReblogStream =>
-      reblogStream.map((status) => status?.pleromaEmojiReactions).distinct();
+  Stream<List<IPleromaStatusEmojiReaction>>
+      get reblogPleromaEmojiReactionsStream => reblogStream
+          .map((status) => status?.pleromaEmojiReactions)
+          .distinct();
 
-  List<IPleromaStatusEmojiReaction> get emojiReactionsOriginalPlusReblog =>
-      mergeEmojiReactionsLists(emojiReactionsOriginal, emojiReactionsReblog);
+  List<IPleromaStatusEmojiReaction>
+      get reblogPlusOriginalPleromaEmojiReactions => mergeEmojiReactionsLists(
+          pleromaEmojiReactions, reblogPleromaEmojiReactions);
 
   Stream<List<IPleromaStatusEmojiReaction>>
-      get emojiReactionsOriginalPlusReblogStream => Rx.combineLatest2(
-          emojiReactionsOriginalStream,
-          emojiReactionsReblogStream,
+      get reblogPlusOriginalEmojiReactionsStream => Rx.combineLatest2(
+          pleromaEmojiReactionsStream,
+          reblogPleromaEmojiReactionsStream,
           (emojiReactionsOriginal, emojiReactionsReblog) =>
               mergeEmojiReactionsLists(
                   emojiReactionsOriginal, emojiReactionsReblog));
@@ -503,7 +504,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   Future<IPleromaStatus> requestToggleEmojiReaction(
       {@required String emoji}) async {
     var alreadyAdded;
-    var foundEmojiReaction = emojiReactionsOriginal?.firstWhere(
+    var foundEmojiReaction = pleromaEmojiReactions?.firstWhere(
         (emojiReaction) => emojiReaction.name == emoji,
         orElse: () => null);
 
@@ -553,11 +554,11 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   }
 
   @override
-  bool get nsfwSensitive => reblogOrOriginal.sensitive;
+  bool get nsfwSensitive => reblogOrOriginal.nsfwSensitive;
 
   @override
   Stream<bool> get nsfwSensitiveStream =>
-      reblogOrOriginalStream.map((status) => status.sensitive);
+      reblogOrOriginalStream.map((status) => status.nsfwSensitive);
 
   @override
   String get spoilerText => reblogOrOriginal.spoilerText;
@@ -614,6 +615,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
         }
       });
 
+  // todo: recheck, regex looks very strange
   String _excludeAccountFromHtmlContent(String htmlContent, String accountURL) {
     String newHtmlContent =
         htmlContent?.replaceFirst(RegExp('@<span>.*<\/span>'), "</a>");
@@ -627,6 +629,10 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
     String content,
     List<IPleromaEmoji> emoji,
   ) {
+    if (emoji?.isNotEmpty != true) {
+      return content;
+    }
+
     List<IPleromaEmoji> customEmoji = emoji ?? [];
 
     var newHtmlContent = content;
@@ -636,9 +642,9 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
       String url = emoji.url;
 
       newHtmlContent = newHtmlContent.replaceAll(
-          ":$shortcode:", '<img src="$url" width="20">');
+          ":$shortcode", '<img src="$url" width="20">');
     }
-    newHtmlContent = "<html> <body>$newHtmlContent</body></html>";
+    newHtmlContent = "<html><body>$newHtmlContent</body></html>";
     return newHtmlContent;
   }
 }

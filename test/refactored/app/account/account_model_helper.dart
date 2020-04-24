@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'database/account_database_model_helper.dart';
 
-Future<IAccount> createTestAccount(
+Future<DbAccountWrapper> createTestAccount(
         {@required String seed, String remoteId}) async =>
     DbAccountWrapper(await createTestDbAccount(seed: seed, remoteId: remoteId));
 

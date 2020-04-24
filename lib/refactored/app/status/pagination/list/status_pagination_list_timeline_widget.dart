@@ -31,7 +31,7 @@ class StatusPaginationListTimelineWidget
                 child: DisposableProxyProvider<IStatus, IStatusBloc>(
                     update: (context, status, oldValue) =>
                         StatusBloc.createFromContext(context, status,
-                            needWatchLocalRepositoryForUpdates:
+                            isNeedWatchLocalRepositoryForUpdates:
                                 needWatchLocalRepositoryForUpdates),
                     child: StatusListItemTimelineWidget()),
               ));

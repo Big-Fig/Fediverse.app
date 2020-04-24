@@ -198,10 +198,10 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
           typedResult.readTable(statusReblogAccountAlias);
 
       statusPopulated = DbStatusPopulated(
-          rebloggedStatus: rebloggedStatus,
-          rebloggedStatusAccount: rebloggedStatusAccount,
-          status: notificationStatus,
-          account: notificationStatusAccount);
+          reblogDbStatus: rebloggedStatus,
+          reblogDbStatusAccount: rebloggedStatusAccount,
+          dbStatus: notificationStatus,
+          dbAccount: notificationStatusAccount);
     }
 
     return DbNotificationPopulated(

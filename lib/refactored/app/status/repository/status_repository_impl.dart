@@ -74,7 +74,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     if (reblog != null) {
       // list & conversation should be null. We don't need reblogs in
       // conversations & lists
-      upsertRemoteStatus(reblog,
+      await upsertRemoteStatus(reblog,
           listRemoteId: null, conversationRemoteId: null);
     }
   }
@@ -466,7 +466,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     if (item == null) {
       return null;
     }
-    return item.dbStatusPopulated.status;
+    return item.dbStatusPopulated.dbStatus;
   }
 
   @override

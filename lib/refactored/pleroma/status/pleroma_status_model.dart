@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
 import 'package:fedi/refactored/mastodon/status/mastodon_status_model.dart';
 import 'package:fedi/refactored/mastodon/visibility/mastodon_visibility_model.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
@@ -15,6 +16,8 @@ import 'package:fedi/refactored/pleroma/visibility/pleroma_visibility_model.dart
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_status_model.g.dart';
+
+Function eq = const ListEquality().equals;
 
 abstract class IPleromaStatus implements IMastodonStatus {
   set favourited(bool value);
@@ -642,7 +645,7 @@ class PleromaStatusEmojiReaction implements IPleromaStatusEmojiReaction {
           name == other.name &&
           count == other.count &&
           me == other.me &&
-          accounts == other.accounts;
+          eq(accounts, other.accounts);
 
   @override
   int get hashCode =>
@@ -658,6 +661,9 @@ class PleromaStatusEmojiReaction implements IPleromaStatusEmojiReaction {
 List<IPleromaStatusEmojiReaction> mergeEmojiReactionsLists(
     List<IPleromaStatusEmojiReaction> emojiReactionsOriginal,
     List<IPleromaStatusEmojiReaction> emojiReactionsReblog) {
+  if (emojiReactionsReblog?.isNotEmpty != true) {
+    return emojiReactionsOriginal;
+  }
   var mergedList = <IPleromaStatusEmojiReaction>[];
 
   mergedList.addAll(emojiReactionsOriginal ?? []);

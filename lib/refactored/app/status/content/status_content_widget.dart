@@ -20,7 +20,7 @@ class StatusContentWidget extends StatelessWidget {
               data: contentWithCustomEmojis,
               onLinkTap: (String link) async {
                 var mentionedAccount =
-                    await statusBloc.findMentionAccountByUrl(url: link);
+                    await statusBloc.loadAccountByMentionUrl(url: link);
 
                 if (mentionedAccount != null) {
                   goToAccountDetailsPage(context, mentionedAccount);
