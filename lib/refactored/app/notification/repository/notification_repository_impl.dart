@@ -264,7 +264,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
     if (item == null) {
       return null;
     }
-    return item.dbNotificationPopulated.notification;
+    return item.dbNotificationPopulated.dbNotification;
   }
 
   @override

@@ -33,7 +33,7 @@ class NotificationPaginationListWidget
                         update: (context, notification, oldValue) =>
                             NotificationBloc.createFromContext(
                                 context, notification,
-                                needWatchLocalRepositoryForUpdates:
+                                isNeedWatchLocalRepositoryForUpdates:
                                     needWatchLocalRepositoryForUpdates),
                         child: NotificationListItemWidget()),
               ));

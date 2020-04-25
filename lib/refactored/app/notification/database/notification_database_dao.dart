@@ -205,9 +205,9 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
     }
 
     return DbNotificationPopulated(
-      notification: typedResult.readTable(db.dbNotifications),
-      account: notificationAccount,
-      statusPopulated: statusPopulated,
+      dbNotification: typedResult.readTable(db.dbNotifications),
+      dbAccount: notificationAccount,
+      dbStatusPopulated: statusPopulated,
     );
   }
 
