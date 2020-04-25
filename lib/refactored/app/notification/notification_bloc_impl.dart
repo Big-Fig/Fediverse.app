@@ -23,7 +23,7 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
 
   static NotificationBloc createFromContext(
           BuildContext context, INotification notification,
-          {bool needWatchLocalRepositoryForUpdates = true}) =>
+          {bool isNeedWatchLocalRepositoryForUpdates = true}) =>
       NotificationBloc(
         pleromaNotificationService:
             IPleromaNotificationService.of(context, listen: false),
@@ -31,42 +31,56 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
             INotificationRepository.of(context, listen: false),
         notification: notification,
         needRefreshFromNetworkOnInit: false,
-        needWatchLocalRepositoryForUpdates: needWatchLocalRepositoryForUpdates,
+        isNeedWatchLocalRepositoryForUpdates:
+            isNeedWatchLocalRepositoryForUpdates,
       );
 
   final BehaviorSubject<INotification> _notificationSubject;
 
   final IPleromaNotificationService pleromaNotificationService;
   final INotificationRepository notificationRepository;
+  final bool isNeedWatchLocalRepositoryForUpdates;
 
   NotificationBloc({
     @required this.pleromaNotificationService,
     @required this.notificationRepository,
     @required INotification notification,
-    @required bool needRefreshFromNetworkOnInit,
-    @required bool needWatchLocalRepositoryForUpdates,
+    bool needRefreshFromNetworkOnInit = false,
+    this.isNeedWatchLocalRepositoryForUpdates = true,
+    // todo: remove hack. Don't init when bloc quickly disposed. Help
+    //  improve performance in timeline unnecessary recreations
+    bool delayInit = true,
   }) : _notificationSubject = BehaviorSubject.seeded(notification) {
     addDisposable(subject: _notificationSubject);
 
     assert(needRefreshFromNetworkOnInit != null);
-    assert(needWatchLocalRepositoryForUpdates != null);
-    Future.delayed(Duration(seconds: 1), () {
-      if (!disposed) {
-        if (needWatchLocalRepositoryForUpdates) {
-          addDisposable(
-              streamSubscription: notificationRepository
-                  .watchByRemoteId(notification.remoteId)
-                  .listen((updatedNotification) {
-            if (updatedNotification != null) {
-              _notificationSubject.add(updatedNotification);
-            }
-          }));
-        }
-        if (needRefreshFromNetworkOnInit) {
-          updateFromNetwork();
-        }
+    assert(isNeedWatchLocalRepositoryForUpdates != null);
+
+    if (delayInit) {
+      Future.delayed(Duration(seconds: 1), () {
+        _init(notification, needRefreshFromNetworkOnInit);
+      });
+    } else {
+      _init(notification, needRefreshFromNetworkOnInit);
+    }
+  }
+
+  void _init(INotification notification, bool needRefreshFromNetworkOnInit) {
+    if (!disposed) {
+      if (isNeedWatchLocalRepositoryForUpdates) {
+        addDisposable(
+            streamSubscription: notificationRepository
+                .watchByRemoteId(notification.remoteId)
+                .listen((updatedNotification) {
+          if (updatedNotification != null) {
+            _notificationSubject.add(updatedNotification);
+          }
+        }));
       }
-    });
+      if (needRefreshFromNetworkOnInit) {
+        refreshFromNetwork();
+      }
+    }
   }
 
   @override
@@ -91,8 +105,7 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
       .map((notification) => notification?.createdAt)
       .distinct();
 
-
-  Future updateFromNetwork() async {
+  Future refreshFromNetwork() async {
     var remoteNotification = await pleromaNotificationService.getNotification(
         notificationRemoteId: remoteId);
 

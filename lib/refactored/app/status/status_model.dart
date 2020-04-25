@@ -358,83 +358,10 @@ class DbStatusPopulatedWrapper implements IStatus {
     DbAccount reblogStatusAccount;
 
     if (reblog != null) {
-      reblogStatus = DbStatus(
-        id: reblog.localId,
-        remoteId: reblog.remoteId,
-        createdAt: reblog.createdAt,
-        inReplyToRemoteId: reblog.inReplyToRemoteId,
-        inReplyToAccountRemoteId: reblog.inReplyToAccountRemoteId,
-        sensitive: reblog.nsfwSensitive,
-        spoilerText: reblog.spoilerText,
-        visibility: reblog.visibility,
-        uri: reblog.uri,
-        url: reblog.url,
-        repliesCount: reblog.repliesCount,
-        reblogsCount: reblog.reblogsCount,
-        favouritesCount: reblog.favouritesCount,
-        favourited: reblog.favourited,
-        reblogged: reblog.reblogged,
-        muted: reblog.muted,
-        bookmarked: reblog.bookmarked,
-        pinned: reblog.pinned,
-        content: reblog.content,
-        reblogStatusRemoteId: reblog.reblogStatusRemoteId,
-        application: reblog.application,
-        accountRemoteId: reblog.account.remoteId,
-        mediaAttachments: reblog.mediaAttachments,
-        mentions: reblog.mentions,
-        tags: reblog.tags,
-        emojis: reblog.emojis,
-        poll: reblog.poll,
-        card: reblog.card,
-        language: reblog.language,
-        pleromaContent: reblog.pleromaContent,
-        pleromaConversationId: reblog.pleromaConversationId,
-        pleromaDirectConversationId: reblog.pleromaDirectConversationId,
-        pleromaInReplyToAccountAcct: reblog.pleromaInReplyToAccountAcct,
-        pleromaLocal: reblog.pleromaLocal,
-        pleromaSpoilerText: reblog.pleromaSpoilerText,
-        pleromaExpiresAt: reblog.pleromaExpiresAt,
-        pleromaThreadMuted: reblog.pleromaThreadMuted,
-        pleromaEmojiReactions: reblog.pleromaEmojiReactions,
-      );
+      reblogStatus = dbStatusFromStatus(reblog);
 
-      reblogStatusAccount = DbAccount(
-          id: reblog.account?.localId,
-          remoteId: reblog.account?.remoteId,
-          username: reblog.account?.username,
-          url: reblog.account?.url,
-          note: reblog.account?.note,
-          locked: reblog.account?.locked,
-          headerStatic: reblog.account?.headerStatic,
-          header: reblog.account?.header,
-          followingCount: reblog.account?.followingCount,
-          followersCount: reblog.account?.followersCount,
-          statusesCount: reblog.account?.statusesCount,
-          displayName: reblog.account?.displayName,
-          createdAt: reblog.account?.createdAt,
-          bot: reblog.account?.bot,
-          avatarStatic: reblog.account?.avatarStatic,
-          avatar: reblog.account?.avatar,
-          acct: reblog.account?.acct,
-          lastStatusAt: reblog.account?.lastStatusAt,
-          fields: reblog.account?.fields,
-          emojis: reblog.account?.emojis,
-          pleromaRelationship: reblog.account?.pleromaRelationship,
-          pleromaTags: reblog.account?.pleromaTags,
-          pleromaIsAdmin: reblog.account?.pleromaIsAdmin,
-          pleromaIsModerator: reblog.account?.pleromaIsModerator,
-          pleromaConfirmationPending:
-              reblog.account?.pleromaConfirmationPending,
-          pleromaHideFavorites: reblog.account?.pleromaHideFavorites,
-          pleromaHideFollowers: reblog.account?.pleromaHideFollowers,
-          pleromaHideFollows: reblog.account?.pleromaHideFollows,
-          pleromaHideFollowersCount: reblog.account?.pleromaHideFollowersCount,
-          pleromaHideFollowsCount: reblog.account?.pleromaHideFollowsCount,
-          pleromaDeactivated: reblog.account?.pleromaDeactivated,
-          pleromaAllowFollowingMove: reblog.account?.pleromaAllowFollowingMove,
-          pleromaSkipThreadContainment:
-              reblog.account?.pleromaSkipThreadContainment);
+      var account = reblog.account;
+      reblogStatusAccount = dbAccountFromAccount(account);
     }
 
     return DbStatusPopulatedWrapper(dbStatusPopulated.copyWith(
@@ -566,4 +493,50 @@ class DbStatusPopulated {
           dbAccount: account,
           reblogDbStatus: reblogDbStatus,
           reblogDbStatusAccount: reblogDbStatusAccount);
+}
+
+DbStatus dbStatusFromStatus(IStatus status) {
+  if (status == null) {
+    return null;
+  }
+  return DbStatus(
+    id: status.localId,
+    remoteId: status.remoteId,
+    createdAt: status.createdAt,
+    inReplyToRemoteId: status.inReplyToRemoteId,
+    inReplyToAccountRemoteId: status.inReplyToAccountRemoteId,
+    sensitive: status.nsfwSensitive,
+    spoilerText: status.spoilerText,
+    visibility: status.visibility,
+    uri: status.uri,
+    url: status.url,
+    repliesCount: status.repliesCount,
+    reblogsCount: status.reblogsCount,
+    favouritesCount: status.favouritesCount,
+    favourited: status.favourited,
+    reblogged: status.reblogged,
+    muted: status.muted,
+    bookmarked: status.bookmarked,
+    pinned: status.pinned,
+    content: status.content,
+    reblogStatusRemoteId: status.reblogStatusRemoteId,
+    application: status.application,
+    accountRemoteId: status.account.remoteId,
+    mediaAttachments: status.mediaAttachments,
+    mentions: status.mentions,
+    tags: status.tags,
+    emojis: status.emojis,
+    poll: status.poll,
+    card: status.card,
+    language: status.language,
+    pleromaContent: status.pleromaContent,
+    pleromaConversationId: status.pleromaConversationId,
+    pleromaDirectConversationId: status.pleromaDirectConversationId,
+    pleromaInReplyToAccountAcct: status.pleromaInReplyToAccountAcct,
+    pleromaLocal: status.pleromaLocal,
+    pleromaSpoilerText: status.pleromaSpoilerText,
+    pleromaExpiresAt: status.pleromaExpiresAt,
+    pleromaThreadMuted: status.pleromaThreadMuted,
+    pleromaEmojiReactions: status.pleromaEmojiReactions,
+  );
 }

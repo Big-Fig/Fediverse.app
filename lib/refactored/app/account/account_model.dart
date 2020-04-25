@@ -94,8 +94,7 @@ abstract class IAccount {
   bool get pleromaSkipThreadContainment;
 
   IAccount copyWith(
-      {
-      String remoteId,
+      {String remoteId,
       String username,
       String url,
       String note,
@@ -127,7 +126,6 @@ abstract class IAccount {
       bool pleromaDeactivated,
       bool pleromaAllowFollowingMove,
       bool pleromaSkipThreadContainment});
-
 }
 
 class DbAccountWrapper implements IAccount {
@@ -313,4 +311,44 @@ class DbAccountWrapper implements IAccount {
         pleromaAllowFollowingMove: pleromaAllowFollowingMove,
         pleromaSkipThreadContainment: pleromaSkipThreadContainment,
       ));
+}
+
+DbAccount dbAccountFromAccount(IAccount account) {
+  if (account == null) {
+    return null;
+  }
+  return DbAccount(
+      id: account?.localId,
+      remoteId: account?.remoteId,
+      username: account?.username,
+      url: account?.url,
+      note: account?.note,
+      locked: account?.locked,
+      headerStatic: account?.headerStatic,
+      header: account?.header,
+      followingCount: account?.followingCount,
+      followersCount: account?.followersCount,
+      statusesCount: account?.statusesCount,
+      displayName: account?.displayName,
+      createdAt: account?.createdAt,
+      bot: account?.bot,
+      avatarStatic: account?.avatarStatic,
+      avatar: account?.avatar,
+      acct: account?.acct,
+      lastStatusAt: account?.lastStatusAt,
+      fields: account?.fields,
+      emojis: account?.emojis,
+      pleromaRelationship: account?.pleromaRelationship,
+      pleromaTags: account?.pleromaTags,
+      pleromaIsAdmin: account?.pleromaIsAdmin,
+      pleromaIsModerator: account?.pleromaIsModerator,
+      pleromaConfirmationPending: account?.pleromaConfirmationPending,
+      pleromaHideFavorites: account?.pleromaHideFavorites,
+      pleromaHideFollowers: account?.pleromaHideFollowers,
+      pleromaHideFollows: account?.pleromaHideFollows,
+      pleromaHideFollowersCount: account?.pleromaHideFollowersCount,
+      pleromaHideFollowsCount: account?.pleromaHideFollowsCount,
+      pleromaDeactivated: account?.pleromaDeactivated,
+      pleromaAllowFollowingMove: account?.pleromaAllowFollowingMove,
+      pleromaSkipThreadContainment: account?.pleromaSkipThreadContainment);
 }
