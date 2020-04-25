@@ -53,7 +53,7 @@ void main() {
     dbStatus = await createTestDbStatus(seed: "seed3", dbAccount: dbAccount);
 
     dbStatusPopulated =
-        await createTestStatusPopulated(dbStatus, accountRepository);
+        await createTestDbStatusPopulated(dbStatus, accountRepository);
 
     var reblogDbAccount = await createTestDbAccount(seed: "seed11");
     accountRepository.insert(reblogDbAccount);

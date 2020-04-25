@@ -17,6 +17,7 @@ import 'package:moor_ffi/moor_ffi.dart';
 import '../../account/database/account_database_model_helper.dart';
 import '../../conversation/repository/conversation_repository_model_helper.dart';
 import '../database/status_database_model_helper.dart';
+import '../status_model_helper.dart';
 import 'status_repository_model_helper.dart';
 
 final String baseUrl = "https://pleroma.com";
@@ -46,7 +47,7 @@ void main() {
     dbStatus = await createTestDbStatus(seed: "seed3", dbAccount: dbAccount);
 
     dbStatusPopulated =
-        await createTestStatusPopulated(dbStatus, accountRepository);
+        await createTestDbStatusPopulated(dbStatus, accountRepository);
   });
 
   tearDown(() async {
@@ -158,7 +159,7 @@ void main() {
     expect((await statusRepository.getAll()).length, 1);
 
     expectDbStatusPopulated((await statusRepository.getAll()).first,
-        await createTestStatusPopulated(dbStatus2, accountRepository));
+        await createTestDbStatusPopulated(dbStatus2, accountRepository));
   });
 
   test('updateById', () async {
@@ -455,7 +456,7 @@ void main() {
         onlyNotMuted: null,
         excludeVisibilities: null,
         newerThanStatus:
-            createFakePopulatedStatusWithRemoteId("remoteId5", dbAccount),
+            await createTestStatus(seed: "remoteId5", remoteId: "remoteId5"),
         limit: null,
         offset: null,
         orderingTermData: null,
@@ -512,7 +513,7 @@ void main() {
         onlyWithHashtag: null,
         onlyFromAccountsFollowingByAccount: null,
         olderThanStatus:
-            createFakePopulatedStatusWithRemoteId("remoteId5", dbAccount),
+        await createTestStatus(seed: "remoteId5", remoteId: "remoteId5"),
         onlyInListWithRemoteId: null);
 
     await insertDbStatus(
@@ -551,7 +552,7 @@ void main() {
         onlyNotMuted: null,
         excludeVisibilities: null,
         newerThanStatus:
-            createFakePopulatedStatusWithRemoteId("remoteId2", dbAccount),
+        await createTestStatus(seed: "remoteId2", remoteId: "remoteId2"),
         limit: null,
         offset: null,
         orderingTermData: null,
@@ -561,7 +562,7 @@ void main() {
         onlyWithHashtag: null,
         onlyFromAccountsFollowingByAccount: null,
         olderThanStatus:
-            createFakePopulatedStatusWithRemoteId("remoteId5", dbAccount),
+        await createTestStatus(seed: "remoteId5", remoteId: "remoteId5"),
         onlyInListWithRemoteId: null);
 
     await insertDbStatus(
@@ -644,9 +645,9 @@ void main() {
         (await query.map(statusRepository.dao.typedResultToPopulated).get());
     expect(actualList.length, 3);
 
-    expectActualStatus(actualList[0], status1, dbAccount);
-    expectActualStatus(actualList[1], status2, dbAccount);
-    expectActualStatus(actualList[2], status3, dbAccount);
+    expect(actualList[0].dbStatus, status1);
+    expect(actualList[1].dbStatus, status2);
+    expect(actualList[2].dbStatus, status3);
   });
 
   test('createQuery orderingTermData remoteId desc no limit', () async {
@@ -687,9 +688,9 @@ void main() {
         (await query.map(statusRepository.dao.typedResultToPopulated).get());
     expect(actualList.length, 3);
 
-    expectActualStatus(actualList[0], status3, dbAccount);
-    expectActualStatus(actualList[1], status2, dbAccount);
-    expectActualStatus(actualList[2], status1, dbAccount);
+    expect(actualList[0].dbStatus, status3);
+    expect(actualList[1].dbStatus, status2);
+    expect(actualList[2].dbStatus, status1);
   });
 
   test('createQuery orderingTermData remoteId desc & limit & offset', () async {
@@ -730,7 +731,7 @@ void main() {
         (await query.map(statusRepository.dao.typedResultToPopulated).get());
     expect(actualList.length, 1);
 
-    expectActualStatus(actualList[0], status2, dbAccount);
+    expect(actualList[0].dbStatus, status2);
   });
 
   test('createQuery onlyNoNsfwSensitive', () async {
@@ -1115,7 +1116,7 @@ void main() {
     // 1 is not related to conversation
     await statusRepository.upsertRemoteStatus(
         mapLocalStatusToRemoteStatus(DbStatusPopulatedWrapper(
-            await createTestStatusPopulated(
+            await createTestDbStatusPopulated(
                 dbStatus.copyWith(remoteId: "status1"), accountRepository))),
         listRemoteId: null,
         conversationRemoteId: null);
@@ -1128,7 +1129,7 @@ void main() {
     // 2 is related to conversation
     await statusRepository.upsertRemoteStatus(
         mapLocalStatusToRemoteStatus(DbStatusPopulatedWrapper(
-            await createTestStatusPopulated(
+            await createTestDbStatusPopulated(
                 dbStatus.copyWith(remoteId: "status2"), accountRepository))),
         listRemoteId: null,
         conversationRemoteId: conversationRemoteId);
@@ -1142,7 +1143,7 @@ void main() {
     // 4 is newer than 2
     await statusRepository.upsertRemoteStatus(
         mapLocalStatusToRemoteStatus(DbStatusPopulatedWrapper(
-            await createTestStatusPopulated(
+            await createTestDbStatusPopulated(
                 dbStatus.copyWith(remoteId: "status4"), accountRepository))),
         listRemoteId: null,
         conversationRemoteId: conversationRemoteId);
@@ -1155,7 +1156,7 @@ void main() {
     // remain 4
     await statusRepository.upsertRemoteStatus(
         mapLocalStatusToRemoteStatus(DbStatusPopulatedWrapper(
-            await createTestStatusPopulated(
+            await createTestDbStatusPopulated(
                 dbStatus.copyWith(remoteId: "status3"), accountRepository))),
         listRemoteId: null,
         conversationRemoteId: conversationRemoteId);

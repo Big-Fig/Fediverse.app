@@ -1,3 +1,4 @@
+import 'package:fedi/refactored/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/refactored/app/database/app_database.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/pleroma/visibility/pleroma_visibility_model.dart';
@@ -6,6 +7,21 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../../../pleroma/application/pleroma_application_model_helper.dart';
 import '../../account/database/account_database_model_helper.dart';
+
+
+Future<DbStatusPopulated> createTestDbStatusPopulated(
+    DbStatus dbStatus, AccountRepository accountRepository) async {
+  DbStatusPopulated dbStatusPopulated = DbStatusPopulated(
+    dbStatus: dbStatus,
+    dbAccount:
+    (await accountRepository.findByRemoteId(dbStatus.accountRemoteId))
+        .dbAccount,
+    reblogDbStatus: null,
+    reblogDbStatusAccount: null,
+  );
+  return dbStatusPopulated;
+}
+
 
 Future<DbStatus> createTestDbStatus({
   @required String seed,
