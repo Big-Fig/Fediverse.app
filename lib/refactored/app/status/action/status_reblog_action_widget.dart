@@ -29,7 +29,7 @@ class StatusReblogActionWidget extends StatelessWidget {
                             .tr("app.status.action.reblog"),
                         onPressed: onPressed,
                       ),
-                  asyncButtonAction: statusBloc.requestToggleReblog);
+                  asyncButtonAction: statusBloc.toggleReblog);
             }),
         StreamBuilder<int>(
             stream: statusBloc.reblogPlusOriginalReblogsCountStream,

@@ -95,6 +95,18 @@ abstract class IStatusBloc implements Disposable {
 
   Stream<bool> get rebloggedStream;
 
+  bool get bookmarked;
+
+  Stream<bool> get bookmarkedStream;
+
+  bool get muted;
+
+  Stream<bool> get mutedStream;
+
+  bool get pinned;
+
+  Stream<bool> get pinnedStream;
+
   int get favouritesCount;
 
   Stream<int> get favouritesCountStream;
@@ -147,19 +159,15 @@ abstract class IStatusBloc implements Disposable {
 
   Stream<IAccount> watchInReplyToAccount();
 
-  Future<List<IAccount>> loadFavouritedByAccounts();
+  Future<IStatus> toggleReblog();
 
-  Future<List<IAccount>> loadRebloggedByAccounts();
+  Future<IStatus> toggleFavourite();
 
-  Future<IStatus> requestToggleReblog();
+  Future<IStatus> toggleMute();
 
-  Future<IStatus> requestToggleFavourite();
+  Future<IStatus> toggleBookmark();
 
-  Future<IStatus> requestToggleMute();
+  Future<IStatus> togglePin();
 
-  Future<IStatus> requestToggleBookmark();
-
-  Future<IStatus> requestTogglePin();
-
-  Future<IPleromaStatus> requestToggleEmojiReaction({@required String emoji});
+  Future<IPleromaStatus> toggleEmojiReaction({@required String emoji});
 }
