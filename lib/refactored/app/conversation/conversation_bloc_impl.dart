@@ -5,7 +5,6 @@ import 'package:fedi/refactored/app/conversation/conversation_bloc.dart';
 import 'package:fedi/refactored/app/conversation/conversation_model.dart';
 import 'package:fedi/refactored/app/conversation/repository/conversation_repository.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
-import 'package:fedi/refactored/app/status/repository/status_repository_model.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/refactored/pleroma/conversation/pleroma_conversation_model.dart';
@@ -29,6 +28,7 @@ class ConversationBloc extends AsyncInitLoadingBloc
   final IConversationRepository conversationRepository;
   final IStatusRepository statusRepository;
   final IAccountRepository accountRepository;
+  final bool isNeedWatchLocalRepositoryForUpdates;
 
   ConversationBloc({
     @required this.pleromaConversationService,
@@ -37,49 +37,70 @@ class ConversationBloc extends AsyncInitLoadingBloc
     @required this.statusRepository,
     @required this.accountRepository,
     @required IConversation conversation,
-    @required bool needRefreshFromNetworkOnInit,
+    bool needRefreshFromNetworkOnInit = false,
+    this.isNeedWatchLocalRepositoryForUpdates = true,
+    // todo: remove hack. Don't init when bloc quickly disposed. Help
+    //  improve performance in timeline unnecessary recreations
+    bool delayInit = true,
   }) : _conversationSubject = BehaviorSubject.seeded(conversation) {
     addDisposable(subject: _conversationSubject);
     addDisposable(subject: _lastStatusSubject);
     addDisposable(subject: _accountsSubject);
 
-    initRepositoriesWatch(conversation);
-
-    if (needRefreshFromNetworkOnInit) {
-      updateFromNetwork();
+    if (delayInit) {
+      Future.delayed(Duration(seconds: 1), () {
+        _init(conversation, needRefreshFromNetworkOnInit);
+      });
+    } else {
+      _init(conversation, needRefreshFromNetworkOnInit);
     }
   }
 
-  void initRepositoriesWatch(IConversation conversation) {
-    addDisposable(
-        streamSubscription: conversationRepository
-            .watchByRemoteId(conversation.remoteId)
-            .listen((updatedConversation) {
-      _conversationSubject.add(updatedConversation);
-    }));
+  void _init(IConversation conversation, bool needRefreshFromNetworkOnInit) {
+    if (!disposed) {
+      if (isNeedWatchLocalRepositoryForUpdates) {
+        addDisposable(
+            streamSubscription: conversationRepository
+                .watchByRemoteId(conversation.remoteId)
+                .listen((updatedConversation) {
+          if (updatedConversation != null) {
+            _conversationSubject.add(updatedConversation);
+          }
+        }));
 
-    addDisposable(
-        streamSubscription: statusRepository
-            .watchConversationLastStatus(conversation: conversation)
-            .listen((lastStatus) {
-      _lastStatusSubject.add(lastStatus);
-    }));
-    addDisposable(
-        streamSubscription: accountRepository
-            .watchConversationAccounts(conversation: conversation)
-            .listen((accounts) {
-      _accountsSubject.add(accounts);
-    }));
+        addDisposable(
+            streamSubscription: statusRepository
+                .watchConversationLastStatus(conversation: conversation)
+                .listen((lastStatus) {
+          if (lastStatus != null) {
+            _lastStatusSubject.add(lastStatus);
+          }
+        }));
+        addDisposable(
+            streamSubscription: accountRepository
+                .watchConversationAccounts(conversation: conversation)
+                .listen((accounts) {
+          if (accounts != null) {
+            _accountsSubject.add(accounts);
+          }
+        }));
+      }
+      if (needRefreshFromNetworkOnInit) {
+        refreshFromNetwork();
+      }
+    }
   }
 
   @override
   Future internalAsyncInit() async {
-    var status = await statusRepository.getConversationLastStatus(conversation: conversation);
+    var status = await statusRepository.getConversationLastStatus(
+        conversation: conversation);
     if (!_lastStatusSubject.isClosed) {
       _lastStatusSubject.add(status);
     }
 
-    var accounts = await accountRepository.getConversationAccounts(conversation: conversation);
+    var accounts = await accountRepository.getConversationAccounts(
+        conversation: conversation);
 
     if (!_accountsSubject.isClosed) {
       _accountsSubject.add(accounts);
@@ -93,12 +114,13 @@ class ConversationBloc extends AsyncInitLoadingBloc
   Stream<List<IAccount>> get accountsStream => _accountsSubject.stream;
 
   @override
-  List<IAccount> get accountsWithoutMe =>
-      myAccountBloc.excludeMyAccountFromList(accounts);
+  List<IAccount> get accountsWithoutMe => IAccount.excludeAccountFromList(
+      accounts, (account) => !myAccountBloc.checkAccountIsMe(account));
 
   @override
-  Stream<List<IAccount>> get accountsWithoutMeStream => accountsStream
-      .map((accounts) => myAccountBloc.excludeMyAccountFromList(accounts));
+  Stream<List<IAccount>> get accountsWithoutMeStream =>
+      accountsStream.map((accounts) => IAccount.excludeAccountFromList(
+          accounts, (account) => !myAccountBloc.checkAccountIsMe(account)));
 
   @override
   IConversation get conversation => _conversationSubject.value;
@@ -107,15 +129,17 @@ class ConversationBloc extends AsyncInitLoadingBloc
   Stream<IConversation> get conversationStream => _conversationSubject.stream;
 
   @override
-  Future updateFromNetwork() async {
+  Future refreshFromNetwork() async {
     var remoteConversation = await pleromaConversationService.getConversation(
         conversationRemoteId: conversation.remoteId);
 
     await accountRepository.upsertRemoteAccounts(remoteConversation.accounts,
-        conversationRemoteId: remoteConversation.accounts);
+        conversationRemoteId: remoteConversation.id);
 
-    await statusRepository.upsertRemoteStatus(remoteConversation.lastStatus,
-        listRemoteId: null, conversationRemoteId: remoteConversation.id);
+    if (remoteConversation.lastStatus != null) {
+      await statusRepository.upsertRemoteStatus(remoteConversation.lastStatus,
+          listRemoteId: null, conversationRemoteId: remoteConversation.id);
+    }
 
     await _updateByRemoteConversation(remoteConversation);
   }

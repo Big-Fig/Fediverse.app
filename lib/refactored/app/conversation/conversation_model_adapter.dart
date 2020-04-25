@@ -23,4 +23,4 @@ PleromaConversation mapLocalConversationToRemoteConversation(
       lastStatus: mapLocalStatusToRemoteStatus(lastStatus),
       id: conversation.remoteId,
       accounts:
-          accounts.map(mapLocalAccountToRemoteAccount).toList());
+          accounts?.map(mapLocalAccountToRemoteAccount)?.toList());

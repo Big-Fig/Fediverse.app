@@ -45,6 +45,12 @@ class ConversationRepository extends AsyncInitLoadingBloc
     await accountRepository.upsertRemoteAccounts(remoteAccounts,
         conversationRemoteId: remoteConversation.id);
 
+    var lastStatus = remoteConversation.lastStatus;
+    if (lastStatus != null) {
+      await statusRepository.upsertRemoteStatus(lastStatus,
+          conversationRemoteId: remoteConversation.id, listRemoteId: null);
+    }
+
     await upsert(mapRemoteConversationToDbConversation(remoteConversation));
   }
 
@@ -141,8 +147,12 @@ class ConversationRepository extends AsyncInitLoadingBloc
     return dao.replace(dbConversation);
   }
 
-  DbConversationWrapper mapDataClassToItem(DbConversation dataClass) =>
-      DbConversationWrapper(dataClass);
+  DbConversationWrapper mapDataClassToItem(DbConversation dataClass) {
+    if (dataClass == null) {
+      return null;
+    }
+    return DbConversationWrapper(dataClass);
+  }
 
   Insertable<DbConversation> mapItemToDataClass(DbConversationWrapper item) =>
       item.dbConversation;
@@ -166,9 +176,12 @@ class ConversationRepository extends AsyncInitLoadingBloc
           listRemoteId: null,
           conversationRemoteId: oldLocalConversation.remoteId);
     }
-
-    await updateById(oldLocalConversation.localId,
-        mapRemoteConversationToDbConversation(newRemoteConversation));
+    if (oldLocalConversation.localId != null) {
+      await updateById(oldLocalConversation.localId,
+          mapRemoteConversationToDbConversation(newRemoteConversation));
+    } else {
+      await upsertRemoteConversation(newRemoteConversation);
+    }
   }
 
   @override

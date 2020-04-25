@@ -22,7 +22,7 @@ abstract class IAccountRepository
   Stream<IAccount> watchByRemoteId(String remoteId);
 
   Future upsertRemoteAccounts(List<IPleromaAccount> remoteAccounts,
-      {@required conversationRemoteId});
+      {@required String conversationRemoteId});
 
   Future upsertRemoteAccount(IPleromaAccount remoteAccount,
       {@required conversationRemoteId});

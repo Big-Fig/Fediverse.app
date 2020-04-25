@@ -21,8 +21,16 @@ class DbConversationWrapper implements IConversation {
 
   @override
   bool get unread => dbConversation.unread;
+
   @override
   String toString() {
     return 'DbConversationWrapper{dbConversation: $dbConversation}';
   }
+
+  DbConversationWrapper copyWith({int id, String remoteId, bool unread}) =>
+      DbConversationWrapper(dbConversation.copyWith(
+        id: id ?? this.localId,
+        remoteId: remoteId ?? this.remoteId,
+        unread: unread ?? this.unread,
+      ));
 }
