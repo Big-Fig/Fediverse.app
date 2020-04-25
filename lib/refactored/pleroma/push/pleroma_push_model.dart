@@ -44,7 +44,8 @@ class PleromaPushSubscribeRequest {
 
 @JsonSerializable(explicitToJson: true)
 class PleromaPushSubscription {
-  final String id;
+  // todo: pleroma id is string but mastodon is int
+  final dynamic id;
   final String endpoint;
   final PleromaPushSettingsDataAlerts alerts;
   @JsonKey(name: "server_key")
