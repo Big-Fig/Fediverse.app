@@ -146,12 +146,12 @@ class AccountRepository extends AsyncInitLoadingBloc
 
   @override
   Future upsertRemoteAccounts(List<IPleromaAccount> remoteAccounts,
-      {@required conversationRemoteId}) async {
+      {@required String conversationRemoteId}) async {
     if (conversationRemoteId != null) {
       var existConversationAccount = await conversationAccountsDao
           .findByConversationRemoteId(conversationRemoteId);
 
-      var accountsToInsert = remoteAccounts.where((remoteAccount) {
+      var accountsToInsert = remoteAccounts?.where((remoteAccount) {
         var found = existConversationAccount.firstWhere(
             (conversationAccount) =>
                 conversationAccount.accountRemoteId == remoteAccount.id,
@@ -160,7 +160,7 @@ class AccountRepository extends AsyncInitLoadingBloc
         return !exist;
       });
 
-      if (accountsToInsert.isNotEmpty) {
+      if (accountsToInsert?.isNotEmpty == true) {
         conversationAccountsDao.insertAll(
             accountsToInsert
                 .map((accountToInsert) => DbConversationAccount(
@@ -172,7 +172,9 @@ class AccountRepository extends AsyncInitLoadingBloc
       }
     }
 
-    await upsertAll(remoteAccounts.map(mapRemoteAccountToDbAccount).toList());
+    if(remoteAccounts?.isNotEmpty == true) {
+      await upsertAll(remoteAccounts.map(mapRemoteAccountToDbAccount).toList());
+    }
   }
 
   @override

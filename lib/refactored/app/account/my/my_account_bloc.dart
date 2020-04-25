@@ -19,6 +19,4 @@ abstract class IMyAccountBloc extends IAccountBloc {
   bool checkIsStatusFromMe(IStatus status);
 
   updateMyAccountByRemote(IPleromaMyAccount remoteMyAccount);
-
-  List<IAccount> excludeMyAccountFromList(List<IAccount> accounts);
 }

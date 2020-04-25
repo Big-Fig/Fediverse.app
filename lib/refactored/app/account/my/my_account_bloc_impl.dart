@@ -95,9 +95,6 @@ class MyAccountBloc extends IMyAccountBloc {
     return myAccount.remoteId == status.account.remoteId;
   }
 
-  @override
-  List<IAccount> excludeMyAccountFromList(List<IAccount> accounts) =>
-      accounts?.where((account) => !checkAccountIsMe(account))?.toList();
 
   @override
   IPleromaAccountRelationship get accountRelationship => throw selfActionError;

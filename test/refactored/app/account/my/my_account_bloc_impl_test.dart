@@ -450,12 +450,4 @@ void main() {
                 reblogDbStatusAccount: null))),
         false);
   });
-  test('excludeMyAccountFromList', () async {
-    var account2 = await createTestAccount(seed: "seed5");
-    expect(myAccountBloc.excludeMyAccountFromList([myAccount]), []);
-    expect(
-        myAccountBloc
-            .excludeMyAccountFromList([myAccount, account2, myAccount]),
-        [account2]);
-  });
 }

@@ -82,8 +82,11 @@ DbStatus mapRemoteStatusToDbStatus(IPleromaStatus remoteStatus) {
 }
 
 PleromaStatus mapLocalStatusToRemoteStatus(IStatus localStatus) {
+  if (localStatus == null) {
+    return null;
+  }
   PleromaStatus reblog;
-  if (localStatus.reblog != null) {
+  if (localStatus?.reblog != null) {
     reblog = mapLocalStatusToRemoteStatus(localStatus.reblog);
   }
   return PleromaStatus(

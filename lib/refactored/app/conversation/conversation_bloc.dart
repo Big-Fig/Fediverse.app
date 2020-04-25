@@ -26,5 +26,5 @@ abstract class IConversationBloc implements Disposable, IAsyncInitLoadingBloc {
 
   Stream<List<IAccount>> get accountsWithoutMeStream;
 
-  Future updateFromNetwork();
+  Future refreshFromNetwork();
 }

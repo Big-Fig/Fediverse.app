@@ -15,7 +15,7 @@ import 'package:moor/moor.dart';
 import 'package:moor_ffi/moor_ffi.dart';
 
 import '../../account/database/account_database_model_helper.dart';
-import '../../conversation/repository/conversation_repository_model_helper.dart';
+import '../../conversation/conversation_model_helper.dart';
 import '../database/status_database_model_helper.dart';
 import '../status_model_helper.dart';
 import 'status_repository_model_helper.dart';
@@ -513,7 +513,7 @@ void main() {
         onlyWithHashtag: null,
         onlyFromAccountsFollowingByAccount: null,
         olderThanStatus:
-        await createTestStatus(seed: "remoteId5", remoteId: "remoteId5"),
+            await createTestStatus(seed: "remoteId5", remoteId: "remoteId5"),
         onlyInListWithRemoteId: null);
 
     await insertDbStatus(
@@ -552,7 +552,7 @@ void main() {
         onlyNotMuted: null,
         excludeVisibilities: null,
         newerThanStatus:
-        await createTestStatus(seed: "remoteId2", remoteId: "remoteId2"),
+            await createTestStatus(seed: "remoteId2", remoteId: "remoteId2"),
         limit: null,
         offset: null,
         orderingTermData: null,
@@ -562,7 +562,7 @@ void main() {
         onlyWithHashtag: null,
         onlyFromAccountsFollowingByAccount: null,
         olderThanStatus:
-        await createTestStatus(seed: "remoteId5", remoteId: "remoteId5"),
+            await createTestStatus(seed: "remoteId5", remoteId: "remoteId5"),
         onlyInListWithRemoteId: null);
 
     await insertDbStatus(
@@ -793,7 +793,8 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    var status2 = (await createTestDbStatus(seed: "seed2", dbAccount: dbAccount));
+    var status2 =
+        (await createTestDbStatus(seed: "seed2", dbAccount: dbAccount));
 
     // because copyWith is not possible to use with null
     var status2Json = status2.toJson();
@@ -1111,7 +1112,8 @@ void main() {
   test('createQuery onlyInConversation', () async {
     var conversationRemoteId = "conversationRemoteId";
 
-    var conversation = createFakeConversationWithRemoteId(conversationRemoteId);
+    var conversation = await createTestConversation(
+        seed: conversationRemoteId, remoteId: conversationRemoteId);
 
     // 1 is not related to conversation
     await statusRepository.upsertRemoteStatus(
