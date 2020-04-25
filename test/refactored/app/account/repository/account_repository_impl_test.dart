@@ -184,7 +184,7 @@ void main() {
 
     var dbStatus =
         await createTestDbStatus(seed: "seedStatus", dbAccount: dbAccount1);
-    var status = await createTestStatusPopulated(dbStatus, accountRepository);
+    var status = await createTestDbStatusPopulated(dbStatus, accountRepository);
     var query = accountRepository.createQuery(
         olderThanAccount: null,
         newerThanAccount: null,
@@ -231,7 +231,7 @@ void main() {
 
     var dbStatus =
         await createTestDbStatus(seed: "seedStatus", dbAccount: dbAccount1);
-    var status = await createTestStatusPopulated(dbStatus, accountRepository);
+    var status = await createTestDbStatusPopulated(dbStatus, accountRepository);
     var query = accountRepository.createQuery(
         olderThanAccount: null,
         newerThanAccount: null,
