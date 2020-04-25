@@ -399,6 +399,66 @@ void main() {
     expect(listenedValue, newValue);
     subscription.cancel();
   });
+  test('bookmarked', () async {
+    expect(statusBloc.bookmarked, status.bookmarked);
+
+    var newValue = !status.bookmarked;
+
+    var listenedValue;
+
+    var subscription = statusBloc.bookmarkedStream.listen((newValue) {
+      listenedValue = newValue;
+    });
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+    expect(listenedValue, status.bookmarked);
+
+    await _update(status.copyWith(bookmarked: newValue));
+
+    expect(statusBloc.bookmarked, newValue);
+    expect(listenedValue, newValue);
+    subscription.cancel();
+  });
+  test('pinned', () async {
+    expect(statusBloc.pinned, status.pinned);
+
+    var newValue = !status.pinned;
+
+    var listenedValue;
+
+    var subscription = statusBloc.pinnedStream.listen((newValue) {
+      listenedValue = newValue;
+    });
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+    expect(listenedValue, status.pinned);
+
+    await _update(status.copyWith(pinned: newValue));
+
+    expect(statusBloc.pinned, newValue);
+    expect(listenedValue, newValue);
+    subscription.cancel();
+  });
+  test('muted', () async {
+    expect(statusBloc.muted, status.muted);
+
+    var newValue = !status.muted;
+
+    var listenedValue;
+
+    var subscription = statusBloc.mutedStream.listen((newValue) {
+      listenedValue = newValue;
+    });
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+    expect(listenedValue, status.muted);
+
+    await _update(status.copyWith(muted: newValue));
+
+    expect(statusBloc.muted, newValue);
+    expect(listenedValue, newValue);
+    subscription.cancel();
+  });
 
   test('favourited', () async {
     expect(statusBloc.favourited, status.favourited);
@@ -987,57 +1047,347 @@ void main() {
     subscription.cancel();
   });
 
-  test('loadFavouritedByAccounts', () async {
-    throw "Not implemented yet";
-//    var account1 = await createTestAccount(seed: "loadFavouritedByAccounts1");
-//    var account2 = await createTestAccount(seed: "loadFavouritedByAccounts2");
-//
-//    await _update(status);
-//
-//    expect(await statusBloc.loadFavouritedByAccounts(), []);
-//
-//
-//    when(pleromaAccountServiceMock.getAccount(accountRemoteId: accountId1))
-//        .thenAnswer((_) async => mapLocalAccountToRemoteAccount(account));
-//
-//    await accountRepository.updateStatusFavouritedBy(
-//        statusRemoteId: status.remoteId,
-//        favouritedByAccounts: [
-//          mapLocalAccountToRemoteAccount(account1),
-//          mapLocalAccountToRemoteAccount(account2),
-//        ]);
-//
-//    await accountRepository.upsertRemoteAccount(
-//        mapLocalAccountToRemoteAccount(account1),
-//        conversationRemoteId: null);
-//
-//    expect((await statusBloc.loadFavouritedByAccounts()).length, 2);
-  });
-
-  test('loadReblogedByAccounts', () async {
-    throw "Not implemented yet";
-  });
-
   test('requestToggleReblog', () async {
-    throw "Not implemented yet";
+    var id = await statusRepository.upsertRemoteStatus(
+        mapLocalStatusToRemoteStatus(status),
+        listRemoteId: null,
+        conversationRemoteId: null);
+    status = status.copyWith(id: id);
+
+    expect(statusBloc.reblogged, status.reblogged);
+
+    bool listenedValue;
+
+    var subscription = statusBloc.rebloggedStream.listen((newValue) {
+      listenedValue = newValue;
+    });
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+    expect(statusBloc.reblogged, status.reblogged);
+
+    when(pleromaStatusServiceMock.reblogStatus(statusRemoteId: status.remoteId))
+        .thenAnswer((_) async =>
+            mapLocalStatusToRemoteStatus(status.copyWith(reblogged: true)));
+
+    when(pleromaStatusServiceMock.unReblogStatus(
+            statusRemoteId: status.remoteId))
+        .thenAnswer((_) async =>
+            mapLocalStatusToRemoteStatus(status.copyWith(reblogged: false)));
+
+    var initialValue = status.reblogged;
+
+    await statusBloc.toggleReblog();
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+
+    expect(statusBloc.reblogged, !initialValue);
+    expect(listenedValue, !initialValue);
+
+    await statusBloc.toggleReblog();
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+
+    expect(statusBloc.reblogged, initialValue);
+    expect(listenedValue, initialValue);
+
+    subscription.cancel();
   });
 
   test('requestToggleFavourite', () async {
-    throw "Not implemented yet";
+    var id = await statusRepository.upsertRemoteStatus(
+        mapLocalStatusToRemoteStatus(status),
+        listRemoteId: null,
+        conversationRemoteId: null);
+    status = status.copyWith(id: id);
+
+    expect(statusBloc.favourited, status.favourited);
+
+    bool listenedValue;
+
+    var subscription = statusBloc.favouritedStream.listen((newValue) {
+      listenedValue = newValue;
+    });
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+    expect(statusBloc.favourited, status.favourited);
+
+    when(pleromaStatusServiceMock.favouriteStatus(
+            statusRemoteId: status.remoteId))
+        .thenAnswer((_) async =>
+            mapLocalStatusToRemoteStatus(status.copyWith(favourited: true)));
+
+    when(pleromaStatusServiceMock.unFavouriteStatus(
+            statusRemoteId: status.remoteId))
+        .thenAnswer((_) async =>
+            mapLocalStatusToRemoteStatus(status.copyWith(favourited: false)));
+
+    var initialValue = status.favourited;
+
+    await statusBloc.toggleFavourite();
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+
+    expect(statusBloc.favourited, !initialValue);
+    expect(listenedValue, !initialValue);
+
+    await statusBloc.toggleFavourite();
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+
+    expect(statusBloc.favourited, initialValue);
+    expect(listenedValue, initialValue);
+
+    subscription.cancel();
   });
 
   test('requestToggleMute', () async {
-    throw "Not implemented yet";
+    var id = await statusRepository.upsertRemoteStatus(
+        mapLocalStatusToRemoteStatus(status),
+        listRemoteId: null,
+        conversationRemoteId: null);
+    status = status.copyWith(id: id);
+
+    expect(statusBloc.muted, status.muted);
+
+    bool listenedValue;
+
+    var subscription = statusBloc.mutedStream.listen((newValue) {
+      listenedValue = newValue;
+    });
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+    expect(statusBloc.muted, status.muted);
+
+    when(pleromaStatusServiceMock.muteStatus(statusRemoteId: status.remoteId))
+        .thenAnswer((_) async =>
+            mapLocalStatusToRemoteStatus(status.copyWith(muted: true)));
+
+    when(pleromaStatusServiceMock.unMuteStatus(statusRemoteId: status.remoteId))
+        .thenAnswer((_) async =>
+            mapLocalStatusToRemoteStatus(status.copyWith(muted: false)));
+
+    var initialValue = status.muted;
+
+    await statusBloc.toggleMute();
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+
+    expect(statusBloc.muted, !initialValue);
+    expect(listenedValue, !initialValue);
+
+    await statusBloc.toggleMute();
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+
+    expect(statusBloc.muted, initialValue);
+    expect(listenedValue, initialValue);
+
+    subscription.cancel();
   });
 
   test('requestToggleBookmark', () async {
-    throw "Not implemented yet";
+    var id = await statusRepository.upsertRemoteStatus(
+        mapLocalStatusToRemoteStatus(status),
+        listRemoteId: null,
+        conversationRemoteId: null);
+    status = status.copyWith(id: id);
+
+    expect(statusBloc.bookmarked, status.bookmarked);
+
+    bool listenedValue;
+
+    var subscription = statusBloc.bookmarkedStream.listen((newValue) {
+      listenedValue = newValue;
+    });
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+    expect(statusBloc.bookmarked, status.bookmarked);
+
+    when(pleromaStatusServiceMock.bookmarkStatus(
+            statusRemoteId: status.remoteId))
+        .thenAnswer((_) async =>
+            mapLocalStatusToRemoteStatus(status.copyWith(bookmarked: true)));
+
+    when(pleromaStatusServiceMock.unBookmarkStatus(
+            statusRemoteId: status.remoteId))
+        .thenAnswer((_) async =>
+            mapLocalStatusToRemoteStatus(status.copyWith(bookmarked: false)));
+
+    var initialValue = status.bookmarked;
+
+    await statusBloc.toggleBookmark();
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+
+    expect(statusBloc.bookmarked, !initialValue);
+    expect(listenedValue, !initialValue);
+
+    await statusBloc.toggleBookmark();
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+
+    expect(statusBloc.bookmarked, initialValue);
+    expect(listenedValue, initialValue);
+
+    subscription.cancel();
   });
 
   test('requestTogglePin', () async {
-    throw "Not implemented yet";
+    var id = await statusRepository.upsertRemoteStatus(
+        mapLocalStatusToRemoteStatus(status),
+        listRemoteId: null,
+        conversationRemoteId: null);
+    status = status.copyWith(id: id);
+
+    expect(statusBloc.pinned, status.pinned);
+
+    bool listenedValue;
+
+    var subscription = statusBloc.pinnedStream.listen((newValue) {
+      listenedValue = newValue;
+    });
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+    expect(statusBloc.pinned, status.pinned);
+
+    when(pleromaStatusServiceMock.pinStatus(statusRemoteId: status.remoteId))
+        .thenAnswer((_) async =>
+            mapLocalStatusToRemoteStatus(status.copyWith(pinned: true)));
+
+    when(pleromaStatusServiceMock.unPinStatus(statusRemoteId: status.remoteId))
+        .thenAnswer((_) async =>
+            mapLocalStatusToRemoteStatus(status.copyWith(pinned: false)));
+
+    var initialValue = status.pinned;
+
+    await statusBloc.togglePin();
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+
+    expect(statusBloc.pinned, !initialValue);
+    expect(listenedValue, !initialValue);
+
+    await statusBloc.togglePin();
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+
+    expect(statusBloc.pinned, initialValue);
+    expect(listenedValue, initialValue);
+
+    subscription.cancel();
   });
   test('requestToggleEmojiReaction', () async {
-    throw "Not implemented yet";
+    var emoji1 = "emoji1";
+    var emoji2 = "emoji2";
+
+    var account1 = await createTestAccount(seed: "account1");
+    var account2 = await createTestAccount(seed: "account2");
+
+    var reaction2 = PleromaStatusEmojiReaction(
+        name: emoji2,
+        count: 1,
+        me: true,
+        accounts: [mapLocalAccountToRemoteAccount(account2)]);
+
+    status = status.copyWith(pleromaEmojiReactions: [reaction2]);
+
+    _update(status);
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+    expect(statusBloc.pleromaEmojiReactions, status.pleromaEmojiReactions);
+
+    when(pleromaStatusEmojiReactionServiceMock.addReaction(
+            emoji: emoji1, statusRemoteId: status.remoteId))
+        .thenAnswer((_) async {
+      List<PleromaStatusEmojiReaction> reactions =
+          status.pleromaEmojiReactions ?? [];
+
+      var reaction = reactions.firstWhere((reaction) => reaction.name == emoji1,
+          orElse: () => null);
+
+      if (reaction == null) {
+        reaction = PleromaStatusEmojiReaction(
+            name: emoji1,
+            count: 1,
+            me: true,
+            accounts: [mapLocalAccountToRemoteAccount(account1)]);
+        reactions.add(reaction);
+      } else {
+        reactions.remove(reaction);
+        var accounts = reaction.accounts;
+        accounts.add(mapLocalAccountToRemoteAccount(account1));
+        reaction = reaction.copyWith(
+            count: reaction.count + 1, me: true, accounts: accounts);
+        reactions.add(reaction);
+      }
+
+      return mapLocalStatusToRemoteStatus(
+          status.copyWith(pleromaEmojiReactions: reactions));
+    });
+
+    when(pleromaStatusEmojiReactionServiceMock.removeReaction(
+            emoji: emoji1, statusRemoteId: status.remoteId))
+        .thenAnswer((_) async {
+      List<PleromaStatusEmojiReaction> reactions =
+          status.pleromaEmojiReactions ?? [];
+
+      var reaction = reactions.firstWhere((reaction) => reaction.name == emoji1,
+          orElse: () => null);
+
+      if (reaction == null) {
+        assert(false);
+      } else {
+        reactions.remove(reaction);
+        var accounts = reaction.accounts;
+        accounts.remove(
+            accounts.firstWhere((account) => account.id == account1.remoteId));
+        reaction = reaction.copyWith(
+            count: reaction.count - 1, me: false, accounts: accounts);
+
+        if (reaction.count > 0) {
+          reactions.add(reaction);
+        }
+      }
+
+      return mapLocalStatusToRemoteStatus(
+          status.copyWith(pleromaEmojiReactions: reactions));
+    });
+
+    var listenedValue;
+
+    var subscription =
+        statusBloc.pleromaEmojiReactionsStream.listen((newValue) {
+      listenedValue = newValue;
+    });
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+    expect(listenedValue, status.pleromaEmojiReactions);
+
+    await statusBloc.toggleEmojiReaction(emoji: emoji1);
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+
+    var newReactions = [
+      reaction2,
+      PleromaStatusEmojiReaction(
+          name: emoji1,
+          count: 1,
+          me: true,
+          accounts: [mapLocalAccountToRemoteAccount(account1)])
+    ];
+    expect(statusBloc.pleromaEmojiReactions, newReactions);
+    expect(listenedValue, newReactions);
+
+    await statusBloc.toggleEmojiReaction(emoji: emoji1);
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+
+    newReactions = [
+      reaction2,
+    ];
+    expect(statusBloc.pleromaEmojiReactions, newReactions);
+    expect(listenedValue, newReactions);
+
+    subscription.cancel();
   });
 }

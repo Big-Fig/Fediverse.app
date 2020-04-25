@@ -31,7 +31,7 @@ class StatusFavouriteActionWidget extends StatelessWidget {
                             .tr("app.status.action.favourite"),
                         onPressed: onPressed,
                       ),
-                  asyncButtonAction: statusBloc.requestToggleFavourite);
+                  asyncButtonAction: statusBloc.toggleFavourite);
             }),
         if (displayCounter)
           StreamBuilder<int>(

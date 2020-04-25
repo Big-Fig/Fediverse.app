@@ -130,7 +130,7 @@ class _StatusListItemTimelineWidgetState
                     setState(() {
                       Navigator.of(context).pop();
                     });
-                    statusBloc.requestToggleEmojiReaction(emoji: emoji);
+                    statusBloc.toggleEmojiReaction(emoji: emoji);
                   },
                 ));
       },

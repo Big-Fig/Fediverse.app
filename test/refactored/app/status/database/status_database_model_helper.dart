@@ -29,6 +29,7 @@ Future<DbStatus> createTestDbStatus({
       favouritesCount: 5,
       favourited: true,
       reblogged: false,
+      pinned: false,
       muted: true,
       bookmarked: false,
       content: seed + "content",

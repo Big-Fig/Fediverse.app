@@ -1,5 +1,4 @@
 import 'package:fedi/refactored/app/account/account_model.dart';
-import 'package:fedi/refactored/app/account/account_model_adapter.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
@@ -263,6 +262,27 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
       statusStream.map((status) => status.reblogged).distinct();
 
   @override
+  bool get muted => status.muted;
+
+  @override
+  Stream<bool> get mutedStream =>
+      statusStream.map((status) => status.muted).distinct();
+
+  @override
+  bool get bookmarked => status.bookmarked;
+
+  @override
+  Stream<bool> get bookmarkedStream =>
+      statusStream.map((status) => status.bookmarked).distinct();
+
+  @override
+  bool get pinned => status.pinned;
+
+  @override
+  Stream<bool> get pinnedStream =>
+      statusStream.map((status) => status.pinned).distinct();
+
+  @override
   Future<IAccount> loadAccountByMentionUrl({@required String url}) async {
     var foundMention = mentions?.firstWhere((mention) => mention.url == url,
         orElse: () => null);
@@ -283,57 +303,13 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   }
 
   @override
-  Future<List<IAccount>> loadFavouritedByAccounts() async {
-    var remoteAccounts = await pleromaStatusService.favouritedBy(
-        statusRemoteId: status.remoteId);
-
-    if(remoteAccounts?.isNotEmpty != true) {
-      return [];
-    }
-
-    // don't await because we don't actually need this, just update local
-    // storage with new info
-    accountRepository.upsertRemoteAccounts(remoteAccounts,
-        conversationRemoteId: null);
-
-    // TODO: rework to many-many relationship table
-    return remoteAccounts
-        .map((remoteAccount) =>
-            DbAccountWrapper(mapRemoteAccountToDbAccount(remoteAccount)))
-        .toList();
-  }
-
-  @override
-  Future<List<IAccount>> loadRebloggedByAccounts() async {
-    var remoteAccounts =
-        await pleromaStatusService.reblogedBy(statusRemoteId: status.remoteId);
-
-    if(remoteAccounts?.isNotEmpty != true) {
-      return [];
-    }
-
-    // don't await because we don't actually need this, just update local
-    // storage with new info
-    accountRepository.upsertRemoteAccounts(remoteAccounts,
-        conversationRemoteId: null);
-
-    // TODO: rework to many-many relationship table
-    return remoteAccounts
-        .map((remoteAccount) =>
-            DbAccountWrapper(mapRemoteAccountToDbAccount(remoteAccount)))
-        .toList();
-  }
-
-  @override
   int get favouritesCount => status.favouritesCount;
 
   @override
   Stream<int> get favouritesCountStream =>
       statusStream.map((status) => status.favouritesCount).distinct();
 
-
   int get reblogFavouritesCount => reblog?.favouritesCount;
-
 
   Stream<int> get reblogFavouritesCountStream =>
       reblogStream.map((status) => status?.favouritesCount).distinct();
@@ -380,7 +356,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
       statusStream.map((status) => status.repliesCount).distinct();
 
   @override
-  Future<IStatus> requestToggleFavourite() async {
+  Future<IStatus> toggleFavourite() async {
     IPleromaStatus remoteStatus;
     if (status.favourited) {
       remoteStatus = await pleromaStatusService.unFavouriteStatus(
@@ -397,7 +373,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   }
 
   @override
-  Future<IStatus> requestToggleReblog() async {
+  Future<IStatus> toggleReblog() async {
     _logger.finest(
         () => "requestToggleReblog status.reblogged=${status.reblogged}");
     IPleromaStatus remoteStatus;
@@ -416,7 +392,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   }
 
   @override
-  Future<IStatus> requestToggleMute() async {
+  Future<IStatus> toggleMute() async {
     IPleromaStatus remoteStatus;
     if (status.muted) {
       remoteStatus = await pleromaStatusService.unMuteStatus(
@@ -433,7 +409,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   }
 
   @override
-  Future<IStatus> requestToggleBookmark() async {
+  Future<IStatus> toggleBookmark() async {
     IPleromaStatus remoteStatus;
     if (status.bookmarked) {
       remoteStatus = await pleromaStatusService.unBookmarkStatus(
@@ -450,7 +426,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   }
 
   @override
-  Future<IStatus> requestTogglePin() async {
+  Future<IStatus> togglePin() async {
     IPleromaStatus remoteStatus;
     if (status.pinned) {
       remoteStatus = await pleromaStatusService.unPinStatus(
@@ -501,8 +477,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
                   emojiReactionsOriginal, emojiReactionsReblog));
 
   @override
-  Future<IPleromaStatus> requestToggleEmojiReaction(
-      {@required String emoji}) async {
+  Future<IPleromaStatus> toggleEmojiReaction({@required String emoji}) async {
     var alreadyAdded;
     var foundEmojiReaction = pleromaEmojiReactions?.firstWhere(
         (emojiReaction) => emojiReaction.name == emoji,

@@ -133,17 +133,16 @@ class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
   @JsonKey(name: "application_id")
   final int applicationId;
 
-  PleromaScheduledStatusParams(
-      {this.text,
-      this.mediaIds,
-      this.sensitive,
-      this.spoilerText,
-      this.visibility,
-      this.scheduledAt,
-      this.poll,
-      this.idempotency,
-      this.inReplyToId,
-      this.applicationId});
+  PleromaScheduledStatusParams({this.text,
+    this.mediaIds,
+    this.sensitive,
+    this.spoilerText,
+    this.visibility,
+    this.scheduledAt,
+    this.poll,
+    this.idempotency,
+    this.inReplyToId,
+    this.applicationId});
 
   factory PleromaScheduledStatusParams.fromJson(Map<String, dynamic> json) =>
       _$PleromaScheduledStatusParamsFromJson(json);
@@ -318,16 +317,15 @@ class PleromaStatusPleromaPart {
   @JsonKey(name: "emoji_reactions")
   List<PleromaStatusEmojiReaction> emojiReactions;
 
-  PleromaStatusPleromaPart(
-      {this.content,
-      this.conversationId,
-      this.directConversationId,
-      this.inReplyToAccountAcct,
-      this.local,
-      this.spoilerText,
-      this.expiresAt,
-      this.threadMuted,
-      this.emojiReactions});
+  PleromaStatusPleromaPart({this.content,
+    this.conversationId,
+    this.directConversationId,
+    this.inReplyToAccountAcct,
+    this.local,
+    this.spoilerText,
+    this.expiresAt,
+    this.threadMuted,
+    this.emojiReactions});
 
   factory PleromaStatusPleromaPart.fromJson(Map<String, dynamic> json) =>
       _$PleromaStatusPleromaPartFromJson(json);
@@ -470,21 +468,20 @@ class PleromaPostStatus implements IPleromaPostStatus {
   @override
   final List<String> to;
 
-  PleromaPostStatus(
-      {this.contentType,
-      this.expiresInSeconds,
-      this.idempotencyKey,
-      this.inReplyToConversationId,
-      this.inReplyToId,
-      this.language,
-      this.visibility,
-      this.mediaIds,
-      this.poll,
-      this.preview,
-      this.sensitive,
-      this.spoilerText,
-      this.status,
-      this.to}) {
+  PleromaPostStatus({this.contentType,
+    this.expiresInSeconds,
+    this.idempotencyKey,
+    this.inReplyToConversationId,
+    this.inReplyToId,
+    this.language,
+    this.visibility,
+    this.mediaIds,
+    this.poll,
+    this.preview,
+    this.sensitive,
+    this.spoilerText,
+    this.status,
+    this.to}) {
     var isPollExist = poll != null;
     var isMediaExist = mediaIds?.isNotEmpty == true;
     var isTextExist = status?.isNotEmpty == true;
@@ -564,22 +561,21 @@ class PleromaScheduleStatus implements IPleromaScheduleStatus {
   @override
   DateTime scheduledAt;
 
-  PleromaScheduleStatus(
-      {this.contentType,
-      this.expiresInSeconds,
-      this.idempotencyKey,
-      this.inReplyToConversationId,
-      this.inReplyToId,
-      this.language,
-      this.visibility,
-      this.mediaIds,
-      this.poll,
-      this.preview,
-      this.sensitive,
-      this.spoilerText,
-      this.status,
-      this.to,
-      this.scheduledAt}) {
+  PleromaScheduleStatus({this.contentType,
+    this.expiresInSeconds,
+    this.idempotencyKey,
+    this.inReplyToConversationId,
+    this.inReplyToId,
+    this.language,
+    this.visibility,
+    this.mediaIds,
+    this.poll,
+    this.preview,
+    this.sensitive,
+    this.spoilerText,
+    this.status,
+    this.to,
+    this.scheduledAt}) {
     var isPollExist = poll != null;
     var isMediaExist = mediaIds?.isNotEmpty == true;
     var isTextExist = status?.isNotEmpty == true;
@@ -623,6 +619,15 @@ class PleromaStatusEmojiReaction implements IPleromaStatusEmojiReaction {
 
   PleromaStatusEmojiReaction({this.name, this.count, this.me, this.accounts});
 
+  PleromaStatusEmojiReaction copyWith({String name, int count, bool me,
+    List<PleromaAccount>accounts}) =>
+      PleromaStatusEmojiReaction(
+        name: name ?? this.name,
+        count: count ?? this.count,
+        me: me ?? this.me,
+        accounts: accounts ?? this.accounts,
+      );
+
   factory PleromaStatusEmojiReaction.fromJson(Map<String, dynamic> json) =>
       _$PleromaStatusEmojiReactionFromJson(json);
 
@@ -640,12 +645,12 @@ class PleromaStatusEmojiReaction implements IPleromaStatusEmojiReaction {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaStatusEmojiReaction &&
-          runtimeType == other.runtimeType &&
-          name == other.name &&
-          count == other.count &&
-          me == other.me &&
-          eq(accounts, other.accounts);
+          other is PleromaStatusEmojiReaction &&
+              runtimeType == other.runtimeType &&
+              name == other.name &&
+              count == other.count &&
+              me == other.me &&
+              eq(accounts, other.accounts);
 
   @override
   int get hashCode =>
@@ -670,8 +675,8 @@ List<IPleromaStatusEmojiReaction> mergeEmojiReactionsLists(
 
   emojiReactionsReblog?.forEach((emojiReaction) {
     var alreadyExistEmojiReaction = mergedList.firstWhere(
-        (currentEmojiReaction) =>
-            currentEmojiReaction.name == emojiReaction.name,
+            (currentEmojiReaction) =>
+        currentEmojiReaction.name == emojiReaction.name,
         orElse: () => null);
 
     if (alreadyExistEmojiReaction != null) {
