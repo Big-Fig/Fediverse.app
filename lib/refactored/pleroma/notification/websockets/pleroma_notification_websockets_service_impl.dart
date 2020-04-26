@@ -1,82 +1,92 @@
-import 'package:fedi/refactored/pleroma/notification/websockets/channel/pleroma_notification_websockets_channel.dart';
-import 'package:fedi/refactored/pleroma/notification/websockets/channel/pleroma_notification_websockets_channel_impl.dart';
+import 'package:fedi/refactored/pleroma/notification/websockets/pleroma_notification_websockets_model.dart';
 import 'package:fedi/refactored/pleroma/notification/websockets/pleroma_notification_websockets_service.dart';
+import 'package:fedi/refactored/websockets/websockets_channel_impl.dart';
+import 'package:fedi/refactored/websockets/websockets_channel_model.dart';
+import 'package:fedi/refactored/websockets/websockets_model.dart';
+import 'package:fedi/refactored/websockets/websockets_service.dart';
 import 'package:flutter/widgets.dart';
+import 'package:path/path.dart' as path;
+
+var urlPath = path.posix;
 
 class PleromaNotificationWebSocketsService
     extends IPleromaNotificationWebSocketsService {
-  final String baseUrl;
+  static final _relativePath = "/api/v1/streaming";
+  final IWebSocketsService webSocketsService;
 
+  final Uri baseUri;
   final String accessToken;
 
-  PleromaNotificationWebSocketsService(
-      {@required this.baseUrl, @required this.accessToken});
+  PleromaNotificationWebSocketsService({
+    @required this.webSocketsService,
+    @required this.baseUri,
+    @required this.accessToken,
+  });
 
-  final Map<PleromaNotificationWebSocketsChannelSettings,
-      PleromaNotificationWebSocketsChannel> urlToChannel = Map();
-
-  IPleromaNotificationWebSocketsChannel getOrCreateNewChannel(
-      {@required PleromaNotificationWebSocketsChannelSettings settings}) {
-    if (!urlToChannel.containsKey(settings)) {
-      urlToChannel[settings] = createChannel(settings: settings);
-    }
-
-    return urlToChannel[settings];
+  WebSocketsChannel<PleromaNotificationWebSocketsEvent> getOrCreateNewChannel(
+      {@required String stream, Map<String, String> queryArgs}) {
+    var webSocketsScheme = mapHttpToWebSocketsScheme(baseUri.scheme);
+    var host = baseUri.host;
+    var baseUrl =
+        Uri(scheme: webSocketsScheme, host: host, path: _relativePath);
+    return webSocketsService.getOrCreateWebSocketsChannel(
+        config: PleromaNotificationWebSocketsChannelConfig(
+      baseUrl: baseUrl,
+      queryArgs: {
+        "access_token": accessToken,
+        "stream": stream,
+        ...(queryArgs ?? {})
+      },
+    ));
   }
 
-  IPleromaNotificationWebSocketsChannel createChannel(
-          {@required PleromaNotificationWebSocketsChannelSettings settings}) =>
-      PleromaNotificationWebSocketsChannel(settings: settings);
+  mapHttpToWebSocketsScheme(String scheme) {
+    switch (scheme) {
+      case "http":
+        return "ws";
+        break;
+      case "https":
+        return "wss";
+        break;
+    }
+    throw "Invalid http protocal $scheme";
+  }
 
   @override
-  IPleromaNotificationWebSocketsChannel getHashtagChannel(
+  WebSocketsChannel<PleromaNotificationWebSocketsEvent> getHashtagChannel(
           {@required String hashtag, @required bool local}) =>
       getOrCreateNewChannel(
-          settings: PleromaNotificationWebSocketsChannelSettings(
-              baseUrl: baseUrl,
-              accessToken: accessToken,
-              stream: local ? "hashtag:local" : "hashtag",
-              additionalQueryArgs: {"tag": hashtag}));
+          stream: local ? "hashtag:local" : "hashtag",
+          queryArgs: {"tag": hashtag});
 
   @override
-  IPleromaNotificationWebSocketsChannel getListChannel(
+  WebSocketsChannel<PleromaNotificationWebSocketsEvent> getListChannel(
           {@required String listId}) =>
-      getOrCreateNewChannel(
-          settings: PleromaNotificationWebSocketsChannelSettings(
-              baseUrl: baseUrl,
-              accessToken: accessToken,
-              stream: "list",
-              additionalQueryArgs: {"list": listId}));
+      getOrCreateNewChannel(stream: "list", queryArgs: {"list": listId});
 
   @override
-  IPleromaNotificationWebSocketsChannel getPublicChannel(
-          {@required bool local}) =>
-      getOrCreateNewChannel(
-          settings: PleromaNotificationWebSocketsChannelSettings(
-              baseUrl: baseUrl,
-              accessToken: accessToken,
-              stream: local ? "public:local" : "public"));
-
-  @override
-  IPleromaNotificationWebSocketsChannel getUserChannel() =>
-      getOrCreateNewChannel(
-          settings: PleromaNotificationWebSocketsChannelSettings(
-              baseUrl: baseUrl, accessToken: accessToken, stream: "user"));
-
-  @override
-  IPleromaNotificationWebSocketsChannel
-      getDirectChannel() => getOrCreateNewChannel(
-          settings: PleromaNotificationWebSocketsChannelSettings(
-              baseUrl: baseUrl, accessToken: accessToken, stream: "direct"));
-
-  @override
-  void dispose() {
-    super.dispose();
-
-    urlToChannel.values.forEach((channel) {
-      channel.dispose();
-    });
-
-    urlToChannel.clear();
+  WebSocketsChannel<PleromaNotificationWebSocketsEvent> getPublicChannel(
+      {@required bool local, @required onlyMedia}) {
+    var stream = local ? "public:local" : "public";
+    if (onlyMedia) {
+      stream += ":media";
+    }
+    return getOrCreateNewChannel(stream: stream);
   }
+
+  @override
+  WebSocketsChannel<PleromaNotificationWebSocketsEvent> getUserChannel(
+          {@required String accountId, @required bool notification}) =>
+      getOrCreateNewChannel(
+          stream: notification ? "user:notification" : "user",
+          queryArgs: {"accountId": accountId});
+
+  @override
+  WebSocketsChannel<PleromaNotificationWebSocketsEvent> getDirectChannel(
+          {@required String accountId}) =>
+      getOrCreateNewChannel(
+          stream: "direct", queryArgs: {"accountId": accountId});
+
+  WebSocketsEvent eventParser(Map<String, dynamic> json) =>
+      PleromaNotificationWebSocketsEvent.fromJson(json);
 }

@@ -1,5 +1,6 @@
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
-import 'package:fedi/refactored/pleroma/notification/websockets/channel/pleroma_notification_websockets_channel.dart';
+import 'package:fedi/refactored/pleroma/notification/websockets/pleroma_notification_websockets_model.dart';
+import 'package:fedi/refactored/websockets/websockets_channel_impl.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -10,21 +11,21 @@ abstract class IPleromaNotificationWebSocketsService extends DisposableOwner {
 
   /// Returns events that are relevant to the authorized user,
   /// i.e. home timeline and notifications
-  IPleromaNotificationWebSocketsChannel getUserChannel();
+  WebSocketsChannel<PleromaNotificationWebSocketsEvent> getUserChannel();
 
   /// Returns all direct events
-  IPleromaNotificationWebSocketsChannel getDirectChannel();
+  WebSocketsChannel<PleromaNotificationWebSocketsEvent> getDirectChannel();
 
   /// Returns all public events
-  IPleromaNotificationWebSocketsChannel getPublicChannel(
+  WebSocketsChannel<PleromaNotificationWebSocketsEvent> getPublicChannel(
       {@required bool local});
 
   /// Returns all public events for a particular hashtag
   /// local support mentioned in Mastodon docs but not implemented in Pleroma
-  IPleromaNotificationWebSocketsChannel getHashtagChannel(
+  WebSocketsChannel<PleromaNotificationWebSocketsEvent> getHashtagChannel(
       {@required String hashtag, @required bool local});
 
   /// Return events for a list
-  IPleromaNotificationWebSocketsChannel getListChannel(
+  WebSocketsChannel<PleromaNotificationWebSocketsEvent> getListChannel(
       {@required String listId});
 }

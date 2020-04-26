@@ -1,13 +1,26 @@
 import 'dart:convert';
 
 import 'package:fedi/refactored/enum/enum_values.dart';
+import 'package:fedi/refactored/websockets/websockets_channel_model.dart';
+import 'package:fedi/refactored/websockets/websockets_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_notification_websockets_model.g.dart';
 
+class PleromaNotificationWebSocketsChannelConfig
+    extends WebSocketsChannelConfig<PleromaNotificationWebSocketsEvent> {
+  PleromaNotificationWebSocketsChannelConfig(
+      {@required Uri baseUrl, @required Map<String, String> queryArgs})
+      : super(baseUrl: baseUrl, queryArgs: queryArgs);
+
+  @override
+  PleromaNotificationWebSocketsEvent eventParser(Map<String, dynamic> json) =>
+      PleromaNotificationWebSocketsEvent.fromJson(json);
+}
+
 @JsonSerializable()
-class PleromaNotificationWebSocketsEvent {
+class PleromaNotificationWebSocketsEvent extends WebSocketsEvent {
   final String event;
 
   PleromaNotificationWebSocketsEventType get eventType =>
