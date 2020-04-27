@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:fedi/refactored/enum/enum_values.dart';
+import 'package:fedi/refactored/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/refactored/websockets/websockets_channel_model.dart';
 import 'package:fedi/refactored/websockets/websockets_model.dart';
 import 'package:flutter/widgets.dart';
@@ -50,6 +51,8 @@ class PleromaNotificationWebSocketsEvent extends WebSocketsEvent {
 
   String toJsonString() =>
       jsonEncode(_$PleromaNotificationWebSocketsEventToJson(this));
+
+  PleromaStatus parsePayloadAsStatus() => PleromaStatus.fromJson(jsonDecode(payload));
 }
 
 enum PleromaNotificationWebSocketsEventType {
