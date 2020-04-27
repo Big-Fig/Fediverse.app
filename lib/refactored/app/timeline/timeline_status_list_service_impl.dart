@@ -16,7 +16,7 @@ import 'package:moor/moor.dart';
 var _logger = Logger("timeline_status_list_service_impl.dart");
 
 abstract class TimelineStatusListService extends DisposableOwner
-    implements IStatusCachedListBloc {
+    implements IStatusCachedListService {
   final IPleromaTimelineService pleromaTimelineService;
   final IStatusRepository statusRepository;
   final ICurrentAuthInstanceBloc currentInstanceBloc;
@@ -110,6 +110,40 @@ abstract class TimelineStatusListService extends DisposableOwner
           () => "error during refreshItemsFromRemoteForPage", e, stackTrace);
       return false;
     }
+  }
+
+
+  @override
+  Stream<List<IStatus>> watchLocalItemsNewerThanItem(IStatus item) {
+    var timelineSettings = retrieveTimelineSettings();
+    _logger.finest(() => "watchLocalItemsNewerThanItem \n"
+        "\t item=$item");
+
+    var onlyLocalFilter;
+    if (timelineSettings.onlyLocal == true) {
+      var localUrlHost = currentInstanceBloc.currentInstance.urlHost;
+      onlyLocalFilter = OnlyLocalStatusFilter(localUrlHost);
+    }
+    var timelineLocalPreferences = timelineLocalPreferencesBloc.value;
+    return statusRepository.watchStatuses(
+        onlyInConversation: null,
+        onlyFromAccount: null,
+        onlyInListWithRemoteId: timelineSettings.onlyInListWithRemoteId,
+        onlyWithHashtag: timelineSettings.withHashtag,
+        onlyFromAccountsFollowingByAccount: timelineSettings.homeAccount,
+        onlyLocal: onlyLocalFilter,
+        onlyWithMedia: timelineLocalPreferences.onlyWithMedia,
+        onlyNotMuted: timelineSettings.onlyNotMuted,
+        excludeVisibilities: timelineSettings.excludeVisibilities,
+        olderThanStatus: null,
+        newerThanStatus: item,
+        onlyNoNsfwSensitive: timelineLocalPreferences.onlyNoNsfwSensitive,
+        onlyNoReplies: timelineLocalPreferences.onlyNoReplies,
+        limit: null,
+        offset: null,
+        orderingTermData: StatusOrderingTermData(
+            orderingMode: OrderingMode.desc,
+            orderByType: StatusOrderByType.remoteId));
   }
 
   @override

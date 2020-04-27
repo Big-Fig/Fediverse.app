@@ -1,5 +1,4 @@
 import 'package:fedi/refactored/app/account/account_model.dart';
-import 'package:fedi/refactored/app/account/statuses/account_statuses_bloc.dart';
 import 'package:fedi/refactored/app/status/list/cached/status_cached_list_service.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository_model.dart';
@@ -12,8 +11,7 @@ import 'package:moor/moor.dart';
 
 var _logger = Logger("account_statuses_bloc_impl.dart");
 
-class AccountStatusesBloc extends IStatusCachedListBloc
-    implements IAccountStatusesBloc {
+class AccountStatusesBloc extends IStatusCachedListService {
   final IAccount account;
   final IPleromaAccountService pleromaAccountService;
   final IStatusRepository statusRepository;
@@ -67,6 +65,29 @@ class AccountStatusesBloc extends IStatusCachedListBloc
         onlyInConversation: null);
 
     return statuses;
+  }
+
+  @override
+  Stream<List<IStatus>> watchLocalItemsNewerThanItem(IStatus item) {
+    return statusRepository.watchStatuses(
+        onlyInListWithRemoteId: null,
+        onlyWithHashtag: null,
+        onlyFromAccountsFollowingByAccount: null,
+        onlyLocal: null,
+        onlyWithMedia: false,
+        onlyNotMuted: false,
+        excludeVisibilities: null,
+        olderThanStatus: null,
+        newerThanStatus: item,
+        onlyNoNsfwSensitive: false,
+        onlyNoReplies: false,
+        onlyFromAccount: account,
+        limit: null,
+        offset: null,
+        orderingTermData: StatusOrderingTermData(
+            orderingMode: OrderingMode.desc,
+            orderByType: StatusOrderByType.remoteId),
+        onlyInConversation: null);
   }
 
   @override

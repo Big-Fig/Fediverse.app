@@ -1,21 +1,21 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'pleroma_notification_websockets_model.dart';
+part of 'pleroma_websockets_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-PleromaNotificationWebSocketsEvent _$PleromaNotificationWebSocketsEventFromJson(
+PleromaWebSocketsEvent _$PleromaWebSocketsEventFromJson(
     Map<String, dynamic> json) {
-  return PleromaNotificationWebSocketsEvent(
+  return PleromaWebSocketsEvent(
     event: json['event'] as String,
     payload: json['payload'] as String,
   );
 }
 
-Map<String, dynamic> _$PleromaNotificationWebSocketsEventToJson(
-        PleromaNotificationWebSocketsEvent instance) =>
+Map<String, dynamic> _$PleromaWebSocketsEventToJson(
+        PleromaWebSocketsEvent instance) =>
     <String, dynamic>{
       'event': instance.event,
       'payload': instance.payload,

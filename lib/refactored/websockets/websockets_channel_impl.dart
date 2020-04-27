@@ -54,6 +54,7 @@ class WebSocketsChannel<T extends WebSocketsEvent> extends DisposableOwner
     _sourceSubscription = _source.eventsStream
         .skipWhile((event) => event == null)
         .listen((event) {
+      _logger.finest(() => "newEvent event");
       _eventsStreamController.add(event);
     });
   }

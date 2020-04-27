@@ -1,4 +1,4 @@
-import 'package:fedi/refactored/pleroma/notification/websockets/pleroma_notification_websockets_service_impl.dart';
+import 'package:fedi/refactored/pleroma/websockets/pleroma_websockets_service_impl.dart';
 import 'package:fedi/refactored/websockets/websockets_service.dart';
 import 'package:fedi/refactored/websockets/websockets_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,12 +9,12 @@ void main() {
   var accessToken = "accessToken";
 
   IWebSocketsService webSocketsService;
-  PleromaNotificationWebSocketsService pleromaNotificationWebSocketsService;
+  PleromaWebSocketsService pleromaWebSocketsService;
 
   setUp(() async {
     webSocketsService = WebSocketsService();
 
-    pleromaNotificationWebSocketsService = PleromaNotificationWebSocketsService(
+    pleromaWebSocketsService = PleromaWebSocketsService(
         webSocketsService: webSocketsService,
         baseUri: Uri.parse(host),
         accessToken: accessToken);
@@ -22,12 +22,12 @@ void main() {
 
   tearDown(() async {
     webSocketsService.dispose();
-    pleromaNotificationWebSocketsService.dispose();
+    pleromaWebSocketsService.dispose();
   });
 
   test('getHashtagChannel', () async {
     expect(
-        pleromaNotificationWebSocketsService
+        pleromaWebSocketsService
             .getHashtagChannel(hashtag: "hashtag1", local: true)
             .config
             .calculateWebSocketsUrl()
@@ -35,7 +35,7 @@ void main() {
         "$wssHost?access_token=$accessToken&stream=hashtag:local"
         "&tag=hashtag1");
     expect(
-        pleromaNotificationWebSocketsService
+        pleromaWebSocketsService
             .getHashtagChannel(hashtag: "hashtag1", local: false)
             .config
             .calculateWebSocketsUrl()
@@ -46,28 +46,28 @@ void main() {
 
   test('getPublicChannel', () async {
     expect(
-        pleromaNotificationWebSocketsService
+        pleromaWebSocketsService
             .getPublicChannel(local: true, onlyMedia: false)
             .config
             .calculateWebSocketsUrl()
             .toString(),
         "$wssHost?access_token=$accessToken&stream=public:local");
     expect(
-        pleromaNotificationWebSocketsService
+        pleromaWebSocketsService
             .getPublicChannel(local: false, onlyMedia: false)
             .config
             .calculateWebSocketsUrl()
             .toString(),
         "$wssHost?access_token=$accessToken&stream=public");
     expect(
-        pleromaNotificationWebSocketsService
+        pleromaWebSocketsService
             .getPublicChannel(local: true, onlyMedia: true)
             .config
             .calculateWebSocketsUrl()
             .toString(),
         "$wssHost?access_token=$accessToken&stream=public:local:media");
     expect(
-        pleromaNotificationWebSocketsService
+        pleromaWebSocketsService
             .getPublicChannel(local: false, onlyMedia: true)
             .config
             .calculateWebSocketsUrl()
@@ -77,7 +77,7 @@ void main() {
 
   test('getListChannel', () async {
     expect(
-        pleromaNotificationWebSocketsService
+        pleromaWebSocketsService
             .getListChannel(listId: "list1")
             .config
             .calculateWebSocketsUrl()
@@ -85,27 +85,44 @@ void main() {
         "$wssHost?access_token=$accessToken&stream=list"
         "&list=list1");
   });
-  test('getUserChannel', () async {
+  test('getAccountChannel', () async {
     expect(
-        pleromaNotificationWebSocketsService
-            .getUserChannel(accountId: "user1", notification: false)
+        pleromaWebSocketsService
+            .getAccountChannel(accountId: "user1", notification: false)
             .config
             .calculateWebSocketsUrl()
             .toString(),
         "$wssHost?access_token=$accessToken&stream=user"
         "&accountId=user1");
     expect(
-        pleromaNotificationWebSocketsService
-            .getUserChannel(accountId: "user1", notification: true)
+        pleromaWebSocketsService
+            .getAccountChannel(accountId: "user1", notification: true)
             .config
             .calculateWebSocketsUrl()
             .toString(),
         "$wssHost?access_token=$accessToken&stream=user:notification"
         "&accountId=user1");
   });
+
+  test('getAccountChannel', () async {
+    expect(
+        pleromaWebSocketsService
+            .getMyAccountChannel( notification: false)
+            .config
+            .calculateWebSocketsUrl()
+            .toString(),
+        "$wssHost?access_token=$accessToken&stream=user");
+    expect(
+        pleromaWebSocketsService
+            .getMyAccountChannel( notification: true)
+            .config
+            .calculateWebSocketsUrl()
+            .toString(),
+        "$wssHost?access_token=$accessToken&stream=user:notification");
+  });
   test('getDirectChannel', () async {
     expect(
-        pleromaNotificationWebSocketsService
+        pleromaWebSocketsService
             .getDirectChannel(accountId: "direct1")
             .config
             .calculateWebSocketsUrl()

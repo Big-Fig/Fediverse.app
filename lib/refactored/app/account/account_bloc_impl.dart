@@ -2,9 +2,12 @@ import 'package:fedi/refactored/app/account/account_bloc.dart';
 import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/account/account_model_adapter.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
+import 'package:fedi/refactored/app/account/websockets/account_websockets_handler_impl.dart';
 import 'package:fedi/refactored/app/emoji/emoji_text_model.dart';
+import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_service.dart';
+import 'package:fedi/refactored/pleroma/websockets/pleroma_websockets_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -33,22 +36,29 @@ class AccountBloc extends IAccountBloc {
 
   final IPleromaAccountService pleromaAccountService;
   final IAccountRepository accountRepository;
+  final IStatusRepository statusRepository;
+  final IPleromaWebSocketsService pleromaWebSocketsService;
   final bool isNeedPreFetchRelationship;
   final bool isNeedWatchLocalRepositoryForUpdates;
+  final bool isNeedWatchWebSocketsEvents;
   bool refreshInProgress = false;
   bool refreshAccountRelationshipInProgress = false;
 
   AccountBloc({
     @required this.accountRepository,
+    @required this.pleromaWebSocketsService,
+    @required this.statusRepository,
     @required this.pleromaAccountService,
-    @required IAccount account,
-    // for better performance we don't update account too often
-    bool isNeedRefreshFromNetworkOnInit = false,
-    // sometimes we don't need relationship
-    this.isNeedPreFetchRelationship = true,
-    // todo: remove hack. Don't init when bloc quickly disposed. Help
+    @required
+        IAccount account, // for better performance we don't update account
+    // too often
+    bool isNeedRefreshFromNetworkOnInit =
+        false, // sometimes we don't need relationship
+    this.isNeedPreFetchRelationship =
+        true, // todo: remove hack. Don't init when bloc quickly disposed. Help
     //  improve performance in timeline unnecessary recreations
     bool delayInit = true,
+    this.isNeedWatchWebSocketsEvents,
     this.isNeedWatchLocalRepositoryForUpdates = true,
   }) : _accountSubject = BehaviorSubject.seeded(account) {
     assert(account != null);
@@ -78,6 +88,14 @@ class AccountBloc extends IAccountBloc {
 
       if (needRefreshFromNetworkOnInit == true) {
         refreshFromNetwork();
+      }
+
+      if (isNeedWatchWebSocketsEvents) {
+        addDisposable(
+            disposable: AccountWebSocketsHandler(
+                statusRepository: statusRepository,
+                accountRemoteId: account.remoteId,
+                pleromaWebSocketsService: null));
       }
     }
   }
@@ -238,13 +256,18 @@ class AccountBloc extends IAccountBloc {
 
   static AccountBloc createFromContext(BuildContext context,
           {@required IAccount account,
+          @required bool isNeedWatchWebSocketsEvents,
           @required bool isNeedRefreshFromNetworkOnInit,
           @required bool isNeedWatchLocalRepositoryForUpdates}) =>
       AccountBloc(
+          pleromaWebSocketsService:
+              IPleromaWebSocketsService.of(context, listen: false),
+          statusRepository: IStatusRepository.of(context, listen: false),
           account: account,
           isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
           isNeedWatchLocalRepositoryForUpdates:
               isNeedWatchLocalRepositoryForUpdates,
+          isNeedWatchWebSocketsEvents: isNeedWatchWebSocketsEvents,
           accountRepository: IAccountRepository.of(context, listen: false),
           pleromaAccountService:
               IPleromaAccountService.of(context, listen: false));

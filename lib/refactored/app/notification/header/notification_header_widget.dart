@@ -19,7 +19,7 @@ abstract class NotificationHeaderWidget extends StatelessWidget {
             create: (context) => AccountBloc.createFromContext(context,
                 account: notificationBloc.account,
                 isNeedRefreshFromNetworkOnInit: false,
-                isNeedWatchLocalRepositoryForUpdates: true),
+                isNeedWatchLocalRepositoryForUpdates: true, isNeedWatchWebSocketsEvents: false),
             child: GestureDetector(
               onTap: () {
                 goToAccountDetailsPage(context, notificationBloc.account);

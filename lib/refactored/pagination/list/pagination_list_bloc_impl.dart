@@ -8,7 +8,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 var _logger = Logger("pagination_list_bloc_impl.dart");
 
-abstract class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
+class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     extends AsyncInitLoadingBloc implements IPaginationListBloc<TPage, TItem> {
   final IPaginationBloc<TPage, TItem> paginationBloc;
   final RefreshController refreshController =
