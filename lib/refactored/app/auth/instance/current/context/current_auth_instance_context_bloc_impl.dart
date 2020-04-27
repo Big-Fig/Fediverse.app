@@ -35,6 +35,8 @@ import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachmen
 import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_service_impl.dart';
 import 'package:fedi/refactored/pleroma/notification/pleroma_notification_service.dart';
 import 'package:fedi/refactored/pleroma/notification/pleroma_notification_service_impl.dart';
+import 'package:fedi/refactored/pleroma/notification/websockets/pleroma_notification_websockets_service.dart';
+import 'package:fedi/refactored/pleroma/notification/websockets/pleroma_notification_websockets_service_impl.dart';
 import 'package:fedi/refactored/pleroma/push/pleroma_push_model.dart';
 import 'package:fedi/refactored/pleroma/push/pleroma_push_service.dart';
 import 'package:fedi/refactored/pleroma/push/pleroma_push_service_impl.dart';
@@ -55,6 +57,7 @@ import 'package:fedi/refactored/push/fcm/fcm_push_service.dart';
 import 'package:fedi/refactored/push/relay/push_relay_service.dart';
 import 'package:fedi/refactored/rest/rest_service.dart';
 import 'package:fedi/refactored/rest/rest_service_impl.dart';
+import 'package:fedi/refactored/websockets/websockets_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -69,8 +72,10 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
   final IPushRelayService pushRelayService;
   final IFcmPushService fcmPushService;
   final IPushHandlerBloc pushHandlerBloc;
+  final IWebSocketsService webSocketsService;
 
   CurrentAuthInstanceContextBloc({
+    @required this.webSocketsService,
     @required this.currentInstance,
     @required this.preferencesService,
     @required this.connectionService,
@@ -84,8 +89,6 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     _logger.fine(() => "internalAsyncInit");
 
     await fcmPushService.askPermissions();
-
-
 
     var globalProviderService = this;
 
@@ -244,17 +247,27 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         .asyncInitAndRegister<IPushSubscriptionBloc>(pushSubscriptionBloc);
 
     var isHaveSubscription = pushSubscriptionBloc.isHaveSubscription;
-    if(!isHaveSubscription) {
+    if (!isHaveSubscription) {
       await pushSubscriptionBloc.subscribeWithDefaultPreferences();
     }
-
 
     var notificationPushLoaderBloc = NotificationPushLoaderBloc(
         currentInstance: currentInstance,
         pushHandlerBloc: pushHandlerBloc,
-        notificationRepository: notificationRepository, pleromaNotificationService:
-    pleromaNotificationService);
+        notificationRepository: notificationRepository,
+        pleromaNotificationService: pleromaNotificationService);
 
     addDisposable(disposable: notificationPushLoaderBloc);
+
+    var pleromaNotificationWebSocketsService =
+        PleromaNotificationWebSocketsService(
+            webSocketsService: webSocketsService,
+            accessToken: currentInstance.token.accessToken,
+            baseUri: currentInstance.url);
+
+    addDisposable(disposable: pleromaNotificationWebSocketsService);
+    await globalProviderService
+        .asyncInitAndRegister<IPleromaNotificationWebSocketsService>(
+            pleromaNotificationWebSocketsService);
   }
 }
