@@ -56,7 +56,7 @@ class AccountPaginationListWidget extends PaginationListWidget<IAccount> {
                             isNeedWatchLocalRepositoryForUpdates:
                                 needWatchLocalRepositoryForUpdates,
                             account: account,
-                            isNeedRefreshFromNetworkOnInit: false),
+                            isNeedRefreshFromNetworkOnInit: false, isNeedWatchWebSocketsEvents: false),
                     child: AccountListItemWidget(
                         accountSelectedCallback: accountSelectedCallback)),
               );

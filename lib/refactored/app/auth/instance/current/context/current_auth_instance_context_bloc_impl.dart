@@ -35,8 +35,6 @@ import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachmen
 import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_service_impl.dart';
 import 'package:fedi/refactored/pleroma/notification/pleroma_notification_service.dart';
 import 'package:fedi/refactored/pleroma/notification/pleroma_notification_service_impl.dart';
-import 'package:fedi/refactored/pleroma/notification/websockets/pleroma_notification_websockets_service.dart';
-import 'package:fedi/refactored/pleroma/notification/websockets/pleroma_notification_websockets_service_impl.dart';
 import 'package:fedi/refactored/pleroma/push/pleroma_push_model.dart';
 import 'package:fedi/refactored/pleroma/push/pleroma_push_service.dart';
 import 'package:fedi/refactored/pleroma/push/pleroma_push_service_impl.dart';
@@ -52,6 +50,8 @@ import 'package:fedi/refactored/pleroma/status/pleroma_status_service.dart';
 import 'package:fedi/refactored/pleroma/status/pleroma_status_service_impl.dart';
 import 'package:fedi/refactored/pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:fedi/refactored/pleroma/timeline/pleroma_timeline_service_impl.dart';
+import 'package:fedi/refactored/pleroma/websockets/pleroma_websockets_service.dart';
+import 'package:fedi/refactored/pleroma/websockets/pleroma_websockets_service_impl.dart';
 import 'package:fedi/refactored/provider/provider_context_bloc_impl.dart';
 import 'package:fedi/refactored/push/fcm/fcm_push_service.dart';
 import 'package:fedi/refactored/push/relay/push_relay_service.dart';
@@ -259,15 +259,15 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
 
     addDisposable(disposable: notificationPushLoaderBloc);
 
-    var pleromaNotificationWebSocketsService =
-        PleromaNotificationWebSocketsService(
+    var pleromaWebSocketsService =
+        PleromaWebSocketsService(
             webSocketsService: webSocketsService,
             accessToken: currentInstance.token.accessToken,
             baseUri: currentInstance.url);
 
-    addDisposable(disposable: pleromaNotificationWebSocketsService);
+    addDisposable(disposable: pleromaWebSocketsService);
     await globalProviderService
-        .asyncInitAndRegister<IPleromaNotificationWebSocketsService>(
-            pleromaNotificationWebSocketsService);
+        .asyncInitAndRegister<IPleromaWebSocketsService>(
+            pleromaWebSocketsService);
   }
 }

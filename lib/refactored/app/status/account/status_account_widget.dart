@@ -35,7 +35,7 @@ class StatusAccountWidget extends StatelessWidget {
             context,
             account: account,
             isNeedWatchLocalRepositoryForUpdates: false,
-            isNeedRefreshFromNetworkOnInit: false),
+            isNeedRefreshFromNetworkOnInit: false, isNeedWatchWebSocketsEvents: false),
         child: GestureDetector(
           onTap: () {
             goToAccountDetailsPage(context, reblogOrOriginalAccount);

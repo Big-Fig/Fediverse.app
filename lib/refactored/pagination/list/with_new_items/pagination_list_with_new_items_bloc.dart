@@ -3,11 +3,16 @@ import 'package:fedi/refactored/pagination/pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IPaginationListWithNewItemsBloc<TPage extends PaginationPage<TItem>,
+abstract class IPaginationListWithNewItemsBloc<
+    TPage extends PaginationPage<TItem>,
     TItem> implements IPaginationListBloc<TPage, TItem> {
   static IPaginationListWithNewItemsBloc of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<IPaginationListWithNewItemsBloc>(context, listen: listen);
+
+
+  TItem get newerItem;
+  Stream<TItem> get newerItemStream;
 
   List<TItem> get unmergedNewItems;
 
@@ -17,10 +22,6 @@ abstract class IPaginationListWithNewItemsBloc<TPage extends PaginationPage<TIte
 
   Stream<int> get unmergedNewItemsCountStream;
 
-  bool get isHaveUnmergedNewItems;
-
-  Stream<bool> get isHaveUnmergedNewItemsStream;
-
   List<TItem> get mergedNewItems;
 
   Stream<List<TItem>> get mergedNewItemsStream;
@@ -28,10 +29,6 @@ abstract class IPaginationListWithNewItemsBloc<TPage extends PaginationPage<TIte
   int get mergedNewItemsCount;
 
   Stream<int> get mergedNewItemsCountStream;
-
-  bool get isHaveMergedNewItems;
-
-  Stream<bool> get isHaveMergedNewItemsStream;
 
   mergeNewItems();
 
