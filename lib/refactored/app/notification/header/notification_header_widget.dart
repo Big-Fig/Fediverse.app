@@ -18,8 +18,8 @@ abstract class NotificationHeaderWidget extends StatelessWidget {
         DisposableProvider<IAccountBloc>(
             create: (context) => AccountBloc.createFromContext(context,
                 account: notificationBloc.account,
-                needRefreshFromNetworkOnInit: false,
-                needWatchLocalRepositoryForUpdates: true),
+                isNeedRefreshFromNetworkOnInit: false,
+                isNeedWatchLocalRepositoryForUpdates: true),
             child: GestureDetector(
               onTap: () {
                 goToAccountDetailsPage(context, notificationBloc.account);

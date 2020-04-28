@@ -272,10 +272,10 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
 //    _logger.finest(() => "rebloggedStatus $rebloggedStatus");
 //    _logger.finest(() => "rebloggedStatusAccount $rebloggedStatusAccount");
     return DbStatusPopulated(
-        rebloggedStatus: rebloggedStatus,
-        rebloggedStatusAccount: rebloggedStatusAccount,
-        status: typedResult.readTable(db.dbStatuses),
-        account: typedResult.readTable(accountAlias));
+        reblogDbStatus: rebloggedStatus,
+        reblogDbStatusAccount: rebloggedStatusAccount,
+        dbStatus: typedResult.readTable(db.dbStatuses),
+        dbAccount: typedResult.readTable(accountAlias));
   }
 
   List<Join<Table, DataClass>> populateStatusJoin({

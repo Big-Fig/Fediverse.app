@@ -1,71 +1,83 @@
 import 'package:fedi/refactored/app/account/account_model.dart';
-import 'package:fedi/refactored/app/conversation/conversation_model.dart';
 import 'package:fedi/refactored/app/emoji/emoji_text_model.dart';
 import 'package:fedi/refactored/disposable/disposable.dart';
+import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/refactored/pleroma/field/pleroma_field_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IAccountBloc extends Disposable {
+abstract class IAccountBloc extends DisposableOwner {
   static IAccountBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IAccountBloc>(context, listen: listen);
-
-  bool get isMyAccount;
 
   IAccount get account;
 
   Stream<IAccount> get accountStream;
 
-  String get acct;
+  String get acct => account.acct;
 
-  Stream<String> get acctStream;
+  Stream<String> get acctStream => accountStream.map((account) => account.acct);
 
-  String get note;
+  String get avatar => account.avatar;
 
-  Stream<String> get noteStream;
+  Stream<String> get avatarStream =>
+      accountStream.map((account) => account.avatar);
 
-  String get header;
+  List<IPleromaField> get fields => account.fields;
 
-  Stream<String> get headerStream;
+  Stream<List<IPleromaField>> get fieldsStream =>
+      accountStream.map((account) => account.fields);
 
-  String get avatar;
+  int get followersCount => account.followersCount;
 
-  Stream<String> get avatarStream;
+  Stream<int> get followersCountStream =>
+      accountStream.map((account) => account.followersCount);
 
-  EmojiText get displayNameEmojiText;
+  int get followingCount => account.followingCount;
 
-  Stream<EmojiText> get displayNameEmojiTextStream;
+  Stream<int> get followingCountStream =>
+      accountStream.map((account) => account.followingCount);
 
-  List<IPleromaField> get fields;
+  String get header => account.header;
 
-  Stream<List<IPleromaField>> get fieldsStream;
+  Stream<String> get headerStream =>
+      accountStream.map((account) => account.header);
 
-  int get statusesCount;
+  String get note => account.note;
 
-  Stream<int> get statusesCountStream;
+  Stream<String> get noteStream => accountStream.map((account) => account.note);
 
-  int get followingCount;
+  int get statusesCount => account.statusesCount;
 
-  Stream<int> get followingCountStream;
+  Stream<int> get statusesCountStream =>
+      accountStream.map((account) => account.statusesCount);
 
-  int get followersCount;
+  EmojiText get displayNameEmojiText =>
+      EmojiText(text: account.displayName, emojis: account.emojis);
 
-  Stream<int> get followersCountStream;
+  Stream<EmojiText> get displayNameEmojiTextStream =>
+      accountStream.map((account) =>
+          EmojiText(text: account.displayName, emojis: account.emojis));
+
+  String get displayName => account.displayName;
+
+  Stream<String> get displayNameStream =>
+      accountStream.map((account) => account.displayName);
 
   IPleromaAccountRelationship get accountRelationship;
 
   Stream<IPleromaAccountRelationship> get accountRelationshipStream;
 
-  Future<IPleromaAccountRelationship> requestToggleFollow();
+  Future<IPleromaAccountRelationship> toggleFollow();
 
-  Future<IPleromaAccountRelationship> requestToggleMute();
+  Future<IPleromaAccountRelationship> toggleMute();
 
-  Future<IPleromaAccountRelationship> requestToggleBlock();
+  Future<IPleromaAccountRelationship> togglePin();
 
-  Future requestReport();
+  Future<IPleromaAccountRelationship> toggleBlock();
 
-  Future<bool> requestRefreshFromNetwork();
+  Future report();
 
-  Future<IConversation> findRelatedConversation();
+  Future<bool> refreshFromNetwork();
 }

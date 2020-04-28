@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/refactored/app/async/async_button_widget.dart';
+import 'package:fedi/refactored/app/async/async_operation_button_builder_widget.dart';
+import 'package:fedi/refactored/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/refactored/app/status/reblog/status_reblog_account_list_page.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
 import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
@@ -19,7 +20,8 @@ class StatusReblogActionWidget extends StatelessWidget {
             builder: (context, snapshot) {
               var reblogged = snapshot.data;
 
-              return AsyncButtonWidget(
+              return PleromaAsyncOperationButtonBuilderWidget(
+                  showProgressDialog: false,
                   builder: (context, onPressed) => IconButton(
                         color: reblogged ? Colors.blue : Colors.black,
                         icon: Icon(Icons.repeat),
@@ -27,11 +29,11 @@ class StatusReblogActionWidget extends StatelessWidget {
                             .tr("app.status.action.reblog"),
                         onPressed: onPressed,
                       ),
-                  asyncButtonAction: statusBloc.requestToggleReblog);
+                  asyncButtonAction: statusBloc.toggleReblog);
             }),
         StreamBuilder<int>(
-            stream: statusBloc.reblogsReblogPlusOriginalCountStream,
-            initialData: statusBloc.reblogsReblogPlusOriginalCount,
+            stream: statusBloc.reblogPlusOriginalReblogsCountStream,
+            initialData: statusBloc.reblogPlusOriginalReblogsCount,
             builder: (context, snapshot) {
               var reblogsCount = snapshot.data;
 

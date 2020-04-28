@@ -74,7 +74,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     if (reblog != null) {
       // list & conversation should be null. We don't need reblogs in
       // conversations & lists
-      upsertRemoteStatus(reblog,
+      await upsertRemoteStatus(reblog,
           listRemoteId: null, conversationRemoteId: null);
     }
   }
@@ -129,23 +129,22 @@ class StatusRepository extends AsyncInitLoadingBloc
 
   Future addStatusesToList(
       List<String> statusRemoteIds, String listRemoteId) async {
-    List<DbStatusList> alreadyAddedListStatuses = await listsDao
-        .findByListRemoteId(listRemoteId);
+    List<DbStatusList> alreadyAddedListStatuses =
+        await listsDao.findByListRemoteId(listRemoteId);
     Iterable<String> alreadyAddedListStatusesIds =
-    alreadyAddedListStatuses
-        .map((listStatus) => listStatus.statusRemoteId);
-    Iterable<String> notAddedYetStatusRemoteIds = statusRemoteIds.where(
-            (statusRemoteId) {
-          return !alreadyAddedListStatusesIds.contains(statusRemoteId);
-        });
+        alreadyAddedListStatuses.map((listStatus) => listStatus.statusRemoteId);
+    Iterable<String> notAddedYetStatusRemoteIds =
+        statusRemoteIds.where((statusRemoteId) {
+      return !alreadyAddedListStatusesIds.contains(statusRemoteId);
+    });
 
     if (notAddedYetStatusRemoteIds?.isNotEmpty == true) {
       await listsDao.insertAll(
           notAddedYetStatusRemoteIds
               .map((statusRemoteId) => DbStatusList(
-              id: null,
-              statusRemoteId: statusRemoteId,
-              listRemoteId: listRemoteId))
+                  id: null,
+                  statusRemoteId: statusRemoteId,
+                  listRemoteId: listRemoteId))
               .toList(),
           InsertMode.insertOrReplace);
     }
@@ -153,13 +152,14 @@ class StatusRepository extends AsyncInitLoadingBloc
 
   Future addStatusesToConversation(
       List<String> statusRemoteIds, String conversationRemoteId) async {
-    List<DbConversationStatus> alreadyAddedConversationStatuses = await conversationStatusesDao
-        .findByConversationRemoteId(conversationRemoteId);
+    List<DbConversationStatus> alreadyAddedConversationStatuses =
+        await conversationStatusesDao
+            .findByConversationRemoteId(conversationRemoteId);
     Iterable<String> alreadyAddedConversationStatusesIds =
-    alreadyAddedConversationStatuses
-        .map((conversationStatus) => conversationStatus.statusRemoteId);
-    Iterable<String> notAddedYetStatusRemoteIds = statusRemoteIds.where(
-            (statusRemoteId) {
+        alreadyAddedConversationStatuses
+            .map((conversationStatus) => conversationStatus.statusRemoteId);
+    Iterable<String> notAddedYetStatusRemoteIds =
+        statusRemoteIds.where((statusRemoteId) {
       return !alreadyAddedConversationStatusesIds.contains(statusRemoteId);
     });
 
@@ -435,6 +435,9 @@ class StatusRepository extends AsyncInitLoadingBloc
       (await dao.findAll()).map(mapDataClassToItem).toList();
 
   @override
+  Future<int> countAll() => dao.countAllQuery().getSingle();
+
+  @override
   Stream<List<DbStatusPopulatedWrapper>> watchAll() =>
       (dao.watchAll()).map((list) => list.map(mapDataClassToItem).toList());
 
@@ -463,7 +466,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     if (item == null) {
       return null;
     }
-    return item.dbStatusPopulated.status;
+    return item.dbStatusPopulated.dbStatus;
   }
 
   @override
@@ -573,4 +576,46 @@ class StatusRepository extends AsyncInitLoadingBloc
         .map((typedResult) => dao.typedResultToPopulated(typedResult));
     return stream.map((dbStatus) => mapDataClassToItem(dbStatus));
   }
+
+  @override
+  Future<IStatus> getConversationLastStatus(
+          {@required IConversation conversation}) =>
+      getStatus(
+          onlyInListWithRemoteId: null,
+          onlyWithHashtag: null,
+          onlyFromAccountsFollowingByAccount: null,
+          onlyFromAccount: null,
+          onlyInConversation: conversation,
+          onlyLocal: null,
+          onlyWithMedia: null,
+          onlyNotMuted: null,
+          excludeVisibilities: null,
+          olderThanStatus: null,
+          newerThanStatus: null,
+          onlyNoNsfwSensitive: null,
+          onlyNoReplies: null,
+          orderingTermData: StatusOrderingTermData(
+              orderingMode: OrderingMode.desc,
+              orderByType: StatusOrderByType.remoteId));
+
+  @override
+  Stream<IStatus> watchConversationLastStatus(
+          {@required IConversation conversation}) =>
+      watchStatus(
+          onlyInListWithRemoteId: null,
+          onlyWithHashtag: null,
+          onlyFromAccountsFollowingByAccount: null,
+          onlyFromAccount: null,
+          onlyInConversation: conversation,
+          onlyLocal: null,
+          onlyWithMedia: null,
+          onlyNotMuted: null,
+          excludeVisibilities: null,
+          olderThanStatus: null,
+          newerThanStatus: null,
+          onlyNoNsfwSensitive: null,
+          onlyNoReplies: null,
+          orderingTermData: StatusOrderingTermData(
+              orderingMode: OrderingMode.desc,
+              orderByType: StatusOrderByType.remoteId));
 }

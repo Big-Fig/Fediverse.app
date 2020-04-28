@@ -2,8 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/account/my/edit/edit_my_account_bloc.dart';
 import 'package:fedi/refactored/app/account/my/edit/edit_my_account_bloc_impl.dart';
 import 'package:fedi/refactored/app/account/my/edit/edit_my_account_widget.dart';
+import 'package:fedi/refactored/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
-import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_alert/flutter_alert.dart';
 
@@ -33,30 +33,38 @@ class EditMyAccountPage extends StatelessWidget {
                 initialData: editMyAccountBloc.isSomethingChanged,
                 builder: (context, snapshot) {
                   var isSomethingChanged = snapshot.data;
-                  var onPressed;
 
-                  if (isSomethingChanged) {
-                    onPressed = () async {
-                      // todo: progress dialog
-                      var success = await editMyAccountBloc.submitChanges();
-
-                      if (success) {
-                        Navigator.pop(context);
-                      } else {
-                        showAlert(context: null, title: "error");
-                      }
-                    };
-                  }
-                  return FlatButton(
-                    child: Text(
-                      AppLocalizations.of(context)
-                          .tr("app.account.my.edit.action.save"),
-                      style: TextStyle(
-                          color: isSomethingChanged
-                              ? Colors.white
-                              : Colors.white70),
-                    ),
-                    onPressed: onPressed,
+                  return PleromaAsyncOperationButtonBuilderWidget(
+                    showProgressDialog: true,
+                    progressContentMessage: AppLocalizations.of(context)
+                        .tr("app.status.post.dialog.async.content"),
+                    asyncButtonAction: () async {
+                      await editMyAccountBloc.submitChanges();
+                      Navigator.pop(context);
+                    },
+                    errorAlertDialogBuilders: [
+                      // todo: handle specific cases by error code
+//                          (context, error) => SimpleAlertDialog(
+//                          title: AppLocalizations.of(context)
+//                              .tr("app.status.post.dialog.error.title"),
+//                          content: AppLocalizations.of(context).tr(
+//                              "app.status.post.dialog.error.content",
+//                              args: [error.toString()]),
+//                          context: context)
+                    ],
+                    builder: (BuildContext context, onPressed) {
+                      return FlatButton(
+                        child: Text(
+                          AppLocalizations.of(context)
+                              .tr("app.account.my.edit.action.save"),
+                          style: TextStyle(
+                              color: isSomethingChanged
+                                  ? Colors.white
+                                  : Colors.white70),
+                        ),
+                        onPressed: isSomethingChanged ? onPressed : null,
+                      );
+                    },
                   );
                 }),
           ],

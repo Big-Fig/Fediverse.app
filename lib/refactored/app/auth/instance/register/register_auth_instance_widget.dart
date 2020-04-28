@@ -1,10 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/refactored/app/auth/instance/register/register_auth_instance_bloc.dart';
-import 'package:fedi/refactored/app/dialog/alert/my_alert_dialog.dart';
-import 'package:fedi/refactored/app/dialog/progress/indeterminate_progress_dialog.dart';
 import 'package:fedi/refactored/app/form/form_field_error_model.dart';
 import 'package:fedi/refactored/app/form/form_model.dart';
+import 'package:fedi/refactored/dialog/alert/base_alert_dialog.dart';
+import 'package:fedi/refactored/dialog/alert/simple_alert_dialog.dart';
+import 'package:fedi/refactored/dialog/async/async_dialog.dart';
+import 'package:fedi/refactored/dialog/progress/indeterminate_progress_dialog.dart';
 import 'package:fedi/refactored/pleroma/account/public/pleroma_account_public_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -129,51 +131,36 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
     final validEmail = bloc.emailField.value;
     final validPassword = bloc.passwordField.value;
 
-    var progressDialog = IndeterminateProgressDialog(
-        contentMessage: AppLocalizations.of(context)
-            .tr("app.auth.instance.register.progress.dialog.content"));
-    progressDialog.show(context);
 
-    var authApplicationBloc = AuthHostBloc.createFromContext(context,
-        instanceBaseUrl: instanceBaseUrl);
-    var success;
-    var e;
-    try {
-      success = await authApplicationBloc.registerAccount(
-          request: PleromaAccountRegisterRequest(
-              //todo: popup ToS before register
-              agreement: true,
-              email: validEmail,
-              // todo: add locale chooser
-              locale: "en",
-              password: validPassword,
-              username: validUsername));
-    } catch (error) {
-      e = error;
-    } finally {
-      progressDialog.hide(context);
-      authApplicationBloc.dispose();
-    }
-    if (success == true) {
-      var alert = MyAlertDialog(
-          title: AppLocalizations.of(context)
-              .tr("app.auth.instance.register.success.dialog.title"),
-          content: AppLocalizations.of(context)
-              .tr("app.auth.instance.register.success.dialog.content"));
-      alert.show(context);
-    } else {
-      // todo: handle error by type
-      showError(context, error: e.toString());
-    }
-  }
+    doAsyncOperationWithDialog(context: context, asyncCode: () async {
+        AuthHostBloc authApplicationBloc;
+      try {
+        authApplicationBloc = AuthHostBloc.createFromContext(context,
+            instanceBaseUrl: instanceBaseUrl);
 
-  showError(BuildContext context, {@required String error}) {
-    var alert = MyAlertDialog(
-        title: AppLocalizations.of(context)
-            .tr("app.auth.instance.register.success.dialog.title"),
-        content: AppLocalizations.of(context).tr(
-            "app.auth.instance.register.success.dialog.content",
-            args: [error]));
-    alert.show(context);
+        await authApplicationBloc.registerAccount(
+            request: PleromaAccountRegisterRequest(
+            //todo: popup ToS before register
+            agreement: true,
+            email: validEmail,
+            // todo: add locale chooser
+            locale: "en",
+            password: validPassword,
+            username: validUsername));
+      } finally {
+        authApplicationBloc?.dispose();
+      }
+
+    }, errorAlertDialogBuilders: [
+          (context, error) {
+        // todo: handle specific error
+        return SimpleAlertDialog(
+            title: AppLocalizations.of(context)
+                .tr("app.auth.instance.register.fail.dialog.title"),
+            content: AppLocalizations.of(context).tr(
+                "app.auth.instance.register.fail.dialog.content",
+                args: [error.toString()]), context: context);
+      }
+    ]);
   }
 }

@@ -131,41 +131,80 @@ class MyAccountRemoteWrapper extends IMyAccount {
 
   @override
   IAccount copyWith(
-      {int id,
-      String remoteId,
-      String username,
-      String url,
-      String note,
-      bool locked,
-      String headerStatic,
-      String header,
-      int followingCount,
-      int followersCount,
-      int statusesCount,
-      String displayName,
-      DateTime createdAt,
-      bool bot,
-      String avatarStatic,
-      String avatar,
-      String acct,
-      DateTime lastStatusAt,
-      List<PleromaField> fields,
-      List<PleromaEmoji> emojis,
-      List<PleromaTag> pleromaTags,
-      PleromaAccountRelationship pleromaRelationship,
-      bool pleromaIsAdmin,
-      bool pleromaIsModerator,
-      bool pleromaConfirmationPending,
-      bool pleromaHideFavorites,
-      bool pleromaHideFollowers,
-      bool pleromaHideFollows,
-      bool pleromaHideFollowersCount,
-      bool pleromaHideFollowsCount,
-      bool pleromaDeactivated,
-      bool pleromaAllowFollowingMove,
-      bool pleromaSkipThreadContainment}) {
-    throw UnsupportedError("Unsupported");
-  }
+          {String remoteId,
+          String username,
+          String url,
+          String note,
+          bool locked,
+          String headerStatic,
+          String header,
+          int followingCount,
+          int followersCount,
+          int statusesCount,
+          String displayName,
+          DateTime createdAt,
+          bool bot,
+          String avatarStatic,
+          String avatar,
+          String acct,
+          DateTime lastStatusAt,
+          List<PleromaField> fields,
+          List<PleromaEmoji> emojis,
+          List<PleromaTag> pleromaTags,
+          PleromaAccountRelationship pleromaRelationship,
+          bool pleromaIsAdmin,
+          bool pleromaIsModerator,
+          bool pleromaConfirmationPending,
+          bool pleromaHideFavorites,
+          bool pleromaHideFollowers,
+          bool pleromaHideFollows,
+          bool pleromaHideFollowersCount,
+          bool pleromaHideFollowsCount,
+          bool pleromaDeactivated,
+          bool pleromaAllowFollowingMove,
+          bool pleromaSkipThreadContainment}) =>
+      MyAccountRemoteWrapper(
+          remoteAccount: remoteAccount.copyWith(
+              id: remoteId,
+              username: username,
+              url: url,
+              note: note,
+              locked: locked,
+              headerStatic: headerStatic,
+              header: header,
+              followingCount: followingCount,
+              followersCount: followersCount,
+              statusesCount: statusesCount,
+              displayName: displayName,
+              createdAt: createdAt,
+              bot: bot,
+              avatarStatic: avatarStatic,
+              avatar: avatar,
+              acct: acct,
+              lastStatusAt: lastStatusAt,
+              fields: fields,
+              emojis: emojis,
+              pleroma: PleromaMyAccountPleromaPart(
+                  tags: pleromaTags ?? this.pleromaTags,
+                  relationship: pleromaRelationship ?? this.pleromaRelationship,
+                  isAdmin: pleromaIsAdmin ?? this.pleromaIsAdmin,
+                  isModerator: pleromaIsModerator ?? this.pleromaIsModerator,
+                  confirmationPending: pleromaConfirmationPending ??
+                      this.pleromaConfirmationPending,
+                  hideFavorites:
+                      pleromaHideFavorites ?? this.pleromaHideFavorites,
+                  hideFollowers:
+                      pleromaHideFollowers ?? this.pleromaHideFollowers,
+                  hideFollows: pleromaHideFollows ?? this.pleromaHideFollows,
+                  hideFollowersCount: pleromaHideFollowersCount ??
+                      this.pleromaHideFollowersCount,
+                  hideFollowsCount:
+                      pleromaHideFollowsCount ?? this.pleromaHideFollowsCount,
+                  deactivated: pleromaDeactivated ?? this.pleromaDeactivated,
+                  allowFollowingMove: pleromaAllowFollowingMove ??
+                      this.pleromaAllowFollowingMove,
+                  skipThreadContainment: pleromaSkipThreadContainment ??
+                      this.pleromaSkipThreadContainment)));
 
   @override
   String get pleromaChatToken => remoteAccount.pleroma?.chatToken;
@@ -178,4 +217,14 @@ class MyAccountRemoteWrapper extends IMyAccount {
   @override
   int get pleromaUnreadConversationCount =>
       remoteAccount.pleroma?.unreadConversationCount;
+}
+
+class SelfActionNotPossibleException implements Exception {
+  const SelfActionNotPossibleException();
+
+  @override
+  String toString() {
+    return 'SelfActionNotPossibleException: '
+        '"You cant retrieve or perform actions with yourself"';
+  }
 }

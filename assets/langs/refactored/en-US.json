@@ -29,7 +29,9 @@
           "unsaved": {
             "dialog": {
               "title": "You have unsaved changed",
-              "action": "Discard"
+              "action": {
+                "discard": "Discard"
+              }
             }
           },
           "field": {
@@ -82,11 +84,45 @@
         "title": "Select account"
       }
     },
+    "async": {
+      "pleroma": {
+        "error": {
+          "dialog": {
+            "title": "Pleroma API error",
+            "content": "Message: {}"
+          }
+        }
+      },
+      "socket": {
+        "error": {
+          "dialog": {
+            "title": "Socket error",
+            "content": "Check your connection: {}"
+          }
+        }
+      }
+    },
     "auth": {
       "instance": {
+        "logout": {
+          "dialog": {
+            "title": "Logging out",
+            "content": "Are you sure?"
+          }
+        },
+        "remove": {
+          "dialog": {
+            "title": "Logging out",
+            "content": "Are you sure?"
+          }
+        },
         "chooser": {
           "action": {
             "add_account": "Add account"
+          },
+          "dialog": {
+            "title": "Change active instance?",
+            "content": "Are you sure?"
           }
         },
         "current": {
@@ -266,8 +302,8 @@
             "hide_replies": {
               "label": "Hide replies"
             },
-            "only_nsfw": {
-              "label": "Only NSFW"
+            "hide_nsfw": {
+              "label": "Hide NSFW"
             }
           }
         }
@@ -357,6 +393,18 @@
         "title": "Reblogged by"
       },
       "post": {
+        "dialog": {
+          "async": {
+            "content": "Posting..."
+          },
+          "error": {
+            "title": "Status not posted",
+            "content": "Error: {}"
+          }
+        },
+        "toast": {
+          "success": "Status posted"
+        },
         "action": {
           "post": "Post"
         },
@@ -405,12 +453,6 @@
     }
   },
   "async": {
-    "dialog": {
-      "title": "Performing...",
-      "action": {
-        "cancel": "Cancel"
-      }
-    },
     "init": {
       "state": {
         "not_started": "Async init not started",
@@ -467,6 +509,10 @@
   "dialog": {
     "progress": {
       "content": "Loading..."
+    },
+    "error": {
+      "title": "Something wrong",
+      "content": "Please report about this error: {}"
     },
     "action": {
       "ok": "Ok",

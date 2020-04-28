@@ -29,7 +29,7 @@ class TimelinesHomeTabPageDrawerWidget extends StatelessWidget {
               drawerBloc.changeOnlyNoReplies),
           buildOptionListTile(
               AppLocalizations.of(context)
-                  .tr("app.timeline.display.settings.field.only_nsfw.label"),
+                  .tr("app.timeline.display.settings.field.hide_nsfw.label"),
               drawerBloc.onlyNoNsfwSensitiveStream,
               drawerBloc.onlyNoNsfwSensitive,
               drawerBloc.changeOnlyNoNsfwSensitive),

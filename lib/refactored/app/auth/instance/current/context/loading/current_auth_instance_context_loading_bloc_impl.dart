@@ -16,7 +16,7 @@ class CurrentAuthInstanceContextLoadingBloc extends DisposableOwner
 
   void refresh() {
     stateSubject.add(CurrentAuthInstanceContextLoadingState.loading);
-    myAccountBloc.requestRefreshFromNetwork().then((_) {
+    myAccountBloc.refreshFromNetwork().then((_) {
       if (myAccountBloc.isLocalCacheExist) {
         stateSubject
             .add(CurrentAuthInstanceContextLoadingState.localCacheExist);

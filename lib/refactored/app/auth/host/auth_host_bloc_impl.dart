@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fedi/refactored/app/auth/host/auth_host_access_token_local_preference_bloc.dart';
 import 'package:fedi/refactored/app/auth/host/auth_host_access_token_local_preference_bloc_impl.dart';
 import 'package:fedi/refactored/app/auth/host/auth_host_application_local_preference_bloc.dart';
@@ -136,46 +138,48 @@ class AuthHostBloc extends DisposableOwner implements IAuthHostBloc {
   }
 
   @override
-  Future<bool> launchLoginToAccount(
-      {@required AuthInstanceCallback successCallback, @required Function(
-          dynamic error) errorCallback}) async {
+  Future<AuthInstance> launchLoginToAccount() async {
     _logger.finest(() => "launchLoginToAccount");
     await checkApplicationRegistration();
-    return pleromaOAuthService.launchAuthorizeFormAndExtractAuthorizationCode(
+
+
+    var authCode = await pleromaOAuthService
+        .launchAuthorizeFormAndExtractAuthorizationCode(
         authorizeRequest: PleromaOAuthAuthorizeRequest(redirectUri: redirectUri,
             scope: scopes,
             forceLogin: true,
             clientId: hostApplication.clientId),
-        successCallback: (authCode) async {
-          var token = await pleromaOAuthService.retrieveAccountAccessToken(
-              tokenRequest: PleromaOAuthAccountTokenRequest(
-                redirectUri: redirectUri,
-                scope: scopes,
-                code: authCode,
-                clientSecret: hostApplication.clientSecret,
-                clientId: hostApplication.clientId,));
+    );
 
-          var restService = RestService(baseUrl: instanceBaseUrl);
-          var pleromaAuthRestService = PleromaAuthRestService(
-              accessToken: token.accessToken,
-              connectionService: connectionService,
-              restService: restService);
-          var pleromaMyAccountService = PleromaMyAccountService(
-              restService: pleromaAuthRestService);
+    var token = await pleromaOAuthService.retrieveAccountAccessToken(
+        tokenRequest: PleromaOAuthAccountTokenRequest(
+          redirectUri: redirectUri,
+          scope: scopes,
+          code: authCode,
+          clientSecret: hostApplication.clientSecret,
+          clientId: hostApplication.clientId,));
 
-          var myAccount = await pleromaMyAccountService.verifyCredentials();
+    var restService = RestService(baseUrl: instanceBaseUrl);
+    var pleromaAuthRestService = PleromaAuthRestService(
+        accessToken: token.accessToken,
+        connectionService: connectionService,
+        restService: restService);
+    var pleromaMyAccountService = PleromaMyAccountService(
+        restService: pleromaAuthRestService);
 
-          var instance = AuthInstance(
-              urlHost: instanceBaseUrlHost.toLowerCase(),
-              urlSchema: instanceBaseUrlSchema,
-              authCode: authCode,
-              token: token,
-              acct: myAccount.acct,
-              application: hostApplication,
-              isPleromaInstance: myAccount.pleroma != null);
-          currentInstanceBloc.changeCurrentInstance(instance);
-        },
-        errorCallback: errorCallback);
+    var myAccount = await pleromaMyAccountService.verifyCredentials();
+
+    var instance = AuthInstance(
+        urlHost: instanceBaseUrlHost.toLowerCase(),
+        urlSchema: instanceBaseUrlSchema,
+        authCode: authCode,
+        token: token,
+        acct: myAccount.acct,
+        application: hostApplication,
+        isPleromaInstance: myAccount.pleroma != null);
+    currentInstanceBloc.changeCurrentInstance(instance);
+
+    return instance;
   }
 
   @override

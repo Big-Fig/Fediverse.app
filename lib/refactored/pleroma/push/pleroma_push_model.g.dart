@@ -72,7 +72,7 @@ Map<String, dynamic> _$PleromaPushSubscribeRequestToJson(
 PleromaPushSubscription _$PleromaPushSubscriptionFromJson(
     Map<String, dynamic> json) {
   return PleromaPushSubscription(
-    id: json['id'] as String,
+    id: json['id'],
     endpoint: json['endpoint'] as String,
     alerts: json['alerts'] == null
         ? null

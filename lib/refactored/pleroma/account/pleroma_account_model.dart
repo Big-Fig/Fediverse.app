@@ -106,6 +106,67 @@ class PleromaAccount implements IPleromaAccount {
   Map<String, dynamic> toJson() => _$PleromaAccountToJson(this);
 
   String toJsonString() => jsonEncode(_$PleromaAccountToJson(this));
+
+  @override
+  String toString() {
+    return 'PleromaAccount{username: $username, url: $url,'
+        ' statusesCount: $statusesCount, note: $note, locked: $locked,'
+        ' id: $id, headerStatic: $headerStatic, header: $header,'
+        ' followingCount: $followingCount, followersCount: $followersCount,'
+        ' fields: $fields, emojis: $emojis, displayName: $displayName,'
+        ' createdAt: $createdAt, bot: $bot, avatarStatic: $avatarStatic,'
+        ' avatar: $avatar, acct: $acct, pleroma: $pleroma,'
+        ' lastStatusAt: $lastStatusAt}';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaAccount &&
+          runtimeType == other.runtimeType &&
+          username == other.username &&
+          url == other.url &&
+          statusesCount == other.statusesCount &&
+          note == other.note &&
+          locked == other.locked &&
+          id == other.id &&
+          headerStatic == other.headerStatic &&
+          header == other.header &&
+          followingCount == other.followingCount &&
+          followersCount == other.followersCount &&
+          fields == other.fields &&
+          emojis == other.emojis &&
+          displayName == other.displayName &&
+          createdAt == other.createdAt &&
+          bot == other.bot &&
+          avatarStatic == other.avatarStatic &&
+          avatar == other.avatar &&
+          acct == other.acct &&
+          pleroma == other.pleroma &&
+          lastStatusAt == other.lastStatusAt;
+
+  @override
+  int get hashCode =>
+      username.hashCode ^
+      url.hashCode ^
+      statusesCount.hashCode ^
+      note.hashCode ^
+      locked.hashCode ^
+      id.hashCode ^
+      headerStatic.hashCode ^
+      header.hashCode ^
+      followingCount.hashCode ^
+      followersCount.hashCode ^
+      fields.hashCode ^
+      emojis.hashCode ^
+      displayName.hashCode ^
+      createdAt.hashCode ^
+      bot.hashCode ^
+      avatarStatic.hashCode ^
+      avatar.hashCode ^
+      acct.hashCode ^
+      pleroma.hashCode ^
+      lastStatusAt.hashCode;
 }
 
 abstract class IPleromaAccountPleromaPart {
@@ -234,6 +295,45 @@ class PleromaAccountPleromaPart implements IPleromaAccountPleromaPart {
         ' deactivated: $deactivated, allowFollowingMove: $allowFollowingMove,'
         ' skipThreadContainment: $skipThreadContainment}';
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaAccountPleromaPart &&
+          runtimeType == other.runtimeType &&
+          backgroundImage == other.backgroundImage &&
+          tags == other.tags &&
+          relationship == other.relationship &&
+          isAdmin == other.isAdmin &&
+          isModerator == other.isModerator &&
+          confirmationPending == other.confirmationPending &&
+          hideFavorites == other.hideFavorites &&
+          hideFollowers == other.hideFollowers &&
+          hideFollows == other.hideFollows &&
+          hideFollowersCount == other.hideFollowersCount &&
+          hideFollowsCount == other.hideFollowsCount &&
+          chatToken == other.chatToken &&
+          deactivated == other.deactivated &&
+          allowFollowingMove == other.allowFollowingMove &&
+          skipThreadContainment == other.skipThreadContainment;
+
+  @override
+  int get hashCode =>
+      backgroundImage.hashCode ^
+      tags.hashCode ^
+      relationship.hashCode ^
+      isAdmin.hashCode ^
+      isModerator.hashCode ^
+      confirmationPending.hashCode ^
+      hideFavorites.hashCode ^
+      hideFollowers.hashCode ^
+      hideFollows.hashCode ^
+      hideFollowersCount.hashCode ^
+      hideFollowsCount.hashCode ^
+      chatToken.hashCode ^
+      deactivated.hashCode ^
+      allowFollowingMove.hashCode ^
+      skipThreadContainment.hashCode;
 }
 
 abstract class IPleromaAccountRelationship
@@ -283,6 +383,63 @@ class PleromaAccountRelationship implements IPleromaAccountRelationship {
     this.showingReblogs,
     this.subscribing,
   });
+
+  PleromaAccountRelationship copyWith(
+          {int id,
+          bool blocking,
+          bool domainBlocking,
+          bool endorsed,
+          bool followedBy,
+          bool following,
+          bool muting,
+          bool mutingNotifications,
+          bool requested,
+          bool showingReblogs,
+          bool subscribing}) =>
+      PleromaAccountRelationship(
+        id: id ?? this.id,
+        blocking: blocking ?? this.blocking,
+        domainBlocking: domainBlocking ?? this.domainBlocking,
+        endorsed: endorsed ?? this.endorsed,
+        followedBy: followedBy ?? this.followedBy,
+        following: following ?? this.following,
+        muting: muting ?? this.muting,
+        mutingNotifications: mutingNotifications ?? this.mutingNotifications,
+        requested: requested ?? this.requested,
+        showingReblogs: showingReblogs ?? this.showingReblogs,
+        subscribing: subscribing ?? this.subscribing,
+      );
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaAccountRelationship &&
+          runtimeType == other.runtimeType &&
+          blocking == other.blocking &&
+          domainBlocking == other.domainBlocking &&
+          endorsed == other.endorsed &&
+          followedBy == other.followedBy &&
+          following == other.following &&
+          id == other.id &&
+          muting == other.muting &&
+          mutingNotifications == other.mutingNotifications &&
+          requested == other.requested &&
+          showingReblogs == other.showingReblogs &&
+          subscribing == other.subscribing;
+
+  @override
+  int get hashCode =>
+      blocking.hashCode ^
+      domainBlocking.hashCode ^
+      endorsed.hashCode ^
+      followedBy.hashCode ^
+      following.hashCode ^
+      id.hashCode ^
+      muting.hashCode ^
+      mutingNotifications.hashCode ^
+      requested.hashCode ^
+      showingReblogs.hashCode ^
+      subscribing.hashCode;
 
   @override
   String toString() {
@@ -379,6 +536,23 @@ class PleromaAccountReportRequest implements IPleromaAccountReportRequest {
   @JsonKey(name: "status_ids")
   @override
   final List<String> statusIds;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaAccountReportRequest &&
+          runtimeType == other.runtimeType &&
+          accountId == other.accountId &&
+          comment == other.comment &&
+          forward == other.forward &&
+          statusIds == other.statusIds;
+
+  @override
+  int get hashCode =>
+      accountId.hashCode ^
+      comment.hashCode ^
+      forward.hashCode ^
+      statusIds.hashCode;
 
   PleromaAccountReportRequest(
       {@required this.accountId, this.comment, this.forward, this.statusIds});

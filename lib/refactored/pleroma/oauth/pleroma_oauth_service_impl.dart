@@ -64,10 +64,8 @@ class PleromaOAuthService extends DisposableOwner
   }
 
   @override
-  Future<bool> launchAuthorizeFormAndExtractAuthorizationCode(
-      {@required PleromaOAuthAuthorizeRequest authorizeRequest,
-      @required AuthorizationCodeSuccessCallback successCallback,
-      @required AuthorizationCodeErrorCallback errorCallback}) async {
+  Future<String> launchAuthorizeFormAndExtractAuthorizationCode(
+      {@required PleromaOAuthAuthorizeRequest authorizeRequest}) async {
     _logger.finest(() => "launchAuthorizeFormAndExtractAuthorizationCode");
     var host = restService.baseUrl;
     var baseUrl = join(oauthRelativeUrlPath, "authorize");
@@ -86,23 +84,27 @@ class PleromaOAuthService extends DisposableOwner
     _logger.finest(() => "launchAuthorizeFormAndExtractAuthorizationCode \n"
         "\t url = $url\n"
         "\t canLaunch=$isCanLaunch");
+
+    var completer =  Completer<String>();
     if (isCanLaunch) {
       StreamSubscription<Uri> subscription;
       subscription = getUriLinksStream().listen((Uri uri) {
         subscription.cancel();
         closeWebView();
         var code = uri.queryParameters['code'].toString();
-        successCallback(code);
+        completer.complete(code);
       }, onError: (e) {
         subscription.cancel();
         closeWebView();
-        errorCallback(e);
+        completer.completeError(e);
       });
       _logger.finest(() => "launch url=$url");
-      return await launch(url);
+      await launch(url);
     } else {
-      throw "Can't launch $url";
+      completer.completeError(Exception("Can't launch $url"));
     }
+
+    return completer.future;
   }
 
   @override

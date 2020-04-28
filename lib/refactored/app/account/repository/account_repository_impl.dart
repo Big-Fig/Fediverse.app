@@ -94,6 +94,9 @@ class AccountRepository extends AsyncInitLoadingBloc
       dao.getAllQuery().map(mapDataClassToItem).get();
 
   @override
+  Future<int> countAll() => dao.countAllQuery().getSingle();
+
+  @override
   Stream<List<DbAccountWrapper>> watchAll() =>
       dao.getAllQuery().map(mapDataClassToItem).watch();
 
@@ -132,7 +135,7 @@ class AccountRepository extends AsyncInitLoadingBloc
           .get();
 
       if (found?.isNotEmpty != true) {
-        conversationAccountsDao.insert(DbConversationAccount(
+        await conversationAccountsDao.insert(DbConversationAccount(
             id: null,
             conversationRemoteId: conversationRemoteId,
             accountRemoteId: accountRemoteId));
@@ -143,12 +146,12 @@ class AccountRepository extends AsyncInitLoadingBloc
 
   @override
   Future upsertRemoteAccounts(List<IPleromaAccount> remoteAccounts,
-      {@required conversationRemoteId}) async {
+      {@required String conversationRemoteId}) async {
     if (conversationRemoteId != null) {
       var existConversationAccount = await conversationAccountsDao
           .findByConversationRemoteId(conversationRemoteId);
 
-      var accountsToInsert = remoteAccounts.where((remoteAccount) {
+      var accountsToInsert = remoteAccounts?.where((remoteAccount) {
         var found = existConversationAccount.firstWhere(
             (conversationAccount) =>
                 conversationAccount.accountRemoteId == remoteAccount.id,
@@ -157,7 +160,7 @@ class AccountRepository extends AsyncInitLoadingBloc
         return !exist;
       });
 
-      if (accountsToInsert.isNotEmpty) {
+      if (accountsToInsert?.isNotEmpty == true) {
         conversationAccountsDao.insertAll(
             accountsToInsert
                 .map((accountToInsert) => DbConversationAccount(
@@ -169,7 +172,9 @@ class AccountRepository extends AsyncInitLoadingBloc
       }
     }
 
-    await upsertAll(remoteAccounts.map(mapRemoteAccountToDbAccount).toList());
+    if(remoteAccounts?.isNotEmpty == true) {
+      await upsertAll(remoteAccounts.map(mapRemoteAccountToDbAccount).toList());
+    }
   }
 
   @override
@@ -452,4 +457,36 @@ class AccountRepository extends AsyncInitLoadingBloc
             .toList(),
         InsertMode.insertOrReplace);
   }
+
+  @override
+  Future<List<IAccount>> getConversationAccounts(
+          {@required IConversation conversation}) =>
+      getAccounts(
+          searchQuery: null,
+          olderThanAccount: null,
+          newerThanAccount: null,
+          onlyInConversation: conversation,
+          onlyInStatusRebloggedBy: null,
+          onlyInStatusFavouritedBy: null,
+          onlyInAccountFollowers: null,
+          onlyInAccountFollowing: null,
+          limit: null,
+          offset: null,
+          orderingTermData: null);
+
+  @override
+  Stream<List<IAccount>> watchConversationAccounts(
+          {@required IConversation conversation}) =>
+      watchAccounts(
+          searchQuery: null,
+          olderThanAccount: null,
+          newerThanAccount: null,
+          onlyInConversation: conversation,
+          onlyInStatusRebloggedBy: null,
+          onlyInStatusFavouritedBy: null,
+          onlyInAccountFollowers: null,
+          onlyInAccountFollowing: null,
+          limit: null,
+          offset: null,
+          orderingTermData: null);
 }

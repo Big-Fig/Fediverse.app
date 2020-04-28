@@ -32,9 +32,9 @@ void goToAccountDetailsPage(BuildContext context, IAccount account) {
     MaterialPageRoute(
         builder: (context) => DisposableProvider<IAccountBloc>(
             create: (context) => AccountBloc.createFromContext(context,
-                needWatchLocalRepositoryForUpdates: true,
+                isNeedWatchLocalRepositoryForUpdates: true,
                 account: account,
-                needRefreshFromNetworkOnInit: false),
+                isNeedRefreshFromNetworkOnInit: false),
             child: AccountDetailsPage())),
   );
 }

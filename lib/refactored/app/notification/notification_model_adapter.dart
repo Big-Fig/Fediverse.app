@@ -16,10 +16,10 @@ INotification mapRemoteNotificationToLocalNotification(
         .dbStatusPopulated;
   }
   return DbNotificationPopulatedWrapper(DbNotificationPopulated(
-      notification: mapRemoteNotificationToDbNotification(remoteNotification,
+      dbNotification: mapRemoteNotificationToDbNotification(remoteNotification,
           unread: unread),
-      account: mapRemoteAccountToDbAccount(remoteNotification.account),
-      statusPopulated: statusPopulated));
+      dbAccount: mapRemoteAccountToDbAccount(remoteNotification.account),
+      dbStatusPopulated: statusPopulated));
 }
 
 DbNotification mapRemoteNotificationToDbNotification(
