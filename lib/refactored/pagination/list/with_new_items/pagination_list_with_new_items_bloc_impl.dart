@@ -12,8 +12,10 @@ abstract class PaginationListWithNewItemsBloc<
         TItem> extends PaginationListBloc<TPage, TItem>
     implements IPaginationListWithNewItemsBloc<TPage, TItem> {
   TItem get newerItem => items?.isNotEmpty == true ? items.first : null;
+
   Stream<TItem> get newerItemStream => itemsStream
       .map((items) => items?.isNotEmpty == true ? items.first : null);
+
   Stream<List<TItem>> watchItemsNewerThanItem(TItem item);
 
   @override
@@ -43,8 +45,9 @@ abstract class PaginationListWithNewItemsBloc<
         newItemsSubscription.cancel();
       }
 
-      newItemsSubscription =
-          watchItemsNewerThanItem(newerItem).listen((newItems) {
+      newItemsSubscription = watchItemsNewerThanItem(newerItem)
+          .skipWhile((newItems) => newItems?.isNotEmpty != true)
+          .listen((newItems) {
         _unmergedNewItemsSubject.add(newItems);
       });
 
@@ -62,21 +65,29 @@ abstract class PaginationListWithNewItemsBloc<
   }
 
   @override
-  List<TItem> get items => [...mergedNewItems, ...super.items];
+  List<TItem> get items => _calculateNewItems(super.items, mergedNewItems);
 
   @override
   Stream<List<TItem>> get itemsStream =>
       Rx.combineLatest2(mergedNewItemsStream, super.itemsStream,
           (mergedNewItems, items) {
-        if (items == null && mergedNewItems == null) {
-          return null;
-        }
-        if (items == null && mergedNewItems != null) {
-          return mergedNewItems;
-        } else {
-          return [...(mergedNewItems ?? []), ...items];
-        }
+        return _calculateNewItems(items, mergedNewItems);
       });
+
+  List<TItem> _calculateNewItems(items, mergedNewItems) {
+    if (items == null && mergedNewItems == null) {
+      return null;
+    }
+    if (items == null) {
+      if (mergedNewItems?.isNotEmpty == true) {
+        return mergedNewItems;
+      } else {
+        return null;
+      }
+    } else {
+      return [...(mergedNewItems ?? []), ...items];
+    }
+  }
 
   bool get isHaveUnmergedNewItems => unmergedNewItemsCount > 0;
 
