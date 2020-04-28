@@ -1,9 +1,8 @@
 import 'package:fedi/refactored/app/account/my/action/my_account_action_list_bottom_sheet_dialog.dart';
 import 'package:fedi/refactored/app/account/my/avatar/my_account_avatar_widget.dart';
 import 'package:fedi/refactored/app/home/home_model.dart';
-import 'package:fedi/refactored/app/home/tab/account/account_home_tab_page.dart';
-import 'package:fedi/refactored/app/home/tab/conversations/conversations_home_tab_bloc.dart';
-import 'package:fedi/refactored/app/home/tab/conversations/conversations_home_tab_bloc_impl.dart';
+import 'package:fedi/refactored/app/home/tab/account/account_home_tab_page'
+    '.dart';
 import 'package:fedi/refactored/app/home/tab/conversations/conversations_home_tab_page.dart';
 import 'package:fedi/refactored/app/home/tab/notifications/notifications_home_tab_page.dart';
 import 'package:fedi/refactored/app/home/tab/timelines/timelines_home_tab_page.dart';
@@ -130,10 +129,9 @@ class _HomePageState extends State<HomePage>
             key: PageStorageKey<String>("NotificationsHomeTabPage"));
         break;
       case AppHomeTab.conversations:
-        return DisposableProvider<IConversationsHomeTabBloc>(
-            create: (context) =>
-                ConversationsHomeTabBloc.createFromContext(context),
-            child: ConversationsHomeTabPage());
+        return ConversationsHomeTabPage(
+            key: PageStorageKey<String>("ConversationsHomeTabPage")
+        );
         break;
       case AppHomeTab.account:
         return AccountHomeTabPage();

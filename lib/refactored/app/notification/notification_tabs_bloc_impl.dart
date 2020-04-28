@@ -69,10 +69,10 @@ class NotificationsTabsBloc extends DisposableOwner
 
     addDisposable(
         disposable: MyNotificationsWebSocketsHandler(
-      pleromaWebSocketsService: pleromaWebSocketsService,
       conversationRepository: conversationRepository,
-      notificationRepository: notificationRepository,
       statusRepository: statusRepository,
+      notificationRepository: notificationRepository,
+      pleromaWebSocketsService: pleromaWebSocketsService,
     ));
 
     _logger.finest(() => "constructor");

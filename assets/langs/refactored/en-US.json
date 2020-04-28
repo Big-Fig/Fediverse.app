@@ -257,6 +257,9 @@
             "home": "Home",
             "local": "Local"
           }
+        },
+        "conversations": {
+          "title": "Messages"
         }
       }
     },

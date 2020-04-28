@@ -5,6 +5,7 @@ import 'package:fedi/refactored/app/websockets/web_sockets_handler_impl.dart';
 import 'package:fedi/refactored/pleroma/websockets/pleroma_websockets_service.dart';
 import 'package:flutter/widgets.dart';
 
+// todo: why we need this additional conversation channel?
 class AccountConversationsWebSocketsHandler extends WebSocketsChannelHandler {
   AccountConversationsWebSocketsHandler({
     @required IPleromaWebSocketsService pleromaWebSocketsService,
