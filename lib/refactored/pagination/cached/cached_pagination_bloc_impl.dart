@@ -16,13 +16,13 @@ abstract class CachedPaginationBloc<TPage extends CachedPaginationPage<TItem>,
 
   @override
   Future<TPage> loadPage({
-    @required bool forceToUpdateFromNetwork,
+    @required bool forceToSkipCache,
     @required int pageIndex,
     @required TPage previousPage,
     @required TPage nextPage,
   }) async {
     var isActuallyRefreshed;
-    if (forceToUpdateFromNetwork) {
+    if (forceToSkipCache) {
       if (isPossibleToLoadFromNetwork) {
         isActuallyRefreshed = await refreshItemsFromRemoteForPage(
             pageIndex: pageIndex,
@@ -42,7 +42,7 @@ abstract class CachedPaginationBloc<TPage extends CachedPaginationPage<TItem>,
         olderPage: nextPage,
         newerPage: previousPage);
 
-    if(forceToUpdateFromNetwork && !isActuallyRefreshed) {
+    if(forceToSkipCache && !isActuallyRefreshed) {
       return null;
     }
 

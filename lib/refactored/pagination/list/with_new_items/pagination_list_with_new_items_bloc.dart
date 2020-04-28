@@ -10,8 +10,8 @@ abstract class IPaginationListWithNewItemsBloc<
           {bool listen = true}) =>
       Provider.of<IPaginationListWithNewItemsBloc>(context, listen: listen);
 
-
   TItem get newerItem;
+
   Stream<TItem> get newerItemStream;
 
   List<TItem> get unmergedNewItems;
