@@ -2,7 +2,6 @@ import 'package:fedi/refactored/app/conversation/conversation_bloc.dart';
 import 'package:fedi/refactored/app/conversation/conversation_bloc_impl.dart';
 import 'package:fedi/refactored/app/conversation/conversation_model.dart';
 import 'package:fedi/refactored/app/conversation/list/conversation_list_item_widget.dart';
-import 'package:fedi/refactored/app/conversation/pagination/list/conversation_pagination_list_bloc.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:fedi/refactored/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/refactored/pagination/list/pagination_list_widget.dart';
@@ -51,8 +50,10 @@ class ConversationListWidget extends PaginationListWidget<IConversation> {
   IPaginationListBloc<PaginationPage<IConversation>, IConversation>
       retrievePaginationListBloc(BuildContext context,
           {@required bool listen}) {
-    IConversationPaginationListBloc paginationListBloc =
-        IConversationPaginationListBloc.of(context, listen: listen);
+    var paginationListBloc = Provider.of<
+            IPaginationListBloc<PaginationPage<IConversation>, IConversation>>(
+        context,
+        listen: listen);
     return paginationListBloc;
   }
 }

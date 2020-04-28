@@ -6,22 +6,25 @@ import 'package:fedi/refactored/pleroma/websockets/pleroma_websockets_service.da
 import 'package:flutter/widgets.dart';
 
 class MyAccountConversationsWebSocketsHandler extends WebSocketsChannelHandler {
-  MyAccountConversationsWebSocketsHandler({
-    @required IPleromaWebSocketsService pleromaWebSocketsService,
-    @required IStatusRepository statusRepository,
-    @required INotificationRepository notificationRepository,
-    @required IConversationRepository conversationRepository,
-  }) : super(
+  MyAccountConversationsWebSocketsHandler(
+      {@required IPleromaWebSocketsService pleromaWebSocketsService,
+      @required IStatusRepository statusRepository,
+      @required INotificationRepository notificationRepository,
+      @required IConversationRepository conversationRepository,
+      @required String accountId})
+      : super(
           webSocketsChannel:
-              pleromaWebSocketsService.getDirectChannel(accountId: null),
+              pleromaWebSocketsService.getDirectChannel(accountId: accountId),
           statusRepository: statusRepository,
           notificationRepository: notificationRepository,
           conversationRepository: conversationRepository,
         );
 
   static MyAccountConversationsWebSocketsHandler createFromContext(
-          BuildContext context) =>
+          BuildContext context,
+          {@required String accountId}) =>
       MyAccountConversationsWebSocketsHandler(
+        accountId: accountId,
         pleromaWebSocketsService:
             IPleromaWebSocketsService.of(context, listen: false),
         notificationRepository:

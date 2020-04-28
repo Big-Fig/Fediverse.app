@@ -1,23 +1,21 @@
 import 'package:fedi/refactored/app/conversation/conversation_model.dart';
-import 'package:fedi/refactored/app/conversation/list/conversation_list_service.dart';
+import 'package:fedi/refactored/app/conversation/list/cached/conversation_cached_list_service.dart';
 import 'package:fedi/refactored/app/conversation/repository/conversation_repository.dart';
 import 'package:fedi/refactored/app/conversation/repository/conversation_repository_model.dart';
-import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:fedi/refactored/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/refactored/pleroma/conversation/pleroma_conversation_model.dart';
 import 'package:fedi/refactored/pleroma/conversation/pleroma_conversation_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-import 'package:moor/moor.dart';
+import 'package:moor_flutter/moor_flutter.dart';
 
-var _logger = Logger("conversation_list_service_impl.dart.dart");
+var _logger = Logger("conversation_cached_list_service_impl.dart");
 
-class ConversationListService extends DisposableOwner
-    implements IConversationListService {
+class ConversationCachedListService extends IConversationCachedListService {
   final IPleromaConversationService pleromaConversationService;
   final IConversationRepository conversationRepository;
 
-  ConversationListService(
+  ConversationCachedListService(
       {@required this.pleromaConversationService,
       @required this.conversationRepository});
 
@@ -27,18 +25,18 @@ class ConversationListService extends DisposableOwner
   @override
   Future<bool> refreshItemsFromRemoteForPage(
       {@required int limit,
-      @required IConversation newerThanConversation,
-      @required IConversation olderThanConversation}) async {
+      @required IConversation newerThan,
+      @required IConversation olderThan}) async {
     _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
-        "\t newerThanConversation = $newerThanConversation"
-        "\t olderThanConversation = $olderThanConversation");
+        "\t newerThan = $newerThan"
+        "\t olderThan = $olderThan");
 
     try {
       List<IPleromaConversation> remoteConversations;
 
       remoteConversations = await pleromaConversationService.getConversations(
-          maxId: olderThanConversation?.remoteId,
-          sinceId: newerThanConversation?.remoteId,
+          maxId: olderThan?.remoteId,
+          sinceId: newerThan?.remoteId,
           limit: limit);
 
       if (remoteConversations != null) {
@@ -61,23 +59,35 @@ class ConversationListService extends DisposableOwner
   @override
   Future<List<IConversation>> loadLocalItems(
       {@required int limit,
-      @required IConversation newerThanConversation,
-      @required IConversation olderThanConversation}) async {
+      @required IConversation newerThan,
+      @required IConversation olderThan}) async {
     _logger.finest(() => "start loadLocalItems \n"
-        "\t newerThanConversation=$newerThanConversation"
-        "\t olderThanConversation=$olderThanConversation");
+        "\t newerThan=$newerThan"
+        "\t olderThan=$olderThan");
 
     var conversations = await conversationRepository.getConversations(
-        olderThanConversation: olderThanConversation,
-        newerThanConversation: newerThanConversation,
+        olderThan: olderThan,
+        newerThan: newerThan,
         limit: limit,
         offset: null,
         orderingTermData: ConversationOrderingTermData(
             orderingMode: OrderingMode.desc,
-            orderByType: ConversationOrderByType.remoteId), withAccount: null);
+            orderByType: ConversationOrderByType.remoteId));
 
     _logger.finer(
         () => "finish loadLocalItems conversations ${conversations.length}");
     return conversations;
   }
+
+  @override
+  Stream<List<IConversation>> watchLocalItemsNewerThanItem(
+          IConversation item) =>
+      conversationRepository.watchConversations(
+          olderThan: null,
+          newerThan: item,
+          limit: null,
+          offset: null,
+          orderingTermData: ConversationOrderingTermData(
+              orderingMode: OrderingMode.desc,
+              orderByType: ConversationOrderByType.remoteId));
 }
