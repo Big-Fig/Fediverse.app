@@ -3,25 +3,25 @@ import 'package:fedi/refactored/app/notification/repository/notification_reposit
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/app/websockets/web_sockets_handler_impl.dart';
 import 'package:fedi/refactored/pleroma/websockets/pleroma_websockets_service.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 
-class PublicTimelineWebSocketsHandler extends WebSocketsChannelHandler {
-  PublicTimelineWebSocketsHandler({
-    @required   IPleromaWebSocketsService pleromaWebSocketsService,
-    @required   IStatusRepository statusRepository,
-    @required   INotificationRepository notificationRepository,
-    @required   IConversationRepository conversationRepository,
+class MyAccountConversationsWebSocketsHandler extends WebSocketsChannelHandler {
+  MyAccountConversationsWebSocketsHandler({
+    @required IPleromaWebSocketsService pleromaWebSocketsService,
+    @required IStatusRepository statusRepository,
+    @required INotificationRepository notificationRepository,
+    @required IConversationRepository conversationRepository,
   }) : super(
-          webSocketsChannel: pleromaWebSocketsService.getPublicChannel(
-              local: false, onlyMedia: false),
+          webSocketsChannel:
+              pleromaWebSocketsService.getDirectChannel(accountId: null),
           statusRepository: statusRepository,
           notificationRepository: notificationRepository,
           conversationRepository: conversationRepository,
         );
 
-  static PublicTimelineWebSocketsHandler createFromContext(
+  static MyAccountConversationsWebSocketsHandler createFromContext(
           BuildContext context) =>
-      PublicTimelineWebSocketsHandler(
+      MyAccountConversationsWebSocketsHandler(
         pleromaWebSocketsService:
             IPleromaWebSocketsService.of(context, listen: false),
         notificationRepository:

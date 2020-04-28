@@ -5,8 +5,6 @@ import 'package:fedi/refactored/app/home/tab/account/account_home_tab_page.dart'
 import 'package:fedi/refactored/app/home/tab/conversations/conversations_home_tab_bloc.dart';
 import 'package:fedi/refactored/app/home/tab/conversations/conversations_home_tab_bloc_impl.dart';
 import 'package:fedi/refactored/app/home/tab/conversations/conversations_home_tab_page.dart';
-import 'package:fedi/refactored/app/home/tab/notifications/notifications_home_tab_bloc.dart';
-import 'package:fedi/refactored/app/home/tab/notifications/notifications_home_tab_bloc_impl.dart';
 import 'package:fedi/refactored/app/home/tab/notifications/notifications_home_tab_page.dart';
 import 'package:fedi/refactored/app/home/tab/timelines/timelines_home_tab_page.dart';
 import 'package:fedi/refactored/app/notification/unread/notification_unread_all_badge_count_widget.dart';
@@ -128,10 +126,8 @@ class _HomePageState extends State<HomePage>
         );
         break;
       case AppHomeTab.notifications:
-        return DisposableProvider<INotificationsHomeTabBloc>(
-            create: (context) =>
-                NotificationsHomeTabBloc.createFromContext(context),
-            child: NotificationsHomeTabPage());
+        return NotificationsHomeTabPage(
+            key: PageStorageKey<String>("NotificationsHomeTabPage"));
         break;
       case AppHomeTab.conversations:
         return DisposableProvider<IConversationsHomeTabBloc>(

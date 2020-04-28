@@ -1,6 +1,8 @@
 import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
 import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/refactored/app/conversation/repository/conversation_repository.dart';
+import 'package:fedi/refactored/app/notification/repository/notification_repository.dart';
 import 'package:fedi/refactored/app/status/list/cached/status_cached_list_service.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/app/timeline/home/home_timeline_service_impl.dart';
@@ -9,7 +11,6 @@ import 'package:fedi/refactored/app/timeline/local_preferences/timeline_local_pr
 import 'package:fedi/refactored/app/timeline/tab/timeline_tab_bloc_impl.dart';
 import 'package:fedi/refactored/app/timeline/tab/timeline_tab_model.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_service.dart';
-
 import 'package:fedi/refactored/pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:fedi/refactored/pleroma/websockets/pleroma_websockets_service.dart';
 import 'package:flutter/widgets.dart';
@@ -22,16 +23,19 @@ class HomeTimelineTabBloc extends TimelineTabBloc
   final IPleromaAccountService pleromaAccountService;
   final IStatusRepository statusRepository;
   final IAccountRepository accountRepository;
+  final IConversationRepository conversationRepository;
+  final INotificationRepository notificationRepository;
   final ICurrentAuthInstanceBloc currentInstanceBloc;
   final ITimelineLocalPreferencesBloc timelineLocalPreferencesBloc;
   final IMyAccountBloc myAccountBloc;
-  final IPleromaWebSocketsService
-  pleromaWebSocketsService;
+  final IPleromaWebSocketsService pleromaWebSocketsService;
 
   HomeTimelineTabBloc(
       {@required this.pleromaTimelineService,
       @required this.pleromaAccountService,
       @required this.statusRepository,
+      @required this.conversationRepository,
+      @required this.notificationRepository,
       @required this.accountRepository,
       @required this.currentInstanceBloc,
       @required this.myAccountBloc,
@@ -39,10 +43,12 @@ class HomeTimelineTabBloc extends TimelineTabBloc
       @required this.pleromaWebSocketsService})
       : super(tab: TimelineTab.home) {
     addDisposable(
-        disposable: HomeTimelineStatusWebSocketsHandler(
-            pleromaWebSocketsService:
-                pleromaWebSocketsService,
-            statusRepository: statusRepository));
+        disposable: HomeTimelineWebSocketsHandler(
+      pleromaWebSocketsService: pleromaWebSocketsService,
+      statusRepository: statusRepository,
+      conversationRepository: conversationRepository,
+      notificationRepository: notificationRepository,
+    ));
   }
 
   @override
