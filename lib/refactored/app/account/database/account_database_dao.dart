@@ -49,10 +49,10 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
         alias(db.dbConversationAccounts, _conversationAccountsAliasId);
   }
 
-  Future<int> insert(Insertable<DbAccount> entity) async =>
+  Future<int> insert(Insertable<DbAccount> entity) =>
       into(dbAccounts).insert(entity);
 
-  Future<int> upsert(Insertable<DbAccount> entity) async =>
+  Future<int> upsert(Insertable<DbAccount> entity) =>
       into(dbAccounts).insert(entity, mode: InsertMode.insertOrReplace);
 
   Future insertAll(
@@ -196,18 +196,20 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
         ..where(CustomExpression<bool, BoolType>(
             "$_statusRebloggedAccounts.status_remote_id"
             " = '$statusRemoteId'"));
+  // todo: rework with single relationship table
   JoinedSelectStatement addFollowingsWhere(
           JoinedSelectStatement query, String followingAccountRemoteId) =>
       query
         ..where(CustomExpression<bool, BoolType>(
-            "$_accountFollowingsAliasId.followings_account_remote_id"
+            "$_accountFollowingsAliasId.account_remote_id"
             " = '$followingAccountRemoteId'"));
 
+  // todo: rework with single relationship table
   JoinedSelectStatement addFollowersWhere(
           JoinedSelectStatement query, String followerAccountRemoteId) =>
       query
         ..where(CustomExpression<bool, BoolType>(
-            "$_accountFollowersAliasId.follower_account_remote_id"
+            "$_accountFollowersAliasId.account_remote_id"
             " = '$followerAccountRemoteId'"));
 
   List<DbAccount> typedResultListToPopulated(List<TypedResult> typedResult) {

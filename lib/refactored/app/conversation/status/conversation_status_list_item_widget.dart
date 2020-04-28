@@ -1,11 +1,11 @@
 import 'package:fedi/refactored/app/account/avatar/account_avatar_widget.dart';
 import 'package:fedi/refactored/app/account/details/account_details_page.dart';
+import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
 import 'package:fedi/refactored/app/status/action/status_favourite_action_widget.dart';
 import 'package:fedi/refactored/app/status/card/status_card_widget.dart';
 import 'package:fedi/refactored/app/status/content/status_content_without_accounts_widget.dart';
 import 'package:fedi/refactored/app/status/media/status_media_attachments_widget.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
-import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +14,9 @@ class ConversationStatusListItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     IStatusBloc statusBloc = IStatusBloc.of(context, listen: true);
 
-    if (statusBloc.isFromMyAccount) {
+    var myAccountBloc = IMyAccountBloc.of(context, listen: true);
+
+    if (myAccountBloc.checkIsStatusFromMe(statusBloc.status)) {
       return buildFromMeBody(context, statusBloc);
     } else {
       return buildNotFromMeBody(context, statusBloc);

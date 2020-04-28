@@ -31,7 +31,7 @@ class AccountDetailsWidget extends StatelessWidget {
           child: AccountStatusesWidget(
             header: AccountWidget(),
             alwaysShowHeader: true,
-            additionalRefreshAction: accountBloc.requestRefreshFromNetwork,
+            additionalRefreshAction: accountBloc.refreshFromNetwork,
             key: PageStorageKey(
                 "AccountDetailsWidget.${accountBloc.account.remoteId}"),
           ),

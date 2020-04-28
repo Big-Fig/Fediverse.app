@@ -1,0 +1,9 @@
+import 'package:fedi/refactored/app/account/database/account_database_model.dart';
+import 'package:fedi/refactored/app/status/database/status_database_model.dart';
+import 'package:fedi/refactored/app/conversation/database/conversation_database_model.dart';
+import 'package:fedi/refactored/app/notification/database/notification_database_model.dart';
+
+CREATE INDEX status_remote_id_index ON db_statuses (remote_id);
+CREATE INDEX account_remote_id_index ON db_accounts (remote_id);
+CREATE INDEX conversation_remote_id_index ON db_conversations (remote_id);
+CREATE INDEX notification_remote_id_index ON db_notifications (remote_id);

@@ -35,8 +35,7 @@ abstract class IConversationRepository
       @required ConversationOrderingTermData orderingTermData});
 
   Stream<List<DbConversationWrapper>> watchConversations(
-      {@required IAccount withAccount,
-      @required IConversation olderThanConversation,
+      {@required IConversation olderThanConversation,
       @required IConversation newerThanConversation,
       @required int limit,
       @required int offset,
@@ -57,4 +56,7 @@ abstract class IConversationRepository
   Future updateLocalConversationByRemoteConversation(
       {@required IConversation oldLocalConversation,
       @required IPleromaConversation newRemoteConversation});
+
+  Future<IConversation> findConversationWithAccount(
+      {@required IAccount account});
 }

@@ -28,9 +28,9 @@ class ConversationAccountsWidget extends StatelessWidget {
               itemCount: items.length,
               itemBuilder: (context, index) => DisposableProvider<IAccountBloc>(
                   create: (context) => AccountBloc.createFromContext(context,
-                      needWatchLocalRepositoryForUpdates: false,
+                      isNeedWatchLocalRepositoryForUpdates: false,
                       account: items[index],
-                      needRefreshFromNetworkOnInit: false),
+                      isNeedRefreshFromNetworkOnInit: false),
                   child: AccountListItemWidget(
                     accountSelectedCallback: (IAccount account) {
                       goToAccountDetailsPage(context, account);

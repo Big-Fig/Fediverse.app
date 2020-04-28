@@ -6,7 +6,7 @@ import 'package:fedi/refactored/pleroma/account/my/pleroma_my_account_model.dart
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IMyAccountBloc implements IAccountBloc {
+abstract class IMyAccountBloc extends IAccountBloc {
   static IMyAccountBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IMyAccountBloc>(context, listen: listen);
 
@@ -16,9 +16,7 @@ abstract class IMyAccountBloc implements IAccountBloc {
 
   bool checkAccountIsMe(IAccount account);
 
-  bool checkStatusIsFromMe(IStatus status);
+  bool checkIsStatusFromMe(IStatus status);
 
   updateMyAccountByRemote(IPleromaMyAccount remoteMyAccount);
-
-  List<IAccount> excludeMyAccountFromList(List<IAccount> accounts);
 }

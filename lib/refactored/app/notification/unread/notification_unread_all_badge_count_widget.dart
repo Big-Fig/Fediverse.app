@@ -11,6 +11,6 @@ class NotificationUnreadAllBadgeCountWidget
   Stream<int> retrieveUnreadBadgeCountStream(BuildContext context) {
     var notificationRepository =
         INotificationRepository.of(context, listen: false);
-    return notificationRepository.watchUnreadAll();
+    return notificationRepository.watchUnreadCountAnyType();
   }
 }

@@ -32,7 +32,7 @@ abstract class IStatusRepository
   Future upsertRemoteStatus(IPleromaStatus remoteStatus,
       {@required String listRemoteId, @required String conversationRemoteId});
 
-  Future<List<DbStatusPopulatedWrapper>> getStatuses(
+  Future<List<IStatus>> getStatuses(
       {@required String onlyInListWithRemoteId,
       @required String onlyWithHashtag,
       @required IAccount onlyFromAccountsFollowingByAccount,
@@ -50,7 +50,7 @@ abstract class IStatusRepository
       @required int offset,
       @required StatusOrderingTermData orderingTermData});
 
-  Stream<List<DbStatusPopulatedWrapper>> watchStatuses(
+  Stream<List<IStatus>> watchStatuses(
       {@required String onlyInListWithRemoteId,
       @required String onlyWithHashtag,
       @required IAccount onlyFromAccountsFollowingByAccount,
@@ -68,7 +68,7 @@ abstract class IStatusRepository
       @required int offset,
       @required StatusOrderingTermData orderingTermData});
 
-  Future<DbStatusPopulatedWrapper> getStatus(
+  Future<IStatus> getStatus(
       {@required String onlyInListWithRemoteId,
       @required String onlyWithHashtag,
       @required IAccount onlyFromAccountsFollowingByAccount,
@@ -84,7 +84,7 @@ abstract class IStatusRepository
       @required bool onlyNoReplies,
       @required StatusOrderingTermData orderingTermData});
 
-  Stream<DbStatusPopulatedWrapper> watchStatus(
+  Stream<IStatus> watchStatus(
       {@required String onlyInListWithRemoteId,
       @required String onlyWithHashtag,
       @required IAccount onlyFromAccountsFollowingByAccount,
@@ -99,4 +99,11 @@ abstract class IStatusRepository
       @required bool onlyNoNsfwSensitive,
       @required bool onlyNoReplies,
       @required StatusOrderingTermData orderingTermData});
+
+  Stream<IStatus> watchConversationLastStatus(
+      {@required IConversation conversation});
+
+
+  Future<IStatus> getConversationLastStatus(
+      {@required IConversation conversation});
 }

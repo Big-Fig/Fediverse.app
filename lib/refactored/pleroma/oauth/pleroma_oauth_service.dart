@@ -10,10 +10,8 @@ abstract class IPleromaOAuthService extends IPleromaApi {
   static IPleromaOAuthService of(BuildContext context, {bool listen = true}) =>
       Provider.of<IPleromaOAuthService>(context, listen: listen);
 
-  Future<bool> launchAuthorizeFormAndExtractAuthorizationCode(
-      {@required PleromaOAuthAuthorizeRequest authorizeRequest,
-      @required AuthorizationCodeSuccessCallback successCallback,
-      @required AuthorizationCodeErrorCallback errorCallback});
+  Future<String> launchAuthorizeFormAndExtractAuthorizationCode(
+      {@required PleromaOAuthAuthorizeRequest authorizeRequest});
 
   Future<PleromaOAuthToken> retrieveAccountAccessToken(
       {@required PleromaOAuthAccountTokenRequest tokenRequest});

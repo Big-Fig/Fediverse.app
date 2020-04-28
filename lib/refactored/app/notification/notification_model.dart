@@ -18,6 +18,15 @@ abstract class INotification {
   IAccount get account;
 
   MastodonNotificationType get type;
+
+  INotification copyWith(
+      {int localId,
+      String remoteId,
+      bool unread,
+      DateTime createdAt,
+      IStatus status,
+      IAccount account,
+      MastodonNotificationType type});
 }
 
 class DbNotificationPopulatedWrapper implements INotification {
@@ -26,44 +35,75 @@ class DbNotificationPopulatedWrapper implements INotification {
   DbNotificationPopulatedWrapper(this.dbNotificationPopulated);
 
   @override
-  IAccount get account => DbAccountWrapper(dbNotificationPopulated.account);
+  IAccount get account => DbAccountWrapper(dbNotificationPopulated.dbAccount);
 
   @override
-  DateTime get createdAt => dbNotificationPopulated.notification.createdAt;
+  DateTime get createdAt => dbNotificationPopulated.dbNotification.createdAt;
 
   @override
-  int get localId => dbNotificationPopulated.notification.id;
+  int get localId => dbNotificationPopulated.dbNotification.id;
 
   @override
-  String get remoteId => dbNotificationPopulated.notification.remoteId;
+  String get remoteId => dbNotificationPopulated.dbNotification.remoteId;
 
   @override
   MastodonNotificationType get type =>
-      dbNotificationPopulated.notification.type;
+      dbNotificationPopulated.dbNotification.type;
 
   @override
-  IStatus get status => dbNotificationPopulated.statusPopulated != null
-      ? DbStatusPopulatedWrapper(dbNotificationPopulated.statusPopulated)
+  IStatus get status => dbNotificationPopulated.dbStatusPopulated != null
+      ? DbStatusPopulatedWrapper(dbNotificationPopulated.dbStatusPopulated)
       : null;
 
   @override
-  bool get unread => dbNotificationPopulated.notification.unread == true;
+  bool get unread => dbNotificationPopulated.dbNotification.unread == true;
+
+  @override
+  DbNotificationPopulatedWrapper copyWith(
+          {int localId,
+          String remoteId,
+          bool unread,
+          DateTime createdAt,
+          IStatus status,
+          IAccount account,
+          MastodonNotificationType type}) =>
+      DbNotificationPopulatedWrapper(DbNotificationPopulated(
+          dbNotification: dbNotificationPopulated.dbNotification.copyWith(
+            id: localId ?? this.localId,
+            remoteId: remoteId ?? this.remoteId,
+            unread: unread ?? this.unread,
+            createdAt: createdAt ?? this.createdAt,
+            type: type ?? this.type,
+          ),
+          dbAccount: dbAccountFromAccount(account) ??
+              dbNotificationPopulated.dbAccount,
+          dbStatusPopulated: dbNotificationPopulated.dbStatusPopulated.copyWith(
+              status: dbStatusFromStatus(status) ??
+                  dbNotificationPopulated.dbStatusPopulated.dbStatus,
+              account: dbAccountFromAccount(status?.account) ??
+                  dbNotificationPopulated.dbStatusPopulated.dbAccount,
+              reblogDbStatus: dbStatusFromStatus(status?.reblog) ??
+                  dbNotificationPopulated.dbStatusPopulated.reblogDbStatus,
+              reblogDbStatusAccount:
+                  dbAccountFromAccount(status?.reblog?.account) ??
+                      dbNotificationPopulated
+                          .dbStatusPopulated.reblogDbStatusAccount)));
 }
 
 class DbNotificationPopulated {
-  final DbNotification notification;
-  final DbAccount account;
-  final DbStatusPopulated statusPopulated;
+  final DbNotification dbNotification;
+  final DbAccount dbAccount;
+  final DbStatusPopulated dbStatusPopulated;
 
   DbNotificationPopulated(
-      {@required this.notification,
-      @required this.account,
-      @required this.statusPopulated});
+      {@required this.dbNotification,
+      @required this.dbAccount,
+      @required this.dbStatusPopulated});
 
   @override
   String toString() {
-    return 'DbNotificationPopulated{notification: $notification,'
-        ' account: $account, statusPopulated: $statusPopulated}';
+    return 'DbNotificationPopulated{dbNotification: $dbNotification,'
+        ' dbAccount: $dbAccount, dbStatusPopulated: $dbStatusPopulated}';
   }
 
   @override
@@ -71,10 +111,11 @@ class DbNotificationPopulated {
       identical(this, other) ||
       other is DbNotificationPopulated &&
           runtimeType == other.runtimeType &&
-          notification == other.notification &&
-          account == other.account &&
-          statusPopulated == other.statusPopulated;
+          dbNotification == other.dbNotification &&
+          dbAccount == other.dbAccount &&
+          dbStatusPopulated == other.dbStatusPopulated;
+
   @override
   int get hashCode =>
-      notification.hashCode ^ account.hashCode ^ statusPopulated.hashCode;
+      dbNotification.hashCode ^ dbAccount.hashCode ^ dbStatusPopulated.hashCode;
 }

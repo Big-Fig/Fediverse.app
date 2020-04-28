@@ -25,6 +25,32 @@ class PleromaEmoji implements IPleromaEmoji {
   PleromaEmoji(
       {this.shortcode, this.url, this.staticUrl, this.visibleInPicker});
 
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaEmoji &&
+          runtimeType == other.runtimeType &&
+          shortcode == other.shortcode &&
+          url == other.url &&
+          staticUrl == other.staticUrl &&
+          visibleInPicker == other.visibleInPicker &&
+          category == other.category;
+
+  @override
+  int get hashCode =>
+      shortcode.hashCode ^
+      url.hashCode ^
+      staticUrl.hashCode ^
+      visibleInPicker.hashCode ^
+      category.hashCode;
+
+  @override
+  String toString() {
+    return 'PleromaEmoji{shortcode: $shortcode, url: $url,'
+        ' staticUrl: $staticUrl,'
+        ' visibleInPicker: $visibleInPicker, category: $category}';
+  }
+
   factory PleromaEmoji.fromJson(Map<String, dynamic> json) =>
       _$PleromaEmojiFromJson(json);
 

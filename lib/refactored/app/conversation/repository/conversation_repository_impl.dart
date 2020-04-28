@@ -45,6 +45,12 @@ class ConversationRepository extends AsyncInitLoadingBloc
     await accountRepository.upsertRemoteAccounts(remoteAccounts,
         conversationRemoteId: remoteConversation.id);
 
+    var lastStatus = remoteConversation.lastStatus;
+    if (lastStatus != null) {
+      await statusRepository.upsertRemoteStatus(lastStatus,
+          conversationRemoteId: remoteConversation.id, listRemoteId: null);
+    }
+
     await upsert(mapRemoteConversationToDbConversation(remoteConversation));
   }
 
@@ -55,8 +61,11 @@ class ConversationRepository extends AsyncInitLoadingBloc
         .finer(() => "upsertRemoteConversations ${remoteConversations.length}");
 
     for (var remoteConversation in remoteConversations) {
-      await statusRepository.upsertRemoteStatus(remoteConversation.lastStatus,
-          listRemoteId: null, conversationRemoteId: remoteConversation.id);
+      var lastStatus = remoteConversation.lastStatus;
+      if (lastStatus != null) {
+        await statusRepository.upsertRemoteStatus(lastStatus,
+            listRemoteId: null, conversationRemoteId: remoteConversation.id);
+      }
 
       await accountRepository.upsertRemoteAccounts(remoteConversation.accounts,
           conversationRemoteId: remoteConversation.id);
@@ -118,6 +127,9 @@ class ConversationRepository extends AsyncInitLoadingBloc
       dao.getAllQuery().map(mapDataClassToItem).get();
 
   @override
+  Future<int> countAll() => dao.countAllQuery().getSingle();
+
+  @override
   Stream<List<DbConversationWrapper>> watchAll() =>
       dao.getAllQuery().map(mapDataClassToItem).watch();
 
@@ -135,8 +147,12 @@ class ConversationRepository extends AsyncInitLoadingBloc
     return dao.replace(dbConversation);
   }
 
-  DbConversationWrapper mapDataClassToItem(DbConversation dataClass) =>
-      DbConversationWrapper(dataClass);
+  DbConversationWrapper mapDataClassToItem(DbConversation dataClass) {
+    if (dataClass == null) {
+      return null;
+    }
+    return DbConversationWrapper(dataClass);
+  }
 
   Insertable<DbConversation> mapItemToDataClass(DbConversationWrapper item) =>
       item.dbConversation;
@@ -154,8 +170,18 @@ class ConversationRepository extends AsyncInitLoadingBloc
     await accountRepository.upsertRemoteAccounts(remoteAccounts,
         conversationRemoteId: oldLocalConversation.remoteId);
 
-    await updateById(oldLocalConversation.localId,
-        mapRemoteConversationToDbConversation(newRemoteConversation));
+    var lastStatus = newRemoteConversation.lastStatus;
+    if (lastStatus != null) {
+      await statusRepository.upsertRemoteStatus(lastStatus,
+          listRemoteId: null,
+          conversationRemoteId: oldLocalConversation.remoteId);
+    }
+    if (oldLocalConversation.localId != null) {
+      await updateById(oldLocalConversation.localId,
+          mapRemoteConversationToDbConversation(newRemoteConversation));
+    } else {
+      await upsertRemoteConversation(newRemoteConversation);
+    }
   }
 
   @override
@@ -167,7 +193,6 @@ class ConversationRepository extends AsyncInitLoadingBloc
       @required int offset,
       @required ConversationOrderingTermData orderingTermData}) async {
     var query = createQuery(
-        withAccount: withAccount,
         olderThanConversation: olderThanConversation,
         newerThanConversation: newerThanConversation,
         limit: limit,
@@ -182,14 +207,12 @@ class ConversationRepository extends AsyncInitLoadingBloc
 
   @override
   Stream<List<DbConversationWrapper>> watchConversations(
-      {@required IAccount withAccount,
-      @required IConversation olderThanConversation,
+      {@required IConversation olderThanConversation,
       @required IConversation newerThanConversation,
       @required int limit,
       @required int offset,
       @required ConversationOrderingTermData orderingTermData}) {
     var query = createQuery(
-      withAccount: withAccount,
       olderThanConversation: olderThanConversation,
       newerThanConversation: newerThanConversation,
       limit: limit,
@@ -202,14 +225,12 @@ class ConversationRepository extends AsyncInitLoadingBloc
   }
 
   SimpleSelectStatement createQuery(
-      {@required IAccount withAccount,
-      @required IConversation olderThanConversation,
+      {@required IConversation olderThanConversation,
       @required IConversation newerThanConversation,
       @required int limit,
       @required int offset,
       @required ConversationOrderingTermData orderingTermData}) {
     _logger.fine(() => "createQuery \n"
-        "\t withAccount=$withAccount\n"
         "\t olderThanConversation=$olderThanConversation\n"
         "\t newerThanConversation=$newerThanConversation\n"
         "\t limit=$limit\n"
@@ -222,10 +243,6 @@ class ConversationRepository extends AsyncInitLoadingBloc
       dao.addRemoteIdBoundsWhere(query,
           maximumRemoteIdExcluding: olderThanConversation?.remoteId,
           minimumRemoteIdExcluding: newerThanConversation?.remoteId);
-    }
-
-    if(withAccount != null) {
-      throw "Not implemented yet";
     }
 
     if (orderingTermData != null) {
@@ -262,7 +279,6 @@ class ConversationRepository extends AsyncInitLoadingBloc
       @required IConversation newerThanConversation,
       @required ConversationOrderingTermData orderingTermData}) {
     var conversationsStream = watchConversations(
-        withAccount: withAccount,
         olderThanConversation: olderThanConversation,
         newerThanConversation: newerThanConversation,
         orderingTermData: orderingTermData,
@@ -270,4 +286,15 @@ class ConversationRepository extends AsyncInitLoadingBloc
         offset: null);
     return conversationsStream.map((conversations) => conversations?.first);
   }
+
+  @override
+  Future<IConversation> findConversationWithAccount(
+          {@required IAccount account}) =>
+      getConversation(
+          withAccount: account,
+          olderThanConversation: null,
+          newerThanConversation: null,
+          orderingTermData: ConversationOrderingTermData(
+              orderByType: ConversationOrderByType.remoteId,
+              orderingMode: OrderingMode.desc));
 }

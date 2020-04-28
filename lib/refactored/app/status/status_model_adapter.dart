@@ -17,10 +17,10 @@ DbStatusPopulatedWrapper mapRemoteStatusToLocalStatus(
         mapRemoteAccountToDbAccount(remoteStatus.reblog.account);
   }
   return DbStatusPopulatedWrapper(DbStatusPopulated(
-      status: mapRemoteStatusToDbStatus(remoteStatus),
-      account: mapRemoteAccountToDbAccount(remoteStatus.account),
-      rebloggedStatus: rebloggedStatus,
-      rebloggedStatusAccount: rebloggedStatusAccount));
+      dbStatus: mapRemoteStatusToDbStatus(remoteStatus),
+      dbAccount: mapRemoteAccountToDbAccount(remoteStatus.account),
+      reblogDbStatus: rebloggedStatus,
+      reblogDbStatusAccount: rebloggedStatusAccount));
 }
 
 DbStatus mapRemoteStatusToDbStatus(IPleromaStatus remoteStatus) {
@@ -59,6 +59,7 @@ DbStatus mapRemoteStatusToDbStatus(IPleromaStatus remoteStatus) {
       muted: remoteStatus.muted,
       bookmarked: remoteStatus.bookmarked,
       pinned: remoteStatus.pinned,
+      language: remoteStatus.language,
       content: remoteStatus.content,
       reblogStatusRemoteId: remoteStatus.reblog?.id,
       application: remoteStatus.application,
@@ -80,10 +81,12 @@ DbStatus mapRemoteStatusToDbStatus(IPleromaStatus remoteStatus) {
       accountRemoteId: remoteStatus.account.id);
 }
 
-// TODO: temporary solution for refactoring period
 PleromaStatus mapLocalStatusToRemoteStatus(IStatus localStatus) {
+  if (localStatus == null) {
+    return null;
+  }
   PleromaStatus reblog;
-  if (localStatus.reblog != null) {
+  if (localStatus?.reblog != null) {
     reblog = mapLocalStatusToRemoteStatus(localStatus.reblog);
   }
   return PleromaStatus(
@@ -91,7 +94,7 @@ PleromaStatus mapLocalStatusToRemoteStatus(IStatus localStatus) {
     createdAt: localStatus.createdAt,
     inReplyToId: localStatus.inReplyToRemoteId,
     inReplyToAccountId: localStatus.inReplyToAccountRemoteId,
-    sensitive: localStatus.sensitive,
+    sensitive: localStatus.nsfwSensitive,
     spoilerText: localStatus.spoilerText,
     visibility: pleromaVisibilityValues.reverse[localStatus.visibility],
     uri: localStatus.uri,
@@ -106,6 +109,7 @@ PleromaStatus mapLocalStatusToRemoteStatus(IStatus localStatus) {
     pinned: localStatus.pinned,
     content: localStatus.content,
     reblog: reblog,
+    language: localStatus.language,
     application: localStatus.application,
     mediaAttachments: localStatus.mediaAttachments,
     mentions: localStatus.mentions,

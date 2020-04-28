@@ -1,10 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/account/account_bloc.dart';
 import 'package:fedi/refactored/app/account/account_model.dart';
-import 'package:fedi/refactored/app/async/async_button_widget.dart';
+import 'package:fedi/refactored/app/async/async_operation_button_builder_widget.dart';
+import 'package:fedi/refactored/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/refactored/app/conversation/start/status/post_status_start_conversation_page.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_alert/flutter_alert.dart';
@@ -16,7 +16,6 @@ class AccountActionListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);
-    assert(!accountBloc.isMyAccount);
     return StreamBuilder<IPleromaAccountRelationship>(
         stream: accountBloc.accountRelationshipStream,
         initialData: accountBloc.accountRelationship,
@@ -81,10 +80,11 @@ class AccountActionListWidget extends StatelessWidget {
     );
   }
 
-  AsyncButtonWidget buildFollowButton(
+  AsyncOperationButtonBuilderWidget buildFollowButton(
       IAccountBloc accountBloc, IPleromaAccountRelationship relationship) {
-    return AsyncButtonWidget(
-      asyncButtonAction: accountBloc.requestToggleFollow,
+    return PleromaAsyncOperationButtonBuilderWidget(
+      showProgressDialog: false,
+      asyncButtonAction: accountBloc.toggleFollow,
       builder: (BuildContext context, VoidCallback onPressed) {
         return OutlineButton(
           child: Row(
@@ -115,15 +115,15 @@ class AccountActionListWidget extends StatelessWidget {
             text: relationship.muting
                 ? appLocalizations.tr("app.account.action.unmute")
                 : appLocalizations.tr("app.account.action.mute"),
-            onPressed: accountBloc.requestToggleMute),
+            onPressed: accountBloc.toggleMute),
         AlertAction(
             text: relationship.blocking
                 ? appLocalizations.tr("app.account.action.unblock")
                 : appLocalizations.tr("app.account.action.block"),
-            onPressed: accountBloc.requestToggleBlock),
+            onPressed: accountBloc.toggleBlock),
         AlertAction(
             text: appLocalizations.tr("app.account.action.report"),
-            onPressed: accountBloc.requestReport),
+            onPressed: accountBloc.report),
       ],
       cancelable: true,
     );

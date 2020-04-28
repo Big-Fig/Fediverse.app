@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 abstract class IStatusBloc implements Disposable {
   static IStatusBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IStatusBloc>(context, listen: listen);
+
   IStatus get status;
 
   Stream<IStatus> get statusStream;
@@ -23,37 +24,33 @@ abstract class IStatusBloc implements Disposable {
 
   Stream<IStatus> get reblogOrOriginalStream;
 
-  Stream<String> get contentStream;
-
   String get content;
 
-  Stream<String> get contentWithEmojisWithoutAccountStream;
+  Stream<String> get contentStream;
 
   String get contentWithEmojisWithoutAccount;
 
-  Stream<String> get contentWithEmojisStream;
-
-  IPleromaCard get cardOriginal;
-
-  Stream<IPleromaCard> get cardOriginalStream;
-
-  IPleromaCard get cardReblog;
-
-  Stream<IPleromaCard> get cardReblogStream;
-
-  IPleromaCard get cardReblogOrOriginal;
-
-  Stream<IPleromaCard> get cardReblogOrOriginalStream;
+  Stream<String> get contentWithEmojisWithoutAccountStream;
 
   String get contentWithEmojis;
+
+  Stream<String> get contentWithEmojisStream;
+
+  IPleromaCard get card;
+
+  Stream<IPleromaCard> get cardStream;
+
+  IPleromaCard get reblogOrOriginalCard;
+
+  Stream<IPleromaCard> get reblogOrOriginalCardStream;
 
   IAccount get account;
 
   Stream<IAccount> get accountStream;
 
-  IAccount get accountReblogOrOriginalAccount;
+  IAccount get reblogOrOriginalAccount;
 
-  Stream<IAccount> get accountReblogOrOriginalStream;
+  Stream<IAccount> get reblogOrOriginalAccountStream;
 
   DateTime get createdAt;
 
@@ -63,21 +60,9 @@ abstract class IStatusBloc implements Disposable {
 
   Stream<bool> get isHaveInReplyToAccountStream;
 
-  Future<IAccount> loadInReplyToAccount();
-
-  Stream<IAccount> watchInReplyToAccount();
-
-  Future<List<IAccount>> loadFavouritedByAccounts();
-
-  Future<List<IAccount>> loadRebloggedByAccounts();
-
   bool get isHaveReblog;
 
   Stream<bool> get isHaveReblogStream;
-
-  Future<IAccount> findMentionAccountByUrl({@required String url});
-
-  bool get isFromMyAccount;
 
   String get remoteId;
 
@@ -85,20 +70,14 @@ abstract class IStatusBloc implements Disposable {
 
   Stream<List<IPleromaMediaAttachment>> get mediaAttachmentsStream;
 
-  List<IPleromaStatusEmojiReaction> get emojiReactionsOriginal;
+  List<IPleromaStatusEmojiReaction> get pleromaEmojiReactions;
 
-  Stream<List<IPleromaStatusEmojiReaction>> get emojiReactionsOriginalStream;
+  Stream<List<IPleromaStatusEmojiReaction>> get pleromaEmojiReactionsStream;
 
-  List<IPleromaStatusEmojiReaction> get emojiReactionsReblog;
-
-  Stream<List<IPleromaStatusEmojiReaction>> get emojiReactionsReblogStream;
-
-  List<IPleromaStatusEmojiReaction> get emojiReactionsOriginalPlusReblog;
+  List<IPleromaStatusEmojiReaction> get reblogPlusOriginalPleromaEmojiReactions;
 
   Stream<List<IPleromaStatusEmojiReaction>>
-      get emojiReactionsOriginalPlusReblogStream;
-
-  Future updateFromNetwork();
+      get reblogPlusOriginalEmojiReactionsStream;
 
   String get accountAvatar;
 
@@ -116,65 +95,79 @@ abstract class IStatusBloc implements Disposable {
 
   Stream<bool> get rebloggedStream;
 
-  int get favouritesOriginalCount;
+  bool get bookmarked;
 
-  Stream<int> get favouritesOriginalCountStream;
+  Stream<bool> get bookmarkedStream;
 
-  int get favouritesReblogCount;
+  bool get muted;
 
-  Stream<int> get favouritesReblogCountStream;
+  Stream<bool> get mutedStream;
 
-  int get favouritesReblogPlusOriginalCount;
+  bool get pinned;
 
-  Stream<int> get favouritesReblogPlusOriginalCountStream;
+  Stream<bool> get pinnedStream;
 
-  int get reblogsOriginalCount;
+  int get favouritesCount;
 
-  Stream<int> get reblogsOriginalCountStream;
+  Stream<int> get favouritesCountStream;
 
-  int get reblogsReblogCount;
+  int get reblogPlusOriginalFavouritesCount;
 
-  Stream<int> get reblogsReblogCountStream;
+  Stream<int> get reblogPlusOriginalFavouritesCountStream;
 
-  int get reblogsReblogPlusOriginalCount;
+  int get reblogsCount;
 
-  Stream<int> get reblogsReblogPlusOriginalCountStream;
+  Stream<int> get reblogsCountStream;
+
+  int get reblogPlusOriginalReblogsCount;
+
+  Stream<int> get reblogPlusOriginalReblogsCountStream;
 
   int get repliesCount;
 
   Stream<int> get repliesCountStream;
 
-  Future<IStatus> requestToggleReblog();
-
-  Future<IStatus> requestToggleFavourite();
-
-  Future<IStatus> requestToggleMute();
-
-  Future<IStatus> requestToggleBookmark();
-
-  Future<IStatus> requestTogglePin();
-
-  Future<IPleromaStatus> requestToggleEmojiReaction({@required String emoji});
-
-
   String get spoilerText;
 
   Stream<String> get spoilerTextStream;
 
-
   bool get nsfwSensitive;
+
   Stream<bool> get nsfwSensitiveStream;
 
   bool get nsfwSensitiveAndDisplayEnabled;
+
   Stream<bool> get nsfwSensitiveAndDisplayEnabledStream;
 
   bool get containsSpoiler;
+
   Stream<bool> get containsSpoilerStream;
 
   bool get containsSpoilerAndDisplayEnabled;
+
   Stream<bool> get containsSpoilerAndDisplayEnabledStream;
 
   changeDisplayNsfwSensitive(bool display);
 
   changeDisplaySpoiler(bool display);
+
+  Future refreshFromNetwork();
+
+  Future<IAccount> loadAccountByMentionUrl({@required String url});
+
+  Future<IAccount> loadInReplyToAccount();
+
+  Stream<IAccount> watchInReplyToAccount();
+
+  Future<IStatus> toggleReblog();
+
+  Future<IStatus> toggleFavourite();
+
+  Future<IStatus> toggleMute();
+
+  Future<IStatus> toggleBookmark();
+
+  Future<IStatus> togglePin();
+
+  Future<IPleromaStatus> toggleEmojiReaction({@required String emoji});
 }
