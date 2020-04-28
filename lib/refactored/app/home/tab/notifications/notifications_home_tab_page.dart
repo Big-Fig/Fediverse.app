@@ -1,6 +1,8 @@
 import 'package:fedi/refactored/app/home/tab/notifications/drawer/notifications_home_tab_page_drawer_bloc.dart';
 import 'package:fedi/refactored/app/home/tab/notifications/drawer/notifications_home_tab_page_drawer_bloc_impl.dart';
 import 'package:fedi/refactored/app/home/tab/notifications/drawer/notifications_home_tab_page_drawer_widget.dart';
+import 'package:fedi/refactored/app/notification/notification_tabs_bloc.dart';
+import 'package:fedi/refactored/app/notification/notification_tabs_bloc_impl.dart';
 import 'package:fedi/refactored/app/notification/notification_tabs_widget.dart';
 import 'package:fedi/refactored/app/push/subscription/push_subscription_bloc.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
@@ -27,9 +29,12 @@ class NotificationsHomeTabPage extends StatelessWidget {
         child: NotificationsHomeTabPageDrawerWidget(),
       ),
       body: SafeArea(
-        child: NotificationTabsWidget(
-          key: this.key,
-          appBarActionWidgets: <Widget>[buildSettingsActionButton()],
+        child: DisposableProvider<INotificationsTabsBloc>(
+          create: (context) => NotificationsTabsBloc.createFromContext(context),
+          child: NotificationTabsWidget(
+            key: this.key,
+            appBarActionWidgets: <Widget>[buildSettingsActionButton()],
+          ),
         ),
       ),
     );

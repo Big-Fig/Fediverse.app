@@ -1,6 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/refactored/app/conversation/conversations_list_bloc.dart';
+import 'package:fedi/refactored/app/conversation/conversations_list_bloc_impl.dart';
 import 'package:fedi/refactored/app/conversation/conversations_list_widget.dart';
 import 'package:fedi/refactored/app/conversation/start/start_conversation_page.dart';
+import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -30,7 +33,9 @@ class ConversationsHomeTabPage extends StatelessWidget {
           ),
         ],
       ),
-      body: ConversationsListWidget(key: this.key),
+      body: DisposableProvider<IConversationsListBloc>(
+          create: (context) => ConversationsListBloc.createFromContext(context),
+          child: ConversationsListWidget(key: this.key)),
     );
   }
 }

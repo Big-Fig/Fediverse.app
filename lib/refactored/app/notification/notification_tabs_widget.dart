@@ -6,7 +6,6 @@ import 'package:fedi/refactored/app/notification/notification_tabs_model.dart';
 import 'package:fedi/refactored/app/notification/pagination/cached/notification_cached_pagination_bloc_impl.dart';
 import 'package:fedi/refactored/app/notification/pagination/list/notification_pagination_list_widget.dart';
 import 'package:fedi/refactored/app/notification/pagination/list/notification_pagination_list_with_new_items_bloc_impl.dart';
-import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:fedi/refactored/mastodon/notification/mastodon_notification_model.dart';
 import 'package:fedi/refactored/pagination/list/pagination_list_bloc.dart';
@@ -131,12 +130,14 @@ class NotificationTabsWidget extends StatelessWidget {
               cachedListService:
                   INotificationCachedListService.of(context, listen: false)),
           child: ProxyProvider<
-              IPaginationListWithNewItemsBloc<PaginationPage<IStatus>, IStatus>,
-              IPaginationListBloc<PaginationPage<IStatus>, IStatus>>(
+              IPaginationListWithNewItemsBloc<PaginationPage<INotification>,
+                  INotification>,
+              IPaginationListBloc<PaginationPage<INotification>,
+                  INotification>>(
             update: (context, value, previous) => value,
             child: ProxyProvider<
-                IPaginationListWithNewItemsBloc<PaginationPage<IStatus>,
-                    IStatus>,
+                IPaginationListWithNewItemsBloc<PaginationPage<INotification>,
+                    INotification>,
                 IPaginationListWithNewItemsBloc>(
               update: (context, value, previous) => value,
               child: PaginationListWithNewItemsHeaderWidget(
