@@ -40,7 +40,6 @@ class AccountBloc extends IAccountBloc {
   final IPleromaWebSocketsService pleromaWebSocketsService;
   final bool isNeedPreFetchRelationship;
   final bool isNeedWatchLocalRepositoryForUpdates;
-  final bool isNeedWatchWebSocketsEvents;
   bool refreshInProgress = false;
   bool refreshAccountRelationshipInProgress = false;
 
@@ -58,7 +57,6 @@ class AccountBloc extends IAccountBloc {
         true, // todo: remove hack. Don't init when bloc quickly disposed. Help
     //  improve performance in timeline unnecessary recreations
     bool delayInit = true,
-    this.isNeedWatchWebSocketsEvents,
     this.isNeedWatchLocalRepositoryForUpdates = true,
   }) : _accountSubject = BehaviorSubject.seeded(account) {
     assert(account != null);
@@ -88,14 +86,6 @@ class AccountBloc extends IAccountBloc {
 
       if (needRefreshFromNetworkOnInit == true) {
         refreshFromNetwork();
-      }
-
-      if (isNeedWatchWebSocketsEvents) {
-        addDisposable(
-            disposable: AccountWebSocketsHandler(
-                statusRepository: statusRepository,
-                accountRemoteId: account.remoteId,
-                pleromaWebSocketsService: null));
       }
     }
   }
@@ -258,8 +248,7 @@ class AccountBloc extends IAccountBloc {
           {@required IAccount account,
           @required bool isNeedWatchWebSocketsEvents,
           @required bool isNeedRefreshFromNetworkOnInit,
-          @required bool isNeedWatchLocalRepositoryForUpdates}) =>
-      AccountBloc(
+          @required bool isNeedWatchLocalRepositoryForUpdates}) => AccountBloc(
           pleromaWebSocketsService:
               IPleromaWebSocketsService.of(context, listen: false),
           statusRepository: IStatusRepository.of(context, listen: false),
@@ -267,7 +256,6 @@ class AccountBloc extends IAccountBloc {
           isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
           isNeedWatchLocalRepositoryForUpdates:
               isNeedWatchLocalRepositoryForUpdates,
-          isNeedWatchWebSocketsEvents: isNeedWatchWebSocketsEvents,
           accountRepository: IAccountRepository.of(context, listen: false),
           pleromaAccountService:
               IPleromaAccountService.of(context, listen: false));

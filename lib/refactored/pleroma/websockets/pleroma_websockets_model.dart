@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:fedi/refactored/enum/enum_values.dart';
+import 'package:fedi/refactored/pleroma/conversation/pleroma_conversation_model.dart';
+import 'package:fedi/refactored/pleroma/notification/pleroma_notification_model.dart';
 import 'package:fedi/refactored/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/refactored/websockets/websockets_channel_model.dart';
 import 'package:fedi/refactored/websockets/websockets_model.dart';
@@ -30,29 +32,33 @@ class PleromaWebSocketsEvent extends WebSocketsEvent {
   /// Could be Status or Notification
   final String payload;
 
-  PleromaWebSocketsEvent(
-      {@required this.event, @required this.payload});
+  PleromaWebSocketsEvent({@required this.event, @required this.payload});
 
   @override
   String toString() {
     return 'PleromaWebSocketsEvent{event: $event, payload: $payload}';
   }
 
-  factory PleromaWebSocketsEvent.fromJson(
-          Map<String, dynamic> json) =>
+  factory PleromaWebSocketsEvent.fromJson(Map<String, dynamic> json) =>
       _$PleromaWebSocketsEventFromJson(json);
 
-  factory PleromaWebSocketsEvent.fromJsonString(
-          String jsonString) =>
+  factory PleromaWebSocketsEvent.fromJsonString(String jsonString) =>
       _$PleromaWebSocketsEventFromJson(jsonDecode(jsonString));
 
-  Map<String, dynamic> toJson() =>
-      _$PleromaWebSocketsEventToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaWebSocketsEventToJson(this);
 
-  String toJsonString() =>
-      jsonEncode(_$PleromaWebSocketsEventToJson(this));
+  String toJsonString() => jsonEncode(_$PleromaWebSocketsEventToJson(this));
 
-  PleromaStatus parsePayloadAsStatus() => PleromaStatus.fromJson(jsonDecode(payload));
+  PleromaStatus parsePayloadAsStatus() =>
+      PleromaStatus.fromJson(jsonDecode(payload));
+
+  PleromaNotification parsePayloadAsNotification() =>
+      PleromaNotification.fromJson(jsonDecode(payload));
+
+  PleromaConversation parsePayloadAsConversation() =>
+      PleromaConversation.fromJson(jsonDecode(payload));
+
+  String parsePayloadAsRemoteId() => payload;
 }
 
 enum PleromaWebSocketsEventType {

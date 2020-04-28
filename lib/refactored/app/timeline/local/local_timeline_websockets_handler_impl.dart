@@ -1,32 +1,33 @@
+import 'package:fedi/refactored/app/conversation/repository/conversation_repository.dart';
+import 'package:fedi/refactored/app/notification/repository/notification_repository.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
-import 'package:fedi/refactored/app/status/websockets/status_websockets_handler.dart';
-import 'package:fedi/refactored/disposable/disposable_owner.dart';
-import 'package:fedi/refactored/pleroma/websockets/pleroma_websockets_model.dart';
-
-
+import 'package:fedi/refactored/app/websockets/web_sockets_handler_impl.dart';
 import 'package:fedi/refactored/pleroma/websockets/pleroma_websockets_service.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/cupertino.dart';
 
-class LocalTimelineStatusWebSocketsHandler extends DisposableOwner
-    implements IStatusWebSocketsHandler {
-  final IPleromaWebSocketsService
-  pleromaWebSocketsService;
-  final IStatusRepository statusRepository;
+class LocalTimelineWebSocketsHandler extends WebSocketsChannelHandler {
+  LocalTimelineWebSocketsHandler({
+    @required   IPleromaWebSocketsService pleromaWebSocketsService,
+    @required   IStatusRepository statusRepository,
+    @required   INotificationRepository notificationRepository,
+    @required   IConversationRepository conversationRepository,
+  }) : super(
+    webSocketsChannel:
+    pleromaWebSocketsService.getPublicChannel(local: true, onlyMedia: false),
+    statusRepository: statusRepository,
+    notificationRepository: notificationRepository,
+    conversationRepository: conversationRepository,
+  );
 
-  LocalTimelineStatusWebSocketsHandler(
-      {@required this.pleromaWebSocketsService,
-      @required this.statusRepository}) {
-    var userWebSocketsChannel =
-        pleromaWebSocketsService.getPublicChannel(local: true, onlyMedia: false);
-
-    addDisposable(streamSubscription:
-        userWebSocketsChannel.eventsStream.listen((event) async {
-      if (event?.eventType == PleromaWebSocketsEventType.update) {
-        var remoteStatus = event.parsePayloadAsStatus();
-
-        await statusRepository.upsertRemoteStatus(remoteStatus,
-            listRemoteId: null, conversationRemoteId: null);
-      }
-    }));
-  }
+  static LocalTimelineWebSocketsHandler createFromContext(
+      BuildContext context) =>
+      LocalTimelineWebSocketsHandler(
+        pleromaWebSocketsService:
+        IPleromaWebSocketsService.of(context, listen: false),
+        notificationRepository:
+        INotificationRepository.of(context, listen: false),
+        conversationRepository:
+        IConversationRepository.of(context, listen: false),
+        statusRepository: IStatusRepository.of(context, listen: false),
+      );
 }

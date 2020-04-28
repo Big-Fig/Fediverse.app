@@ -18,7 +18,6 @@ abstract class IPleromaWebSocketsService extends DisposableOwner {
   /// i.e. home timeline and notifications
   IWebSocketsChannel<PleromaWebSocketsEvent> getAccountChannel(
       {@required String accountId, @required bool notification});
-
   /// Returns all direct events
   IWebSocketsChannel<PleromaWebSocketsEvent> getDirectChannel(
       {@required String accountId});

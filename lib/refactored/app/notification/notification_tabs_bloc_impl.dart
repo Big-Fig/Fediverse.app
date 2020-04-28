@@ -1,20 +1,32 @@
 import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
 import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/refactored/app/home/tab/notifications/notifications_home_tab_bloc.dart';
-import 'package:fedi/refactored/app/home/tab/notifications/notifications_home_tab_model.dart';
+import 'package:fedi/refactored/app/conversation/repository/conversation_repository.dart';
+import 'package:fedi/refactored/app/notification/notification_tabs_bloc.dart';
+import 'package:fedi/refactored/app/notification/notification_tabs_model.dart';
+import 'package:fedi/refactored/app/notification/repository/notification_repository.dart';
+import 'package:fedi/refactored/app/notification/websockets/my_notifications_websockets_handler_impl.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/refactored/pleroma/notification/pleroma_notification_service.dart';
+import 'package:fedi/refactored/pleroma/websockets/pleroma_websockets_service.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger("notifications_home_tab_page_bloc_impl.dart");
 
-class NotificationsHomeTabBloc extends DisposableOwner
-    implements INotificationsHomeTabBloc {
+class NotificationsTabsBloc extends DisposableOwner
+    implements INotificationsTabsBloc {
+  List<NotificationTab> tabs = [
+    NotificationTab.all,
+    NotificationTab.mentions,
+    NotificationTab.reblogs,
+    NotificationTab.favourites,
+    NotificationTab.follows,
+  ];
+
   @override
   void selectTab(NotificationTab tab) {
     selectedTabSubject.add(tab);
@@ -31,29 +43,43 @@ class NotificationsHomeTabBloc extends DisposableOwner
 
   final IPleromaNotificationService pleromaNotificationService;
   final IPleromaAccountService pleromaAccountService;
+  final IConversationRepository conversationRepository;
+  final INotificationRepository notificationRepository;
   final IStatusRepository statusRepository;
   final IAccountRepository accountRepository;
   final IMyAccountBloc myAccountBloc;
   final ICurrentAuthInstanceBloc currentInstanceBloc;
+  final IPleromaWebSocketsService pleromaWebSocketsService;
 
-  NotificationsHomeTabBloc({
+  NotificationsTabsBloc({
     @required NotificationTab startTab,
     @required this.pleromaNotificationService,
     @required this.pleromaAccountService,
+    @required this.notificationRepository,
+    @required this.conversationRepository,
     @required this.statusRepository,
     @required this.accountRepository,
     @required this.myAccountBloc,
     @required this.currentInstanceBloc,
+    @required this.pleromaWebSocketsService,
   }) {
     selectedTabSubject = BehaviorSubject.seeded(startTab);
 
     addDisposable(subject: selectedTabSubject);
 
+    addDisposable(
+        disposable: MyNotificationsWebSocketsHandler(
+      pleromaWebSocketsService: pleromaWebSocketsService,
+      conversationRepository: conversationRepository,
+      notificationRepository: notificationRepository,
+      statusRepository: statusRepository,
+    ));
+
     _logger.finest(() => "constructor");
   }
 
-  static NotificationsHomeTabBloc createFromContext(BuildContext context) =>
-      NotificationsHomeTabBloc(
+  static NotificationsTabsBloc createFromContext(BuildContext context) =>
+      NotificationsTabsBloc(
         startTab: NotificationTab.all,
         pleromaNotificationService:
             IPleromaNotificationService.of(context, listen: false),
@@ -64,24 +90,11 @@ class NotificationsHomeTabBloc extends DisposableOwner
         myAccountBloc: IMyAccountBloc.of(context, listen: false),
         currentInstanceBloc:
             ICurrentAuthInstanceBloc.of(context, listen: false),
+        pleromaWebSocketsService:
+            IPleromaWebSocketsService.of(context, listen: false),
+        conversationRepository:
+            IConversationRepository.of(context, listen: false),
+        notificationRepository:
+            INotificationRepository.of(context, listen: false),
       );
-//
-//
-//  @override
-//  IStatusPaginationListBloc retrieveNotificationTabPaginationListBloc(
-//      NotificationTab tab) {
-//    switch (tab) {
-//      case NotificationTab.public:
-//        return publicNotificationPaginationListBloc;
-//        break;
-//      case NotificationTab.home:
-//        return homeNotificationPaginationListBloc;
-//        break;
-//      case NotificationTab.local:
-//        return localNotificationPaginationListBloc;
-//        break;
-//    }
-//
-//    throw "retrieveNotificationTabPaginationListBloc unsupported tab = $tab";
-//  }
 }
