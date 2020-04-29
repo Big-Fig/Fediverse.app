@@ -14,7 +14,7 @@ class ConversationTitleWidget extends StatelessWidget {
           var accounts = snapshot.data;
 
           if (accounts?.isNotEmpty != true) {
-            return CircularProgressIndicator();
+            return SizedBox.shrink();
           }
           return Row(
             children: <Widget>[
