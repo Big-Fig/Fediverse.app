@@ -10,21 +10,18 @@ class MyAccountConversationsWebSocketsHandler extends WebSocketsChannelHandler {
       {@required IPleromaWebSocketsService pleromaWebSocketsService,
       @required IStatusRepository statusRepository,
       @required INotificationRepository notificationRepository,
-      @required IConversationRepository conversationRepository,
-      @required String accountId})
+      @required IConversationRepository conversationRepository})
       : super(
           webSocketsChannel:
-              pleromaWebSocketsService.getDirectChannel(accountId: accountId),
+              pleromaWebSocketsService.getDirectChannel(accountId: null),
           statusRepository: statusRepository,
           notificationRepository: notificationRepository,
           conversationRepository: conversationRepository,
         );
 
   static MyAccountConversationsWebSocketsHandler createFromContext(
-          BuildContext context,
-          {@required String accountId}) =>
+          BuildContext context) =>
       MyAccountConversationsWebSocketsHandler(
-        accountId: accountId,
         pleromaWebSocketsService:
             IPleromaWebSocketsService.of(context, listen: false),
         notificationRepository:

@@ -19,6 +19,7 @@ abstract class IPleromaWebSocketsService extends DisposableOwner {
   IWebSocketsChannel<PleromaWebSocketsEvent> getAccountChannel(
       {@required String accountId, @required bool notification});
   /// Returns all direct events
+  // todo: why we need account id here?
   IWebSocketsChannel<PleromaWebSocketsEvent> getDirectChannel(
       {@required String accountId});
 
