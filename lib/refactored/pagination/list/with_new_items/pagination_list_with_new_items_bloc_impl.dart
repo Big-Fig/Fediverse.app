@@ -50,8 +50,16 @@ abstract class PaginationListWithNewItemsBloc<
       newItemsSubscription = watchItemsNewerThanItem(newerItem)
           .skipWhile((newItems) => newItems?.isNotEmpty != true)
           .listen((newItems) {
-        _logger.finest(() => "watchItemsNewerThanItem newItems ${newItems.length}");
-        _unmergedNewItemsSubject.add(newItems);
+        // we need to filter again to be sure that newerItem is no
+        // changed during sql request execute time
+        List<TItem> actuallyNew = newItems
+            .where((newItem) => compareItems(newItem, newerItem) > 0)
+            .toList();
+        _logger
+            .finest(() => "watchItemsNewerThanItem newItems ${newItems.length} "
+                "actuallyNew = ${actuallyNew.length}");
+
+        _unmergedNewItemsSubject.add(actuallyNew);
       });
 
       addDisposable(streamSubscription: newItemsSubscription);
@@ -141,4 +149,6 @@ abstract class PaginationListWithNewItemsBloc<
     _mergedNewItemsSubject.add([]);
     _unmergedNewItemsSubject.add([]);
   }
+
+  int compareItems(TItem a, TItem b);
 }

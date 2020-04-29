@@ -21,4 +21,19 @@ class ConversationPaginationListWithNewItemsBloc<
   @override
   Stream<List<IConversation>> watchItemsNewerThanItem(IConversation item) =>
       cachedListService.watchLocalItemsNewerThanItem(item);
+
+  @override
+  int compareItems(IConversation a, IConversation b) {
+    if (a == null && b == null) {
+      return 0;
+    }
+
+    if (a != null && b == null) {
+      return -1;
+    }
+    if (a == null && b != null) {
+      return 1;
+    }
+    return a.remoteId.compareTo(b.remoteId);
+  }
 }

@@ -26,4 +26,20 @@ class StatusPaginationListWithNewItemsBloc<
     _logger.finest(() => "watchItemsNewerThanItem item = $item");
     return statusCachedListService.watchLocalItemsNewerThanItem(item);
   }
+
+  @override
+  int compareItems(IStatus a, IStatus b) {
+    if (a == null && b == null) {
+      return 0;
+    }
+
+    if (a != null && b == null) {
+      return -1;
+    }
+    if (a == null && b != null) {
+      return 1;
+    }
+    return a.remoteId.compareTo(b.remoteId);
+  }
+
 }

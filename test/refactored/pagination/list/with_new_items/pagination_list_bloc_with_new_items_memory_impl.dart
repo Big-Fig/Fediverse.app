@@ -14,8 +14,11 @@ class MemoryPaginationListWithNewItemsBloc<TPage extends PaginationPage<TItem>,
 
   addNewItems(List<TItem> newItems) => newItemsStreamController.add(newItems);
 
+  final int Function(TItem a, TItem b) comparator;
+
   MemoryPaginationListWithNewItemsBloc(
       {@required bool mergeNewItemsImmediately,
+      @required this.comparator,
       @required IPaginationBloc<TPage, TItem> paginationBloc})
       : super(
             mergeNewItemsImmediately: mergeNewItemsImmediately,
@@ -28,4 +31,10 @@ class MemoryPaginationListWithNewItemsBloc<TPage extends PaginationPage<TItem>,
   @override
   Stream<List<TItem>> watchItemsNewerThanItem(TItem item) =>
       newItemsStreamController.stream;
+
+  @override
+  int compareItems(TItem a, TItem b) {
+    return comparator(a, b);
+  }
+
 }
