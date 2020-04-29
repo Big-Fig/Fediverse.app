@@ -3,6 +3,9 @@ import 'package:fedi/refactored/pagination/list/with_new_items/pagination_list_w
 import 'package:fedi/refactored/pagination/pagination_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
+
+var _logger = Logger("pagination_list_with_new_items_header_widget.dart");
 
 class PaginationListWithNewItemsHeaderWidget extends StatelessWidget {
   final Widget child;
@@ -27,11 +30,17 @@ class PaginationListWithNewItemsHeaderWidget extends StatelessWidget {
     );
   }
 
-  StreamBuilder<int> buildNewItemsHeaderWidget(IPaginationListWithNewItemsBloc<PaginationPage, dynamic> paginationWithUpdatesListBloc) => StreamBuilder<int>(
-          stream: paginationWithUpdatesListBloc.unmergedNewItemsCountStream,
+  StreamBuilder<int> buildNewItemsHeaderWidget(
+          IPaginationListWithNewItemsBloc<PaginationPage, dynamic>
+              paginationWithUpdatesListBloc) =>
+      StreamBuilder<int>(
+          stream: paginationWithUpdatesListBloc.unmergedNewItemsCountStream
+              .distinct(),
           initialData: paginationWithUpdatesListBloc.unmergedNewItemsCount,
           builder: (context, snapshot) {
             var updateItemsCount = snapshot.data ?? 0;
+
+            _logger.finest(() => "updateItemsCount $updateItemsCount");
 
             if (updateItemsCount > 0) {
               return GestureDetector(
@@ -42,9 +51,13 @@ class PaginationListWithNewItemsHeaderWidget extends StatelessWidget {
                     decoration: BoxDecoration(color: Colors.blue),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(AppLocalizations.of(context).tr(
-                          "pagination.list.new_items.action.tap_to_load_new",
-                          args: [updateItemsCount.toString()])),
+                      child: Text(
+                        AppLocalizations.of(context).tr(
+                            "pagination.list.new_items.action.tap_to_load_new",
+                            args: [updateItemsCount.toString()]),
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ));
             } else {

@@ -501,7 +501,7 @@
     "list": {
       "new_items": {
         "action": {
-          "tap_to_load_new": "Tap to load new items({})"
+          "tap_to_load_new": "Tap to load new items ({})"
         }
       },
       "empty": "Nothing found"

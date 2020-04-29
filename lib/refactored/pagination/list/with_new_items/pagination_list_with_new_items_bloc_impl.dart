@@ -5,7 +5,10 @@ import 'package:fedi/refactored/pagination/list/with_new_items/pagination_list_w
 import 'package:fedi/refactored/pagination/pagination_bloc.dart';
 import 'package:fedi/refactored/pagination/pagination_model.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
+
+var _logger = Logger("pagination_list_with_new_items_bloc_impl.dart");
 
 abstract class PaginationListWithNewItemsBloc<
         TPage extends PaginationPage<TItem>,
@@ -41,13 +44,13 @@ abstract class PaginationListWithNewItemsBloc<
 
     addDisposable(
         streamSubscription: newerItemStream.distinct().listen((newerItem) {
-      if (newItemsSubscription != null) {
-        newItemsSubscription.cancel();
-      }
+      _logger.finest(() => "newerItem $newerItem");
+      newItemsSubscription?.cancel();
 
       newItemsSubscription = watchItemsNewerThanItem(newerItem)
           .skipWhile((newItems) => newItems?.isNotEmpty != true)
           .listen((newItems) {
+        _logger.finest(() => "watchItemsNewerThanItem newItems ${newItems.length}");
         _unmergedNewItemsSubject.add(newItems);
       });
 
