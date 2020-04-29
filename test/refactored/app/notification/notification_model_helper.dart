@@ -12,12 +12,14 @@ Future<DbNotificationPopulatedWrapper> createTestNotification(
     {@required String seed,
     String remoteId,
     DbAccountWrapper account,
-    DbStatusPopulated status}) async {
+    DbStatusPopulated status,
+    DateTime createdAt,
+    }) async {
   account = account ?? await createTestAccount(seed: seed);
   var dbAccount = account.dbAccount;
   return DbNotificationPopulatedWrapper(DbNotificationPopulated(
     dbNotification: await createTestDbNotification(
-        seed: seed, remoteId: remoteId, dbAccount: dbAccount),
+        seed: seed, remoteId: remoteId, dbAccount: dbAccount, createdAt: createdAt),
     dbAccount: dbAccount,
     dbStatusPopulated: status,
   ));
