@@ -344,7 +344,7 @@ void main() {
   test('createQuery newerThanNotification', () async {
     var query = notificationRepository.createQuery(
         newerThanNotification: await createTestNotification(
-            seed: "remoteId5", remoteId: "remoteId5"),
+            seed: "remoteId5", remoteId: "remoteId5", createdAt: DateTime(5)),
         limit: null,
         offset: null,
         orderingTermData: null,
@@ -354,27 +354,27 @@ void main() {
     await insertDbNotification(
         notificationRepository,
         (await createTestDbNotification(seed: "seed2", dbAccount: dbAccount))
-            .copyWith(remoteId: "remoteId4"));
+            .copyWith(remoteId: "remoteId4", createdAt: DateTime(4)));
 
     expect((await query.get()).length, 0);
 
     await insertDbNotification(
         notificationRepository,
         (await createTestDbNotification(seed: "seed2", dbAccount: dbAccount))
-            .copyWith(remoteId: "remoteId5"));
+            .copyWith(remoteId: "remoteId5", createdAt: DateTime(5)));
 
     expect((await query.get()).length, 0);
 
     await insertDbNotification(
         notificationRepository,
         (await createTestDbNotification(seed: "seed1", dbAccount: dbAccount))
-            .copyWith(remoteId: "remoteId6"));
+            .copyWith(remoteId: "remoteId6", createdAt: DateTime(6)));
 
     expect((await query.get()).length, 1);
     await insertDbNotification(
         notificationRepository,
         (await createTestDbNotification(seed: "seed1", dbAccount: dbAccount))
-            .copyWith(remoteId: "remoteId7"));
+            .copyWith(remoteId: "remoteId7", createdAt: DateTime(7)));
 
     expect((await query.get()).length, 2);
   });
@@ -386,33 +386,33 @@ void main() {
         offset: null,
         orderingTermData: null,
         olderThanNotification: await createTestNotification(
-            seed: "remoteId5", remoteId: "remoteId5"),
+            seed: "remoteId5", remoteId: "remoteId5", createdAt: DateTime(5)),
         onlyWithType: null);
 
     await insertDbNotification(
         notificationRepository,
         (await createTestDbNotification(seed: "seed2", dbAccount: dbAccount))
-            .copyWith(remoteId: "remoteId3"));
+            .copyWith(remoteId: "remoteId3", createdAt: DateTime(3)));
 
     expect((await query.get()).length, 1);
     await insertDbNotification(
         notificationRepository,
         (await createTestDbNotification(seed: "seed2", dbAccount: dbAccount))
-            .copyWith(remoteId: "remoteId4"));
+            .copyWith(remoteId: "remoteId4", createdAt: DateTime(4)));
 
     expect((await query.get()).length, 2);
 
     await insertDbNotification(
         notificationRepository,
         (await createTestDbNotification(seed: "seed2", dbAccount: dbAccount))
-            .copyWith(remoteId: "remoteId5"));
+            .copyWith(remoteId: "remoteId5", createdAt: DateTime(5)));
 
     expect((await query.get()).length, 2);
 
     await insertDbNotification(
         notificationRepository,
         (await createTestDbNotification(seed: "seed1", dbAccount: dbAccount))
-            .copyWith(remoteId: "remoteId6"));
+            .copyWith(remoteId: "remoteId6", createdAt: DateTime(6)));
 
     expect((await query.get()).length, 2);
   });
@@ -421,52 +421,52 @@ void main() {
       () async {
     var query = notificationRepository.createQuery(
         newerThanNotification: await createTestNotification(
-            seed: "remoteId2", remoteId: "remoteId2"),
+            seed: "remoteId2", remoteId: "remoteId2", createdAt: DateTime(2)),
         limit: null,
         offset: null,
         orderingTermData: null,
         olderThanNotification: await createTestNotification(
-            seed: "remoteId5", remoteId: "remoteId5"),
+            seed: "remoteId5", remoteId: "remoteId5", createdAt: DateTime(5)),
         onlyWithType: null);
 
     await insertDbNotification(
         notificationRepository,
         (await createTestDbNotification(seed: "seed1", dbAccount: dbAccount))
-            .copyWith(remoteId: "remoteId1"));
+            .copyWith(remoteId: "remoteId1", createdAt: DateTime(1)));
 
     expect((await query.get()).length, 0);
 
     await insertDbNotification(
         notificationRepository,
         (await createTestDbNotification(seed: "seed2", dbAccount: dbAccount))
-            .copyWith(remoteId: "remoteId2"));
+            .copyWith(remoteId: "remoteId2", createdAt: DateTime(2)));
 
     expect((await query.get()).length, 0);
     await insertDbNotification(
         notificationRepository,
         (await createTestDbNotification(seed: "seed3", dbAccount: dbAccount))
-            .copyWith(remoteId: "remoteId3"));
+            .copyWith(remoteId: "remoteId3", createdAt: DateTime(3)));
 
     expect((await query.get()).length, 1);
 
     await insertDbNotification(
         notificationRepository,
         (await createTestDbNotification(seed: "seed4", dbAccount: dbAccount))
-            .copyWith(remoteId: "remoteId4"));
+            .copyWith(remoteId: "remoteId4", createdAt: DateTime(4)));
 
     expect((await query.get()).length, 2);
 
     await insertDbNotification(
         notificationRepository,
         (await createTestDbNotification(seed: "seed5", dbAccount: dbAccount))
-            .copyWith(remoteId: "remoteId5"));
+            .copyWith(remoteId: "remoteId5", createdAt: DateTime(5)));
 
     expect((await query.get()).length, 2);
 
     await insertDbNotification(
         notificationRepository,
         (await createTestDbNotification(seed: "seed6", dbAccount: dbAccount))
-            .copyWith(remoteId: "remoteId6"));
+            .copyWith(remoteId: "remoteId6", createdAt: DateTime(6)));
 
     expect((await query.get()).length, 2);
   });

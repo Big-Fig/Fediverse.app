@@ -4,6 +4,9 @@ import 'package:fedi/refactored/pagination/list/with_new_items/pagination_list_w
 import 'package:fedi/refactored/pagination/pagination_bloc.dart';
 import 'package:fedi/refactored/pagination/pagination_model.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
+
+var _logger = Logger("status_pagination_list_with_new_items_bloc_impl.dart");
 
 class StatusPaginationListWithNewItemsBloc<
         TPage extends PaginationPage<IStatus>>
@@ -20,6 +23,7 @@ class StatusPaginationListWithNewItemsBloc<
 
   @override
   Stream<List<IStatus>> watchItemsNewerThanItem(IStatus item) {
+    _logger.finest(() => "watchItemsNewerThanItem item = $item");
     return statusCachedListService.watchLocalItemsNewerThanItem(item);
   }
 }
