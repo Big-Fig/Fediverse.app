@@ -82,14 +82,19 @@ class PleromaWebSocketsService extends IPleromaWebSocketsService {
   }
 
   IWebSocketsChannel<PleromaWebSocketsEvent> getMyAccountChannel(
-      {@required bool notification}) => getOrCreateNewChannel(
-        stream: notification ? "user:notification" : "user");
+          {@required bool notification}) =>
+      getOrCreateNewChannel(
+          stream: notification ? "user:notification" : "user");
 
   @override
   IWebSocketsChannel<PleromaWebSocketsEvent> getDirectChannel(
-          {@required String accountId}) =>
-      getOrCreateNewChannel(
-          stream: "direct", queryArgs: {"accountId": accountId});
+      {@required String accountId}) {
+    Map<String, String> queryArgs = {};
+    if (accountId != null) {
+      queryArgs.addAll({"accountId": accountId});
+    }
+    return getOrCreateNewChannel(stream: "direct", queryArgs: queryArgs);
+  }
 
   WebSocketsEvent eventParser(Map<String, dynamic> json) =>
       PleromaWebSocketsEvent.fromJson(json);

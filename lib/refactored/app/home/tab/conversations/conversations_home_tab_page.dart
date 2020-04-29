@@ -3,6 +3,7 @@ import 'package:fedi/refactored/app/conversation/conversations_list_bloc.dart';
 import 'package:fedi/refactored/app/conversation/conversations_list_bloc_impl.dart';
 import 'package:fedi/refactored/app/conversation/conversations_list_widget.dart';
 import 'package:fedi/refactored/app/conversation/start/start_conversation_page.dart';
+import 'package:fedi/refactored/app/conversation/websockets/my_account_conversations_websockets_handler_impl.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
