@@ -32,7 +32,9 @@ void main() {
     paginationBloc = memoryPaginationBloc;
 
     memoryPaginationListWithNewItemsBloc = MemoryPaginationListWithNewItemsBloc(
-        paginationBloc: paginationBloc, mergeNewItemsImmediately: false);
+        paginationBloc: paginationBloc,
+        mergeNewItemsImmediately: false,
+        comparator: TestPaginationItem.compareItems);
     paginationListWithNewItemsBloc = memoryPaginationListWithNewItemsBloc;
     paginationListBloc = paginationListWithNewItemsBloc;
   });
@@ -294,9 +296,9 @@ void main() {
   });
 
   test('mergedNewItems', () async {
-    var testPaginationItem1 = TestPaginationItem(100);
-    var testPaginationItem2 = TestPaginationItem(200);
-    var testPaginationItem3 = TestPaginationItem(300);
+    var testPaginationItem1 = TestPaginationItem(-1);
+    var testPaginationItem2 = TestPaginationItem(-2);
+    var testPaginationItem3 = TestPaginationItem(-3);
 
     expect(paginationListWithNewItemsBloc.mergedNewItems.length, 0);
     expect(paginationListWithNewItemsBloc.items, null);
@@ -354,9 +356,9 @@ void main() {
   });
 
   test('mergedNewItems', () async {
-    var testPaginationItem1 = TestPaginationItem(100);
-    var testPaginationItem2 = TestPaginationItem(200);
-    var testPaginationItem3 = TestPaginationItem(300);
+    var testPaginationItem1 = TestPaginationItem(-1);
+    var testPaginationItem2 = TestPaginationItem(-2);
+    var testPaginationItem3 = TestPaginationItem(-3);
 
     expect(paginationListWithNewItemsBloc.mergedNewItemsCount, 0);
     expect(paginationListWithNewItemsBloc.items, null);
@@ -399,13 +401,15 @@ void main() {
 
   test('mergeNewItemsImmediately', () async {
     memoryPaginationListWithNewItemsBloc = MemoryPaginationListWithNewItemsBloc(
-        paginationBloc: paginationBloc, mergeNewItemsImmediately: true);
+        paginationBloc: paginationBloc,
+        mergeNewItemsImmediately: true,
+        comparator: TestPaginationItem.compareItems);
     paginationListWithNewItemsBloc = memoryPaginationListWithNewItemsBloc;
     paginationListBloc = paginationListWithNewItemsBloc;
 
-    var testPaginationItem1 = TestPaginationItem(100);
-    var testPaginationItem2 = TestPaginationItem(200);
-    var testPaginationItem3 = TestPaginationItem(300);
+    var testPaginationItem1 = TestPaginationItem(-1);
+    var testPaginationItem2 = TestPaginationItem(-2);
+    var testPaginationItem3 = TestPaginationItem(-3);
 
     expect(paginationListWithNewItemsBloc.mergedNewItemsCount, 0);
     expect(paginationListWithNewItemsBloc.items, null);

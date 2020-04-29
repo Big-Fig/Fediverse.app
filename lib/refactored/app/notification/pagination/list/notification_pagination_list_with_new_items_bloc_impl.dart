@@ -22,4 +22,19 @@ class NotificationPaginationListWithNewItemsBloc<
   Stream<List<INotification>> watchItemsNewerThanItem(INotification item) {
     return cachedListService.watchLocalItemsNewerThanItem(item);
   }
+
+  @override
+  int compareItems(INotification a, INotification b) {
+    if (a == null && b == null) {
+      return 0;
+    }
+
+    if (a != null && b == null) {
+      return -1;
+    }
+    if (a == null && b != null) {
+      return 1;
+    }
+    return a.createdAt.compareTo(b.createdAt);
+  }
 }
