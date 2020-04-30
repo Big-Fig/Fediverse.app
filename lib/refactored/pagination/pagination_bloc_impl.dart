@@ -12,18 +12,8 @@ var _logger = Logger("pagination_bloc_impl.dart");
 
 abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
     extends DisposableOwner implements IPaginationBloc<TPage, TItem> {
-  // ignore: close_sinks
-  BehaviorSubject<PaginationRefreshState> refreshStateSubject =
-      BehaviorSubject.seeded(PaginationRefreshState.notRefreshed);
-
-  Stream<PaginationRefreshState> get refreshStateStream =>
-      refreshStateSubject.stream;
-
-  PaginationRefreshState get refreshState => refreshStateSubject.value;
 
   final int maximumCachedPagesCount;
-
-  static final int undefinedPageIndex = -1;
 
   bool get isPageCacheEnabled =>
       maximumCachedPagesCount == null || maximumCachedPagesCount > 0;
@@ -52,26 +42,29 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
 
   @override
   int get loadedPagesMaximumIndex =>
-      loadedPageIndexesSorted.fold(undefinedPageIndex, max);
+      loadedPageIndexesSortedByIndex.fold(IPaginationBloc.undefinedPageIndex, max);
 
   @override
-  Stream<int> get loadedPagesMaximumIndexStream => loadedPageIndexesSortedStream
-      .map((list) => list.fold(undefinedPageIndex, max));
+  Stream<int> get loadedPagesMaximumIndexStream => loadedPageIndexesSortedByIndexStream
+      .map((list) => list.fold(IPaginationBloc.undefinedPageIndex, max));
 
   @override
   int get loadedPagesMinimumIndex =>
-      loadedPageIndexesSorted.fold(undefinedPageIndex, min);
+      loadedPageIndexesSortedByIndex.fold(null, (a, b) => min(a ?? b + 1, b)) ??
+      IPaginationBloc.undefinedPageIndex;
 
   @override
-  Stream<int> get loadedPagesMinimumIndexStream => loadedPageIndexesSortedStream
-      .map((list) => list.fold(undefinedPageIndex, min));
+  Stream<int> get loadedPagesMinimumIndexStream =>
+      loadedPageIndexesSortedByIndexStream.map((list) =>
+          list.fold(null, (a, b) => min(a ?? b + 1, b)) ??
+          IPaginationBloc.undefinedPageIndex);
 
   @override
-  List<int> get loadedPageIndexesSorted =>
+  List<int> get loadedPageIndexesSortedByIndex =>
       pagesSubject.value.map((page) => page.pageIndex).toList();
 
   @override
-  Stream<List<int>> get loadedPageIndexesSortedStream => pagesSubject.stream
+  Stream<List<int>> get loadedPageIndexesSortedByIndexStream => pagesSubject.stream
       .map((list) => list.map(((page) => page.pageIndex)).toList());
 
   @override
@@ -85,7 +78,6 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
       @required this.itemsCountPerPage}) {
     assert(itemsCountPerPage != null && itemsCountPerPage > 0);
     addDisposable(subject: pagesSubject);
-    addDisposable(subject: refreshStateSubject);
     _logger.finest(() => "constructor");
   }
 
@@ -95,12 +87,11 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
     _logger.finest(() => "dispose");
   }
 
-  // todo: move forceToUpdateFromNetwork to nested clasess 
   @override
   Future<TPage> requestPage(
-      {@required pageIndex, @required bool forceToUpdateFromNetwork}) async {
+      {@required int pageIndex, @required bool forceToSkipCache}) async {
     _logger.finest(() =>
-        "requestPage $pageIndex, forceToUpdateFromNetwork $forceToUpdateFromNetwork");
+        "requestPage $pageIndex, forceToUpdateFromNetwork $forceToSkipCache");
 
     TPage page;
     if (isPageCacheEnabled) {
@@ -118,7 +109,7 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
           nextPage = indexToCachedPageMap[nextIndex];
         }
         page = await loadPage(
-            forceToUpdateFromNetwork: forceToUpdateFromNetwork,
+            forceToSkipCache: forceToSkipCache,
             pageIndex: pageIndex,
             previousPage: previousPage,
             nextPage: nextPage);
@@ -147,7 +138,7 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
       }
     } else {
       page = await loadPage(
-          forceToUpdateFromNetwork: forceToUpdateFromNetwork,
+          forceToSkipCache: forceToSkipCache,
           pageIndex: pageIndex,
           previousPage: null,
           nextPage: null);
@@ -168,22 +159,18 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
 
   @override
   Future<TPage> refresh() async {
-    refreshStateSubject.add(PaginationRefreshState.refreshing);
+
     indexToCachedPageMap.clear();
     pagesSubject.value.clear();
 //    onPagesChanged([newFirstPage]);
 
-    var newFirstPage =
-        await requestPage(pageIndex: 0, forceToUpdateFromNetwork: true);
-    
-    if (!refreshStateSubject.isClosed) {
-      refreshStateSubject.add(PaginationRefreshState.refreshed);
-    }
+    var newFirstPage = await requestPage(pageIndex: 0, forceToSkipCache: true);
+
     return newFirstPage;
   }
 
   Future<TPage> loadPage({
-    @required bool forceToUpdateFromNetwork,
+    @required bool forceToSkipCache,
     @required int pageIndex,
     @required TPage previousPage,
     @required TPage nextPage,
@@ -193,17 +180,22 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
     var isLoadedInSequence = true;
 
     if (loadedPagesSortedByIndex?.isNotEmpty == true) {
-      var previousIndex = loadedPagesSortedByIndex.first.pageIndex - 1;
+      var firstIndex = loadedPagesSortedByIndex.first.pageIndex;
 
-      for (var page in loadedPagesSortedByIndex) {
-        var currentIndex = page.pageIndex;
+      if (firstIndex != 0) {
+        isLoadedInSequence = false;
+      } else {
+        var previousIndex = firstIndex - 1;
+        for (var page in loadedPagesSortedByIndex) {
+          var currentIndex = page.pageIndex;
 
-        if (currentIndex != previousIndex + 1) {
-          isLoadedInSequence = false;
-          break;
+          if (currentIndex != previousIndex + 1) {
+            isLoadedInSequence = false;
+            break;
+          }
+
+          previousIndex = currentIndex;
         }
-
-        previousIndex = currentIndex;
       }
     }
 

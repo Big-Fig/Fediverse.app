@@ -5,23 +5,13 @@ import 'package:fedi/refactored/pleroma/api/pleroma_api_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IStatusCachedListBloc extends DisposableOwner
+abstract class IStatusCachedListService extends DisposableOwner
     implements IPleromaCachedListService<IStatus> {
-  static IStatusCachedListBloc of(BuildContext context,
+  static IStatusCachedListService of(BuildContext context,
           {bool listen = true}) =>
-      Provider.of<IStatusCachedListBloc>(context, listen: listen);
-
-  IPleromaApi get pleromaApi;
-
-  Future<List<IStatus>> loadLocalItems(
-      {@required int limit,
-      @required IStatus newerThan,
-      @required IStatus olderThan});
-
-  Future<bool> refreshItemsFromRemoteForPage(
-      {@required int limit,
-      @required IStatus newerThan,
-      @required IStatus olderThan});
+      Provider.of<IStatusCachedListService>(context, listen: listen);
 
   Future preRefreshAllAction();
+
+  Stream<List<IStatus>> watchLocalItemsNewerThanItem(IStatus item);
 }

@@ -19,7 +19,7 @@ abstract class NetworkOnlyPaginationBloc<TPage extends PaginationPage<TItem>,
 
   @override
   Future<TPage> loadPage({
-    @required bool forceToUpdateFromNetwork,
+    @required bool forceToSkipCache,
     @required int pageIndex,
     @required TPage previousPage,
     @required TPage nextPage,

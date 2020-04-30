@@ -73,4 +73,17 @@ class NotificationCachedListService extends INotificationCachedListService {
           onlyWithType: onlyWithType,
           notificationRepository:
               INotificationRepository.of(context, listen: false));
+
+  @override
+  Stream<List<INotification>> watchLocalItemsNewerThanItem(
+          INotification item) =>
+      notificationRepository.watchNotifications(
+          onlyWithType: onlyWithType,
+          olderThanNotification: null,
+          newerThanNotification: item,
+          limit: null,
+          offset: null,
+          orderingTermData: NotificationOrderingTermData(
+              orderingMode: OrderingMode.desc,
+              orderByType: NotificationOrderByType.createdAt));
 }

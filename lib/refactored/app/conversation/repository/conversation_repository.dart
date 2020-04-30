@@ -27,36 +27,35 @@ abstract class IConversationRepository
   Future upsertRemoteConversation(IPleromaConversation remoteConversation);
 
   Future<List<DbConversationWrapper>> getConversations(
-      {@required IAccount withAccount,
-      @required IConversation olderThanConversation,
-      @required IConversation newerThanConversation,
+      {
+      @required IConversation olderThan,
+      @required IConversation newerThan,
       @required int limit,
       @required int offset,
       @required ConversationOrderingTermData orderingTermData});
 
   Stream<List<DbConversationWrapper>> watchConversations(
-      {@required IConversation olderThanConversation,
-      @required IConversation newerThanConversation,
+      {
+      @required IConversation olderThan,
+      @required IConversation newerThan,
       @required int limit,
       @required int offset,
       @required ConversationOrderingTermData orderingTermData});
 
   Future<DbConversationWrapper> getConversation(
-      {@required IAccount withAccount,
-      @required IConversation olderThanConversation,
-      @required IConversation newerThanConversation,
+      {
+      @required IConversation olderThan,
+      @required IConversation newerThan,
       @required ConversationOrderingTermData orderingTermData});
 
   Stream<DbConversationWrapper> watchConversation(
-      {@required IAccount withAccount,
-      @required IConversation olderThanConversation,
-      @required IConversation newerThanConversation,
+      {
+      @required IConversation olderThan,
+      @required IConversation newerThan,
       @required ConversationOrderingTermData orderingTermData});
 
   Future updateLocalConversationByRemoteConversation(
       {@required IConversation oldLocalConversation,
       @required IPleromaConversation newRemoteConversation});
 
-  Future<IConversation> findConversationWithAccount(
-      {@required IAccount account});
 }

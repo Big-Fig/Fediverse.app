@@ -50,11 +50,14 @@ import 'package:fedi/refactored/pleroma/status/pleroma_status_service.dart';
 import 'package:fedi/refactored/pleroma/status/pleroma_status_service_impl.dart';
 import 'package:fedi/refactored/pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:fedi/refactored/pleroma/timeline/pleroma_timeline_service_impl.dart';
+import 'package:fedi/refactored/pleroma/websockets/pleroma_websockets_service.dart';
+import 'package:fedi/refactored/pleroma/websockets/pleroma_websockets_service_impl.dart';
 import 'package:fedi/refactored/provider/provider_context_bloc_impl.dart';
 import 'package:fedi/refactored/push/fcm/fcm_push_service.dart';
 import 'package:fedi/refactored/push/relay/push_relay_service.dart';
 import 'package:fedi/refactored/rest/rest_service.dart';
 import 'package:fedi/refactored/rest/rest_service_impl.dart';
+import 'package:fedi/refactored/websockets/websockets_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -69,8 +72,10 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
   final IPushRelayService pushRelayService;
   final IFcmPushService fcmPushService;
   final IPushHandlerBloc pushHandlerBloc;
+  final IWebSocketsService webSocketsService;
 
   CurrentAuthInstanceContextBloc({
+    @required this.webSocketsService,
     @required this.currentInstance,
     @required this.preferencesService,
     @required this.connectionService,
@@ -84,8 +89,6 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     _logger.fine(() => "internalAsyncInit");
 
     await fcmPushService.askPermissions();
-
-
 
     var globalProviderService = this;
 
@@ -244,17 +247,27 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         .asyncInitAndRegister<IPushSubscriptionBloc>(pushSubscriptionBloc);
 
     var isHaveSubscription = pushSubscriptionBloc.isHaveSubscription;
-    if(!isHaveSubscription) {
+    if (!isHaveSubscription) {
       await pushSubscriptionBloc.subscribeWithDefaultPreferences();
     }
-
 
     var notificationPushLoaderBloc = NotificationPushLoaderBloc(
         currentInstance: currentInstance,
         pushHandlerBloc: pushHandlerBloc,
-        notificationRepository: notificationRepository, pleromaNotificationService:
-    pleromaNotificationService);
+        notificationRepository: notificationRepository,
+        pleromaNotificationService: pleromaNotificationService);
 
     addDisposable(disposable: notificationPushLoaderBloc);
+
+    var pleromaWebSocketsService =
+        PleromaWebSocketsService(
+            webSocketsService: webSocketsService,
+            accessToken: currentInstance.token.accessToken,
+            baseUri: currentInstance.url);
+
+    addDisposable(disposable: pleromaWebSocketsService);
+    await globalProviderService
+        .asyncInitAndRegister<IPleromaWebSocketsService>(
+            pleromaWebSocketsService);
   }
 }
