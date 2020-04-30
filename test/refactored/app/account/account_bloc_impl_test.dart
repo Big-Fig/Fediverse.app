@@ -6,14 +6,18 @@ import 'package:fedi/refactored/app/account/repository/account_repository.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/refactored/app/database/app_database.dart';
 import 'package:fedi/refactored/app/emoji/emoji_text_model.dart';
+import 'package:fedi/refactored/app/status/repository/status_repository.dart';
+import 'package:fedi/refactored/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/refactored/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/refactored/pleroma/field/pleroma_field_model.dart';
+import 'package:fedi/refactored/pleroma/websockets/pleroma_websockets_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:moor_ffi/moor_ffi.dart';
 
 import '../../pleroma/account/pleroma_account_service_mock.dart';
+import '../../pleroma/websockets/pleroma_websockets_service_mock.dart';
 import 'account_model_helper.dart';
 
 void main() {
@@ -22,10 +26,14 @@ void main() {
   PleromaAccountServiceMock pleromaAccountServiceMock;
   AppDatabase database;
   IAccountRepository accountRepository;
+  IStatusRepository statusRepository;
+  IPleromaWebSocketsService pleromaWebSocketsService;
 
   setUp(() async {
     database = AppDatabase(VmDatabase.memory());
     accountRepository = AccountRepository(appDatabase: database);
+    statusRepository = StatusRepository(
+        appDatabase: database, accountRepository: accountRepository);
 
     pleromaAccountServiceMock = PleromaAccountServiceMock();
 
@@ -33,11 +41,15 @@ void main() {
 
     account = await createTestAccount(seed: "seed1");
 
+    pleromaWebSocketsService = PleromaWebSocketsServiceMock();
+
     accountBloc = AccountBloc(
         account: account,
         pleromaAccountService: pleromaAccountServiceMock,
         accountRepository: accountRepository,
-        delayInit: false);
+        delayInit: false,
+        pleromaWebSocketsService: pleromaWebSocketsService,
+        statusRepository: statusRepository);
   });
 
   tearDown(() async {

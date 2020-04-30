@@ -6,14 +6,15 @@ import 'package:fedi/refactored/app/conversation/status/conversation_status_list
 import 'package:fedi/refactored/app/conversation/status/post/conversation_post_status_widget.dart';
 import 'package:fedi/refactored/app/status/list/cached/status_cached_list_service.dart';
 import 'package:fedi/refactored/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
-import 'package:fedi/refactored/app/status/pagination/list/status_pagination_list_bloc.dart';
-import 'package:fedi/refactored/app/status/pagination/list/status_pagination_list_bloc_impl.dart';
+import 'package:fedi/refactored/app/status/pagination/list/status_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/async/loading/init/async_init_loading_widget.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
+import 'package:fedi/refactored/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/refactored/pagination/pagination_bloc.dart';
 import 'package:fedi/refactored/pagination/pagination_model.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 class ConversationWidget extends StatelessWidget {
   @override
@@ -22,7 +23,7 @@ class ConversationWidget extends StatelessWidget {
     return AsyncInitLoadingWidget(
         asyncInitLoadingBloc: conversationBloc,
         loadingFinishedBuilder: (context) {
-          return DisposableProvider<IStatusCachedListBloc>(
+          return DisposableProvider<IStatusCachedListService>(
               create: (context) {
                 var currentInstanceBloc =
                     ICurrentAuthInstanceBloc.of(context, listen: false);
@@ -45,9 +46,15 @@ class ConversationWidget extends StatelessWidget {
                   IPaginationBloc<PaginationPage<IStatus>, IStatus>>(
                 create: (context) =>
                     StatusCachedPaginationBloc.createFromContext(context),
-                child: DisposableProvider<IStatusPaginationListBloc>(
-                  create: (context) =>
-                      StatusPaginationListBloc.createFromContext(context),
+                child: DisposableProvider<
+                    IPaginationListBloc<PaginationPage<IStatus>, IStatus>>(
+                  create: (context) => StatusPaginationListWithNewItemsBloc(
+                      mergeNewItemsImmediately: true,
+                      statusCachedListService:
+                          IStatusCachedListService.of(context, listen: false),
+                      paginationBloc: Provider.of<
+                          IPaginationBloc<PaginationPage<IStatus>,
+                              IStatus>>(context, listen: false)),
                   child: Column(
                     children: <Widget>[
                       Expanded(
@@ -57,9 +64,9 @@ class ConversationWidget extends StatelessWidget {
                         ),
                       ),
                       ConversationPostStatusWidget(successCallback: (context) {
-                        var paginationListBloc = IStatusPaginationListBloc.of(
-                            context,
-                            listen: false);
+                        var paginationListBloc = Provider.of<
+                            IPaginationListBloc<PaginationPage<IStatus>,
+                                IStatus>>(context, listen: false);
                         paginationListBloc.refresh();
                       })
                     ],

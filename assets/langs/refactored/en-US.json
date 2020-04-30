@@ -257,6 +257,9 @@
             "home": "Home",
             "local": "Local"
           }
+        },
+        "conversations": {
+          "title": "Messages"
         }
       }
     },
@@ -496,6 +499,11 @@
   },
   "pagination": {
     "list": {
+      "new_items": {
+        "action": {
+          "tap_to_load_new": "Tap to load new items ({})"
+        }
+      },
       "empty": "Nothing found"
     }
   },

@@ -7,19 +7,15 @@ abstract class IPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     implements Disposable, IAsyncInitLoadingBloc {
   int get itemsCountPerPage;
 
-  List<TItem> get items;
-
-  Stream<List<TItem>> get itemsStream;
+  bool get isRefreshedAtLeastOnce;
 
   List<TPage> get sortedPages;
 
   Stream<List<TPage>> get sortedPagesStream;
 
-  Stream<PaginationRefreshState> get refreshStateStream;
+  List<TItem> get items;
 
-  PaginationRefreshState get refreshState;
-
-  bool get isRefreshedAtLeastOnce;
+  Stream<List<TItem>> get itemsStream;
 
   Future<bool> refresh();
 

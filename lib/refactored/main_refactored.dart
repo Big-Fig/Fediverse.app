@@ -121,7 +121,8 @@ void buildCurrentInstanceApp(
         connectionService: appContextBloc.get(),
         pushRelayService: appContextBloc.get(),
         pushHandlerBloc: appContextBloc.get(),
-        fcmPushService: appContextBloc.get());
+        fcmPushService: appContextBloc.get(),
+        webSocketsService: appContextBloc.get());
     await currentInstanceContextBloc.performAsyncInit();
     _logger.finest(
         () => "buildCurrentInstanceApp CurrentInstanceContextLoadingPage");

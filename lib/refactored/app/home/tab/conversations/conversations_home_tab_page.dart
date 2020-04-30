@@ -1,23 +1,30 @@
-import 'package:fedi/refactored/app/conversation/list/conversation_list_widget.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/refactored/app/conversation/conversations_list_bloc.dart';
+import 'package:fedi/refactored/app/conversation/conversations_list_bloc_impl.dart';
+import 'package:fedi/refactored/app/conversation/conversations_list_widget.dart';
 import 'package:fedi/refactored/app/conversation/start/start_conversation_page.dart';
-import 'package:fedi/refactored/app/home/tab/conversations/conversations_home_tab_bloc.dart';
+import 'package:fedi/refactored/app/conversation/websockets/my_account_conversations_websockets_handler_impl.dart';
+import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
-import 'package:provider/provider.dart';
 
-var _logger = Logger("conversations_home_tab_page.dart.dart");
+var _logger = Logger("conversations_home_tab_page.dart");
 
 class ConversationsHomeTabPage extends StatelessWidget {
   final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
+  ConversationsHomeTabPage({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     _logger.finest(() => "build");
+
     return Scaffold(
       key: _drawerKey,
       appBar: AppBar(
-        title: Text("Messages"),
+        title: Text(AppLocalizations.of(context)
+            .tr("app.home.tab.conversations.title")),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),
@@ -27,27 +34,9 @@ class ConversationsHomeTabPage extends StatelessWidget {
           ),
         ],
       ),
-      body: buildBodyWidget(context),
-    );
-  }
-
-  Widget buildBodyWidget(BuildContext context) {
-    _logger.finest(() => "buildBodyWidget");
-
-    var conversationsHomeTabBloc =
-        IConversationsHomeTabBloc.of(context, listen: true);
-
-    return MultiProvider(
-      providers: [
-        Provider.value(value: conversationsHomeTabBloc.conversationListService),
-        Provider.value(
-            value: conversationsHomeTabBloc.conversationPaginationBloc),
-        Provider.value(
-            value: conversationsHomeTabBloc.conversationPaginationListBloc),
-      ],
-      child: ConversationListWidget(
-        key: PageStorageKey("ConversationsHomePage"),
-      ),
+      body: DisposableProvider<IConversationsListBloc>(
+          create: (context) => ConversationsListBloc.createFromContext(context),
+          child: ConversationsListWidget(key: this.key)),
     );
   }
 }

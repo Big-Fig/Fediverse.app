@@ -7,8 +7,6 @@ import 'package:fedi/refactored/app/auth/instance/list/auth_instance_list_bloc_i
 import 'package:fedi/refactored/app/auth/instance/list/auth_instance_list_local_preference_bloc.dart';
 import 'package:fedi/refactored/app/auth/instance/list/auth_instance_list_local_preference_bloc_impl.dart';
 import 'package:fedi/refactored/app/context/app_context_bloc.dart';
-import 'package:fedi/refactored/app/notification/pagination/list/notification_pagination_list_bloc_impl.dart';
-import 'package:fedi/refactored/app/notification/push/notification_push_loader_bloc_impl.dart';
 import 'package:fedi/refactored/app/push/handler/push_handler_bloc.dart';
 import 'package:fedi/refactored/app/push/handler/push_handler_bloc_impl.dart';
 import 'package:fedi/refactored/app/push/handler/unhandled/push_handler_unhandled_local_preferences_bloc.dart';
@@ -30,6 +28,8 @@ import 'package:fedi/refactored/push/fcm/fcm_push_service.dart';
 import 'package:fedi/refactored/push/fcm/fcm_push_service_impl.dart';
 import 'package:fedi/refactored/push/relay/push_relay_service.dart';
 import 'package:fedi/refactored/push/relay/push_relay_service_impl.dart';
+import 'package:fedi/refactored/websockets/websockets_service.dart';
+import 'package:fedi/refactored/websockets/websockets_service_impl.dart';
 import 'package:logging/logging.dart';
 
 var _logger = Logger("app_context_bloc_impl.dart");
@@ -105,5 +105,9 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         fcmPushService: fcmPushService);
     await globalProviderService
         .asyncInitAndRegister<IPushHandlerBloc>(pushHandlerBloc);
+
+    var webSocketsService = WebSocketsService();
+    await globalProviderService
+        .asyncInitAndRegister<IWebSocketsService>(webSocketsService);
   }
 }
