@@ -119,6 +119,9 @@ dev_dependencies:
   # in memory moor SQLite database for tests
   moor_ffi: ^0.4.0
 
+  # save photo and video to gallery
+  gallery_saver: ^2.0.1
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
