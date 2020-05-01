@@ -5,29 +5,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class StatusMediaAttachmentImageWidget extends StatelessWidget {
-  final IPleromaMediaAttachment attachment;
+  final IPleromaMediaAttachment mediaAttachment;
 
-  StatusMediaAttachmentImageWidget(this.attachment);
+  StatusMediaAttachmentImageWidget(this.mediaAttachment);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          var networkImage = Image.network(
-            attachment.url,
-            height: 15.0,
-            width: 15.0,
-          );
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => MediaAttachmentPreviewPage(
-                      attachment: attachment,
-                    )),
-          );
+          goToMediaAttachmentPreviewPage(context, mediaAttachment: mediaAttachment);
         },
         child: CachedNetworkImage(
-          imageUrl: attachment.previewUrl,
+          imageUrl: mediaAttachment.previewUrl,
           placeholder: (context, url) => Center(
             child: Container(
               width: 30,

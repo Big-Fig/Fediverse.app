@@ -329,12 +329,13 @@
     "media": {
       "attachment": {
         "preview": {
-          "title": "Media attachment"
+          "title": "Media attachment",
+          "not_supported_type": "Not supported type {}"
         },
-        "download": {
+        "add_to_gallery": {
           "toast": {
-            "success": "Download started",
-            "fail": "Failed to start download"
+            "success": "Added to gallery",
+            "fail": "Error: media not added to gallery"
           }
         },
         "upload": {

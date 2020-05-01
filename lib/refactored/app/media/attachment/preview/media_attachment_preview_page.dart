@@ -1,73 +1,71 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/refactored/app/media/attachment/media_attachment_add_to_gallery_helper.dart';
 import 'package:fedi/refactored/mastodon/media/attachment/mastodon_media_attachment_model.dart';
+import 'package:fedi/refactored/media/video/media_video_player_widget.dart';
 import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:logging/logging.dart';
 import 'package:photo_view/photo_view.dart';
 
-var _logger = Logger("media_attachment_preview_page.dart");
-
 class MediaAttachmentPreviewPage extends StatelessWidget {
-  final IPleromaMediaAttachment attachment;
+  final IPleromaMediaAttachment mediaAttachment;
 
-  MediaAttachmentPreviewPage({@required this.attachment}) {
-    assert(attachment.typeMastodon == MastodonMediaAttachmentType.image,
-        "only image type supported by now");
-  }
+  MediaAttachmentPreviewPage({@required this.mediaAttachment});
 
   @override
   Widget build(BuildContext context) {
-    var networkImage = Image.network(
-      attachment.url,
-    );
     return Scaffold(
       appBar: AppBar(
-        title: Text(attachment.description ??
+        title: Text(mediaAttachment.description ??
             AppLocalizations.of(context)
                 .tr("app.media.attachment.preview.title")),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.file_download),
             onPressed: () async {
-              try {
-//                var fileDownloadService =
-//                    IFileDownloadService.of(context, listen: false);
-//
-//                await fileDownloadService.enqueueFileDownload(
-//                    url: attachment.url);
-
-                // todo: unify toast
-                Fluttertoast.showToast(
-                    msg: AppLocalizations.of(context)
-                        .tr("app.media.attachment.download.toast.success"),
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.CENTER,
-                    backgroundColor: Colors.blue,
-                    textColor: Colors.white,
-                    fontSize: 16.0);
-              } catch (e, stackTrace) {
-                _logger.severe(() => "can't download file", e, stackTrace);
-
-                // todo: unify toast
-                Fluttertoast.showToast(
-                    msg: AppLocalizations.of(context)
-                        .tr("app.media.attachment.download.toast.fail"),
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.CENTER,
-                    backgroundColor: Colors.blue,
-                    textColor: Colors.white,
-                    fontSize: 16.0);
-              }
+              await addToGallery(context, mediaAttachment: mediaAttachment);
             },
           )
         ],
       ),
-      body: Container(
-        child: PhotoView(
-          imageProvider: networkImage.image,
-        ),
-      ),
+      body: buildBody(context),
     );
   }
+
+  Widget buildBody(BuildContext context) {
+    switch (mediaAttachment.typeMastodon) {
+      case MastodonMediaAttachmentType.image:
+        return Container(
+          child: PhotoView(
+            imageProvider: NetworkImage(mediaAttachment.type),
+          ),
+        );
+        break;
+      case MastodonMediaAttachmentType.video:
+        return MediaVideoPlayerWidget.network(networkUrl: mediaAttachment.url);
+        break;
+      case MastodonMediaAttachmentType.audio:
+        // TODO: use special UI for audio
+        return MediaVideoPlayerWidget.network(networkUrl: mediaAttachment.url);
+
+        break;
+      case MastodonMediaAttachmentType.gifv:
+      case MastodonMediaAttachmentType.unknown:
+      default:
+        return Center(
+            child: Text(AppLocalizations.of(context).tr(
+                "app.media.attachment.preview.not_supported_type",
+                args: [mediaAttachment.type])));
+        break;
+    }
+  }
+}
+
+void goToMediaAttachmentPreviewPage(BuildContext context,
+    {@required IPleromaMediaAttachment mediaAttachment}) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+        builder: (context) =>
+            MediaAttachmentPreviewPage(mediaAttachment: mediaAttachment)),
+  );
 }
