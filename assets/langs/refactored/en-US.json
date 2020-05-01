@@ -328,15 +328,20 @@
     },
     "media": {
       "attachment": {
+        "share": {
+          "title": "Share",
+          "progress": {
+            "content": "Sharing..."
+          }
+        },
+        "add_to_gallery": {
+          "progress": {
+            "content": "Saving..."
+          }
+        },
         "preview": {
           "title": "Media attachment",
           "not_supported_type": "Not supported type {}"
-        },
-        "add_to_gallery": {
-          "toast": {
-            "success": "Added to gallery",
-            "fail": "Error: media not added to gallery"
-          }
         },
         "upload": {
           "remove": {
