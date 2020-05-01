@@ -328,6 +328,15 @@
     },
     "media": {
       "attachment": {
+        "preview": {
+          "title": "Media attachment"
+        },
+        "download": {
+          "toast": {
+            "success": "Download started",
+            "fail": "Failed to start download"
+          }
+        },
         "upload": {
           "remove": {
             "dialog": {

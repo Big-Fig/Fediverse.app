@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fedi/refactored/app/image/image_view_page.dart';
+import 'package:fedi/refactored/app/media/attachment/preview/media_attachment_preview_page.dart';
 import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,11 +21,13 @@ class StatusMediaAttachmentImageWidget extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ImageViewPage(networkImage.image)),
+                builder: (context) => MediaAttachmentPreviewPage(
+                      attachment: attachment,
+                    )),
           );
         },
         child: CachedNetworkImage(
-          imageUrl: attachment.url,
+          imageUrl: attachment.previewUrl,
           placeholder: (context, url) => Center(
             child: Container(
               width: 30,
