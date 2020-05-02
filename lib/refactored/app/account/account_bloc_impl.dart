@@ -2,7 +2,6 @@ import 'package:fedi/refactored/app/account/account_bloc.dart';
 import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/account/account_model_adapter.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
-import 'package:fedi/refactored/app/account/websockets/account_websockets_handler_impl.dart';
 import 'package:fedi/refactored/app/emoji/emoji_text_model.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
