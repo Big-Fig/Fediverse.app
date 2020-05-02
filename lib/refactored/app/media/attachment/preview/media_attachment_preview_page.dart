@@ -59,6 +59,7 @@ class MediaAttachmentPreviewPage extends StatelessWidget {
     var url = NetworkImage(mediaAttachment.url);
     switch (mediaAttachment.typeMastodon) {
       case MastodonMediaAttachmentType.image:
+      case MastodonMediaAttachmentType.gifv:
         return Container(
           child: PhotoView(
             imageProvider: url,
@@ -71,9 +72,7 @@ class MediaAttachmentPreviewPage extends StatelessWidget {
       case MastodonMediaAttachmentType.audio:
         // TODO: use special UI for audio
         return MediaVideoPlayerWidget.network(networkUrl: mediaAttachment.url);
-
         break;
-      case MastodonMediaAttachmentType.gifv:
       case MastodonMediaAttachmentType.unknown:
       default:
         return Center(
