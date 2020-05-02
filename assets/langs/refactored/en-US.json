@@ -21,6 +21,14 @@
         "statuses": "Statuses"
       },
       "my": {
+        "settings": {
+          "field": {
+            "websockets_enabled": {
+              "label": "WebSockets real-time updates",
+              "description": "Disable to reduce battery usage"
+            }
+          }
+        },
         "edit": {
           "title": "Edit account",
           "action": {

@@ -2,6 +2,10 @@ import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
 import 'package:fedi/refactored/app/account/my/my_account_bloc_impl.dart';
 import 'package:fedi/refactored/app/account/my/my_account_local_preference_bloc.dart';
 import 'package:fedi/refactored/app/account/my/my_account_local_preference_bloc_impl.dart';
+import 'package:fedi/refactored/app/account/my/settings/my_account_settings_bloc.dart';
+import 'package:fedi/refactored/app/account/my/settings/my_account_settings_bloc_impl.dart';
+import 'package:fedi/refactored/app/account/my/settings/my_account_settings_local_preference_bloc.dart';
+import 'package:fedi/refactored/app/account/my/settings/my_account_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/refactored/app/auth/instance/auth_instance_model.dart';
@@ -259,15 +263,29 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
 
     addDisposable(disposable: notificationPushLoaderBloc);
 
-    var pleromaWebSocketsService =
-        PleromaWebSocketsService(
-            webSocketsService: webSocketsService,
-            accessToken: currentInstance.token.accessToken,
-            baseUri: currentInstance.url);
+    var pleromaWebSocketsService = PleromaWebSocketsService(
+        webSocketsService: webSocketsService,
+        accessToken: currentInstance.token.accessToken,
+        baseUri: currentInstance.url);
 
     addDisposable(disposable: pleromaWebSocketsService);
+    await globalProviderService.asyncInitAndRegister<IPleromaWebSocketsService>(
+        pleromaWebSocketsService);
+
+    var myAccountSettingsLocalPreferenceBloc =
+        MyAccountSettingsLocalPreferenceBloc(
+            currentInstance.userAtHost, preferencesService);
+
+    addDisposable(disposable: myAccountSettingsLocalPreferenceBloc);
     await globalProviderService
-        .asyncInitAndRegister<IPleromaWebSocketsService>(
-            pleromaWebSocketsService);
+        .asyncInitAndRegister<IMyAccountSettingsLocalPreferenceBloc>(
+            myAccountSettingsLocalPreferenceBloc);
+
+    var myAccountSettingsBloc =
+        MyAccountSettingsBloc(localPreferenceBloc: myAccountSettingsLocalPreferenceBloc);
+
+    addDisposable(disposable: myAccountSettingsBloc);
+    await globalProviderService
+        .asyncInitAndRegister<IMyAccountSettingsBloc>(myAccountSettingsBloc);
   }
 }
