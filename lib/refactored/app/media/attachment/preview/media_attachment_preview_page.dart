@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/async/async_operation_button_builder_widget.dart';
 import 'package:fedi/refactored/app/media/attachment/media_attachment_add_to_gallery_helper.dart';
-import 'package:fedi/refactored/app/media/attachment/media_attachment_share_helper.dart';
+import 'package:fedi/refactored/app/share/share_service.dart';
 import 'package:fedi/refactored/mastodon/media/attachment/mastodon_media_attachment_model.dart';
 import 'package:fedi/refactored/media/video/media_video_player_widget.dart';
 import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_model.dart';
@@ -11,9 +11,7 @@ import 'package:photo_view/photo_view.dart';
 class MediaAttachmentPreviewPage extends StatelessWidget {
   final IPleromaMediaAttachment mediaAttachment;
 
-  MediaAttachmentPreviewPage({
-    @required this.mediaAttachment
-  });
+  MediaAttachmentPreviewPage({@required this.mediaAttachment});
 
   @override
   Widget build(BuildContext context) {
@@ -33,13 +31,19 @@ class MediaAttachmentPreviewPage extends StatelessWidget {
 
   Widget buildShareAction(BuildContext context) =>
       AsyncOperationButtonBuilderWidget(
-        progressContentMessage: AppLocalizations.of(context)
-            .tr("app.media.attachment.share.progress.content"),
+          progressContentMessage: AppLocalizations.of(context)
+              .tr("app.media.attachment.share.progress.content"),
           builder: (BuildContext context, VoidCallback onPressed) =>
               IconButton(icon: Icon(Icons.share), onPressed: onPressed),
-          asyncButtonAction: () => shareMediaAttachment(
-              context: context,
-              mediaAttachment: mediaAttachment));
+          asyncButtonAction: () {
+            var shareService = IShareService.of(context, listen: false);
+            String popupTitle = AppLocalizations.of(context)
+                .tr("app.media.attachment.share.title");
+            return shareService.shareMediaAttachment(
+                context: context,
+                popupTitle: popupTitle,
+                mediaAttachment: mediaAttachment);
+          });
 
   Widget buildAddToGalleryAction(
           BuildContext context) =>
@@ -86,8 +90,7 @@ void goToMediaAttachmentPreviewPage(BuildContext context,
   Navigator.push(
     context,
     MaterialPageRoute(
-        builder: (context) => MediaAttachmentPreviewPage(
-              mediaAttachment: mediaAttachment
-            )),
+        builder: (context) =>
+            MediaAttachmentPreviewPage(mediaAttachment: mediaAttachment)),
   );
 }

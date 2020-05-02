@@ -374,6 +374,12 @@
       }
     },
     "status": {
+      "share": {
+        "title": "Share status",
+        "progress": {
+          "content": "Sharing..."
+        }
+      },
       "action": {
         "comment": "Comment",
         "favourite": "Favourite",
@@ -384,6 +390,7 @@
         "follow": "Follow",
         "open_in_browser": "Open in browser",
         "copy_link": "Copy link",
+        "share": "Share",
         "more": "More",
         "popup": {
           "title": "Status Actions",

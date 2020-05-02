@@ -1,7 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/account/account_bloc.dart';
+import 'package:fedi/refactored/app/share/share_service.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
+import 'package:fedi/refactored/dialog/async/async_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,12 +27,12 @@ class StatusShareActionWidget extends StatelessWidget {
     IStatus status = statusBloc.status;
     showModalBottomSheet(
         builder: (BuildContext context) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+          return ListView(
             children: <Widget>[
               buildTitleSeparator(context),
               buildCopyAction(context, status),
               buildOpenInBrowserAction(context, status),
+              buildShareAction(context, status),
               buildAccountDescSeparator(context),
               buildAccountNameSeparator(status),
               // public button
@@ -244,6 +246,46 @@ class StatusShareActionWidget extends StatelessWidget {
                     backgroundColor: Colors.blue,
                     textColor: Colors.white,
                     fontSize: 16.0);
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Padding buildShareAction(BuildContext context, IStatus status) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 10),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: OutlineButton(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(AppLocalizations.of(context)
+                      .tr("app.status.action.share"))
+                ],
+              ),
+              onPressed: () {
+                var appLocalizations = AppLocalizations.of(context);
+                var popupTitle = appLocalizations.tr("app.status.share.title");
+                var progressMessage =
+                    appLocalizations.tr("app.status.share.progress.content");
+
+                doAsyncOperationWithDialog(
+                    context: context,
+                    contentMessage: progressMessage,
+                    asyncCode: () async {
+                      var shareService =
+                          IShareService.of(context, listen: false);
+
+                      return shareService.shareStatus(
+                          context: context,
+                          popupTitle: popupTitle,
+                          status: status);
+                    });
               },
             ),
           ),
