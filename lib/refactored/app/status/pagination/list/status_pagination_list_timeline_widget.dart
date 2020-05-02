@@ -3,6 +3,7 @@ import 'package:fedi/refactored/app/status/pagination/list/status_pagination_lis
 import 'package:fedi/refactored/app/status/status_bloc.dart';
 import 'package:fedi/refactored/app/status/status_bloc_impl.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
+import 'package:fedi/refactored/collapsible/collapsible_bloc.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:fedi/refactored/pagination/list/pagination_list_widget.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ import 'package:provider/provider.dart';
 class StatusPaginationListTimelineWidget
     extends StatusPaginationListBaseWidget {
   final bool needWatchLocalRepositoryForUpdates;
+
   StatusPaginationListTimelineWidget(
       {@required Key key, @required this.needWatchLocalRepositoryForUpdates})
       : super(key: key);
@@ -29,10 +31,19 @@ class StatusPaginationListTimelineWidget
           itemBuilder: (context, index) => Provider<IStatus>.value(
                 value: items[index],
                 child: DisposableProxyProvider<IStatus, IStatusBloc>(
-                    update: (context, status, oldValue) =>
-                        StatusBloc.createFromContext(context, status,
-                            isNeedWatchLocalRepositoryForUpdates:
-                                needWatchLocalRepositoryForUpdates),
+                    update: (context, status, oldValue) {
+                      var collapsibleBloc =
+                          ICollapsibleBloc.of(context, listen: false);
+
+                      var statusBloc = StatusBloc.createFromContext(
+                          context, status,
+                          isNeedWatchLocalRepositoryForUpdates:
+                              needWatchLocalRepositoryForUpdates);
+
+                      collapsibleBloc.changeCurrentVisibleItem(statusBloc);
+
+                      return statusBloc;
+                    },
                     child: StatusListItemTimelineWidget()),
               ));
 }
