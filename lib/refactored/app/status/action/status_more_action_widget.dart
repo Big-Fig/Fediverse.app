@@ -1,5 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/account/account_bloc.dart';
+import 'package:fedi/refactored/app/account/account_model.dart';
+import 'package:fedi/refactored/app/conversation/start/status/post_status_start_conversation_page.dart';
 import 'package:fedi/refactored/app/share/share_service.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
@@ -35,13 +37,10 @@ class StatusShareActionWidget extends StatelessWidget {
               buildShareAction(context, status),
               buildAccountDescSeparator(context),
               buildAccountNameSeparator(status),
-              // public button
               buildAccountFollowAction(context, status),
-              // public button
+              buildAccountMessageAction(context, status),
               buildAccountMuteAction(context, status),
-              // Unlisted
               buildAccountBlockAction(context, status),
-              // Private
               buildAccountReportAction(context, status),
             ],
           );
@@ -286,6 +285,31 @@ class StatusShareActionWidget extends StatelessWidget {
                           popupTitle: popupTitle,
                           status: status);
                     });
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Padding buildAccountMessageAction(BuildContext context, IStatus status) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 10),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: OutlineButton(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(AppLocalizations.of(context)
+                      .tr("app.account.action.message"))
+                ],
+              ),
+              onPressed: () {
+                goToPostStatusStartConversationPage(context,
+                    conversationAccountsWithoutMe: <IAccount>[status.account]);
               },
             ),
           ),
