@@ -5,7 +5,7 @@ import 'package:fedi/refactored/dialog/alert/simple_alert_dialog.dart';
 import 'package:flutter/widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-Future handleStatusContentLink(
+Future handleStatusContentLinkClick(
     {@required IStatusBloc statusBloc,
     @required String link,
     @required BuildContext context}) async {

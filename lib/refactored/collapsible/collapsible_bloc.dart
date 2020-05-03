@@ -7,18 +7,17 @@ abstract class ICollapsibleBloc extends Disposable {
   static ICollapsibleBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<ICollapsibleBloc>(context, listen: listen);
 
-  bool get isCurrentVisibleItemPossibleToCollapse;
+  bool get isAtLeastOneVisibleItemExpanded;
 
-  Stream<bool> get isCurrentVisibleItemPossibleToCollapseStream;
+  Stream<bool> get isAtLeastOneVisibleItemExpandedStream;
 
-  bool get isCurrentVisibleItemCollapsed;
+  List<ICollapsibleItem> get visibleItems;
 
-  Stream<bool> get isCurrentVisibleItemCollapsedStream;
+  Stream<List<ICollapsibleItem>> get visibleItemsStream;
 
-  ICollapsibleItem  get currentVisibleItem;
-  Stream<ICollapsibleItem> get currentVisibleItemStream;
+  addVisibleItem(ICollapsibleItem item);
 
-  changeCurrentVisibleItem(ICollapsibleItem item);
+  removeVisibleItem(ICollapsibleItem item);
 
-  toggleCollapse();
+  collapseAllVisibleItems();
 }

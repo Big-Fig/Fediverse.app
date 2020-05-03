@@ -2,6 +2,8 @@ import 'package:fedi/refactored/app/status/list/status_list_item_timeline_widget
 import 'package:fedi/refactored/app/status/status_bloc.dart';
 import 'package:fedi/refactored/app/status/status_bloc_impl.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
+import 'package:fedi/refactored/collapsible/collapsible_bloc.dart';
+import 'package:fedi/refactored/disposable/disposable.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:fedi/refactored/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/refactored/pagination/list/pagination_list_widget.dart';
@@ -39,9 +41,22 @@ class AccountStatusesWidget extends PaginationListWidget<IStatus> {
           itemBuilder: (context, index) => Provider<IStatus>.value(
                 value: items[index],
                 child: DisposableProxyProvider<IStatus, IStatusBloc>(
-                    update: (context, status, oldValue) =>
-                        StatusBloc.createFromContext(context, status),
-                    child: StatusListItemTimelineWidget()),
+                    update: (context, status, oldValue) {
+                      var collapsibleBloc =
+                      ICollapsibleBloc.of(context, listen: false);
+
+                      var statusBloc = StatusBloc.createFromContext(
+                          context, status);
+
+                      collapsibleBloc.addVisibleItem(statusBloc);
+
+                      statusBloc.addDisposable(disposable: CustomDisposable(() {
+                        collapsibleBloc.removeVisibleItem(statusBloc);
+                      }));
+
+                      return statusBloc;
+                    },
+                    child: StatusListItemTimelineWidget(collapsible: true,)),
               ));
 
   @override

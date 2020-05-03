@@ -2,70 +2,80 @@ import 'dart:async';
 
 import 'package:fedi/refactored/collapsible/collapsible_bloc.dart';
 import 'package:fedi/refactored/collapsible/collapsible_model.dart';
+import 'package:fedi/refactored/disposable/disposable.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
+var _logger = Logger("collapsible_bloc_impl.dart");
 class CollapsibleBloc extends DisposableOwner implements ICollapsibleBloc {
   // ignore: close_sinks
-  BehaviorSubject<ICollapsibleItem> _currentVisibleItemSubject =
-      BehaviorSubject();
+  BehaviorSubject<List<ICollapsibleItem>> visibleItemsSubject =
+      BehaviorSubject.seeded([]);
+  List<ICollapsibleItem> get visibleItems => visibleItemsSubject.value;
+  Stream<List<ICollapsibleItem>> get visibleItemsStream =>
+      visibleItemsSubject.stream;
+
+  Map<ICollapsibleItem, StreamSubscription> itemCollapsibleSubscriptionMap = {};
 
   // ignore: close_sinks
-  BehaviorSubject<bool> _isCurrentVisibleItemCollapsedSubject =
-      BehaviorSubject();
+  BehaviorSubject<bool> isAtLeastOneVisibleItemExpandedSubject =
+      BehaviorSubject.seeded(false);
+
+  @override
+  bool get isAtLeastOneVisibleItemExpanded =>
+      isAtLeastOneVisibleItemExpandedSubject.value;
+
+  @override
+  Stream<bool> get isAtLeastOneVisibleItemExpandedStream =>
+      isAtLeastOneVisibleItemExpandedSubject.stream;
 
   CollapsibleBloc() {
-    addDisposable(subject: _currentVisibleItemSubject);
-    addDisposable(subject: _isCurrentVisibleItemCollapsedSubject);
+    addDisposable(subject: visibleItemsSubject);
+    addDisposable(subject: isAtLeastOneVisibleItemExpandedSubject);
+    addDisposable(disposable: CustomDisposable(() {
+      itemCollapsibleSubscriptionMap.values
+          .forEach((subscription) => subscription.cancel());
+    }));
   }
 
   @override
-  ICollapsibleItem get currentVisibleItem => _currentVisibleItemSubject.value;
-
-  @override
-  Stream<ICollapsibleItem> get currentVisibleItemStream =>
-      _currentVisibleItemSubject.stream;
-
-  StreamSubscription _currentItemSubscription;
-
-  @override
-  changeCurrentVisibleItem(ICollapsibleItem item) {
-    _currentVisibleItemSubject.add(item);
-    _currentItemSubscription?.cancel();
-    _currentItemSubscription =
-        currentVisibleItem.isCollapsedStream.listen((isCollapsed) {
-      _isCurrentVisibleItemCollapsedSubject.add(isCollapsed);
+  addVisibleItem(ICollapsibleItem item) {
+    visibleItems.add(item);
+    itemCollapsibleSubscriptionMap[item] = item.isCollapsedStream.listen((_) {
+      checkIsAtLeastOneVisibleItemExpanded();
     });
+    onVisibleItemsChanged(visibleItems);
+  }
+
+  void onVisibleItemsChanged(List<ICollapsibleItem> newVisibleItems) {
+    _logger.finest(() => "onVisibleItemsChanged ${newVisibleItems.length}");
+    visibleItemsSubject.add(newVisibleItems);
   }
 
   @override
-  void dispose() {
-    super.dispose();
-
-    _currentItemSubscription?.cancel();
+  removeVisibleItem(ICollapsibleItem item) {
+    itemCollapsibleSubscriptionMap.remove(item)?.cancel();
+    visibleItems.remove(item);
+    onVisibleItemsChanged(visibleItems);
   }
 
   @override
-  bool get isCurrentVisibleItemCollapsed =>
-      _isCurrentVisibleItemCollapsedSubject.value;
-
-  @override
-  Stream<bool> get isCurrentVisibleItemCollapsedStream =>
-      _isCurrentVisibleItemCollapsedSubject.stream;
-
-  @override
-  bool get isCurrentVisibleItemPossibleToCollapse =>
-      currentVisibleItem?.isPossibleToCollapse;
-
-  @override
-  Stream<bool> get isCurrentVisibleItemPossibleToCollapseStream =>
-      currentVisibleItemStream
-          .map((currentVisibleItem) => currentVisibleItem.isPossibleToCollapse);
-
-  @override
-  toggleCollapse() => currentVisibleItem.toggleCollapse();
+  collapseAllVisibleItems() {
+    visibleItems.forEach((item) => item.collapse());
+  }
 
   static CollapsibleBloc createFromContext(BuildContext context) =>
       CollapsibleBloc();
+
+  static bool calculateIsAtLeastOneVisibleItemExpanded(
+          List<ICollapsibleItem> visibleItems) =>
+      visibleItems.fold(false,
+          (previousValue, element) => previousValue || !element.isCollapsed);
+
+  void checkIsAtLeastOneVisibleItemExpanded() {
+    isAtLeastOneVisibleItemExpandedSubject
+        .add(calculateIsAtLeastOneVisibleItemExpanded(visibleItems));
+  }
 }

@@ -20,6 +20,7 @@ var _logger = Logger("status_bloc_impl.dart");
 
 final int minimumCharactersLimitToCollapse = 400;
 
+// todo: extract nsfw, spoiler, collapsible logic in separate classes
 class StatusBloc extends DisposableOwner implements IStatusBloc {
   static StatusBloc createFromContext(
     BuildContext context,
@@ -57,8 +58,13 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
 
   Stream<bool> get isCollapsedStream => _isCollapsedSubject.stream;
 
-  toggleCollapse() {
+  toggleCollapseExpand() {
     _isCollapsedSubject.add(!isCollapsed);
+  }
+
+  @override
+  collapse() {
+    _isCollapsedSubject.add(true);
   }
 
   @override
@@ -654,4 +660,26 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
     newHtmlContent = "<html><body>$newHtmlContent</body></html>";
     return newHtmlContent;
   }
+
+  @override
+  String get contentWithEmojisCollapsible => isCollapsed ? _collapseContent
+    (contentWithEmojis) : contentWithEmojis;
+
+  @override
+  Stream<String> get contentWithEmojisCollapsibleStream =>
+      Rx.combineLatest2(contentWithEmojisStream, isCollapsedStream,
+          (contentWithEmojis, isCollapsed) => isCollapsed ? _collapseContent
+            (contentWithEmojis) : contentWithEmojis);
+
+  _collapseContent(String contentWithEmojis) {
+    // todo: check html tags
+    if(contentWithEmojis.length > minimumCharactersLimitToCollapse) {
+      var collapsedContent = contentWithEmojis
+          .substring(0, minimumCharactersLimitToCollapse);
+      return "$collapsedContent...";
+    } else {
+      return contentWithEmojis;
+    }
+  }
+
 }

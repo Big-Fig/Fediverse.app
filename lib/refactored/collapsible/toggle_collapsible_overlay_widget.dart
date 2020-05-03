@@ -8,32 +8,23 @@ class ToggleCollapsibleOverlayWidget extends StatelessWidget {
     var collapsibleBloc = ICollapsibleBloc.of(context, listen: true);
 
     return StreamBuilder<bool>(
-        stream: collapsibleBloc.isCurrentVisibleItemPossibleToCollapseStream,
-        initialData: collapsibleBloc.isCurrentVisibleItemPossibleToCollapse,
+        stream: collapsibleBloc.isAtLeastOneVisibleItemExpandedStream,
+        initialData: collapsibleBloc.isAtLeastOneVisibleItemExpanded,
         builder: (context, snapshot) {
-          var isCurrentVisibleItemCollapsible = snapshot.data;
+          var isAtLeastOneVisibleItemExpanded = snapshot.data;
 
-          if (isCurrentVisibleItemCollapsible == true) {
-            return StreamBuilder<bool>(
-                stream: collapsibleBloc.isCurrentVisibleItemCollapsedStream,
-                initialData: collapsibleBloc.isCurrentVisibleItemCollapsed,
-                builder: (context, snapshot) {
-                  var isCurrentVisibleItemCollapsed = snapshot.data;
-                  var icon = isCurrentVisibleItemCollapsed == true
-                      ? Icons.keyboard_arrow_down
-                      : Icons.keyboard_arrow_up;
-                  return Container(
-                    decoration: new BoxDecoration(
-                      color: Colors.blue,
-                      shape: BoxShape.circle,
-                    ),
-                    child: IconButton(
-                      onPressed: collapsibleBloc.toggleCollapse,
-                      color: Colors.white,
-                      icon: Icon(icon),
-                    ),
-                  );
-                });
+          if (isAtLeastOneVisibleItemExpanded) {
+            return Container(
+              decoration: new BoxDecoration(
+                color: Colors.blue,
+                shape: BoxShape.circle,
+              ),
+              child: IconButton(
+                onPressed: collapsibleBloc.collapseAllVisibleItems,
+                color: Colors.white,
+                icon: Icon(Icons.keyboard_arrow_up),
+              ),
+            );
           } else {
             return SizedBox.shrink();
           }
