@@ -4,6 +4,7 @@ import 'package:fedi/refactored/app/status/status_bloc.dart';
 import 'package:fedi/refactored/app/status/status_bloc_impl.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/collapsible/collapsible_bloc.dart';
+import 'package:fedi/refactored/disposable/disposable.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:fedi/refactored/pagination/list/pagination_list_widget.dart';
 import 'package:flutter/material.dart';
@@ -40,10 +41,14 @@ class StatusPaginationListTimelineWidget
                           isNeedWatchLocalRepositoryForUpdates:
                               needWatchLocalRepositoryForUpdates);
 
-                      collapsibleBloc.changeCurrentVisibleItem(statusBloc);
+                      collapsibleBloc.addVisibleItem(statusBloc);
+
+                      statusBloc.addDisposable(disposable: CustomDisposable(() {
+                        collapsibleBloc.removeVisibleItem(statusBloc);
+                      }));
 
                       return statusBloc;
                     },
-                    child: StatusListItemTimelineWidget()),
+                    child: StatusListItemTimelineWidget(collapsible: true,)),
               ));
 }

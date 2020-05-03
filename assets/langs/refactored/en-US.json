@@ -359,6 +359,12 @@
       }
     },
     "status": {
+      "collapsible": {
+        "action": {
+          "collapse": "Collapse",
+          "expand": "Expand"
+        }
+      },
       "content": {
         "link": {
           "launch": {

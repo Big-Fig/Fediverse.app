@@ -35,6 +35,10 @@ abstract class IStatusBloc implements Disposable, ICollapsibleItem {
 
   String get contentWithEmojis;
 
+  Stream<String> get contentWithEmojisCollapsibleStream;
+
+  String get contentWithEmojisCollapsible;
+
   Stream<String> get contentWithEmojisStream;
 
   IPleromaCard get card;
