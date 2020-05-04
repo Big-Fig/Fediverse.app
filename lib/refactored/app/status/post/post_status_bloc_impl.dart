@@ -61,6 +61,22 @@ abstract class PostStatusBloc extends DisposableOwner
   Stream<List<String>> get mentionedAcctsStream => mentionedAcctsSubject.stream;
 
   // ignore: close_sinks
+  BehaviorSubject<DateTime> scheduledAtSubject = BehaviorSubject();
+
+  @override
+  bool get isScheduled => scheduledAt != null;
+
+  @override
+  Stream<bool> get isScheduledStream =>
+      scheduledAtStream.map((scheduledAt) => scheduledAt != null);
+
+  @override
+  DateTime get scheduledAt => scheduledAtSubject.value;
+
+  @override
+  Stream<DateTime> get scheduledAtStream => scheduledAtSubject.stream;
+
+  // ignore: close_sinks
   BehaviorSubject<PleromaVisibility> visibilitySubject;
 
   @override
@@ -152,6 +168,7 @@ abstract class PostStatusBloc extends DisposableOwner
     addDisposable(subject: mentionedAcctsSubject);
     addDisposable(subject: inputTextSubject);
     addDisposable(subject: visibilitySubject);
+    addDisposable(subject: scheduledAtSubject);
     addDisposable(disposable: CustomDisposable(() {
       mediaAttachmentBlocs.forEach((bloc) {
         bloc.dispose();
@@ -329,6 +346,20 @@ abstract class PostStatusBloc extends DisposableOwner
 
   @override
   Future<bool> postStatus() async {
+    bool success;
+    if (isScheduled) {
+      success = await _scheduleStatus();
+    } else {
+      success = await _postStatus();
+    }
+
+    if (success) {
+      _clear();
+    }
+    return success;
+  }
+
+  Future<bool> _postStatus() async {
     var remoteStatus = await pleromaStatusService.postStatus(
         data: PleromaPostStatus(
             mediaIds: mediaAttachmentBlocs
@@ -346,11 +377,33 @@ abstract class PostStatusBloc extends DisposableOwner
       await statusRepository.upsertRemoteStatus(remoteStatus,
           listRemoteId: null, conversationRemoteId: conversationRemoteId);
       success = true;
-      inputTextController.clear();
     } else {
       success = false;
     }
     return success;
+  }
+
+  Future<bool> _scheduleStatus() async {
+    var scheduledStatus = await pleromaStatusService.scheduleStatus(
+        data: PleromaScheduleStatus(
+            mediaIds: mediaAttachmentBlocs
+                ?.map((bloc) => bloc.pleromaMediaAttachment.id)
+                ?.toList(),
+            status: inputText,
+            sensitive: nsfwSensitive,
+            visibility: pleromaVisibilityValues.reverse[visibility],
+            inReplyToId: inReplyToStatusRemoteId,
+            inReplyToConversationId: conversationRemoteId,
+            idempotencyKey: idempotencyKey,
+            scheduledAt: scheduledAt));
+    var success = scheduledStatus != null;
+    return success;
+  }
+
+  void _clear() {
+    inputTextController.clear();
+    _regenerateIdempotencyKey();
+    clearSchedule();
   }
 
   String removeAcctsFromText(String inputText, List<String> mentionedAccts) {
@@ -364,5 +417,13 @@ abstract class PostStatusBloc extends DisposableOwner
     });
 
     return newText;
+  }
+
+  schedule(DateTime dateTime) {
+    scheduledAtSubject.add(dateTime);
+  }
+
+  clearSchedule() {
+    schedule(null);
   }
 }

@@ -13,6 +13,7 @@ import 'package:fedi/refactored/pleroma/mention/pleroma_mention_model.dart';
 import 'package:fedi/refactored/pleroma/poll/pleroma_poll_model.dart';
 import 'package:fedi/refactored/pleroma/tag/pleroma_tag_model.dart';
 import 'package:fedi/refactored/pleroma/visibility/pleroma_visibility_model.dart';
+import 'package:flutter/widgets.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_status_model.g.dart';
@@ -133,16 +134,17 @@ class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
   @JsonKey(name: "application_id")
   final int applicationId;
 
-  PleromaScheduledStatusParams({this.text,
-    this.mediaIds,
-    this.sensitive,
-    this.spoilerText,
-    this.visibility,
-    this.scheduledAt,
-    this.poll,
-    this.idempotency,
-    this.inReplyToId,
-    this.applicationId});
+  PleromaScheduledStatusParams(
+      {this.text,
+      this.mediaIds,
+      this.sensitive,
+      this.spoilerText,
+      this.visibility,
+      this.scheduledAt,
+      this.poll,
+      this.idempotency,
+      this.inReplyToId,
+      this.applicationId});
 
   factory PleromaScheduledStatusParams.fromJson(Map<String, dynamic> json) =>
       _$PleromaScheduledStatusParamsFromJson(json);
@@ -317,15 +319,16 @@ class PleromaStatusPleromaPart {
   @JsonKey(name: "emoji_reactions")
   List<PleromaStatusEmojiReaction> emojiReactions;
 
-  PleromaStatusPleromaPart({this.content,
-    this.conversationId,
-    this.directConversationId,
-    this.inReplyToAccountAcct,
-    this.local,
-    this.spoilerText,
-    this.expiresAt,
-    this.threadMuted,
-    this.emojiReactions});
+  PleromaStatusPleromaPart(
+      {this.content,
+      this.conversationId,
+      this.directConversationId,
+      this.inReplyToAccountAcct,
+      this.local,
+      this.spoilerText,
+      this.expiresAt,
+      this.threadMuted,
+      this.emojiReactions});
 
   factory PleromaStatusPleromaPart.fromJson(Map<String, dynamic> json) =>
       _$PleromaStatusPleromaPartFromJson(json);
@@ -468,20 +471,21 @@ class PleromaPostStatus implements IPleromaPostStatus {
   @override
   final List<String> to;
 
-  PleromaPostStatus({this.contentType,
-    this.expiresInSeconds,
-    this.idempotencyKey,
-    this.inReplyToConversationId,
-    this.inReplyToId,
-    this.language,
-    this.visibility,
-    this.mediaIds,
-    this.poll,
-    this.preview,
-    this.sensitive,
-    this.spoilerText,
-    this.status,
-    this.to}) {
+  PleromaPostStatus(
+      {this.contentType,
+      this.expiresInSeconds,
+      this.idempotencyKey,
+      this.inReplyToConversationId,
+      this.inReplyToId,
+      this.language,
+      this.visibility,
+      this.mediaIds,
+      this.poll,
+      this.preview,
+      this.sensitive,
+      this.spoilerText,
+      this.status,
+      this.to}) {
     var isPollExist = poll != null;
     var isMediaExist = mediaIds?.isNotEmpty == true;
     var isTextExist = status?.isNotEmpty == true;
@@ -557,25 +561,26 @@ class PleromaScheduleStatus implements IPleromaScheduleStatus {
   @override
   final List<String> to;
 
-  @JsonKey(name: "scheduled_at")
+  @JsonKey(name: "scheduled_at", toJson: toUTCIsoString)
   @override
   DateTime scheduledAt;
 
-  PleromaScheduleStatus({this.contentType,
-    this.expiresInSeconds,
-    this.idempotencyKey,
-    this.inReplyToConversationId,
-    this.inReplyToId,
-    this.language,
-    this.visibility,
-    this.mediaIds,
-    this.poll,
-    this.preview,
-    this.sensitive,
-    this.spoilerText,
-    this.status,
-    this.to,
-    this.scheduledAt}) {
+  PleromaScheduleStatus(
+      {this.contentType,
+      this.expiresInSeconds,
+      this.idempotencyKey,
+      this.inReplyToConversationId,
+      this.inReplyToId,
+      this.language,
+      this.visibility,
+      this.mediaIds,
+      this.poll,
+      this.preview,
+      this.sensitive,
+      this.spoilerText,
+      this.status,
+      this.to,
+      @required this.scheduledAt}) {
     var isPollExist = poll != null;
     var isMediaExist = mediaIds?.isNotEmpty == true;
     var isTextExist = status?.isNotEmpty == true;
@@ -597,6 +602,8 @@ class PleromaScheduleStatus implements IPleromaScheduleStatus {
   Map<String, dynamic> toJson() => _$PleromaScheduleStatusToJson(this);
 
   String toJsonString() => jsonEncode(_$PleromaScheduleStatusToJson(this));
+
+  static toUTCIsoString(DateTime scheduledAt) => scheduledAt.toUtc()?.toIso8601String();
 }
 
 abstract class IPleromaStatusEmojiReaction {
@@ -619,8 +626,8 @@ class PleromaStatusEmojiReaction implements IPleromaStatusEmojiReaction {
 
   PleromaStatusEmojiReaction({this.name, this.count, this.me, this.accounts});
 
-  PleromaStatusEmojiReaction copyWith({String name, int count, bool me,
-    List<PleromaAccount>accounts}) =>
+  PleromaStatusEmojiReaction copyWith(
+          {String name, int count, bool me, List<PleromaAccount> accounts}) =>
       PleromaStatusEmojiReaction(
         name: name ?? this.name,
         count: count ?? this.count,
@@ -645,12 +652,12 @@ class PleromaStatusEmojiReaction implements IPleromaStatusEmojiReaction {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is PleromaStatusEmojiReaction &&
-              runtimeType == other.runtimeType &&
-              name == other.name &&
-              count == other.count &&
-              me == other.me &&
-              eq(accounts, other.accounts);
+      other is PleromaStatusEmojiReaction &&
+          runtimeType == other.runtimeType &&
+          name == other.name &&
+          count == other.count &&
+          me == other.me &&
+          eq(accounts, other.accounts);
 
   @override
   int get hashCode =>
@@ -675,8 +682,8 @@ List<IPleromaStatusEmojiReaction> mergeEmojiReactionsLists(
 
   emojiReactionsReblog?.forEach((emojiReaction) {
     var alreadyExistEmojiReaction = mergedList.firstWhere(
-            (currentEmojiReaction) =>
-        currentEmojiReaction.name == emojiReaction.name,
+        (currentEmojiReaction) =>
+            currentEmojiReaction.name == emojiReaction.name,
         orElse: () => null);
 
     if (alreadyExistEmojiReaction != null) {
