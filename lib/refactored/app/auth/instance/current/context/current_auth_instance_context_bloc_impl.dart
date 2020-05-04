@@ -18,6 +18,8 @@ import 'package:fedi/refactored/app/push/subscription/push_subscription_bloc.dar
 import 'package:fedi/refactored/app/push/subscription/push_subscription_bloc_impl.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository_impl.dart';
+import 'package:fedi/refactored/app/status/scheduled/repository/scheduled_status_repository.dart';
+import 'package:fedi/refactored/app/status/scheduled/repository/scheduled_status_repository_impl.dart';
 import 'package:fedi/refactored/app/timeline/local_preferences/timeline_local_preferences_bloc.dart';
 import 'package:fedi/refactored/app/timeline/local_preferences/timeline_local_preferences_bloc_impl.dart';
 import 'package:fedi/refactored/connection/connection_service.dart';
@@ -112,6 +114,11 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: statusRepository);
     await globalProviderService
         .asyncInitAndRegister<IStatusRepository>(statusRepository);
+    var scheduledStatusRepository = ScheduledStatusRepository(
+        appDatabase: moorDatabaseService.appDatabase);
+    addDisposable(disposable: scheduledStatusRepository);
+    await globalProviderService
+        .asyncInitAndRegister<IScheduledStatusRepository>(scheduledStatusRepository);
     var conversationRepository = ConversationRepository(
         appDatabase: moorDatabaseService.appDatabase,
         accountRepository: accountRepository,

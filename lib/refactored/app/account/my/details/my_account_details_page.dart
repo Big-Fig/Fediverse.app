@@ -6,6 +6,7 @@ import 'package:fedi/refactored/app/account/my/action/my_account_action_list_bot
 import 'package:fedi/refactored/app/account/my/edit/edit_my_account_page.dart';
 import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
 import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/refactored/app/status/scheduled/list/scheduled_status_list_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +27,12 @@ class MyAccountDetailsPage extends StatelessWidget {
               icon: Icon(Icons.edit),
               onPressed: () {
                 goToEditMyAccountPage(context);
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.schedule),
+              onPressed: () {
+                goToScheduledStatusListPage(context);
               },
             )
           ],
