@@ -8,7 +8,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 var _logger = Logger("pagination_list_bloc_impl.dart");
 
-abstract class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
+class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     extends AsyncInitLoadingBloc implements IPaginationListBloc<TPage, TItem> {
   final IPaginationBloc<TPage, TItem> paginationBloc;
   final RefreshController refreshController =
@@ -34,16 +34,11 @@ abstract class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   @override
   int get itemsCountPerPage => paginationBloc.itemsCountPerPage;
 
-  Stream<PaginationRefreshState> get refreshStateStream =>
-      paginationBloc.refreshStateStream;
-
-  PaginationRefreshState get refreshState => paginationBloc.refreshState;
-
   @override
   Future<bool> loadMore() async {
     var nextPageIndex = paginationBloc.loadedPagesMaximumIndex + 1;
     var nextPage = await paginationBloc.requestPage(
-        pageIndex: nextPageIndex, forceToUpdateFromNetwork: true);
+        pageIndex: nextPageIndex, forceToSkipCache: true);
     var success = nextPage?.items?.isNotEmpty == true;
     return success;
   }
@@ -51,7 +46,7 @@ abstract class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   @override
   Future internalAsyncInit() async {
     var page = await paginationBloc.requestPage(
-        pageIndex: 0, forceToUpdateFromNetwork: false);
+        pageIndex: 0, forceToSkipCache: false);
 
     if (page == null) {
       _logger.severe(

@@ -1,5 +1,4 @@
 import 'package:fedi/refactored/app/status/list/status_list_item_timeline_widget.dart';
-import 'package:fedi/refactored/app/status/pagination/list/status_pagination_list_bloc.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
 import 'package:fedi/refactored/app/status/status_bloc_impl.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
@@ -49,8 +48,8 @@ class AccountStatusesWidget extends PaginationListWidget<IStatus> {
   IPaginationListBloc<PaginationPage<IStatus>, IStatus>
       retrievePaginationListBloc(BuildContext context,
           {@required bool listen}) {
-    IStatusPaginationListBloc timelinePaginationListBloc =
-        IStatusPaginationListBloc.of(context, listen: listen);
+    var timelinePaginationListBloc =
+        Provider.of<IPaginationListBloc<PaginationPage<IStatus>, IStatus>>(context, listen: listen);
     return timelinePaginationListBloc;
   }
 }

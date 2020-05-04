@@ -1,15 +1,10 @@
 import 'package:fedi/refactored/app/account/my/action/my_account_action_list_bottom_sheet_dialog.dart';
 import 'package:fedi/refactored/app/account/my/avatar/my_account_avatar_widget.dart';
 import 'package:fedi/refactored/app/home/home_model.dart';
-import 'package:fedi/refactored/app/home/tab/account/account_home_tab_page.dart';
-import 'package:fedi/refactored/app/home/tab/conversations/conversations_home_tab_bloc.dart';
-import 'package:fedi/refactored/app/home/tab/conversations/conversations_home_tab_bloc_impl.dart';
+import 'package:fedi/refactored/app/home/tab/account/account_home_tab_page'
+    '.dart';
 import 'package:fedi/refactored/app/home/tab/conversations/conversations_home_tab_page.dart';
-import 'package:fedi/refactored/app/home/tab/notifications/notifications_home_tab_bloc.dart';
-import 'package:fedi/refactored/app/home/tab/notifications/notifications_home_tab_bloc_impl.dart';
 import 'package:fedi/refactored/app/home/tab/notifications/notifications_home_tab_page.dart';
-import 'package:fedi/refactored/app/home/tab/timelines/timelines_home_tab_bloc.dart';
-import 'package:fedi/refactored/app/home/tab/timelines/timelines_home_tab_bloc_impl.dart';
 import 'package:fedi/refactored/app/home/tab/timelines/timelines_home_tab_page.dart';
 import 'package:fedi/refactored/app/notification/unread/notification_unread_all_badge_count_widget.dart';
 import 'package:fedi/refactored/app/status/post/new/new_post_status_page.dart';
@@ -125,24 +120,18 @@ class _HomePageState extends State<HomePage>
   Widget buildBody(BuildContext context, AppHomeTab selectedTab) {
     switch (selectedTab) {
       case AppHomeTab.timelines:
-        return DisposableProvider<ITimelinesHomeTabBloc>(
-            create: (BuildContext context) =>
-                TimelinesHomeTabBloc.createFromContext(context),
-            child: TimelinesHomeTabPage(
-              key: PageStorageKey<String>("TimelinesHomeTabPage"),
-            ));
+        return TimelinesHomeTabPage(
+          key: PageStorageKey<String>("TimelinesHomeTabPage"),
+        );
         break;
       case AppHomeTab.notifications:
-        return DisposableProvider<INotificationsHomeTabBloc>(
-            create: (context) =>
-                NotificationsHomeTabBloc.createFromContext(context),
-            child: NotificationsHomeTabPage());
+        return NotificationsHomeTabPage(
+            key: PageStorageKey<String>("NotificationsHomeTabPage"));
         break;
       case AppHomeTab.conversations:
-        return DisposableProvider<IConversationsHomeTabBloc>(
-            create: (context) =>
-                ConversationsHomeTabBloc.createFromContext(context),
-            child: ConversationsHomeTabPage());
+        return ConversationsHomeTabPage(
+            key: PageStorageKey<String>("ConversationsHomeTabPage")
+        );
         break;
       case AppHomeTab.account:
         return AccountHomeTabPage();

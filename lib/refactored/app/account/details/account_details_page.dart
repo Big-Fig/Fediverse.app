@@ -34,7 +34,7 @@ void goToAccountDetailsPage(BuildContext context, IAccount account) {
             create: (context) => AccountBloc.createFromContext(context,
                 isNeedWatchLocalRepositoryForUpdates: true,
                 account: account,
-                isNeedRefreshFromNetworkOnInit: false),
+                isNeedRefreshFromNetworkOnInit: false, isNeedWatchWebSocketsEvents: false),
             child: AccountDetailsPage())),
   );
 }

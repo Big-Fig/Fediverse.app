@@ -128,27 +128,50 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
   SimpleSelectStatement<$DbNotificationsTable, DbNotification>
       startSelectQuery() => (select(db.dbNotifications));
 
-  /// remote ids are strings but it is possible to compare them in
-  /// chronological order
+  /// notification remote ids can't be compared
+//  SimpleSelectStatement<$DbNotificationsTable, DbNotification>
+//      addRemoteIdBoundsWhere(
+//    SimpleSelectStatement<$DbNotificationsTable, DbNotification> query, {
+//    @required String minimumRemoteIdExcluding,
+//    @required String maximumRemoteIdExcluding,
+//  }) {
+//    var minimumExist = minimumRemoteIdExcluding?.isNotEmpty == true;
+//    var maximumExist = maximumRemoteIdExcluding?.isNotEmpty == true;
+//    assert(minimumExist || maximumExist);
+//
+//    if (minimumExist) {
+//      var biggerExp = CustomExpression<bool, BoolType>(
+//          "db_notifications.remote_id > '$minimumRemoteIdExcluding'");
+//      query = query..where((notification) => biggerExp);
+//    }
+//    if (maximumExist) {
+//      var smallerExp = CustomExpression<bool, BoolType>(
+//          "db_notifications.remote_id < '$maximumRemoteIdExcluding'");
+//      query = query..where((notification) => smallerExp);
+//    }
+//
+//    return query;
+//  }
+
   SimpleSelectStatement<$DbNotificationsTable, DbNotification>
-      addRemoteIdBoundsWhere(
+      addCreatedAtBoundsWhere(
     SimpleSelectStatement<$DbNotificationsTable, DbNotification> query, {
-    @required String minimumRemoteIdExcluding,
-    @required String maximumRemoteIdExcluding,
+    @required DateTime minimumCreatedAt,
+    @required DateTime maximumCreatedAt,
   }) {
-    var minimumExist = minimumRemoteIdExcluding?.isNotEmpty == true;
-    var maximumExist = maximumRemoteIdExcluding?.isNotEmpty == true;
+    var minimumExist = minimumCreatedAt != null;
+    var maximumExist = maximumCreatedAt != null;
     assert(minimumExist || maximumExist);
 
     if (minimumExist) {
-      var biggerExp = CustomExpression<bool, BoolType>(
-          "db_notifications.remote_id > '$minimumRemoteIdExcluding'");
-      query = query..where((notification) => biggerExp);
+      query = query
+        ..where((notification) =>
+            notification.createdAt.isBiggerThanValue(minimumCreatedAt));
     }
     if (maximumExist) {
-      var smallerExp = CustomExpression<bool, BoolType>(
-          "db_notifications.remote_id < '$maximumRemoteIdExcluding'");
-      query = query..where((notification) => smallerExp);
+      query = query
+        ..where((notification) =>
+            notification.createdAt.isSmallerThanValue(maximumCreatedAt));
     }
 
     return query;
