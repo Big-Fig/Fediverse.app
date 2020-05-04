@@ -3837,6 +3837,303 @@ class $DbNotificationsTable extends DbNotifications
       MastodonNotificationTypeDatabaseConverter();
 }
 
+class DbScheduledStatus extends DataClass
+    implements Insertable<DbScheduledStatus> {
+  final int id;
+  final String remoteId;
+  final DateTime scheduledAt;
+  final PleromaScheduledStatusParams params;
+  final List<PleromaMediaAttachment> mediaAttachments;
+  DbScheduledStatus(
+      {@required this.id,
+      @required this.remoteId,
+      @required this.scheduledAt,
+      this.params,
+      this.mediaAttachments});
+  factory DbScheduledStatus.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final stringType = db.typeSystem.forDartType<String>();
+    final dateTimeType = db.typeSystem.forDartType<DateTime>();
+    return DbScheduledStatus(
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      remoteId: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}remote_id']),
+      scheduledAt: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}scheduled_at']),
+      params: $DbScheduledStatusesTable.$converter0.mapToDart(
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}params'])),
+      mediaAttachments: $DbScheduledStatusesTable.$converter1.mapToDart(
+          stringType.mapFromDatabaseResponse(
+              data['${effectivePrefix}media_attachments'])),
+    );
+  }
+  factory DbScheduledStatus.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return DbScheduledStatus(
+      id: serializer.fromJson<int>(json['id']),
+      remoteId: serializer.fromJson<String>(json['remoteId']),
+      scheduledAt: serializer.fromJson<DateTime>(json['scheduledAt']),
+      params: serializer.fromJson<PleromaScheduledStatusParams>(json['params']),
+      mediaAttachments: serializer
+          .fromJson<List<PleromaMediaAttachment>>(json['mediaAttachments']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'remoteId': serializer.toJson<String>(remoteId),
+      'scheduledAt': serializer.toJson<DateTime>(scheduledAt),
+      'params': serializer.toJson<PleromaScheduledStatusParams>(params),
+      'mediaAttachments':
+          serializer.toJson<List<PleromaMediaAttachment>>(mediaAttachments),
+    };
+  }
+
+  @override
+  DbScheduledStatusesCompanion createCompanion(bool nullToAbsent) {
+    return DbScheduledStatusesCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      remoteId: remoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(remoteId),
+      scheduledAt: scheduledAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(scheduledAt),
+      params:
+          params == null && nullToAbsent ? const Value.absent() : Value(params),
+      mediaAttachments: mediaAttachments == null && nullToAbsent
+          ? const Value.absent()
+          : Value(mediaAttachments),
+    );
+  }
+
+  DbScheduledStatus copyWith(
+          {int id,
+          String remoteId,
+          DateTime scheduledAt,
+          PleromaScheduledStatusParams params,
+          List<PleromaMediaAttachment> mediaAttachments}) =>
+      DbScheduledStatus(
+        id: id ?? this.id,
+        remoteId: remoteId ?? this.remoteId,
+        scheduledAt: scheduledAt ?? this.scheduledAt,
+        params: params ?? this.params,
+        mediaAttachments: mediaAttachments ?? this.mediaAttachments,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('DbScheduledStatus(')
+          ..write('id: $id, ')
+          ..write('remoteId: $remoteId, ')
+          ..write('scheduledAt: $scheduledAt, ')
+          ..write('params: $params, ')
+          ..write('mediaAttachments: $mediaAttachments')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(
+      id.hashCode,
+      $mrjc(
+          remoteId.hashCode,
+          $mrjc(scheduledAt.hashCode,
+              $mrjc(params.hashCode, mediaAttachments.hashCode)))));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is DbScheduledStatus &&
+          other.id == this.id &&
+          other.remoteId == this.remoteId &&
+          other.scheduledAt == this.scheduledAt &&
+          other.params == this.params &&
+          other.mediaAttachments == this.mediaAttachments);
+}
+
+class DbScheduledStatusesCompanion extends UpdateCompanion<DbScheduledStatus> {
+  final Value<int> id;
+  final Value<String> remoteId;
+  final Value<DateTime> scheduledAt;
+  final Value<PleromaScheduledStatusParams> params;
+  final Value<List<PleromaMediaAttachment>> mediaAttachments;
+  const DbScheduledStatusesCompanion({
+    this.id = const Value.absent(),
+    this.remoteId = const Value.absent(),
+    this.scheduledAt = const Value.absent(),
+    this.params = const Value.absent(),
+    this.mediaAttachments = const Value.absent(),
+  });
+  DbScheduledStatusesCompanion.insert({
+    this.id = const Value.absent(),
+    @required String remoteId,
+    @required DateTime scheduledAt,
+    this.params = const Value.absent(),
+    this.mediaAttachments = const Value.absent(),
+  })  : remoteId = Value(remoteId),
+        scheduledAt = Value(scheduledAt);
+  DbScheduledStatusesCompanion copyWith(
+      {Value<int> id,
+      Value<String> remoteId,
+      Value<DateTime> scheduledAt,
+      Value<PleromaScheduledStatusParams> params,
+      Value<List<PleromaMediaAttachment>> mediaAttachments}) {
+    return DbScheduledStatusesCompanion(
+      id: id ?? this.id,
+      remoteId: remoteId ?? this.remoteId,
+      scheduledAt: scheduledAt ?? this.scheduledAt,
+      params: params ?? this.params,
+      mediaAttachments: mediaAttachments ?? this.mediaAttachments,
+    );
+  }
+}
+
+class $DbScheduledStatusesTable extends DbScheduledStatuses
+    with TableInfo<$DbScheduledStatusesTable, DbScheduledStatus> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $DbScheduledStatusesTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
+  @override
+  GeneratedIntColumn get id => _id ??= _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn('id', $tableName, false,
+        hasAutoIncrement: true, declaredAsPrimaryKey: true);
+  }
+
+  final VerificationMeta _remoteIdMeta = const VerificationMeta('remoteId');
+  GeneratedTextColumn _remoteId;
+  @override
+  GeneratedTextColumn get remoteId => _remoteId ??= _constructRemoteId();
+  GeneratedTextColumn _constructRemoteId() {
+    return GeneratedTextColumn('remote_id', $tableName, false,
+        $customConstraints: 'UNIQUE NOT NULL');
+  }
+
+  final VerificationMeta _scheduledAtMeta =
+      const VerificationMeta('scheduledAt');
+  GeneratedDateTimeColumn _scheduledAt;
+  @override
+  GeneratedDateTimeColumn get scheduledAt =>
+      _scheduledAt ??= _constructScheduledAt();
+  GeneratedDateTimeColumn _constructScheduledAt() {
+    return GeneratedDateTimeColumn(
+      'scheduled_at',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _paramsMeta = const VerificationMeta('params');
+  GeneratedTextColumn _params;
+  @override
+  GeneratedTextColumn get params => _params ??= _constructParams();
+  GeneratedTextColumn _constructParams() {
+    return GeneratedTextColumn(
+      'params',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _mediaAttachmentsMeta =
+      const VerificationMeta('mediaAttachments');
+  GeneratedTextColumn _mediaAttachments;
+  @override
+  GeneratedTextColumn get mediaAttachments =>
+      _mediaAttachments ??= _constructMediaAttachments();
+  GeneratedTextColumn _constructMediaAttachments() {
+    return GeneratedTextColumn(
+      'media_attachments',
+      $tableName,
+      true,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, remoteId, scheduledAt, params, mediaAttachments];
+  @override
+  $DbScheduledStatusesTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'db_scheduled_statuses';
+  @override
+  final String actualTableName = 'db_scheduled_statuses';
+  @override
+  VerificationContext validateIntegrity(DbScheduledStatusesCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.id.present) {
+      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    }
+    if (d.remoteId.present) {
+      context.handle(_remoteIdMeta,
+          remoteId.isAcceptableValue(d.remoteId.value, _remoteIdMeta));
+    } else if (isInserting) {
+      context.missing(_remoteIdMeta);
+    }
+    if (d.scheduledAt.present) {
+      context.handle(_scheduledAtMeta,
+          scheduledAt.isAcceptableValue(d.scheduledAt.value, _scheduledAtMeta));
+    } else if (isInserting) {
+      context.missing(_scheduledAtMeta);
+    }
+    context.handle(_paramsMeta, const VerificationResult.success());
+    context.handle(_mediaAttachmentsMeta, const VerificationResult.success());
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  DbScheduledStatus map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return DbScheduledStatus.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(DbScheduledStatusesCompanion d) {
+    final map = <String, Variable>{};
+    if (d.id.present) {
+      map['id'] = Variable<int, IntType>(d.id.value);
+    }
+    if (d.remoteId.present) {
+      map['remote_id'] = Variable<String, StringType>(d.remoteId.value);
+    }
+    if (d.scheduledAt.present) {
+      map['scheduled_at'] =
+          Variable<DateTime, DateTimeType>(d.scheduledAt.value);
+    }
+    if (d.params.present) {
+      final converter = $DbScheduledStatusesTable.$converter0;
+      map['params'] =
+          Variable<String, StringType>(converter.mapToSql(d.params.value));
+    }
+    if (d.mediaAttachments.present) {
+      final converter = $DbScheduledStatusesTable.$converter1;
+      map['media_attachments'] = Variable<String, StringType>(
+          converter.mapToSql(d.mediaAttachments.value));
+    }
+    return map;
+  }
+
+  @override
+  $DbScheduledStatusesTable createAlias(String alias) {
+    return $DbScheduledStatusesTable(_db, alias);
+  }
+
+  static TypeConverter<PleromaScheduledStatusParams, String> $converter0 =
+      PleromaScheduledStatusParamsDatabaseConverter();
+  static TypeConverter<List<PleromaMediaAttachment>, String> $converter1 =
+      PleromaMediaAttachmentListDatabaseConverter();
+}
+
 class DbStatusHashtag extends DataClass implements Insertable<DbStatusHashtag> {
   final int id;
   final String statusRemoteId;
@@ -5620,6 +5917,13 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   Index get notificationRemoteIdIndex => _notificationRemoteIdIndex ??= Index(
       'notification_remote_id_index',
       'CREATE INDEX notification_remote_id_index ON db_notifications (remote_id);');
+  $DbScheduledStatusesTable _dbScheduledStatuses;
+  $DbScheduledStatusesTable get dbScheduledStatuses =>
+      _dbScheduledStatuses ??= $DbScheduledStatusesTable(this);
+  Index _scheduledStatusRemoteIdIndex;
+  Index get scheduledStatusRemoteIdIndex => _scheduledStatusRemoteIdIndex ??= Index(
+      'scheduled_status_remote_id_index',
+      'CREATE INDEX scheduled_status_remote_id_index ON db_scheduled_statuses (remote_id);');
   $DbStatusHashtagsTable _dbStatusHashtags;
   $DbStatusHashtagsTable get dbStatusHashtags =>
       _dbStatusHashtags ??= $DbStatusHashtagsTable(this);
@@ -5680,6 +5984,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   NotificationDao _notificationDao;
   NotificationDao get notificationDao =>
       _notificationDao ??= NotificationDao(this as AppDatabase);
+  ScheduledStatusDao _scheduledStatusDao;
+  ScheduledStatusDao get scheduledStatusDao =>
+      _scheduledStatusDao ??= ScheduledStatusDao(this as AppDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
@@ -5692,6 +5999,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         conversationRemoteIdIndex,
         dbNotifications,
         notificationRemoteIdIndex,
+        dbScheduledStatuses,
+        scheduledStatusRemoteIdIndex,
         dbStatusHashtags,
         dbStatusLists,
         dbStatusFavouritedAccounts,

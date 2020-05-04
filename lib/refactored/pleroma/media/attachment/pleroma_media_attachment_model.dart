@@ -71,6 +71,12 @@ class PleromaMediaAttachment implements IPleromaMediaAttachment {
       type.hashCode ^
       url.hashCode ^
       pleroma.hashCode;
+  @override
+  String toString() {
+    return 'PleromaMediaAttachment{description: $description, id: $id,'
+        ' previewUrl: $previewUrl, remoteUrl: $remoteUrl, textUrl: $textUrl,'
+        ' type: $type, url: $url, pleroma: $pleroma}';
+  }
 }
 
 @JsonSerializable()

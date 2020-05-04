@@ -48,7 +48,7 @@ PleromaScheduledStatusParams _$PleromaScheduledStatusParamsFromJson(
     poll: json['poll'],
     idempotency: json['idempotency'] as String,
     inReplyToId: json['in_reply_to_id'] as String,
-    applicationId: json['application_id'] as int,
+    applicationId: json['application_id'],
   );
 }
 
@@ -297,7 +297,8 @@ Map<String, dynamic> _$PleromaScheduleStatusToJson(
       'spoiler_text': instance.spoilerText,
       'status': instance.status,
       'to': instance.to,
-      'scheduled_at': PleromaScheduleStatus.toUTCIsoString(instance.scheduledAt),
+      'scheduled_at':
+          PleromaScheduleStatus.toUTCIsoString(instance.scheduledAt),
     };
 
 PleromaStatusEmojiReaction _$PleromaStatusEmojiReactionFromJson(
