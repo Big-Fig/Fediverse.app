@@ -132,7 +132,7 @@ class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
   final String inReplyToId;
 
   @JsonKey(name: "application_id")
-  final int applicationId;
+  final dynamic applicationId;
 
   PleromaScheduledStatusParams(
       {this.text,
@@ -161,6 +161,42 @@ class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
 
   String toJsonString() =>
       jsonEncode(_$PleromaScheduledStatusParamsToJson(this));
+  @override
+  String toString() {
+    return 'PleromaScheduledStatusParams{text: $text, mediaIds: $mediaIds,'
+        ' sensitive: $sensitive, spoilerText: $spoilerText,'
+        ' visibility: $visibility, scheduledAt: $scheduledAt, poll: $poll, '
+        'idempotency: $idempotency, inReplyToId: $inReplyToId, '
+        'applicationId: $applicationId}';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaScheduledStatusParams &&
+          runtimeType == other.runtimeType &&
+          text == other.text &&
+          eq(mediaIds, other.mediaIds) &&
+          sensitive == other.sensitive &&
+          spoilerText == other.spoilerText &&
+          visibility == other.visibility &&
+          scheduledAt == other.scheduledAt &&
+          poll == other.poll &&
+          idempotency == other.idempotency &&
+          inReplyToId == other.inReplyToId &&
+          applicationId == other.applicationId;
+  @override
+  int get hashCode =>
+      text.hashCode ^
+      mediaIds.hashCode ^
+      sensitive.hashCode ^
+      spoilerText.hashCode ^
+      visibility.hashCode ^
+      scheduledAt.hashCode ^
+      poll.hashCode ^
+      idempotency.hashCode ^
+      inReplyToId.hashCode ^
+      applicationId.hashCode;
 }
 
 @JsonSerializable()
@@ -603,7 +639,8 @@ class PleromaScheduleStatus implements IPleromaScheduleStatus {
 
   String toJsonString() => jsonEncode(_$PleromaScheduleStatusToJson(this));
 
-  static toUTCIsoString(DateTime scheduledAt) => scheduledAt.toUtc()?.toIso8601String();
+  static toUTCIsoString(DateTime scheduledAt) =>
+      scheduledAt.toUtc()?.toIso8601String();
 }
 
 abstract class IPleromaStatusEmojiReaction {
