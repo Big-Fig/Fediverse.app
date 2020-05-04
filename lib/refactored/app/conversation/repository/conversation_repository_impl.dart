@@ -186,7 +186,7 @@ class ConversationRepository extends AsyncInitLoadingBloc
 
   @override
   Future<List<DbConversationWrapper>> getConversations(
-      {@required IAccount withAccount,
+      {
       @required IConversation olderThanConversation,
       @required IConversation newerThanConversation,
       @required int limit,
@@ -258,12 +258,12 @@ class ConversationRepository extends AsyncInitLoadingBloc
 
   @override
   Future<DbConversationWrapper> getConversation(
-      {@required IAccount withAccount,
+      {
       @required IConversation olderThanConversation,
       @required IConversation newerThanConversation,
       @required ConversationOrderingTermData orderingTermData}) async {
     var conversations = await getConversations(
-        withAccount: withAccount,
+  
         olderThanConversation: olderThanConversation,
         newerThanConversation: newerThanConversation,
         orderingTermData: orderingTermData,
@@ -274,7 +274,7 @@ class ConversationRepository extends AsyncInitLoadingBloc
 
   @override
   Stream<DbConversationWrapper> watchConversation(
-      {@required IAccount withAccount,
+      {
       @required IConversation olderThanConversation,
       @required IConversation newerThanConversation,
       @required ConversationOrderingTermData orderingTermData}) {
@@ -286,15 +286,4 @@ class ConversationRepository extends AsyncInitLoadingBloc
         offset: null);
     return conversationsStream.map((conversations) => conversations?.first);
   }
-
-  @override
-  Future<IConversation> findConversationWithAccount(
-          {@required IAccount account}) =>
-      getConversation(
-          withAccount: account,
-          olderThanConversation: null,
-          newerThanConversation: null,
-          orderingTermData: ConversationOrderingTermData(
-              orderByType: ConversationOrderByType.remoteId,
-              orderingMode: OrderingMode.desc));
 }
