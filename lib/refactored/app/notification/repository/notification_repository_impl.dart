@@ -155,9 +155,9 @@ class NotificationRepository extends AsyncInitLoadingBloc
     var query = dao.startSelectQuery();
 
     if (olderThanNotification != null || newerThanNotification != null) {
-      dao.addRemoteIdBoundsWhere(query,
-          maximumRemoteIdExcluding: olderThanNotification?.remoteId,
-          minimumRemoteIdExcluding: newerThanNotification?.remoteId);
+      dao.addCreatedAtBoundsWhere(query,
+          maximumCreatedAt: olderThanNotification?.createdAt,
+          minimumCreatedAt: newerThanNotification?.createdAt);
     }
 
     if (onlyWithType != null) {
@@ -228,10 +228,8 @@ class NotificationRepository extends AsyncInitLoadingBloc
   Future<List<DbNotificationPopulatedWrapper>> getAll() async =>
       (await dao.findAll()).map(mapDataClassToItem).toList();
 
-
   @override
-  Future<int> countAll() =>
-      dao.countAllQuery().getSingle();
+  Future<int> countAll() => dao.countAllQuery().getSingle();
 
   @override
   Stream<List<DbNotificationPopulatedWrapper>> watchAll() =>
@@ -344,7 +342,8 @@ class NotificationRepository extends AsyncInitLoadingBloc
     return dao.countUnreadAllQuery().watchSingle();
   }
 
-  Stream<int> watchUnreadCountByType({@required MastodonNotificationType type}) {
+  Stream<int> watchUnreadCountByType(
+      {@required MastodonNotificationType type}) {
     return dao
         .countUnreadByTypeQuery(mastodonNotificationTypeValues.reverse[type])
         .watchSingle();

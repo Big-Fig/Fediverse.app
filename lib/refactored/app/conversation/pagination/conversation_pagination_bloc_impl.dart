@@ -1,5 +1,5 @@
 import 'package:fedi/refactored/app/conversation/conversation_model.dart';
-import 'package:fedi/refactored/app/conversation/list/conversation_list_service.dart';
+import 'package:fedi/refactored/app/conversation/list/cached/conversation_cached_list_service.dart';
 import 'package:fedi/refactored/app/conversation/pagination/conversation_pagination_bloc.dart';
 import 'package:fedi/refactored/app/pagination/cached/cached_pleroma_pagination_bloc_impl.dart';
 import 'package:fedi/refactored/pagination/cached/cached_pagination_model.dart';
@@ -9,7 +9,7 @@ import 'package:flutter/cupertino.dart';
 class ConversationPaginationBloc
     extends CachedPleromaPaginationBloc<IConversation>
     implements IConversationPaginationBloc {
-  final IConversationListService listService;
+  final IConversationCachedListService listService;
 
   ConversationPaginationBloc(
       {@required this.listService,
@@ -30,8 +30,8 @@ class ConversationPaginationBloc
           @required CachedPaginationPage<IConversation> newerPage}) =>
       listService.loadLocalItems(
         limit: itemsCountPerPage,
-        newerThanConversation: olderPage?.items?.first,
-        olderThanConversation: newerPage?.items?.last,
+        newerThan: olderPage?.items?.first,
+        olderThan: newerPage?.items?.last,
       );
 
   @override
@@ -45,8 +45,8 @@ class ConversationPaginationBloc
 
     return listService.refreshItemsFromRemoteForPage(
       limit: itemsCountPerPage,
-      newerThanConversation: olderPage?.items?.first,
-      olderThanConversation: newerPage?.items?.last,
+      newerThan: olderPage?.items?.first,
+      olderThan: newerPage?.items?.last,
     );
   }
 }

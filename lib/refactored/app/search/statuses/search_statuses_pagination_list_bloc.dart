@@ -1,12 +1,13 @@
 import 'package:fedi/refactored/app/search/input/search_input_bloc.dart';
-import 'package:fedi/refactored/app/status/pagination/list/status_pagination_list_bloc_impl.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
+import 'package:fedi/refactored/pagination/list/pagination_list_bloc_impl.dart';
 import 'package:fedi/refactored/pagination/pagination_bloc.dart';
 import 'package:fedi/refactored/pagination/pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-class SearchStatusesPaginationListBloc extends StatusPaginationListBloc {
+class SearchStatusesPaginationListBloc
+    extends PaginationListBloc<PaginationPage<IStatus>, IStatus> {
   final ISearchInputBloc searchInputBloc;
   SearchStatusesPaginationListBloc({
     @required this.searchInputBloc,

@@ -30,7 +30,7 @@ class ConversationAccountsWidget extends StatelessWidget {
                   create: (context) => AccountBloc.createFromContext(context,
                       isNeedWatchLocalRepositoryForUpdates: false,
                       account: items[index],
-                      isNeedRefreshFromNetworkOnInit: false),
+                      isNeedRefreshFromNetworkOnInit: false, isNeedWatchWebSocketsEvents: false),
                   child: AccountListItemWidget(
                     accountSelectedCallback: (IAccount account) {
                       goToAccountDetailsPage(context, account);

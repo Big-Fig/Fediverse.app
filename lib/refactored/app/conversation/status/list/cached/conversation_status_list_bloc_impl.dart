@@ -11,7 +11,7 @@ import 'package:moor/moor.dart';
 var _logger = Logger("conversation_statuses_list_bloc_impl.dart");
 
 abstract class ConversationStatusListBloc extends DisposableOwner
-    implements IStatusCachedListBloc {
+    implements IStatusCachedListService {
   final IStatusRepository statusRepository;
   final IConversation conversation;
 
@@ -53,6 +53,29 @@ abstract class ConversationStatusListBloc extends DisposableOwner
         "finish loadLocalItems for $conversation statuses ${statuses.length}");
     return statuses;
   }
+  @override
+  Stream<List<IStatus>> watchLocalItemsNewerThanItem(IStatus item) {
+   return statusRepository.watchStatuses(
+       onlyInConversation: conversation,
+       onlyFromAccount: null,
+       onlyInListWithRemoteId: null,
+       onlyWithHashtag: null,
+       onlyFromAccountsFollowingByAccount: null,
+       onlyLocal: null,
+       onlyWithMedia: null,
+       onlyNotMuted: null,
+       excludeVisibilities: null,
+       olderThanStatus: null,
+       newerThanStatus: item,
+       onlyNoNsfwSensitive: null,
+       onlyNoReplies: null,
+       limit: null,
+       offset: null,
+       orderingTermData: StatusOrderingTermData(
+           orderingMode: OrderingMode.desc,
+           orderByType: StatusOrderByType.remoteId));
+  }
+
 
   @override
   Future preRefreshAllAction() async {

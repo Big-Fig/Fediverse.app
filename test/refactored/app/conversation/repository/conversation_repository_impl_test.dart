@@ -236,8 +236,8 @@ void main() {
 
   test('createQuery empty', () async {
     var query = conversationRepository.createQuery(
-        olderThanConversation: null,
-        newerThanConversation: null,
+        olderThan: null,
+        newerThan: null,
         limit: null,
         offset: null,
         orderingTermData: null);
@@ -262,8 +262,8 @@ void main() {
 
 //  test('createQuery withAccount', () async {
 //    var query = conversationRepository.createQuery(
-//        olderThanConversation: null,
-//        newerThanConversation: null,
+//        olderThan: null,
+//        newerThan: null,
 //        limit: null,
 //        offset: null,
 //        orderingTermData: null,
@@ -288,14 +288,14 @@ void main() {
 //    expect((await query.get()).length, 1);
 //  });
 
-  test('createQuery newerThanConversation', () async {
+  test('createQuery newerThan', () async {
     var query = conversationRepository.createQuery(
-      newerThanConversation: await createTestConversation(
+      newerThan: await createTestConversation(
           seed: "remoteId5", remoteId: "remoteId5"),
       limit: null,
       offset: null,
       orderingTermData: null,
-      olderThanConversation: null,
+      olderThan: null,
     );
 
     await insertDbConversation(
@@ -326,13 +326,13 @@ void main() {
     expect((await query.get()).length, 2);
   });
 
-  test('createQuery notNewerThanConversation', () async {
+  test('createQuery notNewerThan', () async {
     var query = conversationRepository.createQuery(
-        newerThanConversation: null,
+        newerThan: null,
         limit: null,
         offset: null,
         orderingTermData: null,
-        olderThanConversation: await createTestConversation(
+        olderThan: await createTestConversation(
             seed: "remoteId5", remoteId: "remoteId5"));
 
     await insertDbConversation(
@@ -363,15 +363,15 @@ void main() {
     expect((await query.get()).length, 2);
   });
 
-  test('createQuery notNewerThanConversation & newerThanConversation',
+  test('createQuery notNewerThan & newerThan',
       () async {
     var query = conversationRepository.createQuery(
-        newerThanConversation: await createTestConversation(
+        newerThan: await createTestConversation(
             seed: "remoteId2", remoteId: "remoteId2"),
         limit: null,
         offset: null,
         orderingTermData: null,
-        olderThanConversation: await createTestConversation(
+        olderThan: await createTestConversation(
             seed: "remoteId5", remoteId: "remoteId5"));
 
     await insertDbConversation(
@@ -418,13 +418,13 @@ void main() {
 
   test('createQuery orderingTermData remoteId asc no limit', () async {
     var query = conversationRepository.createQuery(
-        newerThanConversation: null,
+        newerThan: null,
         limit: null,
         offset: null,
         orderingTermData: ConversationOrderingTermData(
             orderByType: ConversationOrderByType.remoteId,
             orderingMode: OrderingMode.asc),
-        olderThanConversation: null);
+        olderThan: null);
 
     var conversation2 = await insertDbConversation(
         conversationRepository,
@@ -453,13 +453,13 @@ void main() {
 
   test('createQuery orderingTermData remoteId desc no limit', () async {
     var query = conversationRepository.createQuery(
-        newerThanConversation: null,
+        newerThan: null,
         limit: null,
         offset: null,
         orderingTermData: ConversationOrderingTermData(
             orderByType: ConversationOrderByType.remoteId,
             orderingMode: OrderingMode.desc),
-        olderThanConversation: null);
+        olderThan: null);
 
     var conversation2 = await insertDbConversation(
         conversationRepository,
@@ -488,13 +488,13 @@ void main() {
 
   test('createQuery orderingTermData remoteId desc & limit & offset', () async {
     var query = conversationRepository.createQuery(
-        newerThanConversation: null,
+        newerThan: null,
         limit: 1,
         offset: 1,
         orderingTermData: ConversationOrderingTermData(
             orderByType: ConversationOrderByType.remoteId,
             orderingMode: OrderingMode.desc),
-        olderThanConversation: null);
+        olderThan: null);
 
     var conversation2 = await insertDbConversation(
         conversationRepository,

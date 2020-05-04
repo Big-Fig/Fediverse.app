@@ -14,12 +14,13 @@ Future<DbNotification> createTestDbNotification({
   @required DbAccount dbAccount,
   DbStatus dbStatus,
   bool unread = false,
+  DateTime createdAt  ,
   MastodonNotificationType type = MastodonNotificationType.reblog,
 }) async {
   DbNotification dbNotification = DbNotification(
       id: null,
       remoteId: remoteId ?? seed + "remoteId",
-      createdAt: DateTime(1),
+      createdAt: createdAt ?? DateTime(1),
       accountRemoteId: dbAccount.remoteId,
       statusRemoteId: dbStatus?.remoteId,
       unread: unread,

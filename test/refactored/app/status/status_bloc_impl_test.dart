@@ -18,7 +18,7 @@ import 'package:mockito/mockito.dart';
 import 'package:moor_ffi/moor_ffi.dart';
 
 import '../../pleroma/account/pleroma_account_service_mock.dart';
-import '../../pleroma/status/pleroma_status_emoji_reaction_service.dart';
+import '../../pleroma/status/pleroma_status_emoji_reaction_service_mock.dart';
 import '../../pleroma/status/pleroma_status_service_mock.dart';
 import '../account/account_model_helper.dart';
 import 'status_model_helper.dart';

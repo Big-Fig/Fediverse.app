@@ -13,10 +13,10 @@ import 'package:fedi/refactored/app/search/search_model.dart';
 import 'package:fedi/refactored/app/search/statuses/search_statuses_list_service.dart';
 import 'package:fedi/refactored/app/search/statuses/search_statuses_list_widget.dart';
 import 'package:fedi/refactored/app/search/statuses/search_statuses_pagination_list_bloc.dart';
-import 'package:fedi/refactored/app/status/pagination/list/status_pagination_list_bloc.dart';
 import 'package:fedi/refactored/app/status/pagination/network_only/status_network_only_pagination_bloc_impl.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
+import 'package:fedi/refactored/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/refactored/pagination/pagination_bloc.dart';
 import 'package:fedi/refactored/pagination/pagination_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -126,7 +126,7 @@ class SearchWidget extends StatelessWidget {
               IPaginationBloc<PaginationPage<IStatus>, IStatus>>(
             create: (context) =>
                 StatusNetworkOnlyPaginationBloc.createFromContext(context),
-            child: DisposableProvider<IStatusPaginationListBloc>(
+            child: DisposableProvider<IPaginationListBloc<PaginationPage<IStatus>, IStatus>>(
               create: (context) =>
                   SearchStatusesPaginationListBloc.createFromContext(context),
               child: SearchStatusesListWidget(),
