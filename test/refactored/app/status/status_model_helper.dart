@@ -9,13 +9,17 @@ import 'database/status_database_model_helper.dart';
 Future<DbStatusPopulatedWrapper> createTestStatus(
     {@required String seed,
     String remoteId,
+    DateTime createdAt,
     DbAccountWrapper account,
     DbStatusPopulatedWrapper reblog}) async {
   account = account ?? await createTestAccount(seed: seed);
   var dbAccount = account.dbAccount;
   return DbStatusPopulatedWrapper(DbStatusPopulated(
     dbStatus: await createTestDbStatus(
-        seed: seed, remoteId: remoteId, dbAccount: dbAccount),
+        createdAt: createdAt,
+        seed: seed,
+        remoteId: remoteId,
+        dbAccount: dbAccount),
     dbAccount: dbAccount,
     reblogDbStatus: reblog?.dbStatusPopulated?.dbStatus,
     reblogDbStatusAccount: reblog?.dbStatusPopulated?.dbAccount,

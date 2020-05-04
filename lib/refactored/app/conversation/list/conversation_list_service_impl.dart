@@ -74,7 +74,7 @@ class ConversationListService extends DisposableOwner
         offset: null,
         orderingTermData: ConversationOrderingTermData(
             orderingMode: OrderingMode.desc,
-            orderByType: ConversationOrderByType.remoteId), withAccount: null);
+            orderByType: ConversationOrderByType.remoteId));
 
     _logger.finer(
         () => "finish loadLocalItems conversations ${conversations.length}");
