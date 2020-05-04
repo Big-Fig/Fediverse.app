@@ -187,14 +187,14 @@ class ConversationRepository extends AsyncInitLoadingBloc
   @override
   Future<List<DbConversationWrapper>> getConversations(
       {
-      @required IConversation olderThanConversation,
-      @required IConversation newerThanConversation,
+      @required IConversation olderThan,
+      @required IConversation newerThan,
       @required int limit,
       @required int offset,
       @required ConversationOrderingTermData orderingTermData}) async {
     var query = createQuery(
-        olderThanConversation: olderThanConversation,
-        newerThanConversation: newerThanConversation,
+        olderThan: olderThan,
+        newerThan: newerThan,
         limit: limit,
         offset: offset,
         orderingTermData: orderingTermData);
@@ -207,14 +207,14 @@ class ConversationRepository extends AsyncInitLoadingBloc
 
   @override
   Stream<List<DbConversationWrapper>> watchConversations(
-      {@required IConversation olderThanConversation,
-      @required IConversation newerThanConversation,
+      {@required IConversation olderThan,
+      @required IConversation newerThan,
       @required int limit,
       @required int offset,
       @required ConversationOrderingTermData orderingTermData}) {
     var query = createQuery(
-      olderThanConversation: olderThanConversation,
-      newerThanConversation: newerThanConversation,
+      olderThan: olderThan,
+      newerThan: newerThan,
       limit: limit,
       offset: offset,
       orderingTermData: orderingTermData,
@@ -225,24 +225,24 @@ class ConversationRepository extends AsyncInitLoadingBloc
   }
 
   SimpleSelectStatement createQuery(
-      {@required IConversation olderThanConversation,
-      @required IConversation newerThanConversation,
+      {@required IConversation olderThan,
+      @required IConversation newerThan,
       @required int limit,
       @required int offset,
       @required ConversationOrderingTermData orderingTermData}) {
     _logger.fine(() => "createQuery \n"
-        "\t olderThanConversation=$olderThanConversation\n"
-        "\t newerThanConversation=$newerThanConversation\n"
+        "\t olderThan=$olderThan\n"
+        "\t newerThan=$newerThan\n"
         "\t limit=$limit\n"
         "\t offset=$offset\n"
         "\t orderingTermData=$orderingTermData\n");
 
     var query = dao.startSelectQuery();
 
-    if (olderThanConversation != null || newerThanConversation != null) {
+    if (olderThan != null || newerThan != null) {
       dao.addRemoteIdBoundsWhere(query,
-          maximumRemoteIdExcluding: olderThanConversation?.remoteId,
-          minimumRemoteIdExcluding: newerThanConversation?.remoteId);
+          maximumRemoteIdExcluding: olderThan?.remoteId,
+          minimumRemoteIdExcluding: newerThan?.remoteId);
     }
 
     if (orderingTermData != null) {
@@ -259,13 +259,13 @@ class ConversationRepository extends AsyncInitLoadingBloc
   @override
   Future<DbConversationWrapper> getConversation(
       {
-      @required IConversation olderThanConversation,
-      @required IConversation newerThanConversation,
+      @required IConversation olderThan,
+      @required IConversation newerThan,
       @required ConversationOrderingTermData orderingTermData}) async {
     var conversations = await getConversations(
   
-        olderThanConversation: olderThanConversation,
-        newerThanConversation: newerThanConversation,
+        olderThan: olderThan,
+        newerThan: newerThan,
         orderingTermData: orderingTermData,
         limit: 1,
         offset: null);
@@ -275,12 +275,12 @@ class ConversationRepository extends AsyncInitLoadingBloc
   @override
   Stream<DbConversationWrapper> watchConversation(
       {
-      @required IConversation olderThanConversation,
-      @required IConversation newerThanConversation,
+      @required IConversation olderThan,
+      @required IConversation newerThan,
       @required ConversationOrderingTermData orderingTermData}) {
     var conversationsStream = watchConversations(
-        olderThanConversation: olderThanConversation,
-        newerThanConversation: newerThanConversation,
+        olderThan: olderThan,
+        newerThan: newerThan,
         orderingTermData: orderingTermData,
         limit: 1,
         offset: null);
