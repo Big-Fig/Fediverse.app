@@ -102,6 +102,9 @@ dependencies:
   # WebSockets API mobile implementation
   web_socket_channel: ^1.1.0
 
+  # Provides internationalization and localization facilities
+  intl: ^0.16.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

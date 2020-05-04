@@ -5,6 +5,7 @@ import 'package:fedi/refactored/app/status/post/action/post_status_attach_media_
 import 'package:fedi/refactored/app/status/post/action/post_status_mention_action_widget.dart';
 import 'package:fedi/refactored/app/status/post/action/post_status_nsfw_action_widget.dart';
 import 'package:fedi/refactored/app/status/post/action/post_status_post_action_widget.dart';
+import 'package:fedi/refactored/app/status/post/action/post_status_schedule_action_widget.dart';
 import 'package:fedi/refactored/app/status/post/action/post_status_visibility_action_widget.dart';
 import 'package:fedi/refactored/app/status/post/mentions/post_status_mentions_widget.dart';
 import 'package:fedi/refactored/app/status/post/message/message_post_status_widget.dart';
@@ -31,10 +32,9 @@ class NewPostStatusWidget extends StatelessWidget {
                 children: [
                   PostStatusMentionActionWidget(),
                   PostStatusVisibilityActionWidget(),
-                  PostStatusAttachCameraVideoActionWidget(),
-                  PostStatusAttachCameraImageActionWidget(),
                   PostStatusAttachMediaActionWidget(),
-                  PostStatusNsfwActionWidget()
+                  PostStatusNsfwActionWidget(),
+                  PostStatusScheduleActionWidget(),
                 ],
               ),
               PostStatusPostActionWidget(successCallback: (context) {

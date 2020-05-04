@@ -297,7 +297,7 @@ Map<String, dynamic> _$PleromaScheduleStatusToJson(
       'spoiler_text': instance.spoilerText,
       'status': instance.status,
       'to': instance.to,
-      'scheduled_at': instance.scheduledAt?.toIso8601String(),
+      'scheduled_at': PleromaScheduleStatus.toUTCIsoString(instance.scheduledAt),
     };
 
 PleromaStatusEmojiReaction _$PleromaStatusEmojiReactionFromJson(

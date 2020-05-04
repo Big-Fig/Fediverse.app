@@ -44,6 +44,9 @@ abstract class IPostStatusBloc implements Disposable {
 
   detachMedia(FilePickerFile filePickerFile);
 
+  schedule(DateTime dateTime);
+  clearSchedule();
+
   bool get isReadyToPost;
 
   Stream<bool> get isReadyToPostStream;
@@ -51,6 +54,14 @@ abstract class IPostStatusBloc implements Disposable {
   bool get isPossibleToAttachMedia;
 
   Stream<bool> get isPossibleToAttachMediaStream;
+
+  bool get isScheduled;
+
+  Stream<bool> get isScheduledStream;
+
+  DateTime get scheduledAt;
+
+  Stream<DateTime> get scheduledAtStream;
 
   bool get isMaximumMediaAttachmentCountReached;
 
