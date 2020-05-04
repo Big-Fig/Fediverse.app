@@ -50,13 +50,13 @@ class PleromaScheduledStatusService implements IPleromaScheduledStatusService {
   }
 
   @override
-  Future<IPleromaScheduledStatus> cancelScheduledStatus(
+  Future<bool> cancelScheduledStatus(
       {@required String scheduledStatusRemoteId}) async {
     var request = RestRequest.delete(
         relativePath: join(scheduledStatusesRelativeUrlPath, scheduledStatusRemoteId));
     var httpResponse = await restService.sendHttpRequest(request);
 
-    return parseScheduledStatusResponse(httpResponse);
+    return httpResponse.statusCode == 200;
   }
 
   @override
@@ -75,7 +75,7 @@ class PleromaScheduledStatusService implements IPleromaScheduledStatusService {
   }
 
   @override
-  Future<IPleromaScheduledStatus> rescheduleStatus(
+  Future<IPleromaScheduledStatus> reScheduleStatus(
       {@required String scheduledStatusRemoteId, @required DateTime scheduledAt}) async {
     var request = RestRequest.put(
         relativePath: join(scheduledStatusesRelativeUrlPath, scheduledStatusRemoteId),

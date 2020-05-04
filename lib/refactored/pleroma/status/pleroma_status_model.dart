@@ -69,7 +69,7 @@ abstract class IPleromaScheduledStatus extends IMastodonScheduledStatus {
 
 abstract class IPleromaScheduledStatusParams
     extends IMastodonScheduledStatusParams {
-  PleromaVisibility get visibilityPleroma =>
+  PleromaVisibility get pleromaVisibility =>
       const PleromaVisibilityTypeConverter().fromJson(visibility);
 }
 

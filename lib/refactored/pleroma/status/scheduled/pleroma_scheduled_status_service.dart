@@ -8,13 +8,13 @@ abstract class IPleromaScheduledStatusService implements IPleromaApi {
           {listen: true}) =>
       Provider.of<IPleromaScheduledStatusService>(context, listen: listen);
 
-  Future<IPleromaScheduledStatus> cancelScheduledStatus(
+  Future<bool> cancelScheduledStatus(
       {@required String scheduledStatusRemoteId});
 
   Future<IPleromaScheduledStatus> getScheduledStatus(
       {@required String scheduledStatusRemoteId});
 
-  Future<IPleromaScheduledStatus> rescheduleStatus(
+  Future<IPleromaScheduledStatus> reScheduleStatus(
       {@required String scheduledStatusRemoteId, @required DateTime scheduledAt});
 
   Future<List<IPleromaScheduledStatus>> getScheduledStatuses({

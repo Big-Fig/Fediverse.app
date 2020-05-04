@@ -359,6 +359,9 @@
       }
     },
     "status": {
+      "scheduled": {
+        "title": "Scheduled statuses"
+      },
       "action": {
         "comment": "Comment",
         "favourite": "Favourite",
