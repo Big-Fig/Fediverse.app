@@ -35,8 +35,9 @@ class ConversationDao extends DatabaseAccessor<AppDatabase>
         alias(db.dbConversationAccounts, _conversationAccountsAliasId);
   }
 
-  Future<int> insert(Insertable<DbConversation> entity) async =>
-      into(db.dbConversations).insert(entity);
+  Future<int> insert(Insertable<DbConversation> entity,
+          {InsertMode mode}) async =>
+      into(db.dbConversations).insert(entity, mode: mode);
 
   Future<int> upsert(Insertable<DbConversation> entity) async =>
       into(db.dbConversations).insert(entity, mode: InsertMode.insertOrReplace);
@@ -111,9 +112,9 @@ class ConversationDao extends DatabaseAccessor<AppDatabase>
             .toList());
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyMediaWhere(
-      SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
+          SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
       query
         ..where((status) =>
-        isNotNull(status.mediaAttachments) |
-        status.mediaAttachments.equals(""));
+            isNotNull(status.mediaAttachments) |
+            status.mediaAttachments.equals(""));
 }

@@ -27,13 +27,14 @@ class AccountFollowingsDao extends DatabaseAccessor<AppDatabase>
   // Called by the AppDatabase class
   AccountFollowingsDao(this.db) : super(db);
 
-  Future<int> insert(Insertable<DbAccountFollowing> entity) async =>
-      into(dbAccountFollowings).insert(entity);
+  Future<int> insert(Insertable<DbAccountFollowing> entity,
+          {InsertMode mode}) async =>
+      into(dbAccountFollowings).insert(entity, mode: mode);
 
   Future insertAll(Iterable<Insertable<DbAccountFollowing>> entities,
           InsertMode mode) async =>
       await batch((batch) {
-        batch.insertAll(dbAccountFollowings, entities);
+        batch.insertAll(dbAccountFollowings, entities, mode: mode);
       });
 
   Future<bool> replace(Insertable<DbAccountFollowing> entity) async =>

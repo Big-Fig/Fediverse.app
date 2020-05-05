@@ -31,7 +31,7 @@ class ConversationStatusesDao extends DatabaseAccessor<AppDatabase>
   Future insertAll(Iterable<Insertable<DbConversationStatus>> entities,
           InsertMode mode) async =>
       await batch((batch) {
-        batch.insertAll(dbConversationStatuses, entities);
+        batch.insertAll(dbConversationStatuses, entities, mode: mode);
       });
 
   Future<bool> replace(Insertable<DbConversationStatus> entity) async =>

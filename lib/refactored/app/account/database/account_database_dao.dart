@@ -49,8 +49,8 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
         alias(db.dbConversationAccounts, _conversationAccountsAliasId);
   }
 
-  Future<int> insert(Insertable<DbAccount> entity) =>
-      into(dbAccounts).insert(entity);
+  Future<int> insert(Insertable<DbAccount> entity,{    InsertMode mode}) =>
+      into(dbAccounts).insert(entity, mode: mode);
 
   Future<int> upsert(Insertable<DbAccount> entity) =>
       into(dbAccounts).insert(entity, mode: InsertMode.insertOrReplace);
