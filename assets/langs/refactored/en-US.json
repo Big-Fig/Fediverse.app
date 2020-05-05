@@ -361,7 +361,11 @@
     "status": {
       "scheduled": {
         "title": "Scheduled statuses",
-        "scheduled_at": "Scheduled at: {}",
+        "state": {
+          "scheduled_at": "Scheduled at: {}",
+          "canceled": "Canceled",
+          "already_posted": "Already posted"
+        },
         "action": {
           "edit": "Edit",
           "cancel": "Cancel"

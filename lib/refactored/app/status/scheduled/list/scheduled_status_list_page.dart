@@ -30,24 +30,25 @@ class ScheduledStatusListPage extends StatelessWidget {
 
   Widget buildBody(BuildContext context) {
     return DisposableProvider<IScheduledStatusCachedListService>(
-      create: (context) => ScheduledStatusCachedListService.createFromContext(context),
+      create: (context) =>
+          ScheduledStatusCachedListService.createFromContext(context),
       child: DisposableProvider<
           IPaginationBloc<PaginationPage<IScheduledStatus>, IScheduledStatus>>(
         create: (BuildContext context) => ScheduledStatusCachedPaginationBloc(
             itemsCountPerPage: 20,
             maximumCachedPagesCount: null,
-            scheduledStatusListService: IScheduledStatusCachedListService.of
-              (context, listen: false)),
+            scheduledStatusListService:
+                IScheduledStatusCachedListService.of(context, listen: false)),
         child: DisposableProvider<
             IPaginationListWithNewItemsBloc<PaginationPage<IScheduledStatus>,
                 IScheduledStatus>>(
           create: (context) => ScheduledStatusPaginationListWithNewItemsBloc(
               scheduledStatusCachedListService:
-                  IScheduledStatusCachedListService.of(context),
+                  IScheduledStatusCachedListService.of(context, listen: false),
               mergeNewItemsImmediately: false,
               paginationBloc: Provider.of<
                   IPaginationBloc<PaginationPage<IScheduledStatus>,
-                      IScheduledStatus>>(context)),
+                      IScheduledStatus>>(context, listen: false)),
           child: ProxyProvider<
               IPaginationListWithNewItemsBloc<PaginationPage<IScheduledStatus>,
                   IScheduledStatus>,
@@ -55,13 +56,13 @@ class ScheduledStatusListPage extends StatelessWidget {
                   IScheduledStatus>>(
             update: (context, value, previous) => value,
             child: ProxyProvider<
-                IPaginationListWithNewItemsBloc<PaginationPage<IScheduledStatus>,
-                    IScheduledStatus>,
+                IPaginationListWithNewItemsBloc<
+                    PaginationPage<IScheduledStatus>, IScheduledStatus>,
                 IPaginationListWithNewItemsBloc>(
               update: (context, value, previous) => value,
               child: ScheduledStatusPaginationListTimelineWidget(
-                key:
-                    PageStorageKey("ScheduledStatusPaginationListTimelineWidget"),
+                key: PageStorageKey(
+                    "ScheduledStatusPaginationListTimelineWidget"),
                 needWatchLocalRepositoryForUpdates: true,
               ),
             ),
