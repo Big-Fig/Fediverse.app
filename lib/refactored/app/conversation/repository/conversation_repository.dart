@@ -27,35 +27,30 @@ abstract class IConversationRepository
   Future upsertRemoteConversation(IPleromaConversation remoteConversation);
 
   Future<List<DbConversationWrapper>> getConversations(
-      {
-      @required IConversation olderThan,
+      {@required IConversation olderThan,
       @required IConversation newerThan,
       @required int limit,
       @required int offset,
       @required ConversationOrderingTermData orderingTermData});
 
   Stream<List<DbConversationWrapper>> watchConversations(
-      {
-      @required IConversation olderThan,
+      {@required IConversation olderThan,
       @required IConversation newerThan,
       @required int limit,
       @required int offset,
       @required ConversationOrderingTermData orderingTermData});
 
   Future<DbConversationWrapper> getConversation(
-      {
-      @required IConversation olderThan,
+      {@required IConversation olderThan,
       @required IConversation newerThan,
       @required ConversationOrderingTermData orderingTermData});
 
   Stream<DbConversationWrapper> watchConversation(
-      {
-      @required IConversation olderThan,
+      {@required IConversation olderThan,
       @required IConversation newerThan,
       @required ConversationOrderingTermData orderingTermData});
 
   Future updateLocalConversationByRemoteConversation(
       {@required IConversation oldLocalConversation,
       @required IPleromaConversation newRemoteConversation});
-
 }
