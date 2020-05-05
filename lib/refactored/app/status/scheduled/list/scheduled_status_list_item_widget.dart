@@ -12,9 +12,6 @@ import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
-import 'package:logging/logging.dart';
-
-var _logger = Logger("scheduled_status_list_item_widget.dart");
 
 final dateFormat = DateFormat("yyyy-MM-dd HH:mm");
 
@@ -23,26 +20,93 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var scheduledStatusBloc = IScheduledStatusBloc.of(context, listen: true);
 
-    return Column(
-      children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            buildScheduledAt(context, scheduledStatusBloc),
-            buildEditButton(context, scheduledStatusBloc),
-            buildCancelButton(context, scheduledStatusBloc),
-          ],
-        ),
-        DisposableProxyProvider<IScheduledStatusBloc, IStatusBloc>(
-            update: (context, value, previous) => StatusBloc.createFromContext(
-                context,
-                ScheduledStatusAdapterToStatus(
-                    scheduledStatus: value.scheduledStatus,
-                    account:
-                        IMyAccountBloc.of(context, listen: false).account)),
-            child: StatusListItemTimelineWidget())
-      ],
+    return Card(
+      child: Column(
+        children: <Widget>[
+          buildScheduledHeader(context, scheduledStatusBloc),
+          DisposableProxyProvider<IScheduledStatusBloc, IStatusBloc>(
+              update: (context, value, previous) =>
+                  StatusBloc.createFromContext(
+                      context,
+                      ScheduledStatusAdapterToStatus(
+                          scheduledStatus: value.scheduledStatus,
+                          account: IMyAccountBloc.of(context, listen: false)
+                              .account)),
+              child: StatusListItemTimelineWidget(
+                displayActions: false,
+                statusCallback: (_, __) {
+                  // nothing
+                },
+              ))
+        ],
+      ),
     );
+  }
+
+  Widget buildScheduledHeader(
+      BuildContext context, IScheduledStatusBloc scheduledStatusBloc) {
+    return StreamBuilder<ScheduledStatusState>(
+        stream: scheduledStatusBloc.stateStream,
+        initialData: scheduledStatusBloc.state,
+        builder: (context, snapshot) {
+          var state = snapshot.data;
+
+          switch (state) {
+            case ScheduledStatusState.scheduled:
+              return Container(
+                decoration: BoxDecoration(color: Colors.blue),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      buildScheduledAt(context, scheduledStatusBloc),
+                      buildEditButton(context, scheduledStatusBloc),
+                      buildCancelButton(context, scheduledStatusBloc),
+                    ],
+                  ),
+                ),
+              );
+              break;
+            case ScheduledStatusState.canceled:
+              return Container(
+                decoration: BoxDecoration(color: Colors.red),
+                child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(AppLocalizations.of(context)
+                              .tr("app.status.scheduled.state.canceled"),
+                          style: TextStyle(color:  Colors.white),),
+                        )
+                      ],
+                    )),
+              );
+              break;
+            case ScheduledStatusState.alreadyPosted:
+              return Container(
+                decoration: BoxDecoration(color: Colors.blue),
+                child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(AppLocalizations.of(context)
+                              .tr("app.status.scheduled.state.already_posted"),
+                              style: TextStyle(color:  Colors.white)),
+                        )
+                      ],
+                    )),
+              );
+          }
+
+          throw "Invalid state $state";
+        });
   }
 
   Widget buildScheduledAt(
@@ -52,10 +116,11 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
           initialData: scheduledStatusBloc.scheduledAt,
           builder: (context, snapshot) {
             var scheduledAt = snapshot.data;
-            return Text(AppLocalizations.of(context).tr(
-                "app status.scheduled"
-                ".scheduled_at",
-                args: [dateFormat.format(scheduledAt)]));
+            return Text(
+                AppLocalizations.of(context).tr(
+                    "app.status.scheduled.state.scheduled_at",
+                    args: [dateFormat.format(scheduledAt)]),
+                style: TextStyle(color: Colors.white));
           });
 
   Widget buildCancelButton(
@@ -63,10 +128,11 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
       PleromaAsyncOperationButtonBuilderWidget(
         builder: (context, onPressed) {
           return FlatButton(
-            onPressed: onPressed,
-            child: Text(AppLocalizations.of(context)
-                .tr("app.status.scheduled.action.cancel")),
-          );
+              onPressed: onPressed,
+              child: Text(
+                  AppLocalizations.of(context)
+                      .tr("app.status.scheduled.action.cancel"),
+                  style: TextStyle(color: Colors.white)));
         },
         asyncButtonAction: () => scheduledStatusBloc.cancelSchedule(),
       );
@@ -74,19 +140,19 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
   Widget buildEditButton(
       BuildContext context, IScheduledStatusBloc scheduledStatusBloc) {
     return FlatButton(
-      onPressed: () async {
-        var newScheduledAt = await showScheduledStatusDateTimePickerDialog(
-            context, scheduledStatusBloc.scheduledAt);
+        onPressed: () async {
+          var newScheduledAt = await showScheduledStatusDateTimePickerDialog(
+              context, scheduledStatusBloc.scheduledAt);
 
-        if (newScheduledAt != null) {
-          doAsyncOperationWithDialog(
-              context: context,
-              asyncCode: () =>
-                  scheduledStatusBloc.reSchedule(scheduledAt: newScheduledAt));
-        }
-      },
-      child: Text(
-          AppLocalizations.of(context).tr("app.status.scheduled.action.edit")),
-    );
+          if (newScheduledAt != null) {
+            doAsyncOperationWithDialog(
+                context: context,
+                asyncCode: () => scheduledStatusBloc.reSchedule(
+                    scheduledAt: newScheduledAt));
+          }
+        },
+        child: Text(
+            AppLocalizations.of(context).tr("app.status.scheduled.action.edit"),
+            style: TextStyle(color: Colors.white)));
   }
 }

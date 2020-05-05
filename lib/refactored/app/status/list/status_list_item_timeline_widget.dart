@@ -99,8 +99,10 @@ class _StatusListItemTimelineWidgetState
               ),
             ),
             buildStatusContent(context, statusBloc),
+            if(widget.displayActions)
             StatusEmojiReactionListWidget(),
-            Padding(
+            if(widget.displayActions)
+              Padding(
               padding: EdgeInsets.symmetric(horizontal: 12.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
