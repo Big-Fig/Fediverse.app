@@ -1,3 +1,4 @@
+import 'package:fedi/refactored/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/refactored/app/conversation/conversation_model.dart';
 import 'package:fedi/refactored/app/conversation/conversations_list_bloc.dart';
 import 'package:fedi/refactored/app/conversation/list/cached/conversation_cached_list_service.dart';
@@ -42,6 +43,7 @@ class ConversationsListBloc extends DisposableOwner
     @required this.statusRepository,
     @required this.conversationRepository,
     @required this.pleromaWebSocketsService,
+    @required bool listenWebSocketsChanges,
   }) {
     _logger.finest(() => "constructor");
     conversationListService = ConversationCachedListService(
@@ -59,12 +61,14 @@ class ConversationsListBloc extends DisposableOwner
         mergeNewItemsImmediately: true);
     addDisposable(disposable: conversationPaginationListBloc);
 
-    addDisposable(
-        disposable: MyAccountConversationsWebSocketsHandler(
-            notificationRepository: notificationRepository,
-            conversationRepository: conversationRepository,
-            statusRepository: statusRepository,
-            pleromaWebSocketsService: pleromaWebSocketsService));
+    if (listenWebSocketsChanges) {
+      addDisposable(
+          disposable: MyAccountConversationsWebSocketsHandler(
+              notificationRepository: notificationRepository,
+              conversationRepository: conversationRepository,
+              statusRepository: statusRepository,
+              pleromaWebSocketsService: pleromaWebSocketsService));
+    }
   }
 
   static ConversationsListBloc createFromContext(BuildContext context) =>
@@ -78,5 +82,8 @@ class ConversationsListBloc extends DisposableOwner
         statusRepository: IStatusRepository.of(context, listen: false),
         pleromaWebSocketsService:
             IPleromaWebSocketsService.of(context, listen: false),
+        listenWebSocketsChanges:
+            IMyAccountSettingsBloc.of(context, listen: false)
+                .isRealtimeWebSocketsEnabled,
       );
 }

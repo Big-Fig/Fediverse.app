@@ -6,6 +6,9 @@ import 'package:fedi/refactored/app/notification/notification_tabs_model.dart';
 import 'package:fedi/refactored/app/notification/pagination/cached/notification_cached_pagination_bloc_impl.dart';
 import 'package:fedi/refactored/app/notification/pagination/list/notification_pagination_list_widget.dart';
 import 'package:fedi/refactored/app/notification/pagination/list/notification_pagination_list_with_new_items_bloc_impl.dart';
+import 'package:fedi/refactored/collapsible/collapsible_bloc.dart';
+import 'package:fedi/refactored/collapsible/collapsible_bloc_impl.dart';
+import 'package:fedi/refactored/collapsible/toggle_collapsible_overlay_widget.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:fedi/refactored/mastodon/notification/mastodon_notification_model.dart';
 import 'package:fedi/refactored/pagination/list/pagination_list_bloc.dart';
@@ -141,9 +144,24 @@ class NotificationTabsWidget extends StatelessWidget {
                 IPaginationListWithNewItemsBloc>(
               update: (context, value, previous) => value,
               child: PaginationListWithNewItemsHeaderWidget(
-                child: NotificationPaginationListWidget(
-                  needWatchLocalRepositoryForUpdates: true,
-                  key: PageStorageKey("${tab.toString()}"),
+
+
+                child: DisposableProvider<ICollapsibleBloc>(
+                  create: (context) => CollapsibleBloc.createFromContext(context),
+                  child: Stack(
+                    children: <Widget>[
+                      NotificationPaginationListWidget(
+                        needWatchLocalRepositoryForUpdates: true,
+                        key: PageStorageKey("${tab.toString()}"),
+                      ),
+                      Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ToggleCollapsibleOverlayWidget(),
+                          ))
+                    ],
+                  ),
                 ),
               ),
             ),

@@ -1,10 +1,15 @@
 import 'package:fedi/refactored/app/account/account_model.dart';
+import 'package:fedi/refactored/app/account/my/settings/my_account_settings_bloc.dart';
+import 'package:fedi/refactored/app/account/websockets/account_websockets_handler_impl.dart';
+import 'package:fedi/refactored/app/conversation/repository/conversation_repository.dart';
+import 'package:fedi/refactored/app/notification/repository/notification_repository.dart';
 import 'package:fedi/refactored/app/status/list/cached/status_cached_list_service.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository_model.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/refactored/pleroma/api/pleroma_api_service.dart';
+import 'package:fedi/refactored/pleroma/websockets/pleroma_websockets_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -15,12 +20,29 @@ class AccountStatusesBloc extends IStatusCachedListService {
   final IAccount account;
   final IPleromaAccountService pleromaAccountService;
   final IStatusRepository statusRepository;
+  final INotificationRepository notificationRepository;
+  final IConversationRepository conversationRepository;
+  final IPleromaWebSocketsService pleromaWebSocketsService;
 
   AccountStatusesBloc(
       {@required this.account,
       @required this.pleromaAccountService,
-      @required this.statusRepository})
-      : super();
+      @required this.statusRepository,
+      @required this.notificationRepository,
+      @required this.conversationRepository,
+      @required this.pleromaWebSocketsService,
+      @required bool listenWebSocketsChanges})
+      : super() {
+    if (listenWebSocketsChanges) {
+      addDisposable(
+          disposable: AccountWebSocketsHandler(
+              statusRepository: statusRepository,
+              accountId: account.remoteId,
+              notificationRepository: notificationRepository,
+              conversationRepository: conversationRepository,
+              pleromaWebSocketsService: pleromaWebSocketsService));
+    }
+  }
 
   @override
   IPleromaApi get pleromaApi => pleromaAccountService;
@@ -31,7 +53,16 @@ class AccountStatusesBloc extends IStatusCachedListService {
         account: account,
         pleromaAccountService:
             IPleromaAccountService.of(context, listen: false),
-        statusRepository: IStatusRepository.of(context, listen: false));
+        statusRepository: IStatusRepository.of(context, listen: false),
+        conversationRepository:
+            IConversationRepository.of(context, listen: false),
+        listenWebSocketsChanges:
+            IMyAccountSettingsBloc.of(context, listen: false)
+                .isRealtimeWebSocketsEnabled,
+        notificationRepository:
+            INotificationRepository.of(context, listen: false),
+        pleromaWebSocketsService:
+            IPleromaWebSocketsService.of(context, listen: false));
   }
 
   @override
