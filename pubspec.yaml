@@ -122,6 +122,15 @@ dev_dependencies:
   # in memory moor SQLite database for tests
   moor_ffi: ^0.4.0
 
+  # save photo and video to gallery
+  gallery_saver: ^2.0.1
+
+  # share actions via native API
+  esys_flutter_share: ^1.0.2
+
+  # detect mime type be extension
+  mime: ^0.9.6+3
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
