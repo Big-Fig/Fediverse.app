@@ -101,7 +101,7 @@ abstract class IMastodonScheduledStatusParams {
 
   String get inReplyToId;
 
-  int get applicationId;
+  dynamic get applicationId;
 
   MastodonVisibility get visibilityMastodon =>
       const MastodonVisibilityTypeConverter().fromJson(visibility);

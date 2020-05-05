@@ -382,6 +382,18 @@
       }
     },
     "status": {
+      "scheduled": {
+        "title": "Scheduled statuses",
+        "state": {
+          "scheduled_at": "Scheduled at: {}",
+          "canceled": "Canceled",
+          "already_posted": "Already posted"
+        },
+        "action": {
+          "edit": "Edit",
+          "cancel": "Cancel"
+        }
+      },
       "share": {
         "title": "Share status",
         "progress": {
@@ -444,17 +456,45 @@
         "title": "Reblogged by"
       },
       "post": {
+        "schedule": {
+          "error": {
+            "not_in_future": {
+              "dialog": {
+                "title": "Invalid time",
+                "content": "Schedule time must be at least 5 minutes in the future"
+              }
+            }
+          },
+          "dialog": {
+            "action": {
+              "cancel": "Cancel",
+              "edit": "Edit",
+              "clear": "Clear"
+            },
+            "title": "Schedule",
+            "content": {
+              "not_scheduled": "Not scheduled",
+              "scheduled": "Scheduled at: {}"
+            }
+          }
+        },
         "dialog": {
           "async": {
             "content": "Posting..."
           },
           "error": {
-            "title": "Status not posted",
+            "title": {
+              "post": "Failed to post status",
+              "schedule": "Failed to schedule status"
+            },
             "content": "Error: {}"
           }
         },
         "toast": {
-          "success": "Status posted"
+          "success": {
+            "post": "Status posted",
+            "schedule": "Status scheduled"
+          }
         },
         "action": {
           "post": "Post"

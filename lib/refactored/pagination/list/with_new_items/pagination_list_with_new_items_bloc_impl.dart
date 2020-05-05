@@ -140,9 +140,12 @@ abstract class PaginationListWithNewItemsBloc<
   }
 
   @override
-  Future<bool> refresh() {
-    clearNewItems();
-    return super.refresh();
+  Future<bool> refresh() async {
+    var refreshed = await super.refresh();
+    if (refreshed) {
+      clearNewItems();
+    }
+    return refreshed;
   }
 
   void clearNewItems() {

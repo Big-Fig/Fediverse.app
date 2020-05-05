@@ -21,6 +21,7 @@ import 'package:fedi/refactored/app/status/thread/status_thread_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:provider/provider.dart';
 
 var _logger = Logger("status_list_item_timeline_widget.dart");
 
@@ -94,8 +95,10 @@ class StatusListItemTimelineWidget extends StatelessWidget {
               ),
             ),
             buildStatusContent(context, statusBloc),
+            if(displayActions)
             StatusEmojiReactionListWidget(),
-            Padding(
+            if(displayActions)
+              Padding(
               padding: EdgeInsets.symmetric(horizontal: 12.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
