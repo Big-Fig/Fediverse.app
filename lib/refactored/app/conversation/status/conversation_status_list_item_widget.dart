@@ -49,7 +49,7 @@ class ConversationStatusListItemWidget extends StatelessWidget {
         child: Container(
           child: Column(
             children: <Widget>[
-              StatusContentWithoutAccountsWidget(),
+              StatusContentWithEmojisWithoutAccountsWidget(),
               StatusCardWidget(),
               StatusMediaAttachmentsWidget(),
             ],
