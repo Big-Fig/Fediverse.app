@@ -25,6 +25,7 @@ Future<DbStatusPopulated> createTestDbStatusPopulated(
 
 Future<DbStatus> createTestDbStatus({
   @required String seed,
+  DateTime createdAt,
   @required DbAccount dbAccount,
   bool pleromaThreadMuted = false,
   String remoteId,
@@ -32,7 +33,7 @@ Future<DbStatus> createTestDbStatus({
   DbStatus dbStatus = DbStatus(
       id: null,
       remoteId: remoteId ?? seed + "remoteId",
-      createdAt: DateTime(1),
+      createdAt: createdAt ?? DateTime(1),
       inReplyToRemoteId: seed + "inReplyToRemoteId",
       inReplyToAccountRemoteId: seed + "inReplyToAccountRemoteId",
       sensitive: true,

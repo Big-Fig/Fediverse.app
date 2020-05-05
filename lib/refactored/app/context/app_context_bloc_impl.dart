@@ -55,9 +55,10 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         CameraPermissionBloc(globalProviderService.get<IPermissionsService>()));
     await globalProviderService.asyncInitAndRegister<IMicPermissionBloc>(
         MicPermissionBloc(globalProviderService.get<IPermissionsService>()));
-    await globalProviderService.asyncInitAndRegister<IStoragePermissionBloc>(
-        StoragePermissionBloc(
-            globalProviderService.get<IPermissionsService>()));
+    var storagePermissionBloc =
+        StoragePermissionBloc(globalProviderService.get<IPermissionsService>());
+    await globalProviderService
+        .asyncInitAndRegister<IStoragePermissionBloc>(storagePermissionBloc);
 
     var instanceListLocalPreferenceBloc =
         AuthInstanceListLocalPreferenceBloc(preferencesService);
@@ -109,5 +110,6 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     var webSocketsService = WebSocketsService();
     await globalProviderService
         .asyncInitAndRegister<IWebSocketsService>(webSocketsService);
+
   }
 }

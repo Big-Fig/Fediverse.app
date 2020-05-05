@@ -43,6 +43,8 @@ class PleromaMediaAttachment implements IPleromaMediaAttachment {
   factory PleromaMediaAttachment.fromJsonString(String jsonString) =>
       _$PleromaMediaAttachmentFromJson(jsonDecode(jsonString));
 
+  bool get isImage => typeMastodon == MastodonMediaAttachmentType.image;
+
   Map<String, dynamic> toJson() => _$PleromaMediaAttachmentToJson(this);
 
   String toJsonString() => jsonEncode(_$PleromaMediaAttachmentToJson(this));

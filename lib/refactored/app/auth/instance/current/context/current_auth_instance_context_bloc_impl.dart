@@ -16,6 +16,8 @@ import 'package:fedi/refactored/app/push/subscription/local_preferences/push_sub
 import 'package:fedi/refactored/app/push/subscription/local_preferences/push_subscription_local_preferences_bloc_impl.dart';
 import 'package:fedi/refactored/app/push/subscription/push_subscription_bloc.dart';
 import 'package:fedi/refactored/app/push/subscription/push_subscription_bloc_impl.dart';
+import 'package:fedi/refactored/app/share/share_service.dart';
+import 'package:fedi/refactored/app/share/share_service_impl.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/refactored/app/status/scheduled/repository/scheduled_status_repository.dart';
@@ -273,15 +275,19 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
 
     addDisposable(disposable: notificationPushLoaderBloc);
 
-    var pleromaWebSocketsService =
-        PleromaWebSocketsService(
-            webSocketsService: webSocketsService,
-            accessToken: currentInstance.token.accessToken,
-            baseUri: currentInstance.url);
+    var pleromaWebSocketsService = PleromaWebSocketsService(
+        webSocketsService: webSocketsService,
+        accessToken: currentInstance.token.accessToken,
+        baseUri: currentInstance.url);
 
     addDisposable(disposable: pleromaWebSocketsService);
+    await globalProviderService.asyncInitAndRegister<IPleromaWebSocketsService>(
+        pleromaWebSocketsService);
+
+    var shareService = ShareService();
+
+    addDisposable(disposable: shareService);
     await globalProviderService
-        .asyncInitAndRegister<IPleromaWebSocketsService>(
-            pleromaWebSocketsService);
+        .asyncInitAndRegister<IShareService>(shareService);
   }
 }
