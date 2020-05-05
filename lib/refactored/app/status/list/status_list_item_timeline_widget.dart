@@ -95,9 +95,9 @@ class StatusListItemTimelineWidget extends StatelessWidget {
               ),
             ),
             buildStatusContent(context, statusBloc),
-            if(widget.displayActions)
+            if(displayActions)
             StatusEmojiReactionListWidget(),
-            if(widget.displayActions)
+            if(displayActions)
               Padding(
               padding: EdgeInsets.symmetric(horizontal: 12.0),
               child: Row(

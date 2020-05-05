@@ -36,7 +36,7 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
                 displayActions: false,
                 statusCallback: (_, __) {
                   // nothing
-                },
+                }, collapsible: false,
               ))
         ],
       ),
