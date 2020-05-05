@@ -7,11 +7,13 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Future<DbScheduledStatus> createTestDbScheduledStatus(
-        {@required String seed, String remoteId}) async =>
+        {@required String seed, String remoteId, bool canceled, DateTime scheduledAt})
+async =>
     DbScheduledStatus(
         id: null,
+        canceled: canceled ?? seed.hashCode % 2 == 0,
         remoteId: remoteId ?? seed + "remoteId1",
-        scheduledAt: DateTime(seed.hashCode % 10),
+        scheduledAt: scheduledAt ?? DateTime(seed.hashCode % 10),
         mediaAttachments: [
           PleromaMediaAttachment(remoteUrl: seed + "remoteUrl1")
         ],

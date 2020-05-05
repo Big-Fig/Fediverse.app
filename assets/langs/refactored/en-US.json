@@ -360,7 +360,12 @@
     },
     "status": {
       "scheduled": {
-        "title": "Scheduled statuses"
+        "title": "Scheduled statuses",
+        "scheduled_at": "Scheduled at: {}",
+        "action": {
+          "edit": "Edit",
+          "cancel": "Cancel"
+        }
       },
       "action": {
         "comment": "Comment",

@@ -24,7 +24,9 @@ abstract class IScheduledStatusRepository
 
   Future updateLocalScheduledStatusByRemoteScheduledStatus(
       {@required IScheduledStatus oldLocalScheduledStatus,
-        @required IPleromaScheduledStatus newRemoteScheduledStatus});
+      @required IPleromaScheduledStatus newRemoteScheduledStatus});
+
+  Future markAsCanceled({@required IScheduledStatus scheduledStatus});
 
   Future<IScheduledStatus> findByRemoteId(String remoteId);
 
@@ -33,6 +35,8 @@ abstract class IScheduledStatusRepository
   Future<List<IScheduledStatus>> getScheduledStatuses(
       {@required IScheduledStatus olderThan,
       @required IScheduledStatus newerThan,
+      @required bool excludeCanceled,
+      @required bool excludeScheduleAtExpired,
       @required int limit,
       @required int offset,
       @required ScheduledStatusOrderingTermData orderingTermData});
@@ -40,6 +44,8 @@ abstract class IScheduledStatusRepository
   Stream<List<IScheduledStatus>> watchScheduledStatuses(
       {@required IScheduledStatus olderThan,
       @required IScheduledStatus newerThan,
+      @required bool excludeCanceled,
+      @required bool excludeScheduleAtExpired,
       @required int limit,
       @required int offset,
       @required ScheduledStatusOrderingTermData orderingTermData});
@@ -47,12 +53,14 @@ abstract class IScheduledStatusRepository
   Future<IScheduledStatus> getScheduledStatus(
       {@required IScheduledStatus olderThan,
       @required IScheduledStatus newerThan,
-      
+      @required bool excludeCanceled,
+      @required bool excludeScheduleAtExpired,
       @required ScheduledStatusOrderingTermData orderingTermData});
 
   Stream<IScheduledStatus> watchScheduledStatus(
       {@required IScheduledStatus olderThan,
       @required IScheduledStatus newerThan,
-      
+      @required bool excludeCanceled,
+      @required bool excludeScheduleAtExpired,
       @required ScheduledStatusOrderingTermData orderingTermData});
 }

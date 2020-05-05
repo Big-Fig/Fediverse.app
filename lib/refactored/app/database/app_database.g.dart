@@ -3842,12 +3842,14 @@ class DbScheduledStatus extends DataClass
   final int id;
   final String remoteId;
   final DateTime scheduledAt;
+  final bool canceled;
   final PleromaScheduledStatusParams params;
   final List<PleromaMediaAttachment> mediaAttachments;
   DbScheduledStatus(
       {@required this.id,
       @required this.remoteId,
       @required this.scheduledAt,
+      @required this.canceled,
       this.params,
       this.mediaAttachments});
   factory DbScheduledStatus.fromData(
@@ -3857,12 +3859,15 @@ class DbScheduledStatus extends DataClass
     final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
     final dateTimeType = db.typeSystem.forDartType<DateTime>();
+    final boolType = db.typeSystem.forDartType<bool>();
     return DbScheduledStatus(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       remoteId: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}remote_id']),
       scheduledAt: dateTimeType
           .mapFromDatabaseResponse(data['${effectivePrefix}scheduled_at']),
+      canceled:
+          boolType.mapFromDatabaseResponse(data['${effectivePrefix}canceled']),
       params: $DbScheduledStatusesTable.$converter0.mapToDart(
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}params'])),
       mediaAttachments: $DbScheduledStatusesTable.$converter1.mapToDart(
@@ -3877,6 +3882,7 @@ class DbScheduledStatus extends DataClass
       id: serializer.fromJson<int>(json['id']),
       remoteId: serializer.fromJson<String>(json['remoteId']),
       scheduledAt: serializer.fromJson<DateTime>(json['scheduledAt']),
+      canceled: serializer.fromJson<bool>(json['canceled']),
       params: serializer.fromJson<PleromaScheduledStatusParams>(json['params']),
       mediaAttachments: serializer
           .fromJson<List<PleromaMediaAttachment>>(json['mediaAttachments']),
@@ -3889,6 +3895,7 @@ class DbScheduledStatus extends DataClass
       'id': serializer.toJson<int>(id),
       'remoteId': serializer.toJson<String>(remoteId),
       'scheduledAt': serializer.toJson<DateTime>(scheduledAt),
+      'canceled': serializer.toJson<bool>(canceled),
       'params': serializer.toJson<PleromaScheduledStatusParams>(params),
       'mediaAttachments':
           serializer.toJson<List<PleromaMediaAttachment>>(mediaAttachments),
@@ -3905,6 +3912,9 @@ class DbScheduledStatus extends DataClass
       scheduledAt: scheduledAt == null && nullToAbsent
           ? const Value.absent()
           : Value(scheduledAt),
+      canceled: canceled == null && nullToAbsent
+          ? const Value.absent()
+          : Value(canceled),
       params:
           params == null && nullToAbsent ? const Value.absent() : Value(params),
       mediaAttachments: mediaAttachments == null && nullToAbsent
@@ -3917,12 +3927,14 @@ class DbScheduledStatus extends DataClass
           {int id,
           String remoteId,
           DateTime scheduledAt,
+          bool canceled,
           PleromaScheduledStatusParams params,
           List<PleromaMediaAttachment> mediaAttachments}) =>
       DbScheduledStatus(
         id: id ?? this.id,
         remoteId: remoteId ?? this.remoteId,
         scheduledAt: scheduledAt ?? this.scheduledAt,
+        canceled: canceled ?? this.canceled,
         params: params ?? this.params,
         mediaAttachments: mediaAttachments ?? this.mediaAttachments,
       );
@@ -3932,6 +3944,7 @@ class DbScheduledStatus extends DataClass
           ..write('id: $id, ')
           ..write('remoteId: $remoteId, ')
           ..write('scheduledAt: $scheduledAt, ')
+          ..write('canceled: $canceled, ')
           ..write('params: $params, ')
           ..write('mediaAttachments: $mediaAttachments')
           ..write(')'))
@@ -3943,8 +3956,10 @@ class DbScheduledStatus extends DataClass
       id.hashCode,
       $mrjc(
           remoteId.hashCode,
-          $mrjc(scheduledAt.hashCode,
-              $mrjc(params.hashCode, mediaAttachments.hashCode)))));
+          $mrjc(
+              scheduledAt.hashCode,
+              $mrjc(canceled.hashCode,
+                  $mrjc(params.hashCode, mediaAttachments.hashCode))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -3952,6 +3967,7 @@ class DbScheduledStatus extends DataClass
           other.id == this.id &&
           other.remoteId == this.remoteId &&
           other.scheduledAt == this.scheduledAt &&
+          other.canceled == this.canceled &&
           other.params == this.params &&
           other.mediaAttachments == this.mediaAttachments);
 }
@@ -3960,12 +3976,14 @@ class DbScheduledStatusesCompanion extends UpdateCompanion<DbScheduledStatus> {
   final Value<int> id;
   final Value<String> remoteId;
   final Value<DateTime> scheduledAt;
+  final Value<bool> canceled;
   final Value<PleromaScheduledStatusParams> params;
   final Value<List<PleromaMediaAttachment>> mediaAttachments;
   const DbScheduledStatusesCompanion({
     this.id = const Value.absent(),
     this.remoteId = const Value.absent(),
     this.scheduledAt = const Value.absent(),
+    this.canceled = const Value.absent(),
     this.params = const Value.absent(),
     this.mediaAttachments = const Value.absent(),
   });
@@ -3973,20 +3991,24 @@ class DbScheduledStatusesCompanion extends UpdateCompanion<DbScheduledStatus> {
     this.id = const Value.absent(),
     @required String remoteId,
     @required DateTime scheduledAt,
+    @required bool canceled,
     this.params = const Value.absent(),
     this.mediaAttachments = const Value.absent(),
   })  : remoteId = Value(remoteId),
-        scheduledAt = Value(scheduledAt);
+        scheduledAt = Value(scheduledAt),
+        canceled = Value(canceled);
   DbScheduledStatusesCompanion copyWith(
       {Value<int> id,
       Value<String> remoteId,
       Value<DateTime> scheduledAt,
+      Value<bool> canceled,
       Value<PleromaScheduledStatusParams> params,
       Value<List<PleromaMediaAttachment>> mediaAttachments}) {
     return DbScheduledStatusesCompanion(
       id: id ?? this.id,
       remoteId: remoteId ?? this.remoteId,
       scheduledAt: scheduledAt ?? this.scheduledAt,
+      canceled: canceled ?? this.canceled,
       params: params ?? this.params,
       mediaAttachments: mediaAttachments ?? this.mediaAttachments,
     );
@@ -4030,6 +4052,18 @@ class $DbScheduledStatusesTable extends DbScheduledStatuses
     );
   }
 
+  final VerificationMeta _canceledMeta = const VerificationMeta('canceled');
+  GeneratedBoolColumn _canceled;
+  @override
+  GeneratedBoolColumn get canceled => _canceled ??= _constructCanceled();
+  GeneratedBoolColumn _constructCanceled() {
+    return GeneratedBoolColumn(
+      'canceled',
+      $tableName,
+      false,
+    );
+  }
+
   final VerificationMeta _paramsMeta = const VerificationMeta('params');
   GeneratedTextColumn _params;
   @override
@@ -4058,7 +4092,7 @@ class $DbScheduledStatusesTable extends DbScheduledStatuses
 
   @override
   List<GeneratedColumn> get $columns =>
-      [id, remoteId, scheduledAt, params, mediaAttachments];
+      [id, remoteId, scheduledAt, canceled, params, mediaAttachments];
   @override
   $DbScheduledStatusesTable get asDslTable => this;
   @override
@@ -4083,6 +4117,12 @@ class $DbScheduledStatusesTable extends DbScheduledStatuses
           scheduledAt.isAcceptableValue(d.scheduledAt.value, _scheduledAtMeta));
     } else if (isInserting) {
       context.missing(_scheduledAtMeta);
+    }
+    if (d.canceled.present) {
+      context.handle(_canceledMeta,
+          canceled.isAcceptableValue(d.canceled.value, _canceledMeta));
+    } else if (isInserting) {
+      context.missing(_canceledMeta);
     }
     context.handle(_paramsMeta, const VerificationResult.success());
     context.handle(_mediaAttachmentsMeta, const VerificationResult.success());
@@ -4109,6 +4149,9 @@ class $DbScheduledStatusesTable extends DbScheduledStatuses
     if (d.scheduledAt.present) {
       map['scheduled_at'] =
           Variable<DateTime, DateTimeType>(d.scheduledAt.value);
+    }
+    if (d.canceled.present) {
+      map['canceled'] = Variable<bool, BoolType>(d.canceled.value);
     }
     if (d.params.present) {
       final converter = $DbScheduledStatusesTable.$converter0;

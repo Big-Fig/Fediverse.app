@@ -10,6 +10,8 @@ class DbScheduledStatuses extends Table {
 
   DateTimeColumn get scheduledAt => dateTime()();
 
+  BoolColumn get canceled => boolean()();
+
   TextColumn get params =>
       text().map(PleromaScheduledStatusParamsDatabaseConverter()).nullable()();
 

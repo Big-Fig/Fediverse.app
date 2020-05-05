@@ -20,6 +20,7 @@ import 'package:fedi/refactored/app/status/thread/status_thread_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:provider/provider.dart';
 
 var _logger = Logger("status_list_item_timeline_widget.dart");
 
