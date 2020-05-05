@@ -89,7 +89,7 @@ class AccountActionListWidget extends StatelessWidget {
         return OutlineButton(
           child: Row(
             children: <Widget>[
-              Text(relationship.following
+              Text(relationship?.following == true
                   ? AppLocalizations.of(context)
                       .tr("app.account.action.unfollow")
                   : AppLocalizations.of(context)

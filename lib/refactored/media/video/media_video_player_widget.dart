@@ -5,8 +5,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:video_player/video_player.dart';
 
 class MediaVideoPlayerWidget extends StatefulWidget {
-  final File file;
-  MediaVideoPlayerWidget({@required this.file});
+  final File localFile;
+  final String networkUrl;
+
+  MediaVideoPlayerWidget.localFile({@required this.localFile})
+      : networkUrl = null {
+    assert(localFile != null);
+  }
+
+  MediaVideoPlayerWidget.network({@required this.networkUrl})
+      : localFile = null {
+    assert(networkUrl != null);
+  }
 
   @override
   _MediaVideoPlayerWidgetState createState() => _MediaVideoPlayerWidgetState();
@@ -19,24 +29,28 @@ class _MediaVideoPlayerWidgetState extends State<MediaVideoPlayerWidget> {
   @override
   void initState() {
     super.initState();
-    File file = widget.file;
 
-    _controller = VideoPlayerController.file(file)
-      ..initialize().then((_) {
-        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-        setState(() {
-          _controller.setVolume(0);
+    if (widget.networkUrl != null) {
+      _controller = VideoPlayerController.network(widget.networkUrl);
+    } else {
+      _controller = VideoPlayerController.file(widget.localFile);
+    }
 
-          chewieController = ChewieController(
-            aspectRatio: _controller.value.aspectRatio,
-            videoPlayerController: _controller,
-            autoPlay: false,
-            looping: true,
-          );
+    _controller.initialize().then((_) {
+      // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+      setState(() {
+        _controller.setVolume(0);
 
-          _controller.pause();
-        });
+        chewieController = ChewieController(
+          aspectRatio: _controller.value.aspectRatio,
+          videoPlayerController: _controller,
+          autoPlay: false,
+          looping: true,
+        );
+
+        _controller.pause();
       });
+    });
     _controller.setVolume(0);
   }
 
