@@ -21,6 +21,14 @@
         "statuses": "Statuses"
       },
       "my": {
+        "settings": {
+          "field": {
+            "websockets_enabled": {
+              "label": "WebSockets real-time updates",
+              "description": "Disable to reduce battery usage"
+            }
+          }
+        },
         "edit": {
           "title": "Edit account",
           "action": {
@@ -390,6 +398,24 @@
         "title": "Share status",
         "progress": {
           "content": "Sharing..."
+        }
+      },
+      "collapsible": {
+        "action": {
+          "collapse": "Collapse",
+          "expand": "Expand"
+        }
+      },
+      "content": {
+        "link": {
+          "launch": {
+            "error": {
+              "dialog": {
+                "title": "Can't launch URL",
+                "content": "URL {} have invalid format"
+              }
+            }
+          }
         }
       },
       "action": {

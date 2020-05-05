@@ -1,5 +1,6 @@
 import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
+import 'package:fedi/refactored/collapsible/collapsible_model.dart';
 import 'package:fedi/refactored/disposable/disposable.dart';
 import 'package:fedi/refactored/pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_model.dart';
@@ -8,8 +9,7 @@ import 'package:fedi/refactored/pleroma/status/pleroma_status_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IStatusBloc
-    implements Disposable {
+abstract class IStatusBloc implements Disposable, ICollapsibleItem {
   static IStatusBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IStatusBloc>(context, listen: listen);
 
@@ -34,6 +34,10 @@ abstract class IStatusBloc
   Stream<String> get contentWithEmojisWithoutAccountStream;
 
   String get contentWithEmojis;
+
+  Stream<String> get contentWithEmojisCollapsibleStream;
+
+  String get contentWithEmojisCollapsible;
 
   Stream<String> get contentWithEmojisStream;
 
@@ -67,13 +71,13 @@ abstract class IStatusBloc
 
   String get remoteId;
 
-  List<IPleromaStatusEmojiReaction> get pleromaEmojiReactions;
-
-  Stream<List<IPleromaStatusEmojiReaction>> get pleromaEmojiReactionsStream;
-
   List<IPleromaMediaAttachment> get mediaAttachments;
 
   Stream<List<IPleromaMediaAttachment>> get mediaAttachmentsStream;
+
+  List<IPleromaStatusEmojiReaction> get pleromaEmojiReactions;
+
+  Stream<List<IPleromaStatusEmojiReaction>> get pleromaEmojiReactionsStream;
 
   List<IPleromaStatusEmojiReaction> get reblogPlusOriginalPleromaEmojiReactions;
 

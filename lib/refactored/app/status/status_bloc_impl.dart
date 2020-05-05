@@ -18,6 +18,9 @@ import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger("status_bloc_impl.dart");
 
+final int minimumCharactersLimitToCollapse = 400;
+
+// todo: extract nsfw, spoiler, collapsible logic in separate classes
 class StatusBloc extends DisposableOwner implements IStatusBloc {
   static StatusBloc createFromContext(
     BuildContext context,
@@ -39,6 +42,40 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
         pleromaStatusEmojiReactionService:
             IPleromaStatusEmojiReactionService.of(context, listen: false),
       );
+
+  // ignore: close_sinks
+  final BehaviorSubject<bool> _isCollapsedSubject = BehaviorSubject.seeded
+    (true);
+
+  bool get isPossibleToCollapse =>
+      (status.content?.length ?? 0) > minimumCharactersLimitToCollapse;
+
+  @override
+  Stream<bool> get isPossibleToCollapseStream => statusStream.map((status) =>
+      (status.content?.length ?? 0) > minimumCharactersLimitToCollapse);
+
+  bool get isCollapsed => _isCollapsedSubject.value;
+
+  Stream<bool> get isCollapsedStream => _isCollapsedSubject.stream;
+
+  toggleCollapseExpand() {
+    _isCollapsedSubject.add(!isCollapsed);
+  }
+
+  @override
+  collapse() {
+    _isCollapsedSubject.add(true);
+  }
+
+  @override
+  bool get isNeedShowFullContent => !(isPossibleToCollapse && isCollapsed);
+
+  @override
+  Stream<bool> get isNeedShowFullContentStream => Rx.combineLatest2(
+      isPossibleToCollapseStream,
+      isCollapsedStream,
+      (isPossibleToCollapse, isCollapsed) =>
+          !(isPossibleToCollapse && isCollapsed));
 
   final BehaviorSubject<IStatus> _statusSubject;
 
@@ -74,6 +111,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
     addDisposable(subject: _statusSubject);
     addDisposable(subject: _displayNsfwSensitiveSubject);
     addDisposable(subject: _displaySpoilerSubject);
+    addDisposable(subject: _isCollapsedSubject);
 
     assert(needRefreshFromNetworkOnInit != null);
     assert(isNeedWatchLocalRepositoryForUpdates != null);
@@ -622,4 +660,26 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
     newHtmlContent = "<html><body>$newHtmlContent</body></html>";
     return newHtmlContent;
   }
+
+  @override
+  String get contentWithEmojisCollapsible => isCollapsed ? _collapseContent
+    (contentWithEmojis) : contentWithEmojis;
+
+  @override
+  Stream<String> get contentWithEmojisCollapsibleStream =>
+      Rx.combineLatest2(contentWithEmojisStream, isCollapsedStream,
+          (contentWithEmojis, isCollapsed) => isCollapsed ? _collapseContent
+            (contentWithEmojis) : contentWithEmojis);
+
+  _collapseContent(String contentWithEmojis) {
+    // todo: check html tags
+    if(contentWithEmojis.length > minimumCharactersLimitToCollapse) {
+      var collapsedContent = contentWithEmojis
+          .substring(0, minimumCharactersLimitToCollapse);
+      return "$collapsedContent...";
+    } else {
+      return contentWithEmojis;
+    }
+  }
+
 }
