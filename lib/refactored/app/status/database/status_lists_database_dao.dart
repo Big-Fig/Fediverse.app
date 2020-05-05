@@ -23,8 +23,9 @@ class StatusListsDao extends DatabaseAccessor<AppDatabase>
   // Called by the AppDatabase class
   StatusListsDao(this.db) : super(db);
 
-  Future<int> insert(Insertable<DbStatusList> entity) async =>
-      into(dbStatusLists).insert(entity);
+  Future<int> insert(Insertable<DbStatusList> entity,
+          {InsertMode mode}) async =>
+      into(dbStatusLists).insert(entity, mode: mode);
 
   Future<int> upsert(Insertable<DbStatusList> entity) async =>
       into(db.dbStatusLists).insert(entity, mode: InsertMode.insertOrReplace);
@@ -32,7 +33,7 @@ class StatusListsDao extends DatabaseAccessor<AppDatabase>
   Future insertAll(
           Iterable<Insertable<DbStatusList>> entities, InsertMode mode) async =>
       await batch((batch) {
-        batch.insertAll(dbStatusLists, entities);
+        batch.insertAll(dbStatusLists, entities, mode: mode);
       });
 
   Future<bool> replace(Insertable<DbStatusList> entity) async =>

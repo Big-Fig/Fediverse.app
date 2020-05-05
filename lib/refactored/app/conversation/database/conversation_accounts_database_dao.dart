@@ -28,8 +28,9 @@ class ConversationAccountsDao extends DatabaseAccessor<AppDatabase>
   // Called by the AppDatabase class
   ConversationAccountsDao(this.db) : super(db);
 
-  Future<int> insert(Insertable<DbConversationAccount> entity) async =>
-      into(dbConversationAccounts).insert(entity);
+  Future<int> insert(Insertable<DbConversationAccount> entity,
+          {InsertMode mode}) async =>
+      into(dbConversationAccounts).insert(entity, mode: mode);
 
   Future insertAll(Iterable<Insertable<DbConversationAccount>> entities,
           InsertMode mode) async =>

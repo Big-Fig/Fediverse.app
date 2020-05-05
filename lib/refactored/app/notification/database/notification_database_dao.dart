@@ -89,8 +89,9 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
             ..where((notification) => notification.remoteId.like(remoteId)))
           .join(populateNotificationJoin());
 
-  Future<int> insert(Insertable<DbNotification> entity) async =>
-      into(db.dbNotifications).insert(entity);
+  Future<int> insert(Insertable<DbNotification> entity,
+          {InsertMode mode}) async =>
+      into(db.dbNotifications).insert(entity, mode: mode);
 
   Future<int> upsert(Insertable<DbNotification> entity) async =>
       into(db.dbNotifications).insert(entity, mode: InsertMode.insertOrReplace);
