@@ -5,38 +5,41 @@ import 'package:moor/moor.dart';
 
 part 'scheduled_status_database_dao.g.dart';
 
-
 @UseDao(tables: [
   DbScheduledStatuses
 ], queries: {
   "countAll": "SELECT Count(*) FROM db_scheduled_statuses;",
   "findById": "SELECT * FROM db_scheduled_statuses WHERE id = :id;",
-  "findByRemoteId": "SELECT * FROM db_scheduled_statuses WHERE remote_id LIKE :remoteId;",
+  "findByRemoteId":
+      "SELECT * FROM db_scheduled_statuses WHERE remote_id LIKE :remoteId;",
   "countById": "SELECT COUNT(*) FROM db_scheduled_statuses WHERE id = :id;",
   "deleteById": "DELETE FROM db_scheduled_statuses WHERE id = :id;",
   "clear": "DELETE FROM db_scheduled_statuses",
   "getAll": "SELECT * FROM db_scheduled_statuses",
-  "findLocalIdByRemoteId": "SELECT id FROM db_scheduled_statuses WHERE remote_id = "
-      ":remoteId;",
+  "findLocalIdByRemoteId":
+      "SELECT id FROM db_scheduled_statuses WHERE remote_id = "
+          ":remoteId;",
 })
-class ScheduledStatusDao extends DatabaseAccessor<AppDatabase> with _$ScheduledStatusDaoMixin {
+class ScheduledStatusDao extends DatabaseAccessor<AppDatabase>
+    with _$ScheduledStatusDaoMixin {
   final AppDatabase db;
 
   // Called by the AppDatabase class
-  ScheduledStatusDao(this.db) : super(db) {
-  }
+  ScheduledStatusDao(this.db) : super(db) {}
 
   Future<int> insert(Insertable<DbScheduledStatus> entity) =>
       into(dbScheduledStatuses).insert(entity);
 
   Future<int> upsert(Insertable<DbScheduledStatus> entity) =>
-      into(dbScheduledStatuses).insert(entity, mode: InsertMode.insertOrReplace);
+      into(dbScheduledStatuses)
+          .insert(entity, mode: InsertMode.insertOrReplace);
 
-  Future insertAll(
-          Iterable<Insertable<DbScheduledStatus>> entities, InsertMode mode) async =>
+  Future insertAll(Iterable<Insertable<DbScheduledStatus>> entities,
+          InsertMode mode) async =>
       await batch((batch) {
         batch.insertAll(dbScheduledStatuses, entities, mode: mode);
       });
+
   Future<bool> replace(Insertable<DbScheduledStatus> entity) async =>
       await update(dbScheduledStatuses).replace(entity);
 
@@ -54,12 +57,13 @@ class ScheduledStatusDao extends DatabaseAccessor<AppDatabase> with _$ScheduledS
     return localId;
   }
 
-  SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus> startSelectQuery() =>
-      (select(db.dbScheduledStatuses));
+  SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus>
+      startSelectQuery() => (select(db.dbScheduledStatuses));
 
   /// remote ids are strings but it is possible to compare them in
   /// chronological order
-  SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus> addRemoteIdBoundsWhere(
+  SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus>
+      addRemoteIdBoundsWhere(
     SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus> query, {
     @required String minimumRemoteIdExcluding,
     @required String maximumRemoteIdExcluding,
@@ -82,8 +86,25 @@ class ScheduledStatusDao extends DatabaseAccessor<AppDatabase> with _$ScheduledS
     return query;
   }
 
+  SimpleSelectStatement<$DbScheduledStatusesTable,
+      DbScheduledStatus> addExcludeCanceledWhere(
+          SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus>
+              query) =>
+      query
+        ..where(
+            (scheduledStatus) => scheduledStatus.canceled.equals(true).not());
+
+  SimpleSelectStatement<$DbScheduledStatusesTable,
+      DbScheduledStatus> addExcludeScheduleAtExpiredWhere(
+          SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus>
+              query) =>
+      query
+        ..where((scheduledStatus) => scheduledStatus.scheduledAt
+            .isBiggerThanValue(DateTime.now().toUtc()));
+
   SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus> orderBy(
-          SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus> query,
+          SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus>
+              query,
           List<ScheduledStatusOrderingTermData> orderTerms) =>
       query
         ..orderBy(orderTerms
@@ -99,8 +120,8 @@ class ScheduledStatusDao extends DatabaseAccessor<AppDatabase> with _$ScheduledS
                 })
             .toList());
 
-
-  List<DbScheduledStatus> typedResultListToPopulated(List<TypedResult> typedResult) {
+  List<DbScheduledStatus> typedResultListToPopulated(
+      List<TypedResult> typedResult) {
     if (typedResult == null) {
       return null;
     }

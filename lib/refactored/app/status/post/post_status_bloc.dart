@@ -10,6 +10,8 @@ abstract class IPostStatusBloc implements Disposable {
   static IPostStatusBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IPostStatusBloc>(context, listen: listen);
 
+  static final Duration requiredDurationToScheduleStatus = Duration(minutes: 5);
+
   List<IUploadMediaAttachmentBloc> get mediaAttachmentBlocs;
 
   Stream<List<IUploadMediaAttachmentBloc>> get mediaAttachmentBlocsStream;
@@ -45,6 +47,7 @@ abstract class IPostStatusBloc implements Disposable {
   detachMedia(FilePickerFile filePickerFile);
 
   schedule(DateTime dateTime);
+
   clearSchedule();
 
   bool get isReadyToPost;

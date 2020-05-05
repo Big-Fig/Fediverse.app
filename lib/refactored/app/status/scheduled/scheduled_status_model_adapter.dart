@@ -1,15 +1,18 @@
 import 'package:fedi/refactored/app/database/app_database.dart';
 import 'package:fedi/refactored/app/status/scheduled/scheduled_status_model.dart';
 import 'package:fedi/refactored/pleroma/status/pleroma_status_model.dart';
+import 'package:flutter/widgets.dart';
 
 DbScheduledStatus mapRemoteScheduledStatusToDbScheduledStatus(
-    IPleromaScheduledStatus remoteScheduledStatus) {
+    IPleromaScheduledStatus remoteScheduledStatus,
+    {@required bool canceled}) {
   return DbScheduledStatus(
       id: null,
       remoteId: remoteScheduledStatus.id,
       scheduledAt: remoteScheduledStatus.scheduledAt,
       params: remoteScheduledStatus.params,
-      mediaAttachments: remoteScheduledStatus.mediaAttachments);
+      mediaAttachments: remoteScheduledStatus.mediaAttachments,
+      canceled: canceled);
 }
 
 PleromaScheduledStatus mapLocalScheduledStatusToRemoteScheduledStatus(

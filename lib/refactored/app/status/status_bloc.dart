@@ -8,7 +8,8 @@ import 'package:fedi/refactored/pleroma/status/pleroma_status_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IStatusBloc implements Disposable {
+abstract class IStatusBloc
+    implements Disposable {
   static IStatusBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IStatusBloc>(context, listen: listen);
 
@@ -66,13 +67,13 @@ abstract class IStatusBloc implements Disposable {
 
   String get remoteId;
 
-  List<IPleromaMediaAttachment> get mediaAttachments;
-
-  Stream<List<IPleromaMediaAttachment>> get mediaAttachmentsStream;
-
   List<IPleromaStatusEmojiReaction> get pleromaEmojiReactions;
 
   Stream<List<IPleromaStatusEmojiReaction>> get pleromaEmojiReactionsStream;
+
+  List<IPleromaMediaAttachment> get mediaAttachments;
+
+  Stream<List<IPleromaMediaAttachment>> get mediaAttachmentsStream;
 
   List<IPleromaStatusEmojiReaction> get reblogPlusOriginalPleromaEmojiReactions;
 

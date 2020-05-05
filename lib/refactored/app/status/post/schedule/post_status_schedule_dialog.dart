@@ -1,13 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/status/post/post_status_bloc.dart';
+import 'package:fedi/refactored/app/status/scheduled/datetime/scheduled_status_datetime_picker_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_alert/flutter_alert.dart';
 import 'package:intl/intl.dart';
 
 final dateFormat = DateFormat("yyyy-MM-dd HH:mm");
-
-var requiredDurationToSchedule = Duration(minutes: 5);
 
 showPostStatusScheduleDialog(
     BuildContext context, IPostStatusBloc postStatusBloc) {
@@ -34,11 +33,12 @@ showPostStatusScheduleDialog(
             text: appLocalizations
                 .tr("app.status.post.schedule.dialog.action.edit"),
             onPressed: () async {
-              var newTime = await _showChooseDateTimeDialog(
+              var newTime = await showScheduledStatusDateTimePickerDialog(
                   context, postStatusBloc.scheduledAt);
 
               if (newTime
-                  .isBefore(DateTime.now().add(requiredDurationToSchedule))) {
+                  .isBefore(DateTime.now().add(IPostStatusBloc
+                  .requiredDurationToScheduleStatus))) {
                 showAlert(
                   context: context,
                   title: appLocalizations
@@ -60,44 +60,4 @@ showPostStatusScheduleDialog(
                 postStatusBloc.clearSchedule();
               })
       ]);
-}
-
-Future<DateTime> _showChooseDateTimeDialog(
-    BuildContext context, DateTime oldValue) async {
-  var now =
-      DateTime.now()
-          .add(requiredDurationToSchedule)
-      // additional time to select time
-          .add(Duration(minutes:2));
-  var initialDate = now;
-
-  if (oldValue != null) {
-    var scheduledAt = oldValue;
-    initialDate = scheduledAt.isAfter(now) ? scheduledAt : now;
-  }
-
-  var dateTime = await showDatePicker(
-    context: context,
-    initialDate: initialDate,
-    firstDate: initialDate,
-    lastDate: initialDate.add(Duration(days: 365)),
-  );
-
-  if (dateTime != null) {
-    var initialTimeOfDay = TimeOfDay.fromDateTime(initialDate);
-    var timeOfDay =
-        await showTimePicker(context: context, initialTime: initialTimeOfDay);
-
-    if (timeOfDay != null) {
-      dateTime = DateTime(dateTime.year, dateTime.month, dateTime.day,
-          timeOfDay.hour, timeOfDay.minute);
-
-      return dateTime;
-    } else {
-      return null;
-    }
-  }
-  {
-    return null;
-  }
 }

@@ -27,6 +27,7 @@ mixin _$ScheduledStatusDaoMixin on DatabaseAccessor<AppDatabase> {
       id: row.readInt('id'),
       remoteId: row.readString('remote_id'),
       scheduledAt: row.readDateTime('scheduled_at'),
+      canceled: row.readBool('canceled'),
       params: $DbScheduledStatusesTable.$converter0
           .mapToDart(row.readString('params')),
       mediaAttachments: $DbScheduledStatusesTable.$converter1

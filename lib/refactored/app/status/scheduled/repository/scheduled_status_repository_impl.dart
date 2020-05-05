@@ -1,11 +1,9 @@
-import 'package:fedi/refactored/app/conversation/conversation_model.dart';
 import 'package:fedi/refactored/app/database/app_database.dart';
 import 'package:fedi/refactored/app/status/scheduled/database/scheduled_status_database_dao.dart';
 import 'package:fedi/refactored/app/status/scheduled/repository/scheduled_status_repository.dart';
 import 'package:fedi/refactored/app/status/scheduled/repository/scheduled_status_repository_model.dart';
 import 'package:fedi/refactored/app/status/scheduled/scheduled_status_model.dart';
 import 'package:fedi/refactored/app/status/scheduled/scheduled_status_model_adapter.dart';
-import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/refactored/pleroma/status/pleroma_status_model.dart';
 import 'package:flutter/widgets.dart';
@@ -114,8 +112,9 @@ class ScheduledStatusRepository extends AsyncInitLoadingBloc
   Future upsertRemoteScheduledStatus(
     IPleromaScheduledStatus remoteScheduledStatus,
   ) async {
-    await upsert(
-        mapRemoteScheduledStatusToDbScheduledStatus(remoteScheduledStatus));
+    await upsert(mapRemoteScheduledStatusToDbScheduledStatus(
+        remoteScheduledStatus,
+        canceled: false));
   }
 
   @override
@@ -124,7 +123,9 @@ class ScheduledStatusRepository extends AsyncInitLoadingBloc
   ) async {
     if (remoteScheduledStatuses?.isNotEmpty == true) {
       await upsertAll(remoteScheduledStatuses
-          .map(mapRemoteScheduledStatusToDbScheduledStatus)
+          .map((remoteScheduledStatus) =>
+              mapRemoteScheduledStatusToDbScheduledStatus(remoteScheduledStatus,
+                  canceled: false))
           .toList());
     }
   }
@@ -137,8 +138,9 @@ class ScheduledStatusRepository extends AsyncInitLoadingBloc
         "\t old: $oldLocalScheduledStatus \n"
         "\t newRemoteScheduledStatus: $newRemoteScheduledStatus");
 
-    var newLocalScheduledStatus =
-        mapRemoteScheduledStatusToDbScheduledStatus(newRemoteScheduledStatus);
+    var newLocalScheduledStatus = mapRemoteScheduledStatusToDbScheduledStatus(
+        newRemoteScheduledStatus,
+        canceled: oldLocalScheduledStatus.canceled);
     await updateById(oldLocalScheduledStatus.localId, newLocalScheduledStatus);
   }
 
@@ -146,12 +148,16 @@ class ScheduledStatusRepository extends AsyncInitLoadingBloc
   Future<List<DbScheduledStatusWrapper>> getScheduledStatuses(
       {@required IScheduledStatus olderThan,
       @required IScheduledStatus newerThan,
+      @required bool excludeCanceled,
+      @required bool excludeScheduleAtExpired,
       @required int limit,
       @required int offset,
       @required ScheduledStatusOrderingTermData orderingTermData}) async {
     var query = createQuery(
         olderThan: olderThan,
         newerThan: newerThan,
+        excludeCanceled: excludeCanceled,
+        excludeScheduleAtExpired: excludeScheduleAtExpired,
         limit: limit,
         offset: offset,
         orderingTermData: orderingTermData);
@@ -168,12 +174,16 @@ class ScheduledStatusRepository extends AsyncInitLoadingBloc
   Stream<List<DbScheduledStatusWrapper>> watchScheduledStatuses(
       {@required IScheduledStatus olderThan,
       @required IScheduledStatus newerThan,
+      @required bool excludeCanceled,
+      @required bool excludeScheduleAtExpired,
       @required int limit,
       @required int offset,
       @required ScheduledStatusOrderingTermData orderingTermData}) {
     var query = createQuery(
       olderThan: olderThan,
       newerThan: newerThan,
+      excludeCanceled: excludeCanceled,
+      excludeScheduleAtExpired: excludeScheduleAtExpired,
       limit: limit,
       offset: offset,
       orderingTermData: orderingTermData,
@@ -190,12 +200,16 @@ class ScheduledStatusRepository extends AsyncInitLoadingBloc
   JoinedSelectStatement createQuery(
       {@required IScheduledStatus olderThan,
       @required IScheduledStatus newerThan,
+      @required bool excludeCanceled,
+      @required bool excludeScheduleAtExpired,
       @required int limit,
       @required int offset,
       @required ScheduledStatusOrderingTermData orderingTermData}) {
     _logger.fine(() => "createQuery \n"
         "\t olderThan=$olderThan\n"
         "\t newerThan=$newerThan\n"
+        "\t excludeCanceled=$excludeCanceled\n"
+        "\t excludeScheduleAtExpired=$excludeScheduleAtExpired\n"
         "\t limit=$limit\n"
         "\t offset=$offset\n"
         "\t orderingTermData=$orderingTermData\n");
@@ -206,6 +220,14 @@ class ScheduledStatusRepository extends AsyncInitLoadingBloc
       query = dao.addRemoteIdBoundsWhere(query,
           maximumRemoteIdExcluding: olderThan?.remoteId,
           minimumRemoteIdExcluding: newerThan?.remoteId);
+    }
+
+    if (excludeCanceled == true) {
+      query = dao.addExcludeCanceledWhere(query);
+    }
+
+    if (excludeScheduleAtExpired == true) {
+      query = dao.addExcludeScheduleAtExpiredWhere(query);
     }
 
     if (orderingTermData != null) {
@@ -226,10 +248,14 @@ class ScheduledStatusRepository extends AsyncInitLoadingBloc
   Future<DbScheduledStatusWrapper> getScheduledStatus(
       {@required IScheduledStatus olderThan,
       @required IScheduledStatus newerThan,
+      @required bool excludeCanceled,
+      @required bool excludeScheduleAtExpired,
       @required ScheduledStatusOrderingTermData orderingTermData}) async {
     var scheduledStatuses = await getScheduledStatuses(
         olderThan: olderThan,
         newerThan: newerThan,
+        excludeCanceled: excludeCanceled,
+        excludeScheduleAtExpired: excludeScheduleAtExpired,
         orderingTermData: orderingTermData,
         limit: 1,
         offset: null);
@@ -240,15 +266,31 @@ class ScheduledStatusRepository extends AsyncInitLoadingBloc
   Stream<DbScheduledStatusWrapper> watchScheduledStatus(
       {@required IScheduledStatus olderThan,
       @required IScheduledStatus newerThan,
-      
+      @required bool excludeCanceled,
+      @required bool excludeScheduleAtExpired,
       @required ScheduledStatusOrderingTermData orderingTermData}) {
     var scheduledStatusesStream = watchScheduledStatuses(
         olderThan: olderThan,
         newerThan: newerThan,
+        excludeCanceled: excludeCanceled,
+        excludeScheduleAtExpired: excludeScheduleAtExpired,
         orderingTermData: orderingTermData,
         limit: 1,
         offset: null);
     return scheduledStatusesStream
         .map((scheduledStatuses) => scheduledStatuses?.first);
+  }
+
+  @override
+  Future markAsCanceled({@required IScheduledStatus scheduledStatus}) async {
+    await updateById(
+        scheduledStatus.localId,
+        DbScheduledStatus(
+            canceled: true,
+            params: scheduledStatus.params,
+            mediaAttachments: scheduledStatus.mediaAttachments,
+            id: scheduledStatus.localId,
+            remoteId: scheduledStatus.remoteId,
+            scheduledAt: scheduledStatus.scheduledAt));
   }
 }

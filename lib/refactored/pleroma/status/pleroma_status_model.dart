@@ -161,6 +161,7 @@ class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
 
   String toJsonString() =>
       jsonEncode(_$PleromaScheduledStatusParamsToJson(this));
+
   @override
   String toString() {
     return 'PleromaScheduledStatusParams{text: $text, mediaIds: $mediaIds,'
@@ -185,6 +186,7 @@ class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
           idempotency == other.idempotency &&
           inReplyToId == other.inReplyToId &&
           applicationId == other.applicationId;
+
   @override
   int get hashCode =>
       text.hashCode ^
