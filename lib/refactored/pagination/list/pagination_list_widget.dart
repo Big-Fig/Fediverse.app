@@ -155,7 +155,8 @@ class _PaginationListWidgetState<T> extends State<PaginationListWidget<T>> {
             builder: (context, snapshot) {
               var items = snapshot.data;
 
-              _logger.finest(() => "build paginationListBloc.itemsStream");
+              _logger.finest(() => "build paginationListBloc.itemsStream items "
+                  "${items?.length}");
 
               return widget.buildSmartRefresher(
                   paginationListBloc,
