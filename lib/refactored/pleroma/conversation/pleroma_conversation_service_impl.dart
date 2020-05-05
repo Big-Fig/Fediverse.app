@@ -112,8 +112,9 @@ class PleromaConversationService implements IPleromaConversationService {
 
     if (recipientsIds?.isNotEmpty == true) {
       // array
+      // todo: pleroma only
       queryArgs.addAll(recipientsIds?.map((id) {
-        return RestRequestQueryArg("recipients", id);
+        return RestRequestQueryArg("recipients[]", id);
       }));
     }
 

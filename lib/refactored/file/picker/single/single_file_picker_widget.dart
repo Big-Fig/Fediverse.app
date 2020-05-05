@@ -38,8 +38,8 @@ class SingleFilePickerWidget extends FilePickerBodyWidget {
               return AlertDialog(
                   title: Text(AppLocalizations.of(context)
                       .tr("file.picker.single.video.confirm.dialog.title")),
-                  content: MediaVideoPlayerWidget(
-                    file: filePickerFile.file,
+                  content: MediaVideoPlayerWidget.localFile(
+                    localFile: filePickerFile.file,
                   ),
                   actions: [
                     FlatButton(
