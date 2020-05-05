@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/pagination/list/pagination_list_bloc_impl.dart';
 import 'package:fedi/refactored/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/refactored/pagination/pagination_bloc.dart';
@@ -55,10 +56,16 @@ abstract class PaginationListWithNewItemsBloc<
         List<TItem> actuallyNew = newItems
             .where((newItem) => compareItems(newItem, newerItem) > 0)
             .toList();
-        _logger
-            .finest(() => "watchItemsNewerThanItem newItems ${newItems.length} "
-                "actuallyNew = ${actuallyNew.length}");
+        _logger.finest(() => "watchItemsNewerThanItem \n"
+            "\t newItems ${newItems.length} \n"
+            "\t actuallyNew = ${actuallyNew.length}");
 
+        if(newItems.length == 2 ) {
+          _logger.finest(() => "watchItemsNewerThanItem \n"
+              "\t newItems ${newItems.map((item) => "${(item as IStatus)
+              .remoteId} ${(item as IStatus)
+              .localId}")} \n");
+        }
         _unmergedNewItemsSubject.add(actuallyNew);
       });
 
@@ -85,19 +92,29 @@ abstract class PaginationListWithNewItemsBloc<
         return _calculateNewItems(items, mergedNewItems);
       });
 
-  List<TItem> _calculateNewItems(items, mergedNewItems) {
+  List<TItem> _calculateNewItems(
+      List<TItem> items, List<TItem> mergedNewItems) {
+    List<TItem> result;
+
     if (items == null && mergedNewItems == null) {
-      return null;
+      result = null;
     }
     if (items == null) {
       if (mergedNewItems?.isNotEmpty == true) {
-        return mergedNewItems;
+        result = mergedNewItems;
       } else {
-        return null;
+        result = null;
       }
     } else {
-      return [...(mergedNewItems ?? []), ...items];
+      result = [...(mergedNewItems ?? []), ...items];
     }
+
+    _logger.finest(() => "_calculateNewItems \n"
+        "\t items = ${items?.length} \n"
+        "\t mergedNewItems = ${mergedNewItems.length} \n"
+        "\t result = ${result?.length}");
+
+    return result;
   }
 
   bool get isHaveUnmergedNewItems => unmergedNewItemsCount > 0;
@@ -135,8 +152,14 @@ abstract class PaginationListWithNewItemsBloc<
 
   @override
   mergeNewItems() {
+    _logger.finest(() => "mergeNewItems \n"
+        "\t unmergedNewItems = ${unmergedNewItems.length}\n"
+        "\t mergedNewItems = ${mergedNewItems.length}\n");
     _mergedNewItemsSubject.add([...unmergedNewItems, ...mergedNewItems]);
     _unmergedNewItemsSubject.add([]);
+    _logger.finest(() => "mergeNewItems after "
+        "\t unmergedNewItems = ${unmergedNewItems.length}\n"
+        "\t mergedNewItems = ${mergedNewItems.length}\n");
   }
 
   @override
