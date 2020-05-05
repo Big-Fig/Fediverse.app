@@ -388,6 +388,24 @@
           "content": "Sharing..."
         }
       },
+      "collapsible": {
+        "action": {
+          "collapse": "Collapse",
+          "expand": "Expand"
+        }
+      },
+      "content": {
+        "link": {
+          "launch": {
+            "error": {
+              "dialog": {
+                "title": "Can't launch URL",
+                "content": "URL {} have invalid format"
+              }
+            }
+          }
+        }
+      },
       "action": {
         "comment": "Comment",
         "favourite": "Favourite",
