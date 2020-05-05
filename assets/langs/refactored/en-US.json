@@ -16,9 +16,9 @@
         }
       },
       "info": {
-        "followers": "Followers",
-        "following": "Following",
-        "statuses": "Statuses"
+        "followers": "Followers \n {}",
+        "following": "Following \n {}",
+        "statuses": "Statuses \n {}"
       },
       "my": {
         "edit": {
