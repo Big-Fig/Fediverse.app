@@ -20,6 +20,8 @@ import 'package:fedi/refactored/app/push/subscription/local_preferences/push_sub
 import 'package:fedi/refactored/app/push/subscription/local_preferences/push_subscription_local_preferences_bloc_impl.dart';
 import 'package:fedi/refactored/app/push/subscription/push_subscription_bloc.dart';
 import 'package:fedi/refactored/app/push/subscription/push_subscription_bloc_impl.dart';
+import 'package:fedi/refactored/app/share/share_service.dart';
+import 'package:fedi/refactored/app/share/share_service_impl.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/refactored/app/timeline/local_preferences/timeline_local_preferences_bloc.dart';
@@ -273,19 +275,25 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         pleromaWebSocketsService);
 
     var myAccountSettingsLocalPreferenceBloc =
-        MyAccountSettingsLocalPreferenceBloc(
-            currentInstance.userAtHost, preferencesService);
+    MyAccountSettingsLocalPreferenceBloc(
+        currentInstance.userAtHost, preferencesService);
 
     addDisposable(disposable: myAccountSettingsLocalPreferenceBloc);
     await globalProviderService
         .asyncInitAndRegister<IMyAccountSettingsLocalPreferenceBloc>(
-            myAccountSettingsLocalPreferenceBloc);
+        myAccountSettingsLocalPreferenceBloc);
 
     var myAccountSettingsBloc =
-        MyAccountSettingsBloc(localPreferenceBloc: myAccountSettingsLocalPreferenceBloc);
+    MyAccountSettingsBloc(localPreferenceBloc: myAccountSettingsLocalPreferenceBloc);
 
     addDisposable(disposable: myAccountSettingsBloc);
     await globalProviderService
         .asyncInitAndRegister<IMyAccountSettingsBloc>(myAccountSettingsBloc);
+
+    var shareService = ShareService();
+
+    addDisposable(disposable: shareService);
+    await globalProviderService
+        .asyncInitAndRegister<IShareService>(shareService);
   }
 }

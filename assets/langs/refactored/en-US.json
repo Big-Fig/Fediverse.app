@@ -336,6 +336,21 @@
     },
     "media": {
       "attachment": {
+        "share": {
+          "title": "Share",
+          "progress": {
+            "content": "Sharing..."
+          }
+        },
+        "add_to_gallery": {
+          "progress": {
+            "content": "Saving..."
+          }
+        },
+        "preview": {
+          "title": "Media attachment",
+          "not_supported_type": "Not supported type {}"
+        },
         "upload": {
           "remove": {
             "dialog": {
@@ -367,6 +382,12 @@
       }
     },
     "status": {
+      "share": {
+        "title": "Share status",
+        "progress": {
+          "content": "Sharing..."
+        }
+      },
       "action": {
         "comment": "Comment",
         "favourite": "Favourite",
@@ -377,6 +398,7 @@
         "follow": "Follow",
         "open_in_browser": "Open in browser",
         "copy_link": "Copy link",
+        "share": "Share",
         "more": "More",
         "popup": {
           "title": "Status Actions",

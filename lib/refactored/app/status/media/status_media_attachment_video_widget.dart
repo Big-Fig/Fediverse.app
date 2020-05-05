@@ -3,10 +3,11 @@ import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachmen
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
+// TODO: use MediaVideoPlayer class instead of copy-pasted code
 class StatusMediaAttachmentVideoWidget extends StatefulWidget {
-  final IPleromaMediaAttachment attachment;
+  final IPleromaMediaAttachment mediaAttachment;
 
-  StatusMediaAttachmentVideoWidget(this.attachment);
+  StatusMediaAttachmentVideoWidget(this.mediaAttachment);
 
   @override
   _StatusMediaAttachmentVideoWidget createState() =>
@@ -21,7 +22,7 @@ class _StatusMediaAttachmentVideoWidget
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.network(widget.attachment.url)
+    _controller = VideoPlayerController.network(widget.mediaAttachment.url)
       ..initialize().then((_) {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {

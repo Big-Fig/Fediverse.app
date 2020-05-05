@@ -33,4 +33,14 @@ class DbConversationWrapper implements IConversation {
         remoteId: remoteId ?? this.remoteId,
         unread: unread ?? this.unread,
       ));
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is DbConversationWrapper && runtimeType == other.runtimeType &&
+              dbConversation == other.dbConversation;
+  @override
+  int get hashCode => dbConversation.hashCode;
+
+
+
 }
