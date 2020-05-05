@@ -49,6 +49,7 @@ class ConversationPage extends StatelessWidget {
   }
 }
 
+// todo: conversationAccountsWithoutMe should be removed and dynamically load
 void goToConversationPage(BuildContext context,
     {@required IConversation conversation,
     @required List<IAccount> conversationAccountsWithoutMe}) {
