@@ -24,6 +24,8 @@ import 'package:fedi/refactored/app/share/share_service.dart';
 import 'package:fedi/refactored/app/share/share_service_impl.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository_impl.dart';
+import 'package:fedi/refactored/app/status/scheduled/repository/scheduled_status_repository.dart';
+import 'package:fedi/refactored/app/status/scheduled/repository/scheduled_status_repository_impl.dart';
 import 'package:fedi/refactored/app/timeline/local_preferences/timeline_local_preferences_bloc.dart';
 import 'package:fedi/refactored/app/timeline/local_preferences/timeline_local_preferences_bloc_impl.dart';
 import 'package:fedi/refactored/connection/connection_service.dart';
@@ -54,6 +56,8 @@ import 'package:fedi/refactored/pleroma/status/emoji_reaction/pleroma_status_emo
 import 'package:fedi/refactored/pleroma/status/emoji_reaction/pleroma_status_emoji_reaction_service_impl.dart';
 import 'package:fedi/refactored/pleroma/status/pleroma_status_service.dart';
 import 'package:fedi/refactored/pleroma/status/pleroma_status_service_impl.dart';
+import 'package:fedi/refactored/pleroma/status/scheduled/pleroma_scheduled_status_service.dart';
+import 'package:fedi/refactored/pleroma/status/scheduled/pleroma_scheduled_status_service_impl.dart';
 import 'package:fedi/refactored/pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:fedi/refactored/pleroma/timeline/pleroma_timeline_service_impl.dart';
 import 'package:fedi/refactored/pleroma/websockets/pleroma_websockets_service.dart';
@@ -116,6 +120,11 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: statusRepository);
     await globalProviderService
         .asyncInitAndRegister<IStatusRepository>(statusRepository);
+    var scheduledStatusRepository = ScheduledStatusRepository(
+        appDatabase: moorDatabaseService.appDatabase);
+    addDisposable(disposable: scheduledStatusRepository);
+    await globalProviderService
+        .asyncInitAndRegister<IScheduledStatusRepository>(scheduledStatusRepository);
     var conversationRepository = ConversationRepository(
         appDatabase: moorDatabaseService.appDatabase,
         accountRepository: accountRepository,
@@ -179,7 +188,12 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         PleromaStatusService(restService: pleromaAuthRestService);
     await globalProviderService
         .asyncInitAndRegister<IPleromaStatusService>(pleromaStatusService);
-    addDisposable(disposable: pleromaStatusService);
+    addDisposable(disposable: pleromaStatusService);   
+    var pleromaScheduledStatusService =
+        PleromaScheduledStatusService(restService: pleromaAuthRestService);
+    await globalProviderService
+        .asyncInitAndRegister<IPleromaScheduledStatusService>(pleromaScheduledStatusService);
+    addDisposable(disposable: pleromaScheduledStatusService);
     var pleromaStatusEmojiReactionService =
         PleromaStatusEmojiReactionService(restService: pleromaAuthRestService);
     await globalProviderService.asyncInitAndRegister<

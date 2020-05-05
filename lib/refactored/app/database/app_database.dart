@@ -23,6 +23,8 @@ import 'package:fedi/refactored/app/status/database/status_lists_database_dao.da
 import 'package:fedi/refactored/app/status/database/status_lists_database_model.dart';
 import 'package:fedi/refactored/app/status/database/status_reblogged_accounts_database_dao.dart';
 import 'package:fedi/refactored/app/status/database/status_reblogged_accounts_database_model.dart';
+import 'package:fedi/refactored/app/status/scheduled/database/scheduled_status_database_dao.dart';
+import 'package:fedi/refactored/app/status/scheduled/database/scheduled_status_database_model.dart';
 import 'package:fedi/refactored/mastodon/notification'
     '/mastodon_notification_model.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
@@ -51,6 +53,7 @@ part 'app_database.g.dart';
 //    DbConversations,
 //    DbNotifications,
 //    DbAccounts,
+//    DbScheduledStatuses,
     DbStatusHashtags,
     DbStatusLists,
     DbStatusFavouritedAccounts,
@@ -73,6 +76,7 @@ part 'app_database.g.dart';
     StatusFavouritedAccountsDao,
     StatusRebloggedAccountsDao,
     NotificationDao,
+    ScheduledStatusDao,
   ],
   include: {'app_database.moor'}
 )
