@@ -30,14 +30,17 @@ class PublicTimelineTabBloc extends TimelineTabBloc
       @required this.notificationRepository,
       @required this.timelineLocalPreferencesBloc,
       @required this.currentInstanceBloc,
-      @required this.pleromaWebSocketsService})
+      @required this.pleromaWebSocketsService,
+      @required bool listenWebSocketsChanges})
       : super(tab: TimelineTab.public) {
-    addDisposable(
-        disposable: PublicTimelineWebSocketsHandler(
-            pleromaWebSocketsService: pleromaWebSocketsService,
-            statusRepository: statusRepository,
-            conversationRepository: conversationRepository,
-            notificationRepository: notificationRepository));
+    if (listenWebSocketsChanges) {
+      addDisposable(
+          disposable: PublicTimelineWebSocketsHandler(
+              pleromaWebSocketsService: pleromaWebSocketsService,
+              statusRepository: statusRepository,
+              conversationRepository: conversationRepository,
+              notificationRepository: notificationRepository));
+    }
   }
 
   @override

@@ -5,6 +5,7 @@ import 'package:fedi/refactored/app/account/details/account_details_widget.dart'
 import 'package:fedi/refactored/app/account/my/action/my_account_action_list_bottom_sheet_dialog.dart';
 import 'package:fedi/refactored/app/account/my/edit/edit_my_account_page.dart';
 import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
+import 'package:fedi/refactored/app/account/my/settings/my_account_settings_drawer_body_widget.dart';
 import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +18,9 @@ class MyAccountDetailsPage extends StatelessWidget {
     return Provider<IAccountBloc>(
       create: (context) => IMyAccountBloc.of(context, listen: false),
       child: Scaffold(
+        drawer:
+            Drawer(child: SafeArea(child: MyAccountSettingsDrawerBodyWidget())),
         appBar: AppBar(
-          leading: SizedBox.shrink(),
           centerTitle: true,
           title: buildAccountChooserButton(context, myAccountBloc),
           actions: <Widget>[

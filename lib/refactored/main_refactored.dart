@@ -1,6 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
 import 'package:fedi/refactored/app/account/my/my_account_model.dart';
+import 'package:fedi/refactored/app/account/my/settings'
+    '/my_account_settings_model'
+    '.dart';
 import 'package:fedi/refactored/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/refactored/app/auth/instance/current/context/current_auth_instance_context_bloc_impl.dart';
 import 'package:fedi/refactored/app/auth/instance/current/context/loading/current_auth_instance_context_loading_bloc.dart';
@@ -69,6 +72,7 @@ void main() async {
   Hive.registerAdapter(PleromaMyAccountAdapter(), 54);
   Hive.registerAdapter(PushHandlerUnhandledListAdapter(), 55);
   Hive.registerAdapter(PleromaPushMessageAdapter(), 56);
+  Hive.registerAdapter(MyAccountSettingsAdapter(), 57);
 
   Hive.init(directory.path);
 
