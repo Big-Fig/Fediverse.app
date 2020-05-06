@@ -1,14 +1,15 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/status/account/status_account_widget.dart';
 import 'package:fedi/refactored/app/status/action/status_comment_action_widget.dart';
 import 'package:fedi/refactored/app/status/action/status_favourite_action_widget.dart';
 import 'package:fedi/refactored/app/status/action/status_more_action_widget.dart';
 import 'package:fedi/refactored/app/status/action/status_reblog_action_widget.dart';
 import 'package:fedi/refactored/app/status/card/status_card_widget.dart';
-import 'package:fedi/refactored/app/status/content/status_content_widget.dart';
+import 'package:fedi/refactored/app/status/content/status_content_with_emojis_widget.dart';
 import 'package:fedi/refactored/app/status/created_at/status_created_at_widget.dart';
 import 'package:fedi/refactored/app/status/emoji_reaction/status_emoji_reaction_list_widget.dart';
 import 'package:fedi/refactored/app/status/emoji_reaction/status_emoji_reaction_picker_widget.dart';
-import 'package:fedi/refactored/app/media/attachment/media_attachments_widget.dart';
+import 'package:fedi/refactored/app/status/media/status_media_attachments_widget.dart';
 import 'package:fedi/refactored/app/status/nsfw/status_nsfw_warning_widget.dart';
 import 'package:fedi/refactored/app/status/reblog/status_reblog_header_widget.dart';
 import 'package:fedi/refactored/app/status/reply/status_reply_header_widget.dart';
@@ -20,25 +21,21 @@ import 'package:fedi/refactored/app/status/thread/status_thread_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:provider/provider.dart';
 
 var _logger = Logger("status_list_item_timeline_widget.dart");
 
-class StatusListItemTimelineWidget extends StatefulWidget {
+class StatusListItemTimelineWidget extends StatelessWidget {
   final IStatusCallback statusCallback;
   final bool displayActions;
+  final bool collapsible;
 
   StatusListItemTimelineWidget({
+    @required this.collapsible,
     this.displayActions = true,
     this.statusCallback = goToStatusThreadPage,
   }) : super();
 
-  @override
-  _StatusListItemTimelineWidgetState createState() =>
-      _StatusListItemTimelineWidgetState();
-}
-
-class _StatusListItemTimelineWidgetState
-    extends State<StatusListItemTimelineWidget> {
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: true);
@@ -59,8 +56,8 @@ class _StatusListItemTimelineWidgetState
       GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () {
-          if (widget.statusCallback != null) {
-            widget.statusCallback(context, statusBloc.status);
+          if (statusCallback != null) {
+            statusCallback(context, statusBloc.status);
           }
         },
         child: Column(
@@ -98,8 +95,10 @@ class _StatusListItemTimelineWidgetState
               ),
             ),
             buildStatusContent(context, statusBloc),
+            if(displayActions)
             StatusEmojiReactionListWidget(),
-            Padding(
+            if(displayActions)
+              Padding(
               padding: EdgeInsets.symmetric(horizontal: 12.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -127,9 +126,7 @@ class _StatusListItemTimelineWidgetState
             builder: (context) => StatusEmojiReactionPickerWidget(
                   emojiReactionSelectedCallback:
                       (String emojiName, String emoji) {
-                    setState(() {
-                      Navigator.of(context).pop();
-                    });
+                    Navigator.of(context).pop();
                     statusBloc.toggleEmojiReaction(emoji: emoji);
                   },
                 ));
@@ -146,33 +143,57 @@ class _StatusListItemTimelineWidgetState
 
           if (nsfwSensitiveAndDisplayEnabled) {
             return StreamBuilder<bool>(
-              stream: statusBloc.containsSpoilerAndDisplayEnabledStream,
+                stream: statusBloc.containsSpoilerAndDisplayEnabledStream,
                 initialData: statusBloc.containsSpoilerAndDisplayEnabled,
-              builder: (context, snapshot) {
-                var containsSpoilerAndDisplayEnabled = snapshot.data;
-                if(containsSpoilerAndDisplayEnabled) {
-                  return Column(
-                    children: <Widget>[
-                      StatusSpoilerWidget(),
-                      StatusContentWidget(),
-                      StatusCardWidget(),
-                      MediaAttachmentsWidget(),
-                    ],
-                  );
-                } else {
-                 return Column(
-                   children: <Widget>[
-                     StatusSpoilerWidget(),
-                     StatusSpoilerAlertWidget(),
-                   ],
-                 );
-                }
-
-              }
-            );
+                builder: (context, snapshot) {
+                  var containsSpoilerAndDisplayEnabled = snapshot.data;
+                  if (containsSpoilerAndDisplayEnabled) {
+                    return Column(
+                      children: <Widget>[
+                        StatusSpoilerWidget(),
+                        StatusContentWidget(
+                          collapsible: collapsible,
+                        ),
+                        if (collapsible && statusBloc.isPossibleToCollapse)
+                          buildCollapsibleButton(context, statusBloc),
+                        StatusCardWidget(),
+                        StatusMediaAttachmentsWidget(),
+                      ],
+                    );
+                  } else {
+                    return Column(
+                      children: <Widget>[
+                        StatusSpoilerWidget(),
+                        StatusSpoilerAlertWidget(),
+                      ],
+                    );
+                  }
+                });
           } else {
             return StatusNsfwWarningWidget();
           }
         });
+  }
+
+  Center buildCollapsibleButton(BuildContext context, IStatusBloc statusBloc) {
+    var appLocalizations = AppLocalizations.of(context);
+    return Center(
+        child: FlatButton(
+      color: Colors.blue,
+      child: StreamBuilder<bool>(
+          stream: statusBloc.isCollapsedStream,
+          initialData: statusBloc.isCollapsed,
+          builder: (context, snapshot) {
+            var isCollapsed = snapshot.data;
+            return Text(
+              isCollapsed
+                  ? appLocalizations.tr("app.status.collapsible.action.expand")
+                  : appLocalizations.tr("app.status.collapsible.action"
+                      ".collapse"),
+              style: TextStyle(color: Colors.white),
+            );
+          }),
+      onPressed: statusBloc.toggleCollapseExpand,
+    ));
   }
 }

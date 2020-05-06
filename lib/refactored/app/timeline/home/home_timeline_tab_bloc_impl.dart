@@ -40,15 +40,18 @@ class HomeTimelineTabBloc extends TimelineTabBloc
       @required this.currentInstanceBloc,
       @required this.myAccountBloc,
       @required this.timelineLocalPreferencesBloc,
-      @required this.pleromaWebSocketsService})
+      @required this.pleromaWebSocketsService,
+      @required bool listenWebSocketsChanges})
       : super(tab: TimelineTab.home) {
-    addDisposable(
-        disposable: HomeTimelineWebSocketsHandler(
-      pleromaWebSocketsService: pleromaWebSocketsService,
-      statusRepository: statusRepository,
-      conversationRepository: conversationRepository,
-      notificationRepository: notificationRepository,
-    ));
+    if (listenWebSocketsChanges) {
+      addDisposable(
+          disposable: HomeTimelineWebSocketsHandler(
+        pleromaWebSocketsService: pleromaWebSocketsService,
+        statusRepository: statusRepository,
+        conversationRepository: conversationRepository,
+        notificationRepository: notificationRepository,
+      ));
+    }
   }
 
   @override

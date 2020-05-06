@@ -6,6 +6,9 @@ import 'package:fedi/refactored/app/status/list/cached/status_cached_list_bloc.d
 import 'package:fedi/refactored/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
 import 'package:fedi/refactored/app/status/pagination/list/status_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
+import 'package:fedi/refactored/collapsible/collapsible_bloc.dart';
+import 'package:fedi/refactored/collapsible/collapsible_bloc_impl.dart';
+import 'package:fedi/refactored/collapsible/toggle_collapsible_overlay_widget.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:fedi/refactored/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/refactored/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
@@ -49,12 +52,26 @@ class AccountDetailsWidget extends StatelessWidget {
                 IPaginationListWithNewItemsBloc>(
               update: (context, value, previous) => value,
               child: PaginationListWithNewItemsHeaderWidget(
-                child: AccountStatusesWidget(
-                  header: AccountWidget(),
-                  alwaysShowHeader: true,
-                  additionalRefreshAction: accountBloc.refreshFromNetwork,
-                  key: PageStorageKey(
-                      "AccountDetailsWidget.${accountBloc.account.remoteId}"),
+                child: DisposableProvider<ICollapsibleBloc>(
+                  create: (context) =>
+                      CollapsibleBloc.createFromContext(context),
+                  child: Stack(
+                    children: <Widget>[
+                      AccountStatusesWidget(
+                        header: AccountWidget(),
+                        alwaysShowHeader: true,
+                        additionalRefreshAction: accountBloc.refreshFromNetwork,
+                        key: PageStorageKey(
+                            "AccountDetailsWidget.${accountBloc.account.remoteId}"),
+                      ),
+                      Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ToggleCollapsibleOverlayWidget(),
+                          ))
+                    ],
+                  ),
                 ),
               ),
             ),

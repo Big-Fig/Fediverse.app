@@ -86,6 +86,7 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
         });
       }
 
+
       return ScrollablePositionedList.builder(
         itemScrollController: itemScrollController,
         itemPositionsListener: itemPositionListener,
@@ -104,7 +105,7 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
                       statusThreadBloc.startStatus.remoteId) {
                     goToStatusThreadPage(context, status);
                   }
-                })),
+                }, collapsible: false,)),
           );
         },
       );

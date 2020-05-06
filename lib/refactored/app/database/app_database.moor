@@ -1,5 +1,6 @@
 import 'package:fedi/refactored/app/account/database/account_database_model.dart';
 import 'package:fedi/refactored/app/status/database/status_database_model.dart';
+import 'package:fedi/refactored/app/status/scheduled/database/scheduled_status_database_model.dart';
 import 'package:fedi/refactored/app/conversation/database/conversation_database_model.dart';
 import 'package:fedi/refactored/app/notification/database/notification_database_model.dart';
 import 'package:fedi/refactored/app/account/database/account_followers_database_model.dart';
@@ -23,3 +24,4 @@ CREATE UNIQUE INDEX db_status_reblogged_accounts_index ON db_status_reblogged_ac
 CREATE UNIQUE INDEX db_account_followings_index ON db_account_followings(account_remote_id, following_account_remote_id);
 CREATE UNIQUE INDEX db_account_followers_index ON db_account_followers(account_remote_id, follower_account_remote_id);
 CREATE UNIQUE INDEX db_conversation_accounts_index ON db_conversation_accounts(conversation_remote_id, account_remote_id);
+CREATE INDEX scheduled_status_remote_id_index ON db_scheduled_statuses (remote_id);
