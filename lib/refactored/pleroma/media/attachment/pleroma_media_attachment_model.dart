@@ -11,20 +11,30 @@ abstract class IPleromaMediaAttachment extends IMastodonMediaAttachment {
 
 @JsonSerializable()
 class PleromaMediaAttachment implements IPleromaMediaAttachment {
+  @override
   final String description;
+  @override
   final String id;
+
+  @override
   @JsonKey(name: "preview_url")
   final String previewUrl;
+  @override
   @JsonKey(name: "remote_url")
   final String remoteUrl;
+  @override
   @JsonKey(name: "text_url")
   final String textUrl;
+  @override
   @JsonKey(name: "type")
   final String type;
 
+  @override
   MastodonMediaAttachmentType get typeMastodon =>
       MastodonMediaAttachmentTypeTypeConverter().fromJson(type);
+  @override
   final String url;
+  @override
   PleromaMediaAttachmentPleromaPart pleroma;
 
   PleromaMediaAttachment(

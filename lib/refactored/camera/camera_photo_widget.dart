@@ -1,10 +1,10 @@
 import 'package:fedi/refactored/camera/camera_bloc.dart';
 import 'package:fedi/refactored/camera/camera_widget.dart';
-import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CameraPhotoWidget extends CameraWidget {
+  @override
   Widget buildControls(BuildContext context, ICameraBloc cameraBloc) {
     return Padding(
       padding: const EdgeInsets.all(4.0),
@@ -37,7 +37,7 @@ class CameraPhotoWidget extends CameraWidget {
               pressed = () async {
                 var pathToSave =
                     await ICameraBloc.calculateUniquePathForImage(context);
-                cameraBloc.captureImage(pathToSave);
+                await cameraBloc.captureImage(pathToSave);
               };
             }
             return IconButton(

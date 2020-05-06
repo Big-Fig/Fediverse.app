@@ -12,7 +12,7 @@ var _logger = Logger("websockets_service_impl.dart");
 
 class WebSocketsService extends DisposableOwner implements IWebSocketsService {
   @visibleForTesting
-  final Map<Uri, IWebSocketsChannel> urlToChannel = Map();
+  final Map<Uri, IWebSocketsChannel> urlToChannel = {};
 
   WebSocketsService() {
     addDisposable(disposable: CustomDisposable(() {
@@ -21,6 +21,7 @@ class WebSocketsService extends DisposableOwner implements IWebSocketsService {
     }));
   }
 
+  @override
   IWebSocketsChannel<T> getOrCreateWebSocketsChannel<T extends WebSocketsEvent>(
       {@required IWebSocketsChannelConfig<T> config}) {
     var url = config.calculateWebSocketsUrl();

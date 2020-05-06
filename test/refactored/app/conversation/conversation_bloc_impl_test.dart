@@ -129,7 +129,7 @@ void main() {
 
     expectConversation(conversationBloc.conversation, newValue);
     expectConversation(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('lastStatus', () async {
@@ -157,7 +157,7 @@ void main() {
     expectStatus(conversationBloc.lastStatus, status2);
     expectStatus(listenedValue, status2);
 
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('accounts', () async {
@@ -190,7 +190,7 @@ void main() {
     expectAccount(listenedValue[1], account2);
     expectAccount(listenedValue[2], account3);
 
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('accountsWithoutMe', () async {
@@ -223,7 +223,7 @@ void main() {
     expectAccount(listenedValue[0], account1);
     expectAccount(listenedValue[1], account3);
 
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('refreshFromNetwork', () async {
@@ -254,6 +254,6 @@ void main() {
 
     expectConversation(conversationBloc.conversation, newValue);
     expectConversation(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
 }

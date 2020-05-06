@@ -13,6 +13,7 @@ class SimpleAlertDialog extends BaseAlertDialog {
       content: content,
       cancelable: true);
 
+  @override
   Widget buildCancelAction(BuildContext context) =>
       buildButton(context, createOkCancelAction(context));
 }

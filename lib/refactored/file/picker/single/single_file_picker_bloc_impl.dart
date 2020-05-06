@@ -17,7 +17,7 @@ class SingleFilePickerBloc extends FilePickerBloc
             startActiveTab: startActiveTab);
 
   @override
-  onFileSelected(FilePickerFile filePickerFile) {
+  void onFileSelected(FilePickerFile filePickerFile) {
     if (fileSelectedCallback != null) {
       fileSelectedCallback(filePickerFile);
     }

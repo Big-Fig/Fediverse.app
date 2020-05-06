@@ -4,7 +4,6 @@ import 'package:fedi/refactored/app/media/attachment/upload/upload_media_attachm
 import 'package:fedi/refactored/app/status/post/post_status_bloc.dart';
 import 'package:fedi/refactored/file/picker/file_picker_model.dart';
 import 'package:fedi/refactored/file/picker/single/single_file_picker_page.dart';
-import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -116,7 +115,7 @@ class UploadMediaAttachmentGridWidget extends StatelessWidget {
     }, startActiveTab: FilePickerTab.gallery);
   }
 
-  askToRemoveAsset(BuildContext context, IPostStatusBloc postStatusBloc,
+  void askToRemoveAsset(BuildContext context, IPostStatusBloc postStatusBloc,
       IUploadMediaAttachmentBloc mediaItemBloc) {
     showDialog(
       context: context,
@@ -127,7 +126,7 @@ class UploadMediaAttachmentGridWidget extends StatelessWidget {
               .tr("app.media.attachment.upload.remove.dialog.content")),
           actions: <Widget>[
             FlatButton(
-              child: new Text(AppLocalizations.of(context)
+              child: Text(AppLocalizations.of(context)
                   .tr("app.media.attachment.upload.remove.dialog.content"
                       ".action.cancel")),
               onPressed: () {
@@ -136,7 +135,7 @@ class UploadMediaAttachmentGridWidget extends StatelessWidget {
             ),
             // usually buttons at the bottom of the dialog
             FlatButton(
-              child: new Text(AppLocalizations.of(context)
+              child: Text(AppLocalizations.of(context)
                   .tr("app.media.attachment.upload.remove.dialog.content"
                       ".action.remove")),
               onPressed: () {

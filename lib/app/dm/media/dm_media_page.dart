@@ -109,7 +109,7 @@ class _DMMediaPage extends State<DMMediaPage> {
           .filePickerFile.file);
       _pr.hide();
       if (widget.filePickerFile.isNeedDeleteAfterUsage) {
-        widget.filePickerFile.file.delete();
+        await widget.filePickerFile.file.delete();
       }
       widget.mediaUploaded(context, attachment.id);
     } on Exception catch (e) {

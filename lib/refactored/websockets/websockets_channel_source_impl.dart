@@ -15,7 +15,8 @@ class WebSocketsChannelSource<T extends WebSocketsEvent> extends DisposableOwner
   @override
   Stream<T> get eventsStream =>
       _channel.stream.map(_mapChannelData);
-  final Uri url;
+  @override
+  final Uri  url;
   final WebSocketsEventParser<T> eventParser;
 
   final IOWebSocketChannel _channel;

@@ -31,6 +31,7 @@ var _statusReblogAccountAliasId = "status_reblog_account";
 })
 class NotificationDao extends DatabaseAccessor<AppDatabase>
     with _$NotificationDaoMixin {
+  @override
   final AppDatabase db;
   $DbAccountsTable accountAlias;
   $DbStatusesTable statusAlias;

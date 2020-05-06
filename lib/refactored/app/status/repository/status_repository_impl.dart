@@ -206,6 +206,7 @@ class StatusRepository extends AsyncInitLoadingBloc
   Future<DbStatusPopulatedWrapper> findByRemoteId(String remoteId) async =>
       mapDataClassToItem(await dao.findByRemoteId(remoteId));
 
+  @override
   Future<List<DbStatusPopulatedWrapper>> getStatuses(
       {@required String onlyInListWithRemoteId,
       @required IAccount onlyFromAccount,
@@ -247,6 +248,7 @@ class StatusRepository extends AsyncInitLoadingBloc
         .toList();
   }
 
+  @override
   Stream<List<DbStatusPopulatedWrapper>> watchStatuses(
       {@required String onlyInListWithRemoteId,
       @required String onlyWithHashtag,
@@ -507,7 +509,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     }
 
     if (newRemoteStatus.reblog != null) {
-      upsertRemoteStatus(newRemoteStatus,
+      await upsertRemoteStatus(newRemoteStatus,
           listRemoteId: null, conversationRemoteId: null);
     }
   }

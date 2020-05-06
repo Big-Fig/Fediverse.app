@@ -96,7 +96,7 @@ class PleromaScheduledStatusService implements IPleromaScheduledStatusService {
     if (restResponse.isSuccess) {
       return restResponse.body;
     } else {
-      throw new PleromaScheduledStatusException(
+      throw PleromaScheduledStatusException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
   }
@@ -113,7 +113,7 @@ class PleromaScheduledStatusService implements IPleromaScheduledStatusService {
     if (restResponse.isSuccess) {
       return restResponse.body;
     } else {
-      throw new PleromaScheduledStatusException(
+      throw PleromaScheduledStatusException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
   }

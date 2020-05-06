@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 abstract class IPleromaTimelineService implements IPleromaApi {
   Uri get baseUrl;
 
-  static IPleromaTimelineService of(BuildContext context, {listen: true}) =>
+  static IPleromaTimelineService of(BuildContext context, {listen= true}) =>
       Provider.of<IPleromaTimelineService>(context, listen: listen);
 
   Future<List<IPleromaStatus>> getPublicTimeline({

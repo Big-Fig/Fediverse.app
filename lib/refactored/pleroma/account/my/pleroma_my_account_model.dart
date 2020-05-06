@@ -15,8 +15,10 @@ import 'package:json_annotation/json_annotation.dart';
 part 'pleroma_my_account_model.g.dart';
 
 abstract class IPleromaMyAccountEdit extends IMastodonMyAccountEdit {
+  @override
   IPleromaMyAccountSource get source;
 
+  @override
   Map<int, IPleromaField> get fieldsAttributes;
 
   /// if true, html tags are stripped from all statuses requested from the API
@@ -59,6 +61,7 @@ abstract class IPleromaMyAccountEdit extends IMastodonMyAccountEdit {
   String get pleromaBackgroundImage;
 
   /// if true, discovery of this account in search results and other services is allowed.
+  @override
   bool get discoverable;
 
   /// the type of this account.
@@ -171,6 +174,7 @@ class PleromaMyAccountEdit extends IPleromaMyAccountEdit {
   factory PleromaMyAccountEdit.fromJsonString(String jsonString) =>
       _$PleromaMyAccountEditFromJson(jsonDecode(jsonString));
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaMyAccountEditToJson(this);
 
   String toJsonString() => jsonEncode(_$PleromaMyAccountEditToJson(this));
@@ -198,24 +202,33 @@ abstract class IPleromaMyAccountSource implements IMastodonMyAccountSource {
 @JsonSerializable()
 class PleromaMyAccountSource
     implements IPleromaMyAccountSource {
+  @override
   MastodonVisibility get privacyMastodon =>
       mastodonVisibilityValues.map[privacy];
 
+  @override
   PleromaVisibility get privacyPleroma => pleromaVisibilityValues.map[privacy];
 
+  @override
   @HiveField(1)
   String privacy;
+  @override
   @HiveField(2)
   bool sensitive;
+  @override
   @HiveField(3)
   String language;
+  @override
   @HiveField(4)
   String note;
+  @override
   @HiveField(5)
   List<PleromaField> fields;
+  @override
   @HiveField(6)
   @JsonKey(name: "follow_requests_count")
   int followRequestsCount;
+  @override
   @HiveField(7)
   PleromaMyAccountSourcePleromaPart pleroma;
 
@@ -431,54 +444,75 @@ abstract class IPleromaMyAccountPleromaPart
 @JsonSerializable(explicitToJson: true)
 class PleromaMyAccount
     implements IPleromaMyAccount, IPreferencesObject {
+  @override
   @HiveField(0)
   String username;
+  @override
   @HiveField(1)
   String url;
+  @override
   @HiveField(2)
   @JsonKey(name: "statuses_count")
   int statusesCount;
+  @override
   @HiveField(3)
   String note;
+  @override
   @HiveField(4)
   bool locked;
+  @override
   @HiveField(5)
   String id;
+  @override
   @HiveField(6)
   @JsonKey(name: "header_static")
   String headerStatic;
+  @override
   @HiveField(7)
   String header;
+  @override
   @HiveField(8)
   @JsonKey(name: "following_count")
   int followingCount;
+  @override
   @HiveField(9)
   @JsonKey(name: "followers_count")
   int followersCount;
+  @override
   @HiveField(10)
   List<PleromaField> fields;
+  @override
   @HiveField(11)
   List<PleromaEmoji> emojis;
+  @override
   @HiveField(12)
   @JsonKey(name: "display_name")
   String displayName;
+  @override
   @HiveField(13)
   @JsonKey(name: "created_at")
   DateTime createdAt;
+  @override
   @HiveField(14)
   bool bot;
+  @override
   @HiveField(15)
   @JsonKey(name: "avatar_static")
   String avatarStatic;
+  @override
   @HiveField(16)
   String avatar;
+  @override
   @HiveField(17)
   String acct;
+  @override
   @HiveField(19)
   PleromaMyAccountPleromaPart pleroma;
+  @override
   @HiveField(20)
   @JsonKey(name: "last_status_at")
   DateTime lastStatusAt;
+  @override
   @HiveField(21)
   PleromaMyAccountSource source;
 
@@ -511,7 +545,7 @@ class PleromaMyAccount
       _$PleromaMyAccountFromJson(jsonDecode(jsonString));
 
   static List<PleromaMyAccount> listFromJsonString(String str) =>
-      new List<PleromaMyAccount>.from(
+      List<PleromaMyAccount>.from(
           json.decode(str).map((x) => PleromaMyAccount.fromJson(x)));
 
   Map<String, dynamic> toJson() => _$PleromaMyAccountToJson(this);
@@ -602,7 +636,7 @@ class PleromaMyAccountPleromaPartNotificationsSettings {
 
   static List<PleromaMyAccountPleromaPartNotificationsSettings>
   listFromJsonString(String str) =>
-      new List<PleromaMyAccountPleromaPartNotificationsSettings>.from(json
+      List<PleromaMyAccountPleromaPartNotificationsSettings>.from(json
           .decode(str)
           .map((x) =>
           PleromaMyAccountPleromaPartNotificationsSettings.fromJson(
@@ -621,45 +655,56 @@ class PleromaMyAccountPleromaPartNotificationsSettings {
 class PleromaMyAccountPleromaPart
     implements IPleromaMyAccountPleromaPart {
   // TODO: CHECK, was in previous implementation, but not exist at https://docs-develop.pleroma.social/backend/API/differences_in_mastoapi_responses/
+  @override
   @HiveField(1)
   @JsonKey(name: "background_image")
   dynamic backgroundImage;
 
+  @override
   @HiveField(2)
   // todo: remove hack, Pleroma return List<String> instead of List<PleromaTag>
   // for example at accounts/verify_credentials endpoint
 //  List<PleromaTag> tags;
   List<dynamic> tags;
 
+  @override
   @HiveField(3)
   PleromaAccountRelationship relationship;
+  @override
   @HiveField(4)
   @JsonKey(name: "is_admin")
   bool isAdmin;
+  @override
   @HiveField(5)
   @JsonKey(name: "is_moderator")
   @HiveField(6)
   bool isModerator;
 
+  @override
   @HiveField(7)
   @JsonKey(name: "confirmation_pending")
   bool confirmationPending;
 
+  @override
   @HiveField(8)
   // TODO: CHECK, was in previous implementation, but not exist at
   @JsonKey(name: "hide_favorites")
   bool hideFavorites;
 
+  @override
   @HiveField(9)
   @JsonKey(name: "hide_followers")
   @HiveField(10)
   bool hideFollowers;
+  @override
   @HiveField(11)
   @JsonKey(name: "hide_follows")
   bool hideFollows;
+  @override
   @HiveField(12)
   @JsonKey(name: "hide_followers_count")
   bool hideFollowersCount;
+  @override
   @HiveField(13)
   @JsonKey(name: "hide_follows_count")
   bool hideFollowsCount;
@@ -667,33 +712,40 @@ class PleromaMyAccountPleromaPart
   ///  A generic map of settings for frontends.
   ///  Opaque to the backend.
   ///  Only returned in verify_credentials and update_credentials
+  @override
   @HiveField(14)
   @JsonKey(name: "settings_store")
   dynamic settingsStore;
 
   /// The token needed for Pleroma chat. Only returned in verify_credentials
+  @override
   @HiveField(15)
   @JsonKey(name: "chat_token")
   String chatToken;
+  @override
   @HiveField(16)
   bool deactivated;
 
   ///  boolean, true when the user allows automatically follow moved
   ///  following accounts
+  @override
   @HiveField(17)
   @JsonKey(name: "allow_following_move")
   bool allowFollowingMove;
 
   /// The count of unread conversations. Only returned to the account owner.
+  @override
   @HiveField(18)
   @JsonKey(name: "unread_conversation_count")
   int unreadConversationCount;
 
   /// TODO: CHECK, was in previous implementation, but not exist at
   /// https://docs-develop.pleroma.social/backend/API/differences_in_mastoapi_responses/
+  @override
   @JsonKey(name: "skip_thread_containment")
   bool skipThreadContainment;
 
+  @override
   @HiveField(19)
   @JsonKey(name: "notifications_settings")
   PleromaMyAccountPleromaPartNotificationsSettings notificationSettings;

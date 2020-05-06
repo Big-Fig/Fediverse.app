@@ -11,5 +11,6 @@ abstract class IStatusNetworkOnlyListService extends DisposableOwner
           {bool listen = true}) =>
       Provider.of<IStatusNetworkOnlyListService>(context, listen: listen);
 
+  @override
   IPleromaApi get pleromaApi;
 }

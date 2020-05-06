@@ -13,5 +13,5 @@ abstract class ICurrentAuthInstanceContextLoadingBloc extends Disposable {
 
   Stream<CurrentAuthInstanceContextLoadingState> get stateStream;
 
-  refresh();
+  void refresh();
 }

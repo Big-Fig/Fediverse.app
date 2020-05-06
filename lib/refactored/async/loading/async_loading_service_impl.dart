@@ -7,7 +7,7 @@ typedef Future LoadingFunction();
 abstract class AsyncLoadingService extends DisposableOwner
     implements IAsyncLoadingService {
   // ignore: close_sinks
-  BehaviorSubject<bool> _isLoadingSubject = BehaviorSubject<bool>.seeded(false);
+  final BehaviorSubject<bool> _isLoadingSubject = BehaviorSubject<bool>.seeded(false);
 
   @override
   Stream<bool> get isLoadingStream => _isLoadingSubject.stream;

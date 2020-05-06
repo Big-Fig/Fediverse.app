@@ -36,14 +36,14 @@ class TimelineWidget extends StatelessWidget {
           if (onlyWithMedia == true) {
             bodyWidget = StatusPaginationListMediaWidget(
                 key: PageStorageKey<String>(
-                    this.key.toString() + "TimelinePaginationListMediaWidget"));
+                    key.toString() + "TimelinePaginationListMediaWidget"));
           } else {
             bodyWidget = DisposableProvider<ICollapsibleBloc>(
               create: (context) => CollapsibleBloc.createFromContext(context),
               child: Stack(
                 children: <Widget>[
                   StatusPaginationListTimelineWidget(
-                    key: PageStorageKey<String>(this.key.toString() +
+                    key: PageStorageKey<String>(key.toString() +
                         "TimelinePaginationListSimpleWidget"),
                     needWatchLocalRepositoryForUpdates: true,
                   ),

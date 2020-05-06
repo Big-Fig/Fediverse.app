@@ -9,7 +9,7 @@ abstract class ProgressDialog extends BaseDialog {
   final String contentMessage;
 
   // ignore: close_sinks
-  BehaviorSubject<bool> _isCanceledSubject = BehaviorSubject.seeded(false);
+  final BehaviorSubject<bool> _isCanceledSubject = BehaviorSubject.seeded(false);
 
   bool get isCanceled => _isCanceledSubject.value;
 
@@ -67,10 +67,10 @@ abstract class ProgressDialog extends BaseDialog {
                   child: buildDialogContent(context),
                 )
               ]),
-              if (this.cancelable)
+              if (cancelable)
                 StreamBuilder<bool>(
-                    stream: this.isCanceledStream,
-                    initialData: this.isCanceled,
+                    stream: isCanceledStream,
+                    initialData: isCanceled,
                     builder: (context, snapshot) {
                       var canceled = snapshot.data;
                       Future<Null> Function() onPressed;

@@ -24,6 +24,7 @@ var _conversationAccountsAliasId = "conversationAccounts";
 })
 class ConversationDao extends DatabaseAccessor<AppDatabase>
     with _$ConversationDaoMixin {
+  @override
   final AppDatabase db;
   $DbAccountsTable accountAlias;
   $DbConversationAccountsTable conversationAccountsAlias;

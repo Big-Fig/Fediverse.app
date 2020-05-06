@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-typedef IPostStatusCallback(BuildContext context);
+typedef IPostStatusCallback = Function(BuildContext context);
 
 class PostStatusPostActionWidget extends StatelessWidget {
   final IPostStatusCallback successCallback;
@@ -32,7 +32,7 @@ class PostStatusPostActionWidget extends StatelessWidget {
               var isScheduled = postStatusBloc.isScheduled;
               var success = await postStatusBloc.postStatus();
               if (success) {
-                Fluttertoast.showToast(
+                await Fluttertoast.showToast(
                     msg: isScheduled
                         ? AppLocalizations.of(context)
                             .tr("app.status.post.toast.success.schedule")

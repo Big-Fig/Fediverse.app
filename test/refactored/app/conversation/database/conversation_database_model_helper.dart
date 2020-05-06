@@ -11,7 +11,7 @@ Future<DbConversation> createTestDbConversation(
       unread: false,
     );
 
-expectDbConversation(IConversation actual, DbConversation expected) {
+void expectDbConversation(IConversation actual, DbConversation expected) {
   if (actual == null && expected == null) {
     return;
   }

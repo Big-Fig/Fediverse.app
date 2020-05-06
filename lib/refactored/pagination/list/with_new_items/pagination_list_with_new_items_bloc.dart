@@ -30,7 +30,7 @@ abstract class IPaginationListWithNewItemsBloc<
 
   Stream<int> get mergedNewItemsCountStream;
 
-  mergeNewItems();
+  void mergeNewItems();
 
   bool get mergeNewItemsImmediately;
 }

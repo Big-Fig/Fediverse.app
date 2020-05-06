@@ -6,7 +6,7 @@ import 'package:fedi/refactored/file/picker/file_picker_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-showEditMyAccountAvatarDialog(BuildContext context, FilePickerFile
+void showEditMyAccountAvatarDialog(BuildContext context, FilePickerFile
 filePickerFile, FilePickerSelectedFileCallback selectedCallback) {
   showDialog(
       context: context,
@@ -31,7 +31,7 @@ filePickerFile, FilePickerSelectedFileCallback selectedCallback) {
                 dismissDialog(context);
                 if (croppedFile != null) {
                   if (filePickerFile.isNeedDeleteAfterUsage) {
-                    filePickerFile.file.delete();
+                    await filePickerFile.file.delete();
                   }
 
                   selectedCallback(FilePickerFile(

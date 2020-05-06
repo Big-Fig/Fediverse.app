@@ -27,6 +27,7 @@ class EditMyAccountBloc extends DisposableOwner implements IEditMyAccountBloc {
   @override
   List<EditMyAccountCustomField> customFields = [];
 
+  @override
   List<IEditMyAccountField> get allFields =>
       [displayNameField, noteField, lockedField, ...customFields];
 

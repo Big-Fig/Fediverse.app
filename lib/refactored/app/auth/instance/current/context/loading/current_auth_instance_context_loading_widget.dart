@@ -3,9 +3,7 @@ import 'package:fedi/refactored/app/account/my/action/my_account_action_list_bot
 import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
 import 'package:fedi/refactored/app/auth/instance/current/context/loading/current_auth_instance_context_loading_bloc.dart';
 import 'package:fedi/refactored/app/auth/instance/current/context/loading/current_auth_instance_context_loading_model.dart';
-import 'package:fedi/refactored/app/auth/instance/join/join_auth_instance_widget.dart';
 import 'package:fedi/refactored/app/theme/theme.dart';
-import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';

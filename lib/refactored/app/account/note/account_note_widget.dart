@@ -1,6 +1,5 @@
 import 'package:fedi/refactored/app/account/account_bloc.dart';
 import 'package:fedi/refactored/app/html/html_text_widget.dart';
-import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -22,7 +21,7 @@ class AccountNoteWidget extends StatelessWidget {
                 data: note,
                 onLinkTap: (String url) async {
                   if (await canLaunch(url)) {
-                    launch(url);
+                    await launch(url);
                   }
                 },
               ),

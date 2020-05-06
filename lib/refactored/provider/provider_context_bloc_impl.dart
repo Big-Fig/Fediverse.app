@@ -3,11 +3,11 @@ import 'package:fedi/refactored/disposable/disposable.dart';
 import 'package:fedi/refactored/provider/provider_context_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-import 'package:provider/provider.dart' as ProviderLib;
+import 'package:provider/provider.dart' as provider_lib;
 
 var _logger = Logger("provider_context_bloc_impl.dart");
 
-typedef ProviderLib.Provider<T> ProviderBuilder<T extends Disposable>();
+typedef provider_lib.Provider<T> ProviderBuilder<T extends Disposable>();
 
 class DisposableEntry<T extends Disposable> {
   T disposable;
@@ -18,7 +18,7 @@ class DisposableEntry<T extends Disposable> {
 
 abstract class ProviderContextBloc extends AsyncInitLoadingBloc
     implements IProviderContextBloc {
-  Map<Type, DisposableEntry> _storage = Map();
+  final Map<Type, DisposableEntry> _storage = {};
 
   @override
   Disposable register<T extends Disposable>(T disposable) {
@@ -29,12 +29,12 @@ abstract class ProviderContextBloc extends AsyncInitLoadingBloc
 
     ProviderBuilder<T> providerCreator = () {
 //      _logger.d(() => "providerCreator for $type context $context");
-      return ProviderLib.Provider<T>.value(value: disposable);
+      return provider_lib.Provider<T>.value(value: disposable);
     };
 
     _storage[type] = DisposableEntry<T>(disposable, providerCreator);
 
-    return CustomDisposable(() => this.unregister<T>(disposable));
+    return CustomDisposable(() => unregister<T>(disposable));
   }
 
   @override
@@ -61,7 +61,7 @@ abstract class ProviderContextBloc extends AsyncInitLoadingBloc
 
     var providers =
         _storage.values.map((entry) => entry.providerBuilder()).toList();
-    return ProviderLib.MultiProvider(
+    return provider_lib.MultiProvider(
       providers: providers,
       child: child,
     );
@@ -69,7 +69,7 @@ abstract class ProviderContextBloc extends AsyncInitLoadingBloc
 
   @override
   Future<Disposable> asyncInitAndRegister<T extends Disposable>(T obj,
-      {Future additionalAsyncInit(T obj)}) async {
+      {Future Function(T obj) additionalAsyncInit}) async {
     if (obj is AsyncInitLoadingBloc) {
       await obj.performAsyncInit();
     }

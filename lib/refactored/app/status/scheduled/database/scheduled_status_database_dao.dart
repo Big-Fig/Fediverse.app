@@ -22,10 +22,11 @@ part 'scheduled_status_database_dao.g.dart';
 })
 class ScheduledStatusDao extends DatabaseAccessor<AppDatabase>
     with _$ScheduledStatusDaoMixin {
+  @override
   final AppDatabase db;
 
   // Called by the AppDatabase class
-  ScheduledStatusDao(this.db) : super(db) {}
+  ScheduledStatusDao(this.db) : super(db);
 
   Future<int> insert(Insertable<DbScheduledStatus> entity) =>
       into(dbScheduledStatuses).insert(entity);

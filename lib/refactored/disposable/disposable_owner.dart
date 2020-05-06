@@ -44,6 +44,7 @@ class DisposableOwner extends Disposable {
     }
   }
 
+  @override
   @mustCallSuper
   void dispose() {
     disposed = true;

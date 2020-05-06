@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 abstract class INotificationsTabsBloc extends Disposable {
-  static INotificationsTabsBloc of(BuildContext context, {listen: true}) =>
+  static INotificationsTabsBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<INotificationsTabsBloc>(context, listen: listen);
 
   List<NotificationTab> get tabs;

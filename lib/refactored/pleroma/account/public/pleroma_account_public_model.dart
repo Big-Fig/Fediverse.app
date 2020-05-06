@@ -52,10 +52,11 @@ class PleromaAccountRegisterRequest extends IPleromaAccountRegisterRequest {
       _$PleromaAccountRegisterRequestFromJson(jsonDecode(jsonString));
 
   static List<PleromaAccountRegisterRequest> listFromJsonString(String str) =>
-      new List<PleromaAccountRegisterRequest>.from(json
+      List<PleromaAccountRegisterRequest>.from(json
           .decode(str)
           .map((x) => PleromaAccountRegisterRequest.fromJson(x)));
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaAccountRegisterRequestToJson(this);
 
   String toJsonString() =>

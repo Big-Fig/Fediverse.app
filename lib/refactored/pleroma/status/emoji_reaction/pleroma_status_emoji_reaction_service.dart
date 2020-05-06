@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 abstract class IPleromaStatusEmojiReactionService implements IPleromaApi {
   static IPleromaStatusEmojiReactionService of(BuildContext context,
-          {listen: true}) =>
+          {bool listen = true}) =>
       Provider.of<IPleromaStatusEmojiReactionService>(context, listen: listen);
 
   Future<IPleromaStatus> addReaction(

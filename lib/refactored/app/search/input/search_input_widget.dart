@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SearchInputWidget extends StatelessWidget {
+  @override
   Widget build(BuildContext context) {
     var searchInputBloc = ISearchInputBloc.of(context, listen: true);
 

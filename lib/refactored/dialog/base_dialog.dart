@@ -22,10 +22,10 @@ abstract class BaseDialog extends DisposableOwner {
         builder: (BuildContext context) => buildDialog(context));
   }
 
-  hide(BuildContext context) {
+  void hide(BuildContext context) async {
     assert(isShowing);
     _isShowing = false;
-    this.dispose();
+    dispose();
     Navigator.of(context).pop();
   }
 

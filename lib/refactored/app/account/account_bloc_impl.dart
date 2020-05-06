@@ -17,6 +17,7 @@ var _logger = Logger("account_bloc_impl.dart");
 class AccountBloc extends IAccountBloc {
   final BehaviorSubject<IAccount> _accountSubject;
 
+  @override
   IPleromaAccountRelationship get accountRelationship =>
       account.pleromaRelationship;
 

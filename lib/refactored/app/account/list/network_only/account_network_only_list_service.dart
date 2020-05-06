@@ -11,5 +11,6 @@ abstract class IAccountNetworkOnlyListService extends DisposableOwner
           {bool listen = true}) =>
       Provider.of<IAccountNetworkOnlyListService>(context, listen: listen);
 
+  @override
   IPleromaApi get pleromaApi;
 }

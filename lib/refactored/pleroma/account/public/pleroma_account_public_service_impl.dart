@@ -51,7 +51,7 @@ class PleromaAccountPublicService extends IPleromaAccountPublicService {
     if (httpResponse.statusCode == 200) {
       return true;
     } else {
-      throw new PleromaAccountPublicException(
+      throw PleromaAccountPublicException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
   }

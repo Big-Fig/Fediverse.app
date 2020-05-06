@@ -13,8 +13,8 @@ class PleromaRestException implements Exception {
 
   PleromaRestException({@required this.statusCode, @required this.body}) {
     try {
-      var jsonBody = jsonDecode(this.body);
-      this.decodedErrorDescription = jsonBody["error"];
+      var jsonBody = jsonDecode(body);
+      decodedErrorDescription = jsonBody["error"];
     } catch (e) {
       _logger.warning(() => "error during parse 'error' from API response");
     }

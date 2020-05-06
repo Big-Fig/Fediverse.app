@@ -8,19 +8,26 @@ import 'package:json_annotation/json_annotation.dart';
 part 'pleroma_notification_model.g.dart';
 
 abstract class IPleromaNotification extends IMastodonNotification {
+  @override
   IPleromaAccount get account;
 
+  @override
   IPleromaStatus get status;
 }
 
 @JsonSerializable()
 @MastodonMediaNotificationTypeTypeConverter()
 class PleromaNotification extends IPleromaNotification {
+  @override
   PleromaAccount account;
+  @override
   @JsonKey(name: "created_at")
   DateTime createdAt;
+  @override
   String id;
+  @override
   MastodonNotificationType type;
+  @override
   PleromaStatus status;
 
   PleromaNotification({
@@ -38,7 +45,7 @@ class PleromaNotification extends IPleromaNotification {
       _$PleromaNotificationFromJson(jsonDecode(jsonString));
 
   static List<PleromaNotification> listFromJsonString(String str) =>
-      new List<PleromaNotification>.from(
+      List<PleromaNotification>.from(
           json.decode(str).map((x) => PleromaNotification.fromJson(x)));
 
   Map<String, dynamic> toJson() => _$PleromaNotificationToJson(this);

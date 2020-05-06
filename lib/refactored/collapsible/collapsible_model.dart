@@ -12,7 +12,7 @@ abstract class ICollapsibleItem {
 
   Stream<bool> get isCollapsedStream;
 
-  toggleCollapseExpand();
+  void toggleCollapseExpand();
 
-  collapse();
+  void collapse();
 }

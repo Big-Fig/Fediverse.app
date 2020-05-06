@@ -19,7 +19,7 @@ class ProfileEditSelectAvatarPage extends ProfileEditSelectImagePage {
   }
 
   @override
-  onFileSelected(BuildContext context, FilePickerFile filePickerFile) {
+  void onFileSelected(BuildContext context, FilePickerFile filePickerFile) {
     showDialog(
         context: context,
         child: AlertDialog(
@@ -35,7 +35,7 @@ class ProfileEditSelectAvatarPage extends ProfileEditSelectImagePage {
                   dismissDialog(context);
                   if (croppedFile != null) {
                     if (filePickerFile.isNeedDeleteAfterUsage) {
-                      filePickerFile.file.delete();
+                      await filePickerFile.file.delete();
                     }
 
                     selectedCallback(FilePickerFile(

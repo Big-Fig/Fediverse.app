@@ -1,6 +1,4 @@
 import 'package:fedi/refactored/app/media/attachment/upload/upload_media_attachment_grid_widget.dart';
-import 'package:fedi/refactored/app/status/post/action/post_status_attach_camera_image_action_widget.dart';
-import 'package:fedi/refactored/app/status/post/action/post_status_attach_camera_video_action_widget.dart';
 import 'package:fedi/refactored/app/status/post/action/post_status_attach_media_action_widget.dart';
 import 'package:fedi/refactored/app/status/post/action/post_status_mention_action_widget.dart';
 import 'package:fedi/refactored/app/status/post/action/post_status_nsfw_action_widget.dart';

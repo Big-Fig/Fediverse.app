@@ -31,7 +31,7 @@ class ConversationStatusListItemWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             ClipRRect(
-              borderRadius: new BorderRadius.circular(20.0),
+              borderRadius: BorderRadius.circular(20.0),
               child: Container(
                 color: Color(0xffececec),
                 constraints: BoxConstraints(maxWidth: deviceWidth * 0.80),
@@ -73,7 +73,7 @@ class ConversationStatusListItemWidget extends StatelessWidget {
                   builder: (context, snapshot) {
                     var accountAvatar = snapshot.data;
                     return ClipRRect(
-                      borderRadius: new BorderRadius.circular(15.0),
+                      borderRadius: BorderRadius.circular(15.0),
                       child: AccountAvatarWidget.buildAccountAvatarWidget(
                           avatarUrl: accountAvatar,
                           progressSize: 30,
@@ -85,7 +85,7 @@ class ConversationStatusListItemWidget extends StatelessWidget {
               width: 8,
             ),
             ClipRRect(
-              borderRadius: new BorderRadius.circular(20.0),
+              borderRadius: BorderRadius.circular(20.0),
               child: Container(
                 decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),

@@ -9,16 +9,21 @@ abstract class IPleromaEmoji implements IMastodonEmoji {}
 @HiveType()
 @JsonSerializable()
 class PleromaEmoji implements IPleromaEmoji {
+  @override
   @HiveField(0)
   String shortcode;
+  @override
   @HiveField(1)
   String url;
+  @override
   @HiveField(2)
   @JsonKey(name: "static_url")
   String staticUrl;
+  @override
   @JsonKey(name: "visible_in_picker")
   @HiveField(3)
   bool visibleInPicker;
+  @override
   @HiveField(4)
   String category;
 

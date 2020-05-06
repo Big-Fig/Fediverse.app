@@ -22,6 +22,7 @@ part 'account_followings_database_dao.g.dart';
 })
 class AccountFollowingsDao extends DatabaseAccessor<AppDatabase>
     with _$AccountFollowingsDaoMixin {
+  @override
   final AppDatabase db;
 
   // Called by the AppDatabase class

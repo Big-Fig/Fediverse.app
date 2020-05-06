@@ -62,8 +62,10 @@ abstract class IPleromaStatus implements IMastodonStatus {
 }
 
 abstract class IPleromaScheduledStatus extends IMastodonScheduledStatus {
+  @override
   IPleromaScheduledStatusParams get params;
 
+  @override
   List<IPleromaMediaAttachment> get mediaAttachments;
 }
 
@@ -99,7 +101,7 @@ class PleromaScheduledStatus extends IPleromaScheduledStatus {
       _$PleromaScheduledStatusFromJson(jsonDecode(jsonString));
 
   static List<PleromaScheduledStatus> listFromJsonString(String str) =>
-      new List<PleromaScheduledStatus>.from(
+      List<PleromaScheduledStatus>.from(
           json.decode(str).map((x) => PleromaScheduledStatus.fromJson(x)));
 
   Map<String, dynamic> toJson() => _$PleromaScheduledStatusToJson(this);
@@ -109,28 +111,38 @@ class PleromaScheduledStatus extends IPleromaScheduledStatus {
 
 @JsonSerializable()
 class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
+  @override
   final String text;
 
+  @override
   @JsonKey(name: "media_ids")
   final List<String> mediaIds;
 
+  @override
   final bool sensitive;
 
+  @override
   @JsonKey(name: "spoiler_text")
   final String spoilerText;
 
+  @override
   final String visibility;
 
+  @override
   @JsonKey(name: "scheduled_at")
   final DateTime scheduledAt;
 
+  @override
   final dynamic poll;
 
+  @override
   final String idempotency;
 
+  @override
   @JsonKey(name: "in_reply_to_id")
   final String inReplyToId;
 
+  @override
   @JsonKey(name: "application_id")
   final dynamic applicationId;
 
@@ -153,7 +165,7 @@ class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
       _$PleromaScheduledStatusParamsFromJson(jsonDecode(jsonString));
 
   static List<PleromaScheduledStatusParams> listFromJsonString(String str) =>
-      new List<PleromaScheduledStatusParams>.from(json
+      List<PleromaScheduledStatusParams>.from(json
           .decode(str)
           .map((x) => PleromaScheduledStatusParams.fromJson(x)));
 
@@ -203,43 +215,71 @@ class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
 
 @JsonSerializable()
 class PleromaStatus extends IPleromaStatus {
+  @override
   final String id;
+  @override
   @JsonKey(name: "created_at")
   final DateTime createdAt;
+  @override
   @JsonKey(name: "in_reply_to_id")
   final String inReplyToId;
+  @override
   @JsonKey(name: "in_reply_to_account_id")
   String inReplyToAccountId;
+  @override
   final bool sensitive;
+  @override
   @JsonKey(name: "spoiler_text")
   final String spoilerText;
 
+  @override
   final String uri;
+  @override
   final String url;
+  @override
   @JsonKey(name: "replies_count")
   final int repliesCount;
+  @override
   @JsonKey(name: "reblogs_count")
   int reblogsCount;
+  @override
   @JsonKey(name: "favourites_count")
   int favouritesCount;
+  @override
   bool favourited;
+  @override
   bool reblogged;
+  @override
   final bool muted;
+  @override
   final bool bookmarked;
+  @override
   final bool pinned;
+  @override
   final String content;
+  @override
   final PleromaStatus reblog;
+  @override
   final PleromaApplication application;
+  @override
   final PleromaAccount account;
+  @override
   @JsonKey(name: "media_attachments")
   final List<PleromaMediaAttachment> mediaAttachments;
+  @override
   final List<PleromaMention> mentions;
+  @override
   final List<PleromaTag> tags;
+  @override
   final List<PleromaEmoji> emojis;
+  @override
   final PleromaPoll poll;
+  @override
   final PleromaCard card;
+  @override
   final PleromaStatusPleromaPart pleroma;
 
+  @override
   final String language;
 
   @override
@@ -249,6 +289,7 @@ class PleromaStatus extends IPleromaStatus {
   MastodonVisibility get visibilityMastodon =>
       const MastodonVisibilityTypeConverter().fromJson(visibility);
 
+  @override
   PleromaVisibility get visibilityPleroma =>
       const PleromaVisibilityTypeConverter().fromJson(visibility);
 
@@ -291,7 +332,7 @@ class PleromaStatus extends IPleromaStatus {
       _$PleromaStatusFromJson(jsonDecode(jsonString));
 
   static List<PleromaStatus> listFromJsonString(String str) =>
-      new List<PleromaStatus>.from(
+      List<PleromaStatus>.from(
           json.decode(str).map((x) => PleromaStatus.fromJson(x)));
 
   Map<String, dynamic> toJson() => _$PleromaStatusToJson(this);
@@ -542,6 +583,7 @@ class PleromaPostStatus implements IPleromaPostStatus {
   factory PleromaPostStatus.fromJsonString(String jsonString) =>
       _$PleromaPostStatusFromJson(jsonDecode(jsonString));
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaPostStatusToJson(this);
 
   String toJsonString() => jsonEncode(_$PleromaPostStatusToJson(this));
@@ -637,11 +679,12 @@ class PleromaScheduleStatus implements IPleromaScheduleStatus {
   factory PleromaScheduleStatus.fromJsonString(String jsonString) =>
       _$PleromaScheduleStatusFromJson(jsonDecode(jsonString));
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaScheduleStatusToJson(this);
 
   String toJsonString() => jsonEncode(_$PleromaScheduleStatusToJson(this));
 
-  static toUTCIsoString(DateTime scheduledAt) =>
+  static String toUTCIsoString(DateTime scheduledAt) =>
       scheduledAt.toUtc()?.toIso8601String();
 }
 
@@ -657,10 +700,14 @@ abstract class IPleromaStatusEmojiReaction {
 
 @JsonSerializable()
 class PleromaStatusEmojiReaction implements IPleromaStatusEmojiReaction {
+  @override
   String name;
+  @override
   int count;
+  @override
   bool me;
 
+  @override
   List<PleromaAccount> accounts;
 
   PleromaStatusEmojiReaction({this.name, this.count, this.me, this.accounts});
@@ -680,7 +727,7 @@ class PleromaStatusEmojiReaction implements IPleromaStatusEmojiReaction {
   Map<String, dynamic> toJson() => _$PleromaStatusEmojiReactionToJson(this);
 
   static List<PleromaStatusEmojiReaction> listFromJsonString(String str) =>
-      new List<PleromaStatusEmojiReaction>.from(
+      List<PleromaStatusEmojiReaction>.from(
           json.decode(str).map((x) => PleromaStatusEmojiReaction.fromJson(x)));
 
   factory PleromaStatusEmojiReaction.fromJsonString(String jsonString) =>

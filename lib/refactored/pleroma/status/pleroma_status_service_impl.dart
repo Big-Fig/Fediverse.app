@@ -104,7 +104,7 @@ class PleromaStatusService implements IPleromaStatusService {
     if (restResponse.isSuccess) {
       return restResponse.body;
     } else {
-      throw new PleromaStatusException(
+      throw PleromaStatusException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
   }
@@ -120,7 +120,7 @@ class PleromaStatusService implements IPleromaStatusService {
     if (restResponse.isSuccess) {
       return restResponse.body;
     } else {
-      throw new PleromaStatusException(
+      throw PleromaStatusException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
   }
@@ -135,7 +135,7 @@ class PleromaStatusService implements IPleromaStatusService {
     if (restResponse.isSuccess) {
       return restResponse.body;
     } else {
-      throw new PleromaStatusException(
+      throw PleromaStatusException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
   }
@@ -150,7 +150,7 @@ class PleromaStatusService implements IPleromaStatusService {
     if (restResponse.isSuccess) {
       return restResponse.body;
     } else {
-      throw new PleromaStatusException(
+      throw PleromaStatusException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
   }

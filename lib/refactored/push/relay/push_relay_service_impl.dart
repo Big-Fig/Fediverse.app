@@ -14,6 +14,7 @@ class PushRelayService extends DisposableOwner implements IPushRelayService {
 
   PushRelayService({@required this.pushRelayBaseUrl});
 
+  @override
   String createPushRelayEndPointUrl({
     @required String account,
     @required Uri baseServerUrl,

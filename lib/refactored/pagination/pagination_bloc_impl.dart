@@ -27,16 +27,19 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
   }
 
   int get cachedPagesCount => indexToCachedPageMap.length;
+  @override
   final int itemsCountPerPage;
   final Map<int, TPage> indexToCachedPageMap = {};
 
   // ignore: close_sinks
   final BehaviorSubject<List<TPage>> pagesSubject = BehaviorSubject.seeded([]);
 
+  @override
   Stream<bool> get isLoadedPagesInSequenceStream =>
       loadedPagesSortedByIndexStream
           .map((pages) => mapIsLoadedPagesInSequence(pages));
 
+  @override
   bool get isLoadedPagesInSequence =>
       mapIsLoadedPagesInSequence(loadedPagesSortedByIndex);
 

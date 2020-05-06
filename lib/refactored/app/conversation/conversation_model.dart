@@ -29,7 +29,7 @@ class DbConversationWrapper implements IConversation {
 
   DbConversationWrapper copyWith({int id, String remoteId, bool unread}) =>
       DbConversationWrapper(dbConversation.copyWith(
-        id: id ?? this.localId,
+        id: id ?? localId,
         remoteId: remoteId ?? this.remoteId,
         unread: unread ?? this.unread,
       ));

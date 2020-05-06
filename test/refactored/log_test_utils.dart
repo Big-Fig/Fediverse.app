@@ -1,7 +1,7 @@
 
 import 'package:logging/logging.dart';
 
-initTestLog() {
+void initTestLog() {
   Logger.root.level = Level.ALL; // defaults to Level.INFO
   Logger.root.onRecord.listen((record) {
     print('${record.level.name}(${record.loggerName}): ${record.time}: '

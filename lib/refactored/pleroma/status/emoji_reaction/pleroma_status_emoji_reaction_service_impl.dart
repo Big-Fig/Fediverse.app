@@ -97,7 +97,7 @@ class PleromaStatusEmojiReactionService
     if (restResponse.isSuccess) {
       return restResponse.body;
     } else {
-      throw new PleromaStatusEmojiReactionException(
+      throw PleromaStatusEmojiReactionException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
   }
@@ -113,7 +113,7 @@ class PleromaStatusEmojiReactionService
     if (restResponse.isSuccess) {
       return restResponse.body;
     } else {
-      throw new PleromaStatusEmojiReactionException(
+      throw PleromaStatusEmojiReactionException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
   }
@@ -130,7 +130,7 @@ class PleromaStatusEmojiReactionService
     if (restResponse.isSuccess) {
       return restResponse.body;
     } else {
-      throw new PleromaStatusEmojiReactionException(
+      throw PleromaStatusEmojiReactionException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
   }

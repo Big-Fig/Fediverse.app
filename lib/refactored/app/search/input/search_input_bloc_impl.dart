@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
 class SearchInputBloc extends DisposableOwner implements ISearchInputBloc {
+  @override
   final TextEditingController searchTextEditingController =
       TextEditingController();
 
@@ -31,7 +32,7 @@ class SearchInputBloc extends DisposableOwner implements ISearchInputBloc {
   Stream<String> get searchTextStream => searchTextSubject.stream;
 
   @override
-  clearSearch() {
+  void clearSearch() {
     searchTextEditingController.text = "";
   }
 

@@ -6,7 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPleromaAccountService implements IPleromaApi {
-  static IPleromaAccountService of(BuildContext context, {listen: true}) =>
+  static IPleromaAccountService of(BuildContext context, {bool listen = true}) =>
       Provider.of<IPleromaAccountService>(context, listen: listen);
 
   /// Find out whether a given account is followed, blocked, muted, etc.

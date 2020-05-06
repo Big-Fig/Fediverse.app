@@ -244,7 +244,7 @@ class PleromaTimelineService implements IPleromaTimelineService {
     if (restResponse.isSuccess) {
       return restResponse.body;
     } else {
-      throw new PleromaTimelineException(
+      throw PleromaTimelineException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
   }

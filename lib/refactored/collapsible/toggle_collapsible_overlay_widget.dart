@@ -15,7 +15,7 @@ class ToggleCollapsibleOverlayWidget extends StatelessWidget {
 
           if (isAtLeastOneVisibleItemExpanded) {
             return Container(
-              decoration: new BoxDecoration(
+              decoration: BoxDecoration(
                 color: Colors.blue,
                 shape: BoxShape.circle,
               ),

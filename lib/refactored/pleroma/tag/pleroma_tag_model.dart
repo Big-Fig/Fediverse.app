@@ -15,10 +15,13 @@ abstract class IPleromaTag implements IMastodonTag {
 @HiveType()
 @JsonSerializable()
 class PleromaTag implements IPleromaTag {
+  @override
   @HiveField(0)
   String name;
+  @override
   @HiveField(1)
   String url;
+  @override
   @HiveField(2)
   List<PleromaHistory> history;
   PleromaTag({

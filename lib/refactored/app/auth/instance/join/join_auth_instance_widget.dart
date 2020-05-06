@@ -71,7 +71,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
       ),
       onPressed: () {
         goToRegisterAuthInstancePage(context,
-            instanceBaseUrl: Uri.parse("https://fedi.app"));
+            instanceBaseUrl: Uri.parse('https://fedi.app'));
       },
     );
   }
@@ -190,8 +190,8 @@ class JoinAuthInstanceWidget extends StatelessWidget {
     return uri;
   }
 
-  signUpToInstance(BuildContext context) async {
-    doAsyncOperationWithDialog(
+  Future signUpToInstance(BuildContext context) async {
+    await doAsyncOperationWithDialog(
         context: context,
         contentMessage: AppLocalizations.of(context).tr("app.auth.instance.join"
             ".progress.dialog.content"),
@@ -228,9 +228,9 @@ class JoinAuthInstanceWidget extends StatelessWidget {
               ".fail.dialog.content"),
           context: context);
 
-  logInToInstance(BuildContext context) {
+  Future logInToInstance(BuildContext context) {
     var joinInstanceBloc = IJoinAuthInstanceBloc.of(context, listen: false);
-    doAsyncOperationWithDialog(
+    return doAsyncOperationWithDialog(
         context: context,
         contentMessage: AppLocalizations.of(context).tr("app.auth.instance.join"
             ".progress.dialog.content"),

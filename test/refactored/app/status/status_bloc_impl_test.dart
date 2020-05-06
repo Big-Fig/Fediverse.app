@@ -97,7 +97,7 @@ void main() {
 
     expectStatus(statusBloc.status, newValue);
     expectStatus(listenedValue, newValue);
-    subscription.cancel();
+    await await subscription.cancel();
   });
 
   test('reblog', () async {
@@ -120,7 +120,7 @@ void main() {
 
     expectStatus(statusBloc.reblog, reblog);
     expectStatus(listenedValue, reblog);
-    subscription.cancel();
+    await await subscription.cancel();
   });
   test('reblogOrOriginal', () async {
     expectStatus(statusBloc.reblogOrOriginal, status);
@@ -142,7 +142,7 @@ void main() {
 
     expectStatus(statusBloc.reblogOrOriginal, reblog);
     expectStatus(listenedValue, reblog);
-    subscription.cancel();
+    await await subscription.cancel();
   });
 
   test('content', () async {
@@ -163,7 +163,7 @@ void main() {
 
     expect(statusBloc.content, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await await subscription.cancel();
   });
 
   test('contentHtmlWithEmojis', () async {
@@ -202,7 +202,7 @@ void main() {
         "<img src=\"https://fedi.app/emoji2.png\" width=\"20\">"
         "</body></html>");
 
-    subscription.cancel();
+    await await subscription.cancel();
   });
   test('contentWithEmojisWithoutAccount', () async {
     var newValue = "newContent :emoji :emoji1 :emoji2 @<span>acct<\/span>";
@@ -244,7 +244,7 @@ void main() {
         "</a>"
         "</body></html>");
 
-    subscription.cancel();
+    await await subscription.cancel();
   });
 
   test('card', () async {
@@ -265,7 +265,7 @@ void main() {
 
     expect(statusBloc.card, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await await subscription.cancel();
   });
 
   test('reblogOrOriginalCard', () async {
@@ -296,7 +296,7 @@ void main() {
     expect(statusBloc.reblogOrOriginalCard, reblogValue);
     expect(listenedValue, reblogValue);
 
-    subscription.cancel();
+    await await subscription.cancel();
   });
 
   test('isHaveReblog', () async {
@@ -323,7 +323,7 @@ void main() {
     expect(statusBloc.isHaveReblog, false);
     expect(listenedValue, false);
 
-    subscription.cancel();
+    await await subscription.cancel();
   });
 
   test('account', () async {
@@ -344,7 +344,7 @@ void main() {
 
     expectAccount(statusBloc.account, newValue);
     expectAccount(listenedValue, newValue);
-    subscription.cancel();
+    await await subscription.cancel();
   });
 
   test('reblogOrOriginalAccount', () async {
@@ -376,7 +376,7 @@ void main() {
 
     expectAccount(statusBloc.reblogOrOriginalAccount, reblogValue);
     expectAccount(listenedValue, reblogValue);
-    subscription.cancel();
+    await await subscription.cancel();
   });
 
   test('reblogged', () async {
@@ -397,7 +397,7 @@ void main() {
 
     expect(statusBloc.reblogged, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await await subscription.cancel();
   });
   test('bookmarked', () async {
     expect(statusBloc.bookmarked, status.bookmarked);
@@ -417,7 +417,7 @@ void main() {
 
     expect(statusBloc.bookmarked, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await await subscription.cancel();
   });
   test('pinned', () async {
     expect(statusBloc.pinned, status.pinned);
@@ -437,7 +437,7 @@ void main() {
 
     expect(statusBloc.pinned, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await await subscription.cancel();
   });
   test('muted', () async {
     expect(statusBloc.muted, status.muted);
@@ -457,7 +457,7 @@ void main() {
 
     expect(statusBloc.muted, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await await subscription.cancel();
   });
 
   test('favourited', () async {
@@ -478,7 +478,7 @@ void main() {
 
     expect(statusBloc.favourited, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await await subscription.cancel();
   });
 
   test('isHaveInReplyToAccount', () async {
@@ -501,7 +501,7 @@ void main() {
 
     expect(statusBloc.isHaveInReplyToAccount, true);
     expect(listenedValue, true);
-    subscription.cancel();
+    await await subscription.cancel();
   });
 
   test('isHaveReblog', () async {
@@ -523,7 +523,7 @@ void main() {
     expect(statusBloc.isHaveReblog, true);
     expect(listenedValue, true);
 
-    subscription.cancel();
+    await await subscription.cancel();
   });
 
   test('mediaAttachments', () async {
@@ -544,7 +544,7 @@ void main() {
 
     expect(statusBloc.mediaAttachments, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('emojiReactions', () async {
@@ -568,7 +568,7 @@ void main() {
 
     expect(statusBloc.pleromaEmojiReactions, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('reblogPlusOriginalEmojiReactions', () async {
@@ -643,7 +643,7 @@ void main() {
     expect(listenedValue[2], expected[2]);
     expect(listenedValue, expected);
 
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('accountAvatar', () async {
@@ -664,7 +664,7 @@ void main() {
 
     expect(statusBloc.accountAvatar, newValue.avatar);
     expect(listenedValue, newValue.avatar);
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('mentions', () async {
@@ -685,7 +685,7 @@ void main() {
 
     expect(statusBloc.mentions, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('spoilerText', () async {
@@ -706,7 +706,7 @@ void main() {
 
     expect(statusBloc.spoilerText, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('nsfwSensitive', () async {
@@ -727,7 +727,7 @@ void main() {
 
     expect(statusBloc.nsfwSensitive, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('nsfwSensitiveAndDisplayEnabled', () async {
@@ -759,7 +759,7 @@ void main() {
     expect(statusBloc.nsfwSensitiveAndDisplayEnabled, false);
     expect(listenedValue, false);
 
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('containsSpoiler', () async {
@@ -785,7 +785,7 @@ void main() {
 
     expect(statusBloc.containsSpoiler, false);
     expect(listenedValue, false);
-    subscription.cancel();
+    await subscription.cancel();
   });
   test('containsSpoilerAndDisplayEnabled', () async {
     var listenedValue;
@@ -816,7 +816,7 @@ void main() {
     expect(statusBloc.containsSpoilerAndDisplayEnabled, false);
     expect(listenedValue, false);
 
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('createdAt', () async {
@@ -837,7 +837,7 @@ void main() {
 
     expect(statusBloc.createdAt, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('favouritesCount', () async {
@@ -858,7 +858,7 @@ void main() {
 
     expect(statusBloc.favouritesCount, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('reblogPlusOriginalFavouritesCount', () async {
@@ -893,7 +893,7 @@ void main() {
         statusBloc.reblogPlusOriginalFavouritesCount, newValue + reblogValue);
     expect(listenedValue, newValue + reblogValue);
 
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('reblogsCount', () async {
@@ -914,7 +914,7 @@ void main() {
 
     expect(statusBloc.reblogsCount, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('reblogPlusOriginalReblogsCount', () async {
@@ -947,7 +947,7 @@ void main() {
     expect(statusBloc.reblogPlusOriginalReblogsCount, newValue + reblogValue);
     expect(listenedValue, newValue + reblogValue);
 
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('repliesCount', () async {
@@ -968,7 +968,7 @@ void main() {
 
     expect(statusBloc.repliesCount, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('refreshFromNetwork', () async {
@@ -1000,7 +1000,7 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
 
     expectStatus(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('loadAccountByMentionUrl', () async {
@@ -1044,7 +1044,7 @@ void main() {
 
     expectAccount(await statusBloc.loadInReplyToAccount(), account1);
 
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('requestToggleReblog', () async {
@@ -1090,7 +1090,7 @@ void main() {
     expect(statusBloc.reblogged, initialValue);
     expect(listenedValue, initialValue);
 
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('requestToggleFavourite', () async {
@@ -1137,7 +1137,7 @@ void main() {
     expect(statusBloc.favourited, initialValue);
     expect(listenedValue, initialValue);
 
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('requestToggleMute', () async {
@@ -1182,7 +1182,7 @@ void main() {
     expect(statusBloc.muted, initialValue);
     expect(listenedValue, initialValue);
 
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('requestToggleBookmark', () async {
@@ -1229,7 +1229,7 @@ void main() {
     expect(statusBloc.bookmarked, initialValue);
     expect(listenedValue, initialValue);
 
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('requestTogglePin', () async {
@@ -1274,7 +1274,7 @@ void main() {
     expect(statusBloc.pinned, initialValue);
     expect(listenedValue, initialValue);
 
-    subscription.cancel();
+    await subscription.cancel();
   });
   test('requestToggleEmojiReaction', () async {
     var emoji1 = "emoji1";
@@ -1291,7 +1291,7 @@ void main() {
 
     status = status.copyWith(pleromaEmojiReactions: [reaction2]);
 
-    _update(status);
+    await _update(status);
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
     expect(statusBloc.pleromaEmojiReactions, status.pleromaEmojiReactions);
@@ -1388,6 +1388,6 @@ void main() {
     expect(statusBloc.pleromaEmojiReactions, newReactions);
     expect(listenedValue, newReactions);
 
-    subscription.cancel();
+    await subscription.cancel();
   });
 }
