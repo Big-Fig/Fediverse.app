@@ -11,12 +11,12 @@ import 'package:moor/moor.dart';
 
 var _logger = Logger("conversation_statuses_list_bloc_context_api_impl.dart");
 
-class ConversationStatusListContextApiService
+class ConversationStatusListContextApiBloc
     extends ConversationStatusListBloc {
   final IPleromaStatusService pleromaStatusService;
   final IStatus statusToFetchContext;
 
-  ConversationStatusListContextApiService(
+  ConversationStatusListContextApiBloc(
       {@required this.pleromaStatusService,
       @required IConversation conversation,
       @required this.statusToFetchContext,
@@ -70,11 +70,11 @@ class ConversationStatusListContextApiService
     }
   }
 
-  static ConversationStatusListContextApiService createFromContext(
+  static ConversationStatusListContextApiBloc createFromContext(
           BuildContext context,
           {@required IConversation conversation,
           @required IStatus statusToFetchContext}) =>
-      ConversationStatusListContextApiService(
+      ConversationStatusListContextApiBloc(
           conversation: conversation,
           pleromaStatusService:
               IPleromaStatusService.of(context, listen: false),

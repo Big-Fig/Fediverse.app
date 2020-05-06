@@ -1,5 +1,5 @@
 import 'package:fedi/refactored/app/account/account_model.dart';
-import 'package:fedi/refactored/app/status/list/cached/status_cached_list_service.dart';
+import 'package:fedi/refactored/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository_model.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
@@ -11,12 +11,12 @@ import 'package:moor/moor.dart';
 
 var _logger = Logger("account_statuses_bloc_impl.dart");
 
-class AccountStatusesBloc extends IStatusCachedListService {
+class AccountStatusesCachedListBlocBloc extends IStatusCachedListBloc {
   final IAccount account;
   final IPleromaAccountService pleromaAccountService;
   final IStatusRepository statusRepository;
 
-  AccountStatusesBloc(
+  AccountStatusesCachedListBlocBloc(
       {@required this.account,
       @required this.pleromaAccountService,
       @required this.statusRepository})
@@ -25,9 +25,9 @@ class AccountStatusesBloc extends IStatusCachedListService {
   @override
   IPleromaApi get pleromaApi => pleromaAccountService;
 
-  static AccountStatusesBloc createFromContext(BuildContext context,
+  static AccountStatusesCachedListBlocBloc createFromContext(BuildContext context,
       {@required IAccount account}) {
-    return AccountStatusesBloc(
+    return AccountStatusesCachedListBlocBloc(
         account: account,
         pleromaAccountService:
             IPleromaAccountService.of(context, listen: false),

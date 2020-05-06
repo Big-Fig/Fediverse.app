@@ -1,4 +1,4 @@
-import 'package:fedi/refactored/app/notification/list/cached/notification_cached_list_service.dart';
+import 'package:fedi/refactored/app/notification/list/cached/notification_cached_list_bloc.dart';
 import 'package:fedi/refactored/app/notification/notification_model.dart';
 import 'package:fedi/refactored/app/notification/repository/notification_repository.dart';
 import 'package:fedi/refactored/app/notification/repository/notification_repository_model.dart';
@@ -8,7 +8,7 @@ import 'package:fedi/refactored/pleroma/notification/pleroma_notification_servic
 import 'package:flutter/widgets.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 
-class NotificationCachedListService extends INotificationCachedListService {
+class NotificationCachedListBloc extends INotificationCachedListBloc {
   final IPleromaNotificationService pleromaNotificationService;
   final INotificationRepository notificationRepository;
   final MastodonNotificationType onlyWithType;
@@ -16,7 +16,7 @@ class NotificationCachedListService extends INotificationCachedListService {
   @override
   IPleromaApi get pleromaApi => pleromaNotificationService;
 
-  NotificationCachedListService(
+  NotificationCachedListBloc(
       {@required this.pleromaNotificationService,
       @required this.notificationRepository,
       this.onlyWithType});
@@ -65,9 +65,9 @@ class NotificationCachedListService extends INotificationCachedListService {
     }
   }
 
-  static NotificationCachedListService createFromContext(BuildContext context,
+  static NotificationCachedListBloc createFromContext(BuildContext context,
           {MastodonNotificationType onlyWithType}) =>
-      NotificationCachedListService(
+      NotificationCachedListBloc(
           pleromaNotificationService:
               IPleromaNotificationService.of(context, listen: false),
           onlyWithType: onlyWithType,

@@ -2,7 +2,7 @@ import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:fedi/refactored/pleroma/api/pleroma_api_service.dart';
 import 'package:flutter/widgets.dart';
 
-abstract class IPleromaCachedListService<T> extends DisposableOwner {
+abstract class IPleromaCachedListBloc<T> extends DisposableOwner {
   IPleromaApi get pleromaApi;
 
   Future<List<T>> loadLocalItems(

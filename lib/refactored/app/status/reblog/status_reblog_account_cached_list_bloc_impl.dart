@@ -11,15 +11,15 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 
-var _logger = Logger("status_favourite_account_list_service_impl.dart");
+var _logger = Logger("status_reblog_account_list_service_impl.dart");
 
-class StatusFavouriteAccountListService extends DisposableOwner
-    implements IAccountCachedListService {
+class StatusReblogAccountCachedListBloc extends DisposableOwner
+    implements IAccountCachedListBloc {
   final IPleromaStatusService pleromaStatusService;
   final IAccountRepository accountRepository;
   final IStatus status;
 
-  StatusFavouriteAccountListService({
+  StatusReblogAccountCachedListBloc({
     @required this.pleromaStatusService,
     @required this.accountRepository,
     @required this.status,
@@ -40,21 +40,21 @@ class StatusFavouriteAccountListService extends DisposableOwner
     try {
       List<IPleromaAccount> remoteAccounts;
 
-      remoteAccounts = await pleromaStatusService.favouritedBy(
-          statusRemoteId: status.remoteId
-          // pagination not supported
+      remoteAccounts =
+          await pleromaStatusService.reblogedBy(statusRemoteId: status.remoteId
+              // pagination not supported
 //          maxId: olderThanAccount?.remoteId,
 //          sinceId: newerThanAccount?.remoteId,
 //          limit: limit
-          );
+              );
 
       if (remoteAccounts != null) {
         await accountRepository.upsertRemoteAccounts(remoteAccounts,
             conversationRemoteId: null);
 
-        await accountRepository.updateStatusFavouritedBy(
+        await accountRepository.updateStatusRebloggedBy(
             statusRemoteId: status.remoteId,
-            favouritedByAccounts: remoteAccounts);
+            rebloggedByAccounts: remoteAccounts);
 
         return true;
       } else {
@@ -79,7 +79,6 @@ class StatusFavouriteAccountListService extends DisposableOwner
         "\t olderThanAccount=$olderThan");
 
     var accounts = await accountRepository.getAccounts(
-        searchQuery: null,
         olderThanAccount: olderThan,
         newerThanAccount: newerThan,
         limit: limit,
@@ -91,16 +90,16 @@ class StatusFavouriteAccountListService extends DisposableOwner
         onlyInAccountFollowers: null,
         onlyInStatusFavouritedBy: status,
         onlyInAccountFollowing: null,
-        onlyInStatusRebloggedBy: null);
+        onlyInStatusRebloggedBy: status,
+        searchQuery: null);
 
     _logger.finer(() => "finish loadLocalItems accounts ${accounts.length}");
     return accounts;
   }
 
-  static StatusFavouriteAccountListService createFromContext(
-          BuildContext context,
+  static StatusReblogAccountCachedListBloc createFromContext(BuildContext context,
           {@required IStatus status}) =>
-      StatusFavouriteAccountListService(
+      StatusReblogAccountCachedListBloc(
           accountRepository: IAccountRepository.of(context, listen: false),
           pleromaStatusService:
               IPleromaStatusService.of(context, listen: false),
