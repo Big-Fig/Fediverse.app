@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 // TODO: use MediaVideoPlayer class instead of copy-pasted code
-class StatusMediaAttachmentVideoWidget extends StatefulWidget {
+class MediaAttachmentVideoWidget extends StatefulWidget {
   final IPleromaMediaAttachment mediaAttachment;
 
-  StatusMediaAttachmentVideoWidget(this.mediaAttachment);
+  MediaAttachmentVideoWidget(this.mediaAttachment);
 
   @override
   _StatusMediaAttachmentVideoWidget createState() =>
@@ -15,7 +15,7 @@ class StatusMediaAttachmentVideoWidget extends StatefulWidget {
 }
 
 class _StatusMediaAttachmentVideoWidget
-    extends State<StatusMediaAttachmentVideoWidget> {
+    extends State<MediaAttachmentVideoWidget> {
   VideoPlayerController _controller;
   ChewieController chewieController;
 
