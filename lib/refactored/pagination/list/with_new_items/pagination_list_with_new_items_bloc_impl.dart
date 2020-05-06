@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:fedi/refactored/pagination/list/pagination_list_bloc_impl.dart';
 import 'package:fedi/refactored/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
@@ -56,6 +57,12 @@ abstract class PaginationListWithNewItemsBloc<
         List<TItem> actuallyNew = newItems
             .where((newItem) => compareItems(newItem, newerItem) > 0)
             .toList();
+
+        // remove duplicates
+        // sometimes local storage sqlite returns duplicated items
+        // todo: hack should be removed
+        actuallyNew = LinkedHashSet<TItem>.from(actuallyNew).toList();
+
         _logger.finest(() => "watchItemsNewerThanItem \n"
             "\t newItems ${newItems.length} \n"
             "\t actuallyNew = ${actuallyNew.length}");

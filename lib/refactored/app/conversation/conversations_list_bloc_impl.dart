@@ -58,7 +58,7 @@ class ConversationsListBloc extends DisposableOwner
     conversationPaginationListBloc = ConversationPaginationListWithNewItemsBloc(
         paginationBloc: conversationPaginationBloc,
         cachedListService: conversationListService,
-        mergeNewItemsImmediately: false,
+        mergeNewItemsImmediately: true,
     );
     addDisposable(disposable: conversationPaginationListBloc);
 
