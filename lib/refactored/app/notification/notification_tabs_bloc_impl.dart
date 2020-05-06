@@ -1,4 +1,5 @@
 import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
+import 'package:fedi/refactored/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
 import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/refactored/app/conversation/repository/conversation_repository.dart';
@@ -62,18 +63,21 @@ class NotificationsTabsBloc extends DisposableOwner
     @required this.myAccountBloc,
     @required this.currentInstanceBloc,
     @required this.pleromaWebSocketsService,
+    @required bool listenWebSocketsChanges,
   }) {
     selectedTabSubject = BehaviorSubject.seeded(startTab);
 
     addDisposable(subject: selectedTabSubject);
 
-    addDisposable(
-        disposable: MyNotificationsWebSocketsHandler(
-      conversationRepository: conversationRepository,
-      statusRepository: statusRepository,
-      notificationRepository: notificationRepository,
-      pleromaWebSocketsService: pleromaWebSocketsService,
-    ));
+    if (listenWebSocketsChanges) {
+      addDisposable(
+          disposable: MyNotificationsWebSocketsHandler(
+        conversationRepository: conversationRepository,
+        statusRepository: statusRepository,
+        notificationRepository: notificationRepository,
+        pleromaWebSocketsService: pleromaWebSocketsService,
+      ));
+    }
 
     _logger.finest(() => "constructor");
   }
@@ -96,5 +100,8 @@ class NotificationsTabsBloc extends DisposableOwner
             IConversationRepository.of(context, listen: false),
         notificationRepository:
             INotificationRepository.of(context, listen: false),
+        listenWebSocketsChanges:
+            IMyAccountSettingsBloc.of(context, listen: false)
+                .isRealtimeWebSocketsEnabled,
       );
 }

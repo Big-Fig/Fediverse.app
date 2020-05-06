@@ -3,11 +3,12 @@ import 'package:fedi/refactored/app/account/details/account_details_page.dart';
 import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
 import 'package:fedi/refactored/app/status/action/status_favourite_action_widget.dart';
 import 'package:fedi/refactored/app/status/card/status_card_widget.dart';
-import 'package:fedi/refactored/app/status/content/status_content_without_accounts_widget.dart';
-import 'package:fedi/refactored/app/media/attachment/media_attachments_widget.dart';
+import 'package:fedi/refactored/app/status/content/status_content_with_emojis_without_accounts_widget.dart';
+import 'package:fedi/refactored/app/status/media/status_media_attachments_widget.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ConversationStatusListItemWidget extends StatelessWidget {
   @override
@@ -35,26 +36,25 @@ class ConversationStatusListItemWidget extends StatelessWidget {
               child: Container(
                 color: Color(0xffececec),
                 constraints: BoxConstraints(maxWidth: deviceWidth * 0.80),
-                child: buildContent(context),
+                child: buildContent(context, statusBloc),
               ),
             ),
           ],
         ));
   }
 
-  Padding buildContent(BuildContext context) {
+  Padding buildContent(BuildContext context, IStatusBloc statusBloc) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
-      child: Container(
-        child: Column(
-          children: <Widget>[
-            StatusContentWithoutAccountsWidget(),
-            StatusCardWidget(),
-            MediaAttachmentsWidget(),
-          ],
-        ),
-      ),
-    );
+        padding: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+        child: Container(
+          child: Column(
+            children: <Widget>[
+              StatusContentWithEmojisWithoutAccountsWidget(),
+              StatusCardWidget(),
+              StatusMediaAttachmentsWidget(),
+            ],
+          ),
+        ));
   }
 
   Widget buildNotFromMeBody(BuildContext context, IStatusBloc statusBloc) {
@@ -96,7 +96,7 @@ class ConversationStatusListItemWidget extends StatelessWidget {
                   padding: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
                   child: Stack(
                     children: <Widget>[
-                      buildContent(context),
+                      buildContent(context, statusBloc),
                       Positioned(
                         bottom: -10,
                         right: -10,

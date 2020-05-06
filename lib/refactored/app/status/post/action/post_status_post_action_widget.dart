@@ -23,16 +23,21 @@ class PostStatusPostActionWidget extends StatelessWidget {
         builder: (context, snapshot) {
           var isReadyToPost = snapshot.data;
 
+
           return PleromaAsyncOperationButtonBuilderWidget(
             showProgressDialog: true,
             progressContentMessage: AppLocalizations.of(context)
                 .tr("app.status.post.dialog.async.content"),
             asyncButtonAction: () async {
+              var isScheduled = postStatusBloc.isScheduled;
               var success = await postStatusBloc.postStatus();
               if (success) {
                 Fluttertoast.showToast(
-                    msg: AppLocalizations.of(context)
-                        .tr("app.status.post.toast.success"),
+                    msg: isScheduled
+                        ? AppLocalizations.of(context)
+                            .tr("app.status.post.toast.success.schedule")
+                        : AppLocalizations.of(context)
+                            .tr("app.status.post.toast.success.post"),
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.CENTER,
                     timeInSecForIosWeb: 1,
@@ -45,13 +50,19 @@ class PostStatusPostActionWidget extends StatelessWidget {
               }
             },
             errorAlertDialogBuilders: [
-              (context, error) => SimpleAlertDialog(
-                  title: AppLocalizations.of(context)
-                      .tr("app.status.post.dialog.error.title"),
+              (context, error) {
+                var isScheduled = postStatusBloc.isScheduled;
+                return SimpleAlertDialog(
+                  title: isScheduled
+                      ? AppLocalizations.of(context)
+                          .tr("app.status.post.dialog.error.title.schedule")
+                      : AppLocalizations.of(context)
+                          .tr("app.status.post.dialog.error.title.post"),
                   content: AppLocalizations.of(context).tr(
                       "app.status.post.dialog.error.content",
                       args: [error.toString()]),
-                  context: context)
+                  context: context);
+              }
             ],
             builder: (BuildContext context, onPressed) {
               return OutlineButton(

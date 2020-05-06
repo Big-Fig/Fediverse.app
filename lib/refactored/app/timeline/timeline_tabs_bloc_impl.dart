@@ -1,4 +1,5 @@
 import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
+import 'package:fedi/refactored/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
 import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/refactored/app/conversation/repository/conversation_repository.dart';
@@ -46,7 +47,9 @@ class TimelineTabsBloc extends DisposableOwner implements ITimelineTabsBloc {
           conversationRepository:
               IConversationRepository.of(context, listen: false),
           notificationRepository:
-              INotificationRepository.of(context, listen: false));
+              INotificationRepository.of(context, listen: false),
+          myAccountSettingsBloc:
+              IMyAccountSettingsBloc.of(context, listen: false));
 
   final Map<TimelineTab, ITimelineTabBloc> tabsMap = Map();
 
@@ -71,6 +74,7 @@ class TimelineTabsBloc extends DisposableOwner implements ITimelineTabsBloc {
   final INotificationRepository notificationRepository;
   final IAccountRepository accountRepository;
   final IMyAccountBloc myAccountBloc;
+  final IMyAccountSettingsBloc myAccountSettingsBloc;
   final ICurrentAuthInstanceBloc currentInstanceBloc;
   final ITimelineLocalPreferencesBloc timelineLocalPreferencesBloc;
   final IPleromaWebSocketsService pleromaWebSocketsService;
@@ -84,6 +88,7 @@ class TimelineTabsBloc extends DisposableOwner implements ITimelineTabsBloc {
     @required this.conversationRepository,
     @required this.notificationRepository,
     @required this.myAccountBloc,
+    @required this.myAccountSettingsBloc,
     @required this.currentInstanceBloc,
     @required this.timelineLocalPreferencesBloc,
     @required this.pleromaWebSocketsService,
@@ -105,6 +110,8 @@ class TimelineTabsBloc extends DisposableOwner implements ITimelineTabsBloc {
         timelineLocalPreferencesBloc: timelineLocalPreferencesBloc,
         conversationRepository: conversationRepository,
         notificationRepository: notificationRepository,
+        listenWebSocketsChanges:
+            myAccountSettingsBloc.isRealtimeWebSocketsEnabled,
       ),
       TimelineTab.local: LocalTimelineTabBloc(
         currentInstanceBloc: currentInstanceBloc,
@@ -114,6 +121,8 @@ class TimelineTabsBloc extends DisposableOwner implements ITimelineTabsBloc {
         timelineLocalPreferencesBloc: timelineLocalPreferencesBloc,
         conversationRepository: conversationRepository,
         notificationRepository: notificationRepository,
+        listenWebSocketsChanges:
+            myAccountSettingsBloc.isRealtimeWebSocketsEnabled,
       ),
       TimelineTab.public: PublicTimelineTabBloc(
         currentInstanceBloc: currentInstanceBloc,
@@ -123,6 +132,8 @@ class TimelineTabsBloc extends DisposableOwner implements ITimelineTabsBloc {
         timelineLocalPreferencesBloc: timelineLocalPreferencesBloc,
         conversationRepository: conversationRepository,
         notificationRepository: notificationRepository,
+        listenWebSocketsChanges:
+            myAccountSettingsBloc.isRealtimeWebSocketsEnabled,
       )
     });
 

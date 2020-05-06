@@ -13,7 +13,8 @@ var _logger = Logger("status_media_attachments_widget.dart");
 class MediaAttachmentsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var statusBloc = IStatusBloc.of(context, listen: false);
+    var statusBloc =
+        IStatusBloc.of(context, listen: false);
     return StreamBuilder<List<IPleromaMediaAttachment>>(
         stream: statusBloc.mediaAttachmentsStream.distinct(),
         initialData: statusBloc.mediaAttachments,
