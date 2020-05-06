@@ -132,7 +132,7 @@ dev_dependencies:
   moor_ffi: ^0.4.0
 
   # better lint
-  pedantic: ^1.8.0
+  pedantic: ^1.8.0+1
 
 
 # For information on the generic Dart part of this file, see the
