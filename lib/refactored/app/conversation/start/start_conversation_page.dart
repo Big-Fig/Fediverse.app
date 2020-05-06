@@ -43,13 +43,12 @@ void goToStartConversationPage(BuildContext context) {
                 create: (context) => SelectAccountCachedListBloc.createFromContext(
                     context,
                     excludeMyAccount: true),
-                child: Provider<IPleromaCachedListBloc<IAccount>>(
-                  create: (context) =>
-                      ISelectAccountCachedListBloc.of(context, listen: false),
-                  child: Provider<ISearchInputBloc>(
-                    create: (context) =>
-                        ISelectAccountCachedListBloc.of(context, listen: false)
-                            .searchInputBloc,
+                child:
+                ProxyProvider<IPleromaCachedListBloc<IAccount>, ISelectAccountCachedListBloc>(
+                  update: (context, value, previous) => value,
+                  child:
+                  ProxyProvider<ISelectAccountCachedListBloc, ISearchInputBloc>(
+                    update: (context, value, previous) => value.searchInputBloc,
                     child: DisposableProvider<
                             IPaginationBloc<PaginationPage<IAccount>,
                                 IAccount>>(

@@ -14,8 +14,8 @@ class MyAccountDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var myAccountBloc = IMyAccountBloc.of(context, listen: true);
-    return Provider<IAccountBloc>(
-      create: (context) => IMyAccountBloc.of(context, listen: false),
+    return ProxyProvider<IMyAccountBloc, IAccountBloc>(
+      update: (context, value, previous) => value,
       child: Scaffold(
         appBar: AppBar(
           leading: SizedBox.shrink(),
