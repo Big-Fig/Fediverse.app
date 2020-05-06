@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'dart:collection';
 
-import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/pagination/list/pagination_list_bloc_impl.dart';
 import 'package:fedi/refactored/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/refactored/pagination/pagination_bloc.dart';
@@ -46,6 +44,7 @@ abstract class PaginationListWithNewItemsBloc<
 
     addDisposable(
         streamSubscription: newerItemStream.distinct().listen((newerItem) {
+//          clearNewItems();
       _logger.finest(() => "newerItem $newerItem");
       newItemsSubscription?.cancel();
 
@@ -158,9 +157,12 @@ abstract class PaginationListWithNewItemsBloc<
   }
 
   @override
-  Future<bool> refresh() {
-    clearNewItems();
-    return super.refresh();
+  Future<bool> refresh() async {
+    var refreshed = await super.refresh();
+    if (refreshed) {
+      clearNewItems();
+    }
+    return refreshed;
   }
 
   void clearNewItems() {
