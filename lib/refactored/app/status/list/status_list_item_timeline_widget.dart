@@ -8,7 +8,7 @@ import 'package:fedi/refactored/app/status/content/status_content_widget.dart';
 import 'package:fedi/refactored/app/status/created_at/status_created_at_widget.dart';
 import 'package:fedi/refactored/app/status/emoji_reaction/status_emoji_reaction_list_widget.dart';
 import 'package:fedi/refactored/app/status/emoji_reaction/status_emoji_reaction_picker_widget.dart';
-import 'package:fedi/refactored/app/status/media/status_media_attachments_widget.dart';
+import 'package:fedi/refactored/app/media/attachment/media_attachments_widget.dart';
 import 'package:fedi/refactored/app/status/nsfw/status_nsfw_warning_widget.dart';
 import 'package:fedi/refactored/app/status/reblog/status_reblog_header_widget.dart';
 import 'package:fedi/refactored/app/status/reply/status_reply_header_widget.dart';
@@ -156,7 +156,7 @@ class _StatusListItemTimelineWidgetState
                       StatusSpoilerWidget(),
                       StatusContentWidget(),
                       StatusCardWidget(),
-                      StatusMediaAttachmentsWidget(),
+                      MediaAttachmentsWidget(),
                     ],
                   );
                 } else {

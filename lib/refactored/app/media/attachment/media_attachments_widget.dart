@@ -1,17 +1,16 @@
 import 'package:carousel_pro/carousel_pro.dart';
-import 'package:fedi/refactored/app/status/media/status_media_attachment_image_widget.dart';
-import 'package:fedi/refactored/app/status/media/status_media_attachment_video_widget.dart';
+import 'package:fedi/refactored/app/media/attachment/media_attachment_image_widget.dart';
+import 'package:fedi/refactored/app/media/attachment/media_attachment_video_widget.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
 import 'package:fedi/refactored/mastodon/media/attachment/mastodon_media_attachment_model.dart';
 import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_model.dart';
-import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
 var _logger = Logger("status_media_attachments_widget.dart");
 
-class StatusMediaAttachmentsWidget extends StatelessWidget {
+class MediaAttachmentsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: false);
@@ -37,12 +36,12 @@ class StatusMediaAttachmentsWidget extends StatelessWidget {
         mediaAttachments.map((IPleromaMediaAttachment attachment) {
       switch (attachment.typeMastodon) {
         case MastodonMediaAttachmentType.image:
-          return StatusMediaAttachmentImageWidget(attachment);
+          return MediaAttachmentImageWidget(attachment);
           break;
 
         case MastodonMediaAttachmentType.video:
         case MastodonMediaAttachmentType.audio:
-          return StatusMediaAttachmentVideoWidget(attachment);
+          return MediaAttachmentVideoWidget(attachment);
           break;
 
         case MastodonMediaAttachmentType.gifv:

@@ -5,10 +5,10 @@ import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachmen
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class StatusMediaAttachmentImageWidget extends StatelessWidget {
+class MediaAttachmentImageWidget extends StatelessWidget {
   final IPleromaMediaAttachment mediaAttachment;
 
-  StatusMediaAttachmentImageWidget(this.mediaAttachment);
+  MediaAttachmentImageWidget(this.mediaAttachment);
 
   @override
   Widget build(BuildContext context) {
