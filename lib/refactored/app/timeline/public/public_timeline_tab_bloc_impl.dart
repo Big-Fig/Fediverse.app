@@ -1,10 +1,10 @@
 import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/refactored/app/conversation/repository/conversation_repository.dart';
 import 'package:fedi/refactored/app/notification/repository/notification_repository.dart';
-import 'package:fedi/refactored/app/status/list/cached/status_cached_list_service.dart';
+import 'package:fedi/refactored/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/app/timeline/local_preferences/timeline_local_preferences_bloc.dart';
-import 'package:fedi/refactored/app/timeline/public/public_timeline_service_impl.dart';
+import 'package:fedi/refactored/app/timeline/public/public_timeline_status_cached_list_bloc_impl.dart.dart';
 import 'package:fedi/refactored/app/timeline/public/public_timeline_tab_bloc.dart';
 import 'package:fedi/refactored/app/timeline/public/public_timeline_websockets_handler_impl.dart';
 import 'package:fedi/refactored/app/timeline/tab/timeline_tab_bloc_impl.dart';
@@ -41,7 +41,7 @@ class PublicTimelineTabBloc extends TimelineTabBloc
   }
 
   @override
-  IStatusCachedListService createListService() => PublicTimelineService(
+  IStatusCachedListBloc createListService() => PublicTimelineStatusCachedListBloc(
       pleromaTimelineService: pleromaTimelineService,
       statusRepository: statusRepository,
       currentInstanceBloc: currentInstanceBloc,
