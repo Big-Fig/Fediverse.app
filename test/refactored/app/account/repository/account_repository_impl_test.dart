@@ -9,13 +9,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/moor.dart';
 import 'package:moor_ffi/moor_ffi.dart';
 
+import '../../../log_test_utils.dart';
+import '../../conversation/conversation_model_helper.dart';
 import '../../status/database/status_database_model_helper.dart';
-import '../../status/repository/status_repository_model_helper.dart';
 import '../account_model_helper.dart';
 import '../database/account_database_model_helper.dart';
 import 'account_repository_model_helper.dart';
 
 void main() {
+//  initTestLog();
+
   AppDatabase database;
   AccountRepository accountRepository;
 
@@ -23,7 +26,7 @@ void main() {
   DbAccount dbAccount2;
 
   setUp(() async {
-    database = AppDatabase(VmDatabase.memory());
+    database = AppDatabase(VmDatabase.memory(logStatements: false));
     accountRepository = AccountRepository(appDatabase: database);
     dbAccount1 = await createTestDbAccount(seed: "seed1");
     dbAccount2 = await createTestDbAccount(seed: "seed2");
@@ -646,5 +649,88 @@ void main() {
     expect(actualList.length, 1);
 
     expectDbAccount(actualList[0], account2);
+  });
+
+  test('upsertRemoteAccount conversationRemoteId', () async {
+    var conversationRemoteId = "conversationRemoteId123";
+
+    expect(await accountRepository.countAll(), 0);
+
+    await accountRepository.upsertRemoteAccount(
+        mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount1)),
+        conversationRemoteId: conversationRemoteId);
+
+
+    var conversation = await createTestConversation(
+        seed: "seed1", remoteId: conversationRemoteId);
+
+
+    expect(await accountRepository.countAll(), 1);
+    expect(
+        (await accountRepository.getAccounts(
+            olderThanAccount: null,
+            newerThanAccount: null,
+            onlyInConversation: null,
+            onlyInStatusRebloggedBy: null,
+            onlyInStatusFavouritedBy: null,
+            onlyInAccountFollowers: null,
+            onlyInAccountFollowing: null,
+            searchQuery: null,
+            limit: null,
+            offset: null,
+            orderingTermData: null)).length,
+        1);
+    expect(
+        (await accountRepository.conversationAccountsDao.getAll()).length,
+        1);
+
+    expect(
+        (await accountRepository.getAccounts(
+            olderThanAccount: null,
+            newerThanAccount: null,
+            onlyInConversation: conversation,
+            onlyInStatusRebloggedBy: null,
+            onlyInStatusFavouritedBy: null,
+            onlyInAccountFollowers: null,
+            onlyInAccountFollowing: null,
+            searchQuery: null,
+            limit: null,
+            offset: null,
+            orderingTermData: null)).length,
+        1);
+
+
+    var accounts = (await accountRepository.getConversationAccounts(
+        conversation: conversation));
+    expect(
+        accounts
+            .length,
+        1);
+
+
+    await accountRepository.upsertRemoteAccount(
+        mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount1)),
+        conversationRemoteId: conversationRemoteId);
+    expect(await accountRepository.countAll(), 1);
+    expect(
+        (await accountRepository.getAccounts(
+            olderThanAccount: null,
+            newerThanAccount: null,
+            onlyInConversation: null,
+            onlyInStatusRebloggedBy: null,
+            onlyInStatusFavouritedBy: null,
+            onlyInAccountFollowers: null,
+            onlyInAccountFollowing: null,
+            searchQuery: null,
+            limit: null,
+            offset: null,
+            orderingTermData: null)).length,
+        1);
+    expect(
+        (await accountRepository.getConversationAccounts(
+                conversation: await createTestConversation(
+                    seed: "seed2", remoteId: conversationRemoteId)))
+            .length,
+        1);
   });
 }

@@ -89,13 +89,15 @@ class StatusRepository extends AsyncInitLoadingBloc
       return;
     }
 
+
     List<IPleromaAccount> remoteAccounts =
-        remoteStatuses.map((remoteStatus) => remoteStatus.account).toList();
+    remoteStatuses.map((remoteStatus) => remoteStatus.account).toList();
 
     await accountRepository.upsertRemoteAccounts(remoteAccounts,
         conversationRemoteId: conversationRemoteId);
 
     await upsertAll(remoteStatuses.map(mapRemoteStatusToDbStatus).toList());
+
 
     if (listRemoteId != null) {
       await addStatusesToList(
@@ -121,10 +123,13 @@ class StatusRepository extends AsyncInitLoadingBloc
         .where((remoteStatus) => remoteStatus.reblog != null)
         .map((remoteStatus) => remoteStatus.reblog)
         .toList();
-    // list & conversation should be null. We don't need reblogs in
-    // conversations & lists
-    upsertRemoteStatuses(reblogs,
-        listRemoteId: null, conversationRemoteId: null);
+
+    if (reblogs?.isNotEmpty == true) {
+      // list & conversation should be null. We don't need reblogs in
+      // conversations & lists
+      await upsertRemoteStatuses(reblogs,
+          listRemoteId: null, conversationRemoteId: null);
+    }
   }
 
   Future addStatusesToList(
@@ -163,16 +168,24 @@ class StatusRepository extends AsyncInitLoadingBloc
       return !alreadyAddedConversationStatusesIds.contains(statusRemoteId);
     });
 
+
     if (notAddedYetStatusRemoteIds?.isNotEmpty == true) {
-      await conversationStatusesDao.insertAll(
-          notAddedYetStatusRemoteIds
-              .map((statusRemoteId) => DbConversationStatus(
-                  id: null,
-                  statusRemoteId: statusRemoteId,
-                  conversationRemoteId: conversationRemoteId))
-              .toList(),
-          InsertMode.insertOrReplace);
+      for(var statusRemoteId in notAddedYetStatusRemoteIds) {
+        await conversationStatusesDao.insert(DbConversationStatus(
+            id: null,
+            statusRemoteId: statusRemoteId,
+            conversationRemoteId: conversationRemoteId), mode: InsertMode.insertOrReplace);
+      }
+
     }
+//      await conversationStatusesDao.insertAll(
+//          notAddedYetStatusRemoteIds
+//              .map((statusRemoteId) => DbConversationStatus(
+//                  id: null,
+//                  statusRemoteId: statusRemoteId,
+//                  conversationRemoteId: conversationRemoteId))
+//              .toList(),
+//          InsertMode.insertOrReplace);
   }
 
   Future updateStatusTags(String statusRemoteId, List<IPleromaTag> tags) async {

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/pagination/list/pagination_list_bloc_impl.dart';
@@ -56,6 +57,8 @@ abstract class PaginationListWithNewItemsBloc<
         List<TItem> actuallyNew = newItems
             .where((newItem) => compareItems(newItem, newerItem) > 0)
             .toList();
+
+        actuallyNew = LinkedHashSet<TItem>.from(actuallyNew).toList();
         _logger.finest(() => "watchItemsNewerThanItem \n"
             "\t newItems ${newItems.length} \n"
             "\t actuallyNew = ${actuallyNew.length}");
