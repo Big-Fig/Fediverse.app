@@ -67,7 +67,7 @@ abstract class AbstractFileGalleryBloc extends AsyncInitLoadingBloc
     return await reloadFolders();
   }
 
-  reloadFolders() async {
+  Future reloadFolders() async {
     assert(permissionGranted);
     galleryStateSubject.add(FileGalleryState.loading);
     var folders = await loadFolders();
@@ -115,6 +115,7 @@ class FileGalleryBloc extends AbstractFileGalleryBloc {
     }));
   }
 
+  @override
   Future<List<AssetPathEntity>> loadFolders() async =>
       await PhotoManager.getAssetPathList(
           type: mapFileTypesToPickToRequestType(fileTypesToPick));

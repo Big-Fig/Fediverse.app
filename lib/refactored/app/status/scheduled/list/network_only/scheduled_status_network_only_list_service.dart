@@ -11,5 +11,6 @@ abstract class IScheduledStatusNetworkOnlyListService extends DisposableOwner
           {bool listen = true}) =>
       Provider.of<IScheduledStatusNetworkOnlyListService>(context, listen: listen);
 
+  @override
   IPleromaApi get pleromaApi;
 }

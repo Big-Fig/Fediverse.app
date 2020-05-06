@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 
 abstract class IFileGalleryBloc
     implements Disposable, IPermissionBloc, IAsyncInitLoadingBloc {
-  static IFileGalleryBloc of(BuildContext context, {listen: true}) =>
+  static IFileGalleryBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IFileGalleryBloc>(context, listen: listen);
 
   Stream<FileGalleryState> get galleryStateStream;

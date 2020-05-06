@@ -104,16 +104,20 @@ class PleromaSearchRequest extends IPleromaSearchRequest {
   factory PleromaSearchRequest.fromJsonString(String jsonString) =>
       _$PleromaSearchRequestFromJson(jsonDecode(jsonString));
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaSearchRequestToJson(this);
 
   String toJsonString() => jsonEncode(_$PleromaSearchRequestToJson(this));
 }
 
 abstract class IPleromaSearchResult extends IMastodonSearchResult {
+  @override
   List<IPleromaAccount> get accounts;
 
+  @override
   List<IPleromaStatus> get statuses;
 
+  @override
   List<IPleromaTag> get hashtags;
 }
 

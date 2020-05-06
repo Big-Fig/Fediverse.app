@@ -187,5 +187,6 @@ abstract class TimelineStatusCachedListBloc extends DisposableOwner
     return statuses;
   }
 
+  @override
   Future preRefreshAllAction() async {}
 }

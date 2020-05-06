@@ -6,7 +6,7 @@ import 'package:fedi/refactored/app/auth/instance/chooser/auth_instance_chooser_
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:flutter/material.dart';
 
-showMyAccountActionListBottomSheetDialog(BuildContext context) {
+void showMyAccountActionListBottomSheetDialog(BuildContext context) {
   showModalBottomSheet(
       builder: (BuildContext context) => BottomSheet(
             onClosing: () {},

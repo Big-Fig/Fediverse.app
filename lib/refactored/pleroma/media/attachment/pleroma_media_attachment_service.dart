@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 abstract class IPleromaMediaAttachmentService implements IPleromaApi {
   static IPleromaMediaAttachmentService of(BuildContext context,
-          {listen: true}) =>
+          {bool listen = true}) =>
       Provider.of<IPleromaMediaAttachmentService>(context, listen: listen);
 
   Future<IPleromaMediaAttachment> uploadMedia({@required File file});

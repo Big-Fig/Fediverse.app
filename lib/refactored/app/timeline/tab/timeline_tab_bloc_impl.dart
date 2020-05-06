@@ -16,6 +16,7 @@ abstract class TimelineTabBloc extends DisposableOwner
   final TimelineTab tab;
   IStatusCachedListBloc statusCachedListService;
   IStatusCachedPaginationBloc statusCachedPaginationBloc;
+  @override
   IPaginationListWithNewItemsBloc<PaginationPage<IStatus>, IStatus>
       paginationListWithNewItemsBloc;
 

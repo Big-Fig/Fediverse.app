@@ -19,6 +19,7 @@ part 'status_reblogged_accounts_database_dao.g.dart';
 })
 class StatusRebloggedAccountsDao extends DatabaseAccessor<AppDatabase>
     with _$StatusRebloggedAccountsDaoMixin {
+  @override
   final AppDatabase db;
 
   // Called by the AppDatabase class

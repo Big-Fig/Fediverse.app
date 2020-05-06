@@ -22,51 +22,71 @@ abstract class IPleromaAccount implements IMastodonAccount {
 @HiveType()
 @JsonSerializable(explicitToJson: true)
 class PleromaAccount implements IPleromaAccount {
+  @override
   @HiveField(0)
   String username;
+  @override
   @HiveField(1)
   String url;
+  @override
   @HiveField(2)
   @JsonKey(name: "statuses_count")
   int statusesCount;
+  @override
   @HiveField(3)
   String note;
+  @override
   @HiveField(4)
   bool locked;
+  @override
   @HiveField(5)
   String id;
+  @override
   @HiveField(6)
   @JsonKey(name: "header_static")
   String headerStatic;
+  @override
   @HiveField(7)
   String header;
+  @override
   @HiveField(8)
   @JsonKey(name: "following_count")
   int followingCount;
+  @override
   @HiveField(9)
   @JsonKey(name: "followers_count")
   int followersCount;
+  @override
   @HiveField(10)
   List<PleromaField> fields;
+  @override
   @HiveField(11)
   List<PleromaEmoji> emojis;
+  @override
   @HiveField(12)
   @JsonKey(name: "display_name")
   String displayName;
+  @override
   @HiveField(13)
   @JsonKey(name: "created_at")
   DateTime createdAt;
+  @override
   @HiveField(14)
   bool bot;
+  @override
   @HiveField(15)
   @JsonKey(name: "avatar_static")
   String avatarStatic;
+  @override
   @HiveField(16)
   String avatar;
+  @override
   @HiveField(17)
   String acct;
+  @override
   @HiveField(19)
   PleromaAccountPleromaPart pleroma;
+  @override
   @HiveField(20)
   @JsonKey(name: "last_status_at")
   DateTime lastStatusAt;
@@ -100,7 +120,7 @@ class PleromaAccount implements IPleromaAccount {
       _$PleromaAccountFromJson(jsonDecode(jsonString));
 
   static List<PleromaAccount> listFromJsonString(String str) =>
-      new List<PleromaAccount>.from(
+      List<PleromaAccount>.from(
           json.decode(str).map((x) => PleromaAccount.fromJson(x)));
 
   Map<String, dynamic> toJson() => _$PleromaAccountToJson(this);
@@ -204,38 +224,49 @@ abstract class IPleromaAccountPleromaPart {
 class PleromaAccountPleromaPart implements IPleromaAccountPleromaPart {
   // TODO: CHECK, was in previous implementation, but not exist at https://docs-develop.pleroma.social/backend/API/differences_in_mastoapi_responses/
 
+  @override
   @JsonKey(name: "background_image")
   dynamic backgroundImage;
 
   // todo: remove hack, Pleroma return List<String> instead of List<PleromaTag>
   // for example at accounts/verify_credentials endpoint
 //  List<PleromaTag> tags;
+  @override
   List<dynamic> tags;
 
+  @override
   PleromaAccountRelationship relationship;
 
+  @override
   @JsonKey(name: "is_admin")
   bool isAdmin;
 
+  @override
   @JsonKey(name: "is_moderator")
   bool isModerator;
 
+  @override
   @JsonKey(name: "confirmation_pending")
   bool confirmationPending;
 
   // TODO: CHECK, was in previous implementation, but not exist at
+  @override
   @JsonKey(name: "hide_favorites")
   bool hideFavorites;
 
+  @override
   @JsonKey(name: "hide_followers")
   bool hideFollowers;
 
+  @override
   @JsonKey(name: "hide_follows")
   bool hideFollows;
 
+  @override
   @JsonKey(name: "hide_followers_count")
   bool hideFollowersCount;
 
+  @override
   @JsonKey(name: "hide_follows_count")
   bool hideFollowsCount;
 
@@ -244,16 +275,19 @@ class PleromaAccountPleromaPart implements IPleromaAccountPleromaPart {
   @JsonKey(name: "chat_token")
   String chatToken;
 
+  @override
   bool deactivated;
 
   ///  boolean, true when the user allows automatically follow moved
   ///  following accounts
 
+  @override
   @JsonKey(name: "allow_following_move")
   bool allowFollowingMove;
 
   /// TODO: CHECK, was in previous implementation, but not exist at
   /// https://docs-develop.pleroma.social/backend/API/differences_in_mastoapi_responses/
+  @override
   @JsonKey(name: "skip_thread_containment")
   bool skipThreadContainment;
 
@@ -342,31 +376,42 @@ abstract class IPleromaAccountRelationship
 @HiveType()
 @JsonSerializable()
 class PleromaAccountRelationship implements IPleromaAccountRelationship {
+  @override
   @HiveField(1)
   bool blocking;
+  @override
   @JsonKey(name: "domain_blocking")
   @HiveField(2)
   bool domainBlocking;
+  @override
   @HiveField(3)
   bool endorsed;
+  @override
   @HiveField(4)
   @JsonKey(name: "followed_by")
   bool followedBy;
+  @override
   @HiveField(5)
   bool following;
+  @override
   @HiveField(6)
   String id;
+  @override
   @HiveField(7)
   bool muting;
+  @override
   @HiveField(8)
   @JsonKey(name: "muting_notifications")
   @HiveField(9)
   bool mutingNotifications;
+  @override
   @HiveField(10)
   bool requested;
+  @override
   @JsonKey(name: "showing_reblogs")
   @HiveField(11)
   bool showingReblogs;
+  @override
   @HiveField(12)
   bool subscribing;
 
@@ -458,7 +503,7 @@ class PleromaAccountRelationship implements IPleromaAccountRelationship {
       _$PleromaAccountRelationshipFromJson(jsonDecode(jsonString));
 
   static List<PleromaAccountRelationship> listFromJsonString(String str) =>
-      new List<PleromaAccountRelationship>.from(
+      List<PleromaAccountRelationship>.from(
           json.decode(str).map((x) => PleromaAccountRelationship.fromJson(x)));
 
   Map<String, dynamic> toJson() => _$PleromaAccountRelationshipToJson(this);
@@ -507,7 +552,7 @@ class PleromaAccountIdentityProof extends IPleromaAccountIdentityProof {
       _$PleromaAccountIdentityProofFromJson(jsonDecode(jsonString));
 
   static List<PleromaAccountIdentityProof> listFromJsonString(String str) =>
-      new List<PleromaAccountIdentityProof>.from(
+      List<PleromaAccountIdentityProof>.from(
           json.decode(str).map((x) => PleromaAccountIdentityProof.fromJson(x)));
 
   Map<String, dynamic> toJson() => _$PleromaAccountIdentityProofToJson(this);
@@ -563,6 +608,7 @@ class PleromaAccountReportRequest implements IPleromaAccountReportRequest {
   factory PleromaAccountReportRequest.fromJsonString(String jsonString) =>
       _$PleromaAccountReportRequestFromJson(jsonDecode(jsonString));
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaAccountReportRequestToJson(this);
 
   String toJsonString() =>

@@ -10,6 +10,7 @@ class PushSubscriptionLocalPreferencesBloc
       ILocalPreferencesService preferencesService, String userAtHost)
       : super(preferencesService, "$userAtHost.push.subscription", 1);
 
+  @override
   PushSubscriptionLocalPreferences get defaultValue =>
       PushSubscriptionLocalPreferences.defaultAllEnabled();
 }

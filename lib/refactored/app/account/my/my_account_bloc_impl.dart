@@ -107,7 +107,7 @@ class MyAccountBloc extends IMyAccountBloc {
   Future<IPleromaAccountRelationship> togglePin() => throw selfActionError;
 
   @override
-  updateMyAccountByRemote(IPleromaMyAccount remoteMyAccount) {
+  void updateMyAccountByRemote(IPleromaMyAccount remoteMyAccount) {
     myAccountLocalPreferenceBloc
         .setValue(MyAccountRemoteWrapper(remoteAccount: remoteMyAccount));
   }

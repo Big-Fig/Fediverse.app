@@ -18,6 +18,7 @@ part 'status_lists_database_dao.g.dart';
 })
 class StatusListsDao extends DatabaseAccessor<AppDatabase>
     with _$StatusListsDaoMixin {
+  @override
   final AppDatabase db;
 
   // Called by the AppDatabase class

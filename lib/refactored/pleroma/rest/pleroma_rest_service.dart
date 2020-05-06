@@ -4,6 +4,6 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPleromaRestService implements IRestService, IPleromaApi {
-  static IPleromaRestService of(BuildContext context, {listen: true}) =>
+  static IPleromaRestService of(BuildContext context, {bool listen = true}) =>
       Provider.of<IPleromaRestService>(context, listen: listen);
 }

@@ -9,7 +9,7 @@ Future<DbConversationWrapper> createTestConversation(
     DbConversationWrapper(
         await createTestDbConversation(seed: seed, remoteId: remoteId));
 
-expectConversation(IConversation actual, IConversation expected) {
+void expectConversation(IConversation actual, IConversation expected) {
   if (actual == null && expected == null) {
     return;
   }

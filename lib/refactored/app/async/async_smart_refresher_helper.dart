@@ -7,7 +7,7 @@ typedef Future<bool> AsyncAction();
 var _logger = Logger("async_smart_refresher_helper.dart");
 
 class AsyncSmartRefresherHelper {
-  static doAsyncRefresh(
+  static void doAsyncRefresh(
       {@required RefreshController controller, @required AsyncAction action}) {
     _logger.finest(() => "doAsyncRefresh");
     action().then((success) {
@@ -23,7 +23,7 @@ class AsyncSmartRefresherHelper {
     });
   }
 
-  static doAsyncLoading(
+  static void doAsyncLoading(
       {@required RefreshController controller, @required AsyncAction action}) {
     _logger.finest(() => "doAsyncLoading");
     action().then((success) {

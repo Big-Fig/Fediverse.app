@@ -12,7 +12,7 @@ abstract class ICurrentAuthInstanceBloc implements Disposable {
 
   Stream<AuthInstance> get currentInstanceStream;
 
-  changeCurrentInstance(AuthInstance instance);
+  void changeCurrentInstance(AuthInstance instance);
 
   bool isCurrentInstance(AuthInstance instance);
 

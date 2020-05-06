@@ -85,7 +85,7 @@ void goToPostStatusStartConversationPage(BuildContext context,
         conversation: foundConversation,
         conversationAccountsWithoutMe: conversationAccountsWithoutMe);
   } else {
-    Navigator.push(
+    await Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) => DisposableProvider<IPostStatusBloc>(

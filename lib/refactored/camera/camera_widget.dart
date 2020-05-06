@@ -4,7 +4,6 @@ import 'package:fedi/refactored/async/loading/init/async_init_loading_widget.dar
 import 'package:fedi/refactored/camera/camera_bloc.dart';
 import 'package:fedi/refactored/camera/camera_model.dart';
 import 'package:fedi/refactored/permission/grant_permission_widget.dart';
-import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

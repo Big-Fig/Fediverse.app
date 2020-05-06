@@ -4,7 +4,7 @@ import 'package:fedi/refactored/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/refactored/pleroma/field/pleroma_field_model.dart';
 import 'package:fedi/refactored/pleroma/tag/pleroma_tag_model.dart';
 
-typedef AccountSelectedCallback(IAccount account);
+typedef AccountSelectedCallback = Function(IAccount account);
 
 abstract class IAccount {
 

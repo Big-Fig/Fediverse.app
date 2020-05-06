@@ -11,13 +11,16 @@ abstract class INotificationCachedListBloc extends DisposableOwner
           {bool listen = true}) =>
       Provider.of<INotificationCachedListBloc>(context, listen: listen);
 
+  @override
   IPleromaApi get pleromaApi;
 
+  @override
   Future<List<INotification>> loadLocalItems(
       {@required int limit,
       @required INotification newerThan,
       @required INotification olderThan});
 
+  @override
   Future<bool> refreshItemsFromRemoteForPage(
       {@required int limit,
       @required INotification newerThan,

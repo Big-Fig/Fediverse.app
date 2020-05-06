@@ -25,7 +25,7 @@ class ConversationStatusListWidget extends StatusPaginationListBaseWidget {
           RefreshController refreshController,
           Widget Function(BuildContext context) smartRefresherBodyBuilder) =>
       SmartRefresher(
-        key: this.key,
+        key: key,
         enablePullDown: true,
         enablePullUp: true,
 // water drop header bugged (inverted with reverse)

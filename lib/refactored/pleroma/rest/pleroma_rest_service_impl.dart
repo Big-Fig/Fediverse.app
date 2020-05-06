@@ -17,7 +17,7 @@ class PleromaRestService extends DisposableOwner
 
   // TODO: rework seed state
   // ignore: close_sinks
-  BehaviorSubject<PleromaApiState> _stateSubject =
+  final BehaviorSubject<PleromaApiState> _stateSubject =
       BehaviorSubject.seeded(PleromaApiState.validAuth);
 
   @override
@@ -32,10 +32,12 @@ class PleromaRestService extends DisposableOwner
   @override
   Stream<bool> get isConnectedStream => connectionService.isConnectedStream;
 
+  @override
   Stream<bool> get isApiReadyToUseStream =>
       Rx.combineLatest2(pleromaStateStream, isConnectedStream, mapIsReady)
           .distinct();
 
+  @override
   bool get isApiReadyToUse => mapIsReady(pleromaState, isConnected);
 
   final IRestService restService;

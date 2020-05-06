@@ -10,6 +10,7 @@ class TimelineLocalPreferencesBloc
       ILocalPreferencesService preferencesService, String userAtHost)
       : super(preferencesService, "$userAtHost.timeline.display", 1);
 
+  @override
   TimelineLocalPreferences get defaultValue => TimelineLocalPreferences(
       onlyNoReplies: false, onlyWithMedia: false, onlyNoNsfwSensitive: false);
 }

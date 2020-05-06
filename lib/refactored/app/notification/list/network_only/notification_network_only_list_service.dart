@@ -11,5 +11,6 @@ abstract class INotificationNetworkOnlyListService extends DisposableOwner
           {bool listen = true}) =>
       Provider.of<INotificationNetworkOnlyListService>(context, listen: listen);
 
+  @override
   IPleromaApi get pleromaApi;
 }

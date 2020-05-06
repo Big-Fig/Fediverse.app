@@ -50,7 +50,7 @@ class PleromaPushService implements IPleromaPushService {
     if (restResponse.isSuccess) {
       return restResponse.body;
     } else {
-      throw new PleromaPushException(
+      throw PleromaPushException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
   }

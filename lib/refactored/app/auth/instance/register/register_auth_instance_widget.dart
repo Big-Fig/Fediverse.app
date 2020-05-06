@@ -3,10 +3,8 @@ import 'package:fedi/refactored/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/refactored/app/auth/instance/register/register_auth_instance_bloc.dart';
 import 'package:fedi/refactored/app/form/form_field_error_model.dart';
 import 'package:fedi/refactored/app/form/form_model.dart';
-import 'package:fedi/refactored/dialog/alert/base_alert_dialog.dart';
 import 'package:fedi/refactored/dialog/alert/simple_alert_dialog.dart';
 import 'package:fedi/refactored/dialog/async/async_dialog.dart';
-import 'package:fedi/refactored/dialog/progress/indeterminate_progress_dialog.dart';
 import 'package:fedi/refactored/pleroma/account/public/pleroma_account_public_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -126,13 +124,13 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
     );
   }
 
-  submit(BuildContext context, IRegisterAuthInstanceBloc bloc) async {
+  Future submit(BuildContext context, IRegisterAuthInstanceBloc bloc) async {
     final validUsername = bloc.usernameField.value;
     final validEmail = bloc.emailField.value;
     final validPassword = bloc.passwordField.value;
 
 
-    doAsyncOperationWithDialog(context: context, asyncCode: () async {
+    await doAsyncOperationWithDialog(context: context, asyncCode: () async {
         AuthHostBloc authApplicationBloc;
       try {
         authApplicationBloc = AuthHostBloc.createFromContext(context,

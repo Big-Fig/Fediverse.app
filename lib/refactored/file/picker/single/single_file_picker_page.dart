@@ -29,7 +29,7 @@ class SingleFilePickerPage extends StatelessWidget {
   }
 }
 
-goToSingleFilePickerPage(BuildContext context,
+void goToSingleFilePickerPage(BuildContext context,
     {@required FilePickerSelectedFileCallback fileSelectedCallback,
     List<FilePickerFileType> fileTypesToPick = const [
       FilePickerFileType.image,

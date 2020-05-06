@@ -90,6 +90,7 @@ class AuthHostBloc extends DisposableOwner implements IAuthHostBloc {
   Stream<PleromaClientApplication> get hostApplicationStream =>
       authHostApplicationLocalPreferenceBloc.stream;
 
+  @override
   bool get isHostAccessTokenExist => hostAccessToken != null;
 
   @override
@@ -115,13 +116,14 @@ class AuthHostBloc extends DisposableOwner implements IAuthHostBloc {
 
     _logger.finest(() => "registerApplication application =$application");
     if (application != null) {
-      authHostApplicationLocalPreferenceBloc.setValue(application);
+      await authHostApplicationLocalPreferenceBloc.setValue(application);
       return true;
     } else {
       return false;
     }
   }
 
+  @override
   Future<bool> retrieveAppAccessToken() async {
     var accessToken = await pleromaOAuthService.retrieveAppAccessToken(
         tokenRequest: PleromaOAuthAppTokenRequest(redirectUri: redirectUri,
@@ -130,7 +132,7 @@ class AuthHostBloc extends DisposableOwner implements IAuthHostBloc {
           clientId: hostApplication.clientId,));
 
     if (accessToken != null) {
-      authHostAccessTokenLocalPreferenceBloc.setValue(accessToken);
+      await authHostAccessTokenLocalPreferenceBloc.setValue(accessToken);
       return true;
     } else {
       return false;

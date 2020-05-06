@@ -27,7 +27,7 @@ class CurrentAuthInstanceBloc extends DisposableOwner
       currentInstanceLocalPreferenceBloc.stream;
 
   @override
-  changeCurrentInstance(AuthInstance instance) {
+  void changeCurrentInstance(AuthInstance instance) {
     _logger.finest(() => "changeCurrentInstance $instance");
     if (!instanceListBloc.availableInstances.contains(instance)) {
       instanceListBloc.addInstance(instance);

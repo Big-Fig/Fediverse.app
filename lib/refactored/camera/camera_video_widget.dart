@@ -1,11 +1,11 @@
 import 'package:fedi/refactored/camera/camera_bloc.dart';
 import 'package:fedi/refactored/camera/camera_model.dart';
 import 'package:fedi/refactored/camera/camera_widget.dart';
-import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CameraVideoWidget extends CameraWidget {
+  @override
   Widget buildControls(BuildContext context, ICameraBloc cameraBloc) {
     return Padding(
       padding: const EdgeInsets.all(4.0),
@@ -118,7 +118,7 @@ class CameraVideoWidget extends CameraWidget {
     if (isEnabled) {
       pressed = () async {
         var pathToSave = await ICameraBloc.calculateUniquePathForImage(context);
-        cameraBloc.startVideoRecording(pathToSave);
+        await cameraBloc.startVideoRecording(pathToSave);
       };
     }
     return IconButton(
@@ -133,7 +133,7 @@ class CameraVideoWidget extends CameraWidget {
         iconSize: 80,
         icon: Icon(Icons.pause_circle_outline),
         onPressed: () async {
-          cameraBloc.pauseVideoRecording();
+          await cameraBloc.pauseVideoRecording();
         },
       );
   IconButton buildResumeRecordingButton({@required ICameraBloc cameraBloc}) =>
@@ -141,7 +141,7 @@ class CameraVideoWidget extends CameraWidget {
         iconSize: 80,
         icon: Icon(Icons.play_circle_outline),
         onPressed: () async {
-          cameraBloc.resumeVideoRecording();
+          await cameraBloc.resumeVideoRecording();
         },
       );
 

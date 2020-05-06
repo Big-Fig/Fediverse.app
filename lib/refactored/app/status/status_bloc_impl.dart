@@ -47,6 +47,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   final BehaviorSubject<bool> _isCollapsedSubject = BehaviorSubject.seeded
     (true);
 
+  @override
   bool get isPossibleToCollapse =>
       (status.content?.length ?? 0) > minimumCharactersLimitToCollapse;
 
@@ -54,16 +55,19 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   Stream<bool> get isPossibleToCollapseStream => statusStream.map((status) =>
       (status.content?.length ?? 0) > minimumCharactersLimitToCollapse);
 
+  @override
   bool get isCollapsed => _isCollapsedSubject.value;
 
+  @override
   Stream<bool> get isCollapsedStream => _isCollapsedSubject.stream;
 
-  toggleCollapseExpand() {
+  @override
+  void toggleCollapseExpand(){
     _isCollapsedSubject.add(!isCollapsed);
   }
 
   @override
-  collapse() {
+  void collapse() {
     _isCollapsedSubject.add(true);
   }
 
@@ -148,8 +152,10 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   @override
   Stream<IStatus> get statusStream => _statusSubject.stream.distinct();
 
+  @override
   IStatus get reblogOrOriginal => reblog ?? status;
 
+  @override
   Stream<IStatus> get reblogOrOriginalStream => Rx.combineLatest2(
       statusStream, reblogStream, (original, reblog) => reblog ?? original);
 
@@ -193,8 +199,10 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   @override
   String get remoteId => status.remoteId;
 
+  @override
   List<IPleromaMention> get mentions => status.mentions;
 
+  @override
   Stream<List<IPleromaMention>> get mentionsStream =>
       statusStream.map((status) => status.mentions).distinct();
 
@@ -258,8 +266,10 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   Stream<List<IPleromaMediaAttachment>> get mediaAttachmentsStream =>
       statusStream.map((status) => status.mediaAttachments).distinct();
 
+  @override
   String get accountAvatar => account?.avatar;
 
+  @override
   Stream<String> get accountAvatarStream =>
       accountStream.map((account) => account.avatar).distinct();
 
@@ -369,10 +379,8 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   Stream<int> get reblogsCountStream =>
       statusStream.map((status) => status.reblogsCount).distinct();
 
-  @override
   int get reblogReblogsCount => reblog?.reblogsCount;
 
-  @override
   Stream<int> get reblogReblogsCountStream =>
       reblogStream.map((status) => status?.reblogsCount).distinct();
 
@@ -502,10 +510,12 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
           .map((status) => status?.pleromaEmojiReactions)
           .distinct();
 
+  @override
   List<IPleromaStatusEmojiReaction>
       get reblogPlusOriginalPleromaEmojiReactions => mergeEmojiReactionsLists(
           pleromaEmojiReactions, reblogPleromaEmojiReactions);
 
+  @override
   Stream<List<IPleromaStatusEmojiReaction>>
       get reblogPlusOriginalEmojiReactionsStream => Rx.combineLatest2(
           pleromaEmojiReactionsStream,
@@ -557,12 +567,12 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
       statusStream.map((status) => status.reblog).distinct();
 
   @override
-  changeDisplayNsfwSensitive(bool display) {
+  void changeDisplayNsfwSensitive(bool display) {
     _displayNsfwSensitiveSubject.add(display);
   }
 
   @override
-  changeDisplaySpoiler(bool display) {
+  void changeDisplaySpoiler(bool display) {
     _displaySpoilerSubject.add(display);
   }
 
@@ -671,7 +681,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
           (contentWithEmojis, isCollapsed) => isCollapsed ? _collapseContent
             (contentWithEmojis) : contentWithEmojis);
 
-  _collapseContent(String contentWithEmojis) {
+  String _collapseContent(String contentWithEmojis) {
     // todo: check html tags
     if(contentWithEmojis.length > minimumCharactersLimitToCollapse) {
       var collapsedContent = contentWithEmojis

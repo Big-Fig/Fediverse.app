@@ -145,7 +145,7 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
               context, scheduledStatusBloc.scheduledAt);
 
           if (newScheduledAt != null) {
-            doAsyncOperationWithDialog(
+            await doAsyncOperationWithDialog(
                 context: context,
                 asyncCode: () => scheduledStatusBloc.reSchedule(
                     scheduledAt: newScheduledAt));

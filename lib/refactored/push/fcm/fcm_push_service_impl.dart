@@ -18,13 +18,16 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
   // ignore: close_sinks
   final BehaviorSubject<String> _deviceTokenSubject = BehaviorSubject();
 
+  @override
   Stream<String> get deviceTokenStream => _deviceTokenSubject.stream;
 
+  @override
   String get deviceToken => _deviceTokenSubject.value;
 
   // ignore: close_sinks
   final BehaviorSubject<PushMessage> _messageSubject = BehaviorSubject();
 
+  @override
   Stream<PushMessage> get messageStream => _messageSubject.stream;
 
   FcmPushService() : _fcm = FirebaseMessaging() {
@@ -49,7 +52,8 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
     }
   }
 
-  askPermissions() async {
+  @override
+  Future askPermissions() async {
     _fcm.requestNotificationPermissions(IosNotificationSettings());
   }
 
@@ -70,7 +74,7 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
         onResume: (data) async =>
             _onNewMessage(parseCloudMessage(PushMessageType.resume, data)));
 
-    _fcm.setAutoInitEnabled(true);
+    await _fcm.setAutoInitEnabled(true);
 
     await _updateToken();
   }
@@ -101,7 +105,7 @@ Map<String, dynamic> _remapForJson(raw) => (raw as Map)
 
 Map<String, dynamic> _remapToStringObjectMap(Map data) {
 
-  var remappedData  = Map<String, dynamic>();
+  var remappedData  = <String, dynamic>{};
 
   data.entries.forEach((entry) {
     var remappedValue = entry.value;

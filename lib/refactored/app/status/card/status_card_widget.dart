@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
 import 'package:fedi/refactored/pleroma/card/pleroma_card_model.dart';
-import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -28,7 +27,7 @@ class StatusCardWidget extends StatelessWidget {
               });
             },
             child: ConstrainedBox(
-              constraints: new BoxConstraints(
+              constraints: BoxConstraints(
                 minHeight: 0,
                 maxHeight: 135.0,
               ),

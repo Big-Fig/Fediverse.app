@@ -102,7 +102,7 @@ class AccountActionListWidget extends StatelessWidget {
     );
   }
 
-  showMoreOptions(BuildContext context, IAccountBloc accountBloc,
+  void showMoreOptions(BuildContext context, IAccountBloc accountBloc,
       IPleromaAccountRelationship relationship) {
     var appLocalizations = AppLocalizations.of(context);
     showAlert(

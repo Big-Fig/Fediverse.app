@@ -12,7 +12,8 @@ class MemoryPaginationListWithNewItemsBloc<TPage extends PaginationPage<TItem>,
   final StreamController<List<TItem>> newItemsStreamController =
       StreamController.broadcast();
 
-  addNewItems(List<TItem> newItems) => newItemsStreamController.add(newItems);
+  void addNewItems(List<TItem> newItems) => newItemsStreamController.add
+    (newItems);
 
   final int Function(TItem a, TItem b) comparator;
 

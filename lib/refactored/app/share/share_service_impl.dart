@@ -14,6 +14,7 @@ import 'package:mime_type/mime_type.dart';
 final _textMimeType = "text/plain";
 
 class ShareService extends DisposableOwner implements IShareService {
+  @override
   Future shareMediaAttachment(
       {@required BuildContext context,
       @required String popupTitle,
@@ -30,6 +31,7 @@ class ShareService extends DisposableOwner implements IShareService {
     }
   }
 
+  @override
   Future shareStatus(
       {@required BuildContext context,
       @required String popupTitle,

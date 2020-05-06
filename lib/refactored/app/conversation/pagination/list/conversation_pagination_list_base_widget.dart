@@ -1,5 +1,4 @@
 import 'package:fedi/refactored/app/conversation/conversation_model.dart';
-import 'package:fedi/refactored/app/conversation/pagination/list/conversation_pagination_list_bloc.dart';
 import 'package:fedi/refactored/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/refactored/pagination/list/pagination_list_widget.dart';
 import 'package:fedi/refactored/pagination/pagination_model.dart';

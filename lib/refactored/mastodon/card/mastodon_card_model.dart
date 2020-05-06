@@ -29,7 +29,7 @@ abstract class IMastodonCard {
   String get embedUrl;
 }
 
-final mastodonCardTypeValues = new EnumValues({
+final mastodonCardTypeValues = EnumValues({
   "link": MastodonCardType.link,
   "photo": MastodonCardType.photo,
   "video": MastodonCardType.video,

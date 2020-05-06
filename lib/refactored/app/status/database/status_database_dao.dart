@@ -28,6 +28,7 @@ var _conversationStatusesAliasId = "conversationStatuses";
       ":remoteId;",
 })
 class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
+  @override
   final AppDatabase db;
   $DbAccountsTable accountAlias;
   $DbStatusesTable reblogAlias;

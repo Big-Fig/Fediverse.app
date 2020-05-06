@@ -118,6 +118,6 @@ void main() {
     expect(listened.first.index, 0);
     expect(listened.last.index, storageSize - 1);
 
-    subscription.cancel();
+    await subscription.cancel();
   });
 }

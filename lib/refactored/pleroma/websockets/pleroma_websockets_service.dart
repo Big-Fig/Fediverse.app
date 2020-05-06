@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 
 abstract class IPleromaWebSocketsService extends DisposableOwner {
   static IPleromaWebSocketsService of(BuildContext context,
-          {listen: true}) =>
+          {listen= true}) =>
       Provider.of(context, listen: listen);
 
 

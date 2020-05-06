@@ -11,9 +11,8 @@ class PleromaRestServiceMock extends IPleromaRestService {
   Function(RestRequest request) sendHttpRequestMock;
   Function(UploadMultipartRestRequest request) uploadFileMultipartRequestMock;
 
-  final Map<RestRequest, Response> httpRequestToResponse = Map();
-  final Map<UploadMultipartRestRequest, Response> uploadRequestToResponse =
-      Map();
+  final Map<RestRequest, Response> httpRequestToResponse = {};
+  final Map<UploadMultipartRestRequest, Response> uploadRequestToResponse = {};
 
   PleromaRestServiceMock({@required this.baseUrl});
 
@@ -63,7 +62,4 @@ class PleromaRestServiceMock extends IPleromaRestService {
 
   @override
   Stream<PleromaApiState> get pleromaStateStream => throw UnimplementedError();
-
-  @override
-  bool get isPleromaInstance => throw UnimplementedError();
 }

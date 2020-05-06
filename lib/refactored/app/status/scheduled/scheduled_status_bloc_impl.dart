@@ -22,8 +22,10 @@ class ScheduledStatusBloc extends DisposableOwner
   // ignore: close_sinks
   final BehaviorSubject<ScheduledStatusState> _stateSubject = BehaviorSubject();
 
+  @override
   ScheduledStatusState get state => _stateSubject.value;
 
+  @override
   Stream<ScheduledStatusState> get stateStream => _stateSubject.stream;
 
   final IPleromaStatusService pleromaStatusService;
@@ -92,8 +94,10 @@ class ScheduledStatusBloc extends DisposableOwner
     }
   }
 
+  @override
   IScheduledStatus get scheduledStatus => _scheduledStatusSubject.value;
 
+  @override
   Stream<IScheduledStatus> get scheduledStatusStream =>
       _scheduledStatusSubject.stream;
 

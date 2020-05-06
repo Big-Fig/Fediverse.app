@@ -8,18 +8,22 @@ import 'package:rxdart/rxdart.dart';
 
 class JoinAuthInstanceRegisterBloc extends DisposableOwner
     implements IRegisterAuthInstanceBloc {
+  @override
   final FormTextField usernameField = FormTextField(initialValue: "",
       validators: [EmptyFormTextFieldError.createValidator()]);
 
+  @override
   final FormTextField emailField = FormTextField(initialValue: "",
       validators: [InvalidEmailFormTextFieldError.createValidator()]);
 
+  @override
   final FormTextField passwordField = FormTextField(initialValue: "",
       validators: [
         InvalidLengthFormTextFieldError.createValidator(
             minLength: 4, maxLength: null)
       ]);
 
+  @override
   FormTextField confirmPasswordField;
 
   List<FormTextField> get fields =>
@@ -28,12 +32,14 @@ class JoinAuthInstanceRegisterBloc extends DisposableOwner
   List<Stream<bool>> get fieldHasErrorStreams =>
       fields.map((field) => field.hasErrorStream).toList();
 
+  @override
   Stream<bool> get readyToSubmitStream =>
       Rx.combineLatest(fieldHasErrorStreams, (fieldHasErrors) =>
           fieldHasErrors.fold(true, (previous, hasError) => previous &
           !hasError)
       );
 
+  @override
   bool get readyToSubmit =>
       fields.fold(true, (previous, formField) => previous & !formField
           .hasError);

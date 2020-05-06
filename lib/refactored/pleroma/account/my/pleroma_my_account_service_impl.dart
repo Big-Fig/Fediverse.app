@@ -44,7 +44,7 @@ class PleromaMyAccountService implements IPleromaMyAccountService {
     if (httpResponse.statusCode == 200) {
       return PleromaMyAccount.fromJsonString(httpResponse.body);
     } else {
-      throw new PleromaMyAccountException(
+      throw PleromaMyAccountException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
   }

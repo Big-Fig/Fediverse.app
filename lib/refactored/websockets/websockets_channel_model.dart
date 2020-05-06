@@ -21,9 +21,11 @@ abstract class WebSocketsChannelConfig<T extends WebSocketsEvent>
 
   WebSocketsChannelConfig({@required this.baseUrl, @required this.queryArgs});
 
+  @override
   IWebSocketsChannelSource<T> createChannelSource() => WebSocketsChannelSource(
       url: calculateWebSocketsUrl(), eventParser: eventParser);
 
+  @override
   Uri calculateWebSocketsUrl() {
     var queryArgsString = queryArgs.entries
         .map((entry) => "${entry.key}=${entry.value}")

@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPleromaAuthRestService implements IPleromaRestService {
-  static IPleromaAuthRestService of(BuildContext context, {listen: true}) =>
+  static IPleromaAuthRestService of(BuildContext context,
+          {bool listen = true}) =>
       Provider.of<IPleromaAuthRestService>(context, listen: listen);
 }

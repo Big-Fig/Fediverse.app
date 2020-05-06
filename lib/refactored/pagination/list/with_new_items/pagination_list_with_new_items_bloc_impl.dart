@@ -15,8 +15,10 @@ abstract class PaginationListWithNewItemsBloc<
         TPage extends PaginationPage<TItem>,
         TItem> extends PaginationListBloc<TPage, TItem>
     implements IPaginationListWithNewItemsBloc<TPage, TItem> {
+  @override
   TItem get newerItem => items?.isNotEmpty == true ? items.first : null;
 
+  @override
   Stream<TItem> get newerItemStream => itemsStream
       .map((items) => items?.isNotEmpty == true ? items.first : null);
 
@@ -26,11 +28,11 @@ abstract class PaginationListWithNewItemsBloc<
   final bool mergeNewItemsImmediately;
 
   // ignore: close_sinks
-  BehaviorSubject<List<TItem>> _mergedNewItemsSubject =
+  final BehaviorSubject<List<TItem>> _mergedNewItemsSubject =
       BehaviorSubject.seeded([]);
 
   // ignore: close_sinks
-  BehaviorSubject<List<TItem>> _unmergedNewItemsSubject =
+  final BehaviorSubject<List<TItem>> _unmergedNewItemsSubject =
       BehaviorSubject.seeded([]);
 
   // ignore: cancel_subscriptions
@@ -142,17 +144,21 @@ abstract class PaginationListWithNewItemsBloc<
   Stream<bool> get isHaveMergedNewItemsStream => mergedNewItemsCountStream
       .map((isHaveMergedNewItems) => mergedNewItemsCount > 0);
 
+  @override
   List<TItem> get mergedNewItems => _mergedNewItemsSubject.value;
 
+  @override
   Stream<List<TItem>> get mergedNewItemsStream => _mergedNewItemsSubject.stream;
 
+  @override
   int get mergedNewItemsCount => mergedNewItems?.length ?? 0;
 
+  @override
   Stream<int> get mergedNewItemsCountStream =>
       mergedNewItemsStream.map((mergedNewItems) => mergedNewItems?.length ?? 0);
 
   @override
-  mergeNewItems() {
+  void mergeNewItems() {
     _logger.finest(() => "mergeNewItems \n"
         "\t unmergedNewItems = ${unmergedNewItems.length}\n"
         "\t mergedNewItems = ${mergedNewItems.length}\n");

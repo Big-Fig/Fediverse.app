@@ -10,5 +10,5 @@ abstract class IMyAccountSettingsBloc extends Disposable {
   bool get isRealtimeWebSocketsEnabled;
   Stream<bool> get isRealtimeWebSocketsEnabledStream;
 
-  changeIsRealtimeWebSocketsEnabled(bool value);
+  void changeIsRealtimeWebSocketsEnabled(bool value);
 }

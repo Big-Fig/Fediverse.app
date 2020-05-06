@@ -18,6 +18,7 @@ part 'status_hashtags_database_dao.g.dart';
 })
 class StatusHashtagsDao extends DatabaseAccessor<AppDatabase>
     with _$StatusHashtagsDaoMixin {
+  @override
   final AppDatabase db;
 
   // Called by the AppDatabase class

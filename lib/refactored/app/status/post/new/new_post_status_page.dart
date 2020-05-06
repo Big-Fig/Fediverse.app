@@ -25,7 +25,7 @@ class NewPostStatusPage extends StatelessWidget {
   }
 }
 
-goToNewPostStatusPage(BuildContext context) {
+void goToNewPostStatusPage(BuildContext context) {
   Navigator.push(
     context,
     MaterialPageRoute(

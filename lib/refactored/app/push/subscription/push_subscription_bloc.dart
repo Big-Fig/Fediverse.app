@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPushSubscriptionBloc extends Disposable {
-  static IPushSubscriptionBloc of(BuildContext context, {listen: true}) =>
+  static IPushSubscriptionBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IPushSubscriptionBloc>(context, listen: listen);
 
   bool get isHaveSubscription;

@@ -8,7 +8,6 @@ import 'package:fedi/refactored/app/home/tab/notifications/notifications_home_ta
 import 'package:fedi/refactored/app/home/tab/timelines/timelines_home_tab_page.dart';
 import 'package:fedi/refactored/app/notification/unread/notification_unread_all_badge_count_widget.dart';
 import 'package:fedi/refactored/app/status/post/new/new_post_status_page.dart';
-import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';

@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IShareService implements Disposable {
-  static IShareService of(BuildContext context, {listen: true}) =>
+  static IShareService of(BuildContext context, {bool listen = true}) =>
       Provider.of<IShareService>(context, listen: listen);
 
   Future shareMediaAttachment(

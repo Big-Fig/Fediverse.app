@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-typedef EmojiReactionSelectedCallback(String emojiName, String emoji);
+typedef EmojiReactionSelectedCallback = Function(String emojiName, String emoji);
 
 class StatusEmojiReactionPickerWidget extends StatelessWidget {
   final EmojiReactionSelectedCallback emojiReactionSelectedCallback;
@@ -24,7 +24,7 @@ class StatusEmojiReactionPickerWidget extends StatelessWidget {
       onEmojiSelected: (emoji, category) {
         SharedPreferences.getInstance().then((prefs) {
           final key = "recents";
-          var recentEmojis = prefs.getStringList(key) ?? new List();
+          var recentEmojis = prefs.getStringList(key) ?? [];
           recentEmojis.insert(0, emoji.name);
           prefs.setStringList(key, recentEmojis);
         });

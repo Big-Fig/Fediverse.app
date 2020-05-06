@@ -251,7 +251,7 @@ void main() {
 
     expect((await query.get()).length, 1);
 
-    scheduledStatusRepository.markAsCanceled(
+    await scheduledStatusRepository.markAsCanceled(
         scheduledStatus: DbScheduledStatusWrapper(scheduledStatus));
     expect((await query.get()).length, 0);
   });

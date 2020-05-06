@@ -8,9 +8,11 @@ class GroupPermissionBloc extends AsyncInitLoadingBloc
   final List<IPermissionBloc> permissionBlocs;
   GroupPermissionBloc(this.permissionBlocs);
 
+  @override
   Stream<bool> get permissionGrantedStream =>
       permissionStatusStream.map(IPermissionBloc.mapPermissionStatusToBool);
 
+  @override
   bool get permissionGranted =>
       IPermissionBloc.mapPermissionStatusToBool(permissionStatus);
 

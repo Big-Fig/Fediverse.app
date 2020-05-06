@@ -8,7 +8,6 @@ import 'package:fedi/refactored/file/gallery/folder/file_gallery_folder_bloc_imp
 import 'package:fedi/refactored/file/gallery/folder/file_gallery_folder_widget.dart';
 import 'package:fedi/refactored/permission/grant_permission_widget.dart';
 import 'package:fedi/refactored/permission/storage_permission_bloc.dart';
-import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:md2_tab_indicator/md2_tab_indicator.dart';

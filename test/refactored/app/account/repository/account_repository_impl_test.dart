@@ -9,7 +9,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/moor.dart';
 import 'package:moor_ffi/moor_ffi.dart';
 
-import '../../../log_test_utils.dart';
 import '../../conversation/conversation_model_helper.dart';
 import '../../status/database/status_database_model_helper.dart';
 import '../account_model_helper.dart';

@@ -26,7 +26,7 @@ Future<DbStatusPopulatedWrapper> createTestStatus(
   ));
 }
 
-expectStatus(IStatus actual, IStatus expected) {
+void expectStatus(IStatus actual, IStatus expected) {
   if (actual == null && expected == null) {
     return;
   }

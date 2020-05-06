@@ -23,6 +23,7 @@ part 'conversation_accounts_database_dao.g.dart';
 })
 class ConversationAccountsDao extends DatabaseAccessor<AppDatabase>
     with _$ConversationAccountsDaoMixin {
+  @override
   final AppDatabase db;
 
   // Called by the AppDatabase class

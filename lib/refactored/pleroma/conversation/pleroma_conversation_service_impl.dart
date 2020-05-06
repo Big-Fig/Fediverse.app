@@ -66,7 +66,7 @@ class PleromaConversationService implements IPleromaConversationService {
     if (restResponse.isSuccess) {
       return restResponse.body;
     } else {
-      throw new PleromaConversationException(
+      throw PleromaConversationException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
   }
@@ -87,7 +87,7 @@ class PleromaConversationService implements IPleromaConversationService {
     if (restResponse.isSuccess) {
       return restResponse.body;
     } else {
-      throw new PleromaConversationException(
+      throw PleromaConversationException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
   }
@@ -134,7 +134,7 @@ class PleromaConversationService implements IPleromaConversationService {
     if (restResponse.isSuccess) {
       return restResponse.body;
     } else {
-      throw new PleromaConversationException(
+      throw PleromaConversationException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
   }
@@ -155,7 +155,7 @@ class PleromaConversationService implements IPleromaConversationService {
     if (restResponse.isSuccess) {
       return true;
     } else {
-      throw new PleromaConversationException(
+      throw PleromaConversationException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
   }
@@ -177,7 +177,7 @@ class PleromaConversationService implements IPleromaConversationService {
     if (restResponse.isSuccess) {
       return restResponse.body;
     } else {
-      throw new PleromaConversationException(
+      throw PleromaConversationException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
   }

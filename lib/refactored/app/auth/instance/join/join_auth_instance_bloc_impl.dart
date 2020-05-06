@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 class JoinAuthInstanceBloc extends DisposableOwner
     implements IJoinAuthInstanceBloc {
 
+  @override
   final TextEditingController hostTextController = TextEditingController();
 
   JoinAuthInstanceBloc() {

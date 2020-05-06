@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 abstract class IPleromaScheduledStatusService implements IPleromaApi {
   static IPleromaScheduledStatusService of(BuildContext context,
-          {listen: true}) =>
+          {bool listen = true}) =>
       Provider.of<IPleromaScheduledStatusService>(context, listen: listen);
 
   Future<bool> cancelScheduledStatus(

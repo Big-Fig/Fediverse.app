@@ -26,6 +26,7 @@ var _conversationAccountsAliasId = "conversationAccounts";
       ":remoteId;",
 })
 class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
+  @override
   final AppDatabase db;
   $DbAccountsTable accountAlias;
   $DbAccountFollowingsTable accountFollowingsAlias;

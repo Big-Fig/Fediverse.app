@@ -18,5 +18,5 @@ abstract class IUploadMediaAttachmentBloc implements Disposable {
 
   Stream<UploadMediaAttachmentState> get uploadStateStream;
 
-  startUpload();
+  void startUpload();
 }

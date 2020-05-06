@@ -15,9 +15,9 @@ abstract class ICollapsibleBloc extends Disposable {
 
   Stream<List<ICollapsibleItem>> get visibleItemsStream;
 
-  addVisibleItem(ICollapsibleItem item);
+  void addVisibleItem(ICollapsibleItem item);
 
-  removeVisibleItem(ICollapsibleItem item);
+  void removeVisibleItem(ICollapsibleItem item);
 
-  collapseAllVisibleItems();
+  void collapseAllVisibleItems();
 }
