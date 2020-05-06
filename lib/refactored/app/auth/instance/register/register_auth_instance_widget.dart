@@ -12,7 +12,6 @@ import 'package:flutter/material.dart';
 class RegisterAuthInstanceWidget extends StatelessWidget {
   final Uri instanceBaseUrl;
 
-
   RegisterAuthInstanceWidget({@required this.instanceBaseUrl});
 
   @override
@@ -129,36 +128,38 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
     final validEmail = bloc.emailField.value;
     final validPassword = bloc.passwordField.value;
 
+    await doAsyncOperationWithDialog(
+        context: context,
+        asyncCode: () async {
+          AuthHostBloc authApplicationBloc;
+          try {
+            authApplicationBloc = AuthHostBloc.createFromContext(context,
+                instanceBaseUrl: instanceBaseUrl);
 
-    await doAsyncOperationWithDialog(context: context, asyncCode: () async {
-        AuthHostBloc authApplicationBloc;
-      try {
-        authApplicationBloc = AuthHostBloc.createFromContext(context,
-            instanceBaseUrl: instanceBaseUrl);
-
-        await authApplicationBloc.registerAccount(
-            request: PleromaAccountRegisterRequest(
-            //todo: popup ToS before register
-            agreement: true,
-            email: validEmail,
-            // todo: add locale chooser
-            locale: "en",
-            password: validPassword,
-            username: validUsername));
-      } finally {
-        authApplicationBloc?.dispose();
-      }
-
-    }, errorAlertDialogBuilders: [
+            await authApplicationBloc.registerAccount(
+                request: PleromaAccountRegisterRequest(
+                    //todo: popup ToS before register
+                    agreement: true,
+                    email: validEmail,
+                    // todo: add locale chooser
+                    locale: "en",
+                    password: validPassword,
+                    username: validUsername));
+          } finally {
+            authApplicationBloc?.dispose();
+          }
+        },
+        errorAlertDialogBuilders: [
           (context, error) {
-        // todo: handle specific error
-        return SimpleAlertDialog(
-            title: AppLocalizations.of(context)
-                .tr("app.auth.instance.register.fail.dialog.title"),
-            content: AppLocalizations.of(context).tr(
-                "app.auth.instance.register.fail.dialog.content",
-                args: [error.toString()]), context: context);
-      }
-    ]);
+            // todo: handle specific error
+            return SimpleAlertDialog(
+                title: AppLocalizations.of(context)
+                    .tr("app.auth.instance.register.fail.dialog.title"),
+                content: AppLocalizations.of(context).tr(
+                    "app.auth.instance.register.fail.dialog.content",
+                    args: [error.toString()]),
+                context: context);
+          }
+        ]);
   }
 }

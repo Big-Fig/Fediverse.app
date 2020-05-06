@@ -33,11 +33,10 @@ class AccountAvatarWidget extends StatelessWidget {
     return CachedNetworkImage(
       imageBuilder: (context, imageProvider) {
         return ClipRRect(
-            borderRadius: BorderRadius.circular(imageSize / 2),
-        child: Image(
-            width: imageSize,
-            height: imageSize,
-            image: imageProvider),);
+          borderRadius: BorderRadius.circular(imageSize / 2),
+          child:
+              Image(width: imageSize, height: imageSize, image: imageProvider),
+        );
       },
       imageUrl: avatarUrl,
       placeholder: (context, url) => Center(

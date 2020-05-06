@@ -125,6 +125,4 @@ class PleromaCard implements IPleromaCard {
         ' providerUrl: $providerUrl, title: $title, type: $type,'
         ' url: $url, width: $width}';
   }
-
-
 }

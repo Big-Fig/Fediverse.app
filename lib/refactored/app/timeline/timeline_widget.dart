@@ -43,8 +43,8 @@ class TimelineWidget extends StatelessWidget {
               child: Stack(
                 children: <Widget>[
                   StatusPaginationListTimelineWidget(
-                    key: PageStorageKey<String>(key.toString() +
-                        "TimelinePaginationListSimpleWidget"),
+                    key: PageStorageKey<String>(
+                        key.toString() + "TimelinePaginationListSimpleWidget"),
                     needWatchLocalRepositoryForUpdates: true,
                   ),
                   Align(

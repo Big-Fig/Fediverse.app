@@ -66,6 +66,4 @@ class ConversationStatusListConversationApiBloc
           pleromaConversationService:
               IPleromaConversationService.of(context, listen: false),
           statusRepository: IStatusRepository.of(context, listen: false));
-
-
 }

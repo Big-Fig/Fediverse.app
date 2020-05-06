@@ -44,9 +44,10 @@ class LocalTimelineTabBloc extends TimelineTabBloc
   }
 
   @override
-  IStatusCachedListBloc createListService() => LocalTimelineStatusCachedListBloc(
-      pleromaTimelineService: pleromaTimelineService,
-      statusRepository: statusRepository,
-      currentInstanceBloc: currentInstanceBloc,
-      timelineLocalPreferencesBloc: timelineLocalPreferencesBloc);
+  IStatusCachedListBloc createListService() =>
+      LocalTimelineStatusCachedListBloc(
+          pleromaTimelineService: pleromaTimelineService,
+          statusRepository: statusRepository,
+          currentInstanceBloc: currentInstanceBloc,
+          timelineLocalPreferencesBloc: timelineLocalPreferencesBloc);
 }

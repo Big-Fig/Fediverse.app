@@ -38,9 +38,9 @@ void goToSelectAccountPage(BuildContext context,
     MaterialPageRoute(
         builder: (context) =>
             DisposableProvider<IPleromaCachedListBloc<IAccount>>(
-                create: (context) => SelectAccountCachedListBloc.createFromContext(
-                    context,
-                    excludeMyAccount: excludeMyAccount),
+                create: (context) =>
+                    SelectAccountCachedListBloc.createFromContext(context,
+                        excludeMyAccount: excludeMyAccount),
                 child: DisposableProvider<
                     IPaginationBloc<PaginationPage<IAccount>, IAccount>>(
                   create: (context) =>

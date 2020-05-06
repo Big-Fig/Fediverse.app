@@ -11,20 +11,20 @@ var _logger = Logger("current_auth_instance_bloc_impl.dart");
 class CurrentAuthInstanceBloc extends DisposableOwner
     implements ICurrentAuthInstanceBloc {
   final IAuthInstanceListBloc instanceListBloc;
-  final ICurrentAuthInstanceLocalPreferenceBloc
-      currentInstanceLocalPreferenceBloc;
+  final ICurrentAuthInstanceLocalPreferenceBloc 
+  currentLocalPreferenceBloc;
 
   CurrentAuthInstanceBloc({
     @required this.instanceListBloc,
-    @required this.currentInstanceLocalPreferenceBloc,
+    @required this.currentLocalPreferenceBloc,
   });
 
   @override
-  AuthInstance get currentInstance => currentInstanceLocalPreferenceBloc.value;
+  AuthInstance get currentInstance => currentLocalPreferenceBloc.value;
 
   @override
   Stream<AuthInstance> get currentInstanceStream =>
-      currentInstanceLocalPreferenceBloc.stream;
+      currentLocalPreferenceBloc.stream;
 
   @override
   void changeCurrentInstance(AuthInstance instance) {
@@ -33,7 +33,7 @@ class CurrentAuthInstanceBloc extends DisposableOwner
       instanceListBloc.addInstance(instance);
     }
 
-    currentInstanceLocalPreferenceBloc.setValue(instance);
+    currentLocalPreferenceBloc.setValue(instance);
   }
 
   @override
@@ -43,6 +43,6 @@ class CurrentAuthInstanceBloc extends DisposableOwner
   Future logoutCurrentInstance() async {
     _logger.finest(() => "logoutCurrentInstance $currentInstance");
     instanceListBloc.removeInstance(currentInstance);
-    await currentInstanceLocalPreferenceBloc.setValue(null);
+    await currentLocalPreferenceBloc.setValue(null);
   }
 }

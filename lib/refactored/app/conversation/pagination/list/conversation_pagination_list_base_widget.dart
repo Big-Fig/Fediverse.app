@@ -27,7 +27,7 @@ abstract class ConversationPaginationListBaseWidget
       retrievePaginationListBloc(BuildContext context,
           {@required bool listen}) {
     var conversationPaginationListBloc = Provider.of<
-        IPaginationListBloc<PaginationPage<IConversation>, IConversation>>(
+            IPaginationListBloc<PaginationPage<IConversation>, IConversation>>(
         context,
         listen: listen);
     return conversationPaginationListBloc;

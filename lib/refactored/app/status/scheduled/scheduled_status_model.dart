@@ -246,6 +246,4 @@ class ScheduledStatusAdapterToStatus implements IStatus {
   PleromaVisibility get visibility => scheduledStatus.params.pleromaVisibility;
 }
 
-enum ScheduledStatusState {
-  scheduled, canceled, alreadyPosted
-}
+enum ScheduledStatusState { scheduled, canceled, alreadyPosted }

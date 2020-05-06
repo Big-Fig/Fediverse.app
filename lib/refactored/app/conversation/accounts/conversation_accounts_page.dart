@@ -18,8 +18,8 @@ class ConversationAccountsPage extends StatelessWidget {
             Navigator.of(context).pop();
           },
         ),
-        title: Text(AppLocalizations.of(context)
-            .tr("app.conversation.accounts.title")),
+        title: Text(
+            AppLocalizations.of(context).tr("app.conversation.accounts.title")),
       ),
       body: ConversationAccountsWidget(),
     );

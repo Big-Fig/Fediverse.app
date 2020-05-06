@@ -12,7 +12,6 @@ var _logger = Logger("pagination_bloc_impl.dart");
 
 abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
     extends DisposableOwner implements IPaginationBloc<TPage, TItem> {
-
   final int maximumCachedPagesCount;
 
   bool get isPageCacheEnabled =>
@@ -44,12 +43,13 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
       mapIsLoadedPagesInSequence(loadedPagesSortedByIndex);
 
   @override
-  int get loadedPagesMaximumIndex =>
-      loadedPageIndexesSortedByIndex.fold(IPaginationBloc.undefinedPageIndex, max);
+  int get loadedPagesMaximumIndex => loadedPageIndexesSortedByIndex.fold(
+      IPaginationBloc.undefinedPageIndex, max);
 
   @override
-  Stream<int> get loadedPagesMaximumIndexStream => loadedPageIndexesSortedByIndexStream
-      .map((list) => list.fold(IPaginationBloc.undefinedPageIndex, max));
+  Stream<int> get loadedPagesMaximumIndexStream =>
+      loadedPageIndexesSortedByIndexStream
+          .map((list) => list.fold(IPaginationBloc.undefinedPageIndex, max));
 
   @override
   int get loadedPagesMinimumIndex =>
@@ -67,8 +67,9 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
       pagesSubject.value.map((page) => page.pageIndex).toList();
 
   @override
-  Stream<List<int>> get loadedPageIndexesSortedByIndexStream => pagesSubject.stream
-      .map((list) => list.map(((page) => page.pageIndex)).toList());
+  Stream<List<int>> get loadedPageIndexesSortedByIndexStream =>
+      pagesSubject.stream
+          .map((list) => list.map(((page) => page.pageIndex)).toList());
 
   @override
   List<TPage> get loadedPagesSortedByIndex => pagesSubject.value;
@@ -162,7 +163,6 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
 
   @override
   Future<TPage> refresh() async {
-
     indexToCachedPageMap.clear();
     pagesSubject.value.clear();
 //    onPagesChanged([newFirstPage]);

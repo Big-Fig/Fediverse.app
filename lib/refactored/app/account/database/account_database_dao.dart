@@ -50,7 +50,7 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
         alias(db.dbConversationAccounts, _conversationAccountsAliasId);
   }
 
-  Future<int> insert(Insertable<DbAccount> entity,{    InsertMode mode}) =>
+  Future<int> insert(Insertable<DbAccount> entity, {InsertMode mode}) =>
       into(dbAccounts).insert(entity, mode: mode);
 
   Future<int> upsert(Insertable<DbAccount> entity) =>
@@ -198,6 +198,7 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
         ..where(CustomExpression<bool, BoolType>(
             "$_statusRebloggedAccounts.status_remote_id"
             " = '$statusRemoteId'"));
+
   // todo: rework with single relationship table
   JoinedSelectStatement addFollowingsWhere(
           JoinedSelectStatement query, String followingAccountRemoteId) =>

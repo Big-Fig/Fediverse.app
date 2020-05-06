@@ -56,9 +56,8 @@ class NotificationCachedPaginationBloc
           {int itemsCountPerPage = 20,
           int maximumCachedPagesCount}) =>
       NotificationCachedPaginationBloc(
-          notificationListService: Provider.of<INotificationCachedListBloc>(
-              context,
-              listen: false),
+          notificationListService:
+              Provider.of<INotificationCachedListBloc>(context, listen: false),
           itemsCountPerPage: itemsCountPerPage,
           maximumCachedPagesCount: maximumCachedPagesCount);
 }

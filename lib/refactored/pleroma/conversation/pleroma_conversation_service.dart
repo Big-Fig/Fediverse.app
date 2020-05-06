@@ -5,7 +5,8 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPleromaConversationService implements IPleromaApi {
-  static IPleromaConversationService of(BuildContext context, {bool listen = true}) =>
+  static IPleromaConversationService of(BuildContext context,
+          {bool listen = true}) =>
       Provider.of<IPleromaConversationService>(context, listen: listen);
 
   Future<List<IPleromaStatus>> getConversationStatuses({
@@ -21,15 +22,12 @@ abstract class IPleromaConversationService implements IPleromaApi {
   Future<IPleromaConversation> markConversationAsRead(
       {@required String conversationRemoteId});
 
-  Future<bool> deleteConversation(
-      {@required String conversationRemoteId});
+  Future<bool> deleteConversation({@required String conversationRemoteId});
 
   Future<List<IPleromaConversation>> getConversations(
       {String maxId,
       String sinceId,
       String minId,
-        /// Pleroma only
-        /// Only return conversations with the given recipients
       List<String> recipientsIds,
       int limit});
 }

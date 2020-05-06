@@ -20,8 +20,8 @@ class SingleFilePickerPage extends StatelessWidget {
           icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text(AppLocalizations.of(context)
-            .tr("file.picker.single.title")),
+        title:
+            Text(AppLocalizations.of(context).tr("file.picker.single.title")),
       ),
       body: SingleFilePickerWidget(),
       bottomNavigationBar: FilePickerBottomNavBarWidget(),

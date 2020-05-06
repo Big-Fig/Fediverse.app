@@ -9,7 +9,8 @@ abstract class ProgressDialog extends BaseDialog {
   final String contentMessage;
 
   // ignore: close_sinks
-  final BehaviorSubject<bool> _isCanceledSubject = BehaviorSubject.seeded(false);
+  final BehaviorSubject<bool> _isCanceledSubject =
+      BehaviorSubject.seeded(false);
 
   bool get isCanceled => _isCanceledSubject.value;
 

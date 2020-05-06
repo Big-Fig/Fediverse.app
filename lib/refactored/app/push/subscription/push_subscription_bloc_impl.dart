@@ -14,15 +14,14 @@ var _logger = Logger("push_subscription_bloc_impl.dart");
 
 class PushSubscriptionBloc extends DisposableOwner
     implements IPushSubscriptionBloc {
-  final IPushSubscriptionLocalPreferencesBloc
-  pushSubscriptionLocalPreferencesBloc;
+  final IPushSubscriptionLocalPreferencesBloc subscriptionLocalPreferencesBloc;
   final IPleromaPushService pleromaPushService;
   final IPushRelayService pushRelayService;
   final AuthInstance currentInstance;
   final IFcmPushService fcmPushService;
 
   PushSubscriptionBloc({
-    @required this.pushSubscriptionLocalPreferencesBloc,
+    @required this.subscriptionLocalPreferencesBloc,
     @required this.pleromaPushService,
     @required this.pushRelayService,
     @required this.currentInstance,
@@ -31,76 +30,74 @@ class PushSubscriptionBloc extends DisposableOwner
 
   @override
   bool get favouritePushesEnabled =>
-      pushSubscriptionLocalPreferencesBloc.value.favourite;
+      subscriptionLocalPreferencesBloc.value.favourite;
 
   @override
   Stream<bool> get favouritePushesEnabledStream =>
-      pushSubscriptionLocalPreferencesBloc.stream.map((preferences) =>
-          pushSubscriptionLocalPreferencesBloc.value.favourite);
+      subscriptionLocalPreferencesBloc.stream.map(
+          (preferences) => subscriptionLocalPreferencesBloc.value.favourite);
 
   @override
   Future<bool> changeFavouritePushesEnabled(bool value) {
     return updateSubscriptionPreferences(
-        pushSubscriptionLocalPreferencesBloc.value.copyWith(favourite: value));
+        subscriptionLocalPreferencesBloc.value.copyWith(favourite: value));
   }
 
   @override
-  bool get followPushesEnabled =>
-      pushSubscriptionLocalPreferencesBloc.value.follow;
+  bool get followPushesEnabled => subscriptionLocalPreferencesBloc.value.follow;
 
   @override
   Stream<bool> get followPushesEnabledStream =>
-      pushSubscriptionLocalPreferencesBloc.stream.map(
-          (preferences) => pushSubscriptionLocalPreferencesBloc.value.follow);
+      subscriptionLocalPreferencesBloc.stream
+          .map((preferences) => subscriptionLocalPreferencesBloc.value.follow);
 
   @override
   Future<bool> changeFollowPushesEnabled(bool value) {
     return updateSubscriptionPreferences(
-        pushSubscriptionLocalPreferencesBloc.value.copyWith(follow: value));
+        subscriptionLocalPreferencesBloc.value.copyWith(follow: value));
   }
 
   @override
   bool get mentionPushesEnabled =>
-      pushSubscriptionLocalPreferencesBloc.value.mention;
+      subscriptionLocalPreferencesBloc.value.mention;
 
   @override
   Stream<bool> get mentionPushesEnabledStream =>
-      pushSubscriptionLocalPreferencesBloc.stream.map(
-          (preferences) => pushSubscriptionLocalPreferencesBloc.value.mention);
+      subscriptionLocalPreferencesBloc.stream
+          .map((preferences) => subscriptionLocalPreferencesBloc.value.mention);
 
   @override
   Future<bool> changeMentionPushesEnabled(bool value) {
     return updateSubscriptionPreferences(
-        pushSubscriptionLocalPreferencesBloc.value.copyWith(mention: value));
+        subscriptionLocalPreferencesBloc.value.copyWith(mention: value));
   }
 
   @override
-  bool get reblogPushesEnabled =>
-      pushSubscriptionLocalPreferencesBloc.value.reblog;
+  bool get reblogPushesEnabled => subscriptionLocalPreferencesBloc.value.reblog;
 
   @override
   Stream<bool> get reblogPushesEnabledStream =>
-      pushSubscriptionLocalPreferencesBloc.stream.map(
-          (preferences) => pushSubscriptionLocalPreferencesBloc.value.reblog);
+      subscriptionLocalPreferencesBloc.stream
+          .map((preferences) => subscriptionLocalPreferencesBloc.value.reblog);
 
   @override
   Future<bool> changeReblogPushesEnabled(bool value) {
     return updateSubscriptionPreferences(
-        pushSubscriptionLocalPreferencesBloc.value.copyWith(reblog: value));
+        subscriptionLocalPreferencesBloc.value.copyWith(reblog: value));
   }
 
   @override
-  bool get pollPushesEnabled => pushSubscriptionLocalPreferencesBloc.value.poll;
+  bool get pollPushesEnabled => subscriptionLocalPreferencesBloc.value.poll;
 
   @override
   Stream<bool> get pollPushesEnabledStream =>
-      pushSubscriptionLocalPreferencesBloc.stream.map(
-          (preferences) => pushSubscriptionLocalPreferencesBloc.value.poll);
+      subscriptionLocalPreferencesBloc.stream
+          .map((preferences) => subscriptionLocalPreferencesBloc.value.poll);
 
   @override
   Future<bool> changePollPushesEnabled(bool value) {
     return updateSubscriptionPreferences(
-        pushSubscriptionLocalPreferencesBloc.value.copyWith(poll: value));
+        subscriptionLocalPreferencesBloc.value.copyWith(poll: value));
   }
 
   Future<bool> updateSubscriptionPreferences(
@@ -125,35 +122,32 @@ class PushSubscriptionBloc extends DisposableOwner
       success = subscription != null;
 
       if (success) {
-        await pushSubscriptionLocalPreferencesBloc.setValue(newPreferences);
+        await subscriptionLocalPreferencesBloc.setValue(newPreferences);
       }
     } else {
       success = false;
     }
 
-    if(success) {
+    if (success) {
       _logger.finest(() => "updateSubscriptionPreferences \n"
           "\t newPreferences = $newPreferences"
           "\t deviceToken = $deviceToken"
-          "\t success = $success"
-      );
+          "\t success = $success");
     } else {
       _logger.severe(() => "updateSubscriptionPreferences \n"
           "\t newPreferences = $newPreferences"
           "\t deviceToken = $deviceToken"
-          "\t success = $success"
-      );
+          "\t success = $success");
     }
 
     return success;
   }
 
   @override
-  bool get isHaveSubscription => pushSubscriptionLocalPreferencesBloc.isSavedPreferenceExist;
+  bool get isHaveSubscription =>
+      subscriptionLocalPreferencesBloc.isSavedPreferenceExist;
 
   @override
-  Future subscribeWithDefaultPreferences() => updateSubscriptionPreferences(PushSubscriptionLocalPreferences
-        .defaultAllEnabled());
-
-
+  Future subscribeWithDefaultPreferences() => updateSubscriptionPreferences(
+      PushSubscriptionLocalPreferences.defaultAllEnabled());
 }

@@ -15,7 +15,8 @@ abstract class IPleromaScheduledStatusService implements IPleromaApi {
       {@required String scheduledStatusRemoteId});
 
   Future<IPleromaScheduledStatus> reScheduleStatus(
-      {@required String scheduledStatusRemoteId, @required DateTime scheduledAt});
+      {@required String scheduledStatusRemoteId,
+      @required DateTime scheduledAt});
 
   Future<List<IPleromaScheduledStatus>> getScheduledStatuses({
     String sinceId,

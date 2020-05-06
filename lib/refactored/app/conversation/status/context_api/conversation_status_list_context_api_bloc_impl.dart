@@ -11,8 +11,7 @@ import 'package:moor/moor.dart';
 
 var _logger = Logger("conversation_statuses_list_bloc_context_api_impl.dart");
 
-class ConversationStatusListContextApiBloc
-    extends ConversationStatusListBloc {
+class ConversationStatusListContextApiBloc extends ConversationStatusListBloc {
   final IPleromaStatusService pleromaStatusService;
   final IStatus statusToFetchContext;
 

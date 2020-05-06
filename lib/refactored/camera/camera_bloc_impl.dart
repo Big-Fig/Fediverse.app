@@ -54,7 +54,7 @@ abstract class AbstractCameraBloc extends AsyncInitLoadingBloc
   AbstractCameraBloc.byCameraLensDirection({
     @required this.cameraPermissionBloc,
     @required this.micPermissionBloc,
-    this.startCameraLensDirection= camera_lib.CameraLensDirection.back,
+    this.startCameraLensDirection = camera_lib.CameraLensDirection.back,
     CameraConfig startConfig,
   }) {
     _constructor(startConfig);
@@ -98,7 +98,8 @@ abstract class AbstractCameraBloc extends AsyncInitLoadingBloc
   BehaviorSubject<camera_lib.CameraController> cameraControllerSubject =
       BehaviorSubject();
   @override
-  camera_lib.CameraController get cameraController => cameraControllerSubject.value;
+  camera_lib.CameraController get cameraController =>
+      cameraControllerSubject.value;
   @override
   Stream<camera_lib.CameraController> get cameraControllerStream =>
       cameraControllerSubject.stream;
@@ -249,7 +250,8 @@ abstract class AbstractCameraBloc extends AsyncInitLoadingBloc
   }
 
   Future<camera_lib.CameraController> _createAndInitCamera(
-      camera_lib.CameraDescription cameraDescription, CameraConfig config) async {
+      camera_lib.CameraDescription cameraDescription,
+      CameraConfig config) async {
     _logger.fine(() => "_createAndInitCamera start \n"
         "\t availableCameras $availableCameras \n"
         "\t config $config  \n");

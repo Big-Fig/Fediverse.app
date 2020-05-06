@@ -147,26 +147,27 @@ class PleromaMyAccountEdit extends IPleromaMyAccountEdit {
   @JsonKey(name: "skip_thread_containment")
   final bool skipThreadContainment;
 
-  PleromaMyAccountEdit({this.bot,
-    this.discoverable,
-    this.displayName,
-    this.fieldsAttributes,
-    this.locked,
-    this.note,
-    this.source,
-    this.actorType,
-    this.allowFollowingMove,
-    this.defaultScope,
-    this.hideFavorites,
-    this.hideFollowers,
-    this.hideFollowersCount,
-    this.hideFollows,
-    this.hideFollowsCount,
-    this.noRichText,
-    this.pleromaBackgroundImage,
-    this.pleromaSettingsStore,
-    this.showRole,
-    this.skipThreadContainment});
+  PleromaMyAccountEdit(
+      {this.bot,
+      this.discoverable,
+      this.displayName,
+      this.fieldsAttributes,
+      this.locked,
+      this.note,
+      this.source,
+      this.actorType,
+      this.allowFollowingMove,
+      this.defaultScope,
+      this.hideFavorites,
+      this.hideFollowers,
+      this.hideFollowersCount,
+      this.hideFollows,
+      this.hideFollowsCount,
+      this.noRichText,
+      this.pleromaBackgroundImage,
+      this.pleromaSettingsStore,
+      this.showRole,
+      this.skipThreadContainment});
 
   factory PleromaMyAccountEdit.fromJson(Map<String, dynamic> json) =>
       _$PleromaMyAccountEditFromJson(json);
@@ -200,8 +201,7 @@ abstract class IPleromaMyAccountSource implements IMastodonMyAccountSource {
 
 @HiveType()
 @JsonSerializable()
-class PleromaMyAccountSource
-    implements IPleromaMyAccountSource {
+class PleromaMyAccountSource implements IPleromaMyAccountSource {
   @override
   MastodonVisibility get privacyMastodon =>
       mastodonVisibilityValues.map[privacy];
@@ -232,13 +232,14 @@ class PleromaMyAccountSource
   @HiveField(7)
   PleromaMyAccountSourcePleromaPart pleroma;
 
-  PleromaMyAccountSource({this.privacy,
-    this.sensitive,
-    this.language,
-    this.note,
-    this.fields,
-    this.followRequestsCount,
-    this.pleroma});
+  PleromaMyAccountSource(
+      {this.privacy,
+      this.sensitive,
+      this.language,
+      this.note,
+      this.fields,
+      this.followRequestsCount,
+      this.pleroma});
 
   factory PleromaMyAccountSource.fromJson(Map<String, dynamic> json) =>
       _$PleromaMyAccountSourceFromJson(json);
@@ -277,7 +278,7 @@ class PleromaMyAccountSourcePleromaPart {
       {this.showRole, this.noRichText, this.discoverable, this.actorType});
 
   factory PleromaMyAccountSourcePleromaPart.fromJson(
-      Map<String, dynamic> json) =>
+          Map<String, dynamic> json) =>
       _$PleromaMyAccountSourcePleromaPartFromJson(json);
 
   factory PleromaMyAccountSourcePleromaPart.fromJsonString(String jsonString) =>
@@ -384,24 +385,25 @@ class PleromaAccountPleromaPart {
   @JsonKey(name: "notifications_settings")
   PleromaMyAccountPleromaPartNotificationsSettings notificationSettings;
 
-  PleromaAccountPleromaPart({this.backgroundImage,
-    this.tags,
-    this.relationship,
-    this.isAdmin,
-    this.isModerator,
-    this.confirmationPending,
-    this.hideFavorites,
-    this.hideFollowers,
-    this.hideFollows,
-    this.hideFollowersCount,
-    this.hideFollowsCount,
-    this.settingsStore,
-    this.chatToken,
-    this.deactivated,
-    this.allowFollowingMove,
-    this.unreadConversationCount,
-    this.skipThreadContainment,
-    this.notificationSettings});
+  PleromaAccountPleromaPart(
+      {this.backgroundImage,
+      this.tags,
+      this.relationship,
+      this.isAdmin,
+      this.isModerator,
+      this.confirmationPending,
+      this.hideFavorites,
+      this.hideFollowers,
+      this.hideFollows,
+      this.hideFollowersCount,
+      this.hideFollowsCount,
+      this.settingsStore,
+      this.chatToken,
+      this.deactivated,
+      this.allowFollowingMove,
+      this.unreadConversationCount,
+      this.skipThreadContainment,
+      this.notificationSettings});
 
   factory PleromaAccountPleromaPart.fromJson(Map<String, dynamic> json) =>
       _$PleromaAccountPleromaPartFromJson(json);
@@ -442,8 +444,7 @@ abstract class IPleromaMyAccountPleromaPart
 
 @HiveType()
 @JsonSerializable(explicitToJson: true)
-class PleromaMyAccount
-    implements IPleromaMyAccount, IPreferencesObject {
+class PleromaMyAccount implements IPleromaMyAccount, IPreferencesObject {
   @override
   @HiveField(0)
   String username;
@@ -516,27 +517,28 @@ class PleromaMyAccount
   @HiveField(21)
   PleromaMyAccountSource source;
 
-  PleromaMyAccount({this.username,
-    this.url,
-    this.statusesCount,
-    this.note,
-    this.locked,
-    this.id,
-    this.headerStatic,
-    this.header,
-    this.followingCount,
-    this.followersCount,
-    this.fields,
-    this.emojis,
-    this.displayName,
-    this.createdAt,
-    this.bot,
-    this.avatarStatic,
-    this.avatar,
-    this.acct,
-    this.pleroma,
-    this.lastStatusAt,
-    this.source});
+  PleromaMyAccount(
+      {this.username,
+      this.url,
+      this.statusesCount,
+      this.note,
+      this.locked,
+      this.id,
+      this.headerStatic,
+      this.header,
+      this.followingCount,
+      this.followersCount,
+      this.fields,
+      this.emojis,
+      this.displayName,
+      this.createdAt,
+      this.bot,
+      this.avatarStatic,
+      this.avatar,
+      this.acct,
+      this.pleroma,
+      this.lastStatusAt,
+      this.source});
 
   factory PleromaMyAccount.fromJson(Map<String, dynamic> json) =>
       _$PleromaMyAccountFromJson(json);
@@ -552,41 +554,40 @@ class PleromaMyAccount
 
   String toJsonString() => jsonEncode(_$PleromaMyAccountToJson(this));
 
-
-  PleromaMyAccount copyWith({
-    String id,
-    String username,
-    String url,
-    String note,
-    bool locked,
-    String headerStatic,
-    String header,
-    int followingCount,
-    int followersCount,
-    int statusesCount,
-    String displayName,
-    DateTime createdAt,
-    bool bot,
-    String avatarStatic,
-    String avatar,
-    String acct,
-    DateTime lastStatusAt,
-    List<PleromaField> fields,
-    List<PleromaEmoji> emojis,
-    List<PleromaTag> pleromaTags,
-    PleromaAccountRelationship pleromaRelationship,
-    bool pleromaIsAdmin,
-    bool pleromaIsModerator,
-    bool pleromaConfirmationPending,
-    bool pleromaHideFavorites,
-    bool pleromaHideFollowers,
-    bool pleromaHideFollows,
-    bool pleromaHideFollowersCount,
-    bool pleromaHideFollowsCount,
-    bool pleromaDeactivated,
-    bool pleromaAllowFollowingMove,
-    bool pleromaSkipThreadContainment,
-    PleromaMyAccountPleromaPart pleroma}) {
+  PleromaMyAccount copyWith(
+      {String id,
+      String username,
+      String url,
+      String note,
+      bool locked,
+      String headerStatic,
+      String header,
+      int followingCount,
+      int followersCount,
+      int statusesCount,
+      String displayName,
+      DateTime createdAt,
+      bool bot,
+      String avatarStatic,
+      String avatar,
+      String acct,
+      DateTime lastStatusAt,
+      List<PleromaField> fields,
+      List<PleromaEmoji> emojis,
+      List<PleromaTag> pleromaTags,
+      PleromaAccountRelationship pleromaRelationship,
+      bool pleromaIsAdmin,
+      bool pleromaIsModerator,
+      bool pleromaConfirmationPending,
+      bool pleromaHideFavorites,
+      bool pleromaHideFollowers,
+      bool pleromaHideFollows,
+      bool pleromaHideFollowersCount,
+      bool pleromaHideFollowsCount,
+      bool pleromaDeactivated,
+      bool pleromaAllowFollowingMove,
+      bool pleromaSkipThreadContainment,
+      PleromaMyAccountPleromaPart pleroma}) {
     return PleromaMyAccount(
         id: id ?? this.id,
         username: username ?? this.username,
@@ -607,8 +608,7 @@ class PleromaMyAccount
         lastStatusAt: lastStatusAt ?? this.lastStatusAt,
         fields: fields ?? this.fields,
         emojis: emojis ?? this.emojis,
-        pleroma: pleroma ?? this.pleroma
-    );
+        pleroma: pleroma ?? this.pleroma);
   }
 }
 
@@ -626,34 +626,32 @@ class PleromaMyAccountPleromaPartNotificationsSettings {
       {this.followers, this.follows, this.nonFollowers, this.nonFollows});
 
   factory PleromaMyAccountPleromaPartNotificationsSettings.fromJson(
-      Map<String, dynamic> json) =>
+          Map<String, dynamic> json) =>
       _$PleromaMyAccountPleromaPartNotificationsSettingsFromJson(json);
 
   factory PleromaMyAccountPleromaPartNotificationsSettings.fromJsonString(
-      String jsonString) =>
+          String jsonString) =>
       _$PleromaMyAccountPleromaPartNotificationsSettingsFromJson(
           jsonDecode(jsonString));
 
   static List<PleromaMyAccountPleromaPartNotificationsSettings>
-  listFromJsonString(String str) =>
-      List<PleromaMyAccountPleromaPartNotificationsSettings>.from(json
-          .decode(str)
-          .map((x) =>
-          PleromaMyAccountPleromaPartNotificationsSettings.fromJson(
-              x)));
+      listFromJsonString(String str) =>
+          List<PleromaMyAccountPleromaPartNotificationsSettings>.from(json
+              .decode(str)
+              .map((x) =>
+                  PleromaMyAccountPleromaPartNotificationsSettings.fromJson(
+                      x)));
 
   Map<String, dynamic> toJson() =>
       _$PleromaMyAccountPleromaPartNotificationsSettingsToJson(this);
 
-  String toJsonString() =>
-      jsonEncode(
-          _$PleromaMyAccountPleromaPartNotificationsSettingsToJson(this));
+  String toJsonString() => jsonEncode(
+      _$PleromaMyAccountPleromaPartNotificationsSettingsToJson(this));
 }
 
 @HiveType()
 @JsonSerializable(explicitToJson: true)
-class PleromaMyAccountPleromaPart
-    implements IPleromaMyAccountPleromaPart {
+class PleromaMyAccountPleromaPart implements IPleromaMyAccountPleromaPart {
   // TODO: CHECK, was in previous implementation, but not exist at https://docs-develop.pleroma.social/backend/API/differences_in_mastoapi_responses/
   @override
   @HiveField(1)
@@ -750,24 +748,25 @@ class PleromaMyAccountPleromaPart
   @JsonKey(name: "notifications_settings")
   PleromaMyAccountPleromaPartNotificationsSettings notificationSettings;
 
-  PleromaMyAccountPleromaPart({this.backgroundImage,
-    this.tags,
-    this.relationship,
-    this.isAdmin,
-    this.isModerator,
-    this.confirmationPending,
-    this.hideFavorites,
-    this.hideFollowers,
-    this.hideFollows,
-    this.hideFollowersCount,
-    this.hideFollowsCount,
-    this.settingsStore,
-    this.chatToken,
-    this.deactivated,
-    this.allowFollowingMove,
-    this.unreadConversationCount,
-    this.skipThreadContainment,
-    this.notificationSettings});
+  PleromaMyAccountPleromaPart(
+      {this.backgroundImage,
+      this.tags,
+      this.relationship,
+      this.isAdmin,
+      this.isModerator,
+      this.confirmationPending,
+      this.hideFavorites,
+      this.hideFollowers,
+      this.hideFollows,
+      this.hideFollowersCount,
+      this.hideFollowsCount,
+      this.settingsStore,
+      this.chatToken,
+      this.deactivated,
+      this.allowFollowingMove,
+      this.unreadConversationCount,
+      this.skipThreadContainment,
+      this.notificationSettings});
 
   factory PleromaMyAccountPleromaPart.fromJson(Map<String, dynamic> json) =>
       _$PleromaMyAccountPleromaPartFromJson(json);

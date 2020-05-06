@@ -30,4 +30,5 @@ class FilePickerFile {
   }
 }
 
-typedef FilePickerSelectedFileCallback = Function(FilePickerFile filePickerFile);
+typedef FilePickerSelectedFileCallback = Function(
+    FilePickerFile filePickerFile);

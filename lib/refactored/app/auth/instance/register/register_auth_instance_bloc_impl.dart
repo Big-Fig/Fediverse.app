@@ -9,15 +9,18 @@ import 'package:rxdart/rxdart.dart';
 class JoinAuthInstanceRegisterBloc extends DisposableOwner
     implements IRegisterAuthInstanceBloc {
   @override
-  final FormTextField usernameField = FormTextField(initialValue: "",
+  final FormTextField usernameField = FormTextField(
+      initialValue: "",
       validators: [EmptyFormTextFieldError.createValidator()]);
 
   @override
-  final FormTextField emailField = FormTextField(initialValue: "",
+  final FormTextField emailField = FormTextField(
+      initialValue: "",
       validators: [InvalidEmailFormTextFieldError.createValidator()]);
 
   @override
-  final FormTextField passwordField = FormTextField(initialValue: "",
+  final FormTextField passwordField = FormTextField(
+      initialValue: "",
       validators: [
         InvalidLengthFormTextFieldError.createValidator(
             minLength: 4, maxLength: null)
@@ -26,23 +29,24 @@ class JoinAuthInstanceRegisterBloc extends DisposableOwner
   @override
   FormTextField confirmPasswordField;
 
-  List<FormTextField> get fields =>
-      [usernameField, emailField, passwordField, confirmPasswordField,
+  List<FormTextField> get fields => [
+        usernameField,
+        emailField,
+        passwordField,
+        confirmPasswordField,
       ];
   List<Stream<bool>> get fieldHasErrorStreams =>
       fields.map((field) => field.hasErrorStream).toList();
 
   @override
-  Stream<bool> get readyToSubmitStream =>
-      Rx.combineLatest(fieldHasErrorStreams, (fieldHasErrors) =>
-          fieldHasErrors.fold(true, (previous, hasError) => previous &
-          !hasError)
-      );
+  Stream<bool> get readyToSubmitStream => Rx.combineLatest(
+      fieldHasErrorStreams,
+      (fieldHasErrors) => fieldHasErrors.fold(
+          true, (previous, hasError) => previous & !hasError));
 
   @override
-  bool get readyToSubmit =>
-      fields.fold(true, (previous, formField) => previous & !formField
-          .hasError);
+  bool get readyToSubmit => fields.fold(
+      true, (previous, formField) => previous & !formField.hasError);
 
   JoinAuthInstanceRegisterBloc() {
     confirmPasswordField =

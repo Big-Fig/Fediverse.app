@@ -7,11 +7,9 @@ import 'package:fedi/refactored/pleroma/tag/pleroma_tag_model.dart';
 typedef AccountSelectedCallback = Function(IAccount account);
 
 abstract class IAccount {
-
   static List<IAccount> excludeAccountFromList(
-      List<IAccount> accounts, bool predicate(IAccount account)) =>
+          List<IAccount> accounts, bool predicate(IAccount account)) =>
       accounts?.where((account) => predicate(account))?.toList();
-
 
   int get localId;
 

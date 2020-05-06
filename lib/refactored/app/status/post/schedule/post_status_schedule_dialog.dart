@@ -36,9 +36,8 @@ void showPostStatusScheduleDialog(
               var newTime = await showScheduledStatusDateTimePickerDialog(
                   context, postStatusBloc.scheduledAt);
 
-              if (newTime
-                  .isBefore(DateTime.now().add(IPostStatusBloc
-                  .requiredDurationToScheduleStatus))) {
+              if (newTime.isBefore(DateTime.now()
+                  .add(IPostStatusBloc.requiredDurationToScheduleStatus))) {
                 showAlert(
                   context: context,
                   title: appLocalizations

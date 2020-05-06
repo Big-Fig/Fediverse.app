@@ -10,9 +10,7 @@ class HtmlTextWidget extends StatelessWidget {
   final String data;
   final OnLinkTap onLinkTap;
 
-  HtmlTextWidget(
-      {@required this.data,
-      @required this.onLinkTap});
+  HtmlTextWidget({@required this.data, @required this.onLinkTap});
 
   @override
   Widget build(BuildContext context) => Html(

@@ -8,6 +8,7 @@ abstract class IMyAccountSettingsBloc extends Disposable {
       Provider.of<IMyAccountSettingsBloc>(context, listen: listen);
 
   bool get isRealtimeWebSocketsEnabled;
+
   Stream<bool> get isRealtimeWebSocketsEnabledStream;
 
   void changeIsRealtimeWebSocketsEnabled(bool value);

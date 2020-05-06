@@ -6,7 +6,8 @@ import 'package:fedi/refactored/pagination/pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("scheduledStatus_pagination_list_with_new_items_bloc_impl.dart");
+var _logger =
+    Logger("scheduledStatus_pagination_list_with_new_items_bloc_impl.dart");
 
 class ScheduledStatusPaginationListWithNewItemsBloc<
         TPage extends PaginationPage<IScheduledStatus>>
@@ -22,7 +23,8 @@ class ScheduledStatusPaginationListWithNewItemsBloc<
             paginationBloc: paginationBloc);
 
   @override
-  Stream<List<IScheduledStatus>> watchItemsNewerThanItem(IScheduledStatus item) {
+  Stream<List<IScheduledStatus>> watchItemsNewerThanItem(
+      IScheduledStatus item) {
     _logger.finest(() => "watchItemsNewerThanItem item = $item");
     return scheduledStatusCachedListService.watchLocalItemsNewerThanItem(item);
   }
@@ -41,5 +43,4 @@ class ScheduledStatusPaginationListWithNewItemsBloc<
     }
     return a.remoteId.compareTo(b.remoteId);
   }
-
 }

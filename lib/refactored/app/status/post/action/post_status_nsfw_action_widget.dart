@@ -17,8 +17,8 @@ class PostStatusNsfwActionWidget extends StatelessWidget {
 
             return Text(
                 AppLocalizations.of(context).tr("app.status.post.nsfw.title"),
-                style: TextStyle(color: calculateColor(nsfwSensitive),
-                    fontSize: 10));
+                style: TextStyle(
+                    color: calculateColor(nsfwSensitive), fontSize: 10));
           }),
       onPressed: () {
         postStatusBloc.changeNsfwSensitive(!postStatusBloc.nsfwSensitive);

@@ -46,8 +46,8 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
 
   @override
   Future internalAsyncInit() async {
-    var page = await paginationBloc.requestPage(
-        pageIndex: 0, forceToSkipCache: false);
+    var page =
+        await paginationBloc.requestPage(pageIndex: 0, forceToSkipCache: false);
 
     if (page == null) {
       _logger.severe(

@@ -43,12 +43,11 @@ import 'package:moor/moor.dart';
 
 part 'app_database.g.dart';
 
-@UseMoor(
-  tables: [
-    // todo: remove hack
-    // bug in moor - https://github.com/simolus3/moor/issues/447
-    // we should exclude tables here because we use this tables in
-    // app_database.moor
+@UseMoor(tables: [
+  // todo: remove hack
+  // bug in moor - https://github.com/simolus3/moor/issues/447
+  // we should exclude tables here because we use this tables in
+  // app_database.moor
 //    DbStatuses,
 //    DbConversations,
 //    DbNotifications,
@@ -62,24 +61,23 @@ part 'app_database.g.dart';
 //    DbAccountFollowers,
 //    DbConversationAccounts,
 //    DbScheduledStatuses,
-  ],
-  daos: [
-    StatusDao,
-    StatusHashtagsDao,
-    StatusListsDao,
-    AccountDao,
-    AccountFollowingsDao,
-    AccountFollowersDao,
-    ConversationDao,
-    ConversationAccountsDao,
-    ConversationStatusesDao,
-    StatusFavouritedAccountsDao,
-    StatusRebloggedAccountsDao,
-    NotificationDao,
-    ScheduledStatusDao,
-  ],
-  include: {'app_database.moor'}
-)
+], daos: [
+  StatusDao,
+  StatusHashtagsDao,
+  StatusListsDao,
+  AccountDao,
+  AccountFollowingsDao,
+  AccountFollowersDao,
+  ConversationDao,
+  ConversationAccountsDao,
+  ConversationStatusesDao,
+  StatusFavouritedAccountsDao,
+  StatusRebloggedAccountsDao,
+  NotificationDao,
+  ScheduledStatusDao,
+], include: {
+  'app_database.moor'
+})
 class AppDatabase extends _$AppDatabase {
   AppDatabase(QueryExecutor e) : super(e);
 

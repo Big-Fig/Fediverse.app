@@ -27,7 +27,9 @@ abstract class StatusPaginationListBaseWidget
       retrievePaginationListBloc(BuildContext context,
           {@required bool listen}) {
     var timelinePaginationListBloc =
-        Provider.of<IPaginationListBloc<PaginationPage<IStatus>, IStatus>>(context, listen: listen);
+        Provider.of<IPaginationListBloc<PaginationPage<IStatus>, IStatus>>(
+            context,
+            listen: listen);
     return timelinePaginationListBloc;
   }
 }

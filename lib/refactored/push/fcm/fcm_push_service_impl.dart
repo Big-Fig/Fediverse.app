@@ -104,12 +104,11 @@ Map<String, dynamic> _remapForJson(raw) => (raw as Map)
     ?.map((key, value) => MapEntry<String, dynamic>(key.toString(), value));
 
 Map<String, dynamic> _remapToStringObjectMap(Map data) {
-
-  var remappedData  = <String, dynamic>{};
+  var remappedData = <String, dynamic>{};
 
   data.entries.forEach((entry) {
     var remappedValue = entry.value;
-    if(entry.value is Map) {
+    if (entry.value is Map) {
       remappedValue = _remapToStringObjectMap(entry.value);
     }
     remappedData[entry.key.toString()] = remappedValue;
@@ -141,15 +140,13 @@ PushMessage _parsePushMessageOnIos(
 PushMessage _parsePushMessageOnAndroid(
     PushMessageType cloudMessageType, Map<String, dynamic> rawData) {
   _logger.finest(() => "_parsePushMessageOnAndroid rawData $rawData");
-  var dataJson =
-      rawData.containsKey(_dataKey) ? rawData[_dataKey] : null;
+  var dataJson = rawData.containsKey(_dataKey) ? rawData[_dataKey] : null;
   var notificationJson =
       rawData.containsKey(_notificationKey) ? rawData[_notificationKey] : null;
 
   _logger.finest(() => "_parsePushMessageOnAndroid \n"
       "\t dataJson $dataJson \n"
-      "\t notificationJson $notificationJson"
-  );
+      "\t notificationJson $notificationJson");
   return PushMessage(
       notification: notificationJson != null
           ? PushNotification.fromJson(notificationJson)

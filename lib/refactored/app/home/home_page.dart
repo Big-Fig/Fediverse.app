@@ -129,8 +129,7 @@ class _HomePageState extends State<HomePage>
         break;
       case AppHomeTab.conversations:
         return ConversationsHomeTabPage(
-            key: PageStorageKey<String>("ConversationsHomeTabPage")
-        );
+            key: PageStorageKey<String>("ConversationsHomeTabPage"));
         break;
       case AppHomeTab.account:
         return AccountHomeTabPage();

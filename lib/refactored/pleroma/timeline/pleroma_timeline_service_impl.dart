@@ -35,36 +35,18 @@ class PleromaTimelineService implements IPleromaTimelineService {
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-
   PleromaTimelineService({@required this.restService});
 
   @override
   Future<List<IPleromaStatus>> getHashtagTimeline({
-    /// for example '#cats'
     @required String hashtag,
-
-    /// Return results older than id
     String maxId,
-
-    /// Return results newer than id
     String sinceId,
-
-    /// Return results immediately newer than id
     String minId,
-
-    /// Maximum number of results to return
     int limit = 20,
-
-    /// Show only local statuses?
     bool onlyWithMedia = false,
-
-    /// Show only statuses with media attached?
     bool onlyLocal = false,
-
-    /// also return activities by muted (not by blocked!) users
     bool withMuted = false,
-
-    /// queries will exclude the statuses with the given visibilities
     List<PleromaVisibility> excludeVisibilities = const [
       PleromaVisibility.DIRECT
     ],
@@ -84,28 +66,13 @@ class PleromaTimelineService implements IPleromaTimelineService {
 
   @override
   Future<List<IPleromaStatus>> getHomeTimeline({
-    /// Return results older than id
     String maxId,
-
-    /// Return results newer than id
     String sinceId,
-
-    /// Return results immediately newer than id
     String minId,
-
-    /// Maximum number of results to return
     int limit = 20,
-
-    /// Show only statuses with media attached?
     bool onlyWithMedia = false,
-
-    /// Show only local statuses?
     bool onlyLocal = false,
-
-    /// also return activities by muted (not by blocked!) users
     bool withMuted = false,
-
-    /// queries will exclude the statuses with the given visibilities
     List<PleromaVisibility> excludeVisibilities = const [
       PleromaVisibility.DIRECT
     ],
@@ -124,31 +91,14 @@ class PleromaTimelineService implements IPleromaTimelineService {
 
   @override
   Future<List<IPleromaStatus>> getListTimeline({
-    /// list id
     @required String listId,
-
-    /// Return results older than id
     String maxId,
-
-    /// Return results newer than id
-    String sinceId,
-
-    /// Return results immediately newer than id
-    String minId,
-
-    /// Show only statuses with media attached?
+      String sinceId,
+     String minId,
     bool onlyWithMedia = false,
-
-    /// Show only local statuses?
     bool onlyLocal = false,
-
-    /// Maximum number of results to return
     int limit = 20,
-
-    /// also return activities by muted (not by blocked!) users
     bool withMuted = false,
-
-    /// queries will exclude the statuses with the given visibilities
     List<PleromaVisibility> excludeVisibilities = const [
       PleromaVisibility.DIRECT
     ],
@@ -168,28 +118,13 @@ class PleromaTimelineService implements IPleromaTimelineService {
 
   @override
   Future<List<IPleromaStatus>> getPublicTimeline({
-    /// Return results older than id
     String maxId,
-
-    /// Return results newer than id
     String sinceId,
-
-    /// Return results immediately newer than id
     String minId,
-
-    /// Maximum number of results to return
     int limit = 20,
-
-    /// Show only local statuses?
     bool onlyWithMedia = false,
-
-    /// Show only statuses with media attached?
     bool onlyLocal = false,
-
-    /// also return activities by muted (not by blocked!) users
     bool withMuted = false,
-
-    /// queries will exclude the statuses with the given visibilities
     List<PleromaVisibility> excludeVisibilities = const [
       PleromaVisibility.DIRECT
     ],
@@ -216,7 +151,6 @@ class PleromaTimelineService implements IPleromaTimelineService {
       @required bool onlyLocal,
       @required bool withMuted,
       @required List<PleromaVisibility> excludeVisibilities}) async {
-
     var request = RestRequest.get(
         relativePath: join("/api/v1/timelines/", relativeTimeLineUrlPath),
         queryArgs: [

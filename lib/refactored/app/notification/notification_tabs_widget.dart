@@ -117,8 +117,7 @@ class NotificationTabsWidget extends StatelessWidget {
     MastodonNotificationType onlyWithType = mapTabToType(tab);
 
     return DisposableProvider<INotificationCachedListBloc>(
-      create: (context) => NotificationCachedListBloc.createFromContext(
-          context,
+      create: (context) => NotificationCachedListBloc.createFromContext(context,
           onlyWithType: onlyWithType),
       child: DisposableProvider<
           IPaginationBloc<PaginationPage<INotification>, INotification>>(
@@ -144,10 +143,9 @@ class NotificationTabsWidget extends StatelessWidget {
                 IPaginationListWithNewItemsBloc>(
               update: (context, value, previous) => value,
               child: PaginationListWithNewItemsHeaderWidget(
-
-
                 child: DisposableProvider<ICollapsibleBloc>(
-                  create: (context) => CollapsibleBloc.createFromContext(context),
+                  create: (context) =>
+                      CollapsibleBloc.createFromContext(context),
                   child: Stack(
                     children: <Widget>[
                       NotificationPaginationListWidget(

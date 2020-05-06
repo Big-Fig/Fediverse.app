@@ -43,10 +43,10 @@ class AccountStatusesWidget extends PaginationListWidget<IStatus> {
                 child: DisposableProxyProvider<IStatus, IStatusBloc>(
                     update: (context, status, oldValue) {
                       var collapsibleBloc =
-                      ICollapsibleBloc.of(context, listen: false);
+                          ICollapsibleBloc.of(context, listen: false);
 
-                      var statusBloc = StatusBloc.createFromContext(
-                          context, status);
+                      var statusBloc =
+                          StatusBloc.createFromContext(context, status);
 
                       collapsibleBloc.addVisibleItem(statusBloc);
 
@@ -56,7 +56,9 @@ class AccountStatusesWidget extends PaginationListWidget<IStatus> {
 
                       return statusBloc;
                     },
-                    child: StatusListItemTimelineWidget(collapsible: true,)),
+                    child: StatusListItemTimelineWidget(
+                      collapsible: true,
+                    )),
               ));
 
   @override
@@ -64,7 +66,9 @@ class AccountStatusesWidget extends PaginationListWidget<IStatus> {
       retrievePaginationListBloc(BuildContext context,
           {@required bool listen}) {
     var timelinePaginationListBloc =
-        Provider.of<IPaginationListBloc<PaginationPage<IStatus>, IStatus>>(context, listen: listen);
+        Provider.of<IPaginationListBloc<PaginationPage<IStatus>, IStatus>>(
+            context,
+            listen: listen);
     return timelinePaginationListBloc;
   }
 }

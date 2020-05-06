@@ -6,8 +6,10 @@ import 'package:fedi/refactored/file/picker/file_picker_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-void showEditMyAccountAvatarDialog(BuildContext context, FilePickerFile
-filePickerFile, FilePickerSelectedFileCallback selectedCallback) {
+void showEditMyAccountAvatarDialog(
+    BuildContext context,
+    FilePickerFile filePickerFile,
+    FilePickerSelectedFileCallback selectedCallback) {
   showDialog(
       context: context,
       child: AlertDialog(
@@ -20,13 +22,13 @@ filePickerFile, FilePickerSelectedFileCallback selectedCallback) {
                 dismissDialog(context);
                 selectedCallback(filePickerFile);
               },
-              child: Text(AppLocalizations.of(context).tr(
-                  "app.account.my.edit.field.header.dialog.action"
+              child: Text(AppLocalizations.of(context)
+                  .tr("app.account.my.edit.field.header.dialog.action"
                       ".select"))),
           FlatButton(
               onPressed: () async {
                 File croppedFile =
-                await cropImage(filePickerFile.file, context);
+                    await cropImage(filePickerFile.file, context);
 
                 dismissDialog(context);
                 if (croppedFile != null) {
@@ -42,15 +44,15 @@ filePickerFile, FilePickerSelectedFileCallback selectedCallback) {
                   selectedCallback(filePickerFile);
                 }
               },
-              child: Text(AppLocalizations.of(context).tr(
-                  "app.account.my.edit.field.header.dialog.action"
+              child: Text(AppLocalizations.of(context)
+                  .tr("app.account.my.edit.field.header.dialog.action"
                       ".crop"))),
           FlatButton(
               onPressed: () {
                 dismissDialog(context);
               },
-              child: Text(AppLocalizations.of(context).tr(
-                  "app.account.my.edit.field.header.dialog.action"
+              child: Text(AppLocalizations.of(context)
+                  .tr("app.account.my.edit.field.header.dialog.action"
                       ".cancel"))),
         ],
       ));

@@ -10,5 +10,6 @@ abstract class IScheduledStatusCachedListService extends DisposableOwner
           {bool listen = true}) =>
       Provider.of<IScheduledStatusCachedListService>(context, listen: listen);
 
-  Stream<List<IScheduledStatus>> watchLocalItemsNewerThanItem(IScheduledStatus item);
+  Stream<List<IScheduledStatus>> watchLocalItemsNewerThanItem(
+      IScheduledStatus item);
 }

@@ -127,16 +127,17 @@ class AccountRepository extends AsyncInitLoadingBloc
   @override
   Future upsertRemoteAccount(IPleromaAccount remoteAccount,
       {@required conversationRemoteId}) async {
-
     await upsert(mapRemoteAccountToDbAccount(remoteAccount));
 
     if (conversationRemoteId != null) {
       var accountRemoteId = remoteAccount.id;
 
-      await conversationAccountsDao.insert(DbConversationAccount(
-          id: null,
-          conversationRemoteId: conversationRemoteId,
-          accountRemoteId: accountRemoteId), mode: InsertMode.insertOrReplace);
+      await conversationAccountsDao.insert(
+          DbConversationAccount(
+              id: null,
+              conversationRemoteId: conversationRemoteId,
+              accountRemoteId: accountRemoteId),
+          mode: InsertMode.insertOrReplace);
     }
   }
 
@@ -306,13 +307,12 @@ class AccountRepository extends AsyncInitLoadingBloc
     var includeStatusRebloggedAccounts = onlyInStatusRebloggedBy != null;
     var includeConversationAccounts = onlyInConversation != null;
 
-
     var joinQuery = query.join(dao.populateAccountJoin(
-        includeAccountFollowings: includeAccountFollowings,
-        includeAccountFollowers: includeAccountFollowers,
-        includeStatusFavouritedAccounts: includeStatusFavouritedAccounts,
-        includeStatusRebloggedAccounts: includeStatusRebloggedAccounts,
-       includeConversationAccounts: includeConversationAccounts,
+      includeAccountFollowings: includeAccountFollowings,
+      includeAccountFollowers: includeAccountFollowers,
+      includeStatusFavouritedAccounts: includeStatusFavouritedAccounts,
+      includeStatusRebloggedAccounts: includeStatusRebloggedAccounts,
+      includeConversationAccounts: includeConversationAccounts,
 //       includeConversationAccounts: false,
     ));
 

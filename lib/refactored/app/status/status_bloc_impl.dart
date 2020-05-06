@@ -44,8 +44,8 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
       );
 
   // ignore: close_sinks
-  final BehaviorSubject<bool> _isCollapsedSubject = BehaviorSubject.seeded
-    (true);
+  final BehaviorSubject<bool> _isCollapsedSubject =
+      BehaviorSubject.seeded(true);
 
   @override
   bool get isPossibleToCollapse =>
@@ -62,7 +62,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   Stream<bool> get isCollapsedStream => _isCollapsedSubject.stream;
 
   @override
-  void toggleCollapseExpand(){
+  void toggleCollapseExpand() {
     _isCollapsedSubject.add(!isCollapsed);
   }
 
@@ -104,10 +104,11 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
     @required this.pleromaStatusEmojiReactionService,
     @required this.statusRepository,
     @required this.accountRepository,
-    @required IStatus status,
-    // for better performance we don't update account too often
-    bool needRefreshFromNetworkOnInit = false,
-    // todo: remove hack. Don't init when bloc quickly disposed. Help
+    @required
+        IStatus
+            status, // for better performance we don't update account too often
+    bool needRefreshFromNetworkOnInit =
+        false, // todo: remove hack. Don't init when bloc quickly disposed. Help
     //  improve performance in timeline unnecessary recreations
     bool delayInit = true,
     this.isNeedWatchLocalRepositoryForUpdates = true,
@@ -672,24 +673,25 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   }
 
   @override
-  String get contentWithEmojisCollapsible => isCollapsed ? _collapseContent
-    (contentWithEmojis) : contentWithEmojis;
+  String get contentWithEmojisCollapsible =>
+      isCollapsed ? _collapseContent(contentWithEmojis) : contentWithEmojis;
 
   @override
-  Stream<String> get contentWithEmojisCollapsibleStream =>
-      Rx.combineLatest2(contentWithEmojisStream, isCollapsedStream,
-          (contentWithEmojis, isCollapsed) => isCollapsed ? _collapseContent
-            (contentWithEmojis) : contentWithEmojis);
+  Stream<String> get contentWithEmojisCollapsibleStream => Rx.combineLatest2(
+      contentWithEmojisStream,
+      isCollapsedStream,
+      (contentWithEmojis, isCollapsed) => isCollapsed
+          ? _collapseContent(contentWithEmojis)
+          : contentWithEmojis);
 
   String _collapseContent(String contentWithEmojis) {
     // todo: check html tags
-    if(contentWithEmojis.length > minimumCharactersLimitToCollapse) {
-      var collapsedContent = contentWithEmojis
-          .substring(0, minimumCharactersLimitToCollapse);
+    if (contentWithEmojis.length > minimumCharactersLimitToCollapse) {
+      var collapsedContent =
+          contentWithEmojis.substring(0, minimumCharactersLimitToCollapse);
       return "$collapsedContent...";
     } else {
       return contentWithEmojis;
     }
   }
-
 }

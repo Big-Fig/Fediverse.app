@@ -80,8 +80,12 @@ class CameraErrorException extends CameraException {
 
 class CameraNotReadyException extends CameraException {
   final List<CameraState> desiredStates;
-  CameraNotReadyException(camera_lib.CameraDescription cameraDescription, int index,
-      CameraLensDirection lensDirection, CameraState state, this.desiredStates)
+  CameraNotReadyException(
+      camera_lib.CameraDescription cameraDescription,
+      int index,
+      CameraLensDirection lensDirection,
+      CameraState state,
+      this.desiredStates)
       : super(cameraDescription, index, lensDirection, state);
   @override
   String toString() {

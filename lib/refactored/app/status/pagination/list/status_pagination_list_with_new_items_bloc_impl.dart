@@ -41,5 +41,4 @@ class StatusPaginationListWithNewItemsBloc<
     }
     return a.remoteId.compareTo(b.remoteId);
   }
-
 }

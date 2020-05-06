@@ -94,8 +94,8 @@ class StatusThreadBloc extends DisposableOwner implements IStatusThreadBloc {
     try {
       _logger.finest(() => "refresh");
       // update start status
-      var updatedStartRemoteStatus = await pleromaStatusService
-          .getStatus(statusRemoteId: startStatus.remoteId);
+      var updatedStartRemoteStatus = await pleromaStatusService.getStatus(
+          statusRemoteId: startStatus.remoteId);
       if (updatedStartRemoteStatus != null) {
         // don't await because we don't need it
         unawaited(statusRepository.updateLocalStatusByRemoteStatus(
@@ -107,8 +107,8 @@ class StatusThreadBloc extends DisposableOwner implements IStatusThreadBloc {
       }
 
       // update context
-      var remoteStatusContext = await pleromaStatusService
-          .getStatusContext(statusRemoteId: startStatus.remoteId);
+      var remoteStatusContext = await pleromaStatusService.getStatusContext(
+          statusRemoteId: startStatus.remoteId);
 
       List<IStatus> newStatuses = [];
       newStatuses.addAll(remoteStatusContext.ancestors

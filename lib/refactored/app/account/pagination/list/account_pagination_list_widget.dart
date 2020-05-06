@@ -49,17 +49,18 @@ class AccountPaginationListWidget extends PaginationListWidget<IAccount> {
             var item = items[index];
             _logger.finest(() => "itemBuilder ${item.remoteId}");
             return Provider<IAccount>.value(
-                value: item,
-                child: DisposableProxyProvider<IAccount, IAccountBloc>(
-                    update: (context, account, oldValue) =>
-                        AccountBloc.createFromContext(context,
-                            isNeedWatchLocalRepositoryForUpdates:
-                                needWatchLocalRepositoryForUpdates,
-                            account: account,
-                            isNeedRefreshFromNetworkOnInit: false, isNeedWatchWebSocketsEvents: false),
-                    child: AccountListItemWidget(
-                        accountSelectedCallback: accountSelectedCallback)),
-              );
+              value: item,
+              child: DisposableProxyProvider<IAccount, IAccountBloc>(
+                  update: (context, account, oldValue) =>
+                      AccountBloc.createFromContext(context,
+                          isNeedWatchLocalRepositoryForUpdates:
+                              needWatchLocalRepositoryForUpdates,
+                          account: account,
+                          isNeedRefreshFromNetworkOnInit: false,
+                          isNeedWatchWebSocketsEvents: false),
+                  child: AccountListItemWidget(
+                      accountSelectedCallback: accountSelectedCallback)),
+            );
           });
 
   @override

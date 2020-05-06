@@ -10,8 +10,7 @@ class StatusSpoilerAlertWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: RaisedButton(
-        child: Text(
-            appLocalizations.tr("app.status.spoiler.action.view")),
+        child: Text(appLocalizations.tr("app.status.spoiler.action.view")),
         onPressed: () {
           var statusBloc = IStatusBloc.of(context, listen: false);
 

@@ -26,12 +26,12 @@ class AccountStatusesCachedListBloc extends IStatusCachedListBloc {
 
   AccountStatusesCachedListBloc(
       {@required this.account,
-        @required this.pleromaAccountService,
-        @required this.statusRepository,
-        @required this.notificationRepository,
-        @required this.conversationRepository,
-        @required this.pleromaWebSocketsService,
-        @required bool listenWebSocketsChanges})
+      @required this.pleromaAccountService,
+      @required this.statusRepository,
+      @required this.notificationRepository,
+      @required this.conversationRepository,
+      @required this.pleromaWebSocketsService,
+      @required bool listenWebSocketsChanges})
       : super() {
     if (listenWebSocketsChanges) {
       addDisposable(

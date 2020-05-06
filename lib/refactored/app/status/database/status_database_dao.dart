@@ -104,7 +104,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
               includeStatusHashtags: false,
               includeConversations: false));
 
-  Future<int> insert(Insertable<DbStatus> entity,{    InsertMode mode}) async =>
+  Future<int> insert(Insertable<DbStatus> entity, {InsertMode mode}) async =>
       into(db.dbStatuses).insert(entity, mode: mode);
 
   Future<int> upsert(Insertable<DbStatus> entity) async =>
