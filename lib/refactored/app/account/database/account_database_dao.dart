@@ -129,7 +129,7 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
     @required includeStatusRebloggedAccounts,
     @required includeConversationAccounts,
   }) {
-    return [
+    List<Join<Table, DataClass>> allJoins = [
       ...(includeAccountFollowings
           ? [
               innerJoin(
@@ -164,13 +164,14 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
           : []),
       ...(includeConversationAccounts
           ? [
-              innerJoin(
+              leftOuterJoin(
                   conversationAccountsAlias,
                   conversationAccountsAlias.accountRemoteId
                       .equalsExp(dbAccounts.remoteId))
             ]
           : [])
     ];
+    return allJoins;
   }
 
   SimpleSelectStatement<$DbAccountsTable, DbAccount> addSearchWhere(
