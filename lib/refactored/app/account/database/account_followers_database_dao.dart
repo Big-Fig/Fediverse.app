@@ -28,7 +28,8 @@ class AccountFollowersDao extends DatabaseAccessor<AppDatabase>
   // Called by the AppDatabase class
   AccountFollowersDao(this.db) : super(db);
 
-  Future<int> insert(Insertable<DbAccountFollower> entity,{    InsertMode mode}) async =>
+  Future<int> insert(Insertable<DbAccountFollower> entity,
+          {InsertMode mode}) async =>
       into(dbAccountFollowers).insert(entity, mode: mode);
 
   Future insertAll(Iterable<Insertable<DbAccountFollower>> entities,

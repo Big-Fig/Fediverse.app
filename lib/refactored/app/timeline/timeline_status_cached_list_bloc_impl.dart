@@ -112,7 +112,6 @@ abstract class TimelineStatusCachedListBloc extends DisposableOwner
     }
   }
 
-
   @override
   Stream<List<IStatus>> watchLocalItemsNewerThanItem(IStatus item) {
     var timelineSettings = retrieveTimelineSettings();

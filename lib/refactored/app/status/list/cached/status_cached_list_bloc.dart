@@ -6,8 +6,7 @@ import 'package:provider/provider.dart';
 
 abstract class IStatusCachedListBloc extends DisposableOwner
     implements IPleromaCachedListBloc<IStatus> {
-  static IStatusCachedListBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static IStatusCachedListBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IStatusCachedListBloc>(context, listen: listen);
 
   Future preRefreshAllAction();

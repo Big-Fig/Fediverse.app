@@ -36,11 +36,9 @@ class DbConversationWrapper implements IConversation {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is DbConversationWrapper && runtimeType == other.runtimeType &&
-              dbConversation == other.dbConversation;
+      other is DbConversationWrapper &&
+          runtimeType == other.runtimeType &&
+          dbConversation == other.dbConversation;
   @override
   int get hashCode => dbConversation.hashCode;
-
-
-
 }

@@ -38,8 +38,8 @@ class ConversationBloc extends AsyncInitLoadingBloc
     @required this.accountRepository,
     @required IConversation conversation,
     bool needRefreshFromNetworkOnInit = false,
-    this.isNeedWatchLocalRepositoryForUpdates = true,
-    // todo: remove hack. Don't init when bloc quickly disposed. Help
+    this.isNeedWatchLocalRepositoryForUpdates =
+        true, // todo: remove hack. Don't init when bloc quickly disposed. Help
     //  improve performance in timeline unnecessary recreations
     bool delayInit = true,
   }) : _conversationSubject = BehaviorSubject.seeded(conversation) {

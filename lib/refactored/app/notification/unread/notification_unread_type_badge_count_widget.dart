@@ -5,18 +5,17 @@ import 'package:flutter/cupertino.dart';
 
 class NotificationUnreadTypeBadgeCountWidget
     extends NotificationUnreadBadgeCountWidget {
-
   final MastodonNotificationType type;
 
-  NotificationUnreadTypeBadgeCountWidget(
-      {@required Widget child, @required this.type,}) : super(child: child);
+  NotificationUnreadTypeBadgeCountWidget({
+    @required Widget child,
+    @required this.type,
+  }) : super(child: child);
 
   @override
   Stream<int> retrieveUnreadBadgeCountStream(BuildContext context) {
-    var notificationRepository = INotificationRepository.of(
-        context, listen: false);
+    var notificationRepository =
+        INotificationRepository.of(context, listen: false);
     return notificationRepository.watchUnreadCountByType(type: type);
   }
-
-
 }

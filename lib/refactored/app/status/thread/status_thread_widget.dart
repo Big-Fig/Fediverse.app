@@ -85,7 +85,6 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
         });
       }
 
-
       return ScrollablePositionedList.builder(
         itemScrollController: itemScrollController,
         itemPositionsListener: itemPositionListener,
@@ -99,12 +98,14 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
                     StatusBloc.createFromContext(context, status,
                         isNeedWatchLocalRepositoryForUpdates: true),
                 child: StatusListItemTimelineWidget(
-                    statusCallback: (context, status) {
-                  if (status.remoteId !=
-                      statusThreadBloc.startStatus.remoteId) {
-                    goToStatusThreadPage(context, status);
-                  }
-                }, collapsible: false,)),
+                  statusCallback: (context, status) {
+                    if (status.remoteId !=
+                        statusThreadBloc.startStatus.remoteId) {
+                      goToStatusThreadPage(context, status);
+                    }
+                  },
+                  collapsible: false,
+                )),
           );
         },
       );

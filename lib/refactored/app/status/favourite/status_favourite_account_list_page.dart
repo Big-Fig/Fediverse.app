@@ -39,7 +39,8 @@ void goToStatusFavouriteAccountListPage(BuildContext context, IStatus status) {
         builder: (context) =>
             DisposableProvider<IPleromaCachedListBloc<IAccount>>(
                 create: (context) =>
-                    StatusFavouriteAccountCachedListBloc.createFromContext(context,
+                    StatusFavouriteAccountCachedListBloc.createFromContext(
+                        context,
                         status: status),
                 child: DisposableProvider<
                     IPaginationBloc<PaginationPage<IAccount>, IAccount>>(

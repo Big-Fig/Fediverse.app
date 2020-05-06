@@ -36,12 +36,12 @@ class CurrentAuthInstanceContextLoadingWidget extends StatelessWidget {
 
                 return Center(
                     child: Text(
-                        AppLocalizations.of(context).tr(
-                        "app.auth.instance.current.context.loading.loading"
-                        ".content",
-                        args: [myAccountBloc.instance.userAtHost]),
-                    style: TextStyle(color: Colors.white),
-                    ));
+                  AppLocalizations.of(context).tr(
+                      "app.auth.instance.current.context.loading.loading"
+                      ".content",
+                      args: [myAccountBloc.instance.userAtHost]),
+                  style: TextStyle(color: Colors.white),
+                ));
                 break;
               case CurrentAuthInstanceContextLoadingState.localCacheExist:
                 return child;
@@ -49,9 +49,9 @@ class CurrentAuthInstanceContextLoadingWidget extends StatelessWidget {
                   .cantFetchAndLocalCacheNotExist:
                 return Column(
                   children: <Widget>[
-                    Text(AppLocalizations.of(context)
-                        .tr("app.auth.instance.current.context.loading.cant_load"
-                            ".content")),
+                    Text(AppLocalizations.of(context).tr(
+                        "app.auth.instance.current.context.loading.cant_load"
+                        ".content")),
                     RaisedButton(
                       child: Text(AppLocalizations.of(context).tr(
                           "app.auth.instance.current.context.loading.cant_load"

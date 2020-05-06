@@ -185,8 +185,7 @@ class ConversationRepository extends AsyncInitLoadingBloc
 
   @override
   Future<List<DbConversationWrapper>> getConversations(
-      {
-      @required IConversation olderThan,
+      {@required IConversation olderThan,
       @required IConversation newerThan,
       @required int limit,
       @required int offset,
@@ -257,12 +256,10 @@ class ConversationRepository extends AsyncInitLoadingBloc
 
   @override
   Future<DbConversationWrapper> getConversation(
-      {
-      @required IConversation olderThan,
+      {@required IConversation olderThan,
       @required IConversation newerThan,
       @required ConversationOrderingTermData orderingTermData}) async {
     var conversations = await getConversations(
-  
         olderThan: olderThan,
         newerThan: newerThan,
         orderingTermData: orderingTermData,
@@ -273,8 +270,7 @@ class ConversationRepository extends AsyncInitLoadingBloc
 
   @override
   Stream<DbConversationWrapper> watchConversation(
-      {
-      @required IConversation olderThan,
+      {@required IConversation olderThan,
       @required IConversation newerThan,
       @required ConversationOrderingTermData orderingTermData}) {
     var conversationsStream = watchConversations(

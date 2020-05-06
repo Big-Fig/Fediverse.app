@@ -145,23 +145,22 @@ class CameraVideoWidget extends CameraWidget {
         },
       );
 
-  Widget buildStopButtonWidget(ICameraBloc cameraBloc) =>
-      StreamBuilder<bool>(
-          stream: cameraBloc.isVideoRecordingInProgressOrPausedStream,
-          initialData: cameraBloc.isVideoRecordingInProgressOrPaused,
-          builder: (context, snapshot) {
-            var isVideoRecordingInProgressOrPaused = snapshot.data;
-            if (isVideoRecordingInProgressOrPaused) {
-              return IconButton(
-                iconSize: 44,
-                color: Colors.red,
-                icon: Icon(Icons.stop),
-                onPressed: () {
-                  cameraBloc.stopVideoRecording();
-                },
-              );
-            } else {
-              return SizedBox.shrink();
-            }
-          });
+  Widget buildStopButtonWidget(ICameraBloc cameraBloc) => StreamBuilder<bool>(
+      stream: cameraBloc.isVideoRecordingInProgressOrPausedStream,
+      initialData: cameraBloc.isVideoRecordingInProgressOrPaused,
+      builder: (context, snapshot) {
+        var isVideoRecordingInProgressOrPaused = snapshot.data;
+        if (isVideoRecordingInProgressOrPaused) {
+          return IconButton(
+            iconSize: 44,
+            color: Colors.red,
+            icon: Icon(Icons.stop),
+            onPressed: () {
+              cameraBloc.stopVideoRecording();
+            },
+          );
+        } else {
+          return SizedBox.shrink();
+        }
+      });
 }

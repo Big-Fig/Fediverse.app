@@ -12,9 +12,7 @@ class LocalTimelineStatusCachedListBloc extends TimelineStatusCachedListBloc
     implements IStatusCachedListBloc {
   @override
   ITimelineSettings retrieveTimelineSettings() => TimelineSettings.public(
-        excludeVisibilities: [
-          PleromaVisibility.DIRECT
-        ],
+        excludeVisibilities: [PleromaVisibility.DIRECT],
         onlyLocal: true,
         onlyNotMuted: true,
       );

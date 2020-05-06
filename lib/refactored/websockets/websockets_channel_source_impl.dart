@@ -13,10 +13,9 @@ var _logger = Logger("websockets_channel_source.dart");
 class WebSocketsChannelSource<T extends WebSocketsEvent> extends DisposableOwner
     implements IWebSocketsChannelSource<T> {
   @override
-  Stream<T> get eventsStream =>
-      _channel.stream.map(_mapChannelData);
+  Stream<T> get eventsStream => _channel.stream.map(_mapChannelData);
   @override
-  final Uri  url;
+  final Uri url;
   final WebSocketsEventParser<T> eventParser;
 
   final IOWebSocketChannel _channel;

@@ -26,14 +26,15 @@ class ConversationStatusesDao extends DatabaseAccessor<AppDatabase>
   // Called by the AppDatabase class
   ConversationStatusesDao(this.db) : super(db);
 
-  Future<int> insert(Insertable<DbConversationStatus> entity, { InsertMode mode}) async =>
+  Future<int> insert(Insertable<DbConversationStatus> entity,
+          {InsertMode mode}) async =>
       into(dbConversationStatuses).insert(entity, mode: mode);
 
   Future insertAll(Iterable<Insertable<DbConversationStatus>> entities,
-          InsertMode mode) async {
+      InsertMode mode) async {
     await batch((batch) {
-        batch.insertAll(dbConversationStatuses, entities, mode: mode);
-      });
+      batch.insertAll(dbConversationStatuses, entities, mode: mode);
+    });
   }
 
   Future<bool> replace(Insertable<DbConversationStatus> entity) async =>

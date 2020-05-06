@@ -97,7 +97,7 @@ class PleromaAccountService implements IPleromaAccountService {
 
   @override
   Future<List<IPleromaAccountRelationship>> getRelationshipWithAccounts(
-  {@required List<String> remoteAccountIds}) async {
+      {@required List<String> remoteAccountIds}) async {
     var httpResponse = await restService.sendHttpRequest(RestRequest.get(
         relativePath: urlPath.join(accountRelativeUrlPath, "relationships"),
         queryArgs: remoteAccountIds

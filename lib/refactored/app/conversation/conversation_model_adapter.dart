@@ -16,11 +16,11 @@ DbConversation mapRemoteConversationToDbConversation(
 }
 
 PleromaConversation mapLocalConversationToRemoteConversation(
-    IConversation conversation,
-    {@required IStatus lastStatus,
-    @required List<IAccount> accounts}) => PleromaConversation(
-      unread: conversation.unread,
-      lastStatus: mapLocalStatusToRemoteStatus(lastStatus),
-      id: conversation.remoteId,
-      accounts:
-          accounts?.map(mapLocalAccountToRemoteAccount)?.toList());
+        IConversation conversation,
+        {@required IStatus lastStatus,
+        @required List<IAccount> accounts}) =>
+    PleromaConversation(
+        unread: conversation.unread,
+        lastStatus: mapLocalStatusToRemoteStatus(lastStatus),
+        id: conversation.remoteId,
+        accounts: accounts?.map(mapLocalAccountToRemoteAccount)?.toList());

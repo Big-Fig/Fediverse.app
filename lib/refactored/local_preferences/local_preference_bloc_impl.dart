@@ -44,7 +44,7 @@ abstract class LocalPreferenceBloc<T> extends AsyncInitLoadingBloc
   @override
   Future<bool> setValue(T newValue) {
     var future = setValueInternal(newValue);
-    if(!_subject.isClosed) {
+    if (!_subject.isClosed) {
       _subject.add(newValue);
     }
     return future;

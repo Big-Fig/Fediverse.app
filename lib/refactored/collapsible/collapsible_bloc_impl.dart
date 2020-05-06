@@ -9,6 +9,7 @@ import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger("collapsible_bloc_impl.dart");
+
 class CollapsibleBloc extends DisposableOwner implements ICollapsibleBloc {
   // ignore: close_sinks
   BehaviorSubject<List<ICollapsibleItem>> visibleItemsSubject =

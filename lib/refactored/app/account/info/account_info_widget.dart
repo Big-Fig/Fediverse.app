@@ -42,8 +42,7 @@ class AccountInfoWidget extends StatelessWidget {
     );
   }
 
-  StreamBuilder<int> buildFollowersCountWidget(
-      IAccountBloc accountBloc) {
+  StreamBuilder<int> buildFollowersCountWidget(IAccountBloc accountBloc) {
     return StreamBuilder<int>(
         stream: accountBloc.followersCountStream,
         initialData: accountBloc.followersCount,
@@ -55,8 +54,7 @@ class AccountInfoWidget extends StatelessWidget {
         });
   }
 
-  StreamBuilder<int> buildFollowingCountWidget(
-      IAccountBloc accountBloc) {
+  StreamBuilder<int> buildFollowingCountWidget(IAccountBloc accountBloc) {
     return StreamBuilder<int>(
         stream: accountBloc.followingCountStream,
         initialData: accountBloc.followingCount,
@@ -68,8 +66,7 @@ class AccountInfoWidget extends StatelessWidget {
         });
   }
 
-  StreamBuilder<int> buildStatusesCountWidget(
-      IAccountBloc accountBloc) {
+  StreamBuilder<int> buildStatusesCountWidget(IAccountBloc accountBloc) {
     return StreamBuilder<int>(
         stream: accountBloc.statusesCountStream,
         initialData: accountBloc.statusesCount,

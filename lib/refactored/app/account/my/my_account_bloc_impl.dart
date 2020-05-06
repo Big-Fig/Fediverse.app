@@ -95,7 +95,6 @@ class MyAccountBloc extends IMyAccountBloc {
     return myAccount.remoteId == status.account.remoteId;
   }
 
-
   @override
   IPleromaAccountRelationship get accountRelationship => throw selfActionError;
 

@@ -39,6 +39,7 @@ DialogAction createDefaultCancelAction(BuildContext context) {
       },
       label: AppLocalizations.of(context).tr("dialog.action.cancel"));
 }
+
 DialogAction createOkCancelAction(BuildContext context) {
   return DialogAction(
       onAction: () {

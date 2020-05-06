@@ -89,15 +89,13 @@ class StatusRepository extends AsyncInitLoadingBloc
       return;
     }
 
-
     List<IPleromaAccount> remoteAccounts =
-    remoteStatuses.map((remoteStatus) => remoteStatus.account).toList();
+        remoteStatuses.map((remoteStatus) => remoteStatus.account).toList();
 
     await accountRepository.upsertRemoteAccounts(remoteAccounts,
         conversationRemoteId: conversationRemoteId);
 
     await upsertAll(remoteStatuses.map(mapRemoteStatusToDbStatus).toList());
-
 
     if (listRemoteId != null) {
       await addStatusesToList(
@@ -168,15 +166,15 @@ class StatusRepository extends AsyncInitLoadingBloc
       return !alreadyAddedConversationStatusesIds.contains(statusRemoteId);
     });
 
-
     if (notAddedYetStatusRemoteIds?.isNotEmpty == true) {
-      for(var statusRemoteId in notAddedYetStatusRemoteIds) {
-        await conversationStatusesDao.insert(DbConversationStatus(
-            id: null,
-            statusRemoteId: statusRemoteId,
-            conversationRemoteId: conversationRemoteId), mode: InsertMode.insertOrReplace);
+      for (var statusRemoteId in notAddedYetStatusRemoteIds) {
+        await conversationStatusesDao.insert(
+            DbConversationStatus(
+                id: null,
+                statusRemoteId: statusRemoteId,
+                conversationRemoteId: conversationRemoteId),
+            mode: InsertMode.insertOrReplace);
       }
-
     }
 //      await conversationStatusesDao.insertAll(
 //          notAddedYetStatusRemoteIds

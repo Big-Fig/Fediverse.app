@@ -132,8 +132,7 @@ class UploadMediaAttachmentGridWidget extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-            ),
-            // usually buttons at the bottom of the dialog
+            ), // usually buttons at the bottom of the dialog
             FlatButton(
               child: Text(AppLocalizations.of(context)
                   .tr("app.media.attachment.upload.remove.dialog.content"

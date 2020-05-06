@@ -78,10 +78,8 @@ class FileGalleryWidget extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   TabBar(
-                    indicatorSize: TabBarIndicatorSize.label,
-                    //makes it better
-                    isScrollable: true,
-                    //up to your taste
+                    indicatorSize: TabBarIndicatorSize.label, //makes it better
+                    isScrollable: true, //up to your taste
                     indicator: MD2Indicator(
                         //it begins here
                         indicatorHeight: 3,

@@ -94,22 +94,21 @@ class StatusListItemTimelineWidget extends StatelessWidget {
               ),
             ),
             buildStatusContent(context, statusBloc),
-            if(displayActions)
-            StatusEmojiReactionListWidget(),
-            if(displayActions)
+            if (displayActions) StatusEmojiReactionListWidget(),
+            if (displayActions)
               Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  StatusCommentActionWidget(),
-                  StatusFavouriteActionWidget(),
-                  buildEmojiPickerButton(context, statusBloc),
-                  StatusReblogActionWidget(),
-                  StatusShareActionWidget(),
-                ],
+                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    StatusCommentActionWidget(),
+                    StatusFavouriteActionWidget(),
+                    buildEmojiPickerButton(context, statusBloc),
+                    StatusReblogActionWidget(),
+                    StatusShareActionWidget(),
+                  ],
+                ),
               ),
-            ),
           ],
         ),
       );

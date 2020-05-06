@@ -39,29 +39,30 @@ void goToStartConversationPage(BuildContext context) {
   Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => DisposableProvider<ISelectAccountCachedListBloc>(
-            create: (context) => SelectAccountCachedListBloc.createFromContext(
-                context,
-                excludeMyAccount: true),
-            child: Provider<IPleromaCachedListBloc<IAccount>>(
-              create: (context) =>
-                  ISelectAccountCachedListBloc.of(context, listen: false),
-              child: Provider<ISearchInputBloc>(
+          builder: (context) =>
+              DisposableProvider<ISelectAccountCachedListBloc>(
                 create: (context) =>
-                ISelectAccountCachedListBloc.of(context, listen: false)
-                    .searchInputBloc,
-                child: DisposableProvider<
-                    IPaginationBloc<PaginationPage<IAccount>,
-                        IAccount>>(
+                    SelectAccountCachedListBloc.createFromContext(context,
+                        excludeMyAccount: true),
+                child: Provider<IPleromaCachedListBloc<IAccount>>(
+                  create: (context) =>
+                      ISelectAccountCachedListBloc.of(context, listen: false),
+                  child: Provider<ISearchInputBloc>(
                     create: (context) =>
-                        AccountCachedPaginationBloc.createFromContext(
-                            context),
-                    child: DisposableProvider<IAccountPaginationListBloc>(
+                        ISelectAccountCachedListBloc.of(context, listen: false)
+                            .searchInputBloc,
+                    child: DisposableProvider<
+                            IPaginationBloc<PaginationPage<IAccount>,
+                                IAccount>>(
                         create: (context) =>
-                            AccountPaginationListBloc.createFromContext(
+                            AccountCachedPaginationBloc.createFromContext(
                                 context),
-                        child: StartConversationPage())),
-              ),
-            ),
-          )));
+                        child: DisposableProvider<IAccountPaginationListBloc>(
+                            create: (context) =>
+                                AccountPaginationListBloc.createFromContext(
+                                    context),
+                            child: StartConversationPage())),
+                  ),
+                ),
+              )));
 }

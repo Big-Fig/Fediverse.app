@@ -35,7 +35,7 @@ abstract class NetworkOnlyPaginationBloc<TPage extends PaginationPage<TItem>,
         olderPage: nextPage,
         newerPage: previousPage);
 
-    if(loadedItems == null) {
+    if (loadedItems == null) {
       return null;
     }
 

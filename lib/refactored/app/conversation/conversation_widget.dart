@@ -36,10 +36,10 @@ class ConversationWidget extends StatelessWidget {
                 } else {
                   // mastodon instances support conversation
                   // only by status context
-                  return ConversationStatusListContextApiBloc
-                      .createFromContext(context,
-                          conversation: conversationBloc.conversation,
-                          statusToFetchContext: conversationBloc.lastStatus);
+                  return ConversationStatusListContextApiBloc.createFromContext(
+                      context,
+                      conversation: conversationBloc.conversation,
+                      statusToFetchContext: conversationBloc.lastStatus);
                 }
               },
               child: DisposableProvider<
@@ -64,7 +64,7 @@ class ConversationWidget extends StatelessWidget {
                         ),
                       ),
                       ConversationPostStatusWidget(successCallback: (context) {
-                          // nothing
+                        // nothing
                       })
                     ],
                   ),

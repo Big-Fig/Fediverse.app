@@ -36,7 +36,8 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
                 displayActions: false,
                 statusCallback: (_, __) {
                   // nothing
-                }, collapsible: false,
+                },
+                collapsible: false,
               ))
         ],
       ),
@@ -78,9 +79,11 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(AppLocalizations.of(context)
-                              .tr("app.status.scheduled.state.canceled"),
-                          style: TextStyle(color:  Colors.white),),
+                          child: Text(
+                            AppLocalizations.of(context)
+                                .tr("app.status.scheduled.state.canceled"),
+                            style: TextStyle(color: Colors.white),
+                          ),
                         )
                       ],
                     )),
@@ -96,9 +99,10 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(AppLocalizations.of(context)
-                              .tr("app.status.scheduled.state.already_posted"),
-                              style: TextStyle(color:  Colors.white)),
+                          child: Text(
+                              AppLocalizations.of(context).tr(
+                                  "app.status.scheduled.state.already_posted"),
+                              style: TextStyle(color: Colors.white)),
                         )
                       ],
                     )),

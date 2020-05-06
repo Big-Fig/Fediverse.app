@@ -38,8 +38,7 @@ class PleromaWebSocketsService extends IPleromaWebSocketsService {
     ));
   }
 
-  String
-  mapHttpToWebSocketsScheme(String scheme) {
+  String mapHttpToWebSocketsScheme(String scheme) {
     switch (scheme) {
       case "http":
         return "ws";

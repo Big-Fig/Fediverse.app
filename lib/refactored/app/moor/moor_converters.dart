@@ -53,7 +53,6 @@ class PleromaApplicationDatabaseConverter
   Map<String, dynamic> toJson(PleromaApplication obj) => obj.toJson();
 }
 
-
 class PleromaScheduledStatusParamsDatabaseConverter
     extends JsonDatabaseConverter<PleromaScheduledStatusParams> {
   const PleromaScheduledStatusParamsDatabaseConverter() : super();

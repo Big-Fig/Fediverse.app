@@ -25,7 +25,8 @@ class StatusRebloggedAccountsDao extends DatabaseAccessor<AppDatabase>
   // Called by the AppDatabase class
   StatusRebloggedAccountsDao(this.db) : super(db);
 
-  Future<int> insert(Insertable<DbStatusRebloggedAccount> entity,{    InsertMode mode}) async =>
+  Future<int> insert(Insertable<DbStatusRebloggedAccount> entity,
+          {InsertMode mode}) async =>
       into(dbStatusRebloggedAccounts).insert(entity, mode: mode);
 
   Future insertAll(Iterable<Insertable<DbStatusRebloggedAccount>> entities,

@@ -23,14 +23,17 @@ class ScheduledStatusNetworkOnlyPaginationBloc
   @override
   IPleromaApi get pleromaApi => listService.pleromaApi;
 
-  static ScheduledStatusNetworkOnlyPaginationBloc createFromContext(BuildContext context,
-          {int itemsCountPerPage = 20, int maximumCachedPagesCount}) =>
+  static ScheduledStatusNetworkOnlyPaginationBloc createFromContext(
+          BuildContext context,
+          {int itemsCountPerPage = 20,
+          int maximumCachedPagesCount}) =>
       ScheduledStatusNetworkOnlyPaginationBloc(
           maximumCachedPagesCount: maximumCachedPagesCount,
           itemsCountPerPage: itemsCountPerPage,
-          listService: Provider.of<IPleromaNetworkOnlyListService<IScheduledStatus>>(
-              context,
-              listen: false));
+          listService:
+              Provider.of<IPleromaNetworkOnlyListService<IScheduledStatus>>(
+                  context,
+                  listen: false));
 
   @override
   Future<List<IScheduledStatus>> loadItemsFromRemoteForPage(
