@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 abstract class IConversationsListBloc extends Disposable {
-  static IConversationsListBloc of(BuildContext context, {listen: true}) =>
+  static IConversationsListBloc of(BuildContext context,
+          {bool listen = true}) =>
       Provider.of<IConversationsListBloc>(context, listen: listen);
 
   IConversationCachedListService get conversationListService;

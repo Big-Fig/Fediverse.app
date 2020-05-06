@@ -65,6 +65,9 @@ dependencies:
   #default media picker
   image_picker: ^0.6.3+4
 
+  # better lint, should be in main dependencies to ignore async/await unnecessary warnings
+  pedantic: ^1.8.0+1
+
   # localization via .json files
   #easy_localization: ^1.3.1
   # Actually it is 1.3.1 with minor fix from me (Yevhenii Zapletin)
@@ -105,6 +108,15 @@ dependencies:
   # Provides internationalization and localization facilities
   intl: ^0.16.0
 
+  # save photo and video to gallery
+  gallery_saver: ^2.0.1
+
+  # share actions via native API
+  esys_flutter_share: ^1.0.2
+
+  # detect mime type be extension
+  mime: ^0.9.6+3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -122,14 +134,6 @@ dev_dependencies:
   # in memory moor SQLite database for tests
   moor_ffi: ^0.4.0
 
-  # save photo and video to gallery
-  gallery_saver: ^2.0.1
-
-  # share actions via native API
-  esys_flutter_share: ^1.0.2
-
-  # detect mime type be extension
-  mime: ^0.9.6+3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

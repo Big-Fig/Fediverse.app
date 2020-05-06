@@ -42,7 +42,7 @@ class PleromaAccountService implements IPleromaAccountService {
     if (httpResponse.statusCode == 200) {
       return PleromaAccount.listFromJsonString(httpResponse.body);
     } else {
-      throw new PleromaAccountException(
+      throw PleromaAccountException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
   }
@@ -52,7 +52,7 @@ class PleromaAccountService implements IPleromaAccountService {
     if (httpResponse.statusCode == 200) {
       return PleromaAccountIdentityProof.listFromJsonString(httpResponse.body);
     } else {
-      throw new PleromaAccountException(
+      throw PleromaAccountException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
   }
@@ -61,7 +61,7 @@ class PleromaAccountService implements IPleromaAccountService {
     if (httpResponse.statusCode == 200) {
       return PleromaList.listFromJsonString(httpResponse.body);
     } else {
-      throw new PleromaAccountException(
+      throw PleromaAccountException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
   }
@@ -70,7 +70,7 @@ class PleromaAccountService implements IPleromaAccountService {
     if (httpResponse.statusCode == 200) {
       return PleromaStatus.listFromJsonString(httpResponse.body);
     } else {
-      throw new PleromaAccountException(
+      throw PleromaAccountException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
   }
@@ -80,7 +80,7 @@ class PleromaAccountService implements IPleromaAccountService {
     if (httpResponse.statusCode == 200) {
       return PleromaAccountRelationship.fromJsonString(httpResponse.body);
     } else {
-      throw new PleromaAccountException(
+      throw PleromaAccountException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
   }
@@ -90,14 +90,14 @@ class PleromaAccountService implements IPleromaAccountService {
     if (httpResponse.statusCode == 200) {
       return PleromaAccountRelationship.listFromJsonString(httpResponse.body);
     } else {
-      throw new PleromaAccountException(
+      throw PleromaAccountException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
   }
 
   @override
   Future<List<IPleromaAccountRelationship>> getRelationshipWithAccounts(
-  {@required List<String> remoteAccountIds}) async {
+      {@required List<String> remoteAccountIds}) async {
     var httpResponse = await restService.sendHttpRequest(RestRequest.get(
         relativePath: urlPath.join(accountRelativeUrlPath, "relationships"),
         queryArgs: remoteAccountIds
@@ -111,7 +111,7 @@ class PleromaAccountService implements IPleromaAccountService {
     if (httpResponse.statusCode == 200) {
       return PleromaAccount.fromJsonString(httpResponse.body);
     } else {
-      throw new PleromaAccountException(
+      throw PleromaAccountException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
   }

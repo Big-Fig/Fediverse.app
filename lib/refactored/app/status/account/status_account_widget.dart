@@ -7,7 +7,6 @@ import 'package:fedi/refactored/app/account/details/account_details_page.dart';
 import 'package:fedi/refactored/app/account/display_name/account_display_name_widget.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
-import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -35,7 +34,8 @@ class StatusAccountWidget extends StatelessWidget {
             context,
             account: account,
             isNeedWatchLocalRepositoryForUpdates: false,
-            isNeedRefreshFromNetworkOnInit: false, isNeedWatchWebSocketsEvents: false),
+            isNeedRefreshFromNetworkOnInit: false,
+            isNeedWatchWebSocketsEvents: false),
         child: GestureDetector(
           onTap: () {
             goToAccountDetailsPage(context, reblogOrOriginalAccount);

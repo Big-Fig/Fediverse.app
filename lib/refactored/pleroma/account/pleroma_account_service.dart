@@ -6,7 +6,8 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPleromaAccountService implements IPleromaApi {
-  static IPleromaAccountService of(BuildContext context, {listen: true}) =>
+  static IPleromaAccountService of(BuildContext context,
+          {bool listen = true}) =>
       Provider.of<IPleromaAccountService>(context, listen: listen);
 
   /// Find out whether a given account is followed, blocked, muted, etc.
@@ -15,15 +16,8 @@ abstract class IPleromaAccountService implements IPleromaApi {
 
   Future<List<IPleromaAccount>> search({
     @required String query,
-
-    /// Attempt WebFinger lookup. Defaults to false. Use this when q is an
-    /// exact address.
     bool resolve,
-
-    /// Only who the user is following. Defaults to false.
     bool following,
-
-    /// Maximum number of results to return
     int limit = 20,
   });
 
@@ -33,40 +27,22 @@ abstract class IPleromaAccountService implements IPleromaApi {
 
   Future<List<IPleromaAccount>> getAccountFollowings({
     @required String accountRemoteId,
-
-    /// Return results newer than id
     String sinceId,
-
-    /// Return results immediately newer than id
     String maxId,
-
-    /// Maximum number of results to return
     int limit = 20,
   });
 
   Future<List<IPleromaAccount>> getAccountFollowers({
     @required String accountRemoteId,
-
-    /// Return results newer than id
     String sinceId,
-
-    /// Return results immediately newer than id
     String maxId,
-
-    /// Maximum number of results to return
     int limit = 20,
   });
 
   Future<List<IPleromaStatus>> getAccountStatuses({
     @required String accountRemoteId,
-
-    /// Return results newer than id
     String sinceId,
-
-    /// Return results immediately newer than id
     String maxId,
-
-    /// Maximum number of results to return
     int limit = 20,
   });
 

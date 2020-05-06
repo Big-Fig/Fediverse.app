@@ -1,4 +1,4 @@
-import 'package:fedi/refactored/app/status/list/cached/status_cached_list_service.dart';
+import 'package:fedi/refactored/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/refactored/app/status/pagination/cached/status_cached_pagination_bloc.dart';
 import 'package:fedi/refactored/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
 import 'package:fedi/refactored/app/status/pagination/list/status_pagination_list_with_new_items_bloc_impl.dart';
@@ -14,8 +14,9 @@ import 'package:flutter/widgets.dart';
 abstract class TimelineTabBloc extends DisposableOwner
     implements ITimelineTabBloc {
   final TimelineTab tab;
-  IStatusCachedListService statusCachedListService;
+  IStatusCachedListBloc statusCachedListService;
   IStatusCachedPaginationBloc statusCachedPaginationBloc;
+  @override
   IPaginationListWithNewItemsBloc<PaginationPage<IStatus>, IStatus>
       paginationListWithNewItemsBloc;
 
@@ -31,10 +32,11 @@ abstract class TimelineTabBloc extends DisposableOwner
 
     paginationListWithNewItemsBloc =
         StatusPaginationListWithNewItemsBloc<CachedPaginationPage<IStatus>>(
-          paginationBloc: statusCachedPaginationBloc,
-            mergeNewItemsImmediately: false, statusCachedListService: statusCachedListService);
+            paginationBloc: statusCachedPaginationBloc,
+            mergeNewItemsImmediately: false,
+            statusCachedListService: statusCachedListService);
     addDisposable(disposable: paginationListWithNewItemsBloc);
   }
 
-  IStatusCachedListService createListService();
+  IStatusCachedListBloc createListService();
 }

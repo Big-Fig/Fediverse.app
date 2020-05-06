@@ -30,7 +30,8 @@ async =>
             inReplyToId: seed + "inReplyToId1",
             applicationId: seed + "textId1"));
 
-expectDbScheduledStatus(IScheduledStatus actual, DbScheduledStatus expected) {
+void expectDbScheduledStatus(IScheduledStatus actual, DbScheduledStatus
+expected) {
   if (actual == null && expected == null) {
     return;
   }

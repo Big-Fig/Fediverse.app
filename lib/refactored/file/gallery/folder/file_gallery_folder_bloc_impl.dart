@@ -59,7 +59,7 @@ abstract class AbstractFileGalleryFolderBloc extends AsyncInitLoadingBloc
     return await reloadFiles();
   }
 
-  reloadFiles() async {
+  void reloadFiles() async {
     assert(permissionGranted);
     galleryStateSubject.add(FileGalleryState.loading);
     var files = await loadFiles();

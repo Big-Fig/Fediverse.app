@@ -5,7 +5,8 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPleromaNotificationService implements IPleromaApi {
-  static IPleromaNotificationService of(BuildContext context, {listen: true}) =>
+  static IPleromaNotificationService of(BuildContext context,
+          {bool listen = true}) =>
       Provider.of<IPleromaNotificationService>(context, listen: listen);
 
   Future<List<IPleromaNotification>> getNotifications(

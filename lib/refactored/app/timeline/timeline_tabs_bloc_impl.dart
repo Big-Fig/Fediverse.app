@@ -51,7 +51,7 @@ class TimelineTabsBloc extends DisposableOwner implements ITimelineTabsBloc {
           myAccountSettingsBloc:
               IMyAccountSettingsBloc.of(context, listen: false));
 
-  final Map<TimelineTab, ITimelineTabBloc> tabsMap = Map();
+  final Map<TimelineTab, ITimelineTabBloc> tabsMap = {};
 
   @override
   void selectTab(TimelineTab tab) {

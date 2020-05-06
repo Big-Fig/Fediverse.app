@@ -14,8 +14,11 @@ abstract class IPleromaClientApplication implements IMastodonClientApplication {
 
 @JsonSerializable()
 class PleromaApplication implements IPleromaApplication {
+  @override
   final String name;
+  @override
   final String website;
+  @override
   @JsonKey(name: "vapid_key")
   @HiveField(2)
   final String vapidKey;
@@ -59,9 +62,11 @@ class PleromaClientApplication
   @JsonKey(name: "vapid_key")
   @HiveField(2)
   String vapidKey;
+  @override
   @JsonKey(name: "client_id")
   @HiveField(3)
   String clientId;
+  @override
   @JsonKey(name: "client_secret")
   @HiveField(4)
   String clientSecret;

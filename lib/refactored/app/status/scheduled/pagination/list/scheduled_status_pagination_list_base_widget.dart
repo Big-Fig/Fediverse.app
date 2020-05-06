@@ -26,8 +26,9 @@ abstract class ScheduledStatusPaginationListBaseWidget
   IPaginationListBloc<PaginationPage<IScheduledStatus>, IScheduledStatus>
       retrievePaginationListBloc(BuildContext context,
           {@required bool listen}) {
-    var paginationListBloc =
-        Provider.of<IPaginationListBloc<PaginationPage<IScheduledStatus>, IScheduledStatus>>(context, listen: listen);
+    var paginationListBloc = Provider.of<
+        IPaginationListBloc<PaginationPage<IScheduledStatus>,
+            IScheduledStatus>>(context, listen: listen);
     return paginationListBloc;
   }
 }

@@ -28,13 +28,15 @@ abstract class PostStatusBloc extends DisposableOwner
   final String conversationRemoteId;
   final String inReplyToStatusRemoteId;
 
+  @override
   bool get isHaveMentionedAccts => mentionedAccts?.isNotEmpty == true;
+  @override
   Stream<bool> get isHaveMentionedAcctsStream => mentionedAcctsStream
       .map((mentionedAccts) => mentionedAccts?.isNotEmpty == true);
 
   String idempotencyKey;
 
-  _regenerateIdempotencyKey() {
+  void _regenerateIdempotencyKey() {
     idempotencyKey = DateTime.now().millisecondsSinceEpoch.toString();
   }
 
@@ -266,7 +268,7 @@ abstract class PostStatusBloc extends DisposableOwner
   }
 
   @override
-  addMentionByAccount(IAccount account) {
+  void addMentionByAccount(IAccount account) {
     var acct = account.acct;
     if (!mentionedAccts.contains(acct)) {
       mentionedAccts.add(acct);
@@ -275,12 +277,12 @@ abstract class PostStatusBloc extends DisposableOwner
   }
 
   @override
-  removeMentionByAccount(IAccount account) {
+  void removeMentionByAccount(IAccount account) {
     removeMentionByAcct(account.acct);
   }
 
   @override
-  removeMentionByAcct(String acct) {
+  void removeMentionByAcct(String acct) {
     if (mentionedAccts.contains(acct)) {
       mentionedAccts.remove(acct);
       onMentionedAccountsChanged();
@@ -288,7 +290,7 @@ abstract class PostStatusBloc extends DisposableOwner
   }
 
   @override
-  attachMedia(FilePickerFile filePickerFile) {
+  void attachMedia(FilePickerFile filePickerFile) {
     var existedBloc = findMediaAttachmentBlocByFilePickerFile(filePickerFile);
 
     if (existedBloc == null) {
@@ -303,7 +305,7 @@ abstract class PostStatusBloc extends DisposableOwner
   }
 
   @override
-  detachMedia(FilePickerFile filePickerFile) {
+  void detachMedia(FilePickerFile filePickerFile) {
     var existedBloc = findMediaAttachmentBlocByFilePickerFile(filePickerFile);
     if (existedBloc != null) {
       existedBloc.dispose();
@@ -320,12 +322,12 @@ abstract class PostStatusBloc extends DisposableOwner
       }, orElse: () => null);
 
   @override
-  changeVisibility(PleromaVisibility visibility) {
+  void changeVisibility(PleromaVisibility visibility) {
     visibilitySubject.add(visibility);
   }
 
   @override
-  changeNsfwSensitive(bool nsfwSensitive) {
+  void changeNsfwSensitive(bool nsfwSensitive) {
     nsfwSensitiveSubject.add(nsfwSensitive);
   }
 
@@ -419,11 +421,13 @@ abstract class PostStatusBloc extends DisposableOwner
     return newText;
   }
 
-  schedule(DateTime dateTime) {
+  @override
+  void schedule(DateTime dateTime) {
     scheduledAtSubject.add(dateTime);
   }
 
-  clearSchedule() {
+  @override
+  void clearSchedule() {
     schedule(null);
   }
 }

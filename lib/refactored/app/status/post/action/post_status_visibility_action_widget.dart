@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/status/post/post_status_bloc.dart';
 import 'package:fedi/refactored/pleroma/visibility/pleroma_visibility_model.dart';
-import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -174,16 +173,20 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
             ".public");
         break;
       case PleromaVisibility.UNLISTED:
-        return appLocalizations.tr("app.status.post.action.visibility.state.unlisted");
+        return appLocalizations
+            .tr("app.status.post.action.visibility.state.unlisted");
         break;
       case PleromaVisibility.DIRECT:
-        return appLocalizations.tr("app.status.post.action.visibility.state.direct");
+        return appLocalizations
+            .tr("app.status.post.action.visibility.state.direct");
         break;
       case PleromaVisibility.LIST:
-        return appLocalizations.tr("app.status.post.action.visibility.state.list");
+        return appLocalizations
+            .tr("app.status.post.action.visibility.state.list");
         break;
       case PleromaVisibility.PRIVATE:
-        return appLocalizations.tr("app.status.post.action.visibility.state.private");
+        return appLocalizations
+            .tr("app.status.post.action.visibility.state.private");
         break;
     }
     throw "Not supported visibility $visibility";

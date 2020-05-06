@@ -28,7 +28,7 @@ abstract class IMastodonSearchRequest {
 
 enum MastodonSearchRequestType { accounts, hashtags, statuses }
 
-final mastodonSearchRequestTypeTypeValues = new EnumValues({
+final mastodonSearchRequestTypeTypeValues = EnumValues({
   "accounts": MastodonSearchRequestType.accounts,
   "hashtags": MastodonSearchRequestType.hashtags,
   "statuses": MastodonSearchRequestType.statuses,

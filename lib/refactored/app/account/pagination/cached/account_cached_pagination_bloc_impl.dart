@@ -1,6 +1,6 @@
 import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/account/pagination/cached/account_cached_pagination_bloc.dart';
-import 'package:fedi/refactored/app/list/cached/cached_list_service.dart';
+import 'package:fedi/refactored/app/list/cached/pleroma_cached_list_bloc.dart';
 import 'package:fedi/refactored/app/pagination/cached/cached_pleroma_pagination_bloc_impl.dart';
 import 'package:fedi/refactored/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/refactored/pleroma/api/pleroma_api_service.dart';
@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 class AccountCachedPaginationBloc extends CachedPleromaPaginationBloc<IAccount>
     implements IAccountCachedPaginationBloc {
-  final IPleromaCachedListService<IAccount> listService;
+  final IPleromaCachedListBloc<IAccount> listService;
 
   AccountCachedPaginationBloc(
       {@required this.listService,
@@ -55,6 +55,6 @@ class AccountCachedPaginationBloc extends CachedPleromaPaginationBloc<IAccount>
       AccountCachedPaginationBloc(
           maximumCachedPagesCount: maximumCachedPagesCount,
           itemsCountPerPage: itemsCountPerPage,
-          listService: Provider.of<IPleromaCachedListService<IAccount>>(context,
+          listService: Provider.of<IPleromaCachedListBloc<IAccount>>(context,
               listen: false));
 }

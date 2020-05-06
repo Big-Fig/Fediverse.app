@@ -69,7 +69,7 @@ class PleromaNotificationService implements IPleromaNotificationService {
     if (restResponse.isSuccess) {
       return restResponse.body;
     } else {
-      throw new PleromaNotificationException(
+      throw PleromaNotificationException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
   }
@@ -86,7 +86,7 @@ class PleromaNotificationService implements IPleromaNotificationService {
     if (restResponse.isSuccess) {
       return restResponse.body;
     } else {
-      throw new PleromaNotificationException(
+      throw PleromaNotificationException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
   }

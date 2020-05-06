@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:fedi/refactored/push/relay/push_relay_service.dart';
 import 'package:flutter/widgets.dart';
@@ -14,6 +15,7 @@ class PushRelayService extends DisposableOwner implements IPushRelayService {
 
   PushRelayService({@required this.pushRelayBaseUrl});
 
+  @override
   String createPushRelayEndPointUrl({
     @required String account,
     @required Uri baseServerUrl,

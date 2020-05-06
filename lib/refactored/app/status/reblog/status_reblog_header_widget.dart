@@ -3,7 +3,6 @@ import 'package:easy_localization/easy_localization_delegate.dart';
 import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/account/details/account_details_page.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
-import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -26,7 +25,7 @@ class StatusReblogHeaderWidget extends StatelessWidget {
               child: Row(
                 children: <Widget>[
                   ClipRRect(
-                    borderRadius: new BorderRadius.circular(12.0),
+                    borderRadius: BorderRadius.circular(12.0),
                     child: CachedNetworkImage(
                       imageUrl: account.avatar,
                       placeholder: (context, url) =>

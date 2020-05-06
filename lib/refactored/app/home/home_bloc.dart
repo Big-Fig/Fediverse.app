@@ -11,5 +11,5 @@ abstract class IAppHomeBloc implements Disposable {
 
   Stream<AppHomeTab> get selectedTabStream;
 
-  selectTab(AppHomeTab tab);
+  void selectTab(AppHomeTab tab);
 }

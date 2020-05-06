@@ -9,9 +9,13 @@ abstract class IPleromaMention implements IMastodonMention {}
 
 @JsonSerializable()
 class PleromaMention implements IPleromaMention {
+  @override
   final String acct;
+  @override
   final String id;
+  @override
   final String url;
+  @override
   final String username;
 
   PleromaMention({

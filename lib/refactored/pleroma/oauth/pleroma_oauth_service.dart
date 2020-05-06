@@ -3,8 +3,8 @@ import 'package:fedi/refactored/pleroma/oauth/pleroma_oauth_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-typedef AuthorizationCodeSuccessCallback(String code);
-typedef AuthorizationCodeErrorCallback(error);
+typedef dynamic AuthorizationCodeSuccessCallback(String code);
+typedef dynamic AuthorizationCodeErrorCallback(error);
 
 abstract class IPleromaOAuthService extends IPleromaApi {
   static IPleromaOAuthService of(BuildContext context, {bool listen = true}) =>

@@ -49,7 +49,7 @@ void main() {
     myAccountLocalPreferenceBloc = MyAccountLocalPreferenceBloc(
         preferencesService, authInstance.userAtHost);
 
-    myAccountLocalPreferenceBloc.setValue(myAccount);
+    await myAccountLocalPreferenceBloc.setValue(myAccount);
     await Future.delayed(Duration(milliseconds: 1));
 
     myAccountBloc = MyAccountBloc(
@@ -92,7 +92,7 @@ void main() {
 
     expectAccount(myAccountBloc.account, newValue);
     expectAccount(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('acct', () async {
@@ -113,7 +113,7 @@ void main() {
 
     expect(myAccountBloc.acct, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
   test('note', () async {
     expect(myAccountBloc.note, myAccount.note);
@@ -133,7 +133,7 @@ void main() {
 
     expect(myAccountBloc.note, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
   test('header', () async {
     expect(myAccountBloc.header, myAccount.header);
@@ -153,7 +153,7 @@ void main() {
 
     expect(myAccountBloc.header, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
   test('avatar', () async {
     expect(myAccountBloc.avatar, myAccount.avatar);
@@ -173,7 +173,7 @@ void main() {
 
     expect(myAccountBloc.avatar, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
   test('displayName', () async {
     expect(myAccountBloc.displayName, myAccount.displayName);
@@ -193,7 +193,7 @@ void main() {
 
     expect(myAccountBloc.displayName, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
   test('fields', () async {
     expect(myAccountBloc.fields, myAccount.fields);
@@ -213,7 +213,7 @@ void main() {
 
     expect(myAccountBloc.fields, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('statusesCount', () async {
@@ -234,7 +234,7 @@ void main() {
 
     expect(myAccountBloc.statusesCount, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
   test('statusesCount', () async {
     expect(myAccountBloc.statusesCount, myAccount.statusesCount);
@@ -254,7 +254,7 @@ void main() {
 
     expect(myAccountBloc.statusesCount, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
   test('followingCount', () async {
     expect(myAccountBloc.followingCount, myAccount.followingCount);
@@ -274,7 +274,7 @@ void main() {
 
     expect(myAccountBloc.followingCount, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
   test('followersCount', () async {
     expect(myAccountBloc.followersCount, myAccount.followersCount);
@@ -294,7 +294,7 @@ void main() {
 
     expect(myAccountBloc.followersCount, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('displayNameEmojiText', () async {
@@ -320,7 +320,7 @@ void main() {
         EmojiText(text: newDisplayNameValue, emojis: myAccount.emojis));
     expect(listenedValue,
         EmojiText(text: newDisplayNameValue, emojis: myAccount.emojis));
-    subscription.cancel();
+    await subscription.cancel();
 
     var newEmojis = [PleromaEmoji(url: "url", staticUrl: "staticUrl")];
 
@@ -339,7 +339,7 @@ void main() {
         equals(EmojiText(text: newDisplayNameValue, emojis: newEmojis)));
     expect(listenedValue,
         equals(EmojiText(text: newDisplayNameValue, emojis: newEmojis)));
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('accountRelationship', () async {
@@ -372,7 +372,7 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
 
     expectAccount(myAccountBloc.account, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('toggleBlock', () async {
@@ -399,7 +399,7 @@ void main() {
 
   test('isLocalCacheExist', () async {
     expect(myAccountBloc.isLocalCacheExist, true);
-    myAccountLocalPreferenceBloc.setValue(null);
+    await myAccountLocalPreferenceBloc.setValue(null);
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
     expect(myAccountBloc.isLocalCacheExist, false);

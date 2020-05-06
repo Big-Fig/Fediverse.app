@@ -191,7 +191,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-initLog() {
+void initLog() {
   if (kReleaseMode) {
     Logger.root.level = Level.OFF; // defaults to Level.INFO
   } else {

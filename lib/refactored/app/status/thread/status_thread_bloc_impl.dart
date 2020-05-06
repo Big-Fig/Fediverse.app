@@ -8,6 +8,7 @@ import 'package:fedi/refactored/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/refactored/pleroma/status/pleroma_status_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:pedantic/pedantic.dart';
 import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger("status_thread_bloc_impl.dart");
@@ -15,6 +16,7 @@ var _logger = Logger("status_thread_bloc_impl.dart");
 class StatusThreadBloc extends DisposableOwner implements IStatusThreadBloc {
   final IPleromaStatusService pleromaStatusService;
   final IStatusRepository statusRepository;
+  @override
   IStatus startStatus;
   final BehaviorSubject<List<IStatus>> _statusesSubject;
 
@@ -51,7 +53,7 @@ class StatusThreadBloc extends DisposableOwner implements IStatusThreadBloc {
       mentionAccts.map((acct) => "@$acct").join(" ");
 
   static List<IPleromaMention> findAllMentions(List<IStatus> statuses) {
-    Set<IPleromaMention> mentions = Set();
+    Set<IPleromaMention> mentions = {};
 
     statuses.forEach((status) {
       if (status.mentions != null) {
@@ -62,6 +64,7 @@ class StatusThreadBloc extends DisposableOwner implements IStatusThreadBloc {
     return mentions.toList();
   }
 
+  @override
   Future<IStatus> sendMessageToAllMentionedAccounts(
       {@required String idempotencyKey, @required String text}) async {
     assert(text?.isNotEmpty == true);
@@ -91,23 +94,21 @@ class StatusThreadBloc extends DisposableOwner implements IStatusThreadBloc {
     try {
       _logger.finest(() => "refresh");
       // update start status
-      var updatedStartRemoteStatus = await this
-          .pleromaStatusService
-          .getStatus(statusRemoteId: startStatus.remoteId);
+      var updatedStartRemoteStatus = await pleromaStatusService.getStatus(
+          statusRemoteId: startStatus.remoteId);
       if (updatedStartRemoteStatus != null) {
         // don't await because we don't need it
-        statusRepository.updateLocalStatusByRemoteStatus(
+        unawaited(statusRepository.updateLocalStatusByRemoteStatus(
             oldLocalStatus: startStatus,
-            newRemoteStatus: updatedStartRemoteStatus);
+            newRemoteStatus: updatedStartRemoteStatus));
         startStatus = mapRemoteStatusToLocalStatus(updatedStartRemoteStatus);
 
         _logger.finest(() => "refresh getStatus startStatus $startStatus ");
       }
 
       // update context
-      var remoteStatusContext = await this
-          .pleromaStatusService
-          .getStatusContext(statusRemoteId: startStatus.remoteId);
+      var remoteStatusContext = await pleromaStatusService.getStatusContext(
+          statusRemoteId: startStatus.remoteId);
 
       List<IStatus> newStatuses = [];
       newStatuses.addAll(remoteStatusContext.ancestors

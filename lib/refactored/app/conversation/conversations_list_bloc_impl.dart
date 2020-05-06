@@ -56,9 +56,10 @@ class ConversationsListBloc extends DisposableOwner
         maximumCachedPagesCount: null);
     addDisposable(disposable: conversationListService);
     conversationPaginationListBloc = ConversationPaginationListWithNewItemsBloc(
-        paginationBloc: conversationPaginationBloc,
-        cachedListService: conversationListService,
-        mergeNewItemsImmediately: true);
+      paginationBloc: conversationPaginationBloc,
+      cachedListService: conversationListService,
+      mergeNewItemsImmediately: true,
+    );
     addDisposable(disposable: conversationPaginationListBloc);
 
     if (listenWebSocketsChanges) {

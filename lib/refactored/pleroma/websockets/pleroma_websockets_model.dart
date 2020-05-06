@@ -78,7 +78,7 @@ enum PleromaWebSocketsEventType {
   conversation,
 }
 
-final pleromaWebSocketsEventTypeValues = new EnumValues({
+final pleromaWebSocketsEventTypeValues = EnumValues({
   "update": PleromaWebSocketsEventType.update,
   "notification": PleromaWebSocketsEventType.notification,
   "delete": PleromaWebSocketsEventType.delete,

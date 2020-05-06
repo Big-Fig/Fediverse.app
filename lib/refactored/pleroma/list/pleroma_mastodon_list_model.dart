@@ -23,7 +23,7 @@ class PleromaList extends IPleromaList {
       _$PleromaListFromJson(jsonDecode(jsonString));
 
   static List<PleromaList> listFromJsonString(String str) =>
-      new List<PleromaList>.from(
+      List<PleromaList>.from(
           json.decode(str).map((x) => PleromaList.fromJson(x)));
 
   Map<String, dynamic> toJson() => _$PleromaListToJson(this);

@@ -121,10 +121,13 @@ class StatusRepository extends AsyncInitLoadingBloc
         .where((remoteStatus) => remoteStatus.reblog != null)
         .map((remoteStatus) => remoteStatus.reblog)
         .toList();
-    // list & conversation should be null. We don't need reblogs in
-    // conversations & lists
-    upsertRemoteStatuses(reblogs,
-        listRemoteId: null, conversationRemoteId: null);
+
+    if (reblogs?.isNotEmpty == true) {
+      // list & conversation should be null. We don't need reblogs in
+      // conversations & lists
+      await upsertRemoteStatuses(reblogs,
+          listRemoteId: null, conversationRemoteId: null);
+    }
   }
 
   Future addStatusesToList(
@@ -164,15 +167,23 @@ class StatusRepository extends AsyncInitLoadingBloc
     });
 
     if (notAddedYetStatusRemoteIds?.isNotEmpty == true) {
-      await conversationStatusesDao.insertAll(
-          notAddedYetStatusRemoteIds
-              .map((statusRemoteId) => DbConversationStatus(
-                  id: null,
-                  statusRemoteId: statusRemoteId,
-                  conversationRemoteId: conversationRemoteId))
-              .toList(),
-          InsertMode.insertOrReplace);
+      for (var statusRemoteId in notAddedYetStatusRemoteIds) {
+        await conversationStatusesDao.insert(
+            DbConversationStatus(
+                id: null,
+                statusRemoteId: statusRemoteId,
+                conversationRemoteId: conversationRemoteId),
+            mode: InsertMode.insertOrReplace);
+      }
     }
+//      await conversationStatusesDao.insertAll(
+//          notAddedYetStatusRemoteIds
+//              .map((statusRemoteId) => DbConversationStatus(
+//                  id: null,
+//                  statusRemoteId: statusRemoteId,
+//                  conversationRemoteId: conversationRemoteId))
+//              .toList(),
+//          InsertMode.insertOrReplace);
   }
 
   Future updateStatusTags(String statusRemoteId, List<IPleromaTag> tags) async {
@@ -193,6 +204,7 @@ class StatusRepository extends AsyncInitLoadingBloc
   Future<DbStatusPopulatedWrapper> findByRemoteId(String remoteId) async =>
       mapDataClassToItem(await dao.findByRemoteId(remoteId));
 
+  @override
   Future<List<DbStatusPopulatedWrapper>> getStatuses(
       {@required String onlyInListWithRemoteId,
       @required IAccount onlyFromAccount,
@@ -234,6 +246,7 @@ class StatusRepository extends AsyncInitLoadingBloc
         .toList();
   }
 
+  @override
   Stream<List<DbStatusPopulatedWrapper>> watchStatuses(
       {@required String onlyInListWithRemoteId,
       @required String onlyWithHashtag,
@@ -494,7 +507,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     }
 
     if (newRemoteStatus.reblog != null) {
-      upsertRemoteStatus(newRemoteStatus,
+      await upsertRemoteStatus(newRemoteStatus,
           listRemoteId: null, conversationRemoteId: null);
     }
   }

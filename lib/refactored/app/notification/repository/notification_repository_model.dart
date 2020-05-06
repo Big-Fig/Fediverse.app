@@ -1,8 +1,6 @@
 import 'package:moor/moor.dart';
 
-enum NotificationOrderByType {
-  remoteId, createdAt
-}
+enum NotificationOrderByType { remoteId, createdAt }
 
 class NotificationOrderingTermData {
   final NotificationOrderByType orderByType;

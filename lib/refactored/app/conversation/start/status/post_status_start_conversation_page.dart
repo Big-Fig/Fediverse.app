@@ -36,7 +36,6 @@ class PostStatusStartConversationPage extends StatelessWidget {
 
 void goToPostStatusStartConversationPage(BuildContext context,
     {@required List<IAccount> conversationAccountsWithoutMe}) async {
-
   var foundConversation;
 
   // todo: move find conversation logic outside this class
@@ -45,31 +44,31 @@ void goToPostStatusStartConversationPage(BuildContext context,
 
   List<IPleromaConversation> foundRemoteConversations;
   if (pleromaConversationService.isApiReadyToUse) {
-    await doAsyncOperationWithDialog(context: context, asyncCode: () async {
-      foundRemoteConversations =
-      await pleromaConversationService.getConversations(
-          recipientsIds: conversationAccountsWithoutMe
-              .map((account) => account.remoteId)
-              .toList(),
-          limit: 1);
+    await doAsyncOperationWithDialog(
+        context: context,
+        asyncCode: () async {
+          foundRemoteConversations =
+              await pleromaConversationService.getConversations(
+                  recipientsIds: conversationAccountsWithoutMe
+                      .map((account) => account.remoteId)
+                      .toList(),
+                  limit: 1);
 
+          var remoteConversation = foundRemoteConversations?.isNotEmpty == true
+              ? foundRemoteConversations.first
+              : null;
 
-      var remoteConversation = foundRemoteConversations?.isNotEmpty == true
-          ? foundRemoteConversations.first
-          : null;
+          if (remoteConversation != null) {
+            var conversationRepository =
+                IConversationRepository.of(context, listen: false);
 
-
-      if (remoteConversation != null) {
-        var conversationRepository =
-        IConversationRepository.of(context, listen: false);
-
-        await conversationRepository.upsertRemoteConversation(remoteConversation);
-        foundConversation =
-        await conversationRepository.findByRemoteId(remoteConversation.id);
-      }
-    });
+            await conversationRepository
+                .upsertRemoteConversation(remoteConversation);
+            foundConversation = await conversationRepository
+                .findByRemoteId(remoteConversation.id);
+          }
+        });
   }
-
 
   if (foundConversation != null) {
     var accountRepository = IAccountRepository.of(context, listen: false);
@@ -85,7 +84,7 @@ void goToPostStatusStartConversationPage(BuildContext context,
         conversation: foundConversation,
         conversationAccountsWithoutMe: conversationAccountsWithoutMe);
   } else {
-    Navigator.push(
+    await Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) => DisposableProvider<IPostStatusBloc>(

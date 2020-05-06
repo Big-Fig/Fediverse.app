@@ -27,7 +27,7 @@ enum MastodonMediaAttachmentType {
   audio, // Audio track
 }
 
-final mastodonMediaAttachmentTypeValues = new EnumValues({
+final mastodonMediaAttachmentTypeValues = EnumValues({
   "unknown": MastodonMediaAttachmentType.unknown,
   "image": MastodonMediaAttachmentType.image,
   "gifv": MastodonMediaAttachmentType.gifv,

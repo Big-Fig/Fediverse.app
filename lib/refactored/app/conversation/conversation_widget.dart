@@ -1,10 +1,10 @@
 import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/refactored/app/conversation/conversation_bloc.dart';
-import 'package:fedi/refactored/app/conversation/status/context_api/conversation_status_list_bloc_context_api_impl.dart';
-import 'package:fedi/refactored/app/conversation/status/conversation_api/conversation_status_list_bloc_conversation_api_impl.dart';
+import 'package:fedi/refactored/app/conversation/status/context_api/conversation_status_list_context_api_bloc_impl.dart';
+import 'package:fedi/refactored/app/conversation/status/conversation_api/conversation_status_list_conversation_api_bloc_impl.dart';
 import 'package:fedi/refactored/app/conversation/status/conversation_status_list_widget.dart';
 import 'package:fedi/refactored/app/conversation/status/post/conversation_post_status_widget.dart';
-import 'package:fedi/refactored/app/status/list/cached/status_cached_list_service.dart';
+import 'package:fedi/refactored/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/refactored/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
 import 'package:fedi/refactored/app/status/pagination/list/status_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
@@ -23,23 +23,23 @@ class ConversationWidget extends StatelessWidget {
     return AsyncInitLoadingWidget(
         asyncInitLoadingBloc: conversationBloc,
         loadingFinishedBuilder: (context) {
-          return DisposableProvider<IStatusCachedListService>(
+          return DisposableProvider<IStatusCachedListBloc>(
               create: (context) {
                 var currentInstanceBloc =
                     ICurrentAuthInstanceBloc.of(context, listen: false);
 
                 if (currentInstanceBloc.currentInstance.isPleromaInstance) {
                   // pleroma instances support loading by conversation id
-                  return ConversationStatusListConversationApiService
+                  return ConversationStatusListConversationApiBloc
                       .createFromContext(context,
                           conversation: conversationBloc.conversation);
                 } else {
                   // mastodon instances support conversation
                   // only by status context
-                  return ConversationStatusListContextApiService
-                      .createFromContext(context,
-                          conversation: conversationBloc.conversation,
-                          statusToFetchContext: conversationBloc.lastStatus);
+                  return ConversationStatusListContextApiBloc.createFromContext(
+                      context,
+                      conversation: conversationBloc.conversation,
+                      statusToFetchContext: conversationBloc.lastStatus);
                 }
               },
               child: DisposableProvider<
@@ -51,7 +51,7 @@ class ConversationWidget extends StatelessWidget {
                   create: (context) => StatusPaginationListWithNewItemsBloc(
                       mergeNewItemsImmediately: true,
                       statusCachedListService:
-                          IStatusCachedListService.of(context, listen: false),
+                          IStatusCachedListBloc.of(context, listen: false),
                       paginationBloc: Provider.of<
                           IPaginationBloc<PaginationPage<IStatus>,
                               IStatus>>(context, listen: false)),
@@ -64,10 +64,7 @@ class ConversationWidget extends StatelessWidget {
                         ),
                       ),
                       ConversationPostStatusWidget(successCallback: (context) {
-                        var paginationListBloc = Provider.of<
-                            IPaginationListBloc<PaginationPage<IStatus>,
-                                IStatus>>(context, listen: false);
-                        paginationListBloc.refresh();
+                        // nothing
                       })
                     ],
                   ),

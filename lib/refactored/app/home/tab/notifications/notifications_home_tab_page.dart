@@ -32,7 +32,7 @@ class NotificationsHomeTabPage extends StatelessWidget {
         child: DisposableProvider<INotificationsTabsBloc>(
           create: (context) => NotificationsTabsBloc.createFromContext(context),
           child: NotificationTabsWidget(
-            key: this.key,
+            key: key,
             appBarActionWidgets: <Widget>[buildSettingsActionButton()],
           ),
         ),

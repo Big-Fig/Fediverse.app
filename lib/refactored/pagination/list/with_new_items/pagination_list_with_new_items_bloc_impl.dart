@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:fedi/refactored/pagination/list/pagination_list_bloc_impl.dart';
 import 'package:fedi/refactored/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
@@ -14,8 +15,10 @@ abstract class PaginationListWithNewItemsBloc<
         TPage extends PaginationPage<TItem>,
         TItem> extends PaginationListBloc<TPage, TItem>
     implements IPaginationListWithNewItemsBloc<TPage, TItem> {
+  @override
   TItem get newerItem => items?.isNotEmpty == true ? items.first : null;
 
+  @override
   Stream<TItem> get newerItemStream => itemsStream
       .map((items) => items?.isNotEmpty == true ? items.first : null);
 
@@ -25,11 +28,11 @@ abstract class PaginationListWithNewItemsBloc<
   final bool mergeNewItemsImmediately;
 
   // ignore: close_sinks
-  BehaviorSubject<List<TItem>> _mergedNewItemsSubject =
+  final BehaviorSubject<List<TItem>> _mergedNewItemsSubject =
       BehaviorSubject.seeded([]);
 
   // ignore: close_sinks
-  BehaviorSubject<List<TItem>> _unmergedNewItemsSubject =
+  final BehaviorSubject<List<TItem>> _unmergedNewItemsSubject =
       BehaviorSubject.seeded([]);
 
   // ignore: cancel_subscriptions
@@ -44,6 +47,7 @@ abstract class PaginationListWithNewItemsBloc<
 
     addDisposable(
         streamSubscription: newerItemStream.distinct().listen((newerItem) {
+//          clearNewItems();
       _logger.finest(() => "newerItem $newerItem");
       newItemsSubscription?.cancel();
 
@@ -55,9 +59,15 @@ abstract class PaginationListWithNewItemsBloc<
         List<TItem> actuallyNew = newItems
             .where((newItem) => compareItems(newItem, newerItem) > 0)
             .toList();
-        _logger
-            .finest(() => "watchItemsNewerThanItem newItems ${newItems.length} "
-                "actuallyNew = ${actuallyNew.length}");
+
+        // remove duplicates
+        // sometimes local storage sqlite returns duplicated items
+        // todo: hack should be removed
+        actuallyNew = LinkedHashSet<TItem>.from(actuallyNew).toList();
+
+        _logger.finest(() => "watchItemsNewerThanItem \n"
+            "\t newItems ${newItems.length} \n"
+            "\t actuallyNew = ${actuallyNew.length}");
 
         _unmergedNewItemsSubject.add(actuallyNew);
       });
@@ -85,19 +95,29 @@ abstract class PaginationListWithNewItemsBloc<
         return _calculateNewItems(items, mergedNewItems);
       });
 
-  List<TItem> _calculateNewItems(items, mergedNewItems) {
+  List<TItem> _calculateNewItems(
+      List<TItem> items, List<TItem> mergedNewItems) {
+    List<TItem> result;
+
     if (items == null && mergedNewItems == null) {
-      return null;
+      result = null;
     }
     if (items == null) {
       if (mergedNewItems?.isNotEmpty == true) {
-        return mergedNewItems;
+        result = mergedNewItems;
       } else {
-        return null;
+        result = null;
       }
     } else {
-      return [...(mergedNewItems ?? []), ...items];
+      result = [...(mergedNewItems ?? []), ...items];
     }
+
+    _logger.finest(() => "_calculateNewItems \n"
+        "\t items = ${items?.length} \n"
+        "\t mergedNewItems = ${mergedNewItems.length} \n"
+        "\t result = ${result?.length}");
+
+    return result;
   }
 
   bool get isHaveUnmergedNewItems => unmergedNewItemsCount > 0;
@@ -124,19 +144,29 @@ abstract class PaginationListWithNewItemsBloc<
   Stream<bool> get isHaveMergedNewItemsStream => mergedNewItemsCountStream
       .map((isHaveMergedNewItems) => mergedNewItemsCount > 0);
 
+  @override
   List<TItem> get mergedNewItems => _mergedNewItemsSubject.value;
 
+  @override
   Stream<List<TItem>> get mergedNewItemsStream => _mergedNewItemsSubject.stream;
 
+  @override
   int get mergedNewItemsCount => mergedNewItems?.length ?? 0;
 
+  @override
   Stream<int> get mergedNewItemsCountStream =>
       mergedNewItemsStream.map((mergedNewItems) => mergedNewItems?.length ?? 0);
 
   @override
-  mergeNewItems() {
+  void mergeNewItems() {
+    _logger.finest(() => "mergeNewItems \n"
+        "\t unmergedNewItems = ${unmergedNewItems.length}\n"
+        "\t mergedNewItems = ${mergedNewItems.length}\n");
     _mergedNewItemsSubject.add([...unmergedNewItems, ...mergedNewItems]);
     _unmergedNewItemsSubject.add([]);
+    _logger.finest(() => "mergeNewItems after "
+        "\t unmergedNewItems = ${unmergedNewItems.length}\n"
+        "\t mergedNewItems = ${mergedNewItems.length}\n");
   }
 
   @override

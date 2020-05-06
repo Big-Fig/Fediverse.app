@@ -20,8 +20,8 @@ class BaseAlertDialog extends BaseDialog {
 
   @override
   Widget buildDialog(BuildContext context) => AlertDialog(
-        title: Text(this.title),
-        content: Text(this.content),
+        title: Text(title),
+        content: Text(content),
         actions: <Widget>[
           if (cancelable) buildCancelAction(context),
           ...actions?.map((action) => buildButton(context, action))?.toList() ??

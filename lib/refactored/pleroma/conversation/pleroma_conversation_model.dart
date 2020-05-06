@@ -35,7 +35,7 @@ class PleromaConversationPleromaPart extends IPleromaConversationPleromaPart {
       _$PleromaConversationPleromaPartFromJson(jsonDecode(jsonString));
 
   static List<PleromaConversationPleromaPart> listFromJsonString(String str) =>
-      new List<PleromaConversationPleromaPart>.from(json
+      List<PleromaConversationPleromaPart>.from(json
           .decode(str)
           .map((x) => PleromaConversationPleromaPart.fromJson(x)));
 
@@ -74,7 +74,7 @@ class PleromaConversation implements IPleromaConversation {
       _$PleromaConversationFromJson(jsonDecode(jsonString));
 
   static List<PleromaConversation> listFromJsonString(String str) =>
-      new List<PleromaConversation>.from(
+      List<PleromaConversation>.from(
           json.decode(str).map((x) => PleromaConversation.fromJson(x)));
 
   Map<String, dynamic> toJson() => _$PleromaConversationToJson(this);

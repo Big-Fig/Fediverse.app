@@ -2,7 +2,7 @@ import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository_model.dart';
-import 'package:fedi/refactored/app/account/select/select_account_list_service.dart';
+import 'package:fedi/refactored/app/account/select/select_account_list_bloc.dart';
 import 'package:fedi/refactored/app/search/input/search_input_bloc.dart';
 import 'package:fedi/refactored/app/search/input/search_input_bloc_impl.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
@@ -15,8 +15,8 @@ import 'package:moor/moor.dart';
 
 var _logger = Logger("account_list_service_impl.dart");
 
-class SelectAccountListService extends DisposableOwner
-    implements ISelectAccountListService {
+class SelectAccountCachedListBloc extends DisposableOwner
+    implements ISelectAccountCachedListBloc {
   final IPleromaAccountService pleromaAccountService;
   final IAccountRepository accountRepository;
   final IMyAccountBloc myAccountBloc;
@@ -26,7 +26,7 @@ class SelectAccountListService extends DisposableOwner
 
   String get searchText => searchInputBloc.searchText;
 
-  SelectAccountListService({
+  SelectAccountCachedListBloc({
     @required this.pleromaAccountService,
     @required this.accountRepository,
     @required this.myAccountBloc,
@@ -123,9 +123,9 @@ class SelectAccountListService extends DisposableOwner
     return accounts;
   }
 
-  static SelectAccountListService createFromContext(BuildContext context,
+  static SelectAccountCachedListBloc createFromContext(BuildContext context,
           {@required bool excludeMyAccount}) =>
-      SelectAccountListService(
+      SelectAccountCachedListBloc(
           excludeMyAccount: excludeMyAccount,
           myAccountBloc: IMyAccountBloc.of(context, listen: false),
           accountRepository: IAccountRepository.of(context, listen: false),

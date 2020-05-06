@@ -72,7 +72,7 @@ Future<DbStatus> createTestDbStatus({
   return dbStatus;
 }
 
-expectDbStatusPopulated(IStatus actual, DbStatusPopulated expected) {
+void expectDbStatusPopulated(IStatus actual, DbStatusPopulated expected) {
   if (actual == null && expected == null) {
     return;
   }

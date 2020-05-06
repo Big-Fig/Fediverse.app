@@ -5,8 +5,8 @@ import 'package:fedi/refactored/app/auth/host/auth_host_access_token_local_prefe
 import 'package:fedi/refactored/app/auth/host/auth_host_application_local_preference_bloc.dart';
 import 'package:fedi/refactored/app/auth/host/auth_host_application_local_preference_bloc_impl.dart';
 import 'package:fedi/refactored/app/auth/host/auth_host_bloc.dart';
-import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/refactored/app/auth/instance/auth_instance_model.dart';
+import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/refactored/connection/connection_service.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:fedi/refactored/local_preferences/local_preferences_service.dart';
@@ -47,25 +47,24 @@ class AuthHostBloc extends DisposableOwner implements IAuthHostBloc {
   IPleromaRestService pleromaRestService;
   IPleromaOAuthService pleromaOAuthService;
   IPleromaAccountPublicService pleromaAccountPublicService;
-  IAuthHostApplicationLocalPreferenceBloc
-  authHostApplicationLocalPreferenceBloc;
-  IAuthHostAccessTokenLocalPreferenceBloc
-  authHostAccessTokenLocalPreferenceBloc;
+  IAuthHostApplicationLocalPreferenceBloc hostApplicationLocalPreferenceBloc;
+  IAuthHostAccessTokenLocalPreferenceBloc hostAccessTokenLocalPreferenceBloc;
   ICurrentAuthInstanceBloc currentInstanceBloc;
   final IConnectionService connectionService;
 
   AuthHostBloc(
-      {@required this.instanceBaseUrl, @required ILocalPreferencesService preferencesService, @required this.connectionService, @required this.currentInstanceBloc,}) {
+      {@required this.instanceBaseUrl,
+        @required ILocalPreferencesService preferencesService,
+        @required this.connectionService,
+        @required this.currentInstanceBloc,}) {
     assert(instanceBaseUrlSchema?.isNotEmpty == true);
     assert(instanceBaseUrlHost?.isNotEmpty == true);
-    authHostApplicationLocalPreferenceBloc =
-        AuthHostApplicationLocalPreferenceBloc(
-            preferencesService, instanceBaseUrlHost);
-    addDisposable(disposable: authHostApplicationLocalPreferenceBloc);
-    authHostAccessTokenLocalPreferenceBloc =
-        AuthHostAccessTokenLocalPreferenceBloc(
-            preferencesService, instanceBaseUrlHost);
-    addDisposable(disposable: authHostAccessTokenLocalPreferenceBloc);
+    hostApplicationLocalPreferenceBloc = AuthHostApplicationLocalPreferenceBloc(
+        preferencesService, instanceBaseUrlHost);
+    addDisposable(disposable: hostApplicationLocalPreferenceBloc);
+    hostAccessTokenLocalPreferenceBloc = AuthHostAccessTokenLocalPreferenceBloc(
+        preferencesService, instanceBaseUrlHost);
+    addDisposable(disposable: hostAccessTokenLocalPreferenceBloc);
     restService = RestService(baseUrl: instanceBaseUrl);
     addDisposable(disposable: restService);
     pleromaRestService = PleromaRestService(
@@ -84,21 +83,22 @@ class AuthHostBloc extends DisposableOwner implements IAuthHostBloc {
 
   @override
   PleromaClientApplication get hostApplication =>
-      authHostApplicationLocalPreferenceBloc.value;
+      hostApplicationLocalPreferenceBloc.value;
 
   @override
   Stream<PleromaClientApplication> get hostApplicationStream =>
-      authHostApplicationLocalPreferenceBloc.stream;
+      hostApplicationLocalPreferenceBloc.stream;
 
+  @override
   bool get isHostAccessTokenExist => hostAccessToken != null;
 
   @override
   PleromaOAuthToken get hostAccessToken =>
-      authHostAccessTokenLocalPreferenceBloc.value;
+      hostAccessTokenLocalPreferenceBloc.value;
 
   @override
   Stream<PleromaOAuthToken> get hostAccessTokenStream =>
-      authHostAccessTokenLocalPreferenceBloc.stream;
+      hostAccessTokenLocalPreferenceBloc.stream;
 
   @override
   bool get isHostApplicationRegistered => hostApplication != null;
@@ -115,13 +115,14 @@ class AuthHostBloc extends DisposableOwner implements IAuthHostBloc {
 
     _logger.finest(() => "registerApplication application =$application");
     if (application != null) {
-      authHostApplicationLocalPreferenceBloc.setValue(application);
+      await hostApplicationLocalPreferenceBloc.setValue(application);
       return true;
     } else {
       return false;
     }
   }
 
+  @override
   Future<bool> retrieveAppAccessToken() async {
     var accessToken = await pleromaOAuthService.retrieveAppAccessToken(
         tokenRequest: PleromaOAuthAppTokenRequest(redirectUri: redirectUri,
@@ -130,7 +131,7 @@ class AuthHostBloc extends DisposableOwner implements IAuthHostBloc {
           clientId: hostApplication.clientId,));
 
     if (accessToken != null) {
-      authHostAccessTokenLocalPreferenceBloc.setValue(accessToken);
+      await hostAccessTokenLocalPreferenceBloc.setValue(accessToken);
       return true;
     } else {
       return false;
@@ -145,11 +146,10 @@ class AuthHostBloc extends DisposableOwner implements IAuthHostBloc {
 
     var authCode = await pleromaOAuthService
         .launchAuthorizeFormAndExtractAuthorizationCode(
-        authorizeRequest: PleromaOAuthAuthorizeRequest(redirectUri: redirectUri,
-            scope: scopes,
-            forceLogin: true,
-            clientId: hostApplication.clientId),
-    );
+      authorizeRequest: PleromaOAuthAuthorizeRequest(redirectUri: redirectUri,
+          scope: scopes,
+          forceLogin: true,
+          clientId: hostApplication.clientId),);
 
     var token = await pleromaOAuthService.retrieveAccountAccessToken(
         tokenRequest: PleromaOAuthAccountTokenRequest(
@@ -169,8 +169,7 @@ class AuthHostBloc extends DisposableOwner implements IAuthHostBloc {
 
     var myAccount = await pleromaMyAccountService.verifyCredentials();
 
-    var instance = AuthInstance(
-        urlHost: instanceBaseUrlHost.toLowerCase(),
+    var instance = AuthInstance(urlHost: instanceBaseUrlHost.toLowerCase(),
         urlSchema: instanceBaseUrlSchema,
         authCode: authCode,
         token: token,
@@ -193,7 +192,8 @@ class AuthHostBloc extends DisposableOwner implements IAuthHostBloc {
   }
 
   Future checkApplicationRegistration() async {
-    _logger.finest(() => "checkApplicationRegistration $isHostApplicationRegistered");
+    _logger
+        .finest(() => "checkApplicationRegistration $isHostApplicationRegistered");
     if (!isHostApplicationRegistered) {
       var success = await registerApplication();
       _logger.finest(() => "checkApplicationRegistration "

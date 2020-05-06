@@ -1,8 +1,8 @@
 import 'package:fedi/refactored/app/account/account_bloc.dart';
 import 'package:fedi/refactored/app/account/account_widget.dart';
-import 'package:fedi/refactored/app/account/statuses/account_statuses_bloc_impl.dart';
+import 'package:fedi/refactored/app/account/statuses/account_statuses_cached_list_bloc_impl.dart';
 import 'package:fedi/refactored/app/account/statuses/account_statuses_widget.dart';
-import 'package:fedi/refactored/app/status/list/cached/status_cached_list_service.dart';
+import 'package:fedi/refactored/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/refactored/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
 import 'package:fedi/refactored/app/status/pagination/list/status_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
@@ -24,8 +24,9 @@ class AccountDetailsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: true);
 
-    return DisposableProvider<IStatusCachedListService>(
-      create: (context) => AccountStatusesBloc.createFromContext(context,
+    return DisposableProvider<IStatusCachedListBloc>(
+      create: (context) => AccountStatusesCachedListBloc.createFromContext(
+          context,
           account: accountBloc.account),
       child:
           DisposableProvider<IPaginationBloc<PaginationPage<IStatus>, IStatus>>(
@@ -41,7 +42,7 @@ class AccountDetailsWidget extends StatelessWidget {
                       listen: false),
                   mergeNewItemsImmediately: false,
                   statusCachedListService:
-                      IStatusCachedListService.of(context, listen: false)),
+                      IStatusCachedListBloc.of(context, listen: false)),
           child: ProxyProvider<
               IPaginationListWithNewItemsBloc<PaginationPage<IStatus>, IStatus>,
               IPaginationListBloc<PaginationPage<IStatus>, IStatus>>(

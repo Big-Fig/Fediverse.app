@@ -96,6 +96,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
           String remoteId) async =>
       mapDataClassToItem(await dao.findByRemoteId(remoteId));
 
+  @override
   Future<List<DbNotificationPopulatedWrapper>> getNotifications(
       {@required MastodonNotificationType onlyWithType,
       @required INotification olderThanNotification,
@@ -117,6 +118,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
         .toList();
   }
 
+  @override
   Stream<List<DbNotificationPopulatedWrapper>> watchNotifications(
       {@required MastodonNotificationType onlyWithType,
       @required INotification olderThanNotification,
@@ -328,20 +330,24 @@ class NotificationRepository extends AsyncInitLoadingBloc
     return stream.map((dbNotification) => mapDataClassToItem(dbNotification));
   }
 
+  @override
   Future<int> countUnreadAnyType() {
     return dao.countUnreadAllQuery().getSingle();
   }
 
+  @override
   Future<int> countUnreadByType({@required MastodonNotificationType type}) {
     return dao
         .countUnreadByTypeQuery(mastodonNotificationTypeValues.reverse[type])
         .getSingle();
   }
 
+  @override
   Stream<int> watchUnreadCountAnyType() {
     return dao.countUnreadAllQuery().watchSingle();
   }
 
+  @override
   Stream<int> watchUnreadCountByType(
       {@required MastodonNotificationType type}) {
     return dao

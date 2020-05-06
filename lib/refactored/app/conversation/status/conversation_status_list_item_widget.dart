@@ -1,14 +1,13 @@
 import 'package:fedi/refactored/app/account/avatar/account_avatar_widget.dart';
 import 'package:fedi/refactored/app/account/details/account_details_page.dart';
 import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
+import 'package:fedi/refactored/app/media/attachment/media_attachments_widget.dart';
 import 'package:fedi/refactored/app/status/action/status_favourite_action_widget.dart';
 import 'package:fedi/refactored/app/status/card/status_card_widget.dart';
 import 'package:fedi/refactored/app/status/content/status_content_with_emojis_without_accounts_widget.dart';
-import 'package:fedi/refactored/app/status/media/status_media_attachments_widget.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class ConversationStatusListItemWidget extends StatelessWidget {
   @override
@@ -32,7 +31,7 @@ class ConversationStatusListItemWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             ClipRRect(
-              borderRadius: new BorderRadius.circular(20.0),
+              borderRadius: BorderRadius.circular(20.0),
               child: Container(
                 color: Color(0xffececec),
                 constraints: BoxConstraints(maxWidth: deviceWidth * 0.80),
@@ -51,7 +50,7 @@ class ConversationStatusListItemWidget extends StatelessWidget {
             children: <Widget>[
               StatusContentWithEmojisWithoutAccountsWidget(),
               StatusCardWidget(),
-              StatusMediaAttachmentsWidget(),
+              MediaAttachmentsWidget(),
             ],
           ),
         ));
@@ -74,7 +73,7 @@ class ConversationStatusListItemWidget extends StatelessWidget {
                   builder: (context, snapshot) {
                     var accountAvatar = snapshot.data;
                     return ClipRRect(
-                      borderRadius: new BorderRadius.circular(15.0),
+                      borderRadius: BorderRadius.circular(15.0),
                       child: AccountAvatarWidget.buildAccountAvatarWidget(
                           avatarUrl: accountAvatar,
                           progressSize: 30,
@@ -86,7 +85,7 @@ class ConversationStatusListItemWidget extends StatelessWidget {
               width: 8,
             ),
             ClipRRect(
-              borderRadius: new BorderRadius.circular(20.0),
+              borderRadius: BorderRadius.circular(20.0),
               child: Container(
                 decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),

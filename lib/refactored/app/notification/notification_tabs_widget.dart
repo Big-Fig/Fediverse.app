@@ -1,5 +1,5 @@
-import 'package:fedi/refactored/app/notification/list/cached/notification_cached_list_service.dart';
-import 'package:fedi/refactored/app/notification/list/cached/notification_cached_list_service_impl.dart';
+import 'package:fedi/refactored/app/notification/list/cached/notification_cached_list_bloc.dart';
+import 'package:fedi/refactored/app/notification/list/cached/notification_cached_list_bloc_impl.dart';
 import 'package:fedi/refactored/app/notification/notification_model.dart';
 import 'package:fedi/refactored/app/notification/notification_tabs_bloc.dart';
 import 'package:fedi/refactored/app/notification/notification_tabs_model.dart';
@@ -116,9 +116,8 @@ class NotificationTabsWidget extends StatelessWidget {
       INotificationsTabsBloc notificationsTabsBloc) {
     MastodonNotificationType onlyWithType = mapTabToType(tab);
 
-    return DisposableProvider<INotificationCachedListService>(
-      create: (context) => NotificationCachedListService.createFromContext(
-          context,
+    return DisposableProvider<INotificationCachedListBloc>(
+      create: (context) => NotificationCachedListBloc.createFromContext(context,
           onlyWithType: onlyWithType),
       child: DisposableProvider<
           IPaginationBloc<PaginationPage<INotification>, INotification>>(
@@ -131,7 +130,7 @@ class NotificationTabsWidget extends StatelessWidget {
               mergeNewItemsImmediately: false,
               paginationBloc: Provider.of(context, listen: false),
               cachedListService:
-                  INotificationCachedListService.of(context, listen: false)),
+                  INotificationCachedListBloc.of(context, listen: false)),
           child: ProxyProvider<
               IPaginationListWithNewItemsBloc<PaginationPage<INotification>,
                   INotification>,
@@ -144,10 +143,9 @@ class NotificationTabsWidget extends StatelessWidget {
                 IPaginationListWithNewItemsBloc>(
               update: (context, value, previous) => value,
               child: PaginationListWithNewItemsHeaderWidget(
-
-
                 child: DisposableProvider<ICollapsibleBloc>(
-                  create: (context) => CollapsibleBloc.createFromContext(context),
+                  create: (context) =>
+                      CollapsibleBloc.createFromContext(context),
                   child: Stack(
                     children: <Widget>[
                       NotificationPaginationListWidget(

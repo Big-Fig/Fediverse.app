@@ -9,8 +9,7 @@ import 'package:provider/provider.dart';
 abstract class ITimelineTabsBloc extends Disposable {
   List<TimelineTab> get tabs;
 
-
-  static ITimelineTabsBloc of(BuildContext context, {listen: true}) =>
+  static ITimelineTabsBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<ITimelineTabsBloc>(context, listen: listen);
 
   TimelineTab get selectedTab;
@@ -21,5 +20,4 @@ abstract class ITimelineTabsBloc extends Disposable {
       retrieveTimelineTabPaginationListBloc(TimelineTab tab);
 
   void selectTab(TimelineTab tab);
-
 }

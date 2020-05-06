@@ -14,6 +14,7 @@ import 'package:logging/logging.dart';
 import 'package:path/path.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 var _logger = Logger("pleroma_oauth_service_impl.dart");
 
 class PleromaOAuthService extends DisposableOwner
@@ -85,7 +86,7 @@ class PleromaOAuthService extends DisposableOwner
         "\t url = $url\n"
         "\t canLaunch=$isCanLaunch");
 
-    var completer =  Completer<String>();
+    var completer = Completer<String>();
     if (isCanLaunch) {
       StreamSubscription<Uri> subscription;
       subscription = getUriLinksStream().listen((Uri uri) {

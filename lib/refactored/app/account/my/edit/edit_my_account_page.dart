@@ -83,7 +83,7 @@ class EditMyAccountPage extends StatelessWidget {
     }
   }
 
-  alertUnsaved(BuildContext context) {
+  void alertUnsaved(BuildContext context) {
     showAlert(
       context: context,
       title: AppLocalizations.of(context)

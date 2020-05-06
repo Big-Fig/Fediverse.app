@@ -46,8 +46,8 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
     @required this.notificationRepository,
     @required INotification notification,
     bool needRefreshFromNetworkOnInit = false,
-    this.isNeedWatchLocalRepositoryForUpdates = true,
-    // todo: remove hack. Don't init when bloc quickly disposed. Help
+    this.isNeedWatchLocalRepositoryForUpdates =
+        true, // todo: remove hack. Don't init when bloc quickly disposed. Help
     //  improve performance in timeline unnecessary recreations
     bool delayInit = true,
   }) : _notificationSubject = BehaviorSubject.seeded(notification) {

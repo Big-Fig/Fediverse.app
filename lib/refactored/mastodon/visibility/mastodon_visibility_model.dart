@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 enum MastodonVisibility { PUBLIC, UNLISTED, DIRECT }
 
-final mastodonVisibilityValues = new EnumValues({
+final mastodonVisibilityValues = EnumValues({
   "public": MastodonVisibility.PUBLIC,
   "unlisted": MastodonVisibility.UNLISTED,
   "direct": MastodonVisibility.DIRECT

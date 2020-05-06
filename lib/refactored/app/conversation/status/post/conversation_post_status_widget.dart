@@ -13,7 +13,6 @@ import 'package:flutter/material.dart';
 class ConversationPostStatusWidget extends StatelessWidget {
   final IPostStatusCallback successCallback;
 
-
   ConversationPostStatusWidget({@required this.successCallback});
 
   @override
@@ -37,7 +36,7 @@ class ConversationPostStatusWidget extends StatelessWidget {
                   PostStatusNsfwActionWidget()
                 ],
               ),
-              PostStatusPostActionWidget(successCallback:successCallback)
+              PostStatusPostActionWidget(successCallback: successCallback)
             ],
           )
         ],

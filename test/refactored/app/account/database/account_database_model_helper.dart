@@ -43,7 +43,7 @@ Future<DbAccount> createTestDbAccount(
       pleromaSkipThreadContainment: true,
     );
 
-expectDbAccount(IAccount actual, DbAccount expected) {
+void expectDbAccount(IAccount actual, DbAccount expected) {
   if (actual == null && expected == null) {
     return;
   }

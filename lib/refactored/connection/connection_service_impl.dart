@@ -13,14 +13,17 @@ class ConnectionService extends AsyncInitLoadingBloc
     implements IConnectionService {
   Connectivity connectivity;
 
-  BehaviorSubject<ConnectivityResult> _connectionStateSubject =
+  final BehaviorSubject<ConnectivityResult> _connectionStateSubject =
       BehaviorSubject.seeded(ConnectivityResult.none);
 
+  @override
   Stream<ConnectivityResult> get connectionStateStream =>
       _connectionStateSubject.stream.distinct();
 
+  @override
   ConnectivityResult get connectionState => _connectionStateSubject.value;
 
+  @override
   Stream<bool> get isConnectedStream =>
       connectionStateStream.map(_mapConnectivityResult).distinct();
 
@@ -28,6 +31,7 @@ class ConnectionService extends AsyncInitLoadingBloc
       connectivityResult == ConnectivityResult.wifi ||
       connectivityResult == ConnectivityResult.mobile;
 
+  @override
   bool get isConnected => _mapConnectivityResult(connectionState);
 
   ConnectionService() {

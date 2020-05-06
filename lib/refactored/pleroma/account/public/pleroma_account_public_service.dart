@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 abstract class IPleromaAccountPublicService implements IPleromaApi {
   static IPleromaAccountPublicService of(BuildContext context,
-          {listen: true}) =>
+          {bool listen = true}) =>
       Provider.of<IPleromaAccountPublicService>(context, listen: listen);
 
   Future<bool> registerAccount(

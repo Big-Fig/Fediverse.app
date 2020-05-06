@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 enum PleromaVisibility { PUBLIC, UNLISTED, DIRECT, LIST, PRIVATE }
 
-final pleromaVisibilityValues = new EnumValues({
+final pleromaVisibilityValues = EnumValues({
   "public": PleromaVisibility.PUBLIC,
   "unlisted": PleromaVisibility.UNLISTED,
   "direct": PleromaVisibility.DIRECT,

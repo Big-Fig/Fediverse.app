@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 
 abstract class ICameraBloc
     implements Disposable, IPermissionBloc, IAsyncInitLoadingBloc {
-  static ICameraBloc of(BuildContext context, {listen: true}) =>
+  static ICameraBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<ICameraBloc>(context, listen: listen);
 
   Stream<int> get selectedCameraIndexStream;

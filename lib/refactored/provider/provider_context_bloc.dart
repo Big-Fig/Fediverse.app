@@ -8,7 +8,7 @@ abstract class IProviderContextBloc extends DisposableOwner {
   Disposable register<T extends Disposable>(T object);
 
   Future<Disposable> asyncInitAndRegister<T extends Disposable>(T obj,
-      {Future additionalAsyncInit(T obj)});
+      {Future Function(T obj) additionalAsyncInit});
 
   void unregister<T extends Disposable>(T object);
 

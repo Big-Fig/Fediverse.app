@@ -11,11 +11,11 @@ import 'package:moor/moor.dart';
 var _logger =
     Logger("conversation_statuses_list_bloc_conversation_api_impl.dart");
 
-class ConversationStatusListConversationApiService
+class ConversationStatusListConversationApiBloc
     extends ConversationStatusListBloc {
   final IPleromaConversationService pleromaConversationService;
 
-  ConversationStatusListConversationApiService(
+  ConversationStatusListConversationApiBloc(
       {@required IConversation conversation,
       @required this.pleromaConversationService,
       @required IStatusRepository statusRepository})
@@ -58,14 +58,12 @@ class ConversationStatusListConversationApiService
     }
   }
 
-  static ConversationStatusListConversationApiService createFromContext(
+  static ConversationStatusListConversationApiBloc createFromContext(
           BuildContext context,
           {@required IConversation conversation}) =>
-      ConversationStatusListConversationApiService(
+      ConversationStatusListConversationApiBloc(
           conversation: conversation,
           pleromaConversationService:
               IPleromaConversationService.of(context, listen: false),
           statusRepository: IStatusRepository.of(context, listen: false));
-
-
 }

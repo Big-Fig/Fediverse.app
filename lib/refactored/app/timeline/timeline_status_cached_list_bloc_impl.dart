@@ -1,5 +1,5 @@
 import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/refactored/app/status/list/cached/status_cached_list_service.dart';
+import 'package:fedi/refactored/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository_model.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
@@ -15,14 +15,14 @@ import 'package:moor/moor.dart';
 
 var _logger = Logger("timeline_status_list_service_impl.dart");
 
-abstract class TimelineStatusListService extends DisposableOwner
-    implements IStatusCachedListService {
+abstract class TimelineStatusCachedListBloc extends DisposableOwner
+    implements IStatusCachedListBloc {
   final IPleromaTimelineService pleromaTimelineService;
   final IStatusRepository statusRepository;
   final ICurrentAuthInstanceBloc currentInstanceBloc;
   final TimelineLocalPreferencesBloc timelineLocalPreferencesBloc;
 
-  TimelineStatusListService(
+  TimelineStatusCachedListBloc(
       {@required this.pleromaTimelineService,
       @required this.statusRepository,
       @required this.currentInstanceBloc,
@@ -112,7 +112,6 @@ abstract class TimelineStatusListService extends DisposableOwner
     }
   }
 
-
   @override
   Stream<List<IStatus>> watchLocalItemsNewerThanItem(IStatus item) {
     var timelineSettings = retrieveTimelineSettings();
@@ -187,5 +186,6 @@ abstract class TimelineStatusListService extends DisposableOwner
     return statuses;
   }
 
+  @override
   Future preRefreshAllAction() async {}
 }

@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/refactored/app/media/attachment/media_attachments_widget.dart';
 import 'package:fedi/refactored/app/status/account/status_account_widget.dart';
 import 'package:fedi/refactored/app/status/action/status_comment_action_widget.dart';
 import 'package:fedi/refactored/app/status/action/status_favourite_action_widget.dart';
@@ -9,7 +10,6 @@ import 'package:fedi/refactored/app/status/content/status_content_with_emojis_wi
 import 'package:fedi/refactored/app/status/created_at/status_created_at_widget.dart';
 import 'package:fedi/refactored/app/status/emoji_reaction/status_emoji_reaction_list_widget.dart';
 import 'package:fedi/refactored/app/status/emoji_reaction/status_emoji_reaction_picker_widget.dart';
-import 'package:fedi/refactored/app/status/media/status_media_attachments_widget.dart';
 import 'package:fedi/refactored/app/status/nsfw/status_nsfw_warning_widget.dart';
 import 'package:fedi/refactored/app/status/reblog/status_reblog_header_widget.dart';
 import 'package:fedi/refactored/app/status/reply/status_reply_header_widget.dart';
@@ -21,7 +21,6 @@ import 'package:fedi/refactored/app/status/thread/status_thread_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-import 'package:provider/provider.dart';
 
 var _logger = Logger("status_list_item_timeline_widget.dart");
 
@@ -95,22 +94,21 @@ class StatusListItemTimelineWidget extends StatelessWidget {
               ),
             ),
             buildStatusContent(context, statusBloc),
-            if(displayActions)
-            StatusEmojiReactionListWidget(),
-            if(displayActions)
+            if (displayActions) StatusEmojiReactionListWidget(),
+            if (displayActions)
               Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  StatusCommentActionWidget(),
-                  StatusFavouriteActionWidget(),
-                  buildEmojiPickerButton(context, statusBloc),
-                  StatusReblogActionWidget(),
-                  StatusShareActionWidget(),
-                ],
+                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    StatusCommentActionWidget(),
+                    StatusFavouriteActionWidget(),
+                    buildEmojiPickerButton(context, statusBloc),
+                    StatusReblogActionWidget(),
+                    StatusShareActionWidget(),
+                  ],
+                ),
               ),
-            ),
           ],
         ),
       );
@@ -157,7 +155,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
                         if (collapsible && statusBloc.isPossibleToCollapse)
                           buildCollapsibleButton(context, statusBloc),
                         StatusCardWidget(),
-                        StatusMediaAttachmentsWidget(),
+                        MediaAttachmentsWidget(),
                       ],
                     );
                   } else {

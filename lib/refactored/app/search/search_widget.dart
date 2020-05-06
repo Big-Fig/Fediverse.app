@@ -110,7 +110,7 @@ class SearchWidget extends StatelessWidget {
               IPaginationBloc<PaginationPage<IAccount>, IAccount>>(
             create: (context) =>
                 AccountNetworkOnlyPaginationBloc.createFromContext(context),
-            child: Provider<IAccountPaginationListBloc>(
+            child: DisposableProvider<IAccountPaginationListBloc>(
               create: (context) =>
                   SearchAccountsPaginationListBloc.createFromContext(context),
               child: SearchAccountsListWidget(),
@@ -126,7 +126,8 @@ class SearchWidget extends StatelessWidget {
               IPaginationBloc<PaginationPage<IStatus>, IStatus>>(
             create: (context) =>
                 StatusNetworkOnlyPaginationBloc.createFromContext(context),
-            child: DisposableProvider<IPaginationListBloc<PaginationPage<IStatus>, IStatus>>(
+            child: DisposableProvider<
+                IPaginationListBloc<PaginationPage<IStatus>, IStatus>>(
               create: (context) =>
                   SearchStatusesPaginationListBloc.createFromContext(context),
               child: SearchStatusesListWidget(),

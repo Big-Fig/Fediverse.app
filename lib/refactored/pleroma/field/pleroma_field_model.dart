@@ -9,10 +9,13 @@ abstract class IPleromaField implements IMastodonField {}
 @HiveType()
 @JsonSerializable()
 class PleromaField implements IPleromaField {
+  @override
   @HiveField(0)
   String name;
+  @override
   @HiveField(1)
   String value;
+  @override
   @HiveField(2)
   @JsonKey(name: "verified_at")
   DateTime verifiedAt;

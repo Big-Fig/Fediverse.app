@@ -1,4 +1,4 @@
-import 'package:fedi/refactored/app/notification/list/cached/notification_cached_list_service.dart';
+import 'package:fedi/refactored/app/notification/list/cached/notification_cached_list_bloc.dart';
 import 'package:fedi/refactored/app/notification/notification_model.dart';
 import 'package:fedi/refactored/pagination/list/with_new_items/pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/refactored/pagination/pagination_bloc.dart';
@@ -8,7 +8,7 @@ import 'package:flutter/widgets.dart';
 class NotificationPaginationListWithNewItemsBloc<
         TPage extends PaginationPage<INotification>>
     extends PaginationListWithNewItemsBloc<TPage, INotification> {
-  final INotificationCachedListService cachedListService;
+  final INotificationCachedListBloc cachedListService;
 
   NotificationPaginationListWithNewItemsBloc(
       {@required bool mergeNewItemsImmediately,

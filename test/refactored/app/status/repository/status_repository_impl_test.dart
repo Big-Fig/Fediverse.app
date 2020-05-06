@@ -65,7 +65,7 @@ void main() {
 
   test('reblog join', () async {
     var reblogDbAccount = await createTestDbAccount(seed: "seed11");
-    accountRepository.insert(reblogDbAccount);
+    await accountRepository.insert(reblogDbAccount);
     var reblogDbStatus =
         await createTestDbStatus(seed: "seed33", dbAccount: reblogDbAccount);
     var reblogStatusId = await statusRepository.insert(reblogDbStatus);
@@ -1109,7 +1109,7 @@ void main() {
     expect((await query.get()).length, 2);
   });
 
-  test('createQuery onlyInConversation', () async {
+  test('getConversationLastStatus', () async {
     var conversationRemoteId = "conversationRemoteId";
 
     var conversation = await createTestConversation(
@@ -1168,5 +1168,100 @@ void main() {
                 conversation: conversation))
             .remoteId,
         "status4");
+  });
+
+  test('addStatusesToConversation', () async {
+    expect((await statusRepository.conversationStatusesDao.getAll())
+        .length, 0);
+
+
+    await statusRepository.addStatusesToConversation(["statusRemoteId1"],
+        "conversationRemoteId1");
+
+    expect((await statusRepository.conversationStatusesDao.getAll()).length, 1);
+
+
+    await statusRepository.addStatusesToConversation(["statusRemoteId1"],
+        "conversationRemoteId1");
+
+    expect((await statusRepository.conversationStatusesDao.getAll()).length, 1);
+  });
+
+  test('upsertRemoteStatus duplicated parallel upsert', () async {
+    expect(await statusRepository.countAll(), 0);
+
+    var conversationRemoteId = "conversationRemoteId";
+
+
+    await statusRepository.upsertRemoteStatuses([
+      mapLocalStatusToRemoteStatus(DbStatusPopulatedWrapper(dbStatusPopulated))
+    ],
+        conversationRemoteId: conversationRemoteId,
+        listRemoteId: null);
+    await statusRepository.upsertRemoteStatuses([
+      mapLocalStatusToRemoteStatus(DbStatusPopulatedWrapper(dbStatusPopulated))
+    ],
+        conversationRemoteId: conversationRemoteId,
+        listRemoteId: null);
+
+
+    var future1 = statusRepository.upsertRemoteStatus(
+        mapLocalStatusToRemoteStatus(
+            DbStatusPopulatedWrapper(dbStatusPopulated)),
+        conversationRemoteId: conversationRemoteId,
+        listRemoteId: null);
+    var future2 = statusRepository.upsertRemoteStatus(
+        mapLocalStatusToRemoteStatus(
+            DbStatusPopulatedWrapper(dbStatusPopulated)),
+        conversationRemoteId: conversationRemoteId,
+        listRemoteId: null);
+
+
+    var future3 = statusRepository.upsertRemoteStatuses([
+      mapLocalStatusToRemoteStatus(DbStatusPopulatedWrapper(dbStatusPopulated))
+    ],
+        conversationRemoteId: conversationRemoteId,
+        listRemoteId: null);
+    var future4 = statusRepository.upsertRemoteStatuses([
+      mapLocalStatusToRemoteStatus(DbStatusPopulatedWrapper(dbStatusPopulated))
+    ],
+        conversationRemoteId: conversationRemoteId,
+//        conversationRemoteId: null,
+        listRemoteId: null);
+
+    await future1;
+    await future2;
+    await future3;
+    await future4;
+
+    expect(await statusRepository.countAll(), 1);
+    expect(await accountRepository.countAll(), 1);
+    expect((await statusRepository.conversationStatusesDao.countAll()).length, 1);
+    expect(
+        (await statusRepository
+            .getStatuses(
+            onlyInListWithRemoteId: null,
+            onlyWithHashtag: null,
+            onlyFromAccountsFollowingByAccount: null,
+            onlyFromAccount: null,
+            onlyInConversation: await createTestConversation(
+                seed: "seed5", remoteId: conversationRemoteId),
+            onlyLocal: null,
+            onlyWithMedia: null,
+            onlyNotMuted: null,
+            excludeVisibilities: null,
+            olderThanStatus: null,
+            newerThanStatus: null,
+            onlyNoNsfwSensitive: null,
+            onlyNoReplies: null,
+            orderingTermData: null,
+            offset: null,
+            limit: null))
+            .length,
+        1);
+    expectDbStatus(
+        await statusRepository.findByRemoteId(dbStatus.remoteId), dbStatus);
+    expectDbAccount(
+        await accountRepository.findByRemoteId(dbAccount.remoteId), dbAccount);
   });
 }

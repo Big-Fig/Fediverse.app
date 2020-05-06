@@ -5,10 +5,8 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPleromaWebSocketsService extends DisposableOwner {
-  static IPleromaWebSocketsService of(BuildContext context,
-          {listen: true}) =>
+  static IPleromaWebSocketsService of(BuildContext context, {listen = true}) =>
       Provider.of(context, listen: listen);
-
 
   /// Returns events that are relevant to user with accountId
   IWebSocketsChannel<PleromaWebSocketsEvent> getMyAccountChannel(
@@ -18,6 +16,7 @@ abstract class IPleromaWebSocketsService extends DisposableOwner {
   /// i.e. home timeline and notifications
   IWebSocketsChannel<PleromaWebSocketsEvent> getAccountChannel(
       {@required String accountId, @required bool notification});
+
   /// Returns all direct events
   // todo: why we need account id here?
   IWebSocketsChannel<PleromaWebSocketsEvent> getDirectChannel(

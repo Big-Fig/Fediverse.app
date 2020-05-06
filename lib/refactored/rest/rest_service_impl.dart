@@ -33,10 +33,12 @@ class RestService extends DisposableOwner implements IRestService {
 
   Stream<RestHttpError> get lastErrorStream => _lastErrorSubject.stream;
 
+  @override
   final Uri baseUrl;
 
   RestService({@required this.baseUrl});
 
+  @override
   Future<http.Response> sendHttpRequest<T extends RestRequest, K>(
       T request) async {
     assert(request.relativeUrlPath != null);
@@ -60,7 +62,7 @@ class RestService extends DisposableOwner implements IRestService {
         "\t url($requestType): $url \n"
         "\t headers: ${request.headers} \n"
         "\t requestBodyJson: $requestBodyJson \n");
-    var requestHeaders = Map<String, String>();
+    var requestHeaders = <String, String>{};
     requestHeaders.addAll(request.headers);
     if (request.bodyJson?.isNotEmpty == true) {
       requestHeaders["Content-Type"] = "application/json";
@@ -167,7 +169,7 @@ class RestService extends DisposableOwner implements IRestService {
     _logger.fine(() => "start send $url request $request");
     var requestType = request.type;
     var httpMethodString = requestTypeToStringMap[requestType];
-    var multipartRequest = new http.MultipartRequest(
+    var multipartRequest = http.MultipartRequest(
       httpMethodString,
       url,
     );

@@ -14,6 +14,7 @@ class CurrentAuthInstanceContextLoadingBloc extends DisposableOwner
     addDisposable(subject: stateSubject);
   }
 
+  @override
   void refresh() {
     stateSubject.add(CurrentAuthInstanceContextLoadingState.loading);
     myAccountBloc.refreshFromNetwork().then((_) {

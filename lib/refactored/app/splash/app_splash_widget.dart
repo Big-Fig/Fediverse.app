@@ -4,7 +4,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/context/app_context_bloc_impl.dart';
 import 'package:fedi/refactored/app/init/app_init_page.dart';
 import 'package:fedi/refactored/async/loading/init/async_init_loading_model.dart';
-import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';

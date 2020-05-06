@@ -24,7 +24,7 @@ PleromaAccountRelationship createTestAccountRelationship(
       subscribing: seed.hashCode % 2 == 0,
     );
 
-expectAccount(IAccount actual, IAccount expected) {
+void expectAccount(IAccount actual, IAccount expected) {
   if (actual == null && expected == null) {
     return;
   }

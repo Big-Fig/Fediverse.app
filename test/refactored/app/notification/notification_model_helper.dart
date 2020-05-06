@@ -25,7 +25,7 @@ Future<DbNotificationPopulatedWrapper> createTestNotification(
   ));
 }
 
-expectNotification(INotification actual, INotification expected) {
+void expectNotification(INotification actual, INotification expected) {
   if (actual == null && expected == null) {
     return;
   }

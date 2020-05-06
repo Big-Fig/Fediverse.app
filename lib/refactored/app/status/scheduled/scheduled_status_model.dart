@@ -78,6 +78,7 @@ class DbScheduledStatusWrapper implements IScheduledStatus {
 
 class ScheduledStatusAdapterToStatus implements IStatus {
   final notSupportedError = Exception("Not supported for scheduled status");
+  @override
   final IAccount account;
   final IScheduledStatus scheduledStatus;
 
@@ -245,6 +246,4 @@ class ScheduledStatusAdapterToStatus implements IStatus {
   PleromaVisibility get visibility => scheduledStatus.params.pleromaVisibility;
 }
 
-enum ScheduledStatusState {
-  scheduled, canceled, alreadyPosted
-}
+enum ScheduledStatusState { scheduled, canceled, alreadyPosted }

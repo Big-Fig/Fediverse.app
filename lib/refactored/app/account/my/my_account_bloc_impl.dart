@@ -95,7 +95,6 @@ class MyAccountBloc extends IMyAccountBloc {
     return myAccount.remoteId == status.account.remoteId;
   }
 
-
   @override
   IPleromaAccountRelationship get accountRelationship => throw selfActionError;
 
@@ -107,7 +106,7 @@ class MyAccountBloc extends IMyAccountBloc {
   Future<IPleromaAccountRelationship> togglePin() => throw selfActionError;
 
   @override
-  updateMyAccountByRemote(IPleromaMyAccount remoteMyAccount) {
+  void updateMyAccountByRemote(IPleromaMyAccount remoteMyAccount) {
     myAccountLocalPreferenceBloc
         .setValue(MyAccountRemoteWrapper(remoteAccount: remoteMyAccount));
   }

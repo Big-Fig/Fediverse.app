@@ -34,7 +34,7 @@ class SearchBloc extends DisposableOwner implements ISearchBloc {
   SearchTab get selectedTab => _selectedTabSubject.value;
 
   @override
-  selectTab(SearchTab tab) {
+  void selectTab(SearchTab tab) {
     _selectedTabSubject.add(tab);
   }
 

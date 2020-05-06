@@ -1,7 +1,5 @@
-import 'package:fedi/refactored/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/refactored/app/database/app_database.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository_impl.dart';
-import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Future<DbStatus> insertDbStatus(

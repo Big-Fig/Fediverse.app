@@ -7,5 +7,6 @@ abstract class IScheduledStatusNetworkOnlyPaginationBloc
     implements INetworkOnlyPleromaPaginationBloc<IScheduledStatus> {
   static IScheduledStatusNetworkOnlyPaginationBloc of(BuildContext context,
           {bool listen = true}) =>
-      Provider.of<IScheduledStatusNetworkOnlyPaginationBloc>(context, listen: listen);
+      Provider.of<IScheduledStatusNetworkOnlyPaginationBloc>(context,
+          listen: listen);
 }
