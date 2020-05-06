@@ -25,7 +25,7 @@ class AccountDetailsWidget extends StatelessWidget {
     var accountBloc = IAccountBloc.of(context, listen: true);
 
     return DisposableProvider<IStatusCachedListBloc>(
-      create: (context) => AccountStatusesCachedListBlocBloc.createFromContext(context,
+      create: (context) => AccountStatusesCachedListBloc.createFromContext(context,
           account: accountBloc.account),
       child:
           DisposableProvider<IPaginationBloc<PaginationPage<IStatus>, IStatus>>(

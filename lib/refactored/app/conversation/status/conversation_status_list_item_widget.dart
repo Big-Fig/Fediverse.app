@@ -1,14 +1,13 @@
 import 'package:fedi/refactored/app/account/avatar/account_avatar_widget.dart';
 import 'package:fedi/refactored/app/account/details/account_details_page.dart';
 import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
+import 'package:fedi/refactored/app/media/attachment/media_attachments_widget.dart';
 import 'package:fedi/refactored/app/status/action/status_favourite_action_widget.dart';
 import 'package:fedi/refactored/app/status/card/status_card_widget.dart';
 import 'package:fedi/refactored/app/status/content/status_content_with_emojis_without_accounts_widget.dart';
-import 'package:fedi/refactored/app/status/media/status_media_attachments_widget.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class ConversationStatusListItemWidget extends StatelessWidget {
   @override
@@ -51,7 +50,7 @@ class ConversationStatusListItemWidget extends StatelessWidget {
             children: <Widget>[
               StatusContentWithEmojisWithoutAccountsWidget(),
               StatusCardWidget(),
-              StatusMediaAttachmentsWidget(),
+              MediaAttachmentsWidget(),
             ],
           ),
         ));

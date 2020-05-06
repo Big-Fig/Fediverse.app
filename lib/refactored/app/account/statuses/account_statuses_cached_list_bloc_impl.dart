@@ -3,7 +3,6 @@ import 'package:fedi/refactored/app/account/my/settings/my_account_settings_bloc
 import 'package:fedi/refactored/app/account/websockets/account_websockets_handler_impl.dart';
 import 'package:fedi/refactored/app/conversation/repository/conversation_repository.dart';
 import 'package:fedi/refactored/app/notification/repository/notification_repository.dart';
-import 'package:fedi/refactored/app/status/list/cached/status_cached_list_service.dart';
 import 'package:fedi/refactored/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository_model.dart';
@@ -17,7 +16,7 @@ import 'package:moor/moor.dart';
 
 var _logger = Logger("account_statuses_bloc_impl.dart");
 
-class AccountStatusesCachedListBlocBloc extends IStatusCachedListBloc {
+class AccountStatusesCachedListBloc extends IStatusCachedListBloc {
   final IAccount account;
   final IPleromaAccountService pleromaAccountService;
   final IStatusRepository statusRepository;
@@ -25,7 +24,7 @@ class AccountStatusesCachedListBlocBloc extends IStatusCachedListBloc {
   final IConversationRepository conversationRepository;
   final IPleromaWebSocketsService pleromaWebSocketsService;
 
-  AccountStatusesCachedListBlocBloc(
+  AccountStatusesCachedListBloc(
       {@required this.account,
         @required this.pleromaAccountService,
         @required this.statusRepository,
@@ -48,9 +47,9 @@ class AccountStatusesCachedListBlocBloc extends IStatusCachedListBloc {
   @override
   IPleromaApi get pleromaApi => pleromaAccountService;
 
-  static AccountStatusesCachedListBlocBloc createFromContext(BuildContext context,
+  static AccountStatusesCachedListBloc createFromContext(BuildContext context,
       {@required IAccount account}) {
-    return AccountStatusesCachedListBlocBloc(
+    return AccountStatusesCachedListBloc(
         account: account,
         pleromaAccountService:
             IPleromaAccountService.of(context, listen: false),
