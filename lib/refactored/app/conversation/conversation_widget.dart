@@ -64,10 +64,7 @@ class ConversationWidget extends StatelessWidget {
                         ),
                       ),
                       ConversationPostStatusWidget(successCallback: (context) {
-                        var paginationListBloc = Provider.of<
-                            IPaginationListBloc<PaginationPage<IStatus>,
-                                IStatus>>(context, listen: false);
-                        paginationListBloc.refresh();
+                          // nothing
                       })
                     ],
                   ),

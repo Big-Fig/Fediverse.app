@@ -57,18 +57,10 @@ abstract class PaginationListWithNewItemsBloc<
         List<TItem> actuallyNew = newItems
             .where((newItem) => compareItems(newItem, newerItem) > 0)
             .toList();
-
-        actuallyNew = LinkedHashSet<TItem>.from(actuallyNew).toList();
         _logger.finest(() => "watchItemsNewerThanItem \n"
             "\t newItems ${newItems.length} \n"
             "\t actuallyNew = ${actuallyNew.length}");
 
-        if(newItems.length == 2 ) {
-          _logger.finest(() => "watchItemsNewerThanItem \n"
-              "\t newItems ${newItems.map((item) => "${(item as IStatus)
-              .remoteId} ${(item as IStatus)
-              .localId}")} \n");
-        }
         _unmergedNewItemsSubject.add(actuallyNew);
       });
 
