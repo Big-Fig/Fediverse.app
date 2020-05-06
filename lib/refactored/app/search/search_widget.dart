@@ -110,7 +110,8 @@ class SearchWidget extends StatelessWidget {
               IPaginationBloc<PaginationPage<IAccount>, IAccount>>(
             create: (context) =>
                 AccountNetworkOnlyPaginationBloc.createFromContext(context),
-            child: Provider<IAccountPaginationListBloc>(
+            child:
+            DisposableProvider<IAccountPaginationListBloc>(
               create: (context) =>
                   SearchAccountsPaginationListBloc.createFromContext(context),
               child: SearchAccountsListWidget(),

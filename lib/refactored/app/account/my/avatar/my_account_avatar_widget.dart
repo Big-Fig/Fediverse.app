@@ -6,7 +6,8 @@ import 'package:provider/provider.dart';
 
 class MyAccountAvatarWidget extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => Provider<IAccountBloc>(
-      create: (context) => IMyAccountBloc.of(context, listen: false),
-      child: AccountAvatarWidget(imageSize: 24, progressSize: 24));
+  Widget build(BuildContext context) =>
+      ProxyProvider<IMyAccountBloc, IAccountBloc>(
+          update: (context, value, previous) => value,
+          child: AccountAvatarWidget(imageSize: 24, progressSize: 24));
 }

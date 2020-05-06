@@ -47,8 +47,8 @@ class UploadMediaAttachmentGridWidget extends StatelessWidget {
                   child: Stack(
                     alignment: Alignment.center,
                     children: <Widget>[
-                      Provider<IUploadMediaAttachmentBloc>(
-                          create: (_) => mediaItemBloc,
+                      Provider<IUploadMediaAttachmentBloc>.value(
+                          value: mediaItemBloc,
                           child: UploadMediaAttachmentGridItem()),
                       Align(
                         alignment: Alignment.topRight,
