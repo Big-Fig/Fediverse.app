@@ -10,7 +10,8 @@ class MyAccountSettings implements IPreferencesObject {
 
   MyAccountSettings({this.isRealtimeWebSocketsEnabled});
 
-  MyAccountSettings copyWith({bool isRealtimeWebSocketsEnabled}) => MyAccountSettings(
-        isRealtimeWebSocketsEnabled:
-            isRealtimeWebSocketsEnabled ?? this.isRealtimeWebSocketsEnabled);
+  MyAccountSettings copyWith({bool isRealtimeWebSocketsEnabled}) =>
+      MyAccountSettings(
+          isRealtimeWebSocketsEnabled:
+              isRealtimeWebSocketsEnabled ?? this.isRealtimeWebSocketsEnabled);
 }

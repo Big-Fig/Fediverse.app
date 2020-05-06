@@ -4,8 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPleromaPushService extends IPleromaApi {
-
-  static IPleromaPushService of(BuildContext context, {listen: true}) =>
+  static IPleromaPushService of(BuildContext context, {bool listen = true}) =>
       Provider.of<IPleromaPushService>(context, listen: listen);
 
   /// Add a Web Push API subscription to receive notifications.
@@ -14,10 +13,11 @@ abstract class IPleromaPushService extends IPleromaApi {
   /// It's based on access token
   /// return success or not
   Future<PleromaPushSubscription> subscribe({
-    @required String endpointCallbackUrl, @required PleromaPushSubscribeData data,});
+    @required String endpointCallbackUrl,
+    @required PleromaPushSubscribeData data,
+  });
 
   Future<PleromaPushSubscription> retrieveCurrentSubscription();
-
 
   /// Remove subscription for current access token
   Future<bool> unsubscribe();

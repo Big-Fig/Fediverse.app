@@ -1,10 +1,10 @@
-import 'package:camera/camera.dart' as Camera;
+import 'package:camera/camera.dart' as camera_lib;
 import 'package:camera/camera.dart';
 import 'package:fedi/refactored/camera/camera_model.dart';
 
 class CameraByLensDirectionNotExistException implements Exception {
   final CameraLensDirection requiredLensDirection;
-  final List<Camera.CameraDescription> availableCameras;
+  final List<camera_lib.CameraDescription> availableCameras;
 
   CameraByLensDirectionNotExistException(
       this.requiredLensDirection, this.availableCameras);
@@ -18,7 +18,7 @@ class CameraByLensDirectionNotExistException implements Exception {
 }
 
 class CameraByIndexNotExistException implements Exception {
-  final List<Camera.CameraDescription> availableCameras;
+  final List<camera_lib.CameraDescription> availableCameras;
   final int requiredIndex;
   CameraByIndexNotExistException(this.availableCameras, this.requiredIndex);
 
@@ -45,7 +45,7 @@ class CamerasListErrorException implements Exception {
 }
 
 abstract class CameraException implements Exception {
-  final Camera.CameraDescription cameraDescription;
+  final camera_lib.CameraDescription cameraDescription;
   final int index;
   final CameraLensDirection lensDirection;
   final CameraState state;
@@ -63,7 +63,7 @@ abstract class CameraException implements Exception {
 class CameraErrorException extends CameraException {
   final Exception cameraException;
   CameraErrorException(
-      Camera.CameraDescription cameraDescription,
+      camera_lib.CameraDescription cameraDescription,
       int index,
       CameraLensDirection lensDirection,
       CameraState state,
@@ -80,8 +80,12 @@ class CameraErrorException extends CameraException {
 
 class CameraNotReadyException extends CameraException {
   final List<CameraState> desiredStates;
-  CameraNotReadyException(Camera.CameraDescription cameraDescription, int index,
-      CameraLensDirection lensDirection, CameraState state, this.desiredStates)
+  CameraNotReadyException(
+      camera_lib.CameraDescription cameraDescription,
+      int index,
+      CameraLensDirection lensDirection,
+      CameraState state,
+      this.desiredStates)
       : super(cameraDescription, index, lensDirection, state);
   @override
   String toString() {

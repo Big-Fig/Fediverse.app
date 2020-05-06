@@ -46,7 +46,7 @@ class FormTextField extends DisposableOwner {
   bool get hasError => error != null;
   Stream<bool> get hasErrorStream => errorStream.map((error) => error != null);
 
-  checkErrors(String value) {
+  void checkErrors(String value) {
     var error = findError(value);
 
     _errorSubject.add(error);

@@ -13,13 +13,13 @@ import 'package:moor/moor.dart';
 
 var _logger = Logger("status_favourite_account_list_service_impl.dart");
 
-class StatusFavouriteAccountListService extends DisposableOwner
-    implements IAccountCachedListService {
+class StatusFavouriteAccountCachedListBloc extends DisposableOwner
+    implements IAccountCachedListBloc {
   final IPleromaStatusService pleromaStatusService;
   final IAccountRepository accountRepository;
   final IStatus status;
 
-  StatusFavouriteAccountListService({
+  StatusFavouriteAccountCachedListBloc({
     @required this.pleromaStatusService,
     @required this.accountRepository,
     @required this.status,
@@ -97,10 +97,10 @@ class StatusFavouriteAccountListService extends DisposableOwner
     return accounts;
   }
 
-  static StatusFavouriteAccountListService createFromContext(
+  static StatusFavouriteAccountCachedListBloc createFromContext(
           BuildContext context,
           {@required IStatus status}) =>
-      StatusFavouriteAccountListService(
+      StatusFavouriteAccountCachedListBloc(
           accountRepository: IAccountRepository.of(context, listen: false),
           pleromaStatusService:
               IPleromaStatusService.of(context, listen: false),

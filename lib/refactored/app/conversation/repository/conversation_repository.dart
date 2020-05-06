@@ -1,4 +1,3 @@
-import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/conversation/conversation_model.dart';
 import 'package:fedi/refactored/app/conversation/repository/conversation_repository_model.dart';
 import 'package:fedi/refactored/app/database/app_database.dart';

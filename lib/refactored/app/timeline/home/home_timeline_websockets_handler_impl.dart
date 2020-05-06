@@ -8,9 +8,9 @@ import 'package:flutter/cupertino.dart';
 class HomeTimelineWebSocketsHandler extends WebSocketsChannelHandler {
   HomeTimelineWebSocketsHandler({
     @required IPleromaWebSocketsService pleromaWebSocketsService,
-    @required  IStatusRepository statusRepository,
-    @required  INotificationRepository notificationRepository,
-    @required  IConversationRepository conversationRepository,
+    @required IStatusRepository statusRepository,
+    @required INotificationRepository notificationRepository,
+    @required IConversationRepository conversationRepository,
   }) : super(
           webSocketsChannel:
               pleromaWebSocketsService.getMyAccountChannel(notification: false),

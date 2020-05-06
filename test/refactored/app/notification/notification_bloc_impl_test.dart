@@ -14,7 +14,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:moor_ffi/moor_ffi.dart';
 
-import '../../pleroma/account/pleroma_account_service_mock.dart';
 import '../../pleroma/notification/pleroma_notification_service_mock.dart';
 import '../account/account_model_helper.dart';
 import '../status/status_model_helper.dart';
@@ -25,7 +24,6 @@ void main() {
   DbStatusPopulatedWrapper status;
   INotificationBloc notificationBloc;
   PleromaNotificationServiceMock pleromaNotificationServiceMock;
-  PleromaAccountServiceMock pleromaAccountServiceMock;
   AppDatabase database;
   IAccountRepository accountRepository;
   IStatusRepository statusRepository;
@@ -65,7 +63,7 @@ void main() {
     await database.close();
   });
 
-  Future _update(INotification notification, {bool unread: false}) async {
+  Future _update(INotification notification, {bool unread = false}) async {
     await notificationRepository.upsertRemoteNotification(
         mapLocalNotificationToRemoteNotification(notification),
         unread: unread);
@@ -94,7 +92,7 @@ void main() {
 
     expectNotification(notificationBloc.notification, newValue);
     expectNotification(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
 
 
@@ -117,7 +115,7 @@ void main() {
 
     expectAccount(notificationBloc.account, newValue);
     expectAccount(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('status', () async {
@@ -138,7 +136,7 @@ void main() {
 
     expectStatus(notificationBloc.status, newValue);
     expectStatus(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
 
 
@@ -160,7 +158,7 @@ void main() {
 
     expect(notificationBloc.createdAt, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
 
 }

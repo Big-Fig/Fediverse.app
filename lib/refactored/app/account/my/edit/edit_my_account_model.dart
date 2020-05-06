@@ -11,8 +11,10 @@ abstract class IEditMyAccountField {
 
 abstract class EditMyAccountField extends DisposableOwner
     implements IEditMyAccountField {
+  @override
   bool get isChanged => isChangedSubject.value;
 
+  @override
   Stream<bool> get isChangedStream => isChangedSubject.stream;
   @protected
   // ignore: close_sinks
@@ -58,7 +60,7 @@ class EditMyAccountBoolField extends EditMyAccountField {
     }));
   }
 
-  onValueChanged(bool newValue) {
+  void onValueChanged(bool newValue) {
     currentValueSubject.add(newValue);
   }
 }

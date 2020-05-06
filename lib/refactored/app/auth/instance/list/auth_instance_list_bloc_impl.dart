@@ -31,9 +31,9 @@ class AuthInstanceListBloc extends DisposableOwner
       .map((availableInstances) => availableInstances?.isNotEmpty == true);
 
   @override
-  addInstance(AuthInstance instance) {
+  void addInstance(AuthInstance instance) {
     _logger.finest(() => "addInstance $instance");
-    var instances = this.availableInstances;
+    var instances = availableInstances;
     if (!instances.contains(instance)) {
       instances.add(instance);
       instanceListLocalPreferenceBloc
@@ -42,9 +42,9 @@ class AuthInstanceListBloc extends DisposableOwner
   }
 
   @override
-  removeInstance(AuthInstance instance) {
+  void removeInstance(AuthInstance instance) {
     _logger.finest(() => "removeInstance $instance");
-    var instances = this.availableInstances;
+    var instances = availableInstances;
     if (instances.contains(instance)) {
       instances.remove(instance);
       instanceListLocalPreferenceBloc

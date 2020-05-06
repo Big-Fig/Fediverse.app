@@ -65,7 +65,7 @@ void main() {
     expect(listenedValue1, event2);
     expect(listenedValue2, event2);
 
-    subscription1.cancel();
+    await subscription1.cancel();
 
     source.addEvent(event1);
     // hack to execute notify callbacks
@@ -73,6 +73,6 @@ void main() {
     expect(listenedValue1, event2);
     expect(listenedValue2, event1);
 
-    subscription2.cancel();
+    await subscription2.cancel();
   });
 }

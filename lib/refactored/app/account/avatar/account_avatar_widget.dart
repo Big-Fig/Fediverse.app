@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/refactored/app/account/account_bloc.dart';
-import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -34,11 +33,10 @@ class AccountAvatarWidget extends StatelessWidget {
     return CachedNetworkImage(
       imageBuilder: (context, imageProvider) {
         return ClipRRect(
-            borderRadius: BorderRadius.circular(imageSize / 2),
-        child: Image(
-            width: imageSize,
-            height: imageSize,
-            image: imageProvider),);
+          borderRadius: BorderRadius.circular(imageSize / 2),
+          child:
+              Image(width: imageSize, height: imageSize, image: imageProvider),
+        );
       },
       imageUrl: avatarUrl,
       placeholder: (context, url) => Center(

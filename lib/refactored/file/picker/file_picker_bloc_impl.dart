@@ -6,6 +6,7 @@ import 'package:rxdart/subjects.dart';
 
 abstract class FilePickerBloc extends DisposableOwner
     implements IFilePickerBloc {
+  @override
   final List<FilePickerFileType> fileTypesToPick;
   final bool captureEnabled;
 
@@ -49,7 +50,7 @@ abstract class FilePickerBloc extends DisposableOwner
   static List<FilePickerTab> calculateFilePickerTabs(
       {@required List<FilePickerFileType> fileTypesToPick,
       @required bool captureEnabled}) {
-    var tabs = Set<FilePickerTab>();
+    var tabs = <FilePickerTab>{};
 
     fileTypesToPick.forEach((type) {
       switch (type) {
@@ -74,7 +75,8 @@ abstract class FilePickerBloc extends DisposableOwner
     return tabs.toList();
   }
 
-  onTabSelected(FilePickerTab tab) {
+  @override
+  void onTabSelected(FilePickerTab tab) {
     selectedTabSubject.add(tab);
   }
 }

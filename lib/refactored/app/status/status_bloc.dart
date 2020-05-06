@@ -152,9 +152,9 @@ abstract class IStatusBloc implements Disposable, ICollapsibleItem {
 
   Stream<bool> get containsSpoilerAndDisplayEnabledStream;
 
-  changeDisplayNsfwSensitive(bool display);
+  void changeDisplayNsfwSensitive(bool display);
 
-  changeDisplaySpoiler(bool display);
+  void changeDisplaySpoiler(bool display);
 
   Future refreshFromNetwork();
 

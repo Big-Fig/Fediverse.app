@@ -37,18 +37,18 @@ class TimelinesHomeTabPageDrawerBloc extends DisposableOwner
   TimelinesHomeTabPageDrawerBloc({@required this.localPreferencesBloc});
 
   @override
-  changeOnlyNoNsfwSensitive(bool value) {
+  void changeOnlyNoNsfwSensitive(bool value) {
     localPreferencesBloc
         .setValue(preferences.copyWith(onlyNoNsfwSensitive: value));
   }
 
   @override
-  changeOnlyNoReplies(bool value) {
+  void changeOnlyNoReplies(bool value) {
     localPreferencesBloc.setValue(preferences.copyWith(onlyNoReplies: value));
   }
 
   @override
-  changeOnlyWithMedia(bool value) {
+  void changeOnlyWithMedia(bool value) {
     localPreferencesBloc.setValue(preferences.copyWith(onlyWithMedia: value));
   }
 }

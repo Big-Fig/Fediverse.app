@@ -20,8 +20,8 @@ class SingleFilePickerPage extends StatelessWidget {
           icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text(AppLocalizations.of(context)
-            .tr("file.picker.single.title")),
+        title:
+            Text(AppLocalizations.of(context).tr("file.picker.single.title")),
       ),
       body: SingleFilePickerWidget(),
       bottomNavigationBar: FilePickerBottomNavBarWidget(),
@@ -29,7 +29,7 @@ class SingleFilePickerPage extends StatelessWidget {
   }
 }
 
-goToSingleFilePickerPage(BuildContext context,
+void goToSingleFilePickerPage(BuildContext context,
     {@required FilePickerSelectedFileCallback fileSelectedCallback,
     List<FilePickerFileType> fileTypesToPick = const [
       FilePickerFileType.image,

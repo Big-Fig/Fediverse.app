@@ -16,7 +16,8 @@ class ListLoadingFooterWidget extends StatelessWidget {
             break;
           case LoadStatus.canLoading:
             body = Text(
-              AppLocalizations.of(context).tr("list.loading.state.can_loading"),
+              AppLocalizations.of(context).tr("app.list.loading.state"
+                  ".can_loading"),
             );
             break;
           case LoadStatus.loading:

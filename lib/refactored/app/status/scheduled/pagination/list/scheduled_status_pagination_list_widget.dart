@@ -28,9 +28,11 @@ class ScheduledStatusPaginationListTimelineWidget
           footer: footer,
           itemBuilder: (context, index) => Provider<IScheduledStatus>.value(
                 value: items[index],
-                child: DisposableProxyProvider<IScheduledStatus, IScheduledStatusBloc>(
+                child: DisposableProxyProvider<IScheduledStatus,
+                        IScheduledStatusBloc>(
                     update: (context, scheduledStatus, oldValue) =>
-                        ScheduledStatusBloc.createFromContext(context, scheduledStatus,
+                        ScheduledStatusBloc.createFromContext(
+                            context, scheduledStatus,
                             isNeedWatchLocalRepositoryForUpdates:
                                 needWatchLocalRepositoryForUpdates),
                     child: ScheduledStatusListItemWidget()),

@@ -13,6 +13,7 @@ var _logger = Logger("websockets_channel_impl.dart");
 
 class WebSocketsChannel<T extends WebSocketsEvent> extends DisposableOwner
     implements IWebSocketsChannel<T> {
+  @override
   final IWebSocketsChannelConfig<T> config;
 
   IWebSocketsChannelSource _source;
@@ -21,6 +22,7 @@ class WebSocketsChannel<T extends WebSocketsEvent> extends DisposableOwner
   // ignore: close_sinks
   StreamController<T> _eventsStreamController;
 
+  @override
   Stream<T> get eventsStream => _eventsStreamController.stream;
 
   @override

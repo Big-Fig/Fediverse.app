@@ -38,7 +38,7 @@ class PleromaWebSocketsService extends IPleromaWebSocketsService {
     ));
   }
 
-  mapHttpToWebSocketsScheme(String scheme) {
+  String mapHttpToWebSocketsScheme(String scheme) {
     switch (scheme) {
       case "http":
         return "ws";
@@ -81,6 +81,7 @@ class PleromaWebSocketsService extends IPleromaWebSocketsService {
         queryArgs: {"accountId": accountId});
   }
 
+  @override
   IWebSocketsChannel<PleromaWebSocketsEvent> getMyAccountChannel(
           {@required bool notification}) =>
       getOrCreateNewChannel(

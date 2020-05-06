@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPushRelayService extends Disposable {
-  static IPushRelayService of(BuildContext context, {listen: true}) =>
+  static IPushRelayService of(BuildContext context, {listen = true}) =>
       Provider.of<IPushRelayService>(context, listen: listen);
 
   /// Create Url to forward WebPushSubscription to FCM

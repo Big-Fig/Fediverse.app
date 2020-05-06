@@ -13,12 +13,10 @@ class StatusNsfwWarningWidget extends StatelessWidget {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(
-                appLocalizations.tr("app.status.nsfw.content")),
+            child: Text(appLocalizations.tr("app.status.nsfw.content")),
           ),
           RaisedButton(
-            child: Text(
-                appLocalizations.tr("app.status.nsfw.action.view")),
+            child: Text(appLocalizations.tr("app.status.nsfw.action.view")),
             onPressed: () {
               var statusBloc = IStatusBloc.of(context, listen: false);
 

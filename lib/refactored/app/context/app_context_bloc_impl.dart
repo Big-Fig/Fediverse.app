@@ -78,7 +78,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
 
     var currentInstanceBloc = CurrentAuthInstanceBloc(
         instanceListBloc: instanceListBloc,
-        currentInstanceLocalPreferenceBloc: currentInstanceLocalPreferenceBloc);
+        currentLocalPreferenceBloc: currentInstanceLocalPreferenceBloc);
     await globalProviderService
         .asyncInitAndRegister<ICurrentAuthInstanceBloc>(currentInstanceBloc);
 
@@ -110,6 +110,5 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     var webSocketsService = WebSocketsService();
     await globalProviderService
         .asyncInitAndRegister<IWebSocketsService>(webSocketsService);
-
   }
 }

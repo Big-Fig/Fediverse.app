@@ -22,18 +22,20 @@ part 'account_followers_database_dao.g.dart';
 })
 class AccountFollowersDao extends DatabaseAccessor<AppDatabase>
     with _$AccountFollowersDaoMixin {
+  @override
   final AppDatabase db;
 
   // Called by the AppDatabase class
   AccountFollowersDao(this.db) : super(db);
 
-  Future<int> insert(Insertable<DbAccountFollower> entity) async =>
-      into(dbAccountFollowers).insert(entity);
+  Future<int> insert(Insertable<DbAccountFollower> entity,
+          {InsertMode mode}) async =>
+      into(dbAccountFollowers).insert(entity, mode: mode);
 
   Future insertAll(Iterable<Insertable<DbAccountFollower>> entities,
           InsertMode mode) async =>
       await batch((batch) {
-        batch.insertAll(dbAccountFollowers, entities);
+        batch.insertAll(dbAccountFollowers, entities, mode: mode);
       });
 
   Future<bool> replace(Insertable<DbAccountFollower> entity) async =>

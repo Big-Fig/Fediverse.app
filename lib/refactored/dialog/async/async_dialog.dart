@@ -16,8 +16,8 @@ Future<AsyncDialogResult<T>> doAsyncOperationWithDialog<T>({
   @required BuildContext context,
   @required Future<T> asyncCode(),
   String contentMessage,
-  List<ErrorAlertDialogBuilder> errorAlertDialogBuilders: const [],
-  bool showDefaultErrorAlertDialogOnUnhandledError: true,
+  List<ErrorAlertDialogBuilder> errorAlertDialogBuilders = const [],
+  bool showDefaultErrorAlertDialogOnUnhandledError = true,
   bool showProgressDialog = true,
   bool cancelable = false,
 }) async {

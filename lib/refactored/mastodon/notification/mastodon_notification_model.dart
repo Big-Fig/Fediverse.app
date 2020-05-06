@@ -88,7 +88,7 @@ enum MastodonNotificationType {
   poll,
 }
 
-final mastodonNotificationTypeValues = new EnumValues({
+final mastodonNotificationTypeValues = EnumValues({
   "follow": MastodonNotificationType.follow,
   "mention": MastodonNotificationType.mention,
   "reblog": MastodonNotificationType.reblog,

@@ -128,7 +128,7 @@ void main() {
     expect(listened.first.index, 0);
     expect(listened.last.index, storageSize - 1);
 
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('newerItem', () async {
@@ -152,7 +152,7 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
     expect(listened.index, 0);
 
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('unmergedNewItems', () async {
@@ -200,7 +200,7 @@ void main() {
     expect(paginationListWithNewItemsBloc.unmergedNewItems[1],
         testPaginationItem3);
 
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('unmergedNewItemsCount', () async {
@@ -237,7 +237,7 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
     expect(listened, 2);
 
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('unmergedNewItems', () async {
@@ -292,7 +292,7 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
     expect(listened.length, 0);
 
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('mergedNewItems', () async {
@@ -352,7 +352,7 @@ void main() {
     expect(
         paginationListWithNewItemsBloc.mergedNewItems[2], testPaginationItem1);
 
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('mergedNewItems', () async {
@@ -396,7 +396,7 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
     expect(listened, 3);
 
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('mergeNewItemsImmediately', () async {
@@ -441,6 +441,6 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
     expect(listened, 3);
 
-    subscription.cancel();
+    await subscription.cancel();
   });
 }

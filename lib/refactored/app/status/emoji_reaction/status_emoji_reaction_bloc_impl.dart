@@ -19,6 +19,7 @@ class StatusEmojiReactionBloc extends DisposableOwner
   Stream<IPleromaStatusEmojiReaction> get emojiReactionStream =>
       emojiReactionSubject.stream;
 
+  @override
   IPleromaStatusEmojiReaction get emojiReaction => emojiReactionSubject.value;
   final IPleromaStatusEmojiReactionService pleromaStatusEmojiReactionService;
 

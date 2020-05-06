@@ -7,10 +7,10 @@ import 'package:flutter/cupertino.dart';
 
 class PublicTimelineWebSocketsHandler extends WebSocketsChannelHandler {
   PublicTimelineWebSocketsHandler({
-    @required   IPleromaWebSocketsService pleromaWebSocketsService,
-    @required   IStatusRepository statusRepository,
-    @required   INotificationRepository notificationRepository,
-    @required   IConversationRepository conversationRepository,
+    @required IPleromaWebSocketsService pleromaWebSocketsService,
+    @required IStatusRepository statusRepository,
+    @required INotificationRepository notificationRepository,
+    @required IConversationRepository conversationRepository,
   }) : super(
           webSocketsChannel: pleromaWebSocketsService.getPublicChannel(
               local: false, onlyMedia: false),

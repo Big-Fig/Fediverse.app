@@ -25,7 +25,7 @@ class StatusShareActionWidget extends StatelessWidget {
     );
   }
 
-  showMoreOptions(BuildContext context, IStatusBloc statusBloc) {
+  void showMoreOptions(BuildContext context, IStatusBloc statusBloc) {
     IStatus status = statusBloc.status;
     showModalBottomSheet(
         builder: (BuildContext context) {

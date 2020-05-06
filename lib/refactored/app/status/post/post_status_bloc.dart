@@ -32,23 +32,23 @@ abstract class IPostStatusBloc implements Disposable {
 
   Stream<bool> get nsfwSensitiveStream;
 
-  addMentionByAccount(IAccount account);
+  void addMentionByAccount(IAccount account);
 
-  removeMentionByAccount(IAccount account);
+  void removeMentionByAccount(IAccount account);
 
-  removeMentionByAcct(String acct);
+  void removeMentionByAcct(String acct);
 
-  changeVisibility(PleromaVisibility visibility);
+  void changeVisibility(PleromaVisibility visibility);
 
-  changeNsfwSensitive(bool nsfwSensitive);
+  void changeNsfwSensitive(bool nsfwSensitive);
 
-  attachMedia(FilePickerFile filePickerFile);
+  void attachMedia(FilePickerFile filePickerFile);
 
-  detachMedia(FilePickerFile filePickerFile);
+  void detachMedia(FilePickerFile filePickerFile);
 
-  schedule(DateTime dateTime);
+  void schedule(DateTime dateTime);
 
-  clearSchedule();
+  void clearSchedule();
 
   bool get isReadyToPost;
 

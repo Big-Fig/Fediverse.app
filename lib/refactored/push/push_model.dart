@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'push_model.g.dart';
 
-typedef PushMessageListener(PushMessage message);
+typedef dynamic PushMessageListener(PushMessage message);
 
 class PushMessage {
   final PushMessageType type;

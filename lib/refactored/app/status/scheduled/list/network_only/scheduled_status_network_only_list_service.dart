@@ -9,7 +9,9 @@ abstract class IScheduledStatusNetworkOnlyListService extends DisposableOwner
     implements IPleromaNetworkOnlyListService<IScheduledStatus> {
   static IScheduledStatusNetworkOnlyListService of(BuildContext context,
           {bool listen = true}) =>
-      Provider.of<IScheduledStatusNetworkOnlyListService>(context, listen: listen);
+      Provider.of<IScheduledStatusNetworkOnlyListService>(context,
+          listen: listen);
 
+  @override
   IPleromaApi get pleromaApi;
 }

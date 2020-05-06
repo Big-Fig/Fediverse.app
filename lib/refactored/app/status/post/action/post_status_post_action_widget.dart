@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-typedef IPostStatusCallback(BuildContext context);
+typedef IPostStatusCallback = Function(BuildContext context);
 
 class PostStatusPostActionWidget extends StatelessWidget {
   final IPostStatusCallback successCallback;
@@ -23,7 +23,6 @@ class PostStatusPostActionWidget extends StatelessWidget {
         builder: (context, snapshot) {
           var isReadyToPost = snapshot.data;
 
-
           return PleromaAsyncOperationButtonBuilderWidget(
             showProgressDialog: true,
             progressContentMessage: AppLocalizations.of(context)
@@ -32,7 +31,7 @@ class PostStatusPostActionWidget extends StatelessWidget {
               var isScheduled = postStatusBloc.isScheduled;
               var success = await postStatusBloc.postStatus();
               if (success) {
-                Fluttertoast.showToast(
+                await Fluttertoast.showToast(
                     msg: isScheduled
                         ? AppLocalizations.of(context)
                             .tr("app.status.post.toast.success.schedule")
@@ -53,15 +52,15 @@ class PostStatusPostActionWidget extends StatelessWidget {
               (context, error) {
                 var isScheduled = postStatusBloc.isScheduled;
                 return SimpleAlertDialog(
-                  title: isScheduled
-                      ? AppLocalizations.of(context)
-                          .tr("app.status.post.dialog.error.title.schedule")
-                      : AppLocalizations.of(context)
-                          .tr("app.status.post.dialog.error.title.post"),
-                  content: AppLocalizations.of(context).tr(
-                      "app.status.post.dialog.error.content",
-                      args: [error.toString()]),
-                  context: context);
+                    title: isScheduled
+                        ? AppLocalizations.of(context)
+                            .tr("app.status.post.dialog.error.title.schedule")
+                        : AppLocalizations.of(context)
+                            .tr("app.status.post.dialog.error.title.post"),
+                    content: AppLocalizations.of(context).tr(
+                        "app.status.post.dialog.error.content",
+                        args: [error.toString()]),
+                    context: context);
               }
             ],
             builder: (BuildContext context, onPressed) {

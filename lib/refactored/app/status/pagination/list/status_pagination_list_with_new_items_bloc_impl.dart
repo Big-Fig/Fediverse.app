@@ -1,4 +1,4 @@
-import 'package:fedi/refactored/app/status/list/cached/status_cached_list_service.dart';
+import 'package:fedi/refactored/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/pagination/list/with_new_items/pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/refactored/pagination/pagination_bloc.dart';
@@ -11,7 +11,7 @@ var _logger = Logger("status_pagination_list_with_new_items_bloc_impl.dart");
 class StatusPaginationListWithNewItemsBloc<
         TPage extends PaginationPage<IStatus>>
     extends PaginationListWithNewItemsBloc<TPage, IStatus> {
-  final IStatusCachedListService statusCachedListService;
+  final IStatusCachedListBloc statusCachedListService;
 
   StatusPaginationListWithNewItemsBloc(
       {@required bool mergeNewItemsImmediately,
@@ -41,5 +41,4 @@ class StatusPaginationListWithNewItemsBloc<
     }
     return a.remoteId.compareTo(b.remoteId);
   }
-
 }

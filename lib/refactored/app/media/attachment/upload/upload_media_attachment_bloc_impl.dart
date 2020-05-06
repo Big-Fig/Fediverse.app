@@ -43,7 +43,7 @@ class UploadMediaAttachmentBloc extends DisposableOwner
   }
 
   @override
-  startUpload() {
+  void startUpload() {
     assert(uploadState == UploadMediaAttachmentState.notUploaded ||
         uploadState == UploadMediaAttachmentState.failed);
     uploadStateSubject.add(UploadMediaAttachmentState.uploading);

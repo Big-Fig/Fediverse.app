@@ -96,7 +96,6 @@ class ConversationListItemWidget extends StatelessWidget {
     for (var i = 0; i < status.mentions.length; i++) {
       var mention = status.mentions[i];
       var account = mention.acct.split("@").first;
-      print(account);
       formattedText = formattedText.replaceAll("@$account", "");
     }
 

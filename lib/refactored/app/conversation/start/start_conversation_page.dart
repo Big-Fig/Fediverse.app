@@ -3,11 +3,11 @@ import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/account/pagination/cached/account_cached_pagination_bloc_impl.dart';
 import 'package:fedi/refactored/app/account/pagination/list/account_pagination_list_bloc.dart';
 import 'package:fedi/refactored/app/account/pagination/list/account_pagination_list_bloc_impl.dart';
-import 'package:fedi/refactored/app/account/select/select_account_list_service.dart';
-import 'package:fedi/refactored/app/account/select/select_account_list_service_impl.dart';
+import 'package:fedi/refactored/app/account/select/select_account_list_bloc.dart';
+import 'package:fedi/refactored/app/account/select/select_account_list_bloc_impl.dart';
 import 'package:fedi/refactored/app/account/select/select_account_widget.dart';
 import 'package:fedi/refactored/app/conversation/start/status/post_status_start_conversation_page.dart';
-import 'package:fedi/refactored/app/list/cached/cached_list_service.dart';
+import 'package:fedi/refactored/app/list/cached/pleroma_cached_list_bloc.dart';
 import 'package:fedi/refactored/app/search/input/search_input_bloc.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:fedi/refactored/pagination/pagination_bloc.dart';
@@ -39,16 +39,17 @@ void goToStartConversationPage(BuildContext context) {
   Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => DisposableProvider<ISelectAccountListService>(
-                create: (context) => SelectAccountListService.createFromContext(
-                    context,
-                    excludeMyAccount: true),
-                child: Provider<IPleromaCachedListService<IAccount>>(
+          builder: (context) =>
+              DisposableProvider<ISelectAccountCachedListBloc>(
+                create: (context) =>
+                    SelectAccountCachedListBloc.createFromContext(context,
+                        excludeMyAccount: true),
+                child: Provider<IPleromaCachedListBloc<IAccount>>(
                   create: (context) =>
-                      ISelectAccountListService.of(context, listen: false),
+                      ISelectAccountCachedListBloc.of(context, listen: false),
                   child: Provider<ISearchInputBloc>(
                     create: (context) =>
-                        ISelectAccountListService.of(context, listen: false)
+                        ISelectAccountCachedListBloc.of(context, listen: false)
                             .searchInputBloc,
                     child: DisposableProvider<
                             IPaginationBloc<PaginationPage<IAccount>,

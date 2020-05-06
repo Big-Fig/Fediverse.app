@@ -23,8 +23,8 @@ class MyAccountSettingsBloc extends DisposableOwner
           defaultIsRealtimeWebSocketsEnabled);
 
   @override
-  changeIsRealtimeWebSocketsEnabled(bool value) {
-    localPreferenceBloc.setValue(localPreferenceBloc.value.copyWith
-      (isRealtimeWebSocketsEnabled:value));
+  void changeIsRealtimeWebSocketsEnabled(bool value) {
+    localPreferenceBloc.setValue(
+        localPreferenceBloc.value.copyWith(isRealtimeWebSocketsEnabled: value));
   }
 }

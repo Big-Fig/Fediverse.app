@@ -19,18 +19,20 @@ part 'status_reblogged_accounts_database_dao.g.dart';
 })
 class StatusRebloggedAccountsDao extends DatabaseAccessor<AppDatabase>
     with _$StatusRebloggedAccountsDaoMixin {
+  @override
   final AppDatabase db;
 
   // Called by the AppDatabase class
   StatusRebloggedAccountsDao(this.db) : super(db);
 
-  Future<int> insert(Insertable<DbStatusRebloggedAccount> entity) async =>
-      into(dbStatusRebloggedAccounts).insert(entity);
+  Future<int> insert(Insertable<DbStatusRebloggedAccount> entity,
+          {InsertMode mode}) async =>
+      into(dbStatusRebloggedAccounts).insert(entity, mode: mode);
 
   Future insertAll(Iterable<Insertable<DbStatusRebloggedAccount>> entities,
           InsertMode mode) async =>
       await batch((batch) {
-        batch.insertAll(dbStatusRebloggedAccounts, entities);
+        batch.insertAll(dbStatusRebloggedAccounts, entities, mode: mode);
       });
   Future<bool> replace(Insertable<DbStatusRebloggedAccount> entity) async =>
       await update(dbStatusRebloggedAccounts).replace(entity);

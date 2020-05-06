@@ -3,7 +3,6 @@ import 'package:fedi/refactored/app/account/account_bloc_impl.dart';
 import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/account/details/account_details_widget.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
-import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -34,7 +33,8 @@ void goToAccountDetailsPage(BuildContext context, IAccount account) {
             create: (context) => AccountBloc.createFromContext(context,
                 isNeedWatchLocalRepositoryForUpdates: true,
                 account: account,
-                isNeedRefreshFromNetworkOnInit: false, isNeedWatchWebSocketsEvents: false),
+                isNeedRefreshFromNetworkOnInit: false,
+                isNeedWatchWebSocketsEvents: false),
             child: AccountDetailsPage())),
   );
 }

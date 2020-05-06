@@ -8,7 +8,7 @@ import 'package:intl/intl.dart';
 
 final dateFormat = DateFormat("yyyy-MM-dd HH:mm");
 
-showPostStatusScheduleDialog(
+void showPostStatusScheduleDialog(
     BuildContext context, IPostStatusBloc postStatusBloc) {
   var isScheduled = postStatusBloc.isScheduled;
   var scheduledAt = postStatusBloc.scheduledAt;
@@ -36,9 +36,8 @@ showPostStatusScheduleDialog(
               var newTime = await showScheduledStatusDateTimePickerDialog(
                   context, postStatusBloc.scheduledAt);
 
-              if (newTime
-                  .isBefore(DateTime.now().add(IPostStatusBloc
-                  .requiredDurationToScheduleStatus))) {
+              if (newTime.isBefore(DateTime.now()
+                  .add(IPostStatusBloc.requiredDurationToScheduleStatus))) {
                 showAlert(
                   context: context,
                   title: appLocalizations

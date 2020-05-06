@@ -5,9 +5,7 @@ class EnumValues<T> {
   EnumValues(this.map);
 
   Map<T, String> get reverse {
-    if (_reverseMap == null) {
-      _reverseMap = map.map((k, v) => new MapEntry(v, k));
-    }
+    _reverseMap ??= map.map((k, v) => MapEntry(v, k));
     return _reverseMap;
   }
 }

@@ -13,13 +13,13 @@ import 'package:moor/moor.dart';
 
 var _logger = Logger("status_reblog_account_list_service_impl.dart");
 
-class StatusReblogAccountListService extends DisposableOwner
-    implements IAccountCachedListService {
+class StatusReblogAccountCachedListBloc extends DisposableOwner
+    implements IAccountCachedListBloc {
   final IPleromaStatusService pleromaStatusService;
   final IAccountRepository accountRepository;
   final IStatus status;
 
-  StatusReblogAccountListService({
+  StatusReblogAccountCachedListBloc({
     @required this.pleromaStatusService,
     @required this.accountRepository,
     @required this.status,
@@ -97,9 +97,10 @@ class StatusReblogAccountListService extends DisposableOwner
     return accounts;
   }
 
-  static StatusReblogAccountListService createFromContext(BuildContext context,
+  static StatusReblogAccountCachedListBloc createFromContext(
+          BuildContext context,
           {@required IStatus status}) =>
-      StatusReblogAccountListService(
+      StatusReblogAccountCachedListBloc(
           accountRepository: IAccountRepository.of(context, listen: false),
           pleromaStatusService:
               IPleromaStatusService.of(context, listen: false),

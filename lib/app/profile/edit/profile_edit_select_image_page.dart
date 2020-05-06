@@ -42,5 +42,5 @@ abstract class ProfileEditSelectImagePage extends StatelessWidget {
 
   Widget createAppBarTitle(BuildContext context);
 
-  onFileSelected(BuildContext context, FilePickerFile filePickerFile);
+  void onFileSelected(BuildContext context, FilePickerFile filePickerFile);
 }

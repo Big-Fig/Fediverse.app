@@ -3,17 +3,14 @@ import 'package:fedi/refactored/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/refactored/app/auth/instance/register/register_auth_instance_bloc.dart';
 import 'package:fedi/refactored/app/form/form_field_error_model.dart';
 import 'package:fedi/refactored/app/form/form_model.dart';
-import 'package:fedi/refactored/dialog/alert/base_alert_dialog.dart';
 import 'package:fedi/refactored/dialog/alert/simple_alert_dialog.dart';
 import 'package:fedi/refactored/dialog/async/async_dialog.dart';
-import 'package:fedi/refactored/dialog/progress/indeterminate_progress_dialog.dart';
 import 'package:fedi/refactored/pleroma/account/public/pleroma_account_public_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class RegisterAuthInstanceWidget extends StatelessWidget {
   final Uri instanceBaseUrl;
-
 
   RegisterAuthInstanceWidget({@required this.instanceBaseUrl});
 
@@ -126,41 +123,43 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
     );
   }
 
-  submit(BuildContext context, IRegisterAuthInstanceBloc bloc) async {
+  Future submit(BuildContext context, IRegisterAuthInstanceBloc bloc) async {
     final validUsername = bloc.usernameField.value;
     final validEmail = bloc.emailField.value;
     final validPassword = bloc.passwordField.value;
 
+    await doAsyncOperationWithDialog(
+        context: context,
+        asyncCode: () async {
+          AuthHostBloc authApplicationBloc;
+          try {
+            authApplicationBloc = AuthHostBloc.createFromContext(context,
+                instanceBaseUrl: instanceBaseUrl);
 
-    doAsyncOperationWithDialog(context: context, asyncCode: () async {
-        AuthHostBloc authApplicationBloc;
-      try {
-        authApplicationBloc = AuthHostBloc.createFromContext(context,
-            instanceBaseUrl: instanceBaseUrl);
-
-        await authApplicationBloc.registerAccount(
-            request: PleromaAccountRegisterRequest(
-            //todo: popup ToS before register
-            agreement: true,
-            email: validEmail,
-            // todo: add locale chooser
-            locale: "en",
-            password: validPassword,
-            username: validUsername));
-      } finally {
-        authApplicationBloc?.dispose();
-      }
-
-    }, errorAlertDialogBuilders: [
+            await authApplicationBloc.registerAccount(
+                request: PleromaAccountRegisterRequest(
+                    //todo: popup ToS before register
+                    agreement: true,
+                    email: validEmail,
+                    // todo: add locale chooser
+                    locale: "en",
+                    password: validPassword,
+                    username: validUsername));
+          } finally {
+            authApplicationBloc?.dispose();
+          }
+        },
+        errorAlertDialogBuilders: [
           (context, error) {
-        // todo: handle specific error
-        return SimpleAlertDialog(
-            title: AppLocalizations.of(context)
-                .tr("app.auth.instance.register.fail.dialog.title"),
-            content: AppLocalizations.of(context).tr(
-                "app.auth.instance.register.fail.dialog.content",
-                args: [error.toString()]), context: context);
-      }
-    ]);
+            // todo: handle specific error
+            return SimpleAlertDialog(
+                title: AppLocalizations.of(context)
+                    .tr("app.auth.instance.register.fail.dialog.title"),
+                content: AppLocalizations.of(context).tr(
+                    "app.auth.instance.register.fail.dialog.content",
+                    args: [error.toString()]),
+                context: context);
+          }
+        ]);
   }
 }

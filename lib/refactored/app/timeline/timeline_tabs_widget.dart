@@ -103,9 +103,9 @@ class TimelineTabsWidget extends StatelessWidget {
     _logger.finest(() => "new tab $tab");
 
     return Provider<
-        IPaginationListWithNewItemsBloc<PaginationPage<IStatus>, IStatus>>(
-      create: (_) =>
-          timelineTabsBloc.retrieveTimelineTabPaginationListBloc(tab),
+        IPaginationListWithNewItemsBloc<PaginationPage<IStatus>,
+            IStatus>>.value(
+      value: timelineTabsBloc.retrieveTimelineTabPaginationListBloc(tab),
       child: ProxyProvider<
           IPaginationListWithNewItemsBloc<PaginationPage<IStatus>, IStatus>,
           IPaginationListBloc<PaginationPage<IStatus>, IStatus>>(

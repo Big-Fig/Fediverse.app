@@ -7,5 +7,6 @@ abstract class IScheduledStatusCachedPaginationBloc
     implements ICachedPleromaPaginationBloc<IScheduledStatus> {
   static IScheduledStatusCachedPaginationBloc of(BuildContext context,
           {bool listen = true}) =>
-      Provider.of<IScheduledStatusCachedPaginationBloc>(context, listen: listen);
+      Provider.of<IScheduledStatusCachedPaginationBloc>(context,
+          listen: listen);
 }

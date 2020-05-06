@@ -20,6 +20,7 @@ part 'status_favourited_accounts_database_dao.g.dart';
 })
 class StatusFavouritedAccountsDao extends DatabaseAccessor<AppDatabase>
     with _$StatusFavouritedAccountsDaoMixin {
+  @override
   final AppDatabase db;
 
   // Called by the AppDatabase class

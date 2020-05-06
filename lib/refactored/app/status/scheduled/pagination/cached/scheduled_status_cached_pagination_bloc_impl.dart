@@ -7,7 +7,8 @@ import 'package:fedi/refactored/pleroma/api/pleroma_api_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-class ScheduledStatusCachedPaginationBloc extends CachedPleromaPaginationBloc<IScheduledStatus>
+class ScheduledStatusCachedPaginationBloc
+    extends CachedPleromaPaginationBloc<IScheduledStatus>
     implements IScheduledStatusCachedPaginationBloc {
   final IScheduledStatusCachedListService scheduledStatusListService;
 
@@ -40,7 +41,6 @@ class ScheduledStatusCachedPaginationBloc extends CachedPleromaPaginationBloc<IS
       @required int itemsCountPerPage,
       @required CachedPaginationPage<IScheduledStatus> olderPage,
       @required CachedPaginationPage<IScheduledStatus> newerPage}) async {
-
     // can't refresh not first page without actual items bounds
     assert(!(pageIndex > 0 && olderPage == null && newerPage == null));
 
@@ -51,11 +51,14 @@ class ScheduledStatusCachedPaginationBloc extends CachedPleromaPaginationBloc<IS
     );
   }
 
-  static ScheduledStatusCachedPaginationBloc createFromContext(BuildContext context,
-          {int itemsCountPerPage = 20, int maximumCachedPagesCount}) =>
+  static ScheduledStatusCachedPaginationBloc createFromContext(
+          BuildContext context,
+          {int itemsCountPerPage = 20,
+          int maximumCachedPagesCount}) =>
       ScheduledStatusCachedPaginationBloc(
           scheduledStatusListService:
-              Provider.of<IScheduledStatusCachedListService>(context, listen: false),
+              Provider.of<IScheduledStatusCachedListService>(context,
+                  listen: false),
           itemsCountPerPage: itemsCountPerPage,
           maximumCachedPagesCount: maximumCachedPagesCount);
 }

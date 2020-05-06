@@ -10,9 +10,9 @@ class WebSocketsChannelSourceMock<T extends WebSocketsEvent>
     extends DisposableOwner implements IWebSocketsChannelSource<T> {
   @override
   Stream<T> get eventsStream => _eventsStreamController.stream;
-  StreamController<T> _eventsStreamController = StreamController();
+  final StreamController<T> _eventsStreamController = StreamController();
 
-  addEvent(T event) {
+  void addEvent(T event) {
     _eventsStreamController.add(event);
   }
 

@@ -11,6 +11,7 @@ var _logger = Logger("pagination_list_bloc_impl.dart");
 class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     extends AsyncInitLoadingBloc implements IPaginationListBloc<TPage, TItem> {
   final IPaginationBloc<TPage, TItem> paginationBloc;
+  @override
   final RefreshController refreshController =
       RefreshController(initialRefresh: false);
 
@@ -45,8 +46,8 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
 
   @override
   Future internalAsyncInit() async {
-    var page = await paginationBloc.requestPage(
-        pageIndex: 0, forceToSkipCache: false);
+    var page =
+        await paginationBloc.requestPage(pageIndex: 0, forceToSkipCache: false);
 
     if (page == null) {
       _logger.severe(
@@ -61,6 +62,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   Stream<List<TPage>> get sortedPagesStream =>
       paginationBloc.loadedPagesSortedByIndexStream;
 
+  @override
   bool isRefreshedAtLeastOnce = false;
 
   @override

@@ -72,5 +72,5 @@ class AuthInstance extends IPreferencesObject {
 
   bool isInstanceWithHostAndAcct(
           {@required String host, @required String acct}) =>
-      this.acct == acct && this.urlHost == host;
+      this.acct == acct && urlHost == host;
 }

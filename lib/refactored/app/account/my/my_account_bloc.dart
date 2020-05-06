@@ -18,5 +18,5 @@ abstract class IMyAccountBloc extends IAccountBloc {
 
   bool checkIsStatusFromMe(IStatus status);
 
-  updateMyAccountByRemote(IPleromaMyAccount remoteMyAccount);
+  void updateMyAccountByRemote(IPleromaMyAccount remoteMyAccount);
 }

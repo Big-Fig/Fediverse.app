@@ -53,7 +53,7 @@ void main() {
     expect(listened, 0);
     expect(paginationBloc.loadedPagesMinimumIndex, 0);
 
-    subscription.cancel();
+    await subscription.cancel();
   });
   test('loadedPagesMaximumIndex', () async {
     expect(paginationBloc.loadedPagesMaximumIndex,
@@ -82,7 +82,7 @@ void main() {
     expect(listened, 2);
     expect(paginationBloc.loadedPagesMaximumIndex, 2);
 
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('isLoadedPagesInSequence', () async {
@@ -116,7 +116,7 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
     expect(listened, false);
 
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('loadedPageIndexesSortedByIndex', () async {
@@ -170,7 +170,7 @@ void main() {
     expect(listened[2], 2);
     expect(listened[3], 4);
 
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('loadedPagesSortedByIndex', () async {
@@ -224,7 +224,7 @@ void main() {
     expect(listened[2].pageIndex, 2);
     expect(listened[3].pageIndex, 4);
 
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('itemsCountPerPage', () async {

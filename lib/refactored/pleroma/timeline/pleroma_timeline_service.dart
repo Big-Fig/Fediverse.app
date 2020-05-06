@@ -7,99 +7,58 @@ import 'package:provider/provider.dart';
 abstract class IPleromaTimelineService implements IPleromaApi {
   Uri get baseUrl;
 
-  static IPleromaTimelineService of(BuildContext context, {listen: true}) =>
+  static IPleromaTimelineService of(BuildContext context, {listen = true}) =>
       Provider.of<IPleromaTimelineService>(context, listen: listen);
 
   Future<List<IPleromaStatus>> getPublicTimeline({
-    /// Return results older than id
     String maxId,
-    /// Return results newer than id
     String sinceId,
-    /// Return results immediately newer than id
     String minId,
-    /// Maximum number of results to return
     int limit = 20,
-    /// Show only statuses with media attached?
     bool onlyWithMedia = false,
-    /// Show only local statuses?
-    bool onlyLocal =
-        false,
-    /// also return activities by muted (not by blocked!) users
-    bool withMuted =
-        false,
-    /// queries will exclude the statuses with the given visibilities
+    bool onlyLocal = false,
+    bool withMuted = false,
     List<PleromaVisibility> excludeVisibilities = const [
       PleromaVisibility.DIRECT
     ],
   });
 
   Future<List<IPleromaStatus>> getHashtagTimeline({
-    /// for example '#cats'
-    @required String hashtag, /// Return results older than id
+    @required String hashtag,
     String maxId,
-    /// Return results newer than id
     String sinceId,
-    /// Return results immediately newer than id
     String minId,
-    /// Maximum number of results to return
     int limit = 20,
-    /// Show only local statuses?
     bool onlyWithMedia = false,
-    /// Show only statuses with media attached?
-    bool onlyLocal =
-        false,
-    /// also return activities by muted (not by blocked!) users
-    bool withMuted =
-        false,
-    /// queries will exclude the statuses with the given visibilities
+    bool onlyLocal = false,
+    bool withMuted = false,
     List<PleromaVisibility> excludeVisibilities = const [
       PleromaVisibility.DIRECT
     ],
   });
 
   Future<List<IPleromaStatus>> getHomeTimeline({
-    /// Return results older than id
     String maxId,
-    /// Return results newer than id
     String sinceId,
-    /// Return results immediately newer than id
     String minId,
-    /// Maximum number of results to return
     int limit = 20,
-    /// Show only statuses with media attached?
     bool onlyWithMedia = false,
-    /// Show only local statuses?
-    bool onlyLocal =
-        false,
-    /// also return activities by muted (not by blocked!) users
-    bool withMuted =
-        false,
-    /// queries will exclude the statuses with the given visibilities
+    bool onlyLocal = false,
+    bool withMuted = false,
     List<PleromaVisibility> excludeVisibilities = const [
       PleromaVisibility.DIRECT
     ],
   });
 
   Future<List<IPleromaStatus>> getListTimeline({
-    /// list id
     @required String listId,
-    /// Return results older than id
     String maxId,
-    /// Return results newer than id
     String sinceId,
-    /// Return results immediately newer than id
     String minId,
-    /// Maximum number of results to return
     int limit = 20,
-    /// Show only statuses with media attached?
     bool onlyWithMedia = false,
-    /// Show only local statuses?
-    bool onlyLocal =
-        false,
-    /// also return activities by muted (not by blocked!) users
-    bool withMuted =
-        false,
-    /// queries will exclude the statuses with the given visibilities
+    bool onlyLocal = false,
+    bool withMuted = false,
     List<PleromaVisibility> excludeVisibilities = const [
       PleromaVisibility.DIRECT
     ],

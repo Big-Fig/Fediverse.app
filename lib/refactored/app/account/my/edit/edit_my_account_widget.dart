@@ -5,7 +5,6 @@ import 'package:fedi/refactored/app/account/my/edit/edit_my_account_model.dart';
 import 'package:fedi/refactored/app/account/my/edit/header/edit_my_account_header_dialog.dart';
 import 'package:fedi/refactored/file/picker/file_picker_model.dart';
 import 'package:fedi/refactored/file/picker/single/single_file_picker_page.dart';
-import 'package:fedi/refactored/stream_builder/initial_data_stream_builder.dart';
 import 'package:flutter/material.dart';
 
 class EditMyAccountWidget extends StatelessWidget {
@@ -66,7 +65,7 @@ class EditMyAccountWidget extends StatelessWidget {
     );
   }
 
-  startChoosingFileToUploadHeader(
+  void startChoosingFileToUploadHeader(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
     goToSingleFilePickerPage(context,
         fileSelectedCallback: (FilePickerFile filePickerFile) async {
@@ -75,7 +74,7 @@ class EditMyAccountWidget extends StatelessWidget {
         Navigator.of(context).pop();
         await editMyAccountBloc.uploadHeaderImage(filePickerFile.file);
         if (filePickerFile.isNeedDeleteAfterUsage) {
-          filePickerFile.file.delete();
+          await filePickerFile.file.delete();
         }
       });
     }, startActiveTab: FilePickerTab.gallery);
@@ -102,7 +101,7 @@ class EditMyAccountWidget extends StatelessWidget {
     );
   }
 
-  startChoosingFileToUploadAvatar(
+  void startChoosingFileToUploadAvatar(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
     goToSingleFilePickerPage(context,
         fileSelectedCallback: (FilePickerFile filePickerFile) async {
@@ -111,7 +110,7 @@ class EditMyAccountWidget extends StatelessWidget {
         Navigator.of(context).pop();
         await editMyAccountBloc.uploadAvatarImage(filePickerFile.file);
         if (filePickerFile.isNeedDeleteAfterUsage) {
-          filePickerFile.file.delete();
+          await filePickerFile.file.delete();
         }
       });
     }, startActiveTab: FilePickerTab.gallery);
@@ -286,7 +285,7 @@ class EditMyAccountWidget extends StatelessWidget {
     );
   }
 
-  buildCustomFields(
+  Widget buildCustomFields(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

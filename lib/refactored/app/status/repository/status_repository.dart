@@ -103,7 +103,6 @@ abstract class IStatusRepository
   Stream<IStatus> watchConversationLastStatus(
       {@required IConversation conversation});
 
-
   Future<IStatus> getConversationLastStatus(
       {@required IConversation conversation});
 }

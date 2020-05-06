@@ -17,10 +17,10 @@ Future handleStatusContentLinkClick(
     var isCanLaunchLink = await canLaunch(link);
 
     if (isCanLaunchLink) {
-      launch(link);
+      await launch(link);
     } else {
       var appLocalizations = AppLocalizations.of(context);
-      SimpleAlertDialog(
+      await SimpleAlertDialog(
         context: context,
         title: appLocalizations.tr("app.status.content.link.launch.error.dialog"
             ".title"),

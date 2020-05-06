@@ -85,7 +85,7 @@ void main() {
 
     expectAccount(accountBloc.account, newValue);
     expectAccount(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('acct', () async {
@@ -106,7 +106,7 @@ void main() {
 
     expect(accountBloc.acct, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
   test('note', () async {
     expect(accountBloc.note, account.note);
@@ -126,7 +126,7 @@ void main() {
 
     expect(accountBloc.note, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
   test('header', () async {
     expect(accountBloc.header, account.header);
@@ -146,7 +146,7 @@ void main() {
 
     expect(accountBloc.header, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
   test('avatar', () async {
     expect(accountBloc.avatar, account.avatar);
@@ -166,7 +166,7 @@ void main() {
 
     expect(accountBloc.avatar, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
   test('displayName', () async {
     expect(accountBloc.displayName, account.displayName);
@@ -186,7 +186,7 @@ void main() {
 
     expect(accountBloc.displayName, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
   test('fields', () async {
     expect(accountBloc.fields, account.fields);
@@ -206,7 +206,7 @@ void main() {
 
     expect(accountBloc.fields, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('statusesCount', () async {
@@ -227,7 +227,7 @@ void main() {
 
     expect(accountBloc.statusesCount, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
   test('statusesCount', () async {
     expect(accountBloc.statusesCount, account.statusesCount);
@@ -247,7 +247,7 @@ void main() {
 
     expect(accountBloc.statusesCount, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
   test('followingCount', () async {
     expect(accountBloc.followingCount, account.followingCount);
@@ -267,7 +267,7 @@ void main() {
 
     expect(accountBloc.followingCount, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
   test('followersCount', () async {
     expect(accountBloc.followersCount, account.followersCount);
@@ -287,7 +287,7 @@ void main() {
 
     expect(accountBloc.followersCount, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('displayNameEmojiText', () async {
@@ -313,7 +313,7 @@ void main() {
         EmojiText(text: newDisplayNameValue, emojis: account.emojis));
     expect(listenedValue,
         EmojiText(text: newDisplayNameValue, emojis: account.emojis));
-    subscription.cancel();
+    await subscription.cancel();
 
     var newEmojis = [PleromaEmoji(url: "url", staticUrl: "staticUrl")];
 
@@ -332,7 +332,7 @@ void main() {
         equals(EmojiText(text: newDisplayNameValue, emojis: newEmojis)));
     expect(listenedValue,
         equals(EmojiText(text: newDisplayNameValue, emojis: newEmojis)));
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('accountRelationship', () async {
@@ -353,7 +353,7 @@ void main() {
 
     expect(accountBloc.accountRelationship, newValue);
     expect(listenedValue, newValue);
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('refreshFromNetwork', () async {
@@ -388,7 +388,7 @@ void main() {
         newValue.copyWith(pleromaRelationship: newRelationship));
     expectAccount(
         listenedValue, newValue.copyWith(pleromaRelationship: newRelationship));
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('toggleBlock', () async {
@@ -429,7 +429,7 @@ void main() {
     expect(accountBloc.accountRelationship.blocking, initialValue);
     expect(listenedValue.blocking, initialValue);
 
-    subscription.cancel();
+    await subscription.cancel();
   });
   test('toggleFollow', () async {
     expect(accountBloc.accountRelationship, account.pleromaRelationship);
@@ -469,7 +469,7 @@ void main() {
     expect(accountBloc.accountRelationship.following, initialValue);
     expect(listenedValue.following, initialValue);
 
-    subscription.cancel();
+    await subscription.cancel();
   });
   test('toggleMute', () async {
     expect(accountBloc.accountRelationship, account.pleromaRelationship);
@@ -509,7 +509,7 @@ void main() {
     expect(accountBloc.accountRelationship.muting, initialValue);
     expect(listenedValue.muting, initialValue);
 
-    subscription.cancel();
+    await subscription.cancel();
   });
   test('togglePin', () async {
     expect(accountBloc.accountRelationship, account.pleromaRelationship);
@@ -549,7 +549,7 @@ void main() {
     expect(accountBloc.accountRelationship.muting, initialValue);
     expect(listenedValue.muting, initialValue);
 
-    subscription.cancel();
+    await subscription.cancel();
   });
 
   test('report', () async {

@@ -1,4 +1,4 @@
-import 'package:fedi/refactored/app/notification/list/cached/notification_cached_list_service.dart';
+import 'package:fedi/refactored/app/notification/list/cached/notification_cached_list_bloc.dart';
 import 'package:fedi/refactored/app/notification/notification_model.dart';
 import 'package:fedi/refactored/app/notification/pagination/cached/notification_cached_pagination_bloc.dart';
 import 'package:fedi/refactored/app/pagination/cached/cached_pleroma_pagination_bloc_impl.dart';
@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 class NotificationCachedPaginationBloc
     extends CachedPleromaPaginationBloc<INotification>
     implements INotificationCachedPaginationBloc {
-  final INotificationCachedListService notificationListService;
+  final INotificationCachedListBloc notificationListService;
 
   NotificationCachedPaginationBloc(
       {@required this.notificationListService,
@@ -56,9 +56,8 @@ class NotificationCachedPaginationBloc
           {int itemsCountPerPage = 20,
           int maximumCachedPagesCount}) =>
       NotificationCachedPaginationBloc(
-          notificationListService: Provider.of<INotificationCachedListService>(
-              context,
-              listen: false),
+          notificationListService:
+              Provider.of<INotificationCachedListBloc>(context, listen: false),
           itemsCountPerPage: itemsCountPerPage,
           maximumCachedPagesCount: maximumCachedPagesCount);
 }

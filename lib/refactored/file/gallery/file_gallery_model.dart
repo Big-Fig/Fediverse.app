@@ -5,7 +5,7 @@ import 'package:photo_manager/photo_manager.dart';
 
 enum FileGalleryState { loadingNotStarted, loading, loaded }
 
-typedef FileGalleryFileCallback(FileGalleryFile galleryFile);
+typedef FileGalleryFileCallback = Function(FileGalleryFile galleryFile);
 
 class FileGalleryFile {
   final File file;

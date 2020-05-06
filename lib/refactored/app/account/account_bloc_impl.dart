@@ -17,6 +17,7 @@ var _logger = Logger("account_bloc_impl.dart");
 class AccountBloc extends IAccountBloc {
   final BehaviorSubject<IAccount> _accountSubject;
 
+  @override
   IPleromaAccountRelationship get accountRelationship =>
       account.pleromaRelationship;
 
@@ -247,7 +248,8 @@ class AccountBloc extends IAccountBloc {
           {@required IAccount account,
           @required bool isNeedWatchWebSocketsEvents,
           @required bool isNeedRefreshFromNetworkOnInit,
-          @required bool isNeedWatchLocalRepositoryForUpdates}) => AccountBloc(
+          @required bool isNeedWatchLocalRepositoryForUpdates}) =>
+      AccountBloc(
           pleromaWebSocketsService:
               IPleromaWebSocketsService.of(context, listen: false),
           statusRepository: IStatusRepository.of(context, listen: false),

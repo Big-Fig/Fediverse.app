@@ -256,7 +256,7 @@ packages:
     source: hosted
     version: "0.1.0"
   esys_flutter_share:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: esys_flutter_share
       url: "https://pub.dartlang.org"
@@ -388,7 +388,7 @@ packages:
     source: hosted
     version: "4.0.1"
   gallery_saver:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: gallery_saver
       url: "https://pub.dartlang.org"
@@ -549,7 +549,7 @@ packages:
     source: hosted
     version: "1.1.8"
   mime:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: mime
       url: "https://pub.dartlang.org"
@@ -668,7 +668,7 @@ packages:
     source: hosted
     version: "1.0.1"
   pedantic:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: pedantic
       url: "https://pub.dartlang.org"

@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 abstract class INotificationsHomeTabPageDrawerBloc extends Disposable {
   static INotificationsHomeTabPageDrawerBloc of(BuildContext context,
-          {listen: true}) =>
+          {bool listen = true}) =>
       Provider.of<INotificationsHomeTabPageDrawerBloc>(context, listen: listen);
 
   bool get favourite;

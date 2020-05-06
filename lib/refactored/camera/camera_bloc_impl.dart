@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:camera/camera.dart' as Camera;
+import 'package:camera/camera.dart' as camera_lib;
 import 'package:camera/camera.dart';
 import 'package:fedi/refactored/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/refactored/camera/camera_bloc.dart';
@@ -21,17 +21,17 @@ Logger _logger = Logger("camera_bloc_impl.dart");
 const videoRecordingTimerRepeatDuration = Duration(seconds: 1);
 var defaultVideoConfig = CameraConfig(
     audioEnabled: true,
-    resolutionPreset: Camera.ResolutionPreset.high,
+    resolutionPreset: camera_lib.ResolutionPreset.high,
     maximumVideoDuration: null);
 var defaultImageConfig = CameraConfig(
     audioEnabled: false,
-    resolutionPreset: Camera.ResolutionPreset.high,
+    resolutionPreset: camera_lib.ResolutionPreset.high,
     maximumVideoDuration: null);
 
 abstract class AbstractCameraBloc extends AsyncInitLoadingBloc
     implements ICameraBloc {
   int startCameraIndex;
-  Camera.CameraLensDirection startCameraLensDirection;
+  camera_lib.CameraLensDirection startCameraLensDirection;
 
   Timer _videoRecordingTimer;
   String _videoRecordingPath;
@@ -54,7 +54,7 @@ abstract class AbstractCameraBloc extends AsyncInitLoadingBloc
   AbstractCameraBloc.byCameraLensDirection({
     @required this.cameraPermissionBloc,
     @required this.micPermissionBloc,
-    this.startCameraLensDirection: Camera.CameraLensDirection.back,
+    this.startCameraLensDirection = camera_lib.CameraLensDirection.back,
     CameraConfig startConfig,
   }) {
     _constructor(startConfig);
@@ -69,12 +69,12 @@ abstract class AbstractCameraBloc extends AsyncInitLoadingBloc
   }
 
   void _constructor(CameraConfig startConfig) {
-    this._permissionsToCheck = [cameraPermissionBloc];
+    _permissionsToCheck = [cameraPermissionBloc];
     var cameraConfig = startConfig ?? defaultVideoConfig;
     if (cameraConfig.audioEnabled) {
       _permissionsToCheck.add(micPermissionBloc);
     }
-    this._groupPermissionBloc = GroupPermissionBloc(_permissionsToCheck);
+    _groupPermissionBloc = GroupPermissionBloc(_permissionsToCheck);
     cameraConfigSubject = BehaviorSubject.seeded(cameraConfig);
     addDisposable(subject: latestCapturedFileSubject);
     addDisposable(subject: videoRecordingTimeInSecondsSubject);
@@ -87,30 +87,33 @@ abstract class AbstractCameraBloc extends AsyncInitLoadingBloc
   // ignore: close_sinks
   BehaviorSubject<CameraFile> latestCapturedFileSubject = BehaviorSubject();
 
+  @override
   CameraFile get latestCapturedFile => latestCapturedFileSubject.value;
 
+  @override
   Stream<CameraFile> get latestCapturedFileStream =>
       latestCapturedFileSubject.stream;
 
   // ignore: close_sinks
-  BehaviorSubject<Camera.CameraController> cameraControllerSubject =
+  BehaviorSubject<camera_lib.CameraController> cameraControllerSubject =
       BehaviorSubject();
   @override
-  Camera.CameraController get cameraController => cameraControllerSubject.value;
+  camera_lib.CameraController get cameraController =>
+      cameraControllerSubject.value;
   @override
-  Stream<Camera.CameraController> get cameraControllerStream =>
+  Stream<camera_lib.CameraController> get cameraControllerStream =>
       cameraControllerSubject.stream;
 
   // ignore: close_sinks
-  BehaviorSubject<List<Camera.CameraDescription>> availableCamerasSubject =
+  BehaviorSubject<List<camera_lib.CameraDescription>> availableCamerasSubject =
       BehaviorSubject();
 
   @override
-  Stream<List<Camera.CameraDescription>> get availableCamerasStream =>
+  Stream<List<camera_lib.CameraDescription>> get availableCamerasStream =>
       availableCamerasSubject.stream;
 
   @override
-  List<Camera.CameraDescription> get availableCameras =>
+  List<camera_lib.CameraDescription> get availableCameras =>
       availableCamerasSubject.value;
 
   // ignore: close_sinks
@@ -142,12 +145,12 @@ abstract class AbstractCameraBloc extends AsyncInitLoadingBloc
   @override
   int get selectedCameraIndex => selectedCameraIndexSubject.value;
   @override
-  Stream<Camera.CameraDescription> get cameraDescriptionStream =>
+  Stream<camera_lib.CameraDescription> get cameraDescriptionStream =>
       cameraControllerStream
           .map((cameraController) => cameraController?.description);
 
   @override
-  Camera.CameraDescription get cameraDescription =>
+  camera_lib.CameraDescription get cameraDescription =>
       cameraController?.description;
 
   // ignore: close_sinks
@@ -159,19 +162,25 @@ abstract class AbstractCameraBloc extends AsyncInitLoadingBloc
   @override
   CameraState get cameraState => stateSubject.value;
 
+  @override
   Stream<bool> get isReadyForActionStream =>
       cameraStateStream.map(mapCameraStateToReadyForAction);
 
+  @override
   bool get isReadyForAction => mapCameraStateToReadyForAction(cameraState);
 
+  @override
   Stream<bool> get isVideoRecordingInProgressStream =>
       cameraStateStream.map(mapCameraStateToVideoRecordingInProgress);
 
+  @override
   bool get isVideoRecordingInProgress =>
       mapCameraStateToVideoRecordingInProgress(cameraState);
+  @override
   Stream<bool> get isVideoRecordingInProgressOrPausedStream =>
       cameraStateStream.map(mapCameraStateToVideoRecordingInProgressOrPaused);
 
+  @override
   bool get isVideoRecordingInProgressOrPaused =>
       mapCameraStateToVideoRecordingInProgressOrPaused(cameraState);
 
@@ -190,6 +199,7 @@ abstract class AbstractCameraBloc extends AsyncInitLoadingBloc
   bool get isBackCameraSelected =>
       cameraLensDirection == CameraLensDirection.back;
 
+  @override
   void dispose() {
     super.dispose();
 
@@ -217,7 +227,7 @@ abstract class AbstractCameraBloc extends AsyncInitLoadingBloc
   }
 
   Future _initAfterPermissionGranted() async {
-    List<Camera.CameraDescription> availableCameras;
+    List<camera_lib.CameraDescription> availableCameras;
     try {
       availableCameras = await loadAvailableCameras();
     } on Exception {
@@ -235,12 +245,13 @@ abstract class AbstractCameraBloc extends AsyncInitLoadingBloc
     if (startCameraIndex != null) {
       await chooseCameraByIndex(startCameraIndex);
     } else if (startCameraLensDirection != null) {
-      chooseCameraByLensDirection(startCameraLensDirection);
+      await chooseCameraByLensDirection(startCameraLensDirection);
     }
   }
 
-  Future<Camera.CameraController> _createAndInitCamera(
-      Camera.CameraDescription cameraDescription, CameraConfig config) async {
+  Future<camera_lib.CameraController> _createAndInitCamera(
+      camera_lib.CameraDescription cameraDescription,
+      CameraConfig config) async {
     _logger.fine(() => "_createAndInitCamera start \n"
         "\t availableCameras $availableCameras \n"
         "\t config $config  \n");
@@ -289,7 +300,7 @@ abstract class AbstractCameraBloc extends AsyncInitLoadingBloc
     _logger.fine(() => "switchFrontBackCamera oldState $cameraState "
         "oldIndex $selectedCameraIndex");
     if (isFrontCameraSelected || isBackCameraSelected) {
-      Camera.CameraDescription cameraDescription;
+      camera_lib.CameraDescription cameraDescription;
       if (isFrontCameraSelected) {
         cameraDescription = findCameraDescriptionByLens(
             availableCameras, CameraLensDirection.back);
@@ -297,7 +308,7 @@ abstract class AbstractCameraBloc extends AsyncInitLoadingBloc
         cameraDescription = findCameraDescriptionByLens(
             availableCameras, CameraLensDirection.front);
       }
-      _createAndInitCamera(cameraDescription, cameraConfig);
+      await _createAndInitCamera(cameraDescription, cameraConfig);
     } else {
       throw "You can't switch only between front & back camera. Currently "
           "selected is $cameraLensDirection";
@@ -481,7 +492,7 @@ abstract class AbstractCameraBloc extends AsyncInitLoadingBloc
       } else {
         _permissionsToCheck.remove(micPermissionBloc);
       }
-      checkPermissionStatus();
+      await checkPermissionStatus();
     }
   }
 
@@ -508,19 +519,21 @@ abstract class AbstractCameraBloc extends AsyncInitLoadingBloc
   Future<PermissionStatus> requestPermission() =>
       _groupPermissionBloc.requestPermission();
 
-  Future<List<Camera.CameraDescription>> loadAvailableCameras();
+  Future<List<camera_lib.CameraDescription>> loadAvailableCameras();
 
-  Camera.CameraController createCameraController(
-      Camera.CameraDescription cameraByIndex, CameraConfig config);
+  camera_lib.CameraController createCameraController(
+      camera_lib.CameraDescription cameraByIndex, CameraConfig config);
 }
 
 class CameraBloc extends AbstractCameraBloc {
-  Future<List<Camera.CameraDescription>> loadAvailableCameras() async =>
-      await Camera.availableCameras();
+  @override
+  Future<List<camera_lib.CameraDescription>> loadAvailableCameras() async =>
+      await camera_lib.availableCameras();
 
-  Camera.CameraController createCameraController(
-      Camera.CameraDescription cameraByIndex, CameraConfig config) {
-    return Camera.CameraController(cameraByIndex, config.resolutionPreset,
+  @override
+  camera_lib.CameraController createCameraController(
+      camera_lib.CameraDescription cameraByIndex, CameraConfig config) {
+    return camera_lib.CameraController(cameraByIndex, config.resolutionPreset,
         enableAudio: config.audioEnabled);
   }
 

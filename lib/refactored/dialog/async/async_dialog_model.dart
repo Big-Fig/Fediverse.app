@@ -8,6 +8,7 @@ class AsyncDialogResult<T> {
       : success = true,
         canceled = false,
         handledError = null;
+
   AsyncDialogResult.withError(this.handledError)
       : success = false,
         canceled = false,
@@ -24,6 +25,4 @@ class AsyncDialogResult<T> {
     return 'AsyncDialogResult{result: $result, success: $success,'
         ' canceled: $canceled, handledError: $handledError}';
   }
-
-
 }

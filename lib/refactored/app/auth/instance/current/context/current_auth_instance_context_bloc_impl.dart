@@ -120,11 +120,11 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: statusRepository);
     await globalProviderService
         .asyncInitAndRegister<IStatusRepository>(statusRepository);
-    var scheduledStatusRepository = ScheduledStatusRepository(
-        appDatabase: moorDatabaseService.appDatabase);
+    var scheduledStatusRepository =
+        ScheduledStatusRepository(appDatabase: moorDatabaseService.appDatabase);
     addDisposable(disposable: scheduledStatusRepository);
-    await globalProviderService
-        .asyncInitAndRegister<IScheduledStatusRepository>(scheduledStatusRepository);
+    await globalProviderService.asyncInitAndRegister<
+        IScheduledStatusRepository>(scheduledStatusRepository);
     var conversationRepository = ConversationRepository(
         appDatabase: moorDatabaseService.appDatabase,
         accountRepository: accountRepository,
@@ -188,11 +188,11 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         PleromaStatusService(restService: pleromaAuthRestService);
     await globalProviderService
         .asyncInitAndRegister<IPleromaStatusService>(pleromaStatusService);
-    addDisposable(disposable: pleromaStatusService);   
+    addDisposable(disposable: pleromaStatusService);
     var pleromaScheduledStatusService =
         PleromaScheduledStatusService(restService: pleromaAuthRestService);
-    await globalProviderService
-        .asyncInitAndRegister<IPleromaScheduledStatusService>(pleromaScheduledStatusService);
+    await globalProviderService.asyncInitAndRegister<
+        IPleromaScheduledStatusService>(pleromaScheduledStatusService);
     addDisposable(disposable: pleromaScheduledStatusService);
     var pleromaStatusEmojiReactionService =
         PleromaStatusEmojiReactionService(restService: pleromaAuthRestService);
@@ -256,7 +256,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
 
     var pushSubscriptionBloc = PushSubscriptionBloc(
         pushRelayService: pushRelayService,
-        pushSubscriptionLocalPreferencesBloc:
+        subscriptionLocalPreferencesBloc:
             pushSubscriptionLocalPreferenceBloc,
         pleromaPushService: pleromaPushService,
         currentInstance: currentInstance,
@@ -289,16 +289,16 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         pleromaWebSocketsService);
 
     var myAccountSettingsLocalPreferenceBloc =
-    MyAccountSettingsLocalPreferenceBloc(
-        currentInstance.userAtHost, preferencesService);
+        MyAccountSettingsLocalPreferenceBloc(
+            currentInstance.userAtHost, preferencesService);
 
     addDisposable(disposable: myAccountSettingsLocalPreferenceBloc);
     await globalProviderService
         .asyncInitAndRegister<IMyAccountSettingsLocalPreferenceBloc>(
-        myAccountSettingsLocalPreferenceBloc);
+            myAccountSettingsLocalPreferenceBloc);
 
-    var myAccountSettingsBloc =
-    MyAccountSettingsBloc(localPreferenceBloc: myAccountSettingsLocalPreferenceBloc);
+    var myAccountSettingsBloc = MyAccountSettingsBloc(
+        localPreferenceBloc: myAccountSettingsLocalPreferenceBloc);
 
     addDisposable(disposable: myAccountSettingsBloc);
     await globalProviderService

@@ -24,7 +24,7 @@ class AppHomeBloc extends DisposableOwner implements IAppHomeBloc {
   }
 
   @override
-  selectTab(AppHomeTab tab) {
+  void selectTab(AppHomeTab tab) {
     _selectedTabSubject.add(tab);
   }
 }

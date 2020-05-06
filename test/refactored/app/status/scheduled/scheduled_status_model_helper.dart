@@ -9,7 +9,7 @@ Future<DbScheduledStatusWrapper> createTestScheduledStatus(
     DbScheduledStatusWrapper(
         await createTestDbScheduledStatus(seed: seed, remoteId: remoteId));
 
-expectScheduledStatus(IScheduledStatus actual, IScheduledStatus expected) {
+void expectScheduledStatus(IScheduledStatus actual, IScheduledStatus expected) {
   if (actual == null && expected == null) {
     return;
   }

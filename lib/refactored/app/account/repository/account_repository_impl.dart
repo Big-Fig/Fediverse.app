@@ -127,21 +127,18 @@ class AccountRepository extends AsyncInitLoadingBloc
   @override
   Future upsertRemoteAccount(IPleromaAccount remoteAccount,
       {@required conversationRemoteId}) async {
+    await upsert(mapRemoteAccountToDbAccount(remoteAccount));
+
     if (conversationRemoteId != null) {
       var accountRemoteId = remoteAccount.id;
-      var found = await conversationAccountsDao
-          .findByConversationRemoteIdAndAccountRemoteIdQuery(
-              conversationRemoteId, accountRemoteId)
-          .get();
 
-      if (found?.isNotEmpty != true) {
-        await conversationAccountsDao.insert(DbConversationAccount(
-            id: null,
-            conversationRemoteId: conversationRemoteId,
-            accountRemoteId: accountRemoteId));
-      }
+      await conversationAccountsDao.insert(
+          DbConversationAccount(
+              id: null,
+              conversationRemoteId: conversationRemoteId,
+              accountRemoteId: accountRemoteId),
+          mode: InsertMode.insertOrReplace);
     }
-    await upsert(mapRemoteAccountToDbAccount(remoteAccount));
   }
 
   @override
@@ -161,7 +158,7 @@ class AccountRepository extends AsyncInitLoadingBloc
       });
 
       if (accountsToInsert?.isNotEmpty == true) {
-        conversationAccountsDao.insertAll(
+        await conversationAccountsDao.insertAll(
             accountsToInsert
                 .map((accountToInsert) => DbConversationAccount(
                     id: null,
@@ -172,7 +169,7 @@ class AccountRepository extends AsyncInitLoadingBloc
       }
     }
 
-    if(remoteAccounts?.isNotEmpty == true) {
+    if (remoteAccounts?.isNotEmpty == true) {
       await upsertAll(remoteAccounts.map(mapRemoteAccountToDbAccount).toList());
     }
   }
@@ -282,6 +279,7 @@ class AccountRepository extends AsyncInitLoadingBloc
         "\t onlyInStatusFavouritedBy=$onlyInStatusFavouritedBy\n"
         "\t onlyInAccountFollowers=$onlyInAccountFollowers\n"
         "\t onlyInAccountFollowing=$onlyInAccountFollowing\n"
+        "\t onlyInConversation=$onlyInConversation\n"
         "\t searchQuery=$searchQuery\n"
         "\t limit=$limit\n"
         "\t offset=$offset\n"
@@ -308,12 +306,15 @@ class AccountRepository extends AsyncInitLoadingBloc
     var includeStatusFavouritedAccounts = onlyInStatusFavouritedBy != null;
     var includeStatusRebloggedAccounts = onlyInStatusRebloggedBy != null;
     var includeConversationAccounts = onlyInConversation != null;
+
     var joinQuery = query.join(dao.populateAccountJoin(
-        includeAccountFollowings: includeAccountFollowings,
-        includeAccountFollowers: includeAccountFollowers,
-        includeStatusFavouritedAccounts: includeStatusFavouritedAccounts,
-        includeStatusRebloggedAccounts: includeStatusRebloggedAccounts,
-        includeConversationAccounts: includeConversationAccounts));
+      includeAccountFollowings: includeAccountFollowings,
+      includeAccountFollowers: includeAccountFollowers,
+      includeStatusFavouritedAccounts: includeStatusFavouritedAccounts,
+      includeStatusRebloggedAccounts: includeStatusRebloggedAccounts,
+      includeConversationAccounts: includeConversationAccounts,
+//       includeConversationAccounts: false,
+    ));
 
     if (includeAccountFollowings) {
       joinQuery =

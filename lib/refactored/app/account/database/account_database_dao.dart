@@ -26,6 +26,7 @@ var _conversationAccountsAliasId = "conversationAccounts";
       ":remoteId;",
 })
 class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
+  @override
   final AppDatabase db;
   $DbAccountsTable accountAlias;
   $DbAccountFollowingsTable accountFollowingsAlias;
@@ -49,8 +50,8 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
         alias(db.dbConversationAccounts, _conversationAccountsAliasId);
   }
 
-  Future<int> insert(Insertable<DbAccount> entity) =>
-      into(dbAccounts).insert(entity);
+  Future<int> insert(Insertable<DbAccount> entity, {InsertMode mode}) =>
+      into(dbAccounts).insert(entity, mode: mode);
 
   Future<int> upsert(Insertable<DbAccount> entity) =>
       into(dbAccounts).insert(entity, mode: InsertMode.insertOrReplace);
@@ -129,7 +130,7 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
     @required includeStatusRebloggedAccounts,
     @required includeConversationAccounts,
   }) {
-    return [
+    List<Join<Table, DataClass>> allJoins = [
       ...(includeAccountFollowings
           ? [
               innerJoin(
@@ -164,13 +165,14 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
           : []),
       ...(includeConversationAccounts
           ? [
-              innerJoin(
+              leftOuterJoin(
                   conversationAccountsAlias,
                   conversationAccountsAlias.accountRemoteId
                       .equalsExp(dbAccounts.remoteId))
             ]
           : [])
     ];
+    return allJoins;
   }
 
   SimpleSelectStatement<$DbAccountsTable, DbAccount> addSearchWhere(
@@ -196,6 +198,7 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
         ..where(CustomExpression<bool, BoolType>(
             "$_statusRebloggedAccounts.status_remote_id"
             " = '$statusRemoteId'"));
+
   // todo: rework with single relationship table
   JoinedSelectStatement addFollowingsWhere(
           JoinedSelectStatement query, String followingAccountRemoteId) =>

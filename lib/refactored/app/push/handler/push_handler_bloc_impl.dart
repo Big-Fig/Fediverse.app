@@ -34,9 +34,8 @@ class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
   }
 
   Future handlePushMessage(PushMessage pushMessage) async {
-    
     var pleromaPushMessage = PleromaPushMessage.fromJson(pushMessage.data);
-    
+
     bool handled = false;
     for (var handler in realTimeHandlers) {
       handled = await handler(pleromaPushMessage);
@@ -44,27 +43,25 @@ class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
         break;
       }
     }
-    
-    _logger.finest(()=>"handlePushMessage \n"
+
+    _logger.finest(() => "handlePushMessage \n"
         "\t pleromaPushMessage =$pleromaPushMessage"
-        "\t handled =$handled"
-    );
-    
+        "\t handled =$handled");
+
     if (!handled) {
       var instanceForMessage = instanceListBloc.findInstanceByCredentials(
           host: pleromaPushMessage.server, acct: pleromaPushMessage.account);
-    
+
       if (instanceForMessage != null) {
         _logger.finest(() => "pleromaPushMessage = $pleromaPushMessage by \n"
             "\t instanceForMessage=$instanceForMessage");
-    
+
         if (!currentInstanceBloc.isCurrentInstance(instanceForMessage)) {
           await unhandledLocalPreferencesBloc
               .addUnhandledMessage(pleromaPushMessage);
-    
+
           if (pushMessage.type == PushMessageType.launch ||
-              pushMessage.type == PushMessageType.resume
-          ) {
+              pushMessage.type == PushMessageType.resume) {
             // launch after click on notification
             if (currentInstanceBloc.currentInstance != instanceForMessage) {
               currentInstanceBloc.changeCurrentInstance(instanceForMessage);

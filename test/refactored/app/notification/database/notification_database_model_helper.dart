@@ -28,7 +28,7 @@ Future<DbNotification> createTestDbNotification({
   return dbNotification;
 }
 
-expectDbNotificationPopulated(
+void expectDbNotificationPopulated(
     INotification actual, DbNotificationPopulated expected) {
   expect(actual.localId != null, true);
   var dbNotification = expected.dbNotification;

@@ -12,5 +12,5 @@ abstract class ISearchInputBloc extends Disposable {
 
   Stream<String> get searchTextStream;
 
-  clearSearch();
+  void clearSearch();
 }

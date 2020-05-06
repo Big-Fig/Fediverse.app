@@ -49,6 +49,8 @@ class StatusPaginationListTimelineWidget
 
                       return statusBloc;
                     },
-                    child: StatusListItemTimelineWidget(collapsible: true,)),
+                    child: StatusListItemTimelineWidget(
+                      collapsible: true,
+                    )),
               ));
 }

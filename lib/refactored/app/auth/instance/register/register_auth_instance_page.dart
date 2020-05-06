@@ -7,9 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class RegisterAuthInstancePage extends StatelessWidget {
-
   final Uri instanceBaseUrl;
-
 
   RegisterAuthInstancePage({@required this.instanceBaseUrl});
 
@@ -22,13 +20,14 @@ class RegisterAuthInstancePage extends StatelessWidget {
               ".title"),
         ),
       ),
-      body: SafeArea(child: RegisterAuthInstanceWidget(instanceBaseUrl:instanceBaseUrl)),
+      body: SafeArea(
+          child: RegisterAuthInstanceWidget(instanceBaseUrl: instanceBaseUrl)),
     );
   }
 }
 
-void goToRegisterAuthInstancePage(BuildContext context, {@required Uri
-instanceBaseUrl}) {
+void goToRegisterAuthInstancePage(BuildContext context,
+    {@required Uri instanceBaseUrl}) {
   Navigator.push(
     context,
     MaterialPageRoute(
