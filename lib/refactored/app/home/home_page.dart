@@ -6,8 +6,9 @@ import 'package:fedi/refactored/app/home/tab/account/account_home_tab_page'
 import 'package:fedi/refactored/app/home/tab/conversations/chats_home_tab_page.dart';
 import 'package:fedi/refactored/app/home/tab/notifications/notifications_home_tab_page.dart';
 import 'package:fedi/refactored/app/home/tab/timelines/timelines_home_tab_page.dart';
-import 'package:fedi/refactored/app/notification/unread/notification_unread_all_badge_count_widget.dart';
+import 'package:fedi/refactored/app/notification/unread/notification_unread_exclude_types_badge_count_widget.dart';
 import 'package:fedi/refactored/app/status/post/new/new_post_status_page.dart';
+import 'package:fedi/refactored/pleroma/notification/pleroma_notification_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -88,7 +89,10 @@ class _HomePageState extends State<HomePage>
         return Icon(Icons.home);
         break;
       case AppHomeTab.notifications:
-        return NotificationUnreadAllBadgeCountWidget(
+        return NotificationUnreadBadgeExcludeTypesCountWidget(
+            excludeTypes: <PleromaNotificationType>[
+              PleromaNotificationType.chatMention
+            ],
             child: Icon(Icons.notifications));
         break;
       case AppHomeTab.conversations:

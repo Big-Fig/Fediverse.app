@@ -36,6 +36,12 @@ abstract class INotificationRepository
 
   Future<int> countUnreadByType({@required PleromaNotificationType type});
 
+  Future<int> getUnreadCountExcludeTypes(
+      {@required List<PleromaNotificationType> excludeTypes});
+
+  Stream<int> watchUnreadCountExcludeTypes(
+      {@required List<PleromaNotificationType> excludeTypes});
+
   Stream<int> watchUnreadCountAnyType();
 
   Stream<int> watchUnreadCountByType({@required PleromaNotificationType type});

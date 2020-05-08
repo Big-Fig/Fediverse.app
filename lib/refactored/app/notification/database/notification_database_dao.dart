@@ -239,6 +239,17 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
     );
   }
 
+  Selectable<int> countUnreadExcludeTypes(List<String> excludeTypes) {
+    var query = 'SELECT COUNT(*) FROM db_notifications WHERE unread = 1 AND '
+        'type NOT IN '
+            '(${excludeTypes.map((type) => "'$type'").join(", ")})';
+    return customSelectQuery(
+        query,
+        readsFrom: {
+          dbNotifications
+        }).map((QueryRow row) => row.readInt('COUNT(*)'));
+  }
+
   List<Join<Table, DataClass>> populateNotificationJoin() {
     return [
       innerJoin(
