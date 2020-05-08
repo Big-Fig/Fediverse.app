@@ -130,5 +130,11 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
   String get remoteId => notification.remoteId;
 
   @override
-  MastodonNotificationType get type => notification.type;
+  String get type => notification.type;
+
+  @override
+  MastodonNotificationType get typeMastodon => notification.typeMastodon;
+
+  @override
+  PleromaNotificationType get typePleroma => notification.typePleroma;
 }

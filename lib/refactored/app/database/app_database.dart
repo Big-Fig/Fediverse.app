@@ -31,8 +31,6 @@ import 'package:fedi/refactored/app/status/database/status_reblogged_accounts_da
 import 'package:fedi/refactored/app/status/database/status_reblogged_accounts_database_model.dart';
 import 'package:fedi/refactored/app/status/scheduled/database/scheduled_status_database_dao.dart';
 import 'package:fedi/refactored/app/status/scheduled/database/scheduled_status_database_model.dart';
-import 'package:fedi/refactored/mastodon/notification'
-    '/mastodon_notification_model.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/refactored/pleroma/application/pleroma_application_model.dart';
 import 'package:fedi/refactored/pleroma/card/pleroma_card_model.dart';

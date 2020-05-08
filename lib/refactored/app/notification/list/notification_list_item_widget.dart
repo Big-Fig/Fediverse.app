@@ -11,7 +11,7 @@ import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/collapsible/collapsible_bloc.dart';
 import 'package:fedi/refactored/disposable/disposable.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
-import 'package:fedi/refactored/mastodon/notification/mastodon_notification_model.dart';
+import 'package:fedi/refactored/pleroma/notification/pleroma_notification_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -63,20 +63,20 @@ class NotificationListItemWidget extends StatelessWidget {
       BuildContext context, INotificationBloc notificationBloc) {
     Widget headerWidget;
 
-    switch (notificationBloc.type) {
-      case MastodonNotificationType.follow:
+    switch (notificationBloc.typePleroma) {
+      case PleromaNotificationType.follow:
         headerWidget = NotificationFollowTypeHeaderWidget();
         break;
-      case MastodonNotificationType.mention:
+      case PleromaNotificationType.mention:
         headerWidget = NotificationMentionTypeHeaderWidget();
         break;
-      case MastodonNotificationType.reblog:
+      case PleromaNotificationType.reblog:
         headerWidget = NotificationReblogTypeHeaderWidget();
         break;
-      case MastodonNotificationType.favourite:
+      case PleromaNotificationType.favourite:
         headerWidget = NotificationFavouriteTypeHeaderWidget();
         break;
-      case MastodonNotificationType.poll:
+      case PleromaNotificationType.poll:
         headerWidget = NotificationPollTypeHeaderWidget();
         break;
       default:

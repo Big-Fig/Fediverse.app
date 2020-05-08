@@ -3466,7 +3466,7 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
   final String accountRemoteId;
   final String statusRemoteId;
   final bool unread;
-  final MastodonNotificationType type;
+  final String type;
   final DateTime createdAt;
   DbNotification(
       {@required this.id,
@@ -3494,8 +3494,7 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
           .mapFromDatabaseResponse(data['${effectivePrefix}status_remote_id']),
       unread:
           boolType.mapFromDatabaseResponse(data['${effectivePrefix}unread']),
-      type: $DbNotificationsTable.$converter0.mapToDart(
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}type'])),
+      type: stringType.mapFromDatabaseResponse(data['${effectivePrefix}type']),
       createdAt: dateTimeType
           .mapFromDatabaseResponse(data['${effectivePrefix}created_at']),
     );
@@ -3509,7 +3508,7 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
       accountRemoteId: serializer.fromJson<String>(json['accountRemoteId']),
       statusRemoteId: serializer.fromJson<String>(json['statusRemoteId']),
       unread: serializer.fromJson<bool>(json['unread']),
-      type: serializer.fromJson<MastodonNotificationType>(json['type']),
+      type: serializer.fromJson<String>(json['type']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
     );
   }
@@ -3522,7 +3521,7 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
       'accountRemoteId': serializer.toJson<String>(accountRemoteId),
       'statusRemoteId': serializer.toJson<String>(statusRemoteId),
       'unread': serializer.toJson<bool>(unread),
-      'type': serializer.toJson<MastodonNotificationType>(type),
+      'type': serializer.toJson<String>(type),
       'createdAt': serializer.toJson<DateTime>(createdAt),
     };
   }
@@ -3555,7 +3554,7 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
           String accountRemoteId,
           String statusRemoteId,
           bool unread,
-          MastodonNotificationType type,
+          String type,
           DateTime createdAt}) =>
       DbNotification(
         id: id ?? this.id,
@@ -3610,7 +3609,7 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
   final Value<String> accountRemoteId;
   final Value<String> statusRemoteId;
   final Value<bool> unread;
-  final Value<MastodonNotificationType> type;
+  final Value<String> type;
   final Value<DateTime> createdAt;
   const DbNotificationsCompanion({
     this.id = const Value.absent(),
@@ -3638,7 +3637,7 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
       Value<String> accountRemoteId,
       Value<String> statusRemoteId,
       Value<bool> unread,
-      Value<MastodonNotificationType> type,
+      Value<String> type,
       Value<DateTime> createdAt}) {
     return DbNotificationsCompanion(
       id: id ?? this.id,
@@ -3779,7 +3778,10 @@ class $DbNotificationsTable extends DbNotifications
       context.handle(
           _unreadMeta, unread.isAcceptableValue(d.unread.value, _unreadMeta));
     }
-    context.handle(_typeMeta, const VerificationResult.success());
+    if (d.type.present) {
+      context.handle(
+          _typeMeta, type.isAcceptableValue(d.type.value, _typeMeta));
+    }
     if (d.createdAt.present) {
       context.handle(_createdAtMeta,
           createdAt.isAcceptableValue(d.createdAt.value, _createdAtMeta));
@@ -3818,9 +3820,7 @@ class $DbNotificationsTable extends DbNotifications
       map['unread'] = Variable<bool, BoolType>(d.unread.value);
     }
     if (d.type.present) {
-      final converter = $DbNotificationsTable.$converter0;
-      map['type'] =
-          Variable<String, StringType>(converter.mapToSql(d.type.value));
+      map['type'] = Variable<String, StringType>(d.type.value);
     }
     if (d.createdAt.present) {
       map['created_at'] = Variable<DateTime, DateTimeType>(d.createdAt.value);
@@ -3832,9 +3832,6 @@ class $DbNotificationsTable extends DbNotifications
   $DbNotificationsTable createAlias(String alias) {
     return $DbNotificationsTable(_db, alias);
   }
-
-  static TypeConverter<MastodonNotificationType, String> $converter0 =
-      MastodonNotificationTypeDatabaseConverter();
 }
 
 class DbConversationStatus extends DataClass

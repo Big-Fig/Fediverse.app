@@ -3,7 +3,7 @@ import 'package:fedi/refactored/app/notification/database/notification_database_
 import 'package:fedi/refactored/app/notification/notification_model.dart';
 import 'package:fedi/refactored/app/notification/repository/notification_repository_model.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
-import 'package:fedi/refactored/mastodon/notification/mastodon_notification_model.dart';
+import 'package:fedi/refactored/pleroma/notification/pleroma_notification_model.dart';
 import 'package:moor/moor.dart';
 
 part 'notification_database_dao.g.dart';
@@ -120,12 +120,15 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
     return localId;
   }
 
-  SimpleSelectStatement<$DbNotificationsTable, DbNotification> addOnlyTypeWhere(
-          SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
-          MastodonNotificationType type) =>
-      query
-        ..where((notification) => (notification.type
-            .equals(mastodonNotificationTypeValues.reverse[type])));
+  SimpleSelectStatement<$DbNotificationsTable, DbNotification>
+      addExcludeTypeWhere(
+              SimpleSelectStatement<$DbNotificationsTable, DbNotification>
+                  query,
+              List<PleromaNotificationType> excludeTypes) =>
+          query
+            ..where((notification) => (notification.type.isNotIn(excludeTypes
+                .map((type) => pleromaNotificationTypeValues.reverse[type])
+                .toList())));
 
   SimpleSelectStatement<$DbNotificationsTable, DbNotification>
       startSelectQuery() => (select(db.dbNotifications));

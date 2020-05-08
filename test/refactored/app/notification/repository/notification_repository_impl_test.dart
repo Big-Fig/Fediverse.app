@@ -6,7 +6,7 @@ import 'package:fedi/refactored/app/notification/repository/notification_reposit
 import 'package:fedi/refactored/app/notification/repository/notification_repository_model.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
-import 'package:fedi/refactored/mastodon/notification/mastodon_notification_model.dart';
+import 'package:fedi/refactored/pleroma/notification/pleroma_notification_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/moor.dart';
 import 'package:moor_ffi/moor_ffi.dart';
@@ -125,8 +125,9 @@ void main() {
   });
 
   test('updateLocalNotificationByRemoteNotification', () async {
-    var id = await notificationRepository
-        .insert(dbNotification.copyWith(type: MastodonNotificationType.follow));
+    var id = await notificationRepository.insert(dbNotification.copyWith(
+        type: pleromaNotificationTypeValues
+            .reverse[PleromaNotificationType.follow]));
     assert(id != null, true);
 
     var oldLocalNotification = DbNotificationPopulatedWrapper(
@@ -136,7 +137,7 @@ void main() {
             dbStatusPopulated: dbStatusPopulated));
     var newContent = "newContent";
     var newAcct = "newAcct";
-    var newType = MastodonNotificationType.reblog;
+    var newType = PleromaNotificationType.reblog;
     var newRemoteNotification = mapLocalNotificationToRemoteNotification(
         DbNotificationPopulatedWrapper(DbNotificationPopulated(
             dbNotification: dbNotification.copyWith(id: id),
@@ -155,7 +156,8 @@ void main() {
 
     expect(
         (await notificationRepository.findById(id)).status.content, newContent);
-    expect((await notificationRepository.findById(id)).type, newType);
+    expect((await notificationRepository.findById(id)).type,
+        pleromaNotificationTypeValues.reverse[newType]);
     expect((await notificationRepository.findById(id)).account.acct, newAcct);
   });
 
@@ -248,7 +250,7 @@ void main() {
 
   test('createQuery empty', () async {
     var query = notificationRepository.createQuery(
-      onlyWithType: null,
+      excludeTypes: null,
       olderThanNotification: null,
       newerThanNotification: null,
       limit: null,
@@ -272,7 +274,8 @@ void main() {
 
   test('createQuery onlyWithType', () async {
     var query = notificationRepository.createQuery(
-      onlyWithType: MastodonNotificationType.reblog,
+      excludeTypes: pleromaNotificationTypeValues
+          .valuesWithExclude([PleromaNotificationType.reblog]),
       olderThanNotification: null,
       newerThanNotification: null,
       limit: null,
@@ -283,14 +286,18 @@ void main() {
     await insertDbNotification(
         notificationRepository,
         (await createTestDbNotification(seed: "seed1", dbAccount: dbAccount))
-            .copyWith(type: MastodonNotificationType.follow));
+            .copyWith(
+                type: pleromaNotificationTypeValues
+                    .reverse[PleromaNotificationType.follow]));
 
     expect((await query.get()).length, 0);
 
     await insertDbNotification(
         notificationRepository,
         (await createTestDbNotification(seed: "seed2", dbAccount: dbAccount))
-            .copyWith(type: MastodonNotificationType.reblog));
+            .copyWith(
+                type: pleromaNotificationTypeValues
+                    .reverse[PleromaNotificationType.reblog]));
     expect((await query.get()).length, 1);
   });
   test('countUnread', () async {
@@ -298,45 +305,54 @@ void main() {
     await insertDbNotification(
         notificationRepository,
         (await createTestDbNotification(seed: "seed1", dbAccount: dbAccount))
-            .copyWith(type: MastodonNotificationType.follow, unread: true));
+            .copyWith(
+                type: pleromaNotificationTypeValues
+                    .reverse[PleromaNotificationType.follow],
+                unread: true));
 
     expect(
         (await notificationRepository.countUnreadByType(
-            type: MastodonNotificationType.reblog)),
+            type: PleromaNotificationType.reblog)),
         0);
     expect(
         (await notificationRepository.countUnreadByType(
-            type: MastodonNotificationType.follow)),
+            type: PleromaNotificationType.follow)),
         1);
     expect((await notificationRepository.countUnreadAnyType()), 1);
 
     await insertDbNotification(
         notificationRepository,
         (await createTestDbNotification(seed: "seed2", dbAccount: dbAccount))
-            .copyWith(type: MastodonNotificationType.follow, unread: false));
+            .copyWith(
+                type: pleromaNotificationTypeValues
+                    .reverse[PleromaNotificationType.follow],
+                unread: false));
 
     expect(
         (await notificationRepository.countUnreadByType(
-            type: MastodonNotificationType.reblog)),
+            type: PleromaNotificationType.reblog)),
         0);
     expect(
         (await notificationRepository.countUnreadByType(
-            type: MastodonNotificationType.follow)),
+            type: PleromaNotificationType.follow)),
         1);
     expect((await notificationRepository.countUnreadAnyType()), 1);
 
     await insertDbNotification(
         notificationRepository,
         (await createTestDbNotification(seed: "seed3", dbAccount: dbAccount))
-            .copyWith(type: MastodonNotificationType.reblog, unread: true));
+            .copyWith(
+                type: pleromaNotificationTypeValues
+                    .reverse[PleromaNotificationType.reblog],
+                unread: true));
 
     expect(
         (await notificationRepository.countUnreadByType(
-            type: MastodonNotificationType.reblog)),
+            type: PleromaNotificationType.reblog)),
         1);
     expect(
         (await notificationRepository.countUnreadByType(
-            type: MastodonNotificationType.follow)),
+            type: PleromaNotificationType.follow)),
         1);
     expect((await notificationRepository.countUnreadAnyType()), 2);
   });
@@ -349,7 +365,7 @@ void main() {
         offset: null,
         orderingTermData: null,
         olderThanNotification: null,
-        onlyWithType: null);
+        excludeTypes: null);
 
     await insertDbNotification(
         notificationRepository,
@@ -387,7 +403,7 @@ void main() {
         orderingTermData: null,
         olderThanNotification: await createTestNotification(
             seed: "remoteId5", remoteId: "remoteId5", createdAt: DateTime(5)),
-        onlyWithType: null);
+        excludeTypes: null);
 
     await insertDbNotification(
         notificationRepository,
@@ -427,7 +443,7 @@ void main() {
         orderingTermData: null,
         olderThanNotification: await createTestNotification(
             seed: "remoteId5", remoteId: "remoteId5", createdAt: DateTime(5)),
-        onlyWithType: null);
+        excludeTypes: null);
 
     await insertDbNotification(
         notificationRepository,
@@ -480,7 +496,7 @@ void main() {
             orderByType: NotificationOrderByType.remoteId,
             orderingMode: OrderingMode.asc),
         olderThanNotification: null,
-        onlyWithType: null);
+        excludeTypes: null);
 
     var notification2 = await insertDbNotification(
         notificationRepository,
@@ -514,7 +530,7 @@ void main() {
             orderByType: NotificationOrderByType.remoteId,
             orderingMode: OrderingMode.desc),
         olderThanNotification: null,
-        onlyWithType: null);
+        excludeTypes: null);
 
     var notification2 = await insertDbNotification(
         notificationRepository,
@@ -548,7 +564,7 @@ void main() {
             orderByType: NotificationOrderByType.remoteId,
             orderingMode: OrderingMode.desc),
         olderThanNotification: null,
-        onlyWithType: null);
+        excludeTypes: null);
 
     var notification2 = await insertDbNotification(
         notificationRepository,
@@ -581,7 +597,7 @@ void main() {
             orderByType: NotificationOrderByType.createdAt,
             orderingMode: OrderingMode.desc),
         olderThanNotification: null,
-        onlyWithType: null);
+        excludeTypes: null);
 
     var notification2 = await insertDbNotification(
         notificationRepository,
