@@ -1,4 +1,5 @@
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
+import 'package:fedi/refactored/app/chat/message/repository/chat_message_repository.dart';
 import 'package:fedi/refactored/app/database/app_database.dart';
 import 'package:fedi/refactored/app/notification/database/notification_database_dao.dart';
 import 'package:fedi/refactored/app/notification/notification_model.dart';
@@ -7,6 +8,7 @@ import 'package:fedi/refactored/app/notification/repository/notification_reposit
 import 'package:fedi/refactored/app/notification/repository/notification_repository_model.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/async/loading/init/async_init_loading_bloc_impl.dart';
+import 'package:fedi/refactored/pleroma/chat/pleroma_chat_model.dart';
 import 'package:fedi/refactored/pleroma/notification/pleroma_notification_model.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/refactored/pleroma/status/pleroma_status_model.dart';
@@ -21,11 +23,13 @@ class NotificationRepository extends AsyncInitLoadingBloc
   final NotificationDao dao;
   final IAccountRepository accountRepository;
   final IStatusRepository statusRepository;
+  final IChatMessageRepository chatMessageRepository;
 
   NotificationRepository({
     @required AppDatabase appDatabase,
     @required this.accountRepository,
     @required this.statusRepository,
+    @required this.chatMessageRepository,
   }) : dao = appDatabase.notificationDao;
 
   @override
@@ -51,6 +55,10 @@ class NotificationRepository extends AsyncInitLoadingBloc
     if (remoteStatus != null) {
       await statusRepository.upsertRemoteStatus(remoteStatus,
           listRemoteId: null, conversationRemoteId: null);
+    }   
+    var remoteChatMessage = remoteNotification.chatMessage;
+    if (remoteChatMessage != null) {
+      await chatMessageRepository.upsertRemoteChatMessage(remoteChatMessage);
     }
 
     await upsert(mapRemoteNotificationToDbNotification(remoteNotification,
@@ -84,6 +92,13 @@ class NotificationRepository extends AsyncInitLoadingBloc
 
     await statusRepository.upsertRemoteStatuses(remoteStatuses,
         conversationRemoteId: conversationRemoteId, listRemoteId: null);
+    
+    List<IPleromaChatMessage> remoteChatMessages = remoteNotifications
+        .map((remoteNotification) => remoteNotification.chatMessage)
+        .where((remoteChatMessage) => remoteChatMessage != null)
+        .toList();
+
+    await chatMessageRepository.upsertRemoteChatMessages(remoteChatMessages);
 
     await upsertAll(remoteNotifications
         .map(mapRemoteNotificationToDbNotification)

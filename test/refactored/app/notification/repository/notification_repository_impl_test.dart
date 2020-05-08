@@ -1,4 +1,5 @@
 import 'package:fedi/refactored/app/account/repository/account_repository_impl.dart';
+import 'package:fedi/refactored/app/chat/message/repository/chat_message_repository_impl.dart';
 import 'package:fedi/refactored/app/database/app_database.dart';
 import 'package:fedi/refactored/app/notification/notification_model.dart';
 import 'package:fedi/refactored/app/notification/notification_model_adapter.dart';
@@ -23,6 +24,7 @@ void main() {
   AppDatabase database;
   AccountRepository accountRepository;
   StatusRepository statusRepository;
+  ChatMessageRepository chatMessageRepository;
   NotificationRepository notificationRepository;
 
   DbStatusPopulated dbStatusPopulated;
@@ -38,10 +40,13 @@ void main() {
     accountRepository = AccountRepository(appDatabase: database);
     statusRepository = StatusRepository(
         appDatabase: database, accountRepository: accountRepository);
+    chatMessageRepository = ChatMessageRepository(
+        appDatabase: database, accountRepository: accountRepository);
     notificationRepository = NotificationRepository(
         appDatabase: database,
         accountRepository: accountRepository,
-        statusRepository: statusRepository);
+        statusRepository: statusRepository,
+        chatMessageRepository: chatMessageRepository);
 
     dbAccount = await createTestDbAccount(seed: "seed1");
     var accountId = await accountRepository.insert(dbAccount);

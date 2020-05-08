@@ -19,6 +19,10 @@ PleromaNotification _$PleromaNotificationFromJson(Map<String, dynamic> json) {
     status: json['status'] == null
         ? null
         : PleromaStatus.fromJson(json['status'] as Map<String, dynamic>),
+    chatMessage: json['chat_message'] == null
+        ? null
+        : PleromaChatMessage.fromJson(
+            json['chat_message'] as Map<String, dynamic>),
   );
 }
 
@@ -30,4 +34,5 @@ Map<String, dynamic> _$PleromaNotificationToJson(
       'id': instance.id,
       'type': instance.type,
       'status': instance.status,
+      'chat_message': instance.chatMessage,
     };
