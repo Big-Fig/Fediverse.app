@@ -9,7 +9,7 @@ part of 'pleroma_chat_model.dart';
 PleromaChat _$PleromaChatFromJson(Map<String, dynamic> json) {
   return PleromaChat(
     id: json['id'] as String,
-    unread: json['unread'] as bool,
+    unread: json['unread'] as int,
     account: json['account'] == null
         ? null
         : PleromaAccount.fromJson(json['account'] as Map<String, dynamic>),

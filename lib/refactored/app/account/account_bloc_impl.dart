@@ -151,7 +151,7 @@ class AccountBloc extends IAccountBloc {
       // sometimes we don't have local account id, for example go from search
       // to account page
       await accountRepository.upsertRemoteAccount(newRemoteAccount,
-          conversationRemoteId: null);
+          conversationRemoteId: null, chatRemoteId: null);
     }
   }
 
@@ -232,7 +232,7 @@ class AccountBloc extends IAccountBloc {
             // sometimes we don't have local account id, for example go from search
             // to account page
             await accountRepository.upsertRemoteAccount(remoteAccount,
-                conversationRemoteId: null);
+                conversationRemoteId: null, chatRemoteId: null);
           }
         } else {
           _logger.severe(

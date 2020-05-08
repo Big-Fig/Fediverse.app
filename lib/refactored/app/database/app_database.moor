@@ -11,11 +11,14 @@ import 'package:fedi/refactored/app/status/database/status_favourited_accounts_d
 import 'package:fedi/refactored/app/status/database/status_hashtags_database_model.dart';
 import 'package:fedi/refactored/app/status/database/status_lists_database_model.dart';
 import 'package:fedi/refactored/app/status/database/status_reblogged_accounts_database_model.dart';
+import 'package:fedi/refactored/app/chat/database/chat_database_model.dart';
+import 'package:fedi/refactored/app/chat/database/chat_accounts_database_model.dart';
+import 'package:fedi/refactored/app/chat/message/database/chat_message_database_model.dart';
 
-CREATE UNIQUE INDEX status_remote_id_index ON db_statuses (remote_id);
-CREATE UNIQUE INDEX account_remote_id_index ON db_accounts (remote_id);
-CREATE UNIQUE INDEX conversation_remote_id_index ON db_conversations (remote_id);
-CREATE UNIQUE INDEX notification_remote_id_index ON db_notifications (remote_id);
+CREATE UNIQUE INDEX db_status_remote_id_index ON db_statuses (remote_id);
+CREATE UNIQUE INDEX db_account_remote_id_index ON db_accounts (remote_id);
+CREATE UNIQUE INDEX db_conversation_remote_id_index ON db_conversations (remote_id);
+CREATE UNIQUE INDEX db_notification_remote_id_index ON db_notifications (remote_id);
 CREATE UNIQUE INDEX db_conversation_statuses_index ON db_conversation_statuses(status_remote_id, conversation_remote_id);
 CREATE UNIQUE INDEX db_status_hashtags_index ON db_status_hashtags(status_remote_id, hashtag);
 CREATE UNIQUE INDEX db_status_lists_index ON db_status_lists(status_remote_id, list_remote_id);
@@ -24,4 +27,8 @@ CREATE UNIQUE INDEX db_status_reblogged_accounts_index ON db_status_reblogged_ac
 CREATE UNIQUE INDEX db_account_followings_index ON db_account_followings(account_remote_id, following_account_remote_id);
 CREATE UNIQUE INDEX db_account_followers_index ON db_account_followers(account_remote_id, follower_account_remote_id);
 CREATE UNIQUE INDEX db_conversation_accounts_index ON db_conversation_accounts(conversation_remote_id, account_remote_id);
-CREATE INDEX scheduled_status_remote_id_index ON db_scheduled_statuses (remote_id);
+CREATE UNIQUE INDEX db_scheduled_status_remote_id_index ON db_scheduled_statuses (remote_id);
+CREATE UNIQUE INDEX db_chat_remote_id_index ON db_chats (remote_id);
+CREATE UNIQUE INDEX db_chat_messages_remote_id_index ON db_chat_messages(remote_id);
+CREATE INDEX db_chat_messages_chat_remote_id_index ON db_chat_messages(chat_remote_id);
+CREATE UNIQUE INDEX db_chat_accounts_index ON db_chat_accounts(chat_remote_id, account_remote_id);

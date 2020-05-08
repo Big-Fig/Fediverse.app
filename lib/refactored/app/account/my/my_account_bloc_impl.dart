@@ -7,6 +7,7 @@ import 'package:fedi/refactored/app/account/my/my_account_local_preference_bloc.
 import 'package:fedi/refactored/app/account/my/my_account_model.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
 import 'package:fedi/refactored/app/auth/instance/auth_instance_model.dart';
+import 'package:fedi/refactored/app/chat/message/chat_message_model.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/pleroma/account/my/pleroma_my_account_model.dart';
 import 'package:fedi/refactored/pleroma/account/my/pleroma_my_account_service.dart';
@@ -37,7 +38,7 @@ class MyAccountBloc extends IMyAccountBloc {
       if (myAccount != null) {
         accountRepository.upsertRemoteAccount(
             mapLocalAccountToRemoteAccount(myAccount),
-            conversationRemoteId: null);
+            conversationRemoteId: null, chatRemoteId: null);
       }
     }));
   }
@@ -109,5 +110,10 @@ class MyAccountBloc extends IMyAccountBloc {
   void updateMyAccountByRemote(IPleromaMyAccount remoteMyAccount) {
     myAccountLocalPreferenceBloc
         .setValue(MyAccountRemoteWrapper(remoteAccount: remoteMyAccount));
+  }
+
+  @override
+  bool checkIsChatMessageFromMe(IChatMessage chatMessage) {
+    return myAccount.remoteId == chatMessage.account.remoteId;
   }
 }
