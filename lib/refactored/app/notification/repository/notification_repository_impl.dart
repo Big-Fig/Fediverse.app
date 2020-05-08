@@ -8,9 +8,9 @@ import 'package:fedi/refactored/app/notification/repository/notification_reposit
 import 'package:fedi/refactored/app/notification/repository/notification_repository_model.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/async/loading/init/async_init_loading_bloc_impl.dart';
+import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/refactored/pleroma/chat/pleroma_chat_model.dart';
 import 'package:fedi/refactored/pleroma/notification/pleroma_notification_model.dart';
-import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/refactored/pleroma/status/pleroma_status_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -55,7 +55,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
     if (remoteStatus != null) {
       await statusRepository.upsertRemoteStatus(remoteStatus,
           listRemoteId: null, conversationRemoteId: null);
-    }   
+    }
     var remoteChatMessage = remoteNotification.chatMessage;
     if (remoteChatMessage != null) {
       await chatMessageRepository.upsertRemoteChatMessage(remoteChatMessage);
@@ -92,7 +92,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
 
     await statusRepository.upsertRemoteStatuses(remoteStatuses,
         conversationRemoteId: conversationRemoteId, listRemoteId: null);
-    
+
     List<IPleromaChatMessage> remoteChatMessages = remoteNotifications
         .map((remoteNotification) => remoteNotification.chatMessage)
         .where((remoteChatMessage) => remoteChatMessage != null)
@@ -119,7 +119,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
       @required int offset,
       @required NotificationOrderingTermData orderingTermData}) async {
     var query = createQuery(
-        excludeTypes:excludeTypes,
+        excludeTypes: excludeTypes,
         olderThanNotification: olderThanNotification,
         newerThanNotification: newerThanNotification,
         limit: limit,
@@ -141,7 +141,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
       @required int offset,
       @required NotificationOrderingTermData orderingTermData}) {
     var query = createQuery(
-        excludeTypes:excludeTypes,
+        excludeTypes: excludeTypes,
         olderThanNotification: olderThanNotification,
         newerThanNotification: newerThanNotification,
         limit: limit,
@@ -313,7 +313,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
       @required INotification newerThanNotification,
       @required NotificationOrderingTermData orderingTermData}) async {
     var query = createQuery(
-        excludeTypes:excludeTypes,
+        excludeTypes: excludeTypes,
         olderThanNotification: olderThanNotification,
         newerThanNotification: newerThanNotification,
         limit: 1,
@@ -331,7 +331,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
       @required INotification newerThanNotification,
       @required NotificationOrderingTermData orderingTermData}) {
     var query = createQuery(
-        excludeTypes:excludeTypes,
+        excludeTypes: excludeTypes,
         olderThanNotification: olderThanNotification,
         newerThanNotification: newerThanNotification,
         limit: 1,
@@ -362,10 +362,26 @@ class NotificationRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Stream<int> watchUnreadCountByType(
-      {@required PleromaNotificationType type}) {
+  Stream<int> watchUnreadCountByType({@required PleromaNotificationType type}) {
     return dao
         .countUnreadByTypeQuery(pleromaNotificationTypeValues.reverse[type])
         .watchSingle();
   }
+
+  @override
+  Future<int> getUnreadCountExcludeTypes(
+          {@required List<PleromaNotificationType> excludeTypes}) async =>
+      dao
+          .countUnreadExcludeTypes(excludeTypes
+              .map((type) => pleromaNotificationTypeValues.reverse[type])
+              .toList())
+          .getSingle();
+  @override
+  Stream<int> watchUnreadCountExcludeTypes(
+          {@required List<PleromaNotificationType> excludeTypes}) =>
+      dao
+          .countUnreadExcludeTypes(excludeTypes
+              .map((type) => pleromaNotificationTypeValues.reverse[type])
+              .toList())
+          .watchSingle();
 }
