@@ -10,12 +10,12 @@ import 'package:fedi/refactored/collapsible/collapsible_bloc.dart';
 import 'package:fedi/refactored/collapsible/collapsible_bloc_impl.dart';
 import 'package:fedi/refactored/collapsible/toggle_collapsible_overlay_widget.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
-import 'package:fedi/refactored/mastodon/notification/mastodon_notification_model.dart';
 import 'package:fedi/refactored/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/refactored/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/refactored/pagination/list/with_new_items/pagination_list_with_new_items_header_widget.dart';
 import 'package:fedi/refactored/pagination/pagination_bloc.dart';
 import 'package:fedi/refactored/pagination/pagination_model.dart';
+import 'package:fedi/refactored/pleroma/notification/pleroma_notification_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -114,11 +114,11 @@ class NotificationTabsWidget extends StatelessWidget {
 
   Widget buildTabBody(BuildContext context, NotificationTab tab,
       INotificationsTabsBloc notificationsTabsBloc) {
-    MastodonNotificationType onlyWithType = mapTabToType(tab);
+    List<PleromaNotificationType> excludeTypes = mapTabToExcludeTypes(tab);
 
     return DisposableProvider<INotificationCachedListBloc>(
       create: (context) => NotificationCachedListBloc.createFromContext(context,
-          onlyWithType: onlyWithType),
+          excludeTypes: excludeTypes),
       child: DisposableProvider<
           IPaginationBloc<PaginationPage<INotification>, INotification>>(
         create: (context) =>
@@ -169,26 +169,47 @@ class NotificationTabsWidget extends StatelessWidget {
     );
   }
 
-  MastodonNotificationType mapTabToType(NotificationTab tab) {
-    MastodonNotificationType onlyWithType;
+  List<PleromaNotificationType> mapTabToExcludeTypes(NotificationTab tab) {
+    List<PleromaNotificationType> excludeTypes;
 
     switch (tab) {
       case NotificationTab.all:
-        onlyWithType = null;
+        excludeTypes = pleromaNotificationTypeValues
+            .valuesWithExclude([PleromaNotificationType.chatMention]);
         break;
       case NotificationTab.mentions:
-        onlyWithType = MastodonNotificationType.mention;
+        excludeTypes = pleromaNotificationTypeValues.valuesWithExclude([
+          PleromaNotificationType.chatMention,
+          PleromaNotificationType.reblog,
+          PleromaNotificationType.favourite,
+          PleromaNotificationType.follow,
+        ]);
         break;
       case NotificationTab.reblogs:
-        onlyWithType = MastodonNotificationType.reblog;
+        excludeTypes = pleromaNotificationTypeValues.valuesWithExclude([
+          PleromaNotificationType.chatMention,
+          PleromaNotificationType.mention,
+          PleromaNotificationType.favourite,
+          PleromaNotificationType.follow,
+        ]);
         break;
       case NotificationTab.favourites:
-        onlyWithType = MastodonNotificationType.favourite;
+        excludeTypes = pleromaNotificationTypeValues.valuesWithExclude([
+          PleromaNotificationType.chatMention,
+          PleromaNotificationType.mention,
+          PleromaNotificationType.reblog,
+          PleromaNotificationType.follow,
+        ]);
         break;
       case NotificationTab.follows:
-        onlyWithType = MastodonNotificationType.follow;
+        excludeTypes = pleromaNotificationTypeValues.valuesWithExclude([
+          PleromaNotificationType.chatMention,
+          PleromaNotificationType.mention,
+          PleromaNotificationType.reblog,
+          PleromaNotificationType.favourite,
+        ]);
         break;
     }
-    return onlyWithType;
+    return excludeTypes;
   }
 }

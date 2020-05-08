@@ -1,7 +1,6 @@
 import 'package:fedi/refactored/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/refactored/app/database/app_database.dart';
 import 'package:fedi/refactored/app/notification/notification_model.dart';
-import 'package:fedi/refactored/mastodon/notification/mastodon_notification_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -15,7 +14,7 @@ Future<DbNotification> createTestDbNotification({
   DbStatus dbStatus,
   bool unread = false,
   DateTime createdAt  ,
-  MastodonNotificationType type = MastodonNotificationType.reblog,
+  String type = "reblog",
 }) async {
   DbNotification dbNotification = DbNotification(
       id: null,

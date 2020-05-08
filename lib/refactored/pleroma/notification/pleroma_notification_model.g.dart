@@ -15,8 +15,7 @@ PleromaNotification _$PleromaNotificationFromJson(Map<String, dynamic> json) {
         ? null
         : DateTime.parse(json['created_at'] as String),
     id: json['id'] as String,
-    type: const MastodonMediaNotificationTypeTypeConverter()
-        .fromJson(json['type'] as String),
+    type: json['type'] as String,
     status: json['status'] == null
         ? null
         : PleromaStatus.fromJson(json['status'] as Map<String, dynamic>),
@@ -29,7 +28,6 @@ Map<String, dynamic> _$PleromaNotificationToJson(
       'account': instance.account,
       'created_at': instance.createdAt?.toIso8601String(),
       'id': instance.id,
-      'type': const MastodonMediaNotificationTypeTypeConverter()
-          .toJson(instance.type),
+      'type': instance.type,
       'status': instance.status,
     };

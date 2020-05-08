@@ -96,7 +96,7 @@ mixin _$NotificationDaoMixin on DatabaseAccessor<AppDatabase> {
       accountRemoteId: row.readString('account_remote_id'),
       statusRemoteId: row.readString('status_remote_id'),
       unread: row.readBool('unread'),
-      type: $DbNotificationsTable.$converter0.mapToDart(row.readString('type')),
+      type: row.readString('type'),
       createdAt: row.readDateTime('created_at'),
     );
   }
