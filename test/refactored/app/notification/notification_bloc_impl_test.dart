@@ -1,5 +1,7 @@
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository_impl.dart';
+import 'package:fedi/refactored/app/chat/message/repository/chat_message_repository.dart';
+import 'package:fedi/refactored/app/chat/message/repository/chat_message_repository_impl.dart';
 import 'package:fedi/refactored/app/database/app_database.dart';
 import 'package:fedi/refactored/app/notification/notification_bloc.dart';
 import 'package:fedi/refactored/app/notification/notification_bloc_impl.dart';
@@ -27,6 +29,7 @@ void main() {
   AppDatabase database;
   IAccountRepository accountRepository;
   IStatusRepository statusRepository;
+  IChatMessageRepository chatMessageRepository;
   INotificationRepository notificationRepository;
 
   setUp(() async {
@@ -34,7 +37,10 @@ void main() {
     accountRepository = AccountRepository(appDatabase: database);
     statusRepository = StatusRepository(
         appDatabase: database, accountRepository: accountRepository);
+    chatMessageRepository = ChatMessageRepository(
+        appDatabase: database, accountRepository: accountRepository);
     notificationRepository = NotificationRepository(
+        chatMessageRepository: chatMessageRepository,
         appDatabase: database,
         accountRepository: accountRepository,
         statusRepository: statusRepository);
@@ -45,8 +51,8 @@ void main() {
 
     status = await createTestStatus(seed: "seed4");
 
-    notification = await createTestNotification(seed: "seed1", status: status
-        .dbStatusPopulated);
+    notification = await createTestNotification(
+        seed: "seed1", status: status.dbStatusPopulated);
 
     notificationBloc = NotificationBloc(
         notification: notification,
@@ -71,12 +77,10 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
   }
 
-
   test('notification', () async {
     expectNotification(notificationBloc.notification, notification);
 
-    var newValue =
-    await createTestNotification(
+    var newValue = await createTestNotification(
         seed: "seed2", remoteId: notification.remoteId);
 
     var listenedValue;
@@ -94,8 +98,6 @@ void main() {
     expectNotification(listenedValue, newValue);
     await subscription.cancel();
   });
-
-
 
   test('account', () async {
     expectAccount(notificationBloc.account, notification.account);
@@ -139,7 +141,6 @@ void main() {
     await subscription.cancel();
   });
 
-
   test('createdAt', () async {
     expect(notificationBloc.createdAt, notification.createdAt);
 
@@ -160,5 +161,4 @@ void main() {
     expect(listenedValue, newValue);
     await subscription.cancel();
   });
-
 }

@@ -158,7 +158,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     var notificationRepository = NotificationRepository(
         appDatabase: moorDatabaseService.appDatabase,
         accountRepository: accountRepository,
-        statusRepository: statusRepository);
+        statusRepository: statusRepository, chatMessageRepository: chatMessageRepository);
     addDisposable(disposable: notificationRepository);
     await globalProviderService
         .asyncInitAndRegister<INotificationRepository>(notificationRepository);
