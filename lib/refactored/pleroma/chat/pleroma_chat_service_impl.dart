@@ -133,9 +133,7 @@ class PleromaChatService implements IPleromaChatService {
     assert(chatId?.isNotEmpty == true);
     var httpResponse = await restService.sendHttpRequest(RestRequest.post(
         relativePath: urlPath.join(chatRelativeUrlPath, chatId, "messages"),
-        queryArgs: [
-          RestRequestQueryArg("content", data.content)
-        ]));
+        bodyJson: data.toJson()));
 
     return parseChatMessageResponse(httpResponse);
   }

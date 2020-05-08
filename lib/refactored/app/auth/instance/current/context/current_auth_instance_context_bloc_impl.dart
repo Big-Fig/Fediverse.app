@@ -10,6 +10,10 @@ import 'package:fedi/refactored/app/account/repository/account_repository.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/refactored/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/refactored/app/auth/instance/current/context/current_auth_instance_context_bloc.dart';
+import 'package:fedi/refactored/app/chat/message/repository/chat_message_repository.dart';
+import 'package:fedi/refactored/app/chat/message/repository/chat_message_repository_impl.dart';
+import 'package:fedi/refactored/app/chat/repository/chat_repository.dart';
+import 'package:fedi/refactored/app/chat/repository/chat_repository_impl.dart';
 import 'package:fedi/refactored/app/conversation/repository/conversation_repository.dart';
 import 'package:fedi/refactored/app/conversation/repository/conversation_repository_impl.dart';
 import 'package:fedi/refactored/app/notification/push/notification_push_loader_bloc_impl.dart';
@@ -37,6 +41,8 @@ import 'package:fedi/refactored/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_service_impl.dart';
 import 'package:fedi/refactored/pleroma/account/public/pleroma_account_public_service.dart';
 import 'package:fedi/refactored/pleroma/account/public/pleroma_account_public_service_impl.dart';
+import 'package:fedi/refactored/pleroma/chat/pleroma_chat_service.dart';
+import 'package:fedi/refactored/pleroma/chat/pleroma_chat_service_impl.dart';
 import 'package:fedi/refactored/pleroma/conversation/pleroma_conversation_service.dart';
 import 'package:fedi/refactored/pleroma/conversation/pleroma_conversation_service_impl.dart';
 import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_service.dart';
@@ -133,6 +139,22 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService
         .asyncInitAndRegister<IConversationRepository>(conversationRepository);
 
+
+    var chatMessageRepository = ChatMessageRepository(
+        appDatabase: moorDatabaseService.appDatabase,
+        accountRepository: accountRepository);
+    addDisposable(disposable: chatMessageRepository);
+    await globalProviderService
+        .asyncInitAndRegister<IChatMessageRepository>(chatMessageRepository);
+    
+    var chatRepository = ChatRepository(
+        appDatabase: moorDatabaseService.appDatabase,
+        accountRepository: accountRepository,
+        messageRepository: chatMessageRepository);
+    addDisposable(disposable: chatRepository);
+    await globalProviderService
+        .asyncInitAndRegister<IChatRepository>(chatRepository);
+
     var notificationRepository = NotificationRepository(
         appDatabase: moorDatabaseService.appDatabase,
         accountRepository: accountRepository,
@@ -204,6 +226,13 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService.asyncInitAndRegister<
         IPleromaConversationService>(pleromaConversationService);
     addDisposable(disposable: pleromaConversationService);
+
+    var pleromaChatService = PleromaChatService(
+        restService: pleromaAuthRestService);
+    await globalProviderService.asyncInitAndRegister<IPleromaChatService>(
+        pleromaChatService);
+    addDisposable(disposable: pleromaChatService);    
+    
     var pleromaSearchService =
         PleromaSearchService(restService: pleromaAuthRestService);
     await globalProviderService

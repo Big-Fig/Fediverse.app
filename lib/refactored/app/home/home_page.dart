@@ -3,7 +3,7 @@ import 'package:fedi/refactored/app/account/my/avatar/my_account_avatar_widget.d
 import 'package:fedi/refactored/app/home/home_model.dart';
 import 'package:fedi/refactored/app/home/tab/account/account_home_tab_page'
     '.dart';
-import 'package:fedi/refactored/app/home/tab/conversations/conversations_home_tab_page.dart';
+import 'package:fedi/refactored/app/home/tab/conversations/chats_home_tab_page.dart';
 import 'package:fedi/refactored/app/home/tab/notifications/notifications_home_tab_page.dart';
 import 'package:fedi/refactored/app/home/tab/timelines/timelines_home_tab_page.dart';
 import 'package:fedi/refactored/app/notification/unread/notification_unread_all_badge_count_widget.dart';
@@ -128,8 +128,10 @@ class _HomePageState extends State<HomePage>
             key: PageStorageKey<String>("NotificationsHomeTabPage"));
         break;
       case AppHomeTab.conversations:
-        return ConversationsHomeTabPage(
-            key: PageStorageKey<String>("ConversationsHomeTabPage"));
+        return ChatsHomeTabPage(
+            key: PageStorageKey<String>("ChatsHomeTabPage"));
+//        return ConversationsHomeTabPage(
+//            key: PageStorageKey<String>("ConversationsHomeTabPage"));
         break;
       case AppHomeTab.account:
         return AccountHomeTabPage();

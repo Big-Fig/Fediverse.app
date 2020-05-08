@@ -52,7 +52,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     var remoteAccount = remoteStatus.account;
 
     await accountRepository.upsertRemoteAccount(remoteAccount,
-        conversationRemoteId: conversationRemoteId);
+        conversationRemoteId: conversationRemoteId, chatRemoteId: null);
 
     await upsert(mapRemoteStatusToDbStatus(remoteStatus));
 
@@ -93,7 +93,7 @@ class StatusRepository extends AsyncInitLoadingBloc
         remoteStatuses.map((remoteStatus) => remoteStatus.account).toList();
 
     await accountRepository.upsertRemoteAccounts(remoteAccounts,
-        conversationRemoteId: conversationRemoteId);
+        conversationRemoteId: conversationRemoteId, chatRemoteId: null);
 
     await upsertAll(remoteStatuses.map(mapRemoteStatusToDbStatus).toList());
 
@@ -493,7 +493,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     var remoteAccount = newRemoteStatus.account;
 
     await accountRepository.upsertRemoteAccount(remoteAccount,
-        conversationRemoteId: null);
+        conversationRemoteId: null, chatRemoteId: null);
 
     await updateById(
         oldLocalStatus.localId, mapRemoteStatusToDbStatus(newRemoteStatus));

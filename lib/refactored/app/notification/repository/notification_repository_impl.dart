@@ -46,7 +46,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
     var remoteAccount = remoteNotification.account;
 
     await accountRepository.upsertRemoteAccount(remoteAccount,
-        conversationRemoteId: conversationRemoteId);
+        conversationRemoteId: conversationRemoteId, chatRemoteId: null);
 
     var remoteStatus = remoteNotification.status;
     if (remoteStatus != null) {
@@ -76,7 +76,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
         .toList();
 
     await accountRepository.upsertRemoteAccounts(remoteAccounts,
-        conversationRemoteId: conversationRemoteId);
+        conversationRemoteId: conversationRemoteId, chatRemoteId: null);
 
     List<IPleromaStatus> remoteStatuses = remoteNotifications
         .map((remoteNotification) => remoteNotification.status)
@@ -279,7 +279,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
     var remoteAccount = newRemoteNotification.account;
 
     await accountRepository.upsertRemoteAccount(remoteAccount,
-        conversationRemoteId: null);
+        conversationRemoteId: null, chatRemoteId: null);
 
     var remoteStatus = newRemoteNotification.status;
 

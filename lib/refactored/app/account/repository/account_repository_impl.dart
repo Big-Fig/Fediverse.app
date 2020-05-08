@@ -5,6 +5,8 @@ import 'package:fedi/refactored/app/account/database/account_followers_database_
 import 'package:fedi/refactored/app/account/database/account_followings_database_dao.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository_model.dart';
+import 'package:fedi/refactored/app/chat/chat_model.dart';
+import 'package:fedi/refactored/app/chat/database/chat_accounts_database_dao.dart';
 import 'package:fedi/refactored/app/conversation/conversation_model.dart';
 import 'package:fedi/refactored/app/conversation/database/conversation_accounts_database_dao.dart';
 import 'package:fedi/refactored/app/database/app_database.dart';
@@ -27,6 +29,7 @@ class AccountRepository extends AsyncInitLoadingBloc
   StatusFavouritedAccountsDao statusFavouritedAccountsDao;
   StatusRebloggedAccountsDao statusRebloggedAccountsDao;
   ConversationAccountsDao conversationAccountsDao;
+  ChatAccountsDao chatAccountsDao;
 
   AccountRepository({@required AppDatabase appDatabase}) {
     dao = appDatabase.accountDao;
@@ -35,6 +38,7 @@ class AccountRepository extends AsyncInitLoadingBloc
     statusFavouritedAccountsDao = appDatabase.statusFavouritedAccountsDao;
     statusRebloggedAccountsDao = appDatabase.statusRebloggedAccountsDao;
     conversationAccountsDao = appDatabase.conversationAccountsDao;
+    chatAccountsDao = appDatabase.chatAccountsDao;
   }
 
   @override
@@ -126,7 +130,7 @@ class AccountRepository extends AsyncInitLoadingBloc
 
   @override
   Future upsertRemoteAccount(IPleromaAccount remoteAccount,
-      {@required conversationRemoteId}) async {
+      {@required conversationRemoteId, @required String chatRemoteId}) async {
     await upsert(mapRemoteAccountToDbAccount(remoteAccount));
 
     if (conversationRemoteId != null) {
@@ -139,11 +143,22 @@ class AccountRepository extends AsyncInitLoadingBloc
               accountRemoteId: accountRemoteId),
           mode: InsertMode.insertOrReplace);
     }
+    if (chatRemoteId != null) {
+      var accountRemoteId = remoteAccount.id;
+
+      await chatAccountsDao.insert(
+          DbChatAccount(
+              id: null,
+              chatRemoteId: chatRemoteId,
+              accountRemoteId: accountRemoteId),
+          mode: InsertMode.insertOrReplace);
+    }
   }
 
   @override
   Future upsertRemoteAccounts(List<IPleromaAccount> remoteAccounts,
-      {@required String conversationRemoteId}) async {
+      {@required String conversationRemoteId,
+      @required String chatRemoteId}) async {
     if (conversationRemoteId != null) {
       var existConversationAccount = await conversationAccountsDao
           .findByConversationRemoteId(conversationRemoteId);
@@ -163,6 +178,30 @@ class AccountRepository extends AsyncInitLoadingBloc
                 .map((accountToInsert) => DbConversationAccount(
                     id: null,
                     conversationRemoteId: conversationRemoteId,
+                    accountRemoteId: accountToInsert.id))
+                .toList(),
+            InsertMode.insertOrReplace);
+      }
+    }
+
+    if (chatRemoteId != null) {
+      var existChatAccount =
+          await chatAccountsDao.findByChatRemoteId(chatRemoteId);
+
+      var accountsToInsert = remoteAccounts?.where((remoteAccount) {
+        var found = existChatAccount.firstWhere(
+            (chatAccount) => chatAccount.accountRemoteId == remoteAccount.id,
+            orElse: () => null);
+        var exist = found != null;
+        return !exist;
+      });
+
+      if (accountsToInsert?.isNotEmpty == true) {
+        await chatAccountsDao.insertAll(
+            accountsToInsert
+                .map((accountToInsert) => DbChatAccount(
+                    id: null,
+                    chatRemoteId: chatRemoteId,
                     accountRemoteId: accountToInsert.id))
                 .toList(),
             InsertMode.insertOrReplace);
@@ -196,6 +235,7 @@ class AccountRepository extends AsyncInitLoadingBloc
       {@required IAccount olderThanAccount,
       @required IAccount newerThanAccount,
       @required IConversation onlyInConversation,
+      @required IChat onlyInChat,
       @required IStatus onlyInStatusRebloggedBy,
       @required IStatus onlyInStatusFavouritedBy,
       @required IAccount onlyInAccountFollowers,
@@ -215,7 +255,8 @@ class AccountRepository extends AsyncInitLoadingBloc
         searchQuery: searchQuery,
         limit: limit,
         offset: offset,
-        orderingTermData: orderingTermData);
+        orderingTermData: orderingTermData,
+        onlyInChat: onlyInChat);
 
     var typedAccountsList = await query.get();
 
@@ -230,6 +271,7 @@ class AccountRepository extends AsyncInitLoadingBloc
       {@required IAccount olderThanAccount,
       @required IAccount newerThanAccount,
       @required IConversation onlyInConversation,
+      @required IChat onlyInChat,
       @required IStatus onlyInStatusRebloggedBy,
       @required IStatus onlyInStatusFavouritedBy,
       @required IAccount onlyInAccountFollowers,
@@ -239,18 +281,18 @@ class AccountRepository extends AsyncInitLoadingBloc
       @required int offset,
       @required AccountOrderingTermData orderingTermData}) {
     var query = createQuery(
-      olderThanAccount: olderThanAccount,
-      newerThanAccount: newerThanAccount,
-      onlyInConversation: onlyInConversation,
-      onlyInStatusRebloggedBy: onlyInStatusRebloggedBy,
-      onlyInStatusFavouritedBy: onlyInStatusFavouritedBy,
-      onlyInAccountFollowers: onlyInAccountFollowers,
-      onlyInAccountFollowing: onlyInAccountFollowing,
-      searchQuery: searchQuery,
-      limit: limit,
-      offset: offset,
-      orderingTermData: orderingTermData,
-    );
+        olderThanAccount: olderThanAccount,
+        newerThanAccount: newerThanAccount,
+        onlyInConversation: onlyInConversation,
+        onlyInStatusRebloggedBy: onlyInStatusRebloggedBy,
+        onlyInStatusFavouritedBy: onlyInStatusFavouritedBy,
+        onlyInAccountFollowers: onlyInAccountFollowers,
+        onlyInAccountFollowing: onlyInAccountFollowing,
+        searchQuery: searchQuery,
+        limit: limit,
+        offset: offset,
+        orderingTermData: orderingTermData,
+        onlyInChat: onlyInChat);
 
     Stream<List<TypedResult>> stream = query.watch();
 
@@ -264,6 +306,7 @@ class AccountRepository extends AsyncInitLoadingBloc
       {@required IAccount olderThanAccount,
       @required IAccount newerThanAccount,
       @required IConversation onlyInConversation,
+      @required IChat onlyInChat,
       @required IStatus onlyInStatusRebloggedBy,
       @required IStatus onlyInStatusFavouritedBy,
       @required IAccount onlyInAccountFollowers,
@@ -349,6 +392,7 @@ class AccountRepository extends AsyncInitLoadingBloc
       {@required IAccount olderThanAccount,
       @required IAccount newerThanAccount,
       @required IConversation onlyInConversation,
+      @required IChat onlyInChat,
       @required IStatus onlyInStatusRebloggedBy,
       @required IStatus onlyInStatusFavouritedBy,
       @required IAccount onlyInAccountFollowers,
@@ -366,7 +410,8 @@ class AccountRepository extends AsyncInitLoadingBloc
         searchQuery: searchQuery,
         orderingTermData: orderingTermData,
         limit: 1,
-        offset: null);
+        offset: null,
+        onlyInChat: onlyInChat);
     return accounts?.first;
   }
 
@@ -375,6 +420,7 @@ class AccountRepository extends AsyncInitLoadingBloc
       {@required IAccount olderThanAccount,
       @required IAccount newerThanAccount,
       @required IConversation onlyInConversation,
+      @required IChat onlyInChat,
       @required IStatus onlyInStatusRebloggedBy,
       @required IStatus onlyInStatusFavouritedBy,
       @required IAccount onlyInAccountFollowers,
@@ -392,14 +438,16 @@ class AccountRepository extends AsyncInitLoadingBloc
         searchQuery: searchQuery,
         orderingTermData: orderingTermData,
         limit: 1,
-        offset: null);
+        offset: null,
+        onlyInChat: onlyInChat);
     return accountsStream.map((accounts) => accounts?.first);
   }
 
   @override
   Future updateAccountFollowings(
       String accountRemoteId, List<PleromaAccount> followings) async {
-    await upsertRemoteAccounts(followings, conversationRemoteId: null);
+    await upsertRemoteAccounts(followings,
+        conversationRemoteId: null, chatRemoteId: null);
     await accountFollowingsDao.deleteByAccountRemoteId(accountRemoteId);
     await accountFollowingsDao.insertAll(
         followings
@@ -414,7 +462,7 @@ class AccountRepository extends AsyncInitLoadingBloc
   @override
   Future updateAccountFollowers(
       String accountRemoteId, List<PleromaAccount> followers) async {
-    await upsertRemoteAccounts(followers, conversationRemoteId: null);
+    await upsertRemoteAccounts(followers, conversationRemoteId: null, chatRemoteId: null);
     await accountFollowersDao.deleteByAccountRemoteId(accountRemoteId);
     await accountFollowersDao.insertAll(
         followers
@@ -431,7 +479,7 @@ class AccountRepository extends AsyncInitLoadingBloc
       {@required String statusRemoteId,
       @required List<PleromaAccount> favouritedByAccounts}) async {
     await upsertRemoteAccounts(favouritedByAccounts,
-        conversationRemoteId: null);
+        conversationRemoteId: null, chatRemoteId: null);
     await statusFavouritedAccountsDao.deleteByStatusRemoteId(statusRemoteId);
     await statusFavouritedAccountsDao.insertAll(
         favouritedByAccounts
@@ -447,7 +495,7 @@ class AccountRepository extends AsyncInitLoadingBloc
   Future updateStatusRebloggedBy(
       {@required String statusRemoteId,
       @required List<PleromaAccount> rebloggedByAccounts}) async {
-    await upsertRemoteAccounts(rebloggedByAccounts, conversationRemoteId: null);
+    await upsertRemoteAccounts(rebloggedByAccounts, conversationRemoteId: null, chatRemoteId: null);
     await statusRebloggedAccountsDao.deleteByStatusRemoteId(statusRemoteId);
     await statusRebloggedAccountsDao.insertAll(
         rebloggedByAccounts
@@ -473,7 +521,8 @@ class AccountRepository extends AsyncInitLoadingBloc
           onlyInAccountFollowing: null,
           limit: null,
           offset: null,
-          orderingTermData: null);
+          orderingTermData: null,
+          onlyInChat: null);
 
   @override
   Stream<List<IAccount>> watchConversationAccounts(
@@ -489,5 +538,36 @@ class AccountRepository extends AsyncInitLoadingBloc
           onlyInAccountFollowing: null,
           limit: null,
           offset: null,
-          orderingTermData: null);
+          orderingTermData: null,
+          onlyInChat: null);
+
+  @override
+  Future<List<IAccount>> getChatAccounts({@required IChat chat}) => getAccounts(
+      searchQuery: null,
+      olderThanAccount: null,
+      newerThanAccount: null,
+      onlyInConversation: null,
+      onlyInStatusRebloggedBy: null,
+      onlyInStatusFavouritedBy: null,
+      onlyInAccountFollowers: null,
+      onlyInAccountFollowing: null,
+      limit: null,
+      offset: null,
+      orderingTermData: null,
+      onlyInChat: chat);
+  @override
+  Stream<List<IAccount>> watchChatAccounts({@required IChat chat}) =>
+      watchAccounts(
+          searchQuery: null,
+          olderThanAccount: null,
+          newerThanAccount: null,
+          onlyInConversation: null,
+          onlyInStatusRebloggedBy: null,
+          onlyInStatusFavouritedBy: null,
+          onlyInAccountFollowers: null,
+          onlyInAccountFollowing: null,
+          limit: null,
+          offset: null,
+          orderingTermData: null,
+          onlyInChat: chat);
 }

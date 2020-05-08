@@ -236,6 +236,20 @@
         }
       }
     },
+    "chat": {
+      "accounts": {
+        "title": "Chat accounts"
+      },
+      "action": {
+        "more": "More"
+      },
+      "preview": {
+        "you": "You: {}"
+      },
+      "start": {
+        "title": "Start chat"
+      }
+    },
     "conversation": {
       "accounts": {
         "title": "Conversation accounts"
@@ -268,6 +282,9 @@
         },
         "conversations": {
           "title": "Messages"
+        },
+        "chats": {
+          "title": "Chats"
         }
       }
     },

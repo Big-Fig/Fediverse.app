@@ -64,7 +64,7 @@ class SelectAccountCachedListBloc extends DisposableOwner
 
       if (remoteAccounts != null) {
         await accountRepository.upsertRemoteAccounts(remoteAccounts,
-            conversationRemoteId: null);
+            conversationRemoteId: null, chatRemoteId: null);
 
         return true;
       } else {
@@ -101,7 +101,7 @@ class SelectAccountCachedListBloc extends DisposableOwner
         onlyInStatusFavouritedBy: null,
         onlyInAccountFollowing: null,
         onlyInStatusRebloggedBy: null,
-        searchQuery: searchText);
+        searchQuery: searchText, onlyInChat: null);
 
     if (excludeMyAccount) {
       accounts = accounts.where((account) {

@@ -10,7 +10,7 @@ part 'pleroma_chat_model.g.dart';
 abstract class IPleromaChat {
   String get id;
 
-  bool get unread;
+  int get unread;
 
   IPleromaAccount get account;
 }
@@ -20,7 +20,7 @@ class PleromaChat implements IPleromaChat {
   @override
   final String id;
   @override
-  final bool unread;
+  final int unread;
   @override
   final PleromaAccount account;
 
@@ -136,6 +136,8 @@ class PleromaChatMessage extends IPleromaChatMessage {
 
 abstract class IPleromaChatMessageSendData {
   String get content;
+  Map<String, dynamic> toJson();
+
 }
 
 @JsonSerializable()
@@ -167,6 +169,7 @@ class PleromaChatMessageSendData implements IPleromaChatMessageSendData {
       List<PleromaChatMessageSendData>.from(
           json.decode(str).map((x) => PleromaChatMessageSendData.fromJson(x)));
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaChatMessageSendDataToJson(this);
 
   String toJsonString() => jsonEncode(_$PleromaChatMessageSendDataToJson(this));

@@ -50,7 +50,7 @@ class StatusFavouriteAccountCachedListBloc extends DisposableOwner
 
       if (remoteAccounts != null) {
         await accountRepository.upsertRemoteAccounts(remoteAccounts,
-            conversationRemoteId: null);
+            conversationRemoteId: null, chatRemoteId: null);
 
         await accountRepository.updateStatusFavouritedBy(
             statusRemoteId: status.remoteId,
@@ -91,7 +91,7 @@ class StatusFavouriteAccountCachedListBloc extends DisposableOwner
         onlyInAccountFollowers: null,
         onlyInStatusFavouritedBy: status,
         onlyInAccountFollowing: null,
-        onlyInStatusRebloggedBy: null);
+        onlyInStatusRebloggedBy: null, onlyInChat: null);
 
     _logger.finer(() => "finish loadLocalItems accounts ${accounts.length}");
     return accounts;

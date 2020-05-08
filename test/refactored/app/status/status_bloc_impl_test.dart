@@ -1028,7 +1028,7 @@ void main() {
 
     await accountRepository.upsertRemoteAccount(
         mapLocalAccountToRemoteAccount(account1),
-        conversationRemoteId: null);
+        conversationRemoteId: null, chatRemoteId: null);
 
     expectAccount(await statusBloc.loadInReplyToAccount(), null);
 

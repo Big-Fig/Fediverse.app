@@ -343,7 +343,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
         var remoteAccount = await pleromaAccountService.getAccount(
             accountRemoteId: accountRemoteId);
         await accountRepository.upsertRemoteAccount(remoteAccount,
-            conversationRemoteId: null);
+            conversationRemoteId: null, chatRemoteId: null);
       }
       account = await accountRepository.findByRemoteId(accountRemoteId);
     }
