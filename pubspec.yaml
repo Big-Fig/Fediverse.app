@@ -146,6 +146,11 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
+  fonts:
+  - family:  FediIcons
+    fonts:
+      - asset: fonts/FediIcons.ttf
+
   # To add assets to your application, add an assets section, like this:
   # assets:
   #  - images/a_dot_burr.jpeg
@@ -162,6 +167,7 @@ flutter:
     - assets/images/repost.png
     - assets/images/share.png
     - assets/images/happy.png
+    - assets/fonts/FediIcons.ttf
 #    - assets/images/addVideoFileIcon.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
