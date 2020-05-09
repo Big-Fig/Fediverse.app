@@ -7,7 +7,6 @@ import 'package:fedi/refactored/app/emoji/emoji_text_helper.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/refactored/pleroma/chat/pleroma_chat_service.dart';
-import 'package:fedi/refactored/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';

@@ -7,10 +7,10 @@ import 'package:fedi/refactored/pagination/pagination_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-abstract class IChatsListBloc extends Disposable {
-  static IChatsListBloc of(BuildContext context,
+abstract class IChatListContainerBloc extends Disposable {
+  static IChatListContainerBloc of(BuildContext context,
           {bool listen = true}) =>
-      Provider.of<IChatsListBloc>(context, listen: listen);
+      Provider.of<IChatListContainerBloc>(context, listen: listen);
 
   IChatCachedListService get chatListService;
 

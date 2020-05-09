@@ -1,9 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/refactored/app/chat/chats_list_bloc.dart';
-import 'package:fedi/refactored/app/chat/chats_list_bloc_impl.dart';
-import 'package:fedi/refactored/app/chat/chats_list_widget.dart';
+import 'package:fedi/refactored/app/chat/list/chat_list_container_bloc.dart';
+import 'package:fedi/refactored/app/chat/list/chat_list_container_bloc_impl.dart';
+import 'package:fedi/refactored/app/chat/list/chat_list_container_widget.dart';
 import 'package:fedi/refactored/app/chat/start/start_chat_page.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -57,10 +57,10 @@ class ChatsHomeTabPage extends StatelessWidget {
     );
   }
 
-  DisposableProvider<IChatsListBloc> buildPleromaBody() {
-    return DisposableProvider<IChatsListBloc>(
-        create: (context) => ChatsListBloc.createFromContext(context),
-        child: ChatsListWidget(key: key));
+  DisposableProvider<IChatListContainerBloc> buildPleromaBody() {
+    return DisposableProvider<IChatListContainerBloc>(
+        create: (context) => ChatsListContainerBloc.createFromContext(context),
+        child: ChatListContainerWidget(key: key));
   }
 
   Center buildMastodonBody(BuildContext context) {

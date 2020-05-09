@@ -1,5 +1,5 @@
 import 'package:fedi/refactored/app/chat/message/chat_message_model.dart';
-import 'package:fedi/refactored/app/chat/message/list/cached/chat_message_list_bloc.dart';
+import 'package:fedi/refactored/app/chat/message/list/cached/chat_message_cached_list_bloc.dart';
 import 'package:fedi/refactored/app/chat/message/pagination/cached/chat_message_cached_pagination_bloc.dart';
 import 'package:fedi/refactored/app/pagination/cached/cached_pleroma_pagination_bloc_impl.dart';
 import 'package:fedi/refactored/pagination/cached/cached_pagination_model.dart';

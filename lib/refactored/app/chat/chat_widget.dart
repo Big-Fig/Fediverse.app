@@ -1,7 +1,7 @@
 import 'package:fedi/refactored/app/chat/chat_bloc.dart';
 import 'package:fedi/refactored/app/chat/message/chat_message_model.dart';
-import 'package:fedi/refactored/app/chat/message/list/cached/chat_message_list_bloc.dart';
-import 'package:fedi/refactored/app/chat/message/list/cached/chat_message_list_bloc_impl.dart';
+import 'package:fedi/refactored/app/chat/message/list/cached/chat_message_cached_list_bloc.dart';
+import 'package:fedi/refactored/app/chat/message/list/cached/chat_message_cached_list_bloc_impl.dart';
 import 'package:fedi/refactored/app/chat/message/list/chat_message_list_widget.dart';
 import 'package:fedi/refactored/app/chat/message/pagination/cached/chat_message_cached_pagination_bloc_impl.dart';
 import 'package:fedi/refactored/app/chat/message/pagination/list/chat_message_pagination_list_with_new_items_bloc_impl.dart';
