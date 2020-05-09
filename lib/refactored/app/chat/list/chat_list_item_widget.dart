@@ -75,6 +75,7 @@ class ChatListItemWidget extends StatelessWidget {
           if (lastMessage == null) {
             return SizedBox.shrink();
           }
+
           // todo: handle emojis
           return Text(
             lastMessage.content,

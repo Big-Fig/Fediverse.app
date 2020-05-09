@@ -16,14 +16,28 @@ class ChatTitleWidget extends StatelessWidget {
           if (accounts?.isNotEmpty != true) {
             return SizedBox.shrink();
           }
-          return Row(
-            children: <Widget>[
-              Text(
-                accounts.map((account) => account.acct).join(", "),
-                style: TextStyle(fontSize: 18),
-              ),
-            ],
-          );
+          var accountsText = accounts.map((account) => account.acct).join(", ");
+          return StreamBuilder<int>(
+              stream: chatBloc.unreadCountStream,
+              initialData: chatBloc.unreadCount,
+              builder: (context, snapshot) {
+                var unreadCount = snapshot.data;
+
+                var finalText;
+
+                if (unreadCount > 0) {
+                  finalText = "$accountsText ($unreadCount)";
+                } else {
+                  finalText = accountsText;
+                }
+
+                return Text(
+                  finalText,
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: unreadCount > 0 ? FontWeight.bold : null),
+                );
+              });
         });
   }
 }

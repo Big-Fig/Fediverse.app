@@ -291,4 +291,19 @@ class ChatRepository extends AsyncInitLoadingBloc implements IChatRepository {
       return null;
     }
   }
+
+  @override
+  Future markAsRead({@required IChat chat}) {
+    return updateById(chat.localId,
+        DbChat(id: chat.localId, remoteId: chat.remoteId, unread: 0));
+  }
+
+  @override
+  Future<int> getTotalUnreadCount() => dao.getTotalAmountUnread();
+
+  @override
+  Stream<int> watchTotalUnreadCount() => dao.watchTotalAmountUnread();
+
+  @override
+  Future incrementUnreadCount({@required String chatRemoteId}) => dao.incrementUnreadCount();
 }

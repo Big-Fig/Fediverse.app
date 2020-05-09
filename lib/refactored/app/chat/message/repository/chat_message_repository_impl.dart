@@ -293,8 +293,7 @@ class ChatMessageRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<IChatMessage> getLastChatMessage(
-          {@required IChat chat}) =>
+  Future<IChatMessage> getChatLastChatMessage({@required IChat chat}) =>
       getChatMessage(
           onlyInChat: chat,
           olderThanChatMessage: null,
@@ -304,7 +303,7 @@ class ChatMessageRepository extends AsyncInitLoadingBloc
               orderByType: ChatMessageOrderByType.remoteId));
 
   @override
-  Stream<IChatMessage> watchLastChatMessage({@required IChat chat}) =>
+  Stream<IChatMessage> watchChatLastChatMessage({@required IChat chat}) =>
       watchChatMessage(
           onlyInChat: chat,
           olderThanChatMessage: null,
@@ -312,4 +311,5 @@ class ChatMessageRepository extends AsyncInitLoadingBloc
           orderingTermData: ChatMessageOrderingTermData(
               orderingMode: OrderingMode.desc,
               orderByType: ChatMessageOrderByType.remoteId));
+
 }

@@ -2,10 +2,10 @@ import 'package:badges/badges.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-abstract class NotificationUnreadBadgeCountWidget extends StatelessWidget {
+abstract class BadgeCountWidget extends StatelessWidget {
   final Widget child;
 
-  NotificationUnreadBadgeCountWidget({@required this.child});
+  BadgeCountWidget({@required this.child});
 
   Stream<int> retrieveUnreadBadgeCountStream(BuildContext context);
 

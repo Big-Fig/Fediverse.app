@@ -13,14 +13,12 @@ abstract class IChatRepository
         IReadIdListRepository<DbChatWrapper, int>,
         IWriteIdListRepository<DbChat, int>,
         Disposable {
-  static IChatRepository of(BuildContext context,
-          {bool listen = true}) =>
+  static IChatRepository of(BuildContext context, {bool listen = true}) =>
       Provider.of<IChatRepository>(context, listen: listen);
 
   Future<DbChatWrapper> findByRemoteId(String remoteId);
 
-  Future upsertRemoteChats(
-      List<IPleromaChat> remoteChats);
+  Future upsertRemoteChats(List<IPleromaChat> remoteChats);
 
   Stream<DbChatWrapper> watchByRemoteId(String remoteId);
 
@@ -51,8 +49,15 @@ abstract class IChatRepository
       @required ChatOrderingTermData orderingTermData});
 
   Future updateLocalChatByRemoteChat(
-      {@required IChat oldLocalChat,
-      @required IPleromaChat newRemoteChat});
+      {@required IChat oldLocalChat, @required IPleromaChat newRemoteChat});
+
+  Future<int> getTotalUnreadCount();
+
+  Stream<int> watchTotalUnreadCount();
 
   Future<IChat> findByAccount({@required IAccount account});
+
+  Future markAsRead({@required IChat chat});
+
+  Future incrementUnreadCount({@required String chatRemoteId});
 }

@@ -13,8 +13,7 @@ var _chatAccountsAliasId = "chatAccounts";
 ], queries: {
   "countAll": "SELECT Count(*) FROM db_chats;",
   "findById": "SELECT * FROM db_chats WHERE id = :id;",
-  "findByRemoteId":
-      "SELECT * FROM db_chats WHERE remote_id LIKE :remoteId;",
+  "findByRemoteId": "SELECT * FROM db_chats WHERE remote_id LIKE :remoteId;",
   "countById": "SELECT COUNT(*) FROM db_chats WHERE id = :id;",
   "deleteById": "DELETE FROM db_chats WHERE id = :id;",
   "clear": "DELETE FROM db_chats",
@@ -22,8 +21,7 @@ var _chatAccountsAliasId = "chatAccounts";
   "findLocalIdByRemoteId": "SELECT id FROM db_chats WHERE remote_id = "
       ":remoteId;",
 })
-class ChatDao extends DatabaseAccessor<AppDatabase>
-    with _$ChatDaoMixin {
+class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
   @override
   final AppDatabase db;
   $DbAccountsTable accountAlias;
@@ -32,19 +30,17 @@ class ChatDao extends DatabaseAccessor<AppDatabase>
   // Called by the AppDatabase class
   ChatDao(this.db) : super(db) {
     accountAlias = alias(db.dbAccounts, _accountAliasId);
-    chatAccountsAlias =
-        alias(db.dbChatAccounts, _chatAccountsAliasId);
+    chatAccountsAlias = alias(db.dbChatAccounts, _chatAccountsAliasId);
   }
 
-  Future<int> insert(Insertable<DbChat> entity,
-          {InsertMode mode}) async =>
+  Future<int> insert(Insertable<DbChat> entity, {InsertMode mode}) async =>
       into(db.dbChats).insert(entity, mode: mode);
 
   Future<int> upsert(Insertable<DbChat> entity) async =>
       into(db.dbChats).insert(entity, mode: InsertMode.insertOrReplace);
 
-  Future insertAll(Iterable<Insertable<DbChat>> entities,
-          InsertMode mode) async =>
+  Future insertAll(
+          Iterable<Insertable<DbChat>> entities, InsertMode mode) async =>
       await batch((batch) {
         batch.insertAll(db.dbChats, entities, mode: mode);
       });
@@ -66,13 +62,12 @@ class ChatDao extends DatabaseAccessor<AppDatabase>
     return localId;
   }
 
-  SimpleSelectStatement<$DbChatsTable, DbChat>
-      startSelectQuery() => (select(db.dbChats));
+  SimpleSelectStatement<$DbChatsTable, DbChat> startSelectQuery() =>
+      (select(db.dbChats));
 
   /// remote ids are strings but it is possible to compare them in
   /// chronological order
-  SimpleSelectStatement<$DbChatsTable, DbChat>
-      addRemoteIdBoundsWhere(
+  SimpleSelectStatement<$DbChatsTable, DbChat> addRemoteIdBoundsWhere(
     SimpleSelectStatement<$DbChatsTable, DbChat> query, {
     @required String minimumRemoteIdExcluding,
     @required String maximumRemoteIdExcluding,
@@ -93,6 +88,36 @@ class ChatDao extends DatabaseAccessor<AppDatabase>
     }
 
     return query;
+  }
+
+  Future<int> incrementUnreadCount() {
+    var query = db.customUpdate("UPDATE db_chats "
+        "SET unread = unread + 1");
+
+    return query;
+  }
+
+  Future<int> getTotalAmountUnread() {
+    var query = db.customSelectQuery("SELECT SUM(db_chats.unread) "
+        "as unread_total FROM db_chats");
+
+    return query
+        .map((queryRow) => queryRow.readInt("unread_total"))
+        .getSingle();
+  }
+
+  Stream<int> watchTotalAmountUnread() {
+    // todo: remove hack
+    // it is not possible to use custom sql query from getTotalAmountUnread
+    // unfortunately moor don't support watch for custom queries with sum only
+    var query = db.select(dbChats)
+      ..where((chat) => chat.unread.isBiggerThanValue(0));
+
+    var unreadChatsStream = query.watch();
+
+    return unreadChatsStream.map((unreadChats) {
+      return unreadChats.fold(0, (previous, chat) => chat.unread);
+    });
   }
 
   SimpleSelectStatement<$DbChatsTable, DbChat> orderBy(

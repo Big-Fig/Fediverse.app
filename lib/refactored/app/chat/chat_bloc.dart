@@ -14,6 +14,14 @@ abstract class IChatBloc implements Disposable, IAsyncInitLoadingBloc {
 
   Stream<IChat> get chatStream;
 
+  int get unreadCount;
+
+  Stream<int> get unreadCountStream;
+
+  bool get isHaveUnread;
+
+  Stream<bool> get isHaveUnreadStream;
+
   IChatMessage get lastMessage;
 
   Stream<IChatMessage> get lastMessageStream;
@@ -27,4 +35,6 @@ abstract class IChatBloc implements Disposable, IAsyncInitLoadingBloc {
   Stream<List<IAccount>> get accountsWithoutMeStream;
 
   Future refreshFromNetwork();
+
+  Future markAsRead();
 }

@@ -10,6 +10,8 @@ import 'package:fedi/refactored/app/account/repository/account_repository.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/refactored/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/refactored/app/auth/instance/current/context/current_auth_instance_context_bloc.dart';
+import 'package:fedi/refactored/app/chat/current/current_chat_bloc.dart';
+import 'package:fedi/refactored/app/chat/current/current_chat_bloc_impl.dart';
 import 'package:fedi/refactored/app/chat/message/repository/chat_message_repository.dart';
 import 'package:fedi/refactored/app/chat/message/repository/chat_message_repository_impl.dart';
 import 'package:fedi/refactored/app/chat/repository/chat_repository.dart';
@@ -139,14 +141,13 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService
         .asyncInitAndRegister<IConversationRepository>(conversationRepository);
 
-
     var chatMessageRepository = ChatMessageRepository(
         appDatabase: moorDatabaseService.appDatabase,
         accountRepository: accountRepository);
     addDisposable(disposable: chatMessageRepository);
     await globalProviderService
         .asyncInitAndRegister<IChatMessageRepository>(chatMessageRepository);
-    
+
     var chatRepository = ChatRepository(
         appDatabase: moorDatabaseService.appDatabase,
         accountRepository: accountRepository,
@@ -158,7 +159,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     var notificationRepository = NotificationRepository(
         appDatabase: moorDatabaseService.appDatabase,
         accountRepository: accountRepository,
-        statusRepository: statusRepository, chatMessageRepository: chatMessageRepository);
+        statusRepository: statusRepository,
+        chatMessageRepository: chatMessageRepository);
     addDisposable(disposable: notificationRepository);
     await globalProviderService
         .asyncInitAndRegister<INotificationRepository>(notificationRepository);
@@ -227,12 +229,12 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         IPleromaConversationService>(pleromaConversationService);
     addDisposable(disposable: pleromaConversationService);
 
-    var pleromaChatService = PleromaChatService(
-        restService: pleromaAuthRestService);
-    await globalProviderService.asyncInitAndRegister<IPleromaChatService>(
-        pleromaChatService);
-    addDisposable(disposable: pleromaChatService);    
-    
+    var pleromaChatService =
+        PleromaChatService(restService: pleromaAuthRestService);
+    await globalProviderService
+        .asyncInitAndRegister<IPleromaChatService>(pleromaChatService);
+    addDisposable(disposable: pleromaChatService);
+
     var pleromaSearchService =
         PleromaSearchService(restService: pleromaAuthRestService);
     await globalProviderService
@@ -285,8 +287,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
 
     var pushSubscriptionBloc = PushSubscriptionBloc(
         pushRelayService: pushRelayService,
-        subscriptionLocalPreferencesBloc:
-            pushSubscriptionLocalPreferenceBloc,
+        subscriptionLocalPreferencesBloc: pushSubscriptionLocalPreferenceBloc,
         pleromaPushService: pleromaPushService,
         currentInstance: currentInstance,
         fcmPushService: fcmPushService);
@@ -300,11 +301,21 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       await pushSubscriptionBloc.subscribeWithDefaultPreferences();
     }
 
+    var currentChatBloc = CurrentChatBloc();
+
+    await globalProviderService
+        .asyncInitAndRegister<ICurrentChatBloc>(currentChatBloc);
+
+    addDisposable(disposable: currentChatBloc);
+
     var notificationPushLoaderBloc = NotificationPushLoaderBloc(
         currentInstance: currentInstance,
         pushHandlerBloc: pushHandlerBloc,
         notificationRepository: notificationRepository,
-        pleromaNotificationService: pleromaNotificationService);
+        pleromaNotificationService: pleromaNotificationService,
+        chatRepository: chatRepository,
+        currentChatBloc: currentChatBloc,
+        pleromaChatService: pleromaChatService);
 
     addDisposable(disposable: notificationPushLoaderBloc);
 
