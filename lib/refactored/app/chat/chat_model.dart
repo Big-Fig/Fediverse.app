@@ -6,6 +6,8 @@ abstract class IChat {
   String get remoteId;
 
   int get unread;
+
+  IChat copyWith({int id, String remoteId, bool unread});
 }
 
 class DbChatWrapper implements IChat {
@@ -27,6 +29,7 @@ class DbChatWrapper implements IChat {
     return 'DbChatWrapper{dbChat: $dbChat}';
   }
 
+  @override
   DbChatWrapper copyWith({int id, String remoteId, bool unread}) =>
       DbChatWrapper(dbChat.copyWith(
         id: id ?? localId,

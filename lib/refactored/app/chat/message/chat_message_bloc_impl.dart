@@ -3,6 +3,7 @@ import 'package:fedi/refactored/app/account/repository/account_repository.dart';
 import 'package:fedi/refactored/app/chat/message/chat_message_bloc.dart';
 import 'package:fedi/refactored/app/chat/message/chat_message_model.dart';
 import 'package:fedi/refactored/app/chat/message/repository/chat_message_repository.dart';
+import 'package:fedi/refactored/app/emoji/emoji_text_helper.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/refactored/pleroma/chat/pleroma_chat_service.dart';
@@ -194,12 +195,12 @@ class ChatMessageBloc extends DisposableOwner implements IChatMessageBloc {
 
   @override
   String get contentWithEmojis =>
-      _addEmojiToHtmlContent(chatMessage.content, chatMessage.emojis);
+      addEmojiToHtmlContent(chatMessage.content, chatMessage.emojis);
 
   @override
   Stream<String> get contentWithEmojisStream => chatMessageStream
       .map((chatMessage) =>
-          _addEmojiToHtmlContent(chatMessage.content, chatMessage.emojis))
+          addEmojiToHtmlContent(chatMessage.content, chatMessage.emojis))
       .distinct();
 
   @override
@@ -209,26 +210,5 @@ class ChatMessageBloc extends DisposableOwner implements IChatMessageBloc {
     _logger.finest(() => "dispose");
   }
 
-  String _addEmojiToHtmlContent(
-    String content,
-    List<IPleromaEmoji> emoji,
-  ) {
-    if (emoji?.isNotEmpty != true) {
-      return content;
-    }
 
-    List<IPleromaEmoji> customEmoji = emoji ?? [];
-
-    var newHtmlContent = content;
-    for (int i = 0; i < customEmoji.length; i++) {
-      var emoji = customEmoji[i];
-      String shortcode = emoji.shortcode;
-      String url = emoji.url;
-
-      newHtmlContent = newHtmlContent.replaceAll(
-          ":$shortcode", '<img src="$url" width="20">');
-    }
-    newHtmlContent = "<html><body>$newHtmlContent</body></html>";
-    return newHtmlContent;
-  }
 }

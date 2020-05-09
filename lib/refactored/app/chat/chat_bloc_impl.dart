@@ -12,8 +12,7 @@ import 'package:flutter/widgets.dart';
 import 'package:moor/moor.dart';
 import 'package:rxdart/rxdart.dart';
 
-class ChatBloc extends AsyncInitLoadingBloc
-    implements IChatBloc {
+class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
   final BehaviorSubject<IChat> _chatSubject;
 
   // ignore: close_sinks
@@ -69,7 +68,7 @@ class ChatBloc extends AsyncInitLoadingBloc
 
         addDisposable(
             streamSubscription: messageRepository
-                .watchLastChatMessage(chat: chat)
+                .watchChatLastChatMessage(chat: chat)
                 .listen((lastMessage) {
           if (lastMessage != null) {
             _lastMessageSubject.add(lastMessage);
@@ -92,14 +91,12 @@ class ChatBloc extends AsyncInitLoadingBloc
 
   @override
   Future internalAsyncInit() async {
-    var message = await messageRepository.getLastChatMessage(
-        chat: chat);
+    var message = await messageRepository.getChatLastChatMessage(chat: chat);
     if (!_lastMessageSubject.isClosed) {
       _lastMessageSubject.add(message);
     }
 
-    var accounts = await accountRepository.getChatAccounts(
-        chat: chat);
+    var accounts = await accountRepository.getChatAccounts(chat: chat);
 
     if (!_accountsSubject.isClosed) {
       _accountsSubject.add(accounts);
@@ -155,18 +152,41 @@ class ChatBloc extends AsyncInitLoadingBloc
   Stream<IChatMessage> get lastMessageStream => _lastMessageSubject.stream;
 
   static ChatBloc createFromContext(BuildContext context,
-      {@required IChat chat,
-      bool needRefreshFromNetworkOnInit = false}) {
+      {@required IChat chat, bool needRefreshFromNetworkOnInit = false}) {
     return ChatBloc(
-      pleromaChatService:
-          IPleromaChatService.of(context, listen: false),
+      pleromaChatService: IPleromaChatService.of(context, listen: false),
       myAccountBloc: IMyAccountBloc.of(context, listen: false),
       chat: chat,
       needRefreshFromNetworkOnInit: needRefreshFromNetworkOnInit,
-      chatRepository:
-          IChatRepository.of(context, listen: false),
+      chatRepository: IChatRepository.of(context, listen: false),
       messageRepository: IChatMessageRepository.of(context, listen: false),
       accountRepository: IAccountRepository.of(context, listen: false),
     );
   }
+
+  @override
+  Future markAsRead() async {
+    if (pleromaChatService.isApiReadyToUse) {
+      var updatedRemoteChat =
+          await pleromaChatService.markChatAsRead(chatId: chat.remoteId);
+
+      await chatRepository.upsertRemoteChat(updatedRemoteChat);
+    } else {
+      // TODO: mark as read once app receive network connection
+      await chatRepository.markAsRead(chat: chat);
+    }
+  }
+
+  @override
+  bool get isHaveUnread => unreadCount > 0;
+
+  @override
+  Stream<bool> get isHaveUnreadStream =>
+      unreadCountStream.map((unreadCount) => unreadCount > 0);
+
+  @override
+  int get unreadCount => chat.unread;
+
+  @override
+  Stream<int> get unreadCountStream => chatStream.map((chat) => chat.unread);
 }

@@ -57,9 +57,9 @@ abstract class IChatMessageRepository
       @required IChatMessage newerThanChatMessage,
       @required ChatMessageOrderingTermData orderingTermData});
 
-  Stream<IChatMessage> watchLastChatMessage(
+  Stream<IChatMessage> watchChatLastChatMessage(
       {@required IChat chat});
 
-  Future<IChatMessage> getLastChatMessage(
+  Future<IChatMessage> getChatLastChatMessage(
       {@required IChat chat});
 }

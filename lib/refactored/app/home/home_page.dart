@@ -1,5 +1,6 @@
 import 'package:fedi/refactored/app/account/my/action/my_account_action_list_bottom_sheet_dialog.dart';
 import 'package:fedi/refactored/app/account/my/avatar/my_account_avatar_widget.dart';
+import 'package:fedi/refactored/app/chat/unread/chat_unread_badge_count_widget.dart';
 import 'package:fedi/refactored/app/home/home_model.dart';
 import 'package:fedi/refactored/app/home/tab/account/account_home_tab_page'
     '.dart';
@@ -96,7 +97,7 @@ class _HomePageState extends State<HomePage>
             child: Icon(Icons.notifications));
         break;
       case AppHomeTab.conversations:
-        return Icon(Icons.mail);
+        return ChatUnreadBadgeCountWidget(child: Icon(Icons.mail));
         break;
       case AppHomeTab.account:
         return GestureDetector(
