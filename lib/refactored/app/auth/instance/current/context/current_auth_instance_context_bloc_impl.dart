@@ -151,7 +151,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     var chatRepository = ChatRepository(
         appDatabase: moorDatabaseService.appDatabase,
         accountRepository: accountRepository,
-        messageRepository: chatMessageRepository);
+        chatMessageRepository: chatMessageRepository);
     addDisposable(disposable: chatRepository);
     await globalProviderService
         .asyncInitAndRegister<IChatRepository>(chatRepository);

@@ -68,7 +68,7 @@ class ChatListItemWidget extends StatelessWidget {
 
   Widget buildLastMessageText(BuildContext context, IChatBloc chatBloc) {
     return StreamBuilder<IChatMessage>(
-        stream: chatBloc.lastMessageStream,
+        stream: chatBloc.lastChatMessageStream,
         builder: (context, snapshot) {
           var lastMessage = snapshot.data;
 

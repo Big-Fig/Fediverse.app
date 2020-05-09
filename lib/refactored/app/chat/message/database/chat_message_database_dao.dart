@@ -174,7 +174,7 @@ class ChatMessageDao extends DatabaseAccessor<AppDatabase> with _$ChatMessageDao
 
   List<Join<Table, DataClass>> populateChatMessageJoin() {
     return [
-      innerJoin(
+      leftOuterJoin(
         accountAlias,
         accountAlias.remoteId.equalsExp(dbChatMessages.accountRemoteId),
       ),

@@ -21,12 +21,12 @@ class ChatRepository extends AsyncInitLoadingBloc implements IChatRepository {
   ChatAccountsDao chatAccountsDao;
 
   final IAccountRepository accountRepository;
-  final IChatMessageRepository messageRepository;
+  final IChatMessageRepository chatMessageRepository;
 
   ChatRepository({
     @required AppDatabase appDatabase,
     @required this.accountRepository,
-    @required this.messageRepository,
+    @required this.chatMessageRepository,
   }) {
     dao = appDatabase.chatDao;
     chatAccountsDao = appDatabase.chatAccountsDao;
@@ -49,7 +49,7 @@ class ChatRepository extends AsyncInitLoadingBloc implements IChatRepository {
 
 //    var lastMessage = remoteChat.lastMessage;
 //    if (lastMessage != null) {
-//      await messageRepository.upsertRemoteMessage(lastMessage,
+//      await chatMessageRepository.upsertRemoteMessage(lastMessage,
 //          chatRemoteId: remoteChat.id, listRemoteId: null);
 //    }
 
@@ -63,7 +63,7 @@ class ChatRepository extends AsyncInitLoadingBloc implements IChatRepository {
     for (var remoteChat in remoteChats) {
 //      var lastMessage = remoteChat.lastMessage;
 //      if (lastMessage != null) {
-//        await messageRepository.upsertRemoteMessage(lastMessage,
+//        await chatMessageRepository.upsertRemoteMessage(lastMessage,
 //            listRemoteId: null, chatRemoteId: remoteChat.id);
 //      }
 
@@ -167,7 +167,7 @@ class ChatRepository extends AsyncInitLoadingBloc implements IChatRepository {
 //
 //    var lastMessage = newRemoteChat.lastMessage;
 //    if (lastMessage != null) {
-//      await messageRepository.upsertRemoteMessage(lastMessage,
+//      await chatMessageRepository.upsertRemoteMessage(lastMessage,
 //          listRemoteId: null,
 //          chatRemoteId: oldLocalChat.remoteId);
 //    }

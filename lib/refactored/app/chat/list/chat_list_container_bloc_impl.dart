@@ -30,14 +30,14 @@ class ChatsListContainerBloc extends DisposableOwner implements IChatListContain
   IPaginationListBloc<PaginationPage<IChat>, IChat> chatPaginationListBloc;
 
   final INotificationRepository notificationRepository;
-  final IChatMessageRepository messageRepository;
+  final IChatMessageRepository chatMessageRepository;
   final IChatRepository chatRepository;
   final IPleromaWebSocketsService pleromaWebSocketsService;
 
   ChatsListContainerBloc({
     @required IPleromaChatService pleromaChatService,
     @required this.notificationRepository,
-    @required this.messageRepository,
+    @required this.chatMessageRepository,
     @required this.chatRepository,
     @required this.pleromaWebSocketsService,
     @required bool listenWebSocketsChanges,
@@ -63,7 +63,7 @@ class ChatsListContainerBloc extends DisposableOwner implements IChatListContain
 //          disposable: MyAccountChatsWebSocketsHandler(
 //              notificationRepository: notificationRepository,
 //              chatRepository: chatRepository,
-//              messageRepository: messageRepository,
+//              chatMessageRepository: chatMessageRepository,
 //              pleromaWebSocketsService: pleromaWebSocketsService));
 //    }
   }
@@ -73,7 +73,7 @@ class ChatsListContainerBloc extends DisposableOwner implements IChatListContain
         chatRepository: IChatRepository.of(context, listen: false),
         notificationRepository:
             INotificationRepository.of(context, listen: false),
-        messageRepository: IChatMessageRepository.of(context, listen: false),
+        chatMessageRepository: IChatMessageRepository.of(context, listen: false),
         pleromaWebSocketsService:
             IPleromaWebSocketsService.of(context, listen: false),
         listenWebSocketsChanges:

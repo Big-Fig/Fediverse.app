@@ -24,7 +24,7 @@ class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
   final IMyAccountBloc myAccountBloc;
   final IPleromaChatService pleromaChatService;
   final IChatRepository chatRepository;
-  final IChatMessageRepository messageRepository;
+  final IChatMessageRepository chatMessageRepository;
   final IAccountRepository accountRepository;
   final bool isNeedWatchLocalRepositoryForUpdates;
 
@@ -32,7 +32,7 @@ class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
     @required this.pleromaChatService,
     @required this.myAccountBloc,
     @required this.chatRepository,
-    @required this.messageRepository,
+    @required this.chatMessageRepository,
     @required this.accountRepository,
     @required IChat chat,
     bool needRefreshFromNetworkOnInit = false,
@@ -67,7 +67,7 @@ class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
         }));
 
         addDisposable(
-            streamSubscription: messageRepository
+            streamSubscription: chatMessageRepository
                 .watchChatLastChatMessage(chat: chat)
                 .listen((lastMessage) {
           if (lastMessage != null) {
@@ -91,7 +91,7 @@ class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
 
   @override
   Future internalAsyncInit() async {
-    var message = await messageRepository.getChatLastChatMessage(chat: chat);
+    var message = await chatMessageRepository.getChatLastChatMessage(chat: chat);
     if (!_lastMessageSubject.isClosed) {
       _lastMessageSubject.add(message);
     }
@@ -134,7 +134,7 @@ class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
 //        chatRemoteId: remoteChat.remoteId, conversationRemoteId: null);
 //
 //    if (remoteChat.lastMessage != null) {
-//      await messageRepository.upsertRemoteChatMessage(remoteChat.lastMessage);
+//      await chatMessageRepository.upsertRemoteChatMessage(remoteChat.lastMessage);
 //    }
 //
 //    await _updateByRemoteChat(remoteChat);
@@ -146,10 +146,10 @@ class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
 //          newRemoteChat: remoteChat);
 
   @override
-  IChatMessage get lastMessage => _lastMessageSubject.value;
+  IChatMessage get lastChatMessage => _lastMessageSubject.value;
 
   @override
-  Stream<IChatMessage> get lastMessageStream => _lastMessageSubject.stream;
+  Stream<IChatMessage> get lastChatMessageStream => _lastMessageSubject.stream;
 
   static ChatBloc createFromContext(BuildContext context,
       {@required IChat chat, bool needRefreshFromNetworkOnInit = false}) {
@@ -159,7 +159,7 @@ class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
       chat: chat,
       needRefreshFromNetworkOnInit: needRefreshFromNetworkOnInit,
       chatRepository: IChatRepository.of(context, listen: false),
-      messageRepository: IChatMessageRepository.of(context, listen: false),
+      chatMessageRepository: IChatMessageRepository.of(context, listen: false),
       accountRepository: IAccountRepository.of(context, listen: false),
     );
   }

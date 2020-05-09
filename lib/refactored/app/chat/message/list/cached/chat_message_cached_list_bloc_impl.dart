@@ -15,13 +15,13 @@ var _logger = Logger("chat_messages_list_bloc_chat_api_impl.dart");
 class ChatMessageListBloc extends DisposableOwner
     implements IChatMessageCachedListBloc {
   final IPleromaChatService pleromaChatService;
-  final IChatMessageRepository messageRepository;
+  final IChatMessageRepository chatMessageRepository;
   final IChat chat;
 
   ChatMessageListBloc(
       {@required this.chat,
       @required this.pleromaChatService,
-      @required this.messageRepository});
+      @required this.chatMessageRepository});
 
   @override
   IPleromaApi get pleromaApi => pleromaChatService;
@@ -43,7 +43,7 @@ class ChatMessageListBloc extends DisposableOwner
           limit: limit);
 
       if (remoteMessages != null) {
-        await messageRepository.upsertRemoteChatMessages(remoteMessages);
+        await chatMessageRepository.upsertRemoteChatMessages(remoteMessages);
 
         return true;
       } else {
@@ -67,7 +67,7 @@ class ChatMessageListBloc extends DisposableOwner
         "\t newerThan=$newerThan"
         "\t olderThan=$olderThan");
 
-    var messages = await messageRepository.getChatMessages(
+    var messages = await chatMessageRepository.getChatMessages(
         onlyInChat: chat,
         limit: limit,
         offset: null,
@@ -84,7 +84,7 @@ class ChatMessageListBloc extends DisposableOwner
 
   @override
   Stream<List<IChatMessage>> watchLocalItemsNewerThanItem(IChatMessage item) {
-    return messageRepository.watchChatMessages(
+    return chatMessageRepository.watchChatMessages(
         onlyInChat: chat,
         limit: null,
         offset: null,
@@ -100,5 +100,5 @@ class ChatMessageListBloc extends DisposableOwner
       ChatMessageListBloc(
           chat: chat,
           pleromaChatService: IPleromaChatService.of(context, listen: false),
-          messageRepository: IChatMessageRepository.of(context, listen: false));
+          chatMessageRepository: IChatMessageRepository.of(context, listen: false));
 }
