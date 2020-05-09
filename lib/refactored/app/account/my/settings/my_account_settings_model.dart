@@ -7,11 +7,17 @@ part 'my_account_settings_model.g.dart';
 class MyAccountSettings implements IPreferencesObject {
   @HiveField(0)
   bool isRealtimeWebSocketsEnabled;
+  @HiveField(1)
+  bool isNewChatsEnabled;
 
-  MyAccountSettings({this.isRealtimeWebSocketsEnabled});
+  MyAccountSettings(
+      {this.isRealtimeWebSocketsEnabled, this.isNewChatsEnabled});
 
-  MyAccountSettings copyWith({bool isRealtimeWebSocketsEnabled}) =>
+  MyAccountSettings copyWith(
+          {bool isRealtimeWebSocketsEnabled, bool isNewChatsEnabled}) =>
       MyAccountSettings(
           isRealtimeWebSocketsEnabled:
-              isRealtimeWebSocketsEnabled ?? this.isRealtimeWebSocketsEnabled);
+              isRealtimeWebSocketsEnabled ?? this.isRealtimeWebSocketsEnabled,
+          isNewChatsEnabled:
+              isNewChatsEnabled ?? this.isNewChatsEnabled);
 }

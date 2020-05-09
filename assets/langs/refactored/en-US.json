@@ -26,6 +26,10 @@
             "websockets_enabled": {
               "label": "WebSockets real-time updates",
               "description": "Disable to reduce battery usage"
+            },
+            "new_chats_enabled": {
+              "label": "Replace DM with chats",
+              "description": "Not supported on most instances"
             }
           }
         },
@@ -281,10 +285,17 @@
           }
         },
         "conversations": {
-          "title": "Messages"
+          "title": "Messages",
+          "action": {
+            "switch_to_chats": "Switch to new Chats"
+          }
         },
         "chats": {
-          "title": "Chats"
+          "title": "Chats",
+          "not_supported_on_mastodon": "Chats not supported on Mastodon instances",
+          "action": {
+            "switch_to_dms": "Switch to old DM"
+          }
         }
       }
     },
