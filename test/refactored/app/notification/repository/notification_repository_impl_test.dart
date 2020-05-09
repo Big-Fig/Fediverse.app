@@ -277,10 +277,9 @@ void main() {
     expect((await query.get()).length, 2);
   });
 
-  test('createQuery onlyWithType', () async {
+  test('createQuery excludeTypes', () async {
     var query = notificationRepository.createQuery(
-      excludeTypes: pleromaNotificationTypeValues
-          .valuesWithExclude([PleromaNotificationType.reblog]),
+      excludeTypes: [PleromaNotificationType.follow],
       olderThanNotification: null,
       newerThanNotification: null,
       limit: null,
