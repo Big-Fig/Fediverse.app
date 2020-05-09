@@ -35,55 +35,9 @@ class ChatMessageBloc extends DisposableOwner implements IChatMessageBloc {
           isNeedWatchLocalRepositoryForUpdates:
               isNeedWatchLocalRepositoryForUpdates);
 
-  // ignore: close_sinks
-  final BehaviorSubject<bool> _isCollapsedSubject =
-      BehaviorSubject.seeded(true);
-
-  @override
-  bool get isPossibleToCollapse =>
-      (chatMessage.content?.length ?? 0) > minimumCharactersLimitToCollapse;
-
-  @override
-  Stream<bool> get isPossibleToCollapseStream =>
-      chatMessageStream.map((chatMessage) =>
-          (chatMessage.content?.length ?? 0) >
-          minimumCharactersLimitToCollapse);
-
-  @override
-  bool get isCollapsed => _isCollapsedSubject.value;
-
-  @override
-  Stream<bool> get isCollapsedStream => _isCollapsedSubject.stream;
-
-  @override
-  void toggleCollapseExpand() {
-    _isCollapsedSubject.add(!isCollapsed);
-  }
-
-  @override
-  void collapse() {
-    _isCollapsedSubject.add(true);
-  }
-
-  @override
-  bool get isNeedShowFullContent => !(isPossibleToCollapse && isCollapsed);
-
-  @override
-  Stream<bool> get isNeedShowFullContentStream => Rx.combineLatest2(
-      isPossibleToCollapseStream,
-      isCollapsedStream,
-      (isPossibleToCollapse, isCollapsed) =>
-          !(isPossibleToCollapse && isCollapsed));
-
   final BehaviorSubject<IChatMessage> _chatMessageSubject;
 
-  // ignore: close_sinks
-  final BehaviorSubject<bool> _displayNsfwSensitiveSubject =
-      BehaviorSubject.seeded(false);
 
-  // ignore: close_sinks
-  final BehaviorSubject<bool> _displaySpoilerSubject =
-      BehaviorSubject.seeded(false);
 
   final IPleromaChatService pleromaChatService;
   final IPleromaAccountService pleromaAccountService;
@@ -106,9 +60,6 @@ class ChatMessageBloc extends DisposableOwner implements IChatMessageBloc {
     this.isNeedWatchLocalRepositoryForUpdates = true,
   }) : _chatMessageSubject = BehaviorSubject.seeded(chatMessage) {
     addDisposable(subject: _chatMessageSubject);
-    addDisposable(subject: _displayNsfwSensitiveSubject);
-    addDisposable(subject: _displaySpoilerSubject);
-    addDisposable(subject: _isCollapsedSubject);
 
     assert(needRefreshFromNetworkOnInit != null);
     assert(isNeedWatchLocalRepositoryForUpdates != null);
@@ -208,6 +159,4 @@ class ChatMessageBloc extends DisposableOwner implements IChatMessageBloc {
 
     _logger.finest(() => "dispose");
   }
-
-
 }

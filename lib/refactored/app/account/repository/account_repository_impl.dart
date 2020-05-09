@@ -323,6 +323,7 @@ class AccountRepository extends AsyncInitLoadingBloc
         "\t onlyInAccountFollowers=$onlyInAccountFollowers\n"
         "\t onlyInAccountFollowing=$onlyInAccountFollowing\n"
         "\t onlyInConversation=$onlyInConversation\n"
+        "\t onlyInChat=$onlyInChat\n"
         "\t searchQuery=$searchQuery\n"
         "\t limit=$limit\n"
         "\t offset=$offset\n"
@@ -349,6 +350,7 @@ class AccountRepository extends AsyncInitLoadingBloc
     var includeStatusFavouritedAccounts = onlyInStatusFavouritedBy != null;
     var includeStatusRebloggedAccounts = onlyInStatusRebloggedBy != null;
     var includeConversationAccounts = onlyInConversation != null;
+    var includeChatAccounts = onlyInChat != null;
 
     var joinQuery = query.join(dao.populateAccountJoin(
       includeAccountFollowings: includeAccountFollowings,
@@ -356,7 +358,7 @@ class AccountRepository extends AsyncInitLoadingBloc
       includeStatusFavouritedAccounts: includeStatusFavouritedAccounts,
       includeStatusRebloggedAccounts: includeStatusRebloggedAccounts,
       includeConversationAccounts: includeConversationAccounts,
-//       includeConversationAccounts: false,
+      includeChatAccounts: includeChatAccounts,
     ));
 
     if (includeAccountFollowings) {
@@ -378,6 +380,10 @@ class AccountRepository extends AsyncInitLoadingBloc
     if (includeConversationAccounts) {
       joinQuery =
           dao.addConversationWhere(joinQuery, onlyInConversation.remoteId);
+    }
+    if (includeChatAccounts) {
+      joinQuery =
+          dao.addChatWhere(joinQuery, onlyInChat.remoteId);
     }
 
     assert(!(limit == null && offset != null));
@@ -462,7 +468,8 @@ class AccountRepository extends AsyncInitLoadingBloc
   @override
   Future updateAccountFollowers(
       String accountRemoteId, List<PleromaAccount> followers) async {
-    await upsertRemoteAccounts(followers, conversationRemoteId: null, chatRemoteId: null);
+    await upsertRemoteAccounts(followers,
+        conversationRemoteId: null, chatRemoteId: null);
     await accountFollowersDao.deleteByAccountRemoteId(accountRemoteId);
     await accountFollowersDao.insertAll(
         followers
@@ -495,7 +502,8 @@ class AccountRepository extends AsyncInitLoadingBloc
   Future updateStatusRebloggedBy(
       {@required String statusRemoteId,
       @required List<PleromaAccount> rebloggedByAccounts}) async {
-    await upsertRemoteAccounts(rebloggedByAccounts, conversationRemoteId: null, chatRemoteId: null);
+    await upsertRemoteAccounts(rebloggedByAccounts,
+        conversationRemoteId: null, chatRemoteId: null);
     await statusRebloggedAccountsDao.deleteByStatusRemoteId(statusRemoteId);
     await statusRebloggedAccountsDao.insertAll(
         rebloggedByAccounts
@@ -555,6 +563,7 @@ class AccountRepository extends AsyncInitLoadingBloc
       offset: null,
       orderingTermData: null,
       onlyInChat: chat);
+
   @override
   Stream<List<IAccount>> watchChatAccounts({@required IChat chat}) =>
       watchAccounts(

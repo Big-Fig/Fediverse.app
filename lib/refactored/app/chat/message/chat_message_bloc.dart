@@ -5,7 +5,7 @@ import 'package:fedi/refactored/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IChatMessageBloc implements Disposable, ICollapsibleItem {
+abstract class IChatMessageBloc implements Disposable {
   static IChatMessageBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IChatMessageBloc>(context, listen: listen);
 
