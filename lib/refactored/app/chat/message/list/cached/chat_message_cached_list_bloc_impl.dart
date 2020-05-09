@@ -1,6 +1,6 @@
 import 'package:fedi/refactored/app/chat/chat_model.dart';
 import 'package:fedi/refactored/app/chat/message/chat_message_model.dart';
-import 'package:fedi/refactored/app/chat/message/list/cached/chat_message_list_bloc.dart';
+import 'package:fedi/refactored/app/chat/message/list/cached/chat_message_cached_list_bloc.dart';
 import 'package:fedi/refactored/app/chat/message/repository/chat_message_repository.dart';
 import 'package:fedi/refactored/app/chat/message/repository/chat_message_repository_model.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';

@@ -1,8 +1,8 @@
 import 'package:fedi/refactored/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/refactored/app/chat/chat_model.dart';
-import 'package:fedi/refactored/app/chat/chats_list_bloc.dart';
 import 'package:fedi/refactored/app/chat/list/cached/chat_cached_list_service.dart';
 import 'package:fedi/refactored/app/chat/list/cached/chat_cached_list_service_impl.dart';
+import 'package:fedi/refactored/app/chat/list/chat_list_container_bloc.dart';
 import 'package:fedi/refactored/app/chat/message/repository/chat_message_repository.dart';
 import 'package:fedi/refactored/app/chat/pagination/chat_pagination_bloc.dart';
 import 'package:fedi/refactored/app/chat/pagination/chat_pagination_bloc_impl.dart';
@@ -19,8 +19,7 @@ import 'package:logging/logging.dart';
 
 var _logger = Logger("chats_home_tab_bloc_impl.dart");
 
-class ChatsListBloc extends DisposableOwner
-    implements IChatsListBloc {
+class ChatsListContainerBloc extends DisposableOwner implements IChatListContainerBloc {
   @override
   IChatCachedListService chatListService;
 
@@ -28,15 +27,14 @@ class ChatsListBloc extends DisposableOwner
   IChatPaginationBloc chatPaginationBloc;
 
   @override
-  IPaginationListBloc<PaginationPage<IChat>, IChat>
-      chatPaginationListBloc;
+  IPaginationListBloc<PaginationPage<IChat>, IChat> chatPaginationListBloc;
 
   final INotificationRepository notificationRepository;
   final IChatMessageRepository messageRepository;
   final IChatRepository chatRepository;
   final IPleromaWebSocketsService pleromaWebSocketsService;
 
-  ChatsListBloc({
+  ChatsListContainerBloc({
     @required IPleromaChatService pleromaChatService,
     @required this.notificationRepository,
     @required this.messageRepository,
@@ -46,8 +44,7 @@ class ChatsListBloc extends DisposableOwner
   }) {
     _logger.finest(() => "constructor");
     chatListService = ChatCachedListService(
-        pleromaChatService: pleromaChatService,
-        chatRepository: chatRepository);
+        pleromaChatService: pleromaChatService, chatRepository: chatRepository);
     addDisposable(disposable: chatListService);
     chatPaginationBloc = ChatPaginationBloc(
         itemsCountPerPage: 20,
@@ -71,12 +68,9 @@ class ChatsListBloc extends DisposableOwner
 //    }
   }
 
-  static ChatsListBloc createFromContext(BuildContext context) =>
-      ChatsListBloc(
-        pleromaChatService:
-            IPleromaChatService.of(context, listen: false),
-        chatRepository:
-            IChatRepository.of(context, listen: false),
+  static ChatsListContainerBloc createFromContext(BuildContext context) => ChatsListContainerBloc(
+        pleromaChatService: IPleromaChatService.of(context, listen: false),
+        chatRepository: IChatRepository.of(context, listen: false),
         notificationRepository:
             INotificationRepository.of(context, listen: false),
         messageRepository: IChatMessageRepository.of(context, listen: false),

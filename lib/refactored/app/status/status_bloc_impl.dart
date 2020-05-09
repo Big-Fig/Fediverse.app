@@ -7,7 +7,6 @@ import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/refactored/pleroma/card/pleroma_card_model.dart';
-import 'package:fedi/refactored/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/refactored/pleroma/mention/pleroma_mention_model.dart';
 import 'package:fedi/refactored/pleroma/status/emoji_reaction/pleroma_status_emoji_reaction_service.dart';
