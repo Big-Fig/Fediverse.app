@@ -4,6 +4,7 @@ import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:flutter/widgets.dart';
 
 final defaultIsRealtimeWebSocketsEnabled = true;
+final defaultIsNewChatsEnabled = false;
 
 class MyAccountSettingsBloc extends DisposableOwner
     implements IMyAccountSettingsBloc {
@@ -21,10 +22,24 @@ class MyAccountSettingsBloc extends DisposableOwner
       localPreferenceBloc.stream.map((value) =>
           value?.isRealtimeWebSocketsEnabled ??
           defaultIsRealtimeWebSocketsEnabled);
+  @override
+  bool get isNewChatsEnabled =>
+      localPreferenceBloc.value?.isNewChatsEnabled ??
+          defaultIsNewChatsEnabled;
+
+  @override
+  Stream<bool> get isNewChatsEnabledStream =>
+      localPreferenceBloc.stream.map((value) =>
+          value?.isNewChatsEnabled ??
+              defaultIsNewChatsEnabled);
 
   @override
   void changeIsRealtimeWebSocketsEnabled(bool value) {
     localPreferenceBloc.setValue(
         localPreferenceBloc.value.copyWith(isRealtimeWebSocketsEnabled: value));
+  }  @override
+  void changeIsNewChatsEnabled(bool value) {
+    localPreferenceBloc.setValue(
+        localPreferenceBloc.value.copyWith(isNewChatsEnabled: value));
   }
 }

@@ -1,10 +1,12 @@
 import 'package:fedi/refactored/app/account/my/action/my_account_action_list_bottom_sheet_dialog.dart';
 import 'package:fedi/refactored/app/account/my/avatar/my_account_avatar_widget.dart';
+import 'package:fedi/refactored/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/refactored/app/chat/unread/chat_unread_badge_count_widget.dart';
 import 'package:fedi/refactored/app/home/home_model.dart';
 import 'package:fedi/refactored/app/home/tab/account/account_home_tab_page'
     '.dart';
 import 'package:fedi/refactored/app/home/tab/conversations/chats_home_tab_page.dart';
+import 'package:fedi/refactored/app/home/tab/conversations/conversations_home_tab_page.dart';
 import 'package:fedi/refactored/app/home/tab/notifications/notifications_home_tab_page.dart';
 import 'package:fedi/refactored/app/home/tab/timelines/timelines_home_tab_page.dart';
 import 'package:fedi/refactored/app/notification/unread/notification_unread_exclude_types_badge_count_widget.dart';
@@ -97,7 +99,20 @@ class _HomePageState extends State<HomePage>
             child: Icon(Icons.notifications));
         break;
       case AppHomeTab.conversations:
-        return ChatUnreadBadgeCountWidget(child: Icon(Icons.mail));
+        var myAccountSettingsBloc =
+            IMyAccountSettingsBloc.of(context, listen: false);
+        return StreamBuilder<bool>(
+            stream: myAccountSettingsBloc.isNewChatsEnabledStream,
+            builder: (context, snapshot) {
+              var isNewChatsEnabled = snapshot.data;
+
+              var icon = Icon(Icons.mail);
+              if (isNewChatsEnabled == true) {
+                return ChatUnreadBadgeCountWidget(child: icon);
+              } else {
+                return icon;
+              }
+            });
         break;
       case AppHomeTab.account:
         return GestureDetector(
@@ -133,10 +148,24 @@ class _HomePageState extends State<HomePage>
             key: PageStorageKey<String>("NotificationsHomeTabPage"));
         break;
       case AppHomeTab.conversations:
-        return ChatsHomeTabPage(
-            key: PageStorageKey<String>("ChatsHomeTabPage"));
-//        return ConversationsHomeTabPage(
-//            key: PageStorageKey<String>("ConversationsHomeTabPage"));
+        var myAccountSettingsBloc =
+            IMyAccountSettingsBloc.of(context, listen: false);
+
+        return StreamBuilder<bool>(
+            stream: myAccountSettingsBloc.isNewChatsEnabledStream,
+            initialData: myAccountSettingsBloc.isNewChatsEnabled,
+            builder: (context, snapshot) {
+              var isNewChatsEnabled = snapshot.data;
+
+              if (isNewChatsEnabled == true) {
+                return ChatsHomeTabPage(
+                    key: PageStorageKey<String>("ChatsHomeTabPage"));
+              } else {
+                return ConversationsHomeTabPage(
+                    key: PageStorageKey<String>("ConversationsHomeTabPage"));
+              }
+            });
+
         break;
       case AppHomeTab.account:
         return AccountHomeTabPage();

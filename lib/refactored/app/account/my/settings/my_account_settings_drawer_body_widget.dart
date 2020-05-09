@@ -20,6 +20,15 @@ class MyAccountSettingsDrawerBodyWidget extends StatelessWidget {
             myAccountSettingsBloc.isRealtimeWebSocketsEnabledStream,
             myAccountSettingsBloc.isRealtimeWebSocketsEnabled,
             myAccountSettingsBloc.changeIsRealtimeWebSocketsEnabled),
+        buildOptionListTile(
+            AppLocalizations.of(context)
+                .tr("app.account.my.settings.field.new_chats_enabled.label"),
+            AppLocalizations.of(context)
+                .tr("app.account.my.settings.field.new_chats_enabled"
+                    ".description"),
+            myAccountSettingsBloc.isNewChatsEnabledStream,
+            myAccountSettingsBloc.isNewChatsEnabled,
+            myAccountSettingsBloc.changeIsNewChatsEnabled),
       ],
     );
   }

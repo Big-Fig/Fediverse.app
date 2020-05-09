@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/refactored/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/refactored/app/conversation/conversations_list_bloc.dart';
 import 'package:fedi/refactored/app/conversation/conversations_list_bloc_impl.dart';
 import 'package:fedi/refactored/app/conversation/conversations_list_widget.dart';
@@ -25,6 +26,15 @@ class ConversationsHomeTabPage extends StatelessWidget {
         title: Text(AppLocalizations.of(context)
             .tr("app.home.tab.conversations.title")),
         actions: <Widget>[
+          OutlineButton(
+            onPressed: () {
+              IMyAccountSettingsBloc.of(context, listen: false)
+                  .changeIsNewChatsEnabled(true);
+            },
+            child: Text(AppLocalizations.of(context)
+                .tr("app.home.tab.conversations.action.switch_to_chats"),
+              style: TextStyle(color: Colors.white),),
+          ),
           IconButton(
             icon: Icon(Icons.add),
             onPressed: () {
