@@ -149,7 +149,7 @@ flutter:
   fonts:
   - family:  FediIcons
     fonts:
-      - asset: fonts/FediIcons.ttf
+      - asset: assets/fonts/FediIcons.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:
@@ -167,6 +167,7 @@ flutter:
     - assets/images/repost.png
     - assets/images/share.png
     - assets/images/happy.png
+    - assets/images/default_timeline_header.png
     - assets/fonts/FediIcons.ttf
 #    - assets/images/addVideoFileIcon.png
 

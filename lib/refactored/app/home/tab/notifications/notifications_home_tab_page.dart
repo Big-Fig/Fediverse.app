@@ -28,13 +28,11 @@ class NotificationsHomeTabPage extends StatelessWidget {
             pushSettingsBloc: IPushSubscriptionBloc.of(context, listen: false)),
         child: NotificationsHomeTabPageDrawerWidget(),
       ),
-      body: SafeArea(
-        child: DisposableProvider<INotificationsTabsBloc>(
-          create: (context) => NotificationsTabsBloc.createFromContext(context),
-          child: NotificationTabsWidget(
-            key: key,
-            appBarActionWidgets: <Widget>[buildSettingsActionButton()],
-          ),
+      body: DisposableProvider<INotificationsTabsBloc>(
+        create: (context) => NotificationsTabsBloc.createFromContext(context),
+        child: NotificationTabsWidget(
+          key: key,
+          appBarActionWidgets: <Widget>[buildSettingsActionButton()],
         ),
       ),
     );

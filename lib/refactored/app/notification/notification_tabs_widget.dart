@@ -1,3 +1,4 @@
+import 'package:fedi/refactored/app/header/header_image_decoration_widget.dart';
 import 'package:fedi/refactored/app/notification/list/cached/notification_cached_list_bloc.dart';
 import 'package:fedi/refactored/app/notification/list/cached/notification_cached_list_bloc_impl.dart';
 import 'package:fedi/refactored/app/notification/notification_model.dart';
@@ -40,9 +41,9 @@ class NotificationTabsWidget extends StatelessWidget {
       initialIndex: tabs.indexOf(notificationsTabsBloc.selectedTab),
       child: Column(
         children: <Widget>[
-          Container(
-              decoration: BoxDecoration(color: Colors.blue),
-              child: buildTabBar(context, tabs, notificationsTabsBloc)),
+          HeaderImageDecorationWidget(
+              child: SafeArea(
+                  child: buildTabBar(context, tabs, notificationsTabsBloc))),
           Expanded(child: buildBodyWidget(context)),
         ],
       ),
