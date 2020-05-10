@@ -26,18 +26,16 @@ class TimelinesHomeTabPage extends StatelessWidget {
                 ITimelineLocalPreferencesBloc.of(context, listen: false)),
         child: TimelinesHomeTabPageDrawerWidget(),
       ),
-      body: SafeArea(
-        child: DisposableProvider<ITimelineTabsBloc>(
-            create: (BuildContext context) =>
-                TimelineTabsBloc.createFromContext(context, TimelineTab.home),
-            child: TimelineTabsWidget(
-              key: key,
-              appBarActionWidgets: <Widget>[
-                buildSearchActionButton(context),
-                buildSettingsActionButton()
-              ],
-            )),
-      ),
+      body: DisposableProvider<ITimelineTabsBloc>(
+          create: (BuildContext context) =>
+              TimelineTabsBloc.createFromContext(context, TimelineTab.home),
+          child: TimelineTabsWidget(
+            key: key,
+            appBarActionWidgets: <Widget>[
+              buildSearchActionButton(context),
+              buildSettingsActionButton()
+            ],
+          )),
     );
   }
 

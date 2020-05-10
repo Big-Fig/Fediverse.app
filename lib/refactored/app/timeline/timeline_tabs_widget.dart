@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/refactored/app/header/header_image_decoration_widget.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/app/timeline/tab/timeline_tab_model.dart';
 import 'package:fedi/refactored/app/timeline/timeline_tabs_bloc.dart';
@@ -32,9 +33,9 @@ class TimelineTabsWidget extends StatelessWidget {
       initialIndex: tabs.indexOf(timelinesTabsBloc.selectedTab),
       child: Column(
         children: <Widget>[
-          Container(
-              decoration: BoxDecoration(color: Colors.blue),
-              child: buildTabBar(context, tabs, timelinesTabsBloc)),
+          HeaderImageDecorationWidget(
+              child: SafeArea(
+                  child: buildTabBar(context, tabs, timelinesTabsBloc))),
           Expanded(child: buildBodyWidget(context)),
         ],
       ),

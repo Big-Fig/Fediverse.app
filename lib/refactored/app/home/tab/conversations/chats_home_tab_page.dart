@@ -5,6 +5,7 @@ import 'package:fedi/refactored/app/chat/list/chat_list_container_bloc.dart';
 import 'package:fedi/refactored/app/chat/list/chat_list_container_bloc_impl.dart';
 import 'package:fedi/refactored/app/chat/list/chat_list_container_widget.dart';
 import 'package:fedi/refactored/app/chat/start/start_chat_page.dart';
+import 'package:fedi/refactored/app/header/header_image_decoration_widget.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,32 +30,45 @@ class ChatsHomeTabPage extends StatelessWidget {
 
     return Scaffold(
       key: _drawerKey,
-      appBar: AppBar(
-        title:
-            Text(AppLocalizations.of(context).tr("app.home.tab.chats.title")),
-        actions: <Widget>[
-          OutlineButton(
-            onPressed: () {
-              IMyAccountSettingsBloc.of(context, listen: false)
-                  .changeIsNewChatsEnabled(false);
-            },
-            child: Text(
-              AppLocalizations.of(context)
-                  .tr("app.home.tab.chats.action.switch_to_dms"),
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-          if (isPleromaInstance)
-            IconButton(
-              icon: Icon(Icons.add),
-              onPressed: () {
-                goToStartChatPage(context);
-              },
-            ),
+      body: Column(
+        children: <Widget>[
+          HeaderImageDecorationWidget(
+              child: SafeArea(
+                  child: buildTopBar(context, isPleromaInstance))),
+          isPleromaInstance ? Expanded(child: buildPleromaBody()) : Expanded(child: buildMastodonBody(context))
         ],
       ),
-      body: isPleromaInstance ? buildPleromaBody() : buildMastodonBody(context),
     );
+  }
+
+  Widget buildTopBar(BuildContext context, bool isPleromaInstance) {
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+      Text(
+          AppLocalizations.of(context).tr("app.home.tab.chats.title")),
+      Row(children: <Widget>[
+        OutlineButton(
+          onPressed: () {
+            IMyAccountSettingsBloc.of(context, listen: false)
+                .changeIsNewChatsEnabled(false);
+          },
+          child: Text(
+            AppLocalizations.of(context)
+                .tr("app.home.tab.chats.action.switch_to_dms"),
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+        if (isPleromaInstance)
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {
+              goToStartChatPage(context);
+            },
+          ),
+      ],)
+    ],);
   }
 
   DisposableProvider<IChatListContainerBloc> buildPleromaBody() {
