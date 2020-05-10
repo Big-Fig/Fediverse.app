@@ -33,9 +33,10 @@ class FediIcons {
   static const IconData heart = IconData(0xe809, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData home = IconData(0xe80a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData image = IconData(0xe80b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData menu = IconData(0xe80c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData menu_vertical = IconData(0xe80d, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData menu_vertical = IconData(0xe80c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData menu = IconData(0xe80d, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData message = IconData(0xe80e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData notification = IconData(0xe80f, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData pen = IconData(0xe810, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData personal_message = IconData(0xe811, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData plus = IconData(0xe812, fontFamily: _kFontFam, fontPackage: _kFontPkg);
