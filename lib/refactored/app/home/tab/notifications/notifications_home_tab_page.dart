@@ -5,7 +5,8 @@ import 'package:fedi/refactored/app/notification/notification_tabs_bloc.dart';
 import 'package:fedi/refactored/app/notification/notification_tabs_bloc_impl.dart';
 import 'package:fedi/refactored/app/notification/notification_tabs_widget.dart';
 import 'package:fedi/refactored/app/push/subscription/push_subscription_bloc.dart';
-import 'package:fedi/refactored/app/ui/button/icon/fedi_filter_icon_button.dart';
+import 'package:fedi/refactored/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
+import 'package:fedi/refactored/app/ui/fedi_icons.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +40,8 @@ class NotificationsHomeTabPage extends StatelessWidget {
     );
   }
 
-  Widget buildFilterActionButton() => FediFilterIconButton(
+  Widget buildFilterActionButton() =>
+      FediIconInCircleTransparentButton(FediIcons.filter,
         onPressed: () {
           _drawerKey.currentState.openEndDrawer();
         },
