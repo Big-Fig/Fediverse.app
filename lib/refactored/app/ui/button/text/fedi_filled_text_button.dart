@@ -36,7 +36,7 @@ class FediFilledTextButton extends FediTextButton {
                 text,
                 // 80% transparency
                 style: TextStyle(
-                    fontFamily: "Rubik",
+
                     fontSize: 16.0,
                     fontWeight: FontWeight.w500,
                     color: FediColors.white),

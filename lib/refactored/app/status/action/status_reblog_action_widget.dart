@@ -2,6 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/refactored/app/status/reblog/status_reblog_account_list_page.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
+import 'package:fedi/refactored/app/ui/fedi_colors.dart';
+import 'package:fedi/refactored/app/ui/fedi_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -21,8 +23,11 @@ class StatusReblogActionWidget extends StatelessWidget {
               return PleromaAsyncOperationButtonBuilderWidget(
                   showProgressDialog: false,
                   builder: (context, onPressed) => IconButton(
-                        color: reblogged ? Colors.blue : Colors.black,
-                        icon: Icon(Icons.repeat),
+                        iconSize: 20.0,
+                        color: reblogged
+                            ? FediColors.primaryColor
+                            : FediColors.secondaryColor,
+                        icon: Icon(FediIcons.reply),
                         tooltip: AppLocalizations.of(context)
                             .tr("app.status.action.reblog"),
                         onPressed: onPressed,
@@ -39,7 +44,13 @@ class StatusReblogActionWidget extends StatelessWidget {
                   onTap: () {
                     goToStatusReblogAccountListPage(context, statusBloc.status);
                   },
-                  child: Text(reblogsCount.toString()));
+                  child: Text(
+                    reblogsCount.toString(),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: FediColors.secondaryColor,
+                    ),
+                  ));
             }),
       ],
     );

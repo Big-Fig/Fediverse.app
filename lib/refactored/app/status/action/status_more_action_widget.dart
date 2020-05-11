@@ -5,6 +5,8 @@ import 'package:fedi/refactored/app/conversation/start/status/post_status_start_
 import 'package:fedi/refactored/app/share/share_service.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
+import 'package:fedi/refactored/app/ui/fedi_colors.dart';
+import 'package:fedi/refactored/app/ui/fedi_icons.dart';
 import 'package:fedi/refactored/dialog/async/async_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +19,9 @@ class StatusShareActionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: true);
     return IconButton(
-      icon: Icon(Icons.more_vert),
+      color: FediColors.secondaryColor,
+      iconSize: 20.0,
+      icon: Icon(FediIcons.menu),
       tooltip: AppLocalizations.of(context).tr("app.status.action.more"),
       onPressed: () {
         showMoreOptions(context, statusBloc);

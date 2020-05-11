@@ -42,7 +42,7 @@ class FediTransparentTextButton extends FediTextButton {
                     // 80% transparency
                     style: TextStyle(
                         fontSize: 16.0,
-                        fontFamily: "Rubik",
+
                         color: FediColors.white.withAlpha((0.8 * 255).toInt())),
                   ),
                 ),

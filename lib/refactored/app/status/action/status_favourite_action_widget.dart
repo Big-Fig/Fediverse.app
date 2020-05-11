@@ -2,6 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/refactored/app/status/favourite/status_favourite_account_list_page.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
+import 'package:fedi/refactored/app/ui/fedi_colors.dart';
+import 'package:fedi/refactored/app/ui/fedi_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -23,8 +25,11 @@ class StatusFavouriteActionWidget extends StatelessWidget {
               return PleromaAsyncOperationButtonBuilderWidget(
                   showProgressDialog: false,
                   builder: (context, onPressed) => IconButton(
-                        color: favourited ? Colors.blue : Colors.black,
-                        icon: Icon(Icons.favorite_border),
+                        iconSize: 20.0,
+                        color: favourited
+                            ? FediColors.primaryColor
+                            : FediColors.secondaryColor,
+                        icon: Icon(FediIcons.heart),
                         tooltip: AppLocalizations.of(context)
                             .tr("app.status.action.favourite"),
                         onPressed: onPressed,
@@ -45,7 +50,13 @@ class StatusFavouriteActionWidget extends StatelessWidget {
                       goToStatusFavouriteAccountListPage(
                           context, statusBloc.status);
                     },
-                    child: Text(favouritesCount.toString()));
+                    child: Text(
+                      favouritesCount.toString(),
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: FediColors.secondaryColor,
+                      ),
+                    ));
               }),
       ],
     );
