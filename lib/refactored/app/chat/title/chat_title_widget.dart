@@ -1,5 +1,6 @@
 import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/chat/chat_bloc.dart';
+import 'package:fedi/refactored/app/ui/fedi_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -34,8 +35,9 @@ class ChatTitleWidget extends StatelessWidget {
                 return Text(
                   finalText,
                   style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: unreadCount > 0 ? FontWeight.bold : null),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: FediColors.darkGrey),
                 );
               });
         });

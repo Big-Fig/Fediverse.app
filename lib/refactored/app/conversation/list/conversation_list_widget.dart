@@ -2,6 +2,7 @@ import 'package:fedi/refactored/app/conversation/conversation_bloc.dart';
 import 'package:fedi/refactored/app/conversation/conversation_bloc_impl.dart';
 import 'package:fedi/refactored/app/conversation/conversation_model.dart';
 import 'package:fedi/refactored/app/conversation/list/conversation_list_item_widget.dart';
+import 'package:fedi/refactored/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:fedi/refactored/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/refactored/pagination/list/pagination_list_widget.dart';
@@ -43,7 +44,9 @@ class ConversationListWidget extends PaginationListWidget<IConversation> {
                         update: (context, conversation, oldValue) =>
                             ConversationBloc.createFromContext(context,
                                 conversation: conversation),
-                        child: ConversationListItemWidget()),
+                        child: FediListTile(
+                            isFirstInList: index == 0 && header == null,
+                            child: ConversationListItemWidget())),
               ));
 
   @override

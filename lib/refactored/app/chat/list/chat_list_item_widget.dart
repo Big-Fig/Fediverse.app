@@ -4,6 +4,7 @@ import 'package:fedi/refactored/app/chat/chat_bloc.dart';
 import 'package:fedi/refactored/app/chat/chat_page.dart';
 import 'package:fedi/refactored/app/chat/message/chat_message_model.dart';
 import 'package:fedi/refactored/app/chat/title/chat_title_widget.dart';
+import 'package:fedi/refactored/app/ui/fedi_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -18,26 +19,24 @@ class ChatListItemWidget extends StatelessWidget {
       onTap: () {
         goToChatPage(context, chat: chatBloc.chat);
       },
-      child: Card(
-        child: Padding(
-          padding: EdgeInsets.all(8),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  ChatAvatarWidget(),
-                  Padding(
-                    padding: EdgeInsets.all(12.0),
-                    child: buildChatPreview(context, chatBloc),
-                  ),
-                ],
-              ),
-              buildGoToChatButton(context, chatBloc),
-            ],
-          ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ChatAvatarWidget(),
+                Padding(
+                  padding: EdgeInsets.all(12.0),
+                  child: buildChatPreview(context, chatBloc),
+                ),
+              ],
+            ),
+            buildGoToChatButton(context, chatBloc),
+          ],
         ),
       ),
     );
@@ -80,7 +79,10 @@ class ChatListItemWidget extends StatelessWidget {
           return Text(
             lastMessage.content,
             maxLines: 2,
-            style: TextStyle(fontSize: 14),
+            style: TextStyle(
+              fontSize: 16,
+              color: FediColors.mediumGrey,
+            ),
           );
         });
   }
