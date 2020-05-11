@@ -6,6 +6,11 @@ import 'package:fedi/refactored/app/chat/list/chat_list_container_bloc_impl.dart
 import 'package:fedi/refactored/app/chat/list/chat_list_container_widget.dart';
 import 'package:fedi/refactored/app/chat/start/start_chat_page.dart';
 import 'package:fedi/refactored/app/header/header_image_decoration_widget.dart';
+import 'package:fedi/refactored/app/search/search_page.dart';
+import 'package:fedi/refactored/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
+import 'package:fedi/refactored/app/ui/button/text/fedi_transparent_text_button.dart';
+import 'package:fedi/refactored/app/ui/fedi_icons.dart';
+import 'package:fedi/refactored/app/ui/header/fedi_header_text.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,43 +38,67 @@ class ChatsHomeTabPage extends StatelessWidget {
       body: Column(
         children: <Widget>[
           HeaderImageDecorationWidget(
-              child: SafeArea(
-                  child: buildTopBar(context, isPleromaInstance))),
-          isPleromaInstance ? Expanded(child: buildPleromaBody()) : Expanded(child: buildMastodonBody(context))
+              child: SafeArea(child: buildTopBar(context, isPleromaInstance))),
+          isPleromaInstance
+              ? Expanded(child: buildPleromaBody())
+              : Expanded(child: buildMastodonBody(context))
         ],
       ),
     );
   }
 
   Widget buildTopBar(BuildContext context, bool isPleromaInstance) {
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-      Text(
-          AppLocalizations.of(context).tr("app.home.tab.chats.title")),
-      Row(children: <Widget>[
-        OutlineButton(
-          onPressed: () {
-            IMyAccountSettingsBloc.of(context, listen: false)
-                .changeIsNewChatsEnabled(false);
-          },
-          child: Text(
-            AppLocalizations.of(context)
-                .tr("app.home.tab.chats.action.switch_to_dms"),
-            style: TextStyle(color: Colors.white),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 24.0, horizontal: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: FediHeaderText(
+                AppLocalizations.of(context).tr("app.home.tab.chats.title")),
           ),
-        ),
-        if (isPleromaInstance)
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              goToStartChatPage(context);
-            },
-          ),
-      ],)
-    ],);
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              FediTransparentTextButton(
+                AppLocalizations.of(context)
+                    .tr("app.home.tab.chats.action.switch_to_dms"),
+                onPressed: () {
+                  IMyAccountSettingsBloc.of(context, listen: false)
+                      .changeIsNewChatsEnabled(false);
+                },
+              ),
+              if (isPleromaInstance) Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: buildSearchActionButton(context),
+              ),
+              if (isPleromaInstance) Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: buildPenActionButton(context),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
   }
+
+  Widget buildPenActionButton(BuildContext context) =>
+      FediIconInCircleTransparentButton(
+        FediIcons.pen,
+        onPressed: () {
+          goToStartChatPage(context);
+        },
+      );
+
+  Widget buildSearchActionButton(BuildContext context) =>
+      FediIconInCircleTransparentButton(
+        FediIcons.search,
+        onPressed: () {
+          goToSearchPage(context);
+        },
+      );
 
   DisposableProvider<IChatListContainerBloc> buildPleromaBody() {
     return DisposableProvider<IChatListContainerBloc>(

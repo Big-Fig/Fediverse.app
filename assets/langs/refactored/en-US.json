@@ -287,14 +287,14 @@
         "conversations": {
           "title": "Messages",
           "action": {
-            "switch_to_chats": "Switch to new Chats"
+            "switch_to_chats": "Chats"
           }
         },
         "chats": {
-          "title": "Chats",
+          "title": "Messages",
           "not_supported_on_mastodon": "Chats not supported on Mastodon instances",
           "action": {
-            "switch_to_dms": "Switch to old DM"
+            "switch_to_dms": "DM"
           }
         }
       }

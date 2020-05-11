@@ -5,6 +5,11 @@ import 'package:fedi/refactored/app/conversation/conversations_list_bloc_impl.da
 import 'package:fedi/refactored/app/conversation/conversations_list_widget.dart';
 import 'package:fedi/refactored/app/conversation/start/start_conversation_page.dart';
 import 'package:fedi/refactored/app/header/header_image_decoration_widget.dart';
+import 'package:fedi/refactored/app/search/search_page.dart';
+import 'package:fedi/refactored/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
+import 'package:fedi/refactored/app/ui/button/text/fedi_transparent_text_button.dart';
+import 'package:fedi/refactored/app/ui/fedi_icons.dart';
+import 'package:fedi/refactored/app/ui/header/fedi_header_text.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -37,33 +42,53 @@ class ConversationsHomeTabPage extends StatelessWidget {
   }
 
   Widget buildTopBar(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Text(AppLocalizations.of(context)
-            .tr("app.home.tab.conversations.title")),
-        Row(
-          children: <Widget>[
-            OutlineButton(
-              onPressed: () {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 24.0, horizontal: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: FediHeaderText(AppLocalizations.of(context)
+                .tr("app.home.tab.conversations.title")),
+          ),
+          Row(
+            children: <Widget>[
+              FediTransparentTextButton(
+                  AppLocalizations.of(context)
+                      .tr("app.home.tab.conversations.action.switch_to_chats"),
+                  onPressed: () {
                 IMyAccountSettingsBloc.of(context, listen: false)
                     .changeIsNewChatsEnabled(true);
-              },
-              child: Text(
-                AppLocalizations.of(context)
-                    .tr("app.home.tab.conversations.action.switch_to_chats"),
-                style: TextStyle(color: Colors.white),
+              }),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: buildSearchActionButton(context),
               ),
-            ),
-            IconButton(
-              icon: Icon(Icons.add),
-              onPressed: () {
-                goToStartConversationPage(context);
-              },
-            ),
-          ],
-        )
-      ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: buildPenActionButton(context),
+              )
+            ],
+          )
+        ],
+      ),
     );
   }
+
+  Widget buildPenActionButton(BuildContext context) =>
+      FediIconInCircleTransparentButton(
+        FediIcons.pen,
+        onPressed: () {
+          goToStartConversationPage(context);
+        },
+      );
+
+  Widget buildSearchActionButton(BuildContext context) =>
+      FediIconInCircleTransparentButton(
+        FediIcons.search,
+        onPressed: () {
+          goToSearchPage(context);
+        },
+      );
 }
