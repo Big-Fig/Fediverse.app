@@ -12,7 +12,7 @@ class FediSubHeaderText extends StatelessWidget {
     style: TextStyle(
         color: FediColors.darkGrey,
         fontSize: 16.0,
-        fontFamily: "Rubik",
+
         fontWeight: FontWeight.w500
     ),
   );

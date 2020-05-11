@@ -9,8 +9,10 @@ var _logger = Logger("html_text_widget.dart");
 class HtmlTextWidget extends StatelessWidget {
   final String data;
   final OnLinkTap onLinkTap;
+  final double fontSize;
 
-  HtmlTextWidget({@required this.data, @required this.onLinkTap});
+  HtmlTextWidget({@required this.data, @required this.onLinkTap, this
+      .fontSize = 18.0});
 
   @override
   Widget build(BuildContext context) => Html(
@@ -21,10 +23,10 @@ class HtmlTextWidget extends StatelessWidget {
           if (node is dom.Element) {
             switch (node.localName) {
               case "p":
-                return baseStyle.merge(TextStyle(fontSize: 18));
+                return baseStyle.merge(TextStyle(fontSize: fontSize));
             }
           }
-          return baseStyle.merge(TextStyle(fontSize: 18));
+          return baseStyle.merge(TextStyle(fontSize: fontSize));
         },
         onImageError: (exception, stackTrace) {
           _logger.warning(() => "onImageError", exception, stackTrace);

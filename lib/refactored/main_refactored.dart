@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
 import 'package:fedi/refactored/app/account/my/my_account_model.dart';
@@ -51,6 +53,14 @@ void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
   initLog();
+
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
+      statusBarBrightness: Platform.isIOS
+          ? Brightness.dark
+          : Brightness.light // Dark == white status bar --
+      // for
+      // IOS.
+      ));
 
   final directory = await getApplicationDocumentsDirectory();
   Hive.registerAdapter(PleromaFieldAdapter(), 37);
@@ -177,9 +187,7 @@ class MyApp extends StatelessWidget {
         ],
         locale: savedLocale,
         supportedLocales: [Locale('en', 'US')],
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
+        theme: ThemeData(primarySwatch: Colors.blue, fontFamily: "Rubik"),
         initialRoute: "/",
         home: child,
         navigatorObservers: [

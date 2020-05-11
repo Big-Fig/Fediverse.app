@@ -35,14 +35,19 @@ class FediHomeTabContainer extends StatelessWidget {
           child: Padding(
             padding:
                 EdgeInsets.only(top: topHeaderHeightInSafeArea - borderRadius),
-            child: Container(
-              decoration: BoxDecoration(
-                color: FediColors.white,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(borderRadius),
-                    topRight: Radius.circular(borderRadius)),
+            child: ClipRRect(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(borderRadius),
+                  topRight: Radius.circular(borderRadius)),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: FediColors.offWhite,
+//                  borderRadius: BorderRadius.only(
+//                      topLeft: Radius.circular(borderRadius),
+//                      topRight: Radius.circular(borderRadius)),
+                ),
+                child: body,
               ),
-              child: body,
             ),
           ),
         )
