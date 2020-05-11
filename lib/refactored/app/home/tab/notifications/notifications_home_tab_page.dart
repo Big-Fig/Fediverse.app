@@ -5,6 +5,7 @@ import 'package:fedi/refactored/app/notification/notification_tabs_bloc.dart';
 import 'package:fedi/refactored/app/notification/notification_tabs_bloc_impl.dart';
 import 'package:fedi/refactored/app/notification/notification_tabs_widget.dart';
 import 'package:fedi/refactored/app/push/subscription/push_subscription_bloc.dart';
+import 'package:fedi/refactored/app/ui/button/icon/fedi_filter_icon_button.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,15 +33,13 @@ class NotificationsHomeTabPage extends StatelessWidget {
         create: (context) => NotificationsTabsBloc.createFromContext(context),
         child: NotificationTabsWidget(
           key: key,
-          appBarActionWidgets: <Widget>[buildSettingsActionButton()],
+          appBarActionWidgets: <Widget>[buildFilterActionButton()],
         ),
       ),
     );
   }
 
-  IconButton buildSettingsActionButton() => IconButton(
-        icon: Icon(Icons.settings),
-        color: Colors.white,
+  Widget buildFilterActionButton() => FediFilterIconButton(
         onPressed: () {
           _drawerKey.currentState.openEndDrawer();
         },
