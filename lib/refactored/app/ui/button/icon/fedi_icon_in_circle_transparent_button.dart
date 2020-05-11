@@ -26,11 +26,14 @@ class FediIconInCircleTransparentButton extends FediIconInCircleButton {
         ),
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(FediIconInCircleButton.defaultCircleSize),
+        borderRadius:
+            BorderRadius.circular(FediIconInCircleButton.defaultCircleSize),
         child: BackdropFilter(
           child: IconButton(
-            icon: Icon(iconData, size: FediIconInCircleButton.defaultIconSize, color:
-            FediColors.white),
+            padding: EdgeInsets.all(0.0),
+            icon: Icon(iconData,
+                size: FediIconInCircleButton.defaultIconSize,
+                color: FediColors.white),
             onPressed: onPressed,
           ),
           filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),

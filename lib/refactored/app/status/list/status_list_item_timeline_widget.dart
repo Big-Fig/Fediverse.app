@@ -41,12 +41,9 @@ class StatusListItemTimelineWidget extends StatelessWidget {
 
     _logger.finest(() => "build ${statusBloc.remoteId}");
 
-    return Card(
-      elevation: 0,
-      child: Padding(
-        padding: EdgeInsets.all(8),
-        child: buildMainContentWidget(context, statusBloc),
-      ),
+    return Padding(
+      padding: EdgeInsets.all(8),
+      child: buildMainContentWidget(context, statusBloc),
     );
   }
 

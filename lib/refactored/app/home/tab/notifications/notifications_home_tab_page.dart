@@ -23,6 +23,8 @@ class NotificationsHomeTabPage extends StatelessWidget {
   Widget build(BuildContext context) {
     _logger.finest(() => "build");
 
+
+
     return Scaffold(
       key: _drawerKey,
       endDrawer: DisposableProvider<INotificationsHomeTabPageDrawerBloc>(

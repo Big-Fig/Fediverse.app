@@ -2,10 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
 import 'package:flutter/cupertino.dart';
 
-class HeaderImageDecorationWidget extends StatelessWidget {
+class FediHeaderImageDecorationWidget extends StatelessWidget {
   final Widget child;
 
-  HeaderImageDecorationWidget({@required this.child});
+  FediHeaderImageDecorationWidget({@required this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,7 @@ class HeaderImageDecorationWidget extends StatelessWidget {
       ImageProvider imageProvider, SafeArea child) {
     return Container(
         decoration: BoxDecoration(
-            image: DecorationImage(fit: BoxFit.fill, image: imageProvider)),
+            image: DecorationImage(fit: BoxFit.fitWidth, image: imageProvider)),
         child: child);
   }
 

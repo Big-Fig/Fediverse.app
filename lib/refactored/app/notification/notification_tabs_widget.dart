@@ -1,4 +1,3 @@
-import 'package:fedi/refactored/app/header/header_image_decoration_widget.dart';
 import 'package:fedi/refactored/app/notification/list/cached/notification_cached_list_bloc.dart';
 import 'package:fedi/refactored/app/notification/list/cached/notification_cached_list_bloc_impl.dart';
 import 'package:fedi/refactored/app/notification/notification_model.dart';
@@ -7,9 +6,8 @@ import 'package:fedi/refactored/app/notification/notification_tabs_model.dart';
 import 'package:fedi/refactored/app/notification/pagination/cached/notification_cached_pagination_bloc_impl.dart';
 import 'package:fedi/refactored/app/notification/pagination/list/notification_pagination_list_widget.dart';
 import 'package:fedi/refactored/app/notification/pagination/list/notification_pagination_list_with_new_items_bloc_impl.dart';
-import 'package:fedi/refactored/app/ui/button/icon/fedi_icon_in_circle_filled_button.dart';
-import 'package:fedi/refactored/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
 import 'package:fedi/refactored/app/ui/fedi_icons.dart';
+import 'package:fedi/refactored/app/ui/home/fedi_home_tab_container_widget.dart';
 import 'package:fedi/refactored/app/ui/tab/fedi_icon_tab.dart';
 import 'package:fedi/refactored/collapsible/collapsible_bloc.dart';
 import 'package:fedi/refactored/collapsible/collapsible_bloc_impl.dart';
@@ -39,70 +37,29 @@ class NotificationTabsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var notificationsTabsBloc =
         INotificationsTabsBloc.of(context, listen: false);
+
     var tabs = notificationsTabsBloc.tabs;
+
     return DefaultTabController(
-      length: tabs.length,
-      initialIndex: tabs.indexOf(notificationsTabsBloc.selectedTab),
-      child: Column(
-        children: <Widget>[
-          HeaderImageDecorationWidget(
-              child: SafeArea(
-                  child: Padding(
-            padding: const EdgeInsets.fromLTRB(0, 16, 0, 24),
-            child: buildTabBar(context, tabs, notificationsTabsBloc),
-          ))),
-          Expanded(child: buildBodyWidget(context)),
-        ],
-      ),
-    );
+        length: tabs.length,
+        initialIndex: tabs.indexOf(notificationsTabsBloc.selectedTab),
+        child: FediHomeTabContainer(
+          topHeaderHeightInSafeArea: 104.0,
+          topBar: buildTabBar(context, tabs, notificationsTabsBloc),
+          body: buildBodyWidget(context),
+        ));
   }
 
   Widget buildTabBar(BuildContext context, List<NotificationTab> tabs,
           INotificationsTabsBloc notificationsTabsBloc) =>
       Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           ...tabs.map((tab) => FediIconTab(mapTabToIconData(context, tab),
               index: tabs.indexOf(tab))),
           ...appBarActionWidgets
         ],
       );
-
-  Widget buildTab(BuildContext context, List<NotificationTab> tabs,
-      NotificationTab tab, INotificationsTabsBloc notificationsTabsBloc) {
-    var tabController = DefaultTabController.of(context);
-
-    return StreamBuilder<NotificationTab>(
-        stream: notificationsTabsBloc.selectedTabStream,
-        initialData: notificationsTabsBloc.selectedTab,
-        builder: (context, snapshot) {
-          var selectedTab = snapshot.data;
-
-          var isSelected = tab == selectedTab;
-
-          var onPressed = () {
-//            notificationsTabsBloc.selectTab(tab);
-            tabController.animateTo(tabs.indexOf(tab));
-          };
-          var icon = mapTabToIconData(context, tab);
-          Widget button;
-          if (isSelected) {
-            button = FediIconInCircleFilledButton(
-              icon,
-              onPressed: onPressed,
-            );
-          } else {
-            button = FediIconInCircleTransparentButton(
-              icon,
-              onPressed: onPressed,
-            );
-          }
-
-          return Tab(
-            icon: button,
-          );
-        });
-  }
 
   IconData mapTabToIconData(BuildContext context, NotificationTab tab) {
     switch (tab) {
