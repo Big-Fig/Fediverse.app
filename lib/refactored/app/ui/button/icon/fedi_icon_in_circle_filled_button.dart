@@ -25,6 +25,7 @@ class FediIconInCircleFilledButton extends FediIconInCircleButton {
         ),
       ),
       child: IconButton(
+        padding: EdgeInsets.all(0.0),
         icon: Icon(iconData,
             size: FediIconInCircleButton.defaultIconSize,
             color: FediColors.white),

@@ -5,12 +5,12 @@ import 'package:fedi/refactored/app/chat/list/chat_list_container_bloc.dart';
 import 'package:fedi/refactored/app/chat/list/chat_list_container_bloc_impl.dart';
 import 'package:fedi/refactored/app/chat/list/chat_list_container_widget.dart';
 import 'package:fedi/refactored/app/chat/start/start_chat_page.dart';
-import 'package:fedi/refactored/app/header/header_image_decoration_widget.dart';
 import 'package:fedi/refactored/app/search/search_page.dart';
 import 'package:fedi/refactored/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
 import 'package:fedi/refactored/app/ui/button/text/fedi_transparent_text_button.dart';
 import 'package:fedi/refactored/app/ui/fedi_icons.dart';
 import 'package:fedi/refactored/app/ui/header/fedi_header_text.dart';
+import 'package:fedi/refactored/app/ui/home/fedi_home_tab_container_widget.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,61 +26,57 @@ class ChatsHomeTabPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _logger.finest(() => "build");
-
     var currentAuthInstanceBloc =
         ICurrentAuthInstanceBloc.of(context, listen: false);
 
     var isPleromaInstance =
         currentAuthInstanceBloc.currentInstance.isPleromaInstance;
-
     return Scaffold(
       key: _drawerKey,
-      body: Column(
-        children: <Widget>[
-          HeaderImageDecorationWidget(
-              child: SafeArea(child: buildTopBar(context, isPleromaInstance))),
-          isPleromaInstance
-              ? Expanded(child: buildPleromaBody())
-              : Expanded(child: buildMastodonBody(context))
-        ],
+      body: FediHomeTabContainer(
+        topHeaderHeightInSafeArea: 104.0,
+        topBar: buildTopBar(context, isPleromaInstance),
+        body: buildBody(context, isPleromaInstance),
       ),
     );
   }
 
+  Widget buildBody(BuildContext context, bool isPleromaInstance) =>
+      isPleromaInstance ? buildPleromaBody() : buildMastodonBody(context);
+
   Widget buildTopBar(BuildContext context, bool isPleromaInstance) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 24.0, horizontal: 8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: FediHeaderText(
-                AppLocalizations.of(context).tr("app.home.tab.chats.title")),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              FediTransparentTextButton(
-                AppLocalizations.of(context)
-                    .tr("app.home.tab.chats.action.switch_to_dms"),
-                onPressed: () {
-                  IMyAccountSettingsBloc.of(context, listen: false)
-                      .changeIsNewChatsEnabled(false);
-                },
-              ),
-              if (isPleromaInstance) Padding(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: FediHeaderText(
+              AppLocalizations.of(context).tr("app.home.tab.chats.title")),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            FediTransparentTextButton(
+              AppLocalizations.of(context)
+                  .tr("app.home.tab.chats.action.switch_to_dms"),
+              onPressed: () {
+                IMyAccountSettingsBloc.of(context, listen: false)
+                    .changeIsNewChatsEnabled(false);
+              },
+            ),
+            if (isPleromaInstance)
+              Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: buildSearchActionButton(context),
               ),
-              if (isPleromaInstance) Padding(
+            if (isPleromaInstance)
+              Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: buildPenActionButton(context),
               ),
-            ],
-          )
-        ],
-      ),
+          ],
+        )
+      ],
     );
   }
 
