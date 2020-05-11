@@ -550,11 +550,11 @@
         },
         "field": {
           "message": {
-            "label": "Message"
+            "hint": "What’s going on today?"
           }
         },
         "new": {
-          "title": "Compose new status"
+          "title": "New status"
         }
       },
       "reblog": {

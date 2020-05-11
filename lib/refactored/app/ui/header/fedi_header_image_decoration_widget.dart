@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 
 class FediHeaderImageDecorationWidget extends StatelessWidget {
   final Widget child;
@@ -9,6 +10,7 @@ class FediHeaderImageDecorationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     var myAccountBloc = IMyAccountBloc.of(context, listen: false);
     return StreamBuilder<String>(
         stream: myAccountBloc.headerStream,
@@ -41,6 +43,7 @@ class FediHeaderImageDecorationWidget extends StatelessWidget {
 
   Container buildWithImageProvider(
       ImageProvider imageProvider, SafeArea child) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     return Container(
         decoration: BoxDecoration(
             image: DecorationImage(fit: BoxFit.fitWidth, image: imageProvider)),

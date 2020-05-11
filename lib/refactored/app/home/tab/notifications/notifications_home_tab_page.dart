@@ -23,8 +23,6 @@ class NotificationsHomeTabPage extends StatelessWidget {
   Widget build(BuildContext context) {
     _logger.finest(() => "build");
 
-
-
     return Scaffold(
       key: _drawerKey,
       endDrawer: DisposableProvider<INotificationsHomeTabPageDrawerBloc>(
@@ -42,8 +40,8 @@ class NotificationsHomeTabPage extends StatelessWidget {
     );
   }
 
-  Widget buildFilterActionButton() =>
-      FediIconInCircleTransparentButton(FediIcons.filter,
+  Widget buildFilterActionButton() => FediIconInCircleTransparentButton(
+        FediIcons.filter,
         onPressed: () {
           _drawerKey.currentState.openEndDrawer();
         },

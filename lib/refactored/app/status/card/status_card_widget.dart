@@ -20,81 +20,84 @@ class StatusCardWidget extends StatelessWidget {
             return SizedBox.shrink();
           }
 
-          return GestureDetector(
-            onTap: () {
-              canLaunch(card.url).then((result) {
-                launch(card.url);
-              });
-            },
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minHeight: 0,
-                maxHeight: 135.0,
-              ),
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.black38,
-                    width: 1,
-                  ),
-                  borderRadius: BorderRadius.circular(3),
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical:8.0),
+            child: GestureDetector(
+              onTap: () {
+                canLaunch(card.url).then((result) {
+                  launch(card.url);
+                });
+              },
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: 0,
+                  maxHeight: 135.0,
                 ),
-                child: Padding(
-                  padding: EdgeInsets.all(3),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.max,
-                    children: <Widget>[
-                      if (card.image != null)
-                        AspectRatio(
-                          aspectRatio: 1,
-                          child: CachedNetworkImage(
-                            imageUrl: card.image,
-                            fit: BoxFit.cover,
-                            placeholder: (context, url) => Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: CircularProgressIndicator(),
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.black38,
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(3),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(3),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        if (card.image != null)
+                          AspectRatio(
+                            aspectRatio: 1,
+                            child: CachedNetworkImage(
+                              imageUrl: card.image,
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) => Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: CircularProgressIndicator(),
+                              ),
+                              errorWidget: (context, url, error) =>
+                                  Icon(Icons.error),
                             ),
-                            errorWidget: (context, url, error) =>
-                                Icon(Icons.error),
                           ),
-                        ),
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 3),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              if (card.providerName != null)
-                                Text(
-                                  card.providerName,
-                                  style: TextStyle(
-                                      color: Colors.black45, fontSize: 13),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              if (card.title != null)
-                                Text(
-                                  card.title,
-                                  maxLines: 2,
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              if (card.description != null)
-                                Flexible(
-                                  child: Text(
-                                    card.description,
-                                    overflow: TextOverflow.clip,
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 3),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                if (card.providerName != null)
+                                  Text(
+                                    card.providerName,
+                                    style: TextStyle(
+                                        color: Colors.black45, fontSize: 13),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                ),
-                            ],
+                                if (card.title != null)
+                                  Text(
+                                    card.title,
+                                    maxLines: 2,
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                if (card.description != null)
+                                  Flexible(
+                                    child: Text(
+                                      card.description,
+                                      overflow: TextOverflow.clip,
+                                    ),
+                                  ),
+                              ],
+                            ),
                           ),
-                        ),
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),

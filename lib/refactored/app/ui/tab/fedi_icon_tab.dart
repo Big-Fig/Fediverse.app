@@ -37,8 +37,12 @@ class _FediIconTabState extends State<FediIconTab> {
 
   @override
   void dispose() {
-    var tabController = DefaultTabController.of(context);
-    tabController.removeListener(listener);
+    try {
+      var tabController = DefaultTabController.of(context);
+      tabController.removeListener(listener);
+    } catch(e) {
+      // just ignore. Sometimes tab controller already not exist
+    }
     super.dispose();
   }
 

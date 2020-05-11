@@ -1,5 +1,3 @@
-import 'package:fedi/refactored/app/ui/button/icon/fedi_icon_in_circle_filled_button.dart';
-import 'package:fedi/refactored/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
 import 'package:fedi/refactored/app/ui/button/text/fedi_filled_text_button.dart';
 import 'package:fedi/refactored/app/ui/button/text/fedi_transparent_text_button.dart';
 import 'package:flutter/cupertino.dart';
@@ -39,8 +37,12 @@ class _FediTextTabState extends State<FediTextTab> {
 
   @override
   void dispose() {
-    var tabController = DefaultTabController.of(context);
-    tabController.removeListener(listener);
+    try {
+      var tabController = DefaultTabController.of(context);
+      tabController.removeListener(listener);
+    } catch(e) {
+      // just ignore. Sometimes tab controller already not exist
+    }
     super.dispose();
   }
 

@@ -21,7 +21,7 @@ class FediTransparentTextButton extends FediTextButton {
           height: FediIconInCircleButton.defaultCircleSize,
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,
-            color: FediColors.darkGrey.withAlpha((0.3 * 255).toInt()),
+            color: FediColors.darkGrey.withOpacity(0.3),
             borderRadius: BorderRadius.all(
                 Radius.circular(FediIconInCircleButton.defaultCircleSize)),
             border: Border.all(
@@ -39,11 +39,9 @@ class FediTransparentTextButton extends FediTextButton {
                       const EdgeInsets.symmetric(vertical: 6, horizontal: 20),
                   child: Text(
                     text,
-                    // 80% transparency
                     style: TextStyle(
                         fontSize: 16.0,
-
-                        color: FediColors.white.withAlpha((0.8 * 255).toInt())),
+                        color: FediColors.white.withOpacity(0.8)),
                   ),
                 ),
               ),
