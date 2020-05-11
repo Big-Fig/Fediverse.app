@@ -6,6 +6,9 @@ import 'package:fedi/refactored/app/timeline/tab/timeline_tab_model.dart';
 import 'package:fedi/refactored/app/timeline/timeline_tabs_bloc.dart';
 import 'package:fedi/refactored/app/timeline/timeline_tabs_bloc_impl.dart';
 import 'package:fedi/refactored/app/timeline/timeline_tabs_widget.dart';
+import 'package:fedi/refactored/app/ui/button/icon/fedi_filter_icon_button.dart';
+import 'package:fedi/refactored/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
+import 'package:fedi/refactored/app/ui/fedi_icons.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +19,7 @@ class TimelinesHomeTabPage extends StatelessWidget {
   final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
   TimelinesHomeTabPage({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,15 +37,13 @@ class TimelinesHomeTabPage extends StatelessWidget {
             key: key,
             appBarActionWidgets: <Widget>[
               buildSearchActionButton(context),
-              buildSettingsActionButton()
+              buildFilterActionButton()
             ],
           )),
     );
   }
 
-  IconButton buildSettingsActionButton() => IconButton(
-        icon: Icon(Icons.settings),
-        color: Colors.white,
+  Widget buildFilterActionButton() => FediFilterIconButton(
         onPressed: () {
           _drawerKey.currentState.openEndDrawer();
         },

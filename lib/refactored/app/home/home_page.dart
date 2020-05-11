@@ -12,7 +12,7 @@ import 'package:fedi/refactored/app/home/tab/timelines/timelines_home_tab_page.d
 import 'package:fedi/refactored/app/notification/unread/notification_unread_exclude_types_badge_count_widget.dart';
 import 'package:fedi/refactored/app/status/post/new/new_post_status_page.dart';
 import 'package:fedi/refactored/app/ui/fedi_icons.dart';
-import 'package:fedi/refactored/app/ui/icon/fedi_transparent_circle_icon.dart';
+import 'package:fedi/refactored/app/ui/icon/fedi_transparent_icon.dart';
 import 'package:fedi/refactored/pleroma/notification/pleroma_notification_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
