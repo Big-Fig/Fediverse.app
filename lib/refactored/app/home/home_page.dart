@@ -11,6 +11,7 @@ import 'package:fedi/refactored/app/home/tab/notifications/notifications_home_ta
 import 'package:fedi/refactored/app/home/tab/timelines/timelines_home_tab_page.dart';
 import 'package:fedi/refactored/app/notification/unread/notification_unread_exclude_types_badge_count_widget.dart';
 import 'package:fedi/refactored/app/status/post/new/new_post_status_page.dart';
+import 'package:fedi/refactored/app/ui/fedi_colors.dart';
 import 'package:fedi/refactored/app/ui/fedi_icons.dart';
 import 'package:fedi/refactored/app/ui/icon/fedi_transparent_icon.dart';
 import 'package:fedi/refactored/pleroma/notification/pleroma_notification_model.dart';
@@ -49,13 +50,12 @@ class _HomePageState extends State<HomePage>
       return SizedBox.shrink();
     }
 
-
-
-
     return Scaffold(
       body: buildBody(context, selectedTab),
       bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
+          selectedIconTheme: IconThemeData(color: FediColors.primaryColor),
+          unselectedIconTheme: IconThemeData(color: FediColors.darkGrey),
           showSelectedLabels: true,
           showUnselectedLabels: true,
           currentIndex: tabs.indexOf(selectedTab),
@@ -78,13 +78,14 @@ class _HomePageState extends State<HomePage>
     );
   }
 
-  BottomNavigationBarItem buildNewMessageNavBarItem() => BottomNavigationBarItem(
-      icon: GestureDetector(
-          onTap: () {
-            goToNewPostStatusPage(context);
-
-          },
-          child: FediTransparentIcon(FediIcons.plus)), title: Text(''));
+  BottomNavigationBarItem buildNewMessageNavBarItem() =>
+      BottomNavigationBarItem(
+          icon: GestureDetector(
+              onTap: () {
+                goToNewPostStatusPage(context);
+              },
+              child: FediTransparentIcon(FediIcons.plus)),
+          title: Text(''));
 
   BottomNavigationBarItem buildTabNavBarItem(
           BuildContext context, AppHomeTab tab) =>

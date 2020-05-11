@@ -5,11 +5,12 @@ import 'package:flutter/widgets.dart';
 
 class FediTransparentIcon extends FediIcon {
   final IconData iconData;
+  final Color color;
 
-  FediTransparentIcon(this.iconData);
+  FediTransparentIcon(this.iconData, {this.color});
 
   @override
   Widget build(BuildContext context) {
-    return Icon(iconData, color: FediColors.darkGrey);
+    return Icon(iconData, color: color);
   }
 }
