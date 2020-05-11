@@ -2,6 +2,7 @@ import 'package:fedi/refactored/app/chat/chat_bloc.dart';
 import 'package:fedi/refactored/app/chat/chat_bloc_impl.dart';
 import 'package:fedi/refactored/app/chat/chat_model.dart';
 import 'package:fedi/refactored/app/chat/list/chat_list_item_widget.dart';
+import 'package:fedi/refactored/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:fedi/refactored/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/refactored/pagination/list/pagination_list_widget.dart';
@@ -38,22 +39,21 @@ class ChatListWidget extends PaginationListWidget<IChat> {
           footer: footer,
           itemBuilder: (context, index) => Provider<IChat>.value(
                 value: items[index],
-                child:
-                    DisposableProxyProvider<IChat, IChatBloc>(
-                        update: (context, chat, oldValue) =>
-                            ChatBloc.createFromContext(context,
-                                chat: chat),
-                        child: ChatListItemWidget()),
+                child: DisposableProxyProvider<IChat, IChatBloc>(
+                    update: (context, chat, oldValue) =>
+                        ChatBloc.createFromContext(context, chat: chat),
+                    child: FediListTile(
+                        isFirstInList: index == 0 && header == null,
+                        child: ChatListItemWidget())),
               ));
 
   @override
-  IPaginationListBloc<PaginationPage<IChat>, IChat>
-      retrievePaginationListBloc(BuildContext context,
-          {@required bool listen}) {
-    var paginationListBloc = Provider.of<
-            IPaginationListBloc<PaginationPage<IChat>, IChat>>(
-        context,
-        listen: listen);
+  IPaginationListBloc<PaginationPage<IChat>, IChat> retrievePaginationListBloc(
+      BuildContext context,
+      {@required bool listen}) {
+    var paginationListBloc =
+        Provider.of<IPaginationListBloc<PaginationPage<IChat>, IChat>>(context,
+            listen: listen);
     return paginationListBloc;
   }
 }

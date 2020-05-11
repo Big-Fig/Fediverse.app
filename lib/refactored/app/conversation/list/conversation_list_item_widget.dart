@@ -5,6 +5,8 @@ import 'package:fedi/refactored/app/conversation/conversation_bloc.dart';
 import 'package:fedi/refactored/app/conversation/conversation_page.dart';
 import 'package:fedi/refactored/app/conversation/title/conversation_title_widget.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
+import 'package:fedi/refactored/app/ui/fedi_colors.dart';
+import 'package:fedi/refactored/app/ui/fedi_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
@@ -22,26 +24,24 @@ class ConversationListItemWidget extends StatelessWidget {
             conversation: conversationBloc.conversation,
             conversationAccountsWithoutMe: conversationBloc.accountsWithoutMe);
       },
-      child: Card(
-        child: Padding(
-          padding: EdgeInsets.all(8),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  ConversationAvatarWidget(),
-                  Padding(
-                    padding: EdgeInsets.all(12.0),
-                    child: buildConversationPreview(context, conversationBloc),
-                  ),
-                ],
-              ),
-              buildGoToConversationButton(context, conversationBloc),
-            ],
-          ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ConversationAvatarWidget(),
+                Padding(
+                  padding: EdgeInsets.all(12.0),
+                  child: buildConversationPreview(context, conversationBloc),
+                ),
+              ],
+            ),
+            buildGoToConversationButton(context, conversationBloc),
+          ],
         ),
       ),
     );
@@ -62,7 +62,9 @@ class ConversationListItemWidget extends StatelessWidget {
   IconButton buildGoToConversationButton(
       BuildContext context, IConversationBloc conversationBloc) {
     return IconButton(
-      icon: Icon(Icons.chevron_right),
+      color: FediColors.darkGrey,
+      iconSize: 16.0,
+      icon: Icon(FediIcons.arrow_right),
       tooltip: AppLocalizations.of(context).tr("app.conversation."
           ".action.more"),
       onPressed: () {
@@ -86,7 +88,10 @@ class ConversationListItemWidget extends StatelessWidget {
           return Text(
             extractStatusText(context, lastStatus),
             maxLines: 2,
-            style: TextStyle(fontSize: 14),
+            style: TextStyle(
+              fontSize: 16,
+              color: FediColors.mediumGrey,
+            ),
           );
         });
   }
