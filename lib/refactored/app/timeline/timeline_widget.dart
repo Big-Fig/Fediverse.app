@@ -1,6 +1,10 @@
 import 'package:fedi/refactored/app/status/pagination/list/status_pagination_list_media_widget.dart';
 import 'package:fedi/refactored/app/status/pagination/list/status_pagination_list_timeline_widget.dart';
+import 'package:fedi/refactored/app/status/post/new/new_post_status_bloc_impl.dart';
+import 'package:fedi/refactored/app/status/post/post_status_bloc.dart';
+import 'package:fedi/refactored/app/status/post/post_status_widget.dart';
 import 'package:fedi/refactored/app/timeline/local_preferences/timeline_local_preferences_bloc.dart';
+import 'package:fedi/refactored/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/refactored/collapsible/collapsible_bloc.dart';
 import 'package:fedi/refactored/collapsible/collapsible_bloc_impl.dart';
 import 'package:fedi/refactored/collapsible/toggle_collapsible_overlay_widget.dart';
@@ -45,6 +49,22 @@ class TimelineWidget extends StatelessWidget {
                   StatusPaginationListTimelineWidget(
                     key: PageStorageKey<String>(
                         key.toString() + "TimelinePaginationListSimpleWidget"),
+                    header: FediListTile(
+                      isFirstInList: true,
+                      child: DisposableProvider<IPostStatusBloc>(
+                        create: (context) =>
+                            NewPostStatusBloc.createFromContext(context),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: PostStatusWidget(
+                            expanded: false,
+                            displayMentions: false,
+                            goBackOnSuccess: false,
+                            displayAccountAvatar: true,
+                          ),
+                        ),
+                      ),
+                    ),
                     needWatchLocalRepositoryForUpdates: true,
                   ),
                   Align(

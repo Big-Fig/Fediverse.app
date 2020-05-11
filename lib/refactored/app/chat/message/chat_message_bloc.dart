@@ -1,6 +1,5 @@
 import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/chat/message/chat_message_model.dart';
-import 'package:fedi/refactored/collapsible/collapsible_model.dart';
 import 'package:fedi/refactored/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';

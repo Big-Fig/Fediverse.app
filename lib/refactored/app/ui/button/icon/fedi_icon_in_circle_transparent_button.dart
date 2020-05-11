@@ -18,8 +18,7 @@ class FediIconInCircleTransparentButton extends FediIconInCircleButton {
       height: FediIconInCircleButton.defaultCircleSize,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        // 77/255 =  30% transparency
-        color: FediColors.darkGrey.withAlpha(77),
+        color: FediColors.darkGrey.withOpacity(0.3),
         border: Border.all(
           color: FediColors.white,
           width: 1.0,

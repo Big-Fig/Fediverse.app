@@ -8,12 +8,10 @@ class FediSubHeaderText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Text(
-    text,
-    style: TextStyle(
-        color: FediColors.darkGrey,
-        fontSize: 16.0,
-
-        fontWeight: FontWeight.w500
-    ),
-  );
+        text,
+        style: TextStyle(
+            color: FediColors.darkGrey,
+            fontSize: 16.0,
+            fontWeight: FontWeight.w500),
+      );
 }

@@ -3,7 +3,7 @@ import 'package:fedi/refactored/app/status/pagination/list/status_pagination_lis
 import 'package:fedi/refactored/app/status/status_bloc.dart';
 import 'package:fedi/refactored/app/status/status_bloc_impl.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
-import 'package:fedi/refactored/app/ui/fedi_colors.dart';
+import 'package:fedi/refactored/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/refactored/collapsible/collapsible_bloc.dart';
 import 'package:fedi/refactored/disposable/disposable.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
@@ -16,8 +16,19 @@ class StatusPaginationListTimelineWidget
   final bool needWatchLocalRepositoryForUpdates;
 
   StatusPaginationListTimelineWidget(
-      {@required Key key, @required this.needWatchLocalRepositoryForUpdates})
-      : super(key: key);
+      {@required Key key,
+      Widget header,
+      Widget footer,
+      bool alwaysShowHeader,
+      bool alwaysShowFooter,
+      RefreshAction additionalRefreshAction,
+      @required this.needWatchLocalRepositoryForUpdates})
+      : super(
+            key: key,
+            header: header,
+            footer: footer,
+            alwaysShowFooter: alwaysShowFooter,
+            alwaysShowHeader: alwaysShowHeader);
 
   @override
   ScrollView buildItemsCollectionView(
@@ -31,12 +42,6 @@ class StatusPaginationListTimelineWidget
           header: header,
           footer: footer,
           itemBuilder: (context, index) {
-            EdgeInsets edgeInsets;
-            if (index == 0) {
-              edgeInsets = EdgeInsets.only(bottom: 8.0);
-            } else {
-              edgeInsets = EdgeInsets.symmetric(vertical: 8.0);
-            }
             return Provider<IStatus>.value(
               value: items[index],
               child: DisposableProxyProvider<IStatus, IStatusBloc>(
@@ -57,22 +62,11 @@ class StatusPaginationListTimelineWidget
 
                     return statusBloc;
                   },
-                  child: Padding(
-                    padding: edgeInsets,
-                    child: Container(
-                        decoration: BoxDecoration(
-                          color: FediColors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.15),
-                              spreadRadius: 3,
-                              blurRadius: 7,
-                            )
-                          ],
-                        ),
-                        child: StatusListItemTimelineWidget(
-                          collapsible: true,
-                        )),
+                  child: FediListTile(
+                    isFirstInList: index == 0 && header == null,
+                    child: StatusListItemTimelineWidget(
+                      collapsible: true,
+                    ),
                   )),
             );
           });

@@ -21,7 +21,9 @@ class FediFilledTextButton extends FediTextButton {
           height: FediIconInCircleButton.defaultCircleSize,
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,
-            color: FediColors.primaryColor,
+            color: onPressed != null
+                ? FediColors.primaryColor
+                : FediColors.lightGrey,
             borderRadius: BorderRadius.all(
                 Radius.circular(FediIconInCircleButton.defaultCircleSize)),
             border: Border.all(
@@ -36,7 +38,6 @@ class FediFilledTextButton extends FediTextButton {
                 text,
                 // 80% transparency
                 style: TextStyle(
-
                     fontSize: 16.0,
                     fontWeight: FontWeight.w500,
                     color: FediColors.white),
