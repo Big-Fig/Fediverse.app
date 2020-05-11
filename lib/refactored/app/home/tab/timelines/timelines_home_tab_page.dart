@@ -6,7 +6,6 @@ import 'package:fedi/refactored/app/timeline/tab/timeline_tab_model.dart';
 import 'package:fedi/refactored/app/timeline/timeline_tabs_bloc.dart';
 import 'package:fedi/refactored/app/timeline/timeline_tabs_bloc_impl.dart';
 import 'package:fedi/refactored/app/timeline/timeline_tabs_widget.dart';
-import 'package:fedi/refactored/app/ui/button/icon/fedi_filter_icon_button.dart';
 import 'package:fedi/refactored/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
 import 'package:fedi/refactored/app/ui/fedi_icons.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
@@ -43,15 +42,16 @@ class TimelinesHomeTabPage extends StatelessWidget {
     );
   }
 
-  Widget buildFilterActionButton() => FediFilterIconButton(
+  Widget buildFilterActionButton() => FediIconInCircleTransparentButton(
+        FediIcons.filter,
         onPressed: () {
           _drawerKey.currentState.openEndDrawer();
         },
       );
 
-  IconButton buildSearchActionButton(BuildContext context) => IconButton(
-        icon: Icon(Icons.search),
-        color: Colors.white,
+  Widget buildSearchActionButton(BuildContext context) =>
+      FediIconInCircleTransparentButton(
+        FediIcons.search,
         onPressed: () {
           goToSearchPage(context);
         },

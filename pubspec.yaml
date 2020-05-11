@@ -147,9 +147,14 @@ flutter:
   uses-material-design: true
 
   fonts:
-  - family:  FediIcons
+  - family: FediIcons
     fonts:
       - asset: assets/fonts/FediIcons.ttf
+  - family: Rubik
+    fonts:
+      - asset: assets/fonts/Rubik-Light.ttf
+      - asset: assets/fonts/Rubik-Medium.ttf
+        weight: 500
 
   # To add assets to your application, add an assets section, like this:
   # assets:
@@ -168,7 +173,6 @@ flutter:
     - assets/images/share.png
     - assets/images/happy.png
     - assets/images/default_timeline_header.png
-    - assets/fonts/FediIcons.ttf
 #    - assets/images/addVideoFileIcon.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
