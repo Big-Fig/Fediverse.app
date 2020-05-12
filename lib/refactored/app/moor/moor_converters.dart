@@ -1,4 +1,3 @@
-import 'package:fedi/refactored/mastodon/notification/mastodon_notification_model.dart';
 import 'package:fedi/refactored/moor/moor_json_type_converter.dart';
 import 'package:fedi/refactored/pleroma/account/my/pleroma_my_account_model.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
@@ -26,19 +25,6 @@ class PleromaVisibilityDatabaseConverter
   @override
   String mapToSql(PleromaVisibility value) =>
       pleromaVisibilityValues.reverse[value];
-}
-
-class MastodonNotificationTypeDatabaseConverter
-    extends TypeConverter<MastodonNotificationType, String> {
-  const MastodonNotificationTypeDatabaseConverter();
-
-  @override
-  MastodonNotificationType mapToDart(String fromDb) =>
-      mastodonNotificationTypeValues.map[fromDb];
-
-  @override
-  String mapToSql(MastodonNotificationType value) =>
-      mastodonNotificationTypeValues.reverse[value];
 }
 
 class PleromaApplicationDatabaseConverter

@@ -4,6 +4,12 @@ import 'package:fedi/refactored/app/account/database/account_followers_database_
 import 'package:fedi/refactored/app/account/database/account_followers_database_model.dart';
 import 'package:fedi/refactored/app/account/database/account_followings_database_dao.dart';
 import 'package:fedi/refactored/app/account/database/account_followings_database_model.dart';
+import 'package:fedi/refactored/app/chat/database/chat_accounts_database_dao.dart';
+import 'package:fedi/refactored/app/chat/database/chat_accounts_database_model.dart';
+import 'package:fedi/refactored/app/chat/database/chat_database_dao.dart';
+import 'package:fedi/refactored/app/chat/database/chat_database_model.dart';
+import 'package:fedi/refactored/app/chat/message/database/chat_message_database_dao.dart';
+import 'package:fedi/refactored/app/chat/message/database/chat_message_database_model.dart';
 import 'package:fedi/refactored/app/conversation/database/conversation_accounts_database_dao.dart';
 import 'package:fedi/refactored/app/conversation/database/conversation_accounts_database_model.dart';
 import 'package:fedi/refactored/app/conversation/database/conversation_database_dao.dart';
@@ -25,8 +31,6 @@ import 'package:fedi/refactored/app/status/database/status_reblogged_accounts_da
 import 'package:fedi/refactored/app/status/database/status_reblogged_accounts_database_model.dart';
 import 'package:fedi/refactored/app/status/scheduled/database/scheduled_status_database_dao.dart';
 import 'package:fedi/refactored/app/status/scheduled/database/scheduled_status_database_model.dart';
-import 'package:fedi/refactored/mastodon/notification'
-    '/mastodon_notification_model.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/refactored/pleroma/application/pleroma_application_model.dart';
 import 'package:fedi/refactored/pleroma/card/pleroma_card_model.dart';
@@ -61,6 +65,9 @@ part 'app_database.g.dart';
 //    DbAccountFollowers,
 //    DbConversationAccounts,
 //    DbScheduledStatuses,
+//  DbChats,
+//  DbChatAccounts,
+//  DbChatMessages,
 ], daos: [
   StatusDao,
   StatusHashtagsDao,
@@ -75,6 +82,9 @@ part 'app_database.g.dart';
   StatusRebloggedAccountsDao,
   NotificationDao,
   ScheduledStatusDao,
+  ChatDao,
+  ChatAccountsDao,
+  ChatMessageDao,
 ], include: {
   'app_database.moor'
 })

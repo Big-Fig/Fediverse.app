@@ -42,7 +42,7 @@ class ConversationRepository extends AsyncInitLoadingBloc
     var remoteAccounts = remoteConversation.accounts;
 
     await accountRepository.upsertRemoteAccounts(remoteAccounts,
-        conversationRemoteId: remoteConversation.id);
+        conversationRemoteId: remoteConversation.id, chatRemoteId: null);
 
     var lastStatus = remoteConversation.lastStatus;
     if (lastStatus != null) {
@@ -67,7 +67,7 @@ class ConversationRepository extends AsyncInitLoadingBloc
       }
 
       await accountRepository.upsertRemoteAccounts(remoteConversation.accounts,
-          conversationRemoteId: remoteConversation.id);
+          conversationRemoteId: remoteConversation.id, chatRemoteId: null);
     }
 
     await upsertAll(remoteConversations
@@ -167,7 +167,7 @@ class ConversationRepository extends AsyncInitLoadingBloc
     var remoteAccounts = newRemoteConversation.accounts;
 
     await accountRepository.upsertRemoteAccounts(remoteAccounts,
-        conversationRemoteId: oldLocalConversation.remoteId);
+        conversationRemoteId: oldLocalConversation.remoteId, chatRemoteId: null);
 
     var lastStatus = newRemoteConversation.lastStatus;
     if (lastStatus != null) {

@@ -1,12 +1,12 @@
 import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
+import 'package:fedi/refactored/app/emoji/emoji_text_helper.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/refactored/pleroma/card/pleroma_card_model.dart';
-import 'package:fedi/refactored/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/refactored/pleroma/mention/pleroma_mention_model.dart';
 import 'package:fedi/refactored/pleroma/status/emoji_reaction/pleroma_status_emoji_reaction_service.dart';
@@ -296,11 +296,11 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
 
   @override
   String get contentWithEmojis =>
-      _addEmojiToHtmlContent(status.content, status.emojis);
+      addEmojiToHtmlContent(status.content, status.emojis);
 
   @override
   Stream<String> get contentWithEmojisStream => statusStream
-      .map((status) => _addEmojiToHtmlContent(status.content, status.emojis))
+      .map((status) => addEmojiToHtmlContent(status.content, status.emojis))
       .distinct();
 
   @override
@@ -343,7 +343,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
         var remoteAccount = await pleromaAccountService.getAccount(
             accountRemoteId: accountRemoteId);
         await accountRepository.upsertRemoteAccount(remoteAccount,
-            conversationRemoteId: null);
+            conversationRemoteId: null, chatRemoteId: null);
       }
       account = await accountRepository.findByRemoteId(accountRemoteId);
     }
@@ -646,29 +646,6 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
     // String newHtmlContent =
     //     html.replaceAll(RegExp('<\s*a[^>]*>(?=@).*<\s*\/\s*a>'), "");
     // print(newHtmlContent);
-    return newHtmlContent;
-  }
-
-  String _addEmojiToHtmlContent(
-    String content,
-    List<IPleromaEmoji> emoji,
-  ) {
-    if (emoji?.isNotEmpty != true) {
-      return content;
-    }
-
-    List<IPleromaEmoji> customEmoji = emoji ?? [];
-
-    var newHtmlContent = content;
-    for (int i = 0; i < customEmoji.length; i++) {
-      var emoji = customEmoji[i];
-      String shortcode = emoji.shortcode;
-      String url = emoji.url;
-
-      newHtmlContent = newHtmlContent.replaceAll(
-          ":$shortcode", '<img src="$url" width="20">');
-    }
-    newHtmlContent = "<html><body>$newHtmlContent</body></html>";
     return newHtmlContent;
   }
 

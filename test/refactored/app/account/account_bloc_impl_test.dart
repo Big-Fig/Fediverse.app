@@ -61,7 +61,8 @@ void main() {
   Future _update(IAccount account) async {
     await accountRepository.upsertRemoteAccount(
         mapLocalAccountToRemoteAccount(account),
-        conversationRemoteId: null);
+        conversationRemoteId: null,
+        chatRemoteId: null);
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
   }

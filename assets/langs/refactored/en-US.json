@@ -26,6 +26,10 @@
             "websockets_enabled": {
               "label": "WebSockets real-time updates",
               "description": "Disable to reduce battery usage"
+            },
+            "new_chats_enabled": {
+              "label": "Replace DM with chats",
+              "description": "Not supported on most instances"
             }
           }
         },
@@ -236,6 +240,20 @@
         }
       }
     },
+    "chat": {
+      "accounts": {
+        "title": "Chat accounts"
+      },
+      "action": {
+        "more": "More"
+      },
+      "preview": {
+        "you": "You: {}"
+      },
+      "start": {
+        "title": "Start chat"
+      }
+    },
     "conversation": {
       "accounts": {
         "title": "Conversation accounts"
@@ -267,7 +285,17 @@
           }
         },
         "conversations": {
-          "title": "Messages"
+          "title": "Messages",
+          "action": {
+            "switch_to_chats": "Chats"
+          }
+        },
+        "chats": {
+          "title": "Messages",
+          "not_supported_on_mastodon": "Chats not supported on Mastodon instances",
+          "action": {
+            "switch_to_dms": "DM"
+          }
         }
       }
     },
@@ -295,11 +323,15 @@
         }
       },
       "header": {
-        "favourite": "Favourited your status",
         "follow": "Followed you",
-        "mention": "Mentioned you",
-        "reblog": "Reblogged your status",
-        "poll": "Poll notification"
+        "favourite": "Liked your status \"{}\"",
+        "mention": "Mentioned you in status \"{}\"",
+        "reblog": "Reblogged your status \"{}\"",
+        "poll": "Poll notification",
+        "move": "Move notification",
+        "followRequest": "Follow request",
+        "pleromaEmojiReaction": "Emoji reaction for \"{}\"",
+        "pleromaChatMention": "Chat mention in \"{}\""
       }
     },
     "timeline": {
@@ -522,11 +554,11 @@
         },
         "field": {
           "message": {
-            "label": "Message"
+            "hint": "What’s going on today?"
           }
         },
         "new": {
-          "title": "Compose new status"
+          "title": "New status"
         }
       },
       "reblog": {

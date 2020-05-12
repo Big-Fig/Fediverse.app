@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/status/post/post_status_bloc.dart';
+import 'package:fedi/refactored/app/ui/fedi_colors.dart';
 import 'package:fedi/refactored/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
             return buildVisibilityIcon(
                 context: context,
                 visibility: visibility,
-                isSelectedVisibility: true,
+                isSelectedVisibility: false,
                 isPossibleToChangeVisibility: true);
           }),
       onPressed: () {
@@ -160,8 +161,10 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
   Color calculateVisibilityColor(
       isSelectedVisibility, isPossibleToChangeVisibility) {
     return isSelectedVisibility
-        ? Colors.blue
-        : isPossibleToChangeVisibility ? Colors.black : Colors.grey;
+        ? FediColors.primaryColor
+        : isPossibleToChangeVisibility
+            ? FediColors.darkGrey
+            : FediColors.lightGrey;
   }
 
   String mapVisibilityToTitle(
@@ -169,24 +172,24 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
     var appLocalizations = AppLocalizations.of(context);
     switch (visibility) {
       case PleromaVisibility.PUBLIC:
-        return appLocalizations.tr("app.status.post.action.visibility.state"
+        return appLocalizations.tr("app.status.post.visibility.state"
             ".public");
         break;
       case PleromaVisibility.UNLISTED:
         return appLocalizations
-            .tr("app.status.post.action.visibility.state.unlisted");
+            .tr("app.status.post.visibility.state.unlisted");
         break;
       case PleromaVisibility.DIRECT:
         return appLocalizations
-            .tr("app.status.post.action.visibility.state.direct");
+            .tr("app.status.post.visibility.state.direct");
         break;
       case PleromaVisibility.LIST:
         return appLocalizations
-            .tr("app.status.post.action.visibility.state.list");
+            .tr("app.status.post.visibility.state.list");
         break;
       case PleromaVisibility.PRIVATE:
         return appLocalizations
-            .tr("app.status.post.action.visibility.state.private");
+            .tr("app.status.post.visibility.state.private");
         break;
     }
     throw "Not supported visibility $visibility";

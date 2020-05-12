@@ -14,13 +14,34 @@ abstract class IMastodonNotification {
 
   String get id;
 
-  MastodonNotificationType get type;
+  String get type;
+
+  MastodonNotificationType get typeMastodon;
 
   IMastodonStatus get status;
 }
 
+enum MastodonNotificationType {
+  follow,
+  favourite,
+  reblog,
+  mention,
+  poll,
+  move,
+  followRequest,
+}
+
+final mastodonNotificationTypeValues = EnumValues({
+  "follow": MastodonNotificationType.follow,
+  "favourite": MastodonNotificationType.favourite,
+  "reblog": MastodonNotificationType.reblog,
+  "mention": MastodonNotificationType.mention,
+  "poll": MastodonNotificationType.poll,
+  "move": MastodonNotificationType.move,
+  "follow_request": MastodonNotificationType.followRequest,
+});
+
 @JsonSerializable()
-@MastodonMediaNotificationTypeTypeConverter()
 class MastodonNotificationsRequest {
   @JsonKey(name: "max_id")
   final String maxId;
@@ -29,8 +50,8 @@ class MastodonNotificationsRequest {
   @JsonKey(name: "min_id")
   final String minId;
   final int limit;
-  @JsonKey(name: "exclude_types")
-  final List<MastodonNotificationType> excludeTypes;
+  @JsonKey(name: "exclude_types[]")
+  final List<String> excludeTypes;
   @JsonKey(name: "account_id")
   final String accountId;
   MastodonNotificationsRequest(
@@ -78,33 +99,4 @@ class MastodonNotificationsRequest {
 
   String toJsonString() =>
       jsonEncode(_$MastodonNotificationsRequestToJson(this));
-}
-
-enum MastodonNotificationType {
-  follow,
-  mention,
-  reblog,
-  favourite,
-  poll,
-}
-
-final mastodonNotificationTypeValues = EnumValues({
-  "follow": MastodonNotificationType.follow,
-  "mention": MastodonNotificationType.mention,
-  "reblog": MastodonNotificationType.reblog,
-  "favourite": MastodonNotificationType.favourite,
-  "poll": MastodonNotificationType.poll
-});
-
-class MastodonMediaNotificationTypeTypeConverter
-    implements JsonConverter<MastodonNotificationType, String> {
-  const MastodonMediaNotificationTypeTypeConverter();
-
-  @override
-  MastodonNotificationType fromJson(String value) =>
-      mastodonNotificationTypeValues.map[value];
-
-  @override
-  String toJson(MastodonNotificationType value) =>
-      mastodonNotificationTypeValues.reverse[value];
 }

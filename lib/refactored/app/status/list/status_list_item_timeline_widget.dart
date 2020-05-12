@@ -18,6 +18,8 @@ import 'package:fedi/refactored/app/status/spoiler/status_spoiler_widget.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/app/status/thread/status_thread_page.dart';
+import 'package:fedi/refactored/app/ui/fedi_colors.dart';
+import 'package:fedi/refactored/app/ui/fedi_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -41,13 +43,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
 
     _logger.finest(() => "build ${statusBloc.remoteId}");
 
-    return Card(
-      elevation: 0,
-      child: Padding(
-        padding: EdgeInsets.all(8),
-        child: buildMainContentWidget(context, statusBloc),
-      ),
-    );
+    return buildMainContentWidget(context, statusBloc);
   }
 
   GestureDetector buildMainContentWidget(
@@ -84,7 +80,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
                   }
                 }),
             Padding(
-              padding: EdgeInsets.fromLTRB(12.0, 0.0, 0.0, 0.0),
+              padding: EdgeInsets.all(16.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -93,21 +89,39 @@ class StatusListItemTimelineWidget extends StatelessWidget {
                 ],
               ),
             ),
-            buildStatusContent(context, statusBloc),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: buildStatusContent(context, statusBloc),
+            ),
             if (displayActions) StatusEmojiReactionListWidget(),
             if (displayActions)
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    StatusCommentActionWidget(),
-                    StatusFavouriteActionWidget(),
-                    buildEmojiPickerButton(context, statusBloc),
-                    StatusReblogActionWidget(),
-                    StatusShareActionWidget(),
-                  ],
-                ),
+              Column(
+                children: <Widget>[
+                  Container(
+                    height: 1.0,
+                    decoration: BoxDecoration(color: FediColors.ultraLightGrey),
+                  ),
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            StatusCommentActionWidget(),
+                            StatusFavouriteActionWidget(),
+                            buildEmojiPickerButton(context, statusBloc),
+                            StatusReblogActionWidget()
+                          ],
+                        ),
+                        StatusShareActionWidget(),
+                      ],
+                    ),
+                  ),
+                ],
               ),
           ],
         ),
@@ -116,8 +130,9 @@ class StatusListItemTimelineWidget extends StatelessWidget {
   IconButton buildEmojiPickerButton(
       BuildContext context, IStatusBloc statusBloc) {
     return IconButton(
-      color: Colors.grey,
-      icon: Icon(Icons.insert_emoticon),
+      color: FediColors.secondaryColor,
+      iconSize: 20.0,
+      icon: Icon(FediIcons.emoji),
       onPressed: () {
         showModalBottomSheet(
             context: context,

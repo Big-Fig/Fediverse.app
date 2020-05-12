@@ -1,3 +1,4 @@
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
 import 'package:fedi/refactored/app/account/my/my_account_model.dart';
@@ -8,7 +9,7 @@ import 'package:fedi/refactored/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/refactored/app/auth/instance/current/context/current_auth_instance_context_bloc_impl.dart';
 import 'package:fedi/refactored/app/auth/instance/current/context/loading/current_auth_instance_context_loading_bloc.dart';
 import 'package:fedi/refactored/app/auth/instance/current/context/loading/current_auth_instance_context_loading_bloc_impl.dart';
-import 'package:fedi/refactored/app/auth/instance/current/context/loading/current_auth_instance_context_loading_page.dart';
+import 'package:fedi/refactored/app/auth/instance/current/context/loading/current_auth_instance_context_loading_widget.dart';
 import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/refactored/app/auth/instance/join/from_scratch/from_scratch_join_auth_instance_page.dart';
 import 'package:fedi/refactored/app/auth/instance/join/join_auth_instance_bloc.dart';
@@ -51,6 +52,7 @@ void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
   initLog();
+
 
   final directory = await getApplicationDocumentsDirectory();
   Hive.registerAdapter(PleromaFieldAdapter(), 37);
@@ -140,7 +142,7 @@ void buildCurrentInstanceApp(
                                 myAccountBloc:
                                     IMyAccountBloc.of(context, listen: false)),
                         child: MyApp(
-                            child: CurrentAuthInstanceContextLoadingPage(
+                            child: CurrentAuthInstanceContextLoadingWidget(
                           child: const HomePage(),
                         )))))));
   } else {
@@ -177,9 +179,7 @@ class MyApp extends StatelessWidget {
         ],
         locale: savedLocale,
         supportedLocales: [Locale('en', 'US')],
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
+        theme: ThemeData(primarySwatch: Colors.blue, fontFamily: "Rubik"),
         initialRoute: "/",
         home: child,
         navigatorObservers: [

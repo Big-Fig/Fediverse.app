@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 
 class EmojiTextWidget extends StatelessWidget {
   final EmojiText emojiText;
-  EmojiTextWidget({@required this.emojiText});
+  final TextStyle textStyle;
+  EmojiTextWidget({@required this.emojiText, this.textStyle});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class EmojiTextWidget extends StatelessWidget {
     } else {
       return Text(
         emojiText.text,
-        style: TextStyle(fontSize: 17.0),
+        style: textStyle,
       );
     }
   }
@@ -49,7 +50,7 @@ class EmojiTextWidget extends StatelessWidget {
       if (foundEmoji == false) {
         var text = Text(
           emojiOrText,
-          style: TextStyle(fontSize: 17.0),
+          style: textStyle,
         );
         usernameWidget.add(text);
       }

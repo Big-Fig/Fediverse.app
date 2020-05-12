@@ -1,11 +1,11 @@
 import 'package:fedi/refactored/app/notification/repository/notification_repository.dart';
-import 'package:fedi/refactored/app/notification/unread/notification_unread_badge_count_widget.dart';
-import 'package:fedi/refactored/mastodon/notification/mastodon_notification_model.dart';
+import 'package:fedi/refactored/app/badge/badge_count_widget.dart';
+import 'package:fedi/refactored/pleroma/notification/pleroma_notification_model.dart';
 import 'package:flutter/cupertino.dart';
 
 class NotificationUnreadTypeBadgeCountWidget
-    extends NotificationUnreadBadgeCountWidget {
-  final MastodonNotificationType type;
+    extends BadgeCountWidget {
+  final PleromaNotificationType type;
 
   NotificationUnreadTypeBadgeCountWidget({
     @required Widget child,

@@ -34,14 +34,16 @@ class CurrentAuthInstanceContextLoadingWidget extends StatelessWidget {
               case CurrentAuthInstanceContextLoadingState.loading:
                 var myAccountBloc = IMyAccountBloc.of(context, listen: true);
 
-                return Center(
-                    child: Text(
-                  AppLocalizations.of(context).tr(
-                      "app.auth.instance.current.context.loading.loading"
-                      ".content",
-                      args: [myAccountBloc.instance.userAtHost]),
-                  style: TextStyle(color: Colors.white),
-                ));
+                return Scaffold(
+                  body: Center(
+                      child: Text(
+                    AppLocalizations.of(context).tr(
+                        "app.auth.instance.current.context.loading.loading"
+                        ".content",
+                        args: [myAccountBloc.instance.userAtHost]),
+                    style: TextStyle(color: Colors.white),
+                  )),
+                );
                 break;
               case CurrentAuthInstanceContextLoadingState.localCacheExist:
                 return child;

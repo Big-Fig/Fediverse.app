@@ -3,10 +3,10 @@ import 'package:fedi/refactored/app/conversation/conversation_bloc.dart';
 import 'package:fedi/refactored/app/conversation/status/context_api/conversation_status_list_context_api_bloc_impl.dart';
 import 'package:fedi/refactored/app/conversation/status/conversation_api/conversation_status_list_conversation_api_bloc_impl.dart';
 import 'package:fedi/refactored/app/conversation/status/conversation_status_list_widget.dart';
-import 'package:fedi/refactored/app/conversation/status/post/conversation_post_status_widget.dart';
 import 'package:fedi/refactored/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/refactored/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
 import 'package:fedi/refactored/app/status/pagination/list/status_pagination_list_with_new_items_bloc_impl.dart';
+import 'package:fedi/refactored/app/status/post/post_status_widget.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/async/loading/init/async_init_loading_widget.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
@@ -63,9 +63,11 @@ class ConversationWidget extends StatelessWidget {
                               conversationBloc.conversation.remoteId),
                         ),
                       ),
-                      ConversationPostStatusWidget(successCallback: (context) {
-                        // nothing
-                      })
+                      PostStatusWidget(
+                          showVisibilityAction: false,
+                          expanded: false,
+                          goBackOnSuccess: false,
+                          displayMentions: false)
                     ],
                   ),
                 ),

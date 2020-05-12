@@ -13,7 +13,7 @@ class StatusSpoilerWidget extends StatelessWidget {
         builder: (context, snapshot) {
           var spoiler = snapshot.data;
 
-          if (spoiler != null) {
+          if (spoiler?.isNotEmpty == true) {
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(spoiler),
