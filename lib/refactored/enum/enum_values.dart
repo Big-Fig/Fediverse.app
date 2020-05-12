@@ -11,4 +11,6 @@ class EnumValues<T> {
 
   List<T> valuesWithExclude(List<T> valuesToExclude) =>
       map.values.where((value) => valuesToExclude.contains(value)).toList();
+  List<T> valuesWithExcept(List<T> valuesToExcept) =>
+      map.values.where((value) => !valuesToExcept.contains(value)).toList();
 }
