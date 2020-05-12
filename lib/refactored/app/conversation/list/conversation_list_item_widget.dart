@@ -51,7 +51,7 @@ class ConversationListItemWidget extends StatelessWidget {
       BuildContext context, IConversationBloc conversationBloc) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         ConversationTitleWidget(),
         buildLastStatusText(context, conversationBloc),
@@ -87,9 +87,11 @@ class ConversationListItemWidget extends StatelessWidget {
           }
           return Text(
             extractStatusText(context, lastStatus),
-            maxLines: 2,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(
               fontSize: 16,
+              fontWeight: FontWeight.w300,
               color: FediColors.mediumGrey,
             ),
           );
