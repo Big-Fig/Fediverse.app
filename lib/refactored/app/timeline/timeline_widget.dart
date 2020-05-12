@@ -65,6 +65,7 @@ class TimelineWidget extends StatelessWidget {
                         ),
                       ),
                     ),
+                    alwaysShowHeader: true,
                     needWatchLocalRepositoryForUpdates: true,
                   ),
                   Align(
