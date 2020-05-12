@@ -324,15 +324,15 @@
       },
       "header": {
         "follow": "Followed you",
-        "favourite": "Liked your status '{}'",
-        "mention": "Mentioned you in status '{}'",
-        "reblog": "Reblogged your status '{}'",
+        "favourite": "Liked your status \"{}\"",
+        "mention": "Mentioned you in status \"{}\"",
+        "reblog": "Reblogged your status \"{}\"",
         "poll": "Poll notification",
         "move": "Move notification",
         "followRequest": "Follow request",
-        "pleromaEmojiReaction": "Emoji reaction {} for '{}'",
-        "pleromaChatMention": "Chat mention in '{}'",
-      },
+        "pleromaEmojiReaction": "Emoji reaction for \"{}\"",
+        "pleromaChatMention": "Chat mention in \"{}\""
+      }
     },
     "timeline": {
       "display": {

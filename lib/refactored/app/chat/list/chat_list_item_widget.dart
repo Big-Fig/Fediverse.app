@@ -5,6 +5,7 @@ import 'package:fedi/refactored/app/chat/chat_page.dart';
 import 'package:fedi/refactored/app/chat/message/chat_message_model.dart';
 import 'package:fedi/refactored/app/chat/title/chat_title_widget.dart';
 import 'package:fedi/refactored/app/ui/fedi_colors.dart';
+import 'package:fedi/refactored/app/ui/fedi_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -45,7 +46,7 @@ class ChatListItemWidget extends StatelessWidget {
   Column buildChatPreview(BuildContext context, IChatBloc chatBloc) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         ChatTitleWidget(),
         buildLastMessageText(context, chatBloc),
@@ -55,12 +56,13 @@ class ChatListItemWidget extends StatelessWidget {
 
   IconButton buildGoToChatButton(BuildContext context, IChatBloc chatBloc) {
     return IconButton(
-      icon: Icon(Icons.chevron_right),
       tooltip: AppLocalizations.of(context).tr("app.chat."
           ".action.more"),
+      color: FediColors.darkGrey,
+      iconSize: 16.0,
+      icon: Icon(FediIcons.arrow_right),
       onPressed: () {
-        goToChatPage(context,
-            chat: chatBloc.chat);
+        goToChatPage(context, chat: chatBloc.chat);
       },
     );
   }
@@ -78,9 +80,11 @@ class ChatListItemWidget extends StatelessWidget {
           // todo: handle emojis
           return Text(
             lastMessage.content,
-            maxLines: 2,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(
               fontSize: 16,
+              fontWeight: FontWeight.w300,
               color: FediColors.mediumGrey,
             ),
           );

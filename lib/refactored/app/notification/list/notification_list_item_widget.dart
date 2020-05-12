@@ -3,11 +3,7 @@ import 'package:fedi/refactored/app/account/account_bloc.dart';
 import 'package:fedi/refactored/app/account/account_bloc_impl.dart';
 import 'package:fedi/refactored/app/account/acct/account_acct_widget.dart';
 import 'package:fedi/refactored/app/account/avatar/account_avatar_widget.dart';
-import 'package:fedi/refactored/app/notification/header/notification_favourite_type_header_widget.dart';
-import 'package:fedi/refactored/app/notification/header/notification_follow_type_header_widget.dart';
-import 'package:fedi/refactored/app/notification/header/notification_mention_type_header_widget.dart';
-import 'package:fedi/refactored/app/notification/header/notification_poll_type_header_widget.dart';
-import 'package:fedi/refactored/app/notification/header/notification_reblog_type_header_widget.dart';
+import 'package:fedi/refactored/app/notification/created_at/notification_created_at_widget.dart';
 import 'package:fedi/refactored/app/notification/notification_bloc.dart';
 import 'package:fedi/refactored/app/ui/fedi_colors.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
@@ -39,63 +35,25 @@ class NotificationListItemWidget extends StatelessWidget {
               children: <Widget>[
                 AccountAvatarWidget(progressSize: 36, imageSize: 36),
                 SizedBox(width: 16),
-                Column(
-                  children: <Widget>[
-                    AccountAcctWidget(),
-                    buildNotificationContent(context, notificationBloc)
-                  ],
-                )
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      AccountAcctWidget(
+                          textStyle: TextStyle(
+                              fontSize: 16.0, color: FediColors.darkGrey)),
+                      buildNotificationContent(context, notificationBloc)
+                    ],
+                  ),
+                ),
+                NotificationCreatedAtWidget()
               ],
             ),
-//          buildHeaderWidget(context, notificationBloc),
-            Container(
-              height: 1,
-              decoration: BoxDecoration(color: FediColors.ultraLightGrey),
-            )
           ],
         ),
       ),
     );
-  }
-
-  Widget buildHeaderWidget(
-      BuildContext context, INotificationBloc notificationBloc) {
-    Widget headerWidget;
-
-    switch (notificationBloc.typePleroma) {
-      case PleromaNotificationType.follow:
-        headerWidget = NotificationFollowTypeHeaderWidget();
-        break;
-      case PleromaNotificationType.mention:
-        headerWidget = NotificationMentionTypeHeaderWidget();
-        break;
-      case PleromaNotificationType.reblog:
-        headerWidget = NotificationReblogTypeHeaderWidget();
-        break;
-      case PleromaNotificationType.favourite:
-        headerWidget = NotificationFavouriteTypeHeaderWidget();
-        break;
-      case PleromaNotificationType.poll:
-        headerWidget = NotificationPollTypeHeaderWidget();
-        break;
-      case PleromaNotificationType.move:
-        headerWidget = NotificationFavouriteTypeHeaderWidget();
-        break;
-      case PleromaNotificationType.followRequest:
-        headerWidget = NotificationFavouriteTypeHeaderWidget();
-        break;
-      case PleromaNotificationType.pleromaEmojiReaction:
-        headerWidget = NotificationFavouriteTypeHeaderWidget();
-        break;
-      case PleromaNotificationType.pleromaChatMention:
-        headerWidget = NotificationFavouriteTypeHeaderWidget();
-        break;
-      default:
-        throw "Invalid type ${notificationBloc.type}";
-        break;
-    }
-
-    return headerWidget;
   }
 
   Widget buildNotificationContent(
@@ -104,41 +62,52 @@ class NotificationListItemWidget extends StatelessWidget {
 
     var appLocalizations = AppLocalizations.of(context);
 
-    switch(notificationBloc.typePleroma) {
-
+    switch (notificationBloc.typePleroma) {
       case PleromaNotificationType.follow:
-        text = appLocalizations.tr("key");
+        text = appLocalizations.tr("app.notification.header.follow");
         break;
       case PleromaNotificationType.favourite:
-        // TODO: Handle this case.
+        text = appLocalizations.tr("app.notification.header.favourite",
+            args: [notificationBloc.status?.content]);
         break;
       case PleromaNotificationType.reblog:
-        // TODO: Handle this case.
+        text = appLocalizations.tr("app.notification.header.reblog",
+            args: [notificationBloc.status?.content]);
         break;
       case PleromaNotificationType.mention:
-        // TODO: Handle this case.
+        text = appLocalizations.tr("app.notification.header.mention",
+            args: [notificationBloc.status?.content]);
         break;
       case PleromaNotificationType.poll:
-        // TODO: Handle this case.
+        text = appLocalizations.tr("app.notification.header.poll");
         break;
       case PleromaNotificationType.move:
-        // TODO: Handle this case.
+        text = appLocalizations.tr("app.notification.header.move");
         break;
       case PleromaNotificationType.followRequest:
-        // TODO: Handle this case.
+        text = appLocalizations.tr("app.notification.header.followRequest");
         break;
       case PleromaNotificationType.pleromaEmojiReaction:
-        // TODO: Handle this case.
+        text = appLocalizations.tr(
+            "app.notification.header"
+            ".pleromaEmojiReaction",
+            args: [notificationBloc.status?.content]);
         break;
       case PleromaNotificationType.pleromaChatMention:
-        // TODO: Handle this case.
+        text = appLocalizations.tr("app.notification.header.pleromaChatMention",
+            args: [notificationBloc.status?.content]);
         break;
     }
 
     return Text(
       text,
-      maxLines: 2,
-      style: TextStyle(color: FediColors.mediumGrey, fontSize: 16),
+      softWrap: false,
+      overflow: TextOverflow.ellipsis,
+      maxLines: 1,
+      style: TextStyle(
+          color: FediColors.mediumGrey,
+          fontSize: 16,
+          fontWeight: FontWeight.w300),
     );
   }
 }
