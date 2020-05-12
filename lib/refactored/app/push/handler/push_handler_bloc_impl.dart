@@ -76,12 +76,12 @@ class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
   }
 
   @override
-  void addRealTimeHandler(pushHandler) {
+  void addRealTimeHandler(IPushRealTimeHandler pushHandler) {
     realTimeHandlers.add(pushHandler);
   }
 
   @override
-  void removeRealTimeHandler(pushHandler) {
+  void removeRealTimeHandler(IPushRealTimeHandler pushHandler) {
     realTimeHandlers.remove(pushHandler);
   }
 

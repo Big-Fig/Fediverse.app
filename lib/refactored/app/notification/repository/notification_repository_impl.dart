@@ -1,4 +1,5 @@
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
+import 'package:fedi/refactored/app/chat/message/repository/chat_message_repository.dart';
 import 'package:fedi/refactored/app/database/app_database.dart';
 import 'package:fedi/refactored/app/notification/database/notification_database_dao.dart';
 import 'package:fedi/refactored/app/notification/notification_model.dart';
@@ -7,8 +8,8 @@ import 'package:fedi/refactored/app/notification/repository/notification_reposit
 import 'package:fedi/refactored/app/notification/repository/notification_repository_model.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:fedi/refactored/mastodon/notification/mastodon_notification_model.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
+import 'package:fedi/refactored/pleroma/chat/pleroma_chat_model.dart';
 import 'package:fedi/refactored/pleroma/notification/pleroma_notification_model.dart';
 import 'package:fedi/refactored/pleroma/status/pleroma_status_model.dart';
 import 'package:flutter/widgets.dart';
@@ -22,11 +23,13 @@ class NotificationRepository extends AsyncInitLoadingBloc
   final NotificationDao dao;
   final IAccountRepository accountRepository;
   final IStatusRepository statusRepository;
+  final IChatMessageRepository chatMessageRepository;
 
   NotificationRepository({
     @required AppDatabase appDatabase,
     @required this.accountRepository,
     @required this.statusRepository,
+    @required this.chatMessageRepository,
   }) : dao = appDatabase.notificationDao;
 
   @override
@@ -46,12 +49,16 @@ class NotificationRepository extends AsyncInitLoadingBloc
     var remoteAccount = remoteNotification.account;
 
     await accountRepository.upsertRemoteAccount(remoteAccount,
-        conversationRemoteId: conversationRemoteId);
+        conversationRemoteId: conversationRemoteId, chatRemoteId: null);
 
     var remoteStatus = remoteNotification.status;
     if (remoteStatus != null) {
       await statusRepository.upsertRemoteStatus(remoteStatus,
           listRemoteId: null, conversationRemoteId: null);
+    }
+    var remoteChatMessage = remoteNotification.chatMessage;
+    if (remoteChatMessage != null) {
+      await chatMessageRepository.upsertRemoteChatMessage(remoteChatMessage);
     }
 
     await upsert(mapRemoteNotificationToDbNotification(remoteNotification,
@@ -76,7 +83,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
         .toList();
 
     await accountRepository.upsertRemoteAccounts(remoteAccounts,
-        conversationRemoteId: conversationRemoteId);
+        conversationRemoteId: conversationRemoteId, chatRemoteId: null);
 
     List<IPleromaStatus> remoteStatuses = remoteNotifications
         .map((remoteNotification) => remoteNotification.status)
@@ -85,6 +92,13 @@ class NotificationRepository extends AsyncInitLoadingBloc
 
     await statusRepository.upsertRemoteStatuses(remoteStatuses,
         conversationRemoteId: conversationRemoteId, listRemoteId: null);
+
+    List<IPleromaChatMessage> remoteChatMessages = remoteNotifications
+        .map((remoteNotification) => remoteNotification.chatMessage)
+        .where((remoteChatMessage) => remoteChatMessage != null)
+        .toList();
+
+    await chatMessageRepository.upsertRemoteChatMessages(remoteChatMessages);
 
     await upsertAll(remoteNotifications
         .map(mapRemoteNotificationToDbNotification)
@@ -98,14 +112,14 @@ class NotificationRepository extends AsyncInitLoadingBloc
 
   @override
   Future<List<DbNotificationPopulatedWrapper>> getNotifications(
-      {@required MastodonNotificationType onlyWithType,
+      {@required List<PleromaNotificationType> excludeTypes,
       @required INotification olderThanNotification,
       @required INotification newerThanNotification,
       @required int limit,
       @required int offset,
       @required NotificationOrderingTermData orderingTermData}) async {
     var query = createQuery(
-        onlyWithType: onlyWithType,
+        excludeTypes: excludeTypes,
         olderThanNotification: olderThanNotification,
         newerThanNotification: newerThanNotification,
         limit: limit,
@@ -120,14 +134,14 @@ class NotificationRepository extends AsyncInitLoadingBloc
 
   @override
   Stream<List<DbNotificationPopulatedWrapper>> watchNotifications(
-      {@required MastodonNotificationType onlyWithType,
+      {@required List<PleromaNotificationType> excludeTypes,
       @required INotification olderThanNotification,
       @required INotification newerThanNotification,
       @required int limit,
       @required int offset,
       @required NotificationOrderingTermData orderingTermData}) {
     var query = createQuery(
-        onlyWithType: onlyWithType,
+        excludeTypes: excludeTypes,
         olderThanNotification: olderThanNotification,
         newerThanNotification: newerThanNotification,
         limit: limit,
@@ -140,14 +154,14 @@ class NotificationRepository extends AsyncInitLoadingBloc
   }
 
   JoinedSelectStatement createQuery(
-      {@required MastodonNotificationType onlyWithType,
+      {@required List<PleromaNotificationType> excludeTypes,
       @required INotification olderThanNotification,
       @required INotification newerThanNotification,
       @required int limit,
       @required int offset,
       @required NotificationOrderingTermData orderingTermData}) {
     _logger.fine(() => "createQuery \n"
-        "\t onlyWithType=$onlyWithType\n"
+        "\t excludeTypes=$excludeTypes\n"
         "\t olderThanNotification=$olderThanNotification\n"
         "\t newerThanNotification=$newerThanNotification\n"
         "\t limit=$limit\n"
@@ -162,8 +176,8 @@ class NotificationRepository extends AsyncInitLoadingBloc
           minimumCreatedAt: newerThanNotification?.createdAt);
     }
 
-    if (onlyWithType != null) {
-      dao.addOnlyTypeWhere(query, onlyWithType);
+    if (excludeTypes?.isNotEmpty == true) {
+      dao.addExcludeTypeWhere(query, excludeTypes);
     }
 
     if (orderingTermData != null) {
@@ -279,7 +293,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
     var remoteAccount = newRemoteNotification.account;
 
     await accountRepository.upsertRemoteAccount(remoteAccount,
-        conversationRemoteId: null);
+        conversationRemoteId: null, chatRemoteId: null);
 
     var remoteStatus = newRemoteNotification.status;
 
@@ -294,12 +308,12 @@ class NotificationRepository extends AsyncInitLoadingBloc
 
   @override
   Future<DbNotificationPopulatedWrapper> getNotification(
-      {@required MastodonNotificationType onlyWithType,
+      {@required List<PleromaNotificationType> excludeTypes,
       @required INotification olderThanNotification,
       @required INotification newerThanNotification,
       @required NotificationOrderingTermData orderingTermData}) async {
     var query = createQuery(
-        onlyWithType: onlyWithType,
+        excludeTypes: excludeTypes,
         olderThanNotification: olderThanNotification,
         newerThanNotification: newerThanNotification,
         limit: 1,
@@ -312,12 +326,12 @@ class NotificationRepository extends AsyncInitLoadingBloc
 
   @override
   Stream<DbNotificationPopulatedWrapper> watchNotification(
-      {@required MastodonNotificationType onlyWithType,
+      {@required List<PleromaNotificationType> excludeTypes,
       @required INotification olderThanNotification,
       @required INotification newerThanNotification,
       @required NotificationOrderingTermData orderingTermData}) {
     var query = createQuery(
-        onlyWithType: onlyWithType,
+        excludeTypes: excludeTypes,
         olderThanNotification: olderThanNotification,
         newerThanNotification: newerThanNotification,
         limit: 1,
@@ -336,9 +350,9 @@ class NotificationRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<int> countUnreadByType({@required MastodonNotificationType type}) {
+  Future<int> countUnreadByType({@required PleromaNotificationType type}) {
     return dao
-        .countUnreadByTypeQuery(mastodonNotificationTypeValues.reverse[type])
+        .countUnreadByTypeQuery(pleromaNotificationTypeValues.reverse[type])
         .getSingle();
   }
 
@@ -348,10 +362,26 @@ class NotificationRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Stream<int> watchUnreadCountByType(
-      {@required MastodonNotificationType type}) {
+  Stream<int> watchUnreadCountByType({@required PleromaNotificationType type}) {
     return dao
-        .countUnreadByTypeQuery(mastodonNotificationTypeValues.reverse[type])
+        .countUnreadByTypeQuery(pleromaNotificationTypeValues.reverse[type])
         .watchSingle();
   }
+
+  @override
+  Future<int> getUnreadCountExcludeTypes(
+          {@required List<PleromaNotificationType> excludeTypes}) async =>
+      dao
+          .countUnreadExcludeTypes(excludeTypes
+              .map((type) => pleromaNotificationTypeValues.reverse[type])
+              .toList())
+          .getSingle();
+  @override
+  Stream<int> watchUnreadCountExcludeTypes(
+          {@required List<PleromaNotificationType> excludeTypes}) =>
+      dao
+          .countUnreadExcludeTypes(excludeTypes
+              .map((type) => pleromaNotificationTypeValues.reverse[type])
+              .toList())
+          .watchSingle();
 }

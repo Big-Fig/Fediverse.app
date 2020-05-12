@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class ConversationAvatarWidget extends StatelessWidget {
   final double baseAvatarSize;
 
-  ConversationAvatarWidget({this.baseAvatarSize = 50.0});
+  ConversationAvatarWidget({this.baseAvatarSize = 36.0});
 
   @override
   Widget build(BuildContext context) {

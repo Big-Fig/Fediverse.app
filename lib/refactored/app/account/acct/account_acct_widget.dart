@@ -1,7 +1,16 @@
 import 'package:fedi/refactored/app/account/account_bloc.dart';
+import 'package:fedi/refactored/app/ui/fedi_colors.dart';
 import 'package:flutter/cupertino.dart';
 
 class AccountAcctWidget extends StatelessWidget {
+  final TextStyle textStyle;
+
+  AccountAcctWidget(
+      {this.textStyle = const TextStyle(
+        color: FediColors.darkGrey,
+        fontSize: 14.0,
+      )});
+
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: true);
@@ -11,7 +20,10 @@ class AccountAcctWidget extends StatelessWidget {
         builder: (context, snapshot) {
           var acct = snapshot.data;
 
-          return Text(acct);
+          return Text(
+            acct,
+            style: textStyle,
+          );
         });
   }
 }

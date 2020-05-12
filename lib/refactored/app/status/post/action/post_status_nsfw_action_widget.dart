@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/status/post/post_status_bloc.dart';
+import 'package:fedi/refactored/app/ui/fedi_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -27,6 +28,6 @@ class PostStatusNsfwActionWidget extends StatelessWidget {
   }
 
   Color calculateColor(bool sensitive) {
-    return sensitive ? Colors.blue : Colors.black;
+    return sensitive ? FediColors.primaryColor : FediColors.darkGrey;
   }
 }

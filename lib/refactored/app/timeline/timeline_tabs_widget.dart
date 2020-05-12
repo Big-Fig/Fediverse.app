@@ -3,6 +3,8 @@ import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/app/timeline/tab/timeline_tab_model.dart';
 import 'package:fedi/refactored/app/timeline/timeline_tabs_bloc.dart';
 import 'package:fedi/refactored/app/timeline/timeline_widget.dart';
+import 'package:fedi/refactored/app/ui/home/fedi_home_tab_container_widget.dart';
+import 'package:fedi/refactored/app/ui/tab/fedi_text_tab.dart';
 import 'package:fedi/refactored/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/refactored/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/refactored/pagination/list/with_new_items/pagination_list_with_new_items_header_widget.dart';
@@ -27,37 +29,34 @@ class TimelineTabsWidget extends StatelessWidget {
     _logger.finest(() => "build");
 
     var tabs = timelinesTabsBloc.tabs;
+
     return DefaultTabController(
-      length: tabs.length,
-      initialIndex: tabs.indexOf(timelinesTabsBloc.selectedTab),
-      child: Column(
-        children: <Widget>[
-          Container(
-              decoration: BoxDecoration(color: Colors.blue),
-              child: buildTabBar(context, tabs, timelinesTabsBloc)),
-          Expanded(child: buildBodyWidget(context)),
-        ],
-      ),
-    );
+        length: tabs.length,
+        initialIndex: tabs.indexOf(timelinesTabsBloc.selectedTab),
+        child: FediHomeTabContainer(
+          topHeaderHeightInSafeArea: 156.0,
+          topBar: buildTabBar(context, tabs, timelinesTabsBloc),
+          body: buildBodyWidget(context),
+        ));
   }
 
   Widget buildTabBar(BuildContext context, List<TimelineTab> tabs,
           ITimelineTabsBloc timelineTabsBloc) =>
-      Row(
+      Column(
         children: [
-          Flexible(
-            child: TabBar(
-              tabs: tabs.map((tab) {
-                return buildTab(context, tab);
-              }).toList(),
-              onTap: (index) {
-                timelineTabsBloc.selectTab(tabs[index]);
-              },
+          Padding(
+            padding: const EdgeInsets.only(bottom: 16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: appBarActionWidgets,
             ),
           ),
           Row(
-            children: appBarActionWidgets,
-          )
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: tabs
+                  .map((tab) => FediTextTab(mapTabToTitle(context, tab),
+                      index: tabs.indexOf(tab)))
+                  .toList()),
         ],
       );
 

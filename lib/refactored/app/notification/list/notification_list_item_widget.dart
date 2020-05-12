@@ -1,17 +1,13 @@
-import 'package:fedi/refactored/app/notification/header/notification_favourite_type_header_widget.dart';
-import 'package:fedi/refactored/app/notification/header/notification_follow_type_header_widget.dart';
-import 'package:fedi/refactored/app/notification/header/notification_mention_type_header_widget.dart';
-import 'package:fedi/refactored/app/notification/header/notification_poll_type_header_widget.dart';
-import 'package:fedi/refactored/app/notification/header/notification_reblog_type_header_widget.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/refactored/app/account/account_bloc.dart';
+import 'package:fedi/refactored/app/account/account_bloc_impl.dart';
+import 'package:fedi/refactored/app/account/acct/account_acct_widget.dart';
+import 'package:fedi/refactored/app/account/avatar/account_avatar_widget.dart';
+import 'package:fedi/refactored/app/notification/created_at/notification_created_at_widget.dart';
 import 'package:fedi/refactored/app/notification/notification_bloc.dart';
-import 'package:fedi/refactored/app/status/list/status_list_item_timeline_widget.dart';
-import 'package:fedi/refactored/app/status/status_bloc.dart';
-import 'package:fedi/refactored/app/status/status_bloc_impl.dart';
-import 'package:fedi/refactored/app/status/status_model.dart';
-import 'package:fedi/refactored/collapsible/collapsible_bloc.dart';
-import 'package:fedi/refactored/disposable/disposable.dart';
+import 'package:fedi/refactored/app/ui/fedi_colors.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
-import 'package:fedi/refactored/mastodon/notification/mastodon_notification_model.dart';
+import 'package:fedi/refactored/pleroma/notification/pleroma_notification_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -25,65 +21,93 @@ class NotificationListItemWidget extends StatelessWidget {
 
     _logger.finest(() => "build ${notificationBloc.remoteId}");
 
-    var status = notificationBloc.status;
-    return Card(
-      elevation: 0,
+    return DisposableProvider<IAccountBloc>(
+      create: (context) => AccountBloc.createFromContext(context,
+          account: notificationBloc.account,
+          isNeedWatchWebSocketsEvents: false,
+          isNeedRefreshFromNetworkOnInit: false,
+          isNeedWatchLocalRepositoryForUpdates: false),
       child: Padding(
-        padding: EdgeInsets.all(8),
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
         child: Column(
           children: <Widget>[
-            buildHeaderWidget(context, notificationBloc),
-            if (status != null) buildStatusWidget(context, status)
+            Row(
+              children: <Widget>[
+                AccountAvatarWidget(progressSize: 36, imageSize: 36),
+                SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      AccountAcctWidget(
+                          textStyle: TextStyle(
+                              fontSize: 16.0, color: FediColors.darkGrey)),
+                      buildNotificationContent(context, notificationBloc)
+                    ],
+                  ),
+                ),
+                NotificationCreatedAtWidget()
+              ],
+            ),
           ],
         ),
       ),
     );
   }
 
-  DisposableProvider<IStatusBloc> buildStatusWidget(
-      BuildContext context, IStatus status) {
-    return DisposableProvider<IStatusBloc>(
-        create: (context) {
-          var statusBloc = StatusBloc.createFromContext(context, status);
-          var collapsibleBloc = ICollapsibleBloc.of(context, listen: false);
-
-          collapsibleBloc.addVisibleItem(statusBloc);
-
-          statusBloc.addDisposable(disposable: CustomDisposable(() {
-            collapsibleBloc.removeVisibleItem(statusBloc);
-          }));
-          return statusBloc;
-        },
-        child: StatusListItemTimelineWidget(
-          collapsible: true,
-        ));
-  }
-
-  Widget buildHeaderWidget(
+  Widget buildNotificationContent(
       BuildContext context, INotificationBloc notificationBloc) {
-    Widget headerWidget;
+    var text;
 
-    switch (notificationBloc.type) {
-      case MastodonNotificationType.follow:
-        headerWidget = NotificationFollowTypeHeaderWidget();
+    var appLocalizations = AppLocalizations.of(context);
+
+    switch (notificationBloc.typePleroma) {
+      case PleromaNotificationType.follow:
+        text = appLocalizations.tr("app.notification.header.follow");
         break;
-      case MastodonNotificationType.mention:
-        headerWidget = NotificationMentionTypeHeaderWidget();
+      case PleromaNotificationType.favourite:
+        text = appLocalizations.tr("app.notification.header.favourite",
+            args: [notificationBloc.status?.content]);
         break;
-      case MastodonNotificationType.reblog:
-        headerWidget = NotificationReblogTypeHeaderWidget();
+      case PleromaNotificationType.reblog:
+        text = appLocalizations.tr("app.notification.header.reblog",
+            args: [notificationBloc.status?.content]);
         break;
-      case MastodonNotificationType.favourite:
-        headerWidget = NotificationFavouriteTypeHeaderWidget();
+      case PleromaNotificationType.mention:
+        text = appLocalizations.tr("app.notification.header.mention",
+            args: [notificationBloc.status?.content]);
         break;
-      case MastodonNotificationType.poll:
-        headerWidget = NotificationPollTypeHeaderWidget();
+      case PleromaNotificationType.poll:
+        text = appLocalizations.tr("app.notification.header.poll");
         break;
-      default:
-        throw "Invalid type ${notificationBloc.type}";
+      case PleromaNotificationType.move:
+        text = appLocalizations.tr("app.notification.header.move");
+        break;
+      case PleromaNotificationType.followRequest:
+        text = appLocalizations.tr("app.notification.header.followRequest");
+        break;
+      case PleromaNotificationType.pleromaEmojiReaction:
+        text = appLocalizations.tr(
+            "app.notification.header"
+            ".pleromaEmojiReaction",
+            args: [notificationBloc.status?.content]);
+        break;
+      case PleromaNotificationType.pleromaChatMention:
+        text = appLocalizations.tr("app.notification.header.pleromaChatMention",
+            args: [notificationBloc.status?.content]);
         break;
     }
 
-    return headerWidget;
+    return Text(
+      text,
+      softWrap: false,
+      overflow: TextOverflow.ellipsis,
+      maxLines: 1,
+      style: TextStyle(
+          color: FediColors.mediumGrey,
+          fontSize: 16,
+          fontWeight: FontWeight.w300),
+    );
   }
 }

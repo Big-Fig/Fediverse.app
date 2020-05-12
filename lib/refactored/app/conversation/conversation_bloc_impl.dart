@@ -134,7 +134,7 @@ class ConversationBloc extends AsyncInitLoadingBloc
         conversationRemoteId: conversation.remoteId);
 
     await accountRepository.upsertRemoteAccounts(remoteConversation.accounts,
-        conversationRemoteId: remoteConversation.id);
+        conversationRemoteId: remoteConversation.id, chatRemoteId: null);
 
     if (remoteConversation.lastStatus != null) {
       await statusRepository.upsertRemoteStatus(remoteConversation.lastStatus,

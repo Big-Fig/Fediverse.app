@@ -6,16 +6,19 @@ import 'package:fedi/refactored/app/notification/notification_tabs_model.dart';
 import 'package:fedi/refactored/app/notification/pagination/cached/notification_cached_pagination_bloc_impl.dart';
 import 'package:fedi/refactored/app/notification/pagination/list/notification_pagination_list_widget.dart';
 import 'package:fedi/refactored/app/notification/pagination/list/notification_pagination_list_with_new_items_bloc_impl.dart';
+import 'package:fedi/refactored/app/ui/fedi_icons.dart';
+import 'package:fedi/refactored/app/ui/home/fedi_home_tab_container_widget.dart';
+import 'package:fedi/refactored/app/ui/tab/fedi_icon_tab.dart';
 import 'package:fedi/refactored/collapsible/collapsible_bloc.dart';
 import 'package:fedi/refactored/collapsible/collapsible_bloc_impl.dart';
 import 'package:fedi/refactored/collapsible/toggle_collapsible_overlay_widget.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
-import 'package:fedi/refactored/mastodon/notification/mastodon_notification_model.dart';
 import 'package:fedi/refactored/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/refactored/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/refactored/pagination/list/with_new_items/pagination_list_with_new_items_header_widget.dart';
 import 'package:fedi/refactored/pagination/pagination_bloc.dart';
 import 'package:fedi/refactored/pagination/pagination_model.dart';
+import 'package:fedi/refactored/pleroma/notification/pleroma_notification_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -34,60 +37,46 @@ class NotificationTabsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var notificationsTabsBloc =
         INotificationsTabsBloc.of(context, listen: false);
+
     var tabs = notificationsTabsBloc.tabs;
+
     return DefaultTabController(
-      length: tabs.length,
-      initialIndex: tabs.indexOf(notificationsTabsBloc.selectedTab),
-      child: Column(
-        children: <Widget>[
-          Container(
-              decoration: BoxDecoration(color: Colors.blue),
-              child: buildTabBar(context, tabs, notificationsTabsBloc)),
-          Expanded(child: buildBodyWidget(context)),
-        ],
-      ),
-    );
+        length: tabs.length,
+        initialIndex: tabs.indexOf(notificationsTabsBloc.selectedTab),
+        child: FediHomeTabContainer(
+          topHeaderHeightInSafeArea: 104.0,
+          topBar: buildTabBar(context, tabs, notificationsTabsBloc),
+          body: buildBodyWidget(context),
+        ));
   }
 
   Widget buildTabBar(BuildContext context, List<NotificationTab> tabs,
           INotificationsTabsBloc notificationsTabsBloc) =>
       Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Flexible(
-            child: TabBar(
-              tabs: tabs.map((tab) {
-                return buildTab(context, tab);
-              }).toList(),
-              onTap: (index) {
-                notificationsTabsBloc.selectTab(tabs[index]);
-              },
-            ),
-          ),
+          ...tabs.map((tab) => FediIconTab(mapTabToIconData(context, tab),
+              index: tabs.indexOf(tab))),
           ...appBarActionWidgets
         ],
-      );
-
-  Tab buildTab(BuildContext context, NotificationTab tab) => Tab(
-        icon: Icon(mapTabToIconData(context, tab)),
       );
 
   IconData mapTabToIconData(BuildContext context, NotificationTab tab) {
     switch (tab) {
       case NotificationTab.all:
-        return Icons.notifications_none;
+        return FediIcons.notification;
         break;
-
       case NotificationTab.mentions:
-        return Icons.alternate_email;
+        return FediIcons.chat;
         break;
       case NotificationTab.reblogs:
-        return Icons.repeat;
+        return FediIcons.reply;
         break;
       case NotificationTab.favourites:
-        return Icons.favorite_border;
+        return FediIcons.heart;
         break;
       case NotificationTab.follows:
-        return Icons.person_add;
+        return FediIcons.add_user;
         break;
     }
 
@@ -114,11 +103,11 @@ class NotificationTabsWidget extends StatelessWidget {
 
   Widget buildTabBody(BuildContext context, NotificationTab tab,
       INotificationsTabsBloc notificationsTabsBloc) {
-    MastodonNotificationType onlyWithType = mapTabToType(tab);
+    List<PleromaNotificationType> excludeTypes = mapTabToExcludeTypes(tab);
 
     return DisposableProvider<INotificationCachedListBloc>(
       create: (context) => NotificationCachedListBloc.createFromContext(context,
-          onlyWithType: onlyWithType),
+          excludeTypes: excludeTypes),
       child: DisposableProvider<
           IPaginationBloc<PaginationPage<INotification>, INotification>>(
         create: (context) =>
@@ -169,26 +158,36 @@ class NotificationTabsWidget extends StatelessWidget {
     );
   }
 
-  MastodonNotificationType mapTabToType(NotificationTab tab) {
-    MastodonNotificationType onlyWithType;
+  List<PleromaNotificationType> mapTabToExcludeTypes(NotificationTab tab) {
+    List<PleromaNotificationType> excludeTypes;
 
     switch (tab) {
       case NotificationTab.all:
-        onlyWithType = null;
+        excludeTypes = pleromaNotificationTypeValues
+            .valuesWithExclude([PleromaNotificationType.pleromaChatMention]);
         break;
       case NotificationTab.mentions:
-        onlyWithType = MastodonNotificationType.mention;
+        excludeTypes = pleromaNotificationTypeValues.valuesWithExcept([
+          PleromaNotificationType.mention
+        ]);
         break;
       case NotificationTab.reblogs:
-        onlyWithType = MastodonNotificationType.reblog;
+        excludeTypes = pleromaNotificationTypeValues.valuesWithExcept([
+          PleromaNotificationType.reblog
+        ]);
         break;
       case NotificationTab.favourites:
-        onlyWithType = MastodonNotificationType.favourite;
+        excludeTypes = pleromaNotificationTypeValues.valuesWithExcept([
+          PleromaNotificationType.favourite
+        ]);
         break;
       case NotificationTab.follows:
-        onlyWithType = MastodonNotificationType.follow;
+        excludeTypes = pleromaNotificationTypeValues.valuesWithExcept([
+          PleromaNotificationType.follow,
+          PleromaNotificationType.followRequest,
+        ]);
         break;
     }
-    return onlyWithType;
+    return excludeTypes;
   }
 }

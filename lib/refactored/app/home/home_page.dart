@@ -1,13 +1,20 @@
 import 'package:fedi/refactored/app/account/my/action/my_account_action_list_bottom_sheet_dialog.dart';
 import 'package:fedi/refactored/app/account/my/avatar/my_account_avatar_widget.dart';
+import 'package:fedi/refactored/app/account/my/settings/my_account_settings_bloc.dart';
+import 'package:fedi/refactored/app/chat/unread/chat_unread_badge_count_widget.dart';
 import 'package:fedi/refactored/app/home/home_model.dart';
 import 'package:fedi/refactored/app/home/tab/account/account_home_tab_page'
     '.dart';
+import 'package:fedi/refactored/app/home/tab/conversations/chats_home_tab_page.dart';
 import 'package:fedi/refactored/app/home/tab/conversations/conversations_home_tab_page.dart';
 import 'package:fedi/refactored/app/home/tab/notifications/notifications_home_tab_page.dart';
 import 'package:fedi/refactored/app/home/tab/timelines/timelines_home_tab_page.dart';
-import 'package:fedi/refactored/app/notification/unread/notification_unread_all_badge_count_widget.dart';
+import 'package:fedi/refactored/app/notification/unread/notification_unread_exclude_types_badge_count_widget.dart';
 import 'package:fedi/refactored/app/status/post/new/new_post_status_page.dart';
+import 'package:fedi/refactored/app/ui/fedi_colors.dart';
+import 'package:fedi/refactored/app/ui/fedi_icons.dart';
+import 'package:fedi/refactored/app/ui/icon/fedi_transparent_icon.dart';
+import 'package:fedi/refactored/pleroma/notification/pleroma_notification_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -17,8 +24,7 @@ var _logger = Logger("home_page.dart");
 const List<AppHomeTab> tabs = [
   AppHomeTab.timelines,
   AppHomeTab.notifications,
-  null,
-  // spacer
+  null, // new status button
   AppHomeTab.conversations,
   AppHomeTab.account,
 ];
@@ -43,12 +49,13 @@ class _HomePageState extends State<HomePage>
     if (selectedTab == null) {
       return SizedBox.shrink();
     }
+
     return Scaffold(
       body: buildBody(context, selectedTab),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: buildNewPostFloatingActionButton(context),
       bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
+          selectedIconTheme: IconThemeData(color: FediColors.primaryColor),
+          unselectedIconTheme: IconThemeData(color: FediColors.darkGrey),
           showSelectedLabels: true,
           showUnselectedLabels: true,
           currentIndex: tabs.indexOf(selectedTab),
@@ -65,19 +72,24 @@ class _HomePageState extends State<HomePage>
             if (tab != null) {
               return buildTabNavBarItem(context, tab);
             } else {
-              return buildSpacerNavBarItem();
+              return buildNewMessageNavBarItem();
             }
           }).toList()),
     );
   }
 
-  BottomNavigationBarItem buildSpacerNavBarItem() => BottomNavigationBarItem(
-      backgroundColor: Colors.blue, icon: Icon(null), title: Text(''));
+  BottomNavigationBarItem buildNewMessageNavBarItem() =>
+      BottomNavigationBarItem(
+          icon: GestureDetector(
+              onTap: () {
+                goToNewPostStatusPage(context);
+              },
+              child: FediTransparentIcon(FediIcons.plus)),
+          title: Text(''));
 
   BottomNavigationBarItem buildTabNavBarItem(
           BuildContext context, AppHomeTab tab) =>
       BottomNavigationBarItem(
-        backgroundColor: Colors.blue,
         icon: mapTabToIcon(context, tab),
         title: Text(''),
       );
@@ -85,14 +97,30 @@ class _HomePageState extends State<HomePage>
   Widget mapTabToIcon(BuildContext context, AppHomeTab tab) {
     switch (tab) {
       case AppHomeTab.timelines:
-        return Icon(Icons.home);
+        return FediTransparentIcon(FediIcons.home);
         break;
       case AppHomeTab.notifications:
-        return NotificationUnreadAllBadgeCountWidget(
-            child: Icon(Icons.notifications));
+        return NotificationUnreadBadgeExcludeTypesCountWidget(
+            excludeTypes: <PleromaNotificationType>[
+              PleromaNotificationType.pleromaChatMention
+            ],
+            child: FediTransparentIcon(FediIcons.notification));
         break;
       case AppHomeTab.conversations:
-        return Icon(Icons.mail);
+        var myAccountSettingsBloc =
+            IMyAccountSettingsBloc.of(context, listen: false);
+        return StreamBuilder<bool>(
+            stream: myAccountSettingsBloc.isNewChatsEnabledStream,
+            builder: (context, snapshot) {
+              var isNewChatsEnabled = snapshot.data;
+
+              var icon = FediTransparentIcon(FediIcons.envelope);
+              if (isNewChatsEnabled == true) {
+                return ChatUnreadBadgeCountWidget(child: icon);
+              } else {
+                return icon;
+              }
+            });
         break;
       case AppHomeTab.account:
         return GestureDetector(
@@ -107,15 +135,6 @@ class _HomePageState extends State<HomePage>
     throw "mapTabToIcon invalid tab=$tab";
   }
 
-  FloatingActionButton buildNewPostFloatingActionButton(BuildContext context) =>
-      FloatingActionButton(
-        onPressed: () {
-          goToNewPostStatusPage(context);
-        },
-        child: Icon(Icons.add),
-        elevation: 2.0,
-      );
-
   Widget buildBody(BuildContext context, AppHomeTab selectedTab) {
     switch (selectedTab) {
       case AppHomeTab.timelines:
@@ -128,8 +147,24 @@ class _HomePageState extends State<HomePage>
             key: PageStorageKey<String>("NotificationsHomeTabPage"));
         break;
       case AppHomeTab.conversations:
-        return ConversationsHomeTabPage(
-            key: PageStorageKey<String>("ConversationsHomeTabPage"));
+        var myAccountSettingsBloc =
+            IMyAccountSettingsBloc.of(context, listen: false);
+
+        return StreamBuilder<bool>(
+            stream: myAccountSettingsBloc.isNewChatsEnabledStream,
+            initialData: myAccountSettingsBloc.isNewChatsEnabled,
+            builder: (context, snapshot) {
+              var isNewChatsEnabled = snapshot.data;
+
+              if (isNewChatsEnabled == true) {
+                return ChatsHomeTabPage(
+                    key: PageStorageKey<String>("ChatsHomeTabPage"));
+              } else {
+                return ConversationsHomeTabPage(
+                    key: PageStorageKey<String>("ConversationsHomeTabPage"));
+              }
+            });
+
         break;
       case AppHomeTab.account:
         return AccountHomeTabPage();

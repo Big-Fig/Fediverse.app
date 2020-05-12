@@ -13,10 +13,8 @@ MastodonNotificationsRequest _$MastodonNotificationsRequestFromJson(
     sinceId: json['since_id'] as String,
     minId: json['min_id'] as String,
     limit: json['limit'] as int,
-    excludeTypes: (json['exclude_types'] as List)
-        ?.map((e) => const MastodonMediaNotificationTypeTypeConverter()
-            .fromJson(e as String))
-        ?.toList(),
+    excludeTypes:
+        (json['exclude_types[]'] as List)?.map((e) => e as String)?.toList(),
     accountId: json['account_id'] as String,
   );
 }
@@ -28,8 +26,6 @@ Map<String, dynamic> _$MastodonNotificationsRequestToJson(
       'since_id': instance.sinceId,
       'min_id': instance.minId,
       'limit': instance.limit,
-      'exclude_types': instance.excludeTypes
-          ?.map(const MastodonMediaNotificationTypeTypeConverter().toJson)
-          ?.toList(),
+      'exclude_types[]': instance.excludeTypes,
       'account_id': instance.accountId,
     };

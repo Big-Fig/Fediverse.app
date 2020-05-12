@@ -167,7 +167,7 @@ void main() {
   });
 
   test('contentHtmlWithEmojis', () async {
-    var newValue = "newContent :emoji :emoji1 :emoji2";
+    var newValue = "newContent :emoji: :emoji1: :emoji2:";
 
     var listenedValue;
 
@@ -191,13 +191,13 @@ void main() {
 
     expect(
         statusBloc.contentWithEmojis,
-        "<html><body>newContent :emoji "
+        "<html><body>newContent :emoji: "
         "<img src=\"https://fedi.app/emoji1.png\" width=\"20\"> "
         "<img src=\"https://fedi.app/emoji2.png\" width=\"20\">"
         "</body></html>");
     expect(
         listenedValue,
-        "<html><body>newContent :emoji "
+        "<html><body>newContent :emoji: "
         "<img src=\"https://fedi.app/emoji1.png\" width=\"20\"> "
         "<img src=\"https://fedi.app/emoji2.png\" width=\"20\">"
         "</body></html>");
@@ -205,7 +205,7 @@ void main() {
     await await subscription.cancel();
   });
   test('contentWithEmojisWithoutAccount', () async {
-    var newValue = "newContent :emoji :emoji1 :emoji2 @<span>acct<\/span>";
+    var newValue = "newContent :emoji: :emoji1: :emoji2: @<span>acct<\/span>";
 
     var listenedValue;
 
@@ -220,8 +220,8 @@ void main() {
     await _update(status.copyWith(content: newValue, emojis: []));
 
     expect(statusBloc.contentWithEmojisWithoutAccount,
-        "newContent :emoji :emoji1 :emoji2 </a>");
-    expect(listenedValue, "newContent :emoji :emoji1 :emoji2 </a>");
+        "newContent :emoji: :emoji1: :emoji2: </a>");
+    expect(listenedValue, "newContent :emoji: :emoji1: :emoji2: </a>");
 
     // same if emojis is empty or null
     await _update(status.copyWith(content: newValue, emojis: [
@@ -231,14 +231,14 @@ void main() {
 
     expect(
         statusBloc.contentWithEmojisWithoutAccount,
-        "<html><body>newContent :emoji "
+        "<html><body>newContent :emoji: "
         "<img src=\"https://fedi.app/emoji1.png\" width=\"20\"> "
         "<img src=\"https://fedi.app/emoji2.png\" width=\"20\"> "
         "</a>"
         "</body></html>");
     expect(
         listenedValue,
-        "<html><body>newContent :emoji "
+        "<html><body>newContent :emoji: "
         "<img src=\"https://fedi.app/emoji1.png\" width=\"20\"> "
         "<img src=\"https://fedi.app/emoji2.png\" width=\"20\"> "
         "</a>"
@@ -1028,7 +1028,7 @@ void main() {
 
     await accountRepository.upsertRemoteAccount(
         mapLocalAccountToRemoteAccount(account1),
-        conversationRemoteId: null);
+        conversationRemoteId: null, chatRemoteId: null);
 
     expectAccount(await statusBloc.loadInReplyToAccount(), null);
 

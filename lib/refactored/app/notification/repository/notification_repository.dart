@@ -2,7 +2,6 @@ import 'package:fedi/refactored/app/database/app_database.dart';
 import 'package:fedi/refactored/app/notification/notification_model.dart';
 import 'package:fedi/refactored/app/notification/repository/notification_repository_model.dart';
 import 'package:fedi/refactored/disposable/disposable.dart';
-import 'package:fedi/refactored/mastodon/notification/mastodon_notification_model.dart';
 import 'package:fedi/refactored/pleroma/notification/pleroma_notification_model.dart';
 import 'package:fedi/refactored/repository/repository.dart';
 import 'package:flutter/widgets.dart';
@@ -35,14 +34,20 @@ abstract class INotificationRepository
 
   Future<int> countUnreadAnyType();
 
-  Future<int> countUnreadByType({@required MastodonNotificationType type});
+  Future<int> countUnreadByType({@required PleromaNotificationType type});
+
+  Future<int> getUnreadCountExcludeTypes(
+      {@required List<PleromaNotificationType> excludeTypes});
+
+  Stream<int> watchUnreadCountExcludeTypes(
+      {@required List<PleromaNotificationType> excludeTypes});
 
   Stream<int> watchUnreadCountAnyType();
 
-  Stream<int> watchUnreadCountByType({@required MastodonNotificationType type});
+  Stream<int> watchUnreadCountByType({@required PleromaNotificationType type});
 
   Future<List<DbNotificationPopulatedWrapper>> getNotifications(
-      {@required MastodonNotificationType onlyWithType,
+      {@required List<PleromaNotificationType> excludeTypes,
       @required INotification olderThanNotification,
       @required INotification newerThanNotification,
       @required int limit,
@@ -50,7 +55,7 @@ abstract class INotificationRepository
       @required NotificationOrderingTermData orderingTermData});
 
   Stream<List<DbNotificationPopulatedWrapper>> watchNotifications(
-      {@required MastodonNotificationType onlyWithType,
+      {@required List<PleromaNotificationType> excludeTypes,
       @required INotification olderThanNotification,
       @required INotification newerThanNotification,
       @required int limit,
@@ -58,13 +63,13 @@ abstract class INotificationRepository
       @required NotificationOrderingTermData orderingTermData});
 
   Future<DbNotificationPopulatedWrapper> getNotification(
-      {@required MastodonNotificationType onlyWithType,
+      {@required List<PleromaNotificationType> excludeTypes,
       @required INotification olderThanNotification,
       @required INotification newerThanNotification,
       @required NotificationOrderingTermData orderingTermData});
 
   Stream<DbNotificationPopulatedWrapper> watchNotification(
-      {@required MastodonNotificationType onlyWithType,
+      {@required List<PleromaNotificationType> excludeTypes,
       @required INotification olderThanNotification,
       @required INotification newerThanNotification,
       @required NotificationOrderingTermData orderingTermData});

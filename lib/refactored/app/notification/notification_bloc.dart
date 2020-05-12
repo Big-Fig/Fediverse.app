@@ -3,6 +3,7 @@ import 'package:fedi/refactored/app/notification/notification_model.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/disposable/disposable.dart';
 import 'package:fedi/refactored/mastodon/notification/mastodon_notification_model.dart';
+import 'package:fedi/refactored/pleroma/notification/pleroma_notification_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +24,9 @@ abstract class INotificationBloc implements Disposable {
 
   Stream<IAccount> get accountStream;
 
-  MastodonNotificationType get type;
+  String get type;
+  MastodonNotificationType get typeMastodon;
+  PleromaNotificationType get typePleroma;
 
   DateTime get createdAt;
 

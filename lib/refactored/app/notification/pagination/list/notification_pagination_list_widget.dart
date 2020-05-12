@@ -3,6 +3,7 @@ import 'package:fedi/refactored/app/notification/notification_bloc.dart';
 import 'package:fedi/refactored/app/notification/notification_bloc_impl.dart';
 import 'package:fedi/refactored/app/notification/notification_model.dart';
 import 'package:fedi/refactored/app/notification/pagination/list/notification_pagination_list_base_widget.dart';
+import 'package:fedi/refactored/app/ui/fedi_colors.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:fedi/refactored/pagination/list/pagination_list_widget.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +36,14 @@ class NotificationPaginationListWidget
                                 context, notification,
                                 isNeedWatchLocalRepositoryForUpdates:
                                     needWatchLocalRepositoryForUpdates),
-                        child: NotificationListItemWidget()),
+                        child: Column(
+                          children: <Widget>[
+                            NotificationListItemWidget(),
+                            Container(
+                              height: 1,
+                              decoration: BoxDecoration(color: FediColors.ultraLightGrey),
+                            )
+                          ],
+                        )),
               ));
 }

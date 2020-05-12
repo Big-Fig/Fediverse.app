@@ -5,8 +5,8 @@ import 'package:fedi/refactored/app/account/repository/account_repository.dart';
 import 'package:fedi/refactored/app/conversation/conversation_page.dart';
 import 'package:fedi/refactored/app/conversation/repository/conversation_repository.dart';
 import 'package:fedi/refactored/app/conversation/start/status/post_status_start_conversation_bloc_impl.dart';
-import 'package:fedi/refactored/app/status/post/new/new_post_status_widget.dart';
 import 'package:fedi/refactored/app/status/post/post_status_bloc.dart';
+import 'package:fedi/refactored/app/status/post/post_status_widget.dart';
 import 'package:fedi/refactored/dialog/async/async_dialog.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:fedi/refactored/pleroma/conversation/pleroma_conversation_model.dart';
@@ -29,7 +29,12 @@ class PostStatusStartConversationPage extends StatelessWidget {
           },
         ),
       ),
-      body: NewPostStatusWidget(),
+      body: PostStatusWidget(
+        showVisibilityAction: false,
+        displayMentions: true,
+        goBackOnSuccess: true,
+        expanded: true,
+      ),
     );
   }
 }

@@ -45,7 +45,7 @@ class StatusAccountWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               AccountAvatarWidget(
-                imageSize: 40,
+                imageSize: 48,
                 progressSize: 15,
               ),
               SizedBox(

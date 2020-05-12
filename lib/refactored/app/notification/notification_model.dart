@@ -2,6 +2,7 @@ import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/database/app_database.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/mastodon/notification/mastodon_notification_model.dart';
+import 'package:fedi/refactored/pleroma/notification/pleroma_notification_model.dart';
 import 'package:flutter/widgets.dart';
 
 abstract class INotification {
@@ -17,7 +18,9 @@ abstract class INotification {
 
   IAccount get account;
 
-  MastodonNotificationType get type;
+  String get type;
+  PleromaNotificationType get typePleroma;
+  MastodonNotificationType get typeMastodon;
 
   INotification copyWith(
       {int localId,
@@ -47,7 +50,15 @@ class DbNotificationPopulatedWrapper implements INotification {
   String get remoteId => dbNotificationPopulated.dbNotification.remoteId;
 
   @override
-  MastodonNotificationType get type =>
+  MastodonNotificationType get typeMastodon => mastodonNotificationTypeValues
+      .map[type];
+
+  @override
+  PleromaNotificationType get typePleroma => pleromaNotificationTypeValues
+      .map[type];
+
+  @override
+  String get type =>
       dbNotificationPopulated.dbNotification.type;
 
   @override
