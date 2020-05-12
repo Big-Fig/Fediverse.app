@@ -167,35 +167,24 @@ class NotificationTabsWidget extends StatelessWidget {
             .valuesWithExclude([PleromaNotificationType.pleromaChatMention]);
         break;
       case NotificationTab.mentions:
-        excludeTypes = pleromaNotificationTypeValues.valuesWithExclude([
-          PleromaNotificationType.pleromaChatMention,
-          PleromaNotificationType.reblog,
-          PleromaNotificationType.favourite,
-          PleromaNotificationType.follow,
+        excludeTypes = pleromaNotificationTypeValues.valuesWithExcept([
+          PleromaNotificationType.mention
         ]);
         break;
       case NotificationTab.reblogs:
-        excludeTypes = pleromaNotificationTypeValues.valuesWithExclude([
-          PleromaNotificationType.pleromaChatMention,
-          PleromaNotificationType.mention,
-          PleromaNotificationType.favourite,
-          PleromaNotificationType.follow,
+        excludeTypes = pleromaNotificationTypeValues.valuesWithExcept([
+          PleromaNotificationType.reblog
         ]);
         break;
       case NotificationTab.favourites:
-        excludeTypes = pleromaNotificationTypeValues.valuesWithExclude([
-          PleromaNotificationType.pleromaChatMention,
-          PleromaNotificationType.mention,
-          PleromaNotificationType.reblog,
-          PleromaNotificationType.follow,
+        excludeTypes = pleromaNotificationTypeValues.valuesWithExcept([
+          PleromaNotificationType.favourite
         ]);
         break;
       case NotificationTab.follows:
-        excludeTypes = pleromaNotificationTypeValues.valuesWithExclude([
-          PleromaNotificationType.pleromaChatMention,
-          PleromaNotificationType.mention,
-          PleromaNotificationType.reblog,
-          PleromaNotificationType.favourite,
+        excludeTypes = pleromaNotificationTypeValues.valuesWithExcept([
+          PleromaNotificationType.follow,
+          PleromaNotificationType.followRequest,
         ]);
         break;
     }
