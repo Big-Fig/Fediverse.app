@@ -21,15 +21,29 @@ abstract class IPleromaNotification extends IMastodonNotification {
   PleromaNotificationType get typePleroma;
 }
 
-
 enum PleromaNotificationType {
   follow,
-  mention,
-  reblog,
   favourite,
+  reblog,
+  mention,
   poll,
-  chatMention
+  move,
+  followRequest,
+  pleromaEmojiReaction,
+  pleromaChatMention
 }
+
+final pleromaNotificationTypeValues = EnumValues({
+  "follow": PleromaNotificationType.follow,
+  "favourite": PleromaNotificationType.favourite,
+  "reblog": PleromaNotificationType.reblog,
+  "mention": PleromaNotificationType.mention,
+  "poll": PleromaNotificationType.poll,
+  "move": PleromaNotificationType.move,
+  "follow_request": PleromaNotificationType.followRequest,
+  "pleroma:emoji_reaction": PleromaNotificationType.pleromaEmojiReaction,
+  "pleroma:chat_mention": PleromaNotificationType.pleromaChatMention,
+});
 
 @JsonSerializable()
 class PleromaNotification extends IPleromaNotification {
@@ -69,6 +83,7 @@ class PleromaNotification extends IPleromaNotification {
           json.decode(str).map((x) => PleromaNotification.fromJson(x)));
 
   Map<String, dynamic> toJson() => _$PleromaNotificationToJson(this);
+
   String toJsonString() => jsonEncode(_$PleromaNotificationToJson(this));
 
   @override
@@ -78,21 +93,10 @@ class PleromaNotification extends IPleromaNotification {
   }
 
   @override
-  MastodonNotificationType get typeMastodon => mastodonNotificationTypeValues
-      .map[type];
+  MastodonNotificationType get typeMastodon =>
+      mastodonNotificationTypeValues.map[type];
 
   @override
-  PleromaNotificationType get typePleroma => pleromaNotificationTypeValues
-      .map[type];
+  PleromaNotificationType get typePleroma =>
+      pleromaNotificationTypeValues.map[type];
 }
-
-
-final pleromaNotificationTypeValues = EnumValues({
-  "follow": PleromaNotificationType.follow,
-  "mention": PleromaNotificationType.mention,
-  "reblog": PleromaNotificationType.reblog,
-  "favourite": PleromaNotificationType.favourite,
-  "poll": PleromaNotificationType.poll,
-  "pleroma:chat_mention": PleromaNotificationType.chatMention,
-});
-

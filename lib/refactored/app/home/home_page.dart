@@ -102,7 +102,7 @@ class _HomePageState extends State<HomePage>
       case AppHomeTab.notifications:
         return NotificationUnreadBadgeExcludeTypesCountWidget(
             excludeTypes: <PleromaNotificationType>[
-              PleromaNotificationType.chatMention
+              PleromaNotificationType.pleromaChatMention
             ],
             child: FediTransparentIcon(FediIcons.notification));
         break;

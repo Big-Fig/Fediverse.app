@@ -16,6 +16,9 @@ class MyAccountSettingsAdapter extends TypeAdapter<MyAccountSettings> {
         case 0:
           obj.isRealtimeWebSocketsEnabled = reader.read() as bool;
           break;
+        case 1:
+          obj.isNewChatsEnabled = reader.read() as bool;
+          break;
       }
     }
     return obj;
@@ -23,8 +26,10 @@ class MyAccountSettingsAdapter extends TypeAdapter<MyAccountSettings> {
 
   @override
   void write(BinaryWriter writer, MyAccountSettings obj) {
-    writer.writeByte(1);
+    writer.writeByte(2);
     writer.writeByte(0);
     writer.write(obj.isRealtimeWebSocketsEnabled);
+    writer.writeByte(1);
+    writer.write(obj.isNewChatsEnabled);
   }
 }

@@ -23,11 +23,23 @@ abstract class IMastodonNotification {
 
 enum MastodonNotificationType {
   follow,
-  mention,
-  reblog,
   favourite,
+  reblog,
+  mention,
   poll,
+  move,
+  followRequest,
 }
+
+final mastodonNotificationTypeValues = EnumValues({
+  "follow": MastodonNotificationType.follow,
+  "favourite": MastodonNotificationType.favourite,
+  "reblog": MastodonNotificationType.reblog,
+  "mention": MastodonNotificationType.mention,
+  "poll": MastodonNotificationType.poll,
+  "move": MastodonNotificationType.move,
+  "follow_request": MastodonNotificationType.followRequest,
+});
 
 @JsonSerializable()
 class MastodonNotificationsRequest {
@@ -88,11 +100,3 @@ class MastodonNotificationsRequest {
   String toJsonString() =>
       jsonEncode(_$MastodonNotificationsRequestToJson(this));
 }
-
-final mastodonNotificationTypeValues = EnumValues({
-  "follow": MastodonNotificationType.follow,
-  "mention": MastodonNotificationType.mention,
-  "reblog": MastodonNotificationType.reblog,
-  "favourite": MastodonNotificationType.favourite,
-  "poll": MastodonNotificationType.poll
-});
