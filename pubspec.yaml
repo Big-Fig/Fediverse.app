@@ -117,6 +117,9 @@ dependencies:
   # detect mime type be extension
   mime: ^0.9.6+3
 
+  # parse html to extract raw text from status content
+  html: ^0.14.0+3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

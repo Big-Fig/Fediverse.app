@@ -14,6 +14,7 @@ import 'package:fedi/refactored/pleroma/notification/pleroma_notification_model.
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:html/parser.dart';
 
 var _logger = Logger("notification_list_item_timeline_widget.dart");
 
@@ -95,15 +96,15 @@ class NotificationListItemWidget extends StatelessWidget {
         break;
       case PleromaNotificationType.favourite:
         text = appLocalizations.tr("app.notification.header.favourite",
-            args: [notificationBloc.status?.content]);
+            args: [extractStatusRawContent(notificationBloc)]);
         break;
       case PleromaNotificationType.reblog:
         text = appLocalizations.tr("app.notification.header.reblog",
-            args: [notificationBloc.status?.content]);
+            args: [extractStatusRawContent(notificationBloc)]);
         break;
       case PleromaNotificationType.mention:
         text = appLocalizations.tr("app.notification.header.mention",
-            args: [notificationBloc.status?.content]);
+            args: [extractStatusRawContent(notificationBloc)]);
         break;
       case PleromaNotificationType.poll:
         text = appLocalizations.tr("app.notification.header.poll");
@@ -118,11 +119,11 @@ class NotificationListItemWidget extends StatelessWidget {
         text = appLocalizations.tr(
             "app.notification.header"
             ".pleromaEmojiReaction",
-            args: [notificationBloc.status?.content]);
+            args: [extractStatusRawContent(notificationBloc)]);
         break;
       case PleromaNotificationType.pleromaChatMention:
         text = appLocalizations.tr("app.notification.header.pleromaChatMention",
-            args: [notificationBloc.status?.content]);
+            args: [extractStatusRawContent(notificationBloc)]);
         break;
     }
 
@@ -136,5 +137,14 @@ class NotificationListItemWidget extends StatelessWidget {
           fontSize: 16,
           fontWeight: FontWeight.w300),
     );
+  }
+
+  String extractStatusRawContent(INotificationBloc notificationBloc) {
+    var content = notificationBloc.status?.content;
+    if(content != null) {
+      var document = parse(content);
+      content = parse(document.body.text).documentElement.text;
+    }
+    return content;
   }
 }
