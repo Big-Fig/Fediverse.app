@@ -18,7 +18,7 @@ class ChatPostMessageContentWidget extends StatelessWidget {
           borderSide: BorderSide(),
         ),
         labelText: AppLocalizations.of(context)
-            .tr("app.status.post.field.message.label"),
+            .tr("app.chat.post.field.message.label"),
       ),
       autofocus: false,
       controller: chatPostMessageBloc.inputTextController,

@@ -57,5 +57,6 @@ void expectDbChatMessage(IChatMessage actual, DbChatMessage expected) {
   expect(actual.createdAt, expected.createdAt);
   expect(actual.content, expected.content);
   expect(actual.emojis, expected.emojis);
+  expect(actual.mediaAttachment, expected.mediaAttachment);
   expect(actual.chatRemoteId, expected.chatRemoteId);
 }

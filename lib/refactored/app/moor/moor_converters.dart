@@ -127,6 +127,17 @@ class PleromaMediaAttachmentListDatabaseConverter
   @override
   Map<String, dynamic> toJson(PleromaMediaAttachment obj) => obj.toJson();
 }
+class PleromaMediaAttachmentDatabaseConverter
+    extends JsonDatabaseConverter<PleromaMediaAttachment> {
+  const PleromaMediaAttachmentDatabaseConverter() : super();
+
+  @override
+  PleromaMediaAttachment fromJson(Map<String, dynamic> json) =>
+      PleromaMediaAttachment.fromJson(json);
+
+  @override
+  Map<String, dynamic> toJson(PleromaMediaAttachment obj) => obj.toJson();
+}
 
 class PleromaMentionListDatabaseConverter
     extends JsonListDatabaseConverter<PleromaMention> {

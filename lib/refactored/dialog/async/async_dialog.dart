@@ -76,7 +76,7 @@ Future<AsyncDialogResult<T>> doAsyncOperationWithDialog<T>({
   }
 
   AsyncDialogResult dialogResult;
-  if (progressDialog.isCanceled) {
+  if (progressDialog?.isCanceled == true) {
     dialogResult = AsyncDialogResult<T>.canceled();
     _logger.fine(() => "canceled doAsyncOperationWithDialog");
   } else if (error != null) {

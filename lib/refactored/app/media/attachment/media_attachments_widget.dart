@@ -1,7 +1,6 @@
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:fedi/refactored/app/media/attachment/media_attachment_image_widget.dart';
 import 'package:fedi/refactored/app/media/attachment/media_attachment_video_widget.dart';
-import 'package:fedi/refactored/app/status/status_bloc.dart';
 import 'package:fedi/refactored/mastodon/media/attachment/mastodon_media_attachment_model.dart';
 import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,21 +10,17 @@ import 'package:logging/logging.dart';
 var _logger = Logger("status_media_attachments_widget.dart");
 
 class MediaAttachmentsWidget extends StatelessWidget {
+  final List<IPleromaMediaAttachment> mediaAttachments;
+
+  MediaAttachmentsWidget({@required this.mediaAttachments});
+
   @override
   Widget build(BuildContext context) {
-    var statusBloc = IStatusBloc.of(context, listen: false);
-    return StreamBuilder<List<IPleromaMediaAttachment>>(
-        stream: statusBloc.mediaAttachmentsStream.distinct(),
-        initialData: statusBloc.mediaAttachments,
-        builder: (context, snapshot) {
-          var mediaAttachments = snapshot.data;
-
-          if (mediaAttachments?.isNotEmpty == true) {
-            return buildChildren(context, mediaAttachments);
-          } else {
-            return SizedBox.shrink();
-          }
-        });
+    if (mediaAttachments?.isNotEmpty == true) {
+      return buildChildren(context, mediaAttachments);
+    } else {
+      return SizedBox.shrink();
+    }
   }
 
   Widget buildChildren(

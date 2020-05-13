@@ -14,4 +14,6 @@ class DbChatMessages extends Table {
   DateTimeColumn get createdAt => dateTime()();
   TextColumn get emojis =>
       text().map(PleromaEmojiListDatabaseConverter()).nullable()();
+  TextColumn get mediaAttachment =>
+      text().map(PleromaMediaAttachmentDatabaseConverter()).nullable()();
 }
