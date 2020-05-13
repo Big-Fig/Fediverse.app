@@ -66,13 +66,23 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
         if (chatMessage != null) {
           var chatId = chatMessage.chatId;
 
+          // local chat message may not exist
+          // when message is first message in new chat
+          var chat = await chatRepository.findByRemoteId(chatId);
+          if(chat == null) {
+            var remoteChat = await pleromaChatService.getChat(id: chatId);
+            await chatRepository.upsertRemoteChat(remoteChat);
+          }
+
           // increase only if chat closed now
-          if (currentChatBloc.currentChat?.remoteId != chatId) {
-            await chatRepository.incrementUnreadCount(chatRemoteId: chatId);
-          } else {
+          var isMessageForOpenedChat =
+              currentChatBloc.currentChat?.remoteId == chatId;
+          if (isMessageForOpenedChat) {
             var updatedChat =
                 await pleromaChatService.markChatAsRead(chatId: chatId);
             await chatRepository.upsertRemoteChat(updatedChat);
+          } else {
+            await chatRepository.incrementUnreadCount(chatRemoteId: chatId);
           }
         }
       }
