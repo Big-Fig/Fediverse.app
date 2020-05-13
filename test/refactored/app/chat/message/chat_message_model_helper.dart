@@ -39,6 +39,7 @@ void expectChatMessage(IChatMessage actual, IChatMessage expected) {
   expect(actual.content, expected.content);
 
   expect(actual.emojis, expected.emojis);
+  expect(actual.mediaAttachment, expected.mediaAttachment);
   expect(actual.chatRemoteId, expected.chatRemoteId);
 
   expectAccount(actual.account, expected.account);

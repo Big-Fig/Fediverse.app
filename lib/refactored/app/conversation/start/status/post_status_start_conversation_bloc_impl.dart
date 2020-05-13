@@ -40,7 +40,7 @@ class PostStatusStartConversationBloc extends PostStatusBloc {
   @override
   Stream<bool> get isReadyToPostStream => Rx.combineLatest3(
       inputWithoutMentionedAcctsTextStream,
-      mediaAttachmentBlocsStream,
+      mediaAttachmentGridBloc.mediaAttachmentBlocsStream,
       mentionedAcctsStream,
       (inputWithoutMentionedAcctsText, mediaAttachmentBlocs, mentionedAccts) =>
           calculateIsReadyToPost(

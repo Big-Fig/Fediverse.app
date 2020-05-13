@@ -6130,6 +6130,7 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
   final String content;
   final DateTime createdAt;
   final List<PleromaEmoji> emojis;
+  final PleromaMediaAttachment mediaAttachment;
   DbChatMessage(
       {@required this.id,
       @required this.remoteId,
@@ -6137,7 +6138,8 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
       @required this.accountRemoteId,
       @required this.content,
       @required this.createdAt,
-      this.emojis});
+      this.emojis,
+      this.mediaAttachment});
   factory DbChatMessage.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -6159,6 +6161,8 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
           .mapFromDatabaseResponse(data['${effectivePrefix}created_at']),
       emojis: $DbChatMessagesTable.$converter0.mapToDart(
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}emojis'])),
+      mediaAttachment: $DbChatMessagesTable.$converter1.mapToDart(stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}media_attachment'])),
     );
   }
   factory DbChatMessage.fromJson(Map<String, dynamic> json,
@@ -6172,6 +6176,8 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
       content: serializer.fromJson<String>(json['content']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       emojis: serializer.fromJson<List<PleromaEmoji>>(json['emojis']),
+      mediaAttachment:
+          serializer.fromJson<PleromaMediaAttachment>(json['mediaAttachment']),
     );
   }
   @override
@@ -6185,6 +6191,8 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
       'content': serializer.toJson<String>(content),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'emojis': serializer.toJson<List<PleromaEmoji>>(emojis),
+      'mediaAttachment':
+          serializer.toJson<PleromaMediaAttachment>(mediaAttachment),
     };
   }
 
@@ -6209,6 +6217,9 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
           : Value(createdAt),
       emojis:
           emojis == null && nullToAbsent ? const Value.absent() : Value(emojis),
+      mediaAttachment: mediaAttachment == null && nullToAbsent
+          ? const Value.absent()
+          : Value(mediaAttachment),
     );
   }
 
@@ -6219,7 +6230,8 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
           String accountRemoteId,
           String content,
           DateTime createdAt,
-          List<PleromaEmoji> emojis}) =>
+          List<PleromaEmoji> emojis,
+          PleromaMediaAttachment mediaAttachment}) =>
       DbChatMessage(
         id: id ?? this.id,
         remoteId: remoteId ?? this.remoteId,
@@ -6228,6 +6240,7 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
         content: content ?? this.content,
         createdAt: createdAt ?? this.createdAt,
         emojis: emojis ?? this.emojis,
+        mediaAttachment: mediaAttachment ?? this.mediaAttachment,
       );
   @override
   String toString() {
@@ -6238,7 +6251,8 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
           ..write('accountRemoteId: $accountRemoteId, ')
           ..write('content: $content, ')
           ..write('createdAt: $createdAt, ')
-          ..write('emojis: $emojis')
+          ..write('emojis: $emojis, ')
+          ..write('mediaAttachment: $mediaAttachment')
           ..write(')'))
         .toString();
   }
@@ -6252,8 +6266,12 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
               chatRemoteId.hashCode,
               $mrjc(
                   accountRemoteId.hashCode,
-                  $mrjc(content.hashCode,
-                      $mrjc(createdAt.hashCode, emojis.hashCode)))))));
+                  $mrjc(
+                      content.hashCode,
+                      $mrjc(
+                          createdAt.hashCode,
+                          $mrjc(
+                              emojis.hashCode, mediaAttachment.hashCode))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -6264,7 +6282,8 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
           other.accountRemoteId == this.accountRemoteId &&
           other.content == this.content &&
           other.createdAt == this.createdAt &&
-          other.emojis == this.emojis);
+          other.emojis == this.emojis &&
+          other.mediaAttachment == this.mediaAttachment);
 }
 
 class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
@@ -6275,6 +6294,7 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
   final Value<String> content;
   final Value<DateTime> createdAt;
   final Value<List<PleromaEmoji>> emojis;
+  final Value<PleromaMediaAttachment> mediaAttachment;
   const DbChatMessagesCompanion({
     this.id = const Value.absent(),
     this.remoteId = const Value.absent(),
@@ -6283,6 +6303,7 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
     this.content = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.emojis = const Value.absent(),
+    this.mediaAttachment = const Value.absent(),
   });
   DbChatMessagesCompanion.insert({
     this.id = const Value.absent(),
@@ -6292,6 +6313,7 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
     @required String content,
     @required DateTime createdAt,
     this.emojis = const Value.absent(),
+    this.mediaAttachment = const Value.absent(),
   })  : remoteId = Value(remoteId),
         chatRemoteId = Value(chatRemoteId),
         accountRemoteId = Value(accountRemoteId),
@@ -6304,7 +6326,8 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
       Value<String> accountRemoteId,
       Value<String> content,
       Value<DateTime> createdAt,
-      Value<List<PleromaEmoji>> emojis}) {
+      Value<List<PleromaEmoji>> emojis,
+      Value<PleromaMediaAttachment> mediaAttachment}) {
     return DbChatMessagesCompanion(
       id: id ?? this.id,
       remoteId: remoteId ?? this.remoteId,
@@ -6313,6 +6336,7 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
       content: content ?? this.content,
       createdAt: createdAt ?? this.createdAt,
       emojis: emojis ?? this.emojis,
+      mediaAttachment: mediaAttachment ?? this.mediaAttachment,
     );
   }
 }
@@ -6404,9 +6428,31 @@ class $DbChatMessagesTable extends DbChatMessages
     );
   }
 
+  final VerificationMeta _mediaAttachmentMeta =
+      const VerificationMeta('mediaAttachment');
+  GeneratedTextColumn _mediaAttachment;
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, remoteId, chatRemoteId, accountRemoteId, content, createdAt, emojis];
+  GeneratedTextColumn get mediaAttachment =>
+      _mediaAttachment ??= _constructMediaAttachment();
+  GeneratedTextColumn _constructMediaAttachment() {
+    return GeneratedTextColumn(
+      'media_attachment',
+      $tableName,
+      true,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        remoteId,
+        chatRemoteId,
+        accountRemoteId,
+        content,
+        createdAt,
+        emojis,
+        mediaAttachment
+      ];
   @override
   $DbChatMessagesTable get asDslTable => this;
   @override
@@ -6455,6 +6501,7 @@ class $DbChatMessagesTable extends DbChatMessages
       context.missing(_createdAtMeta);
     }
     context.handle(_emojisMeta, const VerificationResult.success());
+    context.handle(_mediaAttachmentMeta, const VerificationResult.success());
     return context;
   }
 
@@ -6494,6 +6541,11 @@ class $DbChatMessagesTable extends DbChatMessages
       map['emojis'] =
           Variable<String, StringType>(converter.mapToSql(d.emojis.value));
     }
+    if (d.mediaAttachment.present) {
+      final converter = $DbChatMessagesTable.$converter1;
+      map['media_attachment'] = Variable<String, StringType>(
+          converter.mapToSql(d.mediaAttachment.value));
+    }
     return map;
   }
 
@@ -6504,6 +6556,8 @@ class $DbChatMessagesTable extends DbChatMessages
 
   static TypeConverter<List<PleromaEmoji>, String> $converter0 =
       PleromaEmojiListDatabaseConverter();
+  static TypeConverter<PleromaMediaAttachment, String> $converter1 =
+      PleromaMediaAttachmentDatabaseConverter();
 }
 
 class DbChatAccount extends DataClass implements Insertable<DbChatAccount> {

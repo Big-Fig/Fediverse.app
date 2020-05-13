@@ -1,3 +1,4 @@
+import 'package:fedi/refactored/app/media/attachment/upload/upload_media_attachment_grid_bloc.dart';
 import 'package:fedi/refactored/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +8,8 @@ abstract class IChatPostMessageBloc implements Disposable {
       Provider.of<IChatPostMessageBloc>(context, listen: listen);
 
   TextEditingController get inputTextController;
+
+  IUploadMediaAttachmentGridBloc get mediaAttachmentGridBloc;
 
   bool get isReadyToPost;
 

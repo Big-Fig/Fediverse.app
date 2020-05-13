@@ -1,4 +1,5 @@
 import 'package:fedi/refactored/app/account/my/avatar/my_account_avatar_widget.dart';
+import 'package:fedi/refactored/app/media/attachment/upload/upload_media_attachment_grid_bloc.dart';
 import 'package:fedi/refactored/app/media/attachment/upload/upload_media_attachment_grid_widget.dart';
 import 'package:fedi/refactored/app/status/post/action/post_status_attach_media_action_widget.dart';
 import 'package:fedi/refactored/app/status/post/action/post_status_mention_action_widget.dart';
@@ -8,9 +9,11 @@ import 'package:fedi/refactored/app/status/post/action/post_status_schedule_acti
 import 'package:fedi/refactored/app/status/post/action/post_status_visibility_action_widget.dart';
 import 'package:fedi/refactored/app/status/post/mentions/post_status_mentions_widget.dart';
 import 'package:fedi/refactored/app/status/post/message/message_post_status_widget.dart';
+import 'package:fedi/refactored/app/status/post/post_status_bloc.dart';
 import 'package:fedi/refactored/app/ui/fedi_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PostStatusWidget extends StatelessWidget {
   final bool showVisibilityAction;
@@ -55,7 +58,10 @@ class PostStatusWidget extends StatelessWidget {
                   child: MessagePostStatusWidget(
                   expanded: expanded,
                 )),
-          UploadMediaAttachmentGridWidget(),
+          ProxyProvider<IPostStatusBloc, IUploadMediaAttachmentGridBloc>(
+              update: (context, value, previous) =>
+              value.mediaAttachmentGridBloc,
+              child: UploadMediaAttachmentGridWidget()),
           if (!displayAccountAvatar)
             Container(
               height: 1,

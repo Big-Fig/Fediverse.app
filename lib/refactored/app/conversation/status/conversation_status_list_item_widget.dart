@@ -6,6 +6,7 @@ import 'package:fedi/refactored/app/status/action/status_favourite_action_widget
 import 'package:fedi/refactored/app/status/card/status_card_widget.dart';
 import 'package:fedi/refactored/app/status/content/status_content_with_emojis_without_accounts_widget.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
+import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -50,7 +51,12 @@ class ConversationStatusListItemWidget extends StatelessWidget {
             children: <Widget>[
               StatusContentWithEmojisWithoutAccountsWidget(),
               StatusCardWidget(),
-              MediaAttachmentsWidget(),
+              StreamBuilder<List<IPleromaMediaAttachment>>(
+                  stream: statusBloc.mediaAttachmentsStream,
+                  initialData: statusBloc.mediaAttachments,
+                  builder: (context, snapshot) => MediaAttachmentsWidget(
+                        mediaAttachments: snapshot.data,
+                      )),
             ],
           ),
         ));

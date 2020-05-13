@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/media/attachment/upload/upload_media_attachment_bloc.dart';
+import 'package:fedi/refactored/app/media/attachment/upload/upload_media_attachment_grid_bloc.dart';
 import 'package:fedi/refactored/app/media/attachment/upload/upload_media_attachment_grid_item_widget.dart';
-import 'package:fedi/refactored/app/status/post/post_status_bloc.dart';
 import 'package:fedi/refactored/file/picker/file_picker_model.dart';
 import 'package:fedi/refactored/file/picker/single/single_file_picker_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,10 +11,10 @@ import 'package:provider/provider.dart';
 class UploadMediaAttachmentGridWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var postStatusBloc = IPostStatusBloc.of(context, listen: false);
+    var bloc = IUploadMediaAttachmentGridBloc.of(context, listen: false);
     return StreamBuilder<List<IUploadMediaAttachmentBloc>>(
-        stream: postStatusBloc.mediaAttachmentBlocsStream,
-        initialData: postStatusBloc.mediaAttachmentBlocs,
+        stream: bloc.mediaAttachmentBlocsStream,
+        initialData: bloc.mediaAttachmentBlocs,
         builder: (context, snapshot) {
           var mediaItemBlocs = snapshot.data;
 
@@ -22,7 +22,8 @@ class UploadMediaAttachmentGridWidget extends StatelessWidget {
             return SizedBox.shrink();
           }
 
-          var count = mediaItemBlocs.length < 4
+          var maximumMediaAttachmentCount = bloc.maximumMediaAttachmentCount;
+          var count = mediaItemBlocs.length < maximumMediaAttachmentCount
               ? mediaItemBlocs.length + 1
               : mediaItemBlocs.length;
           return Container(
@@ -32,8 +33,9 @@ class UploadMediaAttachmentGridWidget extends StatelessWidget {
               itemCount: count,
               itemBuilder: (BuildContext context, int index) {
                 print("$count == $index");
-                if (count == index + 1 && mediaItemBlocs.length != 4) {
-                  return buildAddTile(context, postStatusBloc);
+                if (count == index + 1 &&
+                    mediaItemBlocs.length != maximumMediaAttachmentCount) {
+                  return buildAddTile(context, bloc);
                 }
                 var mediaItemBloc = mediaItemBlocs[index];
 
@@ -62,8 +64,7 @@ class UploadMediaAttachmentGridWidget extends StatelessWidget {
                               iconSize: 15,
                               color: Colors.white,
                               onPressed: () {
-                                askToRemoveAsset(
-                                    context, postStatusBloc, mediaItemBloc);
+                                askToRemoveAsset(context, bloc, mediaItemBloc);
                               },
                             ),
                           ),
@@ -80,11 +81,12 @@ class UploadMediaAttachmentGridWidget extends StatelessWidget {
         });
   }
 
-  Widget buildAddTile(BuildContext context, IPostStatusBloc postStatusBloc) {
+  Widget buildAddTile(
+      BuildContext context, IUploadMediaAttachmentGridBloc bloc) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        _openAttachPage(context, postStatusBloc);
+        _openAttachPage(context, bloc);
       },
       child: Container(
         margin: EdgeInsets.all(8),
@@ -97,7 +99,7 @@ class UploadMediaAttachmentGridWidget extends StatelessWidget {
               color: Colors.white,
             ),
             onPressed: () {
-              _openAttachPage(context, postStatusBloc);
+              _openAttachPage(context, bloc);
             },
           ),
         ),
@@ -107,15 +109,18 @@ class UploadMediaAttachmentGridWidget extends StatelessWidget {
     );
   }
 
-  void _openAttachPage(BuildContext context, IPostStatusBloc postStatusBloc) {
+  void _openAttachPage(
+      BuildContext context, IUploadMediaAttachmentGridBloc bloc) {
     goToSingleFilePickerPage(context,
         fileSelectedCallback: (FilePickerFile filePickerFile) {
-      postStatusBloc.attachMedia(filePickerFile);
+      bloc.attachMedia(filePickerFile);
       Navigator.of(context).pop();
     }, startActiveTab: FilePickerTab.gallery);
   }
 
-  void askToRemoveAsset(BuildContext context, IPostStatusBloc postStatusBloc,
+  void askToRemoveAsset(
+      BuildContext context,
+      IUploadMediaAttachmentGridBloc bloc,
       IUploadMediaAttachmentBloc mediaItemBloc) {
     showDialog(
       context: context,
@@ -127,7 +132,7 @@ class UploadMediaAttachmentGridWidget extends StatelessWidget {
           actions: <Widget>[
             FlatButton(
               child: Text(AppLocalizations.of(context)
-                  .tr("app.media.attachment.upload.remove.dialog.content"
+                  .tr("app.media.attachment.upload.remove.dialog"
                       ".action.cancel")),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -135,10 +140,10 @@ class UploadMediaAttachmentGridWidget extends StatelessWidget {
             ), // usually buttons at the bottom of the dialog
             FlatButton(
               child: Text(AppLocalizations.of(context)
-                  .tr("app.media.attachment.upload.remove.dialog.content"
+                  .tr("app.media.attachment.upload.remove.dialog"
                       ".action.remove")),
               onPressed: () {
-                postStatusBloc.detachMedia(mediaItemBloc.filePickerFile);
+                bloc.detachMedia(mediaItemBloc.filePickerFile);
                 Navigator.of(context).pop();
               },
             ),

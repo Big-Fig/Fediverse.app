@@ -18,6 +18,7 @@ DbChatMessage mapRemoteChatMessageToDbChatMessage(
       createdAt: remoteChatMessage.createdAt,
       content: remoteChatMessage.content,
       emojis: remoteChatMessage.emojis,
+      mediaAttachment: remoteChatMessage.mediaAttachment,
       accountRemoteId: remoteChatMessage.accountId,
       chatRemoteId: remoteChatMessage.chatId);
 }
@@ -32,6 +33,7 @@ PleromaChatMessage mapLocalChatMessageToRemoteChatMessage(
     createdAt: localChatMessage.createdAt,
     content: localChatMessage.content,
     emojis: localChatMessage.emojis,
+    mediaAttachment: localChatMessage.mediaAttachment,
     accountId: localChatMessage.account.remoteId,
     chatId: localChatMessage.chatRemoteId,
   );
