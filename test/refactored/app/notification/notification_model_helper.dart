@@ -37,6 +37,8 @@ void expectNotification(INotification actual, INotification expected) {
   expect(actual.createdAt, expected.createdAt);
   expect(actual.type, expected.type);
   expect(actual.unread, expected.unread);
+  expect(actual.chatMessageRemoteId, expected.chatMessageRemoteId);
+  expect(actual.chatRemoteId, expected.chatRemoteId);
   expectAccount(actual.account, expected.account);
   expectStatus(actual.status, expected.status);
 }

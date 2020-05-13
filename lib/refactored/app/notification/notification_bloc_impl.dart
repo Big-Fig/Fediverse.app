@@ -98,6 +98,20 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
       notificationStream.map((notification) => notification.status).distinct();
 
   @override
+  String get chatMessageRemoteId => notification.chatMessageRemoteId;
+
+  @override
+  Stream<String> get chatMessageRemoteIdStream => notificationStream
+      .map((notification) => notification.chatMessageRemoteId);
+
+  @override
+  String get chatRemoteId => notification.chatRemoteId;
+
+  @override
+  Stream<String> get chatRemoteIdStream =>
+      notificationStream.map((notification) => notification.chatRemoteId);
+
+  @override
   DateTime get createdAt => notification?.createdAt;
 
   @override

@@ -3465,6 +3465,8 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
   final String remoteId;
   final String accountRemoteId;
   final String statusRemoteId;
+  final String chatRemoteId;
+  final String chatMessageRemoteId;
   final bool unread;
   final String type;
   final DateTime createdAt;
@@ -3473,6 +3475,8 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
       @required this.remoteId,
       @required this.accountRemoteId,
       this.statusRemoteId,
+      this.chatRemoteId,
+      this.chatMessageRemoteId,
       this.unread,
       this.type,
       @required this.createdAt});
@@ -3492,6 +3496,10 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
           .mapFromDatabaseResponse(data['${effectivePrefix}account_remote_id']),
       statusRemoteId: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}status_remote_id']),
+      chatRemoteId: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}chat_remote_id']),
+      chatMessageRemoteId: stringType.mapFromDatabaseResponse(
+          data['${effectivePrefix}chat_message_remote_id']),
       unread:
           boolType.mapFromDatabaseResponse(data['${effectivePrefix}unread']),
       type: stringType.mapFromDatabaseResponse(data['${effectivePrefix}type']),
@@ -3507,6 +3515,9 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
       remoteId: serializer.fromJson<String>(json['remoteId']),
       accountRemoteId: serializer.fromJson<String>(json['accountRemoteId']),
       statusRemoteId: serializer.fromJson<String>(json['statusRemoteId']),
+      chatRemoteId: serializer.fromJson<String>(json['chatRemoteId']),
+      chatMessageRemoteId:
+          serializer.fromJson<String>(json['chatMessageRemoteId']),
       unread: serializer.fromJson<bool>(json['unread']),
       type: serializer.fromJson<String>(json['type']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
@@ -3520,6 +3531,8 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
       'remoteId': serializer.toJson<String>(remoteId),
       'accountRemoteId': serializer.toJson<String>(accountRemoteId),
       'statusRemoteId': serializer.toJson<String>(statusRemoteId),
+      'chatRemoteId': serializer.toJson<String>(chatRemoteId),
+      'chatMessageRemoteId': serializer.toJson<String>(chatMessageRemoteId),
       'unread': serializer.toJson<bool>(unread),
       'type': serializer.toJson<String>(type),
       'createdAt': serializer.toJson<DateTime>(createdAt),
@@ -3539,6 +3552,12 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
       statusRemoteId: statusRemoteId == null && nullToAbsent
           ? const Value.absent()
           : Value(statusRemoteId),
+      chatRemoteId: chatRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(chatRemoteId),
+      chatMessageRemoteId: chatMessageRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(chatMessageRemoteId),
       unread:
           unread == null && nullToAbsent ? const Value.absent() : Value(unread),
       type: type == null && nullToAbsent ? const Value.absent() : Value(type),
@@ -3553,6 +3572,8 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
           String remoteId,
           String accountRemoteId,
           String statusRemoteId,
+          String chatRemoteId,
+          String chatMessageRemoteId,
           bool unread,
           String type,
           DateTime createdAt}) =>
@@ -3561,6 +3582,8 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
         remoteId: remoteId ?? this.remoteId,
         accountRemoteId: accountRemoteId ?? this.accountRemoteId,
         statusRemoteId: statusRemoteId ?? this.statusRemoteId,
+        chatRemoteId: chatRemoteId ?? this.chatRemoteId,
+        chatMessageRemoteId: chatMessageRemoteId ?? this.chatMessageRemoteId,
         unread: unread ?? this.unread,
         type: type ?? this.type,
         createdAt: createdAt ?? this.createdAt,
@@ -3572,6 +3595,8 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
           ..write('remoteId: $remoteId, ')
           ..write('accountRemoteId: $accountRemoteId, ')
           ..write('statusRemoteId: $statusRemoteId, ')
+          ..write('chatRemoteId: $chatRemoteId, ')
+          ..write('chatMessageRemoteId: $chatMessageRemoteId, ')
           ..write('unread: $unread, ')
           ..write('type: $type, ')
           ..write('createdAt: $createdAt')
@@ -3588,8 +3613,12 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
               accountRemoteId.hashCode,
               $mrjc(
                   statusRemoteId.hashCode,
-                  $mrjc(unread.hashCode,
-                      $mrjc(type.hashCode, createdAt.hashCode)))))));
+                  $mrjc(
+                      chatRemoteId.hashCode,
+                      $mrjc(
+                          chatMessageRemoteId.hashCode,
+                          $mrjc(unread.hashCode,
+                              $mrjc(type.hashCode, createdAt.hashCode)))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -3598,6 +3627,8 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
           other.remoteId == this.remoteId &&
           other.accountRemoteId == this.accountRemoteId &&
           other.statusRemoteId == this.statusRemoteId &&
+          other.chatRemoteId == this.chatRemoteId &&
+          other.chatMessageRemoteId == this.chatMessageRemoteId &&
           other.unread == this.unread &&
           other.type == this.type &&
           other.createdAt == this.createdAt);
@@ -3608,6 +3639,8 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
   final Value<String> remoteId;
   final Value<String> accountRemoteId;
   final Value<String> statusRemoteId;
+  final Value<String> chatRemoteId;
+  final Value<String> chatMessageRemoteId;
   final Value<bool> unread;
   final Value<String> type;
   final Value<DateTime> createdAt;
@@ -3616,6 +3649,8 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
     this.remoteId = const Value.absent(),
     this.accountRemoteId = const Value.absent(),
     this.statusRemoteId = const Value.absent(),
+    this.chatRemoteId = const Value.absent(),
+    this.chatMessageRemoteId = const Value.absent(),
     this.unread = const Value.absent(),
     this.type = const Value.absent(),
     this.createdAt = const Value.absent(),
@@ -3625,6 +3660,8 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
     @required String remoteId,
     @required String accountRemoteId,
     this.statusRemoteId = const Value.absent(),
+    this.chatRemoteId = const Value.absent(),
+    this.chatMessageRemoteId = const Value.absent(),
     this.unread = const Value.absent(),
     this.type = const Value.absent(),
     @required DateTime createdAt,
@@ -3636,6 +3673,8 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
       Value<String> remoteId,
       Value<String> accountRemoteId,
       Value<String> statusRemoteId,
+      Value<String> chatRemoteId,
+      Value<String> chatMessageRemoteId,
       Value<bool> unread,
       Value<String> type,
       Value<DateTime> createdAt}) {
@@ -3644,6 +3683,8 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
       remoteId: remoteId ?? this.remoteId,
       accountRemoteId: accountRemoteId ?? this.accountRemoteId,
       statusRemoteId: statusRemoteId ?? this.statusRemoteId,
+      chatRemoteId: chatRemoteId ?? this.chatRemoteId,
+      chatMessageRemoteId: chatMessageRemoteId ?? this.chatMessageRemoteId,
       unread: unread ?? this.unread,
       type: type ?? this.type,
       createdAt: createdAt ?? this.createdAt,
@@ -3702,6 +3743,34 @@ class $DbNotificationsTable extends DbNotifications
     );
   }
 
+  final VerificationMeta _chatRemoteIdMeta =
+      const VerificationMeta('chatRemoteId');
+  GeneratedTextColumn _chatRemoteId;
+  @override
+  GeneratedTextColumn get chatRemoteId =>
+      _chatRemoteId ??= _constructChatRemoteId();
+  GeneratedTextColumn _constructChatRemoteId() {
+    return GeneratedTextColumn(
+      'chat_remote_id',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _chatMessageRemoteIdMeta =
+      const VerificationMeta('chatMessageRemoteId');
+  GeneratedTextColumn _chatMessageRemoteId;
+  @override
+  GeneratedTextColumn get chatMessageRemoteId =>
+      _chatMessageRemoteId ??= _constructChatMessageRemoteId();
+  GeneratedTextColumn _constructChatMessageRemoteId() {
+    return GeneratedTextColumn(
+      'chat_message_remote_id',
+      $tableName,
+      true,
+    );
+  }
+
   final VerificationMeta _unreadMeta = const VerificationMeta('unread');
   GeneratedBoolColumn _unread;
   @override
@@ -3739,8 +3808,17 @@ class $DbNotificationsTable extends DbNotifications
   }
 
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, remoteId, accountRemoteId, statusRemoteId, unread, type, createdAt];
+  List<GeneratedColumn> get $columns => [
+        id,
+        remoteId,
+        accountRemoteId,
+        statusRemoteId,
+        chatRemoteId,
+        chatMessageRemoteId,
+        unread,
+        type,
+        createdAt
+      ];
   @override
   $DbNotificationsTable get asDslTable => this;
   @override
@@ -3773,6 +3851,18 @@ class $DbNotificationsTable extends DbNotifications
           _statusRemoteIdMeta,
           statusRemoteId.isAcceptableValue(
               d.statusRemoteId.value, _statusRemoteIdMeta));
+    }
+    if (d.chatRemoteId.present) {
+      context.handle(
+          _chatRemoteIdMeta,
+          chatRemoteId.isAcceptableValue(
+              d.chatRemoteId.value, _chatRemoteIdMeta));
+    }
+    if (d.chatMessageRemoteId.present) {
+      context.handle(
+          _chatMessageRemoteIdMeta,
+          chatMessageRemoteId.isAcceptableValue(
+              d.chatMessageRemoteId.value, _chatMessageRemoteIdMeta));
     }
     if (d.unread.present) {
       context.handle(
@@ -3815,6 +3905,14 @@ class $DbNotificationsTable extends DbNotifications
     if (d.statusRemoteId.present) {
       map['status_remote_id'] =
           Variable<String, StringType>(d.statusRemoteId.value);
+    }
+    if (d.chatRemoteId.present) {
+      map['chat_remote_id'] =
+          Variable<String, StringType>(d.chatRemoteId.value);
+    }
+    if (d.chatMessageRemoteId.present) {
+      map['chat_message_remote_id'] =
+          Variable<String, StringType>(d.chatMessageRemoteId.value);
     }
     if (d.unread.present) {
       map['unread'] = Variable<bool, BoolType>(d.unread.value);
