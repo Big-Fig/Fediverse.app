@@ -300,7 +300,7 @@ class ChatMessageRepository extends AsyncInitLoadingBloc
           newerThanChatMessage: null,
           orderingTermData: ChatMessageOrderingTermData(
               orderingMode: OrderingMode.desc,
-              orderByType: ChatMessageOrderByType.remoteId));
+              orderByType: ChatMessageOrderByType.createdAt));
 
   @override
   Stream<IChatMessage> watchChatLastChatMessage({@required IChat chat}) =>
@@ -310,6 +310,6 @@ class ChatMessageRepository extends AsyncInitLoadingBloc
           newerThanChatMessage: null,
           orderingTermData: ChatMessageOrderingTermData(
               orderingMode: OrderingMode.desc,
-              orderByType: ChatMessageOrderByType.remoteId));
+              orderByType: ChatMessageOrderByType.createdAt));
 
 }
