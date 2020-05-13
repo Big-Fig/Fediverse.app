@@ -19,6 +19,7 @@ class ConversationListItemWidget extends StatelessWidget {
     var conversationBloc = IConversationBloc.of(context, listen: true);
 
     return GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onTap: () {
         goToConversationPage(context,
             conversation: conversationBloc.conversation,

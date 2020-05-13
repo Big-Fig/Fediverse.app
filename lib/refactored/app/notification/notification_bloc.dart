@@ -1,4 +1,5 @@
 import 'package:fedi/refactored/app/account/account_model.dart';
+import 'package:fedi/refactored/app/chat/message/chat_message_model.dart';
 import 'package:fedi/refactored/app/notification/notification_model.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/disposable/disposable.dart';
@@ -18,6 +19,14 @@ abstract class INotificationBloc implements Disposable {
 
   Stream<IStatus> get statusStream;
 
+  String get chatMessageRemoteId;
+
+  Stream<String> get chatMessageRemoteIdStream;
+
+  String get chatRemoteId;
+
+  Stream<String> get chatRemoteIdStream;
+
   String get remoteId;
 
   IAccount get account;
@@ -25,7 +34,9 @@ abstract class INotificationBloc implements Disposable {
   Stream<IAccount> get accountStream;
 
   String get type;
+
   MastodonNotificationType get typeMastodon;
+
   PleromaNotificationType get typePleroma;
 
   DateTime get createdAt;

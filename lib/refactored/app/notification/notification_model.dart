@@ -18,6 +18,10 @@ abstract class INotification {
 
   IAccount get account;
 
+  String get chatMessageRemoteId;
+
+  String get chatRemoteId;
+
   String get type;
   PleromaNotificationType get typePleroma;
   MastodonNotificationType get typeMastodon;
@@ -99,6 +103,12 @@ class DbNotificationPopulatedWrapper implements INotification {
                   dbAccountFromAccount(status?.reblog?.account) ??
                       dbNotificationPopulated
                           .dbStatusPopulated.reblogDbStatusAccount)));
+
+  @override
+  String get chatMessageRemoteId => dbNotificationPopulated.dbNotification.chatMessageRemoteId;
+
+  @override
+  String get chatRemoteId  => dbNotificationPopulated.dbNotification.chatRemoteId;
 }
 
 class DbNotificationPopulated {

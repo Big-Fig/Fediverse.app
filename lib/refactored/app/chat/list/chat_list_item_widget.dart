@@ -17,6 +17,7 @@ class ChatListItemWidget extends StatelessWidget {
     var chatBloc = IChatBloc.of(context, listen: true);
 
     return GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onTap: () {
         goToChatPage(context, chat: chatBloc.chat);
       },
