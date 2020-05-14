@@ -1,32 +1,27 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_html/rich_text_parser.dart';
-import 'package:html/dom.dart' as dom;
+import 'package:flutter_html/html_parser.dart';
+import 'package:flutter_html/style.dart';
 import 'package:logging/logging.dart';
 
 var _logger = Logger("html_text_widget.dart");
 
 class HtmlTextWidget extends StatelessWidget {
   final String data;
-  final OnLinkTap onLinkTap;
+  final OnTap onLinkTap;
   final double fontSize;
 
-  HtmlTextWidget({@required this.data, @required this.onLinkTap, this
-      .fontSize = 18.0});
+  HtmlTextWidget(
+      {@required this.data, @required this.onLinkTap, this.fontSize = 18.0});
 
   @override
   Widget build(BuildContext context) => Html(
         onImageTap: (String source) {
           _logger.finest(() => "onImageTap $source");
         },
-        customTextStyle: (dom.Node node, TextStyle baseStyle) {
-          if (node is dom.Element) {
-            switch (node.localName) {
-              case "p":
-                return baseStyle.merge(TextStyle(fontSize: fontSize));
-            }
-          }
-          return baseStyle.merge(TextStyle(fontSize: fontSize));
+        style: {
+          "img": Style(display: Display.INLINE, width: 20, height: 20),
+          "p": Style(fontSize: FontSize(fontSize)),
         },
         onImageError: (exception, stackTrace) {
           _logger.warning(() => "onImageError", exception, stackTrace);
