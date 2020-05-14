@@ -131,6 +131,9 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
                     case ChatOrderByType.remoteId:
                       expression = item.remoteId;
                       break;
+                    case ChatOrderByType.updatedAt:
+                      expression = item.updatedAt;
+                      break;
                   }
                   return OrderingTerm(
                       expression: expression, mode: orderTerm.orderingMode);

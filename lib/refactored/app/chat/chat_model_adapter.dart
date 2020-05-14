@@ -6,23 +6,22 @@ import 'package:fedi/refactored/pleroma/chat/pleroma_chat_model.dart';
 import 'package:flutter/widgets.dart';
 
 DbChat mapRemoteChatToDbChat(IPleromaChat remoteChat) {
-  return DbChat(
-      id: null,
-      remoteId: remoteChat.id,
-      unread: remoteChat.unread);
+  return DbChat(id: null, remoteId: remoteChat.id, unread: remoteChat.unread,
+      updatedAt: remoteChat.updatedAt);
 }
 
 PleromaChat mapLocalChatToRemoteChat(IChat chat,
-        {
+    {
 //          @required IChatMessage lastMessage,
-        @required List<IAccount> accounts}) {
+    @required List<IAccount> accounts}) {
   assert(accounts?.isNotEmpty == true);
   assert(accounts.length < 2, "only direct chats supported");
   return PleromaChat(
-        unread: chat.unread,
+      unread: chat.unread,
 //        lastMessage: mapLocalMessageToRemoteMessage(lastMessage),
-        id: chat.remoteId,
-        account: mapLocalAccountToRemoteAccount(accounts.first)
+      id: chat.remoteId,
+      account: mapLocalAccountToRemoteAccount(accounts.first),
+      updatedAt: chat.updatedAt
 //        accounts: accounts?.map(mapLocalAccountToRemoteAccount)?.toList()
-        );
+      );
 }

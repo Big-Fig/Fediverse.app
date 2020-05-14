@@ -13,6 +13,9 @@ PleromaChat _$PleromaChatFromJson(Map<String, dynamic> json) {
     account: json['account'] == null
         ? null
         : PleromaAccount.fromJson(json['account'] as Map<String, dynamic>),
+    updatedAt: json['updated_at'] == null
+        ? null
+        : DateTime.parse(json['updated_at'] as String),
   );
 }
 
@@ -20,6 +23,7 @@ Map<String, dynamic> _$PleromaChatToJson(PleromaChat instance) =>
     <String, dynamic>{
       'id': instance.id,
       'unread': instance.unread,
+      'updated_at': instance.updatedAt?.toIso8601String(),
       'account': instance.account,
     };
 

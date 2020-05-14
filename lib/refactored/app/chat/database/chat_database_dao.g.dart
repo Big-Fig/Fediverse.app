@@ -27,6 +27,7 @@ mixin _$ChatDaoMixin on DatabaseAccessor<AppDatabase> {
       id: row.readInt('id'),
       remoteId: row.readString('remote_id'),
       unread: row.readInt('unread'),
+      updatedAt: row.readDateTime('updated_at'),
     );
   }
 

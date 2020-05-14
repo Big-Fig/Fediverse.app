@@ -7,7 +7,9 @@ abstract class IChat {
 
   int get unread;
 
-  IChat copyWith({int id, String remoteId, bool unread});
+  DateTime get updatedAt;
+
+  IChat copyWith({int id, String remoteId, bool unread, DateTime updatedAt});
 }
 
 class DbChatWrapper implements IChat {
@@ -23,6 +25,8 @@ class DbChatWrapper implements IChat {
 
   @override
   int get unread => dbChat.unread;
+  @override
+  DateTime get updatedAt => dbChat.updatedAt;
 
   @override
   String toString() {
@@ -30,12 +34,13 @@ class DbChatWrapper implements IChat {
   }
 
   @override
-  DbChatWrapper copyWith({int id, String remoteId, bool unread}) =>
+  DbChatWrapper copyWith(
+          {int id, String remoteId, bool unread, DateTime updatedAt}) =>
       DbChatWrapper(dbChat.copyWith(
-        id: id ?? localId,
-        remoteId: remoteId ?? this.remoteId,
-        unread: unread ?? this.unread,
-      ));
+          id: id ?? localId,
+          remoteId: remoteId ?? this.remoteId,
+          unread: unread ?? this.unread,
+          updatedAt: updatedAt ?? this.updatedAt));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
