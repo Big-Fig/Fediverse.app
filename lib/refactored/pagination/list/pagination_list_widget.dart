@@ -136,8 +136,6 @@ class _PaginationListWidgetState<T> extends State<PaginationListWidget<T>> {
         "paginationListBloc.isRefreshedAtLeastOnce=${paginationListBloc.isRefreshedAtLeastOnce}");
 
     if (!paginationListBloc.isRefreshedAtLeastOnce) {
-      // 500 delay required to be sure that widget will be built during initial
-      // refresh
       askToRefresh(context);
     }
 
@@ -170,10 +168,13 @@ class _PaginationListWidgetState<T> extends State<PaginationListWidget<T>> {
     );
   }
 
-  void askToRefresh(BuildContext context) {
-    // 500 delay required to be sure that widget will be built during initial
+  // todo: remove hack
+  // retryOnFail is hack for rare cases, when askToRefresh future executes
+  // before widgets actually builds
+  void askToRefresh(BuildContext context, {bool retryOnFail = true}) {
+    // delay required to be sure that widget will be built during initial
     // refresh
-    Future.delayed(Duration(milliseconds: 500), () {
+    Future.delayed(Duration(milliseconds: 1000), () {
       _logger.finest(() => "initState delayed");
       try {
         IPaginationListBloc<PaginationPage<T>, T> paginationListBloc =
@@ -189,10 +190,15 @@ class _PaginationListWidgetState<T> extends State<PaginationListWidget<T>> {
           _logger.finest(() => "initState position = $position");
           if (position != null) {
             refreshController.requestRefresh();
+          } else if(retryOnFail) {
+            askToRefresh(context, retryOnFail: false);
           }
         }
       } catch (e, stackTrace) {
         _logger.warning(() => "error during refreshing", e, stackTrace);
+        if(retryOnFail) {
+          askToRefresh(context, retryOnFail: false);
+        }
       }
     });
   }
