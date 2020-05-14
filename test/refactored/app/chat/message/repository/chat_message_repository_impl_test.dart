@@ -440,9 +440,11 @@ void main() {
   test('createQuery onlyInChat', () async {
     var chatRemoteId = "chatRemoteId";
     var query = chatMessageRepository.createQuery(
-      onlyInChat:
-          DbChatWrapper(DbChat(remoteId: chatRemoteId, unread: 0, id: null,
-              updatedAt: DateTime.now())),
+      onlyInChat: DbChatWrapper(DbChat(
+          remoteId: chatRemoteId,
+          unread: 0,
+          id: null,
+          updatedAt: DateTime.now())),
       newerThanChatMessage: null,
       limit: null,
       offset: null,
@@ -500,7 +502,8 @@ void main() {
     await chatMessageRepository.upsertRemoteChatMessage(
         mapLocalChatMessageToRemoteChatMessage(DbChatMessagePopulatedWrapper(
             await createTestDbChatMessagePopulated(
-                dbChatMessage.copyWith(remoteId: "chatMessage1"),
+                dbChatMessage.copyWith(
+                    remoteId: "chatMessage1", createdAt: DateTime(2001)),
                 accountRepository))));
 
     expect(
@@ -511,7 +514,9 @@ void main() {
         mapLocalChatMessageToRemoteChatMessage(DbChatMessagePopulatedWrapper(
             await createTestDbChatMessagePopulated(
                 dbChatMessage.copyWith(
-                    remoteId: "chatMessage2", chatRemoteId: chatRemoteId),
+                    remoteId: "chatMessage2",
+                    chatRemoteId: chatRemoteId,
+                    createdAt: DateTime(2002)),
                 accountRepository))));
 
     expect(
@@ -524,7 +529,9 @@ void main() {
       mapLocalChatMessageToRemoteChatMessage(DbChatMessagePopulatedWrapper(
           await createTestDbChatMessagePopulated(
               dbChatMessage.copyWith(
-                  remoteId: "chatMessage4", chatRemoteId: chatRemoteId),
+                  remoteId: "chatMessage4",
+                  chatRemoteId: chatRemoteId,
+                  createdAt: DateTime(2004)),
               accountRepository))),
     );
     expect(
@@ -537,7 +544,9 @@ void main() {
         mapLocalChatMessageToRemoteChatMessage(DbChatMessagePopulatedWrapper(
             await createTestDbChatMessagePopulated(
                 dbChatMessage.copyWith(
-                    remoteId: "chatMessage3", chatRemoteId: chatRemoteId),
+                    remoteId: "chatMessage3",
+                    chatRemoteId: chatRemoteId,
+                    createdAt: DateTime(2003)),
                 accountRepository))));
 
     expect(
