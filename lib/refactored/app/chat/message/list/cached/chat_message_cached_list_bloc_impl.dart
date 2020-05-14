@@ -74,8 +74,8 @@ class ChatMessageListBloc extends DisposableOwner
         orderingTermData: ChatMessageOrderingTermData(
             orderingMode: OrderingMode.desc,
             orderByType: ChatMessageOrderByType.createdAt),
-        olderThanChatMessage: null,
-        newerThanChatMessage: null);
+        olderThanChatMessage: newerThan,
+        newerThanChatMessage: olderThan);
 
     _logger.finer(
         () => "finish loadLocalItems for $chat messages ${messages.length}");
@@ -91,7 +91,7 @@ class ChatMessageListBloc extends DisposableOwner
         orderingTermData: ChatMessageOrderingTermData(
             orderingMode: OrderingMode.desc,
             orderByType: ChatMessageOrderByType.createdAt),
-        olderThanChatMessage: null,
+        olderThanChatMessage: item,
         newerThanChatMessage: null);
   }
 
