@@ -13,6 +13,8 @@ abstract class IPleromaChat {
 
   int get unread;
 
+  DateTime get updatedAt;
+
   IPleromaAccount get account;
 }
 
@@ -22,11 +24,19 @@ class PleromaChat implements IPleromaChat {
   final String id;
   @override
   final int unread;
+
+  @override
+  @JsonKey(name: "updated_at")
+  final DateTime updatedAt;
+
   @override
   final PleromaAccount account;
 
   PleromaChat(
-      {@required this.id, @required this.unread, @required this.account});
+      {@required this.id,
+      @required this.unread,
+      @required this.account,
+      @required this.updatedAt});
 
   factory PleromaChat.fromJson(Map<String, dynamic> json) =>
       _$PleromaChatFromJson(json);
@@ -41,12 +51,6 @@ class PleromaChat implements IPleromaChat {
   Map<String, dynamic> toJson() => _$PleromaChatToJson(this);
 
   String toJsonString() => jsonEncode(_$PleromaChatToJson(this));
-
-  @override
-  String toString() {
-    return 'PleromaChat{id: $id, unread: $unread, account: $account}';
-  }
-
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -54,9 +58,16 @@ class PleromaChat implements IPleromaChat {
           runtimeType == other.runtimeType &&
           id == other.id &&
           unread == other.unread &&
+          updatedAt == other.updatedAt &&
           account == other.account;
   @override
-  int get hashCode => id.hashCode ^ unread.hashCode ^ account.hashCode;
+  int get hashCode =>
+      id.hashCode ^ unread.hashCode ^ updatedAt.hashCode ^ account.hashCode;
+  @override
+  String toString() {
+    return 'PleromaChat{id: $id, unread: $unread, updatedAt: $updatedAt,'
+        ' account: $account}';
+  }
 }
 
 abstract class IPleromaChatMessage {

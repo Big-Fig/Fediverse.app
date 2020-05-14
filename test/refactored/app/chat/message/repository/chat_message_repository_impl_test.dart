@@ -441,7 +441,8 @@ void main() {
     var chatRemoteId = "chatRemoteId";
     var query = chatMessageRepository.createQuery(
       onlyInChat:
-          DbChatWrapper(DbChat(remoteId: chatRemoteId, unread: 0, id: null)),
+          DbChatWrapper(DbChat(remoteId: chatRemoteId, unread: 0, id: null,
+              updatedAt: DateTime.now())),
       newerThanChatMessage: null,
       limit: null,
       offset: null,

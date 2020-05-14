@@ -72,7 +72,7 @@ class ChatCachedListService extends IChatCachedListService {
         offset: null,
         orderingTermData: ChatOrderingTermData(
             orderingMode: OrderingMode.desc,
-            orderByType: ChatOrderByType.remoteId));
+            orderByType: ChatOrderByType.updatedAt));
 
     _logger.finer(
         () => "finish loadLocalItems chats ${chats.length}");
@@ -89,5 +89,5 @@ class ChatCachedListService extends IChatCachedListService {
           offset: null,
           orderingTermData: ChatOrderingTermData(
               orderingMode: OrderingMode.desc,
-              orderByType: ChatOrderByType.remoteId));
+              orderByType: ChatOrderByType.updatedAt));
 }

@@ -18,4 +18,5 @@ void expectChat(IChat actual, IChat expected) {
 
   expect(actual.remoteId, expected.remoteId);
   expect(actual.unread, expected.unread);
+  expect(actual.updatedAt, expected.updatedAt);
 }
