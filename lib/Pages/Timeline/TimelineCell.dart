@@ -334,15 +334,15 @@ class _TimelineCell extends State<TimelineCell> {
                         onImageTap: (String source) {
                           print("source $source");
                         },
-                        customTextStyle: (dom.Node node, TextStyle baseStyle) {
-                          if (node is dom.Element) {
-                            switch (node.localName) {
-                              case "p":
-                                return baseStyle.merge(TextStyle(fontSize: 18));
-                            }
-                          }
-                          return baseStyle.merge(TextStyle(fontSize: 18));
-                        },
+//                        customTextStyle: (dom.Node node, TextStyle baseStyle) {
+//                          if (node is dom.Element) {
+//                            switch (node.localName) {
+//                              case "p":
+//                                return baseStyle.merge(TextStyle(fontSize: 18));
+//                            }
+//                          }
+//                          return baseStyle.merge(TextStyle(fontSize: 18));
+//                        },
                         onImageError:
                             (dynamic exception, StackTrace stackTrace) {
                           print("Image error!!!");

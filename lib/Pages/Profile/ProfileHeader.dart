@@ -170,17 +170,17 @@ class _ProfileHeader extends State<ProfileHeader> {
             child: Row(
               children: <Widget>[
                 Html(
-                  padding: EdgeInsets.all(10),
+//                  padding: EdgeInsets.all(10),
                   data: widget.profileAccount.note,
-                  customTextStyle: (dom.Node node, TextStyle baseStyle) {
-                    if (node is dom.Element) {
-                      switch (node.localName) {
-                        case "p":
-                          return baseStyle.merge(TextStyle(fontSize: 18));
-                      }
-                    }
-                    return baseStyle.merge(TextStyle(fontSize: 18));
-                  },
+//                  customTextStyle: (dom.Node node, TextStyle baseStyle) {
+//                    if (node is dom.Element) {
+//                      switch (node.localName) {
+//                        case "p":
+//                          return baseStyle.merge(TextStyle(fontSize: 18));
+//                      }
+//                    }
+//                    return baseStyle.merge(TextStyle(fontSize: 18));
+//                  },
                   onLinkTap: (url) {
                     
                     canLaunch(url).then((result) {
