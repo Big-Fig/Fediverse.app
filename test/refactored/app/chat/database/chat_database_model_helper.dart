@@ -12,8 +12,7 @@ Future<DbChat> createTestDbChat(
       id: null,
       remoteId: remoteId ?? seed + "remoteId1",
       unread: unread ?? seed.hashCode,
-      updatedAt:
-          updatedAt ?? DateTime.fromMillisecondsSinceEpoch(seed.hashCode),
+      updatedAt: updatedAt ?? DateTime(seed.hashCode % 2000),
     );
 
 void expectDbChat(IChat actual, DbChat expected) {

@@ -106,8 +106,8 @@ void main() {
       {
 //        IChatMessage lastChatMessage,
       @required List<IAccount> accounts}) async {
-    await chatRepository.upsertRemoteChat(mapLocalChatToRemoteChat(chat,
-//            lastChatMessage: lastChatMessage,
+    await chatRepository.upsertRemoteChat(mapLocalChatToRemoteChat(
+        chat, //            lastChatMessage: lastChatMessage,
         accounts: accounts));
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
@@ -137,8 +137,14 @@ void main() {
   });
 
   test('lastChatMessage', () async {
-    var chatMessage1 = await createTestChatMessage(seed: "chatMessage1", chatRemoteId: chat.remoteId);
-    var chatMessage2 = await createTestChatMessage(seed: "chatMessage2", chatRemoteId: chat.remoteId);
+    var chatMessage1 = await createTestChatMessage(
+        seed: "chatMessage1",
+        chatRemoteId: chat.remoteId,
+        createdAt: DateTime(2001));
+    var chatMessage2 = await createTestChatMessage(
+        seed: "chatMessage2",
+        chatRemoteId: chat.remoteId,
+        createdAt: DateTime(2002));
 
     var newValue = await createTestChat(seed: "seed2", remoteId: chat.remoteId);
 
@@ -151,8 +157,7 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
 
     await _update(
-      newValue,
-      accounts: [chatMessage1.account],
+      newValue, accounts: [chatMessage1.account],
 //        lastChatMessage: chatMessage1
     );
     await chatMessageRepository.upsertRemoteChatMessage(
@@ -168,8 +173,7 @@ void main() {
         mapLocalChatMessageToRemoteChatMessage(chatMessage2));
 
     await _update(
-      newValue,
-      accounts: [chatMessage2.account],
+      newValue, accounts: [chatMessage2.account],
 //        lastChatMessage: chatMessage1
     );
     await chatMessageRepository.upsertRemoteChatMessage(
@@ -204,13 +208,12 @@ void main() {
     expectAccount(chatBloc.accounts[0], account1);
     expectAccount(listenedValue[0], account1);
 
-    await _update(newValue, accounts: [account2,
-//      account3
+    await _update(newValue, accounts: [
+      account2, //      account3
     ]);
 
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-
 
     expectAccount(chatBloc.accounts[0], account1);
     expectAccount(chatBloc.accounts[1], account2);
@@ -243,8 +246,8 @@ void main() {
     expectAccount(chatBloc.accountsWithoutMe[0], account1);
     expectAccount(listenedValue[0], account1);
 
-    await _update(newValue, accounts: [account2,
-//      account3
+    await _update(newValue, accounts: [
+      account2, //      account3
     ]);
 
     expectAccount(chatBloc.accountsWithoutMe[0], account1);
