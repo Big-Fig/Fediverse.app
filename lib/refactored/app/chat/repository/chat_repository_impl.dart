@@ -162,13 +162,11 @@ class ChatRepository extends AsyncInitLoadingBloc implements IChatRepository {
 
     await accountRepository.upsertRemoteAccounts([newRemoteChat.account],
         chatRemoteId: oldLocalChat.remoteId, conversationRemoteId: null);
-//
-//    var lastMessage = newRemoteChat.lastMessage;
-//    if (lastMessage != null) {
-//      await chatMessageRepository.upsertRemoteMessage(lastMessage,
-//          listRemoteId: null,
-//          chatRemoteId: oldLocalChat.remoteId);
-//    }
+
+    var lastMessage = newRemoteChat.lastMessage;
+    if (lastMessage != null) {
+      await chatMessageRepository.upsertRemoteChatMessage(lastMessage);
+    }
     if (oldLocalChat.localId != null) {
       await updateById(
           oldLocalChat.localId, mapRemoteChatToDbChat(newRemoteChat));

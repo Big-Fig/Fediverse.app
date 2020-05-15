@@ -20,12 +20,12 @@ DbChat mapRemoteChatToDbChat(IPleromaChat remoteChat) {
 }
 
 PleromaChat mapLocalChatToRemoteChat(IChat chat,
-    {@required IChatMessage lastMessage, @required List<IAccount> accounts}) {
+    {@required IChatMessage lastChatMessage, @required List<IAccount> accounts}) {
   assert(accounts?.isNotEmpty == true);
   assert(accounts.length < 2, "only direct chats supported");
   return PleromaChat(
       unread: chat.unread,
-      lastMessage: mapLocalChatMessageToRemoteChatMessage(lastMessage),
+      lastMessage: mapLocalChatMessageToRemoteChatMessage(lastChatMessage),
       id: chat.remoteId,
       account: mapLocalAccountToRemoteAccount(accounts.first),
       updatedAt: chat.updatedAt

@@ -2,6 +2,7 @@ import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/refactored/app/chat/chat_model.dart';
 import 'package:fedi/refactored/app/chat/chat_model_adapter.dart';
+import 'package:fedi/refactored/app/chat/message/chat_message_model.dart';
 import 'package:fedi/refactored/app/chat/message/repository/chat_message_repository_impl.dart';
 import 'package:fedi/refactored/app/chat/repository/chat_repository_impl.dart';
 import 'package:fedi/refactored/app/chat/repository/chat_repository_model.dart';
@@ -21,8 +22,8 @@ void main() {
   ChatRepository chatRepository;
   AccountRepository accountRepository;
   ChatMessageRepository chatMessageRepository;
-//
-//  DbChatMessagePopulated dbChatMessagePopulated;
+
+  DbChatMessagePopulated dbChatMessagePopulated;
   DbChatMessage dbChatMessage;
 
   DbChat dbChat;
@@ -44,19 +45,18 @@ void main() {
     // assign local id for further equal with data retrieved from db
     dbAccount = dbAccount.copyWith(id: accountId);
 
-    dbChatMessage =
-        await createTestDbChatMessage(seed: "seed3", dbAccount: dbAccount);
+    dbChat = await createTestDbChat(seed: "seed4");
 
-//    dbChatMessagePopulated =
-//        await createTestDbChatMessagePopulated(dbChatMessage, accountRepository);
-//
-//    dbChatMessagePopulated = DbChatMessagePopulated(
-//        dbChatMessage: dbChatMessage,
-//        dbAccount: dbAccount);
+    dbChatMessage = await createTestDbChatMessage(
+        seed: "seed3", dbAccount: dbAccount, chatRemoteId: dbChat.remoteId);
+
+    dbChatMessagePopulated = await createTestDbChatMessagePopulated(
+        dbChatMessage, accountRepository);
+
+    dbChatMessagePopulated = DbChatMessagePopulated(
+        dbChatMessage: dbChatMessage, dbAccount: dbAccount);
 
     await chatMessageRepository.insert(dbChatMessage);
-
-    dbChat = await createTestDbChat(seed: "seed4");
   });
 
   tearDown(() async {
@@ -108,15 +108,12 @@ void main() {
 
     var newRemoteId = "newRemoteId";
     var newAcct = "newAcct";
-//    var newContent = "newContent";
+    var newContent = "newContent";
     var newRemoteChat = mapLocalChatToRemoteChat(
         DbChatWrapper(dbChat.copyWith(id: id, remoteId: newRemoteId)),
-//        lastChatMessage: DbChatMessagePopulatedWrapper(DbChatMessagePopulated(
-//            dbChatMessage: dbChatMessage.copyWith(content: newContent),
-//            dbAccount: dbAccount.copyWith(acct: newAcct),
-//            reblogDbChatMessage: null,
-//            reblogDbChatMessageAccount: null)
-//        ),
+        lastChatMessage: DbChatMessagePopulatedWrapper(DbChatMessagePopulated(
+            dbChatMessage: dbChatMessage.copyWith(content: newContent),
+            dbAccount: dbAccount.copyWith(acct: newAcct))),
         accounts: [DbAccountWrapper(dbAccount.copyWith(acct: newAcct))]);
     await chatRepository.updateLocalChatByRemoteChat(
       oldLocalChat: oldLocalChat,
@@ -126,8 +123,10 @@ void main() {
     expect((await chatRepository.findById(id)).remoteId, newRemoteId);
     expect((await accountRepository.findByRemoteId(dbAccount.remoteId)).acct,
         newAcct);
-//    expect((await chatMessageRepository.findByRemoteId(dbChatMessage.remoteId)).content,
-//        newContent);
+    expect(
+        (await chatMessageRepository.findByRemoteId(dbChatMessage.remoteId))
+            .content,
+        newContent);
   });
 
   test('findByRemoteId', () async {
@@ -139,14 +138,14 @@ void main() {
     expect(await chatRepository.countAll(), 0);
 
     await chatRepository.upsertRemoteChat(
-      mapLocalChatToRemoteChat(
-        DbChatWrapper(dbChat), accounts: [DbAccountWrapper(dbAccount)],
-//          lastChatMessage: DbChatMessagePopulatedWrapper(dbChatMessagePopulated)
-      ),
+      mapLocalChatToRemoteChat(DbChatWrapper(dbChat),
+          accounts: [DbAccountWrapper(dbAccount)],
+          lastChatMessage:
+              DbChatMessagePopulatedWrapper(dbChatMessagePopulated)),
     );
 
     expect(await chatRepository.countAll(), 1);
-    // with reblog
+
     expect(await chatMessageRepository.countAll(), 1);
     expect(await accountRepository.countAll(), 1);
     expectDbChat(await chatRepository.findByRemoteId(dbChat.remoteId), dbChat);
@@ -159,13 +158,12 @@ void main() {
     // item with same id updated
 
     await chatRepository.upsertRemoteChat(
-      mapLocalChatToRemoteChat(
-        DbChatWrapper(dbChat), accounts: [DbAccountWrapper(dbAccount)],
-//          lastChatMessage: DbChatMessagePopulatedWrapper(dbChatMessagePopulated)
-      ),
+      mapLocalChatToRemoteChat(DbChatWrapper(dbChat),
+          accounts: [DbAccountWrapper(dbAccount)],
+          lastChatMessage:
+              DbChatMessagePopulatedWrapper(dbChatMessagePopulated)),
     );
     expect(await chatRepository.countAll(), 1);
-    // with reblog
     expect(await chatMessageRepository.countAll(), 1);
     expect(await accountRepository.countAll(), 1);
     expectDbChat(await chatRepository.findByRemoteId(dbChat.remoteId), dbChat);
@@ -179,10 +177,10 @@ void main() {
   test('upsertRemoteChates', () async {
     expect(await chatRepository.countAll(), 0);
     await chatRepository.upsertRemoteChats([
-      mapLocalChatToRemoteChat(
-        DbChatWrapper(dbChat), accounts: [DbAccountWrapper(dbAccount)],
-//          lastChatMessage: DbChatMessagePopulatedWrapper(dbChatMessagePopulated)
-      ),
+      mapLocalChatToRemoteChat(DbChatWrapper(dbChat),
+          accounts: [DbAccountWrapper(dbAccount)],
+          lastChatMessage:
+              DbChatMessagePopulatedWrapper(dbChatMessagePopulated)),
     ]);
 
     expect(await chatRepository.countAll(), 1);
@@ -197,10 +195,10 @@ void main() {
         dbChatMessage);
 
     await chatRepository.upsertRemoteChats([
-      mapLocalChatToRemoteChat(
-        DbChatWrapper(dbChat), accounts: [DbAccountWrapper(dbAccount)],
-//          lastChatMessage: DbChatMessagePopulatedWrapper(dbChatMessagePopulated)
-      ),
+      mapLocalChatToRemoteChat(DbChatWrapper(dbChat),
+          accounts: [DbAccountWrapper(dbAccount)],
+          lastChatMessage:
+              DbChatMessagePopulatedWrapper(dbChatMessagePopulated)),
     ]);
     // update item with same id
     expect(await chatRepository.countAll(), 1);
@@ -240,34 +238,6 @@ void main() {
 
     expect((await query.get()).length, 3);
   });
-
-//  test('createQuery withAccount', () async {
-//    var query = chatRepository.createQuery(
-//        olderThan: null,
-//        newerThan: null,
-//        limit: null,
-//        offset: null,
-//        orderingTermData: null,
-//        withAccount: DbAccountWrapper(dbAccount));
-//
-//    expect((await query.get()).length, 0);
-//
-//    await chatRepository.upsertRemoteChat(
-//        mapLocalChatToRemoteChat(
-//            DbChatWrapper(dbChat),
-//            lastChatMessage: null,
-//            accounts: []));
-//
-//    expect((await query.get()).length, 0);
-//
-//    await chatRepository.upsertRemoteChat(
-//        mapLocalChatToRemoteChat(
-//            DbChatWrapper(dbChat),
-//            lastChatMessage: null,
-//            accounts: [DbAccountWrapper(dbAccount)]));
-//
-//    expect((await query.get()).length, 1);
-//  });
 
   test('createQuery newerThan', () async {
     var query = chatRepository.createQuery(
