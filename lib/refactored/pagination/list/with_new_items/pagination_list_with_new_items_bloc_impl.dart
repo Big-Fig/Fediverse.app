@@ -179,8 +179,12 @@ abstract class PaginationListWithNewItemsBloc<
   }
 
   void clearNewItems() {
-    _mergedNewItemsSubject.add([]);
-    _unmergedNewItemsSubject.add([]);
+    if (!_mergedNewItemsSubject.isClosed) {
+      _mergedNewItemsSubject.add([]);
+    }
+    if (!_unmergedNewItemsSubject.isClosed) {
+      _unmergedNewItemsSubject.add([]);
+    }
   }
 
   int compareItems(TItem a, TItem b);

@@ -99,24 +99,25 @@ abstract class PaginationListWidget<T> extends StatefulWidget {
       @required IndexedWidgetBuilder itemBuilder}) {
     _logger.finest(() => "buildItemsListView items ${items?.length}");
 
-    var length = items.length;
     return ListView.builder(
-      itemBuilder: (context, index) {
-        if (header != null && index == 0) {
-          return header;
-        } else if (footer != null && index == length - 1) {
-          return footer;
-        }
-        var itemIndex = index;
-        if (header != null) {
-          itemIndex -= 1;
-        }
+        itemBuilder: (context, index) {
+          var isFirst = index == 0;
+          var isLast = index == (items.length - 1);
+          if (header != null && isFirst) {
+            return header;
+          } else if (footer != null && isLast) {
+            return footer;
+          }
+          var itemIndex = index;
+          if (header != null) {
+            itemIndex -= 1;
+          }
 
-        _logger.finest(() => "buildItemsListView itemIndex=$itemIndex");
-        return itemBuilder(context, itemIndex);
-      },
-      itemCount: items.length,
-    );
+          _logger.finest(() => "buildItemsListView itemIndex=$itemIndex");
+          return itemBuilder(context, itemIndex);
+        },
+        itemCount:
+            items.length + (header != null ? 1 : 0) + (footer != null ? 1 : 0));
   }
 }
 
@@ -168,10 +169,7 @@ class _PaginationListWidgetState<T> extends State<PaginationListWidget<T>> {
     );
   }
 
-  // todo: remove hack
-  // retryOnFail is hack for rare cases, when askToRefresh future executes
-  // before widgets actually builds
-  void askToRefresh(BuildContext context, {bool retryOnFail = true}) {
+  void askToRefresh(BuildContext context) {
     // delay required to be sure that widget will be built during initial
     // refresh
     Future.delayed(Duration(milliseconds: 1000), () {
@@ -190,15 +188,10 @@ class _PaginationListWidgetState<T> extends State<PaginationListWidget<T>> {
           _logger.finest(() => "initState position = $position");
           if (position != null) {
             refreshController.requestRefresh();
-          } else if(retryOnFail) {
-            askToRefresh(context, retryOnFail: false);
           }
         }
       } catch (e, stackTrace) {
         _logger.warning(() => "error during refreshing", e, stackTrace);
-        if(retryOnFail) {
-          askToRefresh(context, retryOnFail: false);
-        }
       }
     });
   }
