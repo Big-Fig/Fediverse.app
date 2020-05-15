@@ -11,6 +11,7 @@ import 'package:fedi/refactored/app/chat/chat_bloc.dart';
 import 'package:fedi/refactored/app/chat/chat_bloc_impl.dart';
 import 'package:fedi/refactored/app/chat/chat_model.dart';
 import 'package:fedi/refactored/app/chat/chat_model_adapter.dart';
+import 'package:fedi/refactored/app/chat/message/chat_message_model.dart';
 import 'package:fedi/refactored/app/chat/message/chat_message_model_adapter.dart';
 import 'package:fedi/refactored/app/chat/message/repository/chat_message_repository.dart';
 import 'package:fedi/refactored/app/chat/message/repository/chat_message_repository_impl.dart';
@@ -103,12 +104,9 @@ void main() {
   });
 
   Future _update(IChat chat,
-      {
-//        IChatMessage lastChatMessage,
-      @required List<IAccount> accounts}) async {
-    await chatRepository.upsertRemoteChat(mapLocalChatToRemoteChat(
-        chat, //            lastChatMessage: lastChatMessage,
-        accounts: accounts));
+      {IChatMessage lastChatMessage, @required List<IAccount> accounts}) async {
+    await chatRepository.upsertRemoteChat(mapLocalChatToRemoteChat(chat,
+        lastChatMessage: lastChatMessage, accounts: accounts));
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
   }
@@ -156,12 +154,8 @@ void main() {
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 
-    await _update(
-      newValue, accounts: [chatMessage1.account],
-//        lastChatMessage: chatMessage1
-    );
-    await chatMessageRepository.upsertRemoteChatMessage(
-        mapLocalChatMessageToRemoteChatMessage(chatMessage1));
+    await _update(newValue,
+        accounts: [chatMessage1.account], lastChatMessage: chatMessage1);
 
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
@@ -172,12 +166,8 @@ void main() {
     await chatMessageRepository.upsertRemoteChatMessage(
         mapLocalChatMessageToRemoteChatMessage(chatMessage2));
 
-    await _update(
-      newValue, accounts: [chatMessage2.account],
-//        lastChatMessage: chatMessage1
-    );
-    await chatMessageRepository.upsertRemoteChatMessage(
-        mapLocalChatMessageToRemoteChatMessage(chatMessage2));
+    await _update(newValue,
+        accounts: [chatMessage2.account], lastChatMessage: chatMessage1);
 
 // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
