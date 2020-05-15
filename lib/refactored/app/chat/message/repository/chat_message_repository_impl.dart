@@ -124,12 +124,14 @@ class ChatMessageRepository extends AsyncInitLoadingBloc
         "\t offset=$offset\n"
         "\t orderingTermData=$orderingTermData\n");
 
+
     var query = dao.startSelectQuery();
 
     if (olderThanChatMessage != null || newerThanChatMessage != null) {
-      dao.addRemoteIdBoundsWhere(query,
-          maximumRemoteIdExcluding: olderThanChatMessage?.remoteId,
-          minimumRemoteIdExcluding: newerThanChatMessage?.remoteId);
+      assert(orderingTermData.orderByType == ChatMessageOrderByType.createdAt);
+      dao.addCreatedAtBoundsWhere(query,
+          maximumDateTimeExcluding: olderThanChatMessage?.createdAt,
+          minimumDateTimeExcluding: newerThanChatMessage?.createdAt);
     }
 
     if (orderingTermData != null) {

@@ -91,8 +91,8 @@ class ChatMessageListBloc extends DisposableOwner
         orderingTermData: ChatMessageOrderingTermData(
             orderingMode: OrderingMode.desc,
             orderByType: ChatMessageOrderByType.createdAt),
-        olderThanChatMessage: item,
-        newerThanChatMessage: null);
+        olderThanChatMessage: null,
+        newerThanChatMessage: item);
   }
 
   static ChatMessageListBloc createFromContext(BuildContext context,
