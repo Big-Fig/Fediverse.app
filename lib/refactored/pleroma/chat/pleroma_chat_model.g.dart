@@ -16,6 +16,10 @@ PleromaChat _$PleromaChatFromJson(Map<String, dynamic> json) {
     updatedAt: json['updated_at'] == null
         ? null
         : DateTime.parse(json['updated_at'] as String),
+    lastMessage: json['last_message'] == null
+        ? null
+        : PleromaChatMessage.fromJson(
+            json['last_message'] as Map<String, dynamic>),
   );
 }
 
@@ -24,7 +28,8 @@ Map<String, dynamic> _$PleromaChatToJson(PleromaChat instance) =>
       'id': instance.id,
       'unread': instance.unread,
       'updated_at': instance.updatedAt?.toIso8601String(),
-      'account': instance.account,
+      'account': instance.account?.toJson(),
+      'last_message': instance.lastMessage?.toJson(),
     };
 
 PleromaChatMessage _$PleromaChatMessageFromJson(Map<String, dynamic> json) {
@@ -54,8 +59,8 @@ Map<String, dynamic> _$PleromaChatMessageToJson(PleromaChatMessage instance) =>
       'account_id': instance.accountId,
       'content': instance.content,
       'created_at': instance.createdAt?.toIso8601String(),
-      'emojis': instance.emojis,
-      'attachment': instance.mediaAttachment,
+      'emojis': instance.emojis?.map((e) => e?.toJson())?.toList(),
+      'attachment': instance.mediaAttachment?.toJson(),
     };
 
 PleromaChatMessageSendData _$PleromaChatMessageSendDataFromJson(

@@ -47,11 +47,10 @@ class ChatRepository extends AsyncInitLoadingBloc implements IChatRepository {
     await accountRepository.upsertRemoteAccounts(remoteAccounts,
         chatRemoteId: remoteChat.id, conversationRemoteId: null);
 
-//    var lastMessage = remoteChat.lastMessage;
-//    if (lastMessage != null) {
-//      await chatMessageRepository.upsertRemoteMessage(lastMessage,
-//          chatRemoteId: remoteChat.id, listRemoteId: null);
-//    }
+    var lastMessage = remoteChat.lastMessage;
+    if (lastMessage != null) {
+      await chatMessageRepository.upsertRemoteChatMessage(lastMessage);
+    }
 
     await upsert(mapRemoteChatToDbChat(remoteChat));
   }
@@ -61,11 +60,10 @@ class ChatRepository extends AsyncInitLoadingBloc implements IChatRepository {
     _logger.finer(() => "upsertRemoteChats ${remoteChats.length}");
 
     for (var remoteChat in remoteChats) {
-//      var lastMessage = remoteChat.lastMessage;
-//      if (lastMessage != null) {
-//        await chatMessageRepository.upsertRemoteMessage(lastMessage,
-//            listRemoteId: null, chatRemoteId: remoteChat.id);
-//      }
+      var lastMessage = remoteChat.lastMessage;
+      if (lastMessage != null) {
+        await chatMessageRepository.upsertRemoteChatMessage(lastMessage);
+      }
 
       await accountRepository.upsertRemoteAccounts([remoteChat.account],
           chatRemoteId: remoteChat.id, conversationRemoteId: null);
