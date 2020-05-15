@@ -104,6 +104,10 @@ class ChatPostMessageBloc extends DisposableOwner
     if (remoteChatMessage != null) {
       success = true;
       await chatMessageRepository.upsertRemoteChatMessage(remoteChatMessage);
+
+      // todo: remove hack
+      // backend shouldn't mark chat as unread after message from me
+      await pleromaChatService.markChatAsRead(chatId: chatRemoteId);
     } else {
       success = false;
     }
