@@ -66,55 +66,49 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
       (select(db.dbChats));
 
   SimpleSelectStatement<$DbChatsTable, DbChat> addUpdatedAtBoundsWhere(
-      SimpleSelectStatement<$DbChatsTable, DbChat> query, {
-        @required DateTime minimumDateTimeExcluding,
-        @required DateTime maximumDateTimeExcluding,
-      }) {
+    SimpleSelectStatement<$DbChatsTable, DbChat> query, {
+    @required DateTime minimumDateTimeExcluding,
+    @required DateTime maximumDateTimeExcluding,
+  }) {
     var minimumExist = minimumDateTimeExcluding != null;
     var maximumExist = maximumDateTimeExcluding != null;
     assert(minimumExist || maximumExist);
 
-
     if (minimumExist) {
-      query = query..where((chat) => chat.updatedAt
-          .isBiggerThanValue(minimumDateTimeExcluding));
+      query = query
+        ..where((chat) =>
+            chat.updatedAt.isBiggerThanValue(minimumDateTimeExcluding));
     }
     if (maximumExist) {
-      query = query..where((chat) => chat.updatedAt
-          .isSmallerThanValue(maximumDateTimeExcluding));
+      query = query
+        ..where((chat) =>
+            chat.updatedAt.isSmallerThanValue(maximumDateTimeExcluding));
     }
 
     return query;
   }
 
-  Future<int> incrementUnreadCount() {
-    var query = db.customUpdate("UPDATE db_chats "
-        "SET unread = unread + 1");
+  Future<int> incrementUnreadCount({@required String chatRemoteId}) {
+
+    var update = "UPDATE db_chats "
+        "SET unread = unread + 1 WHERE remote_id = '$chatRemoteId'";
+    var query = db.customUpdate(update, updates: {dbChats});
 
     return query;
   }
 
-  Future<int> getTotalAmountUnread() {
-    var query = db.customSelectQuery("SELECT SUM(db_chats.unread) "
-        "as unread_total FROM db_chats");
+  Future<int> getTotalAmountUnread() => totalAmountUnreadQuery().getSingle();
 
-    return query
-        .map((queryRow) => queryRow.readInt("unread_total"))
-        .getSingle();
-  }
+  Stream<int> watchTotalAmountUnread() =>
+      totalAmountUnreadQuery().watchSingle();
 
-  Stream<int> watchTotalAmountUnread() {
-    // todo: remove hack
-    // it is not possible to use custom sql query from getTotalAmountUnread
-    // unfortunately moor don't support watch for custom queries with sum only
-    var query = db.select(dbChats)
-      ..where((chat) => chat.unread.isBiggerThanValue(0));
+  Selectable<int> totalAmountUnreadQuery() {
+    var unreadCount = dbChats.unread.total();
 
-    var unreadChatsStream = query.watch();
+    final query = selectOnly(dbChats)..addColumns([unreadCount]);
 
-    return unreadChatsStream.map((unreadChats) {
-      return unreadChats.fold(0, (previous, chat) => chat.unread);
-    });
+    var mapped = query.map((row) => row.read(unreadCount));
+    return mapped.map((value) => value.toInt());
   }
 
   SimpleSelectStatement<$DbChatsTable, DbChat> orderBy(

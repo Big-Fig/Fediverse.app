@@ -308,5 +308,5 @@ class ChatRepository extends AsyncInitLoadingBloc implements IChatRepository {
 
   @override
   Future incrementUnreadCount({@required String chatRemoteId}) =>
-      dao.incrementUnreadCount();
+      dao.incrementUnreadCount(chatRemoteId: chatRemoteId);
 }
