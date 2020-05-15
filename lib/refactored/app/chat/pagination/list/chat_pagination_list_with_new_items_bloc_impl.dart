@@ -5,8 +5,7 @@ import 'package:fedi/refactored/pagination/pagination_bloc.dart';
 import 'package:fedi/refactored/pagination/pagination_model.dart';
 import 'package:flutter/widgets.dart';
 
-class ChatPaginationListWithNewItemsBloc<
-        TPage extends PaginationPage<IChat>>
+class ChatPaginationListWithNewItemsBloc<TPage extends PaginationPage<IChat>>
     extends PaginationListWithNewItemsBloc<TPage, IChat> {
   final IChatCachedListService cachedListService;
 
@@ -23,7 +22,7 @@ class ChatPaginationListWithNewItemsBloc<
       cachedListService.watchLocalItemsNewerThanItem(item);
 
   @override
-  int compareItems(IChat a, IChat b) {
+  int compareItemsToSort(IChat a, IChat b) {
     if (a?.updatedAt == null && b?.updatedAt == null) {
       return 0;
     }
@@ -36,4 +35,7 @@ class ChatPaginationListWithNewItemsBloc<
     }
     return a.updatedAt.compareTo(b.updatedAt);
   }
+
+  @override
+  bool isItemsEqual(IChat a, IChat b) => a.remoteId == b.remoteId;
 }
