@@ -65,26 +65,23 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
   SimpleSelectStatement<$DbChatsTable, DbChat> startSelectQuery() =>
       (select(db.dbChats));
 
-  /// remote ids are strings but it is possible to compare them in
-  /// chronological order
-  SimpleSelectStatement<$DbChatsTable, DbChat> addRemoteIdBoundsWhere(
-    SimpleSelectStatement<$DbChatsTable, DbChat> query, {
-    @required String minimumRemoteIdExcluding,
-    @required String maximumRemoteIdExcluding,
-  }) {
-    var minimumExist = minimumRemoteIdExcluding?.isNotEmpty == true;
-    var maximumExist = maximumRemoteIdExcluding?.isNotEmpty == true;
+  SimpleSelectStatement<$DbChatsTable, DbChat> addUpdatedAtBoundsWhere(
+      SimpleSelectStatement<$DbChatsTable, DbChat> query, {
+        @required DateTime minimumDateTimeExcluding,
+        @required DateTime maximumDateTimeExcluding,
+      }) {
+    var minimumExist = minimumDateTimeExcluding != null;
+    var maximumExist = maximumDateTimeExcluding != null;
     assert(minimumExist || maximumExist);
 
+
     if (minimumExist) {
-      var biggerExp = CustomExpression<bool, BoolType>(
-          "db_chats.remote_id > '$minimumRemoteIdExcluding'");
-      query = query..where((chat) => biggerExp);
+      query = query..where((chat) => chat.updatedAt
+          .isBiggerThanValue(minimumDateTimeExcluding));
     }
     if (maximumExist) {
-      var smallerExp = CustomExpression<bool, BoolType>(
-          "db_chats.remote_id < '$maximumRemoteIdExcluding'");
-      query = query..where((chat) => smallerExp);
+      query = query..where((chat) => chat.updatedAt
+          .isSmallerThanValue(maximumDateTimeExcluding));
     }
 
     return query;

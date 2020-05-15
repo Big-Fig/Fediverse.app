@@ -29,16 +29,16 @@ class ChatMessagePaginationListWithNewItemsBloc<
 
   @override
   int compareItems(IChatMessage a, IChatMessage b) {
-    if (a == null && b == null) {
+    if (a?.createdAt == null && b?.createdAt == null) {
       return 0;
     }
 
-    if (a != null && b == null) {
+    if (a?.createdAt != null && b?.createdAt == null) {
       return -1;
     }
-    if (a == null && b != null) {
+    if (a?.createdAt == null && b?.createdAt != null) {
       return 1;
     }
-    return a.remoteId.compareTo(b.remoteId);
+    return a.createdAt.compareTo(b.createdAt);
   }
 }

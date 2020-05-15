@@ -119,14 +119,12 @@ class ChatMessageDao extends DatabaseAccessor<AppDatabase> with _$ChatMessageDao
     assert(minimumExist || maximumExist);
 
     if (minimumExist) {
-      var biggerExp = CustomExpression<bool, BoolType>(
-          "db_chat_messages.created_at > '$minimumDateTimeExcluding'");
-      query = query..where((chatMessage) => biggerExp);
+      query = query..where((chatMessage) => chatMessage.createdAt
+          .isBiggerThanValue(minimumDateTimeExcluding));
     }
     if (maximumExist) {
-      var smallerExp = CustomExpression<bool, BoolType>(
-          "db_chat_messages.created_at < '$maximumDateTimeExcluding'");
-      query = query..where((chatMessage) => smallerExp);
+      query = query..where((chatMessage) => chatMessage.createdAt
+          .isSmallerThanValue(maximumDateTimeExcluding));
     }
 
     return query;
