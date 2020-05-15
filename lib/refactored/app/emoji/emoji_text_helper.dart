@@ -6,7 +6,7 @@ String addEmojiToHtmlContent(
     ) {
   // todo: rework with RichText
   if (emoji?.isNotEmpty != true) {
-    return content;
+    return "<html><body><p>$content</p></body></html>";
   }
 
   List<IPleromaEmoji> customEmoji = emoji ?? [];
@@ -21,6 +21,7 @@ String addEmojiToHtmlContent(
     newHtmlContent = newHtmlContent.replaceAll(
         ":$shortcode:", '<img src="$url" width="20">');
   }
-  newHtmlContent = "<html><body>$newHtmlContent</body></html>";
+  newHtmlContent = "<html><body><p>$newHtmlContent</p></body></html>";
+//  newHtmlContent = "<p>$newHtmlContent</p>";
   return newHtmlContent;
 }
