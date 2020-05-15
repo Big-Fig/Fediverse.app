@@ -128,7 +128,7 @@ class ChatMessageRepository extends AsyncInitLoadingBloc
     var query = dao.startSelectQuery();
 
     if (olderThanChatMessage != null || newerThanChatMessage != null) {
-      assert(orderingTermData.orderByType == ChatMessageOrderByType.createdAt);
+      assert(orderingTermData?.orderByType == ChatMessageOrderByType.createdAt);
       dao.addCreatedAtBoundsWhere(query,
           maximumDateTimeExcluding: olderThanChatMessage?.createdAt,
           minimumDateTimeExcluding: newerThanChatMessage?.createdAt);

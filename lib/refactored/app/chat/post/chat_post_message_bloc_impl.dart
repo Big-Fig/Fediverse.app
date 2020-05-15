@@ -9,7 +9,10 @@ import 'package:fedi/refactored/pleroma/chat/pleroma_chat_model.dart';
 import 'package:fedi/refactored/pleroma/chat/pleroma_chat_service.dart';
 import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_service.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
+
+var _logger = Logger("chat_post_message_bloc_impl.dart");
 
 // todo: unify post status & post chat message code
 class ChatPostMessageBloc extends DisposableOwner
@@ -82,6 +85,7 @@ class ChatPostMessageBloc extends DisposableOwner
 
   @override
   Future<bool> postMessage() async {
+
     bool success;
 
     var mediaAttachmentBlocs = mediaAttachmentGridBloc.mediaAttachmentBlocs;
@@ -90,10 +94,13 @@ class ChatPostMessageBloc extends DisposableOwner
       mediaId = mediaAttachmentBlocs.first.pleromaMediaAttachment.id;
     }
 
+    var data = PleromaChatMessageSendData(content: inputText, mediaId: mediaId);
+    _logger.finest(() => "postMessage data=$data");
     var remoteChatMessage = await pleromaChatService.sendMessage(
         chatId: chatRemoteId,
-        data: PleromaChatMessageSendData(content: inputText, mediaId: mediaId));
+        data: data);
 
+    _logger.finest(() => "postMessage remoteChatMessage=$remoteChatMessage");
     if (remoteChatMessage != null) {
       success = true;
       await chatMessageRepository.upsertRemoteChatMessage(remoteChatMessage);

@@ -230,9 +230,10 @@ class ChatRepository extends AsyncInitLoadingBloc implements IChatRepository {
     var query = dao.startSelectQuery();
 
     if (olderThan != null || newerThan != null) {
-      dao.addRemoteIdBoundsWhere(query,
-          maximumRemoteIdExcluding: olderThan?.remoteId,
-          minimumRemoteIdExcluding: newerThan?.remoteId);
+      assert(orderingTermData?.orderByType == ChatOrderByType.updatedAt);
+      dao.addUpdatedAtBoundsWhere(query,
+          maximumDateTimeExcluding: olderThan?.updatedAt,
+          minimumDateTimeExcluding: newerThan?.updatedAt);
     }
 
     if (orderingTermData != null) {
