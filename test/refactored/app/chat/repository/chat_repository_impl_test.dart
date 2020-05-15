@@ -480,4 +480,73 @@ void main() {
 
     expectDbChat(actualList[0], chat2);
   });
+
+  test('incrementUnreadCount', () async {
+    var chat2 = await insertDbChat(
+        chatRepository,
+        (await createTestDbChat(seed: "seed2"))
+            .copyWith(remoteId: "remoteId2", unread: 1));
+    var chat3 = await insertDbChat(
+        chatRepository,
+        (await createTestDbChat(seed: "seed3"))
+            .copyWith(remoteId: "remoteId3", unread: 1));
+
+    await chatRepository.incrementUnreadCount(chatRemoteId: chat2.remoteId);
+
+    expect((await chatRepository.findByRemoteId(chat2.remoteId)).unread, 2);
+    expect((await chatRepository.findByRemoteId(chat3.remoteId)).unread, 1);
+  });
+
+  test('incrementUnreadCount', () async {
+    var chat2 = await insertDbChat(
+        chatRepository,
+        (await createTestDbChat(seed: "seed2"))
+            .copyWith(remoteId: "remoteId2", unread: 1));
+    var chat3 = await insertDbChat(
+        chatRepository,
+        (await createTestDbChat(seed: "seed3"))
+            .copyWith(remoteId: "remoteId3", unread: 1));
+
+    await chatRepository.markAsRead(chat: DbChatWrapper(chat2));
+
+    expect((await chatRepository.findByRemoteId(chat2.remoteId)).unread, 0);
+    expect((await chatRepository.findByRemoteId(chat3.remoteId)).unread, 1);
+  });
+  test('totalUnreadCount', () async {
+    int listened;
+    var subscription = chatRepository.watchTotalUnreadCount().listen((event) {
+      listened = event;
+    });
+    await Future.delayed(Duration(milliseconds: 1));
+    expect(await chatRepository.getTotalUnreadCount(), 0);
+    expect(listened, 0);
+
+    var chat2 = await insertDbChat(
+        chatRepository,
+        (await createTestDbChat(seed: "seed2"))
+            .copyWith(remoteId: "remoteId2", unread: 1));
+    var chat3 = await insertDbChat(
+        chatRepository,
+        (await createTestDbChat(seed: "seed3"))
+            .copyWith(remoteId: "remoteId3", unread: 1));
+
+    await Future.delayed(Duration(milliseconds: 1));
+    expect(await chatRepository.getTotalUnreadCount(), 2);
+    expect(listened, 2);
+
+    await chatRepository.markAsRead(chat: DbChatWrapper(chat2));
+    await Future.delayed(Duration(milliseconds: 1));
+    expect(await chatRepository.getTotalUnreadCount(), 1);
+    expect(listened, 1);
+    await chatRepository.incrementUnreadCount(chatRemoteId: chat2.remoteId);
+    await Future.delayed(Duration(milliseconds: 1));
+    expect(await chatRepository.getTotalUnreadCount(), 2);
+    expect(listened, 2);
+    await chatRepository.incrementUnreadCount(chatRemoteId: chat3.remoteId);
+    await Future.delayed(Duration(milliseconds: 1));
+    expect(await chatRepository.getTotalUnreadCount(), 3);
+    expect(listened, 3);
+
+    await subscription.cancel();
+  });
 }
