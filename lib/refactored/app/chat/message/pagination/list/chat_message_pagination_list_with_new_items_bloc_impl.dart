@@ -28,7 +28,7 @@ class ChatMessagePaginationListWithNewItemsBloc<
   }
 
   @override
-  int compareItems(IChatMessage a, IChatMessage b) {
+  int compareItemsToSort(IChatMessage a, IChatMessage b) {
     if (a?.createdAt == null && b?.createdAt == null) {
       return 0;
     }
@@ -41,4 +41,7 @@ class ChatMessagePaginationListWithNewItemsBloc<
     }
     return a.createdAt.compareTo(b.createdAt);
   }
+
+  @override
+  bool isItemsEqual(IChatMessage a, IChatMessage b) => a.remoteId == b.remoteId;
 }
