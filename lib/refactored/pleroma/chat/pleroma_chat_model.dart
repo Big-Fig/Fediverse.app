@@ -16,9 +16,11 @@ abstract class IPleromaChat {
   DateTime get updatedAt;
 
   IPleromaAccount get account;
+
+  IPleromaChatMessage get lastMessage;
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class PleromaChat implements IPleromaChat {
   @override
   final String id;
@@ -32,11 +34,17 @@ class PleromaChat implements IPleromaChat {
   @override
   final PleromaAccount account;
 
-  PleromaChat(
-      {@required this.id,
-      @required this.unread,
-      @required this.account,
-      @required this.updatedAt});
+  @override
+  @JsonKey(name: "last_message")
+  final PleromaChatMessage lastMessage;
+
+  PleromaChat({
+    @required this.id,
+    @required this.unread,
+    @required this.account,
+    @required this.updatedAt,
+    @required this.lastMessage,
+  });
 
   factory PleromaChat.fromJson(Map<String, dynamic> json) =>
       _$PleromaChatFromJson(json);
@@ -51,6 +59,7 @@ class PleromaChat implements IPleromaChat {
   Map<String, dynamic> toJson() => _$PleromaChatToJson(this);
 
   String toJsonString() => jsonEncode(_$PleromaChatToJson(this));
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -59,14 +68,19 @@ class PleromaChat implements IPleromaChat {
           id == other.id &&
           unread == other.unread &&
           updatedAt == other.updatedAt &&
-          account == other.account;
+          account == other.account &&
+          lastMessage == other.lastMessage;
   @override
   int get hashCode =>
-      id.hashCode ^ unread.hashCode ^ updatedAt.hashCode ^ account.hashCode;
+      id.hashCode ^
+      unread.hashCode ^
+      updatedAt.hashCode ^
+      account.hashCode ^
+      lastMessage.hashCode;
   @override
   String toString() {
     return 'PleromaChat{id: $id, unread: $unread, updatedAt: $updatedAt,'
-        ' account: $account}';
+        ' account: $account, lastMessage: $lastMessage}';
   }
 }
 
@@ -86,7 +100,7 @@ abstract class IPleromaChatMessage {
   IPleromaMediaAttachment get mediaAttachment;
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class PleromaChatMessage extends IPleromaChatMessage {
   @override
   final String id;
