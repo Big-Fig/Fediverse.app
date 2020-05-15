@@ -4,12 +4,16 @@ import 'package:fedi/refactored/app/conversation/avatar/conversation_avatar_widg
 import 'package:fedi/refactored/app/conversation/conversation_bloc.dart';
 import 'package:fedi/refactored/app/conversation/conversation_page.dart';
 import 'package:fedi/refactored/app/conversation/title/conversation_title_widget.dart';
+import 'package:fedi/refactored/app/emoji/emoji_text_helper.dart';
+import 'package:fedi/refactored/app/html/html_text_widget.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/app/ui/fedi_colors.dart';
 import 'package:fedi/refactored/app/ui/fedi_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
+
+var _maxLastStatusLength = 30;
 
 class ConversationListItemWidget extends StatelessWidget {
   ConversationListItemWidget();
@@ -86,15 +90,24 @@ class ConversationListItemWidget extends StatelessWidget {
           if (lastStatus == null) {
             return CircularProgressIndicator();
           }
-          return Text(
-            extractStatusText(context, lastStatus),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w300,
-              color: FediColors.mediumGrey,
-            ),
+
+          var content = extractStatusText(context, lastStatus);
+
+          var length = content.length;
+
+          // todo: handle html tags cut
+          if (length > _maxLastStatusLength) {
+            content = content.substring(0, _maxLastStatusLength);
+            content += "...";
+          }
+          return HtmlTextWidget(
+            shrinkWrap: true,
+            data: addEmojiToHtmlContent(
+                content, lastStatus.emojis),
+            onLinkTap: null,
+            fontSize: 16.0,
+            fontWeight: FontWeight.w300,
+            color: FediColors.mediumGrey,
           );
         });
   }

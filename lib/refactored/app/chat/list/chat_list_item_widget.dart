@@ -1,13 +1,20 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
 import 'package:fedi/refactored/app/chat/avatar/chat_avatar_widget.dart';
 import 'package:fedi/refactored/app/chat/chat_bloc.dart';
 import 'package:fedi/refactored/app/chat/chat_page.dart';
 import 'package:fedi/refactored/app/chat/message/chat_message_model.dart';
 import 'package:fedi/refactored/app/chat/title/chat_title_widget.dart';
+import 'package:fedi/refactored/app/emoji/emoji_text_helper.dart';
+import 'package:fedi/refactored/app/html/html_text_widget.dart';
 import 'package:fedi/refactored/app/ui/fedi_colors.dart';
 import 'package:fedi/refactored/app/ui/fedi_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:html/parser.dart';
+
+var _maxLastMessageLength = 30;
 
 class ChatListItemWidget extends StatelessWidget {
   ChatListItemWidget();
@@ -27,15 +34,17 @@ class ChatListItemWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                ChatAvatarWidget(),
-                Padding(
-                  padding: EdgeInsets.all(12.0),
-                  child: buildChatPreview(context, chatBloc),
-                ),
-              ],
+            Flexible(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  ChatAvatarWidget(),
+                  Padding(
+                    padding: EdgeInsets.all(12.0),
+                    child: buildChatPreview(context, chatBloc),
+                  ),
+                ],
+              ),
             ),
             buildGoToChatButton(context, chatBloc),
           ],
@@ -77,18 +86,35 @@ class ChatListItemWidget extends StatelessWidget {
           if (lastMessage == null) {
             return SizedBox.shrink();
           }
+          var content = extractContent(context, lastMessage);
 
-          // todo: handle emojis
-          return Text(
-            lastMessage.content,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w300,
-              color: FediColors.mediumGrey,
-            ),
+          var length = content.length;
+
+          // todo: handle html tags cut
+          if (length > _maxLastMessageLength) {
+            content = content.substring(0, _maxLastMessageLength);
+            content += "...";
+          }
+          return HtmlTextWidget(
+            shrinkWrap: true,
+            data: addEmojiToHtmlContent(content, lastMessage.emojis),
+            onLinkTap: null,
+            fontSize: 16.0,
+            fontWeight: FontWeight.w300,
+            color: FediColors.mediumGrey,
           );
         });
+  }
+
+  String extractContent(BuildContext context, IChatMessage chatMessage) {
+    String formattedText = parse(chatMessage.content).documentElement.text;
+
+    var myAccountBloc = IMyAccountBloc.of(context, listen: true);
+
+    if (myAccountBloc.checkIsChatMessageFromMe(chatMessage)) {
+      formattedText = AppLocalizations.of(context)
+          .tr("app.chat.preview.you", args: [formattedText]);
+    }
+    return formattedText;
   }
 }
