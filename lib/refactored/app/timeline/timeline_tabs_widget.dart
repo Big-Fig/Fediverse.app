@@ -34,7 +34,7 @@ class TimelineTabsWidget extends StatelessWidget {
         length: tabs.length,
         initialIndex: tabs.indexOf(timelinesTabsBloc.selectedTab),
         child: FediHomeTabContainer(
-          topHeaderHeightInSafeArea: 156.0,
+          topHeaderHeightInSafeArea: 164.0,
           topBar: buildTabBar(context, tabs, timelinesTabsBloc),
           body: buildBodyWidget(context),
         ));

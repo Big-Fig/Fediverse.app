@@ -46,7 +46,7 @@ class FediHeaderImageDecorationWidget extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     return Container(
         decoration: BoxDecoration(
-            image: DecorationImage(fit: BoxFit.fitWidth, image: imageProvider)),
+            image: DecorationImage(fit: BoxFit.cover, image: imageProvider)),
         child: child);
   }
 
