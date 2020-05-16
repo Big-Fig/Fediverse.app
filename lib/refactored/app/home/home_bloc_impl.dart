@@ -7,24 +7,34 @@ import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger("home_bloc_impl.dart");
 
-class AppHomeBloc extends DisposableOwner implements IAppHomeBloc {
+const List<HomeTab> _tabs = [
+  HomeTab.timelines,
+  HomeTab.notifications,
+  HomeTab.conversations,
+  HomeTab.account,
+];
+
+class HomeBloc extends DisposableOwner implements IHomeBloc {
   // ignore: close_sinks
-  final BehaviorSubject<AppHomeTab> _selectedTabSubject;
+  final BehaviorSubject<HomeTab> _selectedTabSubject;
 
   @override
-  Stream<AppHomeTab> get selectedTabStream => _selectedTabSubject.stream;
+  Stream<HomeTab> get selectedTabStream => _selectedTabSubject.stream;
 
   @override
-  AppHomeTab get selectedTab => _selectedTabSubject.value;
+  HomeTab get selectedTab => _selectedTabSubject.value;
 
-  AppHomeBloc({@required AppHomeTab startTab})
+  HomeBloc({@required HomeTab startTab})
       : _selectedTabSubject = BehaviorSubject.seeded(startTab) {
     _logger.finest(() => "constructor");
     addDisposable(subject: _selectedTabSubject);
   }
 
   @override
-  void selectTab(AppHomeTab tab) {
+  void selectTab(HomeTab tab) {
     _selectedTabSubject.add(tab);
   }
+
+  @override
+  List<HomeTab> get tabs => _tabs;
 }

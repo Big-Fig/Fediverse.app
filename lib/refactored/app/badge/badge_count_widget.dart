@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 abstract class BadgeCountWidget extends StatelessWidget {
   final Widget child;
 
-  BadgeCountWidget({@required this.child});
+  const BadgeCountWidget({@required this.child});
 
   Stream<int> retrieveUnreadBadgeCountStream(BuildContext context);
 

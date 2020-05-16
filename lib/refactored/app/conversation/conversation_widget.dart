@@ -63,7 +63,7 @@ class ConversationWidget extends StatelessWidget {
                               conversationBloc.conversation.remoteId),
                         ),
                       ),
-                      PostStatusWidget(
+                      const PostStatusWidget(
                           showVisibilityAction: false,
                           expanded: false,
                           goBackOnSuccess: false,

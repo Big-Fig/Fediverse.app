@@ -60,7 +60,7 @@ class AccountBloc extends IAccountBloc {
     this.isNeedWatchLocalRepositoryForUpdates = true,
   }) : _accountSubject = BehaviorSubject.seeded(account) {
     assert(account != null);
-    _logger.finest(() => "AccountBloc ${account.remoteId}");
+    _logger.finest(() => "AccountBloc constructor ${account.remoteId}");
     addDisposable(subject: _accountSubject);
     if (delayInit) {
       Future.delayed(Duration(seconds: 1), () {
@@ -69,6 +69,12 @@ class AccountBloc extends IAccountBloc {
     } else {
       _init(account, isNeedRefreshFromNetworkOnInit);
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _logger.finest(() => "AccountBloc dispose");
   }
 
   void _init(IAccount account, bool needRefreshFromNetworkOnInit) {

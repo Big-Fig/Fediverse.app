@@ -14,10 +14,10 @@ import 'package:logging/logging.dart';
 
 var _logger = Logger("notifications_home_tab_page.dart");
 
-class NotificationsHomeTabPage extends StatelessWidget {
-  final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
-  NotificationsHomeTabPage({Key key}) : super(key: key);
+class NotificationsHomeTabPage extends StatelessWidget {
+  const NotificationsHomeTabPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

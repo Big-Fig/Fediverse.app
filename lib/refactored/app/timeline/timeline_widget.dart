@@ -4,6 +4,7 @@ import 'package:fedi/refactored/app/status/post/new/new_post_status_bloc_impl.da
 import 'package:fedi/refactored/app/status/post/post_status_bloc.dart';
 import 'package:fedi/refactored/app/status/post/post_status_widget.dart';
 import 'package:fedi/refactored/app/timeline/local_preferences/timeline_local_preferences_bloc.dart';
+import 'package:fedi/refactored/app/timeline/timeline_header_widget.dart';
 import 'package:fedi/refactored/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/refactored/collapsible/collapsible_bloc.dart';
 import 'package:fedi/refactored/collapsible/collapsible_bloc_impl.dart';
@@ -46,32 +47,20 @@ class TimelineWidget extends StatelessWidget {
               create: (context) => CollapsibleBloc.createFromContext(context),
               child: Stack(
                 children: <Widget>[
-                  StatusPaginationListTimelineWidget(
+                  const StatusPaginationListTimelineWidget(
                     key: PageStorageKey<String>(
-                        key.toString() + "TimelinePaginationListSimpleWidget"),
+                        "TimelinePaginationListSimpleWidget"),
                     header: FediListTile(
                       isFirstInList: true,
-                      child: DisposableProvider<IPostStatusBloc>(
-                        create: (context) =>
-                            NewPostStatusBloc.createFromContext(context),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: PostStatusWidget(
-                            expanded: false,
-                            displayMentions: false,
-                            goBackOnSuccess: false,
-                            displayAccountAvatar: true,
-                          ),
-                        ),
-                      ),
+                      child: TimelineHeaderWidget(),
                     ),
                     alwaysShowHeader: true,
                     needWatchLocalRepositoryForUpdates: true,
                   ),
-                  Align(
+                  const Align(
                       alignment: Alignment.bottomLeft,
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: EdgeInsets.all(8.0),
                         child: ToggleCollapsibleOverlayWidget(),
                       ))
                 ],

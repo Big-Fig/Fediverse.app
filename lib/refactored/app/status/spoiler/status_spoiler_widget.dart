@@ -3,6 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class StatusSpoilerWidget extends StatelessWidget {
+
+
+
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: true);
@@ -19,8 +22,10 @@ class StatusSpoilerWidget extends StatelessWidget {
               child: Text(spoiler),
             );
           } else {
-            return SizedBox.shrink();
+            return const SizedBox.shrink();
           }
         });
   }
+
+  const StatusSpoilerWidget();
 }

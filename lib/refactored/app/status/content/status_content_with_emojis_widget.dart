@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class StatusContentWidget extends StatelessWidget {
   final bool collapsible;
 
-  StatusContentWidget({@required this.collapsible});
+  const StatusContentWidget({@required this.collapsible});
 
   @override
   Widget build(BuildContext context) {

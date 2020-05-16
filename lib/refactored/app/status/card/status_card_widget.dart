@@ -105,4 +105,6 @@ class StatusCardWidget extends StatelessWidget {
           );
         });
   }
+
+  const StatusCardWidget();
 }

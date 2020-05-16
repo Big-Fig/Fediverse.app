@@ -22,7 +22,7 @@ class PostStatusWidget extends StatelessWidget {
   final bool goBackOnSuccess;
   final bool displayAccountAvatar;
 
-  PostStatusWidget(
+  const PostStatusWidget(
       {this.showVisibilityAction = true,
       @required this.expanded,
       @required this.displayMentions,
