@@ -187,7 +187,11 @@ class _PaginationListWidgetState<T> extends State<PaginationListWidget<T>> {
 
           _logger.finest(() => "initState position = $position");
           if (position != null) {
+            // refresh with UI indicator
             refreshController.requestRefresh();
+          } else {
+            // refresh without UI indicator
+            paginationListBloc.refresh();
           }
         }
       } catch (e, stackTrace) {
