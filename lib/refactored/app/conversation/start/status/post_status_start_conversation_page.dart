@@ -29,7 +29,7 @@ class PostStatusStartConversationPage extends StatelessWidget {
           },
         ),
       ),
-      body: PostStatusWidget(
+      body: const PostStatusWidget(
         showVisibilityAction: false,
         displayMentions: true,
         goBackOnSuccess: true,

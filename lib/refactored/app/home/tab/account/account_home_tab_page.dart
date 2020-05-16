@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 class AccountHomeTabPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return MyAccountDetailsPage();
-  }
+  Widget build(BuildContext context) => const MyAccountDetailsPage();
+  const AccountHomeTabPage();
 }

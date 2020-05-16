@@ -113,6 +113,9 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
     bool delayInit = true,
     this.isNeedWatchLocalRepositoryForUpdates = true,
   }) : _statusSubject = BehaviorSubject.seeded(status) {
+
+    _logger.finest(() => "required constructor ${status.remoteId}");
+
     addDisposable(subject: _statusSubject);
     addDisposable(subject: _displayNsfwSensitiveSubject);
     addDisposable(subject: _displaySpoilerSubject);

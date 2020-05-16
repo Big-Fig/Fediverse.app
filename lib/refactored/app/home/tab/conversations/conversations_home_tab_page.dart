@@ -17,10 +17,10 @@ import 'package:logging/logging.dart';
 
 var _logger = Logger("conversations_home_tab_page.dart");
 
-class ConversationsHomeTabPage extends StatelessWidget {
-  final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
-  ConversationsHomeTabPage({Key key}) : super(key: key);
+class ConversationsHomeTabPage extends StatelessWidget {
+  const ConversationsHomeTabPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

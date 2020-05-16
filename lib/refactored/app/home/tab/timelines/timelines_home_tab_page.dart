@@ -14,10 +14,10 @@ import 'package:flutter/material.dart';
 
 import 'drawer/timelines_home_tab_page_drawer_widget.dart';
 
-class TimelinesHomeTabPage extends StatelessWidget {
-  final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
-  TimelinesHomeTabPage({Key key}) : super(key: key);
+class TimelinesHomeTabPage extends StatelessWidget {
+  const TimelinesHomeTabPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

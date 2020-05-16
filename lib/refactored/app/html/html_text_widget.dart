@@ -16,7 +16,7 @@ class HtmlTextWidget extends StatelessWidget {
   final Color color;
   final bool shrinkWrap;
 
-  HtmlTextWidget({
+  const HtmlTextWidget({
     @required this.data,
     @required this.onLinkTap,
     this.fontSize = 18.0,

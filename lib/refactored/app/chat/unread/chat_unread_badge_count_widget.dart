@@ -3,7 +3,7 @@ import 'package:fedi/refactored/app/chat/repository/chat_repository.dart';
 import 'package:flutter/cupertino.dart';
 
 class ChatUnreadBadgeCountWidget extends BadgeCountWidget {
-  ChatUnreadBadgeCountWidget({
+  const ChatUnreadBadgeCountWidget({
     @required Widget child,
   }) : super(child: child);
 

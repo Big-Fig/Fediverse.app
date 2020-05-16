@@ -18,10 +18,10 @@ import 'package:logging/logging.dart';
 
 var _logger = Logger("chats_home_tab_page.dart");
 
-class ChatsHomeTabPage extends StatelessWidget {
-  final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
-  ChatsHomeTabPage({Key key}) : super(key: key);
+class ChatsHomeTabPage extends StatelessWidget {
+  const ChatsHomeTabPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

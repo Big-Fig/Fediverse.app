@@ -15,7 +15,7 @@ class StatusPaginationListTimelineWidget
     extends StatusPaginationListBaseWidget {
   final bool needWatchLocalRepositoryForUpdates;
 
-  StatusPaginationListTimelineWidget(
+  const StatusPaginationListTimelineWidget(
       {@required Key key,
       Widget header,
       Widget footer,
@@ -64,7 +64,7 @@ class StatusPaginationListTimelineWidget
                   },
                   child: FediListTile(
                     isFirstInList: index == 0 && header == null,
-                    child: StatusListItemTimelineWidget(
+                    child: const StatusListItemTimelineWidget(
                       collapsible: true,
                     ),
                   )),

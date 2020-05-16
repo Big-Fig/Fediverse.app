@@ -7,7 +7,7 @@ class FediListTile extends StatelessWidget {
   final bool isFirstInList;
   final bool noPadding;
 
-  FediListTile({
+  const FediListTile({
     @required this.child,
     this.isFirstInList = false,
     this.noPadding = false,

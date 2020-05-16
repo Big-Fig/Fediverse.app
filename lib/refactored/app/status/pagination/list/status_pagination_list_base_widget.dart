@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 abstract class StatusPaginationListBaseWidget
     extends PaginationListWidget<IStatus> {
-  StatusPaginationListBaseWidget({
+  const StatusPaginationListBaseWidget({
     @required Key key,
     Widget header,
     Widget footer,

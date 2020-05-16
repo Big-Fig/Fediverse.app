@@ -32,7 +32,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
   final bool displayActions;
   final bool collapsible;
 
-  StatusListItemTimelineWidget({
+  const StatusListItemTimelineWidget({
     @required this.collapsible,
     this.displayActions = true,
     this.statusCallback = goToStatusThreadPage,
@@ -164,13 +164,13 @@ class StatusListItemTimelineWidget extends StatelessWidget {
                   if (containsSpoilerAndDisplayEnabled) {
                     return Column(
                       children: <Widget>[
-                        StatusSpoilerWidget(),
+                        const StatusSpoilerWidget(),
                         StatusContentWidget(
                           collapsible: collapsible,
                         ),
                         if (collapsible && statusBloc.isPossibleToCollapse)
                           buildCollapsibleButton(context, statusBloc),
-                        StatusCardWidget(),
+                        const StatusCardWidget(),
                         StreamBuilder<List<IPleromaMediaAttachment>>(
                             stream: statusBloc.mediaAttachmentsStream,
                             initialData: statusBloc.mediaAttachments,
@@ -209,7 +209,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
                   ? appLocalizations.tr("app.status.collapsible.action.expand")
                   : appLocalizations.tr("app.status.collapsible.action"
                       ".collapse"),
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
             );
           }),
       onPressed: statusBloc.toggleCollapseExpand,

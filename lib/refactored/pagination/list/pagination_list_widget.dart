@@ -10,32 +10,33 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-var _logger = Logger("pagination_list_widget.dart");
+var _logger = Logger("pagination_list_dart");
 
 typedef Future<bool> RefreshAction();
 
-abstract class PaginationListWidget<T> extends StatefulWidget {
+abstract class PaginationListWidget<T> extends StatelessWidget {
   final bool alwaysShowHeader;
   final Widget header;
   final bool alwaysShowFooter;
   final Widget footer;
   final RefreshAction additionalRefreshAction;
 
-  PaginationListWidget({
+  const PaginationListWidget({
     Key key,
     this.header,
     this.footer,
     this.alwaysShowHeader,
     this.alwaysShowFooter,
     this.additionalRefreshAction,
-  }) : super(key: key) {
-    if (alwaysShowHeader == true) {
-      assert(header != null);
-    }
-    if (alwaysShowFooter == true) {
-      assert(footer != null);
-    }
-  }
+  }) : super(key: key);
+//  {
+//    if (alwaysShowHeader == true) {
+//      assert(header != null);
+//    }
+//    if (alwaysShowFooter == true) {
+//      assert(footer != null);
+//    }
+//  }
 
   SmartRefresher buildSmartRefresher(
       IPaginationListBloc paginationListBloc,
@@ -88,9 +89,6 @@ abstract class PaginationListWidget<T> extends StatefulWidget {
       BuildContext context,
       {@required bool listen});
 
-  @override
-  _PaginationListWidgetState createState() => _PaginationListWidgetState();
-
   static ListView buildItemsListView<T>(
       {@required BuildContext context,
       @required List<T> items,
@@ -119,20 +117,11 @@ abstract class PaginationListWidget<T> extends StatefulWidget {
         itemCount:
             items.length + (header != null ? 1 : 0) + (footer != null ? 1 : 0));
   }
-}
-
-class _PaginationListWidgetState<T> extends State<PaginationListWidget<T>> {
-  @override
-  void initState() {
-    super.initState();
-
-    _logger.finest(() => "initState");
-  }
 
   @override
   Widget build(BuildContext context) {
     IPaginationListBloc<PaginationPage<T>, T> paginationListBloc =
-        widget.retrievePaginationListBloc(context, listen: true);
+        retrievePaginationListBloc(context, listen: true);
     _logger.finest(() => "build "
         "paginationListBloc.isRefreshedAtLeastOnce=${paginationListBloc.isRefreshedAtLeastOnce}");
 
@@ -157,7 +146,7 @@ class _PaginationListWidgetState<T> extends State<PaginationListWidget<T>> {
               _logger.finest(() => "build paginationListBloc.itemsStream items "
                   "${items?.length}");
 
-              return widget.buildSmartRefresher(
+              return buildSmartRefresher(
                   paginationListBloc,
                   context,
                   items,
@@ -176,7 +165,7 @@ class _PaginationListWidgetState<T> extends State<PaginationListWidget<T>> {
       _logger.finest(() => "initState delayed");
       try {
         IPaginationListBloc<PaginationPage<T>, T> paginationListBloc =
-            widget.retrievePaginationListBloc(context, listen: false);
+            retrievePaginationListBloc(context, listen: false);
 
         var isRefreshedAtLeastOnce = paginationListBloc.isRefreshedAtLeastOnce;
         _logger.finest(
@@ -202,18 +191,18 @@ class _PaginationListWidgetState<T> extends State<PaginationListWidget<T>> {
 
   Widget buildNotListBody(Widget child) {
     _logger.finest(() => "buildNotListBody "
-        "alwaysShowHeader=${widget.alwaysShowHeader} "
-        "alwaysShowFooter=${widget.alwaysShowFooter} ");
-    if (widget.alwaysShowHeader != true && widget.alwaysShowFooter != true) {
+        "alwaysShowHeader=${alwaysShowHeader} "
+        "alwaysShowFooter=${alwaysShowFooter} ");
+    if (alwaysShowHeader != true && alwaysShowFooter != true) {
       return child;
     } else {
       return Column(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            if (widget.alwaysShowHeader == true) widget.header,
+            if (alwaysShowHeader == true) header,
             Expanded(child: child),
-            if (widget.alwaysShowFooter == true) widget.footer,
+            if (alwaysShowFooter == true) footer,
           ]);
     }
   }
@@ -226,11 +215,11 @@ class _PaginationListWidgetState<T> extends State<PaginationListWidget<T>> {
     }
 
     if (items?.isNotEmpty == true) {
-      return widget.buildItemsCollectionView(
+      return buildItemsCollectionView(
           context: context,
           items: items,
-          header: widget.header,
-          footer: widget.footer);
+          header: header,
+          footer: footer);
     } else {
       _logger.finest(() => "build empty");
       return buildNotListBody(Center(

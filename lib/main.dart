@@ -1,4 +1,3 @@
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
 import 'package:fedi/refactored/app/account/my/my_account_model.dart';
@@ -16,6 +15,9 @@ import 'package:fedi/refactored/app/auth/instance/join/join_auth_instance_bloc.d
 import 'package:fedi/refactored/app/auth/instance/join/join_auth_instance_bloc_impl.dart';
 import 'package:fedi/refactored/app/auth/instance/list/auth_instance_list_model.dart';
 import 'package:fedi/refactored/app/context/app_context_bloc_impl.dart';
+import 'package:fedi/refactored/app/home/home_bloc.dart';
+import 'package:fedi/refactored/app/home/home_bloc_impl.dart';
+import 'package:fedi/refactored/app/home/home_model.dart';
 import 'package:fedi/refactored/app/home/home_page.dart';
 import 'package:fedi/refactored/app/push/handler/unhandled/push_handler_unhandled_local_preferences_model.dart';
 import 'package:fedi/refactored/app/push/subscription/local_preferences/push_subscription_local_preferences_model.dart';
@@ -52,7 +54,6 @@ void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
   initLog();
-
 
   final directory = await getApplicationDocumentsDirectory();
   Hive.registerAdapter(PleromaFieldAdapter(), 37);
@@ -143,7 +144,9 @@ void buildCurrentInstanceApp(
                                     IMyAccountBloc.of(context, listen: false)),
                         child: MyApp(
                             child: CurrentAuthInstanceContextLoadingWidget(
-                          child: const HomePage(),
+                          child: DisposableProvider<IHomeBloc>(
+                              create: (context) => HomeBloc(startTab: HomeTab.timelines),
+                              child: const HomePage()),
                         )))))));
   } else {
     runApp(EasyLocalization(
