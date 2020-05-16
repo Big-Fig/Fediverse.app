@@ -55,7 +55,7 @@
 	<key>NSMotionUsageDescription</key>
 	<string>need access to motion</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We need access to your photos to post to your instance</string>
+	<string>Save photo and video to your gallery</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>need to recoginize speech</string>
 	<key>UIBackgroundModes</key>
@@ -67,8 +67,6 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Save photo and video to your gallery</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
