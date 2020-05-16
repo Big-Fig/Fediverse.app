@@ -29,7 +29,7 @@ class ChatMessageListWidget extends ChatMessagePaginationListBaseWidget {
         enablePullDown: true,
         enablePullUp: true,
 // water drop header bugged (inverted with reverse)
-//        header: ListRefreshHeaderWidget(),
+        header: MaterialClassicHeader(),
         footer: ListLoadingFooterWidget(),
         controller: refreshController,
         reverse: true,
