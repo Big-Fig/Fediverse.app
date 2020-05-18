@@ -33,10 +33,17 @@ class AccountInfoWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text(
-                      "Yevhenii Zapletin",
-                      style: TextStyle(
-                          color: FediColors.white, fontWeight: FontWeight.w500),
+                    StreamBuilder<String>(
+                      stream: accountBloc.displayNameStream,
+                      initialData: accountBloc.displayName,
+                      builder: (context, snapshot) {
+                        var displayName = snapshot.data;
+                        return Text(
+                          displayName,
+                          style: TextStyle(
+                              color: FediColors.white, fontWeight: FontWeight.w500),
+                        );
+                      }
                     ),
                     Container(
                       height: 80,
