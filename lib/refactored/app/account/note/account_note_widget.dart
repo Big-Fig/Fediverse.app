@@ -13,24 +13,27 @@ class AccountNoteWidget extends StatelessWidget {
         initialData: accountBloc.note,
         builder: (context, snapshot) {
           var note = snapshot.data;
-          return Container(
-            color: Colors.blue[100],
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: HtmlTextWidget(
-                data: note,
-                onLinkTap: (String url) async {
-                  if (await canLaunch(url)) {
-                    await launch(url);
-                  }
-                },
+
+          if (note?.isNotEmpty == true) {
+            return Container(
+              color: Colors.blue[100],
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: HtmlTextWidget(
+                  data: note,
+                  onLinkTap: (String url) async {
+                    if (await canLaunch(url)) {
+                      await launch(url);
+                    }
+                  },
+                ),
               ),
-            ),
-          );
+            );
+          } else {
+            return SizedBox.shrink();
+          }
         });
   }
 
   const AccountNoteWidget();
-
-
 }

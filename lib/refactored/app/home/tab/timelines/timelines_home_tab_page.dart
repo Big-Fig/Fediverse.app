@@ -12,7 +12,7 @@ import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'drawer/timelines_home_tab_page_drawer_widget.dart';
+import 'package:fedi/refactored/app/home/tab/timelines/drawer/timelines_home_tab_page_drawer_widget.dart';
 
 final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
