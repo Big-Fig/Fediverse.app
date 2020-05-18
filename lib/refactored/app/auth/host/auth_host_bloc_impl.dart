@@ -18,6 +18,7 @@ import 'package:fedi/refactored/pleroma/account/public/pleroma_account_public_se
 import 'package:fedi/refactored/pleroma/application/pleroma_application_model.dart';
 import 'package:fedi/refactored/pleroma/application/pleroma_application_service.dart';
 import 'package:fedi/refactored/pleroma/application/pleroma_application_service_impl.dart';
+import 'package:fedi/refactored/pleroma/instance/pleroma_instance_service_impl.dart';
 import 'package:fedi/refactored/pleroma/oauth/pleroma_oauth_model.dart';
 import 'package:fedi/refactored/pleroma/oauth/pleroma_oauth_service.dart';
 import 'package:fedi/refactored/pleroma/oauth/pleroma_oauth_service_impl.dart';
@@ -52,11 +53,12 @@ class AuthHostBloc extends DisposableOwner implements IAuthHostBloc {
   ICurrentAuthInstanceBloc currentInstanceBloc;
   final IConnectionService connectionService;
 
-  AuthHostBloc(
-      {@required this.instanceBaseUrl,
-        @required ILocalPreferencesService preferencesService,
-        @required this.connectionService,
-        @required this.currentInstanceBloc,}) {
+  AuthHostBloc({
+    @required this.instanceBaseUrl,
+    @required ILocalPreferencesService preferencesService,
+    @required this.connectionService,
+    @required this.currentInstanceBloc,
+  }) {
     assert(instanceBaseUrlSchema?.isNotEmpty == true);
     assert(instanceBaseUrlHost?.isNotEmpty == true);
     hostApplicationLocalPreferenceBloc = AuthHostApplicationLocalPreferenceBloc(
@@ -125,10 +127,12 @@ class AuthHostBloc extends DisposableOwner implements IAuthHostBloc {
   @override
   Future<bool> retrieveAppAccessToken() async {
     var accessToken = await pleromaOAuthService.retrieveAppAccessToken(
-        tokenRequest: PleromaOAuthAppTokenRequest(redirectUri: redirectUri,
-          scope: scopes,
-          clientSecret: hostApplication.clientSecret,
-          clientId: hostApplication.clientId,));
+        tokenRequest: PleromaOAuthAppTokenRequest(
+      redirectUri: redirectUri,
+      scope: scopes,
+      clientSecret: hostApplication.clientSecret,
+      clientId: hostApplication.clientId,
+    ));
 
     if (accessToken != null) {
       await hostAccessTokenLocalPreferenceBloc.setValue(accessToken);
@@ -143,40 +147,53 @@ class AuthHostBloc extends DisposableOwner implements IAuthHostBloc {
     _logger.finest(() => "launchLoginToAccount");
     await checkApplicationRegistration();
 
-
     var authCode = await pleromaOAuthService
         .launchAuthorizeFormAndExtractAuthorizationCode(
-      authorizeRequest: PleromaOAuthAuthorizeRequest(redirectUri: redirectUri,
+      authorizeRequest: PleromaOAuthAuthorizeRequest(
+          redirectUri: redirectUri,
           scope: scopes,
           forceLogin: true,
-          clientId: hostApplication.clientId),);
+          clientId: hostApplication.clientId),
+    );
 
     var token = await pleromaOAuthService.retrieveAccountAccessToken(
         tokenRequest: PleromaOAuthAccountTokenRequest(
-          redirectUri: redirectUri,
-          scope: scopes,
-          code: authCode,
-          clientSecret: hostApplication.clientSecret,
-          clientId: hostApplication.clientId,));
+      redirectUri: redirectUri,
+      scope: scopes,
+      code: authCode,
+      clientSecret: hostApplication.clientSecret,
+      clientId: hostApplication.clientId,
+    ));
 
     var restService = RestService(baseUrl: instanceBaseUrl);
     var pleromaAuthRestService = PleromaAuthRestService(
         accessToken: token.accessToken,
         connectionService: connectionService,
         restService: restService);
-    var pleromaMyAccountService = PleromaMyAccountService(
-        restService: pleromaAuthRestService);
+    var pleromaMyAccountService =
+        PleromaMyAccountService(restService: pleromaAuthRestService);
+
+    var pleromaInstanceService =
+        PleromaInstanceService(restService: pleromaAuthRestService);
+
+    var hostInstance = await pleromaInstanceService.getInstance();
 
     var myAccount = await pleromaMyAccountService.verifyCredentials();
 
-    var instance = AuthInstance(urlHost: instanceBaseUrlHost.toLowerCase(),
+    var instance = AuthInstance(
+        urlHost: instanceBaseUrlHost.toLowerCase(),
         urlSchema: instanceBaseUrlSchema,
         authCode: authCode,
         token: token,
         acct: myAccount.acct,
         application: hostApplication,
+        info: hostInstance,
         isPleromaInstance: myAccount.pleroma != null);
     currentInstanceBloc.changeCurrentInstance(instance);
+
+    pleromaMyAccountService.dispose();
+    pleromaInstanceService.dispose();
+    pleromaAuthRestService.dispose();
 
     return instance;
   }
@@ -192,8 +209,8 @@ class AuthHostBloc extends DisposableOwner implements IAuthHostBloc {
   }
 
   Future checkApplicationRegistration() async {
-    _logger
-        .finest(() => "checkApplicationRegistration $isHostApplicationRegistered");
+    _logger.finest(
+        () => "checkApplicationRegistration $isHostApplicationRegistered");
     if (!isHostApplicationRegistered) {
       var success = await registerApplication();
       _logger.finest(() => "checkApplicationRegistration "
@@ -215,13 +232,14 @@ class AuthHostBloc extends DisposableOwner implements IAuthHostBloc {
   }
 
   static AuthHostBloc createFromContext(BuildContext context,
-      {@required Uri instanceBaseUrl}) =>
-      AuthHostBloc(instanceBaseUrl: instanceBaseUrl,
-          preferencesService: ILocalPreferencesService.of(
-              context, listen: false),
+          {@required Uri instanceBaseUrl}) =>
+      AuthHostBloc(
+          instanceBaseUrl: instanceBaseUrl,
+          preferencesService:
+              ILocalPreferencesService.of(context, listen: false),
           connectionService: IConnectionService.of(context, listen: false),
-          currentInstanceBloc: ICurrentAuthInstanceBloc.of(
-              context, listen: false));
+          currentInstanceBloc:
+              ICurrentAuthInstanceBloc.of(context, listen: false));
 
   @override
   Future logout() async {

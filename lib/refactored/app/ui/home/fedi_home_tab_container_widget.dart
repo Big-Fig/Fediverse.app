@@ -1,5 +1,5 @@
 import 'package:fedi/refactored/app/ui/fedi_colors.dart';
-import 'package:fedi/refactored/app/ui/header/fedi_header_image_decoration_widget.dart';
+import 'package:fedi/refactored/app/instance/fedi_instance_image_decoration_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +23,7 @@ class FediHomeTabContainer extends StatelessWidget {
       children: <Widget>[
         Container(
           height: topHeaderHeightInSafeArea + statusBarHeight,
-          child: FediHeaderImageDecorationWidget(
+          child: FediInstanceImageDecorationWidget(
               child: SafeArea(
                   child: Padding(
             padding:

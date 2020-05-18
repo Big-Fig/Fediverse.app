@@ -1,6 +1,7 @@
 import 'package:fedi/refactored/local_preferences/local_preferences_model.dart';
 import 'package:fedi/refactored/pleroma/application/pleroma_application_model.dart';
 import 'package:fedi/refactored/pleroma/oauth/pleroma_oauth_model.dart';
+import 'package:fedi/refactored/pleroma/instance/pleroma_instance_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 
@@ -25,6 +26,9 @@ class AuthInstance extends IPreferencesObject {
   @HiveField(6)
   PleromaClientApplication application;
 
+  @HiveField(7)
+  PleromaInstance info;
+
   String get userAtHost => "$acct@$urlHost";
 
   Uri get url => Uri(scheme: urlSchema, host: urlHost);
@@ -37,6 +41,7 @@ class AuthInstance extends IPreferencesObject {
     this.authCode,
     this.isPleromaInstance,
     this.application,
+    this.info,
   });
 
   @override
@@ -50,6 +55,7 @@ class AuthInstance extends IPreferencesObject {
           token == other.token &&
           authCode == other.authCode &&
           isPleromaInstance == other.isPleromaInstance &&
+          info == other.info &&
           application == other.application;
 
   @override
@@ -60,6 +66,7 @@ class AuthInstance extends IPreferencesObject {
       token.hashCode ^
       authCode.hashCode ^
       isPleromaInstance.hashCode ^
+      info.hashCode ^
       application.hashCode;
 
   @override
@@ -67,6 +74,7 @@ class AuthInstance extends IPreferencesObject {
     return 'Instance{host: $urlHost, acct: $acct, '
         'token: $token,'
         'application: $application,'
+        'instance: $info,'
         ' authCode: $authCode, isPleromaInstance: $isPleromaInstance}';
   }
 

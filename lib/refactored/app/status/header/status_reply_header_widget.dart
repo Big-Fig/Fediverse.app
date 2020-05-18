@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/account/account_model.dart';
-import 'package:fedi/refactored/app/account/details/account_details_page.dart';
 import 'package:fedi/refactored/app/status/header/status_header_widget.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
 import 'package:flutter/cupertino.dart';

@@ -26,11 +26,13 @@ import 'package:fedi/refactored/app/splash/app_splash_widget.dart';
 import 'package:fedi/refactored/app/timeline/local_preferences/timeline_local_preferences_model.dart';
 import 'package:fedi/refactored/async/loading/init/async_init_loading_model.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
+import 'package:fedi/refactored/mastodon/instance/mastodon_instance_model.dart';
 import 'package:fedi/refactored/pleroma/account/my/pleroma_my_account_model.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/refactored/pleroma/application/pleroma_application_model.dart';
 import 'package:fedi/refactored/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/refactored/pleroma/field/pleroma_field_model.dart';
+import 'package:fedi/refactored/pleroma/instance/pleroma_instance_model.dart';
 import 'package:fedi/refactored/pleroma/oauth/pleroma_oauth_model.dart';
 import 'package:fedi/refactored/pleroma/push/pleroma_push_model.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -78,6 +80,11 @@ void main() async {
   Hive.registerAdapter(PushHandlerUnhandledListAdapter(), 55);
   Hive.registerAdapter(PleromaPushMessageAdapter(), 56);
   Hive.registerAdapter(MyAccountSettingsAdapter(), 57);
+  Hive.registerAdapter(PleromaInstancePleromaPartAdapter(), 58);
+  Hive.registerAdapter(PleromaInstanceAdapter(), 59);
+  Hive.registerAdapter(PleromaInstancePleromaPartMetadataAdapter(), 60);
+  Hive.registerAdapter(MastodonInstanceStatsAdapter(), 61);
+  Hive.registerAdapter(MastodonUrlsAdapter(), 62);
 
   Hive.init(directory.path);
 
@@ -201,7 +208,7 @@ class MyApp extends StatelessWidget {
 }
 
 void initLog() {
-  if (kReleaseMode || true) {
+  if (kReleaseMode) {
     Logger.root.level = Level.OFF; // defaults to Level.INFO
   } else {
     Logger.root.level = Level.ALL; // defaults to Level.INFO
