@@ -6,6 +6,7 @@ import 'package:fedi/refactored/app/home/home_bloc.dart';
 import 'package:fedi/refactored/app/home/home_model.dart';
 import 'package:fedi/refactored/app/notification/unread/notification_unread_exclude_types_badge_count_widget.dart';
 import 'package:fedi/refactored/app/status/post/new/new_post_status_page.dart';
+import 'package:fedi/refactored/app/ui/fedi_colors.dart';
 import 'package:fedi/refactored/app/ui/fedi_icons.dart';
 import 'package:fedi/refactored/app/ui/icon/fedi_transparent_icon.dart';
 import 'package:fedi/refactored/pleroma/notification/pleroma_notification_model.dart';
@@ -36,7 +37,7 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: tabsWithPlusButton.map((tab) {
           if (tab != null) {
-            return buildTabNavBarItem(context, tab);
+            return buildTabNavBarItem(context, homeBloc, tab);
           } else {
             return buildNewMessageNavBarItem(context);
           }
@@ -51,24 +52,38 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
       },
       child: const FediTransparentIcon(FediIcons.plus));
 
-  Widget buildTabNavBarItem(BuildContext context, HomeTab tab) =>
-      GestureDetector(
-          onTap: () {
-            IHomeBloc.of(context, listen: false).selectTab(tab);
-          },
-          child: mapTabToIcon(context, tab));
+  Widget buildTabNavBarItem(
+          BuildContext context, IHomeBloc homeBloc, HomeTab tab) =>
+      StreamBuilder<HomeTab>(
+          stream: homeBloc.selectedTabStream,
+          builder: (context, snapshot) {
+            var selectedTab = snapshot.data;
 
-  Widget mapTabToIcon(BuildContext context, HomeTab tab) {
+            return GestureDetector(
+                onTap: () {
+                  IHomeBloc.of(context, listen: false).selectTab(tab);
+                },
+                child: mapTabToIcon(context, tab, selectedTab == tab));
+          });
+
+  Widget mapTabToIcon(BuildContext context, HomeTab tab, bool isSelected) {
+    var color = isSelected ? FediColors.primaryColor : FediColors.darkGrey;
     switch (tab) {
       case HomeTab.timelines:
-        return const FediTransparentIcon(FediIcons.home);
+        return FediTransparentIcon(
+          FediIcons.home,
+          color: color,
+        );
         break;
       case HomeTab.notifications:
         return NotificationUnreadBadgeExcludeTypesCountWidget(
             excludeTypes: <PleromaNotificationType>[
               PleromaNotificationType.pleromaChatMention
             ],
-            child: const FediTransparentIcon(FediIcons.notification));
+            child: FediTransparentIcon(
+              FediIcons.notification,
+              color: color,
+            ));
         break;
       case HomeTab.conversations:
         var myAccountSettingsBloc =
@@ -79,10 +94,11 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
               var isNewChatsEnabled = snapshot.data;
 
               if (isNewChatsEnabled == true) {
-                return const ChatUnreadBadgeCountWidget(
-                    child: FediTransparentIcon(FediIcons.envelope));
+                return ChatUnreadBadgeCountWidget(
+                    child:
+                        FediTransparentIcon(FediIcons.envelope, color: color));
               } else {
-                return const FediTransparentIcon(FediIcons.envelope);
+                return FediTransparentIcon(FediIcons.envelope, color: color);
               }
             });
         break;

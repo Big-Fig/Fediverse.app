@@ -8,6 +8,7 @@ import 'package:fedi/refactored/app/home/tab/conversations/chats_home_tab_page.d
 import 'package:fedi/refactored/app/home/tab/conversations/conversations_home_tab_page.dart';
 import 'package:fedi/refactored/app/home/tab/notifications/notifications_home_tab_page.dart';
 import 'package:fedi/refactored/app/home/tab/timelines/timelines_home_tab_page.dart';
+import 'package:fedi/refactored/app/ui/fedi_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -34,7 +35,19 @@ class HomePage extends StatelessWidget {
           }
           return Scaffold(
             body: buildBody(context, selectedTab),
-            bottomNavigationBar: const HomePageBottomNavigationBarWidget(),
+            bottomNavigationBar: Container(
+              height: 58,
+              child: Column(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    height: 1,
+                    color: FediColors.ultraLightGrey,
+                  ),
+                  const HomePageBottomNavigationBarWidget(),
+                ],
+              ),
+            ),
           );
         });
   }
