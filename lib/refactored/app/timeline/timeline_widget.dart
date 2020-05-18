@@ -1,8 +1,5 @@
 import 'package:fedi/refactored/app/status/pagination/list/status_pagination_list_media_widget.dart';
 import 'package:fedi/refactored/app/status/pagination/list/status_pagination_list_timeline_widget.dart';
-import 'package:fedi/refactored/app/status/post/new/new_post_status_bloc_impl.dart';
-import 'package:fedi/refactored/app/status/post/post_status_bloc.dart';
-import 'package:fedi/refactored/app/status/post/post_status_widget.dart';
 import 'package:fedi/refactored/app/timeline/local_preferences/timeline_local_preferences_bloc.dart';
 import 'package:fedi/refactored/app/timeline/timeline_header_widget.dart';
 import 'package:fedi/refactored/app/ui/list/fedi_list_tile.dart';

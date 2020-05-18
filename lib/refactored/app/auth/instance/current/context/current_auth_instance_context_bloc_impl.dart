@@ -47,6 +47,8 @@ import 'package:fedi/refactored/pleroma/chat/pleroma_chat_service.dart';
 import 'package:fedi/refactored/pleroma/chat/pleroma_chat_service_impl.dart';
 import 'package:fedi/refactored/pleroma/conversation/pleroma_conversation_service.dart';
 import 'package:fedi/refactored/pleroma/conversation/pleroma_conversation_service_impl.dart';
+import 'package:fedi/refactored/pleroma/instance/pleroma_instance_service.dart';
+import 'package:fedi/refactored/pleroma/instance/pleroma_instance_service_impl.dart';
 import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_service.dart';
 import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_service_impl.dart';
 import 'package:fedi/refactored/pleroma/notification/pleroma_notification_service.dart';
@@ -234,6 +236,12 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService
         .asyncInitAndRegister<IPleromaChatService>(pleromaChatService);
     addDisposable(disposable: pleromaChatService);
+    
+    var pleromaInstanceService =
+        PleromaInstanceService(restService: pleromaAuthRestService);
+    await globalProviderService
+        .asyncInitAndRegister<IPleromaInstanceService>(pleromaInstanceService);
+    addDisposable(disposable: pleromaInstanceService);
 
     var pleromaSearchService =
         PleromaSearchService(restService: pleromaAuthRestService);

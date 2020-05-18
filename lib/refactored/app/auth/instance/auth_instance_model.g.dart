@@ -34,6 +34,9 @@ class AuthInstanceAdapter extends TypeAdapter<AuthInstance> {
         case 6:
           obj.application = reader.read() as PleromaClientApplication;
           break;
+        case 7:
+          obj.info = reader.read() as PleromaInstance;
+          break;
       }
     }
     return obj;
@@ -41,7 +44,7 @@ class AuthInstanceAdapter extends TypeAdapter<AuthInstance> {
 
   @override
   void write(BinaryWriter writer, AuthInstance obj) {
-    writer.writeByte(7);
+    writer.writeByte(8);
     writer.writeByte(0);
     writer.write(obj.urlSchema);
     writer.writeByte(1);
@@ -56,5 +59,7 @@ class AuthInstanceAdapter extends TypeAdapter<AuthInstance> {
     writer.write(obj.isPleromaInstance);
     writer.writeByte(6);
     writer.write(obj.application);
+    writer.writeByte(7);
+    writer.write(obj.info);
   }
 }
