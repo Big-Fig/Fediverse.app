@@ -3465,6 +3465,8 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
   final String remoteId;
   final String accountRemoteId;
   final String statusRemoteId;
+  final String chatRemoteId;
+  final String chatMessageRemoteId;
   final bool unread;
   final String type;
   final DateTime createdAt;
@@ -3473,6 +3475,8 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
       @required this.remoteId,
       @required this.accountRemoteId,
       this.statusRemoteId,
+      this.chatRemoteId,
+      this.chatMessageRemoteId,
       this.unread,
       this.type,
       @required this.createdAt});
@@ -3492,6 +3496,10 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
           .mapFromDatabaseResponse(data['${effectivePrefix}account_remote_id']),
       statusRemoteId: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}status_remote_id']),
+      chatRemoteId: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}chat_remote_id']),
+      chatMessageRemoteId: stringType.mapFromDatabaseResponse(
+          data['${effectivePrefix}chat_message_remote_id']),
       unread:
           boolType.mapFromDatabaseResponse(data['${effectivePrefix}unread']),
       type: stringType.mapFromDatabaseResponse(data['${effectivePrefix}type']),
@@ -3507,6 +3515,9 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
       remoteId: serializer.fromJson<String>(json['remoteId']),
       accountRemoteId: serializer.fromJson<String>(json['accountRemoteId']),
       statusRemoteId: serializer.fromJson<String>(json['statusRemoteId']),
+      chatRemoteId: serializer.fromJson<String>(json['chatRemoteId']),
+      chatMessageRemoteId:
+          serializer.fromJson<String>(json['chatMessageRemoteId']),
       unread: serializer.fromJson<bool>(json['unread']),
       type: serializer.fromJson<String>(json['type']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
@@ -3520,6 +3531,8 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
       'remoteId': serializer.toJson<String>(remoteId),
       'accountRemoteId': serializer.toJson<String>(accountRemoteId),
       'statusRemoteId': serializer.toJson<String>(statusRemoteId),
+      'chatRemoteId': serializer.toJson<String>(chatRemoteId),
+      'chatMessageRemoteId': serializer.toJson<String>(chatMessageRemoteId),
       'unread': serializer.toJson<bool>(unread),
       'type': serializer.toJson<String>(type),
       'createdAt': serializer.toJson<DateTime>(createdAt),
@@ -3539,6 +3552,12 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
       statusRemoteId: statusRemoteId == null && nullToAbsent
           ? const Value.absent()
           : Value(statusRemoteId),
+      chatRemoteId: chatRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(chatRemoteId),
+      chatMessageRemoteId: chatMessageRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(chatMessageRemoteId),
       unread:
           unread == null && nullToAbsent ? const Value.absent() : Value(unread),
       type: type == null && nullToAbsent ? const Value.absent() : Value(type),
@@ -3553,6 +3572,8 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
           String remoteId,
           String accountRemoteId,
           String statusRemoteId,
+          String chatRemoteId,
+          String chatMessageRemoteId,
           bool unread,
           String type,
           DateTime createdAt}) =>
@@ -3561,6 +3582,8 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
         remoteId: remoteId ?? this.remoteId,
         accountRemoteId: accountRemoteId ?? this.accountRemoteId,
         statusRemoteId: statusRemoteId ?? this.statusRemoteId,
+        chatRemoteId: chatRemoteId ?? this.chatRemoteId,
+        chatMessageRemoteId: chatMessageRemoteId ?? this.chatMessageRemoteId,
         unread: unread ?? this.unread,
         type: type ?? this.type,
         createdAt: createdAt ?? this.createdAt,
@@ -3572,6 +3595,8 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
           ..write('remoteId: $remoteId, ')
           ..write('accountRemoteId: $accountRemoteId, ')
           ..write('statusRemoteId: $statusRemoteId, ')
+          ..write('chatRemoteId: $chatRemoteId, ')
+          ..write('chatMessageRemoteId: $chatMessageRemoteId, ')
           ..write('unread: $unread, ')
           ..write('type: $type, ')
           ..write('createdAt: $createdAt')
@@ -3588,8 +3613,12 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
               accountRemoteId.hashCode,
               $mrjc(
                   statusRemoteId.hashCode,
-                  $mrjc(unread.hashCode,
-                      $mrjc(type.hashCode, createdAt.hashCode)))))));
+                  $mrjc(
+                      chatRemoteId.hashCode,
+                      $mrjc(
+                          chatMessageRemoteId.hashCode,
+                          $mrjc(unread.hashCode,
+                              $mrjc(type.hashCode, createdAt.hashCode)))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -3598,6 +3627,8 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
           other.remoteId == this.remoteId &&
           other.accountRemoteId == this.accountRemoteId &&
           other.statusRemoteId == this.statusRemoteId &&
+          other.chatRemoteId == this.chatRemoteId &&
+          other.chatMessageRemoteId == this.chatMessageRemoteId &&
           other.unread == this.unread &&
           other.type == this.type &&
           other.createdAt == this.createdAt);
@@ -3608,6 +3639,8 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
   final Value<String> remoteId;
   final Value<String> accountRemoteId;
   final Value<String> statusRemoteId;
+  final Value<String> chatRemoteId;
+  final Value<String> chatMessageRemoteId;
   final Value<bool> unread;
   final Value<String> type;
   final Value<DateTime> createdAt;
@@ -3616,6 +3649,8 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
     this.remoteId = const Value.absent(),
     this.accountRemoteId = const Value.absent(),
     this.statusRemoteId = const Value.absent(),
+    this.chatRemoteId = const Value.absent(),
+    this.chatMessageRemoteId = const Value.absent(),
     this.unread = const Value.absent(),
     this.type = const Value.absent(),
     this.createdAt = const Value.absent(),
@@ -3625,6 +3660,8 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
     @required String remoteId,
     @required String accountRemoteId,
     this.statusRemoteId = const Value.absent(),
+    this.chatRemoteId = const Value.absent(),
+    this.chatMessageRemoteId = const Value.absent(),
     this.unread = const Value.absent(),
     this.type = const Value.absent(),
     @required DateTime createdAt,
@@ -3636,6 +3673,8 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
       Value<String> remoteId,
       Value<String> accountRemoteId,
       Value<String> statusRemoteId,
+      Value<String> chatRemoteId,
+      Value<String> chatMessageRemoteId,
       Value<bool> unread,
       Value<String> type,
       Value<DateTime> createdAt}) {
@@ -3644,6 +3683,8 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
       remoteId: remoteId ?? this.remoteId,
       accountRemoteId: accountRemoteId ?? this.accountRemoteId,
       statusRemoteId: statusRemoteId ?? this.statusRemoteId,
+      chatRemoteId: chatRemoteId ?? this.chatRemoteId,
+      chatMessageRemoteId: chatMessageRemoteId ?? this.chatMessageRemoteId,
       unread: unread ?? this.unread,
       type: type ?? this.type,
       createdAt: createdAt ?? this.createdAt,
@@ -3702,6 +3743,34 @@ class $DbNotificationsTable extends DbNotifications
     );
   }
 
+  final VerificationMeta _chatRemoteIdMeta =
+      const VerificationMeta('chatRemoteId');
+  GeneratedTextColumn _chatRemoteId;
+  @override
+  GeneratedTextColumn get chatRemoteId =>
+      _chatRemoteId ??= _constructChatRemoteId();
+  GeneratedTextColumn _constructChatRemoteId() {
+    return GeneratedTextColumn(
+      'chat_remote_id',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _chatMessageRemoteIdMeta =
+      const VerificationMeta('chatMessageRemoteId');
+  GeneratedTextColumn _chatMessageRemoteId;
+  @override
+  GeneratedTextColumn get chatMessageRemoteId =>
+      _chatMessageRemoteId ??= _constructChatMessageRemoteId();
+  GeneratedTextColumn _constructChatMessageRemoteId() {
+    return GeneratedTextColumn(
+      'chat_message_remote_id',
+      $tableName,
+      true,
+    );
+  }
+
   final VerificationMeta _unreadMeta = const VerificationMeta('unread');
   GeneratedBoolColumn _unread;
   @override
@@ -3739,8 +3808,17 @@ class $DbNotificationsTable extends DbNotifications
   }
 
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, remoteId, accountRemoteId, statusRemoteId, unread, type, createdAt];
+  List<GeneratedColumn> get $columns => [
+        id,
+        remoteId,
+        accountRemoteId,
+        statusRemoteId,
+        chatRemoteId,
+        chatMessageRemoteId,
+        unread,
+        type,
+        createdAt
+      ];
   @override
   $DbNotificationsTable get asDslTable => this;
   @override
@@ -3773,6 +3851,18 @@ class $DbNotificationsTable extends DbNotifications
           _statusRemoteIdMeta,
           statusRemoteId.isAcceptableValue(
               d.statusRemoteId.value, _statusRemoteIdMeta));
+    }
+    if (d.chatRemoteId.present) {
+      context.handle(
+          _chatRemoteIdMeta,
+          chatRemoteId.isAcceptableValue(
+              d.chatRemoteId.value, _chatRemoteIdMeta));
+    }
+    if (d.chatMessageRemoteId.present) {
+      context.handle(
+          _chatMessageRemoteIdMeta,
+          chatMessageRemoteId.isAcceptableValue(
+              d.chatMessageRemoteId.value, _chatMessageRemoteIdMeta));
     }
     if (d.unread.present) {
       context.handle(
@@ -3815,6 +3905,14 @@ class $DbNotificationsTable extends DbNotifications
     if (d.statusRemoteId.present) {
       map['status_remote_id'] =
           Variable<String, StringType>(d.statusRemoteId.value);
+    }
+    if (d.chatRemoteId.present) {
+      map['chat_remote_id'] =
+          Variable<String, StringType>(d.chatRemoteId.value);
+    }
+    if (d.chatMessageRemoteId.present) {
+      map['chat_message_remote_id'] =
+          Variable<String, StringType>(d.chatMessageRemoteId.value);
     }
     if (d.unread.present) {
       map['unread'] = Variable<bool, BoolType>(d.unread.value);
@@ -5933,17 +6031,25 @@ class DbChat extends DataClass implements Insertable<DbChat> {
   final int id;
   final String remoteId;
   final int unread;
-  DbChat({@required this.id, @required this.remoteId, @required this.unread});
+  final DateTime updatedAt;
+  DbChat(
+      {@required this.id,
+      @required this.remoteId,
+      @required this.unread,
+      this.updatedAt});
   factory DbChat.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
+    final dateTimeType = db.typeSystem.forDartType<DateTime>();
     return DbChat(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       remoteId: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}remote_id']),
       unread: intType.mapFromDatabaseResponse(data['${effectivePrefix}unread']),
+      updatedAt: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}updated_at']),
     );
   }
   factory DbChat.fromJson(Map<String, dynamic> json,
@@ -5953,6 +6059,7 @@ class DbChat extends DataClass implements Insertable<DbChat> {
       id: serializer.fromJson<int>(json['id']),
       remoteId: serializer.fromJson<String>(json['remoteId']),
       unread: serializer.fromJson<int>(json['unread']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
     );
   }
   @override
@@ -5962,6 +6069,7 @@ class DbChat extends DataClass implements Insertable<DbChat> {
       'id': serializer.toJson<int>(id),
       'remoteId': serializer.toJson<String>(remoteId),
       'unread': serializer.toJson<int>(unread),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
     };
   }
 
@@ -5974,57 +6082,71 @@ class DbChat extends DataClass implements Insertable<DbChat> {
           : Value(remoteId),
       unread:
           unread == null && nullToAbsent ? const Value.absent() : Value(unread),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
     );
   }
 
-  DbChat copyWith({int id, String remoteId, int unread}) => DbChat(
+  DbChat copyWith({int id, String remoteId, int unread, DateTime updatedAt}) =>
+      DbChat(
         id: id ?? this.id,
         remoteId: remoteId ?? this.remoteId,
         unread: unread ?? this.unread,
+        updatedAt: updatedAt ?? this.updatedAt,
       );
   @override
   String toString() {
     return (StringBuffer('DbChat(')
           ..write('id: $id, ')
           ..write('remoteId: $remoteId, ')
-          ..write('unread: $unread')
+          ..write('unread: $unread, ')
+          ..write('updatedAt: $updatedAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      $mrjf($mrjc(id.hashCode, $mrjc(remoteId.hashCode, unread.hashCode)));
+  int get hashCode => $mrjf($mrjc(id.hashCode,
+      $mrjc(remoteId.hashCode, $mrjc(unread.hashCode, updatedAt.hashCode))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is DbChat &&
           other.id == this.id &&
           other.remoteId == this.remoteId &&
-          other.unread == this.unread);
+          other.unread == this.unread &&
+          other.updatedAt == this.updatedAt);
 }
 
 class DbChatsCompanion extends UpdateCompanion<DbChat> {
   final Value<int> id;
   final Value<String> remoteId;
   final Value<int> unread;
+  final Value<DateTime> updatedAt;
   const DbChatsCompanion({
     this.id = const Value.absent(),
     this.remoteId = const Value.absent(),
     this.unread = const Value.absent(),
+    this.updatedAt = const Value.absent(),
   });
   DbChatsCompanion.insert({
     this.id = const Value.absent(),
     @required String remoteId,
     @required int unread,
+    this.updatedAt = const Value.absent(),
   })  : remoteId = Value(remoteId),
         unread = Value(unread);
   DbChatsCompanion copyWith(
-      {Value<int> id, Value<String> remoteId, Value<int> unread}) {
+      {Value<int> id,
+      Value<String> remoteId,
+      Value<int> unread,
+      Value<DateTime> updatedAt}) {
     return DbChatsCompanion(
       id: id ?? this.id,
       remoteId: remoteId ?? this.remoteId,
       unread: unread ?? this.unread,
+      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 }
@@ -6063,8 +6185,20 @@ class $DbChatsTable extends DbChats with TableInfo<$DbChatsTable, DbChat> {
     );
   }
 
+  final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  GeneratedDateTimeColumn _updatedAt;
   @override
-  List<GeneratedColumn> get $columns => [id, remoteId, unread];
+  GeneratedDateTimeColumn get updatedAt => _updatedAt ??= _constructUpdatedAt();
+  GeneratedDateTimeColumn _constructUpdatedAt() {
+    return GeneratedDateTimeColumn(
+      'updated_at',
+      $tableName,
+      true,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [id, remoteId, unread, updatedAt];
   @override
   $DbChatsTable get asDslTable => this;
   @override
@@ -6090,6 +6224,10 @@ class $DbChatsTable extends DbChats with TableInfo<$DbChatsTable, DbChat> {
     } else if (isInserting) {
       context.missing(_unreadMeta);
     }
+    if (d.updatedAt.present) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableValue(d.updatedAt.value, _updatedAtMeta));
+    }
     return context;
   }
 
@@ -6113,6 +6251,9 @@ class $DbChatsTable extends DbChats with TableInfo<$DbChatsTable, DbChat> {
     if (d.unread.present) {
       map['unread'] = Variable<int, IntType>(d.unread.value);
     }
+    if (d.updatedAt.present) {
+      map['updated_at'] = Variable<DateTime, DateTimeType>(d.updatedAt.value);
+    }
     return map;
   }
 
@@ -6130,6 +6271,7 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
   final String content;
   final DateTime createdAt;
   final List<PleromaEmoji> emojis;
+  final PleromaMediaAttachment mediaAttachment;
   DbChatMessage(
       {@required this.id,
       @required this.remoteId,
@@ -6137,7 +6279,8 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
       @required this.accountRemoteId,
       @required this.content,
       @required this.createdAt,
-      this.emojis});
+      this.emojis,
+      this.mediaAttachment});
   factory DbChatMessage.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -6159,6 +6302,8 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
           .mapFromDatabaseResponse(data['${effectivePrefix}created_at']),
       emojis: $DbChatMessagesTable.$converter0.mapToDart(
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}emojis'])),
+      mediaAttachment: $DbChatMessagesTable.$converter1.mapToDart(stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}media_attachment'])),
     );
   }
   factory DbChatMessage.fromJson(Map<String, dynamic> json,
@@ -6172,6 +6317,8 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
       content: serializer.fromJson<String>(json['content']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       emojis: serializer.fromJson<List<PleromaEmoji>>(json['emojis']),
+      mediaAttachment:
+          serializer.fromJson<PleromaMediaAttachment>(json['mediaAttachment']),
     );
   }
   @override
@@ -6185,6 +6332,8 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
       'content': serializer.toJson<String>(content),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'emojis': serializer.toJson<List<PleromaEmoji>>(emojis),
+      'mediaAttachment':
+          serializer.toJson<PleromaMediaAttachment>(mediaAttachment),
     };
   }
 
@@ -6209,6 +6358,9 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
           : Value(createdAt),
       emojis:
           emojis == null && nullToAbsent ? const Value.absent() : Value(emojis),
+      mediaAttachment: mediaAttachment == null && nullToAbsent
+          ? const Value.absent()
+          : Value(mediaAttachment),
     );
   }
 
@@ -6219,7 +6371,8 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
           String accountRemoteId,
           String content,
           DateTime createdAt,
-          List<PleromaEmoji> emojis}) =>
+          List<PleromaEmoji> emojis,
+          PleromaMediaAttachment mediaAttachment}) =>
       DbChatMessage(
         id: id ?? this.id,
         remoteId: remoteId ?? this.remoteId,
@@ -6228,6 +6381,7 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
         content: content ?? this.content,
         createdAt: createdAt ?? this.createdAt,
         emojis: emojis ?? this.emojis,
+        mediaAttachment: mediaAttachment ?? this.mediaAttachment,
       );
   @override
   String toString() {
@@ -6238,7 +6392,8 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
           ..write('accountRemoteId: $accountRemoteId, ')
           ..write('content: $content, ')
           ..write('createdAt: $createdAt, ')
-          ..write('emojis: $emojis')
+          ..write('emojis: $emojis, ')
+          ..write('mediaAttachment: $mediaAttachment')
           ..write(')'))
         .toString();
   }
@@ -6252,8 +6407,12 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
               chatRemoteId.hashCode,
               $mrjc(
                   accountRemoteId.hashCode,
-                  $mrjc(content.hashCode,
-                      $mrjc(createdAt.hashCode, emojis.hashCode)))))));
+                  $mrjc(
+                      content.hashCode,
+                      $mrjc(
+                          createdAt.hashCode,
+                          $mrjc(
+                              emojis.hashCode, mediaAttachment.hashCode))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -6264,7 +6423,8 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
           other.accountRemoteId == this.accountRemoteId &&
           other.content == this.content &&
           other.createdAt == this.createdAt &&
-          other.emojis == this.emojis);
+          other.emojis == this.emojis &&
+          other.mediaAttachment == this.mediaAttachment);
 }
 
 class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
@@ -6275,6 +6435,7 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
   final Value<String> content;
   final Value<DateTime> createdAt;
   final Value<List<PleromaEmoji>> emojis;
+  final Value<PleromaMediaAttachment> mediaAttachment;
   const DbChatMessagesCompanion({
     this.id = const Value.absent(),
     this.remoteId = const Value.absent(),
@@ -6283,6 +6444,7 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
     this.content = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.emojis = const Value.absent(),
+    this.mediaAttachment = const Value.absent(),
   });
   DbChatMessagesCompanion.insert({
     this.id = const Value.absent(),
@@ -6292,6 +6454,7 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
     @required String content,
     @required DateTime createdAt,
     this.emojis = const Value.absent(),
+    this.mediaAttachment = const Value.absent(),
   })  : remoteId = Value(remoteId),
         chatRemoteId = Value(chatRemoteId),
         accountRemoteId = Value(accountRemoteId),
@@ -6304,7 +6467,8 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
       Value<String> accountRemoteId,
       Value<String> content,
       Value<DateTime> createdAt,
-      Value<List<PleromaEmoji>> emojis}) {
+      Value<List<PleromaEmoji>> emojis,
+      Value<PleromaMediaAttachment> mediaAttachment}) {
     return DbChatMessagesCompanion(
       id: id ?? this.id,
       remoteId: remoteId ?? this.remoteId,
@@ -6313,6 +6477,7 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
       content: content ?? this.content,
       createdAt: createdAt ?? this.createdAt,
       emojis: emojis ?? this.emojis,
+      mediaAttachment: mediaAttachment ?? this.mediaAttachment,
     );
   }
 }
@@ -6404,9 +6569,31 @@ class $DbChatMessagesTable extends DbChatMessages
     );
   }
 
+  final VerificationMeta _mediaAttachmentMeta =
+      const VerificationMeta('mediaAttachment');
+  GeneratedTextColumn _mediaAttachment;
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, remoteId, chatRemoteId, accountRemoteId, content, createdAt, emojis];
+  GeneratedTextColumn get mediaAttachment =>
+      _mediaAttachment ??= _constructMediaAttachment();
+  GeneratedTextColumn _constructMediaAttachment() {
+    return GeneratedTextColumn(
+      'media_attachment',
+      $tableName,
+      true,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        remoteId,
+        chatRemoteId,
+        accountRemoteId,
+        content,
+        createdAt,
+        emojis,
+        mediaAttachment
+      ];
   @override
   $DbChatMessagesTable get asDslTable => this;
   @override
@@ -6455,6 +6642,7 @@ class $DbChatMessagesTable extends DbChatMessages
       context.missing(_createdAtMeta);
     }
     context.handle(_emojisMeta, const VerificationResult.success());
+    context.handle(_mediaAttachmentMeta, const VerificationResult.success());
     return context;
   }
 
@@ -6494,6 +6682,11 @@ class $DbChatMessagesTable extends DbChatMessages
       map['emojis'] =
           Variable<String, StringType>(converter.mapToSql(d.emojis.value));
     }
+    if (d.mediaAttachment.present) {
+      final converter = $DbChatMessagesTable.$converter1;
+      map['media_attachment'] = Variable<String, StringType>(
+          converter.mapToSql(d.mediaAttachment.value));
+    }
     return map;
   }
 
@@ -6504,6 +6697,8 @@ class $DbChatMessagesTable extends DbChatMessages
 
   static TypeConverter<List<PleromaEmoji>, String> $converter0 =
       PleromaEmojiListDatabaseConverter();
+  static TypeConverter<PleromaMediaAttachment, String> $converter1 =
+      PleromaMediaAttachmentDatabaseConverter();
 }
 
 class DbChatAccount extends DataClass implements Insertable<DbChatAccount> {

@@ -252,6 +252,16 @@
       },
       "start": {
         "title": "Start chat"
+      },
+      "post": {
+        "field": {
+          "message": {
+            "label": "Message"
+          }
+        },
+        "action": {
+          "post": "Post"
+        }
       }
     },
     "conversation": {

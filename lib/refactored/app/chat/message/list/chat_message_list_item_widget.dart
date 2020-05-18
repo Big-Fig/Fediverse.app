@@ -3,6 +3,8 @@ import 'package:fedi/refactored/app/account/details/account_details_page.dart';
 import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
 import 'package:fedi/refactored/app/chat/message/chat_message_bloc.dart';
 import 'package:fedi/refactored/app/html/html_text_widget.dart';
+import 'package:fedi/refactored/app/media/attachment/media_attachments_widget.dart';
+import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -41,22 +43,42 @@ class ChatMessageListItemWidget extends StatelessWidget {
   }
 
   Widget buildContent(BuildContext context, IChatMessageBloc messageBloc) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
-      child: StreamBuilder<Object>(
-          stream: messageBloc.contentWithEmojisStream,
-          initialData: messageBloc.contentWithEmojis,
-          builder: (context, snapshot) {
-            var contentWithEmojis = snapshot.data;
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+          child: StreamBuilder<Object>(
+              stream: messageBloc.contentWithEmojisStream,
+              initialData: messageBloc.contentWithEmojis,
+              builder: (context, snapshot) {
+                var contentWithEmojis = snapshot.data;
 
-            return HtmlTextWidget(
-                data: contentWithEmojis,
-                onLinkTap: (String link) async {
-                  if (await canLaunch(link)) {
-                    await launch(link);
-                  }
-                });
-          }),
+                return HtmlTextWidget(
+                    data: contentWithEmojis,
+                    onLinkTap: (String link) async {
+                      if (await canLaunch(link)) {
+                        await launch(link);
+                      }
+                    });
+              }),
+        ),
+        StreamBuilder<IPleromaMediaAttachment>(
+            stream: messageBloc.mediaAttachmentStream,
+            initialData: messageBloc.mediaAttachment,
+            builder: (context, snapshot) {
+              var mediaAttachment = snapshot.data;
+
+              var mediaAttachments = <IPleromaMediaAttachment>[];
+
+              if (mediaAttachment != null) {
+                mediaAttachments.add(mediaAttachment);
+              }
+
+              return MediaAttachmentsWidget(
+                mediaAttachments: mediaAttachments,
+              );
+            }),
+      ],
     );
   }
 

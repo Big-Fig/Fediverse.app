@@ -24,7 +24,7 @@ class NotificationPaginationListWithNewItemsBloc<
   }
 
   @override
-  int compareItems(INotification a, INotification b) {
+  int compareItemsToSort(INotification a, INotification b) {
     if (a == null && b == null) {
       return 0;
     }
@@ -37,4 +37,9 @@ class NotificationPaginationListWithNewItemsBloc<
     }
     return a.createdAt.compareTo(b.createdAt);
   }
+
+
+  @override
+  bool isItemsEqual(INotification a, INotification b) =>
+      a.remoteId == b.remoteId;
 }

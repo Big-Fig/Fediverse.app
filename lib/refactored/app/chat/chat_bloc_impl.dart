@@ -7,6 +7,7 @@ import 'package:fedi/refactored/app/chat/message/chat_message_model.dart';
 import 'package:fedi/refactored/app/chat/message/repository/chat_message_repository.dart';
 import 'package:fedi/refactored/app/chat/repository/chat_repository.dart';
 import 'package:fedi/refactored/async/loading/init/async_init_loading_bloc_impl.dart';
+import 'package:fedi/refactored/pleroma/chat/pleroma_chat_model.dart';
 import 'package:fedi/refactored/pleroma/chat/pleroma_chat_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:moor/moor.dart';
@@ -91,7 +92,8 @@ class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
 
   @override
   Future internalAsyncInit() async {
-    var message = await chatMessageRepository.getChatLastChatMessage(chat: chat);
+    var message =
+        await chatMessageRepository.getChatLastChatMessage(chat: chat);
     if (!_lastMessageSubject.isClosed) {
       _lastMessageSubject.add(message);
     }
@@ -126,24 +128,22 @@ class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
 
   @override
   Future refreshFromNetwork() async {
-    throw "not supported yet by API";
-//    var remoteChat = await pleromaChatService.getChat(
-//        chatRemoteId: chat.remoteId);
-//
-//    await accountRepository.upsertRemoteAccounts(remoteChat.accounts,
-//        chatRemoteId: remoteChat.remoteId, conversationRemoteId: null);
-//
-//    if (remoteChat.lastMessage != null) {
-//      await chatMessageRepository.upsertRemoteChatMessage(remoteChat.lastMessage);
-//    }
-//
-//    await _updateByRemoteChat(remoteChat);
+    var remoteChat = await pleromaChatService.getChat(id: chat.remoteId);
+
+    await accountRepository.upsertRemoteAccount(remoteChat.account,
+        chatRemoteId: remoteChat.id, conversationRemoteId: null);
+
+    if (remoteChat.lastMessage != null) {
+      await chatMessageRepository
+          .upsertRemoteChatMessage(remoteChat.lastMessage);
+    }
+
+    await _updateByRemoteChat(remoteChat);
   }
 
-//  Future _updateByRemoteChat(IPleromaChat remoteChat) =>
-//      chatRepository.updateLocalChatByRemoteChat(
-//          oldLocalChat: chat,
-//          newRemoteChat: remoteChat);
+  Future _updateByRemoteChat(IPleromaChat remoteChat) =>
+      chatRepository.updateLocalChatByRemoteChat(
+          oldLocalChat: chat, newRemoteChat: remoteChat);
 
   @override
   IChatMessage get lastChatMessage => _lastMessageSubject.value;

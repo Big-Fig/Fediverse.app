@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:collection';
 
 import 'package:fedi/refactored/pagination/list/pagination_list_bloc_impl.dart';
 import 'package:fedi/refactored/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
@@ -57,13 +56,14 @@ abstract class PaginationListWithNewItemsBloc<
         // we need to filter again to be sure that newerItem is no
         // changed during sql request execute time
         List<TItem> actuallyNew = newItems
-            .where((newItem) => compareItems(newItem, newerItem) > 0)
+            .where((newItem) => compareItemsToSort(newItem, newerItem) > 0)
             .toList();
 
         // remove duplicates
         // sometimes local storage sqlite returns duplicated items
-        // todo: hack should be removed
-        actuallyNew = LinkedHashSet<TItem>.from(actuallyNew).toList();
+        // sometimes item is newer but already exist
+        // for example chat updateAt updated
+        actuallyNew = removeDuplicates(actuallyNew);
 
         _logger.finest(() => "watchItemsNewerThanItem \n"
             "\t newItems ${newItems.length} \n"
@@ -84,6 +84,21 @@ abstract class PaginationListWithNewItemsBloc<
       }));
     }
   }
+
+  List<TItem> removeDuplicates(List<TItem> actuallyNew) =>
+      actuallyNew.where((a) {
+        bool isAlreadyExist;
+        if (items?.isNotEmpty == true) {
+          var found =
+              items.firstWhere((b) => isItemsEqual(a, b), orElse: () => null);
+
+          isAlreadyExist = found != null;
+        } else {
+          isAlreadyExist = false;
+        }
+        var isNeedToAdd = !isAlreadyExist;
+        return isNeedToAdd;
+      }).toList();
 
   @override
   List<TItem> get items => _calculateNewItems(super.items, mergedNewItems);
@@ -179,9 +194,15 @@ abstract class PaginationListWithNewItemsBloc<
   }
 
   void clearNewItems() {
-    _mergedNewItemsSubject.add([]);
-    _unmergedNewItemsSubject.add([]);
+    if (!_mergedNewItemsSubject.isClosed) {
+      _mergedNewItemsSubject.add([]);
+    }
+    if (!_unmergedNewItemsSubject.isClosed) {
+      _unmergedNewItemsSubject.add([]);
+    }
   }
 
-  int compareItems(TItem a, TItem b);
+  int compareItemsToSort(TItem a, TItem b);
+
+  bool isItemsEqual(TItem a, TItem b);
 }

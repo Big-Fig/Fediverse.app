@@ -1,7 +1,6 @@
 import 'package:fedi/refactored/app/account/account_model.dart';
-import 'package:fedi/refactored/app/media/attachment/upload/upload_media_attachment_bloc.dart';
+import 'package:fedi/refactored/app/media/attachment/upload/upload_media_attachment_grid_bloc.dart';
 import 'package:fedi/refactored/disposable/disposable.dart';
-import 'package:fedi/refactored/file/picker/file_picker_model.dart';
 import 'package:fedi/refactored/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -12,10 +11,6 @@ abstract class IPostStatusBloc implements Disposable {
 
   static final Duration requiredDurationToScheduleStatus = Duration(minutes: 5);
 
-  List<IUploadMediaAttachmentBloc> get mediaAttachmentBlocs;
-
-  Stream<List<IUploadMediaAttachmentBloc>> get mediaAttachmentBlocsStream;
-
   List<String> get mentionedAccts;
 
   Stream<List<String>> get mentionedAcctsStream;
@@ -23,6 +18,8 @@ abstract class IPostStatusBloc implements Disposable {
   TextEditingController get inputTextController;
 
   bool get isPossibleToChangeVisibility;
+
+  IUploadMediaAttachmentGridBloc get mediaAttachmentGridBloc;
 
   PleromaVisibility get visibility;
 
@@ -42,10 +39,6 @@ abstract class IPostStatusBloc implements Disposable {
 
   void changeNsfwSensitive(bool nsfwSensitive);
 
-  void attachMedia(FilePickerFile filePickerFile);
-
-  void detachMedia(FilePickerFile filePickerFile);
-
   void schedule(DateTime dateTime);
 
   void clearSchedule();
@@ -54,10 +47,6 @@ abstract class IPostStatusBloc implements Disposable {
 
   Stream<bool> get isReadyToPostStream;
 
-  bool get isPossibleToAttachMedia;
-
-  Stream<bool> get isPossibleToAttachMediaStream;
-
   bool get isScheduled;
 
   Stream<bool> get isScheduledStream;
@@ -65,12 +54,6 @@ abstract class IPostStatusBloc implements Disposable {
   DateTime get scheduledAt;
 
   Stream<DateTime> get scheduledAtStream;
-
-  bool get isMaximumMediaAttachmentCountReached;
-
-  Stream<bool> get isMaximumMediaAttachmentCountReachedStream;
-
-  int get maximumMediaAttachmentCount;
 
   String get inputText;
 

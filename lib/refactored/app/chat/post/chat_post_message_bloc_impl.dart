@@ -1,43 +1,40 @@
 import 'package:fedi/refactored/app/chat/message/repository/chat_message_repository.dart';
 import 'package:fedi/refactored/app/chat/post/chat_post_message_bloc.dart';
+import 'package:fedi/refactored/app/media/attachment/upload/upload_media_attachment_bloc.dart';
+import 'package:fedi/refactored/app/media/attachment/upload/upload_media_attachment_grid_bloc.dart';
+import 'package:fedi/refactored/app/media/attachment/upload/upload_media_attachment_grid_bloc_impl.dart';
 import 'package:fedi/refactored/disposable/disposable.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:fedi/refactored/pleroma/chat/pleroma_chat_model.dart';
 import 'package:fedi/refactored/pleroma/chat/pleroma_chat_service.dart';
+import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_service.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
+var _logger = Logger("chat_post_message_bloc_impl.dart");
+
+// todo: unify post status & post chat message code
 class ChatPostMessageBloc extends DisposableOwner
     implements IChatPostMessageBloc {
   final IPleromaChatService pleromaChatService;
   final IChatMessageRepository chatMessageRepository;
-
   final String chatRemoteId;
 
   @override
-  bool get isReadyToPost => calculateIsReadyToPost(inputText: inputText);
-
-  @override
-  Stream<bool> get isReadyToPostStream => inputTextStream
-      .map((inputText) => calculateIsReadyToPost(inputText: inputText));
-
-  // ignore: close_sinks
-  BehaviorSubject<String> inputTextSubject = BehaviorSubject.seeded("");
-
-  @override
-  String get inputText => inputTextSubject.value;
-
-  @override
-  Stream<String> get inputTextStream => inputTextSubject.stream;
-
-  @override
-  TextEditingController inputTextController = TextEditingController();
+  final IUploadMediaAttachmentGridBloc mediaAttachmentGridBloc;
 
   ChatPostMessageBloc({
     @required this.pleromaChatService,
     @required this.chatMessageRepository,
     @required this.chatRemoteId,
-  }) {
+    @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
+  }) : mediaAttachmentGridBloc = UploadMediaAttachmentGridBloc(
+            maximumMediaAttachmentCount: 1,
+            pleromaMediaAttachmentService: pleromaMediaAttachmentService) {
+    assert(pleromaMediaAttachmentService != null);
+    addDisposable(disposable: mediaAttachmentGridBloc);
+
     addDisposable(subject: inputTextSubject);
 
     addDisposable(textEditingController: inputTextController);
@@ -52,6 +49,32 @@ class ChatPostMessageBloc extends DisposableOwner
     }));
   }
 
+  @override
+  bool get isReadyToPost => calculateIsReadyToPost(
+      inputText: inputText,
+      mediaAttachmentBlocs: mediaAttachmentGridBloc.mediaAttachmentBlocs);
+
+  @override
+  Stream<bool> get isReadyToPostStream => Rx.combineLatest2(
+      inputTextStream,
+      mediaAttachmentGridBloc.mediaAttachmentBlocsStream,
+      (inputWithoutMentionedAcctsText, mediaAttachmentBlocs) =>
+          calculateIsReadyToPost(
+              inputText: inputWithoutMentionedAcctsText,
+              mediaAttachmentBlocs: mediaAttachmentBlocs));
+
+  // ignore: close_sinks
+  BehaviorSubject<String> inputTextSubject = BehaviorSubject.seeded("");
+
+  @override
+  String get inputText => inputTextSubject.value;
+
+  @override
+  Stream<String> get inputTextStream => inputTextSubject.stream;
+
+  @override
+  TextEditingController inputTextController = TextEditingController();
+
   void onInputTextChanged() {
     var text = inputTextController.text;
 
@@ -62,15 +85,29 @@ class ChatPostMessageBloc extends DisposableOwner
 
   @override
   Future<bool> postMessage() async {
+
     bool success;
 
+    var mediaAttachmentBlocs = mediaAttachmentGridBloc.mediaAttachmentBlocs;
+    var mediaId;
+    if (mediaAttachmentBlocs?.isNotEmpty == true) {
+      mediaId = mediaAttachmentBlocs.first.pleromaMediaAttachment.id;
+    }
+
+    var data = PleromaChatMessageSendData(content: inputText, mediaId: mediaId);
+    _logger.finest(() => "postMessage data=$data");
     var remoteChatMessage = await pleromaChatService.sendMessage(
         chatId: chatRemoteId,
-        data: PleromaChatMessageSendData(content: inputText));
+        data: data);
 
+    _logger.finest(() => "postMessage remoteChatMessage=$remoteChatMessage");
     if (remoteChatMessage != null) {
       success = true;
       await chatMessageRepository.upsertRemoteChatMessage(remoteChatMessage);
+
+      // todo: remove hack
+      // backend shouldn't mark chat as unread after message from me
+      await pleromaChatService.markChatAsRead(chatId: chatRemoteId);
     } else {
       success = false;
     }
@@ -83,12 +120,16 @@ class ChatPostMessageBloc extends DisposableOwner
 
   void _clear() {
     inputTextController.clear();
+    mediaAttachmentGridBloc.clear();
   }
 
-  bool calculateIsReadyToPost({@required String inputText}) {
+  bool calculateIsReadyToPost(
+      {@required String inputText,
+      @required List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs}) {
     var textIsNotEmpty = inputText?.trim()?.isEmpty != true;
+    var mediaAttached = mediaAttachmentBlocs?.isEmpty != true;
 
-    return textIsNotEmpty;
+    return textIsNotEmpty || mediaAttached;
   }
 
   static ChatPostMessageBloc createFromContext(BuildContext context,
@@ -97,5 +138,7 @@ class ChatPostMessageBloc extends DisposableOwner
           chatRemoteId: chatRemoteId,
           chatMessageRepository:
               IChatMessageRepository.of(context, listen: false),
-          pleromaChatService: IPleromaChatService.of(context, listen: false));
+          pleromaChatService: IPleromaChatService.of(context, listen: false),
+          pleromaMediaAttachmentService:
+              IPleromaMediaAttachmentService.of(context, listen: false));
 }

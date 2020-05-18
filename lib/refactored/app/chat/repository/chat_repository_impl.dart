@@ -47,11 +47,10 @@ class ChatRepository extends AsyncInitLoadingBloc implements IChatRepository {
     await accountRepository.upsertRemoteAccounts(remoteAccounts,
         chatRemoteId: remoteChat.id, conversationRemoteId: null);
 
-//    var lastMessage = remoteChat.lastMessage;
-//    if (lastMessage != null) {
-//      await chatMessageRepository.upsertRemoteMessage(lastMessage,
-//          chatRemoteId: remoteChat.id, listRemoteId: null);
-//    }
+    var lastMessage = remoteChat.lastMessage;
+    if (lastMessage != null) {
+      await chatMessageRepository.upsertRemoteChatMessage(lastMessage);
+    }
 
     await upsert(mapRemoteChatToDbChat(remoteChat));
   }
@@ -61,11 +60,10 @@ class ChatRepository extends AsyncInitLoadingBloc implements IChatRepository {
     _logger.finer(() => "upsertRemoteChats ${remoteChats.length}");
 
     for (var remoteChat in remoteChats) {
-//      var lastMessage = remoteChat.lastMessage;
-//      if (lastMessage != null) {
-//        await chatMessageRepository.upsertRemoteMessage(lastMessage,
-//            listRemoteId: null, chatRemoteId: remoteChat.id);
-//      }
+      var lastMessage = remoteChat.lastMessage;
+      if (lastMessage != null) {
+        await chatMessageRepository.upsertRemoteChatMessage(lastMessage);
+      }
 
       await accountRepository.upsertRemoteAccounts([remoteChat.account],
           chatRemoteId: remoteChat.id, conversationRemoteId: null);
@@ -164,13 +162,11 @@ class ChatRepository extends AsyncInitLoadingBloc implements IChatRepository {
 
     await accountRepository.upsertRemoteAccounts([newRemoteChat.account],
         chatRemoteId: oldLocalChat.remoteId, conversationRemoteId: null);
-//
-//    var lastMessage = newRemoteChat.lastMessage;
-//    if (lastMessage != null) {
-//      await chatMessageRepository.upsertRemoteMessage(lastMessage,
-//          listRemoteId: null,
-//          chatRemoteId: oldLocalChat.remoteId);
-//    }
+
+    var lastMessage = newRemoteChat.lastMessage;
+    if (lastMessage != null) {
+      await chatMessageRepository.upsertRemoteChatMessage(lastMessage);
+    }
     if (oldLocalChat.localId != null) {
       await updateById(
           oldLocalChat.localId, mapRemoteChatToDbChat(newRemoteChat));
@@ -232,9 +228,10 @@ class ChatRepository extends AsyncInitLoadingBloc implements IChatRepository {
     var query = dao.startSelectQuery();
 
     if (olderThan != null || newerThan != null) {
-      dao.addRemoteIdBoundsWhere(query,
-          maximumRemoteIdExcluding: olderThan?.remoteId,
-          minimumRemoteIdExcluding: newerThan?.remoteId);
+      assert(orderingTermData?.orderByType == ChatOrderByType.updatedAt);
+      dao.addUpdatedAtBoundsWhere(query,
+          maximumDateTimeExcluding: olderThan?.updatedAt,
+          minimumDateTimeExcluding: newerThan?.updatedAt);
     }
 
     if (orderingTermData != null) {
@@ -294,8 +291,13 @@ class ChatRepository extends AsyncInitLoadingBloc implements IChatRepository {
 
   @override
   Future markAsRead({@required IChat chat}) {
-    return updateById(chat.localId,
-        DbChat(id: chat.localId, remoteId: chat.remoteId, unread: 0));
+    return updateById(
+        chat.localId,
+        DbChat(
+            id: chat.localId,
+            remoteId: chat.remoteId,
+            unread: 0,
+            updatedAt: DateTime.now()));
   }
 
   @override
@@ -305,5 +307,6 @@ class ChatRepository extends AsyncInitLoadingBloc implements IChatRepository {
   Stream<int> watchTotalUnreadCount() => dao.watchTotalAmountUnread();
 
   @override
-  Future incrementUnreadCount({@required String chatRemoteId}) => dao.incrementUnreadCount();
+  Future incrementUnreadCount({@required String chatRemoteId}) =>
+      dao.incrementUnreadCount(chatRemoteId: chatRemoteId);
 }

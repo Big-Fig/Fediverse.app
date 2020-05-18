@@ -11,6 +11,7 @@ import 'package:fedi/refactored/app/chat/chat_bloc.dart';
 import 'package:fedi/refactored/app/chat/chat_bloc_impl.dart';
 import 'package:fedi/refactored/app/chat/chat_model.dart';
 import 'package:fedi/refactored/app/chat/chat_model_adapter.dart';
+import 'package:fedi/refactored/app/chat/message/chat_message_model.dart';
 import 'package:fedi/refactored/app/chat/message/chat_message_model_adapter.dart';
 import 'package:fedi/refactored/app/chat/message/repository/chat_message_repository.dart';
 import 'package:fedi/refactored/app/chat/message/repository/chat_message_repository_impl.dart';
@@ -103,12 +104,9 @@ void main() {
   });
 
   Future _update(IChat chat,
-      {
-//        IChatMessage lastChatMessage,
-      @required List<IAccount> accounts}) async {
+      {IChatMessage lastChatMessage, @required List<IAccount> accounts}) async {
     await chatRepository.upsertRemoteChat(mapLocalChatToRemoteChat(chat,
-//            lastChatMessage: lastChatMessage,
-        accounts: accounts));
+        lastChatMessage: lastChatMessage, accounts: accounts));
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
   }
@@ -137,8 +135,14 @@ void main() {
   });
 
   test('lastChatMessage', () async {
-    var chatMessage1 = await createTestChatMessage(seed: "chatMessage1", chatRemoteId: chat.remoteId);
-    var chatMessage2 = await createTestChatMessage(seed: "chatMessage2", chatRemoteId: chat.remoteId);
+    var chatMessage1 = await createTestChatMessage(
+        seed: "chatMessage1",
+        chatRemoteId: chat.remoteId,
+        createdAt: DateTime(2001));
+    var chatMessage2 = await createTestChatMessage(
+        seed: "chatMessage2",
+        chatRemoteId: chat.remoteId,
+        createdAt: DateTime(2002));
 
     var newValue = await createTestChat(seed: "seed2", remoteId: chat.remoteId);
 
@@ -150,13 +154,8 @@ void main() {
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 
-    await _update(
-      newValue,
-      accounts: [chatMessage1.account],
-//        lastChatMessage: chatMessage1
-    );
-    await chatMessageRepository.upsertRemoteChatMessage(
-        mapLocalChatMessageToRemoteChatMessage(chatMessage1));
+    await _update(newValue,
+        accounts: [chatMessage1.account], lastChatMessage: chatMessage1);
 
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
@@ -167,13 +166,8 @@ void main() {
     await chatMessageRepository.upsertRemoteChatMessage(
         mapLocalChatMessageToRemoteChatMessage(chatMessage2));
 
-    await _update(
-      newValue,
-      accounts: [chatMessage2.account],
-//        lastChatMessage: chatMessage1
-    );
-    await chatMessageRepository.upsertRemoteChatMessage(
-        mapLocalChatMessageToRemoteChatMessage(chatMessage2));
+    await _update(newValue,
+        accounts: [chatMessage2.account], lastChatMessage: chatMessage1);
 
 // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
@@ -204,13 +198,12 @@ void main() {
     expectAccount(chatBloc.accounts[0], account1);
     expectAccount(listenedValue[0], account1);
 
-    await _update(newValue, accounts: [account2,
-//      account3
+    await _update(newValue, accounts: [
+      account2, //      account3
     ]);
 
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-
 
     expectAccount(chatBloc.accounts[0], account1);
     expectAccount(chatBloc.accounts[1], account2);
@@ -243,8 +236,8 @@ void main() {
     expectAccount(chatBloc.accountsWithoutMe[0], account1);
     expectAccount(listenedValue[0], account1);
 
-    await _update(newValue, accounts: [account2,
-//      account3
+    await _update(newValue, accounts: [
+      account2, //      account3
     ]);
 
     expectAccount(chatBloc.accountsWithoutMe[0], account1);

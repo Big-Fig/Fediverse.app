@@ -99,24 +99,25 @@ abstract class PaginationListWidget<T> extends StatefulWidget {
       @required IndexedWidgetBuilder itemBuilder}) {
     _logger.finest(() => "buildItemsListView items ${items?.length}");
 
-    var length = items.length;
     return ListView.builder(
-      itemBuilder: (context, index) {
-        if (header != null && index == 0) {
-          return header;
-        } else if (footer != null && index == length - 1) {
-          return footer;
-        }
-        var itemIndex = index;
-        if (header != null) {
-          itemIndex -= 1;
-        }
+        itemBuilder: (context, index) {
+          var isFirst = index == 0;
+          var isLast = index == (items.length - 1);
+          if (header != null && isFirst) {
+            return header;
+          } else if (footer != null && isLast) {
+            return footer;
+          }
+          var itemIndex = index;
+          if (header != null) {
+            itemIndex -= 1;
+          }
 
-        _logger.finest(() => "buildItemsListView itemIndex=$itemIndex");
-        return itemBuilder(context, itemIndex);
-      },
-      itemCount: items.length,
-    );
+          _logger.finest(() => "buildItemsListView itemIndex=$itemIndex");
+          return itemBuilder(context, itemIndex);
+        },
+        itemCount:
+            items.length + (header != null ? 1 : 0) + (footer != null ? 1 : 0));
   }
 }
 
@@ -136,8 +137,6 @@ class _PaginationListWidgetState<T> extends State<PaginationListWidget<T>> {
         "paginationListBloc.isRefreshedAtLeastOnce=${paginationListBloc.isRefreshedAtLeastOnce}");
 
     if (!paginationListBloc.isRefreshedAtLeastOnce) {
-      // 500 delay required to be sure that widget will be built during initial
-      // refresh
       askToRefresh(context);
     }
 
@@ -171,9 +170,9 @@ class _PaginationListWidgetState<T> extends State<PaginationListWidget<T>> {
   }
 
   void askToRefresh(BuildContext context) {
-    // 500 delay required to be sure that widget will be built during initial
+    // delay required to be sure that widget will be built during initial
     // refresh
-    Future.delayed(Duration(milliseconds: 500), () {
+    Future.delayed(Duration(milliseconds: 1000), () {
       _logger.finest(() => "initState delayed");
       try {
         IPaginationListBloc<PaginationPage<T>, T> paginationListBloc =
@@ -188,7 +187,11 @@ class _PaginationListWidgetState<T> extends State<PaginationListWidget<T>> {
 
           _logger.finest(() => "initState position = $position");
           if (position != null) {
+            // refresh with UI indicator
             refreshController.requestRefresh();
+          } else {
+            // refresh without UI indicator
+            paginationListBloc.refresh();
           }
         }
       } catch (e, stackTrace) {

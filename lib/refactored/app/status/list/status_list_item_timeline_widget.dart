@@ -20,6 +20,7 @@ import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/app/status/thread/status_thread_page.dart';
 import 'package:fedi/refactored/app/ui/fedi_colors.dart';
 import 'package:fedi/refactored/app/ui/fedi_icons.dart';
+import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -170,7 +171,12 @@ class StatusListItemTimelineWidget extends StatelessWidget {
                         if (collapsible && statusBloc.isPossibleToCollapse)
                           buildCollapsibleButton(context, statusBloc),
                         StatusCardWidget(),
-                        MediaAttachmentsWidget(),
+                        StreamBuilder<List<IPleromaMediaAttachment>>(
+                            stream: statusBloc.mediaAttachmentsStream,
+                            initialData: statusBloc.mediaAttachments,
+                            builder: (context, snapshot) => MediaAttachmentsWidget(
+                              mediaAttachments: snapshot.data,
+                            )),
                       ],
                     );
                   } else {

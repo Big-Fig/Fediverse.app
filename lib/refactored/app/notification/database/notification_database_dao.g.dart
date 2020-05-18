@@ -95,6 +95,8 @@ mixin _$NotificationDaoMixin on DatabaseAccessor<AppDatabase> {
       remoteId: row.readString('remote_id'),
       accountRemoteId: row.readString('account_remote_id'),
       statusRemoteId: row.readString('status_remote_id'),
+      chatRemoteId: row.readString('chat_remote_id'),
+      chatMessageRemoteId: row.readString('chat_message_remote_id'),
       unread: row.readBool('unread'),
       type: row.readString('type'),
       createdAt: row.readDateTime('created_at'),

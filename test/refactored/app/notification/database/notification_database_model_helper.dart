@@ -44,6 +44,8 @@ void expectDbNotification(INotification actual, DbNotification dbNotification) {
 
   expect(actual.createdAt, dbNotification.createdAt);
   expect(actual.type, dbNotification.type);
+  expect(actual.chatMessageRemoteId, dbNotification.chatMessageRemoteId);
+  expect(actual.chatRemoteId, dbNotification.chatRemoteId);
   expect(actual.unread, dbNotification.unread);
 }
 

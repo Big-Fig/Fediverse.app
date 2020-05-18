@@ -12,14 +12,16 @@ class MemoryPaginationListWithNewItemsBloc<TPage extends PaginationPage<TItem>,
   final StreamController<List<TItem>> newItemsStreamController =
       StreamController.broadcast();
 
-  void addNewItems(List<TItem> newItems) => newItemsStreamController.add
-    (newItems);
+  void addNewItems(List<TItem> newItems) =>
+      newItemsStreamController.add(newItems);
 
   final int Function(TItem a, TItem b) comparator;
+  final bool Function(TItem a, TItem b) equalTo;
 
   MemoryPaginationListWithNewItemsBloc(
       {@required bool mergeNewItemsImmediately,
       @required this.comparator,
+      @required this.equalTo,
       @required IPaginationBloc<TPage, TItem> paginationBloc})
       : super(
             mergeNewItemsImmediately: mergeNewItemsImmediately,
@@ -34,8 +36,10 @@ class MemoryPaginationListWithNewItemsBloc<TPage extends PaginationPage<TItem>,
       newItemsStreamController.stream;
 
   @override
-  int compareItems(TItem a, TItem b) {
+  int compareItemsToSort(TItem a, TItem b) {
     return comparator(a, b);
   }
 
+  @override
+  bool isItemsEqual(TItem a, TItem b) => equalTo(a, b);
 }

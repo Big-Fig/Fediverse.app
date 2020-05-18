@@ -127,6 +127,15 @@ class PleromaChatService implements IPleromaChatService {
   }
 
   @override
+  Future<IPleromaChat> getChat({@required String id}) async {
+    assert(id?.isNotEmpty == true);
+    var httpResponse = await restService.sendHttpRequest(
+        RestRequest.post(relativePath: urlPath.join(chatRelativeUrlPath, id)));
+
+    return parseChatResponse(httpResponse);
+  }
+
+  @override
   Future<IPleromaChatMessage> sendMessage(
       {@required String chatId,
       @required IPleromaChatMessageSendData data}) async {

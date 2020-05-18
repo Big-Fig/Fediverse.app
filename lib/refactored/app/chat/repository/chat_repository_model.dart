@@ -1,7 +1,7 @@
 import 'package:moor/moor.dart';
 
 enum ChatOrderByType {
-  remoteId,
+  remoteId, updatedAt
 }
 
 class ChatOrderingTermData {

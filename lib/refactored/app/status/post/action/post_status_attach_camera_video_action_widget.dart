@@ -11,8 +11,10 @@ class PostStatusAttachCameraVideoActionWidget extends StatelessWidget {
     var postStatusBloc = IPostStatusBloc.of(context, listen: false);
 
     return StreamBuilder<bool>(
-        stream: postStatusBloc.isPossibleToAttachMediaStream,
-        initialData: postStatusBloc.isPossibleToAttachMedia,
+        stream: postStatusBloc.mediaAttachmentGridBloc
+            .isPossibleToAttachMediaStream,
+        initialData: postStatusBloc.mediaAttachmentGridBloc
+            .isPossibleToAttachMedia,
         builder: (context, snapshot) {
           var isPossibleToAttach = snapshot.data;
 
@@ -21,7 +23,8 @@ class PostStatusAttachCameraVideoActionWidget extends StatelessWidget {
             onPressed = () {
               goToSingleFilePickerPage(context,
                   fileSelectedCallback: (FilePickerFile filePickerFile) {
-                postStatusBloc.attachMedia(filePickerFile);
+                postStatusBloc.mediaAttachmentGridBloc
+                    .attachMedia(filePickerFile);
                 Navigator.of(context).pop();
               }, startActiveTab: FilePickerTab.captureVideo);
             };

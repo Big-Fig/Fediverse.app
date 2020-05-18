@@ -23,7 +23,7 @@ class ConversationPaginationListWithNewItemsBloc<
       cachedListService.watchLocalItemsNewerThanItem(item);
 
   @override
-  int compareItems(IConversation a, IConversation b) {
+  int compareItemsToSort(IConversation a, IConversation b) {
     if (a == null && b == null) {
       return 0;
     }
@@ -36,4 +36,8 @@ class ConversationPaginationListWithNewItemsBloc<
     }
     return a.remoteId.compareTo(b.remoteId);
   }
+
+  @override
+  bool isItemsEqual(IConversation a, IConversation b) =>
+      a.remoteId == b.remoteId;
 }
