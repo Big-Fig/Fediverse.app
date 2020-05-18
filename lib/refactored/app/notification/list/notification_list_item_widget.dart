@@ -13,8 +13,8 @@ import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:fedi/refactored/pleroma/notification/pleroma_notification_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:logging/logging.dart';
 import 'package:html/parser.dart';
+import 'package:logging/logging.dart';
 
 var _logger = Logger("notification_list_item_timeline_widget.dart");
 
@@ -25,9 +25,10 @@ class NotificationListItemWidget extends StatelessWidget {
 
     _logger.finest(() => "build ${notificationBloc.remoteId}");
 
-    return DisposableProvider<IAccountBloc>(
-      create: (context) => AccountBloc.createFromContext(context,
-          account: notificationBloc.account,
+    return DisposableProxyProvider<INotificationBloc, IAccountBloc>(
+      update: (context, value, previous) => AccountBloc.createFromContext(
+          context,
+          account: value.account,
           isNeedWatchWebSocketsEvents: false,
           isNeedRefreshFromNetworkOnInit: false,
           isNeedWatchLocalRepositoryForUpdates: false),
@@ -141,7 +142,7 @@ class NotificationListItemWidget extends StatelessWidget {
 
   String extractStatusRawContent(INotificationBloc notificationBloc) {
     var content = notificationBloc.status?.content;
-    if(content != null) {
+    if (content != null) {
       var document = parse(content);
       content = parse(document.body.text).documentElement.text;
     }

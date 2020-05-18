@@ -1,5 +1,8 @@
+import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/refactored/app/account/account_bloc.dart';
+import 'package:fedi/refactored/app/ui/fedi_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -15,6 +18,7 @@ class AccountHeaderWidget extends StatelessWidget {
           var header = snapshot.data;
           return CachedNetworkImage(
             imageUrl: header,
+            fit: BoxFit.cover,
             placeholder: (context, url) => Center(
               child: Container(
                 width: 30,

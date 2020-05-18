@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/account/account_bloc.dart';
 import 'package:fedi/refactored/app/account/avatar/account_avatar_widget.dart';
@@ -13,39 +15,45 @@ class AccountInfoWidget extends StatelessWidget {
     return Container(
       height: 130,
       child: Stack(
-        fit: StackFit.expand,
         children: <Widget>[
-          FittedBox(
-            fit: BoxFit.none,
-            child: AccountHeaderWidget(),
-          ),
-          Row(
-            children: [
-              AccountAvatarWidget(),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    "Yevhenii Zapletin",
-                    style: TextStyle(
-                        color: FediColors.white, fontWeight: FontWeight.w500),
-                  ),
-                  Container(
-                    height: 80,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        buildStatusesCountWidget(accountBloc),
-                        buildFollowingCountWidget(accountBloc),
-                        buildFollowersCountWidget(accountBloc),
-                      ],
+          Container(
+              width: double.infinity,
+              height: double.infinity,
+              decoration: BoxDecoration(color: Colors.red),
+              child: AccountHeaderWidget()),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                AccountAvatarWidget(
+                  imageSize: 60,
+                  progressSize: 30,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      "Yevhenii Zapletin",
+                      style: TextStyle(
+                          color: FediColors.white, fontWeight: FontWeight.w500),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                    Container(
+                      height: 80,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          buildStatusesCountWidget(accountBloc),
+                          buildFollowingCountWidget(accountBloc),
+                          buildFollowersCountWidget(accountBloc),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ],
       ),
