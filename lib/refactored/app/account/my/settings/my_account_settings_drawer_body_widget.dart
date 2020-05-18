@@ -1,5 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/account/my/settings/my_account_settings_bloc.dart';
+import 'package:fedi/refactored/app/status/scheduled/list/scheduled_status_list_page.dart';
+import 'package:fedi/refactored/app/ui/button/text/fedi_filled_text_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -29,6 +31,12 @@ class MyAccountSettingsDrawerBodyWidget extends StatelessWidget {
             myAccountSettingsBloc.isNewChatsEnabledStream,
             myAccountSettingsBloc.isNewChatsEnabled,
             myAccountSettingsBloc.changeIsNewChatsEnabled),
+        FediFilledTextButton(
+          "Scheduled",
+          onPressed: () {
+            goToScheduledStatusListPage(context);
+          },
+        )
       ],
     );
   }

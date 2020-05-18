@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/account/account_bloc.dart';
 import 'package:fedi/refactored/app/account/avatar/account_avatar_widget.dart';
 import 'package:fedi/refactored/app/account/header/account_header_widget.dart';
+import 'package:fedi/refactored/app/ui/fedi_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -18,22 +19,31 @@ class AccountInfoWidget extends StatelessWidget {
             fit: BoxFit.none,
             child: AccountHeaderWidget(),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                height: 80,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    AccountAvatarWidget(),
-                    buildStatusesCountWidget(accountBloc),
-                    buildFollowingCountWidget(accountBloc),
-                    buildFollowersCountWidget(accountBloc),
-                  ],
-                ),
+          Row(
+            children: [
+              AccountAvatarWidget(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    "Yevhenii Zapletin",
+                    style: TextStyle(
+                        color: FediColors.white, fontWeight: FontWeight.w500),
+                  ),
+                  Container(
+                    height: 80,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        buildStatusesCountWidget(accountBloc),
+                        buildFollowingCountWidget(accountBloc),
+                        buildFollowersCountWidget(accountBloc),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

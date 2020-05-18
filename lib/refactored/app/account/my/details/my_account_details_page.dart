@@ -7,10 +7,14 @@ import 'package:fedi/refactored/app/account/my/edit/edit_my_account_page.dart';
 import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
 import 'package:fedi/refactored/app/account/my/settings/my_account_settings_drawer_body_widget.dart';
 import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/refactored/app/status/scheduled/list/scheduled_status_list_page.dart';
+import 'package:fedi/refactored/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
+import 'package:fedi/refactored/app/ui/fedi_colors.dart';
+import 'package:fedi/refactored/app/ui/home/fedi_home_tab_container_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
 class MyAccountDetailsPage extends StatelessWidget {
   @override
@@ -19,27 +23,32 @@ class MyAccountDetailsPage extends StatelessWidget {
     return ProxyProvider<IMyAccountBloc, IAccountBloc>(
       update: (context, value, previous) => value,
       child: Scaffold(
-        drawer:
-            Drawer(child: SafeArea(child: MyAccountSettingsDrawerBodyWidget())),
-        appBar: AppBar(
-          centerTitle: true,
-          title: buildAccountChooserButton(context, myAccountBloc),
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.edit),
-              onPressed: () {
-                goToEditMyAccountPage(context);
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.schedule),
-              onPressed: () {
-                goToScheduledStatusListPage(context);
-              },
-            )
-          ],
+        key: _drawerKey,
+        body: FediHomeTabContainer(
+          topHeaderHeightInSafeArea: 104,
+          topBar: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              FediIconInCircleTransparentButton(
+                Icons.menu,
+                onPressed: () {
+                  _drawerKey.currentState.openDrawer();
+                },
+              ),
+              buildAccountChooserButton(context, myAccountBloc),
+              FediIconInCircleTransparentButton(
+                Icons.settings,
+                onPressed: () {
+                  goToEditMyAccountPage(context);
+                },
+              ),
+            ],
+          ),
+          body: AccountDetailsWidget(),
         ),
-        body: const SafeArea(child: AccountDetailsWidget()),
+        drawer: Drawer(
+          child: SafeArea(child: MyAccountSettingsDrawerBodyWidget()),
+        ),
       ),
     );
   }
@@ -68,10 +77,10 @@ class MyAccountDetailsPage extends StatelessWidget {
         ICurrentAuthInstanceBloc.of(context, listen: false);
     return AutoSizeText(
       currentInstanceBloc.currentInstance.userAtHost,
-      minFontSize: 12,
+      minFontSize: 10,
       maxFontSize: 20,
       style: TextStyle(
-        color: Colors.white,
+        color: FediColors.white,
       ),
     );
   }
