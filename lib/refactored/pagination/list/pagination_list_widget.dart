@@ -12,14 +12,14 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 var _logger = Logger("pagination_list_dart");
 
-typedef Future<bool> RefreshAction();
-
 abstract class PaginationListWidget<T> extends StatelessWidget {
   final bool alwaysShowHeader;
   final Widget header;
   final bool alwaysShowFooter;
   final Widget footer;
-  final RefreshAction additionalRefreshAction;
+
+  // nothing by default
+  Future<bool> additionalRefreshAction(BuildContext context) async => true;
 
   const PaginationListWidget({
     Key key,
@@ -27,16 +27,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
     this.footer,
     this.alwaysShowHeader,
     this.alwaysShowFooter,
-    this.additionalRefreshAction,
   }) : super(key: key);
-//  {
-//    if (alwaysShowHeader == true) {
-//      assert(header != null);
-//    }
-//    if (alwaysShowFooter == true) {
-//      assert(footer != null);
-//    }
-//  }
 
   SmartRefresher buildSmartRefresher(
       IPaginationListBloc paginationListBloc,
@@ -50,20 +41,16 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
       key: key,
       enablePullDown: true,
       enablePullUp: true,
-      header: ListRefreshHeaderWidget(),
-      footer: ListLoadingFooterWidget(),
+      header: const ListRefreshHeaderWidget(),
+      footer: const ListLoadingFooterWidget(),
       controller: refreshController,
       onRefresh: () {
         _logger.finest(() => "refresh");
         return AsyncSmartRefresherHelper.doAsyncRefresh(
             controller: refreshController,
             action: () async {
-              bool success;
-              if (additionalRefreshAction != null) {
-                success = await additionalRefreshAction();
-              } else {
-                success = true;
-              }
+              bool success = await additionalRefreshAction(context);
+
               success &= await paginationListBloc.refresh();
               if (success) {
                 _logger.finest(() => "onRefresh success=$success");
@@ -216,10 +203,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
 
     if (items?.isNotEmpty == true) {
       return buildItemsCollectionView(
-          context: context,
-          items: items,
-          header: header,
-          footer: footer);
+          context: context, items: items, header: header, footer: footer);
     } else {
       _logger.finest(() => "build empty");
       return buildNotListBody(Center(

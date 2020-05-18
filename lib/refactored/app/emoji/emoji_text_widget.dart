@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class EmojiTextWidget extends StatelessWidget {
   final EmojiText emojiText;
   final TextStyle textStyle;
-  EmojiTextWidget({@required this.emojiText, this.textStyle});
+  const EmojiTextWidget({@required this.emojiText, this.textStyle});
 
   @override
   Widget build(BuildContext context) {

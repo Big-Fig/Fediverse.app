@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/refactored/app/context/app_context_bloc_impl.dart';
+import 'package:fedi/refactored/app/context/app_context_bloc.dart';
 import 'package:fedi/refactored/app/init/app_init_page.dart';
 import 'package:fedi/refactored/async/loading/init/async_init_loading_model.dart';
 import 'package:flutter/material.dart';
@@ -11,17 +11,17 @@ import 'package:logging/logging.dart';
 var _logger = Logger("app_widget.dart");
 
 class AppSplashWidget extends StatelessWidget {
-  final AppContextBloc initBloc;
-
-  AppSplashWidget(this.initBloc);
+  const AppSplashWidget();
 
   @override
   Widget build(BuildContext context) {
     _logger.fine(() => "build");
 
+    var appContextBloc = IAppContextBloc.of(context, listen: false);
+
     return StreamBuilder<AsyncInitLoadingState>(
-        stream: initBloc.initLoadingStateStream,
-        initialData: initBloc.initLoadingState,
+        stream: appContextBloc.initLoadingStateStream,
+        initialData: appContextBloc.initLoadingState,
         builder: (context, snapshot) {
           var loadingState = snapshot.data;
 
@@ -29,15 +29,15 @@ class AppSplashWidget extends StatelessWidget {
           switch (loadingState) {
             case AsyncInitLoadingState.notStarted:
               Timer.run(() {
-                initBloc.performAsyncInit();
+                appContextBloc.performAsyncInit();
               });
-              return MaterialApp(home: InitAppPage());
+              return const MaterialApp(home: InitAppPage());
               break;
             case AsyncInitLoadingState.loading:
-              return MaterialApp(home: InitAppPage());
+              return const MaterialApp(home: InitAppPage());
               break;
             case AsyncInitLoadingState.finished:
-              return MaterialApp(home: InitAppPage());
+              return const MaterialApp(home: InitAppPage());
 
               break;
             case AsyncInitLoadingState.failed:

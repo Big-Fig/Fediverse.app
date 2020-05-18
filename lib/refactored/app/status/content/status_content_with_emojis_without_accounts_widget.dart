@@ -22,4 +22,6 @@ class StatusContentWithEmojisWithoutAccountsWidget extends StatelessWidget {
               });
         });
   }
+
+  const StatusContentWithEmojisWithoutAccountsWidget();
 }

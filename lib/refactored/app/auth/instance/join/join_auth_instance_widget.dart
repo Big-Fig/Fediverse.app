@@ -14,12 +14,10 @@ import 'package:logging/logging.dart';
 var _logger = Logger("join_auth_instance_widget.dart");
 
 class JoinAuthInstanceWidget extends StatelessWidget {
-  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: _formKey,
       child: Column(
         children: <Widget>[
           Padding(
@@ -252,4 +250,6 @@ class JoinAuthInstanceWidget extends StatelessWidget {
           }
         ]);
   }
+
+  const JoinAuthInstanceWidget();
 }

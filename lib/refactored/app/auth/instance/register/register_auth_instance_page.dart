@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 class RegisterAuthInstancePage extends StatelessWidget {
   final Uri instanceBaseUrl;
 
-  RegisterAuthInstancePage({@required this.instanceBaseUrl});
+  const RegisterAuthInstancePage({@required this.instanceBaseUrl});
 
   @override
   Widget build(BuildContext context) {

@@ -30,6 +30,8 @@ class StatusFavouriteAccountListPage extends StatelessWidget {
       ),
     );
   }
+
+  const StatusFavouriteAccountListPage();
 }
 
 void goToStatusFavouriteAccountListPage(BuildContext context, IStatus status) {
@@ -49,7 +51,7 @@ void goToStatusFavouriteAccountListPage(BuildContext context, IStatus status) {
                   child: DisposableProvider<IAccountPaginationListBloc>(
                     create: (context) =>
                         AccountPaginationListBloc.createFromContext(context),
-                    child: StatusFavouriteAccountListPage(),
+                    child: const StatusFavouriteAccountListPage(),
                   ),
                 ))),
   );

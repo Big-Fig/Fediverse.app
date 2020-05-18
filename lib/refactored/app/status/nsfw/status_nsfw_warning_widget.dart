@@ -27,4 +27,6 @@ class StatusNsfwWarningWidget extends StatelessWidget {
       ),
     );
   }
+
+  const StatusNsfwWarningWidget();
 }

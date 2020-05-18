@@ -44,18 +44,18 @@ class StatusAccountWidget extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              AccountAvatarWidget(
+              const AccountAvatarWidget(
                 imageSize: 48,
                 progressSize: 15,
               ),
-              SizedBox(
+              const SizedBox(
                 width: 8,
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  AccountDisplayNameWidget(),
-                  AccountAcctWidget()
+                  const AccountDisplayNameWidget(),
+                  const AccountAcctWidget()
                 ],
               ),
             ],
@@ -64,4 +64,6 @@ class StatusAccountWidget extends StatelessWidget {
       ),
     );
   }
+
+  const StatusAccountWidget();
 }

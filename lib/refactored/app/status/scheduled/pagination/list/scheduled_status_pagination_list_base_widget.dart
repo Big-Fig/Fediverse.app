@@ -13,14 +13,12 @@ abstract class ScheduledStatusPaginationListBaseWidget
     Widget footer,
     bool alwaysShowHeader,
     bool alwaysShowFooter,
-    RefreshAction additionalRefreshAction,
   }) : super(
             key: key,
             footer: footer,
             header: header,
             alwaysShowHeader: alwaysShowHeader,
-            alwaysShowFooter: alwaysShowFooter,
-            additionalRefreshAction: additionalRefreshAction);
+            alwaysShowFooter: alwaysShowFooter,);
 
   @override
   IPaginationListBloc<PaginationPage<IScheduledStatus>, IScheduledStatus>

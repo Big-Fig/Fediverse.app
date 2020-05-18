@@ -25,9 +25,9 @@ class AccountActionListWidget extends StatelessWidget {
           _logger.finest(() => "relationship $relationship");
 
           if (relationship == null) {
-            return Center(
+            return const Center(
                 child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(8.0),
               child: CircularProgressIndicator(),
             ));
           } else {
@@ -128,4 +128,6 @@ class AccountActionListWidget extends StatelessWidget {
       cancelable: true,
     );
   }
+
+  const AccountActionListWidget();
 }

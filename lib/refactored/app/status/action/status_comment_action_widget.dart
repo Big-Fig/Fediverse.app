@@ -40,4 +40,6 @@ class StatusCommentActionWidget extends StatelessWidget {
       ],
     );
   }
+
+  const StatusCommentActionWidget();
 }

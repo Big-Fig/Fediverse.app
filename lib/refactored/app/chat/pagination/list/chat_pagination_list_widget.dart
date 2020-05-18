@@ -17,14 +17,12 @@ class ChatPaginationListWidget
     Widget footer,
     bool alwaysShowHeader,
     bool alwaysShowFooter,
-    RefreshAction additionalRefreshAction,
   }) : super(
             key: key,
             header: header,
             footer: footer,
             alwaysShowHeader: alwaysShowHeader,
-            alwaysShowFooter: alwaysShowFooter,
-            additionalRefreshAction: additionalRefreshAction);
+            alwaysShowFooter: alwaysShowFooter);
 
   @override
   ScrollView buildItemsCollectionView(

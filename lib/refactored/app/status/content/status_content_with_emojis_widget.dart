@@ -4,10 +4,10 @@ import 'package:fedi/refactored/app/status/status_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class StatusContentWidget extends StatelessWidget {
+class StatusContentWithEmojisWidget extends StatelessWidget {
   final bool collapsible;
 
-  const StatusContentWidget({@required this.collapsible});
+  const StatusContentWithEmojisWidget({@required this.collapsible});
 
   @override
   Widget build(BuildContext context) {

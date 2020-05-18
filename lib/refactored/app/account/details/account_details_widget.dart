@@ -58,17 +58,15 @@ class AccountDetailsWidget extends StatelessWidget {
                       CollapsibleBloc.createFromContext(context),
                   child: Stack(
                     children: <Widget>[
-                      AccountStatusesWidget(
+                      const AccountStatusesWidget(
                         header: AccountWidget(),
                         alwaysShowHeader: true,
-                        additionalRefreshAction: accountBloc.refreshFromNetwork,
-                        key: PageStorageKey(
-                            "AccountDetailsWidget.${accountBloc.account.remoteId}"),
+                        key: PageStorageKey("AccountDetailsWidget"),
                       ),
-                      Align(
+                      const Align(
                           alignment: Alignment.bottomLeft,
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: EdgeInsets.all(8.0),
                             child: ToggleCollapsibleOverlayWidget(),
                           ))
                     ],
@@ -81,4 +79,6 @@ class AccountDetailsWidget extends StatelessWidget {
       ),
     );
   }
+
+  const AccountDetailsWidget();
 }

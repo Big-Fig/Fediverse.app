@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 var _logger = Logger("conversations_list_widget.dart");
 
 class ConversationsListWidget extends StatelessWidget {
-  ConversationsListWidget({Key key}) : super(key: key);
+  const ConversationsListWidget({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

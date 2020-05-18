@@ -20,4 +20,6 @@ class InitAppPage extends StatelessWidget {
       ),
     );
   }
+
+  const InitAppPage();
 }

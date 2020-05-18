@@ -99,7 +99,7 @@ class ChatsHomeTabPage extends StatelessWidget {
   DisposableProvider<IChatListContainerBloc> buildPleromaBody() {
     return DisposableProvider<IChatListContainerBloc>(
         create: (context) => ChatsListContainerBloc.createFromContext(context),
-        child: ChatListContainerWidget(key: key));
+        child: const ChatListContainerWidget());
   }
 
   Center buildMastodonBody(BuildContext context) {

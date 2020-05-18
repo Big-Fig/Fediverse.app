@@ -45,7 +45,7 @@ class MyAccountSettingsDrawerBodyWidget extends StatelessWidget {
           Text(
             optionLabel,
           ),
-          Spacer(),
+          const Spacer(),
           StreamBuilder<bool>(
               stream: optionStream.distinct(),
               initialData: optionValue,
@@ -63,4 +63,6 @@ class MyAccountSettingsDrawerBodyWidget extends StatelessWidget {
       subtitle: optionDescription != null ? Text(optionDescription) : null,
     );
   }
+
+  const MyAccountSettingsDrawerBodyWidget();
 }

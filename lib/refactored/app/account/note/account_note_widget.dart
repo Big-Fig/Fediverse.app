@@ -29,4 +29,8 @@ class AccountNoteWidget extends StatelessWidget {
           );
         });
   }
+
+  const AccountNoteWidget();
+
+
 }

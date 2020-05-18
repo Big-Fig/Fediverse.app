@@ -22,7 +22,7 @@ class ChatPostMessageWidget extends StatelessWidget {
           ProxyProvider<IChatPostMessageBloc, IUploadMediaAttachmentGridBloc>(
               update: (context, value, previous) =>
                   value.mediaAttachmentGridBloc,
-              child: UploadMediaAttachmentGridWidget()),
+              child: const UploadMediaAttachmentGridWidget()),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Row(
@@ -30,10 +30,10 @@ class ChatPostMessageWidget extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    ChatPostMessageAttachMediaActionWidget(),
+                    const ChatPostMessageAttachMediaActionWidget(),
                   ],
                 ),
-                ChatPostMessagePostActionWidget()
+                const ChatPostMessagePostActionWidget()
               ],
             ),
           )

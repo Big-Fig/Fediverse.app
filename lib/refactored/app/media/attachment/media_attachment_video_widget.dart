@@ -7,7 +7,7 @@ import 'package:video_player/video_player.dart';
 class MediaAttachmentVideoWidget extends StatefulWidget {
   final IPleromaMediaAttachment mediaAttachment;
 
-  MediaAttachmentVideoWidget(this.mediaAttachment);
+  const MediaAttachmentVideoWidget(this.mediaAttachment);
 
   @override
   _StatusMediaAttachmentVideoWidget createState() =>

@@ -28,7 +28,7 @@ class NotificationsHomeTabPage extends StatelessWidget {
       endDrawer: DisposableProvider<INotificationsHomeTabPageDrawerBloc>(
         create: (BuildContext context) => NotificationsHomeTabPageDrawerBloc(
             pushSettingsBloc: IPushSubscriptionBloc.of(context, listen: false)),
-        child: NotificationsHomeTabPageDrawerWidget(),
+        child: const NotificationsHomeTabPageDrawerWidget(),
       ),
       body: DisposableProvider<INotificationsTabsBloc>(
         create: (context) => NotificationsTabsBloc.createFromContext(context),

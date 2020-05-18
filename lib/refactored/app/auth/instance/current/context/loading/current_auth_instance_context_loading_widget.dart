@@ -12,7 +12,8 @@ var _logger = Logger("current_instance_context_loading_widget.dart");
 
 class CurrentAuthInstanceContextLoadingWidget extends StatelessWidget {
   final Widget child;
-  CurrentAuthInstanceContextLoadingWidget({@required this.child});
+
+  const CurrentAuthInstanceContextLoadingWidget({@required this.child});
 
   @override
   Widget build(BuildContext context) {

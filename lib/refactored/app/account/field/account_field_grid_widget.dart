@@ -30,8 +30,10 @@ class AccountFieldGridWidget extends StatelessWidget {
                         ))
                     .toList());
           } else {
-            return SizedBox.shrink();
+            return const SizedBox.shrink();
           }
         });
   }
+
+  const AccountFieldGridWidget();
 }

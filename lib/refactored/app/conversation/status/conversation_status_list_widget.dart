@@ -29,20 +29,15 @@ class ConversationStatusListWidget extends StatusPaginationListBaseWidget {
         enablePullDown: true,
         enablePullUp: true,
 // water drop header bugged (inverted with reverse)
-        header: MaterialClassicHeader(),
-        footer: ListLoadingFooterWidget(),
+        header: const MaterialClassicHeader(),
+        footer: const ListLoadingFooterWidget(),
         controller: refreshController,
         reverse: true,
         onRefresh: () {
           return AsyncSmartRefresherHelper.doAsyncRefresh(
               controller: refreshController,
               action: () async {
-                bool success;
-                if (additionalRefreshAction != null) {
-                  success = await additionalRefreshAction();
-                } else {
-                  success = true;
-                }
+                bool success = await additionalRefreshAction(context);
                 success |= await paginationListBloc.refresh();
                 return success;
               });

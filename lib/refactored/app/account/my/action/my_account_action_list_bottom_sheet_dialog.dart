@@ -16,7 +16,7 @@ void showMyAccountActionListBottomSheetDialog(BuildContext context) {
                 child: DisposableProvider<IAuthInstanceChooserBloc>(
                     create: (context) =>
                         AuthInstanceChooserBloc.createFromContext(context),
-                    child: AuthInstanceChooserWidget()),
+                    child: const AuthInstanceChooserWidget()),
               );
             },
           ),

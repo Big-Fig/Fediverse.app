@@ -28,6 +28,8 @@ class AddMoreJoinAuthInstancePage extends StatelessWidget {
       ),
     );
   }
+
+  const AddMoreJoinAuthInstancePage();
 }
 
 void goToAddMoreJoinAuthInstancePage(BuildContext context) {

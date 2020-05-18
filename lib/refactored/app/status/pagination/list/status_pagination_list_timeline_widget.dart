@@ -21,7 +21,6 @@ class StatusPaginationListTimelineWidget
       Widget footer,
       bool alwaysShowHeader,
       bool alwaysShowFooter,
-      RefreshAction additionalRefreshAction,
       @required this.needWatchLocalRepositoryForUpdates})
       : super(
             key: key,

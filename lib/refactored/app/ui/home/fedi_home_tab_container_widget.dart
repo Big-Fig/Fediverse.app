@@ -9,7 +9,7 @@ class FediHomeTabContainer extends StatelessWidget {
   final Widget topBar;
   final Widget body;
 
-  FediHomeTabContainer(
+  const FediHomeTabContainer(
       {@required this.topHeaderHeightInSafeArea,
       @required this.topBar,
       @required this.body,

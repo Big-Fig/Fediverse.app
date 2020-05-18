@@ -19,4 +19,6 @@ class StatusSpoilerAlertWidget extends StatelessWidget {
       ),
     );
   }
+
+  const StatusSpoilerAlertWidget();
 }

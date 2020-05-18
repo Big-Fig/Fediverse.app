@@ -26,4 +26,6 @@ class AccountHeaderWidget extends StatelessWidget {
           );
         });
   }
+
+  const AccountHeaderWidget();
 }

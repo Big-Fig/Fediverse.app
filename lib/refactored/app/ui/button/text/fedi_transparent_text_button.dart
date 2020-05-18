@@ -7,11 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 
-class FediTransparentTextButton extends FediTextButton {
+class FediTransparentTextButton extends  StatelessWidget implements FediTextButton {
   final String text;
   final VoidCallback onPressed;
 
-  FediTransparentTextButton(this.text, {@required this.onPressed});
+  const FediTransparentTextButton(this.text, {@required this.onPressed});
 
   @override
   Widget build(BuildContext context) {

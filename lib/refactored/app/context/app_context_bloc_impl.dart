@@ -38,6 +38,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
   @override
   Future internalAsyncInit() async {
     _logger.fine(() => "internalAsyncInit");
+
     var globalProviderService = this;
 
     var connectionService = ConnectionService();

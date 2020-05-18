@@ -113,10 +113,8 @@ class TimelineTabsWidget extends StatelessWidget {
             IPaginationListWithNewItemsBloc<PaginationPage<IStatus>, IStatus>,
             IPaginationListWithNewItemsBloc>(
           update: (context, value, previous) => value,
-          child: PaginationListWithNewItemsHeaderWidget(
-            child: TimelineWidget(
-              key: PageStorageKey(tab.toString()),
-            ),
+          child: const PaginationListWithNewItemsHeaderWidget(
+            child: TimelineWidget(),
           ),
         ),
       ),

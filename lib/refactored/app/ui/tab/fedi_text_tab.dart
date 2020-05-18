@@ -7,7 +7,7 @@ class FediTextTab extends StatefulWidget {
   final String label;
   final int index;
 
-  FediTextTab(this.label, {@required this.index});
+  const FediTextTab(this.label, {@required this.index});
 
   @override
   _FediTextTabState createState() => _FediTextTabState();

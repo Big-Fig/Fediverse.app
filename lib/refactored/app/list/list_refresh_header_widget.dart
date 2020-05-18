@@ -4,9 +4,9 @@ import 'package:flutter/widgets.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class ListRefreshHeaderWidget extends StatelessWidget {
+
   @override
-  Widget build(BuildContext context) {
-    return WaterDropHeader(
+  Widget build(BuildContext context) => WaterDropHeader(
         complete: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -39,5 +39,6 @@ class ListRefreshHeaderWidget extends StatelessWidget {
                 style: TextStyle(color: Colors.grey))
           ],
         ));
-  }
+
+  const ListRefreshHeaderWidget();
 }

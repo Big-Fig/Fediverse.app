@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 class StatusFavouriteActionWidget extends StatelessWidget {
   final bool displayCounter;
 
-  StatusFavouriteActionWidget({this.displayCounter = true});
+  const StatusFavouriteActionWidget({this.displayCounter = true});
 
   @override
   Widget build(BuildContext context) {

@@ -20,9 +20,11 @@ class AccountDetailsPage extends StatelessWidget {
               return Text(acct);
             }),
       ),
-      body: SafeArea(child: AccountDetailsWidget()),
+      body: const SafeArea(child: AccountDetailsWidget()),
     );
   }
+
+  const AccountDetailsPage();
 }
 
 void goToAccountDetailsPage(BuildContext context, IAccount account) {
@@ -35,6 +37,6 @@ void goToAccountDetailsPage(BuildContext context, IAccount account) {
                 account: account,
                 isNeedRefreshFromNetworkOnInit: false,
                 isNeedWatchWebSocketsEvents: false),
-            child: AccountDetailsPage())),
+            child: const AccountDetailsPage())),
   );
 }

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class SelectAccountWidget extends StatelessWidget {
   final AccountSelectedCallback accountSelectedCallback;
 
-  SelectAccountWidget({@required this.accountSelectedCallback});
+  const SelectAccountWidget({@required this.accountSelectedCallback});
 
   @override
   Widget build(BuildContext context) {

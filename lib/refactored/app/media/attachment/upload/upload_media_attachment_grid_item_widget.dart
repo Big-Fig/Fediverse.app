@@ -65,4 +65,6 @@ class UploadMediaAttachmentGridItem extends StatelessWidget {
         break;
     }
   }
+
+  const UploadMediaAttachmentGridItem();
 }
