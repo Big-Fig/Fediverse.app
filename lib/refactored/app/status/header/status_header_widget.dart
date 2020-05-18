@@ -39,10 +39,10 @@ class StatusHeaderWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(12.0),
           child: CachedNetworkImage(
             imageUrl: account.avatar,
-            placeholder: (context, url) => Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: CircularProgressIndicator(),
-            ),
+            placeholder: (context, url) => Container(
+                width: 24,
+                height: 24,
+                child: CircularProgressIndicator()),
             errorWidget: (context, url, error) => Icon(Icons.error),
             height: 24,
             width: 24,

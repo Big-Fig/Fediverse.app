@@ -478,14 +478,13 @@
         }
       },
       "nsfw": {
-        "content": "Status contains NSFW content",
         "action": {
-          "view": "Tap to view"
+          "view": "Tap to view NSFW content"
         }
       },
       "spoiler": {
         "action": {
-          "view": "Tap to view"
+          "view": "Tap to view spoiler content"
         }
       },
       "copy_link": {

@@ -19,7 +19,7 @@ class StatusShareActionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: true);
     return IconButton(
-      color: FediColors.secondaryColor,
+      color: FediColors.darkGrey,
       iconSize: 20.0,
       icon: Icon(FediIcons.menu),
       tooltip: AppLocalizations.of(context).tr("app.status.action.more"),
