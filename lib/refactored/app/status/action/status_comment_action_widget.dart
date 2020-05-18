@@ -13,7 +13,7 @@ class StatusCommentActionWidget extends StatelessWidget {
     return Row(
       children: <Widget>[
         IconButton(
-          color: FediColors.secondaryColor,
+          color: FediColors.darkGrey,
           iconSize: 20.0,
           icon: Icon(FediIcons.message),
           tooltip: AppLocalizations.of(context).tr("app.status.action.comment"),
@@ -33,7 +33,7 @@ class StatusCommentActionWidget extends StatelessWidget {
                 repliesCount.toString(),
                 style: TextStyle(
                   fontSize: 12,
-                  color: FediColors.secondaryColor,
+                  color: FediColors.darkGrey,
                 ),
               );
             })

@@ -131,7 +131,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
   IconButton buildEmojiPickerButton(
       BuildContext context, IStatusBloc statusBloc) {
     return IconButton(
-      color: FediColors.secondaryColor,
+      color: FediColors.darkGrey,
       iconSize: 20.0,
       icon: Icon(FediIcons.emoji),
       onPressed: () {

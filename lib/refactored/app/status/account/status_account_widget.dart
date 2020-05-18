@@ -46,7 +46,7 @@ class StatusAccountWidget extends StatelessWidget {
             children: <Widget>[
               const AccountAvatarWidget(
                 imageSize: 48,
-                progressSize: 15,
+                progressSize: 32,
               ),
               const SizedBox(
                 width: 8,

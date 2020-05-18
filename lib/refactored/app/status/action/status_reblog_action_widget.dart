@@ -26,7 +26,7 @@ class StatusReblogActionWidget extends StatelessWidget {
                         iconSize: 20.0,
                         color: reblogged
                             ? FediColors.primaryColor
-                            : FediColors.secondaryColor,
+                            : FediColors.darkGrey,
                         icon: Icon(FediIcons.reply),
                         tooltip: AppLocalizations.of(context)
                             .tr("app.status.action.reblog"),
