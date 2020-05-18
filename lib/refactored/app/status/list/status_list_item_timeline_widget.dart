@@ -10,14 +10,16 @@ import 'package:fedi/refactored/app/status/content/status_content_with_emojis_wi
 import 'package:fedi/refactored/app/status/created_at/status_created_at_widget.dart';
 import 'package:fedi/refactored/app/status/emoji_reaction/status_emoji_reaction_list_widget.dart';
 import 'package:fedi/refactored/app/status/emoji_reaction/status_emoji_reaction_picker_widget.dart';
-import 'package:fedi/refactored/app/status/nsfw/status_nsfw_warning_widget.dart';
 import 'package:fedi/refactored/app/status/header/status_reblog_header_widget.dart';
 import 'package:fedi/refactored/app/status/header/status_reply_header_widget.dart';
+import 'package:fedi/refactored/app/status/nsfw/status_nsfw_warning_widget.dart';
 import 'package:fedi/refactored/app/status/spoiler/status_spoiler_alert_widget.dart';
 import 'package:fedi/refactored/app/status/spoiler/status_spoiler_widget.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/app/status/thread/status_thread_page.dart';
+import 'package:fedi/refactored/app/ui/button/text/fedi_filled_text_button.dart';
+import 'package:fedi/refactored/app/ui/button/text/fedi_transparent_text_button.dart';
 import 'package:fedi/refactored/app/ui/fedi_colors.dart';
 import 'package:fedi/refactored/app/ui/fedi_icons.dart';
 import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_model.dart';
@@ -202,22 +204,21 @@ class StatusListItemTimelineWidget extends StatelessWidget {
   Center buildCollapsibleButton(BuildContext context, IStatusBloc statusBloc) {
     var appLocalizations = AppLocalizations.of(context);
     return Center(
-        child: FlatButton(
-      color: Colors.blue,
-      child: StreamBuilder<bool>(
-          stream: statusBloc.isCollapsedStream,
-          initialData: statusBloc.isCollapsed,
-          builder: (context, snapshot) {
-            var isCollapsed = snapshot.data;
-            return Text(
-              isCollapsed
-                  ? appLocalizations.tr("app.status.collapsible.action.expand")
-                  : appLocalizations.tr("app.status.collapsible.action"
-                      ".collapse"),
-              style: const TextStyle(color: Colors.white),
-            );
-          }),
-      onPressed: statusBloc.toggleCollapseExpand,
-    ));
+        child: StreamBuilder<bool>(
+            stream: statusBloc.isCollapsedStream,
+            initialData: statusBloc.isCollapsed,
+            builder: (context, snapshot) {
+              var isCollapsed = snapshot.data;
+              return FediFilledTextButton(
+                isCollapsed
+                    ? appLocalizations
+                        .tr("app.status.collapsible.action.expand")
+                    : appLocalizations.tr("app.status.collapsible.action"
+                        ".collapse"),
+                onPressed: () {
+                  statusBloc.toggleCollapseExpand();
+                },
+              );
+            }));
   }
 }
