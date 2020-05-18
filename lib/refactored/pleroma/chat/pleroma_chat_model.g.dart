@@ -13,6 +13,13 @@ PleromaChat _$PleromaChatFromJson(Map<String, dynamic> json) {
     account: json['account'] == null
         ? null
         : PleromaAccount.fromJson(json['account'] as Map<String, dynamic>),
+    updatedAt: json['updated_at'] == null
+        ? null
+        : DateTime.parse(json['updated_at'] as String),
+    lastMessage: json['last_message'] == null
+        ? null
+        : PleromaChatMessage.fromJson(
+            json['last_message'] as Map<String, dynamic>),
   );
 }
 
@@ -20,7 +27,9 @@ Map<String, dynamic> _$PleromaChatToJson(PleromaChat instance) =>
     <String, dynamic>{
       'id': instance.id,
       'unread': instance.unread,
-      'account': instance.account,
+      'updated_at': instance.updatedAt?.toIso8601String(),
+      'account': instance.account?.toJson(),
+      'last_message': instance.lastMessage?.toJson(),
     };
 
 PleromaChatMessage _$PleromaChatMessageFromJson(Map<String, dynamic> json) {
@@ -36,6 +45,10 @@ PleromaChatMessage _$PleromaChatMessageFromJson(Map<String, dynamic> json) {
         ?.map((e) =>
             e == null ? null : PleromaEmoji.fromJson(e as Map<String, dynamic>))
         ?.toList(),
+    mediaAttachment: json['attachment'] == null
+        ? null
+        : PleromaMediaAttachment.fromJson(
+            json['attachment'] as Map<String, dynamic>),
   );
 }
 
@@ -46,13 +59,15 @@ Map<String, dynamic> _$PleromaChatMessageToJson(PleromaChatMessage instance) =>
       'account_id': instance.accountId,
       'content': instance.content,
       'created_at': instance.createdAt?.toIso8601String(),
-      'emojis': instance.emojis,
+      'emojis': instance.emojis?.map((e) => e?.toJson())?.toList(),
+      'attachment': instance.mediaAttachment?.toJson(),
     };
 
 PleromaChatMessageSendData _$PleromaChatMessageSendDataFromJson(
     Map<String, dynamic> json) {
   return PleromaChatMessageSendData(
     content: json['content'] as String,
+    mediaId: json['media_id'] as String,
   );
 }
 
@@ -60,4 +75,5 @@ Map<String, dynamic> _$PleromaChatMessageSendDataToJson(
         PleromaChatMessageSendData instance) =>
     <String, dynamic>{
       'content': instance.content,
+      'media_id': instance.mediaId,
     };

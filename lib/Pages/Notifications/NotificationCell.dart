@@ -110,15 +110,15 @@ class _NotificationCell extends State<NotificationCell> {
             padding: EdgeInsets.only(bottom: 0, top: 8, left: 12.0, right: 12),
             child: Html(
               data: widget.notification.status.content,
-              customTextStyle: (dom.Node node, TextStyle baseStyle) {
-                if (node is dom.Element) {
-                  switch (node.localName) {
-                    case "p":
-                      return baseStyle.merge(TextStyle(fontSize: 18));
-                  }
-                }
-                return baseStyle.merge(TextStyle(fontSize: 18));
-              },
+//              customTextStyle: (dom.Node node, TextStyle baseStyle) {
+//                if (node is dom.Element) {
+//                  switch (node.localName) {
+//                    case "p":
+//                      return baseStyle.merge(TextStyle(fontSize: 18));
+//                  }
+//                }
+//                return baseStyle.merge(TextStyle(fontSize: 18));
+//              },
             ),
           ),
         ],

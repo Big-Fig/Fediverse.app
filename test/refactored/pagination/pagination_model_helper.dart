@@ -31,4 +31,7 @@ class TestPaginationItem {
     }
     return a.index.compareTo(b.index) * (-1);
   }
+
+  static bool equalItems(TestPaginationItem a, TestPaginationItem b) =>
+      a.index == b.index;
 }

@@ -12,8 +12,10 @@ class PostStatusAttachMediaActionWidget extends StatelessWidget {
     var postStatusBloc = IPostStatusBloc.of(context, listen: false);
 
     return StreamBuilder<bool>(
-        stream: postStatusBloc.isPossibleToAttachMediaStream,
-        initialData: postStatusBloc.isPossibleToAttachMedia,
+        stream: postStatusBloc
+            .mediaAttachmentGridBloc.isPossibleToAttachMediaStream,
+        initialData:
+            postStatusBloc.mediaAttachmentGridBloc.isPossibleToAttachMedia,
         builder: (context, snapshot) {
           var isPossibleToAttach = snapshot.data;
 
@@ -22,7 +24,8 @@ class PostStatusAttachMediaActionWidget extends StatelessWidget {
             onPressed = () {
               goToSingleFilePickerPage(context,
                   fileSelectedCallback: (FilePickerFile filePickerFile) {
-                postStatusBloc.attachMedia(filePickerFile);
+                postStatusBloc.mediaAttachmentGridBloc
+                    .attachMedia(filePickerFile);
                 Navigator.of(context).pop();
               }, startActiveTab: FilePickerTab.gallery);
             };
@@ -31,7 +34,9 @@ class PostStatusAttachMediaActionWidget extends StatelessWidget {
           return IconButton(
             icon: Icon(
               FediIcons.attachment,
-              color: isPossibleToAttach ? FediColors.darkGrey : FediColors.lightGrey,
+              color: isPossibleToAttach
+                  ? FediColors.darkGrey
+                  : FediColors.lightGrey,
             ),
             onPressed: onPressed,
           );

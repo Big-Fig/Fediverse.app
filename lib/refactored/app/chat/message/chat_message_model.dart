@@ -1,6 +1,7 @@
 import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/database/app_database.dart';
 import 'package:fedi/refactored/pleroma/emoji/pleroma_emoji_model.dart';
+import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/widgets.dart';
 
 abstract class IChatMessage {
@@ -13,6 +14,7 @@ abstract class IChatMessage {
   IAccount get account;
 
   String get content;
+  IPleromaMediaAttachment get mediaAttachment;
 
   DateTime get createdAt;
 
@@ -25,6 +27,7 @@ abstract class IChatMessage {
     IAccount account,
     String content,
     DateTime createdAt,
+    IPleromaMediaAttachment mediaAttachment,
     List<PleromaEmoji> emojis,
   });
 }
@@ -56,6 +59,10 @@ class DbChatMessagePopulatedWrapper extends IChatMessage {
   String get remoteId => dbChatMessagePopulated.dbChatMessage.remoteId;
 
   @override
+  IPleromaMediaAttachment get mediaAttachment => dbChatMessagePopulated.dbChatMessage
+      .mediaAttachment;
+
+  @override
   DbChatMessagePopulatedWrapper copyWith({
     int localId,
     String remoteId,
@@ -63,6 +70,7 @@ class DbChatMessagePopulatedWrapper extends IChatMessage {
     IAccount account,
     String content,
     DateTime createdAt,
+    IPleromaMediaAttachment mediaAttachment,
     List<PleromaEmoji> emojis,
   }) =>
       DbChatMessagePopulatedWrapper(dbChatMessagePopulated.copyWith(
@@ -72,6 +80,7 @@ class DbChatMessagePopulatedWrapper extends IChatMessage {
         account: account,
         content: content,
         createdAt: createdAt,
+        mediaAttachment:mediaAttachment,
         emojis: emojis,
       ));
 
@@ -102,6 +111,7 @@ class DbChatMessagePopulated {
     IAccount account,
     String content,
     DateTime createdAt,
+    IPleromaMediaAttachment mediaAttachment,
     List<IPleromaEmoji> emojis,
   }) =>
       DbChatMessagePopulated(
@@ -112,6 +122,7 @@ class DbChatMessagePopulated {
             content: content ?? dbChatMessage.content,
             createdAt: createdAt ?? dbChatMessage.createdAt,
             emojis: emojis ?? dbChatMessage.emojis,
+            mediaAttachment: mediaAttachment ?? dbChatMessage.mediaAttachment,
             accountRemoteId: account?.remoteId ?? dbAccount.remoteId,
           ),
           dbAccount:

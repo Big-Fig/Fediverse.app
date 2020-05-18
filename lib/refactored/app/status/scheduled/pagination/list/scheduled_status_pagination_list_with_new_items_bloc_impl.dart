@@ -30,7 +30,7 @@ class ScheduledStatusPaginationListWithNewItemsBloc<
   }
 
   @override
-  int compareItems(IScheduledStatus a, IScheduledStatus b) {
+  int compareItemsToSort(IScheduledStatus a, IScheduledStatus b) {
     if (a == null && b == null) {
       return 0;
     }
@@ -43,4 +43,8 @@ class ScheduledStatusPaginationListWithNewItemsBloc<
     }
     return a.remoteId.compareTo(b.remoteId);
   }
+
+  @override
+  bool isItemsEqual(IScheduledStatus a, IScheduledStatus b) =>
+      a.remoteId == b.remoteId;
 }

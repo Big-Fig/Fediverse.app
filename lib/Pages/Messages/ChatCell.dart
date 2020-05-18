@@ -78,18 +78,18 @@ class _ChatCell extends State<ChatCell> {
                                 data: removeAccountFromHTML(
                                     widget.status.content,
                                     widget.status.account.url),
-                                customTextStyle:
-                                    (dom.Node node, TextStyle baseStyle) {
-                                  if (node is dom.Element) {
-                                    switch (node.localName) {
-                                      case "p":
-                                        return baseStyle
-                                            .merge(TextStyle(fontSize: 18));
-                                    }
-                                  }
-                                  return baseStyle
-                                      .merge(TextStyle(fontSize: 18));
-                                },
+//                                customTextStyle:
+//                                    (dom.Node node, TextStyle baseStyle) {
+//                                  if (node is dom.Element) {
+//                                    switch (node.localName) {
+//                                      case "p":
+//                                        return baseStyle
+//                                            .merge(TextStyle(fontSize: 18));
+//                                    }
+//                                  }
+//                                  return baseStyle
+//                                      .merge(TextStyle(fontSize: 18));
+//                                },
                                 onLinkTap: (String link) {
                                   print("link $link");
                                   canLaunch(link).then((result) {
@@ -163,18 +163,18 @@ class _ChatCell extends State<ChatCell> {
                                     data: removeAccountFromHTML(
                                         widget.status.content,
                                         widget.status.account.url),
-                                    customTextStyle:
-                                        (dom.Node node, TextStyle baseStyle) {
-                                      if (node is dom.Element) {
-                                        switch (node.localName) {
-                                          case "p":
-                                            return baseStyle
-                                                .merge(TextStyle(fontSize: 18));
-                                        }
-                                      }
-                                      return baseStyle
-                                          .merge(TextStyle(fontSize: 18));
-                                    },
+//                                    customTextStyle:
+//                                        (dom.Node node, TextStyle baseStyle) {
+//                                      if (node is dom.Element) {
+//                                        switch (node.localName) {
+//                                          case "p":
+//                                            return baseStyle
+//                                                .merge(TextStyle(fontSize: 18));
+//                                        }
+//                                      }
+//                                      return baseStyle
+//                                          .merge(TextStyle(fontSize: 18));
+//                                    },
                                   ),
                                 ),
                               ],

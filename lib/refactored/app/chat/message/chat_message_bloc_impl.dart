@@ -7,6 +7,7 @@ import 'package:fedi/refactored/app/emoji/emoji_text_helper.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:fedi/refactored/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/refactored/pleroma/chat/pleroma_chat_service.dart';
+import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -36,8 +37,6 @@ class ChatMessageBloc extends DisposableOwner implements IChatMessageBloc {
               isNeedWatchLocalRepositoryForUpdates);
 
   final BehaviorSubject<IChatMessage> _chatMessageSubject;
-
-
 
   final IPleromaChatService pleromaChatService;
   final IPleromaAccountService pleromaAccountService;
@@ -89,6 +88,13 @@ class ChatMessageBloc extends DisposableOwner implements IChatMessageBloc {
       }
     }
   }
+
+  @override
+  IPleromaMediaAttachment get mediaAttachment => chatMessage.mediaAttachment;
+
+  @override
+  Stream<IPleromaMediaAttachment> get mediaAttachmentStream =>
+      chatMessageStream.map((chatMessage) => chatMessage.mediaAttachment);
 
   @override
   IChatMessage get chatMessage => _chatMessageSubject.value;

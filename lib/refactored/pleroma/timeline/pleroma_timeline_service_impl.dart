@@ -163,7 +163,7 @@ class PleromaTimelineService implements IPleromaTimelineService {
           RestRequestQueryArg("with_muted", withMuted.toString()),
           // array
           ...(excludeVisibilities?.map((visibility) {
-            return RestRequestQueryArg("exclude_visibilities",
+            return RestRequestQueryArg("exclude_visibilities[]",
                 pleromaVisibilityValues.reverse[visibility]);
           }))
         ]);

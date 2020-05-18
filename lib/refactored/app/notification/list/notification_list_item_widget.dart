@@ -3,14 +3,18 @@ import 'package:fedi/refactored/app/account/account_bloc.dart';
 import 'package:fedi/refactored/app/account/account_bloc_impl.dart';
 import 'package:fedi/refactored/app/account/acct/account_acct_widget.dart';
 import 'package:fedi/refactored/app/account/avatar/account_avatar_widget.dart';
+import 'package:fedi/refactored/app/chat/chat_page.dart';
+import 'package:fedi/refactored/app/chat/repository/chat_repository.dart';
 import 'package:fedi/refactored/app/notification/created_at/notification_created_at_widget.dart';
 import 'package:fedi/refactored/app/notification/notification_bloc.dart';
+import 'package:fedi/refactored/app/status/thread/status_thread_page.dart';
 import 'package:fedi/refactored/app/ui/fedi_colors.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:fedi/refactored/pleroma/notification/pleroma_notification_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:html/parser.dart';
 
 var _logger = Logger("notification_list_item_timeline_widget.dart");
 
@@ -36,15 +40,21 @@ class NotificationListItemWidget extends StatelessWidget {
                 AccountAvatarWidget(progressSize: 36, imageSize: 36),
                 SizedBox(width: 16),
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      AccountAcctWidget(
-                          textStyle: TextStyle(
-                              fontSize: 16.0, color: FediColors.darkGrey)),
-                      buildNotificationContent(context, notificationBloc)
-                    ],
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () {
+                      onNotificationClick(context, notificationBloc);
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        AccountAcctWidget(
+                            textStyle: TextStyle(
+                                fontSize: 16.0, color: FediColors.darkGrey)),
+                        buildNotificationContent(context, notificationBloc)
+                      ],
+                    ),
                   ),
                 ),
                 NotificationCreatedAtWidget()
@@ -54,6 +64,24 @@ class NotificationListItemWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void onNotificationClick(
+      BuildContext context, INotificationBloc notificationBloc) async {
+    var status = notificationBloc.status;
+    if (status != null) {
+      goToStatusThreadPage(context, status);
+    } else {
+      var chatRemoteId = notificationBloc.chatRemoteId;
+
+      if (chatRemoteId != null) {
+        var chatRepository = IChatRepository.of(context, listen: false);
+
+        var chat = await chatRepository.findByRemoteId(chatRemoteId);
+
+        goToChatPage(context, chat: chat);
+      }
+    }
   }
 
   Widget buildNotificationContent(
@@ -68,15 +96,15 @@ class NotificationListItemWidget extends StatelessWidget {
         break;
       case PleromaNotificationType.favourite:
         text = appLocalizations.tr("app.notification.header.favourite",
-            args: [notificationBloc.status?.content]);
+            args: [extractStatusRawContent(notificationBloc)]);
         break;
       case PleromaNotificationType.reblog:
         text = appLocalizations.tr("app.notification.header.reblog",
-            args: [notificationBloc.status?.content]);
+            args: [extractStatusRawContent(notificationBloc)]);
         break;
       case PleromaNotificationType.mention:
         text = appLocalizations.tr("app.notification.header.mention",
-            args: [notificationBloc.status?.content]);
+            args: [extractStatusRawContent(notificationBloc)]);
         break;
       case PleromaNotificationType.poll:
         text = appLocalizations.tr("app.notification.header.poll");
@@ -91,11 +119,11 @@ class NotificationListItemWidget extends StatelessWidget {
         text = appLocalizations.tr(
             "app.notification.header"
             ".pleromaEmojiReaction",
-            args: [notificationBloc.status?.content]);
+            args: [extractStatusRawContent(notificationBloc)]);
         break;
       case PleromaNotificationType.pleromaChatMention:
         text = appLocalizations.tr("app.notification.header.pleromaChatMention",
-            args: [notificationBloc.status?.content]);
+            args: [extractStatusRawContent(notificationBloc)]);
         break;
     }
 
@@ -109,5 +137,14 @@ class NotificationListItemWidget extends StatelessWidget {
           fontSize: 16,
           fontWeight: FontWeight.w300),
     );
+  }
+
+  String extractStatusRawContent(INotificationBloc notificationBloc) {
+    var content = notificationBloc.status?.content;
+    if(content != null) {
+      var document = parse(content);
+      content = parse(document.body.text).documentElement.text;
+    }
+    return content;
   }
 }

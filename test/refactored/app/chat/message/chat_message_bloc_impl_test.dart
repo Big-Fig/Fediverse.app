@@ -131,8 +131,8 @@ void main() {
     // same if emojis is empty or null
     await _update(chatMessage.copyWith(content: newValue, emojis: <PleromaEmoji>[]));
 
-    expect(chatMessageBloc.contentWithEmojis, newValue);
-    expect(listenedValue, newValue);
+    expect(chatMessageBloc.contentWithEmojis, "<html><body><p>$newValue</p></body></html>");
+    expect(listenedValue, "<html><body><p>$newValue</p></body></html>");
 
     // same if emojis is empty or null
     await _update(chatMessage.copyWith(content: newValue, emojis: [
@@ -142,16 +142,16 @@ void main() {
 
     expect(
         chatMessageBloc.contentWithEmojis,
-        "<html><body>newContent :emoji: "
+        "<html><body><p>newContent :emoji: "
         "<img src=\"https://fedi.app/emoji1.png\" width=\"20\"> "
         "<img src=\"https://fedi.app/emoji2.png\" width=\"20\">"
-        "</body></html>");
+        "</p></body></html>");
     expect(
         listenedValue,
-        "<html><body>newContent :emoji: "
+        "<html><body><p>newContent :emoji: "
         "<img src=\"https://fedi.app/emoji1.png\" width=\"20\"> "
         "<img src=\"https://fedi.app/emoji2.png\" width=\"20\">"
-        "</body></html>");
+        "</p></body></html>");
 
     await await subscription.cancel();
   });

@@ -217,6 +217,11 @@ class MyAccountRemoteWrapper extends IMyAccount {
   @override
   int get pleromaUnreadConversationCount =>
       remoteAccount.pleroma?.unreadConversationCount;
+
+  @override
+  String toString() {
+    return 'MyAccountRemoteWrapper{remoteAccount: $remoteAccount}';
+  }
 }
 
 class SelfActionNotPossibleException implements Exception {

@@ -1,11 +1,11 @@
 import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/media/attachment/upload/upload_media_attachment_bloc.dart';
-import 'package:fedi/refactored/app/media/attachment/upload/upload_media_attachment_bloc_impl.dart';
+import 'package:fedi/refactored/app/media/attachment/upload/upload_media_attachment_grid_bloc.dart';
+import 'package:fedi/refactored/app/media/attachment/upload/upload_media_attachment_grid_bloc_impl.dart';
 import 'package:fedi/refactored/app/status/post/post_status_bloc.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/disposable/disposable.dart';
 import 'package:fedi/refactored/disposable/disposable_owner.dart';
-import 'package:fedi/refactored/file/picker/file_picker_model.dart';
 import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_service.dart';
 import 'package:fedi/refactored/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/refactored/pleroma/status/pleroma_status_service.dart';
@@ -22,11 +22,61 @@ abstract class PostStatusBloc extends DisposableOwner
     implements IPostStatusBloc {
   final IPleromaStatusService pleromaStatusService;
   final IStatusRepository statusRepository;
-  final IPleromaMediaAttachmentService pleromaMediaAttachmentService;
-  @override
-  final int maximumMediaAttachmentCount;
+
   final String conversationRemoteId;
   final String inReplyToStatusRemoteId;
+
+  @override
+  final IUploadMediaAttachmentGridBloc mediaAttachmentGridBloc;
+
+  // ignore: close_sinks
+  BehaviorSubject<String> inputTextSubject = BehaviorSubject.seeded("");
+
+  String idempotencyKey;
+
+  PostStatusBloc({
+    @required this.pleromaStatusService,
+    @required this.statusRepository,
+    @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
+    this.conversationRemoteId,
+    this.inReplyToStatusRemoteId,
+    int maximumMediaAttachmentCount = 4,
+    PleromaVisibility initialVisibility = PleromaVisibility.PUBLIC,
+    List<IAccount> initialAccountsToMention = const [],
+  }) : mediaAttachmentGridBloc = UploadMediaAttachmentGridBloc(
+            maximumMediaAttachmentCount: maximumMediaAttachmentCount,
+            pleromaMediaAttachmentService: pleromaMediaAttachmentService) {
+    assert(pleromaMediaAttachmentService != null);
+    visibilitySubject = BehaviorSubject.seeded(initialVisibility);
+    nsfwSensitiveSubject = BehaviorSubject.seeded(false);
+
+    addDisposable(streamSubscription:
+        mediaAttachmentGridBloc.mediaAttachmentBlocsStream.listen((_) {
+      _regenerateIdempotencyKey();
+    }));
+
+    addDisposable(subject: mentionedAcctsSubject);
+    addDisposable(subject: inputTextSubject);
+    addDisposable(subject: visibilitySubject);
+    addDisposable(subject: scheduledAtSubject);
+
+    addDisposable(textEditingController: inputTextController);
+
+    var editTextListener = () {
+      onInputTextChanged();
+    };
+    inputTextController.addListener(editTextListener);
+
+    addDisposable(disposable: CustomDisposable(() {
+      inputTextController.removeListener(editTextListener);
+    }));
+
+    if (initialAccountsToMention?.isNotEmpty == true) {
+      initialAccountsToMention.forEach((account) {
+        addMentionByAccount(account);
+      });
+    }
+  }
 
   @override
   bool get isHaveMentionedAccts => mentionedAccts?.isNotEmpty == true;
@@ -34,23 +84,9 @@ abstract class PostStatusBloc extends DisposableOwner
   Stream<bool> get isHaveMentionedAcctsStream => mentionedAcctsStream
       .map((mentionedAccts) => mentionedAccts?.isNotEmpty == true);
 
-  String idempotencyKey;
-
   void _regenerateIdempotencyKey() {
     idempotencyKey = DateTime.now().millisecondsSinceEpoch.toString();
   }
-
-  // ignore: close_sinks
-  BehaviorSubject<List<IUploadMediaAttachmentBloc>>
-      mediaAttachmentBlocsSubject = BehaviorSubject.seeded([]);
-
-  @override
-  List<IUploadMediaAttachmentBloc> get mediaAttachmentBlocs =>
-      mediaAttachmentBlocsSubject.value;
-
-  @override
-  Stream<List<IUploadMediaAttachmentBloc>> get mediaAttachmentBlocsStream =>
-      mediaAttachmentBlocsSubject.stream;
 
   // ignore: close_sinks
   BehaviorSubject<List<String>> mentionedAcctsSubject =
@@ -97,40 +133,18 @@ abstract class PostStatusBloc extends DisposableOwner
   Stream<bool> get nsfwSensitiveStream => nsfwSensitiveSubject.stream;
 
   @override
-  bool get isMaximumMediaAttachmentCountReached => isMaximumAttachmentReached(
-      mediaAttachmentBlocs: mediaAttachmentBlocs,
-      maximumMediaAttachmentCount: maximumMediaAttachmentCount);
-
-  @override
-  Stream<bool> get isMaximumMediaAttachmentCountReachedStream =>
-      mediaAttachmentBlocsStream.map((mediaAttachmentBlocs) =>
-          isMaximumAttachmentReached(
-              mediaAttachmentBlocs: mediaAttachmentBlocs,
-              maximumMediaAttachmentCount: maximumMediaAttachmentCount));
-
-  @override
-  bool get isPossibleToAttachMedia => !isMaximumMediaAttachmentCountReached;
-
-  @override
-  Stream<bool> get isPossibleToAttachMediaStream =>
-      isMaximumMediaAttachmentCountReachedStream.map((value) => !value);
-
-  @override
   bool get isReadyToPost => calculateIsReadyToPost(
       inputText: inputWithoutMentionedAcctsText,
-      mediaAttachmentBlocs: mediaAttachmentBlocs);
+      mediaAttachmentBlocs: mediaAttachmentGridBloc.mediaAttachmentBlocs);
 
   @override
   Stream<bool> get isReadyToPostStream => Rx.combineLatest2(
       inputWithoutMentionedAcctsTextStream,
-      mediaAttachmentBlocsStream,
+      mediaAttachmentGridBloc.mediaAttachmentBlocsStream,
       (inputWithoutMentionedAcctsText, mediaAttachmentBlocs) =>
           calculateIsReadyToPost(
               inputText: inputWithoutMentionedAcctsText,
               mediaAttachmentBlocs: mediaAttachmentBlocs));
-
-  // ignore: close_sinks
-  BehaviorSubject<String> inputTextSubject = BehaviorSubject.seeded("");
 
   @override
   String get inputText => inputTextSubject.value;
@@ -151,49 +165,6 @@ abstract class PostStatusBloc extends DisposableOwner
 
   @override
   TextEditingController inputTextController = TextEditingController();
-
-  PostStatusBloc({
-    @required this.pleromaStatusService,
-    @required this.statusRepository,
-    @required this.pleromaMediaAttachmentService,
-    this.conversationRemoteId,
-    this.inReplyToStatusRemoteId,
-    this.maximumMediaAttachmentCount = 4,
-    PleromaVisibility initialVisibility = PleromaVisibility.PUBLIC,
-    List<IAccount> initialAccountsToMention = const [],
-  }) {
-    assert(pleromaMediaAttachmentService != null);
-    visibilitySubject = BehaviorSubject.seeded(initialVisibility);
-    nsfwSensitiveSubject = BehaviorSubject.seeded(false);
-
-    addDisposable(subject: mediaAttachmentBlocsSubject);
-    addDisposable(subject: mentionedAcctsSubject);
-    addDisposable(subject: inputTextSubject);
-    addDisposable(subject: visibilitySubject);
-    addDisposable(subject: scheduledAtSubject);
-    addDisposable(disposable: CustomDisposable(() {
-      mediaAttachmentBlocs.forEach((bloc) {
-        bloc.dispose();
-      });
-    }));
-
-    addDisposable(textEditingController: inputTextController);
-
-    var editTextListener = () {
-      onInputTextChanged();
-    };
-    inputTextController.addListener(editTextListener);
-
-    addDisposable(disposable: CustomDisposable(() {
-      inputTextController.removeListener(editTextListener);
-    }));
-
-    if (initialAccountsToMention?.isNotEmpty == true) {
-      initialAccountsToMention.forEach((account) {
-        addMentionByAccount(account);
-      });
-    }
-  }
 
   void onMentionedAccountsChanged() {
     var mentionedAccts = this.mentionedAccts;
@@ -290,38 +261,6 @@ abstract class PostStatusBloc extends DisposableOwner
   }
 
   @override
-  void attachMedia(FilePickerFile filePickerFile) {
-    var existedBloc = findMediaAttachmentBlocByFilePickerFile(filePickerFile);
-
-    if (existedBloc == null) {
-      var uploadMediaAttachmentBloc = UploadMediaAttachmentBloc(
-          filePickerFile: filePickerFile,
-          pleromaMediaAttachmentService: pleromaMediaAttachmentService);
-      uploadMediaAttachmentBloc.startUpload();
-      mediaAttachmentBlocs.add(uploadMediaAttachmentBloc);
-      mediaAttachmentBlocsSubject.add(mediaAttachmentBlocs);
-    }
-    _regenerateIdempotencyKey();
-  }
-
-  @override
-  void detachMedia(FilePickerFile filePickerFile) {
-    var existedBloc = findMediaAttachmentBlocByFilePickerFile(filePickerFile);
-    if (existedBloc != null) {
-      existedBloc.dispose();
-      mediaAttachmentBlocs.remove(existedBloc);
-      mediaAttachmentBlocsSubject.add(mediaAttachmentBlocs);
-    }
-    _regenerateIdempotencyKey();
-  }
-
-  IUploadMediaAttachmentBloc findMediaAttachmentBlocByFilePickerFile(
-          FilePickerFile filePickerFile) =>
-      mediaAttachmentBlocs.firstWhere((bloc) {
-        return bloc.filePickerFile == filePickerFile;
-      }, orElse: () => null);
-
-  @override
   void changeVisibility(PleromaVisibility visibility) {
     visibilitySubject.add(visibility);
   }
@@ -364,7 +303,7 @@ abstract class PostStatusBloc extends DisposableOwner
   Future<bool> _postStatus() async {
     var remoteStatus = await pleromaStatusService.postStatus(
         data: PleromaPostStatus(
-            mediaIds: mediaAttachmentBlocs
+            mediaIds: mediaAttachmentGridBloc.mediaAttachmentBlocs
                 ?.map((bloc) => bloc.pleromaMediaAttachment.id)
                 ?.toList(),
             status: inputText,
@@ -388,7 +327,7 @@ abstract class PostStatusBloc extends DisposableOwner
   Future<bool> _scheduleStatus() async {
     var scheduledStatus = await pleromaStatusService.scheduleStatus(
         data: PleromaScheduleStatus(
-            mediaIds: mediaAttachmentBlocs
+            mediaIds: mediaAttachmentGridBloc.mediaAttachmentBlocs
                 ?.map((bloc) => bloc.pleromaMediaAttachment.id)
                 ?.toList(),
             status: inputText,
@@ -404,6 +343,7 @@ abstract class PostStatusBloc extends DisposableOwner
 
   void _clear() {
     inputTextController.clear();
+    mediaAttachmentGridBloc.clear();
     _regenerateIdempotencyKey();
     clearSchedule();
   }

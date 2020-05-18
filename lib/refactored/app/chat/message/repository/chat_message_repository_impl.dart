@@ -124,12 +124,14 @@ class ChatMessageRepository extends AsyncInitLoadingBloc
         "\t offset=$offset\n"
         "\t orderingTermData=$orderingTermData\n");
 
+
     var query = dao.startSelectQuery();
 
     if (olderThanChatMessage != null || newerThanChatMessage != null) {
-      dao.addRemoteIdBoundsWhere(query,
-          maximumRemoteIdExcluding: olderThanChatMessage?.remoteId,
-          minimumRemoteIdExcluding: newerThanChatMessage?.remoteId);
+      assert(orderingTermData?.orderByType == ChatMessageOrderByType.createdAt);
+      dao.addCreatedAtBoundsWhere(query,
+          maximumDateTimeExcluding: olderThanChatMessage?.createdAt,
+          minimumDateTimeExcluding: newerThanChatMessage?.createdAt);
     }
 
     if (orderingTermData != null) {
@@ -300,7 +302,7 @@ class ChatMessageRepository extends AsyncInitLoadingBloc
           newerThanChatMessage: null,
           orderingTermData: ChatMessageOrderingTermData(
               orderingMode: OrderingMode.desc,
-              orderByType: ChatMessageOrderByType.remoteId));
+              orderByType: ChatMessageOrderByType.createdAt));
 
   @override
   Stream<IChatMessage> watchChatLastChatMessage({@required IChat chat}) =>
@@ -310,6 +312,6 @@ class ChatMessageRepository extends AsyncInitLoadingBloc
           newerThanChatMessage: null,
           orderingTermData: ChatMessageOrderingTermData(
               orderingMode: OrderingMode.desc,
-              orderByType: ChatMessageOrderByType.remoteId));
+              orderByType: ChatMessageOrderByType.createdAt));
 
 }

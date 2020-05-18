@@ -32,9 +32,11 @@ void main() {
     paginationBloc = memoryPaginationBloc;
 
     memoryPaginationListWithNewItemsBloc = MemoryPaginationListWithNewItemsBloc(
-        paginationBloc: paginationBloc,
-        mergeNewItemsImmediately: false,
-        comparator: TestPaginationItem.compareItems);
+      paginationBloc: paginationBloc,
+      mergeNewItemsImmediately: false,
+      comparator: TestPaginationItem.compareItems,
+      equalTo: TestPaginationItem.equalItems,
+    );
     paginationListWithNewItemsBloc = memoryPaginationListWithNewItemsBloc;
     paginationListBloc = paginationListWithNewItemsBloc;
   });
@@ -401,9 +403,11 @@ void main() {
 
   test('mergeNewItemsImmediately', () async {
     memoryPaginationListWithNewItemsBloc = MemoryPaginationListWithNewItemsBloc(
-        paginationBloc: paginationBloc,
-        mergeNewItemsImmediately: true,
-        comparator: TestPaginationItem.compareItems);
+      paginationBloc: paginationBloc,
+      mergeNewItemsImmediately: true,
+      comparator: TestPaginationItem.compareItems,
+      equalTo: TestPaginationItem.equalItems,
+    );
     paginationListWithNewItemsBloc = memoryPaginationListWithNewItemsBloc;
     paginationListBloc = paginationListWithNewItemsBloc;
 

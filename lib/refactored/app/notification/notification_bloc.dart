@@ -18,6 +18,14 @@ abstract class INotificationBloc implements Disposable {
 
   Stream<IStatus> get statusStream;
 
+  String get chatMessageRemoteId;
+
+  Stream<String> get chatMessageRemoteIdStream;
+
+  String get chatRemoteId;
+
+  Stream<String> get chatRemoteIdStream;
+
   String get remoteId;
 
   IAccount get account;
@@ -25,7 +33,9 @@ abstract class INotificationBloc implements Disposable {
   Stream<IAccount> get accountStream;
 
   String get type;
+
   MastodonNotificationType get typeMastodon;
+
   PleromaNotificationType get typePleroma;
 
   DateTime get createdAt;

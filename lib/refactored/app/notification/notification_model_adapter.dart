@@ -31,6 +31,8 @@ DbNotification mapRemoteNotificationToDbNotification(
       createdAt: remoteNotification.createdAt,
       accountRemoteId: remoteNotification.account.id,
       statusRemoteId: remoteNotification.status?.id,
+      chatRemoteId: remoteNotification.chatMessage?.chatId,
+      chatMessageRemoteId: remoteNotification.chatMessage?.id,
       type: remoteNotification.type,
       unread: unread);
 }
