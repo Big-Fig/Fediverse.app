@@ -19,7 +19,7 @@ class StatusListItemMediaWidget extends StatelessWidget {
         child: CachedNetworkImage(
           fit: BoxFit.cover,
           imageUrl: previewUrl,
-          placeholder: (context, url) => Center(
+          placeholder: (context, url) => const Center(
             child: CircularProgressIndicator(),
           ),
           width: MediaQuery.of(context).size.width,
@@ -55,12 +55,12 @@ class StatusListItemMediaWidget extends StatelessWidget {
                     // todo: display all medias in list
                     return mediaAttachmentPreviewUrlWidget(previewUrl, context);
                   } else {
-                    return StatusNsfwWarningWidget();
+                    return const StatusNsfwWarningWidget();
                   }
                 });
           } else {
             // TODO: remove hack
-            return SizedBox.shrink();
+            return const SizedBox.shrink();
           }
         });
   }

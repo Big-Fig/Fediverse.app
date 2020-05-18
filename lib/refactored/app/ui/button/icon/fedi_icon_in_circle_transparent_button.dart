@@ -6,11 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 
-class FediIconInCircleTransparentButton extends FediIconInCircleButton {
+class FediIconInCircleTransparentButton extends StatelessWidget
+    implements FediIconInCircleButton {
   final IconData iconData;
   final VoidCallback onPressed;
 
-  FediIconInCircleTransparentButton(this.iconData, {@required this.onPressed});
+  const FediIconInCircleTransparentButton(this.iconData,
+      {@required this.onPressed});
 
   @override
   Widget build(BuildContext context) => Container(

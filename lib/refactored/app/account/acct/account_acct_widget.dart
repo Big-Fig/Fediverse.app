@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 class AccountAcctWidget extends StatelessWidget {
   final TextStyle textStyle;
 
-  AccountAcctWidget(
+  const AccountAcctWidget(
       {this.textStyle = const TextStyle(
         color: FediColors.darkGrey,
         fontSize: 14.0,

@@ -12,7 +12,7 @@ var _logger = Logger("status_media_attachments_widget.dart");
 class MediaAttachmentsWidget extends StatelessWidget {
   final List<IPleromaMediaAttachment> mediaAttachments;
 
-  MediaAttachmentsWidget({@required this.mediaAttachments});
+  const MediaAttachmentsWidget({@required this.mediaAttachments});
 
   @override
   Widget build(BuildContext context) {

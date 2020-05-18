@@ -91,4 +91,6 @@ class AccountInfoWidget extends StatelessWidget {
       ),
     );
   }
+
+  const AccountInfoWidget();
 }

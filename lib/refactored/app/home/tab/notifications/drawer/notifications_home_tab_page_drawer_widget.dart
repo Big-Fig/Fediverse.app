@@ -95,4 +95,6 @@ class NotificationsHomeTabPageDrawerWidget extends StatelessWidget {
       ),
     );
   }
+
+  const NotificationsHomeTabPageDrawerWidget();
 }

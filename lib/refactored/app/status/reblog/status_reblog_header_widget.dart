@@ -67,4 +67,6 @@ class StatusReblogHeaderWidget extends StatelessWidget {
           );
         });
   }
+
+  const StatusReblogHeaderWidget();
 }

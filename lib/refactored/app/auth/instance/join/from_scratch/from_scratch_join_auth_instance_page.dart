@@ -17,6 +17,8 @@ class FromScratchJoinAuthInstancePage extends StatelessWidget {
       ),
     );
   }
+
+  const FromScratchJoinAuthInstancePage();
 }
 
 void goToJoinNewInstancePage(BuildContext context) {

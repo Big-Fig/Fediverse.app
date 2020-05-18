@@ -342,4 +342,6 @@ class EditMyAccountWidget extends StatelessWidget {
       ),
     );
   }
+
+  const EditMyAccountWidget();
 }

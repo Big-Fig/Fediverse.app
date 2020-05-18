@@ -14,16 +14,18 @@ class AccountWidget extends StatelessWidget {
     return Container(
       child: Column(
         children: <Widget>[
-          AccountInfoWidget(),
+          const AccountInfoWidget(),
           if (!myAccountBloc.checkAccountIsMe(accountBloc.account))
             Container(
               color: Colors.blue[100],
-              child: AccountActionListWidget(),
+              child: const AccountActionListWidget(),
             ),
-          AccountNoteWidget(),
-          AccountFieldGridWidget(),
+          const AccountNoteWidget(),
+          const AccountFieldGridWidget(),
         ],
       ),
     );
   }
+
+  const AccountWidget();
 }

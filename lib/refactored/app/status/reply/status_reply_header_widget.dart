@@ -61,4 +61,6 @@ class StatusReplyHeaderWidget extends StatelessWidget {
           );
         });
   }
+
+  const StatusReplyHeaderWidget();
 }

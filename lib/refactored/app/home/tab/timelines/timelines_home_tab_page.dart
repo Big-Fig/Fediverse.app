@@ -27,7 +27,7 @@ class TimelinesHomeTabPage extends StatelessWidget {
         create: (BuildContext context) => TimelinesHomeTabPageDrawerBloc(
             localPreferencesBloc:
                 ITimelineLocalPreferencesBloc.of(context, listen: false)),
-        child: TimelinesHomeTabPageDrawerWidget(),
+        child: const TimelinesHomeTabPageDrawerWidget(),
       ),
       body: DisposableProvider<ITimelineTabsBloc>(
           create: (BuildContext context) =>

@@ -153,4 +153,6 @@ class AuthInstanceChooserWidget extends StatelessWidget {
           ],
         ),
       );
+
+  const AuthInstanceChooserWidget();
 }

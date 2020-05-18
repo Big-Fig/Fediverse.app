@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class MediaAttachmentImageWidget extends StatelessWidget {
   final IPleromaMediaAttachment mediaAttachment;
 
-  MediaAttachmentImageWidget(this.mediaAttachment);
+  const MediaAttachmentImageWidget(this.mediaAttachment);
 
   @override
   Widget build(BuildContext context) {

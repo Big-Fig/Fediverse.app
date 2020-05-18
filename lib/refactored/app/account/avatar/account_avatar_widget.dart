@@ -7,7 +7,7 @@ class AccountAvatarWidget extends StatelessWidget {
   final double imageSize;
   final double progressSize;
 
-  AccountAvatarWidget({this.imageSize = 80.0, this.progressSize = 30.0});
+  const AccountAvatarWidget({this.imageSize = 80.0, this.progressSize = 30.0});
 
   @override
   Widget build(BuildContext context) {

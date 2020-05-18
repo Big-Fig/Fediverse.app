@@ -321,4 +321,6 @@ class StatusShareActionWidget extends StatelessWidget {
       ),
     );
   }
+
+  const StatusShareActionWidget();
 }

@@ -29,7 +29,7 @@ var _logger = Logger("notification_tabs_widget.dart");
 class NotificationTabsWidget extends StatelessWidget {
   final List<Widget> appBarActionWidgets;
 
-  NotificationTabsWidget(
+  const NotificationTabsWidget(
       {@required Key key, @required this.appBarActionWidgets})
       : super(key: key);
 

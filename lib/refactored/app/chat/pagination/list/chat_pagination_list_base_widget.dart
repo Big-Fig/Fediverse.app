@@ -12,15 +12,13 @@ abstract class ChatPaginationListBaseWidget
     Widget header,
     Widget footer,
     bool alwaysShowHeader,
-    bool alwaysShowFooter,
-    RefreshAction additionalRefreshAction,
+    bool alwaysShowFooter
   }) : super(
             key: key,
             header: header,
             footer: footer,
             alwaysShowHeader: alwaysShowHeader,
-            alwaysShowFooter: alwaysShowFooter,
-            additionalRefreshAction: additionalRefreshAction);
+            alwaysShowFooter: alwaysShowFooter);
 
   @override
   IPaginationListBloc<PaginationPage<IChat>, IChat>

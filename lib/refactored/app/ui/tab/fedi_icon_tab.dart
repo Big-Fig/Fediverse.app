@@ -7,7 +7,7 @@ class FediIconTab extends StatefulWidget {
   final IconData iconData;
   final int index;
 
-  FediIconTab(this.iconData, {@required this.index});
+  const FediIconTab(this.iconData, {@required this.index});
 
   @override
   _FediIconTabState createState() => _FediIconTabState();

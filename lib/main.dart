@@ -14,6 +14,7 @@ import 'package:fedi/refactored/app/auth/instance/join/from_scratch/from_scratch
 import 'package:fedi/refactored/app/auth/instance/join/join_auth_instance_bloc.dart';
 import 'package:fedi/refactored/app/auth/instance/join/join_auth_instance_bloc_impl.dart';
 import 'package:fedi/refactored/app/auth/instance/list/auth_instance_list_model.dart';
+import 'package:fedi/refactored/app/context/app_context_bloc.dart';
 import 'package:fedi/refactored/app/context/app_context_bloc_impl.dart';
 import 'package:fedi/refactored/app/home/home_bloc.dart';
 import 'package:fedi/refactored/app/home/home_bloc_impl.dart';
@@ -43,6 +44,7 @@ import 'package:hive/hive.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 
 var _logger = Logger("main.dart");
 
@@ -111,8 +113,10 @@ void main() async {
 CurrentAuthInstanceContextBloc currentInstanceContextBloc;
 
 void showSplashPage(AppContextBloc appContextBloc) {
-  runApp(
-      EasyLocalization(child: MyApp(child: (AppSplashWidget(appContextBloc)))));
+  runApp(EasyLocalization(
+      child: MyApp(
+          child: Provider<IAppContextBloc>.value(
+              value: appContextBloc, child: (const AppSplashWidget())))));
 }
 
 void buildCurrentInstanceApp(
@@ -145,7 +149,8 @@ void buildCurrentInstanceApp(
                         child: MyApp(
                             child: CurrentAuthInstanceContextLoadingWidget(
                           child: DisposableProvider<IHomeBloc>(
-                              create: (context) => HomeBloc(startTab: HomeTab.timelines),
+                              create: (context) =>
+                                  HomeBloc(startTab: HomeTab.timelines),
                               child: const HomePage()),
                         )))))));
   } else {
@@ -153,14 +158,15 @@ void buildCurrentInstanceApp(
         child: appContextBloc.provideContextToChild(
             child: DisposableProvider<IJoinAuthInstanceBloc>(
                 create: (context) => JoinAuthInstanceBloc(),
-                child: MyApp(child: FromScratchJoinAuthInstancePage())))));
+                child:
+                    const MyApp(child: FromScratchJoinAuthInstancePage())))));
   }
 }
 
 class MyApp extends StatelessWidget {
   final Widget child;
 
-  MyApp({@required this.child});
+  const MyApp({@required this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -195,7 +201,7 @@ class MyApp extends StatelessWidget {
 }
 
 void initLog() {
-  if (kReleaseMode) {
+  if (kReleaseMode || true) {
     Logger.root.level = Level.OFF; // defaults to Level.INFO
   } else {
     Logger.root.level = Level.ALL; // defaults to Level.INFO

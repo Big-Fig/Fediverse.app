@@ -34,7 +34,7 @@ class ConversationsHomeTabPage extends StatelessWidget {
         body: DisposableProvider<IConversationsListBloc>(
             create: (context) =>
                 ConversationsListBloc.createFromContext(context),
-            child: ConversationsListWidget(key: key)),
+            child: const ConversationsListWidget()),
       ),
     );
   }

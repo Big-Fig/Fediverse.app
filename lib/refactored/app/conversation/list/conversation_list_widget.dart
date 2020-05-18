@@ -16,15 +16,13 @@ class ConversationListWidget extends PaginationListWidget<IConversation> {
     Widget header,
     Widget footer,
     bool alwaysShowHeader,
-    bool alwaysShowFooter,
-    RefreshAction additionalRefreshAction,
+    bool alwaysShowFooter
   }) : super(
             key: key,
             footer: footer,
             header: header,
             alwaysShowHeader: alwaysShowHeader,
-            alwaysShowFooter: alwaysShowFooter,
-            additionalRefreshAction: additionalRefreshAction);
+            alwaysShowFooter: alwaysShowFooter);
 
   @override
   ScrollView buildItemsCollectionView(

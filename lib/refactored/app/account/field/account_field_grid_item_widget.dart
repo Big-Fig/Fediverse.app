@@ -5,7 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 class AccountFieldGridItemWidget extends StatelessWidget {
   final IPleromaField field;
 
-  AccountFieldGridItemWidget({@required this.field});
+  const AccountFieldGridItemWidget({@required this.field});
 
   @override
   Widget build(BuildContext context) {

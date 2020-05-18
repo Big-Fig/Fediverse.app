@@ -10,7 +10,7 @@ var _logger = Logger("pagination_list_with_new_items_header_widget.dart");
 class PaginationListWithNewItemsHeaderWidget extends StatelessWidget {
   final Widget child;
 
-  PaginationListWithNewItemsHeaderWidget({@required this.child});
+  const PaginationListWithNewItemsHeaderWidget({@required this.child});
 
   @override
   Widget build(BuildContext context) {

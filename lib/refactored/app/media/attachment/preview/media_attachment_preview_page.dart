@@ -11,7 +11,7 @@ import 'package:photo_view/photo_view.dart';
 class MediaAttachmentPreviewPage extends StatelessWidget {
   final IPleromaMediaAttachment mediaAttachment;
 
-  MediaAttachmentPreviewPage({@required this.mediaAttachment});
+  const MediaAttachmentPreviewPage({@required this.mediaAttachment});
 
   @override
   Widget build(BuildContext context) {

@@ -83,4 +83,6 @@ class TimelinesHomeTabPageDrawerWidget extends StatelessWidget {
       ),
     );
   }
+
+  const TimelinesHomeTabPageDrawerWidget();
 }

@@ -13,8 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class MyAccountDetailsPage extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
     var myAccountBloc = IMyAccountBloc.of(context, listen: true);
@@ -28,20 +26,20 @@ class MyAccountDetailsPage extends StatelessWidget {
           title: buildAccountChooserButton(context, myAccountBloc),
           actions: <Widget>[
             IconButton(
-              icon: Icon(Icons.edit),
+              icon: const Icon(Icons.edit),
               onPressed: () {
                 goToEditMyAccountPage(context);
               },
             ),
             IconButton(
-              icon: Icon(Icons.schedule),
+              icon: const Icon(Icons.schedule),
               onPressed: () {
                 goToScheduledStatusListPage(context);
               },
             )
           ],
         ),
-        body: SafeArea(child: AccountDetailsWidget()),
+        body: const SafeArea(child: AccountDetailsWidget()),
       ),
     );
   }
@@ -54,7 +52,7 @@ class MyAccountDetailsPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             buildCurrentInstanceNameWidget(context),
-            Icon(
+            const Icon(
               Icons.keyboard_arrow_down,
               color: Colors.white,
             ),
@@ -84,6 +82,6 @@ class MyAccountDetailsPage extends StatelessWidget {
 void goToMyAccountDetailsPagePage(BuildContext context, IAccount account) {
   Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) => MyAccountDetailsPage()),
+    MaterialPageRoute(builder: (context) => const MyAccountDetailsPage()),
   );
 }

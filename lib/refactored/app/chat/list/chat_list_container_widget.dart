@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 var _logger = Logger("chats_list_widget.dart");
 
 class ChatListContainerWidget extends StatelessWidget {
-  ChatListContainerWidget({Key key}) : super(key: key);
+  const ChatListContainerWidget({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

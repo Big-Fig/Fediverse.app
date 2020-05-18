@@ -1,8 +1,8 @@
+import 'package:fedi/refactored/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/refactored/disposable/disposable.dart';
-import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:flutter/cupertino.dart';
 
-abstract class IProviderContextBloc extends DisposableOwner {
+abstract class IProviderContextBloc extends AsyncInitLoadingBloc {
   T get<T extends Disposable>();
 
   Disposable register<T extends Disposable>(T object);

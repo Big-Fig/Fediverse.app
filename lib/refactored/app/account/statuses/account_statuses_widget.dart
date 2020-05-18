@@ -1,3 +1,4 @@
+import 'package:fedi/refactored/app/account/account_bloc.dart';
 import 'package:fedi/refactored/app/status/list/status_list_item_timeline_widget.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
 import 'package:fedi/refactored/app/status/status_bloc_impl.dart';
@@ -12,20 +13,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 class AccountStatusesWidget extends PaginationListWidget<IStatus> {
-  AccountStatusesWidget({
+  const AccountStatusesWidget({
     @required Key key,
     Widget header,
     Widget footer,
     bool alwaysShowHeader,
     bool alwaysShowFooter,
-    RefreshAction additionalRefreshAction,
   }) : super(
             key: key,
             footer: footer,
             header: header,
             alwaysShowHeader: alwaysShowHeader,
-            alwaysShowFooter: alwaysShowFooter,
-            additionalRefreshAction: additionalRefreshAction);
+            alwaysShowFooter: alwaysShowFooter);
+
+  @override
+  Future<bool> additionalRefreshAction(BuildContext context) {
+    var accountBloc = IAccountBloc.of(context, listen: false);
+
+    return accountBloc.refreshFromNetwork();
+  }
 
   @override
   ScrollView buildItemsCollectionView(

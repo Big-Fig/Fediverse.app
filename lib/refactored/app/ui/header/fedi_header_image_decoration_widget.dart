@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 class FediHeaderImageDecorationWidget extends StatelessWidget {
   final Widget child;
 
-  FediHeaderImageDecorationWidget({@required this.child});
+  const FediHeaderImageDecorationWidget({@required this.child});
 
   @override
   Widget build(BuildContext context) {

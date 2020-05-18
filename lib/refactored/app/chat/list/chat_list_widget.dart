@@ -17,14 +17,12 @@ class ChatListWidget extends PaginationListWidget<IChat> {
     Widget footer,
     bool alwaysShowHeader,
     bool alwaysShowFooter,
-    RefreshAction additionalRefreshAction,
   }) : super(
             key: key,
             footer: footer,
             header: header,
             alwaysShowHeader: alwaysShowHeader,
-            alwaysShowFooter: alwaysShowFooter,
-            additionalRefreshAction: additionalRefreshAction);
+            alwaysShowFooter: alwaysShowFooter);
 
   @override
   ScrollView buildItemsCollectionView(

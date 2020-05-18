@@ -49,8 +49,8 @@ class ConversationStatusListItemWidget extends StatelessWidget {
         child: Container(
           child: Column(
             children: <Widget>[
-              StatusContentWithEmojisWithoutAccountsWidget(),
-              StatusCardWidget(),
+              const StatusContentWithEmojisWithoutAccountsWidget(),
+              const StatusCardWidget(),
               StreamBuilder<List<IPleromaMediaAttachment>>(
                   stream: statusBloc.mediaAttachmentsStream,
                   initialData: statusBloc.mediaAttachments,

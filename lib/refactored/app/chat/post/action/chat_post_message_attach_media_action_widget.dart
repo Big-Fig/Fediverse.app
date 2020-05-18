@@ -40,4 +40,6 @@ class ChatPostMessageAttachMediaActionWidget extends StatelessWidget {
           );
         });
   }
+
+  const ChatPostMessageAttachMediaActionWidget();
 }

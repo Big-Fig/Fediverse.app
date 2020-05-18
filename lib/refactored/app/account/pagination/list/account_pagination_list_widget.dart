@@ -17,13 +17,12 @@ class AccountPaginationListWidget extends PaginationListWidget<IAccount> {
   final AccountSelectedCallback accountSelectedCallback;
 
   final bool needWatchLocalRepositoryForUpdates;
-  AccountPaginationListWidget({
+  const AccountPaginationListWidget({
     @required Key key,
     Widget header,
     Widget footer,
     bool alwaysShowHeader,
     bool alwaysShowFooter,
-    RefreshAction additionalRefreshAction,
     this.needWatchLocalRepositoryForUpdates = true,
     @required this.accountSelectedCallback,
   }) : super(
@@ -31,8 +30,7 @@ class AccountPaginationListWidget extends PaginationListWidget<IAccount> {
             header: header,
             footer: footer,
             alwaysShowHeader: alwaysShowHeader,
-            alwaysShowFooter: alwaysShowFooter,
-            additionalRefreshAction: additionalRefreshAction);
+            alwaysShowFooter: alwaysShowFooter);
 
   @override
   ScrollView buildItemsCollectionView(

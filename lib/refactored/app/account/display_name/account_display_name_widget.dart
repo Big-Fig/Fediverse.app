@@ -23,4 +23,6 @@ class AccountDisplayNameWidget extends StatelessWidget {
               emojiText: accountDisplayNameEmojiText, textStyle: textStyle);
         });
   }
+
+  const AccountDisplayNameWidget();
 }

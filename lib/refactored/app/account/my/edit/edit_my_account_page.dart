@@ -102,6 +102,8 @@ class EditMyAccountPage extends StatelessWidget {
       cancelable: true,
     );
   }
+
+  const EditMyAccountPage();
 }
 
 void goToEditMyAccountPage(BuildContext context) {
@@ -110,6 +112,6 @@ void goToEditMyAccountPage(BuildContext context) {
     MaterialPageRoute(
         builder: (context) => DisposableProvider<IEditMyAccountBloc>(
             create: (context) => EditMyAccountBloc.createFromContext(context),
-            child: EditMyAccountPage())),
+            child: const EditMyAccountPage())),
   );
 }

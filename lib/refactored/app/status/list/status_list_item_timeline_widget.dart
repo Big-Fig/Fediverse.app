@@ -64,9 +64,9 @@ class StatusListItemTimelineWidget extends StatelessWidget {
                 builder: (context, snapshot) {
                   var isHaveReblogStream = snapshot.data;
                   if (isHaveReblogStream == true) {
-                    return StatusReblogHeaderWidget();
+                    return const StatusReblogHeaderWidget();
                   } else {
-                    return SizedBox.shrink();
+                    return const SizedBox.shrink();
                   }
                 }),
             StreamBuilder<bool>(
@@ -75,9 +75,9 @@ class StatusListItemTimelineWidget extends StatelessWidget {
                 builder: (context, snapshot) {
                   var isHaveInReplyToAccount = snapshot.data;
                   if (isHaveInReplyToAccount == true) {
-                    return StatusReplyHeaderWidget();
+                    return const StatusReplyHeaderWidget();
                   } else {
-                    return SizedBox.shrink();
+                    return const SizedBox.shrink();
                   }
                 }),
             Padding(
@@ -85,8 +85,8 @@ class StatusListItemTimelineWidget extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  StatusAccountWidget(),
-                  StatusCreatedAtWidget(),
+                  const StatusAccountWidget(),
+                  const StatusCreatedAtWidget(),
                 ],
               ),
             ),
@@ -95,7 +95,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               child: buildStatusContent(context, statusBloc),
             ),
-            if (displayActions) StatusEmojiReactionListWidget(),
+            if (displayActions) const StatusEmojiReactionListWidget(),
             if (displayActions)
               Column(
                 children: <Widget>[
@@ -112,13 +112,13 @@ class StatusListItemTimelineWidget extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
-                            StatusCommentActionWidget(),
-                            StatusFavouriteActionWidget(),
+                            const StatusCommentActionWidget(),
+                            const StatusFavouriteActionWidget(),
                             buildEmojiPickerButton(context, statusBloc),
-                            StatusReblogActionWidget()
+                            const StatusReblogActionWidget()
                           ],
                         ),
-                        StatusShareActionWidget(),
+                        const StatusShareActionWidget(),
                       ],
                     ),
                   ),
@@ -165,31 +165,36 @@ class StatusListItemTimelineWidget extends StatelessWidget {
                     return Column(
                       children: <Widget>[
                         const StatusSpoilerWidget(),
-                        StatusContentWidget(
-                          collapsible: collapsible,
-                        ),
+                        collapsible
+                            ? StatusContentWithEmojisWidget(
+                                collapsible: true,
+                              )
+                            : StatusContentWithEmojisWidget(
+                                collapsible: false,
+                              ),
                         if (collapsible && statusBloc.isPossibleToCollapse)
                           buildCollapsibleButton(context, statusBloc),
                         const StatusCardWidget(),
                         StreamBuilder<List<IPleromaMediaAttachment>>(
                             stream: statusBloc.mediaAttachmentsStream,
                             initialData: statusBloc.mediaAttachments,
-                            builder: (context, snapshot) => MediaAttachmentsWidget(
-                              mediaAttachments: snapshot.data,
-                            )),
+                            builder: (context, snapshot) =>
+                                MediaAttachmentsWidget(
+                                  mediaAttachments: snapshot.data,
+                                )),
                       ],
                     );
                   } else {
                     return Column(
                       children: <Widget>[
-                        StatusSpoilerWidget(),
-                        StatusSpoilerAlertWidget(),
+                        const StatusSpoilerWidget(),
+                        const StatusSpoilerAlertWidget(),
                       ],
                     );
                   }
                 });
           } else {
-            return StatusNsfwWarningWidget();
+            return const StatusNsfwWarningWidget();
           }
         });
   }
