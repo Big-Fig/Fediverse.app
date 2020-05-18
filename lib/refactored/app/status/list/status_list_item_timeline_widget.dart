@@ -11,8 +11,8 @@ import 'package:fedi/refactored/app/status/created_at/status_created_at_widget.d
 import 'package:fedi/refactored/app/status/emoji_reaction/status_emoji_reaction_list_widget.dart';
 import 'package:fedi/refactored/app/status/emoji_reaction/status_emoji_reaction_picker_widget.dart';
 import 'package:fedi/refactored/app/status/nsfw/status_nsfw_warning_widget.dart';
-import 'package:fedi/refactored/app/status/reblog/status_reblog_header_widget.dart';
-import 'package:fedi/refactored/app/status/reply/status_reply_header_widget.dart';
+import 'package:fedi/refactored/app/status/header/status_reblog_header_widget.dart';
+import 'package:fedi/refactored/app/status/header/status_reply_header_widget.dart';
 import 'package:fedi/refactored/app/status/spoiler/status_spoiler_alert_widget.dart';
 import 'package:fedi/refactored/app/status/spoiler/status_spoiler_widget.dart';
 import 'package:fedi/refactored/app/status/status_bloc.dart';
