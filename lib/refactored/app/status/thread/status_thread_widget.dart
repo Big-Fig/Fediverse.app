@@ -73,14 +73,15 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
     if (statuses.isEmpty) {
       return Text(AppLocalizations.of(context).tr("app.list.empty"));
     } else {
-      // jump only after context messages loading
+      // jump only after context messages loaded
       if (!isJumpedToStartState && statuses.length > 1) {
         isJumpedToStartState = true;
-        Future.delayed(Duration(microseconds: 1), () {
+        Future.delayed(Duration(milliseconds: 1000), () {
           if (itemScrollController.isAttached) {
+            var startStatusIndex = statusThreadBloc.startStatusIndex;
             itemScrollController.scrollTo(
-                index: statusThreadBloc.startStatusIndex,
-                duration: Duration(milliseconds: 500));
+                index: startStatusIndex,
+                duration: Duration(milliseconds: 1000));
           }
         });
       }
