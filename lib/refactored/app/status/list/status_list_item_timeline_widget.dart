@@ -83,7 +83,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
                   }
                 }),
             Padding(
-              padding: EdgeInsets.all(16.0),
+              padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -168,10 +168,10 @@ class StatusListItemTimelineWidget extends StatelessWidget {
                       children: <Widget>[
                         const StatusSpoilerWidget(),
                         collapsible
-                            ? StatusContentWithEmojisWidget(
+                            ? const StatusContentWithEmojisWidget(
                                 collapsible: true,
                               )
-                            : StatusContentWithEmojisWidget(
+                            : const StatusContentWithEmojisWidget(
                                 collapsible: false,
                               ),
                         if (collapsible && statusBloc.isPossibleToCollapse)
