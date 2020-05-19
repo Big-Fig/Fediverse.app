@@ -8,6 +8,7 @@ import 'package:fedi/refactored/app/status/status_bloc_impl.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/app/status/thread/status_thread_bloc.dart';
 import 'package:fedi/refactored/app/status/thread/status_thread_page.dart';
+import 'package:fedi/refactored/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -89,7 +90,7 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
       return ScrollablePositionedList.builder(
         itemScrollController: itemScrollController,
         itemPositionsListener: itemPositionListener,
-        padding: EdgeInsets.symmetric(horizontal: 2.0, vertical: 10.0),
+//        padding: EdgeInsets.symmetric(horizontal: 2.0, vertical: 10.0),
         itemCount: statuses.length,
         itemBuilder: (BuildContext context, int index) {
           return Provider.value(
@@ -98,14 +99,17 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
                 update: (context, status, oldValue) =>
                     StatusBloc.createFromContext(context, status,
                         isNeedWatchLocalRepositoryForUpdates: true),
-                child: StatusListItemTimelineWidget(
-                  statusCallback: (context, status) {
-                    if (status.remoteId !=
-                        statusThreadBloc.startStatus.remoteId) {
-                      goToStatusThreadPage(context, status);
-                    }
-                  },
-                  collapsible: false,
+                child: FediListTile(
+                  isFirstInList: index == 0,
+                  child: StatusListItemTimelineWidget(
+                    statusCallback: (context, status) {
+                      if (status.remoteId !=
+                          statusThreadBloc.startStatus.remoteId) {
+                        goToStatusThreadPage(context, status);
+                      }
+                    },
+                    collapsible: false,
+                  ),
                 )),
           );
         },
