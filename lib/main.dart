@@ -85,6 +85,7 @@ void main() async {
   Hive.registerAdapter(PleromaInstancePleromaPartMetadataAdapter(), 60);
   Hive.registerAdapter(MastodonInstanceStatsAdapter(), 61);
   Hive.registerAdapter(MastodonUrlsAdapter(), 62);
+  Hive.registerAdapter(PleromaInstancePollLimitsAdapter(), 63);
 
   Hive.init(directory.path);
 
