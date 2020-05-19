@@ -10,15 +10,17 @@ import 'package:flutter/widgets.dart';
 class FediTransparentTextButton extends  StatelessWidget implements FediTextButton {
   final String text;
   final VoidCallback onPressed;
+  final double height;
 
-  const FediTransparentTextButton(this.text, {@required this.onPressed});
+  const FediTransparentTextButton(this.text, {@required this.onPressed, this
+      .height =  FediIconInCircleButton.defaultCircleSize});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-          height: FediIconInCircleButton.defaultCircleSize,
+          height: height,
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,
             color: FediColors.darkGrey.withOpacity(0.3),
@@ -39,6 +41,7 @@ class FediTransparentTextButton extends  StatelessWidget implements FediTextButt
                       const EdgeInsets.symmetric(vertical: 6, horizontal: 20),
                   child: Text(
                     text,
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                         fontSize: 16.0,
                         color: FediColors.white.withOpacity(0.8)),
