@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/account/account_bloc.dart';
 import 'package:fedi/refactored/app/account/avatar/account_avatar_widget.dart';
 import 'package:fedi/refactored/app/account/header/account_header_widget.dart';
+import 'package:fedi/refactored/app/ui/button/text/fedi_transparent_text_button.dart';
 import 'package:fedi/refactored/app/ui/fedi_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,50 +14,33 @@ class AccountInfoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);
     return Container(
-      height: 130,
+      height: 170,
       child: Stack(
         children: <Widget>[
           Container(
               width: double.infinity,
               height: double.infinity,
-              decoration: BoxDecoration(color: Colors.red),
               child: AccountHeaderWidget()),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                AccountAvatarWidget(
-                  imageSize: 60,
-                  progressSize: 30,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                buildDisplayName(accountBloc),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: AccountAvatarWidget(
+                    imageSize: 60,
+                    progressSize: 30,
+                  ),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    StreamBuilder<String>(
-                      stream: accountBloc.displayNameStream,
-                      initialData: accountBloc.displayName,
-                      builder: (context, snapshot) {
-                        var displayName = snapshot.data;
-                        return Text(
-                          displayName,
-                          style: TextStyle(
-                              color: FediColors.white, fontWeight: FontWeight.w500),
-                        );
-                      }
-                    ),
-                    Container(
-                      height: 80,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          buildStatusesCountWidget(accountBloc),
-                          buildFollowingCountWidget(accountBloc),
-                          buildFollowersCountWidget(accountBloc),
-                        ],
-                      ),
-                    ),
+                    buildStatusesCountWidget(accountBloc),
+                    buildFollowingCountWidget(accountBloc),
+                    buildFollowersCountWidget(accountBloc),
                   ],
                 ),
               ],
@@ -65,6 +49,20 @@ class AccountInfoWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  StreamBuilder<String> buildDisplayName(IAccountBloc accountBloc) {
+    return StreamBuilder<String>(
+        stream: accountBloc.displayNameStream,
+        initialData: accountBloc.displayName,
+        builder: (context, snapshot) {
+          var displayName = snapshot.data;
+          return Text(
+            displayName,
+            style:
+                TextStyle(color: FediColors.white, fontWeight: FontWeight.w500),
+          );
+        });
   }
 
   StreamBuilder<int> buildFollowersCountWidget(IAccountBloc accountBloc) {
@@ -103,17 +101,19 @@ class AccountInfoWidget extends StatelessWidget {
         });
   }
 
-  Container buildStatisticValueWidget(String formattedValue) {
-    return Container(
-      color: Colors.black38,
-      child: Padding(
-        padding: EdgeInsets.all(3),
-        child: Text(
-          formattedValue,
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 18, color: Colors.white),
-        ),
-      ),
+  Widget buildStatisticValueWidget(String formattedValue) {
+    return FediTransparentTextButton(
+      formattedValue,
+      onPressed: () {
+        // nothing by now
+      },
+      height: null,
+    );
+
+    return Text(
+      formattedValue,
+      textAlign: TextAlign.center,
+      style: TextStyle(fontSize: 18, color: Colors.white),
     );
   }
 
