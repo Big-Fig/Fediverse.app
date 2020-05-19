@@ -3,6 +3,7 @@ import 'package:fedi/refactored/app/status/list/status_list_item_timeline_widget
 import 'package:fedi/refactored/app/status/status_bloc.dart';
 import 'package:fedi/refactored/app/status/status_bloc_impl.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
+import 'package:fedi/refactored/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/refactored/collapsible/collapsible_bloc.dart';
 import 'package:fedi/refactored/disposable/disposable.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
@@ -62,8 +63,11 @@ class AccountStatusesWidget extends PaginationListWidget<IStatus> {
 
                       return statusBloc;
                     },
-                    child: StatusListItemTimelineWidget(
-                      collapsible: true,
+                    child: FediListTile(
+                      isFirstInList: index == 0,
+                      child: const StatusListItemTimelineWidget(
+                        collapsible: true,
+                      ),
                     )),
               ));
 
