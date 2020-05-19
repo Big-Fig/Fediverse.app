@@ -65,15 +65,10 @@ class PostStatusPostActionWidget extends StatelessWidget {
               }
             ],
             builder: (BuildContext context, onPressed) {
-              if (isReadyToPost) {
-                return FediFilledTextButton(
-                  AppLocalizations.of(context)
-                      .tr("app.status.post.action.post"),
-                  onPressed: isReadyToPost ? onPressed : null,
-                );
-              } else {
-                return SizedBox.shrink();
-              }
+              return FediFilledTextButton(
+                AppLocalizations.of(context).tr("app.status.post.action.post"),
+                onPressed: isReadyToPost ? onPressed : null,
+              );
             },
           );
         });
