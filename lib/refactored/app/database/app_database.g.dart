@@ -6277,7 +6277,7 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
       @required this.remoteId,
       @required this.chatRemoteId,
       @required this.accountRemoteId,
-      @required this.content,
+      this.content,
       @required this.createdAt,
       this.emojis,
       this.mediaAttachment});
@@ -6451,14 +6451,13 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
     @required String remoteId,
     @required String chatRemoteId,
     @required String accountRemoteId,
-    @required String content,
+    this.content = const Value.absent(),
     @required DateTime createdAt,
     this.emojis = const Value.absent(),
     this.mediaAttachment = const Value.absent(),
   })  : remoteId = Value(remoteId),
         chatRemoteId = Value(chatRemoteId),
         accountRemoteId = Value(accountRemoteId),
-        content = Value(content),
         createdAt = Value(createdAt);
   DbChatMessagesCompanion copyWith(
       {Value<int> id,
@@ -6541,7 +6540,7 @@ class $DbChatMessagesTable extends DbChatMessages
     return GeneratedTextColumn(
       'content',
       $tableName,
-      false,
+      true,
     );
   }
 
@@ -6632,8 +6631,6 @@ class $DbChatMessagesTable extends DbChatMessages
     if (d.content.present) {
       context.handle(_contentMeta,
           content.isAcceptableValue(d.content.value, _contentMeta));
-    } else if (isInserting) {
-      context.missing(_contentMeta);
     }
     if (d.createdAt.present) {
       context.handle(_createdAtMeta,

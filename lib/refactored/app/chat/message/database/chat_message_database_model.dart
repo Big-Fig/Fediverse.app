@@ -10,7 +10,7 @@ class DbChatMessages extends Table {
   TextColumn get remoteId => text().customConstraint("UNIQUE NOT NULL")();
   TextColumn get chatRemoteId => text()();
   TextColumn get accountRemoteId => text()();
-  TextColumn get content => text()();
+  TextColumn get content => text().nullable()();
   DateTimeColumn get createdAt => dateTime()();
   TextColumn get emojis =>
       text().map(PleromaEmojiListDatabaseConverter()).nullable()();
