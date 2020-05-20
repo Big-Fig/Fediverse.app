@@ -1,5 +1,5 @@
-import 'package:fedi/refactored/app/ui/fedi_colors.dart';
 import 'package:fedi/refactored/app/instance/fedi_instance_image_decoration_widget.dart';
+import 'package:fedi/refactored/app/ui/fedi_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -9,11 +9,43 @@ class FediHomeTabContainer extends StatelessWidget {
   final Widget topBar;
   final Widget body;
 
+  static const double _oneLineHeight = 104;
+
   const FediHomeTabContainer(
       {@required this.topHeaderHeightInSafeArea,
       @required this.topBar,
       @required this.body,
       this.borderRadius = 16.0});
+
+  static FediHomeTabContainer createLikeAppBar({
+    @required Widget leading,
+    @required Widget center,
+    @required Widget trailing,
+    @required Widget body,
+  }) {
+    return FediHomeTabContainer(
+        topHeaderHeightInSafeArea: _oneLineHeight,
+        topBar: Stack(
+          children: [
+            if (leading != null)
+              Align(
+                alignment: Alignment.topLeft,
+                child: leading,
+              ),
+            if (center != null)
+              Align(
+                alignment: Alignment.topCenter,
+                child: center,
+              ),
+            if (leading != trailing)
+              Align(
+                alignment: Alignment.topRight,
+                child: trailing,
+              ),
+          ],
+        ),
+        body: body);
+  }
 
   @override
   Widget build(BuildContext context) {
