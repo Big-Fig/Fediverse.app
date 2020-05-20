@@ -60,7 +60,6 @@ class HomeTimelineTabBloc extends TimelineTabBloc
       statusRepository: statusRepository,
       timelineLocalPreferencesBloc: timelineLocalPreferencesBloc,
       currentInstanceBloc: currentInstanceBloc,
-      homeAccount: myAccountBloc.account,
       accountRepository: accountRepository,
       pleromaAccountService: pleromaAccountService);
 }

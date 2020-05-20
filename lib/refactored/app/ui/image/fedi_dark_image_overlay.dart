@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:fedi/refactored/app/ui/fedi_colors.dart';
 import 'package:flutter/cupertino.dart';
 
 class FediDarkImageBackground extends StatelessWidget {

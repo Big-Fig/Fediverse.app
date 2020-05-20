@@ -1,4 +1,3 @@
-import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/account/repository/account_repository.dart';
 import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/refactored/app/status/list/cached/status_cached_list_bloc.dart';
@@ -13,43 +12,27 @@ import 'package:flutter/widgets.dart';
 
 class HomeTimelineStatusCachedListBloc extends TimelineStatusCachedListBloc
     implements IStatusCachedListBloc {
-  final IAccount homeAccount;
   final IAccountRepository accountRepository;
   final IPleromaAccountService pleromaAccountService;
-
-  DateTime lastPreRefreshAllTime;
 
   @override
   ITimelineSettings retrieveTimelineSettings() =>
       TimelineSettings.home(excludeVisibilities: [
         PleromaVisibility.DIRECT,
-      ], onlyLocal: null, onlyNotMuted: true, homeAccount: homeAccount);
+      ], onlyLocal: null, onlyNotMuted: true);
 
   HomeTimelineStatusCachedListBloc({
     @required IPleromaTimelineService pleromaTimelineService,
     @required IStatusRepository statusRepository,
     @required TimelineLocalPreferencesBloc timelineLocalPreferencesBloc,
     @required ICurrentAuthInstanceBloc currentInstanceBloc,
-    @required this.homeAccount,
     @required this.accountRepository,
     @required this.pleromaAccountService,
   }) : super(
             currentInstanceBloc: currentInstanceBloc,
             pleromaTimelineService: pleromaTimelineService,
             timelineLocalPreferencesBloc: timelineLocalPreferencesBloc,
-            statusRepository: statusRepository);
+            statusRepository: statusRepository,
+            isFromHomeTimeline: true);
 
-  @override
-  Future preRefreshAllAction() async {
-    await super.preRefreshAllAction();
-    if (lastPreRefreshAllTime == null ||
-        lastPreRefreshAllTime.difference(DateTime.now()) >
-            Duration(minutes: 1)) {
-      var followingAccounts = await pleromaAccountService.getAccountFollowings(
-          accountRemoteId: homeAccount.remoteId, limit: null);
-
-      await accountRepository.updateAccountFollowings(
-          homeAccount.remoteId, followingAccounts);
-    }
-  }
 }

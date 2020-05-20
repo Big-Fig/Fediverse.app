@@ -197,6 +197,9 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyNoRepliesWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
       query..where((status) => isNull(status.inReplyToRemoteId));
+  SimpleSelectStatement<$DbStatusesTable, DbStatus> addIsFromHomeTimelineWhere(
+          SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
+      query..where((status) => status.isFromHomeTimeline.equals(true));
 
   /// remote ids are strings but it is possible to compare them in
   /// chronological order

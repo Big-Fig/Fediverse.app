@@ -1,4 +1,3 @@
-import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 
@@ -8,8 +7,6 @@ abstract class ITimelineSettings {
   String get onlyInListWithRemoteId;
 
   String get withHashtag;
-
-  IAccount get homeAccount;
 
   bool get onlyLocal;
 
@@ -34,9 +31,6 @@ class TimelineSettings implements ITimelineSettings {
   final String onlyInListWithRemoteId;
 
   @override
-  final IAccount homeAccount;
-
-  @override
   final TimelineRemoteType remoteType;
 
   @override
@@ -47,7 +41,6 @@ class TimelineSettings implements ITimelineSettings {
       @required this.onlyLocal,
       @required this.onlyNotMuted,
       @required this.onlyInListWithRemoteId,
-      @required this.homeAccount,
       @required this.remoteType,
       @required this.withHashtag}) {
     assert(remoteType != null);
@@ -58,7 +51,6 @@ class TimelineSettings implements ITimelineSettings {
         assert(onlyInListWithRemoteId != null);
         break;
       case TimelineRemoteType.home:
-        assert(homeAccount != null);
         break;
       case TimelineRemoteType.hashtag:
         assert(withHashtag != null);
@@ -72,12 +64,10 @@ class TimelineSettings implements ITimelineSettings {
     @required List<PleromaVisibility> excludeVisibilities,
     @required bool onlyLocal,
     @required bool onlyNotMuted,
-    @required IAccount homeAccount,
   }) : this._private(
             excludeVisibilities: excludeVisibilities,
             onlyLocal: onlyLocal,
             onlyNotMuted: onlyNotMuted,
-            homeAccount: homeAccount,
             remoteType: TimelineRemoteType.home,
             withHashtag: null,
             onlyInListWithRemoteId: null);
@@ -91,7 +81,6 @@ class TimelineSettings implements ITimelineSettings {
             excludeVisibilities: excludeVisibilities,
             onlyLocal: onlyLocal,
             onlyNotMuted: onlyNotMuted,
-            homeAccount: null,
             remoteType: TimelineRemoteType.list,
             withHashtag: null,
             onlyInListWithRemoteId: onlyInListWithRemoteId);
@@ -105,7 +94,6 @@ class TimelineSettings implements ITimelineSettings {
             excludeVisibilities: excludeVisibilities,
             onlyLocal: onlyLocal,
             onlyNotMuted: onlyNotMuted,
-            homeAccount: null,
             remoteType: TimelineRemoteType.hashtag,
             withHashtag: withHashtag,
             onlyInListWithRemoteId: null);
@@ -118,7 +106,6 @@ class TimelineSettings implements ITimelineSettings {
             excludeVisibilities: excludeVisibilities,
             onlyLocal: onlyLocal,
             onlyNotMuted: onlyNotMuted,
-            homeAccount: null,
             remoteType: TimelineRemoteType.public,
             withHashtag: null,
             onlyInListWithRemoteId: null);
@@ -129,7 +116,6 @@ class TimelineSettings implements ITimelineSettings {
         ' excludeVisibilities: $excludeVisibilities,'
         ' onlyLocal: $onlyLocal, onlyNotMuted: $onlyNotMuted,'
         ' onlyInListWithRemoteId: $onlyInListWithRemoteId,'
-        ' homeAccount: $homeAccount,'
         ' remoteType: $remoteType, withHashtag: $withHashtag}';
   }
 }

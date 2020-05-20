@@ -222,6 +222,7 @@ void main() {
         onlyNoReplies: null,
         onlyWithHashtag: null,
         onlyFromAccountsFollowingByAccount: null,
+        isFromHomeTimeline: null,
         olderThanStatus: null,
         onlyInListWithRemoteId: null);
 
@@ -255,8 +256,10 @@ void main() {
         onlyNoReplies: null,
         onlyWithHashtag: null,
         onlyFromAccountsFollowingByAccount: null,
+        isFromHomeTimeline: null,
         olderThanStatus: null,
-        onlyInListWithRemoteId: null);
+        onlyInListWithRemoteId: null,
+        );
 
     await insertDbStatus(
         statusRepository,
@@ -304,6 +307,7 @@ void main() {
         onlyNoReplies: null,
         onlyWithHashtag: null,
         onlyFromAccountsFollowingByAccount: null,
+        isFromHomeTimeline: null,
         olderThanStatus: null,
         onlyInListWithRemoteId: null);
 
@@ -345,6 +349,7 @@ void main() {
         onlyNoReplies: null,
         onlyWithHashtag: null,
         onlyFromAccountsFollowingByAccount: null,
+        isFromHomeTimeline: null,
         olderThanStatus: null,
         onlyInListWithRemoteId: null);
 
@@ -416,6 +421,7 @@ void main() {
         onlyNoReplies: null,
         onlyWithHashtag: null,
         onlyFromAccountsFollowingByAccount: null,
+        isFromHomeTimeline: null,
         olderThanStatus: null,
         onlyInListWithRemoteId: null);
 
@@ -465,6 +471,7 @@ void main() {
         onlyNoReplies: null,
         onlyWithHashtag: null,
         onlyFromAccountsFollowingByAccount: null,
+        isFromHomeTimeline: null,
         olderThanStatus: null,
         onlyInListWithRemoteId: null);
 
@@ -512,6 +519,7 @@ void main() {
         onlyNoReplies: null,
         onlyWithHashtag: null,
         onlyFromAccountsFollowingByAccount: null,
+        isFromHomeTimeline: null,
         olderThanStatus:
             await createTestStatus(seed: "remoteId5", remoteId: "remoteId5"),
         onlyInListWithRemoteId: null);
@@ -561,6 +569,7 @@ void main() {
         onlyNoReplies: null,
         onlyWithHashtag: null,
         onlyFromAccountsFollowingByAccount: null,
+        isFromHomeTimeline: null,
         olderThanStatus:
             await createTestStatus(seed: "remoteId5", remoteId: "remoteId5"),
         onlyInListWithRemoteId: null);
@@ -625,6 +634,7 @@ void main() {
         onlyNoReplies: null,
         onlyWithHashtag: null,
         onlyFromAccountsFollowingByAccount: null,
+        isFromHomeTimeline: null,
         olderThanStatus: null,
         onlyInListWithRemoteId: null);
 
@@ -668,6 +678,7 @@ void main() {
         onlyNoReplies: null,
         onlyWithHashtag: null,
         onlyFromAccountsFollowingByAccount: null,
+        isFromHomeTimeline: null,
         olderThanStatus: null,
         onlyInListWithRemoteId: null);
 
@@ -711,6 +722,7 @@ void main() {
         onlyNoReplies: null,
         onlyWithHashtag: null,
         onlyFromAccountsFollowingByAccount: null,
+        isFromHomeTimeline: null,
         olderThanStatus: null,
         onlyInListWithRemoteId: null);
 
@@ -750,6 +762,7 @@ void main() {
         onlyNoReplies: null,
         onlyWithHashtag: null,
         onlyFromAccountsFollowingByAccount: null,
+        isFromHomeTimeline: null,
         olderThanStatus: null,
         onlyInListWithRemoteId: null);
 
@@ -783,6 +796,7 @@ void main() {
         onlyNoReplies: true,
         onlyWithHashtag: null,
         onlyFromAccountsFollowingByAccount: null,
+        isFromHomeTimeline: null,
         olderThanStatus: null,
         onlyInListWithRemoteId: null);
 
@@ -849,7 +863,7 @@ void main() {
             acct: null,
             lastStatusAt: null)),
         olderThanStatus: null,
-        onlyInListWithRemoteId: null);
+        onlyInListWithRemoteId: null, isFromHomeTimeline: null);
 
     await insertDbStatus(
         statusRepository,
@@ -887,6 +901,7 @@ void main() {
         onlyNoReplies: null,
         onlyWithHashtag: "#cats",
         onlyFromAccountsFollowingByAccount: null,
+        isFromHomeTimeline: null,
         olderThanStatus: null,
         onlyInListWithRemoteId: null);
 
@@ -963,6 +978,7 @@ void main() {
         onlyNoReplies: null,
         onlyWithHashtag: null,
         onlyFromAccountsFollowingByAccount: null,
+        isFromHomeTimeline: null,
         olderThanStatus: null,
         onlyInListWithRemoteId: listWithRemoteId);
 
@@ -1024,6 +1040,7 @@ void main() {
         onlyNoReplies: null,
         onlyWithHashtag: null,
         onlyFromAccountsFollowingByAccount: null,
+        isFromHomeTimeline: null,
         olderThanStatus: null,
         onlyInListWithRemoteId: null);
 
@@ -1083,6 +1100,7 @@ void main() {
         onlyNoReplies: null,
         onlyWithHashtag: null,
         onlyFromAccountsFollowingByAccount: null,
+        isFromHomeTimeline: null,
         olderThanStatus: null,
         onlyInListWithRemoteId: null);
 
@@ -1171,18 +1189,15 @@ void main() {
   });
 
   test('addStatusesToConversation', () async {
-    expect((await statusRepository.conversationStatusesDao.getAll())
-        .length, 0);
+    expect((await statusRepository.conversationStatusesDao.getAll()).length, 0);
 
-
-    await statusRepository.addStatusesToConversation(["statusRemoteId1"],
-        "conversationRemoteId1");
+    await statusRepository.addStatusesToConversation(
+        ["statusRemoteId1"], "conversationRemoteId1");
 
     expect((await statusRepository.conversationStatusesDao.getAll()).length, 1);
 
-
-    await statusRepository.addStatusesToConversation(["statusRemoteId1"],
-        "conversationRemoteId1");
+    await statusRepository.addStatusesToConversation(
+        ["statusRemoteId1"], "conversationRemoteId1");
 
     expect((await statusRepository.conversationStatusesDao.getAll()).length, 1);
   });
@@ -1192,18 +1207,12 @@ void main() {
 
     var conversationRemoteId = "conversationRemoteId";
 
-
     await statusRepository.upsertRemoteStatuses([
       mapLocalStatusToRemoteStatus(DbStatusPopulatedWrapper(dbStatusPopulated))
-    ],
-        conversationRemoteId: conversationRemoteId,
-        listRemoteId: null);
+    ], conversationRemoteId: conversationRemoteId, listRemoteId: null);
     await statusRepository.upsertRemoteStatuses([
       mapLocalStatusToRemoteStatus(DbStatusPopulatedWrapper(dbStatusPopulated))
-    ],
-        conversationRemoteId: conversationRemoteId,
-        listRemoteId: null);
-
+    ], conversationRemoteId: conversationRemoteId, listRemoteId: null);
 
     var future1 = statusRepository.upsertRemoteStatus(
         mapLocalStatusToRemoteStatus(
@@ -1216,12 +1225,9 @@ void main() {
         conversationRemoteId: conversationRemoteId,
         listRemoteId: null);
 
-
     var future3 = statusRepository.upsertRemoteStatuses([
       mapLocalStatusToRemoteStatus(DbStatusPopulatedWrapper(dbStatusPopulated))
-    ],
-        conversationRemoteId: conversationRemoteId,
-        listRemoteId: null);
+    ], conversationRemoteId: conversationRemoteId, listRemoteId: null);
     var future4 = statusRepository.upsertRemoteStatuses([
       mapLocalStatusToRemoteStatus(DbStatusPopulatedWrapper(dbStatusPopulated))
     ],
@@ -1236,27 +1242,28 @@ void main() {
 
     expect(await statusRepository.countAll(), 1);
     expect(await accountRepository.countAll(), 1);
-    expect((await statusRepository.conversationStatusesDao.countAll()).length, 1);
     expect(
-        (await statusRepository
-            .getStatuses(
-            onlyInListWithRemoteId: null,
-            onlyWithHashtag: null,
-            onlyFromAccountsFollowingByAccount: null,
-            onlyFromAccount: null,
-            onlyInConversation: await createTestConversation(
-                seed: "seed5", remoteId: conversationRemoteId),
-            onlyLocal: null,
-            onlyWithMedia: null,
-            onlyNotMuted: null,
-            excludeVisibilities: null,
-            olderThanStatus: null,
-            newerThanStatus: null,
-            onlyNoNsfwSensitive: null,
-            onlyNoReplies: null,
-            orderingTermData: null,
-            offset: null,
-            limit: null))
+        (await statusRepository.conversationStatusesDao.countAll()).length, 1);
+    expect(
+        (await statusRepository.getStatuses(
+                onlyInListWithRemoteId: null,
+                onlyWithHashtag: null,
+                onlyFromAccountsFollowingByAccount: null,
+                isFromHomeTimeline: null,
+                onlyFromAccount: null,
+                onlyInConversation: await createTestConversation(
+                    seed: "seed5", remoteId: conversationRemoteId),
+                onlyLocal: null,
+                onlyWithMedia: null,
+                onlyNotMuted: null,
+                excludeVisibilities: null,
+                olderThanStatus: null,
+                newerThanStatus: null,
+                onlyNoNsfwSensitive: null,
+                onlyNoReplies: null,
+                orderingTermData: null,
+                offset: null,
+                limit: null))
             .length,
         1);
     expectDbStatus(

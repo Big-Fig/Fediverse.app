@@ -14,6 +14,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
   final String inReplyToRemoteId;
   final String inReplyToAccountRemoteId;
   final bool sensitive;
+  final bool isFromHomeTimeline;
   final String spoilerText;
   final PleromaVisibility visibility;
   final String uri;
@@ -53,6 +54,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
       this.inReplyToRemoteId,
       this.inReplyToAccountRemoteId,
       @required this.sensitive,
+      this.isFromHomeTimeline,
       @required this.spoilerText,
       this.visibility,
       @required this.uri,
@@ -104,6 +106,8 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           data['${effectivePrefix}in_reply_to_account_remote_id']),
       sensitive:
           boolType.mapFromDatabaseResponse(data['${effectivePrefix}sensitive']),
+      isFromHomeTimeline: boolType.mapFromDatabaseResponse(
+          data['${effectivePrefix}is_from_home_timeline']),
       spoilerText: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}spoiler_text']),
       visibility: $DbStatusesTable.$converter0.mapToDart(stringType
@@ -181,6 +185,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
       inReplyToAccountRemoteId:
           serializer.fromJson<String>(json['inReplyToAccountRemoteId']),
       sensitive: serializer.fromJson<bool>(json['sensitive']),
+      isFromHomeTimeline: serializer.fromJson<bool>(json['isFromHomeTimeline']),
       spoilerText: serializer.fromJson<String>(json['spoilerText']),
       visibility: serializer.fromJson<PleromaVisibility>(json['visibility']),
       uri: serializer.fromJson<String>(json['uri']),
@@ -235,6 +240,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
       'inReplyToAccountRemoteId':
           serializer.toJson<String>(inReplyToAccountRemoteId),
       'sensitive': serializer.toJson<bool>(sensitive),
+      'isFromHomeTimeline': serializer.toJson<bool>(isFromHomeTimeline),
       'spoilerText': serializer.toJson<String>(spoilerText),
       'visibility': serializer.toJson<PleromaVisibility>(visibility),
       'uri': serializer.toJson<String>(uri),
@@ -294,6 +300,9 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
       sensitive: sensitive == null && nullToAbsent
           ? const Value.absent()
           : Value(sensitive),
+      isFromHomeTimeline: isFromHomeTimeline == null && nullToAbsent
+          ? const Value.absent()
+          : Value(isFromHomeTimeline),
       spoilerText: spoilerText == null && nullToAbsent
           ? const Value.absent()
           : Value(spoilerText),
@@ -389,6 +398,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           String inReplyToRemoteId,
           String inReplyToAccountRemoteId,
           bool sensitive,
+          bool isFromHomeTimeline,
           String spoilerText,
           PleromaVisibility visibility,
           String uri,
@@ -429,6 +439,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
         inReplyToAccountRemoteId:
             inReplyToAccountRemoteId ?? this.inReplyToAccountRemoteId,
         sensitive: sensitive ?? this.sensitive,
+        isFromHomeTimeline: isFromHomeTimeline ?? this.isFromHomeTimeline,
         spoilerText: spoilerText ?? this.spoilerText,
         visibility: visibility ?? this.visibility,
         uri: uri ?? this.uri,
@@ -475,6 +486,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           ..write('inReplyToRemoteId: $inReplyToRemoteId, ')
           ..write('inReplyToAccountRemoteId: $inReplyToAccountRemoteId, ')
           ..write('sensitive: $sensitive, ')
+          ..write('isFromHomeTimeline: $isFromHomeTimeline, ')
           ..write('spoilerText: $spoilerText, ')
           ..write('visibility: $visibility, ')
           ..write('uri: $uri, ')
@@ -525,36 +537,37 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
                       $mrjc(
                           sensitive.hashCode,
                           $mrjc(
-                              spoilerText.hashCode,
+                              isFromHomeTimeline.hashCode,
                               $mrjc(
-                                  visibility.hashCode,
+                                  spoilerText.hashCode,
                                   $mrjc(
-                                      uri.hashCode,
+                                      visibility.hashCode,
                                       $mrjc(
-                                          url.hashCode,
+                                          uri.hashCode,
                                           $mrjc(
-                                              repliesCount.hashCode,
+                                              url.hashCode,
                                               $mrjc(
-                                                  reblogsCount.hashCode,
+                                                  repliesCount.hashCode,
                                                   $mrjc(
-                                                      favouritesCount.hashCode,
+                                                      reblogsCount.hashCode,
                                                       $mrjc(
-                                                          favourited.hashCode,
+                                                          favouritesCount
+                                                              .hashCode,
                                                           $mrjc(
-                                                              reblogged
+                                                              favourited
                                                                   .hashCode,
                                                               $mrjc(
-                                                                  muted
+                                                                  reblogged
                                                                       .hashCode,
                                                                   $mrjc(
-                                                                      bookmarked
+                                                                      muted
                                                                           .hashCode,
                                                                       $mrjc(
-                                                                          pinned
+                                                                          bookmarked
                                                                               .hashCode,
                                                                           $mrjc(
-                                                                              content.hashCode,
-                                                                              $mrjc(reblogStatusRemoteId.hashCode, $mrjc(application.hashCode, $mrjc(accountRemoteId.hashCode, $mrjc(mediaAttachments.hashCode, $mrjc(mentions.hashCode, $mrjc(tags.hashCode, $mrjc(emojis.hashCode, $mrjc(poll.hashCode, $mrjc(card.hashCode, $mrjc(language.hashCode, $mrjc(pleromaContent.hashCode, $mrjc(pleromaConversationId.hashCode, $mrjc(pleromaDirectConversationId.hashCode, $mrjc(pleromaInReplyToAccountAcct.hashCode, $mrjc(pleromaLocal.hashCode, $mrjc(pleromaSpoilerText.hashCode, $mrjc(pleromaExpiresAt.hashCode, $mrjc(pleromaThreadMuted.hashCode, pleromaEmojiReactions.hashCode))))))))))))))))))))))))))))))))))))));
+                                                                              pinned.hashCode,
+                                                                              $mrjc(content.hashCode, $mrjc(reblogStatusRemoteId.hashCode, $mrjc(application.hashCode, $mrjc(accountRemoteId.hashCode, $mrjc(mediaAttachments.hashCode, $mrjc(mentions.hashCode, $mrjc(tags.hashCode, $mrjc(emojis.hashCode, $mrjc(poll.hashCode, $mrjc(card.hashCode, $mrjc(language.hashCode, $mrjc(pleromaContent.hashCode, $mrjc(pleromaConversationId.hashCode, $mrjc(pleromaDirectConversationId.hashCode, $mrjc(pleromaInReplyToAccountAcct.hashCode, $mrjc(pleromaLocal.hashCode, $mrjc(pleromaSpoilerText.hashCode, $mrjc(pleromaExpiresAt.hashCode, $mrjc(pleromaThreadMuted.hashCode, pleromaEmojiReactions.hashCode)))))))))))))))))))))))))))))))))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -565,6 +578,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           other.inReplyToRemoteId == this.inReplyToRemoteId &&
           other.inReplyToAccountRemoteId == this.inReplyToAccountRemoteId &&
           other.sensitive == this.sensitive &&
+          other.isFromHomeTimeline == this.isFromHomeTimeline &&
           other.spoilerText == this.spoilerText &&
           other.visibility == this.visibility &&
           other.uri == this.uri &&
@@ -608,6 +622,7 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
   final Value<String> inReplyToRemoteId;
   final Value<String> inReplyToAccountRemoteId;
   final Value<bool> sensitive;
+  final Value<bool> isFromHomeTimeline;
   final Value<String> spoilerText;
   final Value<PleromaVisibility> visibility;
   final Value<String> uri;
@@ -647,6 +662,7 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
     this.inReplyToRemoteId = const Value.absent(),
     this.inReplyToAccountRemoteId = const Value.absent(),
     this.sensitive = const Value.absent(),
+    this.isFromHomeTimeline = const Value.absent(),
     this.spoilerText = const Value.absent(),
     this.visibility = const Value.absent(),
     this.uri = const Value.absent(),
@@ -687,6 +703,7 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
     this.inReplyToRemoteId = const Value.absent(),
     this.inReplyToAccountRemoteId = const Value.absent(),
     @required bool sensitive,
+    this.isFromHomeTimeline = const Value.absent(),
     @required String spoilerText,
     this.visibility = const Value.absent(),
     @required String uri,
@@ -738,6 +755,7 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
       Value<String> inReplyToRemoteId,
       Value<String> inReplyToAccountRemoteId,
       Value<bool> sensitive,
+      Value<bool> isFromHomeTimeline,
       Value<String> spoilerText,
       Value<PleromaVisibility> visibility,
       Value<String> uri,
@@ -778,6 +796,7 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
       inReplyToAccountRemoteId:
           inReplyToAccountRemoteId ?? this.inReplyToAccountRemoteId,
       sensitive: sensitive ?? this.sensitive,
+      isFromHomeTimeline: isFromHomeTimeline ?? this.isFromHomeTimeline,
       spoilerText: spoilerText ?? this.spoilerText,
       visibility: visibility ?? this.visibility,
       uri: uri ?? this.uri,
@@ -890,6 +909,20 @@ class $DbStatusesTable extends DbStatuses
       'sensitive',
       $tableName,
       false,
+    );
+  }
+
+  final VerificationMeta _isFromHomeTimelineMeta =
+      const VerificationMeta('isFromHomeTimeline');
+  GeneratedBoolColumn _isFromHomeTimeline;
+  @override
+  GeneratedBoolColumn get isFromHomeTimeline =>
+      _isFromHomeTimeline ??= _constructIsFromHomeTimeline();
+  GeneratedBoolColumn _constructIsFromHomeTimeline() {
+    return GeneratedBoolColumn(
+      'is_from_home_timeline',
+      $tableName,
+      true,
     );
   }
 
@@ -1319,6 +1352,7 @@ class $DbStatusesTable extends DbStatuses
         inReplyToRemoteId,
         inReplyToAccountRemoteId,
         sensitive,
+        isFromHomeTimeline,
         spoilerText,
         visibility,
         uri,
@@ -1394,6 +1428,12 @@ class $DbStatusesTable extends DbStatuses
           sensitive.isAcceptableValue(d.sensitive.value, _sensitiveMeta));
     } else if (isInserting) {
       context.missing(_sensitiveMeta);
+    }
+    if (d.isFromHomeTimeline.present) {
+      context.handle(
+          _isFromHomeTimelineMeta,
+          isFromHomeTimeline.isAcceptableValue(
+              d.isFromHomeTimeline.value, _isFromHomeTimelineMeta));
     }
     if (d.spoilerText.present) {
       context.handle(_spoilerTextMeta,
@@ -1564,6 +1604,10 @@ class $DbStatusesTable extends DbStatuses
     }
     if (d.sensitive.present) {
       map['sensitive'] = Variable<bool, BoolType>(d.sensitive.value);
+    }
+    if (d.isFromHomeTimeline.present) {
+      map['is_from_home_timeline'] =
+          Variable<bool, BoolType>(d.isFromHomeTimeline.value);
     }
     if (d.spoilerText.present) {
       map['spoiler_text'] = Variable<String, StringType>(d.spoilerText.value);

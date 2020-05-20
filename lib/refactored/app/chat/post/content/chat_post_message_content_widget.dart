@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/chat/post/chat_post_message_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
