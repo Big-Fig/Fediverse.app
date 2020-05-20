@@ -53,13 +53,17 @@ class ChatMessageListItemWidget extends StatelessWidget {
               builder: (context, snapshot) {
                 var contentWithEmojis = snapshot.data;
 
-                return HtmlTextWidget(
-                    data: contentWithEmojis,
-                    onLinkTap: (String link) async {
-                      if (await canLaunch(link)) {
-                        await launch(link);
-                      }
-                    });
+                if (contentWithEmojis != null) {
+                  return HtmlTextWidget(
+                      data: contentWithEmojis,
+                      onLinkTap: (String link) async {
+                        if (await canLaunch(link)) {
+                          await launch(link);
+                        }
+                      });
+                } else {
+                  return SizedBox.shrink();
+                }
               }),
         ),
         StreamBuilder<IPleromaMediaAttachment>(

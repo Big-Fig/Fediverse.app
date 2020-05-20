@@ -86,28 +86,46 @@ class ChatListItemWidget extends StatelessWidget {
           if (lastMessage == null) {
             return SizedBox.shrink();
           }
-          var content = extractContent(context, lastMessage);
+          var content = lastMessage.content;
+          if (content?.isNotEmpty == true) {
+            content = extractContent(context, lastMessage, content);
 
-          var length = content.length;
+            var length = content.length;
 
-          // todo: handle html tags cut
-          if (length > _maxLastMessageLength) {
-            content = content.substring(0, _maxLastMessageLength);
-            content += "...";
+            // todo: handle html tags cut
+            if (length > _maxLastMessageLength) {
+              content = content.substring(0, _maxLastMessageLength);
+              content += "...";
+            }
+            return HtmlTextWidget(
+              shrinkWrap: true,
+              data: addEmojiToHtmlContent(content, lastMessage.emojis),
+              onLinkTap: null,
+              fontSize: 16.0,
+              fontWeight: FontWeight.w300,
+              color: FediColors.mediumGrey,
+            );
+          } else {
+            var mediaAttachment = lastMessage.mediaAttachment;
+            if (mediaAttachment != null) {
+              return Text(
+                mediaAttachment.description,
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w300,
+                  color: FediColors.mediumGrey,
+                ),
+              );
+            } else {
+              return SizedBox.shrink();
+            }
           }
-          return HtmlTextWidget(
-            shrinkWrap: true,
-            data: addEmojiToHtmlContent(content, lastMessage.emojis),
-            onLinkTap: null,
-            fontSize: 16.0,
-            fontWeight: FontWeight.w300,
-            color: FediColors.mediumGrey,
-          );
         });
   }
 
-  String extractContent(BuildContext context, IChatMessage chatMessage) {
-    String formattedText = parse(chatMessage.content).documentElement.text;
+  String extractContent(
+      BuildContext context, IChatMessage chatMessage, String content) {
+    String formattedText = parse(content).documentElement.text;
 
     var myAccountBloc = IMyAccountBloc.of(context, listen: true);
 

@@ -1,9 +1,13 @@
 import 'package:fedi/refactored/pleroma/emoji/pleroma_emoji_model.dart';
 
 String addEmojiToHtmlContent(
-    String content,
-    List<IPleromaEmoji> emoji,
-    ) {
+  String content,
+  List<IPleromaEmoji> emoji,
+) {
+  if (content == null) {
+    return null;
+  }
+
   // todo: rework with RichText
   if (emoji?.isNotEmpty != true) {
     return "<html><body><p>$content</p></body></html>";
