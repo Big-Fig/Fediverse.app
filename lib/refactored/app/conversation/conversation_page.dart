@@ -8,42 +8,47 @@ import 'package:fedi/refactored/app/conversation/conversation_widget.dart';
 import 'package:fedi/refactored/app/conversation/status/post/conversation_post_status_bloc_impl.dart';
 import 'package:fedi/refactored/app/conversation/title/conversation_title_widget.dart';
 import 'package:fedi/refactored/app/status/post/post_status_bloc.dart';
+import 'package:fedi/refactored/app/ui/button/icon/fedi_back_icon_in_circle_transparent_button.dart';
+import 'package:fedi/refactored/app/ui/fedi_colors.dart';
+import 'package:fedi/refactored/app/ui/home/fedi_home_tab_container_widget.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class ConversationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var conversationBloc = IConversationBloc.of(context, listen: false);
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.chevron_left),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        title: GestureDetector(
-          onTap: () {
-            goToConversationAccountsPage(
-                context, conversationBloc.conversation);
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              ConversationAvatarWidget(baseAvatarSize: 40),
-              SizedBox(
-                width: 8,
-              ),
-              ConversationTitleWidget(),
-            ],
+      body: FediHomeTabContainer.createLikeAppBar(
+          leading: FediBackIconInCircleTransparentButton(),
+          center: buildConversationAccountsWidget(context, conversationBloc),
+          trailing: null,
+          body: ConversationWidget()),
+    );
+  }
+
+  GestureDetector buildConversationAccountsWidget(
+      BuildContext context, IConversationBloc conversationBloc) {
+    return GestureDetector(
+      onTap: () {
+        goToConversationAccountsPage(context, conversationBloc.conversation);
+      },
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          const ConversationAvatarWidget(baseAvatarSize: 40),
+          const SizedBox(
+            width: 8,
           ),
-        ),
-        actions: <Widget>[],
-      ),
-      body: SafeArea(
-        child: ConversationWidget(),
+          const ConversationTitleWidget(
+            textStyle: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: FediColors.white),
+          ),
+        ],
       ),
     );
   }
