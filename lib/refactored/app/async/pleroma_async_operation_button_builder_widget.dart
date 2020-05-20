@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/Pleroma/rest/pleroma_rest_exception.dart';
 import 'package:fedi/refactored/app/async/async_operation_button_builder_widget.dart';
 import 'package:fedi/refactored/dialog/alert/simple_alert_dialog.dart';
 import 'package:fedi/refactored/dialog/async/async_dialog.dart';
 import 'package:fedi/refactored/dialog/base_dialog.dart';
+import 'package:fedi/refactored/pleroma/rest/pleroma_rest_exception.dart';
 import 'package:flutter/widgets.dart';
 
 class PleromaAsyncOperationButtonBuilderWidget

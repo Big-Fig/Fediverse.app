@@ -1,8 +1,8 @@
-import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/refactored/app/conversation/repository/conversation_repository.dart';
 import 'package:fedi/refactored/app/notification/repository/notification_repository.dart';
 import 'package:fedi/refactored/app/status/repository/status_repository.dart';
 import 'package:fedi/refactored/app/websockets/web_sockets_handler.dart';
+import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:fedi/refactored/pleroma/websockets/pleroma_websockets_model.dart';
 import 'package:fedi/refactored/websockets/websockets_channel.dart';
 import 'package:flutter/widgets.dart';
