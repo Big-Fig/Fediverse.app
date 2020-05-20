@@ -1,3 +1,4 @@
+import 'package:fedi/refactored/app/ui/button/text/fedi_filled_text_button.dart';
 import 'package:fedi/refactored/pleroma/field/pleroma_field_model.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -9,8 +10,8 @@ class AccountFieldGridItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RaisedButton(
-      child: Text(field.name),
+    return FediFilledTextButton(
+      field.name,
       onPressed: () {
         // todo: refactor extracting url
         String link = extractUrl(field.value);
