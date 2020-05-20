@@ -66,11 +66,6 @@ class AccountStatusesCachedListBloc extends IStatusCachedListBloc {
   }
 
   @override
-  Future preRefreshAllAction() async {
-    // nothing by default
-  }
-
-  @override
   Future<List<IStatus>> loadLocalItems(
       {@required int limit,
       @required IStatus newerThan,
@@ -93,7 +88,8 @@ class AccountStatusesCachedListBloc extends IStatusCachedListBloc {
         orderingTermData: StatusOrderingTermData(
             orderingMode: OrderingMode.desc,
             orderByType: StatusOrderByType.remoteId),
-        onlyInConversation: null);
+        onlyInConversation: null,
+        isFromHomeTimeline: null);
 
     return statuses;
   }
@@ -118,7 +114,8 @@ class AccountStatusesCachedListBloc extends IStatusCachedListBloc {
         orderingTermData: StatusOrderingTermData(
             orderingMode: OrderingMode.desc,
             orderByType: StatusOrderByType.remoteId),
-        onlyInConversation: null);
+        onlyInConversation: null,
+        isFromHomeTimeline: null);
   }
 
   @override

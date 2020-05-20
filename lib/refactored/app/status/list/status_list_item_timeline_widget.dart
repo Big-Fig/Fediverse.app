@@ -19,7 +19,6 @@ import 'package:fedi/refactored/app/status/status_bloc.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
 import 'package:fedi/refactored/app/status/thread/status_thread_page.dart';
 import 'package:fedi/refactored/app/ui/button/text/fedi_filled_text_button.dart';
-import 'package:fedi/refactored/app/ui/button/text/fedi_transparent_text_button.dart';
 import 'package:fedi/refactored/app/ui/fedi_colors.dart';
 import 'package:fedi/refactored/app/ui/fedi_icons.dart';
 import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_model.dart';
@@ -87,17 +86,16 @@ class StatusListItemTimelineWidget extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  const StatusAccountWidget(),
-                  const StatusCreatedAtWidget(),
+                  StatusAccountWidget(),
+                  StatusCreatedAtWidget(),
                 ],
               ),
             ),
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               child: buildStatusContent(context, statusBloc),
             ),
-            if (displayActions) const StatusEmojiReactionListWidget(),
+            if (displayActions) StatusEmojiReactionListWidget(),
             if (displayActions)
               Column(
                 children: <Widget>[
@@ -114,13 +112,13 @@ class StatusListItemTimelineWidget extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
-                            const StatusCommentActionWidget(),
-                            const StatusFavouriteActionWidget(),
+                            StatusCommentActionWidget(),
+                            StatusFavouriteActionWidget(),
                             buildEmojiPickerButton(context, statusBloc),
-                            const StatusReblogActionWidget()
+                            StatusReblogActionWidget()
                           ],
                         ),
-                        const StatusShareActionWidget(),
+                        StatusShareActionWidget(),
                       ],
                     ),
                   ),
@@ -166,17 +164,17 @@ class StatusListItemTimelineWidget extends StatelessWidget {
                   if (containsSpoilerAndDisplayEnabled) {
                     return Column(
                       children: <Widget>[
-                        const StatusSpoilerWidget(),
+                        StatusSpoilerWidget(),
                         collapsible
-                            ? const StatusContentWithEmojisWidget(
+                            ? StatusContentWithEmojisWidget(
                                 collapsible: true,
                               )
-                            : const StatusContentWithEmojisWidget(
+                            : StatusContentWithEmojisWidget(
                                 collapsible: false,
                               ),
                         if (collapsible && statusBloc.isPossibleToCollapse)
                           buildCollapsibleButton(context, statusBloc),
-                        const StatusCardWidget(),
+                        StatusCardWidget(),
                         StreamBuilder<List<IPleromaMediaAttachment>>(
                             stream: statusBloc.mediaAttachmentsStream,
                             initialData: statusBloc.mediaAttachments,
@@ -189,14 +187,14 @@ class StatusListItemTimelineWidget extends StatelessWidget {
                   } else {
                     return Column(
                       children: <Widget>[
-                        const StatusSpoilerWidget(),
-                        const StatusSpoilerAlertWidget(),
+                        StatusSpoilerWidget(),
+                        StatusSpoilerAlertWidget(),
                       ],
                     );
                   }
                 });
           } else {
-            return const StatusNsfwWarningWidget();
+            return StatusNsfwWarningWidget();
           }
         });
   }

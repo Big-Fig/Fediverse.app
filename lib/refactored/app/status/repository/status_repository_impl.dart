@@ -46,7 +46,8 @@ class StatusRepository extends AsyncInitLoadingBloc
   @override
   Future upsertRemoteStatus(IPleromaStatus remoteStatus,
       {@required String listRemoteId,
-      @required String conversationRemoteId}) async {
+      @required String conversationRemoteId,
+      bool isFromHomeTimeline = false}) async {
     _logger.finer(() => "upsertRemoteStatus $remoteStatus listRemoteId=> "
         "$listRemoteId");
     var remoteAccount = remoteStatus.account;
@@ -54,7 +55,8 @@ class StatusRepository extends AsyncInitLoadingBloc
     await accountRepository.upsertRemoteAccount(remoteAccount,
         conversationRemoteId: conversationRemoteId, chatRemoteId: null);
 
-    await upsert(mapRemoteStatusToDbStatus(remoteStatus));
+    await upsert(mapRemoteStatusToDbStatus(remoteStatus,
+        isFromHomeTimeline: isFromHomeTimeline));
 
     var statusRemoteId = remoteStatus.id;
     if (listRemoteId != null) {
@@ -82,7 +84,8 @@ class StatusRepository extends AsyncInitLoadingBloc
   @override
   Future upsertRemoteStatuses(List<IPleromaStatus> remoteStatuses,
       {@required String listRemoteId,
-      @required String conversationRemoteId}) async {
+      @required String conversationRemoteId,
+      bool isFromHomeTimeline = false}) async {
     _logger.finer(() => "upsertRemoteStatuses ${remoteStatuses.length} "
         "listRemoteId => $listRemoteId");
     if (remoteStatuses.isEmpty) {
@@ -95,7 +98,10 @@ class StatusRepository extends AsyncInitLoadingBloc
     await accountRepository.upsertRemoteAccounts(remoteAccounts,
         conversationRemoteId: conversationRemoteId, chatRemoteId: null);
 
-    await upsertAll(remoteStatuses.map(mapRemoteStatusToDbStatus).toList());
+    await upsertAll(remoteStatuses
+        .map((remoteStatus) => mapRemoteStatusToDbStatus(remoteStatus,
+            isFromHomeTimeline: isFromHomeTimeline))
+        .toList());
 
     if (listRemoteId != null) {
       await addStatusesToList(
@@ -205,23 +211,25 @@ class StatusRepository extends AsyncInitLoadingBloc
       mapDataClassToItem(await dao.findByRemoteId(remoteId));
 
   @override
-  Future<List<DbStatusPopulatedWrapper>> getStatuses(
-      {@required String onlyInListWithRemoteId,
-      @required IAccount onlyFromAccount,
-      @required String onlyWithHashtag,
-      @required IAccount onlyFromAccountsFollowingByAccount,
-      @required IConversation onlyInConversation,
-      @required OnlyLocalStatusFilter onlyLocal,
-      @required bool onlyWithMedia,
-      @required bool onlyNotMuted,
-      @required List<PleromaVisibility> excludeVisibilities,
-      @required IStatus olderThanStatus,
-      @required IStatus newerThanStatus,
-      @required bool onlyNoNsfwSensitive,
-      @required bool onlyNoReplies,
-      @required int limit,
-      @required int offset,
-      @required StatusOrderingTermData orderingTermData}) async {
+  Future<List<DbStatusPopulatedWrapper>> getStatuses({
+    @required String onlyInListWithRemoteId,
+    @required IAccount onlyFromAccount,
+    @required String onlyWithHashtag,
+    @required IAccount onlyFromAccountsFollowingByAccount,
+    @required IConversation onlyInConversation,
+    @required OnlyLocalStatusFilter onlyLocal,
+    @required bool onlyWithMedia,
+    @required bool onlyNotMuted,
+    @required List<PleromaVisibility> excludeVisibilities,
+    @required IStatus olderThanStatus,
+    @required IStatus newerThanStatus,
+    @required bool onlyNoNsfwSensitive,
+    @required bool onlyNoReplies,
+    @required int limit,
+    @required int offset,
+    @required StatusOrderingTermData orderingTermData,
+    @required bool isFromHomeTimeline,
+  }) async {
     var query = createQuery(
         onlyFromAccount: onlyFromAccount,
         onlyInListWithRemoteId: onlyInListWithRemoteId,
@@ -238,7 +246,8 @@ class StatusRepository extends AsyncInitLoadingBloc
         limit: limit,
         offset: offset,
         orderingTermData: orderingTermData,
-        onlyInConversation: onlyInConversation);
+        onlyInConversation: onlyInConversation,
+        isFromHomeTimeline: isFromHomeTimeline);
 
     return dao
         .typedResultListToPopulated(await query.get())
@@ -247,23 +256,25 @@ class StatusRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Stream<List<DbStatusPopulatedWrapper>> watchStatuses(
-      {@required String onlyInListWithRemoteId,
-      @required String onlyWithHashtag,
-      @required IAccount onlyFromAccountsFollowingByAccount,
-      @required IAccount onlyFromAccount,
-      @required IConversation onlyInConversation,
-      @required OnlyLocalStatusFilter onlyLocal,
-      @required bool onlyWithMedia,
-      @required bool onlyNotMuted,
-      @required List<PleromaVisibility> excludeVisibilities,
-      @required IStatus olderThanStatus,
-      @required IStatus newerThanStatus,
-      @required bool onlyNoNsfwSensitive,
-      @required bool onlyNoReplies,
-      @required int limit,
-      @required int offset,
-      @required StatusOrderingTermData orderingTermData}) {
+  Stream<List<DbStatusPopulatedWrapper>> watchStatuses({
+    @required String onlyInListWithRemoteId,
+    @required String onlyWithHashtag,
+    @required IAccount onlyFromAccountsFollowingByAccount,
+    @required IAccount onlyFromAccount,
+    @required IConversation onlyInConversation,
+    @required OnlyLocalStatusFilter onlyLocal,
+    @required bool onlyWithMedia,
+    @required bool onlyNotMuted,
+    @required List<PleromaVisibility> excludeVisibilities,
+    @required IStatus olderThanStatus,
+    @required IStatus newerThanStatus,
+    @required bool onlyNoNsfwSensitive,
+    @required bool onlyNoReplies,
+    @required int limit,
+    @required int offset,
+    @required StatusOrderingTermData orderingTermData,
+    @required bool isFromHomeTimeline,
+  }) {
     var query = createQuery(
         onlyInListWithRemoteId: onlyInListWithRemoteId,
         onlyWithHashtag: onlyWithHashtag,
@@ -280,30 +291,33 @@ class StatusRepository extends AsyncInitLoadingBloc
         limit: limit,
         offset: offset,
         orderingTermData: orderingTermData,
-        onlyFromAccount: onlyFromAccount);
+        onlyFromAccount: onlyFromAccount,
+        isFromHomeTimeline: isFromHomeTimeline);
 
     Stream<List<DbStatusPopulated>> stream =
         query.watch().map(dao.typedResultListToPopulated);
     return stream.map((list) => list.map(mapDataClassToItem).toList());
   }
 
-  JoinedSelectStatement createQuery(
-      {@required String onlyInListWithRemoteId,
-      @required String onlyWithHashtag,
-      @required IAccount onlyFromAccount,
-      @required IAccount onlyFromAccountsFollowingByAccount,
-      @required IConversation onlyInConversation,
-      @required OnlyLocalStatusFilter onlyLocal,
-      @required bool onlyWithMedia,
-      @required bool onlyNotMuted,
-      @required List<PleromaVisibility> excludeVisibilities,
-      @required IStatus olderThanStatus,
-      @required IStatus newerThanStatus,
-      @required bool onlyNoNsfwSensitive,
-      @required bool onlyNoReplies,
-      @required int limit,
-      @required int offset,
-      @required StatusOrderingTermData orderingTermData}) {
+  JoinedSelectStatement createQuery({
+    @required String onlyInListWithRemoteId,
+    @required String onlyWithHashtag,
+    @required IAccount onlyFromAccount,
+    @required IAccount onlyFromAccountsFollowingByAccount,
+    @required IConversation onlyInConversation,
+    @required OnlyLocalStatusFilter onlyLocal,
+    @required bool onlyWithMedia,
+    @required bool onlyNotMuted,
+    @required List<PleromaVisibility> excludeVisibilities,
+    @required IStatus olderThanStatus,
+    @required IStatus newerThanStatus,
+    @required bool onlyNoNsfwSensitive,
+    @required bool onlyNoReplies,
+    @required int limit,
+    @required int offset,
+    @required StatusOrderingTermData orderingTermData,
+    @required bool isFromHomeTimeline,
+  }) {
     _logger.fine(() => "createQuery \n"
         "\t onlyInListWithRemoteId=$onlyInListWithRemoteId\n"
         "\t onlyWithHashtag=$onlyWithHashtag\n"
@@ -320,6 +334,7 @@ class StatusRepository extends AsyncInitLoadingBloc
         "\t onlyNoReplies=$onlyNoReplies\n"
         "\t limit=$limit\n"
         "\t offset=$offset\n"
+        "\t isFromHomeTimeline=$isFromHomeTimeline\n"
         "\t orderingTermData=$orderingTermData\n");
 
     var query = dao.startSelectQuery();
@@ -348,6 +363,9 @@ class StatusRepository extends AsyncInitLoadingBloc
 
     if (onlyNoReplies == true) {
       dao.addOnlyNoRepliesWhere(query);
+    }
+    if (isFromHomeTimeline == true) {
+      dao.addIsFromHomeTimelineWhere(query);
     }
 
     if (excludeVisibilities?.isNotEmpty == true) {
@@ -485,7 +503,8 @@ class StatusRepository extends AsyncInitLoadingBloc
   @override
   Future updateLocalStatusByRemoteStatus(
       {@required IStatus oldLocalStatus,
-      @required IPleromaStatus newRemoteStatus}) async {
+      @required IPleromaStatus newRemoteStatus,
+      bool isFromHomeTimeline = false}) async {
     _logger.finer(() => "updateLocalStatusByRemoteStatus \n"
         "\t old: $oldLocalStatus \n"
         "\t newRemoteStatus: $newRemoteStatus");
@@ -496,7 +515,9 @@ class StatusRepository extends AsyncInitLoadingBloc
         conversationRemoteId: null, chatRemoteId: null);
 
     await updateById(
-        oldLocalStatus.localId, mapRemoteStatusToDbStatus(newRemoteStatus));
+        oldLocalStatus.localId,
+        mapRemoteStatusToDbStatus(newRemoteStatus,
+            isFromHomeTimeline: isFromHomeTimeline));
 
     var statusRemoteId = newRemoteStatus.id;
 
@@ -527,7 +548,8 @@ class StatusRepository extends AsyncInitLoadingBloc
       @required IStatus newerThanStatus,
       @required bool onlyNoNsfwSensitive,
       @required bool onlyNoReplies,
-      @required StatusOrderingTermData orderingTermData}) async {
+      @required StatusOrderingTermData orderingTermData,
+      @required bool isFromHomeTimeline}) async {
     var query = createQuery(
         onlyFromAccount: onlyFromAccount,
         onlyInListWithRemoteId: onlyInListWithRemoteId,
@@ -544,7 +566,8 @@ class StatusRepository extends AsyncInitLoadingBloc
         limit: 1,
         offset: null,
         orderingTermData: orderingTermData,
-        onlyInConversation: onlyInConversation);
+        onlyInConversation: onlyInConversation,
+        isFromHomeTimeline: isFromHomeTimeline);
 
     return mapDataClassToItem(
         dao.typedResultToPopulated(await query.getSingle()));
@@ -565,7 +588,8 @@ class StatusRepository extends AsyncInitLoadingBloc
       @required IStatus newerThanStatus,
       @required bool onlyNoNsfwSensitive,
       @required bool onlyNoReplies,
-      @required StatusOrderingTermData orderingTermData}) {
+      @required StatusOrderingTermData orderingTermData,
+      @required bool isFromHomeTimeline}) {
     var query = createQuery(
         onlyInListWithRemoteId: onlyInListWithRemoteId,
         onlyWithHashtag: onlyWithHashtag,
@@ -582,7 +606,8 @@ class StatusRepository extends AsyncInitLoadingBloc
         limit: 1,
         offset: null,
         orderingTermData: orderingTermData,
-        onlyFromAccount: onlyFromAccount);
+        onlyFromAccount: onlyFromAccount,
+        isFromHomeTimeline: isFromHomeTimeline);
 
     Stream<DbStatusPopulated> stream = query
         .watchSingle()
@@ -607,6 +632,7 @@ class StatusRepository extends AsyncInitLoadingBloc
           newerThanStatus: null,
           onlyNoNsfwSensitive: null,
           onlyNoReplies: null,
+          isFromHomeTimeline: null,
           orderingTermData: StatusOrderingTermData(
               orderingMode: OrderingMode.desc,
               orderByType: StatusOrderByType.remoteId));
@@ -628,6 +654,7 @@ class StatusRepository extends AsyncInitLoadingBloc
           newerThanStatus: null,
           onlyNoNsfwSensitive: null,
           onlyNoReplies: null,
+          isFromHomeTimeline: null,
           orderingTermData: StatusOrderingTermData(
               orderingMode: OrderingMode.desc,
               orderByType: StatusOrderByType.remoteId));

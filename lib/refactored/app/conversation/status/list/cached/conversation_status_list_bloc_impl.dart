@@ -47,7 +47,7 @@ abstract class ConversationStatusListBloc extends DisposableOwner
         offset: null,
         orderingTermData: StatusOrderingTermData(
             orderingMode: OrderingMode.desc,
-            orderByType: StatusOrderByType.remoteId));
+            orderByType: StatusOrderByType.remoteId), isFromHomeTimeline: null);
 
     _logger.finer(() =>
         "finish loadLocalItems for $conversation statuses ${statuses.length}");
@@ -74,11 +74,7 @@ abstract class ConversationStatusListBloc extends DisposableOwner
         offset: null,
         orderingTermData: StatusOrderingTermData(
             orderingMode: OrderingMode.desc,
-            orderByType: StatusOrderByType.remoteId));
+            orderByType: StatusOrderByType.remoteId), isFromHomeTimeline: null);
   }
 
-  @override
-  Future preRefreshAllAction() async {
-    // nothing
-  }
 }

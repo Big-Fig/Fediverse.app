@@ -26,5 +26,6 @@ class LocalTimelineStatusCachedListBloc extends TimelineStatusCachedListBloc
             currentInstanceBloc: currentInstanceBloc,
             pleromaTimelineService: pleromaTimelineService,
             timelineLocalPreferencesBloc: timelineLocalPreferencesBloc,
-            statusRepository: statusRepository);
+            statusRepository: statusRepository,
+      isFromHomeTimeline: false);
 }

@@ -21,12 +21,15 @@ abstract class TimelineStatusCachedListBloc extends DisposableOwner
   final IStatusRepository statusRepository;
   final ICurrentAuthInstanceBloc currentInstanceBloc;
   final TimelineLocalPreferencesBloc timelineLocalPreferencesBloc;
+  final bool isFromHomeTimeline;
 
-  TimelineStatusCachedListBloc(
-      {@required this.pleromaTimelineService,
-      @required this.statusRepository,
-      @required this.currentInstanceBloc,
-      @required this.timelineLocalPreferencesBloc});
+  TimelineStatusCachedListBloc({
+    @required this.pleromaTimelineService,
+    @required this.statusRepository,
+    @required this.currentInstanceBloc,
+    @required this.timelineLocalPreferencesBloc,
+    @required this.isFromHomeTimeline,
+  });
 
   @override
   IPleromaApi get pleromaApi => pleromaTimelineService;
@@ -97,7 +100,9 @@ abstract class TimelineStatusCachedListBloc extends DisposableOwner
 
       if (remoteStatuses != null) {
         await statusRepository.upsertRemoteStatuses(remoteStatuses,
-            listRemoteId: null, conversationRemoteId: null);
+            listRemoteId: null,
+            conversationRemoteId: null,
+            isFromHomeTimeline: isFromHomeTimeline);
 
         return true;
       } else {
@@ -129,13 +134,14 @@ abstract class TimelineStatusCachedListBloc extends DisposableOwner
         onlyFromAccount: null,
         onlyInListWithRemoteId: timelineSettings.onlyInListWithRemoteId,
         onlyWithHashtag: timelineSettings.withHashtag,
-        onlyFromAccountsFollowingByAccount: timelineSettings.homeAccount,
+        onlyFromAccountsFollowingByAccount: null,
         onlyLocal: onlyLocalFilter,
         onlyWithMedia: timelineLocalPreferences.onlyWithMedia,
         onlyNotMuted: timelineSettings.onlyNotMuted,
         excludeVisibilities: timelineSettings.excludeVisibilities,
         olderThanStatus: null,
         newerThanStatus: item,
+        isFromHomeTimeline: isFromHomeTimeline,
         onlyNoNsfwSensitive: timelineLocalPreferences.onlyNoNsfwSensitive,
         onlyNoReplies: timelineLocalPreferences.onlyNoReplies,
         limit: null,
@@ -166,7 +172,7 @@ abstract class TimelineStatusCachedListBloc extends DisposableOwner
         onlyFromAccount: null,
         onlyInListWithRemoteId: timelineSettings.onlyInListWithRemoteId,
         onlyWithHashtag: timelineSettings.withHashtag,
-        onlyFromAccountsFollowingByAccount: timelineSettings.homeAccount,
+        onlyFromAccountsFollowingByAccount: null,
         onlyLocal: onlyLocalFilter,
         onlyWithMedia: timelineLocalPreferences.onlyWithMedia,
         onlyNotMuted: timelineSettings.onlyNotMuted,
@@ -179,13 +185,11 @@ abstract class TimelineStatusCachedListBloc extends DisposableOwner
         offset: null,
         orderingTermData: StatusOrderingTermData(
             orderingMode: OrderingMode.desc,
-            orderByType: StatusOrderByType.remoteId));
+            orderByType: StatusOrderByType.remoteId),
+        isFromHomeTimeline: isFromHomeTimeline);
 
     _logger.finer(() =>
         "finish loadLocalItems for $timelineSettings statuses ${statuses.length}");
     return statuses;
   }
-
-  @override
-  Future preRefreshAllAction() async {}
 }

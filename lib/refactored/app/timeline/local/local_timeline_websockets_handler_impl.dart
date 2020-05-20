@@ -30,4 +30,8 @@ class LocalTimelineWebSocketsHandler extends WebSocketsChannelHandler {
             IConversationRepository.of(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
       );
+
+
+  @override
+  String get logTag => "local_timeline_websockets_handler_impl.dart";
 }

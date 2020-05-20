@@ -32,4 +32,7 @@ class AccountWebSocketsHandler extends WebSocketsChannelHandler {
             IConversationRepository.of(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
       );
+
+  @override
+  String get logTag => "account_websockets_handler_impl.dart";
 }

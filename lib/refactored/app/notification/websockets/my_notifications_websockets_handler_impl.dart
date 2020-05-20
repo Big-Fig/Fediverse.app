@@ -30,4 +30,7 @@ class MyNotificationsWebSocketsHandler extends WebSocketsChannelHandler {
             IConversationRepository.of(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
       );
+
+  @override
+  String get logTag => "my_notifications_websockets_handler_impl.dart";
 }

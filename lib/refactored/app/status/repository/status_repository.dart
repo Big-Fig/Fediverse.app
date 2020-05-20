@@ -21,84 +21,97 @@ abstract class IStatusRepository
   Future<IStatus> findByRemoteId(String remoteId);
 
   Future upsertRemoteStatuses(List<IPleromaStatus> remoteStatuses,
-      {@required String listRemoteId, @required String conversationRemoteId});
+      {@required String listRemoteId,
+      @required String conversationRemoteId,
+      bool isFromHomeTimeline = false});
 
   Stream<IStatus> watchByRemoteId(String remoteId);
 
   Future updateLocalStatusByRemoteStatus(
       {@required IStatus oldLocalStatus,
-      @required IPleromaStatus newRemoteStatus});
+      @required IPleromaStatus newRemoteStatus,
+      bool isFromHomeTimeline = false});
 
   Future upsertRemoteStatus(IPleromaStatus remoteStatus,
-      {@required String listRemoteId, @required String conversationRemoteId});
+      {@required String listRemoteId,
+      @required String conversationRemoteId,
+      bool isFromHomeTimeline = false});
 
-  Future<List<IStatus>> getStatuses(
-      {@required String onlyInListWithRemoteId,
-      @required String onlyWithHashtag,
-      @required IAccount onlyFromAccountsFollowingByAccount,
-      @required IAccount onlyFromAccount,
-      @required IConversation onlyInConversation,
-      @required OnlyLocalStatusFilter onlyLocal,
-      @required bool onlyWithMedia,
-      @required bool onlyNotMuted,
-      @required List<PleromaVisibility> excludeVisibilities,
-      @required IStatus olderThanStatus,
-      @required IStatus newerThanStatus,
-      @required bool onlyNoNsfwSensitive,
-      @required bool onlyNoReplies,
-      @required int limit,
-      @required int offset,
-      @required StatusOrderingTermData orderingTermData});
+  Future<List<IStatus>> getStatuses({
+    @required String onlyInListWithRemoteId,
+    @required String onlyWithHashtag,
+    @required IAccount onlyFromAccountsFollowingByAccount,
+    @required IAccount onlyFromAccount,
+    @required IConversation onlyInConversation,
+    @required OnlyLocalStatusFilter onlyLocal,
+    @required bool onlyWithMedia,
+    @required bool onlyNotMuted,
+    @required List<PleromaVisibility> excludeVisibilities,
+    @required IStatus olderThanStatus,
+    @required IStatus newerThanStatus,
+    @required bool onlyNoNsfwSensitive,
+    @required bool onlyNoReplies,
+    @required int limit,
+    @required int offset,
+    @required StatusOrderingTermData orderingTermData,
+    @required bool isFromHomeTimeline,
+  });
 
-  Stream<List<IStatus>> watchStatuses(
-      {@required String onlyInListWithRemoteId,
-      @required String onlyWithHashtag,
-      @required IAccount onlyFromAccountsFollowingByAccount,
-      @required IAccount onlyFromAccount,
-      @required IConversation onlyInConversation,
-      @required OnlyLocalStatusFilter onlyLocal,
-      @required bool onlyWithMedia,
-      @required bool onlyNotMuted,
-      @required List<PleromaVisibility> excludeVisibilities,
-      @required IStatus olderThanStatus,
-      @required IStatus newerThanStatus,
-      @required bool onlyNoNsfwSensitive,
-      @required bool onlyNoReplies,
-      @required int limit,
-      @required int offset,
-      @required StatusOrderingTermData orderingTermData});
+  Stream<List<IStatus>> watchStatuses({
+    @required String onlyInListWithRemoteId,
+    @required String onlyWithHashtag,
+    @required IAccount onlyFromAccountsFollowingByAccount,
+    @required IAccount onlyFromAccount,
+    @required IConversation onlyInConversation,
+    @required OnlyLocalStatusFilter onlyLocal,
+    @required bool onlyWithMedia,
+    @required bool onlyNotMuted,
+    @required List<PleromaVisibility> excludeVisibilities,
+    @required IStatus olderThanStatus,
+    @required IStatus newerThanStatus,
+    @required bool onlyNoNsfwSensitive,
+    @required bool onlyNoReplies,
+    @required int limit,
+    @required int offset,
+    @required StatusOrderingTermData orderingTermData,
+    @required bool isFromHomeTimeline,
+  });
 
-  Future<IStatus> getStatus(
-      {@required String onlyInListWithRemoteId,
-      @required String onlyWithHashtag,
-      @required IAccount onlyFromAccountsFollowingByAccount,
-      @required IAccount onlyFromAccount,
-      @required IConversation onlyInConversation,
-      @required OnlyLocalStatusFilter onlyLocal,
-      @required bool onlyWithMedia,
-      @required bool onlyNotMuted,
-      @required List<PleromaVisibility> excludeVisibilities,
-      @required IStatus olderThanStatus,
-      @required IStatus newerThanStatus,
-      @required bool onlyNoNsfwSensitive,
-      @required bool onlyNoReplies,
-      @required StatusOrderingTermData orderingTermData});
+  Future<IStatus> getStatus({
+    @required String onlyInListWithRemoteId,
+    @required String onlyWithHashtag,
+    @required IAccount onlyFromAccountsFollowingByAccount,
+    @required IAccount onlyFromAccount,
+    @required IConversation onlyInConversation,
+    @required OnlyLocalStatusFilter onlyLocal,
+    @required bool onlyWithMedia,
+    @required bool onlyNotMuted,
+    @required List<PleromaVisibility> excludeVisibilities,
+    @required IStatus olderThanStatus,
+    @required IStatus newerThanStatus,
+    @required bool onlyNoNsfwSensitive,
+    @required bool onlyNoReplies,
+    @required StatusOrderingTermData orderingTermData,
+    @required bool isFromHomeTimeline,
+  });
 
-  Stream<IStatus> watchStatus(
-      {@required String onlyInListWithRemoteId,
-      @required String onlyWithHashtag,
-      @required IAccount onlyFromAccountsFollowingByAccount,
-      @required IAccount onlyFromAccount,
-      @required IConversation onlyInConversation,
-      @required OnlyLocalStatusFilter onlyLocal,
-      @required bool onlyWithMedia,
-      @required bool onlyNotMuted,
-      @required List<PleromaVisibility> excludeVisibilities,
-      @required IStatus olderThanStatus,
-      @required IStatus newerThanStatus,
-      @required bool onlyNoNsfwSensitive,
-      @required bool onlyNoReplies,
-      @required StatusOrderingTermData orderingTermData});
+  Stream<IStatus> watchStatus({
+    @required String onlyInListWithRemoteId,
+    @required String onlyWithHashtag,
+    @required IAccount onlyFromAccountsFollowingByAccount,
+    @required IAccount onlyFromAccount,
+    @required IConversation onlyInConversation,
+    @required OnlyLocalStatusFilter onlyLocal,
+    @required bool onlyWithMedia,
+    @required bool onlyNotMuted,
+    @required List<PleromaVisibility> excludeVisibilities,
+    @required IStatus olderThanStatus,
+    @required IStatus newerThanStatus,
+    @required bool onlyNoNsfwSensitive,
+    @required bool onlyNoReplies,
+    @required StatusOrderingTermData orderingTermData,
+    @required bool isFromHomeTimeline,
+  });
 
   Stream<IStatus> watchConversationLastStatus(
       {@required IConversation conversation});

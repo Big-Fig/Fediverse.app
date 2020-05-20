@@ -101,21 +101,13 @@ class AccountInfoWidget extends StatelessWidget {
         });
   }
 
-  Widget buildStatisticValueWidget(String formattedValue) {
-    return FediTransparentTextButton(
+  Widget buildStatisticValueWidget(String formattedValue) => FediTransparentTextButton(
       formattedValue,
       onPressed: () {
         // nothing by now
       },
       height: null,
     );
-
-    return Text(
-      formattedValue,
-      textAlign: TextAlign.center,
-      style: TextStyle(fontSize: 18, color: Colors.white),
-    );
-  }
 
   const AccountInfoWidget();
 }
