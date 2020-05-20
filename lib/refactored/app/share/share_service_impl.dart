@@ -2,9 +2,9 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:esys_flutter_share/esys_flutter_share.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/refactored/app/share/share_service.dart';
 import 'package:fedi/refactored/app/status/status_model.dart';
+import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:fedi/refactored/mastodon/media/attachment/mastodon_media_attachment_model.dart';
 import 'package:fedi/refactored/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/foundation.dart';

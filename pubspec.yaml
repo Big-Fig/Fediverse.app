@@ -172,17 +172,8 @@ flutter:
   assets:
     - assets/terms/terms.rtf
     - assets/images/theme/logo.png
-    - assets/images/double_ring_loading_io.gif
-    - assets/langs/en-US.json
-    - assets/langs/refactored/en-US.json
-    - assets/images/comment-icon.png
-    - assets/images/comment.png
-    - assets/images/favorites.png
-    - assets/images/repost.png
-    - assets/images/share.png
-    - assets/images/happy.png
     - assets/images/default_timeline_header.png
-#    - assets/images/addVideoFileIcon.png
+    - assets/langs/refactored/en-US.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

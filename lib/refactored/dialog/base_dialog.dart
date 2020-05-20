@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/refactored/dialog/dialog_model.dart';
+import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 

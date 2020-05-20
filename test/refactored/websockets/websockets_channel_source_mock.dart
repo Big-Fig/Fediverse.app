@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:fedi/refactored/disposable/disposable.dart';
+import 'package:fedi/refactored/disposable/disposable_owner.dart';
 import 'package:fedi/refactored/websockets/websockets_channel_source.dart';
 import 'package:fedi/refactored/websockets/websockets_model.dart';
 import 'package:flutter/widgets.dart';
