@@ -48,6 +48,11 @@ class StatusRepository extends AsyncInitLoadingBloc
       {@required String listRemoteId,
       @required String conversationRemoteId,
       bool isFromHomeTimeline = false}) async {
+    // if conversation not specified we try to fetch it from status
+    conversationRemoteId =
+        conversationRemoteId ??
+            remoteStatus?.pleroma?.conversationId?.toString();
+
     _logger.finer(() => "upsertRemoteStatus $remoteStatus listRemoteId=> "
         "$listRemoteId");
     var remoteAccount = remoteStatus.account;
