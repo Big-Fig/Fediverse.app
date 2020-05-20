@@ -1,40 +1,40 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/refactored/app/account/my/my_account_bloc.dart';
-import 'package:fedi/refactored/app/account/my/my_account_model.dart';
-import 'package:fedi/refactored/app/account/my/settings'
+import 'package:fedi/app/account/my/my_account_bloc.dart';
+import 'package:fedi/app/account/my/my_account_model.dart';
+import 'package:fedi/app/account/my/settings'
     '/my_account_settings_model'
     '.dart';
-import 'package:fedi/refactored/app/auth/instance/auth_instance_model.dart';
-import 'package:fedi/refactored/app/auth/instance/current/context/current_auth_instance_context_bloc_impl.dart';
-import 'package:fedi/refactored/app/auth/instance/current/context/loading/current_auth_instance_context_loading_bloc.dart';
-import 'package:fedi/refactored/app/auth/instance/current/context/loading/current_auth_instance_context_loading_bloc_impl.dart';
-import 'package:fedi/refactored/app/auth/instance/current/context/loading/current_auth_instance_context_loading_widget.dart';
-import 'package:fedi/refactored/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/refactored/app/auth/instance/join/from_scratch/from_scratch_join_auth_instance_page.dart';
-import 'package:fedi/refactored/app/auth/instance/join/join_auth_instance_bloc.dart';
-import 'package:fedi/refactored/app/auth/instance/join/join_auth_instance_bloc_impl.dart';
-import 'package:fedi/refactored/app/auth/instance/list/auth_instance_list_model.dart';
-import 'package:fedi/refactored/app/context/app_context_bloc.dart';
-import 'package:fedi/refactored/app/context/app_context_bloc_impl.dart';
-import 'package:fedi/refactored/app/home/home_bloc.dart';
-import 'package:fedi/refactored/app/home/home_bloc_impl.dart';
-import 'package:fedi/refactored/app/home/home_model.dart';
-import 'package:fedi/refactored/app/home/home_page.dart';
-import 'package:fedi/refactored/app/push/handler/unhandled/push_handler_unhandled_local_preferences_model.dart';
-import 'package:fedi/refactored/app/push/subscription/local_preferences/push_subscription_local_preferences_model.dart';
-import 'package:fedi/refactored/app/splash/app_splash_widget.dart';
-import 'package:fedi/refactored/app/timeline/local_preferences/timeline_local_preferences_model.dart';
-import 'package:fedi/refactored/async/loading/init/async_init_loading_model.dart';
-import 'package:fedi/refactored/disposable/disposable_provider.dart';
-import 'package:fedi/refactored/mastodon/instance/mastodon_instance_model.dart';
-import 'package:fedi/refactored/pleroma/account/my/pleroma_my_account_model.dart';
-import 'package:fedi/refactored/pleroma/account/pleroma_account_model.dart';
-import 'package:fedi/refactored/pleroma/application/pleroma_application_model.dart';
-import 'package:fedi/refactored/pleroma/emoji/pleroma_emoji_model.dart';
-import 'package:fedi/refactored/pleroma/field/pleroma_field_model.dart';
-import 'package:fedi/refactored/pleroma/instance/pleroma_instance_model.dart';
-import 'package:fedi/refactored/pleroma/oauth/pleroma_oauth_model.dart';
-import 'package:fedi/refactored/pleroma/push/pleroma_push_model.dart';
+import 'package:fedi/app/auth/instance/auth_instance_model.dart';
+import 'package:fedi/app/auth/instance/current/context/current_auth_instance_context_bloc_impl.dart';
+import 'package:fedi/app/auth/instance/current/context/loading/current_auth_instance_context_loading_bloc.dart';
+import 'package:fedi/app/auth/instance/current/context/loading/current_auth_instance_context_loading_bloc_impl.dart';
+import 'package:fedi/app/auth/instance/current/context/loading/current_auth_instance_context_loading_widget.dart';
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/auth/instance/join/from_scratch/from_scratch_join_auth_instance_page.dart';
+import 'package:fedi/app/auth/instance/join/join_auth_instance_bloc.dart';
+import 'package:fedi/app/auth/instance/join/join_auth_instance_bloc_impl.dart';
+import 'package:fedi/app/auth/instance/list/auth_instance_list_model.dart';
+import 'package:fedi/app/context/app_context_bloc.dart';
+import 'package:fedi/app/context/app_context_bloc_impl.dart';
+import 'package:fedi/app/home/home_bloc.dart';
+import 'package:fedi/app/home/home_bloc_impl.dart';
+import 'package:fedi/app/home/home_model.dart';
+import 'package:fedi/app/home/home_page.dart';
+import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_preferences_model.dart';
+import 'package:fedi/app/push/subscription/local_preferences/push_subscription_local_preferences_model.dart';
+import 'package:fedi/app/splash/app_splash_widget.dart';
+import 'package:fedi/app/timeline/local_preferences/timeline_local_preferences_model.dart';
+import 'package:fedi/async/loading/init/async_init_loading_model.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/mastodon/instance/mastodon_instance_model.dart';
+import 'package:fedi/pleroma/account/my/pleroma_my_account_model.dart';
+import 'package:fedi/pleroma/account/pleroma_account_model.dart';
+import 'package:fedi/pleroma/application/pleroma_application_model.dart';
+import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
+import 'package:fedi/pleroma/field/pleroma_field_model.dart';
+import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
+import 'package:fedi/pleroma/oauth/pleroma_oauth_model.dart';
+import 'package:fedi/pleroma/push/pleroma_push_model.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -192,7 +192,7 @@ class MyApp extends StatelessWidget {
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           EasylocaLizationDelegate(
-              locale: locale, path: "assets/langs/refactored")
+              locale: locale, path: "assets/langs")
         ],
         locale: savedLocale,
         supportedLocales: [Locale('en', 'US')],
