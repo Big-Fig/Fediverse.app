@@ -17,6 +17,7 @@ class ChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var chatBloc = IChatBloc.of(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(

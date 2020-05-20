@@ -2,7 +2,7 @@ import 'package:fedi/refactored/app/account/account_bloc.dart';
 import 'package:fedi/refactored/app/account/account_bloc_impl.dart';
 import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/account/details/account_details_widget.dart';
-import 'package:fedi/refactored/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
+import 'package:fedi/refactored/app/ui/button/icon/fedi_back_icon_in_circle_transparent_button.dart';
 import 'package:fedi/refactored/app/ui/home/fedi_home_tab_container_widget.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,26 +12,16 @@ class AccountDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: true);
+
     return Scaffold(
-      body: FediHomeTabContainer(
-        topHeaderHeightInSafeArea: 104,
-        body: AccountDetailsWidget(),
-        topBar: Stack(
-          children: [
-            Align(
-              alignment: Alignment.topLeft,
-              child: buildBackButton(context),
-            ),
-            Align(
-              alignment: Alignment.topCenter,
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: buildAcct(accountBloc),
-              ),
-            ),
-          ],
-        ),
-      ),
+      body: FediHomeTabContainer.createLikeAppBar(
+          leading: const FediBackIconInCircleTransparentButton(),
+          center: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: buildAcct(accountBloc),
+          ),
+          trailing: null,
+          body: AccountDetailsWidget()),
     );
   }
 
@@ -48,14 +38,6 @@ class AccountDetailsPage extends StatelessWidget {
         });
   }
 
-  FediIconInCircleTransparentButton buildBackButton(BuildContext context) {
-    return FediIconInCircleTransparentButton(
-      Icons.chevron_left,
-      onPressed: () {
-        Navigator.of(context).pop();
-      },
-    );
-  }
 
   const AccountDetailsPage();
 }
