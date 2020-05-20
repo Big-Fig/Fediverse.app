@@ -1,7 +1,5 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/refactored/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/refactored/app/chat/post/chat_post_message_bloc.dart';
-import 'package:fedi/refactored/app/ui/button/text/fedi_filled_text_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -26,10 +24,10 @@ class ChatPostMessagePostActionWidget extends StatelessWidget {
               await postChatMessageBloc.postMessage();
             },
             builder: (BuildContext context, onPressed) {
-                return FediFilledTextButton(
-                  AppLocalizations.of(context).tr("app.chat.post.action.post"),
-                  onPressed: isReadyToPost ? onPressed : null,
-                );
+              return IconButton(
+                onPressed: isReadyToPost ? onPressed : null,
+                icon: Icon(Icons.send),
+              );
             },
           );
         });

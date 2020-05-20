@@ -4,6 +4,7 @@ import 'package:fedi/refactored/app/chat/post/chat_post_message_bloc.dart';
 import 'package:fedi/refactored/app/chat/post/content/chat_post_message_content_widget.dart';
 import 'package:fedi/refactored/app/media/attachment/upload/upload_media_attachment_grid_bloc.dart';
 import 'package:fedi/refactored/app/media/attachment/upload/upload_media_attachment_grid_widget.dart';
+import 'package:fedi/refactored/app/ui/fedi_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,25 +19,24 @@ class ChatPostMessageWidget extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Flexible(child: ChatPostMessageContentWidget()),
-          ProxyProvider<IChatPostMessageBloc, IUploadMediaAttachmentGridBloc>(
-              update: (context, value, previous) =>
-                  value.mediaAttachmentGridBloc,
-              child: const UploadMediaAttachmentGridWidget()),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
+          Container(
+            decoration: BoxDecoration(
+                border: Border.all(color: FediColors.darkGrey),
+                borderRadius: BorderRadius.circular(16.0)),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    const ChatPostMessageAttachMediaActionWidget(),
-                  ],
+                const ChatPostMessageAttachMediaActionWidget(),
+                const Flexible(
+                  child: ChatPostMessageContentWidget(),
                 ),
                 const ChatPostMessagePostActionWidget()
               ],
             ),
-          )
+          ),
+          ProxyProvider<IChatPostMessageBloc, IUploadMediaAttachmentGridBloc>(
+              update: (context, value, previous) =>
+                  value.mediaAttachmentGridBloc,
+              child: const UploadMediaAttachmentGridWidget()),
         ],
       ),
     );

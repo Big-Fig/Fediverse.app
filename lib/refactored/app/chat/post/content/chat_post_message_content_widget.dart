@@ -4,8 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ChatPostMessageContentWidget extends StatelessWidget {
-
-  ChatPostMessageContentWidget();
+  const ChatPostMessageContentWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -13,12 +12,7 @@ class ChatPostMessageContentWidget extends StatelessWidget {
 
     return TextField(
       decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12.0),
-          borderSide: BorderSide(),
-        ),
-        labelText: AppLocalizations.of(context)
-            .tr("app.chat.post.field.message.label"),
+        border: InputBorder.none,
       ),
       autofocus: false,
       controller: chatPostMessageBloc.inputTextController,
