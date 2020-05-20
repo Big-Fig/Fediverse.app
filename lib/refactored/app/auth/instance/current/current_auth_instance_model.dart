@@ -1,1 +1,0 @@
-enum AuthInstanceState { notLogged, logged }
