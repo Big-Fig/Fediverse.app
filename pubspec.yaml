@@ -173,7 +173,7 @@ flutter:
     - assets/terms/terms.rtf
     - assets/images/theme/logo.png
     - assets/images/default_timeline_header.png
-    - assets/langs/refactored/en-US.json
+    - assets/langs/en-US.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
