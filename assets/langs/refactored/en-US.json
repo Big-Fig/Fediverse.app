@@ -295,16 +295,16 @@
           }
         },
         "conversations": {
-          "title": "Messages",
+          "title": "DM",
           "action": {
-            "switch_to_chats": "Chats"
+            "switch_to_chats": "To Chats"
           }
         },
         "chats": {
-          "title": "Messages",
+          "title": "Chats",
           "not_supported_on_mastodon": "Chats not supported on Mastodon instances",
           "action": {
-            "switch_to_dms": "DM"
+            "switch_to_dms": "To DM"
           }
         }
       }
