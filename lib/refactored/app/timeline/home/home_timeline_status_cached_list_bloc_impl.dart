@@ -46,7 +46,7 @@ class HomeTimelineStatusCachedListBloc extends TimelineStatusCachedListBloc
         lastPreRefreshAllTime.difference(DateTime.now()) >
             Duration(minutes: 1)) {
       var followingAccounts = await pleromaAccountService.getAccountFollowings(
-          accountRemoteId: homeAccount.remoteId);
+          accountRemoteId: homeAccount.remoteId, limit: null);
 
       await accountRepository.updateAccountFollowings(
           homeAccount.remoteId, followingAccounts);
