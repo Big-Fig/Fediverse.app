@@ -5,6 +5,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ChatTitleWidget extends StatelessWidget {
+  final TextStyle textStyle;
+
+  const ChatTitleWidget(
+      {this.textStyle = const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+          color: FediColors.darkGrey)});
+
   @override
   Widget build(BuildContext context) {
     var chatBloc = IChatBloc.of(context, listen: false);
@@ -34,10 +42,7 @@ class ChatTitleWidget extends StatelessWidget {
 
                 return Text(
                   finalText,
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: FediColors.darkGrey),
+                  style: textStyle,
                 );
               });
         });

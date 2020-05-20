@@ -8,6 +8,9 @@ import 'package:fedi/refactored/app/chat/current/current_chat_bloc.dart';
 import 'package:fedi/refactored/app/chat/post/chat_post_message_bloc.dart';
 import 'package:fedi/refactored/app/chat/post/chat_post_message_bloc_impl.dart';
 import 'package:fedi/refactored/app/chat/title/chat_title_widget.dart';
+import 'package:fedi/refactored/app/ui/button/icon/fedi_back_icon_in_circle_transparent_button.dart';
+import 'package:fedi/refactored/app/ui/fedi_colors.dart';
+import 'package:fedi/refactored/app/ui/home/fedi_home_tab_container_widget.dart';
 import 'package:fedi/refactored/disposable/disposable.dart';
 import 'package:fedi/refactored/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,32 +22,35 @@ class ChatPage extends StatelessWidget {
     var chatBloc = IChatBloc.of(context, listen: false);
 
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.chevron_left),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        title: GestureDetector(
-          onTap: () {
-            goToChatAccountsPage(context, chatBloc.chat);
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              ChatAvatarWidget(baseAvatarSize: 40),
-              SizedBox(
-                width: 8,
-              ),
-              ChatTitleWidget(),
-            ],
-          ),
-        ),
-        actions: <Widget>[],
+      body: FediHomeTabContainer.createLikeAppBar(
+        leading: FediBackIconInCircleTransparentButton(),
+        center: buildChatAccountsWidget(context, chatBloc),
+        trailing: null,
+        body: ChatWidget(),
       ),
-      body: SafeArea(
-        child: ChatWidget(),
+    );
+  }
+
+  GestureDetector buildChatAccountsWidget(
+      BuildContext context, IChatBloc chatBloc) {
+    return GestureDetector(
+      onTap: () {
+        goToChatAccountsPage(context, chatBloc.chat);
+      },
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          const ChatAvatarWidget(baseAvatarSize: 40),
+          const SizedBox(
+            width: 8,
+          ),
+          const ChatTitleWidget(
+            textStyle: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: FediColors.white),
+          ),
+        ],
       ),
     );
   }
@@ -57,7 +63,6 @@ void goToChatPage(BuildContext context, {@required IChat chat}) {
         builder: (context) => DisposableProvider<IChatBloc>(
             create: (context) {
               var chatBloc = ChatBloc.createFromContext(context, chat: chat);
-
 
               // we don't need to await
               chatBloc.markAsRead();

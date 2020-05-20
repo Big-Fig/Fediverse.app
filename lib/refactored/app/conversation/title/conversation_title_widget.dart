@@ -5,6 +5,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ConversationTitleWidget extends StatelessWidget {
+  final TextStyle textStyle;
+
+  const ConversationTitleWidget(
+      {this.textStyle = const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+          color: FediColors.darkGrey)});
+
   @override
   Widget build(BuildContext context) {
     var conversationBloc = IConversationBloc.of(context, listen: false);
@@ -21,10 +29,7 @@ class ConversationTitleWidget extends StatelessWidget {
             children: <Widget>[
               Text(
                 accounts.map((account) => account.acct).join(", "),
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: FediColors.darkGrey),
+                style: textStyle,
               ),
             ],
           );
