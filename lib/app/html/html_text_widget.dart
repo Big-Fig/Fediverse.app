@@ -16,6 +16,7 @@ class HtmlTextWidget extends StatelessWidget {
   final double lineHeight;
   final Color color;
   final bool shrinkWrap;
+  final bool drawNewLines;
 
   const HtmlTextWidget({
     @required this.data,
@@ -25,44 +26,56 @@ class HtmlTextWidget extends StatelessWidget {
     this.fontWeight = FontWeight.normal,
     this.color,
     this.shrinkWrap = false,
+    this.drawNewLines = true,
   });
 
   @override
-  Widget build(BuildContext context) => Html(
-        shrinkWrap: shrinkWrap,
-        onImageTap: (String source) {
-          _logger.finest(() => "onImageTap $source");
-        },
-        style: {
-          "html": Style(
-            //            backgroundColor: Colors.red,
-            display: shrinkWrap ? Display.INLINE : Display.BLOCK,
-            padding: EdgeInsets.zero,
-            margin: EdgeInsets.zero,
+  Widget build(BuildContext context) {
+    String htmlData;
+    if (drawNewLines) {
+      // draw both new line types
+      htmlData = data.replaceAll("\n", "</br>");
+    } else {
+      htmlData = data.replaceAll("\n", "");
+      htmlData = data.replaceAll("<(/)*br>", "");
+    }
+
+    return Html(
+      shrinkWrap: shrinkWrap,
+      onImageTap: (String source) {
+        _logger.finest(() => "onImageTap $source");
+      },
+      style: {
+        "html": Style(
+          //            backgroundColor: Colors.red,
+          display: shrinkWrap ? Display.INLINE : Display.BLOCK,
+          padding: EdgeInsets.zero,
+          margin: EdgeInsets.zero,
 //              alignment: Alignment.centerLeft,
 //              textDecoration: null,
 //              width: 0
-          ),
-          "body": Style(
-            //            backgroundColor: Colors.grey,
-            display: shrinkWrap ? Display.INLINE : Display.BLOCK,
+        ),
+        "body": Style(
+          //            backgroundColor: Colors.grey,
+          display: shrinkWrap ? Display.INLINE : Display.BLOCK,
 //              alignment: Alignment.centerLeft,
-            padding: EdgeInsets.zero,
-            margin: EdgeInsets.zero,
+          padding: EdgeInsets.zero,
+          margin: EdgeInsets.zero,
 //              width: 0
-          ),
-          "img": Style(display: Display.INLINE, width: 20, height: 20),
-          "p": Style(
-              height: lineHeight,
-              display: Display.INLINE,
-              fontSize: FontSize(fontSize),
-              fontWeight: fontWeight,
-              color: color),
-        },
-        onImageError: (exception, stackTrace) {
-          _logger.warning(() => "onImageError", exception, stackTrace);
-        },
-        data: data,
-        onLinkTap: onLinkTap,
-      );
+        ),
+        "img": Style(display: Display.INLINE, width: 20, height: 20),
+        "p": Style(
+            height: lineHeight,
+            display: Display.INLINE,
+            fontSize: FontSize(fontSize),
+            fontWeight: fontWeight,
+            color: color),
+      },
+      onImageError: (exception, stackTrace) {
+        _logger.warning(() => "onImageError", exception, stackTrace);
+      },
+      data: htmlData,
+      onLinkTap: onLinkTap,
+    );
+  }
 }
