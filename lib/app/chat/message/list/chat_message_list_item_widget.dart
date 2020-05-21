@@ -11,9 +11,13 @@ import 'package:url_launcher/url_launcher.dart';
 const _borderRadius = Radius.circular(16.0);
 
 class ChatMessageListItemWidget extends StatelessWidget {
-  final bool isFirstInGroup;
+  final bool isFirstInMinuteGroup;
+  final bool isLastInMinuteGroup;
 
-  ChatMessageListItemWidget({@required this.isFirstInGroup});
+  ChatMessageListItemWidget({
+    @required this.isFirstInMinuteGroup,
+    @required this.isLastInMinuteGroup,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,28 +30,49 @@ class ChatMessageListItemWidget extends StatelessWidget {
     var isChatMessageFromMe =
         myAccountBloc.checkIsChatMessageFromMe(messageBloc.chatMessage);
 
+    var alignment =
+        isChatMessageFromMe ? Alignment.centerRight : Alignment.centerLeft;
     return Align(
-      alignment:
-          isChatMessageFromMe ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        decoration: BoxDecoration(
-            color: isChatMessageFromMe
-                ? FediColors.primaryColorDark
-                : FediColors.ultraLightGrey,
-            borderRadius: isChatMessageFromMe
-                ? BorderRadius.only(
-                    topLeft: _borderRadius,
-                    topRight: isFirstInGroup ? Radius.zero : _borderRadius,
-                    bottomLeft: _borderRadius)
-                : BorderRadius.only(
-                    topLeft: isFirstInGroup ? Radius.zero : _borderRadius,
-                    topRight: _borderRadius,
-                    bottomRight: _borderRadius)),
-        constraints: BoxConstraints(maxWidth: deviceWidth * 0.80),
-        child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-          child: buildContent(context, messageBloc, isChatMessageFromMe),
-        ),
+      alignment: alignment,
+      child: Column(
+        crossAxisAlignment: isChatMessageFromMe
+            ? CrossAxisAlignment.end
+            : CrossAxisAlignment.start,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+                color: isChatMessageFromMe
+                    ? FediColors.primaryColorDark
+                    : FediColors.ultraLightGrey,
+                borderRadius: isChatMessageFromMe
+                    ? BorderRadius.only(
+                        topLeft: _borderRadius,
+                        topRight: isLastInMinuteGroup ? _borderRadius : Radius.zero,
+                        bottomLeft: _borderRadius)
+                    : BorderRadius.only(
+                        topLeft: isLastInMinuteGroup ? _borderRadius : Radius.zero,
+                        topRight: _borderRadius,
+                        bottomRight: _borderRadius)),
+            constraints: BoxConstraints(maxWidth: deviceWidth * 0.80),
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+              child: buildContent(context, messageBloc, isChatMessageFromMe),
+            ),
+          ),
+          if (isFirstInMinuteGroup)
+            Align(
+                alignment: alignment,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 2.0),
+                  child: Text(
+                    TimeOfDay.fromDateTime(messageBloc.createdAt).format(context),
+                    style: TextStyle(
+                        height: 14 / 12,
+                        fontSize: 12,
+                        color: FediColors.mediumGrey),
+                  ),
+                ))
+        ],
       ),
     );
   }
