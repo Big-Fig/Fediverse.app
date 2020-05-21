@@ -88,17 +88,23 @@ class ChatMessageListWidget extends ChatMessagePaginationListBaseWidget {
         if (previousCreatedAt != null) {
           isFirstInDayGroup =
               !DateUtils.isSameDay(currentCreatedAt, previousCreatedAt);
+          var isSameAccount = currentMessage.account.remoteId ==
+              previousMessage.account.remoteId;
           isFirstInMinuteGroup =
-              !DateUtils.isSameMinute(currentCreatedAt, previousCreatedAt);
+              !(DateUtils.isSameMinute(currentCreatedAt, previousCreatedAt) &&
+                  isSameAccount);
         } else {
           isFirstInDayGroup = true;
           isFirstInMinuteGroup = true;
         }
         if (nextCreatedAt != null) {
+          var isSameAccount =
+              currentMessage.account.remoteId == nextMessage.account.remoteId;
           isLastInDayGroup =
               !DateUtils.isSameDay(currentCreatedAt, nextCreatedAt);
           isLastInMinuteGroup =
-              !DateUtils.isSameMinute(currentCreatedAt, nextCreatedAt);
+              !(DateUtils.isSameMinute(currentCreatedAt, nextCreatedAt) &&
+                  isSameAccount);
         } else {
           isLastInDayGroup = true;
           isLastInMinuteGroup = true;
