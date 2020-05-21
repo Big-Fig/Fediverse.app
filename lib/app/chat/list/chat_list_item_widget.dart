@@ -99,6 +99,7 @@ class ChatListItemWidget extends StatelessWidget {
             }
             return HtmlTextWidget(
               shrinkWrap: true,
+              drawNewLines: false,
               data: addEmojiToHtmlContent(content, lastMessage.emojis),
               onLinkTap: null,
               fontSize: 16.0,
