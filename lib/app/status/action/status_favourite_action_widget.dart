@@ -28,7 +28,7 @@ class StatusFavouriteActionWidget extends StatelessWidget {
                         iconSize: 20.0,
                         color: favourited
                             ? FediColors.primaryColor
-                            : FediColors.darkGrey,
+                            : FediColors.secondaryColor,
                         icon: Icon(FediIcons.heart),
                         tooltip: AppLocalizations.of(context)
                             .tr("app.status.action.favourite"),
