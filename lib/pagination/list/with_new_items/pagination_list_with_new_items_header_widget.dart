@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,9 +8,13 @@ import 'package:logging/logging.dart';
 var _logger = Logger("pagination_list_with_new_items_header_widget.dart");
 
 class PaginationListWithNewItemsHeaderWidget extends StatelessWidget {
+  final String Function(BuildContext context, int updateItemsCount) textBuilder;
   final Widget child;
 
-  const PaginationListWithNewItemsHeaderWidget({@required this.child});
+  const PaginationListWithNewItemsHeaderWidget({
+    @required this.child,
+    @required this.textBuilder,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -48,15 +52,20 @@ class PaginationListWithNewItemsHeaderWidget extends StatelessWidget {
                     paginationWithUpdatesListBloc.mergeNewItems();
                   },
                   child: Container(
-                    decoration: BoxDecoration(color: Colors.blue),
+                    decoration: BoxDecoration(
+                        color: FediColors.primaryColor,
+                        borderRadius: BorderRadius.circular(20.0)),
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 40.0),
                       child: Text(
-                        AppLocalizations.of(context).tr(
-                            "pagination.list.new_items.action.tap_to_load_new",
-                            args: [updateItemsCount.toString()]),
+                        textBuilder(context, updateItemsCount),
                         style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
+                          color: FediColors.white,
+                          fontWeight: FontWeight.w500,
+                          height: 1.15,
+                          fontSize: 14,
+                        ),
                       ),
                     ),
                   ));

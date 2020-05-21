@@ -310,6 +310,13 @@
       }
     },
     "notification": {
+      "list": {
+        "new_items": {
+          "action": {
+            "tap_to_load_new": "{} new notifications. Tap to load."
+          }
+        }
+      },
       "push": {
         "settings": {
           "title": "Push notifications settings",
@@ -424,6 +431,13 @@
       }
     },
     "status": {
+      "list": {
+        "new_items": {
+          "action": {
+            "tap_to_load_new": "{} new posts. Tap to load."
+          }
+        }
+      },
       "scheduled": {
         "title": "Scheduled statuses",
         "state": {
@@ -628,11 +642,6 @@
   },
   "pagination": {
     "list": {
-      "new_items": {
-        "action": {
-          "tap_to_load_new": "Tap to load new items ({})"
-        }
-      },
       "empty": "Nothing found"
     }
   },

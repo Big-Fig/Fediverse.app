@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/notification/list/cached/notification_cached_list_bloc.dart';
 import 'package:fedi/app/notification/list/cached/notification_cached_list_bloc_impl.dart';
 import 'package:fedi/app/notification/notification_model.dart';
@@ -132,6 +133,10 @@ class NotificationTabsWidget extends StatelessWidget {
                 IPaginationListWithNewItemsBloc>(
               update: (context, value, previous) => value,
               child: PaginationListWithNewItemsHeaderWidget(
+                textBuilder: (context, updateItemsCount) =>
+                    AppLocalizations.of(context).tr(
+                        "app.status.list.new_items.action.tap_to_load_new",
+                        args: [updateItemsCount.toString()]),
                 child: DisposableProvider<ICollapsibleBloc>(
                   create: (context) =>
                       CollapsibleBloc.createFromContext(context),
@@ -167,19 +172,16 @@ class NotificationTabsWidget extends StatelessWidget {
             .valuesWithExclude([PleromaNotificationType.pleromaChatMention]);
         break;
       case NotificationTab.mentions:
-        excludeTypes = pleromaNotificationTypeValues.valuesWithExcept([
-          PleromaNotificationType.mention
-        ]);
+        excludeTypes = pleromaNotificationTypeValues
+            .valuesWithExcept([PleromaNotificationType.mention]);
         break;
       case NotificationTab.reblogs:
-        excludeTypes = pleromaNotificationTypeValues.valuesWithExcept([
-          PleromaNotificationType.reblog
-        ]);
+        excludeTypes = pleromaNotificationTypeValues
+            .valuesWithExcept([PleromaNotificationType.reblog]);
         break;
       case NotificationTab.favourites:
-        excludeTypes = pleromaNotificationTypeValues.valuesWithExcept([
-          PleromaNotificationType.favourite
-        ]);
+        excludeTypes = pleromaNotificationTypeValues
+            .valuesWithExcept([PleromaNotificationType.favourite]);
         break;
       case NotificationTab.follows:
         excludeTypes = pleromaNotificationTypeValues.valuesWithExcept([

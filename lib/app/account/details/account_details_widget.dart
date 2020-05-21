@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_widget.dart';
 import 'package:fedi/app/account/statuses/account_statuses_cached_list_bloc_impl.dart';
@@ -53,6 +54,11 @@ class AccountDetailsWidget extends StatelessWidget {
                 IPaginationListWithNewItemsBloc>(
               update: (context, value, previous) => value,
               child: PaginationListWithNewItemsHeaderWidget(
+                textBuilder: (context, updateItemsCount) =>
+                    AppLocalizations.of(context).tr(
+                        "app.notification.list.new_items.action"
+                            ".tap_to_load_new",
+                        args: [updateItemsCount.toString()]),
                 child: DisposableProvider<ICollapsibleBloc>(
                   create: (context) =>
                       CollapsibleBloc.createFromContext(context),
