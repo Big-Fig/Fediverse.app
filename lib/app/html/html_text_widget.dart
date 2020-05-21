@@ -13,6 +13,7 @@ class HtmlTextWidget extends StatelessWidget {
   final OnTap onLinkTap;
   final double fontSize;
   final FontWeight fontWeight;
+  final double lineHeight;
   final Color color;
   final bool shrinkWrap;
 
@@ -20,6 +21,7 @@ class HtmlTextWidget extends StatelessWidget {
     @required this.data,
     @required this.onLinkTap,
     this.fontSize = 18.0,
+    this.lineHeight = 1.0,
     this.fontWeight = FontWeight.normal,
     this.color,
     this.shrinkWrap = false,
@@ -51,6 +53,7 @@ class HtmlTextWidget extends StatelessWidget {
           ),
           "img": Style(display: Display.INLINE, width: 20, height: 20),
           "p": Style(
+              height: lineHeight,
               display: Display.INLINE,
               fontSize: FontSize(fontSize),
               fontWeight: fontWeight,

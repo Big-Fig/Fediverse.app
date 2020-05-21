@@ -45,8 +45,11 @@ class ChatWidget extends StatelessWidget {
                   child: Column(
                     children: <Widget>[
                       Expanded(
-                        child: ChatMessageListWidget(
-                          key: PageStorageKey(chatBloc.chat.remoteId),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: ChatMessageListWidget(
+                            key: PageStorageKey(chatBloc.chat.remoteId),
+                          ),
                         ),
                       ),
                       Container(height: 1, color: FediColors.ultraLightGrey),
