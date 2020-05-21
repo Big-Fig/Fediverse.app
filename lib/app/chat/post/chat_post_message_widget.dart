@@ -19,19 +19,28 @@ class ChatPostMessageWidget extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-                border: Border.all(color: FediColors.darkGrey),
-                borderRadius: BorderRadius.circular(16.0)),
-            child: Row(
-              children: [
-                const ChatPostMessageAttachMediaActionWidget(),
-                const Flexible(
-                  child: ChatPostMessageContentWidget(),
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: FediColors.ultraLightGrey,
+                      borderRadius: BorderRadius.circular(30.0)),
+                  child: Row(
+                    children: [
+                      const ChatPostMessageAttachMediaActionWidget(),
+                      const Flexible(
+                        child: ChatPostMessageContentWidget(),
+                      ),
+                    ],
+                  ),
                 ),
-                const ChatPostMessagePostActionWidget()
-              ],
-            ),
+              ),
+              SizedBox(
+                width: 12,
+              ),
+              const ChatPostMessagePostActionWidget()
+            ],
           ),
           ProxyProvider<IChatPostMessageBloc, IUploadMediaAttachmentGridBloc>(
               update: (context, value, previous) =>

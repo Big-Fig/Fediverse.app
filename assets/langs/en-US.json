@@ -255,8 +255,8 @@
       },
       "post": {
         "field": {
-          "message": {
-            "label": "Message"
+          "content": {
+            "hint": "Start a message"
           }
         },
         "action": {
