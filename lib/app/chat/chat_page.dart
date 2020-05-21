@@ -8,9 +8,8 @@ import 'package:fedi/app/chat/current/current_chat_bloc.dart';
 import 'package:fedi/app/chat/post/chat_post_message_bloc.dart';
 import 'package:fedi/app/chat/post/chat_post_message_bloc_impl.dart';
 import 'package:fedi/app/chat/title/chat_title_widget.dart';
-import 'package:fedi/app/ui/button/icon/fedi_back_icon_in_circle_transparent_button.dart';
+import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
-import 'package:fedi/app/ui/home/fedi_home_tab_container_widget.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,11 +21,35 @@ class ChatPage extends StatelessWidget {
     var chatBloc = IChatBloc.of(context, listen: false);
 
     return Scaffold(
-      body: FediHomeTabContainer.createLikeAppBar(
-        leading: FediBackIconInCircleTransparentButton(),
-        center: buildChatAccountsWidget(context, chatBloc),
-        trailing: null,
-        body: ChatWidget(),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Container(
+              height: 56,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.15),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, -3), // changes position of shadow
+                  ),
+                ],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  FediBackIconButton(),
+                  buildChatAccountsWidget(context, chatBloc)
+                ],
+              ),
+            ),
+            Expanded(
+                child: ChatWidget())
+          ],
+        ),
       ),
     );
   }
@@ -40,15 +63,15 @@ class ChatPage extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          const ChatAvatarWidget(baseAvatarSize: 40),
+          const ChatAvatarWidget(baseAvatarSize: 36),
           const SizedBox(
-            width: 8,
+            width: 16,
           ),
           const ChatTitleWidget(
             textStyle: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
-                color: FediColors.white),
+                color: FediColors.darkGrey),
           ),
         ],
       ),

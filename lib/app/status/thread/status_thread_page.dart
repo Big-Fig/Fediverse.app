@@ -6,7 +6,7 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc_impl.dart';
 import 'package:fedi/app/status/thread/status_thread_widget.dart';
-import 'package:fedi/app/ui/button/icon/fedi_back_icon_in_circle_transparent_button.dart';
+import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/home/fedi_home_tab_container_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -19,7 +19,7 @@ class StatusThreadPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FediHomeTabContainer.createLikeAppBar(
-          leading: const FediBackIconInCircleTransparentButton(),
+          leading: const FediBackIconButton(),
           center: Padding(
             padding: const EdgeInsets.all(10.0),
             child: buildTitle(context),

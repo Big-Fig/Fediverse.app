@@ -1,5 +1,6 @@
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/chat/post/chat_post_message_bloc.dart';
+import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_filled_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -24,9 +25,9 @@ class ChatPostMessagePostActionWidget extends StatelessWidget {
               await postChatMessageBloc.postMessage();
             },
             builder: (BuildContext context, onPressed) {
-              return IconButton(
+              return FediIconInCircleFilledButton(
+                Icons.send,
                 onPressed: isReadyToPost ? onPressed : null,
-                icon: Icon(Icons.send),
               );
             },
           );
