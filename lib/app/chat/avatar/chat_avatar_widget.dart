@@ -17,7 +17,7 @@ class ChatAvatarWidget extends StatelessWidget {
       width: baseAvatarSize,
       height: baseAvatarSize,
       child: StreamBuilder<List<IAccount>>(
-          stream: chatBloc.accountsWithoutMeStream.distinct(),
+          stream: chatBloc.accountsStream,
           builder: (context, snapshot) {
             var accounts = snapshot.data;
             if (accounts?.isNotEmpty != true) {

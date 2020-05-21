@@ -112,15 +112,6 @@ class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
   Stream<List<IAccount>> get accountsStream => _accountsSubject.stream;
 
   @override
-  List<IAccount> get accountsWithoutMe => IAccount.excludeAccountFromList(
-      accounts, (account) => !myAccountBloc.checkAccountIsMe(account));
-
-  @override
-  Stream<List<IAccount>> get accountsWithoutMeStream =>
-      accountsStream.map((accounts) => IAccount.excludeAccountFromList(
-          accounts, (account) => !myAccountBloc.checkAccountIsMe(account)));
-
-  @override
   IChat get chat => _chatSubject.value;
 
   @override
