@@ -6,6 +6,7 @@ import 'package:fedi/app/account/pagination/list/account_pagination_list_bloc_im
 import 'package:fedi/app/account/select/select_account_list_bloc.dart';
 import 'package:fedi/app/account/select/select_account_list_bloc_impl.dart';
 import 'package:fedi/app/account/select/select_account_widget.dart';
+import 'package:fedi/app/chat/chat_model.dart';
 import 'package:fedi/app/chat/chat_page.dart';
 import 'package:fedi/app/chat/repository/chat_repository.dart';
 import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
@@ -28,8 +29,8 @@ class StartChatPage extends StatelessWidget {
           title: Text(AppLocalizations.of(context).tr("app.chat.start.title"))),
       body: SafeArea(
         child: SelectAccountWidget(
-          accountSelectedCallback: (account) {
-            doAsyncOperationWithDialog(
+          accountSelectedCallback: (account) async {
+            var dialogResult = await doAsyncOperationWithDialog<IChat>(
                 context: context,
                 asyncCode: () async {
                   var chatRepository =
@@ -52,12 +53,15 @@ class StartChatPage extends StatelessWidget {
                     }
                   }
 
-                  if (chat != null) {
-                    goToChatPage(context, chat: chat);
-                  } else {
-                    await SimpleAlertDialog(context: null).show(context);
-                  }
+                  return chat;
                 });
+
+            var chat = dialogResult.result;
+            if (chat != null) {
+              goToChatPage(context, chat: chat);
+            } else {
+              await SimpleAlertDialog(context: null).show(context);
+            }
           },
         ),
       ),
