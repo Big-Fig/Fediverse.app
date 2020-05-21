@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/media/attachment/media_attachments_widget.dart';
 import 'package:fedi/app/status/account/status_account_widget.dart';
 import 'package:fedi/app/status/action/status_comment_action_widget.dart';
@@ -49,84 +50,91 @@ class StatusListItemTimelineWidget extends StatelessWidget {
   }
 
   GestureDetector buildMainContentWidget(
-          BuildContext context, IStatusBloc statusBloc) =>
-      GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () {
-          if (statusCallback != null) {
-            statusCallback(context, statusBloc.status);
-          }
-        },
-        child: Column(
-          children: [
-            StreamBuilder<bool>(
-                stream: statusBloc.isHaveReblogStream,
-                initialData: statusBloc.isHaveReblog,
-                builder: (context, snapshot) {
-                  var isHaveReblogStream = snapshot.data;
-                  if (isHaveReblogStream == true) {
-                    return const StatusReblogHeaderWidget();
-                  } else {
-                    return const SizedBox.shrink();
-                  }
-                }),
-            StreamBuilder<bool>(
-                stream: statusBloc.isHaveInReplyToAccountStream,
+      BuildContext context, IStatusBloc statusBloc) {
+    var currentAuthInstanceBloc =
+        ICurrentAuthInstanceBloc.of(context, listen: false);
+
+    var isPleromaInstance =
+        currentAuthInstanceBloc.currentInstance.isPleromaInstance;
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        if (statusCallback != null) {
+          statusCallback(context, statusBloc.status);
+        }
+      },
+      child: Column(
+        children: [
+          StreamBuilder<bool>(
+              stream: statusBloc.isHaveReblogStream,
+              initialData: statusBloc.isHaveReblog,
+              builder: (context, snapshot) {
+                var isHaveReblogStream = snapshot.data;
+                if (isHaveReblogStream == true) {
+                  return const StatusReblogHeaderWidget();
+                } else {
+                  return const SizedBox.shrink();
+                }
+              }),
+          StreamBuilder<bool>(
+              stream: statusBloc.isHaveInReplyToAccountStream,
 //                initialData: statusBloc.isHaveInReplyToAccount,
-                builder: (context, snapshot) {
-                  var isHaveInReplyToAccount = snapshot.data;
-                  if (isHaveInReplyToAccount == true) {
-                    return const StatusReplyHeaderWidget();
-                  } else {
-                    return const SizedBox.shrink();
-                  }
-                }),
-            Padding(
-              padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  StatusAccountWidget(),
-                  StatusCreatedAtWidget(),
-                ],
-              ),
+              builder: (context, snapshot) {
+                var isHaveInReplyToAccount = snapshot.data;
+                if (isHaveInReplyToAccount == true) {
+                  return const StatusReplyHeaderWidget();
+                } else {
+                  return const SizedBox.shrink();
+                }
+              }),
+          Padding(
+            padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                StatusAccountWidget(),
+                StatusCreatedAtWidget(),
+              ],
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              child: buildStatusContent(context, statusBloc),
-            ),
-            if (displayActions) StatusEmojiReactionListWidget(),
-            if (displayActions)
-              Column(
-                children: <Widget>[
-                  Container(
-                    height: 1.0,
-                    decoration: BoxDecoration(color: FediColors.ultraLightGrey),
-                  ),
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            StatusCommentActionWidget(),
-                            StatusFavouriteActionWidget(),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: buildStatusContent(context, statusBloc),
+          ),
+          if (displayActions) StatusEmojiReactionListWidget(),
+          if (displayActions)
+            Column(
+              children: <Widget>[
+                Container(
+                  height: 1.0,
+                  decoration: BoxDecoration(color: FediColors.ultraLightGrey),
+                ),
+                Padding(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          StatusCommentActionWidget(),
+                          StatusFavouriteActionWidget(),
+                          if (isPleromaInstance)
                             buildEmojiPickerButton(context, statusBloc),
-                            StatusReblogActionWidget()
-                          ],
-                        ),
-                        StatusShareActionWidget(),
-                      ],
-                    ),
+                          StatusReblogActionWidget()
+                        ],
+                      ),
+                      StatusShareActionWidget(),
+                    ],
                   ),
-                ],
-              ),
-          ],
-        ),
-      );
+                ),
+              ],
+            ),
+        ],
+      ),
+    );
+  }
 
   IconButton buildEmojiPickerButton(
       BuildContext context, IStatusBloc statusBloc) {
