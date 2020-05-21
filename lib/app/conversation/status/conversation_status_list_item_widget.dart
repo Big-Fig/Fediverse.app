@@ -1,120 +1,127 @@
-import 'package:fedi/app/account/avatar/account_avatar_widget.dart';
-import 'package:fedi/app/account/details/account_details_page.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
+import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/media/attachment/media_attachments_widget.dart';
-import 'package:fedi/app/status/action/status_favourite_action_widget.dart';
-import 'package:fedi/app/status/card/status_card_widget.dart';
-import 'package:fedi/app/status/content/status_content_with_emojis_without_accounts_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
+import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+const _borderRadius = Radius.circular(16.0);
 
 class ConversationStatusListItemWidget extends StatelessWidget {
+  final bool isFirstInMinuteGroup;
+  final bool isLastInMinuteGroup;
+
+  ConversationStatusListItemWidget({
+    @required this.isFirstInMinuteGroup,
+    @required this.isLastInMinuteGroup,
+  });
+
   @override
   Widget build(BuildContext context) {
     IStatusBloc statusBloc = IStatusBloc.of(context, listen: true);
 
     var myAccountBloc = IMyAccountBloc.of(context, listen: true);
 
-    if (myAccountBloc.checkIsStatusFromMe(statusBloc.status)) {
-      return buildFromMeBody(context, statusBloc);
-    } else {
-      return buildNotFromMeBody(context, statusBloc);
-    }
-  }
-
-  Widget buildFromMeBody(BuildContext context, IStatusBloc statusBloc) {
     var deviceWidth = MediaQuery.of(context).size.width;
-    return Padding(
-        padding: EdgeInsets.all(10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            ClipRRect(
-              borderRadius: BorderRadius.circular(20.0),
-              child: Container(
-                color: Color(0xffececec),
-                constraints: BoxConstraints(maxWidth: deviceWidth * 0.80),
-                child: buildContent(context, statusBloc),
-              ),
-            ),
-          ],
-        ));
-  }
 
-  Padding buildContent(BuildContext context, IStatusBloc statusBloc) {
-    return Padding(
-        padding: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
-        child: Container(
-          child: Column(
-            children: <Widget>[
-              const StatusContentWithEmojisWithoutAccountsWidget(),
-              const StatusCardWidget(),
-              StreamBuilder<List<IPleromaMediaAttachment>>(
-                  stream: statusBloc.mediaAttachmentsStream,
-                  initialData: statusBloc.mediaAttachments,
-                  builder: (context, snapshot) => MediaAttachmentsWidget(
-                        mediaAttachments: snapshot.data,
-                      )),
-            ],
+    var isStatusFromMe = myAccountBloc.checkIsStatusFromMe(statusBloc.status);
+
+    var alignment =
+        isStatusFromMe ? Alignment.centerRight : Alignment.centerLeft;
+    return Align(
+      alignment: alignment,
+      child: Column(
+        crossAxisAlignment:
+            isStatusFromMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+                color: isStatusFromMe
+                    ? FediColors.primaryColorDark
+                    : FediColors.ultraLightGrey,
+                borderRadius: isStatusFromMe
+                    ? BorderRadius.only(
+                        topLeft: _borderRadius,
+                        topRight:
+                            isLastInMinuteGroup ? _borderRadius : Radius.zero,
+                        bottomLeft: _borderRadius)
+                    : BorderRadius.only(
+                        topLeft:
+                            isLastInMinuteGroup ? _borderRadius : Radius.zero,
+                        topRight: _borderRadius,
+                        bottomRight: _borderRadius)),
+            constraints: BoxConstraints(maxWidth: deviceWidth * 0.80),
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+              child: buildContent(context, statusBloc, isStatusFromMe),
+            ),
           ),
-        ));
+          if (isFirstInMinuteGroup)
+            Align(
+                alignment: alignment,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 2.0),
+                  child: Text(
+                    TimeOfDay.fromDateTime(statusBloc.createdAt)
+                        .format(context),
+                    style: TextStyle(
+                        height: 14 / 12,
+                        fontSize: 12,
+                        color: FediColors.mediumGrey),
+                  ),
+                ))
+        ],
+      ),
+    );
   }
 
-  Widget buildNotFromMeBody(BuildContext context, IStatusBloc statusBloc) {
-    var deviceWidth = MediaQuery.of(context).size.width;
-    return Padding(
-        padding: EdgeInsets.all(10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            GestureDetector(
-              onTap: () {
-                goToAccountDetailsPage(context, statusBloc.account);
-              },
-              child: StreamBuilder<String>(
-                  stream: statusBloc.accountAvatarStream,
-                  initialData: statusBloc.accountAvatar,
-                  builder: (context, snapshot) {
-                    var accountAvatar = snapshot.data;
-                    return ClipRRect(
-                      borderRadius: BorderRadius.circular(15.0),
-                      child: AccountAvatarWidget.buildAccountAvatarWidget(
-                          avatarUrl: accountAvatar,
-                          progressSize: 30,
-                          imageSize: 30),
-                    );
-                  }),
-            ),
-            SizedBox(
-              width: 8,
-            ),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(20.0),
-              child: Container(
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(20.0)),
-                constraints: BoxConstraints(maxWidth: deviceWidth * 0.80),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
-                  child: Stack(
-                    children: <Widget>[
-                      buildContent(context, statusBloc),
-                      Positioned(
-                        bottom: -10,
-                        right: -10,
-                        child: StatusFavouriteActionWidget(
-                          displayCounter: false,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ));
+  Widget buildContent(
+      BuildContext context, IStatusBloc statusBloc, bool isStatusFromMe) {
+    return Column(
+      children: <Widget>[
+        buildTextContent(statusBloc, isStatusFromMe),
+        buildMediaContent(statusBloc),
+      ],
+    );
   }
+
+  Widget buildMediaContent(IStatusBloc statusBloc) =>
+      StreamBuilder<List<IPleromaMediaAttachment>>(
+          stream: statusBloc.mediaAttachmentsStream,
+          initialData: statusBloc.mediaAttachments,
+          builder: (context, snapshot) {
+            var mediaAttachments = snapshot.data;
+
+            return MediaAttachmentsWidget(
+              mediaAttachments: mediaAttachments,
+            );
+          });
+
+  Widget buildTextContent(IStatusBloc statusBloc, bool isStatusFromMe) =>
+      StreamBuilder<Object>(
+          stream: statusBloc.contentWithEmojisStream,
+          initialData: statusBloc.contentWithEmojis,
+          builder: (context, snapshot) {
+            var contentWithEmojis = snapshot.data;
+
+            if (contentWithEmojis != null) {
+              return HtmlTextWidget(
+                  shrinkWrap: true,
+                  color:
+                      isStatusFromMe ? FediColors.white : FediColors.darkGrey,
+                  fontSize: 16.0,
+                  lineHeight: 1.5,
+                  data: contentWithEmojis,
+                  onLinkTap: (String link) async {
+                    if (await canLaunch(link)) {
+                      await launch(link);
+                    }
+                  });
+            } else {
+              return SizedBox.shrink();
+            }
+          });
 }

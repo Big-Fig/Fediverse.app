@@ -102,6 +102,7 @@ class ConversationListItemWidget extends StatelessWidget {
           }
           return HtmlTextWidget(
             shrinkWrap: true,
+            drawNewLines: false,
             data: addEmojiToHtmlContent(
                 content, lastStatus.emojis),
             onLinkTap: null,
