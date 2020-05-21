@@ -71,15 +71,21 @@ class ChatMessageListWidget extends ChatMessagePaginationListBaseWidget {
         if (nextMessage != null) {
           nextTimeString = timeago.format(nextMessage?.createdAt);
         }
+        var isNewGroup = currentTimeString == nextTimeString;
+
         var messageWidget = Provider.value(
           value: currentMessage,
           child: DisposableProxyProvider<IChatMessage, IChatMessageBloc>(
               update: (context, value, previous) =>
                   ChatMessageBloc.createFromContext(context, value),
-              child: ChatMessageListItemWidget()),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical:2.0),
+                child: ChatMessageListItemWidget(isFirstInGroup: isNewGroup),
+              )),
         );
 
-        if (currentTimeString == nextTimeString) {
+
+        if (isNewGroup) {
           return messageWidget;
         } else {
           return Column(
