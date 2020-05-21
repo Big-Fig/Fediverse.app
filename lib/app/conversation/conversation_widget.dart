@@ -8,6 +8,7 @@ import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc_
 import 'package:fedi/app/status/pagination/list/status_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/status/post/post_status_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
@@ -58,11 +59,15 @@ class ConversationWidget extends StatelessWidget {
                   child: Column(
                     children: <Widget>[
                       Expanded(
-                        child: ConversationStatusListWidget(
-                          key: PageStorageKey(
-                              conversationBloc.conversation.remoteId),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: ConversationStatusListWidget(
+                            key: PageStorageKey(
+                                conversationBloc.conversation.remoteId),
+                          ),
                         ),
                       ),
+                      Container(height: 1, color: FediColors.ultraLightGrey),
                       const PostStatusWidget(
                           showVisibilityAction: false,
                           expanded: false,
