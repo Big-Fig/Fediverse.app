@@ -3,7 +3,8 @@ import 'package:fedi/app/account/account_bloc_impl.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/details/account_details_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
-import 'package:fedi/app/ui/home/fedi_home_tab_container_widget.dart';
+import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/header/fedi_sub_header_text.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,14 +15,15 @@ class AccountDetailsPage extends StatelessWidget {
     var accountBloc = IAccountBloc.of(context, listen: true);
 
     return Scaffold(
-      body: FediHomeTabContainer.createLikeAppBar(
-          leading: const FediBackIconButton(),
-          center: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: buildAcct(accountBloc),
-          ),
-          trailing: null,
-          body: AccountDetailsWidget()),
+      appBar: AppBar(
+        centerTitle: true,
+        // Dark == white status bar -- for  IOS.
+        brightness: Brightness.light,
+        backgroundColor: FediColors.white,
+        title: buildAcct(accountBloc),
+        leading: const FediBackIconButton(),
+      ),
+      body: const AccountDetailsWidget(),
     );
   }
 
@@ -31,13 +33,9 @@ class AccountDetailsPage extends StatelessWidget {
         initialData: accountBloc.acct,
         builder: (context, snapshot) {
           var acct = snapshot.data;
-          return Text(
-            acct,
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
-          );
+          return FediSubHeaderText(acct);
         });
   }
-
 
   const AccountDetailsPage();
 }
