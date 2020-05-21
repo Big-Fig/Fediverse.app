@@ -18,7 +18,7 @@ class ChatTitleWidget extends StatelessWidget {
     var chatBloc = IChatBloc.of(context, listen: false);
 
     return StreamBuilder<List<IAccount>>(
-        stream: chatBloc.accountsWithoutMeStream,
+        stream: chatBloc.accountsStream,
         builder: (context, snapshot) {
           var accounts = snapshot.data;
 

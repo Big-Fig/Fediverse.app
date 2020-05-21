@@ -30,10 +30,6 @@ abstract class IChatBloc implements Disposable, IAsyncInitLoadingBloc {
 
   Stream<List<IAccount>> get accountsStream;
 
-  List<IAccount> get accountsWithoutMe;
-
-  Stream<List<IAccount>> get accountsWithoutMeStream;
-
   Future refreshFromNetwork();
 
   Future markAsRead();

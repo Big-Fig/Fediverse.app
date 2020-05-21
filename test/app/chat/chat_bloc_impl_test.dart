@@ -215,39 +215,6 @@ void main() {
     await subscription.cancel();
   });
 
-  test('accountsWithoutMe', () async {
-    var account1 = await createTestAccount(seed: "account1");
-    var account2 =
-        await createTestAccount(seed: "account2", remoteId: myAccount.remoteId);
-//    var account3 = await createTestAccount(seed: "account3");
-
-    var newValue = await createTestChat(seed: "seed2", remoteId: chat.remoteId);
-
-    var listenedValue;
-
-    var subscription = chatBloc.accountsWithoutMeStream.listen((newValue) {
-      listenedValue = newValue;
-    });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-
-    await _update(newValue, accounts: [account1]);
-
-    expectAccount(chatBloc.accountsWithoutMe[0], account1);
-    expectAccount(listenedValue[0], account1);
-
-    await _update(newValue, accounts: [
-      account2, //      account3
-    ]);
-
-    expectAccount(chatBloc.accountsWithoutMe[0], account1);
-//    expectAccount(chatBloc.accountsWithoutMe[1], account3);
-    expectAccount(listenedValue[0], account1);
-//    expectAccount(listenedValue[1], account3);
-
-    await subscription.cancel();
-  });
-
 //  test('refreshFromNetwork', () async {
 //    expectChat(chatBloc.chat, chat);
 //
