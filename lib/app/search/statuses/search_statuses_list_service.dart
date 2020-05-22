@@ -38,6 +38,7 @@ class SearchStatusesListService extends IStatusNetworkOnlyListService {
           request: PleromaSearchRequest(
               type: MastodonSearchRequestType.statuses,
               offset: offset,
+              resolve: true,
               limit: itemsCountPerPage,
               query: query));
 

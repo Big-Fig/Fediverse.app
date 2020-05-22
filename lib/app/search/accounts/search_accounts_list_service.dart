@@ -38,6 +38,7 @@ class SearchAccountsListService extends IAccountNetworkOnlyListService {
           request: PleromaSearchRequest(
               type: MastodonSearchRequestType.accounts,
               offset: offset,
+              resolve: true,
               limit: itemsCountPerPage,
               query: query));
 
