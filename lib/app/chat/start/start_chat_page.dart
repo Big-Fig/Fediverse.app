@@ -5,6 +5,7 @@ import 'package:fedi/app/account/pagination/list/account_pagination_list_bloc.da
 import 'package:fedi/app/account/pagination/list/account_pagination_list_bloc_impl.dart';
 import 'package:fedi/app/account/select/select_account_list_bloc.dart';
 import 'package:fedi/app/account/select/select_account_list_bloc_impl.dart';
+import 'package:fedi/app/account/select/select_account_pagination_list_bloc.dart';
 import 'package:fedi/app/account/select/select_account_widget.dart';
 import 'package:fedi/app/chat/chat_model.dart';
 import 'package:fedi/app/chat/chat_page.dart';
@@ -80,24 +81,34 @@ void goToStartChatPage(BuildContext context) {
                 create: (context) =>
                     SelectAccountCachedListBloc.createFromContext(context,
                         excludeMyAccount: true),
-                child: Provider<IPleromaCachedListBloc<IAccount>>(
-                  create: (context) =>
-                      ISelectAccountCachedListBloc.of(context, listen: false),
-                  child: Provider<ISearchInputBloc>(
-                    create: (context) =>
-                        ISelectAccountCachedListBloc.of(context, listen: false)
+                child: ProxyProvider<ISelectAccountCachedListBloc,
+                    IPleromaCachedListBloc<IAccount>>(
+                  update: (context, value, previous) => value,
+                  child: ProxyProvider<ISelectAccountCachedListBloc,
+                      ISearchInputBloc>(
+                    update: (context, value, previous) => value.searchInputBloc,
+                    child: Provider<IPleromaCachedListBloc<IAccount>>(
+                      create: (context) => ISelectAccountCachedListBloc.of(
+                          context,
+                          listen: false),
+                      child: Provider<ISearchInputBloc>(
+                        create: (context) => ISelectAccountCachedListBloc.of(
+                                context,
+                                listen: false)
                             .searchInputBloc,
-                    child: DisposableProvider<
-                            IPaginationBloc<PaginationPage<IAccount>,
-                                IAccount>>(
-                        create: (context) =>
-                            AccountCachedPaginationBloc.createFromContext(
-                                context),
-                        child: DisposableProvider<IAccountPaginationListBloc>(
+                        child: DisposableProvider<
+                                IPaginationBloc<PaginationPage<IAccount>,
+                                    IAccount>>(
                             create: (context) =>
-                                AccountPaginationListBloc.createFromContext(
+                                AccountCachedPaginationBloc.createFromContext(
                                     context),
-                            child: StartChatPage())),
+                            child:
+                                DisposableProvider<IAccountPaginationListBloc>(
+                                    create: (context) =>
+                                        SelectAccountPaginationListBloc.createFromContext(context),
+                                    child: StartChatPage())),
+                      ),
+                    ),
                   ),
                 ),
               )));

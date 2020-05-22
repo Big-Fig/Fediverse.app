@@ -33,8 +33,6 @@ class SelectAccountCachedListBloc extends DisposableOwner
     @required this.excludeMyAccount,
   }) : searchInputBloc = SearchInputBloc() {
     addDisposable(disposable: searchInputBloc);
-
-    // todo: listen search query
   }
 
   @override
@@ -101,7 +99,8 @@ class SelectAccountCachedListBloc extends DisposableOwner
         onlyInStatusFavouritedBy: null,
         onlyInAccountFollowing: null,
         onlyInStatusRebloggedBy: null,
-        searchQuery: searchText, onlyInChat: null);
+        searchQuery: searchText,
+        onlyInChat: null);
 
     if (excludeMyAccount) {
       accounts = accounts.where((account) {
