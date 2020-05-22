@@ -8,12 +8,13 @@ import 'package:flutter/material.dart';
 
 class StatusHeaderWidget extends StatelessWidget {
   final String descText;
+  final IconData icon;
   final IAccount account;
 
   @override
   Widget build(BuildContext context) => Container(
-    height: 45,
-    child: GestureDetector(
+        height: 45,
+        child: GestureDetector(
           onTap: () {
             goToAccountDetailsPage(context, account);
           },
@@ -28,7 +29,7 @@ class StatusHeaderWidget extends StatelessWidget {
             ],
           ),
         ),
-  );
+      );
 
   Row buildHeader(IAccount account, BuildContext context) {
     return Row(
@@ -38,9 +39,7 @@ class StatusHeaderWidget extends StatelessWidget {
           child: CachedNetworkImage(
             imageUrl: account.avatar,
             placeholder: (context, url) => Container(
-                width: 24,
-                height: 24,
-                child: CircularProgressIndicator()),
+                width: 24, height: 24, child: CircularProgressIndicator()),
             errorWidget: (context, url, error) => Icon(Icons.error),
             height: 24,
             width: 24,
@@ -59,7 +58,7 @@ class StatusHeaderWidget extends StatelessWidget {
         Row(
           children: <Widget>[
             Icon(
-              Icons.repeat,
+              icon,
               color: FediColors.grey,
             ),
             SizedBox(
@@ -78,5 +77,6 @@ class StatusHeaderWidget extends StatelessWidget {
     );
   }
 
-  const StatusHeaderWidget({this.account, this.descText});
+  const StatusHeaderWidget(
+      {@required this.account, @required this.descText, @required this.icon});
 }

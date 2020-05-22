@@ -66,28 +66,8 @@ class StatusListItemTimelineWidget extends StatelessWidget {
       },
       child: Column(
         children: [
-          StreamBuilder<bool>(
-              stream: statusBloc.isHaveReblogStream,
-              initialData: statusBloc.isHaveReblog,
-              builder: (context, snapshot) {
-                var isHaveReblogStream = snapshot.data;
-                if (isHaveReblogStream == true) {
-                  return const StatusReblogHeaderWidget();
-                } else {
-                  return const SizedBox.shrink();
-                }
-              }),
-          StreamBuilder<bool>(
-              stream: statusBloc.isHaveInReplyToAccountStream,
-//                initialData: statusBloc.isHaveInReplyToAccount,
-              builder: (context, snapshot) {
-                var isHaveInReplyToAccount = snapshot.data;
-                if (isHaveInReplyToAccount == true) {
-                  return const StatusReplyHeaderWidget();
-                } else {
-                  return const SizedBox.shrink();
-                }
-              }),
+          if (statusBloc.isHaveReblog) StatusReblogHeaderWidget(),
+          if (statusBloc.isHaveInReplyToAccount) StatusReplyHeaderWidget(),
           Padding(
             padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
             child: Row(
