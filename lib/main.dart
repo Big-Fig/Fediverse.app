@@ -24,6 +24,7 @@ import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_pre
 import 'package:fedi/app/push/subscription/local_preferences/push_subscription_local_preferences_model.dart';
 import 'package:fedi/app/splash/app_splash_widget.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preferences_model.dart';
+import 'package:fedi/app/ui/fedi_theme.dart';
 import 'package:fedi/async/loading/init/async_init_loading_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/mastodon/instance/mastodon_instance_model.dart';
@@ -196,7 +197,7 @@ class MyApp extends StatelessWidget {
         ],
         locale: savedLocale,
         supportedLocales: [Locale('en', 'US')],
-        theme: ThemeData(primarySwatch: Colors.blue, fontFamily: "Rubik"),
+        theme: fediTheme,
         initialRoute: "/",
         home: child,
         navigatorObservers: [
