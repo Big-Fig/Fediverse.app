@@ -3,6 +3,7 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_model.dart';
 import 'package:fedi/app/timeline/timeline_tabs_bloc.dart';
 import 'package:fedi/app/timeline/timeline_widget.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/home/fedi_home_tab_container_widget.dart';
 import 'package:fedi/app/ui/tab/fedi_text_tab.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
@@ -34,7 +35,8 @@ class TimelineTabsWidget extends StatelessWidget {
         length: tabs.length,
         initialIndex: tabs.indexOf(timelinesTabsBloc.selectedTab),
         child: FediHomeTabContainer(
-          topHeaderHeightInSafeArea: 164.0,
+          topHeaderHeightInSafeArea:
+              FediSizes.headerImageSingleRowSafeAreaHeight,
           topBar: buildTabBar(context, tabs, timelinesTabsBloc),
           body: buildBodyWidget(context),
         ));
@@ -48,15 +50,18 @@ class TimelineTabsWidget extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 16.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: appBarActionWidgets,
+              children: [
+                ...tabs
+                    .map((tab) => FediTextTab(
+                          mapTabToTitle(context, tab),
+                          index: tabs.indexOf(tab),
+                          isTransparent: true,
+                        ))
+                    .toList(),
+                ...appBarActionWidgets
+              ],
             ),
-          ),
-          Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: tabs
-                  .map((tab) => FediTextTab(mapTabToTitle(context, tab),
-                      index: tabs.indexOf(tab), isTransparent: true,))
-                  .toList()),
+          )
         ],
       );
 

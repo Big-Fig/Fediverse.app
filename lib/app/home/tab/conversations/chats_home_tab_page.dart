@@ -65,10 +65,10 @@ class ChatsHomeTabPage extends StatelessWidget {
               },
             ),
             if (isPleromaInstance)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: buildSearchActionButton(context),
-              ),
+//              Padding(
+//                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+//                child: buildSearchActionButton(context),
+//              ),
             if (isPleromaInstance)
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
