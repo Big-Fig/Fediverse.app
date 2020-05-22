@@ -8,11 +8,13 @@ class FediFilledEditTextField extends StatelessWidget {
   final bool autofocus;
   final TextEditingController textEditingController;
   final Widget leading;
+  final Widget ending;
 
   FediFilledEditTextField({
     @required this.textEditingController,
     @required this.hintText,
     this.leading,
+    this.ending,
     @required this.expanded,
     @required this.autofocus,
   });
@@ -20,14 +22,13 @@ class FediFilledEditTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var containLeading = leading != null;
+    var containEnding = ending != null;
     return Container(
       decoration: BoxDecoration(
           color: FediColors.ultraLightGrey,
           borderRadius: BorderRadius.circular(30.0)),
       child: Padding(
-        padding: containLeading
-            ? const EdgeInsets.all(0.0)
-            : const EdgeInsets.symmetric(horizontal: 16.0),
+        padding: calculatePadding(containLeading, containEnding),
         child: Row(
           children: [
             if (containLeading) leading,
@@ -48,9 +49,26 @@ class FediFilledEditTextField extends StatelessWidget {
                 expands: expanded,
               ),
             ),
+            if (containEnding) ending,
           ],
         ),
       ),
     );
+  }
+
+  EdgeInsets calculatePadding(bool containLeading, bool containEnding) {
+    if (containLeading && containEnding) {
+      return const EdgeInsets.all(0.0);
+    } else {
+      if (!containLeading && !containEnding) {
+        return const EdgeInsets.symmetric(horizontal: 16.0);
+      } else {
+        if (containLeading) {
+          return const EdgeInsets.only(right: 16.0);
+        } else {
+          return const EdgeInsets.only(left: 16.0);
+        }
+      }
+    }
   }
 }

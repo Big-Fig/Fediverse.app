@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
-import 'package:fedi/app/ui/button/text/fedi_filled_text_button.dart';
+import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/dialog/alert/simple_alert_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +65,7 @@ class PostStatusPostActionWidget extends StatelessWidget {
               }
             ],
             builder: (BuildContext context, onPressed) {
-              return FediFilledTextButton(
+              return FediPrimaryFilledTextButton(
                 AppLocalizations.of(context).tr("app.status.post.action.post"),
                 onPressed: isReadyToPost ? onPressed : null,
               );

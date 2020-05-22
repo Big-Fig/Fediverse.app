@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/chat/post/action/chat_post_message_attach_media_action_widget.dart';
 import 'package:fedi/app/chat/post/chat_post_message_bloc.dart';
 import 'package:fedi/app/ui/edit/fedi_filled_edit_text_field.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,9 @@ class ChatPostMessageContentWidget extends StatelessWidget {
     IChatPostMessageBloc chatPostMessageBloc = IChatPostMessageBloc.of(context);
 
     return FediFilledEditTextField(
-      leading: const ChatPostMessageAttachMediaActionWidget(),
+      leading: const ChatPostMessageAttachMediaActionWidget(
+        iconSize: FediSizes.filledEditTextIconSize,
+      ),
       hintText:
           AppLocalizations.of(context).tr("app.chat.post.field.content.hint"),
       textEditingController: chatPostMessageBloc.inputTextController,
