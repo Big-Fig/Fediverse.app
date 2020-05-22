@@ -8,6 +8,7 @@ import 'package:fedi/app/notification/pagination/cached/notification_cached_pagi
 import 'package:fedi/app/notification/pagination/list/notification_pagination_list_widget.dart';
 import 'package:fedi/app/notification/pagination/list/notification_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/home/fedi_home_tab_container_widget.dart';
 import 'package:fedi/app/ui/tab/fedi_icon_tab.dart';
 import 'package:fedi/collapsible/collapsible_bloc.dart';
@@ -45,7 +46,8 @@ class NotificationTabsWidget extends StatelessWidget {
         length: tabs.length,
         initialIndex: tabs.indexOf(notificationsTabsBloc.selectedTab),
         child: FediHomeTabContainer(
-          topHeaderHeightInSafeArea: 104.0,
+          topHeaderHeightInSafeArea:
+              FediSizes.headerImageSingleRowSafeAreaHeight,
           topBar: buildTabBar(context, tabs, notificationsTabsBloc),
           body: buildBodyWidget(context),
         ));

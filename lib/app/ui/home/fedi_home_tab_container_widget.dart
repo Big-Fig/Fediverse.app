@@ -1,5 +1,6 @@
 import 'package:fedi/app/instance/fedi_instance_image_decoration_widget.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -8,8 +9,6 @@ class FediHomeTabContainer extends StatelessWidget {
   final double borderRadius;
   final Widget topBar;
   final Widget body;
-
-  static const double _oneLineHeight = 104;
 
   const FediHomeTabContainer(
       {@required this.topHeaderHeightInSafeArea,
@@ -24,7 +23,7 @@ class FediHomeTabContainer extends StatelessWidget {
     @required Widget body,
   }) {
     return FediHomeTabContainer(
-        topHeaderHeightInSafeArea: _oneLineHeight,
+        topHeaderHeightInSafeArea: FediSizes.headerImageSingleRowSafeAreaHeight,
         topBar: Stack(
           children: [
             if (leading != null)
