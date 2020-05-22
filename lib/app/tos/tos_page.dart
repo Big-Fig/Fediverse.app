@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:flutter/material.dart';
 
 class TosPage extends StatelessWidget {
@@ -6,8 +7,8 @@ class TosPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context).tr("app.tos.title")),
+      appBar: FediSubPageTitleAppBar(
+        title: AppLocalizations.of(context).tr("app.tos.title"),
       ),
       body: SafeArea(
         child: SingleChildScrollView(

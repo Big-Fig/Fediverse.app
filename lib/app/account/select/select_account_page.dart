@@ -6,6 +6,7 @@ import 'package:fedi/app/account/pagination/list/account_pagination_list_bloc_im
 import 'package:fedi/app/account/select/select_account_list_bloc_impl.dart';
 import 'package:fedi/app/account/select/select_account_widget.dart';
 import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
+import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
@@ -19,9 +20,9 @@ class SelectAccountPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-            title: Text(
-                AppLocalizations.of(context).tr("app.account.select.title"))),
+        appBar: FediSubPageTitleAppBar(
+          title: AppLocalizations.of(context).tr("app.account.select.title"),
+        ),
         body: SafeArea(
           child: SelectAccountWidget(
             accountSelectedCallback: accountSelectedCallback,

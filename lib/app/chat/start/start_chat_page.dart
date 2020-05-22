@@ -11,6 +11,7 @@ import 'package:fedi/app/chat/chat_page.dart';
 import 'package:fedi/app/chat/repository/chat_repository.dart';
 import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
 import 'package:fedi/app/search/input/search_input_bloc.dart';
+import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/dialog/alert/simple_alert_dialog.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -25,8 +26,9 @@ class StartChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: Text(AppLocalizations.of(context).tr("app.chat.start.title"))),
+      appBar: FediSubPageTitleAppBar(
+        title: AppLocalizations.of(context).tr("app.chat.start.title"),
+      ),
       body: SafeArea(
         child: SelectAccountWidget(
           accountSelectedCallback: (account) async {

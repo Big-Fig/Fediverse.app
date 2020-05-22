@@ -5,6 +5,7 @@ import 'package:fedi/app/status/scheduled/pagination/cached/scheduled_status_cac
 import 'package:fedi/app/status/scheduled/pagination/list/scheduled_status_pagination_list_widget.dart';
 import 'package:fedi/app/status/scheduled/pagination/list/scheduled_status_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
+import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
@@ -18,9 +19,9 @@ class ScheduledStatusListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context).tr("app.status.scheduled"
-            ".title")),
+      appBar: FediSubPageTitleAppBar(
+        title: AppLocalizations.of(context)
+            .tr("app.status.scheduled.title"),
       ),
       body: SafeArea(
         child: buildBody(context),

@@ -2,6 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/async/async_operation_button_builder_widget.dart';
 import 'package:fedi/app/media/attachment/media_attachment_add_to_gallery_helper.dart';
 import 'package:fedi/app/share/share_service.dart';
+import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/mastodon/media/attachment/mastodon_media_attachment_model.dart';
 import 'package:fedi/media/video/media_video_player_widget.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
@@ -16,10 +19,9 @@ class MediaAttachmentPreviewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(mediaAttachment.description ??
-            AppLocalizations.of(context)
-                .tr("app.media.attachment.preview.title")),
+      appBar: FediSubPageTitleAppBar(
+        title: AppLocalizations.of(context)
+            .tr("app.media.attachment.preview.title"),
         actions: <Widget>[
           buildAddToGalleryAction(context),
           buildShareAction(context)
@@ -33,8 +35,13 @@ class MediaAttachmentPreviewPage extends StatelessWidget {
       AsyncOperationButtonBuilderWidget(
           progressContentMessage: AppLocalizations.of(context)
               .tr("app.media.attachment.share.progress.content"),
-          builder: (BuildContext context, VoidCallback onPressed) =>
-              IconButton(icon: Icon(Icons.share), onPressed: onPressed),
+          builder: (BuildContext context, VoidCallback onPressed) => IconButton(
+              icon: Icon(
+                Icons.share,
+                color: FediColors.darkGrey,
+                size: FediSizes.appBarIconSize,
+              ),
+              onPressed: onPressed),
           asyncButtonAction: () {
             var shareService = IShareService.of(context, listen: false);
             String popupTitle = AppLocalizations.of(context)
@@ -45,13 +52,17 @@ class MediaAttachmentPreviewPage extends StatelessWidget {
                 mediaAttachment: mediaAttachment);
           });
 
-  Widget buildAddToGalleryAction(
-          BuildContext context) =>
+  Widget buildAddToGalleryAction(BuildContext context) =>
       AsyncOperationButtonBuilderWidget(
           progressContentMessage: AppLocalizations.of(context)
               .tr("app.media.attachment.add_to_gallery.progress.content"),
-          builder: (BuildContext context, VoidCallback onPressed) =>
-              IconButton(icon: Icon(Icons.file_download), onPressed: onPressed),
+          builder: (BuildContext context, VoidCallback onPressed) => IconButton(
+              icon: Icon(
+                Icons.file_download,
+                color: FediColors.darkGrey,
+                size: FediSizes.appBarIconSize,
+              ),
+              onPressed: onPressed),
           asyncButtonAction: () => addMediaAttachmentToGallery(
               context: context, mediaAttachment: mediaAttachment));
 

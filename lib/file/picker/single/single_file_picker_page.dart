@@ -1,5 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/navigation/navigation_slide_bottom_route_builder.dart';
+import 'package:fedi/app/ui/button/icon/fedi_dismiss_icon_button.dart';
+import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/file/picker/file_picker_bloc.dart';
 import 'package:fedi/file/picker/file_picker_bottom_nav_bar_widget.dart';
@@ -15,13 +17,10 @@ class SingleFilePickerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title:
-            Text(AppLocalizations.of(context).tr("file.picker.single.title")),
+      appBar: FediSubPageTitleAppBar(
+        title: AppLocalizations.of(context)
+            .tr("file.picker.single.title"),
+        leading: FediDismissIconButton(),
       ),
       body: SingleFilePickerWidget(),
       bottomNavigationBar: FilePickerBottomNavBarWidget(),
