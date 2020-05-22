@@ -7,6 +7,7 @@ import 'package:fedi/app/conversation/repository/conversation_repository.dart';
 import 'package:fedi/app/conversation/start/status/post_status_start_conversation_bloc_impl.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/post/post_status_widget.dart';
+import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_model.dart';
@@ -19,15 +20,8 @@ class PostStatusStartConversationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-            AppLocalizations.of(context).tr("app.conversation.start.title")),
-        leading: IconButton(
-          icon: Icon(Icons.chevron_left),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
+      appBar: FediSubPageTitleAppBar(
+        title: AppLocalizations.of(context).tr("app.conversation.start.title"),
       ),
       body: const PostStatusWidget(
         showVisibilityAction: false,

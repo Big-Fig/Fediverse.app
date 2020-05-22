@@ -9,6 +9,7 @@ import 'package:fedi/app/account/select/select_account_widget.dart';
 import 'package:fedi/app/conversation/start/status/post_status_start_conversation_page.dart';
 import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
 import 'package:fedi/app/search/input/search_input_bloc.dart';
+import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
@@ -20,9 +21,10 @@ class StartConversationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: Text(
-              AppLocalizations.of(context).tr("app.conversation.start.title"))),
+      appBar: FediSubPageTitleAppBar(
+        title: AppLocalizations.of(context)
+            .tr("app.conversation.start.title"),
+      ),
       body: SafeArea(
         child: SelectAccountWidget(
           accountSelectedCallback: (account) {
