@@ -2,9 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/pagination/cached/account_cached_pagination_bloc_impl.dart';
 import 'package:fedi/app/account/pagination/list/account_pagination_list_bloc.dart';
-import 'package:fedi/app/account/pagination/list/account_pagination_list_bloc_impl.dart';
 import 'package:fedi/app/account/select/select_account_list_bloc.dart';
 import 'package:fedi/app/account/select/select_account_list_bloc_impl.dart';
+import 'package:fedi/app/account/select/select_account_pagination_list_bloc.dart';
 import 'package:fedi/app/account/select/select_account_widget.dart';
 import 'package:fedi/app/conversation/start/status/post_status_start_conversation_page.dart';
 import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
@@ -22,8 +22,7 @@ class StartConversationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
-        title: AppLocalizations.of(context)
-            .tr("app.conversation.start.title"),
+        title: AppLocalizations.of(context).tr("app.conversation.start.title"),
       ),
       body: SafeArea(
         child: SelectAccountWidget(
@@ -46,24 +45,35 @@ void goToStartConversationPage(BuildContext context) {
                 create: (context) =>
                     SelectAccountCachedListBloc.createFromContext(context,
                         excludeMyAccount: true),
-                child: Provider<IPleromaCachedListBloc<IAccount>>(
-                  create: (context) =>
-                      ISelectAccountCachedListBloc.of(context, listen: false),
-                  child: Provider<ISearchInputBloc>(
-                    create: (context) =>
-                        ISelectAccountCachedListBloc.of(context, listen: false)
+                child: ProxyProvider<ISelectAccountCachedListBloc,
+                    IPleromaCachedListBloc<IAccount>>(
+                  update: (context, value, previous) => value,
+                  child: ProxyProvider<ISelectAccountCachedListBloc,
+                      ISearchInputBloc>(
+                    update: (context, value, previous) => value.searchInputBloc,
+                    child: Provider<IPleromaCachedListBloc<IAccount>>(
+                      create: (context) => ISelectAccountCachedListBloc.of(
+                          context,
+                          listen: false),
+                      child: Provider<ISearchInputBloc>(
+                        create: (context) => ISelectAccountCachedListBloc.of(
+                                context,
+                                listen: false)
                             .searchInputBloc,
-                    child: DisposableProvider<
-                            IPaginationBloc<PaginationPage<IAccount>,
-                                IAccount>>(
-                        create: (context) =>
-                            AccountCachedPaginationBloc.createFromContext(
-                                context),
-                        child: DisposableProvider<IAccountPaginationListBloc>(
+                        child: DisposableProvider<
+                                IPaginationBloc<PaginationPage<IAccount>,
+                                    IAccount>>(
                             create: (context) =>
-                                AccountPaginationListBloc.createFromContext(
+                                AccountCachedPaginationBloc.createFromContext(
                                     context),
-                            child: StartConversationPage())),
+                            child:
+                                DisposableProvider<IAccountPaginationListBloc>(
+                                    create: (context) =>
+                                        SelectAccountPaginationListBloc
+                                            .createFromContext(context),
+                                    child: StartConversationPage())),
+                      ),
+                    ),
                   ),
                 ),
               )));
