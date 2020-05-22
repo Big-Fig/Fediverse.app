@@ -20,6 +20,7 @@ class AccountListItemWidget extends StatelessWidget {
     _logger.finest(() => "build ${accountBloc.acct}");
 
     return GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onTap: () {
         if (accountSelectedCallback != null) {
           accountSelectedCallback(accountBloc.account);
