@@ -3,9 +3,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/my/edit/edit_my_account_bloc.dart';
 import 'package:fedi/app/account/my/edit/edit_my_account_model.dart';
 import 'package:fedi/app/account/my/edit/header/edit_my_account_header_dialog.dart';
+import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:fedi/file/picker/single/single_file_picker_page.dart';
 import 'package:flutter/material.dart';
+
+var _avatarSize = 100.0;
 
 class EditMyAccountWidget extends StatelessWidget {
   @override
@@ -15,6 +18,7 @@ class EditMyAccountWidget extends StatelessWidget {
       children: <Widget>[
         Container(
           height: 200,
+          width: double.infinity,
           child: Stack(
             alignment: Alignment.center,
             children: <Widget>[
@@ -33,37 +37,14 @@ class EditMyAccountWidget extends StatelessWidget {
   }
 
   Widget buildHeaderEditField(
-      BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    return GestureDetector(
-      onTap: () {
-        startChoosingFileToUploadHeader(context, editMyAccountBloc);
-      },
-      behavior: HitTestBehavior.translucent,
-      child: Container(
-        color: Colors.black38,
-        child: Padding(
-          padding: EdgeInsets.all(8),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(
-                AppLocalizations.of(context)
-                    .tr("app.account.my.edit.field.header.label"),
-                style: TextStyle(color: Colors.white),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 2),
-              ),
-              Icon(
-                Icons.edit,
-                color: Colors.white,
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+          BuildContext context, IEditMyAccountBloc editMyAccountBloc) =>
+      FediIconInCircleTransparentButton(
+        Icons.image,
+        iconSize: 20.0,
+        onPressed: () {
+          startChoosingFileToUploadHeader(context, editMyAccountBloc);
+        },
+      );
 
   void startChoosingFileToUploadHeader(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
@@ -88,12 +69,12 @@ class EditMyAccountWidget extends StatelessWidget {
         startChoosingFileToUploadAvatar(context, editMyAccountBloc);
       },
       child: Container(
-        width: 125,
-        height: 125,
+        width: _avatarSize + 5,
+        height: _avatarSize + 5,
         child: Stack(
           alignment: Alignment.bottomRight,
           children: <Widget>[
-            buildAvatarFieldImage(context, editMyAccountBloc),
+            Center(child: buildAvatarFieldImage(context, editMyAccountBloc)),
             buildAvatarFieldEditButton(context, editMyAccountBloc),
           ],
         ),
@@ -116,27 +97,15 @@ class EditMyAccountWidget extends StatelessWidget {
     }, startActiveTab: FilePickerTab.gallery);
   }
 
-  Container buildAvatarFieldEditButton(
-      BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    return Container(
-      color: Colors.black38,
-      child: Padding(
-        padding: EdgeInsets.all(8),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 2),
-            ),
-            Icon(
-              Icons.edit,
-              color: Colors.white,
-            )
-          ],
-        ),
-      ),
-    );
-  }
+  Widget buildAvatarFieldEditButton(
+          BuildContext context, IEditMyAccountBloc editMyAccountBloc) =>
+      FediIconInCircleTransparentButton(
+        Icons.edit,
+        iconSize: 20.0,
+        onPressed: () {
+          startChoosingFileToUploadAvatar(context, editMyAccountBloc);
+        },
+      );
 
   Widget buildAvatarFieldImage(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
@@ -145,48 +114,41 @@ class EditMyAccountWidget extends StatelessWidget {
         initialData: editMyAccountBloc.avatarImageUrl,
         builder: (context, snapshot) {
           var url = snapshot.data;
-          return ClipRRect(
-            borderRadius: BorderRadius.circular(8.0),
-            child: CachedNetworkImage(
-              imageUrl: url,
-              placeholder: (context, url) => Center(
-                child: Container(
-                  width: 30,
-                  height: 30,
-                  child: CircularProgressIndicator(),
-                ),
-              ),
-              errorWidget: (context, url, error) => Icon(Icons.error),
-              height: 125,
-              width: 125,
+
+          return CachedNetworkImage(
+            imageUrl: url,
+            placeholder: (context, url) => Container(
+              width: 30,
+              height: 30,
+              child: CircularProgressIndicator(),
             ),
+            errorWidget: (context, url, error) => Icon(Icons.error),
+            height: _avatarSize,
+            width: _avatarSize,
           );
         });
   }
 
-  Container buildHeaderField(
+  Widget buildHeaderField(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    return Container(
-      height: 200,
-      child: Stack(
-        children: <Widget>[
-          Center(child: buildHeaderFieldImage(context, editMyAccountBloc)),
-          Align(
-              alignment: Alignment.bottomRight,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: buildHeaderEditField(context, editMyAccountBloc),
-              ))
-        ],
-      ),
+    return Stack(
+      children: <Widget>[
+        buildHeaderFieldImage(context, editMyAccountBloc),
+        Align(
+            alignment: Alignment.bottomRight,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: buildHeaderEditField(context, editMyAccountBloc),
+            ))
+      ],
     );
   }
 
-  FittedBox buildHeaderFieldImage(
+  Widget buildHeaderFieldImage(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    return FittedBox(
-      alignment: Alignment.center,
-      fit: BoxFit.none,
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
       child: StreamBuilder<String>(
           stream: editMyAccountBloc.headerImageUrlStream,
           initialData: editMyAccountBloc.headerImageUrl,
@@ -194,6 +156,7 @@ class EditMyAccountWidget extends StatelessWidget {
             var url = snapshot.data;
             return CachedNetworkImage(
               imageUrl: url,
+              fit: BoxFit.cover,
               placeholder: (context, url) => Center(
                 child: Container(
                   width: 30,
