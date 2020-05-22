@@ -9,22 +9,27 @@ class StatusReplyHeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: true);
-    return StreamBuilder<IAccount>(
-        stream: statusBloc.watchInReplyToAccount(),
-        initialData: null,
-        builder: (context, snapshot) {
-          var account = snapshot.data;
+    if (statusBloc.isHaveInReplyToAccount) {
+      return StreamBuilder<IAccount>(
+          stream: statusBloc.watchInReplyToAccount(),
+          initialData: null,
+          builder: (context, snapshot) {
+            var account = snapshot.data;
 
-          // todo: show progress
-          if (account == null) {
-            return SizedBox.shrink();
-          }
+            // todo: show progress
+            if (account == null) {
+              return SizedBox.shrink();
+            }
 
-          return StatusHeaderWidget(
-              descText:
-              AppLocalizations.of(context).tr("app.status.reply.header"),
-              account: account);
-        });
+            return StatusHeaderWidget(
+                descText:
+                    AppLocalizations.of(context).tr("app.status.reply.header"),
+                account: account,
+                icon: Icons.reply);
+          });
+    } else {
+      return const SizedBox.shrink();
+    }
   }
 
   const StatusReplyHeaderWidget();

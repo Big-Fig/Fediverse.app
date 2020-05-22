@@ -11,15 +11,19 @@ class StatusReblogHeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: false);
-    return StreamBuilder<IAccount>(
-        stream: statusBloc.accountStream,
-        initialData: statusBloc.account,
-        builder: (context, snapshot) {
-          var account = snapshot.data;
-          return StatusHeaderWidget(
-              descText:
-                  AppLocalizations.of(context).tr("app.status.reblog.header"),
-              account: account);
-        });
+    if (statusBloc.reblog != null) {
+      return StreamBuilder<IAccount>(
+          stream: statusBloc.accountStream,
+          initialData: statusBloc.account,
+          builder: (context, snapshot) {
+            var account = snapshot.data;
+            return StatusHeaderWidget(
+                descText:
+                    AppLocalizations.of(context).tr("app.status.reblog.header"),
+                account: account, icon: Icons.repeat);
+          });
+    } else {
+      return const SizedBox.shrink();
+    }
   }
 }
