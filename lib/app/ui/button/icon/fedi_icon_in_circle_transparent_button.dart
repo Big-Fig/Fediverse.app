@@ -10,9 +10,11 @@ class FediIconInCircleTransparentButton extends StatelessWidget
     implements FediIconInCircleButton {
   final IconData iconData;
   final VoidCallback onPressed;
+  final double iconSize;
 
   const FediIconInCircleTransparentButton(this.iconData,
-      {@required this.onPressed});
+      {@required this.onPressed,
+      this.iconSize = FediIconInCircleButton.defaultIconSize});
 
   @override
   Widget build(BuildContext context) => Container(
@@ -33,7 +35,7 @@ class FediIconInCircleTransparentButton extends StatelessWidget
           child: IconButton(
             padding: EdgeInsets.all(0.0),
             icon: Icon(iconData,
-                size: FediIconInCircleButton.defaultIconSize,
+                size: iconSize,
                 color: FediColors.white),
             onPressed: onPressed,
           ),
