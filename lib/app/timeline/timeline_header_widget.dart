@@ -5,17 +5,19 @@ import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 
 class TimelineHeaderWidget extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) => DisposableProvider<IPostStatusBloc>(
-      create: (context) => NewPostStatusBloc.createFromContext(context),
-      child: const Padding(padding: EdgeInsets.all(8.0),
-        child: PostStatusWidget(expanded: false,
-          displayMentions: false,
-          goBackOnSuccess: false,
-          displayAccountAvatar: true,),),);
+        create: (context) => NewPostStatusBloc.createFromContext(context),
+        child: const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: PostStatusWidget(
+            expanded: false,
+            displayMentions: false,
+            goBackOnSuccess: false,
+            displayAccountAvatar: true,
+          ),
+        ),
+      );
 
   const TimelineHeaderWidget();
-
 }

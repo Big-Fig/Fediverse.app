@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/home/tab/timelines/drawer/timelines_home_tab_page_drawer_bloc.dart';
+import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -67,19 +68,15 @@ class TimelinesHomeTabPageDrawerWidget extends StatelessWidget {
     );
   }
 
-  Container buildHeaderWidget(BuildContext context) {
-    return Container(
-      height: 110,
-      width: 50,
-      child: DrawerHeader(
-        child: Text(
-          AppLocalizations.of(context).tr("app.timeline.display.settings"
-              ".title"),
-          style: TextStyle(color: Colors.white),
-        ),
-        decoration: BoxDecoration(
-          color: Colors.blue,
-        ),
+  Widget buildHeaderWidget(BuildContext context) {
+    return DrawerHeader(
+      child: Text(
+        AppLocalizations.of(context).tr("app.timeline.display.settings"
+            ".title"),
+        style: TextStyle(color: Colors.white),
+      ),
+      decoration: BoxDecoration(
+        color: FediColors.primaryColor,
       ),
     );
   }
