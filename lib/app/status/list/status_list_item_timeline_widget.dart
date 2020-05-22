@@ -19,7 +19,7 @@ import 'package:fedi/app/status/spoiler/status_spoiler_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
-import 'package:fedi/app/ui/button/text/fedi_filled_text_button.dart';
+import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
@@ -213,7 +213,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
             initialData: statusBloc.isCollapsed,
             builder: (context, snapshot) {
               var isCollapsed = snapshot.data;
-              return FediFilledTextButton(
+              return FediPrimaryFilledTextButton(
                 isCollapsed
                     ? appLocalizations
                         .tr("app.status.collapsible.action.expand")

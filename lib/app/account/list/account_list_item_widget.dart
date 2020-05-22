@@ -25,32 +25,30 @@ class AccountListItemWidget extends StatelessWidget {
           accountSelectedCallback(accountBloc.account);
         }
       },
-      child: Card(
-        child: Padding(
-          padding: EdgeInsets.all(10),
-          child: Column(
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      const AccountAvatarWidget(
-                        imageSize: 40,
-                        progressSize: 30,
-                      ),
-                      const SizedBox(
-                        width: 8,
-                      ),
-                      const AccountAcctWidget()
-                    ],
-                  ),
-                  const Spacer(),
-                  // NO MORE BUTTON
-                ],
-              ),
-            ],
-          ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16.0),
+        child: Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    const AccountAvatarWidget(
+                      imageSize: 36,
+                      progressSize: 24,
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    const AccountAcctWidget()
+                  ],
+                ),
+                const Spacer(),
+                // NO MORE BUTTON
+              ],
+            ),
+          ],
         ),
       ),
     );

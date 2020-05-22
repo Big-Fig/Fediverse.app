@@ -7,6 +7,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ChatPostMessageAttachMediaActionWidget extends StatelessWidget {
+  final double iconSize;
+
+  const ChatPostMessageAttachMediaActionWidget({this.iconSize});
+
   @override
   Widget build(BuildContext context) {
     var postChatMessageBloc = IChatPostMessageBloc.of(context, listen: false);
@@ -30,6 +34,7 @@ class ChatPostMessageAttachMediaActionWidget extends StatelessWidget {
           }
 
           return IconButton(
+            iconSize: iconSize,
             icon: Icon(
               FediIcons.attachment,
               color: isPossibleToAttach
@@ -40,6 +45,4 @@ class ChatPostMessageAttachMediaActionWidget extends StatelessWidget {
           );
         });
   }
-
-  const ChatPostMessageAttachMediaActionWidget();
 }

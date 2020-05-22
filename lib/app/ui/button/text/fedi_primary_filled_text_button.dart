@@ -7,11 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 
-class FediFilledTextButton extends FediTextButton {
+class FediPrimaryFilledTextButton extends FediTextButton {
   final String text;
   final VoidCallback onPressed;
 
-  FediFilledTextButton(this.text, {@required this.onPressed});
+  FediPrimaryFilledTextButton(this.text, {@required this.onPressed});
 
   @override
   Widget build(BuildContext context) {

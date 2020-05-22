@@ -3,6 +3,7 @@ import 'package:fedi/app/account/account_bloc_impl.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/list/account_list_item_widget.dart';
 import 'package:fedi/app/account/pagination/list/account_pagination_list_bloc.dart';
+import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_widget.dart';
@@ -56,8 +57,13 @@ class AccountPaginationListWidget extends PaginationListWidget<IAccount> {
                           account: account,
                           isNeedRefreshFromNetworkOnInit: false,
                           isNeedWatchWebSocketsEvents: false),
-                  child: AccountListItemWidget(
-                      accountSelectedCallback: accountSelectedCallback)),
+                  child: Column(
+                    children: [
+                      AccountListItemWidget(
+                          accountSelectedCallback: accountSelectedCallback),
+                      const FediUltraLightGreyDivider()
+                    ],
+                  )),
             );
           });
 

@@ -55,7 +55,7 @@ class TimelineTabsWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: tabs
                   .map((tab) => FediTextTab(mapTabToTitle(context, tab),
-                      index: tabs.indexOf(tab)))
+                      index: tabs.indexOf(tab), isTransparent: true,))
                   .toList()),
         ],
       );

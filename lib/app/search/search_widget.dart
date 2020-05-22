@@ -15,6 +15,8 @@ import 'package:fedi/app/search/statuses/search_statuses_list_widget.dart';
 import 'package:fedi/app/search/statuses/search_statuses_pagination_list_bloc.dart';
 import 'package:fedi/app/status/pagination/network_only/status_network_only_pagination_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
+import 'package:fedi/app/ui/tab/fedi_text_tab.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
@@ -37,16 +39,21 @@ class SearchWidget extends StatelessWidget {
       value: searchBloc.searchInputBloc,
       child: Column(
         children: <Widget>[
-          SearchInputWidget(),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: SearchInputWidget(),
+          ),
           Expanded(
             child: DefaultTabController(
               length: tabs.length,
               initialIndex: tabs.indexOf(searchBloc.selectedTab),
               child: Column(
                 children: <Widget>[
-                  Container(
-                      decoration: BoxDecoration(color: Colors.blue),
-                      child: buildTabBar(context, tabs, searchBloc)),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: buildTabBar(context, tabs, searchBloc),
+                  ),
+                  FediUltraLightGreyDivider(),
                   Expanded(child: buildTabsWidget(context, tabs, searchBloc))
                 ],
               ),
@@ -59,17 +66,12 @@ class SearchWidget extends StatelessWidget {
 
   Widget buildTabBar(
           BuildContext context, List<SearchTab> tabs, ISearchBloc searchBloc) =>
-      TabBar(
-        tabs: tabs.map((tab) {
-          return buildTab(context, tab);
-        }).toList(),
-        onTap: (index) {
-          searchBloc.selectTab(tabs[index]);
-        },
-      );
-
-  Tab buildTab(BuildContext context, SearchTab tab) =>
-      Tab(text: mapTabToTitle(context, tab));
+      Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: tabs
+              .map((tab) => FediTextTab(mapTabToTitle(context, tab),
+                  index: tabs.indexOf(tab), isTransparent: false,))
+              .toList());
 
   String mapTabToTitle(BuildContext context, SearchTab tab) {
     var appLocalizations = AppLocalizations.of(context);
