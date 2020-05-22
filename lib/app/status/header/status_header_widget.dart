@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/details/account_details_page.dart';
+import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,10 +24,7 @@ class StatusHeaderWidget extends StatelessWidget {
                 padding: EdgeInsets.all(8.0),
                 child: buildHeader(account, context),
               ),
-              Container(
-                  width: double.infinity,
-                  height: 1,
-                  color: FediColors.ultraLightGrey)
+              FediUltraLightGreyDivider()
             ],
           ),
         ),

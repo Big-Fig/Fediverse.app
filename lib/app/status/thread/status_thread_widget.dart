@@ -2,12 +2,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/async/async_smart_refresher_helper.dart';
 import 'package:fedi/app/list/list_refresh_header_widget.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
-import 'package:fedi/app/status/post/thread/thread_post_status_widget.dart';
+import 'package:fedi/app/status/post/post_status_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
+import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -44,7 +45,13 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
         Expanded(
           child: buildMessageList(context, statusThreadBloc),
         ),
-        ThreadPostStatusWidget()
+        FediUltraLightGreyDivider(),
+        PostStatusWidget(
+          goBackOnSuccess: false,
+          expanded: false,
+          isTransparent: false,
+          displayMentions: false,
+        )
       ],
     );
   }

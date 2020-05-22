@@ -6,9 +6,7 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc_impl.dart';
 import 'package:fedi/app/status/thread/status_thread_widget.dart';
-import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
-import 'package:fedi/app/ui/home/fedi_home_tab_container_widget.dart';
+import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,21 +16,10 @@ class StatusThreadPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FediHomeTabContainer.createLikeAppBar(
-          leading: const FediBackIconButton(),
-          center: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: buildTitle(context),
-          ),
-          trailing: null,
-          body: StatusThreadWidget()),
-    );
+        appBar: FediSubPageTitleAppBar(
+            title: AppLocalizations.of(context).tr("app.status.thread.title")),
+        body: StatusThreadWidget());
   }
-
-  Text buildTitle(BuildContext context) => Text(
-        AppLocalizations.of(context).tr("app.status.thread.title"),
-        style: TextStyle(color: FediColors.white, fontWeight: FontWeight.w500),
-      );
 }
 
 void goToStatusThreadPage(BuildContext context, IStatus status) {

@@ -20,6 +20,7 @@ import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:fedi/app/ui/button/text/fedi_filled_text_button.dart';
+import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
@@ -105,10 +106,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
           if (displayActions)
             Column(
               children: <Widget>[
-                Container(
-                  height: 1.0,
-                  decoration: BoxDecoration(color: FediColors.ultraLightGrey),
-                ),
+                const FediUltraLightGreyDivider(),
                 Padding(
                   padding:
                       EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),

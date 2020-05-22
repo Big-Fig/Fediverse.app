@@ -8,9 +8,10 @@ import 'package:fedi/app/status/post/action/post_status_post_action_widget.dart'
 import 'package:fedi/app/status/post/action/post_status_schedule_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_visibility_action_widget.dart';
 import 'package:fedi/app/status/post/mentions/post_status_mentions_widget.dart';
-import 'package:fedi/app/status/post/message/message_post_status_widget.dart';
+import 'package:fedi/app/status/post/message/filled_message_post_status_widget.dart';
+import 'package:fedi/app/status/post/message/transparent_message_post_status_widget.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,12 +22,14 @@ class PostStatusWidget extends StatelessWidget {
   final bool displayMentions;
   final bool goBackOnSuccess;
   final bool displayAccountAvatar;
+  final bool isTransparent;
 
   const PostStatusWidget(
       {this.showVisibilityAction = true,
       @required this.expanded,
       @required this.displayMentions,
       this.displayAccountAvatar = false,
+      this.isTransparent = true,
       @required this.goBackOnSuccess});
 
   @override
@@ -40,33 +43,16 @@ class PostStatusWidget extends StatelessWidget {
           displayAccountAvatar
               ? Row(
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: MyAccountAvatarWidget(
-                        imageSize: 48,
-                        progressSize: 48,
-                      ),
-                    ),
-                    Flexible(
-                      child: MessagePostStatusWidget(
-                        expanded: expanded,
-                      ),
-                    )
+                    buldAvatar(),
+                    buildMessageWidget()
                   ],
                 )
-              : Flexible(
-                  child: MessagePostStatusWidget(
-                  expanded: expanded,
-                )),
+              : buildMessageWidget(),
           ProxyProvider<IPostStatusBloc, IUploadMediaAttachmentGridBloc>(
               update: (context, value, previous) =>
-              value.mediaAttachmentGridBloc,
+                  value.mediaAttachmentGridBloc,
               child: UploadMediaAttachmentGridWidget()),
-          if (!displayAccountAvatar)
-            Container(
-              height: 1,
-              decoration: BoxDecoration(color: FediColors.lightGrey),
-            ),
+          if (!displayAccountAvatar) FediUltraLightGreyDivider(),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Row(
@@ -94,4 +80,26 @@ class PostStatusWidget extends StatelessWidget {
       ),
     );
   }
+
+  Padding buldAvatar() {
+    return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: MyAccountAvatarWidget(
+                      imageSize: 48,
+                      progressSize: 48,
+                    ),
+                  );
+  }
+
+  Widget buildMessageWidget() => isTransparent
+      ? Flexible(
+          child: TransparentMessagePostStatusWidget(
+            expanded: expanded,
+          ),
+        )
+      : Flexible(
+          child: FilledMessagePostStatusWidget(
+            expanded: expanded,
+          ),
+        );
 }
