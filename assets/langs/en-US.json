@@ -22,6 +22,7 @@
       },
       "my": {
         "settings": {
+          "title": "Account settings",
           "field": {
             "websockets_enabled": {
               "label": "WebSockets real-time updates",
@@ -31,7 +32,8 @@
               "label": "Replace DM with chats",
               "description": "Not supported on most instances"
             }
-          }
+          },
+          "scheduled_posts": "Scheduled posts"
         },
         "edit": {
           "title": "Edit account",
