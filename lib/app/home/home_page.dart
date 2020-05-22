@@ -8,7 +8,7 @@ import 'package:fedi/app/home/tab/conversations/chats_home_tab_page.dart';
 import 'package:fedi/app/home/tab/conversations/conversations_home_tab_page.dart';
 import 'package:fedi/app/home/tab/notifications/notifications_home_tab_page.dart';
 import 'package:fedi/app/home/tab/timelines/timelines_home_tab_page.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -39,11 +39,7 @@ class HomePage extends StatelessWidget {
               height: 58,
               child: Column(
                 children: [
-                  Container(
-                    width: double.infinity,
-                    height: 1,
-                    color: FediColors.ultraLightGrey,
-                  ),
+                  const FediUltraLightGreyDivider(),
                   const HomePageBottomNavigationBarWidget(),
                 ],
               ),
