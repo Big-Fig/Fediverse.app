@@ -43,7 +43,7 @@ class PostStatusWidget extends StatelessWidget {
           displayAccountAvatar
               ? Row(
                   children: <Widget>[
-                    buldAvatar(),
+                    buildAvatar(),
                     buildMessageWidget()
                   ],
                 )
@@ -81,7 +81,7 @@ class PostStatusWidget extends StatelessWidget {
     );
   }
 
-  Padding buldAvatar() {
+  Widget buildAvatar() {
     return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: MyAccountAvatarWidget(

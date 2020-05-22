@@ -5,6 +5,7 @@ import 'package:fedi/app/account/details/account_details_widget.dart';
 import 'package:fedi/app/account/my/action/my_account_action_list_bottom_sheet_dialog.dart';
 import 'package:fedi/app/account/my/edit/edit_my_account_page.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
+import 'package:fedi/app/account/my/settings/my_account_settings_drawer_body_widget.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
@@ -23,6 +24,10 @@ class MyAccountDetailsPage extends StatelessWidget {
     return ProxyProvider<IMyAccountBloc, IAccountBloc>(
       update: (context, value, previous) => value,
       child: Scaffold(
+        key: _drawerKey,
+        drawer: Drawer(
+          child: SafeArea(child: const MyAccountSettingsDrawerBodyWidget()),
+        ),
         body: FediHomeTabContainer.createLikeAppBar(
             leading: FediIconInCircleTransparentButton(
               Icons.menu,
@@ -46,6 +51,7 @@ class MyAccountDetailsPage extends StatelessWidget {
           BuildContext context, IMyAccountBloc myAccountBloc) =>
       FlatButton(
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
