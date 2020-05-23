@@ -16,8 +16,8 @@ Map<int, Color> _primaryColorSwatch = {
 
 final ThemeData fediTheme = ThemeData(
   fontFamily: "Rubik",
-  primarySwatch: FediColors.primaryColor,
-  primaryColor: MaterialColor(0xff00BCEC, _primaryColorSwatch),
+  primarySwatch: MaterialColor(0xff00BCEC, _primaryColorSwatch),
+  primaryColor: FediColors.primaryColor,
   primaryColorDark: FediColors.primaryColorDark,
   accentColor: FediColors.secondaryColor,
 );
