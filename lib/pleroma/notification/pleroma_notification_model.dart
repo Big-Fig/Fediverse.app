@@ -19,6 +19,10 @@ abstract class IPleromaNotification extends IMastodonNotification {
   IPleromaChatMessage get chatMessage;
 
   PleromaNotificationType get typePleroma;
+
+  String get emoji;
+
+  PleromaNotificationPleromaPart get pleroma;
 }
 
 enum PleromaNotificationType {
@@ -46,18 +50,45 @@ final pleromaNotificationTypeValues = EnumValues({
 });
 
 @JsonSerializable()
+class PleromaNotificationPleromaPart {
+  @JsonKey(name: "is_seen")
+  final bool isSeen;
+  PleromaNotificationPleromaPart({this.isSeen});
+
+  factory PleromaNotificationPleromaPart.fromJson(Map<String, dynamic> json) =>
+      _$PleromaNotificationPleromaPartFromJson(json);
+
+  factory PleromaNotificationPleromaPart.fromJsonString(String jsonString) =>
+      _$PleromaNotificationPleromaPartFromJson(jsonDecode(jsonString));
+
+  static List<PleromaNotificationPleromaPart> listFromJsonString(String str) =>
+      List<PleromaNotificationPleromaPart>.from(json
+          .decode(str)
+          .map((x) => PleromaNotificationPleromaPart.fromJson(x)));
+
+  Map<String, dynamic> toJson() => _$PleromaNotificationPleromaPartToJson(this);
+
+  String toJsonString() =>
+      jsonEncode(_$PleromaNotificationPleromaPartToJson(this));
+}
+
+@JsonSerializable(explicitToJson: true)
 class PleromaNotification extends IPleromaNotification {
   @override
-  PleromaAccount account;
+  final PleromaAccount account;
   @override
   @JsonKey(name: "created_at")
-  DateTime createdAt;
+  final DateTime createdAt;
   @override
-  String id;
+  final String id;
   @override
-  String type;
+  final String type;
   @override
-  PleromaStatus status;
+  final PleromaStatus status;
+  @override
+  final String emoji;
+  @override
+  final PleromaNotificationPleromaPart pleroma;
 
   @override
   @JsonKey(name: "chat_message")
@@ -70,6 +101,8 @@ class PleromaNotification extends IPleromaNotification {
     this.type,
     this.status,
     this.chatMessage,
+    this.emoji,
+    this.pleroma,
   });
 
   factory PleromaNotification.fromJson(Map<String, dynamic> json) =>

@@ -97,6 +97,9 @@ mixin _$NotificationDaoMixin on DatabaseAccessor<AppDatabase> {
       statusRemoteId: row.readString('status_remote_id'),
       chatRemoteId: row.readString('chat_remote_id'),
       chatMessageRemoteId: row.readString('chat_message_remote_id'),
+      emoji: row.readString('emoji'),
+      pleroma: $DbNotificationsTable.$converter0
+          .mapToDart(row.readString('pleroma')),
       unread: row.readBool('unread'),
       type: row.readString('type'),
       createdAt: row.readDateTime('created_at'),

@@ -8,6 +8,7 @@ import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/pleroma/field/pleroma_field_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/pleroma/mention/pleroma_mention_model.dart';
+import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:fedi/pleroma/poll/pleroma_poll_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
@@ -37,6 +38,19 @@ class PleromaApplicationDatabaseConverter
 
   @override
   Map<String, dynamic> toJson(PleromaApplication obj) => obj.toJson();
+}
+
+class PleromaNotificationPleromaPartDatabaseConverter
+    extends JsonDatabaseConverter<PleromaNotificationPleromaPart> {
+  const PleromaNotificationPleromaPartDatabaseConverter() : super();
+
+  @override
+  PleromaNotificationPleromaPart fromJson(Map<String, dynamic> json) =>
+      PleromaNotificationPleromaPart.fromJson(json);
+
+  @override
+  Map<String, dynamic> toJson(PleromaNotificationPleromaPart obj) =>
+      obj.toJson();
 }
 
 class PleromaScheduledStatusParamsDatabaseConverter
@@ -127,6 +141,7 @@ class PleromaMediaAttachmentListDatabaseConverter
   @override
   Map<String, dynamic> toJson(PleromaMediaAttachment obj) => obj.toJson();
 }
+
 class PleromaMediaAttachmentDatabaseConverter
     extends JsonDatabaseConverter<PleromaMediaAttachment> {
   const PleromaMediaAttachmentDatabaseConverter() : super();

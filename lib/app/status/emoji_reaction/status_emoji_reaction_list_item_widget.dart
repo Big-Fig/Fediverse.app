@@ -1,4 +1,5 @@
 import 'package:fedi/app/status/emoji_reaction/status_emoji_reaction_bloc.dart';
+import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,16 +20,12 @@ class StatusEmojiReactionListItemWidget extends StatelessWidget {
             return SizedBox.shrink();
           }
 
-          return Container(
-            width: 65,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 3),
-              child: FlatButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0)),
-                padding: EdgeInsets.all(0),
-                color: emojiReaction.me ? Colors.blue : Colors.black12,
-                onPressed: () {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
+            child: Container(
+              width: 65,
+              child: GestureDetector(
+                onTap: () {
                   statusEmojiReactionBloc.requestToggleEmojiReaction();
                 },
                 child: Row(
@@ -42,8 +39,10 @@ class StatusEmojiReactionListItemWidget extends StatelessWidget {
                       Text(
                         " : ${emojiReaction.count}",
                         style: TextStyle(
-                            color:
-                                emojiReaction.me ? Colors.white : Colors.black),
+                            fontWeight: FontWeight.w500,
+                            color: emojiReaction.me
+                                ? FediColors.darkGrey
+                                : FediColors.grey),
                       ),
                   ],
                 ),

@@ -33,6 +33,8 @@ DbNotification mapRemoteNotificationToDbNotification(
       statusRemoteId: remoteNotification.status?.id,
       chatRemoteId: remoteNotification.chatMessage?.chatId,
       chatMessageRemoteId: remoteNotification.chatMessage?.id,
+      emoji: remoteNotification.emoji,
+      pleroma: remoteNotification.pleroma,
       type: remoteNotification.type,
       unread: unread);
 }
@@ -48,5 +50,7 @@ PleromaNotification mapLocalNotificationToRemoteNotification(
       createdAt: localNotification.createdAt,
       account: mapLocalAccountToRemoteAccount(localNotification.account),
       type: localNotification.type,
+      emoji: localNotification.emoji,
+      pleroma: localNotification.pleroma,
       status: status);
 }

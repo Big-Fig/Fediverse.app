@@ -48,5 +48,5 @@ class StatusEmojiReactionListWidget extends StatelessWidget {
     );
   }
 
-  const StatusEmojiReactionListWidget();
+   StatusEmojiReactionListWidget();
 }
