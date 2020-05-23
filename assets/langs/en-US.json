@@ -349,7 +349,7 @@
         "poll": "Poll notification",
         "move": "Move notification",
         "followRequest": "Follow request",
-        "pleromaEmojiReaction": "Emoji reaction for \"{}\"",
+        "pleromaEmojiReaction": "{} for \"{}\"",
         "pleromaChatMention": "Chat mention in \"{}\""
       }
     },

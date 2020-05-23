@@ -1,3 +1,4 @@
+import 'package:fedi/app/moor/moor_converters.dart';
 import 'package:moor/moor.dart';
 
 // todo: add foreign keys
@@ -11,9 +12,12 @@ class DbNotifications extends Table {
   TextColumn get statusRemoteId => text().nullable()();
   TextColumn get chatRemoteId => text().nullable()();
   TextColumn get chatMessageRemoteId => text().nullable()();
+  TextColumn get emoji => text().nullable()();
+  TextColumn get pleroma => text()
+      .nullable()
+      .map(PleromaNotificationPleromaPartDatabaseConverter())();
   BoolColumn get unread => boolean().nullable()();
-  TextColumn get type =>
-      text().nullable()();
+  TextColumn get type => text().nullable()();
 
   DateTimeColumn get createdAt => dateTime()();
 }

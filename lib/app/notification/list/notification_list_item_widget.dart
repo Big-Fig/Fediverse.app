@@ -118,9 +118,11 @@ class NotificationListItemWidget extends StatelessWidget {
         break;
       case PleromaNotificationType.pleromaEmojiReaction:
         text = appLocalizations.tr(
-            "app.notification.header"
-            ".pleromaEmojiReaction",
-            args: [extractStatusRawContent(notificationBloc)]);
+            "app.notification.header.pleromaEmojiReaction",
+            args: [
+              notificationBloc.notification.emoji,
+              extractStatusRawContent(notificationBloc)
+            ]);
         break;
       case PleromaNotificationType.pleromaChatMention:
         text = appLocalizations.tr("app.notification.header.pleromaChatMention",

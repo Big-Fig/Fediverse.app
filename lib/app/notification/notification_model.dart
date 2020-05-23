@@ -23,8 +23,14 @@ abstract class INotification {
   String get chatRemoteId;
 
   String get type;
+
   PleromaNotificationType get typePleroma;
+
   MastodonNotificationType get typeMastodon;
+
+  String get emoji;
+
+  PleromaNotificationPleromaPart get pleroma;
 
   INotification copyWith(
       {int localId,
@@ -32,6 +38,8 @@ abstract class INotification {
       bool unread,
       DateTime createdAt,
       IStatus status,
+      String emoji,
+      PleromaNotificationPleromaPart pleroma,
       IAccount account,
       MastodonNotificationType type});
 }
@@ -52,18 +60,22 @@ class DbNotificationPopulatedWrapper implements INotification {
 
   @override
   String get remoteId => dbNotificationPopulated.dbNotification.remoteId;
+  @override
+  String get emoji => dbNotificationPopulated.dbNotification.emoji;
+  @override
+  PleromaNotificationPleromaPart get pleroma =>
+      dbNotificationPopulated.dbNotification.pleroma;
 
   @override
-  MastodonNotificationType get typeMastodon => mastodonNotificationTypeValues
-      .map[type];
+  MastodonNotificationType get typeMastodon =>
+      mastodonNotificationTypeValues.map[type];
 
   @override
-  PleromaNotificationType get typePleroma => pleromaNotificationTypeValues
-      .map[type];
+  PleromaNotificationType get typePleroma =>
+      pleromaNotificationTypeValues.map[type];
 
   @override
-  String get type =>
-      dbNotificationPopulated.dbNotification.type;
+  String get type => dbNotificationPopulated.dbNotification.type;
 
   @override
   IStatus get status => dbNotificationPopulated.dbStatusPopulated != null
@@ -81,6 +93,8 @@ class DbNotificationPopulatedWrapper implements INotification {
           DateTime createdAt,
           IStatus status,
           IAccount account,
+          String emoji,
+          PleromaNotificationPleromaPart pleroma,
           MastodonNotificationType type}) =>
       DbNotificationPopulatedWrapper(DbNotificationPopulated(
           dbNotification: dbNotificationPopulated.dbNotification.copyWith(
@@ -89,6 +103,8 @@ class DbNotificationPopulatedWrapper implements INotification {
             unread: unread ?? this.unread,
             createdAt: createdAt ?? this.createdAt,
             type: type ?? this.type,
+            pleroma: pleroma ?? this.pleroma,
+            emoji: emoji ?? this.emoji,
           ),
           dbAccount: dbAccountFromAccount(account) ??
               dbNotificationPopulated.dbAccount,
@@ -105,10 +121,12 @@ class DbNotificationPopulatedWrapper implements INotification {
                           .dbStatusPopulated.reblogDbStatusAccount)));
 
   @override
-  String get chatMessageRemoteId => dbNotificationPopulated.dbNotification.chatMessageRemoteId;
+  String get chatMessageRemoteId =>
+      dbNotificationPopulated.dbNotification.chatMessageRemoteId;
 
   @override
-  String get chatRemoteId  => dbNotificationPopulated.dbNotification.chatRemoteId;
+  String get chatRemoteId =>
+      dbNotificationPopulated.dbNotification.chatRemoteId;
 }
 
 class DbNotificationPopulated {
