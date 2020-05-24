@@ -1,16 +1,18 @@
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/auth/instance/current/context/loading/current_auth_instance_context_loading_bloc.dart';
 import 'package:fedi/app/auth/instance/current/context/loading/current_auth_instance_context_loading_model.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-class CurrentAuthInstanceContextLoadingBloc extends DisposableOwner
+var _logger = Logger("current_auth_instance_context_loading_bloc_impl.dart");
+
+class CurrentAuthInstanceContextLoadingBloc extends AsyncInitLoadingBloc
     implements ICurrentAuthInstanceContextLoadingBloc {
   final IMyAccountBloc myAccountBloc;
 
   CurrentAuthInstanceContextLoadingBloc({@required this.myAccountBloc}) {
-    refresh();
     addDisposable(subject: stateSubject);
   }
 
@@ -25,6 +27,11 @@ class CurrentAuthInstanceContextLoadingBloc extends DisposableOwner
         stateSubject.add(CurrentAuthInstanceContextLoadingState
             .cantFetchAndLocalCacheNotExist);
       }
+    }).catchError((error, stackTrace) {
+      _logger.warning(
+          () => "can't myAccountBloc.refreshFromNetwork()", error, stackTrace);
+      stateSubject.add(CurrentAuthInstanceContextLoadingState
+          .cantFetchAndLocalCacheNotExist);
     });
   }
 
@@ -38,4 +45,9 @@ class CurrentAuthInstanceContextLoadingBloc extends DisposableOwner
   @override
   Stream<CurrentAuthInstanceContextLoadingState> get stateStream =>
       stateSubject.stream;
+
+  @override
+  Future internalAsyncInit() async {
+    await refresh();
+  }
 }
