@@ -19,5 +19,5 @@ final ThemeData fediTheme = ThemeData(
   primarySwatch: MaterialColor(0xff00BCEC, _primaryColorSwatch),
   primaryColor: FediColors.primaryColor,
   primaryColorDark: FediColors.primaryColorDark,
-  accentColor: FediColors.secondaryColor,
+//  accentColor: FediColors.secondaryColor,
 );

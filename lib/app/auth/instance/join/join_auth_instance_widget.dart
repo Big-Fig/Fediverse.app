@@ -224,6 +224,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
         context: context,
         contentMessage: AppLocalizations.of(context).tr("app.auth.instance.join"
             ".progress.dialog.content"),
+        cancelable: true,
         asyncCode: () async {
           var hostUri = extractCurrentUri(joinInstanceBloc);
           AuthHostBloc bloc;
