@@ -11,8 +11,8 @@ class UrlHelper {
       var appLocalizations = AppLocalizations.of(context);
       await SimpleAlertDialog(
               context: context,
-              title: appLocalizations.tr("app.link.error.dialog.title"),
-              content: appLocalizations.tr("app.link.error.dialog.content",
+              title: appLocalizations.tr("link.error.dialog.title"),
+              content: appLocalizations.tr("link.error.dialog.content",
                   args: [url]))
           .show(context);
     }
