@@ -74,7 +74,7 @@ class HtmlTextWidget extends StatelessWidget {
         "p": Style(
           padding: EdgeInsets.zero,
           margin: EdgeInsets.zero,
-          height: lineHeight,
+          textLineHeight: lineHeight,
           display: Display.INLINE,
           fontSize: FontSize(fontSize),
           fontWeight: fontWeight,
@@ -85,7 +85,7 @@ class HtmlTextWidget extends StatelessWidget {
         "text": Style(
           padding: EdgeInsets.zero,
           margin: EdgeInsets.zero,
-          height: lineHeight,
+          textLineHeight: lineHeight,
           display: Display.INLINE,
           fontSize: FontSize(fontSize),
           fontWeight: fontWeight,
