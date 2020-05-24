@@ -5,15 +5,14 @@ import 'package:fedi/app/conversation/conversation_bloc.dart';
 import 'package:fedi/app/conversation/conversation_page.dart';
 import 'package:fedi/app/conversation/title/conversation_title_widget.dart';
 import 'package:fedi/app/emoji/emoji_text_helper.dart';
+import 'package:fedi/app/html/html_text_helper.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:html/parser.dart';
-
-var _maxLastStatusLength = 30;
+import 'package:flutter/widgets.dart';
 
 class ConversationListItemWidget extends StatelessWidget {
   ConversationListItemWidget();
@@ -29,24 +28,31 @@ class ConversationListItemWidget extends StatelessWidget {
             conversation: conversationBloc.conversation,
             conversationAccountsWithoutMe: conversationBloc.accountsWithoutMe);
       },
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                ConversationAvatarWidget(),
-                Padding(
-                  padding: EdgeInsets.all(12.0),
-                  child: buildConversationPreview(context, conversationBloc),
+      child: Container(
+        height: 88,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Expanded(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ConversationAvatarWidget(),
+                    SizedBox(
+                      width: 16,
+                    ),
+                    Flexible(
+                      child:
+                          buildConversationPreview(context, conversationBloc),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            buildGoToConversationButton(context, conversationBloc),
-          ],
+              ),
+              buildGoToConversationButton(context, conversationBloc),
+            ],
+          ),
         ),
       ),
     );
@@ -56,10 +62,10 @@ class ConversationListItemWidget extends StatelessWidget {
       BuildContext context, IConversationBloc conversationBloc) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
         ConversationTitleWidget(),
-        buildLastStatusText(context, conversationBloc),
+        buildLastMessageText(context, conversationBloc),
       ],
     );
   }
@@ -67,11 +73,11 @@ class ConversationListItemWidget extends StatelessWidget {
   IconButton buildGoToConversationButton(
       BuildContext context, IConversationBloc conversationBloc) {
     return IconButton(
+      tooltip: AppLocalizations.of(context).tr("app.conversation."
+          ".action.more"),
       color: FediColors.darkGrey,
       iconSize: 16.0,
       icon: Icon(FediIcons.arrow_right),
-      tooltip: AppLocalizations.of(context).tr("app.conversation."
-          ".action.more"),
       onPressed: () {
         goToConversationPage(context,
             conversation: conversationBloc.conversation,
@@ -80,31 +86,32 @@ class ConversationListItemWidget extends StatelessWidget {
     );
   }
 
-  Widget buildLastStatusText(
+  Widget buildLastMessageText(
       BuildContext context, IConversationBloc conversationBloc) {
     return StreamBuilder<IStatus>(
         stream: conversationBloc.lastStatusStream,
         builder: (context, snapshot) {
-          var lastStatus = snapshot.data;
+          var lastMessage = snapshot.data;
 
-          if (lastStatus == null) {
-            return CircularProgressIndicator();
+          if (lastMessage == null) {
+            return SizedBox.shrink();
           }
-
-          var content = extractStatusText(context, lastStatus);
-
-          var length = content.length;
-
-          // todo: handle html tags cut
-          if (length > _maxLastStatusLength) {
-            content = content.substring(0, _maxLastStatusLength);
-            content += "...";
+          var content = lastMessage.content;
+          if (content?.isNotEmpty != true) {
+            var mediaAttachments = lastMessage.mediaAttachments;
+            content = mediaAttachments
+                .map((mediaAttachment) => mediaAttachment.description)
+                .join(", ");
           }
+          content = extractContent(context, lastMessage, content);
+
+          var contentWithEmojis =
+              addEmojiToHtmlContent(content, lastMessage.emojis);
           return HtmlTextWidget(
-            shrinkWrap: true,
             drawNewLines: false,
-            data: addEmojiToHtmlContent(
-                content, lastStatus.emojis),
+            textMaxLines: 1,
+            textOverflow: TextOverflow.ellipsis,
+            data: contentWithEmojis,
             onLinkTap: null,
             fontSize: 16.0,
             fontWeight: FontWeight.w300,
@@ -113,13 +120,9 @@ class ConversationListItemWidget extends StatelessWidget {
         });
   }
 
-  String extractStatusText(BuildContext context, IStatus status) {
-    String formattedText = parse(status.content).documentElement.text;
-    for (var i = 0; i < status.mentions.length; i++) {
-      var mention = status.mentions[i];
-      var account = mention.acct.split("@").first;
-      formattedText = formattedText.replaceAll("@$account", "");
-    }
+  String extractContent(BuildContext context, IStatus status, String content) {
+    String formattedText =
+        HtmlTextHelper.extractRawStringFromHtmlString(status.content);
 
     var myAccountBloc = IMyAccountBloc.of(context, listen: true);
 
@@ -127,6 +130,7 @@ class ConversationListItemWidget extends StatelessWidget {
       formattedText = AppLocalizations.of(context)
           .tr("app.conversation.preview.you", args: [formattedText]);
     }
+
     return formattedText;
   }
 }

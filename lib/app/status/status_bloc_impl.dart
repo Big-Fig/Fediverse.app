@@ -1,6 +1,7 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/emoji/emoji_text_helper.dart';
+import 'package:fedi/app/html/html_text_helper.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -48,12 +49,14 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
       BehaviorSubject.seeded(true);
 
   @override
-  bool get isPossibleToCollapse =>
-      (status.content?.length ?? 0) > minimumCharactersLimitToCollapse;
+  bool get isPossibleToCollapse => _isContentTooBig(status.content);
+
+  bool _isContentTooBig(String content) =>
+      (content?.length ?? 0) > minimumCharactersLimitToCollapse;
 
   @override
-  Stream<bool> get isPossibleToCollapseStream => statusStream.map((status) =>
-      (status.content?.length ?? 0) > minimumCharactersLimitToCollapse);
+  Stream<bool> get isPossibleToCollapseStream =>
+      statusStream.map((status) => _isContentTooBig(status.content));
 
   @override
   bool get isCollapsed => _isCollapsedSubject.value;
@@ -113,7 +116,6 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
     bool delayInit = true,
     this.isNeedWatchLocalRepositoryForUpdates = true,
   }) : _statusSubject = BehaviorSubject.seeded(status) {
-
     _logger.finest(() => "required constructor ${status.remoteId}");
 
     addDisposable(subject: _statusSubject);
@@ -228,6 +230,14 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   @override
   Stream<String> get contentStream =>
       statusStream.map((status) => status?.content).distinct();
+
+  @override
+  String get contentRawText =>
+      HtmlTextHelper.extractRawStringFromHtmlString(content);
+
+  @override
+  Stream<String> get contentRawTextStream => contentStream
+      .map((content) => HtmlTextHelper.extractRawStringFromHtmlString(content));
 
   @override
   IPleromaCard get card => status?.card;
