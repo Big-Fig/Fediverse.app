@@ -3,6 +3,7 @@ import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_bloc.dart';
 import 'package:fedi/app/form/form_field_error_model.dart';
 import 'package:fedi/app/form/form_model.dart';
+import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/dialog/alert/simple_alert_dialog.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:fedi/pleroma/account/public/pleroma_account_public_model.dart';
@@ -99,27 +100,26 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
 
   Widget buildSubmitButton(
       BuildContext context, IRegisterAuthInstanceBloc bloc) {
-    return StreamBuilder<bool>(
-      stream: bloc.readyToSubmitStream,
-      initialData: bloc.readyToSubmit,
-      builder: (context, snapshot) {
-        var readyToSubmit = snapshot.data;
-        Null Function() onPressed;
-        if (readyToSubmit) {
-          onPressed = () {
-            submit(context, bloc);
-          };
-        }
-        return Padding(
-          padding: EdgeInsets.all(10),
-          child: RaisedButton(
-            child: Text(AppLocalizations.of(context)
-                .tr("app.auth.instance.register.action.create_account")),
-            color: Colors.blue,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: StreamBuilder<bool>(
+        stream: bloc.readyToSubmitStream,
+        initialData: bloc.readyToSubmit,
+        builder: (context, snapshot) {
+          var readyToSubmit = snapshot.data;
+          Null Function() onPressed;
+          if (readyToSubmit) {
+            onPressed = () {
+              submit(context, bloc);
+            };
+          }
+          return FediPrimaryFilledTextButton(
+            AppLocalizations.of(context)
+                .tr("app.auth.instance.register.action.create_account"),
             onPressed: onPressed,
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 
