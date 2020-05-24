@@ -2,8 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/join/join_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_page.dart';
-import 'package:fedi/app/theme/theme.dart';
 import 'package:fedi/app/tos/tos_page.dart';
+import 'package:fedi/app/ui/button/text/fedi_grey_filled_text_button.dart';
+import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/dialog/alert/base_alert_dialog.dart';
 import 'package:fedi/dialog/alert/simple_alert_dialog.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
@@ -14,7 +15,6 @@ import 'package:logging/logging.dart';
 var _logger = Logger("join_auth_instance_widget.dart");
 
 class JoinAuthInstanceWidget extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -34,7 +34,10 @@ class JoinAuthInstanceWidget extends StatelessWidget {
           buildOrText(context),
           Spacer(),
           buildJoinFediDescText(context),
-          buildJoinFediButton(context),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: buildJoinFediButton(context),
+          ),
           Spacer(
             flex: 3,
           ),
@@ -47,31 +50,28 @@ class JoinAuthInstanceWidget extends StatelessWidget {
   FlatButton buildTermsOfServiceButton(BuildContext context) {
     return FlatButton(
       child: Text(
-          AppLocalizations.of(context).tr("app.auth.instance.join.action.tos")),
-      color: Colors.black12,
+        AppLocalizations.of(context).tr("app.auth.instance.join.action"
+            ".tos"),
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: FediColors.ultraLightGrey,
+        ),
+      ),
+      color: null,
       onPressed: () {
         goToTosPage(context);
       },
     );
   }
 
-  OutlineButton buildJoinFediButton(BuildContext context) {
-    return OutlineButton(
-      textColor: Colors.white,
-      borderSide: BorderSide(
-        width: 2.0,
-        color: Colors.white,
-        style: BorderStyle.solid,
-      ),
-      child: Text(
-        AppLocalizations.of(context).tr("app.auth.instance.join.action"
-            ".join_fedi"),
-      ),
-      onPressed: () {
-        goToRegisterAuthInstancePage(context,
-            instanceBaseUrl: Uri.parse('https://fedi.app'));
-      },
-    );
+  Widget buildJoinFediButton(BuildContext context) {
+    return FediGreyFilledTextButton(
+        AppLocalizations.of(context).tr("app.auth.instance.join"
+            ".action"
+            ".join_fedi"), onPressed: () {
+      goToRegisterAuthInstancePage(context,
+          instanceBaseUrl: Uri.parse('https://fedi.app'));
+    }, textColor: FediColors.darkGrey);
   }
 
   Padding buildJoinFediDescText(BuildContext context) {
@@ -81,7 +81,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
         AppLocalizations.of(context).tr("app.auth.instance.join.no_account"
             ".content"),
         style: TextStyle(
-          color: Colors.white,
+          color: FediColors.white,
         ),
         textAlign: TextAlign.center,
       ),
@@ -108,32 +108,24 @@ class JoinAuthInstanceWidget extends StatelessWidget {
           flex: 1,
           child: Padding(
             padding: EdgeInsets.only(left: 10, right: 5),
-            child: FlatButton(
-                child: Text(
-                    AppLocalizations.of(context).tr("app.auth.instance.join"
-                        ".action"
-                        ".sign_up")),
-                color: romaDarkGrayColor,
-                textColor: Colors.white,
-                onPressed: () {
-                  signUpToInstance(context);
-                }),
+            child: FediGreyFilledTextButton(
+                AppLocalizations.of(context).tr("app.auth.instance.join"
+                    ".action"
+                    ".sign_up"), onPressed: () {
+              signUpToInstance(context);
+            }, textColor: FediColors.darkGrey),
           ),
         ),
         Expanded(
           flex: 1,
           child: Padding(
             padding: EdgeInsets.only(left: 5, right: 10),
-            child: FlatButton(
-                child: Text(
-                    AppLocalizations.of(context).tr("app.auth.instance.join"
-                        ".action"
-                        ".login")),
-                color: romaDarkGrayColor,
-                textColor: Colors.white,
-                onPressed: () {
-                  logInToInstance(context);
-                }),
+            child: FediGreyFilledTextButton(
+                AppLocalizations.of(context).tr("app.auth.instance.join"
+                    ".action"
+                    ".login"), onPressed: () {
+              logInToInstance(context);
+            }, textColor: FediColors.darkGrey),
           ),
         ),
       ],

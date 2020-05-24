@@ -10,8 +10,10 @@ import 'package:flutter/widgets.dart';
 class FediGreyFilledTextButton extends FediTextButton {
   final String text;
   final VoidCallback onPressed;
+  final Color textColor;
 
-  FediGreyFilledTextButton(this.text, {@required this.onPressed});
+  FediGreyFilledTextButton(this.text,
+      {@required this.onPressed, this.textColor = FediColors.grey});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,7 @@ class FediGreyFilledTextButton extends FediTextButton {
                 style: TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w500,
-                    color: FediColors.grey),
+                    color: textColor),
               ),
             ),
           )),

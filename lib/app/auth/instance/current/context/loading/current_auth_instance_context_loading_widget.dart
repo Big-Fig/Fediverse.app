@@ -3,7 +3,7 @@ import 'package:fedi/app/account/my/action/my_account_action_list_bottom_sheet_d
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/auth/instance/current/context/loading/current_auth_instance_context_loading_bloc.dart';
 import 'package:fedi/app/auth/instance/current/context/loading/current_auth_instance_context_loading_model.dart';
-import 'package:fedi/app/theme/theme.dart';
+import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -23,7 +23,7 @@ class CurrentAuthInstanceContextLoadingWidget extends StatelessWidget {
     _logger.finest(() => "build");
 
     return Container(
-      decoration: BoxDecoration(color: romaBlueColor),
+      decoration: BoxDecoration(color: FediColors.primaryColor),
       child: StreamBuilder<CurrentAuthInstanceContextLoadingState>(
           stream: currentInstanceContextLoadingBloc.stateStream.distinct(),
           initialData: currentInstanceContextLoadingBloc.state,
