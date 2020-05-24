@@ -42,7 +42,6 @@ class FediInstanceImageDecorationWidget extends StatelessWidget {
 
   Container buildWithImageProvider(
       ImageProvider imageProvider, SafeArea child) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     return Container(
         decoration: BoxDecoration(
             image: DecorationImage(fit: BoxFit.cover, image: imageProvider)),
