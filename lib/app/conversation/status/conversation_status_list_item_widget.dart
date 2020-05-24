@@ -3,10 +3,11 @@ import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/media/attachment/media_attachments_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+
 
 const _borderRadius = Radius.circular(16.0);
 
@@ -116,9 +117,7 @@ class ConversationStatusListItemWidget extends StatelessWidget {
                   lineHeight: 1.5,
                   data: contentWithEmojis,
                   onLinkTap: (String link) async {
-                    if (await canLaunch(link)) {
-                      await launch(link);
-                    }
+                    await UrlHelper.handleUrlClick(context, link);
                   });
             } else {
               return SizedBox.shrink();

@@ -1,9 +1,9 @@
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/url/url_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class AccountNoteWidget extends StatelessWidget {
   @override
@@ -25,9 +25,7 @@ class AccountNoteWidget extends StatelessWidget {
                 fontSize: 16.0,
                 color: FediColors.darkGrey,
                 onLinkTap: (String url) async {
-                  if (await canLaunch(url)) {
-                    await launch(url);
-                  }
+                  await UrlHelper.handleUrlClick(context, url);
                 },
               ),
             );
