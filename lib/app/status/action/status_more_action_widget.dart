@@ -7,12 +7,12 @@ import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class StatusShareActionWidget extends StatelessWidget {
   @override
@@ -210,10 +210,9 @@ class StatusShareActionWidget extends StatelessWidget {
                       .tr("app.status.action.open_in_browser"))
                 ],
               ),
-              onPressed: () {
-                canLaunch(status.uri).then((result) {
-                  launch(status.uri);
-                });
+              onPressed: () async {
+                var url = status.uri;
+                await UrlHelper.handleUrlClick(context, url);
                 Navigator.of(context).pop();
               },
             ),

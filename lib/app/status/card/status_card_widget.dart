@@ -1,9 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/app/status/status_bloc.dart';
+import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+
 
 class StatusCardWidget extends StatelessWidget {
   @override
@@ -23,10 +24,9 @@ class StatusCardWidget extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.symmetric(vertical:8.0),
             child: GestureDetector(
-              onTap: () {
-                canLaunch(card.url).then((result) {
-                  launch(card.url);
-                });
+              onTap: () async {
+                var url = card.url;
+                await UrlHelper.handleUrlClick(context, url);
               },
               child: ConstrainedBox(
                 constraints: BoxConstraints(
