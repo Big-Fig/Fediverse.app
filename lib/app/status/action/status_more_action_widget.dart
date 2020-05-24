@@ -5,6 +5,7 @@ import 'package:fedi/app/conversation/start/status/post_status_start_conversatio
 import 'package:fedi/app/share/share_service.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/url/url_helper.dart';
@@ -89,231 +90,122 @@ class StatusShareActionWidget extends StatelessWidget {
     );
   }
 
-  Padding buildAccountReportAction(BuildContext context, IStatus status) {
+  Padding buildAccountReportAction(BuildContext context, IStatus status) =>
+      buildButton(AppLocalizations.of(context).tr("app.account.action.report"),
+          () async {
+        await doAsyncOperationWithDialog(
+            context: context,
+            asyncCode: () async {
+              await IAccountBloc.of(context, listen: false).report();
+            });
+
+        Navigator.of(context).pop();
+      });
+
+  Padding buildAccountBlockAction(BuildContext context, IStatus status) =>
+      buildButton(
+          AppLocalizations.of(context).tr(
+              status.account.pleromaRelationship?.blocking == true
+                  ? "app.account.action.unblock"
+                  : "app.account.action.block"), () async {
+        await doAsyncOperationWithDialog(
+            context: context,
+            asyncCode: () async {
+              await IAccountBloc.of(context, listen: false).toggleBlock();
+            });
+
+        Navigator.of(context).pop();
+      });
+
+  Padding buildAccountMuteAction(BuildContext context, IStatus status) =>
+      buildButton(
+          AppLocalizations.of(context).tr(
+              status.account.pleromaRelationship?.muting == true
+                  ? "app.account.action.unmute"
+                  : "app.account.action.mute"), () async {
+        await doAsyncOperationWithDialog(
+            context: context,
+            asyncCode: () async {
+              await IAccountBloc.of(context, listen: false).toggleMute();
+            });
+
+        Navigator.of(context).pop();
+      });
+
+  Padding buildAccountFollowAction(BuildContext context, IStatus status) =>
+      buildButton(
+          AppLocalizations.of(context).tr(
+              status.account.pleromaRelationship?.following == true
+                  ? "app.account.action.unfollow"
+                  : "app.account.action.follow"), () async {
+        await doAsyncOperationWithDialog(
+            context: context,
+            asyncCode: () async {
+              await IAccountBloc.of(context, listen: false).toggleFollow();
+            });
+
+        Navigator.of(context).pop();
+      });
+
+  Padding buildOpenInBrowserAction(BuildContext context, IStatus status) =>
+      buildButton(
+          AppLocalizations.of(context).tr("app.status.action.open_in_browser"),
+          () async {
+        var url = status.uri;
+        await UrlHelper.handleUrlClick(context, url);
+        Navigator.of(context).pop();
+      });
+
+  Padding buildCopyAction(BuildContext context, IStatus status) => buildButton(
+          AppLocalizations.of(context).tr("app.status.action.copy_link"),
+          () async {
+        await Clipboard.setData(ClipboardData(text: status.uri));
+        Navigator.of(context).pop();
+        await Fluttertoast.showToast(
+            msg: AppLocalizations.of(context).tr("app.status.copy_link.toast"),
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.blue,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      });
+
+  Padding buildShareAction(BuildContext context, IStatus status) =>
+      buildButton(AppLocalizations.of(context).tr("app.status.action.share"),
+          () async {
+        var appLocalizations = AppLocalizations.of(context);
+        var popupTitle = appLocalizations.tr("app.status.share.title");
+        var progressMessage =
+            appLocalizations.tr("app.status.share.progress.content");
+
+        await doAsyncOperationWithDialog(
+            context: context,
+            contentMessage: progressMessage,
+            asyncCode: () async {
+              var shareService = IShareService.of(context, listen: false);
+
+              return shareService.shareStatus(
+                  context: context, popupTitle: popupTitle, status: status);
+            });
+      });
+
+  Padding buildAccountMessageAction(BuildContext context, IStatus status) =>
+      buildButton(AppLocalizations.of(context).tr("app.account.action.message"),
+          () {
+        goToPostStatusStartConversationPage(context,
+            conversationAccountsWithoutMe: <IAccount>[status.account]);
+      });
+
+  Padding buildButton(String title, onPressed()) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: Row(
         children: <Widget>[
           Expanded(
-            child: OutlineButton(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(AppLocalizations.of(context)
-                      .tr("app.status.action.report"))
-                ],
-              ),
-              onPressed: () {
-                // todo: progress dialog
-                IAccountBloc.of(context, listen: false).report();
-                Navigator.of(context).pop();
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Padding buildAccountBlockAction(BuildContext context, IStatus status) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: OutlineButton(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  // todo: localization toggle
-                  Text(AppLocalizations.of(context)
-                      .tr("app.status.action.block"))
-                ],
-              ),
-              onPressed: () {
-                // todo: progress dialog
-                IAccountBloc.of(context, listen: false).toggleBlock();
-                Navigator.of(context).pop();
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Padding buildAccountMuteAction(BuildContext context, IStatus status) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: OutlineButton(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  // todo: localization toggle
-                  Text(
-                      AppLocalizations.of(context).tr("app.status.action.mute"))
-                ],
-              ),
-              onPressed: () {
-                // todo: progress dialog
-                IAccountBloc.of(context, listen: false).toggleMute();
-                Navigator.of(context).pop();
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Padding buildAccountFollowAction(BuildContext context, IStatus status) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: OutlineButton(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  // todo: localization toggle
-                  Text(AppLocalizations.of(context)
-                      .tr("app.status.action.follow"))
-                ],
-              ),
-              onPressed: () {
-                // todo: progress dialog
-                IAccountBloc.of(context, listen: false).toggleFollow();
-                Navigator.of(context).pop();
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Padding buildOpenInBrowserAction(BuildContext context, IStatus status) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: OutlineButton(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(AppLocalizations.of(context)
-                      .tr("app.status.action.open_in_browser"))
-                ],
-              ),
-              onPressed: () async {
-                var url = status.uri;
-                await UrlHelper.handleUrlClick(context, url);
-                Navigator.of(context).pop();
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Padding buildCopyAction(BuildContext context, IStatus status) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: OutlineButton(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(AppLocalizations.of(context)
-                      .tr("app.status.action.copy_link"))
-                ],
-              ),
-              onPressed: () {
-                Clipboard.setData(ClipboardData(text: status.uri));
-                Navigator.of(context).pop();
-                Fluttertoast.showToast(
-                    msg: AppLocalizations.of(context)
-                        .tr("app.status.copy_link.toast"),
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.CENTER,
-                    timeInSecForIosWeb: 1,
-                    backgroundColor: Colors.blue,
-                    textColor: Colors.white,
-                    fontSize: 16.0);
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Padding buildShareAction(BuildContext context, IStatus status) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: OutlineButton(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(AppLocalizations.of(context)
-                      .tr("app.status.action.share"))
-                ],
-              ),
-              onPressed: () {
-                var appLocalizations = AppLocalizations.of(context);
-                var popupTitle = appLocalizations.tr("app.status.share.title");
-                var progressMessage =
-                    appLocalizations.tr("app.status.share.progress.content");
-
-                doAsyncOperationWithDialog(
-                    context: context,
-                    contentMessage: progressMessage,
-                    asyncCode: () async {
-                      var shareService =
-                          IShareService.of(context, listen: false);
-
-                      return shareService.shareStatus(
-                          context: context,
-                          popupTitle: popupTitle,
-                          status: status);
-                    });
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Padding buildAccountMessageAction(BuildContext context, IStatus status) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: OutlineButton(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(AppLocalizations.of(context)
-                      .tr("app.account.action.message"))
-                ],
-              ),
-              onPressed: () {
-                goToPostStatusStartConversationPage(context,
-                    conversationAccountsWithoutMe: <IAccount>[status.account]);
-              },
+            child: FediPrimaryFilledTextButton(
+              title,
+              onPressed: onPressed,
             ),
           ),
         ],
