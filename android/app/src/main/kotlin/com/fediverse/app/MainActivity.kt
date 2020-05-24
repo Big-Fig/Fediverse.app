@@ -1,4 +1,4 @@
-package com.fediverse.app
+package com.fediverse.app2
 
 import android.os.Bundle
 
