@@ -44,19 +44,20 @@ class AuthInstance extends IPreferencesObject {
     this.info,
   });
 
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is AuthInstance &&
-          runtimeType == other.runtimeType &&
-          urlSchema == other.urlSchema &&
-          urlHost == other.urlHost &&
-          acct == other.acct &&
-          token == other.token &&
-          authCode == other.authCode &&
-          isPleromaInstance == other.isPleromaInstance &&
-          info == other.info &&
-          application == other.application;
+          other is AuthInstance &&
+              runtimeType == other.runtimeType &&
+              urlSchema == other.urlSchema &&
+              urlHost == other.urlHost &&
+              acct == other.acct &&
+              token == other.token &&
+              authCode == other.authCode &&
+              isPleromaInstance == other.isPleromaInstance &&
+              application == other.application &&
+              info == other.info;
 
   @override
   int get hashCode =>
@@ -66,8 +67,8 @@ class AuthInstance extends IPreferencesObject {
       token.hashCode ^
       authCode.hashCode ^
       isPleromaInstance.hashCode ^
-      info.hashCode ^
-      application.hashCode;
+      application.hashCode ^
+      info.hashCode;
 
   @override
   String toString() {

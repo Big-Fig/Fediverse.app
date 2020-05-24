@@ -98,6 +98,7 @@ class AuthInstanceChooserWidget extends StatelessWidget {
                       .tr("app.auth.instance.remove.dialog.title"),
                   onAction: () {
                     instanceChooserBloc.removeInstance(instance);
+                    Navigator.of(context).pop();
                   },
                 ).show(context);
               },
@@ -156,7 +157,7 @@ class AuthInstanceChooserWidget extends StatelessWidget {
               ],
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal:8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Icon(
                 FediIcons.check,
                 color: FediColors.primaryColorDark,
