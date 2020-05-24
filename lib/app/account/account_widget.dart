@@ -4,6 +4,7 @@ import 'package:fedi/app/account/field/account_field_grid_widget.dart';
 import 'package:fedi/app/account/info/account_info_widget.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/note/account_note_widget.dart';
+import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:flutter/material.dart';
 
 class AccountWidget extends StatelessWidget {
@@ -17,7 +18,7 @@ class AccountWidget extends StatelessWidget {
           const AccountInfoWidget(),
           if (!myAccountBloc.checkAccountIsMe(accountBloc.account))
             Container(
-              color: Colors.blue[100],
+              color: FediColors.primaryColor,
               child: const AccountActionListWidget(),
             ),
           const AccountNoteWidget(),
