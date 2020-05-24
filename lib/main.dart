@@ -187,7 +187,7 @@ class MyApp extends StatelessWidget {
       data: localizationData,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Fedi',
+        title: 'Fedi2',
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,

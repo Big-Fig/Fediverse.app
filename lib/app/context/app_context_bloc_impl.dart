@@ -31,6 +31,7 @@ import 'package:fedi/push/relay/push_relay_service_impl.dart';
 import 'package:fedi/websockets/websockets_service.dart';
 import 'package:fedi/websockets/websockets_service_impl.dart';
 import 'package:logging/logging.dart';
+import 'package:package_info/package_info.dart';
 
 var _logger = Logger("app_context_bloc_impl.dart");
 
@@ -83,8 +84,24 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     await globalProviderService
         .asyncInitAndRegister<ICurrentAuthInstanceBloc>(currentInstanceBloc);
 
-    var pushRelayService =
-        PushRelayService(pushRelayBaseUrl: "https://pushrelay3.your.org/push/");
+    String pushRelayBaseUrl;
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    // different
+    var packageName = packageInfo.packageName;
+    if (packageName ==
+        "com.fediverse"
+            ".app2") {
+      // test app2 push relay
+      pushRelayBaseUrl = "http://161.35.139.75:3000/push/";
+    } else if (packageName ==
+        "com.fediverse"
+            ".app") {
+      // production app push relay
+      pushRelayBaseUrl = "https://pushrelay3.your.org/push/";
+    } else {
+      throw "Invalid packageName $packageName";
+    }
+    var pushRelayService = PushRelayService(pushRelayBaseUrl: pushRelayBaseUrl);
     addDisposable(disposable: pushRelayService);
     await globalProviderService
         .asyncInitAndRegister<IPushRelayService>(pushRelayService);
