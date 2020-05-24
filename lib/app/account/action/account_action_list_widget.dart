@@ -4,6 +4,8 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/async/async_operation_button_builder_widget.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/conversation/start/status/post_status_start_conversation_page.dart';
+import 'package:fedi/app/ui/button/text/fedi_grey_filled_text_button.dart';
+import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -47,36 +49,25 @@ class AccountActionListWidget extends StatelessWidget {
         });
   }
 
-  OutlineButton buildMoreButton(BuildContext context, IAccountBloc accountBloc,
+  Widget buildMoreButton(BuildContext context, IAccountBloc accountBloc,
       IPleromaAccountRelationship relationship) {
-    return OutlineButton(
-      child: Row(
-        children: <Widget>[
-          Text(AppLocalizations.of(context).tr("app.account.action.more")),
-          Icon(
-            Icons.keyboard_arrow_down,
-            color: Colors.grey,
-          )
-        ],
-      ),
-      onPressed: () {
+    return FediGreyFilledTextButton(
+      AppLocalizations.of(context).tr("app.account.action.more"),
+      onPressed: () async {
         showMoreOptions(context, accountBloc, relationship);
       },
+      textColor: FediColors.darkGrey,
     );
   }
 
-  OutlineButton buildMessageButton(
-      BuildContext context, IAccountBloc accountBloc) {
-    return OutlineButton(
-      child: Row(
-        children: <Widget>[
-          Text(AppLocalizations.of(context).tr("app.account.action.message"))
-        ],
-      ),
+  Widget buildMessageButton(BuildContext context, IAccountBloc accountBloc) {
+    return FediGreyFilledTextButton(
+      AppLocalizations.of(context).tr("app.account.action.message"),
       onPressed: () async {
         goToPostStatusStartConversationPage(context,
             conversationAccountsWithoutMe: <IAccount>[accountBloc.account]);
       },
+      textColor: FediColors.darkGrey,
     );
   }
 
@@ -86,17 +77,12 @@ class AccountActionListWidget extends StatelessWidget {
       showProgressDialog: false,
       asyncButtonAction: accountBloc.toggleFollow,
       builder: (BuildContext context, VoidCallback onPressed) {
-        return OutlineButton(
-          child: Row(
-            children: <Widget>[
-              Text(relationship?.following == true
-                  ? AppLocalizations.of(context)
-                      .tr("app.account.action.unfollow")
-                  : AppLocalizations.of(context)
-                      .tr("app.account.action.follow")),
-            ],
-          ),
+        return FediGreyFilledTextButton(
+          relationship?.following == true
+              ? AppLocalizations.of(context).tr("app.account.action.unfollow")
+              : AppLocalizations.of(context).tr("app.account.action.follow"),
           onPressed: onPressed,
+          textColor: FediColors.darkGrey,
         );
       },
     );
