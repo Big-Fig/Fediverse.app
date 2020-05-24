@@ -160,7 +160,7 @@
             "title": "Join new instance"
           },
           "action": {
-            "tos": "By using Fedi you agree to our terms. Tap to review",
+            "tos": "By using Fedi you agree to our terms.\nTap to review",
             "join_fedi": "Join fedi.app",
             "login": "Login",
             "sign_up": "Sign up"
@@ -644,7 +644,10 @@
   },
   "dialog": {
     "progress": {
-      "content": "Loading..."
+      "content": "Loading...",
+      "action": {
+        "cancel": "Cancel"
+      }
     },
     "error": {
       "title": "Something wrong",

@@ -32,9 +32,9 @@ abstract class ProgressDialog extends BaseDialog {
     return Text(
         contentMessage ??
             AppLocalizations.of(context).tr("dialog.progress.content"),
-        textAlign: TextAlign.justify,
+        textAlign: TextAlign.center,
         style: TextStyle(
-            color: Colors.black, fontSize: 22.0, fontWeight: FontWeight.w700));
+            color: Colors.black, fontSize: 18.0, fontWeight: FontWeight.bold));
   }
 
   @override
@@ -46,49 +46,46 @@ abstract class ProgressDialog extends BaseDialog {
           borderRadius: BorderRadius.all(Radius.circular(10.0))),
       child: buildDialogContainer(context));
 
-  Widget buildDialogContainer(BuildContext context) => SizedBox(
-      height: 100.0,
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: SizedBox(
-                    width: 50.0,
-                    height: 50.0,
-                    child: CircularProgressIndicator(),
-                  ),
+  Widget buildDialogContainer(BuildContext context) => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: SizedBox(
+                  width: 50.0,
+                  height: 50.0,
+                  child: CircularProgressIndicator(),
                 ),
-                SizedBox(width: 10),
-                Expanded(
-                  child: buildDialogContent(context),
-                )
-              ]),
-              if (cancelable)
-                StreamBuilder<bool>(
-                    stream: isCanceledStream,
-                    initialData: isCanceled,
-                    builder: (context, snapshot) {
-                      var canceled = snapshot.data;
-                      Future<Null> Function() onPressed;
+              ),
+              buildDialogContent(context)
+            ]),
+            if (cancelable)
+              StreamBuilder<bool>(
+                  stream: isCanceledStream,
+                  initialData: isCanceled,
+                  builder: (context, snapshot) {
+                    var canceled = snapshot.data;
+                    Future<Null> Function() onPressed;
 
-                      if (!canceled) {
-                        onPressed = () async {
-                          _isCanceledSubject.add(true);
-                          await cancelableOperation.cancel();
-                          hide(context);
-                        };
-                      }
-                      return RaisedButton(
-                        onPressed: onPressed,
-                      );
-                    })
-            ],
-          ),
+                    if (!canceled) {
+                      onPressed = () async {
+                        _isCanceledSubject.add(true);
+                        await cancelableOperation.cancel();
+                        hide(context);
+                      };
+                    }
+                    return FlatButton(
+                      child: Text(AppLocalizations.of(context).tr(
+                          AppLocalizations.of(context)
+                              .tr("dialog.progress.action.cancel"))),
+                      onPressed: onPressed,
+                    );
+                  })
+          ],
         ),
-      ));
+      );
 }
