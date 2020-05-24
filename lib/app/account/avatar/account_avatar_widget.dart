@@ -30,25 +30,31 @@ class AccountAvatarWidget extends StatelessWidget {
       {@required String avatarUrl,
       @required double progressSize,
       @required double imageSize}) {
-    return CachedNetworkImage(
-      imageBuilder: (context, imageProvider) {
-        return ClipRRect(
-          borderRadius: BorderRadius.circular(imageSize / 2),
-          child:
-              Image(width: imageSize, height: imageSize, image: imageProvider),
-        );
-      },
-      imageUrl: avatarUrl,
-      placeholder: (context, url) => Center(
-        child: Container(
-          width: progressSize,
-          height: progressSize,
-          child: CircularProgressIndicator(),
+    return Container(
+      width: imageSize,
+      height: imageSize,
+      child: Center(
+        child: CachedNetworkImage(
+          imageBuilder: (context, imageProvider) {
+            return ClipRRect(
+              borderRadius: BorderRadius.circular(imageSize / 2),
+              child:
+                  Image(width: imageSize, height: imageSize, image: imageProvider),
+            );
+          },
+          imageUrl: avatarUrl,
+          placeholder: (context, url) => Center(
+            child: Container(
+              width: progressSize,
+              height: progressSize,
+              child: CircularProgressIndicator(),
+            ),
+          ),
+          errorWidget: (context, url, error) => Icon(Icons.error),
+          height: imageSize,
+          width: imageSize,
         ),
       ),
-      errorWidget: (context, url, error) => Icon(Icons.error),
-      height: imageSize,
-      width: imageSize,
     );
   }
 }
