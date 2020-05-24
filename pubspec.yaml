@@ -39,7 +39,7 @@ dependencies:
   flutter_html:
     git:
       url: https://github.com/xal/flutter_html.git
-      ref: f04785a9e250aa02a64a8bc79c4c568b1146ad83
+      ref: 0f644745261ca2b5f5057014ebe6c9299706d49e
 
   flutter_staggered_grid_view: ^0.3.0
   video_player: ^0.10.4+1

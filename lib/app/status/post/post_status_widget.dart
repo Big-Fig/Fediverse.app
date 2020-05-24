@@ -42,10 +42,7 @@ class PostStatusWidget extends StatelessWidget {
           if (displayMentions) PostStatusMentionsWidget(),
           displayAccountAvatar
               ? Row(
-                  children: <Widget>[
-                    buildAvatar(),
-                    buildMessageWidget()
-                  ],
+                  children: <Widget>[buildAvatar(), buildMessageWidget()],
                 )
               : buildMessageWidget(),
           ProxyProvider<IPostStatusBloc, IUploadMediaAttachmentGridBloc>(
@@ -83,12 +80,12 @@ class PostStatusWidget extends StatelessWidget {
 
   Widget buildAvatar() {
     return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: MyAccountAvatarWidget(
-                      imageSize: 48,
-                      progressSize: 48,
-                    ),
-                  );
+      padding: const EdgeInsets.all(8.0),
+      child: MyAccountAvatarWidget(
+        imageSize: 48,
+        progressSize: 48,
+      ),
+    );
   }
 
   Widget buildMessageWidget() => isTransparent

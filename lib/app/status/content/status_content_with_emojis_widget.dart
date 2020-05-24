@@ -24,6 +24,7 @@ class StatusContentWithEmojisWidget extends StatelessWidget {
           var contentWithEmojisEmojis = snapshot.data;
           return HtmlTextWidget(
               data: contentWithEmojisEmojis,
+              lineHeight: 1.5,
               fontSize: 16.0,
               onLinkTap: (String link) async {
                 await handleStatusContentLinkClick(
