@@ -37,6 +37,7 @@ class PushRelayService extends DisposableOwner implements IPushRelayService {
     if (Platform.isIOS) {
       endpoint += "&device=iOS";
     } else if (Platform.isAndroid) {
+      endpoint += "&device=android";
       // nothing
     } else {
       throw "Unsupported platform ${Platform.operatingSystem}";
