@@ -52,7 +52,7 @@ abstract class ProgressDialog extends BaseDialog {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Row(mainAxisAlignment: MainAxisAlignment.start, children: [
               Padding(
                 padding: const EdgeInsets.all(2.0),
                 child: SizedBox(
@@ -61,7 +61,7 @@ abstract class ProgressDialog extends BaseDialog {
                   child: CircularProgressIndicator(),
                 ),
               ),
-              buildDialogContent(context)
+              Expanded(child: buildDialogContent(context))
             ]),
             if (cancelable)
               StreamBuilder<bool>(
