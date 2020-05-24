@@ -101,13 +101,15 @@ class AccountInfoWidget extends StatelessWidget {
         });
   }
 
-  Widget buildStatisticValueWidget(String formattedValue) => FediTransparentTextButton(
-      formattedValue,
-      onPressed: () {
-        // nothing by now
-      },
-      height: null,
-    );
+  Widget buildStatisticValueWidget(String formattedValue) =>
+      FediTransparentTextButton(
+        formattedValue,
+        textSize: 14.0,
+        onPressed: () {
+          // nothing by now
+        },
+        height: null,
+      );
 
   const AccountInfoWidget();
 }

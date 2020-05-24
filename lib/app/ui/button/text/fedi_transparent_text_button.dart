@@ -7,13 +7,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 
-class FediTransparentTextButton extends  StatelessWidget implements FediTextButton {
+class FediTransparentTextButton extends StatelessWidget
+    implements FediTextButton {
   final String text;
   final VoidCallback onPressed;
   final double height;
+  final double textSize;
 
-  const FediTransparentTextButton(this.text, {@required this.onPressed, this
-      .height =  FediIconInCircleButton.defaultCircleSize});
+  const FediTransparentTextButton(this.text,
+      {@required this.onPressed,
+      this.height = FediIconInCircleButton.defaultCircleSize,
+      this.textSize = 16.0,
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +48,7 @@ class FediTransparentTextButton extends  StatelessWidget implements FediTextButt
                     text,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        fontSize: 16.0,
+                        fontSize: textSize,
                         color: FediColors.white.withOpacity(0.8)),
                   ),
                 ),
