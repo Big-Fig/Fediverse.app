@@ -3,6 +3,8 @@ import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/chooser/auth_instance_chooser_bloc.dart';
 import 'package:fedi/app/auth/instance/join/add_more/add_more_join_auth_instance_page.dart';
+import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/dialog/alert/confirm_alert_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -59,7 +61,13 @@ class AuthInstanceChooserWidget extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Icon(Icons.add),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Icon(
+                  FediIcons.plus,
+                  size: 16.0,
+                ),
+              ),
               Text(AppLocalizations.of(context)
                   .tr("app.auth.instance.chooser.action.add_account")),
             ],
@@ -77,8 +85,9 @@ class AuthInstanceChooserWidget extends StatelessWidget {
           children: <Widget>[
             IconButton(
               icon: Icon(
-                Icons.remove_circle_outline,
-                color: Colors.red,
+                FediIcons.close,
+                size: 16.0,
+                color: FediColors.darkGrey,
               ),
               onPressed: () {
                 ConfirmAlertDialog(
@@ -125,7 +134,7 @@ class AuthInstanceChooserWidget extends StatelessWidget {
                 IconButton(
                   icon: Icon(
                     Icons.exit_to_app,
-                    color: Colors.grey,
+                    color: FediColors.grey,
                   ),
                   onPressed: () {
                     var authHostBloc = AuthHostBloc.createFromContext(context,
@@ -146,9 +155,12 @@ class AuthInstanceChooserWidget extends StatelessWidget {
                 Text(instance.userAtHost),
               ],
             ),
-            Icon(
-              Icons.check_circle,
-              color: Colors.blueAccent,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal:8.0),
+              child: Icon(
+                FediIcons.check,
+                color: FediColors.primaryColorDark,
+              ),
             )
           ],
         ),
