@@ -29,6 +29,10 @@ abstract class IStatusBloc implements Disposable, ICollapsibleItem {
 
   Stream<String> get contentStream;
 
+  String get contentRawText;
+
+  Stream<String> get contentRawTextStream;
+
   String get contentWithEmojisWithoutAccount;
 
   Stream<String> get contentWithEmojisWithoutAccountStream;

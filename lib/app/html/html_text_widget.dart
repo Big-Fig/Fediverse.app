@@ -15,6 +15,8 @@ class HtmlTextWidget extends StatelessWidget {
   final FontWeight fontWeight;
   final double lineHeight;
   final Color color;
+  final int textMaxLines;
+  final TextOverflow textOverflow;
   final bool shrinkWrap;
   final bool drawNewLines;
 
@@ -25,6 +27,8 @@ class HtmlTextWidget extends StatelessWidget {
     this.lineHeight = 1.0,
     this.fontWeight = FontWeight.normal,
     this.color,
+    this.textMaxLines,
+    this.textOverflow,
     this.shrinkWrap = false,
     this.drawNewLines = true,
   });
@@ -47,29 +51,48 @@ class HtmlTextWidget extends StatelessWidget {
       },
       style: {
         "html": Style(
-          //            backgroundColor: Colors.red,
           display: shrinkWrap ? Display.INLINE : Display.BLOCK,
           padding: EdgeInsets.zero,
           margin: EdgeInsets.zero,
-//              alignment: Alignment.centerLeft,
-//              textDecoration: null,
-//              width: 0
+          textOverflow: textOverflow,
+          textMaxLines: textMaxLines,
         ),
         "body": Style(
-          //            backgroundColor: Colors.grey,
           display: shrinkWrap ? Display.INLINE : Display.BLOCK,
-//              alignment: Alignment.centerLeft,
           padding: EdgeInsets.zero,
           margin: EdgeInsets.zero,
-//              width: 0
+          textOverflow: textOverflow,
+          textMaxLines: textMaxLines,
         ),
-        "img": Style(display: Display.INLINE, width: 20, height: 20),
+        "img": Style(
+          display: Display.INLINE,
+          width: 20,
+          height: 20,
+          padding: EdgeInsets.zero,
+          margin: EdgeInsets.zero,
+        ),
         "p": Style(
-            height: lineHeight,
-            display: Display.INLINE,
-            fontSize: FontSize(fontSize),
-            fontWeight: fontWeight,
-            color: color),
+          padding: EdgeInsets.zero,
+          margin: EdgeInsets.zero,
+          height: lineHeight,
+          display: Display.INLINE,
+          fontSize: FontSize(fontSize),
+          fontWeight: fontWeight,
+          color: color,
+          textOverflow: textOverflow,
+          textMaxLines: textMaxLines,
+        ),
+        "text": Style(
+          padding: EdgeInsets.zero,
+          margin: EdgeInsets.zero,
+          height: lineHeight,
+          display: Display.INLINE,
+          fontSize: FontSize(fontSize),
+          fontWeight: fontWeight,
+          color: color,
+          textOverflow: textOverflow,
+          textMaxLines: textMaxLines,
+        ),
       },
       onImageError: (exception, stackTrace) {
         _logger.warning(() => "onImageError", exception, stackTrace);
