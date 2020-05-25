@@ -59,5 +59,6 @@ abstract class IChatRepository
 
   Future markAsRead({@required IChat chat});
 
-  Future incrementUnreadCount({@required String chatRemoteId});
+  Future incrementUnreadCount(
+      {@required String chatRemoteId, @required DateTime updatedAt});
 }

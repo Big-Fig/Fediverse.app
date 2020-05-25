@@ -10,6 +10,8 @@ import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/context/current_auth_instance_context_bloc.dart';
+import 'package:fedi/app/chat/chat_new_messages_handler_bloc.dart';
+import 'package:fedi/app/chat/chat_new_messages_handler_bloc_impl.dart';
 import 'package:fedi/app/chat/current/current_chat_bloc.dart';
 import 'package:fedi/app/chat/current/current_chat_bloc_impl.dart';
 import 'package:fedi/app/chat/message/repository/chat_message_repository.dart';
@@ -236,7 +238,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService
         .asyncInitAndRegister<IPleromaChatService>(pleromaChatService);
     addDisposable(disposable: pleromaChatService);
-    
+
     var pleromaInstanceService =
         PleromaInstanceService(restService: pleromaAuthRestService);
     await globalProviderService
@@ -316,14 +318,22 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
 
     addDisposable(disposable: currentChatBloc);
 
+    var chatNewMessagesHandlerBloc = ChatNewMessagesHandlerBloc(
+        chatRepository: chatRepository,
+        currentChatBloc: currentChatBloc,
+        pleromaChatService: pleromaChatService);
+
+    addDisposable(disposable: chatNewMessagesHandlerBloc);
+
+    await globalProviderService.asyncInitAndRegister<
+        IChatNewMessagesHandlerBloc>(chatNewMessagesHandlerBloc);
+
     var notificationPushLoaderBloc = NotificationPushLoaderBloc(
         currentInstance: currentInstance,
         pushHandlerBloc: pushHandlerBloc,
         notificationRepository: notificationRepository,
         pleromaNotificationService: pleromaNotificationService,
-        chatRepository: chatRepository,
-        currentChatBloc: currentChatBloc,
-        pleromaChatService: pleromaChatService);
+        chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc);
 
     addDisposable(disposable: notificationPushLoaderBloc);
 

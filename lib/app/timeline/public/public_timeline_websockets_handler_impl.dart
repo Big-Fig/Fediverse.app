@@ -1,3 +1,4 @@
+import 'package:fedi/app/chat/chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/conversation/repository/conversation_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
@@ -11,12 +12,14 @@ class PublicTimelineWebSocketsHandler extends WebSocketsChannelHandler {
     @required IStatusRepository statusRepository,
     @required INotificationRepository notificationRepository,
     @required IConversationRepository conversationRepository,
+    @required IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
   }) : super(
           webSocketsChannel: pleromaWebSocketsService.getPublicChannel(
               local: false, onlyMedia: false),
           statusRepository: statusRepository,
           notificationRepository: notificationRepository,
           conversationRepository: conversationRepository,
+          chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
         );
 
   static PublicTimelineWebSocketsHandler createFromContext(
@@ -29,6 +32,8 @@ class PublicTimelineWebSocketsHandler extends WebSocketsChannelHandler {
         conversationRepository:
             IConversationRepository.of(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
+        chatNewMessagesHandlerBloc:
+            IChatNewMessagesHandlerBloc.of(context, listen: false),
       );
 
   @override

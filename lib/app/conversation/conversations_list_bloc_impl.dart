@@ -1,4 +1,5 @@
 import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
+import 'package:fedi/app/chat/chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/conversation/conversation_model.dart';
 import 'package:fedi/app/conversation/conversations_list_bloc.dart';
 import 'package:fedi/app/conversation/list/cached/conversation_cached_list_service.dart';
@@ -36,6 +37,7 @@ class ConversationsListBloc extends DisposableOwner
   final IStatusRepository statusRepository;
   final IConversationRepository conversationRepository;
   final IPleromaWebSocketsService pleromaWebSocketsService;
+  final IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
 
   ConversationsListBloc({
     @required IPleromaConversationService pleromaConversationService,
@@ -44,6 +46,7 @@ class ConversationsListBloc extends DisposableOwner
     @required this.conversationRepository,
     @required this.pleromaWebSocketsService,
     @required bool listenWebSocketsChanges,
+    @required this.chatNewMessagesHandlerBloc,
   }) {
     _logger.finest(() => "constructor");
     conversationListService = ConversationCachedListService(
@@ -65,26 +68,30 @@ class ConversationsListBloc extends DisposableOwner
     if (listenWebSocketsChanges) {
       addDisposable(
           disposable: MyAccountConversationsWebSocketsHandler(
-              notificationRepository: notificationRepository,
-              conversationRepository: conversationRepository,
-              statusRepository: statusRepository,
-              pleromaWebSocketsService: pleromaWebSocketsService));
+        notificationRepository: notificationRepository,
+        conversationRepository: conversationRepository,
+        statusRepository: statusRepository,
+        pleromaWebSocketsService: pleromaWebSocketsService,
+        chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+      ));
     }
   }
 
-  static ConversationsListBloc createFromContext(BuildContext context) =>
+  static ConversationsListBloc createFromContext(
+          BuildContext context) =>
       ConversationsListBloc(
-        pleromaConversationService:
-            IPleromaConversationService.of(context, listen: false),
-        conversationRepository:
-            IConversationRepository.of(context, listen: false),
-        notificationRepository:
-            INotificationRepository.of(context, listen: false),
-        statusRepository: IStatusRepository.of(context, listen: false),
-        pleromaWebSocketsService:
-            IPleromaWebSocketsService.of(context, listen: false),
-        listenWebSocketsChanges:
-            IMyAccountSettingsBloc.of(context, listen: false)
-                .isRealtimeWebSocketsEnabled,
-      );
+          pleromaConversationService:
+              IPleromaConversationService.of(context, listen: false),
+          conversationRepository:
+              IConversationRepository.of(context, listen: false),
+          notificationRepository:
+              INotificationRepository.of(context, listen: false),
+          statusRepository: IStatusRepository.of(context, listen: false),
+          pleromaWebSocketsService:
+              IPleromaWebSocketsService.of(context, listen: false),
+          listenWebSocketsChanges:
+              IMyAccountSettingsBloc.of(context, listen: false)
+                  .isRealtimeWebSocketsEnabled,
+          chatNewMessagesHandlerBloc:
+              IChatNewMessagesHandlerBloc.of(context, listen: false));
 }

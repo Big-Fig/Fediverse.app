@@ -1,6 +1,7 @@
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/chat/chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/conversation/repository/conversation_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
@@ -29,6 +30,7 @@ class HomeTimelineTabBloc extends TimelineTabBloc
   final ITimelineLocalPreferencesBloc timelineLocalPreferencesBloc;
   final IMyAccountBloc myAccountBloc;
   final IPleromaWebSocketsService pleromaWebSocketsService;
+  final IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
 
   HomeTimelineTabBloc(
       {@required this.pleromaTimelineService,
@@ -41,6 +43,7 @@ class HomeTimelineTabBloc extends TimelineTabBloc
       @required this.myAccountBloc,
       @required this.timelineLocalPreferencesBloc,
       @required this.pleromaWebSocketsService,
+      @required this.chatNewMessagesHandlerBloc,
       @required bool listenWebSocketsChanges})
       : super(tab: TimelineTab.home) {
     if (listenWebSocketsChanges) {
@@ -50,6 +53,7 @@ class HomeTimelineTabBloc extends TimelineTabBloc
         statusRepository: statusRepository,
         conversationRepository: conversationRepository,
         notificationRepository: notificationRepository,
+        chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
       ));
     }
   }

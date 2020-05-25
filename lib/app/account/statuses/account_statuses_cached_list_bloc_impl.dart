@@ -1,6 +1,7 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/account/websockets/account_websockets_handler_impl.dart';
+import 'package:fedi/app/chat/chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/conversation/repository/conversation_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
@@ -24,15 +25,16 @@ class AccountStatusesCachedListBloc extends IStatusCachedListBloc {
   final IConversationRepository conversationRepository;
   final IPleromaWebSocketsService pleromaWebSocketsService;
 
-  AccountStatusesCachedListBloc(
-      {@required this.account,
-      @required this.pleromaAccountService,
-      @required this.statusRepository,
-      @required this.notificationRepository,
-      @required this.conversationRepository,
-      @required this.pleromaWebSocketsService,
-      @required bool listenWebSocketsChanges})
-      : super() {
+  AccountStatusesCachedListBloc({
+    @required this.account,
+    @required this.pleromaAccountService,
+    @required this.statusRepository,
+    @required this.notificationRepository,
+    @required this.conversationRepository,
+    @required this.pleromaWebSocketsService,
+    @required bool listenWebSocketsChanges,
+    @required IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
+  }) : super() {
     if (listenWebSocketsChanges) {
       addDisposable(
           disposable: AccountWebSocketsHandler(
@@ -40,7 +42,8 @@ class AccountStatusesCachedListBloc extends IStatusCachedListBloc {
               accountId: account.remoteId,
               notificationRepository: notificationRepository,
               conversationRepository: conversationRepository,
-              pleromaWebSocketsService: pleromaWebSocketsService));
+              pleromaWebSocketsService: pleromaWebSocketsService,
+              chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc));
     }
   }
 
@@ -50,19 +53,20 @@ class AccountStatusesCachedListBloc extends IStatusCachedListBloc {
   static AccountStatusesCachedListBloc createFromContext(BuildContext context,
       {@required IAccount account}) {
     return AccountStatusesCachedListBloc(
-        account: account,
-        pleromaAccountService:
-            IPleromaAccountService.of(context, listen: false),
-        statusRepository: IStatusRepository.of(context, listen: false),
-        conversationRepository:
-            IConversationRepository.of(context, listen: false),
-        listenWebSocketsChanges:
-            IMyAccountSettingsBloc.of(context, listen: false)
-                .isRealtimeWebSocketsEnabled,
-        notificationRepository:
-            INotificationRepository.of(context, listen: false),
-        pleromaWebSocketsService:
-            IPleromaWebSocketsService.of(context, listen: false));
+      account: account,
+      pleromaAccountService: IPleromaAccountService.of(context, listen: false),
+      statusRepository: IStatusRepository.of(context, listen: false),
+      conversationRepository:
+          IConversationRepository.of(context, listen: false),
+      listenWebSocketsChanges: IMyAccountSettingsBloc.of(context, listen: false)
+          .isRealtimeWebSocketsEnabled,
+      notificationRepository:
+          INotificationRepository.of(context, listen: false),
+      pleromaWebSocketsService:
+          IPleromaWebSocketsService.of(context, listen: false),
+      chatNewMessagesHandlerBloc:
+          IChatNewMessagesHandlerBloc.of(context, listen: false),
+    );
   }
 
   @override
