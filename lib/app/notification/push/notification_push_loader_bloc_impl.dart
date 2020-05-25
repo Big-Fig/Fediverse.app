@@ -1,12 +1,10 @@
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
-import 'package:fedi/app/chat/current/current_chat_bloc.dart';
-import 'package:fedi/app/chat/repository/chat_repository.dart';
+import 'package:fedi/app/chat/chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_bloc.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/push/handler/push_handler_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_service.dart';
 import 'package:fedi/pleroma/push/pleroma_push_model.dart';
 import 'package:flutter/widgets.dart';
@@ -19,19 +17,16 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
   final AuthInstance currentInstance;
   final IPushHandlerBloc pushHandlerBloc;
   final IPleromaNotificationService pleromaNotificationService;
-  final IPleromaChatService pleromaChatService;
+
   final INotificationRepository notificationRepository;
-  final IChatRepository chatRepository;
-  final ICurrentChatBloc currentChatBloc;
+  final IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
 
   NotificationPushLoaderBloc({
     @required this.currentInstance,
     @required this.pushHandlerBloc,
     @required this.pleromaNotificationService,
-    @required this.pleromaChatService,
     @required this.notificationRepository,
-    @required this.chatRepository,
-    @required this.currentChatBloc,
+    @required this.chatNewMessagesHandlerBloc,
   }) {
     pushHandlerBloc.addRealTimeHandler(handlePush);
     addDisposable(disposable: CustomDisposable(() {
@@ -64,26 +59,9 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
         // Also, we should fetch chat info if chat not exist locally
         var chatMessage = remoteNotification.chatMessage;
         if (chatMessage != null) {
-          var chatId = chatMessage.chatId;
 
-          // local chat message may not exist
-          // when message is first message in new chat
-          var chat = await chatRepository.findByRemoteId(chatId);
-          if(chat == null) {
-            var remoteChat = await pleromaChatService.getChat(id: chatId);
-            await chatRepository.upsertRemoteChat(remoteChat);
-          }
+          await chatNewMessagesHandlerBloc.handleNewMessage(chatMessage);
 
-          // increase only if chat closed now
-          var isMessageForOpenedChat =
-              currentChatBloc.currentChat?.remoteId == chatId;
-          if (isMessageForOpenedChat) {
-            var updatedChat =
-                await pleromaChatService.markChatAsRead(chatId: chatId);
-            await chatRepository.upsertRemoteChat(updatedChat);
-          } else {
-            await chatRepository.incrementUnreadCount(chatRemoteId: chatId);
-          }
         }
       }
     } else {

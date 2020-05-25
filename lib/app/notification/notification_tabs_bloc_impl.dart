@@ -2,6 +2,7 @@ import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/chat/chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/conversation/repository/conversation_repository.dart';
 import 'package:fedi/app/notification/notification_tabs_bloc.dart';
 import 'package:fedi/app/notification/notification_tabs_model.dart';
@@ -52,6 +53,7 @@ class NotificationsTabsBloc extends DisposableOwner
   final IMyAccountBloc myAccountBloc;
   final ICurrentAuthInstanceBloc currentInstanceBloc;
   final IPleromaWebSocketsService pleromaWebSocketsService;
+  final IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
 
   NotificationsTabsBloc({
     @required NotificationTab startTab,
@@ -65,6 +67,7 @@ class NotificationsTabsBloc extends DisposableOwner
     @required this.currentInstanceBloc,
     @required this.pleromaWebSocketsService,
     @required bool listenWebSocketsChanges,
+    @required this.chatNewMessagesHandlerBloc,
   }) {
     selectedTabSubject = BehaviorSubject.seeded(startTab);
 
@@ -77,6 +80,7 @@ class NotificationsTabsBloc extends DisposableOwner
         statusRepository: statusRepository,
         notificationRepository: notificationRepository,
         pleromaWebSocketsService: pleromaWebSocketsService,
+        chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
       ));
     }
 
@@ -85,24 +89,25 @@ class NotificationsTabsBloc extends DisposableOwner
 
   static NotificationsTabsBloc createFromContext(BuildContext context) =>
       NotificationsTabsBloc(
-        startTab: NotificationTab.all,
-        pleromaNotificationService:
-            IPleromaNotificationService.of(context, listen: false),
-        pleromaAccountService:
-            IPleromaAccountService.of(context, listen: false),
-        statusRepository: IStatusRepository.of(context, listen: false),
-        accountRepository: IAccountRepository.of(context, listen: false),
-        myAccountBloc: IMyAccountBloc.of(context, listen: false),
-        currentInstanceBloc:
-            ICurrentAuthInstanceBloc.of(context, listen: false),
-        pleromaWebSocketsService:
-            IPleromaWebSocketsService.of(context, listen: false),
-        conversationRepository:
-            IConversationRepository.of(context, listen: false),
-        notificationRepository:
-            INotificationRepository.of(context, listen: false),
-        listenWebSocketsChanges:
-            IMyAccountSettingsBloc.of(context, listen: false)
-                .isRealtimeWebSocketsEnabled,
-      );
+          startTab: NotificationTab.all,
+          pleromaNotificationService:
+              IPleromaNotificationService.of(context, listen: false),
+          pleromaAccountService:
+              IPleromaAccountService.of(context, listen: false),
+          statusRepository: IStatusRepository.of(context, listen: false),
+          accountRepository: IAccountRepository.of(context, listen: false),
+          myAccountBloc: IMyAccountBloc.of(context, listen: false),
+          currentInstanceBloc:
+              ICurrentAuthInstanceBloc.of(context, listen: false),
+          pleromaWebSocketsService:
+              IPleromaWebSocketsService.of(context, listen: false),
+          conversationRepository:
+              IConversationRepository.of(context, listen: false),
+          notificationRepository:
+              INotificationRepository.of(context, listen: false),
+          listenWebSocketsChanges:
+              IMyAccountSettingsBloc.of(context, listen: false)
+                  .isRealtimeWebSocketsEnabled,
+          chatNewMessagesHandlerBloc:
+              IChatNewMessagesHandlerBloc.of(context, listen: false));
 }

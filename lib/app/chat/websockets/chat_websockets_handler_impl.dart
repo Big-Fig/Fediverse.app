@@ -3,29 +3,27 @@ import 'package:fedi/app/conversation/repository/conversation_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/websockets/web_sockets_handler_impl.dart';
-import 'package:fedi/pleroma/websockets/pleroma_websockets_model.dart';
 import 'package:fedi/pleroma/websockets/pleroma_websockets_service.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 
-class HomeTimelineWebSocketsHandler extends WebSocketsChannelHandler {
-  HomeTimelineWebSocketsHandler({
+class ChatWebSocketsHandler extends WebSocketsChannelHandler {
+  ChatWebSocketsHandler({
     @required IPleromaWebSocketsService pleromaWebSocketsService,
     @required IStatusRepository statusRepository,
     @required INotificationRepository notificationRepository,
     @required IConversationRepository conversationRepository,
     @required IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
   }) : super(
-            webSocketsChannel: pleromaWebSocketsService.getMyAccountChannel(
-                notification: false),
-            statusRepository: statusRepository,
-            notificationRepository: notificationRepository,
-            conversationRepository: conversationRepository,
-      chatNewMessagesHandlerBloc:chatNewMessagesHandlerBloc,
-            isFromHomeTimeline: true);
+          webSocketsChannel:
+              pleromaWebSocketsService.getMyAccountChannel(notification: true),
+          statusRepository: statusRepository,
+          notificationRepository: notificationRepository,
+          conversationRepository: conversationRepository,
+          chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+        );
 
-  static HomeTimelineWebSocketsHandler createFromContext(
-          BuildContext context) =>
-      HomeTimelineWebSocketsHandler(
+  static ChatWebSocketsHandler createFromContext(BuildContext context) =>
+      ChatWebSocketsHandler(
         pleromaWebSocketsService:
             IPleromaWebSocketsService.of(context, listen: false),
         notificationRepository:
@@ -37,17 +35,5 @@ class HomeTimelineWebSocketsHandler extends WebSocketsChannelHandler {
       );
 
   @override
-  Future handleEvent(PleromaWebSocketsEvent event) async {
-
-    // todo: remove hack
-    // it is for isHomeTimeline flag
-    // other websockets handle can handle same Status and override this flag
-    // we should be sure that handler with isHomeTimeline executes after all
-    // other handlers
-    await Future.delayed(Duration(seconds: 1));
-    return super.handleEvent(event);
-  }
-
-  @override
-  String get logTag => "home_timeline_websockets_handler_impl.dart";
+  String get logTag => "my_notifications_websockets_handler_impl.dart";
 }

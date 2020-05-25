@@ -1,3 +1,4 @@
+import 'package:fedi/app/chat/chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/conversation/repository/conversation_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
@@ -18,6 +19,7 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
   final IStatusRepository statusRepository;
   final INotificationRepository notificationRepository;
   final IConversationRepository conversationRepository;
+  final IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
 
   final String statusListRemoteId;
   final String statusConversationRemoteId;
@@ -28,11 +30,11 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
     @required this.statusRepository,
     @required this.conversationRepository,
     @required this.notificationRepository,
+    @required this.chatNewMessagesHandlerBloc,
     this.statusListRemoteId,
     this.statusConversationRemoteId,
     this.isFromHomeTimeline,
   }) {
-
     _logger = Logger(logTag);
     addDisposable(streamSubscription:
         webSocketsChannel.eventsStream.listen((event) async {
@@ -51,9 +53,13 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
             conversationRemoteId: statusConversationRemoteId);
         break;
       case PleromaWebSocketsEventType.notification:
-        await notificationRepository.upsertRemoteNotification(
-            event.parsePayloadAsNotification(),
+        var notification = event.parsePayloadAsNotification();
+        await notificationRepository.upsertRemoteNotification(notification,
             unread: true);
+        var chatMessage = notification.chatMessage;
+        if (chatMessage != null) {
+          await chatNewMessagesHandlerBloc.handleNewMessage(chatMessage);
+        }
         break;
       case PleromaWebSocketsEventType.delete:
         // TODO: implement remote id

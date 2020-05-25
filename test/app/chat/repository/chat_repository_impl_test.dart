@@ -491,7 +491,8 @@ void main() {
         (await createTestDbChat(seed: "seed3"))
             .copyWith(remoteId: "remoteId3", unread: 1));
 
-    await chatRepository.incrementUnreadCount(chatRemoteId: chat2.remoteId);
+    await chatRepository.incrementUnreadCount(
+        chatRemoteId: chat2.remoteId, updatedAt: DateTime.now());
 
     expect((await chatRepository.findByRemoteId(chat2.remoteId)).unread, 2);
     expect((await chatRepository.findByRemoteId(chat3.remoteId)).unread, 1);
@@ -538,11 +539,13 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
     expect(await chatRepository.getTotalUnreadCount(), 1);
     expect(listened, 1);
-    await chatRepository.incrementUnreadCount(chatRemoteId: chat2.remoteId);
+    await chatRepository.incrementUnreadCount(
+        chatRemoteId: chat2.remoteId, updatedAt: DateTime.now());
     await Future.delayed(Duration(milliseconds: 1));
     expect(await chatRepository.getTotalUnreadCount(), 2);
     expect(listened, 2);
-    await chatRepository.incrementUnreadCount(chatRemoteId: chat3.remoteId);
+    await chatRepository.incrementUnreadCount(
+        chatRemoteId: chat3.remoteId, updatedAt: DateTime.now());
     await Future.delayed(Duration(milliseconds: 1));
     expect(await chatRepository.getTotalUnreadCount(), 3);
     expect(listened, 3);

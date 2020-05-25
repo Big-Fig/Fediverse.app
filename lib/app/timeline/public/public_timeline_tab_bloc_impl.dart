@@ -1,4 +1,5 @@
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/chat/chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/conversation/repository/conversation_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
@@ -22,6 +23,7 @@ class PublicTimelineTabBloc extends TimelineTabBloc
   final ICurrentAuthInstanceBloc currentInstanceBloc;
   final ITimelineLocalPreferencesBloc timelineLocalPreferencesBloc;
   final IPleromaWebSocketsService pleromaWebSocketsService;
+  final IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
 
   PublicTimelineTabBloc(
       {@required this.pleromaTimelineService,
@@ -31,6 +33,7 @@ class PublicTimelineTabBloc extends TimelineTabBloc
       @required this.timelineLocalPreferencesBloc,
       @required this.currentInstanceBloc,
       @required this.pleromaWebSocketsService,
+      @required this.chatNewMessagesHandlerBloc,
       @required bool listenWebSocketsChanges})
       : super(tab: TimelineTab.public) {
     addDisposable(
@@ -51,10 +54,12 @@ class PublicTimelineTabBloc extends TimelineTabBloc
     if (listenWebSocketsChanges) {
       addDisposable(
           disposable: PublicTimelineWebSocketsHandler(
-              pleromaWebSocketsService: pleromaWebSocketsService,
-              statusRepository: statusRepository,
-              conversationRepository: conversationRepository,
-              notificationRepository: notificationRepository));
+        pleromaWebSocketsService: pleromaWebSocketsService,
+        statusRepository: statusRepository,
+        conversationRepository: conversationRepository,
+        notificationRepository: notificationRepository,
+        chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+      ));
     }
   }
 
