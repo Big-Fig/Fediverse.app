@@ -106,7 +106,14 @@ class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
 
   @override
   Stream<List<IAccount>> get accountsStream =>
-      chatStream.map((chat) => accounts);
+      chatStream.map((chat) => chat.accounts);
+
+  @override
+  DateTime get updatedAt => chat.updatedAt;
+
+  @override
+  Stream<DateTime> get updatedAtStream =>
+      chatStream.map((chat) => chat.updatedAt);
 
   @override
   IChat get chat => _chatSubject.value;
