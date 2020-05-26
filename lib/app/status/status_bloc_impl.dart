@@ -52,11 +52,13 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   bool get isPossibleToCollapse => _isContentTooBig(status.content);
 
   bool _isContentTooBig(String content) =>
-      (content?.length ?? 0) > minimumCharactersLimitToCollapse;
+      (HtmlTextHelper.extractRawStringFromHtmlString(content)?.length ?? 0) >
+      minimumCharactersLimitToCollapse;
 
   @override
   Stream<bool> get isPossibleToCollapseStream =>
-      statusStream.map((status) => _isContentTooBig(status.content));
+      statusStream.map((status) => _isContentTooBig(
+          HtmlTextHelper.extractRawStringFromHtmlString(status.content)));
 
   @override
   bool get isCollapsed => _isCollapsedSubject.value;
@@ -108,8 +110,9 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
     @required this.statusRepository,
     @required this.accountRepository,
     @required
-        IStatus
-            status, // for better performance we don't update account too often
+        IStatus status,
+    // for better performance we don't update account too
+    // often
     bool needRefreshFromNetworkOnInit =
         false, // todo: remove hack. Don't init when bloc quickly disposed. Help
     //  improve performance in timeline unnecessary recreations
