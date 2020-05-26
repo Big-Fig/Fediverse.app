@@ -9,4 +9,5 @@ class DbChats extends Table {
   TextColumn get remoteId => text().customConstraint("UNIQUE NOT NULL")();
   IntColumn get unread => integer()();
   DateTimeColumn get updatedAt => dateTime().nullable()();
+  TextColumn get accountRemoteId => text()();
 }

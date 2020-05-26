@@ -22,44 +22,6 @@ mixin _$ChatDaoMixin on DatabaseAccessor<AppDatabase> {
     return countAllQuery().watch();
   }
 
-  DbChat _rowToDbChat(QueryRow row) {
-    return DbChat(
-      id: row.readInt('id'),
-      remoteId: row.readString('remote_id'),
-      unread: row.readInt('unread'),
-      updatedAt: row.readDateTime('updated_at'),
-    );
-  }
-
-  Selectable<DbChat> findByIdQuery(int id) {
-    return customSelectQuery('SELECT * FROM db_chats WHERE id = :id;',
-        variables: [Variable.withInt(id)],
-        readsFrom: {dbChats}).map(_rowToDbChat);
-  }
-
-  Future<List<DbChat>> findById(int id) {
-    return findByIdQuery(id).get();
-  }
-
-  Stream<List<DbChat>> watchFindById(int id) {
-    return findByIdQuery(id).watch();
-  }
-
-  Selectable<DbChat> findByRemoteIdQuery(String remoteId) {
-    return customSelectQuery(
-        'SELECT * FROM db_chats WHERE remote_id LIKE :remoteId;',
-        variables: [Variable.withString(remoteId)],
-        readsFrom: {dbChats}).map(_rowToDbChat);
-  }
-
-  Future<List<DbChat>> findByRemoteId(String remoteId) {
-    return findByRemoteIdQuery(remoteId).get();
-  }
-
-  Stream<List<DbChat>> watchFindByRemoteId(String remoteId) {
-    return findByRemoteIdQuery(remoteId).watch();
-  }
-
   Selectable<int> countByIdQuery(int id) {
     return customSelectQuery('SELECT COUNT(*) FROM db_chats WHERE id = :id;',
         variables: [Variable.withInt(id)],
@@ -87,6 +49,16 @@ mixin _$ChatDaoMixin on DatabaseAccessor<AppDatabase> {
       'DELETE FROM db_chats',
       variables: [],
       updates: {dbChats},
+    );
+  }
+
+  DbChat _rowToDbChat(QueryRow row) {
+    return DbChat(
+      id: row.readInt('id'),
+      remoteId: row.readString('remote_id'),
+      unread: row.readInt('unread'),
+      updatedAt: row.readDateTime('updated_at'),
+      accountRemoteId: row.readString('account_remote_id'),
     );
   }
 

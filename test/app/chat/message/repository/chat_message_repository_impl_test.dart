@@ -205,9 +205,7 @@ void main() {
   test('createQuery newerThanChatMessage', () async {
     var query = chatMessageRepository.createQuery(
       newerThanChatMessage: await createTestChatMessage(
-          seed: "remoteId5",
-          remoteId: "remoteId5",
-          createdAt: DateTime(2005)),
+          seed: "remoteId5", remoteId: "remoteId5", createdAt: DateTime(2005)),
       limit: null,
       offset: null,
       orderingTermData: ChatMessageOrderingTermData(
@@ -457,11 +455,14 @@ void main() {
   test('createQuery onlyInChat', () async {
     var chatRemoteId = "chatRemoteId";
     var query = chatMessageRepository.createQuery(
-      onlyInChat: DbChatWrapper(DbChat(
-          remoteId: chatRemoteId,
-          unread: 0,
-          id: null,
-          updatedAt: DateTime.now())),
+      onlyInChat: DbChatPopulatedWrapper(DbChatPopulated(
+          dbChat: DbChat(
+              remoteId: chatRemoteId,
+              unread: 0,
+              id: null,
+              updatedAt: DateTime.now(),
+              accountRemoteId: dbAccount.remoteId),
+          dbAccount: dbAccount)),
       newerThanChatMessage: null,
       limit: null,
       offset: null,

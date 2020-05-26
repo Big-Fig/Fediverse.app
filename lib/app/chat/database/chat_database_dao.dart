@@ -1,3 +1,4 @@
+import 'package:fedi/app/chat/chat_model.dart';
 import 'package:fedi/app/chat/database/chat_database_model.dart';
 import 'package:fedi/app/chat/repository/chat_repository_model.dart';
 import 'package:fedi/app/database/app_database.dart';
@@ -11,8 +12,6 @@ var _chatAccountsAliasId = "chatAccounts";
 @UseDao(tables: [DbChats],
     queries: {
       "countAll": "SELECT Count(*) FROM db_chats;",
-      "findById": "SELECT * FROM db_chats WHERE id = :id;",
-      "findByRemoteId": "SELECT * FROM db_chats WHERE remote_id LIKE :remoteId;",
       "countById": "SELECT COUNT(*) FROM db_chats WHERE id = :id;",
       "deleteById": "DELETE FROM db_chats WHERE id = :id;",
       "clear": "DELETE FROM db_chats",
@@ -32,14 +31,53 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
     chatAccountsAlias = alias(db.dbChatAccounts, _chatAccountsAliasId);
   }
 
+  Future<List<DbChatPopulated>> findAll() async {
+    JoinedSelectStatement<Table, DataClass> chatMessageQuery = _findAll();
+
+    return typedResultListToPopulated(await chatMessageQuery.get());
+  }
+
+  Stream<List<DbChatPopulated>> watchAll() {
+    JoinedSelectStatement<Table, DataClass> chatMessageQuery = _findAll();
+
+    return chatMessageQuery.watch().map(typedResultListToPopulated);
+  }
+
+  Future<DbChatPopulated> findById(int id) async =>
+      typedResultToPopulated(await _findById(id).getSingle());
+
+  Future<DbChatPopulated> findByRemoteId(String remoteId) async =>
+      typedResultToPopulated(await _findByRemoteId(remoteId).getSingle());
+
+  Stream<DbChatPopulated> watchById(int id) =>
+      (_findById(id).watchSingle().map(typedResultToPopulated));
+
+  Stream<DbChatPopulated> watchByRemoteId(String remoteId) =>
+      (_findByRemoteId(remoteId).watchSingle().map(typedResultToPopulated));
+
+  JoinedSelectStatement<Table, DataClass> _findAll() {
+    var sqlQuery = (select(db.dbChats).join(
+      populateChatJoin(),
+    ));
+    return sqlQuery;
+  }
+
+  JoinedSelectStatement<Table, DataClass> _findById(int id) =>
+      (select(db.dbChats)..where((chatMessage) => chatMessage.id.equals(id))).join(
+          populateChatJoin());
+
+  JoinedSelectStatement<Table, DataClass> _findByRemoteId(String remoteId) =>
+      (select(db.dbChats)..where((chatMessage) => chatMessage.remoteId.like(remoteId)))
+          .join(populateChatJoin());
+
   Future<int> insert(Insertable<DbChat> entity, {InsertMode mode}) async =>
       into(db.dbChats).insert(entity, mode: mode);
 
   Future<int> upsert(Insertable<DbChat> entity) async =>
       into(db.dbChats).insert(entity, mode: InsertMode.insertOrReplace);
 
-  Future insertAll(Iterable<Insertable<DbChat>> entities,
-      InsertMode mode) async =>
+  Future insertAll(
+      Iterable<Insertable<DbChat>> entities, InsertMode mode) async =>
       await batch((batch) {
         batch.insertAll(db.dbChats, entities, mode: mode);
       });
@@ -47,13 +85,13 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
   Future<bool> replace(Insertable<DbChat> entity) async =>
       await update(db.dbChats).replace(entity);
 
-  Future<int> updateByRemoteId(String remoteId,
-      Insertable<DbChat> entity) async {
+  Future<int> updateByRemoteId(
+      String remoteId, Insertable<DbChat> entity) async {
     var localId = await findLocalIdByRemoteIdQuery(remoteId).getSingle();
 
     if (localId != null && localId >= 0) {
-      await (update(db.dbChats)
-        ..where((i) => i.id.equals(localId))).write(entity);
+      await (update(db.dbChats)..where((i) => i.id.equals(localId)))
+          .write(entity);
     } else {
       localId = await insert(entity);
     }
@@ -63,6 +101,8 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
 
   SimpleSelectStatement<$DbChatsTable, DbChat> startSelectQuery() =>
       (select(db.dbChats));
+
+
 
   SimpleSelectStatement<$DbChatsTable, DbChat> addUpdatedAtBoundsWhere(
       SimpleSelectStatement<$DbChatsTable, DbChat> query,
@@ -128,4 +168,30 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
           return OrderingTerm(
               expression: expression, mode: orderTerm.orderingMode);
         }).toList());
+
+
+  List<DbChatPopulated> typedResultListToPopulated(
+      List<TypedResult> typedResult) {
+    if (typedResult == null) {
+      return null;
+    }
+    return typedResult.map(typedResultToPopulated).toList();
+  }
+
+  DbChatPopulated typedResultToPopulated(TypedResult typedResult) {
+    if (typedResult == null) {
+      return null;
+    }
+    return DbChatPopulated(
+        dbChat: typedResult.readTable(db.dbChats),
+        dbAccount: typedResult.readTable(accountAlias));
+  }
+  List<Join<Table, DataClass>> populateChatJoin() {
+    return [
+      leftOuterJoin(
+        accountAlias,
+        accountAlias.remoteId.equalsExp(dbChats.accountRemoteId),
+      ),
+    ];
+  }
 }

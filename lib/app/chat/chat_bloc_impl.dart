@@ -19,9 +19,6 @@ class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
   // ignore: close_sinks
   final BehaviorSubject<IChatMessage> _lastMessageSubject = BehaviorSubject();
 
-  // ignore: close_sinks
-  final BehaviorSubject<List<IAccount>> _accountsSubject = BehaviorSubject();
-
   final IMyAccountBloc myAccountBloc;
   final IPleromaChatService pleromaChatService;
   final IChatRepository chatRepository;
@@ -44,7 +41,6 @@ class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
   }) : _chatSubject = BehaviorSubject.seeded(chat) {
     addDisposable(subject: _chatSubject);
     addDisposable(subject: _lastMessageSubject);
-    addDisposable(subject: _accountsSubject);
 
     if (delayInit) {
       Future.delayed(Duration(seconds: 1), () {
@@ -75,14 +71,14 @@ class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
             _lastMessageSubject.add(lastMessage);
           }
         }));
-        addDisposable(
-            streamSubscription: accountRepository
-                .watchChatAccounts(chat: chat)
-                .listen((accounts) {
-          if (accounts != null) {
-            _accountsSubject.add(accounts);
-          }
-        }));
+//        addDisposable(
+//            streamSubscription: accountRepository
+//                .watchChatAccounts(chat: chat)
+//                .listen((accounts) {
+//          if (accounts != null) {
+//            _accountsSubject.add(accounts);
+//          }
+//        }));
       }
       if (needRefreshFromNetworkOnInit) {
         refreshFromNetwork();
@@ -98,18 +94,19 @@ class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
       _lastMessageSubject.add(message);
     }
 
-    var accounts = await accountRepository.getChatAccounts(chat: chat);
-
-    if (!_accountsSubject.isClosed) {
-      _accountsSubject.add(accounts);
-    }
+//    var accounts = await accountRepository.getChatAccounts(chat: chat);
+//
+//    if (!_accountsSubject.isClosed) {
+//      _accountsSubject.add(accounts);
+//    }
   }
 
   @override
-  List<IAccount> get accounts => _accountsSubject.value;
+  List<IAccount> get accounts => chat.accounts;
 
   @override
-  Stream<List<IAccount>> get accountsStream => _accountsSubject.stream;
+  Stream<List<IAccount>> get accountsStream =>
+      chatStream.map((chat) => accounts);
 
   @override
   IChat get chat => _chatSubject.value;

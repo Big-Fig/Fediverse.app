@@ -10,40 +10,40 @@ import 'package:provider/provider.dart';
 
 abstract class IChatRepository
     implements
-        IReadIdListRepository<DbChatWrapper, int>,
+        IReadIdListRepository<DbChatPopulatedWrapper, int>,
         IWriteIdListRepository<DbChat, int>,
         Disposable {
   static IChatRepository of(BuildContext context, {bool listen = true}) =>
       Provider.of<IChatRepository>(context, listen: listen);
 
-  Future<DbChatWrapper> findByRemoteId(String remoteId);
+  Future<DbChatPopulatedWrapper> findByRemoteId(String remoteId);
 
   Future upsertRemoteChats(List<IPleromaChat> remoteChats);
 
-  Stream<DbChatWrapper> watchByRemoteId(String remoteId);
+  Stream<DbChatPopulatedWrapper> watchByRemoteId(String remoteId);
 
   Future upsertRemoteChat(IPleromaChat remoteChat);
 
-  Future<List<DbChatWrapper>> getChats(
+  Future<List<DbChatPopulatedWrapper>> getChats(
       {@required IChat olderThan,
       @required IChat newerThan,
       @required int limit,
       @required int offset,
       @required ChatOrderingTermData orderingTermData});
 
-  Stream<List<DbChatWrapper>> watchChats(
+  Stream<List<DbChatPopulatedWrapper>> watchChats(
       {@required IChat olderThan,
       @required IChat newerThan,
       @required int limit,
       @required int offset,
       @required ChatOrderingTermData orderingTermData});
 
-  Future<DbChatWrapper> getChat(
+  Future<DbChatPopulatedWrapper> getChat(
       {@required IChat olderThan,
       @required IChat newerThan,
       @required ChatOrderingTermData orderingTermData});
 
-  Stream<DbChatWrapper> watchChat(
+  Stream<DbChatPopulatedWrapper> watchChat(
       {@required IChat olderThan,
       @required IChat newerThan,
       @required ChatOrderingTermData orderingTermData});
