@@ -134,6 +134,27 @@ void main() {
     await subscription.cancel();
   });
 
+  test('updatedAt', () async {
+    expect(chatBloc.updatedAt, chat.updatedAt);
+
+    var newValue = DateTime(1990);
+
+    var listenedValue;
+
+    var subscription = chatBloc.updatedAtStream.listen((newValue) {
+      listenedValue = newValue;
+    });
+    // hack to execute notify callbacks
+    await Future.delayed(Duration(milliseconds: 1));
+    expect(listenedValue, chat.updatedAt);
+
+    await _update(chat.copyWith(updatedAt: newValue), accounts: chat.accounts);
+
+    expect(chatBloc.updatedAt, newValue);
+    expect(listenedValue, newValue);
+    await subscription.cancel();
+  });
+
   test('lastChatMessage', () async {
     var chatMessage1 = await createTestChatMessage(
         seed: "chatMessage1",
