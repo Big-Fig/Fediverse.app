@@ -8,7 +8,6 @@ String addEmojiToHtmlContent(
     return null;
   }
 
-  // todo: rework with RichText
   if (emoji?.isNotEmpty != true) {
     return "<html><body><p>$content</p></body></html>";
   }
@@ -21,7 +20,6 @@ String addEmojiToHtmlContent(
     String shortcode = emoji.shortcode;
     String url = emoji.url;
 
-    // todo: displays always on new line. should be inline
     newHtmlContent = newHtmlContent.replaceAll(
         ":$shortcode:", '<img src="$url" width="20">');
   }

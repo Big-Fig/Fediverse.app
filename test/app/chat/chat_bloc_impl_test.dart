@@ -178,7 +178,7 @@ void main() {
     await subscription.cancel();
   });
 
-
+// todo: rework after backend chats with several accounts rework
   test('accounts', () async {
     var account1 = await createTestAccount(seed: "account1");
     var account2 = await createTestAccount(seed: "account2");

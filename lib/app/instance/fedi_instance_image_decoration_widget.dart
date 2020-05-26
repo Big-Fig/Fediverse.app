@@ -21,21 +21,27 @@ class FediInstanceImageDecorationWidget extends StatelessWidget {
 
     var currentInstance = currentAuthInstanceBloc.currentInstance;
     var backgroundImage = currentInstance?.info?.backgroundImage;
-//    backgroundImage = "https://dontbulling.me/images/city.jpg";
-    // todo: remove hack
-    // backgroundImage is relative path, but should be absolute
+
+    var backgroundImageAbsolutePath;
+
+    // backgroundImageAbsolutePath maybe relative path or absolute absolute
     if (backgroundImage != null) {
       var backgroundImageUri = Uri.parse(backgroundImage);
-      if (backgroundImageUri.host?.isNotEmpty != true) {
-        backgroundImage = currentInstance.url.toString() + backgroundImage;
+      var isRelative = backgroundImageUri.host?.isNotEmpty != true;
+      if (isRelative) {
+        var hostPath = currentInstance.url.toString();
+        backgroundImageAbsolutePath = hostPath + backgroundImage;
+      } else {
+        backgroundImageAbsolutePath = backgroundImage;
       }
     }
 
-    _logger.finest(() => "backgroundImage $backgroundImage");
-    if (backgroundImage?.isNotEmpty == true) {
+    _logger.finest(
+        () => "backgroundImageAbsolutePath $backgroundImageAbsolutePath");
+    if (backgroundImageAbsolutePath?.isNotEmpty == true) {
       // todo: think about unnecessary redraw performance
       return CachedNetworkImage(
-        imageUrl: backgroundImage,
+        imageUrl: backgroundImageAbsolutePath,
         errorWidget: (BuildContext context, String url, Object error) =>
             buildDefault(child),
         placeholder: (_, __) => Container(
