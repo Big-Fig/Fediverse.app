@@ -102,7 +102,6 @@ class SearchWidget extends StatelessWidget {
 
   Widget buildTabBody(
       BuildContext context, SearchTab tab, ISearchBloc searchBloc) {
-    // todo: localization
     switch (tab) {
       case SearchTab.accounts:
         return DisposableProvider<IPleromaNetworkOnlyListService<IAccount>>(
