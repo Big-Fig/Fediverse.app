@@ -178,10 +178,10 @@ void main() {
     await subscription.cancel();
   });
 
+
   test('accounts', () async {
     var account1 = await createTestAccount(seed: "account1");
     var account2 = await createTestAccount(seed: "account2");
-//    var account3 = await createTestAccount(seed: "account3");
 
     var newValue = await createTestChat(seed: "seed2", remoteId: chat.remoteId);
 
@@ -205,15 +205,51 @@ void main() {
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 
-    expectAccount(chatBloc.accounts[0], account1);
-    expectAccount(chatBloc.accounts[1], account2);
+    expectAccount(chatBloc.accounts[0], account2);
 //    expectAccount(chatBloc.accounts[2], account3);
-    expectAccount(listenedValue[0], account1);
-    expectAccount(listenedValue[1], account2);
+    expectAccount(listenedValue[0], account2);
 //    expectAccount(listenedValue[2], account3);
 
     await subscription.cancel();
   });
+
+//
+//  test('accounts', () async {
+//    var account1 = await createTestAccount(seed: "account1");
+//    var account2 = await createTestAccount(seed: "account2");
+////    var account3 = await createTestAccount(seed: "account3");
+//
+//    var newValue = await createTestChat(seed: "seed2", remoteId: chat.remoteId);
+//
+//    var listenedValue;
+//
+//    var subscription = chatBloc.accountsStream.listen((newValue) {
+//      listenedValue = newValue;
+//    });
+//
+//    await _update(newValue, accounts: [account1]);
+//    // hack to execute notify callbacks
+//    await Future.delayed(Duration(milliseconds: 1));
+//
+//    expectAccount(chatBloc.accounts[0], account1);
+//    expectAccount(listenedValue[0], account1);
+//
+//    await _update(newValue, accounts: [
+//      account2, //      account3
+//    ]);
+//
+//    // hack to execute notify callbacks
+//    await Future.delayed(Duration(milliseconds: 1));
+//
+//    expectAccount(chatBloc.accounts[0], account1);
+//    expectAccount(chatBloc.accounts[1], account2);
+////    expectAccount(chatBloc.accounts[2], account3);
+//    expectAccount(listenedValue[0], account1);
+//    expectAccount(listenedValue[1], account2);
+////    expectAccount(listenedValue[2], account3);
+//
+//    await subscription.cancel();
+//  });
 
 //  test('refreshFromNetwork', () async {
 //    expectChat(chatBloc.chat, chat);

@@ -39,6 +39,10 @@ class ChatRepository extends AsyncInitLoadingBloc implements IChatRepository {
   }
 
   @override
+  Future<DbChatPopulatedWrapper> findByRemoteId(String remoteId) async =>
+      mapDataClassToItem(await dao.findByRemoteId(remoteId));
+
+  @override
   Future upsertRemoteChat(IPleromaChat remoteChat) async {
     _logger.finer(() => "upsertRemoteChat $remoteChat");
 
@@ -73,14 +77,6 @@ class ChatRepository extends AsyncInitLoadingBloc implements IChatRepository {
   }
 
   @override
-  Future<DbChatWrapper> findByRemoteId(String remoteId) async =>
-      mapDataClassToItem(await dao.findByRemoteIdQuery(remoteId).getSingle());
-
-  @override
-  Stream<DbChatWrapper> watchByRemoteId(String remoteId) =>
-      dao.findByRemoteIdQuery(remoteId).watchSingle().map(mapDataClassToItem);
-
-  @override
   Future upsertAll(Iterable<DbChat> items) async {
     // insertOrReplace
     // if a row with the same primary or unique key already
@@ -107,27 +103,33 @@ class ChatRepository extends AsyncInitLoadingBloc implements IChatRepository {
   }
 
   @override
-  Future<DbChatWrapper> findById(int id) =>
-      dao.findByIdQuery(id).map(mapDataClassToItem).getSingle();
+  Future<DbChatPopulatedWrapper> findById(int id) async =>
+      mapDataClassToItem(await dao.findById(id));
 
   @override
-  Stream<DbChatWrapper> watchById(int id) =>
-      dao.findByIdQuery(id).map(mapDataClassToItem).watchSingle();
+  Stream<DbChatPopulatedWrapper> watchById(int id) =>
+      (dao.watchById(id)).map(mapDataClassToItem);
+
+  @override
+  Stream<DbChatPopulatedWrapper> watchByRemoteId(String remoteId) {
+    _logger.finest(() => "watchByRemoteId $remoteId");
+    return (dao.watchByRemoteId(remoteId)).map(mapDataClassToItem);
+  }
 
   @override
   Future<bool> isExistWithId(int id) =>
       dao.countByIdQuery(id).map((count) => count > 0).getSingle();
 
   @override
-  Future<List<DbChatWrapper>> getAll() =>
-      dao.getAllQuery().map(mapDataClassToItem).get();
+  Future<List<DbChatPopulatedWrapper>> getAll() async =>
+      (await dao.findAll()).map(mapDataClassToItem).toList();
 
   @override
   Future<int> countAll() => dao.countAllQuery().getSingle();
 
   @override
-  Stream<List<DbChatWrapper>> watchAll() =>
-      dao.getAllQuery().map(mapDataClassToItem).watch();
+  Stream<List<DbChatPopulatedWrapper>> watchAll() =>
+      (dao.watchAll()).map((list) => list.map(mapDataClassToItem).toList());
 
   @override
   Future<int> insert(DbChat item) => dao.insert(item);
@@ -136,21 +138,26 @@ class ChatRepository extends AsyncInitLoadingBloc implements IChatRepository {
   Future<int> upsert(DbChat item) => dao.upsert(item);
 
   @override
-  Future<bool> updateById(int id, DbChat dbChat) {
-    if (dbChat.id != id) {
-      dbChat = dbChat.copyWith(id: id);
+  Future<bool> updateById(int id, DbChat DbChat) {
+    if (DbChat.id != id) {
+      DbChat = DbChat.copyWith(id: id);
     }
-    return dao.replace(dbChat);
+    return dao.replace(DbChat);
   }
 
-  DbChatWrapper mapDataClassToItem(DbChat dataClass) {
+  DbChatPopulatedWrapper mapDataClassToItem(DbChatPopulated dataClass) {
     if (dataClass == null) {
       return null;
     }
-    return DbChatWrapper(dataClass);
+    return DbChatPopulatedWrapper(dataClass);
   }
 
-  Insertable<DbChat> mapItemToDataClass(DbChatWrapper item) => item.dbChat;
+  Insertable<DbChat> mapItemToDataClass(DbChatPopulatedWrapper item) {
+    if (item == null) {
+      return null;
+    }
+    return item.dbChatPopulated.dbChat;
+  }
 
   @override
   Future updateLocalChatByRemoteChat(
@@ -176,7 +183,7 @@ class ChatRepository extends AsyncInitLoadingBloc implements IChatRepository {
   }
 
   @override
-  Future<List<DbChatWrapper>> getChats(
+  Future<List<DbChatPopulatedWrapper>> getChats(
       {@required IChat olderThan,
       @required IChat newerThan,
       @required int limit,
@@ -189,12 +196,14 @@ class ChatRepository extends AsyncInitLoadingBloc implements IChatRepository {
         offset: offset,
         orderingTermData: orderingTermData);
 
-    var dbChats = await query.get();
-    return dbChats.map((dbChat) => mapDataClassToItem(dbChat)).toList();
+    return dao
+        .typedResultListToPopulated(await query.get())
+        .map(mapDataClassToItem)
+        .toList();
   }
 
   @override
-  Stream<List<DbChatWrapper>> watchChats(
+  Stream<List<DbChatPopulatedWrapper>> watchChats(
       {@required IChat olderThan,
       @required IChat newerThan,
       @required int limit,
@@ -208,11 +217,12 @@ class ChatRepository extends AsyncInitLoadingBloc implements IChatRepository {
       orderingTermData: orderingTermData,
     );
 
-    Stream<List<DbChat>> stream = query.watch();
+    Stream<List<DbChatPopulated>> stream =
+        query.watch().map(dao.typedResultListToPopulated);
     return stream.map((list) => list.map(mapDataClassToItem).toList());
   }
 
-  SimpleSelectStatement createQuery(
+  JoinedSelectStatement createQuery(
       {@required IChat olderThan,
       @required IChat newerThan,
       @required int limit,
@@ -238,39 +248,50 @@ class ChatRepository extends AsyncInitLoadingBloc implements IChatRepository {
       dao.orderBy(query, [orderingTermData]);
     }
 
+    var joinQuery = query.join(
+      dao.populateChatJoin(),
+    );
+
     assert(!(limit == null && offset != null));
     if (limit != null) {
-      query.limit(limit, offset: offset);
+      joinQuery.limit(limit, offset: offset);
     }
-    return query;
+    return joinQuery;
   }
 
   @override
-  Future<DbChatWrapper> getChat(
-      {@required IChat olderThan,
+  Future<DbChatPopulatedWrapper> getChat(
+      {@required IChat onlyInChat,
+      @required IChat olderThan,
       @required IChat newerThan,
       @required ChatOrderingTermData orderingTermData}) async {
-    var chats = await getChats(
+    var query = createQuery(
         olderThan: olderThan,
         newerThan: newerThan,
         orderingTermData: orderingTermData,
         limit: 1,
         offset: null);
-    return chats?.first;
+
+    return mapDataClassToItem(
+        dao.typedResultToPopulated(await query.getSingle()));
   }
 
   @override
-  Stream<DbChatWrapper> watchChat(
+  Stream<DbChatPopulatedWrapper> watchChat(
       {@required IChat olderThan,
       @required IChat newerThan,
       @required ChatOrderingTermData orderingTermData}) {
-    var chatsStream = watchChats(
+    var query = createQuery(
         olderThan: olderThan,
         newerThan: newerThan,
         orderingTermData: orderingTermData,
         limit: 1,
         offset: null);
-    return chatsStream.map((chats) => chats?.first);
+
+    Stream<DbChatPopulated> stream = query
+        .watchSingle()
+        .map((typedResult) => dao.typedResultToPopulated(typedResult));
+    return stream.map((dbChat) => mapDataClassToItem(dbChat));
   }
 
   @override
@@ -281,9 +302,8 @@ class ChatRepository extends AsyncInitLoadingBloc implements IChatRepository {
         .getSingle();
 
     if (dbChatAccount != null) {
-      return DbChatWrapper(await dao
-          .findByRemoteIdQuery(dbChatAccount.chatRemoteId)
-          .getSingle());
+      return DbChatPopulatedWrapper(
+          await dao.findByRemoteId(dbChatAccount.chatRemoteId));
     } else {
       return null;
     }
@@ -297,7 +317,8 @@ class ChatRepository extends AsyncInitLoadingBloc implements IChatRepository {
             id: chat.localId,
             remoteId: chat.remoteId,
             unread: 0,
-            updatedAt: DateTime.now()));
+            updatedAt: DateTime.now(),
+            accountRemoteId: chat.accounts.first.remoteId));
   }
 
   @override
@@ -307,6 +328,8 @@ class ChatRepository extends AsyncInitLoadingBloc implements IChatRepository {
   Stream<int> watchTotalUnreadCount() => dao.watchTotalAmountUnread();
 
   @override
-  Future incrementUnreadCount({@required String chatRemoteId, @required DateTime updatedAt}) =>
-      dao.incrementUnreadCount(chatRemoteId: chatRemoteId, updatedAt: updatedAt);
+  Future incrementUnreadCount(
+          {@required String chatRemoteId, @required DateTime updatedAt}) =>
+      dao.incrementUnreadCount(
+          chatRemoteId: chatRemoteId, updatedAt: updatedAt);
 }

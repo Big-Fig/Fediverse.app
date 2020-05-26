@@ -27,6 +27,8 @@ void main() {
   DbChatMessage dbChatMessage;
 
   DbChat dbChat;
+  DbChatPopulated dbChatPopulated;
+  IChat chat;
 
   DbAccount dbAccount;
 
@@ -45,8 +47,10 @@ void main() {
     // assign local id for further equal with data retrieved from db
     dbAccount = dbAccount.copyWith(id: accountId);
 
-    dbChat = await createTestDbChat(seed: "seed4");
+    dbChat = await createTestDbChat(seed: "seed4", dbAccount: dbAccount);
+    dbChatPopulated = DbChatPopulated(dbChat: dbChat, dbAccount: dbAccount);
 
+    chat = DbChatPopulatedWrapper(dbChatPopulated);
     dbChatMessage = await createTestDbChatMessage(
         seed: "seed3", dbAccount: dbAccount, chatRemoteId: dbChat.remoteId);
 
@@ -73,11 +77,19 @@ void main() {
   });
 
   test('upsertAll', () async {
-    var dbChat1 =
-        (await createTestDbChat(seed: "seed5")).copyWith(remoteId: "remoteId1");
+    var dbChat1 = (await createTestDbChat(
+      seed: "seed5",
+      dbAccount: dbAccount,
+    ))
+        .copyWith(
+            remoteId: "remot"
+                "eId1");
     // same remote id
-    var dbChat2 =
-        (await createTestDbChat(seed: "seed6")).copyWith(remoteId: "remoteId1");
+    var dbChat2 = (await createTestDbChat(
+      seed: "seed6",
+      dbAccount: dbAccount,
+    ))
+        .copyWith(remoteId: "remoteId1");
 
     await chatRepository.upsertAll([dbChat1]);
 
@@ -104,13 +116,13 @@ void main() {
         await chatRepository.insert(dbChat.copyWith(remoteId: "oldRemoteId"));
     assert(id != null, true);
 
-    var oldLocalChat = DbChatWrapper(dbChat.copyWith(id: id));
+    var oldLocalChat = chat.copyWith(id: id);
 
     var newRemoteId = "newRemoteId";
     var newAcct = "newAcct";
     var newContent = "newContent";
     var newRemoteChat = mapLocalChatToRemoteChat(
-        DbChatWrapper(dbChat.copyWith(id: id, remoteId: newRemoteId)),
+        chat.copyWith(id: id, remoteId: newRemoteId),
         lastChatMessage: DbChatMessagePopulatedWrapper(DbChatMessagePopulated(
             dbChatMessage: dbChatMessage.copyWith(content: newContent),
             dbAccount: dbAccount.copyWith(acct: newAcct))),
@@ -138,7 +150,7 @@ void main() {
     expect(await chatRepository.countAll(), 0);
 
     await chatRepository.upsertRemoteChat(
-      mapLocalChatToRemoteChat(DbChatWrapper(dbChat),
+      mapLocalChatToRemoteChat(DbChatPopulatedWrapper(dbChatPopulated),
           accounts: [DbAccountWrapper(dbAccount)],
           lastChatMessage:
               DbChatMessagePopulatedWrapper(dbChatMessagePopulated)),
@@ -158,7 +170,7 @@ void main() {
     // item with same id updated
 
     await chatRepository.upsertRemoteChat(
-      mapLocalChatToRemoteChat(DbChatWrapper(dbChat),
+      mapLocalChatToRemoteChat(DbChatPopulatedWrapper(dbChatPopulated),
           accounts: [DbAccountWrapper(dbAccount)],
           lastChatMessage:
               DbChatMessagePopulatedWrapper(dbChatMessagePopulated)),
@@ -177,7 +189,7 @@ void main() {
   test('upsertRemoteChates', () async {
     expect(await chatRepository.countAll(), 0);
     await chatRepository.upsertRemoteChats([
-      mapLocalChatToRemoteChat(DbChatWrapper(dbChat),
+      mapLocalChatToRemoteChat(DbChatPopulatedWrapper(dbChatPopulated),
           accounts: [DbAccountWrapper(dbAccount)],
           lastChatMessage:
               DbChatMessagePopulatedWrapper(dbChatMessagePopulated)),
@@ -195,7 +207,7 @@ void main() {
         dbChatMessage);
 
     await chatRepository.upsertRemoteChats([
-      mapLocalChatToRemoteChat(DbChatWrapper(dbChat),
+      mapLocalChatToRemoteChat(DbChatPopulatedWrapper(dbChatPopulated),
           accounts: [DbAccountWrapper(dbAccount)],
           lastChatMessage:
               DbChatMessagePopulatedWrapper(dbChatMessagePopulated)),
@@ -223,18 +235,27 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    await chatRepository
-        .insert((await createTestDbChat(seed: "seed1")).copyWith());
+    await chatRepository.insert((await createTestDbChat(
+      seed: "seed1",
+      dbAccount: dbAccount,
+    ))
+        .copyWith());
 
     expect((await query.get()).length, 1);
 
-    await chatRepository
-        .insert((await createTestDbChat(seed: "seed2")).copyWith());
+    await chatRepository.insert((await createTestDbChat(
+      seed: "seed2",
+      dbAccount: dbAccount,
+    ))
+        .copyWith());
 
     expect((await query.get()).length, 2);
 
-    await chatRepository
-        .insert((await createTestDbChat(seed: "seed3")).copyWith());
+    await chatRepository.insert((await createTestDbChat(
+      seed: "seed3",
+      dbAccount: dbAccount,
+    ))
+        .copyWith());
 
     expect((await query.get()).length, 3);
   });
@@ -256,27 +277,39 @@ void main() {
 
     await insertDbChat(
         chatRepository,
-        (await createTestDbChat(seed: "seed2"))
+        (await createTestDbChat(
+          seed: "seed2",
+          dbAccount: dbAccount,
+        ))
             .copyWith(remoteId: "remoteId4", updatedAt: DateTime(2004)));
 
     expect((await query.get()).length, 0);
 
     await insertDbChat(
         chatRepository,
-        (await createTestDbChat(seed: "seed2"))
+        (await createTestDbChat(
+          seed: "seed2",
+          dbAccount: dbAccount,
+        ))
             .copyWith(remoteId: "remoteId5", updatedAt: DateTime(2005)));
 
     expect((await query.get()).length, 0);
 
     await insertDbChat(
         chatRepository,
-        (await createTestDbChat(seed: "seed1"))
+        (await createTestDbChat(
+          seed: "seed1",
+          dbAccount: dbAccount,
+        ))
             .copyWith(remoteId: "remoteId6", updatedAt: DateTime(2006)));
 
     expect((await query.get()).length, 1);
     await insertDbChat(
         chatRepository,
-        (await createTestDbChat(seed: "seed1"))
+        (await createTestDbChat(
+          seed: "seed1",
+          dbAccount: dbAccount,
+        ))
             .copyWith(remoteId: "remoteId7", updatedAt: DateTime(2007)));
 
     expect((await query.get()).length, 2);
@@ -297,27 +330,39 @@ void main() {
 
     await insertDbChat(
         chatRepository,
-        (await createTestDbChat(seed: "seed2"))
+        (await createTestDbChat(
+          seed: "seed2",
+          dbAccount: dbAccount,
+        ))
             .copyWith(remoteId: "remoteId3", updatedAt: DateTime(2003)));
 
     expect((await query.get()).length, 1);
     await insertDbChat(
         chatRepository,
-        (await createTestDbChat(seed: "seed2"))
+        (await createTestDbChat(
+          seed: "seed2",
+          dbAccount: dbAccount,
+        ))
             .copyWith(remoteId: "remoteId4", updatedAt: DateTime(2004)));
 
     expect((await query.get()).length, 2);
 
     await insertDbChat(
         chatRepository,
-        (await createTestDbChat(seed: "seed2"))
+        (await createTestDbChat(
+          seed: "seed2",
+          dbAccount: dbAccount,
+        ))
             .copyWith(remoteId: "remoteId5", updatedAt: DateTime(2005)));
 
     expect((await query.get()).length, 2);
 
     await insertDbChat(
         chatRepository,
-        (await createTestDbChat(seed: "seed1"))
+        (await createTestDbChat(
+          seed: "seed1",
+          dbAccount: dbAccount,
+        ))
             .copyWith(remoteId: "remoteId6", updatedAt: DateTime(2006)));
 
     expect((await query.get()).length, 2);
@@ -341,41 +386,59 @@ void main() {
 
     await insertDbChat(
         chatRepository,
-        (await createTestDbChat(seed: "seed1"))
+        (await createTestDbChat(
+          seed: "seed1",
+          dbAccount: dbAccount,
+        ))
             .copyWith(remoteId: "remoteId1", updatedAt: DateTime(2001)));
 
     expect((await query.get()).length, 0);
 
     await insertDbChat(
         chatRepository,
-        (await createTestDbChat(seed: "seed2"))
+        (await createTestDbChat(
+          seed: "seed2",
+          dbAccount: dbAccount,
+        ))
             .copyWith(remoteId: "remoteId2", updatedAt: DateTime(2002)));
 
     expect((await query.get()).length, 0);
     await insertDbChat(
         chatRepository,
-        (await createTestDbChat(seed: "seed3"))
+        (await createTestDbChat(
+          seed: "seed3",
+          dbAccount: dbAccount,
+        ))
             .copyWith(remoteId: "remoteId3", updatedAt: DateTime(2003)));
 
     expect((await query.get()).length, 1);
 
     await insertDbChat(
         chatRepository,
-        (await createTestDbChat(seed: "seed4"))
+        (await createTestDbChat(
+          seed: "seed4",
+          dbAccount: dbAccount,
+        ))
             .copyWith(remoteId: "remoteId4", updatedAt: DateTime(2004)));
 
     expect((await query.get()).length, 2);
 
     await insertDbChat(
         chatRepository,
-        (await createTestDbChat(seed: "seed5"))
+        (await createTestDbChat(
+          seed: "seed5",
+          dbAccount: dbAccount,
+        ))
             .copyWith(remoteId: "remoteId5", updatedAt: DateTime(2005)));
 
     expect((await query.get()).length, 2);
 
     await insertDbChat(
         chatRepository,
-        (await createTestDbChat(seed: "seed6"))
+        (await createTestDbChat(
+          seed: "seed6",
+          dbAccount: dbAccount,
+        ))
             .copyWith(remoteId: "remoteId6", updatedAt: DateTime(2006)));
 
     expect((await query.get()).length, 2);
@@ -383,112 +446,115 @@ void main() {
 
   test('createQuery orderingTermData remoteId asc no limit', () async {
     var query = chatRepository.createQuery(
-        newerThan: null,
-        limit: null,
-        offset: null,
-        orderingTermData: ChatOrderingTermData(
-            orderByType: ChatOrderByType.remoteId,
-            orderingMode: OrderingMode.asc),
-        olderThan: null);
+      newerThan: null,
+      limit: null,
+      offset: null,
+      orderingTermData: ChatOrderingTermData(
+          orderByType: ChatOrderByType.remoteId,
+          orderingMode: OrderingMode.asc),
+      olderThan: null,
+    );
 
     var chat2 = await insertDbChat(
         chatRepository,
-        (await createTestDbChat(seed: "seed2"))
+        (await createTestDbChat(seed: "seed2", dbAccount: dbAccount))
             .copyWith(remoteId: "remoteId2"));
     var chat1 = await insertDbChat(
         chatRepository,
-        (await createTestDbChat(seed: "seed1"))
+        (await createTestDbChat(seed: "seed1", dbAccount: dbAccount))
             .copyWith(remoteId: "remoteId1"));
     var chat3 = await insertDbChat(
         chatRepository,
-        (await createTestDbChat(seed: "seed3"))
+        (await createTestDbChat(seed: "seed3", dbAccount: dbAccount))
             .copyWith(remoteId: "remoteId3"));
 
-    var dbChats = await query.get();
-    var actualList = dbChats
-        .map((dbChat) => chatRepository.mapDataClassToItem(dbChat))
-        .toList();
+    List<DbChatPopulated> actualList =
+        (await query.map(chatRepository.dao.typedResultToPopulated).get());
     expect(actualList.length, 3);
 
-    expectDbChat(actualList[0], chat1);
-    expectDbChat(actualList[1], chat2);
-    expectDbChat(actualList[2], chat3);
+    expect(actualList[0].dbChat, chat1);
+    expect(actualList[1].dbChat, chat2);
+    expect(actualList[2].dbChat, chat3);
   });
 
   test('createQuery orderingTermData remoteId desc no limit', () async {
     var query = chatRepository.createQuery(
-        newerThan: null,
-        limit: null,
-        offset: null,
-        orderingTermData: ChatOrderingTermData(
-            orderByType: ChatOrderByType.remoteId,
-            orderingMode: OrderingMode.desc),
-        olderThan: null);
+      newerThan: null,
+      limit: null,
+      offset: null,
+      orderingTermData: ChatOrderingTermData(
+          orderByType: ChatOrderByType.remoteId,
+          orderingMode: OrderingMode.desc),
+      olderThan: null,
+    );
 
     var chat2 = await insertDbChat(
         chatRepository,
-        (await createTestDbChat(seed: "seed2"))
+        (await createTestDbChat(seed: "seed2", dbAccount: dbAccount))
             .copyWith(remoteId: "remoteId2"));
     var chat1 = await insertDbChat(
         chatRepository,
-        (await createTestDbChat(seed: "seed1"))
+        (await createTestDbChat(seed: "seed1", dbAccount: dbAccount))
             .copyWith(remoteId: "remoteId1"));
     var chat3 = await insertDbChat(
         chatRepository,
-        (await createTestDbChat(seed: "seed3"))
+        (await createTestDbChat(seed: "seed3", dbAccount: dbAccount))
             .copyWith(remoteId: "remoteId3"));
 
-    var dbChats = await query.get();
-    var actualList = dbChats
-        .map((dbChat) => chatRepository.mapDataClassToItem(dbChat))
-        .toList();
+    List<DbChatPopulated> actualList =
+        (await query.map(chatRepository.dao.typedResultToPopulated).get());
     expect(actualList.length, 3);
 
-    expectDbChat(actualList[0], chat3);
-    expectDbChat(actualList[1], chat2);
-    expectDbChat(actualList[2], chat1);
+    expect(actualList[0].dbChat, chat3);
+    expect(actualList[1].dbChat, chat2);
+    expect(actualList[2].dbChat, chat1);
   });
 
   test('createQuery orderingTermData remoteId desc & limit & offset', () async {
     var query = chatRepository.createQuery(
-        newerThan: null,
-        limit: 1,
-        offset: 1,
-        orderingTermData: ChatOrderingTermData(
-            orderByType: ChatOrderByType.remoteId,
-            orderingMode: OrderingMode.desc),
-        olderThan: null);
+      newerThan: null,
+      limit: 1,
+      offset: 1,
+      orderingTermData: ChatOrderingTermData(
+          orderByType: ChatOrderByType.remoteId,
+          orderingMode: OrderingMode.desc),
+      olderThan: null,
+    );
 
     var chat2 = await insertDbChat(
         chatRepository,
-        (await createTestDbChat(seed: "seed2"))
+        (await createTestDbChat(seed: "seed2", dbAccount: dbAccount))
             .copyWith(remoteId: "remoteId2"));
     await insertDbChat(
         chatRepository,
-        (await createTestDbChat(seed: "seed1"))
+        (await createTestDbChat(seed: "seed1", dbAccount: dbAccount))
             .copyWith(remoteId: "remoteId1"));
     await insertDbChat(
         chatRepository,
-        (await createTestDbChat(seed: "seed3"))
+        (await createTestDbChat(seed: "seed3", dbAccount: dbAccount))
             .copyWith(remoteId: "remoteId3"));
 
-    var dbChats = await query.get();
-    var actualList = dbChats
-        .map((dbChat) => chatRepository.mapDataClassToItem(dbChat))
-        .toList();
+    List<DbChatPopulated> actualList =
+        (await query.map(chatRepository.dao.typedResultToPopulated).get());
     expect(actualList.length, 1);
 
-    expectDbChat(actualList[0], chat2);
+    expect(actualList[0].dbChat, chat2);
   });
 
   test('incrementUnreadCount', () async {
     var chat2 = await insertDbChat(
         chatRepository,
-        (await createTestDbChat(seed: "seed2"))
+        (await createTestDbChat(
+          seed: "seed2",
+          dbAccount: dbAccount,
+        ))
             .copyWith(remoteId: "remoteId2", unread: 1));
     var chat3 = await insertDbChat(
         chatRepository,
-        (await createTestDbChat(seed: "seed3"))
+        (await createTestDbChat(
+          seed: "seed3",
+          dbAccount: dbAccount,
+        ))
             .copyWith(remoteId: "remoteId3", unread: 1));
 
     await chatRepository.incrementUnreadCount(
@@ -501,14 +567,25 @@ void main() {
   test('incrementUnreadCount', () async {
     var chat2 = await insertDbChat(
         chatRepository,
-        (await createTestDbChat(seed: "seed2"))
+        (await createTestDbChat(
+          seed: "seed2",
+          dbAccount: dbAccount,
+        ))
             .copyWith(remoteId: "remoteId2", unread: 1));
     var chat3 = await insertDbChat(
         chatRepository,
-        (await createTestDbChat(seed: "seed3"))
+        (await createTestDbChat(
+          seed: "seed3",
+          dbAccount: dbAccount,
+        ))
             .copyWith(remoteId: "remoteId3", unread: 1));
 
-    await chatRepository.markAsRead(chat: DbChatWrapper(chat2));
+    await chatRepository.markAsRead(
+      chat: DbChatPopulatedWrapper(DbChatPopulated(
+        dbChat: chat2,
+        dbAccount: dbAccount,
+      )),
+    );
 
     expect((await chatRepository.findByRemoteId(chat2.remoteId)).unread, 0);
     expect((await chatRepository.findByRemoteId(chat3.remoteId)).unread, 1);
@@ -524,18 +601,29 @@ void main() {
 
     var chat2 = await insertDbChat(
         chatRepository,
-        (await createTestDbChat(seed: "seed2"))
+        (await createTestDbChat(
+          seed: "seed2",
+          dbAccount: dbAccount,
+        ))
             .copyWith(remoteId: "remoteId2", unread: 1));
     var chat3 = await insertDbChat(
         chatRepository,
-        (await createTestDbChat(seed: "seed3"))
+        (await createTestDbChat(
+          seed: "seed3",
+          dbAccount: dbAccount,
+        ))
             .copyWith(remoteId: "remoteId3", unread: 1));
 
     await Future.delayed(Duration(milliseconds: 1));
     expect(await chatRepository.getTotalUnreadCount(), 2);
     expect(listened, 2);
 
-    await chatRepository.markAsRead(chat: DbChatWrapper(chat2));
+    await chatRepository.markAsRead(
+      chat: DbChatPopulatedWrapper(DbChatPopulated(
+        dbChat: chat2,
+        dbAccount: dbAccount,
+      )),
+    );
     await Future.delayed(Duration(milliseconds: 1));
     expect(await chatRepository.getTotalUnreadCount(), 1);
     expect(listened, 1);

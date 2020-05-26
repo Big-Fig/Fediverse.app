@@ -6160,11 +6160,13 @@ class DbChat extends DataClass implements Insertable<DbChat> {
   final String remoteId;
   final int unread;
   final DateTime updatedAt;
+  final String accountRemoteId;
   DbChat(
       {@required this.id,
       @required this.remoteId,
       @required this.unread,
-      this.updatedAt});
+      this.updatedAt,
+      @required this.accountRemoteId});
   factory DbChat.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -6178,6 +6180,8 @@ class DbChat extends DataClass implements Insertable<DbChat> {
       unread: intType.mapFromDatabaseResponse(data['${effectivePrefix}unread']),
       updatedAt: dateTimeType
           .mapFromDatabaseResponse(data['${effectivePrefix}updated_at']),
+      accountRemoteId: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}account_remote_id']),
     );
   }
   factory DbChat.fromJson(Map<String, dynamic> json,
@@ -6188,6 +6192,7 @@ class DbChat extends DataClass implements Insertable<DbChat> {
       remoteId: serializer.fromJson<String>(json['remoteId']),
       unread: serializer.fromJson<int>(json['unread']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      accountRemoteId: serializer.fromJson<String>(json['accountRemoteId']),
     );
   }
   @override
@@ -6198,6 +6203,7 @@ class DbChat extends DataClass implements Insertable<DbChat> {
       'remoteId': serializer.toJson<String>(remoteId),
       'unread': serializer.toJson<int>(unread),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'accountRemoteId': serializer.toJson<String>(accountRemoteId),
     };
   }
 
@@ -6213,15 +6219,24 @@ class DbChat extends DataClass implements Insertable<DbChat> {
       updatedAt: updatedAt == null && nullToAbsent
           ? const Value.absent()
           : Value(updatedAt),
+      accountRemoteId: accountRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(accountRemoteId),
     );
   }
 
-  DbChat copyWith({int id, String remoteId, int unread, DateTime updatedAt}) =>
+  DbChat copyWith(
+          {int id,
+          String remoteId,
+          int unread,
+          DateTime updatedAt,
+          String accountRemoteId}) =>
       DbChat(
         id: id ?? this.id,
         remoteId: remoteId ?? this.remoteId,
         unread: unread ?? this.unread,
         updatedAt: updatedAt ?? this.updatedAt,
+        accountRemoteId: accountRemoteId ?? this.accountRemoteId,
       );
   @override
   String toString() {
@@ -6229,14 +6244,19 @@ class DbChat extends DataClass implements Insertable<DbChat> {
           ..write('id: $id, ')
           ..write('remoteId: $remoteId, ')
           ..write('unread: $unread, ')
-          ..write('updatedAt: $updatedAt')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('accountRemoteId: $accountRemoteId')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(id.hashCode,
-      $mrjc(remoteId.hashCode, $mrjc(unread.hashCode, updatedAt.hashCode))));
+  int get hashCode => $mrjf($mrjc(
+      id.hashCode,
+      $mrjc(
+          remoteId.hashCode,
+          $mrjc(unread.hashCode,
+              $mrjc(updatedAt.hashCode, accountRemoteId.hashCode)))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -6244,7 +6264,8 @@ class DbChat extends DataClass implements Insertable<DbChat> {
           other.id == this.id &&
           other.remoteId == this.remoteId &&
           other.unread == this.unread &&
-          other.updatedAt == this.updatedAt);
+          other.updatedAt == this.updatedAt &&
+          other.accountRemoteId == this.accountRemoteId);
 }
 
 class DbChatsCompanion extends UpdateCompanion<DbChat> {
@@ -6252,29 +6273,35 @@ class DbChatsCompanion extends UpdateCompanion<DbChat> {
   final Value<String> remoteId;
   final Value<int> unread;
   final Value<DateTime> updatedAt;
+  final Value<String> accountRemoteId;
   const DbChatsCompanion({
     this.id = const Value.absent(),
     this.remoteId = const Value.absent(),
     this.unread = const Value.absent(),
     this.updatedAt = const Value.absent(),
+    this.accountRemoteId = const Value.absent(),
   });
   DbChatsCompanion.insert({
     this.id = const Value.absent(),
     @required String remoteId,
     @required int unread,
     this.updatedAt = const Value.absent(),
+    @required String accountRemoteId,
   })  : remoteId = Value(remoteId),
-        unread = Value(unread);
+        unread = Value(unread),
+        accountRemoteId = Value(accountRemoteId);
   DbChatsCompanion copyWith(
       {Value<int> id,
       Value<String> remoteId,
       Value<int> unread,
-      Value<DateTime> updatedAt}) {
+      Value<DateTime> updatedAt,
+      Value<String> accountRemoteId}) {
     return DbChatsCompanion(
       id: id ?? this.id,
       remoteId: remoteId ?? this.remoteId,
       unread: unread ?? this.unread,
       updatedAt: updatedAt ?? this.updatedAt,
+      accountRemoteId: accountRemoteId ?? this.accountRemoteId,
     );
   }
 }
@@ -6325,8 +6352,23 @@ class $DbChatsTable extends DbChats with TableInfo<$DbChatsTable, DbChat> {
     );
   }
 
+  final VerificationMeta _accountRemoteIdMeta =
+      const VerificationMeta('accountRemoteId');
+  GeneratedTextColumn _accountRemoteId;
   @override
-  List<GeneratedColumn> get $columns => [id, remoteId, unread, updatedAt];
+  GeneratedTextColumn get accountRemoteId =>
+      _accountRemoteId ??= _constructAccountRemoteId();
+  GeneratedTextColumn _constructAccountRemoteId() {
+    return GeneratedTextColumn(
+      'account_remote_id',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, remoteId, unread, updatedAt, accountRemoteId];
   @override
   $DbChatsTable get asDslTable => this;
   @override
@@ -6356,6 +6398,14 @@ class $DbChatsTable extends DbChats with TableInfo<$DbChatsTable, DbChat> {
       context.handle(_updatedAtMeta,
           updatedAt.isAcceptableValue(d.updatedAt.value, _updatedAtMeta));
     }
+    if (d.accountRemoteId.present) {
+      context.handle(
+          _accountRemoteIdMeta,
+          accountRemoteId.isAcceptableValue(
+              d.accountRemoteId.value, _accountRemoteIdMeta));
+    } else if (isInserting) {
+      context.missing(_accountRemoteIdMeta);
+    }
     return context;
   }
 
@@ -6381,6 +6431,10 @@ class $DbChatsTable extends DbChats with TableInfo<$DbChatsTable, DbChat> {
     }
     if (d.updatedAt.present) {
       map['updated_at'] = Variable<DateTime, DateTimeType>(d.updatedAt.value);
+    }
+    if (d.accountRemoteId.present) {
+      map['account_remote_id'] =
+          Variable<String, StringType>(d.accountRemoteId.value);
     }
     return map;
   }
