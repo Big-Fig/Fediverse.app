@@ -13,11 +13,12 @@ class StatusContentWithEmojisWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: true);
 
+    var useCollapsible = collapsible && statusBloc.isPossibleToCollapse;
     return StreamBuilder<String>(
-        stream: collapsible
+        stream: useCollapsible
             ? statusBloc.contentWithEmojisCollapsibleStream
             : statusBloc.contentWithEmojisStream,
-        initialData: collapsible
+        initialData: useCollapsible
             ? statusBloc.contentWithEmojisCollapsible
             : statusBloc.contentWithEmojis,
         builder: (context, snapshot) {
