@@ -38,15 +38,15 @@ class StatusEmojiReactionListItemWidget extends StatelessWidget {
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 12.0, vertical: 6.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       Text(
                         emojiReaction.name,
-                        style: TextStyle(fontSize: 16),
+                        style: TextStyle(fontSize: 16, height: 14 / 16),
                       ),
                       SizedBox(
                         width: 8,
