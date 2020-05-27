@@ -47,7 +47,7 @@ class FediInstanceImageDecorationWidget extends StatelessWidget {
         placeholder: (_, __) => Container(
           width: double.infinity,
           height: double.infinity,
-          color: FediColors.grey,
+          color: FediColors.primaryColorDark,
         ),
         imageBuilder: (BuildContext context, ImageProvider imageProvider) =>
             buildWithImageProvider(imageProvider, child),
