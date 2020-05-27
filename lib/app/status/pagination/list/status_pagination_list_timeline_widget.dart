@@ -63,7 +63,7 @@ class StatusPaginationListTimelineWidget
                   },
                   child: FediListTile(
                     isFirstInList: index == 0 && header == null,
-                    child: const StatusListItemTimelineWidget(
+                    child: StatusListItemTimelineWidget(
                       collapsible: true,
                     ),
                   )),

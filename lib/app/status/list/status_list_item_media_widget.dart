@@ -55,7 +55,7 @@ class StatusListItemMediaWidget extends StatelessWidget {
                     // todo: display all medias in list
                     return mediaAttachmentPreviewUrlWidget(previewUrl, context);
                   } else {
-                    return const StatusNsfwWarningWidget();
+                    return StatusNsfwWarningWidget();
                   }
                 });
           } else {

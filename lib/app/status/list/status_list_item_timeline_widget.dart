@@ -35,7 +35,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
   final bool displayActions;
   final bool collapsible;
 
-  const StatusListItemTimelineWidget({
+   StatusListItemTimelineWidget({
     @required this.collapsible,
     this.displayActions = true,
     this.statusCallback = goToStatusThreadPage,
