@@ -51,7 +51,7 @@ class ConversationWidget extends StatelessWidget {
                     IPaginationListBloc<PaginationPage<IStatus>, IStatus>>(
                   create: (context) => StatusPaginationListWithNewItemsBloc(
                       mergeNewItemsImmediately: true,
-                      statusCachedListService:
+                      statusCachedListBloc:
                           IStatusCachedListBloc.of(context, listen: false),
                       paginationBloc: Provider.of<
                           IPaginationBloc<PaginationPage<IStatus>,

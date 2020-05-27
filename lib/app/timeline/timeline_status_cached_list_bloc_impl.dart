@@ -23,6 +23,11 @@ abstract class TimelineStatusCachedListBloc extends DisposableOwner
   final TimelineLocalPreferencesBloc timelineLocalPreferencesBloc;
   final bool isFromHomeTimeline;
 
+  @override
+  Stream<bool> get settingsChangedStream => timelineLocalPreferencesBloc.stream
+      .distinct()
+      .map((preferences) => preferences != null);
+
   TimelineStatusCachedListBloc({
     @required this.pleromaTimelineService,
     @required this.statusRepository,

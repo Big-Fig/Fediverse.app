@@ -11,20 +11,31 @@ var _logger = Logger("status_pagination_list_with_new_items_bloc_impl.dart");
 class StatusPaginationListWithNewItemsBloc<
         TPage extends PaginationPage<IStatus>>
     extends PaginationListWithNewItemsBloc<TPage, IStatus> {
-  final IStatusCachedListBloc statusCachedListService;
+  final IStatusCachedListBloc statusCachedListBloc;
 
   StatusPaginationListWithNewItemsBloc(
       {@required bool mergeNewItemsImmediately,
-      @required this.statusCachedListService,
+      @required this.statusCachedListBloc,
       @required IPaginationBloc<TPage, IStatus> paginationBloc})
       : super(
             mergeNewItemsImmediately: mergeNewItemsImmediately,
-            paginationBloc: paginationBloc);
+            paginationBloc: paginationBloc) {
+    addDisposable(streamSubscription:
+        statusCachedListBloc.settingsChangedStream.listen((changed) async {
+      if (changed == true) {
+        if (refreshController.position != null) {
+          await refreshController.requestRefresh();
+        } else {
+          await refresh();
+        }
+      }
+    }));
+  }
 
   @override
   Stream<List<IStatus>> watchItemsNewerThanItem(IStatus item) {
     _logger.finest(() => "watchItemsNewerThanItem item = $item");
-    return statusCachedListService.watchLocalItemsNewerThanItem(item);
+    return statusCachedListBloc.watchLocalItemsNewerThanItem(item);
   }
 
   @override

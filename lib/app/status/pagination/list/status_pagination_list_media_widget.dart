@@ -24,6 +24,12 @@ class StatusPaginationListMediaWidget extends StatusPaginationListBaseWidget {
       @required Widget footer}) {
     _logger.finest(() => "buildItemsCollectionView ${items?.length}");
 
+    // todo: remove hack
+    // all statuses should be already with media attachments
+    items = items
+        .where((status) => status.mediaAttachments?.isNotEmpty == true)
+        .toList();
+
     var mediaStatuses = items;
 
     var length = mediaStatuses.length;

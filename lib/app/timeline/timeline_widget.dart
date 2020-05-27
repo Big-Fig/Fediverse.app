@@ -25,13 +25,10 @@ class TimelineWidget extends StatelessWidget {
             .map((timelineLocalPreferences) =>
                 timelineLocalPreferences?.onlyWithMedia == true)
             .distinct(),
-        initialData: timelineLocalPreferencesBloc.value?.onlyWithMedia,
+        initialData: timelineLocalPreferencesBloc.value?.onlyWithMedia == true,
         builder: (context, snapshot) {
           var onlyWithMedia = snapshot.data;
 
-          if (onlyWithMedia == null) {
-            return SizedBox.shrink();
-          }
 
           Widget bodyWidget;
 

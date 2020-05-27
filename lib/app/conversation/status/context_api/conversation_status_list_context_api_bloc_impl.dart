@@ -79,4 +79,7 @@ class ConversationStatusListContextApiBloc extends ConversationStatusListBloc {
               IPleromaStatusService.of(context, listen: false),
           statusRepository: IStatusRepository.of(context, listen: false),
           statusToFetchContext: statusToFetchContext);
+
+  @override
+  Stream<bool> get settingsChangedStream => Stream.empty();
 }
