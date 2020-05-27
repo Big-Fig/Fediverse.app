@@ -60,8 +60,10 @@ class DbNotificationPopulatedWrapper implements INotification {
 
   @override
   String get remoteId => dbNotificationPopulated.dbNotification.remoteId;
+
   @override
   String get emoji => dbNotificationPopulated.dbNotification.emoji;
+
   @override
   PleromaNotificationPleromaPart get pleroma =>
       dbNotificationPopulated.dbNotification.pleroma;
@@ -71,8 +73,13 @@ class DbNotificationPopulatedWrapper implements INotification {
       mastodonNotificationTypeValues.map[type];
 
   @override
-  PleromaNotificationType get typePleroma =>
-      pleromaNotificationTypeValues.map[type];
+  PleromaNotificationType get typePleroma {
+    if (pleromaNotificationTypeValues.map.containsKey(type)) {
+      return pleromaNotificationTypeValues.map[type];
+    } else {
+      return PleromaNotificationType.unknown;
+    }
+  }
 
   @override
   String get type => dbNotificationPopulated.dbNotification.type;

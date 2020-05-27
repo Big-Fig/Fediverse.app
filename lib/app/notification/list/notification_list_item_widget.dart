@@ -132,6 +132,26 @@ class NotificationListItemWidget extends StatelessWidget {
             "app.notification.header.pleromaChatMention",
             args: [extractStatusRawContent(notificationBloc)]);
         break;
+      case PleromaNotificationType.unknown:
+        var isHaveStatus = notificationBloc.status != null;
+        String statusText;
+        if (isHaveStatus) {
+          statusText = extractStatusRawContent(notificationBloc);
+        } else {
+          statusText = "";
+        }
+
+        var isHaveEmoji = notificationBloc.notification.emoji != null;
+        String emojiText;
+        if (isHaveEmoji) {
+          emojiText = notificationBloc.notification.emoji;
+        } else {
+          emojiText = "";
+        }
+
+        rawText = appLocalizations.tr("app.notification.header.unknown",
+            args: ["${notificationBloc.type}: $emojiText $statusText"]);
+        break;
     }
 
     var emojis = notificationBloc.status?.emojis;
@@ -139,7 +159,7 @@ class NotificationListItemWidget extends StatelessWidget {
     var htmlText;
 
 //    if (emojis != null) {
-      htmlText = addEmojiToHtmlContent(rawText, emojis);
+    htmlText = addEmojiToHtmlContent(rawText, emojis);
 //    } else {
 //      htmlText = rawText;
 //    }
