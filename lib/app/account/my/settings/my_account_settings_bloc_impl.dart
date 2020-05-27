@@ -4,7 +4,7 @@ import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:flutter/widgets.dart';
 
 final defaultIsRealtimeWebSocketsEnabled = true;
-final defaultIsNewChatsEnabled = false;
+final defaultIsNewChatsEnabled = true;
 
 class MyAccountSettingsBloc extends DisposableOwner
     implements IMyAccountSettingsBloc {
