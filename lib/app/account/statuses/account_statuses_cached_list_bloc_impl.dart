@@ -155,4 +155,7 @@ class AccountStatusesCachedListBloc extends IStatusCachedListBloc {
       return false;
     }
   }
+
+  @override
+  Stream<bool> get settingsChangedStream => Stream.empty();
 }

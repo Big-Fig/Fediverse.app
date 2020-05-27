@@ -66,4 +66,7 @@ class ConversationStatusListConversationApiBloc
           pleromaConversationService:
               IPleromaConversationService.of(context, listen: false),
           statusRepository: IStatusRepository.of(context, listen: false));
+
+  @override
+  Stream<bool> get settingsChangedStream => Stream.empty();
 }

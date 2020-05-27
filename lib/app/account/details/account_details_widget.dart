@@ -42,7 +42,7 @@ class AccountDetailsWidget extends StatelessWidget {
                       context,
                       listen: false),
                   mergeNewItemsImmediately: false,
-                  statusCachedListService:
+                  statusCachedListBloc:
                       IStatusCachedListBloc.of(context, listen: false)),
           child: ProxyProvider<
               IPaginationListWithNewItemsBloc<PaginationPage<IStatus>, IStatus>,

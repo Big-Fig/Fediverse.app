@@ -34,7 +34,7 @@ abstract class TimelineTabBloc extends DisposableOwner
         StatusPaginationListWithNewItemsBloc<CachedPaginationPage<IStatus>>(
             paginationBloc: statusCachedPaginationBloc,
             mergeNewItemsImmediately: false,
-            statusCachedListService: statusCachedListService);
+            statusCachedListBloc: statusCachedListService);
     addDisposable(disposable: paginationListWithNewItemsBloc);
   }
 

@@ -9,4 +9,6 @@ abstract class IStatusCachedListBloc extends DisposableOwner
   static IStatusCachedListBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IStatusCachedListBloc>(context, listen: listen);
   Stream<List<IStatus>> watchLocalItemsNewerThanItem(IStatus item);
+
+  Stream<bool> get settingsChangedStream;
 }
