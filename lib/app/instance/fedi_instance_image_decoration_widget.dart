@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
@@ -43,11 +44,12 @@ class FediInstanceImageDecorationWidget extends StatelessWidget {
         imageUrl: backgroundImageAbsolutePath,
         errorWidget: (BuildContext context, String url, Object error) =>
             buildDefault(child),
-//        placeholder: (_, __) => Container(
-////          width: double.infinity,
-////          height: double.infinity,
-//          color: FediColors.primaryColorDark,
-//        ),
+        placeholder: (_, __) => Container(
+          width: double.infinity,
+          height: double.infinity,
+          color: FediColors.primaryColorDark,
+          child: child,
+        ),
         imageBuilder: (BuildContext context, ImageProvider imageProvider) =>
             buildWithImageProvider(imageProvider, child),
       );
