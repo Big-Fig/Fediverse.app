@@ -83,10 +83,18 @@ abstract class IStatusBloc implements Disposable, ICollapsibleItem {
 
   Stream<List<IPleromaStatusEmojiReaction>> get pleromaEmojiReactionsStream;
 
+  int get pleromaEmojiReactionsCount;
+
+  Stream<int> get pleromaEmojiReactionsCountStream;
+
   List<IPleromaStatusEmojiReaction> get reblogPlusOriginalPleromaEmojiReactions;
 
   Stream<List<IPleromaStatusEmojiReaction>>
       get reblogPlusOriginalEmojiReactionsStream;
+
+  int get reblogPlusOriginalEmojiReactionsCount;
+
+  Stream<int> get reblogPlusOriginalEmojiReactionsCountStream;
 
   String get accountAvatar;
 

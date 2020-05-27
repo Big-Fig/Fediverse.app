@@ -20,31 +20,46 @@ class StatusEmojiReactionListItemWidget extends StatelessWidget {
             return SizedBox.shrink();
           }
 
+          var color =
+              emojiReaction.me ? FediColors.primaryColor : FediColors.lightGrey;
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
-            child: Container(
-              width: 65,
-              child: GestureDetector(
-                onTap: () {
-                  statusEmojiReactionBloc.requestToggleEmojiReaction();
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      emojiReaction.name,
-                      style: TextStyle(fontSize: 22),
-                    ),
-                    if (emojiReaction.count > 1)
+            padding: const EdgeInsets.symmetric(horizontal: 6.0),
+            child: GestureDetector(
+              onTap: () {
+                statusEmojiReactionBloc.requestToggleEmojiReaction();
+              },
+              child: Container(
+                height: 36.0,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(40.0),
+                  border: Border.all(
+                    color: color,
+                    width: 1.5,
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 12.0, vertical: 6.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
                       Text(
-                        " : ${emojiReaction.count}",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: emojiReaction.me
-                                ? FediColors.darkGrey
-                                : FediColors.grey),
+                        emojiReaction.name,
+                        style: TextStyle(fontSize: 16),
                       ),
-                  ],
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        "${emojiReaction.count}",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w300,
+                            fontSize: 14,
+                            color: color),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

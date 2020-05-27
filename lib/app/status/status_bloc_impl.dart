@@ -109,8 +109,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
     @required this.pleromaStatusEmojiReactionService,
     @required this.statusRepository,
     @required this.accountRepository,
-    @required
-        IStatus status,
+    @required IStatus status,
     // for better performance we don't update account too
     // often
     bool needRefreshFromNetworkOnInit =
@@ -519,6 +518,21 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   Stream<List<IPleromaStatusEmojiReaction>> get pleromaEmojiReactionsStream =>
       statusStream.map((status) => status.pleromaEmojiReactions).distinct();
 
+  @override
+  int get pleromaEmojiReactionsCount =>
+      _sumPleromaEmojiReactions(pleromaEmojiReactions);
+
+  @override
+  Stream<int> get pleromaEmojiReactionsCountStream =>
+      pleromaEmojiReactionsStream.map((pleromaEmojiReactions) =>
+          _sumPleromaEmojiReactions(pleromaEmojiReactions));
+
+  int _sumPleromaEmojiReactions(
+          List<IPleromaStatusEmojiReaction> pleromaEmojiReactions) =>
+      pleromaEmojiReactions?.fold(
+          0, (previousValue, element) => previousValue + element.count) ??
+      0;
+
   List<IPleromaStatusEmojiReaction> get reblogPleromaEmojiReactions =>
       reblog?.pleromaEmojiReactions;
 
@@ -526,6 +540,15 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
       get reblogPleromaEmojiReactionsStream => reblogStream
           .map((status) => status?.pleromaEmojiReactions)
           .distinct();
+
+  @override
+  int get reblogPlusOriginalEmojiReactionsCount =>
+      _sumPleromaEmojiReactions(reblogPlusOriginalPleromaEmojiReactions);
+
+  @override
+  Stream<int> get reblogPlusOriginalEmojiReactionsCountStream =>
+      reblogPlusOriginalEmojiReactionsStream.map((pleromaEmojiReactions) =>
+          _sumPleromaEmojiReactions(pleromaEmojiReactions));
 
   @override
   List<IPleromaStatusEmojiReaction>

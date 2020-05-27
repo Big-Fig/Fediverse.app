@@ -8,6 +8,7 @@ import 'package:fedi/pleroma/status/emoji_reaction/pleroma_status_emoji_reaction
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class StatusEmojiReactionListWidget extends StatelessWidget {
   @override
@@ -20,27 +21,36 @@ class StatusEmojiReactionListWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var emojiReactions = snapshot.data;
         if (emojiReactions?.isNotEmpty == true) {
-          return Container(
-              alignment: Alignment.topLeft,
-              child: Wrap(
-                runSpacing: 0,
-                alignment: WrapAlignment.start,
-                crossAxisAlignment: WrapCrossAlignment.start,
-                children: emojiReactions
-                    .map((emojiReaction) =>
-                        DisposableProvider<IStatusEmojiReactionBloc>(
-                            create: (_) => StatusEmojiReactionBloc(
-                                status: statusBloc.status,
-                                statusRepository: IStatusRepository.of(context,
-                                    listen: false),
-                                emojiReaction: emojiReaction,
-                                pleromaStatusEmojiReactionService:
-                                    IPleromaStatusEmojiReactionService.of(
-                                        context,
-                                        listen: false)),
-                            child: StatusEmojiReactionListItemWidget()))
-                    .toList(),
-              ));
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+                alignment: Alignment.topLeft,
+                child: Wrap(
+                  runSpacing: 8,
+                  alignment: WrapAlignment.start,
+                  crossAxisAlignment: WrapCrossAlignment.start,
+                  children: emojiReactions
+                      .map((emojiReaction) =>
+                          Provider<IPleromaStatusEmojiReaction>.value(
+                            value: emojiReaction,
+                            child: DisposableProxyProvider<
+                                    IPleromaStatusEmojiReaction,
+                                    IStatusEmojiReactionBloc>(
+                                update: (context, value, previous) =>
+                                    StatusEmojiReactionBloc(
+                                        status: statusBloc.status,
+                                        statusRepository: IStatusRepository.of(
+                                            context,
+                                            listen: false),
+                                        emojiReaction: value,
+                                        pleromaStatusEmojiReactionService:
+                                            IPleromaStatusEmojiReactionService
+                                                .of(context, listen: false)),
+                                child: StatusEmojiReactionListItemWidget()),
+                          ))
+                      .toList(),
+                )),
+          );
         } else {
           return SizedBox.shrink();
         }
@@ -48,5 +58,5 @@ class StatusEmojiReactionListWidget extends StatelessWidget {
     );
   }
 
-   StatusEmojiReactionListWidget();
+  StatusEmojiReactionListWidget();
 }
