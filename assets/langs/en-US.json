@@ -350,7 +350,8 @@
         "move": "Move notification",
         "followRequest": "Follow request",
         "pleromaEmojiReaction": "{} for \"{}\"",
-        "pleromaChatMention": "Chat mention in \"{}\""
+        "pleromaChatMention": "Chat mention in \"{}\"",
+        "unknown": "Unknown: {}"
       }
     },
     "timeline": {

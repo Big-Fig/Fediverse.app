@@ -34,7 +34,8 @@ enum PleromaNotificationType {
   move,
   followRequest,
   pleromaEmojiReaction,
-  pleromaChatMention
+  pleromaChatMention,
+  unknown
 }
 
 final pleromaNotificationTypeValues = EnumValues({
@@ -53,6 +54,7 @@ final pleromaNotificationTypeValues = EnumValues({
 class PleromaNotificationPleromaPart {
   @JsonKey(name: "is_seen")
   final bool isSeen;
+
   PleromaNotificationPleromaPart({this.isSeen});
 
   factory PleromaNotificationPleromaPart.fromJson(Map<String, dynamic> json) =>
@@ -130,6 +132,11 @@ class PleromaNotification extends IPleromaNotification {
       mastodonNotificationTypeValues.map[type];
 
   @override
-  PleromaNotificationType get typePleroma =>
-      pleromaNotificationTypeValues.map[type];
+  PleromaNotificationType get typePleroma {
+    if (pleromaNotificationTypeValues.map.containsKey(type)) {
+      return pleromaNotificationTypeValues.map[type];
+    } else {
+      return PleromaNotificationType.unknown;
+    }
+  }
 }
