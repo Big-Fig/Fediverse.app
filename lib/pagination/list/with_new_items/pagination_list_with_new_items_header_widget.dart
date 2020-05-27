@@ -11,7 +11,7 @@ class PaginationListWithNewItemsHeaderWidget extends StatelessWidget {
   final String Function(BuildContext context, int updateItemsCount) textBuilder;
   final Widget child;
 
-  const PaginationListWithNewItemsHeaderWidget({
+  PaginationListWithNewItemsHeaderWidget({
     @required this.child,
     @required this.textBuilder,
   });

@@ -10,7 +10,7 @@ var _logger = Logger("account_list_item_widget.dart");
 class AccountListItemWidget extends StatelessWidget {
   final AccountSelectedCallback accountSelectedCallback;
 
-  const AccountListItemWidget({
+  AccountListItemWidget({
     @required this.accountSelectedCallback,
   });
 
@@ -35,14 +35,14 @@ class AccountListItemWidget extends StatelessWidget {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    const AccountAvatarWidget(
+                    AccountAvatarWidget(
                       imageSize: 36,
                       progressSize: 24,
                     ),
                     const SizedBox(
                       width: 8,
                     ),
-                    const AccountAcctWidget()
+                    AccountAcctWidget()
                   ],
                 ),
                 const Spacer(),

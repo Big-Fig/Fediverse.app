@@ -65,7 +65,7 @@ class AccountStatusesWidget extends PaginationListWidget<IStatus> {
                     },
                     child: FediListTile(
                       isFirstInList: index == 0,
-                      child: const StatusListItemTimelineWidget(
+                      child:  StatusListItemTimelineWidget(
                         collapsible: true,
                       ),
                     )),
