@@ -244,6 +244,14 @@ class ScheduledStatusAdapterToStatus implements IStatus {
 
   @override
   PleromaVisibility get visibility => scheduledStatus.params.pleromaVisibility;
+
+  // todo: fix this, sometimes it may be reblog
+  @override
+  bool get isHaveReblog => false;
+
+  // todo: fix this, sometimes it may be reply
+  @override
+  bool get isReply => false;
 }
 
 enum ScheduledStatusState { scheduled, canceled, alreadyPosted }

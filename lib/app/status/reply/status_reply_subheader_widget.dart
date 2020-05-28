@@ -1,15 +1,16 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/status/header/status_header_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
+import 'package:fedi/app/status/subheader/status_subheader_widget.dart';
+import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class StatusReplyHeaderWidget extends StatelessWidget {
+class StatusReplySubHeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: true);
-    if (statusBloc.isHaveInReplyToAccount) {
+    if (statusBloc.isReply) {
       return StreamBuilder<IAccount>(
           stream: statusBloc.watchInReplyToAccount(),
           initialData: null,
@@ -21,16 +22,16 @@ class StatusReplyHeaderWidget extends StatelessWidget {
               return SizedBox.shrink();
             }
 
-            return StatusHeaderWidget(
+            return StatusSubHeaderWidget(
                 descText:
                     AppLocalizations.of(context).tr("app.status.reply.header"),
                 account: account,
-                icon: Icons.reply);
+                icon: FediIcons.message);
           });
     } else {
       return const SizedBox.shrink();
     }
   }
 
-  const StatusReplyHeaderWidget();
+  const StatusReplySubHeaderWidget();
 }

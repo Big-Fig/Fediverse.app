@@ -109,8 +109,8 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
     @required this.pleromaStatusEmojiReactionService,
     @required this.statusRepository,
     @required this.accountRepository,
-    @required IStatus status,
-    // for better performance we don't update account too
+    @required
+        IStatus status, // for better performance we don't update account too
     // often
     bool needRefreshFromNetworkOnInit =
         false, // todo: remove hack. Don't init when bloc quickly disposed. Help
@@ -168,14 +168,6 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
       statusStream, reblogStream, (original, reblog) => reblog ?? original);
 
   @override
-  bool get isHaveInReplyToAccount => status.inReplyToAccountRemoteId != null;
-
-  @override
-  Stream<bool> get isHaveInReplyToAccountStream => statusStream
-      .map((status) => status.inReplyToAccountRemoteId != null)
-      .distinct();
-
-  @override
   IAccount get account => status?.account;
 
   @override
@@ -197,14 +189,6 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
       statusStream.map((status) => status?.createdAt).distinct();
 
   @override
-  bool get isHaveReblog => status?.reblogStatusRemoteId != null;
-
-  @override
-  Stream<bool> get isHaveReblogStream => statusStream
-      .map((status) => status?.reblogStatusRemoteId != null)
-      .distinct();
-
-  @override
   String get remoteId => status.remoteId;
 
   @override
@@ -215,7 +199,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
       statusStream.map((status) => status.mentions).distinct();
 
   @override
-  Future<IAccount> loadInReplyToAccount() {
+  Future<IAccount> getInReplyToAccount() {
     assert(status.inReplyToAccountRemoteId != null);
     return accountRepository.findByRemoteId(status.inReplyToAccountRemoteId);
   }
@@ -224,6 +208,18 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   Stream<IAccount> watchInReplyToAccount() {
     assert(status.inReplyToAccountRemoteId != null);
     return accountRepository.watchByRemoteId(status.inReplyToAccountRemoteId);
+  }
+
+  @override
+  Future<IStatus> getInReplyToStatus() {
+    assert(status.inReplyToRemoteId != null);
+    return statusRepository.findByRemoteId(status.inReplyToRemoteId);
+  }
+
+  @override
+  Stream<IStatus> watchInReplyToStatus() {
+    assert(status.inReplyToRemoteId != null);
+    return statusRepository.watchByRemoteId(status.inReplyToRemoteId);
   }
 
   @override
@@ -710,4 +706,12 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
       return contentWithEmojis;
     }
   }
+
+  // todo: rework with mixin
+  @override
+  bool get isReply => status.isReply;
+
+  // todo: rework with mixin
+  @override
+  bool get isHaveReblog => status.isHaveReblog;
 }

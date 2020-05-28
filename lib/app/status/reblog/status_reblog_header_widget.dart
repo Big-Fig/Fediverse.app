@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class StatusReblogHeaderWidget extends StatelessWidget {
-  const StatusReblogHeaderWidget();
+  StatusReblogHeaderWidget();
 
   @override
   Widget build(BuildContext context) {

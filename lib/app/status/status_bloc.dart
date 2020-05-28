@@ -65,13 +65,9 @@ abstract class IStatusBloc implements Disposable, ICollapsibleItem {
 
   Stream<DateTime> get createdAtStream;
 
-  bool get isHaveInReplyToAccount;
+  bool get isReply => status.isReply;
 
-  Stream<bool> get isHaveInReplyToAccountStream;
-
-  bool get isHaveReblog;
-
-  Stream<bool> get isHaveReblogStream;
+  bool get isHaveReblog => status.isHaveReblog;
 
   String get remoteId;
 
@@ -172,9 +168,13 @@ abstract class IStatusBloc implements Disposable, ICollapsibleItem {
 
   Future<IAccount> loadAccountByMentionUrl({@required String url});
 
-  Future<IAccount> loadInReplyToAccount();
+  Future<IAccount> getInReplyToAccount();
 
   Stream<IAccount> watchInReplyToAccount();
+
+  Future<IStatus> getInReplyToStatus();
+
+  Stream<IStatus> watchInReplyToStatus();
 
   Future<IStatus> toggleReblog();
 

@@ -56,24 +56,20 @@ class StatusHeaderWidget extends StatelessWidget {
         SizedBox(
           width: 12,
         ),
-        Row(
-          children: <Widget>[
-            Icon(
-              icon,
-              size: 16,
-              color: FediColors.grey,
-            ),
-            SizedBox(
-              width: 12,
-            ),
-            Text(
-              descText,
-              style: TextStyle(
-                fontSize: 12,
-                color: FediColors.darkGrey,
-              ),
-            )
-          ],
+        Icon(
+          icon,
+          size: 16,
+          color: FediColors.grey,
+        ),
+        SizedBox(
+          width: 12,
+        ),
+        Text(
+          descText,
+          style: TextStyle(
+            fontSize: 12,
+            color: FediColors.darkGrey,
+          ),
         )
       ],
     );

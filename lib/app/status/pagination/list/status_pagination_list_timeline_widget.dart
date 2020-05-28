@@ -43,30 +43,12 @@ class StatusPaginationListTimelineWidget
           itemBuilder: (context, index) {
             return Provider<IStatus>.value(
               value: items[index],
-              child: DisposableProxyProvider<IStatus, IStatusBloc>(
-                  update: (context, status, oldValue) {
-                    var collapsibleBloc =
-                        ICollapsibleBloc.of(context, listen: false);
-
-                    var statusBloc = StatusBloc.createFromContext(
-                        context, status,
-                        isNeedWatchLocalRepositoryForUpdates:
-                            needWatchLocalRepositoryForUpdates);
-
-                    collapsibleBloc.addVisibleItem(statusBloc);
-
-                    statusBloc.addDisposable(disposable: CustomDisposable(() {
-                      collapsibleBloc.removeVisibleItem(statusBloc);
-                    }));
-
-                    return statusBloc;
-                  },
-                  child: FediListTile(
-                    isFirstInList: index == 0 && header == null,
-                    child: StatusListItemTimelineWidget(
-                      collapsible: true,
-                    ),
-                  )),
+              child: FediListTile(
+                isFirstInList: index == 0 && header == null,
+                child: StatusListItemTimelineWidget(
+                  collapsible: true,
+                ),
+              ),
             );
           });
 }

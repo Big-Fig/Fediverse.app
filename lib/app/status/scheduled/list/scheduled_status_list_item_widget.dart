@@ -7,11 +7,13 @@ import 'package:fedi/app/status/scheduled/scheduled_status_bloc.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_bloc_impl.dart';
+import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 final dateFormat = DateFormat("yyyy-MM-dd HH:mm");
 
@@ -24,14 +26,12 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
       child: Column(
         children: <Widget>[
           buildScheduledHeader(context, scheduledStatusBloc),
-          DisposableProxyProvider<IScheduledStatusBloc, IStatusBloc>(
+          ProxyProvider<IScheduledStatusBloc, IStatus>(
               update: (context, value, previous) =>
-                  StatusBloc.createFromContext(
-                      context,
-                      ScheduledStatusAdapterToStatus(
-                          scheduledStatus: value.scheduledStatus,
-                          account: IMyAccountBloc.of(context, listen: false)
-                              .account)),
+                  ScheduledStatusAdapterToStatus(
+                      scheduledStatus: value.scheduledStatus,
+                      account: IMyAccountBloc.of(context, listen: false)
+                          .account),
               child: StatusListItemTimelineWidget(
                 displayActions: false,
                 statusCallback: (_, __) {

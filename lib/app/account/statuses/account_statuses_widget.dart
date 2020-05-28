@@ -1,12 +1,7 @@
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
-import 'package:fedi/app/status/status_bloc.dart';
-import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
-import 'package:fedi/collapsible/collapsible_bloc.dart';
-import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_widget.dart';
 import 'package:fedi/pagination/pagination_model.dart';
@@ -47,28 +42,12 @@ class AccountStatusesWidget extends PaginationListWidget<IStatus> {
           footer: footer,
           itemBuilder: (context, index) => Provider<IStatus>.value(
                 value: items[index],
-                child: DisposableProxyProvider<IStatus, IStatusBloc>(
-                    update: (context, status, oldValue) {
-                      var collapsibleBloc =
-                          ICollapsibleBloc.of(context, listen: false);
-
-                      var statusBloc =
-                          StatusBloc.createFromContext(context, status);
-
-                      collapsibleBloc.addVisibleItem(statusBloc);
-
-                      statusBloc.addDisposable(disposable: CustomDisposable(() {
-                        collapsibleBloc.removeVisibleItem(statusBloc);
-                      }));
-
-                      return statusBloc;
-                    },
-                    child: FediListTile(
-                      isFirstInList: index == 0,
-                      child:  StatusListItemTimelineWidget(
-                        collapsible: true,
-                      ),
-                    )),
+                child: FediListTile(
+                  isFirstInList: index == 0,
+                  child: StatusListItemTimelineWidget(
+                    collapsible: true,
+                  ),
+                ),
               ));
 
   @override
