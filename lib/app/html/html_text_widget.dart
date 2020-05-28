@@ -1,3 +1,4 @@
+import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -15,6 +16,7 @@ class HtmlTextWidget extends StatelessWidget {
   final FontWeight fontWeight;
   final double lineHeight;
   final Color color;
+  final Color linkColor;
   final int textMaxLines;
   final TextOverflow textOverflow;
   final bool shrinkWrap;
@@ -26,6 +28,7 @@ class HtmlTextWidget extends StatelessWidget {
     this.fontSize = 18.0,
     this.lineHeight = 1.0,
     this.fontWeight = FontWeight.normal,
+    this.linkColor = FediColors.primaryColorDark,
     this.color,
     this.textMaxLines,
     this.textOverflow,
@@ -81,6 +84,9 @@ class HtmlTextWidget extends StatelessWidget {
           color: color,
           textOverflow: textOverflow,
           textMaxLines: textMaxLines,
+        ),
+        "a": Style(
+          color: linkColor,
         ),
         "text": Style(
           padding: EdgeInsets.zero,
