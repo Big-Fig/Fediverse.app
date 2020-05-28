@@ -576,7 +576,7 @@
         }
       },
       "reblog": {
-        "header": "reblogged"
+        "header": "reposted"
       },
       "reply": {
         "header": "replied"
