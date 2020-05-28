@@ -3,6 +3,7 @@ import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_bloc_impl.dart';
 import 'package:fedi/app/account/acct/account_acct_widget.dart';
 import 'package:fedi/app/account/avatar/account_avatar_widget.dart';
+import 'package:fedi/app/account/details/account_details_page.dart';
 import 'package:fedi/app/chat/chat_page.dart';
 import 'package:fedi/app/chat/repository/chat_repository.dart';
 import 'package:fedi/app/emoji/emoji_text_helper.dart';
@@ -40,7 +41,12 @@ class NotificationListItemWidget extends StatelessWidget {
           children: <Widget>[
             Row(
               children: <Widget>[
-                AccountAvatarWidget(progressSize: 36, imageSize: 36),
+                GestureDetector(
+                    onTap: () {
+                      goToAccountDetailsPage(context, notificationBloc.account);
+                    },
+                    child:
+                        AccountAvatarWidget(progressSize: 36, imageSize: 36)),
                 SizedBox(width: 16),
                 Expanded(
                   child: GestureDetector(
