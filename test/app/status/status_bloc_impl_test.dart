@@ -180,7 +180,8 @@ void main() {
     // same if emojis is empty or null
     await _update(status.copyWith(content: newValue, emojis: []));
 
-    expect(statusBloc.contentWithEmojis, "<html><body><p>$newValue</p></body></html>");
+    expect(statusBloc.contentWithEmojis,
+        "<html><body><p>$newValue</p></body></html>");
     expect(listenedValue, "<html><body><p>$newValue</p></body></html>");
 
     // same if emojis is empty or null
@@ -221,7 +222,8 @@ void main() {
 
     expect(statusBloc.contentWithEmojisWithoutAccount,
         "<html><body><p>newContent :emoji: :emoji1: :emoji2: </a></p></body></html>");
-    expect(listenedValue, "<html><body><p>newContent :emoji: :emoji1: :emoji2: </a></p></body></html>");
+    expect(listenedValue,
+        "<html><body><p>newContent :emoji: :emoji1: :emoji2: </a></p></body></html>");
 
     // same if emojis is empty or null
     await _update(status.copyWith(content: newValue, emojis: [
@@ -304,26 +306,16 @@ void main() {
 
     var reblog = await createTestStatus(seed: "isHaveReblog");
 
-    var listenedValue;
-
-    var subscription = statusBloc.isHaveReblogStream.listen((newValue) {
-      listenedValue = newValue;
-    });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue, status.reblog != null);
 
     await _update(status.copyWith(reblog: reblog));
 
     expect(statusBloc.isHaveReblog, true);
-    expect(listenedValue, true);
 
     await _update(status.copyWith(reblog: null));
 
     expect(statusBloc.isHaveReblog, false);
-    expect(listenedValue, false);
-
-    await await subscription.cancel();
   });
 
   test('account', () async {
@@ -481,27 +473,18 @@ void main() {
     await await subscription.cancel();
   });
 
-  test('isHaveInReplyToAccount', () async {
-    expect(statusBloc.isHaveInReplyToAccount,
+  test('isReply', () async {
+    expect(statusBloc.isReply,
         status.inReplyToAccountRemoteId?.isNotEmpty == true);
 
     var newValue = "inReplyToRemoteId";
 
-    var listenedValue;
-
-    var subscription =
-        statusBloc.isHaveInReplyToAccountStream.listen((newValue) {
-      listenedValue = newValue;
-    });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue, status.inReplyToAccountRemoteId?.isNotEmpty == true);
 
     await _update(status.copyWith(inReplyToRemoteId: newValue));
 
-    expect(statusBloc.isHaveInReplyToAccount, true);
-    expect(listenedValue, true);
-    await await subscription.cancel();
+    expect(statusBloc.isReply, true);
   });
 
   test('isHaveReblog', () async {
@@ -509,21 +492,12 @@ void main() {
 
     var reblog = await createTestStatus(seed: "isHaveReblog");
 
-    var listenedValue;
-
-    var subscription = statusBloc.isHaveReblogStream.listen((newValue) {
-      listenedValue = newValue;
-    });
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue, status.reblog != null);
 
     await _update(status.copyWith(reblog: reblog));
 
     expect(statusBloc.isHaveReblog, true);
-    expect(listenedValue, true);
-
-    await await subscription.cancel();
   });
 
   test('mediaAttachments', () async {
@@ -1028,9 +1002,10 @@ void main() {
 
     await accountRepository.upsertRemoteAccount(
         mapLocalAccountToRemoteAccount(account1),
-        conversationRemoteId: null, chatRemoteId: null);
+        conversationRemoteId: null,
+        chatRemoteId: null);
 
-    expectAccount(await statusBloc.loadInReplyToAccount(), null);
+    expectAccount(await statusBloc.getInReplyToAccount(), null);
 
     var listenedValue;
     var subscription = statusBloc.watchInReplyToAccount().listen((newValue) {
@@ -1042,7 +1017,7 @@ void main() {
 
     await _update(status.copyWith(inReplyToAccountRemoteId: account1.remoteId));
 
-    expectAccount(await statusBloc.loadInReplyToAccount(), account1);
+    expectAccount(await statusBloc.getInReplyToAccount(), account1);
 
     await subscription.cancel();
   });

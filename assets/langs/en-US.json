@@ -477,6 +477,7 @@
         "copy_link": "Copy link",
         "share": "Share",
         "more": "More",
+        "show_this_thread": "Show this thread",
         "popup": {
           "title": "Status Actions",
           "more_actions_for": "More actions for"
@@ -579,7 +580,11 @@
         "header": "reposted"
       },
       "reply": {
-        "header": "replied"
+        "header": "reply to",
+        "loading": {
+          "progress": "Loading original status",
+          "failed": "Failed to load original status"
+        }
       },
       "thread": {
         "title": "Status thread"

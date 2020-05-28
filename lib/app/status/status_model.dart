@@ -113,6 +113,11 @@ abstract class IStatus {
   /// for that use the /statuses/:id/reactions endpoint.
   List<PleromaStatusEmojiReaction> get pleromaEmojiReactions;
 
+  bool get isReply =>
+      inReplyToAccountRemoteId != null && inReplyToRemoteId != null;
+
+  bool get isHaveReblog => reblogStatusRemoteId != null;
+
   IStatus copyWith(
       {IAccount account,
       IStatus reblog,
@@ -156,7 +161,7 @@ abstract class IStatus {
       List<PleromaStatusEmojiReaction> pleromaEmojiReactions});
 }
 
-class DbStatusPopulatedWrapper implements IStatus {
+class DbStatusPopulatedWrapper extends IStatus {
   final DbStatusPopulated dbStatusPopulated;
 
   DbStatusPopulatedWrapper(this.dbStatusPopulated);

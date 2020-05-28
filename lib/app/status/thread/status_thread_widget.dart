@@ -102,22 +102,18 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
         itemBuilder: (BuildContext context, int index) {
           return Provider.value(
             value: statuses[index],
-            child: DisposableProxyProvider<IStatus, IStatusBloc>(
-                update: (context, status, oldValue) =>
-                    StatusBloc.createFromContext(context, status,
-                        isNeedWatchLocalRepositoryForUpdates: true),
-                child: FediListTile(
-                  isFirstInList: index == 0,
-                  child: StatusListItemTimelineWidget(
-                    statusCallback: (context, status) {
-                      if (status.remoteId !=
-                          statusThreadBloc.startStatus.remoteId) {
-                        goToStatusThreadPage(context, status);
-                      }
-                    },
-                    collapsible: false,
-                  ),
-                )),
+            child: FediListTile(
+              isFirstInList: index == 0,
+              child: StatusListItemTimelineWidget(
+                statusCallback: (context, status) {
+                  if (status.remoteId !=
+                      statusThreadBloc.startStatus.remoteId) {
+                    goToStatusThreadPage(context, status);
+                  }
+                },
+                collapsible: false,
+              ),
+            ),
           );
         },
       );
