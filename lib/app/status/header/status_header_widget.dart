@@ -13,7 +13,7 @@ class StatusHeaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        height: 45,
+        height: 41,
         child: GestureDetector(
           onTap: () {
             goToAccountDetailsPage(context, account);
@@ -22,7 +22,7 @@ class StatusHeaderWidget extends StatelessWidget {
           child: Column(
             children: [
               Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                 child: buildHeader(account, context),
               ),
               FediUltraLightGreyDivider()
@@ -50,25 +50,27 @@ class StatusHeaderWidget extends StatelessWidget {
         ),
         Text(
           account.acct,
-          style: TextStyle(fontSize: 12, color: FediColors.darkGrey),
+          style:
+              TextStyle(fontSize: 14, color: FediColors.darkGrey, height: 1.15),
         ),
         SizedBox(
-          width: 8,
+          width: 12,
         ),
         Row(
           children: <Widget>[
             Icon(
               icon,
+              size: 16,
               color: FediColors.grey,
             ),
             SizedBox(
-              width: 8,
+              width: 12,
             ),
             Text(
               descText,
               style: TextStyle(
                 fontSize: 12,
-                color: FediColors.grey,
+                color: FediColors.darkGrey,
               ),
             )
           ],
