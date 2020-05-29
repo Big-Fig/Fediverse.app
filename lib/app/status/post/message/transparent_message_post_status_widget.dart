@@ -6,8 +6,12 @@ import 'package:flutter/material.dart';
 
 class TransparentMessagePostStatusWidget extends StatelessWidget {
   final bool expanded;
+  final String hintText;
 
-  TransparentMessagePostStatusWidget({@required this.expanded});
+  TransparentMessagePostStatusWidget({
+    @required this.expanded,
+    this.hintText,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +19,8 @@ class TransparentMessagePostStatusWidget extends StatelessWidget {
 
     return FediTransparentEditTextField(
       textEditingController: postStatusBloc.inputTextController,
-      hintText:
+      focusNode: postStatusBloc.focusNode,
+      hintText: hintText ??
           AppLocalizations.of(context).tr("app.status.post.field.message.hint"),
       expanded: expanded,
       autofocus: expanded,

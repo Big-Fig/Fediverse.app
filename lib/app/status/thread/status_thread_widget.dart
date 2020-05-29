@@ -54,6 +54,8 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
             boxShadow: [FediShadows.forBottomBar],
           ),
           child: PostStatusWidget(
+            hintText:
+                "Reply to ${statusThreadBloc.initialStatusToFetchThread.account.acct}",
             goBackOnSuccess: false,
             expanded: false,
             isTransparent: false,

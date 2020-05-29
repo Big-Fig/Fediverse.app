@@ -7,17 +7,20 @@ class FediTransparentEditTextField extends StatelessWidget {
   final bool autofocus;
   final TextEditingController textEditingController;
   final String hintText;
+  final FocusNode focusNode;
 
   FediTransparentEditTextField({
     @required this.expanded,
     @required this.autofocus,
     @required this.hintText,
     @required this.textEditingController,
+    this.focusNode,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      focusNode: focusNode,
       decoration: InputDecoration(
           border: InputBorder.none,
           hintText: hintText,

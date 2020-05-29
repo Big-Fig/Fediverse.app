@@ -24,6 +24,7 @@ class PostStatusWidget extends StatelessWidget {
   final bool displayAccountAvatar;
   final bool isTransparent;
   final bool showActionsRow;
+  final String hintText;
 
   const PostStatusWidget(
       {this.showVisibilityAction = true,
@@ -32,6 +33,7 @@ class PostStatusWidget extends StatelessWidget {
       this.displayAccountAvatar = false,
       this.isTransparent = true,
       this.showActionsRow = true,
+      this.hintText,
       @required this.goBackOnSuccess});
 
   @override
@@ -97,11 +99,13 @@ class PostStatusWidget extends StatelessWidget {
       ? Flexible(
           child: TransparentMessagePostStatusWidget(
             expanded: expanded,
+            hintText: hintText,
           ),
         )
       : Flexible(
           child: FilledMessagePostStatusWidget(
             expanded: expanded,
+            hintText: hintText,
           ),
         );
 }

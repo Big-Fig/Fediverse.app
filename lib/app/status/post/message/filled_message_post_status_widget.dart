@@ -12,8 +12,12 @@ import 'package:flutter/material.dart';
 
 class FilledMessagePostStatusWidget extends StatelessWidget {
   final bool expanded;
+  final String hintText;
 
-  FilledMessagePostStatusWidget({@required this.expanded});
+  FilledMessagePostStatusWidget({
+    @required this.expanded,
+    this.hintText,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +33,10 @@ class FilledMessagePostStatusWidget extends StatelessWidget {
         ),
         Flexible(
           child: FediFilledEditTextField(
-            hintText: AppLocalizations.of(context)
-                .tr("app.status.post.field.message.hint"),
+            focusNode: postStatusBloc.focusNode,
+            hintText: hintText ??
+                AppLocalizations.of(context)
+                    .tr("app.status.post.field.message.hint"),
             textEditingController: postStatusBloc.inputTextController,
             expanded: false,
             autofocus: false,
@@ -48,19 +54,20 @@ class FilledMessagePostStatusWidget extends StatelessWidget {
     );
   }
 
-  IconButton buildEmojiPicker(BuildContext context, IPostStatusBloc postStatusBloc) {
+  IconButton buildEmojiPicker(
+      BuildContext context, IPostStatusBloc postStatusBloc) {
     return IconButton(
-            icon: Icon(
-              FediIcons.emoji,
-              size: FediSizes.filledEditTextIconSize,
-              color: FediColors.darkGrey,
-            ),
-            onPressed: () {
-              showEmojiPickerModalPopup(context,
-                  emojiReactionSelectedCallback: (String emojiName, String emoji) {
-                    postStatusBloc.appendText( "$emoji");
-                  });
-            },
-          );
+      icon: Icon(
+        FediIcons.emoji,
+        size: FediSizes.filledEditTextIconSize,
+        color: FediColors.darkGrey,
+      ),
+      onPressed: () {
+        showEmojiPickerModalPopup(context,
+            emojiReactionSelectedCallback: (String emojiName, String emoji) {
+          postStatusBloc.appendText("$emoji");
+        });
+      },
+    );
   }
 }

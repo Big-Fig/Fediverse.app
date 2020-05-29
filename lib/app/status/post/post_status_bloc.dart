@@ -16,6 +16,7 @@ abstract class IPostStatusBloc implements Disposable {
   Stream<List<String>> get mentionedAcctsStream;
 
   TextEditingController get inputTextController;
+  FocusNode get focusNode;
 
   bool get isPossibleToChangeVisibility;
 

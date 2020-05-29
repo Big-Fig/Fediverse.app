@@ -62,6 +62,7 @@ abstract class PostStatusBloc extends DisposableOwner
 
     addDisposable(textEditingController: inputTextController);
 
+    
     var editTextListener = () {
       onInputTextChanged();
     };
@@ -71,11 +72,28 @@ abstract class PostStatusBloc extends DisposableOwner
       inputTextController.removeListener(editTextListener);
     }));
 
+    addDisposable(focusNode: focusNode);
+
+    var focusListener = () {
+        onFocusChange(focusNode.hasFocus);
+
+    };
+
+    focusNode.addListener(focusListener);
+
+    addDisposable(disposable: CustomDisposable(() {
+      focusNode.removeListener(focusListener);
+    }));
+
     if (initialAccountsToMention?.isNotEmpty == true) {
       initialAccountsToMention.forEach((account) {
         addMentionByAccount(account);
       });
     }
+  }
+
+  void onFocusChange(bool hasFocus) {
+    // nothing by default
   }
 
   @override
@@ -165,6 +183,8 @@ abstract class PostStatusBloc extends DisposableOwner
 
   @override
   TextEditingController inputTextController = TextEditingController();
+  @override
+  FocusNode focusNode = FocusNode();
 
   void onMentionedAccountsChanged() {
     var mentionedAccts = this.mentionedAccts;
@@ -374,6 +394,6 @@ abstract class PostStatusBloc extends DisposableOwner
 
   @override
   void appendText(String textToAppend) {
-    inputTextController.text = "$inputText$textToAppend";
+    inputTextController.text = "${inputText ?? ""}$textToAppend";
   }
 }
