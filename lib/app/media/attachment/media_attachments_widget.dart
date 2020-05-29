@@ -9,6 +9,8 @@ import 'package:logging/logging.dart';
 
 var _logger = Logger("status_media_attachments_widget.dart");
 
+var _maxHeight = 350.0;
+
 class MediaAttachmentsWidget extends StatelessWidget {
   final List<IPleromaMediaAttachment> mediaAttachments;
 
@@ -18,12 +20,10 @@ class MediaAttachmentsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     if (mediaAttachments?.isNotEmpty == true) {
       return Padding(
-        padding: const EdgeInsets.symmetric(vertical:4.0),
+        padding: const EdgeInsets.symmetric(vertical: 4.0),
         child: SizedBox(
           width: double.infinity,
-          child: LimitedBox(
-              maxHeight: 350,
-              child: buildChildren(context, mediaAttachments)),
+          child: buildChildren(context, mediaAttachments),
         ),
       );
     } else {
@@ -39,7 +39,10 @@ class MediaAttachmentsWidget extends StatelessWidget {
         mediaAttachments.map((IPleromaMediaAttachment attachment) {
       switch (attachment.typeMastodon) {
         case MastodonMediaAttachmentType.image:
-          return MediaAttachmentImageWidget(attachment);
+          return LimitedBox(
+            maxHeight: _maxHeight,
+            child: MediaAttachmentImageWidget(attachment),
+          );
           break;
 
         case MastodonMediaAttachmentType.video:
@@ -62,21 +65,25 @@ class MediaAttachmentsWidget extends StatelessWidget {
     }
   }
 
-  Widget buildCarousel(BuildContext context, List<Widget> children) => Carousel(
-        animationDuration: Duration(seconds: 0),
-        overlayShadowColors: Colors.transparent,
-        overlayShadowSize: 0.0,
-        images: children,
-        dotIncreasedColor:
-            children.length == 1 ? Colors.transparent : Colors.blue,
-        dotSize: 4.0,
-        dotSpacing: 15.0,
-        dotColor: children.length == 1
-            ? Colors.transparent
-            : Colors.blue.withOpacity(0.5),
-        indicatorBgPadding: 5.0,
-        dotBgColor: Colors.transparent,
-        borderRadius: true,
-        autoplay: false,
+  Widget buildCarousel(BuildContext context, List<Widget> children) =>
+      LimitedBox(
+        maxHeight: _maxHeight,
+        child: Carousel(
+          animationDuration: Duration(seconds: 0),
+          overlayShadowColors: Colors.transparent,
+          overlayShadowSize: 0.0,
+          images: children,
+          dotIncreasedColor:
+              children.length == 1 ? Colors.transparent : Colors.blue,
+          dotSize: 4.0,
+          dotSpacing: 15.0,
+          dotColor: children.length == 1
+              ? Colors.transparent
+              : Colors.blue.withOpacity(0.5),
+          indicatorBgPadding: 5.0,
+          dotBgColor: Colors.transparent,
+          borderRadius: true,
+          autoplay: false,
+        ),
       );
 }
