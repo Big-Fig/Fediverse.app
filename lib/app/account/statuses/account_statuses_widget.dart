@@ -44,7 +44,7 @@ class AccountStatusesWidget extends PaginationListWidget<IStatus> {
                 value: items[index],
                 child: FediListTile(
                   isFirstInList: index == 0,
-                  child: StatusListItemTimelineWidget(
+                  child: StatusListItemTimelineWidget.list(
                     collapsible: true,
                   ),
                 ),

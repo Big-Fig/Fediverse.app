@@ -5,11 +5,8 @@ import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
 import 'package:fedi/app/status/scheduled/datetime/scheduled_status_datetime_picker_dialog.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_bloc.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
-import 'package:fedi/app/status/status_bloc.dart';
-import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
@@ -30,9 +27,9 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
               update: (context, value, previous) =>
                   ScheduledStatusAdapterToStatus(
                       scheduledStatus: value.scheduledStatus,
-                      account: IMyAccountBloc.of(context, listen: false)
-                          .account),
-              child: StatusListItemTimelineWidget(
+                      account:
+                          IMyAccountBloc.of(context, listen: false).account),
+              child: StatusListItemTimelineWidget.list(
                 displayActions: false,
                 statusCallback: (_, __) {
                   // nothing

@@ -30,7 +30,7 @@ class StatusReplyWidget extends StatelessWidget {
             case AsyncInitLoadingState.finished:
               return Provider.value(
                   value: statusReplyLoaderBloc.inReplyToStatus,
-                  child: StatusListItemTimelineWidget(
+                  child: StatusListItemTimelineWidget.list(
                     collapsible: collapsible,
                     isFirstReplyInThread: false,
                   ));
