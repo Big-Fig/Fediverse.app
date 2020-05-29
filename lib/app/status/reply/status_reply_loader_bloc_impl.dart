@@ -35,17 +35,22 @@ class StatusReplyLoaderBloc extends AsyncInitLoadingBloc
   @override
   Future internalAsyncInit() async {
     var inReplyToRemoteId = originalStatus.inReplyToRemoteId;
-    var replyToRemoteStatus =
-        await pleromaStatusService.getStatus(statusRemoteId: inReplyToRemoteId);
 
-    if (replyToRemoteStatus != null) {
-      await statusRepository.upsertRemoteStatus(replyToRemoteStatus,
-          listRemoteId: null, conversationRemoteId: null);
+    inReplyToStatus = await statusRepository.findByRemoteId(inReplyToRemoteId);
 
-      inReplyToStatus =
-          await statusRepository.findByRemoteId(inReplyToRemoteId);
-    } else {
-      throw "Can't load inReplyToStatus";
+    if (inReplyToStatus == null) {
+      var replyToRemoteStatus = await pleromaStatusService.getStatus(
+          statusRemoteId: inReplyToRemoteId);
+
+      if (replyToRemoteStatus != null) {
+        await statusRepository.upsertRemoteStatus(replyToRemoteStatus,
+            listRemoteId: null, conversationRemoteId: null);
+
+        inReplyToStatus =
+            await statusRepository.findByRemoteId(inReplyToRemoteId);
+      } else {
+        throw "Can't load inReplyToStatus";
+      }
     }
   }
 }

@@ -6,8 +6,9 @@ import 'package:fedi/app/status/post/post_status_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
+import 'package:fedi/app/ui/divider/fedi_light_grey_divider.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
-import 'package:fedi/app/ui/list/fedi_list_tile.dart';
+import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widgets/flutter_widgets.dart';
@@ -40,7 +41,10 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
     return Column(
       children: <Widget>[
         Expanded(
-          child: buildMessageList(context, statusThreadBloc),
+          child: Container(
+            color: FediColors.offWhite,
+            child: buildMessageList(context, statusThreadBloc),
+          ),
         ),
         FediUltraLightGreyDivider(),
         PostStatusWidget(
@@ -83,7 +87,8 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
         isJumpedToStartState = true;
         Future.delayed(Duration(milliseconds: 1000), () {
           if (itemScrollController.isAttached) {
-            var startStatusIndex = statusThreadBloc.initialStatusToFetchThreadIndex;
+            var startStatusIndex =
+                statusThreadBloc.initialStatusToFetchThreadIndex;
             itemScrollController.scrollTo(
                 index: startStatusIndex,
                 duration: Duration(milliseconds: 1000));
@@ -97,20 +102,33 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
 //        padding: EdgeInsets.symmetric(horizontal: 2.0, vertical: 10.0),
         itemCount: statuses.length,
         itemBuilder: (BuildContext context, int index) {
-          var isFirst = index == 0;
+          var status = statuses[index];
+          var isFirstInList = index == 0;
           return Provider.value(
-            value: statuses[index],
-            child: FediListTile(
-              isFirstInList: index == 0,
-              child: StatusListItemTimelineWidget.thread(
-                statusCallback: (context, status) {
-                  if (status.remoteId !=
-                      statusThreadBloc.initialStatusToFetchThread.remoteId) {
-                    goToStatusThreadPage(context, status);
-                  }
-                },
-                collapsible: false,
-                displayAccountHeader: !isFirst,
+            value: status,
+            child: Padding(
+              padding: isFirstInList
+                  ? const EdgeInsets.only(bottom: 3.0)
+                  : const EdgeInsets.symmetric(vertical: 4.0),
+              child: Container(
+                color: FediColors.white,
+                child: Column(
+                  children: [
+                    StatusListItemTimelineWidget.thread(
+                      statusCallback: (context, status) {
+                        if (status.remoteId !=
+                            statusThreadBloc
+                                .initialStatusToFetchThread.remoteId) {
+                          goToStatusThreadPage(context, status);
+                        }
+                      },
+                      collapsible: false,
+                      displayAccountHeader:
+                          !statusThreadBloc.isFirstStatusInThread(status),
+                    ),
+                    if (isFirstInList) FediLightGreyDivider(),
+                  ],
+                ),
               ),
             ),
           );

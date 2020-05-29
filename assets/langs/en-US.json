@@ -434,6 +434,11 @@
       }
     },
     "status": {
+      "thread": {
+        "start": {
+          "loading": "Loading start status"
+        }
+      },
       "list": {
         "new_items": {
           "action": {

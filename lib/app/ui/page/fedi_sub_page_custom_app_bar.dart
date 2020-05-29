@@ -20,6 +20,7 @@ class FediSubPageCustomAppBar extends StatelessWidget
   Widget build(BuildContext context) => AppBar(
         leading: leading,
         centerTitle: false,
+        titleSpacing: 0.0,
         brightness: Brightness.light,
         backgroundColor: FediColors.white,
         title: child,

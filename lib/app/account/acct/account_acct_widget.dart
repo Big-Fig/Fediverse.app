@@ -9,6 +9,7 @@ class AccountAcctWidget extends StatelessWidget {
       {this.textStyle = const TextStyle(
         color: FediColors.darkGrey,
         fontSize: 14.0,
+        fontWeight: FontWeight.normal
       )});
 
   @override
