@@ -10,6 +10,7 @@ import 'package:fedi/app/conversation/title/conversation_title_widget.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_shadows.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,12 +30,7 @@ class ConversationPage extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.15),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: Offset(0, -3), // changes position of shadow
-                  ),
+                  FediShadows.forTopBar
                 ],
               ),
               child: Row(

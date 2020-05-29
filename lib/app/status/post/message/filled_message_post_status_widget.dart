@@ -1,6 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/status/post/action/post_status_attach_media_action_widget.dart';
+import 'package:fedi/app/status/post/action/post_status_post_icon_action_widget.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/ui/edit/fedi_filled_edit_text_field.dart';
+import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -13,12 +18,41 @@ class FilledMessagePostStatusWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     IPostStatusBloc postStatusBloc = IPostStatusBloc.of(context);
 
-    return FediFilledEditTextField(
-      textEditingController: postStatusBloc.inputTextController,
-      hintText:
-          AppLocalizations.of(context).tr("app.status.post.field.message.hint"),
-      expanded: expanded,
-      autofocus: expanded,
+    return Row(
+      children: [
+        PostStatusAttachMediaActionWidget(
+          iconSize: FediSizes.filledEditTextIconSize,
+        ),
+        const SizedBox(
+          width: 8,
+        ),
+        Flexible(
+          child: FediFilledEditTextField(
+            hintText: AppLocalizations.of(context)
+                .tr("app.status.post.field.message.hint"),
+            textEditingController: postStatusBloc.inputTextController,
+            expanded: false,
+            autofocus: false,
+            ending: IconButton(
+              icon: Icon(
+                FediIcons.emoji,
+                size: FediSizes.filledEditTextIconSize,
+                color: FediColors.darkGrey,
+              ),
+              onPressed: () {
+                //
+              },
+            ),
+          ),
+        ),
+        const SizedBox(
+          width: 12,
+        ),
+        PostStatusPostTextActionWidget(),
+        const SizedBox(
+          width: 8,
+        ),
+      ],
     );
   }
 }

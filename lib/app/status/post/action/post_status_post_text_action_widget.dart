@@ -9,10 +9,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 typedef IPostStatusCallback = Function(BuildContext context);
 
-class PostStatusPostActionWidget extends StatelessWidget {
+class PostStatusPostTextActionWidget extends StatelessWidget {
   final IPostStatusCallback successCallback;
 
-  PostStatusPostActionWidget({this.successCallback});
+  PostStatusPostTextActionWidget({this.successCallback});
 
   @override
   Widget build(BuildContext context) {

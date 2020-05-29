@@ -21,7 +21,7 @@ class StatusThreadBloc extends DisposableOwner implements IStatusThreadBloc {
   IStatus initialStatusToFetchThread;
   final BehaviorSubject<List<IStatus>> _statusesSubject;
 
-  BehaviorSubject<bool> _firstStatusInThreadSubject;
+  final BehaviorSubject<bool> _firstStatusInThreadSubject;
 
   StatusThreadBloc({
     @required this.pleromaStatusService,

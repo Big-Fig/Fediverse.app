@@ -1,4 +1,5 @@
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_shadows.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -34,13 +35,7 @@ class FediListTile extends StatelessWidget {
       child: Container(
           decoration: BoxDecoration(
             color: FediColors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.15),
-                spreadRadius: 3,
-                blurRadius: 7,
-              )
-            ],
+            boxShadow: [FediShadows.forListTile],
           ),
           child: child),
     );
