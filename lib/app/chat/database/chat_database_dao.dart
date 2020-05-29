@@ -9,16 +9,17 @@ part 'chat_database_dao.g.dart';
 var _accountAliasId = "account";
 var _chatAccountsAliasId = "chatAccounts";
 
-@UseDao(tables: [DbChats],
-    queries: {
-      "countAll": "SELECT Count(*) FROM db_chats;",
-      "countById": "SELECT COUNT(*) FROM db_chats WHERE id = :id;",
-      "deleteById": "DELETE FROM db_chats WHERE id = :id;",
-      "clear": "DELETE FROM db_chats",
-      "getAll": "SELECT * FROM db_chats",
-      "findLocalIdByRemoteId": "SELECT id FROM db_chats WHERE remote_id = "
-          ":remoteId;",
-    })
+@UseDao(tables: [
+  DbChats
+], queries: {
+  "countAll": "SELECT Count(*) FROM db_chats;",
+  "countById": "SELECT COUNT(*) FROM db_chats WHERE id = :id;",
+  "deleteById": "DELETE FROM db_chats WHERE id = :id;",
+  "clear": "DELETE FROM db_chats",
+  "getAll": "SELECT * FROM db_chats",
+  "findLocalIdByRemoteId": "SELECT id FROM db_chats WHERE remote_id = "
+      ":remoteId;",
+})
 class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
   @override
   final AppDatabase db;
@@ -63,11 +64,12 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
   }
 
   JoinedSelectStatement<Table, DataClass> _findById(int id) =>
-      (select(db.dbChats)..where((chatMessage) => chatMessage.id.equals(id))).join(
-          populateChatJoin());
+      (select(db.dbChats)..where((chatMessage) => chatMessage.id.equals(id)))
+          .join(populateChatJoin());
 
   JoinedSelectStatement<Table, DataClass> _findByRemoteId(String remoteId) =>
-      (select(db.dbChats)..where((chatMessage) => chatMessage.remoteId.like(remoteId)))
+      (select(db.dbChats)
+            ..where((chatMessage) => chatMessage.remoteId.like(remoteId)))
           .join(populateChatJoin());
 
   Future<int> insert(Insertable<DbChat> entity, {InsertMode mode}) async =>
@@ -77,7 +79,7 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
       into(db.dbChats).insert(entity, mode: InsertMode.insertOrReplace);
 
   Future insertAll(
-      Iterable<Insertable<DbChat>> entities, InsertMode mode) async =>
+          Iterable<Insertable<DbChat>> entities, InsertMode mode) async =>
       await batch((batch) {
         batch.insertAll(db.dbChats, entities, mode: mode);
       });
@@ -102,11 +104,11 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
   SimpleSelectStatement<$DbChatsTable, DbChat> startSelectQuery() =>
       (select(db.dbChats));
 
-
-
   SimpleSelectStatement<$DbChatsTable, DbChat> addUpdatedAtBoundsWhere(
-      SimpleSelectStatement<$DbChatsTable, DbChat> query,
-      {@required DateTime minimumDateTimeExcluding, @required DateTime maximumDateTimeExcluding,}) {
+    SimpleSelectStatement<$DbChatsTable, DbChat> query, {
+    @required DateTime minimumDateTimeExcluding,
+    @required DateTime maximumDateTimeExcluding,
+  }) {
     var minimumExist = minimumDateTimeExcluding != null;
     var maximumExist = maximumDateTimeExcluding != null;
     assert(minimumExist || maximumExist);
@@ -128,7 +130,8 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
   Future<int> incrementUnreadCount(
       {@required String chatRemoteId, @required DateTime updatedAt}) {
     var update = "UPDATE db_chats "
-        "SET unread = unread + 1, updated_at = ${updatedAt.millisecondsSinceEpoch} "
+        "SET unread = unread + 1,"
+        " updated_at = ${updatedAt.millisecondsSinceEpoch ~/ 1000} "
         "WHERE remote_id = '$chatRemoteId'";
     var query = db.customUpdate(update, updates: {dbChats});
 
@@ -143,32 +146,31 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
   Selectable<int> totalAmountUnreadQuery() {
     var unreadCount = dbChats.unread.total();
 
-    final query = selectOnly(dbChats)
-      ..addColumns([unreadCount]);
+    final query = selectOnly(dbChats)..addColumns([unreadCount]);
 
     var mapped = query.map((row) => row.read(unreadCount));
     return mapped.map((value) => value.toInt());
   }
 
   SimpleSelectStatement<$DbChatsTable, DbChat> orderBy(
-      SimpleSelectStatement<$DbChatsTable, DbChat> query,
-      List<ChatOrderingTermData> orderTerms) =>
+          SimpleSelectStatement<$DbChatsTable, DbChat> query,
+          List<ChatOrderingTermData> orderTerms) =>
       query
-        ..orderBy(orderTerms.map((orderTerm) =>
-            (item) {
-          var expression;
-          switch (orderTerm.orderByType) {
-            case ChatOrderByType.remoteId:
-              expression = item.remoteId;
-              break;
-            case ChatOrderByType.updatedAt:
-              expression = item.updatedAt;
-              break;
-          }
-          return OrderingTerm(
-              expression: expression, mode: orderTerm.orderingMode);
-        }).toList());
-
+        ..orderBy(orderTerms
+            .map((orderTerm) => (item) {
+                  var expression;
+                  switch (orderTerm.orderByType) {
+                    case ChatOrderByType.remoteId:
+                      expression = item.remoteId;
+                      break;
+                    case ChatOrderByType.updatedAt:
+                      expression = item.updatedAt;
+                      break;
+                  }
+                  return OrderingTerm(
+                      expression: expression, mode: orderTerm.orderingMode);
+                })
+            .toList());
 
   List<DbChatPopulated> typedResultListToPopulated(
       List<TypedResult> typedResult) {
@@ -186,6 +188,7 @@ class ChatDao extends DatabaseAccessor<AppDatabase> with _$ChatDaoMixin {
         dbChat: typedResult.readTable(db.dbChats),
         dbAccount: typedResult.readTable(accountAlias));
   }
+
   List<Join<Table, DataClass>> populateChatJoin() {
     return [
       leftOuterJoin(
