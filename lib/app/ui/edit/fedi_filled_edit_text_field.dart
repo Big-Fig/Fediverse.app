@@ -9,6 +9,7 @@ class FediFilledEditTextField extends StatelessWidget {
   final TextEditingController textEditingController;
   final Widget leading;
   final Widget ending;
+  final FocusNode focusNode;
 
   FediFilledEditTextField({
     @required this.textEditingController,
@@ -17,6 +18,7 @@ class FediFilledEditTextField extends StatelessWidget {
     this.ending,
     @required this.expanded,
     @required this.autofocus,
+    this.focusNode,
   });
 
   @override
@@ -34,6 +36,7 @@ class FediFilledEditTextField extends StatelessWidget {
             if (containLeading) leading,
             Flexible(
               child: TextField(
+                focusNode: focusNode,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: hintText,

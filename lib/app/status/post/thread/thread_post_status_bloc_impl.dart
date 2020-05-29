@@ -18,8 +18,7 @@ class ThreadPostStatusBloc extends PostStatusBloc {
             pleromaStatusService: pleromaStatusService,
             statusRepository: statusRepository,
             pleromaMediaAttachmentService: pleromaMediaAttachmentService,
-            initialVisibility: PleromaVisibility.PUBLIC,
-            initialAccountsToMention: [inReplyToStatus.account]);
+            initialVisibility: PleromaVisibility.PUBLIC);
 
   static ThreadPostStatusBloc createFromContext(BuildContext context,
           {@required IStatus inReplyToStatus}) =>
@@ -33,4 +32,15 @@ class ThreadPostStatusBloc extends PostStatusBloc {
 
   @override
   bool get isPossibleToChangeVisibility => false;
+
+  @override
+  void onFocusChange(bool hasFocus) {
+    super.onFocusChange(hasFocus);
+
+    if(hasFocus) {
+      if(inputText?.isNotEmpty != true) {
+        addMentionByAccount(inReplyToStatus.account);
+      }
+    }
+  }
 }
