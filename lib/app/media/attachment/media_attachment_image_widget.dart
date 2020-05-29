@@ -18,6 +18,7 @@ class MediaAttachmentImageWidget extends StatelessWidget {
         },
         child: CachedNetworkImage(
           imageUrl: mediaAttachment.previewUrl,
+          fit: BoxFit.contain,
           placeholder: (context, url) => Center(
             child: Container(
               width: 30,

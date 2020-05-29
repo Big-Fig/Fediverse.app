@@ -183,14 +183,14 @@ class StatusListItemTimelineWidget extends StatelessWidget {
   Padding buildBody(bool isReply) {
     if (isReply && isFirstReplyAndDisplayReplyToStatus) {
       return Padding(
-        padding: EdgeInsets.fromLTRB(68.0, 8.0, 16.0, 16.0),
+        padding: EdgeInsets.fromLTRB(68.0  -16.0, 8.0, 0.0, 16.0),
         child: StatusBodyWidget(
           collapsible: collapsible,
         ),
       );
     } else {
       return Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 8.0),
         child: StatusBodyWidget(
           collapsible: collapsible,
         ),

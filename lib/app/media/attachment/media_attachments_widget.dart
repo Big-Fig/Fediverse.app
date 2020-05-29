@@ -17,7 +17,15 @@ class MediaAttachmentsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (mediaAttachments?.isNotEmpty == true) {
-      return buildChildren(context, mediaAttachments);
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical:4.0),
+        child: SizedBox(
+          width: double.infinity,
+          child: LimitedBox(
+              maxHeight: 350,
+              child: buildChildren(context, mediaAttachments)),
+        ),
+      );
     } else {
       return SizedBox.shrink();
     }
@@ -39,8 +47,8 @@ class MediaAttachmentsWidget extends StatelessWidget {
           return MediaAttachmentVideoWidget(attachment);
           break;
 
-        case MastodonMediaAttachmentType.gifv:
         case MastodonMediaAttachmentType.unknown:
+        case MastodonMediaAttachmentType.gifv:
         default:
           _logger.severe(() => "Can't display attachment = $attachment");
           return SizedBox.shrink();
@@ -48,23 +56,13 @@ class MediaAttachmentsWidget extends StatelessWidget {
       }
     }).toList();
     if (children.length == 1) {
-      return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: children.first,
-      );
+      return children.first;
     } else {
       return buildCarousel(context, children);
     }
   }
 
-  Widget buildCarousel(BuildContext context, List<Widget> children) {
-    var deviceWidth = MediaQuery.of(context).size.width;
-    var targetHeight = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
-
-    return LimitedBox(
-      maxWidth: deviceWidth,
-      maxHeight: targetHeight,
-      child: Carousel(
+  Widget buildCarousel(BuildContext context, List<Widget> children) => Carousel(
         animationDuration: Duration(seconds: 0),
         overlayShadowColors: Colors.transparent,
         overlayShadowSize: 0.0,
@@ -80,7 +78,5 @@ class MediaAttachmentsWidget extends StatelessWidget {
         dotBgColor: Colors.transparent,
         borderRadius: true,
         autoplay: false,
-      ),
-    );
-  }
+      );
 }
