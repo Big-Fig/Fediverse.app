@@ -7,10 +7,13 @@ class FediListTile extends StatelessWidget {
   final bool isFirstInList;
   final bool noPadding;
 
+  final oneSidePadding;
+
   const FediListTile({
     @required this.child,
     this.isFirstInList = false,
     this.noPadding = false,
+    this.oneSidePadding = 8.0,
   });
 
   @override
@@ -18,9 +21,9 @@ class FediListTile extends StatelessWidget {
     var edgeInsets;
     if (!noPadding) {
       if (isFirstInList) {
-        edgeInsets = EdgeInsets.only(bottom: 8.0);
+        edgeInsets = EdgeInsets.only(bottom: oneSidePadding);
       } else {
-        edgeInsets = EdgeInsets.symmetric(vertical: 8.0);
+        edgeInsets = EdgeInsets.symmetric(vertical: oneSidePadding);
       }
     } else {
       edgeInsets = EdgeInsets.all(0.0);

@@ -42,4 +42,6 @@ abstract class IStatusThreadBloc implements Disposable {
       {@required String idempotencyKey, @required String text});
 
   Future<bool> refresh();
+
+  bool isFirstStatusInThread(IStatus status);
 }

@@ -7,7 +7,7 @@ import 'package:fedi/app/status/emoji_reaction/status_emoji_reaction_list_widget
 import 'package:fedi/app/status/reblog/status_reblog_header_widget.dart';
 import 'package:fedi/app/status/reply/status_reply_loader_bloc.dart';
 import 'package:fedi/app/status/reply/status_reply_loader_bloc_impl.dart';
-import 'package:fedi/app/status/reply/status_reply_subheader_widget.dart';
+import 'package:fedi/app/status/reply/status_reply_sub_header_widget.dart';
 import 'package:fedi/app/status/reply/status_reply_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_bloc_impl.dart';
@@ -29,19 +29,19 @@ class StatusListItemTimelineWidget extends StatelessWidget {
   final bool displayActions;
   final bool displayAccountHeader;
   final bool displayThisThreadAction;
-  final bool displayOnlyOneReply;
+  final bool displayReplyToStatus;
   final bool isFirstReplyInThread;
   final bool collapsible;
 
-  bool get isFirstReplyOrDisplayAllReplies =>
-      (!displayOnlyOneReply || isFirstReplyInThread);
+  bool get isFirstReplyAndDisplayReplyToStatus =>
+      (displayReplyToStatus && isFirstReplyInThread);
 
   StatusListItemTimelineWidget._private({
     @required this.collapsible,
     @required this.displayActions,
     @required this.displayAccountHeader,
     @required this.displayThisThreadAction,
-    @required this.displayOnlyOneReply,
+    @required this.displayReplyToStatus,
     @required this.isFirstReplyInThread,
     this.statusCallback = goToStatusThreadPage,
   }) : super();
@@ -57,7 +57,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
         statusCallback: statusCallback,
         isFirstReplyInThread: isFirstReplyInThread,
         displayActions: displayActions,
-        displayOnlyOneReply: true,
+        displayReplyToStatus: true,
         displayThisThreadAction: true,
         displayAccountHeader: true,
       );
@@ -71,7 +71,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
         statusCallback: statusCallback,
         isFirstReplyInThread: false,
         displayActions: false,
-        displayOnlyOneReply: false,
+        displayReplyToStatus: false,
         displayThisThreadAction: false,
         displayAccountHeader: displayAccountHeader,
       );
@@ -80,11 +80,11 @@ class StatusListItemTimelineWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var status = Provider.of<IStatus>(context, listen: false);
 
-    _logger.finest(() => "build ${status.remoteId}");
+    _logger.finest(() => "build status?.remoteId ${status?.remoteId}");
 
     var isReply = status.isReply;
 
-    if (isReply && isFirstReplyOrDisplayAllReplies) {
+    if (isReply && isFirstReplyAndDisplayReplyToStatus) {
       return Column(
         children: [
           buildReplyToStatus(context),
@@ -115,7 +115,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
   Widget buildOriginalStatus(BuildContext context, bool isReply) {
     var status = Provider.of<IStatus>(context, listen: false);
     var isReplyAndFirstReplyOrDisplayAllReplies =
-        isReply && displayThisThreadAction && isFirstReplyOrDisplayAllReplies;
+        isReply && displayThisThreadAction && isFirstReplyAndDisplayReplyToStatus;
     return DisposableProxyProvider<IStatus, IStatusBloc>(
       update: (context, status, oldValue) => _createStatusBloc(context, status),
       child: GestureDetector(
@@ -130,7 +130,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
             if (status.isHaveReblog) StatusReblogHeaderWidget(),
             if (displayAccountHeader)
               Padding(
-                padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+                padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -139,14 +139,14 @@ class StatusListItemTimelineWidget extends StatelessWidget {
                   ],
                 ),
               ),
-            if (isReply && isFirstReplyOrDisplayAllReplies)
+            if (isReply)
               Padding(
-                padding: EdgeInsets.fromLTRB(68.0, 4.0, 16.0, 0.0),
+                padding: const EdgeInsets.fromLTRB(68.0, 4.0, 16.0, 0.0),
                 child: StatusReplySubHeaderWidget(),
               ),
-            buildBody(isReply && isFirstReplyOrDisplayAllReplies),
+            buildBody(isReply),
             StatusEmojiReactionListWidget(),
-            if (displayActions && !(isReply && isFirstReplyOrDisplayAllReplies))
+            if (displayActions && !(isReply && isFirstReplyAndDisplayReplyToStatus))
               Column(
                 children: [
                   const FediUltraLightGreyDivider(),
@@ -181,7 +181,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
   }
 
   Padding buildBody(bool isReply) {
-    if (isReply) {
+    if (isReply && isFirstReplyAndDisplayReplyToStatus) {
       return Padding(
         padding: EdgeInsets.fromLTRB(68.0, 8.0, 16.0, 16.0),
         child: StatusBodyWidget(
