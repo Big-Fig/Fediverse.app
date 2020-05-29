@@ -6,7 +6,12 @@ import 'package:flutter/material.dart';
 class EmojiTextWidget extends StatelessWidget {
   final EmojiText emojiText;
   final TextStyle textStyle;
-  const EmojiTextWidget({@required this.emojiText, this.textStyle});
+  final TextOverflow overflow;
+  const EmojiTextWidget({
+    @required this.emojiText,
+    this.textStyle,
+    this.overflow = TextOverflow.ellipsis,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +21,7 @@ class EmojiTextWidget extends StatelessWidget {
       return Text(
         emojiText.text,
         style: textStyle,
+        overflow: overflow,
       );
     }
   }
@@ -51,6 +57,7 @@ class EmojiTextWidget extends StatelessWidget {
         var text = Text(
           emojiOrText,
           style: textStyle,
+          overflow: overflow,
         );
         usernameWidget.add(text);
       }

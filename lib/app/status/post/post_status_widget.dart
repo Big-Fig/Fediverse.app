@@ -4,7 +4,7 @@ import 'package:fedi/app/media/attachment/upload/upload_media_attachment_grid_wi
 import 'package:fedi/app/status/post/action/post_status_attach_media_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_mention_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_nsfw_action_widget.dart';
-import 'package:fedi/app/status/post/action/post_status_post_action_widget.dart';
+import 'package:fedi/app/status/post/action/post_status_post_text_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_schedule_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_visibility_action_widget.dart';
 import 'package:fedi/app/status/post/mentions/post_status_mentions_widget.dart';
@@ -12,7 +12,6 @@ import 'package:fedi/app/status/post/message/filled_message_post_status_widget.d
 import 'package:fedi/app/status/post/message/transparent_message_post_status_widget.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/ui/divider/fedi_light_grey_divider.dart';
-import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +23,7 @@ class PostStatusWidget extends StatelessWidget {
   final bool goBackOnSuccess;
   final bool displayAccountAvatar;
   final bool isTransparent;
+  final bool showActionsRow;
 
   const PostStatusWidget(
       {this.showVisibilityAction = true,
@@ -31,6 +31,7 @@ class PostStatusWidget extends StatelessWidget {
       @required this.displayMentions,
       this.displayAccountAvatar = false,
       this.isTransparent = true,
+      this.showActionsRow = true,
       @required this.goBackOnSuccess});
 
   @override
@@ -50,9 +51,8 @@ class PostStatusWidget extends StatelessWidget {
               update: (context, value, previous) =>
                   value.mediaAttachmentGridBloc,
               child: UploadMediaAttachmentGridWidget()),
-          if (!displayAccountAvatar)
-            expanded ? FediLightGreyDivider() : FediUltraLightGreyDivider(),
-          buildActions()
+          if (!displayAccountAvatar && expanded) FediLightGreyDivider(),
+          if (showActionsRow) buildActions()
         ],
       ),
     );
@@ -73,7 +73,7 @@ class PostStatusWidget extends StatelessWidget {
               PostStatusScheduleActionWidget(),
             ],
           ),
-          PostStatusPostActionWidget(successCallback: (context) {
+          PostStatusPostTextActionWidget(successCallback: (context) {
             if (goBackOnSuccess) {
               Navigator.of(context).pop();
             }

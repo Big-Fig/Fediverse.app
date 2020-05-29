@@ -9,6 +9,7 @@ import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:fedi/app/ui/divider/fedi_light_grey_divider.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_shadows.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widgets/flutter_widgets.dart';
@@ -47,11 +48,18 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
           ),
         ),
         FediUltraLightGreyDivider(),
-        PostStatusWidget(
-          goBackOnSuccess: false,
-          expanded: false,
-          isTransparent: false,
-          displayMentions: false,
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [FediShadows.forBottomBar],
+          ),
+          child: PostStatusWidget(
+            goBackOnSuccess: false,
+            expanded: false,
+            isTransparent: false,
+            displayMentions: false,
+            showActionsRow: false,
+          ),
         )
       ],
     );
@@ -125,6 +133,7 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
                       collapsible: false,
                       displayAccountHeader:
                           !statusThreadBloc.isFirstStatusInThread(status),
+                      displayActions: isFirstInList,
                     ),
                     if (isFirstInList) FediLightGreyDivider(),
                   ],

@@ -64,13 +64,14 @@ class StatusListItemTimelineWidget extends StatelessWidget {
   static StatusListItemTimelineWidget thread({
     @required bool collapsible,
     @required bool displayAccountHeader,
+    @required bool displayActions,
     IStatusCallback statusCallback = goToStatusThreadPage,
   }) =>
       StatusListItemTimelineWidget._private(
         collapsible: collapsible,
         statusCallback: statusCallback,
         isFirstReplyInThread: false,
-        displayActions: false,
+        displayActions: displayActions,
         displayReplyToStatus: false,
         displayThisThreadAction: false,
         displayAccountHeader: displayAccountHeader,
@@ -80,7 +81,12 @@ class StatusListItemTimelineWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var status = Provider.of<IStatus>(context, listen: false);
 
-    _logger.finest(() => "build status?.remoteId ${status?.remoteId}");
+    if(status == null) {
+      _logger.warning(() => "status is null");
+      return SizedBox.shrink();
+    }
+
+    _logger.finest(() => "build status?.remoteId ${status.remoteId}");
 
     var isReply = status.isReply;
 
@@ -181,7 +187,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
   }
 
   Padding buildBody(bool isReply) {
-    if (isReply && isFirstReplyAndDisplayReplyToStatus) {
+    if (isReply && (!displayReplyToStatus || isFirstReplyInThread)) {
       return Padding(
         padding: EdgeInsets.fromLTRB(68.0  -16.0, 8.0, 0.0, 16.0),
         child: StatusBodyWidget(

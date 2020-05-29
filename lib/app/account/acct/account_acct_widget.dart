@@ -9,7 +9,7 @@ class AccountAcctWidget extends StatelessWidget {
       {this.textStyle = const TextStyle(
         color: FediColors.darkGrey,
         fontSize: 14.0,
-        fontWeight: FontWeight.normal
+        fontWeight: FontWeight.normal,
       )});
 
   @override
@@ -23,6 +23,7 @@ class AccountAcctWidget extends StatelessWidget {
 
           return Text(
             acct,
+            overflow: TextOverflow.ellipsis,
             style: textStyle,
           );
         });

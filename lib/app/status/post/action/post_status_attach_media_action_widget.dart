@@ -7,6 +7,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PostStatusAttachMediaActionWidget extends StatelessWidget {
+  final double iconSize;
+
+
+  PostStatusAttachMediaActionWidget({this.iconSize});
+
   @override
   Widget build(BuildContext context) {
     var postStatusBloc = IPostStatusBloc.of(context, listen: false);
@@ -33,7 +38,8 @@ class PostStatusAttachMediaActionWidget extends StatelessWidget {
 
           return IconButton(
             icon: Icon(
-              FediIcons.attachment,
+              FediIcons.camera,
+              size: iconSize,
               color: isPossibleToAttach
                   ? FediColors.darkGrey
                   : FediColors.lightGrey,

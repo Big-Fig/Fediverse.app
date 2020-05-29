@@ -42,7 +42,7 @@ class StatusAccountWidget extends StatelessWidget {
           },
           behavior: HitTestBehavior.translucent,
           child: Row(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisSize: MainAxisSize.max,
             children: <Widget>[
               const AccountAvatarWidget(
                 imageSize: 48,
@@ -54,8 +54,8 @@ class StatusAccountWidget extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  const AccountDisplayNameWidget(),
-                  const AccountAcctWidget()
+                  AccountDisplayNameWidget(),
+                  AccountAcctWidget()
                 ],
               ),
             ],
