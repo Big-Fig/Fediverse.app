@@ -83,7 +83,7 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
         isJumpedToStartState = true;
         Future.delayed(Duration(milliseconds: 1000), () {
           if (itemScrollController.isAttached) {
-            var startStatusIndex = statusThreadBloc.startStatusIndex;
+            var startStatusIndex = statusThreadBloc.initialStatusToFetchThreadIndex;
             itemScrollController.scrollTo(
                 index: startStatusIndex,
                 duration: Duration(milliseconds: 1000));
@@ -105,7 +105,7 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
               child: StatusListItemTimelineWidget.thread(
                 statusCallback: (context, status) {
                   if (status.remoteId !=
-                      statusThreadBloc.startStatus.remoteId) {
+                      statusThreadBloc.initialStatusToFetchThread.remoteId) {
                     goToStatusThreadPage(context, status);
                   }
                 },

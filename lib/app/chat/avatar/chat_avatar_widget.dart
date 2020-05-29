@@ -1,13 +1,14 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/avatar/account_avatar_widget.dart';
 import 'package:fedi/app/chat/chat_bloc.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ChatAvatarWidget extends StatelessWidget {
   final double baseAvatarSize;
 
-  const ChatAvatarWidget({this.baseAvatarSize = 36.0});
+  const ChatAvatarWidget({this.baseAvatarSize = FediSizes.appBarAvatarSize});
 
   @override
   Widget build(BuildContext context) {
