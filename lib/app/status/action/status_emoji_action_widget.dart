@@ -9,48 +9,37 @@ class StatusEmojiActionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: false);
-    return Row(
-      children: [
-        IconButton(
-          color: FediColors.darkGrey,
-          iconSize: 20.0,
-          icon: Icon(FediIcons.emoji),
-          onPressed: () {
-            _showEmojiPicker(context, statusBloc);
-          },
-        ),
-        StreamBuilder<int>(
-            stream: statusBloc.reblogPlusOriginalEmojiReactionsCountStream,
-            initialData: statusBloc.reblogPlusOriginalEmojiReactionsCount,
-            builder: (context, snapshot) {
-              var favouritesCount = snapshot.data;
-              if (favouritesCount == null) {
-                return SizedBox.shrink();
-              }
-              return GestureDetector(
-                  onTap: () {
-                    _showEmojiPicker(context, statusBloc);
-                  },
-                  child: Text(
-                    favouritesCount.toString(),
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: FediColors.darkGrey,
-                    ),
-                  ));
-            }),
-      ],
-    );
+    return Row(children: [
+      IconButton(
+        color: FediColors.darkGrey,
+        iconSize: 20.0,
+        icon: Icon(FediIcons.emoji),
+        onPressed: () {
+          _showEmojiPicker(context, statusBloc);
+        },),
+      StreamBuilder<int>(
+          stream: statusBloc.reblogPlusOriginalEmojiReactionsCountStream,
+          initialData: statusBloc.reblogPlusOriginalEmojiReactionsCount,
+          builder: (context, snapshot) {
+            var favouritesCount = snapshot.data;
+            if (favouritesCount == null) {
+              return SizedBox.shrink();
+            }
+            return GestureDetector(onTap: () {
+              _showEmojiPicker(context, statusBloc);
+            },
+                child: Text(favouritesCount.toString(), style: TextStyle(
+                  fontSize: 12, color: FediColors.darkGrey,),));
+          }),
+    ],);
   }
 
   void _showEmojiPicker(BuildContext context, IStatusBloc statusBloc) {
-    showModalBottomSheet(
-        context: context,
-        builder: (context) => StatusEmojiReactionPickerWidget(
-              emojiReactionSelectedCallback: (String emojiName, String emoji) {
-                Navigator.of(context).pop();
-                statusBloc.toggleEmojiReaction(emoji: emoji);
-              },
-            ));
+    showEmojiPickerModalPopup(context,
+        emojiReactionSelectedCallback: (String emojiName, String emoji) {
+          statusBloc.toggleEmojiReaction(emoji: emoji);
+        });
   }
+
+
 }

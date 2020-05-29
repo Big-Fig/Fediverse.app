@@ -20,4 +20,6 @@ abstract class IChatPostMessageBloc implements Disposable {
   Stream<String> get inputTextStream;
 
   Future<bool> postMessage();
+
+  void appendText(String textToAppend);
 }

@@ -68,4 +68,6 @@ abstract class IPostStatusBloc implements Disposable {
   Stream<bool> get isHaveMentionedAcctsStream;
 
   Future<bool> postStatus();
+
+  void appendText(String text);
 }

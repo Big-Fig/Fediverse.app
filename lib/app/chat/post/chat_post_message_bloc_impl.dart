@@ -132,6 +132,11 @@ class ChatPostMessageBloc extends DisposableOwner
     return textIsNotEmpty || mediaAttached;
   }
 
+  @override
+  void appendText(String textToAppend) {
+    inputTextController.text = "$inputText$textToAppend";
+  }
+
   static ChatPostMessageBloc createFromContext(BuildContext context,
           {@required String chatRemoteId}) =>
       ChatPostMessageBloc(

@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/status/emoji_reaction/status_emoji_reaction_picker_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_attach_media_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_post_icon_action_widget.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
@@ -33,16 +34,7 @@ class FilledMessagePostStatusWidget extends StatelessWidget {
             textEditingController: postStatusBloc.inputTextController,
             expanded: false,
             autofocus: false,
-            ending: IconButton(
-              icon: Icon(
-                FediIcons.emoji,
-                size: FediSizes.filledEditTextIconSize,
-                color: FediColors.darkGrey,
-              ),
-              onPressed: () {
-                //
-              },
-            ),
+            ending: buildEmojiPicker(context, postStatusBloc),
           ),
         ),
         const SizedBox(
@@ -54,5 +46,21 @@ class FilledMessagePostStatusWidget extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  IconButton buildEmojiPicker(BuildContext context, IPostStatusBloc postStatusBloc) {
+    return IconButton(
+            icon: Icon(
+              FediIcons.emoji,
+              size: FediSizes.filledEditTextIconSize,
+              color: FediColors.darkGrey,
+            ),
+            onPressed: () {
+              showEmojiPickerModalPopup(context,
+                  emojiReactionSelectedCallback: (String emojiName, String emoji) {
+                    postStatusBloc.appendText( "$emoji");
+                  });
+            },
+          );
   }
 }
