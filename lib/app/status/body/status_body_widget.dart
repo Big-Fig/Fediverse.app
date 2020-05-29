@@ -10,6 +10,8 @@ import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
 
+const _defaultPadding = EdgeInsets.symmetric(horizontal: 16.0);
+
 class StatusBodyWidget extends StatelessWidget {
   final bool collapsible;
 
@@ -33,17 +35,25 @@ class StatusBodyWidget extends StatelessWidget {
                   if (containsSpoilerAndDisplayEnabled) {
                     return Column(
                       children: <Widget>[
-                        StatusSpoilerWidget(),
-                        collapsible
-                            ? StatusContentWithEmojisWidget(
-                                collapsible: true,
-                              )
-                            : StatusContentWithEmojisWidget(
-                                collapsible: false,
-                              ),
-                        if (collapsible && statusBloc.isPossibleToCollapse)
-                          buildCollapsibleButton(context, statusBloc),
-                        StatusCardWidget(),
+                        Padding(
+                          padding: _defaultPadding,
+                          child: Column(
+                            children: [
+                              StatusSpoilerWidget(),
+                              collapsible
+                                  ? StatusContentWithEmojisWidget(
+                                      collapsible: true,
+                                    )
+                                  : StatusContentWithEmojisWidget(
+                                      collapsible: false,
+                                    ),
+                              if (collapsible &&
+                                  statusBloc.isPossibleToCollapse)
+                                buildCollapsibleButton(context, statusBloc),
+                              StatusCardWidget(),
+                            ],
+                          ),
+                        ),
                         StreamBuilder<List<IPleromaMediaAttachment>>(
                             stream: statusBloc.mediaAttachmentsStream,
                             initialData: statusBloc.mediaAttachments,
@@ -54,11 +64,14 @@ class StatusBodyWidget extends StatelessWidget {
                       ],
                     );
                   } else {
-                    return Column(
-                      children: <Widget>[
-                        StatusSpoilerWidget(),
-                        StatusSpoilerAlertWidget(),
-                      ],
+                    return Padding(
+                      padding: _defaultPadding,
+                      child: Column(
+                        children: <Widget>[
+                          StatusSpoilerWidget(),
+                          StatusSpoilerAlertWidget(),
+                        ],
+                      ),
                     );
                   }
                 });
