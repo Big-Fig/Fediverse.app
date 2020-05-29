@@ -35,3 +35,16 @@ class StatusEmojiReactionPickerWidget extends StatelessWidget {
     );
   }
 }
+
+void showEmojiPickerModalPopup(BuildContext context, {EmojiReactionSelectedCallback emojiReactionSelectedCallback}) {
+  showModalBottomSheet(
+      context: context,
+      builder: (context) => StatusEmojiReactionPickerWidget(
+        emojiReactionSelectedCallback: (String emojiName, String emoji) {
+          if(emojiReactionSelectedCallback != null) {
+            emojiReactionSelectedCallback(emojiName, emoji);
+          }
+          Navigator.of(context).pop();
+        },
+      ));
+}

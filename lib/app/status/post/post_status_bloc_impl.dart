@@ -370,4 +370,10 @@ abstract class PostStatusBloc extends DisposableOwner
   void clearSchedule() {
     schedule(null);
   }
+
+
+  @override
+  void appendText(String textToAppend) {
+    inputTextController.text = "$inputText$textToAppend";
+  }
 }

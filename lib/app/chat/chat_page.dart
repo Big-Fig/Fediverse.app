@@ -10,6 +10,7 @@ import 'package:fedi/app/chat/post/chat_post_message_bloc_impl.dart';
 import 'package:fedi/app/chat/title/chat_title_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/page/fedi_sub_page_custom_app_bar.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -25,15 +26,9 @@ class ChatPage extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            FediSubPageTitleAppBar(
-              leading: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  FediBackIconButton(),
-                  buildChatAccountsWidget(context, chatBloc)
-                ],
-              ),
+            FediSubPageCustomAppBar(
+              leading: FediBackIconButton(),
+              child: buildChatAccountsWidget(context, chatBloc),
             ),
             Expanded(child: ChatWidget())
           ],
