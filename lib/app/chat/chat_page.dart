@@ -10,6 +10,7 @@ import 'package:fedi/app/chat/post/chat_post_message_bloc_impl.dart';
 import 'package:fedi/app/chat/title/chat_title_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,20 +25,8 @@ class ChatPage extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            Container(
-              height: 56,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.15),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: Offset(0, -3), // changes position of shadow
-                  ),
-                ],
-              ),
-              child: Row(
+            FediSubPageTitleAppBar(
+              leading: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
                 children: [
@@ -46,8 +35,7 @@ class ChatPage extends StatelessWidget {
                 ],
               ),
             ),
-            Expanded(
-                child: ChatWidget())
+            Expanded(child: ChatWidget())
           ],
         ),
       ),

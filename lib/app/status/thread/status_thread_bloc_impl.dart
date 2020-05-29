@@ -1,3 +1,4 @@
+import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
@@ -17,15 +18,20 @@ class StatusThreadBloc extends DisposableOwner implements IStatusThreadBloc {
   final IPleromaStatusService pleromaStatusService;
   final IStatusRepository statusRepository;
   @override
-  IStatus startStatus;
+  IStatus initialStatusToFetchThread;
   final BehaviorSubject<List<IStatus>> _statusesSubject;
+
+  BehaviorSubject<bool> _firstStatusInThreadSubject;
 
   StatusThreadBloc({
     @required this.pleromaStatusService,
     @required this.statusRepository,
-    @required this.startStatus,
-  }) : _statusesSubject = BehaviorSubject.seeded([startStatus]) {
+    @required this.initialStatusToFetchThread,
+  })  : _statusesSubject = BehaviorSubject.seeded([initialStatusToFetchThread]),
+        _firstStatusInThreadSubject =
+            BehaviorSubject.seeded(!initialStatusToFetchThread.isReply) {
     addDisposable(subject: _statusesSubject);
+    addDisposable(subject: _firstStatusInThreadSubject);
   }
 
   @override
@@ -70,7 +76,7 @@ class StatusThreadBloc extends DisposableOwner implements IStatusThreadBloc {
     assert(text?.isNotEmpty == true);
 
     String status = "$mentionAcctsListString $text";
-    String inReplyToId = startStatus.remoteId;
+    String inReplyToId = initialStatusToFetchThread.remoteId;
 
     var remoteStatus = await pleromaStatusService.postStatus(
         data: PleromaPostStatus(
@@ -95,30 +101,33 @@ class StatusThreadBloc extends DisposableOwner implements IStatusThreadBloc {
       _logger.finest(() => "refresh");
       // update start status
       var updatedStartRemoteStatus = await pleromaStatusService.getStatus(
-          statusRemoteId: startStatus.remoteId);
+          statusRemoteId: initialStatusToFetchThread.remoteId);
       if (updatedStartRemoteStatus != null) {
         // don't await because we don't need it
         unawaited(statusRepository.updateLocalStatusByRemoteStatus(
-            oldLocalStatus: startStatus,
+            oldLocalStatus: initialStatusToFetchThread,
             newRemoteStatus: updatedStartRemoteStatus));
-        startStatus = mapRemoteStatusToLocalStatus(updatedStartRemoteStatus);
+        initialStatusToFetchThread =
+            mapRemoteStatusToLocalStatus(updatedStartRemoteStatus);
 
-        _logger.finest(() => "refresh getStatus startStatus $startStatus ");
+        _logger.finest(
+            () => "refresh getStatus startStatus $initialStatusToFetchThread ");
       }
 
       // update context
       var remoteStatusContext = await pleromaStatusService.getStatusContext(
-          statusRemoteId: startStatus.remoteId);
+          statusRemoteId: initialStatusToFetchThread.remoteId);
 
       List<IStatus> newStatuses = [];
       newStatuses.addAll(remoteStatusContext.ancestors
           .map((remoteStatus) => mapRemoteStatusToLocalStatus(remoteStatus)));
-      newStatuses.add(startStatus);
+      newStatuses.add(initialStatusToFetchThread);
       newStatuses.addAll(remoteStatusContext.descendants
           .map((remoteStatus) => mapRemoteStatusToLocalStatus(remoteStatus)));
       _logger.finest(
           () => "refresh getStatusContext newStatuses ${newStatuses.length} ");
       _statusesSubject.add(newStatuses);
+      _firstStatusInThreadSubject.add(true);
       return true;
     } catch (error, stackTrace) {
       _logger.severe(() => "refresh error ", error, stackTrace);
@@ -127,5 +136,43 @@ class StatusThreadBloc extends DisposableOwner implements IStatusThreadBloc {
   }
 
   @override
-  int get startStatusIndex => statuses.indexOf(startStatus);
+  int get initialStatusToFetchThreadIndex =>
+      statuses.indexOf(initialStatusToFetchThread);
+
+  @override
+  IAccount get firstStatusAccountInThread => firstStatusInThread?.account;
+
+  @override
+  Stream<IAccount> get firstStatusAccountInThreadStream =>
+      firstStatusInThreadStream
+          .map((firstStatusInThread) => firstStatusInThread?.account);
+
+  @override
+  IStatus get firstStatusInThread =>
+      _calculateFirstStatus(statuses, firstStatusInThreadLoaded);
+
+  @override
+  Stream<IStatus> get firstStatusInThreadStream => Rx.combineLatest2(
+      statusesStream,
+      firstStatusInThreadLoadedStream,
+      (statuses, threadContextLoaded) =>
+          _calculateFirstStatus(statuses, threadContextLoaded));
+
+  @override
+  bool get firstStatusInThreadLoaded => _firstStatusInThreadSubject.value;
+
+  @override
+  Stream<bool> get firstStatusInThreadLoadedStream =>
+      _firstStatusInThreadSubject.stream;
+
+  IStatus _calculateFirstStatus(
+    List<IStatus> statuses,
+    bool threadContextLoaded,
+  ) {
+    if (threadContextLoaded) {
+      return statuses.first;
+    } else {
+      return null;
+    }
+  }
 }
