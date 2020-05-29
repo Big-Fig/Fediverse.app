@@ -36,16 +36,45 @@ class StatusListItemTimelineWidget extends StatelessWidget {
   bool get isFirstReplyOrDisplayAllReplies =>
       (!displayOnlyOneReply || isFirstReplyInThread);
 
-
-  StatusListItemTimelineWidget({
+  StatusListItemTimelineWidget._private({
     @required this.collapsible,
-    this.displayActions = true,
-    this.displayAccountHeader = true,
-    this.displayThisThreadAction = true,
-    this.displayOnlyOneReply = true,
-    this.isFirstReplyInThread = true,
+    @required this.displayActions,
+    @required this.displayAccountHeader,
+    @required this.displayThisThreadAction,
+    @required this.displayOnlyOneReply,
+    @required this.isFirstReplyInThread,
     this.statusCallback = goToStatusThreadPage,
   }) : super();
+
+  static StatusListItemTimelineWidget list({
+    @required bool collapsible,
+    bool isFirstReplyInThread = true,
+    bool displayActions = true,
+    IStatusCallback statusCallback = goToStatusThreadPage,
+  }) =>
+      StatusListItemTimelineWidget._private(
+        collapsible: collapsible,
+        statusCallback: statusCallback,
+        isFirstReplyInThread: isFirstReplyInThread,
+        displayActions: displayActions,
+        displayOnlyOneReply: true,
+        displayThisThreadAction: true,
+        displayAccountHeader: true,
+      );
+  static StatusListItemTimelineWidget thread({
+    @required bool collapsible,
+    @required bool displayAccountHeader,
+    IStatusCallback statusCallback = goToStatusThreadPage,
+  }) =>
+      StatusListItemTimelineWidget._private(
+        collapsible: collapsible,
+        statusCallback: statusCallback,
+        isFirstReplyInThread: false,
+        displayActions: false,
+        displayOnlyOneReply: false,
+        displayThisThreadAction: false,
+        displayAccountHeader: displayAccountHeader,
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +114,8 @@ class StatusListItemTimelineWidget extends StatelessWidget {
 
   Widget buildOriginalStatus(BuildContext context, bool isReply) {
     var status = Provider.of<IStatus>(context, listen: false);
-    var isReplyAndFirstReplyOrDisplayAllReplies = isReply && displayThisThreadAction && isFirstReplyOrDisplayAllReplies;
+    var isReplyAndFirstReplyOrDisplayAllReplies =
+        isReply && displayThisThreadAction && isFirstReplyOrDisplayAllReplies;
     return DisposableProxyProvider<IStatus, IStatusBloc>(
       update: (context, status, oldValue) => _createStatusBloc(context, status),
       child: GestureDetector(

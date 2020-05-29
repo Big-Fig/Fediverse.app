@@ -1,12 +1,7 @@
 import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
 import 'package:fedi/app/status/pagination/list/status_pagination_list_base_widget.dart';
-import 'package:fedi/app/status/status_bloc.dart';
-import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
-import 'package:fedi/collapsible/collapsible_bloc.dart';
-import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -45,7 +40,7 @@ class StatusPaginationListTimelineWidget
               value: items[index],
               child: FediListTile(
                 isFirstInList: index == 0 && header == null,
-                child: StatusListItemTimelineWidget(
+                child: StatusListItemTimelineWidget.list(
                   collapsible: true,
                 ),
               ),

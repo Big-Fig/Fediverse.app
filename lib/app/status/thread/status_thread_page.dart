@@ -16,6 +16,7 @@ class StatusThreadPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      asd
         appBar: FediSubPageTitleAppBar(
             title: AppLocalizations.of(context).tr("app.status.thread.title")),
         body: StatusThreadWidget());

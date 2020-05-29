@@ -585,9 +585,6 @@
           "progress": "Loading original status",
           "failed": "Failed to load original status"
         }
-      },
-      "thread": {
-        "title": "Status thread"
       }
     },
     "tos": {
