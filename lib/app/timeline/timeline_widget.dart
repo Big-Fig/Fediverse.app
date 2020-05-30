@@ -1,8 +1,6 @@
 import 'package:fedi/app/status/pagination/list/status_pagination_list_media_widget.dart';
 import 'package:fedi/app/status/pagination/list/status_pagination_list_timeline_widget.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preferences_bloc.dart';
-import 'package:fedi/app/timeline/timeline_header_widget.dart';
-import 'package:fedi/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/collapsible/collapsible_bloc.dart';
 import 'package:fedi/collapsible/collapsible_bloc_impl.dart';
 import 'package:fedi/collapsible/toggle_collapsible_overlay_widget.dart';
