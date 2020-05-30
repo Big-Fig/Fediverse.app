@@ -49,7 +49,8 @@ class TimelineTabsWidget extends StatelessWidget {
               SliverAppBar(
                 floating: true,
                 pinned: true,
-                snap: false,
+                snap: true,
+//                snap: false,
                 leading: SABT(
                   child: GestureDetector(
                     onTap: () {
@@ -86,7 +87,7 @@ class TimelineTabsWidget extends StatelessWidget {
                 actions: [Container()],
 
                 flexibleSpace: FlexibleSpaceBar(
-//                  collapseMode: CollapseMode.pin,
+                  collapseMode: CollapseMode.pin,
 //                  background: Image.asset('assets/forest.jpg', fit: BoxFit.cover),
                     background: Semantics(
                   container: true,
@@ -103,42 +104,6 @@ class TimelineTabsWidget extends StatelessWidget {
                   ),
                 )),
               )
-
-//              buildTabBar(context, tabs, timelinesTabsBloc)
-//              SliverOverlapAbsorber(
-//                // This widget takes the overlapping behavior of the SliverAppBar,
-//                // and redirects it to the SliverOverlapInjector below. If it is
-//                // missing, then it is possible for the nested "inner" scroll view
-//                // below to end up under the SliverAppBar even when the inner
-//                // scroll view thinks it has not been scrolled.
-//                // This is not necessary if the "headerSliverBuilder" only builds
-//                // widgets that do not overlap the next sliver.
-//                handle:
-//                    NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-//                sliver:
-//
-//
-//                SliverAppBar(
-//                  title: const Text('Books'),
-//                  // This is the title in the app bar.
-//                  pinned: true,
-//                  expandedHeight: 150.0,
-//                  // The "forceElevated" property causes the SliverAppBar to show
-//                  // a shadow. The "innerBoxIsScrolled" parameter is true when the
-//                  // inner scroll view is scrolled beyond its "zero" point, i.e.
-//                  // when it appears to be scrolled below the SliverAppBar.
-//                  // Without this, there are cases where the shadow would appear
-//                  // or not appear inappropriately, because the SliverAppBar is
-//                  // not actually aware of the precise position of the inner
-//                  // scroll views.
-//                  forceElevated: innerBoxIsScrolled,
-//                  bottom: TabBar(
-//                    // These are the widgets to put in each tab in the tab bar.
-//                    tabs: timelinesTabsBloc.tabs.map((TimelineTab tab) => Tab
-//                      (text: tab.toString())).toList(),
-//                  ),
-//                ),
-//              ),
             ];
           },
           body: Builder(
@@ -152,66 +117,7 @@ class TimelineTabsWidget extends StatelessWidget {
                   child: AnnotatedRegion<SystemUiOverlayStyle>(
                       value: SystemUiOverlayStyle.dark,
                       child: buildBodyWidget(context)));
-              return FediHomeTabContainer(
-                topHeaderHeightInSafeArea:
-                    FediSizes.headerImageSingleRowSafeAreaHeight,
-                topBar: buildTabBar(context, tabs, timelinesTabsBloc),
-                body: buildBodyWidget(context),
-              );
-//              return CustomScrollView(
-//                // The "controller" and "primary" members should be left
-//                // unset, so that the NestedScrollView can control this
-//                // inner scroll view.
-//                // If the "controller" property is set, then this scroll
-//                // view will not be associated with the NestedScrollView.
-//                // The PageStorageKey should be unique to this ScrollView;
-//                // it allows the list to remember its scroll position when
-//                // the tab view is not on the screen.
-//                key: PageStorageKey<String>("name"),
-//                slivers: <Widget>[
-//                  SliverOverlapInjector(
-//                    // This is the flip side of the SliverOverlapAbsorber
-//                    // above.
-//                    handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
-//                        context),
-//                  ),
-//                  SliverPadding(
-//                    padding: const EdgeInsets.all(8.0),
-//                    // In this example, the inner scroll view has
-//                    // fixed-height list items, hence the use of
-//                    // SliverFixedExtentList. However, one could use any
-//                    // sliver widget here, e.g. SliverList or SliverGrid.
-//                    sliver: SliverFixedExtentList(
-//                      // The items in this example are fixed to 48 pixels
-//                      // high. This matches the Material Design spec for
-//                      // ListTile widgets.
-//                      itemExtent: 48.0,
-//                      delegate: SliverChildBuilderDelegate(
-//                        (BuildContext context, int index) {
-//                          // This builder is called for each child.
-//                          // In this example, we just number each list item.
-//                          return ListTile(
-//                            title: Text('Item $index'),
-//                          );
-//                        },
-//                        // The childCount of the SliverChildBuilderDelegate
-//                        // specifies how many children this inner list
-//                        // has. In this example, each tab has a list of
-//                        // exactly 30 items, but this is arbitrary.
-//                        childCount: 30,
-//                      ),
-//                    ),
-//                  ),
-//                ],
-//              );
             },
-
-//            child: FediHomeTabContainer(
-//              topHeaderHeightInSafeArea:
-//                  FediSizes.headerImageSingleRowSafeAreaHeight,
-//              topBar: buildTabBar(context, tabs, timelinesTabsBloc),
-//              body: buildBodyWidget(context),
-//            ),
           ),
         ));
   }
