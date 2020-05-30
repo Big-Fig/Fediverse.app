@@ -23,36 +23,30 @@ class HomePage extends StatelessWidget {
 
     var homeBloc = IHomeBloc.of(context, listen: false);
 
-    return Semantics(
-      container: true,
-      child: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.light,
-        child: StreamBuilder<HomeTab>(
-            stream: homeBloc.selectedTabStream,
-            initialData: homeBloc.selectedTab,
-            builder: (context, snapshot) {
-              var selectedTab = snapshot.data;
+    return StreamBuilder<HomeTab>(
+        stream: homeBloc.selectedTabStream,
+        initialData: homeBloc.selectedTab,
+        builder: (context, snapshot) {
+          var selectedTab = snapshot.data;
 
-              _logger.finest(() => "selectedTab $selectedTab");
+          _logger.finest(() => "selectedTab $selectedTab");
 
-              if (selectedTab == null) {
-                return SizedBox.shrink();
-              }
-              return Scaffold(
-                body: buildBody(context, selectedTab),
-                bottomNavigationBar: Container(
-                  height: 58,
-                  child: Column(
-                    children: [
-                      const FediUltraLightGreyDivider(),
-                      const HomePageBottomNavigationBarWidget(),
-                    ],
-                  ),
-                ),
-              );
-            }),
-      ),
-    );
+          if (selectedTab == null) {
+            return SizedBox.shrink();
+          }
+          return Scaffold(
+            body: buildBody(context, selectedTab),
+            bottomNavigationBar: Container(
+              height: 58,
+              child: Column(
+                children: [
+                  const FediUltraLightGreyDivider(),
+                  const HomePageBottomNavigationBarWidget(),
+                ],
+              ),
+            ),
+          );
+        });
   }
 
   Widget buildBody(BuildContext context, HomeTab selectedTab) {
@@ -63,12 +57,17 @@ class HomePage extends StatelessWidget {
         );
         break;
       case HomeTab.notifications:
-        return const NotificationsHomeTabPage(
-            key: PageStorageKey<String>("NotificationsHomeTabPage"));
+        return Semantics(
+            container: true,
+            child: AnnotatedRegion<SystemUiOverlayStyle>(
+                value: SystemUiOverlayStyle.light,
+                child: const NotificationsHomeTabPage(
+                    key: PageStorageKey<String>("NotificationsHomeTabPage")))
+        );
         break;
       case HomeTab.conversations:
         var myAccountSettingsBloc =
-            IMyAccountSettingsBloc.of(context, listen: false);
+        IMyAccountSettingsBloc.of(context, listen: false);
 
         return StreamBuilder<bool>(
             stream: myAccountSettingsBloc.isNewChatsEnabledStream,
@@ -77,17 +76,32 @@ class HomePage extends StatelessWidget {
               var isNewChatsEnabled = snapshot.data;
 
               if (isNewChatsEnabled == true) {
-                return const ChatsHomeTabPage(
-                    key: PageStorageKey<String>("ChatsHomeTabPage"));
+                return Semantics(
+                    container: true,
+                    child: AnnotatedRegion<SystemUiOverlayStyle>(
+                        value: SystemUiOverlayStyle.light,
+                        child: const ChatsHomeTabPage(
+                            key: PageStorageKey<String>("ChatsHomeTabPage")))
+                );
               } else {
-                return const ConversationsHomeTabPage(
-                    key: PageStorageKey<String>("ConversationsHomeTabPage"));
+                return Semantics(
+                    container: true,
+                    child: AnnotatedRegion<SystemUiOverlayStyle>(
+                        value: SystemUiOverlayStyle.light,
+                        child: const ConversationsHomeTabPage(
+                            key: PageStorageKey<String>
+                              ("ConversationsHomeTabPage")))
+                );
               }
             });
 
         break;
       case HomeTab.account:
-        return const AccountHomeTabPage();
+        return Semantics(
+            container: true,
+            child: AnnotatedRegion<SystemUiOverlayStyle>(
+                value: SystemUiOverlayStyle.light,
+                child: const AccountHomeTabPage()));
         break;
     }
 

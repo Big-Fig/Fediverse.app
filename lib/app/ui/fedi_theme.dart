@@ -15,9 +15,11 @@ Map<int, Color> _primaryColorSwatch = {
 };
 
 final ThemeData fediTheme = ThemeData(
-  fontFamily: "Rubik",
-  primarySwatch: MaterialColor(0xff00BCEC, _primaryColorSwatch),
-  primaryColor: FediColors.primaryColor,
-  primaryColorDark: FediColors.primaryColorDark,
+    fontFamily: "Rubik",
+    primarySwatch: MaterialColor(0xff00BCEC, _primaryColorSwatch),
+    primaryColor: FediColors.primaryColor,
+    primaryColorDark: FediColors.primaryColorDark,
+//    appBarTheme: AppBarTheme(brightness: Brightness.light)
+//    brightness: Brightness.dark
 //  accentColor: FediColors.secondaryColor,
-);
+    );

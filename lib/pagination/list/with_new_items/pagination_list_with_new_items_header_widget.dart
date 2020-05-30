@@ -27,7 +27,7 @@ class PaginationListWithNewItemsHeaderWidget extends StatelessWidget {
         Align(
             alignment: Alignment.topCenter,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(24.0),
               child: buildNewItemsHeaderWidget(paginationWithUpdatesListBloc),
             )),
       ],
