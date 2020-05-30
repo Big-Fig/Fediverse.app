@@ -44,11 +44,6 @@ class TimelineWidget extends StatelessWidget {
                   const StatusPaginationListTimelineWidget(
                     key: PageStorageKey<String>(
                         "TimelinePaginationListSimpleWidget"),
-//                    header: FediListTile(
-//                      isFirstInList: true,
-//                      child: TimelineHeaderWidget(),
-//                    ),
-//                    alwaysShowHeader: true,
                     needWatchLocalRepositoryForUpdates: true,
                   ),
                   const Align(

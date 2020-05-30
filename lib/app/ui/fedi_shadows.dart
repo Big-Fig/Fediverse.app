@@ -2,24 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class FediShadows {
-  static const BoxShadow forBottomBar = BoxShadow(
+  static const BoxShadow _shadow = BoxShadow(
     color: Color(0x26000000),
     // 15%
-    spreadRadius: 5,
-    blurRadius: 7,
-    offset: Offset(0, 3), // changes position of shadow
+    blurRadius: 12,
+    offset: Offset(0, 1),
   );
-  static const BoxShadow forTopBar = BoxShadow(
-    color: Color(0x26000000),
-    // 15%
-    spreadRadius: 5,
-    blurRadius: 7,
-    offset: Offset(0, -3), // changes position of shadow
-  );
-  static const BoxShadow forListTile = BoxShadow(
-    color: Color(0x26000000),
-    // 15%
-    spreadRadius: 5,
-    blurRadius: 7,
-  );
+  static const BoxShadow forBottomBar = _shadow;
+  static const BoxShadow forTopBar = _shadow;
+  static const BoxShadow forListTile = _shadow;
 }

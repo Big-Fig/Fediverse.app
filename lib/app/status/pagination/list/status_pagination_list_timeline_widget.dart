@@ -39,8 +39,8 @@ class StatusPaginationListTimelineWidget
             return Provider<IStatus>.value(
               value: items[index],
               child: FediListTile(
-//                isFirstInList: index == 0 && header == null,
-                isFirstInList: false,
+                isFirstInList: index == 0 && header == null,
+//                isFirstInList: false,
                 child: StatusListItemTimelineWidget.list(
                   collapsible: true,
                 ),
