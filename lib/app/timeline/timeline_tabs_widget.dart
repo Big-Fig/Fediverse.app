@@ -56,34 +56,33 @@ class TimelineTabsWidget extends StatelessWidget {
 
   GestureDetector _buildCollapsedAppBarBody(BuildContext context) {
     return GestureDetector(
-            onTap: () {
-              goToNewPostStatusPage(context);
-            },
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  MyAccountAvatarWidget(
-                    imageSize: 40,
-                    progressSize: 24,
-                  ),
-                  SizedBox(
-                    width: 24.0,
-                  ),
-                  Text(
-                    tr("app.status.post.field.message.hint"),
-                    style: TextStyle(
-                        fontSize: 18.0,
-                        color: FediColors.lightGrey,
-                        height: 1.5,
-                        fontWeight: FontWeight.w300),
-                  ),
-                ],
-              ),
+      onTap: () {
+        goToNewPostStatusPage(context);
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            MyAccountAvatarWidget(
+              imageSize: 40,
+              progressSize: 24,
             ),
-          );
+            SizedBox(
+              width: 24.0,
+            ),
+            Text(
+              tr("app.status.post.field.message.hint"),
+              style: TextStyle(
+                  fontSize: 18.0,
+                  color: FediColors.lightGrey,
+                  height: 1.5,
+                  fontWeight: FontWeight.w300),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget buildTabBar(BuildContext context, List<TimelineTab> tabs,
@@ -113,8 +112,6 @@ class TimelineTabsWidget extends StatelessWidget {
       Tab(text: mapTabToTitle(context, tab));
 
   String mapTabToTitle(BuildContext context, TimelineTab tab) {
-
-
     switch (tab) {
       case TimelineTab.public:
         return tr("app.home.tab.timelines.tab.public");
@@ -163,10 +160,9 @@ class TimelineTabsWidget extends StatelessWidget {
             IPaginationListWithNewItemsBloc>(
           update: (context, value, previous) => value,
           child: PaginationListWithNewItemsHeaderWidget(
-            textBuilder: (context, updateItemsCount) =>
-                tr(
-                    "app.status.list.new_items.action.tap_to_load_new",
-                    args: [updateItemsCount.toString()]),
+            textBuilder: (context, updateItemsCount) => plural(
+                "app.status.list.new_items.action.tap_to_load_new",
+                updateItemsCount),
             child: TimelineWidget(),
           ),
         ),

@@ -315,7 +315,10 @@
       "list": {
         "new_items": {
           "action": {
-            "tap_to_load_new": "{} new notifications. Tap to load."
+            "tap_to_load_new": {
+              "one": "{} new notification. Tap to load.",
+              "other": "{} new notifications. Tap to load."
+            }
           }
         }
       },
@@ -442,7 +445,10 @@
       "list": {
         "new_items": {
           "action": {
-            "tap_to_load_new": "{} new posts. Tap to load."
+            "tap_to_load_new": {
+              "one": "{} new post. Tap to load.",
+              "other": "{} new posts. Tap to load."
+            }
           }
         }
       },
