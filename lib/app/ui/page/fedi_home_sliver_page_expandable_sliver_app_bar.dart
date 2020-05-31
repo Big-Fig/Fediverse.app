@@ -25,7 +25,7 @@ class FediHomeSliverPageExpandableSliverAppBar extends StatelessWidget {
   Widget build(BuildContext context) => SliverAppBar(
         floating: true,
         pinned: true,
-        snap: true,
+        snap: false,
 //                snap: false,
         titleSpacing: 0.0,
         centerTitle: true,
@@ -40,7 +40,7 @@ class FediHomeSliverPageExpandableSliverAppBar extends StatelessWidget {
         actions: [Container()],
 
         flexibleSpace: FlexibleSpaceBar(
-          collapseMode: CollapseMode.pin,
+          collapseMode: CollapseMode.parallax,
           background: FediLightStatusBarStyleArea(
             child: FediHomeTabContainer(
                 topHeaderHeightInSafeArea: expandedAppBarTopBarHeightInSafeArea,
