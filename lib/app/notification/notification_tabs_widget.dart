@@ -17,7 +17,7 @@ import 'package:fedi/collapsible/toggle_collapsible_overlay_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
-import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_header_widget.dart';
+import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_container_with_overlay_widget.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
@@ -134,10 +134,11 @@ class NotificationTabsWidget extends StatelessWidget {
                     INotification>,
                 IPaginationListWithNewItemsBloc>(
               update: (context, value, previous) => value,
-              child: PaginationListWithNewItemsHeaderWidget(
+              child: PaginationListWithNewItemsContainerWithOverlayWidget(
                 textBuilder: (context, updateItemsCount) =>
                     plural(
-                        "app.status.list.new_items.action.tap_to_load_new",
+                        "app.notification.list.new_items.action"
+                            ".tap_to_load_new",
                         updateItemsCount),
                 child: DisposableProvider<ICollapsibleBloc>(
                   create: (context) =>

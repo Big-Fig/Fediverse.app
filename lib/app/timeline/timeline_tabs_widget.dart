@@ -14,7 +14,7 @@ import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/app/ui/tab/fedi_text_tab.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
-import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_header_widget.dart';
+import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_container_with_overlay_widget.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -159,11 +159,12 @@ class TimelineTabsWidget extends StatelessWidget {
             IPaginationListWithNewItemsBloc<PaginationPage<IStatus>, IStatus>,
             IPaginationListWithNewItemsBloc>(
           update: (context, value, previous) => value,
-          child: PaginationListWithNewItemsHeaderWidget(
+          child: PaginationListWithNewItemsContainerWithOverlayWidget(
             textBuilder: (context, updateItemsCount) => plural(
                 "app.status.list.new_items.action.tap_to_load_new",
                 updateItemsCount),
             child: TimelineWidget(),
+            padding: const EdgeInsets.only(top: 100),
           ),
         ),
       ),

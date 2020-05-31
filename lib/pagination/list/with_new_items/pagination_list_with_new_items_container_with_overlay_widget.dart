@@ -7,13 +7,16 @@ import 'package:logging/logging.dart';
 
 var _logger = Logger("pagination_list_with_new_items_header_widget.dart");
 
-class PaginationListWithNewItemsHeaderWidget extends StatelessWidget {
+class PaginationListWithNewItemsContainerWithOverlayWidget
+    extends StatelessWidget {
   final String Function(BuildContext context, int updateItemsCount) textBuilder;
   final Widget child;
+  final EdgeInsets padding;
 
-  PaginationListWithNewItemsHeaderWidget({
+  PaginationListWithNewItemsContainerWithOverlayWidget({
     @required this.child,
     @required this.textBuilder,
+    this.padding = const EdgeInsets.only(top: 24.0),
   });
 
   @override
@@ -27,7 +30,7 @@ class PaginationListWithNewItemsHeaderWidget extends StatelessWidget {
         Align(
             alignment: Alignment.topCenter,
             child: Padding(
-              padding: const EdgeInsets.all(24.0),
+              padding: padding,
               child: buildNewItemsHeaderWidget(paginationWithUpdatesListBloc),
             )),
       ],
