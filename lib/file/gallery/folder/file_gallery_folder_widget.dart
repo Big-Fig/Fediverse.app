@@ -41,8 +41,7 @@ class FileGalleryFolderWidget extends StatelessWidget {
           switch (galleryState) {
             case FileGalleryState.loadingNotStarted:
               return Center(
-                  child: Text(AppLocalizations.of(context)
-                      .tr("file.gallery.state.loading_not_started")));
+                  child: Text(tr("file.gallery.state.loading_not_started")));
               break;
             case FileGalleryState.loading:
               return Center(child: CircularProgressIndicator());
@@ -69,7 +68,7 @@ class FileGalleryFolderWidget extends StatelessWidget {
           if (files.isEmpty) {
             return Center(
               child: Text(
-                  AppLocalizations.of(context).tr("file.gallery.folder.empty")),
+                  tr("file.gallery.folder.empty")),
             );
           } else {
             return GridView.builder(

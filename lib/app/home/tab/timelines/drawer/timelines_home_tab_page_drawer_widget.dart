@@ -15,21 +15,18 @@ class TimelinesHomeTabPageDrawerWidget extends StatelessWidget {
         children: <Widget>[
           buildHeaderWidget(context),
           buildOptionListTile(
-              AppLocalizations.of(context)
-                  .tr("app.timeline.display.settings.field.only_with_media"
+              tr("app.timeline.display.settings.field.only_with_media"
                       ".label"),
               drawerBloc.onlyWithMediaStream,
               drawerBloc.onlyWithMedia,
               drawerBloc.changeOnlyWithMedia),
           buildOptionListTile(
-              AppLocalizations.of(context)
-                  .tr("app.timeline.display.settings.field.hide_replies.label"),
+              tr("app.timeline.display.settings.field.hide_replies.label"),
               drawerBloc.onlyNoRepliesStream,
               drawerBloc.onlyNoReplies,
               drawerBloc.changeOnlyNoReplies),
           buildOptionListTile(
-              AppLocalizations.of(context)
-                  .tr("app.timeline.display.settings.field.hide_nsfw.label"),
+              tr("app.timeline.display.settings.field.hide_nsfw.label"),
               drawerBloc.onlyNoNsfwSensitiveStream,
               drawerBloc.onlyNoNsfwSensitive,
               drawerBloc.changeOnlyNoNsfwSensitive),
@@ -71,7 +68,7 @@ class TimelinesHomeTabPageDrawerWidget extends StatelessWidget {
   Widget buildHeaderWidget(BuildContext context) {
     return DrawerHeader(
       child: Text(
-        AppLocalizations.of(context).tr("app.timeline.display.settings"
+        tr("app.timeline.display.settings"
             ".title"),
         style: TextStyle(color: Colors.white),
       ),

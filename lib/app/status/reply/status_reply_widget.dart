@@ -39,8 +39,7 @@ class StatusReplyWidget extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  AppLocalizations.of(context)
-                      .tr("app.status.reply.loading.failed"),
+                  tr("app.status.reply.loading.failed"),
                 ),
               );
               break;
@@ -58,8 +57,7 @@ class StatusReplyWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              AppLocalizations.of(context)
-                  .tr("app.status.reply.loading.progress"),
+              tr("app.status.reply.loading.progress"),
             ),
           ),
           Padding(

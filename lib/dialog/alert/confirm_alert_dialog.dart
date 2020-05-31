@@ -16,7 +16,7 @@ class ConfirmAlertDialog extends BaseAlertDialog {
             actions: [
               DialogAction(
                   label: okActionLabel ??
-                      AppLocalizations.of(context).tr("dialog.action.ok"),
+                      tr("dialog.action.ok"),
                   onAction: onAction)
             ],
             cancelable: true);

@@ -68,8 +68,7 @@ class AuthInstanceChooserWidget extends StatelessWidget {
                   size: 16.0,
                 ),
               ),
-              Text(AppLocalizations.of(context)
-                  .tr("app.auth.instance.chooser.action.add_account")),
+              Text(tr("app.auth.instance.chooser.action.add_account")),
             ],
           ),
         ),
@@ -92,10 +91,8 @@ class AuthInstanceChooserWidget extends StatelessWidget {
               onPressed: () {
                 ConfirmAlertDialog(
                   context: context,
-                  title: AppLocalizations.of(context)
-                      .tr("app.auth.instance.remove.dialog.title"),
-                  content: AppLocalizations.of(context)
-                      .tr("app.auth.instance.remove.dialog.title"),
+                  title: tr("app.auth.instance.remove.dialog.title"),
+                  content: tr("app.auth.instance.remove.dialog.title"),
                   onAction: () {
                     instanceChooserBloc.removeInstance(instance);
                     Navigator.of(context).pop();
@@ -107,10 +104,8 @@ class AuthInstanceChooserWidget extends StatelessWidget {
                 onTap: () {
                   ConfirmAlertDialog(
                     context: context,
-                    title: AppLocalizations.of(context)
-                        .tr("app.auth.instance.chooser.dialog.title"),
-                    content: AppLocalizations.of(context)
-                        .tr("app.auth.instance.chooser.dialog.title"),
+                    title: tr("app.auth.instance.chooser.dialog.title"),
+                    content: tr("app.auth.instance.chooser.dialog.title"),
                     onAction: () {
                       instanceChooserBloc.chooseInstance(instance);
                     },
@@ -143,10 +138,8 @@ class AuthInstanceChooserWidget extends StatelessWidget {
 
                     ConfirmAlertDialog(
                       context: context,
-                      title: AppLocalizations.of(context)
-                          .tr("app.auth.instance.logout.dialog.title"),
-                      content: AppLocalizations.of(context)
-                          .tr("app.auth.instance.logout.dialog.title"),
+                      title: tr("app.auth.instance.logout.dialog.title"),
+                      content: tr("app.auth.instance.logout.dialog.title"),
                       onAction: () {
                         authHostBloc.logout();
                       },

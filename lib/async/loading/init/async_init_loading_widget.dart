@@ -30,8 +30,7 @@ class AsyncInitLoadingWidget extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
-                  child: Text(AppLocalizations.of(context)
-                      .tr("async.init.state.not_started")),
+                  child: Text(tr("async.init.state.not_started")),
                 ),
               );
               break;
@@ -45,7 +44,7 @@ class AsyncInitLoadingWidget extends StatelessWidget {
               return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Center(
-                    child: Text(AppLocalizations.of(context).tr(
+                    child: Text(tr(
                         "async.init.state.failed",
                         args: [asyncInitLoadingBloc.initLoadingException])),
                   ));

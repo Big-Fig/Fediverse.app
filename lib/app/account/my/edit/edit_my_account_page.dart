@@ -22,7 +22,7 @@ class EditMyAccountPage extends StatelessWidget {
       },
       child: Scaffold(
         appBar: FediSubPageTitleAppBar(
-          title: AppLocalizations.of(context).tr("app.account.my.edit.title"),
+          title: tr("app.account.my.edit.title"),
           leading: FediDismissIconButton(
             customOnPressed: () {
               handleBackPressed(context, editMyAccountBloc);
@@ -46,8 +46,7 @@ class EditMyAccountPage extends StatelessWidget {
 
             return PleromaAsyncOperationButtonBuilderWidget(
               showProgressDialog: true,
-              progressContentMessage: AppLocalizations.of(context)
-                  .tr("app.status.post.dialog.async.content"),
+              progressContentMessage: tr("app.status.post.dialog.async.content"),
               asyncButtonAction: () async {
                 await editMyAccountBloc.submitChanges();
                 Navigator.pop(context);
@@ -55,9 +54,9 @@ class EditMyAccountPage extends StatelessWidget {
               errorAlertDialogBuilders: [
                 // todo: handle specific cases by error code
 //                          (context, error) => SimpleAlertDialog(
-//                          title: AppLocalizations.of(context)
+//                          title: of(context)
 //                              .tr("app.status.post.dialog.error.title"),
-//                          content: AppLocalizations.of(context).tr(
+//                          content: tr(
 //                              "app.status.post.dialog.error.content",
 //                              args: [error.toString()]),
 //                          context: context)
@@ -65,8 +64,7 @@ class EditMyAccountPage extends StatelessWidget {
               builder: (BuildContext context, onPressed) {
                 return FlatButton(
                   child: Text(
-                    AppLocalizations.of(context)
-                        .tr("app.account.my.edit.action.save"),
+                    tr("app.account.my.edit.action.save"),
                     style: TextStyle(
                         color: isSomethingChanged
                             ? FediColors.darkGrey
@@ -90,14 +88,12 @@ class EditMyAccountPage extends StatelessWidget {
   void alertUnsaved(BuildContext context) {
     showAlert(
       context: context,
-      title: AppLocalizations.of(context)
-          .tr("app.account.my.edit.unsaved.dialog.title"),
+      title: tr("app.account.my.edit.unsaved.dialog.title"),
       //      body:
       // "",
       actions: [
         AlertAction(
-          text: AppLocalizations.of(context)
-              .tr("app.account.my.edit.unsaved.dialog.action.discard"),
+          text: tr("app.account.my.edit.unsaved.dialog.action.discard"),
           onPressed: () {
             Navigator.pop(context);
           },

@@ -116,12 +116,11 @@ class _PostStatusMentionsWidgetState extends State<PostStatusMentionsWidget> {
       BuildContext context, List<String> mentionedAccts) {
     String mentionDesc;
     if (mentionedAccts.length > 1) {
-      mentionDesc = AppLocalizations.of(context).tr(
+      mentionDesc = tr(
           "app.status.post.mention.content.many",
           args: [mentionedAccts.length.toString()]);
     } else {
-      mentionDesc = AppLocalizations.of(context)
-          .tr("app.status.post.mention.content.one");
+      mentionDesc = tr("app.status.post.mention.content.one");
     }
 
     return Text(

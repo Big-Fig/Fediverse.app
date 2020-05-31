@@ -26,18 +26,15 @@ class PostStatusPostTextActionWidget extends StatelessWidget {
 
           return PleromaAsyncOperationButtonBuilderWidget(
             showProgressDialog: true,
-            progressContentMessage: AppLocalizations.of(context)
-                .tr("app.status.post.dialog.async.content"),
+            progressContentMessage: tr("app.status.post.dialog.async.content"),
             asyncButtonAction: () async {
               var isScheduled = postStatusBloc.isScheduled;
               var success = await postStatusBloc.postStatus();
               if (success) {
                 await Fluttertoast.showToast(
                     msg: isScheduled
-                        ? AppLocalizations.of(context)
-                            .tr("app.status.post.toast.success.schedule")
-                        : AppLocalizations.of(context)
-                            .tr("app.status.post.toast.success.post"),
+                        ? tr("app.status.post.toast.success.schedule")
+                        : tr("app.status.post.toast.success.post"),
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.CENTER,
                     timeInSecForIosWeb: 1,
@@ -54,11 +51,9 @@ class PostStatusPostTextActionWidget extends StatelessWidget {
                 var isScheduled = postStatusBloc.isScheduled;
                 return SimpleAlertDialog(
                     title: isScheduled
-                        ? AppLocalizations.of(context)
-                            .tr("app.status.post.dialog.error.title.schedule")
-                        : AppLocalizations.of(context)
-                            .tr("app.status.post.dialog.error.title.post"),
-                    content: AppLocalizations.of(context).tr(
+                        ? tr("app.status.post.dialog.error.title.schedule")
+                        : tr("app.status.post.dialog.error.title.post"),
+                    content: tr(
                         "app.status.post.dialog.error.content",
                         args: [error.toString()]),
                     context: context);
@@ -66,7 +61,7 @@ class PostStatusPostTextActionWidget extends StatelessWidget {
             ],
             builder: (BuildContext context, onPressed) {
               return FediPrimaryFilledTextButton(
-                AppLocalizations.of(context).tr("app.status.post.action.post"),
+                tr("app.status.post.action.post"),
                 onPressed: isReadyToPost ? onPressed : null,
               );
             },

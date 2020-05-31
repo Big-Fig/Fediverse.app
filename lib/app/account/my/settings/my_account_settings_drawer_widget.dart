@@ -18,19 +18,15 @@ class MyAccountSettingsDrawerBodyWidget extends StatelessWidget {
         children: <Widget>[
           Container(width: double.infinity, child: buildHeaderWidget(context)),
           buildOptionListTile(
-              AppLocalizations.of(context)
-                  .tr("app.account.my.settings.field.websockets_enabled.label"),
-              AppLocalizations.of(context)
-                  .tr("app.account.my.settings.field.websockets_enabled"
+              tr("app.account.my.settings.field.websockets_enabled.label"),
+              tr("app.account.my.settings.field.websockets_enabled"
                       ".description"),
               myAccountSettingsBloc.isRealtimeWebSocketsEnabledStream,
               myAccountSettingsBloc.isRealtimeWebSocketsEnabled,
               myAccountSettingsBloc.changeIsRealtimeWebSocketsEnabled),
           buildOptionListTile(
-              AppLocalizations.of(context)
-                  .tr("app.account.my.settings.field.new_chats_enabled.label"),
-              AppLocalizations.of(context)
-                  .tr("app.account.my.settings.field.new_chats_enabled"
+              tr("app.account.my.settings.field.new_chats_enabled.label"),
+              tr("app.account.my.settings.field.new_chats_enabled"
                       ".description"),
               myAccountSettingsBloc.isNewChatsEnabledStream,
               myAccountSettingsBloc.isNewChatsEnabled,
@@ -40,8 +36,7 @@ class MyAccountSettingsDrawerBodyWidget extends StatelessWidget {
             child: FediUltraLightGreyDivider(),
           ),
           FediPrimaryFilledTextButton(
-            AppLocalizations.of(context)
-                .tr("app.account.my.settings.scheduled_posts"),
+            tr("app.account.my.settings.scheduled_posts"),
             onPressed: () {
               goToScheduledStatusListPage(context);
             },
@@ -87,7 +82,7 @@ class MyAccountSettingsDrawerBodyWidget extends StatelessWidget {
       height: 110,
       child: DrawerHeader(
         child: Text(
-          AppLocalizations.of(context).tr("app.account.my.settings.title"),
+          tr("app.account.my.settings.title"),
           style: TextStyle(color: Colors.white),
         ),
         decoration: BoxDecoration(

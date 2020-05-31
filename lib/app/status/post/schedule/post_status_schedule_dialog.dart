@@ -13,25 +13,22 @@ void showPostStatusScheduleDialog(
   var isScheduled = postStatusBloc.isScheduled;
   var scheduledAt = postStatusBloc.scheduledAt;
 
-  var appLocalizations = AppLocalizations.of(context);
+
 
   showAlert(
       context: context,
-      title: appLocalizations.tr("app.status.post.schedule.dialog.title"),
+      title: tr("app.status.post.schedule.dialog.title"),
       body: isScheduled
-          ? appLocalizations.tr(
+          ? tr(
               "app.status.post.schedule.dialog.content.scheduled",
               args: [dateFormat.format(scheduledAt)])
-          : appLocalizations
-              .tr("app.status.post.schedule.dialog.content.not_scheduled"),
+          : tr("app.status.post.schedule.dialog.content.not_scheduled"),
       actions: [
         AlertAction(
-            text: appLocalizations
-                .tr("app.status.post.schedule.dialog.action.cancel"),
+            text: tr("app.status.post.schedule.dialog.action.cancel"),
             onPressed: () {}),
         AlertAction(
-            text: appLocalizations
-                .tr("app.status.post.schedule.dialog.action.edit"),
+            text: tr("app.status.post.schedule.dialog.action.edit"),
             onPressed: () async {
               var newTime = await showScheduledStatusDateTimePickerDialog(
                   context, postStatusBloc.scheduledAt);
@@ -40,11 +37,9 @@ void showPostStatusScheduleDialog(
                   .add(IPostStatusBloc.requiredDurationToScheduleStatus))) {
                 showAlert(
                   context: context,
-                  title: appLocalizations
-                      .tr("app.status.post.schedule.error.not_in_future.dialog"
+                  title: tr("app.status.post.schedule.error.not_in_future.dialog"
                           ".title"),
-                  body: appLocalizations
-                      .tr("app.status.post.schedule.error.not_in_future.dialog"
+                  body: tr("app.status.post.schedule.error.not_in_future.dialog"
                           ".content"),
                 );
               } else {
@@ -53,8 +48,7 @@ void showPostStatusScheduleDialog(
             }),
         if (isScheduled)
           AlertAction(
-              text: appLocalizations
-                  .tr("app.status.post.schedule.dialog.action.clear"),
+              text: tr("app.status.post.schedule.dialog.action.clear"),
               onPressed: () async {
                 postStatusBloc.clearSchedule();
               })

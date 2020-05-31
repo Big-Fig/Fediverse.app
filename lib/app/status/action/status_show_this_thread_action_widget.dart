@@ -16,8 +16,7 @@ class StatusShowThisThreadActionWidget extends StatelessWidget {
             height: 48,
             child: Center(
                 child: Text(
-              AppLocalizations.of(context)
-                  .tr("app.status.action.show_this_thread"),
+              tr("app.status.action.show_this_thread"),
               style: TextStyle(fontSize: 16, color: FediColors.primaryColor),
             ))));
   }

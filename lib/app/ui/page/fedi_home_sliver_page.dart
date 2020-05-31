@@ -46,7 +46,7 @@ class FediHomeSliverPage extends StatelessWidget {
 //                    goToNewPostStatusPage(context);
 //                  },
 //                  child: Text(
-//                    AppLocalizations.of(context)
+//                    of(context)
 //                        .tr("app.status.post.field.message.hint"),
 //                    style: TextStyle(
 //                        fontSize: 18.0,

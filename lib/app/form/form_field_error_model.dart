@@ -11,7 +11,7 @@ abstract class FormTextFieldError extends FormFieldError {}
 class EmptyFormTextFieldError extends FormTextFieldError {
   @override
   String createErrorDescription(BuildContext context) =>
-      AppLocalizations.of(context).tr("form.field.text.error.empty.desc");
+      tr("form.field.text.error.empty.desc");
 
   static FormFieldErrorValidator createValidator() => (currentValue) {
         if (currentValue?.isNotEmpty == true) {
@@ -34,15 +34,15 @@ class InvalidLengthFormTextFieldError extends FormTextFieldError {
   @override
   String createErrorDescription(BuildContext context) {
     if (minLength != null && maxLength != null) {
-      return AppLocalizations.of(context).tr(
+      return tr(
           "form.field.text.error.length.min_and_max.desc",
           args: [minLength.toString(), maxLength.toString()]);
     } else if (minLength != null) {
-      return AppLocalizations.of(context).tr(
+      return tr(
           "form.field.text.error.length.min_only.desc",
           args: [minLength.toString()]);
     } else if (maxLength != null) {}
-    return AppLocalizations.of(context).tr(
+    return tr(
         "form.field.text.error.length.max_only.desc",
         args: [maxLength.toString()]);
   }
@@ -80,8 +80,7 @@ class InvalidEmailFormTextFieldError extends FormTextFieldError {
 
   @override
   String createErrorDescription(BuildContext context) =>
-      AppLocalizations.of(context)
-          .tr("form.field.text.email.error.invalid.desc");
+      tr("form.field.text.email.error.invalid.desc");
 
   static FormFieldErrorValidator createValidator() => (currentValue) {
         bool emailValid = emailRegex.hasMatch(currentValue ?? "");
@@ -96,6 +95,5 @@ class InvalidEmailFormTextFieldError extends FormTextFieldError {
 class PasswordNotMatchFormTextFieldError extends FormTextFieldError {
   @override
   String createErrorDescription(BuildContext context) =>
-      AppLocalizations.of(context)
-          .tr("form.field.text.password.error.not_match.desc");
+      tr("form.field.text.password.error.not_match.desc");
 }

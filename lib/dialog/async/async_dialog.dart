@@ -30,7 +30,7 @@ Future<AsyncDialogResult<T>> doAsyncOperationWithDialog<T>({
     progressDialog = IndeterminateProgressDialog(
         cancelable: cancelable,
         contentMessage: contentMessage ??
-            AppLocalizations.of(context).tr("dialog.progress.content"),
+            tr("dialog.progress.content"),
         cancelableOperation: cancelableOperation);
     progressDialog.show(context);
   }
@@ -55,9 +55,8 @@ Future<AsyncDialogResult<T>> doAsyncOperationWithDialog<T>({
     if (errorDialog == null && showDefaultErrorAlertDialogOnUnhandledError) {
       errorDialog = SimpleAlertDialog(
         context: context,
-        title: AppLocalizations.of(context).tr("dialog.error.title"),
-        content: AppLocalizations.of(context)
-            .tr("dialog.error.content", args: [error.toString()]),
+        title: tr("dialog.error.title"),
+        content: tr("dialog.error.content", args: [error.toString()]),
       );
     }
 

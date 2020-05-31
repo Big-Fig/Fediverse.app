@@ -22,7 +22,7 @@ class StartConversationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
-        title: AppLocalizations.of(context).tr("app.conversation.start.title"),
+        title: tr("app.conversation.start.title"),
       ),
       body: SafeArea(
         child: SelectAccountWidget(

@@ -76,12 +76,12 @@ dependencies:
   pedantic: ^1.8.0+1
 
   # localization via .json files
-#  easy_localization: ^2.3.1
-  # Actually it is 1.3.1 with minor fix from me (Yevhenii Zapletin)
+  # easy_localization: ^2.3.2
+  # it is easy_localization: ^2.3.2 with fixes for multiply runApp
   easy_localization:
     git:
       url: https://github.com/xal/easy_localization.git
-      ref: xal/fixQuickSwitchLocaleException
+      ref: 7fa1378a64dd1caaae2bfcfad709b765bbd54391
 
   # annotations to generate json from & to methods
   json_annotation: ^3.0.1

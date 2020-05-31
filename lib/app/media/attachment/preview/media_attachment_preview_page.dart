@@ -20,8 +20,7 @@ class MediaAttachmentPreviewPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
-        title: AppLocalizations.of(context)
-            .tr("app.media.attachment.preview.title"),
+        title: tr("app.media.attachment.preview.title"),
         actions: <Widget>[
           buildAddToGalleryAction(context),
           buildShareAction(context)
@@ -33,8 +32,7 @@ class MediaAttachmentPreviewPage extends StatelessWidget {
 
   Widget buildShareAction(BuildContext context) =>
       AsyncOperationButtonBuilderWidget(
-          progressContentMessage: AppLocalizations.of(context)
-              .tr("app.media.attachment.share.progress.content"),
+          progressContentMessage: tr("app.media.attachment.share.progress.content"),
           builder: (BuildContext context, VoidCallback onPressed) => IconButton(
               icon: Icon(
                 Icons.share,
@@ -44,8 +42,7 @@ class MediaAttachmentPreviewPage extends StatelessWidget {
               onPressed: onPressed),
           asyncButtonAction: () {
             var shareService = IShareService.of(context, listen: false);
-            String popupTitle = AppLocalizations.of(context)
-                .tr("app.media.attachment.share.title");
+            String popupTitle = tr("app.media.attachment.share.title");
             return shareService.shareMediaAttachment(
                 context: context,
                 popupTitle: popupTitle,
@@ -54,8 +51,7 @@ class MediaAttachmentPreviewPage extends StatelessWidget {
 
   Widget buildAddToGalleryAction(BuildContext context) =>
       AsyncOperationButtonBuilderWidget(
-          progressContentMessage: AppLocalizations.of(context)
-              .tr("app.media.attachment.add_to_gallery.progress.content"),
+          progressContentMessage: tr("app.media.attachment.add_to_gallery.progress.content"),
           builder: (BuildContext context, VoidCallback onPressed) => IconButton(
               icon: Icon(
                 Icons.file_download,
@@ -87,7 +83,7 @@ class MediaAttachmentPreviewPage extends StatelessWidget {
       case MastodonMediaAttachmentType.unknown:
       default:
         return Center(
-            child: Text(AppLocalizations.of(context).tr(
+            child: Text(tr(
                 "app.media.attachment.preview.not_supported_type",
                 args: [mediaAttachment.type])));
         break;

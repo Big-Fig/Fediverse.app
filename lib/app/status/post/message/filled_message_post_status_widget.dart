@@ -35,8 +35,7 @@ class FilledMessagePostStatusWidget extends StatelessWidget {
           child: FediFilledEditTextField(
             focusNode: postStatusBloc.focusNode,
             hintText: hintText ??
-                AppLocalizations.of(context)
-                    .tr("app.status.post.field.message.hint"),
+                tr("app.status.post.field.message.hint"),
             textEditingController: postStatusBloc.inputTextController,
             expanded: false,
             autofocus: false,

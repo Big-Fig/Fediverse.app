@@ -82,7 +82,6 @@ class StatusBodyWidget extends StatelessWidget {
   }
 
   Center buildCollapsibleButton(BuildContext context, IStatusBloc statusBloc) {
-    var appLocalizations = AppLocalizations.of(context);
     return Center(
         child: StreamBuilder<bool>(
             stream: statusBloc.isCollapsedStream,
@@ -91,10 +90,8 @@ class StatusBodyWidget extends StatelessWidget {
               var isCollapsed = snapshot.data;
               return FediPrimaryFilledTextButton(
                 isCollapsed
-                    ? appLocalizations
-                        .tr("app.status.collapsible.action.expand")
-                    : appLocalizations.tr("app.status.collapsible.action"
-                        ".collapse"),
+                    ? tr("app.status.collapsible.action.expand")
+                    : tr("app.status.collapsible.action.collapse"),
                 onPressed: () {
                   statusBloc.toggleCollapseExpand();
                 },

@@ -27,7 +27,7 @@ class StartChatPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
-        title: AppLocalizations.of(context).tr("app.chat.start.title"),
+        title: tr("app.chat.start.title"),
       ),
       body: SafeArea(
         child: SelectAccountWidget(

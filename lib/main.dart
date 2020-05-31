@@ -42,7 +42,6 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -121,7 +120,7 @@ void main() async {
 CurrentAuthInstanceContextBloc currentInstanceContextBloc;
 
 void showSplashPage(AppContextBloc appContextBloc) {
-  runApp(EasyLocalization(
+  runApp(_buildEasyLocalization(
       child: MyApp(
           child: Provider<IAppContextBloc>.value(
               value: appContextBloc, child: (const AppSplashWidget())))));
@@ -145,7 +144,7 @@ void buildCurrentInstanceApp(
     await currentInstanceContextBloc.performAsyncInit();
     _logger.finest(
         () => "buildCurrentInstanceApp CurrentInstanceContextLoadingPage");
-    runApp(EasyLocalization(
+    runApp(_buildEasyLocalization(
         child: appContextBloc.provideContextToChild(
             child: currentInstanceContextBloc.provideContextToChild(
                 child:
@@ -162,13 +161,22 @@ void buildCurrentInstanceApp(
                               child: const HomePage()),
                         )))))));
   } else {
-    runApp(EasyLocalization(
+    runApp(_buildEasyLocalization(
         child: appContextBloc.provideContextToChild(
             child: DisposableProvider<IJoinAuthInstanceBloc>(
                 create: (context) => JoinAuthInstanceBloc(),
                 child:
                     const MyApp(child: FromScratchJoinAuthInstancePage())))));
   }
+}
+
+Widget _buildEasyLocalization({@required Widget child}) {
+  return EasyLocalization(
+    key: PageStorageKey("EasyLocalization"),
+    supportedLocales: [Locale('en', 'US')],
+    path: "assets/langs",
+    child: child,
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -180,29 +188,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-    var localizationData = EasyLocalizationProvider.of(context).data;
-    var savedLocale = localizationData.savedLocale;
-    var locale = localizationData.locale;
-    var app = EasyLocalizationProvider(
-      data: localizationData,
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Fedi2',
-        localizationsDelegates: [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          EasylocaLizationDelegate(
-              locale: locale, path: "assets/langs")
-        ],
-        locale: savedLocale,
-        supportedLocales: [Locale('en', 'US')],
-        theme: fediTheme,
-        initialRoute: "/",
-        home: child,
-        navigatorObservers: [
-          FirebaseAnalyticsObserver(analytics: analytics),
-        ],
-      ),
+    var app = MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Fedi2',
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
+      theme: fediTheme,
+      initialRoute: "/",
+      home: child,
+      navigatorObservers: [
+        FirebaseAnalyticsObserver(analytics: analytics),
+      ],
     );
     return app;
   }

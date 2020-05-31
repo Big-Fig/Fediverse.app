@@ -14,7 +14,7 @@ class SearchInputWidget extends StatelessWidget {
       autofocus: false,
       textEditingController: searchInputBloc.searchTextEditingController,
       expanded: false,
-      hintText: AppLocalizations.of(context).tr("app.search.field.input.hint"),
+      hintText: tr("app.search.field.input.hint"),
       ending: IconButton(
         iconSize: FediSizes.filledEditTextIconSize,
         onPressed: () {

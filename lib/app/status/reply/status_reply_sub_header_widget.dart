@@ -24,7 +24,7 @@ class StatusReplySubHeaderWidget extends StatelessWidget {
 
             return StatusSubHeaderWidget(
                 descText:
-                    AppLocalizations.of(context).tr("app.status.reply.header"),
+                    tr("app.status.reply.header"),
                 account: account,
                 icon: FediIcons.message);
           });

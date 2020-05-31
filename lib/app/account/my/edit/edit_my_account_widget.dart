@@ -172,8 +172,7 @@ class EditMyAccountWidget extends StatelessWidget {
 
   Widget buildDisplayNameField(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    var label = AppLocalizations.of(context)
-        .tr("app.account.my.edit.field.display_name.label");
+    var label = tr("app.account.my.edit.field.display_name.label");
     var textEditingController =
         editMyAccountBloc.displayNameField.textEditingController;
     return buildTextField(textEditingController, label);
@@ -182,7 +181,7 @@ class EditMyAccountWidget extends StatelessWidget {
   Widget buildNoteField(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
     var label =
-        AppLocalizations.of(context).tr("app.account.my.edit.field.note.label");
+        tr("app.account.my.edit.field.note.label");
     var textEditingController =
         editMyAccountBloc.noteField.textEditingController;
     return buildTextField(textEditingController, label);
@@ -214,8 +213,7 @@ class EditMyAccountWidget extends StatelessWidget {
 
   Widget buildLockedField(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    var label = AppLocalizations.of(context)
-        .tr("app.account.my.edit.field.locked.label");
+    var label = tr("app.account.my.edit.field.locked.label");
     var field = editMyAccountBloc.lockedField;
     return buildBooleanField(label, field);
   }
@@ -255,8 +253,7 @@ class EditMyAccountWidget extends StatelessWidget {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.all(10.0),
-          child: Text(AppLocalizations.of(context)
-              .tr("app.account.my.edit.group.custom_field.label")),
+          child: Text(tr("app.account.my.edit.group.custom_field.label")),
         ),
         ...editMyAccountBloc.customFields.map((customField) =>
             buildField(context, editMyAccountBloc, customField))
@@ -273,15 +270,13 @@ class EditMyAccountWidget extends StatelessWidget {
           Flexible(
             child: buildCustomFieldTextField(
                 customField.nameField.textEditingController,
-                AppLocalizations.of(context)
-                    .tr("app.account.my.edit.field.custom_field.label"
+                tr("app.account.my.edit.field.custom_field.label"
                         ".label")),
           ),
           Flexible(
             child: buildCustomFieldTextField(
                 customField.valueField.textEditingController,
-                AppLocalizations.of(context)
-                    .tr("app.account.my.edit.field.custom_field.value"
+                ("app.account.my.edit.field.custom_field.value"
                         ".label")),
           ),
         ],

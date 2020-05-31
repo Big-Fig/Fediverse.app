@@ -20,7 +20,7 @@ class StatusReblogHeaderWidget extends StatelessWidget {
             var account = snapshot.data;
             return StatusHeaderWidget(
                 descText:
-                    AppLocalizations.of(context).tr("app.status.reblog.header"),
+                    tr("app.status.reblog.header"),
                 account: account,
                 icon: FediIcons.reply);
           });

@@ -13,8 +13,7 @@ void showEditMyAccountHeaderDialog(
   showDialog(
       context: context,
       child: AlertDialog(
-        title: Text(AppLocalizations.of(context)
-            .tr("app.account.my.edit.field.avatar.dialog.title")),
+        title: Text(tr("app.account.my.edit.field.avatar.dialog.title")),
         content: Image.file(filePickerFile.file),
         actions: <Widget>[
           FlatButton(
@@ -36,13 +35,13 @@ void showEditMyAccountHeaderDialog(
                   selectedCallback(filePickerFile);
                 }
               },
-              child: Text(AppLocalizations.of(context).tr(
+              child: Text(tr(
                   "app.account.my.edit.field.avatar.dialog.action.select_and_crop"))),
           FlatButton(
               onPressed: () {
                 dismissDialog(context);
               },
-              child: Text(AppLocalizations.of(context).tr(
+              child: Text(tr(
                   "app.account.my.edit.field.avatar.dialog.action.cancel"))),
         ],
       ));

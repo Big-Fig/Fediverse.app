@@ -22,7 +22,7 @@ class ChatPostMessageContentWidget extends StatelessWidget {
       ),
       ending: buildEmojiPicker(context, chatPostMessageBloc),
       hintText:
-          AppLocalizations.of(context).tr("app.chat.post.field.content.hint"),
+          tr("app.chat.post.field.content.hint"),
       textEditingController: chatPostMessageBloc.inputTextController,
       expanded: false,
       autofocus: false,
