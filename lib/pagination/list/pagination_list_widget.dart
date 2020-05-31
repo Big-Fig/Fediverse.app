@@ -5,6 +5,7 @@ import 'package:fedi/app/list/list_refresh_header_widget.dart';
 import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
+import 'package:fedi/ui/scroll_direction_detector_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -34,6 +35,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
       BuildContext context,
       List<T> items,
       RefreshController refreshController,
+      ScrollController scrollController,
       Widget Function(BuildContext context) smartRefresherBodyBuilder) {
     _logger.finest(() => "buildSmartRefresher items ${items?.length}");
 
@@ -44,6 +46,8 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
       header: const ListRefreshHeaderWidget(),
       footer: const ListLoadingFooterWidget(),
       controller: refreshController,
+      scrollController: scrollController,
+      primary: scrollController == null,
       onRefresh: () {
         _logger.finest(() => "refresh");
         return AsyncSmartRefresherHelper.doAsyncRefresh(
@@ -133,11 +137,19 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
               _logger.finest(() => "build paginationListBloc.itemsStream items "
                   "${items?.length}");
 
+              ScrollController scrollController;
+              try {
+                var scrollDirectionDetector =
+                    IScrollDirectionDetector.of(context, listen: false);
+                scrollController = scrollDirectionDetector.scrollController;
+              } catch (e) {}
+
               return buildSmartRefresher(
                   paginationListBloc,
                   context,
                   items,
                   paginationListBloc.refreshController,
+                  scrollController,
                   (context) => buildSmartRefresherBody(
                       context, items, paginationListBloc));
             });
@@ -206,9 +218,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
           context: context, items: items, header: header, footer: footer);
     } else {
       _logger.finest(() => "build empty");
-      return buildNotListBody(Center(
-          child:
-              Text(tr("pagination.list.empty"))));
+      return buildNotListBody(Center(child: Text(tr("pagination.list.empty"))));
     }
   }
 }
