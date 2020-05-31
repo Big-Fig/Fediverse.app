@@ -74,14 +74,12 @@ class SearchWidget extends StatelessWidget {
               .toList());
 
   String mapTabToTitle(BuildContext context, SearchTab tab) {
-    var appLocalizations = AppLocalizations.of(context);
-
     switch (tab) {
       case SearchTab.accounts:
-        return appLocalizations.tr("app.search.tab.accounts");
+        return tr("app.search.tab.accounts");
         break;
       case SearchTab.statuses:
-        return appLocalizations.tr("app.search.tab.statuses");
+        return tr("app.search.tab.statuses");
         break;
     }
 

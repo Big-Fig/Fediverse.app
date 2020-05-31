@@ -50,7 +50,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
   FlatButton buildTermsOfServiceButton(BuildContext context) {
     return FlatButton(
       child: Text(
-        AppLocalizations.of(context).tr("app.auth.instance.join.action"
+        tr("app.auth.instance.join.action"
             ".tos"),
         textAlign: TextAlign.center,
         style: TextStyle(
@@ -66,7 +66,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
 
   Widget buildJoinFediButton(BuildContext context) {
     return FediGreyFilledTextButton(
-        AppLocalizations.of(context).tr("app.auth.instance.join"
+        tr("app.auth.instance.join"
             ".action"
             ".join_fedi"), onPressed: () {
       goToRegisterAuthInstancePage(context,
@@ -78,7 +78,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
       child: Text(
-        AppLocalizations.of(context).tr("app.auth.instance.join.no_account"
+        tr("app.auth.instance.join.no_account"
             ".content"),
         style: TextStyle(
           color: FediColors.white,
@@ -91,7 +91,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
   Container buildOrText(BuildContext context) {
     return Container(
       child: Text(
-        AppLocalizations.of(context).tr("app.auth.instance.join.no_account"
+        tr("app.auth.instance.join.no_account"
             ".prefix"),
         style: TextStyle(
           color: Colors.white,
@@ -109,7 +109,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.only(left: 10, right: 5),
             child: FediGreyFilledTextButton(
-                AppLocalizations.of(context).tr("app.auth.instance.join"
+                tr("app.auth.instance.join"
                     ".action"
                     ".sign_up"), onPressed: () {
               signUpToInstance(context);
@@ -121,7 +121,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.only(left: 5, right: 10),
             child: FediGreyFilledTextButton(
-                AppLocalizations.of(context).tr("app.auth.instance.join"
+                tr("app.auth.instance.join"
                     ".action"
                     ".login"), onPressed: () {
               logInToInstance(context);
@@ -143,9 +143,9 @@ class JoinAuthInstanceWidget extends StatelessWidget {
         decoration: InputDecoration(
           filled: true,
           fillColor: Colors.white54,
-          hintText: AppLocalizations.of(context).tr("app.auth.instance.join"
+          hintText: tr("app.auth.instance.join"
               ".field.host.hint"),
-          helperText: AppLocalizations.of(context).tr("app.auth.instance.join"
+          helperText: tr("app.auth.instance.join"
               ".field.host.helper"),
           border: InputBorder.none,
           helperStyle: TextStyle(color: Colors.white),
@@ -183,7 +183,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
   Future signUpToInstance(BuildContext context) async {
     await doAsyncOperationWithDialog(
         context: context,
-        contentMessage: AppLocalizations.of(context).tr("app.auth.instance.join"
+        contentMessage: tr("app.auth.instance.join"
             ".progress.dialog.content"),
         asyncCode: () async {
           var joinInstanceBloc =
@@ -212,9 +212,9 @@ class JoinAuthInstanceWidget extends StatelessWidget {
 
   BaseAlertDialog createInstanceDeadErrorAlertDialog(BuildContext context) =>
       SimpleAlertDialog(
-          title: AppLocalizations.of(context).tr("app.auth.instance.join"
+          title: tr("app.auth.instance.join"
               ".fail.dialog.title"),
-          content: AppLocalizations.of(context).tr("app.auth.instance.join"
+          content: tr("app.auth.instance.join"
               ".fail.dialog.content"),
           context: context);
 
@@ -222,7 +222,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
     var joinInstanceBloc = IJoinAuthInstanceBloc.of(context, listen: false);
     return doAsyncOperationWithDialog(
         context: context,
-        contentMessage: AppLocalizations.of(context).tr("app.auth.instance.join"
+        contentMessage: tr("app.auth.instance.join"
             ".progress.dialog.content"),
         cancelable: true,
         asyncCode: () async {

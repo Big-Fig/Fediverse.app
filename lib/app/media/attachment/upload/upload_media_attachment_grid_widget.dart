@@ -127,20 +127,17 @@ class UploadMediaAttachmentGridWidget extends StatelessWidget {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          content: Text(AppLocalizations.of(context)
-              .tr("app.media.attachment.upload.remove.dialog.content")),
+          content: Text(tr("app.media.attachment.upload.remove.dialog.content")),
           actions: <Widget>[
             FlatButton(
-              child: Text(AppLocalizations.of(context)
-                  .tr("app.media.attachment.upload.remove.dialog"
+              child: Text(tr("app.media.attachment.upload.remove.dialog"
                       ".action.cancel")),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ), // usually buttons at the bottom of the dialog
             FlatButton(
-              child: Text(AppLocalizations.of(context)
-                  .tr("app.media.attachment.upload.remove.dialog"
+              child: Text(tr("app.media.attachment.upload.remove.dialog"
                       ".action.remove")),
               onPressed: () {
                 bloc.detachMedia(mediaItemBloc.filePickerFile);

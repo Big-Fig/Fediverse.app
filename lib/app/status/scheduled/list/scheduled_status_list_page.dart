@@ -20,8 +20,7 @@ class ScheduledStatusListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
-        title: AppLocalizations.of(context)
-            .tr("app.status.scheduled.title"),
+        title: tr("app.status.scheduled.title"),
       ),
       body: SafeArea(
         child: buildBody(context),

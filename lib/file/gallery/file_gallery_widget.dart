@@ -43,8 +43,7 @@ class FileGalleryWidget extends StatelessWidget {
           switch (galleryState) {
             case FileGalleryState.loadingNotStarted:
               return Center(
-                  child: Text(AppLocalizations.of(context)
-                      .tr("file.gallery.state.loading_not_started")));
+                  child: Text(tr("file.gallery.state.loading_not_started")));
               break;
             case FileGalleryState.loading:
               return Center(child: CircularProgressIndicator());
@@ -71,7 +70,7 @@ class FileGalleryWidget extends StatelessWidget {
           if (folders.isEmpty) {
             return Center(
                 child: Text(
-                    AppLocalizations.of(context).tr("file.gallery.empty")));
+                    tr("file.gallery.empty")));
           } else {
             return DefaultTabController(
               length: folders.length,

@@ -17,7 +17,7 @@ class PostStatusNsfwActionWidget extends StatelessWidget {
             var nsfwSensitive = snapshot.data;
 
             return Text(
-                AppLocalizations.of(context).tr("app.status.post.nsfw.title"),
+                tr("app.status.post.nsfw.title"),
                 style: TextStyle(
                     color: calculateColor(nsfwSensitive), fontSize: 10));
           }),

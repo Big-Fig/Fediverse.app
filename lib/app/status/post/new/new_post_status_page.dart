@@ -13,7 +13,7 @@ class NewPostStatusPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
-        title: AppLocalizations.of(context).tr("app"
+        title: tr("app"
             ".status.post.new.title"),
         leading: const FediDismissIconButton(),
       ),

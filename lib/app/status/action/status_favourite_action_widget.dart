@@ -30,8 +30,7 @@ class StatusFavouriteActionWidget extends StatelessWidget {
                             ? FediColors.primaryColor
                             : FediColors.secondaryColor,
                         icon: Icon(FediIcons.heart),
-                        tooltip: AppLocalizations.of(context)
-                            .tr("app.status.action.favourite"),
+                        tooltip: tr("app.status.action.favourite"),
                         onPressed: onPressed,
                       ),
                   asyncButtonAction: statusBloc.toggleFavourite);

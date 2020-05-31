@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization_delegate.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
@@ -21,7 +21,7 @@ class PostStatusStartConversationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
-        title: AppLocalizations.of(context).tr("app.conversation.start.title"),
+        title: tr("app.conversation.start.title"),
       ),
       body: const PostStatusWidget(
         showVisibilityAction: false,

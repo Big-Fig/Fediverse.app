@@ -23,7 +23,7 @@ class StatusShareActionWidget extends StatelessWidget {
       color: FediColors.darkGrey,
       iconSize: 20.0,
       icon: Icon(FediIcons.menu),
-      tooltip: AppLocalizations.of(context).tr("app.status.action.more"),
+      tooltip: tr("app.status.action.more"),
       onPressed: () {
         showMoreOptions(context, statusBloc);
       },
@@ -70,8 +70,7 @@ class StatusShareActionWidget extends StatelessWidget {
       padding: EdgeInsets.only(top: 10, left: 10, right: 10),
       child: Center(
         child: Text(
-          AppLocalizations.of(context)
-              .tr("app.status.action.popup.more_actions_for"),
+          tr("app.status.action.popup.more_actions_for"),
           style: TextStyle(color: Colors.blue),
         ),
       ),
@@ -83,7 +82,7 @@ class StatusShareActionWidget extends StatelessWidget {
       padding: EdgeInsets.only(top: 10, left: 10, right: 10),
       child: Center(
         child: Text(
-          AppLocalizations.of(context).tr("app.status.action.popup.title"),
+          tr("app.status.action.popup.title"),
           style: TextStyle(color: Colors.blue),
         ),
       ),
@@ -91,7 +90,7 @@ class StatusShareActionWidget extends StatelessWidget {
   }
 
   Padding buildAccountReportAction(BuildContext context, IStatus status) =>
-      buildButton(AppLocalizations.of(context).tr("app.account.action.report"),
+      buildButton(tr("app.account.action.report"),
           () async {
         await doAsyncOperationWithDialog(
             context: context,
@@ -104,7 +103,7 @@ class StatusShareActionWidget extends StatelessWidget {
 
   Padding buildAccountBlockAction(BuildContext context, IStatus status) =>
       buildButton(
-          AppLocalizations.of(context).tr(
+          tr(
               status.account.pleromaRelationship?.blocking == true
                   ? "app.account.action.unblock"
                   : "app.account.action.block"), () async {
@@ -119,7 +118,7 @@ class StatusShareActionWidget extends StatelessWidget {
 
   Padding buildAccountMuteAction(BuildContext context, IStatus status) =>
       buildButton(
-          AppLocalizations.of(context).tr(
+          tr(
               status.account.pleromaRelationship?.muting == true
                   ? "app.account.action.unmute"
                   : "app.account.action.mute"), () async {
@@ -134,7 +133,7 @@ class StatusShareActionWidget extends StatelessWidget {
 
   Padding buildAccountFollowAction(BuildContext context, IStatus status) =>
       buildButton(
-          AppLocalizations.of(context).tr(
+          tr(
               status.account.pleromaRelationship?.following == true
                   ? "app.account.action.unfollow"
                   : "app.account.action.follow"), () async {
@@ -149,7 +148,7 @@ class StatusShareActionWidget extends StatelessWidget {
 
   Padding buildOpenInBrowserAction(BuildContext context, IStatus status) =>
       buildButton(
-          AppLocalizations.of(context).tr("app.status.action.open_in_browser"),
+          tr("app.status.action.open_in_browser"),
           () async {
         var url = status.uri;
         await UrlHelper.handleUrlClick(context, url);
@@ -157,12 +156,12 @@ class StatusShareActionWidget extends StatelessWidget {
       });
 
   Padding buildCopyAction(BuildContext context, IStatus status) => buildButton(
-          AppLocalizations.of(context).tr("app.status.action.copy_link"),
+          tr("app.status.action.copy_link"),
           () async {
         await Clipboard.setData(ClipboardData(text: status.uri));
         Navigator.of(context).pop();
         await Fluttertoast.showToast(
-            msg: AppLocalizations.of(context).tr("app.status.copy_link.toast"),
+            msg: tr("app.status.copy_link.toast"),
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.CENTER,
             timeInSecForIosWeb: 1,
@@ -172,12 +171,11 @@ class StatusShareActionWidget extends StatelessWidget {
       });
 
   Padding buildShareAction(BuildContext context, IStatus status) =>
-      buildButton(AppLocalizations.of(context).tr("app.status.action.share"),
+      buildButton(tr("app.status.action.share"),
           () async {
-        var appLocalizations = AppLocalizations.of(context);
-        var popupTitle = appLocalizations.tr("app.status.share.title");
+        var popupTitle = tr("app.status.share.title");
         var progressMessage =
-            appLocalizations.tr("app.status.share.progress.content");
+            tr("app.status.share.progress.content");
 
         await doAsyncOperationWithDialog(
             context: context,
@@ -191,7 +189,7 @@ class StatusShareActionWidget extends StatelessWidget {
       });
 
   Padding buildAccountMessageAction(BuildContext context, IStatus status) =>
-      buildButton(AppLocalizations.of(context).tr("app.account.action.message"),
+      buildButton(tr("app.account.action.message"),
           () {
         goToPostStatusStartConversationPage(context,
             conversationAccountsWithoutMe: <IAccount>[status.account]);

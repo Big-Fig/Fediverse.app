@@ -208,7 +208,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
       _logger.finest(() => "build empty");
       return buildNotListBody(Center(
           child:
-              Text(AppLocalizations.of(context).tr("pagination.list.empty"))));
+              Text(tr("pagination.list.empty"))));
     }
   }
 }

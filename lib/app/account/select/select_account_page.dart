@@ -24,7 +24,7 @@ class SelectAccountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: FediSubPageTitleAppBar(
-          title: AppLocalizations.of(context).tr("app.account.select.title"),
+          title: tr("app.account.select.title"),
         ),
         body: SafeArea(
           child: SelectAccountWidget(

@@ -50,7 +50,7 @@ class CurrentAuthInstanceContextLoadingWidget extends StatelessWidget {
                               body: SafeArea(
                                 child: Center(
                                     child: Text(
-                                  AppLocalizations.of(context).tr(
+                                  tr(
                                       "app.auth.instance.current.context.loading.loading"
                                       ".content",
                                       args: [
@@ -80,7 +80,7 @@ class CurrentAuthInstanceContextLoadingWidget extends StatelessWidget {
                                   Padding(
                                     padding: const EdgeInsets.all(16.0),
                                     child: Text(
-                                      AppLocalizations.of(context).tr(
+                                      tr(
                                           "app.auth.instance.current.context.loading.cant_load"
                                           ".content"),
                                       style: TextStyle(
@@ -91,7 +91,7 @@ class CurrentAuthInstanceContextLoadingWidget extends StatelessWidget {
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: FediGreyFilledTextButton(
-                                      AppLocalizations.of(context).tr(
+                                      tr(
                                           "app.auth.instance.current.context.loading.cant_load"
                                           ".action.refresh"),
                                       onPressed: () {
@@ -104,7 +104,7 @@ class CurrentAuthInstanceContextLoadingWidget extends StatelessWidget {
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: FediGreyFilledTextButton(
-                                      AppLocalizations.of(context).tr(
+                                      tr(
                                           "app.auth.instance.current.context.loading.cant_load"
                                           ".action.choose_different_account"),
                                       onPressed: () {

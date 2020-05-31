@@ -12,7 +12,7 @@ class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
       appBar: FediSubPageTitleAppBar(
-        title: AppLocalizations.of(context).tr("app.search.title"),
+        title: tr("app.search.title"),
       ),
       body: SearchWidget(),
     );

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 class GrantPermissionWidget extends StatelessWidget {
   final IPermissionBloc permissionBloc;
   final WidgetBuilder grantedBuilder;
+
   GrantPermissionWidget(
       {@required this.permissionBloc, @required this.grantedBuilder});
 
@@ -20,8 +21,7 @@ class GrantPermissionWidget extends StatelessWidget {
           if (!permissionGranted) {
             return Center(
               child: RaisedButton(
-                child: Text(AppLocalizations.of(context)
-                    .tr("permission.grant.action.grant")),
+                child: Text(tr("permission.grant.action.grant")),
                 onPressed: () {
                   permissionBloc.requestPermission();
                 },

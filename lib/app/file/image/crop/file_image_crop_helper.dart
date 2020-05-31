@@ -10,7 +10,7 @@ Future<File> cropImageToSquare(File file, BuildContext context) {
       aspectRatioPresets: [CropAspectRatioPreset.square],
       androidUiSettings: AndroidUiSettings(
           toolbarTitle:
-              AppLocalizations.of(context).tr("app.file.image.crop.title"),
+              tr("app.file.image.crop.title"),
           toolbarColor: Colors.blue,
           toolbarWidgetColor: Colors.white,
           initAspectRatio: CropAspectRatioPreset.square,
@@ -32,7 +32,7 @@ Future<File> cropImage(File file, BuildContext context) {
       ],
       androidUiSettings: AndroidUiSettings(
           toolbarTitle:
-              AppLocalizations.of(context).tr("app.file.image.crop.title"),
+              tr("app.file.image.crop.title"),
           toolbarColor: Colors.blue,
           toolbarWidgetColor: Colors.white,
           initAspectRatio: CropAspectRatioPreset.original,

@@ -21,7 +21,7 @@ class StatusFavouriteAccountListPage extends StatelessWidget {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
         title:
-            AppLocalizations.of(context).tr("app.status.favourited_by.title"),
+            tr("app.status.favourited_by.title"),
       ),
       body: SafeArea(
         child: AccountPaginationListWidget(

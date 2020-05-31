@@ -43,8 +43,7 @@ class AppSplashWidget extends StatelessWidget {
             case AsyncInitLoadingState.failed:
               return MaterialApp(
                   home: Scaffold(
-                      body: Text(AppLocalizations.of(context)
-                          .tr("app.splash.state.error"))));
+                      body: Text(tr("app.splash.state.error"))));
 
               break;
           }

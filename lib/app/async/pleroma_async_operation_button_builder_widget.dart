@@ -34,9 +34,8 @@ class PleromaAsyncOperationButtonBuilderWidget
     if (error is PleromaRestException) {
       return SimpleAlertDialog(
         context: context,
-        title: AppLocalizations.of(context)
-            .tr("app.async.pleroma.error.dialog.title"),
-        content: AppLocalizations.of(context).tr(
+        title: tr("app.async.pleroma.error.dialog.title"),
+        content: tr(
             "app.async.pleroma.error.dialog.content",
             args: [error.toString()]),
       );
@@ -50,9 +49,8 @@ class PleromaAsyncOperationButtonBuilderWidget
     if (error is SocketException) {
       return SimpleAlertDialog(
         context: context,
-        title: AppLocalizations.of(context)
-            .tr("app.async.socket.error.dialog.title"),
-        content: AppLocalizations.of(context).tr(
+        title: tr("app.async.socket.error.dialog.title"),
+        content: tr(
             "app.async.socket.error.dialog.content",
             args: [error.toString()]),
       );

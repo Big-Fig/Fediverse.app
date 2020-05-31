@@ -18,8 +18,7 @@ class SingleFilePickerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
-        title: AppLocalizations.of(context)
-            .tr("file.picker.single.title"),
+        title: tr("file.picker.single.title"),
         leading: FediDismissIconButton(),
       ),
       body: SingleFilePickerWidget(),

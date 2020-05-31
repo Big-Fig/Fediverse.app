@@ -8,7 +8,7 @@ class TosPage extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: FediSubPageTitleAppBar(
-        title: AppLocalizations.of(context).tr("app.tos.title"),
+        title: tr("app.tos.title"),
       ),
       body: SafeArea(
         child: SingleChildScrollView(

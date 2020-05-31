@@ -18,7 +18,7 @@ class ListRefreshHeaderWidget extends StatelessWidget {
               width: 15.0,
             ),
             Text(
-              AppLocalizations.of(context).tr("app.list.refresh.up_to_date"),
+              tr("app.list.refresh.up_to_date"),
               style: TextStyle(color: Colors.grey),
             )
           ],
@@ -34,8 +34,7 @@ class ListRefreshHeaderWidget extends StatelessWidget {
               width: 15.0,
             ),
             Text(
-                AppLocalizations.of(context)
-                    .tr("app.list.refresh.unable_to_fetch"),
+                tr("app.list.refresh.unable_to_fetch"),
                 style: TextStyle(color: Colors.grey))
           ],
         ));

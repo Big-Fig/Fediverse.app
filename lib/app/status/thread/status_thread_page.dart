@@ -48,7 +48,7 @@ class StatusThreadPage extends StatelessWidget {
 
           if (status == null) {
             return Text(
-             AppLocalizations.of(context).tr("app.status.thread.start.loading"),
+             tr("app.status.thread.start.loading"),
               style: TextStyle(color: FediColors.darkGrey),
             );
           }

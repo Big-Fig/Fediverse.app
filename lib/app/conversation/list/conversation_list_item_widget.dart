@@ -73,7 +73,7 @@ class ConversationListItemWidget extends StatelessWidget {
   IconButton buildGoToConversationButton(
       BuildContext context, IConversationBloc conversationBloc) {
     return IconButton(
-      tooltip: AppLocalizations.of(context).tr("app.conversation."
+      tooltip: tr("app.conversation."
           ".action.more"),
       color: FediColors.darkGrey,
       iconSize: 16.0,
@@ -127,8 +127,7 @@ class ConversationListItemWidget extends StatelessWidget {
     var myAccountBloc = IMyAccountBloc.of(context, listen: true);
 
     if (myAccountBloc.checkIsStatusFromMe(status)) {
-      formattedText = AppLocalizations.of(context)
-          .tr("app.conversation.preview.you", args: [formattedText]);
+      formattedText = tr("app.conversation.preview.you", args: [formattedText]);
     }
 
     return formattedText;

@@ -7,11 +7,11 @@ import 'package:flutter/material.dart';
 class StatusSpoilerAlertWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var appLocalizations = AppLocalizations.of(context);
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: FediPrimaryFilledTextButton(
-        appLocalizations.tr("app.status.spoiler.action.view"),
+        tr("app.status.spoiler.action.view"),
         onPressed: () {
           var statusBloc = IStatusBloc.of(context, listen: false);
 

@@ -36,15 +36,13 @@ class SingleFilePickerWidget extends FilePickerBodyWidget {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                  title: Text(AppLocalizations.of(context)
-                      .tr("file.picker.single.video.confirm.dialog.title")),
+                  title: Text(tr("file.picker.single.video.confirm.dialog.title")),
                   content: MediaVideoPlayerWidget.localFile(
                     localFile: filePickerFile.file,
                   ),
                   actions: [
                     FlatButton(
-                      child: Text(AppLocalizations.of(context)
-                          .tr("file.picker.single.video.confirm.dialog"
+                      child: Text(tr("file.picker.single.video.confirm.dialog"
                               ".action.select")),
                       onPressed: () {
                         Navigator.pop(context);
@@ -53,8 +51,7 @@ class SingleFilePickerWidget extends FilePickerBodyWidget {
                       },
                     ),
                     FlatButton(
-                      child: Text(AppLocalizations.of(context)
-                          .tr("file.picker.single.video.confirm.dialog"
+                      child: Text(tr("file.picker.single.video.confirm.dialog"
                               ".action.cancel")),
                       onPressed: () {
                         Navigator.pop(context);

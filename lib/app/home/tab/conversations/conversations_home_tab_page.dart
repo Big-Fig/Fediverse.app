@@ -47,14 +47,12 @@ class ConversationsHomeTabPage extends StatelessWidget {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: FediHeaderText(AppLocalizations.of(context)
-              .tr("app.home.tab.conversations.title")),
+          child: FediHeaderText(tr("app.home.tab.conversations.title")),
         ),
         Row(
           children: <Widget>[
             FediTransparentTextButton(
-                AppLocalizations.of(context)
-                    .tr("app.home.tab.conversations.action.switch_to_chats"),
+                tr("app.home.tab.conversations.action.switch_to_chats"),
                 onPressed: () {
               IMyAccountSettingsBloc.of(context, listen: false)
                   .changeIsNewChatsEnabled(true);

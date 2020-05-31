@@ -90,7 +90,7 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
 
   Widget buildList(IStatusThreadBloc statusThreadBloc, List<IStatus> statuses) {
     if (statuses.isEmpty) {
-      return Text(AppLocalizations.of(context).tr("app.list.empty"));
+      return Text(tr("app.list.empty"));
     } else {
       // jump only after context messages loaded
       if (!isJumpedToStartState && statuses.length > 1) {

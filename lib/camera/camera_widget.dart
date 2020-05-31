@@ -109,11 +109,10 @@ abstract class CameraWidget extends StatelessWidget {
                 switch (state) {
                   case CameraState.error:
                     widget = Text(
-                        AppLocalizations.of(context).tr("camera.state.error"));
+                        tr("camera.state.error"));
                     break;
                   case CameraState.initializing:
-                    widget = Text(AppLocalizations.of(context)
-                        .tr("camera.state.initializing"));
+                    widget = Text(tr("camera.state.initializing"));
                     break;
                   case CameraState.videoRecording:
                     widget = SizedBox.shrink();
@@ -128,8 +127,7 @@ abstract class CameraWidget extends StatelessWidget {
                     widget = SizedBox.shrink();
                     break;
                   default:
-                    widget = Text(AppLocalizations.of(context)
-                        .tr("camera.state.not_initialized"));
+                    widget = Text(tr("camera.state.not_initialized"));
                     break;
                 }
 

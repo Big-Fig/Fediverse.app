@@ -51,14 +51,13 @@ class ChatsHomeTabPage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: FediHeaderText(
-              AppLocalizations.of(context).tr("app.home.tab.chats.title")),
+              tr("app.home.tab.chats.title")),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             FediTransparentTextButton(
-              AppLocalizations.of(context)
-                  .tr("app.home.tab.chats.action.switch_to_dms"),
+              tr("app.home.tab.chats.action.switch_to_dms"),
               onPressed: () {
                 IMyAccountSettingsBloc.of(context, listen: false)
                     .changeIsNewChatsEnabled(false);
@@ -104,7 +103,6 @@ class ChatsHomeTabPage extends StatelessWidget {
 
   Center buildMastodonBody(BuildContext context) {
     return Center(
-        child: Text(AppLocalizations.of(context)
-            .tr("app.home.tab.chats.not_supported_on_mastodon")));
+        child: Text(tr("app.home.tab.chats.not_supported_on_mastodon")));
   }
 }

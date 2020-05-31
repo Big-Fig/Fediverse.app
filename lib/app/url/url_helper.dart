@@ -8,11 +8,11 @@ class UrlHelper {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
-      var appLocalizations = AppLocalizations.of(context);
+
       await SimpleAlertDialog(
               context: context,
-              title: appLocalizations.tr("link.error.dialog.title"),
-              content: appLocalizations.tr("link.error.dialog.content",
+              title: tr("link.error.dialog.title"),
+              content: tr("link.error.dialog.content",
                   args: [url]))
           .show(context);
     }

@@ -16,7 +16,7 @@ class StatusCommentActionWidget extends StatelessWidget {
           color: FediColors.darkGrey,
           iconSize: 20.0,
           icon: Icon(FediIcons.message),
-          tooltip: AppLocalizations.of(context).tr("app.status.action.comment"),
+          tooltip: tr("app.status.action.comment"),
           onPressed: () {
             goToStatusThreadPage(context, statusBloc.status);
           },

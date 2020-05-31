@@ -37,7 +37,7 @@ DialogAction createDefaultCancelAction(BuildContext context) {
       onAction: () {
         Navigator.of(context).pop();
       },
-      label: AppLocalizations.of(context).tr("dialog.action.cancel"));
+      label: tr("dialog.action.cancel"));
 }
 
 DialogAction createOkCancelAction(BuildContext context) {
@@ -45,5 +45,5 @@ DialogAction createOkCancelAction(BuildContext context) {
       onAction: () {
         Navigator.of(context).pop();
       },
-      label: AppLocalizations.of(context).tr("dialog.action.ok"));
+      label: tr("dialog.action.ok"));
 }

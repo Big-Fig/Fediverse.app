@@ -31,7 +31,7 @@ abstract class ProgressDialog extends BaseDialog {
   Widget buildDialogContentMessage(BuildContext context) {
     return Text(
         contentMessage ??
-            AppLocalizations.of(context).tr("dialog.progress.content"),
+            tr("dialog.progress.content"),
         textAlign: TextAlign.center,
         style: TextStyle(
             color: Colors.black, fontSize: 18.0, fontWeight: FontWeight.bold));
@@ -79,9 +79,8 @@ abstract class ProgressDialog extends BaseDialog {
                       };
                     }
                     return FlatButton(
-                      child: Text(AppLocalizations.of(context).tr(
-                          AppLocalizations.of(context)
-                              .tr("dialog.progress.action.cancel"))),
+                      child: Text(tr(
+                          tr("dialog.progress.action.cancel"))),
                       onPressed: onPressed,
                     );
                   })

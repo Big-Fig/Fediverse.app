@@ -52,7 +52,7 @@ class AccountActionListWidget extends StatelessWidget {
   Widget buildMoreButton(BuildContext context, IAccountBloc accountBloc,
       IPleromaAccountRelationship relationship) {
     return FediGreyFilledTextButton(
-      AppLocalizations.of(context).tr("app.account.action.more"),
+      tr("app.account.action.more"),
       onPressed: () async {
         showMoreOptions(context, accountBloc, relationship);
       },
@@ -62,7 +62,7 @@ class AccountActionListWidget extends StatelessWidget {
 
   Widget buildMessageButton(BuildContext context, IAccountBloc accountBloc) {
     return FediGreyFilledTextButton(
-      AppLocalizations.of(context).tr("app.account.action.message"),
+      tr("app.account.action.message"),
       onPressed: () async {
         goToPostStatusStartConversationPage(context,
             conversationAccountsWithoutMe: <IAccount>[accountBloc.account]);
@@ -79,8 +79,8 @@ class AccountActionListWidget extends StatelessWidget {
       builder: (BuildContext context, VoidCallback onPressed) {
         return FediGreyFilledTextButton(
           relationship?.following == true
-              ? AppLocalizations.of(context).tr("app.account.action.unfollow")
-              : AppLocalizations.of(context).tr("app.account.action.follow"),
+              ? tr("app.account.action.unfollow")
+              : tr("app.account.action.follow"),
           onPressed: onPressed,
           textColor: FediColors.darkGrey,
         );
@@ -90,25 +90,24 @@ class AccountActionListWidget extends StatelessWidget {
 
   void showMoreOptions(BuildContext context, IAccountBloc accountBloc,
       IPleromaAccountRelationship relationship) {
-    var appLocalizations = AppLocalizations.of(context);
+
     showAlert(
       context: context,
-      title: appLocalizations
-          .tr("app.account.action.popup.title", args: [accountBloc.acct]),
+      title: tr("app.account.action.popup.title", args: [accountBloc.acct]),
       body: "${accountBloc.acct}",
       actions: [
         AlertAction(
             text: relationship.muting
-                ? appLocalizations.tr("app.account.action.unmute")
-                : appLocalizations.tr("app.account.action.mute"),
+                ? tr("app.account.action.unmute")
+                : tr("app.account.action.mute"),
             onPressed: accountBloc.toggleMute),
         AlertAction(
             text: relationship.blocking
-                ? appLocalizations.tr("app.account.action.unblock")
-                : appLocalizations.tr("app.account.action.block"),
+                ? tr("app.account.action.unblock")
+                : tr("app.account.action.block"),
             onPressed: accountBloc.toggleBlock),
         AlertAction(
-            text: appLocalizations.tr("app.account.action.report"),
+            text: tr("app.account.action.report"),
             onPressed: accountBloc.report),
       ],
       cancelable: true,

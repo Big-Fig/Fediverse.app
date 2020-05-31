@@ -13,8 +13,7 @@ void showEditMyAccountAvatarDialog(
   showDialog(
       context: context,
       child: AlertDialog(
-        title: Text(AppLocalizations.of(context)
-            .tr("app.account.my.edit.field.header.dialog.title")),
+        title: Text(tr("app.account.my.edit.field.header.dialog.title")),
         content: Image.file(filePickerFile.file),
         actions: <Widget>[
           FlatButton(
@@ -22,8 +21,7 @@ void showEditMyAccountAvatarDialog(
                 dismissDialog(context);
                 selectedCallback(filePickerFile);
               },
-              child: Text(AppLocalizations.of(context)
-                  .tr("app.account.my.edit.field.header.dialog.action"
+              child: Text(tr("app.account.my.edit.field.header.dialog.action"
                       ".select"))),
           FlatButton(
               onPressed: () async {
@@ -44,15 +42,13 @@ void showEditMyAccountAvatarDialog(
                   selectedCallback(filePickerFile);
                 }
               },
-              child: Text(AppLocalizations.of(context)
-                  .tr("app.account.my.edit.field.header.dialog.action"
+              child: Text(tr("app.account.my.edit.field.header.dialog.action"
                       ".crop"))),
           FlatButton(
               onPressed: () {
                 dismissDialog(context);
               },
-              child: Text(AppLocalizations.of(context)
-                  .tr("app.account.my.edit.field.header.dialog.action"
+              child: Text(tr("app.account.my.edit.field.header.dialog.action"
                       ".cancel"))),
         ],
       ));

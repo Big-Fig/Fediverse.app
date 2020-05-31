@@ -68,7 +68,7 @@ class ChatListItemWidget extends StatelessWidget {
 
   IconButton buildGoToChatButton(BuildContext context, IChatBloc chatBloc) {
     return IconButton(
-      tooltip: AppLocalizations.of(context).tr("app.chat."
+      tooltip: tr("app.chat."
           ".action.more"),
       color: FediColors.darkGrey,
       iconSize: 16.0,
@@ -118,8 +118,7 @@ class ChatListItemWidget extends StatelessWidget {
     var myAccountBloc = IMyAccountBloc.of(context, listen: true);
 
     if (myAccountBloc.checkIsChatMessageFromMe(chatMessage)) {
-      formattedText = AppLocalizations.of(context)
-          .tr("app.chat.preview.you", args: [formattedText]);
+      formattedText = tr("app.chat.preview.you", args: [formattedText]);
     }
 
     return formattedText;

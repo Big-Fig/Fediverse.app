@@ -71,7 +71,7 @@ class AccountInfoWidget extends StatelessWidget {
         initialData: accountBloc.followersCount,
         builder: (context, snapshot) {
           var followersCount = snapshot.data;
-          return buildStatisticValueWidget(AppLocalizations.of(context).tr(
+          return buildStatisticValueWidget(tr(
               "app.account.info.followers",
               args: [followersCount.toString()]));
         });
@@ -83,7 +83,7 @@ class AccountInfoWidget extends StatelessWidget {
         initialData: accountBloc.followingCount,
         builder: (context, snapshot) {
           var followingCount = snapshot.data;
-          return buildStatisticValueWidget(AppLocalizations.of(context).tr(
+          return buildStatisticValueWidget(tr(
               "app.account.info.following",
               args: [followingCount.toString()]));
         });
@@ -95,7 +95,7 @@ class AccountInfoWidget extends StatelessWidget {
         initialData: accountBloc.statusesCount,
         builder: (context, snapshot) {
           var statusesCount = snapshot.data;
-          return buildStatisticValueWidget(AppLocalizations.of(context).tr(
+          return buildStatisticValueWidget(tr(
               "app.account.info.statuses",
               args: [statusesCount.toString()]));
         });

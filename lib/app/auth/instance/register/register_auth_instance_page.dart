@@ -17,8 +17,7 @@ class RegisterAuthInstancePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
-          title: AppLocalizations.of(context)
-              .tr("app.auth.instance.register.title"),
+          title: tr("app.auth.instance.register.title"),
           leading: FediDismissIconButton()),
       body: SafeArea(
           child: RegisterAuthInstanceWidget(instanceBaseUrl: instanceBaseUrl)),

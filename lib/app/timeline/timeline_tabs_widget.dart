@@ -73,8 +73,7 @@ class TimelineTabsWidget extends StatelessWidget {
                     width: 24.0,
                   ),
                   Text(
-                    AppLocalizations.of(context)
-                        .tr("app.status.post.field.message.hint"),
+                    tr("app.status.post.field.message.hint"),
                     style: TextStyle(
                         fontSize: 18.0,
                         color: FediColors.lightGrey,
@@ -114,18 +113,18 @@ class TimelineTabsWidget extends StatelessWidget {
       Tab(text: mapTabToTitle(context, tab));
 
   String mapTabToTitle(BuildContext context, TimelineTab tab) {
-    var appLocalizations = AppLocalizations.of(context);
+
 
     switch (tab) {
       case TimelineTab.public:
-        return appLocalizations.tr("app.home.tab.timelines.tab.public");
+        return tr("app.home.tab.timelines.tab.public");
         break;
       case TimelineTab.home:
-        return appLocalizations.tr("app.home.tab.timelines.tab.home");
+        return tr("app.home.tab.timelines.tab.home");
 
         break;
       case TimelineTab.local:
-        return appLocalizations.tr("app.home.tab.timelines.tab.local");
+        return tr("app.home.tab.timelines.tab.local");
         break;
     }
 
@@ -165,7 +164,7 @@ class TimelineTabsWidget extends StatelessWidget {
           update: (context, value, previous) => value,
           child: PaginationListWithNewItemsHeaderWidget(
             textBuilder: (context, updateItemsCount) =>
-                AppLocalizations.of(context).tr(
+                tr(
                     "app.status.list.new_items.action.tap_to_load_new",
                     args: [updateItemsCount.toString()]),
             child: TimelineWidget(),

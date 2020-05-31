@@ -77,8 +77,7 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            AppLocalizations.of(context)
-                                .tr("app.status.scheduled.state.canceled"),
+                            tr("app.status.scheduled.state.canceled"),
                             style: TextStyle(color: Colors.white),
                           ),
                         )
@@ -97,7 +96,7 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                              AppLocalizations.of(context).tr(
+                              tr(
                                   "app.status.scheduled.state.already_posted"),
                               style: TextStyle(color: Colors.white)),
                         )
@@ -118,7 +117,7 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
           builder: (context, snapshot) {
             var scheduledAt = snapshot.data;
             return Text(
-                AppLocalizations.of(context).tr(
+                tr(
                     "app.status.scheduled.state.scheduled_at",
                     args: [dateFormat.format(scheduledAt)]),
                 style: TextStyle(color: Colors.white));
@@ -131,8 +130,7 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
           return FlatButton(
               onPressed: onPressed,
               child: Text(
-                  AppLocalizations.of(context)
-                      .tr("app.status.scheduled.action.cancel"),
+                  tr("app.status.scheduled.action.cancel"),
                   style: TextStyle(color: Colors.white)));
         },
         asyncButtonAction: () => scheduledStatusBloc.cancelSchedule(),
@@ -153,7 +151,7 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
           }
         },
         child: Text(
-            AppLocalizations.of(context).tr("app.status.scheduled.action.edit"),
+            tr("app.status.scheduled.action.edit"),
             style: TextStyle(color: Colors.white)));
   }
 }

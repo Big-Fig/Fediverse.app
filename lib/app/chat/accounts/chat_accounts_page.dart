@@ -13,7 +13,7 @@ class ChatAccountsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
-        title: AppLocalizations.of(context).tr("app.chat.accounts.title"),
+        title: tr("app.chat.accounts.title"),
       ),
       body: ChatAccountsWidget(),
     );

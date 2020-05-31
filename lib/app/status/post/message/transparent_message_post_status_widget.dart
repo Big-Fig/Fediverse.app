@@ -21,7 +21,7 @@ class TransparentMessagePostStatusWidget extends StatelessWidget {
       textEditingController: postStatusBloc.inputTextController,
       focusNode: postStatusBloc.focusNode,
       hintText: hintText ??
-          AppLocalizations.of(context).tr("app.status.post.field.message.hint"),
+          tr("app.status.post.field.message.hint"),
       expanded: expanded,
       autofocus: expanded,
     );

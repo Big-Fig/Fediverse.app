@@ -99,43 +99,39 @@ class NotificationListItemWidget extends StatelessWidget {
       BuildContext context, INotificationBloc notificationBloc) {
     var rawText;
 
-    var appLocalizations = AppLocalizations.of(context);
-
     switch (notificationBloc.typePleroma) {
       case PleromaNotificationType.follow:
-        rawText = appLocalizations.tr("app.notification.header.follow");
+        rawText = tr("app.notification.header.follow");
         break;
       case PleromaNotificationType.favourite:
-        rawText = appLocalizations.tr("app.notification.header.favourite",
+        rawText = tr("app.notification.header.favourite",
             args: [extractStatusRawContent(notificationBloc)]);
         break;
       case PleromaNotificationType.reblog:
-        rawText = appLocalizations.tr("app.notification.header.reblog",
+        rawText = tr("app.notification.header.reblog",
             args: [extractStatusRawContent(notificationBloc)]);
         break;
       case PleromaNotificationType.mention:
-        rawText = appLocalizations.tr("app.notification.header.mention",
+        rawText = tr("app.notification.header.mention",
             args: [extractStatusRawContent(notificationBloc)]);
         break;
       case PleromaNotificationType.poll:
-        rawText = appLocalizations.tr("app.notification.header.poll");
+        rawText = tr("app.notification.header.poll");
         break;
       case PleromaNotificationType.move:
-        rawText = appLocalizations.tr("app.notification.header.move");
+        rawText = tr("app.notification.header.move");
         break;
       case PleromaNotificationType.followRequest:
-        rawText = appLocalizations.tr("app.notification.header.followRequest");
+        rawText = tr("app.notification.header.followRequest");
         break;
       case PleromaNotificationType.pleromaEmojiReaction:
-        rawText = appLocalizations
-            .tr("app.notification.header.pleromaEmojiReaction", args: [
+        rawText = tr("app.notification.header.pleromaEmojiReaction", args: [
           notificationBloc.notification.emoji,
           extractStatusRawContent(notificationBloc)
         ]);
         break;
       case PleromaNotificationType.pleromaChatMention:
-        rawText = appLocalizations.tr(
-            "app.notification.header.pleromaChatMention",
+        rawText = tr("app.notification.header.pleromaChatMention",
             args: [extractStatusRawContent(notificationBloc)]);
         break;
       case PleromaNotificationType.unknown:
@@ -155,7 +151,7 @@ class NotificationListItemWidget extends StatelessWidget {
           emojiText = "";
         }
 
-        rawText = appLocalizations.tr("app.notification.header.unknown",
+        rawText = tr("app.notification.header.unknown",
             args: ["${notificationBloc.type}: $emojiText $statusText"]);
         break;
     }

@@ -13,8 +13,7 @@ class ConversationAccountsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
-        title: AppLocalizations.of(context)
-            .tr("app.conversation.accounts.title"),
+        title: tr("app.conversation.accounts.title"),
       ),
       body: ConversationAccountsWidget(),
     );

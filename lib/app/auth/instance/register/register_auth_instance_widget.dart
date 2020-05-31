@@ -59,10 +59,8 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
       buildTextField(
         context: context,
         formTextField: bloc.usernameField,
-        labelText: AppLocalizations.of(context)
-            .tr("app.auth.instance.register.field.username.label"),
-        hintText: AppLocalizations.of(context)
-            .tr("app.auth.instance.register.field.username.hint"),
+        labelText: tr("app.auth.instance.register.field.username.label"),
+        hintText: tr("app.auth.instance.register.field.username.hint"),
       );
 
   Widget buildEmailField(
@@ -70,10 +68,8 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
       buildTextField(
         context: context,
         formTextField: bloc.emailField,
-        labelText: AppLocalizations.of(context)
-            .tr("app.auth.instance.register.field.email.label"),
-        hintText: AppLocalizations.of(context)
-            .tr("app.auth.instance.register.field.email.hint"),
+        labelText: tr("app.auth.instance.register.field.email.label"),
+        hintText: tr("app.auth.instance.register.field.email.hint"),
       );
 
   Widget buildPasswordField(
@@ -81,10 +77,8 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
       buildTextField(
         context: context,
         formTextField: bloc.passwordField,
-        labelText: AppLocalizations.of(context)
-            .tr("app.auth.instance.register.field.password.label"),
-        hintText: AppLocalizations.of(context)
-            .tr("app.auth.instance.register.field.password.hint"),
+        labelText: tr("app.auth.instance.register.field.password.label"),
+        hintText: tr("app.auth.instance.register.field.password.hint"),
       );
 
   Widget buildConfirmPasswordField(
@@ -92,10 +86,8 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
       buildTextField(
         context: context,
         formTextField: bloc.confirmPasswordField,
-        labelText: AppLocalizations.of(context)
-            .tr("app.auth.instance.register.field.confirm_password.label"),
-        hintText: AppLocalizations.of(context)
-            .tr("app.auth.instance.register.field.confirm_password.hint"),
+        labelText: tr("app.auth.instance.register.field.confirm_password.label"),
+        hintText: tr("app.auth.instance.register.field.confirm_password.hint"),
       );
 
   Widget buildSubmitButton(
@@ -114,8 +106,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
             };
           }
           return FediPrimaryFilledTextButton(
-            AppLocalizations.of(context)
-                .tr("app.auth.instance.register.action.create_account"),
+            tr("app.auth.instance.register.action.create_account"),
             onPressed: onPressed,
           );
         },
@@ -153,9 +144,8 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
           (context, error) {
             // todo: handle specific error
             return SimpleAlertDialog(
-                title: AppLocalizations.of(context)
-                    .tr("app.auth.instance.register.fail.dialog.title"),
-                content: AppLocalizations.of(context).tr(
+                title: tr("app.auth.instance.register.fail.dialog.title"),
+                content: tr(
                     "app.auth.instance.register.fail.dialog.content",
                     args: [error.toString()]),
                 context: context);
