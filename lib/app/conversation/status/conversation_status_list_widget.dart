@@ -28,6 +28,7 @@ class ConversationStatusListWidget extends StatusPaginationListBaseWidget {
           BuildContext context,
           List<IStatus> items,
           RefreshController refreshController,
+          ScrollController scrollController,
           Widget Function(BuildContext context) smartRefresherBodyBuilder) =>
       SmartRefresher(
         key: key,
@@ -38,6 +39,8 @@ class ConversationStatusListWidget extends StatusPaginationListBaseWidget {
         footer: const ListLoadingFooterWidget(),
         controller: refreshController,
         reverse: true,
+        scrollController: scrollController,
+        primary: scrollController == null,
         onRefresh: () {
           return AsyncSmartRefresherHelper.doAsyncRefresh(
               controller: refreshController,

@@ -29,6 +29,7 @@ class ChatMessageListWidget extends ChatMessagePaginationListBaseWidget {
           BuildContext context,
           List<IChatMessage> items,
           RefreshController refreshController,
+          ScrollController scrollController,
           Widget Function(BuildContext context) smartRefresherBodyBuilder) =>
       SmartRefresher(
         key: key,
@@ -39,6 +40,8 @@ class ChatMessageListWidget extends ChatMessagePaginationListBaseWidget {
         footer: const ListLoadingFooterWidget(),
         controller: refreshController,
         reverse: true,
+        scrollController:  scrollController,
+        primary: scrollController == null,
         onRefresh: () {
           return AsyncSmartRefresherHelper.doAsyncRefresh(
               controller: refreshController,
