@@ -136,9 +136,9 @@ class NotificationTabsWidget extends StatelessWidget {
               update: (context, value, previous) => value,
               child: PaginationListWithNewItemsHeaderWidget(
                 textBuilder: (context, updateItemsCount) =>
-                    tr(
+                    plural(
                         "app.status.list.new_items.action.tap_to_load_new",
-                        args: [updateItemsCount.toString()]),
+                        updateItemsCount),
                 child: DisposableProvider<ICollapsibleBloc>(
                   create: (context) =>
                       CollapsibleBloc.createFromContext(context),
