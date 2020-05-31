@@ -13,3 +13,10 @@ class FocusNodeDisposable extends CustomDisposable {
 
   FocusNodeDisposable(this.focusNode) : super(() => focusNode.dispose());
 }
+
+class ScrollControllerDisposable extends CustomDisposable {
+  final ScrollController scrollController;
+
+  ScrollControllerDisposable(this.scrollController)
+      : super(() => scrollController.dispose());
+}

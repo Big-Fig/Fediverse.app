@@ -11,13 +11,16 @@ class DisposableOwner extends Disposable {
   bool disposed = false;
   final CompositeDisposable _compositeDisposable = CompositeDisposable([]);
 
-  void addDisposable(
-      {Disposable disposable,
-      StreamSubscription streamSubscription,
-      TextEditingController textEditingController,
-      FocusNode focusNode,
-      Subject subject,
-      Timer timer}) {
+  void addDisposable({
+    Disposable disposable,
+    StreamSubscription streamSubscription,
+    TextEditingController textEditingController,
+    ScrollController scrollController,
+    FocusNode focusNode,
+    Subject subject,
+    Timer timer,
+    VoidCallback custom,
+  }) {
     if (disposable != null) {
       _compositeDisposable.children.add(disposable);
     }
@@ -41,6 +44,13 @@ class DisposableOwner extends Disposable {
     }
     if (focusNode != null) {
       _compositeDisposable.children.add(FocusNodeDisposable(focusNode));
+    }
+    if (scrollController != null) {
+      _compositeDisposable.children
+          .add(ScrollControllerDisposable(scrollController));
+    }
+    if (custom != null) {
+      _compositeDisposable.children.add(CustomDisposable(custom));
     }
   }
 

@@ -1,3 +1,4 @@
+import 'package:fedi/ui/scroll_direction_detector_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -13,10 +14,12 @@ class FediHomeSliverPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return NestedScrollView(
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return [appBar];
-        },
-        body: body,
+      controller:
+          IScrollDirectionDetector.of(context, listen: false).scrollController,
+      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+        return [appBar];
+      },
+      body: body,
     );
   }
 }

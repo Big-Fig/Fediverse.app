@@ -58,16 +58,18 @@ class FediInstanceImageDecorationWidget extends StatelessWidget {
     }
   }
 
-  Container buildDefault(SafeArea child) {
+  Container buildDefault(Widget child) {
     var imageProvider = getDefaultHeaderImage().image;
     return buildWithImageProvider(imageProvider, child);
   }
 
-  Container buildWithImageProvider(
-      ImageProvider imageProvider, SafeArea child) {
+  Container buildWithImageProvider(ImageProvider imageProvider, Widget child) {
     return Container(
         decoration: BoxDecoration(
-            image: DecorationImage(fit: BoxFit.cover, image: imageProvider)),
+            image: DecorationImage(
+                fit: BoxFit.cover,
+                alignment: Alignment.topCenter,
+                image: imageProvider)),
         child: child);
   }
 
