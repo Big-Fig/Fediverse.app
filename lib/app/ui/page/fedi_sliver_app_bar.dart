@@ -38,9 +38,13 @@ class FediSliverAppBar extends SliverPersistentHeaderDelegate {
       fit: StackFit.expand,
       overflow: Overflow.visible,
       children: [
-        buildExpandedAppBar(context, shrinkOffset),
         buildCollapsedStatusBar(context, shrinkOffset),
         buildCollapsedAppBar(context, shrinkOffset),
+        Positioned(
+            top: -shrinkOffset,
+            width: MediaQuery.of(context).size.width,
+            height: expandedHeight,
+            child: buildExpandedAppBar(context, shrinkOffset)),
       ],
     );
 
@@ -108,7 +112,8 @@ class FediSliverAppBar extends SliverPersistentHeaderDelegate {
 
   Opacity buildCollapsedStatusBar(BuildContext context, double shrinkOffset) {
     return Opacity(
-      opacity: shrinkOffset / expandedHeight,
+      //      opacity: shrinkOffset / expandedHeight,
+      opacity: shrinkOffset >= expandedHeight -10 ? 1 : 0,
       child: Container(
         width: double.infinity,
         height: statusBarHeight,
