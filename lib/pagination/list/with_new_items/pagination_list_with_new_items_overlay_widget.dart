@@ -49,7 +49,7 @@ class PaginationListWithNewItemsOverlayWidget extends StatelessWidget {
                 builder: (context, snapshot) {
                   var scrollDirection = snapshot.data;
 
-                  if (scrollDirection == ScrollDirection.forward) {
+                  if (scrollDirection != ScrollDirection.reverse) {
                     return GestureDetector(
                         onTap: () {
                           paginationWithUpdatesListBloc.mergeNewItems();

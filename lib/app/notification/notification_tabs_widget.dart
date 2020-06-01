@@ -156,10 +156,15 @@ class NotificationTabsWidget extends StatelessWidget {
                         CollapsibleBloc.createFromContext(context),
                     child: Stack(
                       children: <Widget>[
-                        NotificationPaginationListWidget(
-                          needWatchLocalRepositoryForUpdates: true,
-                          key: PageStorageKey("${tab.toString()}"),
-                        ),
+                        Builder(
+                            builder: (context) =>
+                                NotificationPaginationListWidget(
+                                  needWatchLocalRepositoryForUpdates: true,
+                                  scrollController:
+                                      IScrollDirectionDetector.of(context)
+                                          .scrollController,
+                                  key: PageStorageKey("${tab.toString()}"),
+                                )),
                         Align(
                             alignment: Alignment.bottomLeft,
                             child: Padding(
