@@ -1,7 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/Pages/Profile/OtherAccount.dart';
-import 'package:fedi/Pleroma/Models/message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -18,9 +16,9 @@ import 'package:url_launcher/url_launcher.dart';
 
 class ChatCell extends StatefulWidget {
   final Account otherAccount;
-  final Message message;
+  final Status status;
   final String timePosted;
-  ChatCell(this.message, this.otherAccount, this.timePosted);
+  ChatCell(this.status, this.otherAccount, this.timePosted);
 
   @override
   State<StatefulWidget> createState() {
@@ -36,8 +34,8 @@ class _ChatCell extends State<ChatCell> {
   Widget build(BuildContext context) {
     deviceWidth = MediaQuery.of(context).size.width;
     targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
-    print("${widget.message.content}");
-    if (widget.message.accountId == widget.otherAccount.id) {
+    print("${widget.status.content}");
+    if (widget.status.account.acct == widget.otherAccount.acct) {
       return getOtherAccountCell();
     } else {
       return getMyCell();
@@ -71,13 +69,15 @@ class _ChatCell extends State<ChatCell> {
                       child: Container(
                         child: Column(
                           children: <Widget>[
-                            if (widget.message.attachment != null)
-                              getMeidaWidget(widget.message.attachment),
+                            if (widget.status.mediaAttachments.length > 0)
+                              getMeidaWidget(widget.status),
                             Padding(
                               padding: EdgeInsets.only(
                                   bottom: 0, top: 0, left: 0, right: 0),
                               child: Html(
-                                data: widget.message.content ?? "",
+                                data: removeAccountFromHTML(
+                                    widget.status.content,
+                                    widget.status.account.url),
 //                                customTextStyle:
 //                                    (dom.Node node, TextStyle baseStyle) {
 //                                  if (node is dom.Element) {
@@ -129,7 +129,7 @@ class _ChatCell extends State<ChatCell> {
               ClipRRect(
                 borderRadius: BorderRadius.circular(15.0),
                 child: CachedNetworkImage(
-                  imageUrl: widget.message.accountId == CurrentInstance.instance.currentAccount.id ? CurrentInstance.instance.currentAccount.avatar : widget.otherAccount.avatar,
+                  imageUrl: widget.status.account.avatar,
                   placeholder: (context, url) => CircularProgressIndicator(),
                   errorWidget: (context, url, error) => Icon(Icons.error),
                   width: 30,
@@ -154,13 +154,15 @@ class _ChatCell extends State<ChatCell> {
                           child: Container(
                             child: Column(
                               children: <Widget>[
-                                if (widget.message.attachment != null)
-                                  getMeidaWidget(widget.message.attachment),
+                                if (widget.status.mediaAttachments.length > 0)
+                                  getMeidaWidget(widget.status),
                                 Padding(
                                   padding: EdgeInsets.only(
                                       bottom: 0, top: 0, left: 0, right: 0),
                                   child: Html(
-                                    data: widget.message.content ?? "",
+                                    data: removeAccountFromHTML(
+                                        widget.status.content,
+                                        widget.status.account.url),
 //                                    customTextStyle:
 //                                        (dom.Node node, TextStyle baseStyle) {
 //                                      if (node is dom.Element) {
@@ -182,7 +184,27 @@ class _ChatCell extends State<ChatCell> {
                       ),
                     ),
                   ),
-                  
+                  Positioned(
+                    bottom: -10,
+                    right: -10,
+                    child: IconButton(
+                      icon: Image(
+                                  height: 20,
+                                  width: 20,
+                                  color: Colors.grey,
+                                  image: AssetImage(
+                                      "assets/images/favorites.png"),
+                                ),
+                      color: widget.status.favourited
+                          ? Colors.redAccent
+                          : Colors.grey,
+                      tooltip: AppLocalizations.of(context)
+                          .tr("messages.chat.cell.tooltip.more"),
+                      onPressed: () {
+                        like();
+                      },
+                    ),
+                  ),
                 ],
               ),
             ],
@@ -206,11 +228,31 @@ class _ChatCell extends State<ChatCell> {
     // ),R
   }
 
-  
+  like() {
+    String path = StatusRequest.Status.favouriteStatus(widget.status.id);
+    if (widget.status.favourited == true) {
+      path = StatusRequest.Status.unfavouriteStatus(widget.status.id);
+      widget.status.favouritesCount = widget.status.favouritesCount - 1;
+    } else {
+      widget.status.favouritesCount = widget.status.favouritesCount + 1;
+    }
+    widget.status.favourited = !widget.status.favourited;
 
-  Widget getMeidaWidget(Attachment attachment) {
+    CurrentInstance.instance.currentClient
+        .run(path: path, method: HTTPMethod.POST)
+        .then((response) {
+      print(response.body);
+    }).catchError((error) {
+      print(error);
+    });
+    if (mounted) setState(() {});
+  }
+
+  Widget getMeidaWidget(Status status) {
     List<Widget> items = <Widget>[];
 
+    for (var i = 0; i < status.mediaAttachments.length; i++) {
+      MediaAttachment attachment = status.mediaAttachments[i];
       if (attachment.type == "image") {
         var image = CachedNetworkImage(
           imageUrl: attachment.url,
@@ -231,9 +273,11 @@ class _ChatCell extends State<ChatCell> {
           ),
         );
       } else {
-       
+        if (status.mediaAttachments.length == 1) {
           return Container();
+        }
       }
+    }
     return Container(
       height: targetWidth,
       width: targetWidth,

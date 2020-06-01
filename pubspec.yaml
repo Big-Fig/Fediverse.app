@@ -182,7 +182,7 @@ flutter:
     - assets/images/share.png
     - assets/images/happy.png
     - assets/images/default_timeline_header.png
-#    - assets/images/addVideoFileIcon.png
+    - assets/images/addVideoFileIcon.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

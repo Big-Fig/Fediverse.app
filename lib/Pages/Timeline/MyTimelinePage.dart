@@ -118,9 +118,9 @@ class MyTimelinePageState extends State<MyTimelinePage>
         .run(path: path, method: HTTPMethod.GET)
         .then((response) {
       List<Status> newStatuses = Status.listFromJsonString(response.body);
-      newStatuses.removeWhere((status) {
-        return status.visibility == StatusModel.Visibility.DIRECT;
-      });
+      // newStatuses.removeWhere((status) {
+      //   return status.visibility == StatusModel.Visibility.DIRECT;
+      // });
 
       if (hideReplies) {
         newStatuses.removeWhere((status) {
@@ -187,9 +187,9 @@ class MyTimelinePageState extends State<MyTimelinePage>
         .run(path: loadMorePath, method: HTTPMethod.GET)
         .then((response) {
       List<Status> newStatuses = Status.listFromJsonString(response.body);
-      newStatuses.removeWhere((status) {
-        return status.visibility == StatusModel.Visibility.DIRECT;
-      });
+      // newStatuses.removeWhere((status) {
+      //   return status.visibility == StatusModel.Visibility.DIRECT;
+      // });
 
       if (hideReplies) {
         newStatuses.removeWhere((status) {

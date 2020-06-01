@@ -72,12 +72,12 @@ class _Mentions extends State<Mentions> {
         .then((response) {
       List<NotificationModel.Notification> newNotifications =
           NotificationModel.Notification.listFromJsonString(response.body);
-      newNotifications.removeWhere((notification) {
-        print(notification.status.visibility);
-        return notification.status.visibility ==
-                StatusModel.Visibility.PRIVATE ||
-            notification.status.visibility == StatusModel.Visibility.DIRECT;
-      });
+      // newNotifications.removeWhere((notification) {
+      //   print(notification.status.visibility);
+      //   return notification.status.visibility ==
+      //           StatusModel.Visibility.PRIVATE ||
+      //       notification.status.visibility == StatusModel.Visibility.DIRECT;
+      // });
       if (mounted)
         setState(() {
           widget.notifications.clear();
@@ -109,17 +109,18 @@ class _Mentions extends State<Mentions> {
         .then((response) {
       List<NotificationModel.Notification> newNotifications =
           NotificationModel.Notification.listFromJsonString(response.body);
-      newNotifications.removeWhere((notification) {
-        print(notification.status.visibility);
-        return notification.status.visibility ==
-                StatusModel.Visibility.PRIVATE ||
-            notification.status.visibility == StatusModel.Visibility.DIRECT;
-      });
+      // newNotifications.removeWhere((notification) {
+      //   print(notification.status.visibility);
+      //   return notification.status.visibility ==
+      //           StatusModel.Visibility.PRIVATE ||
+      //       notification.status.visibility == StatusModel.Visibility.DIRECT;
+      // });
       widget.notifications.addAll(newNotifications);
-      if (mounted)
+      if (mounted) {
         setState(() {
           _refreshController.loadComplete();
         });
+      }
     }).catchError((error) {
       if (mounted) setState(() {});
       _refreshController.loadFailed();

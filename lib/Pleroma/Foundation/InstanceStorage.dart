@@ -61,12 +61,29 @@ class InstanceStorage {
     return print("done");
   }
 
+   static Future<void> setInstanceImplementsChat(String account, bool
+  data) async {
+    var box = await Hive.openBox('HasChat', lazy: true) as LazyBox;
+    await box.put("$account-has-chat", data);
+    return print("done");
+  }
+
+
+ static Future<bool> getInstanceImplementsChat
+      (String account) async {
+    var box = await Hive.openBox('HasChat', lazy: true) as LazyBox;
+    bool settings = await box.get
+      ("$account-has-chat");
+    return settings;
+  }
+
   static Future<void> setAccountNotificationsSettings(String account, PleromaPushSubscribeData
   data) async {
     var box = await Hive.openBox('InstanceStorage', lazy: true) as LazyBox;
     await box.put("$account-notifications-settings", data);
     return print("done");
   }
+
 
   static Future<PleromaPushSubscribeData> getAccountNotificationsSettings
       (String account) async {

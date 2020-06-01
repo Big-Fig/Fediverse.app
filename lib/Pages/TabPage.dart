@@ -6,8 +6,9 @@ import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pages/Post/QuickPostPage.dart';
-import 'package:fedi/Pages/Statuses/emoji_reaction_bloc.dart';
+import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
+import 'package:fedi/Pleroma/Foundation/Requests/chat.dart' as ChatRequest;
 import 'package:fedi/Pleroma/Models/Status.dart';
 import 'package:fedi/app/emoji/emoji_bottom_picker.dart';
 import 'package:fedi/app/emoji/emoji_bottom_sheet_bloc.dart';
@@ -24,8 +25,8 @@ import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Transitions/SlideBottomRoute.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
-import './Placeholder.dart';
 import 'Messages/MessageContainer.dart';
+import 'package:fedi/Pages/Old-Messages/MessageContainer.dart' as OldMessage;
 import 'Notifications/NotificationPage.dart';
 import 'Profile/AccountsBottomSheet.dart';
 import 'Profile/MyProfilePage.dart';
@@ -68,7 +69,7 @@ class TabPageState extends State<TabPage>
   static FirebaseAnalytics analytics = FirebaseAnalytics();
   static FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);
-      
+    var showChat = false;
   // WebRTCManager manager = WebRTCManager.instance;
 
   // Should be refactored to enums
@@ -78,23 +79,121 @@ class TabPageState extends State<TabPage>
   EmojiBottomPicker emojiPicker;
 
   int _currentIndex = 0;
-  List<Widget> _children;
+  List<Widget> _children = [];
 
-  List<AppBar> _appBar;
-  TabController _tabController;
+  List<AppBar> _appBar = [];
   MyProfilePage myProfile = MyProfilePage();
   var emojiPickerShown = false;
   rebuildWithSelectedTimelien(String timeline) {
     _timelineKey.currentState.selectTimeline(timeline);
   }
 
-  @override
-  initState() {
-    super.initState();
-    updateBadges();
-    _firebaseMessaging.requestNotificationPermissions();
-    _tabController = TabController(length: 2, vsync: this);
-    _children = [
+  void checkChat() async {
+     String account =
+      "${CurrentInstance.instance.currentAccount.acct}@${CurrentInstance.instance.currentClient.baseURL}";
+
+    var implmentChat = await InstanceStorage.getInstanceImplementsChat(account);
+    var path = ChatRequest.Chat.getChats();
+    if ( implmentChat == true){
+      addChat();
+      return;
+    } else if ( implmentChat == false) {
+      removeChat();
+      return;
+    }
+    CurrentInstance.instance.currentClient
+        .run(path: path, method: HTTPMethod.GET)
+        .then((response) {
+          print("RESPONSECODE:");
+          print(response);
+          if ( response.statusCode == 200 ){
+            InstanceStorage.setInstanceImplementsChat(account, true).then((_){
+               addChat();
+            });
+           
+          } else if (response.statusCode == 404 ) { 
+            InstanceStorage.setInstanceImplementsChat(account, false);
+            removeChat();
+          }
+          
+        });
+    print("CHECK CHAT $implmentChat");
+    // if (implmentChat == null){
+    //   var path = ChatRequest.Chat.getChats();
+    //   CurrentInstance.instance.currentClient
+    //     .run(path: path, method: HTTPMethod.GET)
+    //     .then((response) {
+    //       print(response);
+    //       if ( response.statusCode == 200 ){
+    //         InstanceStorage.setInstanceImplementsChat(account, true).then((_){
+    //            addChat();
+    //         });
+           
+    //       } else if (response.statusCode == 404 ) { 
+    //         InstanceStorage.setInstanceImplementsChat(account, true);
+    //       }
+          
+    //     });
+    // } else if (implmentChat == true){
+    //   addChat();  
+    // } else {
+    //   removeChat();
+    // }
+    // await InstanceStorage.setAccountNotificationsSettings(
+    //                   account, settings);
+  }
+
+  void removeChat(){
+      setState(() {
+       var currentURL = "${CurrentInstance.instance.currentClient.baseURL}"
+        .replaceAll("https://", "@");
+      var client = "${CurrentInstance.instance.currentAccount.acct}$currentURL";
+      _appBar = [
+      null,
+      null,
+      null,
+      AppBar(
+        centerTitle: true,
+        title: FlatButton(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              AutoSizeText(
+                client,
+                minFontSize: 12,
+                maxFontSize: 20,
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              Icon(
+                Icons.keyboard_arrow_down,
+                color: Colors.white,
+              ),
+            ],
+          ),
+          onPressed: () {
+            showAccountSheet(context);
+          },
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditProfile(refresh),
+                    settings: RouteSettings(name: "/MyProfile"),
+                  ));
+            },
+          )
+        ],
+      ),
+    ];
+
+      _children = [
       MyTimelinePage(
         this,
         key: _timelineKey,
@@ -102,10 +201,146 @@ class TabPageState extends State<TabPage>
       NotificationPage(
         key: _notificationKey,
       ),
-      PlaceholderWidget(Colors.blue),
+      OldMessage.MessageConatiner(),
+      myProfile,
+    ];
+      showChat = false;
+    });
+    
+  }
+
+  void addChat(){
+    setState(() {
+       var currentURL = "${CurrentInstance.instance.currentClient.baseURL}"
+        .replaceAll("https://", "@");
+      var client = "${CurrentInstance.instance.currentAccount.acct}$currentURL";
+      _appBar = [
+      null,
+      null,
+      null,
+      AppBar(
+        centerTitle: true,
+        title: FlatButton(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              AutoSizeText(
+                client,
+                minFontSize: 12,
+                maxFontSize: 20,
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              Icon(
+                Icons.keyboard_arrow_down,
+                color: Colors.white,
+              ),
+            ],
+          ),
+          onPressed: () {
+            showAccountSheet(context);
+          },
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditProfile(refresh),
+                    settings: RouteSettings(name: "/MyProfile"),
+                  ));
+            },
+          )
+        ],
+      ),
+    ];
+
+      _children = [
+      MyTimelinePage(
+        this,
+        key: _timelineKey,
+      ),
+      NotificationPage(
+        key: _notificationKey,
+      ),
       MessageConatiner(),
       myProfile,
     ];
+      showChat = true;
+    });
+    
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    var currentURL = "${CurrentInstance.instance.currentClient.baseURL}"
+        .replaceAll("https://", "@");
+      var client = "${CurrentInstance.instance.currentAccount.acct}$currentURL";
+     _appBar = [
+      null,
+      null,
+      AppBar(
+        centerTitle: true,
+        title: FlatButton(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              AutoSizeText(
+                client,
+                minFontSize: 12,
+                maxFontSize: 20,
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              Icon(
+                Icons.keyboard_arrow_down,
+                color: Colors.white,
+              ),
+            ],
+          ),
+          onPressed: () {
+            showAccountSheet(context);
+          },
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditProfile(refresh),
+                    settings: RouteSettings(name: "/MyProfile"),
+                  ));
+            },
+          )
+        ],
+      ),
+    ];
+
+      _children = [
+      MyTimelinePage(
+        this,
+        key: _timelineKey,
+      ),
+      NotificationPage(
+        key: _notificationKey,
+      ),
+      myProfile,
+    ];
+
+    checkChat();
+    updateBadges();
+    _firebaseMessaging.requestNotificationPermissions();
+    
 
     PushHelper pushHelper = PushHelper.instance;
     pushHelper.swapAccount = swapAccount;
@@ -263,55 +498,7 @@ class TabPageState extends State<TabPage>
     );
     var currentURL = "${CurrentInstance.instance.currentClient.baseURL}"
         .replaceAll("https://", "@");
-    var client = "${CurrentInstance.instance.currentAccount.acct}$currentURL";
 
-    _appBar = [
-      null,
-      null,
-      AppBar(
-        title: Text(AppLocalizations.of(context).tr("tab_page.title")),
-      ),
-      null,
-      AppBar(
-        centerTitle: true,
-        title: FlatButton(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              AutoSizeText(
-                client,
-                minFontSize: 12,
-                maxFontSize: 20,
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-              Icon(
-                Icons.keyboard_arrow_down,
-                color: Colors.white,
-              ),
-            ],
-          ),
-          onPressed: () {
-            showAccountSheet(context);
-          },
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.settings),
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => EditProfile(refresh),
-                    settings: RouteSettings(name: "/MyProfile"),
-                  ));
-            },
-          )
-        ],
-      ),
-    ];
 
     return MultiProvider(
       providers: [
@@ -345,33 +532,29 @@ class TabPageState extends State<TabPage>
           onTap: onTabTapped, // new
           currentIndex: _currentIndex, // new
           items: [
-            new BottomNavigationBarItem(
+            BottomNavigationBarItem(
               backgroundColor: Colors.blue,
               icon: Icon(Icons.home),
               title: Text(''),
             ),
-            new BottomNavigationBarItem(
+            BottomNavigationBarItem(
               backgroundColor: Colors.blue,
               icon: notificaitonIcon,
               title: Text(''),
             ),
-            new BottomNavigationBarItem(
-                backgroundColor: Colors.blue,
-                icon: Icon(null),
-                title: Text('')),
-            new BottomNavigationBarItem(
+            BottomNavigationBarItem(
               backgroundColor: Colors.blue,
-              icon: Icon(Icons.mail),
+              icon: Icon(Icons.chat_bubble),
               title: Text(''),
             ),
-            new BottomNavigationBarItem(
+            BottomNavigationBarItem(
               backgroundColor: Colors.blue,
               icon: GestureDetector(
                 onLongPress: () {
                   showAccountSheet(context);
                 },
                 child: ClipRRect(
-                  borderRadius: new BorderRadius.circular(12.0),
+                  borderRadius: BorderRadius.circular(12.0),
                   child: CachedNetworkImage(
                     imageUrl: CurrentInstance.instance.currentAccount.avatar,
                     placeholder: (context, url) => Container(
@@ -419,14 +602,15 @@ class TabPageState extends State<TabPage>
     });
     print("single tap");
     setState(() {
-      if (index == 2) {
-        Navigator.push(
-          context,
-          SlideBottomRoute(page: QuickPostPage("", [])),
-        );
-      } else {
-        _currentIndex = index;
-      }
+      // if (index == 2) {
+      //   Navigator.push(
+      //     context,
+      //     SlideBottomRoute(page: QuickPostPage("", [])),
+      //   );
+      // } else {
+      //   _currentIndex = index;
+      // }
+      _currentIndex = index;
     });
   }
 

@@ -1,4 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/Pages/Messages/ChatPage.dart';
+import 'package:fedi/Pleroma/Foundation/Client.dart';
+import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:fedi/Pleroma/Foundation/Requests/chat.dart';
+import 'package:fedi/Pleroma/Models/user_chat.dart';
 import 'package:fedi/refactored/app/account/account_bloc.dart';
 import 'package:fedi/refactored/app/account/account_model.dart';
 import 'package:fedi/refactored/app/conversation/start/status/post_status_start_conversation_page.dart';
@@ -312,8 +317,18 @@ class StatusShareActionWidget extends StatelessWidget {
                 ],
               ),
               onPressed: () {
-                goToPostStatusStartConversationPage(context,
-                    conversationAccountsWithoutMe: <IAccount>[status.account]);
+                var path = Chat.createChatByAccount(status.account.remoteId);
+                CurrentInstance.instance.currentClient
+                    .run(path: path, method: HTTPMethod.POST)
+                    .then((response) {
+                  var userchat = userChatFromJson(response.body);
+                  Navigator.pop(context);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ChatPage(conversation: userchat),
+                      ));
+                });
               },
             ),
           ),

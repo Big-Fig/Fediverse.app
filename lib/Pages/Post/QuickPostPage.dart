@@ -111,7 +111,7 @@ class _QuickPostPageState extends State<QuickPostPage> {
                 showModalBottomSheet(
                     builder: (BuildContext context) {
                       return Container(
-                        height: 250,
+                        height: 350,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: <Widget>[
@@ -191,6 +191,31 @@ class _QuickPostPageState extends State<QuickPostPage> {
                                 ],
                               ),
                             ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              child: Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    child: OutlineButton(
+                                      child: Row(
+                                        children: <Widget>[
+                                          getVisibilityIcon("Direct"),
+                                          Text(AppLocalizations.of(context)
+                                              .tr("post.quick_post.visibility"
+                                                  ".direct"))
+                                        ],
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          statusVisability = "Direct";
+                                        });
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                             Container(
                               height: 30,
                             ), // Cancel
@@ -220,6 +245,8 @@ class _QuickPostPageState extends State<QuickPostPage> {
                                 ],
                               ),
                             ),
+
+                            
                           ],
                         ),
                       );
@@ -402,8 +429,10 @@ class _QuickPostPageState extends State<QuickPostPage> {
       );
     } else if (visibility == "Unlisted") {
       return Icon(Icons.lock_open, color: Colors.blue);
-    } else {
+    } else if (visibility == "Private") {
       return Icon(Icons.lock, color: Colors.blue);
+    } else {
+      return Icon(Icons.mail, color: Colors.blue);
     }
   }
 
@@ -557,8 +586,8 @@ class _QuickPostPageState extends State<QuickPostPage> {
     )));
   }
 
-  postStatus() {
-    if (assets.length == 0 && statusController.text == "") {
+  void postStatus() {
+    if (assets.isEmpty && statusController.text == "") {
       var alert = Alert(
           context,
           AppLocalizations.of(context)
@@ -570,7 +599,7 @@ class _QuickPostPageState extends State<QuickPostPage> {
       return;
     }
 
-    if (assets.length == 0) {
+    if (assets.isEmpty) {
       postTextStatus();
       return;
     }
@@ -629,7 +658,7 @@ class _QuickPostPageState extends State<QuickPostPage> {
     Map<String, dynamic> params = {
       "status": statusController.text,
       "sensitive": isChecked,
-      "visibility": statusVisability,
+      "visibility": statusVisability.toLowerCase(),
       "media_ids": attachments
     };
 
@@ -674,7 +703,7 @@ class _QuickPostPageState extends State<QuickPostPage> {
     Map<String, dynamic> params = {
       "status": statusController.text,
       "sensitive": isChecked,
-      "visibility": statusVisability,
+      "visibility": statusVisability.toLowerCase(),
     };
 
     print("Params");
