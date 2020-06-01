@@ -8,7 +8,7 @@ import 'package:fedi/app/timeline/timeline_tabs_bloc.dart';
 import 'package:fedi/app/timeline/timeline_widget.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
-import 'package:fedi/app/ui/page/my_sliver_app_bar.dart';
+import 'package:fedi/app/ui/page/fedi_sliver_app_bar.dart';
 import 'package:fedi/app/ui/tab/fedi_text_tab.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
@@ -24,40 +24,6 @@ import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
 var _logger = Logger("timeline_tabs_widget.dart");
-
-class MySliverAppBarNew extends SliverPersistentHeaderDelegate {
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    var scrollDirectionDetector =
-        IScrollDirectionDetector.of(context, listen: false);
-    return StreamBuilder<ScrollDirection>(
-        stream: scrollDirectionDetector.scrollDirectionStream,
-        initialData: scrollDirectionDetector.scrollDirection,
-        builder: (context, snapshot) {
-          var scrollDirection = snapshot.data;
-
-          if (scrollDirection == ScrollDirection.forward &&
-              shrinkOffset == maxExtent) {
-            return Container(
-                color: Colors.white, child: _buildCollapsedAppBarBody(context));
-          } else {
-            return SizedBox.shrink();
-          }
-        });
-  }
-
-  @override
-  double get maxExtent => kToolbarHeight;
-
-  @override
-  double get minExtent => kToolbarHeight;
-
-//  double get minExtent => statusBarHeight;
-
-  @override
-  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => true;
-}
 
 class TimelineTabsWidget extends StatelessWidget {
   final List<Widget> appBarActionWidgets;
@@ -83,82 +49,45 @@ class TimelineTabsWidget extends StatelessWidget {
         return scrollDirectionDetector;
       },
       child: Builder(builder: (context) {
-
         return DefaultTabController(
-            length: tabs.length,
-            initialIndex: tabs.indexOf(timelinesTabsBloc.selectedTab),
-            child: NestedScrollView(
-              controller: IScrollDirectionDetector.of(context, listen: false)
-                  .scrollController,
-              headerSliverBuilder: (context, _) {
-                return [
-                  SliverPersistentHeader(
-                      pinned: true,
-                      delegate: MySliverAppBar(
-                        expandedHeight: 255 + 32.0 + 2.0,
-                        topBar: buildTabBar(context, tabs, timelinesTabsBloc),
-                        expandedAppBarBody: ClipRRect(
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(16.0),
-                              topRight: Radius.circular(16.0)),
-                          child: FediListTile(
-                            isFirstInList: true,
-                            child: TimelinePostStatusHeaderWidget(),
-                          ),
-                        ),
-                        collapsedAppBarBody: _buildCollapsedAppBarBody(context),
-                        statusBarHeight: MediaQuery.of(context).padding.top,
-                      )),
-//                    SliverPersistentHeader(
-//                      pinned: true,
-//                      delegate: MySliverAppBarNew(),
-//                    ),
-
-//                    SliverPersistentHeader(
-//                        pinned: true,
-//                        delegate: MySliverAppBarSmall(
-//                          expandedHeight: 255,
-//                          topBar: buildTabBar(context, tabs, timelinesTabsBloc),
-//                          expandedAppBarBody: FediListTile(
-//                            isFirstInList: true,
-//                            child: TimelinePostStatusHeaderWidget(),
-//                          ),
-//                          collapsedAppBarBody:
-//                          _buildCollapsedAppBarBody(context),
-//                          statusBarHeight: MediaQuery.of(context).padding.top,
-//                        )),
-                ];
-              },
-              body: buildBodyWidget(context),
-            )
-//        FediHomeSliverPage(
-//          body: FediDarkStatusBarStyleArea(child: buildBodyWidget(context)),
-//          appBar: FediHomeSliverPageExpandableSliverAppBar(
-//            expandedAppBarBodyHeight: 96,
-//            expandedAppBarTopBar: buildTabBar(context, tabs, timelinesTabsBloc),
-//            expandedAppBarBody: FediListTile(
-//              isFirstInList: true,
-//              child: TimelinePostStatusHeaderWidget(),
-//            ),
-//            collapsedAppBarBody: StreamBuilder<ScrollDirection>(
-//              stream: scrollDirectionDetector.scrollDirectionStream,
-//              initialData: scrollDirectionDetector.scrollDirection,
-//              builder: (context, snapshot) {
-//                var scrollDirection = snapshot.data;
-//
-//                if(scrollDirection == ScrollDirection.forward) {
-//                  return _buildCollapsedAppBarBody(context);
-//                } else {
-//
-//                  return SizedBox.shrink();
-//                }
-//              }
-//            ),
-//          ),
-//        ),
-            );
+          length: tabs.length,
+          initialIndex: tabs.indexOf(timelinesTabsBloc.selectedTab),
+          child: NestedScrollView(
+            controller: IScrollDirectionDetector.of(context, listen: false)
+                .scrollController,
+            headerSliverBuilder: (context, bool innerBoxIsScrolled) {
+              return [
+                buildSliverAppBar(context, tabs, timelinesTabsBloc),
+              ];
+            },
+            body: buildBodyWidget(context),
+          ),
+        );
       }),
     );
+  }
+
+  SliverPersistentHeader buildSliverAppBar(BuildContext context,
+      List<TimelineTab> tabs, ITimelineTabsBloc timelinesTabsBloc) {
+    return SliverPersistentHeader(
+        pinned: true,
+        floating: true,
+
+        delegate: FediSliverAppBar(
+          expandedHeight: 255 + 32.0 + 2.0,
+          topBar: buildTabBar(context, tabs, timelinesTabsBloc),
+          expandedAppBarBody: ClipRRect(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16.0),
+                topRight: Radius.circular(16.0)),
+            child: FediListTile(
+              isFirstInList: true,
+              child: TimelinePostStatusHeaderWidget(),
+            ),
+          ),
+          collapsedAppBarBody: _buildCollapsedAppBarBody(context),
+          statusBarHeight: MediaQuery.of(context).padding.top,
+        ));
   }
 
   Widget buildTabBar(BuildContext context, List<TimelineTab> tabs,
