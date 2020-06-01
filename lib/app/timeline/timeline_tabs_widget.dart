@@ -83,8 +83,7 @@ class TimelineTabsWidget extends StatelessWidget {
         return scrollDirectionDetector;
       },
       child: Builder(builder: (context) {
-        var scrollDirectionDetector =
-            IScrollDirectionDetector.of(context, listen: false);
+
         return DefaultTabController(
             length: tabs.length,
             initialIndex: tabs.indexOf(timelinesTabsBloc.selectedTab),

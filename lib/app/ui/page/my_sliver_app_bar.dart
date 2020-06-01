@@ -84,7 +84,7 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
               builder: (context, snapshot) {
                 var scrollDirection = snapshot.data;
 
-                if (scrollDirection == ScrollDirection.forward &&
+                if (scrollDirection != ScrollDirection.reverse &&
                     shrinkOffset >= maxExtent - 10) {
                   return Container(
 //                      width: double.infinity,

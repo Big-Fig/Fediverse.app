@@ -5,7 +5,6 @@ import 'package:fedi/app/list/list_refresh_header_widget.dart';
 import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:fedi/ui/scroll_direction_detector_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -18,12 +17,14 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
   final Widget header;
   final bool alwaysShowFooter;
   final Widget footer;
+  final ScrollController scrollController;
 
   // nothing by default
   Future<bool> additionalRefreshAction(BuildContext context) async => true;
 
   const PaginationListWidget({
     Key key,
+    this.scrollController,
     this.header,
     this.footer,
     this.alwaysShowHeader,
@@ -47,7 +48,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
       footer: const ListLoadingFooterWidget(),
       controller: refreshController,
       scrollController: scrollController,
-      primary: scrollController == null,
+      primary: scrollController != null ? false : true,
       onRefresh: () {
         _logger.finest(() => "refresh");
         return AsyncSmartRefresherHelper.doAsyncRefresh(
@@ -136,13 +137,6 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
 
               _logger.finest(() => "build paginationListBloc.itemsStream items "
                   "${items?.length}");
-
-              ScrollController scrollController;
-              try {
-                var scrollDirectionDetector =
-                    IScrollDirectionDetector.of(context, listen: false);
-                scrollController = scrollDirectionDetector.scrollController;
-              } catch (e) {}
 
               return buildSmartRefresher(
                   paginationListBloc,

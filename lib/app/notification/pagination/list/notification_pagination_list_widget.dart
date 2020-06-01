@@ -12,9 +12,14 @@ import 'package:provider/provider.dart';
 class NotificationPaginationListWidget
     extends NotificationPaginationListBaseWidget {
   final bool needWatchLocalRepositoryForUpdates;
-  NotificationPaginationListWidget(
-      {@required Key key, @required this.needWatchLocalRepositoryForUpdates})
-      : super(key: key);
+  NotificationPaginationListWidget({
+    @required Key key,
+    @required this.needWatchLocalRepositoryForUpdates,
+    ScrollController scrollController,
+  }) : super(
+          key: key,
+          scrollController: scrollController,
+        );
 
   @override
   ScrollView buildItemsCollectionView(
