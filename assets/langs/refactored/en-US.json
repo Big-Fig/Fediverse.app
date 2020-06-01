@@ -295,13 +295,13 @@
           }
         },
         "conversations": {
-          "title": "Messages",
+          "title": "Chats",
           "action": {
             "switch_to_chats": "Chats"
           }
         },
         "chats": {
-          "title": "Messages",
+          "title": "Chats",
           "not_supported_on_mastodon": "Chats not supported on Mastodon instances",
           "action": {
             "switch_to_dms": "DM"

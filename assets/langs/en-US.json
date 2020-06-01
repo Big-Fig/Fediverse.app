@@ -60,8 +60,8 @@
   "messages": {
     "chat": {
       "title": {
-        "no_account": "DM {}",
-        "with_account": "DM"
+        "no_account": "Chat {}",
+        "with_account": "Chat"
       },
       "cell": {
         "tooltip": {
@@ -109,7 +109,8 @@
       }
     },
     "user_list": {
-      "title": "Send DM",
+      "title": "Send Chat",
+      "old-title": "Send Message",
       "action": {
         "search": "Search"
       },
@@ -129,7 +130,8 @@
   },
   "message": {
     "tabs": {
-      "messages": "Messages",
+      "dm-messages":"Messages",
+      "messages": "Chats",
       "notifications": "Notifications"
     }
   },
@@ -270,7 +272,8 @@
       "visibility": {
         "public": " Public - Everyone can see",
         "unlisted": " Unlisted - Doesn't post to public timeline",
-        "private": " Private - Only followers can see"
+        "private": " Private - Only followers can see",
+        "direct": " Direct - Post to mentioned users only"
       },
       "action": {
         "cancel": " Cancel",

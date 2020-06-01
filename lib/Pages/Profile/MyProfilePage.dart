@@ -77,9 +77,7 @@ class _MyProfilePage extends State<MyProfilePage> {
             method: HTTPMethod.GET)
         .then((response) {
       List<Status> newStatuses = Status.listFromJsonString(response.body);
-      newStatuses.removeWhere((status) {
-        return status.visibility == StatusModel.Visibility.DIRECT;
-      });
+      
       widget.statuses.clear();
       widget.statuses.addAll(newStatuses);
       if (mounted) setState(() {});
@@ -123,9 +121,9 @@ class _MyProfilePage extends State<MyProfilePage> {
             method: HTTPMethod.GET)
         .then((response) {
       List<Status> newStatuses = Status.listFromJsonString(response.body);
-      newStatuses.removeWhere((status) {
-        return status.visibility == StatusModel.Visibility.DIRECT;
-      });
+      // newStatuses.removeWhere((status) {
+      //   return status.visibility == StatusModel.Visibility.DIRECT;
+      // });
       widget.statuses.addAll(newStatuses);
       if (mounted) setState(() {});
       _refreshController.loadComplete();

@@ -1,16 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/Pleroma/Models/Account.dart';
-import 'package:fedi/Pleroma/Models/user_chat.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:html/parser.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
+import 'package:fedi/Pleroma/Models/Account.dart';
+import 'package:fedi/Pleroma/Models/Conversation.dart';
 import 'package:fedi/Pleroma/Models/Status.dart';
 
 class MessagesCell extends StatefulWidget {
-  final UserChat conversation;
-  final Function(UserChat conversation) cellTapped;
+  final Conversation conversation;
+  final Function(Conversation conversation) cellTapped;
   MessagesCell({this.conversation, this.cellTapped});
 
   @override
@@ -25,7 +25,12 @@ class _MessagesCell extends State<MessagesCell> {
   @override
   void initState() {
     super.initState();
-    messageUser = widget.conversation.account;
+
+    if (widget.conversation.accounts.length > 0) {
+      messageUser = getOtherAccount(widget.conversation.accounts);
+    } else {
+      messageUser = widget.conversation.lastStatus.account;
+    }
   }
 
   cellTapped() {
@@ -77,17 +82,12 @@ class _MessagesCell extends State<MessagesCell> {
                                 ),
                               ],
                             ),
-                            if (widget.conversation.lastMessage != null)
-                              Text(
-                                getStatusText(
-                                    context,
-                                    widget.conversation.lastMessage.content ??
-                                        ""),
-                                maxLines: 2,
-                                style: TextStyle(fontSize: 14),
-                              ),
-                            if (widget.conversation.lastMessage == null)
-                              Text("")
+                            Text(
+                              getStatusText(context,
+                                  widget.conversation.lastStatus),
+                              maxLines: 2,
+                              style: TextStyle(fontSize: 14),
+                            ),
                           ],
                         ),
                       ),
@@ -117,12 +117,17 @@ class _MessagesCell extends State<MessagesCell> {
     );
   }
 
-  String getStatusText(BuildContext context, String status) {
+  String getStatusText(BuildContext context, Status status) {
     print("CONVERSATION ID ${widget.conversation.id}");
-    String parsedString = parse(status).documentElement.text;
-
-    if (widget.conversation.lastMessage.accountId ==
-        CurrentInstance.instance.currentAccount.id) {
+    String parsedString = parse(status.content).documentElement.text;
+    for (var i = 0; i < status.mentions.length; i ++){
+      var mention = status.mentions[i];
+      var account = mention.acct.split("@").first;
+      print(account);
+      parsedString = parsedString.replaceAll("@$account", "");
+    }
+    
+    if (widget.conversation.lastStatus.account.acct == CurrentInstance.instance.currentAccount.acct) {
       parsedString = AppLocalizations.of(context)
           .tr("messages.cell.status.you", args: [parsedString]);
     }

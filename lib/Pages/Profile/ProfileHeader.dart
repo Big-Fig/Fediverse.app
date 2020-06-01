@@ -1,10 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/Pages/Web/InAppWebPage.dart';
+import 'package:fedi/Pleroma/Foundation/InstanceStorage.dart';
+import 'package:fedi/Pleroma/Foundation/Requests/chat.dart';
+import 'package:fedi/Pleroma/Models/user_chat.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_alert/flutter_alert.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:fedi/Pages/Messages/ChatPage.dart';
+import 'package:fedi/Pages/Old-Messages/ChatPage.dart' as OldChat;
 import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Accounts.dart';
@@ -182,7 +186,6 @@ class _ProfileHeader extends State<ProfileHeader> {
 //                    return baseStyle.merge(TextStyle(fontSize: 18));
 //                  },
                   onLinkTap: (url) {
-                    
                     canLaunch(url).then((result) {
                       launch(url);
                     });
@@ -311,13 +314,36 @@ class _ProfileHeader extends State<ProfileHeader> {
                   ],
                 ),
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ChatPage(
-                          account: widget.profileAccount,
-                        ),
-                      ));
+                  String account =
+                      "${CurrentInstance.instance.currentAccount.acct}@${CurrentInstance.instance.currentClient.baseURL}";
+                  InstanceStorage.getInstanceImplementsChat(account)
+                      .then((hasChat) {
+                    if (hasChat == true) {
+                      var path =
+                          Chat.createChatByAccount(widget.profileAccount.id);
+                      CurrentInstance.instance.currentClient
+                          .run(path: path, method: HTTPMethod.POST)
+                          .then((response) {
+                        var userchat = userChatFromJson(response.body);
+                        Navigator.pop(context);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  ChatPage(conversation: userchat),
+                            ));
+                      });
+                    } else {
+                      print(widget.profileAccount);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => OldChat.ChatPage(
+                              account: widget.profileAccount,
+                            ),
+                          ));
+                    }
+                  });
                 },
               ),
               OutlineButton(

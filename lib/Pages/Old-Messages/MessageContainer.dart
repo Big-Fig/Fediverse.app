@@ -1,12 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/Pleroma/Foundation/Client.dart';
-import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
-import 'package:fedi/Pleroma/Foundation/Requests/chat.dart';
-import 'package:fedi/Pleroma/Models/user_chat.dart';
 import 'package:flutter/material.dart';
-import 'package:fedi/Pages/Messages/ChatPage.dart';
-import 'package:fedi/Pages/Messages/MessagesPage.dart';
-import 'package:fedi/Pages/Messages/UserListPage.dart';
+import 'package:fedi/Pages/Old-Messages/ChatPage.dart';
+import 'package:fedi/Pages/Old-Messages/MessagesPage.dart';
+import 'package:fedi/Pages/Old-Messages/UserListPage.dart';
 import 'package:fedi/Pleroma/Models/Account.dart';
 
 class MessageConatiner extends StatefulWidget {
@@ -18,6 +14,7 @@ class MessageConatiner extends StatefulWidget {
 
 class _MessageContainer extends State<MessageConatiner>
     with TickerProviderStateMixin {
+
   TabController _controller;
   int _currentIndex = 0;
   List<Widget> pageControllers;
@@ -45,23 +42,16 @@ class _MessageContainer extends State<MessageConatiner>
   }
 
   sendMessage(Account account) {
-    var path = Chat.createChatByAccount(account.id);
-
-    CurrentInstance.instance.currentClient
-        .run(path: path, method: HTTPMethod.POST)
-        .then((response) {
-      var userchat = userChatFromJson(response.body);
-      Navigator.pop(context);
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ChatPage(
-              conversation: userchat,
-              refreshMasterList: refreshPage,
-              refreshMesagePage: refreshPage,
-            ),
-          ));
-    });
+    Navigator.pop(context);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ChatPage(
+            account: account,
+            refreshMasterList: refreshPage,
+            refreshMesagePage: refreshPage,
+          ),
+        ));
   }
 
   _goToUserList() {
@@ -71,10 +61,11 @@ class _MessageContainer extends State<MessageConatiner>
 
   @override
   Widget build(BuildContext context) {
+
     var appLocalizations = AppLocalizations.of(context);
 
     List<String> titles = [
-      appLocalizations.tr("message.tabs.messages"),
+      appLocalizations.tr("message.tabs.dm-messages"),
       appLocalizations.tr("message.tabs.notifications"),
     ];
 

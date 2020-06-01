@@ -1,12 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/Pleroma/Foundation/Requests/chat.dart' as ChatRequest;
-import 'package:fedi/Pleroma/Models/message.dart';
-import 'package:fedi/Pleroma/Models/user_chat.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:fedi/Pages/Messages/ChatPage.dart';
-import 'package:fedi/Pages/Messages/MessagesCell.dart';
+import 'package:fedi/Pages/Old-Messages/ChatPage.dart';
+import 'package:fedi/Pages/Old-Messages/MessagesCell.dart';
 import 'package:fedi/Pleroma/Foundation/Client.dart';
 import 'package:fedi/Pleroma/Foundation/CurrentInstance.dart';
 import 'package:fedi/Pleroma/Foundation/Requests/Timeline.dart';
@@ -14,7 +11,7 @@ import 'package:fedi/Pleroma/Models/Conversation.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class MessagesPage extends StatefulWidget {
-  final List<UserChat> messages = [];
+  final List<Conversation> conversations = [];
   MessagesPage({Key key}) : super(key: key);
   @override
   State<StatefulWidget> createState() {
@@ -23,7 +20,6 @@ class MessagesPage extends StatefulWidget {
 }
 
 class MessagesPageState extends State<MessagesPage> {
-  @override
   void initState() {
     super.initState();
 
@@ -36,11 +32,10 @@ class MessagesPageState extends State<MessagesPage> {
   void fetchStatuses() {
     print("teh fetch");
 
-    if (mounted) {
+    if (mounted)
       setState(() {
-        widget.messages.clear();
+        widget.conversations.clear();
       });
-    }
     _refreshController.requestRefresh();
   }
 
@@ -54,15 +49,16 @@ class MessagesPageState extends State<MessagesPage> {
   void _onRefresh() async {
     print("ONREFRESH");
     // if failed,use refreshFailed()
-    var path = ChatRequest.Chat.getChats();
     CurrentInstance.instance.currentClient
         .run(
-            path: path,
+            path: Timeline.getConvverstations(
+                minId: "", maxId: "", sinceId: "", limit: "20"),
             method: HTTPMethod.GET)
         .then((response) {
-      List<UserChat> newMessages = chatsFromJson(response.body);
-      widget.messages.clear();
-      widget.messages.addAll(newMessages);
+      List<Conversation> newConversations =
+          Conversation.listFromJsonString(response.body);
+      widget.conversations.clear();
+      widget.conversations.addAll(newConversations);
       if (mounted) setState(() {});
       _refreshController.refreshCompleted();
     }).catchError((error) {
@@ -75,20 +71,20 @@ class MessagesPageState extends State<MessagesPage> {
   void _onLoading() async {
     // if failed,use loadFailed(),if no data return,use LoadNodata()
     var lastId = "";
-    UserChat lastConverstation = widget.messages.last;
+    Conversation lastConverstation = widget.conversations.last;
     if (lastConverstation != null) {
       lastId = lastConverstation.id;
     }
 
     CurrentInstance.instance.currentClient
         .run(
-            path:
-            ChatRequest.Chat.getChats( minId: "", maxId: lastId, sinceId: "", limit: "20"),
+            path: Timeline.getConvverstations(
+                minId: "", maxId: lastId, sinceId: "", limit: "20"),
             method: HTTPMethod.GET)
         .then((response) {
-      List<UserChat> newConversations =
-          chatsFromJson(response.body);
-      widget.messages.addAll(newConversations);
+      List<Conversation> newConversations =
+          Conversation.listFromJsonString(response.body);
+      widget.conversations.addAll(newConversations);
       if (mounted) setState(() {});
       _refreshController.loadComplete();
     }).catchError((error) {
@@ -97,7 +93,7 @@ class MessagesPageState extends State<MessagesPage> {
     });
   }
 
-  cellTapped(UserChat conversation) {
+  cellTapped(Conversation conversation) {
     Navigator.push(
         context,
         MaterialPageRoute(
@@ -178,10 +174,10 @@ class MessagesPageState extends State<MessagesPage> {
       child: ListView.builder(
         padding: EdgeInsets.symmetric(horizontal: 2.0, vertical: 10.0),
         itemBuilder: (c, i) => MessagesCell(
-          conversation: widget.messages[i],
+          conversation: widget.conversations[i],
           cellTapped: cellTapped,
         ),
-        itemCount: widget.messages.length,
+        itemCount: widget.conversations.length,
       ),
     );
   }

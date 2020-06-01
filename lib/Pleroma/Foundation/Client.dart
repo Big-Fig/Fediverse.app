@@ -60,6 +60,7 @@ class Client {
   Future<http.Response> unsubscribeToPush() async {
    
     var url = "$baseURL/api/v1/push/subscription";
+    print("THIS IS MY ACCESSTOKEN: $accessToken");
     var headers = {
       HttpHeaders.authorizationHeader: "Bearer $accessToken",
       "Accept": "application/json",
