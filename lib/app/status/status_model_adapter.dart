@@ -23,8 +23,7 @@ DbStatusPopulatedWrapper mapRemoteStatusToLocalStatus(
       reblogDbStatusAccount: rebloggedStatusAccount));
 }
 
-DbStatus mapRemoteStatusToDbStatus(IPleromaStatus remoteStatus, {bool
-isFromHomeTimeline = false}) {
+DbStatus mapRemoteStatusToDbStatus(IPleromaStatus remoteStatus) {
 // TODO: fix when https://git.pleroma.social/pleroma/pleroma/issues/1573  will be resolved
   DateTime expiresAt;
   try {
@@ -43,7 +42,6 @@ isFromHomeTimeline = false}) {
   }
   return DbStatus(
       id: null,
-      isFromHomeTimeline: isFromHomeTimeline,
       remoteId: remoteStatus.id,
       createdAt: remoteStatus.createdAt,
       inReplyToRemoteId: remoteStatus.inReplyToId,

@@ -15,6 +15,7 @@ var _accountFollowingsAliasId = "accountFollowings";
 var _statusHashtagsAliasId = "statusHashtags";
 var _statusListsAliasId = "statusLists";
 var _conversationStatusesAliasId = "conversationStatuses";
+var _homeTimelineStatusesAliasId = "homeTimelineStatuses";
 
 @UseDao(tables: [
   DbStatuses
@@ -38,6 +39,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   $DbStatusListsTable statusListsAlias;
   $DbAccountFollowingsTable accountFollowingsAlias;
   $DbConversationStatusesTable conversationStatusesAlias;
+  $DbHomeTimelineStatusesTable homeTimelineStatusesAlias;
 
   // Called by the AppDatabase class
   StatusDao(this.db) : super(db) {
@@ -51,6 +53,8 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
     statusListsAlias = alias(db.dbStatusLists, _statusListsAliasId);
     conversationStatusesAlias =
         alias(db.dbConversationStatuses, _conversationStatusesAliasId);
+    homeTimelineStatusesAlias =
+        alias(db.dbHomeTimelineStatuses, _homeTimelineStatusesAliasId);
   }
 
   Future<List<DbStatusPopulated>> findAll() async {
@@ -80,29 +84,35 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   JoinedSelectStatement<Table, DataClass> _findAll() {
     var sqlQuery = (select(db.dbStatuses).join(
       populateStatusJoin(
-          includeAccountFollowing: false,
-          includeStatusLists: false,
-          includeStatusHashtags: false,
-          includeConversations: false),
+        includeAccountFollowing: false,
+        includeStatusLists: false,
+        includeStatusHashtags: false,
+        includeConversations: false,
+        includeHomeTimeline: false,
+      ),
     ));
     return sqlQuery;
   }
 
   JoinedSelectStatement<Table, DataClass> _findById(int id) =>
-      (select(db.dbStatuses)..where((status) => status.id.equals(id))).join(
-          populateStatusJoin(
-              includeAccountFollowing: false,
-              includeStatusLists: false,
-              includeStatusHashtags: false,
-              includeConversations: false));
+      (select(db.dbStatuses)..where((status) => status.id.equals(id)))
+          .join(populateStatusJoin(
+        includeAccountFollowing: false,
+        includeStatusLists: false,
+        includeStatusHashtags: false,
+        includeConversations: false,
+        includeHomeTimeline: false,
+      ));
 
   JoinedSelectStatement<Table, DataClass> _findByRemoteId(String remoteId) =>
       (select(db.dbStatuses)..where((status) => status.remoteId.like(remoteId)))
           .join(populateStatusJoin(
-              includeAccountFollowing: false,
-              includeStatusLists: false,
-              includeStatusHashtags: false,
-              includeConversations: false));
+        includeAccountFollowing: false,
+        includeStatusLists: false,
+        includeStatusHashtags: false,
+        includeConversations: false,
+        includeHomeTimeline: false,
+      ));
 
   Future<int> insert(Insertable<DbStatus> entity, {InsertMode mode}) async =>
       into(db.dbStatuses).insert(entity, mode: mode);
@@ -197,9 +207,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyNoRepliesWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
       query..where((status) => isNull(status.inReplyToRemoteId));
-  SimpleSelectStatement<$DbStatusesTable, DbStatus> addIsFromHomeTimelineWhere(
-          SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
-      query..where((status) => status.isFromHomeTimeline.equals(true));
+
 
   /// remote ids are strings but it is possible to compare them in
   /// chronological order
@@ -287,6 +295,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
     @required includeStatusHashtags,
     @required includeStatusLists,
     @required includeConversations,
+    @required includeHomeTimeline,
   }) {
     return [
       innerJoin(
@@ -332,7 +341,15 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
                   conversationStatusesAlias.statusRemoteId
                       .equalsExp(dbStatuses.remoteId))
             ]
-          : [])
+          : []),
+      ...(includeHomeTimeline
+          ? [
+              innerJoin(
+                  homeTimelineStatusesAlias,
+                  homeTimelineStatusesAlias.statusRemoteId
+                      .equalsExp(dbStatuses.remoteId))
+            ]
+          : []),
     ];
   }
 }

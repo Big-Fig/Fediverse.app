@@ -3,6 +3,7 @@ import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/conversation/conversation_model.dart';
 import 'package:fedi/app/conversation/database/conversation_statuses_database_dao.dart';
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/app/status/database/home_timeline_statuses_database_dao.dart';
 import 'package:fedi/app/status/database/status_database_dao.dart';
 import 'package:fedi/app/status/database/status_hashtags_database_dao.dart';
 import 'package:fedi/app/status/database/status_lists_database_dao.dart';
@@ -26,6 +27,7 @@ class StatusRepository extends AsyncInitLoadingBloc
   StatusDao dao;
   StatusHashtagsDao hashtagsDao;
   StatusListsDao listsDao;
+  HomeTimelineStatusesDao homeTimelineStatusesDao;
   ConversationStatusesDao conversationStatusesDao;
   IAccountRepository accountRepository;
 
@@ -34,6 +36,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     dao = appDatabase.statusDao;
     hashtagsDao = appDatabase.statusHashtagsDao;
     listsDao = appDatabase.statusListsDao;
+    homeTimelineStatusesDao = appDatabase.homeTimelineStatusesDao;
     conversationStatusesDao = appDatabase.conversationStatusesDao;
   }
 
@@ -49,9 +52,8 @@ class StatusRepository extends AsyncInitLoadingBloc
       @required String conversationRemoteId,
       bool isFromHomeTimeline = false}) async {
     // if conversation not specified we try to fetch it from status
-    conversationRemoteId =
-        conversationRemoteId ??
-            remoteStatus?.pleroma?.conversationId?.toString();
+    conversationRemoteId = conversationRemoteId ??
+        remoteStatus?.pleroma?.conversationId?.toString();
 
     _logger.finer(() => "upsertRemoteStatus $remoteStatus listRemoteId=> "
         "$listRemoteId");
@@ -60,8 +62,16 @@ class StatusRepository extends AsyncInitLoadingBloc
     await accountRepository.upsertRemoteAccount(remoteAccount,
         conversationRemoteId: conversationRemoteId, chatRemoteId: null);
 
-    await upsert(mapRemoteStatusToDbStatus(remoteStatus,
-        isFromHomeTimeline: isFromHomeTimeline));
+    await upsert(mapRemoteStatusToDbStatus(remoteStatus));
+
+    if (isFromHomeTimeline) {
+      await homeTimelineStatusesDao.insert(
+          DbHomeTimelineStatus(
+            statusRemoteId: remoteStatus.id,
+            id: null,
+          ),
+          mode: InsertMode.insertOrReplace);
+    }
 
     var statusRemoteId = remoteStatus.id;
     if (listRemoteId != null) {
@@ -104,9 +114,17 @@ class StatusRepository extends AsyncInitLoadingBloc
         conversationRemoteId: conversationRemoteId, chatRemoteId: null);
 
     await upsertAll(remoteStatuses
-        .map((remoteStatus) => mapRemoteStatusToDbStatus(remoteStatus,
-            isFromHomeTimeline: isFromHomeTimeline))
+        .map((remoteStatus) => mapRemoteStatusToDbStatus(remoteStatus))
         .toList());
+
+    if (isFromHomeTimeline) {
+      await homeTimelineStatusesDao.insertAll(
+          remoteStatuses
+              .map((remoteStatus) => DbHomeTimelineStatus(
+                  statusRemoteId: remoteStatus.id, id: null))
+              .toList(),
+          InsertMode.insertOrReplace);
+    }
 
     if (listRemoteId != null) {
       await addStatusesToList(
@@ -369,9 +387,6 @@ class StatusRepository extends AsyncInitLoadingBloc
     if (onlyNoReplies == true) {
       dao.addOnlyNoRepliesWhere(query);
     }
-    if (isFromHomeTimeline == true) {
-      dao.addIsFromHomeTimelineWhere(query);
-    }
 
     if (excludeVisibilities?.isNotEmpty == true) {
       dao.addExcludeVisibilitiesWhere(query, excludeVisibilities);
@@ -390,12 +405,14 @@ class StatusRepository extends AsyncInitLoadingBloc
     var needFilterByList = onlyInListWithRemoteId?.isNotEmpty == true;
     var needFilterByTag = onlyWithHashtag?.isNotEmpty == true;
     var needFilterByConversation = onlyInConversation != null;
+    var needFilterByHomeTimeline = isFromHomeTimeline == true;
     var joinQuery = query.join(
       dao.populateStatusJoin(
           includeAccountFollowing: needFilterByFollowing,
           includeStatusLists: needFilterByList,
           includeStatusHashtags: needFilterByTag,
-          includeConversations: needFilterByConversation),
+          includeConversations: needFilterByConversation,
+          includeHomeTimeline: needFilterByHomeTimeline),
     );
 
     var finalQuery = joinQuery;
@@ -413,6 +430,10 @@ class StatusRepository extends AsyncInitLoadingBloc
 
     if (needFilterByTag) {
       finalQuery = dao.addHashtagWhere(finalQuery, onlyWithHashtag);
+    }
+
+    if (needFilterByHomeTimeline) {
+      // nothing it is filtered by inner join
     }
 
     assert(!(limit == null && offset != null));
@@ -520,9 +541,16 @@ class StatusRepository extends AsyncInitLoadingBloc
         conversationRemoteId: null, chatRemoteId: null);
 
     await updateById(
-        oldLocalStatus.localId,
-        mapRemoteStatusToDbStatus(newRemoteStatus,
-            isFromHomeTimeline: isFromHomeTimeline));
+        oldLocalStatus.localId, mapRemoteStatusToDbStatus(newRemoteStatus));
+
+    if (isFromHomeTimeline) {
+      await homeTimelineStatusesDao.insert(
+          DbHomeTimelineStatus(
+            statusRemoteId: newRemoteStatus.id,
+            id: null,
+          ),
+          mode: InsertMode.insertOrReplace);
+    }
 
     var statusRemoteId = newRemoteStatus.id;
 

@@ -12,7 +12,6 @@ class DbStatuses extends Table {
   TextColumn get inReplyToRemoteId => text().nullable()();
   TextColumn get inReplyToAccountRemoteId => text().nullable()();
   BoolColumn get sensitive => boolean()();
-  BoolColumn get isFromHomeTimeline => boolean().nullable()();
   TextColumn get spoilerText => text()();
   TextColumn get visibility =>
       text().nullable().map(PleromaVisibilityDatabaseConverter())();
