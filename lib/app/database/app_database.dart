@@ -19,6 +19,8 @@ import 'package:fedi/app/conversation/database/conversation_statuses_database_mo
 import 'package:fedi/app/moor/moor_converters.dart';
 import 'package:fedi/app/notification/database/notification_database_dao.dart';
 import 'package:fedi/app/notification/database/notification_database_model.dart';
+import 'package:fedi/app/status/database/home_timeline_statuses_database_dao.dart';
+import 'package:fedi/app/status/database/home_timeline_statuses_database_model.dart';
 import 'package:fedi/app/status/database/status_database_dao.dart';
 import 'package:fedi/app/status/database/status_database_model.dart';
 import 'package:fedi/app/status/database/status_favourited_accounts_database_dao.dart';
@@ -69,6 +71,7 @@ part 'app_database.g.dart';
 //  DbChats,
 //  DbChatAccounts,
 //  DbChatMessages,
+  DbHomeTimelineStatuses
 ], daos: [
   StatusDao,
   StatusHashtagsDao,
@@ -86,6 +89,7 @@ part 'app_database.g.dart';
   ChatDao,
   ChatAccountsDao,
   ChatMessageDao,
+  HomeTimelineStatusesDao
 ], include: {
   'app_database.moor'
 })

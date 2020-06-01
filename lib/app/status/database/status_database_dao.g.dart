@@ -60,7 +60,6 @@ mixin _$StatusDaoMixin on DatabaseAccessor<AppDatabase> {
       inReplyToRemoteId: row.readString('in_reply_to_remote_id'),
       inReplyToAccountRemoteId: row.readString('in_reply_to_account_remote_id'),
       sensitive: row.readBool('sensitive'),
-      isFromHomeTimeline: row.readBool('is_from_home_timeline'),
       spoilerText: row.readString('spoiler_text'),
       visibility:
           $DbStatusesTable.$converter0.mapToDart(row.readString('visibility')),
