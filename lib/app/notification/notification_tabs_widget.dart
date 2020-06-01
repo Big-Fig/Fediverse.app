@@ -45,14 +45,14 @@ class NotificationTabsWidget extends StatelessWidget {
     var tabs = notificationsTabsBloc.tabs;
 
     return DefaultTabController(
-        length: tabs.length,
-        initialIndex: tabs.indexOf(notificationsTabsBloc.selectedTab),
-        child: FediHomeTabContainer(
-          topHeaderHeightInSafeArea:
-              FediSizes.headerImageSingleRowSafeAreaHeight,
-          topBar: buildTabBar(context, tabs, notificationsTabsBloc),
-          body: buildBodyWidget(context),
-        ));
+      length: tabs.length,
+      initialIndex: tabs.indexOf(notificationsTabsBloc.selectedTab),
+      child: FediHomeTabContainer(
+        topHeaderHeightInSafeArea: FediSizes.headerImageSingleRowSafeAreaHeight,
+        topBar: buildTabBar(context, tabs, notificationsTabsBloc),
+        body: buildBodyWidget(context),
+      ),
+    );
   }
 
   Widget buildTabBar(BuildContext context, List<NotificationTab> tabs,
@@ -110,69 +110,56 @@ class NotificationTabsWidget extends StatelessWidget {
       INotificationsTabsBloc notificationsTabsBloc) {
     List<PleromaNotificationType> excludeTypes = mapTabToExcludeTypes(tab);
 
-    return DisposableProvider<IScrollDirectionDetector>(
-      create: (context) {
-        var scrollController = ScrollController();
-        var scrollDirectionDetector =
-            ScrollDirectionDetector(scrollController: scrollController);
-        scrollDirectionDetector.addDisposable(
-            scrollController: scrollController);
-        return scrollDirectionDetector;
-      },
-      child: DisposableProvider<INotificationCachedListBloc>(
-        create: (context) => NotificationCachedListBloc.createFromContext(
-            context,
-            excludeTypes: excludeTypes),
+    return DisposableProvider<INotificationCachedListBloc>(
+      create: (context) => NotificationCachedListBloc.createFromContext(
+          context,
+          excludeTypes: excludeTypes),
+      child: DisposableProvider<
+          IPaginationBloc<PaginationPage<INotification>, INotification>>(
+        create: (context) =>
+            NotificationCachedPaginationBloc.createFromContext(context),
         child: DisposableProvider<
-            IPaginationBloc<PaginationPage<INotification>, INotification>>(
-          create: (context) =>
-              NotificationCachedPaginationBloc.createFromContext(context),
-          child: DisposableProvider<
+            IPaginationListWithNewItemsBloc<PaginationPage<INotification>,
+                INotification>>(
+          create: (context) => NotificationPaginationListWithNewItemsBloc(
+              mergeNewItemsImmediately: false,
+              paginationBloc: Provider.of(context, listen: false),
+              cachedListService:
+                  INotificationCachedListBloc.of(context, listen: false)),
+          child: ProxyProvider<
               IPaginationListWithNewItemsBloc<PaginationPage<INotification>,
+                  INotification>,
+              IPaginationListBloc<PaginationPage<INotification>,
                   INotification>>(
-            create: (context) => NotificationPaginationListWithNewItemsBloc(
-                mergeNewItemsImmediately: false,
-                paginationBloc: Provider.of(context, listen: false),
-                cachedListService:
-                    INotificationCachedListBloc.of(context, listen: false)),
+            update: (context, value, previous) => value,
             child: ProxyProvider<
                 IPaginationListWithNewItemsBloc<PaginationPage<INotification>,
                     INotification>,
-                IPaginationListBloc<PaginationPage<INotification>,
-                    INotification>>(
+                IPaginationListWithNewItemsBloc>(
               update: (context, value, previous) => value,
-              child: ProxyProvider<
-                  IPaginationListWithNewItemsBloc<PaginationPage<INotification>,
-                      INotification>,
-                  IPaginationListWithNewItemsBloc>(
-                update: (context, value, previous) => value,
-                child: PaginationListWithNewItemsContainerWithOverlayWidget(
-                  textBuilder: (context, updateItemsCount) => plural(
-                      "app.notification.list.new_items.action"
-                      ".tap_to_load_new",
-                      updateItemsCount),
-                  child: DisposableProvider<ICollapsibleBloc>(
-                    create: (context) =>
-                        CollapsibleBloc.createFromContext(context),
-                    child: Stack(
-                      children: <Widget>[
-                        Builder(
-                            builder: (context) =>
-                                NotificationPaginationListWidget(
-                                  needWatchLocalRepositoryForUpdates: true,
-                                  scrollController:
-                                      IScrollDirectionDetector.of(context)
-                                          .scrollController,
-                                  key: PageStorageKey("${tab.toString()}"),
-                                )),
-                        Align(
-                            alignment: Alignment.bottomLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ToggleCollapsibleOverlayWidget(),
-                            ))
-                      ],
-                    ),
+              child: PaginationListWithNewItemsContainerWithOverlayWidget(
+                textBuilder: (context, updateItemsCount) => plural(
+                    "app.notification.list.new_items.action"
+                    ".tap_to_load_new",
+                    updateItemsCount),
+                child: DisposableProvider<ICollapsibleBloc>(
+                  create: (context) =>
+                      CollapsibleBloc.createFromContext(context),
+                  child: Stack(
+                    children: <Widget>[
+                      Builder(
+                          builder: (context) =>
+                              NotificationPaginationListWidget(
+                                needWatchLocalRepositoryForUpdates: true,
+                                key: PageStorageKey("${tab.toString()}"),
+                              )),
+                      Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ToggleCollapsibleOverlayWidget(),
+                          ))
+                    ],
                   ),
                 ),
               ),
