@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/account_bloc.dart';
+import 'package:fedi/app/account/account_bloc_impl.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/conversation/start/status/post_status_start_conversation_page.dart';
 import 'package:fedi/app/share/share_service.dart';
@@ -10,6 +11,7 @@ import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -34,20 +36,29 @@ class StatusShareActionWidget extends StatelessWidget {
     IStatus status = statusBloc.status;
     showModalBottomSheet(
         builder: (BuildContext context) {
-          return ListView(
-            children: <Widget>[
-              buildTitleSeparator(context),
-              buildCopyAction(context, status),
-              buildOpenInBrowserAction(context, status),
-              buildShareAction(context, status),
-              buildAccountDescSeparator(context),
-              buildAccountNameSeparator(status),
-              buildAccountFollowAction(context, status),
-              buildAccountMessageAction(context, status),
-              buildAccountMuteAction(context, status),
-              buildAccountBlockAction(context, status),
-              buildAccountReportAction(context, status),
-            ],
+          return DisposableProvider<IAccountBloc>(
+            create: (context) => AccountBloc.createFromContext(context,
+                account: statusBloc.account,
+                isNeedWatchWebSocketsEvents: false,
+                isNeedRefreshFromNetworkOnInit: false,
+                isNeedWatchLocalRepositoryForUpdates: false),
+            child: Builder(
+              builder: (context) => ListView(
+                children: <Widget>[
+                  buildTitleSeparator(context),
+                  buildCopyAction(context, status),
+                  buildOpenInBrowserAction(context, status),
+                  buildShareAction(context, status),
+                  buildAccountDescSeparator(context),
+                  buildAccountNameSeparator(status),
+                  buildAccountFollowAction(context, status),
+                  buildAccountMessageAction(context, status),
+                  buildAccountMuteAction(context, status),
+                  buildAccountBlockAction(context, status),
+                  buildAccountReportAction(context, status),
+                ],
+              ),
+            ),
           );
         },
         context: context);
@@ -90,8 +101,7 @@ class StatusShareActionWidget extends StatelessWidget {
   }
 
   Padding buildAccountReportAction(BuildContext context, IStatus status) =>
-      buildButton(tr("app.account.action.report"),
-          () async {
+      buildButton(tr("app.account.action.report"), () async {
         await doAsyncOperationWithDialog(
             context: context,
             asyncCode: () async {
@@ -103,10 +113,9 @@ class StatusShareActionWidget extends StatelessWidget {
 
   Padding buildAccountBlockAction(BuildContext context, IStatus status) =>
       buildButton(
-          tr(
-              status.account.pleromaRelationship?.blocking == true
-                  ? "app.account.action.unblock"
-                  : "app.account.action.block"), () async {
+          tr(status.account.pleromaRelationship?.blocking == true
+              ? "app.account.action.unblock"
+              : "app.account.action.block"), () async {
         await doAsyncOperationWithDialog(
             context: context,
             asyncCode: () async {
@@ -118,10 +127,9 @@ class StatusShareActionWidget extends StatelessWidget {
 
   Padding buildAccountMuteAction(BuildContext context, IStatus status) =>
       buildButton(
-          tr(
-              status.account.pleromaRelationship?.muting == true
-                  ? "app.account.action.unmute"
-                  : "app.account.action.mute"), () async {
+          tr(status.account.pleromaRelationship?.muting == true
+              ? "app.account.action.unmute"
+              : "app.account.action.mute"), () async {
         await doAsyncOperationWithDialog(
             context: context,
             asyncCode: () async {
@@ -133,10 +141,9 @@ class StatusShareActionWidget extends StatelessWidget {
 
   Padding buildAccountFollowAction(BuildContext context, IStatus status) =>
       buildButton(
-          tr(
-              status.account.pleromaRelationship?.following == true
-                  ? "app.account.action.unfollow"
-                  : "app.account.action.follow"), () async {
+          tr(status.account.pleromaRelationship?.following == true
+              ? "app.account.action.unfollow"
+              : "app.account.action.follow"), () async {
         await doAsyncOperationWithDialog(
             context: context,
             asyncCode: () async {
@@ -147,17 +154,14 @@ class StatusShareActionWidget extends StatelessWidget {
       });
 
   Padding buildOpenInBrowserAction(BuildContext context, IStatus status) =>
-      buildButton(
-          tr("app.status.action.open_in_browser"),
-          () async {
+      buildButton(tr("app.status.action.open_in_browser"), () async {
         var url = status.uri;
         await UrlHelper.handleUrlClick(context, url);
         Navigator.of(context).pop();
       });
 
-  Padding buildCopyAction(BuildContext context, IStatus status) => buildButton(
-          tr("app.status.action.copy_link"),
-          () async {
+  Padding buildCopyAction(BuildContext context, IStatus status) =>
+      buildButton(tr("app.status.action.copy_link"), () async {
         await Clipboard.setData(ClipboardData(text: status.uri));
         Navigator.of(context).pop();
         await Fluttertoast.showToast(
@@ -171,11 +175,9 @@ class StatusShareActionWidget extends StatelessWidget {
       });
 
   Padding buildShareAction(BuildContext context, IStatus status) =>
-      buildButton(tr("app.status.action.share"),
-          () async {
+      buildButton(tr("app.status.action.share"), () async {
         var popupTitle = tr("app.status.share.title");
-        var progressMessage =
-            tr("app.status.share.progress.content");
+        var progressMessage = tr("app.status.share.progress.content");
 
         await doAsyncOperationWithDialog(
             context: context,
@@ -189,8 +191,7 @@ class StatusShareActionWidget extends StatelessWidget {
       });
 
   Padding buildAccountMessageAction(BuildContext context, IStatus status) =>
-      buildButton(tr("app.account.action.message"),
-          () {
+      buildButton(tr("app.account.action.message"), () {
         goToPostStatusStartConversationPage(context,
             conversationAccountsWithoutMe: <IAccount>[status.account]);
       });
