@@ -1,6 +1,7 @@
 import 'package:fedi/app/home/tab/timelines/timelines_home_tab_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/ui/scroll_direction_detector_bloc_impl.dart';
+import 'package:fedi/ui/scroll_controller_bloc.dart';
+import 'package:fedi/ui/scroll_controller_bloc_impl.dart';
 import 'package:flutter/src/widgets/scroll_controller.dart';
 import 'package:flutter/widgets.dart';
 
@@ -10,24 +11,20 @@ class TimelinesHomeTabBloc extends DisposableOwner
   ScrollController scrollController;
 
   @override
-  ScrollDirectionDetector scrollDirectionDetector;
+  IScrollControllerBloc scrollControllerBloc;
 
   TimelinesHomeTabBloc() {
     scrollController = ScrollController();
 
-    scrollDirectionDetector =
-        ScrollDirectionDetector(scrollController: scrollController);
+    scrollControllerBloc =
+        ScrollControllerBloc(scrollController: scrollController);
 
     addDisposable(scrollController: scrollController);
-    addDisposable(disposable: scrollDirectionDetector);
+    addDisposable(disposable: scrollControllerBloc);
   }
 
   @override
   void scrollToTop() {
-    scrollController.animateTo(
-      0.0,
-      curve: Curves.easeOut,
-      duration: const Duration(milliseconds: 300),
-    );
+   scrollControllerBloc.scrollToTop();
   }
 }

@@ -64,7 +64,7 @@ class StatusRepository extends AsyncInitLoadingBloc
 
     await upsert(mapRemoteStatusToDbStatus(remoteStatus));
 
-    if (isFromHomeTimeline) {
+    if (isFromHomeTimeline == true) {
       await homeTimelineStatusesDao.insert(
           DbHomeTimelineStatus(
             statusRemoteId: remoteStatus.id,
@@ -117,7 +117,7 @@ class StatusRepository extends AsyncInitLoadingBloc
         .map((remoteStatus) => mapRemoteStatusToDbStatus(remoteStatus))
         .toList());
 
-    if (isFromHomeTimeline) {
+    if (isFromHomeTimeline == true) {
       await homeTimelineStatusesDao.insertAll(
           remoteStatuses
               .map((remoteStatus) => DbHomeTimelineStatus(
@@ -543,7 +543,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     await updateById(
         oldLocalStatus.localId, mapRemoteStatusToDbStatus(newRemoteStatus));
 
-    if (isFromHomeTimeline) {
+    if (isFromHomeTimeline == true) {
       await homeTimelineStatusesDao.insert(
           DbHomeTimelineStatus(
             statusRemoteId: newRemoteStatus.id,
