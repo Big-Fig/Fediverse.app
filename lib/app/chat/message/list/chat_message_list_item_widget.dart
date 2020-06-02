@@ -8,7 +8,6 @@ import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dar
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-
 const _borderRadius = Radius.circular(16.0);
 
 class ChatMessageListItemWidget extends StatelessWidget {
@@ -48,10 +47,12 @@ class ChatMessageListItemWidget extends StatelessWidget {
                 borderRadius: isChatMessageFromMe
                     ? BorderRadius.only(
                         topLeft: _borderRadius,
-                        topRight: isLastInMinuteGroup ? _borderRadius : Radius.zero,
+                        topRight:
+                            isLastInMinuteGroup ? _borderRadius : Radius.zero,
                         bottomLeft: _borderRadius)
                     : BorderRadius.only(
-                        topLeft: isLastInMinuteGroup ? _borderRadius : Radius.zero,
+                        topLeft:
+                            isLastInMinuteGroup ? _borderRadius : Radius.zero,
                         topRight: _borderRadius,
                         bottomRight: _borderRadius)),
             constraints: BoxConstraints(maxWidth: deviceWidth * 0.80),
@@ -66,7 +67,8 @@ class ChatMessageListItemWidget extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 2.0),
                   child: Text(
-                    TimeOfDay.fromDateTime(messageBloc.createdAt).format(context),
+                    TimeOfDay.fromDateTime(messageBloc.createdAt)
+                        .format(context),
                     style: TextStyle(
                         height: 14 / 12,
                         fontSize: 12,
@@ -81,6 +83,9 @@ class ChatMessageListItemWidget extends StatelessWidget {
   Widget buildContent(BuildContext context, IChatMessageBloc messageBloc,
       bool isChatMessageFromMe) {
     return Column(
+      crossAxisAlignment:
+          isChatMessageFromMe ?  CrossAxisAlignment.end : CrossAxisAlignment
+              .start,
       children: <Widget>[
         buildTextContent(messageBloc, isChatMessageFromMe),
         buildMediaContent(messageBloc),
