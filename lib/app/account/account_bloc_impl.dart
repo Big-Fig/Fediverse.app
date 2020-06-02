@@ -165,7 +165,7 @@ class AccountBloc extends IAccountBloc {
   Future<IPleromaAccountRelationship> toggleFollow() async {
     assert(accountRelationship != null);
     var newRelationship;
-    if (accountRelationship.following) {
+    if (accountRelationship.following == true) {
       newRelationship = await pleromaAccountService.unFollowAccount(
           accountRemoteId: account.remoteId);
     } else {
@@ -181,7 +181,7 @@ class AccountBloc extends IAccountBloc {
   Future<IPleromaAccountRelationship> toggleMute() async {
     assert(accountRelationship != null);
     var newRelationship;
-    if (accountRelationship.muting) {
+    if (accountRelationship.muting == true) {
       newRelationship = await pleromaAccountService.unMuteAccount(
           accountRemoteId: account.remoteId);
     } else {
@@ -197,7 +197,8 @@ class AccountBloc extends IAccountBloc {
   Future<IPleromaAccountRelationship> togglePin() async {
     assert(accountRelationship != null);
     var newRelationship;
-    if (accountRelationship.muting) {
+    // todo: fix
+    if (accountRelationship.muting == true) {
       newRelationship = await pleromaAccountService.unPinAccount(
           accountRemoteId: account.remoteId);
     } else {
