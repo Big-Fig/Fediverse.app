@@ -18,6 +18,7 @@ class DisposableOwner extends Disposable {
     ScrollController scrollController,
     FocusNode focusNode,
     Subject subject,
+    StreamController streamController,
     Timer timer,
     VoidCallback custom,
   }) {
@@ -27,6 +28,10 @@ class DisposableOwner extends Disposable {
 
     if (subject != null) {
       _compositeDisposable.children.add(SubjectDisposable(subject));
+    }
+
+    if (streamController != null) {
+      _compositeDisposable.children.add(StreamControllerDisposable(streamController));
     }
 
     if (timer != null) {

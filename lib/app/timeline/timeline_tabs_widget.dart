@@ -40,32 +40,22 @@ class TimelineTabsWidget extends StatelessWidget {
 
     var tabs = timelinesTabsBloc.tabs;
 
-    return DisposableProvider<IScrollDirectionDetector>(
-      create: (context) {
-        var scrollController = ScrollController();
-        var scrollDirectionDetector =
-            ScrollDirectionDetector(scrollController: scrollController);
-        scrollDirectionDetector.addDisposable(
-            scrollController: scrollController);
-        return scrollDirectionDetector;
-      },
-      child: Builder(builder: (context) {
-        return DefaultTabController(
-          length: tabs.length,
-          initialIndex: tabs.indexOf(timelinesTabsBloc.selectedTab),
-          child: NestedScrollView(
-            controller: IScrollDirectionDetector.of(context, listen: false)
-                .scrollController,
-            headerSliverBuilder: (context, bool innerBoxIsScrolled) {
-              return [
-                buildSliverAppBar(context, tabs, timelinesTabsBloc),
-              ];
-            },
-            body: buildBodyWidget(context),
-          ),
-        );
-      }),
-    );
+    return Builder(builder: (context) {
+      return DefaultTabController(
+        length: tabs.length,
+        initialIndex: tabs.indexOf(timelinesTabsBloc.selectedTab),
+        child: NestedScrollView(
+          controller: IScrollDirectionDetector.of(context, listen: false)
+              .scrollController,
+          headerSliverBuilder: (context, bool innerBoxIsScrolled) {
+            return [
+              buildSliverAppBar(context, tabs, timelinesTabsBloc),
+            ];
+          },
+          body: buildBodyWidget(context),
+        ),
+      );
+    });
   }
 
   SliverPersistentHeader buildSliverAppBar(BuildContext context,

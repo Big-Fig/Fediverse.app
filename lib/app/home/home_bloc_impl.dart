@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fedi/app/home/home_bloc.dart';
 import 'package:fedi/app/home/home_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
@@ -17,6 +19,8 @@ const List<HomeTab> _tabs = [
 class HomeBloc extends DisposableOwner implements IHomeBloc {
   // ignore: close_sinks
   final BehaviorSubject<HomeTab> _selectedTabSubject;
+  final StreamController<HomeTab> _reselectedTabStreamController =
+      StreamController.broadcast();
 
   @override
   Stream<HomeTab> get selectedTabStream => _selectedTabSubject.stream;
@@ -36,11 +40,16 @@ class HomeBloc extends DisposableOwner implements IHomeBloc {
     _logger.finest(() => "constructor");
     addDisposable(subject: _selectedTabSubject);
     addDisposable(subject: _isTimelinesUnreadSubject);
+    addDisposable(streamController: _reselectedTabStreamController);
   }
 
   @override
   void selectTab(HomeTab tab) {
-    _selectedTabSubject.add(tab);
+    if (selectedTab == tab) {
+      _reselectedTabStreamController.add(tab);
+    } else {
+      _selectedTabSubject.add(tab);
+    }
   }
 
   @override
@@ -50,4 +59,14 @@ class HomeBloc extends DisposableOwner implements IHomeBloc {
 
   @override
   List<HomeTab> get tabs => _tabs;
+
+  @override
+  Stream<HomeTab> get reselectedTabStream =>
+      _reselectedTabStreamController.stream;
+
+  @override
+  Stream<bool> get selectedTabReselectedStream => Rx.combineLatest2(
+      selectedTabStream,
+      reselectedTabStream,
+      (selectedTab, reselectedTab) => selectedTab == reselectedTab);
 }
