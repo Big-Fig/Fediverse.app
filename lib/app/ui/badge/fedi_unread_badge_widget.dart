@@ -4,8 +4,12 @@ import 'package:flutter/material.dart';
 
 abstract class FediUnreadBadgeWidget extends StatelessWidget {
   final Widget child;
+  final double offset;
 
-  const FediUnreadBadgeWidget({@required this.child});
+  const FediUnreadBadgeWidget({
+    @required this.child,
+    this.offset = 2.0,
+  });
 
   Stream<bool> retrieveUnreadBadgeCountStream(BuildContext context);
 
@@ -21,8 +25,8 @@ abstract class FediUnreadBadgeWidget extends StatelessWidget {
               children: [
                 child,
                 Positioned(
-                  right: 2.0,
-                  top: 2.0,
+                  right: offset,
+                  top: offset,
                   child: Container(
                     width: 8.0,
                     height: 8.0,

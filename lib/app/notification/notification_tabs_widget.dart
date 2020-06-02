@@ -60,6 +60,7 @@ class NotificationTabsWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           ...tabs.map((tab) => NotificationUnreadBadgeExcludeTypesWidget(
+                offset: 6.0,
                 excludeTypes: mapTabToExcludeTypes(tab),
                 child: FediIconTab(mapTabToIconData(context, tab),
                     index: tabs.indexOf(tab)),

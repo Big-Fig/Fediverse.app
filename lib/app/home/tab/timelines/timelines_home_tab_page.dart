@@ -1,3 +1,4 @@
+import 'package:fedi/app/home/home_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/drawer/timelines_home_tab_page_drawer_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/drawer/timelines_home_tab_page_drawer_bloc_impl.dart';
 import 'package:fedi/app/search/search_page.dart';
@@ -30,8 +31,20 @@ class TimelinesHomeTabPage extends StatelessWidget {
         child: const TimelinesHomeTabPageDrawerWidget(),
       ),
       body: DisposableProvider<ITimelineTabsBloc>(
-          create: (BuildContext context) =>
-              TimelineTabsBloc.createFromContext(context, TimelineTab.home),
+          create: (BuildContext context) {
+            var homeBloc = IHomeBloc.of(context, listen: false);
+            var timelineTabsBloc = TimelineTabsBloc.createFromContext(context, TimelineTab.home);
+            timelineTabsBloc.addDisposable(streamSubscription:
+            timelineTabsBloc.tabsMap[TimelineTab.home]
+                .paginationListWithNewItemsBloc.unmergedNewItemsCountStream
+                .listen((unreadCount) {
+
+                  homeBloc.updateTimelinesUnread(unreadCount != null &&
+                      unreadCount > 0);
+
+            }));
+            return timelineTabsBloc;
+          },
           child: TimelineTabsWidget(
             key: key,
             appBarActionWidgets: <Widget>[
