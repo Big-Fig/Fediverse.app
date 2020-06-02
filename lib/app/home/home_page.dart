@@ -11,6 +11,7 @@ import 'package:fedi/app/home/tab/timelines/timelines_home_tab_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/timelines_home_tab_bloc_impl.dart';
 import 'package:fedi/app/home/tab/timelines/timelines_home_tab_page.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
+import 'package:fedi/app/ui/page/fedi_sliver_app_bar_bloc.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/ui/scroll_controller_bloc.dart';
 import 'package:flutter/cupertino.dart';
@@ -67,8 +68,11 @@ class HomePage extends StatelessWidget {
         },
           child: ProxyProvider<ITimelinesHomeTabBloc, IScrollControllerBloc>(
             update: (context, value, previous) => value.scrollControllerBloc,
-            child: const TimelinesHomeTabPage(
-              key: PageStorageKey<String>("TimelinesHomeTabPage"),),
+            child: ProxyProvider<ITimelinesHomeTabBloc, IFediSliverAppBarBloc>(
+            update: (context, value, previous) => value.fediSliverAppBarBloc,
+              child: const TimelinesHomeTabPage(
+                key: PageStorageKey<String>("TimelinesHomeTabPage"),),
+            ),
           ),);
         break;
       case HomeTab.notifications:

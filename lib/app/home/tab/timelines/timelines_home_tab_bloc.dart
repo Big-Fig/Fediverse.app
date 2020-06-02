@@ -1,3 +1,4 @@
+import 'package:fedi/app/ui/page/fedi_sliver_app_bar_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/ui/scroll_controller_bloc.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,6 +11,7 @@ abstract class ITimelinesHomeTabBloc extends DisposableOwner {
   ScrollController get scrollController;
 
   IScrollControllerBloc get scrollControllerBloc;
+  IFediSliverAppBarBloc get fediSliverAppBarBloc;
 
   void scrollToTop();
 }

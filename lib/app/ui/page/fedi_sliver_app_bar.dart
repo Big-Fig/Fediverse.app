@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:fedi/app/instance/fedi_instance_image_decoration_widget.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_shadows.dart';
+import 'package:fedi/app/ui/page/fedi_sliver_app_bar_bloc.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:fedi/ui/scroll_controller_bloc.dart';
@@ -32,6 +33,10 @@ class FediSliverAppBar extends SliverPersistentHeaderDelegate {
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     print("$shrinkOffset $overlapsContent");
 
+    var fediSliverAppBarBloc = IFediSliverAppBarBloc.of(context, listen: false);
+    fediSliverAppBarBloc.onBuild(minExtent:minExtent, maxExtent:maxExtent,
+        shrinkOffset: shrinkOffset, overlapsContent:overlapsContent);
+
     var expanded = shrinkOffset / expandedHeight == 1;
 
     var stack = Stack(
@@ -39,12 +44,12 @@ class FediSliverAppBar extends SliverPersistentHeaderDelegate {
       overflow: Overflow.visible,
       children: [
         buildCollapsedStatusBar(context, shrinkOffset),
-        buildCollapsedAppBar(context, shrinkOffset),
         Positioned(
             top: -shrinkOffset,
             width: MediaQuery.of(context).size.width,
             height: expandedHeight,
             child: buildExpandedAppBar(context, shrinkOffset)),
+        buildCollapsedAppBar(context, shrinkOffset),
       ],
     );
 
