@@ -7,6 +7,7 @@ import 'package:fedi/app/notification/notification_tabs_model.dart';
 import 'package:fedi/app/notification/pagination/cached/notification_cached_pagination_bloc_impl.dart';
 import 'package:fedi/app/notification/pagination/list/notification_pagination_list_widget.dart';
 import 'package:fedi/app/notification/pagination/list/notification_pagination_list_with_new_items_bloc_impl.dart';
+import 'package:fedi/app/notification/unread/notification_unread_exclude_types_badge_widget.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/home/fedi_home_tab_container_widget.dart';
@@ -21,8 +22,6 @@ import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_ite
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
-import 'package:fedi/ui/scroll_direction_detector_bloc.dart';
-import 'package:fedi/ui/scroll_direction_detector_bloc_impl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -60,8 +59,11 @@ class NotificationTabsWidget extends StatelessWidget {
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          ...tabs.map((tab) => FediIconTab(mapTabToIconData(context, tab),
-              index: tabs.indexOf(tab))),
+          ...tabs.map((tab) => NotificationUnreadBadgeExcludeTypesWidget(
+                excludeTypes: mapTabToExcludeTypes(tab),
+                child: FediIconTab(mapTabToIconData(context, tab),
+                    index: tabs.indexOf(tab)),
+              )),
           ...appBarActionWidgets
         ],
       );
@@ -111,8 +113,7 @@ class NotificationTabsWidget extends StatelessWidget {
     List<PleromaNotificationType> excludeTypes = mapTabToExcludeTypes(tab);
 
     return DisposableProvider<INotificationCachedListBloc>(
-      create: (context) => NotificationCachedListBloc.createFromContext(
-          context,
+      create: (context) => NotificationCachedListBloc.createFromContext(context,
           excludeTypes: excludeTypes),
       child: DisposableProvider<
           IPaginationBloc<PaginationPage<INotification>, INotification>>(

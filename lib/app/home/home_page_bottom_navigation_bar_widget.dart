@@ -4,7 +4,7 @@ import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/chat/unread/chat_unread_badge_count_widget.dart';
 import 'package:fedi/app/home/home_bloc.dart';
 import 'package:fedi/app/home/home_model.dart';
-import 'package:fedi/app/notification/unread/notification_unread_exclude_types_badge_count_widget.dart';
+import 'package:fedi/app/notification/unread/notification_unread_exclude_types_badge_widget.dart';
 import 'package:fedi/app/status/post/new/new_post_status_page.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
@@ -32,7 +32,7 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
     ];
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16.0),
+      padding: const EdgeInsets.symmetric(vertical:8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: tabsWithPlusButton.map((tab) {
@@ -68,21 +68,30 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
 
   Widget mapTabToIcon(BuildContext context, HomeTab tab, bool isSelected) {
     var color = isSelected ? FediColors.primaryColor : FediColors.darkGrey;
+
+
+    const insets = EdgeInsets.all(8.0);
     switch (tab) {
       case HomeTab.timelines:
-        return FediTransparentIcon(
-          FediIcons.home,
-          color: color,
+        return Padding(
+          padding: insets,
+          child: FediTransparentIcon(
+            FediIcons.home,
+            color: color,
+          ),
         );
         break;
       case HomeTab.notifications:
-        return NotificationUnreadBadgeExcludeTypesCountWidget(
+        return NotificationUnreadBadgeExcludeTypesWidget(
             excludeTypes: <PleromaNotificationType>[
               PleromaNotificationType.pleromaChatMention
             ],
-            child: FediTransparentIcon(
-              FediIcons.notification,
-              color: color,
+            child: Padding(
+              padding: insets,
+              child: FediTransparentIcon(
+                FediIcons.notification,
+                color: color,
+              ),
             ));
         break;
       case HomeTab.conversations:
@@ -96,9 +105,15 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
               if (isNewChatsEnabled == true) {
                 return ChatUnreadBadgeCountWidget(
                     child:
-                        FediTransparentIcon(FediIcons.envelope, color: color));
+                        Padding(
+                          padding: insets,
+                          child: FediTransparentIcon(FediIcons.envelope, color: color),
+                        ));
               } else {
-                return FediTransparentIcon(FediIcons.envelope, color: color);
+                return Padding(
+                  padding: insets,
+                  child: FediTransparentIcon(FediIcons.envelope, color: color),
+                );
               }
             });
         break;
@@ -107,7 +122,10 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
           onLongPress: () {
             showMyAccountActionListBottomSheetDialog(context);
           },
-          child: const MyAccountAvatarWidget(),
+          child: Padding(
+            padding: insets,
+            child: const MyAccountAvatarWidget(),
+          ),
         );
         break;
     }
