@@ -145,14 +145,19 @@ class TimelineTabsWidget extends StatelessWidget {
 
             return StreamBuilder<bool>(
                 stream: Rx.combineLatest2(
-                    scrollControllerBloc.scrollDirectionStream,
+                    scrollControllerBloc.longScrollDirectionStream,
                     fediSliverAppBarBloc.isAtLeastStartExpandStream,
-                    (scrollDirection, isAtLeastStartExpand) =>
-                        scrollDirection != ScrollDirection.reverse &&
-                        isAtLeastStartExpand == false),
+                    (scrollDirection, isAtLeastStartExpand) {
+
+                      _logger.finest(() => "scrollDirection $scrollDirection "
+                          "$isAtLeastStartExpand");
+
+                      return scrollDirection == ScrollDirection.forward &&
+                        isAtLeastStartExpand == false;
+                    }),
                 builder: (context, snapshot) {
                   var show = snapshot.data;
-                  if (show) {
+                  if (show == true) {
                     return FediDarkStatusBarStyleArea(
                       child: Padding(
                         padding: EdgeInsets.only(

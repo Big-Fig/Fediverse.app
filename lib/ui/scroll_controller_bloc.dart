@@ -10,9 +10,14 @@ abstract class IScrollControllerBloc extends Disposable {
 
   ScrollController get scrollController;
 
+  ScrollDirection get scrollDirection;
+
   Stream<ScrollDirection> get scrollDirectionStream;
 
-  ScrollDirection get scrollDirection;
+  ScrollDirection get longScrollDirection;
+
+  Stream<ScrollDirection> get longScrollDirectionStream;
+
 
   void scrollToTop();
 }
