@@ -5,6 +5,10 @@ import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:flutter/cupertino.dart';
 
 class AccountDisplayNameWidget extends StatelessWidget {
+  final TextOverflow textOverflow;
+
+  AccountDisplayNameWidget({this.textOverflow = TextOverflow.ellipsis});
+
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: true);
@@ -14,15 +18,15 @@ class AccountDisplayNameWidget extends StatelessWidget {
         builder: (context, snapshot) {
           var accountDisplayNameEmojiText = snapshot.data;
           var textStyle = TextStyle(
-
             color: FediColors.darkGrey,
             fontWeight: FontWeight.w500,
             fontSize: 16.0,
           );
           return EmojiTextWidget(
-              emojiText: accountDisplayNameEmojiText, textStyle: textStyle);
+            emojiText: accountDisplayNameEmojiText,
+            textStyle: textStyle,
+            textOverflow: textOverflow,
+          );
         });
   }
-
-  const AccountDisplayNameWidget();
 }

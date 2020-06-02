@@ -76,24 +76,28 @@ class StatusThreadPage extends StatelessWidget {
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Row(
-                          children: [
-                            AccountAvatarWidget(
-                              imageSize: FediSizes.appBarAvatarSize,
-                              progressSize: FediSizes.appBarAvatarSize * 0.8,
-                            ),
-                            const SizedBox(
-                              width: 16,
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                AccountDisplayNameWidget(),
-                                AccountAcctWidget(),
-                              ],
-                            ),
-                          ],
+                        Flexible(
+                          child: Row(
+                            children: [
+                              AccountAvatarWidget(
+                                imageSize: FediSizes.appBarAvatarSize,
+                                progressSize: FediSizes.appBarAvatarSize * 0.8,
+                              ),
+                              const SizedBox(
+                                width: 16,
+                              ),
+                              Flexible(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    AccountDisplayNameWidget(),
+                                    AccountAcctWidget(),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),

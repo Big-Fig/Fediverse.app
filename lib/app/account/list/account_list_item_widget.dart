@@ -33,7 +33,7 @@ class AccountListItemWidget extends StatelessWidget {
             Row(
               children: <Widget>[
                 Row(
-                  mainAxisSize: MainAxisSize.min,
+                  mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
                     AccountAvatarWidget(
                       imageSize: 36,
