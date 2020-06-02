@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/pleroma/rest/pleroma_rest_service_impl.dart';
@@ -20,7 +22,7 @@ class PleromaAuthRestService extends PleromaRestService
       : super(restService: restService, connectionService: connectionService);
 
   Map<String, String> createAuthHeaders() =>
-      {"authorization": "Bearer $accessToken"};
+      {HttpHeaders.authorizationHeader: "Bearer $accessToken"};
 
   @override
   Future<Response> sendHttpRequest<T extends RestRequest, K>(T request) {

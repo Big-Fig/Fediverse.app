@@ -23,7 +23,7 @@ Map<RestRequestType, String> requestTypeToStringMap = {
 var urlPath = p.Context(style: p.Style.url);
 final Encoding _defaultEncoding = Encoding.getByName("utf-8");
 
-final Logger _logger = Logger("rest_bloc.dart");
+final Logger _logger = Logger("rest_service_impl.dart");
 
 const successResponseStatusCode = 200;
 
@@ -56,17 +56,27 @@ class RestService extends DisposableOwner implements IRestService {
     var requestType = request.type;
     var bodyJson = request.bodyJson;
     bodyJson.removeWhere((key, value) => value == null);
-    var requestBodyJson = json.encode(bodyJson);
+    if (bodyJson?.isEmpty == true) {
+      bodyJson = null;
+    }
+    String requestBodyJson;
+    if (bodyJson != null) {
+      requestBodyJson = json.encode(bodyJson);
+    }
+
+    var requestHeaders = <String, String>{};
+    requestHeaders.addAll(request.headers);
+    Encoding encoding;
+    if (request.bodyJson?.isNotEmpty == true) {
+      requestHeaders["Content-Type"] = "application/json";
+      encoding = _defaultEncoding;
+    }
 
     _logger.fine(() => "start sendHttpRequest \n"
         "\t url($requestType): $url \n"
         "\t headers: ${request.headers} \n"
-        "\t requestBodyJson: $requestBodyJson \n");
-    var requestHeaders = <String, String>{};
-    requestHeaders.addAll(request.headers);
-    if (request.bodyJson?.isNotEmpty == true) {
-      requestHeaders["Content-Type"] = "application/json";
-    }
+        "\t requestBodyJson: $requestBodyJson \n"
+        "\t encoding: $encoding \n");
     switch (request.type) {
       case RestRequestType.get:
         assert(body?.isNotEmpty != true);
@@ -74,15 +84,11 @@ class RestService extends DisposableOwner implements IRestService {
         break;
       case RestRequestType.post:
         response = await http.post(url,
-            headers: requestHeaders,
-            body: requestBodyJson,
-            encoding: _defaultEncoding);
+            headers: requestHeaders, body: requestBodyJson, encoding: encoding);
         break;
       case RestRequestType.patch:
         response = await http.patch(url,
-            headers: requestHeaders,
-            body: requestBodyJson,
-            encoding: _defaultEncoding);
+            headers: requestHeaders, body: requestBodyJson, encoding: encoding);
         break;
       case RestRequestType.delete:
         assert(body?.isNotEmpty != true);
@@ -90,9 +96,7 @@ class RestService extends DisposableOwner implements IRestService {
         break;
       case RestRequestType.put:
         response = await http.put(url,
-            headers: requestHeaders,
-            body: requestBodyJson,
-            encoding: _defaultEncoding);
+            headers: requestHeaders, body: requestBodyJson, encoding: encoding);
         break;
       case RestRequestType.head:
         assert(body?.isNotEmpty != true);
