@@ -64,11 +64,14 @@ class StatusHeaderWidget extends StatelessWidget {
         SizedBox(
           width: 12,
         ),
-        Text(
-          descText,
-          style: TextStyle(
-            fontSize: 12,
-            color: FediColors.darkGrey,
+        Flexible(
+          child: Text(
+            descText,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: 12,
+              color: FediColors.darkGrey,
+            ),
           ),
         )
       ],

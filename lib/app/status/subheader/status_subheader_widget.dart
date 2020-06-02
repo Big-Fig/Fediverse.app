@@ -40,10 +40,13 @@ class StatusSubHeaderWidget extends StatelessWidget {
         SizedBox(
           width: 4,
         ),
-        Text(
-          account.acct,
-          style:
-              TextStyle(fontSize: 14, color: FediColors.darkGrey, height: 1.15),
+        Flexible(
+          child: Text(
+            account.acct,
+            overflow: TextOverflow.ellipsis,
+            style:
+                TextStyle(fontSize: 14, color: FediColors.darkGrey, height: 1.15),
+          ),
         ),
       ],
     );
