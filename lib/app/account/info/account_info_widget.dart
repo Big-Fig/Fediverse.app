@@ -59,6 +59,7 @@ class AccountInfoWidget extends StatelessWidget {
           var displayName = snapshot.data;
           return Text(
             displayName,
+            textAlign: TextAlign.center,
             style:
                 TextStyle(color: FediColors.white, fontWeight: FontWeight.w500),
           );
