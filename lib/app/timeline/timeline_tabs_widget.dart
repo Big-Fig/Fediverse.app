@@ -14,6 +14,7 @@ import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_container_with_overlay_widget.dart';
+import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_unread_badge_widget.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:fedi/ui/scroll_direction_detector_bloc.dart';
 import 'package:fedi/ui/scroll_direction_detector_bloc_impl.dart';
@@ -72,7 +73,6 @@ class TimelineTabsWidget extends StatelessWidget {
     return SliverPersistentHeader(
         pinned: true,
         floating: true,
-
         delegate: FediSliverAppBar(
           expandedHeight: 255 + 32.0 + 2.0,
           topBar: buildTabBar(context, tabs, timelinesTabsBloc),
@@ -100,10 +100,17 @@ class TimelineTabsWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ...tabs
-                    .map((tab) => FediTextTab(
-                          mapTabToTitle(context, tab),
-                          index: tabs.indexOf(tab),
-                          isTransparent: true,
+                    .map((tab) =>
+                        Provider<IPaginationListWithNewItemsBloc>.value(
+                          value: timelineTabsBloc
+                              .retrieveTimelineTabPaginationListBloc(tab),
+                          child: PaginationListWithNewItemsUnreadBadgeWidget(
+                            child: FediTextTab(
+                              mapTabToTitle(context, tab),
+                              index: tabs.indexOf(tab),
+                              isTransparent: true,
+                            ),
+                          ),
                         ))
                     .toList(),
                 ...appBarActionWidgets
@@ -112,9 +119,6 @@ class TimelineTabsWidget extends StatelessWidget {
           )
         ],
       );
-
-  Tab buildTab(BuildContext context, TimelineTab tab) =>
-      Tab(text: mapTabToTitle(context, tab));
 
   String mapTabToTitle(BuildContext context, TimelineTab tab) {
     switch (tab) {

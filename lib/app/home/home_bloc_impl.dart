@@ -24,15 +24,28 @@ class HomeBloc extends DisposableOwner implements IHomeBloc {
   @override
   HomeTab get selectedTab => _selectedTabSubject.value;
 
+  final BehaviorSubject<bool> _isTimelinesUnreadSubject =
+      BehaviorSubject.seeded(false);
+  @override
+  bool get isTimelinesUnread => _isTimelinesUnreadSubject.value;
+  @override
+  Stream<bool> get isTimelinesUnreadStream => _isTimelinesUnreadSubject.stream;
+
   HomeBloc({@required HomeTab startTab})
       : _selectedTabSubject = BehaviorSubject.seeded(startTab) {
     _logger.finest(() => "constructor");
     addDisposable(subject: _selectedTabSubject);
+    addDisposable(subject: _isTimelinesUnreadSubject);
   }
 
   @override
   void selectTab(HomeTab tab) {
     _selectedTabSubject.add(tab);
+  }
+
+  @override
+  void updateTimelinesUnread(bool unread) {
+    _isTimelinesUnreadSubject.add(unread);
   }
 
   @override

@@ -3,14 +3,17 @@ import 'package:fedi/app/ui/badge/fedi_unread_badge_widget.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:flutter/cupertino.dart';
 
-class NotificationUnreadBadgeExcludeTypesWidget
-    extends FediUnreadBadgeWidget {
+class NotificationUnreadBadgeExcludeTypesWidget extends FediUnreadBadgeWidget {
   final List<PleromaNotificationType> excludeTypes;
 
   NotificationUnreadBadgeExcludeTypesWidget({
     @required Widget child,
     @required this.excludeTypes,
-  }) : super(child: child);
+    double offset = 2.0,
+  }) : super(
+          child: child,
+          offset: offset,
+        );
 
   @override
   Stream<bool> retrieveUnreadBadgeCountStream(BuildContext context) {

@@ -7,10 +7,15 @@ abstract class IHomeBloc implements Disposable {
   static IHomeBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IHomeBloc>(context, listen: listen);
 
-  HomeTab get selectedTab;
   List<HomeTab> get tabs;
 
+  HomeTab get selectedTab;
   Stream<HomeTab> get selectedTabStream;
 
+  bool get isTimelinesUnread;
+  Stream<bool> get isTimelinesUnreadStream;
+
   void selectTab(HomeTab tab);
+
+  void updateTimelinesUnread(bool bool);
 }
