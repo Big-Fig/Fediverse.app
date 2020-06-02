@@ -29,9 +29,9 @@ class EmojiTextWidget extends StatelessWidget {
     }
   }
 
-  Row buildEmojifiedText(BuildContext context) {
+  Widget buildEmojifiedText(BuildContext context) {
     var emojiUsername = emojiText.text.split(":");
-    List<Widget> usernameWidget = [];
+    List<InlineSpan> spans = [];
 
     for (var i = 0; i < emojiUsername.length; i++) {
       var emojiOrText = emojiUsername[i];
@@ -44,28 +44,37 @@ class EmojiTextWidget extends StatelessWidget {
           var image = CachedNetworkImage(
             imageUrl: url,
             placeholder: (context, url) {
-              return Icon(Icons.help_outline);
+              return Icon(
+                Icons.help_outline,
+                size: textStyle.fontSize,
+              );
 //              return SizedBox.shrink();
             },
             height: emojiSize,
             width: emojiSize,
-            errorWidget: (context, url, error) => Icon(Icons.error),
+            errorWidget: (context, url, error) => Icon(
+              Icons.error,
+              size: textStyle.fontSize,
+            ),
           );
-          usernameWidget.add(image);
+          spans.add(WidgetSpan(child: image));
           foundEmoji = true;
         }
       }
 
       if (foundEmoji == false) {
-        var text = Text(
-          emojiOrText,
+        spans.add(TextSpan(
+          text: emojiOrText,
           style: textStyle,
-          overflow: textOverflow,
-        );
-        usernameWidget.add(text);
+        ));
       }
     }
 
-    return Row(children: usernameWidget);
+    return RichText(
+      overflow: textOverflow,
+      text: TextSpan(
+        children: spans,
+      ),
+    );
   }
 }
