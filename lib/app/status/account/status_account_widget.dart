@@ -51,12 +51,14 @@ class StatusAccountWidget extends StatelessWidget {
               const SizedBox(
                 width: 8,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  AccountDisplayNameWidget(),
-                  AccountAcctWidget()
-                ],
+              Flexible(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    AccountDisplayNameWidget(),
+                    AccountAcctWidget()
+                  ],
+                ),
               ),
             ],
           ),

@@ -6,11 +6,14 @@ import 'package:flutter/material.dart';
 class EmojiTextWidget extends StatelessWidget {
   final EmojiText emojiText;
   final TextStyle textStyle;
-  final TextOverflow overflow;
+  final TextOverflow textOverflow;
+  final double emojiSize;
+
   const EmojiTextWidget({
     @required this.emojiText,
+    this.emojiSize = 19.0,
     this.textStyle,
-    this.overflow = TextOverflow.ellipsis,
+    this.textOverflow = TextOverflow.ellipsis,
   });
 
   @override
@@ -21,7 +24,7 @@ class EmojiTextWidget extends StatelessWidget {
       return Text(
         emojiText.text,
         style: textStyle,
-        overflow: overflow,
+        overflow: textOverflow,
       );
     }
   }
@@ -44,8 +47,8 @@ class EmojiTextWidget extends StatelessWidget {
               return Icon(Icons.help_outline);
 //              return SizedBox.shrink();
             },
-            height: 15,
-            width: 15,
+            height: emojiSize,
+            width: emojiSize,
             errorWidget: (context, url, error) => Icon(Icons.error),
           );
           usernameWidget.add(image);
@@ -57,11 +60,12 @@ class EmojiTextWidget extends StatelessWidget {
         var text = Text(
           emojiOrText,
           style: textStyle,
-          overflow: overflow,
+          overflow: textOverflow,
         );
         usernameWidget.add(text);
       }
     }
+
     return Row(children: usernameWidget);
   }
 }

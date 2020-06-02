@@ -140,8 +140,11 @@ class StatusListItemTimelineWidget extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    StatusAccountWidget(),
-                    StatusCreatedAtWidget(),
+                    Flexible(child: StatusAccountWidget()),
+                    Padding(
+                      padding: const EdgeInsets.only(left:8.0),
+                      child: StatusCreatedAtWidget(),
+                    ),
                   ],
                 ),
               ),
