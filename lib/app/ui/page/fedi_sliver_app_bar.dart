@@ -5,7 +5,7 @@ import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_shadows.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
-import 'package:fedi/ui/scroll_direction_detector_bloc.dart';
+import 'package:fedi/ui/scroll_controller_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -55,12 +55,12 @@ class FediSliverAppBar extends SliverPersistentHeaderDelegate {
         return FediLightStatusBarStyleArea(child: stack);
       }
 
-      var scrollDirectionDetector =
-          IScrollDirectionDetector.of(context, listen: false);
+      var scrollControllerBloc =
+          IScrollControllerBloc.of(context, listen: false);
 
       return StreamBuilder<ScrollDirection>(
-        stream: scrollDirectionDetector.scrollDirectionStream,
-        initialData: scrollDirectionDetector.scrollDirection,
+        stream: scrollControllerBloc.scrollDirectionStream,
+        initialData: scrollControllerBloc.scrollDirection,
         builder: (context, snapshot) {
           var scrollDirection = snapshot.data;
 
@@ -83,15 +83,15 @@ class FediSliverAppBar extends SliverPersistentHeaderDelegate {
       return SizedBox.shrink();
     }
 
-    var scrollDirectionDetector =
-        IScrollDirectionDetector.of(context, listen: false);
+    var scrollControllerBloc =
+        IScrollControllerBloc.of(context, listen: false);
 
     return Positioned(
       top: max(minExtent, (maxExtent - shrinkOffset)),
       width: MediaQuery.of(context).size.width,
       child: StreamBuilder<ScrollDirection>(
-          stream: scrollDirectionDetector.scrollDirectionStream,
-          initialData: scrollDirectionDetector.scrollDirection,
+          stream: scrollControllerBloc.scrollDirectionStream,
+          initialData: scrollControllerBloc.scrollDirection,
           builder: (context, snapshot) {
             var scrollDirection = snapshot.data;
 

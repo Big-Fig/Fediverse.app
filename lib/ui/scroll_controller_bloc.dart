@@ -3,14 +3,16 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IScrollDirectionDetector extends Disposable {
-  static IScrollDirectionDetector of(BuildContext context,
+abstract class IScrollControllerBloc extends Disposable {
+  static IScrollControllerBloc of(BuildContext context,
           {bool listen = true}) =>
-      Provider.of<IScrollDirectionDetector>(context, listen: listen);
+      Provider.of<IScrollControllerBloc>(context, listen: listen);
 
   ScrollController get scrollController;
 
   Stream<ScrollDirection> get scrollDirectionStream;
 
   ScrollDirection get scrollDirection;
+
+  void scrollToTop();
 }

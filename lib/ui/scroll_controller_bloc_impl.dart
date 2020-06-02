@@ -1,15 +1,15 @@
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/ui/scroll_direction_detector_bloc.dart';
+import 'package:fedi/ui/scroll_controller_bloc.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
-class ScrollDirectionDetector extends DisposableOwner
-    implements IScrollDirectionDetector {
+class ScrollControllerBloc extends DisposableOwner
+    implements IScrollControllerBloc {
   @override
   final ScrollController scrollController;
 
-  ScrollDirectionDetector({@required this.scrollController})
+  ScrollControllerBloc({@required this.scrollController})
       : scrollDirectionSubject = BehaviorSubject.seeded(null) {
     addDisposable(subject: scrollDirectionSubject);
     var listener = () {
@@ -34,4 +34,13 @@ class ScrollDirectionDetector extends DisposableOwner
 
   @override
   ScrollDirection get scrollDirection => scrollDirectionSubject.value;
+
+  @override
+  void scrollToTop() {
+    scrollController.animateTo(
+      0.0,
+      curve: Curves.easeOut,
+      duration: const Duration(milliseconds: 300),
+    );
+  }
 }

@@ -1,7 +1,7 @@
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:fedi/ui/scroll_direction_detector_bloc.dart';
+import 'package:fedi/ui/scroll_controller_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -41,26 +41,26 @@ class PaginationListWithNewItemsOverlayWidget extends StatelessWidget {
 
           if (updateItemsCount > 0) {
             try {
-              var scrollDirectionDetector =
-              IScrollDirectionDetector.of(context, listen: false);
+              var scrollControllerBloc =
+                  IScrollControllerBloc.of(context, listen: false);
 
               return StreamBuilder<ScrollDirection>(
-                  stream:
-                  scrollDirectionDetector.scrollDirectionStream.distinct(),
-                  initialData: scrollDirectionDetector.scrollDirection,
+                  stream: scrollControllerBloc.scrollDirectionStream.distinct(),
+                  initialData: scrollControllerBloc.scrollDirection,
                   builder: (context, snapshot) {
                     var scrollDirection = snapshot.data;
 
                     if (scrollDirection != ScrollDirection.reverse) {
-                      return _buildButtons(paginationWithUpdatesListBloc, context, updateItemsCount);
+                      return _buildButtons(paginationWithUpdatesListBloc,
+                          context, updateItemsCount);
                     } else {
                       return SizedBox.shrink();
                     }
                   });
-            } catch(e) {
-              return _buildButtons(paginationWithUpdatesListBloc, context, updateItemsCount);
+            } catch (e) {
+              return _buildButtons(
+                  paginationWithUpdatesListBloc, context, updateItemsCount);
             }
-
           } else {
             return SizedBox.shrink();
           }
@@ -69,28 +69,38 @@ class PaginationListWithNewItemsOverlayWidget extends StatelessWidget {
 //        });
   }
 
-  GestureDetector _buildButtons(IPaginationListWithNewItemsBloc<PaginationPage, dynamic> paginationWithUpdatesListBloc, BuildContext context, int updateItemsCount) {
+  GestureDetector _buildButtons(
+      IPaginationListWithNewItemsBloc<PaginationPage, dynamic>
+          paginationWithUpdatesListBloc,
+      BuildContext context,
+      int updateItemsCount) {
     return GestureDetector(
-                        onTap: () {
-                          paginationWithUpdatesListBloc.mergeNewItems();
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: FediColors.primaryColor,
-                              borderRadius: BorderRadius.circular(20.0)),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 8.0, horizontal: 40.0),
-                            child: Text(
-                              textBuilder(context, updateItemsCount),
-                              style: TextStyle(
-                                color: FediColors.white,
-                                fontWeight: FontWeight.w500,
-                                height: 1.15,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ),
-                        ));
+        onTap: () {
+          paginationWithUpdatesListBloc.mergeNewItems();
+
+          try {
+            var scrollControllerBloc =
+                IScrollControllerBloc.of(context, listen: false);
+            scrollControllerBloc.scrollToTop();
+          } catch (e) {}
+        },
+        child: Container(
+          decoration: BoxDecoration(
+              color: FediColors.primaryColor,
+              borderRadius: BorderRadius.circular(20.0)),
+          child: Padding(
+            padding:
+                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 40.0),
+            child: Text(
+              textBuilder(context, updateItemsCount),
+              style: TextStyle(
+                color: FediColors.white,
+                fontWeight: FontWeight.w500,
+                height: 1.15,
+                fontSize: 14,
+              ),
+            ),
+          ),
+        ));
   }
 }
