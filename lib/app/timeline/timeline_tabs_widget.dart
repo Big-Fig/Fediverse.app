@@ -7,22 +7,24 @@ import 'package:fedi/app/timeline/timeline_post_status_header_widget.dart';
 import 'package:fedi/app/timeline/timeline_tabs_bloc.dart';
 import 'package:fedi/app/timeline/timeline_widget.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_shadows.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/app/ui/page/fedi_sliver_app_bar.dart';
+import 'package:fedi/app/ui/page/fedi_sliver_app_bar_bloc.dart';
+import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/app/ui/tab/fedi_text_tab.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_container_with_overlay_widget.dart';
 import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_unread_badge_widget.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:fedi/ui/scroll_controller_bloc.dart';
-import 'package:fedi/ui/scroll_controller_bloc_impl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger("timeline_tabs_widget.dart");
 
@@ -45,8 +47,8 @@ class TimelineTabsWidget extends StatelessWidget {
         length: tabs.length,
         initialIndex: tabs.indexOf(timelinesTabsBloc.selectedTab),
         child: NestedScrollView(
-          controller: IScrollControllerBloc.of(context, listen: false)
-              .scrollController,
+          controller:
+              IScrollControllerBloc.of(context, listen: false).scrollController,
           headerSliverBuilder: (context, bool innerBoxIsScrolled) {
             return [
               buildSliverAppBar(context, tabs, timelinesTabsBloc),
@@ -75,7 +77,8 @@ class TimelineTabsWidget extends StatelessWidget {
               child: TimelinePostStatusHeaderWidget(),
             ),
           ),
-          collapsedAppBarBody: _buildCollapsedAppBarBody(context),
+//          collapsedAppBarBody: _buildCollapsedAppBarBody(context),
+          collapsedAppBarBody: null,
           statusBarHeight: MediaQuery.of(context).padding.top,
         ));
   }
@@ -131,15 +134,56 @@ class TimelineTabsWidget extends StatelessWidget {
     var timelineTabsBloc = ITimelineTabsBloc.of(context, listen: true);
     _logger.finest(() => "buildBodyWidget");
     var tabs = timelineTabsBloc.tabs;
-    return TabBarView(
-        children: List<Widget>.generate(
-      tabs.length,
-      (int index) {
-        var tab = tabs[index];
+    return Column(
+      children: [
+        Builder(
+          builder: (context) {
+            var scrollControllerBloc =
+                IScrollControllerBloc.of(context, listen: false);
+            var fediSliverAppBarBloc =
+                IFediSliverAppBarBloc.of(context, listen: false);
 
-        return buildTabBody(context, tab, timelineTabsBloc);
-      },
-    ));
+            return StreamBuilder<bool>(
+                stream: Rx.combineLatest2(
+                    scrollControllerBloc.scrollDirectionStream,
+                    fediSliverAppBarBloc.isAtLeastStartExpandStream,
+                    (scrollDirection, isAtLeastStartExpand) =>
+                        scrollDirection != ScrollDirection.reverse &&
+                        isAtLeastStartExpand == false),
+                builder: (context, snapshot) {
+                  var show = snapshot.data;
+                  if (show) {
+                    return FediDarkStatusBarStyleArea(
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).padding.top),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: FediColors.white,
+                              boxShadow: [FediShadows.forTopBar]),
+                          child: _buildCollapsedAppBarBody(context),
+                        ),
+                      ),
+                    );
+                  } else {
+                    return SizedBox.shrink();
+                  }
+                });
+          },
+        ),
+        Expanded(
+          child: TabBarView(
+              children: List<Widget>.generate(
+            tabs.length,
+            (int index) {
+              var tab = tabs[index];
+
+              return buildTabBody(context, tab, timelineTabsBloc);
+            },
+          )),
+        ),
+      ],
+    );
   }
 
   Widget buildTabBody(BuildContext context, TimelineTab tab,
@@ -163,7 +207,7 @@ class TimelineTabsWidget extends StatelessWidget {
                 "app.status.list.new_items.action.tap_to_load_new",
                 updateItemsCount),
             child: TimelineWidget(),
-            padding: const EdgeInsets.only(top: 100),
+            padding: const EdgeInsets.only(top: 24),
           ),
         ),
       ),
@@ -173,6 +217,7 @@ class TimelineTabsWidget extends StatelessWidget {
 
 GestureDetector _buildCollapsedAppBarBody(BuildContext context) {
   return GestureDetector(
+    behavior: HitTestBehavior.translucent,
     onTap: () {
       goToNewPostStatusPage(context);
     },
