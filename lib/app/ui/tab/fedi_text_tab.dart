@@ -1,6 +1,6 @@
+import 'package:fedi/app/ui/button/text/fedi_grey_filled_text_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
-import 'package:fedi/app/ui/button/text/fedi_grey_filled_text_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -19,15 +19,18 @@ class FediTextTab extends StatefulWidget {
 class _FediTextTabState extends State<FediTextTab> {
   bool isSelected;
   VoidCallback listener;
+  bool isDisposed = false;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     var tabController = DefaultTabController.of(context);
     listener = () {
-      setState(() {
-        updateIsSelected(tabController);
-      });
+      if (isDisposed) {
+        setState(() {
+          updateIsSelected(tabController);
+        });
+      }
     };
     updateIsSelected(tabController);
     tabController.addListener(listener);
@@ -39,6 +42,7 @@ class _FediTextTabState extends State<FediTextTab> {
 
   @override
   void dispose() {
+    isDisposed = true;
     try {
       var tabController = DefaultTabController.of(context);
       tabController.removeListener(listener);
