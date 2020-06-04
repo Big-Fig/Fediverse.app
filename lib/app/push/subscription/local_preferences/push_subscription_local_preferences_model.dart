@@ -19,12 +19,15 @@ class PushSubscriptionLocalPreferences extends IPreferencesObject {
   bool reblog;
   @HiveField(5)
   bool poll;
+  @HiveField(6)
+  bool chat;
   PushSubscriptionLocalPreferences({
     this.favourite,
     this.follow,
     this.mention,
     this.reblog,
     this.poll,
+    this.chat,
   });
 
   PushSubscriptionLocalPreferences.defaultAllEnabled()
@@ -34,20 +37,24 @@ class PushSubscriptionLocalPreferences extends IPreferencesObject {
           mention: true,
           reblog: true,
           poll: true,
+          chat: true,
         );
 
-  PushSubscriptionLocalPreferences copyWith(
-          {bool favourite,
-          bool follow,
-          bool mention,
-          bool reblog,
-          bool poll}) =>
+  PushSubscriptionLocalPreferences copyWith({
+    bool favourite,
+    bool follow,
+    bool mention,
+    bool reblog,
+    bool poll,
+    bool chat,
+  }) =>
       PushSubscriptionLocalPreferences(
         favourite: favourite ?? this.favourite,
         follow: follow ?? this.follow,
         mention: mention ?? this.mention,
         reblog: reblog ?? this.reblog,
         poll: poll ?? this.poll,
+        chat: chat ?? this.chat,
       );
 
   @override
@@ -58,16 +65,18 @@ class PushSubscriptionLocalPreferences extends IPreferencesObject {
           favourite == other.favourite &&
           follow == other.follow &&
           mention == other.mention &&
-          reblog == other.reblog;
-  @override
-  int get hashCode =>
-      favourite.hashCode ^ follow.hashCode ^ mention.hashCode ^ reblog.hashCode;
+          reblog == other.reblog &&
+          poll == other.poll &&
+          chat == other.chat;
 
   @override
-  String toString() {
-    return 'PushSubscriptionLocalPreferences{favourite: $favourite,'
-        ' follow: $follow, mention: $mention, reblog: $reblog, poll: $poll}';
-  }
+  int get hashCode =>
+      favourite.hashCode ^
+      follow.hashCode ^
+      mention.hashCode ^
+      reblog.hashCode ^
+      poll.hashCode ^
+      chat.hashCode;
 
   factory PushSubscriptionLocalPreferences.fromJson(
           Map<String, dynamic> json) =>

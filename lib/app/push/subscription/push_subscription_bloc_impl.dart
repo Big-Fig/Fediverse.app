@@ -95,9 +95,22 @@ class PushSubscriptionBloc extends DisposableOwner
           .map((preferences) => subscriptionLocalPreferencesBloc.value.poll);
 
   @override
+  bool get chatPushesEnabled => subscriptionLocalPreferencesBloc.value.chat;
+
+  @override
+  Stream<bool> get chatPushesEnabledStream =>
+      subscriptionLocalPreferencesBloc.stream
+          .map((preferences) => subscriptionLocalPreferencesBloc.value.chat);
+
+  @override
   Future<bool> changePollPushesEnabled(bool value) {
     return updateSubscriptionPreferences(
         subscriptionLocalPreferencesBloc.value.copyWith(poll: value));
+  }
+  @override
+  Future<bool> changeChatPushesEnabled(bool value) {
+    return updateSubscriptionPreferences(
+        subscriptionLocalPreferencesBloc.value.copyWith(chat: value));
   }
 
   Future<bool> updateSubscriptionPreferences(
@@ -113,11 +126,13 @@ class PushSubscriptionBloc extends DisposableOwner
               fcmDeviceToken: deviceToken),
           data: PleromaPushSubscribeData(
               alerts: PleromaPushSettingsDataAlerts(
-                  favourite: newPreferences.favourite,
-                  follow: newPreferences.follow,
-                  mention: newPreferences.mention,
-                  reblog: newPreferences.reblog,
-                  poll: newPreferences.poll)));
+            favourite: newPreferences.favourite,
+            follow: newPreferences.follow,
+            mention: newPreferences.mention,
+            reblog: newPreferences.reblog,
+            poll: newPreferences.poll,
+            pleroma: PleromaPushSettingsDataAlertsPleromaPart(chatMention: newPreferences.chat),
+          )));
 
       success = subscription != null;
 
