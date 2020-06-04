@@ -16,7 +16,7 @@ class HomeTimelineWebSocketsHandler extends WebSocketsChannelHandler {
     @required IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
   }) : super(
             webSocketsChannel: pleromaWebSocketsService.getMyAccountChannel(
-                notification: false),
+                notification: false, chat: false),
             statusRepository: statusRepository,
             notificationRepository: notificationRepository,
             conversationRepository: conversationRepository,

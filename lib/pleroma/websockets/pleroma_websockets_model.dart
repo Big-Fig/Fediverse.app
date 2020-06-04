@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:fedi/enum/enum_values.dart';
+import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
@@ -54,6 +55,8 @@ class PleromaWebSocketsEvent extends WebSocketsEvent {
 
   PleromaNotification parsePayloadAsNotification() =>
       PleromaNotification.fromJson(jsonDecode(payload));
+  PleromaChat parsePayloadAsChat() =>
+      PleromaChat.fromJson(jsonDecode(payload));
 
   PleromaConversation parsePayloadAsConversation() =>
       PleromaConversation.fromJson(jsonDecode(payload));
@@ -76,6 +79,8 @@ enum PleromaWebSocketsEventType {
 
   /// not exist in documentation but looks like conversation update
   conversation,
+
+  pleromaChatUpdate,
 }
 
 final pleromaWebSocketsEventTypeValues = EnumValues({
@@ -84,4 +89,5 @@ final pleromaWebSocketsEventTypeValues = EnumValues({
   "delete": PleromaWebSocketsEventType.delete,
   "filters_changed": PleromaWebSocketsEventType.filtersChanged,
   "conversation": PleromaWebSocketsEventType.conversation,
+  "pleroma:chat_update": PleromaWebSocketsEventType.pleromaChatUpdate,
 });

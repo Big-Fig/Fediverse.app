@@ -1,5 +1,4 @@
 import 'package:fedi/app/home/tab/timelines/timelines_home_tab_bloc.dart';
-import 'package:fedi/app/ui/page/fedi_sliver_app_bar.dart';
 import 'package:fedi/app/ui/page/fedi_sliver_app_bar_bloc.dart';
 import 'package:fedi/app/ui/page/fedi_sliver_app_bar_bloc_impl.dart';
 import 'package:fedi/disposable/disposable_owner.dart';

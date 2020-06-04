@@ -82,10 +82,15 @@ class PleromaWebSocketsService extends IPleromaWebSocketsService {
   }
 
   @override
-  IWebSocketsChannel<PleromaWebSocketsEvent> getMyAccountChannel(
-          {@required bool notification}) =>
-      getOrCreateNewChannel(
-          stream: notification ? "user:notification" : "user");
+  IWebSocketsChannel<PleromaWebSocketsEvent> getMyAccountChannel({
+    @required bool notification,
+    @required bool chat,
+  }) {
+    assert(!(notification == true && chat == true));
+    return getOrCreateNewChannel(
+        stream:
+            notification ? "user:notification" : chat ? "user:pleroma_chat" : "user");
+  }
 
   @override
   IWebSocketsChannel<PleromaWebSocketsEvent> getDirectChannel(

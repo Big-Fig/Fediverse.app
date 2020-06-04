@@ -52,4 +52,8 @@ class ChatNewMessagesHandlerBloc extends DisposableOwner
       }
     }
   }
+
+  @override
+  Future handleChatUpdate(PleromaChat chat) =>
+      chatRepository.upsertRemoteChat(chat);
 }
