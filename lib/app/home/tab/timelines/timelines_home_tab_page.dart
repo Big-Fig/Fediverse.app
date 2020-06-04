@@ -50,7 +50,7 @@ class TimelinesHomeTabPage extends StatelessWidget {
             appBarActionWidgets: <Widget>[
               buildSearchActionButton(context),
               SizedBox(
-                width: 16.0,
+                width: 8.0,
               ),
               buildFilterActionButton()
             ],
