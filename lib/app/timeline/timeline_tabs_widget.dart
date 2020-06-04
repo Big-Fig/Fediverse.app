@@ -98,7 +98,7 @@ class TimelineTabsWidget extends StatelessWidget {
                     children: [
                       ...tabs
                           .map((tab) => Padding(
-                                padding: const EdgeInsets.only(right: 16.0),
+                                padding: const EdgeInsets.only(right: 8.0),
                                 child: Provider<
                                     IPaginationListWithNewItemsBloc>.value(
                                   value: timelineTabsBloc
