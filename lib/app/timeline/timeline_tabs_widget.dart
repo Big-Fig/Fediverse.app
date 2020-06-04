@@ -15,7 +15,7 @@ import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/app/ui/tab/fedi_text_tab.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
-import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_container_with_overlay_widget.dart';
+import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_overlay_widget.dart';
 import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_unread_badge_widget.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:fedi/ui/scroll_controller_bloc.dart';
@@ -97,12 +97,13 @@ class TimelineTabsWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       ...tabs
-                          .map((tab) =>
-                              Padding(
-                                padding: const EdgeInsets.only(right:16.0),
-                                child: Provider<IPaginationListWithNewItemsBloc>.value(
+                          .map((tab) => Padding(
+                                padding: const EdgeInsets.only(right: 16.0),
+                                child: Provider<
+                                    IPaginationListWithNewItemsBloc>.value(
                                   value: timelineTabsBloc
-                                      .retrieveTimelineTabPaginationListBloc(tab),
+                                      .retrieveTimelineTabPaginationListBloc(
+                                          tab),
                                   child:
                                       PaginationListWithNewItemsUnreadBadgeWidget(
                                     child: FediTextTab(
@@ -216,17 +217,50 @@ class TimelineTabsWidget extends StatelessWidget {
           IPaginationListBloc<PaginationPage<IStatus>, IStatus>>(
         update: (context, value, previous) => value,
         child: ProxyProvider<
-            IPaginationListWithNewItemsBloc<PaginationPage<IStatus>, IStatus>,
-            IPaginationListWithNewItemsBloc>(
-          update: (context, value, previous) => value,
-          child: PaginationListWithNewItemsContainerWithOverlayWidget(
-            textBuilder: (context, updateItemsCount) => plural(
-                "app.status.list.new_items.action.tap_to_load_new",
-                updateItemsCount),
-            child: TimelineWidget(),
-            padding: const EdgeInsets.only(top: 24),
-          ),
-        ),
+                IPaginationListWithNewItemsBloc<PaginationPage<IStatus>,
+                    IStatus>,
+                IPaginationListWithNewItemsBloc>(
+            update: (context, value, previous) => value,
+            child: Stack(
+              children: <Widget>[
+                TimelineWidget(),
+                Builder(
+                  builder: (context) {
+                    var scrollControllerBloc =
+                        IScrollControllerBloc.of(context, listen: false);
+                    var fediSliverAppBarBloc =
+                        IFediSliverAppBarBloc.of(context, listen: false);
+                    return StreamBuilder<bool>(
+                        stream: Rx.combineLatest2(
+                            scrollControllerBloc.longScrollDirectionStream,
+                            fediSliverAppBarBloc.isAtLeastStartExpandStream,
+                            (scrollDirection, isAtLeastStartExpand) {
+                          _logger
+                              .finest(() => "scrollDirection $scrollDirection "
+                                  "$isAtLeastStartExpand");
+
+                          return scrollDirection == ScrollDirection.forward &&
+                              isAtLeastStartExpand == false;
+                        }),
+                        builder: (context, snapshot) {
+                          var showCollapsedBody = snapshot.data;
+                          return Align(
+                              alignment: Alignment.topCenter,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                    top: showCollapsedBody == true ? 24 : 48),
+                                child: PaginationListWithNewItemsOverlayWidget(
+                                  textBuilder: (context, updateItemsCount) =>
+                                      plural(
+                                          "app.status.list.new_items.action.tap_to_load_new",
+                                          updateItemsCount),
+                                ),
+                              ));
+                        });
+                  },
+                ),
+              ],
+            )),
       ),
     );
   }
