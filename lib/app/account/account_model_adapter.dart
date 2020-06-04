@@ -7,6 +7,10 @@ DbAccountWrapper mapRemoteAccountToLocalAccount(IPleromaAccount remoteAccount) {
 }
 
 DbAccount mapRemoteAccountToDbAccount(IPleromaAccount remoteAccount) {
+  if(remoteAccount == null) {
+    return null;
+  }
+  assert(remoteAccount.id != null);
   return DbAccount(
     id: null,
     remoteId: remoteAccount.id,
