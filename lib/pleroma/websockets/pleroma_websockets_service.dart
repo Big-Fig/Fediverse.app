@@ -9,8 +9,10 @@ abstract class IPleromaWebSocketsService extends DisposableOwner {
       Provider.of(context, listen: listen);
 
   /// Returns events that are relevant to user with accountId
-  IWebSocketsChannel<PleromaWebSocketsEvent> getMyAccountChannel(
-      {@required bool notification});
+  IWebSocketsChannel<PleromaWebSocketsEvent> getMyAccountChannel({
+    @required bool notification,
+    @required bool chat,
+  });
 
   /// Returns events that are relevant to the authorized user,
   /// i.e. home timeline and notifications

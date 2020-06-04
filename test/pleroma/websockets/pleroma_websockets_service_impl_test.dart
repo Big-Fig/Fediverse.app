@@ -107,14 +107,14 @@ void main() {
   test('getAccountChannel', () async {
     expect(
         pleromaWebSocketsService
-            .getMyAccountChannel( notification: false)
+            .getMyAccountChannel( notification: false, chat: false)
             .config
             .calculateWebSocketsUrl()
             .toString(),
         "$wssHost?access_token=$accessToken&stream=user");
     expect(
         pleromaWebSocketsService
-            .getMyAccountChannel( notification: true)
+            .getMyAccountChannel( notification: true, chat: false)
             .config
             .calculateWebSocketsUrl()
             .toString(),

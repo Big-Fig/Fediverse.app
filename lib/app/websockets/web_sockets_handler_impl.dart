@@ -73,6 +73,11 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
         await conversationRepository
             .upsertRemoteConversation(event.parsePayloadAsConversation());
         break;
+      case PleromaWebSocketsEventType.pleromaChatUpdate:
+
+        var chat = event.parsePayloadAsChat();
+        await chatNewMessagesHandlerBloc.handleChatUpdate(chat);
+        break;
     }
   }
 }
