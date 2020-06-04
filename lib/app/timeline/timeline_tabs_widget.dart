@@ -92,21 +92,34 @@ class TimelineTabsWidget extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                ...tabs
-                    .map((tab) =>
-                        Provider<IPaginationListWithNewItemsBloc>.value(
-                          value: timelineTabsBloc
-                              .retrieveTimelineTabPaginationListBloc(tab),
-                          child: PaginationListWithNewItemsUnreadBadgeWidget(
-                            child: FediTextTab(
-                              mapTabToTitle(context, tab),
-                              index: tabs.indexOf(tab),
-                              isTransparent: true,
-                            ),
-                          ),
-                        ))
-                    .toList(),
-                ...appBarActionWidgets
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      ...tabs
+                          .map((tab) =>
+                              Padding(
+                                padding: const EdgeInsets.only(right:16.0),
+                                child: Provider<IPaginationListWithNewItemsBloc>.value(
+                                  value: timelineTabsBloc
+                                      .retrieveTimelineTabPaginationListBloc(tab),
+                                  child:
+                                      PaginationListWithNewItemsUnreadBadgeWidget(
+                                    child: FediTextTab(
+                                      mapTabToTitle(context, tab),
+                                      index: tabs.indexOf(tab),
+                                      isTransparent: true,
+                                    ),
+                                  ),
+                                ),
+                              ))
+                          .toList()
+                    ],
+                  ),
+                ),
+                Row(
+                  children: [...appBarActionWidgets],
+                )
               ],
             ),
           )
@@ -148,13 +161,12 @@ class TimelineTabsWidget extends StatelessWidget {
                     scrollControllerBloc.longScrollDirectionStream,
                     fediSliverAppBarBloc.isAtLeastStartExpandStream,
                     (scrollDirection, isAtLeastStartExpand) {
+                  _logger.finest(() => "scrollDirection $scrollDirection "
+                      "$isAtLeastStartExpand");
 
-                      _logger.finest(() => "scrollDirection $scrollDirection "
-                          "$isAtLeastStartExpand");
-
-                      return scrollDirection == ScrollDirection.forward &&
-                        isAtLeastStartExpand == false;
-                    }),
+                  return scrollDirection == ScrollDirection.forward &&
+                      isAtLeastStartExpand == false;
+                }),
                 builder: (context, snapshot) {
                   var show = snapshot.data;
                   if (show == true) {
