@@ -131,7 +131,7 @@ class PushSubscriptionBloc extends DisposableOwner
             mention: newPreferences.mention,
             reblog: newPreferences.reblog,
             poll: newPreferences.poll,
-            pleroma: PleromaPushSettingsDataAlertsPleromaPart(chatMention: newPreferences.chat),
+            pleromaChatMention: newPreferences.chat,
           )));
 
       success = subscription != null;
