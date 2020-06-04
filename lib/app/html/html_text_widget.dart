@@ -41,10 +41,10 @@ class HtmlTextWidget extends StatelessWidget {
     String htmlData;
     if (drawNewLines) {
       // draw both new line types
-      htmlData = data.replaceAll("\n", "</br>");
+      htmlData = data?.replaceAll("\n", "</br>");
     } else {
-      htmlData = data.replaceAll("\n", "");
-      htmlData = data.replaceAll("<(/)*br>", "");
+      htmlData = data?.replaceAll("\n", "");
+      htmlData = data?.replaceAll("<(/)*br>", "");
     }
 
     return Html(
