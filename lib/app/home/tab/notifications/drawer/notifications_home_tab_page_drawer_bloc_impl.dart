@@ -56,6 +56,15 @@ class NotificationsHomeTabPageDrawerBloc extends DisposableOwner
   Stream<bool> get pollStream => pushSettingsBloc.pollPushesEnabledStream;
 
   @override
+  bool get chat => pushSettingsBloc.chatPushesEnabled;
+
+  @override
+  Stream<bool> get chatStream => pushSettingsBloc.chatPushesEnabledStream;
+
+  @override
   Future<bool> changePoll(bool value) =>
       pushSettingsBloc.changePollPushesEnabled(value);
+  @override
+  Future<bool> changeChat(bool value) =>
+      pushSettingsBloc.changeChatPushesEnabled(value);
 }

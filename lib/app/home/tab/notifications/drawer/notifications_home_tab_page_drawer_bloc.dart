@@ -35,5 +35,11 @@ abstract class INotificationsHomeTabPageDrawerBloc extends Disposable {
 
   Stream<bool> get pollStream;
 
+  bool get chat;
+
+  Stream<bool> get chatStream;
+
   Future<bool> changePoll(bool value);
+
+  Future<bool> changeChat(bool value);
 }

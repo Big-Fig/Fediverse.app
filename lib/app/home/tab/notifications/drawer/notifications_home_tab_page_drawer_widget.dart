@@ -40,6 +40,11 @@ class NotificationsHomeTabPageDrawerWidget extends StatelessWidget {
               drawerBloc.pollStream,
               drawerBloc.poll,
               drawerBloc.changePoll),
+          buildOptionListTile(
+              tr("app.notification.push.settings.field.chat.label"),
+              drawerBloc.chatStream,
+              drawerBloc.chat,
+              drawerBloc.changeChat),
         ],
       ),
     );

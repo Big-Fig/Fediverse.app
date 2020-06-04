@@ -38,5 +38,11 @@ abstract class IPushSubscriptionBloc extends Disposable {
 
   Stream<bool> get pollPushesEnabledStream;
 
+  bool get chatPushesEnabled;
+
+  Stream<bool> get chatPushesEnabledStream;
+
   Future<bool> changePollPushesEnabled(bool value);
+
+  Future<bool> changeChatPushesEnabled(bool value);
 }

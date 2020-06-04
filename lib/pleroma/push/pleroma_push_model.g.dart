@@ -112,6 +112,20 @@ Map<String, dynamic> _$PleromaPushSubscribeDataToJson(
       'alerts': instance.alerts?.toJson(),
     };
 
+PleromaPushSettingsDataAlertsPleromaPart
+    _$PleromaPushSettingsDataAlertsPleromaPartFromJson(
+        Map<String, dynamic> json) {
+  return PleromaPushSettingsDataAlertsPleromaPart(
+    chatMention: json['chat_mention'] as bool,
+  );
+}
+
+Map<String, dynamic> _$PleromaPushSettingsDataAlertsPleromaPartToJson(
+        PleromaPushSettingsDataAlertsPleromaPart instance) =>
+    <String, dynamic>{
+      'chat_mention': instance.chatMention,
+    };
+
 PleromaPushSettingsDataAlerts _$PleromaPushSettingsDataAlertsFromJson(
     Map<String, dynamic> json) {
   return PleromaPushSettingsDataAlerts(
@@ -120,6 +134,10 @@ PleromaPushSettingsDataAlerts _$PleromaPushSettingsDataAlertsFromJson(
     mention: json['mention'] as bool,
     reblog: json['reblog'] as bool,
     poll: json['poll'] as bool,
+    pleroma: json['pleroma'] == null
+        ? null
+        : PleromaPushSettingsDataAlertsPleromaPart.fromJson(
+            json['pleroma'] as Map<String, dynamic>),
   );
 }
 
@@ -131,6 +149,7 @@ Map<String, dynamic> _$PleromaPushSettingsDataAlertsToJson(
       'mention': instance.mention,
       'reblog': instance.reblog,
       'poll': instance.poll,
+      'pleroma': instance.pleroma?.toJson(),
     };
 
 PleromaPushSubscribeRequestSubscription

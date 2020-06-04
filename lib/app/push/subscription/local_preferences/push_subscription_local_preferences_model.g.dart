@@ -29,6 +29,9 @@ class PushSubscriptionLocalPreferencesAdapter
         case 5:
           obj.poll = reader.read() as bool;
           break;
+        case 6:
+          obj.chat = reader.read() as bool;
+          break;
       }
     }
     return obj;
@@ -36,7 +39,7 @@ class PushSubscriptionLocalPreferencesAdapter
 
   @override
   void write(BinaryWriter writer, PushSubscriptionLocalPreferences obj) {
-    writer.writeByte(5);
+    writer.writeByte(6);
     writer.writeByte(1);
     writer.write(obj.favourite);
     writer.writeByte(2);
@@ -47,6 +50,8 @@ class PushSubscriptionLocalPreferencesAdapter
     writer.write(obj.reblog);
     writer.writeByte(5);
     writer.write(obj.poll);
+    writer.writeByte(6);
+    writer.write(obj.chat);
   }
 }
 
@@ -62,6 +67,7 @@ PushSubscriptionLocalPreferences _$PushSubscriptionLocalPreferencesFromJson(
     mention: json['mention'] as bool,
     reblog: json['reblog'] as bool,
     poll: json['poll'] as bool,
+    chat: json['chat'] as bool,
   );
 }
 
@@ -73,4 +79,5 @@ Map<String, dynamic> _$PushSubscriptionLocalPreferencesToJson(
       'mention': instance.mention,
       'reblog': instance.reblog,
       'poll': instance.poll,
+      'chat': instance.chat,
     };
