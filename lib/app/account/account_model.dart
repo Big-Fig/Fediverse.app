@@ -321,6 +321,8 @@ DbAccount dbAccountFromAccount(IAccount account) {
   if (account == null) {
     return null;
   }
+
+  assert(account.remoteId != null);
   return DbAccount(
       id: account?.localId,
       remoteId: account?.remoteId,
