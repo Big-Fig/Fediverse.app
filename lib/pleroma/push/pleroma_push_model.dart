@@ -127,28 +127,6 @@ class PleromaPushSubscribeData {
   String toJsonString() => jsonEncode(_$PleromaPushSubscribeDataToJson(this));
 }
 
-@JsonSerializable()
-class PleromaPushSettingsDataAlertsPleromaPart {
-  @JsonKey(name: "chat_mention")
-  final bool chatMention;
-  PleromaPushSettingsDataAlertsPleromaPart({@required this.chatMention});
-
-  factory PleromaPushSettingsDataAlertsPleromaPart.fromJson(
-          Map<String, dynamic> json) =>
-      _$PleromaPushSettingsDataAlertsPleromaPartFromJson(json);
-
-  factory PleromaPushSettingsDataAlertsPleromaPart.fromJsonString(
-          String jsonString) =>
-      _$PleromaPushSettingsDataAlertsPleromaPartFromJson(
-          jsonDecode(jsonString));
-
-  Map<String, dynamic> toJson() =>
-      _$PleromaPushSettingsDataAlertsPleromaPartToJson(this);
-
-  String toJsonString() =>
-      jsonEncode(_$PleromaPushSettingsDataAlertsPleromaPartToJson(this));
-}
-
 @JsonSerializable(explicitToJson: true)
 class PleromaPushSettingsDataAlerts {
   final bool favourite;
@@ -161,7 +139,8 @@ class PleromaPushSettingsDataAlerts {
 
   final bool poll;
 
-  final PleromaPushSettingsDataAlertsPleromaPart pleroma;
+  @JsonKey(name: "pleroma:chat_mention")
+  final bool pleromaChatMention;
 
   PleromaPushSettingsDataAlerts({
     @required this.favourite,
@@ -169,7 +148,7 @@ class PleromaPushSettingsDataAlerts {
     @required this.mention,
     @required this.reblog,
     @required this.poll,
-    @required this.pleroma,
+    @required this.pleromaChatMention,
   });
 
   PleromaPushSettingsDataAlerts.defaultAllEnabled()
@@ -179,9 +158,7 @@ class PleromaPushSettingsDataAlerts {
           mention: true,
           reblog: true,
           poll: true,
-          pleroma: PleromaPushSettingsDataAlertsPleromaPart(
-            chatMention: true,
-          ),
+          pleromaChatMention: true,
         );
 
 
@@ -195,7 +172,7 @@ class PleromaPushSettingsDataAlerts {
           mention == other.mention &&
           reblog == other.reblog &&
           poll == other.poll &&
-          pleroma == other.pleroma;
+          pleromaChatMention == other.pleromaChatMention;
   @override
   int get hashCode =>
       favourite.hashCode ^
@@ -203,12 +180,14 @@ class PleromaPushSettingsDataAlerts {
       mention.hashCode ^
       reblog.hashCode ^
       poll.hashCode ^
-      pleroma.hashCode;
+      pleromaChatMention.hashCode;
 
 
   @override
   String toString() {
-    return 'PleromaPushSettingsDataAlerts{favourite: $favourite, follow: $follow, mention: $mention, reblog: $reblog, poll: $poll, pleroma: $pleroma}';
+    return 'PleromaPushSettingsDataAlerts{favourite: $favourite,'
+        ' follow: $follow, mention: $mention, reblog: $reblog,'
+        ' poll: $poll, pleromaChatMention: $pleromaChatMention}';
   }
 
   factory PleromaPushSettingsDataAlerts.fromJson(Map<String, dynamic> json) =>
