@@ -33,17 +33,15 @@ class TimelinesHomeTabPage extends StatelessWidget {
       body: DisposableProvider<ITimelineTabsBloc>(
           create: (BuildContext context) {
             var homeBloc = IHomeBloc.of(context, listen: false);
-            var timelineTabsBloc = TimelineTabsBloc.createFromContext
-              (context, TimelineTab.home);
+            var timelineTabsBloc =
+                TimelineTabsBloc.createFromContext(context, TimelineTab.home);
 
-            timelineTabsBloc.addDisposable(streamSubscription:
-            timelineTabsBloc.tabsMap[TimelineTab.home]
-                .paginationListWithNewItemsBloc.unmergedNewItemsCountStream
-                .listen((unreadCount) {
-
-                  homeBloc.updateTimelinesUnread(unreadCount != null &&
-                      unreadCount > 0);
-
+            timelineTabsBloc.addDisposable(
+                streamSubscription: timelineTabsBloc.tabsMap[TimelineTab.home]
+                    .paginationListWithNewItemsBloc.unmergedNewItemsCountStream
+                    .listen((unreadCount) {
+              homeBloc.updateTimelinesUnread(
+                  unreadCount != null && unreadCount > 0);
             }));
             return timelineTabsBloc;
           },
@@ -51,6 +49,9 @@ class TimelinesHomeTabPage extends StatelessWidget {
             key: key,
             appBarActionWidgets: <Widget>[
               buildSearchActionButton(context),
+              SizedBox(
+                width: 16.0,
+              ),
               buildFilterActionButton()
             ],
           )),
