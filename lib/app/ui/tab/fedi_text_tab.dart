@@ -20,13 +20,17 @@ class _FediTextTabState extends State<FediTextTab> {
   bool isSelected;
   VoidCallback listener;
 
+  bool disposed = false;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     var tabController = DefaultTabController.of(context);
     listener = () {
       setState(() {
-        updateIsSelected(tabController);
+        if(!disposed) {
+          updateIsSelected(tabController);
+        }
       });
     };
     updateIsSelected(tabController);
@@ -39,6 +43,7 @@ class _FediTextTabState extends State<FediTextTab> {
 
   @override
   void dispose() {
+    disposed = true;
     try {
       var tabController = DefaultTabController.of(context);
       tabController.removeListener(listener);
