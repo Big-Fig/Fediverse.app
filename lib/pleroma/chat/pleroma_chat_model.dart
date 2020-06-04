@@ -46,6 +46,20 @@ class PleromaChat implements IPleromaChat {
     @required this.lastMessage,
   });
 
+  PleromaChat copyWith({
+    String id,
+    bool unread,
+    PleromaAccount account,
+    DateTime updatedAt,
+    PleromaChatMessage lastMessage,
+  }) => PleromaChat(
+      id: id ?? this.id,
+      unread: unread ?? this.unread,
+      account: account ?? this.account,
+      updatedAt: updatedAt ?? this.updatedAt,
+      lastMessage: lastMessage ?? this.lastMessage,
+    );
+
   factory PleromaChat.fromJson(Map<String, dynamic> json) =>
       _$PleromaChatFromJson(json);
 

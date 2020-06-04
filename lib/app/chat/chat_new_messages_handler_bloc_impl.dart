@@ -54,6 +54,16 @@ class ChatNewMessagesHandlerBloc extends DisposableOwner
   }
 
   @override
-  Future handleChatUpdate(PleromaChat chat) =>
-      chatRepository.upsertRemoteChat(chat);
+  Future handleChatUpdate(PleromaChat chat) async {
+    // increase only if chat closed now
+    var chatId = chat.id;
+    var isMessageForOpenedChat =
+        currentChatBloc.currentChat?.remoteId == chatId;
+
+    if (isMessageForOpenedChat) {
+      chat = await pleromaChatService.markChatAsRead(chatId: chatId);
+    }
+
+    return chatRepository.upsertRemoteChat(chat);
+  }
 }
