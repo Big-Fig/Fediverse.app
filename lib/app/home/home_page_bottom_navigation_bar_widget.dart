@@ -75,6 +75,7 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
     switch (tab) {
       case HomeTab.timelines:
         return HomeTimelinesUnreadBadgeWidget(
+          offset: 2.0 + 8.0,
           child: Padding(
             padding: insets,
             child: FediTransparentIcon(
@@ -89,6 +90,7 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
             excludeTypes: <PleromaNotificationType>[
               PleromaNotificationType.pleromaChatMention
             ],
+            offset: 2.0 + 8.0,
             child: Padding(
               padding: insets,
               child: FediTransparentIcon(
@@ -107,6 +109,7 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
 
               if (isNewChatsEnabled == true) {
                 return ChatUnreadBadgeCountWidget(
+                    offset: 2.0 + 8.0,
                     child: Padding(
                   padding: insets,
                   child: FediTransparentIcon(FediIcons.envelope, color: color),
