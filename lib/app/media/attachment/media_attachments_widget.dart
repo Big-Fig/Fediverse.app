@@ -1,4 +1,4 @@
-import 'package:carousel_pro/carousel_pro.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fedi/app/media/attachment/media_attachment_image_widget.dart';
 import 'package:fedi/app/media/attachment/media_attachment_video_widget.dart';
 import 'package:fedi/mastodon/media/attachment/mastodon_media_attachment_model.dart';
@@ -31,12 +31,12 @@ class MediaAttachmentsWidget extends StatelessWidget {
     }
   }
 
-  Widget buildChildren(
-      BuildContext context, List<IPleromaMediaAttachment> mediaAttachments) {
+  Widget buildChildren(BuildContext context,
+      List<IPleromaMediaAttachment> mediaAttachments) {
     _logger.finest(() => "buildChildren ${mediaAttachments?.length}");
 
     List<Widget> children =
-        mediaAttachments.map((IPleromaMediaAttachment attachment) {
+    mediaAttachments.map((IPleromaMediaAttachment attachment) {
       switch (attachment.typeMastodon) {
         case MastodonMediaAttachmentType.image:
           return MediaAttachmentImageWidget(
@@ -65,25 +65,13 @@ class MediaAttachmentsWidget extends StatelessWidget {
     }
   }
 
-  Widget buildCarousel(BuildContext context, List<Widget> children) =>
-      LimitedBox(
-        maxHeight: _maxHeight,
-        child: Carousel(
-          animationDuration: Duration(seconds: 0),
-          overlayShadowColors: Colors.transparent,
-          overlayShadowSize: 0.0,
-          images: children,
-          dotIncreasedColor:
-              children.length == 1 ? Colors.transparent : Colors.blue,
-          dotSize: 4.0,
-          dotSpacing: 15.0,
-          dotColor: children.length == 1
-              ? Colors.transparent
-              : Colors.blue.withOpacity(0.5),
-          indicatorBgPadding: 5.0,
-          dotBgColor: Colors.transparent,
-          borderRadius: true,
-          autoplay: false,
-        ),
-      );
+  Widget buildCarousel(BuildContext context, List<Widget> children) {
+    return CarouselSlider(
+      items: children,
+      options: CarouselOptions(
+          viewportFraction: 0.8,
+          enableInfiniteScroll: false,
+      ),
+    );
+  }
 }

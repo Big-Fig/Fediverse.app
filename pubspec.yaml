@@ -46,7 +46,6 @@ dependencies:
   path_provider: ^1.4.5
   photo_manager: ^0.5.0
   camera: ^0.5.7
-  carousel_pro: ^1.0.0
   scoped_model: any
   percent_indicator: "^2.1.1"
   mime_type: ^0.2.4
@@ -131,6 +130,9 @@ dependencies:
 
   # better scroll controller for nested scroll
   nested_scroll_controller: ^0.2.1
+
+  # media attachments carousel
+  carousel_slider: ^2.1.0
 
 # required to build flutter test with hive https://github.com/hivedb/hive/issues/285
 dependency_overrides:
