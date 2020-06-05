@@ -26,7 +26,7 @@ class _FediTextTabState extends State<FediTextTab> {
     super.didChangeDependencies();
     var tabController = DefaultTabController.of(context);
     listener = () {
-      if (isDisposed) {
+      if (!isDisposed) {
         setState(() {
           updateIsSelected(tabController);
         });
