@@ -5,7 +5,8 @@ import 'package:flutter/cupertino.dart';
 class ChatUnreadBadgeCountWidget extends FediUnreadBadgeWidget {
   const ChatUnreadBadgeCountWidget({
     @required Widget child,
-  }) : super(child: child);
+    double offset = 2.0,
+  }) : super(child: child, offset: offset);
 
   @override
   Stream<bool> retrieveUnreadBadgeCountStream(BuildContext context) {
