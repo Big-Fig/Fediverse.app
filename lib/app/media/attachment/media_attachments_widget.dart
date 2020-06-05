@@ -39,9 +39,9 @@ class MediaAttachmentsWidget extends StatelessWidget {
         mediaAttachments.map((IPleromaMediaAttachment attachment) {
       switch (attachment.typeMastodon) {
         case MastodonMediaAttachmentType.image:
-          return LimitedBox(
+          return MediaAttachmentImageWidget(
+            attachment,
             maxHeight: _maxHeight,
-            child: MediaAttachmentImageWidget(attachment),
           );
           break;
 

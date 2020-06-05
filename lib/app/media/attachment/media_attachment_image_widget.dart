@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 
 class MediaAttachmentImageWidget extends StatelessWidget {
   final IPleromaMediaAttachment mediaAttachment;
+  final double maxHeight;
 
-  const MediaAttachmentImageWidget(this.mediaAttachment);
+  const MediaAttachmentImageWidget(this.mediaAttachment, {this.maxHeight});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,23 @@ class MediaAttachmentImageWidget extends StatelessWidget {
               child: CircularProgressIndicator(),
             ),
           ),
-          errorWidget: (context, url, error) => Icon(Icons.error),
+          imageBuilder: (context, imageProvider) {
+            if(maxHeight != null) {
+              return LimitedBox(
+                maxHeight: maxHeight,
+                child: Image(
+                  image: imageProvider,
+                ),
+              );
+            } else {
+              return Image(
+                image: imageProvider,
+              );
+            }
+
+          },
+          errorWidget: (context, url, error) =>
+              Icon(Icons.error),
         ));
   }
 }
