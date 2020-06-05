@@ -61,6 +61,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
         displayThisThreadAction: true,
         displayAccountHeader: true,
       );
+
   static StatusListItemTimelineWidget thread({
     @required bool collapsible,
     @required bool displayAccountHeader,
@@ -81,7 +82,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var status = Provider.of<IStatus>(context, listen: false);
 
-    if(status == null) {
+    if (status == null) {
       _logger.warning(() => "status is null");
       return SizedBox.shrink();
     }
@@ -120,8 +121,9 @@ class StatusListItemTimelineWidget extends StatelessWidget {
 
   Widget buildOriginalStatus(BuildContext context, bool isReply) {
     var status = Provider.of<IStatus>(context, listen: false);
-    var isReplyAndFirstReplyOrDisplayAllReplies =
-        isReply && displayThisThreadAction && isFirstReplyAndDisplayReplyToStatus;
+    var isReplyAndFirstReplyOrDisplayAllReplies = isReply &&
+        displayThisThreadAction &&
+        isFirstReplyAndDisplayReplyToStatus;
     return DisposableProxyProvider<IStatus, IStatusBloc>(
       update: (context, status, oldValue) => _createStatusBloc(context, status),
       child: GestureDetector(
@@ -142,7 +144,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
                   children: <Widget>[
                     Flexible(child: StatusAccountWidget()),
                     Padding(
-                      padding: const EdgeInsets.only(left:8.0),
+                      padding: const EdgeInsets.only(left: 8.0),
                       child: StatusCreatedAtWidget(),
                     ),
                   ],
@@ -155,7 +157,8 @@ class StatusListItemTimelineWidget extends StatelessWidget {
               ),
             buildBody(isReply),
             StatusEmojiReactionListWidget(),
-            if (displayActions && !(isReply && isFirstReplyAndDisplayReplyToStatus))
+            if (displayActions &&
+                !(isReply && isFirstReplyAndDisplayReplyToStatus))
               Column(
                 children: [
                   const FediUltraLightGreyDivider(),
@@ -192,7 +195,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
   Padding buildBody(bool isReply) {
     if (isReply && (!displayReplyToStatus || isFirstReplyInThread)) {
       return Padding(
-        padding: EdgeInsets.fromLTRB(68.0  -16.0, 8.0, 0.0, 16.0),
+        padding: EdgeInsets.fromLTRB(68.0 - 16.0, 8.0, 0.0, 16.0),
         child: StatusBodyWidget(
           collapsible: collapsible,
         ),

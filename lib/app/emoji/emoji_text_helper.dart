@@ -8,6 +8,10 @@ String addEmojiToHtmlContent(
     return null;
   }
 
+  if (content.trim().isEmpty) {
+    return "";
+  }
+
   if (emoji?.isNotEmpty != true) {
     return "<html><body><p>$content</p></body></html>";
   }
