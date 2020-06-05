@@ -13,6 +13,7 @@ import 'package:fedi/app/home/tab/timelines/timelines_home_tab_page.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/page/fedi_sliver_app_bar_bloc.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/ui/nested_scroll_controller_bloc.dart';
 import 'package:fedi/ui/scroll_controller_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,8 @@ class HomePage extends StatelessWidget {
 
     var homeBloc = IHomeBloc.of(context, listen: false);
 
-    return StreamBuilder<HomeTab>(stream: homeBloc.selectedTabStream,
+    return StreamBuilder<HomeTab>(
+        stream: homeBloc.selectedTabStream,
         initialData: homeBloc.selectedTab,
         builder: (context, snapshot) {
           var selectedTab = snapshot.data;
@@ -43,48 +45,63 @@ class HomePage extends StatelessWidget {
             body: buildBody(context, selectedTab),
             bottomNavigationBar: Container(
               height: 58,
-              child: Column(children: [
-                const FediUltraLightGreyDivider(),
-                const HomePageBottomNavigationBarWidget(),
-              ],),),);
+              child: Column(
+                children: [
+                  const FediUltraLightGreyDivider(),
+                  const HomePageBottomNavigationBarWidget(),
+                ],
+              ),
+            ),
+          );
         });
   }
 
   Widget buildBody(BuildContext context, HomeTab selectedTab) {
     switch (selectedTab) {
       case HomeTab.timelines:
-        return DisposableProvider<ITimelinesHomeTabBloc>(create: (context) {
-          var homeBloc = IHomeBloc.of(context, listen: false);
-          var timelinesHomeTabBloc = TimelinesHomeTabBloc();
+        return DisposableProvider<ITimelinesHomeTabBloc>(
+          create: (context) {
+            var homeBloc = IHomeBloc.of(context, listen: false);
+            var timelinesHomeTabBloc = TimelinesHomeTabBloc();
 
-          timelinesHomeTabBloc.addDisposable(
-              streamSubscription: homeBloc.reselectedTabStream.listen((
-                  reselectedTab) {
-                if (reselectedTab == HomeTab.timelines) {
-                  timelinesHomeTabBloc.scrollToTop();
-                }
-              }));
-          return timelinesHomeTabBloc;
-        },
-          child: ProxyProvider<ITimelinesHomeTabBloc, IScrollControllerBloc>(
-            update: (context, value, previous) => value.scrollControllerBloc,
-            child: ProxyProvider<ITimelinesHomeTabBloc, IFediSliverAppBarBloc>(
-            update: (context, value, previous) => value.fediSliverAppBarBloc,
-              child: const TimelinesHomeTabPage(
-                key: PageStorageKey<String>("TimelinesHomeTabPage"),),
+            timelinesHomeTabBloc.addDisposable(streamSubscription:
+                homeBloc.reselectedTabStream.listen((reselectedTab) {
+              if (reselectedTab == HomeTab.timelines) {
+                timelinesHomeTabBloc.scrollToTop();
+              }
+            }));
+            return timelinesHomeTabBloc;
+          },
+          child:
+              ProxyProvider<ITimelinesHomeTabBloc, INestedScrollControllerBloc>(
+            update: (context, value, previous) =>
+                value.nestedScrollControllerBloc,
+            child: ProxyProvider<ITimelinesHomeTabBloc, IScrollControllerBloc>(
+              update: (context, value, previous) =>
+                  value.nestedScrollControllerBloc,
+              child:
+                  ProxyProvider<ITimelinesHomeTabBloc, IFediSliverAppBarBloc>(
+                update: (context, value, previous) =>
+                    value.fediSliverAppBarBloc,
+                child: const TimelinesHomeTabPage(
+                  key: PageStorageKey<String>("TimelinesHomeTabPage"),
+                ),
+              ),
             ),
-          ),);
+          ),
+        );
         break;
       case HomeTab.notifications:
-        return Semantics(container: true,
+        return Semantics(
+            container: true,
             child: AnnotatedRegion<SystemUiOverlayStyle>(
                 value: SystemUiOverlayStyle.light,
                 child: const NotificationsHomeTabPage(
                     key: PageStorageKey<String>("NotificationsHomeTabPage"))));
         break;
       case HomeTab.conversations:
-        var myAccountSettingsBloc = IMyAccountSettingsBloc.of(
-            context, listen: false);
+        var myAccountSettingsBloc =
+            IMyAccountSettingsBloc.of(context, listen: false);
 
         return StreamBuilder<bool>(
             stream: myAccountSettingsBloc.isNewChatsEnabledStream,
@@ -93,13 +110,15 @@ class HomePage extends StatelessWidget {
               var isNewChatsEnabled = snapshot.data;
 
               if (isNewChatsEnabled == true) {
-                return Semantics(container: true,
+                return Semantics(
+                    container: true,
                     child: AnnotatedRegion<SystemUiOverlayStyle>(
                         value: SystemUiOverlayStyle.light,
                         child: const ChatsHomeTabPage(
                             key: PageStorageKey<String>("ChatsHomeTabPage"))));
               } else {
-                return Semantics(container: true,
+                return Semantics(
+                    container: true,
                     child: AnnotatedRegion<SystemUiOverlayStyle>(
                         value: SystemUiOverlayStyle.light,
                         child: const ConversationsHomeTabPage(
@@ -110,7 +129,8 @@ class HomePage extends StatelessWidget {
 
         break;
       case HomeTab.account:
-        return Semantics(container: true,
+        return Semantics(
+            container: true,
             child: AnnotatedRegion<SystemUiOverlayStyle>(
                 value: SystemUiOverlayStyle.light,
                 child: const AccountHomeTabPage()));

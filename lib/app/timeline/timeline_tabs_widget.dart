@@ -18,6 +18,7 @@ import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_ite
 import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_overlay_widget.dart';
 import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_unread_badge_widget.dart';
 import 'package:fedi/pagination/pagination_model.dart';
+import 'package:fedi/ui/nested_scroll_controller_bloc.dart';
 import 'package:fedi/ui/scroll_controller_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -43,18 +44,23 @@ class TimelineTabsWidget extends StatelessWidget {
     var tabs = timelinesTabsBloc.tabs;
 
     return Builder(builder: (context) {
+      var nestedScrollController =
+          INestedScrollControllerBloc.of(context, listen: false)
+              .nestedScrollController;
       return DefaultTabController(
         length: tabs.length,
         initialIndex: tabs.indexOf(timelinesTabsBloc.selectedTab),
         child: NestedScrollView(
-          controller:
-              IScrollControllerBloc.of(context, listen: false).scrollController,
+          controller: nestedScrollController,
           headerSliverBuilder: (context, bool innerBoxIsScrolled) {
             return [
               buildSliverAppBar(context, tabs, timelinesTabsBloc),
             ];
           },
-          body: buildBodyWidget(context),
+          body: Builder(builder: (context) {
+            nestedScrollController.enableScroll(context);
+            return buildBodyWidget(context);
+          }),
         ),
       );
     });
