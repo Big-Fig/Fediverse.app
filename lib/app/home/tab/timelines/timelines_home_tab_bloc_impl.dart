@@ -2,36 +2,35 @@ import 'package:fedi/app/home/tab/timelines/timelines_home_tab_bloc.dart';
 import 'package:fedi/app/ui/page/fedi_sliver_app_bar_bloc.dart';
 import 'package:fedi/app/ui/page/fedi_sliver_app_bar_bloc_impl.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/ui/scroll_controller_bloc.dart';
-import 'package:fedi/ui/scroll_controller_bloc_impl.dart';
-import 'package:flutter/src/widgets/scroll_controller.dart';
-import 'package:flutter/widgets.dart';
+import 'package:fedi/ui/nested_scroll_controller_bloc.dart';
+import 'package:fedi/ui/nested_scroll_controller_bloc_impl.dart';
+import 'package:nested_scroll_controller/nested_scroll_controller.dart';
 
 class TimelinesHomeTabBloc extends DisposableOwner
     implements ITimelinesHomeTabBloc {
   @override
-  ScrollController scrollController;
+  NestedScrollController nestedScrollController;
 
   @override
-  IScrollControllerBloc scrollControllerBloc;
+  INestedScrollControllerBloc nestedScrollControllerBloc;
 
   @override
   IFediSliverAppBarBloc fediSliverAppBarBloc;
 
   TimelinesHomeTabBloc() {
-    scrollController = ScrollController();
+    nestedScrollController = NestedScrollController(centerScroll: false);
     fediSliverAppBarBloc = FediSliverAppBarBloc();
 
-    scrollControllerBloc =
-        ScrollControllerBloc(scrollController: scrollController);
+    nestedScrollControllerBloc =
+        NestedScrollControllerBloc(nestedScrollController: nestedScrollController);
 
-    addDisposable(scrollController: scrollController);
-    addDisposable(disposable: scrollControllerBloc);
+    addDisposable(scrollController: nestedScrollController);
+    addDisposable(disposable: nestedScrollControllerBloc);
     addDisposable(disposable: fediSliverAppBarBloc);
   }
 
   @override
   void scrollToTop() {
-   scrollControllerBloc.scrollToTop();
+    nestedScrollControllerBloc.scrollToTop();
   }
 }

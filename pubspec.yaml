@@ -129,6 +129,9 @@ dependencies:
   # fetch package info during runtime
   package_info: ^0.4.0+18
 
+  # better scroll controller for nested scroll
+  nested_scroll_controller: ^0.2.1
+
 # required to build flutter test with hive https://github.com/hivedb/hive/issues/285
 dependency_overrides:
   path: 1.7.0
