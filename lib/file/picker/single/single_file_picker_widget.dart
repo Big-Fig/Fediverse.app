@@ -7,7 +7,7 @@ import 'package:fedi/file/picker/file_picker_bloc.dart';
 import 'package:fedi/file/picker/file_picker_body_widget.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:fedi/file/picker/gallery/file_picker_gallery_adapter.dart';
-import 'package:fedi/media/video/media_video_player_widget.dart';
+import 'package:fedi/media/media_video_player_widget.dart';
 import 'package:fedi/permission/storage_permission_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';

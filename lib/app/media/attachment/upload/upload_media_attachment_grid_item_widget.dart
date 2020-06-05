@@ -1,7 +1,7 @@
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';
-import 'package:fedi/media/video/media_video_player_widget.dart';
+import 'package:fedi/media/media_video_player_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
