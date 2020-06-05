@@ -14,18 +14,21 @@ class FediIconTab extends StatefulWidget {
 }
 
 class _FediIconTabState extends State<FediIconTab> {
-
   bool isSelected;
   VoidCallback listener;
+
+  bool isDisposed = false;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     var tabController = DefaultTabController.of(context);
     listener = () {
-      setState(() {
-        updateIsSelected(tabController);
-      });
+      if (!isDisposed) {
+        setState(() {
+          updateIsSelected(tabController);
+        });
+      }
     };
     updateIsSelected(tabController);
     tabController.addListener(listener);
@@ -37,10 +40,11 @@ class _FediIconTabState extends State<FediIconTab> {
 
   @override
   void dispose() {
+    isDisposed = true;
     try {
       var tabController = DefaultTabController.of(context);
       tabController.removeListener(listener);
-    } catch(e) {
+    } catch (e) {
       // just ignore. Sometimes tab controller already not exist
     }
     super.dispose();
