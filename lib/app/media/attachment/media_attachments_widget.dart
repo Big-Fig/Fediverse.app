@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:fedi/app/media/attachment/media_attachment_audio_widget.dart';
 import 'package:fedi/app/media/attachment/media_attachment_image_widget.dart';
 import 'package:fedi/app/media/attachment/media_attachment_video_widget.dart';
 import 'package:fedi/mastodon/media/attachment/mastodon_media_attachment_model.dart';
@@ -31,12 +32,12 @@ class MediaAttachmentsWidget extends StatelessWidget {
     }
   }
 
-  Widget buildChildren(BuildContext context,
-      List<IPleromaMediaAttachment> mediaAttachments) {
+  Widget buildChildren(
+      BuildContext context, List<IPleromaMediaAttachment> mediaAttachments) {
     _logger.finest(() => "buildChildren ${mediaAttachments?.length}");
 
     List<Widget> children =
-    mediaAttachments.map((IPleromaMediaAttachment attachment) {
+        mediaAttachments.map((IPleromaMediaAttachment attachment) {
       switch (attachment.typeMastodon) {
         case MastodonMediaAttachmentType.image:
           return MediaAttachmentImageWidget(
@@ -46,12 +47,13 @@ class MediaAttachmentsWidget extends StatelessWidget {
           break;
 
         case MastodonMediaAttachmentType.video:
-        case MastodonMediaAttachmentType.audio:
+        case MastodonMediaAttachmentType.gifv:
           return MediaAttachmentVideoWidget(attachment);
+        case MastodonMediaAttachmentType.audio:
+          return MediaAttachmentAudioWidget(attachment);
           break;
 
         case MastodonMediaAttachmentType.unknown:
-        case MastodonMediaAttachmentType.gifv:
         default:
           _logger.severe(() => "Can't display attachment = $attachment");
           return SizedBox.shrink();
@@ -69,8 +71,8 @@ class MediaAttachmentsWidget extends StatelessWidget {
     return CarouselSlider(
       items: children,
       options: CarouselOptions(
-          viewportFraction: 0.8,
-          enableInfiniteScroll: false,
+        viewportFraction: 0.8,
+        enableInfiniteScroll: false,
       ),
     );
   }

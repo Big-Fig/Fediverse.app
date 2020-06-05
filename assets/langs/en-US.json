@@ -718,5 +718,11 @@
         "content": "URL {} have invalid format"
       }
     }
+  },
+  "media": {
+    "player": {
+      "initializing": "Initializing: {}",
+      "failed": "Failed to load: {}"
+    }
   }
 }
