@@ -32,18 +32,15 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
       ...tabs.sublist(middleIndex),
     ];
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: tabsWithPlusButton.map((tab) {
-          if (tab != null) {
-            return buildTabNavBarItem(context, homeBloc, tab);
-          } else {
-            return buildNewMessageNavBarItem(context);
-          }
-        }).toList(),
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: tabsWithPlusButton.map((tab) {
+        if (tab != null) {
+          return buildTabNavBarItem(context, homeBloc, tab);
+        } else {
+          return buildNewMessageNavBarItem(context);
+        }
+      }).toList(),
     );
   }
 
@@ -51,7 +48,10 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
       onTap: () {
         goToNewPostStatusPage(context);
       },
-      child: const FediTransparentIcon(FediIcons.plus));
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: const FediTransparentIcon(FediIcons.plus),
+      ));
 
   Widget buildTabNavBarItem(
           BuildContext context, IHomeBloc homeBloc, HomeTab tab) =>
@@ -70,7 +70,8 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
   Widget mapTabToIcon(BuildContext context, HomeTab tab, bool isSelected) {
     var color = isSelected ? FediColors.primaryColor : FediColors.darkGrey;
 
-    const insets = EdgeInsets.all(8.0);
+    // todo: refactor UI
+    const insets = EdgeInsets.all(16.0);
     switch (tab) {
       case HomeTab.timelines:
         return HomeTimelinesUnreadBadgeWidget(
