@@ -52,16 +52,18 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
           "\t remoteNotification = $remoteNotification");
 
       if (handled) {
-        await notificationRepository
-            .upsertRemoteNotification(remoteNotification, unread: true);
+        var alreadyExistNotification =
+            await notificationRepository.findByRemoteId(remoteNotification.id);
+
+        await notificationRepository.upsertRemoteNotification(
+            remoteNotification,
+            unread: alreadyExistNotification?.unread ?? true);
 
         // todo: remove temp hack unread should be redesigned
         // Also, we should fetch chat info if chat not exist locally
         var chatMessage = remoteNotification.chatMessage;
         if (chatMessage != null) {
-
           await chatNewMessagesHandlerBloc.handleNewMessage(chatMessage);
-
         }
       }
     } else {
