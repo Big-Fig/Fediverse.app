@@ -43,7 +43,6 @@ class NotificationCachedListBloc extends INotificationCachedListBloc {
       {@required int limit,
       @required INotification newerThan,
       @required INotification olderThan}) async {
-
     // todo: don't exclude pleroma types on mastodon instances
     var remoteNotifications = await pleromaNotificationService.getNotifications(
         request: MastodonNotificationsRequest(
@@ -84,4 +83,11 @@ class NotificationCachedListBloc extends INotificationCachedListBloc {
           orderingTermData: NotificationOrderingTermData(
               orderingMode: OrderingMode.desc,
               orderByType: NotificationOrderByType.createdAt));
+
+  @override
+  Future markAsRead(List<INotification> notifications) async {
+    for (var notification in notifications) {
+      await notificationRepository.markAsRead(notification: notification);
+    }
+  }
 }

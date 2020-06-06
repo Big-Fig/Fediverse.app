@@ -73,4 +73,6 @@ abstract class INotificationRepository
       @required INotification olderThanNotification,
       @required INotification newerThanNotification,
       @required NotificationOrderingTermData orderingTermData});
+
+  Future markAsRead({@required INotification notification});
 }

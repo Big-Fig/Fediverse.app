@@ -27,4 +27,6 @@ abstract class INotificationCachedListBloc extends DisposableOwner
       @required INotification olderThan});
 
   Stream<List<INotification>> watchLocalItemsNewerThanItem(INotification item);
+
+  Future markAsRead(List<INotification> lastMergedItems);
 }

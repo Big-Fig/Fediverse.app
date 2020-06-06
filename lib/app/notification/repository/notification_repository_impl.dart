@@ -376,6 +376,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
               .map((type) => pleromaNotificationTypeValues.reverse[type])
               .toList())
           .getSingle();
+
   @override
   Stream<int> watchUnreadCountExcludeTypes(
           {@required List<PleromaNotificationType> excludeTypes}) =>
@@ -384,4 +385,23 @@ class NotificationRepository extends AsyncInitLoadingBloc
               .map((type) => pleromaNotificationTypeValues.reverse[type])
               .toList())
           .watchSingle();
+
+  @override
+  Future markAsRead({@required INotification notification}) {
+    return updateById(
+        notification.localId,
+        DbNotification(
+          id: notification.localId,
+          remoteId: notification.remoteId,
+          accountRemoteId: notification.remoteId,
+          statusRemoteId: notification.status?.remoteId,
+          chatRemoteId: notification.chatRemoteId,
+          chatMessageRemoteId: notification.chatMessageRemoteId,
+          emoji: notification.emoji,
+          pleroma: notification.pleroma,
+          unread: false,
+          type: notification.type,
+          createdAt: notification.createdAt,
+        ));
+  }
 }

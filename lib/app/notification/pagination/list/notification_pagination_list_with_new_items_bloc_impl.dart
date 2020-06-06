@@ -19,6 +19,15 @@ class NotificationPaginationListWithNewItemsBloc<
             paginationBloc: paginationBloc);
 
   @override
+  void onNewItemsMerged(List<INotification> lastMergedItems) {
+    super.onNewItemsMerged(lastMergedItems);
+
+    if (lastMergedItems?.isNotEmpty == true) {
+      cachedListService.markAsRead(lastMergedItems);
+    }
+  }
+
+  @override
   Stream<List<INotification>> watchItemsNewerThanItem(INotification item) {
     return cachedListService.watchLocalItemsNewerThanItem(item);
   }
@@ -37,7 +46,6 @@ class NotificationPaginationListWithNewItemsBloc<
     }
     return a.createdAt.compareTo(b.createdAt);
   }
-
 
   @override
   bool isItemsEqual(INotification a, INotification b) =>
