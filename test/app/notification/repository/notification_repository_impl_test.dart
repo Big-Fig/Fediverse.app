@@ -179,8 +179,6 @@ void main() {
     await notificationRepository.upsertRemoteNotification(
         mapLocalNotificationToRemoteNotification(
             DbNotificationPopulatedWrapper(dbNotificationPopulated)),
-        conversationRemoteId: null,
-        listRemoteId: null,
         unread: false);
 
     expect(await notificationRepository.countAll(), 1);
@@ -199,8 +197,6 @@ void main() {
     await notificationRepository.upsertRemoteNotification(
         mapLocalNotificationToRemoteNotification(
             DbNotificationPopulatedWrapper(dbNotificationPopulated)),
-        conversationRemoteId: null,
-        listRemoteId: null,
         unread: false);
     expect(await notificationRepository.countAll(), 1);
     // with reblog
@@ -220,7 +216,7 @@ void main() {
     await notificationRepository.upsertRemoteNotifications([
       mapLocalNotificationToRemoteNotification(
           DbNotificationPopulatedWrapper(dbNotificationPopulated)),
-    ], conversationRemoteId: null, listRemoteId: null, unread: false);
+    ], unread: false);
 
     expect(await notificationRepository.countAll(), 1);
     // with reblog
@@ -237,7 +233,7 @@ void main() {
     await notificationRepository.upsertRemoteNotifications([
       mapLocalNotificationToRemoteNotification(
           DbNotificationPopulatedWrapper(dbNotificationPopulated)),
-    ], conversationRemoteId: null, listRemoteId: null, unread: false);
+    ], unread: false);
 
     // update item with same id
     expect(await notificationRepository.countAll(), 1);

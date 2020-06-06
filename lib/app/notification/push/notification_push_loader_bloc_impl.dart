@@ -2,6 +2,7 @@ import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/chat/chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_bloc.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
+import 'package:fedi/app/notification/repository/notification_repository_model.dart';
 import 'package:fedi/app/push/handler/push_handler_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/disposable/disposable.dart';
@@ -9,6 +10,7 @@ import 'package:fedi/pleroma/notification/pleroma_notification_service.dart';
 import 'package:fedi/pleroma/push/pleroma_push_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:moor/moor.dart';
 
 var _logger = Logger("notification_push_loader_bloc_impl.dart");
 
@@ -43,8 +45,9 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
         "\t pleromaPushMessage = $pleromaPushMessage");
     bool handled;
     if (isForCurrentInstance) {
+      String remoteNotificationId = pleromaPushMessage.notificationId;
       var remoteNotification = await pleromaNotificationService.getNotification(
-          notificationRemoteId: pleromaPushMessage.notificationId);
+          notificationRemoteId: remoteNotificationId);
 
       handled = remoteNotification != null;
 
@@ -52,8 +55,15 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
           "\t remoteNotification = $remoteNotification");
 
       if (handled) {
+        var all = await notificationRepository.countAll();
+        _logger.finest(() => "all ${all}");
+
         var alreadyExistNotification =
-            await notificationRepository.findByRemoteId(remoteNotification.id);
+            await notificationRepository.findByRemoteId(remoteNotificationId);
+
+        _logger.finest(() => "handlePush \n"
+            "\t remoteNotificationId = $remoteNotificationId \n"
+            "\t alreadyExistNotification = $alreadyExistNotification");
 
         await notificationRepository.upsertRemoteNotification(
             remoteNotification,
