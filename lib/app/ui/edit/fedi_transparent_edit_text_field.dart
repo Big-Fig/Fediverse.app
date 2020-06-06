@@ -8,11 +8,17 @@ class FediTransparentEditTextField extends StatelessWidget {
   final TextEditingController textEditingController;
   final String hintText;
   final FocusNode focusNode;
+  final int maxLines;
+  final ValueChanged<String> onSubmitted;
+  final TextInputAction textInputAction;
 
   FediTransparentEditTextField({
     @required this.expanded,
     @required this.autofocus,
     @required this.hintText,
+    @required this.maxLines,
+    @required this.onSubmitted,
+    @required this.textInputAction,
     @required this.textEditingController,
     this.focusNode,
   });
@@ -21,6 +27,9 @@ class FediTransparentEditTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       focusNode: focusNode,
+      textInputAction:
+          maxLines == 1 ? textInputAction : TextInputAction.newline,
+      onSubmitted: onSubmitted,
       decoration: InputDecoration(
           border: InputBorder.none,
           hintText: hintText,
@@ -37,7 +46,7 @@ class FediTransparentEditTextField extends StatelessWidget {
       autofocus: autofocus,
       controller: textEditingController,
       minLines: null,
-      maxLines: null,
+      maxLines: maxLines,
       expands: expanded,
     );
   }

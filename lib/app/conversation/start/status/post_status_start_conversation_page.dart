@@ -27,7 +27,7 @@ class PostStatusStartConversationPage extends StatelessWidget {
         showVisibilityAction: false,
         displayMentions: true,
         goBackOnSuccess: true,
-        expanded: true,
+        expanded: true, maxLines: null,
       ),
     );
   }

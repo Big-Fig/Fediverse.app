@@ -261,6 +261,13 @@
             "hint": "Start a message"
           }
         },
+        "error": {
+          "empty": {
+            "dialog": {
+              "title": "Can't send empty message"
+            }
+          }
+        },
         "action": {
           "post": "Post"
         }
@@ -579,6 +586,13 @@
           "content": {
             "one": "1 mention",
             "many": "{} mentions"
+          }
+        },
+        "error": {
+          "empty": {
+            "dialog": {
+              "title": "Can't send empty message"
+            }
           }
         },
         "field": {

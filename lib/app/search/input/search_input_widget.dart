@@ -22,6 +22,9 @@ class SearchInputWidget extends StatelessWidget {
         },
         icon: Icon(Icons.clear),
       ),
+      textInputAction: TextInputAction.done,
+      onSubmitted: null,
+      maxLines: 1,
     );
   }
 }

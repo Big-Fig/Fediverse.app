@@ -7,15 +7,18 @@ import 'package:fedi/app/ui/edit/fedi_filled_edit_text_field.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/dialog/alert/simple_alert_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FilledMessagePostStatusWidget extends StatelessWidget {
   final bool expanded;
   final String hintText;
+  final int maxLines;
 
   FilledMessagePostStatusWidget({
     @required this.expanded,
+    @required this.maxLines,
     this.hintText,
   });
 
@@ -34,11 +37,22 @@ class FilledMessagePostStatusWidget extends StatelessWidget {
         Flexible(
           child: FediFilledEditTextField(
             focusNode: postStatusBloc.focusNode,
-            hintText: hintText ??
-                tr("app.status.post.field.message.hint"),
+            hintText: hintText ?? tr("app.status.post.field.message.hint"),
             textEditingController: postStatusBloc.inputTextController,
             expanded: false,
             autofocus: false,
+            maxLines: maxLines,
+            textInputAction: TextInputAction.send,
+            onSubmitted: (String value) async {
+              if (postStatusBloc.isReadyToPost) {
+                await postStatusBloc.postStatus();
+              } else {
+                await SimpleAlertDialog(
+                        context: context,
+                        title: tr("app.status.post.error.empty.dialog.title"))
+                    .show(context);
+              }
+            },
             ending: buildEmojiPicker(context, postStatusBloc),
           ),
         ),

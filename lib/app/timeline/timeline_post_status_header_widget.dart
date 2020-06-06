@@ -15,6 +15,7 @@ class TimelinePostStatusHeaderWidget extends StatelessWidget {
             displayMentions: false,
             goBackOnSuccess: false,
             displayAccountAvatar: true,
+            maxLines: 1,
           ),
         ),
       );

@@ -69,11 +69,13 @@ class ConversationWidget extends StatelessWidget {
                       ),
                       const FediUltraLightGreyDivider(),
                       const PostStatusWidget(
-                          showVisibilityAction: false,
-                          expanded: false,
-                          isTransparent: false,
-                          goBackOnSuccess: false,
-                          displayMentions: false)
+                        showVisibilityAction: false,
+                        expanded: false,
+                        isTransparent: false,
+                        goBackOnSuccess: false,
+                        displayMentions: false,
+                        maxLines: 1,
+                      )
                     ],
                   ),
                 ),
