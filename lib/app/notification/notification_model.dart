@@ -134,6 +134,12 @@ class DbNotificationPopulatedWrapper implements INotification {
   @override
   String get chatRemoteId =>
       dbNotificationPopulated.dbNotification.chatRemoteId;
+
+  @override
+  String toString() {
+    return 'DbNotificationPopulatedWrapper{'
+        'dbNotificationPopulated: $dbNotificationPopulated}';
+  }
 }
 
 class DbNotificationPopulated {

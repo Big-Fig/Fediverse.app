@@ -8,6 +8,7 @@ import 'package:fedi/pleroma/websockets/pleroma_websockets_model.dart';
 import 'package:fedi/websockets/websockets_channel.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:moor/moor.dart';
 
 abstract class WebSocketsChannelHandler extends DisposableOwner
     implements IWebSocketsHandler {
@@ -54,8 +55,10 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
         break;
       case PleromaWebSocketsEventType.notification:
         var notification = event.parsePayloadAsNotification();
+
         await notificationRepository.upsertRemoteNotification(notification,
             unread: true);
+
         var chatMessage = notification.chatMessage;
         if (chatMessage != null) {
           await chatNewMessagesHandlerBloc.handleNewMessage(chatMessage);
@@ -74,7 +77,6 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
             .upsertRemoteConversation(event.parsePayloadAsConversation());
         break;
       case PleromaWebSocketsEventType.pleromaChatUpdate:
-
         var chat = event.parsePayloadAsChat();
         await chatNewMessagesHandlerBloc.handleChatUpdate(chat);
         break;

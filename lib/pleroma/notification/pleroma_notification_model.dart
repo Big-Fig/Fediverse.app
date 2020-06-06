@@ -123,8 +123,8 @@ class PleromaNotification extends IPleromaNotification {
 
   @override
   String toString() {
-    return 'PleromaNotification{account: $account, createdAt: $createdAt, id: $id,'
-        ' type: $type, status: $status}';
+    return 'PleromaNotification{id: $id, account: $account, createdAt: '
+        '$createdAt, type: $type, status: $status}';
   }
 
   @override
