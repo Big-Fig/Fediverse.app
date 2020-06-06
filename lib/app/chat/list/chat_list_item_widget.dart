@@ -68,8 +68,7 @@ class ChatListItemWidget extends StatelessWidget {
 
   IconButton buildGoToChatButton(BuildContext context, IChatBloc chatBloc) {
     return IconButton(
-      tooltip: tr("app.chat."
-          ".action.more"),
+      tooltip: tr("app.chat.action.more"),
       color: FediColors.darkGrey,
       iconSize: 16.0,
       icon: Icon(FediIcons.arrow_right),
