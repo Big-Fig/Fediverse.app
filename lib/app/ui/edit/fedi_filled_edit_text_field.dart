@@ -10,10 +10,16 @@ class FediFilledEditTextField extends StatelessWidget {
   final Widget leading;
   final Widget ending;
   final FocusNode focusNode;
+  final int maxLines;
+  final ValueChanged<String> onSubmitted;
+  final TextInputAction textInputAction;
 
   FediFilledEditTextField({
     @required this.textEditingController,
     @required this.hintText,
+    @required this.maxLines,
+    @required this.onSubmitted,
+    @required this.textInputAction,
     this.leading,
     this.ending,
     @required this.expanded,
@@ -37,6 +43,9 @@ class FediFilledEditTextField extends StatelessWidget {
             Flexible(
               child: TextField(
                 focusNode: focusNode,
+                textInputAction:
+                    maxLines == 1 ? textInputAction : TextInputAction.newline,
+                onSubmitted: onSubmitted,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: hintText,
@@ -48,7 +57,7 @@ class FediFilledEditTextField extends StatelessWidget {
                 autofocus: autofocus,
                 controller: textEditingController,
                 minLines: null,
-                maxLines: null,
+                maxLines: maxLines,
                 expands: expanded,
               ),
             ),

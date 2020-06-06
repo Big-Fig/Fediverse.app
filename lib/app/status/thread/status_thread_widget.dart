@@ -60,7 +60,7 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
             expanded: false,
             isTransparent: false,
             displayMentions: false,
-            showActionsRow: false,
+            showActionsRow: false, maxLines: 1,
           ),
         )
       ],

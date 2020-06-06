@@ -20,7 +20,7 @@ class NewPostStatusPage extends StatelessWidget {
       body: const PostStatusWidget(
         goBackOnSuccess: true,
         displayMentions: true,
-        expanded: true,
+        expanded: true, maxLines: null,
       ),
     );
   }
