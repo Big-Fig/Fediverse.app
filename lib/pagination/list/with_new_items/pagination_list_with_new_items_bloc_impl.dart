@@ -177,8 +177,11 @@ abstract class PaginationListWithNewItemsBloc<
     _logger.finest(() => "mergeNewItems \n"
         "\t unmergedNewItems = ${unmergedNewItems.length}\n"
         "\t mergedNewItems = ${mergedNewItems.length}\n");
+    var lastMergedItems = unmergedNewItems;
     _mergedNewItemsSubject.add([...unmergedNewItems, ...mergedNewItems]);
     _unmergedNewItemsSubject.add([]);
+
+    onNewItemsMerged(lastMergedItems);
     _logger.finest(() => "mergeNewItems after "
         "\t unmergedNewItems = ${unmergedNewItems.length}\n"
         "\t mergedNewItems = ${mergedNewItems.length}\n");
@@ -205,4 +208,8 @@ abstract class PaginationListWithNewItemsBloc<
   int compareItemsToSort(TItem a, TItem b);
 
   bool isItemsEqual(TItem a, TItem b);
+
+  void onNewItemsMerged(List<TItem> unmergedNewItems) {
+    // nothing by default
+  }
 }
