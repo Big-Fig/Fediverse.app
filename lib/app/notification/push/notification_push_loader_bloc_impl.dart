@@ -2,7 +2,6 @@ import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/chat/chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_bloc.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
-import 'package:fedi/app/notification/repository/notification_repository_model.dart';
 import 'package:fedi/app/push/handler/push_handler_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/disposable/disposable.dart';

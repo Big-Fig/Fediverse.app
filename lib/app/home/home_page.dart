@@ -6,6 +6,8 @@ import 'package:fedi/app/home/tab/account/account_home_tab_page'
     '.dart';
 import 'package:fedi/app/home/tab/conversations/chats_home_tab_page.dart';
 import 'package:fedi/app/home/tab/conversations/conversations_home_tab_page.dart';
+import 'package:fedi/app/home/tab/notifications/notifications_home_tab_bloc.dart';
+import 'package:fedi/app/home/tab/notifications/notifications_home_tab_bloc_impl.dart';
 import 'package:fedi/app/home/tab/notifications/notifications_home_tab_page.dart';
 import 'package:fedi/app/home/tab/timelines/timelines_home_tab_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/timelines_home_tab_bloc_impl.dart';
@@ -19,7 +21,6 @@ import 'package:fedi/ui/nested_scroll_controller_bloc.dart';
 import 'package:fedi/ui/scroll_controller_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
@@ -68,12 +69,16 @@ class HomePage extends StatelessWidget {
   }
 
   Widget buildBody(BuildContext context, HomeTab selectedTab) {
+    var deviceHeight = MediaQuery.of(context).size.width;
     switch (selectedTab) {
       case HomeTab.timelines:
         return DisposableProvider<ITimelinesHomeTabBloc>(
           create: (context) {
             var homeBloc = IHomeBloc.of(context, listen: false);
-            var timelinesHomeTabBloc = TimelinesHomeTabBloc();
+            var timelinesHomeTabBloc = TimelinesHomeTabBloc(
+              //              deviceHeight: MediaQuery.of(context).size.height,
+              deviceHeight: deviceHeight,
+            );
 
             timelinesHomeTabBloc.addDisposable(streamSubscription:
                 homeBloc.reselectedTabStream.listen((reselectedTab) {
@@ -103,8 +108,40 @@ class HomePage extends StatelessWidget {
         );
         break;
       case HomeTab.notifications:
-        return const NotificationsHomeTabPage(
-          key: PageStorageKey<String>("NotificationsHomeTabPage"),
+        return DisposableProvider<INotificationsHomeTabBloc>(
+          create: (context) {
+            var homeBloc = IHomeBloc.of(context, listen: false);
+
+            var notificationsHomeTabBloc = NotificationsHomeTabBloc(
+              //              deviceHeight: MediaQuery.of(context).size.height,
+              deviceHeight: deviceHeight,
+            );
+
+            notificationsHomeTabBloc.addDisposable(streamSubscription:
+                homeBloc.reselectedTabStream.listen((reselectedTab) {
+              if (reselectedTab == HomeTab.notifications) {
+                notificationsHomeTabBloc.scrollToTop();
+              }
+            }));
+
+            return notificationsHomeTabBloc;
+          },
+          child: ProxyProvider<INotificationsHomeTabBloc, INestedScrollControllerBloc>(
+            update: (context, value, previous) =>
+            value.nestedScrollControllerBloc,
+            child: ProxyProvider<INotificationsHomeTabBloc, IScrollControllerBloc>(
+              update: (context, value, previous) =>
+              value.nestedScrollControllerBloc,
+              child:
+              ProxyProvider<INotificationsHomeTabBloc, IFediSliverAppBarBloc>(
+                update: (context, value, previous) =>
+                value.fediSliverAppBarBloc,
+                child: const NotificationsHomeTabPage(
+                  key: PageStorageKey<String>("NotificationsHomeTabPage"),
+                ),
+              ),
+            ),
+          ),
         );
         break;
       case HomeTab.conversations:
@@ -122,8 +159,7 @@ class HomePage extends StatelessWidget {
                     key: PageStorageKey<String>("ChatsHomeTabPage"));
               } else {
                 return const ConversationsHomeTabPage(
-                    key: PageStorageKey<String>(
-                        "ConversationsHomeTabPage"));
+                    key: PageStorageKey<String>("ConversationsHomeTabPage"));
               }
             });
 

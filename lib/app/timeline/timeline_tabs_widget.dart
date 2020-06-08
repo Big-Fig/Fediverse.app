@@ -197,18 +197,18 @@ class TimelineTabsWidget extends StatelessWidget {
             _logger.finest(() => "Builder");
 
             return StreamBuilder<bool>(
-//                stream: Rx.combineLatest2(
-//                    scrollControllerBloc.longScrollDirectionStream,
-//                    fediSliverAppBarBloc.isAtLeastStartExpandStream,
-//                        (scrollDirection, isAtLeastStartExpand) {
-//                      _logger.finest(() => "scrollDirection $scrollDirection "
-//                          "$isAtLeastStartExpand");
-//
-//                      return scrollDirection == ScrollDirection.forward &&
-//                          isAtLeastStartExpand == false;
-//                    }),
-                stream: scrollControllerBloc.longScrollDirectionStream.map(
-                        (scrollDirection) => scrollDirection == ScrollDirection.forward),
+                stream: Rx.combineLatest2(
+                    scrollControllerBloc.longScrollDirectionStream,
+                    fediSliverAppBarBloc.isAtLeastStartExpandStream,
+                        (scrollDirection, isAtLeastStartExpand) {
+                      _logger.finest(() => "scrollDirection $scrollDirection "
+                          "$isAtLeastStartExpand");
+
+                      return scrollDirection == ScrollDirection.forward &&
+                          isAtLeastStartExpand == false;
+                    }),
+//                stream: scrollControllerBloc.longScrollDirectionStream.map(
+//                        (scrollDirection) => scrollDirection == ScrollDirection.forward),
                 builder: (context, snapshot) {
                   var show = snapshot.data;
                   _logger.finest(() => "show $show");
