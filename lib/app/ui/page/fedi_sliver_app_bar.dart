@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:fedi/app/instance/fedi_instance_image_decoration_widget.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_shadows.dart';
 import 'package:fedi/app/ui/page/fedi_sliver_app_bar_bloc.dart';

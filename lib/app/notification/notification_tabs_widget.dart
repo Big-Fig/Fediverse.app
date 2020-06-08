@@ -12,8 +12,8 @@ import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/page/fedi_sliver_app_bar.dart';
-import 'package:fedi/app/ui/page/fedi_sliver_app_bar_bloc.dart';
-import 'package:fedi/app/ui/page/fedi_sliver_app_bar_bloc_impl.dart';
+import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
+import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:fedi/app/ui/tab/fedi_icon_tab.dart';
 import 'package:fedi/collapsible/collapsible_bloc.dart';
 import 'package:fedi/collapsible/collapsible_bloc_impl.dart';
@@ -46,27 +46,34 @@ class NotificationTabsWidget extends StatelessWidget {
 
     var tabs = notificationsTabsBloc.tabs;
 
-    return DisposableProvider<IFediSliverAppBarBloc>(
-      create: (context) => FediSliverAppBarBloc(),
-      child: DefaultTabController(
-        length: tabs.length,
-        initialIndex: tabs.indexOf(notificationsTabsBloc.selectedTab),
-        child: NestedScrollView(
-          body: ClipRRect(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(16.0),
-                topRight: Radius.circular(16.0)),
-            child: Container(
-              color: FediColors.white,
-              child: buildBodyWidget(context),
+    return DefaultTabController(
+      length: tabs.length,
+      initialIndex: tabs.indexOf(notificationsTabsBloc.selectedTab),
+      child: NestedScrollView(
+        body: FediDarkStatusBarStyleArea(child: buildBodyWidget(context)),
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return [
+            SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: 16.0 + MediaQuery.of(context).padding.top,
+                      bottom: 16.0,
+                      left: 16.0,
+                      right: 16.0,
+                    ),
+                    child: FediLightStatusBarStyleArea(
+                      child: buildTabBar(context, tabs, notificationsTabsBloc),
+                    ),
+                  ),
+//              _buildCollapsedAppBarBody(context)
+                ],
+              ),
             ),
-          ),
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return [
-              buildSliverAppBar(context, tabs, notificationsTabsBloc),
-            ];
-          },
-        ),
+//            buildSliverAppBar(context, tabs, notificationsTabsBloc),
+          ];
+        },
       ),
     );
 
@@ -89,9 +96,9 @@ class NotificationTabsWidget extends StatelessWidget {
         pinned: true,
         floating: true,
         delegate: FediSliverAppBar(
-          expandedHeight:
-          MediaQuery.of(context).padding.top +
-              FediSizes.headerImageSingleRowSafeAreaHeight - 16.0,
+          expandedHeight: MediaQuery.of(context).padding.top +
+              FediSizes.headerImageSingleRowSafeAreaHeight -
+              16.0,
           topBar: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: buildTabBar(context, tabs, notificationsTabsBloc),
@@ -198,12 +205,21 @@ class NotificationTabsWidget extends StatelessWidget {
                       CollapsibleBloc.createFromContext(context),
                   child: Stack(
                     children: <Widget>[
-                      Builder(
-                          builder: (context) =>
-                              NotificationPaginationListWidget(
-                                needWatchLocalRepositoryForUpdates: true,
-                                key: PageStorageKey("${tab.toString()}"),
+                      Expanded(
+                        child: Builder(
+                          builder: (context) => ClipRRect(
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(16.0),
+                                  topRight: Radius.circular(16.0)),
+                              child: Container(
+                                color: FediColors.white,
+                                child: NotificationPaginationListWidget(
+                                  needWatchLocalRepositoryForUpdates: true,
+                                  key: PageStorageKey("${tab.toString()}"),
+                                ),
                               )),
+                        ),
+                      ),
                       Align(
                           alignment: Alignment.bottomLeft,
                           child: Padding(
