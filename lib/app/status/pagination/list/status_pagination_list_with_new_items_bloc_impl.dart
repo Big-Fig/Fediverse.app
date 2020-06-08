@@ -24,7 +24,7 @@ class StatusPaginationListWithNewItemsBloc<
         statusCachedListBloc.settingsChangedStream.listen((changed) async {
       if (changed == true) {
         if (refreshController.position != null) {
-          await refreshController.requestRefresh();
+          await refreshController.requestRefresh(needMove:false);
         } else {
           await refresh();
         }

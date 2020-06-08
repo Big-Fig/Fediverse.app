@@ -389,7 +389,7 @@
       "empty": "Items not found",
       "loading": {
         "state": {
-          "can_loading": "Can loading",
+          "can_loading": "Can load more",
           "no_more_data": "No more data",
           "failed": "Failed to load"
         }

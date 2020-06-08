@@ -22,12 +22,12 @@ class SelectAccountPaginationListBloc extends AccountPaginationListBloc {
       // refresh controller if it attached
       if (refreshController.position != null) {
         try {
-          refreshController.requestRefresh();
+          refreshController.requestRefresh(needMove:false);
         } on Exception catch (e, stackTrace) {
           // ignore error, because it is related to refresh controller
           // internal wrong logic
           _logger.warning(
-              () => "error during refreshController.requestRefresh();",
+              () => "error during refreshController.requestRefresh(needMove:false);",
               e,
               stackTrace);
         }

@@ -170,7 +170,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
           _logger.finest(() => "initState position = $position");
           if (position != null) {
             // refresh with UI indicator
-            refreshController.requestRefresh();
+            refreshController.requestRefresh(needMove:false);
           } else {
             // refresh without UI indicator
             paginationListBloc.refresh();

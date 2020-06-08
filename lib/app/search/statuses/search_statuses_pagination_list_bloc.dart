@@ -18,7 +18,7 @@ class SearchStatusesPaginationListBloc
             searchInputBloc.searchTextStream.distinct().listen((newText) {
       // refresh controller if it attached
       if (refreshController.position != null) {
-        refreshController.requestRefresh();
+        refreshController.requestRefresh(needMove:false);
       } else {
         //otherwise refresh only bloc
         paginationBloc.refresh();
