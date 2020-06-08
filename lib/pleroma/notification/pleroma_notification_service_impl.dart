@@ -52,6 +52,7 @@ class PleromaNotificationService implements IPleromaNotificationService {
   @override
   Future<List<IPleromaNotification>> getNotifications(
       {@required MastodonNotificationsRequest request}) async {
+
     var httpResponse = await restService.sendHttpRequest(RestRequest.get(
         relativePath: notificationRelativeUrlPath,
         queryArgs: RestRequestQueryArg.listFromJson(request.toJson())));
