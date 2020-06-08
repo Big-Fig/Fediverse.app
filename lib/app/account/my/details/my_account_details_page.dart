@@ -9,7 +9,8 @@ import 'package:fedi/app/account/my/settings/my_account_settings_drawer_widget.d
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
-import 'package:fedi/app/ui/home/fedi_home_tab_container_widget.dart';
+import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
+import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,28 +20,61 @@ final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 class MyAccountDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var myAccountBloc = IMyAccountBloc.of(context, listen: true);
-
     return ProxyProvider<IMyAccountBloc, IAccountBloc>(
       update: (context, value, previous) => value,
       child: Scaffold(
         key: _drawerKey,
+        backgroundColor: Colors.transparent,
         drawer: const MyAccountSettingsDrawerBodyWidget(),
-        body: FediHomeTabContainer.createLikeAppBar(
-            leading: FediIconInCircleTransparentButton(
-              Icons.menu,
-              onPressed: () {
-                _drawerKey.currentState.openDrawer();
-              },
-            ),
-            center: buildAccountChooserButton(context, myAccountBloc),
-            trailing: FediIconInCircleTransparentButton(
-              Icons.settings,
-              onPressed: () {
-                goToEditMyAccountPage(context);
-              },
-            ),
-            body: AccountDetailsWidget()),
+
+        body: NestedScrollView(
+          body: FediDarkStatusBarStyleArea(
+              child: ClipRRect(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(16.0),
+                      topRight: Radius.circular(16.0)),
+                  child: Container(
+                      color: Colors.white, child: AccountDetailsWidget()))),
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return [
+              SliverList(
+                delegate: SliverChildListDelegate(
+                  [
+                    Padding(
+                      padding: EdgeInsets.only(
+                        top: 24.0 + MediaQuery.of(context).padding.top,
+                        bottom: 24.0,
+                        left: 16.0,
+                        right: 16.0,
+                      ),
+                      child: FediLightStatusBarStyleArea(
+                        child: buildTopBar(context),
+                      ),
+                    ),
+//              _buildCollapsedAppBarBody(context)
+                  ],
+                ),
+              ),
+//            buildSliverAppBar(context, tabs, notificationsTabsBloc),
+            ];
+          },
+        ),
+
+//        body: FediHomeTabContainer.createLikeAppBar(
+//            leading: FediIconInCircleTransparentButton(
+//              Icons.menu,
+//              onPressed: () {
+//                _drawerKey.currentState.openDrawer();
+//              },
+//            ),
+//            center: buildAccountChooserButton(context, myAccountBloc),
+//            trailing: FediIconInCircleTransparentButton(
+//              Icons.settings,
+//              onPressed: () {
+//                goToEditMyAccountPage(context);
+//              },
+//            ),
+//            body: AccountDetailsWidget()),
       ),
     );
   }
@@ -79,6 +113,29 @@ class MyAccountDetailsPage extends StatelessWidget {
   }
 
   const MyAccountDetailsPage();
+
+  Widget buildTopBar(BuildContext context) {
+    var myAccountBloc = IMyAccountBloc.of(context, listen: true);
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        FediIconInCircleTransparentButton(
+          Icons.menu,
+          onPressed: () {
+            _drawerKey.currentState.openDrawer();
+          },
+        ),
+        buildAccountChooserButton(context, myAccountBloc),
+        FediIconInCircleTransparentButton(
+          Icons.settings,
+          onPressed: () {
+            goToEditMyAccountPage(context);
+          },
+        ),
+      ],
+    );
+  }
 }
 
 void goToMyAccountDetailsPagePage(BuildContext context, IAccount account) {

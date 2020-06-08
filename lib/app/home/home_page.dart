@@ -2,9 +2,15 @@ import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/home/home_bloc.dart';
 import 'package:fedi/app/home/home_model.dart';
 import 'package:fedi/app/home/home_page_bottom_navigation_bar_widget.dart';
+import 'package:fedi/app/home/tab/account/account_home_tab_bloc.dart';
+import 'package:fedi/app/home/tab/account/account_home_tab_bloc_impl.dart';
 import 'package:fedi/app/home/tab/account/account_home_tab_page'
     '.dart';
+import 'package:fedi/app/home/tab/conversations/chats_home_tab_bloc.dart';
+import 'package:fedi/app/home/tab/conversations/chats_home_tab_bloc_impl.dart';
 import 'package:fedi/app/home/tab/conversations/chats_home_tab_page.dart';
+import 'package:fedi/app/home/tab/conversations/conversations_home_tab_bloc.dart';
+import 'package:fedi/app/home/tab/conversations/conversations_home_tab_bloc_impl.dart';
 import 'package:fedi/app/home/tab/conversations/conversations_home_tab_page.dart';
 import 'package:fedi/app/home/tab/notifications/notifications_home_tab_bloc.dart';
 import 'package:fedi/app/home/tab/notifications/notifications_home_tab_bloc_impl.dart';
@@ -155,17 +161,118 @@ class HomePage extends StatelessWidget {
               var isNewChatsEnabled = snapshot.data;
 
               if (isNewChatsEnabled == true) {
-                return const ChatsHomeTabPage(
-                    key: PageStorageKey<String>("ChatsHomeTabPage"));
+                return DisposableProvider<IChatsHomeTabBloc>(
+                  create: (context) {
+                    var homeBloc = IHomeBloc.of(context, listen: false);
+
+                    var chatsHomeTabBloc = ChatsHomeTabBloc(
+                      //              deviceHeight: MediaQuery.of(context).size.height,
+                      deviceHeight: deviceHeight,
+                    );
+
+                    chatsHomeTabBloc.addDisposable(streamSubscription:
+                    homeBloc.reselectedTabStream.listen((reselectedTab) {
+                      if (reselectedTab == HomeTab.conversations) {
+                        chatsHomeTabBloc.scrollToTop();
+                      }
+                    }));
+
+                    return chatsHomeTabBloc;
+                  },
+                  child: ProxyProvider<IChatsHomeTabBloc, INestedScrollControllerBloc>(
+                    update: (context, value, previous) =>
+                    value.nestedScrollControllerBloc,
+                    child: ProxyProvider<IChatsHomeTabBloc, IScrollControllerBloc>(
+                      update: (context, value, previous) =>
+                      value.nestedScrollControllerBloc,
+                      child:
+                      ProxyProvider<IChatsHomeTabBloc, IFediSliverAppBarBloc>(
+                        update: (context, value, previous) =>
+                        value.fediSliverAppBarBloc,
+                        child: const ChatsHomeTabPage(
+                          key: PageStorageKey<String>("ChatsHomeTabPage"),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
               } else {
-                return const ConversationsHomeTabPage(
-                    key: PageStorageKey<String>("ConversationsHomeTabPage"));
+
+                return DisposableProvider<IConversationsHomeTabBloc>(
+                  create: (context) {
+                    var homeBloc = IHomeBloc.of(context, listen: false);
+
+                    var conversationsHomeTabBloc = ConversationsHomeTabBloc(
+                      //              deviceHeight: MediaQuery.of(context).size.height,
+                      deviceHeight: deviceHeight,
+                    );
+
+                    conversationsHomeTabBloc.addDisposable(streamSubscription:
+                    homeBloc.reselectedTabStream.listen((reselectedTab) {
+                      if (reselectedTab == HomeTab.conversations) {
+                        conversationsHomeTabBloc.scrollToTop();
+                      }
+                    }));
+
+                    return conversationsHomeTabBloc;
+                  },
+                  child: ProxyProvider<IConversationsHomeTabBloc, INestedScrollControllerBloc>(
+                    update: (context, value, previous) =>
+                    value.nestedScrollControllerBloc,
+                    child: ProxyProvider<IConversationsHomeTabBloc, IScrollControllerBloc>(
+                      update: (context, value, previous) =>
+                      value.nestedScrollControllerBloc,
+                      child:
+                      ProxyProvider<IConversationsHomeTabBloc, IFediSliverAppBarBloc>(
+                        update: (context, value, previous) =>
+                        value.fediSliverAppBarBloc,
+                        child: const ConversationsHomeTabPage(
+                          key: PageStorageKey<String>("ConversationsHomeTabPage"),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
               }
             });
 
         break;
       case HomeTab.account:
-        return const AccountHomeTabPage();
+        return DisposableProvider<IAccountHomeTabBloc>(
+          create: (context) {
+            var homeBloc = IHomeBloc.of(context, listen: false);
+
+            var accountHomeTabBloc = AccountHomeTabBloc(
+              //              deviceHeight: MediaQuery.of(context).size.height,
+              deviceHeight: deviceHeight,
+            );
+
+            accountHomeTabBloc.addDisposable(streamSubscription:
+            homeBloc.reselectedTabStream.listen((reselectedTab) {
+              if (reselectedTab == HomeTab.account) {
+                accountHomeTabBloc.scrollToTop();
+              }
+            }));
+
+            return accountHomeTabBloc;
+          },
+          child: ProxyProvider<IAccountHomeTabBloc, INestedScrollControllerBloc>(
+            update: (context, value, previous) =>
+            value.nestedScrollControllerBloc,
+            child: ProxyProvider<IAccountHomeTabBloc, IScrollControllerBloc>(
+              update: (context, value, previous) =>
+              value.nestedScrollControllerBloc,
+              child:
+              ProxyProvider<IAccountHomeTabBloc, IFediSliverAppBarBloc>(
+                update: (context, value, previous) =>
+                value.fediSliverAppBarBloc,
+                child: const AccountHomeTabPage(
+                  key: PageStorageKey<String>("AccountHomeTabPage"),
+                ),
+              ),
+            ),
+          ),
+        );
         break;
     }
 
