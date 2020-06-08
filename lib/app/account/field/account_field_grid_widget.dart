@@ -1,6 +1,7 @@
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/field/account_field_grid_item_widget.dart';
 import 'package:fedi/pleroma/field/pleroma_field_model.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class AccountFieldGridWidget extends StatelessWidget {
@@ -20,6 +21,7 @@ class AccountFieldGridWidget extends StatelessWidget {
 
           if (nonEmptyFields?.isNotEmpty == true) {
             return GridView.count(
+              padding: EdgeInsets.zero,
                 shrinkWrap: true,
                 childAspectRatio: 4,
                 crossAxisCount: 2,
