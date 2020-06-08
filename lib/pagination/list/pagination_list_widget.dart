@@ -5,9 +5,7 @@ import 'package:fedi/app/list/list_refresh_header_widget.dart';
 import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:fedi/ui/scroll_controller_bloc.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -41,7 +39,6 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
       ScrollController scrollController,
       Widget Function(BuildContext context) smartRefresherBodyBuilder) {
     _logger.finest(() => "buildSmartRefresher items ${items?.length}");
-
 
     return SmartRefresher(
       key: key,
