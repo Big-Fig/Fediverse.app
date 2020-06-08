@@ -58,8 +58,8 @@ class NotificationTabsWidget extends StatelessWidget {
                 [
                   Padding(
                     padding: EdgeInsets.only(
-                      top: 16.0 + MediaQuery.of(context).padding.top,
-                      bottom: 16.0,
+                      top: 24.0 + MediaQuery.of(context).padding.top,
+                      bottom: 24.0,
                       left: 16.0,
                       right: 16.0,
                     ),
