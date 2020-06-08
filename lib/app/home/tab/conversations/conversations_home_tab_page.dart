@@ -8,9 +8,9 @@ import 'package:fedi/app/search/search_page.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
-import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/header/fedi_header_text.dart';
-import 'package:fedi/app/ui/home/fedi_home_tab_container_widget.dart';
+import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
+import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,15 +29,54 @@ class ConversationsHomeTabPage extends StatelessWidget {
 
     return Scaffold(
       key: _drawerKey,
-      body: FediHomeTabContainer(
-        topHeaderHeightInSafeArea:
-        FediSizes.headerImageSingleRowSafeAreaHeight,
-        topBar: buildTopBar(context),
-        body: DisposableProvider<IConversationsListBloc>(
+      backgroundColor: Colors.transparent,
+      body: NestedScrollView(
+        body: FediDarkStatusBarStyleArea(
+          child: DisposableProvider<IConversationsListBloc>(
             create: (context) =>
                 ConversationsListBloc.createFromContext(context),
-            child: const ConversationsListWidget()),
+            child: ClipRRect(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(16.0),
+                    topRight: Radius.circular(16.0)),
+                child: Container(
+                    color: Colors.white, child: ConversationsListWidget())),
+          ),
+        ),
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return [
+            SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: 24.0 + MediaQuery.of(context).padding.top,
+                      bottom: 24.0,
+                      left: 16.0,
+                      right: 16.0,
+                    ),
+                    child: FediLightStatusBarStyleArea(
+                      child: buildTopBar(context),
+                    ),
+                  ),
+//              _buildCollapsedAppBarBody(context)
+                ],
+              ),
+            ),
+//            buildSliverAppBar(context, tabs, notificationsTabsBloc),
+          ];
+        },
       ),
+//
+//      body: FediHomeTabContainer(
+//        topHeaderHeightInSafeArea:
+//        FediSizes.headerImageSingleRowSafeAreaHeight,
+//        topBar: buildTopBar(context),
+//        body: DisposableProvider<IConversationsListBloc>(
+//            create: (context) =>
+//                ConversationsListBloc.createFromContext(context),
+//            child: const ConversationsListWidget()),
+//      ),
     );
   }
 

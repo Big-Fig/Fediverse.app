@@ -5,5 +5,5 @@ import 'package:flutter/material.dart';
 class AccountHomeTabPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => const MyAccountDetailsPage();
-  const AccountHomeTabPage();
+  const AccountHomeTabPage({Key key}) : super(key: key);
 }
