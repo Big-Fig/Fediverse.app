@@ -18,13 +18,15 @@ class StatusPaginationListTimelineWidget
       Widget footer,
       bool alwaysShowHeader,
       bool alwaysShowFooter,
+      ScrollController scrollController,
       @required this.needWatchLocalRepositoryForUpdates})
       : super(
             key: key,
             header: header,
             footer: footer,
             alwaysShowFooter: alwaysShowFooter,
-            alwaysShowHeader: alwaysShowHeader);
+            alwaysShowHeader: alwaysShowHeader,
+            scrollController: scrollController);
 
   @override
   ScrollView buildItemsCollectionView(
@@ -41,7 +43,8 @@ class StatusPaginationListTimelineWidget
             return Provider<IStatus>.value(
               value: items[index],
               child: FediListTile(
-                isFirstInList: index == 0 && header == null && !forceFirstItemPadding,
+                isFirstInList:
+                    index == 0 && header == null && !forceFirstItemPadding,
 //                isFirstInList: false,
                 child: StatusListItemTimelineWidget.list(
                   collapsible: true,

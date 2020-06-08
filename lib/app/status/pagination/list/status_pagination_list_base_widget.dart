@@ -13,12 +13,15 @@ abstract class StatusPaginationListBaseWidget
     Widget footer,
     bool alwaysShowHeader,
     bool alwaysShowFooter,
+    ScrollController scrollController,
   }) : super(
-            key: key,
-            footer: footer,
-            header: header,
-            alwaysShowHeader: alwaysShowHeader,
-            alwaysShowFooter: alwaysShowFooter);
+          key: key,
+          footer: footer,
+          header: header,
+          alwaysShowHeader: alwaysShowHeader,
+          alwaysShowFooter: alwaysShowFooter,
+          scrollController: scrollController,
+        );
 
   @override
   IPaginationListBloc<PaginationPage<IStatus>, IStatus>

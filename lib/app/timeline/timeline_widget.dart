@@ -5,6 +5,7 @@ import 'package:fedi/collapsible/collapsible_bloc.dart';
 import 'package:fedi/collapsible/collapsible_bloc_impl.dart';
 import 'package:fedi/collapsible/toggle_collapsible_overlay_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/ui/scroll_controller_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
@@ -27,23 +28,28 @@ class TimelineWidget extends StatelessWidget {
         builder: (context, snapshot) {
           var onlyWithMedia = snapshot.data;
 
-
           Widget bodyWidget;
+
+          var scrollControllerBloc =
+              IScrollControllerBloc.of(context, listen: false);
 
           if (onlyWithMedia == true) {
             bodyWidget = StatusPaginationListMediaWidget(
-                key: PageStorageKey<String>(
-                    key.toString() + "TimelinePaginationListMediaWidget"));
+              key: PageStorageKey<String>(
+                  key.toString() + "TimelinePaginationListMediaWidget"),
+              scrollController: scrollControllerBloc.scrollController,
+            );
           } else {
             bodyWidget = DisposableProvider<ICollapsibleBloc>(
               create: (context) => CollapsibleBloc.createFromContext(context),
               child: Stack(
                 children: <Widget>[
-                  const StatusPaginationListTimelineWidget(
+                  StatusPaginationListTimelineWidget(
                     forceFirstItemPadding: true,
                     key: PageStorageKey<String>(
                         "TimelinePaginationListSimpleWidget"),
                     needWatchLocalRepositoryForUpdates: true,
+                    scrollController: scrollControllerBloc.scrollController,
                   ),
                   const Align(
                       alignment: Alignment.bottomLeft,
