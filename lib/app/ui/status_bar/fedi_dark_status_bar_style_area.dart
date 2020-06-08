@@ -1,3 +1,5 @@
+import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
@@ -8,10 +10,11 @@ class FediDarkStatusBarStyleArea extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Semantics(
-      container: true,
-      child: AnnotatedRegion<SystemUiOverlayStyle>(
-          value: SystemUiOverlayStyle.dark, child: child),
-    );
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.dark.copyWith(
+          statusBarColor: FediColors.white,
+//          systemNavigationBarColor: Colors.black,
+        ),
+        child: child);
   }
 }

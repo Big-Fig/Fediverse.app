@@ -32,7 +32,6 @@ dependencies:
   url_launcher: ^5.2.7
   hive: ^0.4.1
   hive_generator: ^0.4.0+1
-  pull_to_refresh: ^1.5.4
 
 #  flutter_html: ^1.0.0
   # actually it is ^1.0.0 with additional text style features
@@ -140,6 +139,9 @@ dependencies:
 
   # video/audio players
   video_player: ^0.10.11+1
+
+  # pull to refresh and pull to load more
+  pull_to_refresh: ^1.5.8
 
 # required to build flutter test with hive https://github.com/hivedb/hive/issues/285
 dependency_overrides:

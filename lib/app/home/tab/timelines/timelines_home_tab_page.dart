@@ -24,6 +24,7 @@ class TimelinesHomeTabPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _drawerKey,
+      backgroundColor: Colors.transparent,
       endDrawer: DisposableProvider<ITimelinesHomeTabPageDrawerBloc>(
         create: (BuildContext context) => TimelinesHomeTabPageDrawerBloc(
             localPreferencesBloc:
