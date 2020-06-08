@@ -67,7 +67,7 @@ class FediInstanceImageDecorationWidget extends StatelessWidget {
     return Container(
         decoration: BoxDecoration(
             image: DecorationImage(
-                fit: BoxFit.cover,
+                fit: BoxFit.fitWidth,
                 alignment: Alignment.topCenter,
                 image: imageProvider)),
         child: child);
