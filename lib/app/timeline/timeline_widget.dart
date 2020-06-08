@@ -40,6 +40,7 @@ class TimelineWidget extends StatelessWidget {
               child: Stack(
                 children: <Widget>[
                   const StatusPaginationListTimelineWidget(
+                    forceFirstItemPadding: true,
                     key: PageStorageKey<String>(
                         "TimelinePaginationListSimpleWidget"),
                     needWatchLocalRepositoryForUpdates: true,

@@ -136,10 +136,10 @@ class FediSliverAppBar extends SliverPersistentHeaderDelegate {
         height: expandedHeight - 10,
         child: Stack(
           children: [
-            Container(
-              height: imageDecorationHeight,
-              child: FediInstanceImageDecorationWidget(child: Container()),
-            ),
+//            Container(
+//              height: imageDecorationHeight,
+//              child: FediInstanceImageDecorationWidget(child: Container()),
+//            ),
             Padding(
               padding: EdgeInsets.only(top: statusBarHeight),
               child: Column(

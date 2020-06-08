@@ -12,6 +12,7 @@ import 'package:fedi/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/app/ui/page/fedi_sliver_app_bar.dart';
 import 'package:fedi/app/ui/page/fedi_sliver_app_bar_bloc.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
+import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:fedi/app/ui/tab/fedi_text_tab.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
@@ -54,12 +55,36 @@ class TimelineTabsWidget extends StatelessWidget {
           controller: nestedScrollController,
           headerSliverBuilder: (context, bool innerBoxIsScrolled) {
             return [
-              buildSliverAppBar(context, tabs, timelinesTabsBloc),
+              SliverList(
+                delegate: SliverChildListDelegate(
+                  [
+                    Padding(
+                      padding: EdgeInsets.only(
+                        top: 16.0 + MediaQuery.of(context).padding.top,
+                        bottom: 8.0,
+                        left: 16.0,
+                        right: 16.0,
+                      ),
+                      child: FediLightStatusBarStyleArea(
+                        child: buildTabBar(context, tabs, timelinesTabsBloc),
+                      ),
+                    ),
+                    FediDarkStatusBarStyleArea(child: _buildExpandedAppBar()),
+//              _buildCollapsedAppBarBody(context)
+                  ],
+                ),
+              ),
+//              buildSliverAppBar(context, tabs, timelinesTabsBloc),
             ];
           },
           body: Builder(builder: (context) {
             nestedScrollController.enableScroll(context);
-            return buildBodyWidget(context);
+            return FediDarkStatusBarStyleArea(
+              child: Container(
+                color: FediColors.white,
+                child: buildBodyWidget(context),
+              ),
+            );
           }),
         ),
       );
@@ -72,21 +97,27 @@ class TimelineTabsWidget extends StatelessWidget {
         pinned: true,
         floating: true,
         delegate: FediSliverAppBar(
-          expandedHeight: 255 + 32.0 + 2.0,
+          expandedHeight: 255 + 32.0 + 2.0 - 2.0,
           topBar: buildTabBar(context, tabs, timelinesTabsBloc),
-          expandedAppBarBody: ClipRRect(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(16.0),
-                topRight: Radius.circular(16.0)),
-            child: FediListTile(
-              isFirstInList: true,
-              child: TimelinePostStatusHeaderWidget(),
-            ),
-          ),
+          expandedAppBarBody: _buildExpandedAppBar(),
 //          collapsedAppBarBody: _buildCollapsedAppBarBody(context),
           collapsedAppBarBody: null,
           statusBarHeight: MediaQuery.of(context).padding.top,
         ));
+  }
+
+  ClipRRect _buildExpandedAppBar() {
+    return ClipRRect(
+      borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0)),
+      child: Container(
+        color: FediColors.white,
+        child: FediListTile(
+          isFirstInList: true,
+          child: TimelinePostStatusHeaderWidget(),
+        ),
+      ),
+    );
   }
 
   Widget buildTabBar(BuildContext context, List<TimelineTab> tabs,
@@ -159,23 +190,28 @@ class TimelineTabsWidget extends StatelessWidget {
         Builder(
           builder: (context) {
             var scrollControllerBloc =
-                IScrollControllerBloc.of(context, listen: false);
+            IScrollControllerBloc.of(context, listen: false);
             var fediSliverAppBarBloc =
-                IFediSliverAppBarBloc.of(context, listen: false);
+            IFediSliverAppBarBloc.of(context, listen: false);
+
+            _logger.finest(() => "Builder");
 
             return StreamBuilder<bool>(
-                stream: Rx.combineLatest2(
-                    scrollControllerBloc.longScrollDirectionStream,
-                    fediSliverAppBarBloc.isAtLeastStartExpandStream,
-                    (scrollDirection, isAtLeastStartExpand) {
-                  _logger.finest(() => "scrollDirection $scrollDirection "
-                      "$isAtLeastStartExpand");
-
-                  return scrollDirection == ScrollDirection.forward &&
-                      isAtLeastStartExpand == false;
-                }),
+//                stream: Rx.combineLatest2(
+//                    scrollControllerBloc.longScrollDirectionStream,
+//                    fediSliverAppBarBloc.isAtLeastStartExpandStream,
+//                        (scrollDirection, isAtLeastStartExpand) {
+//                      _logger.finest(() => "scrollDirection $scrollDirection "
+//                          "$isAtLeastStartExpand");
+//
+//                      return scrollDirection == ScrollDirection.forward &&
+//                          isAtLeastStartExpand == false;
+//                    }),
+                stream: scrollControllerBloc.longScrollDirectionStream.map(
+                        (scrollDirection) => scrollDirection == ScrollDirection.forward),
                 builder: (context, snapshot) {
                   var show = snapshot.data;
+                  _logger.finest(() => "show $show");
                   if (show == true) {
                     return FediDarkStatusBarStyleArea(
                       child: Padding(
@@ -195,6 +231,7 @@ class TimelineTabsWidget extends StatelessWidget {
                 });
           },
         ),
+
         Expanded(
           child: TabBarView(
               children: List<Widget>.generate(
@@ -206,6 +243,8 @@ class TimelineTabsWidget extends StatelessWidget {
             },
           )),
         ),
+
+
       ],
     );
   }

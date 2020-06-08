@@ -10,8 +10,10 @@ import 'package:fedi/app/home/tab/notifications/notifications_home_tab_page.dart
 import 'package:fedi/app/home/tab/timelines/timelines_home_tab_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/timelines_home_tab_bloc_impl.dart';
 import 'package:fedi/app/home/tab/timelines/timelines_home_tab_page.dart';
+import 'package:fedi/app/instance/fedi_instance_image_decoration_widget.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/page/fedi_sliver_app_bar_bloc.dart';
+import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/ui/nested_scroll_controller_bloc.dart';
 import 'package:fedi/ui/scroll_controller_bloc.dart';
@@ -42,7 +44,16 @@ class HomePage extends StatelessWidget {
             return SizedBox.shrink();
           }
           return Scaffold(
-            body: buildBody(context, selectedTab),
+            body: Stack(
+              children: [
+                FediLightStatusBarStyleArea(
+                  child: FediInstanceImageDecorationWidget(
+                    child: Container(),
+                  ),
+                ),
+                buildBody(context, selectedTab),
+              ],
+            ),
             bottomNavigationBar: Container(
               height: 58,
               child: Column(
@@ -92,12 +103,9 @@ class HomePage extends StatelessWidget {
         );
         break;
       case HomeTab.notifications:
-        return Semantics(
-            container: true,
-            child: AnnotatedRegion<SystemUiOverlayStyle>(
-                value: SystemUiOverlayStyle.light,
-                child: const NotificationsHomeTabPage(
-                    key: PageStorageKey<String>("NotificationsHomeTabPage"))));
+        return const NotificationsHomeTabPage(
+          key: PageStorageKey<String>("NotificationsHomeTabPage"),
+        );
         break;
       case HomeTab.conversations:
         var myAccountSettingsBloc =
@@ -110,30 +118,18 @@ class HomePage extends StatelessWidget {
               var isNewChatsEnabled = snapshot.data;
 
               if (isNewChatsEnabled == true) {
-                return Semantics(
-                    container: true,
-                    child: AnnotatedRegion<SystemUiOverlayStyle>(
-                        value: SystemUiOverlayStyle.light,
-                        child: const ChatsHomeTabPage(
-                            key: PageStorageKey<String>("ChatsHomeTabPage"))));
+                return const ChatsHomeTabPage(
+                    key: PageStorageKey<String>("ChatsHomeTabPage"));
               } else {
-                return Semantics(
-                    container: true,
-                    child: AnnotatedRegion<SystemUiOverlayStyle>(
-                        value: SystemUiOverlayStyle.light,
-                        child: const ConversationsHomeTabPage(
-                            key: PageStorageKey<String>(
-                                "ConversationsHomeTabPage"))));
+                return const ConversationsHomeTabPage(
+                    key: PageStorageKey<String>(
+                        "ConversationsHomeTabPage"));
               }
             });
 
         break;
       case HomeTab.account:
-        return Semantics(
-            container: true,
-            child: AnnotatedRegion<SystemUiOverlayStyle>(
-                value: SystemUiOverlayStyle.light,
-                child: const AccountHomeTabPage()));
+        return const AccountHomeTabPage();
         break;
     }
 

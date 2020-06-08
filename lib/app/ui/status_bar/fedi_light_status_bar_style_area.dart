@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
@@ -8,10 +9,14 @@ class FediLightStatusBarStyleArea extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Semantics(
-      container: true,
-      child: AnnotatedRegion<SystemUiOverlayStyle>(
-          value: SystemUiOverlayStyle.light, child: child),
-    );
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.light.copyWith(
+          statusBarColor: Colors.transparent,
+//          systemNavigationBarColor: Colors.white,
+//          systemNavigationBarColor: Colors.transparent,
+//          statusBarColor: Colors.transparent,
+//          systemNavigationBarDividerColor: Colors.transparent,
+        ),
+        child: child);
   }
 }

@@ -9,10 +9,12 @@ import 'package:provider/provider.dart';
 class StatusPaginationListTimelineWidget
     extends StatusPaginationListBaseWidget {
   final bool needWatchLocalRepositoryForUpdates;
+  final bool forceFirstItemPadding;
 
   const StatusPaginationListTimelineWidget(
       {@required Key key,
       Widget header,
+      this.forceFirstItemPadding = false,
       Widget footer,
       bool alwaysShowHeader,
       bool alwaysShowFooter,
@@ -39,7 +41,7 @@ class StatusPaginationListTimelineWidget
             return Provider<IStatus>.value(
               value: items[index],
               child: FediListTile(
-                isFirstInList: index == 0 && header == null,
+                isFirstInList: index == 0 && header == null && !forceFirstItemPadding,
 //                isFirstInList: false,
                 child: StatusListItemTimelineWidget.list(
                   collapsible: true,

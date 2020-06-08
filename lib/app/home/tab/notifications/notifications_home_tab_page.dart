@@ -25,6 +25,7 @@ class NotificationsHomeTabPage extends StatelessWidget {
 
     return Scaffold(
       key: _drawerKey,
+      backgroundColor: Colors.transparent,
       endDrawer: DisposableProvider<INotificationsHomeTabPageDrawerBloc>(
         create: (BuildContext context) => NotificationsHomeTabPageDrawerBloc(
             pushSettingsBloc: IPushSubscriptionBloc.of(context, listen: false)),

@@ -31,9 +31,10 @@ class ScrollControllerBloc extends DisposableOwner
         longScrollDirectionSubject.add(null);
       } else {
         var difference = now.difference(lastDirectionSwitchDateTime);
+        var isLong = difference.inMilliseconds > 1000;
         _logger
-            .finest(() => "difference $difference");
-        if (difference.inMilliseconds > 1000) {
+            .finest(() => "difference $difference isLong $isLong");
+        if (isLong) {
           longScrollDirectionSubject.add(currentScrollDirection);
         }
       }

@@ -8,9 +8,12 @@ import 'package:fedi/app/notification/pagination/cached/notification_cached_pagi
 import 'package:fedi/app/notification/pagination/list/notification_pagination_list_widget.dart';
 import 'package:fedi/app/notification/pagination/list/notification_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/notification/unread/notification_unread_exclude_types_badge_widget.dart';
+import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/home/fedi_home_tab_container_widget.dart';
+import 'package:fedi/app/ui/page/fedi_sliver_app_bar.dart';
+import 'package:fedi/app/ui/page/fedi_sliver_app_bar_bloc.dart';
+import 'package:fedi/app/ui/page/fedi_sliver_app_bar_bloc_impl.dart';
 import 'package:fedi/app/ui/tab/fedi_icon_tab.dart';
 import 'package:fedi/collapsible/collapsible_bloc.dart';
 import 'package:fedi/collapsible/collapsible_bloc_impl.dart';
@@ -43,15 +46,61 @@ class NotificationTabsWidget extends StatelessWidget {
 
     var tabs = notificationsTabsBloc.tabs;
 
-    return DefaultTabController(
-      length: tabs.length,
-      initialIndex: tabs.indexOf(notificationsTabsBloc.selectedTab),
-      child: FediHomeTabContainer(
-        topHeaderHeightInSafeArea: FediSizes.headerImageSingleRowSafeAreaHeight,
-        topBar: buildTabBar(context, tabs, notificationsTabsBloc),
-        body: buildBodyWidget(context),
+    return DisposableProvider<IFediSliverAppBarBloc>(
+      create: (context) => FediSliverAppBarBloc(),
+      child: DefaultTabController(
+        length: tabs.length,
+        initialIndex: tabs.indexOf(notificationsTabsBloc.selectedTab),
+        child: NestedScrollView(
+          body: ClipRRect(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16.0),
+                topRight: Radius.circular(16.0)),
+            child: Container(
+              color: FediColors.white,
+              child: buildBodyWidget(context),
+            ),
+          ),
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return [
+              buildSliverAppBar(context, tabs, notificationsTabsBloc),
+            ];
+          },
+        ),
       ),
     );
+
+//    return DefaultTabController(
+//      length: tabs.length,
+//      initialIndex: tabs.indexOf(notificationsTabsBloc.selectedTab),
+//      child: FediHomeTabContainer(
+//        topHeaderHeightInSafeArea: FediSizes.headerImageSingleRowSafeAreaHeight,
+//        topBar: buildTabBar(context, tabs, notificationsTabsBloc),
+//        body: buildBodyWidget(context),
+//      ),
+//    );
+  }
+
+  SliverPersistentHeader buildSliverAppBar(
+      BuildContext context,
+      List<NotificationTab> tabs,
+      INotificationsTabsBloc notificationsTabsBloc) {
+    return SliverPersistentHeader(
+        pinned: true,
+        floating: true,
+        delegate: FediSliverAppBar(
+          expandedHeight:
+          MediaQuery.of(context).padding.top +
+              FediSizes.headerImageSingleRowSafeAreaHeight - 16.0,
+          topBar: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: buildTabBar(context, tabs, notificationsTabsBloc),
+          ),
+          expandedAppBarBody: null,
+//          collapsedAppBarBody: _buildCollapsedAppBarBody(context),
+          collapsedAppBarBody: null,
+          statusBarHeight: MediaQuery.of(context).padding.top,
+        ));
   }
 
   Widget buildTabBar(BuildContext context, List<NotificationTab> tabs,
