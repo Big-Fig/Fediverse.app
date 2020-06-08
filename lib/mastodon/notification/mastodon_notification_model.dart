@@ -50,8 +50,9 @@ class MastodonNotificationsRequest {
   @JsonKey(name: "min_id")
   final String minId;
   final int limit;
-  @JsonKey(name: "exclude_types[]")
+  @JsonKey(name: "exclude_types[]", toJson: _removeInvalidExcludeTypes)
   final List<String> excludeTypes;
+
   @JsonKey(name: "account_id")
   final String accountId;
   MastodonNotificationsRequest(
@@ -61,6 +62,21 @@ class MastodonNotificationsRequest {
       this.limit,
       this.excludeTypes,
       this.accountId});
+
+  static const validTypes = {
+    "follow",
+    "favourite",
+    "reblog",
+    "mention"
+  };
+
+  // only default set of types (follow, favourite, reblog, mention, poll)
+  // supported on all instances
+  static List<String> _removeInvalidExcludeTypes(List<String> excludeTypes) {
+    return excludeTypes
+        .where((type) => validTypes.contains(type.toLowerCase()))
+        .toList();
+  }
 
   @override
   String toString() {

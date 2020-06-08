@@ -26,6 +26,8 @@ Map<String, dynamic> _$MastodonNotificationsRequestToJson(
       'since_id': instance.sinceId,
       'min_id': instance.minId,
       'limit': instance.limit,
-      'exclude_types[]': instance.excludeTypes,
+      'exclude_types[]':
+          MastodonNotificationsRequest._removeInvalidExcludeTypes(
+              instance.excludeTypes),
       'account_id': instance.accountId,
     };
