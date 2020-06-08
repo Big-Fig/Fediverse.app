@@ -12,7 +12,7 @@ class AccountFieldGridItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FediPrimaryFilledTextButton(
-      field.name,
+      field.name ?? field.value,
       onPressed: () {
         String link = UrlHelper.extractUrl(field.value);
         UrlHelper.handleUrlClick(context, link);
