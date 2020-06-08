@@ -44,7 +44,7 @@ class PublicTimelineTabBloc extends TimelineTabBloc
             paginationListWithNewItemsBloc.refreshController;
         if (refreshController.position != null) {
           // attached to UI
-          paginationListWithNewItemsBloc.refreshController.requestRefresh();
+          paginationListWithNewItemsBloc.refreshController.requestRefresh(needMove:false);
         } else {
           // not attached to UI
           paginationListWithNewItemsBloc.refresh();
