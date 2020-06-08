@@ -154,15 +154,22 @@ class NotificationTabsWidget extends StatelessWidget {
 
     var tabs = notificationsTabsBloc.tabs;
 
-    return TabBarView(
-        children: List<Widget>.generate(
-      tabs.length,
-      (int index) {
-        var tab = tabs[index];
+    return ClipRRect(
+      borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0)),
+      child: Container(
+        color: FediColors.white,
+        child: TabBarView(
+            children: List<Widget>.generate(
+          tabs.length,
+          (int index) {
+            var tab = tabs[index];
 
-        return buildTabBody(context, tab, notificationsTabsBloc);
-      },
-    ));
+            return buildTabBody(context, tab, notificationsTabsBloc);
+          },
+        )),
+      ),
+    );
   }
 
   Widget buildTabBody(BuildContext context, NotificationTab tab,
@@ -207,17 +214,11 @@ class NotificationTabsWidget extends StatelessWidget {
                     children: <Widget>[
                       Expanded(
                         child: Builder(
-                          builder: (context) => ClipRRect(
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(16.0),
-                                  topRight: Radius.circular(16.0)),
-                              child: Container(
-                                color: FediColors.white,
-                                child: NotificationPaginationListWidget(
-                                  needWatchLocalRepositoryForUpdates: true,
-                                  key: PageStorageKey("${tab.toString()}"),
-                                ),
-                              )),
+                          builder: (context) =>
+                              NotificationPaginationListWidget(
+                            needWatchLocalRepositoryForUpdates: true,
+                            key: PageStorageKey("${tab.toString()}"),
+                          ),
                         ),
                       ),
                       Align(
