@@ -276,8 +276,7 @@ class EditMyAccountWidget extends StatelessWidget {
           Flexible(
             child: buildCustomFieldTextField(
                 customField.valueField.textEditingController,
-                ("app.account.my.edit.field.custom_field.value"
-                        ".label")),
+                ("app.account.my.edit.field.custom_field.value.label".tr())),
           ),
         ],
       ),
