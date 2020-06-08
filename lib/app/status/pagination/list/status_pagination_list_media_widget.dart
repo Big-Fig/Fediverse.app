@@ -14,20 +14,7 @@ import 'package:provider/provider.dart';
 var _logger = Logger("status_pagination_list_media_widget.dart");
 
 class StatusPaginationListMediaWidget extends StatusPaginationListBaseWidget {
-  const StatusPaginationListMediaWidget({
-    @required Key key,
-    Widget header,
-    Widget footer,
-    bool alwaysShowHeader,
-    bool alwaysShowFooter,
-    ScrollController scrollController,
-  }) : super(
-            key: key,
-            header: header,
-            footer: footer,
-            alwaysShowFooter: alwaysShowFooter,
-            alwaysShowHeader: alwaysShowHeader,
-            scrollController: scrollController);
+  StatusPaginationListMediaWidget({@required Key key}) : super(key: key);
 
   @override
   ScrollView buildItemsCollectionView(
