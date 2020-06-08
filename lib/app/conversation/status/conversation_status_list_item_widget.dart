@@ -102,13 +102,13 @@ class ConversationStatusListItemWidget extends StatelessWidget {
           });
 
   Widget buildTextContent(IStatusBloc statusBloc, bool isStatusFromMe) =>
-      StreamBuilder<Object>(
+      StreamBuilder<String>(
           stream: statusBloc.contentWithEmojisStream,
           initialData: statusBloc.contentWithEmojis,
           builder: (context, snapshot) {
             var contentWithEmojis = snapshot.data;
 
-            if (contentWithEmojis != null) {
+            if (contentWithEmojis?.isNotEmpty == true) {
               return HtmlTextWidget(
                   shrinkWrap: true,
                   color:
