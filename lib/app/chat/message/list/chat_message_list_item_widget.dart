@@ -113,13 +113,13 @@ class ChatMessageListItemWidget extends StatelessWidget {
 
   Widget buildTextContent(
           IChatMessageBloc messageBloc, bool isChatMessageFromMe) =>
-      StreamBuilder<Object>(
+      StreamBuilder<String>(
           stream: messageBloc.contentWithEmojisStream,
           initialData: messageBloc.contentWithEmojis,
           builder: (context, snapshot) {
             var contentWithEmojis = snapshot.data;
 
-            if (contentWithEmojis != null) {
+            if (contentWithEmojis?.isNotEmpty == true) {
               return HtmlTextWidget(
                   shrinkWrap: true,
                   color: isChatMessageFromMe
