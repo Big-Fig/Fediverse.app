@@ -73,8 +73,7 @@ class ConversationListItemWidget extends StatelessWidget {
   IconButton buildGoToConversationButton(
       BuildContext context, IConversationBloc conversationBloc) {
     return IconButton(
-      tooltip: tr("app.conversation."
-          ".action.more"),
+      tooltip: tr("app.conversation.action.more"),
       color: FediColors.darkGrey,
       iconSize: 16.0,
       icon: Icon(FediIcons.arrow_right),
