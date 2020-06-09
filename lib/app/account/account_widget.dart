@@ -8,6 +8,10 @@ import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:flutter/material.dart';
 
 class AccountWidget extends StatelessWidget {
+  final VoidCallback onStatusesTapCallback;
+
+  AccountWidget({this.onStatusesTapCallback});
+
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: true);
@@ -15,7 +19,7 @@ class AccountWidget extends StatelessWidget {
     return Container(
       child: Column(
         children: <Widget>[
-          const AccountInfoWidget(),
+          AccountInfoWidget(onStatusesTapCallback: onStatusesTapCallback),
           if (!myAccountBloc.checkAccountIsMe(accountBloc.account))
             Container(
               color: FediColors.primaryColor,
@@ -27,6 +31,4 @@ class AccountWidget extends StatelessWidget {
       ),
     );
   }
-
-  const AccountWidget();
 }

@@ -16,6 +16,7 @@ import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_ite
 import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_container_with_overlay_widget.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
+import 'package:fedi/ui/scroll_controller_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -54,17 +55,28 @@ class AccountDetailsWidget extends StatelessWidget {
                 IPaginationListWithNewItemsBloc>(
               update: (context, value, previous) => value,
               child: PaginationListWithNewItemsContainerWithOverlayWidget(
-                textBuilder: (context, updateItemsCount) =>
-                    plural(
-                        "app.notification.list.new_items.action"
-                            ".tap_to_load_new", updateItemsCount),
+                textBuilder: (context, updateItemsCount) => plural(
+                    "app.notification.list.new_items.action"
+                    ".tap_to_load_new",
+                    updateItemsCount),
                 child: DisposableProvider<ICollapsibleBloc>(
                   create: (context) =>
                       CollapsibleBloc.createFromContext(context),
                   child: Stack(
                     children: <Widget>[
-                      const AccountStatusesWidget(
-                        header: AccountWidget(),
+                      AccountStatusesWidget(
+                        header: AccountWidget(
+                          onStatusesTapCallback: () {
+                            var scrollControllerBloc = IScrollControllerBloc.of(
+                                context,
+                                listen: false);
+                            scrollControllerBloc.scrollController.animateTo(
+                              MediaQuery.of(context).size.height / 2,
+                              duration: Duration(milliseconds: 500),
+                              curve: Curves.easeOut,
+                            );
+                          },
+                        ),
                         alwaysShowHeader: true,
                         key: PageStorageKey("AccountDetailsWidget"),
                       ),
