@@ -156,11 +156,44 @@ class PleromaStatusService implements IPleromaStatusService {
   }
 
   @override
-  Future<List<IPleromaAccount>> favouritedBy(
-      {@required String statusRemoteId}) async {
+  Future<List<IPleromaAccount>> favouritedBy({
+    @required String statusRemoteId,
+    String maxId,
+    String sinceId,
+    String minId,
+    int limit = 20,
+  }) async {
     var request = RestRequest.get(
+        queryArgs: [
+          RestRequestQueryArg("min_id", minId),
+          RestRequestQueryArg("max_id", maxId),
+          RestRequestQueryArg("since_id", sinceId),
+          RestRequestQueryArg("limit", limit.toString()),
+        ],
         relativePath:
             join(statusRelativeUrlPath, statusRemoteId, "favourited_by"));
+    var httpResponse = await restService.sendHttpRequest(request);
+
+    return parseAccountsResponse(httpResponse);
+  }
+
+  @override
+  Future<List<IPleromaAccount>> reblogedBy({
+    @required String statusRemoteId,
+    String maxId,
+    String sinceId,
+    String minId,
+    int limit = 20,
+  }) async {
+    var request = RestRequest.get(
+        queryArgs: [
+          RestRequestQueryArg("min_id", minId),
+          RestRequestQueryArg("max_id", maxId),
+          RestRequestQueryArg("since_id", sinceId),
+          RestRequestQueryArg("limit", limit.toString()),
+        ],
+        relativePath:
+            join(statusRelativeUrlPath, statusRemoteId, "rebloged_by"));
     var httpResponse = await restService.sendHttpRequest(request);
 
     return parseAccountsResponse(httpResponse);
@@ -193,20 +226,6 @@ class PleromaStatusService implements IPleromaStatusService {
     var httpResponse = await restService.sendHttpRequest(request);
 
     return parseStatusResponse(httpResponse);
-  }
-
-  @override
-  Future<List<IPleromaAccount>> reblogedBy(
-      {@required String statusRemoteId}) async {
-    var request = RestRequest.get(
-        relativePath: join(
-            statusRelativeUrlPath,
-            statusRemoteId,
-            "rebloged_by"
-            ""));
-    var httpResponse = await restService.sendHttpRequest(request);
-
-    return parseAccountsResponse(httpResponse);
   }
 
   @override
