@@ -11,7 +11,8 @@ Future<DbStatusPopulatedWrapper> createTestStatus(
     String remoteId,
     DateTime createdAt,
     DbAccountWrapper account,
-    DbStatusPopulatedWrapper reblog}) async {
+    DbStatusPopulatedWrapper reblog,
+    DbStatusPopulatedWrapper reply}) async {
   account = account ?? await createTestAccount(seed: seed);
   var dbAccount = account.dbAccount;
   return DbStatusPopulatedWrapper(DbStatusPopulated(
@@ -23,6 +24,10 @@ Future<DbStatusPopulatedWrapper> createTestStatus(
     dbAccount: dbAccount,
     reblogDbStatus: reblog?.dbStatusPopulated?.dbStatus,
     reblogDbStatusAccount: reblog?.dbStatusPopulated?.dbAccount,
+    replyDbStatus: reply?.dbStatusPopulated?.dbStatus,
+    replyDbStatusAccount: reply?.dbStatusPopulated?.dbAccount,
+    replyReblogDbStatus: reply?.dbStatusPopulated?.reblogDbStatus,
+    replyReblogDbStatusAccount: reply?.dbStatusPopulated?.reblogDbStatusAccount,
   ));
 }
 

@@ -59,10 +59,15 @@ void main() {
     dbStatus = dbStatus.copyWith(reblogStatusRemoteId: reblogDbStatus.remoteId);
 
     dbStatusPopulated = DbStatusPopulated(
-        dbStatus: dbStatus,
-        dbAccount: dbAccount,
-        reblogDbStatus: reblogDbStatus,
-        reblogDbStatusAccount: reblogDbAccount);
+      dbStatus: dbStatus,
+      dbAccount: dbAccount,
+      reblogDbStatus: reblogDbStatus,
+      reblogDbStatusAccount: reblogDbAccount,
+      replyReblogDbStatus: null,
+      replyDbStatusAccount: null,
+      replyDbStatus: null,
+      replyReblogDbStatusAccount: null,
+    );
 
     await statusRepository.insert(dbStatus);
 
@@ -126,10 +131,15 @@ void main() {
         DbConversationWrapper(
             dbConversation.copyWith(id: id, remoteId: newRemoteId)),
         lastStatus: DbStatusPopulatedWrapper(DbStatusPopulated(
-            dbStatus: dbStatus.copyWith(content: newContent),
-            dbAccount: dbAccount.copyWith(acct: newAcct),
-            reblogDbStatus: null,
-            reblogDbStatusAccount: null)),
+          dbStatus: dbStatus.copyWith(content: newContent),
+          dbAccount: dbAccount.copyWith(acct: newAcct),
+          reblogDbStatus: null,
+          reblogDbStatusAccount: null,
+          replyReblogDbStatus: null,
+          replyDbStatusAccount: null,
+          replyReblogDbStatusAccount: null,
+          replyDbStatus: null,
+        )),
         accounts: [DbAccountWrapper(dbAccount.copyWith(acct: newAcct))]);
     await conversationRepository.updateLocalConversationByRemoteConversation(
       oldLocalConversation: oldLocalConversation,
@@ -363,8 +373,7 @@ void main() {
     expect((await query.get()).length, 2);
   });
 
-  test('createQuery notNewerThan & newerThan',
-      () async {
+  test('createQuery notNewerThan & newerThan', () async {
     var query = conversationRepository.createQuery(
         newerThan: await createTestConversation(
             seed: "remoteId2", remoteId: "remoteId2"),

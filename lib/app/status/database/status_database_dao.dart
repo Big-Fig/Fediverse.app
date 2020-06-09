@@ -10,6 +10,10 @@ part 'status_database_dao.g.dart';
 var _accountAliasId = "account";
 var _reblogAliasId = "reblog";
 var _reblogAccountAliasId = "reblogAccount";
+var _replyAliasId = "reply";
+var _replyAccountAliasId = "replyAccount";
+var _replyReblogAliasId = "replyReblog";
+var _replyReblogAccountAliasId = "replyReblogAccount";
 var _statusAliasId = "status";
 var _accountFollowingsAliasId = "accountFollowings";
 var _statusHashtagsAliasId = "statusHashtags";
@@ -34,6 +38,10 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   $DbAccountsTable accountAlias;
   $DbStatusesTable reblogAlias;
   $DbAccountsTable reblogAccountAlias;
+  $DbStatusesTable replyAlias;
+  $DbAccountsTable replyAccountAlias;
+  $DbStatusesTable replyReblogAlias;
+  $DbAccountsTable replyReblogAccountAlias;
   $DbStatusesTable statusAlias;
   $DbStatusHashtagsTable statusHashtagsAlias;
   $DbStatusListsTable statusListsAlias;
@@ -46,6 +54,10 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
     accountAlias = alias(db.dbAccounts, _accountAliasId);
     reblogAlias = alias(db.dbStatuses, _reblogAliasId);
     reblogAccountAlias = alias(db.dbAccounts, _reblogAccountAliasId);
+    replyAlias = alias(db.dbStatuses, _replyAliasId);
+    replyAccountAlias = alias(db.dbAccounts, _replyAccountAliasId);
+    replyReblogAlias = alias(db.dbStatuses, _replyReblogAliasId);
+    replyReblogAccountAlias = alias(db.dbAccounts, _replyReblogAccountAliasId);
     statusAlias = alias(db.dbStatuses, _statusAliasId);
     accountFollowingsAlias =
         alias(db.dbAccountFollowings, _accountFollowingsAliasId);
@@ -208,7 +220,6 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
       query..where((status) => isNull(status.inReplyToRemoteId));
 
-
   /// remote ids are strings but it is possible to compare them in
   /// chronological order
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addRemoteIdBoundsWhere(
@@ -284,10 +295,16 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
 //    _logger.finest(() => "rebloggedStatus $rebloggedStatus");
 //    _logger.finest(() => "rebloggedStatusAccount $rebloggedStatusAccount");
     return DbStatusPopulated(
-        reblogDbStatus: rebloggedStatus,
-        reblogDbStatusAccount: rebloggedStatusAccount,
-        dbStatus: typedResult.readTable(db.dbStatuses),
-        dbAccount: typedResult.readTable(accountAlias));
+      reblogDbStatus: rebloggedStatus,
+      reblogDbStatusAccount: rebloggedStatusAccount,
+      dbStatus: typedResult.readTable(db.dbStatuses),
+      dbAccount: typedResult.readTable(accountAlias),
+      replyDbStatus: typedResult.readTable(replyAlias),
+      replyDbStatusAccount: typedResult.readTable(replyAccountAlias),
+      replyReblogDbStatus: typedResult.readTable(replyReblogAlias),
+      replyReblogDbStatusAccount:
+          typedResult.readTable(replyReblogAccountAlias),
+    );
   }
 
   List<Join<Table, DataClass>> populateStatusJoin({
@@ -309,6 +326,23 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
       leftOuterJoin(
         reblogAccountAlias,
         reblogAccountAlias.remoteId.equalsExp(reblogAlias.accountRemoteId),
+      ),
+      leftOuterJoin(
+        replyAlias,
+        replyAlias.remoteId.equalsExp(dbStatuses.inReplyToRemoteId),
+      ),
+      leftOuterJoin(
+        replyAccountAlias,
+        replyAccountAlias.remoteId.equalsExp(replyAlias.accountRemoteId),
+      ),
+      leftOuterJoin(
+        replyReblogAlias,
+        replyReblogAlias.remoteId.equalsExp(replyAlias.reblogStatusRemoteId),
+      ),
+      leftOuterJoin(
+        replyReblogAccountAlias,
+        replyReblogAccountAlias.remoteId
+            .equalsExp(replyReblogAlias.accountRemoteId),
       ),
       ...(includeAccountFollowing
           ? [

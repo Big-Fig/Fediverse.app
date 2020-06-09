@@ -8,20 +8,22 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../../pleroma/application/pleroma_application_model_helper.dart';
 import '../../account/database/account_database_model_helper.dart';
 
-
 Future<DbStatusPopulated> createTestDbStatusPopulated(
     DbStatus dbStatus, AccountRepository accountRepository) async {
   DbStatusPopulated dbStatusPopulated = DbStatusPopulated(
     dbStatus: dbStatus,
     dbAccount:
-    (await accountRepository.findByRemoteId(dbStatus.accountRemoteId))
-        .dbAccount,
+        (await accountRepository.findByRemoteId(dbStatus.accountRemoteId))
+            .dbAccount,
     reblogDbStatus: null,
     reblogDbStatusAccount: null,
+    replyReblogDbStatus: null,
+    replyDbStatusAccount: null,
+    replyReblogDbStatusAccount: null,
+    replyDbStatus: null,
   );
   return dbStatusPopulated;
 }
-
 
 Future<DbStatus> createTestDbStatus({
   @required String seed,

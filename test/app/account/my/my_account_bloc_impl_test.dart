@@ -430,24 +430,38 @@ void main() {
 
   test('checkIsStatusFromMe', () async {
     var dbAccount = await createTestDbAccount(seed: "seed3");
-    var dbStatus = await createTestDbStatus(seed: "seed4", dbAccount: dbAccount);
+    var dbStatus =
+        await createTestDbStatus(seed: "seed4", dbAccount: dbAccount);
 
     expect(
-        myAccountBloc.checkIsStatusFromMe(DbStatusPopulatedWrapper(
+        myAccountBloc.checkIsStatusFromMe(
+          DbStatusPopulatedWrapper(
             DbStatusPopulated(
-                dbStatus: dbStatus,
-                dbAccount: dbAccount.copyWith(remoteId: myAccount.remoteId),
-                reblogDbStatusAccount: null,
-                reblogDbStatus: null))),
+              dbStatus: dbStatus,
+              dbAccount: dbAccount.copyWith(remoteId: myAccount.remoteId),
+              reblogDbStatusAccount: null,
+              reblogDbStatus: null,
+              replyReblogDbStatusAccount: null,
+              replyDbStatusAccount: null,
+              replyDbStatus: null,
+              replyReblogDbStatus: null,
+            ),
+          ),
+        ),
         true);
 
     expect(
-        myAccountBloc.checkIsStatusFromMe(DbStatusPopulatedWrapper(
-            DbStatusPopulated(
-                dbStatus: dbStatus,
-                dbAccount: dbAccount.copyWith(remoteId: "invalidRemoteId"),
-                reblogDbStatus: null,
-                reblogDbStatusAccount: null))),
+        myAccountBloc
+            .checkIsStatusFromMe(DbStatusPopulatedWrapper(DbStatusPopulated(
+          dbStatus: dbStatus,
+          dbAccount: dbAccount.copyWith(remoteId: "invalidRemoteId"),
+          reblogDbStatus: null,
+          reblogDbStatusAccount: null,
+          replyReblogDbStatusAccount: null,
+          replyDbStatusAccount: null,
+          replyDbStatus: null,
+          replyReblogDbStatus: null,
+        ))),
         false);
   });
 }

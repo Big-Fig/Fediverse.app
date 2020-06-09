@@ -49,6 +49,10 @@ abstract class AsyncInitLoadingBloc extends AsyncLoadingService
     }
   }
 
+  void markAsAlreadyInitialized() {
+    _isInitLoadingSubject.add(AsyncInitLoadingState.finished);
+  }
+
   @protected
   Future internalAsyncInit();
 }

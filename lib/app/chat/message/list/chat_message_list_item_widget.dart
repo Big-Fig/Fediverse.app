@@ -36,28 +36,29 @@ class ChatMessageListItemWidget extends StatelessWidget {
     return Align(
       alignment: alignment,
       child: Column(
-        crossAxisAlignment:
-        isChatMessageFromMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        crossAxisAlignment: isChatMessageFromMe
+            ? CrossAxisAlignment.end
+            : CrossAxisAlignment.start,
         children: [
           Container(
             decoration: BoxDecoration(
               color: isHaveTextContent
                   ? isChatMessageFromMe
-                  ? FediColors.primaryColorDark
-                  : FediColors.ultraLightGrey
+                      ? FediColors.primaryColorDark
+                      : FediColors.ultraLightGrey
                   : Colors.transparent,
               borderRadius: isHaveTextContent
                   ? isChatMessageFromMe
-                  ? BorderRadius.only(
-                  topLeft: _borderRadius,
-                  topRight:
-                  isLastInMinuteGroup ? _borderRadius : Radius.zero,
-                  bottomLeft: _borderRadius)
-                  : BorderRadius.only(
-                  topLeft:
-                  isLastInMinuteGroup ? _borderRadius : Radius.zero,
-                  topRight: _borderRadius,
-                  bottomRight: _borderRadius)
+                      ? BorderRadius.only(
+                          topLeft: _borderRadius,
+                          topRight:
+                              isLastInMinuteGroup ? _borderRadius : Radius.zero,
+                          bottomLeft: _borderRadius)
+                      : BorderRadius.only(
+                          topLeft:
+                              isLastInMinuteGroup ? _borderRadius : Radius.zero,
+                          topRight: _borderRadius,
+                          bottomRight: _borderRadius)
                   : BorderRadius.zero,
             ),
             constraints: BoxConstraints(maxWidth: deviceWidth * 0.80),
@@ -68,22 +69,23 @@ class ChatMessageListItemWidget extends StatelessWidget {
               child: isHaveTextContent
                   ? buildContent(context, messageBloc, isChatMessageFromMe)
                   : ClipRRect(
-                borderRadius: isChatMessageFromMe
-                    ? BorderRadius.only(
-                    topLeft: _borderRadius,
-                    topRight: isLastInMinuteGroup
-                        ? _borderRadius
-                        : Radius.zero,
-                    bottomLeft: _borderRadius)
-                    : BorderRadius.only(
-                  topLeft: isLastInMinuteGroup
-                      ? _borderRadius
-                      : Radius.zero,
-                  topRight: _borderRadius,
-                  bottomRight: _borderRadius,
-                ),
-                child: buildContent(context, messageBloc, isChatMessageFromMe),
-              ),
+                      borderRadius: isChatMessageFromMe
+                          ? BorderRadius.only(
+                              topLeft: _borderRadius,
+                              topRight: isLastInMinuteGroup
+                                  ? _borderRadius
+                                  : Radius.zero,
+                              bottomLeft: _borderRadius)
+                          : BorderRadius.only(
+                              topLeft: isLastInMinuteGroup
+                                  ? _borderRadius
+                                  : Radius.zero,
+                              topRight: _borderRadius,
+                              bottomRight: _borderRadius,
+                            ),
+                      child: buildContent(
+                          context, messageBloc, isChatMessageFromMe),
+                    ),
             ),
           ),
           if (isFirstInMinuteGroup)
@@ -108,9 +110,9 @@ class ChatMessageListItemWidget extends StatelessWidget {
   Widget buildContent(BuildContext context, IChatMessageBloc messageBloc,
       bool isChatMessageFromMe) {
     return Column(
-      crossAxisAlignment:
-          isChatMessageFromMe ?  CrossAxisAlignment.end : CrossAxisAlignment
-              .start,
+      crossAxisAlignment: isChatMessageFromMe
+          ? CrossAxisAlignment.end
+          : CrossAxisAlignment.start,
       children: <Widget>[
         buildTextContent(messageBloc, isChatMessageFromMe),
         buildMediaContent(messageBloc),

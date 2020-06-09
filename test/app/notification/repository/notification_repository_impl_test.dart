@@ -67,10 +67,15 @@ void main() {
     dbStatus = dbStatus.copyWith(reblogStatusRemoteId: reblogDbStatus.remoteId);
 
     dbStatusPopulated = DbStatusPopulated(
-        dbStatus: dbStatus,
-        dbAccount: dbAccount,
-        reblogDbStatus: reblogDbStatus,
-        reblogDbStatusAccount: reblogDbAccount);
+      dbStatus: dbStatus,
+      dbAccount: dbAccount,
+      reblogDbStatus: reblogDbStatus,
+      reblogDbStatusAccount: reblogDbAccount,
+      replyReblogDbStatus: null,
+      replyDbStatusAccount: null,
+      replyReblogDbStatusAccount: null,
+      replyDbStatus: null,
+    );
 
     await statusRepository.insert(dbStatus);
 
@@ -152,6 +157,10 @@ void main() {
               dbAccount: dbAccount.copyWith(acct: newAcct),
               reblogDbStatusAccount: null,
               reblogDbStatus: null,
+              replyReblogDbStatus: null,
+              replyDbStatusAccount: null,
+              replyReblogDbStatusAccount: null,
+              replyDbStatus: null,
             ))));
     await notificationRepository.updateLocalNotificationByRemoteNotification(
       oldLocalNotification: oldLocalNotification,

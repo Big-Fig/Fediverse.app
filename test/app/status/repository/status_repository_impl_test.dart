@@ -73,10 +73,15 @@ void main() {
     dbStatus = dbStatus.copyWith(reblogStatusRemoteId: reblogDbStatus.remoteId);
 
     dbStatusPopulated = DbStatusPopulated(
-        dbStatus: dbStatus,
-        dbAccount: dbAccount,
-        reblogDbStatus: reblogDbStatus,
-        reblogDbStatusAccount: reblogDbAccount);
+      dbStatus: dbStatus,
+      dbAccount: dbAccount,
+      reblogDbStatus: reblogDbStatus,
+      reblogDbStatusAccount: reblogDbAccount,
+      replyReblogDbStatus: null,
+      replyDbStatusAccount: null,
+      replyReblogDbStatusAccount: null,
+      replyDbStatus: null,
+    );
 
     assert(reblogStatusId != null, true);
 
@@ -178,18 +183,28 @@ void main() {
     assert(id != null, true);
 
     var oldLocalStatus = DbStatusPopulatedWrapper(DbStatusPopulated(
-        dbStatus: dbStatus.copyWith(id: id),
-        dbAccount: dbAccount,
-        reblogDbStatus: null,
-        reblogDbStatusAccount: null));
+      dbStatus: dbStatus.copyWith(id: id),
+      dbAccount: dbAccount,
+      reblogDbStatus: null,
+      reblogDbStatusAccount: null,
+      replyReblogDbStatus: null,
+      replyDbStatusAccount: null,
+      replyReblogDbStatusAccount: null,
+      replyDbStatus: null,
+    ));
     var newContent = "newContent";
     var newAcct = "newAcct";
-    var newRemoteStatus = mapLocalStatusToRemoteStatus(DbStatusPopulatedWrapper(
-        DbStatusPopulated(
-            dbStatus: dbStatus.copyWith(id: id, content: newContent),
-            dbAccount: dbAccount.copyWith(acct: newAcct),
-            reblogDbStatus: null,
-            reblogDbStatusAccount: null)));
+    var newRemoteStatus =
+        mapLocalStatusToRemoteStatus(DbStatusPopulatedWrapper(DbStatusPopulated(
+      dbStatus: dbStatus.copyWith(id: id, content: newContent),
+      dbAccount: dbAccount.copyWith(acct: newAcct),
+      reblogDbStatus: null,
+      reblogDbStatusAccount: null,
+      replyReblogDbStatus: null,
+      replyDbStatusAccount: null,
+      replyReblogDbStatusAccount: null,
+      replyDbStatus: null,
+    )));
     await statusRepository.updateLocalStatusByRemoteStatus(
       oldLocalStatus: oldLocalStatus,
       newRemoteStatus: newRemoteStatus,
@@ -242,24 +257,24 @@ void main() {
 
   test('createQuery containsBaseUrlOrIsPleromaLocal', () async {
     var query = statusRepository.createQuery(
-        onlyInConversation: null,
-        onlyFromAccount: null,
-        onlyWithMedia: null,
-        onlyNotMuted: null,
-        excludeVisibilities: null,
-        newerThanStatus: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        onlyNoNsfwSensitive: null,
-        onlyLocal: OnlyLocalStatusFilter("pleroma.com"),
-        onlyNoReplies: null,
-        onlyWithHashtag: null,
-        onlyFromAccountsFollowingByAccount: null,
-        isFromHomeTimeline: null,
-        olderThanStatus: null,
-        onlyInListWithRemoteId: null,
-        );
+      onlyInConversation: null,
+      onlyFromAccount: null,
+      onlyWithMedia: null,
+      onlyNotMuted: null,
+      excludeVisibilities: null,
+      newerThanStatus: null,
+      limit: null,
+      offset: null,
+      orderingTermData: null,
+      onlyNoNsfwSensitive: null,
+      onlyLocal: OnlyLocalStatusFilter("pleroma.com"),
+      onlyNoReplies: null,
+      onlyWithHashtag: null,
+      onlyFromAccountsFollowingByAccount: null,
+      isFromHomeTimeline: null,
+      olderThanStatus: null,
+      onlyInListWithRemoteId: null,
+    );
 
     await insertDbStatus(
         statusRepository,
@@ -863,7 +878,8 @@ void main() {
             acct: null,
             lastStatusAt: null)),
         olderThanStatus: null,
-        onlyInListWithRemoteId: null, isFromHomeTimeline: null);
+        onlyInListWithRemoteId: null,
+        isFromHomeTimeline: null);
 
     await insertDbStatus(
         statusRepository,

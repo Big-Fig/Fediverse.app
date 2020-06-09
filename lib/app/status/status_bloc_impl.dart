@@ -211,9 +211,12 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   }
 
   @override
-  Future<IStatus> getInReplyToStatus() {
+  Future<IStatus> getInReplyToStatus() async {
     assert(status.inReplyToRemoteId != null);
-    return statusRepository.findByRemoteId(status.inReplyToRemoteId);
+    if (status.inReplyToStatus != null) {
+      return status.inReplyToStatus;
+    }
+    return await statusRepository.findByRemoteId(status.inReplyToRemoteId);
   }
 
   @override

@@ -226,10 +226,15 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
           typedResult.readTable(statusReblogAccountAlias);
 
       statusPopulated = DbStatusPopulated(
-          reblogDbStatus: rebloggedStatus,
-          reblogDbStatusAccount: rebloggedStatusAccount,
-          dbStatus: notificationStatus,
-          dbAccount: notificationStatusAccount);
+        reblogDbStatus: rebloggedStatus,
+        reblogDbStatusAccount: rebloggedStatusAccount,
+        dbStatus: notificationStatus,
+        dbAccount: notificationStatusAccount,
+        replyDbStatus: null,
+        replyDbStatusAccount: null,
+        replyReblogDbStatus: null,
+        replyReblogDbStatusAccount: null,
+      );
     }
 
     return DbNotificationPopulated(
@@ -242,12 +247,9 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
   Selectable<int> countUnreadExcludeTypes(List<String> excludeTypes) {
     var query = 'SELECT COUNT(*) FROM db_notifications WHERE unread = 1 AND '
         'type NOT IN '
-            '(${excludeTypes.map((type) => "'$type'").join(", ")})';
-    return customSelectQuery(
-        query,
-        readsFrom: {
-          dbNotifications
-        }).map((QueryRow row) => row.readInt('COUNT(*)'));
+        '(${excludeTypes.map((type) => "'$type'").join(", ")})';
+    return customSelectQuery(query, readsFrom: {dbNotifications})
+        .map((QueryRow row) => row.readInt('COUNT(*)'));
   }
 
   List<Join<Table, DataClass>> populateNotificationJoin() {
