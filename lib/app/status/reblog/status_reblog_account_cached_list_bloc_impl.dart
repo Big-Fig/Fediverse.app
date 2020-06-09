@@ -41,11 +41,11 @@ class StatusReblogAccountCachedListBloc extends DisposableOwner
       List<IPleromaAccount> remoteAccounts;
 
       remoteAccounts =
-          await pleromaStatusService.reblogedBy(statusRemoteId: status.remoteId
-              // pagination not supported
-//          maxId: olderThanAccount?.remoteId,
-//          sinceId: newerThanAccount?.remoteId,
-//          limit: limit
+          await pleromaStatusService.reblogedBy(statusRemoteId: status.remoteId,
+
+          maxId: olderThan?.remoteId,
+          sinceId: newerThan?.remoteId,
+          limit: limit
               );
 
       if (remoteAccounts != null) {

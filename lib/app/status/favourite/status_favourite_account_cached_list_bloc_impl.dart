@@ -41,11 +41,11 @@ class StatusFavouriteAccountCachedListBloc extends DisposableOwner
       List<IPleromaAccount> remoteAccounts;
 
       remoteAccounts = await pleromaStatusService.favouritedBy(
-          statusRemoteId: status.remoteId
-          // pagination not supported
-//          maxId: olderThanAccount?.remoteId,
-//          sinceId: newerThanAccount?.remoteId,
-//          limit: limit
+          statusRemoteId: status.remoteId,
+
+          maxId: olderThan?.remoteId,
+          sinceId: newerThan?.remoteId,
+          limit: limit
           );
 
       if (remoteAccounts != null) {

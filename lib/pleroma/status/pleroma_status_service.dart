@@ -41,7 +41,19 @@ abstract class IPleromaStatusService implements IPleromaApi {
 
   Future<IPleromaStatus> unReblogStatus({@required String statusRemoteId});
 
-  Future<List<IPleromaAccount>> favouritedBy({@required String statusRemoteId});
+  Future<List<IPleromaAccount>> favouritedBy({
+    @required String statusRemoteId,
+    String maxId,
+    String sinceId,
+    String minId,
+    int limit = 20,
+  });
 
-  Future<List<IPleromaAccount>> reblogedBy({@required String statusRemoteId});
+  Future<List<IPleromaAccount>> reblogedBy({
+    @required String statusRemoteId,
+    String maxId,
+    String sinceId,
+    String minId,
+    int limit = 20,
+  });
 }
