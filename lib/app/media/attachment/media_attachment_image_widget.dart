@@ -28,7 +28,7 @@ class MediaAttachmentImageWidget extends StatelessWidget {
             ),
           ),
           imageBuilder: (context, imageProvider) {
-            if(maxHeight != null) {
+            if (maxHeight != null) {
               return LimitedBox(
                 maxHeight: maxHeight,
                 child: Image(
@@ -40,10 +40,8 @@ class MediaAttachmentImageWidget extends StatelessWidget {
                 image: imageProvider,
               );
             }
-
           },
-          errorWidget: (context, url, error) =>
-              Icon(Icons.error),
+          errorWidget: (context, url, error) => Icon(Icons.error),
         ));
   }
 }

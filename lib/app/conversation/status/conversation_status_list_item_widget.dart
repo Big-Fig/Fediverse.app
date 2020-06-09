@@ -8,7 +8,6 @@ import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dar
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-
 const _borderRadius = Radius.circular(16.0);
 
 class ConversationStatusListItemWidget extends StatelessWidget {
@@ -32,6 +31,7 @@ class ConversationStatusListItemWidget extends StatelessWidget {
 
     var alignment =
         isStatusFromMe ? Alignment.centerRight : Alignment.centerLeft;
+    var isHaveTextContent = statusBloc?.content?.isNotEmpty == true;
     return Align(
       alignment: alignment,
       child: Column(
@@ -40,24 +40,49 @@ class ConversationStatusListItemWidget extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-                color: isStatusFromMe
-                    ? FediColors.primaryColorDark
-                    : FediColors.ultraLightGrey,
-                borderRadius: isStatusFromMe
-                    ? BorderRadius.only(
-                        topLeft: _borderRadius,
-                        topRight:
-                            isLastInMinuteGroup ? _borderRadius : Radius.zero,
-                        bottomLeft: _borderRadius)
-                    : BorderRadius.only(
-                        topLeft:
-                            isLastInMinuteGroup ? _borderRadius : Radius.zero,
-                        topRight: _borderRadius,
-                        bottomRight: _borderRadius)),
+              color: isHaveTextContent
+                  ? isStatusFromMe
+                      ? FediColors.primaryColorDark
+                      : FediColors.ultraLightGrey
+                  : Colors.transparent,
+              borderRadius: isHaveTextContent
+                  ? isStatusFromMe
+                      ? BorderRadius.only(
+                          topLeft: _borderRadius,
+                          topRight:
+                              isLastInMinuteGroup ? _borderRadius : Radius.zero,
+                          bottomLeft: _borderRadius)
+                      : BorderRadius.only(
+                          topLeft:
+                              isLastInMinuteGroup ? _borderRadius : Radius.zero,
+                          topRight: _borderRadius,
+                          bottomRight: _borderRadius)
+                  : BorderRadius.zero,
+            ),
             constraints: BoxConstraints(maxWidth: deviceWidth * 0.80),
             child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              child: buildContent(context, statusBloc, isStatusFromMe),
+              padding: isHaveTextContent
+                  ? EdgeInsets.symmetric(vertical: 12, horizontal: 16)
+                  : EdgeInsets.zero,
+              child: isHaveTextContent
+                  ? buildContent(context, statusBloc, isStatusFromMe)
+                  : ClipRRect(
+                      borderRadius: isStatusFromMe
+                          ? BorderRadius.only(
+                              topLeft: _borderRadius,
+                              topRight: isLastInMinuteGroup
+                                  ? _borderRadius
+                                  : Radius.zero,
+                              bottomLeft: _borderRadius)
+                          : BorderRadius.only(
+                              topLeft: isLastInMinuteGroup
+                                  ? _borderRadius
+                                  : Radius.zero,
+                              topRight: _borderRadius,
+                              bottomRight: _borderRadius,
+                            ),
+                      child: buildContent(context, statusBloc, isStatusFromMe),
+                    ),
             ),
           ),
           if (isFirstInMinuteGroup)

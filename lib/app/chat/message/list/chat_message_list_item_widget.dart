@@ -32,33 +32,58 @@ class ChatMessageListItemWidget extends StatelessWidget {
 
     var alignment =
         isChatMessageFromMe ? Alignment.centerRight : Alignment.centerLeft;
+    var isHaveTextContent = messageBloc?.content?.isNotEmpty == true;
     return Align(
       alignment: alignment,
       child: Column(
-        crossAxisAlignment: isChatMessageFromMe
-            ? CrossAxisAlignment.end
-            : CrossAxisAlignment.start,
+        crossAxisAlignment:
+        isChatMessageFromMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
           Container(
             decoration: BoxDecoration(
-                color: isChatMessageFromMe
-                    ? FediColors.primaryColorDark
-                    : FediColors.ultraLightGrey,
-                borderRadius: isChatMessageFromMe
-                    ? BorderRadius.only(
-                        topLeft: _borderRadius,
-                        topRight:
-                            isLastInMinuteGroup ? _borderRadius : Radius.zero,
-                        bottomLeft: _borderRadius)
-                    : BorderRadius.only(
-                        topLeft:
-                            isLastInMinuteGroup ? _borderRadius : Radius.zero,
-                        topRight: _borderRadius,
-                        bottomRight: _borderRadius)),
+              color: isHaveTextContent
+                  ? isChatMessageFromMe
+                  ? FediColors.primaryColorDark
+                  : FediColors.ultraLightGrey
+                  : Colors.transparent,
+              borderRadius: isHaveTextContent
+                  ? isChatMessageFromMe
+                  ? BorderRadius.only(
+                  topLeft: _borderRadius,
+                  topRight:
+                  isLastInMinuteGroup ? _borderRadius : Radius.zero,
+                  bottomLeft: _borderRadius)
+                  : BorderRadius.only(
+                  topLeft:
+                  isLastInMinuteGroup ? _borderRadius : Radius.zero,
+                  topRight: _borderRadius,
+                  bottomRight: _borderRadius)
+                  : BorderRadius.zero,
+            ),
             constraints: BoxConstraints(maxWidth: deviceWidth * 0.80),
             child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              child: buildContent(context, messageBloc, isChatMessageFromMe),
+              padding: isHaveTextContent
+                  ? EdgeInsets.symmetric(vertical: 12, horizontal: 16)
+                  : EdgeInsets.zero,
+              child: isHaveTextContent
+                  ? buildContent(context, messageBloc, isChatMessageFromMe)
+                  : ClipRRect(
+                borderRadius: isChatMessageFromMe
+                    ? BorderRadius.only(
+                    topLeft: _borderRadius,
+                    topRight: isLastInMinuteGroup
+                        ? _borderRadius
+                        : Radius.zero,
+                    bottomLeft: _borderRadius)
+                    : BorderRadius.only(
+                  topLeft: isLastInMinuteGroup
+                      ? _borderRadius
+                      : Radius.zero,
+                  topRight: _borderRadius,
+                  bottomRight: _borderRadius,
+                ),
+                child: buildContent(context, messageBloc, isChatMessageFromMe),
+              ),
             ),
           ),
           if (isFirstInMinuteGroup)
