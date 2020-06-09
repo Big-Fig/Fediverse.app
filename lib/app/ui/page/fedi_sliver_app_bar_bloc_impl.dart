@@ -15,6 +15,7 @@ class FediSliverAppBarBloc extends DisposableOwner
 
   @override
   bool get isAtLeastStartExpand => isAtLeastStartExpandSubject.value;
+
   @override
   Stream<bool> get isAtLeastStartExpandStream =>
       isAtLeastStartExpandSubject.stream;
@@ -41,7 +42,16 @@ class FediSliverAppBarBloc extends DisposableOwner
     scrollController.addListener(listener);
 
     addDisposable(custom: () {
-      scrollController.removeListener(listener);
+      try {
+        scrollController.removeListener(listener);
+      } catch (e, stackTrace) {
+        _logger.warning(
+          () => "failed to unsubscribe scrollController"
+              ".removeListener(listener);",
+          e,
+          stackTrace,
+        );
+      }
     });
   }
 
