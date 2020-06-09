@@ -630,6 +630,15 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
       reblogOrOriginalStream.map((status) => status.spoilerText);
 
   @override
+  String get spoilerTextWithEmojis =>
+      addEmojiToHtmlContent(spoilerText, status.emojis);
+
+  @override
+  Stream<String> get spoilerTextWithEmojisStream => statusStream
+      .map((status) => addEmojiToHtmlContent(status.spoilerText, status.emojis))
+      .distinct();
+
+  @override
   bool get containsSpoiler => spoilerText?.isNotEmpty == true;
 
   @override
