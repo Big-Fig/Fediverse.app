@@ -7,6 +7,7 @@ import 'package:fedi/app/ui/button/text/fedi_grey_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
+import 'package:fedi/build_info/version_build_info_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -45,14 +46,31 @@ class CurrentAuthInstanceContextLoadingWidget extends StatelessWidget {
                       child: Scaffold(
                         backgroundColor: FediColors.primaryColor,
                         body: SafeArea(
-                          child: Center(
-                              child: Text(
-                            tr(
-                                "app.auth.instance.current.context.loading.loading"
-                                ".content",
-                                args: [myAccountBloc.instance.userAtHost]),
-                            style: TextStyle(color: Colors.white),
-                          )),
+                          child: Stack(
+                            children: [
+                              Center(
+                                child: Text(
+                                  tr(
+                                      "app.auth.instance.current.context.loading.loading"
+                                      ".content",
+                                      args: [
+                                        myAccountBloc.instance.userAtHost
+                                      ]),
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                              Positioned(
+                                right: 20.0,
+                                bottom: 20.0,
+                                child: VersionBuildInfoWidget(
+                                  textStyle: TextStyle(
+                                    color: FediColors.white,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     );
