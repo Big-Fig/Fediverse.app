@@ -1,8 +1,8 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fedi/app/media/attachment/media_attachment_audio_widget.dart';
 import 'package:fedi/app/media/attachment/media_attachment_image_widget.dart';
 import 'package:fedi/app/media/attachment/media_attachment_video_widget.dart';
 import 'package:fedi/mastodon/media/attachment/mastodon_media_attachment_model.dart';
+import 'package:fedi/media/media_carousel_widget.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,12 +20,9 @@ class MediaAttachmentsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (mediaAttachments?.isNotEmpty == true) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4.0),
-        child: SizedBox(
-          width: double.infinity,
-          child: buildChildren(context, mediaAttachments),
-        ),
+      return SizedBox(
+        width: double.infinity,
+        child: buildChildren(context, mediaAttachments),
       );
     } else {
       return SizedBox.shrink();
@@ -63,17 +60,9 @@ class MediaAttachmentsWidget extends StatelessWidget {
     if (children.length == 1) {
       return children.first;
     } else {
-      return buildCarousel(context, children);
+      return MediaCarouselWidget(
+        children: children,
+      );
     }
-  }
-
-  Widget buildCarousel(BuildContext context, List<Widget> children) {
-    return CarouselSlider(
-      items: children,
-      options: CarouselOptions(
-        viewportFraction: 0.8,
-        enableInfiniteScroll: false,
-      ),
-    );
   }
 }
