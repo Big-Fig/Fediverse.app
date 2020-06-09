@@ -8,11 +8,13 @@ class EmojiTextWidget extends StatelessWidget {
   final TextStyle textStyle;
   final TextOverflow textOverflow;
   final double emojiSize;
+  final TextAlign textAlign;
 
   const EmojiTextWidget({
     @required this.emojiText,
     this.emojiSize = 19.0,
     this.textStyle,
+    this.textAlign = TextAlign.start,
     this.textOverflow = TextOverflow.ellipsis,
   });
 
@@ -24,6 +26,7 @@ class EmojiTextWidget extends StatelessWidget {
       return Text(
         emojiText.text,
         style: textStyle,
+        textAlign: textAlign,
         overflow: textOverflow,
       );
     }
@@ -72,6 +75,7 @@ class EmojiTextWidget extends StatelessWidget {
 
     return RichText(
       overflow: textOverflow,
+      textAlign: textAlign,
       text: TextSpan(
         children: spans,
       ),

@@ -6,8 +6,18 @@ import 'package:flutter/cupertino.dart';
 
 class AccountDisplayNameWidget extends StatelessWidget {
   final TextOverflow textOverflow;
+  final TextStyle textStyle;
+  final TextAlign textAlign;
 
-  AccountDisplayNameWidget({this.textOverflow = TextOverflow.ellipsis});
+  AccountDisplayNameWidget({
+    this.textOverflow = TextOverflow.ellipsis,
+    this.textStyle = const TextStyle(
+      color: FediColors.darkGrey,
+      fontWeight: FontWeight.w500,
+      fontSize: 16.0,
+    ),
+    this.textAlign = TextAlign.start,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,12 +27,8 @@ class AccountDisplayNameWidget extends StatelessWidget {
         initialData: accountBloc.displayNameEmojiText,
         builder: (context, snapshot) {
           var accountDisplayNameEmojiText = snapshot.data;
-          var textStyle = TextStyle(
-            color: FediColors.darkGrey,
-            fontWeight: FontWeight.w500,
-            fontSize: 16.0,
-          );
           return EmojiTextWidget(
+            textAlign: textAlign,
             emojiText: accountDisplayNameEmojiText,
             textStyle: textStyle,
             textOverflow: textOverflow,
