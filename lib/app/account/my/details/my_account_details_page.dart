@@ -11,6 +11,8 @@ import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.d
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
+import 'package:fedi/ui/nested_scroll_controller_bloc.dart';
+import 'package:fedi/ui/scroll_controller_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -28,6 +30,7 @@ class MyAccountDetailsPage extends StatelessWidget {
         drawer: const MyAccountSettingsDrawerBodyWidget(),
 
         body: NestedScrollView(
+          controller: IScrollControllerBloc.of(context, listen: false).scrollController,
           body: FediDarkStatusBarStyleArea(
               child: ClipRRect(
                   borderRadius: BorderRadius.only(

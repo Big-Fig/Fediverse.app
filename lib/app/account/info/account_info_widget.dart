@@ -11,6 +11,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AccountInfoWidget extends StatelessWidget {
+  final VoidCallback onStatusesTapCallback;
+
+  AccountInfoWidget({this.onStatusesTapCallback});
+
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);
@@ -81,7 +85,7 @@ class AccountInfoWidget extends StatelessWidget {
         });
   }
 
-  StreamBuilder<int> buildStatusesCountWidget(IAccountBloc accountBloc) {
+  Widget buildStatusesCountWidget(IAccountBloc accountBloc) {
     return StreamBuilder<int>(
         stream: accountBloc.statusesCountStream,
         initialData: accountBloc.statusesCount,
@@ -97,10 +101,10 @@ class AccountInfoWidget extends StatelessWidget {
         formattedValue,
         textSize: 14.0,
         onPressed: () {
-          // nothing by now
+          if (onStatusesTapCallback != null) {
+            onStatusesTapCallback();
+          }
         },
         height: null,
       );
-
-  const AccountInfoWidget();
 }
