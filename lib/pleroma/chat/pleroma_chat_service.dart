@@ -22,9 +22,13 @@ abstract class IPleromaChatService implements IPleromaApi {
     int limit = 20,
   });
 
-  Future<IPleromaChat> markChatAsRead({@required String chatId});
+  Future<IPleromaChat> markChatAsRead({
+    @required String chatId,
+    @required String lastReadChatMessageId,
+  });
 
   Future<IPleromaChat> getChat({@required String id});
+
   Future<IPleromaChat> getOrCreateChatByAccountId({@required String accountId});
 
   Future<IPleromaChatMessage> sendMessage(

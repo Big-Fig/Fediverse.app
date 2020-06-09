@@ -85,7 +85,6 @@ class ChatPostMessageBloc extends DisposableOwner
 
   @override
   Future<bool> postMessage() async {
-
     bool success;
 
     var mediaAttachmentBlocs = mediaAttachmentGridBloc.mediaAttachmentBlocs;
@@ -96,9 +95,8 @@ class ChatPostMessageBloc extends DisposableOwner
 
     var data = PleromaChatMessageSendData(content: inputText, mediaId: mediaId);
     _logger.finest(() => "postMessage data=$data");
-    var remoteChatMessage = await pleromaChatService.sendMessage(
-        chatId: chatRemoteId,
-        data: data);
+    var remoteChatMessage =
+        await pleromaChatService.sendMessage(chatId: chatRemoteId, data: data);
 
     _logger.finest(() => "postMessage remoteChatMessage=$remoteChatMessage");
     if (remoteChatMessage != null) {
@@ -107,7 +105,10 @@ class ChatPostMessageBloc extends DisposableOwner
 
       // todo: remove hack
       // backend shouldn't mark chat as unread after message from me
-      await pleromaChatService.markChatAsRead(chatId: chatRemoteId);
+      await pleromaChatService.markChatAsRead(
+        chatId: chatRemoteId,
+        lastReadChatMessageId: remoteChatMessage.id,
+      );
     } else {
       success = false;
     }

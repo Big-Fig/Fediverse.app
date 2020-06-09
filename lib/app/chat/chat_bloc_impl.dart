@@ -162,8 +162,16 @@ class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
   @override
   Future markAsRead() async {
     if (pleromaChatService.isApiReadyToUse) {
-      var updatedRemoteChat =
-          await pleromaChatService.markChatAsRead(chatId: chat.remoteId);
+      var lastReadChatMessageId = lastChatMessage?.remoteId;
+      if (lastReadChatMessageId == null) {
+        var lastMessage =
+            await chatMessageRepository.getChatLastChatMessage(chat: chat);
+        lastReadChatMessageId = lastMessage?.remoteId;
+      }
+      var updatedRemoteChat = await pleromaChatService.markChatAsRead(
+        chatId: chat.remoteId,
+        lastReadChatMessageId: lastReadChatMessageId,
+      );
 
       await chatRepository.upsertRemoteChat(updatedRemoteChat);
     } else {

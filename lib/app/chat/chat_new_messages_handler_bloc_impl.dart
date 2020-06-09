@@ -42,7 +42,10 @@ class ChatNewMessagesHandlerBloc extends DisposableOwner
         currentChatBloc.currentChat?.remoteId == chatId;
 
     if (isMessageForOpenedChat) {
-      var updatedChat = await pleromaChatService.markChatAsRead(chatId: chatId);
+      var updatedChat = await pleromaChatService.markChatAsRead(
+        chatId: chatId,
+        lastReadChatMessageId: chatMessage?.id,
+      );
       await chatRepository.upsertRemoteChat(updatedChat);
       // updates updatedAt from backend
     } else {
@@ -61,7 +64,10 @@ class ChatNewMessagesHandlerBloc extends DisposableOwner
         currentChatBloc.currentChat?.remoteId == chatId;
 
     if (isMessageForOpenedChat) {
-      chat = await pleromaChatService.markChatAsRead(chatId: chatId);
+      chat = await pleromaChatService.markChatAsRead(
+        chatId: chatId,
+        lastReadChatMessageId: chat.lastMessage?.id,
+      );
     }
 
     return chatRepository.upsertRemoteChat(chat);
