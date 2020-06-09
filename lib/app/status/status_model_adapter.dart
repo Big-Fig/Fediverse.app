@@ -16,11 +16,18 @@ DbStatusPopulatedWrapper mapRemoteStatusToLocalStatus(
     rebloggedStatusAccount =
         mapRemoteAccountToDbAccount(remoteStatus.reblog.account);
   }
-  return DbStatusPopulatedWrapper(DbStatusPopulated(
+  return DbStatusPopulatedWrapper(
+    DbStatusPopulated(
       dbStatus: mapRemoteStatusToDbStatus(remoteStatus),
       dbAccount: mapRemoteAccountToDbAccount(remoteStatus.account),
       reblogDbStatus: rebloggedStatus,
-      reblogDbStatusAccount: rebloggedStatusAccount));
+      reblogDbStatusAccount: rebloggedStatusAccount,
+      replyReblogDbStatus: null,
+      replyDbStatusAccount: null,
+      replyReblogDbStatusAccount: null,
+      replyDbStatus: null,
+    ),
+  );
 }
 
 DbStatus mapRemoteStatusToDbStatus(IPleromaStatus remoteStatus) {

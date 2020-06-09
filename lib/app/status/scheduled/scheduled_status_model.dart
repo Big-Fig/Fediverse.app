@@ -104,6 +104,7 @@ class ScheduledStatusAdapterToStatus implements IStatus {
       int id,
       String remoteId,
       DateTime createdAt,
+      IStatus inReplyToStatus,
       String inReplyToRemoteId,
       String inReplyToAccountRemoteId,
       bool nsfwSensitive,
@@ -252,6 +253,10 @@ class ScheduledStatusAdapterToStatus implements IStatus {
   // todo: fix this, sometimes it may be reply
   @override
   bool get isReply => false;
+
+  @override
+  // todo: fix this, sometimes it may be reply
+  IStatus get inReplyToStatus => null;
 }
 
 enum ScheduledStatusState { scheduled, canceled, alreadyPosted }

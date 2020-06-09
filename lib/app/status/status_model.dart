@@ -23,6 +23,8 @@ abstract class IStatus {
 
   DateTime get createdAt;
 
+  IStatus get inReplyToStatus;
+
   String get inReplyToRemoteId;
 
   String get inReplyToAccountRemoteId;
@@ -124,6 +126,7 @@ abstract class IStatus {
       int id,
       String remoteId,
       DateTime createdAt,
+      IStatus inReplyToStatus,
       String inReplyToRemoteId,
       String inReplyToAccountRemoteId,
       bool nsfwSensitive,
@@ -192,6 +195,27 @@ class DbStatusPopulatedWrapper extends IStatus {
 
   @override
   int get favouritesCount => dbStatusPopulated.dbStatus.favouritesCount;
+
+  @override
+  IStatus get inReplyToStatus {
+    if (dbStatusPopulated.replyDbStatus != null &&
+        dbStatusPopulated.replyDbStatusAccount != null) {
+      return DbStatusPopulatedWrapper(
+        DbStatusPopulated(
+          dbStatus: dbStatusPopulated.replyDbStatus,
+          dbAccount: dbStatusPopulated.replyDbStatusAccount,
+          reblogDbStatus: dbStatusPopulated.replyReblogDbStatus,
+          reblogDbStatusAccount: dbStatusPopulated.replyReblogDbStatusAccount,
+          replyDbStatus: null,
+          replyReblogDbStatusAccount: null,
+          replyReblogDbStatus: null,
+          replyDbStatusAccount: null,
+        ),
+      );
+    } else {
+      return null;
+    }
+  }
 
   @override
   String get inReplyToAccountRemoteId =>
@@ -309,10 +333,15 @@ class DbStatusPopulatedWrapper extends IStatus {
     if (dbStatusPopulated.reblogDbStatus != null &&
         dbStatusPopulated.reblogDbStatusAccount != null) {
       return DbStatusPopulatedWrapper(DbStatusPopulated(
-          dbStatus: dbStatusPopulated.reblogDbStatus,
-          dbAccount: dbStatusPopulated.reblogDbStatusAccount,
-          reblogDbStatus: null,
-          reblogDbStatusAccount: null));
+        dbStatus: dbStatusPopulated.reblogDbStatus,
+        dbAccount: dbStatusPopulated.reblogDbStatusAccount,
+        reblogDbStatus: null,
+        reblogDbStatusAccount: null,
+        replyDbStatus: null,
+        replyReblogDbStatusAccount: null,
+        replyDbStatusAccount: null,
+        replyReblogDbStatus: null,
+      ));
     } else {
       return null;
     }
@@ -325,6 +354,7 @@ class DbStatusPopulatedWrapper extends IStatus {
       int id,
       String remoteId,
       DateTime createdAt,
+      IStatus inReplyToStatus,
       String inReplyToRemoteId,
       String inReplyToAccountRemoteId,
       bool nsfwSensitive,
@@ -370,84 +400,107 @@ class DbStatusPopulatedWrapper extends IStatus {
       reblogStatusAccount = dbAccountFromAccount(account);
     }
 
+    DbStatus replyStatus;
+    DbAccount replyStatusAccount;
+
+    DbStatus replyReblogStatus;
+    DbAccount replyReblogStatusAccount;
+    if (inReplyToStatus != null) {
+      replyStatus = dbStatusFromStatus(inReplyToStatus);
+
+      var account = inReplyToStatus.account;
+      replyStatusAccount = dbAccountFromAccount(account);
+
+      if (inReplyToStatus.reblog != null) {
+        replyReblogStatus = dbStatusFromStatus(inReplyToStatus.reblog);
+
+        var account = inReplyToStatus.reblog.account;
+        replyReblogStatusAccount = dbAccountFromAccount(account);
+      }
+    }
+
     return DbStatusPopulatedWrapper(dbStatusPopulated.copyWith(
-        status: dbStatusPopulated.dbStatus.copyWith(
-          id: id,
-          remoteId: remoteId,
-          createdAt: createdAt,
-          inReplyToRemoteId: inReplyToRemoteId,
-          inReplyToAccountRemoteId: inReplyToAccountRemoteId,
-          sensitive: nsfwSensitive,
-          spoilerText: spoilerText,
-          visibility: visibility,
-          uri: uri,
-          url: url,
-          repliesCount: repliesCount,
-          reblogsCount: reblogsCount,
-          favouritesCount: favouritesCount,
-          favourited: favourited,
-          reblogged: reblogged,
-          muted: muted,
-          bookmarked: bookmarked,
-          pinned: pinned,
-          content: content,
-          reblogStatusRemoteId: reblogStatusRemoteId,
-          application: application,
-          accountRemoteId: accountRemoteId,
-          mediaAttachments: mediaAttachments,
-          mentions: mentions,
-          tags: tags,
-          emojis: emojis,
-          poll: poll,
-          card: card,
-          language: language,
-          pleromaContent: pleromaContent,
-          pleromaConversationId: pleromaConversationId,
-          pleromaDirectConversationId: pleromaDirectConversationId,
-          pleromaInReplyToAccountAcct: pleromaInReplyToAccountAcct,
-          pleromaLocal: pleromaLocal,
-          pleromaSpoilerText: pleromaSpoilerText,
-          pleromaExpiresAt: pleromaExpiresAt,
-          pleromaThreadMuted: pleromaThreadMuted,
-          pleromaEmojiReactions: pleromaEmojiReactions,
-        ),
-        account: dbStatusPopulated.dbAccount.copyWith(
-            id: account?.localId,
-            remoteId: account?.remoteId,
-            username: account?.username,
-            url: account?.url,
-            note: account?.note,
-            locked: account?.locked,
-            headerStatic: account?.headerStatic,
-            header: account?.header,
-            followingCount: account?.followingCount,
-            followersCount: account?.followersCount,
-            statusesCount: account?.statusesCount,
-            displayName: account?.displayName,
-            createdAt: account?.createdAt,
-            bot: account?.bot,
-            avatarStatic: account?.avatarStatic,
-            avatar: account?.avatar,
-            acct: account?.acct,
-            lastStatusAt: account?.lastStatusAt,
-            fields: account?.fields,
-            emojis: account?.emojis,
-            pleromaRelationship: account?.pleromaRelationship,
-            pleromaTags: account?.pleromaTags,
-            pleromaIsAdmin: account?.pleromaIsAdmin,
-            pleromaIsModerator: account?.pleromaIsModerator,
-            pleromaConfirmationPending: account?.pleromaConfirmationPending,
-            pleromaHideFavorites: account?.pleromaHideFavorites,
-            pleromaHideFollowers: account?.pleromaHideFollowers,
-            pleromaHideFollows: account?.pleromaHideFollows,
-            pleromaHideFollowersCount: account?.pleromaHideFollowersCount,
-            pleromaHideFollowsCount: account?.pleromaHideFollowsCount,
-            pleromaDeactivated: account?.pleromaDeactivated,
-            pleromaAllowFollowingMove: account?.pleromaAllowFollowingMove,
-            pleromaSkipThreadContainment:
-                account?.pleromaSkipThreadContainment),
-        reblogDbStatus: reblogStatus,
-        reblogDbStatusAccount: reblogStatusAccount));
+      status: dbStatusPopulated.dbStatus.copyWith(
+        id: id,
+        remoteId: remoteId,
+        createdAt: createdAt,
+        inReplyToRemoteId: inReplyToRemoteId,
+        inReplyToAccountRemoteId: inReplyToAccountRemoteId,
+        sensitive: nsfwSensitive,
+        spoilerText: spoilerText,
+        visibility: visibility,
+        uri: uri,
+        url: url,
+        repliesCount: repliesCount,
+        reblogsCount: reblogsCount,
+        favouritesCount: favouritesCount,
+        favourited: favourited,
+        reblogged: reblogged,
+        muted: muted,
+        bookmarked: bookmarked,
+        pinned: pinned,
+        content: content,
+        reblogStatusRemoteId: reblogStatusRemoteId,
+        application: application,
+        accountRemoteId: accountRemoteId,
+        mediaAttachments: mediaAttachments,
+        mentions: mentions,
+        tags: tags,
+        emojis: emojis,
+        poll: poll,
+        card: card,
+        language: language,
+        pleromaContent: pleromaContent,
+        pleromaConversationId: pleromaConversationId,
+        pleromaDirectConversationId: pleromaDirectConversationId,
+        pleromaInReplyToAccountAcct: pleromaInReplyToAccountAcct,
+        pleromaLocal: pleromaLocal,
+        pleromaSpoilerText: pleromaSpoilerText,
+        pleromaExpiresAt: pleromaExpiresAt,
+        pleromaThreadMuted: pleromaThreadMuted,
+        pleromaEmojiReactions: pleromaEmojiReactions,
+      ),
+      account: dbStatusPopulated.dbAccount.copyWith(
+          id: account?.localId,
+          remoteId: account?.remoteId,
+          username: account?.username,
+          url: account?.url,
+          note: account?.note,
+          locked: account?.locked,
+          headerStatic: account?.headerStatic,
+          header: account?.header,
+          followingCount: account?.followingCount,
+          followersCount: account?.followersCount,
+          statusesCount: account?.statusesCount,
+          displayName: account?.displayName,
+          createdAt: account?.createdAt,
+          bot: account?.bot,
+          avatarStatic: account?.avatarStatic,
+          avatar: account?.avatar,
+          acct: account?.acct,
+          lastStatusAt: account?.lastStatusAt,
+          fields: account?.fields,
+          emojis: account?.emojis,
+          pleromaRelationship: account?.pleromaRelationship,
+          pleromaTags: account?.pleromaTags,
+          pleromaIsAdmin: account?.pleromaIsAdmin,
+          pleromaIsModerator: account?.pleromaIsModerator,
+          pleromaConfirmationPending: account?.pleromaConfirmationPending,
+          pleromaHideFavorites: account?.pleromaHideFavorites,
+          pleromaHideFollowers: account?.pleromaHideFollowers,
+          pleromaHideFollows: account?.pleromaHideFollows,
+          pleromaHideFollowersCount: account?.pleromaHideFollowersCount,
+          pleromaHideFollowsCount: account?.pleromaHideFollowsCount,
+          pleromaDeactivated: account?.pleromaDeactivated,
+          pleromaAllowFollowingMove: account?.pleromaAllowFollowingMove,
+          pleromaSkipThreadContainment: account?.pleromaSkipThreadContainment),
+      reblogDbStatus: reblogStatus,
+      reblogDbStatusAccount: reblogStatusAccount,
+      replyDbStatus: replyStatus,
+      replyDbStatusAccount: replyStatusAccount,
+      replyReblogDbStatus: replyReblogStatus,
+      replyReblogDbStatusAccount: replyReblogStatusAccount,
+    ));
   }
 }
 
@@ -456,12 +509,20 @@ class DbStatusPopulated {
   final DbAccount dbAccount;
   final DbStatus reblogDbStatus;
   final DbAccount reblogDbStatusAccount;
+  final DbStatus replyDbStatus;
+  final DbAccount replyDbStatusAccount;
+  final DbStatus replyReblogDbStatus;
+  final DbAccount replyReblogDbStatusAccount;
 
   DbStatusPopulated({
     @required this.dbStatus,
     @required this.dbAccount,
     @required this.reblogDbStatus,
     @required this.reblogDbStatusAccount,
+    @required this.replyDbStatus,
+    @required this.replyDbStatusAccount,
+    @required this.replyReblogDbStatus,
+    @required this.replyReblogDbStatusAccount,
   });
 
   @override
@@ -472,20 +533,32 @@ class DbStatusPopulated {
           dbStatus == other.dbStatus &&
           dbAccount == other.dbAccount &&
           reblogDbStatus == other.reblogDbStatus &&
-          reblogDbStatusAccount == other.reblogDbStatusAccount;
+          reblogDbStatusAccount == other.reblogDbStatusAccount &&
+          replyDbStatus == other.replyDbStatus &&
+          replyDbStatusAccount == other.replyDbStatusAccount &&
+          replyReblogDbStatus == other.replyReblogDbStatus &&
+          replyReblogDbStatusAccount == other.replyReblogDbStatusAccount;
 
   @override
   int get hashCode =>
       dbStatus.hashCode ^
       dbAccount.hashCode ^
       reblogDbStatus.hashCode ^
-      reblogDbStatusAccount.hashCode;
+      reblogDbStatusAccount.hashCode ^
+      replyDbStatus.hashCode ^
+      replyDbStatusAccount.hashCode ^
+      replyReblogDbStatus.hashCode ^
+      replyReblogDbStatusAccount.hashCode;
 
   @override
   String toString() {
     return 'DbStatusPopulated{dbStatus: $dbStatus, dbAccount: $dbAccount,'
         ' reblogDbStatus: $reblogDbStatus,'
-        ' reblogDbStatusAccount: $reblogDbStatusAccount}';
+        ' reblogDbStatusAccount: $reblogDbStatusAccount,'
+        ' replyDbStatus: $replyDbStatus,'
+        ' replyDbStatusAccount: $replyDbStatusAccount,'
+        ' replyReblogDbStatus: $replyReblogDbStatus,'
+        ' replyReblogDbStatusAccount: $replyReblogDbStatusAccount}';
   }
 
   DbStatusPopulated copyWith({
@@ -493,12 +566,21 @@ class DbStatusPopulated {
     DbAccount account,
     DbStatus reblogDbStatus,
     DbAccount reblogDbStatusAccount,
+    DbStatus replyDbStatus,
+    DbAccount replyDbStatusAccount,
+    DbStatus replyReblogDbStatus,
+    DbAccount replyReblogDbStatusAccount,
   }) =>
       DbStatusPopulated(
-          dbStatus: status,
-          dbAccount: account,
-          reblogDbStatus: reblogDbStatus,
-          reblogDbStatusAccount: reblogDbStatusAccount);
+        dbStatus: status,
+        dbAccount: account,
+        reblogDbStatus: reblogDbStatus,
+        reblogDbStatusAccount: reblogDbStatusAccount,
+        replyDbStatus: replyDbStatus,
+        replyDbStatusAccount: replyDbStatusAccount,
+        replyReblogDbStatus: replyReblogDbStatus,
+        replyReblogDbStatusAccount: replyReblogDbStatusAccount,
+      );
 }
 
 DbStatus dbStatusFromStatus(IStatus status) {

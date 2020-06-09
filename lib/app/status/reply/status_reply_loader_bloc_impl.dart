@@ -30,10 +30,17 @@ class StatusReplyLoaderBloc extends AsyncInitLoadingBloc
     @required this.originalStatus,
   }) {
     assert(originalStatus.inReplyToRemoteId != null);
+    if (originalStatus.inReplyToStatus != null) {
+      inReplyToStatus = originalStatus.inReplyToStatus;
+      markAsAlreadyInitialized();
+    }
   }
 
   @override
   Future internalAsyncInit() async {
+    if (inReplyToStatus != null) {
+      return;
+    }
     var inReplyToRemoteId = originalStatus.inReplyToRemoteId;
 
     inReplyToStatus = await statusRepository.findByRemoteId(inReplyToRemoteId);
