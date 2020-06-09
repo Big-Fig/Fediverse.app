@@ -4,6 +4,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/avatar/account_avatar_widget.dart';
 import 'package:fedi/app/account/display_name/account_display_name_widget.dart';
+import 'package:fedi/app/account/follower/account_follower_account_list_page.dart';
+import 'package:fedi/app/account/following/account_following_account_list_page.dart';
 import 'package:fedi/app/account/header/account_header_widget.dart';
 import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
@@ -69,8 +71,12 @@ class AccountInfoWidget extends StatelessWidget {
         initialData: accountBloc.followersCount,
         builder: (context, snapshot) {
           var followersCount = snapshot.data;
-          return buildStatisticValueWidget(tr("app.account.info.followers",
-              args: [followersCount.toString()]));
+          return buildStatisticValueWidget(
+            tr("app.account.info.followers", args: [followersCount.toString()]),
+            onPressed: () {
+              goToAccountFollowerAccountListPage(context, accountBloc.account);
+            },
+          );
         });
   }
 
@@ -80,8 +86,12 @@ class AccountInfoWidget extends StatelessWidget {
         initialData: accountBloc.followingCount,
         builder: (context, snapshot) {
           var followingCount = snapshot.data;
-          return buildStatisticValueWidget(tr("app.account.info.following",
-              args: [followingCount.toString()]));
+          return buildStatisticValueWidget(
+            tr("app.account.info.following", args: [followingCount.toString()]),
+            onPressed: () {
+              goToAccountFollowingAccountListPage(context, accountBloc.account);
+            },
+          );
         });
   }
 
@@ -91,20 +101,19 @@ class AccountInfoWidget extends StatelessWidget {
         initialData: accountBloc.statusesCount,
         builder: (context, snapshot) {
           var statusesCount = snapshot.data;
-          return buildStatisticValueWidget(tr("app.account.info.statuses",
-              args: [statusesCount.toString()]));
+          return buildStatisticValueWidget(
+            tr("app.account.info.statuses", args: [statusesCount.toString()]),
+            onPressed: () {},
+          );
         });
   }
 
-  Widget buildStatisticValueWidget(String formattedValue) =>
+  Widget buildStatisticValueWidget(String formattedValue,
+          {VoidCallback onPressed}) =>
       FediTransparentTextButton(
         formattedValue,
         textSize: 14.0,
-        onPressed: () {
-          if (onStatusesTapCallback != null) {
-            onStatusesTapCallback();
-          }
-        },
+        onPressed: onPressed,
         height: null,
       );
 }

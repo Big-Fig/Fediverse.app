@@ -140,7 +140,7 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
           ? [
               innerJoin(
                   accountFollowingsAlias,
-                  accountFollowingsAlias.accountRemoteId
+                  accountFollowingsAlias.followingAccountRemoteId
                       .equalsExp(dbAccounts.remoteId))
             ]
           : []),
@@ -148,7 +148,7 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
           ? [
               innerJoin(
                   accountFollowersAlias,
-                  accountFollowersAlias.accountRemoteId
+                  accountFollowersAlias.followerAccountRemoteId
                       .equalsExp(dbAccounts.remoteId))
             ]
           : []),
