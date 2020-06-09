@@ -11,6 +11,7 @@ import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_shadows.dart';
+import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,29 +22,31 @@ class ConversationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var conversationBloc = IConversationBloc.of(context, listen: false);
 
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            Container(
-              height: 56,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                  FediShadows.forTopBar
-                ],
+    return FediDarkStatusBarStyleArea(
+      child: Scaffold(
+        body: SafeArea(
+          child: Column(
+            children: [
+              Container(
+                height: 56,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    FediShadows.forTopBar
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    FediBackIconButton(),
+                    buildConversationAccountsWidget(context, conversationBloc)
+                  ],
+                ),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  FediBackIconButton(),
-                  buildConversationAccountsWidget(context, conversationBloc)
-                ],
-              ),
-            ),
-            Expanded(child: ConversationWidget())
-          ],
+              Expanded(child: ConversationWidget())
+            ],
+          ),
         ),
       ),
     );
