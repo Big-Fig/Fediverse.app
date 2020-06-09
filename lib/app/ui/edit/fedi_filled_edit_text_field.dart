@@ -13,6 +13,7 @@ class FediFilledEditTextField extends StatelessWidget {
   final int maxLines;
   final ValueChanged<String> onSubmitted;
   final TextInputAction textInputAction;
+  final TextInputType keyboardType;
 
   FediFilledEditTextField({
     @required this.textEditingController,
@@ -25,6 +26,7 @@ class FediFilledEditTextField extends StatelessWidget {
     @required this.expanded,
     @required this.autofocus,
     this.focusNode,
+    this.keyboardType,
   });
 
   @override
@@ -59,6 +61,7 @@ class FediFilledEditTextField extends StatelessWidget {
                 minLines: null,
                 maxLines: maxLines,
                 expands: expanded,
+                keyboardType: keyboardType,
               ),
             ),
             if (containEnding) ending,
