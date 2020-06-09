@@ -48,7 +48,6 @@ version
 .packages
 .pub-cache/
 .pub/
-lib/build_info/
 flutter_*.png
 linked_*.ds
 unlinked.ds

@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/avatar/account_avatar_widget.dart';
+import 'package:fedi/app/account/display_name/account_display_name_widget.dart';
 import 'package:fedi/app/account/header/account_header_widget.dart';
 import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
@@ -13,57 +14,49 @@ class AccountInfoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);
-    return Container(
-      height: 170,
-      child: Stack(
-        children: <Widget>[
-          Container(
-              width: double.infinity,
-              height: double.infinity,
-              child: AccountHeaderWidget()),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                buildDisplayName(accountBloc),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: AccountAvatarWidget(
-                    imageSize: 60,
-                    progressSize: 30,
-                  ),
+    return Stack(
+      children: <Widget>[
+        Positioned(
+          top: 0.0,
+          bottom: 0.0,
+          left: 0.0,
+          right: 0.0,
+          child: AccountHeaderWidget(),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              AccountDisplayNameWidget(
+                textOverflow: TextOverflow.visible,
+                textStyle: TextStyle(
+                  color: FediColors.white,
+                  fontWeight: FontWeight.w500,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    buildStatusesCountWidget(accountBloc),
-                    buildFollowingCountWidget(accountBloc),
-                    buildFollowersCountWidget(accountBloc),
-                  ],
+                textAlign: TextAlign.center,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: AccountAvatarWidget(
+                  imageSize: 60,
+                  progressSize: 30,
                 ),
-              ],
-            ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  buildStatusesCountWidget(accountBloc),
+                  buildFollowingCountWidget(accountBloc),
+                  buildFollowersCountWidget(accountBloc),
+                ],
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
-  }
-
-  StreamBuilder<String> buildDisplayName(IAccountBloc accountBloc) {
-    return StreamBuilder<String>(
-        stream: accountBloc.displayNameStream,
-        initialData: accountBloc.displayName,
-        builder: (context, snapshot) {
-          var displayName = snapshot.data;
-          return Text(
-            displayName,
-            textAlign: TextAlign.center,
-            style:
-                TextStyle(color: FediColors.white, fontWeight: FontWeight.w500),
-          );
-        });
   }
 
   StreamBuilder<int> buildFollowersCountWidget(IAccountBloc accountBloc) {
@@ -72,8 +65,7 @@ class AccountInfoWidget extends StatelessWidget {
         initialData: accountBloc.followersCount,
         builder: (context, snapshot) {
           var followersCount = snapshot.data;
-          return buildStatisticValueWidget(tr(
-              "app.account.info.followers",
+          return buildStatisticValueWidget(tr("app.account.info.followers",
               args: [followersCount.toString()]));
         });
   }
@@ -84,8 +76,7 @@ class AccountInfoWidget extends StatelessWidget {
         initialData: accountBloc.followingCount,
         builder: (context, snapshot) {
           var followingCount = snapshot.data;
-          return buildStatisticValueWidget(tr(
-              "app.account.info.following",
+          return buildStatisticValueWidget(tr("app.account.info.following",
               args: [followingCount.toString()]));
         });
   }
@@ -96,8 +87,7 @@ class AccountInfoWidget extends StatelessWidget {
         initialData: accountBloc.statusesCount,
         builder: (context, snapshot) {
           var statusesCount = snapshot.data;
-          return buildStatisticValueWidget(tr(
-              "app.account.info.statuses",
+          return buildStatisticValueWidget(tr("app.account.info.statuses",
               args: [statusesCount.toString()]));
         });
   }

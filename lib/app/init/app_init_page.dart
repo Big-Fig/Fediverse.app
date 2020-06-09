@@ -1,5 +1,5 @@
 import 'package:fedi/app/ui/fedi_colors.dart';
-import 'package:fedi/build_info/version_build_info_widget.dart';
+import 'package:fedi/package_info/version_package_info_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -22,7 +22,7 @@ class InitAppPage extends StatelessWidget {
             Positioned(
               right: 20.0,
               bottom: 20.0,
-              child: VersionBuildInfoWidget(
+              child: VersionPackageInfoWidget(
                 textStyle: TextStyle(
                   color: FediColors.white,
                   fontWeight: FontWeight.w500,
