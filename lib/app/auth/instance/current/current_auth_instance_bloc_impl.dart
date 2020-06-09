@@ -11,8 +11,7 @@ var _logger = Logger("current_auth_instance_bloc_impl.dart");
 class CurrentAuthInstanceBloc extends DisposableOwner
     implements ICurrentAuthInstanceBloc {
   final IAuthInstanceListBloc instanceListBloc;
-  final ICurrentAuthInstanceLocalPreferenceBloc 
-  currentLocalPreferenceBloc;
+  final ICurrentAuthInstanceLocalPreferenceBloc currentLocalPreferenceBloc;
 
   CurrentAuthInstanceBloc({
     @required this.instanceListBloc,
@@ -29,9 +28,15 @@ class CurrentAuthInstanceBloc extends DisposableOwner
   @override
   void changeCurrentInstance(AuthInstance instance) {
     _logger.finest(() => "changeCurrentInstance $instance");
-    if (!instanceListBloc.availableInstances.contains(instance)) {
-      instanceListBloc.addInstance(instance);
+
+    var found = instanceListBloc.availableInstances?.firstWhere(
+        (existInstance) => existInstance.userAtHost == instance.userAtHost,
+        orElse: () => null);
+
+    if (found != null) {
+      instanceListBloc.removeInstance(found);
     }
+    instanceListBloc.addInstance(instance);
 
     currentLocalPreferenceBloc.setValue(instance);
   }
