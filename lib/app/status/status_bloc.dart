@@ -144,6 +144,10 @@ abstract class IStatusBloc implements Disposable, ICollapsibleItem {
 
   Stream<String> get spoilerTextStream;
 
+  String get spoilerTextWithEmojis;
+
+  Stream<String> get spoilerTextWithEmojisStream;
+
   bool get nsfwSensitive;
 
   Stream<bool> get nsfwSensitiveStream;

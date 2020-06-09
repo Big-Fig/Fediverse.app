@@ -9,6 +9,7 @@ import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 const _defaultPadding = EdgeInsets.symmetric(horizontal: 16.0);
 
@@ -67,6 +68,7 @@ class StatusBodyWidget extends StatelessWidget {
                     return Padding(
                       padding: _defaultPadding,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           StatusSpoilerWidget(),
                           StatusSpoilerAlertWidget(),

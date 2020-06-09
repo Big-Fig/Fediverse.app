@@ -1,3 +1,5 @@
+import 'package:fedi/app/html/html_text_widget.dart';
+import 'package:fedi/app/status/content/statuc_content_link_helper.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,16 +13,20 @@ class StatusSpoilerWidget extends StatelessWidget {
     var statusBloc = IStatusBloc.of(context, listen: true);
 
     return StreamBuilder<String>(
-        stream: statusBloc.spoilerTextStream,
-        initialData: statusBloc.spoilerText,
+        stream: statusBloc.spoilerTextWithEmojisStream,
+        initialData: statusBloc.spoilerTextWithEmojis,
         builder: (context, snapshot) {
           var spoiler = snapshot.data;
 
           if (spoiler?.isNotEmpty == true) {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(spoiler),
-            );
+            return HtmlTextWidget(
+                data: spoiler,
+                lineHeight: 1.5,
+                fontSize: 16.0,
+                onLinkTap: (String link) async {
+                  await handleStatusContentLinkClick(
+                      statusBloc: statusBloc, link: link, context: context);
+                });
           } else {
             return const SizedBox.shrink();
           }
