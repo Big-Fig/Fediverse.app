@@ -1,6 +1,15 @@
 {
   "app": {
     "account": {
+      "list": {
+        "privacy": "Some information may be missed due to privacy settings"
+      },
+      "follower": {
+        "title": "{} followers"
+      },
+      "following": {
+        "title": "{} followings"
+      },
       "action": {
         "follow": "Follow",
         "unfollow": "Unfollow",

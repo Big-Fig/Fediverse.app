@@ -473,10 +473,10 @@ class AccountRepository extends AsyncInitLoadingBloc
     await accountFollowersDao.deleteByAccountRemoteId(accountRemoteId);
     await accountFollowersDao.insertAll(
         followers
-            .map((followingAccount) => DbAccountFollower(
+            .map((followerAccount) => DbAccountFollower(
                 id: null,
                 accountRemoteId: accountRemoteId,
-                followerAccountRemoteId: followingAccount.id))
+                followerAccountRemoteId: followerAccount.id))
             .toList(),
         InsertMode.insertOrReplace);
   }
