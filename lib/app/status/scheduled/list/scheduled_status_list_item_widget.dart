@@ -59,8 +59,10 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       buildScheduledAt(context, scheduledStatusBloc),
-                      buildEditButton(context, scheduledStatusBloc),
-                      buildCancelButton(context, scheduledStatusBloc),
+                      Row(children: [
+                        buildEditButton(context, scheduledStatusBloc),
+                        buildCancelButton(context, scheduledStatusBloc),
+                      ],)
                     ],
                   ),
                 ),
