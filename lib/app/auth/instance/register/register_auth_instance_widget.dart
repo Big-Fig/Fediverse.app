@@ -4,6 +4,8 @@ import 'package:fedi/app/auth/instance/register/register_auth_instance_bloc.dart
 import 'package:fedi/app/form/form_field_error_model.dart';
 import 'package:fedi/app/form/form_model.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
+import 'package:fedi/app/ui/divider/fedi_light_grey_divider.dart';
+import 'package:fedi/app/ui/edit/fedi_transparent_edit_text_field.dart';
 import 'package:fedi/dialog/alert/simple_alert_dialog.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:fedi/pleroma/account/public/pleroma_account_public_model.dart';
@@ -32,11 +34,56 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
     );
   }
 
-  Padding buildTextField(
+  Widget buildTextField(
       {@required BuildContext context,
       @required FormTextField formTextField,
       @required String hintText,
       @required String labelText}) {
+    return Padding(
+      padding: EdgeInsets.all(10.0),
+      child: StreamBuilder<FormFieldError>(
+          stream: formTextField.errorStream,
+          initialData: formTextField.error,
+          builder: (context, snapshot) {
+            var error = snapshot.data;
+
+            // TODO: go to next focus node
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(labelText, style: TextStyle(fontWeight: FontWeight.w500),),
+                FediTransparentEditTextField(
+                  onSubmitted: null,
+                  textInputAction: TextInputAction.done,
+                  expanded: false,
+                  hintText: hintText,
+                  maxLines: 1,
+                  textEditingController: formTextField.textEditingController,
+                  autofocus: false,
+                ),
+                if (error != null)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical:4.0),
+                    child: Text(
+                      error?.createErrorDescription(context),
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical:4.0),
+                  child: FediLightGreyDivider(),
+                )
+              ],
+            );
+
+            return TextField(
+                controller: formTextField.textEditingController,
+                decoration: InputDecoration(
+                    hintText: hintText,
+                    labelText: labelText,
+                    errorText: error?.createErrorDescription(context)));
+          }),
+    );
     return Padding(
         padding: EdgeInsets.all(10),
         child: StreamBuilder<FormFieldError>(
@@ -86,7 +133,8 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
       buildTextField(
         context: context,
         formTextField: bloc.confirmPasswordField,
-        labelText: tr("app.auth.instance.register.field.confirm_password.label"),
+        labelText:
+            tr("app.auth.instance.register.field.confirm_password.label"),
         hintText: tr("app.auth.instance.register.field.confirm_password.hint"),
       );
 
@@ -145,8 +193,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
             // todo: handle specific error
             return SimpleAlertDialog(
                 title: tr("app.auth.instance.register.fail.dialog.title"),
-                content: tr(
-                    "app.auth.instance.register.fail.dialog.content",
+                content: tr("app.auth.instance.register.fail.dialog.content",
                     args: [error.toString()]),
                 context: context);
           }
