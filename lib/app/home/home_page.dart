@@ -20,6 +20,7 @@ import 'package:fedi/app/home/tab/timelines/timelines_home_tab_bloc_impl.dart';
 import 'package:fedi/app/home/tab/timelines/timelines_home_tab_page.dart';
 import 'package:fedi/app/instance/fedi_instance_image_decoration_widget.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
+import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/page/fedi_sliver_app_bar_bloc.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -54,8 +55,11 @@ class HomePage extends StatelessWidget {
             body: Stack(
               children: [
                 FediLightStatusBarStyleArea(
-                  child: FediInstanceImageDecorationWidget(
-                    child: Container(),
+                  child: Container(
+                    color: FediColors.primaryColor,
+                    child: FediInstanceImageDecorationWidget(
+                      child: Container(),
+                    ),
                   ),
                 ),
                 buildBody(context, selectedTab),
