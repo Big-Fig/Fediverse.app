@@ -31,13 +31,13 @@ class AppSplashWidget extends StatelessWidget {
               Timer.run(() {
                 appContextBloc.performAsyncInit();
               });
-              return const MaterialApp(home: InitAppPage());
+              return const MaterialApp(home: AppInitPage());
               break;
             case AsyncInitLoadingState.loading:
-              return const MaterialApp(home: InitAppPage());
+              return const MaterialApp(home: AppInitPage());
               break;
             case AsyncInitLoadingState.finished:
-              return const MaterialApp(home: InitAppPage());
+              return const MaterialApp(home: AppInitPage());
 
               break;
             case AsyncInitLoadingState.failed:
