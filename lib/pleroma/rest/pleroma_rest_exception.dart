@@ -25,3 +25,8 @@ class PleromaRestException implements Exception {
     return 'PleromaRestException{statusCode: $statusCode, body: $body}';
   }
 }
+
+class PleromaThrottledRestException extends PleromaRestException {
+  PleromaThrottledRestException({@required int statusCode, @required String body})
+      : super(statusCode: statusCode, body: body);
+}
