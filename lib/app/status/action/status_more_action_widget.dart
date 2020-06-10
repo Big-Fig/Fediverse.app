@@ -3,6 +3,7 @@ import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_bloc_impl.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/action/account_report_action.dart';
+import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/conversation/start/status/post_status_start_conversation_page.dart';
 import 'package:fedi/app/share/share_service.dart';
 import 'package:fedi/app/status/status_bloc.dart';
@@ -35,6 +36,9 @@ class StatusShareActionWidget extends StatelessWidget {
 
   void showMoreOptions(BuildContext context, IStatusBloc statusBloc) {
     IStatus status = statusBloc.status;
+
+    var myAccountBloc = IMyAccountBloc.of(context, listen: false);
+    var isStatusFromMe = myAccountBloc.checkIsStatusFromMe(status);
     showModalBottomSheet(
         builder: (BuildContext context) {
           return DisposableProvider<IAccountBloc>(
@@ -50,13 +54,16 @@ class StatusShareActionWidget extends StatelessWidget {
                   buildCopyAction(context, status),
                   buildOpenInBrowserAction(context, status),
                   buildShareAction(context, status),
-                  buildAccountDescSeparator(context),
-                  buildAccountNameSeparator(status),
-                  buildAccountFollowAction(context, status),
-                  buildAccountMessageAction(context, status),
-                  buildAccountMuteAction(context, status),
-                  buildAccountBlockAction(context, status),
-                  buildAccountReportAction(context, status),
+                  if (!isStatusFromMe) buildAccountDescSeparator(context),
+                  if (!isStatusFromMe) buildAccountNameSeparator(status),
+                  if (!isStatusFromMe)
+                    buildAccountFollowAction(context, status),
+                  if (!isStatusFromMe)
+                    buildAccountMessageAction(context, status),
+                  if (!isStatusFromMe) buildAccountMuteAction(context, status),
+                  if (!isStatusFromMe) buildAccountBlockAction(context, status),
+                  if (!isStatusFromMe)
+                    buildAccountReportAction(context, status),
                 ],
               ),
             ),
