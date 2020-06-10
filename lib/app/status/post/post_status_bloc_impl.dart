@@ -337,6 +337,7 @@ abstract class PostStatusBloc extends DisposableOwner
     if (remoteStatus != null) {
       await statusRepository.upsertRemoteStatus(remoteStatus,
           listRemoteId: null, conversationRemoteId: conversationRemoteId);
+      await onStatusPosted(remoteStatus);
       success = true;
     } else {
       success = false;
@@ -395,5 +396,9 @@ abstract class PostStatusBloc extends DisposableOwner
   @override
   void appendText(String textToAppend) {
     inputTextController.text = "${inputText ?? ""}$textToAppend";
+  }
+
+  Future onStatusPosted(IPleromaStatus remoteStatus) async {
+    // nothing by default
   }
 }

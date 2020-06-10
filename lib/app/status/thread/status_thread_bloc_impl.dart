@@ -179,4 +179,10 @@ class StatusThreadBloc extends DisposableOwner implements IStatusThreadBloc {
   @override
   bool isFirstStatusInThread(IStatus status) =>
       firstStatusInThread?.remoteId == status.remoteId;
+
+  @override
+  void addStatusInThread(IStatus status) {
+    statuses.add(status);
+    _statusesSubject.add(statuses);
+  }
 }
