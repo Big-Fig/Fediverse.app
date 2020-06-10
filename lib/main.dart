@@ -48,6 +48,8 @@ import 'package:moor/moor.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
+import 'app/init/app_init_page.dart';
+
 var _logger = Logger("main.dart");
 
 FirebaseAnalytics analytics = FirebaseAnalytics();
@@ -99,6 +101,7 @@ void main() async {
 
   AppContextBloc appContextBloc = AppContextBloc();
 
+  runApp(MaterialApp(home: AppInitPage()));
   showSplashPage(appContextBloc);
 
   appContextBloc.initLoadingStateStream.listen((newState) {
@@ -120,10 +123,12 @@ void main() async {
 CurrentAuthInstanceContextBloc currentInstanceContextBloc;
 
 void showSplashPage(AppContextBloc appContextBloc) {
-  runApp(_buildEasyLocalization(
+
+  var easyLocalization = _buildEasyLocalization(
       child: MyApp(
           child: Provider<IAppContextBloc>.value(
-              value: appContextBloc, child: (const AppSplashWidget())))));
+              value: appContextBloc, child: (const AppSplashWidget()))));
+  runApp(easyLocalization);
 }
 
 void buildCurrentInstanceApp(

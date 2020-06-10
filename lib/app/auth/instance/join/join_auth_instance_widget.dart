@@ -18,76 +18,119 @@ var _logger = Logger("join_auth_instance_widget.dart");
 class JoinAuthInstanceWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Form(child: Column(children: <Widget>[
-      Padding(padding: const EdgeInsets.all(8.0), child: buildLogoWidget(),),
-      SizedBox(height: 60,),
-      buildHostTextField(context),
-      Spacer(),
-      buildActionButtons(context),
-      Spacer(),
-      buildOrText(context),
-      Spacer(),
-      buildJoinFediDescText(context),
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: buildJoinFediButton(context),),
-      Spacer(flex: 3,),
-      buildTermsOfServiceButton(context),
-    ],),);
+    return Form(
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: buildLogoWidget(),
+          ),
+          SizedBox(
+            height: 60,
+          ),
+          buildHostTextField(context),
+          Spacer(),
+          buildActionButtons(context),
+          Spacer(),
+          buildOrText(context),
+          Spacer(),
+          buildJoinFediDescText(context),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: buildJoinFediButton(context),
+          ),
+          Spacer(
+            flex: 3,
+          ),
+          buildTermsOfServiceButton(context),
+        ],
+      ),
+    );
   }
 
   FlatButton buildTermsOfServiceButton(BuildContext context) {
     return FlatButton(
-      child: Text(tr("app.auth.instance.join.action"
-          ".tos"), textAlign: TextAlign.center,
-        style: TextStyle(color: FediColors.ultraLightGrey,),),
+      child: Text(
+        tr("app.auth.instance.join.action"
+            ".tos"),
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: FediColors.ultraLightGrey,
+        ),
+      ),
       color: null,
       onPressed: () {
         goToTosPage(context);
-      },);
+      },
+    );
   }
 
   Widget buildJoinFediButton(BuildContext context) {
-    return FediGreyFilledTextButton(tr("app.auth.instance.join"
-        ".action"
-        ".join_fedi"), onPressed: () {
-      goToRegisterAuthInstancePage(
-          context, instanceBaseUrl: Uri.parse('https://fedi.app'));
+    return FediGreyFilledTextButton(
+        tr("app.auth.instance.join"
+            ".action"
+            ".join_fedi"), onPressed: () {
+      goToRegisterAuthInstancePage(context,
+          instanceBaseUrl: Uri.parse('https://fedi.app'));
     }, textColor: FediColors.darkGrey);
   }
 
   Padding buildJoinFediDescText(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-      child: Text(tr("app.auth.instance.join.no_account"
-          ".content"), style: TextStyle(color: FediColors.white,),
-        textAlign: TextAlign.center,),);
+      child: Text(
+        tr("app.auth.instance.join.no_account"
+            ".content"),
+        style: TextStyle(
+          color: FediColors.white,
+        ),
+        textAlign: TextAlign.center,
+      ),
+    );
   }
 
   Container buildOrText(BuildContext context) {
-    return Container(child: Text(tr("app.auth.instance.join.no_account"
-        ".prefix"), style: TextStyle(color: Colors.white,),),);
+    return Container(
+      child: Text(
+        tr("app.auth.instance.join.no_account"
+            ".prefix"),
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+    );
   }
 
   Row buildActionButtons(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-        Expanded(flex: 1, child: Padding(
-          padding: EdgeInsets.only(left: 10, right: 5),
-          child: FediGreyFilledTextButton(tr("app.auth.instance.join"
-              ".action"
-              ".sign_up"), onPressed: () {
-            signUpToInstance(context);
-          }, textColor: FediColors.darkGrey),),),
-        Expanded(flex: 1, child: Padding(
-          padding: EdgeInsets.only(left: 5, right: 10),
-          child: FediGreyFilledTextButton(tr("app.auth.instance.join"
-              ".action"
-              ".login"), onPressed: () {
-            logInToInstance(context);
-          }, textColor: FediColors.darkGrey),),),
-      ],);
+        Expanded(
+          flex: 1,
+          child: Padding(
+            padding: EdgeInsets.only(left: 10, right: 5),
+            child: FediGreyFilledTextButton(
+                tr("app.auth.instance.join"
+                    ".action"
+                    ".sign_up"), onPressed: () {
+              signUpToInstance(context);
+            }, textColor: FediColors.darkGrey),
+          ),
+        ),
+        Expanded(
+          flex: 1,
+          child: Padding(
+            padding: EdgeInsets.only(left: 5, right: 10),
+            child: FediGreyFilledTextButton(
+                tr("app.auth.instance.join"
+                    ".action"
+                    ".login"), onPressed: () {
+              logInToInstance(context);
+            }, textColor: FediColors.darkGrey),
+          ),
+        ),
+      ],
+    );
   }
 
   Widget buildHostTextField(BuildContext context) {
@@ -95,7 +138,8 @@ class JoinAuthInstanceWidget extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: FediFilledEditTextField(expanded: false,
+      child: FediFilledEditTextField(
+          expanded: false,
           hintText: tr("app.auth.instance.join"
               ".field.host.hint"),
           onSubmitted: (String value) {
@@ -110,8 +154,12 @@ class JoinAuthInstanceWidget extends StatelessWidget {
   }
 
   Container buildLogoWidget() {
-    return Container(child: Image(
-      image: AssetImage("assets/images/theme/logo.png"), width: 100,),);
+    return Container(
+      child: Image(
+        image: AssetImage("assets/images/theme/logo.png"),
+        width: 100,
+      ),
+    );
   }
 
   Uri extractCurrentUri(IJoinAuthInstanceBloc joinInstanceBloc) {
@@ -132,37 +180,46 @@ class JoinAuthInstanceWidget extends StatelessWidget {
 
   Future signUpToInstance(BuildContext context) async {
     await doAsyncOperationWithDialog(
-        context: context, contentMessage: tr("app.auth.instance.join"
-        ".progress.dialog.content"), asyncCode: () async {
-      var joinInstanceBloc = IJoinAuthInstanceBloc.of(context, listen: false);
+        context: context,
+        contentMessage: tr("app.auth.instance.join"
+            ".progress.dialog.content"),
+        asyncCode: () async {
+          var joinInstanceBloc =
+              IJoinAuthInstanceBloc.of(context, listen: false);
 
-      var hostUri = extractCurrentUri(joinInstanceBloc);
+          var hostUri = extractCurrentUri(joinInstanceBloc);
 
-      AuthHostBloc authHostBloc;
-      try {
-        authHostBloc =
-            AuthHostBloc.createFromContext(context, instanceBaseUrl: hostUri);
-        await authHostBloc.checkApplicationRegistration();
-      } finally {
-        authHostBloc?.dispose();
-      }
+          AuthHostBloc authHostBloc;
+          try {
+            authHostBloc = AuthHostBloc.createFromContext(context,
+                instanceBaseUrl: hostUri);
+            await authHostBloc.checkApplicationRegistration();
+          } finally {
+            authHostBloc?.dispose();
+          }
 
-      goToRegisterAuthInstancePage(context, instanceBaseUrl: hostUri);
-    }, errorAlertDialogBuilders: [(context, error) {
-      // todo: handle specific error
-      return createInstanceDeadErrorAlertDialog(context);
-    }
-    ]);
+          goToRegisterAuthInstancePage(context, instanceBaseUrl: hostUri);
+        },
+        errorAlertDialogBuilders: [
+          (context, error) {
+            // todo: handle specific error
+            return createInstanceDeadErrorAlertDialog(context);
+          }
+        ]);
   }
 
   BaseAlertDialog createInstanceDeadErrorAlertDialog(BuildContext context) =>
-      SimpleAlertDialog(title: tr("app.auth.instance.join"
-          ".fail.dialog.title"), content: tr("app.auth.instance.join"
-          ".fail.dialog.content"), context: context);
+      SimpleAlertDialog(
+          title: tr("app.auth.instance.join"
+              ".fail.dialog.title"),
+          content: tr("app.auth.instance.join"
+              ".fail.dialog.content"),
+          context: context);
 
   Future logInToInstance(BuildContext context) {
     var joinInstanceBloc = IJoinAuthInstanceBloc.of(context, listen: false);
-    return doAsyncOperationWithDialog(context: context,
+    return doAsyncOperationWithDialog(
+        context: context,
         contentMessage: tr("app.auth.instance.join"
             ".progress.dialog.content"),
         cancelable: true,
@@ -170,17 +227,18 @@ class JoinAuthInstanceWidget extends StatelessWidget {
           var hostUri = extractCurrentUri(joinInstanceBloc);
           AuthHostBloc bloc;
           try {
-            bloc = AuthHostBloc.createFromContext(
-                context, instanceBaseUrl: hostUri);
+            bloc = AuthHostBloc.createFromContext(context,
+                instanceBaseUrl: hostUri);
             await bloc.launchLoginToAccount();
           } finally {
             bloc.dispose();
           }
         },
-        errorAlertDialogBuilders: [(context, error) {
-          // todo: handle specific error
-          return createInstanceDeadErrorAlertDialog(context);
-        }
+        errorAlertDialogBuilders: [
+          (context, error) {
+            // todo: handle specific error
+            return createInstanceDeadErrorAlertDialog(context);
+          }
         ]);
   }
 
