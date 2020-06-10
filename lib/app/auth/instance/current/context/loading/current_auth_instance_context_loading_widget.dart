@@ -3,6 +3,7 @@ import 'package:fedi/app/account/my/action/my_account_action_list_bottom_sheet_d
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/auth/instance/current/context/loading/current_auth_instance_context_loading_bloc.dart';
 import 'package:fedi/app/auth/instance/current/context/loading/current_auth_instance_context_loading_model.dart';
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/ui/button/text/fedi_grey_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
@@ -39,95 +40,13 @@ class CurrentAuthInstanceContextLoadingWidget extends StatelessWidget {
 
                 switch (state) {
                   case CurrentAuthInstanceContextLoadingState.loading:
-                    var myAccountBloc =
-                        IMyAccountBloc.of(context, listen: true);
-
-                    return FediLightStatusBarStyleArea(
-                      child: Scaffold(
-                        backgroundColor: FediColors.primaryColor,
-                        body: SafeArea(
-                          child: Stack(
-                            children: [
-                              Center(
-                                child: Text(
-                                  tr(
-                                      "app.auth.instance.current.context.loading.loading"
-                                      ".content",
-                                      args: [
-                                        myAccountBloc.instance.userAtHost
-                                      ]),
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                              Positioned(
-                                right: 20.0,
-                                bottom: 20.0,
-                                child: VersionPackageInfoWidget(
-                                  textStyle: TextStyle(
-                                    color: FediColors.white,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
+                    return _buildLoading(context);
                     break;
                   case CurrentAuthInstanceContextLoadingState.localCacheExist:
                     return child;
                   case CurrentAuthInstanceContextLoadingState
                       .cantFetchAndLocalCacheNotExist:
-                    return FediLightStatusBarStyleArea(
-                      child: Scaffold(
-                        backgroundColor: FediColors.primaryColor,
-                        body: SafeArea(
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Text(
-                                    tr("app.auth.instance.current.context.loading.cant_load"
-                                        ".content"),
-                                    style: TextStyle(
-                                        color: FediColors.white,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: FediGreyFilledTextButton(
-                                    tr("app.auth.instance.current.context.loading.cant_load"
-                                        ".action.refresh"),
-                                    onPressed: () {
-                                      currentInstanceContextLoadingBloc
-                                          .refresh();
-                                    },
-                                    textColor: FediColors.darkGrey,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: FediGreyFilledTextButton(
-                                    tr("app.auth.instance.current.context.loading.cant_load"
-                                        ".action.choose_different_account"),
-                                    onPressed: () {
-                                      showMyAccountActionListBottomSheetDialog(
-                                          context);
-                                    },
-                                    textColor: FediColors.darkGrey,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
+                    return _buildSessionExpired(currentInstanceContextLoadingBloc, context);
                     break;
                 }
 
@@ -136,5 +55,109 @@ class CurrentAuthInstanceContextLoadingWidget extends StatelessWidget {
         },
       ),
     );
+  }
+
+  FediLightStatusBarStyleArea _buildLoading(BuildContext context) {
+    var myAccountBloc =
+        IMyAccountBloc.of(context, listen: true);
+    
+    return FediLightStatusBarStyleArea(
+      child: Scaffold(
+        backgroundColor: FediColors.primaryColor,
+        body: SafeArea(
+          child: Stack(
+            children: [
+              Center(
+                child: Text(
+                  tr(
+                      "app.auth.instance.current.context.loading.loading"
+                      ".content",
+                      args: [
+                        myAccountBloc.instance.userAtHost
+                      ]),
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+              Positioned(
+                right: 20.0,
+                bottom: 20.0,
+                child: VersionPackageInfoWidget(
+                  textStyle: TextStyle(
+                    color: FediColors.white,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  FediLightStatusBarStyleArea _buildSessionExpired(ICurrentAuthInstanceContextLoadingBloc currentInstanceContextLoadingBloc, BuildContext context) {
+    return FediLightStatusBarStyleArea(
+                    child: Scaffold(
+                      backgroundColor: FediColors.primaryColor,
+                      body: SafeArea(
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Text(
+                                  tr("app.auth.instance.current.context.loading.cant_load"
+                                      ".content"),
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: FediColors.white,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: FediGreyFilledTextButton(
+                                  tr("app.auth.instance.current.context.loading.cant_load"
+                                      ".action.refresh"),
+                                  onPressed: () {
+                                    currentInstanceContextLoadingBloc
+                                        .refresh();
+                                  },
+                                  textColor: FediColors.darkGrey,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: FediGreyFilledTextButton(
+                                  tr("app.auth.instance.current.context.loading.cant_load"
+                                      ".action.choose_different_account"),
+                                  onPressed: () {
+                                    showMyAccountActionListBottomSheetDialog(
+                                        context);
+                                  },
+                                  textColor: FediColors.darkGrey,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: FediGreyFilledTextButton(
+                                  tr("app.auth.instance.current.context.loading.cant_load"
+                                      ".action.logout"),
+                                  onPressed: () {
+                                    ICurrentAuthInstanceBloc.of(context,
+                                            listen: false)
+                                        .logoutCurrentInstance();
+                                  },
+                                  textColor: FediColors.darkGrey,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
   }
 }
