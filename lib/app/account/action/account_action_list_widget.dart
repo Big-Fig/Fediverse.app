@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/account/action/account_report_action.dart';
 import 'package:fedi/app/async/async_operation_button_builder_widget.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/conversation/start/status/post_status_start_conversation_page.dart';
@@ -107,8 +108,15 @@ class AccountActionListWidget extends StatelessWidget {
                 : tr("app.account.action.block"),
             onPressed: accountBloc.toggleBlock),
         AlertAction(
-            text: tr("app.account.action.report"),
-            onPressed: accountBloc.report),
+            text: tr("app.account.action.report.label"),
+            onPressed: () async {
+              var success = await doAsyncActionReport(
+                  context, IAccountBloc.of(context, listen: false));
+
+              if (success) {
+                Navigator.of(context).pop();
+              }
+            }),
       ],
       cancelable: true,
     );
