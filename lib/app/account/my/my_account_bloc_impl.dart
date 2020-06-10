@@ -72,7 +72,7 @@ class MyAccountBloc extends IMyAccountBloc {
   }
 
   @override
-  Future<bool> refreshFromNetwork() async {
+  Future<bool> refreshFromNetwork(bool isNeedPreFetchRelationship) async {
     if (pleromaMyAccountService.isApiReadyToUse) {
       var remoteMyAccount = await pleromaMyAccountService.verifyCredentials();
 

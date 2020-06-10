@@ -19,7 +19,7 @@ class CurrentAuthInstanceContextLoadingBloc extends AsyncInitLoadingBloc
   @override
   void refresh() {
     stateSubject.add(CurrentAuthInstanceContextLoadingState.loading);
-    myAccountBloc.refreshFromNetwork().then((_) {
+    myAccountBloc.refreshFromNetwork(false).then((_) {
       if (myAccountBloc.isLocalCacheExist) {
         stateSubject
             .add(CurrentAuthInstanceContextLoadingState.localCacheExist);
