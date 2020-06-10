@@ -18,7 +18,16 @@
         "unblock": "Unblock",
         "mute": "Mute",
         "unmute": "Unmute",
-        "report": "Report",
+        "report": {
+          "label": "Report",
+          "success": {
+            "toast": "Successfully reported"
+          },
+          "fail": {
+            "title": "Failed to report",
+            "content": "Something wrong"
+          }
+        },
         "more": "More",
         "popup": {
           "title": "More actions for {}"

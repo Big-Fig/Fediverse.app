@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_bloc_impl.dart';
 import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/account/action/account_report_action.dart';
 import 'package:fedi/app/conversation/start/status/post_status_start_conversation_page.dart';
 import 'package:fedi/app/share/share_service.dart';
 import 'package:fedi/app/status/status_bloc.dart';
@@ -100,16 +101,16 @@ class StatusShareActionWidget extends StatelessWidget {
     );
   }
 
-  Padding buildAccountReportAction(BuildContext context, IStatus status) =>
-      buildButton(tr("app.account.action.report"), () async {
-        await doAsyncOperationWithDialog(
-            context: context,
-            asyncCode: () async {
-              await IAccountBloc.of(context, listen: false).report();
-            });
+  Padding buildAccountReportAction(BuildContext context, IStatus status) {
+    return buildButton(tr("app.account.action.report.label"), () async {
+      var success = await doAsyncActionReport(
+          context, IAccountBloc.of(context, listen: false));
 
+      if (success) {
         Navigator.of(context).pop();
-      });
+      }
+    });
+  }
 
   Padding buildAccountBlockAction(BuildContext context, IStatus status) =>
       buildButton(
