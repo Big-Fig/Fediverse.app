@@ -6,6 +6,7 @@ import 'package:fedi/app/auth/instance/current/context/loading/current_auth_inst
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/ui/button/text/fedi_grey_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
 import 'package:fedi/package_info/version_package_info_widget.dart';
@@ -57,7 +58,7 @@ class CurrentAuthInstanceContextLoadingWidget extends StatelessWidget {
     );
   }
 
-  FediLightStatusBarStyleArea _buildLoading(BuildContext context) {
+  Widget _buildLoading(BuildContext context) {
     var myAccountBloc =
         IMyAccountBloc.of(context, listen: true);
     
