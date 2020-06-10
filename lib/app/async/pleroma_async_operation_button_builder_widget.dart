@@ -25,18 +25,31 @@ class PleromaAsyncOperationButtonBuilderWidget
               // top priority for passed to constructor handlers
               ...(errorAlertDialogBuilders ?? []),
               // low priority for base Pleroma handler
+              pleromaThrottledErrorAlertDialogBuilder,
               pleromaErrorAlertDialogBuilder,
               socketErrorAlertDialogBuilder,
             ]);
+
+  static BaseDialog pleromaThrottledErrorAlertDialogBuilder(
+      BuildContext context, dynamic error) {
+    if (error is PleromaThrottledRestException) {
+      return SimpleAlertDialog(
+        context: context,
+        title: tr("app.async.pleroma.error.throttled.dialog.title"),
+        content: tr("app.async.pleroma.error.throttled.dialog.content"),
+      );
+    } else {
+      return null;
+    }
+  }
 
   static BaseDialog pleromaErrorAlertDialogBuilder(
       BuildContext context, dynamic error) {
     if (error is PleromaRestException) {
       return SimpleAlertDialog(
         context: context,
-        title: tr("app.async.pleroma.error.dialog.title"),
-        content: tr(
-            "app.async.pleroma.error.dialog.content",
+        title: tr("app.async.pleroma.error.common.dialog.title"),
+        content: tr("app.async.pleroma.error.common.dialog.content",
             args: [error.toString()]),
       );
     } else {
@@ -50,8 +63,7 @@ class PleromaAsyncOperationButtonBuilderWidget
       return SimpleAlertDialog(
         context: context,
         title: tr("app.async.socket.error.dialog.title"),
-        content: tr(
-            "app.async.socket.error.dialog.content",
+        content: tr("app.async.socket.error.dialog.content",
             args: [error.toString()]),
       );
     } else {

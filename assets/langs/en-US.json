@@ -119,9 +119,17 @@
     "async": {
       "pleroma": {
         "error": {
-          "dialog": {
-            "title": "Pleroma API error",
-            "content": "Message: {}"
+          "common": {
+            "dialog": {
+              "title": "Pleroma API error",
+              "content": "Message: {}"
+            }
+          },
+          "throttled": {
+            "dialog": {
+              "title": "Throttled. Server blocked action.",
+              "content": "Too much operations per minute. Please wait before do something again."
+            }
           }
         }
       },
