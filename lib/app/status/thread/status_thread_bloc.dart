@@ -44,4 +44,6 @@ abstract class IStatusThreadBloc implements Disposable {
   Future<bool> refresh();
 
   bool isFirstStatusInThread(IStatus status);
+
+  void addStatusInThread(IStatus status);
 }
