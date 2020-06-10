@@ -101,8 +101,9 @@ class ConversationListItemWidget extends StatelessWidget {
             content = mediaAttachments
                 .map((mediaAttachment) => mediaAttachment.description)
                 .join(", ");
+          } else {
+            content = extractContent(context, lastMessage, content);
           }
-          content = extractContent(context, lastMessage, content);
 
           var contentWithEmojis =
               addEmojiToHtmlContent(content, lastMessage.emojis);
