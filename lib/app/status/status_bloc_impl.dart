@@ -430,26 +430,26 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
     await statusRepository.updateLocalStatusByRemoteStatus(
         oldLocalStatus: status, newRemoteStatus: remoteStatus);
 
-    return statusRepository.findByRemoteId(status.remoteId);
+    return statusRepository.findByRemoteId(remoteStatus.id);
   }
 
   @override
   Future<IStatus> toggleReblog() async {
     _logger.finest(
-        () => "requestToggleReblog status.reblogged=${status.reblogged}");
+        () => "requestToggleReblog status.reblogged=${reblogOrOriginal.reblogged}");
     IPleromaStatus remoteStatus;
-    if (status.reblogged) {
+    if (reblogOrOriginal.reblogged) {
       remoteStatus = await pleromaStatusService.unReblogStatus(
-          statusRemoteId: status.remoteId);
+          statusRemoteId: reblogOrOriginal.remoteId);
     } else {
       remoteStatus = await pleromaStatusService.reblogStatus(
-          statusRemoteId: status.remoteId);
+          statusRemoteId: reblogOrOriginal.remoteId);
     }
 
-    await statusRepository.updateLocalStatusByRemoteStatus(
-        oldLocalStatus: status, newRemoteStatus: remoteStatus);
+    await statusRepository.upsertRemoteStatus(remoteStatus, listRemoteId: null,
+        conversationRemoteId: null);
 
-    return statusRepository.findByRemoteId(status.remoteId);
+    return statusRepository.findByRemoteId(remoteStatus.id);
   }
 
   @override
