@@ -56,7 +56,7 @@ dependencies:
   indexed_list_view: ^1.0.8
   flutter_widgets: ^0.1.7+1
   image_cropper: ^1.1.1
-  cached_network_image: ^2.0.0
+  cached_network_image: ^2.2.0+1
   rxdart: ^0.23.1
   auto_size_text: ^2.1.0
   vibration: ^1.2.2
