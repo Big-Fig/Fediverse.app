@@ -3,8 +3,10 @@ import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/pleroma/field/pleroma_field_model.dart';
 import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
+import 'package:flutter/widgets.dart';
 
-typedef AccountSelectedCallback = Function(IAccount account);
+typedef AccountCallback = Function(
+    BuildContext context, IAccount account);
 
 abstract class IAccount {
   static List<IAccount> excludeAccountFromList(

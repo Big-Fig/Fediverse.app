@@ -1,7 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/async/async_smart_refresher_helper.dart';
 import 'package:fedi/app/list/list_refresh_header_widget.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
+import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/post/post_status_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc.dart';
@@ -54,13 +56,15 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
             boxShadow: [FediShadows.forBottomBar],
           ),
           child: PostStatusWidget(
-            hintText:
-                "Reply to ${statusThreadBloc.initialStatusToFetchThread.account.acct}",
+            hintText: "app.status.thread.post.hint".tr(
+              args: [statusThreadBloc.initialStatusToFetchThread.account.acct],
+            ),
             goBackOnSuccess: false,
             expanded: false,
             isTransparent: false,
             displayMentions: false,
-            showActionsRow: false, maxLines: 1,
+            showActionsRow: false,
+            maxLines: 1,
           ),
         )
       ],
@@ -136,6 +140,11 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
                       displayAccountHeader:
                           !statusThreadBloc.isFirstStatusInThread(status),
                       displayActions: isFirstInList,
+                      accountMentionCallback:
+                          (BuildContext context, IAccount account) {
+                        IPostStatusBloc.of(context, listen: false)
+                            .addMentionByAccount(account);
+                      },
                     ),
                     if (isFirstInList) FediLightGreyDivider(),
                   ],

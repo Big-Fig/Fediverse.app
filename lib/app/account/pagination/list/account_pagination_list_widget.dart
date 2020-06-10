@@ -15,7 +15,7 @@ import 'package:provider/provider.dart';
 var _logger = Logger("account_pagination_list_widget.dart");
 
 class AccountPaginationListWidget extends PaginationListWidget<IAccount> {
-  final AccountSelectedCallback accountSelectedCallback;
+  final AccountCallback accountSelectedCallback;
 
   final bool needWatchLocalRepositoryForUpdates;
   const AccountPaginationListWidget({

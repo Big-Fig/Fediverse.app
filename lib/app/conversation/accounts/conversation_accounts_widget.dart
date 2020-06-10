@@ -35,7 +35,8 @@ class ConversationAccountsWidget extends StatelessWidget {
                   child: Column(
                     children: [
                       AccountListItemWidget(
-                        accountSelectedCallback: (IAccount account) {
+                        accountSelectedCallback:
+                            (BuildContext context, IAccount account) {
                           goToAccountDetailsPage(context, account);
                         },
                       ),

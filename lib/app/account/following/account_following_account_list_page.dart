@@ -42,7 +42,7 @@ class AccountFollowingAccountListPage extends StatelessWidget {
             ),
             Expanded(
               child: AccountPaginationListWidget(
-                accountSelectedCallback: (account) =>
+                accountSelectedCallback: (context, account) =>
                     goToAccountDetailsPage(context, account),
                 key: PageStorageKey("AccountFollowingAccountListPage"),
               ),

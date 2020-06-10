@@ -17,7 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SelectAccountPage extends StatelessWidget {
-  final AccountSelectedCallback accountSelectedCallback;
+  final AccountCallback accountSelectedCallback;
 
   const SelectAccountPage({@required this.accountSelectedCallback});
 
@@ -35,7 +35,7 @@ class SelectAccountPage extends StatelessWidget {
 }
 
 void goToSelectAccountPage(BuildContext context,
-    {@required AccountSelectedCallback accountSelectedCallback,
+    {@required AccountCallback accountSelectedCallback,
     @required bool excludeMyAccount}) {
   Navigator.push(
     context,

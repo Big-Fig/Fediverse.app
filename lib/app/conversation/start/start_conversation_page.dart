@@ -26,7 +26,7 @@ class StartConversationPage extends StatelessWidget {
       ),
       body: SafeArea(
         child: SelectAccountWidget(
-          accountSelectedCallback: (account) {
+          accountSelectedCallback: (context, account) {
             goToPostStatusStartConversationPage(context,
                 conversationAccountsWithoutMe: [account]);
           },
