@@ -31,7 +31,7 @@ class StartChatPage extends StatelessWidget {
       ),
       body: SafeArea(
         child: SelectAccountWidget(
-          accountSelectedCallback: (account) async {
+          accountSelectedCallback: (context, account) async {
             var dialogResult = await doAsyncOperationWithDialog<IChat>(
                 context: context,
                 asyncCode: () async {

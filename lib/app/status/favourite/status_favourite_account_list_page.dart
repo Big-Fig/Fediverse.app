@@ -38,7 +38,7 @@ class StatusFavouriteAccountListPage extends StatelessWidget {
             ),
             Expanded(
               child: AccountPaginationListWidget(
-                accountSelectedCallback: (account) =>
+                accountSelectedCallback: (context, account) =>
                     goToAccountDetailsPage(context, account),
                 key: PageStorageKey("StatusFavouriteAccountListPage"),
               ),

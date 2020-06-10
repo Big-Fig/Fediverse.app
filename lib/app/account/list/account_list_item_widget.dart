@@ -8,7 +8,7 @@ import 'package:logging/logging.dart';
 var _logger = Logger("account_list_item_widget.dart");
 
 class AccountListItemWidget extends StatelessWidget {
-  final AccountSelectedCallback accountSelectedCallback;
+  final AccountCallback accountSelectedCallback;
 
   AccountListItemWidget({
     @required this.accountSelectedCallback,
@@ -23,7 +23,7 @@ class AccountListItemWidget extends StatelessWidget {
       behavior: HitTestBehavior.translucent,
       onTap: () {
         if (accountSelectedCallback != null) {
-          accountSelectedCallback(accountBloc.account);
+          accountSelectedCallback(context, accountBloc.account);
         }
       },
       child: Padding(

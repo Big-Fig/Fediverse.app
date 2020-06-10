@@ -7,7 +7,7 @@ class SearchAccountsListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return AccountPaginationListWidget(
       needWatchLocalRepositoryForUpdates: false,
-      accountSelectedCallback: (account) async {
+      accountSelectedCallback: (context, account) async {
         goToAccountDetailsPage(context, account);
       },
       key: PageStorageKey("SearchAccountsListWidget"),

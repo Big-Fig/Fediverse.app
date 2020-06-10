@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SelectAccountWidget extends StatelessWidget {
-  final AccountSelectedCallback accountSelectedCallback;
+  final AccountCallback accountSelectedCallback;
 
   const SelectAccountWidget({@required this.accountSelectedCallback});
 

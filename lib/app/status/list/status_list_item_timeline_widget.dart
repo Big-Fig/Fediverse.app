@@ -1,3 +1,4 @@
+import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/status/account/status_account_widget.dart';
 import 'package:fedi/app/status/action/status_actions_list_widget.dart';
 import 'package:fedi/app/status/action/status_show_this_thread_action_widget.dart';
@@ -26,6 +27,7 @@ var _logger = Logger("status_list_item_timeline_widget.dart");
 
 class StatusListItemTimelineWidget extends StatelessWidget {
   final IStatusCallback statusCallback;
+  final AccountCallback accountMentionCallback;
   final bool displayActions;
   final bool displayAccountHeader;
   final bool displayThisThreadAction;
@@ -43,6 +45,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
     @required this.displayThisThreadAction,
     @required this.displayReplyToStatus,
     @required this.isFirstReplyInThread,
+    @required this.accountMentionCallback,
     this.statusCallback = goToStatusThreadPage,
   }) : super();
 
@@ -60,6 +63,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
         displayReplyToStatus: true,
         displayThisThreadAction: true,
         displayAccountHeader: true,
+        accountMentionCallback: null,
       );
 
   static StatusListItemTimelineWidget thread({
@@ -67,6 +71,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
     @required bool displayAccountHeader,
     @required bool displayActions,
     IStatusCallback statusCallback = goToStatusThreadPage,
+    @required AccountCallback accountMentionCallback,
   }) =>
       StatusListItemTimelineWidget._private(
         collapsible: collapsible,
@@ -75,6 +80,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
         displayActions: displayActions,
         displayReplyToStatus: false,
         displayThisThreadAction: false,
+        accountMentionCallback: accountMentionCallback,
         displayAccountHeader: displayAccountHeader,
       );
 
@@ -153,7 +159,9 @@ class StatusListItemTimelineWidget extends StatelessWidget {
             if (isReply)
               Padding(
                 padding: const EdgeInsets.fromLTRB(68.0, 4.0, 16.0, 0.0),
-                child: StatusReplySubHeaderWidget(),
+                child: StatusReplySubHeaderWidget(
+                  accountCallback: accountMentionCallback,
+                ),
               ),
             buildBody(isReply),
             StatusEmojiReactionListWidget(),

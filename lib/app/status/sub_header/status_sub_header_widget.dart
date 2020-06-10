@@ -8,13 +8,18 @@ class StatusSubHeaderWidget extends StatelessWidget {
   final String descText;
   final IconData icon;
   final IAccount account;
+  final AccountCallback accountCallback;
 
   @override
   Widget build(BuildContext context) => Container(
         height: 16,
         child: GestureDetector(
           onTap: () {
-            goToAccountDetailsPage(context, account);
+            if (accountCallback != null) {
+              accountCallback(context, account);
+            } else {
+              goToAccountDetailsPage(context, account);
+            }
           },
           behavior: HitTestBehavior.translucent,
           child: buildHeader(account, context),
@@ -44,14 +49,18 @@ class StatusSubHeaderWidget extends StatelessWidget {
           child: Text(
             account.acct,
             overflow: TextOverflow.ellipsis,
-            style:
-                TextStyle(fontSize: 14, color: FediColors.darkGrey, height: 1.15),
+            style: TextStyle(
+                fontSize: 14, color: FediColors.darkGrey, height: 1.15),
           ),
         ),
       ],
     );
   }
 
-  const StatusSubHeaderWidget(
-      {@required this.account, @required this.descText, @required this.icon});
+  StatusSubHeaderWidget({
+    @required this.account,
+    @required this.descText,
+    @required this.icon,
+    this.accountCallback,
+  });
 }
