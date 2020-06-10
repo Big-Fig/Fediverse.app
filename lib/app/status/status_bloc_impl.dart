@@ -419,16 +419,16 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   @override
   Future<IStatus> toggleFavourite() async {
     IPleromaStatus remoteStatus;
-    if (status.favourited) {
+    if (reblogOrOriginal.favourited) {
       remoteStatus = await pleromaStatusService.unFavouriteStatus(
-          statusRemoteId: status.remoteId);
+          statusRemoteId: reblogOrOriginal.remoteId);
     } else {
       remoteStatus = await pleromaStatusService.favouriteStatus(
-          statusRemoteId: status.remoteId);
+          statusRemoteId: reblogOrOriginal.remoteId);
     }
 
     await statusRepository.updateLocalStatusByRemoteStatus(
-        oldLocalStatus: status, newRemoteStatus: remoteStatus);
+        oldLocalStatus: reblogOrOriginal, newRemoteStatus: remoteStatus);
 
     return statusRepository.findByRemoteId(remoteStatus.id);
   }
@@ -455,58 +455,58 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   @override
   Future<IStatus> toggleMute() async {
     IPleromaStatus remoteStatus;
-    if (status.muted) {
+    if (reblogOrOriginal.muted) {
       remoteStatus = await pleromaStatusService.unMuteStatus(
-          statusRemoteId: status.remoteId);
+          statusRemoteId: reblogOrOriginal.remoteId);
     } else {
       remoteStatus = await pleromaStatusService.muteStatus(
-          statusRemoteId: status.remoteId);
+          statusRemoteId: reblogOrOriginal.remoteId);
     }
 
     await statusRepository.updateLocalStatusByRemoteStatus(
-        oldLocalStatus: status, newRemoteStatus: remoteStatus);
+        oldLocalStatus: reblogOrOriginal, newRemoteStatus: remoteStatus);
 
-    return statusRepository.findByRemoteId(status.remoteId);
+    return statusRepository.findByRemoteId(reblogOrOriginal.remoteId);
   }
 
   @override
   Future<IStatus> toggleBookmark() async {
     IPleromaStatus remoteStatus;
-    if (status.bookmarked) {
+    if (reblogOrOriginal.bookmarked) {
       remoteStatus = await pleromaStatusService.unBookmarkStatus(
-          statusRemoteId: status.remoteId);
+          statusRemoteId: reblogOrOriginal.remoteId);
     } else {
       remoteStatus = await pleromaStatusService.bookmarkStatus(
-          statusRemoteId: status.remoteId);
+          statusRemoteId: reblogOrOriginal.remoteId);
     }
 
     await statusRepository.updateLocalStatusByRemoteStatus(
-        oldLocalStatus: status, newRemoteStatus: remoteStatus);
+        oldLocalStatus: reblogOrOriginal, newRemoteStatus: remoteStatus);
 
-    return statusRepository.findByRemoteId(status.remoteId);
+    return statusRepository.findByRemoteId(reblogOrOriginal.remoteId);
   }
 
   @override
   Future<IStatus> togglePin() async {
     IPleromaStatus remoteStatus;
-    if (status.pinned) {
+    if (reblogOrOriginal.pinned) {
       remoteStatus = await pleromaStatusService.unPinStatus(
-          statusRemoteId: status.remoteId);
+          statusRemoteId: reblogOrOriginal.remoteId);
     } else {
       // reblogged don't support pin
-      if (status.reblogged) {
+      if (reblogOrOriginal.reblogged) {
         remoteStatus = await pleromaStatusService.pinStatus(
-            statusRemoteId: reblog.remoteId);
+            statusRemoteId: reblogOrOriginal.remoteId);
       } else {
         remoteStatus = await pleromaStatusService.pinStatus(
-            statusRemoteId: status.remoteId);
+            statusRemoteId: reblogOrOriginal.remoteId);
       }
     }
 
     await statusRepository.updateLocalStatusByRemoteStatus(
-        oldLocalStatus: status, newRemoteStatus: remoteStatus);
+        oldLocalStatus: reblogOrOriginal, newRemoteStatus: remoteStatus);
 
-    return statusRepository.findByRemoteId(status.remoteId);
+    return statusRepository.findByRemoteId(reblogOrOriginal.remoteId);
   }
 
   @override

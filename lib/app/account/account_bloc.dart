@@ -78,5 +78,5 @@ abstract class IAccountBloc extends DisposableOwner {
 
   Future report();
 
-  Future<bool> refreshFromNetwork();
+  Future<bool> refreshFromNetwork(bool isNeedPreFetchRelationship);
 }

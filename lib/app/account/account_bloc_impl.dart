@@ -91,7 +91,7 @@ class AccountBloc extends IAccountBloc {
       }
 
       if (needRefreshFromNetworkOnInit == true) {
-        refreshFromNetwork();
+        refreshFromNetwork(isNeedPreFetchRelationship);
       }
     }
   }
@@ -168,11 +168,20 @@ class AccountBloc extends IAccountBloc {
     if (accountRelationship.following == true) {
       newRelationship = await pleromaAccountService.unFollowAccount(
           accountRemoteId: account.remoteId);
+      await accountRepository.updateLocalAccountByRemoteAccount(
+          oldLocalAccount: account,
+          newRemoteAccount: mapLocalAccountToRemoteAccount(account.copyWith(
+              followersCount: account.followersCount - 1,
+              pleromaRelationship: newRelationship)));
     } else {
       newRelationship = await pleromaAccountService.followAccount(
           accountRemoteId: account.remoteId);
+      await accountRepository.updateLocalAccountByRemoteAccount(
+          oldLocalAccount: account,
+          newRemoteAccount: mapLocalAccountToRemoteAccount(account.copyWith(
+              followersCount: account.followersCount + 1,
+              pleromaRelationship: newRelationship)));
     }
-    await _updateRelationship(account, newRelationship);
 
     return newRelationship;
   }
@@ -211,7 +220,7 @@ class AccountBloc extends IAccountBloc {
   }
 
   @override
-  Future<bool> refreshFromNetwork() async {
+  Future<bool> refreshFromNetwork(bool isNeedPreFetchRelationship) async {
     _logger.finest(() => "requestRefreshFromNetwork start");
 
     IPleromaAccount remoteAccount;

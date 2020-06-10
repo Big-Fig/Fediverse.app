@@ -367,7 +367,7 @@ void main() {
     when(pleromaMyAccountServiceMock.verifyCredentials())
         .thenAnswer((_) async => newValue.remoteAccount);
 
-    await myAccountBloc.refreshFromNetwork();
+    await myAccountBloc.refreshFromNetwork(false);
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 
