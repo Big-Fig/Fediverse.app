@@ -91,8 +91,9 @@ class ChatListItemWidget extends StatelessWidget {
           if (content?.isNotEmpty != true) {
             var mediaAttachment = lastMessage.mediaAttachment;
             content = mediaAttachment.description;
+          } else {
+            content = extractContent(context, lastMessage, content);
           }
-          content = extractContent(context, lastMessage, content);
 
           var contentWithEmojis =
               addEmojiToHtmlContent(content, lastMessage.emojis);
