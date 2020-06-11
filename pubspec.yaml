@@ -143,6 +143,9 @@ dependencies:
   # pull to refresh and pull to load more
   pull_to_refresh: ^1.5.8
 
+  # custom scroll view which fix bugs related to inner scrollables sync
+  extended_nested_scroll_view: ^1.0.0
+
 # required to build flutter test with hive https://github.com/hivedb/hive/issues/285
 dependency_overrides:
   path: 1.7.0
