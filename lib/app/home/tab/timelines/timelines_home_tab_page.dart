@@ -46,9 +46,18 @@ class TimelinesHomeTabPage extends StatelessWidget {
           return timelineTabsBloc;
         },
         child: Builder(
-            builder: (context) => TimelineNewWidget(
-                  tabs: ITimelineTabsBloc.of(context, listen: false).tabs,
-                )),
+          builder: (context) => TimelineNewWidget(
+            tabs: ITimelineTabsBloc.of(context, listen: false).tabs,
+            appBarActionWidgets: <Widget>[
+              buildSearchActionButton(context),
+              SizedBox(
+                width: 8.0,
+              ),
+              buildFilterActionButton()
+            ],
+            startTab: TimelineTab.home,
+          ),
+        ),
 //        child: TimelineTabsWidget(
 //          key: key,
 //          appBarActionWidgets: <Widget>[

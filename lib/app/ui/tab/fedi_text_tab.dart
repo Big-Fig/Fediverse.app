@@ -8,9 +8,14 @@ class FediTextTab extends StatefulWidget {
   final String label;
   final int index;
   final bool isTransparent;
+  final TabController tabController;
 
-  const FediTextTab(this.label,
-      {@required this.index, @required this.isTransparent});
+  const FediTextTab(
+    this.label, {
+    @required this.index,
+    @required this.isTransparent,
+    @required this.tabController,
+  });
 
   @override
   _FediTextTabState createState() => _FediTextTabState();
@@ -24,16 +29,16 @@ class _FediTextTabState extends State<FediTextTab> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    var tabController = DefaultTabController.of(context);
+
     listener = () {
       if (!isDisposed) {
         setState(() {
-          updateIsSelected(tabController);
+          updateIsSelected(widget.tabController);
         });
       }
     };
-    updateIsSelected(tabController);
-    tabController.addListener(listener);
+    updateIsSelected(widget.tabController);
+    widget.tabController.addListener(listener);
   }
 
   void updateIsSelected(TabController tabController) {
@@ -55,8 +60,7 @@ class _FediTextTabState extends State<FediTextTab> {
   @override
   Widget build(BuildContext context) {
     var onPressed = () {
-      var tabController = DefaultTabController.of(context);
-      tabController.animateTo(widget.index);
+      widget.tabController.animateTo(widget.index);
     };
 
     Widget text;
