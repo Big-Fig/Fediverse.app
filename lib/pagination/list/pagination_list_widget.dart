@@ -168,7 +168,9 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
           var position = refreshController.position;
 
           _logger.finest(() => "initState position = $position");
-          if (position != null) {
+          // todo: remove hack for empty refresh
+          if (position != null && paginationListBloc.items?.isNotEmpty ==
+              true) {
             // refresh with UI indicator
             refreshController.requestRefresh(needMove:false);
           } else {
