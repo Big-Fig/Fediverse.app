@@ -12,7 +12,7 @@ class StatusPaginationListTimelineWidget
   final bool forceFirstItemPadding;
 
   const StatusPaginationListTimelineWidget(
-      {@required Key key,
+      {Key key,
       Widget header,
       this.forceFirstItemPadding = false,
       Widget footer,

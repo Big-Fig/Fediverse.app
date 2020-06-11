@@ -110,7 +110,6 @@ class HomePage extends StatelessWidget {
                 update: (context, value, previous) =>
                     value.fediSliverAppBarBloc,
                 child: const TimelinesHomeTabPage(
-                  key: PageStorageKey<String>("TimelinesHomeTabPage"),
                 ),
               ),
             ),

@@ -41,7 +41,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
     _logger.finest(() => "buildSmartRefresher items ${items?.length}");
 
     return SmartRefresher(
-      key: key,
+//      key: key,
       enablePullDown: true,
       enablePullUp: true,
       header: const ListRefreshHeaderWidget(),
