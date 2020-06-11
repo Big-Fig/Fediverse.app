@@ -20,7 +20,7 @@ import 'package:rxdart/rxdart.dart';
 var _logger = Logger("notifications_home_tab_page_bloc_impl.dart");
 
 class NotificationsTabsBloc extends DisposableOwner
-    implements INotificationsTabsBloc {
+    implements INotificationTabsBloc {
   @override
   List<NotificationTab> tabs = [
     NotificationTab.all,

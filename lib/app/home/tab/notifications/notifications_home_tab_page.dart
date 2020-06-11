@@ -3,6 +3,8 @@ import 'package:fedi/app/home/tab/notifications/drawer/notifications_home_tab_pa
 import 'package:fedi/app/home/tab/notifications/drawer/notifications_home_tab_page_drawer_widget.dart';
 import 'package:fedi/app/notification/notification_tabs_bloc.dart';
 import 'package:fedi/app/notification/notification_tabs_bloc_impl.dart';
+import 'package:fedi/app/notification/notification_tabs_model.dart';
+import 'package:fedi/app/notification/notification_tabs_new_widget.dart';
 import 'package:fedi/app/notification/notification_tabs_widget.dart';
 import 'package:fedi/app/push/subscription/push_subscription_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
@@ -31,11 +33,17 @@ class NotificationsHomeTabPage extends StatelessWidget {
             pushSettingsBloc: IPushSubscriptionBloc.of(context, listen: false)),
         child: const NotificationsHomeTabPageDrawerWidget(),
       ),
-      body: DisposableProvider<INotificationsTabsBloc>(
+      body: DisposableProvider<INotificationTabsBloc>(
         create: (context) => NotificationsTabsBloc.createFromContext(context),
-        child: NotificationTabsWidget(
-          key: key,
-          appBarActionWidgets: <Widget>[buildFilterActionButton()],
+        child: Builder(
+          builder: (context) {
+            return NotificationTabsNewWidget(
+              //          key: key,
+              appBarActionWidgets: <Widget>[buildFilterActionButton()],
+              startTab: NotificationTab.all,
+              tabs: INotificationTabsBloc.of(context).tabs,
+            );
+          },
         ),
       ),
     );

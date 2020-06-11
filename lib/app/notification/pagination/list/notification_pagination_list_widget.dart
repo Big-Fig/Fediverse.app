@@ -13,7 +13,7 @@ class NotificationPaginationListWidget
     extends NotificationPaginationListBaseWidget {
   final bool needWatchLocalRepositoryForUpdates;
   NotificationPaginationListWidget({
-    @required Key key,
+     Key key,
     @required this.needWatchLocalRepositoryForUpdates,
     ScrollController scrollController,
   }) : super(

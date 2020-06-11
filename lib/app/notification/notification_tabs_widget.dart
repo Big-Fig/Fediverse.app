@@ -36,13 +36,13 @@ class NotificationTabsWidget extends StatelessWidget {
   final List<Widget> appBarActionWidgets;
 
   const NotificationTabsWidget(
-      {@required Key key, @required this.appBarActionWidgets})
+      {Key key, @required this.appBarActionWidgets})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var notificationsTabsBloc =
-        INotificationsTabsBloc.of(context, listen: false);
+        INotificationTabsBloc.of(context, listen: false);
 
     var tabs = notificationsTabsBloc.tabs;
 
@@ -91,7 +91,7 @@ class NotificationTabsWidget extends StatelessWidget {
   SliverPersistentHeader buildSliverAppBar(
       BuildContext context,
       List<NotificationTab> tabs,
-      INotificationsTabsBloc notificationsTabsBloc) {
+      INotificationTabsBloc notificationsTabsBloc) {
     return SliverPersistentHeader(
         pinned: true,
         floating: true,
@@ -111,7 +111,7 @@ class NotificationTabsWidget extends StatelessWidget {
   }
 
   Widget buildTabBar(BuildContext context, List<NotificationTab> tabs,
-          INotificationsTabsBloc notificationsTabsBloc) =>
+          INotificationTabsBloc notificationsTabsBloc) =>
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -149,7 +149,7 @@ class NotificationTabsWidget extends StatelessWidget {
 
   Widget buildBodyWidget(BuildContext context) {
     var notificationsTabsBloc =
-        INotificationsTabsBloc.of(context, listen: false);
+        INotificationTabsBloc.of(context, listen: false);
     _logger.finest(() => "buildBodyWidget");
 
     var tabs = notificationsTabsBloc.tabs;
@@ -173,7 +173,7 @@ class NotificationTabsWidget extends StatelessWidget {
   }
 
   Widget buildTabBody(BuildContext context, NotificationTab tab,
-      INotificationsTabsBloc notificationsTabsBloc) {
+      INotificationTabsBloc notificationsTabsBloc) {
     List<PleromaNotificationType> excludeTypes = mapTabToExcludeTypes(tab);
 
     return DisposableProvider<INotificationCachedListBloc>(

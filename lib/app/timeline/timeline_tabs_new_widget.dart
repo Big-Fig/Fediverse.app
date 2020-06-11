@@ -29,23 +29,23 @@ import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger("timeline_tabs_widget.dart");
 
-class TimelineNewWidget extends StatefulWidget {
+class TimelineTabsNewWidget extends StatefulWidget {
   final List<TimelineTab> tabs;
   final TimelineTab startTab;
 
   final List<Widget> appBarActionWidgets;
 
-  TimelineNewWidget({
+  TimelineTabsNewWidget({
     @required this.tabs,
     @required this.startTab,
     @required this.appBarActionWidgets,
   });
 
   @override
-  _TimelineNewWidgetState createState() => _TimelineNewWidgetState();
+  _TimelineTabsNewWidgetState createState() => _TimelineTabsNewWidgetState();
 }
 
-class _TimelineNewWidgetState extends State<TimelineNewWidget>
+class _TimelineTabsNewWidgetState extends State<TimelineTabsNewWidget>
     with TickerProviderStateMixin {
   TabController tabController;
 
