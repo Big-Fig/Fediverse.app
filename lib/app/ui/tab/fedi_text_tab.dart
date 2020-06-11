@@ -49,8 +49,7 @@ class _FediTextTabState extends State<FediTextTab> {
   void dispose() {
     isDisposed = true;
     try {
-      var tabController = DefaultTabController.of(context);
-      tabController.removeListener(listener);
+      widget.tabController.removeListener(listener);
     } catch (e) {
       // just ignore. Sometimes tab controller already not exist
     }

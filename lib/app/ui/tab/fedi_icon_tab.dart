@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 class FediIconTab extends StatefulWidget {
   final IconData iconData;
   final int index;
+  final TabController tabController;
 
-  const FediIconTab(this.iconData, {@required this.index});
+  const FediIconTab(this.iconData,
+      {@required this.index, @required this.tabController});
 
   @override
   _FediIconTabState createState() => _FediIconTabState();
@@ -22,16 +24,16 @@ class _FediIconTabState extends State<FediIconTab> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    var tabController = DefaultTabController.of(context);
+
     listener = () {
       if (!isDisposed) {
         setState(() {
-          updateIsSelected(tabController);
+          updateIsSelected(widget.tabController);
         });
       }
     };
-    updateIsSelected(tabController);
-    tabController.addListener(listener);
+    updateIsSelected(widget.tabController);
+    widget.tabController.addListener(listener);
   }
 
   void updateIsSelected(TabController tabController) {
@@ -42,8 +44,7 @@ class _FediIconTabState extends State<FediIconTab> {
   void dispose() {
     isDisposed = true;
     try {
-      var tabController = DefaultTabController.of(context);
-      tabController.removeListener(listener);
+      widget.tabController.removeListener(listener);
     } catch (e) {
       // just ignore. Sometimes tab controller already not exist
     }
@@ -53,8 +54,7 @@ class _FediIconTabState extends State<FediIconTab> {
   @override
   Widget build(BuildContext context) {
     var onPressed = () {
-      var tabController = DefaultTabController.of(context);
-      tabController.animateTo(widget.index);
+      widget.tabController.animateTo(widget.index);
     };
 
     Widget button;

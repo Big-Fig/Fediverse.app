@@ -3,10 +3,10 @@ import 'package:fedi/disposable/disposable.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-abstract class INotificationsTabsBloc extends Disposable {
-  static INotificationsTabsBloc of(BuildContext context,
+abstract class INotificationTabsBloc extends Disposable {
+  static INotificationTabsBloc of(BuildContext context,
           {bool listen = true}) =>
-      Provider.of<INotificationsTabsBloc>(context, listen: listen);
+      Provider.of<INotificationTabsBloc>(context, listen: listen);
 
   List<NotificationTab> get tabs;
 

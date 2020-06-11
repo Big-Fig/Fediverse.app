@@ -146,7 +146,7 @@ class HomePage extends StatelessWidget {
                 update: (context, value, previous) =>
                 value.fediSliverAppBarBloc,
                 child: const NotificationsHomeTabPage(
-                  key: PageStorageKey<String>("NotificationsHomeTabPage"),
+//                  key: PageStorageKey<String>("NotificationsHomeTabPage"),
                 ),
               ),
             ),
