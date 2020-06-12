@@ -132,56 +132,60 @@ class StatusListItemTimelineWidget extends StatelessWidget {
         isFirstReplyAndDisplayReplyToStatus;
     return DisposableProxyProvider<IStatus, IStatusBloc>(
       update: (context, status, oldValue) => _createStatusBloc(context, status),
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () {
-          if (statusCallback != null) {
-            statusCallback(context, status);
-          }
-        },
-        child: Column(
-          children: [
-            if (status.isHaveReblog) StatusReblogHeaderWidget(),
-            if (displayAccountHeader)
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Flexible(child: StatusAccountWidget()),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: StatusCreatedAtWidget(),
+      child: Column(
+        children: [
+          GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () {
+              if (statusCallback != null) {
+                statusCallback(context, status);
+              }
+            },
+            child: Column(
+              children: [
+                if (status.isHaveReblog) StatusReblogHeaderWidget(),
+                if (displayAccountHeader)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Flexible(child: StatusAccountWidget()),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: StatusCreatedAtWidget(),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-            if (isReply)
-              Padding(
-                padding: const EdgeInsets.fromLTRB(68.0, 4.0, 16.0, 0.0),
-                child: StatusReplySubHeaderWidget(
-                  accountCallback: accountMentionCallback,
-                ),
-              ),
-            buildBody(isReply),
-            StatusEmojiReactionListWidget(),
-            if (displayActions &&
-                !(isReply && isFirstReplyAndDisplayReplyToStatus))
-              Column(
-                children: [
-                  const FediUltraLightGreyDivider(),
-                  StatusActionsListWidget(),
-                ],
-              ),
-            if (isReplyAndFirstReplyOrDisplayAllReplies)
-              Column(
-                children: [
-                  const FediUltraLightGreyDivider(),
-                  StatusShowThisThreadActionWidget(),
-                ],
-              ),
-          ],
-        ),
+                  ),
+                if (isReply)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(68.0, 4.0, 16.0, 0.0),
+                    child: StatusReplySubHeaderWidget(
+                      accountCallback: accountMentionCallback,
+                    ),
+                  ),
+                buildBody(isReply),
+                StatusEmojiReactionListWidget(),
+              ],
+            ),
+          ),
+          if (displayActions &&
+              !(isReply && isFirstReplyAndDisplayReplyToStatus))
+            Column(
+              children: [
+                const FediUltraLightGreyDivider(),
+                StatusActionsListWidget(),
+              ],
+            ),
+          if (isReplyAndFirstReplyOrDisplayAllReplies)
+            Column(
+              children: [
+                const FediUltraLightGreyDivider(),
+                StatusShowThisThreadActionWidget(),
+              ],
+            ),
+        ],
       ),
     );
   }
