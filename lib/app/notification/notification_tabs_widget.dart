@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:fedi/app/notification/list/cached/notification_cached_list_bloc.dart';
 import 'package:fedi/app/notification/list/cached/notification_cached_list_bloc_impl.dart';
 import 'package:fedi/app/notification/notification_model.dart';
@@ -8,10 +9,7 @@ import 'package:fedi/app/notification/pagination/cached/notification_cached_pagi
 import 'package:fedi/app/notification/pagination/list/notification_pagination_list_widget.dart';
 import 'package:fedi/app/notification/pagination/list/notification_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/notification/unread/notification_unread_exclude_types_badge_widget.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
-import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/page/fedi_sliver_app_bar.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:fedi/app/ui/tab/fedi_icon_tab.dart';
@@ -25,89 +23,56 @@ import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_ite
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:fedi/ui/nested_scroll_controller_bloc.dart';
+import 'package:flutter/material.dart' hide NestedScrollView;
+import 'package:flutter/rendering.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-var _logger = Logger("notification_tabs_widget.dart");
+var _logger = Logger("timeline_tabs_widget.dart");
 
-class NotificationTabsWidget extends StatelessWidget {
+class NotificationTabsWidget extends StatefulWidget {
+  final List<NotificationTab> tabs;
+  final NotificationTab startTab;
+
   final List<Widget> appBarActionWidgets;
 
-  const NotificationTabsWidget(
-      {Key key, @required this.appBarActionWidgets})
-      : super(key: key);
+  NotificationTabsWidget({
+    @required this.tabs,
+    @required this.startTab,
+    @required this.appBarActionWidgets,
+  });
+
+  @override
+  _NotificationTabsWidgetState createState() =>
+      _NotificationTabsWidgetState();
+}
+
+class _NotificationTabsWidgetState extends State<NotificationTabsWidget>
+    with TickerProviderStateMixin {
+  TabController tabController;
+
+  @override
+  void initState() {
+    tabController = TabController(
+      length: widget.tabs.length, vsync: this,
+//      initialIndex: widget.tabs.indexOf(widget.startTab),
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    var notificationsTabsBloc =
-        INotificationTabsBloc.of(context, listen: false);
-
-    var tabs = notificationsTabsBloc.tabs;
-
-    return DefaultTabController(
-      length: tabs.length,
-      initialIndex: tabs.indexOf(notificationsTabsBloc.selectedTab),
-      child: NestedScrollView(
-        body: FediDarkStatusBarStyleArea(child: buildBodyWidget(context)),
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return [
-            SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  Padding(
-                    padding: EdgeInsets.only(
-                      top: 24.0 + MediaQuery.of(context).padding.top,
-                      bottom: 24.0,
-                      left: 16.0,
-                      right: 16.0,
-                    ),
-                    child: FediLightStatusBarStyleArea(
-                      child: buildTabBar(context, tabs, notificationsTabsBloc),
-                    ),
-                  ),
-//              _buildCollapsedAppBarBody(context)
-                ],
-              ),
-            ),
-//            buildSliverAppBar(context, tabs, notificationsTabsBloc),
-          ];
-        },
-      ),
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: _buildScaffoldBody(),
     );
-
-//    return DefaultTabController(
-//      length: tabs.length,
-//      initialIndex: tabs.indexOf(notificationsTabsBloc.selectedTab),
-//      child: FediHomeTabContainer(
-//        topHeaderHeightInSafeArea: FediSizes.headerImageSingleRowSafeAreaHeight,
-//        topBar: buildTabBar(context, tabs, notificationsTabsBloc),
-//        body: buildBodyWidget(context),
-//      ),
-//    );
-  }
-
-  SliverPersistentHeader buildSliverAppBar(
-      BuildContext context,
-      List<NotificationTab> tabs,
-      INotificationTabsBloc notificationsTabsBloc) {
-    return SliverPersistentHeader(
-        pinned: true,
-        floating: true,
-        delegate: FediSliverAppBar(
-          expandedHeight: MediaQuery.of(context).padding.top +
-              FediSizes.headerImageSingleRowSafeAreaHeight -
-              16.0,
-          topBar: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: buildTabBar(context, tabs, notificationsTabsBloc),
-          ),
-          expandedAppBarBody: null,
-//          collapsedAppBarBody: _buildCollapsedAppBarBody(context),
-          collapsedAppBarBody: null,
-          statusBarHeight: MediaQuery.of(context).padding.top,
-        ));
   }
 
   Widget buildTabBar(BuildContext context, List<NotificationTab> tabs,
@@ -118,10 +83,13 @@ class NotificationTabsWidget extends StatelessWidget {
           ...tabs.map((tab) => NotificationUnreadBadgeExcludeTypesWidget(
                 offset: 6.0,
                 excludeTypes: mapTabToExcludeTypes(tab),
-                child: FediIconTab(mapTabToIconData(context, tab),
-                    index: tabs.indexOf(tab)),
+                child: FediIconTab(
+                  mapTabToIconData(context, tab),
+                  index: tabs.indexOf(tab),
+                  tabController: tabController,
+                ),
               )),
-          ...appBarActionWidgets
+          ...widget.appBarActionWidgets
         ],
       );
 
@@ -147,34 +115,135 @@ class NotificationTabsWidget extends StatelessWidget {
     throw "Invalid tab $tab";
   }
 
-  Widget buildBodyWidget(BuildContext context) {
-    var notificationsTabsBloc =
-        INotificationTabsBloc.of(context, listen: false);
-    _logger.finest(() => "buildBodyWidget");
+  Widget _buildScaffoldBody() {
+    var timelinesTabsBloc = INotificationTabsBloc.of(context, listen: true);
 
-    var tabs = notificationsTabsBloc.tabs;
+    _logger.finest(() => "build");
+
+    var nestedScrollController =
+        INestedScrollControllerBloc.of(context, listen: false)
+            .nestedScrollController;
+    return NestedScrollView(
+        controller: nestedScrollController,
+        headerSliverBuilder: (BuildContext c, bool f) {
+          return [
+            SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: 16.0 + MediaQuery.of(context).padding.top,
+                      bottom: 8.0,
+                      left: 16.0,
+                      right: 16.0,
+                    ),
+                    child: FediLightStatusBarStyleArea(
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: buildTabBar(
+                            context, widget.tabs, timelinesTabsBloc),
+                      ),
+                    ),
+                  ),
+//              _buildCollapsedAppBarBody(context)
+                ],
+              ),
+            ),
+//              buildSliverAppBar(context, tabs, timelinesTabsBloc),
+          ];
+        },
+        //2.[inner scrollables in tabview sync issue](https://github.com/flutter/flutter/issues/21868)
+        innerScrollPositionKeyBuilder: () {
+          String index = 'Tab0';
+          index += tabController.index.toString();
+          return Key(index);
+        },
+        body: Column(
+          children: <Widget>[
+            Expanded(
+              child: NotificationTabsNestedScrollViewBodyWidget(
+                  'Tab0', tabController, widget.tabs),
+            )
+          ],
+        ));
+  }
+}
+
+class NotificationTabsNestedScrollViewBodyWidget extends StatefulWidget {
+  final List<NotificationTab> tabs;
+  const NotificationTabsNestedScrollViewBodyWidget(
+    this.tabKey,
+    this.tabController,
+    this.tabs,
+  );
+
+  final String tabKey;
+  final TabController tabController;
+
+  @override
+  _NotificationTabsNestedScrollViewBodyWidgetState createState() =>
+      _NotificationTabsNestedScrollViewBodyWidgetState();
+}
+
+class _NotificationTabsNestedScrollViewBodyWidgetState
+    extends State<NotificationTabsNestedScrollViewBodyWidget>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+
+    var notificationTabsBloc = INotificationTabsBloc.of(context, listen: true);
+    _logger.finest(() => "buildBodyWidget");
+    var tabs = notificationTabsBloc.tabs;
 
     return ClipRRect(
       borderRadius: BorderRadius.only(
           topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0)),
       child: Container(
-        color: FediColors.white,
+        color: Colors.white,
         child: TabBarView(
+            controller: widget.tabController,
             children: List<Widget>.generate(
-          tabs.length,
-          (int index) {
-            var tab = tabs[index];
+              tabs.length,
+              (int index) {
+                var tab = tabs[index];
 
-            return buildTabBody(context, tab, notificationsTabsBloc);
-          },
-        )),
+                return TabViewItem(Key(widget.tabKey + index.toString()), tab);
+
+//              return buildTabBody(context, tab, notificationTabsBloc);
+              },
+            )),
       ),
     );
   }
 
-  Widget buildTabBody(BuildContext context, NotificationTab tab,
-      INotificationTabsBloc notificationsTabsBloc) {
-    List<PleromaNotificationType> excludeTypes = mapTabToExcludeTypes(tab);
+  @override
+  bool get wantKeepAlive => true;
+}
+
+class TabViewItem extends StatefulWidget {
+  final NotificationTab tab;
+  const TabViewItem(this.tabKey, this.tab);
+
+  final Key tabKey;
+
+  @override
+  _TabViewItemState createState() => _TabViewItemState();
+}
+
+class _TabViewItemState extends State<TabViewItem>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+
+    List<PleromaNotificationType> excludeTypes =
+        mapTabToExcludeTypes(widget.tab);
 
     return DisposableProvider<INotificationCachedListBloc>(
       create: (context) => NotificationCachedListBloc.createFromContext(context,
@@ -214,9 +283,14 @@ class NotificationTabsWidget extends StatelessWidget {
                     children: <Widget>[
                       Builder(
                         builder: (context) =>
-                            NotificationPaginationListWidget(
-                          needWatchLocalRepositoryForUpdates: true,
-                          key: PageStorageKey("${tab.toString()}"),
+                            NestedScrollViewInnerScrollPositionKeyWidget(
+                          widget.tabKey,
+                          FediDarkStatusBarStyleArea(
+                            child: NotificationPaginationListWidget(
+                              needWatchLocalRepositoryForUpdates: true,
+//                              key: PageStorageKey("${tab.toString()}"),
+                            ),
+                          ),
                         ),
                       ),
                       Align(
@@ -236,33 +310,36 @@ class NotificationTabsWidget extends StatelessWidget {
     );
   }
 
-  List<PleromaNotificationType> mapTabToExcludeTypes(NotificationTab tab) {
-    List<PleromaNotificationType> excludeTypes;
+  @override
+  bool get wantKeepAlive => true;
+}
 
-    switch (tab) {
-      case NotificationTab.all:
-        excludeTypes = pleromaNotificationTypeValues
-            .valuesWithExclude([PleromaNotificationType.pleromaChatMention]);
-        break;
-      case NotificationTab.mentions:
-        excludeTypes = pleromaNotificationTypeValues
-            .valuesWithExcept([PleromaNotificationType.mention]);
-        break;
-      case NotificationTab.reblogs:
-        excludeTypes = pleromaNotificationTypeValues
-            .valuesWithExcept([PleromaNotificationType.reblog]);
-        break;
-      case NotificationTab.favourites:
-        excludeTypes = pleromaNotificationTypeValues
-            .valuesWithExcept([PleromaNotificationType.favourite]);
-        break;
-      case NotificationTab.follows:
-        excludeTypes = pleromaNotificationTypeValues.valuesWithExcept([
-          PleromaNotificationType.follow,
-          PleromaNotificationType.followRequest,
-        ]);
-        break;
-    }
-    return excludeTypes;
+List<PleromaNotificationType> mapTabToExcludeTypes(NotificationTab tab) {
+  List<PleromaNotificationType> excludeTypes;
+
+  switch (tab) {
+    case NotificationTab.all:
+      excludeTypes = pleromaNotificationTypeValues
+          .valuesWithExclude([PleromaNotificationType.pleromaChatMention]);
+      break;
+    case NotificationTab.mentions:
+      excludeTypes = pleromaNotificationTypeValues
+          .valuesWithExcept([PleromaNotificationType.mention]);
+      break;
+    case NotificationTab.reblogs:
+      excludeTypes = pleromaNotificationTypeValues
+          .valuesWithExcept([PleromaNotificationType.reblog]);
+      break;
+    case NotificationTab.favourites:
+      excludeTypes = pleromaNotificationTypeValues
+          .valuesWithExcept([PleromaNotificationType.favourite]);
+      break;
+    case NotificationTab.follows:
+      excludeTypes = pleromaNotificationTypeValues.valuesWithExcept([
+        PleromaNotificationType.follow,
+        PleromaNotificationType.followRequest,
+      ]);
+      break;
   }
+  return excludeTypes;
 }
