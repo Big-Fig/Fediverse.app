@@ -179,26 +179,18 @@ class JoinAuthInstanceWidget extends StatelessWidget {
   }
 
   Future signUpToInstance(BuildContext context) async {
-    await doAsyncOperationWithDialog(
+    var joinInstanceBloc = IJoinAuthInstanceBloc.of(context, listen: false);
+    var hostUri = extractCurrentUri(joinInstanceBloc);
+    var asyncDialogResult = await doAsyncOperationWithDialog(
         context: context,
         contentMessage: tr("app.auth.instance.join"
             ".progress.dialog.content"),
         asyncCode: () async {
-          var joinInstanceBloc =
-              IJoinAuthInstanceBloc.of(context, listen: false);
-
-          var hostUri = extractCurrentUri(joinInstanceBloc);
-
           AuthHostBloc authHostBloc;
-          try {
-            authHostBloc = AuthHostBloc.createFromContext(context,
-                instanceBaseUrl: hostUri);
-            await authHostBloc.checkApplicationRegistration();
-          } finally {
-            authHostBloc?.dispose();
-          }
-
-          goToRegisterAuthInstancePage(context, instanceBaseUrl: hostUri);
+          authHostBloc =
+              AuthHostBloc.createFromContext(context, instanceBaseUrl: hostUri);
+          await authHostBloc.checkApplicationRegistration();
+          authHostBloc?.dispose();
         },
         errorAlertDialogBuilders: [
           (context, error) {
@@ -206,6 +198,9 @@ class JoinAuthInstanceWidget extends StatelessWidget {
             return createInstanceDeadErrorAlertDialog(context);
           }
         ]);
+    if (asyncDialogResult.success) {
+      goToRegisterAuthInstancePage(context, instanceBaseUrl: hostUri);
+    }
   }
 
   BaseAlertDialog createInstanceDeadErrorAlertDialog(BuildContext context) =>
