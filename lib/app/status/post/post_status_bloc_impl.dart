@@ -62,7 +62,6 @@ abstract class PostStatusBloc extends DisposableOwner
 
     addDisposable(textEditingController: inputTextController);
 
-    
     var editTextListener = () {
       onInputTextChanged();
     };
@@ -75,8 +74,7 @@ abstract class PostStatusBloc extends DisposableOwner
     addDisposable(focusNode: focusNode);
 
     var focusListener = () {
-        onFocusChange(focusNode.hasFocus);
-
+      onFocusChange(focusNode.hasFocus);
     };
 
     focusNode.addListener(focusListener);
@@ -338,9 +336,21 @@ abstract class PostStatusBloc extends DisposableOwner
       await statusRepository.upsertRemoteStatus(remoteStatus,
           listRemoteId: null, conversationRemoteId: conversationRemoteId);
       await onStatusPosted(remoteStatus);
+      if (inReplyToStatusRemoteId != null) {}
       success = true;
     } else {
       success = false;
+    }
+    if (success) {
+      try {
+        await statusRepository.incrementRepliesCount(
+            remoteId: inReplyToStatusRemoteId);
+      } catch (e, stackTrace) {
+        _logger.warning(
+            () => "failed to incrementRepliesCount $inReplyToStatusRemoteId",
+            e,
+            stackTrace);
+      }
     }
     return success;
   }
@@ -363,6 +373,7 @@ abstract class PostStatusBloc extends DisposableOwner
   }
 
   void _clear() {
+    focusNode.unfocus();
     inputTextController.clear();
     mediaAttachmentGridBloc.clear();
     _regenerateIdempotencyKey();
@@ -391,7 +402,6 @@ abstract class PostStatusBloc extends DisposableOwner
   void clearSchedule() {
     schedule(null);
   }
-
 
   @override
   void appendText(String textToAppend) {

@@ -118,4 +118,6 @@ abstract class IStatusRepository
 
   Future<IStatus> getConversationLastStatus(
       {@required IConversation conversation});
+
+  Future incrementRepliesCount({@required String remoteId});
 }
