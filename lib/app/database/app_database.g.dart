@@ -694,9 +694,9 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
     @required int repliesCount,
     @required int reblogsCount,
     @required int favouritesCount,
-    @required bool favourited,
-    @required bool reblogged,
-    @required bool muted,
+    this.favourited = const Value.absent(),
+    this.reblogged = const Value.absent(),
+    this.muted = const Value.absent(),
     this.bookmarked = const Value.absent(),
     this.pinned = const Value.absent(),
     this.content = const Value.absent(),
@@ -727,9 +727,6 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
         repliesCount = Value(repliesCount),
         reblogsCount = Value(reblogsCount),
         favouritesCount = Value(favouritesCount),
-        favourited = Value(favourited),
-        reblogged = Value(reblogged),
-        muted = Value(muted),
         accountRemoteId = Value(accountRemoteId);
   DbStatusesCompanion copyWith(
       {Value<int> id,
@@ -990,11 +987,8 @@ class $DbStatusesTable extends DbStatuses
   @override
   GeneratedBoolColumn get favourited => _favourited ??= _constructFavourited();
   GeneratedBoolColumn _constructFavourited() {
-    return GeneratedBoolColumn(
-      'favourited',
-      $tableName,
-      false,
-    );
+    return GeneratedBoolColumn('favourited', $tableName, false,
+        defaultValue: const Constant(false));
   }
 
   final VerificationMeta _rebloggedMeta = const VerificationMeta('reblogged');
@@ -1002,11 +996,8 @@ class $DbStatusesTable extends DbStatuses
   @override
   GeneratedBoolColumn get reblogged => _reblogged ??= _constructReblogged();
   GeneratedBoolColumn _constructReblogged() {
-    return GeneratedBoolColumn(
-      'reblogged',
-      $tableName,
-      false,
-    );
+    return GeneratedBoolColumn('reblogged', $tableName, false,
+        defaultValue: const Constant(false));
   }
 
   final VerificationMeta _mutedMeta = const VerificationMeta('muted');
@@ -1014,11 +1005,8 @@ class $DbStatusesTable extends DbStatuses
   @override
   GeneratedBoolColumn get muted => _muted ??= _constructMuted();
   GeneratedBoolColumn _constructMuted() {
-    return GeneratedBoolColumn(
-      'muted',
-      $tableName,
-      false,
-    );
+    return GeneratedBoolColumn('muted', $tableName, false,
+        defaultValue: const Constant(false));
   }
 
   final VerificationMeta _bookmarkedMeta = const VerificationMeta('bookmarked');
@@ -1437,20 +1425,14 @@ class $DbStatusesTable extends DbStatuses
     if (d.favourited.present) {
       context.handle(_favouritedMeta,
           favourited.isAcceptableValue(d.favourited.value, _favouritedMeta));
-    } else if (isInserting) {
-      context.missing(_favouritedMeta);
     }
     if (d.reblogged.present) {
       context.handle(_rebloggedMeta,
           reblogged.isAcceptableValue(d.reblogged.value, _rebloggedMeta));
-    } else if (isInserting) {
-      context.missing(_rebloggedMeta);
     }
     if (d.muted.present) {
       context.handle(
           _mutedMeta, muted.isAcceptableValue(d.muted.value, _mutedMeta));
-    } else if (isInserting) {
-      context.missing(_mutedMeta);
     }
     if (d.bookmarked.present) {
       context.handle(_bookmarkedMeta,

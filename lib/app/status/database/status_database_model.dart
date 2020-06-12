@@ -20,9 +20,9 @@ class DbStatuses extends Table {
   IntColumn get repliesCount => integer()();
   IntColumn get reblogsCount => integer()();
   IntColumn get favouritesCount => integer()();
-  BoolColumn get favourited => boolean()();
-  BoolColumn get reblogged => boolean()();
-  BoolColumn get muted => boolean()();
+  BoolColumn get favourited => boolean().withDefault(const Constant(false))();
+  BoolColumn get reblogged => boolean().withDefault(const Constant(false))();
+  BoolColumn get muted => boolean().withDefault(const Constant(false))();
   BoolColumn get bookmarked => boolean().nullable()();
   BoolColumn get pinned => boolean().nullable()();
   TextColumn get content => text().nullable()();
