@@ -52,7 +52,6 @@ class PleromaNotificationService implements IPleromaNotificationService {
   @override
   Future<List<IPleromaNotification>> getNotifications(
       {@required MastodonNotificationsRequest request}) async {
-
     var httpResponse = await restService.sendHttpRequest(RestRequest.get(
         relativePath: notificationRelativeUrlPath,
         queryArgs: RestRequestQueryArg.listFromJson(request.toJson())));
@@ -61,17 +60,24 @@ class PleromaNotificationService implements IPleromaNotificationService {
   }
 
   PleromaNotification parseNotificationResponse(Response httpResponse) {
+    var body = httpResponse.body;
+
+    // todo: report to pleroma
+    if (body == null || body == "null") {
+      return null;
+    }
     RestResponse<PleromaNotification> restResponse = RestResponse.fromResponse(
       response: httpResponse,
-      resultParser: (body) =>
-          PleromaNotification.fromJsonString(httpResponse.body),
+      resultParser: (body) {
+        return PleromaNotification.fromJsonString(body);
+      },
     );
 
     if (restResponse.isSuccess) {
       return restResponse.body;
     } else {
       throw PleromaNotificationException(
-          statusCode: httpResponse.statusCode, body: httpResponse.body);
+          statusCode: httpResponse.statusCode, body: body);
     }
   }
 
