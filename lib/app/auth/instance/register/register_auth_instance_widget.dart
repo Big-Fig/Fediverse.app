@@ -75,30 +75,8 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
                 )
               ],
             );
-
-            return TextField(
-                controller: formTextField.textEditingController,
-                decoration: InputDecoration(
-                    hintText: hintText,
-                    labelText: labelText,
-                    errorText: error?.createErrorDescription(context)));
           }),
     );
-    return Padding(
-        padding: EdgeInsets.all(10),
-        child: StreamBuilder<FormFieldError>(
-            stream: formTextField.errorStream,
-            initialData: formTextField.error,
-            builder: (context, snapshot) {
-              var error = snapshot.data;
-
-              return TextField(
-                  controller: formTextField.textEditingController,
-                  decoration: InputDecoration(
-                      hintText: hintText,
-                      labelText: labelText,
-                      errorText: error?.createErrorDescription(context)));
-            }));
   }
 
   Widget buildUsernameField(

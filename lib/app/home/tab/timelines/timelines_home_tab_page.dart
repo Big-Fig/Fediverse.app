@@ -7,7 +7,7 @@ import 'package:fedi/app/timeline/local_preferences/timeline_local_preferences_b
 import 'package:fedi/app/timeline/tab/timeline_tab_model.dart';
 import 'package:fedi/app/timeline/timeline_tabs_bloc.dart';
 import 'package:fedi/app/timeline/timeline_tabs_bloc_impl.dart';
-import 'package:fedi/app/timeline/timeline_tabs_new_widget.dart';
+import 'package:fedi/app/timeline/timeline_tabs_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -46,7 +46,7 @@ class TimelinesHomeTabPage extends StatelessWidget {
           return timelineTabsBloc;
         },
         child: Builder(
-          builder: (context) => TimelineTabsNewWidget(
+          builder: (context) => TimelineTabsWidget(
             tabs: ITimelineTabsBloc.of(context, listen: false).tabs,
             appBarActionWidgets: <Widget>[
               buildSearchActionButton(context),

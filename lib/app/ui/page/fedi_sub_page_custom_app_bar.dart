@@ -1,6 +1,4 @@
 import 'package:fedi/app/ui/fedi_colors.dart';
-import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
-import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

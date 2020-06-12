@@ -66,12 +66,18 @@ class SearchWidget extends StatelessWidget {
 
   Widget buildTabBar(
           BuildContext context, List<SearchTab> tabs, ISearchBloc searchBloc) =>
-      Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: tabs
-              .map((tab) => FediTextTab(mapTabToTitle(context, tab),
-                  index: tabs.indexOf(tab), isTransparent: false,))
-              .toList());
+      Builder(
+        builder: (context) => Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: tabs
+                .map((tab) => FediTextTab(
+                      mapTabToTitle(context, tab),
+                      index: tabs.indexOf(tab),
+                      isTransparent: false,
+                      tabController: DefaultTabController.of(context),
+                    ))
+                .toList()),
+      );
 
   String mapTabToTitle(BuildContext context, SearchTab tab) {
     switch (tab) {
