@@ -10,15 +10,20 @@ import 'package:flutter/widgets.dart';
 class FediPrimaryFilledTextButton extends FediTextButton {
   final String text;
   final VoidCallback onPressed;
+  final double height;
 
-  FediPrimaryFilledTextButton(this.text, {@required this.onPressed});
+  FediPrimaryFilledTextButton(
+    this.text, {
+    @required this.onPressed,
+    this.height: FediIconInCircleButton.defaultCircleSize,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-          height: FediIconInCircleButton.defaultCircleSize,
+          height: height,
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,
             color: onPressed != null
@@ -35,8 +40,7 @@ class FediPrimaryFilledTextButton extends FediTextButton {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 20),
               child: Text(
-                text,
-                // 80% transparency
+                text, textAlign: TextAlign.center, // 80% transparency
                 style: TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w500,
