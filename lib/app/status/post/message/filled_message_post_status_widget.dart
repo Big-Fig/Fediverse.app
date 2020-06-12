@@ -39,8 +39,8 @@ class FilledMessagePostStatusWidget extends StatelessWidget {
             focusNode: postStatusBloc.focusNode,
             hintText: hintText ?? tr("app.status.post.field.message.hint"),
             textEditingController: postStatusBloc.inputTextController,
-            expanded: false,
-            autofocus: false,
+            expanded: expanded,
+            autofocus: expanded,
             maxLines: maxLines,
             textInputAction: TextInputAction.send,
             onSubmitted: (String value) async {
