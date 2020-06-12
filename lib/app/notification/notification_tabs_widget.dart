@@ -10,24 +10,25 @@ import 'package:fedi/app/notification/pagination/list/notification_pagination_li
 import 'package:fedi/app/notification/pagination/list/notification_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/notification/unread/notification_unread_exclude_types_badge_widget.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/page/fedi_sliver_app_bar_bloc.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:fedi/app/ui/tab/fedi_icon_tab.dart';
-import 'package:fedi/collapsible/collapsible_bloc.dart';
-import 'package:fedi/collapsible/collapsible_bloc_impl.dart';
-import 'package:fedi/collapsible/toggle_collapsible_overlay_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_container_with_overlay_widget.dart';
+import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_overlay_widget.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:fedi/ui/nested_scroll_controller_bloc.dart';
+import 'package:fedi/ui/scroll_controller_bloc.dart';
 import 'package:flutter/material.dart' hide NestedScrollView;
 import 'package:flutter/rendering.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger("timeline_tabs_widget.dart");
 
@@ -44,8 +45,7 @@ class NotificationTabsWidget extends StatefulWidget {
   });
 
   @override
-  _NotificationTabsWidgetState createState() =>
-      _NotificationTabsWidgetState();
+  _NotificationTabsWidgetState createState() => _NotificationTabsWidgetState();
 }
 
 class _NotificationTabsWidgetState extends State<NotificationTabsWidget>
@@ -271,37 +271,61 @@ class _TabViewItemState extends State<TabViewItem>
                     INotification>,
                 IPaginationListWithNewItemsBloc>(
               update: (context, value, previous) => value,
-              child: PaginationListWithNewItemsContainerWithOverlayWidget(
-                textBuilder: (context, updateItemsCount) => plural(
-                    "app.notification.list.new_items.action"
-                    ".tap_to_load_new",
-                    updateItemsCount),
-                child: DisposableProvider<ICollapsibleBloc>(
-                  create: (context) =>
-                      CollapsibleBloc.createFromContext(context),
-                  child: Stack(
-                    children: <Widget>[
-                      Builder(
-                        builder: (context) =>
-                            NestedScrollViewInnerScrollPositionKeyWidget(
-                          widget.tabKey,
-                          FediDarkStatusBarStyleArea(
-                            child: NotificationPaginationListWidget(
-                              needWatchLocalRepositoryForUpdates: true,
+              child: Stack(
+                children: <Widget>[
+                  Builder(
+                    builder: (context) =>
+                        NestedScrollViewInnerScrollPositionKeyWidget(
+                      widget.tabKey,
+                      FediDarkStatusBarStyleArea(
+                        child: NotificationPaginationListWidget(
+                          needWatchLocalRepositoryForUpdates: true,
 //                              key: PageStorageKey("${tab.toString()}"),
-                            ),
-                          ),
                         ),
                       ),
-                      Align(
-                          alignment: Alignment.bottomLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ToggleCollapsibleOverlayWidget(),
-                          ))
-                    ],
+                    ),
                   ),
-                ),
+                  Builder(
+                    builder: (context) {
+                      var scrollControllerBloc =
+                          IScrollControllerBloc.of(context, listen: false);
+                      var fediSliverAppBarBloc =
+                          IFediSliverAppBarBloc.of(context, listen: false);
+                      return StreamBuilder<bool>(
+                          stream: Rx.combineLatest2(
+                              scrollControllerBloc.longScrollDirectionStream,
+                              fediSliverAppBarBloc.isAtLeastStartExpandStream,
+                              (scrollDirection, isAtLeastStartExpand) {
+                            _logger.finest(
+                                () => "scrollDirection $scrollDirection "
+                                    "$isAtLeastStartExpand");
+
+                            return scrollDirection ==
+                                    ScrollDirection.forward &&
+                                isAtLeastStartExpand == false;
+                          }),
+                          builder: (context, snapshot) {
+                            var showCollapsedBody = snapshot.data;
+                            return Align(
+                                alignment: Alignment.topCenter,
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                      top: showCollapsedBody == true
+                                          ? 24
+                                          : 48),
+                                  child:
+                                      PaginationListWithNewItemsOverlayWidget(
+                                    textBuilder:
+                                        (context, updateItemsCount) => plural(
+                                            "app.notification.list.new_items"
+                                            ".action.tap_to_load_new",
+                                            updateItemsCount),
+                                  ),
+                                ));
+                          });
+                    },
+                  ),
+                ],
               ),
             ),
           ),

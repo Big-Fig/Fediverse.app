@@ -320,24 +320,6 @@ class _TabViewItemState extends State<TabViewItem>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-//
-//   return NestedScrollViewInnerScrollPositionKeyWidget(
-//      widget.tabKey,
-//      ListView.builder(
-//          physics: const ClampingScrollPhysics(),
-//          itemBuilder: (BuildContext c, int i) {
-//            return Container(
-//              //decoration: BoxDecoration(border: Border.all(color: Colors.orange,width: 1.0)),
-//              alignment: Alignment.center,
-//              height: 60.0,
-//              width: double.infinity,
-//              //color: Colors.blue,
-//              child: Text(widget.tabKey.toString() + ': List$i'),
-//            );
-//          },
-//          itemCount: 100,
-//          padding: const EdgeInsets.all(0.0)),
-//    );
 
     var timelineTabsBloc = ITimelineTabsBloc.of(context, listen: false);
 
@@ -356,23 +338,6 @@ class _TabViewItemState extends State<TabViewItem>
             update: (context, value, previous) => value,
             child: Stack(
               children: <Widget>[
-//               NestedScrollViewInnerScrollPositionKeyWidget(
-//              widget.tabKey,
-//              ListView.builder(
-//                  physics: const ClampingScrollPhysics(),
-//                  itemBuilder: (BuildContext c, int i) {
-//                    return Container(
-//                      //decoration: BoxDecoration(border: Border.all(color: Colors.orange,width: 1.0)),
-//                      alignment: Alignment.center,
-//                      height: 60.0,
-//                      width: double.infinity,
-//                      //color: Colors.blue,
-//                      child: Text("asd" + ': List$i'),
-//                    );
-//                  },
-//                  itemCount: 100,
-//                  padding: const EdgeInsets.all(0.0)),
-//            ),
                 FediDarkStatusBarStyleArea(child: TimelineWidget(tabKey: widget.tabKey)),
 
                 Builder(
