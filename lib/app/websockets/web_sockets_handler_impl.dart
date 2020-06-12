@@ -12,7 +12,7 @@ import 'package:moor/moor.dart';
 
 abstract class WebSocketsChannelHandler extends DisposableOwner
     implements IWebSocketsHandler {
-  var _logger;
+  Logger _logger;
 
   String get logTag;
 
@@ -45,6 +45,12 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
 
   Future handleEvent(PleromaWebSocketsEvent event) async {
     _logger.finest(() => "event $event");
+
+    // todo: report bug to pleroma
+    if (event?.payload == null || event?.payload == "null") {
+      _logger.warning(() => "event payload is empty");
+      return;
+    }
 
     switch (event?.eventType) {
       case PleromaWebSocketsEventType.update:

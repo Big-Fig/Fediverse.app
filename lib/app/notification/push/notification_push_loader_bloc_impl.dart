@@ -48,17 +48,16 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
       var remoteNotification = await pleromaNotificationService.getNotification(
           notificationRemoteId: remoteNotificationId);
 
-      handled = remoteNotification != null;
-
-      _logger.finest(() => "handlePush \n"
-          "\t remoteNotification = $remoteNotification");
-
-      if (handled) {
+      handled = true;
+      if (remoteNotification != null) {
         var all = await notificationRepository.countAll();
         _logger.finest(() => "all ${all}");
 
         var alreadyExistNotification =
             await notificationRepository.findByRemoteId(remoteNotificationId);
+
+        _logger.finest(() => "handlePush \n"
+            "\t remoteNotification = $remoteNotification");
 
         _logger.finest(() => "handlePush \n"
             "\t remoteNotificationId = $remoteNotificationId \n"
