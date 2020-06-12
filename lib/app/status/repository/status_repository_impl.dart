@@ -691,4 +691,8 @@ class StatusRepository extends AsyncInitLoadingBloc
           orderingTermData: StatusOrderingTermData(
               orderingMode: OrderingMode.desc,
               orderByType: StatusOrderByType.remoteId));
+
+  @override
+  Future incrementRepliesCount({@required String remoteId}) =>
+      dao.incrementRepliesCount(remoteId: remoteId);
 }

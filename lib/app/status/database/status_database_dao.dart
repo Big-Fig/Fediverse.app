@@ -386,4 +386,14 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
           : []),
     ];
   }
+
+  Future incrementRepliesCount({@required String remoteId}) {
+
+      var update = "UPDATE db_statuses "
+          "SET replies_count = replies_count + 1 "
+          "WHERE remote_id = '$remoteId'";
+      var query = db.customUpdate(update, updates: {dbStatuses});
+
+      return query;
+  }
 }
