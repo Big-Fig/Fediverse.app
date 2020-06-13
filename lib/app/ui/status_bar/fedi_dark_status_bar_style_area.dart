@@ -18,7 +18,8 @@ class FediDarkStatusBarStyleArea extends StatelessWidget {
 //            statusBarColor: Colors.red,
 //          ),
         value: SystemUiOverlayStyle.dark.copyWith(
-          statusBarColor: FediColors.white,
+          statusBarColor: Colors.red,
+//          statusBarColor: FediColors.white,
 
 //          systemNavigationBarColor: FediColors.white,
 //          systemNavigationBarColor: Colors.black,

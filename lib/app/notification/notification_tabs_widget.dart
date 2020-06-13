@@ -25,6 +25,7 @@ import 'package:fedi/ui/nested_scroll_controller_bloc.dart';
 import 'package:flutter/material.dart' hide NestedScrollView;
 import 'package:flutter/rendering.dart';
 import 'package:logging/logging.dart';
+import 'package:nested_scroll_controller/nested_scroll_controller.dart';
 import 'package:provider/provider.dart';
 
 var _logger = Logger("timeline_tabs_widget.dart");
@@ -120,49 +121,71 @@ class _NotificationTabsWidgetState extends State<NotificationTabsWidget>
     var nestedScrollController =
         INestedScrollControllerBloc.of(context, listen: false)
             .nestedScrollController;
+
+    var fediSliverAppBarBloc = IFediSliverAppBarBloc.of(context);
+    return Stack(
+      children: [
+        _buildNestedScrollView(nestedScrollController, timelinesTabsBloc),
+        StreamBuilder<bool>(
+            stream: fediSliverAppBarBloc.isAtLeastStartExpandStream,
+            builder: (context, snapshot) {
+              var isAtLeastStartExpand = snapshot.data;
+              if (isAtLeastStartExpand == false) {
+                return Container(
+                    height: MediaQuery.of(context).padding.top,
+                    color: Colors.white);
+              } else {
+                return SizedBox.shrink();
+              }
+            })
+      ],
+    );
+  }
+
+  NestedScrollView _buildNestedScrollView(NestedScrollController nestedScrollController, INotificationTabsBloc timelinesTabsBloc) {
     return NestedScrollView(
-        controller: nestedScrollController,
-        headerSliverBuilder: (BuildContext c, bool f) {
-          return [
-            SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  Padding(
-                    padding: EdgeInsets.only(
-                      top: 16.0 + MediaQuery.of(context).padding.top,
-                      bottom: 8.0,
-                      left: 16.0,
-                      right: 16.0,
-                    ),
-                    child: FediLightStatusBarStyleArea(
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: buildTabBar(
-                            context, widget.tabs, timelinesTabsBloc),
-                      ),
+      controller: nestedScrollController,
+      headerSliverBuilder: (BuildContext c, bool f) {
+        return [
+          SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: 16.0 + MediaQuery.of(context).padding.top,
+                    bottom: 8.0,
+                    left: 16.0,
+                    right: 16.0,
+                  ),
+                  child: FediLightStatusBarStyleArea(
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 16.0, top: 8.0),
+                      child: buildTabBar(
+                          context, widget.tabs, timelinesTabsBloc),
                     ),
                   ),
+                ),
 //              _buildCollapsedAppBarBody(context)
-                ],
-              ),
+              ],
             ),
+          ),
 //              buildSliverAppBar(context, tabs, timelinesTabsBloc),
-          ];
-        },
-        //2.[inner scrollables in tabview sync issue](https://github.com/flutter/flutter/issues/21868)
-        innerScrollPositionKeyBuilder: () {
-          String index = 'Tab0';
-          index += tabController.index.toString();
-          return Key(index);
-        },
-        body: Column(
-          children: <Widget>[
-            Expanded(
-              child: NotificationTabsNestedScrollViewBodyWidget(
-                  'Tab0', tabController, widget.tabs),
-            )
-          ],
-        ));
+        ];
+      },
+      //2.[inner scrollables in tabview sync issue](https://github.com/flutter/flutter/issues/21868)
+      innerScrollPositionKeyBuilder: () {
+        String index = 'Tab0';
+        index += tabController.index.toString();
+        return Key(index);
+      },
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: NotificationTabsNestedScrollViewBodyWidget(
+                'Tab0', tabController, widget.tabs),
+          )
+        ],
+      ));
   }
 }
 
