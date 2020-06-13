@@ -69,7 +69,13 @@ abstract class PaginationListWithNewItemsBloc<
             "\t newItems ${newItems.length} \n"
             "\t actuallyNew = ${actuallyNew.length}");
 
-        _unmergedNewItemsSubject.add(actuallyNew);
+        if(items?.isNotEmpty != true) {
+        // merge immediately
+          _mergedNewItemsSubject.add(actuallyNew);
+        } else {
+          _unmergedNewItemsSubject.add(actuallyNew);
+        }
+
       });
 
       addDisposable(streamSubscription: newItemsSubscription);

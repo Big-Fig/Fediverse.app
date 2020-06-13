@@ -36,10 +36,10 @@ class ScheduledStatusPaginationListWithNewItemsBloc<
     }
 
     if (a != null && b == null) {
-      return -1;
+      return 1;
     }
     if (a == null && b != null) {
-      return 1;
+      return -1;
     }
     return a.remoteId.compareTo(b.remoteId);
   }

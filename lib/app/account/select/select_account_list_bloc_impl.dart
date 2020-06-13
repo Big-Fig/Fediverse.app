@@ -51,7 +51,8 @@ class SelectAccountCachedListBloc extends DisposableOwner
       List<IPleromaAccount> remoteAccounts;
 
       if (searchText?.isNotEmpty == true) {
-        remoteAccounts = await pleromaAccountService.search(query: searchText);
+        remoteAccounts = await pleromaAccountService.search(
+            query: searchText, resolve: true);
       } else {
         remoteAccounts = await pleromaAccountService.getAccountFollowings(
             maxId: olderThan?.remoteId,
