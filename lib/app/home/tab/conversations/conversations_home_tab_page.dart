@@ -9,6 +9,7 @@ import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.d
 import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/header/fedi_header_text.dart';
+import 'package:fedi/app/ui/page/fedi_sliver_app_bar_bloc.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -28,46 +29,27 @@ class ConversationsHomeTabPage extends StatelessWidget {
   Widget build(BuildContext context) {
     _logger.finest(() => "build");
 
+    var fediSliverAppBarBloc = IFediSliverAppBarBloc.of(context);
+    
     return Scaffold(
       key: _drawerKey,
       backgroundColor: Colors.transparent,
-      body: NestedScrollView(
-        controller: IScrollControllerBloc.of(context).scrollController,
-        body: FediDarkStatusBarStyleArea(
-          child: DisposableProvider<IConversationsListBloc>(
-            create: (context) =>
-                ConversationsListBloc.createFromContext(context),
-            child: ClipRRect(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(16.0),
-                    topRight: Radius.circular(16.0)),
-                child: Container(
-                    color: Colors.white, child: ConversationsListWidget())),
-          ),
-        ),
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return [
-            SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  Padding(
-                    padding: EdgeInsets.only(
-                      top: 24.0 + MediaQuery.of(context).padding.top,
-                      bottom: 24.0,
-                      left: 16.0,
-                      right: 16.0,
-                    ),
-                    child: FediLightStatusBarStyleArea(
-                      child: buildTopBar(context),
-                    ),
-                  ),
-//              _buildCollapsedAppBarBody(context)
-                ],
-              ),
-            ),
-//            buildSliverAppBar(context, tabs, notificationsTabsBloc),
-          ];
-        },
+      body: Column(
+        children: [
+          buildNestedScrollView(context),
+          StreamBuilder<bool>(
+              stream: fediSliverAppBarBloc.isAtLeastStartExpandStream,
+              builder: (context, snapshot) {
+                var isAtLeastStartExpand = snapshot.data;
+                if (isAtLeastStartExpand == false) {
+                  return Container(
+                      height: MediaQuery.of(context).padding.top,
+                      color: Colors.white);
+                } else {
+                  return SizedBox.shrink();
+                }
+              })
+        ],
       ),
 //
 //      body: FediHomeTabContainer(
@@ -79,6 +61,47 @@ class ConversationsHomeTabPage extends StatelessWidget {
 //                ConversationsListBloc.createFromContext(context),
 //            child: const ConversationsListWidget()),
 //      ),
+    );
+  }
+
+  NestedScrollView buildNestedScrollView(BuildContext context) {
+    return NestedScrollView(
+      controller: IScrollControllerBloc.of(context).scrollController,
+      body: FediDarkStatusBarStyleArea(
+        child: DisposableProvider<IConversationsListBloc>(
+          create: (context) =>
+              ConversationsListBloc.createFromContext(context),
+          child: ClipRRect(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(16.0),
+                  topRight: Radius.circular(16.0)),
+              child: Container(
+                  color: Colors.white, child: ConversationsListWidget())),
+        ),
+      ),
+      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+        return [
+          SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: 24.0 + MediaQuery.of(context).padding.top,
+                    bottom: 24.0,
+                    left: 16.0,
+                    right: 16.0,
+                  ),
+                  child: FediLightStatusBarStyleArea(
+                    child: buildTopBar(context),
+                  ),
+                ),
+//              _buildCollapsedAppBarBody(context)
+              ],
+            ),
+          ),
+//            buildSliverAppBar(context, tabs, notificationsTabsBloc),
+        ];
+      },
     );
   }
 

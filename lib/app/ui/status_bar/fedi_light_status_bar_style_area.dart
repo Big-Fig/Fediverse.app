@@ -15,7 +15,7 @@ class FediLightStatusBarStyleArea extends StatelessWidget {
 //          ),
         value: SystemUiOverlayStyle.light.copyWith(
           statusBarColor: Colors.transparent,
-//            statusBarColor: Colors.red,
+//            statusBarColor: Colors.yellow,
 //          systemNavigationBarColor: Colors.white,
 //          systemNavigationBarColor: Colors.transparent,
 //          statusBarColor: Colors.transparent,

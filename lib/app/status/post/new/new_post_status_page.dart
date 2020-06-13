@@ -17,10 +17,12 @@ class NewPostStatusPage extends StatelessWidget {
             ".status.post.new.title"),
         leading: const FediDismissIconButton(),
       ),
-      body: const PostStatusWidget(
-        goBackOnSuccess: true,
-        displayMentions: true,
-        expanded: true, maxLines: null,
+      body: SafeArea(
+        child: const PostStatusWidget(
+          goBackOnSuccess: true,
+          displayMentions: true,
+          expanded: true, maxLines: null,
+        ),
       ),
     );
   }
