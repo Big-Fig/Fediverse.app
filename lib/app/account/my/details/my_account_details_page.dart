@@ -9,6 +9,7 @@ import 'package:fedi/app/account/my/settings/my_account_settings_drawer_widget.d
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/page/fedi_sliver_app_bar_bloc.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:fedi/ui/scroll_controller_bloc.dart';
@@ -21,6 +22,9 @@ final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 class MyAccountDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+    var fediSliverAppBarBloc = IFediSliverAppBarBloc.of(context);
+
     return ProxyProvider<IMyAccountBloc, IAccountBloc>(
       update: (context, value, previous) => value,
       child: Scaffold(
@@ -28,38 +32,22 @@ class MyAccountDetailsPage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         drawer: const MyAccountSettingsDrawerBodyWidget(),
 
-        body: NestedScrollView(
-          controller: IScrollControllerBloc.of(context, listen: false).scrollController,
-          body: FediDarkStatusBarStyleArea(
-              child: ClipRRect(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(16.0),
-                      topRight: Radius.circular(16.0)),
-                  child: Container(
-                      color: Colors.white, child: AccountDetailsWidget()))),
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return [
-              SliverList(
-                delegate: SliverChildListDelegate(
-                  [
-                    Padding(
-                      padding: EdgeInsets.only(
-                        top: 24.0 + MediaQuery.of(context).padding.top,
-                        bottom: 24.0,
-                        left: 16.0,
-                        right: 16.0,
-                      ),
-                      child: FediLightStatusBarStyleArea(
-                        child: buildTopBar(context),
-                      ),
-                    ),
-//              _buildCollapsedAppBarBody(context)
-                  ],
-                ),
-              ),
-//            buildSliverAppBar(context, tabs, notificationsTabsBloc),
-            ];
-          },
+        body: Stack(
+          children: [
+            buildNestedScrollView(context),
+            StreamBuilder<bool>(
+                stream: fediSliverAppBarBloc.isAtLeastStartExpandStream,
+                builder: (context, snapshot) {
+                  var isAtLeastStartExpand = snapshot.data;
+                  if (isAtLeastStartExpand == false) {
+                    return Container(
+                        height: MediaQuery.of(context).padding.top,
+                        color: Colors.white);
+                  } else {
+                    return SizedBox.shrink();
+                  }
+                })
+          ],
         ),
 
 //        body: FediHomeTabContainer.createLikeAppBar(
@@ -79,6 +67,42 @@ class MyAccountDetailsPage extends StatelessWidget {
 //            body: AccountDetailsWidget()),
       ),
     );
+  }
+
+  NestedScrollView buildNestedScrollView(BuildContext context) {
+    return NestedScrollView(
+        controller: IScrollControllerBloc.of(context, listen: false).scrollController,
+        body: FediDarkStatusBarStyleArea(
+            child: ClipRRect(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(16.0),
+                    topRight: Radius.circular(16.0)),
+                child: Container(
+                    color: Colors.white, child: AccountDetailsWidget()))),
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return [
+            SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: 24.0 + MediaQuery.of(context).padding.top,
+                      bottom: 24.0,
+                      left: 16.0,
+                      right: 16.0,
+                    ),
+                    child: FediLightStatusBarStyleArea(
+                      child: buildTopBar(context),
+                    ),
+                  ),
+//              _buildCollapsedAppBarBody(context)
+                ],
+              ),
+            ),
+//            buildSliverAppBar(context, tabs, notificationsTabsBloc),
+          ];
+        },
+      );
   }
 
   FlatButton buildAccountChooserButton(
