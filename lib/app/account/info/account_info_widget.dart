@@ -103,7 +103,12 @@ class AccountInfoWidget extends StatelessWidget {
           var statusesCount = snapshot.data;
           return buildStatisticValueWidget(
             tr("app.account.info.statuses", args: [statusesCount.toString()]),
-            onPressed: () {},
+            onPressed: () {
+              if(onStatusesTapCallback != null) {
+                onStatusesTapCallback();
+              }
+
+            },
           );
         });
   }
