@@ -437,6 +437,15 @@
         "add_to_gallery": {
           "progress": {
             "content": "Saving..."
+          },
+          "success": {
+            "toast": "Saved"
+          },
+          "error": {
+            "dialog": {
+              "title": "Can't save media",
+              "content": "Media type is not supported, network not available or permission not granted"
+            }
           }
         },
         "preview": {
