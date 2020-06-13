@@ -18,7 +18,7 @@ class FediSliverAppBarBloc extends DisposableOwner
 
   @override
   Stream<bool> get isAtLeastStartExpandStream =>
-      isAtLeastStartExpandSubject.stream;
+      isAtLeastStartExpandSubject.stream.distinct();
 
   FediSliverAppBarBloc({
     @required this.scrollController,
@@ -27,17 +27,22 @@ class FediSliverAppBarBloc extends DisposableOwner
     addDisposable(subject: isAtLeastStartExpandSubject);
 
     var listener = () {
-      var isScrolledAtLeastOneScreen =
-          scrollController.totalOffset > deviceHeight / 2;
+      // -1 is hack, because scroll extent sometimes invalid (0.0000...1
+      // difference)
+      var isAtLeastStartExpand = scrollController.position.pixels <
+          scrollController.position.maxScrollExtent -1;
+
       _logger.finest(() => "offset: ${scrollController.offset} \n"
-          "\t innerOffset: ${scrollController.innerOffset} \n"
-          "\t totalOffset: ${scrollController.totalOffset} \n"
-          "\t isScrolledAtLeastOneScreen: ${isScrolledAtLeastOneScreen} \n");
-      if (isScrolledAtLeastOneScreen) {
-        isAtLeastStartExpandSubject.add(false);
-      } else {
-        isAtLeastStartExpandSubject.add(true);
-      }
+              "\t innerOffset: ${scrollController.innerOffset} \n"
+              "\t totalOffset: ${scrollController.totalOffset} \n"
+              "\t position: ${scrollController.position} \n"
+              "\t isAtLeastStartExpand: ${isAtLeastStartExpand} \n"
+              "\t scrollController.position.pixels: ${scrollController
+          .position.pixels} scrollController.position.maxScrollExtent ${scrollController.position.maxScrollExtent}"
+//          "\t isScrolledAtLeastOneScreen: ${isScrolledAtLeastOneScreen} \n"
+          );
+        isAtLeastStartExpandSubject.add(isAtLeastStartExpand);
+
     };
     scrollController.addListener(listener);
 

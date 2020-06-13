@@ -17,18 +17,15 @@ import 'package:fedi/app/ui/tab/fedi_icon_tab.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
-import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_container_with_overlay_widget.dart';
 import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_overlay_widget.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:fedi/ui/nested_scroll_controller_bloc.dart';
-import 'package:fedi/ui/scroll_controller_bloc.dart';
 import 'package:flutter/material.dart' hide NestedScrollView;
 import 'package:flutter/rendering.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
-import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger("timeline_tabs_widget.dart");
 
@@ -287,36 +284,31 @@ class _TabViewItemState extends State<TabViewItem>
                   ),
                   Builder(
                     builder: (context) {
-                      var scrollControllerBloc =
-                          IScrollControllerBloc.of(context, listen: false);
                       var fediSliverAppBarBloc =
                           IFediSliverAppBarBloc.of(context, listen: false);
                       return StreamBuilder<bool>(
-                          stream: Rx.combineLatest2(
-                              scrollControllerBloc.longScrollDirectionStream,
+                          stream:
                               fediSliverAppBarBloc.isAtLeastStartExpandStream,
-                              (scrollDirection, isAtLeastStartExpand) {
-                            _logger.finest(
-                                () => "scrollDirection $scrollDirection "
-                                    "$isAtLeastStartExpand");
-
-                            return scrollDirection ==
-                                    ScrollDirection.forward &&
-                                isAtLeastStartExpand == false;
-                          }),
                           builder: (context, snapshot) {
-                            var showCollapsedBody = snapshot.data;
+                            var isAtLeastStartExpand = snapshot.data;
+                            var topPadding = isAtLeastStartExpand == true
+                                ? 24.0
+                                : 24.0 + MediaQuery.of(context).padding.top;
+
+                            _logger.finest(() => "topPadding $topPadding");
+
+//
+//                            topPadding =
+//                                24.0 + MediaQuery.of(context).padding.top;
+//                                24.0;
                             return Align(
                                 alignment: Alignment.topCenter,
                                 child: Padding(
-                                  padding: EdgeInsets.only(
-                                      top: showCollapsedBody == true
-                                          ? 24
-                                          : 48),
+                                  padding: EdgeInsets.only(top: topPadding),
                                   child:
                                       PaginationListWithNewItemsOverlayWidget(
-                                    textBuilder:
-                                        (context, updateItemsCount) => plural(
+                                    textBuilder: (context, updateItemsCount) =>
+                                        plural(
                                             "app.notification.list.new_items"
                                             ".action.tap_to_load_new",
                                             updateItemsCount),
