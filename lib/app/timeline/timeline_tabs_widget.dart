@@ -157,7 +157,7 @@ class _TimelineTabsWidgetState extends State<TimelineTabsWidget>
         INestedScrollControllerBloc.of(context, listen: false)
             .nestedScrollController;
     return NestedScrollView(
-      controller: nestedScrollController,
+        controller: nestedScrollController,
         headerSliverBuilder: (BuildContext c, bool f) {
           return [
             SliverList(
@@ -232,72 +232,78 @@ class _TimelineTabsNestedScrollViewBodyWidgetState
     _logger.finest(() => "buildBodyWidget");
     var tabs = timelineTabsBloc.tabs;
 
-
-
     return Container(
       color: Colors.white,
       child: Column(
         children: [
-          Builder(
-            builder: (context) {
-              var scrollControllerBloc =
-                  IScrollControllerBloc.of(context, listen: false);
-              var fediSliverAppBarBloc =
-                  IFediSliverAppBarBloc.of(context, listen: false);
-
-              _logger.finest(() => "Builder");
-
-              return StreamBuilder<bool>(
-                  stream: Rx.combineLatest2(
-                      scrollControllerBloc.longScrollDirectionStream,
-                      fediSliverAppBarBloc.isAtLeastStartExpandStream,
-                      (scrollDirection, isAtLeastStartExpand) {
-                    _logger.finest(() => "scrollDirection $scrollDirection "
-                        "$isAtLeastStartExpand");
-
-                    return scrollDirection == ScrollDirection.forward &&
-                        isAtLeastStartExpand == false;
-                  }),
-//                stream: scrollControllerBloc.longScrollDirectionStream.map(
-//                        (scrollDirection) => scrollDirection == ScrollDirection.forward),
-                  builder: (context, snapshot) {
-                    var show = snapshot.data;
-                    _logger.finest(() => "show $show");
-                    if (show == true) {
-                      return FediDarkStatusBarStyleArea(
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              top: MediaQuery.of(context).padding.top),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: FediColors.white,
-                                boxShadow: [FediShadows.forTopBar]),
-                            child: _buildCollapsedAppBarBody(context),
-                          ),
-                        ),
-                      );
-                    } else {
-                      return SizedBox.shrink();
-                    }
-                  });
-            },
-          ),
-          Expanded(
-            child: TabBarView(
-                controller: widget.tabController,
-                children: List<Widget>.generate(
-                  tabs.length,
-                  (int index) {
-                    var tab = tabs[index];
-
-                    return TabViewItem(Key(widget.tabKey + index.toString()), tab);
-
-//              return buildTabBody(context, tab, timelineTabsBloc);
-                  },
-                )),
-          ),
+          _buildCollapsedBody(),
+          _buildTabBarView(tabs),
         ],
       ),
+    );
+  }
+
+  Builder _buildCollapsedBody() {
+    return Builder(
+      builder: (context) {
+        var scrollControllerBloc =
+            IScrollControllerBloc.of(context, listen: false);
+        var fediSliverAppBarBloc =
+            IFediSliverAppBarBloc.of(context, listen: false);
+
+        _logger.finest(() => "Builder");
+
+        return StreamBuilder<bool>(
+            stream: Rx.combineLatest2(
+                scrollControllerBloc.longScrollDirectionStream,
+                fediSliverAppBarBloc.isAtLeastStartExpandStream,
+                (scrollDirection, isAtLeastStartExpand) {
+              _logger.finest(() => "scrollDirection $scrollDirection "
+                  "$isAtLeastStartExpand");
+
+              return scrollDirection == ScrollDirection.forward &&
+                  isAtLeastStartExpand == false;
+            }),
+//                stream: scrollControllerBloc.longScrollDirectionStream.map(
+//                        (scrollDirection) => scrollDirection == ScrollDirection.forward),
+            builder: (context, snapshot) {
+              var show = snapshot.data;
+              _logger.finest(() => "show $show");
+              if (show == true) {
+                return FediDarkStatusBarStyleArea(
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).padding.top),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: FediColors.white,
+                          boxShadow: [FediShadows.forTopBar]),
+                      child: _buildCollapsedAppBarBody(context),
+                    ),
+                  ),
+                );
+              } else {
+                return SizedBox.shrink();
+              }
+            });
+      },
+    );
+  }
+
+  Expanded _buildTabBarView(List<TimelineTab> tabs) {
+    return Expanded(
+      child: TabBarView(
+          controller: widget.tabController,
+          children: List<Widget>.generate(
+            tabs.length,
+            (int index) {
+              var tab = tabs[index];
+
+              return TabViewItem(Key(widget.tabKey + index.toString()), tab);
+
+//              return buildTabBody(context, tab, timelineTabsBloc);
+            },
+          )),
     );
   }
 
@@ -338,73 +344,59 @@ class _TabViewItemState extends State<TabViewItem>
             update: (context, value, previous) => value,
             child: Stack(
               children: <Widget>[
-                FediDarkStatusBarStyleArea(child: TimelineWidget(tabKey: widget.tabKey)),
-
-                Builder(
-                  builder: (context) {
-                    var scrollControllerBloc =
-                        IScrollControllerBloc.of(context, listen: false);
-                    var fediSliverAppBarBloc =
-                        IFediSliverAppBarBloc.of(context, listen: false);
-                    return StreamBuilder<bool>(
-                        stream: Rx.combineLatest2(
-                            scrollControllerBloc.longScrollDirectionStream,
-                            fediSliverAppBarBloc.isAtLeastStartExpandStream,
-                            (scrollDirection, isAtLeastStartExpand) {
-                          _logger
-                              .finest(() => "scrollDirection $scrollDirection "
-                                  "$isAtLeastStartExpand");
-
-                          return scrollDirection == ScrollDirection.forward &&
-                              isAtLeastStartExpand == false;
-                        }),
-                        builder: (context, snapshot) {
-                          var showCollapsedBody = snapshot.data;
-                          return Align(
-                              alignment: Alignment.topCenter,
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                    top: showCollapsedBody == true ? 24 : 48),
-                                child: PaginationListWithNewItemsOverlayWidget(
-                                  textBuilder: (context, updateItemsCount) =>
-                                      plural(
-                                          "app.status.list.new_items.action.tap_to_load_new",
-                                          updateItemsCount),
-                                ),
-                              ));
-                        });
-                  },
-                ),
+                FediDarkStatusBarStyleArea(
+                    child: TimelineWidget(tabKey: widget.tabKey)),
+                _buildTapToLoadOverlay(),
               ],
             )),
       ),
     );
-//
-//     child = ListView.builder(
-//        physics: const ClampingScrollPhysics(),
-//        itemBuilder: (BuildContext c, int i) {
-//          return Container(
-//            //decoration: BoxDecoration(border: Border.all(color: Colors.orange,width: 1.0)),
-//            alignment: Alignment.center,
-//            height: 60.0,
-//            width: double.infinity,
-//            //color: Colors.blue,
-//            child: Text(widget.tabKey.toString() + ': List$i'),
-//          );
-//        },
-//        itemCount: 100,
-//        padding: const EdgeInsets.all(0.0));
-
-//    child = SmartRefresher(
-//      controller: RefreshController(),
-//      enablePullDown: true,
-//      enablePullUp: true,
-//      header: const ListRefreshHeaderWidget(),
-//      footer: const ListLoadingFooterWidget(),
-//      child: child,
-//    );
 
     return child;
+  }
+
+  Builder _buildTapToLoadOverlay() {
+    return Builder(
+      builder: (context) {
+        var scrollControllerBloc =
+            IScrollControllerBloc.of(context, listen: false);
+        var fediSliverAppBarBloc =
+            IFediSliverAppBarBloc.of(context, listen: false);
+        return StreamBuilder<bool>(
+            stream: Rx.combineLatest2(
+                scrollControllerBloc.longScrollDirectionStream,
+                fediSliverAppBarBloc.isAtLeastStartExpandStream,
+                (longScrollDirection, isAtLeastStartExpand) {
+              _logger.finest(() => "longScrollDirection $longScrollDirection "
+                  "isAtLeastStartExpand $isAtLeastStartExpand");
+
+              var collapsedAppBarShowed = longScrollDirection == ScrollDirection.forward;
+              var expandedAppBarShowed = isAtLeastStartExpand == true;
+              var isInSafeArea = collapsedAppBarShowed ||
+                  expandedAppBarShowed;
+              return isInSafeArea;
+            }),
+            builder: (context, snapshot) {
+              var isInSafeArea = snapshot.data;
+              var topPadding = isInSafeArea != false
+                  ? 24.0
+                  : 24.0 + MediaQuery.of(context).padding.top;
+
+              _logger.finest(() => " topPadding $topPadding");
+
+              return Align(
+                  alignment: Alignment.topCenter,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: topPadding),
+                    child: PaginationListWithNewItemsOverlayWidget(
+                      textBuilder: (context, updateItemsCount) => plural(
+                          "app.status.list.new_items.action.tap_to_load_new",
+                          updateItemsCount),
+                    ),
+                  ));
+            });
+      },
+    );
   }
 
   @override
