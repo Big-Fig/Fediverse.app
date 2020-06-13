@@ -276,9 +276,14 @@ class _TimelineTabsNestedScrollViewBodyWidgetState
                         top: MediaQuery.of(context).padding.top),
                     child: Container(
                       decoration: BoxDecoration(
-                          color: FediColors.white,
+                          //                          color: FediColors.white,
                           boxShadow: [FediShadows.forTopBar]),
-                      child: _buildCollapsedAppBarBody(context),
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 2.0),
+                        child: Container(
+                            color: Colors.white,
+                            child: _buildCollapsedAppBarBody(context)),
+                      ),
                     ),
                   ),
                 );
@@ -370,10 +375,10 @@ class _TabViewItemState extends State<TabViewItem>
               _logger.finest(() => "longScrollDirection $longScrollDirection "
                   "isAtLeastStartExpand $isAtLeastStartExpand");
 
-              var collapsedAppBarShowed = longScrollDirection == ScrollDirection.forward;
+              var collapsedAppBarShowed =
+                  longScrollDirection == ScrollDirection.forward;
               var expandedAppBarShowed = isAtLeastStartExpand == true;
-              var isInSafeArea = collapsedAppBarShowed ||
-                  expandedAppBarShowed;
+              var isInSafeArea = collapsedAppBarShowed || expandedAppBarShowed;
               return isInSafeArea;
             }),
             builder: (context, snapshot) {
