@@ -15,7 +15,6 @@ class MediaAudioPlayerWidget extends MediaPlayerWidget<ChewieAudioController> {
   @override
   ChewieAudioController createDisplayController(
       VideoPlayerController videoPlayerController) {
-    videoPlayerController.setVolume(0);
     return ChewieAudioController(
       videoPlayerController: videoPlayerController,
       autoInitialize: false,
