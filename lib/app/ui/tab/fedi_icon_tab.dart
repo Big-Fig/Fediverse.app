@@ -27,9 +27,11 @@ class _FediIconTabState extends State<FediIconTab> {
 
     listener = () {
       if (!isDisposed) {
-        setState(() {
-          updateIsSelected(widget.tabController);
-        });
+        if (!widget.tabController.indexIsChanging) {
+          setState(() {
+            updateIsSelected(widget.tabController);
+          });
+        }
       }
     };
     updateIsSelected(widget.tabController);
