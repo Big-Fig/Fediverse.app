@@ -24,6 +24,7 @@ import 'package:fedi/ui/scroll_controller_bloc.dart';
 import 'package:flutter/material.dart' hide NestedScrollView;
 import 'package:flutter/rendering.dart';
 import 'package:logging/logging.dart';
+import 'package:nested_scroll_controller/nested_scroll_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -156,6 +157,31 @@ class _TimelineTabsWidgetState extends State<TimelineTabsWidget>
     var nestedScrollController =
         INestedScrollControllerBloc.of(context, listen: false)
             .nestedScrollController;
+
+    var fediSliverAppBarBloc = IFediSliverAppBarBloc.of(context);
+
+    return Stack(
+      children: [
+        _buildNestedScrollView(nestedScrollController, timelinesTabsBloc),
+        StreamBuilder<bool>(
+            stream: fediSliverAppBarBloc.isAtLeastStartExpandStream,
+            builder: (context, snapshot) {
+              var isAtLeastStartExpand = snapshot.data;
+              if (isAtLeastStartExpand == false) {
+                return Container(
+                    height: MediaQuery.of(context).padding.top,
+                    color: Colors.white);
+              } else {
+                return SizedBox.shrink();
+              }
+            })
+      ],
+    );
+  }
+
+  NestedScrollView _buildNestedScrollView(
+      NestedScrollController nestedScrollController,
+      ITimelineTabsBloc timelinesTabsBloc) {
     return NestedScrollView(
         controller: nestedScrollController,
         headerSliverBuilder: (BuildContext c, bool f) {
@@ -202,6 +228,7 @@ class _TimelineTabsWidgetState extends State<TimelineTabsWidget>
 
 class TimelineTabsNestedScrollViewBodyWidget extends StatefulWidget {
   final List<TimelineTab> tabs;
+
   const TimelineTabsNestedScrollViewBodyWidget(
     this.tabKey,
     this.tabController,
@@ -318,6 +345,7 @@ class _TimelineTabsNestedScrollViewBodyWidgetState
 
 class TabViewItem extends StatefulWidget {
   final TimelineTab tab;
+
   const TabViewItem(this.tabKey, this.tab);
 
   final Key tabKey;
