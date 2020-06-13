@@ -724,7 +724,7 @@
       "content": "Please report about this error: {}"
     },
     "action": {
-      "ok": "Ok",
+      "ok": "OK",
       "cancel": "Cancel"
     }
   },

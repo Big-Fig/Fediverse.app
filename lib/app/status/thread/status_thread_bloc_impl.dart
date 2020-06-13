@@ -32,6 +32,7 @@ class StatusThreadBloc extends DisposableOwner implements IStatusThreadBloc {
             BehaviorSubject.seeded(!initialStatusToFetchThread.isReply) {
     addDisposable(subject: _statusesSubject);
     addDisposable(subject: _firstStatusInThreadSubject);
+    refresh();
   }
 
   @override
