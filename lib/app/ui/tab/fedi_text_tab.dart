@@ -32,9 +32,11 @@ class _FediTextTabState extends State<FediTextTab> {
 
     listener = () {
       if (!isDisposed) {
-        setState(() {
-          updateIsSelected(widget.tabController);
-        });
+        if (!widget.tabController.indexIsChanging) {
+          setState(() {
+            updateIsSelected(widget.tabController);
+          });
+        }
       }
     };
     updateIsSelected(widget.tabController);
