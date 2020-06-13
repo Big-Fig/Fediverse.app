@@ -28,10 +28,10 @@ class ChatPaginationListWithNewItemsBloc<TPage extends PaginationPage<IChat>>
     }
 
     if (a?.updatedAt != null && b?.updatedAt == null) {
-      return -1;
+      return 1;
     }
     if (a?.updatedAt == null && b?.updatedAt != null) {
-      return 1;
+      return -1;
     }
     return a.updatedAt.compareTo(b.updatedAt);
   }

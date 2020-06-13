@@ -34,10 +34,10 @@ class ChatMessagePaginationListWithNewItemsBloc<
     }
 
     if (a?.createdAt != null && b?.createdAt == null) {
-      return -1;
+      return 1;
     }
     if (a?.createdAt == null && b?.createdAt != null) {
-      return 1;
+      return -1;
     }
     return a.createdAt.compareTo(b.createdAt);
   }

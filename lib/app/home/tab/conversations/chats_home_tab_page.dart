@@ -13,6 +13,7 @@ import 'package:fedi/app/ui/header/fedi_header_text.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/ui/scroll_controller_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -36,6 +37,7 @@ class ChatsHomeTabPage extends StatelessWidget {
       key: _drawerKey,
       backgroundColor: Colors.transparent,
       body: NestedScrollView(
+        controller: IScrollControllerBloc.of(context).scrollController,
         body: FediDarkStatusBarStyleArea(
           child: ClipRRect(
             borderRadius: BorderRadius.only(
