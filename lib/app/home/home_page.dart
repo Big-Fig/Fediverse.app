@@ -65,13 +65,17 @@ class HomePage extends StatelessWidget {
                 buildBody(context, selectedTab),
               ],
             ),
-            bottomNavigationBar: Container(
-              height: 58,
-              child: Column(
-                children: [
-                  const FediUltraLightGreyDivider(),
-                  const HomePageBottomNavigationBarWidget(),
-                ],
+            bottomNavigationBar: Padding(
+              padding:  EdgeInsets.only(bottom: MediaQuery.of(context)
+                  .padding.bottom),
+              child: Container(
+                height: 58,
+                child: Column(
+                  children: [
+                    const FediUltraLightGreyDivider(),
+                    const HomePageBottomNavigationBarWidget(),
+                  ],
+                ),
               ),
             ),
           );
