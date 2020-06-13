@@ -15,7 +15,7 @@ class FediPrimaryFilledTextButton extends FediTextButton {
   FediPrimaryFilledTextButton(
     this.text, {
     @required this.onPressed,
-    this.height: FediIconInCircleButton.defaultCircleSize,
+    this.height = FediIconInCircleButton.defaultCircleSize,
   });
 
   @override

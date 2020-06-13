@@ -42,7 +42,7 @@ class PostStatusPostTextActionWidget extends StatelessWidget {
                     textColor: Colors.white,
                     fontSize: 16.0);
               }
-              FocusScope.of(context).requestFocus(new FocusNode()); //remove focus
+              FocusScope.of(context).requestFocus( FocusNode()); //remove focus
               if (success && successCallback != null) {
                 successCallback(context);
               }

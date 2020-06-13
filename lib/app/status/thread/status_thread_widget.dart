@@ -1,7 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/async/async_smart_refresher_helper.dart';
-import 'package:fedi/app/list/list_refresh_header_widget.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/post/post_status_widget.dart';
@@ -14,9 +12,9 @@ import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_shadows.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as material;
 import 'package:flutter_widgets/flutter_widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class StatusThreadWidget extends StatefulWidget {
   @override
@@ -24,7 +22,6 @@ class StatusThreadWidget extends StatefulWidget {
 }
 
 class _StatusThreadWidgetState extends State<StatusThreadWidget> {
-  RefreshController refreshController = RefreshController(initialRefresh: true);
   final ItemScrollController itemScrollController = ItemScrollController();
   final ItemPositionsListener itemPositionListener =
       ItemPositionsListener.create();
@@ -34,7 +31,6 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
   @override
   void dispose() {
     super.dispose();
-    refreshController.dispose();
   }
 
   @override
@@ -78,15 +74,8 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
         initialData: statusThreadBloc.statuses,
         builder: (context, snapshot) {
           var statuses = snapshot.data;
-
-          return SmartRefresher(
-            enablePullUp: false,
-            enablePullDown: true,
-            header: ListRefreshHeaderWidget(),
-            controller: refreshController,
-            onRefresh: () => AsyncSmartRefresherHelper.doAsyncRefresh(
-                controller: refreshController,
-                action: statusThreadBloc.refresh),
+          return material.RefreshIndicator(
+            onRefresh: () => statusThreadBloc.refresh(),
             child: buildList(statusThreadBloc, statuses),
           );
         });
@@ -113,6 +102,7 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
       return ScrollablePositionedList.builder(
         itemScrollController: itemScrollController,
         itemPositionsListener: itemPositionListener,
+physics: AlwaysScrollableScrollPhysics(),
 //        padding: EdgeInsets.symmetric(horizontal: 2.0, vertical: 10.0),
         itemCount: statuses.length,
         itemBuilder: (BuildContext context, int index) {
