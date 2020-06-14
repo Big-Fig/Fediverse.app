@@ -12,6 +12,7 @@ import 'package:path/path.dart';
 
 class PleromaNotificationService implements IPleromaNotificationService {
   final notificationRelativeUrlPath = "api/v1/notifications";
+  @override
   final IPleromaAuthRestService restService;
 
   @override

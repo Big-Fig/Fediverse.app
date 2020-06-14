@@ -11,6 +11,7 @@ import 'package:path/path.dart';
 
 class PleromaScheduledStatusService implements IPleromaScheduledStatusService {
   final scheduledStatusesRelativeUrlPath = "/api/v1/scheduled_statuses/";
+  @override
   final IPleromaAuthRestService restService;
 
   @override

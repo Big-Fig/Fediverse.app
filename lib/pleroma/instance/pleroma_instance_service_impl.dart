@@ -14,6 +14,7 @@ var urlPath = path.Context(style: path.Style.url);
 
 class PleromaInstanceService implements IPleromaInstanceService {
   final instanceRelativeUrlPath = "/api/v1/instance";
+  @override
   final IPleromaAuthRestService restService;
 
   @override

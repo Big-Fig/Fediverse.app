@@ -12,6 +12,7 @@ var urlPath = path.Context(style: path.Style.url);
 
 class PleromaChatService implements IPleromaChatService {
   final chatRelativeUrlPath = "/api/v1/pleroma/chats";
+  @override
   final IPleromaAuthRestService restService;
 
   @override

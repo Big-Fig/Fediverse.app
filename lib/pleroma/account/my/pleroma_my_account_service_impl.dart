@@ -17,6 +17,7 @@ var _logger = Logger("pleroma_my_account_service_impl.dart");
 class PleromaMyAccountService implements IPleromaMyAccountService {
   final verifyProfileRelativeUrlPath = "/api/v1/accounts/verify_credentials";
   final editProfileRelativeUrlPath = "/api/v1/accounts/update_credentials";
+  @override
   final IPleromaAuthRestService restService;
 
   @override

@@ -13,6 +13,7 @@ class PleromaConversationService implements IPleromaConversationService {
   final conversationRelativeUrlPath = "/api/v1/conversations/";
   final pleromaConversationRelativeUrlPath = "/api/v1/pleroma/conversations/";
   final conversationStatusesRelativeUrlPath = "statuses";
+  @override
   final IPleromaAuthRestService restService;
 
   @override

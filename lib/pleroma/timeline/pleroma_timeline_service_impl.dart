@@ -14,6 +14,7 @@ class PleromaTimelineService implements IPleromaTimelineService {
   Uri get baseUrl => restService.baseUrl;
 
   final timelineRelativeUrlPath = "/api/v1/timelines/";
+  @override
   final IPleromaAuthRestService restService;
 
   @override

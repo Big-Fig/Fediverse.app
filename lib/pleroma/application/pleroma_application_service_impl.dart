@@ -14,6 +14,7 @@ import 'package:path/path.dart';
 
 class PleromaApplicationService implements IPleromaApplicationService {
   final appsRelativeUrlPath = "/api/v1/apps/";
+  @override
   final IPleromaRestService restService;
 
   @override

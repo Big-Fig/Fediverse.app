@@ -41,6 +41,7 @@ class PleromaRestService extends DisposableOwner
   @override
   bool get isApiReadyToUse => mapIsReady(pleromaState, isConnected);
 
+  @override
   final IRestService restService;
 
   @override

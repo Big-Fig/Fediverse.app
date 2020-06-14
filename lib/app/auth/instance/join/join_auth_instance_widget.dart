@@ -226,7 +226,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
                 instanceBaseUrl: hostUri);
             await bloc.launchLoginToAccount();
           } finally {
-            bloc.dispose();
+            bloc?.dispose();
           }
         },
         errorAlertDialogBuilders: [

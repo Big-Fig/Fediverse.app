@@ -132,11 +132,12 @@ class AuthInstanceChooserWidget extends StatelessWidget {
                     Icons.exit_to_app,
                     color: FediColors.grey,
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     var authHostBloc = AuthHostBloc.createFromContext(context,
                         instanceBaseUrl: instance.url);
+                    await authHostBloc.performAsyncInit();
 
-                    ConfirmAlertDialog(
+                    await ConfirmAlertDialog(
                       context: context,
                       title: tr("app.auth.instance.logout.dialog.title"),
                       content: tr("app.auth.instance.logout.dialog.title"),
