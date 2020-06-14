@@ -78,7 +78,7 @@ class _TimelineTabsWidgetState extends State<TimelineTabsWidget>
       borderRadius: BorderRadius.only(
           topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0)),
       child: Container(
-        color: FediColors.white,
+        color: FediColors.offWhite,
         child: FediListTile(
           isFirstInList: true,
           child: TimelinePostStatusHeaderWidget(),
@@ -226,13 +226,16 @@ class _TimelineTabsWidgetState extends State<TimelineTabsWidget>
           index += tabController.index.toString();
           return Key(index);
         },
-        body: Column(
-          children: <Widget>[
-            Expanded(
-              child: TimelineTabsNestedScrollViewBodyWidget(
-                  'Tab0', tabController, widget.tabs),
-            )
-          ],
+        body: Container(
+          color: FediColors.offWhite,
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                child: TimelineTabsNestedScrollViewBodyWidget(
+                    'Tab0', tabController, widget.tabs),
+              )
+            ],
+          ),
         ));
   }
 }
@@ -271,7 +274,7 @@ class _TimelineTabsNestedScrollViewBodyWidgetState
     var tabs = timelineTabsBloc.tabs;
 
     return Container(
-      color: Colors.white,
+      color: FediColors.offWhite,
       child: Column(
         children: [
           _buildCollapsedBody(),
@@ -319,7 +322,7 @@ class _TimelineTabsNestedScrollViewBodyWidgetState
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 2.0),
                         child: Container(
-                            color: Colors.white,
+                            color: FediColors.offWhite,
                             child: _buildCollapsedAppBarBody(context)),
                       ),
                     ),
