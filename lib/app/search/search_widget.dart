@@ -100,7 +100,12 @@ class SearchWidget extends StatelessWidget {
         (int index) {
           var tab = tabs[index];
 
-          return buildTabBody(context, tab, searchBloc);
+          return GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onPanDown: (_) {
+                FocusScope.of(context).requestFocus(FocusNode());
+              },
+              child: buildTabBody(context, tab, searchBloc));
         },
       ));
 

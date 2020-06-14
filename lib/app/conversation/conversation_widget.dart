@@ -59,11 +59,18 @@ class ConversationWidget extends StatelessWidget {
                   child: Column(
                     children: <Widget>[
                       Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: ConversationStatusListWidget(
-                            key: PageStorageKey(
-                                conversationBloc.conversation.remoteId),
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onPanDown: (_) {
+                            FocusScope.of(context).requestFocus(FocusNode());
+                          },
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: ConversationStatusListWidget(
+                              key: PageStorageKey(
+                                  conversationBloc.conversation.remoteId),
+                            ),
                           ),
                         ),
                       ),

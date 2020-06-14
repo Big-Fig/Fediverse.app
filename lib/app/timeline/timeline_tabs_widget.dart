@@ -162,19 +162,30 @@ class _TimelineTabsWidgetState extends State<TimelineTabsWidget>
 
     return Stack(
       children: [
-        _buildNestedScrollView(nestedScrollController, timelinesTabsBloc),
+        GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onPanDown: (_) {
+              FocusScope.of(context).requestFocus(FocusNode());
+            },
+            child: _buildNestedScrollView(
+                nestedScrollController, timelinesTabsBloc)),
         StreamBuilder<bool>(
-            stream: fediSliverAppBarBloc.isAtLeastStartExpandStream,
-            builder: (context, snapshot) {
-              var isAtLeastStartExpand = snapshot.data;
-              if (isAtLeastStartExpand == false) {
-                return Container(
-                    height: MediaQuery.of(context).padding.top,
-                    color: Colors.white);
-              } else {
-                return SizedBox.shrink();
-              }
-            })
+            stream: fediSliverAppBarBloc.expandOffsetStream.map((expandOffset) {
+          if (expandOffset != null && expandOffset > 100) {
+            return true;
+          } else {
+            return false;
+          }
+        }), builder: (context, snapshot) {
+          var showStatusBar = snapshot.data;
+          if (showStatusBar == true) {
+            return Container(
+                height: MediaQuery.of(context).padding.top,
+                color: Colors.white);
+          } else {
+            return SizedBox.shrink();
+          }
+        })
       ],
     );
   }
