@@ -1,5 +1,6 @@
 import 'package:fedi/app/media/attachment/media_attachment_audio_widget.dart';
 import 'package:fedi/app/media/attachment/media_attachment_image_widget.dart';
+import 'package:fedi/app/media/attachment/media_attachment_unknown_widget.dart';
 import 'package:fedi/app/media/attachment/media_attachment_video_widget.dart';
 import 'package:fedi/mastodon/media/attachment/mastodon_media_attachment_model.dart';
 import 'package:fedi/media/media_carousel_widget.dart';
@@ -52,8 +53,7 @@ class MediaAttachmentsWidget extends StatelessWidget {
 
         case MastodonMediaAttachmentType.unknown:
         default:
-          _logger.severe(() => "Can't display attachment = $attachment");
-          return SizedBox.shrink();
+          return MediaAttachmentUnknownWidget(attachment);
           break;
       }
     }).toList();
