@@ -13,6 +13,7 @@ var urlPath = path.Context(style: path.Style.url);
 class PleromaAccountFollowRequestsService
     implements IPleromaAccountFollowRequestsService {
   final accountFollowRequestsRelativeUrlPath = "/api/v1/follow_requests";
+  @override
   final IPleromaAuthRestService restService;
 
   @override

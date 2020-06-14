@@ -9,6 +9,7 @@ import 'package:fedi/rest/rest_request_model.dart';
 import 'package:flutter/widgets.dart';
 
 class PleromaSearchService implements IPleromaMediaAttachmentService {
+  @override
   final IPleromaAuthRestService restService;
 
   PleromaSearchService({@required this.restService});

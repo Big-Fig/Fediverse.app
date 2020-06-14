@@ -13,6 +13,7 @@ import 'package:path/path.dart';
 
 class PleromaStatusService implements IPleromaStatusService {
   final statusRelativeUrlPath = "/api/v1/statuses/";
+  @override
   final IPleromaAuthRestService restService;
 
   @override

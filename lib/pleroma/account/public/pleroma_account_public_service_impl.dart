@@ -13,6 +13,7 @@ var urlPath = path.Context(style: path.Style.url);
 
 class PleromaAccountPublicService extends IPleromaAccountPublicService {
   final accountRelativeUrlPath = "/api/v1/accounts/";
+  @override
   final IPleromaRestService restService;
 
   @override

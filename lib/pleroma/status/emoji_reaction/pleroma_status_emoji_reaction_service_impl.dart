@@ -15,6 +15,7 @@ class PleromaStatusEmojiReactionService
     implements IPleromaStatusEmojiReactionService {
   final pleromaStatusesRelativeUrlPath = "/api/v1/pleroma/statuses/";
   final reactionsRelativeUrlPath = "reactions";
+  @override
   final IPleromaAuthRestService restService;
 
   @override

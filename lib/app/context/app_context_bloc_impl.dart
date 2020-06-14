@@ -23,6 +23,8 @@ import 'package:fedi/permission/permissions_service.dart';
 import 'package:fedi/permission/permissions_service_impl.dart';
 import 'package:fedi/permission/storage_permission_bloc.dart';
 import 'package:fedi/permission/storage_permission_bloc_impl.dart';
+import 'package:fedi/pleroma/oauth/pleroma_oauth_last_launched_host_to_login_local_preference_bloc.dart';
+import 'package:fedi/pleroma/oauth/pleroma_oauth_last_launched_host_to_login_local_preference_bloc_impl.dart';
 import 'package:fedi/provider/provider_context_bloc_impl.dart';
 import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:fedi/push/fcm/fcm_push_service_impl.dart';
@@ -61,6 +63,13 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         StoragePermissionBloc(globalProviderService.get<IPermissionsService>());
     await globalProviderService
         .asyncInitAndRegister<IStoragePermissionBloc>(storagePermissionBloc);
+
+    var pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc =
+        PleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc(
+            preferencesService);
+    await globalProviderService.asyncInitAndRegister<
+            IPleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc>(
+        pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc);
 
     var instanceListLocalPreferenceBloc =
         AuthInstanceListLocalPreferenceBloc(preferencesService);

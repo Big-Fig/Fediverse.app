@@ -152,6 +152,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
           try {
             authApplicationBloc = AuthHostBloc.createFromContext(context,
                 instanceBaseUrl: instanceBaseUrl);
+            await authApplicationBloc.performAsyncInit();
 
             await authApplicationBloc.registerAccount(
                 request: PleromaAccountRegisterRequest(

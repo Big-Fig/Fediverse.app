@@ -18,6 +18,8 @@ abstract class IAuthHostBloc extends Disposable {
 
   Stream<PleromaOAuthToken> get hostAccessTokenStream;
 
+  Future<AuthInstance> loginWithAuthCode(String authCode);
+
   Future<bool> registerApplication();
 
   Future<bool> retrieveAppAccessToken();
@@ -26,6 +28,8 @@ abstract class IAuthHostBloc extends Disposable {
 
   Future<bool> registerAccount(
       {@required IPleromaAccountRegisterRequest request});
+
+  Future checkApplicationRegistration();
 
   Future logout();
 }

@@ -10,6 +10,7 @@ import 'package:http/http.dart';
 
 class PleromaPushService implements IPleromaPushService {
   final subscriptionRelativeUrlPath = "api/v1/push/subscription";
+  @override
   final IPleromaAuthRestService restService;
   final PleromaPushSubscriptionKeys keys;
 
