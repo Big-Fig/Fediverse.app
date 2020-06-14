@@ -13,6 +13,10 @@ abstract class IPleromaOAuthService extends IPleromaApi {
   Future<String> launchAuthorizeFormAndExtractAuthorizationCode(
       {@required PleromaOAuthAuthorizeRequest authorizeRequest});
 
+
+  static String extractAuthCodeFromUri(Uri uri) =>
+      uri.queryParameters['code'].toString();
+
   Future<PleromaOAuthToken> retrieveAccountAccessToken(
       {@required PleromaOAuthAccountTokenRequest tokenRequest});
 

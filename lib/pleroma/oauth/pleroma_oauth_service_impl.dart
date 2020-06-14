@@ -21,6 +21,7 @@ var _logger = Logger("pleroma_oauth_service_impl.dart");
 class PleromaOAuthService extends DisposableOwner
     implements IPleromaOAuthService {
   final oauthRelativeUrlPath = "/oauth/";
+  @override
   final IPleromaRestService restService;
 
   @override
@@ -93,7 +94,7 @@ class PleromaOAuthService extends DisposableOwner
       subscription = getUriLinksStream().listen((Uri uri) {
         subscription.cancel();
         closeWebView();
-        var code = uri.queryParameters['code'].toString();
+        var code = extractAuthCodeFromUri(uri);
         completer.complete(code);
       }, onError: (e) {
         subscription.cancel();
@@ -103,11 +104,13 @@ class PleromaOAuthService extends DisposableOwner
       _logger.finest(() => "launch url=$url");
       await launch(url);
     } else {
-      completer.completeError(Exception("Can't launch $url"));
+      completer.completeError(PleromaOAuthCantLaunchException());
     }
 
     return completer.future;
   }
+
+  String extractAuthCodeFromUri(Uri uri) => uri.queryParameters['code'].toString();
 
   @override
   Future<PleromaOAuthToken> retrieveAccountAccessToken(
