@@ -54,47 +54,59 @@ class AccountDetailsWidget extends StatelessWidget {
                     IStatus>,
                 IPaginationListWithNewItemsBloc>(
               update: (context, value, previous) => value,
-              child: PaginationListWithNewItemsContainerWithOverlayWidget(
-                textBuilder: (context, updateItemsCount) => plural(
-                    "app.notification.list.new_items.action"
-                    ".tap_to_load_new",
-                    updateItemsCount),
-                child: DisposableProvider<ICollapsibleBloc>(
-                  create: (context) =>
-                      CollapsibleBloc.createFromContext(context),
-                  child: Stack(
-                    children: <Widget>[
-                      AccountStatusesWidget(
-                        header: AccountWidget(
-                          onStatusesTapCallback: () {
-                            var scrollControllerBloc = IScrollControllerBloc.of(
-                                context,
-                                listen: false);
-                            scrollControllerBloc.scrollController.animateTo(
-                              MediaQuery.of(context).size.height / 2,
-                              duration: Duration(milliseconds: 500),
-                              curve: Curves.easeOut,
-                            );
-                          },
-                        ),
-                        alwaysShowHeader: true,
-                        key: PageStorageKey("AccountDetailsWidget"),
-                      ),
-                      const Align(
-                          alignment: Alignment.bottomLeft,
-                          child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: ToggleCollapsibleOverlayWidget(),
-                          ))
-                    ],
-                  ),
-                ),
-              ),
+              child: buildListWithNewItemsOverlayContainer(context),
             ),
           ),
         ),
       ),
     );
+  }
+
+  Widget buildListWithNewItemsOverlayContainer(BuildContext context) {
+    return PaginationListWithNewItemsContainerWithOverlayWidget(
+              textBuilder: (context, updateItemsCount) => plural(
+                  "app.status.list.new_items.action"
+                  ".tap_to_load_new",
+                  updateItemsCount),
+              child: buildBody(context),
+            );
+  }
+
+  DisposableProvider<ICollapsibleBloc> buildBody(BuildContext context) {
+    return DisposableProvider<ICollapsibleBloc>(
+                create: (context) =>
+                    CollapsibleBloc.createFromContext(context),
+                child: Stack(
+                  children: <Widget>[
+                    buildAccountStatusesWidget(context),
+                    const Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: ToggleCollapsibleOverlayWidget(),
+                        ))
+                  ],
+                ),
+              );
+  }
+
+  AccountStatusesWidget buildAccountStatusesWidget(BuildContext context) {
+    return AccountStatusesWidget(
+                    header: AccountWidget(
+                      onStatusesTapCallback: () {
+                        var scrollControllerBloc = IScrollControllerBloc.of(
+                            context,
+                            listen: false);
+                        scrollControllerBloc.scrollController.animateTo(
+                          MediaQuery.of(context).size.height / 2,
+                          duration: Duration(milliseconds: 500),
+                          curve: Curves.easeOut,
+                        );
+                      },
+                    ),
+                    alwaysShowHeader: true,
+                    key: PageStorageKey("AccountDetailsWidget"),
+                  );
   }
 
   const AccountDetailsWidget();

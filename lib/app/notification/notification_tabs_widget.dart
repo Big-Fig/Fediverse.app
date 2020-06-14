@@ -293,53 +293,8 @@ class _TabViewItemState extends State<TabViewItem>
               update: (context, value, previous) => value,
               child: Stack(
                 children: <Widget>[
-                  Builder(
-                    builder: (context) =>
-                        NestedScrollViewInnerScrollPositionKeyWidget(
-                      widget.tabKey,
-                      FediDarkStatusBarStyleArea(
-                        child: NotificationPaginationListWidget(
-                          needWatchLocalRepositoryForUpdates: true,
-//                              key: PageStorageKey("${tab.toString()}"),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Builder(
-                    builder: (context) {
-                      var fediSliverAppBarBloc =
-                          IFediSliverAppBarBloc.of(context, listen: false);
-                      return StreamBuilder<bool>(
-                          stream:
-                              fediSliverAppBarBloc.isAtLeastStartExpandStream,
-                          builder: (context, snapshot) {
-                            var isAtLeastStartExpand = snapshot.data;
-                            var topPadding = isAtLeastStartExpand == true
-                                ? 24.0
-                                : 24.0 + MediaQuery.of(context).padding.top;
-
-                            _logger.finest(() => "topPadding $topPadding");
-
-//
-//                            topPadding =
-//                                24.0 + MediaQuery.of(context).padding.top;
-//                                24.0;
-                            return Align(
-                                alignment: Alignment.topCenter,
-                                child: Padding(
-                                  padding: EdgeInsets.only(top: topPadding),
-                                  child:
-                                      PaginationListWithNewItemsOverlayWidget(
-                                    textBuilder: (context, updateItemsCount) =>
-                                        plural(
-                                            "app.notification.list.new_items"
-                                            ".action.tap_to_load_new",
-                                            updateItemsCount),
-                                  ),
-                                ));
-                          });
-                    },
-                  ),
+                  _buildList(),
+                  _buildOverlayNewItems(context),
                 ],
               ),
             ),
@@ -348,6 +303,57 @@ class _TabViewItemState extends State<TabViewItem>
       ),
     );
   }
+
+  Builder _buildList() {
+    return Builder(
+                  builder: (context) =>
+                      NestedScrollViewInnerScrollPositionKeyWidget(
+                    widget.tabKey,
+                    FediDarkStatusBarStyleArea(
+                      child: NotificationPaginationListWidget(
+                        needWatchLocalRepositoryForUpdates: true,
+//                              key: PageStorageKey("${tab.toString()}"),
+                      ),
+                    ),
+                  ),
+                );
+  }
+
+  Builder _buildOverlayNewItems(BuildContext context) => Builder(
+                  builder: (context) {
+                    var fediSliverAppBarBloc =
+                        IFediSliverAppBarBloc.of(context, listen: false);
+                    return StreamBuilder<bool>(
+                        stream:
+                            fediSliverAppBarBloc.isAtLeastStartExpandStream,
+                        builder: (context, snapshot) {
+                          var isAtLeastStartExpand = snapshot.data;
+                          var topPadding = isAtLeastStartExpand == true
+                              ? 24.0
+                              : 24.0 + MediaQuery.of(context).padding.top;
+
+                          _logger.finest(() => "topPadding $topPadding");
+
+//
+//                            topPadding =
+//                                24.0 + MediaQuery.of(context).padding.top;
+//                                24.0;
+                          return Align(
+                              alignment: Alignment.topCenter,
+                              child: Padding(
+                                padding: EdgeInsets.only(top: topPadding),
+                                child:
+                                    PaginationListWithNewItemsOverlayWidget(
+                                  textBuilder: (context, updateItemsCount) =>
+                                      plural(
+                                          "app.notification.list.new_items"
+                                          ".action.tap_to_load_new",
+                                          updateItemsCount),
+                                ),
+                              ));
+                        });
+                  },
+                );
 
   @override
   bool get wantKeepAlive => true;
