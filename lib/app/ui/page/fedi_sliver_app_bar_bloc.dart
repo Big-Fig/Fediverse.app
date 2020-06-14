@@ -7,13 +7,16 @@ abstract class IFediSliverAppBarBloc extends Disposable {
       Provider.of<IFediSliverAppBarBloc>(context, listen: listen);
 
   bool get isAtLeastStartExpand;
+
   Stream<bool> get isAtLeastStartExpandStream;
+
+  int get expandOffset;
+
+  Stream<int> get expandOffsetStream;
 
   void onBuild(
       {@required double minExtent,
       @required double maxExtent,
       @required double shrinkOffset,
-      @required bool overlapsContent}) {
-
-  }
+      @required bool overlapsContent}) {}
 }
