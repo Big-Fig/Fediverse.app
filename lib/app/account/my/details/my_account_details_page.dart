@@ -1,8 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/account/details/account_details_widget.dart';
 import 'package:fedi/app/account/my/action/my_account_action_list_bottom_sheet_dialog.dart';
+import 'package:fedi/app/account/my/details/my_account_details_widget.dart';
 import 'package:fedi/app/account/my/edit/edit_my_account_page.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_drawer_widget.dart';
@@ -22,7 +22,6 @@ final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 class MyAccountDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     var fediSliverAppBarBloc = IFediSliverAppBarBloc.of(context);
 
     return ProxyProvider<IMyAccountBloc, IAccountBloc>(
@@ -71,38 +70,42 @@ class MyAccountDetailsPage extends StatelessWidget {
 
   NestedScrollView buildNestedScrollView(BuildContext context) {
     return NestedScrollView(
-        controller: IScrollControllerBloc.of(context, listen: false).scrollController,
-        body: FediDarkStatusBarStyleArea(
-            child: ClipRRect(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(16.0),
-                    topRight: Radius.circular(16.0)),
-                child: Container(
-                    color: Colors.white, child: AccountDetailsWidget()))),
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return [
-            SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  Padding(
-                    padding: EdgeInsets.only(
-                      top: 24.0 + MediaQuery.of(context).padding.top,
-                      bottom: 24.0,
-                      left: 16.0,
-                      right: 16.0,
-                    ),
-                    child: FediLightStatusBarStyleArea(
-                      child: buildTopBar(context),
-                    ),
+      controller:
+          IScrollControllerBloc.of(context, listen: false).scrollController,
+      body: FediDarkStatusBarStyleArea(
+        child: ClipRRect(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0)),
+          child: Container(
+            color: Colors.white,
+            child: MyAccountDetailsWidget(),
+          ),
+        ),
+      ),
+      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+        return [
+          SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: 24.0 + MediaQuery.of(context).padding.top,
+                    bottom: 24.0,
+                    left: 16.0,
+                    right: 16.0,
                   ),
+                  child: FediLightStatusBarStyleArea(
+                    child: buildTopBar(context),
+                  ),
+                ),
 //              _buildCollapsedAppBarBody(context)
-                ],
-              ),
+              ],
             ),
+          ),
 //            buildSliverAppBar(context, tabs, notificationsTabsBloc),
-          ];
-        },
-      );
+        ];
+      },
+    );
   }
 
   FlatButton buildAccountChooserButton(
