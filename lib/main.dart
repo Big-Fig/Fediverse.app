@@ -4,6 +4,7 @@ import 'package:fedi/app/account/my/my_account_model.dart';
 import 'package:fedi/app/account/my/settings'
     '/my_account_settings_model'
     '.dart';
+import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/context/current_auth_instance_context_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/current/context/loading/current_auth_instance_context_loading_bloc.dart';
@@ -34,7 +35,9 @@ import 'package:fedi/pleroma/application/pleroma_application_model.dart';
 import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/pleroma/field/pleroma_field_model.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
+import 'package:fedi/pleroma/oauth/pleroma_oauth_last_launched_host_to_login_local_preference_bloc.dart';
 import 'package:fedi/pleroma/oauth/pleroma_oauth_model.dart';
+import 'package:fedi/pleroma/oauth/pleroma_oauth_service.dart';
 import 'package:fedi/pleroma/push/pleroma_push_model.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
@@ -47,6 +50,7 @@ import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:uni_links/uni_links.dart';
 
 import 'app/init/app_init_page.dart';
 
@@ -105,11 +109,17 @@ void main() async {
   runApp(MaterialApp(home: AppInitPage()));
   showSplashPage(appContextBloc);
 
-  appContextBloc.initLoadingStateStream.listen((newState) {
+  appContextBloc.initLoadingStateStream.listen((newState) async {
     _logger.fine(() => "appContextBloc.initLoadingStateStream.newState "
         "$newState");
 
     if (newState == AsyncInitLoadingState.finished) {
+      var initialUri = await getInitialUri();
+
+      if (initialUri != null) {
+        await _handleLoginOnAndroidWithoutChrome(appContextBloc, initialUri);
+      }
+
       var currentInstanceBloc = appContextBloc.get<ICurrentAuthInstanceBloc>();
 
       currentInstanceBloc.currentInstanceStream
@@ -119,6 +129,31 @@ void main() async {
       });
     }
   });
+}
+
+void _handleLoginOnAndroidWithoutChrome(
+    AppContextBloc appContextBloc, Uri initialUri) async {
+  var pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc = appContextBloc
+      .get<IPleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc>();
+
+  var lastLaunchedHost =
+      pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc.value;
+
+  _logger.finest(() => "initialUri = $initialUri "
+      "lastLaunchedHost = $lastLaunchedHost");
+  if (lastLaunchedHost != null) {
+    var authHostBloc = AuthHostBloc(
+        instanceBaseUrl: Uri.parse(lastLaunchedHost),
+        preferencesService: appContextBloc.get(),
+        connectionService: appContextBloc.get(),
+        currentInstanceBloc: appContextBloc.get(),
+        pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc:
+            pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc);
+    await authHostBloc.performAsyncInit();
+    String authCode = IPleromaOAuthService.extractAuthCodeFromUri(initialUri);
+
+    await authHostBloc.loginWithAuthCode(authCode);
+  }
 }
 
 CurrentAuthInstanceContextBloc currentInstanceContextBloc;

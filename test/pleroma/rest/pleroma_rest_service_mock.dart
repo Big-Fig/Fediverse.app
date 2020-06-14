@@ -1,6 +1,7 @@
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
+import 'package:fedi/rest/rest_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/src/response.dart';
 
@@ -62,4 +63,7 @@ class PleromaRestServiceMock extends IPleromaRestService {
 
   @override
   Stream<PleromaApiState> get pleromaStateStream => throw UnimplementedError();
+
+  @override
+  IRestService get restService => this;
 }
