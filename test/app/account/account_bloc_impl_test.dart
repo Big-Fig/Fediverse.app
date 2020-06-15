@@ -49,7 +49,8 @@ void main() {
         accountRepository: accountRepository,
         delayInit: false,
         pleromaWebSocketsService: pleromaWebSocketsService,
-        statusRepository: statusRepository);
+        statusRepository: statusRepository,
+        myAccount: null);
   });
 
   tearDown(() async {

@@ -31,7 +31,8 @@ class ChatAccountsWidget extends StatelessWidget {
                       isNeedWatchLocalRepositoryForUpdates: false,
                       account: items[index],
                       isNeedRefreshFromNetworkOnInit: false,
-                      isNeedWatchWebSocketsEvents: false),
+                      isNeedWatchWebSocketsEvents: false,
+                      isNeedPreFetchRelationship: false),
                   child: Column(
                     children: [
                       AccountListItemWidget(

@@ -205,7 +205,8 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
         ..where((status) =>
             (status.muted.equals(false)) &
             (status.pleromaThreadMuted.equals(false) |
-                isNull(status.pleromaThreadMuted)));
+                isNull(status.pleromaThreadMuted))
+        );
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyFromAccountWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
@@ -315,6 +316,14 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
     @required includeHomeTimeline,
   }) {
     return [
+      ...(includeHomeTimeline
+          ? [
+        innerJoin(
+            homeTimelineStatusesAlias,
+            homeTimelineStatusesAlias.statusRemoteId
+                .equalsExp(dbStatuses.remoteId))
+      ]
+          : []),
       innerJoin(
         accountAlias,
         accountAlias.remoteId.equalsExp(dbStatuses.accountRemoteId),
@@ -373,14 +382,6 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
               innerJoin(
                   conversationStatusesAlias,
                   conversationStatusesAlias.statusRemoteId
-                      .equalsExp(dbStatuses.remoteId))
-            ]
-          : []),
-      ...(includeHomeTimeline
-          ? [
-              innerJoin(
-                  homeTimelineStatusesAlias,
-                  homeTimelineStatusesAlias.statusRemoteId
                       .equalsExp(dbStatuses.remoteId))
             ]
           : []),

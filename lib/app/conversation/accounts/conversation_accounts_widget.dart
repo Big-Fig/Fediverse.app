@@ -27,11 +27,14 @@ class ConversationAccountsWidget extends StatelessWidget {
           return ListView.builder(
               itemCount: items.length,
               itemBuilder: (context, index) => DisposableProvider<IAccountBloc>(
-                  create: (context) => AccountBloc.createFromContext(context,
-                      isNeedWatchLocalRepositoryForUpdates: false,
-                      account: items[index],
-                      isNeedRefreshFromNetworkOnInit: false,
-                      isNeedWatchWebSocketsEvents: false),
+                  create: (context) => AccountBloc.createFromContext(
+                        context,
+                        isNeedWatchLocalRepositoryForUpdates: false,
+                        account: items[index],
+                        isNeedRefreshFromNetworkOnInit: false,
+                        isNeedWatchWebSocketsEvents: false,
+                        isNeedPreFetchRelationship: false,
+                      ),
                   child: Column(
                     children: [
                       AccountListItemWidget(

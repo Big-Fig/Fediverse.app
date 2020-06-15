@@ -27,11 +27,13 @@ class AccountActionListWidget extends StatelessWidget {
 
           _logger.finest(() => "relationship $relationship");
 
-          if (relationship == null) {
+          if (relationship?.following == null) {
             return const Center(
                 child: Padding(
               padding: EdgeInsets.all(8.0),
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                backgroundColor: FediColors.white,
+              ),
             ));
           } else {
             return Padding(
@@ -91,7 +93,6 @@ class AccountActionListWidget extends StatelessWidget {
 
   void showMoreOptions(BuildContext context, IAccountBloc accountBloc,
       IPleromaAccountRelationship relationship) {
-
     showAlert(
       context: context,
       title: tr("app.account.action.popup.title", args: [accountBloc.acct]),

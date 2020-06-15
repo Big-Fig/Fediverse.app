@@ -30,11 +30,13 @@ class NotificationListItemWidget extends StatelessWidget {
 
     return DisposableProxyProvider<INotificationBloc, IAccountBloc>(
       update: (context, value, previous) => AccountBloc.createFromContext(
-          context,
-          account: value.account,
-          isNeedWatchWebSocketsEvents: false,
-          isNeedRefreshFromNetworkOnInit: false,
-          isNeedWatchLocalRepositoryForUpdates: false),
+        context,
+        account: value.account,
+        isNeedWatchWebSocketsEvents: false,
+        isNeedRefreshFromNetworkOnInit: false,
+        isNeedWatchLocalRepositoryForUpdates: false,
+        isNeedPreFetchRelationship: false,
+      ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
         child: Column(

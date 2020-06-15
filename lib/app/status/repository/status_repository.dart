@@ -120,4 +120,10 @@ abstract class IStatusRepository
       {@required IConversation conversation});
 
   Future incrementRepliesCount({@required String remoteId});
+
+
+  Future removeHomeStatusesFromAccount({
+    @required String accountRemoteId,
+  });
+
 }

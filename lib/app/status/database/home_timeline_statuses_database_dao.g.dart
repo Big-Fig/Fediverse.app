@@ -26,6 +26,7 @@ mixin _$HomeTimelineStatusesDaoMixin on DatabaseAccessor<AppDatabase> {
   DbHomeTimelineStatus _rowToDbHomeTimelineStatus(QueryRow row) {
     return DbHomeTimelineStatus(
       id: row.readInt('id'),
+      accountRemoteId: row.readString('account_remote_id'),
       statusRemoteId: row.readString('status_remote_id'),
     );
   }
@@ -65,6 +66,14 @@ mixin _$HomeTimelineStatusesDaoMixin on DatabaseAccessor<AppDatabase> {
     return customUpdate(
       'DELETE FROM db_home_timeline_statuses WHERE id = :id;',
       variables: [Variable.withInt(id)],
+      updates: {dbHomeTimelineStatuses},
+    );
+  }
+
+  Future<int> deleteByAccountRemoteId(String accountRemoteId) {
+    return customUpdate(
+      'DELETE FROM db_home_timeline_statuses WHERE account_remote_id = :accountRemoteId;',
+      variables: [Variable.withString(accountRemoteId)],
       updates: {dbHomeTimelineStatuses},
     );
   }

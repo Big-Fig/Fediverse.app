@@ -17,6 +17,10 @@ part 'account_followings_database_dao.g.dart';
       "account_remote_id = :accountRemoteId;",
   "deleteByFollowingAccountRemoteId": "DELETE FROM db_account_followings WHERE "
       "following_account_remote_id = :accountRemoteId;",
+  "deleteByAccountRemoteIdAndFollowingAccountRemoteId":
+      "DELETE FROM db_account_followings WHERE "
+          "following_account_remote_id = :followingAccountRemoteId AND "
+          "account_remote_id = :accountRemoteId;",
   "clear": "DELETE FROM db_account_followings",
   "getAll": "SELECT * FROM db_account_followings"
 })

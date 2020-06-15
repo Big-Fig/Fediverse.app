@@ -339,6 +339,7 @@
         "chats": {
           "title": "Chats",
           "not_supported_on_mastodon": "Chats not supported on Mastodon instances",
+          "not_supported_on_pleroma": "This instance don't support chats yet",
           "action": {
             "switch_to_dms": "To DM"
           }

@@ -48,7 +48,7 @@ class StatusThreadPage extends StatelessWidget {
 
           if (status == null) {
             return Text(
-             tr("app.status.thread.start.loading"),
+              tr("app.status.thread.start.loading"),
               style: TextStyle(color: FediColors.darkGrey),
             );
           }
@@ -63,11 +63,14 @@ class StatusThreadPage extends StatelessWidget {
                 value: account,
                 child: DisposableProxyProvider<IAccount, IAccountBloc>(
                   update: (context, value, previous) =>
-                      AccountBloc.createFromContext(context,
-                          account: account,
-                          isNeedWatchWebSocketsEvents: false,
-                          isNeedRefreshFromNetworkOnInit: false,
-                          isNeedWatchLocalRepositoryForUpdates: false),
+                      AccountBloc.createFromContext(
+                    context,
+                    account: account,
+                    isNeedWatchWebSocketsEvents: false,
+                    isNeedRefreshFromNetworkOnInit: false,
+                    isNeedWatchLocalRepositoryForUpdates: false,
+                    isNeedPreFetchRelationship: false,
+                  ),
                   child: GestureDetector(
                     onTap: () {
                       goToAccountDetailsPage(context, account);
@@ -88,7 +91,8 @@ class StatusThreadPage extends StatelessWidget {
                               ),
                               Flexible(
                                 child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     AccountDisplayNameWidget(),

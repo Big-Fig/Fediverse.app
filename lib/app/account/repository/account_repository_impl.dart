@@ -382,8 +382,7 @@ class AccountRepository extends AsyncInitLoadingBloc
           dao.addConversationWhere(joinQuery, onlyInConversation.remoteId);
     }
     if (includeChatAccounts) {
-      joinQuery =
-          dao.addChatWhere(joinQuery, onlyInChat.remoteId);
+      joinQuery = dao.addChatWhere(joinQuery, onlyInChat.remoteId);
     }
 
     assert(!(limit == null && offset != null));
@@ -579,4 +578,24 @@ class AccountRepository extends AsyncInitLoadingBloc
           offset: null,
           orderingTermData: null,
           onlyInChat: chat);
+
+  @override
+  Future removeAccountFollowing({
+    @required String accountRemoteId,
+    @required String followingAccountId,
+  }) {
+    return accountFollowingsDao
+        .deleteByAccountRemoteIdAndFollowingAccountRemoteId(
+            followingAccountId, accountRemoteId);
+  }
+
+  @override
+  Future removeAccountFollower({
+    @required String accountRemoteId,
+    @required String followerAccountId,
+  }) {
+    return accountFollowersDao
+        .deleteByAccountRemoteIdAndFollowerAccountRemoteId(
+            followerAccountId, accountRemoteId);
+  }
 }
