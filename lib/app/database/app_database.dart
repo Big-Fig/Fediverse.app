@@ -72,6 +72,7 @@ part 'app_database.g.dart';
 //  DbChatAccounts,
 //  DbChatMessages,
   DbHomeTimelineStatuses
+//  DbAccountRelationships
 ], daos: [
   StatusDao,
   StatusHashtagsDao,
@@ -89,7 +90,8 @@ part 'app_database.g.dart';
   ChatDao,
   ChatAccountsDao,
   ChatMessageDao,
-  HomeTimelineStatusesDao
+  HomeTimelineStatusesDao,
+//  AccountRelationshipsDao
 ], include: {
   'app_database.moor'
 })

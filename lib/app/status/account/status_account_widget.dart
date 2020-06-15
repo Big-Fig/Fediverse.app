@@ -31,11 +31,13 @@ class StatusAccountWidget extends StatelessWidget {
       value: reblogOrOriginalAccount,
       child: DisposableProxyProvider<IAccount, IAccountBloc>(
         update: (context, account, oldValue) => AccountBloc.createFromContext(
-            context,
-            account: account,
-            isNeedWatchLocalRepositoryForUpdates: false,
-            isNeedRefreshFromNetworkOnInit: false,
-            isNeedWatchWebSocketsEvents: false),
+          context,
+          account: account,
+          isNeedWatchLocalRepositoryForUpdates: false,
+          isNeedRefreshFromNetworkOnInit: false,
+          isNeedWatchWebSocketsEvents: false,
+          isNeedPreFetchRelationship: false,
+        ),
         child: GestureDetector(
           onTap: () {
             goToAccountDetailsPage(context, reblogOrOriginalAccount);

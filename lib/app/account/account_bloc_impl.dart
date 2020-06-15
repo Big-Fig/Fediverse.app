@@ -1,6 +1,8 @@
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
+import 'package:fedi/app/account/my/my_account_bloc.dart';
+import 'package:fedi/app/account/my/my_account_model.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/emoji/emoji_text_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
@@ -15,24 +17,19 @@ import 'package:rxdart/rxdart.dart';
 var _logger = Logger("account_bloc_impl.dart");
 
 class AccountBloc extends IAccountBloc {
+  final IMyAccount myAccount;
+
+  final BehaviorSubject<IPleromaAccountRelationship>
+      _accountRelationshipSubject;
   final BehaviorSubject<IAccount> _accountSubject;
 
   @override
   IPleromaAccountRelationship get accountRelationship =>
-      account.pleromaRelationship;
+      _accountRelationshipSubject.value;
 
   @override
-  Stream<IPleromaAccountRelationship> get accountRelationshipStream {
-    // load from network if relationship not exist locally
-    // API require additional request to retrieve relationship
-    if (accountRelationship == null) {
-      // don't await
-      _refreshAccountRelationship(account);
-    }
-    return accountStream.map((account) {
-      return account.pleromaRelationship;
-    });
-  }
+  Stream<IPleromaAccountRelationship> get accountRelationshipStream =>
+      _accountRelationshipSubject.stream;
 
   final IPleromaAccountService pleromaAccountService;
   final IAccountRepository accountRepository;
@@ -44,6 +41,7 @@ class AccountBloc extends IAccountBloc {
   bool refreshAccountRelationshipInProgress = false;
 
   AccountBloc({
+    @required this.myAccount,
     @required this.accountRepository,
     @required this.pleromaWebSocketsService,
     @required this.statusRepository,
@@ -58,10 +56,20 @@ class AccountBloc extends IAccountBloc {
     //  improve performance in timeline unnecessary recreations
     bool delayInit = true,
     this.isNeedWatchLocalRepositoryForUpdates = true,
-  }) : _accountSubject = BehaviorSubject.seeded(account) {
+  })  : _accountSubject = BehaviorSubject.seeded(account),
+        _accountRelationshipSubject =
+            BehaviorSubject.seeded(account.pleromaRelationship) {
     assert(account != null);
     _logger.finest(() => "AccountBloc constructor ${account.remoteId}");
     addDisposable(subject: _accountSubject);
+    addDisposable(subject: _accountRelationshipSubject);
+    addDisposable(streamSubscription: _accountSubject.stream.listen((account) {
+      var pleromaRelationship = account?.pleromaRelationship;
+      _logger.finest(() => "pleromaRelationship $pleromaRelationship");
+      if (pleromaRelationship?.following != null) {
+        _accountRelationshipSubject.add(pleromaRelationship);
+      }
+    }));
     if (delayInit) {
       Future.delayed(Duration(seconds: 1), () {
         _init(account, isNeedRefreshFromNetworkOnInit);
@@ -92,6 +100,10 @@ class AccountBloc extends IAccountBloc {
 
       if (needRefreshFromNetworkOnInit == true) {
         refreshFromNetwork(isNeedPreFetchRelationship);
+      } else {
+        if (isNeedPreFetchRelationship && accountRelationship?.following == null) {
+          _refreshAccountRelationship(account);
+        }
       }
     }
   }
@@ -143,6 +155,7 @@ class AccountBloc extends IAccountBloc {
 
   Future _updateRelationship(
       IAccount account, IPleromaAccountRelationship newRelationship) async {
+    _accountRelationshipSubject.add(newRelationship);
     var newAccount = account.copyWith(pleromaRelationship: newRelationship);
     var newRemoteAccount = mapLocalAccountToRemoteAccount(newAccount);
 
@@ -173,6 +186,19 @@ class AccountBloc extends IAccountBloc {
           newRemoteAccount: mapLocalAccountToRemoteAccount(account.copyWith(
               followersCount: account.followersCount - 1,
               pleromaRelationship: newRelationship)));
+
+      if (myAccount != null) {
+        await accountRepository.removeAccountFollower(
+            accountRemoteId: account.remoteId,
+            followerAccountId: myAccount.remoteId);
+
+        await accountRepository.removeAccountFollowing(
+            accountRemoteId: myAccount.remoteId,
+            followingAccountId: account.remoteId);
+      }
+
+      await statusRepository.removeHomeStatusesFromAccount(
+          accountRemoteId: account.remoteId);
     } else {
       newRelationship = await pleromaAccountService.followAccount(
           accountRemoteId: account.remoteId);
@@ -241,6 +267,10 @@ class AccountBloc extends IAccountBloc {
           _logger.finest(
               () => "requestRefreshFromNetwork remoteAccount  $remoteAccount");
 
+          remoteAccount = mapLocalAccountToRemoteAccount(
+              mapRemoteAccountToLocalAccount(remoteAccount)
+                  .copyWith(pleromaRelationship: accountRelationship));
+
           if (account.localId != null) {
             await accountRepository.updateLocalAccountByRemoteAccount(
                 oldLocalAccount: account, newRemoteAccount: remoteAccount);
@@ -264,8 +294,10 @@ class AccountBloc extends IAccountBloc {
           {@required IAccount account,
           @required bool isNeedWatchWebSocketsEvents,
           @required bool isNeedRefreshFromNetworkOnInit,
+          @required bool isNeedPreFetchRelationship,
           @required bool isNeedWatchLocalRepositoryForUpdates}) =>
       AccountBloc(
+          isNeedPreFetchRelationship: isNeedPreFetchRelationship,
           pleromaWebSocketsService:
               IPleromaWebSocketsService.of(context, listen: false),
           statusRepository: IStatusRepository.of(context, listen: false),
@@ -275,5 +307,6 @@ class AccountBloc extends IAccountBloc {
               isNeedWatchLocalRepositoryForUpdates,
           accountRepository: IAccountRepository.of(context, listen: false),
           pleromaAccountService:
-              IPleromaAccountService.of(context, listen: false));
+              IPleromaAccountService.of(context, listen: false),
+          myAccount: IMyAccountBloc.of(context, listen: false).account);
 }

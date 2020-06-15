@@ -103,6 +103,18 @@ mixin _$AccountFollowersDaoMixin on DatabaseAccessor<AppDatabase> {
     );
   }
 
+  Future<int> deleteByAccountRemoteIdAndFollowerAccountRemoteId(
+      String followerAccountRemoteId, String accountRemoteId) {
+    return customUpdate(
+      'DELETE FROM db_account_followers WHERE follower_account_remote_id = :followerAccountRemoteId AND account_remote_id = :accountRemoteId;',
+      variables: [
+        Variable.withString(followerAccountRemoteId),
+        Variable.withString(accountRemoteId)
+      ],
+      updates: {dbAccountFollowers},
+    );
+  }
+
   Future<int> clear() {
     return customUpdate(
       'DELETE FROM db_account_followers',

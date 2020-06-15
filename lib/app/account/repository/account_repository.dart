@@ -107,4 +107,13 @@ abstract class IAccountRepository
   Future<List<IAccount>> getChatAccounts({@required IChat chat});
 
   Stream<List<IAccount>> watchChatAccounts({@required IChat chat});
+
+  Future removeAccountFollowing({
+    @required String accountRemoteId,
+    @required String followingAccountId,
+  });
+  Future removeAccountFollower({
+    @required String accountRemoteId,
+    @required String followerAccountId,
+  });
 }

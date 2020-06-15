@@ -14,6 +14,7 @@ import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -42,11 +43,14 @@ class StatusShareActionWidget extends StatelessWidget {
     showModalBottomSheet(
         builder: (BuildContext context) {
           return DisposableProvider<IAccountBloc>(
-            create: (context) => AccountBloc.createFromContext(context,
-                account: statusBloc.account,
-                isNeedWatchWebSocketsEvents: false,
-                isNeedRefreshFromNetworkOnInit: false,
-                isNeedWatchLocalRepositoryForUpdates: false),
+            create: (context) => AccountBloc.createFromContext(
+              context,
+              account: statusBloc.account,
+              isNeedWatchWebSocketsEvents: false,
+              isNeedRefreshFromNetworkOnInit: false,
+              isNeedWatchLocalRepositoryForUpdates: false,
+              isNeedPreFetchRelationship: true,
+            ),
             child: Builder(
               builder: (context) => ListView(
                 children: <Widget>[
@@ -54,16 +58,7 @@ class StatusShareActionWidget extends StatelessWidget {
                   buildCopyAction(context, status),
                   buildOpenInBrowserAction(context, status),
                   buildShareAction(context, status),
-                  if (!isStatusFromMe) buildAccountDescSeparator(context),
-                  if (!isStatusFromMe) buildAccountNameSeparator(status),
-                  if (!isStatusFromMe)
-                    buildAccountFollowAction(context, status),
-                  if (!isStatusFromMe)
-                    buildAccountMessageAction(context, status),
-                  if (!isStatusFromMe) buildAccountMuteAction(context, status),
-                  if (!isStatusFromMe) buildAccountBlockAction(context, status),
-                  if (!isStatusFromMe)
-                    buildAccountReportAction(context, status),
+                  if (!isStatusFromMe) buildAccountActionsWidget(context)
                 ],
               ),
             ),
@@ -72,12 +67,12 @@ class StatusShareActionWidget extends StatelessWidget {
         context: context);
   }
 
-  Padding buildAccountNameSeparator(IStatus status) {
+  Padding buildAccountNameSeparator(IAccount account) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: Center(
         child: Text(
-          status.account.acct,
+          account.acct,
           style: TextStyle(color: Colors.blue),
         ),
       ),
@@ -108,10 +103,10 @@ class StatusShareActionWidget extends StatelessWidget {
     );
   }
 
-  Padding buildAccountReportAction(BuildContext context, IStatus status) {
+  Padding buildAccountReportAction(
+      BuildContext context, IAccountBloc accountBloc) {
     return buildButton(tr("app.account.action.report.label"), () async {
-      var success = await doAsyncActionReport(
-          context, IAccountBloc.of(context, listen: false));
+      var success = await doAsyncActionReport(context, accountBloc);
 
       if (success) {
         Navigator.of(context).pop();
@@ -119,47 +114,44 @@ class StatusShareActionWidget extends StatelessWidget {
     });
   }
 
-  Padding buildAccountBlockAction(BuildContext context, IStatus status) =>
-      buildButton(
-          tr(status.account.pleromaRelationship?.blocking == true
-              ? "app.account.action.unblock"
-              : "app.account.action.block"), () async {
-        await doAsyncOperationWithDialog(
-            context: context,
-            asyncCode: () async {
-              await IAccountBloc.of(context, listen: false).toggleBlock();
-            });
+  Padding buildAccountBlockAction(
+      BuildContext context, IAccountBloc accountBloc) {
+    return buildButton(
+        tr(accountBloc.accountRelationship?.blocking == true
+            ? "app.account.action.unblock"
+            : "app.account.action.block"), () async {
+      await doAsyncOperationWithDialog(
+          context: context, asyncCode: () async => accountBloc.toggleBlock());
 
-        Navigator.of(context).pop();
-      });
+      Navigator.of(context).pop();
+    });
+  }
 
-  Padding buildAccountMuteAction(BuildContext context, IStatus status) =>
-      buildButton(
-          tr(status.account.pleromaRelationship?.muting == true
-              ? "app.account.action.unmute"
-              : "app.account.action.mute"), () async {
-        await doAsyncOperationWithDialog(
-            context: context,
-            asyncCode: () async {
-              await IAccountBloc.of(context, listen: false).toggleMute();
-            });
+  Padding buildAccountMuteAction(
+      BuildContext context, IAccountBloc accountBloc) {
+    return buildButton(
+        tr(accountBloc.accountRelationship?.muting == true
+            ? "app.account.action.unmute"
+            : "app.account.action.mute"), () async {
+      await doAsyncOperationWithDialog(
+          context: context, asyncCode: () => accountBloc.toggleMute());
 
-        Navigator.of(context).pop();
-      });
+      Navigator.of(context).pop();
+    });
+  }
 
-  Padding buildAccountFollowAction(BuildContext context, IStatus status) =>
-      buildButton(
-          tr(status.account.pleromaRelationship?.following == true
-              ? "app.account.action.unfollow"
-              : "app.account.action.follow"), () async {
-        await doAsyncOperationWithDialog(
-            context: context,
-            asyncCode: () async {
-              await IAccountBloc.of(context, listen: false).toggleFollow();
-            });
+  Padding buildAccountFollowAction(
+      BuildContext context, IAccountBloc accountBloc) {
+    return buildButton(
+        tr(accountBloc.accountRelationship?.following == true
+            ? "app.account.action.unfollow"
+            : "app.account.action.follow"), () async {
+      await doAsyncOperationWithDialog(
+          context: context, asyncCode: () => accountBloc.toggleFollow());
 
-        Navigator.of(context).pop();
-      });
+      Navigator.of(context).pop();
+    });
+  }
 
   Padding buildOpenInBrowserAction(BuildContext context, IStatus status) =>
       buildButton(tr("app.status.action.open_in_browser"), () async {
@@ -198,10 +190,11 @@ class StatusShareActionWidget extends StatelessWidget {
             });
       });
 
-  Padding buildAccountMessageAction(BuildContext context, IStatus status) =>
+  Padding buildAccountMessageAction(
+          BuildContext context, IAccountBloc accountBloc) =>
       buildButton(tr("app.account.action.message"), () {
         goToPostStatusStartConversationPage(context,
-            conversationAccountsWithoutMe: <IAccount>[status.account]);
+            conversationAccountsWithoutMe: <IAccount>[accountBloc.account]);
       });
 
   Padding buildButton(String title, onPressed()) {
@@ -221,4 +214,34 @@ class StatusShareActionWidget extends StatelessWidget {
   }
 
   const StatusShareActionWidget();
+
+  Widget buildAccountActionsWidget(BuildContext context) {
+    var accountBloc = IAccountBloc.of(context, listen: false);
+    return Column(
+      children: [
+        buildAccountDescSeparator(context),
+        buildAccountNameSeparator(accountBloc.account),
+        StreamBuilder<IPleromaAccountRelationship>(
+            stream: accountBloc.accountRelationshipStream,
+            builder: (context, snapshot) {
+              // hack we should compare relationship field with null
+              if (snapshot.data?.following == null) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(child: CircularProgressIndicator()),
+                );
+              }
+              return Column(
+                children: [
+                  buildAccountFollowAction(context, accountBloc),
+                  buildAccountMessageAction(context, accountBloc),
+                  buildAccountMuteAction(context, accountBloc),
+                  buildAccountBlockAction(context, accountBloc),
+                  buildAccountReportAction(context, accountBloc),
+                ],
+              );
+            }),
+      ],
+    );
+  }
 }

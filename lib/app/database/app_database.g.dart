@@ -7038,8 +7038,12 @@ class $DbChatAccountsTable extends DbChatAccounts
 class DbHomeTimelineStatus extends DataClass
     implements Insertable<DbHomeTimelineStatus> {
   final int id;
+  final String accountRemoteId;
   final String statusRemoteId;
-  DbHomeTimelineStatus({@required this.id, @required this.statusRemoteId});
+  DbHomeTimelineStatus(
+      {@required this.id,
+      @required this.accountRemoteId,
+      @required this.statusRemoteId});
   factory DbHomeTimelineStatus.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -7048,6 +7052,8 @@ class DbHomeTimelineStatus extends DataClass
     final stringType = db.typeSystem.forDartType<String>();
     return DbHomeTimelineStatus(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      accountRemoteId: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}account_remote_id']),
       statusRemoteId: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}status_remote_id']),
     );
@@ -7057,6 +7063,7 @@ class DbHomeTimelineStatus extends DataClass
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return DbHomeTimelineStatus(
       id: serializer.fromJson<int>(json['id']),
+      accountRemoteId: serializer.fromJson<String>(json['accountRemoteId']),
       statusRemoteId: serializer.fromJson<String>(json['statusRemoteId']),
     );
   }
@@ -7065,6 +7072,7 @@ class DbHomeTimelineStatus extends DataClass
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
+      'accountRemoteId': serializer.toJson<String>(accountRemoteId),
       'statusRemoteId': serializer.toJson<String>(statusRemoteId),
     };
   }
@@ -7073,52 +7081,67 @@ class DbHomeTimelineStatus extends DataClass
   DbHomeTimelineStatusesCompanion createCompanion(bool nullToAbsent) {
     return DbHomeTimelineStatusesCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      accountRemoteId: accountRemoteId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(accountRemoteId),
       statusRemoteId: statusRemoteId == null && nullToAbsent
           ? const Value.absent()
           : Value(statusRemoteId),
     );
   }
 
-  DbHomeTimelineStatus copyWith({int id, String statusRemoteId}) =>
+  DbHomeTimelineStatus copyWith(
+          {int id, String accountRemoteId, String statusRemoteId}) =>
       DbHomeTimelineStatus(
         id: id ?? this.id,
+        accountRemoteId: accountRemoteId ?? this.accountRemoteId,
         statusRemoteId: statusRemoteId ?? this.statusRemoteId,
       );
   @override
   String toString() {
     return (StringBuffer('DbHomeTimelineStatus(')
           ..write('id: $id, ')
+          ..write('accountRemoteId: $accountRemoteId, ')
           ..write('statusRemoteId: $statusRemoteId')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(id.hashCode, statusRemoteId.hashCode));
+  int get hashCode => $mrjf($mrjc(
+      id.hashCode, $mrjc(accountRemoteId.hashCode, statusRemoteId.hashCode)));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is DbHomeTimelineStatus &&
           other.id == this.id &&
+          other.accountRemoteId == this.accountRemoteId &&
           other.statusRemoteId == this.statusRemoteId);
 }
 
 class DbHomeTimelineStatusesCompanion
     extends UpdateCompanion<DbHomeTimelineStatus> {
   final Value<int> id;
+  final Value<String> accountRemoteId;
   final Value<String> statusRemoteId;
   const DbHomeTimelineStatusesCompanion({
     this.id = const Value.absent(),
+    this.accountRemoteId = const Value.absent(),
     this.statusRemoteId = const Value.absent(),
   });
   DbHomeTimelineStatusesCompanion.insert({
     this.id = const Value.absent(),
+    @required String accountRemoteId,
     @required String statusRemoteId,
-  }) : statusRemoteId = Value(statusRemoteId);
+  })  : accountRemoteId = Value(accountRemoteId),
+        statusRemoteId = Value(statusRemoteId);
   DbHomeTimelineStatusesCompanion copyWith(
-      {Value<int> id, Value<String> statusRemoteId}) {
+      {Value<int> id,
+      Value<String> accountRemoteId,
+      Value<String> statusRemoteId}) {
     return DbHomeTimelineStatusesCompanion(
       id: id ?? this.id,
+      accountRemoteId: accountRemoteId ?? this.accountRemoteId,
       statusRemoteId: statusRemoteId ?? this.statusRemoteId,
     );
   }
@@ -7138,6 +7161,17 @@ class $DbHomeTimelineStatusesTable extends DbHomeTimelineStatuses
         hasAutoIncrement: true, declaredAsPrimaryKey: true);
   }
 
+  final VerificationMeta _accountRemoteIdMeta =
+      const VerificationMeta('accountRemoteId');
+  GeneratedTextColumn _accountRemoteId;
+  @override
+  GeneratedTextColumn get accountRemoteId =>
+      _accountRemoteId ??= _constructAccountRemoteId();
+  GeneratedTextColumn _constructAccountRemoteId() {
+    return GeneratedTextColumn('account_remote_id', $tableName, false,
+        $customConstraints: 'NOT NULL');
+  }
+
   final VerificationMeta _statusRemoteIdMeta =
       const VerificationMeta('statusRemoteId');
   GeneratedTextColumn _statusRemoteId;
@@ -7150,7 +7184,7 @@ class $DbHomeTimelineStatusesTable extends DbHomeTimelineStatuses
   }
 
   @override
-  List<GeneratedColumn> get $columns => [id, statusRemoteId];
+  List<GeneratedColumn> get $columns => [id, accountRemoteId, statusRemoteId];
   @override
   $DbHomeTimelineStatusesTable get asDslTable => this;
   @override
@@ -7163,6 +7197,14 @@ class $DbHomeTimelineStatusesTable extends DbHomeTimelineStatuses
     final context = VerificationContext();
     if (d.id.present) {
       context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    }
+    if (d.accountRemoteId.present) {
+      context.handle(
+          _accountRemoteIdMeta,
+          accountRemoteId.isAcceptableValue(
+              d.accountRemoteId.value, _accountRemoteIdMeta));
+    } else if (isInserting) {
+      context.missing(_accountRemoteIdMeta);
     }
     if (d.statusRemoteId.present) {
       context.handle(
@@ -7188,6 +7230,10 @@ class $DbHomeTimelineStatusesTable extends DbHomeTimelineStatuses
     final map = <String, Variable>{};
     if (d.id.present) {
       map['id'] = Variable<int, IntType>(d.id.value);
+    }
+    if (d.accountRemoteId.present) {
+      map['account_remote_id'] =
+          Variable<String, StringType>(d.accountRemoteId.value);
     }
     if (d.statusRemoteId.present) {
       map['status_remote_id'] =

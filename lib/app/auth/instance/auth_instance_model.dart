@@ -29,6 +29,9 @@ class AuthInstance extends IPreferencesObject {
   @HiveField(7)
   PleromaInstance info;
 
+  bool get isSupportChats =>
+      info?.pleroma?.metadata?.features?.contains("chat") == true;
+
   String get userAtHost => "$acct@$urlHost";
 
   Uri get url => Uri(scheme: urlSchema, host: urlHost);

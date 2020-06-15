@@ -18,6 +18,7 @@ class AccountPaginationListWidget extends PaginationListWidget<IAccount> {
   final AccountCallback accountSelectedCallback;
 
   final bool needWatchLocalRepositoryForUpdates;
+
   const AccountPaginationListWidget({
     @required Key key,
     Widget header,
@@ -56,7 +57,8 @@ class AccountPaginationListWidget extends PaginationListWidget<IAccount> {
                               needWatchLocalRepositoryForUpdates,
                           account: account,
                           isNeedRefreshFromNetworkOnInit: false,
-                          isNeedWatchWebSocketsEvents: false),
+                          isNeedWatchWebSocketsEvents: false,
+                          isNeedPreFetchRelationship: false),
                   child: Column(
                     children: [
                       AccountListItemWidget(

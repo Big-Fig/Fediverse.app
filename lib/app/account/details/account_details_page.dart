@@ -32,7 +32,8 @@ void goToAccountDetailsPage(BuildContext context, IAccount account) {
                 isNeedWatchLocalRepositoryForUpdates: true,
                 account: account,
                 isNeedRefreshFromNetworkOnInit: false,
-                isNeedWatchWebSocketsEvents: false),
+                isNeedWatchWebSocketsEvents: false,
+                isNeedPreFetchRelationship: true),
             child: const AccountDetailsPage())),
   );
 }
