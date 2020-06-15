@@ -32,8 +32,10 @@ class ChatsHomeTabPage extends StatelessWidget {
     var currentAuthInstanceBloc =
         ICurrentAuthInstanceBloc.of(context, listen: false);
 
-    var isPleromaInstance =
-        currentAuthInstanceBloc.currentInstance.isPleromaInstance;
+    var currentInstance = currentAuthInstanceBloc.currentInstance;
+    var isPleromaInstance = currentInstance.isPleromaInstance;
+
+    var isSupportChats = currentInstance.isSupportChats;
 
     var fediSliverAppBarBloc = IFediSliverAppBarBloc.of(context);
     return Scaffold(
@@ -41,7 +43,7 @@ class ChatsHomeTabPage extends StatelessWidget {
       backgroundColor: Colors.transparent,
       body: Stack(
         children: [
-          buildNestedScrollView(context, isPleromaInstance),
+          buildNestedScrollView(context, isPleromaInstance, isSupportChats),
           StreamBuilder<bool>(
               stream: fediSliverAppBarBloc.isAtLeastStartExpandStream,
               builder: (context, snapshot) {
@@ -65,7 +67,7 @@ class ChatsHomeTabPage extends StatelessWidget {
   }
 
   NestedScrollView buildNestedScrollView(
-      BuildContext context, bool isPleromaInstance) {
+      BuildContext context, bool isPleromaInstance, bool isSupportChats) {
     var nestedScrollController =
         INestedScrollControllerBloc.of(context, listen: false)
             .nestedScrollController;
@@ -82,7 +84,7 @@ class ChatsHomeTabPage extends StatelessWidget {
                   topRight: Radius.circular(16.0)),
               child: Container(
                 color: Colors.white,
-                child: buildBody(context, isPleromaInstance),
+                child: buildBody(context, isPleromaInstance, isSupportChats),
               ),
             ),
           );
@@ -101,7 +103,8 @@ class ChatsHomeTabPage extends StatelessWidget {
                     right: 16.0,
                   ),
                   child: FediLightStatusBarStyleArea(
-                    child: buildTopBar(context, isPleromaInstance),
+                    child:
+                        buildTopBar(context, isPleromaInstance, isSupportChats),
                   ),
                 ),
 //              _buildCollapsedAppBarBody(context)
@@ -114,10 +117,16 @@ class ChatsHomeTabPage extends StatelessWidget {
     );
   }
 
-  Widget buildBody(BuildContext context, bool isPleromaInstance) =>
-      isPleromaInstance ? buildPleromaBody() : buildMastodonBody(context);
+  Widget buildBody(
+          BuildContext context, bool isPleromaInstance, bool isSupportChats) =>
+      isPleromaInstance
+          ? isSupportChats
+              ? buildPleromaBody()
+              : buildPleromaNotSupportedBody(context)
+          : buildMastodonBody(context);
 
-  Widget buildTopBar(BuildContext context, bool isPleromaInstance) {
+  Widget buildTopBar(
+      BuildContext context, bool isPleromaInstance, bool isSupportChats) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -135,12 +144,12 @@ class ChatsHomeTabPage extends StatelessWidget {
                     .changeIsNewChatsEnabled(false);
               },
             ),
-            if (isPleromaInstance)
+            if (isPleromaInstance && isSupportChats)
 //              Padding(
 //                padding: const EdgeInsets.symmetric(horizontal: 8.0),
 //                child: buildSearchActionButton(context),
 //              ),
-              if (isPleromaInstance)
+              if (isPleromaInstance && isSupportChats)
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: buildPenActionButton(context),
@@ -176,5 +185,10 @@ class ChatsHomeTabPage extends StatelessWidget {
   Center buildMastodonBody(BuildContext context) {
     return Center(
         child: Text(tr("app.home.tab.chats.not_supported_on_mastodon")));
+  }
+
+  Center buildPleromaNotSupportedBody(BuildContext context) {
+    return Center(
+        child: Text(tr("app.home.tab.chats.not_supported_on_pleroma")));
   }
 }
