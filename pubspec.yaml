@@ -160,7 +160,7 @@ dev_dependencies:
   # build tools runner
   # usage example
   # flutter pub run build_runner build --delete-conflicting-outputs
-  build_runner: ^1.7.3
+  build_runner: ^1.10.0
   # build tool to generate json from & to methods
   json_serializable: ^3.2.5
   # sql orm generator
