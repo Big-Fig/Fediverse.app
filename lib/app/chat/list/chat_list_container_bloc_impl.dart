@@ -15,6 +15,7 @@ import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
+import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
 import 'package:fedi/pleroma/websockets/pleroma_websockets_service.dart';
@@ -32,7 +33,12 @@ class ChatsListContainerBloc extends DisposableOwner
   IChatPaginationBloc chatPaginationBloc;
 
   @override
-  IPaginationListBloc<PaginationPage<IChat>, IChat> chatPaginationListBloc;
+  IPaginationListBloc<PaginationPage<IChat>, IChat> get
+  chatPaginationListBloc => chatPaginationListWithNewItemsBloc;
+
+  @override
+  IPaginationListWithNewItemsBloc<PaginationPage<IChat>, IChat>
+      chatPaginationListWithNewItemsBloc;
 
   final INotificationRepository notificationRepository;
   final IChatMessageRepository chatMessageRepository;
@@ -62,12 +68,12 @@ class ChatsListContainerBloc extends DisposableOwner
         listService: chatListService,
         maximumCachedPagesCount: null);
     addDisposable(disposable: chatListService);
-    chatPaginationListBloc = ChatPaginationListWithNewItemsBloc(
+    chatPaginationListWithNewItemsBloc = ChatPaginationListWithNewItemsBloc(
       paginationBloc: chatPaginationBloc,
       cachedListService: chatListService,
       mergeNewItemsImmediately: true,
     );
-    addDisposable(disposable: chatPaginationListBloc);
+    addDisposable(disposable: chatPaginationListWithNewItemsBloc);
 
     if (listenWebSocketsChanges) {
       addDisposable(
