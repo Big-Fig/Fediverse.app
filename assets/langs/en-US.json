@@ -483,6 +483,16 @@
       }
     },
     "status": {
+      "emoji": {
+        "error": {
+          "cant_add": {
+            "dialog": {
+              "title": "Can't add emoji",
+              "content": "Error: {}"
+            }
+          }
+        }
+      },
       "thread": {
         "start": {
           "loading": "Loading start status"
