@@ -13,4 +13,6 @@ abstract class ISearchInputBloc extends Disposable {
   Stream<String> get searchTextStream;
 
   void clearSearch();
+
+  void performSearch();
 }
