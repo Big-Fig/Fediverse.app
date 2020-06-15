@@ -74,11 +74,12 @@ class _NotificationTabsWidgetState extends State<NotificationTabsWidget>
   }
 
   Widget buildTabBar(BuildContext context, List<NotificationTab> tabs,
-          INotificationTabsBloc notificationsTabsBloc) =>
+      INotificationTabsBloc notificationsTabsBloc) =>
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          ...tabs.map((tab) => NotificationUnreadBadgeExcludeTypesWidget(
+          ...tabs.map((tab) =>
+              NotificationUnreadBadgeExcludeTypesWidget(
                 offset: 6.0,
                 excludeTypes: mapTabToExcludeTypes(tab),
                 child: FediIconTab(
@@ -119,7 +120,8 @@ class _NotificationTabsWidgetState extends State<NotificationTabsWidget>
     _logger.finest(() => "build");
 
     var nestedScrollController =
-        INestedScrollControllerBloc.of(context, listen: false)
+        INestedScrollControllerBloc
+            .of(context, listen: false)
             .nestedScrollController;
 
     var fediSliverAppBarBloc = IFediSliverAppBarBloc.of(context);
@@ -132,7 +134,10 @@ class _NotificationTabsWidgetState extends State<NotificationTabsWidget>
               var isAtLeastStartExpand = snapshot.data;
               if (isAtLeastStartExpand == false) {
                 return Container(
-                    height: MediaQuery.of(context).padding.top,
+                    height: MediaQuery
+                        .of(context)
+                        .padding
+                        .top,
                     color: Colors.white);
               } else {
                 return SizedBox.shrink();
@@ -142,60 +147,70 @@ class _NotificationTabsWidgetState extends State<NotificationTabsWidget>
     );
   }
 
-  NestedScrollView _buildNestedScrollView(NestedScrollController nestedScrollController, INotificationTabsBloc timelinesTabsBloc) {
+  NestedScrollView _buildNestedScrollView(
+      NestedScrollController nestedScrollController,
+      INotificationTabsBloc timelinesTabsBloc) {
     return NestedScrollView(
-      controller: nestedScrollController,
-      headerSliverBuilder: (BuildContext c, bool f) {
-        return [
-          SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: 16.0 + MediaQuery.of(context).padding.top,
-                    bottom: 8.0,
-                    left: 16.0,
-                    right: 16.0,
-                  ),
-                  child: FediLightStatusBarStyleArea(
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 16.0, top: 8.0),
-                      child: buildTabBar(
-                          context, widget.tabs, timelinesTabsBloc),
+        controller: nestedScrollController,
+        headerSliverBuilder: (BuildContext c, bool f) {
+          return [
+            SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: 16.0 + MediaQuery
+                          .of(context)
+                          .padding
+                          .top,
+                      bottom: 8.0,
+                      left: 16.0,
+                      right: 16.0,
+                    ),
+                    child: FediLightStatusBarStyleArea(
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 16.0, top: 8.0),
+                        child: buildTabBar(
+                            context, widget.tabs, timelinesTabsBloc),
+                      ),
                     ),
                   ),
-                ),
 //              _buildCollapsedAppBarBody(context)
-              ],
+                ],
+              ),
             ),
-          ),
 //              buildSliverAppBar(context, tabs, timelinesTabsBloc),
-        ];
-      },
-      //2.[inner scrollables in tabview sync issue](https://github.com/flutter/flutter/issues/21868)
-      innerScrollPositionKeyBuilder: () {
-        String index = 'Tab0';
-        index += tabController.index.toString();
-        return Key(index);
-      },
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: NotificationTabsNestedScrollViewBodyWidget(
-                'Tab0', tabController, widget.tabs),
-          )
-        ],
-      ));
+          ];
+        },
+        //2.[inner scrollables in tabview sync issue](https://github.com/flutter/flutter/issues/21868)
+        innerScrollPositionKeyBuilder: () {
+          String index = 'Tab0';
+          index += tabController.index.toString();
+          return Key(index);
+        },
+        body: Builder(
+            builder: (context) {
+              nestedScrollController.enableScroll(context);
+
+              return Column(
+                children: <Widget>[
+                  Expanded(
+                    child: NotificationTabsNestedScrollViewBodyWidget(
+                        'Tab0', tabController, widget.tabs),
+                  )
+                ],
+              );
+            }
+        ));
   }
 }
 
 class NotificationTabsNestedScrollViewBodyWidget extends StatefulWidget {
   final List<NotificationTab> tabs;
-  const NotificationTabsNestedScrollViewBodyWidget(
-    this.tabKey,
-    this.tabController,
-    this.tabs,
-  );
+
+  const NotificationTabsNestedScrollViewBodyWidget(this.tabKey,
+      this.tabController,
+      this.tabs,);
 
   final String tabKey;
   final TabController tabController;
@@ -230,7 +245,7 @@ class _NotificationTabsNestedScrollViewBodyWidgetState
             controller: widget.tabController,
             children: List<Widget>.generate(
               tabs.length,
-              (int index) {
+                  (int index) {
                 var tab = tabs[index];
 
                 return TabViewItem(Key(widget.tabKey + index.toString()), tab);
@@ -248,6 +263,7 @@ class _NotificationTabsNestedScrollViewBodyWidgetState
 
 class TabViewItem extends StatefulWidget {
   final NotificationTab tab;
+
   const TabViewItem(this.tabKey, this.tab);
 
   final Key tabKey;
@@ -263,11 +279,12 @@ class _TabViewItemState extends State<TabViewItem>
     super.build(context);
 
     List<PleromaNotificationType> excludeTypes =
-        mapTabToExcludeTypes(widget.tab);
+    mapTabToExcludeTypes(widget.tab);
 
     return DisposableProvider<INotificationCachedListBloc>(
-      create: (context) => NotificationCachedListBloc.createFromContext(context,
-          excludeTypes: excludeTypes),
+      create: (context) =>
+          NotificationCachedListBloc.createFromContext(context,
+              excludeTypes: excludeTypes),
       child: DisposableProvider<
           IPaginationBloc<PaginationPage<INotification>, INotification>>(
         create: (context) =>
@@ -275,10 +292,11 @@ class _TabViewItemState extends State<TabViewItem>
         child: DisposableProvider<
             IPaginationListWithNewItemsBloc<PaginationPage<INotification>,
                 INotification>>(
-          create: (context) => NotificationPaginationListWithNewItemsBloc(
-              mergeNewItemsImmediately: false,
-              paginationBloc: Provider.of(context, listen: false),
-              cachedListService:
+          create: (context) =>
+              NotificationPaginationListWithNewItemsBloc(
+                  mergeNewItemsImmediately: false,
+                  paginationBloc: Provider.of(context, listen: false),
+                  cachedListService:
                   INotificationCachedListBloc.of(context, listen: false)),
           child: ProxyProvider<
               IPaginationListWithNewItemsBloc<PaginationPage<INotification>,
@@ -306,54 +324,58 @@ class _TabViewItemState extends State<TabViewItem>
 
   Builder _buildList() {
     return Builder(
-                  builder: (context) =>
-                      NestedScrollViewInnerScrollPositionKeyWidget(
-                    widget.tabKey,
-                    FediDarkStatusBarStyleArea(
-                      child: NotificationPaginationListWidget(
-                        needWatchLocalRepositoryForUpdates: true,
+      builder: (context) =>
+          NestedScrollViewInnerScrollPositionKeyWidget(
+            widget.tabKey,
+            FediDarkStatusBarStyleArea(
+              child: NotificationPaginationListWidget(
+                needWatchLocalRepositoryForUpdates: true,
 //                              key: PageStorageKey("${tab.toString()}"),
-                      ),
-                    ),
-                  ),
-                );
+              ),
+            ),
+          ),
+    );
   }
 
-  Builder _buildOverlayNewItems(BuildContext context) => Builder(
-                  builder: (context) {
-                    var fediSliverAppBarBloc =
-                        IFediSliverAppBarBloc.of(context, listen: false);
-                    return StreamBuilder<bool>(
-                        stream:
-                            fediSliverAppBarBloc.isAtLeastStartExpandStream,
-                        builder: (context, snapshot) {
-                          var isAtLeastStartExpand = snapshot.data;
-                          var topPadding = isAtLeastStartExpand == true
-                              ? 24.0
-                              : 24.0 + MediaQuery.of(context).padding.top;
+  Builder _buildOverlayNewItems(BuildContext context) =>
+      Builder(
+        builder: (context) {
+          var fediSliverAppBarBloc =
+          IFediSliverAppBarBloc.of(context, listen: false);
+          return StreamBuilder<bool>(
+              stream:
+              fediSliverAppBarBloc.isAtLeastStartExpandStream,
+              builder: (context, snapshot) {
+                var isAtLeastStartExpand = snapshot.data;
+                var topPadding = isAtLeastStartExpand == true
+                    ? 24.0
+                    : 24.0 + MediaQuery
+                    .of(context)
+                    .padding
+                    .top;
 
-                          _logger.finest(() => "topPadding $topPadding");
+                _logger.finest(() => "topPadding $topPadding");
 
 //
 //                            topPadding =
 //                                24.0 + MediaQuery.of(context).padding.top;
 //                                24.0;
-                          return Align(
-                              alignment: Alignment.topCenter,
-                              child: Padding(
-                                padding: EdgeInsets.only(top: topPadding),
-                                child:
-                                    PaginationListWithNewItemsOverlayWidget(
-                                  textBuilder: (context, updateItemsCount) =>
-                                      plural(
-                                          "app.notification.list.new_items"
-                                          ".action.tap_to_load_new",
-                                          updateItemsCount),
-                                ),
-                              ));
-                        });
-                  },
-                );
+                return Align(
+                    alignment: Alignment.topCenter,
+                    child: Padding(
+                      padding: EdgeInsets.only(top: topPadding),
+                      child:
+                      PaginationListWithNewItemsOverlayWidget(
+                        textBuilder: (context, updateItemsCount) =>
+                            plural(
+                                "app.notification.list.new_items"
+                                    ".action.tap_to_load_new",
+                                updateItemsCount),
+                      ),
+                    ));
+              });
+        },
+      );
 
   @override
   bool get wantKeepAlive => true;

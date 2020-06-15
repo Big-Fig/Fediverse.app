@@ -14,7 +14,7 @@ import 'package:fedi/app/ui/page/fedi_sliver_app_bar_bloc.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:fedi/ui/scroll_controller_bloc.dart';
+import 'package:fedi/ui/nested_scroll_controller_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -34,7 +34,6 @@ class ChatsHomeTabPage extends StatelessWidget {
 
     var isPleromaInstance =
         currentAuthInstanceBloc.currentInstance.isPleromaInstance;
-
 
     var fediSliverAppBarBloc = IFediSliverAppBarBloc.of(context);
     return Scaffold(
@@ -65,18 +64,29 @@ class ChatsHomeTabPage extends StatelessWidget {
     );
   }
 
-  NestedScrollView buildNestedScrollView(BuildContext context, bool isPleromaInstance) {
+  NestedScrollView buildNestedScrollView(
+      BuildContext context, bool isPleromaInstance) {
+    var nestedScrollController =
+        INestedScrollControllerBloc.of(context, listen: false)
+            .nestedScrollController;
     return NestedScrollView(
-      controller: IScrollControllerBloc.of(context).scrollController,
-      body: FediDarkStatusBarStyleArea(
-        child: ClipRRect(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0)),
-          child: Container(
-            color: Colors.white,
-            child: buildBody(context, isPleromaInstance),
-          ),
-        ),
+      controller: nestedScrollController,
+      body: Builder(
+        builder: (context) {
+          nestedScrollController.enableScroll(context);
+
+          return FediDarkStatusBarStyleArea(
+            child: ClipRRect(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(16.0),
+                  topRight: Radius.circular(16.0)),
+              child: Container(
+                color: Colors.white,
+                child: buildBody(context, isPleromaInstance),
+              ),
+            ),
+          );
+        },
       ),
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
         return [
