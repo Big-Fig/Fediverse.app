@@ -270,6 +270,16 @@
       }
     },
     "chat": {
+      "list": {
+        "new_items": {
+          "action": {
+            "tap_to_load_new": {
+              "one": "{} new chat. Tap to load.",
+              "other": "{} new chats. Tap to load."
+            }
+          }
+        }
+      },
       "accounts": {
         "title": "Chat accounts"
       },
@@ -301,6 +311,16 @@
       }
     },
     "conversation": {
+      "list": {
+        "new_items": {
+          "action": {
+            "tap_to_load_new": {
+              "one": "{} new conversation. Tap to load.",
+              "other": "{} new conversations. Tap to load."
+            }
+          }
+        }
+      },
       "accounts": {
         "title": "Conversation accounts"
       },

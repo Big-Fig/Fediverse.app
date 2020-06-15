@@ -36,7 +36,7 @@ class ConversationsHomeTabPage extends StatelessWidget {
       backgroundColor: Colors.transparent,
       body: Column(
         children: [
-          buildNestedScrollView(context),
+          Expanded(child: buildNestedScrollView(context)),
           StreamBuilder<bool>(
               stream: fediSliverAppBarBloc.isAtLeastStartExpandStream,
               builder: (context, snapshot) {

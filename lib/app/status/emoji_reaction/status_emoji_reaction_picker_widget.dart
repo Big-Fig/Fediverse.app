@@ -16,7 +16,7 @@ class StatusEmojiReactionPickerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return EmojiPicker(
       bgColor: Colors.transparent,
-      rows: 5,
+      rows: 6,
       columns: 7,
       numRecommended: 0,
       selectedCategory: Category.RECENT,
@@ -39,12 +39,15 @@ class StatusEmojiReactionPickerWidget extends StatelessWidget {
 void showEmojiPickerModalPopup(BuildContext context, {EmojiReactionSelectedCallback emojiReactionSelectedCallback}) {
   showModalBottomSheet(
       context: context,
-      builder: (context) => StatusEmojiReactionPickerWidget(
-        emojiReactionSelectedCallback: (String emojiName, String emoji) {
-          if(emojiReactionSelectedCallback != null) {
-            emojiReactionSelectedCallback(emojiName, emoji);
-          }
-          Navigator.of(context).pop();
-        },
+      builder: (context) => Padding(
+        padding: const EdgeInsets.only(top: 24.0),
+        child: StatusEmojiReactionPickerWidget(
+          emojiReactionSelectedCallback: (String emojiName, String emoji) {
+            if(emojiReactionSelectedCallback != null) {
+              emojiReactionSelectedCallback(emojiName, emoji);
+            }
+            Navigator.of(context).pop();
+          },
+        ),
       ));
 }
