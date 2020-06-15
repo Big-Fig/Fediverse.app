@@ -13,8 +13,10 @@ class MyAccountDetailsWidget extends AccountDetailsWidget {
 
   @override
   Widget buildListWithNewItemsOverlayContainer(BuildContext context) {
-    return Stack(
-        children: [buildBody(context), _buildOverlayNewItems(context)]);
+    return Stack(children: [
+      buildBody(context),
+      _buildOverlayNewItems(context),
+    ]);
   }
 
   Builder _buildOverlayNewItems(BuildContext context) => Builder(

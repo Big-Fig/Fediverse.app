@@ -88,7 +88,7 @@ class _TimelineTabsWidgetState extends State<TimelineTabsWidget>
   }
 
   Widget buildTabBar(BuildContext context, List<TimelineTab> tabs,
-          ITimelineTabsBloc timelineTabsBloc) =>
+      ITimelineTabsBloc timelineTabsBloc) =>
       Column(
         children: [
           Padding(
@@ -101,24 +101,25 @@ class _TimelineTabsWidgetState extends State<TimelineTabsWidget>
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       ...tabs
-                          .map((tab) => Padding(
-                                padding: const EdgeInsets.only(right: 8.0),
-                                child: Provider<
-                                    IPaginationListWithNewItemsBloc>.value(
-                                  value: timelineTabsBloc
-                                      .retrieveTimelineTabPaginationListBloc(
-                                          tab),
-                                  child:
-                                      PaginationListWithNewItemsUnreadBadgeWidget(
-                                    child: FediTextTab(
-                                      mapTabToTitle(context, tab),
-                                      index: tabs.indexOf(tab),
-                                      isTransparent: true,
-                                      tabController: tabController,
-                                    ),
-                                  ),
+                          .map((tab) =>
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: Provider<
+                                IPaginationListWithNewItemsBloc>.value(
+                              value: timelineTabsBloc
+                                  .retrieveTimelineTabPaginationListBloc(
+                                  tab),
+                              child:
+                              PaginationListWithNewItemsUnreadBadgeWidget(
+                                child: FediTextTab(
+                                  mapTabToTitle(context, tab),
+                                  index: tabs.indexOf(tab),
+                                  isTransparent: true,
+                                  tabController: tabController,
                                 ),
-                              ))
+                              ),
+                            ),
+                          ))
                           .toList()
                     ],
                   ),
@@ -154,8 +155,9 @@ class _TimelineTabsWidgetState extends State<TimelineTabsWidget>
 
     _logger.finest(() => "build");
 
-    var nestedScrollController =
-        INestedScrollControllerBloc.of(context, listen: false)
+    NestedScrollController nestedScrollController =
+        INestedScrollControllerBloc
+            .of(context, listen: false)
             .nestedScrollController;
 
     var fediSliverAppBarBloc = IFediSliverAppBarBloc.of(context);
@@ -171,16 +173,19 @@ class _TimelineTabsWidgetState extends State<TimelineTabsWidget>
                 nestedScrollController, timelinesTabsBloc)),
         StreamBuilder<bool>(
             stream: fediSliverAppBarBloc.expandOffsetStream.map((expandOffset) {
-          if (expandOffset != null && expandOffset > 100) {
-            return true;
-          } else {
-            return false;
-          }
-        }), builder: (context, snapshot) {
+              if (expandOffset != null && expandOffset > 100) {
+                return true;
+              } else {
+                return false;
+              }
+            }), builder: (context, snapshot) {
           var showStatusBar = snapshot.data;
           if (showStatusBar == true) {
             return Container(
-                height: MediaQuery.of(context).padding.top,
+                height: MediaQuery
+                    .of(context)
+                    .padding
+                    .top,
                 color: Colors.white);
           } else {
             return SizedBox.shrink();
@@ -194,60 +199,67 @@ class _TimelineTabsWidgetState extends State<TimelineTabsWidget>
       NestedScrollController nestedScrollController,
       ITimelineTabsBloc timelinesTabsBloc) {
     return NestedScrollView(
-        controller: nestedScrollController,
-        headerSliverBuilder: (BuildContext c, bool f) {
-          return [
-            SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  Padding(
-                    padding: EdgeInsets.only(
-                      top: 16.0 + MediaQuery.of(context).padding.top,
-                      bottom: 8.0,
-                      left: 16.0,
-                      right: 16.0,
-                    ),
-                    child: FediLightStatusBarStyleArea(
-                      child:
-                          buildTabBar(context, widget.tabs, timelinesTabsBloc),
-                    ),
+      controller: nestedScrollController,
+      headerSliverBuilder: (BuildContext c, bool f) {
+        return [
+          SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: 16.0 + MediaQuery
+                        .of(context)
+                        .padding
+                        .top,
+                    bottom: 8.0,
+                    left: 16.0,
+                    right: 16.0,
                   ),
-                  FediDarkStatusBarStyleArea(child: _buildExpandedAppBar()),
+                  child: FediLightStatusBarStyleArea(
+                    child:
+                    buildTabBar(context, widget.tabs, timelinesTabsBloc),
+                  ),
+                ),
+                FediDarkStatusBarStyleArea(child: _buildExpandedAppBar()),
 //              _buildCollapsedAppBarBody(context)
-                ],
-              ),
+              ],
             ),
-//              buildSliverAppBar(context, tabs, timelinesTabsBloc),
-          ];
-        },
-        //2.[inner scrollables in tabview sync issue](https://github.com/flutter/flutter/issues/21868)
-        innerScrollPositionKeyBuilder: () {
-          String index = 'Tab0';
-          index += tabController.index.toString();
-          return Key(index);
-        },
-        body: Container(
-          color: FediColors.offWhite,
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                child: TimelineTabsNestedScrollViewBodyWidget(
-                    'Tab0', tabController, widget.tabs),
-              )
-            ],
           ),
-        ));
+//              buildSliverAppBar(context, tabs, timelinesTabsBloc),
+        ];
+      },
+      //2.[inner scrollables in tabview sync issue](https://github.com/flutter/flutter/issues/21868)
+      innerScrollPositionKeyBuilder: () {
+        String index = 'Tab0';
+        index += tabController.index.toString();
+        return Key(index);
+      },
+      body: Builder(
+        builder: (context) {
+          nestedScrollController.enableScroll(context);
+
+          return Container(
+            color: FediColors.offWhite,
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                  child: TimelineTabsNestedScrollViewBodyWidget(
+                      'Tab0', tabController, widget.tabs),
+                )
+              ],
+            ),
+          );
+        },
+      ),);
   }
 }
 
 class TimelineTabsNestedScrollViewBodyWidget extends StatefulWidget {
   final List<TimelineTab> tabs;
 
-  const TimelineTabsNestedScrollViewBodyWidget(
-    this.tabKey,
-    this.tabController,
-    this.tabs,
-  );
+  const TimelineTabsNestedScrollViewBodyWidget(this.tabKey,
+      this.tabController,
+      this.tabs,);
 
   final String tabKey;
   final TabController tabController;
@@ -288,9 +300,9 @@ class _TimelineTabsNestedScrollViewBodyWidgetState
     return Builder(
       builder: (context) {
         var scrollControllerBloc =
-            IScrollControllerBloc.of(context, listen: false);
+        IScrollControllerBloc.of(context, listen: false);
         var fediSliverAppBarBloc =
-            IFediSliverAppBarBloc.of(context, listen: false);
+        IFediSliverAppBarBloc.of(context, listen: false);
 
         _logger.finest(() => "Builder");
 
@@ -298,13 +310,13 @@ class _TimelineTabsNestedScrollViewBodyWidgetState
             stream: Rx.combineLatest2(
                 scrollControllerBloc.longScrollDirectionStream,
                 fediSliverAppBarBloc.isAtLeastStartExpandStream,
-                (scrollDirection, isAtLeastStartExpand) {
-              _logger.finest(() => "scrollDirection $scrollDirection "
-                  "$isAtLeastStartExpand");
+                    (scrollDirection, isAtLeastStartExpand) {
+                  _logger.finest(() => "scrollDirection $scrollDirection "
+                      "$isAtLeastStartExpand");
 
-              return scrollDirection == ScrollDirection.forward &&
-                  isAtLeastStartExpand == false;
-            }),
+                  return scrollDirection == ScrollDirection.forward &&
+                      isAtLeastStartExpand == false;
+                }),
 //                stream: scrollControllerBloc.longScrollDirectionStream.map(
 //                        (scrollDirection) => scrollDirection == ScrollDirection.forward),
             builder: (context, snapshot) {
@@ -314,10 +326,13 @@ class _TimelineTabsNestedScrollViewBodyWidgetState
                 return FediDarkStatusBarStyleArea(
                   child: Padding(
                     padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).padding.top),
+                        top: MediaQuery
+                            .of(context)
+                            .padding
+                            .top),
                     child: Container(
                       decoration: BoxDecoration(
-                          //                          color: FediColors.white,
+                        //                          color: FediColors.white,
                           boxShadow: [FediShadows.forTopBar]),
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 2.0),
@@ -342,7 +357,7 @@ class _TimelineTabsNestedScrollViewBodyWidgetState
           controller: widget.tabController,
           children: List<Widget>.generate(
             tabs.length,
-            (int index) {
+                (int index) {
               var tab = tabs[index];
 
               return TabViewItem(Key(widget.tabKey + index.toString()), tab);
@@ -385,9 +400,9 @@ class _TabViewItemState extends State<TabViewItem>
           IPaginationListBloc<PaginationPage<IStatus>, IStatus>>(
         update: (context, value, previous) => value,
         child: ProxyProvider<
-                IPaginationListWithNewItemsBloc<PaginationPage<IStatus>,
-                    IStatus>,
-                IPaginationListWithNewItemsBloc>(
+            IPaginationListWithNewItemsBloc<PaginationPage<IStatus>,
+                IStatus>,
+            IPaginationListWithNewItemsBloc>(
             update: (context, value, previous) => value,
             child: Stack(
               children: <Widget>[
@@ -406,28 +421,33 @@ class _TabViewItemState extends State<TabViewItem>
     return Builder(
       builder: (context) {
         var scrollControllerBloc =
-            IScrollControllerBloc.of(context, listen: false);
+        IScrollControllerBloc.of(context, listen: false);
         var fediSliverAppBarBloc =
-            IFediSliverAppBarBloc.of(context, listen: false);
+        IFediSliverAppBarBloc.of(context, listen: false);
         return StreamBuilder<bool>(
             stream: Rx.combineLatest2(
                 scrollControllerBloc.longScrollDirectionStream,
                 fediSliverAppBarBloc.isAtLeastStartExpandStream,
-                (longScrollDirection, isAtLeastStartExpand) {
-              _logger.finest(() => "longScrollDirection $longScrollDirection "
-                  "isAtLeastStartExpand $isAtLeastStartExpand");
+                    (longScrollDirection, isAtLeastStartExpand) {
+                  _logger
+                      .finest(() => "longScrollDirection $longScrollDirection "
+                      "isAtLeastStartExpand $isAtLeastStartExpand");
 
-              var collapsedAppBarShowed =
-                  longScrollDirection == ScrollDirection.forward;
-              var expandedAppBarShowed = isAtLeastStartExpand == true;
-              var isInSafeArea = collapsedAppBarShowed || expandedAppBarShowed;
-              return isInSafeArea;
-            }),
+                  var collapsedAppBarShowed =
+                      longScrollDirection == ScrollDirection.forward;
+                  var expandedAppBarShowed = isAtLeastStartExpand == true;
+                  var isInSafeArea = collapsedAppBarShowed ||
+                      expandedAppBarShowed;
+                  return isInSafeArea;
+                }),
             builder: (context, snapshot) {
               var isInSafeArea = snapshot.data;
               var topPadding = isInSafeArea != false
                   ? 24.0
-                  : 24.0 + MediaQuery.of(context).padding.top;
+                  : 24.0 + MediaQuery
+                  .of(context)
+                  .padding
+                  .top;
 
               _logger.finest(() => " topPadding $topPadding");
 
@@ -436,9 +456,10 @@ class _TabViewItemState extends State<TabViewItem>
                   child: Padding(
                     padding: EdgeInsets.only(top: topPadding),
                     child: PaginationListWithNewItemsOverlayWidget(
-                      textBuilder: (context, updateItemsCount) => plural(
-                          "app.status.list.new_items.action.tap_to_load_new",
-                          updateItemsCount),
+                      textBuilder: (context, updateItemsCount) =>
+                          plural(
+                              "app.status.list.new_items.action.tap_to_load_new",
+                              updateItemsCount),
                     ),
                   ));
             });

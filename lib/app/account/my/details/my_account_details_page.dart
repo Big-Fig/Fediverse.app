@@ -12,7 +12,7 @@ import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/page/fedi_sliver_app_bar_bloc.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
-import 'package:fedi/ui/scroll_controller_bloc.dart';
+import 'package:fedi/ui/nested_scroll_controller_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -40,7 +40,10 @@ class MyAccountDetailsPage extends StatelessWidget {
                   var isAtLeastStartExpand = snapshot.data;
                   if (isAtLeastStartExpand == false) {
                     return Container(
-                        height: MediaQuery.of(context).padding.top,
+                        height: MediaQuery
+                            .of(context)
+                            .padding
+                            .top,
                         color: Colors.white);
                   } else {
                     return SizedBox.shrink();
@@ -69,18 +72,28 @@ class MyAccountDetailsPage extends StatelessWidget {
   }
 
   NestedScrollView buildNestedScrollView(BuildContext context) {
+    var nestedScrollController = INestedScrollControllerBloc
+        .of(context, listen: false)
+        .nestedScrollController;
     return NestedScrollView(
       controller:
-          IScrollControllerBloc.of(context, listen: false).scrollController,
-      body: FediDarkStatusBarStyleArea(
-        child: ClipRRect(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0)),
-          child: Container(
-            color: Colors.white,
-            child: MyAccountDetailsWidget(),
-          ),
-        ),
+      nestedScrollController,
+      body: Builder(
+          builder: (context) {
+            nestedScrollController.enableScroll(context);
+
+            return FediDarkStatusBarStyleArea(
+              child: ClipRRect(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(16.0),
+                    topRight: Radius.circular(16.0)),
+                child: Container(
+                  color: Colors.white,
+                  child: MyAccountDetailsWidget(),
+                ),
+              ),
+            );
+          }
       ),
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
         return [
@@ -89,7 +102,10 @@ class MyAccountDetailsPage extends StatelessWidget {
               [
                 Padding(
                   padding: EdgeInsets.only(
-                    top: 24.0 + MediaQuery.of(context).padding.top,
+                    top: 24.0 + MediaQuery
+                        .of(context)
+                        .padding
+                        .top,
                     bottom: 24.0,
                     left: 16.0,
                     right: 16.0,
@@ -108,8 +124,8 @@ class MyAccountDetailsPage extends StatelessWidget {
     );
   }
 
-  FlatButton buildAccountChooserButton(
-          BuildContext context, IMyAccountBloc myAccountBloc) =>
+  FlatButton buildAccountChooserButton(BuildContext context,
+      IMyAccountBloc myAccountBloc) =>
       FlatButton(
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -130,7 +146,7 @@ class MyAccountDetailsPage extends StatelessWidget {
 
   Widget buildCurrentInstanceNameWidget(BuildContext context) {
     var currentInstanceBloc =
-        ICurrentAuthInstanceBloc.of(context, listen: false);
+    ICurrentAuthInstanceBloc.of(context, listen: false);
     return AutoSizeText(
       currentInstanceBloc.currentInstance.userAtHost,
       minFontSize: 10,

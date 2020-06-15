@@ -50,9 +50,12 @@ class PaginationListWithNewItemsOverlayWidget extends StatelessWidget {
                   builder: (context, snapshot) {
                     var scrollDirection = snapshot.data;
 
+                    _logger.finest(() => "scrollDirection $scrollDirection");
+
                     if (scrollDirection == ScrollDirection.forward ||
-                        scrollDirection == ScrollDirection.idle ||
-                        scrollDirection == null) {
+//                        scrollDirection == ScrollDirection.idle ||
+                        scrollDirection == null
+                    ) {
                       return _buildButtons(paginationWithUpdatesListBloc,
                           context, updateItemsCount);
                     } else {
