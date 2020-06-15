@@ -16,7 +16,7 @@ class StatusEmojiReactionPickerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return EmojiPicker(
       bgColor: Colors.transparent,
-      rows: 6,
+      rows: 5,
       columns: 7,
       numRecommended: 0,
       selectedCategory: Category.RECENT,
