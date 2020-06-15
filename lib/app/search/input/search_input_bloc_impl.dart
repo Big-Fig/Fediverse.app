@@ -16,13 +16,6 @@ class SearchInputBloc extends DisposableOwner implements ISearchInputBloc {
     addDisposable(subject: searchTextSubject);
     addDisposable(textEditingController: searchTextEditingController);
 
-    var listener = () {
-      onSearchTextChanged();
-    };
-    searchTextEditingController.addListener(listener);
-    addDisposable(disposable: CustomDisposable(() {
-      searchTextEditingController.removeListener(listener);
-    }));
   }
 
   @override
@@ -42,5 +35,10 @@ class SearchInputBloc extends DisposableOwner implements ISearchInputBloc {
     if (newText != oldText) {
       searchTextSubject.add(newText);
     }
+  }
+
+  @override
+  void performSearch() {
+    onSearchTextChanged();
   }
 }
