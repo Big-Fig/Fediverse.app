@@ -16,7 +16,7 @@ import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_ite
 import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_container_with_overlay_widget.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:fedi/ui/scroll_controller_bloc.dart';
+import 'package:fedi/ui/scroll/scroll_controller_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

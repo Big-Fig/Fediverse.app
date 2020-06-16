@@ -1,5 +1,5 @@
-import 'package:fedi/ui/nested_scroll_controller_bloc.dart';
-import 'package:fedi/ui/scroll_controller_bloc_impl.dart';
+import 'package:fedi/ui/scroll/nested_scroll_controller_bloc.dart';
+import 'package:fedi/ui/scroll/scroll_controller_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
 import 'package:nested_scroll_controller/nested_scroll_controller.dart';
 
