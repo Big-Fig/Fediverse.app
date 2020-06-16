@@ -30,7 +30,7 @@ class AuthInstance extends IPreferencesObject {
   PleromaInstance info;
 
   bool get isSupportChats =>
-      info?.pleroma?.metadata?.features?.contains("chat") == true;
+      info?.pleroma?.metadata?.features?.contains("pleroma_chat_messages") == true;
 
   String get userAtHost => "$acct@$urlHost";
 
