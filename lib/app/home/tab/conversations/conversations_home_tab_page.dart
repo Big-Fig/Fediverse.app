@@ -13,7 +13,7 @@ import 'package:fedi/app/ui/page/fedi_sliver_app_bar_bloc.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:fedi/ui/nested_scroll_controller_bloc.dart';
+import 'package:fedi/ui/scroll/nested_scroll_controller_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';

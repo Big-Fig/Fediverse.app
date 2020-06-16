@@ -21,7 +21,7 @@ import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_ite
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
-import 'package:fedi/ui/nested_scroll_controller_bloc.dart';
+import 'package:fedi/ui/scroll/nested_scroll_controller_bloc.dart';
 import 'package:flutter/material.dart' hide NestedScrollView;
 import 'package:flutter/rendering.dart';
 import 'package:logging/logging.dart';

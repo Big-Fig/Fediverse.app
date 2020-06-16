@@ -1,4 +1,4 @@
-import 'package:fedi/ui/scroll_controller_bloc.dart';
+import 'package:fedi/ui/scroll/scroll_controller_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
