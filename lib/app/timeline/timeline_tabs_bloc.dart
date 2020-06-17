@@ -3,6 +3,7 @@ import 'package:fedi/app/timeline/tab/timeline_tab_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 

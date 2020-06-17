@@ -9,9 +9,8 @@ import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger("fedi_nested_scroll_view_widget.dart");
 
-typedef NestedScrollViewContentBuilder = Function(BuildContext context);
-typedef NestedScrollViewOverlayBuilder = Function(
-    BuildContext context, bool isInSafeArea);
+typedef NestedScrollViewContentBuilder = Widget Function(BuildContext context);
+typedef NestedScrollViewOverlayBuilder = Widget Function(BuildContext context);
 
 abstract class FediNestedScrollViewWidget extends StatelessWidget {
   final Widget onLongScrollUpTopOverlayWidget;
@@ -128,8 +127,15 @@ abstract class FediNestedScrollViewWidget extends StatelessWidget {
         builder: (context, snapshot) {
           var isInSafeArea = snapshot.data;
 
-          return tabBodyOverlayBuilder(context, isInSafeArea);
+          var topPadding =
+              isInSafeArea != false ? 0.0 : MediaQuery.of(context).padding.top;
+
+          _logger.finest(() => " topPadding $topPadding");
+
+          return Padding(
+            padding: EdgeInsets.only(top: topPadding),
+            child: tabBodyOverlayBuilder(context),
+          );
         });
   }
-
 }

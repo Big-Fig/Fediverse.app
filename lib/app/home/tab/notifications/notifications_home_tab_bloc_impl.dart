@@ -20,11 +20,12 @@ class NotificationsHomeTabBloc extends DisposableOwner
 
   NotificationsHomeTabBloc() {
     nestedScrollController = NestedScrollController(centerScroll: false);
-    fediNestedScrollViewBloc = FediNestedScrollViewBloc(
-        scrollController: nestedScrollController);
-
     nestedScrollControllerBloc = NestedScrollControllerBloc(
         nestedScrollController: nestedScrollController);
+
+    fediNestedScrollViewBloc = FediNestedScrollViewBloc(
+        nestedScrollControllerBloc: nestedScrollControllerBloc);
+
 
     addDisposable(scrollController: nestedScrollController);
     addDisposable(disposable: nestedScrollControllerBloc);

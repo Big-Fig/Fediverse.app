@@ -1,5 +1,6 @@
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
     as extended_nested_scroll_view;
+import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_bloc.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_widget.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_bloc.dart';
@@ -7,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart' hide NestedScrollView;
 import 'package:logging/logging.dart';
 
-typedef TabBodyProviderBuilder = Function(
+typedef TabBodyProviderBuilder = Widget Function(
     BuildContext context, int index, Widget child);
 
 var _logger =
@@ -184,7 +185,10 @@ class _NestedBodyTabItemWidgetState extends State<_NestedBodyTabItemWidget>
         builder: (context) {
           return Stack(
             children: [
-              widget.tabBodyContentBuilder(context),
+              NestedScrollViewInnerScrollPositionKeyWidget(
+                widget.tabKey,
+                widget.tabBodyContentBuilder(context),
+              ),
               if (widget.tabBodyOverlayBuilder != null)
                 FediNestedScrollViewWidget.buildOverlay(
                     context, widget.tabBodyOverlayBuilder),
