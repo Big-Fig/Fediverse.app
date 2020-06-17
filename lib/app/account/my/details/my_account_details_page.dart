@@ -9,7 +9,7 @@ import 'package:fedi/app/account/my/settings/my_account_settings_drawer_widget.d
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
-import 'package:fedi/app/ui/page/fedi_sliver_app_bar_bloc.dart';
+import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_bloc.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:fedi/ui/scroll/nested_scroll_controller_bloc.dart';
@@ -22,7 +22,7 @@ final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 class MyAccountDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var fediSliverAppBarBloc = IFediSliverAppBarBloc.of(context);
+    var fediNestedScrollViewBloc = IFediNestedScrollViewBloc.of(context);
 
     return ProxyProvider<IMyAccountBloc, IAccountBloc>(
       update: (context, value, previous) => value,
@@ -35,7 +35,7 @@ class MyAccountDetailsPage extends StatelessWidget {
           children: [
             buildNestedScrollView(context),
             StreamBuilder<bool>(
-                stream: fediSliverAppBarBloc.isAtLeastStartExpandStream,
+                stream: fediNestedScrollViewBloc.isNestedScrollViewBodyStartScrollStream,
                 builder: (context, snapshot) {
                   var isAtLeastStartExpand = snapshot.data;
                   if (isAtLeastStartExpand == false) {

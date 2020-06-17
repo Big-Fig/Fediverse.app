@@ -21,7 +21,7 @@ import 'package:fedi/app/home/tab/timelines/timelines_home_tab_page.dart';
 import 'package:fedi/app/instance/fedi_instance_image_decoration_widget.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
-import 'package:fedi/app/ui/page/fedi_sliver_app_bar_bloc.dart';
+import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_bloc.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/ui/scroll/nested_scroll_controller_bloc.dart';
@@ -83,15 +83,12 @@ class HomePage extends StatelessWidget {
   }
 
   Widget buildBody(BuildContext context, HomeTab selectedTab) {
-    var deviceHeight = MediaQuery.of(context).size.width;
     switch (selectedTab) {
       case HomeTab.timelines:
         return DisposableProvider<ITimelinesHomeTabBloc>(
           create: (context) {
             var homeBloc = IHomeBloc.of(context, listen: false);
             var timelinesHomeTabBloc = TimelinesHomeTabBloc(
-              //              deviceHeight: MediaQuery.of(context).size.height,
-              deviceHeight: deviceHeight,
             );
 
             timelinesHomeTabBloc.addDisposable(streamSubscription:
@@ -110,9 +107,9 @@ class HomePage extends StatelessWidget {
               update: (context, value, previous) =>
                   value.nestedScrollControllerBloc,
               child:
-                  ProxyProvider<ITimelinesHomeTabBloc, IFediSliverAppBarBloc>(
+                  ProxyProvider<ITimelinesHomeTabBloc, IFediNestedScrollViewBloc>(
                 update: (context, value, previous) =>
-                    value.fediSliverAppBarBloc,
+                    value.fediNestedScrollViewBloc,
                 child: const TimelinesHomeTabPage(
                 ),
               ),
@@ -127,7 +124,6 @@ class HomePage extends StatelessWidget {
 
             var notificationsHomeTabBloc = NotificationsHomeTabBloc(
               //              deviceHeight: MediaQuery.of(context).size.height,
-              deviceHeight: deviceHeight,
             );
 
             notificationsHomeTabBloc.addDisposable(streamSubscription:
@@ -146,9 +142,9 @@ class HomePage extends StatelessWidget {
               update: (context, value, previous) =>
               value.nestedScrollControllerBloc,
               child:
-              ProxyProvider<INotificationsHomeTabBloc, IFediSliverAppBarBloc>(
+              ProxyProvider<INotificationsHomeTabBloc, IFediNestedScrollViewBloc>(
                 update: (context, value, previous) =>
-                value.fediSliverAppBarBloc,
+                value.fediNestedScrollViewBloc,
                 child: const NotificationsHomeTabPage(
 //                  key: PageStorageKey<String>("NotificationsHomeTabPage"),
                 ),
@@ -174,7 +170,6 @@ class HomePage extends StatelessWidget {
 
                     var chatsHomeTabBloc = ChatsHomeTabBloc(
                       //              deviceHeight: MediaQuery.of(context).size.height,
-                      deviceHeight: deviceHeight,
                     );
 
                     chatsHomeTabBloc.addDisposable(streamSubscription:
@@ -193,9 +188,9 @@ class HomePage extends StatelessWidget {
                       update: (context, value, previous) =>
                       value.nestedScrollControllerBloc,
                       child:
-                      ProxyProvider<IChatsHomeTabBloc, IFediSliverAppBarBloc>(
+                      ProxyProvider<IChatsHomeTabBloc, IFediNestedScrollViewBloc>(
                         update: (context, value, previous) =>
-                        value.fediSliverAppBarBloc,
+                        value.fediNestedScrollViewBloc,
                         child: const ChatsHomeTabPage(
                           key: PageStorageKey<String>("ChatsHomeTabPage"),
                         ),
@@ -211,7 +206,6 @@ class HomePage extends StatelessWidget {
 
                     var conversationsHomeTabBloc = ConversationsHomeTabBloc(
                       //              deviceHeight: MediaQuery.of(context).size.height,
-                      deviceHeight: deviceHeight,
                     );
 
                     conversationsHomeTabBloc.addDisposable(streamSubscription:
@@ -230,9 +224,9 @@ class HomePage extends StatelessWidget {
                       update: (context, value, previous) =>
                       value.nestedScrollControllerBloc,
                       child:
-                      ProxyProvider<IConversationsHomeTabBloc, IFediSliverAppBarBloc>(
+                      ProxyProvider<IConversationsHomeTabBloc, IFediNestedScrollViewBloc>(
                         update: (context, value, previous) =>
-                        value.fediSliverAppBarBloc,
+                        value.fediNestedScrollViewBloc,
                         child: const ConversationsHomeTabPage(
                           key: PageStorageKey<String>("ConversationsHomeTabPage"),
                         ),
@@ -251,7 +245,6 @@ class HomePage extends StatelessWidget {
 
             var accountHomeTabBloc = AccountHomeTabBloc(
               //              deviceHeight: MediaQuery.of(context).size.height,
-              deviceHeight: deviceHeight,
             );
 
             accountHomeTabBloc.addDisposable(streamSubscription:
@@ -270,9 +263,9 @@ class HomePage extends StatelessWidget {
               update: (context, value, previous) =>
               value.nestedScrollControllerBloc,
               child:
-              ProxyProvider<IAccountHomeTabBloc, IFediSliverAppBarBloc>(
+              ProxyProvider<IAccountHomeTabBloc, IFediNestedScrollViewBloc>(
                 update: (context, value, previous) =>
-                value.fediSliverAppBarBloc,
+                value.fediNestedScrollViewBloc,
                 child: const AccountHomeTabPage(
                   key: PageStorageKey<String>("AccountHomeTabPage"),
                 ),

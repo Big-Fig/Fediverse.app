@@ -10,7 +10,7 @@ import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.d
 import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/header/fedi_header_text.dart';
-import 'package:fedi/app/ui/page/fedi_sliver_app_bar_bloc.dart';
+import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_bloc.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -38,7 +38,7 @@ class ChatsHomeTabPage extends StatelessWidget {
 
     var isSupportChats = currentInstance.isSupportChats;
 
-    var fediSliverAppBarBloc = IFediSliverAppBarBloc.of(context);
+    var fediNestedScrollViewBloc = IFediNestedScrollViewBloc.of(context);
     return Scaffold(
       key: _drawerKey,
       backgroundColor: Colors.transparent,
@@ -46,7 +46,7 @@ class ChatsHomeTabPage extends StatelessWidget {
         children: [
           buildNestedScrollView(context, isPleromaInstance, isSupportChats),
           StreamBuilder<bool>(
-              stream: fediSliverAppBarBloc.isAtLeastStartExpandStream,
+              stream: fediNestedScrollViewBloc.isNestedScrollViewBodyStartScrollStream,
               builder: (context, snapshot) {
                 var isAtLeastStartExpand = snapshot.data;
                 if (isAtLeastStartExpand == false) {

@@ -10,7 +10,7 @@ import 'package:fedi/app/notification/pagination/list/notification_pagination_li
 import 'package:fedi/app/notification/pagination/list/notification_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/notification/unread/notification_unread_exclude_types_badge_widget.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
-import 'package:fedi/app/ui/page/fedi_sliver_app_bar_bloc.dart';
+import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_bloc.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:fedi/app/ui/tab/fedi_icon_tab.dart';
@@ -124,12 +124,12 @@ class _NotificationTabsWidgetState extends State<NotificationTabsWidget>
             .of(context, listen: false)
             .nestedScrollController;
 
-    var fediSliverAppBarBloc = IFediSliverAppBarBloc.of(context);
+    var fediNestedScrollViewBloc = IFediNestedScrollViewBloc.of(context);
     return Stack(
       children: [
         _buildNestedScrollView(nestedScrollController, timelinesTabsBloc),
         StreamBuilder<bool>(
-            stream: fediSliverAppBarBloc.isAtLeastStartExpandStream,
+            stream: fediNestedScrollViewBloc.isNestedScrollViewBodyStartScrollStream,
             builder: (context, snapshot) {
               var isAtLeastStartExpand = snapshot.data;
               if (isAtLeastStartExpand == false) {
@@ -340,11 +340,11 @@ class _TabViewItemState extends State<TabViewItem>
   Builder _buildOverlayNewItems(BuildContext context) =>
       Builder(
         builder: (context) {
-          var fediSliverAppBarBloc =
-          IFediSliverAppBarBloc.of(context, listen: false);
+          var fediNestedScrollViewBloc =
+          IFediNestedScrollViewBloc.of(context, listen: false);
           return StreamBuilder<bool>(
               stream:
-              fediSliverAppBarBloc.isAtLeastStartExpandStream,
+              fediNestedScrollViewBloc.isNestedScrollViewBodyStartScrollStream,
               builder: (context, snapshot) {
                 var isAtLeastStartExpand = snapshot.data;
                 var topPadding = isAtLeastStartExpand == true
