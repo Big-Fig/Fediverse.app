@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/details/account_details_widget.dart';
-import 'package:fedi/app/ui/page/fedi_sliver_app_bar_bloc.dart';
+import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_bloc.dart';
 import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_overlay_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,10 +21,10 @@ class MyAccountDetailsWidget extends AccountDetailsWidget {
 
   Builder _buildOverlayNewItems(BuildContext context) => Builder(
         builder: (context) {
-          var fediSliverAppBarBloc =
-              IFediSliverAppBarBloc.of(context, listen: false);
+          var fediNestedScrollViewBloc =
+              IFediNestedScrollViewBloc.of(context, listen: false);
           return StreamBuilder<bool>(
-              stream: fediSliverAppBarBloc.isAtLeastStartExpandStream,
+              stream: fediNestedScrollViewBloc.isNestedScrollViewBodyStartScrollStream,
               builder: (context, snapshot) {
                 var isAtLeastStartExpand = snapshot.data;
                 var topPadding = isAtLeastStartExpand == true

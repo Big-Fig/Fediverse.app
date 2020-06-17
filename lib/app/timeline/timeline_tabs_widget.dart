@@ -10,7 +10,7 @@ import 'package:fedi/app/timeline/timeline_widget.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_shadows.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
-import 'package:fedi/app/ui/page/fedi_sliver_app_bar_bloc.dart';
+import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_bloc.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:fedi/app/ui/tab/fedi_text_tab.dart';
@@ -160,7 +160,7 @@ class _TimelineTabsWidgetState extends State<TimelineTabsWidget>
             .of(context, listen: false)
             .nestedScrollController;
 
-    var fediSliverAppBarBloc = IFediSliverAppBarBloc.of(context);
+    var fediNestedScrollViewBloc = IFediNestedScrollViewBloc.of(context);
 
     return Stack(
       children: [
@@ -172,7 +172,7 @@ class _TimelineTabsWidgetState extends State<TimelineTabsWidget>
             child: _buildNestedScrollView(
                 nestedScrollController, timelinesTabsBloc)),
         StreamBuilder<bool>(
-            stream: fediSliverAppBarBloc.expandOffsetStream.map((expandOffset) {
+            stream: fediNestedScrollViewBloc.scrollOffsetStream.map((expandOffset) {
               if (expandOffset != null && expandOffset > 100) {
                 return true;
               } else {
@@ -301,15 +301,15 @@ class _TimelineTabsNestedScrollViewBodyWidgetState
       builder: (context) {
         var scrollControllerBloc =
         IScrollControllerBloc.of(context, listen: false);
-        var fediSliverAppBarBloc =
-        IFediSliverAppBarBloc.of(context, listen: false);
+        var fediNestedScrollViewBloc =
+        IFediNestedScrollViewBloc.of(context, listen: false);
 
         _logger.finest(() => "Builder");
 
         return StreamBuilder<bool>(
             stream: Rx.combineLatest2(
                 scrollControllerBloc.longScrollDirectionStream,
-                fediSliverAppBarBloc.isAtLeastStartExpandStream,
+                fediNestedScrollViewBloc.isNestedScrollViewBodyStartScrollStream,
                     (scrollDirection, isAtLeastStartExpand) {
                   _logger.finest(() => "scrollDirection $scrollDirection "
                       "$isAtLeastStartExpand");
@@ -422,12 +422,12 @@ class _TabViewItemState extends State<TabViewItem>
       builder: (context) {
         var scrollControllerBloc =
         IScrollControllerBloc.of(context, listen: false);
-        var fediSliverAppBarBloc =
-        IFediSliverAppBarBloc.of(context, listen: false);
+        var fediNestedScrollViewBloc =
+        IFediNestedScrollViewBloc.of(context, listen: false);
         return StreamBuilder<bool>(
             stream: Rx.combineLatest2(
                 scrollControllerBloc.longScrollDirectionStream,
-                fediSliverAppBarBloc.isAtLeastStartExpandStream,
+                fediNestedScrollViewBloc.isNestedScrollViewBodyStartScrollStream,
                     (longScrollDirection, isAtLeastStartExpand) {
                   _logger
                       .finest(() => "longScrollDirection $longScrollDirection "

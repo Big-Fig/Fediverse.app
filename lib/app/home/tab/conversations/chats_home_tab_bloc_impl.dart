@@ -1,6 +1,6 @@
 import 'package:fedi/app/home/tab/conversations/chats_home_tab_bloc.dart';
-import 'package:fedi/app/ui/page/fedi_sliver_app_bar_bloc.dart';
-import 'package:fedi/app/ui/page/fedi_sliver_app_bar_bloc_impl.dart';
+import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_bloc.dart';
+import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_bloc_impl.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/ui/scroll/nested_scroll_controller_bloc.dart';
 import 'package:fedi/ui/scroll/nested_scroll_controller_bloc_impl.dart';
@@ -15,19 +15,19 @@ class ChatsHomeTabBloc extends DisposableOwner implements IChatsHomeTabBloc {
   INestedScrollControllerBloc nestedScrollControllerBloc;
 
   @override
-  IFediSliverAppBarBloc fediSliverAppBarBloc;
+  IFediNestedScrollViewBloc fediNestedScrollViewBloc;
 
-  ChatsHomeTabBloc({@required double deviceHeight}) {
+  ChatsHomeTabBloc() {
     nestedScrollController = NestedScrollController(centerScroll: false);
-    fediSliverAppBarBloc = FediSliverAppBarBloc(
-        scrollController: nestedScrollController, deviceHeight: deviceHeight);
+    fediNestedScrollViewBloc = FediNestedScrollViewBloc(
+        scrollController: nestedScrollController);
 
     nestedScrollControllerBloc = NestedScrollControllerBloc(
         nestedScrollController: nestedScrollController);
 
     addDisposable(scrollController: nestedScrollController);
     addDisposable(disposable: nestedScrollControllerBloc);
-    addDisposable(disposable: fediSliverAppBarBloc);
+    addDisposable(disposable: fediNestedScrollViewBloc);
   }
 
   @override
