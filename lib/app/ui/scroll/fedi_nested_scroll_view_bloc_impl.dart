@@ -10,10 +10,14 @@ var _logger = Logger("fedi_sliver_app_bar_bloc_impl.dart");
 
 class FediNestedScrollViewBloc extends DisposableOwner
     implements IFediNestedScrollViewBloc {
+  @override
+  final INestedScrollControllerBloc nestedScrollControllerBloc;
+
   BehaviorSubject<bool> isNestedScrollViewBodyStartScrollSubject =
       BehaviorSubject();
   BehaviorSubject<int> scrollOffsetSubject = BehaviorSubject();
-  final NestedScrollController scrollController;
+  ScrollController get scrollController =>
+      nestedScrollControllerBloc.nestedScrollController;
 
   @override
   bool get isNestedScrollViewBodyStartScroll =>
@@ -29,7 +33,7 @@ class FediNestedScrollViewBloc extends DisposableOwner
   @override
   Stream<int> get scrollOffsetStream => scrollOffsetSubject.stream.distinct();
 
-  FediNestedScrollViewBloc({@required this.scrollController}) {
+  FediNestedScrollViewBloc({@required this.nestedScrollControllerBloc}) {
     addDisposable(subject: isNestedScrollViewBodyStartScrollSubject);
     addDisposable(subject: scrollOffsetSubject);
 
@@ -73,9 +77,6 @@ class FediNestedScrollViewBloc extends DisposableOwner
 //    //          "\t isScrolledAtLeastOneScreen: ${isScrolledAtLeastOneScreen} \n"
 //        );
   }
-
-  @override
-  INestedScrollControllerBloc nestedScrollControllerBloc;
 
   @override
   NestedScrollController get nestedScrollController =>

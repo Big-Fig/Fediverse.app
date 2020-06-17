@@ -3,4 +3,5 @@ class FediSizes {
   static const appBarAvatarSize = 36.0;
   static const filledEditTextIconSize = 20.0;
   static const headerImageSingleRowSafeAreaHeight = 104.0;
+  static const tapToLoadTopPadding = 24.0;
 }

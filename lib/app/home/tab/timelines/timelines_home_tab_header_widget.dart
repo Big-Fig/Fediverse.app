@@ -4,7 +4,7 @@ import 'package:fedi/app/status/post/post_status_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 
-class TimelinePostStatusHeaderWidget extends StatelessWidget {
+class TimelinesHomeTabHeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => DisposableProvider<IPostStatusBloc>(
         create: (context) => NewPostStatusBloc.createFromContext(context),
@@ -17,5 +17,5 @@ class TimelinePostStatusHeaderWidget extends StatelessWidget {
         ),
       );
 
-  const TimelinePostStatusHeaderWidget();
+  const TimelinesHomeTabHeaderWidget();
 }

@@ -19,12 +19,10 @@ class AccountHomeTabBloc extends DisposableOwner
   IFediNestedScrollViewBloc fediNestedScrollViewBloc;
 
   AccountHomeTabBloc() {
-    nestedScrollController = NestedScrollController(centerScroll: false);
-    fediNestedScrollViewBloc = FediNestedScrollViewBloc(
-        scrollController: nestedScrollController);
-
     nestedScrollControllerBloc = NestedScrollControllerBloc(
         nestedScrollController: nestedScrollController);
+    fediNestedScrollViewBloc = FediNestedScrollViewBloc(
+        nestedScrollControllerBloc: nestedScrollControllerBloc);
 
     addDisposable(scrollController: nestedScrollController);
     addDisposable(disposable: nestedScrollControllerBloc);

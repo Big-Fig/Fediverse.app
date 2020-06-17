@@ -1,10 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:fedi/app/account/my/avatar/my_account_avatar_widget.dart';
+import 'package:fedi/app/home/tab/timelines/timelines_home_tab_header_widget.dart';
 import 'package:fedi/app/status/post/new/new_post_status_page.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_model.dart';
-import 'package:fedi/app/timeline/timeline_post_status_header_widget.dart';
 import 'package:fedi/app/timeline/timeline_tabs_bloc.dart';
 import 'package:fedi/app/timeline/timeline_widget.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
@@ -81,7 +81,7 @@ class _TimelineTabsWidgetState extends State<TimelineTabsWidget>
         color: FediColors.offWhite,
         child: FediListTile(
           isFirstInList: true,
-          child: TimelinePostStatusHeaderWidget(),
+          child: TimelinesHomeTabHeaderWidget(),
         ),
       ),
     );
