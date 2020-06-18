@@ -4,7 +4,7 @@ import 'package:fedi/app/notification/list/cached/notification_cached_list_bloc.
 import 'package:fedi/app/notification/list/cached/notification_cached_list_bloc_impl.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/notification_tabs_bloc.dart';
-import 'package:fedi/app/notification/notification_tabs_model.dart';
+import 'package:fedi/app/notification/tab/notification_tab_model.dart';
 import 'package:fedi/app/notification/pagination/cached/notification_cached_pagination_bloc_impl.dart';
 import 'package:fedi/app/notification/pagination/list/notification_pagination_list_widget.dart';
 import 'package:fedi/app/notification/pagination/list/notification_pagination_list_with_new_items_bloc_impl.dart';
@@ -129,7 +129,7 @@ class _NotificationTabsWidgetState extends State<NotificationTabsWidget>
       children: [
         _buildNestedScrollView(nestedScrollController, timelinesTabsBloc),
         StreamBuilder<bool>(
-            stream: fediNestedScrollViewBloc.isNestedScrollViewBodyStartScrollStream,
+            stream: fediNestedScrollViewBloc.isNestedScrollViewBodyStartedScrollStream,
             builder: (context, snapshot) {
               var isAtLeastStartExpand = snapshot.data;
               if (isAtLeastStartExpand == false) {
@@ -344,7 +344,7 @@ class _TabViewItemState extends State<TabViewItem>
           IFediNestedScrollViewBloc.of(context, listen: false);
           return StreamBuilder<bool>(
               stream:
-              fediNestedScrollViewBloc.isNestedScrollViewBodyStartScrollStream,
+              fediNestedScrollViewBloc.isNestedScrollViewBodyStartedScrollStream,
               builder: (context, snapshot) {
                 var isAtLeastStartExpand = snapshot.data;
                 var topPadding = isAtLeastStartExpand == true

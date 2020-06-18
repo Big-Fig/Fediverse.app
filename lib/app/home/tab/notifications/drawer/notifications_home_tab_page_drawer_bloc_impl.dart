@@ -5,66 +5,66 @@ import 'package:flutter/cupertino.dart';
 
 class NotificationsHomeTabPageDrawerBloc extends DisposableOwner
     implements INotificationsHomeTabPageDrawerBloc {
-  final IPushSubscriptionBloc pushSettingsBloc;
-  NotificationsHomeTabPageDrawerBloc({@required this.pushSettingsBloc});
+  final IPushSubscriptionBloc pushSubscriptionBloc;
+  NotificationsHomeTabPageDrawerBloc({@required this.pushSubscriptionBloc});
 
   @override
-  bool get favourite => pushSettingsBloc.favouritePushesEnabled;
+  bool get favourite => pushSubscriptionBloc.favouritePushesEnabled;
 
   @override
   Stream<bool> get favouriteStream =>
-      pushSettingsBloc.favouritePushesEnabledStream;
+      pushSubscriptionBloc.favouritePushesEnabledStream;
 
   @override
   Future<bool> changeFavourite(bool value) =>
-      pushSettingsBloc.changeFavouritePushesEnabled(value);
+      pushSubscriptionBloc.changeFavouritePushesEnabled(value);
 
   @override
-  bool get follow => pushSettingsBloc.followPushesEnabled;
+  bool get follow => pushSubscriptionBloc.followPushesEnabled;
 
   @override
-  Stream<bool> get followStream => pushSettingsBloc.followPushesEnabledStream;
+  Stream<bool> get followStream => pushSubscriptionBloc.followPushesEnabledStream;
 
   @override
   Future<bool> changeFollow(bool value) =>
-      pushSettingsBloc.changeFollowPushesEnabled(value);
+      pushSubscriptionBloc.changeFollowPushesEnabled(value);
 
   @override
-  bool get mention => pushSettingsBloc.mentionPushesEnabled;
+  bool get mention => pushSubscriptionBloc.mentionPushesEnabled;
 
   @override
-  Stream<bool> get mentionStream => pushSettingsBloc.mentionPushesEnabledStream;
+  Stream<bool> get mentionStream => pushSubscriptionBloc.mentionPushesEnabledStream;
 
   @override
   Future<bool> changeMention(bool value) =>
-      pushSettingsBloc.changeMentionPushesEnabled(value);
+      pushSubscriptionBloc.changeMentionPushesEnabled(value);
 
   @override
-  bool get reblog => pushSettingsBloc.reblogPushesEnabled;
+  bool get reblog => pushSubscriptionBloc.reblogPushesEnabled;
 
   @override
-  Stream<bool> get reblogStream => pushSettingsBloc.reblogPushesEnabledStream;
+  Stream<bool> get reblogStream => pushSubscriptionBloc.reblogPushesEnabledStream;
 
   @override
   Future<bool> changeReblog(bool value) =>
-      pushSettingsBloc.changeReblogPushesEnabled(value);
+      pushSubscriptionBloc.changeReblogPushesEnabled(value);
 
   @override
-  bool get poll => pushSettingsBloc.pollPushesEnabled;
+  bool get poll => pushSubscriptionBloc.pollPushesEnabled;
 
   @override
-  Stream<bool> get pollStream => pushSettingsBloc.pollPushesEnabledStream;
+  Stream<bool> get pollStream => pushSubscriptionBloc.pollPushesEnabledStream;
 
   @override
-  bool get chat => pushSettingsBloc.chatPushesEnabled;
+  bool get chat => pushSubscriptionBloc.chatPushesEnabled;
 
   @override
-  Stream<bool> get chatStream => pushSettingsBloc.chatPushesEnabledStream;
+  Stream<bool> get chatStream => pushSubscriptionBloc.chatPushesEnabledStream;
 
   @override
   Future<bool> changePoll(bool value) =>
-      pushSettingsBloc.changePollPushesEnabled(value);
+      pushSubscriptionBloc.changePollPushesEnabled(value);
   @override
   Future<bool> changeChat(bool value) =>
-      pushSettingsBloc.changeChatPushesEnabled(value);
+      pushSubscriptionBloc.changeChatPushesEnabled(value);
 }

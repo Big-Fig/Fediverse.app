@@ -6,13 +6,12 @@ import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_widget.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart' hide NestedScrollView;
-import 'package:logging/logging.dart';
+
+typedef TabBarViewContainerBuilder = Widget Function(
+    BuildContext context, Widget child);
 
 typedef TabBodyProviderBuilder = Widget Function(
     BuildContext context, int index, Widget child);
-
-var _logger =
-    Logger("fedi_nested_scroll_view_with_nested_scrollable_tabs_widget.dart");
 
 class FediNestedScrollViewWithNestedScrollableTabsWidget
     extends FediNestedScrollViewWidget {
@@ -21,12 +20,14 @@ class FediNestedScrollViewWithNestedScrollableTabsWidget
   final TabBodyProviderBuilder tabBodyProviderBuilder;
   final NestedScrollViewContentBuilder tabBodyContentBuilder;
   final NestedScrollViewOverlayBuilder tabBodyOverlayBuilder;
+  final TabBarViewContainerBuilder tabBarViewContainerBuilder;
 
   FediNestedScrollViewWithNestedScrollableTabsWidget({
     @required Widget onLongScrollUpTopOverlayWidget,
     @required List<Widget> topSliverWidgets,
     @required double topSliverScrollOffsetToShowWhiteStatusBar,
     @required this.tabKeyPrefix,
+    @required this.tabBarViewContainerBuilder,
     @required this.tabBodyProviderBuilder,
     @required this.tabBodyContentBuilder,
     @required this.tabBodyOverlayBuilder,
@@ -76,6 +77,7 @@ class FediNestedScrollViewWithNestedScrollableTabsWidget
             tabBodyProviderBuilder: tabBodyProviderBuilder,
             tabBodyContentBuilder: tabBodyContentBuilder,
             tabBodyOverlayBuilder: tabBodyOverlayBuilder,
+            tabBarViewContainerBuilder: tabBarViewContainerBuilder,
           );
         },
       ),
@@ -89,6 +91,7 @@ class _NestedBodyWidget extends StatefulWidget {
   final TabBodyProviderBuilder tabBodyProviderBuilder;
   final NestedScrollViewContentBuilder tabBodyContentBuilder;
   final NestedScrollViewOverlayBuilder tabBodyOverlayBuilder;
+  final TabBarViewContainerBuilder tabBarViewContainerBuilder;
 
   const _NestedBodyWidget({
     @required this.tabKeyPrefix,
@@ -96,6 +99,7 @@ class _NestedBodyWidget extends StatefulWidget {
     @required this.tabBodyProviderBuilder,
     @required this.tabBodyContentBuilder,
     @required this.tabBodyOverlayBuilder,
+    @required this.tabBarViewContainerBuilder,
   });
 
   @override
@@ -132,19 +136,25 @@ class _NestedBodyWidgetState extends State<_NestedBodyWidget>
 
     var tabController =
         fediNestedScrollViewWithNestedScrollableTabsBloc.tabController;
+    Widget child = TabBarView(
+      controller: tabController,
+      children: List<Widget>.generate(
+        tabController.length,
+        (int index) => _NestedBodyTabItemWidget(
+          tabKey: _calculateTabKey(widget.tabKeyPrefix, index),
+          tabBodyProviderBuilder: widget.tabBodyProviderBuilder,
+          tabBodyContentBuilder: widget.tabBodyContentBuilder,
+          tabBodyOverlayBuilder: widget.tabBodyOverlayBuilder,
+          index: index,
+        ),
+      ),
+    );
+
+    if (widget.tabBarViewContainerBuilder != null) {
+      child = widget.tabBarViewContainerBuilder(context, child);
+    }
     return Expanded(
-      child: TabBarView(
-          controller: tabController,
-          children: List<Widget>.generate(
-            tabController.length,
-            (int index) => _NestedBodyTabItemWidget(
-              tabKey: _calculateTabKey(widget.tabKeyPrefix, index),
-              tabBodyProviderBuilder: widget.tabBodyProviderBuilder,
-              tabBodyContentBuilder: widget.tabBodyContentBuilder,
-              tabBodyOverlayBuilder: widget.tabBodyOverlayBuilder,
-              index: index,
-            ),
-          )),
+      child: child,
     );
   }
 

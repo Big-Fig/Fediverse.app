@@ -1,4 +1,4 @@
-import 'package:fedi/app/notification/notification_tabs_model.dart';
+import 'package:fedi/app/notification/tab/notification_tab_model.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

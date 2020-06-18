@@ -13,19 +13,30 @@ class FediNestedScrollViewBloc extends DisposableOwner
   @override
   final INestedScrollControllerBloc nestedScrollControllerBloc;
 
-  BehaviorSubject<bool> isNestedScrollViewBodyStartScrollSubject =
+  BehaviorSubject<bool> isNestedScrollViewBodyStartedScrollSubject =
       BehaviorSubject();
   BehaviorSubject<int> scrollOffsetSubject = BehaviorSubject();
+
   ScrollController get scrollController =>
       nestedScrollControllerBloc.nestedScrollController;
 
   @override
-  bool get isNestedScrollViewBodyStartScroll =>
-      isNestedScrollViewBodyStartScrollSubject.value;
+  bool get isNestedScrollViewBodyStartedScroll =>
+      isNestedScrollViewBodyStartedScrollSubject.value;
 
   @override
-  Stream<bool> get isNestedScrollViewBodyStartScrollStream =>
-      isNestedScrollViewBodyStartScrollSubject.stream.distinct();
+  Stream<bool> get isNestedScrollViewBodyStartedScrollStream =>
+      isNestedScrollViewBodyStartedScrollSubject.stream.distinct();
+
+  @override
+  bool get isNestedScrollViewBodyNotStartedScroll =>
+      isNestedScrollViewBodyStartedScroll != true;
+
+  @override
+  Stream<bool> get isNestedScrollViewBodyNotStartedScrollStream =>
+      isNestedScrollViewBodyStartedScrollStream.map(
+          (isNestedScrollViewBodyStartedScroll) =>
+              isNestedScrollViewBodyStartedScroll != true);
 
   @override
   int get scrollOffset => scrollOffsetSubject.value;
@@ -34,7 +45,7 @@ class FediNestedScrollViewBloc extends DisposableOwner
   Stream<int> get scrollOffsetStream => scrollOffsetSubject.stream.distinct();
 
   FediNestedScrollViewBloc({@required this.nestedScrollControllerBloc}) {
-    addDisposable(subject: isNestedScrollViewBodyStartScrollSubject);
+    addDisposable(subject: isNestedScrollViewBodyStartedScrollSubject);
     addDisposable(subject: scrollOffsetSubject);
 
     var listener = () {
@@ -67,7 +78,7 @@ class FediNestedScrollViewBloc extends DisposableOwner
     // scrolls but actually it is a little smaller (0.00001 difference)
     maxScrollExtent = maxScrollExtent - 1;
     var isAtLeastStartExpand = pixels <= maxScrollExtent;
-    isNestedScrollViewBodyStartScrollSubject.add(isAtLeastStartExpand);
+    isNestedScrollViewBodyStartedScrollSubject.add(isAtLeastStartExpand);
 //    _logger.finest(() => "offset: ${scrollController.offset} \n"
 //            "\t innerOffset: ${scrollController.innerOffset} \n"
 //            "\t totalOffset: ${scrollController.totalOffset} \n"

@@ -46,7 +46,7 @@ class ChatsHomeTabPage extends StatelessWidget {
         children: [
           buildNestedScrollView(context, isPleromaInstance, isSupportChats),
           StreamBuilder<bool>(
-              stream: fediNestedScrollViewBloc.isNestedScrollViewBodyStartScrollStream,
+              stream: fediNestedScrollViewBloc.isNestedScrollViewBodyStartedScrollStream,
               builder: (context, snapshot) {
                 var isAtLeastStartExpand = snapshot.data;
                 if (isAtLeastStartExpand == false) {

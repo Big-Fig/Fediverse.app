@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:fedi/app/status/pagination/list/status_pagination_list_media_widget.dart';
 import 'package:fedi/app/status/pagination/list/status_pagination_list_timeline_widget.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preferences_bloc.dart';
+import 'package:fedi/app/timeline/tab/timeline_tab_model.dart';
 import 'package:fedi/collapsible/collapsible_bloc.dart';
 import 'package:fedi/collapsible/collapsible_bloc_impl.dart';
 import 'package:fedi/collapsible/toggle_collapsible_overlay_widget.dart';
@@ -13,6 +15,7 @@ var _logger = Logger("timeline_widget.dart");
 
 class TimelineWidget extends StatelessWidget {
   final Key tabKey;
+
   const TimelineWidget({@required this.tabKey, Key key}) : super(key: key);
 
   @override
