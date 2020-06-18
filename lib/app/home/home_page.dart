@@ -120,9 +120,9 @@ class HomePage extends StatelessWidget {
           var isNewChatsEnabled = snapshot.data;
 
           if (isNewChatsEnabled == true) {
-            return _buildChatMessagesTab();
+            return _buildChatMessagesTab(context);
           } else {
-            return _buildConversationMessagesTab();
+            return _buildConversationMessagesTab(context);
           }
         });
   }
@@ -194,13 +194,13 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  DisposableProvider<IChatMessagesHomeTabBloc> _buildChatMessagesTab() {
+  DisposableProvider<IChatMessagesHomeTabBloc> _buildChatMessagesTab(BuildContext context) {
     return DisposableProvider<IChatMessagesHomeTabBloc>(
       create: (context) {
         var homeBloc = IHomeBloc.of(context, listen: false);
 
         var chatMessagesHomeTabBloc = ChatMessagesHomeTabBloc(
-            //              deviceHeight: MediaQuery.of(context).size.height,
+
             );
 
         chatMessagesHomeTabBloc.addDisposable(streamSubscription:
@@ -232,7 +232,7 @@ class HomePage extends StatelessWidget {
   }
 
   DisposableProvider<IConversationMessagesHomeTabBloc>
-      _buildConversationMessagesTab() {
+      _buildConversationMessagesTab(BuildContext context) {
     return DisposableProvider<IConversationMessagesHomeTabBloc>(
       create: (context) {
         var homeBloc = IHomeBloc.of(context, listen: false);

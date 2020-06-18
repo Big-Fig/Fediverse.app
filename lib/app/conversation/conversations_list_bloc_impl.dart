@@ -13,6 +13,7 @@ import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
+import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_service.dart';
 import 'package:fedi/pleroma/websockets/pleroma_websockets_service.dart';
@@ -30,8 +31,12 @@ class ConversationsListBloc extends DisposableOwner
   IConversationPaginationBloc conversationPaginationBloc;
 
   @override
-  IPaginationListBloc<PaginationPage<IConversation>, IConversation>
-      conversationPaginationListBloc;
+  IPaginationListWithNewItemsBloc<PaginationPage<IConversation>, IConversation>
+      conversationPaginationListWithNewItemsBloc;
+  @override
+  IPaginationListBloc<PaginationPage<IConversation>, IConversation> get
+      conversationPaginationListBloc =>
+      conversationPaginationListWithNewItemsBloc;
 
   final INotificationRepository notificationRepository;
   final IStatusRepository statusRepository;
@@ -58,7 +63,7 @@ class ConversationsListBloc extends DisposableOwner
         listService: conversationListService,
         maximumCachedPagesCount: null);
     addDisposable(disposable: conversationListService);
-    conversationPaginationListBloc = ConversationPaginationListWithNewItemsBloc(
+    conversationPaginationListWithNewItemsBloc = ConversationPaginationListWithNewItemsBloc(
       paginationBloc: conversationPaginationBloc,
       cachedListService: conversationListService,
       mergeNewItemsImmediately: true,

@@ -18,6 +18,7 @@ class ChatMessagesHomeTabBloc extends DisposableOwner
   IFediNestedScrollViewBloc fediNestedScrollViewBloc;
 
   ChatMessagesHomeTabBloc() {
+    nestedScrollController = NestedScrollController();
 
     nestedScrollControllerBloc = NestedScrollControllerBloc(
         nestedScrollController: nestedScrollController);
