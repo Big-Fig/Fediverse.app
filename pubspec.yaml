@@ -146,8 +146,6 @@ dependencies:
   # custom scroll view which fix bugs related to inner scrollables sync
   extended_nested_scroll_view: ^1.0.0
 
-  flutter_statusbarcolor: ^0.2.3
-
 # required to build flutter test with hive https://github.com/hivedb/hive/issues/285
 dependency_overrides:
   path: 1.7.0
