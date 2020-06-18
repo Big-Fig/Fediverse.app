@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:fedi/app/account/my/avatar/my_account_avatar_widget.dart';
-import 'package:fedi/app/home/tab/timelines/timelines_home_tab_header_widget.dart';
+import 'package:fedi/app/home/tab/timelines/timelines_home_tab_post_status_header_widget.dart';
 import 'package:fedi/app/status/post/new/new_post_status_page.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_model.dart';
@@ -13,7 +13,7 @@ import 'package:fedi/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_bloc.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
-import 'package:fedi/app/ui/tab/fedi_text_tab.dart';
+import 'package:fedi/app/ui/tab/fedi_text_tab_indicator_item_widget.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_overlay_widget.dart';
@@ -81,7 +81,7 @@ class _TimelineTabsWidgetState extends State<TimelineTabsWidget>
         color: FediColors.offWhite,
         child: FediListTile(
           isFirstInList: true,
-          child: TimelinesHomeTabHeaderWidget(),
+          child: TimelinesHomeTabPostStatusHeaderWidget(),
         ),
       ),
     );
@@ -111,8 +111,8 @@ class _TimelineTabsWidgetState extends State<TimelineTabsWidget>
                                   tab),
                               child:
                               PaginationListWithNewItemsUnreadBadgeWidget(
-                                child: FediTextTab(
-                                  mapTabToTitle(context, tab),
+                                child: FediTextTabIndicatorItemWidget(
+                                  label: mapTabToTitle(context, tab),
                                   index: tabs.indexOf(tab),
                                   isTransparent: true,
                                   tabController: tabController,
