@@ -24,7 +24,7 @@ class MyAccountDetailsWidget extends AccountDetailsWidget {
           var fediNestedScrollViewBloc =
               IFediNestedScrollViewBloc.of(context, listen: false);
           return StreamBuilder<bool>(
-              stream: fediNestedScrollViewBloc.isNestedScrollViewBodyStartScrollStream,
+              stream: fediNestedScrollViewBloc.isNestedScrollViewBodyStartedScrollStream,
               builder: (context, snapshot) {
                 var isAtLeastStartExpand = snapshot.data;
                 var topPadding = isAtLeastStartExpand == true

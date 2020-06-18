@@ -5,7 +5,7 @@ import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/chat/chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/conversation/repository/conversation_repository.dart';
 import 'package:fedi/app/notification/notification_tabs_bloc.dart';
-import 'package:fedi/app/notification/notification_tabs_model.dart';
+import 'package:fedi/app/notification/tab/notification_tab_model.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/notification/websockets/my_notifications_websockets_handler_impl.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';

@@ -13,9 +13,13 @@ abstract class IFediNestedScrollViewBloc extends Disposable {
 
   NestedScrollController get nestedScrollController;
 
-  bool get isNestedScrollViewBodyStartScroll;
+  bool get isNestedScrollViewBodyStartedScroll;
 
-  Stream<bool> get isNestedScrollViewBodyStartScrollStream;
+  Stream<bool> get isNestedScrollViewBodyStartedScrollStream;
+
+  bool get isNestedScrollViewBodyNotStartedScroll;
+
+  Stream<bool> get isNestedScrollViewBodyNotStartedScrollStream;
 
   int get scrollOffset;
 

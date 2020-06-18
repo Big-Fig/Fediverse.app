@@ -1,21 +1,28 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/timeline/tab/timeline_tab_model.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_filled_button.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class FediIconTab extends StatefulWidget {
+class FediIconTabIndicatorItemWidget extends StatefulWidget {
   final IconData iconData;
   final int index;
   final TabController tabController;
 
-  const FediIconTab(this.iconData,
-      {@required this.index, @required this.tabController});
+  const FediIconTabIndicatorItemWidget(
+      {@required this.iconData,
+      @required this.index,
+      @required this.tabController});
 
   @override
-  _FediIconTabState createState() => _FediIconTabState();
+  _FediIconTabIndicatorItemWidgetState createState() =>
+      _FediIconTabIndicatorItemWidgetState();
+
 }
 
-class _FediIconTabState extends State<FediIconTab> {
+class _FediIconTabIndicatorItemWidgetState
+    extends State<FediIconTabIndicatorItemWidget> {
   bool isSelected;
   VoidCallback listener;
 
@@ -74,4 +81,5 @@ class _FediIconTabState extends State<FediIconTab> {
 
     return button;
   }
+
 }

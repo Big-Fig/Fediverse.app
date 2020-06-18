@@ -309,7 +309,7 @@ class _TimelineTabsNestedScrollViewBodyWidgetState
         return StreamBuilder<bool>(
             stream: Rx.combineLatest2(
                 scrollControllerBloc.longScrollDirectionStream,
-                fediNestedScrollViewBloc.isNestedScrollViewBodyStartScrollStream,
+                fediNestedScrollViewBloc.isNestedScrollViewBodyStartedScrollStream,
                     (scrollDirection, isAtLeastStartExpand) {
                   _logger.finest(() => "scrollDirection $scrollDirection "
                       "$isAtLeastStartExpand");
@@ -427,7 +427,7 @@ class _TabViewItemState extends State<TabViewItem>
         return StreamBuilder<bool>(
             stream: Rx.combineLatest2(
                 scrollControllerBloc.longScrollDirectionStream,
-                fediNestedScrollViewBloc.isNestedScrollViewBodyStartScrollStream,
+                fediNestedScrollViewBloc.isNestedScrollViewBodyStartedScrollStream,
                     (longScrollDirection, isAtLeastStartExpand) {
                   _logger
                       .finest(() => "longScrollDirection $longScrollDirection "

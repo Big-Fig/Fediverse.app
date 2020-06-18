@@ -51,7 +51,7 @@ class ChatListContainerWidget extends StatelessWidget {
           IFediNestedScrollViewBloc.of(context, listen: false);
           return StreamBuilder<bool>(
               stream:
-              fediNestedScrollViewBloc.isNestedScrollViewBodyStartScrollStream,
+              fediNestedScrollViewBloc.isNestedScrollViewBodyStartedScrollStream,
               builder: (context, snapshot) {
                 var isAtLeastStartExpand = snapshot.data;
                 var topPadding = isAtLeastStartExpand == true

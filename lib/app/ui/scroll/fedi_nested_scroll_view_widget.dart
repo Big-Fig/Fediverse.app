@@ -34,30 +34,40 @@ abstract class FediNestedScrollViewWidget extends StatelessWidget {
             context,
           ),
         ),
-        if (topSliverScrollOffsetToShowWhiteStatusBar != null)
-          buildTopSliverOffsetWhiteStatusBar(fediNestedScrollViewBloc)
+        buildTopSliverOffsetWhiteStatusBar(fediNestedScrollViewBloc)
       ],
     );
   }
 
   Widget buildTopSliverOffsetWhiteStatusBar(
           IFediNestedScrollViewBloc fediNestedScrollViewBloc) =>
-      StreamBuilder<bool>(stream:
-          fediNestedScrollViewBloc.scrollOffsetStream.map((expandOffset) {
+      StreamBuilder<bool>(
+          stream: _calculateShowStatusBarStream(fediNestedScrollViewBloc),
+          builder: (context, snapshot) {
+            var isNeedShow = snapshot.data;
+            if (isNeedShow == true) {
+              return const FediWhiteStatusBarWidget();
+            } else {
+              return const SizedBox.shrink();
+            }
+          });
+
+  Stream<bool> _calculateShowStatusBarStream(
+      IFediNestedScrollViewBloc fediNestedScrollViewBloc) {
+    if (topSliverScrollOffsetToShowWhiteStatusBar != null) {
+      return fediNestedScrollViewBloc.scrollOffsetStream.map((expandOffset) {
         if (expandOffset != null &&
             expandOffset > topSliverScrollOffsetToShowWhiteStatusBar) {
           return true;
         } else {
           return false;
         }
-      }), builder: (context, snapshot) {
-        var isNeedShow = snapshot.data;
-        if (isNeedShow == true) {
-          return const FediWhiteStatusBarWidget();
-        } else {
-          return const SizedBox.shrink();
-        }
       });
+    } else {
+      return fediNestedScrollViewBloc
+          .isNestedScrollViewBodyNotStartedScrollStream;
+    }
+  }
 
   List<Widget> buildTopSliverWidgets(BuildContext context) => [
         SliverList(
@@ -86,7 +96,7 @@ abstract class FediNestedScrollViewWidget extends StatelessWidget {
     return StreamBuilder<bool>(
         stream: Rx.combineLatest2(
             scrollControllerBloc.longScrollDirectionStream,
-            fediNestedScrollViewBloc.isNestedScrollViewBodyStartScrollStream,
+            fediNestedScrollViewBloc.isNestedScrollViewBodyStartedScrollStream,
             (scrollDirection, isAtLeastStartExpand) {
           _logger.finest(() => "scrollDirection $scrollDirection "
               "$isAtLeastStartExpand");
@@ -113,7 +123,7 @@ abstract class FediNestedScrollViewWidget extends StatelessWidget {
     return StreamBuilder<bool>(
         stream: Rx.combineLatest2(
             scrollControllerBloc.longScrollDirectionStream,
-            fediNestedScrollViewBloc.isNestedScrollViewBodyStartScrollStream,
+            fediNestedScrollViewBloc.isNestedScrollViewBodyStartedScrollStream,
             (longScrollDirection, isAtLeastStartExpand) {
           _logger.finest(() => "longScrollDirection $longScrollDirection "
               "isAtLeastStartExpand $isAtLeastStartExpand");

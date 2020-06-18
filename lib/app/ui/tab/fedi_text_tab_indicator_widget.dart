@@ -24,7 +24,7 @@ class FediTextTabIndicatorWidget<T> extends StatelessWidget {
           var tab = entry.value;
           var isLast = index == tabs.length - 1;
           return Padding(
-            padding: EdgeInsets.only(right: isLast ? 0.0 : 8.0),
+            padding: EdgeInsets.only(right: isLast ? 0.0 : 16.0),
             child: FediTextTabIndicatorItemWidget(
               index: index,
               tabController: tabController,

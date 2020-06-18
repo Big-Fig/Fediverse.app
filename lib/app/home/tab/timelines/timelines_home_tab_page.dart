@@ -8,10 +8,12 @@ import 'package:fedi/app/home/tab/timelines/timelines_home_tab_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/timelines_home_tab_overlay_on_long_scroll_widget.dart';
 import 'package:fedi/app/home/tab/timelines/timelines_home_tab_post_status_header_widget.dart';
 import 'package:fedi/app/search/search_page.dart';
+import 'package:fedi/app/status/list/status_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/new_timeline_widget.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_model.dart';
+import 'package:fedi/app/timeline/tab/timeline_tab_text_tab_indicator_item_widget.dart';
 import 'package:fedi/app/timeline/timeline_tabs_bloc.dart';
 import 'package:fedi/app/timeline/timeline_tabs_bloc_impl.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
@@ -23,12 +25,9 @@ import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollabl
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_bloc_impl.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_widget.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
-import 'package:fedi/app/ui/tab/fedi_icon_tab_indicator_item_widget.dart';
-import 'package:fedi/app/ui/tab/fedi_text_tab_indicator_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
-import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_overlay_widget.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -160,28 +159,16 @@ class _TimelinesHomeTabPageState extends State<TimelinesHomeTabPage>
         tabBodyContentBuilder: (BuildContext context) =>
             FediDarkStatusBarStyleArea(child: NewTimelineWidget()),
         tabBodyOverlayBuilder: (BuildContext context) =>
-            _buildTapToLoadOverlay(context),
+            StatusListTapToLoadOverlayWidget(),
       ),
     );
   }
-
-  Widget _buildTapToLoadOverlay(BuildContext context) => Align(
-        alignment: Alignment.topCenter,
-        child: Padding(
-          padding: EdgeInsets.only(top: FediSizes.tapToLoadTopPadding),
-          child: PaginationListWithNewItemsOverlayWidget(
-            textBuilder: (context, updateItemsCount) => plural(
-                "app.status.list.new_items.action.tap_to_load_new",
-                updateItemsCount),
-          ),
-        ),
-      );
 
   List<Widget> _buildEndingWidgets(BuildContext context) {
     return [
       buildSearchActionButton(context),
       SizedBox(
-        width: 8.0,
+        width: 16.0,
       ),
       buildFilterActionButton()
     ];
@@ -202,11 +189,8 @@ class _TimelinesHomeTabPageState extends State<TimelinesHomeTabPage>
         },
       );
 
-  Widget _buildTabIndicatorWidget() => FediTextTabIndicatorWidget(
+  Widget _buildTabIndicatorWidget() => TimelineTabTextTabIndicatorItemWidget(
         tabController: tabController,
-        isTransparent: true,
-        tabs: _timelineTabs,
-        tabToTextMapper: (BuildContext context, TimelineTab tab) =>
-            FediIconTabIndicatorItemWidget.mapTabToTitle(context, tab),
+        timelineTabs: _timelineTabs,
       );
 }

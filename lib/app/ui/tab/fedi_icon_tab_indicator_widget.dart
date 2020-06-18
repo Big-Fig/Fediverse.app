@@ -2,12 +2,12 @@ import 'package:fedi/app/ui/tab/fedi_icon_tab_indicator_item_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-typedef TabToIconMapper = IconData Function<T>(BuildContext context, T tab);
+typedef TabToIconMapper<T> = IconData Function(BuildContext context, T tab);
 
 class FediIconTabIndicatorWidget<T> extends StatelessWidget {
   final List<T> tabs;
   final TabController tabController;
-  final TabToIconMapper tabToIconMapper;
+  final TabToIconMapper<T> tabToIconMapper;
 
   FediIconTabIndicatorWidget({
     @required this.tabs,
@@ -23,7 +23,7 @@ class FediIconTabIndicatorWidget<T> extends StatelessWidget {
           var isLast = index == tabs.length - 1;
 
           return Padding(
-            padding: EdgeInsets.only(right: isLast ? 0.0 : 8.0),
+            padding: EdgeInsets.only(right: isLast ? 0.0 : 16.0),
             child: FediIconTabIndicatorItemWidget(
               index: index,
               tabController: tabController,
