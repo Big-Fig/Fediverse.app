@@ -2,10 +2,7 @@ import 'package:fedi/app/status/pagination/list/status_pagination_list_media_wid
 import 'package:fedi/app/status/pagination/list/status_pagination_list_timeline_widget.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preferences_bloc.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
-import 'package:fedi/collapsible/collapsible_bloc.dart';
-import 'package:fedi/collapsible/collapsible_bloc_impl.dart';
-import 'package:fedi/collapsible/toggle_collapsible_overlay_widget.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/collapsible/collapsible_owner_widget.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
@@ -26,7 +23,8 @@ class TimelineWidget extends StatelessWidget {
               .map((timelineLocalPreferences) =>
                   timelineLocalPreferences?.onlyWithMedia == true)
               .distinct(),
-          initialData: timelineLocalPreferencesBloc.value?.onlyWithMedia == true,
+          initialData:
+              timelineLocalPreferencesBloc.value?.onlyWithMedia == true,
           builder: (context, snapshot) {
             var onlyWithMedia = snapshot.data;
 
@@ -35,21 +33,10 @@ class TimelineWidget extends StatelessWidget {
             if (onlyWithMedia == true) {
               bodyWidget = StatusPaginationListMediaWidget();
             } else {
-              bodyWidget = DisposableProvider<ICollapsibleBloc>(
-                create: (context) => CollapsibleBloc.createFromContext(context),
-                child: Stack(
-                  children: <Widget>[
-                    StatusPaginationListTimelineWidget(
-                      forceFirstItemPadding: true,
-                      needWatchLocalRepositoryForUpdates: true,
-                    ),
-                    Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: ToggleCollapsibleOverlayWidget(),
-                        ))
-                  ],
+              bodyWidget = CollapsibleOwnerWidget(
+                child: StatusPaginationListTimelineWidget(
+                  forceFirstItemPadding: true,
+                  needWatchLocalRepositoryForUpdates: true,
                 ),
               );
             }
