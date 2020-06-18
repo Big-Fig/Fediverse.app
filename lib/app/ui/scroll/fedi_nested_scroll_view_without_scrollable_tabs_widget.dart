@@ -2,15 +2,15 @@ import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_bloc.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_widget.dart';
 import 'package:flutter/cupertino.dart';
 
-typedef ProviderBuilder = Function(BuildContext context, Widget child);
+typedef ProviderBuilder = Widget Function(BuildContext context, Widget child);
 
-class FediNestedScrollViewWithNestedScrollableTabsWidget
+class FediNestedScrollViewWithoutNestedScrollableTabsWidget
     extends FediNestedScrollViewWidget {
   final ProviderBuilder providerBuilder;
   final NestedScrollViewContentBuilder contentBuilder;
   final NestedScrollViewOverlayBuilder overlayBuilder;
 
-  FediNestedScrollViewWithNestedScrollableTabsWidget({
+  FediNestedScrollViewWithoutNestedScrollableTabsWidget({
     @required Widget onLongScrollUpTopOverlayWidget,
     @required List<Widget> topSliverWidgets,
     @required double topSliverScrollOffsetToShowWhiteStatusBar,
@@ -46,25 +46,29 @@ class FediNestedScrollViewWithNestedScrollableTabsWidget
               if (onLongScrollUpTopOverlayWidget != null)
                 FediNestedScrollViewWidget.buildOnLongScrollUpTopOverlayWidget(
                     context, onLongScrollUpTopOverlayWidget),
-              providerBuilder(
-                context,
-                Builder(
-                  builder: (context) {
-                    return Stack(
-                      children: [
-                        contentBuilder(context),
-                        if (overlayBuilder != null)
-                          FediNestedScrollViewWidget.buildOverlay(
-                              context, overlayBuilder),
-                      ],
-                    );
-                  },
-                ),
-              )
+              Expanded(child: _buildBody(context))
             ],
           );
         },
       ),
     );
   }
+
+  Widget _buildBody(BuildContext context) => providerBuilder(
+        context,
+        Builder(
+          builder: (context) {
+            return Stack(
+              children: [
+                Expanded(
+                  child: contentBuilder(context),
+                ),
+                if (overlayBuilder != null)
+                  FediNestedScrollViewWidget.buildOverlay(
+                      context, overlayBuilder),
+              ],
+            );
+          },
+        ),
+      );
 }

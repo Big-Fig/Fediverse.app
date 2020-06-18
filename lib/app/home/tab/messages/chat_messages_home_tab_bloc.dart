@@ -4,9 +4,9 @@ import 'package:fedi/ui/scroll/nested_scroll_controller_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-abstract class IChatsHomeTabBloc extends DisposableOwner {
-  static IChatsHomeTabBloc of(BuildContext context, {bool listen = true}) =>
-      Provider.of<IChatsHomeTabBloc>(context, listen: listen);
+abstract class IChatMessagesHomeTabBloc extends DisposableOwner {
+  static IChatMessagesHomeTabBloc of(BuildContext context, {bool listen = true}) =>
+      Provider.of<IChatMessagesHomeTabBloc>(context, listen: listen);
 
   ScrollController get nestedScrollController;
 

@@ -34,54 +34,10 @@ class ChatListContainerWidget extends StatelessWidget {
             value: chatsListBloc.chatPaginationListWithNewItemsBloc
                 as IPaginationListBloc),
       ],
-      child: Stack(
-        children: [
-          ChatListWidget(
-            key: PageStorageKey("ChatsListWidget"),
-          ),
-          _buildOverlayNewItems(context)
-        ],
+      child: ChatListWidget(
+        key: PageStorageKey("ChatsListWidget"),
       ),
     );
   }
-  Builder _buildOverlayNewItems(BuildContext context) =>
-      Builder(
-        builder: (context) {
-          var fediNestedScrollViewBloc =
-          IFediNestedScrollViewBloc.of(context, listen: false);
-          return StreamBuilder<bool>(
-              stream:
-              fediNestedScrollViewBloc.isNestedScrollViewBodyStartedScrollStream,
-              builder: (context, snapshot) {
-                var isAtLeastStartExpand = snapshot.data;
-                var topPadding = isAtLeastStartExpand == true
-                    ? 24.0
-                    : 24.0 + MediaQuery
-                    .of(context)
-                    .padding
-                    .top;
-
-                _logger.finest(() => "topPadding $topPadding");
-
-//
-//                            topPadding =
-//                                24.0 + MediaQuery.of(context).padding.top;
-//                                24.0;
-                return Align(
-                    alignment: Alignment.topCenter,
-                    child: Padding(
-                      padding: EdgeInsets.only(top: topPadding),
-                      child:
-                      PaginationListWithNewItemsOverlayWidget(
-                        textBuilder: (context, updateItemsCount) =>
-                            plural(
-                                "app.chat.list.new_items"
-                                    ".action.tap_to_load_new",
-                                updateItemsCount),
-                      ),
-                    ));
-              });
-        },
-      );
 
 }

@@ -35,47 +35,9 @@ class ConversationsListWidget extends StatelessWidget {
             value: conversationsListBloc.conversationPaginationListBloc
                 as IPaginationListBloc),
       ],
-      child: Stack(
-        children: [
-          ConversationListWidget(
-            key: PageStorageKey("ConversationsListWidget"),
-          ),
-          _buildOverlayNewItems(context)
-        ],
+      child: ConversationListWidget(
+        key: PageStorageKey("ConversationsListWidget"),
       ),
     );
   }
-
-  Builder _buildOverlayNewItems(BuildContext context) => Builder(
-        builder: (context) {
-          var fediNestedScrollViewBloc =
-              IFediNestedScrollViewBloc.of(context, listen: false);
-          return StreamBuilder<bool>(
-              stream: fediNestedScrollViewBloc.isNestedScrollViewBodyStartedScrollStream,
-              builder: (context, snapshot) {
-                var isAtLeastStartExpand = snapshot.data;
-                var topPadding = isAtLeastStartExpand == true
-                    ? 24.0
-                    : 24.0 + MediaQuery.of(context).padding.top;
-
-                _logger.finest(() => "topPadding $topPadding");
-
-//
-//                            topPadding =
-//                                24.0 + MediaQuery.of(context).padding.top;
-//                                24.0;
-                return Align(
-                    alignment: Alignment.topCenter,
-                    child: Padding(
-                      padding: EdgeInsets.only(top: topPadding),
-                      child: PaginationListWithNewItemsOverlayWidget(
-                        textBuilder: (context, updateItemsCount) => plural(
-                            "app.conversation.list.new_items"
-                            ".action.tap_to_load_new",
-                            updateItemsCount),
-                      ),
-                    ));
-              });
-        },
-      );
 }
