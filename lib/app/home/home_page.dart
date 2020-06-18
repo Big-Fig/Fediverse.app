@@ -6,12 +6,12 @@ import 'package:fedi/app/home/tab/account/account_home_tab_bloc.dart';
 import 'package:fedi/app/home/tab/account/account_home_tab_bloc_impl.dart';
 import 'package:fedi/app/home/tab/account/account_home_tab_page'
     '.dart';
-import 'package:fedi/app/home/tab/conversations/chats_home_tab_bloc.dart';
-import 'package:fedi/app/home/tab/conversations/chats_home_tab_bloc_impl.dart';
-import 'package:fedi/app/home/tab/conversations/chats_home_tab_page.dart';
-import 'package:fedi/app/home/tab/conversations/conversations_home_tab_bloc.dart';
-import 'package:fedi/app/home/tab/conversations/conversations_home_tab_bloc_impl.dart';
-import 'package:fedi/app/home/tab/conversations/conversations_home_tab_page.dart';
+import 'package:fedi/app/home/tab/messages/chat_messages_home_tab_bloc.dart';
+import 'package:fedi/app/home/tab/messages/chat_messages_home_tab_bloc_impl.dart';
+import 'package:fedi/app/home/tab/messages/chat_messages_home_tab_page.dart';
+import 'package:fedi/app/home/tab/messages/conversation_messages_home_tab_bloc.dart';
+import 'package:fedi/app/home/tab/messages/conversation_messages_home_tab_bloc_impl.dart';
+import 'package:fedi/app/home/tab/messages/conversation_messages_home_tab_page.dart';
 import 'package:fedi/app/home/tab/notifications/notifications_home_tab_bloc.dart';
 import 'package:fedi/app/home/tab/notifications/notifications_home_tab_bloc_impl.dart';
 import 'package:fedi/app/home/tab/notifications/notifications_home_tab_page.dart';
@@ -153,7 +153,7 @@ class HomePage extends StatelessWidget {
           ),
         );
         break;
-      case HomeTab.conversations:
+      case HomeTab.messages:
         var myAccountSettingsBloc =
             IMyAccountSettingsBloc.of(context, listen: false);
 
@@ -164,35 +164,35 @@ class HomePage extends StatelessWidget {
               var isNewChatsEnabled = snapshot.data;
 
               if (isNewChatsEnabled == true) {
-                return DisposableProvider<IChatsHomeTabBloc>(
+                return DisposableProvider<IChatMessagesHomeTabBloc>(
                   create: (context) {
                     var homeBloc = IHomeBloc.of(context, listen: false);
 
-                    var chatsHomeTabBloc = ChatsHomeTabBloc(
+                    var chatMessagesHomeTabBloc = ChatMessagesHomeTabBloc(
                       //              deviceHeight: MediaQuery.of(context).size.height,
                     );
 
-                    chatsHomeTabBloc.addDisposable(streamSubscription:
+                    chatMessagesHomeTabBloc.addDisposable(streamSubscription:
                     homeBloc.reselectedTabStream.listen((reselectedTab) {
-                      if (reselectedTab == HomeTab.conversations) {
-                        chatsHomeTabBloc.scrollToTop();
+                      if (reselectedTab == HomeTab.messages) {
+                        chatMessagesHomeTabBloc.scrollToTop();
                       }
                     }));
 
-                    return chatsHomeTabBloc;
+                    return chatMessagesHomeTabBloc;
                   },
-                  child: ProxyProvider<IChatsHomeTabBloc, INestedScrollControllerBloc>(
+                  child: ProxyProvider<IChatMessagesHomeTabBloc, INestedScrollControllerBloc>(
                     update: (context, value, previous) =>
                     value.nestedScrollControllerBloc,
-                    child: ProxyProvider<IChatsHomeTabBloc, IScrollControllerBloc>(
+                    child: ProxyProvider<IChatMessagesHomeTabBloc, IScrollControllerBloc>(
                       update: (context, value, previous) =>
                       value.nestedScrollControllerBloc,
                       child:
-                      ProxyProvider<IChatsHomeTabBloc, IFediNestedScrollViewBloc>(
+                      ProxyProvider<IChatMessagesHomeTabBloc, IFediNestedScrollViewBloc>(
                         update: (context, value, previous) =>
                         value.fediNestedScrollViewBloc,
-                        child: const ChatsHomeTabPage(
-                          key: PageStorageKey<String>("ChatsHomeTabPage"),
+                        child: const ChatMessagesHomeTabPage(
+                          key: PageStorageKey<String>("ChatMessagesHomeTabPage"),
                         ),
                       ),
                     ),
@@ -200,35 +200,35 @@ class HomePage extends StatelessWidget {
                 );
               } else {
 
-                return DisposableProvider<IConversationsHomeTabBloc>(
+                return DisposableProvider<IConversationMessagesHomeTabBloc>(
                   create: (context) {
                     var homeBloc = IHomeBloc.of(context, listen: false);
 
-                    var conversationsHomeTabBloc = ConversationsHomeTabBloc(
+                    var conversationMessagesHomeTabBloc = ConversationMessagesHomeTabBloc(
                       //              deviceHeight: MediaQuery.of(context).size.height,
                     );
 
-                    conversationsHomeTabBloc.addDisposable(streamSubscription:
+                    conversationMessagesHomeTabBloc.addDisposable(streamSubscription:
                     homeBloc.reselectedTabStream.listen((reselectedTab) {
-                      if (reselectedTab == HomeTab.conversations) {
-                        conversationsHomeTabBloc.scrollToTop();
+                      if (reselectedTab == HomeTab.messages) {
+                        conversationMessagesHomeTabBloc.scrollToTop();
                       }
                     }));
 
-                    return conversationsHomeTabBloc;
+                    return conversationMessagesHomeTabBloc;
                   },
-                  child: ProxyProvider<IConversationsHomeTabBloc, INestedScrollControllerBloc>(
+                  child: ProxyProvider<IConversationMessagesHomeTabBloc, INestedScrollControllerBloc>(
                     update: (context, value, previous) =>
                     value.nestedScrollControllerBloc,
-                    child: ProxyProvider<IConversationsHomeTabBloc, IScrollControllerBloc>(
+                    child: ProxyProvider<IConversationMessagesHomeTabBloc, IScrollControllerBloc>(
                       update: (context, value, previous) =>
                       value.nestedScrollControllerBloc,
                       child:
-                      ProxyProvider<IConversationsHomeTabBloc, IFediNestedScrollViewBloc>(
+                      ProxyProvider<IConversationMessagesHomeTabBloc, IFediNestedScrollViewBloc>(
                         update: (context, value, previous) =>
                         value.fediNestedScrollViewBloc,
-                        child: const ConversationsHomeTabPage(
-                          key: PageStorageKey<String>("ConversationsHomeTabPage"),
+                        child: const ConversationMessagesHomeTabPage(
+                          key: PageStorageKey<String>("ConversationMessagesHomeTabPage"),
                         ),
                       ),
                     ),

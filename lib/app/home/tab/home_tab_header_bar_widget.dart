@@ -22,9 +22,10 @@ class FediTabMainHeaderBarWidget extends StatelessWidget {
             Row(
               children: leadingWidgets,
             ),
-          Expanded(
-            child: content,
-          ),
+          if (content != null)
+            Expanded(
+              child: content,
+            ),
           if (endingWidgets != null)
             Row(
               children: endingWidgets,

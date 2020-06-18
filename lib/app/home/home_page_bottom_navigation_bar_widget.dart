@@ -99,7 +99,7 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
               ),
             ));
         break;
-      case HomeTab.conversations:
+      case HomeTab.messages:
         var myAccountSettingsBloc =
             IMyAccountSettingsBloc.of(context, listen: false);
         return StreamBuilder<bool>(

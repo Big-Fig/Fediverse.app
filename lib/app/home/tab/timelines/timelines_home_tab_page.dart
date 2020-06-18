@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/home/home_bloc.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 import 'package:fedi/app/home/tab/timelines/drawer/timelines_home_tab_page_drawer_bloc.dart';
@@ -160,6 +159,7 @@ class _TimelinesHomeTabPageState extends State<TimelinesHomeTabPage>
             FediDarkStatusBarStyleArea(child: NewTimelineWidget()),
         tabBodyOverlayBuilder: (BuildContext context) =>
             StatusListTapToLoadOverlayWidget(),
+        tabBarViewContainerBuilder: null,
       ),
     );
   }
