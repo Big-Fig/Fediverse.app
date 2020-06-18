@@ -10,7 +10,7 @@ import 'package:fedi/app/search/search_page.dart';
 import 'package:fedi/app/status/list/status_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preferences_bloc.dart';
-import 'package:fedi/app/timeline/new_timeline_widget.dart';
+import 'package:fedi/app/timeline/timeline_widget.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_model.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_text_tab_indicator_item_widget.dart';
 import 'package:fedi/app/timeline/timeline_tabs_bloc.dart';
@@ -156,7 +156,7 @@ class _TimelinesHomeTabPageState extends State<TimelinesHomeTabPage>
           ),
         ),
         tabBodyContentBuilder: (BuildContext context) =>
-            FediDarkStatusBarStyleArea(child: NewTimelineWidget()),
+            FediDarkStatusBarStyleArea(child: TimelineWidget()),
         tabBodyOverlayBuilder: (BuildContext context) =>
             StatusListTapToLoadOverlayWidget(),
         tabBarViewContainerBuilder: null,
