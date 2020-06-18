@@ -70,6 +70,7 @@ class NotificationListItemWidget extends StatelessWidget {
                     ),
                   ),
                 ),
+                SizedBox(width: 16),
                 NotificationCreatedAtWidget()
               ],
             ),
