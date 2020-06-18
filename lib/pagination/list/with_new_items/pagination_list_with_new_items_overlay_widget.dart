@@ -40,32 +40,27 @@ class PaginationListWithNewItemsOverlayWidget extends StatelessWidget {
           _logger.finest(() => "updateItemsCount $updateItemsCount");
 
           if (updateItemsCount > 0) {
-            try {
-              var scrollControllerBloc =
-                  IScrollControllerBloc.of(context, listen: false);
+            var scrollControllerBloc =
+                IScrollControllerBloc.of(context, listen: false);
 
-              return StreamBuilder<ScrollDirection>(
-                  stream: scrollControllerBloc.scrollDirectionStream.distinct(),
-                  initialData: scrollControllerBloc.scrollDirection,
-                  builder: (context, snapshot) {
-                    var scrollDirection = snapshot.data;
+            return StreamBuilder<ScrollDirection>(
+                stream: scrollControllerBloc.scrollDirectionStream.distinct(),
+                initialData: scrollControllerBloc.scrollDirection,
+                builder: (context, snapshot) {
+                  var scrollDirection = snapshot.data;
 
-                    _logger.finest(() => "scrollDirection $scrollDirection");
+                  _logger.finest(() => "scrollDirection $scrollDirection");
 
-                    if (scrollDirection == ScrollDirection.forward ||
-//                        scrollDirection == ScrollDirection.idle ||
-                        scrollDirection == null
-                    ) {
-                      return _buildButtons(paginationWithUpdatesListBloc,
-                          context, updateItemsCount);
-                    } else {
-                      return SizedBox.shrink();
-                    }
-                  });
-            } catch (e) {
-              return _buildButtons(
-                  paginationWithUpdatesListBloc, context, updateItemsCount);
-            }
+                  if (scrollDirection ==
+                          ScrollDirection
+                              .forward || //                        scrollDirection == ScrollDirection.idle ||
+                      scrollDirection == null) {
+                    return _buildButtons(paginationWithUpdatesListBloc, context,
+                        updateItemsCount);
+                  } else {
+                    return SizedBox.shrink();
+                  }
+                });
           } else {
             return SizedBox.shrink();
           }
@@ -83,11 +78,9 @@ class PaginationListWithNewItemsOverlayWidget extends StatelessWidget {
         onTap: () {
           paginationWithUpdatesListBloc.mergeNewItems();
 
-          try {
-            var scrollControllerBloc =
-                IScrollControllerBloc.of(context, listen: false);
-            scrollControllerBloc.scrollToTop();
-          } catch (e) {}
+          var scrollControllerBloc =
+              IScrollControllerBloc.of(context, listen: false);
+          scrollControllerBloc.scrollToTop();
         },
         child: Container(
           decoration: BoxDecoration(

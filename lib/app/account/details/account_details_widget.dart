@@ -17,6 +17,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AccountDetailsWidget extends StatelessWidget {
+  final ScrollController scrollController;
+
+  const AccountDetailsWidget({@required this.scrollController});
+
   @override
   Widget build(BuildContext context) => buildAccountDetailsProviders(
       context, buildListWithNewItemsOverlayContainer(context));
@@ -60,15 +64,11 @@ class AccountDetailsWidget extends StatelessWidget {
     );
   }
 
-  Widget buildListWithNewItemsOverlayContainer(BuildContext context) {
-    return PaginationListWithNewItemsContainerWithOverlayWidget(
+  Widget buildListWithNewItemsOverlayContainer(BuildContext context) => PaginationListWithNewItemsContainerWithOverlayWidget(
       textBuilder: (context, updateItemsCount) => plural(
           "app.status.list.new_items.action"
           ".tap_to_load_new",
           updateItemsCount),
-      child: const AccountDetailsBodyWidget(),
+      child: AccountDetailsBodyWidget(scrollController: scrollController),
     );
-  }
-
-  const AccountDetailsWidget();
 }

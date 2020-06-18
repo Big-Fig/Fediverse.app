@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AccountDetailsBodyWidget extends StatelessWidget {
+  final ScrollController scrollController;
   @override
   Widget build(BuildContext context) => CollapsibleOwnerWidget(
         child: buildAccountStatusesWidget(context),
@@ -13,6 +14,7 @@ class AccountDetailsBodyWidget extends StatelessWidget {
 
   AccountStatusesWidget buildAccountStatusesWidget(BuildContext context) =>
       AccountStatusesWidget(
+        scrollController: scrollController,
         header: AccountWidget(
           onStatusesTapCallback: () {
             var scrollControllerBloc =
@@ -28,5 +30,5 @@ class AccountDetailsBodyWidget extends StatelessWidget {
         key: PageStorageKey("AccountDetailsWidget"),
       );
 
-  const AccountDetailsBodyWidget();
+  const AccountDetailsBodyWidget({this.scrollController});
 }
