@@ -6,6 +6,7 @@ import 'package:fedi/app/chat/list/chat_list_container_bloc_impl.dart';
 import 'package:fedi/app/chat/list/chat_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/chat/list/chat_list_widget.dart';
 import 'package:fedi/app/chat/start/start_chat_page.dart';
+import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 import 'package:fedi/app/search/search_page.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
@@ -21,8 +22,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
-
-import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 
 var _logger = Logger("chat_messages_home_tab_page.dart");
 
@@ -84,14 +83,12 @@ class ChatMessagesHomeTabPage extends StatelessWidget {
                       Provider.value(
                           value:
                               chatsListBloc.chatPaginationListWithNewItemsBloc),
-                      Provider.value(
+                      Provider<IPaginationListWithNewItemsBloc>.value(
                           value:
-                              chatsListBloc.chatPaginationListWithNewItemsBloc
-                                  as IPaginationListWithNewItemsBloc),
-                      Provider.value(
+                              chatsListBloc.chatPaginationListWithNewItemsBloc),
+                      Provider<IPaginationListBloc>.value(
                           value:
-                              chatsListBloc.chatPaginationListWithNewItemsBloc
-                                  as IPaginationListBloc),
+                              chatsListBloc.chatPaginationListWithNewItemsBloc),
                     ],
                     child: child,
                   );

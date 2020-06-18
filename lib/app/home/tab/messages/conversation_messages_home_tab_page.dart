@@ -77,14 +77,12 @@ class ConversationMessagesHomeTabPage extends StatelessWidget {
                       Provider.value(
                           value: conversationsListBloc
                               .conversationPaginationListBloc),
-                      Provider.value(
+                      Provider<IPaginationListWithNewItemsBloc>.value(
                           value: conversationsListBloc
-                                  .conversationPaginationListBloc
-                              as IPaginationListWithNewItemsBloc),
-                      Provider.value(
+                              .conversationPaginationListWithNewItemsBloc),
+                      Provider<IPaginationListBloc>.value(
                           value: conversationsListBloc
-                                  .conversationPaginationListBloc
-                              as IPaginationListBloc),
+                              .conversationPaginationListBloc),
                     ],
                     child: child,
                   );

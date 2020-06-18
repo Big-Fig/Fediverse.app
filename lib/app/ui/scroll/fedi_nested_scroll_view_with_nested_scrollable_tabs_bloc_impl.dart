@@ -3,7 +3,6 @@ import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollabl
 import 'package:fedi/ui/scroll/nested_scroll_controller_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/material/tab_controller.dart';
-import 'package:nested_scroll_controller/nested_scroll_controller.dart';
 
 class FediNestedScrollViewWithNestedScrollableTabsBloc
     extends FediNestedScrollViewBloc

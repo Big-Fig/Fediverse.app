@@ -1,10 +1,7 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/conversation/conversations_list_bloc.dart';
 import 'package:fedi/app/conversation/list/conversation_list_widget.dart';
-import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
-import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_overlay_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -28,12 +25,11 @@ class ConversationsListWidget extends StatelessWidget {
         Provider.value(value: conversationsListBloc.conversationPaginationBloc),
         Provider.value(
             value: conversationsListBloc.conversationPaginationListBloc),
-        Provider.value(
-            value: conversationsListBloc.conversationPaginationListBloc
-                as IPaginationListWithNewItemsBloc),
-        Provider.value(
-            value: conversationsListBloc.conversationPaginationListBloc
-                as IPaginationListBloc),
+        Provider<IPaginationListWithNewItemsBloc>.value(
+            value: conversationsListBloc
+                .conversationPaginationListWithNewItemsBloc),
+        Provider<IPaginationListBloc>.value(
+            value: conversationsListBloc.conversationPaginationListBloc),
       ],
       child: ConversationListWidget(
         key: PageStorageKey("ConversationsListWidget"),

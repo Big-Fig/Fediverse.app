@@ -1,5 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/app/timeline/tab/timeline_tab_model.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_filled_button.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,7 +16,6 @@ class FediIconTabIndicatorItemWidget extends StatefulWidget {
   @override
   _FediIconTabIndicatorItemWidgetState createState() =>
       _FediIconTabIndicatorItemWidgetState();
-
 }
 
 class _FediIconTabIndicatorItemWidgetState
@@ -81,5 +78,4 @@ class _FediIconTabIndicatorItemWidgetState
 
     return button;
   }
-
 }
