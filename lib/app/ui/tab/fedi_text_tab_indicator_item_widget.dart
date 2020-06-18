@@ -4,24 +4,25 @@ import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class FediTextTab extends StatefulWidget {
+class FediTextTabIndicatorItemWidget extends StatefulWidget {
   final String label;
   final int index;
   final bool isTransparent;
   final TabController tabController;
 
-  const FediTextTab(
-    this.label, {
+  const FediTextTabIndicatorItemWidget(
+     {
+    @required this.label,
     @required this.index,
     @required this.isTransparent,
     @required this.tabController,
   });
 
   @override
-  _FediTextTabState createState() => _FediTextTabState();
+  _FediTextTabIndicatorItemWidgetState createState() => _FediTextTabIndicatorItemWidgetState();
 }
 
-class _FediTextTabState extends State<FediTextTab> {
+class _FediTextTabIndicatorItemWidgetState extends State<FediTextTabIndicatorItemWidget> {
   bool isSelected;
   VoidCallback listener;
   bool isDisposed = false;

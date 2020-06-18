@@ -6,6 +6,7 @@ import 'package:fedi/app/home/tab/timelines/drawer/timelines_home_tab_page_drawe
 import 'package:fedi/app/home/tab/timelines/drawer/timelines_home_tab_page_drawer_widget.dart';
 import 'package:fedi/app/home/tab/timelines/timelines_home_tab_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/timelines_home_tab_overlay_on_long_scroll_widget.dart';
+import 'package:fedi/app/home/tab/timelines/timelines_home_tab_post_status_header_widget.dart';
 import 'package:fedi/app/search/search_page.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preferences_bloc.dart';
@@ -14,11 +15,16 @@ import 'package:fedi/app/timeline/tab/timeline_tab_model.dart';
 import 'package:fedi/app/timeline/timeline_tabs_bloc.dart';
 import 'package:fedi/app/timeline/timeline_tabs_bloc_impl.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
+import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_bloc.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_bloc_impl.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_widget.dart';
+import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
+import 'package:fedi/app/ui/tab/fedi_icon_tab_indicator_item_widget.dart';
+import 'package:fedi/app/ui/tab/fedi_text_tab_indicator_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
@@ -28,10 +34,39 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+const _timelineTabs = [
+  TimelineTab.home,
+  TimelineTab.local,
+  TimelineTab.public,
+];
+
 final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
-class TimelinesHomeTabPage extends StatelessWidget {
+class TimelinesHomeTabPage extends StatefulWidget {
   const TimelinesHomeTabPage({Key key}) : super(key: key);
+
+  @override
+  _TimelinesHomeTabPageState createState() => _TimelinesHomeTabPageState();
+}
+
+class _TimelinesHomeTabPageState extends State<TimelinesHomeTabPage>
+    with TickerProviderStateMixin {
+  TabController tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    tabController = TabController(
+      vsync: this,
+      length: _timelineTabs.length,
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    tabController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,19 +111,34 @@ class TimelinesHomeTabPage extends StatelessWidget {
     return DisposableProvider<
         IFediNestedScrollViewWithNestedScrollableTabsBloc>(
       create: (context) => FediNestedScrollViewWithNestedScrollableTabsBloc(
-        nestedScrollControllerBloc: timelinesHomeTabBloc.nestedScrollControllerBloc,
-        tabController: timelineTabsBloc.tabController,
+        nestedScrollControllerBloc:
+            timelinesHomeTabBloc.nestedScrollControllerBloc,
+        tabController: tabController,
       ),
       child: FediNestedScrollViewWithNestedScrollableTabsWidget(
         onLongScrollUpTopOverlayWidget:
             const TimelinesHomeTabOverlayOnLongScrollWidget(),
         topSliverWidgets: [
           FediTabMainHeaderBarWidget(
-              leadingWidgets: null,
-              content: _buildTabsWidget(),
-              endingWidgets: _buildEndingWidgets(context)),
+            leadingWidgets: null,
+            content: _buildTabIndicatorWidget(),
+            endingWidgets: _buildEndingWidgets(context),
+          ),
+          FediDarkStatusBarStyleArea(
+            child: ClipRRect(
+              borderRadius: FediSizes.defaultClipRRectBorderRadius,
+              child: Container(
+                color: FediColors.offWhite,
+                child: FediListTile(
+                  isFirstInList: true,
+                  child: TimelinesHomeTabPostStatusHeaderWidget(),
+                ),
+              ),
+            ),
+          ),
         ],
-        topSliverScrollOffsetToShowWhiteStatusBar: null,
+        // white status bar over post status header
+        topSliverScrollOffsetToShowWhiteStatusBar: 100,
         tabKeyPrefix: "TimelineTab",
         tabBodyProviderBuilder:
             (BuildContext context, int index, Widget child) => Provider<
@@ -107,7 +157,8 @@ class TimelinesHomeTabPage extends StatelessWidget {
                 update: (context, value, previous) => value, child: child),
           ),
         ),
-        tabBodyContentBuilder: (BuildContext context) => NewTimelineWidget(),
+        tabBodyContentBuilder: (BuildContext context) =>
+            FediDarkStatusBarStyleArea(child: NewTimelineWidget()),
         tabBodyOverlayBuilder: (BuildContext context) =>
             _buildTapToLoadOverlay(context),
       ),
@@ -151,9 +202,11 @@ class TimelinesHomeTabPage extends StatelessWidget {
         },
       );
 
-  Widget _buildTabsWidget() {
-    return Row(
-      children: [],
-    );
-  }
+  Widget _buildTabIndicatorWidget() => FediTextTabIndicatorWidget(
+        tabController: tabController,
+        isTransparent: true,
+        tabs: _timelineTabs,
+        tabToTextMapper: (BuildContext context, TimelineTab tab) =>
+            FediIconTabIndicatorItemWidget.mapTabToTitle(context, tab),
+      );
 }
