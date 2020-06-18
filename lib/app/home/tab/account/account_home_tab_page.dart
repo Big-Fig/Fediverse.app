@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fedi/app/account/account_bloc.dart';
+import 'package:fedi/app/account/details/account_details_body_widget.dart';
 import 'package:fedi/app/account/details/account_details_widget.dart';
 import 'package:fedi/app/account/my/action/my_account_action_list_bottom_sheet_dialog.dart';
 import 'package:fedi/app/account/my/edit/edit_my_account_page.dart';
@@ -7,6 +8,7 @@ import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_drawer_widget.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
+import 'package:fedi/app/status/list/status_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -42,20 +44,25 @@ class AccountHomeTabPage extends StatelessWidget {
         ],
         providerBuilder: (context, child) =>
             ProxyProvider<IMyAccountBloc, IAccountBloc>(
-                update: (context, value, previous) => value, child: child),
+          update: (context, value, previous) => value,
+          child: Builder(
+            builder: (context) =>
+                AccountDetailsWidget.buildAccountDetailsProviders(
+                    context, child),
+          ),
+        ),
         contentBuilder: (context) {
           return FediDarkStatusBarStyleArea(
             child: ClipRRect(
               borderRadius: FediSizes.defaultClipRRectBorderRadius,
               child: Container(
                 color: Colors.white,
-                child: AccountDetailsWidget(),
+                child: AccountDetailsBodyWidget(),
               ),
             ),
           );
         },
-//        overlayBuilder: (context) => StatusListTapToLoadOverlayWidget(),
-        overlayBuilder: null,
+        overlayBuilder: (context) => StatusListTapToLoadOverlayWidget(),
       );
 
   Widget _buildSettingsAction(BuildContext context) =>
