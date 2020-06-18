@@ -21,6 +21,7 @@ class NotificationTabTextTabIndicatorItemWidget extends StatelessWidget {
           tabs: notificationTabs,
           tabToIconMapper: (BuildContext context, NotificationTab tab) =>
               mapTabToIconData(context, tab),
+          expand: true,
         ),
       );
 

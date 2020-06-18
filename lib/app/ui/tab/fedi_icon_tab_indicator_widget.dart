@@ -8,8 +8,10 @@ class FediIconTabIndicatorWidget<T> extends StatelessWidget {
   final List<T> tabs;
   final TabController tabController;
   final TabToIconMapper<T> tabToIconMapper;
+  final bool expand;
 
   FediIconTabIndicatorWidget({
+    @required this.expand,
     @required this.tabs,
     @required this.tabController,
     @required this.tabToIconMapper,
@@ -17,6 +19,8 @@ class FediIconTabIndicatorWidget<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Row(
+        mainAxisAlignment: expand == true ? MainAxisAlignment.spaceBetween :
+        null,
         children: tabs.asMap().entries.map((entry) {
           var index = entry.key;
           var tab = entry.value;
