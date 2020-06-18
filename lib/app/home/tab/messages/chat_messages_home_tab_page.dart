@@ -22,7 +22,7 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-import '../home_tab_header_bar_widget.dart';
+import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 
 var _logger = Logger("chat_messages_home_tab_page.dart");
 
