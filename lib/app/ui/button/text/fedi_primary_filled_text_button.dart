@@ -14,6 +14,7 @@ class FediPrimaryFilledTextButton extends FediTextButton {
   final double height;
   final double fontSize;
   final double lineHeight;
+  final double borderWidth;
 
   FediPrimaryFilledTextButton(
     this.text, {
@@ -21,6 +22,7 @@ class FediPrimaryFilledTextButton extends FediTextButton {
     this.height = FediSizes.defaultFilledButtonHeight,
     this.fontSize = 14.0,
     this.lineHeight = 1.15,
+    this.borderWidth = 1,
   });
 
   @override
@@ -28,7 +30,7 @@ class FediPrimaryFilledTextButton extends FediTextButton {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-          height: height,
+          height: height + borderWidth * 2,
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,
             color: onPressed != null
@@ -38,7 +40,7 @@ class FediPrimaryFilledTextButton extends FediTextButton {
                 Radius.circular(FediIconInCircleButton.defaultCircleSize)),
             border: Border.all(
               color: FediColors.white,
-              width: 1.0,
+              width: borderWidth,
             ),
           ),
           child: Center(

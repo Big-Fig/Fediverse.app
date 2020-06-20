@@ -22,6 +22,7 @@ class FediTabMainHeaderBarWidget extends StatelessWidget {
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           if (leadingWidgets != null)
             Row(

@@ -11,32 +11,35 @@ class FediIconInCircleTransparentButton extends StatelessWidget
   final IconData iconData;
   final VoidCallback onPressed;
   final double iconSize;
+  final double borderWidth;
+  final double size;
 
-  const FediIconInCircleTransparentButton(this.iconData,
-      {@required this.onPressed,
-      this.iconSize = FediIconInCircleButton.defaultIconSize});
+  const FediIconInCircleTransparentButton(
+    this.iconData, {
+    @required this.onPressed,
+    this.borderWidth = 1.0,
+    this.iconSize = FediIconInCircleButton.defaultIconSize,
+    this.size = FediIconInCircleButton.defaultCircleSize,
+  });
 
   @override
   Widget build(BuildContext context) => Container(
-      width: FediIconInCircleButton.defaultCircleSize,
-      height: FediIconInCircleButton.defaultCircleSize,
+      width: size + borderWidth * 2,
+      height: size + borderWidth * 2,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: FediColors.darkGrey.withOpacity(0.3),
         border: Border.all(
           color: FediColors.white,
-          width: 1.0,
+          width: borderWidth,
         ),
       ),
       child: ClipRRect(
-        borderRadius:
-            BorderRadius.circular(FediIconInCircleButton.defaultCircleSize),
+        borderRadius: BorderRadius.circular(size),
         child: BackdropFilter(
           child: IconButton(
             padding: EdgeInsets.all(0.0),
-            icon: Icon(iconData,
-                size: iconSize,
-                color: FediColors.white),
+            icon: Icon(iconData, size: iconSize, color: FediColors.white),
             onPressed: onPressed,
           ),
           filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),

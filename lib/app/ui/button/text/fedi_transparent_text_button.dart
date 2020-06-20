@@ -15,6 +15,7 @@ class FediTransparentTextButton extends StatelessWidget
   final double height;
   final double fontSize;
   final double lineHeight;
+  final double borderWidth;
 
   const FediTransparentTextButton(
     this.text, {
@@ -22,6 +23,7 @@ class FediTransparentTextButton extends StatelessWidget
     this.height = FediSizes.defaultFilledButtonHeight,
     this.fontSize = 14.0,
     this.lineHeight = 1.15,
+    this.borderWidth = 1,
   });
 
   @override
@@ -29,7 +31,7 @@ class FediTransparentTextButton extends StatelessWidget
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-          height: height,
+          height: height + borderWidth * 2,
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,
             color: FediColors.darkGrey.withOpacity(0.3),
@@ -37,7 +39,7 @@ class FediTransparentTextButton extends StatelessWidget
                 Radius.circular(FediIconInCircleButton.defaultCircleSize)),
             border: Border.all(
               color: FediColors.white,
-              width: 1.0,
+              width: borderWidth,
             ),
           ),
           child: ClipRRect(

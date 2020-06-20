@@ -4,11 +4,18 @@ import 'package:fedi/app/account/my/edit/edit_my_account_bloc.dart';
 import 'package:fedi/app/account/my/edit/edit_my_account_model.dart';
 import 'package:fedi/app/account/my/edit/header/edit_my_account_header_dialog.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
+import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:fedi/file/picker/single/single_file_picker_page.dart';
 import 'package:flutter/material.dart';
 
-var _avatarSize = 100.0;
+const _avatarSize = 120.0;
+const _avatarCircleBorderWidth = 4.0;
+const _avatarAndBorderSize = _avatarSize + _avatarCircleBorderWidth;
+const _avatarTopPadding = 50.0;
+const _headerBackgroundHeight = 148.0;
 
 class EditMyAccountWidget extends StatelessWidget {
   @override
@@ -17,15 +24,29 @@ class EditMyAccountWidget extends StatelessWidget {
     return ListView(
       children: <Widget>[
         Container(
-          height: 200,
-          width: double.infinity,
+          height: _avatarTopPadding + _avatarSize + _avatarCircleBorderWidth * 2,
           child: Stack(
-            alignment: Alignment.center,
-            children: <Widget>[
-              buildHeaderField(context, editMyAccountBloc),
-              buildAvatarField(context, editMyAccountBloc),
+            children: [
+              Container(
+                height: _headerBackgroundHeight,
+                child: buildHeaderField(context, editMyAccountBloc),
+              ),
+              Positioned(
+                left: 0,
+                right: 0,
+                top: _avatarTopPadding,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    buildAvatarField(context, editMyAccountBloc),
+                  ],
+                ),
+              ),
             ],
           ),
+        ),
+        SizedBox(
+          height: 24,
         ),
         buildDisplayNameField(context, editMyAccountBloc),
         buildNoteField(context, editMyAccountBloc),
@@ -36,11 +57,12 @@ class EditMyAccountWidget extends StatelessWidget {
     );
   }
 
-  Widget buildHeaderEditField(
+  Widget buildEditHeaderBackgroundActionButton(
           BuildContext context, IEditMyAccountBloc editMyAccountBloc) =>
       FediIconInCircleTransparentButton(
-        Icons.image,
-        iconSize: 20.0,
+        FediIcons.camera,
+        iconSize: 15.0,
+        size: FediSizes.smallFilledButtonHeight,
         onPressed: () {
           startChoosingFileToUploadHeader(context, editMyAccountBloc);
         },
@@ -68,16 +90,12 @@ class EditMyAccountWidget extends StatelessWidget {
       onTap: () {
         startChoosingFileToUploadAvatar(context, editMyAccountBloc);
       },
-      child: Container(
-        width: _avatarSize + 5,
-        height: _avatarSize + 5,
-        child: Stack(
-          alignment: Alignment.bottomRight,
-          children: <Widget>[
-            Center(child: buildAvatarFieldImage(context, editMyAccountBloc)),
-            buildAvatarFieldEditButton(context, editMyAccountBloc),
-          ],
-        ),
+      child: Stack(
+        alignment: Alignment.bottomRight,
+        children: <Widget>[
+          buildAvatarFieldImage(context, editMyAccountBloc),
+          buildEditAvatarActionButton(context, editMyAccountBloc),
+        ],
       ),
     );
   }
@@ -97,11 +115,13 @@ class EditMyAccountWidget extends StatelessWidget {
     }, startActiveTab: FilePickerTab.gallery);
   }
 
-  Widget buildAvatarFieldEditButton(
+  Widget buildEditAvatarActionButton(
           BuildContext context, IEditMyAccountBloc editMyAccountBloc) =>
       FediIconInCircleTransparentButton(
-        Icons.edit,
-        iconSize: 20.0,
+        FediIcons.camera,
+        iconSize: 15.0,
+        borderWidth: 2.0,
+        size: FediSizes.smallFilledButtonHeight,
         onPressed: () {
           startChoosingFileToUploadAvatar(context, editMyAccountBloc);
         },
@@ -109,24 +129,45 @@ class EditMyAccountWidget extends StatelessWidget {
 
   Widget buildAvatarFieldImage(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    return StreamBuilder<String>(
-        stream: editMyAccountBloc.avatarImageUrlStream,
-        initialData: editMyAccountBloc.avatarImageUrl,
-        builder: (context, snapshot) {
-          var url = snapshot.data;
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(_avatarAndBorderSize  / 2),
+        border: Border.all(
+          width: _avatarCircleBorderWidth,
+          color: FediColors.white,
+          style: BorderStyle.solid,
+        ),
+      ),
+      child: StreamBuilder<String>(
+          stream: editMyAccountBloc.avatarImageUrlStream,
+          initialData: editMyAccountBloc.avatarImageUrl,
+          builder: (context, snapshot) {
+            var url = snapshot.data;
 
-          return CachedNetworkImage(
-            imageUrl: url,
-            placeholder: (context, url) => Container(
-              width: 30,
-              height: 30,
-              child: CircularProgressIndicator(),
-            ),
-            errorWidget: (context, url, error) => Icon(Icons.error),
-            height: _avatarSize,
-            width: _avatarSize,
-          );
-        });
+            return CachedNetworkImage(
+              imageUrl: url,
+              placeholder: (context, url) => Container(
+                width: 30,
+                height: 30,
+                child: CircularProgressIndicator(),
+              ),
+              imageBuilder: (context, imageProvider) {
+                return Container(
+                  height: _avatarSize,
+                  width: _avatarSize,
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(_avatarSize / 2 - _avatarCircleBorderWidth),
+                      child: Image(
+                        image: imageProvider,
+                      )),
+                );
+              },
+              errorWidget: (context, url, error) => Icon(Icons.error),
+              height: _avatarSize,
+              width: _avatarSize,
+            );
+          }),
+    );
   }
 
   Widget buildHeaderField(
@@ -134,12 +175,12 @@ class EditMyAccountWidget extends StatelessWidget {
     return Stack(
       children: <Widget>[
         buildHeaderFieldImage(context, editMyAccountBloc),
-        Align(
-            alignment: Alignment.bottomRight,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: buildHeaderEditField(context, editMyAccountBloc),
-            ))
+        Positioned(
+          bottom: 16.0,
+          right: 16.0,
+          child:
+              buildEditHeaderBackgroundActionButton(context, editMyAccountBloc),
+        ),
       ],
     );
   }
@@ -180,8 +221,7 @@ class EditMyAccountWidget extends StatelessWidget {
 
   Widget buildNoteField(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    var label =
-        tr("app.account.my.edit.field.note.label");
+    var label = tr("app.account.my.edit.field.note.label");
     var textEditingController =
         editMyAccountBloc.noteField.textEditingController;
     return buildTextField(textEditingController, label);
@@ -271,7 +311,7 @@ class EditMyAccountWidget extends StatelessWidget {
             child: buildCustomFieldTextField(
                 customField.nameField.textEditingController,
                 tr("app.account.my.edit.field.custom_field.label"
-                        ".label")),
+                    ".label")),
           ),
           Flexible(
             child: buildCustomFieldTextField(

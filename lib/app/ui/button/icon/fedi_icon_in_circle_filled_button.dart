@@ -10,8 +10,17 @@ class FediIconInCircleFilledButton extends StatelessWidget
     implements FediIconInCircleButton {
   final IconData iconData;
   final VoidCallback onPressed;
+  final double iconSize;
+  final double borderWidth;
+  final double size;
 
-  const FediIconInCircleFilledButton(this.iconData, {@required this.onPressed});
+  const FediIconInCircleFilledButton(
+    this.iconData, {
+    @required this.onPressed,
+    this.borderWidth = 1.0,
+    this.iconSize = FediIconInCircleButton.defaultIconSize,
+    this.size = FediIconInCircleButton.defaultCircleSize,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,20 +30,23 @@ class FediIconInCircleFilledButton extends StatelessWidget
         onPressed != null ? FediColors.white : FediColors.lightGrey;
     var iconColor = onPressed != null ? FediColors.white : FediColors.lightGrey;
     return Container(
-        width: FediIconInCircleButton.defaultCircleSize,
-        height: FediIconInCircleButton.defaultCircleSize,
+        width: size + borderWidth * 2,
+        height: size + borderWidth * 2,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: backgroundColor,
           border: Border.all(
             color: borderColor,
-            width: 1.0,
+            width: borderWidth,
           ),
         ),
         child: IconButton(
           padding: EdgeInsets.all(0.0),
-          icon: Icon(iconData,
-              size: FediIconInCircleButton.defaultIconSize, color: iconColor),
+          icon: Icon(
+            iconData,
+            size: iconSize,
+            color: iconColor,
+          ),
           onPressed: onPressed,
         ));
   }
