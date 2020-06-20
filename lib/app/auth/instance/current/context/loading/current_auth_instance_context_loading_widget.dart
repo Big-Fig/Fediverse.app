@@ -72,6 +72,8 @@ class CurrentAuthInstanceContextLoadingWidget extends StatelessWidget {
   FediLightStatusBarStyleArea _buildSessionExpired(
       ICurrentAuthInstanceContextLoadingBloc currentInstanceContextLoadingBloc,
       BuildContext context) {
+    var currentAuthInstanceBloc =
+        ICurrentAuthInstanceBloc.of(context, listen: false);
     return FediLightStatusBarStyleArea(
       child: Scaffold(
         backgroundColor: FediColors.primaryColor,
@@ -84,8 +86,12 @@ class CurrentAuthInstanceContextLoadingWidget extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Text(
-                    tr("app.auth.instance.current.context.loading.cant_load"
-                        ".content"),
+                    tr(
+                        "app.auth.instance.current.context.loading.cant_load"
+                        ".content",
+                        args: [
+                          currentAuthInstanceBloc.currentInstance.userAtHost
+                        ]),
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         color: FediColors.white, fontWeight: FontWeight.w500),
