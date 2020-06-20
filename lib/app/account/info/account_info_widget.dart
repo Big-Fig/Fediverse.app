@@ -1,13 +1,10 @@
 import 'dart:ui';
-
-import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/avatar/account_avatar_widget.dart';
 import 'package:fedi/app/account/display_name/account_display_name_widget.dart';
-import 'package:fedi/app/account/follower/account_follower_account_list_page.dart';
-import 'package:fedi/app/account/following/account_following_account_list_page.dart';
-import 'package:fedi/app/account/header/account_header_widget.dart';
-import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
+import 'package:fedi/app/account/header/account_header_background_widget.dart';
+import 'package:fedi/app/account/header/account_header_followers_count_widget.dart';
+import 'package:fedi/app/account/header/account_header_followings_count_widget.dart';
+import 'package:fedi/app/account/header/account_header_statuses_count_widget.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +16,6 @@ class AccountInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var accountBloc = IAccountBloc.of(context, listen: false);
     return Stack(
       children: <Widget>[
         Positioned(
@@ -27,7 +23,7 @@ class AccountInfoWidget extends StatelessWidget {
           bottom: 0.0,
           left: 0.0,
           right: 0.0,
-          child: AccountHeaderWidget(),
+          child: AccountHeaderBackgroundWidget(),
         ),
         Padding(
           padding: const EdgeInsets.all(16.0),
@@ -50,13 +46,15 @@ class AccountInfoWidget extends StatelessWidget {
                   progressSize: 30,
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  buildStatusesCountWidget(accountBloc),
-                  buildFollowingCountWidget(accountBloc),
-                  buildFollowersCountWidget(accountBloc),
-                ],
+              AccountHeaderStatusesCountWidget(
+                onStatusesTapCallback: onStatusesTapCallback,
+                color: FediColors.white,
+              ),
+              AccountHeaderFollowingsCountWidget(
+                color: FediColors.white,
+              ),
+              AccountHeaderFollowersCountWidget(
+                color: FediColors.white,
               ),
             ],
           ),
@@ -64,61 +62,4 @@ class AccountInfoWidget extends StatelessWidget {
       ],
     );
   }
-
-  StreamBuilder<int> buildFollowersCountWidget(IAccountBloc accountBloc) {
-    return StreamBuilder<int>(
-        stream: accountBloc.followersCountStream,
-        initialData: accountBloc.followersCount,
-        builder: (context, snapshot) {
-          var followersCount = snapshot.data;
-          return buildStatisticValueWidget(
-            tr("app.account.info.followers", args: [followersCount.toString()]),
-            onPressed: () {
-              goToAccountFollowerAccountListPage(context, accountBloc.account);
-            },
-          );
-        });
-  }
-
-  StreamBuilder<int> buildFollowingCountWidget(IAccountBloc accountBloc) {
-    return StreamBuilder<int>(
-        stream: accountBloc.followingCountStream,
-        initialData: accountBloc.followingCount,
-        builder: (context, snapshot) {
-          var followingCount = snapshot.data;
-          return buildStatisticValueWidget(
-            tr("app.account.info.following", args: [followingCount.toString()]),
-            onPressed: () {
-              goToAccountFollowingAccountListPage(context, accountBloc.account);
-            },
-          );
-        });
-  }
-
-  Widget buildStatusesCountWidget(IAccountBloc accountBloc) {
-    return StreamBuilder<int>(
-        stream: accountBloc.statusesCountStream,
-        initialData: accountBloc.statusesCount,
-        builder: (context, snapshot) {
-          var statusesCount = snapshot.data;
-          return buildStatisticValueWidget(
-            tr("app.account.info.statuses", args: [statusesCount.toString()]),
-            onPressed: () {
-              if(onStatusesTapCallback != null) {
-                onStatusesTapCallback();
-              }
-
-            },
-          );
-        });
-  }
-
-  Widget buildStatisticValueWidget(String formattedValue,
-          {VoidCallback onPressed}) =>
-      FediTransparentTextButton(
-        formattedValue,
-        textSize: 14.0,
-        onPressed: onPressed,
-        height: null,
-      );
 }

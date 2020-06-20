@@ -10,4 +10,6 @@ class FediSizes {
     topLeft: Radius.circular(16.0),
     topRight: Radius.circular(16.0),
   );
+  static const smallFilledButtonHeight = 32.0;
+  static const defaultFilledButtonHeight = 36.0;
 }

@@ -59,6 +59,9 @@ class HtmlTextWidget extends StatelessWidget {
           margin: EdgeInsets.zero,
           textOverflow: textOverflow,
           textMaxLines: textMaxLines,
+          fontSize: FontSize(fontSize),
+          fontWeight: fontWeight,
+          color: color,
         ),
         "body": Style(
           display: shrinkWrap ? Display.INLINE : Display.BLOCK,

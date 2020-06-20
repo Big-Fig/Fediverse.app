@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_text_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
@@ -12,13 +13,16 @@ class FediTransparentTextButton extends StatelessWidget
   final String text;
   final VoidCallback onPressed;
   final double height;
-  final double textSize;
+  final double fontSize;
+  final double lineHeight;
 
-  const FediTransparentTextButton(this.text,
-      {@required this.onPressed,
-      this.height = FediIconInCircleButton.defaultCircleSize,
-      this.textSize = 16.0,
-      });
+  const FediTransparentTextButton(
+    this.text, {
+    @required this.onPressed,
+    this.height = FediSizes.defaultFilledButtonHeight,
+    this.fontSize = 14.0,
+    this.lineHeight = 1.15,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -42,13 +46,13 @@ class FediTransparentTextButton extends StatelessWidget
             child: BackdropFilter(
               child: Center(
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 6, horizontal: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
                     text,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        fontSize: textSize,
+                        fontSize: fontSize,
+                        height: lineHeight,
                         color: FediColors.white.withOpacity(0.8)),
                   ),
                 ),

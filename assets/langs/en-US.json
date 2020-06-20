@@ -34,9 +34,9 @@
         }
       },
       "info": {
-        "followers": "Followers \n {}",
-        "following": "Following \n {}",
-        "statuses": "Statuses \n {}"
+        "followers": "Followers",
+        "following": "Following",
+        "statuses": "Statuses"
       },
       "my": {
         "settings": {

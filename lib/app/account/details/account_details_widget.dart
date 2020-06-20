@@ -1,29 +1,24 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/details/account_details_body_widget.dart';
 import 'package:fedi/app/account/statuses/account_statuses_cached_list_bloc_impl.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
+import 'package:fedi/app/status/list/status_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
 import 'package:fedi/app/status/pagination/list/status_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
-import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_container_with_overlay_widget.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
+import 'package:fedi/ui/scroll/scroll_controller_bloc_impl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class AccountDetailsWidget extends StatelessWidget {
-  final ScrollController scrollController;
-
-  const AccountDetailsWidget({@required this.scrollController});
-
+class AccountDetailsWidget extends StatefulWidget {
   @override
-  Widget build(BuildContext context) => buildAccountDetailsProviders(
-      context, buildListWithNewItemsOverlayContainer(context));
+  _AccountDetailsWidgetState createState() => _AccountDetailsWidgetState();
 
   static Widget buildAccountDetailsProviders(
       BuildContext context, Widget child) {
@@ -63,12 +58,38 @@ class AccountDetailsWidget extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget buildListWithNewItemsOverlayContainer(BuildContext context) => PaginationListWithNewItemsContainerWithOverlayWidget(
-      textBuilder: (context, updateItemsCount) => plural(
-          "app.status.list.new_items.action"
-          ".tap_to_load_new",
-          updateItemsCount),
-      child: AccountDetailsBodyWidget(scrollController: scrollController),
-    );
+class _AccountDetailsWidgetState extends State<AccountDetailsWidget> {
+  ScrollControllerBloc scrollControllerBloc;
+  ScrollController scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    scrollController = ScrollController();
+    scrollControllerBloc =
+        ScrollControllerBloc(scrollController: scrollController);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    scrollController.dispose();
+    scrollControllerBloc.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => Provider.value(
+        value: scrollControllerBloc,
+        child: AccountDetailsWidget.buildAccountDetailsProviders(
+            context, buildListWithNewItemsOverlayContainer(context)),
+      );
+
+  Widget buildListWithNewItemsOverlayContainer(BuildContext context) => Stack(
+        children: [
+          AccountDetailsBodyWidget(scrollController: scrollController),
+          StatusListTapToLoadOverlayWidget(),
+        ],
+      );
 }
