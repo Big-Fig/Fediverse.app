@@ -28,17 +28,22 @@ class AccountHeaderBackgroundWidget extends StatelessWidget {
                     fit: BoxFit.cover,
                     image: imageProvider,
                   ),
-                  Container(
-                      decoration: BoxDecoration(
-                    color: FediColors.imageDarkOverlay
-                  ))
+                  buildDarkOverlayContainer(child: null),
                 ],
               ));
             },
-            errorWidget: (context, url, error) => Icon(Icons.error),
+            progressIndicatorBuilder: (context, url, progress) =>
+                buildDarkOverlayContainer(
+                    child: Center(child: CircularProgressIndicator())),
+            errorWidget: (context, url, error) => buildDarkOverlayContainer(
+                child: Center(child: Icon(Icons.error))),
           );
         });
   }
+
+  Widget buildDarkOverlayContainer({@required Widget child}) => Container(
+      child: child,
+      decoration: BoxDecoration(color: FediColors.imageDarkOverlay));
 
   const AccountHeaderBackgroundWidget();
 }
