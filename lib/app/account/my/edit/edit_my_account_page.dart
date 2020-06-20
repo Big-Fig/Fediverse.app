@@ -3,6 +3,7 @@ import 'package:fedi/app/account/my/edit/edit_my_account_bloc.dart';
 import 'package:fedi/app/account/my/edit/edit_my_account_bloc_impl.dart';
 import 'package:fedi/app/account/my/edit/edit_my_account_widget.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
 import 'package:fedi/app/ui/button/icon/fedi_dismiss_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
@@ -23,7 +24,7 @@ class EditMyAccountPage extends StatelessWidget {
       child: Scaffold(
         appBar: FediSubPageTitleAppBar(
           title: tr("app.account.my.edit.title"),
-          leading: FediDismissIconButton(
+          leading: FediBackIconButton(
             customOnPressed: () {
               handleBackPressed(context, editMyAccountBloc);
             },

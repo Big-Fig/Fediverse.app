@@ -15,14 +15,16 @@ class FediGreyFilledTextButton extends FediTextButton {
   final double height;
   final double fontSize;
   final double lineHeight;
+  final double borderWidth;
 
   FediGreyFilledTextButton(
     this.text, {
     @required this.onPressed,
     this.textColor = FediColors.grey,
-        this.height = FediSizes.defaultFilledButtonHeight,
-        this.fontSize = 14.0,
-        this.lineHeight = 1.15,
+    this.height = FediSizes.defaultFilledButtonHeight,
+    this.fontSize = 14.0,
+    this.lineHeight = 1.15,
+    this.borderWidth = 1,
   });
 
   @override
@@ -30,7 +32,7 @@ class FediGreyFilledTextButton extends FediTextButton {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-          height: FediIconInCircleButton.defaultCircleSize,
+          height: height + borderWidth * 2,
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,
             color: onPressed != null
@@ -40,7 +42,7 @@ class FediGreyFilledTextButton extends FediTextButton {
                 Radius.circular(FediIconInCircleButton.defaultCircleSize)),
             border: Border.all(
               color: FediColors.white,
-              width: 1.0,
+              width: borderWidth,
             ),
           ),
           child: Center(
