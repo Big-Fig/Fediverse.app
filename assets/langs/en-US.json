@@ -172,7 +172,7 @@
                 "content": "Loading {}"
               },
               "cant_load": {
-                "content": "Can't load current instance.\nApp error or session expired",
+                "content": "Can't load {} instance.\nApp error or session expired",
                 "action": {
                   "refresh": "Refresh",
                   "choose_different_account": "Choose different account",
