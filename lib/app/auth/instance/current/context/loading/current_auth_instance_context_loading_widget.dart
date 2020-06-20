@@ -117,6 +117,7 @@ class CurrentAuthInstanceContextLoadingWidget extends StatelessWidget {
                       showMyAccountActionListBottomSheetDialog(context);
                     },
                     textColor: FediColors.darkGrey,
+
                   ),
                 ),
                 Padding(

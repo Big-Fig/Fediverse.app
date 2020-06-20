@@ -1,5 +1,6 @@
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/field/account_field_grid_item_widget.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/pleroma/field/pleroma_field_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -21,15 +22,20 @@ class AccountFieldGridWidget extends StatelessWidget {
 
           if (nonEmptyFields?.isNotEmpty == true) {
             return GridView.count(
-              padding: EdgeInsets.zero,
+                padding: const EdgeInsets.all(16.0),
                 shrinkWrap: true,
                 childAspectRatio: 4,
                 crossAxisCount: 2,
                 children: nonEmptyFields
-                    .map((field) => Padding(
-                          padding: const EdgeInsets.all(8.0),
+                // hack to avoid fill parent inside GridView
+                    .map((field) => Column(
+                      children: [
+                        Container(
+                          height: FediSizes.defaultFilledButtonHeight,
                           child: AccountFieldGridItemWidget(field: field),
-                        ))
+                        ),
+                      ],
+                    ))
                     .toList());
           } else {
             return const SizedBox.shrink();

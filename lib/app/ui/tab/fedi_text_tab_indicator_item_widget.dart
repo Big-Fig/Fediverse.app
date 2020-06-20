@@ -10,8 +10,7 @@ class FediTextTabIndicatorItemWidget extends StatefulWidget {
   final bool isTransparent;
   final TabController tabController;
 
-  const FediTextTabIndicatorItemWidget(
-     {
+  const FediTextTabIndicatorItemWidget({
     @required this.label,
     @required this.index,
     @required this.isTransparent,
@@ -19,10 +18,12 @@ class FediTextTabIndicatorItemWidget extends StatefulWidget {
   });
 
   @override
-  _FediTextTabIndicatorItemWidgetState createState() => _FediTextTabIndicatorItemWidgetState();
+  _FediTextTabIndicatorItemWidgetState createState() =>
+      _FediTextTabIndicatorItemWidgetState();
 }
 
-class _FediTextTabIndicatorItemWidgetState extends State<FediTextTabIndicatorItemWidget> {
+class _FediTextTabIndicatorItemWidgetState
+    extends State<FediTextTabIndicatorItemWidget> {
   bool isSelected;
   VoidCallback listener;
   bool isDisposed = false;
@@ -67,12 +68,27 @@ class _FediTextTabIndicatorItemWidgetState extends State<FediTextTabIndicatorIte
 
     Widget text;
     if (isSelected) {
-      text = FediPrimaryFilledTextButton(widget.label, onPressed: onPressed);
+      text = FediPrimaryFilledTextButton(
+        widget.label,
+        onPressed: onPressed,
+        fontSize: 16.0,
+        lineHeight: 1.5,
+      );
     } else {
       if (widget.isTransparent) {
-        text = FediTransparentTextButton(widget.label, onPressed: onPressed);
+        text = FediTransparentTextButton(
+          widget.label,
+          onPressed: onPressed,
+          fontSize: 16.0,
+          lineHeight: 1.5,
+        );
       } else {
-        text = FediGreyFilledTextButton(widget.label, onPressed: onPressed);
+        text = FediGreyFilledTextButton(
+          widget.label,
+          onPressed: onPressed,
+          fontSize: 16.0,
+          lineHeight: 1.5,
+        );
       }
     }
 

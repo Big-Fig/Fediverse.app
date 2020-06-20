@@ -1,8 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fedi/app/account/account_bloc.dart';
-import 'package:fedi/app/account/details/account_details_body_widget.dart';
 import 'package:fedi/app/account/details/account_details_widget.dart';
 import 'package:fedi/app/account/my/action/my_account_action_list_bottom_sheet_dialog.dart';
+import 'package:fedi/app/account/my/details/my_account_details_body_widget.dart';
 import 'package:fedi/app/account/my/edit/edit_my_account_page.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_drawer_widget.dart';
@@ -38,15 +38,19 @@ class AccountHomeTabPage extends StatelessWidget {
         topSliverScrollOffsetToShowWhiteStatusBar: null,
         topSliverWidgets: [
           FediTabMainHeaderBarWidget(
-            leadingWidgets: [
+            leadingWidgets: null,
+            content: Row(children: [
               _buildDrawerAction(context),
               SizedBox(
                 width: 16.0,
               ),
-              buildAccountChooserButton(context),
-            ],
-            content: null,
-            endingWidgets: [_buildSettingsAction(context)],
+              Expanded(child: buildAccountChooserButton(context)),
+              SizedBox(
+                width: 16.0,
+              ),
+              _buildSettingsAction(context)
+            ],),
+            endingWidgets: null,
           ),
         ],
         providerBuilder: (context, child) =>
@@ -64,7 +68,7 @@ class AccountHomeTabPage extends StatelessWidget {
               borderRadius: FediSizes.defaultClipRRectBorderRadius,
               child: Container(
                 color: Colors.white,
-                child: AccountDetailsBodyWidget(),
+                child: MyAccountDetailsBodyWidget(),
               ),
             ),
           );
@@ -94,11 +98,10 @@ class AccountHomeTabPage extends StatelessWidget {
         showMyAccountActionListBottomSheetDialog(context);
       },
       child: Row(
-        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          buildCurrentInstanceNameWidget(context),
+          Flexible(child: buildCurrentInstanceNameWidget(context)),
           SizedBox(
             width: 8.0,
           ),
@@ -116,8 +119,11 @@ class AccountHomeTabPage extends StatelessWidget {
     var currentInstanceBloc =
         ICurrentAuthInstanceBloc.of(context, listen: false);
 
-    return Text(
+    return AutoSizeText(
       currentInstanceBloc.currentInstance.userAtHost,
+      minFontSize: 12.0,
+      maxFontSize: 18.0,
+      maxLines: 1,
       style: TextStyle(
           fontWeight: FontWeight.w500, color: FediColors.white, fontSize: 18.0),
     );

@@ -42,7 +42,7 @@ class PostStatusPostTextActionWidget extends StatelessWidget {
                     textColor: Colors.white,
                     fontSize: 16.0);
               }
-              FocusScope.of(context).requestFocus( FocusNode()); //remove focus
+              FocusScope.of(context).requestFocus(FocusNode()); //remove focus
               if (success && successCallback != null) {
                 successCallback(context);
               }
@@ -54,8 +54,7 @@ class PostStatusPostTextActionWidget extends StatelessWidget {
                     title: isScheduled
                         ? tr("app.status.post.dialog.error.title.schedule")
                         : tr("app.status.post.dialog.error.title.post"),
-                    content: tr(
-                        "app.status.post.dialog.error.content",
+                    content: tr("app.status.post.dialog.error.content",
                         args: [error.toString()]),
                     context: context);
               }

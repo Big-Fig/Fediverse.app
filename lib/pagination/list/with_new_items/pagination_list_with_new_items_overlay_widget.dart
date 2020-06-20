@@ -1,4 +1,5 @@
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc.dart';
@@ -21,15 +22,6 @@ class PaginationListWithNewItemsOverlayWidget extends StatelessWidget {
     var paginationWithUpdatesListBloc =
         IPaginationListWithNewItemsBloc.of(context);
 
-//    return StreamBuilder<bool>(
-//        stream: paginationWithUpdatesListBloc.isDismissedStream,
-//        initialData: paginationWithUpdatesListBloc.isDismissed,
-//        builder: (context, snapshot) {
-//          var isDismissed = snapshot.data;
-//
-//          if (isDismissed) {
-//            return SizedBox.shrink();
-//          } else {
     return StreamBuilder<int>(
         stream: paginationWithUpdatesListBloc.unmergedNewItemsCountStream
             .distinct(),
@@ -55,7 +47,7 @@ class PaginationListWithNewItemsOverlayWidget extends StatelessWidget {
                           ScrollDirection
                               .forward || //                        scrollDirection == ScrollDirection.idle ||
                       scrollDirection == null) {
-                    return _buildButtons(paginationWithUpdatesListBloc, context,
+                    return _buildButton(paginationWithUpdatesListBloc, context,
                         updateItemsCount);
                   } else {
                     return SizedBox.shrink();
@@ -65,40 +57,23 @@ class PaginationListWithNewItemsOverlayWidget extends StatelessWidget {
             return SizedBox.shrink();
           }
         });
-//          }
-//        });
   }
 
-  GestureDetector _buildButtons(
+  Widget _buildButton(
       IPaginationListWithNewItemsBloc<PaginationPage, dynamic>
           paginationWithUpdatesListBloc,
       BuildContext context,
       int updateItemsCount) {
-    return GestureDetector(
-        onTap: () {
-          paginationWithUpdatesListBloc.mergeNewItems();
+    return FediPrimaryFilledTextButton(
+      textBuilder(context, updateItemsCount),
+      onPressed: () {
+        paginationWithUpdatesListBloc.mergeNewItems();
 
-          var scrollControllerBloc =
-              IScrollControllerBloc.of(context, listen: false);
-          scrollControllerBloc.scrollToTop();
-        },
-        child: Container(
-          decoration: BoxDecoration(
-              color: FediColors.primaryColor,
-              borderRadius: BorderRadius.circular(20.0)),
-          child: Padding(
-            padding:
-                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 40.0),
-            child: Text(
-              textBuilder(context, updateItemsCount),
-              style: TextStyle(
-                color: FediColors.white,
-                fontWeight: FontWeight.w500,
-                height: 1.15,
-                fontSize: 14,
-              ),
-            ),
-          ),
-        ));
+        var scrollControllerBloc =
+            IScrollControllerBloc.of(context, listen: false);
+        scrollControllerBloc.scrollToTop();
+      },
+      height: FediSizes.smallFilledButtonHeight,
+    );
   }
 }

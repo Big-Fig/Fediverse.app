@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 
-class AccountHeaderWidget extends StatelessWidget {
+class AccountHeaderBackgroundWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: true);
@@ -51,5 +51,5 @@ class AccountHeaderWidget extends StatelessWidget {
         });
   }
 
-  const AccountHeaderWidget();
+  const AccountHeaderBackgroundWidget();
 }
