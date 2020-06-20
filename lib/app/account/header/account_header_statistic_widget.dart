@@ -1,4 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
+
+final _numberFormat = NumberFormat("#,###");
 
 class AccountHeaderStatisticWidget extends StatelessWidget {
   final String label;
@@ -26,7 +29,7 @@ class AccountHeaderStatisticWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            value.toString(),
+            _numberFormat.format(value),
             style: TextStyle(
               color: color,
               fontWeight: FontWeight.w500,
@@ -35,7 +38,7 @@ class AccountHeaderStatisticWidget extends StatelessWidget {
             ),
           ),
           Text(
-            label.toString(),
+            label,
             style: TextStyle(
               color: color,
               fontWeight: FontWeight.w300,
