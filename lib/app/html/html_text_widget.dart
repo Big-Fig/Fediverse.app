@@ -21,6 +21,7 @@ class HtmlTextWidget extends StatelessWidget {
   final TextOverflow textOverflow;
   final bool shrinkWrap;
   final bool drawNewLines;
+  final TextAlign textAlign;
 
   const HtmlTextWidget({
     @required this.data,
@@ -34,6 +35,7 @@ class HtmlTextWidget extends StatelessWidget {
     this.textOverflow,
     this.shrinkWrap = false,
     this.drawNewLines = true,
+    this.textAlign = TextAlign.start,
   });
 
   @override
@@ -62,6 +64,7 @@ class HtmlTextWidget extends StatelessWidget {
           fontSize: FontSize(fontSize),
           fontWeight: fontWeight,
           color: color,
+          textAlign: textAlign,
         ),
         "body": Style(
           display: shrinkWrap ? Display.INLINE : Display.BLOCK,
@@ -69,6 +72,7 @@ class HtmlTextWidget extends StatelessWidget {
           margin: EdgeInsets.zero,
           textOverflow: textOverflow,
           textMaxLines: textMaxLines,
+          textAlign: textAlign,
         ),
         "img": Style(
           display: Display.INLINE,
@@ -76,6 +80,7 @@ class HtmlTextWidget extends StatelessWidget {
           height: 20,
           padding: EdgeInsets.zero,
           margin: EdgeInsets.zero,
+          textAlign: textAlign,
         ),
         "p": Style(
           padding: EdgeInsets.zero,
@@ -87,6 +92,7 @@ class HtmlTextWidget extends StatelessWidget {
           color: color,
           textOverflow: textOverflow,
           textMaxLines: textMaxLines,
+          textAlign: textAlign,
         ),
         "a": Style(
           color: linkColor,
@@ -101,6 +107,7 @@ class HtmlTextWidget extends StatelessWidget {
           color: color,
           textOverflow: textOverflow,
           textMaxLines: textMaxLines,
+          textAlign: textAlign,
         ),
       },
       onImageError: (exception, stackTrace) {

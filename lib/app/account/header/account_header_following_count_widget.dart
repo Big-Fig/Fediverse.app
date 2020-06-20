@@ -4,10 +4,10 @@ import 'package:fedi/app/account/following/account_following_account_list_page.d
 import 'package:fedi/app/account/header/account_header_statistic_widget.dart';
 import 'package:flutter/cupertino.dart';
 
-class AccountHeaderFollowingsCountWidget extends StatelessWidget {
+class AccountHeaderFollowingCountWidget extends StatelessWidget {
   final Color color;
 
-  AccountHeaderFollowingsCountWidget({@required this.color});
+  AccountHeaderFollowingCountWidget({@required this.color});
 
   @override
   Widget build(BuildContext context) {

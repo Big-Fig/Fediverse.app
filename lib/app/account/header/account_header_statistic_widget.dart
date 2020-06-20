@@ -28,6 +28,7 @@ class AccountHeaderStatisticWidget extends StatelessWidget {
           Text(
             value.toString(),
             style: TextStyle(
+              color: color,
               fontWeight: FontWeight.w500,
               height: 1.15,
               fontSize: 16.0,
@@ -36,6 +37,7 @@ class AccountHeaderStatisticWidget extends StatelessWidget {
           Text(
             label.toString(),
             style: TextStyle(
+              color: color,
               fontWeight: FontWeight.w300,
               height: 1.5,
               fontSize: 14.0,

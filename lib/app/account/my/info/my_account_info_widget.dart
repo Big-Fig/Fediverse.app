@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:fedi/app/account/avatar/account_avatar_widget.dart';
 import 'package:fedi/app/account/header/account_header_followers_count_widget.dart';
-import 'package:fedi/app/account/header/account_header_followings_count_widget.dart';
+import 'package:fedi/app/account/header/account_header_following_count_widget.dart';
 import 'package:fedi/app/account/header/account_header_statuses_count_widget.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:flutter/cupertino.dart';
@@ -33,7 +33,7 @@ class MyAccountInfoWidget extends StatelessWidget {
                     onStatusesTapCallback: onStatusesTapCallback,
                     color: FediColors.darkGrey,
                   ),
-                  AccountHeaderFollowingsCountWidget(
+                  AccountHeaderFollowingCountWidget(
                     color: FediColors.darkGrey,
                   ),
                   AccountHeaderFollowersCountWidget(

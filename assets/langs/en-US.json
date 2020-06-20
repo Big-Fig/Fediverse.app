@@ -28,7 +28,6 @@
             "content": "Something wrong"
           }
         },
-        "more": "More",
         "popup": {
           "title": "More actions for {}"
         }

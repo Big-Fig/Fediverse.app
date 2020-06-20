@@ -11,4 +11,5 @@ class FediColors {
   static const Color ultraLightGrey = Color(0xffEAEAEA);
   static const Color offWhite = Color(0xffFAFAFA);
   static const Color white = Color(0xffFFFFFF);
+  static const Color imageDarkOverlay = Color(0x33333333);
 }

@@ -16,7 +16,7 @@ class FediSubPageTitleAppBar extends StatelessWidget
   final preferredSize = Size.fromHeight(kToolbarHeight);
 
   FediSubPageTitleAppBar({
-    this.title,
+    @required this.title,
     this.actions,
     this.centerTitle = true,
     this.leading = const FediBackIconButton(),
