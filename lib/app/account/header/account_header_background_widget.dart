@@ -30,18 +30,7 @@ class AccountHeaderBackgroundWidget extends StatelessWidget {
                   ),
                   Container(
                       decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: FractionalOffset.topCenter,
-                      end: FractionalOffset.bottomCenter,
-                      colors: [
-                        FediColors.darkGrey.withOpacity(0.7),
-                        FediColors.darkGrey.withOpacity(0.3),
-                        FediColors.darkGrey.withOpacity(0.3),
-                        FediColors.darkGrey.withOpacity(0.3),
-                        FediColors.darkGrey.withOpacity(0.3),
-                        FediColors.darkGrey.withOpacity(0.1),
-                      ],
-                    ),
+                    color: FediColors.imageDarkOverlay
                   ))
                 ],
               ));

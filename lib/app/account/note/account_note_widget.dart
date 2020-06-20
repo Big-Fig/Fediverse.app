@@ -27,7 +27,9 @@ class AccountNoteWidget extends StatelessWidget {
                 shrinkWrap: true,
                 fontWeight: FontWeight.w500,
                 fontSize: 16.0,
+                lineHeight: 1.5,
                 color: color,
+                textAlign: TextAlign.center,
                 onLinkTap: (String url) async {
                   await UrlHelper.handleUrlClick(context, url);
                 },

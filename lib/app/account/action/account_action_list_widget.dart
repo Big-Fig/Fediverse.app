@@ -5,8 +5,11 @@ import 'package:fedi/app/account/action/account_report_action.dart';
 import 'package:fedi/app/async/async_operation_button_builder_widget.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/conversation/start/status/post_status_start_conversation_page.dart';
-import 'package:fedi/app/ui/button/text/fedi_grey_filled_text_button.dart';
+import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
+import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -27,23 +30,31 @@ class AccountActionListWidget extends StatelessWidget {
 
           _logger.finest(() => "relationship $relationship");
 
+          var topPadding = 12.0;
+          var bottomPadding = 16.0;
           if (relationship?.following == null) {
-            return const Center(
-                child: Padding(
-              padding: EdgeInsets.all(8.0),
-              child: CircularProgressIndicator(
-                backgroundColor: FediColors.white,
+            return Container(
+              height: FediSizes.defaultFilledButtonHeight +
+                  topPadding +
+                  bottomPadding,
+              child: const Center(
+                child: CircularProgressIndicator(
+                  backgroundColor: FediColors.white,
+                ),
               ),
-            ));
+            );
           } else {
             return Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: EdgeInsets.only(top: topPadding, bottom: bottomPadding),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.end,
+//                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   buildFollowButton(accountBloc, relationship),
+                  SizedBox(width: 16),
                   buildMessageButton(context, accountBloc),
+                  SizedBox(width: 16),
                   buildMoreButton(context, accountBloc, relationship),
                 ],
               ),
@@ -54,23 +65,21 @@ class AccountActionListWidget extends StatelessWidget {
 
   Widget buildMoreButton(BuildContext context, IAccountBloc accountBloc,
       IPleromaAccountRelationship relationship) {
-    return FediGreyFilledTextButton(
-      tr("app.account.action.more"),
+    return FediIconInCircleTransparentButton(
+      FediIcons.menu,
       onPressed: () async {
         showMoreOptions(context, accountBloc, relationship);
       },
-      textColor: FediColors.darkGrey,
     );
   }
 
   Widget buildMessageButton(BuildContext context, IAccountBloc accountBloc) {
-    return FediGreyFilledTextButton(
+    return FediTransparentTextButton(
       tr("app.account.action.message"),
       onPressed: () async {
         goToPostStatusStartConversationPage(context,
             conversationAccountsWithoutMe: <IAccount>[accountBloc.account]);
       },
-      textColor: FediColors.darkGrey,
     );
   }
 
@@ -80,12 +89,11 @@ class AccountActionListWidget extends StatelessWidget {
       showProgressDialog: false,
       asyncButtonAction: accountBloc.toggleFollow,
       builder: (BuildContext context, VoidCallback onPressed) {
-        return FediGreyFilledTextButton(
+        return FediTransparentTextButton(
           relationship?.following == true
               ? tr("app.account.action.unfollow")
               : tr("app.account.action.follow"),
           onPressed: onPressed,
-          textColor: FediColors.darkGrey,
         );
       },
     );
