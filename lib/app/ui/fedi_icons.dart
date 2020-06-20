@@ -47,5 +47,6 @@ class FediIcons {
   static const IconData arrow_down = IconData(0xe817, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData check = IconData(0xe818, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData chevron_left = IconData(0xe819, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData chevron_down = IconData(0xe81a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData send = IconData(0xe81b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }
