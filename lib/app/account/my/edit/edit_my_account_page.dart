@@ -82,7 +82,8 @@ class EditMyAccountPage extends StatelessWidget {
 
   void handleBackPressed(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    if (editMyAccountBloc.isSomethingChanged) {
+    var isSomethingChanged = editMyAccountBloc.isSomethingChanged;
+    if (isSomethingChanged) {
       alertUnsaved(context);
     } else {
       Navigator.pop(context);

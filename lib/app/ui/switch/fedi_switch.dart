@@ -21,7 +21,6 @@ class FediSwitch extends StatelessWidget {
         indicatorPadding: EdgeInsets.all(4.0),
         indicatorActiveColor: FediColors.primaryColor,
         indicatorInactiveColor: FediColors.lightGrey,
-
         onChanged: onChanged,
       );
 }

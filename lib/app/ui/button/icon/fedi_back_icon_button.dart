@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 
-class FediBackIconButton extends StatelessWidget implements FediIconButton {
+class FediBackIconButton extends StatelessWidget {
   const FediBackIconButton({this.customOnPressed});
 
   final VoidCallback customOnPressed;
