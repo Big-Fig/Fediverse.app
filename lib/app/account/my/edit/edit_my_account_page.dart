@@ -4,7 +4,6 @@ import 'package:fedi/app/account/my/edit/edit_my_account_bloc_impl.dart';
 import 'package:fedi/app/account/my/edit/edit_my_account_widget.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
-import 'package:fedi/app/ui/button/icon/fedi_dismiss_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -47,7 +46,8 @@ class EditMyAccountPage extends StatelessWidget {
 
             return PleromaAsyncOperationButtonBuilderWidget(
               showProgressDialog: true,
-              progressContentMessage: tr("app.status.post.dialog.async.content"),
+              progressContentMessage:
+                  tr("app.status.post.dialog.async.content"),
               asyncButtonAction: () async {
                 await editMyAccountBloc.submitChanges();
                 Navigator.pop(context);
@@ -62,14 +62,17 @@ class EditMyAccountPage extends StatelessWidget {
 //                              args: [error.toString()]),
 //                          context: context)
               ],
+
               builder: (BuildContext context, onPressed) {
                 return FlatButton(
                   child: Text(
                     tr("app.account.my.edit.action.save"),
                     style: TextStyle(
-                        color: isSomethingChanged
-                            ? FediColors.darkGrey
-                            : FediColors.lightGrey),
+                      color: isSomethingChanged
+                          ? FediColors.primaryColor
+                          : FediColors.grey,
+                      fontSize: 16.0,
+                    ),
                   ),
                   onPressed: isSomethingChanged ? onPressed : null,
                 );

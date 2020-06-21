@@ -52,19 +52,13 @@ class EditMyAccountBloc extends DisposableOwner implements IEditMyAccountBloc {
     for (int i = 0; i < maximumPossibleCustomFieldsCount; i++) {
       if (i < fields.length) {
         var field = fields[i];
-
-        customFields.add(EditMyAccountCustomField(
-          index: i,
-          nameField: EditMyAccountStringField(originValue: field.name),
-          valueField: EditMyAccountStringField(originValue: field.value),
-        ));
-      } else {
-        // add empty fields to edit
-        customFields.add(EditMyAccountCustomField(
-          index: i,
-          nameField: EditMyAccountStringField(originValue: ""),
-          valueField: EditMyAccountStringField(originValue: ""),
-        ));
+        if (field.name?.isNotEmpty == true || field.value?.isNotEmpty == true) {
+          customFields.add(EditMyAccountCustomField(
+            index: i,
+            nameField: EditMyAccountStringField(originValue: field.name),
+            valueField: EditMyAccountStringField(originValue: field.value),
+          ));
+        }
       }
     }
 

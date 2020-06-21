@@ -1,8 +1,12 @@
 import 'package:fedi/mastodon/field/mastodon_field_model.dart';
+import 'package:flutter_html/html_parser.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:logging/logging.dart';
 
 part 'pleroma_field_model.g.dart';
+
+var _logger = Logger("pleroma_field_model.dart");
 
 abstract class IPleromaField implements IMastodonField {}
 
@@ -42,5 +46,20 @@ class PleromaField implements IPleromaField {
   @override
   String toString() {
     return 'PleromaField{name: $name, value: $value}';
+  }
+
+  @override
+  String get valueAsRawUrl {
+    if (value?.isNotEmpty == true) {
+      try {
+        var parsed = HtmlParser.parseHTML(value);
+        return parsed.text;
+      } catch (e, stackTrace) {
+        _logger.warning(() => "failed to parse URL from $value", e, stackTrace);
+        return value;
+      }
+    } else {
+      return value;
+    }
   }
 }
