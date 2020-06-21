@@ -7,6 +7,7 @@ import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.d
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/switch/fedi_switch.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:fedi/file/picker/single/single_file_picker_page.dart';
 import 'package:flutter/material.dart';
@@ -272,13 +273,11 @@ class EditMyAccountWidget extends StatelessWidget {
               initialData: field.currentValue,
               builder: (context, snapshot) {
                 var currentValue = snapshot.data;
-                return Switch(
+                return FediSwitch(
                   value: currentValue,
                   onChanged: (value) {
                     field.onValueChanged(value);
                   },
-                  activeTrackColor: Colors.lightBlueAccent,
-                  activeColor: Colors.blue,
                 );
               }),
         ],
