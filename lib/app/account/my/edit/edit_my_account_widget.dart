@@ -14,6 +14,7 @@ import 'package:fedi/app/ui/form/fedi_form_pair_edit_text_row.dart';
 import 'package:fedi/app/ui/form/fedi_form_switch_row.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:fedi/file/picker/single/single_file_picker_page.dart';
+import 'package:fedi/media/media_image_source_model.dart';
 import 'package:flutter/material.dart';
 
 const _avatarSize = 120.0;
@@ -99,7 +100,7 @@ class EditMyAccountWidget extends StatelessWidget {
       showEditMyAccountHeaderDialog(context, filePickerFile,
           (filePickerFile) async {
         Navigator.of(context).pop();
-        await editMyAccountBloc.uploadHeaderImage(filePickerFile.file);
+        await editMyAccountBloc.changeHeaderImage(filePickerFile.file);
         if (filePickerFile.isNeedDeleteAfterUsage) {
           await filePickerFile.file.delete();
         }
@@ -131,7 +132,7 @@ class EditMyAccountWidget extends StatelessWidget {
       showEditMyAccountHeaderDialog(context, filePickerFile,
           (filePickerFile) async {
         Navigator.of(context).pop();
-        await editMyAccountBloc.uploadAvatarImage(filePickerFile.file);
+        await editMyAccountBloc.changeAvatarImage(filePickerFile.file);
         if (filePickerFile.isNeedDeleteAfterUsage) {
           await filePickerFile.file.delete();
         }
@@ -162,36 +163,45 @@ class EditMyAccountWidget extends StatelessWidget {
           style: BorderStyle.solid,
         ),
       ),
-      child: StreamBuilder<String>(
-          stream: editMyAccountBloc.avatarImageUrlStream,
-          initialData: editMyAccountBloc.avatarImageUrl,
+      child: StreamBuilder<MediaImageSource>(
+          stream: editMyAccountBloc.avatarImageSourceStream,
+          initialData: editMyAccountBloc.avatarImageSource,
           builder: (context, snapshot) {
-            var url = snapshot.data;
+            var source = snapshot.data;
 
-            return CachedNetworkImage(
-              imageUrl: url,
-              placeholder: (context, url) => Container(
-                width: 30,
-                height: 30,
-                child: CircularProgressIndicator(),
-              ),
-              imageBuilder: (context, imageProvider) {
-                return Container(
-                  height: _avatarSize,
-                  width: _avatarSize,
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.circular(
-                          _avatarSize / 2 - _avatarCircleBorderWidth),
-                      child: Image(
-                        image: imageProvider,
-                      )),
-                );
-              },
-              errorWidget: (context, url, error) => Icon(Icons.error),
-              height: _avatarSize,
-              width: _avatarSize,
-            );
+            if (source.url != null) {
+              var url = source.url;
+              return CachedNetworkImage(
+                imageUrl: url,
+                placeholder: (context, url) => Container(
+                  width: 30,
+                  height: 30,
+                  child: CircularProgressIndicator(),
+                ),
+                imageBuilder: (context, imageProvider) {
+                  return buildAvatarImageContainer(imageProvider);
+                },
+                errorWidget: (context, url, error) => Icon(Icons.error),
+                height: _avatarSize,
+                width: _avatarSize,
+              );
+            } else {
+              return buildAvatarImageContainer(Image.file(source.file).image);
+            }
           }),
+    );
+  }
+
+  Container buildAvatarImageContainer(ImageProvider imageProvider) {
+    return Container(
+      height: _avatarSize,
+      width: _avatarSize,
+      child: ClipRRect(
+          borderRadius:
+              BorderRadius.circular(_avatarSize / 2 - _avatarCircleBorderWidth),
+          child: Image(
+            image: imageProvider,
+          )),
     );
   }
 
@@ -215,23 +225,31 @@ class EditMyAccountWidget extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      child: StreamBuilder<String>(
-          stream: editMyAccountBloc.headerImageUrlStream,
-          initialData: editMyAccountBloc.headerImageUrl,
+      child: StreamBuilder<MediaImageSource>(
+          stream: editMyAccountBloc.headerImageSourceStream,
+          initialData: editMyAccountBloc.headerImageSource,
           builder: (context, snapshot) {
-            var url = snapshot.data;
-            return CachedNetworkImage(
-              imageUrl: url,
-              fit: BoxFit.cover,
-              placeholder: (context, url) => Center(
-                child: Container(
-                  width: 30,
-                  height: 30,
-                  child: CircularProgressIndicator(),
+            var source = snapshot.data;
+            if (source.url != null) {
+              var url = source.url;
+              return CachedNetworkImage(
+                imageUrl: url,
+                fit: BoxFit.cover,
+                placeholder: (context, url) => Center(
+                  child: Container(
+                    width: 30,
+                    height: 30,
+                    child: CircularProgressIndicator(),
+                  ),
                 ),
-              ),
-              errorWidget: (context, url, error) => Icon(Icons.error),
-            );
+                errorWidget: (context, url, error) => Icon(Icons.error),
+              );
+            } else {
+              return Image.file(
+                source.file,
+                fit: BoxFit.cover,
+              );
+            }
           }),
     );
   }
