@@ -5,6 +5,7 @@ import 'package:fedi/app/account/my/edit/edit_my_account_model.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:fedi/media/media_image_source_model.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_model.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
 import 'package:fedi/pleroma/field/pleroma_field_model.dart';
@@ -105,6 +106,14 @@ class EditMyAccountBloc extends DisposableOwner implements IEditMyAccountBloc {
     addDisposable(subject: _customFieldsChangedSubject);
     addDisposable(subject: _customFieldsSubject);
 
+    avatarImageSourceSubject = BehaviorSubject.seeded(
+        MediaImageSource(url: myAccountBloc.account.avatar));
+    headerImageSourceSubject = BehaviorSubject.seeded(
+        MediaImageSource(url: myAccountBloc.account.header));
+
+    addDisposable(subject: avatarImageSourceSubject);
+    addDisposable(subject: headerImageSourceSubject);
+
     displayNameField = EditMyAccountStringField(
         originValue: myAccountBloc.displayNameEmojiText.text);
     addDisposable(disposable: displayNameField);
@@ -155,17 +164,22 @@ class EditMyAccountBloc extends DisposableOwner implements IEditMyAccountBloc {
             return previousValue | element;
           }));
 
-  @override
-  String get avatarImageUrl => myAccountBloc.avatar;
+  BehaviorSubject<MediaImageSource> avatarImageSourceSubject;
+  BehaviorSubject<MediaImageSource> headerImageSourceSubject;
 
   @override
-  Stream<String> get avatarImageUrlStream => myAccountBloc.avatarStream;
+  MediaImageSource get avatarImageSource => avatarImageSourceSubject.value;
 
   @override
-  String get headerImageUrl => myAccountBloc.header;
+  Stream<MediaImageSource> get avatarImageSourceStream =>
+      avatarImageSourceSubject.stream;
 
   @override
-  Stream<String> get headerImageUrlStream => myAccountBloc.headerStream;
+  MediaImageSource get headerImageSource => headerImageSourceSubject.value;
+
+  @override
+  Stream<MediaImageSource> get headerImageSourceStream =>
+      headerImageSourceSubject.stream;
 
   @override
   Future submitChanges() async {
@@ -186,10 +200,12 @@ class EditMyAccountBloc extends DisposableOwner implements IEditMyAccountBloc {
   }
 
   @override
-  Future<bool> uploadAvatarImage(File file) {
-    var pleromaMyAccountFilesRequest =
-        PleromaMyAccountFilesRequest(avatar: file);
-    return _updateFiles(pleromaMyAccountFilesRequest);
+  Future changeAvatarImage(File file) async {
+    avatarImageSourceSubject.add(MediaImageSource(file: file));
+
+//    var pleromaMyAccountFilesRequest =
+//        PleromaMyAccountFilesRequest(avatar: file);
+//    return _updateFiles(pleromaMyAccountFilesRequest);
   }
 
   Future<bool> _updateFiles(
@@ -206,10 +222,11 @@ class EditMyAccountBloc extends DisposableOwner implements IEditMyAccountBloc {
   }
 
   @override
-  Future<bool> uploadHeaderImage(File file) {
-    var pleromaMyAccountFilesRequest =
-        PleromaMyAccountFilesRequest(header: file);
-    return _updateFiles(pleromaMyAccountFilesRequest);
+  Future changeHeaderImage(File file) async {
+    headerImageSourceSubject.add(MediaImageSource(file: file));
+//    var pleromaMyAccountFilesRequest =
+//        PleromaMyAccountFilesRequest(header: file);
+//    return _updateFiles(pleromaMyAccountFilesRequest);
   }
 
   static EditMyAccountBloc createFromContext(BuildContext context) =>
