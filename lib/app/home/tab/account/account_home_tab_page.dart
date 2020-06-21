@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/details/account_details_widget.dart';
+import 'package:fedi/app/account/header/account_header_background_widget.dart';
 import 'package:fedi/app/account/my/action/my_account_action_list_bottom_sheet_dialog.dart';
 import 'package:fedi/app/account/my/details/my_account_details_body_widget.dart';
 import 'package:fedi/app/account/my/edit/edit_my_account_page.dart';
@@ -26,10 +27,21 @@ class AccountHomeTabPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: FediColors.primaryColorDark,
         key: _drawerKey,
         drawer: const MyAccountSettingsDrawerBodyWidget(),
-        body: _buildBody(context),
+        body: Stack(
+          children: [
+            ProxyProvider<IMyAccountBloc, IAccountBloc>(
+              update: (context, value, previous) => value,
+              child: Container(
+                height: 150.0,
+                child: const AccountHeaderBackgroundWidget(),
+              ),
+            ),
+            _buildBody(context),
+          ],
+        ),
       );
 
   Widget _buildBody(BuildContext context) =>
@@ -39,17 +51,19 @@ class AccountHomeTabPage extends StatelessWidget {
         topSliverWidgets: [
           FediTabMainHeaderBarWidget(
             leadingWidgets: null,
-            content: Row(children: [
-              _buildDrawerAction(context),
-              SizedBox(
-                width: 16.0,
-              ),
-              Expanded(child: buildAccountChooserButton(context)),
-              SizedBox(
-                width: 16.0,
-              ),
-              _buildSettingsAction(context)
-            ],),
+            content: Row(
+              children: [
+                _buildDrawerAction(context),
+                SizedBox(
+                  width: 16.0,
+                ),
+                Expanded(child: buildAccountChooserButton(context)),
+                SizedBox(
+                  width: 16.0,
+                ),
+                _buildSettingsAction(context)
+              ],
+            ),
             endingWidgets: null,
           ),
         ],

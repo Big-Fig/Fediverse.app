@@ -79,8 +79,7 @@ class HomePage extends StatelessWidget {
           );
   }
 
-  FediLightStatusBarStyleArea _buildBackground() {
-    return FediLightStatusBarStyleArea(
+  FediLightStatusBarStyleArea _buildBackground() => FediLightStatusBarStyleArea(
                 child: Container(
                   color: FediColors.primaryColor,
                   child: FediInstanceImageDecorationWidget(
@@ -88,7 +87,6 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
               );
-  }
 
   Widget buildBody(BuildContext context, HomeTab selectedTab) {
     switch (selectedTab) {
