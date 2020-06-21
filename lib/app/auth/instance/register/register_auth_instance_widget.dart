@@ -5,7 +5,7 @@ import 'package:fedi/app/form/form_field_error_model.dart';
 import 'package:fedi/app/form/form_model.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/divider/fedi_light_grey_divider.dart';
-import 'package:fedi/app/ui/edit/fedi_transparent_edit_text_field.dart';
+import 'package:fedi/app/ui/edit_text/fedi_transparent_edit_text_field.dart';
 import 'package:fedi/dialog/alert/simple_alert_dialog.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:fedi/pleroma/account/public/pleroma_account_public_model.dart';

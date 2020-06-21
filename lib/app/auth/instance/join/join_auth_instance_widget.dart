@@ -4,7 +4,7 @@ import 'package:fedi/app/auth/instance/join/join_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_page.dart';
 import 'package:fedi/app/tos/tos_page.dart';
 import 'package:fedi/app/ui/button/text/fedi_grey_filled_text_button.dart';
-import 'package:fedi/app/ui/edit/fedi_filled_edit_text_field.dart';
+import 'package:fedi/app/ui/edit_text/fedi_filled_edit_text_field.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/dialog/alert/base_alert_dialog.dart';
 import 'package:fedi/dialog/alert/simple_alert_dialog.dart';

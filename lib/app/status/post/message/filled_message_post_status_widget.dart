@@ -3,7 +3,7 @@ import 'package:fedi/app/status/emoji_reaction/status_emoji_reaction_picker_widg
 import 'package:fedi/app/status/post/action/post_status_attach_media_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_post_icon_action_widget.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
-import 'package:fedi/app/ui/edit/fedi_filled_edit_text_field.dart';
+import 'package:fedi/app/ui/edit_text/fedi_filled_edit_text_field.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';

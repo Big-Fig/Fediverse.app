@@ -93,20 +93,19 @@
               "label": "Note"
             },
             "locked": {
-              "label": "Locked"
+              "label": "Locked to followers only"
             },
             "custom_field": {
-              "label": {
-                "label": "Label"
+              "label": "Link field #{}",
+              "name": {
+                "label": "Name"
               },
               "value": {
-                "label": "Value"
+                "label": "URL value"
+              },
+              "action": {
+                "add_new": "Add link field"
               }
-            }
-          },
-          "group": {
-            "custom_field": {
-              "label": "Fields"
             }
           }
         }

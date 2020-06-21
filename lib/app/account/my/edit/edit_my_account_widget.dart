@@ -4,10 +4,13 @@ import 'package:fedi/app/account/my/edit/edit_my_account_bloc.dart';
 import 'package:fedi/app/account/my/edit/edit_my_account_model.dart';
 import 'package:fedi/app/account/my/edit/header/edit_my_account_header_dialog.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
+import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/switch/fedi_switch.dart';
+import 'package:fedi/app/ui/form/fedi_form_edit_text_row.dart';
+import 'package:fedi/app/ui/form/fedi_form_pair_edit_text_row.dart';
+import 'package:fedi/app/ui/form/fedi_form_switch_row.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:fedi/file/picker/single/single_file_picker_page.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +28,8 @@ class EditMyAccountWidget extends StatelessWidget {
     return ListView(
       children: <Widget>[
         Container(
-          height: _avatarTopPadding + _avatarSize + _avatarCircleBorderWidth * 2,
+          height:
+              _avatarTopPadding + _avatarSize + _avatarCircleBorderWidth * 2,
           child: Stack(
             children: [
               Container(
@@ -47,12 +51,19 @@ class EditMyAccountWidget extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: 24,
+          height: 8,
         ),
-        buildDisplayNameField(context, editMyAccountBloc),
-        buildNoteField(context, editMyAccountBloc),
-        buildLockedField(context, editMyAccountBloc),
-        buildCustomFields(context, editMyAccountBloc),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            children: [
+              buildDisplayNameField(context, editMyAccountBloc),
+              buildNoteField(context, editMyAccountBloc),
+              buildLockedField(context, editMyAccountBloc),
+              buildLinkFields(context, editMyAccountBloc),
+            ],
+          ),
+        ),
         // Form
       ],
     );
@@ -132,7 +143,7 @@ class EditMyAccountWidget extends StatelessWidget {
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(_avatarAndBorderSize  / 2),
+        borderRadius: BorderRadius.circular(_avatarAndBorderSize / 2),
         border: Border.all(
           width: _avatarCircleBorderWidth,
           color: FediColors.white,
@@ -157,7 +168,8 @@ class EditMyAccountWidget extends StatelessWidget {
                   height: _avatarSize,
                   width: _avatarSize,
                   child: ClipRRect(
-                      borderRadius: BorderRadius.circular(_avatarSize / 2 - _avatarCircleBorderWidth),
+                      borderRadius: BorderRadius.circular(
+                          _avatarSize / 2 - _avatarCircleBorderWidth),
                       child: Image(
                         image: imageProvider,
                       )),
@@ -228,29 +240,14 @@ class EditMyAccountWidget extends StatelessWidget {
     return buildTextField(textEditingController, label);
   }
 
-  Padding buildTextField(
-          TextEditingController textEditingController, String label) =>
-      Padding(
-        padding: EdgeInsets.all(10),
-        child: ConstrainedBox(
-          constraints: BoxConstraints(maxHeight: 200, minHeight: 80),
-          child: Padding(
-            padding: EdgeInsets.all(10),
-            // only( bottom: MediaQuery.of(context).viewInsets.bottom),
-            child: TextField(
-              controller: textEditingController,
-              maxLines: 1,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12.0),
-                  borderSide: BorderSide(),
-                ),
-                labelText: label,
-              ),
-            ),
-          ),
-        ),
-      );
+  Widget buildTextField(
+      TextEditingController textEditingController, String label) {
+    return FediFormEditTextRow(
+      label: label,
+      textEditingController: textEditingController,
+      hint: label,
+    );
+  }
 
   Widget buildLockedField(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
@@ -259,66 +256,54 @@ class EditMyAccountWidget extends StatelessWidget {
     return buildBooleanField(label, field);
   }
 
-  Padding buildBooleanField(String label, EditMyAccountBoolField field) {
-    return Padding(
-      padding: EdgeInsets.all(10),
-      child: Row(
-        children: <Widget>[
-          Text(
-            label,
-          ),
-          Spacer(),
-          StreamBuilder<bool>(
-              stream: field.currentValueStream,
-              initialData: field.currentValue,
-              builder: (context, snapshot) {
-                var currentValue = snapshot.data;
-                return FediSwitch(
-                  value: currentValue,
-                  onChanged: (value) {
-                    field.onValueChanged(value);
-                  },
-                );
-              }),
-        ],
-      ),
-    );
-  }
+  Widget buildBooleanField(String label, EditMyAccountBoolField field) =>
+      StreamBuilder<bool>(
+          stream: field.currentValueStream,
+          initialData: field.currentValue,
+          builder: (context, snapshot) {
+            var currentValue = snapshot.data;
 
-  Widget buildCustomFields(
-      BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Text(tr("app.account.my.edit.group.custom_field.label")),
-        ),
-        ...editMyAccountBloc.customFields.map((customField) =>
-            buildField(context, editMyAccountBloc, customField))
-      ],
-    );
-  }
+            return FediFormSwitchRow(
+              label: label,
+              onChanged: field.onValueChanged,
+              value: currentValue,
+            );
+          });
 
-  Padding buildField(BuildContext context, IEditMyAccountBloc editMyAccountBloc,
-      EditMyAccountCustomField customField) {
-    return Padding(
-      padding: EdgeInsets.all(10),
-      child: Row(
+  Widget buildLinkFields(
+          BuildContext context, IEditMyAccountBloc editMyAccountBloc) =>
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Flexible(
-            child: buildCustomFieldTextField(
-                customField.nameField.textEditingController,
-                tr("app.account.my.edit.field.custom_field.label"
-                    ".label")),
-          ),
-          Flexible(
-            child: buildCustomFieldTextField(
-                customField.valueField.textEditingController,
-                ("app.account.my.edit.field.custom_field.value.label".tr())),
+          ...editMyAccountBloc.customFields.asMap().entries.map(
+                (entry) => buildCustomField(
+                    context, editMyAccountBloc, entry.value, entry.key),
+              ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: FediPrimaryFilledTextButton(
+              tr("app.account.my.edit.field.custom_field.action"
+                  ".add_new"),
+              onPressed: () {},
+            ),
           ),
         ],
-      ),
+      );
+
+  Widget buildCustomField(
+      BuildContext context,
+      IEditMyAccountBloc editMyAccountBloc,
+      EditMyAccountCustomField customField,
+      int index) {
+    return FediFormPairEditTextRow(
+      label: tr("app.account.my.edit.field.custom_field.label",
+          args: [(index + 1).toString()]),
+      nameHint: tr("app.account.my.edit.field.custom_field.name"
+          ".label"),
+      valueHint: tr("app.account.my.edit.field.custom_field.value"
+          ".label"),
+      nameTextEditingController: customField.nameField.textEditingController,
+      valueTextEditingController: customField.valueField.textEditingController,
     );
   }
 
