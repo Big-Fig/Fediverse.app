@@ -17,21 +17,18 @@ class MyAccountDetailsBodyWidget extends StatelessWidget {
   AccountStatusesWidget buildAccountStatusesWidget(BuildContext context) =>
       AccountStatusesWidget(
         scrollController: scrollController,
-        header: Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
-          child: FediListTile(
-            isFirstInList: true,
-            child: MyAccountWidget(
-              onStatusesTapCallback: () {
-                var scrollControllerBloc =
-                    IScrollControllerBloc.of(context, listen: false);
-                scrollControllerBloc.scrollController.animateTo(
-                  MediaQuery.of(context).size.height / 2,
-                  duration: Duration(milliseconds: 500),
-                  curve: Curves.easeOut,
-                );
-              },
-            ),
+        header: FediListTile(
+          isFirstInList: true,
+          child: MyAccountWidget(
+            onStatusesTapCallback: () {
+              var scrollControllerBloc =
+                  IScrollControllerBloc.of(context, listen: false);
+              scrollControllerBloc.scrollController.animateTo(
+                MediaQuery.of(context).size.height / 2,
+                duration: Duration(milliseconds: 500),
+                curve: Curves.easeOut,
+              );
+            },
           ),
         ),
         alwaysShowHeader: true,

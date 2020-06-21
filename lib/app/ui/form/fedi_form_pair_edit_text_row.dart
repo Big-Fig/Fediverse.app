@@ -1,4 +1,3 @@
-import 'package:fedi/app/ui/divider/fedi_light_grey_divider.dart';
 import 'package:fedi/app/ui/edit_text/fedi_transparent_edit_text_field.dart';
 import 'package:fedi/app/ui/form/fedi_form_edit_text_label.dart';
 import 'package:fedi/app/ui/form/fedi_form_row.dart';
