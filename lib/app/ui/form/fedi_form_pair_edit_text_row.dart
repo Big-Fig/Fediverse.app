@@ -9,6 +9,7 @@ class FediFormPairEditTextRow extends StatelessWidget {
   final TextEditingController nameTextEditingController;
   final TextEditingController valueTextEditingController;
   final String valueHint;
+  final Widget ending;
 
   FediFormPairEditTextRow({
     @required this.label,
@@ -16,6 +17,7 @@ class FediFormPairEditTextRow extends StatelessWidget {
     @required this.valueHint,
     @required this.nameTextEditingController,
     @required this.valueTextEditingController,
+    @required this.ending,
   });
 
   @override
@@ -25,6 +27,7 @@ class FediFormPairEditTextRow extends StatelessWidget {
           children: [
             FediFormEditTextLabel(label),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Expanded(
                   child: FediTransparentEditTextField(
@@ -42,6 +45,7 @@ class FediFormPairEditTextRow extends StatelessWidget {
                   width: 16.0,
                 ),
                 Expanded(
+                  flex: 2,
                   child: FediTransparentEditTextField(
                     expanded: false,
                     autofocus: false,
@@ -53,6 +57,7 @@ class FediFormPairEditTextRow extends StatelessWidget {
                     displayUnderlineBorder: true,
                   ),
                 ),
+                ending
               ],
             ),
 

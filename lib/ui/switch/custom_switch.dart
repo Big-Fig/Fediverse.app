@@ -106,9 +106,8 @@ class _CustomSwitchState extends State<CustomSwitch>
       );
 
   void _onValueChanged() {
-    var oldValue = widget.value == false;
 
-    var newValue = !oldValue;
+    var newValue = !widget.value;
 
     widget.onChanged(newValue);
   }

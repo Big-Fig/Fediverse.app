@@ -53,7 +53,12 @@ class PleromaField implements IPleromaField {
     if (value?.isNotEmpty == true) {
       try {
         var parsed = HtmlParser.parseHTML(value);
-        return parsed.text;
+        var allLinkElements = parsed.getElementsByTagName("a");
+        if (allLinkElements?.isNotEmpty == true) {
+          return allLinkElements.first.attributes["href"];
+        } else {
+          return value;
+        }
       } catch (e, stackTrace) {
         _logger.warning(() => "failed to parse URL from $value", e, stackTrace);
         return value;

@@ -33,6 +33,16 @@ abstract class IEditMyAccountBloc implements Disposable {
 
   List<EditMyAccountCustomField> get customFields;
 
+  Stream<List<EditMyAccountCustomField>> get customFieldsStream;
+
+  bool get isMaximumCustomFieldsCountReached;
+
+  Stream<bool> get isMaximumCustomFieldsCountReachedStream;
+
+  void addNewEmptyCustomField();
+
+  void removeCustomField(EditMyAccountCustomField field);
+
   EditMyAccountBoolField get lockedField;
 
   Future submitChanges();

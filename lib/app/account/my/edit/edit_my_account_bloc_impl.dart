@@ -11,9 +11,13 @@ import 'package:fedi/pleroma/field/pleroma_field_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
+// todo: default server config is 4, should be fetched from server
+var _maximumPossibleCustomFieldsCount = 4;
+
 class EditMyAccountBloc extends DisposableOwner implements IEditMyAccountBloc {
   final IMyAccountBloc myAccountBloc;
   final IPleromaMyAccountService pleromaMyAccountService;
+  final int maximumPossibleCustomFieldsCount;
 
   @override
   EditMyAccountStringField displayNameField;
@@ -24,17 +28,83 @@ class EditMyAccountBloc extends DisposableOwner implements IEditMyAccountBloc {
   @override
   EditMyAccountBoolField lockedField;
 
+  final BehaviorSubject<bool> _customFieldsChangedSubject =
+      BehaviorSubject.seeded(false);
+
+  bool get customFieldsChanged => _customFieldsChangedSubject.value;
+
+  Stream<bool> get customFieldsChangedStream =>
+      _customFieldsChangedSubject.stream;
+
   @override
-  List<EditMyAccountCustomField> customFields = [];
+  List<EditMyAccountCustomField> get customFields => _customFieldsSubject.value;
+
+  @override
+  Stream<List<EditMyAccountCustomField>> get customFieldsStream =>
+      _customFieldsSubject.stream;
 
   @override
   List<IEditMyAccountField> get allFields =>
       [displayNameField, noteField, lockedField, ...customFields];
 
+  final BehaviorSubject<List<EditMyAccountCustomField>> _customFieldsSubject =
+      BehaviorSubject.seeded([]);
+
+  @override
+  bool get isMaximumCustomFieldsCountReached =>
+      customFields.length >= maximumPossibleCustomFieldsCount;
+
+  @override
+  Stream<bool> get isMaximumCustomFieldsCountReachedStream =>
+      customFieldsStream.map((customFields) =>
+          customFields.length >= maximumPossibleCustomFieldsCount);
+
+  @override
+  void addNewEmptyCustomField() {
+    assert(!isMaximumCustomFieldsCountReached);
+    List<int> possibleIndexes = [];
+
+    for (var i = 0; i < maximumPossibleCustomFieldsCount; i++) {
+      possibleIndexes.add(i);
+    }
+
+    var unusedIndex = possibleIndexes.firstWhere((index) {
+      var found = customFields.firstWhere((field) => field.index == index,
+          orElse: () => null);
+      return found == null;
+    });
+
+    customFields.add(
+      EditMyAccountCustomField(
+        index: unusedIndex,
+        valueField: EditMyAccountStringField(originValue: ""),
+        nameField: EditMyAccountStringField(originValue: ""),
+      ),
+    );
+
+    _customFieldsSubject.add(customFields);
+    _customFieldsChangedSubject.add(true);
+  }
+
+  @override
+  void removeCustomField(EditMyAccountCustomField field) {
+    customFields.remove(field);
+    _customFieldsSubject.add(customFields);
+    _customFieldsChangedSubject.add(true);
+
+    Future.delayed(Duration(seconds: 1), () {
+      field.dispose();
+    });
+  }
+
   EditMyAccountBloc({
     @required this.myAccountBloc,
     @required this.pleromaMyAccountService,
+    @required this.maximumPossibleCustomFieldsCount,
   }) {
+    addDisposable(subject: _customFieldsChangedSubject);
+    addDisposable(subject: _customFieldsSubject);
+
     displayNameField = EditMyAccountStringField(
         originValue: myAccountBloc.displayNameEmojiText.text);
     addDisposable(disposable: displayNameField);
@@ -46,8 +116,6 @@ class EditMyAccountBloc extends DisposableOwner implements IEditMyAccountBloc {
     addDisposable(disposable: lockedField);
 
     var fields = myAccountBloc.fields;
-    // todo: default server config is 4, should be fetched from server
-    var maximumPossibleCustomFieldsCount = 4;
 
     for (int i = 0; i < maximumPossibleCustomFieldsCount; i++) {
       if (i < fields.length) {
@@ -56,7 +124,8 @@ class EditMyAccountBloc extends DisposableOwner implements IEditMyAccountBloc {
           customFields.add(EditMyAccountCustomField(
             index: i,
             nameField: EditMyAccountStringField(originValue: field.name),
-            valueField: EditMyAccountStringField(originValue: field.value),
+            valueField:
+                EditMyAccountStringField(originValue: field.valueAsRawUrl),
           ));
         }
       }
@@ -70,19 +139,21 @@ class EditMyAccountBloc extends DisposableOwner implements IEditMyAccountBloc {
   }
 
   @override
-  bool get isSomethingChanged => allFields
-          .map((field) => field.isChanged)
-          .fold(false, (previousValue, element) {
+  bool get isSomethingChanged =>
+      allFields.map((field) => field.isChanged).fold(false,
+          (previousValue, element) {
         return previousValue | element;
-      });
+      }) ||
+      customFieldsChanged;
 
   @override
-  Stream<bool> get isSomethingChangedStream =>
-      Rx.combineLatestList(allFields.map((field) => field.isChangedStream)).map(
-          (isChangedList) =>
-              isChangedList.fold(false, (previousValue, element) {
-                return previousValue | element;
-              }));
+  Stream<bool> get isSomethingChangedStream => Rx.combineLatestList([
+        ...allFields.map((field) => field.isChangedStream),
+        customFieldsChangedStream
+      ]).map((isChangedList) =>
+          isChangedList.fold(false, (previousValue, element) {
+            return previousValue | element;
+          }));
 
   @override
   String get avatarImageUrl => myAccountBloc.avatar;
@@ -145,5 +216,6 @@ class EditMyAccountBloc extends DisposableOwner implements IEditMyAccountBloc {
       EditMyAccountBloc(
           myAccountBloc: IMyAccountBloc.of(context, listen: false),
           pleromaMyAccountService:
-              IPleromaMyAccountService.of(context, listen: false));
+              IPleromaMyAccountService.of(context, listen: false),
+          maximumPossibleCustomFieldsCount: _maximumPossibleCustomFieldsCount);
 }

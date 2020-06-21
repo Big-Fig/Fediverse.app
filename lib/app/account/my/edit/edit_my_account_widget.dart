@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/my/edit/edit_my_account_bloc.dart';
 import 'package:fedi/app/account/my/edit/edit_my_account_model.dart';
 import 'package:fedi/app/account/my/edit/header/edit_my_account_header_dialog.dart';
+import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
@@ -60,7 +61,18 @@ class EditMyAccountWidget extends StatelessWidget {
               buildDisplayNameField(context, editMyAccountBloc),
               buildNoteField(context, editMyAccountBloc),
               buildLockedField(context, editMyAccountBloc),
-              buildLinkFields(context, editMyAccountBloc),
+              StreamBuilder<List<EditMyAccountCustomField>>(
+                  stream: editMyAccountBloc.customFieldsStream,
+                  builder: (context, snapshot) {
+                    var customFields = snapshot.data;
+
+                    if (customFields == null) {
+                      return SizedBox.shrink();
+                    } else {
+                      return buildCustomFields(
+                          context, editMyAccountBloc, customFields);
+                    }
+                  }),
             ],
           ),
         ),
@@ -270,23 +282,38 @@ class EditMyAccountWidget extends StatelessWidget {
             );
           });
 
-  Widget buildLinkFields(
-          BuildContext context, IEditMyAccountBloc editMyAccountBloc) =>
+  Widget buildCustomFields(
+          BuildContext context,
+          IEditMyAccountBloc editMyAccountBloc,
+          List<EditMyAccountCustomField> customFields) =>
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          ...editMyAccountBloc.customFields.asMap().entries.map(
+          ...customFields.asMap().entries.map(
                 (entry) => buildCustomField(
                     context, editMyAccountBloc, entry.value, entry.key),
               ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: FediPrimaryFilledTextButton(
-              tr("app.account.my.edit.field.custom_field.action"
-                  ".add_new"),
-              onPressed: () {},
-            ),
-          ),
+          StreamBuilder<bool>(
+              stream: editMyAccountBloc.isMaximumCustomFieldsCountReachedStream,
+              initialData: editMyAccountBloc.isMaximumCustomFieldsCountReached,
+              builder: (context, snapshot) {
+                var isMaximumCustomFieldsCountReached = snapshot.data;
+
+                if (isMaximumCustomFieldsCountReached != true) {
+                  return Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: FediPrimaryFilledTextButton(
+                      tr("app.account.my.edit.field.custom_field.action"
+                          ".add_new"),
+                      onPressed: () {
+                        editMyAccountBloc.addNewEmptyCustomField();
+                      },
+                    ),
+                  );
+                } else {
+                  return SizedBox.shrink();
+                }
+              }),
         ],
       );
 
@@ -295,32 +322,30 @@ class EditMyAccountWidget extends StatelessWidget {
       IEditMyAccountBloc editMyAccountBloc,
       EditMyAccountCustomField customField,
       int index) {
-    return FediFormPairEditTextRow(
-      label: tr("app.account.my.edit.field.custom_field.label",
-          args: [(index + 1).toString()]),
-      nameHint: tr("app.account.my.edit.field.custom_field.name"
-          ".label"),
-      valueHint: tr("app.account.my.edit.field.custom_field.value"
-          ".label"),
-      nameTextEditingController: customField.nameField.textEditingController,
-      valueTextEditingController: customField.valueField.textEditingController,
-    );
-  }
-
-  Padding buildCustomFieldTextField(textEditingController, String label) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: TextField(
-        controller: textEditingController,
-        maxLines: null,
-        decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12.0),
-            borderSide: BorderSide(),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Expanded(
+          child: FediFormPairEditTextRow(
+            label: tr("app.account.my.edit.field.custom_field.label",
+                args: [(index + 1).toString()]),
+            nameHint: tr("app.account.my.edit.field.custom_field.name"
+                ".label"),
+            valueHint: tr("app.account.my.edit.field.custom_field.value"
+                ".label"),
+            nameTextEditingController:
+                customField.nameField.textEditingController,
+            valueTextEditingController:
+                customField.valueField.textEditingController,
+            ending: FediIconButton(
+              FediIcons.close,
+              onPressed: () {
+                editMyAccountBloc.removeCustomField(customField);
+              },
+            ),
           ),
-          labelText: label,
         ),
-      ),
+      ],
     );
   }
 
