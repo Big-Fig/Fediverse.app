@@ -1,8 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/account/my/edit/avatar/edit_my_account_header_dialog.dart';
 import 'package:fedi/app/account/my/edit/edit_my_account_bloc.dart';
 import 'package:fedi/app/account/my/edit/edit_my_account_model.dart';
-import 'package:fedi/app/account/my/edit/header/edit_my_account_header_dialog.dart';
+import 'package:fedi/app/account/my/edit/header/edit_my_account_avatar_dialog.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
@@ -100,10 +101,7 @@ class EditMyAccountWidget extends StatelessWidget {
       showEditMyAccountHeaderDialog(context, filePickerFile,
           (filePickerFile) async {
         Navigator.of(context).pop();
-        await editMyAccountBloc.changeHeaderImage(filePickerFile.file);
-        if (filePickerFile.isNeedDeleteAfterUsage) {
-          await filePickerFile.file.delete();
-        }
+        await editMyAccountBloc.changeHeaderImage(filePickerFile);
       });
     }, startActiveTab: FilePickerTab.gallery);
   }
@@ -129,13 +127,10 @@ class EditMyAccountWidget extends StatelessWidget {
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
     goToSingleFilePickerPage(context,
         fileSelectedCallback: (FilePickerFile filePickerFile) async {
-      showEditMyAccountHeaderDialog(context, filePickerFile,
+      showEditMyAccountAvatarDialog(context, filePickerFile,
           (filePickerFile) async {
         Navigator.of(context).pop();
-        await editMyAccountBloc.changeAvatarImage(filePickerFile.file);
-        if (filePickerFile.isNeedDeleteAfterUsage) {
-          await filePickerFile.file.delete();
-        }
+        await editMyAccountBloc.changeAvatarImage(filePickerFile);
       });
     }, startActiveTab: FilePickerTab.gallery);
   }
