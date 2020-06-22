@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:fedi/app/account/my/edit/edit_my_account_model.dart';
 import 'package:fedi/disposable/disposable.dart';
+import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:fedi/media/media_image_source_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -18,13 +19,13 @@ abstract class IEditMyAccountBloc implements Disposable {
 
   Stream<MediaImageSource> get avatarImageSourceStream;
 
-  Future changeAvatarImage(File file);
+  Future changeAvatarImage(FilePickerFile filePickerFile);
+  Future changeHeaderImage(FilePickerFile filePickerFile);
 
   MediaImageSource get headerImageSource;
 
   Stream<MediaImageSource> get headerImageSourceStream;
 
-  Future changeHeaderImage(File file);
 
   List<IEditMyAccountField> get allFields;
 

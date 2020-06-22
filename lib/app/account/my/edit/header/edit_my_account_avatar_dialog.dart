@@ -13,20 +13,13 @@ void showEditMyAccountAvatarDialog(
   showDialog(
       context: context,
       child: AlertDialog(
-        title: Text(tr("app.account.my.edit.field.header.dialog.title")),
+        title: Text(tr("app.account.my.edit.field.avatar.dialog.title")),
         content: Image.file(filePickerFile.file),
         actions: <Widget>[
           FlatButton(
-              onPressed: () {
-                dismissDialog(context);
-                selectedCallback(filePickerFile);
-              },
-              child: Text(tr("app.account.my.edit.field.header.dialog.action"
-                      ".select"))),
-          FlatButton(
               onPressed: () async {
                 File croppedFile =
-                    await cropImage(filePickerFile.file, context);
+                    await cropImageToSquare(filePickerFile.file, context);
 
                 dismissDialog(context);
                 if (croppedFile != null) {
@@ -42,14 +35,14 @@ void showEditMyAccountAvatarDialog(
                   selectedCallback(filePickerFile);
                 }
               },
-              child: Text(tr("app.account.my.edit.field.header.dialog.action"
-                      ".crop"))),
+              child: Text(tr(
+                  "app.account.my.edit.field.avatar.dialog.action.select_and_crop"))),
           FlatButton(
               onPressed: () {
                 dismissDialog(context);
               },
-              child: Text(tr("app.account.my.edit.field.header.dialog.action"
-                      ".cancel"))),
+              child: Text(tr(
+                  "app.account.my.edit.field.avatar.dialog.action.cancel"))),
         ],
       ));
 }
