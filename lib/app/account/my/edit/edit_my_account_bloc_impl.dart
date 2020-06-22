@@ -1,200 +1,100 @@
-import 'dart:io';
-
 import 'package:fedi/app/account/my/edit/edit_my_account_bloc.dart';
-import 'package:fedi/app/account/my/edit/edit_my_account_model.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
-import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/file/picker/file_picker_model.dart';
-import 'package:fedi/media/media_image_source_model.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_model.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
 import 'package:fedi/pleroma/field/pleroma_field_model.dart';
+import 'package:fedi/ui/form/form_bloc_impl.dart';
+import 'package:fedi/ui/form/form_bool_field_bloc_impl.dart';
+import 'package:fedi/ui/form/form_field_bloc.dart';
+import 'package:fedi/ui/form/form_field_group_bloc.dart';
+import 'package:fedi/ui/form/form_field_group_bloc_impl.dart';
+import 'package:fedi/ui/form/form_image_file_picker_or_url_field_bloc.dart';
+import 'package:fedi/ui/form/form_image_file_picker_or_url_field_bloc_impl.dart';
+import 'package:fedi/ui/form/form_link_pair_field_bloc.dart';
+import 'package:fedi/ui/form/form_link_pair_field_bloc_impl.dart';
+import 'package:fedi/ui/form/form_string_field_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
-import 'package:rxdart/rxdart.dart';
 
 // todo: default server config is 4, should be fetched from server
 var _maximumPossibleCustomFieldsCount = 4;
 
-class EditMyAccountBloc extends DisposableOwner implements IEditMyAccountBloc {
+class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
   final IMyAccountBloc myAccountBloc;
   final IPleromaMyAccountService pleromaMyAccountService;
   final int maximumPossibleCustomFieldsCount;
 
   @override
-  EditMyAccountStringField displayNameField;
+  final FormStringFieldBloc displayNameField;
 
   @override
-  EditMyAccountStringField noteField;
+  final FormStringFieldBloc noteField;
 
   @override
-  EditMyAccountBoolField lockedField;
-
-  final BehaviorSubject<bool> _customFieldsChangedSubject =
-      BehaviorSubject.seeded(false);
-
-  bool get customFieldsChanged => _customFieldsChangedSubject.value;
-
-  Stream<bool> get customFieldsChangedStream =>
-      _customFieldsChangedSubject.stream;
+  final FormBoolFieldBloc lockedField;
 
   @override
-  List<EditMyAccountCustomField> get customFields => _customFieldsSubject.value;
+  final IFormFieldGroupBloc<IFormLinkPairFieldBloc> customFieldsGroupBloc;
 
   @override
-  Stream<List<EditMyAccountCustomField>> get customFieldsStream =>
-      _customFieldsSubject.stream;
+  final IFormImageFilePickerOrUrlFieldBloc avatarField;
 
   @override
-  List<IEditMyAccountField> get allFields =>
-      [displayNameField, noteField, lockedField, ...customFields];
-
-  final BehaviorSubject<List<EditMyAccountCustomField>> _customFieldsSubject =
-      BehaviorSubject.seeded([]);
+  final IFormImageFilePickerOrUrlFieldBloc headerField;
 
   @override
-  bool get isMaximumCustomFieldsCountReached =>
-      customFields.length >= maximumPossibleCustomFieldsCount;
-
-  @override
-  Stream<bool> get isMaximumCustomFieldsCountReachedStream =>
-      customFieldsStream.map((customFields) =>
-          customFields.length >= maximumPossibleCustomFieldsCount);
-
-  @override
-  void addNewEmptyCustomField() {
-    assert(!isMaximumCustomFieldsCountReached);
-    List<int> possibleIndexes = [];
-
-    for (var i = 0; i < maximumPossibleCustomFieldsCount; i++) {
-      possibleIndexes.add(i);
-    }
-
-    var unusedIndex = possibleIndexes.firstWhere((index) {
-      var found = customFields.firstWhere((field) => field.index == index,
-          orElse: () => null);
-      return found == null;
-    });
-
-    customFields.add(
-      EditMyAccountCustomField(
-        index: unusedIndex,
-        valueField: EditMyAccountStringField(originValue: ""),
-        nameField: EditMyAccountStringField(originValue: ""),
-      ),
-    );
-
-    _customFieldsSubject.add(customFields);
-    _customFieldsChangedSubject.add(true);
-  }
-
-  @override
-  void removeCustomField(EditMyAccountCustomField field) {
-    customFields.remove(field);
-    _customFieldsSubject.add(customFields);
-    _customFieldsChangedSubject.add(true);
-
-    Future.delayed(Duration(seconds: 1), () {
-      field.dispose();
-    });
-  }
+  List<IFormFieldBloc> get allFields => [
+        avatarField,
+        headerField,
+        displayNameField,
+        noteField,
+        lockedField,
+        customFieldsGroupBloc
+      ];
 
   EditMyAccountBloc({
     @required this.myAccountBloc,
     @required this.pleromaMyAccountService,
     @required this.maximumPossibleCustomFieldsCount,
-  }) {
-    addDisposable(subject: _customFieldsChangedSubject);
-    addDisposable(subject: _customFieldsSubject);
-
-    avatarImageSourceSubject = BehaviorSubject.seeded(
-        MediaImageSource(url: myAccountBloc.account.avatar));
-    headerImageSourceSubject = BehaviorSubject.seeded(
-        MediaImageSource(url: myAccountBloc.account.header));
-
-    addDisposable(subject: avatarImageSourceSubject);
-    addDisposable(subject: headerImageSourceSubject);
-
-    displayNameField = EditMyAccountStringField(
-        originValue: myAccountBloc.displayNameEmojiText.text);
+  })  : displayNameField = FormStringFieldBloc(
+            originValue: myAccountBloc.displayNameEmojiText.text),
+        noteField = FormStringFieldBloc(originValue: myAccountBloc.note),
+        lockedField =
+            FormBoolFieldBloc(originValue: myAccountBloc.account.locked),
+        avatarField = FormImageFilePickerOrUrlFieldBloc(
+            originalUrl: myAccountBloc.account.avatar),
+        headerField = FormImageFilePickerOrUrlFieldBloc(
+            originalUrl: myAccountBloc.account.header),
+        customFieldsGroupBloc = FormFieldGroupBloc<IFormLinkPairFieldBloc>(
+          maximumFieldsCount: _maximumPossibleCustomFieldsCount,
+          newFieldCreator: () => FormLinkPairFieldBloc(value: null, name: null),
+          originalFields: myAccountBloc.fields
+              .map(
+                (field) => FormLinkPairFieldBloc(
+                  name: field.name,
+                  value: field.value,
+                ),
+              )
+              .toList(),
+        ) {
     addDisposable(disposable: displayNameField);
-
-    noteField = EditMyAccountStringField(originValue: myAccountBloc.note);
     addDisposable(disposable: noteField);
-    lockedField =
-        EditMyAccountBoolField(originValue: myAccountBloc.account.locked);
     addDisposable(disposable: lockedField);
-
-    var fields = myAccountBloc.fields;
-
-    for (int i = 0; i < maximumPossibleCustomFieldsCount; i++) {
-      if (i < fields.length) {
-        var field = fields[i];
-        if (field.name?.isNotEmpty == true || field.value?.isNotEmpty == true) {
-          customFields.add(EditMyAccountCustomField(
-            index: i,
-            nameField: EditMyAccountStringField(originValue: field.name),
-            valueField:
-                EditMyAccountStringField(originValue: field.valueAsRawUrl),
-          ));
-        }
-      }
-    }
-
-    addDisposable(disposable: CustomDisposable(() {
-      for (var customField in customFields) {
-        customField.dispose();
-      }
-    }));
+    addDisposable(disposable: avatarField);
+    addDisposable(disposable: headerField);
+    addDisposable(disposable: customFieldsGroupBloc);
   }
-
-  @override
-  bool get isSomethingChanged =>
-      allFields.map((field) => field.isChanged).fold(false,
-          (previousValue, element) {
-        return previousValue | element;
-      }) ||
-      customFieldsChanged;
-
-  @override
-  Stream<bool> get isSomethingChangedStream => Rx.combineLatestList([
-        ...allFields.map((field) => field.isChangedStream),
-        customFieldsChangedStream
-      ]).map((isChangedList) =>
-          isChangedList.fold(false, (previousValue, element) {
-            return previousValue | element;
-          }));
-
-  BehaviorSubject<FilePickerFile> avatarImageSelectedFilePickerFileSubject;
-  BehaviorSubject<FilePickerFile> headerImageSelectedFilePickerFileSubject;
-
-  FilePickerFile get avatarImageSelectedFilePickerFile =>
-      avatarImageSelectedFilePickerFileSubject.value;
-
-  FilePickerFile get headerImageSelectedFilePickerFile =>
-      headerImageSelectedFilePickerFileSubject.value;
-
-  @override
-  MediaImageSource get avatarImageSource => avatarImageSourceSubject.value;
-
-  @override
-  Stream<MediaImageSource> get avatarImageSourceStream =>
-      avatarImageSourceSubject.stream;
-
-  @override
-  MediaImageSource get headerImageSource => headerImageSourceSubject.value;
-
-  @override
-  Stream<MediaImageSource> get headerImageSourceStream =>
-      headerImageSourceSubject.stream;
 
   @override
   Future submitChanges() async {
     Map<int, PleromaField> fieldsAttributes = {};
-    customFields.forEach((customField) => fieldsAttributes[customField.index] =
-        PleromaField(
-            name: customField.nameField.currentValue,
-            value: customField.valueField.currentValue));
+
+    customFieldsGroupBloc.fields.asMap().entries.forEach((entry) {
+      var index = entry.key;
+      var field = entry.value;
+      fieldsAttributes[index] = PleromaField(
+          name: field.keyField.currentValue,
+          value: field.valueField.currentValue);
+    });
     var remoteMyAccount =
         await pleromaMyAccountService.updateCredentials(PleromaMyAccountEdit(
       displayName: displayNameField.currentValue,
@@ -204,37 +104,6 @@ class EditMyAccountBloc extends DisposableOwner implements IEditMyAccountBloc {
     ));
 
     await myAccountBloc.updateMyAccountByRemote(remoteMyAccount);
-  }
-
-  @override
-  Future changeAvatarImage(FilePickerFile filePickerFile) async {
-    if(avatarImageSelectedFilePickerFile != null) {
-      if(avatarImageSelectedFilePickerFile.isNeedDeleteAfterUsage) {
-        await avatarImageSelectedFilePickerFile.file.delete();
-      }
-    }
-
-    avatarImageSelectedFilePickerFileSubject.add(filePickerFile);
-
-
-//    var pleromaMyAccountFilesRequest =
-//        PleromaMyAccountFilesRequest(avatar: file);
-//    return _updateFiles(pleromaMyAccountFilesRequest);
-  }
-
-  @override
-  Future changeHeaderImage(FilePickerFile filePickerFile) async {
-    if(headerImageSelectedFilePickerFile != null) {
-      if(headerImageSelectedFilePickerFile.isNeedDeleteAfterUsage) {
-        await headerImageSelectedFilePickerFile.file.delete();
-      }
-    }
-
-    headerImageSelectedFilePickerFileSubject.add(filePickerFile);
-
-//    var pleromaMyAccountFilesRequest =
-//        PleromaMyAccountFilesRequest(header: file);
-//    return _updateFiles(pleromaMyAccountFilesRequest);
   }
 
   Future<bool> _updateFiles(
