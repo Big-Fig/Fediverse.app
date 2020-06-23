@@ -71,7 +71,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
               .map(
                 (field) => FormLinkPairFieldBloc(
                   name: field.name,
-                  value: field.value,
+                  value: field.valueAsRawUrl,
                 ),
               )
               .toList(),
@@ -86,6 +86,27 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
 
   @override
   Future submitChanges() async {
+    var avatarPickedFile =
+        avatarField.isChanged ? avatarField.currentFilePickerFile : null;
+
+    var headerPickedFile =
+        headerField.isChanged ? headerField.currentFilePickerFile : null;
+    if (avatarPickedFile != null || headerPickedFile != null) {
+      var request = PleromaMyAccountFilesRequest(
+        avatar: avatarPickedFile?.file,
+        header: headerPickedFile?.file,
+      );
+
+      await _updateFiles(request);
+
+      if (avatarPickedFile?.isNeedDeleteAfterUsage == true) {
+        await avatarPickedFile.file.delete();
+      }
+      if (headerPickedFile?.isNeedDeleteAfterUsage == true) {
+        await headerPickedFile.file.delete();
+      }
+    }
+
     Map<int, PleromaField> fieldsAttributes = {};
 
     customFieldsGroupBloc.fields.asMap().entries.forEach((entry) {

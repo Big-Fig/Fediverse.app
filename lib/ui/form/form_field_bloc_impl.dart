@@ -12,6 +12,7 @@ abstract class FormFieldBloc extends DisposableOwner
   Stream<bool> get isChangedStream => isChangedSubject.stream;
   @protected
   // ignore: close_sinks
+  @protected
   BehaviorSubject<bool> isChangedSubject = BehaviorSubject.seeded(false);
   FormFieldBloc() {
     addDisposable(subject: isChangedSubject);

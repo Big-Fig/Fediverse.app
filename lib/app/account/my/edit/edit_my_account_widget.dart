@@ -291,36 +291,43 @@ class EditMyAccountWidget extends StatelessWidget {
           BuildContext context,
           IEditMyAccountBloc editMyAccountBloc) {
     var customFieldsGroupBloc = editMyAccountBloc.customFieldsGroupBloc;
-    return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          ...customFieldsGroupBloc.fields.asMap().entries.map(
-                (entry) => buildCustomField(
-                    context, customFieldsGroupBloc, entry.value, entry.key),
-              ),
-          StreamBuilder<bool>(
-              stream: customFieldsGroupBloc.isMaximumCustomFieldsCountReachedStream,
-              initialData: customFieldsGroupBloc.isMaximumCustomFieldsCountReached,
-              builder: (context, snapshot) {
-                var isMaximumCustomFieldsCountReached = snapshot.data;
+    return StreamBuilder<List<IFormLinkPairFieldBloc>>(
+      stream: customFieldsGroupBloc.fieldsStream,
+      initialData: customFieldsGroupBloc.fields,
+      builder: (context, snapshot) {
+        var fields = snapshot.data;
+        return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              ...fields.asMap().entries.map(
+                    (entry) => buildCustomField(
+                        context, customFieldsGroupBloc, entry.value, entry.key),
+                  ),
+              StreamBuilder<bool>(
+                  stream: customFieldsGroupBloc.isMaximumCustomFieldsCountReachedStream,
+                  initialData: customFieldsGroupBloc.isMaximumCustomFieldsCountReached,
+                  builder: (context, snapshot) {
+                    var isMaximumCustomFieldsCountReached = snapshot.data;
 
-                if (isMaximumCustomFieldsCountReached != true) {
-                  return Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: FediPrimaryFilledTextButton(
-                      tr("app.account.my.edit.field.custom_field.action"
-                          ".add_new"),
-                      onPressed: () {
-                        customFieldsGroupBloc.addNewEmptyCustomField();
-                      },
-                    ),
-                  );
-                } else {
-                  return SizedBox.shrink();
-                }
-              }),
-        ],
-      );
+                    if (isMaximumCustomFieldsCountReached != true) {
+                      return Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: FediPrimaryFilledTextButton(
+                          tr("app.account.my.edit.field.custom_field.action"
+                              ".add_new"),
+                          onPressed: () {
+                            customFieldsGroupBloc.addNewEmptyCustomField();
+                          },
+                        ),
+                      );
+                    } else {
+                      return SizedBox.shrink();
+                    }
+                  }),
+            ],
+          );
+      }
+    );
   }
 
   Widget buildCustomField(
