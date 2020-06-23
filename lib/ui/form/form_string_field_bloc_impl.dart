@@ -10,14 +10,11 @@ class FormStringFieldBloc extends FormValueFieldBloc<String>
   final TextEditingController textEditingController;
 
   FormStringFieldBloc({@required String originValue})
-      :
-      textEditingController = TextEditingController(text: originValue ?? ""),
+      : textEditingController = TextEditingController(text: originValue ?? ""),
         super(originValue: originValue) {
     var listener = () {
       var currentValue = textEditingController.text;
-
-      bool isChanged = (currentValue ?? "") != (originValue ?? "");
-      isChangedSubject.add(isChanged);
+      changeCurrentValue(currentValue);
     };
     addDisposable(textEditingController: textEditingController);
     textEditingController.addListener(listener);
@@ -25,4 +22,8 @@ class FormStringFieldBloc extends FormValueFieldBloc<String>
       textEditingController.removeListener(listener);
     }));
   }
+
+  @override
+  bool isValueEqual(String newValue, String originValue) =>
+      (newValue ?? "") != (originValue ?? "");
 }

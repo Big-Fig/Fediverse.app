@@ -11,12 +11,19 @@ class FormFilePickerOrUrlFieldBloc extends FormFieldBloc
   final BehaviorSubject<FilePickerFile> _currentFilePickerFileSubject =
       BehaviorSubject();
 
+  @override
   FilePickerFile get currentFilePickerFile =>
       _currentFilePickerFileSubject.value;
+  @override
   Stream<FilePickerFile> get currentFilePickerFileStream =>
       _currentFilePickerFileSubject.stream;
 
-  FormFilePickerOrUrlFieldBloc({@required this.originalUrl});
+  FormFilePickerOrUrlFieldBloc({@required this.originalUrl}) {
+    addDisposable(streamSubscription: currentFilePickerFileStream.listen(
+            (_) {
+              isChangedSubject.add(true);
+            }));
+  }
 
   @override
   void onNewFilePicked(FilePickerFile filePickerFile) {

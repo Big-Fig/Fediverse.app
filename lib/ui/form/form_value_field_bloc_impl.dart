@@ -17,11 +17,11 @@ class FormValueFieldBloc<T>  extends FormFieldBloc implements IFormValueFieldBlo
       : _currentValueSubject = BehaviorSubject.seeded(originValue) {
     addDisposable(subject: _currentValueSubject);
     addDisposable(streamSubscription: _currentValueSubject.listen((newValue) {
-      isChangedSubject.add(isValueEqual(newValue));
+      isChangedSubject.add(isValueEqual(newValue, originValue));
     }));
   }
 
-  bool isValueEqual(newValue) => newValue != originValue;
+  bool isValueEqual(T newValue, T originValue) => newValue != originValue;
 
   @override
   void changeCurrentValue(T newValue) {
