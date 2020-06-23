@@ -11,6 +11,7 @@ import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
+import 'package:fedi/ui/scroll/scroll_controller_bloc.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc_impl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -88,7 +89,9 @@ class _AccountDetailsWidgetState extends State<AccountDetailsWidget> {
 
   Widget buildListWithNewItemsOverlayContainer(BuildContext context) => Stack(
         children: [
-          AccountDetailsBodyWidget(scrollController: scrollController),
+          DisposableProvider<IScrollControllerBloc>(
+              create: (context) => ScrollControllerBloc(scrollController: scrollController),
+              child: AccountDetailsBodyWidget(scrollController: scrollController)),
           StatusListTapToLoadOverlayWidget(),
         ],
       );
