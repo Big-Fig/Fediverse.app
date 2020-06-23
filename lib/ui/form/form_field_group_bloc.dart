@@ -1,5 +1,4 @@
 import 'package:fedi/ui/form/form_field_bloc.dart';
-import 'package:fedi/ui/form/form_field_bloc_impl.dart';
 
 abstract class IFormFieldGroupBloc<T extends IFormFieldBloc>
     extends IFormFieldBloc {
