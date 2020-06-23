@@ -8,7 +8,7 @@ import 'package:fedi/app/chat/list/chat_list_widget.dart';
 import 'package:fedi/app/chat/start/start_chat_page.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 import 'package:fedi/app/search/search_page.dart';
-import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
+import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -126,7 +126,7 @@ class ChatMessagesHomeTabPage extends StatelessWidget {
   }
 
   Widget buildStartChatActionButton(BuildContext context) =>
-      FediIconInCircleTransparentButton(
+      FediIconInCircleBlurredButton(
         FediIcons.pen,
         onPressed: () {
           goToStartChatPage(context);
@@ -134,7 +134,7 @@ class ChatMessagesHomeTabPage extends StatelessWidget {
       );
 
   Widget buildSearchActionButton(BuildContext context) =>
-      FediIconInCircleTransparentButton(
+      FediIconInCircleBlurredButton(
         FediIcons.search,
         onPressed: () {
           goToSearchPage(context);

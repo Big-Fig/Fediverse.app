@@ -15,9 +15,9 @@ abstract class IAuthInstanceListBloc implements Disposable {
 
   Stream<bool> get isHaveInstancesStream;
 
-  void addInstance(AuthInstance instance);
+  Future addInstance(AuthInstance instance);
 
-  void removeInstance(AuthInstance instance);
+  Future removeInstance(AuthInstance instance);
 
   AuthInstance findInstanceByCredentials(
       {@required String host, @required String acct});

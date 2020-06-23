@@ -64,7 +64,8 @@ class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
               pushMessage.type == PushMessageType.resume) {
             // launch after click on notification
             if (currentInstanceBloc.currentInstance != instanceForMessage) {
-              currentInstanceBloc.changeCurrentInstance(instanceForMessage);
+              await currentInstanceBloc.changeCurrentInstance
+                (instanceForMessage);
             }
           }
         }

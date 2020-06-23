@@ -15,7 +15,7 @@ import 'package:fedi/app/timeline/tab/timeline_tab_model.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_text_tab_indicator_item_widget.dart';
 import 'package:fedi/app/timeline/timeline_tabs_bloc.dart';
 import 'package:fedi/app/timeline/timeline_tabs_bloc_impl.dart';
-import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
+import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -174,7 +174,7 @@ class _TimelinesHomeTabPageState extends State<TimelinesHomeTabPage>
     ];
   }
 
-  Widget buildFilterActionButton() => FediIconInCircleTransparentButton(
+  Widget buildFilterActionButton() => FediIconInCircleBlurredButton(
         FediIcons.filter,
         onPressed: () {
           _drawerKey.currentState.openEndDrawer();
@@ -182,7 +182,7 @@ class _TimelinesHomeTabPageState extends State<TimelinesHomeTabPage>
       );
 
   Widget buildSearchActionButton(BuildContext context) =>
-      FediIconInCircleTransparentButton(
+      FediIconInCircleBlurredButton(
         FediIcons.search,
         onPressed: () {
           goToSearchPage(context);

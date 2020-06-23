@@ -38,8 +38,8 @@ class AccountAvatarWidget extends StatelessWidget {
           imageBuilder: (context, imageProvider) {
             return ClipRRect(
               borderRadius: BorderRadius.circular(imageSize / 2),
-              child:
-                  Image(width: imageSize, height: imageSize, image: imageProvider),
+              child: Image(
+                  width: imageSize, height: imageSize, image: imageProvider),
             );
           },
           imageUrl: avatarUrl,

@@ -27,6 +27,7 @@ class AccountDisplayNameWidget extends StatelessWidget {
         initialData: accountBloc.displayNameEmojiText,
         builder: (context, snapshot) {
           var accountDisplayNameEmojiText = snapshot.data;
+
           return EmojiTextWidget(
             textAlign: textAlign,
             emojiText: accountDisplayNameEmojiText,

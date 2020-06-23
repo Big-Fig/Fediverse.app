@@ -5,7 +5,7 @@ import 'package:fedi/app/account/action/account_report_action.dart';
 import 'package:fedi/app/async/async_operation_button_builder_widget.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/conversation/start/status/post_status_start_conversation_page.dart';
-import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
+import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
@@ -65,7 +65,7 @@ class AccountActionListWidget extends StatelessWidget {
 
   Widget buildMoreButton(BuildContext context, IAccountBloc accountBloc,
       IPleromaAccountRelationship relationship) {
-    return FediIconInCircleTransparentButton(
+    return FediIconInCircleBlurredButton(
       FediIcons.menu,
       onPressed: () async {
         showMoreOptions(context, accountBloc, relationship);

@@ -10,7 +10,7 @@ import 'package:fedi/app/account/my/settings/my_account_settings_drawer_widget.d
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 import 'package:fedi/app/status/list/status_list_tap_to_load_overlay_widget.dart';
-import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
+import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -91,7 +91,7 @@ class AccountHomeTabPage extends StatelessWidget {
       );
 
   Widget _buildSettingsAction(BuildContext context) =>
-      FediIconInCircleTransparentButton(
+      FediIconInCircleBlurredButton(
         FediIcons.settings,
         onPressed: () {
           goToEditMyAccountPage(context);
@@ -99,7 +99,7 @@ class AccountHomeTabPage extends StatelessWidget {
       );
 
   Widget _buildDrawerAction(BuildContext context) =>
-      FediIconInCircleTransparentButton(
+      FediIconInCircleBlurredButton(
         Icons.menu,
         onPressed: () {
           _drawerKey.currentState.openDrawer();

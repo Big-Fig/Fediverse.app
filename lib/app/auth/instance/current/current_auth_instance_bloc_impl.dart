@@ -26,7 +26,7 @@ class CurrentAuthInstanceBloc extends DisposableOwner
       currentLocalPreferenceBloc.stream;
 
   @override
-  void changeCurrentInstance(AuthInstance instance) {
+  Future changeCurrentInstance(AuthInstance instance) async {
     _logger.finest(() => "changeCurrentInstance $instance");
 
     var found = instanceListBloc.availableInstances?.firstWhere(
@@ -34,11 +34,11 @@ class CurrentAuthInstanceBloc extends DisposableOwner
         orElse: () => null);
 
     if (found != null) {
-      instanceListBloc.removeInstance(found);
+      await instanceListBloc.removeInstance(found);
     }
-    instanceListBloc.addInstance(instance);
+    await instanceListBloc.addInstance(instance);
 
-    currentLocalPreferenceBloc.setValue(instance);
+    await currentLocalPreferenceBloc.setValue(instance);
   }
 
   @override
@@ -47,7 +47,13 @@ class CurrentAuthInstanceBloc extends DisposableOwner
   @override
   Future logoutCurrentInstance() async {
     _logger.finest(() => "logoutCurrentInstance $currentInstance");
-    instanceListBloc.removeInstance(currentInstance);
-    await currentLocalPreferenceBloc.setValue(null);
+    await instanceListBloc.removeInstance(currentInstance);
+
+    if (instanceListBloc.isHaveInstances == true) {
+      await currentLocalPreferenceBloc.setValue(instanceListBloc
+          .availableInstances.first);
+    } else {
+      await currentLocalPreferenceBloc.setValue(null);
+    }
   }
 }

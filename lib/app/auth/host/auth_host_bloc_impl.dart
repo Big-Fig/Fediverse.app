@@ -204,15 +204,16 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     var myAccount = await pleromaMyAccountService.verifyCredentials();
 
     var instance = AuthInstance(
-        urlHost: instanceBaseUrlHost.toLowerCase(),
-        urlSchema: instanceBaseUrlSchema,
-        authCode: authCode,
-        token: token,
-        acct: myAccount.acct,
-        application: hostApplication,
-        info: hostInstance,
-        isPleromaInstance: myAccount.pleroma != null);
-    currentInstanceBloc.changeCurrentInstance(instance);
+      urlHost: instanceBaseUrlHost.toLowerCase(),
+      urlSchema: instanceBaseUrlSchema,
+      authCode: authCode,
+      token: token,
+      acct: myAccount.acct,
+      application: hostApplication,
+      info: hostInstance,
+      isPleromaInstance: myAccount.pleroma != null,
+    );
+    await currentInstanceBloc.changeCurrentInstance(instance);
 
     pleromaMyAccountService.dispose();
     pleromaInstanceService.dispose();

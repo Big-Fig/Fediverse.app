@@ -18,7 +18,7 @@ abstract class IAccountBloc extends DisposableOwner {
 
   Stream<String> get acctStream => accountStream.map((account) => account.acct);
 
-  String get avatar => account.avatar;
+  String get avatar => account?.avatar;
 
   Stream<String> get avatarStream =>
       accountStream.map((account) => account.avatar);

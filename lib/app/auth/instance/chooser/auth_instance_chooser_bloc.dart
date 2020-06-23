@@ -16,7 +16,7 @@ abstract class IAuthInstanceChooserBloc implements Disposable {
 
   Stream<List<AuthInstance>> get instancesAvailableToChooseStream;
 
-  void chooseInstance(AuthInstance instance);
+  Future chooseInstance(AuthInstance instance);
 
-  void removeInstance(AuthInstance instance);
+  Future removeInstance(AuthInstance instance);
 }
