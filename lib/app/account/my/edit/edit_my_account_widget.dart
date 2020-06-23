@@ -4,7 +4,7 @@ import 'package:fedi/app/account/my/edit/avatar/edit_my_account_header_dialog.da
 import 'package:fedi/app/account/my/edit/edit_my_account_bloc.dart';
 import 'package:fedi/app/account/my/edit/header/edit_my_account_avatar_dialog.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
-import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
+import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
@@ -77,7 +77,7 @@ class EditMyAccountWidget extends StatelessWidget {
 
   Widget buildEditHeaderBackgroundActionButton(
           BuildContext context, IEditMyAccountBloc editMyAccountBloc) =>
-      FediIconInCircleTransparentButton(
+      FediIconInCircleBlurredButton(
         FediIcons.camera,
         iconSize: 15.0,
         size: FediSizes.smallFilledButtonHeight,
@@ -129,7 +129,7 @@ class EditMyAccountWidget extends StatelessWidget {
 
   Widget buildEditAvatarActionButton(
           BuildContext context, IEditMyAccountBloc editMyAccountBloc) =>
-      FediIconInCircleTransparentButton(
+      FediIconInCircleBlurredButton(
         FediIcons.camera,
         iconSize: 15.0,
         borderWidth: 2.0,

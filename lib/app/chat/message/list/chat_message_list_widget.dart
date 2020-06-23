@@ -92,7 +92,7 @@ class ChatMessageListWidget extends ChatMessagePaginationListBaseWidget {
           isFirstInDayGroup =
               !DateUtils.isSameDay(currentCreatedAt, previousCreatedAt);
           var isSameAccount = currentMessage.account.remoteId ==
-              previousMessage.account.remoteId;
+              previousMessage.myAccount.remoteId;
           isFirstInMinuteGroup =
               !(DateUtils.isSameMinute(currentCreatedAt, previousCreatedAt) &&
                   isSameAccount);
@@ -102,7 +102,7 @@ class ChatMessageListWidget extends ChatMessagePaginationListBaseWidget {
         }
         if (nextCreatedAt != null) {
           var isSameAccount =
-              currentMessage.account.remoteId == nextMessage.account.remoteId;
+              currentMessage.account.remoteId == nextMessage.myAccount.remoteId;
           isLastInDayGroup =
               !DateUtils.isSameDay(currentCreatedAt, nextCreatedAt);
           isLastInMinuteGroup =

@@ -1,15 +1,23 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
+import 'package:fedi/app/account/account_bloc.dart';
+import 'package:fedi/app/account/my/my_account_bloc.dart';
+import 'package:fedi/app/account/my/my_account_bloc_impl.dart';
+import 'package:fedi/app/account/my/my_account_local_preference_bloc.dart';
+import 'package:fedi/app/account/my/my_account_local_preference_bloc_impl.dart';
+import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/chooser/auth_instance_chooser_bloc.dart';
+import 'package:fedi/app/auth/instance/chooser/auth_instance_chooser_instance_list_item_widget.dart';
 import 'package:fedi/app/auth/instance/join/add_more/add_more_join_auth_instance_page.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
-import 'package:fedi/app/ui/fedi_icons.dart';
-import 'package:fedi/dialog/alert/confirm_alert_dialog.dart';
+import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/local_preferences/local_preferences_service.dart';
+import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
+import 'package:provider/provider.dart';
 
 var _logger = Logger("instance_chooser_widget.dart");
 
@@ -32,136 +40,77 @@ class AuthInstanceChooserWidget extends StatelessWidget {
           }
           _logger.finest(() => "build instancesAvailableToChoose "
               "${instancesAvailableToChoose.length}");
-          var itemCount = instancesAvailableToChoose.length + 2;
+          var itemCount = instancesAvailableToChoose.length;
 
-//          return ListView(
-//            shrinkWrap: true,
-//            children: [
-//              buildCurrentInstanceRow(context, instanceChooserBloc, instanceChooserBloc.selectedInstance),
-//              ...instancesAvailableToChoose.map((instance) =>
-//                  buildInstanceToChooseRow(
-//                      context, instanceChooserBloc, instance)),
-//              buildAddAccountRow(context)
-//            ],
-//          );
-
-          return ListView.builder(
-            shrinkWrap: true,
-            itemCount: itemCount,
-            itemBuilder: (BuildContext context, int index) {
-              if (index == 0) {
-                var instance = instanceChooserBloc.selectedInstance;
-                return buildCurrentInstanceRow(
-                    context, instanceChooserBloc, instance);
-              } else if (index == itemCount - 1) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: buildAddAccountRow(context),
-                );
-              } else {
-                index -= 1;
-                var instance = instancesAvailableToChoose[index];
-                return buildInstanceToChooseRow(
-                    context, instanceChooserBloc, instance);
-              }
-            },
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ProxyProvider<IMyAccountBloc, IAccountBloc>(
+                update: (BuildContext context, value, previous) => value,
+                child: AuthInstanceChooserInstanceListItemWidget(
+                    instance: instanceChooserBloc.selectedInstance,
+                    isSelected: true),
+              ),
+              buildItemsToChoose(
+                  itemCount, instancesAvailableToChoose, instanceChooserBloc),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: buildAddAccountRow(context),
+              )
+            ],
           );
         });
   }
 
-  Widget buildAddAccountRow(BuildContext context) => FediPrimaryFilledTextButton(
-      tr("app.auth.instance.chooser.action.add_instance"),
-      expanded: false,
-      onPressed: () {
-        goToAddMoreJoinAuthInstancePage(context);
-      },
-    );
+  Widget buildItemsToChoose(
+    int itemCount,
+    List<AuthInstance> instancesAvailableToChoose,
+    IAuthInstanceChooserBloc instanceChooserBloc,
+  ) =>
+      ListView.builder(
+        shrinkWrap: true,
+        itemCount: itemCount,
+        itemBuilder: (BuildContext context, int index) {
+          var instance = instancesAvailableToChoose[index];
+          return DisposableProvider<IMyAccountLocalPreferenceBloc>(
+            create: (context) => MyAccountLocalPreferenceBloc(
+                ILocalPreferencesService.of(context, listen: false),
+                instance.userAtHost),
+            child: Builder(
+              builder: (context) => AsyncInitLoadingWidget(
+                asyncInitLoadingBloc:
+                    IMyAccountLocalPreferenceBloc.of(context, listen: false),
+                loadingFinishedBuilder: (context) {
 
-  Widget buildInstanceToChooseRow(
-          BuildContext context,
-          IAuthInstanceChooserBloc instanceChooserBloc,
-          AuthInstance instance) =>
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          children: <Widget>[
-            IconButton(
-              icon: Icon(
-                FediIcons.close,
-                size: 16.0,
-                color: FediColors.darkGrey,
-              ),
-              onPressed: () {
-                ConfirmAlertDialog(
-                  context: context,
-                  title: tr("app.auth.instance.remove.dialog.title"),
-                  content: tr("app.auth.instance.remove.dialog.title"),
-                  onAction: () {
-                    instanceChooserBloc.removeInstance(instance);
-                    Navigator.of(context).pop();
-                  },
-                ).show(context);
-              },
-            ),
-            GestureDetector(
-                onTap: () {
-                  ConfirmAlertDialog(
-                    context: context,
-                    title: tr("app.auth.instance.chooser.dialog.title"),
-                    content: tr("app.auth.instance.chooser.dialog.title"),
-                    onAction: () {
-                      instanceChooserBloc.chooseInstance(instance);
-                    },
-                  ).show(context);
+                  return DisposableProvider<IAccountBloc>(
+                  create: (context) => MyAccountBloc(
+                    instance: instance,
+                    pleromaMyAccountService:
+                        IPleromaMyAccountService.of(context, listen: false),
+                    accountRepository:
+                        IAccountRepository.of(context, listen: false),
+                    myAccountLocalPreferenceBloc:
+                        IMyAccountLocalPreferenceBloc.of(context, listen: false),
+                  ),
+                  child: AuthInstanceChooserInstanceListItemWidget(
+                    instance: instance,
+                    isSelected: false,
+                  ),
+                );
                 },
-                child: Text(instance.userAtHost)),
-          ],
-        ),
+              ),
+            ),
+          );
+        },
       );
 
-  Widget buildCurrentInstanceRow(
-          BuildContext context,
-          IAuthInstanceChooserBloc instanceChooserBloc,
-          AuthInstance instance) =>
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(
-                    Icons.exit_to_app,
-                    color: FediColors.grey,
-                  ),
-                  onPressed: () async {
-                    var authHostBloc = AuthHostBloc.createFromContext(context,
-                        instanceBaseUrl: instance.url);
-                    await authHostBloc.performAsyncInit();
-
-                    await ConfirmAlertDialog(
-                      context: context,
-                      title: tr("app.auth.instance.logout.dialog.title"),
-                      content: tr("app.auth.instance.logout.dialog.title"),
-                      onAction: () {
-                        authHostBloc.logout();
-                      },
-                    ).show(context);
-                  },
-                ),
-                Text(instance.userAtHost),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Icon(
-                FediIcons.check,
-                color: FediColors.primaryColorDark,
-              ),
-            )
-          ],
-        ),
+  Widget buildAddAccountRow(BuildContext context) =>
+      FediPrimaryFilledTextButton(
+        tr("app.auth.instance.chooser.action.add_instance"),
+        expanded: false,
+        onPressed: () {
+          goToAddMoreJoinAuthInstancePage(context);
+        },
       );
 
   const AuthInstanceChooserWidget();

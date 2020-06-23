@@ -31,23 +31,26 @@ class AuthInstanceListBloc extends DisposableOwner
       .map((availableInstances) => availableInstances?.isNotEmpty == true);
 
   @override
-  void addInstance(AuthInstance instance) {
+  Future addInstance(AuthInstance instance) async {
     _logger.finest(() => "addInstance $instance");
     var instances = availableInstances;
     if (!instances.contains(instance)) {
       instances.add(instance);
-      instanceListLocalPreferenceBloc
+      await instanceListLocalPreferenceBloc
           .setValue(AuthInstanceList(instances: instances));
     }
   }
 
   @override
-  void removeInstance(AuthInstance instance) {
+  Future removeInstance(AuthInstance instance) async {
     _logger.finest(() => "removeInstance $instance");
     var instances = availableInstances;
-    if (instances.contains(instance)) {
-      instances.remove(instance);
-      instanceListLocalPreferenceBloc
+
+    var found = findInstanceByCredentials(host: instance.urlHost,acct: instance
+        .acct );
+    if (found != null) {
+      instances.remove(found);
+      await instanceListLocalPreferenceBloc
           .setValue(AuthInstanceList(instances: instances));
     }
   }

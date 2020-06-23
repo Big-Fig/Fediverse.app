@@ -6,7 +6,6 @@ abstract class IFormFieldGroupBloc<T extends IFormFieldBloc>
 
   void removeCustomField(T field);
 
-
   List<T> get fields;
 
   Stream<List<T>> get fieldsStream;
@@ -16,6 +15,4 @@ abstract class IFormFieldGroupBloc<T extends IFormFieldBloc>
   bool get isMaximumCustomFieldsCountReached;
 
   Stream<bool> get isMaximumCustomFieldsCountReachedStream;
-
-
 }

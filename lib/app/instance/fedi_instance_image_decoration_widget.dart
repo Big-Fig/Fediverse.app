@@ -58,7 +58,7 @@ class FediInstanceImageDecorationWidget extends StatelessWidget {
     }
   }
 
-  Container buildDefault(Widget child) {
+  Widget buildDefault(Widget child) {
     var imageProvider = getDefaultHeaderImage().image;
     return buildWithImageProvider(imageProvider, child);
   }

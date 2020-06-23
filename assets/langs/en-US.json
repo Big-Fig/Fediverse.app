@@ -148,12 +148,6 @@
             "content": "Are you sure?"
           }
         },
-        "remove": {
-          "dialog": {
-            "title": "Logging out",
-            "content": "Are you sure?"
-          }
-        },
         "chooser": {
           "action": {
             "add_instance": "Add instance"

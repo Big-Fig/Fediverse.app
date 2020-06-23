@@ -1,5 +1,5 @@
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_filled_button.dart';
-import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
+import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -70,7 +70,7 @@ class _FediIconTabIndicatorItemWidgetState
         onPressed: onPressed,
       );
     } else {
-      button = FediIconInCircleTransparentButton(
+      button = FediIconInCircleBlurredButton(
         widget.iconData,
         onPressed: onPressed,
       );

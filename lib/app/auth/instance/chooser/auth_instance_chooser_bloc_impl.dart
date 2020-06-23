@@ -18,9 +18,7 @@ class AuthInstanceChooserBloc extends DisposableOwner
       {@required this.instanceListBloc, @required this.currentInstanceBloc});
 
   @override
-  void chooseInstance(AuthInstance instance) {
-    currentInstanceBloc.changeCurrentInstance(instance);
-  }
+  Future chooseInstance(AuthInstance instance) => currentInstanceBloc.changeCurrentInstance(instance);
 
   @override
   List<AuthInstance> get instancesAvailableToChoose =>
@@ -50,7 +48,7 @@ class AuthInstanceChooserBloc extends DisposableOwner
       currentInstanceBloc.currentInstanceStream;
 
   @override
-  void removeInstance(AuthInstance instance) =>
+  Future removeInstance(AuthInstance instance) =>
       instanceListBloc.removeInstance(instance);
 
   static AuthInstanceChooserBloc createFromContext(BuildContext context) =>
