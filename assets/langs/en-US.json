@@ -156,7 +156,7 @@
         },
         "chooser": {
           "action": {
-            "add_account": "Add account"
+            "add_instance": "Add instance"
           },
           "dialog": {
             "title": "Change active instance?",

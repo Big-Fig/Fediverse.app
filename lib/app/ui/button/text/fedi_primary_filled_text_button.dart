@@ -15,6 +15,7 @@ class FediPrimaryFilledTextButton extends FediTextButton {
   final double fontSize;
   final double lineHeight;
   final double borderWidth;
+  final bool expanded;
 
   FediPrimaryFilledTextButton(
     this.text, {
@@ -23,11 +24,12 @@ class FediPrimaryFilledTextButton extends FediTextButton {
     this.fontSize = 14.0,
     this.lineHeight = 1.15,
     this.borderWidth = 1,
+    this.expanded = true,
   });
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    var button = GestureDetector(
       onTap: onPressed,
       child: Container(
           height: height + borderWidth * 2,
@@ -43,11 +45,11 @@ class FediPrimaryFilledTextButton extends FediTextButton {
               width: borderWidth,
             ),
           ),
-          child: Center(
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 20,
-              ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: 20,
+            ),
+            child: Center(
               child: Text(
                 text, textAlign: TextAlign.center, // 80% transparency
                 style: TextStyle(
@@ -59,5 +61,14 @@ class FediPrimaryFilledTextButton extends FediTextButton {
             ),
           )),
     );
+
+    if (expanded) {
+      return button;
+    } else {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [button],
+      );
+    }
   }
 }

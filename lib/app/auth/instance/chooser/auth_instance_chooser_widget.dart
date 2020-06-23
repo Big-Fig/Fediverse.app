@@ -3,6 +3,7 @@ import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/chooser/auth_instance_chooser_bloc.dart';
 import 'package:fedi/app/auth/instance/join/add_more/add_more_join_auth_instance_page.dart';
+import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/dialog/alert/confirm_alert_dialog.dart';
@@ -32,7 +33,20 @@ class AuthInstanceChooserWidget extends StatelessWidget {
           _logger.finest(() => "build instancesAvailableToChoose "
               "${instancesAvailableToChoose.length}");
           var itemCount = instancesAvailableToChoose.length + 2;
+
+//          return ListView(
+//            shrinkWrap: true,
+//            children: [
+//              buildCurrentInstanceRow(context, instanceChooserBloc, instanceChooserBloc.selectedInstance),
+//              ...instancesAvailableToChoose.map((instance) =>
+//                  buildInstanceToChooseRow(
+//                      context, instanceChooserBloc, instance)),
+//              buildAddAccountRow(context)
+//            ],
+//          );
+
           return ListView.builder(
+            shrinkWrap: true,
             itemCount: itemCount,
             itemBuilder: (BuildContext context, int index) {
               if (index == 0) {
@@ -40,7 +54,10 @@ class AuthInstanceChooserWidget extends StatelessWidget {
                 return buildCurrentInstanceRow(
                     context, instanceChooserBloc, instance);
               } else if (index == itemCount - 1) {
-                return buildAddAccountRow(context);
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: buildAddAccountRow(context),
+                );
               } else {
                 index -= 1;
                 var instance = instancesAvailableToChoose[index];
@@ -52,27 +69,13 @@ class AuthInstanceChooserWidget extends StatelessWidget {
         });
   }
 
-  Widget buildAddAccountRow(BuildContext context) => Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: GestureDetector(
-          onTap: () {
-            goToAddMoreJoinAuthInstancePage(context);
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Icon(
-                  FediIcons.plus,
-                  size: 16.0,
-                ),
-              ),
-              Text(tr("app.auth.instance.chooser.action.add_account")),
-            ],
-          ),
-        ),
-      );
+  Widget buildAddAccountRow(BuildContext context) => FediPrimaryFilledTextButton(
+      tr("app.auth.instance.chooser.action.add_instance"),
+      expanded: false,
+      onPressed: () {
+        goToAddMoreJoinAuthInstancePage(context);
+      },
+    );
 
   Widget buildInstanceToChooseRow(
           BuildContext context,
