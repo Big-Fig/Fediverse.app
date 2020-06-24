@@ -44,9 +44,15 @@ class FileGalleryFolderGridItemWidget extends StatelessWidget {
         : SizedBox.shrink();
   }
 
-  Image buildPreviewImage(IFileGalleryFileBloc fileBloc) {
+  Widget buildPreviewImage(IFileGalleryFileBloc fileBloc) {
+
+    var thumbImageData = fileBloc.thumbImageData;
+
+    if(thumbImageData == null) {
+      return Center(child: CircularProgressIndicator());
+    }
     return Image.memory(
-      fileBloc.thumbImageData,
+      thumbImageData,
       fit: BoxFit.cover,
       width: double.infinity,
       height: double.infinity,

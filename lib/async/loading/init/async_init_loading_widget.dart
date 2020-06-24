@@ -46,7 +46,7 @@ class AsyncInitLoadingWidget extends StatelessWidget {
                   child: Center(
                     child: Text(tr(
                         "async.init.state.failed",
-                        args: [asyncInitLoadingBloc.initLoadingException])),
+                        args: [asyncInitLoadingBloc.initLoadingException.toString()])),
                   ));
               break;
           }

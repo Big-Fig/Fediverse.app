@@ -18,4 +18,8 @@ abstract class IFileGalleryBloc
   Stream<List<AssetPathEntity>> get foldersStream;
 
   List<AssetPathEntity> get folders;
+  AssetPathEntity get selectedFolder;
+  Stream<AssetPathEntity> get selectedFolderStream;
+
+  void selectFolder(AssetPathEntity folder);
 }
