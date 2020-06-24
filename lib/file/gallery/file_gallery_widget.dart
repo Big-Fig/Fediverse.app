@@ -68,9 +68,7 @@ class FileGalleryWidget extends StatelessWidget {
           var folders = snapshot.data;
 
           if (folders.isEmpty) {
-            return Center(
-                child: Text(
-                    tr("file.gallery.empty")));
+            return Center(child: Text(tr("file.gallery.empty")));
           } else {
             return DefaultTabController(
               length: folders.length,
@@ -113,6 +111,7 @@ class FileGalleryWidget extends StatelessWidget {
                             },
                             child: FileGalleryFolderWidget(
                               galleryFileTapped: galleryFileTapped,
+                              headerItemBuilder: null,
                             ));
                       }),
                     ),

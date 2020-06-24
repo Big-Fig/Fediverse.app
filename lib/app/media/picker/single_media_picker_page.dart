@@ -20,6 +20,7 @@ import 'package:fedi/permission/grant_permission_widget.dart';
 import 'package:fedi/permission/storage_permission_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:provider/provider.dart';
 
@@ -63,6 +64,33 @@ class SingleMediaPickerPage extends StatelessWidget {
                           return folderBloc;
                         },
                         child: FileGalleryFolderWidget(
+                          headerItemBuilder: (BuildContext context) {
+                            return GestureDetector(
+                              onTap: () async {
+                                final pickedFile = await ImagePicker.pickImage(
+                                    source: ImageSource.camera);
+
+                                if (pickedFile != null) {
+                                  fileSelectedCallback(FilePickerFile(
+                                    type: FilePickerFileType.image,
+                                    isNeedDeleteAfterUsage: true,
+                                    file: pickedFile,
+                                  ));
+                                }
+//                                _showFolderChooserModalBottomSheet(
+//                                    context, fileGalleryBloc);
+                              },
+                              child: Container(
+                                  color: Colors.white,
+                                  width: double.infinity,
+                                  height: double.infinity,
+                                  child: Icon(
+                                    FediIcons.camera,
+                                    color: FediColors.darkGrey,
+                                    size: 40.0,
+                                  )),
+                            );
+                          },
                           galleryFileTapped: (FileGalleryFile galleryFile) {
                             fileSelectedCallback(
                                 mapGalleryToFilePickerFIle(galleryFile));
@@ -99,40 +127,14 @@ class SingleMediaPickerPage extends StatelessWidget {
 
                   return GestureDetector(
                     onTap: () {
-                      showFediModalBottomSheetDialog(
-                          context: context,
-                          child: Provider.value(
-                            value: fileGalleryBloc,
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: fileGalleryBloc.folders
-                                    .map((folder) => ListTile(
-                                          onTap: () {
-                                            fileGalleryBloc
-                                                .selectFolder(folder);
-                                            Navigator.of(context).pop();
-                                          },
-                                          title: Text(
-                                            folder.name,
-                                            style: TextStyle(
-                                                fontWeight: folder ==
-                                                        fileGalleryBloc
-                                                            .selectedFolder
-                                                    ? FontWeight.w500
-                                                    : FontWeight.w300),
-                                          ),
-                                        ))
-                                    .toList(),
-                              ),
-                            ),
-                          ));
+                      _showFolderChooserModalBottomSheet(
+                          context, fileGalleryBloc);
                     },
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        FediSubHeaderText(selectedFolder.name),
+                        FediSubHeaderText(
+                            _calculateFolderTitle(selectedFolder)),
                         SizedBox(
                           width: 6,
                         ),
@@ -149,6 +151,40 @@ class SingleMediaPickerPage extends StatelessWidget {
             return Text(tr("file.picker.single.title"));
           }
         });
+  }
+
+  String _calculateFolderTitle(AssetPathEntity selectedFolder) =>
+      "${selectedFolder.name} (${selectedFolder.assetCount})";
+
+  void _showFolderChooserModalBottomSheet(
+      BuildContext context, IFileGalleryBloc fileGalleryBloc) {
+    return showFediModalBottomSheetDialog(
+        context: context,
+        child: Provider.value(
+          value: fileGalleryBloc,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ListView(
+              shrinkWrap: true,
+              children: fileGalleryBloc.folders
+                  .map((folder) => ListTile(
+                        onTap: () {
+                          fileGalleryBloc.selectFolder(folder);
+                          Navigator.of(context).pop();
+                        },
+                        title: Text(
+                          _calculateFolderTitle(folder),
+                          style: TextStyle(
+                              fontWeight:
+                                  folder == fileGalleryBloc.selectedFolder
+                                      ? FontWeight.w500
+                                      : FontWeight.w300),
+                        ),
+                      ))
+                  .toList(),
+            ),
+          ),
+        ));
   }
 }
 
