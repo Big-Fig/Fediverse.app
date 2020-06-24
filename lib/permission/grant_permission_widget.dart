@@ -9,7 +9,9 @@ class GrantPermissionWidget extends StatelessWidget {
   final WidgetBuilder grantedBuilder;
 
   GrantPermissionWidget(
-      {@required this.permissionBloc, @required this.grantedBuilder});
+      {@required this.permissionBloc, @required this.grantedBuilder}) {
+    permissionBloc.checkPermissionStatus();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,11 @@ class GrantPermissionWidget extends StatelessWidget {
         builder: (context, snapshot) {
           var permissionGranted = snapshot.data;
 
-          if (permissionGranted != true) {
+          if(permissionGranted == null) {
+            return Center(child: CircularProgressIndicator());
+          }
+
+          if (!permissionGranted) {
             return Center(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),

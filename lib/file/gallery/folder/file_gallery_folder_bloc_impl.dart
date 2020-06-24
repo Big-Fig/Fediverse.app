@@ -63,7 +63,9 @@ abstract class AbstractFileGalleryFolderBloc extends AsyncInitLoadingBloc
     assert(permissionGranted);
     galleryStateSubject.add(FileGalleryState.loading);
     var files = await loadFiles();
-    filesSubject.add(files);
+    if (!filesSubject.isClosed) {
+      filesSubject.add(files);
+    }
     galleryStateSubject.add(FileGalleryState.loaded);
   }
 
