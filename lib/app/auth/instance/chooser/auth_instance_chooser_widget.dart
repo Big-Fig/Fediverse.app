@@ -42,8 +42,8 @@ class AuthInstanceChooserWidget extends StatelessWidget {
               "${instancesAvailableToChoose.length}");
           var itemCount = instancesAvailableToChoose.length;
 
-          return Column(
-            mainAxisSize: MainAxisSize.min,
+          return ListView(
+            shrinkWrap: true,
             children: [
               ProxyProvider<IMyAccountBloc, IAccountBloc>(
                 update: (BuildContext context, value, previous) => value,

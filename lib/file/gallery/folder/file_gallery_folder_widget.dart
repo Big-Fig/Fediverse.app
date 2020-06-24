@@ -14,8 +14,11 @@ import 'package:provider/provider.dart';
 
 class FileGalleryFolderWidget extends StatelessWidget {
   final FileGalleryFileCallback galleryFileTapped;
-
-  FileGalleryFolderWidget({@required this.galleryFileTapped});
+  final WidgetBuilder headerItemBuilder;
+  FileGalleryFolderWidget({
+    @required this.galleryFileTapped,
+    @required this.headerItemBuilder,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -68,16 +71,27 @@ class FileGalleryFolderWidget extends StatelessWidget {
 
           if (files.isEmpty) {
             return Center(
-              child: Text(
-                  tr("file.gallery.folder.empty")),
+              child: Text(tr("file.gallery.folder.empty")),
             );
           } else {
+            var length = files.length;
+
+            if (headerItemBuilder != null) {
+              length += 1;
+            }
+
             return GridView.builder(
-              itemCount: files.length,
+              itemCount: length,
               gridDelegate:
                   SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-              itemBuilder: (context, index) =>
-                  _buildItem(context, files[index]),
+              itemBuilder: (context, index) {
+                if (index == 0) {
+                  return headerItemBuilder(context);
+                } else {
+                  index -= 1;
+                  return _buildItem(context, files[index]);
+                }
+              },
             );
           }
         });
@@ -87,13 +101,13 @@ class FileGalleryFolderWidget extends StatelessWidget {
     return Provider<AssetEntity>.value(
       value: assetEntity,
       child: DisposableProxyProvider<AssetEntity, IFileGalleryFileBloc>(
-            update: (BuildContext context, value, previous) {
-              var galleryFileBloc = FileGalleryFileBloc(assetEntity: value);
-              galleryFileBloc.performAsyncInit();
-              return galleryFileBloc;
-            },
-            child: FileGalleryFolderGridItemWidget(
-                galleryFileTapped: galleryFileTapped)),
+          update: (BuildContext context, value, previous) {
+            var galleryFileBloc = FileGalleryFileBloc(assetEntity: value);
+            galleryFileBloc.performAsyncInit();
+            return galleryFileBloc;
+          },
+          child: FileGalleryFolderGridItemWidget(
+              galleryFileTapped: galleryFileTapped)),
     );
   }
 }
