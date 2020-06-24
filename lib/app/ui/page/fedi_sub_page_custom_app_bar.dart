@@ -6,6 +6,7 @@ class FediSubPageCustomAppBar extends StatelessWidget
     implements PreferredSizeWidget {
   final Widget child;
   final Widget leading;
+  final bool centerTitle;
 
   // AppBar size without bottom
   @override
@@ -14,12 +15,13 @@ class FediSubPageCustomAppBar extends StatelessWidget
   FediSubPageCustomAppBar({
     @required this.child,
     @required this.leading,
+    this.centerTitle = false,
   });
 
   @override
   Widget build(BuildContext context) => AppBar(
         leading: leading,
-        centerTitle: false,
+        centerTitle: centerTitle,
         titleSpacing: 0.0,
 //          brightness: Brightness.light,
         backgroundColor: FediColors.white,

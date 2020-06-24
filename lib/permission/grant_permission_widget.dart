@@ -19,12 +19,13 @@ class GrantPermissionWidget extends StatelessWidget {
         builder: (context, snapshot) {
           var permissionGranted = snapshot.data;
 
-          if (!permissionGranted) {
+          if (permissionGranted != true) {
             return Center(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: FediPrimaryFilledTextButton(
                   tr("permission.grant.action.grant"),
+                  expanded: false,
                   onPressed: () {
                     permissionBloc.requestPermission();
                   },

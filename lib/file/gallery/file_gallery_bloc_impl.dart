@@ -23,6 +23,7 @@ abstract class AbstractFileGalleryBloc extends AsyncInitLoadingBloc
     @required this.fileTypesToPick,
   }) {
     addDisposable(subject: foldersSubject);
+    addDisposable(subject: selectedFolderSubject);
     addDisposable(subject: galleryStateSubject);
   }
 
@@ -34,6 +35,20 @@ abstract class AbstractFileGalleryBloc extends AsyncInitLoadingBloc
 
   @override
   List<AssetPathEntity> get folders => foldersSubject.value;
+
+  // ignore: close_sinks
+  BehaviorSubject<AssetPathEntity> selectedFolderSubject = BehaviorSubject();
+
+  @override
+  void selectFolder(AssetPathEntity folder) {
+    selectedFolderSubject.add(folder);
+  }
+
+  @override
+  AssetPathEntity get selectedFolder => selectedFolderSubject.value;
+
+  @override
+  Stream<AssetPathEntity> get selectedFolderStream => selectedFolderSubject.stream;
 
   // ignore: close_sinks
   BehaviorSubject<FileGalleryState> galleryStateSubject =
@@ -64,7 +79,10 @@ abstract class AbstractFileGalleryBloc extends AsyncInitLoadingBloc
   }
 
   Future _initAfterPermissionGranted() async {
-    return await reloadFolders();
+     await reloadFolders();
+     if(folders?.isNotEmpty == true ) {
+       selectedFolderSubject.add(folders.first);
+     }
   }
 
   Future reloadFolders() async {
@@ -167,4 +185,5 @@ class FileGalleryBloc extends AbstractFileGalleryBloc {
 
     throw "fileTypesToPick should containe image or video type";
   }
+
 }

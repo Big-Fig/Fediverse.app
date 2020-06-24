@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/my/edit/avatar/edit_my_account_header_dialog.dart';
 import 'package:fedi/app/account/my/edit/edit_my_account_bloc.dart';
 import 'package:fedi/app/account/my/edit/header/edit_my_account_avatar_dialog.dart';
+import 'package:fedi/app/media/picker/single_media_picker_page.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
@@ -13,7 +14,6 @@ import 'package:fedi/app/ui/form/fedi_form_edit_text_row.dart';
 import 'package:fedi/app/ui/form/fedi_form_pair_edit_text_row.dart';
 import 'package:fedi/app/ui/form/fedi_form_switch_row.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';
-import 'package:fedi/file/picker/single/single_file_picker_page.dart';
 import 'package:fedi/media/media_image_source_model.dart';
 import 'package:fedi/ui/form/form_bool_field_bloc_impl.dart';
 import 'package:fedi/ui/form/form_field_group_bloc.dart';
@@ -88,7 +88,10 @@ class EditMyAccountWidget extends StatelessWidget {
 
   void startChoosingFileToUploadHeader(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    goToSingleFilePickerPage(context,
+    goToSingleMediaPickerPage(context,
+        fileTypesToPick: [
+          FilePickerFileType.image,
+        ],
         fileSelectedCallback: (FilePickerFile filePickerFile) async {
       showEditMyAccountHeaderDialog(context, filePickerFile,
           (filePickerFile) async {
@@ -117,7 +120,10 @@ class EditMyAccountWidget extends StatelessWidget {
 
   void startChoosingFileToUploadAvatar(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    goToSingleFilePickerPage(context,
+    goToSingleMediaPickerPage(context,
+        fileTypesToPick: [
+          FilePickerFileType.image,
+        ],
         fileSelectedCallback: (FilePickerFile filePickerFile) async {
       showEditMyAccountAvatarDialog(context, filePickerFile,
           (filePickerFile) async {

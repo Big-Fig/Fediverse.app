@@ -10,6 +10,7 @@ import 'package:fedi/permission/grant_permission_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
+import 'package:provider/provider.dart';
 
 class FileGalleryFolderWidget extends StatelessWidget {
   final FileGalleryFileCallback galleryFileTapped;
@@ -82,13 +83,17 @@ class FileGalleryFolderWidget extends StatelessWidget {
         });
   }
 
-  Widget _buildItem(BuildContext context, AssetEntity assetEntity) =>
-      DisposableProvider<IFileGalleryFileBloc>(
-          create: (BuildContext context) {
-            var galleryFileBloc = FileGalleryFileBloc(assetEntity: assetEntity);
-            galleryFileBloc.performAsyncInit();
-            return galleryFileBloc;
-          },
-          child: FileGalleryFolderGridItemWidget(
-              galleryFileTapped: galleryFileTapped));
+  Widget _buildItem(BuildContext context, AssetEntity assetEntity) {
+    return Provider<AssetEntity>.value(
+      value: assetEntity,
+      child: DisposableProxyProvider<AssetEntity, IFileGalleryFileBloc>(
+            update: (BuildContext context, value, previous) {
+              var galleryFileBloc = FileGalleryFileBloc(assetEntity: value);
+              galleryFileBloc.performAsyncInit();
+              return galleryFileBloc;
+            },
+            child: FileGalleryFolderGridItemWidget(
+                galleryFileTapped: galleryFileTapped)),
+    );
+  }
 }
