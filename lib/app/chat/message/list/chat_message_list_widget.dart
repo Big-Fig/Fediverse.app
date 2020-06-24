@@ -68,8 +68,8 @@ class ChatMessageListWidget extends ChatMessagePaginationListBaseWidget {
     return ListView.builder(
       itemCount: items.length,
       itemBuilder: (BuildContext context, int index) {
-        var nextMessage;
-        var previousMessage;
+        IChatMessage nextMessage;
+        IChatMessage previousMessage;
         if (index > 0) {
           previousMessage = items[index - 1];
         }
@@ -92,7 +92,7 @@ class ChatMessageListWidget extends ChatMessagePaginationListBaseWidget {
           isFirstInDayGroup =
               !DateUtils.isSameDay(currentCreatedAt, previousCreatedAt);
           var isSameAccount = currentMessage.account.remoteId ==
-              previousMessage.myAccount.remoteId;
+              previousMessage.account.remoteId;
           isFirstInMinuteGroup =
               !(DateUtils.isSameMinute(currentCreatedAt, previousCreatedAt) &&
                   isSameAccount);
@@ -102,7 +102,7 @@ class ChatMessageListWidget extends ChatMessagePaginationListBaseWidget {
         }
         if (nextCreatedAt != null) {
           var isSameAccount =
-              currentMessage.account.remoteId == nextMessage.myAccount.remoteId;
+              currentMessage.account.remoteId == nextMessage.account.remoteId;
           isLastInDayGroup =
               !DateUtils.isSameDay(currentCreatedAt, nextCreatedAt);
           isLastInMinuteGroup =
