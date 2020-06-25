@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
-import 'package:fedi/dialog/alert/simple_alert_dialog.dart';
+import 'package:fedi/error/error_data_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -48,15 +48,17 @@ class PostStatusPostTextActionWidget extends StatelessWidget {
               }
             },
             errorAlertDialogBuilders: [
-              (context, error) {
+              (context, error, stackTrace) {
                 var isScheduled = postStatusBloc.isScheduled;
-                return SimpleAlertDialog(
-                    title: isScheduled
-                        ? tr("app.status.post.dialog.error.title.schedule")
-                        : tr("app.status.post.dialog.error.title.post"),
-                    content: tr("app.status.post.dialog.error.content",
-                        args: [error.toString()]),
-                    context: context);
+                return ErrorData(
+                  error: error,
+                  stackTrace: stackTrace,
+                  titleText: isScheduled
+                      ? tr("app.status.post.dialog.error.title.schedule")
+                      : tr("app.status.post.dialog.error.title.post"),
+                  contentText: tr("app.status.post.dialog.error.content",
+                      args: [error.toString()]),
+                );
               }
             ],
             builder: (BuildContext context, onPressed) {

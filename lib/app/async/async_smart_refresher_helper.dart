@@ -7,10 +7,11 @@ typedef Future<bool> AsyncAction();
 var _logger = Logger("async_smart_refresher_helper.dart");
 
 class AsyncSmartRefresherHelper {
-  static void doAsyncRefresh(
+  static Future<bool> doAsyncRefresh(
       {@required RefreshController controller, @required AsyncAction action}) {
     _logger.finest(() => "doAsyncRefresh");
-    action().then((success) {
+    var future = action();
+    future.then((success) {
       _logger.finest(() => "doAsyncRefresh success = $success");
       if (success) {
         controller.refreshCompleted();
@@ -21,12 +22,14 @@ class AsyncSmartRefresherHelper {
       _logger.severe(() => "doAsyncRefresh fail", error, stackTrace);
       controller.refreshFailed();
     });
+    return future;
   }
 
-  static void doAsyncLoading(
+  static Future<bool> doAsyncLoading(
       {@required RefreshController controller, @required AsyncAction action}) {
     _logger.finest(() => "doAsyncLoading");
-    action().then((success) {
+    var future = action();
+    future.then((success) {
       _logger.finest(() => "doAsyncLoading success = $success");
       if (success) {
         controller.loadComplete();
@@ -37,5 +40,6 @@ class AsyncSmartRefresherHelper {
       _logger.severe(() => "doAsyncLoading fail", error, stackTrace);
       controller.loadFailed();
     });
+    return future;
   }
 }

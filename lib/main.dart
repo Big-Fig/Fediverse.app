@@ -51,8 +51,8 @@ import 'package:moor/moor.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:uni_links/uni_links.dart';
-
-import 'app/init/app_init_page.dart';
+import 'package:overlay_support/overlay_support.dart';
+import 'package:fedi/app/init/app_init_page.dart';
 
 var _logger = Logger("main.dart");
 
@@ -242,7 +242,7 @@ class MyApp extends StatelessWidget {
         FirebaseAnalyticsObserver(analytics: analytics),
       ],
     );
-    return app;
+    return OverlaySupport(child: app);
   }
 }
 

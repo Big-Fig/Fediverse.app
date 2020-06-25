@@ -6,8 +6,8 @@ import 'package:fedi/app/form/form_model.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/divider/fedi_light_grey_divider.dart';
 import 'package:fedi/app/ui/edit_text/fedi_transparent_edit_text_field.dart';
-import 'package:fedi/dialog/alert/simple_alert_dialog.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
+import 'package:fedi/error/error_data_model.dart';
 import 'package:fedi/pleroma/account/public/pleroma_account_public_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -167,14 +167,15 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
             authApplicationBloc?.dispose();
           }
         },
-        errorAlertDialogBuilders: [
-          (context, error) {
+        errorDataBuilders: [
+          (context, error, stackTrace) {
             // todo: handle specific error
-            return SimpleAlertDialog(
-                title: tr("app.auth.instance.register.fail.dialog.title"),
-                content: tr("app.auth.instance.register.fail.dialog.content",
-                    args: [error.toString()]),
-                context: context);
+            return ErrorData(
+                error:error,
+                stackTrace: stackTrace,
+                titleText: tr("app.auth.instance.register.fail.dialog.title"),
+                contentText: tr("app.auth.instance.register.fail.dialog.content",
+                    args: [error.toString()]));
           }
         ]);
   }

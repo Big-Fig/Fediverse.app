@@ -7,6 +7,7 @@ import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/list/fedi_list_smart_refresher_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:flutter/material.dart';
@@ -23,14 +24,14 @@ class ConversationStatusListWidget extends StatusPaginationListBaseWidget {
 
   // override to move refresh/update features from top/bottom to bottom/top
   @override
-  SmartRefresher buildSmartRefresher(
+  Widget buildSmartRefresher(
           IPaginationListBloc paginationListBloc,
           BuildContext context,
           List<IStatus> items,
           RefreshController refreshController,
           ScrollController scrollController,
           Widget Function(BuildContext context) smartRefresherBodyBuilder) =>
-      SmartRefresher(
+      FediListSmartRefresherWidget(
         key: key,
         enablePullDown: true,
         enablePullUp: true,

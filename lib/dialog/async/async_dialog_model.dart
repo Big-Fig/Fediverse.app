@@ -2,7 +2,7 @@ class AsyncDialogResult<T> {
   final T result;
   final bool success;
   final bool canceled;
-  final Error handledError;
+  final dynamic handledError;
 
   AsyncDialogResult.success(this.result)
       : success = true,

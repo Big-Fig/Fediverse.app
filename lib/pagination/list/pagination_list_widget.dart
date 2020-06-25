@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/async/async_smart_refresher_helper.dart';
 import 'package:fedi/app/list/list_loading_footer_widget.dart';
 import 'package:fedi/app/list/list_refresh_header_widget.dart';
+import 'package:fedi/app/ui/list/fedi_list_smart_refresher_widget.dart';
 import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
@@ -31,7 +32,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
     this.alwaysShowFooter,
   }) : super(key: key);
 
-  SmartRefresher buildSmartRefresher(
+  Widget buildSmartRefresher(
       IPaginationListBloc paginationListBloc,
       BuildContext context,
       List<T> items,
@@ -40,7 +41,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
       Widget Function(BuildContext context) smartRefresherBodyBuilder) {
     _logger.finest(() => "buildSmartRefresher items ${items?.length}");
 
-    return SmartRefresher(
+    return FediListSmartRefresherWidget(
 //      key: key,
       enablePullDown: true,
       enablePullUp: true,

@@ -134,8 +134,8 @@
       "socket": {
         "error": {
           "dialog": {
-            "title": "Socket error",
-            "content": "Check your connection: {}"
+            "title": "Check your connection",
+            "content": "No network or remote server unavailable"
           }
         }
       }
@@ -744,7 +744,7 @@
     },
     "error": {
       "title": "Something wrong",
-      "content": "Please report about this error: {}"
+      "content": "An error has occurred. Please retry your action again."
     },
     "action": {
       "ok": "OK",
