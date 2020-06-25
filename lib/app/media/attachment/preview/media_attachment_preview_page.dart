@@ -6,7 +6,7 @@ import 'package:fedi/app/share/share_service.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
-import 'package:fedi/dialog/alert/base_alert_dialog.dart';
+import 'package:fedi/error/error_data_model.dart';
 import 'package:fedi/mastodon/media/attachment/mastodon_media_attachment_model.dart';
 import 'package:fedi/media/media_video_player_widget.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
@@ -74,11 +74,13 @@ class MediaAttachmentPreviewPage extends StatelessWidget {
           }
         },
         errorAlertDialogBuilders: [
-          (BuildContext context, dynamic error) {
-            return BaseAlertDialog(
-              title: tr("app.media.attachment.add_to_gallery.error.dialog"
+          (BuildContext context, dynamic error, StackTrace stackTrace) {
+            return ErrorData(
+              error: error,
+              stackTrace: stackTrace,
+              titleText: tr("app.media.attachment.add_to_gallery.error.dialog"
                   ".title"),
-              content: tr("app.media.attachment.add_to_gallery.error.dialog"
+              contentText: tr("app.media.attachment.add_to_gallery.error.dialog"
                   ".content"),
             );
           }

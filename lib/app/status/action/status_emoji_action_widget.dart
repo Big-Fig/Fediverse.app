@@ -3,8 +3,8 @@ import 'package:fedi/app/status/emoji_reaction/status_emoji_reaction_picker_widg
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
-import 'package:fedi/dialog/alert/simple_alert_dialog.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
+import 'package:fedi/error/error_data_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -52,13 +52,16 @@ class StatusEmojiActionWidget extends StatelessWidget {
       doAsyncOperationWithDialog(
           context: context,
           asyncCode: () => statusBloc.toggleEmojiReaction(emoji: emoji),
-          errorAlertDialogBuilders: [
-            (BuildContext context, dynamic error) => SimpleAlertDialog(
-                context: context,
-                title: "app.status.emoji.error.cant_add.dialog.title".tr(),
-                content:
-                    "app.status.emoji.error.cant_add.dialog.content".tr
-                      (args: [error.toString()]))
+          errorDataBuilders: [
+            (BuildContext context, dynamic error, StackTrace stackTrace) =>
+                ErrorData(
+                    error: error,
+                    stackTrace: stackTrace,
+                    titleText:
+                        "app.status.emoji.error.cant_add.dialog.title".tr(),
+                    contentText:
+                        "app.status.emoji.error.cant_add.dialog.content"
+                            .tr(args: [error.toString()]))
           ]);
     });
   }

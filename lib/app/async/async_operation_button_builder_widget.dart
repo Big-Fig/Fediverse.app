@@ -16,7 +16,7 @@ class AsyncOperationButtonBuilderWidget extends StatefulWidget {
   final String progressContentMessage;
   final String successToastMessage;
 
-  final List<ErrorAlertDialogBuilder> errorAlertDialogBuilders;
+  final List<ErrorDataBuilder> errorAlertDialogBuilders;
 
   AsyncOperationButtonBuilderWidget({
     @required this.builder,
@@ -49,7 +49,7 @@ class _AsyncOperationButtonBuilderWidgetState
                 doAsyncOperationWithDialog(
                         context: context,
                         contentMessage: widget.progressContentMessage,
-                        errorAlertDialogBuilders:
+                        errorDataBuilders:
                             widget.errorAlertDialogBuilders,
                         showProgressDialog: widget.showProgressDialog,
                         asyncCode: widget.asyncButtonAction)

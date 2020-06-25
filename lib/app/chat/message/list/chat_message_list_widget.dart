@@ -7,6 +7,7 @@ import 'package:fedi/app/chat/message/pagination/list/chat_message_pagination_li
 import 'package:fedi/app/date/date_utils.dart';
 import 'package:fedi/app/list/list_loading_footer_widget.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/list/fedi_list_smart_refresher_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:flutter/material.dart';
@@ -24,14 +25,14 @@ class ChatMessageListWidget extends ChatMessagePaginationListBaseWidget {
 
   // override to move refresh/update features from top/bottom to bottom/top
   @override
-  SmartRefresher buildSmartRefresher(
+  Widget buildSmartRefresher(
           IPaginationListBloc paginationListBloc,
           BuildContext context,
           List<IChatMessage> items,
           RefreshController refreshController,
           ScrollController scrollController,
           Widget Function(BuildContext context) smartRefresherBodyBuilder) =>
-      SmartRefresher(
+      FediListSmartRefresherWidget(
         key: key,
         enablePullDown: true,
         enablePullUp: true,

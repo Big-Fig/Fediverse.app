@@ -6,9 +6,8 @@ import 'package:fedi/app/tos/tos_page.dart';
 import 'package:fedi/app/ui/button/text/fedi_grey_filled_text_button.dart';
 import 'package:fedi/app/ui/edit_text/fedi_filled_edit_text_field.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
-import 'package:fedi/dialog/alert/base_alert_dialog.dart';
-import 'package:fedi/dialog/alert/simple_alert_dialog.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
+import 'package:fedi/error/error_data_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -192,10 +191,18 @@ class JoinAuthInstanceWidget extends StatelessWidget {
           await authHostBloc.checkApplicationRegistration();
           authHostBloc?.dispose();
         },
-        errorAlertDialogBuilders: [
-          (context, error) {
+        errorDataBuilders: [
+          (
+            context,
+            error,
+            stackTrace,
+          ) {
             // todo: handle specific error
-            return createInstanceDeadErrorAlertDialog(context);
+            return createInstanceDeadErrorData(
+              context,
+              error,
+              stackTrace,
+            );
           }
         ]);
     if (asyncDialogResult.success) {
@@ -203,13 +210,15 @@ class JoinAuthInstanceWidget extends StatelessWidget {
     }
   }
 
-  BaseAlertDialog createInstanceDeadErrorAlertDialog(BuildContext context) =>
-      SimpleAlertDialog(
-          title: tr("app.auth.instance.join"
+  ErrorData createInstanceDeadErrorData(
+          BuildContext context, error, StackTrace stackTrace) =>
+      ErrorData(
+          error: error,
+          stackTrace: stackTrace,
+          titleText: tr("app.auth.instance.join"
               ".fail.dialog.title"),
-          content: tr("app.auth.instance.join"
-              ".fail.dialog.content"),
-          context: context);
+          contentText: tr("app.auth.instance.join"
+              ".fail.dialog.content"));
 
   Future logInToInstance(BuildContext context) {
     var joinInstanceBloc = IJoinAuthInstanceBloc.of(context, listen: false);
@@ -229,10 +238,10 @@ class JoinAuthInstanceWidget extends StatelessWidget {
             bloc?.dispose();
           }
         },
-        errorAlertDialogBuilders: [
-          (context, error) {
+        errorDataBuilders: [
+          (context, error, stackTrace) {
             // todo: handle specific error
-            return createInstanceDeadErrorAlertDialog(context);
+            return createInstanceDeadErrorData(context, error, stackTrace);
           }
         ]);
   }
