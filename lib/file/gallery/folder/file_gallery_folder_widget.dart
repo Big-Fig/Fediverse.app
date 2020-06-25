@@ -76,7 +76,8 @@ class FileGalleryFolderWidget extends StatelessWidget {
           } else {
             var length = files.length;
 
-            if (headerItemBuilder != null) {
+            var headerItemExist = headerItemBuilder != null;
+            if (headerItemExist) {
               length += 1;
             }
 
@@ -85,10 +86,12 @@ class FileGalleryFolderWidget extends StatelessWidget {
               gridDelegate:
                   SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
               itemBuilder: (context, index) {
-                if (index == 0) {
+                if (index == 0 && headerItemExist) {
                   return headerItemBuilder(context);
                 } else {
-                  index -= 1;
+                  if (headerItemExist) {
+                    index -= 1;
+                  }
                   return _buildItem(context, files[index]);
                 }
               },
