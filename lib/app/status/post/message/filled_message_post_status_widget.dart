@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/status/emoji_reaction/status_emoji_reaction_picker_widget.dart';
-import 'package:fedi/app/status/post/action/post_status_attach_media_action_widget.dart';
+import 'package:fedi/app/status/post/action/post_status_attach_gallery_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_post_icon_action_widget.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/ui/edit_text/fedi_filled_edit_text_field.dart';
@@ -28,7 +28,7 @@ class FilledMessagePostStatusWidget extends StatelessWidget {
 
     return Row(
       children: [
-        PostStatusAttachMediaActionWidget(
+        PostStatusAttachGalleryActionWidget(
           iconSize: FediSizes.filledEditTextIconSize,
         ),
         const SizedBox(

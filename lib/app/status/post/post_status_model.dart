@@ -1,0 +1,3 @@
+enum PostStatusSelectedAction {
+  gallery, files
+}

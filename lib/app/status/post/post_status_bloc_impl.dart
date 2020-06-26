@@ -3,6 +3,7 @@ import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.da
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_grid_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_grid_bloc_impl.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
+import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
@@ -55,6 +56,7 @@ abstract class PostStatusBloc extends DisposableOwner
       _regenerateIdempotencyKey();
     }));
 
+    addDisposable(subject: selectedActionSubject);
     addDisposable(subject: mentionedAcctsSubject);
     addDisposable(subject: inputTextSubject);
     addDisposable(subject: visibilitySubject);
@@ -143,10 +145,10 @@ abstract class PostStatusBloc extends DisposableOwner
   BehaviorSubject<bool> nsfwSensitiveSubject;
 
   @override
-  bool get nsfwSensitive => nsfwSensitiveSubject.value;
+  bool get isNsfwSensitiveEnabled => nsfwSensitiveSubject.value;
 
   @override
-  Stream<bool> get nsfwSensitiveStream => nsfwSensitiveSubject.stream;
+  Stream<bool> get isNsfwSensitiveEnabledStream => nsfwSensitiveSubject.stream;
 
   @override
   bool get isReadyToPost => calculateIsReadyToPost(
@@ -325,7 +327,7 @@ abstract class PostStatusBloc extends DisposableOwner
                 ?.map((bloc) => bloc.pleromaMediaAttachment.id)
                 ?.toList(),
             status: inputText,
-            sensitive: nsfwSensitive,
+            sensitive: isNsfwSensitiveEnabled,
             visibility: pleromaVisibilityValues.reverse[visibility],
             inReplyToId: inReplyToStatusRemoteId,
             inReplyToConversationId: conversationRemoteId,
@@ -362,7 +364,7 @@ abstract class PostStatusBloc extends DisposableOwner
                 ?.map((bloc) => bloc.pleromaMediaAttachment.id)
                 ?.toList(),
             status: inputText,
-            sensitive: nsfwSensitive,
+            sensitive: isNsfwSensitiveEnabled,
             visibility: pleromaVisibilityValues.reverse[visibility],
             inReplyToId: inReplyToStatusRemoteId,
             inReplyToConversationId: conversationRemoteId,
@@ -410,5 +412,52 @@ abstract class PostStatusBloc extends DisposableOwner
 
   Future onStatusPosted(IPleromaStatus remoteStatus) async {
     // nothing by default
+  }
+
+  @override
+  PostStatusSelectedAction get selectedAction => selectedActionSubject.value;
+
+  @override
+  Stream<PostStatusSelectedAction> get selectedActionStream =>
+      selectedActionSubject.stream;
+
+  BehaviorSubject<PostStatusSelectedAction> selectedActionSubject =
+      BehaviorSubject();
+
+  @override
+  bool get isAttachFileActionSelected =>
+      selectedAction == PostStatusSelectedAction.files;
+
+  @override
+  Stream<bool> get isAttachFileActionStream => selectedActionStream.map(
+      (selectedAction) => selectedAction == PostStatusSelectedAction.files);
+
+  @override
+  bool get isAttachGalleryActionSelected =>
+      selectedAction == PostStatusSelectedAction.gallery;
+
+  @override
+  Stream<bool> get isAttachGalleryActionSelectedStream =>
+      selectedActionStream.map((selectedAction) =>
+          selectedAction == PostStatusSelectedAction.gallery);
+
+  @override
+  void toggleAttachFileActionSelection() {
+    if(isAttachFileActionSelected) {
+      selectedActionSubject.add(null);
+    } else {
+      selectedActionSubject.add(PostStatusSelectedAction.files);
+
+    }
+  }
+
+  @override
+  void toggleAttachGalleryActionSelection() {
+    if(isAttachGalleryActionSelected) {
+      selectedActionSubject.add(null);
+    } else {
+      selectedActionSubject.add(PostStatusSelectedAction.gallery);
+
+    }
   }
 }

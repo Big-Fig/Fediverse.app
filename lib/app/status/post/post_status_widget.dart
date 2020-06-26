@@ -1,7 +1,9 @@
 import 'package:fedi/app/account/my/avatar/my_account_avatar_widget.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_grid_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_grid_widget.dart';
-import 'package:fedi/app/status/post/action/post_status_attach_media_action_widget.dart';
+import 'package:fedi/app/status/post/action/post_status_attach_camera_action_widget.dart';
+import 'package:fedi/app/status/post/action/post_status_attach_file_action_widget.dart';
+import 'package:fedi/app/status/post/action/post_status_attach_gallery_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_mention_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_nsfw_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_post_text_action_widget.dart';
@@ -62,20 +64,32 @@ class PostStatusWidget extends StatelessWidget {
     );
   }
 
-  Padding buildActions() {
+  Widget buildActions() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            children: [
-              PostStatusMentionActionWidget(),
-              if (showVisibilityAction) PostStatusVisibilityActionWidget(),
-              PostStatusAttachMediaActionWidget(),
-              PostStatusNsfwActionWidget(),
-              PostStatusScheduleActionWidget(),
-            ],
+          Flexible(
+            child: Container(
+              height: 35,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0, ),
+                child: ListView(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    PostStatusMentionActionWidget(),
+                    PostStatusAttachGalleryActionWidget(),
+                    PostStatusAttachCameraActionWidget(),
+                    PostStatusAttachFileActionWidget(),
+                    PostStatusNsfwActionWidget(),
+                    if (showVisibilityAction) PostStatusVisibilityActionWidget(),
+                    PostStatusScheduleActionWidget(),
+                  ],
+                ),
+              ),
+            ),
           ),
           PostStatusPostTextActionWidget(successCallback: (context) {
             if (goBackOnSuccess) {

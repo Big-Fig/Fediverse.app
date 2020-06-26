@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/media/single_camera_picker.dart';
 import 'package:fedi/app/navigation/navigation_slide_bottom_route_builder.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
@@ -67,8 +69,7 @@ class SingleMediaPickerPage extends StatelessWidget {
                           headerItemBuilder: (BuildContext context) {
                             return GestureDetector(
                               onTap: () async {
-                                final pickedFile = await ImagePicker.pickImage(
-                                    source: ImageSource.camera);
+                                var pickedFile = await pickImageFromCamera();
 
                                 if (pickedFile != null) {
                                   fileSelectedCallback(FilePickerFile(
@@ -109,6 +110,8 @@ class SingleMediaPickerPage extends StatelessWidget {
 //      bottomNavigationBar: FilePickerBottomNavBarWidget(),
     );
   }
+
+
 
   Widget _buildAppBarTitle(BuildContext context) {
     var fileGalleryBloc = IFileGalleryBloc.of(context, listen: false);
