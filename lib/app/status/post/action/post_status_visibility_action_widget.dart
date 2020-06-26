@@ -1,7 +1,7 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/model_bottom_sheet/fedi_modal_bottom_sheet.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
+import 'package:fedi/pleroma/visibility/pleroma_visibility_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -23,53 +23,25 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
                 isPossibleToChangeVisibility: true);
           }),
       onPressed: () {
-        showModalBottomSheet(
-            builder: (BuildContext context) => Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    // TODO: why only 4 options when 5 visibilities available
-                    buildVisibilityButton(
-                        context, postStatusBloc, PleromaVisibility.PUBLIC),
-                    buildVisibilityButton(
-                        context, postStatusBloc, PleromaVisibility.DIRECT),
-                    buildVisibilityButton(
-                        context, postStatusBloc, PleromaVisibility.UNLISTED),
-                    buildVisibilityButton(
-                        context, postStatusBloc, PleromaVisibility.PRIVATE),
-                    Container(
-                      height: 30,
-                    ),
-                    buildCancelButton(context),
-                  ],
-                ),
-            context: context);
+        showFediModalBottomSheetDialog(
+            context: context,
+            child: ListView(
+              shrinkWrap: true,
+              children: <Widget>[
+                // TODO: why only 4 options when 5 visibilities available
+                buildVisibilityButton(
+                    context, postStatusBloc, PleromaVisibility.PUBLIC),
+                buildVisibilityButton(
+                    context, postStatusBloc, PleromaVisibility.DIRECT),
+                buildVisibilityButton(
+                    context, postStatusBloc, PleromaVisibility.UNLISTED),
+                buildVisibilityButton(
+                    context, postStatusBloc, PleromaVisibility.PRIVATE),
+              ],
+            ));
       },
     );
   }
-
-  Padding buildCancelButton(BuildContext context) => Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        child: Row(
-          children: <Widget>[
-            Expanded(
-              child: OutlineButton(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      tr("app.status.post.visibility.action.cancel"),
-                      style: TextStyle(color: Colors.red),
-                    )
-                  ],
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ),
-          ],
-        ),
-      );
 
   Padding buildVisibilityButton(
     BuildContext context,
@@ -91,8 +63,11 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
       child: Row(
         children: <Widget>[
           Expanded(
-            child: OutlineButton(
-              child: Row(
+            child: ListTile(
+              onTap: () {
+                onPressed();
+              },
+              title: Row(
                 children: <Widget>[
                   buildVisibilityIcon(
                       context: context,
@@ -100,6 +75,7 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
                       isPossibleToChangeVisibility:
                           isPossibleToChangeVisibility,
                       isSelectedVisibility: isSelectedVisibility),
+                  SizedBox(width: 16.0),
                   buildVisibilityTitle(
                       context: context,
                       visibility: visibility,
@@ -108,84 +84,10 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
                       isSelectedVisibility: isSelectedVisibility)
                 ],
               ),
-              onPressed: onPressed,
             ),
           ),
         ],
       ),
     );
-  }
-
-  Icon buildVisibilityIcon(
-          {@required BuildContext context,
-          @required PleromaVisibility visibility,
-          @required isPossibleToChangeVisibility,
-          @required isSelectedVisibility}) =>
-      Icon(mapVisibilityToIconData(visibility),
-          color: calculateVisibilityColor(
-              isSelectedVisibility, isPossibleToChangeVisibility));
-
-  IconData mapVisibilityToIconData(PleromaVisibility visibility) {
-    switch (visibility) {
-      case PleromaVisibility.PUBLIC:
-        return Icons.public;
-        break;
-      case PleromaVisibility.UNLISTED:
-        return Icons.lock_open;
-        break;
-      case PleromaVisibility.DIRECT:
-        return Icons.message;
-        break;
-      case PleromaVisibility.LIST:
-        return Icons.list;
-        break;
-      case PleromaVisibility.PRIVATE:
-        return Icons.lock;
-        break;
-    }
-    throw "Not supported visibility $visibility";
-  }
-
-  Text buildVisibilityTitle({
-    @required BuildContext context,
-    @required PleromaVisibility visibility,
-    @required isPossibleToChangeVisibility,
-    @required isSelectedVisibility,
-  }) =>
-      Text(mapVisibilityToTitle(context, visibility),
-          style: TextStyle(
-              color: calculateVisibilityColor(
-                  isSelectedVisibility, isPossibleToChangeVisibility)));
-
-  Color calculateVisibilityColor(
-      isSelectedVisibility, isPossibleToChangeVisibility) {
-    return isSelectedVisibility
-        ? FediColors.primaryColor
-        : isPossibleToChangeVisibility
-            ? FediColors.darkGrey
-            : FediColors.lightGrey;
-  }
-
-  String mapVisibilityToTitle(
-      BuildContext context, PleromaVisibility visibility) {
-    switch (visibility) {
-      case PleromaVisibility.PUBLIC:
-        return tr("app.status.post.visibility.state"
-            ".public");
-        break;
-      case PleromaVisibility.UNLISTED:
-        return tr("app.status.post.visibility.state.unlisted");
-        break;
-      case PleromaVisibility.DIRECT:
-        return tr("app.status.post.visibility.state.direct");
-        break;
-      case PleromaVisibility.LIST:
-        return tr("app.status.post.visibility.state.list");
-        break;
-      case PleromaVisibility.PRIVATE:
-        return tr("app.status.post.visibility.state.private");
-        break;
-    }
-    throw "Not supported visibility $visibility";
   }
 }

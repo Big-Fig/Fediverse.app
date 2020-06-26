@@ -19,7 +19,7 @@ void showFediModalBottomSheetDialog({
                 maxHeight: MediaQuery.of(context).size.height / 4.0 * 3.0,
               ),
               child: Padding(
-                padding: const EdgeInsets.only(top: 8.0),
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: child,
               ),
             ),
