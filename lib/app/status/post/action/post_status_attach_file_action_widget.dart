@@ -3,6 +3,7 @@ import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:fedi/file/picker/single/single_file_picker_page.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -24,15 +25,20 @@ class PostStatusAttachFileActionWidget extends StatelessWidget {
         builder: (context, snapshot) {
           var isPossibleToAttach = snapshot.data;
 
-          Null Function() onPressed;
+          var onPressed;
           if (isPossibleToAttach) {
-            onPressed = () {
-              goToSingleFilePickerPage(context,
-                  fileSelectedCallback: (FilePickerFile filePickerFile) {
+            onPressed = () async {
+
+              var pickedFile = await FilePicker.getFile();
+              if (pickedFile != null) {
+                var filePickerFile = FilePickerFile(
+                  type: FilePickerFileType.other,
+                  isNeedDeleteAfterUsage: true,
+                  file: pickedFile,
+                );
                 postStatusBloc.mediaAttachmentGridBloc
                     .attachMedia(filePickerFile);
-                Navigator.of(context).pop();
-              }, startActiveTab: FilePickerTab.gallery);
+              }
             };
           }
 

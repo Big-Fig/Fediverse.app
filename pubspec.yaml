@@ -149,6 +149,9 @@ dependencies:
   # error overlay
   overlay_support: ^1.0.4
 
+  # file picker for media attachment
+  file_picker: ^1.12.0
+
 # required to build flutter test with hive https://github.com/hivedb/hive/issues/285
 dependency_overrides:
   path: 1.7.0

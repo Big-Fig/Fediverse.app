@@ -1,5 +1,5 @@
 import 'package:fedi/app/account/my/avatar/my_account_avatar_widget.dart';
-import 'package:fedi/app/media/attachment/upload/upload_media_attachment_grid_bloc.dart';
+import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_grid_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_attach_camera_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_attach_file_action_widget.dart';
