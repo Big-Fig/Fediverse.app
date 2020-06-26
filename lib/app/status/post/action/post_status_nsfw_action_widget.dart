@@ -11,8 +11,8 @@ class PostStatusNsfwActionWidget extends StatelessWidget {
 
     return IconButton(
       icon: StreamBuilder<bool>(
-          stream: postStatusBloc.nsfwSensitiveStream,
-          initialData: postStatusBloc.nsfwSensitive,
+          stream: postStatusBloc.isNsfwSensitiveEnabledStream,
+          initialData: postStatusBloc.isNsfwSensitiveEnabled,
           builder: (context, snapshot) {
             var nsfwSensitive = snapshot.data;
 
@@ -22,7 +22,7 @@ class PostStatusNsfwActionWidget extends StatelessWidget {
                     color: calculateColor(nsfwSensitive), fontSize: 10));
           }),
       onPressed: () {
-        postStatusBloc.changeNsfwSensitive(!postStatusBloc.nsfwSensitive);
+        postStatusBloc.changeNsfwSensitive(!postStatusBloc.isNsfwSensitiveEnabled);
       },
     );
   }

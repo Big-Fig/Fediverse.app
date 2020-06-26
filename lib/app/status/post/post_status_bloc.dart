@@ -1,5 +1,6 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_grid_bloc.dart';
+import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
@@ -26,9 +27,24 @@ abstract class IPostStatusBloc implements Disposable {
 
   Stream<PleromaVisibility> get visibilityStream;
 
-  bool get nsfwSensitive;
+  bool get isNsfwSensitiveEnabled;
 
-  Stream<bool> get nsfwSensitiveStream;
+  Stream<bool> get isNsfwSensitiveEnabledStream;
+
+
+  PostStatusSelectedAction get selectedAction;
+  Stream<PostStatusSelectedAction> get selectedActionStream;
+
+  bool get isAttachFileActionSelected;
+
+
+  Stream<bool> get isAttachFileActionStream;
+  bool get isAttachGalleryActionSelected;
+
+  Stream<bool> get isAttachGalleryActionSelectedStream;
+
+  void toggleAttachFileActionSelection();
+  void toggleAttachGalleryActionSelection();
 
   void addMentionByAccount(IAccount account);
 
