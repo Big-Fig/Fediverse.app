@@ -1,4 +1,4 @@
-import 'package:fedi/app/media/attachment/upload/upload_media_attachment_grid_bloc.dart';
+import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';

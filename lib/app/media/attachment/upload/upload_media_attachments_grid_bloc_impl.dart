@@ -1,6 +1,6 @@
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc_impl.dart';
-import 'package:fedi/app/media/attachment/upload/upload_media_attachment_grid_bloc.dart';
+import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';

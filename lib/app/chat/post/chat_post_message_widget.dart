@@ -1,7 +1,7 @@
 import 'package:fedi/app/chat/post/action/chat_post_message_post_action_widget.dart';
 import 'package:fedi/app/chat/post/chat_post_message_bloc.dart';
 import 'package:fedi/app/chat/post/content/chat_post_message_content_widget.dart';
-import 'package:fedi/app/media/attachment/upload/upload_media_attachment_grid_bloc.dart';
+import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_grid_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
