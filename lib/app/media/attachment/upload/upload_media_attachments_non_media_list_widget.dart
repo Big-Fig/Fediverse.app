@@ -35,113 +35,122 @@ class UploadMediaAttachmentsNonMediaListWidget extends StatelessWidget {
                   var fileExtension = extension(filePath);
                   fileExtension = fileExtension?.replaceAll(".", "");
 
+                  var actionsWidget = buildActionsWidget(mediaItemBloc, mediaAttachmentsCollectionBloc);
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                        border: Border.all(color: FediColors.ultraLightGrey),
-                      ),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 70.0,
-                            height: 70.0,
-                            decoration: BoxDecoration(
-                              border: Border(
-                                right: BorderSide(
-                                  width: 1,
-                                  color: FediColors.ultraLightGrey,
-                                ),
-                              ),
-                            ),
-                            child: Center(
-                                child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                  width: 1,
-                                  color: FediColors.darkGrey,
-                                )),
-                                child: Center(
-                                    child: AutoSizeText(
-                                  fileExtension?.toUpperCase(),
-                                  style: TextStyle(color: FediColors.darkGrey),
-                                )),
-                              ),
-                            )),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        fileExtension?.toUpperCase(),
-                                        style: TextStyle(
-                                            color: FediColors.grey,
-                                            height: 1.5,
-                                            fontSize: 12),
-                                      ),
-                                      Text(
-                                        fileName,
-                                        style: TextStyle(
-                                            color: FediColors.darkGrey,
-                                            height: 1.5,
-                                            fontSize: 15),
-                                      ),
-                                    ],
-                                  ),
-                                  StreamBuilder<UploadMediaAttachmentState>(
-                                      stream: mediaItemBloc.uploadStateStream,
-                                      initialData: mediaItemBloc.uploadState,
-                                      builder: (context, snapshot) {
-                                        var uploadState = snapshot.data;
-
-                                        switch (uploadState) {
-                                          case UploadMediaAttachmentState
-                                              .uploading:
-                                            return CircularProgressIndicator();
-                                            break;
-                                          case UploadMediaAttachmentState
-                                              .notUploaded:
-                                          case UploadMediaAttachmentState
-                                              .uploaded:
-                                          case UploadMediaAttachmentState
-                                              .failed:
-                                          default:
-                                            return IconButton(
-                                              onPressed: () {
-                                                mediaAttachmentsCollectionBloc
-                                                    .detachMedia(mediaItemBloc
-                                                        .filePickerFile);
-                                              },
-                                              icon: Icon(FediIcons.close),
-                                            );
-                                            break;
-                                        }
-                                      }),
-                                ],
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
+                    child: _buildNonMediaAttachmentListItem(fileExtension, fileName, actionsWidget),
                   );
                 }).toList(),
               ],
             ),
           );
         });
+  }
+
+  Container _buildNonMediaAttachmentListItem(String fileExtension, String fileName, StreamBuilder<UploadMediaAttachmentState> actionsWidget) {
+    return Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                      border: Border.all(color: FediColors.ultraLightGrey),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 70.0,
+                          height: 70.0,
+                          decoration: BoxDecoration(
+                            border: Border(
+                              right: BorderSide(
+                                width: 1,
+                                color: FediColors.ultraLightGrey,
+                              ),
+                            ),
+                          ),
+                          child: Center(
+                              child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                width: 1,
+                                color: FediColors.darkGrey,
+                              )),
+                              child: Center(
+                                  child: AutoSizeText(
+                                fileExtension?.toUpperCase(),
+                                style: TextStyle(color: FediColors.darkGrey),
+                              )),
+                            ),
+                          )),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Row(
+                              mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      fileExtension?.toUpperCase(),
+                                      style: TextStyle(
+                                          color: FediColors.grey,
+                                          height: 1.5,
+                                          fontSize: 12),
+                                    ),
+                                    Text(
+                                      fileName,
+                                      style: TextStyle(
+                                          color: FediColors.darkGrey,
+                                          height: 1.5,
+                                          fontSize: 15),
+                                    ),
+                                  ],
+                                ),
+                                actionsWidget,
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+  }
+
+  StreamBuilder<UploadMediaAttachmentState> buildActionsWidget(IUploadMediaAttachmentBloc mediaItemBloc, IUploadMediaAttachmentsCollectionBloc mediaAttachmentsCollectionBloc) {
+    return StreamBuilder<UploadMediaAttachmentState>(
+                                    stream: mediaItemBloc.uploadStateStream,
+                                    initialData: mediaItemBloc.uploadState,
+                                    builder: (context, snapshot) {
+                                      var uploadState = snapshot.data;
+
+                                      switch (uploadState) {
+                                        case UploadMediaAttachmentState
+                                            .uploading:
+                                          return CircularProgressIndicator();
+                                          break;
+                                        case UploadMediaAttachmentState
+                                            .notUploaded:
+                                        case UploadMediaAttachmentState
+                                            .uploaded:
+                                        case UploadMediaAttachmentState
+                                            .failed:
+                                        default:
+                                          return IconButton(
+                                            onPressed: () {
+                                              mediaAttachmentsCollectionBloc
+                                                  .detachMedia(mediaItemBloc
+                                                      .filePickerFile);
+                                            },
+                                            icon: Icon(FediIcons.close),
+                                          );
+                                          break;
+                                      }
+                                    });
   }
 }
