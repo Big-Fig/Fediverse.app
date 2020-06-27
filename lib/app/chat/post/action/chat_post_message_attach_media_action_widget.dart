@@ -15,7 +15,7 @@ class ChatPostMessageAttachMediaActionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var postChatMessageBloc = IChatPostMessageBloc.of(context, listen: false);
 
-    var mediaAttachmentGridBloc = postChatMessageBloc.mediaAttachmentGridBloc;
+    var mediaAttachmentGridBloc = postChatMessageBloc.mediaAttachmentsCollectionBloc;
     return StreamBuilder<bool>(
         stream: mediaAttachmentGridBloc.isPossibleToAttachMediaStream,
         initialData: mediaAttachmentGridBloc.isPossibleToAttachMedia,

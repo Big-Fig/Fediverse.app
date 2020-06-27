@@ -2,7 +2,7 @@ import 'package:fedi/app/chat/message/repository/chat_message_repository.dart';
 import 'package:fedi/app/chat/post/chat_post_message_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
-import 'package:fedi/app/media/attachment/upload/upload_media_attachments_grid_bloc_impl.dart';
+import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc_impl.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
@@ -22,18 +22,18 @@ class ChatPostMessageBloc extends DisposableOwner
   final String chatRemoteId;
 
   @override
-  final IUploadMediaAttachmentGridBloc mediaAttachmentGridBloc;
+  final IUploadMediaAttachmentsCollectionBloc mediaAttachmentsCollectionBloc;
 
   ChatPostMessageBloc({
     @required this.pleromaChatService,
     @required this.chatMessageRepository,
     @required this.chatRemoteId,
     @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
-  }) : mediaAttachmentGridBloc = UploadMediaAttachmentGridBloc(
+  }) : mediaAttachmentsCollectionBloc = UploadMediaAttachmentsCollectionBloc(
             maximumMediaAttachmentCount: 1,
             pleromaMediaAttachmentService: pleromaMediaAttachmentService) {
     assert(pleromaMediaAttachmentService != null);
-    addDisposable(disposable: mediaAttachmentGridBloc);
+    addDisposable(disposable: mediaAttachmentsCollectionBloc);
 
     addDisposable(subject: inputTextSubject);
 
@@ -52,12 +52,12 @@ class ChatPostMessageBloc extends DisposableOwner
   @override
   bool get isReadyToPost => calculateIsReadyToPost(
       inputText: inputText,
-      mediaAttachmentBlocs: mediaAttachmentGridBloc.mediaAttachmentBlocs);
+      mediaAttachmentBlocs: mediaAttachmentsCollectionBloc.mediaAttachmentBlocs);
 
   @override
   Stream<bool> get isReadyToPostStream => Rx.combineLatest2(
       inputTextStream,
-      mediaAttachmentGridBloc.mediaAttachmentBlocsStream,
+      mediaAttachmentsCollectionBloc.mediaAttachmentBlocsStream,
       (inputWithoutMentionedAcctsText, mediaAttachmentBlocs) =>
           calculateIsReadyToPost(
               inputText: inputWithoutMentionedAcctsText,
@@ -87,7 +87,7 @@ class ChatPostMessageBloc extends DisposableOwner
   Future<bool> postMessage() async {
     bool success;
 
-    var mediaAttachmentBlocs = mediaAttachmentGridBloc.mediaAttachmentBlocs;
+    var mediaAttachmentBlocs = mediaAttachmentsCollectionBloc.mediaAttachmentBlocs;
     var mediaId;
     if (mediaAttachmentBlocs?.isNotEmpty == true) {
       mediaId = mediaAttachmentBlocs.first.pleromaMediaAttachment.id;
@@ -121,7 +121,7 @@ class ChatPostMessageBloc extends DisposableOwner
 
   void _clear() {
     inputTextController.clear();
-    mediaAttachmentGridBloc.clear();
+    mediaAttachmentsCollectionBloc.clear();
   }
 
   bool calculateIsReadyToPost(

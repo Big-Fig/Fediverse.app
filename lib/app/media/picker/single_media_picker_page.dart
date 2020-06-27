@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/media/single_camera_picker.dart';
 import 'package:fedi/app/navigation/navigation_slide_bottom_route_builder.dart';
@@ -22,7 +21,6 @@ import 'package:fedi/permission/grant_permission_widget.dart';
 import 'package:fedi/permission/storage_permission_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:provider/provider.dart';
 

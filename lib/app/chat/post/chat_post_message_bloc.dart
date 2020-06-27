@@ -9,7 +9,7 @@ abstract class IChatPostMessageBloc implements Disposable {
 
   TextEditingController get inputTextController;
 
-  IUploadMediaAttachmentGridBloc get mediaAttachmentGridBloc;
+  IUploadMediaAttachmentsCollectionBloc get mediaAttachmentsCollectionBloc;
 
   bool get isReadyToPost;
 
