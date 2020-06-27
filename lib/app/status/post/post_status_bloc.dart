@@ -21,7 +21,7 @@ abstract class IPostStatusBloc implements Disposable {
 
   bool get isPossibleToChangeVisibility;
 
-  IUploadMediaAttachmentGridBloc get mediaAttachmentGridBloc;
+  IUploadMediaAttachmentsCollectionBloc get mediaAttachmentGridBloc;
 
   PleromaVisibility get visibility;
 

@@ -1,6 +1,6 @@
 import 'package:fedi/app/account/my/avatar/my_account_avatar_widget.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
-import 'package:fedi/app/media/attachment/upload/upload_media_attachment_grid_widget.dart';
+import 'package:fedi/app/media/attachment/upload/upload_media_attachments_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_attach_camera_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_attach_file_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_attach_gallery_action_widget.dart';
@@ -53,10 +53,10 @@ class PostStatusWidget extends StatelessWidget {
                   children: <Widget>[buildAvatar(), buildMessageWidget()],
                 )
               : buildMessageWidget(),
-          ProxyProvider<IPostStatusBloc, IUploadMediaAttachmentGridBloc>(
+          ProxyProvider<IPostStatusBloc, IUploadMediaAttachmentsCollectionBloc>(
               update: (context, value, previous) =>
                   value.mediaAttachmentGridBloc,
-              child: UploadMediaAttachmentGridWidget()),
+              child: UploadMediaAttachmentsWidget()),
           if (!displayAccountAvatar && expanded) FediLightGreyDivider(),
           if (showActionsRow) buildActions()
         ],

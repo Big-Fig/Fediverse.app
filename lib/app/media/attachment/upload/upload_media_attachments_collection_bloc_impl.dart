@@ -8,14 +8,14 @@ import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.d
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
-class UploadMediaAttachmentGridBloc extends DisposableOwner
-    implements IUploadMediaAttachmentGridBloc {
+class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
+    implements IUploadMediaAttachmentsCollectionBloc {
   @override
   final int maximumMediaAttachmentCount;
 
   final IPleromaMediaAttachmentService pleromaMediaAttachmentService;
 
-  UploadMediaAttachmentGridBloc(
+  UploadMediaAttachmentsCollectionBloc(
       {@required this.maximumMediaAttachmentCount,
       @required this.pleromaMediaAttachmentService}) {
     addDisposable(subject: mediaAttachmentBlocsSubject);
@@ -29,12 +29,26 @@ class UploadMediaAttachmentGridBloc extends DisposableOwner
       mediaAttachmentBlocsSubject = BehaviorSubject.seeded([]);
 
   @override
-  List<IUploadMediaAttachmentBloc> get mediaAttachmentBlocs =>
-      mediaAttachmentBlocsSubject.value;
+  List<IUploadMediaAttachmentBloc> get onlyMediaAttachmentBlocs =>
+      mediaAttachmentBlocs
+          ?.where((bloc) => bloc.filePickerFile.isMedia)?.toList();
 
   @override
-  Stream<List<IUploadMediaAttachmentBloc>> get mediaAttachmentBlocsStream =>
-      mediaAttachmentBlocsSubject.stream;
+  Stream<List<IUploadMediaAttachmentBloc>> get onlyMediaAttachmentBlocsStream =>
+      mediaAttachmentBlocsSubject.stream.map((mediaAttachmentBlocs) =>
+          mediaAttachmentBlocs?.where((bloc) => bloc.filePickerFile.isMedia)?.toList());
+
+  @override
+  List<IUploadMediaAttachmentBloc> get onlyNonMediaAttachmentBlocs =>
+      mediaAttachmentBlocs
+          ?.where((bloc) => !bloc.filePickerFile.isMedia)?.toList();
+
+  @override
+  Stream<List<IUploadMediaAttachmentBloc>>
+      get onlyNonMediaAttachmentBlocsStream =>
+          mediaAttachmentBlocsSubject.stream.map((mediaAttachmentBlocs) =>
+              mediaAttachmentBlocs
+                  ?.where((bloc) => !bloc.filePickerFile.isMedia)?.toList());
 
   @override
   bool get isMaximumMediaAttachmentCountReached => isMaximumAttachmentReached(
@@ -54,6 +68,14 @@ class UploadMediaAttachmentGridBloc extends DisposableOwner
   @override
   Stream<bool> get isPossibleToAttachMediaStream =>
       isMaximumMediaAttachmentCountReachedStream.map((value) => !value);
+
+  @override
+  List<IUploadMediaAttachmentBloc> get mediaAttachmentBlocs =>
+      mediaAttachmentBlocsSubject.value;
+
+  @override
+  Stream<List<IUploadMediaAttachmentBloc>> get mediaAttachmentBlocsStream =>
+      mediaAttachmentBlocsSubject.stream;
 
   @override
   void attachMedia(FilePickerFile filePickerFile) {

@@ -1,7 +1,7 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
-import 'package:fedi/app/media/attachment/upload/upload_media_attachments_grid_bloc_impl.dart';
+import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc_impl.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
@@ -28,7 +28,7 @@ abstract class PostStatusBloc extends DisposableOwner
   final String inReplyToStatusRemoteId;
 
   @override
-  final IUploadMediaAttachmentGridBloc mediaAttachmentGridBloc;
+  final IUploadMediaAttachmentsCollectionBloc mediaAttachmentGridBloc;
 
   // ignore: close_sinks
   BehaviorSubject<String> inputTextSubject = BehaviorSubject.seeded("");
@@ -44,7 +44,7 @@ abstract class PostStatusBloc extends DisposableOwner
     int maximumMediaAttachmentCount = 4,
     PleromaVisibility initialVisibility = PleromaVisibility.PUBLIC,
     List<IAccount> initialAccountsToMention = const [],
-  }) : mediaAttachmentGridBloc = UploadMediaAttachmentGridBloc(
+  }) : mediaAttachmentGridBloc = UploadMediaAttachmentsCollectionBloc(
             maximumMediaAttachmentCount: maximumMediaAttachmentCount,
             pleromaMediaAttachmentService: pleromaMediaAttachmentService) {
     assert(pleromaMediaAttachmentService != null);

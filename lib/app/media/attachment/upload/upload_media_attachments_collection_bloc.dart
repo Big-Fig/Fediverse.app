@@ -4,14 +4,20 @@ import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IUploadMediaAttachmentGridBloc extends Disposable {
-  static IUploadMediaAttachmentGridBloc of(BuildContext context,
+abstract class IUploadMediaAttachmentsCollectionBloc extends Disposable {
+  static IUploadMediaAttachmentsCollectionBloc of(BuildContext context,
           {bool listen = true}) =>
-      Provider.of<IUploadMediaAttachmentGridBloc>(context, listen: listen);
+      Provider.of<IUploadMediaAttachmentsCollectionBloc>(context,
+          listen: listen);
 
-  List<IUploadMediaAttachmentBloc> get mediaAttachmentBlocs;
+  List<IUploadMediaAttachmentBloc> get onlyMediaAttachmentBlocs;
 
-  Stream<List<IUploadMediaAttachmentBloc>> get mediaAttachmentBlocsStream;
+  Stream<List<IUploadMediaAttachmentBloc>> get onlyMediaAttachmentBlocsStream;
+
+  List<IUploadMediaAttachmentBloc> get onlyNonMediaAttachmentBlocs;
+
+  Stream<List<IUploadMediaAttachmentBloc>>
+      get onlyNonMediaAttachmentBlocsStream;
 
   bool get isMaximumMediaAttachmentCountReached;
 
@@ -22,6 +28,10 @@ abstract class IUploadMediaAttachmentGridBloc extends Disposable {
   bool get isPossibleToAttachMedia;
 
   Stream<bool> get isPossibleToAttachMediaStream;
+
+  List<IUploadMediaAttachmentBloc> get mediaAttachmentBlocs;
+
+  Stream<List<IUploadMediaAttachmentBloc>> get mediaAttachmentBlocsStream;
 
   void attachMedia(FilePickerFile filePickerFile);
 
