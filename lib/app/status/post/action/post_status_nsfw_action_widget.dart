@@ -16,10 +16,12 @@ class PostStatusNsfwActionWidget extends StatelessWidget {
           builder: (context, snapshot) {
             var nsfwSensitive = snapshot.data;
 
-            return Text(
-                tr("app.status.post.nsfw.title"),
-                style: TextStyle(
-                    color: calculateColor(nsfwSensitive), fontSize: 10));
+            return Center(
+              child: Text(
+                  tr("app.status.post.nsfw.title").toUpperCase(),
+                  style: TextStyle(
+                      color: calculateColor(nsfwSensitive), fontSize: 10)),
+            );
           }),
       onPressed: () {
         postStatusBloc.changeNsfwSensitive(!postStatusBloc.isNsfwSensitiveEnabled);
