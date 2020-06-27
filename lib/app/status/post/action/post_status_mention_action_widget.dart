@@ -1,6 +1,7 @@
 import 'package:fedi/app/account/select/select_account_page.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +12,7 @@ class PostStatusMentionActionWidget extends StatelessWidget {
 
     return IconButton(
       icon: Icon(
-        Icons.alternate_email,
+        FediIcons.alias,
         color: FediColors.darkGrey,
       ),
       onPressed: () {
