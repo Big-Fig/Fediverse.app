@@ -466,6 +466,11 @@
           "not_supported_type": "Not supported type {}"
         },
         "upload": {
+          "failed": {
+            "notification": {
+              "content": "Failed to upload"
+            }
+          },
           "remove": {
             "dialog": {
               "content": "Are you sure you want to remove the attachment?",
