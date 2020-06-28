@@ -42,6 +42,7 @@ class ChatTitleWidget extends StatelessWidget {
 
                 return Text(
                   finalText,
+                  overflow: TextOverflow.ellipsis,
                   style: textStyle,
                 );
               });

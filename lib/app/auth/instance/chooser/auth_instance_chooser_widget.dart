@@ -72,32 +72,40 @@ class AuthInstanceChooserWidget extends StatelessWidget {
         itemCount: itemCount,
         itemBuilder: (BuildContext context, int index) {
           var instance = instancesAvailableToChoose[index];
-          return DisposableProvider<IMyAccountLocalPreferenceBloc>(
-            create: (context) => MyAccountLocalPreferenceBloc(
-                ILocalPreferencesService.of(context, listen: false),
-                instance.userAtHost),
-            child: Builder(
-              builder: (context) => AsyncInitLoadingWidget(
-                asyncInitLoadingBloc:
-                    IMyAccountLocalPreferenceBloc.of(context, listen: false),
-                loadingFinishedBuilder: (context) {
+          return Provider<AuthInstance>.value(
+            value: instance,
+            child: DisposableProxyProvider<AuthInstance,
+                IMyAccountLocalPreferenceBloc>(
+              update: (context, value, previous) =>
+                  MyAccountLocalPreferenceBloc(
+                      ILocalPreferencesService.of(context, listen: false),
+                      value.userAtHost),
+              child: Builder(
+                builder: (context) => AsyncInitLoadingWidget(
+                  asyncInitLoadingBloc:
+                      IMyAccountLocalPreferenceBloc.of(context, listen: false),
+                  loadingFinishedBuilder: (context) {
+                    var instance =
+                        Provider.of<AuthInstance>(context, listen: false);
 
-                  return DisposableProvider<IAccountBloc>(
-                  create: (context) => MyAccountBloc(
-                    instance: instance,
-                    pleromaMyAccountService:
-                        IPleromaMyAccountService.of(context, listen: false),
-                    accountRepository:
-                        IAccountRepository.of(context, listen: false),
-                    myAccountLocalPreferenceBloc:
-                        IMyAccountLocalPreferenceBloc.of(context, listen: false),
-                  ),
-                  child: AuthInstanceChooserInstanceListItemWidget(
-                    instance: instance,
-                    isSelected: false,
-                  ),
-                );
-                },
+                    return DisposableProvider<IAccountBloc>(
+                      create: (context) => MyAccountBloc(
+                        instance: instance,
+                        pleromaMyAccountService:
+                            IPleromaMyAccountService.of(context, listen: false),
+                        accountRepository:
+                            IAccountRepository.of(context, listen: false),
+                        myAccountLocalPreferenceBloc:
+                            IMyAccountLocalPreferenceBloc.of(context,
+                                listen: false),
+                      ),
+                      child: AuthInstanceChooserInstanceListItemWidget(
+                        instance: instance,
+                        isSelected: false,
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
           );

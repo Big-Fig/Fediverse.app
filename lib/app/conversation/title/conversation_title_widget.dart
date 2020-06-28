@@ -29,6 +29,7 @@ class ConversationTitleWidget extends StatelessWidget {
             children: <Widget>[
               Text(
                 accounts.map((account) => account.acct).join(", "),
+                overflow: TextOverflow.ellipsis,
                 style: textStyle,
               ),
             ],
