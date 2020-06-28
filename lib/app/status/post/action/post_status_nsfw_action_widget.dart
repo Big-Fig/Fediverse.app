@@ -9,22 +9,28 @@ class PostStatusNsfwActionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var postStatusBloc = IPostStatusBloc.of(context, listen: false);
 
-    return IconButton(
-      icon: StreamBuilder<bool>(
+    return GestureDetector(
+      child: StreamBuilder<bool>(
           stream: postStatusBloc.isNsfwSensitiveEnabledStream,
           initialData: postStatusBloc.isNsfwSensitiveEnabled,
           builder: (context, snapshot) {
             var nsfwSensitive = snapshot.data;
 
-            return Center(
-              child: Text(
-                  tr("app.status.post.nsfw.title").toUpperCase(),
-                  style: TextStyle(
-                      color: calculateColor(nsfwSensitive), fontSize: 10)),
+            return Container(
+              height: double.infinity,
+              child: Center(
+                child: Text(tr("app.status.post.nsfw.title").toUpperCase(),
+                    style: TextStyle(
+                      color: calculateColor(nsfwSensitive),
+                      fontSize: 14,
+                      height: 1.15,
+                    )),
+              ),
             );
           }),
-      onPressed: () {
-        postStatusBloc.changeNsfwSensitive(!postStatusBloc.isNsfwSensitiveEnabled);
+      onTap: () {
+        postStatusBloc
+            .changeNsfwSensitive(!postStatusBloc.isNsfwSensitiveEnabled);
       },
     );
   }

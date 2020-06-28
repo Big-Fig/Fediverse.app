@@ -17,6 +17,11 @@ class ChatPostMessageWidget extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
+          ProxyProvider<IChatPostMessageBloc,
+                  IUploadMediaAttachmentsCollectionBloc>(
+              update: (context, value, previous) =>
+                  value.mediaAttachmentsCollectionBloc,
+              child:  UploadMediaAttachmentsWidget()),
           Row(
             children: [
               Expanded(child: const ChatPostMessageContentWidget()),
@@ -26,11 +31,6 @@ class ChatPostMessageWidget extends StatelessWidget {
               const ChatPostMessagePostActionWidget()
             ],
           ),
-          ProxyProvider<IChatPostMessageBloc,
-                  IUploadMediaAttachmentsCollectionBloc>(
-              update: (context, value, previous) =>
-                  value.mediaAttachmentsCollectionBloc,
-              child:  UploadMediaAttachmentsWidget()),
         ],
       ),
     );

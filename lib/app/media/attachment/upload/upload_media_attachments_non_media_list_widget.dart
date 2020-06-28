@@ -1,12 +1,12 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
+import 'package:fedi/app/media/attachment/upload/upload_media_attachment_remove_dialog.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/media/attachment/upload/upload_media_attachments_non_media_single_widget.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 
 class UploadMediaAttachmentsNonMediaListWidget extends StatelessWidget {
   @override
@@ -30,15 +30,23 @@ class UploadMediaAttachmentsNonMediaListWidget extends StatelessWidget {
               shrinkWrap: true,
               children: [
                 ...mediaItemBlocs.map((mediaItemBloc) {
-                  var filePath = mediaItemBloc.filePickerFile.file.path;
-                  var fileName = basename(filePath);
-                  var fileExtension = extension(filePath);
-                  fileExtension = fileExtension?.replaceAll(".", "");
-
-                  var actionsWidget = buildActionsWidget(mediaItemBloc, mediaAttachmentsCollectionBloc);
+                  var actionsWidget = buildActionsWidget(
+                      mediaItemBloc, mediaAttachmentsCollectionBloc);
                   return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: _buildNonMediaAttachmentListItem(fileExtension, fileName, actionsWidget),
+                    padding: const EdgeInsets.symmetric(horizontal:8.0),
+                    child: StreamBuilder<UploadMediaAttachmentState>(
+                        stream: mediaItemBloc.uploadStateStream,
+                        initialData: mediaItemBloc.uploadState,
+                        builder: (context, snapshot) {
+                          var uploadState = snapshot.data;
+                          return UploadMediaAttachmentNonMediaItemWidget(
+                              opacity: uploadState ==
+                                      UploadMediaAttachmentState.uploaded
+                                  ? 1
+                                  : 0.5,
+                              filePath: mediaItemBloc.filePickerFile.file.path,
+                              actionsWidget: actionsWidget);
+                        }),
                   );
                 }).toList(),
               ],
@@ -47,110 +55,37 @@ class UploadMediaAttachmentsNonMediaListWidget extends StatelessWidget {
         });
   }
 
-  Container _buildNonMediaAttachmentListItem(String fileExtension, String fileName, StreamBuilder<UploadMediaAttachmentState> actionsWidget) {
-    return Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                      border: Border.all(color: FediColors.ultraLightGrey),
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 70.0,
-                          height: 70.0,
-                          decoration: BoxDecoration(
-                            border: Border(
-                              right: BorderSide(
-                                width: 1,
-                                color: FediColors.ultraLightGrey,
-                              ),
-                            ),
-                          ),
-                          child: Center(
-                              child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                width: 1,
-                                color: FediColors.darkGrey,
-                              )),
-                              child: Center(
-                                  child: AutoSizeText(
-                                fileExtension?.toUpperCase(),
-                                style: TextStyle(color: FediColors.darkGrey),
-                              )),
-                            ),
-                          )),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      fileExtension?.toUpperCase(),
-                                      style: TextStyle(
-                                          color: FediColors.grey,
-                                          height: 1.5,
-                                          fontSize: 12),
-                                    ),
-                                    Text(
-                                      fileName,
-                                      style: TextStyle(
-                                          color: FediColors.darkGrey,
-                                          height: 1.5,
-                                          fontSize: 15),
-                                    ),
-                                  ],
-                                ),
-                                actionsWidget,
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  );
-  }
+  Widget buildActionsWidget(IUploadMediaAttachmentBloc mediaItemBloc,
+      IUploadMediaAttachmentsCollectionBloc mediaAttachmentsCollectionBloc) {
 
-  StreamBuilder<UploadMediaAttachmentState> buildActionsWidget(IUploadMediaAttachmentBloc mediaItemBloc, IUploadMediaAttachmentsCollectionBloc mediaAttachmentsCollectionBloc) {
     return StreamBuilder<UploadMediaAttachmentState>(
-                                    stream: mediaItemBloc.uploadStateStream,
-                                    initialData: mediaItemBloc.uploadState,
-                                    builder: (context, snapshot) {
-                                      var uploadState = snapshot.data;
+        stream: mediaItemBloc.uploadStateStream,
+        initialData: mediaItemBloc.uploadState,
+        builder: (context, snapshot) {
+          var uploadState = snapshot.data;
 
-                                      switch (uploadState) {
-                                        case UploadMediaAttachmentState
-                                            .uploading:
-                                          return CircularProgressIndicator();
-                                          break;
-                                        case UploadMediaAttachmentState
-                                            .notUploaded:
-                                        case UploadMediaAttachmentState
-                                            .uploaded:
-                                        case UploadMediaAttachmentState
-                                            .failed:
-                                        default:
-                                          return IconButton(
-                                            onPressed: () {
-                                              mediaAttachmentsCollectionBloc
-                                                  .detachMedia(mediaItemBloc
-                                                      .filePickerFile);
-                                            },
-                                            icon: Icon(FediIcons.close),
-                                          );
-                                          break;
-                                      }
-                                    });
+          switch (uploadState) {
+            case UploadMediaAttachmentState.uploading:
+              return const FediCircularProgressIndicator(
+                size: 30.0,
+              );
+              break;
+            case UploadMediaAttachmentState.notUploaded:
+            case UploadMediaAttachmentState.uploaded:
+            case UploadMediaAttachmentState.failed:
+            default:
+              return IconButton(
+                padding: EdgeInsets.zero,
+                onPressed: () {
+                  showConfirmRemoveAssetDialog(context, mediaItemBloc);
+                },
+                icon: Icon(
+                  FediIcons.close,
+                  size: 22.0,
+                ),
+              );
+              break;
+          }
+        });
   }
 }
