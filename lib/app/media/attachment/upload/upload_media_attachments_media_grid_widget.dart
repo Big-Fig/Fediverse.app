@@ -83,23 +83,25 @@ class UploadMediaAttachmentsMediaGridWidget extends StatelessWidget {
       onTap: () {
         _openAttachPage(context, bloc);
       },
-      child: Container(
-        margin: EdgeInsets.all(8),
-        color: Colors.blue,
-        child: Center(
-          child: IconButton(
-            iconSize: 30,
-            icon: Icon(
-              Icons.add_photo_alternate,
-              color: Colors.white,
+      child: ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(16.0)),
+        child: Container(
+          color: Colors.blue,
+          child: Center(
+            child: IconButton(
+              iconSize: 30,
+              icon: Icon(
+                Icons.add_photo_alternate,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                _openAttachPage(context, bloc);
+              },
             ),
-            onPressed: () {
-              _openAttachPage(context, bloc);
-            },
           ),
+          width: 100,
+          height: 100,
         ),
-        width: 100,
-        height: 100,
       ),
     );
   }

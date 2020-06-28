@@ -1,4 +1,4 @@
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/media/attachment/media_attachment_non_media_item_widget.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,13 +15,11 @@ class MediaAttachmentUnknownWidget extends StatelessWidget {
       onTap: () {
         UrlHelper.handleUrlClick(context, mediaAttachment.url);
       },
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            mediaAttachment.description,
-            style: TextStyle(color: FediColors.primaryColor),
-          ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: MediaAttachmentNonMediaItemWidget(
+          actionsWidget: null,
+          filePath: mediaAttachment.description,
         ),
       ),
     );

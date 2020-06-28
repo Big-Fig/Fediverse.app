@@ -4,7 +4,6 @@ import 'package:fedi/app/auth/instance/register/register_auth_instance_bloc.dart
 import 'package:fedi/app/form/form_field_error_model.dart';
 import 'package:fedi/app/form/form_model.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
-import 'package:fedi/app/ui/divider/fedi_light_grey_divider.dart';
 import 'package:fedi/app/ui/edit_text/fedi_transparent_edit_text_field.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:fedi/error/error_data_model.dart';
@@ -60,6 +59,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
                   maxLines: 1,
                   textEditingController: formTextField.textEditingController,
                   autofocus: false,
+                  displayUnderlineBorder: true,
                 ),
                 if (error != null)
                   Padding(
@@ -69,10 +69,6 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
                       style: TextStyle(color: Colors.red),
                     ),
                   ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical:4.0),
-                  child: FediLightGreyDivider(),
-                )
               ],
             );
           }),

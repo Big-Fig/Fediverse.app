@@ -1,8 +1,8 @@
+import 'package:fedi/app/media/attachment/media_attachment_non_media_item_widget.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_remove_dialog.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
-import 'package:fedi/app/media/attachment/upload/upload_media_attachments_non_media_single_widget.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:flutter/cupertino.dart';
@@ -39,7 +39,7 @@ class UploadMediaAttachmentsNonMediaListWidget extends StatelessWidget {
                         initialData: mediaItemBloc.uploadState,
                         builder: (context, snapshot) {
                           var uploadState = snapshot.data;
-                          return UploadMediaAttachmentNonMediaItemWidget(
+                          return MediaAttachmentNonMediaItemWidget(
                               opacity: uploadState ==
                                       UploadMediaAttachmentState.uploaded
                                   ? 1
