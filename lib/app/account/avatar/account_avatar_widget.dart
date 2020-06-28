@@ -30,6 +30,7 @@ class AccountAvatarWidget extends StatelessWidget {
       {@required String avatarUrl,
       @required double progressSize,
       @required double imageSize}) {
+    assert(avatarUrl != null);
     return Container(
       width: imageSize,
       height: imageSize,
