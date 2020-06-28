@@ -441,6 +441,12 @@
     },
     "media": {
       "attachment": {
+        "type": {
+          "photos": "Photos",
+          "camera": "Camera",
+          "file": "File",
+          "audio": "Audio"
+        },
         "share": {
           "title": "Share",
           "progress": {

@@ -1,14 +1,13 @@
 import 'package:fedi/app/account/my/avatar/my_account_avatar_widget.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_widget.dart';
-import 'package:fedi/app/status/post/action/post_status_attach_camera_action_widget.dart';
-import 'package:fedi/app/status/post/action/post_status_attach_file_action_widget.dart';
-import 'package:fedi/app/status/post/action/post_status_attach_gallery_action_widget.dart';
+import 'package:fedi/app/status/post/action/post_status_attach_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_mention_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_nsfw_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_post_text_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_schedule_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_visibility_action_widget.dart';
+import 'package:fedi/app/status/post/attach/post_attach_widget.dart';
 import 'package:fedi/app/status/post/mentions/post_status_mentions_widget.dart';
 import 'package:fedi/app/status/post/message/filled_message_post_status_widget.dart';
 import 'package:fedi/app/status/post/message/transparent_message_post_status_widget.dart';
@@ -53,12 +52,16 @@ class PostStatusWidget extends StatelessWidget {
                   children: <Widget>[buildAvatar(), buildMessageWidget()],
                 )
               : buildMessageWidget(),
-          ProxyProvider<IPostStatusBloc, IUploadMediaAttachmentsCollectionBloc>(
-              update: (context, value, previous) =>
-                  value.mediaAttachmentGridBloc,
-              child: UploadMediaAttachmentsWidget()),
+          Padding(
+            padding: const EdgeInsets.only(bottom:8.0),
+            child: ProxyProvider<IPostStatusBloc, IUploadMediaAttachmentsCollectionBloc>(
+                update: (context, value, previous) =>
+                    value.mediaAttachmentGridBloc,
+                child: UploadMediaAttachmentsWidget()),
+          ),
           if (!displayAccountAvatar && expanded) FediLightGreyDivider(),
-          if (showActionsRow) buildActions()
+          if (showActionsRow) buildActions(),
+          PostAttachWidget()
         ],
       ),
     );
@@ -79,13 +82,14 @@ class PostStatusWidget extends StatelessWidget {
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
                   children: [
-                    PostStatusMentionActionWidget(),
-                    PostStatusAttachGalleryActionWidget(),
-                    PostStatusAttachCameraActionWidget(),
-                    PostStatusAttachFileActionWidget(),
-                    PostStatusNsfwActionWidget(),
+                    PostStatusAttachActionWidget(),
                     if (showVisibilityAction) PostStatusVisibilityActionWidget(),
                     PostStatusScheduleActionWidget(),
+                    PostStatusMentionActionWidget(),
+                    PostStatusNsfwActionWidget(),
+//                    PostStatusAttachGalleryActionWidget(),
+//                    PostStatusAttachCameraActionWidget(),
+//                    PostStatusAttachFileActionWidget(),
                   ],
                 ),
               ),

@@ -58,12 +58,17 @@ class MediaAttachmentNonMediaItemWidget extends StatelessWidget {
                             width: 1,
                             color: FediColors.darkGrey,
                           )),
-                          child: Center(
-                              child: AutoSizeText(
-                            fileExtension?.toUpperCase(),
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(color: FediColors.darkGrey),
-                          )),
+                          child: Padding(
+                            padding: const EdgeInsets.all(1.0),
+                            child: Center(
+                                child: AutoSizeText(
+                              fileExtension?.toUpperCase(),
+                              maxLines: 1,
+                              minFontSize: 8.0,
+//                            overflow: TextOverflow.ellipsis,
+                              style: TextStyle(color: FediColors.darkGrey),
+                            )),
+                          ),
                         ),
                       )),
                     ),

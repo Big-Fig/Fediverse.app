@@ -303,17 +303,19 @@ abstract class PostStatusBloc extends DisposableOwner
     var textIsNotEmpty = inputText?.trim()?.isEmpty != true;
     var mediaAttached = mediaAttachmentBlocs?.isEmpty != true;
 
-    bool atLeastOneMediaNotUploaded;
+//    bool atLeastOneMediaNotUploaded;
+//
+//    if(mediaAttached) {
+//      atLeastOneMediaNotUploaded = mediaAttachmentBlocs.fold(false,
+//              (previousValue, bloc) => previousValue
+//          || bloc.uploadState != UploadMediaAttachmentState.uploaded);
+//    } else {
+//      atLeastOneMediaNotUploaded = false;
+//    }
 
-    if(mediaAttached) {
-      atLeastOneMediaNotUploaded = mediaAttachmentBlocs.fold(false,
-              (previousValue, bloc) => previousValue
-          || bloc.uploadState != UploadMediaAttachmentState.uploaded);
-    } else {
-      atLeastOneMediaNotUploaded = false;
-    }
-
-    return (textIsNotEmpty || mediaAttached) && !atLeastOneMediaNotUploaded;
+    return (textIsNotEmpty || mediaAttached)
+//        && !atLeastOneMediaNotUploaded
+    ;
   }
 
   @override
@@ -389,6 +391,7 @@ abstract class PostStatusBloc extends DisposableOwner
     focusNode.unfocus();
     inputTextController.clear();
     mediaAttachmentGridBloc.clear();
+    nsfwSensitiveSubject.add(false);
     _regenerateIdempotencyKey();
     clearSchedule();
   }
@@ -436,39 +439,21 @@ abstract class PostStatusBloc extends DisposableOwner
       BehaviorSubject();
 
   @override
-  bool get isAttachFileActionSelected =>
-      selectedAction == PostStatusSelectedAction.files;
+  bool get isAttachActionSelected =>
+      selectedAction == PostStatusSelectedAction.attach;
 
   @override
-  Stream<bool> get isAttachFileActionStream => selectedActionStream.map(
-      (selectedAction) => selectedAction == PostStatusSelectedAction.files);
-
+  Stream<bool> get isAttachActionSelectedStream => selectedActionStream.map(
+      (selectedAction) => selectedAction == PostStatusSelectedAction.attach);
+  
   @override
-  bool get isAttachGalleryActionSelected =>
-      selectedAction == PostStatusSelectedAction.gallery;
-
-  @override
-  Stream<bool> get isAttachGalleryActionSelectedStream =>
-      selectedActionStream.map((selectedAction) =>
-          selectedAction == PostStatusSelectedAction.gallery);
-
-  @override
-  void toggleAttachFileActionSelection() {
-    if(isAttachFileActionSelected) {
+  void toggleAttachActionSelection() {
+    if(isAttachActionSelected) {
       selectedActionSubject.add(null);
     } else {
-      selectedActionSubject.add(PostStatusSelectedAction.files);
+      selectedActionSubject.add(PostStatusSelectedAction.attach);
 
     }
   }
-
-  @override
-  void toggleAttachGalleryActionSelection() {
-    if(isAttachGalleryActionSelected) {
-      selectedActionSubject.add(null);
-    } else {
-      selectedActionSubject.add(PostStatusSelectedAction.gallery);
-
-    }
-  }
+  
 }

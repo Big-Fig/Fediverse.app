@@ -11,7 +11,6 @@ class StatusNsfwWarningWidget extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: FediPrimaryFilledTextButton(
         tr("app.status.nsfw.action.view"),
-        height: null,
         onPressed: () {
           var statusBloc = IStatusBloc.of(context, listen: false);
 
