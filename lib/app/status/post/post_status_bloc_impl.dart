@@ -1,5 +1,6 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
+import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc_impl.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
@@ -302,7 +303,17 @@ abstract class PostStatusBloc extends DisposableOwner
     var textIsNotEmpty = inputText?.trim()?.isEmpty != true;
     var mediaAttached = mediaAttachmentBlocs?.isEmpty != true;
 
-    return textIsNotEmpty || mediaAttached;
+    bool atLeastOneMediaNotUploaded;
+
+    if(mediaAttached) {
+      atLeastOneMediaNotUploaded = mediaAttachmentBlocs.fold(false,
+              (previousValue, bloc) => previousValue
+          || bloc.uploadState != UploadMediaAttachmentState.uploaded);
+    } else {
+      atLeastOneMediaNotUploaded = false;
+    }
+
+    return (textIsNotEmpty || mediaAttached) && !atLeastOneMediaNotUploaded;
   }
 
   @override

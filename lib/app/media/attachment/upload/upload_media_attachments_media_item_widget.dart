@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
+import 'package:fedi/app/media/attachment/upload/upload_media_attachment_failed_notification.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_remove_dialog.dart';
+import 'package:fedi/app/ui/error/fedi_error_data_notification_overlay.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
@@ -9,11 +13,40 @@ import 'package:fedi/media/media_video_player_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class UploadMediaAttachmentMediaItemWidget extends StatelessWidget {
+class UploadMediaAttachmentMediaItemWidget extends StatefulWidget {
   final EdgeInsets contentPadding;
 
   UploadMediaAttachmentMediaItemWidget(
       {this.contentPadding = const EdgeInsets.all(16.0)});
+
+  @override
+  _UploadMediaAttachmentMediaItemWidgetState createState() =>
+      _UploadMediaAttachmentMediaItemWidgetState();
+}
+
+class _UploadMediaAttachmentMediaItemWidgetState
+    extends State<UploadMediaAttachmentMediaItemWidget> {
+  StreamSubscription streamSubscription;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    var uploadMediaAttachmentBloc =
+        IUploadMediaAttachmentBloc.of(context, listen: false);
+
+    streamSubscription =
+        uploadMediaAttachmentBloc.uploadStateStream.listen((state) {
+      if (state == UploadMediaAttachmentState.failed) {
+        showMediaAttachmentFailedNotification(context);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    streamSubscription?.cancel();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +71,29 @@ class UploadMediaAttachmentMediaItemWidget extends StatelessWidget {
                   var uploadState = snapshot.data;
                   var mediaPreview = buildMediaPreview(
                       uploadMediaAttachmentBloc.filePickerFile);
+
                   if (uploadState == UploadMediaAttachmentState.uploaded) {
                     return mediaPreview;
+                  } else if (uploadState == UploadMediaAttachmentState.failed) {
+                    return Stack(
+                      children: [
+                        Positioned(
+                            left: 0.0,
+                            top: 0.0,
+                            bottom: 0.0,
+                            right: 0.0,
+                            child: mediaPreview),
+                        Positioned(
+                          left: 0.0,
+                          top: 0.0,
+                          bottom: 0.0,
+                          right: 0.0,
+                          child: Container(
+                            color: FediColors.error.withOpacity(0.7),
+                          ),
+                        ),
+                      ],
+                    );
                   } else {
                     return Opacity(
                       opacity: 0.7,
@@ -51,7 +105,7 @@ class UploadMediaAttachmentMediaItemWidget extends StatelessWidget {
           Align(
             alignment: Alignment.topRight,
             child: Padding(
-              padding: contentPadding,
+              padding: widget.contentPadding,
               child: StreamBuilder<UploadMediaAttachmentState>(
                   stream: uploadMediaAttachmentBloc.uploadStateStream,
                   initialData: uploadMediaAttachmentBloc.uploadState,
@@ -69,6 +123,7 @@ class UploadMediaAttachmentMediaItemWidget extends StatelessWidget {
                         );
                         break;
                       case UploadMediaAttachmentState.uploaded:
+                      case UploadMediaAttachmentState.failed:
                         return IconButton(
                           padding: EdgeInsets.zero,
                           icon: Icon(FediIcons.remove),
@@ -78,15 +133,6 @@ class UploadMediaAttachmentMediaItemWidget extends StatelessWidget {
                             showConfirmRemoveAssetDialog(
                                 context, uploadMediaAttachmentBloc);
                           },
-                        );
-                        break;
-                      case UploadMediaAttachmentState.failed:
-                        return Center(
-                          child: IconButton(
-                              icon: Icon(Icons.error),
-                              onPressed: () {
-                                uploadMediaAttachmentBloc.startUpload();
-                              }),
                         );
                         break;
                     }
