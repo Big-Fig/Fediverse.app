@@ -3,12 +3,12 @@ import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 
-class UploadMediaAttachmentNonMediaItemWidget extends StatelessWidget {
+class MediaAttachmentNonMediaItemWidget extends StatelessWidget {
   final double opacity;
   final Widget actionsWidget;
   final String filePath;
 
-  UploadMediaAttachmentNonMediaItemWidget({
+  MediaAttachmentNonMediaItemWidget({
     this.opacity = 1.0,
     @required this.actionsWidget,
     @required this.filePath,
@@ -54,6 +54,7 @@ class UploadMediaAttachmentNonMediaItemWidget extends StatelessWidget {
                       child: Center(
                           child: AutoSizeText(
                         fileExtension?.toUpperCase(),
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(color: FediColors.darkGrey),
                       )),
                     ),
@@ -62,28 +63,25 @@ class UploadMediaAttachmentNonMediaItemWidget extends StatelessWidget {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(12.0),
-                    child: Row(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              fileExtension?.toUpperCase(),
-                              style: TextStyle(
-                                  color: FediColors.grey,
-                                  height: 1.5,
-                                  fontSize: 12),
-                            ),
-                            Text(
-                              fileName,
-                              style: TextStyle(
-                                  color: FediColors.darkGrey,
-                                  height: 1.5,
-                                  fontSize: 15),
-                            ),
-                          ],
+                        Text(
+                          fileExtension?.toUpperCase(),
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              color: FediColors.grey,
+                              height: 1.5,
+                              fontSize: 12),
+                        ),
+                        Text(
+                          fileName,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              color: FediColors.darkGrey,
+                              height: 1.5,
+                              fontSize: 15),
                         ),
                       ],
                     ),

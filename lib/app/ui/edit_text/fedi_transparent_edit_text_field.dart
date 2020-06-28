@@ -55,9 +55,9 @@ class FediTransparentEditTextField extends StatelessWidget {
           errorBorder:  displayUnderlineBorder ? _errorBorder :  InputBorder.none,
           focusedErrorBorder:  displayUnderlineBorder ? _errorBorder :  InputBorder.none,
           errorStyle: TextStyle(
-            fontSize: 16.0,
+            fontSize: 14.0,
             color: FediColors.error,
-            height: 1.5,
+            height: 1.15,
           ),
           hintText: hintText,
           hintStyle: TextStyle(
