@@ -114,8 +114,10 @@ class AuthInstanceChooserInstanceListItemWidget extends StatelessWidget {
       context: context,
       title: tr("app.auth.instance.chooser.dialog.title"),
       content: tr("app.auth.instance.chooser.dialog.title"),
-      onAction: () {
-        instanceChooserBloc.chooseInstance(instance);
+      onAction: () async {
+        await Navigator.of(context).pop();
+        await Navigator.of(context).pop();
+        await instanceChooserBloc.chooseInstance(instance);
       },
     ).show(context);
   }
@@ -135,6 +137,8 @@ class AuthInstanceChooserInstanceListItemWidget extends StatelessWidget {
             content: tr("app.auth.instance.logout.dialog.content"),
             onAction: () async {
               if (isSelected) {
+                await Navigator.of(context).pop();
+                await Navigator.of(context).pop();
                 var authHostBloc = AuthHostBloc.createFromContext(context,
                     instanceBaseUrl: instance.url);
                 await authHostBloc.performAsyncInit();
@@ -142,8 +146,9 @@ class AuthInstanceChooserInstanceListItemWidget extends StatelessWidget {
 
 
               } else {
+                await Navigator.of(context).pop();
+                await Navigator.of(context).pop();
                 await instanceChooserBloc.removeInstance(instance);
-                Navigator.of(context).pop();
               }
             },
           ).show(context);
