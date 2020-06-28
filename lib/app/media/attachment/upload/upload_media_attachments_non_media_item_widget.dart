@@ -6,7 +6,6 @@ import 'package:fedi/app/media/attachment/upload/upload_media_attachment_failed_
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_remove_dialog.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
-import 'package:fedi/app/ui/error/fedi_error_data_notification_overlay.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:flutter/cupertino.dart';

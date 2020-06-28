@@ -35,16 +35,12 @@ abstract class IPostStatusBloc implements Disposable {
   PostStatusSelectedAction get selectedAction;
   Stream<PostStatusSelectedAction> get selectedActionStream;
 
-  bool get isAttachFileActionSelected;
+  bool get isAttachActionSelected;
 
 
-  Stream<bool> get isAttachFileActionStream;
-  bool get isAttachGalleryActionSelected;
+  Stream<bool> get isAttachActionSelectedStream;
 
-  Stream<bool> get isAttachGalleryActionSelectedStream;
-
-  void toggleAttachFileActionSelection();
-  void toggleAttachGalleryActionSelection();
+  void toggleAttachActionSelection();
 
   void addMentionByAccount(IAccount account);
 

@@ -1,3 +1,3 @@
 enum PostStatusSelectedAction {
-  gallery, files
+  attach
 }
