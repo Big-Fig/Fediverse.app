@@ -1,6 +1,6 @@
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
-import 'package:fedi/app/media/attachment/upload/upload_media_attachments_media_single_widget.dart';
+import 'package:fedi/app/media/attachment/upload/upload_media_attachments_media_item_widget.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:fedi/file/picker/single/single_file_picker_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,7 +10,8 @@ import 'package:provider/provider.dart';
 class UploadMediaAttachmentsMediaGridWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var mediaAttachmentsCollectionBloc = IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);
+    var mediaAttachmentsCollectionBloc =
+        IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);
     return StreamBuilder<List<IUploadMediaAttachmentBloc>>(
         stream: mediaAttachmentsCollectionBloc.onlyMediaAttachmentBlocsStream,
         initialData: mediaAttachmentsCollectionBloc.onlyMediaAttachmentBlocs,
@@ -31,7 +32,9 @@ class UploadMediaAttachmentsMediaGridWidget extends StatelessWidget {
                 ),
                 child: Provider<IUploadMediaAttachmentBloc>.value(
                     value: mediaItemBlocs.first,
-                    child: UploadMediaAttachmentMediaSingleWidget()),
+                    child: UploadMediaAttachmentMediaItemWidget(
+                      contentPadding: const EdgeInsets.all(8.0),
+                    )),
               ),
             );
           }
@@ -47,7 +50,9 @@ class UploadMediaAttachmentsMediaGridWidget extends StatelessWidget {
                   return _buildGridItem(
                     Provider<IUploadMediaAttachmentBloc>.value(
                       value: mediaItemBloc,
-                      child: UploadMediaAttachmentMediaSingleWidget(),
+                      child: UploadMediaAttachmentMediaItemWidget(
+                        contentPadding: const EdgeInsets.all(0.0),
+                      ),
                     ),
                   );
                 }).toList(),
