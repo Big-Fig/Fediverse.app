@@ -52,12 +52,14 @@ abstract class IAccountBloc extends DisposableOwner {
   Stream<int> get statusesCountStream =>
       accountStream.map((account) => account.statusesCount);
 
-  EmojiText get displayNameEmojiText =>
-      EmojiText(text: account.displayName, emojis: account.emojis);
+  EmojiText get displayNameEmojiText => account != null
+      ? EmojiText(text: account.displayName, emojis: account.emojis)
+      : null;
 
   Stream<EmojiText> get displayNameEmojiTextStream =>
-      accountStream.map((account) =>
-          EmojiText(text: account.displayName, emojis: account.emojis));
+      accountStream.map((account) => account != null
+          ? EmojiText(text: account.displayName, emojis: account.emojis)
+          : null);
 
   String get displayName => account.displayName;
 

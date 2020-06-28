@@ -28,6 +28,10 @@ class AccountDisplayNameWidget extends StatelessWidget {
         builder: (context, snapshot) {
           var accountDisplayNameEmojiText = snapshot.data;
 
+          if (accountDisplayNameEmojiText == null) {
+            return SizedBox.shrink();
+          }
+
           return EmojiTextWidget(
             textAlign: textAlign,
             emojiText: accountDisplayNameEmojiText,

@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/join/join_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_page.dart';
 import 'package:fedi/app/tos/tos_page.dart';
@@ -220,9 +221,9 @@ class JoinAuthInstanceWidget extends StatelessWidget {
           contentText: tr("app.auth.instance.join"
               ".fail.dialog.content"));
 
-  Future logInToInstance(BuildContext context) {
+  Future logInToInstance(BuildContext context) async {
     var joinInstanceBloc = IJoinAuthInstanceBloc.of(context, listen: false);
-    return doAsyncOperationWithDialog(
+    var dialogResult = await doAsyncOperationWithDialog(
         context: context,
         contentMessage: tr("app.auth.instance.join"
             ".progress.dialog.content"),
@@ -233,7 +234,9 @@ class JoinAuthInstanceWidget extends StatelessWidget {
           try {
             bloc = AuthHostBloc.createFromContext(context,
                 instanceBaseUrl: hostUri);
-            await bloc.launchLoginToAccount();
+            var instance = await bloc.launchLoginToAccount();
+
+            return instance;
           } finally {
             bloc?.dispose();
           }
@@ -244,6 +247,13 @@ class JoinAuthInstanceWidget extends StatelessWidget {
             return createInstanceDeadErrorData(context, error, stackTrace);
           }
         ]);
+
+    if (dialogResult.result != null) {
+      await Navigator.pop(context);
+      await Navigator.pop(context);
+      await ICurrentAuthInstanceBloc.of(context, listen: false)
+          .changeCurrentInstance(dialogResult.result);
+    }
   }
 
   const JoinAuthInstanceWidget();
