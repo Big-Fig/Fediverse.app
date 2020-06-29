@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class UploadMediaAttachmentsMediaGridWidget extends StatelessWidget {
+class UploadMediaAttachmentsMediaListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var mediaAttachmentsCollectionBloc =
@@ -40,71 +40,73 @@ class UploadMediaAttachmentsMediaGridWidget extends StatelessWidget {
           }
 
           return Container(
-            width: double.infinity,
-            child: Wrap(
+          height: 90.0,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+//              shrinkWrap: true,
               children: [
                 ...mediaItemBlocs.map((mediaItemBloc) {
                   // don't dispose media bloc here
                   // it is disposed in parent Status bloc
 
-                  return _buildGridItem(
+                  return _buildItem(
                     Provider<IUploadMediaAttachmentBloc>.value(
                       value: mediaItemBloc,
                       child: UploadMediaAttachmentMediaItemWidget(
-                        contentPadding: const EdgeInsets.all(0.0),
+                        contentPadding: const EdgeInsets.all(7.0),
                       ),
                     ),
                   );
                 }).toList(),
-                _buildGridItem(
-                  buildAddTile(context, mediaAttachmentsCollectionBloc),
-                )
+//                _buildGridItem(
+//                  buildAddTile(context, mediaAttachmentsCollectionBloc),
+//                )
               ],
             ),
           );
         });
   }
 
-  Widget _buildGridItem(Widget child) {
+  Widget _buildItem(Widget child) {
     return Padding(
-      padding: const EdgeInsets.only(left: 8.0, top: 8.0),
+      padding: const EdgeInsets.only(left: 6.0, top: 6.0),
       child: Container(
-        width: 100,
-        height: 100,
+        width: 90,
+        height: 90,
         child: child,
       ),
     );
   }
 
-  Widget buildAddTile(
-      BuildContext context, IUploadMediaAttachmentsCollectionBloc bloc) {
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: () {
-        _openAttachPage(context, bloc);
-      },
-      child: ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(16.0)),
-        child: Container(
-          color: Colors.blue,
-          child: Center(
-            child: IconButton(
-              iconSize: 30,
-              icon: Icon(
-                Icons.add_photo_alternate,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                _openAttachPage(context, bloc);
-              },
-            ),
-          ),
-          width: 100,
-          height: 100,
-        ),
-      ),
-    );
-  }
+//  Widget buildAddTile(
+//      BuildContext context, IUploadMediaAttachmentsCollectionBloc bloc) {
+//    return GestureDetector(
+//      behavior: HitTestBehavior.opaque,
+//      onTap: () {
+//        _openAttachPage(context, bloc);
+//      },
+//      child: ClipRRect(
+//        borderRadius: BorderRadius.all(Radius.circular(16.0)),
+//        child: Container(
+//          color: Colors.blue,
+//          child: Center(
+//            child: IconButton(
+//              iconSize: 30,
+//              icon: Icon(
+//                Icons.add_photo_alternate,
+//                color: Colors.white,
+//              ),
+//              onPressed: () {
+//                _openAttachPage(context, bloc);
+//              },
+//            ),
+//          ),
+//          width: 100,
+//          height: 100,
+//        ),
+//      ),
+//    );
+//  }
 
   void _openAttachPage(
       BuildContext context, IUploadMediaAttachmentsCollectionBloc bloc) {
@@ -115,5 +117,5 @@ class UploadMediaAttachmentsMediaGridWidget extends StatelessWidget {
     }, startActiveTab: FilePickerTab.gallery);
   }
 
-  const UploadMediaAttachmentsMediaGridWidget();
+  const UploadMediaAttachmentsMediaListWidget();
 }
