@@ -15,7 +15,7 @@ class FromScratchJoinAuthInstancePage extends StatelessWidget {
         resizeToAvoidBottomPadding: false,
         backgroundColor: FediColors.primaryColor,
         body: SafeArea(
-          child: JoinAuthInstanceWidget(),
+          child: JoinAuthInstanceWidget(isFromScratch: true,),
         ),
       ),
     );
