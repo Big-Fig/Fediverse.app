@@ -9,8 +9,10 @@ class FediCircularProgressIndicator extends StatefulWidget {
   final Color color;
   final double size;
 
-  const FediCircularProgressIndicator(
-      {this.color = FediColors.darkGrey, this.size = 30.0});
+  const FediCircularProgressIndicator({
+    this.color = FediColors.darkGrey,
+    this.size = 30.0,
+  });
 
   @override
   _FediCircularProgressIndicatorState createState() =>
@@ -40,18 +42,18 @@ class _FediCircularProgressIndicatorState
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-          animation: _controller,
-          builder: (_, child) {
-            return Transform.rotate(
-              angle: _controller.value * 2 * pi,
-              child: child,
-            );
-          },
-          child:  Icon(
-            FediIcons.loading,
-            size: widget.size,
-            color: widget.color,
-          ),
+      animation: _controller,
+      builder: (_, child) {
+        return Transform.rotate(
+          angle: _controller.value * 2 * pi,
+          child: child,
         );
+      },
+      child: Icon(
+        FediIcons.loading,
+        size: widget.size,
+        color: widget.color,
+      ),
+    );
   }
 }

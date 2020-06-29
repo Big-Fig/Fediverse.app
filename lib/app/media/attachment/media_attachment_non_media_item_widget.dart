@@ -60,7 +60,8 @@ class MediaAttachmentNonMediaItemWidget extends StatelessWidget {
                           )),
                           child: Padding(
                             padding: const EdgeInsets.all(1.0),
-                            child: Center(
+                            child: Align(
+                              alignment: Alignment.bottomCenter,
                                 child: AutoSizeText(
                               fileExtension?.toUpperCase(),
                               maxLines: 1,

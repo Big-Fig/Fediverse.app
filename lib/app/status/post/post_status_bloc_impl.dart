@@ -42,7 +42,7 @@ abstract class PostStatusBloc extends DisposableOwner
     @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
     this.conversationRemoteId,
     this.inReplyToStatusRemoteId,
-    int maximumMediaAttachmentCount = 4,
+    int maximumMediaAttachmentCount = 8,
     PleromaVisibility initialVisibility = PleromaVisibility.PUBLIC,
     List<IAccount> initialAccountsToMention = const [],
   }) : mediaAttachmentGridBloc = UploadMediaAttachmentsCollectionBloc(

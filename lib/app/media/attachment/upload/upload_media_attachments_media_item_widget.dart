@@ -116,22 +116,40 @@ class _UploadMediaAttachmentMediaItemWidgetState
                       case UploadMediaAttachmentState.uploading:
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: FediCircularProgressIndicator(
-                            color: FediColors.white,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(24.0),
+                            child: Container(
+                              width: 24,
+                              height: 24,
+                              color: FediColors.darkGrey.withOpacity(0.8),
+                              child: FediCircularProgressIndicator(
+                                size: 20,
+                                color: FediColors.white,
+                              ),
+                            ),
                           ),
                         );
                         break;
                       case UploadMediaAttachmentState.uploaded:
                       case UploadMediaAttachmentState.failed:
-                        return IconButton(
-                          padding: EdgeInsets.zero,
-                          icon: Icon(FediIcons.remove),
-                          iconSize: 30,
-                          color: Colors.white,
-                          onPressed: () {
+                        return GestureDetector(
+                          onTap: () {
                             showConfirmRemoveAssetDialog(
                                 context, uploadMediaAttachmentBloc);
                           },
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(24.0),
+                            child: Container(
+                              width: 24,
+                              height: 24,
+                              color: FediColors.darkGrey.withOpacity(0.8),
+                              child: Icon(
+                                FediIcons.remove,
+                                size: 14,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
                         );
                         break;
                     }
