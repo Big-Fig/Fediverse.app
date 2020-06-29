@@ -19,7 +19,7 @@ class AddMoreJoinAuthInstancePage extends StatelessWidget {
           title: tr("app.auth.instance.join.new.title"),
           leading: const FediDismissIconButton()),
       body: SafeArea(
-        child: JoinAuthInstanceWidget(),
+        child: JoinAuthInstanceWidget(isFromScratch: false,),
       ),
     );
   }

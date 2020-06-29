@@ -16,6 +16,10 @@ import 'package:logging/logging.dart';
 var _logger = Logger("join_auth_instance_widget.dart");
 
 class JoinAuthInstanceWidget extends StatelessWidget {
+  final bool isFromScratch;
+
+  JoinAuthInstanceWidget({@required this.isFromScratch});
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -249,12 +253,12 @@ class JoinAuthInstanceWidget extends StatelessWidget {
         ]);
 
     if (dialogResult.result != null) {
-      await Navigator.pop(context);
-      await Navigator.pop(context);
+      if (!isFromScratch) {
+        await Navigator.pop(context);
+        await Navigator.pop(context);
+      }
       await ICurrentAuthInstanceBloc.of(context, listen: false)
           .changeCurrentInstance(dialogResult.result);
     }
   }
-
-  const JoinAuthInstanceWidget();
 }
