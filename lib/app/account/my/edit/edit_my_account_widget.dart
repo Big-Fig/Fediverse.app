@@ -95,7 +95,7 @@ class EditMyAccountWidget extends StatelessWidget {
         Navigator.of(context).pop();
         await editMyAccountBloc.headerField.onNewFilePicked(filePickerFile);
       });
-    }, startActiveTab: FilePickerTab.gallery);
+    });
   }
 
   GestureDetector buildAvatarField(
@@ -125,7 +125,7 @@ class EditMyAccountWidget extends StatelessWidget {
         Navigator.of(context).pop();
         await editMyAccountBloc.avatarField.onNewFilePicked(filePickerFile);
       });
-    }, startActiveTab: FilePickerTab.gallery);
+    });
   }
 
   Widget buildEditAvatarActionButton(

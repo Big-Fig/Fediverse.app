@@ -68,7 +68,7 @@ class PostAttachWidget extends StatelessWidget {
           postStatusBloc.mediaAttachmentGridBloc.attachMedia(filePickerFile);
           postStatusBloc.toggleAttachActionSelection();
           Navigator.of(context).pop();
-        }, startActiveTab: FilePickerTab.gallery);
+        });
       });
 
   Widget _buildAttachPhoto(
