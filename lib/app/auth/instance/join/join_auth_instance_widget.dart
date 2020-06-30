@@ -143,6 +143,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: FediFilledEditTextField(
+          autocorrect: false,
           expanded: false,
           hintText: tr("app.auth.instance.join"
               ".field.host.hint"),

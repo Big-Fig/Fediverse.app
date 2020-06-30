@@ -33,11 +33,13 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
     );
   }
 
-  Widget buildTextField(
-      {@required BuildContext context,
-      @required FormTextField formTextField,
-      @required String hintText,
-      @required String labelText}) {
+  Widget buildTextField({
+    @required BuildContext context,
+    @required FormTextField formTextField,
+    @required String hintText,
+    @required String labelText,
+    @required bool autocorrect,
+  }) {
     return Padding(
       padding: EdgeInsets.all(10.0),
       child: StreamBuilder<FormFieldError>(
@@ -50,8 +52,12 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(labelText, style: TextStyle(fontWeight: FontWeight.w500),),
+                Text(
+                  labelText,
+                  style: TextStyle(fontWeight: FontWeight.w500),
+                ),
                 FediTransparentEditTextField(
+                  autocorrect: autocorrect,
                   onSubmitted: null,
                   textInputAction: TextInputAction.done,
                   expanded: false,
@@ -63,7 +69,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
                 ),
                 if (error != null)
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical:4.0),
+                    padding: const EdgeInsets.symmetric(vertical: 4.0),
                     child: Text(
                       error?.createErrorDescription(context),
                       style: TextStyle(color: Colors.red),
@@ -82,6 +88,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
         formTextField: bloc.usernameField,
         labelText: tr("app.auth.instance.register.field.username.label"),
         hintText: tr("app.auth.instance.register.field.username.hint"),
+        autocorrect: false,
       );
 
   Widget buildEmailField(
@@ -91,6 +98,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
         formTextField: bloc.emailField,
         labelText: tr("app.auth.instance.register.field.email.label"),
         hintText: tr("app.auth.instance.register.field.email.hint"),
+        autocorrect: false,
       );
 
   Widget buildPasswordField(
@@ -100,6 +108,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
         formTextField: bloc.passwordField,
         labelText: tr("app.auth.instance.register.field.password.label"),
         hintText: tr("app.auth.instance.register.field.password.hint"),
+        autocorrect: false,
       );
 
   Widget buildConfirmPasswordField(
@@ -110,6 +119,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
         labelText:
             tr("app.auth.instance.register.field.confirm_password.label"),
         hintText: tr("app.auth.instance.register.field.confirm_password.hint"),
+        autocorrect: false,
       );
 
   Widget buildSubmitButton(
@@ -167,10 +177,11 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
           (context, error, stackTrace) {
             // todo: handle specific error
             return ErrorData(
-                error:error,
+                error: error,
                 stackTrace: stackTrace,
                 titleText: tr("app.auth.instance.register.fail.dialog.title"),
-                contentText: tr("app.auth.instance.register.fail.dialog.content",
+                contentText: tr(
+                    "app.auth.instance.register.fail.dialog.content",
                     args: [error.toString()]));
           }
         ]);

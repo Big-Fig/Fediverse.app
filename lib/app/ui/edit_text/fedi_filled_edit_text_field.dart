@@ -14,6 +14,7 @@ class FediFilledEditTextField extends StatelessWidget {
   final ValueChanged<String> onSubmitted;
   final TextInputAction textInputAction;
   final TextInputType keyboardType;
+  final bool autocorrect;
 
   FediFilledEditTextField({
     @required this.textEditingController,
@@ -26,6 +27,7 @@ class FediFilledEditTextField extends StatelessWidget {
     @required this.expanded,
     @required this.autofocus,
     this.focusNode,
+    this.autocorrect = true,
     this.keyboardType,
   });
 
@@ -44,6 +46,7 @@ class FediFilledEditTextField extends StatelessWidget {
             if (containLeading) leading,
             Flexible(
               child: TextField(
+                autocorrect:autocorrect,
                 focusNode: focusNode,
                 textInputAction:
                     maxLines == 1 ? textInputAction : TextInputAction.newline,

@@ -28,6 +28,7 @@ class FediTransparentEditTextField extends StatelessWidget {
   final ValueChanged<String> onSubmitted;
   final TextInputAction textInputAction;
   final bool displayUnderlineBorder;
+  final bool autocorrect;
 
   FediTransparentEditTextField({
     @required this.expanded,
@@ -39,12 +40,14 @@ class FediTransparentEditTextField extends StatelessWidget {
     @required this.textEditingController,
     this.displayUnderlineBorder = false,
     this.focusNode,
+    this.autocorrect = true,
   });
 
   @override
   Widget build(BuildContext context) {
 
     return TextField(
+      autocorrect: autocorrect,
       focusNode: focusNode,
       textInputAction:
           maxLines == 1 ? textInputAction : TextInputAction.newline,
