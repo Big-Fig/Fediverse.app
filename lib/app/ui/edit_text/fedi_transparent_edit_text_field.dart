@@ -23,6 +23,7 @@ class FediTransparentEditTextField extends StatelessWidget {
   final bool autofocus;
   final TextEditingController textEditingController;
   final String hintText;
+  final String errorText;
   final FocusNode focusNode;
   final int maxLines;
   final ValueChanged<String> onSubmitted;
@@ -34,6 +35,7 @@ class FediTransparentEditTextField extends StatelessWidget {
     @required this.expanded,
     @required this.autofocus,
     @required this.hintText,
+    @required this.errorText,
     @required this.maxLines,
     @required this.onSubmitted,
     @required this.textInputAction,
@@ -62,6 +64,7 @@ class FediTransparentEditTextField extends StatelessWidget {
             color: FediColors.error,
             height: 1.15,
           ),
+          errorText: errorText,
           hintText: hintText,
           hintStyle: TextStyle(
             fontSize: 18.0,

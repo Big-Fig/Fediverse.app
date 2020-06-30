@@ -36,7 +36,9 @@ class ChatPostMessageContentWidget extends StatelessWidget {
                   title: tr("app.chat.post.error.empty.dialog.title"))
               .show(context);
         }
-      }, maxLines: 1,
+      },
+      maxLines: 1,
+      errorText: null,
     );
   }
 

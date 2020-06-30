@@ -1,60 +1,50 @@
-import 'dart:async';
-
 import 'package:fedi/app/auth/instance/register/register_auth_instance_bloc.dart';
-import 'package:fedi/app/form/form_field_error_model.dart';
-import 'package:fedi/app/form/form_model.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:fedi/ui/form/form_bloc_impl.dart';
+import 'package:fedi/ui/form/field/value/string/form_password_match_string_field_bloc_impl.dart';
+import 'package:fedi/ui/form/field/value/string/form_string_field_bloc_impl.dart';
+import 'package:fedi/ui/form/field/value/string/form_email_string_field_validation.dart';
+import 'package:fedi/ui/form/field/value/string/form_length_string_field_validation.dart';
+import 'package:fedi/ui/form/field/value/string/form_non_empty_string_field_validation.dart';
 
-class JoinAuthInstanceRegisterBloc extends DisposableOwner
+class JoinAuthInstanceRegisterBloc extends FormBloc
     implements IRegisterAuthInstanceBloc {
   @override
-  final FormTextField usernameField = FormTextField(
-      initialValue: "",
-      validators: [EmptyFormTextFieldError.createValidator()]);
+  final FormStringFieldBloc usernameFieldBloc = FormStringFieldBloc(
+      originValue: "",
+      validators: [NonEmptyStringFieldValidationError.createValidator()]);
 
   @override
-  final FormTextField emailField = FormTextField(
-      initialValue: "",
-      validators: [InvalidEmailFormTextFieldError.createValidator()]);
+  final FormStringFieldBloc emailFieldBloc = FormStringFieldBloc(
+      originValue: "",
+      validators: [FormEmailStringFieldValidationError.createValidator()]);
 
   @override
-  final FormTextField passwordField = FormTextField(
-      initialValue: "",
-      validators: [
-        InvalidLengthFormTextFieldError.createValidator(
-            minLength: 4, maxLength: null)
-      ]);
+  final FormStringFieldBloc passwordFieldBloc =
+      FormStringFieldBloc(originValue: "", validators: [
+    FormLengthStringFieldValidationError.createValidator(
+        minLength: 4, maxLength: null)
+  ]);
 
   @override
-  FormTextField confirmPasswordField;
+  final FormPasswordMatchStringFieldBloc confirmPasswordFieldBloc =
+      FormPasswordMatchStringFieldBloc();
 
-  List<FormTextField> get fields => [
-        usernameField,
-        emailField,
-        passwordField,
-        confirmPasswordField,
+  @override
+  List<FormStringFieldBloc> get items => [
+        usernameFieldBloc,
+        emailFieldBloc,
+        passwordFieldBloc,
+        confirmPasswordFieldBloc,
       ];
-  List<Stream<bool>> get fieldHasErrorStreams =>
-      fields.map((field) => field.hasErrorStream).toList();
-
-  @override
-  Stream<bool> get readyToSubmitStream => Rx.combineLatest(
-      fieldHasErrorStreams,
-      (fieldHasErrors) => fieldHasErrors.fold(
-          true, (previous, hasError) => previous & !hasError));
-
-  @override
-  bool get readyToSubmit => fields.fold(
-      true, (previous, formField) => previous & !formField.hasError);
 
   JoinAuthInstanceRegisterBloc() {
-    confirmPasswordField =
-        FormPasswordMatchTextField(passwordField: passwordField);
-
-    addDisposable(disposable: usernameField);
-    addDisposable(disposable: emailField);
-    addDisposable(disposable: passwordField);
-    addDisposable(disposable: confirmPasswordField);
+    addDisposable(disposable: usernameFieldBloc);
+    addDisposable(disposable: emailFieldBloc);
+    addDisposable(disposable: passwordFieldBloc);
+    addDisposable(disposable: confirmPasswordFieldBloc);
+    addDisposable(streamSubscription:
+        passwordFieldBloc.currentValueStream.listen((currentValue) {
+      confirmPasswordFieldBloc.changePasswordValue(currentValue);
+    }));
   }
 }

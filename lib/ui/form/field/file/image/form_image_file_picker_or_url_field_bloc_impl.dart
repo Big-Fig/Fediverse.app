@@ -1,7 +1,7 @@
 import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:fedi/media/media_image_source_model.dart';
-import 'package:fedi/ui/form/form_file_picker_or_url_field_bloc_impl.dart';
-import 'package:fedi/ui/form/form_image_file_picker_or_url_field_bloc.dart';
+import 'package:fedi/ui/form/field/file/form_file_picker_or_url_field_bloc_impl.dart';
+import 'package:fedi/ui/form/field/file/image/form_image_file_picker_or_url_field_bloc.dart';
 import 'package:flutter/widgets.dart';
 
 class FormImageFilePickerOrUrlFieldBloc extends FormFilePickerOrUrlFieldBloc

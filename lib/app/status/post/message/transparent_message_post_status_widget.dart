@@ -37,7 +37,7 @@ class TransparentMessagePostStatusWidget extends StatelessWidget {
                   title: tr("app.status.post.error.empty.dialog.title"))
               .show(context);
         }
-      },
+      }, errorText: null,
     );
   }
 }

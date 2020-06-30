@@ -3,16 +3,17 @@ import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_model.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
 import 'package:fedi/pleroma/field/pleroma_field_model.dart';
+import 'package:fedi/ui/form/field/file/image/form_image_file_picker_or_url_field_bloc.dart';
+import 'package:fedi/ui/form/field/file/image/form_image_file_picker_or_url_field_bloc_impl.dart';
+import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc_impl.dart';
+import 'package:fedi/ui/form/field/value/string/form_non_empty_string_field_validation.dart';
+import 'package:fedi/ui/form/field/value/string/form_string_field_bloc_impl.dart';
 import 'package:fedi/ui/form/form_bloc_impl.dart';
-import 'package:fedi/ui/form/form_bool_field_bloc_impl.dart';
-import 'package:fedi/ui/form/form_field_bloc.dart';
-import 'package:fedi/ui/form/form_field_group_bloc.dart';
-import 'package:fedi/ui/form/form_field_group_bloc_impl.dart';
-import 'package:fedi/ui/form/form_image_file_picker_or_url_field_bloc.dart';
-import 'package:fedi/ui/form/form_image_file_picker_or_url_field_bloc_impl.dart';
-import 'package:fedi/ui/form/form_link_pair_field_bloc.dart';
-import 'package:fedi/ui/form/form_link_pair_field_bloc_impl.dart';
-import 'package:fedi/ui/form/form_string_field_bloc_impl.dart';
+import 'package:fedi/ui/form/form_item_bloc.dart';
+import 'package:fedi/ui/form/group/one_type/form_one_type_group_bloc.dart';
+import 'package:fedi/ui/form/group/one_type/form_one_type_group_bloc_impl.dart';
+import 'package:fedi/ui/form/group/pair/form_link_pair_field_group_bloc.dart';
+import 'package:fedi/ui/form/group/pair/form_link_pair_field_group_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
 
 // todo: default server config is 4, should be fetched from server
@@ -33,7 +34,8 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
   final FormBoolFieldBloc lockedField;
 
   @override
-  final IFormFieldGroupBloc<IFormLinkPairFieldBloc> customFieldsGroupBloc;
+  final IFormOneTypeGroupBloc<IFormLinkPairFieldGroupBloc>
+      customFieldsGroupBloc;
 
   @override
   final IFormImageFilePickerOrUrlFieldBloc avatarField;
@@ -42,7 +44,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
   final IFormImageFilePickerOrUrlFieldBloc headerField;
 
   @override
-  List<IFormFieldBloc> get allFields => [
+  List<IFormItemBloc> get items => [
         avatarField,
         headerField,
         displayNameField,
@@ -56,20 +58,24 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
     @required this.pleromaMyAccountService,
     @required this.maximumPossibleCustomFieldsCount,
   })  : displayNameField = FormStringFieldBloc(
-            originValue: myAccountBloc.displayNameEmojiText.text),
-        noteField = FormStringFieldBloc(originValue: myAccountBloc.note),
+            originValue: myAccountBloc.displayNameEmojiText.text,
+            validators: [NonEmptyStringFieldValidationError.createValidator()]),
+        noteField = FormStringFieldBloc(
+            originValue: myAccountBloc.note, validators: []),
         lockedField =
             FormBoolFieldBloc(originValue: myAccountBloc.account.locked),
         avatarField = FormImageFilePickerOrUrlFieldBloc(
             originalUrl: myAccountBloc.account.avatar),
         headerField = FormImageFilePickerOrUrlFieldBloc(
             originalUrl: myAccountBloc.account.header),
-        customFieldsGroupBloc = FormFieldGroupBloc<IFormLinkPairFieldBloc>(
+        customFieldsGroupBloc =
+            FormOneTypeGroupBloc<IFormLinkPairFieldGroupBloc>(
           maximumFieldsCount: _maximumPossibleCustomFieldsCount,
-          newFieldCreator: () => FormLinkPairFieldBloc(value: null, name: null),
-          originalFields: myAccountBloc.fields
+          newFieldCreator: () =>
+              FormLinkPairFieldGroupBloc(value: null, name: null),
+          originalItems: myAccountBloc.fields
               .map(
-                (field) => FormLinkPairFieldBloc(
+                (field) => FormLinkPairFieldGroupBloc(
                   name: field.name,
                   value: field.valueAsRawUrl,
                 ),
@@ -86,11 +92,13 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
 
   @override
   Future submitChanges() async {
-    var avatarPickedFile =
-        avatarField.isChanged ? avatarField.currentFilePickerFile : null;
+    var avatarPickedFile = avatarField.isSomethingChanged
+        ? avatarField.currentFilePickerFile
+        : null;
 
-    var headerPickedFile =
-        headerField.isChanged ? headerField.currentFilePickerFile : null;
+    var headerPickedFile = headerField.isSomethingChanged
+        ? headerField.currentFilePickerFile
+        : null;
     if (avatarPickedFile != null || headerPickedFile != null) {
       var request = PleromaMyAccountFilesRequest(
         avatar: avatarPickedFile?.file,
@@ -109,7 +117,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
 
     Map<int, PleromaField> fieldsAttributes = {};
 
-    customFieldsGroupBloc.fields.asMap().entries.forEach((entry) {
+    customFieldsGroupBloc.items.asMap().entries.forEach((entry) {
       var index = entry.key;
       var field = entry.value;
       fieldsAttributes[index] = PleromaField(

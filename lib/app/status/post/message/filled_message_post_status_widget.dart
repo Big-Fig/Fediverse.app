@@ -53,7 +53,7 @@ class FilledMessagePostStatusWidget extends StatelessWidget {
                     .show(context);
               }
             },
-            ending: buildEmojiPicker(context, postStatusBloc),
+            ending: buildEmojiPicker(context, postStatusBloc), errorText: null,
           ),
         ),
         const SizedBox(
