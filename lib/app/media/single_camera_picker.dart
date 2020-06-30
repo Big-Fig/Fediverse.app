@@ -7,3 +7,9 @@ Future<File> pickImageFromCamera() async {
   final pickedFile = await ImagePicker.pickImage(source: ImageSource.camera);
   return pickedFile;
 }
+
+Future<File> pickVideoFromCamera() async {
+  // todo: rework deprecated
+  final pickedFile = await ImagePicker.pickVideo(source: ImageSource.camera);
+  return pickedFile;
+}

@@ -29,15 +29,26 @@ class PostAttachWidget extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 24.0, vertical: 16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _buildAttachPhotos(context, postStatusBloc),
-                      _buildAttachCamera(context, postStatusBloc),
-                      _buildAttachFile(context, postStatusBloc),
-//                      _buildAttachAudio(context, postStatusBloc),
-                    ],
+                      horizontal: 8.0, vertical: 16.0),
+                  child: Container(
+                    height: 82,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      shrinkWrap: true,
+//                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _buildAttachGallery(context, postStatusBloc),
+                        SizedBox(width: 16,),
+                        _buildAttachPhoto(context, postStatusBloc),
+                        SizedBox(width: 16,),
+                        _buildAttachVideo(context, postStatusBloc),
+                        SizedBox(width: 16,),
+                        _buildAttachFile(context, postStatusBloc),
+                        SizedBox(width: 16,),
+                        _buildAttachAudio(context, postStatusBloc),
+                        SizedBox(width: 16,),
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -48,9 +59,9 @@ class PostAttachWidget extends StatelessWidget {
         });
   }
 
-  Widget _buildAttachPhotos(
+  Widget _buildAttachGallery(
           BuildContext context, IPostStatusBloc postStatusBloc) =>
-      _buildAction(FediIcons.image, "app.media.attachment.type.photos".tr(),
+      _buildAction(FediIcons.image, "app.media.attachment.type.gallery".tr(),
           () async {
         goToSingleMediaPickerPage(context,
             fileSelectedCallback: (FilePickerFile filePickerFile) {
@@ -60,15 +71,32 @@ class PostAttachWidget extends StatelessWidget {
         }, startActiveTab: FilePickerTab.gallery);
       });
 
-  Widget _buildAttachCamera(
+  Widget _buildAttachPhoto(
           BuildContext context, IPostStatusBloc postStatusBloc) =>
-      _buildAction(FediIcons.camera, "app.media.attachment.type.camera".tr(),
+      _buildAction(FediIcons.camera, "app.media.attachment.type.photo".tr(),
           () async {
         var pickedFile = await pickImageFromCamera();
 
         if (pickedFile != null) {
           var filePickerFile = FilePickerFile(
             type: FilePickerFileType.image,
+            isNeedDeleteAfterUsage: true,
+            file: pickedFile,
+          );
+          postStatusBloc.mediaAttachmentGridBloc.attachMedia(filePickerFile);
+          postStatusBloc.toggleAttachActionSelection();
+        }
+      });
+
+  Widget _buildAttachVideo(
+          BuildContext context, IPostStatusBloc postStatusBloc) =>
+      _buildAction(FediIcons.video, "app.media.attachment.type.video".tr(),
+          () async {
+        var pickedFile = await pickVideoFromCamera();
+
+        if (pickedFile != null) {
+          var filePickerFile = FilePickerFile(
+            type: FilePickerFileType.video,
             isNeedDeleteAfterUsage: true,
             file: pickedFile,
           );
@@ -96,7 +124,18 @@ class PostAttachWidget extends StatelessWidget {
   Widget _buildAttachAudio(
           BuildContext context, IPostStatusBloc postStatusBloc) =>
       _buildAction(
-          FediIcons.audio, "app.media.attachment.type.audio".tr(), () {});
+          FediIcons.audio, "app.media.attachment.type.audio".tr(), () async {
+        var pickedFile = await FilePicker.getFile(type: FileType.audio);
+        if (pickedFile != null) {
+          var filePickerFile = FilePickerFile(
+            type: FilePickerFileType.other,
+            isNeedDeleteAfterUsage: false,
+            file: pickedFile,
+          );
+          postStatusBloc.mediaAttachmentGridBloc.attachMedia(filePickerFile);
+          postStatusBloc.toggleAttachActionSelection();
+        }
+      });
 
   Widget _buildAction(IconData iconData, String label, Function() onTap) {
     return GestureDetector(

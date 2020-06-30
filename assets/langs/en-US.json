@@ -442,8 +442,9 @@
     "media": {
       "attachment": {
         "type": {
-          "photos": "Photos",
-          "camera": "Camera",
+          "gallery": "Gallery",
+          "photo": "Photo",
+          "video": "Video",
           "file": "File",
           "audio": "Audio"
         },
