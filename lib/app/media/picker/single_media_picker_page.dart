@@ -194,9 +194,7 @@ void goToSingleMediaPickerPage(BuildContext context,
     List<FilePickerFileType> fileTypesToPick = const [
       FilePickerFileType.image,
       FilePickerFileType.video
-    ],
-    @required FilePickerTab startActiveTab,
-    bool captureEnabled = true}) {
+    ]}) {
   Navigator.push(
     context,
     NavigationSlideBottomRouteBuilder(
