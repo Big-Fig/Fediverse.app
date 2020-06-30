@@ -1,22 +1,18 @@
-import 'package:fedi/app/form/form_model.dart';
-import 'package:fedi/disposable/disposable.dart';
+import 'package:fedi/ui/form/form_bloc.dart';
+import 'package:fedi/ui/form/field/value/string/form_string_field_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IRegisterAuthInstanceBloc implements Disposable {
+abstract class IRegisterAuthInstanceBloc implements IFormBloc {
   static IRegisterAuthInstanceBloc of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<IRegisterAuthInstanceBloc>(context, listen: listen);
 
-  FormTextField get usernameField;
+  FormStringFieldBloc get usernameFieldBloc;
 
-  FormTextField get emailField;
+  FormStringFieldBloc get emailFieldBloc;
 
-  FormTextField get passwordField;
+  FormStringFieldBloc get passwordFieldBloc;
 
-  FormTextField get confirmPasswordField;
-
-  Stream<bool> get readyToSubmitStream;
-
-  bool get readyToSubmit;
+  FormStringFieldBloc get confirmPasswordFieldBloc;
 }

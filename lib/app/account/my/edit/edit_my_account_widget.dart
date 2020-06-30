@@ -15,9 +15,10 @@ import 'package:fedi/app/ui/form/fedi_form_pair_edit_text_row.dart';
 import 'package:fedi/app/ui/form/fedi_form_switch_row.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:fedi/media/media_image_source_model.dart';
-import 'package:fedi/ui/form/form_bool_field_bloc_impl.dart';
-import 'package:fedi/ui/form/form_field_group_bloc.dart';
-import 'package:fedi/ui/form/form_link_pair_field_bloc.dart';
+import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc_impl.dart';
+import 'package:fedi/ui/form/group/one_type/form_one_type_group_bloc.dart';
+import 'package:fedi/ui/form/group/pair/form_link_pair_field_group_bloc.dart';
+import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
 import 'package:flutter/material.dart';
 
 const _avatarSize = 120.0;
@@ -65,12 +66,10 @@ class EditMyAccountWidget extends StatelessWidget {
               buildDisplayNameField(context, editMyAccountBloc),
               buildNoteField(context, editMyAccountBloc),
               buildLockedField(context, editMyAccountBloc),
-              buildCustomFields(
-                  context, editMyAccountBloc)
+              buildCustomFields(context, editMyAccountBloc)
             ],
           ),
-        ),
-        // Form
+        ), // Form
       ],
     );
   }
@@ -88,11 +87,9 @@ class EditMyAccountWidget extends StatelessWidget {
 
   void startChoosingFileToUploadHeader(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    goToSingleMediaPickerPage(context,
-        fileTypesToPick: [
-          FilePickerFileType.image,
-        ],
-        fileSelectedCallback: (FilePickerFile filePickerFile) async {
+    goToSingleMediaPickerPage(context, fileTypesToPick: [
+      FilePickerFileType.image,
+    ], fileSelectedCallback: (FilePickerFile filePickerFile) async {
       showEditMyAccountHeaderDialog(context, filePickerFile,
           (filePickerFile) async {
         Navigator.of(context).pop();
@@ -120,11 +117,9 @@ class EditMyAccountWidget extends StatelessWidget {
 
   void startChoosingFileToUploadAvatar(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    goToSingleMediaPickerPage(context,
-        fileTypesToPick: [
-          FilePickerFileType.image,
-        ],
-        fileSelectedCallback: (FilePickerFile filePickerFile) async {
+    goToSingleMediaPickerPage(context, fileTypesToPick: [
+      FilePickerFileType.image,
+    ], fileSelectedCallback: (FilePickerFile filePickerFile) async {
       showEditMyAccountAvatarDialog(context, filePickerFile,
           (filePickerFile) async {
         Navigator.of(context).pop();
@@ -250,24 +245,21 @@ class EditMyAccountWidget extends StatelessWidget {
   Widget buildDisplayNameField(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
     var label = tr("app.account.my.edit.field.display_name.label");
-    var textEditingController =
-        editMyAccountBloc.displayNameField.textEditingController;
-    return buildTextField(textEditingController, label);
+    return buildTextField(editMyAccountBloc.displayNameField, label);
   }
 
   Widget buildNoteField(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
     var label = tr("app.account.my.edit.field.note.label");
-    var textEditingController =
-        editMyAccountBloc.noteField.textEditingController;
-    return buildTextField(textEditingController, label);
+    return buildTextField(editMyAccountBloc.noteField, label);
   }
 
   Widget buildTextField(
-      TextEditingController textEditingController, String label) {
+      IFormStringFieldBloc formStringFieldBloc, String label) {
     return FediFormEditTextRow(
+      autocorrect: true,
       label: label,
-      textEditingController: textEditingController,
+      formStringFieldBloc: formStringFieldBloc,
       hint: label,
     );
   }
@@ -294,15 +286,14 @@ class EditMyAccountWidget extends StatelessWidget {
           });
 
   Widget buildCustomFields(
-          BuildContext context,
-          IEditMyAccountBloc editMyAccountBloc) {
+      BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
     var customFieldsGroupBloc = editMyAccountBloc.customFieldsGroupBloc;
-    return StreamBuilder<List<IFormLinkPairFieldBloc>>(
-      stream: customFieldsGroupBloc.fieldsStream,
-      initialData: customFieldsGroupBloc.fields,
-      builder: (context, snapshot) {
-        var fields = snapshot.data;
-        return Column(
+    return StreamBuilder<List<IFormLinkPairFieldGroupBloc>>(
+        stream: customFieldsGroupBloc.itemsStream,
+        initialData: customFieldsGroupBloc.items,
+        builder: (context, snapshot) {
+          var fields = snapshot.data;
+          return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               ...fields.asMap().entries.map(
@@ -310,8 +301,10 @@ class EditMyAccountWidget extends StatelessWidget {
                         context, customFieldsGroupBloc, entry.value, entry.key),
                   ),
               StreamBuilder<bool>(
-                  stream: customFieldsGroupBloc.isMaximumCustomFieldsCountReachedStream,
-                  initialData: customFieldsGroupBloc.isMaximumCustomFieldsCountReached,
+                  stream:
+                      customFieldsGroupBloc.isMaximumFieldsCountReachedStream,
+                  initialData:
+                      customFieldsGroupBloc.isMaximumFieldsCountReached,
                   builder: (context, snapshot) {
                     var isMaximumCustomFieldsCountReached = snapshot.data;
 
@@ -322,7 +315,7 @@ class EditMyAccountWidget extends StatelessWidget {
                           tr("app.account.my.edit.field.custom_field.action"
                               ".add_new"),
                           onPressed: () {
-                            customFieldsGroupBloc.addNewEmptyCustomField();
+                            customFieldsGroupBloc.addNewEmptyField();
                           },
                         ),
                       );
@@ -332,14 +325,13 @@ class EditMyAccountWidget extends StatelessWidget {
                   }),
             ],
           );
-      }
-    );
+        });
   }
 
   Widget buildCustomField(
       BuildContext context,
-      IFormFieldGroupBloc<IFormLinkPairFieldBloc> fieldGroupBloc,
-      IFormLinkPairFieldBloc customField,
+      IFormOneTypeGroupBloc<IFormLinkPairFieldGroupBloc> fieldGroupBloc,
+      IFormLinkPairFieldGroupBloc customField,
       int index) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -352,15 +344,12 @@ class EditMyAccountWidget extends StatelessWidget {
                 ".label"),
             valueHint: tr("app.account.my.edit.field.custom_field.value"
                 ".label"),
-            nameTextEditingController:
-                customField.keyField.textEditingController,
-            valueTextEditingController:
-                customField.valueField.textEditingController,
+            nameStringFieldBloc: customField.keyField,
+            valueStringFieldBloc: customField.valueField,
             ending: FediIconButton(
               FediIcons.close,
               onPressed: () {
-                fieldGroupBloc
-                    .removeCustomField(customField);
+                fieldGroupBloc.removeField(customField);
               },
             ),
           ),

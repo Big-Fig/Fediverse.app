@@ -39,10 +39,10 @@ class EditMyAccountPage extends StatelessWidget {
 
   Widget buildSaveAppBarAction(IEditMyAccountBloc editMyAccountBloc) =>
       StreamBuilder<bool>(
-          stream: editMyAccountBloc.isSomethingChangedStream,
-          initialData: editMyAccountBloc.isSomethingChanged,
+          stream: editMyAccountBloc.isReadyToSubmitStream,
+          initialData: editMyAccountBloc.isReadyToSubmit,
           builder: (context, snapshot) {
-            var isSomethingChanged = snapshot.data;
+            var isReadyToSubmit = snapshot.data;
 
             return PleromaAsyncOperationButtonBuilderWidget(
               showProgressDialog: true,
@@ -68,13 +68,13 @@ class EditMyAccountPage extends StatelessWidget {
                   child: Text(
                     tr("app.account.my.edit.action.save"),
                     style: TextStyle(
-                      color: isSomethingChanged
+                      color: isReadyToSubmit
                           ? FediColors.primaryColor
                           : FediColors.grey,
                       fontSize: 16.0,
                     ),
                   ),
-                  onPressed: isSomethingChanged ? onPressed : null,
+                  onPressed: isReadyToSubmit ? onPressed : null,
                 );
               },
             );

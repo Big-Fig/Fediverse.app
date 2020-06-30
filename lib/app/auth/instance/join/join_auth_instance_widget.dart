@@ -143,18 +143,20 @@ class JoinAuthInstanceWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: FediFilledEditTextField(
-          autocorrect: false,
-          expanded: false,
-          hintText: tr("app.auth.instance.join"
-              ".field.host.hint"),
-          onSubmitted: (String value) {
-            logInToInstance(context);
-          },
-          textInputAction: TextInputAction.go,
-          autofocus: false,
-          maxLines: 1,
-          textEditingController: joinInstanceBloc.hostTextController,
-          keyboardType: TextInputType.url),
+        autocorrect: false,
+        expanded: false,
+        hintText: tr("app.auth.instance.join"
+            ".field.host.hint"),
+        onSubmitted: (String value) {
+          logInToInstance(context);
+        },
+        textInputAction: TextInputAction.go,
+        autofocus: false,
+        maxLines: 1,
+        textEditingController: joinInstanceBloc.hostTextController,
+        keyboardType: TextInputType.url,
+        errorText: null,
+      ),
     );
   }
 

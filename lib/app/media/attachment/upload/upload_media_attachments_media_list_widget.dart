@@ -1,8 +1,6 @@
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_media_item_widget.dart';
-import 'package:fedi/file/picker/file_picker_model.dart';
-import 'package:fedi/file/picker/single/single_file_picker_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -40,10 +38,10 @@ class UploadMediaAttachmentsMediaListWidget extends StatelessWidget {
           }
 
           return Container(
-          height: 90.0,
+            height: 90.0,
             child: ListView(
-              scrollDirection: Axis.horizontal,
-//              shrinkWrap: true,
+              scrollDirection:
+                  Axis.horizontal, //              shrinkWrap: true,
               children: [
                 ...mediaItemBlocs.map((mediaItemBloc) {
                   // don't dispose media bloc here
@@ -57,8 +55,7 @@ class UploadMediaAttachmentsMediaListWidget extends StatelessWidget {
                       ),
                     ),
                   );
-                }).toList(),
-//                _buildGridItem(
+                }).toList(), //                _buildGridItem(
 //                  buildAddTile(context, mediaAttachmentsCollectionBloc),
 //                )
               ],
@@ -76,45 +73,6 @@ class UploadMediaAttachmentsMediaListWidget extends StatelessWidget {
         child: child,
       ),
     );
-  }
-
-//  Widget buildAddTile(
-//      BuildContext context, IUploadMediaAttachmentsCollectionBloc bloc) {
-//    return GestureDetector(
-//      behavior: HitTestBehavior.opaque,
-//      onTap: () {
-//        _openAttachPage(context, bloc);
-//      },
-//      child: ClipRRect(
-//        borderRadius: BorderRadius.all(Radius.circular(16.0)),
-//        child: Container(
-//          color: Colors.blue,
-//          child: Center(
-//            child: IconButton(
-//              iconSize: 30,
-//              icon: Icon(
-//                Icons.add_photo_alternate,
-//                color: Colors.white,
-//              ),
-//              onPressed: () {
-//                _openAttachPage(context, bloc);
-//              },
-//            ),
-//          ),
-//          width: 100,
-//          height: 100,
-//        ),
-//      ),
-//    );
-//  }
-
-  void _openAttachPage(
-      BuildContext context, IUploadMediaAttachmentsCollectionBloc bloc) {
-    goToSingleFilePickerPage(context,
-        fileSelectedCallback: (FilePickerFile filePickerFile) {
-      bloc.attachMedia(filePickerFile);
-      Navigator.of(context).pop();
-    }, startActiveTab: FilePickerTab.gallery);
   }
 
   const UploadMediaAttachmentsMediaListWidget();

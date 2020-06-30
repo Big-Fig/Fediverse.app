@@ -772,6 +772,13 @@
             }
           }
         },
+        "url": {
+          "error": {
+            "invalid": {
+              "desc": "Invalid URL"
+            }
+          }
+        },
         "password": {
           "error": {
             "not_match": {

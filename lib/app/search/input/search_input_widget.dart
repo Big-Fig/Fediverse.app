@@ -31,7 +31,7 @@ class SearchInputWidget extends StatelessWidget {
             onSubmitted: (_) {
               searchInputBloc.performSearch();
             },
-            maxLines: 1,
+            maxLines: 1, errorText: null,
           ),
         ),
         SizedBox(width: 8,),

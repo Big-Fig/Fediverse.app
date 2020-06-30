@@ -1,13 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_bloc.dart';
-import 'package:fedi/app/form/form_field_error_model.dart';
-import 'package:fedi/app/form/form_model.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
-import 'package:fedi/app/ui/edit_text/fedi_transparent_edit_text_field.dart';
+import 'package:fedi/app/ui/form/fedi_form_edit_text_row.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:fedi/error/error_data_model.dart';
 import 'package:fedi/pleroma/account/public/pleroma_account_public_model.dart';
+import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -35,49 +34,19 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
 
   Widget buildTextField({
     @required BuildContext context,
-    @required FormTextField formTextField,
+    @required IFormStringFieldBloc formStringFieldBloc,
     @required String hintText,
     @required String labelText,
     @required bool autocorrect,
   }) {
     return Padding(
-      padding: EdgeInsets.all(10.0),
-      child: StreamBuilder<FormFieldError>(
-          stream: formTextField.errorStream,
-          initialData: formTextField.error,
-          builder: (context, snapshot) {
-            var error = snapshot.data;
-
-            // TODO: go to next focus node
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  labelText,
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                ),
-                FediTransparentEditTextField(
-                  autocorrect: autocorrect,
-                  onSubmitted: null,
-                  textInputAction: TextInputAction.done,
-                  expanded: false,
-                  hintText: hintText,
-                  maxLines: 1,
-                  textEditingController: formTextField.textEditingController,
-                  autofocus: false,
-                  displayUnderlineBorder: true,
-                ),
-                if (error != null)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4.0),
-                    child: Text(
-                      error?.createErrorDescription(context),
-                      style: TextStyle(color: Colors.red),
-                    ),
-                  ),
-              ],
-            );
-          }),
+      padding: EdgeInsets.symmetric(horizontal:10.0),
+      child: FediFormEditTextRow(
+        formStringFieldBloc: formStringFieldBloc,
+        hint: hintText,
+        label: labelText,
+        autocorrect: autocorrect,
+      ),
     );
   }
 
@@ -85,7 +54,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
           BuildContext context, IRegisterAuthInstanceBloc bloc) =>
       buildTextField(
         context: context,
-        formTextField: bloc.usernameField,
+        formStringFieldBloc: bloc.usernameFieldBloc,
         labelText: tr("app.auth.instance.register.field.username.label"),
         hintText: tr("app.auth.instance.register.field.username.hint"),
         autocorrect: false,
@@ -95,7 +64,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
           BuildContext context, IRegisterAuthInstanceBloc bloc) =>
       buildTextField(
         context: context,
-        formTextField: bloc.emailField,
+        formStringFieldBloc: bloc.emailFieldBloc,
         labelText: tr("app.auth.instance.register.field.email.label"),
         hintText: tr("app.auth.instance.register.field.email.hint"),
         autocorrect: false,
@@ -105,7 +74,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
           BuildContext context, IRegisterAuthInstanceBloc bloc) =>
       buildTextField(
         context: context,
-        formTextField: bloc.passwordField,
+        formStringFieldBloc: bloc.passwordFieldBloc,
         labelText: tr("app.auth.instance.register.field.password.label"),
         hintText: tr("app.auth.instance.register.field.password.hint"),
         autocorrect: false,
@@ -115,7 +84,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
           BuildContext context, IRegisterAuthInstanceBloc bloc) =>
       buildTextField(
         context: context,
-        formTextField: bloc.confirmPasswordField,
+        formStringFieldBloc: bloc.confirmPasswordFieldBloc,
         labelText:
             tr("app.auth.instance.register.field.confirm_password.label"),
         hintText: tr("app.auth.instance.register.field.confirm_password.hint"),
@@ -127,8 +96,8 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: StreamBuilder<bool>(
-        stream: bloc.readyToSubmitStream,
-        initialData: bloc.readyToSubmit,
+        stream: bloc.isReadyToSubmitStream,
+        initialData: bloc.isReadyToSubmit,
         builder: (context, snapshot) {
           var readyToSubmit = snapshot.data;
           Null Function() onPressed;
@@ -147,9 +116,9 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
   }
 
   Future submit(BuildContext context, IRegisterAuthInstanceBloc bloc) async {
-    final validUsername = bloc.usernameField.value;
-    final validEmail = bloc.emailField.value;
-    final validPassword = bloc.passwordField.value;
+    final validUsername = bloc.usernameFieldBloc.currentValue;
+    final validEmail = bloc.emailFieldBloc.currentValue;
+    final validPassword = bloc.passwordFieldBloc.currentValue;
 
     await doAsyncOperationWithDialog(
         context: context,

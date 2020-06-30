@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 class FediFilledEditTextField extends StatelessWidget {
   final String hintText;
+  final String errorText;
   final bool expanded;
   final bool autofocus;
   final TextEditingController textEditingController;
@@ -19,6 +20,7 @@ class FediFilledEditTextField extends StatelessWidget {
   FediFilledEditTextField({
     @required this.textEditingController,
     @required this.hintText,
+    @required this.errorText,
     @required this.maxLines,
     @required this.onSubmitted,
     @required this.textInputAction,
@@ -54,6 +56,7 @@ class FediFilledEditTextField extends StatelessWidget {
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: hintText,
+                  errorText: errorText,
                   hintStyle: TextStyle(
                       fontSize: 16.0, color: FediColors.grey, height: 1.5),
                 ),

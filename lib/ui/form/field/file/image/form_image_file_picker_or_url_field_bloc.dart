@@ -1,5 +1,5 @@
 import 'package:fedi/media/media_image_source_model.dart';
-import 'package:fedi/ui/form/form_file_picker_or_url_field_bloc.dart';
+import 'package:fedi/ui/form/field/file/form_file_picker_or_url_field_bloc.dart';
 
 abstract class IFormImageFilePickerOrUrlFieldBloc extends IFormFilePickerOrUrlFieldBloc {
   Stream<MediaImageSource> get imageSourceStream;
