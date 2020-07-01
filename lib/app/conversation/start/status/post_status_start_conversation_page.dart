@@ -6,7 +6,7 @@ import 'package:fedi/app/conversation/conversation_page.dart';
 import 'package:fedi/app/conversation/repository/conversation_repository.dart';
 import 'package:fedi/app/conversation/start/status/post_status_start_conversation_bloc_impl.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
-import 'package:fedi/app/status/post/post_status_widget.dart';
+import 'package:fedi/app/status/post/post_status_compose_widget.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -23,11 +23,11 @@ class PostStatusStartConversationPage extends StatelessWidget {
       appBar: FediSubPageTitleAppBar(
         title: tr("app.conversation.start.title"),
       ),
-      body: const PostStatusWidget(
-        showVisibilityAction: false,
-        displayMentions: true,
+      body: PostStatusComposeWidget(
         goBackOnSuccess: true,
-        expanded: true, maxLines: null,
+        expanded: true,
+        maxLines: null,
+        displayAccountAvatar: false,
       ),
     );
   }

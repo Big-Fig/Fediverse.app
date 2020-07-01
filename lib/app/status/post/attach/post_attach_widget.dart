@@ -10,6 +10,9 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/widgets.dart';
 
 class PostAttachWidget extends StatelessWidget {
+
+  PostAttachWidget();
+
   @override
   Widget build(BuildContext context) {
     var postStatusBloc = IPostStatusBloc.of(context, listen: false);
@@ -164,4 +167,6 @@ class PostAttachWidget extends StatelessWidget {
       ),
     );
   }
+
+
 }

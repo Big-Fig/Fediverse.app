@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/status/post/new/new_post_status_bloc_impl.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
-import 'package:fedi/app/status/post/post_status_widget.dart';
+import 'package:fedi/app/status/post/post_status_compose_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_dismiss_icon_button.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -18,10 +18,11 @@ class NewPostStatusPage extends StatelessWidget {
         leading: const FediDismissIconButton(),
       ),
       body: SafeArea(
-        child: const PostStatusWidget(
+        child: const PostStatusComposeWidget(
           goBackOnSuccess: true,
-          displayMentions: true,
-          expanded: true, maxLines: null,
+          expanded: true,
+          maxLines: null,
+          displayAccountAvatar: false,
         ),
       ),
     );
