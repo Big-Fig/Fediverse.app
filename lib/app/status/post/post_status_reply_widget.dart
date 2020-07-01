@@ -28,7 +28,7 @@ class PostStatusReplyWidget extends StatelessWidget {
                     value.mediaAttachmentGridBloc,
                 child: UploadMediaAttachmentsWidget()),
           ),
-          buildMessageWidget(),
+          buildInputWidget(),
           PostAttachWidget()
         ],
       ),
@@ -36,7 +36,7 @@ class PostStatusReplyWidget extends StatelessWidget {
   }
 
 
-  Widget buildMessageWidget() => Flexible(
+  Widget buildInputWidget() => Flexible(
         child: PostStatusReplyInputWidget(
           expanded: false,
           hintText: hintText,
