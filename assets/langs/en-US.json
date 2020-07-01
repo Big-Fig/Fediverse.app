@@ -710,6 +710,7 @@
   },
   "file": {
     "picker": {
+      "empty" : "You don't have any media",
       "single": {
         "title": "Choose media",
         "video": {

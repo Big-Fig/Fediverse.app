@@ -42,6 +42,11 @@ class SingleMediaPickerPage extends StatelessWidget {
         grantedBuilder: (BuildContext context) {
           return AsyncInitLoadingWidget(
             loadingFinishedBuilder: (BuildContext context) {
+
+              if(fileGalleryBloc.folders?.isNotEmpty != true) {
+                return Center(child: Text("file.picker.empty".tr()));
+              }
+
               return StreamBuilder<AssetPathEntity>(
                   stream: fileGalleryBloc.selectedFolderStream,
                   initialData: fileGalleryBloc.selectedFolder,

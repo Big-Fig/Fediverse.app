@@ -28,27 +28,17 @@ class AccountListItemWidget extends StatelessWidget {
       },
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16.0),
-        child: Column(
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Row(
-              children: <Widget>[
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: <Widget>[
-                    AccountAvatarWidget(
-                      imageSize: 36,
-                      progressSize: 24,
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    AccountAcctWidget()
-                  ],
-                ),
-                const Spacer(),
-                // NO MORE BUTTON
-              ],
+            AccountAvatarWidget(
+              imageSize: 36,
+              progressSize: 24,
             ),
+            const SizedBox(
+              width: 8,
+            ),
+            Flexible(child: AccountAcctWidget())
           ],
         ),
       ),

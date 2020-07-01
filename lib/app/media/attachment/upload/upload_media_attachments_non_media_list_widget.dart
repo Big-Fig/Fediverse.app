@@ -25,8 +25,8 @@ class UploadMediaAttachmentsNonMediaListWidget extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal:16.0, vertical: 8.0),
             child: Container(
               width: double.infinity,
-              child: ListView(
-                shrinkWrap: true,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   ...mediaItemBlocs.map((mediaItemBloc) {
                     return Provider.value(
