@@ -21,6 +21,7 @@ import 'package:fedi/app/home/home_bloc.dart';
 import 'package:fedi/app/home/home_bloc_impl.dart';
 import 'package:fedi/app/home/home_model.dart';
 import 'package:fedi/app/home/home_page.dart';
+import 'package:fedi/app/init/app_init_page.dart';
 import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_preferences_model.dart';
 import 'package:fedi/app/push/subscription/local_preferences/push_subscription_local_preferences_model.dart';
 import 'package:fedi/app/splash/app_splash_widget.dart';
@@ -48,11 +49,10 @@ import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:uni_links/uni_links.dart';
-import 'package:overlay_support/overlay_support.dart';
-import 'package:fedi/app/init/app_init_page.dart';
 
 var _logger = Logger("main.dart");
 
@@ -142,24 +142,28 @@ void _handleLoginOnAndroidWithoutChrome(
   _logger.finest(() => "initialUri = $initialUri "
       "lastLaunchedHost = $lastLaunchedHost");
   if (lastLaunchedHost != null) {
+    var currentInstanceBloc = appContextBloc.get<ICurrentAuthInstanceBloc>();
     var authHostBloc = AuthHostBloc(
         instanceBaseUrl: Uri.parse(lastLaunchedHost),
         preferencesService: appContextBloc.get(),
         connectionService: appContextBloc.get(),
-        currentInstanceBloc: appContextBloc.get(),
+        currentInstanceBloc: currentInstanceBloc,
         pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc:
             pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc);
     await authHostBloc.performAsyncInit();
     String authCode = IPleromaOAuthService.extractAuthCodeFromUri(initialUri);
 
-    await authHostBloc.loginWithAuthCode(authCode);
+    var authInstance = await authHostBloc.loginWithAuthCode(authCode);
+
+    if (authInstance != null) {
+      await currentInstanceBloc.changeCurrentInstance(authInstance);
+    }
   }
 }
 
 CurrentAuthInstanceContextBloc currentInstanceContextBloc;
 
 void showSplashPage(AppContextBloc appContextBloc) {
-
   var easyLocalization = _buildEasyLocalization(
       child: MyApp(
           child: Provider<IAppContextBloc>.value(
