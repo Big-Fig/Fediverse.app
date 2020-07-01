@@ -102,7 +102,7 @@ class _UploadMediaAttachmentsNonMediaItemWidgetState
                     height: 24,
                     color: FediColors.darkGrey.withOpacity(0.8),
                     child: Icon(
-                      FediIcons.close,
+                      FediIcons.remove,
                       color: FediColors.white,
                       size: 14.0,
                     ),

@@ -21,17 +21,23 @@ class UploadMediaAttachmentsNonMediaListWidget extends StatelessWidget {
             return SizedBox.shrink();
           }
 
-          return Container(
-            width: double.infinity,
-            child: ListView(
-              shrinkWrap: true,
-              children: [
-                ...mediaItemBlocs.map((mediaItemBloc) {
-                  return Provider.value(
-                      value: mediaItemBloc,
-                      child: UploadMediaAttachmentsNonMediaItemWidget());
-                }).toList(),
-              ],
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal:16.0, vertical: 8.0),
+            child: Container(
+              width: double.infinity,
+              child: ListView(
+                shrinkWrap: true,
+                children: [
+                  ...mediaItemBlocs.map((mediaItemBloc) {
+                    return Provider.value(
+                        value: mediaItemBloc,
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom:8.0),
+                          child: UploadMediaAttachmentsNonMediaItemWidget(),
+                        ));
+                  }).toList(),
+                ],
+              ),
             ),
           );
         });

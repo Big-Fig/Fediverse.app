@@ -22,7 +22,12 @@ class UploadMediaAttachmentsMediaListWidget extends StatelessWidget {
 
           if (mediaItemBlocs.length == 1) {
             return Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.only(
+                  left:16.0,
+                  right:16.0,
+                  top: 8.0,
+                  bottom: 16.0,
+              ),
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                   maxWidth: double.infinity,

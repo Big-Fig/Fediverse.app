@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/status/emoji_reaction/status_emoji_reaction_picker_widget.dart';
-import 'package:fedi/app/status/post/action/post_status_attach_gallery_action_widget.dart';
+import 'package:fedi/app/status/post/action/post_status_attach_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_post_icon_action_widget.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/ui/edit_text/fedi_filled_edit_text_field.dart';
@@ -11,12 +11,12 @@ import 'package:fedi/dialog/alert/simple_alert_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class FilledMessagePostStatusWidget extends StatelessWidget {
+class PostStatusReplyInputWidget extends StatelessWidget {
   final bool expanded;
   final String hintText;
   final int maxLines;
 
-  FilledMessagePostStatusWidget({
+  PostStatusReplyInputWidget({
     @required this.expanded,
     @required this.maxLines,
     this.hintText,
@@ -28,12 +28,7 @@ class FilledMessagePostStatusWidget extends StatelessWidget {
 
     return Row(
       children: [
-        PostStatusAttachGalleryActionWidget(
-          iconSize: FediSizes.filledEditTextIconSize,
-        ),
-        const SizedBox(
-          width: 8,
-        ),
+        PostStatusAttachActionWidget(),
         Flexible(
           child: FediFilledEditTextField(
             focusNode: postStatusBloc.focusNode,

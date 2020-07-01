@@ -5,12 +5,12 @@ import 'package:fedi/dialog/alert/simple_alert_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class TransparentMessagePostStatusWidget extends StatelessWidget {
+class PostStatusComposeInputWidget extends StatelessWidget {
   final bool expanded;
   final int maxLines;
   final String hintText;
 
-  TransparentMessagePostStatusWidget({
+  PostStatusComposeInputWidget({
     @required this.expanded,
     @required this.maxLines,
     this.hintText,
