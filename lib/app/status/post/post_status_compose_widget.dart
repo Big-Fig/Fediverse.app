@@ -33,17 +33,19 @@ class PostStatusComposeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
-//child: ListView(
+      padding: const EdgeInsets.all(8.0), //child: ListView(
 //  shrinkWrap: true,
       child: Column(
-      mainAxisSize: expanded ? MainAxisSize.max : MainAxisSize.min,
+        mainAxisSize: expanded ? MainAxisSize.max : MainAxisSize.min,
         children: <Widget>[
           displayAccountAvatar
               ? Row(
                   children: <Widget>[buildAvatar(), buildInputWidget()],
                 )
               : buildInputWidget(),
+          SizedBox(
+            height: 16.0,
+          ),
           Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
             child: ProxyProvider<IPostStatusBloc,
