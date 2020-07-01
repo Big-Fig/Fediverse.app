@@ -17,11 +17,12 @@ abstract class IPostStatusBloc implements Disposable {
   Stream<List<String>> get mentionedAcctsStream;
 
   TextEditingController get inputTextController;
+
   FocusNode get focusNode;
 
   bool get isPossibleToChangeVisibility;
 
-  IUploadMediaAttachmentsCollectionBloc get mediaAttachmentGridBloc;
+  IUploadMediaAttachmentsCollectionBloc get mediaAttachmentsBloc;
 
   PleromaVisibility get visibility;
 
@@ -31,12 +32,11 @@ abstract class IPostStatusBloc implements Disposable {
 
   Stream<bool> get isNsfwSensitiveEnabledStream;
 
-
   PostStatusSelectedAction get selectedAction;
+
   Stream<PostStatusSelectedAction> get selectedActionStream;
 
   bool get isAttachActionSelected;
-
 
   Stream<bool> get isAttachActionSelectedStream;
 

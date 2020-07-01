@@ -28,7 +28,7 @@ abstract class PostStatusBloc extends DisposableOwner
   final String inReplyToStatusRemoteId;
 
   @override
-  final IUploadMediaAttachmentsCollectionBloc mediaAttachmentGridBloc;
+  final IUploadMediaAttachmentsCollectionBloc mediaAttachmentsBloc;
 
   // ignore: close_sinks
   BehaviorSubject<String> inputTextSubject = BehaviorSubject.seeded("");
@@ -44,7 +44,7 @@ abstract class PostStatusBloc extends DisposableOwner
     int maximumMediaAttachmentCount = 8,
     PleromaVisibility initialVisibility = PleromaVisibility.PUBLIC,
     List<IAccount> initialAccountsToMention = const [],
-  }) : mediaAttachmentGridBloc = UploadMediaAttachmentsCollectionBloc(
+  }) : mediaAttachmentsBloc = UploadMediaAttachmentsCollectionBloc(
             maximumMediaAttachmentCount: maximumMediaAttachmentCount,
             pleromaMediaAttachmentService: pleromaMediaAttachmentService) {
     assert(pleromaMediaAttachmentService != null);
@@ -52,7 +52,7 @@ abstract class PostStatusBloc extends DisposableOwner
     nsfwSensitiveSubject = BehaviorSubject.seeded(false);
 
     addDisposable(streamSubscription:
-        mediaAttachmentGridBloc.mediaAttachmentBlocsStream.listen((_) {
+        mediaAttachmentsBloc.mediaAttachmentBlocsStream.listen((_) {
       _regenerateIdempotencyKey();
     }));
 
@@ -153,12 +153,12 @@ abstract class PostStatusBloc extends DisposableOwner
   @override
   bool get isReadyToPost => calculateIsReadyToPost(
       inputText: inputWithoutMentionedAcctsText,
-      mediaAttachmentBlocs: mediaAttachmentGridBloc.mediaAttachmentBlocs);
+      mediaAttachmentBlocs: mediaAttachmentsBloc.mediaAttachmentBlocs);
 
   @override
   Stream<bool> get isReadyToPostStream => Rx.combineLatest2(
       inputWithoutMentionedAcctsTextStream,
-      mediaAttachmentGridBloc.mediaAttachmentBlocsStream,
+      mediaAttachmentsBloc.mediaAttachmentBlocsStream,
       (inputWithoutMentionedAcctsText, mediaAttachmentBlocs) =>
           calculateIsReadyToPost(
               inputText: inputWithoutMentionedAcctsText,
@@ -335,7 +335,7 @@ abstract class PostStatusBloc extends DisposableOwner
   Future<bool> _postStatus() async {
     var remoteStatus = await pleromaStatusService.postStatus(
         data: PleromaPostStatus(
-            mediaIds: mediaAttachmentGridBloc.mediaAttachmentBlocs
+            mediaIds: mediaAttachmentsBloc.mediaAttachmentBlocs
                 ?.map((bloc) => bloc.pleromaMediaAttachment.id)
                 ?.toList(),
             status: inputText,
@@ -372,7 +372,7 @@ abstract class PostStatusBloc extends DisposableOwner
   Future<bool> _scheduleStatus() async {
     var scheduledStatus = await pleromaStatusService.scheduleStatus(
         data: PleromaScheduleStatus(
-            mediaIds: mediaAttachmentGridBloc.mediaAttachmentBlocs
+            mediaIds: mediaAttachmentsBloc.mediaAttachmentBlocs
                 ?.map((bloc) => bloc.pleromaMediaAttachment.id)
                 ?.toList(),
             status: inputText,
@@ -389,7 +389,7 @@ abstract class PostStatusBloc extends DisposableOwner
   void _clear() {
     focusNode.unfocus();
     inputTextController.clear();
-    mediaAttachmentGridBloc.clear();
+    mediaAttachmentsBloc.clear();
     nsfwSensitiveSubject.add(false);
     _regenerateIdempotencyKey();
     clearSchedule();

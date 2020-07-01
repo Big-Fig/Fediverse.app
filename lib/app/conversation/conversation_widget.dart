@@ -6,7 +6,7 @@ import 'package:fedi/app/conversation/status/conversation_status_list_widget.dar
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
 import 'package:fedi/app/status/pagination/list/status_pagination_list_with_new_items_bloc_impl.dart';
-import 'package:fedi/app/status/post/post_status_compose_widget.dart';
+import 'package:fedi/app/status/post/post_status_reply_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
@@ -75,12 +75,7 @@ class ConversationWidget extends StatelessWidget {
                         ),
                       ),
                       const FediUltraLightGreyDivider(),
-                      PostStatusComposeWidget(
-                        expanded: false,
-                        goBackOnSuccess: false,
-                        maxLines: 1,
-                        displayAccountAvatar: false,
-                      )
+                      PostStatusReplyWidget()
                     ],
                   ),
                 ),

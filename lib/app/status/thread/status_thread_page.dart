@@ -6,6 +6,7 @@ import 'package:fedi/app/account/acct/account_acct_widget.dart';
 import 'package:fedi/app/account/avatar/account_avatar_widget.dart';
 import 'package:fedi/app/account/details/account_details_page.dart';
 import 'package:fedi/app/account/display_name/account_display_name_widget.dart';
+import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
 import 'package:fedi/app/status/created_at/status_created_at_widget.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/post/thread/thread_post_status_bloc_impl.dart';
@@ -132,6 +133,10 @@ void goToStatusThreadPage(BuildContext context, IStatus status) {
                 create: (context) => ThreadPostStatusBloc.createFromContext(
                     context,
                     inReplyToStatus: status),
-                child: StatusThreadPage()))),
+                child: ProxyProvider<IPostStatusBloc,
+                        IUploadMediaAttachmentsCollectionBloc>(
+                    update: (context, value, previous) =>
+                        value.mediaAttachmentsBloc,
+                    child: StatusThreadPage())))),
   );
 }

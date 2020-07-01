@@ -7,7 +7,7 @@ import 'package:fedi/app/status/post/action/post_status_nsfw_action_widget.dart'
 import 'package:fedi/app/status/post/action/post_status_post_text_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_schedule_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_visibility_action_widget.dart';
-import 'package:fedi/app/status/post/attach/post_attach_widget.dart';
+import 'package:fedi/app/status/post/attach/post_status_attach_widget.dart';
 import 'package:fedi/app/status/post/input/post_status_compose_input_widget.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/ui/divider/fedi_light_grey_divider.dart';
@@ -49,12 +49,12 @@ class PostStatusComposeWidget extends StatelessWidget {
             child: ProxyProvider<IPostStatusBloc,
                     IUploadMediaAttachmentsCollectionBloc>(
                 update: (context, value, previous) =>
-                    value.mediaAttachmentGridBloc,
+                    value.mediaAttachmentsBloc,
                 child: UploadMediaAttachmentsWidget()),
           ),
           if (!displayAccountAvatar && expanded) FediLightGreyDivider(),
           buildActions(),
-          PostAttachWidget()
+          PostStatusAttachWidget()
         ],
       ),
     );

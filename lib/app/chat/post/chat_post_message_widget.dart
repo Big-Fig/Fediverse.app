@@ -1,4 +1,5 @@
 import 'package:fedi/app/chat/post/action/chat_post_message_post_action_widget.dart';
+import 'package:fedi/app/chat/post/attach/chat_post_message_attach_widget.dart';
 import 'package:fedi/app/chat/post/chat_post_message_bloc.dart';
 import 'package:fedi/app/chat/post/content/chat_post_message_content_widget.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
@@ -20,7 +21,7 @@ class ChatPostMessageWidget extends StatelessWidget {
           ProxyProvider<IChatPostMessageBloc,
                   IUploadMediaAttachmentsCollectionBloc>(
               update: (context, value, previous) =>
-                  value.mediaAttachmentsCollectionBloc,
+                  value.mediaAttachmentsBloc,
               child:  UploadMediaAttachmentsWidget()),
           Row(
             children: [
@@ -31,6 +32,7 @@ class ChatPostMessageWidget extends StatelessWidget {
               const ChatPostMessagePostActionWidget()
             ],
           ),
+          ChatPostMessageAttachWidget()
         ],
       ),
     );
