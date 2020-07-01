@@ -22,32 +22,38 @@ class JoinAuthInstanceWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      child: Column(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: buildLogoWidget(),
-          ),
-          SizedBox(
-            height: 60,
-          ),
-          buildHostTextField(context),
-          Spacer(),
-          buildActionButtons(context),
-          Spacer(),
-          buildOrText(context),
-          Spacer(),
-          buildJoinFediDescText(context),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: buildJoinFediButton(context),
-          ),
-          Spacer(
-            flex: 3,
-          ),
-          buildTermsOfServiceButton(context),
-        ],
+    return GestureDetector(
+        onTap: () {
+          FocusManager.instance.primaryFocus.unfocus();
+        },
+      behavior: HitTestBehavior.translucent,
+      child: Form(
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: buildLogoWidget(),
+            ),
+            SizedBox(
+              height: 60,
+            ),
+            buildHostTextField(context),
+            Spacer(),
+            buildActionButtons(context),
+            Spacer(),
+            buildOrText(context),
+            Spacer(),
+            buildJoinFediDescText(context),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: buildJoinFediButton(context),
+            ),
+            Spacer(
+              flex: 3,
+            ),
+            buildTermsOfServiceButton(context),
+          ],
+        ),
       ),
     );
   }
