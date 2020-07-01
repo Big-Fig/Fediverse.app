@@ -68,8 +68,8 @@ class ConversationStatusListWidget extends StatusPaginationListBaseWidget {
     return ListView.builder(
       itemCount: items.length,
       itemBuilder: (BuildContext context, int index) {
-        var nextMessage;
-        var previousMessage;
+        IStatus nextMessage;
+        IStatus previousMessage;
         if (index > 0) {
           previousMessage = items[index - 1];
         }
@@ -98,7 +98,7 @@ class ConversationStatusListWidget extends StatusPaginationListBaseWidget {
           isFirstInDayGroup =
               !DateUtils.isSameDay(currentCreatedAt, previousCreatedAt);
           var isSameAccount = currentMessage.account.remoteId ==
-              previousMessage.myAccount.remoteId;
+              previousMessage.account.remoteId;
           isFirstInMinuteGroup =
               !(DateUtils.isSameMinute(currentCreatedAt, previousCreatedAt) &&
                   isSameAccount);
@@ -108,7 +108,7 @@ class ConversationStatusListWidget extends StatusPaginationListBaseWidget {
         }
         if (nextCreatedAt != null) {
           var isSameAccount =
-              currentMessage.account.remoteId == nextMessage.myAccount.remoteId;
+              currentMessage.account.remoteId == nextMessage.account.remoteId;
           isLastInDayGroup =
               !DateUtils.isSameDay(currentCreatedAt, nextCreatedAt);
           isLastInMinuteGroup =
