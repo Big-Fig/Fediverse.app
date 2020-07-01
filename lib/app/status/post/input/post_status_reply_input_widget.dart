@@ -1,7 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/status/emoji_reaction/status_emoji_reaction_picker_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_attach_action_widget.dart';
+import 'package:fedi/app/status/post/action/post_status_emoji_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_post_icon_action_widget.dart';
+import 'package:fedi/app/status/post/action/post_status_visibility_action_widget.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/ui/edit_text/fedi_filled_edit_text_field.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
@@ -28,7 +30,17 @@ class PostStatusReplyInputWidget extends StatelessWidget {
 
     return Row(
       children: [
-        PostStatusAttachActionWidget(),
+        StreamBuilder<String>(
+            stream: postStatusBloc.inputWithoutMentionedAcctsTextStream,
+            initialData: postStatusBloc.inputWithoutMentionedAcctsText,
+            builder: (context, snapshot) {
+              var inputWithoutMentionedAcctsText = snapshot.data;
+              if (inputWithoutMentionedAcctsText?.trim()?.isNotEmpty == true) {
+                return PostStatusEmojiActionWidget();
+              } else {
+                return PostStatusAttachActionWidget();
+              }
+            }),
         Flexible(
           child: FediFilledEditTextField(
             focusNode: postStatusBloc.focusNode,
@@ -48,7 +60,8 @@ class PostStatusReplyInputWidget extends StatelessWidget {
                     .show(context);
               }
             },
-            ending: buildEmojiPicker(context, postStatusBloc), errorText: null,
+            ending: null,
+            errorText: null,
           ),
         ),
         const SizedBox(
@@ -62,20 +75,4 @@ class PostStatusReplyInputWidget extends StatelessWidget {
     );
   }
 
-  IconButton buildEmojiPicker(
-      BuildContext context, IPostStatusBloc postStatusBloc) {
-    return IconButton(
-      icon: Icon(
-        FediIcons.emoji,
-        size: FediSizes.filledEditTextIconSize,
-        color: FediColors.darkGrey,
-      ),
-      onPressed: () {
-        showEmojiPickerModalPopup(context,
-            emojiReactionSelectedCallback: (String emojiName, String emoji) {
-          postStatusBloc.appendText("$emoji");
-        });
-      },
-    );
-  }
 }
