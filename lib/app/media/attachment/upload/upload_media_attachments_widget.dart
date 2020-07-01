@@ -6,15 +6,13 @@ import 'package:flutter/material.dart';
 class UploadMediaAttachmentsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return  ConstrainedBox(
-      constraints: BoxConstraints(maxHeight: 100),
-      child: ListView(
+    return  Column(
+//    return  ListView(
 //        shrinkWrap: true,
-        children: [
-          UploadMediaAttachmentsMediaListWidget(),
-          UploadMediaAttachmentsNonMediaListWidget(),
-        ],
-      ),
+      children: [
+        UploadMediaAttachmentsMediaListWidget(),
+        UploadMediaAttachmentsNonMediaListWidget(),
+      ],
     );
   }
 }
