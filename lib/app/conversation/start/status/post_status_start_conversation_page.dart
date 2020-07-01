@@ -5,6 +5,7 @@ import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/conversation/conversation_page.dart';
 import 'package:fedi/app/conversation/repository/conversation_repository.dart';
 import 'package:fedi/app/conversation/start/status/post_status_start_conversation_bloc_impl.dart';
+import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/post/post_status_compose_widget.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
@@ -15,6 +16,7 @@ import 'package:fedi/pleroma/conversation/pleroma_conversation_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:moor/moor.dart';
+import 'package:provider/provider.dart';
 
 class PostStatusStartConversationPage extends StatelessWidget {
   @override
@@ -91,7 +93,11 @@ void goToPostStatusStartConversationPage(BuildContext context,
                   PostStatusStartConversationBloc.createFromContext(context,
                       conversationAccountsWithoutMe:
                           conversationAccountsWithoutMe),
-              child: PostStatusStartConversationPage())),
+              child: ProxyProvider<IPostStatusBloc,
+                      IUploadMediaAttachmentsCollectionBloc>(
+                  update: (context, value, previous) =>
+                      value.mediaAttachmentsBloc,
+                  child: PostStatusStartConversationPage()))),
     );
   }
 }

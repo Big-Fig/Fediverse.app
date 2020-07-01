@@ -22,22 +22,24 @@ class ChatPostMessageBloc extends DisposableOwner
   final String chatRemoteId;
 
   @override
-  final IUploadMediaAttachmentsCollectionBloc mediaAttachmentsCollectionBloc;
+  final IUploadMediaAttachmentsCollectionBloc mediaAttachmentsBloc;
 
   ChatPostMessageBloc({
     @required this.pleromaChatService,
     @required this.chatMessageRepository,
     @required this.chatRemoteId,
     @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
-  }) : mediaAttachmentsCollectionBloc = UploadMediaAttachmentsCollectionBloc(
+  }) : mediaAttachmentsBloc = UploadMediaAttachmentsCollectionBloc(
             maximumMediaAttachmentCount: 1,
             pleromaMediaAttachmentService: pleromaMediaAttachmentService) {
     assert(pleromaMediaAttachmentService != null);
-    addDisposable(disposable: mediaAttachmentsCollectionBloc);
+    addDisposable(disposable: mediaAttachmentsBloc);
 
     addDisposable(subject: inputTextSubject);
 
     addDisposable(textEditingController: inputTextController);
+
+    addDisposable(subject: isAttachActionSubject);
 
     var editTextListener = () {
       onInputTextChanged();
@@ -52,12 +54,13 @@ class ChatPostMessageBloc extends DisposableOwner
   @override
   bool get isReadyToPost => calculateIsReadyToPost(
       inputText: inputText,
-      mediaAttachmentBlocs: mediaAttachmentsCollectionBloc.mediaAttachmentBlocs);
+      mediaAttachmentBlocs:
+          mediaAttachmentsBloc.mediaAttachmentBlocs);
 
   @override
   Stream<bool> get isReadyToPostStream => Rx.combineLatest2(
       inputTextStream,
-      mediaAttachmentsCollectionBloc.mediaAttachmentBlocsStream,
+      mediaAttachmentsBloc.mediaAttachmentBlocsStream,
       (inputWithoutMentionedAcctsText, mediaAttachmentBlocs) =>
           calculateIsReadyToPost(
               inputText: inputWithoutMentionedAcctsText,
@@ -87,7 +90,8 @@ class ChatPostMessageBloc extends DisposableOwner
   Future<bool> postMessage() async {
     bool success;
 
-    var mediaAttachmentBlocs = mediaAttachmentsCollectionBloc.mediaAttachmentBlocs;
+    var mediaAttachmentBlocs =
+        mediaAttachmentsBloc.mediaAttachmentBlocs;
     var mediaId;
     if (mediaAttachmentBlocs?.isNotEmpty == true) {
       mediaId = mediaAttachmentBlocs.first.pleromaMediaAttachment.id;
@@ -121,7 +125,7 @@ class ChatPostMessageBloc extends DisposableOwner
 
   void _clear() {
     inputTextController.clear();
-    mediaAttachmentsCollectionBloc.clear();
+    mediaAttachmentsBloc.clear();
   }
 
   bool calculateIsReadyToPost(
@@ -136,6 +140,19 @@ class ChatPostMessageBloc extends DisposableOwner
   @override
   void appendText(String textToAppend) {
     inputTextController.text = "$inputText$textToAppend";
+  }
+
+  BehaviorSubject<bool> isAttachActionSubject = BehaviorSubject.seeded(false);
+
+  @override
+  bool get isAttachActionSelected => isAttachActionSubject.value;
+
+  @override
+  Stream<bool> get isAttachActionSelectedStream => isAttachActionSubject.stream;
+
+  @override
+  void toggleAttachActionSelection() {
+    isAttachActionSubject.add(!isAttachActionSelected);
   }
 
   static ChatPostMessageBloc createFromContext(BuildContext context,

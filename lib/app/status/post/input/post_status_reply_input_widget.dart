@@ -1,14 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/app/status/emoji_reaction/status_emoji_reaction_picker_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_attach_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_emoji_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_post_icon_action_widget.dart';
-import 'package:fedi/app/status/post/action/post_status_visibility_action_widget.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/ui/edit_text/fedi_filled_edit_text_field.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
-import 'package:fedi/app/ui/fedi_icons.dart';
-import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/dialog/alert/simple_alert_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -74,5 +69,4 @@ class PostStatusReplyInputWidget extends StatelessWidget {
       ],
     );
   }
-
 }

@@ -7,6 +7,7 @@ import 'package:fedi/app/conversation/conversation_model.dart';
 import 'package:fedi/app/conversation/conversation_widget.dart';
 import 'package:fedi/app/conversation/status/post/conversation_post_status_bloc_impl.dart';
 import 'package:fedi/app/conversation/title/conversation_title_widget.dart';
+import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
@@ -16,6 +17,7 @@ import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 class ConversationPage extends StatelessWidget {
   @override
@@ -31,9 +33,7 @@ class ConversationPage extends StatelessWidget {
                 height: 56,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  boxShadow: [
-                    FediShadows.forTopBar
-                  ],
+                  boxShadow: [FediShadows.forTopBar],
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -97,6 +97,10 @@ void goToConversationPage(BuildContext context,
                       conversationAccountsWithoutMe:
                           conversationAccountsWithoutMe);
                 },
-                child: ConversationPage()))),
+                child: ProxyProvider<IPostStatusBloc,
+                        IUploadMediaAttachmentsCollectionBloc>(
+                    update: (context, value, previous) =>
+                        value.mediaAttachmentsBloc,
+                    child: ConversationPage())))),
   );
 }

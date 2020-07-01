@@ -9,8 +9,8 @@ abstract class IChatPostMessageBloc implements Disposable {
 
   TextEditingController get inputTextController;
 
-  IUploadMediaAttachmentsCollectionBloc get mediaAttachmentsCollectionBloc;
-
+  IUploadMediaAttachmentsCollectionBloc get mediaAttachmentsBloc;
+  
   bool get isReadyToPost;
 
   Stream<bool> get isReadyToPostStream;
@@ -22,4 +22,11 @@ abstract class IChatPostMessageBloc implements Disposable {
   Future<bool> postMessage();
 
   void appendText(String textToAppend);
+
+  bool get isAttachActionSelected;
+
+
+  Stream<bool> get isAttachActionSelectedStream;
+
+  void toggleAttachActionSelection();
 }

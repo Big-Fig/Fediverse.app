@@ -1,6 +1,6 @@
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_widget.dart';
-import 'package:fedi/app/status/post/attach/post_attach_widget.dart';
+import 'package:fedi/app/status/post/attach/post_status_attach_widget.dart';
 import 'package:fedi/app/status/post/input/post_status_reply_input_widget.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:flutter/cupertino.dart';
@@ -25,11 +25,11 @@ class PostStatusReplyWidget extends StatelessWidget {
             child: ProxyProvider<IPostStatusBloc,
                     IUploadMediaAttachmentsCollectionBloc>(
                 update: (context, value, previous) =>
-                    value.mediaAttachmentGridBloc,
+                    value.mediaAttachmentsBloc,
                 child: UploadMediaAttachmentsWidget()),
           ),
           buildInputWidget(),
-          PostAttachWidget()
+          PostStatusAttachWidget()
         ],
       ),
     );

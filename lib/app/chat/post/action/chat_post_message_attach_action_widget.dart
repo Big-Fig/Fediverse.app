@@ -1,28 +1,28 @@
-import 'package:fedi/app/status/post/post_status_bloc.dart';
+import 'package:fedi/app/chat/post/chat_post_message_bloc.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class PostStatusAttachActionWidget extends StatelessWidget {
-  PostStatusAttachActionWidget();
+class ChatPostMessageAttachActionWidget extends StatelessWidget {
+  ChatPostMessageAttachActionWidget();
 
   @override
   Widget build(BuildContext context) {
-    var postStatusBloc = IPostStatusBloc.of(context, listen: false);
+    var chatPostMessageBloc = IChatPostMessageBloc.of(context, listen: false);
 
     return StreamBuilder<bool>(
-        stream: postStatusBloc
+        stream: chatPostMessageBloc
             .mediaAttachmentsBloc.isPossibleToAttachMediaStream,
         initialData:
-            postStatusBloc.mediaAttachmentsBloc.isPossibleToAttachMedia,
+            chatPostMessageBloc.mediaAttachmentsBloc.isPossibleToAttachMedia,
         builder: (context, snapshot) {
           var isPossibleToAttach = snapshot.data;
 
           var onPressed;
           if (isPossibleToAttach) {
             onPressed = () async {
-              postStatusBloc.toggleAttachActionSelection();
+              chatPostMessageBloc.toggleAttachActionSelection();
             };
           }
 
