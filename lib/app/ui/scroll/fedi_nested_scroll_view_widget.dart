@@ -108,7 +108,7 @@ abstract class FediNestedScrollViewWidget extends StatelessWidget {
           var show = snapshot.data;
           _logger.finest(() => "show $show");
           if (show == true) {
-            return SafeArea(child: onLongScrollUpTopOverlayWidget);
+            return onLongScrollUpTopOverlayWidget;
           } else {
             return const SizedBox.shrink();
           }
