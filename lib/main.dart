@@ -155,10 +155,15 @@ void _handleLoginOnAndroidWithoutChrome(
     await authHostBloc.performAsyncInit();
     String authCode = IPleromaOAuthService.extractAuthCodeFromUri(initialUri);
 
-    var authInstance = await authHostBloc.loginWithAuthCode(authCode);
+    try {
+      var authInstance = await authHostBloc.loginWithAuthCode(authCode);
 
-    if (authInstance != null) {
-      await currentInstanceBloc.changeCurrentInstance(authInstance);
+      if (authInstance != null) {
+        await currentInstanceBloc.changeCurrentInstance(authInstance);
+      }
+    } catch (e, stackTrace) {
+      _logger.warning(
+          () => "Failed to _handleLoginOnAndroidWithoutChrome ", e, stackTrace);
     }
   }
 }
@@ -200,9 +205,12 @@ void buildCurrentInstanceApp(
                             CurrentAuthInstanceContextLoadingBloc(
                               myAccountBloc:
                                   IMyAccountBloc.of(context, listen: false),
-                              pleromaInstanceService: IPleromaInstanceService.of(context, listen: false),
+                              pleromaInstanceService:
+                                  IPleromaInstanceService.of(context,
+                                      listen: false),
                               currentAuthInstanceBloc:
-                              ICurrentAuthInstanceBloc.of(context, listen: false),
+                                  ICurrentAuthInstanceBloc.of(context,
+                                      listen: false),
                             ),
                         child: MyApp(
                             child: CurrentAuthInstanceContextLoadingWidget(
