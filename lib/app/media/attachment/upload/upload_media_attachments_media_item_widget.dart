@@ -73,26 +73,6 @@ class _UploadMediaAttachmentMediaItemWidgetState
 
                   if (uploadState == UploadMediaAttachmentState.uploaded) {
                     return mediaPreview;
-                  } else if (uploadState == UploadMediaAttachmentState.failed) {
-                    return Stack(
-                      children: [
-                        Positioned(
-                            left: 0.0,
-                            top: 0.0,
-                            bottom: 0.0,
-                            right: 0.0,
-                            child: mediaPreview),
-                        Positioned(
-                          left: 0.0,
-                          top: 0.0,
-                          bottom: 0.0,
-                          right: 0.0,
-                          child: Container(
-                            color: FediColors.error.withOpacity(0.7),
-                          ),
-                        ),
-                      ],
-                    );
                   } else {
                     return Opacity(
                       opacity: 0.7,
@@ -103,62 +83,95 @@ class _UploadMediaAttachmentMediaItemWidgetState
           ),
           Align(
             alignment: Alignment.topRight,
-            child: Padding(
-              padding: widget.contentPadding,
-              child: StreamBuilder<UploadMediaAttachmentState>(
-                  stream: uploadMediaAttachmentBloc.uploadStateStream,
-                  initialData: uploadMediaAttachmentBloc.uploadState,
-                  builder: (context, snapshot) {
-                    var uploadState = snapshot.data;
-
-                    switch (uploadState) {
-                      case UploadMediaAttachmentState.notUploaded:
-                      case UploadMediaAttachmentState.uploading:
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(24.0),
-                            child: Container(
-                              width: 24,
-                              height: 24,
-                              color: FediColors.darkGrey.withOpacity(0.8),
-                              child: FediCircularProgressIndicator(
-                                size: 20,
-                                color: FediColors.white,
-                              ),
-                            ),
-                          ),
-                        );
-                        break;
-                      case UploadMediaAttachmentState.uploaded:
-                      case UploadMediaAttachmentState.failed:
-                        return GestureDetector(
-                          onTap: () {
-                            showConfirmRemoveAssetDialog(
-                                context, uploadMediaAttachmentBloc);
-                          },
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(24.0),
-                            child: Container(
-                              width: 24,
-                              height: 24,
-                              color: FediColors.darkGrey.withOpacity(0.8),
-                              child: Icon(
-                                FediIcons.remove,
-                                size: 14,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        );
-                        break;
-                    }
-
-                    throw "invalid state $uploadState";
-                  }),
-            ),
+            child: buildTopRightAction(uploadMediaAttachmentBloc),
           )
         ],
+      ),
+    );
+  }
+
+  Padding buildTopRightAction(
+      IUploadMediaAttachmentBloc uploadMediaAttachmentBloc) {
+    return Padding(
+      padding: widget.contentPadding,
+      child: StreamBuilder<UploadMediaAttachmentState>(
+          stream: uploadMediaAttachmentBloc.uploadStateStream,
+          initialData: uploadMediaAttachmentBloc.uploadState,
+          builder: (context, snapshot) {
+            var uploadState = snapshot.data;
+
+            switch (uploadState) {
+              case UploadMediaAttachmentState.notUploaded:
+              case UploadMediaAttachmentState.uploading:
+                return buildLoading();
+                break;
+              case UploadMediaAttachmentState.uploaded:
+                return buildRemoveButton(context, uploadMediaAttachmentBloc);
+              case UploadMediaAttachmentState.failed:
+                return buildErrorButton(context, uploadMediaAttachmentBloc);
+                break;
+            }
+
+            throw "invalid state $uploadState";
+          }),
+    );
+  }
+
+  Widget buildLoading() {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(24.0),
+      child: Container(
+        width: 24,
+        height: 24,
+        color: FediColors.darkGrey.withOpacity(0.8),
+        child: FediCircularProgressIndicator(
+          size: 20,
+          color: FediColors.white,
+        ),
+      ),
+    );
+  }
+
+  GestureDetector buildErrorButton(BuildContext context,
+      IUploadMediaAttachmentBloc uploadMediaAttachmentBloc) {
+    return GestureDetector(
+      onTap: () {
+        uploadMediaAttachmentBloc.startUpload();
+      },
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(24.0),
+        child: Container(
+          width: 24,
+          height: 24,
+          color: FediColors.error.withOpacity(0.8),
+          child: Icon(
+            FediIcons.failed,
+            size: 14,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
+
+  GestureDetector buildRemoveButton(BuildContext context,
+      IUploadMediaAttachmentBloc uploadMediaAttachmentBloc) {
+    return GestureDetector(
+      onTap: () {
+        showConfirmRemoveAssetDialog(context, uploadMediaAttachmentBloc);
+      },
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(24.0),
+        child: Container(
+          width: 24,
+          height: 24,
+          color: FediColors.darkGrey.withOpacity(0.8),
+          child: Icon(
+            FediIcons.remove,
+            size: 14,
+            color: Colors.white,
+          ),
+        ),
       ),
     );
   }

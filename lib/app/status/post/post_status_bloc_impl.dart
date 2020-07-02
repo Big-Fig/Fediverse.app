@@ -1,5 +1,6 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
+import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc_impl.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
@@ -335,9 +336,7 @@ abstract class PostStatusBloc extends DisposableOwner
   Future<bool> _postStatus() async {
     var remoteStatus = await pleromaStatusService.postStatus(
         data: PleromaPostStatus(
-            mediaIds: mediaAttachmentsBloc.mediaAttachmentBlocs
-                ?.map((bloc) => bloc.pleromaMediaAttachment.id)
-                ?.toList(),
+            mediaIds: _calculateMediaIds(),
             status: inputText,
             sensitive: isNsfwSensitiveEnabled,
             visibility: pleromaVisibilityValues.reverse[visibility],
@@ -369,12 +368,18 @@ abstract class PostStatusBloc extends DisposableOwner
     return success;
   }
 
+  List<String> _calculateMediaIds() {
+    return mediaAttachmentsBloc.mediaAttachmentBlocs
+        ?.where(
+            (bloc) => bloc.uploadState == UploadMediaAttachmentState.uploaded)
+        ?.map((bloc) => bloc.pleromaMediaAttachment.id)
+        ?.toList();
+  }
+
   Future<bool> _scheduleStatus() async {
     var scheduledStatus = await pleromaStatusService.scheduleStatus(
         data: PleromaScheduleStatus(
-            mediaIds: mediaAttachmentsBloc.mediaAttachmentBlocs
-                ?.map((bloc) => bloc.pleromaMediaAttachment.id)
-                ?.toList(),
+            mediaIds: _calculateMediaIds(),
             status: inputText,
             sensitive: isNsfwSensitiveEnabled,
             visibility: pleromaVisibilityValues.reverse[visibility],
