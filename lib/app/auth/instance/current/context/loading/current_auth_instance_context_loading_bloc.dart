@@ -15,5 +15,5 @@ abstract class ICurrentAuthInstanceContextLoadingBloc
 
   Stream<CurrentAuthInstanceContextLoadingState> get stateStream;
 
-  void refresh();
+  Future refresh();
 }

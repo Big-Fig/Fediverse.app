@@ -48,9 +48,9 @@ class AppAsyncInitLoadingWidget extends StatelessWidget {
                 body: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Center(
-                      child: Text(tr(
-                          "async.init.state.failed",
-                          args: [asyncInitLoadingBloc.initLoadingException])),
+                      child: Text(tr("async.init.state.failed", args: [
+                        asyncInitLoadingBloc.initLoadingException.toString()
+                      ])),
                     )),
               );
               break;

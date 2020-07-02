@@ -36,6 +36,7 @@ import 'package:fedi/pleroma/application/pleroma_application_model.dart';
 import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/pleroma/field/pleroma_field_model.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
+import 'package:fedi/pleroma/instance/pleroma_instance_service.dart';
 import 'package:fedi/pleroma/oauth/pleroma_oauth_last_launched_host_to_login_local_preference_bloc.dart';
 import 'package:fedi/pleroma/oauth/pleroma_oauth_model.dart';
 import 'package:fedi/pleroma/oauth/pleroma_oauth_service.dart';
@@ -123,7 +124,8 @@ void main() async {
       var currentInstanceBloc = appContextBloc.get<ICurrentAuthInstanceBloc>();
 
       currentInstanceBloc.currentInstanceStream
-          .distinct()
+          .distinct(
+              (previous, next) => previous?.userAtHost == next?.userAtHost)
           .listen((currentInstance) {
         buildCurrentInstanceApp(appContextBloc, currentInstance);
       });
@@ -196,8 +198,12 @@ void buildCurrentInstanceApp(
                     DisposableProvider<ICurrentAuthInstanceContextLoadingBloc>(
                         create: (context) =>
                             CurrentAuthInstanceContextLoadingBloc(
-                                myAccountBloc:
-                                    IMyAccountBloc.of(context, listen: false)),
+                              myAccountBloc:
+                                  IMyAccountBloc.of(context, listen: false),
+                              pleromaInstanceService: IPleromaInstanceService.of(context, listen: false),
+                              currentAuthInstanceBloc:
+                              ICurrentAuthInstanceBloc.of(context, listen: false),
+                            ),
                         child: MyApp(
                             child: CurrentAuthInstanceContextLoadingWidget(
                           child: DisposableProvider<IHomeBloc>(
