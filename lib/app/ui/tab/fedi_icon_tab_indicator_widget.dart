@@ -18,22 +18,28 @@ class FediIconTabIndicatorWidget<T> extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => Row(
-        mainAxisAlignment: expand == true ? MainAxisAlignment.spaceBetween :
-        null,
-        children: tabs.asMap().entries.map((entry) {
-          var index = entry.key;
-          var tab = entry.value;
-          var isLast = index == tabs.length - 1;
+  Widget build(BuildContext context) =>
+  Container(
+    height: 42,
+    child: ListView(
+        scrollDirection: Axis.horizontal,
+//      Row(
+//        mainAxisAlignment: expand == true ? MainAxisAlignment.spaceBetween :
+//        null,
+          children: tabs.asMap().entries.map((entry) {
+            var index = entry.key;
+            var tab = entry.value;
+            var isLast = index == tabs.length - 1;
 
-          return Padding(
-            padding: EdgeInsets.only(right: isLast ? 0.0 : 16.0),
-            child: FediIconTabIndicatorItemWidget(
-              index: index,
-              tabController: tabController,
-              iconData: tabToIconMapper(context, tab),
-            ),
-          );
-        }).toList(),
-      );
+            return Padding(
+              padding: EdgeInsets.only(right: isLast ? 0.0 : 16.0),
+              child: FediIconTabIndicatorItemWidget(
+                index: index,
+                tabController: tabController,
+                iconData: tabToIconMapper(context, tab),
+              ),
+            );
+          }).toList(),
+        ),
+  );
 }

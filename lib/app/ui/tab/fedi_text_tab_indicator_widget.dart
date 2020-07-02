@@ -18,20 +18,26 @@ class FediTextTabIndicatorWidget<T> extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => Row(
-        children: tabs.asMap().entries.map((entry) {
-          var index = entry.key;
-          var tab = entry.value;
-          var isLast = index == tabs.length - 1;
-          return Padding(
-            padding: EdgeInsets.only(right: isLast ? 0.0 : 16.0),
-            child: FediTextTabIndicatorItemWidget(
-              index: index,
-              tabController: tabController,
-              label: tabToTextMapper(context, tab),
-              isTransparent: isTransparent,
-            ),
-          );
-        }).toList(),
+  Widget build(BuildContext context) =>
+        //      Row(
+      Container(
+        height: 36,
+        child: ListView(
+          scrollDirection: Axis.horizontal,
+          children: tabs.asMap().entries.map((entry) {
+            var index = entry.key;
+            var tab = entry.value;
+//            var isLast = index == tabs.length - 1;
+            return Padding(
+              padding: EdgeInsets.only(right: 16.0),
+              child: FediTextTabIndicatorItemWidget(
+                index: index,
+                tabController: tabController,
+                label: tabToTextMapper(context, tab),
+                isTransparent: isTransparent,
+              ),
+            );
+          }).toList(),
+        ),
       );
 }
