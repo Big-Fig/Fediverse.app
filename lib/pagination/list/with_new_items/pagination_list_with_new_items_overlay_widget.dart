@@ -74,6 +74,7 @@ class PaginationListWithNewItemsOverlayWidget extends StatelessWidget {
         scrollControllerBloc.scrollToTop();
       },
       height: FediSizes.smallFilledButtonHeight,
+      expanded: false,
     );
   }
 }
