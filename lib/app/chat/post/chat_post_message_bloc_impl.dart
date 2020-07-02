@@ -1,6 +1,7 @@
 import 'package:fedi/app/chat/message/repository/chat_message_repository.dart';
 import 'package:fedi/app/chat/post/chat_post_message_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
+import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc_impl.dart';
 import 'package:fedi/disposable/disposable.dart';
@@ -54,8 +55,7 @@ class ChatPostMessageBloc extends DisposableOwner
   @override
   bool get isReadyToPost => calculateIsReadyToPost(
       inputText: inputText,
-      mediaAttachmentBlocs:
-          mediaAttachmentsBloc.mediaAttachmentBlocs);
+      mediaAttachmentBlocs: mediaAttachmentsBloc.mediaAttachmentBlocs);
 
   @override
   Stream<bool> get isReadyToPostStream => Rx.combineLatest2(
@@ -90,8 +90,8 @@ class ChatPostMessageBloc extends DisposableOwner
   Future<bool> postMessage() async {
     bool success;
 
-    var mediaAttachmentBlocs =
-        mediaAttachmentsBloc.mediaAttachmentBlocs;
+    var mediaAttachmentBlocs = mediaAttachmentsBloc.mediaAttachmentBlocs?.where(
+        (bloc) => bloc.uploadState == UploadMediaAttachmentState.uploaded);
     var mediaId;
     if (mediaAttachmentBlocs?.isNotEmpty == true) {
       mediaId = mediaAttachmentBlocs.first.pleromaMediaAttachment.id;
