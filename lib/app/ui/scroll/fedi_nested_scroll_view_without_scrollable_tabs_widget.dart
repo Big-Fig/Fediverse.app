@@ -60,7 +60,11 @@ class FediNestedScrollViewWithoutNestedScrollableTabsWidget
           builder: (context) {
             return Stack(
               children: [
-                Expanded(
+                Positioned(
+                  top: 0.0,
+                  bottom: 0.0,
+                  left: 0.0,
+                  right: 0.0,
                   child: contentBuilder(context),
                 ),
                 if (overlayBuilder != null)
