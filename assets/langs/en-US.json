@@ -496,6 +496,10 @@
         "accounts": "Accounts",
         "statuses": "Statuses"
       },
+      "desc": {
+        "empty": "Search term is empty",
+        "value": "Results for: '{}'"
+      },
       "field": {
         "input": {
           "hint": "Search"
@@ -710,7 +714,7 @@
   },
   "file": {
     "picker": {
-      "empty" : "You don't have any media",
+      "empty": "You don't have any media",
       "single": {
         "title": "Choose media",
         "video": {
