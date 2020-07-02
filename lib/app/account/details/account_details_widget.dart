@@ -81,7 +81,7 @@ class _AccountDetailsWidgetState extends State<AccountDetailsWidget> {
   }
 
   @override
-  Widget build(BuildContext context) => Provider.value(
+  Widget build(BuildContext context) => Provider<IScrollControllerBloc>.value(
         value: scrollControllerBloc,
         child: AccountDetailsWidget.buildAccountDetailsProviders(
             context, buildListWithNewItemsOverlayContainer(context)),
