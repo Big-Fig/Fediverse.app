@@ -1,7 +1,9 @@
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/auth/instance/current/context/loading/current_auth_instance_context_loading_bloc.dart';
 import 'package:fedi/app/auth/instance/current/context/loading/current_auth_instance_context_loading_model.dart';
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
+import 'package:fedi/pleroma/instance/pleroma_instance_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -11,15 +13,29 @@ var _logger = Logger("current_auth_instance_context_loading_bloc_impl.dart");
 class CurrentAuthInstanceContextLoadingBloc extends AsyncInitLoadingBloc
     implements ICurrentAuthInstanceContextLoadingBloc {
   final IMyAccountBloc myAccountBloc;
+  final IPleromaInstanceService pleromaInstanceService;
+  final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
 
-  CurrentAuthInstanceContextLoadingBloc({@required this.myAccountBloc}) {
+  CurrentAuthInstanceContextLoadingBloc({
+    @required this.myAccountBloc,
+    @required this.pleromaInstanceService,
+    @required this.currentAuthInstanceBloc,
+  }) {
     addDisposable(subject: stateSubject);
   }
 
   @override
-  void refresh() {
+  Future refresh() async {
     stateSubject.add(CurrentAuthInstanceContextLoadingState.loading);
-    myAccountBloc.refreshFromNetwork(false).then((_) {
+
+    if (pleromaInstanceService.isApiReadyToUse) {
+      var info = await pleromaInstanceService.getInstance();
+      var currentInstance = currentAuthInstanceBloc.currentInstance;
+      currentInstance = currentInstance.copyWith(info: info);
+      await currentAuthInstanceBloc.changeCurrentInstance(currentInstance);
+    }
+
+    await myAccountBloc.refreshFromNetwork(false).then((_) {
       if (myAccountBloc.isLocalCacheExist) {
         stateSubject
             .add(CurrentAuthInstanceContextLoadingState.localCacheExist);

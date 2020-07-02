@@ -1,7 +1,7 @@
 import 'package:fedi/local_preferences/local_preferences_model.dart';
 import 'package:fedi/pleroma/application/pleroma_application_model.dart';
-import 'package:fedi/pleroma/oauth/pleroma_oauth_model.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
+import 'package:fedi/pleroma/oauth/pleroma_oauth_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 
@@ -30,7 +30,8 @@ class AuthInstance extends IPreferencesObject {
   PleromaInstance info;
 
   bool get isSupportChats =>
-      info?.pleroma?.metadata?.features?.contains("pleroma_chat_messages") == true;
+      info?.pleroma?.metadata?.features?.contains("pleroma_chat_messages") ==
+      true;
 
   String get userAtHost => "$acct@$urlHost";
 
@@ -47,20 +48,19 @@ class AuthInstance extends IPreferencesObject {
     this.info,
   });
 
-
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is AuthInstance &&
-              runtimeType == other.runtimeType &&
-              urlSchema == other.urlSchema &&
-              urlHost == other.urlHost &&
-              acct == other.acct &&
-              token == other.token &&
-              authCode == other.authCode &&
-              isPleromaInstance == other.isPleromaInstance &&
-              application == other.application &&
-              info == other.info;
+      other is AuthInstance &&
+          runtimeType == other.runtimeType &&
+          urlSchema == other.urlSchema &&
+          urlHost == other.urlHost &&
+          acct == other.acct &&
+          token == other.token &&
+          authCode == other.authCode &&
+          isPleromaInstance == other.isPleromaInstance &&
+          application == other.application &&
+          info == other.info;
 
   @override
   int get hashCode =>
@@ -85,4 +85,26 @@ class AuthInstance extends IPreferencesObject {
   bool isInstanceWithHostAndAcct(
           {@required String host, @required String acct}) =>
       this.acct == acct && urlHost == host;
+
+  AuthInstance copyWith({
+    String urlSchema,
+    String urlHost,
+    String acct,
+    PleromaOAuthToken token,
+    String authCode,
+    bool isPleromaInstance,
+    PleromaClientApplication application,
+    PleromaInstance info,
+  }) {
+    return AuthInstance(
+      urlSchema: urlSchema ?? this.urlSchema,
+      urlHost: urlHost ?? this.urlHost,
+      acct: acct ?? this.acct,
+      token: token ?? this.token,
+      authCode: authCode ?? this.authCode,
+      isPleromaInstance: isPleromaInstance ?? this.isPleromaInstance,
+      application: application ?? this.application,
+      info: info ?? this.info,
+    );
+  }
 }
