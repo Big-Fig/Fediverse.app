@@ -6,43 +6,44 @@ import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:flutter/cupertino.dart';
 
 class TimelinesHomeTabOverlayOnLongScrollWidget extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) => FediDarkStatusBarStyleArea(
-      child: GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        onTap: () {
-          goToNewPostStatusPage(context);
-        },
-        child: Container(
-          color: FediColors.white,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                MyAccountAvatarWidget(
-                  imageSize: 40,
-                  progressSize: 24,
+        child: GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: () {
+            goToNewPostStatusPage(context);
+          },
+          child: Container(
+            color: FediColors.white,
+            child: SafeArea(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    MyAccountAvatarWidget(
+                      imageSize: 40,
+                      progressSize: 24,
+                    ),
+                    SizedBox(
+                      width: 24.0,
+                    ),
+                    Text(
+                      tr("app.status.post.field.message.hint"),
+                      style: TextStyle(
+                          fontSize: 18.0,
+                          color: FediColors.lightGrey,
+                          height: 1.5,
+                          fontWeight: FontWeight.w300),
+                    ),
+                  ],
                 ),
-                SizedBox(
-                  width: 24.0,
-                ),
-                Text(
-                  tr("app.status.post.field.message.hint"),
-                  style: TextStyle(
-                      fontSize: 18.0,
-                      color: FediColors.lightGrey,
-                      height: 1.5,
-                      fontWeight: FontWeight.w300),
-                ),
-              ],
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
 
   const TimelinesHomeTabOverlayOnLongScrollWidget();
 }
