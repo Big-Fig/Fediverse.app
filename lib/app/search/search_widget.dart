@@ -49,6 +49,21 @@ class SearchWidget extends StatelessWidget {
               initialIndex: tabs.indexOf(searchBloc.selectedTab),
               child: Column(
                 children: <Widget>[
+                  StreamBuilder<String>(
+                      stream: searchBloc.searchInputBloc.searchTextStream,
+                      initialData: searchBloc.searchInputBloc.searchText,
+                      builder: (context, snapshot) {
+                        var searchText = snapshot.data;
+                        var text =
+                            "app.search.desc.value".tr(args: [searchText]);
+                        if (searchText?.isNotEmpty == true) {
+                        } else {
+                          text = "app.search.desc.empty".tr();
+                        }
+                        return Text(
+                          text,
+                        );
+                      }),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: buildTabBar(context, tabs, searchBloc),
@@ -71,7 +86,7 @@ class SearchWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: tabs
                 .map((tab) => FediTextTabIndicatorItemWidget(
-                      label:mapTabToTitle(context, tab),
+                      label: mapTabToTitle(context, tab),
                       index: tabs.indexOf(tab),
                       isTransparent: false,
                       tabController: DefaultTabController.of(context),
