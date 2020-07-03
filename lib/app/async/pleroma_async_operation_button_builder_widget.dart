@@ -13,6 +13,7 @@ class PleromaAsyncOperationButtonBuilderWidget
     @required ButtonBuilder builder,
     @required AsyncButtonAction asyncButtonAction,
     String progressContentMessage,
+    String successToastMessage,
     bool showProgressDialog = true,
     List<ErrorDataBuilder> errorAlertDialogBuilders = const [],
   }) : super(
@@ -20,6 +21,7 @@ class PleromaAsyncOperationButtonBuilderWidget
             asyncButtonAction: asyncButtonAction,
             showProgressDialog: showProgressDialog,
             progressContentMessage: progressContentMessage,
+            successToastMessage: successToastMessage,
             errorAlertDialogBuilders: [
               // top priority for passed to constructor handlers
               ...(errorAlertDialogBuilders ?? []),
