@@ -48,7 +48,9 @@ class ChatMessageListWidget extends ChatMessagePaginationListBaseWidget {
               controller: refreshController,
               action: () async {
                 bool success = await additionalRefreshAction(context);
-                success |= await paginationListBloc.refresh();
+                _logger.finest(() => "additionalRefreshAction $success");
+                success &= await paginationListBloc.refresh();
+                _logger.finest(() => "paginationListBloc.refresh() $success");
                 return success;
               });
         },
