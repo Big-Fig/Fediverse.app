@@ -8,11 +8,11 @@ abstract class ISearchInputBloc extends Disposable {
 
   TextEditingController get searchTextEditingController;
 
-  String get searchText;
+  String get confirmedSearchTerm;
 
-  Stream<String> get searchTextStream;
+  Stream<String> get confirmedSearchTermStream;
 
   void clearSearch();
 
-  void performSearch();
+  void confirmSearch();
 }

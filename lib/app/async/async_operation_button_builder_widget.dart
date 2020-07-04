@@ -16,7 +16,7 @@ class AsyncOperationButtonBuilderWidget extends StatefulWidget {
   final String progressContentMessage;
   final String successToastMessage;
 
-  final List<ErrorDataBuilder> errorAlertDialogBuilders;
+  final List<ErrorDataBuilder> errorDataBuilders;
 
   AsyncOperationButtonBuilderWidget({
     @required this.builder,
@@ -24,7 +24,7 @@ class AsyncOperationButtonBuilderWidget extends StatefulWidget {
     this.showProgressDialog = true,
     this.progressContentMessage,
     this.successToastMessage,
-    this.errorAlertDialogBuilders = const [],
+    this.errorDataBuilders = const [],
   });
 
   @override
@@ -50,7 +50,7 @@ class _AsyncOperationButtonBuilderWidgetState
                         context: context,
                         contentMessage: widget.progressContentMessage,
                         errorDataBuilders:
-                            widget.errorAlertDialogBuilders,
+                            widget.errorDataBuilders,
                         showProgressDialog: widget.showProgressDialog,
                         asyncCode: widget.asyncButtonAction)
                     .then((_) async {

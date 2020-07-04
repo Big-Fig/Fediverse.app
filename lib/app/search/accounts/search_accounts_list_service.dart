@@ -25,7 +25,7 @@ class SearchAccountsListService extends IAccountNetworkOnlyListService {
       @required int itemsCountPerPage,
       @required String minId,
       @required String maxId}) async {
-    var query = searchInputBloc.searchText;
+    var query = searchInputBloc.confirmedSearchTerm;
     List<IPleromaAccount> accounts;
 
     if (query?.isNotEmpty == true) {

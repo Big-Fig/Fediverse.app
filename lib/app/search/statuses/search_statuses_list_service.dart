@@ -25,7 +25,7 @@ class SearchStatusesListService extends IStatusNetworkOnlyListService {
       @required int pageIndex,
       @required String minId,
       @required String maxId}) async {
-    var query = searchInputBloc.searchText;
+    var query = searchInputBloc.confirmedSearchTerm;
     List<IPleromaStatus> statuses;
 
     if (query?.isNotEmpty == true) {

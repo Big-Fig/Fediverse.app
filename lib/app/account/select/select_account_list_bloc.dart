@@ -3,10 +3,10 @@ import 'package:fedi/app/search/input/search_input_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-abstract class ISelectAccountCachedListBloc extends IAccountCachedListBloc {
+abstract class ISelectAccountListBloc extends IAccountCachedListBloc {
   ISearchInputBloc get searchInputBloc;
 
-  static ISelectAccountCachedListBloc of(BuildContext context,
+  static ISelectAccountListBloc of(BuildContext context,
           {bool listen = true}) =>
-      Provider.of<ISelectAccountCachedListBloc>(context, listen: listen);
+      Provider.of<ISelectAccountListBloc>(context, listen: listen);
 }

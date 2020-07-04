@@ -50,8 +50,8 @@ class SearchWidget extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   StreamBuilder<String>(
-                      stream: searchBloc.searchInputBloc.searchTextStream,
-                      initialData: searchBloc.searchInputBloc.searchText,
+                      stream: searchBloc.searchInputBloc.confirmedSearchTermStream,
+                      initialData: searchBloc.searchInputBloc.confirmedSearchTerm,
                       builder: (context, snapshot) {
                         var searchText = snapshot.data;
                         var text =

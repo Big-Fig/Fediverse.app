@@ -41,22 +41,22 @@ void goToStartConversationPage(BuildContext context) {
       context,
       MaterialPageRoute(
           builder: (context) =>
-              DisposableProvider<ISelectAccountCachedListBloc>(
+              DisposableProvider<ISelectAccountListBloc>(
                 create: (context) =>
-                    SelectAccountCachedListBloc.createFromContext(context,
+                    SelectAccountListBloc.createFromContext(context,
                         excludeMyAccount: true),
-                child: ProxyProvider<ISelectAccountCachedListBloc,
+                child: ProxyProvider<ISelectAccountListBloc,
                     IPleromaCachedListBloc<IAccount>>(
                   update: (context, value, previous) => value,
-                  child: ProxyProvider<ISelectAccountCachedListBloc,
+                  child: ProxyProvider<ISelectAccountListBloc,
                       ISearchInputBloc>(
                     update: (context, value, previous) => value.searchInputBloc,
                     child: Provider<IPleromaCachedListBloc<IAccount>>(
-                      create: (context) => ISelectAccountCachedListBloc.of(
+                      create: (context) => ISelectAccountListBloc.of(
                           context,
                           listen: false),
                       child: Provider<ISearchInputBloc>(
-                        create: (context) => ISelectAccountCachedListBloc.of(
+                        create: (context) => ISelectAccountListBloc.of(
                                 context,
                                 listen: false)
                             .searchInputBloc,

@@ -9,6 +9,12 @@ import 'package:flutter/widgets.dart';
 
 class PleromaAsyncOperationButtonBuilderWidget
     extends AsyncOperationButtonBuilderWidget {
+  static final List<ErrorDataBuilder> pleromaErrorDataBuilders = [
+    pleromaThrottledErrorAlertDialogBuilder,
+    pleromaErrorAlertDialogBuilder,
+    socketErrorAlertDialogBuilder,
+  ];
+
   PleromaAsyncOperationButtonBuilderWidget({
     @required ButtonBuilder builder,
     @required AsyncButtonAction asyncButtonAction,
@@ -22,13 +28,11 @@ class PleromaAsyncOperationButtonBuilderWidget
             showProgressDialog: showProgressDialog,
             progressContentMessage: progressContentMessage,
             successToastMessage: successToastMessage,
-            errorAlertDialogBuilders: [
+            errorDataBuilders: [
               // top priority for passed to constructor handlers
               ...(errorAlertDialogBuilders ?? []),
               // low priority for base Pleroma handler
-              pleromaThrottledErrorAlertDialogBuilder,
-              pleromaErrorAlertDialogBuilder,
-              socketErrorAlertDialogBuilder,
+              ...pleromaErrorDataBuilders
             ]);
 
   static ErrorData pleromaThrottledErrorAlertDialogBuilder(
