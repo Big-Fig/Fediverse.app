@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/ui/error/fedi_error_data_notification_overlay.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -66,7 +67,8 @@ class FediListSmartRefresherWidget extends StatelessWidget {
             _logger.finest(() => "onRefresh $success");
             if (!success) {
               showFediErrorDataNotificationOverlay(
-                  contentText: "Failed to refresh", titleText: null);
+                  contentText: "app.list.refresh.unable_to_fetch".tr(),
+                  titleText: null);
             }
           }
         },
@@ -75,7 +77,8 @@ class FediListSmartRefresherWidget extends StatelessWidget {
             var success = await onLoading();
             if (!success) {
               showFediErrorDataNotificationOverlay(
-                  contentText: "Failed to load more", titleText: null);
+                  contentText: "app.list.loading.state.failed".tr(),
+                  titleText: null);
             }
           }
         },
