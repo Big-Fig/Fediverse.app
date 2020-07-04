@@ -38,13 +38,16 @@ class PostStatusStartConversationBloc extends PostStatusBloc {
       super.isReadyToPost && mentionedAccts?.isNotEmpty == true;
 
   @override
-  Stream<bool> get isReadyToPostStream => Rx.combineLatest3(
+  Stream<bool> get isReadyToPostStream => Rx.combineLatest4(
       inputWithoutMentionedAcctsTextStream,
       mediaAttachmentsBloc.mediaAttachmentBlocsStream,
+      mediaAttachmentsBloc.isAllAttachedMediaUploadedStream,
       mentionedAcctsStream,
-      (inputWithoutMentionedAcctsText, mediaAttachmentBlocs, mentionedAccts) =>
+      (inputWithoutMentionedAcctsText, mediaAttachmentBlocs,
+              isAllAttachedMediaUploaded, mentionedAccts) =>
           calculateIsReadyToPost(
               inputText: inputWithoutMentionedAcctsText,
-              mediaAttachmentBlocs: mediaAttachmentBlocs) &&
+              mediaAttachmentBlocs: mediaAttachmentBlocs,
+              isAllAttachedMediaUploaded: isAllAttachedMediaUploaded) &&
           mentionedAccts?.isNotEmpty == true);
 }

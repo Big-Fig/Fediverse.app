@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/app/async/async_operation_button_builder_widget.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/media/attachment/add_to_gallery/media_attachment_add_to_gallery_exception.dart';
 import 'package:fedi/app/media/attachment/add_to_gallery/media_attachment_add_to_gallery_helper.dart';
@@ -64,7 +63,7 @@ class MediaAttachmentPreviewPage extends StatelessWidget {
               size: FediSizes.appBarIconSize,
             ),
             onPressed: onPressed),
-        successToastMessage:  tr("app.media.attachment.add_to_gallery.success"
+        successToastMessage: tr("app.media.attachment.add_to_gallery.success"
             ".toast"),
         asyncButtonAction: () async {
           var saved = await addMediaAttachmentToGallery(

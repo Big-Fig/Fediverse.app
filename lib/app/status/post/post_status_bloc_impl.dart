@@ -154,16 +154,21 @@ abstract class PostStatusBloc extends DisposableOwner
   @override
   bool get isReadyToPost => calculateIsReadyToPost(
       inputText: inputWithoutMentionedAcctsText,
-      mediaAttachmentBlocs: mediaAttachmentsBloc.mediaAttachmentBlocs);
+      mediaAttachmentBlocs: mediaAttachmentsBloc.mediaAttachmentBlocs,
+      isAllAttachedMediaUploaded:
+          mediaAttachmentsBloc.isAllAttachedMediaUploaded);
 
   @override
-  Stream<bool> get isReadyToPostStream => Rx.combineLatest2(
+  Stream<bool> get isReadyToPostStream => Rx.combineLatest3(
       inputWithoutMentionedAcctsTextStream,
       mediaAttachmentsBloc.mediaAttachmentBlocsStream,
-      (inputWithoutMentionedAcctsText, mediaAttachmentBlocs) =>
+      mediaAttachmentsBloc.isAllAttachedMediaUploadedStream,
+      (inputWithoutMentionedAcctsText, mediaAttachmentBlocs,
+              isAllAttachedMediaUploaded) =>
           calculateIsReadyToPost(
               inputText: inputWithoutMentionedAcctsText,
-              mediaAttachmentBlocs: mediaAttachmentBlocs));
+              mediaAttachmentBlocs: mediaAttachmentBlocs,
+              isAllAttachedMediaUploaded: isAllAttachedMediaUploaded));
 
   @override
   String get inputText => inputTextSubject.value;
@@ -299,23 +304,12 @@ abstract class PostStatusBloc extends DisposableOwner
 
   bool calculateIsReadyToPost(
       {@required String inputText,
-      @required List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs}) {
+      @required List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs,
+      @required bool isAllAttachedMediaUploaded}) {
     var textIsNotEmpty = inputText?.trim()?.isEmpty != true;
     var mediaAttached = mediaAttachmentBlocs?.isEmpty != true;
 
-//    bool atLeastOneMediaNotUploaded;
-//
-//    if(mediaAttached) {
-//      atLeastOneMediaNotUploaded = mediaAttachmentBlocs.fold(false,
-//              (previousValue, bloc) => previousValue
-//          || bloc.uploadState != UploadMediaAttachmentState.uploaded);
-//    } else {
-//      atLeastOneMediaNotUploaded = false;
-//    }
-
-    return (textIsNotEmpty || mediaAttached)
-//        && !atLeastOneMediaNotUploaded
-        ;
+    return (textIsNotEmpty || mediaAttached) && isAllAttachedMediaUploaded;
   }
 
   @override
