@@ -21,6 +21,7 @@ class UploadMediaAttachmentsMediaListWidget extends StatelessWidget {
           }
 
           if (mediaItemBlocs.length == 1) {
+
             return Padding(
               padding: const EdgeInsets.only(
                   left:16.0,
@@ -28,11 +29,8 @@ class UploadMediaAttachmentsMediaListWidget extends StatelessWidget {
                   top: 8.0,
                   bottom: 16.0,
               ),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: double.infinity,
-                  maxHeight: 220,
-                ),
+              child: Container(
+                height: 220,
                 child: Provider<IUploadMediaAttachmentBloc>.value(
                     value: mediaItemBlocs.first,
                     child: UploadMediaAttachmentMediaItemWidget(

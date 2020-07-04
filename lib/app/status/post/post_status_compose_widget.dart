@@ -40,9 +40,21 @@ class PostStatusComposeWidget extends StatelessWidget {
         children: <Widget>[
           displayAccountAvatar
               ? Row(
-                  children: <Widget>[buildAvatar(), buildInputWidget()],
+                  children: <Widget>[buildAvatar(), Flexible(
+                    child: PostStatusComposeInputWidget(
+                      expanded: expanded,
+                      hintText: hintText,
+                      maxLines: maxLines,
+                    ),
+                  )],
                 )
-              : buildInputWidget(),
+              : Expanded(
+                  child: PostStatusComposeInputWidget(
+                    expanded: false,
+                    hintText: hintText,
+                    maxLines: maxLines,
+                  ),
+                ),
           SizedBox(
             height: 16.0,
           ),
@@ -109,11 +121,4 @@ class PostStatusComposeWidget extends StatelessWidget {
     );
   }
 
-  Widget buildInputWidget() => Flexible(
-        child: PostStatusComposeInputWidget(
-          expanded: expanded,
-          hintText: hintText,
-          maxLines: maxLines,
-        ),
-      );
 }
