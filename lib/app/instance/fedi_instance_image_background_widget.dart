@@ -7,12 +7,12 @@ import 'package:path/path.dart' as path;
 
 var urlPath = path.posix;
 
-var _logger = Logger("fedi_instance_image_decoration_widget.dart");
+var _logger = Logger("fedi_instance_image_background_widget.dart");
 
-class FediInstanceImageDecorationWidget extends StatelessWidget {
+class FediInstanceImageBackgroundWidget extends StatelessWidget {
   final Widget child;
 
-  const FediInstanceImageDecorationWidget({@required this.child});
+  const FediInstanceImageBackgroundWidget({@required this.child});
 
   @override
   Widget build(BuildContext context) {
