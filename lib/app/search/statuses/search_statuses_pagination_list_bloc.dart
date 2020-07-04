@@ -15,7 +15,7 @@ class SearchStatusesPaginationListBloc
   }) : super(paginationBloc: paginationBloc) {
     addDisposable(
         streamSubscription:
-            searchInputBloc.searchTextStream.distinct().listen((newText) {
+            searchInputBloc.confirmedSearchTermStream.listen((newText) {
       // refresh controller if it attached
       if (refreshController.position != null) {
         refreshController.requestRefresh(needMove:false);

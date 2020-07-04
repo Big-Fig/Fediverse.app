@@ -17,10 +17,10 @@ class SearchInputBloc extends DisposableOwner implements ISearchInputBloc {
   }
 
   @override
-  String get searchText => searchTextSubject.value;
+  String get confirmedSearchTerm => searchTextSubject.value;
 
   @override
-  Stream<String> get searchTextStream => searchTextSubject.stream;
+  Stream<String> get confirmedSearchTermStream => searchTextSubject.stream;
 
   @override
   void clearSearch() {
@@ -28,15 +28,12 @@ class SearchInputBloc extends DisposableOwner implements ISearchInputBloc {
   }
 
   void onSearchTextChanged() {
-    var oldText = searchTextSubject.value ?? "";
     var newText = searchTextEditingController.text ?? "";
-    if (newText != oldText) {
-      searchTextSubject.add(newText);
-    }
+    searchTextSubject.add(newText);
   }
 
   @override
-  void performSearch() {
+  void confirmSearch() {
     onSearchTextChanged();
   }
 }

@@ -8,38 +8,47 @@ var _logger = Logger("async_smart_refresher_helper.dart");
 
 class AsyncSmartRefresherHelper {
   static Future<bool> doAsyncRefresh(
-      {@required RefreshController controller, @required AsyncAction action}) {
+      {@required RefreshController controller,
+      @required AsyncAction action}) async {
     _logger.finest(() => "doAsyncRefresh");
-    var future = action();
-    future.then((success) {
-      _logger.finest(() => "doAsyncRefresh success = $success");
-      if (success) {
-        controller.refreshCompleted();
-      } else {
-        controller.refreshFailed();
-      }
-    }).catchError((error, stackTrace) {
+    bool success;
+    try {
+      success = await action();
+    } catch (error, stackTrace) {
       _logger.severe(() => "doAsyncRefresh fail", error, stackTrace);
+      success = false;
+    }
+    _logger.finest(() => "doAsyncRefresh success = $success");
+
+    if (success) {
+      controller.refreshCompleted();
+    } else {
       controller.refreshFailed();
-    });
-    return future;
+    }
+
+    return success;
   }
 
   static Future<bool> doAsyncLoading(
-      {@required RefreshController controller, @required AsyncAction action}) {
+      {@required RefreshController controller,
+      @required AsyncAction action}) async {
     _logger.finest(() => "doAsyncLoading");
-    var future = action();
-    future.then((success) {
-      _logger.finest(() => "doAsyncLoading success = $success");
-      if (success) {
-        controller.loadComplete();
-      } else {
-        controller.loadNoData();
-      }
-    }).catchError((error, stackTrace) {
+    bool success;
+    try {
+      success = await action();
+    } catch (error, stackTrace) {
       _logger.severe(() => "doAsyncLoading fail", error, stackTrace);
       controller.loadFailed();
-    });
-    return future;
+      success = false;
+    }
+
+    _logger.finest(() => "doAsyncLoading success = $success");
+    if (success) {
+      controller.loadComplete();
+    } else {
+      controller.loadNoData();
+    }
+
+    return success;
   }
 }

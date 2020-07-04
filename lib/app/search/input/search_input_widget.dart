@@ -29,7 +29,7 @@ class SearchInputWidget extends StatelessWidget {
             ),
             textInputAction: TextInputAction.search,
             onSubmitted: (_) {
-              searchInputBloc.performSearch();
+              searchInputBloc.confirmSearch();
             },
             maxLines: 1, errorText: null,
           ),
@@ -38,7 +38,7 @@ class SearchInputWidget extends StatelessWidget {
         FediIconInCircleFilledButton(
           FediIcons.search,
           onPressed: () {
-            searchInputBloc.performSearch();
+            searchInputBloc.confirmSearch();
           },
         )
       ],

@@ -15,8 +15,8 @@ import 'package:moor/moor.dart';
 
 var _logger = Logger("account_list_service_impl.dart");
 
-class SelectAccountCachedListBloc extends DisposableOwner
-    implements ISelectAccountCachedListBloc {
+class SelectAccountListBloc extends DisposableOwner
+    implements ISelectAccountListBloc {
   final IPleromaAccountService pleromaAccountService;
   final IAccountRepository accountRepository;
   final IMyAccountBloc myAccountBloc;
@@ -24,9 +24,9 @@ class SelectAccountCachedListBloc extends DisposableOwner
   @override
   ISearchInputBloc searchInputBloc;
 
-  String get searchText => searchInputBloc.searchText;
+  String get searchText => searchInputBloc.confirmedSearchTerm;
 
-  SelectAccountCachedListBloc({
+  SelectAccountListBloc({
     @required this.pleromaAccountService,
     @required this.accountRepository,
     @required this.myAccountBloc,
@@ -123,9 +123,9 @@ class SelectAccountCachedListBloc extends DisposableOwner
     return accounts;
   }
 
-  static SelectAccountCachedListBloc createFromContext(BuildContext context,
+  static SelectAccountListBloc createFromContext(BuildContext context,
           {@required bool excludeMyAccount}) =>
-      SelectAccountCachedListBloc(
+      SelectAccountListBloc(
           excludeMyAccount: excludeMyAccount,
           myAccountBloc: IMyAccountBloc.of(context, listen: false),
           accountRepository: IAccountRepository.of(context, listen: false),

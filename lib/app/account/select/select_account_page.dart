@@ -41,13 +41,13 @@ void goToSelectAccountPage(BuildContext context,
     context,
     MaterialPageRoute(
         builder: (context) =>
-            DisposableProvider<ISelectAccountCachedListBloc>(
+            DisposableProvider<ISelectAccountListBloc>(
                 create: (context) =>
-                    SelectAccountCachedListBloc.createFromContext(context,
+                    SelectAccountListBloc.createFromContext(context,
                         excludeMyAccount: excludeMyAccount),
-                child: ProxyProvider<ISelectAccountCachedListBloc, IPleromaCachedListBloc<IAccount>>(
+                child: ProxyProvider<ISelectAccountListBloc, IPleromaCachedListBloc<IAccount>>(
                   update: (context, value, previous) => value,
-                  child: ProxyProvider<ISelectAccountCachedListBloc, ISearchInputBloc>(
+                  child: ProxyProvider<ISelectAccountListBloc, ISearchInputBloc>(
                     update: (context, value, previous) => value.searchInputBloc,
                     child: DisposableProvider<
                         IPaginationBloc<PaginationPage<IAccount>, IAccount>>(

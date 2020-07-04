@@ -18,7 +18,7 @@ class SearchAccountsPaginationListBloc extends AccountPaginationListBloc {
   }) : super(paginationBloc: paginationBloc) {
     addDisposable(
         streamSubscription:
-            searchInputBloc.searchTextStream.distinct().listen((newText) {
+            searchInputBloc.confirmedSearchTermStream.listen((newText) {
       // refresh controller if it attached
       if (refreshController.position != null) {
         try {

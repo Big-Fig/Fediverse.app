@@ -431,11 +431,11 @@
         "state": {
           "can_loading": "Can load more",
           "no_more_data": "No more data",
-          "failed": "Failed to load"
+          "failed": "Failed to load more"
         }
       },
       "refresh": {
-        "unable_to_fetch": "Unable to fetch",
+        "unable_to_fetch": "Unable to refresh",
         "up_to_date": "Everything up to date"
       }
     },
