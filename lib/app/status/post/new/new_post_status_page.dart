@@ -20,12 +20,20 @@ class NewPostStatusPage extends StatelessWidget {
         leading: const FediDismissIconButton(),
       ),
       body: SafeArea(
-        child:  PostStatusComposeWidget(
-          goBackOnSuccess: true,
-          expanded: true,
-          maxLines: null,
-          displayAccountAvatar: false,
+        child: CustomScrollView(
+          slivers: [
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: PostStatusComposeWidget(
+                goBackOnSuccess: true,
+                expanded: true,
+                maxLines: null,
+                displayAccountAvatar: false,
+              ),
+            ),
+          ],
         ),
+
       ),
     );
   }
@@ -37,8 +45,10 @@ void goToNewPostStatusPage(BuildContext context) {
     MaterialPageRoute(
         builder: (context) => DisposableProvider<IPostStatusBloc>(
             create: (context) => NewPostStatusBloc.createFromContext(context),
-            child: ProxyProvider<IPostStatusBloc, IUploadMediaAttachmentsCollectionBloc>(
-                update: (context, value, previous) => value.mediaAttachmentsBloc,
+            child: ProxyProvider<IPostStatusBloc,
+                    IUploadMediaAttachmentsCollectionBloc>(
+                update: (context, value, previous) =>
+                    value.mediaAttachmentsBloc,
                 child: NewPostStatusPage()))),
   );
 }
