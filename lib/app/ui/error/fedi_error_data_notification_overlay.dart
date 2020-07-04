@@ -1,5 +1,4 @@
 import 'package:fedi/app/ui/fedi_colors.dart';
-import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -9,7 +8,6 @@ void showFediErrorDataNotificationOverlay({
   @required String contentText,
   @required String titleText,
 }) {
-
   // custom code to add FediLightStatusBarStyleArea
   var content = Text(
     contentText,
@@ -20,13 +18,13 @@ void showFediErrorDataNotificationOverlay({
   );
   var subtitle = titleText != null
       ? Text(
-        titleText,
-        style: TextStyle(
-          fontSize: 12,
-          color: FediColors.white,
-          fontWeight: FontWeight.w500,
-        ),
-      )
+          titleText,
+          style: TextStyle(
+            fontSize: 12,
+            color: FediColors.white,
+            fontWeight: FontWeight.w500,
+          ),
+        )
       : null;
   var slideDismiss = true;
   var background = FediColors.error;
