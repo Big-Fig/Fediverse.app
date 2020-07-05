@@ -7,13 +7,13 @@ import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dar
 import 'package:fedi/app/conversation/start/status/post_status_start_conversation_page.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
+import 'package:fedi/app/ui/dialog/fedi_alert_dialog.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_alert/flutter_alert.dart';
 import 'package:logging/logging.dart';
 
 var _logger = Logger("account_actions_widget.dart");
@@ -101,7 +101,7 @@ class AccountActionListWidget extends StatelessWidget {
 
   void showMoreOptions(BuildContext context, IAccountBloc accountBloc,
       IPleromaAccountRelationship relationship) {
-    showAlert(
+    showFediAlertDialog(
       context: context,
       title: tr("app.account.action.popup.title", args: [accountBloc.acct]),
       body: "${accountBloc.acct}",

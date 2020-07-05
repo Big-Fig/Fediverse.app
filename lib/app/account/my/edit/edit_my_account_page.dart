@@ -4,11 +4,11 @@ import 'package:fedi/app/account/my/edit/edit_my_account_bloc_impl.dart';
 import 'package:fedi/app/account/my/edit/edit_my_account_widget.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
+import 'package:fedi/app/ui/dialog/fedi_alert_dialog.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_alert/flutter_alert.dart';
 
 class EditMyAccountPage extends StatelessWidget {
   @override
@@ -91,7 +91,7 @@ class EditMyAccountPage extends StatelessWidget {
   }
 
   void alertUnsaved(BuildContext context) {
-    showAlert(
+    showFediAlertDialog(
       context: context,
       title: tr("app.account.my.edit.unsaved.dialog.title"),
       //      body:
