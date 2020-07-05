@@ -1,5 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/app/ui/error/fedi_error_data_notification_overlay.dart';
+import 'package:fedi/app/ui/notification_overlay/error_fedi_notification_overlay.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:logging/logging.dart';
@@ -66,7 +66,7 @@ class FediListSmartRefresherWidget extends StatelessWidget {
             var success = await onRefresh();
             _logger.finest(() => "onRefresh $success");
             if (!success) {
-              showFediErrorDataNotificationOverlay(
+              showErrorFediNotificationOverlay(
                   contentText: "app.list.refresh.unable_to_fetch".tr(),
                   titleText: null);
             }
@@ -76,7 +76,7 @@ class FediListSmartRefresherWidget extends StatelessWidget {
           if (onLoading != null) {
             var success = await onLoading();
             if (!success) {
-              showFediErrorDataNotificationOverlay(
+              showErrorFediNotificationOverlay(
                   contentText: "app.list.loading.state.failed".tr(),
                   titleText: null);
             }
