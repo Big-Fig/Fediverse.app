@@ -1,10 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_attach_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_emoji_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_post_icon_action_widget.dart';
+import 'package:fedi/app/status/post/action/post_status_post_overlay_notification.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/ui/edit_text/fedi_filled_edit_text_field.dart';
 import 'package:fedi/dialog/alert/simple_alert_dialog.dart';
+import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -47,7 +50,18 @@ class PostStatusReplyInputWidget extends StatelessWidget {
             textInputAction: TextInputAction.send,
             onSubmitted: (String value) async {
               if (postStatusBloc.isReadyToPost) {
-                await postStatusBloc.postStatus();
+                var dialogResult = await doAsyncOperationWithDialog(
+                    context: context,
+                    errorDataBuilders: [
+                      ...PleromaAsyncOperationButtonBuilderWidget
+                          .pleromaErrorDataBuilders
+                    ],
+                    asyncCode: () => postStatusBloc.postStatus());
+                var success = dialogResult.result;
+                if (success) {
+                  showPostStatusPostOverlayNotification(
+                      context, postStatusBloc);
+                }
               } else {
                 await SimpleAlertDialog(
                         context: context,

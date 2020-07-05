@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_widget.dart';
 import 'package:fedi/app/status/scheduled/list/scheduled_status_list_page.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
