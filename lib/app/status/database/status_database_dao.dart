@@ -163,8 +163,10 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
       query
         ..where((status) =>
-            isNotNull(status.mediaAttachments) |
-            status.mediaAttachments.equals(""));
+            isNotNull(status.mediaAttachments)
+//            |
+//            status.mediaAttachments.equals("").not()
+        );
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyLocalWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query,

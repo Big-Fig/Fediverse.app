@@ -5,6 +5,7 @@ import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dar
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:provider/provider.dart';
 
 var _logger = Logger("status_list_item_media_widget.dart");
 
@@ -36,31 +37,19 @@ class StatusListItemMediaWidget extends StatelessWidget {
     _logger.finest(() =>
         "build ${statusBloc.remoteId} media ${statusBloc.mediaAttachments?.length}");
 
-    return StreamBuilder<List<IPleromaMediaAttachment>>(
-        stream: statusBloc.mediaAttachmentsStream,
-        initialData: statusBloc.mediaAttachments,
+    var mediaAttachment = Provider.of<IPleromaMediaAttachment>(context);
+    var previewUrl = mediaAttachment.previewUrl;
+    return StreamBuilder<bool>(
+        stream: statusBloc.nsfwSensitiveAndDisplayEnabledStream,
+        initialData: statusBloc.nsfwSensitiveAndDisplayEnabled,
         builder: (context, snapshot) {
-          var mediaAttachments = snapshot.data;
+          var nsfwSensitiveAndDisplayEnabled = snapshot.data;
 
-          if (mediaAttachments?.isNotEmpty == true) {
-            var mediaAttachment = mediaAttachments.first;
-            var previewUrl = mediaAttachment.previewUrl;
-            return StreamBuilder<bool>(
-                stream: statusBloc.nsfwSensitiveAndDisplayEnabledStream,
-                initialData: statusBloc.nsfwSensitiveAndDisplayEnabled,
-                builder: (context, snapshot) {
-                  var nsfwSensitiveAndDisplayEnabled = snapshot.data;
-
-                  if (nsfwSensitiveAndDisplayEnabled) {
-                    // todo: display all medias in list
-                    return mediaAttachmentPreviewUrlWidget(previewUrl, context);
-                  } else {
-                    return StatusNsfwWarningWidget();
-                  }
-                });
+          if (nsfwSensitiveAndDisplayEnabled) {
+            // todo: display all medias in list
+            return mediaAttachmentPreviewUrlWidget(previewUrl, context);
           } else {
-            // TODO: remove hack
-            return const SizedBox.shrink();
+            return StatusNsfwWarningWidget();
           }
         });
   }

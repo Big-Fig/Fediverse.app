@@ -55,6 +55,21 @@ class PleromaMediaAttachment implements IPleromaMediaAttachment {
 
   bool get isImage => typeMastodon == MastodonMediaAttachmentType.image;
 
+  bool get isMedia {
+    switch (typeMastodon) {
+      case MastodonMediaAttachmentType.image:
+      case MastodonMediaAttachmentType.gifv:
+      case MastodonMediaAttachmentType.video:
+      case MastodonMediaAttachmentType.audio:
+        return true;
+        break;
+      case MastodonMediaAttachmentType.unknown:
+      default:
+        return false;
+        break;
+    }
+  }
+
   Map<String, dynamic> toJson() => _$PleromaMediaAttachmentToJson(this);
 
   String toJsonString() => jsonEncode(_$PleromaMediaAttachmentToJson(this));
@@ -83,6 +98,7 @@ class PleromaMediaAttachment implements IPleromaMediaAttachment {
       type.hashCode ^
       url.hashCode ^
       pleroma.hashCode;
+
   @override
   String toString() {
     return 'PleromaMediaAttachment{description: $description, id: $id,'
