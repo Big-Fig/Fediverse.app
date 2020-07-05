@@ -4,11 +4,11 @@ import 'package:fedi/local_preferences/local_preferences_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'push_subscription_local_preferences_model.g.dart';
+part 'push_subscription_settings_local_preferences_model.g.dart';
 
 @JsonSerializable()
 @HiveType()
-class PushSubscriptionLocalPreferences extends IPreferencesObject {
+class PushSubscriptionSettingsLocalPreferences extends IPreferencesObject {
   @HiveField(1)
   bool favourite;
   @HiveField(2)
@@ -21,7 +21,7 @@ class PushSubscriptionLocalPreferences extends IPreferencesObject {
   bool poll;
   @HiveField(6)
   bool chat;
-  PushSubscriptionLocalPreferences({
+  PushSubscriptionSettingsLocalPreferences({
     this.favourite,
     this.follow,
     this.mention,
@@ -30,7 +30,7 @@ class PushSubscriptionLocalPreferences extends IPreferencesObject {
     this.chat,
   });
 
-  PushSubscriptionLocalPreferences.defaultAllEnabled()
+  PushSubscriptionSettingsLocalPreferences.defaultAllEnabled()
       : this(
           favourite: true,
           follow: true,
@@ -40,7 +40,7 @@ class PushSubscriptionLocalPreferences extends IPreferencesObject {
           chat: true,
         );
 
-  PushSubscriptionLocalPreferences copyWith({
+  PushSubscriptionSettingsLocalPreferences copyWith({
     bool favourite,
     bool follow,
     bool mention,
@@ -48,7 +48,7 @@ class PushSubscriptionLocalPreferences extends IPreferencesObject {
     bool poll,
     bool chat,
   }) =>
-      PushSubscriptionLocalPreferences(
+      PushSubscriptionSettingsLocalPreferences(
         favourite: favourite ?? this.favourite,
         follow: follow ?? this.follow,
         mention: mention ?? this.mention,
@@ -57,10 +57,18 @@ class PushSubscriptionLocalPreferences extends IPreferencesObject {
         chat: chat ?? this.chat,
       );
 
+
+  @override
+  String toString() {
+    return 'PushSubscriptionSettingsLocalPreferences{favourite: $favourite,'
+        ' follow: $follow, mention: $mention,'
+        ' reblog: $reblog, poll: $poll, chat: $chat}';
+  }
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PushSubscriptionLocalPreferences &&
+      other is PushSubscriptionSettingsLocalPreferences &&
           runtimeType == other.runtimeType &&
           favourite == other.favourite &&
           follow == other.follow &&
@@ -78,11 +86,11 @@ class PushSubscriptionLocalPreferences extends IPreferencesObject {
       poll.hashCode ^
       chat.hashCode;
 
-  factory PushSubscriptionLocalPreferences.fromJson(
+  factory PushSubscriptionSettingsLocalPreferences.fromJson(
           Map<String, dynamic> json) =>
       _$PushSubscriptionLocalPreferencesFromJson(json);
 
-  factory PushSubscriptionLocalPreferences.fromJsonString(String jsonString) =>
+  factory PushSubscriptionSettingsLocalPreferences.fromJsonString(String jsonString) =>
       _$PushSubscriptionLocalPreferencesFromJson(jsonDecode(jsonString));
 
   Map<String, dynamic> toJson() =>

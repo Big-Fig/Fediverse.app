@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 
 var _animationDuration = Duration(milliseconds: 60);
 
+var _logger = Logger("custom_switch.dart");
+
+// todo: refactor, cant change value outside this widget
 class CustomSwitch extends StatefulWidget {
   final double width;
   final double height;
@@ -17,7 +21,7 @@ class CustomSwitch extends StatefulWidget {
   final double borderWidth;
   final Color borderColor;
 
-  const CustomSwitch({
+  CustomSwitch({
     Key key,
     this.value,
     this.onChanged,
@@ -32,16 +36,22 @@ class CustomSwitch extends StatefulWidget {
     this.indicatorSize = 25.0,
     this.backgroundBorderRadius = 20.0,
     this.indicatorPadding = const EdgeInsets.all(4.0),
-  }) : super(key: key);
+  }) : super(key: key) {
+    _logger.finest(() => "value $value");
+  }
 
   @override
-  _CustomSwitchState createState() => _CustomSwitchState();
+  _CustomSwitchState createState() => _CustomSwitchState(value);
 }
 
 class _CustomSwitchState extends State<CustomSwitch>
     with SingleTickerProviderStateMixin {
   Animation _toggleAnimation;
   AnimationController _animationController;
+
+  bool value;
+
+  _CustomSwitchState(this.value);
 
   @override
   void initState() {
@@ -50,9 +60,11 @@ class _CustomSwitchState extends State<CustomSwitch>
       vsync: this,
       duration: _animationDuration,
     );
+
+    _logger.finest(() => "initState value $value");
     _toggleAnimation = AlignmentTween(
-      begin: widget.value ? Alignment.centerRight : Alignment.centerLeft,
-      end: widget.value ? Alignment.centerLeft : Alignment.centerRight,
+      begin: value ? Alignment.centerRight : Alignment.centerLeft,
+      end: value ? Alignment.centerLeft : Alignment.centerRight,
     ).animate(
       CurvedAnimation(parent: _animationController, curve: Curves.linear),
     );
@@ -63,7 +75,7 @@ class _CustomSwitchState extends State<CustomSwitch>
     return AnimatedBuilder(
       animation: _animationController,
       builder: (context, child) {
-        var isActive = _toggleAnimation.value != Alignment.centerLeft;
+        var isActive = value;
         return GestureDetector(
           onTap: () {
             _reverseAnimation();
@@ -106,9 +118,11 @@ class _CustomSwitchState extends State<CustomSwitch>
       );
 
   void _onValueChanged() {
+    var newValue = !value;
 
-    var newValue = !widget.value;
-
+    setState(() {
+      value = newValue;
+    });
     widget.onChanged(newValue);
   }
 

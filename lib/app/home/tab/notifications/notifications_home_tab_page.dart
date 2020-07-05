@@ -1,6 +1,4 @@
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
-import 'package:fedi/app/home/tab/notifications/drawer/notifications_home_tab_page_drawer_bloc.dart';
-import 'package:fedi/app/home/tab/notifications/drawer/notifications_home_tab_page_drawer_bloc_impl.dart';
 import 'package:fedi/app/home/tab/notifications/drawer/notifications_home_tab_page_drawer_widget.dart';
 import 'package:fedi/app/home/tab/notifications/notifications_home_tab_bloc.dart';
 import 'package:fedi/app/notification/list/cached/notification_cached_list_bloc.dart';
@@ -15,7 +13,6 @@ import 'package:fedi/app/notification/pagination/list/notification_pagination_li
 import 'package:fedi/app/notification/tab/notification_tab_exclude_helper.dart';
 import 'package:fedi/app/notification/tab/notification_tab_icon_tab_indicator_item_widget.dart';
 import 'package:fedi/app/notification/tab/notification_tab_model.dart';
-import 'package:fedi/app/push/subscription/push_subscription_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
@@ -75,12 +72,7 @@ class _NotificationsHomeTabPageState extends State<NotificationsHomeTabPage>
     return Scaffold(
       key: _drawerKey,
       backgroundColor: Colors.transparent,
-      endDrawer: DisposableProvider<INotificationsHomeTabPageDrawerBloc>(
-        create: (BuildContext context) => NotificationsHomeTabPageDrawerBloc(
-            pushSubscriptionBloc:
-                IPushSubscriptionBloc.of(context, listen: false)),
-        child: const NotificationsHomeTabPageDrawerWidget(),
-      ),
+      endDrawer: const NotificationsHomeTabPageDrawerWidget(),
       body: _buildBody(),
     );
   }

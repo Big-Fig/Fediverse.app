@@ -112,8 +112,8 @@ class HomePage extends StatelessWidget {
     var myAccountSettingsBloc =
         IMyAccountSettingsBloc.of(context, listen: false);
     return StreamBuilder<bool>(
-        stream: myAccountSettingsBloc.isNewChatsEnabledStream,
-        initialData: myAccountSettingsBloc.isNewChatsEnabled,
+        stream: myAccountSettingsBloc.isNewChatsEnabledFieldBloc.currentValueStream,
+        initialData: myAccountSettingsBloc.isNewChatsEnabledFieldBloc.currentValue,
         builder: (context, snapshot) {
           var isNewChatsEnabled = snapshot.data;
 

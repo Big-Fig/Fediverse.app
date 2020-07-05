@@ -107,7 +107,7 @@ class NotificationsTabsBloc extends DisposableOwner
               INotificationRepository.of(context, listen: false),
           listenWebSocketsChanges:
               IMyAccountSettingsBloc.of(context, listen: false)
-                  .isRealtimeWebSocketsEnabled,
+                  .isRealtimeWebSocketsEnabledFieldBloc.currentValue,
           chatNewMessagesHandlerBloc:
               IChatNewMessagesHandlerBloc.of(context, listen: false));
 }

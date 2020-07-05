@@ -3,7 +3,7 @@ import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/app/timeline/local_preferences/timeline_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/timeline/settings/local_preferences/timeline_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
@@ -20,7 +20,7 @@ abstract class TimelineStatusCachedListBloc extends DisposableOwner
   final IPleromaTimelineService pleromaTimelineService;
   final IStatusRepository statusRepository;
   final ICurrentAuthInstanceBloc currentInstanceBloc;
-  final TimelineLocalPreferencesBloc timelineLocalPreferencesBloc;
+  final TimelineSettingsLocalPreferencesBloc timelineLocalPreferencesBloc;
   final bool isFromHomeTimeline;
 
   @override

@@ -24,18 +24,18 @@ import 'package:fedi/app/notification/push/notification_push_loader_bloc_impl.da
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository_impl.dart';
 import 'package:fedi/app/push/handler/push_handler_bloc.dart';
-import 'package:fedi/app/push/subscription/local_preferences/push_subscription_local_preferences_bloc.dart';
-import 'package:fedi/app/push/subscription/local_preferences/push_subscription_local_preferences_bloc_impl.dart';
-import 'package:fedi/app/push/subscription/push_subscription_bloc.dart';
-import 'package:fedi/app/push/subscription/push_subscription_bloc_impl.dart';
+import 'package:fedi/app/push/subscription_settings/local_preferences/push_subscription_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/push/subscription_settings/local_preferences/push_subscription_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/push/subscription_settings/push_subscription_settings_bloc.dart';
+import 'package:fedi/app/push/subscription_settings/push_subscription_settings_bloc_impl.dart';
 import 'package:fedi/app/share/share_service.dart';
 import 'package:fedi/app/share/share_service_impl.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository_impl.dart';
-import 'package:fedi/app/timeline/local_preferences/timeline_local_preferences_bloc.dart';
-import 'package:fedi/app/timeline/local_preferences/timeline_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/timeline/settings/local_preferences/timeline_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/timeline/settings/local_preferences/timeline_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/database/moor/moor_database_service_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
@@ -274,15 +274,15 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         IMyAccountLocalPreferenceBloc>(myAccountLocalPreferenceBloc);
 
     var timelineLocalPreferenceBloc =
-        TimelineLocalPreferencesBloc(preferencesService, userAtHost);
+        TimelineSettingsLocalPreferencesBloc(preferencesService, userAtHost);
     addDisposable(disposable: timelineLocalPreferenceBloc);
     await globalProviderService.asyncInitAndRegister<
-        ITimelineLocalPreferencesBloc>(timelineLocalPreferenceBloc);
+        ITimelineSettingsLocalPreferencesBloc>(timelineLocalPreferenceBloc);
     var pushSubscriptionLocalPreferenceBloc =
-        PushSubscriptionLocalPreferencesBloc(preferencesService, userAtHost);
+        PushSubscriptionSettingsLocalPreferencesBloc(preferencesService, userAtHost);
     addDisposable(disposable: pushSubscriptionLocalPreferenceBloc);
     await globalProviderService
-        .asyncInitAndRegister<IPushSubscriptionLocalPreferencesBloc>(
+        .asyncInitAndRegister<IPushSubscriptionSettingsLocalPreferencesBloc>(
             pushSubscriptionLocalPreferenceBloc);
 
     var myAccountBloc = MyAccountBloc(
@@ -295,16 +295,16 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService
         .asyncInitAndRegister<IMyAccountBloc>(myAccountBloc);
 
-    var pushSubscriptionBloc = PushSubscriptionBloc(
+    var pushSubscriptionBloc = PushSubscriptionSettingsBloc(
         pushRelayService: pushRelayService,
-        subscriptionLocalPreferencesBloc: pushSubscriptionLocalPreferenceBloc,
+        localPreferencesBloc: pushSubscriptionLocalPreferenceBloc,
         pleromaPushService: pleromaPushService,
         currentInstance: currentInstance,
         fcmPushService: fcmPushService);
 
     addDisposable(disposable: pushSubscriptionBloc);
     await globalProviderService
-        .asyncInitAndRegister<IPushSubscriptionBloc>(pushSubscriptionBloc);
+        .asyncInitAndRegister<IPushSubscriptionSettingsBloc>(pushSubscriptionBloc);
 
     var isHaveSubscription = pushSubscriptionBloc.isHaveSubscription;
     if (!isHaveSubscription) {
@@ -356,7 +356,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
             myAccountSettingsLocalPreferenceBloc);
 
     var myAccountSettingsBloc = MyAccountSettingsBloc(
-        localPreferenceBloc: myAccountSettingsLocalPreferenceBloc);
+        localPreferencesBloc: myAccountSettingsLocalPreferenceBloc);
 
     addDisposable(disposable: myAccountSettingsBloc);
     await globalProviderService

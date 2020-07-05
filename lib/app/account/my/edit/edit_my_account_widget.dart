@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/my/edit/avatar/edit_my_account_header_dialog.dart';
 import 'package:fedi/app/account/my/edit/edit_my_account_bloc.dart';
 import 'package:fedi/app/account/my/edit/header/edit_my_account_avatar_dialog.dart';
+import 'package:fedi/app/form/form_field_form_bool_field_row_widget.dart';
 import 'package:fedi/app/media/picker/single_media_picker_page.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
@@ -12,13 +13,11 @@ import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/form/fedi_form_edit_text_row.dart';
 import 'package:fedi/app/ui/form/fedi_form_pair_edit_text_row.dart';
-import 'package:fedi/app/ui/form/fedi_form_switch_row.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:fedi/media/media_image_source_model.dart';
-import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc_impl.dart';
+import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
 import 'package:fedi/ui/form/group/one_type/form_one_type_group_bloc.dart';
 import 'package:fedi/ui/form/group/pair/form_link_pair_field_group_bloc.dart';
-import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
 import 'package:flutter/material.dart';
 
 const _avatarSize = 120.0;
@@ -268,22 +267,8 @@ class EditMyAccountWidget extends StatelessWidget {
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
     var label = tr("app.account.my.edit.field.locked.label");
     var field = editMyAccountBloc.lockedField;
-    return buildBooleanField(label, field);
+    return FormFieldFormBoolFieldRowWidget(label: label, field: field);
   }
-
-  Widget buildBooleanField(String label, FormBoolFieldBloc field) =>
-      StreamBuilder<bool>(
-          stream: field.currentValueStream,
-          initialData: field.currentValue,
-          builder: (context, snapshot) {
-            var currentValue = snapshot.data;
-
-            return FediFormSwitchRow(
-              label: label,
-              onChanged: field.changeCurrentValue,
-              value: currentValue,
-            );
-          });
 
   Widget buildCustomFields(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {

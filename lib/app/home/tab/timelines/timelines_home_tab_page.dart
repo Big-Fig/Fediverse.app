@@ -1,7 +1,5 @@
 import 'package:fedi/app/home/home_bloc.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
-import 'package:fedi/app/home/tab/timelines/drawer/timelines_home_tab_page_drawer_bloc.dart';
-import 'package:fedi/app/home/tab/timelines/drawer/timelines_home_tab_page_drawer_bloc_impl.dart';
 import 'package:fedi/app/home/tab/timelines/drawer/timelines_home_tab_page_drawer_widget.dart';
 import 'package:fedi/app/home/tab/timelines/timelines_home_tab_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/timelines_home_tab_overlay_on_long_scroll_widget.dart';
@@ -9,7 +7,9 @@ import 'package:fedi/app/home/tab/timelines/timelines_home_tab_post_status_heade
 import 'package:fedi/app/search/search_page.dart';
 import 'package:fedi/app/status/list/status_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/app/timeline/local_preferences/timeline_local_preferences_bloc.dart';
+import 'package:fedi/app/timeline/settings/local_preferences/timeline_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/timeline/settings/timelines_settings_bloc.dart';
+import 'package:fedi/app/timeline/settings/timelines_settings_bloc_impl.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_model.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_text_tab_indicator_item_widget.dart';
 import 'package:fedi/app/timeline/timeline_tabs_bloc.dart';
@@ -71,10 +71,11 @@ class _TimelinesHomeTabPageState extends State<TimelinesHomeTabPage>
     return Scaffold(
       key: _drawerKey,
       backgroundColor: Colors.transparent,
-      endDrawer: DisposableProvider<ITimelinesHomeTabPageDrawerBloc>(
-        create: (BuildContext context) => TimelinesHomeTabPageDrawerBloc(
-            localPreferencesBloc:
-                ITimelineLocalPreferencesBloc.of(context, listen: false)),
+      endDrawer: DisposableProvider<ITimelinesSettingsBloc>(
+        create: (BuildContext context) => TimelinesSettingsBloc(
+            localPreferencesBloc: ITimelineSettingsLocalPreferencesBloc.of(
+                context,
+                listen: false)),
         child: const TimelinesHomeTabPageDrawerWidget(),
       ),
       body: _buildBody(),
