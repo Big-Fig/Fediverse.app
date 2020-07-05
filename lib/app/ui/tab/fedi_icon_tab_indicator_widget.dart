@@ -1,4 +1,6 @@
+import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/tab/fedi_icon_tab_indicator_item_widget.dart';
+import 'package:fedi/app/ui/tab/fedi_tab_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -18,28 +20,29 @@ class FediIconTabIndicatorWidget<T> extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) =>
-  Container(
-    height: 42,
-    child: ListView(
-        scrollDirection: Axis.horizontal,
-//      Row(
-//        mainAxisAlignment: expand == true ? MainAxisAlignment.spaceBetween :
-//        null,
-          children: tabs.asMap().entries.map((entry) {
-            var index = entry.key;
-            var tab = entry.value;
-            var isLast = index == tabs.length - 1;
+  Widget build(BuildContext context) {
+    return TabBar(
+      isScrollable: true,
+      indicatorSize: TabBarIndicatorSize.label,
+      labelPadding: EdgeInsets.symmetric(horizontal: 8.0),
+      indicator: FediTabIndicator(
+        indicatorHeight: 42.0,
+        indicatorColor: FediColors.primaryColor,
+        padding: EdgeInsets.zero,
+        insets: EdgeInsets.zero,
+        tabBarIndicatorSize: TabBarIndicatorSize.label,
+      ),
+      tabs: tabs.asMap().entries.map((entry) {
+        var index = entry.key;
+        var tab = entry.value;
 
-            return Padding(
-              padding: EdgeInsets.only(right: isLast ? 0.0 : 16.0),
-              child: FediIconTabIndicatorItemWidget(
-                index: index,
-                tabController: tabController,
-                iconData: tabToIconMapper(context, tab),
-              ),
-            );
-          }).toList(),
-        ),
-  );
+        return FediIconTabIndicatorItemWidget(
+          index: index,
+          tabController: tabController,
+          iconData: tabToIconMapper(context, tab),
+        );
+      }).toList(),
+      controller: tabController,
+    );
+  }
 }
