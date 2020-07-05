@@ -59,7 +59,8 @@ class AccountStatusesCachedListBloc extends IStatusCachedListBloc {
       conversationRepository:
           IConversationRepository.of(context, listen: false),
       listenWebSocketsChanges: IMyAccountSettingsBloc.of(context, listen: false)
-          .isRealtimeWebSocketsEnabled,
+          .isRealtimeWebSocketsEnabledFieldBloc
+          .currentValue,
       notificationRepository:
           INotificationRepository.of(context, listen: false),
       pleromaWebSocketsService:

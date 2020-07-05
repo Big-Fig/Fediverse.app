@@ -1,16 +1,16 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'push_subscription_local_preferences_model.dart';
+part of 'push_subscription_settings_local_preferences_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
 class PushSubscriptionLocalPreferencesAdapter
-    extends TypeAdapter<PushSubscriptionLocalPreferences> {
+    extends TypeAdapter<PushSubscriptionSettingsLocalPreferences> {
   @override
-  PushSubscriptionLocalPreferences read(BinaryReader reader) {
-    var obj = PushSubscriptionLocalPreferences();
+  PushSubscriptionSettingsLocalPreferences read(BinaryReader reader) {
+    var obj = PushSubscriptionSettingsLocalPreferences();
     var numOfFields = reader.readByte();
     for (var i = 0; i < numOfFields; i++) {
       switch (reader.readByte()) {
@@ -38,7 +38,7 @@ class PushSubscriptionLocalPreferencesAdapter
   }
 
   @override
-  void write(BinaryWriter writer, PushSubscriptionLocalPreferences obj) {
+  void write(BinaryWriter writer, PushSubscriptionSettingsLocalPreferences obj) {
     writer.writeByte(6);
     writer.writeByte(1);
     writer.write(obj.favourite);
@@ -59,9 +59,9 @@ class PushSubscriptionLocalPreferencesAdapter
 // JsonSerializableGenerator
 // **************************************************************************
 
-PushSubscriptionLocalPreferences _$PushSubscriptionLocalPreferencesFromJson(
+PushSubscriptionSettingsLocalPreferences _$PushSubscriptionLocalPreferencesFromJson(
     Map<String, dynamic> json) {
-  return PushSubscriptionLocalPreferences(
+  return PushSubscriptionSettingsLocalPreferences(
     favourite: json['favourite'] as bool,
     follow: json['follow'] as bool,
     mention: json['mention'] as bool,
@@ -72,7 +72,7 @@ PushSubscriptionLocalPreferences _$PushSubscriptionLocalPreferencesFromJson(
 }
 
 Map<String, dynamic> _$PushSubscriptionLocalPreferencesToJson(
-        PushSubscriptionLocalPreferences instance) =>
+        PushSubscriptionSettingsLocalPreferences instance) =>
     <String, dynamic>{
       'favourite': instance.favourite,
       'follow': instance.follow,

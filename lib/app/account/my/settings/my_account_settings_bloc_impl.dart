@@ -1,6 +1,8 @@
 import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_local_preference_bloc.dart';
+import 'package:fedi/app/account/my/settings/my_account_settings_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
 
 final defaultIsRealtimeWebSocketsEnabled = true;
@@ -8,38 +10,43 @@ final defaultIsNewChatsEnabled = true;
 
 class MyAccountSettingsBloc extends DisposableOwner
     implements IMyAccountSettingsBloc {
-  final IMyAccountSettingsLocalPreferenceBloc localPreferenceBloc;
-
-  MyAccountSettingsBloc({@required this.localPreferenceBloc});
-
+  final IMyAccountSettingsLocalPreferenceBloc localPreferencesBloc;
   @override
-  bool get isRealtimeWebSocketsEnabled =>
-      localPreferenceBloc.value?.isRealtimeWebSocketsEnabled ??
-      defaultIsRealtimeWebSocketsEnabled;
+  final FormBoolFieldBloc isRealtimeWebSocketsEnabledFieldBloc;
 
   @override
-  Stream<bool> get isRealtimeWebSocketsEnabledStream =>
-      localPreferenceBloc.stream.map((value) =>
-          value?.isRealtimeWebSocketsEnabled ??
-          defaultIsRealtimeWebSocketsEnabled);
-  @override
-  bool get isNewChatsEnabled =>
-      localPreferenceBloc.value?.isNewChatsEnabled ??
-          defaultIsNewChatsEnabled;
+  final FormBoolFieldBloc isNewChatsEnabledFieldBloc;
 
-  @override
-  Stream<bool> get isNewChatsEnabledStream =>
-      localPreferenceBloc.stream.map((value) =>
-          value?.isNewChatsEnabled ??
-              defaultIsNewChatsEnabled);
+  MyAccountSettingsBloc({@required this.localPreferencesBloc})
+      : isRealtimeWebSocketsEnabledFieldBloc = FormBoolFieldBloc(
+            originValue:
+                localPreferencesBloc.value?.isRealtimeWebSocketsEnabled ??
+                    defaultIsRealtimeWebSocketsEnabled),
+        isNewChatsEnabledFieldBloc = FormBoolFieldBloc(
+            originValue: localPreferencesBloc.value?.isNewChatsEnabled ??
+                defaultIsNewChatsEnabled) {
+    addDisposable(disposable: isRealtimeWebSocketsEnabledFieldBloc);
+    addDisposable(disposable: isNewChatsEnabledFieldBloc);
 
-  @override
-  void changeIsRealtimeWebSocketsEnabled(bool value) {
-    localPreferenceBloc.setValue(
-        localPreferenceBloc.value.copyWith(isRealtimeWebSocketsEnabled: value));
-  }  @override
-  void changeIsNewChatsEnabled(bool value) {
-    localPreferenceBloc.setValue(
-        localPreferenceBloc.value.copyWith(isNewChatsEnabled: value));
+    addDisposable(streamSubscription:
+        isRealtimeWebSocketsEnabledFieldBloc.currentValueStream.listen((_) {
+      _onSomethingChanged();
+    }));
+    addDisposable(streamSubscription:
+        isNewChatsEnabledFieldBloc.currentValueStream.listen((_) {
+      _onSomethingChanged();
+    }));
+  }
+
+  void _onSomethingChanged() {
+    var oldPreferences = localPreferencesBloc.value;
+    var newPreferences = MyAccountSettings(
+      isRealtimeWebSocketsEnabled:
+          isRealtimeWebSocketsEnabledFieldBloc.currentValue,
+      isNewChatsEnabled: isNewChatsEnabledFieldBloc.currentValue,
+    );
+    if (newPreferences != oldPreferences) {
+      localPreferencesBloc.setValue(newPreferences);
+    }
   }
 }

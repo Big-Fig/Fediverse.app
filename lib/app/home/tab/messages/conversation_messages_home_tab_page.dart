@@ -109,7 +109,7 @@ class ConversationMessagesHomeTabPage extends StatelessWidget {
     return FediTransparentTextButton(
         tr("app.home.tab.conversations.action.switch_to_chats"), onPressed: () {
       IMyAccountSettingsBloc.of(context, listen: false)
-          .changeIsNewChatsEnabled(true);
+          .isRealtimeWebSocketsEnabledFieldBloc.changeCurrentValue(true);
     });
   }
 

@@ -99,7 +99,7 @@ class ChatsListContainerBloc extends DisposableOwner
               IPleromaWebSocketsService.of(context, listen: false),
           listenWebSocketsChanges:
               IMyAccountSettingsBloc.of(context, listen: false)
-                  .isRealtimeWebSocketsEnabled,
+                  .isRealtimeWebSocketsEnabledFieldBloc.currentValue,
           conversationRepository:
               IConversationRepository.of(context, listen: false),
           statusRepository: IStatusRepository.of(context, listen: false),

@@ -103,7 +103,7 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
         var myAccountSettingsBloc =
             IMyAccountSettingsBloc.of(context, listen: false);
         return StreamBuilder<bool>(
-            stream: myAccountSettingsBloc.isNewChatsEnabledStream,
+            stream: myAccountSettingsBloc.isNewChatsEnabledFieldBloc.currentValueStream,
             builder: (context, snapshot) {
               var isNewChatsEnabled = snapshot.data;
 

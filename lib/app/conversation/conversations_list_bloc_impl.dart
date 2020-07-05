@@ -96,7 +96,7 @@ class ConversationsListBloc extends DisposableOwner
               IPleromaWebSocketsService.of(context, listen: false),
           listenWebSocketsChanges:
               IMyAccountSettingsBloc.of(context, listen: false)
-                  .isRealtimeWebSocketsEnabled,
+                  .isRealtimeWebSocketsEnabledFieldBloc.currentValue,
           chatNewMessagesHandlerBloc:
               IChatNewMessagesHandlerBloc.of(context, listen: false));
 }

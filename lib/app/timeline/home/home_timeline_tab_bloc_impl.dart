@@ -8,7 +8,7 @@ import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/timeline/home/home_timeline_status_cached_list_bloc_impl.dart';
 import 'package:fedi/app/timeline/home/home_timeline_tab_bloc.dart';
-import 'package:fedi/app/timeline/local_preferences/timeline_local_preferences_bloc.dart';
+import 'package:fedi/app/timeline/settings/local_preferences/timeline_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_bloc_impl.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
@@ -27,7 +27,7 @@ class HomeTimelineTabBloc extends TimelineTabBloc
   final IConversationRepository conversationRepository;
   final INotificationRepository notificationRepository;
   final ICurrentAuthInstanceBloc currentInstanceBloc;
-  final ITimelineLocalPreferencesBloc timelineLocalPreferencesBloc;
+  final ITimelineSettingsLocalPreferencesBloc timelineLocalPreferencesBloc;
   final IMyAccountBloc myAccountBloc;
   final IPleromaWebSocketsService pleromaWebSocketsService;
   final IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;

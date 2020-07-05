@@ -1,16 +1,16 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'timeline_local_preferences_model.dart';
+part of 'timeline_settings_local_preferences_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
 class TimelineLocalPreferencesAdapter
-    extends TypeAdapter<TimelineLocalPreferences> {
+    extends TypeAdapter<TimelineSettingsLocalPreferences> {
   @override
-  TimelineLocalPreferences read(BinaryReader reader) {
-    var obj = TimelineLocalPreferences();
+  TimelineSettingsLocalPreferences read(BinaryReader reader) {
+    var obj = TimelineSettingsLocalPreferences();
     var numOfFields = reader.readByte();
     for (var i = 0; i < numOfFields; i++) {
       switch (reader.readByte()) {
@@ -29,7 +29,7 @@ class TimelineLocalPreferencesAdapter
   }
 
   @override
-  void write(BinaryWriter writer, TimelineLocalPreferences obj) {
+  void write(BinaryWriter writer, TimelineSettingsLocalPreferences obj) {
     writer.writeByte(3);
     writer.writeByte(1);
     writer.write(obj.onlyWithMedia);

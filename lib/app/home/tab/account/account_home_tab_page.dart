@@ -6,8 +6,8 @@ import 'package:fedi/app/account/my/action/my_account_action_list_bottom_sheet_d
 import 'package:fedi/app/account/my/details/my_account_details_body_widget.dart';
 import 'package:fedi/app/account/my/edit/edit_my_account_page.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
-import 'package:fedi/app/account/my/settings/my_account_settings_drawer_widget.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/home/tab/account/drawer/account_home_tab_page_drawer_widget.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 import 'package:fedi/app/status/list/status_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
@@ -29,7 +29,7 @@ class AccountHomeTabPage extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         backgroundColor: FediColors.primaryColorDark,
         key: _drawerKey,
-        drawer: const MyAccountSettingsDrawerBodyWidget(),
+        drawer: AccountHomeTabPageDrawerWidget(),
         body: Stack(
           children: [
             ProxyProvider<IMyAccountBloc, IAccountBloc>(
