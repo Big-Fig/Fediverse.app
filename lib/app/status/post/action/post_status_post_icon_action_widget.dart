@@ -1,4 +1,5 @@
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/status/post/action/post_status_post_overlay_notification.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_filled_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
@@ -21,7 +22,10 @@ class PostStatusPostTextActionWidget extends StatelessWidget {
           return PleromaAsyncOperationButtonBuilderWidget(
             showProgressDialog: false,
             asyncButtonAction: () async {
-              await postStatusBloc.postStatus();
+              var success = await postStatusBloc.postStatus();
+              if(success) {
+                showPostStatusPostOverlayNotification(context, postStatusBloc);
+              }
             },
             builder: (BuildContext context, onPressed) {
               return FediIconInCircleFilledButton(
