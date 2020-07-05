@@ -1,3 +1,5 @@
+import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/tab/fedi_tab_indicator.dart';
 import 'package:fedi/app/ui/tab/fedi_text_tab_indicator_item_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,26 +20,30 @@ class FediTextTabIndicatorWidget<T> extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) =>
-        //      Row(
-      Container(
-        height: 36,
-        child: ListView(
-          scrollDirection: Axis.horizontal,
-          children: tabs.asMap().entries.map((entry) {
-            var index = entry.key;
-            var tab = entry.value;
-//            var isLast = index == tabs.length - 1;
-            return Padding(
-              padding: EdgeInsets.only(right: 16.0),
-              child: FediTextTabIndicatorItemWidget(
-                index: index,
-                tabController: tabController,
-                label: tabToTextMapper(context, tab),
-                isTransparent: isTransparent,
-              ),
-            );
-          }).toList(),
-        ),
-      );
+  Widget build(BuildContext context) {
+    return TabBar(
+      isScrollable: true,
+      indicatorSize: TabBarIndicatorSize.label,
+      labelPadding: EdgeInsets.symmetric(horizontal: 8.0),
+      indicator: FediTabIndicator(
+        indicatorHeight: 36.0,
+        indicatorColor: FediColors.primaryColor,
+        padding: EdgeInsets.zero,
+        insets: EdgeInsets.zero,
+        tabBarIndicatorSize: TabBarIndicatorSize.label,
+      ),
+      tabs: tabs.asMap().entries.map((entry) {
+        var index = entry.key;
+        var tab = entry.value;
+
+        return FediTextTabIndicatorItemWidget(
+          index: index,
+          tabController: tabController,
+          label: tabToTextMapper(context, tab),
+          isTransparent: isTransparent,
+        );
+      }).toList(),
+      controller: tabController,
+    );
+  }
 }
