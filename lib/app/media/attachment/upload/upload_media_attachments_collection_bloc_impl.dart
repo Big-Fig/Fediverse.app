@@ -49,7 +49,7 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
 
   // ignore: close_sinks
   BehaviorSubject<bool> isAllAttachedMediaUploadedSubject =
-      BehaviorSubject.seeded(false);
+      BehaviorSubject.seeded(true);
 
   @override
   bool get isAllAttachedMediaUploaded =>
