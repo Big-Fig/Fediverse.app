@@ -59,8 +59,6 @@ dependencies:
   cached_network_image: ^2.2.0+1
   rxdart: ^0.23.1
   auto_size_text: ^2.1.0
-  vibration: ^1.2.2
-  fluttertoast: ^4.0.1
   emoji_picker: ^0.1.0
   shared_preferences: ^0.5.6+3
 

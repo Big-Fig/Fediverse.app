@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:fedi/app/media/attachment/media_attachment_non_media_item_widget.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
-import 'package:fedi/app/media/attachment/upload/upload_media_attachment_failed_notification.dart';
+import 'package:fedi/app/media/attachment/upload/upload_media_attachment_failed_notificationOverlay.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_remove_dialog.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
@@ -31,7 +31,7 @@ class _UploadMediaAttachmentsNonMediaItemWidgetState
     streamSubscription =
         uploadMediaAttachmentBloc.uploadStateStream.listen((state) {
       if (state == UploadMediaAttachmentState.failed) {
-        showMediaAttachmentFailedNotification(context);
+        showMediaAttachmentFailedNotificationOverlay(context);
       }
     });
   }

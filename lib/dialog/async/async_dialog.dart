@@ -1,6 +1,6 @@
 import 'package:async/async.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/app/ui/error/fedi_error_data_notification_overlay.dart';
+import 'package:fedi/app/ui/notification_overlay/error_fedi_notification_overlay.dart';
 import 'package:fedi/dialog/async/async_dialog_model.dart';
 import 'package:fedi/dialog/progress/indeterminate_progress_dialog.dart';
 import 'package:fedi/error/error_data_model.dart';
@@ -84,7 +84,7 @@ Future<AsyncDialogResult<T>> doAsyncOperationWithDialog<T>({
     _logger.fine(() => "canceled doAsyncOperationWithDialog");
   } else if (error != null) {
     if (errorData != null) {
-      showFediErrorDataNotificationOverlay(
+      showErrorFediNotificationOverlay(
         titleText: errorData.titleText,
         contentText: errorData.contentText,
       );

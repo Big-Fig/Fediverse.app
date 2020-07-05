@@ -1,7 +1,7 @@
+import 'package:fedi/app/ui/notification_overlay/info_fedi_notification_overlay.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logging/logging.dart';
 
 typedef Future AsyncButtonAction();
@@ -49,8 +49,7 @@ class _AsyncOperationButtonBuilderWidgetState
                 doAsyncOperationWithDialog(
                         context: context,
                         contentMessage: widget.progressContentMessage,
-                        errorDataBuilders:
-                            widget.errorDataBuilders,
+                        errorDataBuilders: widget.errorDataBuilders,
                         showProgressDialog: widget.showProgressDialog,
                         asyncCode: widget.asyncButtonAction)
                     .then((_) async {
@@ -59,14 +58,8 @@ class _AsyncOperationButtonBuilderWidgetState
                   });
                   var successToastMessage = widget.successToastMessage;
                   if (successToastMessage != null) {
-                    await Fluttertoast.showToast(
-                        msg: successToastMessage,
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.CENTER,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: Colors.blue,
-                        textColor: Colors.white,
-                        fontSize: 16.0);
+                    showInfoFediNotificationOverlay(
+                        contentText: successToastMessage, titleText: null);
                   }
                 }).catchError((error, stacktrace) {
                   _logger.severe(() => "Fail to execute async operation", error,

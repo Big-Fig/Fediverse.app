@@ -11,6 +11,7 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/notification_overlay/info_fedi_notification_overlay.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -18,7 +19,6 @@ import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class StatusShareActionWidget extends StatelessWidget {
   @override
@@ -164,14 +164,9 @@ class StatusShareActionWidget extends StatelessWidget {
       buildButton(tr("app.status.action.copy_link"), () async {
         await Clipboard.setData(ClipboardData(text: status.uri));
         Navigator.of(context).pop();
-        await Fluttertoast.showToast(
-            msg: tr("app.status.copy_link.toast"),
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.blue,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        showInfoFediNotificationOverlay(
+            contentText: tr("app.status.copy_link.toast"),
+            titleText: null);
       });
 
   Padding buildShareAction(BuildContext context, IStatus status) =>
