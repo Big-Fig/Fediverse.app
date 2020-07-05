@@ -39,7 +39,7 @@ abstract class JsonListDatabaseConverter<T>
   @override
   List<T> mapToDart(String fromDb) {
     if (fromDb == null) {
-      return null;
+      return [];
     }
     var list = json.decode(fromDb) as List;
     return list.map((jsonObject) => fromJson(jsonObject)).toList();

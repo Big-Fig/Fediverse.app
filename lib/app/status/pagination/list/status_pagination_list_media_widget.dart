@@ -5,6 +5,7 @@ import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -24,15 +25,27 @@ class StatusPaginationListMediaWidget extends StatusPaginationListBaseWidget {
       @required Widget footer}) {
     _logger.finest(() => "buildItemsCollectionView ${items?.length}");
 
-    // todo: remove hack
     // all statuses should be already with media attachments
     items = items
-        .where((status) => status.mediaAttachments?.isNotEmpty == true)
+        .where((status) =>
+            status.mediaAttachments
+                ?.where((mediaAttachment) => mediaAttachment.isMedia)
+                ?.isNotEmpty ==
+            true)
         .toList();
 
-    var mediaStatuses = items;
+    var statusesWithMediaAttachment = <_StatusWithMediaAttachment>[];
 
-    var length = mediaStatuses.length;
+    items.forEach((status) {
+      var mediaAttachments = status.mediaAttachments
+          ?.where((mediaAttachment) => mediaAttachment.isMedia);
+      mediaAttachments.forEach((mediaAttachment) {
+        statusesWithMediaAttachment.add(_StatusWithMediaAttachment(
+            status: status, mediaAttachment: mediaAttachment));
+      });
+    });
+
+    var length = statusesWithMediaAttachment.length;
     if (header != null) {
       length += 1;
     }
@@ -55,19 +68,26 @@ class StatusPaginationListMediaWidget extends StatusPaginationListBaseWidget {
         }
 
         _logger.finest(() => "itemBuilder itemIndex=$itemIndex");
-        var status = mediaStatuses[itemIndex];
+
+        var statusWithMediaAttachment = statusesWithMediaAttachment[itemIndex];
+
         return Provider<IStatus>.value(
-          value: status,
+          value: statusWithMediaAttachment.status,
           child: DisposableProxyProvider<IStatus, IStatusBloc>(
               update: (context, status, oldValue) =>
                   StatusBloc.createFromContext(context, status),
               child: GestureDetector(
                 onTap: () {
-                  goToStatusThreadPage(context, status);
+                  goToStatusThreadPage(
+                      context, statusWithMediaAttachment.status);
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Center(child: StatusListItemMediaWidget()),
+                  child: Center(
+                    child: Provider<IPleromaMediaAttachment>.value(
+                        value: statusWithMediaAttachment.mediaAttachment,
+                        child: StatusListItemMediaWidget()),
+                  ),
                 ),
               )),
         );
@@ -77,5 +97,20 @@ class StatusPaginationListMediaWidget extends StatusPaginationListBaseWidget {
       mainAxisSpacing: 4.0,
       crossAxisSpacing: 4.0,
     );
+  }
+}
+
+class _StatusWithMediaAttachment {
+  final IStatus status;
+  final IPleromaMediaAttachment mediaAttachment;
+
+  _StatusWithMediaAttachment({
+    @required this.status,
+    @required this.mediaAttachment,
+  });
+
+  @override
+  String toString() {
+    return '_StatusWithMediaAttachment{status: $status, mediaAttachment: $mediaAttachment}';
   }
 }
