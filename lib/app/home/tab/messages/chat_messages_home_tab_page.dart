@@ -120,7 +120,7 @@ class ChatMessagesHomeTabPage extends StatelessWidget {
       tr("app.home.tab.chats.action.switch_to_dms"),
       onPressed: () {
         IMyAccountSettingsBloc.of(context, listen: false)
-            .isRealtimeWebSocketsEnabledFieldBloc.changeCurrentValue(false);
+            .isNewChatsEnabledFieldBloc.changeCurrentValue(false);
       },
     );
   }
