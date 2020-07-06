@@ -52,9 +52,9 @@ class ConversationPage extends StatelessWidget {
     );
   }
 
-  GestureDetector buildConversationAccountsWidget(
+  Widget buildConversationAccountsWidget(
       BuildContext context, IConversationBloc conversationBloc) {
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         goToConversationAccountsPage(context, conversationBloc.conversation);
       },

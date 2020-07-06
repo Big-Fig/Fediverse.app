@@ -41,9 +41,9 @@ class ChatPage extends StatelessWidget {
     );
   }
 
-  GestureDetector buildChatAccountsWidget(
+  Widget buildChatAccountsWidget(
       BuildContext context, IChatBloc chatBloc) {
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         goToChatAccountsPage(context, chatBloc.chat);
       },

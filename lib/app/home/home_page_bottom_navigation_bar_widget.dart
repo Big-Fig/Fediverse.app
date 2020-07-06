@@ -44,7 +44,7 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
     );
   }
 
-  Widget buildNewMessageNavBarItem(BuildContext context) => GestureDetector(
+  Widget buildNewMessageNavBarItem(BuildContext context) => InkWell(
       onTap: () {
         goToNewPostStatusPage(context);
       },
@@ -60,7 +60,7 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
           builder: (context, snapshot) {
             var selectedTab = snapshot.data;
 
-            return GestureDetector(
+            return InkWell(
                 onTap: () {
                   IHomeBloc.of(context, listen: false).selectTab(tab);
                 },
@@ -123,7 +123,7 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
             });
         break;
       case HomeTab.account:
-        return GestureDetector(
+        return InkWell(
           onLongPress: () {
             showMyAccountActionListBottomSheetDialog(context);
           },

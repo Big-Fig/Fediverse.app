@@ -10,6 +10,7 @@ import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/dialog/alert/confirm_alert_dialog.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class AuthInstanceChooserInstanceListItemWidget extends StatelessWidget {
   final bool isSelected;
@@ -52,9 +53,9 @@ class AuthInstanceChooserInstanceListItemWidget extends StatelessWidget {
     );
   }
 
-  GestureDetector buildAccountInfo(
+  Widget buildAccountInfo(
       BuildContext context, IAuthInstanceChooserBloc instanceChooserBloc) {
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         if (!isSelected) {
           _showConfirmChooseInstance(context, instanceChooserBloc);

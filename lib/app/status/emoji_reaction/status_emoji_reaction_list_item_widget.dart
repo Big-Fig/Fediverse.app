@@ -24,7 +24,7 @@ class StatusEmojiReactionListItemWidget extends StatelessWidget {
               emojiReaction.me ? FediColors.primaryColor : FediColors.lightGrey;
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 6.0),
-            child: GestureDetector(
+            child: InkWell(
               onTap: () {
                 statusEmojiReactionBloc.requestToggleEmojiReaction();
               },

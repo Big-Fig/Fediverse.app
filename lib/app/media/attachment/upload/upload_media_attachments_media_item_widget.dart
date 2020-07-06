@@ -132,9 +132,9 @@ class _UploadMediaAttachmentMediaItemWidgetState
     );
   }
 
-  GestureDetector buildErrorButton(BuildContext context,
+  Widget buildErrorButton(BuildContext context,
       IUploadMediaAttachmentBloc uploadMediaAttachmentBloc) {
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         uploadMediaAttachmentBloc.startUpload();
       },
@@ -154,9 +154,9 @@ class _UploadMediaAttachmentMediaItemWidgetState
     );
   }
 
-  GestureDetector buildRemoveButton(BuildContext context,
+  Widget buildRemoveButton(BuildContext context,
       IUploadMediaAttachmentBloc uploadMediaAttachmentBloc) {
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         showConfirmRemoveAssetDialog(context, uploadMediaAttachmentBloc);
       },

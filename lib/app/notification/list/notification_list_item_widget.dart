@@ -43,7 +43,7 @@ class NotificationListItemWidget extends StatelessWidget {
           children: <Widget>[
             Row(
               children: <Widget>[
-                GestureDetector(
+                InkWell(
                     onTap: () {
                       goToAccountDetailsPage(context, notificationBloc.account);
                     },

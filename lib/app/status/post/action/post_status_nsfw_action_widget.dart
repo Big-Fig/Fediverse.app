@@ -9,7 +9,7 @@ class PostStatusNsfwActionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var postStatusBloc = IPostStatusBloc.of(context, listen: false);
 
-    return GestureDetector(
+    return InkWell(
       child: StreamBuilder<bool>(
           stream: postStatusBloc.isNsfwSensitiveEnabledStream,
           initialData: postStatusBloc.isNsfwSensitiveEnabled,

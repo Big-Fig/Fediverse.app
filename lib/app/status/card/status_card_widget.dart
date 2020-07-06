@@ -30,7 +30,7 @@ class StatusCardWidget extends StatelessWidget {
               height: _cardImageSize,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(_cardBorderRadius),
-                child: GestureDetector(
+                child: InkWell(
                   onTap: () async {
                     var url = card.url;
                     await UrlHelper.handleUrlClick(context, url);

@@ -70,7 +70,7 @@ class SingleMediaPickerPage extends StatelessWidget {
                         },
                         child: FileGalleryFolderWidget(
                           headerItemBuilder: (BuildContext context) {
-                            return GestureDetector(
+                            return InkWell(
                               onTap: () async {
                                 var pickedFile = await pickImageFromCamera();
 
@@ -131,7 +131,7 @@ class SingleMediaPickerPage extends StatelessWidget {
                 builder: (context, snapshot) {
                   var selectedFolder = snapshot.data;
 
-                  return GestureDetector(
+                  return InkWell(
                     onTap: () {
                       _showFolderChooserModalBottomSheet(
                           context, fileGalleryBloc);

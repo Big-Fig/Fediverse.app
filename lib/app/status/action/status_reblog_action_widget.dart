@@ -39,7 +39,7 @@ class StatusReblogActionWidget extends StatelessWidget {
             builder: (context, snapshot) {
               var reblogsCount = snapshot.data;
 
-              return GestureDetector(
+              return InkWell(
                   onTap: () {
                     goToStatusReblogAccountListPage(context, statusBloc.status);
                   },

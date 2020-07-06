@@ -8,6 +8,7 @@ import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
   final VoidCallback onFileSelected;
@@ -145,7 +146,7 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
       });
 
   Widget _buildAction(IconData iconData, String label, Function() onTap) {
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         onTap();
       },

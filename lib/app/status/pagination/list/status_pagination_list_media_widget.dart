@@ -76,7 +76,7 @@ class StatusPaginationListMediaWidget extends StatusPaginationListBaseWidget {
           child: DisposableProxyProvider<IStatus, IStatusBloc>(
               update: (context, status, oldValue) =>
                   StatusBloc.createFromContext(context, status),
-              child: GestureDetector(
+              child: InkWell(
                 onTap: () {
                   goToStatusThreadPage(
                       context, statusWithMediaAttachment.status);
