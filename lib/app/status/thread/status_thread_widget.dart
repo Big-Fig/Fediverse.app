@@ -10,6 +10,7 @@ import 'package:fedi/app/ui/divider/fedi_light_grey_divider.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_shadows.dart';
+import 'package:fedi/ui/scroll/unfocus_on_scroll_area_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as material;
@@ -42,7 +43,9 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
         Expanded(
           child: Container(
             color: FediColors.offWhite,
-            child: buildMessageList(context, statusThreadBloc),
+            child: UnfocusOnScrollAreaWidget(
+              child: buildMessageList(context, statusThreadBloc),
+            ),
           ),
         ),
         FediUltraLightGreyDivider(),
@@ -96,7 +99,7 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
       return ScrollablePositionedList.builder(
         itemScrollController: itemScrollController,
         itemPositionsListener: itemPositionListener,
-physics: AlwaysScrollableScrollPhysics(),
+        physics: AlwaysScrollableScrollPhysics(),
 //        padding: EdgeInsets.symmetric(horizontal: 2.0, vertical: 10.0),
         itemCount: statuses.length,
         itemBuilder: (BuildContext context, int index) {
