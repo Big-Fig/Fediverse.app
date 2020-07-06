@@ -696,29 +696,6 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
     return newHtmlContent;
   }
 
-  @override
-  String get contentWithEmojisCollapsible =>
-      isCollapsed ? _collapseContent(contentWithEmojis) : contentWithEmojis;
-
-  @override
-  Stream<String> get contentWithEmojisCollapsibleStream => Rx.combineLatest2(
-      contentWithEmojisStream,
-      isCollapsedStream,
-      (contentWithEmojis, isCollapsed) => isCollapsed
-          ? _collapseContent(contentWithEmojis)
-          : contentWithEmojis);
-
-  String _collapseContent(String contentWithEmojis) {
-    // todo: check html tags
-    if (contentWithEmojis.length > minimumCharactersLimitToCollapse) {
-      var collapsedContent =
-          contentWithEmojis.substring(0, minimumCharactersLimitToCollapse);
-      return "$collapsedContent...";
-    } else {
-      return contentWithEmojis;
-    }
-  }
-
   // todo: rework with mixin
   @override
   bool get isReply => status.isReply;
