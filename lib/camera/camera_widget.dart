@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
 import 'package:fedi/camera/camera_bloc.dart';
 import 'package:fedi/camera/camera_model.dart';
@@ -121,7 +122,7 @@ abstract class CameraWidget extends StatelessWidget {
                     widget = SizedBox.shrink();
                     break;
                   case CameraState.imageCapturing:
-                    widget = CircularProgressIndicator();
+                    widget = FediCircularProgressIndicator();
                     break;
                   case CameraState.readyForAction:
                     widget = SizedBox.shrink();

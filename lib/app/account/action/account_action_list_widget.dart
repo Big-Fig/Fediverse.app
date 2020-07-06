@@ -11,6 +11,7 @@ import 'package:fedi/app/ui/dialog/fedi_alert_dialog.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -38,8 +39,8 @@ class AccountActionListWidget extends StatelessWidget {
                   topPadding +
                   bottomPadding,
               child: const Center(
-                child: CircularProgressIndicator(
-                  backgroundColor: FediColors.white,
+                child: FediCircularProgressIndicator(
+                  color: FediColors.white,
                 ),
               ),
             );

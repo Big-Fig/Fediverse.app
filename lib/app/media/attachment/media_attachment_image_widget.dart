@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/app/media/attachment/preview/media_attachment_preview_page.dart';
+import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,7 @@ class MediaAttachmentImageWidget extends StatelessWidget {
             child: Container(
               width: 30,
               height: 30,
-              child: CircularProgressIndicator(),
+              child: FediCircularProgressIndicator(),
             ),
           ),
           imageBuilder: (context, imageProvider) {

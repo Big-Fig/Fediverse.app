@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -20,7 +21,7 @@ class ListLoadingFooterWidget extends StatelessWidget {
               );
               break;
             case LoadStatus.loading:
-              body = CircularProgressIndicator();
+              body = FediCircularProgressIndicator();
               break;
             case LoadStatus.noMore:
               body = Text(

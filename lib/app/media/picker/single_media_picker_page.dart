@@ -7,6 +7,7 @@ import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/header/fedi_sub_header_text.dart';
 import 'package:fedi/app/ui/model_bottom_sheet/fedi_modal_bottom_sheet.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_custom_app_bar.dart';
+import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/file/gallery/file_gallery_bloc.dart';
@@ -53,7 +54,7 @@ class SingleMediaPickerPage extends StatelessWidget {
                   builder: (context, snapshot) {
                     var folder = snapshot.data;
                     if (folder == null) {
-                      return Center(child: CircularProgressIndicator());
+                      return Center(child: FediCircularProgressIndicator());
                     }
                     return Provider<AssetPathEntity>.value(
                       value: folder,

@@ -1,3 +1,4 @@
+import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
 import 'package:fedi/file/gallery/file/file_gallery_file_bloc.dart';
 import 'package:fedi/file/gallery/file_gallery_model.dart';
@@ -49,7 +50,7 @@ class FileGalleryFolderGridItemWidget extends StatelessWidget {
     var thumbImageData = fileBloc.thumbImageData;
 
     if(thumbImageData == null) {
-      return Center(child: CircularProgressIndicator());
+      return Center(child: FediCircularProgressIndicator());
     }
     return Image.memory(
       thumbImageData,

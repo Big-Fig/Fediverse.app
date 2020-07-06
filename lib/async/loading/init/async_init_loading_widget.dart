@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -35,7 +36,7 @@ class AsyncInitLoadingWidget extends StatelessWidget {
               );
               break;
             case AsyncInitLoadingState.loading:
-              return Center(child: CircularProgressIndicator());
+              return Center(child: FediCircularProgressIndicator());
               break;
             case AsyncInitLoadingState.finished:
               return loadingFinishedBuilder(context);
