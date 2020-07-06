@@ -36,6 +36,7 @@ void main() {
       mergeNewItemsImmediately: false,
       comparator: TestPaginationItem.compareItems,
       equalTo: TestPaginationItem.equalItems,
+      mergeNewItemsImmediatelyWhenItemsIsEmpty: false,
     );
     paginationListWithNewItemsBloc = memoryPaginationListWithNewItemsBloc;
     paginationListBloc = paginationListWithNewItemsBloc;
@@ -407,6 +408,7 @@ void main() {
       mergeNewItemsImmediately: true,
       comparator: TestPaginationItem.compareItems,
       equalTo: TestPaginationItem.equalItems,
+      mergeNewItemsImmediatelyWhenItemsIsEmpty: false,
     );
     paginationListWithNewItemsBloc = memoryPaginationListWithNewItemsBloc;
     paginationListBloc = paginationListWithNewItemsBloc;

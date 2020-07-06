@@ -19,12 +19,16 @@ class MemoryPaginationListWithNewItemsBloc<TPage extends PaginationPage<TItem>,
   final bool Function(TItem a, TItem b) equalTo;
 
   MemoryPaginationListWithNewItemsBloc(
-      {@required bool mergeNewItemsImmediately,
+      {
+        @required bool mergeNewItemsImmediately,
+        @required bool mergeNewItemsImmediatelyWhenItemsIsEmpty,
       @required this.comparator,
       @required this.equalTo,
       @required IPaginationBloc<TPage, TItem> paginationBloc})
       : super(
             mergeNewItemsImmediately: mergeNewItemsImmediately,
+      mergeNewItemsImmediatelyWhenItemsIsEmpty:
+      mergeNewItemsImmediatelyWhenItemsIsEmpty,
             paginationBloc: paginationBloc) {
     addDisposable(disposable: CustomDisposable(() {
       newItemsStreamController.close();

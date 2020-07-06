@@ -37,8 +37,11 @@ abstract class PaginationListWithNewItemsBloc<
   // ignore: cancel_subscriptions
   StreamSubscription newItemsSubscription;
 
+  final bool mergeNewItemsImmediatelyWhenItemsIsEmpty;
+
   PaginationListWithNewItemsBloc(
       {@required this.mergeNewItemsImmediately,
+      this.mergeNewItemsImmediatelyWhenItemsIsEmpty = true,
       @required IPaginationBloc<TPage, TItem> paginationBloc})
       : super(paginationBloc: paginationBloc) {
     addDisposable(subject: _mergedNewItemsSubject);
@@ -69,13 +72,13 @@ abstract class PaginationListWithNewItemsBloc<
             "\t newItems ${newItems.length} \n"
             "\t actuallyNew = ${actuallyNew.length}");
 
-        if(items?.isNotEmpty != true) {
-        // merge immediately
+        if (items?.isNotEmpty != true &&
+            mergeNewItemsImmediatelyWhenItemsIsEmpty) {
+          // merge immediately
           _mergedNewItemsSubject.add(actuallyNew);
         } else {
           _unmergedNewItemsSubject.add(actuallyNew);
         }
-
       });
 
       addDisposable(streamSubscription: newItemsSubscription);
