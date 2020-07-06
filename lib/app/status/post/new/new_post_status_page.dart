@@ -6,6 +6,7 @@ import 'package:fedi/app/status/post/post_status_compose_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_dismiss_icon_button.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/ui/scroll/unfocus_on_scroll_area_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -24,11 +25,13 @@ class NewPostStatusPage extends StatelessWidget {
           slivers: [
             SliverFillRemaining(
               hasScrollBody: false,
-              child: PostStatusComposeWidget(
-                goBackOnSuccess: true,
-                expanded: true,
-                maxLines: null,
-                displayAccountAvatar: false,
+              child: UnfocusOnScrollAreaWidget(
+                child: PostStatusComposeWidget(
+                  goBackOnSuccess: true,
+                  expanded: true,
+                  maxLines: null,
+                  displayAccountAvatar: false,
+                ),
               ),
             ),
           ],

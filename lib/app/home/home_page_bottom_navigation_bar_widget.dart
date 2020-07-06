@@ -123,7 +123,7 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
             });
         break;
       case HomeTab.account:
-        return InkWell(
+        return GestureDetector(
           onLongPress: () {
             showMyAccountActionListBottomSheetDialog(context);
           },

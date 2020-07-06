@@ -13,6 +13,7 @@ import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_model.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_service.dart';
+import 'package:fedi/ui/scroll/unfocus_on_scroll_area_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:moor/moor.dart';
@@ -25,11 +26,22 @@ class PostStatusStartConversationPage extends StatelessWidget {
       appBar: FediSubPageTitleAppBar(
         title: tr("app.conversation.start.title"),
       ),
-      body: PostStatusComposeWidget(
-        goBackOnSuccess: true,
-        expanded: true,
-        maxLines: null,
-        displayAccountAvatar: false,
+      body: SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: UnfocusOnScrollAreaWidget(
+                child: PostStatusComposeWidget(
+                  goBackOnSuccess: true,
+                  expanded: true,
+                  maxLines: null,
+                  displayAccountAvatar: false,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

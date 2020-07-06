@@ -21,6 +21,7 @@ import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
+import 'package:fedi/ui/scroll/unfocus_on_scroll_area_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -50,8 +51,10 @@ class SearchWidget extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   StreamBuilder<String>(
-                      stream: searchBloc.searchInputBloc.confirmedSearchTermStream,
-                      initialData: searchBloc.searchInputBloc.confirmedSearchTerm,
+                      stream:
+                          searchBloc.searchInputBloc.confirmedSearchTermStream,
+                      initialData:
+                          searchBloc.searchInputBloc.confirmedSearchTerm,
                       builder: (context, snapshot) {
                         var searchText = snapshot.data;
                         var text =
@@ -115,11 +118,7 @@ class SearchWidget extends StatelessWidget {
         (int index) {
           var tab = tabs[index];
 
-          return GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onPanDown: (_) {
-                FocusScope.of(context).requestFocus(FocusNode());
-              },
+          return UnfocusOnScrollAreaWidget(
               child: buildTabBody(context, tab, searchBloc));
         },
       ));
