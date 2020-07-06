@@ -22,4 +22,7 @@ abstract class IPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   Future<bool> loadMore();
 
   RefreshController get refreshController;
+
+  Stream<RefreshStatus> get refreshControllerRefreshStatusStream;
+  RefreshStatus get refreshControllerRefreshStatus;
 }

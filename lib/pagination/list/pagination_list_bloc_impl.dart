@@ -5,12 +5,25 @@ import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger("pagination_list_bloc_impl.dart");
 
 class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     extends AsyncInitLoadingBloc implements IPaginationListBloc<TPage, TItem> {
   final IPaginationBloc<TPage, TItem> paginationBloc;
+
+  BehaviorSubject<RefreshStatus> refreshControllerRefreshStatusSubject =
+      BehaviorSubject();
+
+  @override
+  Stream<RefreshStatus> get refreshControllerRefreshStatusStream =>
+      refreshControllerRefreshStatusSubject.stream;
+
+  @override
+  RefreshStatus get refreshControllerRefreshStatus =>
+      refreshControllerRefreshStatusSubject.value;
+
   @override
   final RefreshController refreshController =
       RefreshController(initialRefresh: false);
@@ -24,6 +37,15 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
             "pagination blocs";
       }
     }));
+    addDisposable(subject: refreshControllerRefreshStatusSubject);
+    refreshControllerRefreshStatusSubject.add(refreshController.headerStatus);
+    var listener = () {
+      refreshControllerRefreshStatusSubject.add(refreshController.headerStatus);
+    };
+    refreshController.headerMode.addListener(listener);
+    addDisposable(custom: () {
+      refreshController.headerMode.removeListener(listener);
+    });
   }
 
   @override
