@@ -3,6 +3,7 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/details/account_details_page.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -39,7 +40,7 @@ class StatusHeaderWidget extends StatelessWidget {
           child: CachedNetworkImage(
             imageUrl: account.avatar,
             placeholder: (context, url) => Container(
-                width: 24, height: 24, child: CircularProgressIndicator()),
+                width: 24, height: 24, child: FediCircularProgressIndicator()),
             errorWidget: (context, url, error) => Icon(Icons.error),
             height: 24,
             width: 24,

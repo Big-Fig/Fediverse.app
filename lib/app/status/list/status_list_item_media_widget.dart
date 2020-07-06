@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/app/status/nsfw/status_nsfw_warning_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
+import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -21,7 +22,7 @@ class StatusListItemMediaWidget extends StatelessWidget {
           fit: BoxFit.cover,
           imageUrl: previewUrl,
           placeholder: (context, url) => const Center(
-            child: CircularProgressIndicator(),
+            child: FediCircularProgressIndicator(),
           ),
           width: MediaQuery.of(context).size.width,
           errorWidget: (context, url, error) => Icon(Icons.error),

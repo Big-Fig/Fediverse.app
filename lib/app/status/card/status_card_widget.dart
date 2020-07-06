@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -115,7 +116,7 @@ class StatusCardWidget extends StatelessWidget {
         fit: BoxFit.cover,
         placeholder: (context, url) => Padding(
           padding: const EdgeInsets.all(20.0),
-          child: CircularProgressIndicator(),
+          child: FediCircularProgressIndicator(),
         ),
         errorWidget: (context, url, error) => Icon(Icons.error),
       );

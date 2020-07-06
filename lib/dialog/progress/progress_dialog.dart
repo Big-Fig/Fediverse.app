@@ -1,5 +1,6 @@
 import 'package:async/async.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/dialog/base_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +57,7 @@ abstract class ProgressDialog extends BaseDialog {
                 child: SizedBox(
                   width: 50.0,
                   height: 50.0,
-                  child: CircularProgressIndicator(),
+                  child: FediCircularProgressIndicator(),
                 ),
               ),
               Expanded(child: buildDialogContent(context))

@@ -13,6 +13,7 @@ import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/form/fedi_form_pair_edit_text_row.dart';
+import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:fedi/media/media_image_source_model.dart';
 import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
@@ -173,7 +174,7 @@ class EditMyAccountWidget extends StatelessWidget {
                 placeholder: (context, url) => Container(
                   width: 30,
                   height: 30,
-                  child: CircularProgressIndicator(),
+                  child: FediCircularProgressIndicator(),
                 ),
                 imageBuilder: (context, imageProvider) {
                   return buildAvatarImageContainer(imageProvider);
@@ -236,7 +237,7 @@ class EditMyAccountWidget extends StatelessWidget {
                   child: Container(
                     width: 30,
                     height: 30,
-                    child: CircularProgressIndicator(),
+                    child: FediCircularProgressIndicator(),
                   ),
                 ),
                 errorWidget: (context, url, error) => Icon(Icons.error),

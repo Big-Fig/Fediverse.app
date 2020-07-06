@@ -5,6 +5,7 @@ import 'package:fedi/app/account/details/account_details_page.dart';
 import 'package:fedi/app/account/list/account_list_item_widget.dart';
 import 'package:fedi/app/conversation/conversation_bloc.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
+import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ class ConversationAccountsWidget extends StatelessWidget {
           var items = snapshot.data;
 
           if (items == null) {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: FediCircularProgressIndicator());
           }
 
           return ListView.builder(

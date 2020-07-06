@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/app/account/account_bloc.dart';
+import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -45,11 +46,7 @@ class AccountAvatarWidget extends StatelessWidget {
           },
           imageUrl: avatarUrl,
           placeholder: (context, url) => Center(
-            child: Container(
-              width: progressSize,
-              height: progressSize,
-              child: CircularProgressIndicator(),
-            ),
+            child: FediCircularProgressIndicator(size: progressSize),
           ),
           errorWidget: (context, url, error) => Icon(Icons.error),
           height: imageSize,

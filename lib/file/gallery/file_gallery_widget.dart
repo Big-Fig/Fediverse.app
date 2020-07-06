@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/file/gallery/file_gallery_bloc.dart';
@@ -46,14 +47,14 @@ class FileGalleryWidget extends StatelessWidget {
                   child: Text(tr("file.gallery.state.loading_not_started")));
               break;
             case FileGalleryState.loading:
-              return Center(child: CircularProgressIndicator());
+              return Center(child: FediCircularProgressIndicator());
               break;
             case FileGalleryState.loaded:
               return buildFoldersWidget(context, fileGalleryBloc);
               break;
             default:
               // null
-              return Center(child: CircularProgressIndicator());
+              return Center(child: FediCircularProgressIndicator());
               break;
           }
         });

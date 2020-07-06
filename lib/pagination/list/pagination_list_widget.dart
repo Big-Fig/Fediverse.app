@@ -3,6 +3,7 @@ import 'package:fedi/app/async/async_smart_refresher_helper.dart';
 import 'package:fedi/app/list/list_loading_footer_widget.dart';
 import 'package:fedi/app/list/list_refresh_header_widget.dart';
 import 'package:fedi/app/ui/list/fedi_list_smart_refresher_widget.dart';
+import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
@@ -207,7 +208,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
       IPaginationListBloc<PaginationPage<T>, T> paginationListBloc) {
     if (items == null) {
       _logger.finest(() => "build loading");
-      return buildNotListBody(Center(child: CircularProgressIndicator()));
+      return buildNotListBody(Center(child: FediCircularProgressIndicator()));
     }
 
     if (items?.isNotEmpty == true) {

@@ -1,4 +1,5 @@
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:fedi/package_info/version_package_info_widget.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,7 @@ class AppInitPage extends StatelessWidget {
 //                    ,
 ////                    Padding(
 ////                      padding: const EdgeInsets.all(8.0),
-////                      child: CircularProgressIndicator(
+////                      child: FediCircularProgressIndicator(
 ////                        backgroundColor: FediColors.white,
 ////                      ),
 ////                    ),
@@ -54,8 +55,8 @@ class AppInitPage extends StatelessWidget {
                     Container(
                       width: 40.0,
                       height: 40.0,
-                      child: CircularProgressIndicator(
-                        backgroundColor: FediColors.white,
+                      child: FediCircularProgressIndicator(
+                        color: FediColors.white,
                       ),
                     ),
                   ],

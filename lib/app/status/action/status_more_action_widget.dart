@@ -12,6 +12,7 @@ import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/notification_overlay/info_fedi_notification_overlay.dart';
+import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -223,7 +224,7 @@ class StatusShareActionWidget extends StatelessWidget {
               if (snapshot.data?.following == null) {
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Center(child: CircularProgressIndicator()),
+                  child: Center(child: FediCircularProgressIndicator()),
                 );
               }
               return Column(
