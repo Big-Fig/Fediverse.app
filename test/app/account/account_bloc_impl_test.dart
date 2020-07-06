@@ -43,6 +43,12 @@ void main() {
 
     pleromaWebSocketsService = PleromaWebSocketsServiceMock();
 
+    await accountRepository.upsertRemoteAccount(
+        mapLocalAccountToRemoteAccount(account),
+        conversationRemoteId: null,
+        chatRemoteId: null);
+    account = await accountRepository.findByRemoteId(account.remoteId);
+
     accountBloc = AccountBloc(
         account: account,
         pleromaAccountService: pleromaAccountServiceMock,
@@ -373,16 +379,16 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
     expectAccount(listenedValue, account);
 
+    var newRelationship = createTestAccountRelationship(seed: "seed11");
     when(pleromaAccountServiceMock.getAccount(
             accountRemoteId: account.remoteId))
         .thenAnswer((_) async => mapLocalAccountToRemoteAccount(newValue));
 
-    var newRelationship = createTestAccountRelationship(seed: "seed11");
     when(pleromaAccountServiceMock
             .getRelationshipWithAccounts(remoteAccountIds: [account.remoteId]))
         .thenAnswer((_) async => [newRelationship]);
 
-    await accountBloc.refreshFromNetwork(false);
+    await accountBloc.refreshFromNetwork(true);
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 
