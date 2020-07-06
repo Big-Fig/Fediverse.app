@@ -43,10 +43,10 @@ class StatusBodyWidget extends StatelessWidget {
                               StatusSpoilerWidget(),
                               collapsible
                                   ? StatusContentWithEmojisWidget(
-                                      collapsed: true,
+                                      collapsible: true,
                                     )
                                   : StatusContentWithEmojisWidget(
-                                      collapsed: false,
+                                      collapsible: false,
                                     ),
                               if (collapsible &&
                                   statusBloc.isPossibleToCollapse)

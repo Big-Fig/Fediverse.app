@@ -8,15 +8,15 @@ import 'package:logging/logging.dart';
 var _logger = Logger("status_content_with_emojis_widget.dart");
 
 class StatusContentWithEmojisWidget extends StatelessWidget {
-  final bool collapsed;
+  final bool collapsible;
 
-  const StatusContentWithEmojisWidget({@required this.collapsed});
+  const StatusContentWithEmojisWidget({@required this.collapsible});
 
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: true);
 
-    var isNeedCollapse = collapsed && statusBloc.isPossibleToCollapse;
+    var isNeedCollapse = collapsible && statusBloc.isPossibleToCollapse;
     return StreamBuilder<String>(
         stream: statusBloc.contentWithEmojisStream,
         initialData: statusBloc.contentWithEmojis,
@@ -45,7 +45,7 @@ class StatusContentWithEmojisWidget extends StatelessWidget {
               initialData: statusBloc.isCollapsed,
               builder: (context, snapshot) {
                 var isCollapsed = snapshot.data;
-                if (isCollapsed) {
+                if (isCollapsed && isNeedCollapse) {
                   return Container(
                     height: 200,
                     child: htmlTextWidget,
