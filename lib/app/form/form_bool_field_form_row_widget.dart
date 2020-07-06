@@ -5,12 +5,12 @@ import 'package:logging/logging.dart';
 
 var _logger = Logger("form_field_form_bool_field_row_widget.dart");
 
-class FormFieldFormBoolFieldRowWidget extends StatelessWidget {
+class FormBoolFieldFormRowWidget extends StatelessWidget {
   final String label;
   final String desc;
   final FormBoolFieldBloc field;
 
-  FormFieldFormBoolFieldRowWidget(
+  FormBoolFieldFormRowWidget(
       {@required this.label, this.desc, @required this.field});
 
   @override

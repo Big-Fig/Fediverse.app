@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/app/form/form_field_form_bool_field_row_widget.dart';
+import 'package:fedi/app/form/form_bool_field_form_row_widget.dart';
 import 'package:fedi/app/push/subscription_settings/push_subscription_settings_bloc.dart';
 import 'package:fedi/app/ui/notification_overlay/error_fedi_notification_overlay.dart';
 import 'package:flutter/cupertino.dart';
@@ -44,27 +44,27 @@ class _PushSubscriptionSettingsWidgetState
 
     return ListView(
       children: [
-        FormFieldFormBoolFieldRowWidget(
+        FormBoolFieldFormRowWidget(
           label: tr("app.notification.push.settings.field.favourites.label"),
           field: settingsBloc.favouriteFieldBloc,
         ),
-        FormFieldFormBoolFieldRowWidget(
+        FormBoolFieldFormRowWidget(
           label: tr("app.notification.push.settings.field.follows.label"),
           field: settingsBloc.followFieldBloc,
         ),
-        FormFieldFormBoolFieldRowWidget(
+        FormBoolFieldFormRowWidget(
           label: tr("app.notification.push.settings.field.mentions.label"),
           field: settingsBloc.mentionFieldBloc,
         ),
-        FormFieldFormBoolFieldRowWidget(
+        FormBoolFieldFormRowWidget(
           label: tr("app.notification.push.settings.field.reblogs.label"),
           field: settingsBloc.reblogFieldBloc,
         ),
-        FormFieldFormBoolFieldRowWidget(
+        FormBoolFieldFormRowWidget(
           label: tr("app.notification.push.settings.field.polls.label"),
           field: settingsBloc.pollFieldBloc,
         ),
-        FormFieldFormBoolFieldRowWidget(
+        FormBoolFieldFormRowWidget(
           label: tr("app.notification.push.settings.field.chat.label"),
           field: settingsBloc.chatFieldBloc,
         ),

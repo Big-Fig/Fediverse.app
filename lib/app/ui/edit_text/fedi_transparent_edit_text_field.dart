@@ -41,7 +41,7 @@ class FediTransparentEditTextField extends StatelessWidget {
     @required this.textInputAction,
     @required this.textEditingController,
     this.displayUnderlineBorder = false,
-    this.focusNode,
+    @required this.focusNode,
     this.autocorrect = true,
   });
 
