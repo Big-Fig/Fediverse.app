@@ -1,5 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/app/form/form_field_form_bool_field_row_widget.dart';
+import 'package:fedi/app/form/form_bool_field_form_row_widget.dart';
 import 'package:fedi/app/timeline/settings/timelines_settings_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,16 +11,16 @@ class TimelinesSettingsWidget extends StatelessWidget {
 
     return ListView(
       children: [
-        FormFieldFormBoolFieldRowWidget(
+        FormBoolFieldFormRowWidget(
           label: tr("app.timeline.display.settings.field.only_with_media"
               ".label"),
           field: settingsBloc.onlyWithMediaFieldBloc,
         ),
-        FormFieldFormBoolFieldRowWidget(
+        FormBoolFieldFormRowWidget(
           label: tr("app.timeline.display.settings.field.hide_replies.label"),
           field: settingsBloc.onlyNoRepliesFieldBloc,
         ),
-        FormFieldFormBoolFieldRowWidget(
+        FormBoolFieldFormRowWidget(
           label: tr("app.timeline.display.settings.field.hide_nsfw.label"),
           field: settingsBloc.onlyNoNsfwSensitiveFieldBloc,
         ),

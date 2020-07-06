@@ -3,7 +3,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/my/edit/avatar/edit_my_account_header_dialog.dart';
 import 'package:fedi/app/account/my/edit/edit_my_account_bloc.dart';
 import 'package:fedi/app/account/my/edit/header/edit_my_account_avatar_dialog.dart';
-import 'package:fedi/app/form/form_field_form_bool_field_row_widget.dart';
+import 'package:fedi/app/form/form_bool_field_form_row_widget.dart';
+import 'package:fedi/app/form/form_string_field_form_row_widget.dart';
 import 'package:fedi/app/media/picker/single_media_picker_page.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
@@ -11,7 +12,6 @@ import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/form/fedi_form_edit_text_row.dart';
 import 'package:fedi/app/ui/form/fedi_form_pair_edit_text_row.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:fedi/media/media_image_source_model.dart';
@@ -62,8 +62,18 @@ class EditMyAccountWidget extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
             children: [
-              buildDisplayNameField(context, editMyAccountBloc),
-              buildNoteField(context, editMyAccountBloc),
+              buildTextField(
+                  formStringFieldBloc: editMyAccountBloc.displayNameField,
+                  label: tr("app.account.my.edit.field"
+                      ".display_name.label"),
+                  nextFormStringFieldBloc: editMyAccountBloc.noteField),
+              buildTextField(
+                formStringFieldBloc: editMyAccountBloc.noteField,
+                label: tr(
+                  "app.account.my.edit.field.note.label",
+                ),
+                nextFormStringFieldBloc: null,
+              ),
               buildLockedField(context, editMyAccountBloc),
               buildCustomFields(context, editMyAccountBloc)
             ],
@@ -241,25 +251,25 @@ class EditMyAccountWidget extends StatelessWidget {
     );
   }
 
-  Widget buildDisplayNameField(
-      BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    var label = tr("app.account.my.edit.field.display_name.label");
-    return buildTextField(editMyAccountBloc.displayNameField, label);
-  }
-
-  Widget buildNoteField(
-      BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    var label = tr("app.account.my.edit.field.note.label");
-    return buildTextField(editMyAccountBloc.noteField, label);
-  }
-
   Widget buildTextField(
-      IFormStringFieldBloc formStringFieldBloc, String label) {
-    return FediFormEditTextRow(
+      {@required IFormStringFieldBloc formStringFieldBloc,
+      @required String label,
+      @required IFormStringFieldBloc nextFormStringFieldBloc}) {
+    var isHaveNextField = nextFormStringFieldBloc != null;
+
+    return FormStringFieldFormRowWidget(
       autocorrect: true,
       label: label,
       formStringFieldBloc: formStringFieldBloc,
       hint: label,
+      onSubmitted: isHaveNextField
+          ? (String value) {
+              formStringFieldBloc.focusNode.unfocus();
+              nextFormStringFieldBloc.focusNode.requestFocus();
+            }
+          : null,
+      textInputAction:
+          isHaveNextField ? TextInputAction.next : TextInputAction.done,
     );
   }
 
@@ -267,7 +277,7 @@ class EditMyAccountWidget extends StatelessWidget {
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
     var label = tr("app.account.my.edit.field.locked.label");
     var field = editMyAccountBloc.lockedField;
-    return FormFieldFormBoolFieldRowWidget(label: label, field: field);
+    return FormBoolFieldFormRowWidget(label: label, field: field);
   }
 
   Widget buildCustomFields(
@@ -282,9 +292,22 @@ class EditMyAccountWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               ...fields.asMap().entries.map(
-                    (entry) => buildCustomField(
-                        context, customFieldsGroupBloc, entry.value, entry.key),
-                  ),
+                (entry) {
+                  var index = entry.key;
+                  var nextIndex = index + 1;
+
+                  IFormLinkPairFieldGroupBloc nextCustomField;
+                  if (nextIndex < fields.length) {
+                    nextCustomField = fields[nextIndex];
+                  }
+                  return buildCustomField(
+                      context: context,
+                      fieldGroupBloc: customFieldsGroupBloc,
+                      customField: entry.value,
+                      index: index,
+                      nextCustomField: nextCustomField);
+                },
+              ),
               StreamBuilder<bool>(
                   stream:
                       customFieldsGroupBloc.isMaximumFieldsCountReachedStream,
@@ -314,10 +337,16 @@ class EditMyAccountWidget extends StatelessWidget {
   }
 
   Widget buildCustomField(
-      BuildContext context,
-      IFormOneTypeGroupBloc<IFormLinkPairFieldGroupBloc> fieldGroupBloc,
-      IFormLinkPairFieldGroupBloc customField,
-      int index) {
+      {@required
+          BuildContext context,
+      @required
+          IFormOneTypeGroupBloc<IFormLinkPairFieldGroupBloc> fieldGroupBloc,
+      @required
+          IFormLinkPairFieldGroupBloc customField,
+      @required
+          IFormLinkPairFieldGroupBloc nextCustomField,
+      @required
+          int index}) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -337,6 +366,7 @@ class EditMyAccountWidget extends StatelessWidget {
                 fieldGroupBloc.removeField(customField);
               },
             ),
+            nextFocusNode: nextCustomField?.keyField?.focusNode,
           ),
         ),
       ],

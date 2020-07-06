@@ -12,6 +12,7 @@ class FediFormPairEditTextRow extends StatelessWidget {
   final FormStringFieldBloc valueStringFieldBloc;
   final String valueHint;
   final Widget ending;
+  final FocusNode nextFocusNode;
 
   FediFormPairEditTextRow({
     @required this.label,
@@ -20,72 +21,88 @@ class FediFormPairEditTextRow extends StatelessWidget {
     @required this.nameStringFieldBloc,
     @required this.valueStringFieldBloc,
     @required this.ending,
+    @required this.nextFocusNode,
   });
 
   @override
-  Widget build(BuildContext context) => FediFormRow(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            FediFormEditTextLabel(label),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: StreamBuilder<List<FormItemValidationError>>(
-                      stream: nameStringFieldBloc.errorsStream,
-                      initialData: nameStringFieldBloc.errors,
-                      builder: (context, snapshot) {
-                        var errors = snapshot.data;
+  Widget build(BuildContext context) {
+    var isHaveNext = nextFocusNode != null;
+    return FediFormRow(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          FediFormEditTextLabel(label),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: StreamBuilder<List<FormItemValidationError>>(
+                    stream: nameStringFieldBloc.errorsStream,
+                    initialData: nameStringFieldBloc.errors,
+                    builder: (context, snapshot) {
+                      var errors = snapshot.data;
 
-                        var error =
-                            errors?.isNotEmpty == true ? errors.first : null;
-                        return FediTransparentEditTextField(
-                          expanded: false,
-                          autofocus: false,
-                          hintText: nameHint,
-                          maxLines: 1,
-                          onSubmitted: null,
-                          textInputAction: TextInputAction.done,
-                          textEditingController:
-                              nameStringFieldBloc.textEditingController,
-                          displayUnderlineBorder: true,
-                          errorText: error?.createErrorDescription(context),
-                        );
-                      }),
-                ),
-                SizedBox(
-                  width: 16.0,
-                ),
-                Expanded(
-                  flex: 2,
-                  child: StreamBuilder<List<FormItemValidationError>>(
-                      stream: valueStringFieldBloc.errorsStream,
-                      initialData: valueStringFieldBloc.errors,
-                      builder: (context, snapshot) {
-                        var errors = snapshot.data;
+                      var error =
+                          errors?.isNotEmpty == true ? errors.first : null;
+                      return FediTransparentEditTextField(
+                        expanded: false,
+                        autofocus: false,
+                        hintText: nameHint,
+                        maxLines: 1,
+                        onSubmitted: (_) {
+                          nameStringFieldBloc.focusNode.unfocus();
+                          valueStringFieldBloc.focusNode.requestFocus();
+                        },
+                        textInputAction: TextInputAction.next,
+                        textEditingController:
+                            nameStringFieldBloc.textEditingController,
+                        displayUnderlineBorder: true,
+                        errorText: error?.createErrorDescription(context),
+                        focusNode: nameStringFieldBloc.focusNode,
+                      );
+                    }),
+              ),
+              SizedBox(
+                width: 16.0,
+              ),
+              Expanded(
+                flex: 2,
+                child: StreamBuilder<List<FormItemValidationError>>(
+                    stream: valueStringFieldBloc.errorsStream,
+                    initialData: valueStringFieldBloc.errors,
+                    builder: (context, snapshot) {
+                      var errors = snapshot.data;
 
-                        var error =
-                            errors?.isNotEmpty == true ? errors.first : null;
+                      var error =
+                          errors?.isNotEmpty == true ? errors.first : null;
 
-                        return FediTransparentEditTextField(
-                          expanded: false,
-                          autofocus: false,
-                          hintText: valueHint,
-                          maxLines: 1,
-                          onSubmitted: null,
-                          textInputAction: TextInputAction.done,
-                          textEditingController:
-                              valueStringFieldBloc.textEditingController,
-                          displayUnderlineBorder: true,
-                          errorText: error?.createErrorDescription(context),
-                        );
-                      }),
-                ),
-                ending
-              ],
-            ),
-          ],
-        ),
-      );
+                      return FediTransparentEditTextField(
+                        expanded: false,
+                        autofocus: false,
+                        hintText: valueHint,
+                        maxLines: 1,
+                        onSubmitted: isHaveNext
+                            ? (_) {
+                                valueStringFieldBloc.focusNode.unfocus();
+                                nextFocusNode.requestFocus();
+                              }
+                            : null,
+                        textInputAction: isHaveNext
+                            ? TextInputAction.next
+                            : TextInputAction.done,
+                        textEditingController:
+                            valueStringFieldBloc.textEditingController,
+                        displayUnderlineBorder: true,
+                        errorText: error?.createErrorDescription(context),
+                        focusNode: valueStringFieldBloc.focusNode,
+                      );
+                    }),
+              ),
+              ending
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 }

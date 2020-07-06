@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_bloc.dart';
+import 'package:fedi/app/form/form_string_field_form_row_widget.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
-import 'package:fedi/app/ui/form/fedi_form_edit_text_row.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:fedi/error/error_data_model.dart';
 import 'package:fedi/pleroma/account/public/pleroma_account_public_model.dart';
@@ -38,14 +38,25 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
     @required String hintText,
     @required String labelText,
     @required bool autocorrect,
+    @required IFormStringFieldBloc nextFormStringFieldBloc,
   }) {
+    var isHaveNextField = nextFormStringFieldBloc != null;
+
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal:10.0),
-      child: FediFormEditTextRow(
+      padding: EdgeInsets.symmetric(horizontal: 10.0),
+      child: FormStringFieldFormRowWidget(
         formStringFieldBloc: formStringFieldBloc,
         hint: hintText,
         label: labelText,
         autocorrect: autocorrect,
+        onSubmitted: isHaveNextField
+            ? (String value) {
+                formStringFieldBloc.focusNode.unfocus();
+                nextFormStringFieldBloc.focusNode.requestFocus();
+              }
+            : null,
+        textInputAction:
+            isHaveNextField ? TextInputAction.next : TextInputAction.done,
       ),
     );
   }
@@ -58,6 +69,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
         labelText: tr("app.auth.instance.register.field.username.label"),
         hintText: tr("app.auth.instance.register.field.username.hint"),
         autocorrect: false,
+        nextFormStringFieldBloc: bloc.emailFieldBloc,
       );
 
   Widget buildEmailField(
@@ -68,6 +80,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
         labelText: tr("app.auth.instance.register.field.email.label"),
         hintText: tr("app.auth.instance.register.field.email.hint"),
         autocorrect: false,
+        nextFormStringFieldBloc: bloc.passwordFieldBloc,
       );
 
   Widget buildPasswordField(
@@ -78,6 +91,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
         labelText: tr("app.auth.instance.register.field.password.label"),
         hintText: tr("app.auth.instance.register.field.password.hint"),
         autocorrect: false,
+        nextFormStringFieldBloc: bloc.confirmPasswordFieldBloc,
       );
 
   Widget buildConfirmPasswordField(
@@ -89,6 +103,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
             tr("app.auth.instance.register.field.confirm_password.label"),
         hintText: tr("app.auth.instance.register.field.confirm_password.hint"),
         autocorrect: false,
+        nextFormStringFieldBloc: null,
       );
 
   Widget buildSubmitButton(
