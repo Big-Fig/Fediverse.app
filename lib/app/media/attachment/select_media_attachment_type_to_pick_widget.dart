@@ -5,6 +5,7 @@ import 'package:fedi/app/media/single_camera_picker.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -33,25 +34,15 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
 //                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _buildAttachGallery(context),
-                SizedBox(
-                  width: 16,
-                ),
+                const FediBigHorizontalSpacer(),
                 _buildAttachPhoto(context),
-                SizedBox(
-                  width: 16,
-                ),
+                const FediBigHorizontalSpacer(),
                 _buildAttachVideo(context),
-                SizedBox(
-                  width: 16,
-                ),
+                const FediBigHorizontalSpacer(),
                 _buildAttachFile(context),
-                SizedBox(
-                  width: 16,
-                ),
+                const FediBigHorizontalSpacer(),
                 _buildAttachAudio(context),
-                SizedBox(
-                  width: 16,
-                ),
+                const FediBigHorizontalSpacer(),
               ],
             ),
           ),
@@ -85,7 +76,7 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
             file: pickedFile,
           );
           var attachmentsCollectionBloc =
-          IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);
+              IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);
           attachmentsCollectionBloc.attachMedia(filePickerFile);
           onFileSelected();
         }
@@ -103,7 +94,7 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
             file: pickedFile,
           );
           var attachmentsCollectionBloc =
-          IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);
+              IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);
           attachmentsCollectionBloc.attachMedia(filePickerFile);
           onFileSelected();
         }
@@ -121,10 +112,9 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
           );
 
           var attachmentsCollectionBloc =
-          IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);
+              IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);
           attachmentsCollectionBloc.attachMedia(filePickerFile);
           onFileSelected();
-
         }
       });
 
@@ -139,7 +129,7 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
             file: pickedFile,
           );
           var attachmentsCollectionBloc =
-          IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);
+              IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);
           attachmentsCollectionBloc.attachMedia(filePickerFile);
           onFileSelected();
         }
@@ -160,7 +150,7 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(60.0)),
             child: Center(child: Icon(iconData, color: FediColors.darkGrey)),
           ),
-          SizedBox(
+          const SizedBox(
             height: 6,
           ),
           Text(

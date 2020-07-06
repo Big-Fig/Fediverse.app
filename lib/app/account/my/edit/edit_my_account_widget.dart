@@ -14,6 +14,7 @@ import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/form/fedi_form_pair_edit_text_row.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
+import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:fedi/media/media_image_source_model.dart';
 import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
@@ -56,9 +57,7 @@ class EditMyAccountWidget extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(
-          height: 8,
-        ),
+        const FediSmallVerticalSpacer(),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(

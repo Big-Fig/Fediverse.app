@@ -15,6 +15,8 @@ import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_without_scrollable_tabs_widget.dart';
+import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
+import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -54,13 +56,9 @@ class AccountHomeTabPage extends StatelessWidget {
             content: Row(
               children: [
                 _buildDrawerAction(context),
-                SizedBox(
-                  width: 16.0,
-                ),
+                const FediBigHorizontalSpacer(),
                 Expanded(child: buildAccountChooserButton(context)),
-                SizedBox(
-                  width: 16.0,
-                ),
+                const FediBigHorizontalSpacer(),
                 _buildSettingsAction(context)
               ],
             ),
@@ -116,9 +114,7 @@ class AccountHomeTabPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Flexible(child: buildCurrentInstanceNameWidget(context)),
-          SizedBox(
-            width: 8.0,
-          ),
+          const FediSmallHorizontalSpacer(),
           const Icon(
             FediIcons.chevron_down,
             size: 18.0,
