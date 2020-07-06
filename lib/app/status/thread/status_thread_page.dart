@@ -72,7 +72,7 @@ class StatusThreadPage extends StatelessWidget {
                     isNeedWatchLocalRepositoryForUpdates: false,
                     isNeedPreFetchRelationship: false,
                   ),
-                  child: GestureDetector(
+                  child: InkWell(
                     onTap: () {
                       goToAccountDetailsPage(context, account);
                     },

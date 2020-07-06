@@ -29,7 +29,7 @@ class FediPrimaryFilledTextButton extends FediTextButton {
 
   @override
   Widget build(BuildContext context) {
-    var button = GestureDetector(
+    var button = InkWell(
       onTap: onPressed,
       child: Container(
           height: height + borderWidth * 2,

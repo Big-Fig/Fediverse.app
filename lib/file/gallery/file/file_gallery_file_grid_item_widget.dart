@@ -22,7 +22,7 @@ class FileGalleryFolderGridItemWidget extends StatelessWidget {
 
   Widget buildLoadedWidget(BuildContext context, IFileGalleryFileBloc 
   galleryFileBloc) {
-    return GestureDetector(
+    return InkWell(
       onTap: () async {
         galleryFileTapped(await galleryFileBloc.retrieveFile());
       },

@@ -12,7 +12,7 @@ class MediaAttachmentImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
         onTap: () {
           goToMediaAttachmentPreviewPage(context,
               mediaAttachment: mediaAttachment);

@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 final _numberFormat = NumberFormat("#,###");
 
@@ -18,7 +19,7 @@ class AccountHeaderStatisticWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         if (onPressed != null) {
           onPressed();

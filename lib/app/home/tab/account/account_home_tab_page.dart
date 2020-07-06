@@ -107,7 +107,7 @@ class AccountHomeTabPage extends StatelessWidget {
       );
 
   Widget buildAccountChooserButton(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         showMyAccountActionListBottomSheetDialog(context);
       },

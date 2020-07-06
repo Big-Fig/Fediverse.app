@@ -44,7 +44,7 @@ class StatusFavouriteActionWidget extends StatelessWidget {
                 if (favouritesCount == null) {
                   return SizedBox.shrink();
                 }
-                return GestureDetector(
+                return InkWell(
                     onTap: () {
                       goToStatusFavouriteAccountListPage(
                           context, statusBloc.status);

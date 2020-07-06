@@ -106,7 +106,7 @@ class _UploadMediaAttachmentsNonMediaItemWidgetState
 
   Widget buildRemoveButton(
       BuildContext context, IUploadMediaAttachmentBloc mediaItemBloc) {
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         showConfirmRemoveAssetDialog(context, mediaItemBloc);
       },
@@ -128,7 +128,7 @@ class _UploadMediaAttachmentsNonMediaItemWidgetState
 
   Widget buildFailedButton(
       BuildContext context, IUploadMediaAttachmentBloc mediaItemBloc) {
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         mediaItemBloc.startUpload();
       },

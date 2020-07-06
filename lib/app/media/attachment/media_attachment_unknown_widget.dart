@@ -11,7 +11,7 @@ class MediaAttachmentUnknownWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         UrlHelper.handleUrlClick(context, mediaAttachment.url);
       },

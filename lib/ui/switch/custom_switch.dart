@@ -76,7 +76,7 @@ class _CustomSwitchState extends State<CustomSwitch>
       animation: _animationController,
       builder: (context, child) {
         var isActive = value;
-        return GestureDetector(
+        return InkWell(
           onTap: () {
             _reverseAnimation();
             _onValueChanged();
