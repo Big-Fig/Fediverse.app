@@ -13,6 +13,7 @@ import 'package:fedi/app/notification/created_at/notification_created_at_widget.
 import 'package:fedi/app/notification/notification_bloc.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +50,7 @@ class NotificationListItemWidget extends StatelessWidget {
                     },
                     child:
                         AccountAvatarWidget(progressSize: 36, imageSize: 36)),
-                SizedBox(width: 16),
+                const FediBigHorizontalSpacer(),
                 Expanded(
                   child: GestureDetector(
                     behavior: HitTestBehavior.translucent,
@@ -70,7 +71,7 @@ class NotificationListItemWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(width: 16),
+                const FediBigHorizontalSpacer(),
                 NotificationCreatedAtWidget()
               ],
             ),

@@ -6,6 +6,7 @@ import 'package:fedi/app/account/avatar/account_avatar_widget.dart';
 import 'package:fedi/app/account/details/account_details_page.dart';
 import 'package:fedi/app/account/display_name/account_display_name_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
+import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -50,9 +51,7 @@ class StatusAccountWidget extends StatelessWidget {
                 imageSize: 48,
                 progressSize: 32,
               ),
-              const SizedBox(
-                width: 8,
-              ),
+              const FediSmallHorizontalSpacer(),
               Flexible(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

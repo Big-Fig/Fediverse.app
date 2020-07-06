@@ -13,6 +13,7 @@ import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/header/fedi_header_text.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_without_scrollable_tabs_widget.dart';
+import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
@@ -52,9 +53,7 @@ class ConversationMessagesHomeTabPage extends StatelessWidget {
               content: null,
               endingWidgets: [
                 buildSwitchToChatsActionButton(context),
-                SizedBox(
-                  width: 16.0,
-                ),
+                const FediBigHorizontalSpacer(),
                 buildStartConversationActionButton(context)
               ],
             ),

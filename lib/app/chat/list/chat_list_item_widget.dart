@@ -10,6 +10,7 @@ import 'package:fedi/app/html/html_text_helper.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -38,9 +39,7 @@ class ChatListItemWidget extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     ChatAvatarWidget(),
-                    SizedBox(
-                      width: 16,
-                    ),
+                    const FediBigHorizontalSpacer(),
                     Flexible(
                       child: buildChatPreview(context, chatBloc),
                     ),

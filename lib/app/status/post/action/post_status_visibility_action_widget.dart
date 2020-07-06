@@ -1,5 +1,6 @@
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/ui/model_bottom_sheet/fedi_modal_bottom_sheet.dart';
+import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -75,7 +76,7 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
                       isPossibleToChangeVisibility:
                           isPossibleToChangeVisibility,
                       isSelectedVisibility: isSelectedVisibility),
-                  SizedBox(width: 16.0),
+                  const FediBigHorizontalSpacer(),
                   buildVisibilityTitle(
                       context: context,
                       visibility: visibility,

@@ -1,6 +1,7 @@
 import 'package:fedi/app/ui/edit_text/fedi_transparent_edit_text_field.dart';
 import 'package:fedi/app/ui/form/fedi_form_edit_text_label.dart';
 import 'package:fedi/app/ui/form/fedi_form_row.dart';
+import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/ui/form/field/value/string/form_string_field_bloc_impl.dart';
 import 'package:fedi/ui/form/form_item_validation.dart';
 import 'package:flutter/cupertino.dart';
@@ -62,9 +63,7 @@ class FediFormPairEditTextRow extends StatelessWidget {
                       );
                     }),
               ),
-              SizedBox(
-                width: 16.0,
-              ),
+              const FediBigHorizontalSpacer(),
               Expanded(
                 flex: 2,
                 child: StreamBuilder<List<FormItemValidationError>>(

@@ -12,6 +12,7 @@ import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_shadows.dart';
+import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -62,9 +63,7 @@ class ConversationPage extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           const ConversationAvatarWidget(baseAvatarSize: 36),
-          const SizedBox(
-            width: 8,
-          ),
+          const FediSmallHorizontalSpacer(),
           const ConversationTitleWidget(
             textStyle: TextStyle(
                 fontSize: 16,

@@ -5,6 +5,7 @@ import 'package:fedi/app/chat/post/chat_post_message_bloc.dart';
 import 'package:fedi/app/chat/post/content/chat_post_message_content_widget.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_widget.dart';
+import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -41,9 +42,7 @@ class ChatPostMessageWidget extends StatelessWidget {
                     }
                   }),
               Expanded(child: const ChatPostMessageContentWidget()),
-              const SizedBox(
-                width: 12,
-              ),
+              const FediSmallHorizontalSpacer(),
               const ChatPostMessagePostActionWidget()
             ],
           ),

@@ -12,6 +12,7 @@ import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
+import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -53,9 +54,9 @@ class AccountActionListWidget extends StatelessWidget {
 //                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   buildFollowButton(accountBloc, relationship),
-                  SizedBox(width: 16),
+                  const FediBigHorizontalSpacer(),
                   buildMessageButton(context, accountBloc),
-                  SizedBox(width: 16),
+                  const FediBigHorizontalSpacer(),
                   buildMoreButton(context, accountBloc, relationship),
                 ],
               ),

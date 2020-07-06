@@ -1,5 +1,6 @@
 import 'package:fedi/app/status/emoji_reaction/status_emoji_reaction_bloc.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -48,9 +49,7 @@ class StatusEmojiReactionListItemWidget extends StatelessWidget {
                         emojiReaction.name,
                         style: TextStyle(fontSize: 16, height: 14 / 16),
                       ),
-                      SizedBox(
-                        width: 8,
-                      ),
+                      const FediSmallHorizontalSpacer(),
                       Text(
                         "${emojiReaction.count}",
                         style: TextStyle(

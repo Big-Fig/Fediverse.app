@@ -6,6 +6,7 @@ import 'package:fedi/app/status/post/action/post_status_post_icon_action_widget.
 import 'package:fedi/app/status/post/action/post_status_post_overlay_notification.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/ui/edit_text/fedi_filled_edit_text_field.dart';
+import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:fedi/dialog/alert/simple_alert_dialog.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:flutter/cupertino.dart';
@@ -77,9 +78,7 @@ class PostStatusReplyInputWidget extends StatelessWidget {
           width: 12,
         ),
         PostStatusPostTextActionWidget(),
-        const SizedBox(
-          width: 8,
-        ),
+        const FediSmallHorizontalSpacer(),
       ],
     );
   }

@@ -1,6 +1,7 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/details/account_details_page.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -34,9 +35,7 @@ class StatusSubHeaderWidget extends StatelessWidget {
           size: 16,
           color: FediColors.mediumGrey,
         ),
-        SizedBox(
-          width: 8,
-        ),
+        const FediSmallHorizontalSpacer(),
         Text(
           descText,
           style: TextStyle(

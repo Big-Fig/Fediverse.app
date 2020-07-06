@@ -8,6 +8,7 @@ import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.d
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/dialog/alert/confirm_alert_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -35,9 +36,7 @@ class AuthInstanceChooserInstanceListItemWidget extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 buildLogoutButton(context, instance),
-                SizedBox(
-                  width: 16.0,
-                ),
+                const FediBigHorizontalSpacer(),
                 Flexible(
                   child: buildAccountInfo(context, instanceChooserBloc),
                 ),
@@ -67,9 +66,7 @@ class AuthInstanceChooserInstanceListItemWidget extends StatelessWidget {
             imageSize: 48.0,
             progressSize: 36.0,
           ),
-          SizedBox(
-            width: 16.0,
-          ),
+          const FediBigHorizontalSpacer(),
           Flexible(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

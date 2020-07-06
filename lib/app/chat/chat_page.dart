@@ -12,6 +12,7 @@ import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collec
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_custom_app_bar.dart';
+import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -51,9 +52,7 @@ class ChatPage extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           const ChatAvatarWidget(baseAvatarSize: 36),
-          const SizedBox(
-            width: 16,
-          ),
+          const FediBigHorizontalSpacer(),
           const ChatTitleWidget(
             textStyle: TextStyle(
                 fontSize: 16,

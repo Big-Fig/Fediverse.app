@@ -10,6 +10,7 @@ import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -40,9 +41,7 @@ class ConversationListItemWidget extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     ConversationAvatarWidget(),
-                    SizedBox(
-                      width: 16,
-                    ),
+                    const FediBigHorizontalSpacer(),
                     Flexible(
                       child:
                           buildConversationPreview(context, conversationBloc),
