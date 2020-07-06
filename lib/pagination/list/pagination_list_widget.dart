@@ -171,10 +171,10 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
 
           _logger.finest(() => "initState position = $position");
           // todo: remove hack for empty refresh
-          if (position != null && paginationListBloc.items?.isNotEmpty ==
-              true) {
+          if (position != null &&
+              paginationListBloc.items?.isNotEmpty == true) {
             // refresh with UI indicator
-            refreshController.requestRefresh(needMove:false);
+            refreshController.requestRefresh(needMove: false);
           } else {
             // refresh without UI indicator
             paginationListBloc.refresh();
@@ -216,7 +216,33 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
           context: context, items: items, header: header, footer: footer);
     } else {
       _logger.finest(() => "build empty");
-      return buildNotListBody(Center(child: Text(tr("pagination.list.empty"))));
+      return buildNotListBody(StreamBuilder<RefreshStatus>(
+          stream: paginationListBloc.refreshControllerRefreshStatusStream,
+          initialData: paginationListBloc.refreshControllerRefreshStatus,
+          builder: (context, snapshot) {
+            var refreshControllerRefreshStatus = snapshot.data;
+
+            switch (refreshControllerRefreshStatus) {
+              case RefreshStatus.idle:
+              case RefreshStatus.refreshing:
+                return Center(child: FediCircularProgressIndicator());
+
+              case RefreshStatus.canRefresh:
+              case RefreshStatus.completed:
+
+              case RefreshStatus.failed:
+
+              case RefreshStatus.canTwoLevel:
+
+              case RefreshStatus.twoLevelOpening:
+
+              case RefreshStatus.twoLeveling:
+
+              case RefreshStatus.twoLevelClosing:
+              default:
+                return Center(child: Text(tr("pagination.list.empty")));
+            }
+          }));
     }
   }
 }
