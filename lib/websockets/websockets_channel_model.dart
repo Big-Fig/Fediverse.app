@@ -1,3 +1,4 @@
+import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/websockets/websockets_channel_source.dart';
 import 'package:fedi/websockets/websockets_channel_source_impl.dart';
 import 'package:fedi/websockets/websockets_model.dart';
@@ -19,11 +20,20 @@ abstract class WebSocketsChannelConfig<T extends WebSocketsEvent>
 
   T eventParser(Map<String, dynamic> json);
 
-  WebSocketsChannelConfig({@required this.baseUrl, @required this.queryArgs});
+  final IConnectionService connectionService;
+
+  WebSocketsChannelConfig({
+    @required this.connectionService,
+    @required this.baseUrl,
+    @required this.queryArgs,
+  });
 
   @override
   IWebSocketsChannelSource<T> createChannelSource() => WebSocketsChannelSource(
-      url: calculateWebSocketsUrl(), eventParser: eventParser);
+        connectionService: connectionService,
+        url: calculateWebSocketsUrl(),
+        eventParser: eventParser,
+      );
 
   @override
   Uri calculateWebSocketsUrl() {

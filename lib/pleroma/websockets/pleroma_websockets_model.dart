@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/enum/enum_values.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_model.dart';
@@ -14,9 +15,14 @@ part 'pleroma_websockets_model.g.dart';
 
 class PleromaWebSocketsChannelConfig
     extends WebSocketsChannelConfig<PleromaWebSocketsEvent> {
-  PleromaWebSocketsChannelConfig(
-      {@required Uri baseUrl, @required Map<String, String> queryArgs})
-      : super(baseUrl: baseUrl, queryArgs: queryArgs);
+  PleromaWebSocketsChannelConfig({
+    @required Uri baseUrl,
+    @required Map<String, String> queryArgs,
+    @required IConnectionService connectionService,
+  }) : super(
+            baseUrl: baseUrl,
+            queryArgs: queryArgs,
+            connectionService: connectionService);
 
   @override
   PleromaWebSocketsEvent eventParser(Map<String, dynamic> json) =>
@@ -55,8 +61,8 @@ class PleromaWebSocketsEvent extends WebSocketsEvent {
 
   PleromaNotification parsePayloadAsNotification() =>
       PleromaNotification.fromJson(jsonDecode(payload));
-  PleromaChat parsePayloadAsChat() =>
-      PleromaChat.fromJson(jsonDecode(payload));
+
+  PleromaChat parsePayloadAsChat() => PleromaChat.fromJson(jsonDecode(payload));
 
   PleromaConversation parsePayloadAsConversation() =>
       PleromaConversation.fromJson(jsonDecode(payload));
@@ -79,7 +85,6 @@ enum PleromaWebSocketsEventType {
 
   /// not exist in documentation but looks like conversation update
   conversation,
-
   pleromaChatUpdate,
 }
 

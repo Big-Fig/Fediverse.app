@@ -340,7 +340,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     var pleromaWebSocketsService = PleromaWebSocketsService(
         webSocketsService: webSocketsService,
         accessToken: currentInstance.token.accessToken,
-        baseUri: currentInstance.url);
+        baseUri: currentInstance.url, connectionService: connectionService);
 
     addDisposable(disposable: pleromaWebSocketsService);
     await globalProviderService.asyncInitAndRegister<IPleromaWebSocketsService>(

@@ -1,3 +1,4 @@
+import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/pleroma/websockets/pleroma_websockets_model.dart';
 import 'package:fedi/pleroma/websockets/pleroma_websockets_service.dart';
 import 'package:fedi/websockets/websockets_channel.dart';
@@ -14,9 +15,11 @@ class PleromaWebSocketsService extends IPleromaWebSocketsService {
 
   final Uri baseUri;
   final String accessToken;
+  final IConnectionService connectionService;
 
   PleromaWebSocketsService({
     @required this.webSocketsService,
+    @required this.connectionService,
     @required this.baseUri,
     @required this.accessToken,
   });
@@ -29,6 +32,7 @@ class PleromaWebSocketsService extends IPleromaWebSocketsService {
         Uri(scheme: webSocketsScheme, host: host, path: _relativePath);
     return webSocketsService.getOrCreateWebSocketsChannel(
         config: PleromaWebSocketsChannelConfig(
+      connectionService: connectionService,
       baseUrl: baseUrl,
       queryArgs: {
         "access_token": accessToken,
@@ -47,7 +51,7 @@ class PleromaWebSocketsService extends IPleromaWebSocketsService {
         return "wss";
         break;
     }
-    throw "Invalid http protocal $scheme";
+    throw "Invalid http protocol $scheme";
   }
 
   @override
@@ -88,8 +92,9 @@ class PleromaWebSocketsService extends IPleromaWebSocketsService {
   }) {
     assert(!(notification == true && chat == true));
     return getOrCreateNewChannel(
-        stream:
-            notification ? "user:notification" : chat ? "user:pleroma_chat" : "user");
+        stream: notification
+            ? "user:notification"
+            : chat ? "user:pleroma_chat" : "user");
   }
 
   @override
