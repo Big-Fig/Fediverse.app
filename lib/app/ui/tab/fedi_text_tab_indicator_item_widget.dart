@@ -73,6 +73,7 @@ class _FediTextTabIndicatorItemWidgetState
         onPressed: onPressed,
         fontSize: 16.0,
         lineHeight: 1.5,
+        enabledBackgroundColor: Colors.transparent,
       );
     } else {
       if (widget.isTransparent) {

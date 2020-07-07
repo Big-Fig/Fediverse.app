@@ -68,6 +68,7 @@ class _FediIconTabIndicatorItemWidgetState
       button = FediIconInCircleFilledButton(
         widget.iconData,
         onPressed: onPressed,
+        enabledBackgroundColor: Colors.transparent,
       );
     } else {
       button = FediIconInCircleBlurredButton(

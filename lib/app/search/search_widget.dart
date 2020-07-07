@@ -16,7 +16,8 @@ import 'package:fedi/app/search/statuses/search_statuses_pagination_list_bloc.da
 import 'package:fedi/app/status/pagination/network_only/status_network_only_pagination_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
-import 'package:fedi/app/ui/tab/fedi_text_tab_indicator_item_widget.dart';
+import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/tab/fedi_text_tab_indicator_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
@@ -84,17 +85,22 @@ class SearchWidget extends StatelessWidget {
 
   Widget buildTabBar(
           BuildContext context, List<SearchTab> tabs, ISearchBloc searchBloc) =>
-      Builder(
-        builder: (context) => Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: tabs
-                .map((tab) => FediTextTabIndicatorItemWidget(
-                      label: mapTabToTitle(context, tab),
-                      index: tabs.indexOf(tab),
-                      isTransparent: false,
-                      tabController: DefaultTabController.of(context),
-                    ))
-                .toList()),
+      Container(
+        width: double.infinity,
+        color: FediColors.lightGrey,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Center(
+            child: Builder(
+              builder: (context) => FediTextTabIndicatorWidget(
+                isTransparent: true,
+                tabs: tabs,
+                tabController: DefaultTabController.of(context),
+                tabToTextMapper: mapTabToTitle,
+              ),
+            ),
+          ),
+        ),
       );
 
   String mapTabToTitle(BuildContext context, SearchTab tab) {

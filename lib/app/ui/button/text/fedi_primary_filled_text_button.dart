@@ -16,10 +16,14 @@ class FediPrimaryFilledTextButton extends FediTextButton {
   final double lineHeight;
   final double borderWidth;
   final bool expanded;
+  final Color enabledBackgroundColor;
+  final Color disabledBackgroundColor;
 
   FediPrimaryFilledTextButton(
     this.text, {
     @required this.onPressed,
+    this.enabledBackgroundColor = FediColors.primaryColor,
+    this.disabledBackgroundColor = FediColors.lightGrey,
     this.height = FediSizes.defaultFilledButtonHeight,
     this.fontSize = 14.0,
     this.lineHeight = 1.15,
@@ -36,8 +40,8 @@ class FediPrimaryFilledTextButton extends FediTextButton {
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,
             color: onPressed != null
-                ? FediColors.primaryColor
-                : FediColors.lightGrey,
+                ? enabledBackgroundColor
+                : disabledBackgroundColor,
             borderRadius: BorderRadius.all(
                 Radius.circular(FediIconInCircleButton.defaultCircleSize)),
             border: Border.all(
