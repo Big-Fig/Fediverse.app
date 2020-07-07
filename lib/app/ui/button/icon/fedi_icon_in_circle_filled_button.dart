@@ -13,10 +13,22 @@ class FediIconInCircleFilledButton extends StatelessWidget
   final double iconSize;
   final double borderWidth;
   final double size;
+  final Color enabledBackgroundColor;
+  final Color disabledBackgroundColor;
+  final Color enabledBorderColor;
+  final Color disabledBorderColor;
+  final Color enabledIconColor;
+  final Color disabledIconColor;
 
   const FediIconInCircleFilledButton(
     this.iconData, {
     @required this.onPressed,
+    this.enabledBackgroundColor = FediColors.primaryColor,
+    this.disabledBackgroundColor = FediColors.white,
+    this.enabledBorderColor = FediColors.white,
+    this.disabledBorderColor = FediColors.lightGrey,
+    this.enabledIconColor = FediColors.white,
+    this.disabledIconColor = FediColors.lightGrey,
     this.borderWidth = 1.0,
     this.iconSize = FediIconInCircleButton.defaultIconSize,
     this.size = FediIconInCircleButton.defaultCircleSize,
@@ -25,10 +37,10 @@ class FediIconInCircleFilledButton extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     var backgroundColor =
-        onPressed != null ? FediColors.primaryColor : FediColors.white;
+        onPressed != null ? enabledBackgroundColor : disabledBackgroundColor;
     var borderColor =
-        onPressed != null ? FediColors.white : FediColors.lightGrey;
-    var iconColor = onPressed != null ? FediColors.white : FediColors.lightGrey;
+        onPressed != null ? enabledBorderColor : disabledBackgroundColor;
+    var iconColor = onPressed != null ? enabledIconColor : disabledIconColor;
     return Container(
         width: size + borderWidth * 2,
         height: size + borderWidth * 2,
