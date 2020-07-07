@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:convert';
 
+import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/websockets/websockets_channel_source.dart';
@@ -12,19 +14,65 @@ var _logger = Logger("websockets_channel_source.dart");
 
 class WebSocketsChannelSource<T extends WebSocketsEvent> extends DisposableOwner
     implements IWebSocketsChannelSource<T> {
+  StreamController<T> eventsStreamController = StreamController.broadcast();
+
   @override
-  Stream<T> get eventsStream => _channel.stream.map(_mapChannelData);
+  Stream<T> get eventsStream => eventsStreamController.stream;
   @override
   final Uri url;
   final WebSocketsEventParser<T> eventParser;
 
-  final IOWebSocketChannel _channel;
+  IOWebSocketChannel _channel;
+  StreamSubscription _channelSubscription;
 
-  WebSocketsChannelSource({@required this.url, @required this.eventParser})
-      : _channel = IOWebSocketChannel.connect(url) {
+  WebSocketsChannelSource({
+    @required IConnectionService connectionService,
+    @required this.url,
+    @required this.eventParser,
+  }) {
     addDisposable(disposable: CustomDisposable(() {
-      _channel.sink.close();
+      _disconnect();
     }));
+    if (connectionService.isConnected) {
+      _connect();
+    }
+
+    addDisposable(
+        streamSubscription: connectionService.isConnectedStream
+            .distinct()
+            .listen((isConnected) {
+      if (isConnected) {
+        _connect();
+      } else {
+        _disconnect();
+      }
+    }));
+  }
+
+  void _connect() {
+    _logger.finest(() => "_connect ${_channel == null}");
+    if (_channel == null) {
+      _channel = IOWebSocketChannel.connect(url);
+      _channelSubscription = _channel.stream.listen(
+        (dynamic message) {
+          _logger.finest(() => "message $message");
+          eventsStreamController.add(_mapChannelData(message));
+        },
+        onDone: () {
+          _logger.finest(() => "ws channel closed");
+        },
+        onError: (error) {
+          _logger.shout(() => "ws error $error");
+        },
+      );
+    }
+  }
+
+  void _disconnect() {
+    _logger.finest(() => "_disconnect");
+    _channelSubscription?.cancel();
+    _channel?.sink?.close();
+    _channel = null;
   }
 
   T _mapChannelData(data) {

@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 class TestWebSocketsChannelConfig extends WebSocketsChannelConfig {
   TestWebSocketsChannelConfig(
       {@required Uri baseUrl, @required Map<String, String> queryArgs})
-      : super(baseUrl: baseUrl, queryArgs: queryArgs);
+      : super(baseUrl: baseUrl, queryArgs: queryArgs, connectionService: null);
 
   @override
   WebSocketsEvent eventParser(Map<String, dynamic> json) {

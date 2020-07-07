@@ -15,9 +15,11 @@ void main() {
     webSocketsService = WebSocketsService();
 
     pleromaWebSocketsService = PleromaWebSocketsService(
-        webSocketsService: webSocketsService,
-        baseUri: Uri.parse(host),
-        accessToken: accessToken);
+      webSocketsService: webSocketsService,
+      baseUri: Uri.parse(host),
+      accessToken: accessToken,
+      connectionService: null,
+    );
   });
 
   tearDown(() async {
@@ -107,14 +109,14 @@ void main() {
   test('getAccountChannel', () async {
     expect(
         pleromaWebSocketsService
-            .getMyAccountChannel( notification: false, chat: false)
+            .getMyAccountChannel(notification: false, chat: false)
             .config
             .calculateWebSocketsUrl()
             .toString(),
         "$wssHost?access_token=$accessToken&stream=user");
     expect(
         pleromaWebSocketsService
-            .getMyAccountChannel( notification: true, chat: false)
+            .getMyAccountChannel(notification: true, chat: false)
             .config
             .calculateWebSocketsUrl()
             .toString(),
