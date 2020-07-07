@@ -9,16 +9,15 @@ import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 
 class ThreadPostStatusBloc extends PostStatusBloc {
-  final IStatus inReplyToStatus;
   final IStatusThreadBloc statusThreadBloc;
   ThreadPostStatusBloc({
-    @required this.inReplyToStatus,
+    @required IStatus inReplyToStatus,
     @required this.statusThreadBloc,
     @required IPleromaStatusService pleromaStatusService,
     @required IStatusRepository statusRepository,
     @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
   }) : super(
-            inReplyToStatusRemoteId: inReplyToStatus.remoteId,
+            inReplyToStatus: inReplyToStatus,
             pleromaStatusService: pleromaStatusService,
             statusRepository: statusRepository,
             pleromaMediaAttachmentService: pleromaMediaAttachmentService,
@@ -39,18 +38,7 @@ class ThreadPostStatusBloc extends PostStatusBloc {
   bool get isPossibleToChangeVisibility => false;
 
   @override
-  void onFocusChange(bool hasFocus) {
-    super.onFocusChange(hasFocus);
-
-    if(hasFocus) {
-      if(inputText?.isNotEmpty != true) {
-        addMentionByAccount(inReplyToStatus.account);
-      }
-    }
-  }
-
-  @override
-  Future  onStatusPosted(IPleromaStatus remoteStatus) async {
+  Future onStatusPosted(IPleromaStatus remoteStatus) async {
     var status = await statusRepository.findByRemoteId(remoteStatus.id);
     statusThreadBloc.addStatusInThread(status);
   }

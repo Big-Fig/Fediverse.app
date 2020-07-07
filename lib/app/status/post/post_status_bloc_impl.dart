@@ -6,6 +6,7 @@ import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collec
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
+import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
@@ -26,7 +27,8 @@ abstract class PostStatusBloc extends DisposableOwner
   final IStatusRepository statusRepository;
 
   final String conversationRemoteId;
-  final String inReplyToStatusRemoteId;
+  final IStatus inReplyToStatus;
+  String get inReplyToStatusRemoteId => inReplyToStatus?.remoteId;
 
   @override
   final IUploadMediaAttachmentsCollectionBloc mediaAttachmentsBloc;
@@ -41,7 +43,7 @@ abstract class PostStatusBloc extends DisposableOwner
     @required this.statusRepository,
     @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
     this.conversationRemoteId,
-    this.inReplyToStatusRemoteId,
+    this.inReplyToStatus,
     int maximumMediaAttachmentCount = 8,
     PleromaVisibility initialVisibility = PleromaVisibility.PUBLIC,
     List<IAccount> initialAccountsToMention = const [],
@@ -330,13 +332,15 @@ abstract class PostStatusBloc extends DisposableOwner
   Future<bool> _postStatus() async {
     var remoteStatus = await pleromaStatusService.postStatus(
         data: PleromaPostStatus(
-            mediaIds: _calculateMediaIds(),
-            status: inputText,
-            sensitive: isNsfwSensitiveEnabled,
-            visibility: pleromaVisibilityValues.reverse[visibility],
-            inReplyToId: inReplyToStatusRemoteId,
-            inReplyToConversationId: conversationRemoteId,
-            idempotencyKey: idempotencyKey));
+      mediaIds: _calculateMediaIdsField(),
+      status: calculateStatusTextField(),
+      sensitive: isNsfwSensitiveEnabled,
+      visibility: pleromaVisibilityValues.reverse[visibility],
+      inReplyToId: inReplyToStatusRemoteId,
+      inReplyToConversationId: conversationRemoteId,
+      idempotencyKey: idempotencyKey,
+      to: _calculateToField(),
+    ));
 
     var success;
     if (remoteStatus != null) {
@@ -362,7 +366,7 @@ abstract class PostStatusBloc extends DisposableOwner
     return success;
   }
 
-  List<String> _calculateMediaIds() {
+  List<String> _calculateMediaIdsField() {
     return mediaAttachmentsBloc.mediaAttachmentBlocs
         ?.where(
             (bloc) => bloc.uploadState == UploadMediaAttachmentState.uploaded)
@@ -373,14 +377,16 @@ abstract class PostStatusBloc extends DisposableOwner
   Future<bool> _scheduleStatus() async {
     var scheduledStatus = await pleromaStatusService.scheduleStatus(
         data: PleromaScheduleStatus(
-            mediaIds: _calculateMediaIds(),
-            status: inputText,
-            sensitive: isNsfwSensitiveEnabled,
-            visibility: pleromaVisibilityValues.reverse[visibility],
-            inReplyToId: inReplyToStatusRemoteId,
-            inReplyToConversationId: conversationRemoteId,
-            idempotencyKey: idempotencyKey,
-            scheduledAt: scheduledAt));
+      mediaIds: _calculateMediaIdsField(),
+      status: calculateStatusTextField(),
+      sensitive: isNsfwSensitiveEnabled,
+      visibility: pleromaVisibilityValues.reverse[visibility],
+      inReplyToId: inReplyToStatusRemoteId,
+      inReplyToConversationId: conversationRemoteId,
+      idempotencyKey: idempotencyKey,
+      scheduledAt: scheduledAt,
+      to: _calculateToField(),
+    ));
     var success = scheduledStatus != null;
     return success;
   }
@@ -450,6 +456,39 @@ abstract class PostStatusBloc extends DisposableOwner
       selectedActionSubject.add(null);
     } else {
       selectedActionSubject.add(PostStatusSelectedAction.attach);
+    }
+  }
+
+  List<String> _calculateToField() {
+    if (pleromaStatusService.isPleromaInstance) {
+      if (inReplyToStatus != null) {
+        var inReplyToStatusAcct = inReplyToStatus.account.acct;
+
+        var toField = [...mentionedAccts];
+
+        if (!toField.contains(inReplyToStatusAcct)) {
+          toField.add(inReplyToStatusAcct);
+        }
+        return toField;
+      } else {
+        return mentionedAccts;
+      }
+    } else {
+      return null;
+    }
+  }
+
+  String calculateStatusTextField() {
+    if (pleromaStatusService.isPleromaInstance) {
+      return inputText;
+    } else {
+      if (inReplyToStatus != null) {
+        var inReplyToStatusAcct = inReplyToStatus.account.acct;
+
+        return "@${inReplyToStatusAcct} $inputText";
+      } else {
+        return inputText;
+      }
     }
   }
 }

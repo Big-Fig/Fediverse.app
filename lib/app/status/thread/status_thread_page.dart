@@ -22,7 +22,6 @@ import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_custom_app_bar.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
-import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:flutter/material.dart';
