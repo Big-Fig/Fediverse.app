@@ -527,7 +527,7 @@
           "loading": "Loading start status"
         },
         "post": {
-          "hint": "Reply to {}"
+          "hint": "Reply to @{}"
         }
       },
       "list": {
