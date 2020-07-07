@@ -23,11 +23,7 @@ class StatusPaginationListWithNewItemsBloc<
     addDisposable(streamSubscription:
         statusCachedListBloc.settingsChangedStream.listen((changed) async {
       if (changed == true) {
-        if (refreshController.position != null) {
-          await refreshController.requestRefresh(needMove:false);
-        } else {
-          await refresh();
-        }
+        refreshWithController();
       }
     }));
   }

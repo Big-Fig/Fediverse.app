@@ -13,16 +13,9 @@ class SearchStatusesPaginationListBloc
     @required this.searchInputBloc,
     @required IPaginationBloc<PaginationPage<IStatus>, IStatus> paginationBloc,
   }) : super(paginationBloc: paginationBloc) {
-    addDisposable(
-        streamSubscription:
-            searchInputBloc.confirmedSearchTermStream.listen((newText) {
-      // refresh controller if it attached
-      if (refreshController.position != null) {
-        refreshController.requestRefresh(needMove:false);
-      } else {
-        //otherwise refresh only bloc
-        paginationBloc.refresh();
-      }
+    addDisposable(streamSubscription:
+        searchInputBloc.confirmedSearchTermStream.listen((newText) {
+      refreshWithController();
     }));
   }
 

@@ -162,7 +162,7 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
   }
 
   @override
-  Future<TPage> refresh() async {
+  Future<TPage> refreshWithoutController() async {
     indexToCachedPageMap.clear();
     pagesSubject.value.clear();
 //    onPagesChanged([newFirstPage]);

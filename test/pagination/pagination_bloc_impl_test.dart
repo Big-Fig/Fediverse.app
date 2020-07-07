@@ -240,7 +240,7 @@ void main() {
     expect(page.items.length, itemsCountPerPage);
     expect(page.items[0].index, 0);
 
-    page = await paginationBloc.refresh();
+    page = await paginationBloc.refreshWithoutController();
 
     expect(page.pageIndex, 0);
     expect(page.isActuallyRefreshedFromRemote, true);

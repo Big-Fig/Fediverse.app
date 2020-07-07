@@ -1,5 +1,6 @@
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
+import 'package:fedi/pagination/list/pagination_list_model.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/widgets.dart';
@@ -13,16 +14,25 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     extends AsyncInitLoadingBloc implements IPaginationListBloc<TPage, TItem> {
   final IPaginationBloc<TPage, TItem> paginationBloc;
 
-  BehaviorSubject<RefreshStatus> refreshControllerRefreshStatusSubject =
-      BehaviorSubject();
+  BehaviorSubject<PaginationListLoadingState> refreshStateSubject =
+      BehaviorSubject.seeded(PaginationListLoadingState.initialized);
 
   @override
-  Stream<RefreshStatus> get refreshControllerRefreshStatusStream =>
-      refreshControllerRefreshStatusSubject.stream;
+  Stream<PaginationListLoadingState> get refreshStateStream =>
+      refreshStateSubject.stream;
 
   @override
-  RefreshStatus get refreshControllerRefreshStatus =>
-      refreshControllerRefreshStatusSubject.value;
+  PaginationListLoadingState get refreshState => refreshStateSubject.value;
+
+  BehaviorSubject<PaginationListLoadingState> loadMoreStateSubject =
+      BehaviorSubject.seeded(PaginationListLoadingState.initialized);
+
+  @override
+  Stream<PaginationListLoadingState> get loadMoreStateStream =>
+      loadMoreStateSubject.stream;
+
+  @override
+  PaginationListLoadingState get loadMoreState => loadMoreStateSubject.value;
 
   @override
   final RefreshController refreshController =
@@ -37,15 +47,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
             "pagination blocs";
       }
     }));
-    addDisposable(subject: refreshControllerRefreshStatusSubject);
-    refreshControllerRefreshStatusSubject.add(refreshController.headerStatus);
-    var listener = () {
-      refreshControllerRefreshStatusSubject.add(refreshController.headerStatus);
-    };
-    refreshController.headerMode.addListener(listener);
-    addDisposable(custom: () {
-      refreshController.headerMode.removeListener(listener);
-    });
+    addDisposable(subject: refreshStateSubject);
   }
 
   @override
@@ -56,15 +58,6 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
 
   @override
   int get itemsCountPerPage => paginationBloc.itemsCountPerPage;
-
-  @override
-  Future<bool> loadMore() async {
-    var nextPageIndex = paginationBloc.loadedPagesMaximumIndex + 1;
-    var nextPage = await paginationBloc.requestPage(
-        pageIndex: nextPageIndex, forceToSkipCache: true);
-    var success = nextPage?.items?.isNotEmpty == true;
-    return success;
-  }
 
   @override
   Future internalAsyncInit() async {
@@ -85,14 +78,32 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       paginationBloc.loadedPagesSortedByIndexStream;
 
   @override
-  bool isRefreshedAtLeastOnce = false;
+  Future<bool> loadMoreWithoutController() async {
+    loadMoreStateSubject.add(PaginationListLoadingState.loading);
+    var nextPageIndex = paginationBloc.loadedPagesMaximumIndex + 1;
+    var nextPage = await paginationBloc.requestPage(
+        pageIndex: nextPageIndex, forceToSkipCache: true);
+    var success = nextPage?.items?.isNotEmpty == true;
+    if (success) {
+      loadMoreStateSubject.add(PaginationListLoadingState.loaded);
+    } else {
+      loadMoreStateSubject.add(PaginationListLoadingState.failed);
+    }
+    return success;
+  }
 
   @override
-  Future<bool> refresh() async {
-    isRefreshedAtLeastOnce = true;
-    var newPage = await paginationBloc.refresh();
+  Future<bool> refreshWithoutController() async {
+    refreshStateSubject.add(PaginationListLoadingState.loading);
+    var newPage = await paginationBloc.refreshWithoutController();
 
-    return newPage != null;
+    var success = newPage != null;
+    if (success) {
+      refreshStateSubject.add(PaginationListLoadingState.loaded);
+    } else {
+      refreshStateSubject.add(PaginationListLoadingState.failed);
+    }
+    return success;
   }
 
   static List<TItem> mapToItemsList<TPage extends PaginationPage<TItem>, TItem>(
@@ -106,5 +117,26 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       items.addAll(page.items);
     });
     return items;
+  }
+
+  @override
+  void refreshWithController() {
+    // refresh controller if it attached
+    if (refreshController.position != null) {
+      try {
+        refreshController.requestRefresh(needMove: false);
+      } catch (e, stackTrace) {
+        // ignore error, because it is related to refresh controller
+        // internal wrong logic
+        _logger.warning(
+            () =>
+                "error during refreshController.requestRefresh(needMove:false);",
+            e,
+            stackTrace);
+      }
+    } else {
+      //otherwise refresh only bloc
+      refreshWithoutController();
+    }
   }
 }

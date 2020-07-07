@@ -1,9 +1,15 @@
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 abstract class IPaginationBloc<TPage extends PaginationPage<TItem>, TItem>
     implements DisposableOwner {
+
+  static IPaginationBloc of(BuildContext context, {bool listen = true}) =>
+      Provider.of<IPaginationBloc>(context, listen: listen);
+
+
   static final int undefinedPageIndex = -1;
 
   int get loadedPagesMinimumIndex;
@@ -28,7 +34,7 @@ abstract class IPaginationBloc<TPage extends PaginationPage<TItem>, TItem>
 
   int get itemsCountPerPage;
 
-  Future<TPage> refresh();
+  Future<TPage> refreshWithoutController();
 
   Future<TPage> requestPage(
       {@required int pageIndex, @required bool forceToSkipCache});
