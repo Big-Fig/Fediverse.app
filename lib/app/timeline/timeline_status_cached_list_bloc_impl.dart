@@ -4,6 +4,7 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/timeline/settings/local_preferences/timeline_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/timeline/settings/local_preferences/timeline_settings_local_preferences_model.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
@@ -23,10 +24,14 @@ abstract class TimelineStatusCachedListBloc extends DisposableOwner
   final TimelineSettingsLocalPreferencesBloc timelineLocalPreferencesBloc;
   final bool isFromHomeTimeline;
 
+  TimelineSettingsLocalPreferences _previousPreferences;
   @override
-  Stream<bool> get settingsChangedStream => timelineLocalPreferencesBloc.stream
-      .distinct()
-      .map((preferences) => preferences != null);
+  Stream<bool> get settingsChangedStream =>
+      timelineLocalPreferencesBloc.stream.map((preferences) {
+        var changed = preferences != _previousPreferences;
+        _previousPreferences = preferences;
+        return changed;
+      }).distinct();
 
   TimelineStatusCachedListBloc({
     @required this.pleromaTimelineService,

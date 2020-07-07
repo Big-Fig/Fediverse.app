@@ -51,11 +51,6 @@ void main() {
     expect(paginationListBloc.itemsCountPerPage, itemsCountPerPage);
   });
 
-  test('isRefreshedAtLeastOnce', () async {
-    expect(paginationListBloc.isRefreshedAtLeastOnce, false);
-    await paginationListBloc.refresh();
-    expect(paginationListBloc.isRefreshedAtLeastOnce, true);
-  });
 
   test('items', () async {
     expect(paginationListBloc.items, null);
@@ -67,7 +62,7 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
     expect(listened, null);
 
-    await paginationListBloc.refresh();
+    await paginationListBloc.refreshWithoutController();
 
     expect(paginationListBloc.items.length, itemsCountPerPage);
     expect(paginationListBloc.items.first.index, 0);
@@ -77,7 +72,7 @@ void main() {
     expect(listened.first.index, 0);
     expect(listened.last.index, itemsCountPerPage - 1);
 
-    await paginationListBloc.loadMore();
+    await paginationListBloc.loadMoreWithoutController();
 
     expect(paginationListBloc.items.length, itemsCountPerPage * 2);
     expect(paginationListBloc.items.first.index, 0);
@@ -87,7 +82,7 @@ void main() {
     expect(listened.first.index, 0);
     expect(listened.last.index, itemsCountPerPage * 2 - 1);
 
-    await paginationListBloc.loadMore();
+    await paginationListBloc.loadMoreWithoutController();
 
     expect(paginationListBloc.items.length, itemsCountPerPage * 3);
     expect(paginationListBloc.items.first.index, 0);
@@ -97,7 +92,7 @@ void main() {
     expect(listened.first.index, 0);
     expect(listened.last.index, itemsCountPerPage * 3 - 1);
 
-    await paginationListBloc.refresh();
+    await paginationListBloc.refreshWithoutController();
 
     expect(paginationListBloc.items.length, itemsCountPerPage);
     expect(paginationListBloc.items.first.index, 0);
@@ -110,7 +105,7 @@ void main() {
     var lastPageIndex = storageSize ~/ itemsCountPerPage;
 
     for (int i = 0; i < lastPageIndex; i++) {
-      await paginationListBloc.loadMore();
+      await paginationListBloc.loadMoreWithoutController();
     }
 
     expect(paginationListBloc.items.length, storageSize);
@@ -121,7 +116,7 @@ void main() {
     expect(listened.first.index, 0);
     expect(listened.last.index, storageSize - 1);
 
-    await paginationListBloc.loadMore();
+    await paginationListBloc.loadMoreWithoutController();
 
     expect(paginationListBloc.items.length, storageSize);
     expect(paginationListBloc.items.first.index, 0);
@@ -145,12 +140,12 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
     expect(listened, null);
 
-    await paginationListWithNewItemsBloc.refresh();
+    await paginationListWithNewItemsBloc.refreshWithoutController();
     expect(paginationListWithNewItemsBloc.newerItem.index, 0);
     await Future.delayed(Duration(milliseconds: 1));
     expect(listened.index, 0);
 
-    await paginationListWithNewItemsBloc.loadMore();
+    await paginationListWithNewItemsBloc.loadMoreWithoutController();
     expect(paginationListWithNewItemsBloc.newerItem.index, 0);
     await Future.delayed(Duration(milliseconds: 1));
     expect(listened.index, 0);

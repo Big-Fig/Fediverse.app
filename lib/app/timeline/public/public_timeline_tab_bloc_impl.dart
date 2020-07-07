@@ -36,21 +36,6 @@ class PublicTimelineTabBloc extends TimelineTabBloc
       @required this.chatNewMessagesHandlerBloc,
       @required bool listenWebSocketsChanges})
       : super(tab: TimelineTab.public) {
-    addDisposable(
-        streamSubscription:
-            timelineLocalPreferencesBloc.stream.distinct().listen((_) {
-      Future.delayed(Duration(seconds: 1), () {
-        var refreshController =
-            paginationListWithNewItemsBloc.refreshController;
-        if (refreshController.position != null) {
-          // attached to UI
-          paginationListWithNewItemsBloc.refreshController.requestRefresh(needMove:false);
-        } else {
-          // not attached to UI
-          paginationListWithNewItemsBloc.refresh();
-        }
-      });
-    }));
     if (listenWebSocketsChanges) {
       addDisposable(
           disposable: PublicTimelineWebSocketsHandler(

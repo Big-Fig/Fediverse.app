@@ -197,8 +197,8 @@ abstract class PaginationListWithNewItemsBloc<
   }
 
   @override
-  Future<bool> refresh() async {
-    var refreshed = await super.refresh();
+  Future<bool> refreshWithoutController() async {
+    var refreshed = await super.refreshWithoutController();
     if (refreshed) {
       clearNewItems();
     }

@@ -47,12 +47,12 @@ class ConversationStatusListWidget extends StatusPaginationListBaseWidget {
               controller: refreshController,
               action: () async {
                 bool success = await additionalRefreshAction(context);
-                success &= await paginationListBloc.refresh();
+                success &= await paginationListBloc.refreshWithoutController();
                 return success;
               });
         },
         onLoading: () => AsyncSmartRefresherHelper.doAsyncLoading(
-            controller: refreshController, action: paginationListBloc.loadMore),
+            controller: refreshController, action: paginationListBloc.loadMoreWithoutController),
         child: smartRefresherBodyBuilder(context),
       );
 

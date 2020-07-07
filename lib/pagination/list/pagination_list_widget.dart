@@ -6,6 +6,8 @@ import 'package:fedi/app/ui/list/fedi_list_smart_refresher_widget.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
+import 'package:fedi/pagination/list/pagination_list_loading_error_notification_overlay_builder_widget.dart';
+import 'package:fedi/pagination/list/pagination_list_model.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +45,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
     _logger.finest(() => "buildSmartRefresher items ${items?.length}");
 
     return FediListSmartRefresherWidget(
-//      key: key,
+      //      key: key,
       enablePullDown: true,
       enablePullUp: true,
       header: const ListRefreshHeaderWidget(),
@@ -58,7 +60,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
             action: () async {
               bool success = await additionalRefreshAction(context);
 
-              success &= await paginationListBloc.refresh();
+              success &= await paginationListBloc.refreshWithoutController();
               if (success) {
                 _logger.finest(() => "onRefresh success=$success");
               } else {
@@ -68,7 +70,8 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
             });
       },
       onLoading: () => AsyncSmartRefresherHelper.doAsyncLoading(
-          controller: refreshController, action: paginationListBloc.loadMore),
+          controller: refreshController,
+          action: paginationListBloc.loadMoreWithoutController),
       child: smartRefresherBodyBuilder(context),
     );
   }
@@ -117,39 +120,44 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
     IPaginationListBloc<PaginationPage<T>, T> paginationListBloc =
         retrievePaginationListBloc(context, listen: true);
     _logger.finest(() => "build "
-        "paginationListBloc.isRefreshedAtLeastOnce=${paginationListBloc.isRefreshedAtLeastOnce}");
+        "paginationListBloc.isRefreshedAtLeastOnce=${paginationListBloc.refreshState}");
 
-    if (!paginationListBloc.isRefreshedAtLeastOnce) {
+    if (paginationListBloc.refreshState != PaginationListLoadingState.loaded) {
       askToRefresh(context);
     }
 
-    return AsyncInitLoadingWidget(
-      asyncInitLoadingBloc: paginationListBloc,
-      loadingFinishedBuilder: (BuildContext context) {
-        _logger.finest(() => "build AsyncInitLoadingWidget stream");
-        // Stream builder outside SmartRefresher because
-        // SmartRefresher require ScrollView as child
-        // If child is StreamBuilder SmartRefresher builds all items widget
-        // instead visible only
-        return StreamBuilder<List<T>>(
-            stream: paginationListBloc.itemsStream,
-            initialData: paginationListBloc.items,
-            builder: (context, snapshot) {
-              var items = snapshot.data;
+    return Stack(
+      children: [
+        PaginationListLoadingErrorNotificationOverlayBuilderWidget(paginationListBloc),
+        AsyncInitLoadingWidget(
+          asyncInitLoadingBloc: paginationListBloc,
+          loadingFinishedBuilder: (BuildContext context) {
+            _logger.finest(() => "build AsyncInitLoadingWidget stream");
+            // Stream builder outside SmartRefresher because
+            // SmartRefresher require ScrollView as child
+            // If child is StreamBuilder SmartRefresher builds all items widget
+            // instead visible only
+            return StreamBuilder<List<T>>(
+                stream: paginationListBloc.itemsStream,
+                initialData: paginationListBloc.items,
+                builder: (context, snapshot) {
+                  var items = snapshot.data;
 
-              _logger.finest(() => "build paginationListBloc.itemsStream items "
-                  "${items?.length}");
+                  _logger.finest(() => "build paginationListBloc.itemsStream items "
+                      "${items?.length}");
 
-              return buildSmartRefresher(
-                  paginationListBloc,
-                  context,
-                  items,
-                  paginationListBloc.refreshController,
-                  scrollController,
-                  (context) => buildSmartRefresherBody(
-                      context, items, paginationListBloc));
-            });
-      },
+                  return buildSmartRefresher(
+                      paginationListBloc,
+                      context,
+                      items,
+                      paginationListBloc.refreshController,
+                      scrollController,
+                      (context) => buildSmartRefresherBody(
+                          context, items, paginationListBloc));
+                });
+          },
+        ),
+      ],
     );
   }
 
@@ -158,30 +166,16 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
     // refresh
     Future.delayed(Duration(milliseconds: 1000), () {
       _logger.finest(() => "initState delayed");
-      try {
-        IPaginationListBloc<PaginationPage<T>, T> paginationListBloc =
-            retrievePaginationListBloc(context, listen: false);
 
-        var isRefreshedAtLeastOnce = paginationListBloc.isRefreshedAtLeastOnce;
-        _logger.finest(
-            () => "initState isRefreshedAtLeastOnce = $isRefreshedAtLeastOnce");
-        if (!isRefreshedAtLeastOnce) {
-          var refreshController = paginationListBloc.refreshController;
-          var position = refreshController.position;
+      IPaginationListBloc<PaginationPage<T>, T> paginationListBloc =
+          retrievePaginationListBloc(context, listen: false);
 
-          _logger.finest(() => "initState position = $position");
-          // todo: remove hack for empty refresh
-          if (position != null &&
-              paginationListBloc.items?.isNotEmpty == true) {
-            // refresh with UI indicator
-            refreshController.requestRefresh(needMove: false);
-          } else {
-            // refresh without UI indicator
-            paginationListBloc.refresh();
-          }
-        }
-      } catch (e, stackTrace) {
-        _logger.warning(() => "error during refreshing", e, stackTrace);
+      _logger.finest(
+          () => "initState");
+      final refreshState = paginationListBloc.refreshState;
+      if (refreshState != PaginationListLoadingState.loading &&
+          refreshState != PaginationListLoadingState.loaded) {
+        paginationListBloc.refreshWithController();
       }
     });
   }
@@ -216,31 +210,21 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
           context: context, items: items, header: header, footer: footer);
     } else {
       _logger.finest(() => "build empty");
-      return buildNotListBody(StreamBuilder<RefreshStatus>(
-          stream: paginationListBloc.refreshControllerRefreshStatusStream,
-          initialData: paginationListBloc.refreshControllerRefreshStatus,
+      return buildNotListBody(StreamBuilder<PaginationListLoadingState>(
+          stream: paginationListBloc.refreshStateStream,
+          initialData: paginationListBloc.refreshState,
           builder: (context, snapshot) {
-            var refreshControllerRefreshStatus = snapshot.data;
+            var refreshState = snapshot.data;
 
-            switch (refreshControllerRefreshStatus) {
-              case RefreshStatus.idle:
-              case RefreshStatus.refreshing:
+            switch (refreshState) {
+              case PaginationListLoadingState.initialized:
+              case PaginationListLoadingState.loading:
                 return Center(child: FediCircularProgressIndicator());
-
-              case RefreshStatus.canRefresh:
-              case RefreshStatus.completed:
-
-              case RefreshStatus.failed:
-
-              case RefreshStatus.canTwoLevel:
-
-              case RefreshStatus.twoLevelOpening:
-
-              case RefreshStatus.twoLeveling:
-
-              case RefreshStatus.twoLevelClosing:
+              case PaginationListLoadingState.failed:
+              case PaginationListLoadingState.loaded:
               default:
                 return Center(child: Text(tr("pagination.list.empty")));
+                break;
             }
           }));
     }
