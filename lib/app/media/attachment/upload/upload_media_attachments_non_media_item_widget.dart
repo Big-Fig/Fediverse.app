@@ -79,7 +79,7 @@ class _UploadMediaAttachmentsNonMediaItemWidgetState
             case UploadMediaAttachmentState.uploaded:
               return buildRemoveButton(context, mediaItemBloc);
             case UploadMediaAttachmentState.failed:
-              return buildFailedButton(context, mediaItemBloc);
+              return buildErrorButton(context, mediaItemBloc);
             default:
               throw "Invalid state uploadState ${uploadState}";
               break;
@@ -126,7 +126,7 @@ class _UploadMediaAttachmentsNonMediaItemWidgetState
     );
   }
 
-  Widget buildFailedButton(
+  Widget buildErrorButton(
       BuildContext context, IUploadMediaAttachmentBloc mediaItemBloc) {
     return InkWell(
       onTap: () {

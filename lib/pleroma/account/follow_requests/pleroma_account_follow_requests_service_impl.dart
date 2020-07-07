@@ -16,6 +16,10 @@ class PleromaAccountFollowRequestsService
   @override
   final IPleromaAuthRestService restService;
 
+
+  @override
+  bool get isPleromaInstance => restService.isPleromaInstance;
+
   @override
   Stream<PleromaApiState> get pleromaStateStream =>
       restService.pleromaStateStream;
@@ -99,4 +103,5 @@ class PleromaAccountFollowRequestsService
   void dispose() {
     // nothing
   }
+
 }

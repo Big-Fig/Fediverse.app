@@ -96,6 +96,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
   final IPushHandlerBloc pushHandlerBloc;
   final IWebSocketsService webSocketsService;
 
+  bool get isPleromaInstance => currentInstance.isPleromaInstance;
+
   CurrentAuthInstanceContextBloc({
     @required this.webSocketsService,
     @required this.currentInstance,
@@ -174,15 +176,20 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService.asyncInitAndRegister<IRestService>(restService);
 
     var pleromaRestService = PleromaRestService(
-        restService: restService, connectionService: connectionService);
+      restService: restService,
+      connectionService: connectionService,
+      isPleromaInstance: isPleromaInstance,
+    );
     addDisposable(disposable: pleromaRestService);
     await globalProviderService
         .asyncInitAndRegister<IPleromaRestService>(pleromaRestService);
 
     var pleromaAuthRestService = PleromaAuthRestService(
-        restService: restService,
-        connectionService: connectionService,
-        accessToken: currentInstance.token.accessToken);
+      restService: restService,
+      connectionService: connectionService,
+      accessToken: currentInstance.token.accessToken,
+      isPleromaInstance: isPleromaInstance,
+    );
     addDisposable(disposable: pleromaAuthRestService);
     await globalProviderService
         .asyncInitAndRegister<IPleromaAuthRestService>(pleromaAuthRestService);
@@ -279,7 +286,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService.asyncInitAndRegister<
         ITimelineSettingsLocalPreferencesBloc>(timelineLocalPreferenceBloc);
     var pushSubscriptionLocalPreferenceBloc =
-        PushSubscriptionSettingsLocalPreferencesBloc(preferencesService, userAtHost);
+        PushSubscriptionSettingsLocalPreferencesBloc(
+            preferencesService, userAtHost);
     addDisposable(disposable: pushSubscriptionLocalPreferenceBloc);
     await globalProviderService
         .asyncInitAndRegister<IPushSubscriptionSettingsLocalPreferencesBloc>(
@@ -303,8 +311,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         fcmPushService: fcmPushService);
 
     addDisposable(disposable: pushSubscriptionBloc);
-    await globalProviderService
-        .asyncInitAndRegister<IPushSubscriptionSettingsBloc>(pushSubscriptionBloc);
+    await globalProviderService.asyncInitAndRegister<
+        IPushSubscriptionSettingsBloc>(pushSubscriptionBloc);
 
     var isHaveSubscription = pushSubscriptionBloc.isHaveSubscription;
     if (!isHaveSubscription) {
@@ -340,7 +348,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     var pleromaWebSocketsService = PleromaWebSocketsService(
         webSocketsService: webSocketsService,
         accessToken: currentInstance.token.accessToken,
-        baseUri: currentInstance.url, connectionService: connectionService);
+        baseUri: currentInstance.url,
+        connectionService: connectionService);
 
     addDisposable(disposable: pleromaWebSocketsService);
     await globalProviderService.asyncInitAndRegister<IPleromaWebSocketsService>(

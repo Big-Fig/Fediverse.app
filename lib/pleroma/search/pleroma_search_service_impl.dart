@@ -10,6 +10,9 @@ class PleromaSearchService implements IPleromaSearchService {
   @override
   final IPleromaAuthRestService restService;
 
+  @override
+  bool get isPleromaInstance => restService.isPleromaInstance;
+
   PleromaSearchService({@required this.restService});
 
   @override

@@ -12,6 +12,9 @@ class PleromaSearchService implements IPleromaMediaAttachmentService {
   @override
   final IPleromaAuthRestService restService;
 
+  @override
+  bool get isPleromaInstance => restService.isPleromaInstance;
+
   PleromaSearchService({@required this.restService});
 
   @override
@@ -52,4 +55,5 @@ class PleromaSearchService implements IPleromaMediaAttachmentService {
   void dispose() {
     // nothing
   }
+
 }

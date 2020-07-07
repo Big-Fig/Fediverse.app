@@ -17,6 +17,9 @@ class PleromaStatusService implements IPleromaStatusService {
   final IPleromaAuthRestService restService;
 
   @override
+  bool get isPleromaInstance => restService.isPleromaInstance;
+
+  @override
   Stream<PleromaApiState> get pleromaStateStream =>
       restService.pleromaStateStream;
 
@@ -270,8 +273,7 @@ class PleromaStatusService implements IPleromaStatusService {
         relativePath: join(
             statusRelativeUrlPath,
             statusRemoteId,
-            "unbookmark"
-            ""));
+            "unbookmark"));
     var httpResponse = await restService.sendHttpRequest(request);
 
     return parseStatusResponse(httpResponse);

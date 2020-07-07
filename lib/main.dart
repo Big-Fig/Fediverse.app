@@ -151,7 +151,9 @@ void _handleLoginOnAndroidWithoutChrome(
         connectionService: appContextBloc.get(),
         currentInstanceBloc: currentInstanceBloc,
         pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc:
-            pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc);
+            pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc,
+      // doesn't matter here
+      isPleromaInstance: false,);
     await authHostBloc.performAsyncInit();
     String authCode = IPleromaOAuthService.extractAuthCodeFromUri(initialUri);
 

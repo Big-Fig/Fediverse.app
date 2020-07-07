@@ -14,6 +14,10 @@ class PleromaPushService implements IPleromaPushService {
   final IPleromaAuthRestService restService;
   final PleromaPushSubscriptionKeys keys;
 
+
+  @override
+  bool get isPleromaInstance => restService.isPleromaInstance;
+
   @override
   Stream<PleromaApiState> get pleromaStateStream =>
       restService.pleromaStateStream;
