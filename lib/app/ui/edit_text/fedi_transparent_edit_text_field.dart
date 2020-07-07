@@ -30,6 +30,7 @@ class FediTransparentEditTextField extends StatelessWidget {
   final TextInputAction textInputAction;
   final bool displayUnderlineBorder;
   final bool autocorrect;
+  final bool obscureText;
 
   FediTransparentEditTextField({
     @required this.expanded,
@@ -43,6 +44,7 @@ class FediTransparentEditTextField extends StatelessWidget {
     this.displayUnderlineBorder = false,
     @required this.focusNode,
     this.autocorrect = true,
+    this.obscureText = false,
   });
 
   @override
@@ -76,6 +78,7 @@ class FediTransparentEditTextField extends StatelessWidget {
         color: FediColors.darkGrey,
         height: 1.5,
       ),
+      obscureText: obscureText,
       autofocus: autofocus,
       controller: textEditingController,
       minLines: null,

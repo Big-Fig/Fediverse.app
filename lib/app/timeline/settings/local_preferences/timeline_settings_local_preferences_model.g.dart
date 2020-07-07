@@ -6,7 +6,7 @@ part of 'timeline_settings_local_preferences_model.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class TimelineLocalPreferencesAdapter
+class TimelineSettingsLocalPreferencesAdapter
     extends TypeAdapter<TimelineSettingsLocalPreferences> {
   @override
   TimelineSettingsLocalPreferences read(BinaryReader reader) {

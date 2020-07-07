@@ -6,7 +6,7 @@ part of 'push_subscription_settings_local_preferences_model.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class PushSubscriptionLocalPreferencesAdapter
+class PushSubscriptionSettingsLocalPreferencesAdapter
     extends TypeAdapter<PushSubscriptionSettingsLocalPreferences> {
   @override
   PushSubscriptionSettingsLocalPreferences read(BinaryReader reader) {
@@ -38,7 +38,8 @@ class PushSubscriptionLocalPreferencesAdapter
   }
 
   @override
-  void write(BinaryWriter writer, PushSubscriptionSettingsLocalPreferences obj) {
+  void write(
+      BinaryWriter writer, PushSubscriptionSettingsLocalPreferences obj) {
     writer.writeByte(6);
     writer.writeByte(1);
     writer.write(obj.favourite);
@@ -59,8 +60,9 @@ class PushSubscriptionLocalPreferencesAdapter
 // JsonSerializableGenerator
 // **************************************************************************
 
-PushSubscriptionSettingsLocalPreferences _$PushSubscriptionLocalPreferencesFromJson(
-    Map<String, dynamic> json) {
+PushSubscriptionSettingsLocalPreferences
+    _$PushSubscriptionSettingsLocalPreferencesFromJson(
+        Map<String, dynamic> json) {
   return PushSubscriptionSettingsLocalPreferences(
     favourite: json['favourite'] as bool,
     follow: json['follow'] as bool,
@@ -71,7 +73,7 @@ PushSubscriptionSettingsLocalPreferences _$PushSubscriptionLocalPreferencesFromJ
   );
 }
 
-Map<String, dynamic> _$PushSubscriptionLocalPreferencesToJson(
+Map<String, dynamic> _$PushSubscriptionSettingsLocalPreferencesToJson(
         PushSubscriptionSettingsLocalPreferences instance) =>
     <String, dynamic>{
       'favourite': instance.favourite,

@@ -7,6 +7,7 @@ class FormStringFieldFormRowWidget extends StatelessWidget {
   final String label;
   final String hint;
   final bool autocorrect;
+  final bool obscureText;
   final IFormStringFieldBloc formStringFieldBloc;
   final ValueChanged<String> onSubmitted;
   final TextInputAction textInputAction;
@@ -14,6 +15,7 @@ class FormStringFieldFormRowWidget extends StatelessWidget {
   FormStringFieldFormRowWidget({
     @required this.label,
     @required this.autocorrect,
+    this.obscureText = false,
     @required this.hint,
     @required this.formStringFieldBloc,
     @required this.onSubmitted,
@@ -34,6 +36,7 @@ class FormStringFieldFormRowWidget extends StatelessWidget {
             hint: hint,
             label: label,
             autocorrect: autocorrect,
+            obscureText: obscureText,
             textEditingController: formStringFieldBloc.textEditingController,
             errorText: error?.createErrorDescription(context),
             onSubmitted: onSubmitted,

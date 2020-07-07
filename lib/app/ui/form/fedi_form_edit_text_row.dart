@@ -7,6 +7,7 @@ class FediFormEditTextRow extends StatelessWidget {
   final String label;
   final String hint;
   final bool autocorrect;
+  final bool obscureText;
   final String errorText;
   final TextEditingController textEditingController;
   final FocusNode focusNode;
@@ -16,6 +17,7 @@ class FediFormEditTextRow extends StatelessWidget {
   FediFormEditTextRow({
     @required this.label,
     @required this.autocorrect,
+    this.obscureText = false,
     @required this.hint,
     @required this.errorText,
     @required this.textEditingController,
@@ -37,6 +39,7 @@ class FediFormEditTextRow extends StatelessWidget {
               autofocus: false,
               hintText: hint,
               maxLines: 1,
+              obscureText: obscureText,
               onSubmitted: onSubmitted,
               textInputAction: textInputAction,
               textEditingController: textEditingController,
