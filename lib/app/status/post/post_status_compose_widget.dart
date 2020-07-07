@@ -41,13 +41,16 @@ class PostStatusComposeWidget extends StatelessWidget {
         children: <Widget>[
           displayAccountAvatar
               ? Row(
-                  children: <Widget>[buildAvatar(), Flexible(
-                    child: PostStatusComposeInputWidget(
-                      expanded: expanded,
-                      hintText: hintText,
-                      maxLines: maxLines,
-                    ),
-                  )],
+                  children: <Widget>[
+                    buildAvatar(),
+                    Flexible(
+                      child: PostStatusComposeInputWidget(
+                        expanded: expanded,
+                        hintText: hintText,
+                        maxLines: maxLines,
+                      ),
+                    )
+                  ],
                 )
               : Expanded(
                   child: PostStatusComposeInputWidget(
@@ -63,7 +66,10 @@ class PostStatusComposeWidget extends StatelessWidget {
                     IUploadMediaAttachmentsCollectionBloc>(
                 update: (context, value, previous) =>
                     value.mediaAttachmentsBloc,
-                child: UploadMediaAttachmentsWidget()),
+                child: UploadMediaAttachmentsWidget(
+                  scrollable: false,
+                  heightOnKeyboardOpen: null,
+                )),
           ),
           if (!displayAccountAvatar && expanded) FediLightGreyDivider(),
           buildActions(),
@@ -119,5 +125,4 @@ class PostStatusComposeWidget extends StatelessWidget {
       ),
     );
   }
-
 }

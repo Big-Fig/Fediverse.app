@@ -182,6 +182,9 @@ dev_dependencies:
   # object serialization generator
   hive_generator: ^0.4.0+1
 
+  # detect keyboard visibility
+  flutter_keyboard_visibility: ^3.2.1
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
