@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/app/emoji/emoji_text_model.dart';
+import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -48,15 +50,17 @@ class EmojiTextWidget extends StatelessWidget {
             imageUrl: url,
             placeholder: (context, url) {
               return Icon(
-                Icons.help_outline,
+                FediIcons.image,
                 size: textStyle.fontSize,
+                color: textStyle.color,
               );
 //              return SizedBox.shrink();
             },
             height: emojiSize,
             width: emojiSize,
             errorWidget: (context, url, error) => Icon(
-              Icons.error,
+              FediIcons.warning,
+              color: FediColors.error,
               size: textStyle.fontSize,
             ),
           );
