@@ -20,7 +20,7 @@ class PleromaOAuthTokenAdapter extends TypeAdapter<PleromaOAuthToken> {
           obj.tokenType = reader.read() as String;
           break;
         case 2:
-          obj.scope = reader.read() as String;
+          obj.scope = reader.read() as dynamic;
           break;
         case 3:
           obj.createdAt = reader.read() as dynamic;
@@ -52,7 +52,7 @@ PleromaOAuthToken _$PleromaOAuthTokenFromJson(Map<String, dynamic> json) {
   return PleromaOAuthToken(
     accessToken: json['access_token'] as String,
     tokenType: json['token_type'] as String,
-    scope: json['scope'] as String,
+    scope: json['scope'],
     createdAt: json['created_at'],
   );
 }

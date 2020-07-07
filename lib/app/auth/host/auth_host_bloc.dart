@@ -26,7 +26,7 @@ abstract class IAuthHostBloc extends Disposable {
 
   Future<AuthInstance> launchLoginToAccount();
 
-  Future<bool> registerAccount(
+  Future<AuthInstance> registerAccount(
       {@required IPleromaAccountRegisterRequest request});
 
   Future checkApplicationRegistration();

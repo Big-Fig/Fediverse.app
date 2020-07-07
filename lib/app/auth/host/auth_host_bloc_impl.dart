@@ -193,11 +193,18 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
       clientId: hostApplication.clientId,
     ));
 
+    return
+        await _createInstanceFromToken(token: token, authCode: authCode);
+  }
+
+  Future<AuthInstance> _createInstanceFromToken(
+      {@required PleromaOAuthToken token, @required String authCode}) async {
     var restService = RestService(baseUrl: instanceBaseUrl);
     var pleromaAuthRestService = PleromaAuthRestService(
         accessToken: token.accessToken,
         connectionService: connectionService,
-        restService: restService, isPleromaInstance: isPleromaInstance);
+        restService: restService,
+        isPleromaInstance: isPleromaInstance);
     var pleromaMyAccountService =
         PleromaMyAccountService(restService: pleromaAuthRestService);
 
@@ -226,13 +233,17 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   }
 
   @override
-  Future<bool> registerAccount(
+  Future<AuthInstance> registerAccount(
       {@required IPleromaAccountRegisterRequest request}) async {
     await checkApplicationRegistration();
     await checkHostAccessTokenRegistration();
 
-    return pleromaAccountPublicService.registerAccount(
+    var token = await pleromaAccountPublicService.registerAccount(
         request: request, appAccessToken: hostAccessToken.accessToken);
+
+
+    return  _createInstanceFromToken(token: token, authCode: null);
+
   }
 
   @override

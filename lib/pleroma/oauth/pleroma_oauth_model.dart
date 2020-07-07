@@ -18,13 +18,17 @@ class PleromaOAuthToken implements IPreferencesObject {
   String tokenType;
 
   @HiveField(2)
-  String scope;
+  dynamic scope;
   @JsonKey(name: "created_at")
   @HiveField(3)
   dynamic createdAt;
 
-  PleromaOAuthToken(
-      {this.accessToken, this.tokenType, this.scope, this.createdAt});
+  PleromaOAuthToken({
+    this.accessToken,
+    this.tokenType,
+    this.scope,
+    this.createdAt,
+  });
 
   @override
   String toString() {

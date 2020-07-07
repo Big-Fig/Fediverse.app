@@ -1,5 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
+import 'package:fedi/app/auth/instance/auth_instance_model.dart';
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_bloc.dart';
 import 'package:fedi/app/form/form_string_field_form_row_widget.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
@@ -7,6 +9,7 @@ import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:fedi/error/error_data_model.dart';
 import 'package:fedi/pleroma/account/public/pleroma_account_public_model.dart';
 import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
+import 'package:fedi/ui/scroll/unfocus_on_scroll_area_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -20,15 +23,17 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
     var joinInstanceRegisterBloc =
         IRegisterAuthInstanceBloc.of(context, listen: false);
 
-    return ListView(
-      children: <Widget>[
-        buildUsernameField(context, joinInstanceRegisterBloc),
-        buildEmailField(context, joinInstanceRegisterBloc),
-        buildPasswordField(context, joinInstanceRegisterBloc),
-        buildConfirmPasswordField(context, joinInstanceRegisterBloc),
-        SizedBox(height: 25),
-        buildSubmitButton(context, joinInstanceRegisterBloc),
-      ],
+    return UnfocusOnScrollAreaWidget(
+      child: ListView(
+        children: <Widget>[
+          buildUsernameField(context, joinInstanceRegisterBloc),
+          buildEmailField(context, joinInstanceRegisterBloc),
+          buildPasswordField(context, joinInstanceRegisterBloc),
+          buildConfirmPasswordField(context, joinInstanceRegisterBloc),
+          SizedBox(height: 25),
+          buildSubmitButton(context, joinInstanceRegisterBloc),
+        ],
+      ),
     );
   }
 
@@ -38,6 +43,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
     @required String hintText,
     @required String labelText,
     @required bool autocorrect,
+    @required bool obscureText,
     @required IFormStringFieldBloc nextFormStringFieldBloc,
   }) {
     var isHaveNextField = nextFormStringFieldBloc != null;
@@ -48,6 +54,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
         formStringFieldBloc: formStringFieldBloc,
         hint: hintText,
         label: labelText,
+        obscureText: obscureText,
         autocorrect: autocorrect,
         onSubmitted: isHaveNextField
             ? (String value) {
@@ -70,6 +77,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
         hintText: tr("app.auth.instance.register.field.username.hint"),
         autocorrect: false,
         nextFormStringFieldBloc: bloc.emailFieldBloc,
+        obscureText: false,
       );
 
   Widget buildEmailField(
@@ -81,6 +89,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
         hintText: tr("app.auth.instance.register.field.email.hint"),
         autocorrect: false,
         nextFormStringFieldBloc: bloc.passwordFieldBloc,
+        obscureText: false,
       );
 
   Widget buildPasswordField(
@@ -92,6 +101,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
         hintText: tr("app.auth.instance.register.field.password.hint"),
         autocorrect: false,
         nextFormStringFieldBloc: bloc.confirmPasswordFieldBloc,
+        obscureText: true,
       );
 
   Widget buildConfirmPasswordField(
@@ -103,6 +113,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
             tr("app.auth.instance.register.field.confirm_password.label"),
         hintText: tr("app.auth.instance.register.field.confirm_password.hint"),
         autocorrect: false,
+        obscureText: true,
         nextFormStringFieldBloc: null,
       );
 
@@ -135,16 +146,17 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
     final validEmail = bloc.emailFieldBloc.currentValue;
     final validPassword = bloc.passwordFieldBloc.currentValue;
 
-    await doAsyncOperationWithDialog(
+    var dialogResult = await doAsyncOperationWithDialog(
         context: context,
         asyncCode: () async {
+          AuthInstance authInstance;
           AuthHostBloc authApplicationBloc;
           try {
             authApplicationBloc = AuthHostBloc.createFromContext(context,
                 instanceBaseUrl: instanceBaseUrl);
             await authApplicationBloc.performAsyncInit();
 
-            await authApplicationBloc.registerAccount(
+            authInstance = await authApplicationBloc.registerAccount(
                 request: PleromaAccountRegisterRequest(
                     //todo: popup ToS before register
                     agreement: true,
@@ -156,6 +168,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
           } finally {
             authApplicationBloc?.dispose();
           }
+          return authInstance;
         },
         errorDataBuilders: [
           (context, error, stackTrace) {
@@ -169,5 +182,12 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
                     args: [error.toString()]));
           }
         ]);
+
+    var authInstance = dialogResult.result;
+    if (authInstance != null) {
+      Navigator.of(context).pop();
+      await ICurrentAuthInstanceBloc.of(context, listen: false)
+          .changeCurrentInstance(authInstance);
+    }
   }
 }

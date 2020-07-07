@@ -75,8 +75,8 @@ void main() async {
   Hive.registerAdapter(PleromaAccountRelationshipAdapter(), 42);
   Hive.registerAdapter(PleromaMyAccountSourceAdapter(), 43);
   Hive.registerAdapter(PleromaMyAccountSourcePleromaPartAdapter(), 44);
-  Hive.registerAdapter(TimelineLocalPreferencesAdapter(), 46);
-  Hive.registerAdapter(PushSubscriptionLocalPreferencesAdapter(), 47);
+  Hive.registerAdapter(TimelineSettingsLocalPreferencesAdapter(), 46);
+  Hive.registerAdapter(PushSubscriptionSettingsLocalPreferencesAdapter(), 47);
 
   Hive.registerAdapter(AuthInstanceListAdapter(), 49);
   Hive.registerAdapter(AuthInstanceAdapter(), 50);
