@@ -19,6 +19,9 @@ class PleromaStatusEmojiReactionService
   final IPleromaAuthRestService restService;
 
   @override
+  bool get isPleromaInstance => restService.isPleromaInstance;
+
+  @override
   Stream<PleromaApiState> get pleromaStateStream =>
       restService.pleromaStateStream;
 

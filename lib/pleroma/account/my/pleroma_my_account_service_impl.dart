@@ -20,6 +20,10 @@ class PleromaMyAccountService implements IPleromaMyAccountService {
   @override
   final IPleromaAuthRestService restService;
 
+
+  @override
+  bool get isPleromaInstance => restService.isPleromaInstance;
+
   @override
   Stream<PleromaApiState> get pleromaStateStream =>
       restService.pleromaStateStream;

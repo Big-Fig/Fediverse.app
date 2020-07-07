@@ -6,6 +6,7 @@ abstract class IPleromaApi implements Disposable {
   IRestService get restService;
   Stream<PleromaApiState> get pleromaStateStream;
 
+  bool get isPleromaInstance;
   PleromaApiState get pleromaState;
 
   Stream<bool> get isConnectedStream;

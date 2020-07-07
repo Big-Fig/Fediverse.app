@@ -18,8 +18,13 @@ class PleromaAuthRestService extends PleromaRestService
   PleromaAuthRestService(
       {@required IRestService restService,
       @required IConnectionService connectionService,
+      @required bool isPleromaInstance,
       @required this.accessToken})
-      : super(restService: restService, connectionService: connectionService);
+      : super(
+          restService: restService,
+          connectionService: connectionService,
+          isPleromaInstance: isPleromaInstance,
+        );
 
   Map<String, String> createAuthHeaders() =>
       {HttpHeaders.authorizationHeader: "Bearer $accessToken"};

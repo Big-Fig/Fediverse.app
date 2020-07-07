@@ -38,6 +38,7 @@ var _logger = Logger("auth_host_bloc_impl.dart");
 
 class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   final Uri instanceBaseUrl;
+  final bool isPleromaInstance;
 
   String get instanceBaseUrlString => instanceBaseUrl.toString();
 
@@ -58,6 +59,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
 
   AuthHostBloc({
     @required this.instanceBaseUrl,
+    @required this.isPleromaInstance,
     @required this.pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc,
     @required ILocalPreferencesService preferencesService,
     @required this.connectionService,
@@ -74,7 +76,10 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     restService = RestService(baseUrl: instanceBaseUrl);
     addDisposable(disposable: restService);
     pleromaRestService = PleromaRestService(
-        restService: restService, connectionService: connectionService);
+      restService: restService,
+      connectionService: connectionService,
+      isPleromaInstance: isPleromaInstance,
+    );
     addDisposable(disposable: pleromaRestService);
 
     pleromaApplicationService =
@@ -192,7 +197,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     var pleromaAuthRestService = PleromaAuthRestService(
         accessToken: token.accessToken,
         connectionService: connectionService,
-        restService: restService);
+        restService: restService, isPleromaInstance: isPleromaInstance);
     var pleromaMyAccountService =
         PleromaMyAccountService(restService: pleromaAuthRestService);
 
@@ -213,7 +218,6 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
       info: hostInstance,
       isPleromaInstance: myAccount.pleroma != null,
     );
-
 
     pleromaMyAccountService.dispose();
     pleromaInstanceService.dispose();
@@ -259,6 +263,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
           {@required Uri instanceBaseUrl}) =>
       AuthHostBloc(
           instanceBaseUrl: instanceBaseUrl,
+          isPleromaInstance: false,
           preferencesService:
               ILocalPreferencesService.of(context, listen: false),
           connectionService: IConnectionService.of(context, listen: false),

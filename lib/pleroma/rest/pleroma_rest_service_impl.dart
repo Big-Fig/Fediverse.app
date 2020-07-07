@@ -16,6 +16,9 @@ class PleromaRestService extends DisposableOwner
     implements IPleromaRestService {
   final IConnectionService connectionService;
 
+  @override
+  final bool isPleromaInstance;
+
   // TODO: rework seed state
   // ignore: close_sinks
   final BehaviorSubject<PleromaApiState> _stateSubject =
@@ -47,8 +50,11 @@ class PleromaRestService extends DisposableOwner
   @override
   Uri get baseUrl => restService.baseUrl;
 
-  PleromaRestService(
-      {@required this.restService, @required this.connectionService}) {
+  PleromaRestService({
+    @required this.restService,
+    @required this.connectionService,
+    @required this.isPleromaInstance,
+  }) {
     addDisposable(subject: _stateSubject);
   }
 
