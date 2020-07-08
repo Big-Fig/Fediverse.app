@@ -22,4 +22,5 @@ class FediSizes {
 
   static const borderRadiusBigSize = 16.0;
   static const borderRadiusSmallSize = 8.0;
+  static const buttonHorizontalPaddingSize = 20.0;
 }

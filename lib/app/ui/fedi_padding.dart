@@ -13,4 +13,6 @@ class FediPadding {
   static const verticalSmallPadding =
       EdgeInsets.symmetric(vertical: FediSizes.smallPadding);
   static const allMiddlePadding = EdgeInsets.all(FediSizes.middlePadding);
+  static const buttonHorizontalPadding =
+      EdgeInsets.symmetric(horizontal: FediSizes.buttonHorizontalPaddingSize);
 }
