@@ -1,32 +1,8 @@
-import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
-import 'package:fedi/disposable/disposable.dart';
+import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IChatPostMessageBloc implements Disposable {
+abstract class IChatPostMessageBloc implements IPostMessageBloc {
   static IChatPostMessageBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IChatPostMessageBloc>(context, listen: listen);
-
-  TextEditingController get inputTextController;
-
-  IUploadMediaAttachmentsCollectionBloc get mediaAttachmentsBloc;
-  
-  bool get isReadyToPost;
-
-  Stream<bool> get isReadyToPostStream;
-
-  String get inputText;
-
-  Stream<String> get inputTextStream;
-
-  Future<bool> postMessage();
-
-  void appendText(String textToAppend);
-
-  bool get isAttachActionSelected;
-
-
-  Stream<bool> get isAttachActionSelectedStream;
-
-  void toggleAttachActionSelection();
 }

@@ -6,6 +6,7 @@ import 'package:fedi/app/conversation/conversation_page.dart';
 import 'package:fedi/app/conversation/repository/conversation_repository.dart';
 import 'package:fedi/app/conversation/start/status/post_status_start_conversation_bloc_impl.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
+import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/post/post_status_compose_widget.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
@@ -32,11 +33,14 @@ class PostStatusStartConversationPage extends StatelessWidget {
             SliverFillRemaining(
               hasScrollBody: false,
               child: UnfocusOnScrollAreaWidget(
-                child: PostStatusComposeWidget(
-                  goBackOnSuccess: true,
-                  expanded: true,
-                  maxLines: null,
-                  displayAccountAvatar: false,
+                child: ProxyProvider<IPostStatusBloc, IPostMessageBloc>(
+                  update: (context, value, previous) => value,
+                  child: PostStatusComposeWidget(
+                    goBackOnSuccess: true,
+                    expanded: true,
+                    maxLines: null,
+                    displayAccountAvatar: false,
+                  ),
                 ),
               ),
             ),

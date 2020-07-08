@@ -1,37 +1,39 @@
-import 'package:fedi/app/chat/post/action/chat_post_message_emoji_action_widget.dart';
-import 'package:fedi/app/chat/post/action/chat_post_message_post_action_widget.dart';
-import 'package:fedi/app/chat/post/attach/chat_post_message_attach_widget.dart';
-import 'package:fedi/app/chat/post/chat_post_message_bloc.dart';
-import 'package:fedi/app/chat/post/content/chat_post_message_content_widget.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_widget.dart';
+import 'package:fedi/app/message/action/post_message_attach_action_widget.dart';
+import 'package:fedi/app/message/action/post_message_emoji_action_widget.dart';
+import 'package:fedi/app/message/action/post_message_post_action_widget.dart';
+import 'package:fedi/app/message/post_message_attach_widget.dart';
+import 'package:fedi/app/message/post_message_bloc.dart';
+import 'package:fedi/app/message/post_message_content_widget.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
-import 'action/chat_post_message_attach_action_widget.dart';
-
-class ChatPostMessageWidget extends StatelessWidget {
-  ChatPostMessageWidget();
+class PostMessageWidget extends StatelessWidget {
+  final String hintText;
+  PostMessageWidget({
+    @required this.hintText,
+  });
 
   @override
   Widget build(BuildContext context) {
-    var chatPostMessageBloc = IChatPostMessageBloc.of(context, listen: false);
+    var postMessageBloc = IPostMessageBloc.of(context, listen: false);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          ProxyProvider<IChatPostMessageBloc,
+          ProxyProvider<IPostMessageBloc,
               IUploadMediaAttachmentsCollectionBloc>(
             update: (context, value, previous) => value.mediaAttachmentsBloc,
             child: StreamBuilder<double>(
                 stream: Rx.combineLatest2(
-                    chatPostMessageBloc.isAttachActionSelectedStream,
-                    chatPostMessageBloc
+                    postMessageBloc.isAttachActionSelectedStream,
+                    postMessageBloc
                         .mediaAttachmentsBloc.mediaAttachmentBlocsStream,
                     (bool isAttachActionSelected,
                         List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs) {
@@ -92,22 +94,22 @@ class ChatPostMessageWidget extends StatelessWidget {
           Row(
             children: [
               StreamBuilder<String>(
-                  stream: chatPostMessageBloc.inputTextStream,
-                  initialData: chatPostMessageBloc.inputText,
+                  stream: postMessageBloc.inputTextStream,
+                  initialData: postMessageBloc.inputText,
                   builder: (context, snapshot) {
                     var inputText = snapshot.data;
                     if (inputText?.trim()?.isNotEmpty == true) {
-                      return ChatPostMessageEmojiActionWidget();
+                      return PostMessageEmojiActionWidget();
                     } else {
-                      return ChatPostMessageAttachActionWidget();
+                      return PostMessageAttachActionWidget();
                     }
                   }),
-              Expanded(child: const ChatPostMessageContentWidget()),
+              Expanded(child: PostMessageContentWidget(hintText: hintText)),
               const FediSmallHorizontalSpacer(),
-              const ChatPostMessagePostActionWidget()
+              const PostMessagePostActionWidget()
             ],
           ),
-          ChatPostMessageAttachWidget()
+          PostMessageAttachWidget()
         ],
       ),
     );

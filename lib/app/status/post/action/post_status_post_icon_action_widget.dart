@@ -22,7 +22,7 @@ class PostStatusPostTextActionWidget extends StatelessWidget {
           return PleromaAsyncOperationButtonBuilderWidget(
             showProgressDialog: false,
             asyncButtonAction: () async {
-              var success = await postStatusBloc.postStatus();
+              var success = await postStatusBloc.post();
               if(success) {
                 showPostStatusPostOverlayNotification(context, postStatusBloc);
               }

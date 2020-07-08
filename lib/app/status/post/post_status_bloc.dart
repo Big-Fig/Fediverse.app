@@ -1,12 +1,11 @@
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
+import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
-import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IPostStatusBloc implements Disposable {
+abstract class IPostStatusBloc implements IPostMessageBloc {
   static IPostStatusBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IPostStatusBloc>(context, listen: listen);
 
@@ -16,13 +15,9 @@ abstract class IPostStatusBloc implements Disposable {
 
   Stream<List<String>> get mentionedAcctsStream;
 
-  TextEditingController get inputTextController;
-
   FocusNode get focusNode;
 
   bool get isPossibleToChangeVisibility;
-
-  IUploadMediaAttachmentsCollectionBloc get mediaAttachmentsBloc;
 
   PleromaVisibility get visibility;
 
@@ -35,12 +30,6 @@ abstract class IPostStatusBloc implements Disposable {
   PostStatusSelectedAction get selectedAction;
 
   Stream<PostStatusSelectedAction> get selectedActionStream;
-
-  bool get isAttachActionSelected;
-
-  Stream<bool> get isAttachActionSelectedStream;
-
-  void toggleAttachActionSelection();
 
   void addMentionByAccount(IAccount account);
 
@@ -56,9 +45,6 @@ abstract class IPostStatusBloc implements Disposable {
 
   void clearSchedule();
 
-  bool get isReadyToPost;
-
-  Stream<bool> get isReadyToPostStream;
 
   bool get isScheduled;
 
@@ -68,9 +54,6 @@ abstract class IPostStatusBloc implements Disposable {
 
   Stream<DateTime> get scheduledAtStream;
 
-  String get inputText;
-
-  Stream<String> get inputTextStream;
 
   String get inputWithoutMentionedAcctsText;
 
@@ -80,7 +63,4 @@ abstract class IPostStatusBloc implements Disposable {
 
   Stream<bool> get isHaveMentionedAcctsStream;
 
-  Future<bool> postStatus();
-
-  void appendText(String text);
 }

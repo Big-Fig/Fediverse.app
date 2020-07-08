@@ -1,14 +1,12 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
-import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
-import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc_impl.dart';
+import 'package:fedi/app/message/post_message_bloc_impl.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service.dart';
@@ -21,7 +19,7 @@ var _logger = Logger("post_status_bloc_impl.dart");
 
 final findAcctsRegex = RegExp(r"\B\@(([\w.@\-]+))");
 
-abstract class PostStatusBloc extends DisposableOwner
+abstract class PostStatusBloc extends PostMessageBloc
     implements IPostStatusBloc {
   final IPleromaStatusService pleromaStatusService;
   final IStatusRepository statusRepository;
@@ -29,12 +27,6 @@ abstract class PostStatusBloc extends DisposableOwner
   final String conversationRemoteId;
   final IStatus inReplyToStatus;
   String get inReplyToStatusRemoteId => inReplyToStatus?.remoteId;
-
-  @override
-  final IUploadMediaAttachmentsCollectionBloc mediaAttachmentsBloc;
-
-  // ignore: close_sinks
-  BehaviorSubject<String> inputTextSubject = BehaviorSubject.seeded("");
 
   String idempotencyKey;
 
@@ -47,10 +39,9 @@ abstract class PostStatusBloc extends DisposableOwner
     int maximumMediaAttachmentCount = 8,
     PleromaVisibility initialVisibility = PleromaVisibility.PUBLIC,
     List<IAccount> initialAccountsToMention = const [],
-  }) : mediaAttachmentsBloc = UploadMediaAttachmentsCollectionBloc(
-            maximumMediaAttachmentCount: maximumMediaAttachmentCount,
-            pleromaMediaAttachmentService: pleromaMediaAttachmentService) {
-    assert(pleromaMediaAttachmentService != null);
+  }) : super(
+            pleromaMediaAttachmentService: pleromaMediaAttachmentService,
+            maximumMediaAttachmentCount: maximumMediaAttachmentCount) {
     visibilitySubject = BehaviorSubject.seeded(initialVisibility);
     nsfwSensitiveSubject = BehaviorSubject.seeded(false);
 
@@ -61,22 +52,8 @@ abstract class PostStatusBloc extends DisposableOwner
 
     addDisposable(subject: selectedActionSubject);
     addDisposable(subject: mentionedAcctsSubject);
-    addDisposable(subject: inputTextSubject);
     addDisposable(subject: visibilitySubject);
     addDisposable(subject: scheduledAtSubject);
-
-    addDisposable(textEditingController: inputTextController);
-
-    var editTextListener = () {
-      onInputTextChanged();
-    };
-    inputTextController.addListener(editTextListener);
-
-    addDisposable(disposable: CustomDisposable(() {
-      inputTextController.removeListener(editTextListener);
-    }));
-
-    addDisposable(focusNode: focusNode);
 
     var focusListener = () {
       onFocusChange(focusNode.hasFocus);
@@ -173,12 +150,6 @@ abstract class PostStatusBloc extends DisposableOwner
               isAllAttachedMediaUploaded: isAllAttachedMediaUploaded));
 
   @override
-  String get inputText => inputTextSubject.value;
-
-  @override
-  Stream<String> get inputTextStream => inputTextSubject.stream;
-
-  @override
   String get inputWithoutMentionedAcctsText =>
       removeAcctsFromText(inputText, mentionedAccts);
 
@@ -189,8 +160,6 @@ abstract class PostStatusBloc extends DisposableOwner
       (inputText, mentionedAccts) =>
           removeAcctsFromText(inputText, mentionedAccts));
 
-  @override
-  TextEditingController inputTextController = TextEditingController();
   @override
   FocusNode focusNode = FocusNode();
 
@@ -214,12 +183,12 @@ abstract class PostStatusBloc extends DisposableOwner
     }
   }
 
+  @override
   void onInputTextChanged() {
+    super.onInputTextChanged();
     var text = inputTextController.text;
 
     if (inputText != text) {
-      inputTextSubject.add(text);
-
       var textAccts = findAcctMentionsInText(text);
 
       var mentionedAccts = this.mentionedAccts;
@@ -241,15 +210,6 @@ abstract class PostStatusBloc extends DisposableOwner
 
   static List<String> findAcctMentionsInText(String text) {
     var matches = findAcctsRegex.allMatches(text);
-
-//    matches.forEach((match) => {
-//      _logger.finest(()=> "match \n "
-//          "\t input = ${match.input}"
-//          "\t groupCount = ${match.groupCount}"
-//          "\t group(0) = ${match.group(0)}"
-//          "\t group(1) = ${match.group(1)}"
-//      )
-//    });
 
     return matches.map((match) => // group(0) is all match
         // group(1) is acct without first @
@@ -304,18 +264,8 @@ abstract class PostStatusBloc extends DisposableOwner
     return mediaAttachmentBlocs.length >= maximumMediaAttachmentCount;
   }
 
-  bool calculateIsReadyToPost(
-      {@required String inputText,
-      @required List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs,
-      @required bool isAllAttachedMediaUploaded}) {
-    var textIsNotEmpty = inputText?.trim()?.isEmpty != true;
-    var mediaAttached = mediaAttachmentBlocs?.isEmpty != true;
-
-    return (textIsNotEmpty || mediaAttached) && isAllAttachedMediaUploaded;
-  }
-
   @override
-  Future<bool> postStatus() async {
+  Future<bool> post() async {
     bool success;
     if (isScheduled) {
       success = await _scheduleStatus();
@@ -324,7 +274,7 @@ abstract class PostStatusBloc extends DisposableOwner
     }
 
     if (success) {
-      _clear();
+      clear();
     }
     return success;
   }
@@ -391,10 +341,10 @@ abstract class PostStatusBloc extends DisposableOwner
     return success;
   }
 
-  void _clear() {
+  @override
+  void clear() {
+    super.clear();
     focusNode.unfocus();
-    inputTextController.clear();
-    mediaAttachmentsBloc.clear();
     nsfwSensitiveSubject.add(false);
     _regenerateIdempotencyKey();
     clearSchedule();

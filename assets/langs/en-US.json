@@ -303,6 +303,13 @@
       }
     },
     "conversation": {
+      "post": {
+        "field": {
+          "content": {
+            "hint": "Start a message"
+          }
+        }
+      },
       "list": {
         "new_items": {
           "action": {

@@ -1,13 +1,13 @@
 import 'package:fedi/app/account/my/avatar/my_account_avatar_widget.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_widget.dart';
-import 'package:fedi/app/status/post/action/post_status_attach_action_widget.dart';
+import 'package:fedi/app/message/action/post_message_attach_action_widget.dart';
+import 'package:fedi/app/message/post_message_attach_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_mention_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_nsfw_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_post_text_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_schedule_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_visibility_action_widget.dart';
-import 'package:fedi/app/status/post/attach/post_status_attach_widget.dart';
 import 'package:fedi/app/status/post/input/post_status_compose_input_widget.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/ui/divider/fedi_light_grey_divider.dart';
@@ -73,7 +73,7 @@ class PostStatusComposeWidget extends StatelessWidget {
           ),
           if (!displayAccountAvatar && expanded) FediLightGreyDivider(),
           buildActions(),
-          PostStatusAttachWidget()
+          PostMessageAttachWidget()
         ],
       ),
     );
@@ -96,7 +96,7 @@ class PostStatusComposeWidget extends StatelessWidget {
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
                   children: [
-                    PostStatusAttachActionWidget(),
+                    PostMessageAttachActionWidget(),
                     PostStatusVisibilityActionWidget(),
                     PostStatusScheduleActionWidget(),
                     PostStatusMentionActionWidget(),

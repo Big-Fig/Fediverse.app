@@ -1,93 +1,33 @@
 import 'package:fedi/app/chat/message/repository/chat_message_repository.dart';
 import 'package:fedi/app/chat/post/chat_post_message_bloc.dart';
-import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
-import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
-import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc_impl.dart';
-import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:fedi/app/message/post_message_bloc_impl.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger("chat_post_message_bloc_impl.dart");
 
-// todo: unify post status & post chat message code
-class ChatPostMessageBloc extends DisposableOwner
+class ChatPostMessageBloc extends PostMessageBloc
     implements IChatPostMessageBloc {
   final IPleromaChatService pleromaChatService;
   final IChatMessageRepository chatMessageRepository;
   final String chatRemoteId;
-
-  @override
-  final IUploadMediaAttachmentsCollectionBloc mediaAttachmentsBloc;
 
   ChatPostMessageBloc({
     @required this.pleromaChatService,
     @required this.chatMessageRepository,
     @required this.chatRemoteId,
     @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
-  }) : mediaAttachmentsBloc = UploadMediaAttachmentsCollectionBloc(
-            maximumMediaAttachmentCount: 1,
-            pleromaMediaAttachmentService: pleromaMediaAttachmentService) {
-    assert(pleromaMediaAttachmentService != null);
-    addDisposable(disposable: mediaAttachmentsBloc);
-
-    addDisposable(subject: inputTextSubject);
-
-    addDisposable(textEditingController: inputTextController);
-
-    addDisposable(subject: isAttachActionSubject);
-
-    var editTextListener = () {
-      onInputTextChanged();
-    };
-    inputTextController.addListener(editTextListener);
-
-    addDisposable(disposable: CustomDisposable(() {
-      inputTextController.removeListener(editTextListener);
-    }));
-  }
+  }) : super(
+          maximumMediaAttachmentCount: 1,
+          pleromaMediaAttachmentService: pleromaMediaAttachmentService,
+        );
 
   @override
-  bool get isReadyToPost => calculateIsReadyToPost(
-      inputText: inputText,
-      mediaAttachmentBlocs: mediaAttachmentsBloc.mediaAttachmentBlocs);
-
-  @override
-  Stream<bool> get isReadyToPostStream => Rx.combineLatest2(
-      inputTextStream,
-      mediaAttachmentsBloc.mediaAttachmentBlocsStream,
-      (inputWithoutMentionedAcctsText, mediaAttachmentBlocs) =>
-          calculateIsReadyToPost(
-              inputText: inputWithoutMentionedAcctsText,
-              mediaAttachmentBlocs: mediaAttachmentBlocs));
-
-  // ignore: close_sinks
-  BehaviorSubject<String> inputTextSubject = BehaviorSubject.seeded("");
-
-  @override
-  String get inputText => inputTextSubject.value;
-
-  @override
-  Stream<String> get inputTextStream => inputTextSubject.stream;
-
-  @override
-  TextEditingController inputTextController = TextEditingController();
-
-  void onInputTextChanged() {
-    var text = inputTextController.text;
-
-    if (inputText != text) {
-      inputTextSubject.add(text);
-    }
-  }
-
-  @override
-  Future<bool> postMessage() async {
+  Future<bool> post() async {
     bool success;
 
     var mediaAttachmentBlocs = mediaAttachmentsBloc.mediaAttachmentBlocs?.where(
@@ -118,41 +58,9 @@ class ChatPostMessageBloc extends DisposableOwner
     }
 
     if (success) {
-      _clear();
+      clear();
     }
     return success;
-  }
-
-  void _clear() {
-    inputTextController.clear();
-    mediaAttachmentsBloc.clear();
-  }
-
-  bool calculateIsReadyToPost(
-      {@required String inputText,
-      @required List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs}) {
-    var textIsNotEmpty = inputText?.trim()?.isEmpty != true;
-    var mediaAttached = mediaAttachmentBlocs?.isEmpty != true;
-
-    return textIsNotEmpty || mediaAttached;
-  }
-
-  @override
-  void appendText(String textToAppend) {
-    inputTextController.text = "$inputText$textToAppend";
-  }
-
-  BehaviorSubject<bool> isAttachActionSubject = BehaviorSubject.seeded(false);
-
-  @override
-  bool get isAttachActionSelected => isAttachActionSubject.value;
-
-  @override
-  Stream<bool> get isAttachActionSelectedStream => isAttachActionSubject.stream;
-
-  @override
-  void toggleAttachActionSelection() {
-    isAttachActionSubject.add(!isAttachActionSelected);
   }
 
   static ChatPostMessageBloc createFromContext(BuildContext context,

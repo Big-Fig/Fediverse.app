@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
+import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/status/post/new/new_post_status_bloc_impl.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/post/post_status_compose_widget.dart';
@@ -26,11 +27,14 @@ class NewPostStatusPage extends StatelessWidget {
             SliverFillRemaining(
               hasScrollBody: false,
               child: UnfocusOnScrollAreaWidget(
-                child: PostStatusComposeWidget(
-                  goBackOnSuccess: true,
-                  expanded: true,
-                  maxLines: null,
-                  displayAccountAvatar: false,
+                child: ProxyProvider<IPostStatusBloc, IPostMessageBloc>(
+                  update: (context, value, previous) => value,
+                  child: PostStatusComposeWidget(
+                    goBackOnSuccess: true,
+                    expanded: true,
+                    maxLines: null,
+                    displayAccountAvatar: false,
+                  ),
                 ),
               ),
             ),
