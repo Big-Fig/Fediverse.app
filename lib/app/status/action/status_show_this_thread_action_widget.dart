@@ -2,9 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
-import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+const _showThisThreadContainerHeight = 48.0;
 
 class StatusShowThisThreadActionWidget extends StatelessWidget {
   @override
@@ -15,7 +16,7 @@ class StatusShowThisThreadActionWidget extends StatelessWidget {
           goToStatusThreadPage(context, statusBloc.status);
         },
         child: Container(
-            height: FediSizes.showThisThreadContainerHeight,
+            height: _showThisThreadContainerHeight,
             child: Center(
                 child: Text(
               tr("app.status.action.show_this_thread"),

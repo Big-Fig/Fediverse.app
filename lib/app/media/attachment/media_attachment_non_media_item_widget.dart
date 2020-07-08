@@ -5,7 +5,7 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
-
+ const _nonMediaIconSize = 70.0;
 var _rowHeight = 70.0;
 class MediaAttachmentNonMediaItemWidget extends StatelessWidget {
   final double opacity;
@@ -45,8 +45,8 @@ class MediaAttachmentNonMediaItemWidget extends StatelessWidget {
                   child: Row(
                     children: [
                       Container(
-                        width: FediSizes.nonMediaIconSize,
-                        height: FediSizes.nonMediaIconSize,
+                        width: _nonMediaIconSize,
+                        height: _nonMediaIconSize,
                         decoration: BoxDecoration(
                           border: Border(
                             right: BorderSide(

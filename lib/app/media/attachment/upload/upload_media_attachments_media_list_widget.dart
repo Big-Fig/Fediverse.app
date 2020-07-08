@@ -6,7 +6,8 @@ import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+ const mediaAttachmentSingleHeight = 220.0;
+ const _mediaAttachmentRowItemSize = 90.0;
 class UploadMediaAttachmentsMediaListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,7 @@ class UploadMediaAttachmentsMediaListWidget extends StatelessWidget {
                 bottom: FediSizes.bigPadding,
               ),
               child: Container(
-                height: FediSizes.mediaAttachmentSingleHeight,
+                height: mediaAttachmentSingleHeight,
                 child: Provider<IUploadMediaAttachmentBloc>.value(
                     value: mediaItemBlocs.first,
                     child: UploadMediaAttachmentMediaItemWidget(
@@ -42,7 +43,7 @@ class UploadMediaAttachmentsMediaListWidget extends StatelessWidget {
           }
 
           return Container(
-            height: FediSizes.mediaAttachmentRowItemSize,
+            height: _mediaAttachmentRowItemSize,
             child: ListView(
               scrollDirection:
                   Axis.horizontal, //              shrinkWrap: true,
@@ -73,8 +74,8 @@ class UploadMediaAttachmentsMediaListWidget extends StatelessWidget {
         top: FediSizes.smallPadding,
       ),
       child: Container(
-        width: FediSizes.mediaAttachmentRowItemSize,
-        height: FediSizes.mediaAttachmentRowItemSize,
+        width: _mediaAttachmentRowItemSize,
+        height: _mediaAttachmentRowItemSize,
         child: child,
       ),
     );
