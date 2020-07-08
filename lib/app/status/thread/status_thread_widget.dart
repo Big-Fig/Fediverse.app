@@ -1,8 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/message/post_message_bloc.dart';
+import 'package:fedi/app/message/post_message_widget.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
-import 'package:fedi/app/status/post/post_status_reply_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
@@ -54,9 +55,12 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
             color: Colors.white,
             boxShadow: [FediShadows.forBottomBar],
           ),
-          child: PostStatusReplyWidget(
-            hintText: "app.status.thread.post.hint".tr(
-              args: [statusThreadBloc.initialStatusToFetchThread.account.acct],
+          child:                    ProxyProvider<IPostStatusBloc, IPostMessageBloc>(
+            update: (context, value, previous) => value,
+            child: PostMessageWidget(
+              hintText: "app.status.thread.post.hint".tr(
+                args: [statusThreadBloc.initialStatusToFetchThread.account.acct],
+              ),
             ),
           ),
         )

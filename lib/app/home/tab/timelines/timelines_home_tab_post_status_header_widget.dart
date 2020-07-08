@@ -1,4 +1,5 @@
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
+import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/status/post/new/new_post_status_bloc_impl.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/post/post_status_compose_widget.dart';
@@ -17,11 +18,14 @@ class TimelinesHomeTabPostStatusHeaderWidget extends StatelessWidget {
           value.mediaAttachmentsBloc,
           child: Container(
             color: FediColors.offWhite,
-            child: PostStatusComposeWidget(
-              expanded: false,
-              goBackOnSuccess: false,
-              displayAccountAvatar: true,
-              maxLines: 1,
+            child: ProxyProvider<IPostStatusBloc, IPostMessageBloc>(
+              update: (context, value, previous) => value,
+              child: PostStatusComposeWidget(
+                expanded: false,
+                goBackOnSuccess: false,
+                displayAccountAvatar: true,
+                maxLines: 1,
+              ),
             ),
           ),
         ),

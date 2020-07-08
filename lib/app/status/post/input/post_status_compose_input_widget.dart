@@ -39,7 +39,7 @@ class PostStatusComposeInputWidget extends StatelessWidget {
                 ...PleromaAsyncOperationButtonBuilderWidget
                     .pleromaErrorDataBuilders
               ],
-              asyncCode: () => postStatusBloc.postStatus());
+              asyncCode: () => postStatusBloc.post());
           var success = dialogResult.result;
           if (success) {
             showPostStatusPostOverlayNotification(context, postStatusBloc);

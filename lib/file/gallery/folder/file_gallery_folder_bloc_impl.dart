@@ -66,7 +66,9 @@ abstract class AbstractFileGalleryFolderBloc extends AsyncInitLoadingBloc
     if (!filesSubject.isClosed) {
       filesSubject.add(files);
     }
-    galleryStateSubject.add(FileGalleryState.loaded);
+    if (!galleryStateSubject.isClosed) {
+      galleryStateSubject.add(FileGalleryState.loaded);
+    }
   }
 
   Future<List<AssetEntity>> loadFiles();

@@ -29,7 +29,7 @@ class PostStatusPostTextActionWidget extends StatelessWidget {
             progressContentMessage: tr("app.status.post.dialog.async.content"),
             asyncButtonAction: () async {
 
-              var success = await postStatusBloc.postStatus();
+              var success = await postStatusBloc.post();
               if (success) {
                 showPostStatusPostOverlayNotification(context, postStatusBloc);
               }
