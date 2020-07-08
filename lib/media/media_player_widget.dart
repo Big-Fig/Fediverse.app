@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/media/media_player_model.dart';
 import 'package:flutter/material.dart';
@@ -70,12 +71,12 @@ class _MediaPlayerWidgetState<T> extends State<MediaPlayerWidget<T>> {
     switch (mediaPlayerState) {
       case MediaPlayerState.initializing:
         return Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: FediPadding.allSmallPadding,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: FediPadding.allSmallPadding,
                 child: FediCircularProgressIndicator(),
               ),
               Text("media.player.initializing".tr(args: [widget.pathToFile]),
@@ -89,7 +90,7 @@ class _MediaPlayerWidgetState<T> extends State<MediaPlayerWidget<T>> {
         break;
       case MediaPlayerState.failedToInitialize:
         return Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: FediPadding.allSmallPadding,
           child: Text(
             "media.player.failed".tr(args: [widget.pathToFile]),
             textAlign: TextAlign.center,

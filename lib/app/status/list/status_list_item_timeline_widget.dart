@@ -15,6 +15,7 @@ import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/collapsible/collapsible_bloc.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -146,13 +147,15 @@ class StatusListItemTimelineWidget extends StatelessWidget {
                 if (status.isHaveReblog) StatusReblogHeaderWidget(),
                 if (displayAccountHeader)
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+                    padding: const EdgeInsets.fromLTRB(FediSizes.bigPadding,
+                        FediSizes.bigPadding, FediSizes.bigPadding, 0.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Flexible(child: StatusAccountWidget()),
                         Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
+                          padding: const EdgeInsets.only(
+                              left: FediSizes.smallPadding),
                           child: StatusCreatedAtWidget(),
                         ),
                       ],
@@ -160,7 +163,11 @@ class StatusListItemTimelineWidget extends StatelessWidget {
                   ),
                 if (isReply)
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(68.0, 4.0, 16.0, 0.0),
+                    padding: const EdgeInsets.fromLTRB(
+                        FediSizes.bigPadding + 52.0,
+                        FediSizes.smallPadding,
+                        FediSizes.bigPadding,
+                        0.0),
                     child: StatusReplySubHeaderWidget(
                       accountCallback: accountMentionCallback,
                     ),
@@ -207,14 +214,15 @@ class StatusListItemTimelineWidget extends StatelessWidget {
   Padding buildBody(bool isReply) {
     if (isReply && (!displayReplyToStatus || isFirstReplyInThread)) {
       return Padding(
-        padding: EdgeInsets.fromLTRB(68.0 - 16.0, 8.0, 0.0, 16.0),
+        padding: EdgeInsets.fromLTRB(68.0 - FediSizes.bigPadding,
+            FediSizes.smallPadding, 0.0, FediSizes.bigPadding),
         child: StatusBodyWidget(
           collapsible: collapsible,
         ),
       );
     } else {
       return Padding(
-        padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 8.0),
+        padding: EdgeInsets.symmetric(vertical: FediSizes.smallPadding),
         child: StatusBodyWidget(
           collapsible: collapsible,
         ),

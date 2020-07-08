@@ -26,14 +26,14 @@ class AppInitPage extends StatelessWidget {
 //                  children: [
 //                    ,
 ////                    Padding(
-////                      padding: const EdgeInsets.all(8.0),
+////                      padding: FediPadding.allSmallPadding,
 ////                      child: FediCircularProgressIndicator(
 ////                        backgroundColor: FediColors.white,
 ////                      ),
 ////                    ),
 ////                    if (text != null)
 ////                      Padding(
-////                        padding: const EdgeInsets.all(8.0),
+////                        padding: FediPadding.allSmallPadding,
 ////                        child: Text(
 ////                          text,
 ////                          style: TextStyle(

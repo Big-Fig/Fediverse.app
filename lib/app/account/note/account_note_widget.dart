@@ -1,6 +1,7 @@
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/emoji/emoji_text_model.dart';
 import 'package:fedi/app/emoji/emoji_text_widget.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +24,7 @@ class AccountNoteWidget extends StatelessWidget {
           }
 
           return Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
+            padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
             child: EmojiTextWidget(
               textAlign: TextAlign.center,
               emojiText: noteEmojiText,

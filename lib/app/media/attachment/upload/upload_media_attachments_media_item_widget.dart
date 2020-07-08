@@ -6,6 +6,8 @@ import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.d
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_remove_dialog.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:fedi/media/media_video_player_widget.dart';
@@ -16,7 +18,7 @@ class UploadMediaAttachmentMediaItemWidget extends StatefulWidget {
   final EdgeInsets contentPadding;
 
   UploadMediaAttachmentMediaItemWidget(
-      {this.contentPadding = const EdgeInsets.all(16.0)});
+      {this.contentPadding = FediPadding.allBigPadding});
 
   @override
   _UploadMediaAttachmentMediaItemWidgetState createState() =>
@@ -53,7 +55,7 @@ class _UploadMediaAttachmentMediaItemWidgetState
         IUploadMediaAttachmentBloc.of(context, listen: false);
     return ClipRRect(
       borderRadius: BorderRadius.all(
-        Radius.circular(16.0),
+        Radius.circular(FediSizes.borderRadiusBigSize),
       ),
       child: Stack(
         alignment: Alignment.center,

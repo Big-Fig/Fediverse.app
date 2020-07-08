@@ -1,3 +1,4 @@
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/camera/camera_bloc.dart';
 import 'package:fedi/camera/camera_model.dart';
 import 'package:fedi/camera/camera_widget.dart';
@@ -21,13 +22,13 @@ class CameraVideoWidget extends CameraWidget {
           Align(
               alignment: Alignment.bottomRight,
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: FediPadding.allBigPadding,
                 child: buildSwitchCameraButtonWidget(cameraBloc),
               )),
           Align(
               alignment: Alignment.bottomRight,
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: FediPadding.allBigPadding,
                 child: buildStopButtonWidget(cameraBloc),
               )),
         ],
@@ -44,14 +45,14 @@ class CameraVideoWidget extends CameraWidget {
             var isVideoRecordingInProgressOrPaused = snapshot.data;
             if (isVideoRecordingInProgressOrPaused) {
               return Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: FediPadding.allSmallPadding,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(5.0),
                   child: Container(
                     decoration:
                         BoxDecoration(color: Colors.black.withOpacity(0.5)),
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: FediPadding.allSmallPadding,
                       child: StreamBuilder<int>(
                           stream: cameraBloc.videoRecordingTimeInSecondsStream,
                           initialData: cameraBloc.videoRecordingTimeInSeconds,

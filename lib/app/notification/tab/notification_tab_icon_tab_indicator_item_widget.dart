@@ -1,5 +1,6 @@
 import 'package:fedi/app/notification/tab/notification_tab_model.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/tab/fedi_icon_tab_indicator_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ class NotificationTabTextTabIndicatorItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.only(right: 16.0),
+        padding: const EdgeInsets.only(right: FediSizes.bigPadding),
         child: FediIconTabIndicatorWidget(
           tabController: tabController,
           tabs: notificationTabs,

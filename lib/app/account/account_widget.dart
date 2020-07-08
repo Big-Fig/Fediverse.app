@@ -6,6 +6,7 @@ import 'package:fedi/app/account/info/account_info_widget.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/note/account_note_widget.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:flutter/material.dart';
 
 class AccountWidget extends StatelessWidget {
@@ -27,7 +28,7 @@ class AccountWidget extends StatelessWidget {
           child: AccountHeaderBackgroundWidget(),
         ),
         Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: FediPadding.allBigPadding,
           child: Column(
             children: <Widget>[
               AccountInfoWidget(onStatusesTapCallback: onStatusesTapCallback),

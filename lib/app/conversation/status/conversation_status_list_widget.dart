@@ -7,6 +7,7 @@ import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/list/fedi_list_smart_refresher_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
@@ -134,7 +135,7 @@ class ConversationStatusListWidget extends StatusPaginationListBaseWidget {
             children: <Widget>[
               statusWidget,
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: FediPadding.allSmallPadding,
                 child: Center(
                     child: Text(
                   _dateSeparatorDateFormat.format(currentCreatedAt),

@@ -4,22 +4,23 @@ import 'package:fedi/app/status/action/status_emoji_action_widget.dart';
 import 'package:fedi/app/status/action/status_favourite_action_widget.dart';
 import 'package:fedi/app/status/action/status_more_action_widget.dart';
 import 'package:fedi/app/status/action/status_reblog_action_widget.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:flutter/cupertino.dart';
 
 class StatusActionsListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     var currentAuthInstanceBloc =
-    ICurrentAuthInstanceBloc.of(context, listen: false);
-
-
+        ICurrentAuthInstanceBloc.of(context, listen: false);
 
     var isPleromaInstance =
         currentAuthInstanceBloc.currentInstance.isPleromaInstance;
 
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      padding: const EdgeInsets.symmetric(
+        vertical: FediSizes.smallPadding,
+        horizontal: FediSizes.bigPadding,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -28,8 +29,7 @@ class StatusActionsListWidget extends StatelessWidget {
             children: <Widget>[
               StatusCommentActionWidget(),
               StatusFavouriteActionWidget(),
-              if (isPleromaInstance)
-                StatusEmojiActionWidget(),
+              if (isPleromaInstance) StatusEmojiActionWidget(),
               StatusReblogActionWidget()
             ],
           ),
@@ -38,5 +38,4 @@ class StatusActionsListWidget extends StatelessWidget {
       ),
     );
   }
-
 }

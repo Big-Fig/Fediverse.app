@@ -9,6 +9,7 @@ import 'package:fedi/app/chat/message/pagination/list/chat_message_pagination_li
 import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/message/post_message_widget.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
@@ -52,7 +53,7 @@ class ChatWidget extends StatelessWidget {
                         child: UnfocusOnScrollAreaWidget(
                           child: Padding(
                             padding:
-                                const EdgeInsets.symmetric(horizontal: 16.0),
+                                FediPadding.horizontalBigPadding,
                             child: ChatMessageListWidget(
                               key: PageStorageKey(chatBloc.chat.remoteId),
                             ),

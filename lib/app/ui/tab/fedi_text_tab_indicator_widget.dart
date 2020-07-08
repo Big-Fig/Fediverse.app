@@ -1,4 +1,6 @@
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/tab/fedi_tab_indicator.dart';
 import 'package:fedi/app/ui/tab/fedi_text_tab_indicator_item_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,9 +26,9 @@ class FediTextTabIndicatorWidget<T> extends StatelessWidget {
     return TabBar(
       isScrollable: true,
       indicatorSize: TabBarIndicatorSize.label,
-      labelPadding: EdgeInsets.symmetric(horizontal: 8.0),
+      labelPadding: FediPadding.horizontalSmallPadding,
       indicator: FediTabIndicator(
-        indicatorHeight: 37.0,
+        indicatorHeight:FediSizes.tabIndicatorTextHeight,
         indicatorColor: FediColors.primaryColor,
         padding: EdgeInsets.zero,
         insets: EdgeInsets.zero,

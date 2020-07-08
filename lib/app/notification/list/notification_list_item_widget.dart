@@ -13,6 +13,7 @@ import 'package:fedi/app/notification/created_at/notification_created_at_widget.
 import 'package:fedi/app/notification/notification_bloc.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
@@ -39,7 +40,9 @@ class NotificationListItemWidget extends StatelessWidget {
         isNeedPreFetchRelationship: false,
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+        padding: EdgeInsets.symmetric(
+            horizontal: FediSizes.bigPadding,
+            vertical: FediSizes.bigPadding + FediSizes.smallPadding),
         child: Column(
           children: <Widget>[
             Row(
@@ -48,8 +51,10 @@ class NotificationListItemWidget extends StatelessWidget {
                     onTap: () {
                       goToAccountDetailsPage(context, notificationBloc.account);
                     },
-                    child:
-                        AccountAvatarWidget(progressSize: 36, imageSize: 36)),
+                    child: AccountAvatarWidget(
+                      progressSize: FediSizes.accountAvatarProgressDefaultSize,
+                      imageSize: FediSizes.accountAvatarDefaultSize,
+                    )),
                 const FediBigHorizontalSpacer(),
                 Expanded(
                   child: GestureDetector(
@@ -164,17 +169,12 @@ class NotificationListItemWidget extends StatelessWidget {
 
     var htmlText;
 
-//    if (emojis != null) {
     htmlText = addEmojiToHtmlContent(rawText, emojis);
-//    } else {
-//      htmlText = rawText;
-//    }
 
     return HtmlTextWidget(
       data: htmlText,
       textMaxLines: 1,
       textOverflow: TextOverflow.ellipsis,
-//        shrinkWrap: false,
       color: FediColors.mediumGrey,
       fontSize: 16,
       lineHeight: 1.5,

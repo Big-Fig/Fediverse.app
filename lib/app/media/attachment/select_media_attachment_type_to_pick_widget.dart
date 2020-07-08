@@ -5,6 +5,8 @@ import 'package:fedi/app/media/single_camera_picker.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:file_picker/file_picker.dart';
@@ -21,11 +23,14 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          padding: FediPadding.verticalBigPadding,
           child: const FediUltraLightGreyDivider(),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
+          padding: const EdgeInsets.symmetric(
+            horizontal: FediSizes.smallPadding,
+            vertical: FediSizes.bigPadding,
+          ),
           child: Container(
             height: 82,
             child: ListView(

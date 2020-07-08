@@ -8,6 +8,7 @@ import 'package:fedi/app/init/app_async_init_loading_widget.dart';
 import 'package:fedi/app/init/app_init_page.dart';
 import 'package:fedi/app/ui/button/text/fedi_grey_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -84,7 +85,7 @@ class CurrentAuthInstanceContextLoadingWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: FediPadding.allBigPadding,
                   child: Text(
                     tr(
                         "app.auth.instance.current.context.loading.cant_load"
@@ -98,7 +99,7 @@ class CurrentAuthInstanceContextLoadingWidget extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: FediPadding.allSmallPadding,
                   child: FediGreyFilledTextButton(
                     tr("app.auth.instance.current.context.loading.cant_load"
                         ".action.refresh"),
@@ -109,7 +110,7 @@ class CurrentAuthInstanceContextLoadingWidget extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: FediPadding.allSmallPadding,
                   child: FediGreyFilledTextButton(
                     tr("app.auth.instance.current.context.loading.cant_load"
                         ".action.choose_different_account"),
@@ -121,7 +122,7 @@ class CurrentAuthInstanceContextLoadingWidget extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: FediPadding.allSmallPadding,
                   child: FediGreyFilledTextButton(
                     tr("app.auth.instance.current.context.loading.cant_load"
                         ".action.logout"),

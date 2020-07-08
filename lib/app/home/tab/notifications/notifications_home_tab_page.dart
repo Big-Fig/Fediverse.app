@@ -14,9 +14,9 @@ import 'package:fedi/app/notification/tab/notification_tab_exclude_helper.dart';
 import 'package:fedi/app/notification/tab/notification_tab_icon_tab_indicator_item_widget.dart';
 import 'package:fedi/app/notification/tab/notification_tab_model.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
+import 'package:fedi/app/ui/fedi_border_radius.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
-import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_bloc.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_bloc_impl.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_widget.dart';
@@ -155,7 +155,7 @@ class _NotificationsHomeTabPageState extends State<NotificationsHomeTabPage>
             NotificationListTapToLoadOverlayWidget(),
         tabBarViewContainerBuilder: (BuildContext context, Widget child) {
           return ClipRRect(
-            borderRadius: FediSizes.defaultClipRRectBorderRadius,
+            borderRadius: FediBorderRadius.topOnlyDefaultBorderRadius,
             child: Container(
               color: FediColors.white,
               child: child,

@@ -7,11 +7,12 @@ import 'package:fedi/app/status/spoiler/status_spoiler_alert_widget.dart';
 import 'package:fedi/app/status/spoiler/status_spoiler_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-const _defaultPadding = EdgeInsets.symmetric(horizontal: 16.0);
+const _defaultPadding = FediPadding.horizontalBigPadding;
 
 class StatusBodyWidget extends StatelessWidget {
   final bool collapsible;

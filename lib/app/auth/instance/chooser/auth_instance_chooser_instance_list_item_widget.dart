@@ -28,7 +28,7 @@ class AuthInstanceChooserInstanceListItemWidget extends StatelessWidget {
         IAuthInstanceChooserBloc.of(context, listen: false);
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16.0),
+      padding: const EdgeInsets.only(bottom: FediSizes.bigPadding),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -44,7 +44,7 @@ class AuthInstanceChooserInstanceListItemWidget extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 16.0),
+            padding: const EdgeInsets.only(left: FediSizes.bigPadding),
             child: buildSelectedIcon(),
           ),
         ],
@@ -63,8 +63,8 @@ class AuthInstanceChooserInstanceListItemWidget extends StatelessWidget {
       child: Row(
         children: [
           AccountAvatarWidget(
-            imageSize: 48.0,
-            progressSize: 36.0,
+            imageSize: FediSizes.accountAvatarBigSize,
+            progressSize: FediSizes.accountAvatarProgressBigSize,
           ),
           const FediBigHorizontalSpacer(),
           Flexible(

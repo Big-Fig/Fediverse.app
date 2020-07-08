@@ -11,9 +11,9 @@ import 'package:fedi/app/home/tab/account/drawer/account_home_tab_page_drawer_wi
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 import 'package:fedi/app/status/list/status_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
+import 'package:fedi/app/ui/fedi_border_radius.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
-import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_without_scrollable_tabs_widget.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
@@ -77,7 +77,7 @@ class AccountHomeTabPage extends StatelessWidget {
         contentBuilder: (context) {
           return FediDarkStatusBarStyleArea(
             child: ClipRRect(
-              borderRadius: FediSizes.defaultClipRRectBorderRadius,
+              borderRadius: FediBorderRadius.topOnlyDefaultBorderRadius,
               child: Container(
                 color: Colors.white,
                 child: MyAccountDetailsBodyWidget(),

@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
@@ -26,7 +28,7 @@ class StatusCardWidget extends StatelessWidget {
           }
 
           return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12.0),
+            padding: const EdgeInsets.symmetric(vertical: FediSizes.middlePadding),
             child: Container(
               height: _cardImageSize,
               child: ClipRRect(
@@ -59,7 +61,7 @@ class StatusCardWidget extends StatelessWidget {
                   bottomRight: Radius.circular(_cardBorderRadius)),
               border: Border.all(color: FediColors.ultraLightGrey)),
           child: Padding(
-            padding: EdgeInsets.all(12),
+            padding: FediPadding.allMiddlePadding,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -115,7 +117,7 @@ class StatusCardWidget extends StatelessWidget {
         imageUrl: card.image,
         fit: BoxFit.cover,
         placeholder: (context, url) => Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: FediPadding.allBigPadding,
           child: FediCircularProgressIndicator(),
         ),
         errorWidget: (context, url, error) => Icon(Icons.error),

@@ -1,3 +1,4 @@
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:flutter/cupertino.dart';
 
 class FediFormRow extends StatelessWidget {
@@ -8,7 +9,7 @@ class FediFormRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical:16.0),
+      padding: FediPadding.verticalBigPadding,
       child: child,
     );
   }

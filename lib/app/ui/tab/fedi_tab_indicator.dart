@@ -1,4 +1,5 @@
-
+import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -25,8 +26,8 @@ class FediTabIndicator extends Decoration {
     this.indicatorColor = Colors.greenAccent,
     this.indicatorRadius = 100.0,
     this.tabBarIndicatorSize = TabBarIndicatorSize.label,
-    this.padding = const EdgeInsets.symmetric(vertical: 2.0, horizontal: 8.0),
-    this.insets = const EdgeInsets.symmetric(horizontal: 5.0),
+    this.padding = FediPadding.horizontalSmallPadding,
+    this.insets = FediPadding.horizontalSmallPadding,
   })  : assert(indicatorHeight != null),
         assert(indicatorColor != null),
         assert(indicatorRadius != null),
@@ -98,8 +99,8 @@ class _BubblePainter extends BoxPainter {
     assert(configuration != null);
     assert(configuration.size != null);
     final Rect rect = Offset(
-        offset.dx, (configuration.size.height / 2) - indicatorHeight / 2) &
-    Size(configuration.size.width, indicatorHeight);
+            offset.dx, (configuration.size.height / 2) - indicatorHeight / 2) &
+        Size(configuration.size.width, indicatorHeight);
     final TextDirection textDirection = configuration.textDirection;
     final Rect indicator = _indicatorRectFor(rect, textDirection);
     final Paint paint = Paint();

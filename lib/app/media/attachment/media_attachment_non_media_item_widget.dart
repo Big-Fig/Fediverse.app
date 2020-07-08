@@ -1,5 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:fedi/app/ui/fedi_border_radius.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 
@@ -35,14 +38,14 @@ class MediaAttachmentNonMediaItemWidget extends StatelessWidget {
                 opacity: opacity,
                 child: Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                    borderRadius: FediBorderRadius.allSmallBorderRadius,
                     border: Border.all(color: FediColors.ultraLightGrey),
                   ),
                   child: Row(
                     children: [
                       Container(
-                        width: 70.0,
-                        height: 70.0,
+                        width: FediSizes.nonMediaIconSize,
+                        height: FediSizes.nonMediaIconSize,
                         decoration: BoxDecoration(
                           border: Border(
                             right: BorderSide(
@@ -53,7 +56,7 @@ class MediaAttachmentNonMediaItemWidget extends StatelessWidget {
                         ),
                         child: Center(
                             child: Padding(
-                          padding: const EdgeInsets.all(16.0),
+                          padding: FediPadding.allBigPadding,
                           child: Container(
                             decoration: BoxDecoration(
                                 border: Border.all(
@@ -77,7 +80,7 @@ class MediaAttachmentNonMediaItemWidget extends StatelessWidget {
                       ),
                       Expanded(
                         child: Padding(
-                          padding: const EdgeInsets.all(12.0),
+                          padding: FediPadding.allMiddlePadding,
                           child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,7 +113,7 @@ class MediaAttachmentNonMediaItemWidget extends StatelessWidget {
                 Positioned(
                   top: 0.0,
                   bottom: 0.0,
-                  right: 16.0,
+                  right: FediSizes.bigPadding,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -42,7 +43,8 @@ class _MediaCarouselWidgetState extends State<MediaCarouselWidget> {
               return Container(
                 width: 12.0,
                 height: 12.0,
-                margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                margin: EdgeInsets.symmetric(vertical: FediSizes.middlePadding,
+                    horizontal: 2.0),
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: _current == index

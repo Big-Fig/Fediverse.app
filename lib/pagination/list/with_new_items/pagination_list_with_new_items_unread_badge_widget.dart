@@ -1,4 +1,5 @@
 import 'package:fedi/app/ui/badge/fedi_unread_badge_widget.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -8,7 +9,7 @@ class PaginationListWithNewItemsUnreadBadgeWidget
     @required Widget child,
   }) : super(
           child: child,
-          offset: 8.0,
+          offset: FediSizes.smallPadding,
         );
 
   @override

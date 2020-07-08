@@ -1,4 +1,5 @@
 import 'package:fedi/app/status/post/post_status_bloc.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/model_bottom_sheet/fedi_modal_bottom_sheet.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
@@ -60,7 +61,7 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
       };
     }
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10),
+      padding: EdgeInsets.symmetric(horizontal: FediSizes.middlePadding),
       child: Row(
         children: <Widget>[
           Expanded(

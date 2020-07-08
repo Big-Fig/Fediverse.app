@@ -38,7 +38,7 @@ class FediIconInCircleBlurredButton extends StatelessWidget
         borderRadius: BorderRadius.circular(size),
         child: BackdropFilter(
           child: IconButton(
-            padding: EdgeInsets.all(0.0),
+            padding: EdgeInsets.zero,
             icon: Icon(iconData, size: iconSize, color: FediColors.white),
             onPressed: onPressed,
           ),

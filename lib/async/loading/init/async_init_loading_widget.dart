@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_model.dart';
@@ -29,7 +30,7 @@ class AsyncInitLoadingWidget extends StatelessWidget {
           switch (loadingState) {
             case AsyncInitLoadingState.notStarted:
               return Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: FediPadding.allSmallPadding,
                 child: Center(
                   child: Text(tr("async.init.state.not_started")),
                 ),
@@ -43,7 +44,7 @@ class AsyncInitLoadingWidget extends StatelessWidget {
               break;
             case AsyncInitLoadingState.failed:
               return Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: FediPadding.allSmallPadding,
                   child: Center(
                     child: Text(tr(
                         "async.init.state.failed",

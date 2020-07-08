@@ -1,4 +1,5 @@
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,7 @@ class FediDrawerWidget extends StatelessWidget {
             buildHeaderWidget(context),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal:16.0),
+                padding: FediPadding.horizontalBigPadding,
                 child: child,
               ),
             ),

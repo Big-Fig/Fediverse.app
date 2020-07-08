@@ -1,3 +1,4 @@
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/camera/camera_bloc.dart';
 import 'package:fedi/camera/camera_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,7 +17,7 @@ class CameraPhotoWidget extends CameraWidget {
           Align(
               alignment: Alignment.bottomRight,
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: FediPadding.allBigPadding,
                 child: buildSwitchCameraButtonWidget(cameraBloc),
               )),
         ],

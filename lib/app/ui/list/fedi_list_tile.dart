@@ -1,5 +1,6 @@
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_shadows.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,7 @@ class FediListTile extends StatelessWidget {
     @required this.child,
     this.isFirstInList = false,
     this.noPadding = false,
-    this.oneSidePadding = 8.0,
+    this.oneSidePadding = FediSizes.smallPadding,
   });
 
   @override
@@ -27,7 +28,7 @@ class FediListTile extends StatelessWidget {
         edgeInsets = EdgeInsets.symmetric(vertical: oneSidePadding);
       }
     } else {
-      edgeInsets = EdgeInsets.all(0.0);
+      edgeInsets = EdgeInsets.zero;
     }
 
     return Padding(
