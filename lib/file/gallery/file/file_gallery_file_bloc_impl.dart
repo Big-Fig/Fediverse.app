@@ -10,7 +10,7 @@ import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:photo_manager/photo_manager.dart';
-
+var _thumbImageSize = 150;
 const heicExtension = ".heic";
 var _logger = Logger("file_gallery_file_bloc_impl.dart");
 
@@ -25,7 +25,8 @@ abstract class AbstractFileGalleryFileBloc extends AsyncInitLoadingBloc
 
   @override
   Future internalAsyncInit() async {
-    thumbImageData = await loadThumbData(width: 150, height: 150);
+
+    thumbImageData = await loadThumbData(width: _thumbImageSize, height: _thumbImageSize);
   }
 
   Future<Uint8List> loadThumbData({@required int width, @required int height});

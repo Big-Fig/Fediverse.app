@@ -22,12 +22,14 @@ class HtmlTextWidget extends StatelessWidget {
   final bool shrinkWrap;
   final bool drawNewLines;
   final TextAlign textAlign;
+  final double imageSize;
 
   const HtmlTextWidget({
     @required this.data,
     @required this.onLinkTap,
     this.fontSize = 18.0,
     this.lineHeight = 1.0,
+    this.imageSize = 20.0,
     this.fontWeight = FontWeight.normal,
     this.linkColor = FediColors.primaryColorDark,
     this.color,
@@ -76,8 +78,8 @@ class HtmlTextWidget extends StatelessWidget {
         ),
         "img": Style(
           display: Display.INLINE,
-          width: 20,
-          height: 20,
+          width: imageSize,
+          height: imageSize,
           padding: EdgeInsets.zero,
           margin: EdgeInsets.zero,
           textAlign: textAlign,

@@ -3,6 +3,8 @@ class FediSizes {
   static const accountAvatarProgressDefaultSize = 20.0;
   static const accountAvatarBigSize = 48.0;
   static const accountAvatarProgressBigSize = 24.0;
+  static const accountAvatarSmallSize = 24.0;
+  static const accountAvatarProgressSmallSize = 18.0;
   static const statusSubHeaderHeight = 16.0;
   static const defaultIconSize = 16.0;
   static const smallPadding = 8.0;
@@ -34,4 +36,8 @@ class FediSizes {
   static const editAccountHeaderBackgroundHeight = 148.0;
   static const editAccountAvatarAndBorderSize = FediSizes.editAccountAvatarSize +
       FediSizes.editAccountAvatarCircleBorderWidth;
+  
+  static const unreadBadgeSize = 8.0;
+  static const unreadBadgeDefaultOffset = 2.0;
+
 }

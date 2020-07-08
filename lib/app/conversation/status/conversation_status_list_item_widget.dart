@@ -10,7 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 const _borderRadius =Radius.circular(FediSizes.borderRadiusBigSize);
-
+var _maxDeviceWidthPercent = 0.8;
 class ConversationStatusListItemWidget extends StatelessWidget {
   final bool isFirstInMinuteGroup;
   final bool isLastInMinuteGroup;
@@ -33,6 +33,7 @@ class ConversationStatusListItemWidget extends StatelessWidget {
     var alignment =
         isStatusFromMe ? Alignment.centerRight : Alignment.centerLeft;
     var isHaveTextContent = statusBloc?.content?.isNotEmpty == true;
+    
     return Align(
       alignment: alignment,
       child: Column(
@@ -60,7 +61,7 @@ class ConversationStatusListItemWidget extends StatelessWidget {
                           bottomRight: _borderRadius)
                   : BorderRadius.zero,
             ),
-            constraints: BoxConstraints(maxWidth: deviceWidth * 0.80),
+            constraints: BoxConstraints(maxWidth: deviceWidth * _maxDeviceWidthPercent),
             child: Padding(
               padding: isHaveTextContent
                   ? EdgeInsets.symmetric(

@@ -26,11 +26,11 @@ class TimelinesHomeTabOverlayOnLongScrollWidget extends StatelessWidget {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     MyAccountAvatarWidget(
-                      imageSize: 40,
-                      progressSize: 24,
+                      imageSize: FediSizes.accountAvatarBigSize,
+                      progressSize: FediSizes.accountAvatarProgressBigSize,
                     ),
                     SizedBox(
-                      width: 24.0,
+                      width: FediSizes.bigPadding,
                     ),
                     Text(
                       tr("app.status.post.field.message.hint"),

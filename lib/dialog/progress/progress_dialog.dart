@@ -7,6 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
+var _progressDialogSize = 50.0;
+
 abstract class ProgressDialog extends BaseDialog {
   final String contentMessage;
 
@@ -46,46 +48,46 @@ abstract class ProgressDialog extends BaseDialog {
           borderRadius: BorderRadius.all(Radius.circular(10.0))),
       child: buildDialogContainer(context));
 
-  Widget buildDialogContainer(BuildContext context) => Padding(
-        padding: FediPadding.allBigPadding,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-              Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: SizedBox(
-                  width: 50.0,
-                  height: 50.0,
-                  child: FediCircularProgressIndicator(),
-                ),
+  Widget buildDialogContainer(BuildContext context) {
+    return Padding(
+      padding: FediPadding.allBigPadding,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+            Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: FediCircularProgressIndicator(
+                size: _progressDialogSize,
               ),
-              Expanded(child: buildDialogContent(context))
-            ]),
-            if (cancelable)
-              StreamBuilder<bool>(
-                  stream: isCanceledStream,
-                  initialData: isCanceled,
-                  builder: (context, snapshot) {
-                    var canceled = snapshot.data;
-                    Future<Null> Function() onPressed;
+            ),
+            Expanded(child: buildDialogContent(context))
+          ]),
+          if (cancelable)
+            StreamBuilder<bool>(
+                stream: isCanceledStream,
+                initialData: isCanceled,
+                builder: (context, snapshot) {
+                  var canceled = snapshot.data;
+                  Future<Null> Function() onPressed;
 
-                    if (!canceled) {
-                      onPressed = () async {
-                        _isCanceledSubject.add(true);
-                        await cancelableOperation.cancel();
-                        hide(context);
-                      };
-                    }
-                    return FlatButton(
-                      child: Text(
-                        tr("dialog.progress.action.cancel"),
-                      ),
-                      onPressed: onPressed,
-                    );
-                  })
-          ],
-        ),
-      );
+                  if (!canceled) {
+                    onPressed = () async {
+                      _isCanceledSubject.add(true);
+                      await cancelableOperation.cancel();
+                      hide(context);
+                    };
+                  }
+                  return FlatButton(
+                    child: Text(
+                      tr("dialog.progress.action.cancel"),
+                    ),
+                    onPressed: onPressed,
+                  );
+                })
+        ],
+      ),
+    );
+  }
 }

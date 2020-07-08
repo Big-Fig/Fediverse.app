@@ -12,6 +12,7 @@ import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+var _typeContainerSize = 60.0;
 
 class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
   final VoidCallback onFileSelected;
@@ -141,6 +142,7 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
       });
 
   Widget _buildAction(IconData iconData, String label, Function() onTap) {
+
     return InkWell(
       onTap: () {
         onTap();
@@ -148,11 +150,11 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            width: 60.0,
-            height: 60.0,
+            width: _typeContainerSize,
+            height: _typeContainerSize,
             decoration: BoxDecoration(
                 border: Border.all(color: FediColors.darkGrey),
-                borderRadius: BorderRadius.circular(60.0)),
+                borderRadius: BorderRadius.circular(_typeContainerSize)),
             child: Center(child: Icon(iconData, color: FediColors.darkGrey)),
           ),
           const SizedBox(
