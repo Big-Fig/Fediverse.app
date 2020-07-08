@@ -24,6 +24,15 @@ import 'package:fedi/ui/form/group/pair/form_link_pair_field_group_bloc.dart';
 import 'package:flutter/material.dart';
 
 
+ const editAccountAvatarSize = 120.0;
+ const editAccountProgressSize = 30.0;
+ const editAccountAvatarTopPadding = 50.0;
+ const editAccountAvatarCircleBorderWidth = 4.0;
+ const editAccountHeaderBackgroundHeight = 148.0;
+ const editAccountAvatarAndBorderSize = editAccountAvatarSize +
+    editAccountAvatarCircleBorderWidth;
+
+
 class EditMyAccountWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -31,19 +40,19 @@ class EditMyAccountWidget extends StatelessWidget {
     return ListView(
       children: <Widget>[
         Container(
-          height: FediSizes.editAccountAvatarTopPadding +
-              FediSizes.editAccountAvatarSize +
-              FediSizes.editAccountAvatarCircleBorderWidth * 2,
+          height: editAccountAvatarTopPadding +
+              editAccountAvatarSize +
+              editAccountAvatarCircleBorderWidth * 2,
           child: Stack(
             children: [
               Container(
-                height: FediSizes.editAccountHeaderBackgroundHeight,
+                height: editAccountHeaderBackgroundHeight,
                 child: buildHeaderField(context, editMyAccountBloc),
               ),
               Positioned(
                 left: 0,
                 right: 0,
-                top: FediSizes.editAccountAvatarTopPadding,
+                top: editAccountAvatarTopPadding,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -151,9 +160,9 @@ class EditMyAccountWidget extends StatelessWidget {
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(FediSizes.editAccountAvatarAndBorderSize / 2),
+        borderRadius: BorderRadius.circular(editAccountAvatarAndBorderSize / 2),
         border: Border.all(
-          width: FediSizes.editAccountAvatarCircleBorderWidth,
+          width: editAccountAvatarCircleBorderWidth,
           color: FediColors.white,
           style: BorderStyle.solid,
         ),
@@ -169,16 +178,16 @@ class EditMyAccountWidget extends StatelessWidget {
               return CachedNetworkImage(
                 imageUrl: url,
                 placeholder: (context, url) => Container(
-                  width: FediSizes.editAccountProgressSize,
-                  height: FediSizes.editAccountProgressSize,
+                  width: editAccountProgressSize,
+                  height: editAccountProgressSize,
                   child: FediCircularProgressIndicator(),
                 ),
                 imageBuilder: (context, imageProvider) {
                   return buildAvatarImageContainer(imageProvider);
                 },
                 errorWidget: (context, url, error) => Icon(Icons.error),
-                height: FediSizes.editAccountAvatarSize,
-                width: FediSizes.editAccountAvatarSize,
+                height: editAccountAvatarSize,
+                width: editAccountAvatarSize,
               );
             } else {
               return buildAvatarImageContainer(Image.file(source.file).image);
@@ -189,12 +198,12 @@ class EditMyAccountWidget extends StatelessWidget {
 
   Container buildAvatarImageContainer(ImageProvider imageProvider) {
     return Container(
-      height: FediSizes.editAccountAvatarSize,
-      width: FediSizes.editAccountAvatarSize,
+      height: editAccountAvatarSize,
+      width: editAccountAvatarSize,
       child: ClipRRect(
           borderRadius: BorderRadius.circular(
-              FediSizes.editAccountAvatarSize / 2 -
-                  FediSizes.editAccountAvatarCircleBorderWidth),
+              editAccountAvatarSize / 2 -
+                  editAccountAvatarCircleBorderWidth),
           child: Image(
             image: imageProvider,
           )),
@@ -233,8 +242,8 @@ class EditMyAccountWidget extends StatelessWidget {
                 fit: BoxFit.cover,
                 placeholder: (context, url) => Center(
                   child: Container(
-                    width: FediSizes.editAccountProgressSize,
-                    height: FediSizes.editAccountProgressSize,
+                    width: editAccountProgressSize,
+                    height: editAccountProgressSize,
                     child: FediCircularProgressIndicator(),
                   ),
                 ),
