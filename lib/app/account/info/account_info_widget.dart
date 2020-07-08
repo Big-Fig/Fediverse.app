@@ -5,6 +5,7 @@ import 'package:fedi/app/account/header/account_header_followers_count_widget.da
 import 'package:fedi/app/account/header/account_header_following_count_widget.dart';
 import 'package:fedi/app/account/header/account_header_statuses_count_widget.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,8 +23,8 @@ class AccountInfoWidget extends StatelessWidget {
           Row(
             children: [
               AccountAvatarWidget(
-                imageSize: 48,
-                progressSize: 25,
+                imageSize: FediSizes.accountAvatarBigSize,
+                progressSize: FediSizes.accountAvatarProgressBigSize,
               ),
               const FediSmallHorizontalSpacer(),
               Expanded(

@@ -1,6 +1,9 @@
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../fedi_padding.dart';
 
 class FediFilledEditTextField extends StatelessWidget {
   final String hintText;
@@ -79,15 +82,15 @@ class FediFilledEditTextField extends StatelessWidget {
 
   EdgeInsets calculatePadding(bool containLeading, bool containEnding) {
     if (containLeading && containEnding) {
-      return const EdgeInsets.all(0.0);
+      return EdgeInsets.zero;
     } else {
       if (!containLeading && !containEnding) {
-        return const EdgeInsets.symmetric(horizontal: 16.0);
+        return FediPadding.horizontalBigPadding;
       } else {
         if (containLeading) {
-          return const EdgeInsets.only(right: 16.0);
+          return const EdgeInsets.only(right: FediSizes.bigPadding);
         } else {
-          return const EdgeInsets.only(left: 16.0);
+          return const EdgeInsets.only(left: FediSizes.bigPadding);
         }
       }
     }

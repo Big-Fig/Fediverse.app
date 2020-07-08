@@ -1,6 +1,7 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/pagination/list/account_pagination_list_widget.dart';
 import 'package:fedi/app/search/input/search_input_widget.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,7 @@ class SelectAccountWidget extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: FediPadding.allBigPadding,
           child: SearchInputWidget(),
         ),
         Expanded(

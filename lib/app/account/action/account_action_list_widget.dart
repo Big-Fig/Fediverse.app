@@ -32,8 +32,8 @@ class AccountActionListWidget extends StatelessWidget {
 
           _logger.finest(() => "relationship $relationship");
 
-          var topPadding = 12.0;
-          var bottomPadding = 16.0;
+          var topPadding = FediSizes.smallPadding;
+          var bottomPadding = FediSizes.bigPadding;
           if (relationship?.following == null) {
             return Container(
               height: FediSizes.defaultFilledButtonHeight +

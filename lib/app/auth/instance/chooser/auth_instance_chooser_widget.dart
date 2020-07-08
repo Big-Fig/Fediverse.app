@@ -10,6 +10,7 @@ import 'package:fedi/app/auth/instance/chooser/auth_instance_chooser_bloc.dart';
 import 'package:fedi/app/auth/instance/chooser/auth_instance_chooser_instance_list_item_widget.dart';
 import 'package:fedi/app/auth/instance/join/add_more/add_more_join_auth_instance_page.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
@@ -54,7 +55,7 @@ class AuthInstanceChooserWidget extends StatelessWidget {
               buildItemsToChoose(
                   itemCount, instancesAvailableToChoose, instanceChooserBloc),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: FediPadding.allSmallPadding,
                 child: buildAddAccountRow(context),
               )
             ],

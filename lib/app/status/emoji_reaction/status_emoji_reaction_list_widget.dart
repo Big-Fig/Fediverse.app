@@ -3,6 +3,8 @@ import 'package:fedi/app/status/emoji_reaction/status_emoji_reaction_bloc_impl.d
 import 'package:fedi/app/status/emoji_reaction/status_emoji_reaction_list_item_widget.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_bloc.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/status/emoji_reaction/pleroma_status_emoji_reaction_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
@@ -22,11 +24,11 @@ class StatusEmojiReactionListWidget extends StatelessWidget {
         var emojiReactions = snapshot.data;
         if (emojiReactions?.isNotEmpty == true) {
           return Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: FediPadding.allSmallPadding,
             child: Container(
                 alignment: Alignment.topLeft,
                 child: Wrap(
-                  runSpacing: 8,
+                  runSpacing: FediSizes.smallPadding,
                   alignment: WrapAlignment.start,
                   crossAxisAlignment: WrapCrossAlignment.start,
                   children: emojiReactions

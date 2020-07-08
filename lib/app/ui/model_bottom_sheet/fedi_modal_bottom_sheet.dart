@@ -1,6 +1,7 @@
 import 'dart:core';
 
-import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/fedi_border_radius.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:flutter/material.dart';
 
 void showFediModalBottomSheetDialog({
@@ -12,14 +13,14 @@ void showFediModalBottomSheetDialog({
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
       builder: (BuildContext context) => ClipRRect(
-            borderRadius: FediSizes.defaultClipRRectBorderRadius,
+            borderRadius: FediBorderRadius.topOnlyDefaultBorderRadius,
             child: Container(
               color: Colors.white,
               constraints: BoxConstraints(
                 maxHeight: MediaQuery.of(context).size.height / 4.0 * 3.0,
               ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                padding: FediPadding.verticalBigPadding,
                 child: child,
               ),
             ),

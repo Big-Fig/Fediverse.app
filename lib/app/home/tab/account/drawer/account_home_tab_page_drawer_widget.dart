@@ -4,6 +4,7 @@ import 'package:fedi/app/status/scheduled/list/scheduled_status_list_page.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/drawer/fedi_drawer_widget.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,7 @@ class AccountHomeTabPageDrawerWidget extends StatelessWidget {
         children: [
           MyAccountSettingsWidget(),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            padding: FediPadding.verticalBigPadding,
             child: FediUltraLightGreyDivider(),
           ),
           buildScheduledButton(context)

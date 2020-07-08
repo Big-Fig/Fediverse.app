@@ -1,5 +1,6 @@
 import 'package:async/async.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/dialog/base_dialog.dart';
 import 'package:flutter/cupertino.dart';
@@ -46,7 +47,7 @@ abstract class ProgressDialog extends BaseDialog {
       child: buildDialogContainer(context));
 
   Widget buildDialogContainer(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+        padding: FediPadding.allBigPadding,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,

@@ -1,6 +1,7 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/details/account_details_page.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ class StatusSubHeaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        height: 16,
+        height: FediSizes.statusSubHeaderHeight,
         child: GestureDetector(
           onTap: () {
             if (accountCallback != null) {
@@ -32,7 +33,7 @@ class StatusSubHeaderWidget extends StatelessWidget {
       children: <Widget>[
         Icon(
           icon,
-          size: 16,
+          size: FediSizes.defaultIconSize,
           color: FediColors.mediumGrey,
         ),
         const FediSmallHorizontalSpacer(),
@@ -41,9 +42,7 @@ class StatusSubHeaderWidget extends StatelessWidget {
           style: TextStyle(
               fontSize: 14, color: FediColors.mediumGrey, height: 1.15),
         ),
-        SizedBox(
-          width: 4,
-        ),
+        FediSmallHorizontalSpacer(),
         Flexible(
           child: Text(
             account.acct,

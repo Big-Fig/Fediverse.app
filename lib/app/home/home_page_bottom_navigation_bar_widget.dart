@@ -9,6 +9,8 @@ import 'package:fedi/app/notification/unread/notification_unread_exclude_types_b
 import 'package:fedi/app/status/post/new/new_post_status_page.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/icon/fedi_transparent_icon.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -49,7 +51,7 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
         goToNewPostStatusPage(context);
       },
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: FediPadding.allBigPadding,
         child: const FediTransparentIcon(FediIcons.plus),
       ));
 
@@ -71,11 +73,13 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
     var color = isSelected ? FediColors.primaryColor : FediColors.darkGrey;
 
     // todo: refactor UI
-    const insets = EdgeInsets.all(16.0);
+    const insets = FediPadding.allBigPadding;
+    var additionalOffset = 2.0;
+    var badgeOffset = additionalOffset + FediSizes.smallPadding;
     switch (tab) {
       case HomeTab.timelines:
         return HomeTimelinesUnreadBadgeWidget(
-          offset: 2.0 + 8.0,
+          offset: badgeOffset,
           child: Padding(
             padding: insets,
             child: FediTransparentIcon(
@@ -90,7 +94,7 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
             excludeTypes: <PleromaNotificationType>[
               PleromaNotificationType.pleromaChatMention
             ],
-            offset: 2.0 + 8.0,
+            offset: badgeOffset,
             child: Padding(
               padding: insets,
               child: FediTransparentIcon(
@@ -109,7 +113,7 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
 
               if (isNewChatsEnabled == true) {
                 return ChatUnreadBadgeCountWidget(
-                    offset: 2.0 + 8.0,
+                    offset: badgeOffset,
                     child: Padding(
                   padding: insets,
                   child: FediTransparentIcon(FediIcons.envelope, color: color),

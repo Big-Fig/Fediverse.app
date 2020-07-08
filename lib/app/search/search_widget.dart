@@ -17,6 +17,7 @@ import 'package:fedi/app/status/pagination/network_only/status_network_only_pagi
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/tab/fedi_text_tab_indicator_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
@@ -42,7 +43,7 @@ class SearchWidget extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: FediPadding.allBigPadding,
             child: SearchInputWidget(),
           ),
           Expanded(
@@ -69,7 +70,7 @@ class SearchWidget extends StatelessWidget {
                         );
                       }),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: FediPadding.allSmallPadding,
                     child: buildTabBar(context, tabs, searchBloc),
                   ),
                   FediUltraLightGreyDivider(),
@@ -89,7 +90,7 @@ class SearchWidget extends StatelessWidget {
         width: double.infinity,
         color: FediColors.lightGrey,
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: FediPadding.allBigPadding,
           child: Center(
             child: Builder(
               builder: (context) => FediTextTabIndicatorWidget(

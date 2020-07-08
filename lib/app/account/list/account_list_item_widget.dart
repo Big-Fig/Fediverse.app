@@ -2,6 +2,7 @@ import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/acct/account_acct_widget.dart';
 import 'package:fedi/app/account/avatar/account_avatar_widget.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -28,7 +29,7 @@ class AccountListItemWidget extends StatelessWidget {
         }
       },
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16.0),
+        padding: FediPadding.allBigPadding,
         child: Row(
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[

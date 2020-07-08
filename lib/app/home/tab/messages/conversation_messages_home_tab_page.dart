@@ -9,8 +9,8 @@ import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 import 'package:fedi/app/search/search_page.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
+import 'package:fedi/app/ui/fedi_border_radius.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
-import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/header/fedi_header_text.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_without_scrollable_tabs_widget.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
@@ -90,7 +90,7 @@ class ConversationMessagesHomeTabPage extends StatelessWidget {
           contentBuilder: (context) {
             return FediDarkStatusBarStyleArea(
               child: ClipRRect(
-                borderRadius: FediSizes.defaultClipRRectBorderRadius,
+                borderRadius: FediBorderRadius.topOnlyDefaultBorderRadius,
                 child: Container(
                   color: Colors.white,
                   child: ConversationListWidget(
@@ -108,7 +108,8 @@ class ConversationMessagesHomeTabPage extends StatelessWidget {
     return FediTransparentTextButton(
         tr("app.home.tab.conversations.action.switch_to_chats"), onPressed: () {
       IMyAccountSettingsBloc.of(context, listen: false)
-          .isNewChatsEnabledFieldBloc.changeCurrentValue(true);
+          .isNewChatsEnabledFieldBloc
+          .changeCurrentValue(true);
     });
   }
 

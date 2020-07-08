@@ -1,3 +1,4 @@
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/collapsible/collapsible_bloc.dart';
 import 'package:fedi/collapsible/collapsible_bloc_impl.dart';
 import 'package:fedi/collapsible/toggle_collapsible_overlay_widget.dart';
@@ -19,7 +20,7 @@ class CollapsibleOwnerWidget extends StatelessWidget {
           const Align(
               alignment: Alignment.bottomLeft,
               child: Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: FediPadding.allSmallPadding,
                 child: ToggleCollapsibleOverlayWidget(),
               ))
         ],

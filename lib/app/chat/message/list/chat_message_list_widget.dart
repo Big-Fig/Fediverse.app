@@ -7,6 +7,7 @@ import 'package:fedi/app/chat/message/pagination/list/chat_message_pagination_li
 import 'package:fedi/app/date/date_utils.dart';
 import 'package:fedi/app/list/list_loading_footer_widget.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/list/fedi_list_smart_refresher_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
@@ -140,7 +141,7 @@ class ChatMessageListWidget extends ChatMessagePaginationListBaseWidget {
             children: <Widget>[
               messageWidget,
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: FediPadding.allSmallPadding,
                 child: Center(
                     child: Text(
                   _dateSeparatorDateFormat.format(currentCreatedAt),

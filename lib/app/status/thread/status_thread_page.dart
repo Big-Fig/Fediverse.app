@@ -19,6 +19,7 @@ import 'package:fedi/app/status/thread/status_thread_bloc_impl.dart';
 import 'package:fedi/app/status/thread/status_thread_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_custom_app_bar.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
@@ -104,7 +105,7 @@ class StatusThreadPage extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          padding: FediPadding.horizontalBigPadding,
                           child: StatusCreatedAtWidget(),
                         )
                       ],

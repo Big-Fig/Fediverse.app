@@ -10,6 +10,8 @@ import 'package:fedi/app/html/html_text_helper.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -28,9 +30,9 @@ class ChatListItemWidget extends StatelessWidget {
         goToChatPage(context, chat: chatBloc.chat);
       },
       child: Container(
-        height: 88,
+        height: FediSizes.chatListItemPreviewHeight,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+          padding: FediPadding.allBigPadding,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[

@@ -5,6 +5,7 @@ import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_bloc.dart';
 import 'package:fedi/app/form/form_string_field_form_row_widget.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:fedi/error/error_data_model.dart';
 import 'package:fedi/pleroma/account/public/pleroma_account_public_model.dart';
@@ -49,7 +50,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
     var isHaveNextField = nextFormStringFieldBloc != null;
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10.0),
+      padding: FediPadding.horizontalBigPadding,
       child: FormStringFieldFormRowWidget(
         formStringFieldBloc: formStringFieldBloc,
         hint: hintText,
@@ -120,7 +121,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
   Widget buildSubmitButton(
       BuildContext context, IRegisterAuthInstanceBloc bloc) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: FediPadding.allSmallPadding,
       child: StreamBuilder<bool>(
         stream: bloc.isReadyToSubmitStream,
         initialData: bloc.isReadyToSubmit,

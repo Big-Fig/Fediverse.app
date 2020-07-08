@@ -6,6 +6,7 @@ import 'package:fedi/app/status/scheduled/datetime/scheduled_status_datetime_pic
 import 'package:fedi/app/status/scheduled/scheduled_status_bloc.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -54,7 +55,7 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
               return Container(
                 decoration: BoxDecoration(color: Colors.blue),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  padding: FediPadding.horizontalSmallPadding,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -72,12 +73,12 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
               return Container(
                 decoration: BoxDecoration(color: Colors.red),
                 child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    padding: FediPadding.horizontalSmallPadding,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: FediPadding.allSmallPadding,
                           child: Text(
                             tr("app.status.scheduled.state.canceled"),
                             style: TextStyle(color: Colors.white),
@@ -91,12 +92,12 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
               return Container(
                 decoration: BoxDecoration(color: Colors.blue),
                 child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    padding: FediPadding.horizontalSmallPadding,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: FediPadding.allSmallPadding,
                           child: Text(
                               tr(
                                   "app.status.scheduled.state.already_posted"),

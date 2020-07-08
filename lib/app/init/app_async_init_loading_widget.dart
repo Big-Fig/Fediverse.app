@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/init/app_init_page.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -30,7 +31,7 @@ class AppAsyncInitLoadingWidget extends StatelessWidget {
             case AsyncInitLoadingState.notStarted:
               return Scaffold(
                 body: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: FediPadding.allSmallPadding,
                   child: Center(
                     child: Text(tr("async.init.state.not_started")),
                   ),
@@ -46,7 +47,7 @@ class AppAsyncInitLoadingWidget extends StatelessWidget {
             case AsyncInitLoadingState.failed:
               return Scaffold(
                 body: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: FediPadding.allSmallPadding,
                     child: Center(
                       child: Text(tr("async.init.state.failed", args: [
                         asyncInitLoadingBloc.initLoadingException.toString()

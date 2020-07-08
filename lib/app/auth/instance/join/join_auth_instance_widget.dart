@@ -7,6 +7,8 @@ import 'package:fedi/app/tos/tos_page.dart';
 import 'package:fedi/app/ui/button/text/fedi_grey_filled_text_button.dart';
 import 'package:fedi/app/ui/edit_text/fedi_filled_edit_text_field.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:fedi/error/error_data_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -31,7 +33,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: FediPadding.allSmallPadding,
               child: buildLogoWidget(),
             ),
             SizedBox(
@@ -45,7 +47,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
             Spacer(),
             buildJoinFediDescText(context),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: FediPadding.allSmallPadding,
               child: buildJoinFediButton(context),
             ),
             Spacer(
@@ -87,7 +89,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
 
   Padding buildJoinFediDescText(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+      padding: EdgeInsets.symmetric(horizontal: 30, vertical: FediSizes.bigPadding),
       child: Text(
         tr("app.auth.instance.join.no_account"
             ".content"),
@@ -118,7 +120,8 @@ class JoinAuthInstanceWidget extends StatelessWidget {
         Expanded(
           flex: 1,
           child: Padding(
-            padding: EdgeInsets.only(left: 10, right: 5),
+            padding: EdgeInsets.only(left: FediSizes.bigPadding, right:
+            FediSizes.smallPadding),
             child: FediGreyFilledTextButton(
                 tr("app.auth.instance.join"
                     ".action"
@@ -130,7 +133,8 @@ class JoinAuthInstanceWidget extends StatelessWidget {
         Expanded(
           flex: 1,
           child: Padding(
-            padding: EdgeInsets.only(left: 5, right: 10),
+            padding: EdgeInsets.only(left: FediSizes.bigPadding, right:
+            FediSizes.smallPadding),
             child: FediGreyFilledTextButton(
                 tr("app.auth.instance.join"
                     ".action"
@@ -147,7 +151,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
     var joinInstanceBloc = IJoinAuthInstanceBloc.of(context, listen: true);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      padding: FediPadding.horizontalSmallPadding,
       child: FediFilledEditTextField(
         autocorrect: false,
         expanded: false,

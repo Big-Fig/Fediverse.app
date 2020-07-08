@@ -1,4 +1,5 @@
 import 'package:emoji_picker/emoji_picker.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -40,7 +41,7 @@ void showEmojiPickerModalPopup(BuildContext context, {EmojiReactionSelectedCallb
   showModalBottomSheet(
       context: context,
       builder: (context) => Padding(
-        padding: const EdgeInsets.only(top: 24.0),
+        padding: const EdgeInsets.only(top: FediSizes.bigPadding),
         child: StatusEmojiReactionPickerWidget(
           emojiReactionSelectedCallback: (String emojiName, String emoji) {
             if(emojiReactionSelectedCallback != null) {

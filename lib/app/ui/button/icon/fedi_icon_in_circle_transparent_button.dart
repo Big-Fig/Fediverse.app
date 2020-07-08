@@ -38,7 +38,7 @@ class FediIconInCircleTransparentButton extends StatelessWidget
       child: ClipRRect(
         borderRadius: BorderRadius.circular(size),
         child: IconButton(
-          padding: EdgeInsets.all(0.0),
+          padding: EdgeInsets.zero,
           icon: Icon(iconData, size: iconSize, color: color),
           onPressed: onPressed,
         ),

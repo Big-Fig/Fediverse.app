@@ -11,6 +11,8 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/notification_overlay/info_fedi_notification_overlay.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/url/url_helper.dart';
@@ -70,7 +72,7 @@ class StatusShareActionWidget extends StatelessWidget {
 
   Padding buildAccountNameSeparator(IAccount account) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10),
+      padding: FediPadding.allBigPadding,
       child: Center(
         child: Text(
           account.acct,
@@ -82,7 +84,7 @@ class StatusShareActionWidget extends StatelessWidget {
 
   Padding buildAccountDescSeparator(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 10, left: 10, right: 10),
+      padding: EdgeInsets.only(top: FediSizes.middlePadding, left: FediSizes.middlePadding, right: FediSizes.middlePadding),
       child: Center(
         child: Text(
           tr("app.status.action.popup.more_actions_for"),
@@ -94,7 +96,7 @@ class StatusShareActionWidget extends StatelessWidget {
 
   Padding buildTitleSeparator(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 10, left: 10, right: 10),
+      padding: EdgeInsets.only(top: FediSizes.middlePadding, left: FediSizes.middlePadding, right: FediSizes.middlePadding),
       child: Center(
         child: Text(
           tr("app.status.action.popup.title"),
@@ -195,7 +197,7 @@ class StatusShareActionWidget extends StatelessWidget {
 
   Padding buildButton(String title, onPressed()) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10),
+      padding: EdgeInsets.symmetric(horizontal: FediSizes.middlePadding),
       child: Row(
         children: <Widget>[
           Expanded(
@@ -223,7 +225,7 @@ class StatusShareActionWidget extends StatelessWidget {
               // hack we should compare relationship field with null
               if (snapshot.data?.following == null) {
                 return Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: FediPadding.allSmallPadding,
                   child: Center(child: FediCircularProgressIndicator()),
                 );
               }

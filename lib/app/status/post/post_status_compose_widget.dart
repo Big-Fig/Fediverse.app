@@ -11,6 +11,8 @@ import 'package:fedi/app/status/post/action/post_status_visibility_action_widget
 import 'package:fedi/app/status/post/input/post_status_compose_input_widget.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/ui/divider/fedi_light_grey_divider.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +36,7 @@ class PostStatusComposeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0), //child: ListView(
+      padding: FediPadding.allSmallPadding, //child: ListView(
 //  shrinkWrap: true,
       child: Column(
         mainAxisSize: expanded ? MainAxisSize.max : MainAxisSize.min,
@@ -61,7 +63,7 @@ class PostStatusComposeWidget extends StatelessWidget {
                 ),
           const FediBigVerticalSpacer(),
           Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
+            padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
             child: ProxyProvider<IPostStatusBloc,
                     IUploadMediaAttachmentsCollectionBloc>(
                 update: (context, value, previous) =>
@@ -81,7 +83,7 @@ class PostStatusComposeWidget extends StatelessWidget {
 
   Widget buildActions() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: FediPadding.verticalBigPadding,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -89,9 +91,7 @@ class PostStatusComposeWidget extends StatelessWidget {
             child: Container(
               height: 35,
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8.0,
-                ),
+                padding: FediPadding.horizontalSmallPadding,
                 child: ListView(
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
@@ -118,7 +118,7 @@ class PostStatusComposeWidget extends StatelessWidget {
 
   Widget buildAvatar() {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: FediPadding.allSmallPadding,
       child: MyAccountAvatarWidget(
         imageSize: 48,
         progressSize: 48,

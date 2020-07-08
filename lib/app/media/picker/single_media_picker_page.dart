@@ -4,6 +4,7 @@ import 'package:fedi/app/navigation/navigation_slide_bottom_route_builder.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/header/fedi_sub_header_text.dart';
 import 'package:fedi/app/ui/model_bottom_sheet/fedi_modal_bottom_sheet.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_custom_app_bar.dart';
@@ -170,7 +171,7 @@ class SingleMediaPickerPage extends StatelessWidget {
         child: Provider.value(
           value: fileGalleryBloc,
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: FediPadding.allBigPadding,
             child: ListView(
               shrinkWrap: true,
               children: fileGalleryBloc.folders

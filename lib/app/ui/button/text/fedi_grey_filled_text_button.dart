@@ -47,7 +47,7 @@ class FediGreyFilledTextButton extends FediTextButton {
           ),
           child: Center(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: EdgeInsets.symmetric(horizontal: FediSizes.bigPadding),
               child: Text(
                 text,
                 // 80% transparency

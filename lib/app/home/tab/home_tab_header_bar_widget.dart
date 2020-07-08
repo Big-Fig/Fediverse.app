@@ -1,3 +1,4 @@
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:flutter/cupertino.dart';
 
 class FediTabMainHeaderBarWidget extends StatelessWidget {
@@ -15,10 +16,10 @@ class FediTabMainHeaderBarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
-        left: 16.0,
-        top: 16.0,
-        right: 16.0,
-        bottom: 24.0,
+        left: FediSizes.bigPadding,
+        top: FediSizes.bigPadding,
+        right: FediSizes.bigPadding,
+        bottom: FediSizes.bigPadding + FediSizes.smallPadding,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

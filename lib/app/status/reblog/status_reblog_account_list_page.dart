@@ -9,6 +9,7 @@ import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
 import 'package:fedi/app/status/favourite/status_favourite_account_cached_list_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
@@ -27,7 +28,7 @@ class StatusReblogAccountListPage extends StatelessWidget {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: FediPadding.allBigPadding,
               child: Text(
                 "app.account.list.privacy".tr(),
                 textAlign: TextAlign.center,

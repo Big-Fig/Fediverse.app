@@ -16,9 +16,9 @@ import 'package:fedi/app/timeline/timeline_tabs_bloc.dart';
 import 'package:fedi/app/timeline/timeline_tabs_bloc_impl.dart';
 import 'package:fedi/app/timeline/timeline_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
+import 'package:fedi/app/ui/fedi_border_radius.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
-import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_bloc.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_bloc_impl.dart';
@@ -126,7 +126,7 @@ class _TimelinesHomeTabPageState extends State<TimelinesHomeTabPage>
           ),
           FediDarkStatusBarStyleArea(
             child: ClipRRect(
-              borderRadius: FediSizes.defaultClipRRectBorderRadius,
+              borderRadius: FediBorderRadius.topOnlyDefaultBorderRadius,
               child: Container(
                 color: FediColors.offWhite,
                 child: FediListTile(

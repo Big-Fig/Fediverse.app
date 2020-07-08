@@ -11,6 +11,7 @@ import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart'
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/form/fedi_form_pair_edit_text_row.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
@@ -22,11 +23,6 @@ import 'package:fedi/ui/form/group/one_type/form_one_type_group_bloc.dart';
 import 'package:fedi/ui/form/group/pair/form_link_pair_field_group_bloc.dart';
 import 'package:flutter/material.dart';
 
-const _avatarSize = 120.0;
-const _avatarCircleBorderWidth = 4.0;
-const _avatarAndBorderSize = _avatarSize + _avatarCircleBorderWidth;
-const _avatarTopPadding = 50.0;
-const _headerBackgroundHeight = 148.0;
 
 class EditMyAccountWidget extends StatelessWidget {
   @override
@@ -35,18 +31,19 @@ class EditMyAccountWidget extends StatelessWidget {
     return ListView(
       children: <Widget>[
         Container(
-          height:
-              _avatarTopPadding + _avatarSize + _avatarCircleBorderWidth * 2,
+          height: FediSizes.editAccountAvatarTopPadding +
+              FediSizes.editAccountAvatarSize +
+              FediSizes.editAccountAvatarCircleBorderWidth * 2,
           child: Stack(
             children: [
               Container(
-                height: _headerBackgroundHeight,
+                height: FediSizes.editAccountHeaderBackgroundHeight,
                 child: buildHeaderField(context, editMyAccountBloc),
               ),
               Positioned(
                 left: 0,
                 right: 0,
-                top: _avatarTopPadding,
+                top: FediSizes.editAccountAvatarTopPadding,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -59,7 +56,7 @@ class EditMyAccountWidget extends StatelessWidget {
         ),
         const FediSmallVerticalSpacer(),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding: FediPadding.horizontalBigPadding,
           child: Column(
             children: [
               buildTextField(
@@ -78,7 +75,8 @@ class EditMyAccountWidget extends StatelessWidget {
               buildCustomFields(context, editMyAccountBloc)
             ],
           ),
-        ), // Form
+        ),
+        // Form
       ],
     );
   }
@@ -153,9 +151,9 @@ class EditMyAccountWidget extends StatelessWidget {
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(_avatarAndBorderSize / 2),
+        borderRadius: BorderRadius.circular(FediSizes.editAccountAvatarAndBorderSize / 2),
         border: Border.all(
-          width: _avatarCircleBorderWidth,
+          width: FediSizes.editAccountAvatarCircleBorderWidth,
           color: FediColors.white,
           style: BorderStyle.solid,
         ),
@@ -171,16 +169,16 @@ class EditMyAccountWidget extends StatelessWidget {
               return CachedNetworkImage(
                 imageUrl: url,
                 placeholder: (context, url) => Container(
-                  width: 30,
-                  height: 30,
+                  width: FediSizes.editAccountProgressSize,
+                  height: FediSizes.editAccountProgressSize,
                   child: FediCircularProgressIndicator(),
                 ),
                 imageBuilder: (context, imageProvider) {
                   return buildAvatarImageContainer(imageProvider);
                 },
                 errorWidget: (context, url, error) => Icon(Icons.error),
-                height: _avatarSize,
-                width: _avatarSize,
+                height: FediSizes.editAccountAvatarSize,
+                width: FediSizes.editAccountAvatarSize,
               );
             } else {
               return buildAvatarImageContainer(Image.file(source.file).image);
@@ -191,11 +189,12 @@ class EditMyAccountWidget extends StatelessWidget {
 
   Container buildAvatarImageContainer(ImageProvider imageProvider) {
     return Container(
-      height: _avatarSize,
-      width: _avatarSize,
+      height: FediSizes.editAccountAvatarSize,
+      width: FediSizes.editAccountAvatarSize,
       child: ClipRRect(
-          borderRadius:
-              BorderRadius.circular(_avatarSize / 2 - _avatarCircleBorderWidth),
+          borderRadius: BorderRadius.circular(
+              FediSizes.editAccountAvatarSize / 2 -
+                  FediSizes.editAccountAvatarCircleBorderWidth),
           child: Image(
             image: imageProvider,
           )),
@@ -208,8 +207,8 @@ class EditMyAccountWidget extends StatelessWidget {
       children: <Widget>[
         buildHeaderFieldImage(context, editMyAccountBloc),
         Positioned(
-          bottom: 16.0,
-          right: 16.0,
+          bottom: FediSizes.bigPadding,
+          right: FediSizes.bigPadding,
           child:
               buildEditHeaderBackgroundActionButton(context, editMyAccountBloc),
         ),
@@ -234,8 +233,8 @@ class EditMyAccountWidget extends StatelessWidget {
                 fit: BoxFit.cover,
                 placeholder: (context, url) => Center(
                   child: Container(
-                    width: 30,
-                    height: 30,
+                    width: FediSizes.editAccountProgressSize,
+                    height: FediSizes.editAccountProgressSize,
                     child: FediCircularProgressIndicator(),
                   ),
                 ),
@@ -318,7 +317,7 @@ class EditMyAccountWidget extends StatelessWidget {
 
                     if (isMaximumCustomFieldsCountReached != true) {
                       return Padding(
-                        padding: const EdgeInsets.all(16.0),
+                        padding: FediPadding.allBigPadding,
                         child: FediPrimaryFilledTextButton(
                           tr("app.account.my.edit.field.custom_field.action"
                               ".add_new"),

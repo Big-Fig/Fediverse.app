@@ -1,5 +1,6 @@
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/field/account_field_grid_item_widget.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/pleroma/field/pleroma_field_model.dart';
 import 'package:flutter/material.dart';
@@ -22,12 +23,12 @@ class AccountFieldGridWidget extends StatelessWidget {
 
           if (nonEmptyFields?.isNotEmpty == true) {
             return GridView.count(
-                padding: const EdgeInsets.all(16.0),
+                padding: FediPadding.allBigPadding,
                 shrinkWrap: true,
                 childAspectRatio: 4,
                 crossAxisCount: 2,
-                crossAxisSpacing: 8.0,
-                mainAxisSpacing: 8.0,
+                crossAxisSpacing: FediSizes.smallPadding,
+                mainAxisSpacing: FediSizes.smallPadding,
                 children: nonEmptyFields
                 // hack to avoid fill parent inside GridView
                     .map((field) => Column(

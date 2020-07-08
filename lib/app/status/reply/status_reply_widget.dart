@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
 import 'package:fedi/app/status/reply/status_reply_loader_bloc.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/async/loading/init/async_init_loading_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -38,7 +39,7 @@ class StatusReplyWidget extends StatelessWidget {
               break;
             case AsyncInitLoadingState.failed:
               return Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: FediPadding.allSmallPadding,
                 child: Text(
                   tr("app.status.reply.loading.failed"),
                 ),
@@ -52,17 +53,17 @@ class StatusReplyWidget extends StatelessWidget {
 
   Padding _buildLoading(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: FediPadding.allSmallPadding,
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: FediPadding.allSmallPadding,
             child: Text(
               tr("app.status.reply.loading.progress"),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: FediPadding.allSmallPadding,
             child: FediCircularProgressIndicator(),
           )
         ],

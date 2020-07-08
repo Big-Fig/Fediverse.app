@@ -1,6 +1,7 @@
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_non_media_item_widget.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,7 +23,10 @@ class UploadMediaAttachmentsNonMediaListWidget extends StatelessWidget {
           }
 
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal:16.0, vertical: 8.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: FediSizes.bigPadding,
+              vertical: FediSizes.smallPadding,
+            ),
             child: Container(
               width: double.infinity,
               child: Column(
@@ -32,7 +36,7 @@ class UploadMediaAttachmentsNonMediaListWidget extends StatelessWidget {
                     return Provider.value(
                         value: mediaItemBloc,
                         child: Padding(
-                          padding: const EdgeInsets.only(bottom:8.0),
+                          padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
                           child: UploadMediaAttachmentsNonMediaItemWidget(),
                         ));
                   }).toList(),

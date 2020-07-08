@@ -1,6 +1,8 @@
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_media_item_widget.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,27 +23,26 @@ class UploadMediaAttachmentsMediaListWidget extends StatelessWidget {
           }
 
           if (mediaItemBlocs.length == 1) {
-
             return Padding(
               padding: const EdgeInsets.only(
-                  left:16.0,
-                  right:16.0,
-                  top: 8.0,
-                  bottom: 16.0,
+                left: FediSizes.bigPadding,
+                right: FediSizes.bigPadding,
+                top: FediSizes.smallPadding,
+                bottom: FediSizes.bigPadding,
               ),
               child: Container(
-                height: 220,
+                height: FediSizes.mediaAttachmentSingleHeight,
                 child: Provider<IUploadMediaAttachmentBloc>.value(
                     value: mediaItemBlocs.first,
                     child: UploadMediaAttachmentMediaItemWidget(
-                      contentPadding: const EdgeInsets.all(8.0),
+                      contentPadding: FediPadding.allSmallPadding,
                     )),
               ),
             );
           }
 
           return Container(
-            height: 90.0,
+            height: FediSizes.mediaAttachmentRowItemSize,
             child: ListView(
               scrollDirection:
                   Axis.horizontal, //              shrinkWrap: true,
@@ -54,13 +55,11 @@ class UploadMediaAttachmentsMediaListWidget extends StatelessWidget {
                     Provider<IUploadMediaAttachmentBloc>.value(
                       value: mediaItemBloc,
                       child: UploadMediaAttachmentMediaItemWidget(
-                        contentPadding: const EdgeInsets.all(7.0),
+                        contentPadding: FediPadding.allSmallPadding,
                       ),
                     ),
                   );
                 }).toList(), //                _buildGridItem(
-//                  buildAddTile(context, mediaAttachmentsCollectionBloc),
-//                )
               ],
             ),
           );
@@ -69,10 +68,13 @@ class UploadMediaAttachmentsMediaListWidget extends StatelessWidget {
 
   Widget _buildItem(Widget child) {
     return Padding(
-      padding: const EdgeInsets.only(left: 6.0, top: 6.0),
+      padding: const EdgeInsets.only(
+        left: FediSizes.smallPadding,
+        top: FediSizes.smallPadding,
+      ),
       child: Container(
-        width: 90,
-        height: 90,
+        width: FediSizes.mediaAttachmentRowItemSize,
+        height: FediSizes.mediaAttachmentRowItemSize,
         child: child,
       ),
     );

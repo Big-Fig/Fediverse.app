@@ -4,6 +4,7 @@ import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -82,7 +83,7 @@ class StatusPaginationListMediaWidget extends StatusPaginationListBaseWidget {
                       context, statusWithMediaAttachment.status);
                 },
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: FediPadding.allSmallPadding,
                   child: Center(
                     child: Provider<IPleromaMediaAttachment>.value(
                         value: statusWithMediaAttachment.mediaAttachment,

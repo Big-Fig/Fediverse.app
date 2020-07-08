@@ -48,7 +48,7 @@ class FediTransparentTextButton extends StatelessWidget
             child: BackdropFilter(
               child: Center(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: FediSizes.bigPadding),
                   child: Text(
                     text,
                     textAlign: TextAlign.center,

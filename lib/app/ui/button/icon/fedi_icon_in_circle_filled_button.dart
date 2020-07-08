@@ -53,7 +53,7 @@ class FediIconInCircleFilledButton extends StatelessWidget
           ),
         ),
         child: IconButton(
-          padding: EdgeInsets.all(0.0),
+          padding: EdgeInsets.zero,
           icon: Icon(
             iconData,
             size: iconSize,

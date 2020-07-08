@@ -7,6 +7,7 @@ import 'package:fedi/app/message/action/post_message_post_action_widget.dart';
 import 'package:fedi/app/message/post_message_attach_widget.dart';
 import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/message/post_message_content_widget.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ class PostMessageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var postMessageBloc = IPostMessageBloc.of(context, listen: false);
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: FediPadding.allSmallPadding,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
