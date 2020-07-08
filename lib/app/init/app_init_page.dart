@@ -5,6 +5,7 @@ import 'package:fedi/package_info/version_package_info_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+    var _progressSize = 40.0;
 class AppInitPage extends StatelessWidget {
   final String text;
 
@@ -21,30 +22,6 @@ class AppInitPage extends StatelessWidget {
               Center(
                 child: buildLogoWidget(),
               ),
-//              Center(
-//                child: Column(
-//                  children: [
-//                    ,
-////                    Padding(
-////                      padding: FediPadding.allSmallPadding,
-////                      child: FediCircularProgressIndicator(
-////                        backgroundColor: FediColors.white,
-////                      ),
-////                    ),
-////                    if (text != null)
-////                      Padding(
-////                        padding: FediPadding.allSmallPadding,
-////                        child: Text(
-////                          text,
-////                          style: TextStyle(
-////                            color: FediColors.white,
-////                            fontWeight: FontWeight.w500,
-////                          ),
-////                        ),
-////                      )
-//                  ],
-//                ),
-//              ),
               Positioned(
                 left: 0.0,
                 right: 0.0,
@@ -53,8 +30,8 @@ class AppInitPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      width: 40.0,
-                      height: 40.0,
+                      width: _progressSize,
+                      height: _progressSize,
                       child: FediCircularProgressIndicator(
                         color: FediColors.white,
                       ),
@@ -66,7 +43,7 @@ class AppInitPage extends StatelessWidget {
                 Positioned(
                   left: 20.0,
                   right: 20.0,
-                  bottom: 40.0,
+                  bottom: _progressSize,
                   child: Text(
                     text,
                     textAlign: TextAlign.center,

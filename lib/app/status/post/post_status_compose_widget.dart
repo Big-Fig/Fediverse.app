@@ -120,8 +120,8 @@ class PostStatusComposeWidget extends StatelessWidget {
     return Padding(
       padding: FediPadding.allSmallPadding,
       child: MyAccountAvatarWidget(
-        imageSize: 48,
-        progressSize: 48,
+        imageSize: FediSizes.accountAvatarBigSize,
+        progressSize: FediSizes.accountAvatarProgressBigSize,
       ),
     );
   }

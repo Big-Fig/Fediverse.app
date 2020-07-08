@@ -23,28 +23,31 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+var _headerBackgroundHeight = 150.0;
 
 class AccountHomeTabPage extends StatelessWidget {
   const AccountHomeTabPage({Key key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        backgroundColor: FediColors.primaryColorDark,
-        key: _drawerKey,
-        drawer: AccountHomeTabPageDrawerWidget(),
-        body: Stack(
-          children: [
-            ProxyProvider<IMyAccountBloc, IAccountBloc>(
-              update: (context, value, previous) => value,
-              child: Container(
-                height: 150.0,
-                child: const AccountHeaderBackgroundWidget(),
-              ),
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: FediColors.primaryColorDark,
+      key: _drawerKey,
+      drawer: AccountHomeTabPageDrawerWidget(),
+      body: Stack(
+        children: [
+          ProxyProvider<IMyAccountBloc, IAccountBloc>(
+            update: (context, value, previous) => value,
+            child: Container(
+              height: _headerBackgroundHeight,
+              child: const AccountHeaderBackgroundWidget(),
             ),
-            _buildBody(context),
-          ],
-        ),
-      );
+          ),
+          _buildBody(context),
+        ],
+      ),
+    );
+  }
 
   Widget _buildBody(BuildContext context) =>
       FediNestedScrollViewWithoutNestedScrollableTabsWidget(

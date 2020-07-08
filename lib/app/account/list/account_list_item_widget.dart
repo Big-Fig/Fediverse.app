@@ -3,6 +3,7 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/acct/account_acct_widget.dart';
 import 'package:fedi/app/account/avatar/account_avatar_widget.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -34,8 +35,8 @@ class AccountListItemWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
             AccountAvatarWidget(
-              imageSize: 36,
-              progressSize: 24,
+              imageSize: FediSizes.accountAvatarDefaultSize,
+              progressSize: FediSizes.accountAvatarProgressDefaultSize,
             ),
             const FediSmallHorizontalSpacer(),
             Flexible(child: AccountAcctWidget())

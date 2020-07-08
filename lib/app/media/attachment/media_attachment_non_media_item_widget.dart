@@ -6,6 +6,7 @@ import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 
+var _rowHeight = 70.0;
 class MediaAttachmentNonMediaItemWidget extends StatelessWidget {
   final double opacity;
   final Widget actionsWidget;
@@ -31,7 +32,7 @@ class MediaAttachmentNonMediaItemWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          height: 70,
+          height: _rowHeight,
           child: Stack(
             children: [
               Opacity(
