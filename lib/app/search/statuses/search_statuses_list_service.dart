@@ -28,24 +28,20 @@ class SearchStatusesListService extends IStatusNetworkOnlyListService {
     var query = searchInputBloc.confirmedSearchTerm;
     List<IPleromaStatus> statuses;
 
-    if (query?.isNotEmpty == true) {
-      var offset = pageIndex * itemsCountPerPage;
-      if (offset > 0) {
-        //hack because backend include last item in next page too
-        offset += 1;
-      }
-      var searchResult = await pleromaSearchService.search(
-          request: PleromaSearchRequest(
-              type: MastodonSearchRequestType.statuses,
-              offset: offset,
-              resolve: true,
-              limit: itemsCountPerPage,
-              query: query));
-
-      statuses = searchResult.statuses;
-    } else {
-      statuses = [];
+    var offset = pageIndex * itemsCountPerPage;
+    if (offset > 0) {
+      //hack because backend include last item in next page too
+      offset += 1;
     }
+    var searchResult = await pleromaSearchService.search(
+        request: PleromaSearchRequest(
+            type: MastodonSearchRequestType.statuses,
+            offset: offset,
+            resolve: true,
+            limit: itemsCountPerPage,
+            query: query));
+
+    statuses = searchResult.statuses;
 
     return statuses.map(mapRemoteStatusToLocalStatus).toList();
   }
