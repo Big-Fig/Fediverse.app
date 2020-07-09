@@ -11,6 +11,7 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/list/fedi_list_smart_refresher_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
+import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
@@ -22,6 +23,17 @@ var _dateSeparatorDateFormat = DateFormat('MMMM dd, yyyy');
 
 class ConversationStatusListWidget extends StatusPaginationListBaseWidget {
   ConversationStatusListWidget({@required Key key}) : super(key: key);
+
+  @override
+  IPaginationListBloc<PaginationPage<IStatus>, IStatus>
+  retrievePaginationListBloc(BuildContext context,
+      {@required bool listen}) {
+    var timelinePaginationListBloc =
+    Provider.of<IPaginationListBloc<PaginationPage<IStatus>, IStatus>>(
+        context,
+        listen: listen);
+    return timelinePaginationListBloc;
+  }
 
   // override to move refresh/update features from top/bottom to bottom/top
   @override

@@ -21,14 +21,5 @@ abstract class StatusPaginationListBaseWidget
             alwaysShowHeader: alwaysShowHeader,
             alwaysShowFooter: alwaysShowFooter);
 
-  @override
-  IPaginationListBloc<PaginationPage<IStatus>, IStatus>
-      retrievePaginationListBloc(BuildContext context,
-          {@required bool listen}) {
-    var timelinePaginationListBloc =
-        Provider.of<IPaginationListBloc<CachedPaginationPage<IStatus>, IStatus>>(
-            context,
-            listen: listen);
-    return timelinePaginationListBloc;
-  }
+
 }

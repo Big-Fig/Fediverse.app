@@ -25,7 +25,7 @@ class CachedPaginationListBloc<TPage extends CachedPaginationPage<TItem>, TItem>
       if (nextPage?.items?.isNotEmpty == true) {
         state = PaginationListLoadingState.loaded;
       } else {
-        if (nextPage.isActuallyRefreshedFromRemote) {
+        if (nextPage?.isActuallyRefreshedFromRemote == true) {
           state = PaginationListLoadingState.noData;
         } else {
           state = PaginationListLoadingState.failed;
@@ -53,7 +53,7 @@ class CachedPaginationListBloc<TPage extends CachedPaginationPage<TItem>, TItem>
       if (newPage?.items?.isNotEmpty == true) {
         state = PaginationListLoadingState.loaded;
       } else {
-        if (newPage.isActuallyRefreshedFromRemote) {
+        if (newPage?.isActuallyRefreshedFromRemote == true) {
           state = PaginationListLoadingState.noData;
         } else {
           state = PaginationListLoadingState.failed;
