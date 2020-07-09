@@ -17,7 +17,6 @@ import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart'
 import 'package:fedi/app/ui/fedi_border_radius.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
-import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_bloc.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_bloc_impl.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_widget.dart';
@@ -70,9 +69,6 @@ class _NotificationsHomeTabPageState extends State<NotificationsHomeTabPage>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        color: Colors.white,
-        child: Center(child: FediCircularProgressIndicator()));
     return Scaffold(
       key: _drawerKey,
       backgroundColor: Colors.transparent,

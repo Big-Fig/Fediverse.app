@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:fedi/pagination/list/pagination_list_bloc_impl.dart';
+import 'package:fedi/pagination/list/pagination_list_model.dart';
 import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
@@ -197,12 +198,12 @@ abstract class PaginationListWithNewItemsBloc<
   }
 
   @override
-  Future<bool> refreshWithoutController() async {
-    var refreshed = await super.refreshWithoutController();
-    if (refreshed) {
+  Future<PaginationListLoadingState> refreshWithoutController() async {
+    var state = await super.refreshWithoutController();
+    if (state == PaginationListLoadingState.loaded) {
       clearNewItems();
     }
-    return refreshed;
+    return state;
   }
 
   void clearNewItems() {

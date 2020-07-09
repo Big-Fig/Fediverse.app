@@ -1,3 +1,4 @@
+import 'package:fedi/pagination/list/pagination_list_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:logging/logging.dart';
@@ -12,8 +13,8 @@ class FediListSmartRefresherWidget extends StatelessWidget {
   final bool enablePullUp;
   final bool enableTwoLevel;
   final bool enablePullDown;
-  final Future<bool> Function() onRefresh;
-  final Future<bool> Function() onLoading;
+  final Future<PaginationListLoadingState> Function() onRefresh;
+  final Future<PaginationListLoadingState> Function() onLoading;
   final Future<bool> Function() onTwoLevel;
   final OnOffsetChange onOffsetChange;
   final RefreshController controller;
@@ -61,14 +62,14 @@ class FediListSmartRefresherWidget extends StatelessWidget {
         enableTwoLevel: enableTwoLevel,
         onRefresh: () async {
           if (onRefresh != null) {
-            var success = await onRefresh();
-            _logger.finest(() => "onRefresh $success");
+            var state = await onRefresh();
+            _logger.finest(() => "onRefresh $state");
           }
         },
         onLoading: () async {
           if (onLoading != null) {
-            var success = await onLoading();
-            _logger.finest(() => "onLoading $success");
+            var state = await onLoading();
+            _logger.finest(() => "onLoading $state");
           }
         },
         onTwoLevel: onTwoLevel,

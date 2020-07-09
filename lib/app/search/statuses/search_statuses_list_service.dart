@@ -22,26 +22,30 @@ class SearchStatusesListService extends IStatusNetworkOnlyListService {
   @override
   Future<List<IStatus>> loadItemsFromRemoteForPage(
       {@required int itemsCountPerPage,
-      @required int pageIndex,
-      @required String minId,
-      @required String maxId}) async {
+        @required int pageIndex,
+        @required String minId,
+        @required String maxId}) async {
     var query = searchInputBloc.confirmedSearchTerm;
     List<IPleromaStatus> statuses;
 
-    var offset = pageIndex * itemsCountPerPage;
-    if (offset > 0) {
-      //hack because backend include last item in next page too
-      offset += 1;
-    }
-    var searchResult = await pleromaSearchService.search(
-        request: PleromaSearchRequest(
-            type: MastodonSearchRequestType.statuses,
-            offset: offset,
-            resolve: true,
-            limit: itemsCountPerPage,
-            query: query));
+    if (query?.isNotEmpty == true) {
+      var offset = pageIndex * itemsCountPerPage;
+      if (offset > 0) {
+        //hack because backend include last item in next page too
+        offset += 1;
+      }
+      var searchResult = await pleromaSearchService.search(
+          request: PleromaSearchRequest(
+              type: MastodonSearchRequestType.statuses,
+              offset: offset,
+              resolve: true,
+              limit: itemsCountPerPage,
+              query: query));
 
-    statuses = searchResult.statuses;
+      statuses = searchResult.statuses;
+    } else {
+      statuses = [];
+    }
 
     return statuses.map(mapRemoteStatusToLocalStatus).toList();
   }
@@ -53,5 +57,5 @@ class SearchStatusesListService extends IStatusNetworkOnlyListService {
       SearchStatusesListService(
           searchInputBloc: ISearchInputBloc.of(context, listen: false),
           pleromaSearchService:
-              IPleromaSearchService.of(context, listen: false));
+          IPleromaSearchService.of(context, listen: false));
 }

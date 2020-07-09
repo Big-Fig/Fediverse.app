@@ -24,7 +24,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
   final ScrollController scrollController;
 
   // nothing by default
-  Future<bool> additionalRefreshAction(BuildContext context) async => true;
+  Future<bool> additionalPreRefreshAction(BuildContext context) async => true;
 
   const PaginationListWidget({
     Key key,
@@ -58,15 +58,12 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
         return AsyncSmartRefresherHelper.doAsyncRefresh(
             controller: refreshController,
             action: () async {
-              bool success = await additionalRefreshAction(context);
-
-              success &= await paginationListBloc.refreshWithoutController();
-              if (success) {
-                _logger.finest(() => "onRefresh success=$success");
-              } else {
-                _logger.severe(() => "onRefresh success=$success");
-              }
-              return success;
+              bool success = await additionalPreRefreshAction(context);
+              _logger.finest(() => "additionalPreRefreshAction() $success");
+              var state = await paginationListBloc.refreshWithoutController();
+              _logger.finest(
+                  () => "paginationListBloc.refreshWithoutController() $state");
+              return state;
             });
       },
       onLoading: () => AsyncSmartRefresherHelper.doAsyncLoading(
@@ -128,7 +125,8 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
 
     return Stack(
       children: [
-        PaginationListLoadingErrorNotificationOverlayBuilderWidget(paginationListBloc),
+        PaginationListLoadingErrorNotificationOverlayBuilderWidget(
+            paginationListBloc),
         AsyncInitLoadingWidget(
           asyncInitLoadingBloc: paginationListBloc,
           loadingFinishedBuilder: (BuildContext context) {
@@ -143,8 +141,9 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
                 builder: (context, snapshot) {
                   var items = snapshot.data;
 
-                  _logger.finest(() => "build paginationListBloc.itemsStream items "
-                      "${items?.length}");
+                  _logger.finest(
+                      () => "build paginationListBloc.itemsStream items "
+                          "${items?.length}");
 
                   return buildSmartRefresher(
                       paginationListBloc,
@@ -170,8 +169,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
       IPaginationListBloc<PaginationPage<T>, T> paginationListBloc =
           retrievePaginationListBloc(context, listen: false);
 
-      _logger.finest(
-          () => "initState");
+      _logger.finest(() => "initState");
       final refreshState = paginationListBloc.refreshState;
       if (refreshState != PaginationListLoadingState.loading &&
           refreshState != PaginationListLoadingState.loaded) {
