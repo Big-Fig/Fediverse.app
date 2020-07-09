@@ -19,6 +19,7 @@ import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart'
 import 'package:fedi/app/ui/fedi_border_radius.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_bloc.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_bloc_impl.dart';
@@ -190,8 +191,11 @@ class _TimelinesHomeTabPageState extends State<TimelinesHomeTabPage>
         },
       );
 
-  Widget _buildTabIndicatorWidget() => TimelineTabTextTabIndicatorItemWidget(
-        tabController: tabController,
-        timelineTabs: _timelineTabs,
-      );
+  Widget _buildTabIndicatorWidget() => Padding(
+    padding: const EdgeInsets.only(top: 3.0, right: FediSizes.bigPadding),
+    child: TimelineTabTextTabIndicatorItemWidget(
+          tabController: tabController,
+          timelineTabs: _timelineTabs,
+        ),
+  );
 }
