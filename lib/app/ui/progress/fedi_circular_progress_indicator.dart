@@ -28,9 +28,13 @@ class _FediCircularProgressIndicatorState
   void initState() {
     super.initState();
 
-    _controller =
-        AnimationController(vsync: this, duration: Duration(seconds: 1))
-          ..repeat();
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(
+        seconds: 2,
+      ),
+      upperBound: pi * 2,
+    )..repeat();
   }
 
   @override
@@ -41,18 +45,23 @@ class _FediCircularProgressIndicatorState
 
   @override
   Widget build(BuildContext context) {
+    var size = widget.size;
     return AnimatedBuilder(
       animation: _controller,
       builder: (_, child) {
         return Transform.rotate(
-          angle: _controller.value * 2 * pi,
+          angle: _controller.value,
           child: child,
         );
       },
-      child: Icon(
-        FediIcons.loading,
-        size: widget.size,
-        color: widget.color,
+      child: Container(
+        width: size,
+        height: size,
+        child: Icon(
+          FediIcons.loading,
+          size: size,
+          color: widget.color,
+        ),
       ),
     );
   }

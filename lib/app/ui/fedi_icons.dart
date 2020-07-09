@@ -51,13 +51,13 @@ class FediIcons {
   static const IconData send = IconData(0xe81b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData failed = IconData(0xe82e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData warning = IconData(0xe82f, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData loading = IconData(0xe830, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData alias = IconData(0xe865, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData audio_solid = IconData(0xe866, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData audio = IconData(0xe867, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData check_circle = IconData(0xe868, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData file = IconData(0xe869, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData link = IconData(0xe86a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData loading = IconData(0xe86b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData pdf = IconData(0xe86c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData doc = IconData(0xe86d, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData photo = IconData(0xe86e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
