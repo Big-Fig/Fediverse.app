@@ -1,10 +1,6 @@
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/pagination/cached/cached_pagination_model.dart';
-import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_widget.dart';
-import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
 
 abstract class StatusPaginationListBaseWidget
     extends PaginationListWidget<IStatus> {
@@ -20,6 +16,4 @@ abstract class StatusPaginationListBaseWidget
             header: header,
             alwaysShowHeader: alwaysShowHeader,
             alwaysShowFooter: alwaysShowFooter);
-
-
 }

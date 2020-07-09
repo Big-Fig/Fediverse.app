@@ -1,8 +1,11 @@
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/chat/message/list/cached/chat_message_cached_list_bloc.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/cached/cached_pagination_bloc.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
+import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc_impl.dart';
+import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc_proxy_provider.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -51,9 +54,9 @@ class ChatMessageCachedPaginationListWithNewItemsBloc<
   @override
   bool isItemsEqual(IChatMessage a, IChatMessage b) => a.remoteId == b.remoteId;
 
-  static ChatMessageCachedPaginationListWithNewItemsBloc createFromContext(
-      {@required BuildContext context,
-      @required bool mergeNewItemsImmediately}) {
+  static ChatMessageCachedPaginationListWithNewItemsBloc _createFromContext(
+      BuildContext context,
+      {@required bool mergeNewItemsImmediately}) {
     return ChatMessageCachedPaginationListWithNewItemsBloc(
       mergeNewItemsImmediately: true,
       chatMessageCachedListService:
@@ -61,6 +64,24 @@ class ChatMessageCachedPaginationListWithNewItemsBloc<
       cachedPaginationBloc: Provider.of<
           IPaginationBloc<CachedPaginationPage<IChatMessage>,
               IChatMessage>>(context, listen: false),
+    );
+  }
+
+  static Widget provideToContext(
+    BuildContext context, {
+    @required bool mergeNewItemsImmediately,
+    @required Widget child,
+  }) {
+    return DisposableProvider<
+        ICachedPaginationListWithNewItemsBloc<
+            CachedPaginationPage<IChatMessage>, IChatMessage>>(
+      create: (context) =>
+          ChatMessageCachedPaginationListWithNewItemsBloc._createFromContext(
+        context,
+        mergeNewItemsImmediately: mergeNewItemsImmediately,
+      ),
+      child: CachedPaginationListWithNewItemsBlocProxyProvider<
+          CachedPaginationPage<IChatMessage>, IChatMessage>(child: child),
     );
   }
 }

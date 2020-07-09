@@ -5,13 +5,11 @@ import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/conversation/conversation_page.dart';
 import 'package:fedi/app/conversation/repository/conversation_repository.dart';
 import 'package:fedi/app/conversation/start/status/post_status_start_conversation_bloc_impl.dart';
-import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
 import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/post/post_status_compose_widget.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_model.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_service.dart';
 import 'package:fedi/ui/scroll/unfocus_on_scroll_area_widget.dart';
@@ -103,17 +101,11 @@ void goToPostStatusStartConversationPage(BuildContext context,
   } else {
     await Navigator.push(
       context,
-      MaterialPageRoute(
-          builder: (context) => DisposableProvider<IPostStatusBloc>(
-              create: (context) =>
-                  PostStatusStartConversationBloc.createFromContext(context,
-                      conversationAccountsWithoutMe:
-                          conversationAccountsWithoutMe),
-              child: ProxyProvider<IPostStatusBloc,
-                      IUploadMediaAttachmentsCollectionBloc>(
-                  update: (context, value, previous) =>
-                      value.mediaAttachmentsBloc,
-                  child: PostStatusStartConversationPage()))),
+      MaterialPageRoute(builder: (context) {
+        return PostStatusStartConversationBloc.provideToContext(context,
+            conversationAccountsWithoutMe: conversationAccountsWithoutMe,
+            child: PostStatusStartConversationPage());
+      }),
     );
   }
 }

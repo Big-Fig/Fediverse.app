@@ -1,7 +1,10 @@
+import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/post/post_status_bloc_impl.dart';
+import 'package:fedi/app/status/post/post_status_bloc_proxy_provider.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service.dart';
@@ -23,7 +26,7 @@ class ThreadPostStatusBloc extends PostStatusBloc {
             pleromaMediaAttachmentService: pleromaMediaAttachmentService,
             initialVisibility: PleromaVisibility.PUBLIC);
 
-  static ThreadPostStatusBloc createFromContext(BuildContext context,
+  static ThreadPostStatusBloc _createFromContext(BuildContext context,
           {@required IStatus inReplyToStatus}) =>
       ThreadPostStatusBloc(
           inReplyToStatus: inReplyToStatus,
@@ -33,6 +36,17 @@ class ThreadPostStatusBloc extends PostStatusBloc {
           statusRepository: IStatusRepository.of(context, listen: false),
           pleromaMediaAttachmentService:
               IPleromaMediaAttachmentService.of(context, listen: false));
+
+  static Widget provideToContext(BuildContext context,
+      {@required IStatus inReplyToStatus, @required Widget child}) {
+    return DisposableProvider<IPostStatusBloc>(
+      create: (context) => ThreadPostStatusBloc._createFromContext(
+        context,
+        inReplyToStatus: inReplyToStatus,
+      ),
+      child: PostStatusMessageBlocProxyProvider(child: child),
+    );
+  }
 
   @override
   bool get isPossibleToChangeVisibility => false;

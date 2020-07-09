@@ -2,12 +2,16 @@ import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/chat/message/list/cached/chat_message_cached_list_bloc.dart';
 import 'package:fedi/app/chat/message/pagination/cached/chat_message_cached_pagination_bloc.dart';
 import 'package:fedi/app/pagination/cached/cached_pleroma_pagination_bloc_impl.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/pagination/cached/cached_pagination_bloc.dart';
+import 'package:fedi/pagination/cached/cached_pagination_bloc_proxy_provider.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-class ChatMessageCachedPaginationBloc extends CachedPleromaPaginationBloc<IChatMessage>
+class ChatMessageCachedPaginationBloc
+    extends CachedPleromaPaginationBloc<IChatMessage>
     implements IChatMessageCachedPaginationBloc {
   final IChatMessageCachedListBloc chatMessageListService;
 
@@ -40,7 +44,6 @@ class ChatMessageCachedPaginationBloc extends CachedPleromaPaginationBloc<IChatM
       @required int itemsCountPerPage,
       @required CachedPaginationPage<IChatMessage> olderPage,
       @required CachedPaginationPage<IChatMessage> newerPage}) async {
-
     // can't refresh not first page without actual items bounds
     assert(!(pageIndex > 0 && olderPage == null && newerPage == null));
 
@@ -51,11 +54,29 @@ class ChatMessageCachedPaginationBloc extends CachedPleromaPaginationBloc<IChatM
     );
   }
 
-  static ChatMessageCachedPaginationBloc createFromContext(BuildContext context,
-          {int itemsCountPerPage = 20, int maximumCachedPagesCount}) =>
+  static ChatMessageCachedPaginationBloc _createFromContext(
+          BuildContext context,
+          {int itemsCountPerPage = 20,
+          int maximumCachedPagesCount}) =>
       ChatMessageCachedPaginationBloc(
           chatMessageListService:
               Provider.of<IChatMessageCachedListBloc>(context, listen: false),
           itemsCountPerPage: itemsCountPerPage,
           maximumCachedPagesCount: maximumCachedPagesCount);
+
+  static Widget provideToContext(BuildContext context,
+      {int itemsCountPerPage = 20, int maximumCachedPagesCount, @required
+      Widget child}) {
+    return DisposableProvider<  ICachedPaginationBloc<CachedPaginationPage<IChatMessage>,
+        IChatMessage>>(
+      create: (context) => ChatMessageCachedPaginationBloc._createFromContext(
+        context,
+        itemsCountPerPage: itemsCountPerPage,
+        maximumCachedPagesCount: maximumCachedPagesCount,
+      ),
+      child: CachedPaginationBlocProxyProvider<
+          CachedPaginationPage<IChatMessage>,
+          IChatMessage>(child: child),
+    );
+  }
 }
