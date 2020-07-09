@@ -1,6 +1,6 @@
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
-import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
+import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -14,9 +14,9 @@ void main() {
 
   IPaginationListBloc<CachedPaginationPage<TestPaginationItem>,
       TestPaginationItem> paginationListBloc;
-  IPaginationListWithNewItemsBloc<CachedPaginationPage<TestPaginationItem>,
+  ICachedPaginationListWithNewItemsBloc<CachedPaginationPage<TestPaginationItem>,
       TestPaginationItem> paginationListWithNewItemsBloc;
-  MemoryPaginationListWithNewItemsBloc<CachedPaginationPage<TestPaginationItem>,
+  MemoryCachedPaginationListWithNewItemsBloc<CachedPaginationPage<TestPaginationItem>,
       TestPaginationItem> memoryPaginationListWithNewItemsBloc;
   MemoryPaginationBloc<TestPaginationItem> memoryPaginationBloc;
   int storageSize = 30;
@@ -31,7 +31,7 @@ void main() {
 
     paginationBloc = memoryPaginationBloc;
 
-    memoryPaginationListWithNewItemsBloc = MemoryPaginationListWithNewItemsBloc(
+    memoryPaginationListWithNewItemsBloc = MemoryCachedPaginationListWithNewItemsBloc(
       paginationBloc: paginationBloc,
       mergeNewItemsImmediately: false,
       comparator: TestPaginationItem.compareItems,
@@ -398,7 +398,7 @@ void main() {
   });
 
   test('mergeNewItemsImmediately', () async {
-    memoryPaginationListWithNewItemsBloc = MemoryPaginationListWithNewItemsBloc(
+    memoryPaginationListWithNewItemsBloc = MemoryCachedPaginationListWithNewItemsBloc(
       paginationBloc: paginationBloc,
       mergeNewItemsImmediately: true,
       comparator: TestPaginationItem.compareItems,

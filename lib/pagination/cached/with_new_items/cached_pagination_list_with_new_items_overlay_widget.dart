@@ -1,7 +1,6 @@
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
-import 'package:fedi/pagination/pagination_model.dart';
+import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,17 +9,17 @@ import 'package:logging/logging.dart';
 
 var _logger = Logger("pagination_list_with_new_items_header_widget.dart");
 
-class PaginationListWithNewItemsOverlayWidget extends StatelessWidget {
+class CachedPaginationListWithNewItemsOverlayWidget extends StatelessWidget {
   final String Function(BuildContext context, int updateItemsCount) textBuilder;
 
-  PaginationListWithNewItemsOverlayWidget({
+  CachedPaginationListWithNewItemsOverlayWidget({
     @required this.textBuilder,
   });
 
   @override
   Widget build(BuildContext context) {
     var paginationWithUpdatesListBloc =
-        IPaginationListWithNewItemsBloc.of(context);
+        ICachedPaginationListWithNewItemsBloc.of(context);
 
     return StreamBuilder<int>(
         stream: paginationWithUpdatesListBloc.unmergedNewItemsCountStream
@@ -60,8 +59,7 @@ class PaginationListWithNewItemsOverlayWidget extends StatelessWidget {
   }
 
   Widget _buildButton(
-      IPaginationListWithNewItemsBloc<PaginationPage, dynamic>
-          paginationWithUpdatesListBloc,
+      ICachedPaginationListWithNewItemsBloc paginationWithUpdatesListBloc,
       BuildContext context,
       int updateItemsCount) {
     return FediPrimaryFilledTextButton(

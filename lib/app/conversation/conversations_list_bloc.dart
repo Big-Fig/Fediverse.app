@@ -2,8 +2,9 @@ import 'package:fedi/app/conversation/conversation_model.dart';
 import 'package:fedi/app/conversation/list/cached/conversation_cached_list_service.dart';
 import 'package:fedi/app/conversation/pagination/conversation_pagination_bloc.dart';
 import 'package:fedi/disposable/disposable.dart';
+import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
-import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
+import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +21,6 @@ abstract class IConversationsListBloc extends Disposable {
   IPaginationListBloc<PaginationPage<IConversation>, IConversation>
       get conversationPaginationListBloc;
 
-  IPaginationListWithNewItemsBloc<PaginationPage<IConversation>, IConversation>
+  ICachedPaginationListWithNewItemsBloc<CachedPaginationPage<IConversation>, IConversation>
   get conversationPaginationListWithNewItemsBloc;
 }

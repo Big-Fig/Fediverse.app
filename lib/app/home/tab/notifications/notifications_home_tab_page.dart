@@ -22,10 +22,10 @@ import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollabl
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_widget.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/pagination/cached/cached_pagination_model.dart';
+import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
-import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
-import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -116,27 +116,28 @@ class _NotificationsHomeTabPageState extends State<NotificationsHomeTabPage>
                 context,
                 excludeTypes: tab.asExcludeTypes()),
             child: DisposableProvider<
-                IPaginationBloc<PaginationPage<INotification>, INotification>>(
+                IPaginationBloc<CachedPaginationPage<INotification>,
+                    INotification>>(
               create: (context) =>
                   NotificationCachedPaginationBloc.createFromContext(context),
               child: DisposableProvider<
-                  IPaginationListWithNewItemsBloc<PaginationPage<INotification>,
-                      INotification>>(
+                  ICachedPaginationListWithNewItemsBloc<
+                      CachedPaginationPage<INotification>, INotification>>(
                 create: (context) => NotificationPaginationListWithNewItemsBloc(
                     mergeNewItemsImmediately: false,
                     paginationBloc: Provider.of(context, listen: false),
                     cachedListService:
                         INotificationCachedListBloc.of(context, listen: false)),
                 child: ProxyProvider<
-                    IPaginationListWithNewItemsBloc<
-                        PaginationPage<INotification>, INotification>,
-                    IPaginationListBloc<PaginationPage<INotification>,
+                    ICachedPaginationListWithNewItemsBloc<
+                        CachedPaginationPage<INotification>, INotification>,
+                    IPaginationListBloc<CachedPaginationPage<INotification>,
                         INotification>>(
                   update: (context, value, previous) => value,
                   child: ProxyProvider<
-                      IPaginationListWithNewItemsBloc<
-                          PaginationPage<INotification>, INotification>,
-                      IPaginationListWithNewItemsBloc>(
+                      ICachedPaginationListWithNewItemsBloc<
+                          CachedPaginationPage<INotification>, INotification>,
+                      ICachedPaginationListWithNewItemsBloc>(
                     update: (context, value, previous) => value,
                     child: child,
                   ),

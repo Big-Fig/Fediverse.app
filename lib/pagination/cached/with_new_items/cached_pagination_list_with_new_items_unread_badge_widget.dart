@@ -1,11 +1,11 @@
 import 'package:fedi/app/ui/badge/fedi_unread_badge_widget.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
+import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:flutter/cupertino.dart';
 
-class PaginationListWithNewItemsUnreadBadgeWidget
+class CachedPaginationListWithNewItemsUnreadBadgeWidget
     extends FediUnreadBadgeWidget {
-  const PaginationListWithNewItemsUnreadBadgeWidget({
+  const CachedPaginationListWithNewItemsUnreadBadgeWidget({
     @required Widget child,
   }) : super(
           child: child,
@@ -15,7 +15,7 @@ class PaginationListWithNewItemsUnreadBadgeWidget
   @override
   Stream<bool> retrieveUnreadBadgeCountStream(BuildContext context) {
     var paginationListWithNewItemsBloc =
-        IPaginationListWithNewItemsBloc.of(context, listen: false);
+        ICachedPaginationListWithNewItemsBloc.of(context, listen: false);
 
     return paginationListWithNewItemsBloc.unmergedNewItemsCountStream
         .map((count) => count != null && count > 0);

@@ -1,7 +1,9 @@
 import 'package:fedi/app/chat/message/repository/chat_message_repository.dart';
 import 'package:fedi/app/chat/post/chat_post_message_bloc.dart';
+import 'package:fedi/app/chat/post/chat_post_message_bloc_proxy_provider.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
 import 'package:fedi/app/message/post_message_bloc_impl.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_model.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
@@ -63,7 +65,7 @@ class ChatPostMessageBloc extends PostMessageBloc
     return success;
   }
 
-  static ChatPostMessageBloc createFromContext(BuildContext context,
+  static ChatPostMessageBloc _createFromContext(BuildContext context,
           {@required String chatRemoteId}) =>
       ChatPostMessageBloc(
           chatRemoteId: chatRemoteId,
@@ -72,4 +74,13 @@ class ChatPostMessageBloc extends PostMessageBloc
           pleromaChatService: IPleromaChatService.of(context, listen: false),
           pleromaMediaAttachmentService:
               IPleromaMediaAttachmentService.of(context, listen: false));
+
+  static Widget provideToContext(BuildContext context,
+      {@required String chatRemoteId, @required Widget child}) {
+    return DisposableProvider(
+      create: (context) => ChatPostMessageBloc._createFromContext(context,
+          chatRemoteId: chatRemoteId),
+      child: ChatPostMessageBlocProxyProvider(child: child),
+    );
+  }
 }

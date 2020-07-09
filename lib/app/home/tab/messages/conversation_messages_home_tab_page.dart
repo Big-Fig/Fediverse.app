@@ -17,7 +17,7 @@ import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
-import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
+import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -76,7 +76,7 @@ class ConversationMessagesHomeTabPage extends StatelessWidget {
                       Provider.value(
                           value: conversationsListBloc
                               .conversationPaginationListBloc),
-                      Provider<IPaginationListWithNewItemsBloc>.value(
+                      Provider<ICachedPaginationListWithNewItemsBloc>.value(
                           value: conversationsListBloc
                               .conversationPaginationListWithNewItemsBloc),
                       Provider<IPaginationListBloc>.value(

@@ -1,7 +1,7 @@
 import 'package:fedi/app/conversation/conversations_list_bloc.dart';
 import 'package:fedi/app/conversation/list/conversation_list_widget.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
-import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
+import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -25,7 +25,7 @@ class ConversationsListWidget extends StatelessWidget {
         Provider.value(value: conversationsListBloc.conversationPaginationBloc),
         Provider.value(
             value: conversationsListBloc.conversationPaginationListBloc),
-        Provider<IPaginationListWithNewItemsBloc>.value(
+        Provider<ICachedPaginationListWithNewItemsBloc>.value(
             value: conversationsListBloc
                 .conversationPaginationListWithNewItemsBloc),
         Provider<IPaginationListBloc>.value(

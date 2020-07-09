@@ -1,14 +1,15 @@
-import 'package:fedi/pagination/list/pagination_list_bloc.dart';
-import 'package:fedi/pagination/pagination_model.dart';
+import 'package:fedi/pagination/cached/cached_pagination_list_bloc.dart';
+import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IPaginationListWithNewItemsBloc<
-    TPage extends PaginationPage<TItem>,
-    TItem> implements IPaginationListBloc<TPage, TItem> {
-  static IPaginationListWithNewItemsBloc of(BuildContext context,
+abstract class ICachedPaginationListWithNewItemsBloc<
+    TPage extends CachedPaginationPage<TItem>,
+    TItem> implements ICachedPaginationListBloc<TPage, TItem> {
+  static ICachedPaginationListWithNewItemsBloc of(BuildContext context,
           {bool listen = true}) =>
-      Provider.of<IPaginationListWithNewItemsBloc>(context, listen: listen);
+      Provider.of<ICachedPaginationListWithNewItemsBloc>(context,
+          listen: listen);
 
   TItem get newerItem;
 
