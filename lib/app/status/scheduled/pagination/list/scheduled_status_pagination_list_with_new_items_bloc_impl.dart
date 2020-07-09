@@ -1,8 +1,8 @@
 import 'package:fedi/app/status/scheduled/list/cached/scheduled_status_cached_list_service.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
-import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_bloc_impl.dart';
+import 'package:fedi/pagination/cached/cached_pagination_model.dart';
+import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
-import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
@@ -10,8 +10,8 @@ var _logger =
     Logger("scheduledStatus_pagination_list_with_new_items_bloc_impl.dart");
 
 class ScheduledStatusPaginationListWithNewItemsBloc<
-        TPage extends PaginationPage<IScheduledStatus>>
-    extends PaginationListWithNewItemsBloc<TPage, IScheduledStatus> {
+        TPage extends CachedPaginationPage<IScheduledStatus>>
+    extends CachedPaginationListWithNewItemsBloc<TPage, IScheduledStatus> {
   final IScheduledStatusCachedListService scheduledStatusCachedListService;
 
   ScheduledStatusPaginationListWithNewItemsBloc(

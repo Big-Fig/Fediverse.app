@@ -26,9 +26,9 @@ import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollabl
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/pagination/cached/cached_pagination_model.dart';
+import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
-import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
-import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -142,18 +142,19 @@ class _TimelinesHomeTabPageState extends State<TimelinesHomeTabPage>
         tabKeyPrefix: "TimelineTab",
         tabBodyProviderBuilder:
             (BuildContext context, int index, Widget child) => Provider<
-                IPaginationListWithNewItemsBloc<PaginationPage<IStatus>,
-                    IStatus>>.value(
+                ICachedPaginationListWithNewItemsBloc<
+                    CachedPaginationPage<IStatus>, IStatus>>.value(
           value: timelineTabsBloc.retrieveTimelineTabPaginationListBloc(
               timelineTabsBloc.tabs[index]),
           child: ProxyProvider<
-              IPaginationListWithNewItemsBloc<PaginationPage<IStatus>, IStatus>,
-              IPaginationListBloc<PaginationPage<IStatus>, IStatus>>(
+              ICachedPaginationListWithNewItemsBloc<
+                  CachedPaginationPage<IStatus>, IStatus>,
+              IPaginationListBloc<CachedPaginationPage<IStatus>, IStatus>>(
             update: (context, value, previous) => value,
             child: ProxyProvider<
-                    IPaginationListWithNewItemsBloc<PaginationPage<IStatus>,
-                        IStatus>,
-                    IPaginationListWithNewItemsBloc>(
+                    ICachedPaginationListWithNewItemsBloc<
+                        CachedPaginationPage<IStatus>, IStatus>,
+                    ICachedPaginationListWithNewItemsBloc>(
                 update: (context, value, previous) => value, child: child),
           ),
         ),

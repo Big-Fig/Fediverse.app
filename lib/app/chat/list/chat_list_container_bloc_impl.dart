@@ -14,8 +14,9 @@ import 'package:fedi/app/conversation/repository/conversation_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
-import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
+import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
 import 'package:fedi/pleroma/websockets/pleroma_websockets_service.dart';
@@ -37,7 +38,7 @@ class ChatsListContainerBloc extends DisposableOwner
   chatPaginationListBloc => chatPaginationListWithNewItemsBloc;
 
   @override
-  IPaginationListWithNewItemsBloc<PaginationPage<IChat>, IChat>
+  ICachedPaginationListWithNewItemsBloc<CachedPaginationPage<IChat>, IChat>
       chatPaginationListWithNewItemsBloc;
 
   final INotificationRepository notificationRepository;

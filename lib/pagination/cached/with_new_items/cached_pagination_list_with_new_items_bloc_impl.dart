@@ -1,20 +1,20 @@
 import 'dart:async';
 
-import 'package:fedi/pagination/list/pagination_list_bloc_impl.dart';
+import 'package:fedi/pagination/cached/cached_pagination_bloc.dart';
+import 'package:fedi/pagination/cached/cached_pagination_list_bloc_impl.dart';
+import 'package:fedi/pagination/cached/cached_pagination_model.dart';
+import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_model.dart';
-import 'package:fedi/pagination/list/with_new_items/pagination_list_with_new_items_bloc.dart';
-import 'package:fedi/pagination/pagination_bloc.dart';
-import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger("pagination_list_with_new_items_bloc_impl.dart");
 
-abstract class PaginationListWithNewItemsBloc<
-        TPage extends PaginationPage<TItem>,
-        TItem> extends PaginationListBloc<TPage, TItem>
-    implements IPaginationListWithNewItemsBloc<TPage, TItem> {
+abstract class CachedPaginationListWithNewItemsBloc<
+        TPage extends CachedPaginationPage<TItem>,
+        TItem> extends CachedPaginationListBloc<TPage, TItem>
+    implements ICachedPaginationListWithNewItemsBloc<TPage, TItem> {
   @override
   TItem get newerItem => items?.isNotEmpty == true ? items.first : null;
 
@@ -40,11 +40,11 @@ abstract class PaginationListWithNewItemsBloc<
 
   final bool mergeNewItemsImmediatelyWhenItemsIsEmpty;
 
-  PaginationListWithNewItemsBloc(
+  CachedPaginationListWithNewItemsBloc(
       {@required this.mergeNewItemsImmediately,
       this.mergeNewItemsImmediatelyWhenItemsIsEmpty = true,
-      @required IPaginationBloc<TPage, TItem> paginationBloc})
-      : super(paginationBloc: paginationBloc) {
+      @required ICachedPaginationBloc<TPage, TItem> paginationBloc})
+      : super(cachedPaginationBloc: paginationBloc) {
     addDisposable(subject: _mergedNewItemsSubject);
     addDisposable(subject: _unmergedNewItemsSubject);
 
