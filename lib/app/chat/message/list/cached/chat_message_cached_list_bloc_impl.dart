@@ -4,6 +4,7 @@ import 'package:fedi/app/chat/message/list/cached/chat_message_cached_list_bloc.
 import 'package:fedi/app/chat/message/repository/chat_message_repository.dart';
 import 'package:fedi/app/chat/message/repository/chat_message_repository_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
 import 'package:flutter/widgets.dart';
@@ -95,10 +96,23 @@ class ChatMessageListBloc extends DisposableOwner
         newerThanChatMessage: item);
   }
 
-  static ChatMessageListBloc createFromContext(BuildContext context,
+  static ChatMessageListBloc _createFromContext(BuildContext context,
           {@required IChat chat}) =>
       ChatMessageListBloc(
           chat: chat,
           pleromaChatService: IPleromaChatService.of(context, listen: false),
-          chatMessageRepository: IChatMessageRepository.of(context, listen: false));
+          chatMessageRepository:
+              IChatMessageRepository.of(context, listen: false));
+
+  static Widget provideToContext(
+    BuildContext context, {
+    @required IChat chat,
+    @required Widget child,
+  }) {
+    return DisposableProvider<IChatMessageCachedListBloc>(
+      create: (context) =>
+          ChatMessageListBloc._createFromContext(context, chat: chat),
+      child: child,
+    );
+  }
 }
