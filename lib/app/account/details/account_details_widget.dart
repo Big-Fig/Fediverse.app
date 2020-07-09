@@ -30,7 +30,7 @@ class AccountDetailsWidget extends StatefulWidget {
           context,
           account: accountBloc.account),
       child:
-          DisposableProvider<IPaginationBloc<PaginationPage<IStatus>, IStatus>>(
+          DisposableProvider<IPaginationBloc<CachedPaginationPage<IStatus>, IStatus>>(
         create: (context) =>
             StatusCachedPaginationBloc.createFromContext(context),
         child: DisposableProvider<

@@ -6,6 +6,9 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/pagination/cached/cached_pagination_model.dart';
+import 'package:fedi/pagination/list/pagination_list_bloc.dart';
+import 'package:fedi/pagination/pagination_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +20,17 @@ var _logger = Logger("status_pagination_list_media_widget.dart");
 
 class StatusPaginationListMediaWidget extends StatusPaginationListBaseWidget {
   StatusPaginationListMediaWidget({Key key}) : super(key: key);
+
+  @override
+  IPaginationListBloc<PaginationPage<IStatus>, IStatus>
+  retrievePaginationListBloc(BuildContext context,
+      {@required bool listen}) {
+    var timelinePaginationListBloc =
+    Provider.of<IPaginationListBloc<CachedPaginationPage<IStatus>, IStatus>>(
+        context,
+        listen: listen);
+    return timelinePaginationListBloc;
+  }
 
   @override
   ScrollView buildItemsCollectionView(
