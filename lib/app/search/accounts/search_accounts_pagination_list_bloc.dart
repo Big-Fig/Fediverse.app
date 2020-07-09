@@ -13,9 +13,10 @@ class SearchAccountsPaginationListBloc extends AccountPaginationListBloc {
     @required
         IPaginationBloc<PaginationPage<IAccount>, IAccount> paginationBloc,
   }) : super(paginationBloc: paginationBloc) {
-    addDisposable(
-        streamSubscription:
-            searchInputBloc.confirmedSearchTermStream.listen((newText) {}));
+    addDisposable(streamSubscription:
+    searchInputBloc.confirmedSearchTermStream.listen((newText) {
+      refreshWithController();
+    }));
   }
 
   static SearchAccountsPaginationListBloc createFromContext(

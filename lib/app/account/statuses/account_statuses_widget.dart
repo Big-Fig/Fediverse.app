@@ -26,7 +26,7 @@ class AccountStatusesWidget extends PaginationListWidget<IStatus> {
         );
 
   @override
-  Future<bool> additionalRefreshAction(BuildContext context) {
+  Future<bool> additionalPreRefreshAction(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);
 
     return accountBloc.refreshFromNetwork(true);

@@ -78,32 +78,52 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       paginationBloc.loadedPagesSortedByIndexStream;
 
   @override
-  Future<bool> loadMoreWithoutController() async {
+  Future<PaginationListLoadingState> loadMoreWithoutController() async {
     loadMoreStateSubject.add(PaginationListLoadingState.loading);
-    var nextPageIndex = paginationBloc.loadedPagesMaximumIndex + 1;
-    var nextPage = await paginationBloc.requestPage(
-        pageIndex: nextPageIndex, forceToSkipCache: true);
-    var success = nextPage?.items?.isNotEmpty == true;
-    if (success) {
-      loadMoreStateSubject.add(PaginationListLoadingState.loaded);
-    } else {
+
+    try {
+      PaginationListLoadingState state;
+      var nextPageIndex = paginationBloc.loadedPagesMaximumIndex + 1;
+      var nextPage = await paginationBloc.requestPage(
+          pageIndex: nextPageIndex, forceToSkipCache: true);
+
+      if (nextPage?.items?.isNotEmpty == true) {
+        state = PaginationListLoadingState.loaded;
+      } else {
+        state = PaginationListLoadingState.noData;
+      }
+      loadMoreStateSubject.add(state);
+
+      return state;
+    } catch (e, stackTrace) {
       loadMoreStateSubject.add(PaginationListLoadingState.failed);
+
+      _logger.warning(
+          () => "error during loadMoreWithoutController", e, stackTrace);
+      rethrow;
     }
-    return success;
   }
 
   @override
-  Future<bool> refreshWithoutController() async {
-    refreshStateSubject.add(PaginationListLoadingState.loading);
-    var newPage = await paginationBloc.refreshWithoutController();
+  Future<PaginationListLoadingState> refreshWithoutController() async {
+    try {
+      PaginationListLoadingState state;
+      refreshStateSubject.add(PaginationListLoadingState.loading);
+      var newPage = await paginationBloc.refreshWithoutController();
 
-    var success = newPage != null;
-    if (success) {
-      refreshStateSubject.add(PaginationListLoadingState.loaded);
-    } else {
+      if (newPage?.items?.isNotEmpty == true) {
+        state = PaginationListLoadingState.loaded;
+      } else {
+        state = PaginationListLoadingState.noData;
+      }
+      refreshStateSubject.add(state);
+      return state;
+    } catch (e, stackTrace) {
       refreshStateSubject.add(PaginationListLoadingState.failed);
+      _logger.warning(
+          () => "error during refreshWithoutController", e, stackTrace);
+      rethrow;
     }
-    return success;
   }
 
   static List<TItem> mapToItemsList<TPage extends PaginationPage<TItem>, TItem>(

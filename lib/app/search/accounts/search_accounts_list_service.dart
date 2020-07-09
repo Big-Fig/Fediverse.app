@@ -28,7 +28,7 @@ class SearchAccountsListService extends IAccountNetworkOnlyListService {
     var query = searchInputBloc.confirmedSearchTerm;
     List<IPleromaAccount> accounts;
 
-
+    if (query?.isNotEmpty == true) {
       var offset = pageIndex * itemsCountPerPage;
       if (offset > 0) {
         //hack because backend include last item in next page too
@@ -40,10 +40,12 @@ class SearchAccountsListService extends IAccountNetworkOnlyListService {
               offset: offset,
               resolve: true,
               limit: itemsCountPerPage,
-              query: query ?? ""));
+              query: query));
 
       accounts = searchResult.accounts;
-
+    } else {
+      accounts = [];
+    }
 
     return accounts.map(mapRemoteAccountToLocalAccount).toList();
   }

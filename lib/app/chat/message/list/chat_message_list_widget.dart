@@ -42,21 +42,22 @@ class ChatMessageListWidget extends ChatMessagePaginationListBaseWidget {
         footer: const ListLoadingFooterWidget(),
         controller: refreshController,
         reverse: true,
-        scrollController:  scrollController,
+        scrollController: scrollController,
         primary: scrollController == null,
         onRefresh: () {
           return AsyncSmartRefresherHelper.doAsyncRefresh(
               controller: refreshController,
               action: () async {
-                bool success = await additionalRefreshAction(context);
+                bool success = await additionalPreRefreshAction(context);
                 _logger.finest(() => "additionalRefreshAction $success");
-                success &= await paginationListBloc.refreshWithoutController();
-                _logger.finest(() => "paginationListBloc.refresh() $success");
-                return success;
+                var state = await paginationListBloc.refreshWithoutController();
+                _logger.finest(() => "paginationListBloc.refresh() $state");
+                return state;
               });
         },
         onLoading: () => AsyncSmartRefresherHelper.doAsyncLoading(
-            controller: refreshController, action: paginationListBloc.loadMoreWithoutController),
+            controller: refreshController,
+            action: paginationListBloc.loadMoreWithoutController),
         child: smartRefresherBodyBuilder(context),
       );
 

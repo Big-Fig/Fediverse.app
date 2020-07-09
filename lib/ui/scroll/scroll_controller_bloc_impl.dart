@@ -57,8 +57,8 @@ class ScrollControllerBloc extends DisposableOwner
     var previousScrollDirection = scrollDirection;
     var currentScrollDirection = scrollController.position.userScrollDirection;
 
-    _logger.finest(() => "previous $previousScrollDirection "
-        "current $currentScrollDirection");
+//    _logger.finest(() => "previous $previousScrollDirection "
+//        "current $currentScrollDirection");
 
     if (currentScrollDirection != previousScrollDirection) {
       onScrollDirectionChanged(currentScrollDirection);
@@ -78,7 +78,7 @@ class ScrollControllerBloc extends DisposableOwner
     var now = DateTime.now();
     var differenceWithNow = now.difference(lastDirectionSwitchDateTime);
     var isLong = differenceWithNow.compareTo(longScrollMinimumDuration) > 0;
-    _logger.finest(() => "differenceWithNow $differenceWithNow isLong $isLong");
+//    _logger.finest(() => "differenceWithNow $differenceWithNow isLong $isLong");
     return isLong;
   }
 

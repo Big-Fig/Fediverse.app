@@ -1,1 +1,1 @@
-enum PaginationListLoadingState { initialized, loading, failed, loaded }
+enum PaginationListLoadingState { initialized, loading, failed, loaded, noData }

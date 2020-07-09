@@ -21,11 +21,11 @@ abstract class IPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
 
   Stream<List<TItem>> get itemsStream;
 
-  Future<bool> refreshWithoutController();
+  Future<PaginationListLoadingState> refreshWithoutController();
 
   void refreshWithController();
 
-  Future<bool> loadMoreWithoutController();
+  Future<PaginationListLoadingState> loadMoreWithoutController();
 
   RefreshController get refreshController;
 

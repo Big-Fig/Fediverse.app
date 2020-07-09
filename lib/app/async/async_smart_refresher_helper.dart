@@ -1,54 +1,81 @@
+import 'package:fedi/pagination/list/pagination_list_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:logging/logging.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-typedef Future<bool> AsyncAction();
+typedef Future<PaginationListLoadingState> AsyncAction();
 
 var _logger = Logger("async_smart_refresher_helper.dart");
 
 class AsyncSmartRefresherHelper {
-  static Future<bool> doAsyncRefresh(
+  static Future<PaginationListLoadingState> doAsyncRefresh(
       {@required RefreshController controller,
       @required AsyncAction action}) async {
     _logger.finest(() => "doAsyncRefresh");
-    bool success;
+    PaginationListLoadingState state;
     try {
-      success = await action();
+      state = await action();
     } catch (error, stackTrace) {
       _logger.severe(() => "doAsyncRefresh fail", error, stackTrace);
-      success = false;
+      state = PaginationListLoadingState.failed;
     }
-    _logger.finest(() => "doAsyncRefresh success = $success");
+    _logger.finest(() => "doAsyncRefresh state = $state");
 
-    if (success) {
-      controller.refreshCompleted();
-    } else {
-      controller.refreshFailed();
+    switch (state) {
+      case PaginationListLoadingState.failed:
+        controller.refreshFailed();
+        break;
+      case PaginationListLoadingState.loaded:
+      case PaginationListLoadingState.noData:
+        controller.refreshCompleted();
+        // hack, because it is not possible to load more after refresh
+        // if old "no data" state was saved
+        controller.loadComplete();
+        break;
+
+      case PaginationListLoadingState.loading:
+      case PaginationListLoadingState.initialized:
+      default:
+        throw "invalid state $state";
+        break;
     }
 
-    return success;
+    return state;
   }
 
-  static Future<bool> doAsyncLoading(
+  static Future<PaginationListLoadingState> doAsyncLoading(
       {@required RefreshController controller,
       @required AsyncAction action}) async {
     _logger.finest(() => "doAsyncLoading");
-    bool success;
+    PaginationListLoadingState state;
     try {
-      success = await action();
+      state = await action();
     } catch (error, stackTrace) {
       _logger.severe(() => "doAsyncLoading fail", error, stackTrace);
       controller.loadFailed();
-      success = false;
+      state = PaginationListLoadingState.failed;
     }
 
-    _logger.finest(() => "doAsyncLoading success = $success");
-    if (success) {
-      controller.loadComplete();
-    } else {
-      controller.loadNoData();
+    _logger.finest(() => "doAsyncLoading state = $state");
+
+    switch (state) {
+      case PaginationListLoadingState.failed:
+        controller.loadFailed();
+        break;
+      case PaginationListLoadingState.loaded:
+        controller.loadComplete();
+        break;
+      case PaginationListLoadingState.noData:
+        controller.loadNoData();
+        break;
+
+      case PaginationListLoadingState.loading:
+      case PaginationListLoadingState.initialized:
+      default:
+        throw "invalid state $state";
+        break;
     }
 
-    return success;
+    return state;
   }
 }
