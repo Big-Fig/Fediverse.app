@@ -1,9 +1,11 @@
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/account/list/cached/account_cached_list_service.dart';
+import 'package:fedi/app/account/list/cached/account_cached_list_bloc.dart';
+import 'package:fedi/app/account/list/cached/account_cached_list_bloc_proxy_provider.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service.dart';
@@ -97,7 +99,7 @@ class StatusReblogAccountCachedListBloc extends DisposableOwner
     return accounts;
   }
 
-  static StatusReblogAccountCachedListBloc createFromContext(
+  static StatusReblogAccountCachedListBloc _createFromContext(
           BuildContext context,
           {@required IStatus status}) =>
       StatusReblogAccountCachedListBloc(
@@ -105,4 +107,19 @@ class StatusReblogAccountCachedListBloc extends DisposableOwner
           pleromaStatusService:
               IPleromaStatusService.of(context, listen: false),
           status: status);
+
+
+  static Widget provideToContext(
+      BuildContext context, {
+        @required IStatus status,
+        @required Widget child,
+      }) =>
+      DisposableProvider<IAccountCachedListBloc>(
+        create: (context) =>
+            StatusReblogAccountCachedListBloc._createFromContext(
+              context,
+              status: status,
+            ),
+        child: AccountCachedListBlocProxyProvider(child: child),
+      );
 }

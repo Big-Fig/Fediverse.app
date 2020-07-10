@@ -1,8 +1,10 @@
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/account/list/cached/account_cached_list_service.dart';
+import 'package:fedi/app/account/list/cached/account_cached_list_bloc.dart';
+import 'package:fedi/app/account/list/cached/account_cached_list_bloc_proxy_provider.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
@@ -95,7 +97,7 @@ class AccountFollowerAccountCachedListBloc extends DisposableOwner
     return accounts;
   }
 
-  static AccountFollowerAccountCachedListBloc createFromContext(
+  static AccountFollowerAccountCachedListBloc _createFromContext(
           BuildContext context,
           {@required IAccount account}) =>
       AccountFollowerAccountCachedListBloc(
@@ -103,4 +105,14 @@ class AccountFollowerAccountCachedListBloc extends DisposableOwner
           pleromaAccountService:
               IPleromaAccountService.of(context, listen: false),
           account: account);
+
+  static Widget provideToContext(BuildContext context,
+      {@required IAccount account, @required Widget child}) {
+    return DisposableProvider<IAccountCachedListBloc>(
+      create: (context) =>
+          AccountFollowerAccountCachedListBloc._createFromContext(context,
+              account: account),
+      child: AccountCachedListBlocProxyProvider(child: child),
+    );
+  }
 }

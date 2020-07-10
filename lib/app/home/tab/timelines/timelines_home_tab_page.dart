@@ -29,7 +29,7 @@ import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
-import 'package:fedi/pagination/list/pagination_list_bloc.dart';
+import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc_proxy_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -147,17 +147,8 @@ class _TimelinesHomeTabPageState extends State<TimelinesHomeTabPage>
                     CachedPaginationPage<IStatus>, IStatus>>.value(
           value: timelineTabsBloc.retrieveTimelineTabPaginationListBloc(
               timelineTabsBloc.tabs[index]),
-          child: ProxyProvider<
-              ICachedPaginationListWithNewItemsBloc<
-                  CachedPaginationPage<IStatus>, IStatus>,
-              IPaginationListBloc<CachedPaginationPage<IStatus>, IStatus>>(
-            update: (context, value, previous) => value,
-            child: ProxyProvider<
-                    ICachedPaginationListWithNewItemsBloc<
-                        CachedPaginationPage<IStatus>, IStatus>,
-                    ICachedPaginationListWithNewItemsBloc>(
-                update: (context, value, previous) => value, child: child),
-          ),
+          child: CachedPaginationListWithNewItemsBlocProxyProvider<
+              CachedPaginationPage<IStatus>, IStatus>(child: child),
         ),
         tabBodyContentBuilder: (BuildContext context) =>
             FediDarkStatusBarStyleArea(child: TimelineWidget()),
@@ -192,10 +183,10 @@ class _TimelinesHomeTabPageState extends State<TimelinesHomeTabPage>
       );
 
   Widget _buildTabIndicatorWidget() => Padding(
-    padding: const EdgeInsets.only(top: 3.0, right: FediSizes.bigPadding),
-    child: TimelineTabTextTabIndicatorItemWidget(
+        padding: const EdgeInsets.only(top: 3.0, right: FediSizes.bigPadding),
+        child: TimelineTabTextTabIndicatorItemWidget(
           tabController: tabController,
           timelineTabs: _timelineTabs,
         ),
-  );
+      );
 }
