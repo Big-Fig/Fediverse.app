@@ -25,14 +25,11 @@ class NewPostStatusPage extends StatelessWidget {
             SliverFillRemaining(
               hasScrollBody: false,
               child: UnfocusOnScrollAreaWidget(
-                child: ProxyProvider<IPostStatusBloc, IPostMessageBloc>(
-                  update: (context, value, previous) => value,
-                  child: PostStatusComposeWidget(
-                    goBackOnSuccess: true,
-                    expanded: true,
-                    maxLines: null,
-                    displayAccountAvatar: false,
-                  ),
+                child: PostStatusComposeWidget(
+                  goBackOnSuccess: true,
+                  expanded: true,
+                  maxLines: null,
+                  displayAccountAvatar: false,
                 ),
               ),
             ),
