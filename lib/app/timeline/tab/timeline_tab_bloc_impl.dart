@@ -1,7 +1,7 @@
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc.dart';
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
-import 'package:fedi/app/status/pagination/list/status_pagination_list_with_new_items_bloc_impl.dart';
+import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_bloc.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_model.dart';
@@ -30,7 +30,7 @@ abstract class TimelineTabBloc extends DisposableOwner
     addDisposable(disposable: statusCachedPaginationBloc);
 
     paginationListWithNewItemsBloc =
-        StatusPaginationListWithNewItemsBloc<CachedPaginationPage<IStatus>>(
+        StatusCachedPaginationListWithNewItemsBloc<CachedPaginationPage<IStatus>>(
             paginationBloc: statusCachedPaginationBloc,
             mergeNewItemsImmediately: false,
             statusCachedListBloc: statusCachedListService);

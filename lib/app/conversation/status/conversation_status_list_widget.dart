@@ -2,7 +2,7 @@ import 'package:fedi/app/async/async_smart_refresher_helper.dart';
 import 'package:fedi/app/conversation/status/conversation_status_list_item_widget.dart';
 import 'package:fedi/app/date/date_utils.dart';
 import 'package:fedi/app/list/list_loading_footer_widget.dart';
-import 'package:fedi/app/status/pagination/list/status_pagination_list_base_widget.dart';
+import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_base_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -21,7 +21,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 var _logger = Logger("conversation_status_list_widget.dart");
 var _dateSeparatorDateFormat = DateFormat('MMMM dd, yyyy');
 
-class ConversationStatusListWidget extends StatusPaginationListBaseWidget {
+class ConversationStatusListWidget extends StatusCachedPaginationListBaseWidget {
   ConversationStatusListWidget({@required Key key}) : super(key: key);
 
   @override

@@ -5,8 +5,6 @@ import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/conversation/conversation_page.dart';
 import 'package:fedi/app/conversation/repository/conversation_repository.dart';
 import 'package:fedi/app/conversation/start/status/post_status_start_conversation_bloc_impl.dart';
-import 'package:fedi/app/message/post_message_bloc.dart';
-import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/post/post_status_compose_widget.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
@@ -16,7 +14,6 @@ import 'package:fedi/ui/scroll/unfocus_on_scroll_area_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:moor/moor.dart';
-import 'package:provider/provider.dart';
 
 class PostStatusStartConversationPage extends StatelessWidget {
   @override

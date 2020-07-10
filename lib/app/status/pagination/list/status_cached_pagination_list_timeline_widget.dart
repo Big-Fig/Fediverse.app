@@ -1,5 +1,5 @@
 import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
-import 'package:fedi/app/status/pagination/list/status_pagination_list_base_widget.dart';
+import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_base_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
@@ -9,8 +9,8 @@ import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class StatusPaginationListTimelineWidget
-    extends StatusPaginationListBaseWidget {
+class StatusCachedPaginationListTimelineWidget
+    extends StatusCachedPaginationListBaseWidget {
   final bool needWatchLocalRepositoryForUpdates;
   final bool forceFirstItemPadding;
 
@@ -25,7 +25,7 @@ class StatusPaginationListTimelineWidget
     return timelinePaginationListBloc;
   }
 
-  const StatusPaginationListTimelineWidget(
+  const StatusCachedPaginationListTimelineWidget(
       {Key key,
       Widget header,
       this.forceFirstItemPadding = false,

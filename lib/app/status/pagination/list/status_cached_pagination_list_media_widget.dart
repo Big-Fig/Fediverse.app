@@ -1,5 +1,5 @@
 import 'package:fedi/app/status/list/status_list_item_media_widget.dart';
-import 'package:fedi/app/status/pagination/list/status_pagination_list_base_widget.dart';
+import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_base_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -18,8 +18,8 @@ import 'package:provider/provider.dart';
 
 var _logger = Logger("status_pagination_list_media_widget.dart");
 
-class StatusPaginationListMediaWidget extends StatusPaginationListBaseWidget {
-  StatusPaginationListMediaWidget({Key key}) : super(key: key);
+class StatusCachedPaginationListMediaWidget extends StatusCachedPaginationListBaseWidget {
+  StatusCachedPaginationListMediaWidget({Key key}) : super(key: key);
 
   @override
   IPaginationListBloc<PaginationPage<IStatus>, IStatus>
