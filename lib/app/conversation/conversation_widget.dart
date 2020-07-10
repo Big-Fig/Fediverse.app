@@ -77,11 +77,8 @@ class ConversationWidget extends StatelessWidget {
                         ),
                       ),
                       const FediUltraLightGreyDivider(),
-                      ProxyProvider<IPostStatusBloc, IPostMessageBloc>(
-                        update: (context, value, previous) => value,
-                        child: PostMessageWidget(    hintText: tr("app.conversation.post"
-                            ".field.content.hint"),),
-                      )
+                      PostMessageWidget(    hintText: tr("app.conversation.post"
+                          ".field.content.hint"),)
                     ],
                   ),
                 ),

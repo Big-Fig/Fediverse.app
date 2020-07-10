@@ -77,7 +77,7 @@ class ChatPostMessageBloc extends PostMessageBloc
 
   static Widget provideToContext(BuildContext context,
       {@required String chatRemoteId, @required Widget child}) {
-    return DisposableProvider(
+    return DisposableProvider<IChatPostMessageBloc>(
       create: (context) => ChatPostMessageBloc._createFromContext(context,
           chatRemoteId: chatRemoteId),
       child: ChatPostMessageBlocProxyProvider(child: child),
