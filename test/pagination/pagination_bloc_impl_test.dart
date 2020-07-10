@@ -2,19 +2,19 @@ import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'pagination_bloc_memory_impl.dart';
+import 'memory_cached_pagination_bloc_impl.dart';
 import 'pagination_model_helper.dart';
 
 void main() {
   IPaginationBloc<CachedPaginationPage<TestPaginationItem>, TestPaginationItem>
       paginationBloc;
-  MemoryPaginationBloc<TestPaginationItem> memoryPaginationBloc;
+  MemoryCachedPaginationBloc<TestPaginationItem> memoryPaginationBloc;
   int storageSize = 30;
   int maximumCachedPagesCount;
   int itemsCountPerPage = 4;
 
   setUp(() {
-    memoryPaginationBloc = MemoryPaginationBloc.createTestWithSize(
+    memoryPaginationBloc = MemoryCachedPaginationBloc.createTestWithSize(
         size: storageSize,
         maximumCachedPagesCount: maximumCachedPagesCount,
         itemsCountPerPage: itemsCountPerPage);
