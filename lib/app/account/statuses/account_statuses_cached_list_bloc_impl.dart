@@ -8,6 +8,7 @@ import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/websockets/pleroma_websockets_service.dart';
@@ -50,7 +51,7 @@ class AccountStatusesCachedListBloc extends IStatusCachedListBloc {
   @override
   IPleromaApi get pleromaApi => pleromaAccountService;
 
-  static AccountStatusesCachedListBloc createFromContext(BuildContext context,
+  static AccountStatusesCachedListBloc _createFromContext(BuildContext context,
       {@required IAccount account}) {
     return AccountStatusesCachedListBloc(
       account: account,
@@ -159,4 +160,14 @@ class AccountStatusesCachedListBloc extends IStatusCachedListBloc {
 
   @override
   Stream<bool> get settingsChangedStream => Stream.empty();
+
+  static Widget provideToContext(BuildContext context,
+      {@required IAccount account, @required Widget child}) {
+    return DisposableProvider<IStatusCachedListBloc>(
+      create: (context) => AccountStatusesCachedListBloc._createFromContext(
+          context,
+          account: account),
+      child: child,
+    );
+  }
 }

@@ -1,5 +1,5 @@
-import 'package:fedi/app/status/pagination/list/status_pagination_list_media_widget.dart';
-import 'package:fedi/app/status/pagination/list/status_pagination_list_timeline_widget.dart';
+import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_media_widget.dart';
+import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_timeline_widget.dart';
 import 'package:fedi/app/timeline/settings/local_preferences/timeline_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/collapsible/collapsible_owner_widget.dart';
@@ -31,10 +31,10 @@ class TimelineWidget extends StatelessWidget {
             Widget bodyWidget;
 
             if (onlyWithMedia == true) {
-              bodyWidget = StatusPaginationListMediaWidget();
+              bodyWidget = StatusCachedPaginationListMediaWidget();
             } else {
               bodyWidget = CollapsibleOwnerWidget(
-                child: StatusPaginationListTimelineWidget(
+                child: StatusCachedPaginationListTimelineWidget(
                   forceFirstItemPadding: true,
                   needWatchLocalRepositoryForUpdates: true,
                 ),

@@ -1,14 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/status/post/new/new_post_status_bloc_impl.dart';
-import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/post/post_status_compose_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_dismiss_icon_button.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/ui/scroll/unfocus_on_scroll_area_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class NewPostStatusPage extends StatelessWidget {
   @override
@@ -43,7 +40,8 @@ class NewPostStatusPage extends StatelessWidget {
 void goToNewPostStatusPage(BuildContext context) {
   Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) => NewPostStatusBloc.provideToContext(context,
-          child: NewPostStatusPage())),
+    MaterialPageRoute(
+        builder: (context) => NewPostStatusBloc.provideToContext(context,
+            child: NewPostStatusPage())),
   );
 }

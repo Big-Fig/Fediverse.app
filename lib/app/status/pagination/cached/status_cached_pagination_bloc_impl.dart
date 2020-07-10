@@ -2,6 +2,9 @@ import 'package:fedi/app/pagination/cached/cached_pleroma_pagination_bloc_impl.d
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/pagination/cached/cached_pagination_bloc.dart';
+import 'package:fedi/pagination/cached/cached_pagination_bloc_proxy_provider.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:flutter/cupertino.dart';
@@ -40,7 +43,6 @@ class StatusCachedPaginationBloc extends CachedPleromaPaginationBloc<IStatus>
       @required int itemsCountPerPage,
       @required CachedPaginationPage<IStatus> olderPage,
       @required CachedPaginationPage<IStatus> newerPage}) async {
-
     // can't refresh not first page without actual items bounds
     assert(!(pageIndex > 0 && olderPage == null && newerPage == null));
 
@@ -51,11 +53,27 @@ class StatusCachedPaginationBloc extends CachedPleromaPaginationBloc<IStatus>
     );
   }
 
-  static StatusCachedPaginationBloc createFromContext(BuildContext context,
+  static StatusCachedPaginationBloc _createFromContext(BuildContext context,
           {int itemsCountPerPage = 20, int maximumCachedPagesCount}) =>
       StatusCachedPaginationBloc(
           statusListService:
               Provider.of<IStatusCachedListBloc>(context, listen: false),
           itemsCountPerPage: itemsCountPerPage,
           maximumCachedPagesCount: maximumCachedPagesCount);
+
+  static Widget provideToContext(BuildContext context,
+      {@required Widget child,
+      int itemsCountPerPage = 20,
+      int maximumCachedPagesCount}) {
+    return DisposableProvider<
+        ICachedPaginationBloc<CachedPaginationPage<IStatus>, IStatus>>(
+      create: (context) => StatusCachedPaginationBloc._createFromContext(
+        context,
+        itemsCountPerPage: itemsCountPerPage,
+        maximumCachedPagesCount: maximumCachedPagesCount,
+      ),
+      child: CachedPaginationBlocProxyProvider<CachedPaginationPage<IStatus>,
+          IStatus>(child: child),
+    );
+  }
 }

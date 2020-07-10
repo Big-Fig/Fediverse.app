@@ -1,19 +1,22 @@
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc_impl.dart';
+import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc_proxy_provider.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:provider/provider.dart';
 
 var _logger = Logger("status_pagination_list_with_new_items_bloc_impl.dart");
 
-class StatusPaginationListWithNewItemsBloc<
+class StatusCachedPaginationListWithNewItemsBloc<
         TPage extends CachedPaginationPage<IStatus>>
     extends CachedPaginationListWithNewItemsBloc<TPage, IStatus> {
   final IStatusCachedListBloc statusCachedListBloc;
 
-  StatusPaginationListWithNewItemsBloc(
+  StatusCachedPaginationListWithNewItemsBloc(
       {@required bool mergeNewItemsImmediately,
       @required this.statusCachedListBloc,
       @required IPaginationBloc<TPage, IStatus> paginationBloc})
@@ -51,4 +54,29 @@ class StatusPaginationListWithNewItemsBloc<
 
   @override
   bool isItemsEqual(IStatus a, IStatus b) => a.remoteId == b.remoteId;
+
+  static Widget provideToContext<TPage extends CachedPaginationPage<IStatus>>(
+      BuildContext context,
+      {@required bool mergeNewItemsImmediately,
+      @required Widget child}) {
+    return DisposableProvider<StatusCachedPaginationListWithNewItemsBloc>(
+      create: (context) =>
+          StatusCachedPaginationListWithNewItemsBloc._createFromContext<TPage>(
+              context,
+              mergeNewItemsImmediately: mergeNewItemsImmediately),
+      child: CachedPaginationListWithNewItemsBlocProxyProvider<TPage, IStatus>(
+          child: child),
+    );
+  }
+
+  static StatusCachedPaginationListWithNewItemsBloc<TPage>
+      _createFromContext<TPage extends CachedPaginationPage<IStatus>>(
+          BuildContext context,
+          {@required bool mergeNewItemsImmediately}) {
+    return StatusCachedPaginationListWithNewItemsBloc<TPage>(
+        mergeNewItemsImmediately: mergeNewItemsImmediately,
+        paginationBloc: Provider.of<IPaginationBloc<TPage, IStatus>>(context,
+            listen: false),
+        statusCachedListBloc: IStatusCachedListBloc.of(context, listen: false));
+  }
 }

@@ -1,4 +1,4 @@
-import 'package:fedi/app/status/pagination/list/status_pagination_list_timeline_widget.dart';
+import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_timeline_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
@@ -6,7 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class SearchStatusPaginationListTimelineWidget
-    extends StatusPaginationListTimelineWidget {
+    extends StatusCachedPaginationListTimelineWidget {
   const SearchStatusPaginationListTimelineWidget(
       {Key key,
       Widget header,
