@@ -4,32 +4,33 @@ import 'package:fedi/app/home/home_model.dart';
 import 'package:fedi/app/home/home_page_bottom_navigation_bar_widget.dart';
 import 'package:fedi/app/home/tab/account/account_home_tab_bloc.dart';
 import 'package:fedi/app/home/tab/account/account_home_tab_bloc_impl.dart';
+import 'package:fedi/app/home/tab/account/account_home_tab_bloc_proxy_providier.dart';
 import 'package:fedi/app/home/tab/account/account_home_tab_page'
     '.dart';
 import 'package:fedi/app/home/tab/messages/chat_messages_home_tab_bloc.dart';
 import 'package:fedi/app/home/tab/messages/chat_messages_home_tab_bloc_impl.dart';
+import 'package:fedi/app/home/tab/messages/chat_messages_home_tab_bloc_proxy_providier.dart';
 import 'package:fedi/app/home/tab/messages/chat_messages_home_tab_page.dart';
 import 'package:fedi/app/home/tab/messages/conversation_messages_home_tab_bloc.dart';
 import 'package:fedi/app/home/tab/messages/conversation_messages_home_tab_bloc_impl.dart';
+import 'package:fedi/app/home/tab/messages/conversation_messages_home_tab_bloc_proxy_providier.dart';
 import 'package:fedi/app/home/tab/messages/conversation_messages_home_tab_page.dart';
 import 'package:fedi/app/home/tab/notifications/notifications_home_tab_bloc.dart';
 import 'package:fedi/app/home/tab/notifications/notifications_home_tab_bloc_impl.dart';
+import 'package:fedi/app/home/tab/notifications/notifications_home_tab_bloc_proxy_providier.dart';
 import 'package:fedi/app/home/tab/notifications/notifications_home_tab_page.dart';
 import 'package:fedi/app/home/tab/timelines/timelines_home_tab_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/timelines_home_tab_bloc_impl.dart';
+import 'package:fedi/app/home/tab/timelines/timelines_home_tab_bloc_proxy_providier.dart';
 import 'package:fedi/app/home/tab/timelines/timelines_home_tab_page.dart';
 import 'package:fedi/app/instance/fedi_instance_image_background_widget.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
-import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_bloc.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:fedi/ui/scroll/nested_scroll_controller_bloc.dart';
-import 'package:fedi/ui/scroll/scroll_controller_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
-import 'package:provider/provider.dart';
 
 var _logger = Logger("home_page.dart");
 
@@ -65,28 +66,27 @@ class HomePage extends StatelessWidget {
 
   Padding _buildBottomNavBar(BuildContext context) {
     return Padding(
-            padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).padding.bottom),
-            child: Container(
-              height: 58,
-              child: Column(
-                children: [
-                  const FediUltraLightGreyDivider(),
-                  const HomePageBottomNavigationBarWidget(),
-                ],
-              ),
-            ),
-          );
+      padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
+      child: Container(
+        height: 58,
+        child: Column(
+          children: [
+            const FediUltraLightGreyDivider(),
+            const HomePageBottomNavigationBarWidget(),
+          ],
+        ),
+      ),
+    );
   }
 
   FediLightStatusBarStyleArea _buildBackground() => FediLightStatusBarStyleArea(
-                child: Container(
-                  color: FediColors.primaryColor,
-                  child: FediInstanceImageBackgroundWidget(
-                    child: Container(),
-                  ),
-                ),
-              );
+        child: Container(
+          color: FediColors.primaryColor,
+          child: FediInstanceImageBackgroundWidget(
+            child: Container(),
+          ),
+        ),
+      );
 
   Widget buildBody(BuildContext context, HomeTab selectedTab) {
     switch (selectedTab) {
@@ -112,8 +112,10 @@ class HomePage extends StatelessWidget {
     var myAccountSettingsBloc =
         IMyAccountSettingsBloc.of(context, listen: false);
     return StreamBuilder<bool>(
-        stream: myAccountSettingsBloc.isNewChatsEnabledFieldBloc.currentValueStream,
-        initialData: myAccountSettingsBloc.isNewChatsEnabledFieldBloc.currentValue,
+        stream:
+            myAccountSettingsBloc.isNewChatsEnabledFieldBloc.currentValueStream,
+        initialData:
+            myAccountSettingsBloc.isNewChatsEnabledFieldBloc.currentValue,
         builder: (context, snapshot) {
           var isNewChatsEnabled = snapshot.data;
 
@@ -125,7 +127,8 @@ class HomePage extends StatelessWidget {
         });
   }
 
-  DisposableProvider<ITimelinesHomeTabBloc> buildTimelinesTab(BuildContext context) {
+  DisposableProvider<ITimelinesHomeTabBloc> buildTimelinesTab(
+      BuildContext context) {
     return DisposableProvider<ITimelinesHomeTabBloc>(
       create: (context) {
         var homeBloc = IHomeBloc.of(context, listen: false);
@@ -139,23 +142,12 @@ class HomePage extends StatelessWidget {
         }));
         return timelinesHomeTabBloc;
       },
-      child: ProxyProvider<ITimelinesHomeTabBloc, INestedScrollControllerBloc>(
-        update: (context, value, previous) => value.nestedScrollControllerBloc,
-        child: ProxyProvider<ITimelinesHomeTabBloc, IScrollControllerBloc>(
-          update: (context, value, previous) =>
-              value.nestedScrollControllerBloc,
-          child:
-              ProxyProvider<ITimelinesHomeTabBloc, IFediNestedScrollViewBloc>(
-            update: (context, value, previous) =>
-                value.fediNestedScrollViewBloc,
-            child: const TimelinesHomeTabPage(),
-          ),
-        ),
-      ),
+      child: TimelinesHomeTabBlocProxyProvider(
+          child: const TimelinesHomeTabPage()),
     );
   }
 
-  DisposableProvider<INotificationsHomeTabBloc> _buildNotificationsTab(BuildContext context) {
+  Widget _buildNotificationsTab(BuildContext context) {
     return DisposableProvider<INotificationsHomeTabBloc>(
       create: (context) {
         var homeBloc = IHomeBloc.of(context, listen: false);
@@ -173,33 +165,19 @@ class HomePage extends StatelessWidget {
 
         return notificationsHomeTabBloc;
       },
-      child:
-          ProxyProvider<INotificationsHomeTabBloc, INestedScrollControllerBloc>(
-        update: (context, value, previous) => value.nestedScrollControllerBloc,
-        child: ProxyProvider<INotificationsHomeTabBloc, IScrollControllerBloc>(
-          update: (context, value, previous) =>
-              value.nestedScrollControllerBloc,
-          child: ProxyProvider<INotificationsHomeTabBloc,
-              IFediNestedScrollViewBloc>(
-            update: (context, value, previous) =>
-                value.fediNestedScrollViewBloc,
-            child: const NotificationsHomeTabPage(
-                //                  key: PageStorageKey<String>("NotificationsHomeTabPage"),
-                ),
-          ),
-        ),
+      child: NotificationsHomeTabBlocProxyProvider(
+        child: NotificationsHomeTabPage(),
       ),
     );
   }
 
-  DisposableProvider<IChatMessagesHomeTabBloc> _buildChatMessagesTab(BuildContext context) {
+  DisposableProvider<IChatMessagesHomeTabBloc> _buildChatMessagesTab(
+      BuildContext context) {
     return DisposableProvider<IChatMessagesHomeTabBloc>(
       create: (context) {
         var homeBloc = IHomeBloc.of(context, listen: false);
 
-        var chatMessagesHomeTabBloc = ChatMessagesHomeTabBloc(
-
-            );
+        var chatMessagesHomeTabBloc = ChatMessagesHomeTabBloc();
 
         chatMessagesHomeTabBloc.addDisposable(streamSubscription:
             homeBloc.reselectedTabStream.listen((reselectedTab) {
@@ -210,20 +188,9 @@ class HomePage extends StatelessWidget {
 
         return chatMessagesHomeTabBloc;
       },
-      child:
-          ProxyProvider<IChatMessagesHomeTabBloc, INestedScrollControllerBloc>(
-        update: (context, value, previous) => value.nestedScrollControllerBloc,
-        child: ProxyProvider<IChatMessagesHomeTabBloc, IScrollControllerBloc>(
-          update: (context, value, previous) =>
-              value.nestedScrollControllerBloc,
-          child: ProxyProvider<IChatMessagesHomeTabBloc,
-              IFediNestedScrollViewBloc>(
-            update: (context, value, previous) =>
-                value.fediNestedScrollViewBloc,
-            child: const ChatMessagesHomeTabPage(
-              key: PageStorageKey<String>("ChatMessagesHomeTabPage"),
-            ),
-          ),
+      child: ChatMessagesHomeTabBlocProxyProvider(
+        child: const ChatMessagesHomeTabPage(
+          key: PageStorageKey<String>("ChatMessagesHomeTabPage"),
         ),
       ),
     );
@@ -248,27 +215,14 @@ class HomePage extends StatelessWidget {
 
         return conversationMessagesHomeTabBloc;
       },
-      child: ProxyProvider<IConversationMessagesHomeTabBloc,
-          INestedScrollControllerBloc>(
-        update: (context, value, previous) => value.nestedScrollControllerBloc,
-        child: ProxyProvider<IConversationMessagesHomeTabBloc,
-            IScrollControllerBloc>(
-          update: (context, value, previous) =>
-              value.nestedScrollControllerBloc,
-          child: ProxyProvider<IConversationMessagesHomeTabBloc,
-              IFediNestedScrollViewBloc>(
-            update: (context, value, previous) =>
-                value.fediNestedScrollViewBloc,
-            child: const ConversationMessagesHomeTabPage(
-              key: PageStorageKey<String>("ConversationMessagesHomeTabPage"),
-            ),
-          ),
-        ),
+      child: ConversationMessagesHomeTabBlocProxyProvider(
+        child: const ConversationMessagesHomeTabPage(),
       ),
     );
   }
 
-  DisposableProvider<IAccountHomeTabBloc> _buildAccountTab(BuildContext context) {
+  DisposableProvider<IAccountHomeTabBloc> _buildAccountTab(
+      BuildContext context) {
     return DisposableProvider<IAccountHomeTabBloc>(
       create: (context) {
         var homeBloc = IHomeBloc.of(context, listen: false);
@@ -286,18 +240,9 @@ class HomePage extends StatelessWidget {
 
         return accountHomeTabBloc;
       },
-      child: ProxyProvider<IAccountHomeTabBloc, INestedScrollControllerBloc>(
-        update: (context, value, previous) => value.nestedScrollControllerBloc,
-        child: ProxyProvider<IAccountHomeTabBloc, IScrollControllerBloc>(
-          update: (context, value, previous) =>
-              value.nestedScrollControllerBloc,
-          child: ProxyProvider<IAccountHomeTabBloc, IFediNestedScrollViewBloc>(
-            update: (context, value, previous) =>
-                value.fediNestedScrollViewBloc,
-            child: const AccountHomeTabPage(
-              key: PageStorageKey<String>("AccountHomeTabPage"),
-            ),
-          ),
+      child: AccountHomeTabBlocProxyProvider(
+        child: const AccountHomeTabPage(
+          key: PageStorageKey<String>("AccountHomeTabPage"),
         ),
       ),
     );

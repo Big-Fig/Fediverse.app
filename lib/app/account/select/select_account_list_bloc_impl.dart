@@ -3,9 +3,11 @@ import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_model.dart';
 import 'package:fedi/app/account/select/select_account_list_bloc.dart';
+import 'package:fedi/app/account/select/select_account_list_bloc_proxy_provider.dart';
 import 'package:fedi/app/search/input/search_input_bloc.dart';
 import 'package:fedi/app/search/input/search_input_bloc_impl.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
@@ -123,7 +125,7 @@ class SelectAccountListBloc extends DisposableOwner
     return accounts;
   }
 
-  static SelectAccountListBloc createFromContext(BuildContext context,
+  static SelectAccountListBloc _createFromContext(BuildContext context,
           {@required bool excludeMyAccount}) =>
       SelectAccountListBloc(
           excludeMyAccount: excludeMyAccount,
@@ -131,4 +133,20 @@ class SelectAccountListBloc extends DisposableOwner
           accountRepository: IAccountRepository.of(context, listen: false),
           pleromaAccountService:
               IPleromaAccountService.of(context, listen: false));
+
+
+  static Widget provideToContext(
+      BuildContext context, {
+        @required bool excludeMyAccount,
+        @required Widget child,
+      }) {
+    return DisposableProvider<ISelectAccountListBloc>(
+      create: (context) => SelectAccountListBloc._createFromContext(
+        context,
+        excludeMyAccount: excludeMyAccount,
+      ),
+      child: SelectAccountListBlocProxyProvider(child: child),
+    );
+  }
+
 }

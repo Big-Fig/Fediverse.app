@@ -3,16 +3,11 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/details/account_details_page.dart';
 import 'package:fedi/app/account/follower/account_follower_account_cached_list_bloc_impl.dart';
 import 'package:fedi/app/account/pagination/cached/account_cached_pagination_bloc_impl.dart';
-import 'package:fedi/app/account/pagination/list/account_pagination_list_bloc.dart';
 import 'package:fedi/app/account/pagination/list/account_pagination_list_bloc_impl.dart';
 import 'package:fedi/app/account/pagination/list/account_pagination_list_widget.dart';
-import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:fedi/pagination/pagination_bloc.dart';
-import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -60,24 +55,20 @@ void goToAccountFollowerAccountListPage(
     BuildContext context, IAccount account) {
   Navigator.push(
     context,
-    MaterialPageRoute(
-        builder: (context) =>
-            DisposableProvider<IPleromaCachedListBloc<IAccount>>(
-                create: (context) =>
-                    AccountFollowerAccountCachedListBloc.createFromContext(
-                        context,
-                        account: account),
-                child: DisposableProvider<
-                    IPaginationBloc<PaginationPage<IAccount>, IAccount>>(
-                  create: (context) =>
-                      AccountCachedPaginationBloc.createFromContext(context),
-                  child: DisposableProvider<IAccountPaginationListBloc>(
-                    create: (context) =>
-                        AccountPaginationListBloc.createFromContext(context),
-                    child: AccountFollowerAccountListPage(
-                      account: account,
-                    ),
-                  ),
-                ))),
+    MaterialPageRoute(builder: (context) {
+      return AccountFollowerAccountCachedListBloc.provideToContext(
+        context,
+        account: account,
+        child: AccountCachedPaginationBloc.provideToContext(
+          context,
+          child: AccountPaginationListBloc.provideToContext(
+            context,
+            child: AccountFollowerAccountListPage(
+              account: account,
+            ),
+          ),
+        ),
+      );
+    }),
   );
 }

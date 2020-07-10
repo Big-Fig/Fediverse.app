@@ -1,9 +1,11 @@
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/account/list/cached/account_cached_list_service.dart';
+import 'package:fedi/app/account/list/cached/account_cached_list_bloc.dart';
+import 'package:fedi/app/account/list/cached/account_cached_list_bloc_proxy_provider.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service.dart';
@@ -42,11 +44,9 @@ class StatusFavouriteAccountCachedListBloc extends DisposableOwner
 
       remoteAccounts = await pleromaStatusService.favouritedBy(
           statusRemoteId: status.remoteId,
-
           maxId: olderThan?.remoteId,
           sinceId: newerThan?.remoteId,
-          limit: limit
-          );
+          limit: limit);
 
       if (remoteAccounts != null) {
         await accountRepository.upsertRemoteAccounts(remoteAccounts,
@@ -91,13 +91,14 @@ class StatusFavouriteAccountCachedListBloc extends DisposableOwner
         onlyInAccountFollowers: null,
         onlyInStatusFavouritedBy: status,
         onlyInAccountFollowing: null,
-        onlyInStatusRebloggedBy: null, onlyInChat: null);
+        onlyInStatusRebloggedBy: null,
+        onlyInChat: null);
 
     _logger.finer(() => "finish loadLocalItems accounts ${accounts.length}");
     return accounts;
   }
 
-  static StatusFavouriteAccountCachedListBloc createFromContext(
+  static StatusFavouriteAccountCachedListBloc _createFromContext(
           BuildContext context,
           {@required IStatus status}) =>
       StatusFavouriteAccountCachedListBloc(
@@ -105,4 +106,18 @@ class StatusFavouriteAccountCachedListBloc extends DisposableOwner
           pleromaStatusService:
               IPleromaStatusService.of(context, listen: false),
           status: status);
+
+  static Widget provideToContext(
+    BuildContext context, {
+    @required IStatus status,
+    @required Widget child,
+  }) =>
+      DisposableProvider<IAccountCachedListBloc>(
+        create: (context) =>
+            StatusFavouriteAccountCachedListBloc._createFromContext(
+          context,
+          status: status,
+        ),
+        child: AccountCachedListBlocProxyProvider(child: child),
+      );
 }

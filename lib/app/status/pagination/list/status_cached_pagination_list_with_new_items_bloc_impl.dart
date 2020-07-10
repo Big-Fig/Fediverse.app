@@ -2,6 +2,7 @@ import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
+import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc_proxy_provider.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
@@ -59,13 +60,20 @@ class StatusCachedPaginationListWithNewItemsBloc<
       BuildContext context,
       {@required bool mergeNewItemsImmediately,
       @required Widget child}) {
-    return DisposableProvider<StatusCachedPaginationListWithNewItemsBloc>(
+    return DisposableProvider<
+        ICachedPaginationListWithNewItemsBloc<TPage, IStatus>>(
       create: (context) =>
           StatusCachedPaginationListWithNewItemsBloc._createFromContext<TPage>(
               context,
               mergeNewItemsImmediately: mergeNewItemsImmediately),
-      child: CachedPaginationListWithNewItemsBlocProxyProvider<TPage, IStatus>(
-          child: child),
+      child: ProxyProvider<
+          ICachedPaginationListWithNewItemsBloc<TPage, IStatus>,
+          ICachedPaginationListWithNewItemsBloc>(
+        update: (context, value, previous) => value,
+        child:
+            CachedPaginationListWithNewItemsBlocProxyProvider<TPage, IStatus>(
+                child: child),
+      ),
     );
   }
 

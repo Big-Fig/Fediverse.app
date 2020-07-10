@@ -2,6 +2,9 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/pagination/cached/account_cached_pagination_bloc.dart';
 import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
 import 'package:fedi/app/pagination/cached/cached_pleroma_pagination_bloc_impl.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/pagination/cached/cached_pagination_bloc.dart';
+import 'package:fedi/pagination/cached/cached_pagination_bloc_proxy_provider.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:flutter/cupertino.dart';
@@ -50,11 +53,27 @@ class AccountCachedPaginationBloc extends CachedPleromaPaginationBloc<IAccount>
     );
   }
 
-  static AccountCachedPaginationBloc createFromContext(BuildContext context,
+  static AccountCachedPaginationBloc _createFromContext(BuildContext context,
           {int itemsCountPerPage = 20, int maximumCachedPagesCount}) =>
       AccountCachedPaginationBloc(
           maximumCachedPagesCount: maximumCachedPagesCount,
           itemsCountPerPage: itemsCountPerPage,
           listService: Provider.of<IPleromaCachedListBloc<IAccount>>(context,
               listen: false));
+
+  static Widget provideToContext(BuildContext context,
+      {@required Widget child,
+      int itemsCountPerPage = 20,
+      int maximumCachedPagesCount}) {
+    return DisposableProvider<
+        ICachedPaginationBloc<CachedPaginationPage<IAccount>, IAccount>>(
+      create: (context) => AccountCachedPaginationBloc._createFromContext(
+        context,
+        itemsCountPerPage: itemsCountPerPage,
+        maximumCachedPagesCount: maximumCachedPagesCount,
+      ),
+      child: CachedPaginationBlocProxyProvider<CachedPaginationPage<IAccount>,
+          IAccount>(child: child),
+    );
+  }
 }
