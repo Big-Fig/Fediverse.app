@@ -1,15 +1,13 @@
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 import 'package:fedi/app/home/tab/notifications/drawer/notifications_home_tab_page_drawer_widget.dart';
 import 'package:fedi/app/home/tab/notifications/notifications_home_tab_bloc.dart';
-import 'package:fedi/app/notification/list/cached/notification_cached_list_bloc.dart';
 import 'package:fedi/app/notification/list/cached/notification_cached_list_bloc_impl.dart';
 import 'package:fedi/app/notification/list/notification_list_tap_to_load_overlay_widget.dart';
-import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/notification_tabs_bloc.dart';
 import 'package:fedi/app/notification/notification_tabs_bloc_impl.dart';
 import 'package:fedi/app/notification/pagination/cached/notification_cached_pagination_bloc_impl.dart';
+import 'package:fedi/app/notification/pagination/list/notification_cached_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/notification/pagination/list/notification_pagination_list_widget.dart';
-import 'package:fedi/app/notification/pagination/list/notification_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/notification/tab/notification_tab_exclude_helper.dart';
 import 'package:fedi/app/notification/tab/notification_tab_icon_tab_indicator_item_widget.dart';
 import 'package:fedi/app/notification/tab/notification_tab_model.dart';
@@ -22,13 +20,8 @@ import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollabl
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_widget.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:fedi/pagination/cached/cached_pagination_model.dart';
-import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
-import 'package:fedi/pagination/list/pagination_list_bloc.dart';
-import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 const _notificationTabs = [
   NotificationTab.all,
@@ -111,40 +104,7 @@ class _NotificationsHomeTabPageState extends State<NotificationsHomeTabPage>
             (BuildContext context, int index, Widget child) {
           var tab = _notificationTabs[index];
 
-          return DisposableProvider<INotificationCachedListBloc>(
-            create: (context) => NotificationCachedListBloc.createFromContext(
-                context,
-                excludeTypes: tab.asExcludeTypes()),
-            child: DisposableProvider<
-                IPaginationBloc<CachedPaginationPage<INotification>,
-                    INotification>>(
-              create: (context) =>
-                  NotificationCachedPaginationBloc.createFromContext(context),
-              child: DisposableProvider<
-                  ICachedPaginationListWithNewItemsBloc<
-                      CachedPaginationPage<INotification>, INotification>>(
-                create: (context) => NotificationPaginationListWithNewItemsBloc(
-                    mergeNewItemsImmediately: false,
-                    paginationBloc: Provider.of(context, listen: false),
-                    cachedListService:
-                        INotificationCachedListBloc.of(context, listen: false)),
-                child: ProxyProvider<
-                    ICachedPaginationListWithNewItemsBloc<
-                        CachedPaginationPage<INotification>, INotification>,
-                    IPaginationListBloc<CachedPaginationPage<INotification>,
-                        INotification>>(
-                  update: (context, value, previous) => value,
-                  child: ProxyProvider<
-                      ICachedPaginationListWithNewItemsBloc<
-                          CachedPaginationPage<INotification>, INotification>,
-                      ICachedPaginationListWithNewItemsBloc>(
-                    update: (context, value, previous) => value,
-                    child: child,
-                  ),
-                ),
-              ),
-            ),
-          );
+          return _buildTabBodyProvider(tab, child);
         },
         tabBodyContentBuilder: (BuildContext context) =>
             FediDarkStatusBarStyleArea(
@@ -163,6 +123,21 @@ class _NotificationsHomeTabPageState extends State<NotificationsHomeTabPage>
             ),
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildTabBodyProvider(NotificationTab tab, Widget child) {
+    return NotificationCachedListBloc.provideToContext(
+      context,
+      excludeTypes: tab.asExcludeTypes(),
+      child: NotificationCachedPaginationBloc.provideToContext(
+        context,
+        child:
+            NotificationCachedPaginationListWithNewItemsBloc.provideToContext(
+                context,
+                mergeNewItemsImmediately: false,
+                child: child),
       ),
     );
   }
