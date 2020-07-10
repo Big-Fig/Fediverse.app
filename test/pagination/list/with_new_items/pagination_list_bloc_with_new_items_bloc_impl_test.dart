@@ -1,37 +1,40 @@
+import 'package:fedi/pagination/cached/cached_pagination_bloc.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
-import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
-import 'package:fedi/pagination/pagination_bloc.dart';
+import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../pagination_bloc_memory_impl.dart';
+import '../../memory_cached_pagination_bloc_impl.dart';
 import '../../pagination_model_helper.dart';
 import 'pagination_list_bloc_with_new_items_memory_impl.dart';
 
 void main() {
-  IPaginationBloc<CachedPaginationPage<TestPaginationItem>, TestPaginationItem>
-      paginationBloc;
+  ICachedPaginationBloc<CachedPaginationPage<TestPaginationItem>,
+      TestPaginationItem> paginationBloc;
 
   IPaginationListBloc<CachedPaginationPage<TestPaginationItem>,
       TestPaginationItem> paginationListBloc;
-  ICachedPaginationListWithNewItemsBloc<CachedPaginationPage<TestPaginationItem>,
+  ICachedPaginationListWithNewItemsBloc<
+      CachedPaginationPage<TestPaginationItem>,
       TestPaginationItem> paginationListWithNewItemsBloc;
-  MemoryCachedPaginationListWithNewItemsBloc<CachedPaginationPage<TestPaginationItem>,
+  MemoryCachedPaginationListWithNewItemsBloc<
+      CachedPaginationPage<TestPaginationItem>,
       TestPaginationItem> memoryPaginationListWithNewItemsBloc;
-  MemoryPaginationBloc<TestPaginationItem> memoryPaginationBloc;
+  MemoryCachedPaginationBloc<TestPaginationItem> memoryPaginationBloc;
   int storageSize = 30;
   int maximumCachedPagesCount;
   int itemsCountPerPage = 4;
 
   setUp(() {
-    memoryPaginationBloc = MemoryPaginationBloc.createTestWithSize(
+    memoryPaginationBloc = MemoryCachedPaginationBloc.createTestWithSize(
         size: storageSize,
         maximumCachedPagesCount: maximumCachedPagesCount,
         itemsCountPerPage: itemsCountPerPage);
 
     paginationBloc = memoryPaginationBloc;
 
-    memoryPaginationListWithNewItemsBloc = MemoryCachedPaginationListWithNewItemsBloc(
+    memoryPaginationListWithNewItemsBloc =
+        MemoryCachedPaginationListWithNewItemsBloc(
       paginationBloc: paginationBloc,
       mergeNewItemsImmediately: false,
       comparator: TestPaginationItem.compareItems,
@@ -50,7 +53,6 @@ void main() {
   test('itemsCountPerPage', () async {
     expect(paginationListBloc.itemsCountPerPage, itemsCountPerPage);
   });
-
 
   test('items', () async {
     expect(paginationListBloc.items, null);
@@ -398,7 +400,8 @@ void main() {
   });
 
   test('mergeNewItemsImmediately', () async {
-    memoryPaginationListWithNewItemsBloc = MemoryCachedPaginationListWithNewItemsBloc(
+    memoryPaginationListWithNewItemsBloc =
+        MemoryCachedPaginationListWithNewItemsBloc(
       paginationBloc: paginationBloc,
       mergeNewItemsImmediately: true,
       comparator: TestPaginationItem.compareItems,
