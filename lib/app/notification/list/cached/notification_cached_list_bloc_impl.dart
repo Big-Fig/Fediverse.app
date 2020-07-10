@@ -2,6 +2,7 @@ import 'package:fedi/app/notification/list/cached/notification_cached_list_bloc.
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository_model.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/mastodon/notification/mastodon_notification_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
@@ -62,7 +63,7 @@ class NotificationCachedListBloc extends INotificationCachedListBloc {
     }
   }
 
-  static NotificationCachedListBloc createFromContext(BuildContext context,
+  static NotificationCachedListBloc _createFromContext(BuildContext context,
           {@required List<PleromaNotificationType> excludeTypes}) =>
       NotificationCachedListBloc(
           pleromaNotificationService:
@@ -70,6 +71,20 @@ class NotificationCachedListBloc extends INotificationCachedListBloc {
           excludeTypes: excludeTypes,
           notificationRepository:
               INotificationRepository.of(context, listen: false));
+
+  static Widget provideToContext(
+    BuildContext context, {
+    @required List<PleromaNotificationType> excludeTypes,
+    @required Widget child,
+  }) {
+    return DisposableProvider<INotificationCachedListBloc>(
+      create: (context) => NotificationCachedListBloc._createFromContext(
+        context,
+        excludeTypes: excludeTypes,
+      ),
+      child: child,
+    );
+  }
 
   @override
   Stream<List<INotification>> watchLocalItemsNewerThanItem(

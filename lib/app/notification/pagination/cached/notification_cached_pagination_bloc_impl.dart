@@ -2,6 +2,9 @@ import 'package:fedi/app/notification/list/cached/notification_cached_list_bloc.
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/pagination/cached/notification_cached_pagination_bloc.dart';
 import 'package:fedi/app/pagination/cached/cached_pleroma_pagination_bloc_impl.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/pagination/cached/cached_pagination_bloc.dart';
+import 'package:fedi/pagination/cached/cached_pagination_bloc_proxy_provider.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:flutter/cupertino.dart';
@@ -51,7 +54,7 @@ class NotificationCachedPaginationBloc
     );
   }
 
-  static NotificationCachedPaginationBloc createFromContext(
+  static NotificationCachedPaginationBloc _createFromContext(
           BuildContext context,
           {int itemsCountPerPage = 20,
           int maximumCachedPagesCount}) =>
@@ -60,4 +63,21 @@ class NotificationCachedPaginationBloc
               Provider.of<INotificationCachedListBloc>(context, listen: false),
           itemsCountPerPage: itemsCountPerPage,
           maximumCachedPagesCount: maximumCachedPagesCount);
+
+  static Widget provideToContext(BuildContext context,
+      {@required Widget child,
+      int itemsCountPerPage = 20,
+      int maximumCachedPagesCount}) {
+    return DisposableProvider<
+        ICachedPaginationBloc<CachedPaginationPage<INotification>,
+            INotification>>(
+      create: (context) => NotificationCachedPaginationBloc._createFromContext(
+        context,
+        itemsCountPerPage: itemsCountPerPage,
+        maximumCachedPagesCount: maximumCachedPagesCount,
+      ),
+      child: CachedPaginationBlocProxyProvider<
+          CachedPaginationPage<INotification>, INotification>(child: child),
+    );
+  }
 }
