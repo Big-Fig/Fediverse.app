@@ -46,9 +46,9 @@ class ScrollControllerBloc extends DisposableOwner
     addDisposable(custom: () {
       try {
         scrollController.removeListener(listener);
-      } catch (e, stackTrace) {
+      } catch (e) {
         _logger.warning(
-            () => "cant dispose scroll controller listener", e, stackTrace);
+            () => "cant dispose scroll controller listener");
       }
     });
   }

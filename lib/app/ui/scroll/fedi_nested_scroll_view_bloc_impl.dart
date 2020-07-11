@@ -6,7 +6,7 @@ import 'package:logging/logging.dart';
 import 'package:nested_scroll_controller/nested_scroll_controller.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("fedi_sliver_app_bar_bloc_impl.dart");
+var _logger = Logger("fedi_nested_scroll_view_bloc_impl.dart");
 
 class FediNestedScrollViewBloc extends DisposableOwner
     implements IFediNestedScrollViewBloc {
@@ -56,12 +56,10 @@ class FediNestedScrollViewBloc extends DisposableOwner
     addDisposable(custom: () {
       try {
         scrollController.removeListener(listener);
-      } catch (e, stackTrace) {
+      } catch (e) {
         _logger.warning(
           () => "failed to unsubscribe scrollController"
               ".removeListener(listener);",
-          e,
-          stackTrace,
         );
       }
     });
@@ -79,14 +77,6 @@ class FediNestedScrollViewBloc extends DisposableOwner
     maxScrollExtent = maxScrollExtent - 1;
     var isAtLeastStartExpand = pixels <= maxScrollExtent;
     isNestedScrollViewBodyStartedScrollSubject.add(isAtLeastStartExpand);
-//    _logger.finest(() => "offset: ${scrollController.offset} \n"
-//            "\t innerOffset: ${scrollController.innerOffset} \n"
-//            "\t totalOffset: ${scrollController.totalOffset} \n"
-//            "\t position: ${scrollController.position} \n"
-//            "\t isAtLeastStartExpand: ${isAtLeastStartExpand} \n"
-//            "\t scrollController.position.pixels: ${scrollController.position.pixels} scrollController.position.maxScrollExtent ${scrollController.position.maxScrollExtent}"
-//    //          "\t isScrolledAtLeastOneScreen: ${isScrolledAtLeastOneScreen} \n"
-//        );
   }
 
   @override
