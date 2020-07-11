@@ -1,3 +1,4 @@
+import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -12,24 +13,19 @@ class FediBackIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: () {
-        Navigator.pop(context);
-      },
-      icon: IconButton(
-        icon: Icon(
-          FediIcons.chevron_left,
-          color: FediColors.darkGrey,
-          size: FediSizes.appBarIconSize,
-        ),
-        onPressed: () {
-          if (customOnPressed != null) {
-            customOnPressed();
-          } else {
-            Navigator.of(context).pop();
-          }
-        },
+    return FediIconButton(
+      icon: Icon(
+        FediIcons.chevron_left,
+        color: FediColors.darkGrey,
+        size: FediSizes.appBarIconSize,
       ),
+      onPressed: () {
+        if (customOnPressed != null) {
+          customOnPressed();
+        } else {
+          Navigator.of(context).pop();
+        }
+      },
     );
   }
 }

@@ -8,6 +8,7 @@ import 'package:fedi/app/conversation/start/status/post_status_start_conversatio
 import 'package:fedi/app/share/share_service.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
@@ -27,7 +28,7 @@ class StatusShareActionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: true);
-    return IconButton(
+    return FediIconButton(
       color: FediColors.darkGrey,
       iconSize: 20.0,
       icon: Icon(FediIcons.menu),

@@ -34,7 +34,7 @@ class AccountFieldGridWidget extends StatelessWidget {
                     .map((field) => Column(
                       children: [
                         Container(
-                          height: FediSizes.defaultFilledButtonHeight,
+                          height: FediSizes.textButtonHeight,
                           child: AccountFieldGridItemWidget(field: field),
                         ),
                       ],

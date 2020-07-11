@@ -8,6 +8,7 @@ import 'package:fedi/app/emoji/emoji_text_helper.dart';
 import 'package:fedi/app/html/html_text_helper.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -71,9 +72,9 @@ class ConversationListItemWidget extends StatelessWidget {
     );
   }
 
-  IconButton buildGoToConversationButton(
+  Widget buildGoToConversationButton(
       BuildContext context, IConversationBloc conversationBloc) {
-    return IconButton(
+    return FediIconButton(
       tooltip: tr("app.conversation.action.more"),
       color: FediColors.darkGrey,
       iconSize: 16.0,

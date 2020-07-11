@@ -3,6 +3,7 @@ import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dar
 import 'package:fedi/app/status/action/status_action_counter_widget.dart';
 import 'package:fedi/app/status/reblog/status_reblog_account_list_page.dart';
 import 'package:fedi/app/status/status_bloc.dart';
+import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,7 +24,7 @@ class StatusReblogActionWidget extends StatelessWidget {
 
               return PleromaAsyncOperationButtonBuilderWidget(
                   showProgressDialog: false,
-                  builder: (context, onPressed) => IconButton(
+                  builder: (context, onPressed) => FediIconButton(
                         iconSize: 20.0,
                         color: reblogged
                             ? FediColors.primaryColor

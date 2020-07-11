@@ -1,7 +1,4 @@
 import 'dart:ui';
-
-import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_button.dart';
-import 'package:fedi/app/ui/button/text/fedi_text_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -9,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 
-class FediPrimaryFilledTextButton extends FediTextButton {
+class FediPrimaryFilledTextButton  extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
   final double height;
@@ -25,7 +22,7 @@ class FediPrimaryFilledTextButton extends FediTextButton {
     @required this.onPressed,
     this.enabledBackgroundColor = FediColors.primaryColor,
     this.disabledBackgroundColor = FediColors.lightGrey,
-    this.height = FediSizes.defaultFilledButtonHeight,
+    this.height = FediSizes.textButtonHeight,
     this.fontSize = 14.0,
     this.lineHeight = 1.15,
     this.borderWidth = 1,
@@ -44,7 +41,7 @@ class FediPrimaryFilledTextButton extends FediTextButton {
                 ? enabledBackgroundColor
                 : disabledBackgroundColor,
             borderRadius: BorderRadius.all(
-                Radius.circular(FediIconInCircleButton.defaultCircleSize)),
+                Radius.circular(FediSizes.textButtonRadiusCircle)),
             border: Border.all(
               color: FediColors.white,
               width: borderWidth,

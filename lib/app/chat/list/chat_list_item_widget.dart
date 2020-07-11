@@ -8,6 +8,7 @@ import 'package:fedi/app/chat/title/chat_title_widget.dart';
 import 'package:fedi/app/emoji/emoji_text_helper.dart';
 import 'package:fedi/app/html/html_text_helper.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
+import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
@@ -67,8 +68,8 @@ class ChatListItemWidget extends StatelessWidget {
     );
   }
 
-  IconButton buildGoToChatButton(BuildContext context, IChatBloc chatBloc) {
-    return IconButton(
+  Widget buildGoToChatButton(BuildContext context, IChatBloc chatBloc) {
+    return FediIconButton(
       tooltip: tr("app.chat.action.more"),
       color: FediColors.darkGrey,
       iconSize: 16.0,
