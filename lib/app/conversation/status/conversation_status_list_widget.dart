@@ -21,17 +21,18 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 var _logger = Logger("conversation_status_list_widget.dart");
 var _dateSeparatorDateFormat = DateFormat('MMMM dd, yyyy');
 
-class ConversationStatusListWidget extends StatusCachedPaginationListBaseWidget {
+class ConversationStatusListWidget
+    extends StatusCachedPaginationListBaseWidget {
   ConversationStatusListWidget({@required Key key}) : super(key: key);
 
   @override
   IPaginationListBloc<PaginationPage<IStatus>, IStatus>
-  retrievePaginationListBloc(BuildContext context,
-      {@required bool listen}) {
+      retrievePaginationListBloc(BuildContext context,
+          {@required bool listen}) {
     var timelinePaginationListBloc =
-    Provider.of<IPaginationListBloc<PaginationPage<IStatus>, IStatus>>(
-        context,
-        listen: listen);
+        Provider.of<IPaginationListBloc<PaginationPage<IStatus>, IStatus>>(
+            context,
+            listen: listen);
     return timelinePaginationListBloc;
   }
 
@@ -62,12 +63,14 @@ class ConversationStatusListWidget extends StatusCachedPaginationListBaseWidget 
                 bool success = await additionalPreRefreshAction(context);
                 _logger.finest(() => "additionalPreRefreshAction() $success");
                 var state = await paginationListBloc.refreshWithoutController();
-                _logger.finest(() => "paginationListBloc.refreshWithoutController() $state");
+                _logger.finest(() =>
+                    "paginationListBloc.refreshWithoutController() $state");
                 return state;
               });
         },
         onLoading: () => AsyncSmartRefresherHelper.doAsyncLoading(
-            controller: refreshController, action: paginationListBloc.loadMoreWithoutController),
+            controller: refreshController,
+            action: paginationListBloc.loadMoreWithoutController),
         child: smartRefresherBodyBuilder(context),
       );
 

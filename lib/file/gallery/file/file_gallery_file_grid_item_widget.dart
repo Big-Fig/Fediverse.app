@@ -1,4 +1,3 @@
-import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
 import 'package:fedi/file/gallery/file/file_gallery_file_bloc.dart';
 import 'package:fedi/file/gallery/file_gallery_model.dart';
@@ -8,8 +7,12 @@ import 'package:photo_manager/photo_manager.dart';
 
 class FileGalleryFolderGridItemWidget extends StatelessWidget {
   final FileGalleryFileCallback galleryFileTapped;
+  final Widget loadingWidget;
 
-  FileGalleryFolderGridItemWidget({@required this.galleryFileTapped});
+  FileGalleryFolderGridItemWidget({
+    @required this.galleryFileTapped,
+    @required this.loadingWidget,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,11 +21,12 @@ class FileGalleryFolderGridItemWidget extends StatelessWidget {
     return AsyncInitLoadingWidget(
       loadingFinishedBuilder: (context) => buildLoadedWidget(context, fileBloc),
       asyncInitLoadingBloc: fileBloc,
+      loadingWidget: loadingWidget,
     );
   }
 
-  Widget buildLoadedWidget(BuildContext context, IFileGalleryFileBloc 
-  galleryFileBloc) {
+  Widget buildLoadedWidget(
+      BuildContext context, IFileGalleryFileBloc galleryFileBloc) {
     return InkWell(
       onTap: () async {
         galleryFileTapped(await galleryFileBloc.retrieveFile());
@@ -46,11 +50,10 @@ class FileGalleryFolderGridItemWidget extends StatelessWidget {
   }
 
   Widget buildPreviewImage(IFileGalleryFileBloc fileBloc) {
-
     var thumbImageData = fileBloc.thumbImageData;
 
-    if(thumbImageData == null) {
-      return Center(child: FediCircularProgressIndicator());
+    if (thumbImageData == null) {
+      return Center(child: loadingWidget);
     }
     return Image.memory(
       thumbImageData,

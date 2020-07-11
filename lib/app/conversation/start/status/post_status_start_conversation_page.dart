@@ -6,8 +6,8 @@ import 'package:fedi/app/conversation/conversation_page.dart';
 import 'package:fedi/app/conversation/repository/conversation_repository.dart';
 import 'package:fedi/app/conversation/start/status/post_status_start_conversation_bloc_impl.dart';
 import 'package:fedi/app/status/post/post_status_compose_widget.dart';
+import 'package:fedi/app/ui/async/fedi_async_dialog.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
-import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_model.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_service.dart';
 import 'package:fedi/ui/scroll/unfocus_on_scroll_area_widget.dart';
@@ -53,7 +53,7 @@ void goToPostStatusStartConversationPage(BuildContext context,
 
   List<IPleromaConversation> foundRemoteConversations;
   if (pleromaConversationService.isApiReadyToUse) {
-    await doAsyncOperationWithDialog(
+    await doAsyncOperationWithFediDialog(
         context: context,
         asyncCode: () async {
           foundRemoteConversations =

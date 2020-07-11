@@ -11,10 +11,11 @@ import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+import 'package:fedi/app/ui/pagination/fedi_pagination_list_widget.dart';
 
 var _logger = Logger("account_pagination_list_widget.dart");
 
-class AccountPaginationListWidget extends PaginationListWidget<IAccount> {
+class AccountPaginationListWidget extends FediPaginationListWidget<IAccount> {
   final AccountCallback accountSelectedCallback;
 
   final bool needWatchLocalRepositoryForUpdates;

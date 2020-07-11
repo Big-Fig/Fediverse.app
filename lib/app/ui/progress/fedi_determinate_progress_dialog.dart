@@ -1,7 +1,7 @@
 import 'package:async/async.dart';
-import 'package:fedi/dialog/progress/progress_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:fedi/app/ui/progress/fedi_progress_dialog.dart';
 
 class DeterminateProgressDialog extends ProgressDialog {
   final Stream<int> progressStream;

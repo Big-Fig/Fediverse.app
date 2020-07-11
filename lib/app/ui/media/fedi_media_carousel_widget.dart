@@ -3,16 +3,16 @@ import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class MediaCarouselWidget extends StatefulWidget {
+class FediMediaCarouselWidget extends StatefulWidget {
   final List<Widget> children;
 
-  MediaCarouselWidget({@required this.children});
+  FediMediaCarouselWidget({@required this.children});
 
   @override
-  _MediaCarouselWidgetState createState() => _MediaCarouselWidgetState();
+  _FediMediaCarouselWidgetState createState() => _FediMediaCarouselWidgetState();
 }
 
-class _MediaCarouselWidgetState extends State<MediaCarouselWidget> {
+class _FediMediaCarouselWidgetState extends State<FediMediaCarouselWidget> {
   int _current = 0;
 
   @override

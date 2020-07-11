@@ -1,4 +1,4 @@
-import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_overlay_widget.dart';
+import 'package:fedi/app/pagination/cached/cached_pagination_list_with_new_items_merge_overlay_button.dart';
 import 'package:flutter/cupertino.dart';
 
 const _tapToLoadTopPadding = 24.0;
@@ -14,7 +14,7 @@ class FediListTapToLoadOverlayWidget extends StatelessWidget {
       alignment: Alignment.topCenter,
       child: Padding(
         padding: EdgeInsets.only(top: _tapToLoadTopPadding),
-        child: CachedPaginationListWithNewItemsOverlayWidget(
+        child: CachedPaginationListWithNewItemsMergeOverlayButton(
           textBuilder: textBuilder,
         ),
       ),

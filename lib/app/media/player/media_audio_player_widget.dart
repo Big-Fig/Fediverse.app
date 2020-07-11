@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:chewie_audio/chewie_audio.dart';
-import 'package:fedi/media/media_player_widget.dart';
+import 'package:fedi/app/media/player/media_player_widget.dart';
 import 'package:flutter/widgets.dart';
 import 'package:video_player/video_player.dart';
 

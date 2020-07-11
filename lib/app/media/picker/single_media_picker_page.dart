@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/media/picker/media_picker_service.dart';
 import 'package:fedi/app/navigation/navigation_slide_bottom_route_builder.dart';
+import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
@@ -8,9 +9,9 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/header/fedi_sub_header_text.dart';
 import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_custom_app_bar.dart';
+import 'package:fedi/app/ui/permission/fedi_grant_permission_widget.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
-import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/file/gallery/file_gallery_bloc.dart';
 import 'package:fedi/file/gallery/file_gallery_bloc_impl.dart';
@@ -20,7 +21,6 @@ import 'package:fedi/file/gallery/folder/file_gallery_folder_bloc_impl.dart';
 import 'package:fedi/file/gallery/folder/file_gallery_folder_widget.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:fedi/file/picker/gallery/file_picker_gallery_adapter.dart';
-import 'package:fedi/permission/grant_permission_widget.dart';
 import 'package:fedi/permission/storage_permission_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -41,14 +41,14 @@ class SingleMediaPickerPage extends StatelessWidget {
         child: _buildAppBarTitle(context),
         leading: FediBackIconButton(),
       ), //      body: SingleFilePickerWidget(),
-      body: GrantPermissionWidget(
+      body: FediGrantPermissionWidget(
         grantedBuilder: (BuildContext context) {
-          return AsyncInitLoadingWidget(
+          return FediAsyncInitLoadingWidget(
             loadingFinishedBuilder: (BuildContext context) {
               if (fileGalleryBloc.folders?.isNotEmpty != true) {
                 return Center(child: Text("file.picker.empty".tr()));
               }
-
+              var storagePermissionBloc = IStoragePermissionBloc.of(context, listen: false);
               return StreamBuilder<AssetPathEntity>(
                   stream: fileGalleryBloc.selectedFolderStream,
                   initialData: fileGalleryBloc.selectedFolder,
@@ -64,9 +64,7 @@ class SingleMediaPickerPage extends StatelessWidget {
                         update: (BuildContext context, value, previous) {
                           var folderBloc = FileGalleryFolderBloc(
                               folder: value,
-                              storagePermissionBloc: IStoragePermissionBloc.of(
-                                  context,
-                                  listen: false));
+                              storagePermissionBloc: storagePermissionBloc);
                           folderBloc.performAsyncInit();
                           return folderBloc;
                         },
@@ -103,6 +101,14 @@ class SingleMediaPickerPage extends StatelessWidget {
                           galleryFileTapped: (FileGalleryFile galleryFile) {
                             fileSelectedCallback(
                                 mapGalleryToFilePickerFIle(galleryFile));
+                          },
+                          loadingWidget: FediCircularProgressIndicator(),
+                          permissionButtonBuilder: (context, grantedBuilder) {
+
+                            return FediGrantPermissionWidget(
+                            grantedBuilder: grantedBuilder, permissionBloc:
+                              storagePermissionBloc,
+                          );
                           },
 //                        galleryFileTapped: galleryFileTapped,
                         ),

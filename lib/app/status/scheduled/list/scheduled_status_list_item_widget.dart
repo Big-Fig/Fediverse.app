@@ -6,8 +6,8 @@ import 'package:fedi/app/status/scheduled/datetime/scheduled_status_datetime_pic
 import 'package:fedi/app/status/scheduled/scheduled_status_bloc.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/app/ui/async/fedi_async_dialog.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
-import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
@@ -60,10 +60,12 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       buildScheduledAt(context, scheduledStatusBloc),
-                      Row(children: [
-                        buildEditButton(context, scheduledStatusBloc),
-                        buildCancelButton(context, scheduledStatusBloc),
-                      ],)
+                      Row(
+                        children: [
+                          buildEditButton(context, scheduledStatusBloc),
+                          buildCancelButton(context, scheduledStatusBloc),
+                        ],
+                      )
                     ],
                   ),
                 ),
@@ -99,8 +101,7 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
                         Padding(
                           padding: FediPadding.allSmallPadding,
                           child: Text(
-                              tr(
-                                  "app.status.scheduled.state.already_posted"),
+                              tr("app.status.scheduled.state.already_posted"),
                               style: TextStyle(color: Colors.white)),
                         )
                       ],
@@ -120,8 +121,7 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
           builder: (context, snapshot) {
             var scheduledAt = snapshot.data;
             return Text(
-                tr(
-                    "app.status.scheduled.state.scheduled_at",
+                tr("app.status.scheduled.state.scheduled_at",
                     args: [dateFormat.format(scheduledAt)]),
                 style: TextStyle(color: Colors.white));
           });
@@ -132,8 +132,7 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
         builder: (context, onPressed) {
           return FlatButton(
               onPressed: onPressed,
-              child: Text(
-                  tr("app.status.scheduled.action.cancel"),
+              child: Text(tr("app.status.scheduled.action.cancel"),
                   style: TextStyle(color: Colors.white)));
         },
         asyncButtonAction: () => scheduledStatusBloc.cancelSchedule(),
@@ -147,14 +146,13 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
               context, scheduledStatusBloc.scheduledAt);
 
           if (newScheduledAt != null) {
-            await doAsyncOperationWithDialog(
+            await doAsyncOperationWithFediDialog(
                 context: context,
                 asyncCode: () => scheduledStatusBloc.reSchedule(
                     scheduledAt: newScheduledAt));
           }
         },
-        child: Text(
-            tr("app.status.scheduled.action.edit"),
+        child: Text(tr("app.status.scheduled.action.edit"),
             style: TextStyle(color: Colors.white)));
   }
 }

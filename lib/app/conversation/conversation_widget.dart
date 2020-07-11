@@ -9,9 +9,9 @@ import 'package:fedi/app/message/post_message_widget.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_with_new_items_bloc_impl.dart';
+import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
-import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/ui/scroll/unfocus_on_scroll_area_widget.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +21,7 @@ class ConversationWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var conversationBloc = IConversationBloc.of(context, listen: true);
-    return AsyncInitLoadingWidget(
+    return FediAsyncInitLoadingWidget(
         asyncInitLoadingBloc: conversationBloc,
         loadingFinishedBuilder: (context) {
           return DisposableProvider<IStatusCachedListBloc>(

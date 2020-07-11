@@ -1,18 +1,13 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/app/async/async_smart_refresher_helper.dart';
-import 'package:fedi/app/list/list_loading_footer_widget.dart';
-import 'package:fedi/app/list/list_refresh_header_widget.dart';
-import 'package:fedi/app/ui/list/fedi_list_smart_refresher_widget.dart';
-import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
+
+import 'package:fedi/app/pagination/fedi_pagination_list_loading_error_notification_overlay_builder_widget.dart';
 import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
-import 'package:fedi/pagination/list/pagination_list_loading_error_notification_overlay_builder_widget.dart';
 import 'package:fedi/pagination/list/pagination_list_model.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:pull_to_refresh/src/smart_refresher.dart';
 
 var _logger = Logger("pagination_list_dart");
 
@@ -34,44 +29,6 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
     this.alwaysShowHeader,
     this.alwaysShowFooter,
   }) : super(key: key);
-
-  Widget buildSmartRefresher(
-      IPaginationListBloc paginationListBloc,
-      BuildContext context,
-      List<T> items,
-      RefreshController refreshController,
-      ScrollController scrollController,
-      Widget Function(BuildContext context) smartRefresherBodyBuilder) {
-    _logger.finest(() => "buildSmartRefresher items ${items?.length}");
-
-    return FediListSmartRefresherWidget(
-      //      key: key,
-      enablePullDown: true,
-      enablePullUp: true,
-      header: const ListRefreshHeaderWidget(),
-      footer: const ListLoadingFooterWidget(),
-      controller: refreshController,
-      scrollController: scrollController,
-      primary: scrollController != null ? false : true,
-      onRefresh: () {
-        _logger.finest(() => "refresh");
-        return AsyncSmartRefresherHelper.doAsyncRefresh(
-            controller: refreshController,
-            action: () async {
-              bool success = await additionalPreRefreshAction(context);
-              _logger.finest(() => "additionalPreRefreshAction() $success");
-              var state = await paginationListBloc.refreshWithoutController();
-              _logger.finest(
-                  () => "paginationListBloc.refreshWithoutController() $state");
-              return state;
-            });
-      },
-      onLoading: () => AsyncSmartRefresherHelper.doAsyncLoading(
-          controller: refreshController,
-          action: paginationListBloc.loadMoreWithoutController),
-      child: smartRefresherBodyBuilder(context),
-    );
-  }
 
   ScrollView buildItemsCollectionView(
       {@required BuildContext context,
@@ -125,39 +82,49 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
 
     return Stack(
       children: [
-        PaginationListLoadingErrorNotificationOverlayBuilderWidget(
+        FediPaginationListLoadingErrorNotificationOverlayBuilderWidget(
             paginationListBloc),
-        AsyncInitLoadingWidget(
-          asyncInitLoadingBloc: paginationListBloc,
-          loadingFinishedBuilder: (BuildContext context) {
-            _logger.finest(() => "build AsyncInitLoadingWidget stream");
-            // Stream builder outside SmartRefresher because
-            // SmartRefresher require ScrollView as child
-            // If child is StreamBuilder SmartRefresher builds all items widget
-            // instead visible only
-            return StreamBuilder<List<T>>(
-                stream: paginationListBloc.itemsStream,
-                initialData: paginationListBloc.items,
-                builder: (context, snapshot) {
-                  var items = snapshot.data;
-
-                  _logger.finest(
-                      () => "build paginationListBloc.itemsStream items "
-                          "${items?.length}");
-
-                  return buildSmartRefresher(
-                      paginationListBloc,
-                      context,
-                      items,
-                      paginationListBloc.refreshController,
-                      scrollController,
-                      (context) => buildSmartRefresherBody(
-                          context, items, paginationListBloc));
-                });
-          },
-        ),
+        buildPaginationListBody(paginationListBloc),
       ],
     );
+  }
+
+  Widget buildPaginationListBody(
+      IPaginationListBloc<PaginationPage<T>, T> paginationListBloc) {
+    return AsyncInitLoadingWidget(
+      asyncInitLoadingBloc: paginationListBloc,
+      loadingFinishedBuilder: (BuildContext context) {
+        _logger.finest(() => "build AsyncInitLoadingWidget stream");
+
+        return buildPaginationInitializedBody(context, paginationListBloc);
+      },
+    );
+  }
+
+  Widget buildPaginationInitializedBody(BuildContext context,
+      IPaginationListBloc<PaginationPage<T>, T> paginationListBloc) {
+    // Stream builder outside SmartRefresher because
+    // SmartRefresher require ScrollView as child
+    // If child is StreamBuilder SmartRefresher builds all items widget
+    // instead visible only
+    return StreamBuilder<List<T>>(
+        stream: paginationListBloc.itemsStream,
+        initialData: paginationListBloc.items,
+        builder: (context, snapshot) {
+          var items = snapshot.data;
+
+          _logger.finest(() => "build paginationListBloc.itemsStream items "
+              "${items?.length}");
+
+          return buildSmartRefresher(
+              paginationListBloc,
+              context,
+              items,
+              paginationListBloc.refreshController,
+              scrollController,
+              (context) =>
+                  buildSmartRefresherBody(context, items, paginationListBloc));
+        });
   }
 
   void askToRefresh(BuildContext context) {
@@ -197,42 +164,13 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
   }
 
   Widget buildSmartRefresherBody(BuildContext context, List<T> items,
-      IPaginationListBloc<PaginationPage<T>, T> paginationListBloc) {
-      _logger.finest(() => "buildSmartRefresherBody ${items.length}");
-    if (items == null) {
-      _logger.finest(() => "build loading");
-      return buildNotListBody(
-        Container(
-          color: Colors.green,
-          child: Center(
-            child: FediCircularProgressIndicator(),
-          ),
-        ),
-      );
-    }
+      IPaginationListBloc<PaginationPage<T>, T> paginationListBloc) ;
 
-    if (items?.isNotEmpty == true) {
-      return buildItemsCollectionView(
-          context: context, items: items, header: header, footer: footer);
-    } else {
-      _logger.finest(() => "build empty");
-      return buildNotListBody(StreamBuilder<PaginationListLoadingState>(
-          stream: paginationListBloc.refreshStateStream,
-          initialData: paginationListBloc.refreshState,
-          builder: (context, snapshot) {
-            var refreshState = snapshot.data;
-
-            switch (refreshState) {
-              case PaginationListLoadingState.initialized:
-              case PaginationListLoadingState.loading:
-                return Center(child: FediCircularProgressIndicator());
-              case PaginationListLoadingState.failed:
-              case PaginationListLoadingState.loaded:
-              default:
-                return Center(child: Text(tr("pagination.list.empty")));
-                break;
-            }
-          }));
-    }
-  }
+  Widget buildSmartRefresher(
+      IPaginationListBloc paginationListBloc,
+      BuildContext context,
+      List<T> items,
+      RefreshController refreshController,
+      ScrollController scrollController,
+      Widget Function(BuildContext context) smartRefresherBodyBuilder);
 }
