@@ -51,7 +51,7 @@ class AccountStatusesCachedListBloc extends IStatusCachedListBloc {
   @override
   IPleromaApi get pleromaApi => pleromaAccountService;
 
-  static AccountStatusesCachedListBloc _createFromContext(BuildContext context,
+  static AccountStatusesCachedListBloc createFromContext(BuildContext context,
       {@required IAccount account}) {
     return AccountStatusesCachedListBloc(
       account: account,
@@ -164,7 +164,7 @@ class AccountStatusesCachedListBloc extends IStatusCachedListBloc {
   static Widget provideToContext(BuildContext context,
       {@required IAccount account, @required Widget child}) {
     return DisposableProvider<IStatusCachedListBloc>(
-      create: (context) => AccountStatusesCachedListBloc._createFromContext(
+      create: (context) => AccountStatusesCachedListBloc.createFromContext(
           context,
           account: account),
       child: child,

@@ -98,7 +98,7 @@ class StatusReblogAccountCachedListBloc extends DisposableOwner
     return accounts;
   }
 
-  static StatusReblogAccountCachedListBloc _createFromContext(
+  static StatusReblogAccountCachedListBloc createFromContext(
           BuildContext context,
           {@required IStatus status}) =>
       StatusReblogAccountCachedListBloc(
@@ -114,7 +114,7 @@ class StatusReblogAccountCachedListBloc extends DisposableOwner
   }) =>
       DisposableProvider<IAccountCachedListBloc>(
         create: (context) =>
-            StatusReblogAccountCachedListBloc._createFromContext(
+            StatusReblogAccountCachedListBloc.createFromContext(
           context,
           status: status,
         ),

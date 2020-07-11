@@ -1,7 +1,8 @@
-import 'package:fedi/app/status/scheduled/list/cached/scheduled_status_cached_list_service.dart';
+import 'package:fedi/app/status/scheduled/list/cached/scheduled_status_cached_list_bloc.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository_model.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/status/scheduled/pleroma_scheduled_status_service.dart';
 import 'package:flutter/widgets.dart';
@@ -13,12 +14,11 @@ var _logger = Logger("account_statuses_bloc_impl.dart");
 final _excludeCanceled = true;
 final _excludeScheduleAtExpired = true;
 
-class ScheduledStatusCachedListService
-    extends IScheduledStatusCachedListService {
+class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
   final IScheduledStatusRepository scheduledStatusRepository;
   final IPleromaScheduledStatusService pleromaScheduledStatusService;
 
-  ScheduledStatusCachedListService(
+  ScheduledStatusCachedListBloc(
       {@required this.scheduledStatusRepository,
       @required this.pleromaScheduledStatusService})
       : super();
@@ -26,13 +26,22 @@ class ScheduledStatusCachedListService
   @override
   IPleromaApi get pleromaApi => pleromaScheduledStatusService;
 
-  static ScheduledStatusCachedListService createFromContext(
+  static ScheduledStatusCachedListBloc createFromContext(
           BuildContext context) =>
-      ScheduledStatusCachedListService(
+      ScheduledStatusCachedListBloc(
           pleromaScheduledStatusService:
               IPleromaScheduledStatusService.of(context, listen: false),
           scheduledStatusRepository:
               IScheduledStatusRepository.of(context, listen: false));
+
+  static Widget provideToContext(BuildContext context,
+      {@required Widget child}) {
+    return DisposableProvider<IScheduledStatusCachedListBloc>(
+      create: (context) =>
+          ScheduledStatusCachedListBloc.createFromContext(context),
+      child: child,
+    );
+  }
 
   @override
   Future<List<IScheduledStatus>> loadLocalItems(

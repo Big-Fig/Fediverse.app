@@ -65,7 +65,7 @@ class ChatPostMessageBloc extends PostMessageBloc
     return success;
   }
 
-  static ChatPostMessageBloc _createFromContext(BuildContext context,
+  static ChatPostMessageBloc createFromContext(BuildContext context,
           {@required String chatRemoteId}) =>
       ChatPostMessageBloc(
           chatRemoteId: chatRemoteId,
@@ -78,7 +78,7 @@ class ChatPostMessageBloc extends PostMessageBloc
   static Widget provideToContext(BuildContext context,
       {@required String chatRemoteId, @required Widget child}) {
     return DisposableProvider<IChatPostMessageBloc>(
-      create: (context) => ChatPostMessageBloc._createFromContext(context,
+      create: (context) => ChatPostMessageBloc.createFromContext(context,
           chatRemoteId: chatRemoteId),
       child: ChatPostMessageBlocProxyProvider(child: child),
     );

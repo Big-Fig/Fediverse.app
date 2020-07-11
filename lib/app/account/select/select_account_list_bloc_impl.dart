@@ -125,7 +125,7 @@ class SelectAccountListBloc extends DisposableOwner
     return accounts;
   }
 
-  static SelectAccountListBloc _createFromContext(BuildContext context,
+  static SelectAccountListBloc createFromContext(BuildContext context,
           {@required bool excludeMyAccount}) =>
       SelectAccountListBloc(
           excludeMyAccount: excludeMyAccount,
@@ -141,7 +141,7 @@ class SelectAccountListBloc extends DisposableOwner
         @required Widget child,
       }) {
     return DisposableProvider<ISelectAccountListBloc>(
-      create: (context) => SelectAccountListBloc._createFromContext(
+      create: (context) => SelectAccountListBloc.createFromContext(
         context,
         excludeMyAccount: excludeMyAccount,
       ),

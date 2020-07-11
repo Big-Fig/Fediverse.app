@@ -96,7 +96,7 @@ class ChatMessageListBloc extends DisposableOwner
         newerThanChatMessage: item);
   }
 
-  static ChatMessageListBloc _createFromContext(BuildContext context,
+  static ChatMessageListBloc createFromContext(BuildContext context,
           {@required IChat chat}) =>
       ChatMessageListBloc(
           chat: chat,
@@ -111,7 +111,7 @@ class ChatMessageListBloc extends DisposableOwner
   }) {
     return DisposableProvider<IChatMessageCachedListBloc>(
       create: (context) =>
-          ChatMessageListBloc._createFromContext(context, chat: chat),
+          ChatMessageListBloc.createFromContext(context, chat: chat),
       child: child,
     );
   }

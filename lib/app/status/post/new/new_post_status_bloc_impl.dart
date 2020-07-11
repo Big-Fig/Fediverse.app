@@ -19,7 +19,7 @@ class NewPostStatusBloc extends PostStatusBloc {
             pleromaMediaAttachmentService: pleromaMediaAttachmentService,
             initialVisibility: PleromaVisibility.PUBLIC);
 
-  static NewPostStatusBloc _createFromContext(BuildContext context) =>
+  static NewPostStatusBloc createFromContext(BuildContext context) =>
       NewPostStatusBloc(
           pleromaStatusService:
               IPleromaStatusService.of(context, listen: false),
@@ -30,7 +30,7 @@ class NewPostStatusBloc extends PostStatusBloc {
   static Widget provideToContext(BuildContext context,
       {@required Widget child}) {
     return DisposableProvider<IPostStatusBloc>(
-      create: (context) => NewPostStatusBloc._createFromContext(
+      create: (context) => NewPostStatusBloc.createFromContext(
         context,
       ),
       child: PostStatusMessageBlocProxyProvider(child: child),

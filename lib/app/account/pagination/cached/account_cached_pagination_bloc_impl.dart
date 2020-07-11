@@ -53,7 +53,7 @@ class AccountCachedPaginationBloc extends CachedPleromaPaginationBloc<IAccount>
     );
   }
 
-  static AccountCachedPaginationBloc _createFromContext(BuildContext context,
+  static AccountCachedPaginationBloc createFromContext(BuildContext context,
           {int itemsCountPerPage = 20, int maximumCachedPagesCount}) =>
       AccountCachedPaginationBloc(
           maximumCachedPagesCount: maximumCachedPagesCount,
@@ -67,7 +67,7 @@ class AccountCachedPaginationBloc extends CachedPleromaPaginationBloc<IAccount>
       int maximumCachedPagesCount}) {
     return DisposableProvider<
         ICachedPaginationBloc<CachedPaginationPage<IAccount>, IAccount>>(
-      create: (context) => AccountCachedPaginationBloc._createFromContext(
+      create: (context) => AccountCachedPaginationBloc.createFromContext(
         context,
         itemsCountPerPage: itemsCountPerPage,
         maximumCachedPagesCount: maximumCachedPagesCount,

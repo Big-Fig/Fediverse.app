@@ -63,7 +63,7 @@ class StatusCachedPaginationListWithNewItemsBloc<
     return DisposableProvider<
         ICachedPaginationListWithNewItemsBloc<TPage, IStatus>>(
       create: (context) =>
-          StatusCachedPaginationListWithNewItemsBloc._createFromContext<TPage>(
+          StatusCachedPaginationListWithNewItemsBloc.createFromContext<TPage>(
               context,
               mergeNewItemsImmediately: mergeNewItemsImmediately),
       child: ProxyProvider<
@@ -78,7 +78,7 @@ class StatusCachedPaginationListWithNewItemsBloc<
   }
 
   static StatusCachedPaginationListWithNewItemsBloc<TPage>
-      _createFromContext<TPage extends CachedPaginationPage<IStatus>>(
+      createFromContext<TPage extends CachedPaginationPage<IStatus>>(
           BuildContext context,
           {@required bool mergeNewItemsImmediately}) {
     return StatusCachedPaginationListWithNewItemsBloc<TPage>(

@@ -54,7 +54,7 @@ class ChatMessageCachedPaginationBloc
     );
   }
 
-  static ChatMessageCachedPaginationBloc _createFromContext(
+  static ChatMessageCachedPaginationBloc createFromContext(
           BuildContext context,
           {int itemsCountPerPage = 20,
           int maximumCachedPagesCount}) =>
@@ -69,7 +69,7 @@ class ChatMessageCachedPaginationBloc
       Widget child}) {
     return DisposableProvider<  ICachedPaginationBloc<CachedPaginationPage<IChatMessage>,
         IChatMessage>>(
-      create: (context) => ChatMessageCachedPaginationBloc._createFromContext(
+      create: (context) => ChatMessageCachedPaginationBloc.createFromContext(
         context,
         itemsCountPerPage: itemsCountPerPage,
         maximumCachedPagesCount: maximumCachedPagesCount,

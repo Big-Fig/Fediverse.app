@@ -24,7 +24,7 @@ class SelectAccountPaginationListBloc extends AccountPaginationListBloc {
     }));
   }
 
-  static SelectAccountPaginationListBloc _createFromContext(
+  static SelectAccountPaginationListBloc createFromContext(
           BuildContext context) =>
       SelectAccountPaginationListBloc(
           paginationBloc:
@@ -37,7 +37,7 @@ class SelectAccountPaginationListBloc extends AccountPaginationListBloc {
       {@required Widget child}) {
     return DisposableProvider<IAccountPaginationListBloc>(
       create: (context) =>
-          SelectAccountPaginationListBloc._createFromContext(context),
+          SelectAccountPaginationListBloc.createFromContext(context),
       child: AccountPaginationListBlocProxyProvider(child: child),
     );
   }

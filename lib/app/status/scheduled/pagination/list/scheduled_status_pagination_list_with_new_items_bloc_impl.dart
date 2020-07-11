@@ -1,10 +1,14 @@
-import 'package:fedi/app/status/scheduled/list/cached/scheduled_status_cached_list_service.dart';
+import 'package:fedi/app/status/scheduled/list/cached/scheduled_status_cached_list_bloc.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc_impl.dart';
+import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc_proxy_provider.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
+import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:provider/provider.dart';
 
 var _logger =
     Logger("scheduledStatus_pagination_list_with_new_items_bloc_impl.dart");
@@ -12,7 +16,7 @@ var _logger =
 class ScheduledStatusPaginationListWithNewItemsBloc<
         TPage extends CachedPaginationPage<IScheduledStatus>>
     extends CachedPaginationListWithNewItemsBloc<TPage, IScheduledStatus> {
-  final IScheduledStatusCachedListService scheduledStatusCachedListService;
+  final IScheduledStatusCachedListBloc scheduledStatusCachedListService;
 
   ScheduledStatusPaginationListWithNewItemsBloc(
       {@required bool mergeNewItemsImmediately,
@@ -47,4 +51,23 @@ class ScheduledStatusPaginationListWithNewItemsBloc<
   @override
   bool isItemsEqual(IScheduledStatus a, IScheduledStatus b) =>
       a.remoteId == b.remoteId;
+
+  static Widget provideToContext(BuildContext context,
+      {@required Widget child}) {
+    return DisposableProvider<
+        CachedPaginationListWithNewItemsBloc<
+            CachedPaginationPage<IScheduledStatus>, IScheduledStatus>>(
+      create: (context) => ScheduledStatusPaginationListWithNewItemsBloc(
+        scheduledStatusCachedListService:
+            IScheduledStatusCachedListBloc.of(context, listen: false),
+        mergeNewItemsImmediately: false,
+        paginationBloc: Provider.of<
+            IPaginationBloc<PaginationPage<IScheduledStatus>,
+                IScheduledStatus>>(context, listen: false),
+      ),
+      child: CachedPaginationListWithNewItemsBlocProxyProvider<
+          CachedPaginationPage<IScheduledStatus>,
+          IScheduledStatus>(child: child),
+    );
+  }
 }
