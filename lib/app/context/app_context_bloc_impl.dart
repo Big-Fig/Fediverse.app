@@ -7,6 +7,8 @@ import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_local_preference_bloc.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_local_preference_bloc_impl.dart';
 import 'package:fedi/app/context/app_context_bloc.dart';
+import 'package:fedi/app/media/picker/media_picker_service.dart';
+import 'package:fedi/app/media/picker/media_picker_service_impl.dart';
 import 'package:fedi/app/push/handler/push_handler_bloc.dart';
 import 'package:fedi/app/push/handler/push_handler_bloc_impl.dart';
 import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_preferences_bloc.dart';
@@ -47,6 +49,9 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     var connectionService = ConnectionService();
     await globalProviderService
         .asyncInitAndRegister<IConnectionService>(connectionService);
+    var mediaPickerService = MediaPickerService();
+    await globalProviderService
+        .asyncInitAndRegister<IMediaPickerService>(mediaPickerService);
 
     await globalProviderService
         .asyncInitAndRegister<IPermissionsService>(PermissionsService());

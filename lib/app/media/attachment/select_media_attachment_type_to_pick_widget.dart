@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
+import 'package:fedi/app/media/picker/media_picker_service.dart';
 import 'package:fedi/app/media/picker/single_media_picker_page.dart';
-import 'package:fedi/app/media/single_camera_picker.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
@@ -12,6 +12,7 @@ import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 var _typeContainerSize = 60.0;
 
 class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
@@ -73,7 +74,9 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
   Widget _buildAttachPhoto(BuildContext context) =>
       _buildAction(FediIcons.camera, "app.media.attachment.type.photo".tr(),
           () async {
-        var pickedFile = await pickImageFromCamera();
+        var mediaPickerService = IMediaPickerService.of(context, listen: false);
+
+        var pickedFile = await mediaPickerService.pickImageFromCamera();
 
         if (pickedFile != null) {
           var filePickerFile = FilePickerFile(
@@ -91,7 +94,9 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
   Widget _buildAttachVideo(BuildContext context) =>
       _buildAction(FediIcons.video, "app.media.attachment.type.video".tr(),
           () async {
-        var pickedFile = await pickVideoFromCamera();
+        var mediaPickerService = IMediaPickerService.of(context, listen: false);
+
+        var pickedFile = await mediaPickerService.pickVideoFromCamera();
 
         if (pickedFile != null) {
           var filePickerFile = FilePickerFile(
@@ -142,7 +147,6 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
       });
 
   Widget _buildAction(IconData iconData, String label, Function() onTap) {
-
     return InkWell(
       onTap: () {
         onTap();
