@@ -51,7 +51,11 @@ class CachedPaginationListBloc<TPage extends CachedPaginationPage<TItem>, TItem>
           await paginationBloc.refreshWithoutController();
 
       if (newPage?.items?.isNotEmpty == true) {
-        state = PaginationListLoadingState.loaded;
+        if (newPage?.isActuallyRefreshedFromRemote == true) {
+          state = PaginationListLoadingState.loaded;
+        } else {
+          state = PaginationListLoadingState.failed;
+        }
       } else {
         if (newPage?.isActuallyRefreshedFromRemote == true) {
           state = PaginationListLoadingState.noData;

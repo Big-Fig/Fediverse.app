@@ -198,9 +198,17 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
 
   Widget buildSmartRefresherBody(BuildContext context, List<T> items,
       IPaginationListBloc<PaginationPage<T>, T> paginationListBloc) {
+      _logger.finest(() => "buildSmartRefresherBody ${items.length}");
     if (items == null) {
       _logger.finest(() => "build loading");
-      return buildNotListBody(Center(child: FediCircularProgressIndicator()));
+      return buildNotListBody(
+        Container(
+          color: Colors.green,
+          child: Center(
+            child: FediCircularProgressIndicator(),
+          ),
+        ),
+      );
     }
 
     if (items?.isNotEmpty == true) {
