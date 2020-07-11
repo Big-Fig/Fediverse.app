@@ -1,8 +1,7 @@
-import 'package:fedi/app/ui/icon/fedi_icon.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 
-class FediTransparentIcon extends StatelessWidget implements FediIcon {
+class FediTransparentIcon extends StatelessWidget {
   final IconData iconData;
   final Color color;
 

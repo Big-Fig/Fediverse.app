@@ -1,6 +1,7 @@
 import 'package:fedi/app/status/post/post_status_bloc.dart';
+import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/model_bottom_sheet/fedi_modal_bottom_sheet.dart';
+import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_widget.dart';
@@ -12,37 +13,38 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var postStatusBloc = IPostStatusBloc.of(context, listen: false);
 
-    return IconButton(
-      icon: StreamBuilder<PleromaVisibility>(
-          stream: postStatusBloc.visibilityStream,
-          initialData: postStatusBloc.visibility,
-          builder: (context, snapshot) {
-            var visibility = snapshot.data;
-            return buildVisibilityIcon(
-                context: context,
-                visibility: visibility,
-                isSelectedVisibility: false,
-                isPossibleToChangeVisibility: true);
-          }),
-      onPressed: () {
-        showFediModalBottomSheetDialog(
-            context: context,
-            child: ListView(
-              shrinkWrap: true,
-              children: <Widget>[
-                // TODO: why only 4 options when 5 visibilities available
-                buildVisibilityButton(
-                    context, postStatusBloc, PleromaVisibility.PUBLIC),
-                buildVisibilityButton(
-                    context, postStatusBloc, PleromaVisibility.DIRECT),
-                buildVisibilityButton(
-                    context, postStatusBloc, PleromaVisibility.UNLISTED),
-                buildVisibilityButton(
-                    context, postStatusBloc, PleromaVisibility.PRIVATE),
-              ],
-            ));
-      },
-    );
+    return StreamBuilder<PleromaVisibility>(
+        stream: postStatusBloc.visibilityStream,
+        initialData: postStatusBloc.visibility,
+        builder: (context, snapshot) {
+          var visibility = snapshot.data;
+          var icon = buildVisibilityIcon(
+              context: context,
+              visibility: visibility,
+              isSelectedVisibility: false,
+              isPossibleToChangeVisibility: true);
+
+          return FediIconButton(
+              icon: icon,
+              onPressed: () {
+                showFediModalBottomSheetDialog(
+                    context: context,
+                    child: ListView(
+                      shrinkWrap: true,
+                      children: <Widget>[
+                        // TODO: why only 4 options when 5 visibilities available
+                        buildVisibilityButton(
+                            context, postStatusBloc, PleromaVisibility.PUBLIC),
+                        buildVisibilityButton(
+                            context, postStatusBloc, PleromaVisibility.DIRECT),
+                        buildVisibilityButton(context, postStatusBloc,
+                            PleromaVisibility.UNLISTED),
+                        buildVisibilityButton(
+                            context, postStatusBloc, PleromaVisibility.PRIVATE),
+                      ],
+                    ));
+              });
+        });
   }
 
   Padding buildVisibilityButton(

@@ -23,15 +23,13 @@ import 'package:fedi/ui/form/group/one_type/form_one_type_group_bloc.dart';
 import 'package:fedi/ui/form/group/pair/form_link_pair_field_group_bloc.dart';
 import 'package:flutter/material.dart';
 
-
- const editAccountAvatarSize = 120.0;
- const editAccountProgressSize = 30.0;
- const editAccountAvatarTopPadding = 50.0;
- const editAccountAvatarCircleBorderWidth = 4.0;
- const editAccountHeaderBackgroundHeight = 148.0;
- const editAccountAvatarAndBorderSize = editAccountAvatarSize +
-    editAccountAvatarCircleBorderWidth;
-
+const editAccountAvatarSize = 120.0;
+const editAccountProgressSize = 30.0;
+const editAccountAvatarTopPadding = 50.0;
+const editAccountAvatarCircleBorderWidth = 4.0;
+const editAccountHeaderBackgroundHeight = 148.0;
+const editAccountAvatarAndBorderSize =
+    editAccountAvatarSize + editAccountAvatarCircleBorderWidth;
 
 class EditMyAccountWidget extends StatelessWidget {
   @override
@@ -202,8 +200,7 @@ class EditMyAccountWidget extends StatelessWidget {
       width: editAccountAvatarSize,
       child: ClipRRect(
           borderRadius: BorderRadius.circular(
-              editAccountAvatarSize / 2 -
-                  editAccountAvatarCircleBorderWidth),
+              editAccountAvatarSize / 2 - editAccountAvatarCircleBorderWidth),
           child: Image(
             image: imageProvider,
           )),
@@ -369,7 +366,7 @@ class EditMyAccountWidget extends StatelessWidget {
             nameStringFieldBloc: customField.keyField,
             valueStringFieldBloc: customField.valueField,
             ending: FediIconButton(
-              FediIcons.close,
+              icon: Icon(FediIcons.close),
               onPressed: () {
                 fieldGroupBloc.removeField(customField);
               },

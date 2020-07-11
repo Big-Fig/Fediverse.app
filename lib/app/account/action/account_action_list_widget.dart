@@ -36,7 +36,7 @@ class AccountActionListWidget extends StatelessWidget {
           var bottomPadding = FediSizes.bigPadding;
           if (relationship?.following == null) {
             return Container(
-              height: FediSizes.defaultFilledButtonHeight +
+              height: FediSizes.textButtonHeight +
                   topPadding +
                   bottomPadding,
               child: const Center(

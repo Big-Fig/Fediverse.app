@@ -10,19 +10,9 @@ class FediDarkStatusBarStyleArea extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-//    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-//        statusBarColor: Colors.white
-//    ));
     return AnnotatedRegion<SystemUiOverlayStyle>(
-//          value: SystemUiOverlayStyle(
-//            statusBarColor: Colors.red,
-//          ),
         value: SystemUiOverlayStyle.dark.copyWith(
-//          statusBarColor: Colors.red,
           statusBarColor: FediColors.white,
-
-//          systemNavigationBarColor: FediColors.white,
-//          systemNavigationBarColor: Colors.black,
         ),
         child: child);
   }

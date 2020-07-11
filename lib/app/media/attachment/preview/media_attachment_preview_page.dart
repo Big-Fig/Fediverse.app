@@ -3,6 +3,7 @@ import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dar
 import 'package:fedi/app/media/attachment/add_to_gallery/media_attachment_add_to_gallery_exception.dart';
 import 'package:fedi/app/media/attachment/add_to_gallery/media_attachment_add_to_gallery_helper.dart';
 import 'package:fedi/app/share/share_service.dart';
+import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
@@ -36,7 +37,7 @@ class MediaAttachmentPreviewPage extends StatelessWidget {
       PleromaAsyncOperationButtonBuilderWidget(
           progressContentMessage:
               tr("app.media.attachment.share.progress.content"),
-          builder: (BuildContext context, VoidCallback onPressed) => IconButton(
+          builder: (BuildContext context, VoidCallback onPressed) => FediIconButton(
               icon: Icon(
                 Icons.share,
                 color: FediColors.darkGrey,
@@ -56,7 +57,7 @@ class MediaAttachmentPreviewPage extends StatelessWidget {
       PleromaAsyncOperationButtonBuilderWidget(
         progressContentMessage:
             tr("app.media.attachment.add_to_gallery.progress.content"),
-        builder: (BuildContext context, VoidCallback onPressed) => IconButton(
+        builder: (BuildContext context, VoidCallback onPressed) => FediIconButton(
             icon: Icon(
               Icons.file_download,
               color: FediColors.darkGrey,

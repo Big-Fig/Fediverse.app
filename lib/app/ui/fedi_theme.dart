@@ -19,7 +19,4 @@ final ThemeData fediTheme = ThemeData(
     primarySwatch: MaterialColor(0xff00BCEC, _primaryColorSwatch),
     primaryColor: FediColors.primaryColor,
     primaryColorDark: FediColors.primaryColorDark,
-//    appBarTheme: AppBarTheme(brightness: Brightness.light)
-//    brightness: Brightness.dark
-//  accentColor: FediColors.secondaryColor,
     );

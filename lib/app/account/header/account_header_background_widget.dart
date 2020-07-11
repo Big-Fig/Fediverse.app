@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/app/account/account_bloc.dart';
+import 'package:fedi/app/ui/background/fedi_background_blur.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
-import 'package:fedi/app/ui/image/fedi_dark_image_overlay.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +21,7 @@ class AccountHeaderBackgroundWidget extends StatelessWidget {
           return CachedNetworkImage(
             imageUrl: header,
             imageBuilder: (context, imageProvider) {
-              return FediDarkImageBackground(
+              return FediBackgroundBlur(
                   child: Stack(
                 children: [
                   Image(

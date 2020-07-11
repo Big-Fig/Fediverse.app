@@ -18,9 +18,13 @@ class FediSizes {
   static const appBarAvatarSize = 36.0;
 
   static const smallFilledButtonHeight = 32.0;
-  static const defaultFilledButtonHeight = 36.0;
+  static const textButtonHeight = 36.0;
 
   static const borderRadiusBigSize = 16.0;
   static const borderRadiusSmallSize = 8.0;
   static const buttonHorizontalPaddingSize = 20.0;
+
+  static const textButtonRadiusCircle = 16.0;
+  static const iconInCircleDefaultSize = 40.0;
+  static const iconInCircleDefaultIconSize = 16.0;
 }

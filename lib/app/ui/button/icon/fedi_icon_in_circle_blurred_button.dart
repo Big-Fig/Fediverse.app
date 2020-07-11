@@ -1,13 +1,13 @@
 import 'dart:ui';
 
-import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_button.dart';
+import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 
-class FediIconInCircleBlurredButton extends StatelessWidget
-    implements FediIconInCircleButton {
+class FediIconInCircleBlurredButton extends StatelessWidget {
   final IconData iconData;
   final VoidCallback onPressed;
   final double iconSize;
@@ -18,8 +18,8 @@ class FediIconInCircleBlurredButton extends StatelessWidget
     this.iconData, {
     @required this.onPressed,
     this.borderWidth = 1.0,
-    this.iconSize = FediIconInCircleButton.defaultIconSize,
-    this.size = FediIconInCircleButton.defaultCircleSize,
+    this.iconSize = FediSizes.iconInCircleDefaultIconSize,
+    this.size = FediSizes.iconInCircleDefaultSize,
   });
 
   @override
@@ -37,7 +37,7 @@ class FediIconInCircleBlurredButton extends StatelessWidget
       child: ClipRRect(
         borderRadius: BorderRadius.circular(size),
         child: BackdropFilter(
-          child: IconButton(
+          child: FediIconButton(
             padding: EdgeInsets.zero,
             icon: Icon(iconData, size: iconSize, color: FediColors.white),
             onPressed: onPressed,

@@ -2,12 +2,10 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 
-class FediDarkImageBackground extends StatelessWidget {
-
+class FediBackgroundBlur extends StatelessWidget {
   final Widget child;
 
-
-  FediDarkImageBackground({@required this.child});
+  FediBackgroundBlur({@required this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -16,5 +14,4 @@ class FediDarkImageBackground extends StatelessWidget {
       filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
     );
   }
-
 }
