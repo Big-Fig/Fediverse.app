@@ -59,7 +59,7 @@ class CachedPaginationListBloc<TPage extends CachedPaginationPage<TItem>, TItem>
           state = PaginationListLoadingState.failed;
         }
       }
-
+      refreshStateSubject.add(state);
       return state;
     } catch (e, stackTrace) {
       refreshStateSubject.add(PaginationListLoadingState.failed);
