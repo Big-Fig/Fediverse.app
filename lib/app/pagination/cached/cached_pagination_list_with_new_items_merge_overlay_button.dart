@@ -9,10 +9,11 @@ import 'package:logging/logging.dart';
 
 var _logger = Logger("pagination_list_with_new_items_header_widget.dart");
 
-class CachedPaginationListWithNewItemsOverlayWidget extends StatelessWidget {
+class CachedPaginationListWithNewItemsMergeOverlayButton
+    extends StatelessWidget {
   final String Function(BuildContext context, int updateItemsCount) textBuilder;
 
-  CachedPaginationListWithNewItemsOverlayWidget({
+  CachedPaginationListWithNewItemsMergeOverlayButton({
     @required this.textBuilder,
   });
 
@@ -46,8 +47,11 @@ class CachedPaginationListWithNewItemsOverlayWidget extends StatelessWidget {
                           ScrollDirection
                               .forward || //                        scrollDirection == ScrollDirection.idle ||
                       scrollDirection == null) {
-                    return _buildButton(paginationWithUpdatesListBloc, context,
-                        updateItemsCount);
+                    return buildMergeNewItemsButton(
+                        context: context,
+                        paginationWithUpdatesListBloc:
+                            paginationWithUpdatesListBloc,
+                        updateItemsCount: updateItemsCount);
                   } else {
                     return SizedBox.shrink();
                   }
@@ -58,10 +62,13 @@ class CachedPaginationListWithNewItemsOverlayWidget extends StatelessWidget {
         });
   }
 
-  Widget _buildButton(
-      ICachedPaginationListWithNewItemsBloc paginationWithUpdatesListBloc,
-      BuildContext context,
-      int updateItemsCount) {
+  Widget buildMergeNewItemsButton(
+      {@required
+          BuildContext context,
+      @required
+          ICachedPaginationListWithNewItemsBloc paginationWithUpdatesListBloc,
+      @required
+          int updateItemsCount}) {
     return FediPrimaryFilledTextButton(
       textBuilder(context, updateItemsCount),
       onPressed: () {

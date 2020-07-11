@@ -9,7 +9,7 @@ import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/error/error_data_model.dart';
 import 'package:fedi/mastodon/media/attachment/mastodon_media_attachment_model.dart';
-import 'package:fedi/media/media_video_player_widget.dart';
+import 'package:fedi/app/media/player/media_video_player_widget.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';

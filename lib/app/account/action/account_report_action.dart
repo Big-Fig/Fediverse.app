@@ -1,14 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/account_bloc.dart';
+import 'package:fedi/app/ui/async/fedi_async_dialog.dart';
 import 'package:fedi/app/ui/notification_overlay/info_fedi_notification_overlay.dart';
 import 'package:fedi/dialog/alert/simple_alert_dialog.dart';
-import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-Future<bool> doAsyncActionReport(BuildContext context,
-    IAccountBloc accountBloc) async {
-  var dialogResult = await doAsyncOperationWithDialog(
+Future<bool> doAsyncActionReport(
+    BuildContext context, IAccountBloc accountBloc) async {
+  var dialogResult = await doAsyncOperationWithFediDialog(
       context: context, asyncCode: () => accountBloc.report());
 
   var success = dialogResult.success;

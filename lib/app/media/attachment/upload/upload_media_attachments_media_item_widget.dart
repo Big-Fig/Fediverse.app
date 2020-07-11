@@ -10,7 +10,7 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';
-import 'package:fedi/media/media_video_player_widget.dart';
+import 'package:fedi/app/media/player/media_video_player_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

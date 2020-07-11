@@ -12,6 +12,8 @@ var _progressDialogSize = 50.0;
 abstract class ProgressDialog extends BaseDialog {
   final String contentMessage;
 
+  CancelableOperation cancelableOperation;
+
   // ignore: close_sinks
   final BehaviorSubject<bool> _isCanceledSubject =
       BehaviorSubject.seeded(false);
@@ -20,7 +22,6 @@ abstract class ProgressDialog extends BaseDialog {
 
   Stream<bool> get isCanceledStream => _isCanceledSubject.stream;
 
-  CancelableOperation cancelableOperation;
 
   ProgressDialog({
     this.contentMessage,

@@ -4,9 +4,9 @@ import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_bloc.dart';
 import 'package:fedi/app/form/form_string_field_form_row_widget.dart';
+import 'package:fedi/app/ui/async/fedi_async_dialog.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
-import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:fedi/error/error_data_model.dart';
 import 'package:fedi/pleroma/account/public/pleroma_account_public_model.dart';
 import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
@@ -147,7 +147,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
     final validEmail = bloc.emailFieldBloc.currentValue;
     final validPassword = bloc.passwordFieldBloc.currentValue;
 
-    var dialogResult = await doAsyncOperationWithDialog(
+    var dialogResult = await doAsyncOperationWithFediDialog(
         context: context,
         asyncCode: () async {
           AuthInstance authInstance;

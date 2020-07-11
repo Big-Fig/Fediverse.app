@@ -3,7 +3,7 @@ import 'package:fedi/app/media/attachment/media_attachment_image_widget.dart';
 import 'package:fedi/app/media/attachment/media_attachment_unknown_widget.dart';
 import 'package:fedi/app/media/attachment/media_attachment_video_widget.dart';
 import 'package:fedi/mastodon/media/attachment/mastodon_media_attachment_model.dart';
-import 'package:fedi/media/media_carousel_widget.dart';
+import 'package:fedi/app/ui/media/fedi_media_carousel_widget.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -60,7 +60,7 @@ class MediaAttachmentsWidget extends StatelessWidget {
     if (children.length == 1) {
       return children.first;
     } else {
-      return MediaCarouselWidget(
+      return FediMediaCarouselWidget(
         children: children,
       );
     }

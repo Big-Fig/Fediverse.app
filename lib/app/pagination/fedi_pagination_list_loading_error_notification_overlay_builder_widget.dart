@@ -10,22 +10,24 @@ DateTime _lastLoadMoreErrorShowedDateTime = DateTime.now();
 
 final Duration _throttleDuration = Duration(seconds: 2);
 
-class PaginationListLoadingErrorNotificationOverlayBuilderWidget
+class FediPaginationListLoadingErrorNotificationOverlayBuilderWidget
     extends StatefulWidget {
   final IPaginationListBloc paginationListBloc;
 
-  PaginationListLoadingErrorNotificationOverlayBuilderWidget(
+  FediPaginationListLoadingErrorNotificationOverlayBuilderWidget(
       this.paginationListBloc);
 
   @override
-  _PaginationListLoadingErrorNotificationOverlayBuilderWidgetState
+  _FediPaginationListLoadingErrorNotificationOverlayBuilderWidgetState
       createState() =>
-          _PaginationListLoadingErrorNotificationOverlayBuilderWidgetState();
+          _FediPaginationListLoadingErrorNotificationOverlayBuilderWidgetState();
 }
 
-class _PaginationListLoadingErrorNotificationOverlayBuilderWidgetState
-    extends State<PaginationListLoadingErrorNotificationOverlayBuilderWidget> {
+class _FediPaginationListLoadingErrorNotificationOverlayBuilderWidgetState
+    extends State<
+        FediPaginationListLoadingErrorNotificationOverlayBuilderWidget> {
   DisposableOwner disposable = DisposableOwner();
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();

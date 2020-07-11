@@ -6,9 +6,9 @@ import 'package:fedi/app/account/select/select_account_widget.dart';
 import 'package:fedi/app/chat/chat_model.dart';
 import 'package:fedi/app/chat/chat_page.dart';
 import 'package:fedi/app/chat/repository/chat_repository.dart';
+import 'package:fedi/app/ui/async/fedi_async_dialog.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/dialog/alert/simple_alert_dialog.dart';
-import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +23,7 @@ class StartChatPage extends StatelessWidget {
       body: SafeArea(
         child: SelectAccountWidget(
           accountSelectedCallback: (context, account) async {
-            var dialogResult = await doAsyncOperationWithDialog<IChat>(
+            var dialogResult = await doAsyncOperationWithFediDialog<IChat>(
                 context: context,
                 asyncCode: () async {
                   var chatRepository =

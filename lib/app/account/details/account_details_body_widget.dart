@@ -6,6 +6,7 @@ import 'package:fedi/ui/scroll/scroll_controller_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+
 class AccountDetailsBodyWidget extends StatelessWidget {
   final ScrollController scrollController;
   @override

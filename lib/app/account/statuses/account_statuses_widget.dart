@@ -7,8 +7,9 @@ import 'package:fedi/pagination/list/pagination_list_widget.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:fedi/app/ui/pagination/fedi_pagination_list_widget.dart';
 
-class AccountStatusesWidget extends PaginationListWidget<IStatus> {
+class AccountStatusesWidget extends FediPaginationListWidget<IStatus> {
   const AccountStatusesWidget({
     @required Key key,
     Widget header,

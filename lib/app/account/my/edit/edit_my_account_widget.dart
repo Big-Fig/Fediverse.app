@@ -6,6 +6,7 @@ import 'package:fedi/app/account/my/edit/header/edit_my_account_avatar_dialog.da
 import 'package:fedi/app/form/form_bool_field_form_row_widget.dart';
 import 'package:fedi/app/form/form_string_field_form_row_widget.dart';
 import 'package:fedi/app/media/picker/single_media_picker_page.dart';
+import 'package:fedi/media/media_image_source_model.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
@@ -17,7 +18,6 @@ import 'package:fedi/app/ui/form/fedi_form_pair_edit_text_row.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';
-import 'package:fedi/media/media_image_source_model.dart';
 import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
 import 'package:fedi/ui/form/group/one_type/form_one_type_group_bloc.dart';
 import 'package:fedi/ui/form/group/pair/form_link_pair_field_group_bloc.dart';

@@ -1,10 +1,11 @@
 import 'package:fedi/app/status/post/post_status_bloc.dart';
+import 'package:fedi/app/status/visibility/status_visibility_icon_widget.dart';
+import 'package:fedi/app/status/visibility/status_visibility_title_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
-import 'package:fedi/pleroma/visibility/pleroma_visibility_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +19,7 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
         initialData: postStatusBloc.visibility,
         builder: (context, snapshot) {
           var visibility = snapshot.data;
-          var icon = buildVisibilityIcon(
+          var icon = StatusVisibilityIconWidget.buildVisibilityIcon(
               context: context,
               visibility: visibility,
               isSelectedVisibility: false,
@@ -73,15 +74,13 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
               },
               title: Row(
                 children: <Widget>[
-                  buildVisibilityIcon(
-                      context: context,
+                  StatusVisibilityIconWidget(
                       visibility: visibility,
                       isPossibleToChangeVisibility:
                           isPossibleToChangeVisibility,
                       isSelectedVisibility: isSelectedVisibility),
                   const FediBigHorizontalSpacer(),
-                  buildVisibilityTitle(
-                      context: context,
+                  StatusVisibilityTitleWidget(
                       visibility: visibility,
                       isPossibleToChangeVisibility:
                           isPossibleToChangeVisibility,

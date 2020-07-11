@@ -6,12 +6,14 @@ import 'package:fedi/permission/permission_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class GrantPermissionWidget extends StatelessWidget {
+class FediGrantPermissionWidget extends StatelessWidget {
   final IPermissionBloc permissionBloc;
   final WidgetBuilder grantedBuilder;
 
-  GrantPermissionWidget(
-      {@required this.permissionBloc, @required this.grantedBuilder}) {
+  FediGrantPermissionWidget({
+    @required this.permissionBloc,
+    @required this.grantedBuilder,
+  }) {
     permissionBloc.checkPermissionStatus();
   }
 
@@ -23,7 +25,7 @@ class GrantPermissionWidget extends StatelessWidget {
         builder: (context, snapshot) {
           var permissionGranted = snapshot.data;
 
-          if(permissionGranted == null) {
+          if (permissionGranted == null) {
             return Center(child: FediCircularProgressIndicator());
           }
 

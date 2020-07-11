@@ -9,9 +9,9 @@ import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/chooser/auth_instance_chooser_bloc.dart';
 import 'package:fedi/app/auth/instance/chooser/auth_instance_chooser_instance_list_item_widget.dart';
 import 'package:fedi/app/auth/instance/join/add_more/add_more_join_auth_instance_page.dart';
+import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
-import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
@@ -82,7 +82,7 @@ class AuthInstanceChooserWidget extends StatelessWidget {
                       ILocalPreferencesService.of(context, listen: false),
                       value.userAtHost),
               child: Builder(
-                builder: (context) => AsyncInitLoadingWidget(
+                builder: (context) => FediAsyncInitLoadingWidget(
                   asyncInitLoadingBloc:
                       IMyAccountLocalPreferenceBloc.of(context, listen: false),
                   loadingFinishedBuilder: (context) {

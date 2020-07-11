@@ -1,3 +1,4 @@
+import 'package:fedi/app/ui/async/fedi_async_dialog.dart';
 import 'package:fedi/app/ui/notification_overlay/info_fedi_notification_overlay.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:flutter/cupertino.dart';
@@ -46,7 +47,7 @@ class _AsyncOperationButtonBuilderWidgetState
                 setState(() {
                   asyncOperationInProgress = true;
                 });
-                doAsyncOperationWithDialog(
+                doAsyncOperationWithFediDialog(
                         context: context,
                         contentMessage: widget.progressContentMessage,
                         errorDataBuilders: widget.errorDataBuilders,

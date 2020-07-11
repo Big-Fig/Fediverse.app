@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/file/gallery/file/file_gallery_file_bloc.dart';
@@ -7,18 +6,25 @@ import 'package:fedi/file/gallery/file/file_gallery_file_bloc_impl.dart';
 import 'package:fedi/file/gallery/file/file_gallery_file_grid_item_widget.dart';
 import 'package:fedi/file/gallery/file_gallery_model.dart';
 import 'package:fedi/file/gallery/folder/file_gallery_folder_bloc.dart';
-import 'package:fedi/permission/grant_permission_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:provider/provider.dart';
 
+typedef PermissionButtonBuilder = Widget Function(
+    BuildContext context, WidgetBuilder grantedBuilder);
+
 class FileGalleryFolderWidget extends StatelessWidget {
   final FileGalleryFileCallback galleryFileTapped;
   final WidgetBuilder headerItemBuilder;
+  final Widget loadingWidget;
+  final PermissionButtonBuilder permissionButtonBuilder;
+
   FileGalleryFolderWidget({
     @required this.galleryFileTapped,
     @required this.headerItemBuilder,
+    @required this.loadingWidget,
+    @required this.permissionButtonBuilder,
   });
 
   @override
@@ -26,11 +32,11 @@ class FileGalleryFolderWidget extends StatelessWidget {
     var folderBloc = IFileGalleryFolderBloc.of(context);
 
     return AsyncInitLoadingWidget(
-      loadingFinishedBuilder: (context) => GrantPermissionWidget(
-        grantedBuilder: (context) =>
-            buildPermissionGrantedView(context, folderBloc),
-        permissionBloc: folderBloc,
+      loadingFinishedBuilder: (context) => permissionButtonBuilder(
+        context,
+        (context) => buildPermissionGrantedView(context, folderBloc),
       ),
+      loadingWidget: loadingWidget,
       asyncInitLoadingBloc: folderBloc,
     );
   }
@@ -49,14 +55,14 @@ class FileGalleryFolderWidget extends StatelessWidget {
                   child: Text(tr("file.gallery.state.loading_not_started")));
               break;
             case FileGalleryState.loading:
-              return Center(child: FediCircularProgressIndicator());
+              return Center(child: loadingWidget);
               break;
             case FileGalleryState.loaded:
               return buildFilesWidget(context, folderBloc);
               break;
             default:
               // null
-              return Center(child: FediCircularProgressIndicator());
+              return Center(child: loadingWidget);
               break;
           }
         });
@@ -111,7 +117,9 @@ class FileGalleryFolderWidget extends StatelessWidget {
             return galleryFileBloc;
           },
           child: FileGalleryFolderGridItemWidget(
-              galleryFileTapped: galleryFileTapped)),
+            galleryFileTapped: galleryFileTapped,
+            loadingWidget: loadingWidget,
+          )),
     );
   }
 }

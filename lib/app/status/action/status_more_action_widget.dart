@@ -8,6 +8,7 @@ import 'package:fedi/app/conversation/start/status/post_status_start_conversatio
 import 'package:fedi/app/share/share_service.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/app/ui/async/fedi_async_dialog.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
@@ -17,7 +18,6 @@ import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/notification_overlay/info_fedi_notification_overlay.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/url/url_helper.dart';
-import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -85,7 +85,10 @@ class StatusShareActionWidget extends StatelessWidget {
 
   Padding buildAccountDescSeparator(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: FediSizes.middlePadding, left: FediSizes.middlePadding, right: FediSizes.middlePadding),
+      padding: EdgeInsets.only(
+          top: FediSizes.middlePadding,
+          left: FediSizes.middlePadding,
+          right: FediSizes.middlePadding),
       child: Center(
         child: Text(
           tr("app.status.action.popup.more_actions_for"),
@@ -97,7 +100,10 @@ class StatusShareActionWidget extends StatelessWidget {
 
   Padding buildTitleSeparator(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: FediSizes.middlePadding, left: FediSizes.middlePadding, right: FediSizes.middlePadding),
+      padding: EdgeInsets.only(
+          top: FediSizes.middlePadding,
+          left: FediSizes.middlePadding,
+          right: FediSizes.middlePadding),
       child: Center(
         child: Text(
           tr("app.status.action.popup.title"),
@@ -124,7 +130,7 @@ class StatusShareActionWidget extends StatelessWidget {
         tr(accountBloc.accountRelationship?.blocking == true
             ? "app.account.action.unblock"
             : "app.account.action.block"), () async {
-      await doAsyncOperationWithDialog(
+      await doAsyncOperationWithFediDialog(
           context: context, asyncCode: () async => accountBloc.toggleBlock());
 
       Navigator.of(context).pop();
@@ -137,7 +143,7 @@ class StatusShareActionWidget extends StatelessWidget {
         tr(accountBloc.accountRelationship?.muting == true
             ? "app.account.action.unmute"
             : "app.account.action.mute"), () async {
-      await doAsyncOperationWithDialog(
+      await doAsyncOperationWithFediDialog(
           context: context, asyncCode: () => accountBloc.toggleMute());
 
       Navigator.of(context).pop();
@@ -150,7 +156,7 @@ class StatusShareActionWidget extends StatelessWidget {
         tr(accountBloc.accountRelationship?.following == true
             ? "app.account.action.unfollow"
             : "app.account.action.follow"), () async {
-      await doAsyncOperationWithDialog(
+      await doAsyncOperationWithFediDialog(
           context: context, asyncCode: () => accountBloc.toggleFollow());
 
       Navigator.of(context).pop();
@@ -169,8 +175,7 @@ class StatusShareActionWidget extends StatelessWidget {
         await Clipboard.setData(ClipboardData(text: status.uri));
         Navigator.of(context).pop();
         showInfoFediNotificationOverlay(
-            contentText: tr("app.status.copy_link.toast"),
-            titleText: null);
+            contentText: tr("app.status.copy_link.toast"), titleText: null);
       });
 
   Padding buildShareAction(BuildContext context, IStatus status) =>
@@ -178,7 +183,7 @@ class StatusShareActionWidget extends StatelessWidget {
         var popupTitle = tr("app.status.share.title");
         var progressMessage = tr("app.status.share.progress.content");
 
-        await doAsyncOperationWithDialog(
+        await doAsyncOperationWithFediDialog(
             context: context,
             contentMessage: progressMessage,
             asyncCode: () async {
