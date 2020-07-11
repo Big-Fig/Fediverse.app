@@ -42,9 +42,9 @@ abstract class CachedPaginationBloc<TPage extends CachedPaginationPage<TItem>,
         olderPage: nextPage,
         newerPage: previousPage);
 
-    if (forceToSkipCache && !isActuallyRefreshed) {
-      return null;
-    }
+//    if (forceToSkipCache && !isActuallyRefreshed) {
+//      return null;
+//    }
 
     return createPage(
         pageIndex: pageIndex,
