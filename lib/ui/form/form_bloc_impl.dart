@@ -19,5 +19,5 @@ abstract class FormBloc extends FormGroupBloc implements IFormBloc {
   );
 
   @override
-  Stream<List<IFormItemBloc>> get itemsStream => throw UnimplementedError();
+  Stream<List<IFormItemBloc>> get itemsStream => Stream.value(items);
 }

@@ -28,5 +28,5 @@ class FormKeyValuePairFieldGroupBloc<K extends IFormValueFieldBloc,
   List<IFormItemBloc> get items => [keyField, valueField];
 
   @override
-  Stream<List<IFormItemBloc>> get itemsStream => throw UnimplementedError();
+  Stream<List<IFormItemBloc>> get itemsStream => Stream.value(items);
 }
