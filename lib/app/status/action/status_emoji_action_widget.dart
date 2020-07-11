@@ -1,8 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/status/action/status_action_counter_widget.dart';
 import 'package:fedi/app/status/emoji_reaction/status_emoji_reaction_picker_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:fedi/error/error_data_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,21 +28,17 @@ class StatusEmojiActionWidget extends StatelessWidget {
             stream: statusBloc.reblogPlusOriginalEmojiReactionsCountStream,
             initialData: statusBloc.reblogPlusOriginalEmojiReactionsCount,
             builder: (context, snapshot) {
-              var favouritesCount = snapshot.data;
-              if (favouritesCount == null) {
+              var emojiCount = snapshot.data;
+              if (emojiCount == null) {
                 return SizedBox.shrink();
               }
-              return InkWell(
-                  onTap: () {
-                    _showEmojiPicker(context, statusBloc);
-                  },
-                  child: Text(
-                    favouritesCount.toString(),
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: FediColors.darkGrey,
-                    ),
-                  ));
+
+              return StatusActionCounterWidget(
+                onPressed: () {
+                  _showEmojiPicker(context, statusBloc);
+                },
+                value: emojiCount,
+              );
             }),
       ],
     );

@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/status/action/status_action_counter_widget.dart';
 import 'package:fedi/app/status/reblog/status_reblog_account_list_page.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
@@ -39,17 +40,12 @@ class StatusReblogActionWidget extends StatelessWidget {
             builder: (context, snapshot) {
               var reblogsCount = snapshot.data;
 
-              return InkWell(
-                  onTap: () {
-                    goToStatusReblogAccountListPage(context, statusBloc.status);
-                  },
-                  child: Text(
-                    reblogsCount.toString(),
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: FediColors.secondaryColor,
-                    ),
-                  ));
+              return StatusActionCounterWidget(
+                onPressed: () {
+                  goToStatusReblogAccountListPage(context, statusBloc.status);
+                },
+                value: reblogsCount,
+              );
             }),
       ],
     );

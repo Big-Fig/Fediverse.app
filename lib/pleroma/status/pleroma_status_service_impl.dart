@@ -182,7 +182,7 @@ class PleromaStatusService implements IPleromaStatusService {
   }
 
   @override
-  Future<List<IPleromaAccount>> reblogedBy({
+  Future<List<IPleromaAccount>> rebloggedBy({
     @required String statusRemoteId,
     String maxId,
     String sinceId,
@@ -197,7 +197,7 @@ class PleromaStatusService implements IPleromaStatusService {
           RestRequestQueryArg("limit", limit.toString()),
         ],
         relativePath:
-            join(statusRelativeUrlPath, statusRemoteId, "rebloged_by"));
+            join(statusRelativeUrlPath, statusRemoteId, "reblogged_by"));
     var httpResponse = await restService.sendHttpRequest(request);
 
     return parseAccountsResponse(httpResponse);

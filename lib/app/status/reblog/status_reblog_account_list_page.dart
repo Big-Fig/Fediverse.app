@@ -49,7 +49,7 @@ void goToStatusReblogAccountListPage(BuildContext context, IStatus status) {
     context,
     MaterialPageRoute(builder: (context) => StatusReblogAccountCachedListBloc.provideToContext(
         context,
-        status: status,
+        status: status.reblog ?? status,
         child: AccountCachedPaginationBloc.provideToContext(
           context,
           child: AccountPaginationListBloc.provideToContext(context,
