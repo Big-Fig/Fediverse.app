@@ -1,5 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/app/media/single_camera_picker.dart';
+import 'package:fedi/app/media/picker/media_picker_service.dart';
 import 'package:fedi/app/navigation/navigation_slide_bottom_route_builder.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
@@ -45,8 +45,7 @@ class SingleMediaPickerPage extends StatelessWidget {
         grantedBuilder: (BuildContext context) {
           return AsyncInitLoadingWidget(
             loadingFinishedBuilder: (BuildContext context) {
-
-              if(fileGalleryBloc.folders?.isNotEmpty != true) {
+              if (fileGalleryBloc.folders?.isNotEmpty != true) {
                 return Center(child: Text("file.picker.empty".tr()));
               }
 
@@ -75,7 +74,12 @@ class SingleMediaPickerPage extends StatelessWidget {
                           headerItemBuilder: (BuildContext context) {
                             return InkWell(
                               onTap: () async {
-                                var pickedFile = await pickImageFromCamera();
+                                var mediaPickerService = IMediaPickerService.of(
+                                    context,
+                                    listen: false);
+
+                                var pickedFile = await mediaPickerService
+                                    .pickImageFromCamera();
 
                                 if (pickedFile != null) {
                                   fileSelectedCallback(FilePickerFile(
@@ -84,8 +88,6 @@ class SingleMediaPickerPage extends StatelessWidget {
                                     file: pickedFile,
                                   ));
                                 }
-//                                _showFolderChooserModalBottomSheet(
-//                                    context, fileGalleryBloc);
                               },
                               child: Container(
                                   color: Colors.white,
@@ -116,8 +118,6 @@ class SingleMediaPickerPage extends StatelessWidget {
 //      bottomNavigationBar: FilePickerBottomNavBarWidget(),
     );
   }
-
-
 
   Widget _buildAppBarTitle(BuildContext context) {
     var fileGalleryBloc = IFileGalleryBloc.of(context, listen: false);
