@@ -1,7 +1,10 @@
 import 'package:fedi/app/pagination/cached/cached_pleroma_pagination_bloc_impl.dart';
-import 'package:fedi/app/status/scheduled/list/cached/scheduled_status_cached_list_service.dart';
+import 'package:fedi/app/status/scheduled/list/cached/scheduled_status_cached_list_bloc.dart';
 import 'package:fedi/app/status/scheduled/pagination/cached/scheduled_status_cached_pagination_bloc.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/pagination/cached/cached_pagination_bloc.dart';
+import 'package:fedi/pagination/cached/cached_pagination_bloc_proxy_provider.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,7 +13,7 @@ import 'package:provider/provider.dart';
 class ScheduledStatusCachedPaginationBloc
     extends CachedPleromaPaginationBloc<IScheduledStatus>
     implements IScheduledStatusCachedPaginationBloc {
-  final IScheduledStatusCachedListService scheduledStatusListService;
+  final IScheduledStatusCachedListBloc scheduledStatusListService;
 
   ScheduledStatusCachedPaginationBloc(
       {@required this.scheduledStatusListService,
@@ -57,8 +60,25 @@ class ScheduledStatusCachedPaginationBloc
           int maximumCachedPagesCount}) =>
       ScheduledStatusCachedPaginationBloc(
           scheduledStatusListService:
-              Provider.of<IScheduledStatusCachedListService>(context,
+              Provider.of<IScheduledStatusCachedListBloc>(context,
                   listen: false),
           itemsCountPerPage: itemsCountPerPage,
           maximumCachedPagesCount: maximumCachedPagesCount);
+
+  static Widget provideToContext(BuildContext context,
+      {int itemsCountPerPage = 20,
+      int maximumCachedPagesCount,
+      @required Widget child}) {
+    return DisposableProvider<
+        ICachedPaginationBloc<CachedPaginationPage<IScheduledStatus>,
+            IScheduledStatus>>(
+      create: (context) =>
+          ScheduledStatusCachedPaginationBloc.createFromContext(
+        context,
+        itemsCountPerPage: itemsCountPerPage,
+        maximumCachedPagesCount: maximumCachedPagesCount,
+      ),
+      child: CachedPaginationBlocProxyProvider(child: child),
+    );
+  }
 }

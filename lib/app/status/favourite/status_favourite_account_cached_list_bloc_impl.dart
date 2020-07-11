@@ -98,7 +98,7 @@ class StatusFavouriteAccountCachedListBloc extends DisposableOwner
     return accounts;
   }
 
-  static StatusFavouriteAccountCachedListBloc _createFromContext(
+  static StatusFavouriteAccountCachedListBloc createFromContext(
           BuildContext context,
           {@required IStatus status}) =>
       StatusFavouriteAccountCachedListBloc(
@@ -114,7 +114,7 @@ class StatusFavouriteAccountCachedListBloc extends DisposableOwner
   }) =>
       DisposableProvider<IAccountCachedListBloc>(
         create: (context) =>
-            StatusFavouriteAccountCachedListBloc._createFromContext(
+            StatusFavouriteAccountCachedListBloc.createFromContext(
           context,
           status: status,
         ),

@@ -4,11 +4,11 @@ import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IScheduledStatusCachedListService extends DisposableOwner
+abstract class IScheduledStatusCachedListBloc extends DisposableOwner
     implements IPleromaCachedListBloc<IScheduledStatus> {
-  static IScheduledStatusCachedListService of(BuildContext context,
+  static IScheduledStatusCachedListBloc of(BuildContext context,
           {bool listen = true}) =>
-      Provider.of<IScheduledStatusCachedListService>(context, listen: listen);
+      Provider.of<IScheduledStatusCachedListBloc>(context, listen: listen);
 
   Stream<List<IScheduledStatus>> watchLocalItemsNewerThanItem(
       IScheduledStatus item);

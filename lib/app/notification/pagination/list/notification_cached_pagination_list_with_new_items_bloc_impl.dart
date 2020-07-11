@@ -63,7 +63,7 @@ class NotificationCachedPaginationListWithNewItemsBloc<
     return DisposableProvider<
         ICachedPaginationListWithNewItemsBloc<TPage, INotification>>(
       create: (context) => NotificationCachedPaginationListWithNewItemsBloc
-          ._createFromContext<TPage>(context,
+          .createFromContext<TPage>(context,
               mergeNewItemsImmediately: mergeNewItemsImmediately),
       child: ProxyProvider<
           ICachedPaginationListWithNewItemsBloc<TPage, INotification>,
@@ -76,7 +76,7 @@ class NotificationCachedPaginationListWithNewItemsBloc<
   }
 
   static NotificationCachedPaginationListWithNewItemsBloc<TPage>
-      _createFromContext<TPage extends CachedPaginationPage<INotification>>(
+      createFromContext<TPage extends CachedPaginationPage<INotification>>(
           BuildContext context,
           {@required bool mergeNewItemsImmediately}) {
     return NotificationCachedPaginationListWithNewItemsBloc<TPage>(

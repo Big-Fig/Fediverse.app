@@ -63,7 +63,7 @@ class NotificationCachedListBloc extends INotificationCachedListBloc {
     }
   }
 
-  static NotificationCachedListBloc _createFromContext(BuildContext context,
+  static NotificationCachedListBloc createFromContext(BuildContext context,
           {@required List<PleromaNotificationType> excludeTypes}) =>
       NotificationCachedListBloc(
           pleromaNotificationService:
@@ -78,7 +78,7 @@ class NotificationCachedListBloc extends INotificationCachedListBloc {
     @required Widget child,
   }) {
     return DisposableProvider<INotificationCachedListBloc>(
-      create: (context) => NotificationCachedListBloc._createFromContext(
+      create: (context) => NotificationCachedListBloc.createFromContext(
         context,
         excludeTypes: excludeTypes,
       ),

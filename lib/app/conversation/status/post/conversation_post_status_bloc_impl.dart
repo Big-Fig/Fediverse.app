@@ -27,7 +27,7 @@ class ConversationPostStatusBloc extends PostStatusBloc {
             initialVisibility: PleromaVisibility.PRIVATE,
             initialAccountsToMention: conversationAccountsWithoutMe);
 
-  static ConversationPostStatusBloc _createFromContext(BuildContext context,
+  static ConversationPostStatusBloc createFromContext(BuildContext context,
           {@required IConversation conversation,
           @required List<IAccount> conversationAccountsWithoutMe}) =>
       ConversationPostStatusBloc(
@@ -46,7 +46,7 @@ class ConversationPostStatusBloc extends PostStatusBloc {
     @required Widget child,
   }) {
     return DisposableProvider<IPostStatusBloc>(
-      create: (context) => ConversationPostStatusBloc._createFromContext(
+      create: (context) => ConversationPostStatusBloc.createFromContext(
         context,
         conversationAccountsWithoutMe: conversationAccountsWithoutMe,
         conversation: conversation,

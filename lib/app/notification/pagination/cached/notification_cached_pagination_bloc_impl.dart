@@ -54,7 +54,7 @@ class NotificationCachedPaginationBloc
     );
   }
 
-  static NotificationCachedPaginationBloc _createFromContext(
+  static NotificationCachedPaginationBloc createFromContext(
           BuildContext context,
           {int itemsCountPerPage = 20,
           int maximumCachedPagesCount}) =>
@@ -71,7 +71,7 @@ class NotificationCachedPaginationBloc
     return DisposableProvider<
         ICachedPaginationBloc<CachedPaginationPage<INotification>,
             INotification>>(
-      create: (context) => NotificationCachedPaginationBloc._createFromContext(
+      create: (context) => NotificationCachedPaginationBloc.createFromContext(
         context,
         itemsCountPerPage: itemsCountPerPage,
         maximumCachedPagesCount: maximumCachedPagesCount,

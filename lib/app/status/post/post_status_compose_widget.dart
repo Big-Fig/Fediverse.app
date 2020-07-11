@@ -1,5 +1,4 @@
 import 'package:fedi/app/account/my/avatar/my_account_avatar_widget.dart';
-import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_widget.dart';
 import 'package:fedi/app/message/action/post_message_attach_action_widget.dart';
 import 'package:fedi/app/message/post_message_attach_widget.dart';
@@ -9,14 +8,12 @@ import 'package:fedi/app/status/post/action/post_status_post_text_action_widget.
 import 'package:fedi/app/status/post/action/post_status_schedule_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_visibility_action_widget.dart';
 import 'package:fedi/app/status/post/input/post_status_compose_input_widget.dart';
-import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/ui/divider/fedi_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class PostStatusComposeWidget extends StatelessWidget {
   final bool expanded;
@@ -64,14 +61,10 @@ class PostStatusComposeWidget extends StatelessWidget {
           const FediBigVerticalSpacer(),
           Padding(
             padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
-            child: ProxyProvider<IPostStatusBloc,
-                    IUploadMediaAttachmentsCollectionBloc>(
-                update: (context, value, previous) =>
-                    value.mediaAttachmentsBloc,
-                child: UploadMediaAttachmentsWidget(
-                  scrollable: false,
-                  heightOnKeyboardOpen: null,
-                )),
+            child: UploadMediaAttachmentsWidget(
+              scrollable: false,
+              heightOnKeyboardOpen: null,
+            ),
           ),
           if (!displayAccountAvatar && expanded) FediLightGreyDivider(),
           buildActions(),

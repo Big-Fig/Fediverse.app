@@ -16,7 +16,7 @@ class AccountPaginationListBloc
           IPaginationBloc<PaginationPage<IAccount>, IAccount> paginationBloc})
       : super(paginationBloc: paginationBloc);
 
-  static AccountPaginationListBloc _createFromContext(BuildContext context) {
+  static AccountPaginationListBloc createFromContext(BuildContext context) {
     return AccountPaginationListBloc(
         paginationBloc:
             Provider.of<IPaginationBloc<PaginationPage<IAccount>, IAccount>>(
@@ -27,7 +27,7 @@ class AccountPaginationListBloc
   static Widget provideToContext(BuildContext context,
       {@required Widget child}) {
     return DisposableProvider<IAccountPaginationListBloc>(
-      create: (context) => AccountPaginationListBloc._createFromContext(
+      create: (context) => AccountPaginationListBloc.createFromContext(
         context,
       ),
       child: AccountPaginationListBlocProxyProvider(child: child),

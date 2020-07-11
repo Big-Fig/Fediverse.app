@@ -97,7 +97,7 @@ class AccountFollowerAccountCachedListBloc extends DisposableOwner
     return accounts;
   }
 
-  static AccountFollowerAccountCachedListBloc _createFromContext(
+  static AccountFollowerAccountCachedListBloc createFromContext(
           BuildContext context,
           {@required IAccount account}) =>
       AccountFollowerAccountCachedListBloc(
@@ -110,7 +110,7 @@ class AccountFollowerAccountCachedListBloc extends DisposableOwner
       {@required IAccount account, @required Widget child}) {
     return DisposableProvider<IAccountCachedListBloc>(
       create: (context) =>
-          AccountFollowerAccountCachedListBloc._createFromContext(context,
+          AccountFollowerAccountCachedListBloc.createFromContext(context,
               account: account),
       child: AccountCachedListBlocProxyProvider(child: child),
     );
