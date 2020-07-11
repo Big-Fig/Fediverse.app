@@ -42,13 +42,11 @@ class StatusReblogAccountCachedListBloc extends DisposableOwner
     try {
       List<IPleromaAccount> remoteAccounts;
 
-      remoteAccounts =
-          await pleromaStatusService.reblogedBy(statusRemoteId: status.remoteId,
-
+      remoteAccounts = await pleromaStatusService.rebloggedBy(
+          statusRemoteId: status.remoteId,
           maxId: olderThan?.remoteId,
           sinceId: newerThan?.remoteId,
-          limit: limit
-              );
+          limit: limit);
 
       if (remoteAccounts != null) {
         await accountRepository.upsertRemoteAccounts(remoteAccounts,
@@ -90,10 +88,11 @@ class StatusReblogAccountCachedListBloc extends DisposableOwner
             orderByType: AccountOrderByType.remoteId),
         onlyInConversation: null,
         onlyInAccountFollowers: null,
-        onlyInStatusFavouritedBy: status,
+        onlyInStatusFavouritedBy: null,
         onlyInAccountFollowing: null,
         onlyInStatusRebloggedBy: status,
-        searchQuery: null, onlyInChat: null);
+        searchQuery: null,
+        onlyInChat: null);
 
     _logger.finer(() => "finish loadLocalItems accounts ${accounts.length}");
     return accounts;
@@ -108,18 +107,17 @@ class StatusReblogAccountCachedListBloc extends DisposableOwner
               IPleromaStatusService.of(context, listen: false),
           status: status);
 
-
   static Widget provideToContext(
-      BuildContext context, {
-        @required IStatus status,
-        @required Widget child,
-      }) =>
+    BuildContext context, {
+    @required IStatus status,
+    @required Widget child,
+  }) =>
       DisposableProvider<IAccountCachedListBloc>(
         create: (context) =>
             StatusReblogAccountCachedListBloc._createFromContext(
-              context,
-              status: status,
-            ),
+          context,
+          status: status,
+        ),
         child: AccountCachedListBlocProxyProvider(child: child),
       );
 }

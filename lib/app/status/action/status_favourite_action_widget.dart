@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/status/action/status_action_counter_widget.dart';
 import 'package:fedi/app/status/favourite/status_favourite_account_list_page.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
@@ -44,18 +45,14 @@ class StatusFavouriteActionWidget extends StatelessWidget {
                 if (favouritesCount == null) {
                   return SizedBox.shrink();
                 }
-                return InkWell(
-                    onTap: () {
-                      goToStatusFavouriteAccountListPage(
-                          context, statusBloc.status);
-                    },
-                    child: Text(
-                      favouritesCount.toString(),
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: FediColors.darkGrey,
-                      ),
-                    ));
+
+                return StatusActionCounterWidget(
+                  onPressed: () {
+                    goToStatusFavouriteAccountListPage(
+                        context, statusBloc.status);
+                  },
+                  value: favouritesCount,
+                );
               }),
       ],
     );

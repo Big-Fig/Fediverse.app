@@ -49,7 +49,7 @@ abstract class IPleromaStatusService implements IPleromaApi {
     int limit = 20,
   });
 
-  Future<List<IPleromaAccount>> reblogedBy({
+  Future<List<IPleromaAccount>> rebloggedBy({
     @required String statusRemoteId,
     String maxId,
     String sinceId,
