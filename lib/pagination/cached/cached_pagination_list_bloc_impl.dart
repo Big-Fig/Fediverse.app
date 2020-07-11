@@ -12,6 +12,7 @@ class CachedPaginationListBloc<TPage extends CachedPaginationPage<TItem>, TItem>
   CachedPaginationListBloc(
       {@required ICachedPaginationBloc<TPage, TItem> cachedPaginationBloc})
       : super(paginationBloc: cachedPaginationBloc);
+
   @override
   Future<PaginationListLoadingState> loadMoreWithoutController() async {
     loadMoreStateSubject.add(PaginationListLoadingState.loading);
@@ -31,10 +32,15 @@ class CachedPaginationListBloc<TPage extends CachedPaginationPage<TItem>, TItem>
           state = PaginationListLoadingState.failed;
         }
       }
-      loadMoreStateSubject.add(state);
+      if (!loadMoreStateSubject.isClosed) {
+        loadMoreStateSubject.add(state);
+      }
+
       return state;
     } catch (e, stackTrace) {
-      loadMoreStateSubject.add(PaginationListLoadingState.failed);
+      if (!loadMoreStateSubject.isClosed) {
+        loadMoreStateSubject.add(PaginationListLoadingState.failed);
+      }
       _logger.warning(
           () => "error during loadMoreWithoutController", e, stackTrace);
       rethrow;
@@ -63,10 +69,15 @@ class CachedPaginationListBloc<TPage extends CachedPaginationPage<TItem>, TItem>
           state = PaginationListLoadingState.failed;
         }
       }
-      refreshStateSubject.add(state);
+      if (!refreshStateSubject.isClosed) {
+        refreshStateSubject.add(state);
+      }
+
       return state;
     } catch (e, stackTrace) {
-      refreshStateSubject.add(PaginationListLoadingState.failed);
+      if (!refreshStateSubject.isClosed) {
+        refreshStateSubject.add(PaginationListLoadingState.failed);
+      }
       _logger.warning(
           () => "error during refreshWithoutController", e, stackTrace);
       rethrow;
