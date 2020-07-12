@@ -29,6 +29,7 @@ class FediTextTabIndicatorWidget<T> extends StatelessWidget {
       labelPadding: FediPadding.horizontalSmallPadding,
       indicator: FediTabIndicator(
         indicatorHeight:FediSizes.tabIndicatorTextHeight,
+        indicatorRadius: FediSizes.textButtonRadiusCircle,
         indicatorColor: FediColors.primaryColor,
         padding: EdgeInsets.zero,
         insets: EdgeInsets.zero,
