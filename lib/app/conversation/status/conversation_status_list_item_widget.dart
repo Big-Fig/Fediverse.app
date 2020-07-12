@@ -3,14 +3,13 @@ import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/media/attachment/media_attachments_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
-import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-const _borderRadius =Radius.circular(FediSizes.borderRadiusBigSize);
-var _maxDeviceWidthPercent = 0.8;
+const _borderRadius = Radius.circular(16.0);
+
 class ConversationStatusListItemWidget extends StatelessWidget {
   final bool isFirstInMinuteGroup;
   final bool isLastInMinuteGroup;
@@ -31,63 +30,62 @@ class ConversationStatusListItemWidget extends StatelessWidget {
     var isStatusFromMe = myAccountBloc.checkIsStatusFromMe(statusBloc.status);
 
     var alignment =
-        isStatusFromMe ? Alignment.centerRight : Alignment.centerLeft;
+    isStatusFromMe ? Alignment.centerRight : Alignment.centerLeft;
     var isHaveTextContent = statusBloc?.content?.isNotEmpty == true;
-    
     return Align(
       alignment: alignment,
       child: Column(
         crossAxisAlignment:
-            isStatusFromMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        isStatusFromMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
-          Container(
-            decoration: BoxDecoration(
-              color: isHaveTextContent
-                  ? isStatusFromMe
-                      ? FediColors.primaryColorDark
-                      : FediColors.ultraLightGrey
-                  : Colors.transparent,
-              borderRadius: isHaveTextContent
-                  ? isStatusFromMe
+          Padding(
+            padding: const EdgeInsets.only(top:4.0),
+            child: Container(
+              decoration: BoxDecoration(
+                color: isHaveTextContent
+                    ? isStatusFromMe
+                    ? FediColors.primaryColorDark
+                    : FediColors.ultraLightGrey
+                    : Colors.transparent,
+                borderRadius: isHaveTextContent
+                    ? isStatusFromMe
+                    ? BorderRadius.only(
+                    topLeft: _borderRadius,
+                    topRight:
+                    isLastInMinuteGroup ? _borderRadius : Radius.zero,
+                    bottomLeft: _borderRadius)
+                    : BorderRadius.only(
+                    topLeft:
+                    isLastInMinuteGroup ? _borderRadius : Radius.zero,
+                    topRight: _borderRadius,
+                    bottomRight: _borderRadius)
+                    : BorderRadius.zero,
+              ),
+              constraints: BoxConstraints(maxWidth: deviceWidth * 0.80),
+              child: Padding(
+                padding: isHaveTextContent
+                    ? EdgeInsets.symmetric(vertical: 12, horizontal: 16)
+                    : EdgeInsets.zero,
+                child: isHaveTextContent
+                    ? buildContent(context, statusBloc, isStatusFromMe)
+                    : ClipRRect(
+                  borderRadius: isStatusFromMe
                       ? BorderRadius.only(
-                          topLeft: _borderRadius,
-                          topRight:
-                              isLastInMinuteGroup ? _borderRadius : Radius.zero,
-                          bottomLeft: _borderRadius)
+                      topLeft: _borderRadius,
+                      topRight: isLastInMinuteGroup
+                          ? _borderRadius
+                          : Radius.zero,
+                      bottomLeft: _borderRadius)
                       : BorderRadius.only(
-                          topLeft:
-                              isLastInMinuteGroup ? _borderRadius : Radius.zero,
-                          topRight: _borderRadius,
-                          bottomRight: _borderRadius)
-                  : BorderRadius.zero,
-            ),
-            constraints: BoxConstraints(maxWidth: deviceWidth * _maxDeviceWidthPercent),
-            child: Padding(
-              padding: isHaveTextContent
-                  ? EdgeInsets.symmetric(
-                      vertical: FediSizes.smallPadding,
-                      horizontal: FediSizes.bigPadding,
-                    )
-                  : EdgeInsets.zero,
-              child: isHaveTextContent
-                  ? buildContent(context, statusBloc, isStatusFromMe)
-                  : ClipRRect(
-                      borderRadius: isStatusFromMe
-                          ? BorderRadius.only(
-                              topLeft: _borderRadius,
-                              topRight: isLastInMinuteGroup
-                                  ? _borderRadius
-                                  : Radius.zero,
-                              bottomLeft: _borderRadius)
-                          : BorderRadius.only(
-                              topLeft: isLastInMinuteGroup
-                                  ? _borderRadius
-                                  : Radius.zero,
-                              topRight: _borderRadius,
-                              bottomRight: _borderRadius,
-                            ),
-                      child: buildContent(context, statusBloc, isStatusFromMe),
-                    ),
+                    topLeft: isLastInMinuteGroup
+                        ? _borderRadius
+                        : Radius.zero,
+                    topRight: _borderRadius,
+                    bottomRight: _borderRadius,
+                  ),
+                  child: buildContent(context, statusBloc, isStatusFromMe),
+                ),
+              ),
             ),
           ),
           if (isFirstInMinuteGroup)
@@ -142,7 +140,7 @@ class ConversationStatusListItemWidget extends StatelessWidget {
               return HtmlTextWidget(
                   shrinkWrap: true,
                   color:
-                      isStatusFromMe ? FediColors.white : FediColors.darkGrey,
+                  isStatusFromMe ? FediColors.white : FediColors.darkGrey,
                   fontSize: 16.0,
                   lineHeight: 1.5,
                   data: contentWithEmojis,
