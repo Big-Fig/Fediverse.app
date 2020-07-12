@@ -72,31 +72,6 @@ class StatusThreadBloc extends DisposableOwner implements IStatusThreadBloc {
   }
 
   @override
-  Future<IStatus> sendMessageToAllMentionedAccounts(
-      {@required String idempotencyKey, @required String text}) async {
-    assert(text?.isNotEmpty == true);
-
-    String status = "$mentionAcctsListString $text";
-    String inReplyToId = initialStatusToFetchThread.remoteId;
-
-    var remoteStatus = await pleromaStatusService.postStatus(
-        data: PleromaPostStatus(
-            status: status,
-            to: mentionAccts,
-            inReplyToId: inReplyToId,
-            idempotencyKey: idempotencyKey));
-
-    await statusRepository.upsertRemoteStatus(remoteStatus,
-        listRemoteId: null, conversationRemoteId: null);
-    var localStatus = await statusRepository.findByRemoteId(remoteStatus.id);
-
-    statuses.add(localStatus);
-    _statusesSubject.add(statuses);
-
-    return localStatus;
-  }
-
-  @override
   Future<bool> refresh() async {
     try {
       _logger.finest(() => "refresh");
