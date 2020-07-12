@@ -21,29 +21,41 @@ class LocalTimelineTabBloc extends TimelineTabBloc
   final IConversationRepository conversationRepository;
   final INotificationRepository notificationRepository;
   final ICurrentAuthInstanceBloc currentInstanceBloc;
-  final ITimelineSettingsLocalPreferencesBloc timelineLocalPreferencesBloc;
   final IPleromaWebSocketsService pleromaWebSocketsService;
   final IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
 
   LocalTimelineTabBloc(
-      {@required this.pleromaTimelineService,
-      @required this.statusRepository,
-      @required this.conversationRepository,
-      @required this.notificationRepository,
-      @required this.timelineLocalPreferencesBloc,
-      @required this.currentInstanceBloc,
-      @required this.pleromaWebSocketsService,
-        @required this.chatNewMessagesHandlerBloc,
-      @required bool listenWebSocketsChanges})
-      : super(tab: TimelineTab.local) {
+      {@required
+          this.pleromaTimelineService,
+      @required
+          this.statusRepository,
+      @required
+          this.conversationRepository,
+      @required
+          this.notificationRepository,
+      @required
+          ITimelineSettingsLocalPreferencesBloc timelineLocalPreferencesBloc,
+      @required
+          this.currentInstanceBloc,
+      @required
+          this.pleromaWebSocketsService,
+      @required
+          this.chatNewMessagesHandlerBloc,
+      @required
+          bool listenWebSocketsChanges})
+      : super(
+          tab: TimelineTab.local,
+          timelineLocalPreferencesBloc: timelineLocalPreferencesBloc,
+        ) {
     if (listenWebSocketsChanges) {
       addDisposable(
           disposable: LocalTimelineWebSocketsHandler(
-              pleromaWebSocketsService: pleromaWebSocketsService,
-              statusRepository: statusRepository,
-              conversationRepository: conversationRepository,
-              notificationRepository: notificationRepository,
-            chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,));
+        pleromaWebSocketsService: pleromaWebSocketsService,
+        statusRepository: statusRepository,
+        conversationRepository: conversationRepository,
+        notificationRepository: notificationRepository,
+        chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+      ));
     }
   }
 

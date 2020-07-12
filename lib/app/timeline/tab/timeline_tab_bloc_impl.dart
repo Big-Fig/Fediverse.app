@@ -3,6 +3,7 @@ import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc.
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/app/timeline/settings/local_preferences/timeline_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_bloc.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
@@ -15,11 +16,14 @@ abstract class TimelineTabBloc extends DisposableOwner
   final TimelineTab tab;
   IStatusCachedListBloc statusCachedListService;
   IStatusCachedPaginationBloc statusCachedPaginationBloc;
+  final ITimelineSettingsLocalPreferencesBloc timelineLocalPreferencesBloc;
+
   @override
   ICachedPaginationListWithNewItemsBloc<CachedPaginationPage<IStatus>, IStatus>
       paginationListWithNewItemsBloc;
 
-  TimelineTabBloc({@required this.tab}) {
+  TimelineTabBloc(
+      {@required this.tab, @required this.timelineLocalPreferencesBloc}) {
     statusCachedListService = createListService();
     addDisposable(disposable: statusCachedListService);
 
@@ -29,12 +33,25 @@ abstract class TimelineTabBloc extends DisposableOwner
         statusListService: statusCachedListService);
     addDisposable(disposable: statusCachedPaginationBloc);
 
-    paginationListWithNewItemsBloc =
-        StatusCachedPaginationListWithNewItemsBloc<CachedPaginationPage<IStatus>>(
-            paginationBloc: statusCachedPaginationBloc,
-            mergeNewItemsImmediately: false,
-            statusCachedListBloc: statusCachedListService);
+    paginationListWithNewItemsBloc = StatusCachedPaginationListWithNewItemsBloc<
+            CachedPaginationPage<IStatus>>(
+        paginationBloc: statusCachedPaginationBloc,
+        mergeNewItemsImmediately: false,
+        statusCachedListBloc: statusCachedListService);
     addDisposable(disposable: paginationListWithNewItemsBloc);
+
+    // skip first value to avoid duplicated update on first build
+    var initValueSkipped = false;
+    addDisposable(
+        streamSubscription: timelineLocalPreferencesBloc.stream
+            .distinct()
+            .listen((newPreferences) {
+      if (!initValueSkipped) {
+        paginationListWithNewItemsBloc.refreshWithController();
+      } else {
+        initValueSkipped = true;
+      }
+    }));
   }
 
   IStatusCachedListBloc createListService();
