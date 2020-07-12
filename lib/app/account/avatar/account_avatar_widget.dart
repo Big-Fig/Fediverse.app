@@ -31,7 +31,10 @@ class AccountAvatarWidget extends StatelessWidget {
       {@required String avatarUrl,
       @required double progressSize,
       @required double imageSize}) {
-    assert(avatarUrl != null);
+    if (avatarUrl == null) {
+      return buildLoading(progressSize);
+    }
+
     return Container(
       width: imageSize,
       height: imageSize,
@@ -45,14 +48,18 @@ class AccountAvatarWidget extends StatelessWidget {
             );
           },
           imageUrl: avatarUrl,
-          placeholder: (context, url) => Center(
-            child: FediCircularProgressIndicator(size: progressSize),
-          ),
+          placeholder: (context, url) => buildLoading(progressSize),
           errorWidget: (context, url, error) => Icon(Icons.error),
           height: imageSize,
           width: imageSize,
         ),
       ),
+    );
+  }
+
+  static Center buildLoading(double progressSize) {
+    return Center(
+      child: FediCircularProgressIndicator(size: progressSize),
     );
   }
 }
