@@ -59,10 +59,20 @@ class StatusBodyWidget extends StatelessWidget {
                         StreamBuilder<List<IPleromaMediaAttachment>>(
                             stream: statusBloc.mediaAttachmentsStream,
                             initialData: statusBloc.mediaAttachments,
-                            builder: (context, snapshot) =>
-                                MediaAttachmentsWidget(
-                                  mediaAttachments: snapshot.data,
-                                )),
+                            builder: (context, snapshot) {
+                              var mediaAttachments = snapshot.data;
+
+                              if (mediaAttachments?.isNotEmpty == true) {
+                                return Padding(
+                                  padding: FediPadding.verticalSmallPadding,
+                                  child: MediaAttachmentsWidget(
+                                    mediaAttachments: snapshot.data,
+                                  ),
+                                );
+                              } else {
+                                return SizedBox.shrink();
+                              }
+                            }),
                       ],
                     );
                   } else {
