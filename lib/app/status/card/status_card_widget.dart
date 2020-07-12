@@ -28,7 +28,8 @@ class StatusCardWidget extends StatelessWidget {
           }
 
           return Padding(
-            padding: const EdgeInsets.symmetric(vertical: FediSizes.middlePadding),
+            padding:
+                const EdgeInsets.symmetric(vertical: FediSizes.middlePadding),
             child: Container(
               height: _cardImageSize,
               child: ClipRRect(
@@ -65,11 +66,12 @@ class StatusCardWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                if (card.providerName != null) buildProviderText(card),
-                if (card.title != null) buildTitleText(card),
-                if (card.description != null) buildDescriptionText(card),
+                if (card.providerName?.isNotEmpty == true)
+                  buildProviderText(card),
+                if (card.title?.isNotEmpty == true) buildTitleText(card),
+                if (card.description?.isNotEmpty == true)
+                  buildDescriptionText(card),
               ],
             ),
           ),
@@ -78,7 +80,6 @@ class StatusCardWidget extends StatelessWidget {
 
   Widget buildDescriptionText(IPleromaCard card) => Expanded(
         child: Text(card.description,
-            overflow: TextOverflow.ellipsis,
             style: TextStyle(
               color: FediColors.darkGrey,
               fontSize: 15.0,
@@ -99,15 +100,17 @@ class StatusCardWidget extends StatelessWidget {
     );
   }
 
-  Text buildProviderText(IPleromaCard card) {
-    return Text(
-      card.providerName,
-      style: TextStyle(
-        color: FediColors.grey,
-        fontSize: 12,
-        height: 1.5,
+  Widget buildProviderText(IPleromaCard card) {
+    return Container(
+      child: Text(
+        card.providerName,
+        style: TextStyle(
+          color: FediColors.grey,
+          fontSize: 12,
+          height: 1.5,
+        ),
+        overflow: TextOverflow.ellipsis,
       ),
-      overflow: TextOverflow.ellipsis,
     );
   }
 
