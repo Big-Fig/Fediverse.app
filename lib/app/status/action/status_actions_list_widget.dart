@@ -33,7 +33,7 @@ class StatusActionsListWidget extends StatelessWidget {
               StatusReblogActionWidget()
             ],
           ),
-          StatusShareActionWidget(),
+          StatusMoreActionWidget(),
         ],
       ),
     );

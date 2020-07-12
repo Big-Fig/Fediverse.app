@@ -24,7 +24,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class StatusShareActionWidget extends StatelessWidget {
+class StatusMoreActionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: true);
@@ -217,7 +217,7 @@ class StatusShareActionWidget extends StatelessWidget {
     );
   }
 
-  const StatusShareActionWidget();
+  const StatusMoreActionWidget();
 
   Widget buildAccountActionsWidget(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);

@@ -64,12 +64,6 @@ abstract class PostStatusBloc extends PostMessageBloc
     addDisposable(disposable: CustomDisposable(() {
       focusNode.removeListener(focusListener);
     }));
-
-    if (initialAccountsToMention?.isNotEmpty == true) {
-      initialAccountsToMention.forEach((account) {
-        addMentionByAccount(account);
-      });
-    }
   }
 
   void onFocusChange(bool hasFocus) {
