@@ -38,9 +38,6 @@ abstract class IStatusThreadBloc implements Disposable {
 
   String get mentionAcctsListString;
 
-  Future<IStatus> sendMessageToAllMentionedAccounts(
-      {@required String idempotencyKey, @required String text});
-
   Future<bool> refresh();
 
   bool isFirstStatusInThread(IStatus status);

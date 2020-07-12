@@ -317,11 +317,16 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   List<String> _calculateMediaIdsField() {
-    return mediaAttachmentsBloc.mediaAttachmentBlocs
+    var mediaIds = mediaAttachmentsBloc.mediaAttachmentBlocs
         ?.where(
             (bloc) => bloc.uploadState == UploadMediaAttachmentState.uploaded)
         ?.map((bloc) => bloc.pleromaMediaAttachment.id)
         ?.toList();
+    // media ids shouldn't be empty (should be null in this case)
+    if(mediaIds?.isNotEmpty != true) {
+      mediaIds = null;
+    }
+    return mediaIds;
   }
 
   Future<bool> _scheduleStatus() async {
