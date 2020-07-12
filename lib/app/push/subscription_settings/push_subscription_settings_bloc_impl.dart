@@ -108,7 +108,8 @@ class PushSubscriptionSettingsBloc extends DisposableOwner
     );
 
     var oldPreferences = localPreferencesBloc.value;
-    if (newPreferences != oldPreferences) {
+    var changed = newPreferences != oldPreferences;
+    if (changed) {
       var success = await updateSubscriptionPreferences(newPreferences);
 
       if (!success) {
