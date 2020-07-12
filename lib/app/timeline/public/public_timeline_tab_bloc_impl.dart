@@ -21,21 +21,33 @@ class PublicTimelineTabBloc extends TimelineTabBloc
   final IConversationRepository conversationRepository;
   final INotificationRepository notificationRepository;
   final ICurrentAuthInstanceBloc currentInstanceBloc;
-  final ITimelineSettingsLocalPreferencesBloc timelineLocalPreferencesBloc;
+
   final IPleromaWebSocketsService pleromaWebSocketsService;
   final IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
 
   PublicTimelineTabBloc(
-      {@required this.pleromaTimelineService,
-      @required this.statusRepository,
-      @required this.conversationRepository,
-      @required this.notificationRepository,
-      @required this.timelineLocalPreferencesBloc,
-      @required this.currentInstanceBloc,
-      @required this.pleromaWebSocketsService,
-      @required this.chatNewMessagesHandlerBloc,
-      @required bool listenWebSocketsChanges})
-      : super(tab: TimelineTab.public) {
+      {@required
+          this.pleromaTimelineService,
+      @required
+          this.statusRepository,
+      @required
+          this.conversationRepository,
+      @required
+          this.notificationRepository,
+      @required
+          ITimelineSettingsLocalPreferencesBloc timelineLocalPreferencesBloc,
+      @required
+          this.currentInstanceBloc,
+      @required
+          this.pleromaWebSocketsService,
+      @required
+          this.chatNewMessagesHandlerBloc,
+      @required
+          bool listenWebSocketsChanges})
+      : super(
+          tab: TimelineTab.public,
+          timelineLocalPreferencesBloc: timelineLocalPreferencesBloc,
+        ) {
     if (listenWebSocketsChanges) {
       addDisposable(
           disposable: PublicTimelineWebSocketsHandler(

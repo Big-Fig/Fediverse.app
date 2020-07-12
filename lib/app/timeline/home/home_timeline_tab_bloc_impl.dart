@@ -27,25 +27,39 @@ class HomeTimelineTabBloc extends TimelineTabBloc
   final IConversationRepository conversationRepository;
   final INotificationRepository notificationRepository;
   final ICurrentAuthInstanceBloc currentInstanceBloc;
-  final ITimelineSettingsLocalPreferencesBloc timelineLocalPreferencesBloc;
   final IMyAccountBloc myAccountBloc;
   final IPleromaWebSocketsService pleromaWebSocketsService;
   final IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
 
   HomeTimelineTabBloc(
-      {@required this.pleromaTimelineService,
-      @required this.pleromaAccountService,
-      @required this.statusRepository,
-      @required this.conversationRepository,
-      @required this.notificationRepository,
-      @required this.accountRepository,
-      @required this.currentInstanceBloc,
-      @required this.myAccountBloc,
-      @required this.timelineLocalPreferencesBloc,
-      @required this.pleromaWebSocketsService,
-      @required this.chatNewMessagesHandlerBloc,
-      @required bool listenWebSocketsChanges})
-      : super(tab: TimelineTab.home) {
+      {@required
+          this.pleromaTimelineService,
+      @required
+          this.pleromaAccountService,
+      @required
+          this.statusRepository,
+      @required
+          this.conversationRepository,
+      @required
+          this.notificationRepository,
+      @required
+          this.accountRepository,
+      @required
+          this.currentInstanceBloc,
+      @required
+          this.myAccountBloc,
+      @required
+          ITimelineSettingsLocalPreferencesBloc timelineLocalPreferencesBloc,
+      @required
+          this.pleromaWebSocketsService,
+      @required
+          this.chatNewMessagesHandlerBloc,
+      @required
+          bool listenWebSocketsChanges})
+      : super(
+          tab: TimelineTab.home,
+          timelineLocalPreferencesBloc: timelineLocalPreferencesBloc,
+        ) {
     if (listenWebSocketsChanges) {
       addDisposable(
           disposable: HomeTimelineWebSocketsHandler(
