@@ -133,6 +133,8 @@ class _TimelinesHomeTabPageState extends State<TimelinesHomeTabPage>
                 child: FediListTile(
                   isFirstInList: true,
                   child: TimelinesHomeTabPostStatusHeaderWidget(),
+                  // special hack to avoid 1px horizontal line on some devices
+                  oneSidePadding: FediSizes.smallPadding - 1,
                 ),
               ),
             ),
