@@ -21,7 +21,7 @@ class MediaAttachmentImageWidget extends StatelessWidget {
         },
         child: CachedNetworkImage(
           imageUrl: mediaAttachment.previewUrl,
-          fit: BoxFit.contain,
+          fit: BoxFit.cover,
           placeholder: (context, url) => Padding(
             padding: FediPadding.allBigPadding,
             child: Center(
@@ -37,11 +37,13 @@ class MediaAttachmentImageWidget extends StatelessWidget {
               return LimitedBox(
                 maxHeight: maxHeight,
                 child: Image(
+                  fit: BoxFit.cover,
                   image: imageProvider,
                 ),
               );
             } else {
               return Image(
+                fit: BoxFit.cover,
                 image: imageProvider,
               );
             }
