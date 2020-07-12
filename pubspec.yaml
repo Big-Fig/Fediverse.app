@@ -47,8 +47,6 @@ dependencies:
   path_provider: ^1.4.5
   # fetch gallery albums and items
   photo_manager: ^0.5.0
-  # camera view for media picker
-  camera: ^0.5.7
   # detect file mime type for share
   mime_type: ^0.2.4
   # handle crashes and non-fatal errors
@@ -70,8 +68,8 @@ dependencies:
   # pick images modal popup
   emoji_picker: ^0.1.0
 
-  #default media picker
-  image_picker: ^0.6.3+4
+  # default media picker
+  image_picker: ^0.6.7+4
 
   # better lint, should be in main dependencies to ignore async/await unnecessary warnings
   pedantic: ^1.8.0+1
