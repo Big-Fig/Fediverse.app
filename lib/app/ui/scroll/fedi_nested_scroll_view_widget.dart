@@ -106,7 +106,7 @@ abstract class FediNestedScrollViewWidget extends StatelessWidget {
         }),
         builder: (context, snapshot) {
           var show = snapshot.data;
-          _logger.finest(() => "show $show");
+//          _logger.finest(() => "show $show");
           if (show == true) {
             return onLongScrollUpTopOverlayWidget;
           } else {
@@ -125,8 +125,8 @@ abstract class FediNestedScrollViewWidget extends StatelessWidget {
             scrollControllerBloc.longScrollDirectionStream,
             fediNestedScrollViewBloc.isNestedScrollViewBodyStartedScrollStream,
             (longScrollDirection, isAtLeastStartExpand) {
-          _logger.finest(() => "longScrollDirection $longScrollDirection "
-              "isAtLeastStartExpand $isAtLeastStartExpand");
+//          _logger.finest(() => "longScrollDirection $longScrollDirection "
+//              "isAtLeastStartExpand $isAtLeastStartExpand");
 
           var collapsedAppBarShowed =
               longScrollDirection == ScrollDirection.forward;
