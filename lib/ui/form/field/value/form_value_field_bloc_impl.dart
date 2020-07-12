@@ -24,8 +24,12 @@ class FormValueFieldBloc<T> extends FormFieldBloc
   final BehaviorSubject<T> _currentValueSubject;
   @override
   T get currentValue => _currentValueSubject.value;
+
+
+  // distinct is important, we don't need new value in stream on each widget
+  // build
   @override
-  Stream<T> get currentValueStream => _currentValueSubject.stream;
+  Stream<T> get currentValueStream => _currentValueSubject.stream.distinct();
 
   FormValueFieldBloc({
     @required this.originValue,
