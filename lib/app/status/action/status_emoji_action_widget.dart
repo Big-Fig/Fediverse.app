@@ -6,6 +6,7 @@ import 'package:fedi/app/ui/async/fedi_async_dialog.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/error/error_data_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class StatusEmojiActionWidget extends StatelessWidget {
       children: [
         FediIconButton(
           color: FediColors.darkGrey,
-          iconSize: 20.0,
+          iconSize: FediSizes.bigIconSize,
           icon: Icon(FediIcons.emoji),
           onPressed: () {
             _showEmojiPicker(context, statusBloc);

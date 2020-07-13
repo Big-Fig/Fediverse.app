@@ -92,7 +92,7 @@ class EditMyAccountWidget extends StatelessWidget {
           BuildContext context, IEditMyAccountBloc editMyAccountBloc) =>
       FediIconInCircleBlurredButton(
         FediIcons.camera,
-        iconSize: 15.0,
+        iconSize: FediSizes.mediumIconSize,
         size: FediSizes.smallFilledButtonHeight,
         onPressed: () {
           startChoosingFileToUploadHeader(context, editMyAccountBloc);
@@ -146,7 +146,7 @@ class EditMyAccountWidget extends StatelessWidget {
           BuildContext context, IEditMyAccountBloc editMyAccountBloc) =>
       FediIconInCircleBlurredButton(
         FediIcons.camera,
-        iconSize: 15.0,
+        iconSize: FediSizes.mediumIconSize,
         borderWidth: 2.0,
         size: FediSizes.smallFilledButtonHeight,
         onPressed: () {

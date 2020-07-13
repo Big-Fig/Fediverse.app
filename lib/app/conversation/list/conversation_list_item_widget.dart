@@ -77,7 +77,7 @@ class ConversationListItemWidget extends StatelessWidget {
     return FediIconButton(
       tooltip: tr("app.conversation.action.more"),
       color: FediColors.darkGrey,
-      iconSize: 16.0,
+      iconSize: FediSizes.mediumIconSize,
       icon: Icon(FediIcons.arrow_right),
       onPressed: () {
         goToConversationPage(context,
