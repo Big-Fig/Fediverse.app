@@ -30,7 +30,7 @@ class StatusMoreActionWidget extends StatelessWidget {
     var statusBloc = IStatusBloc.of(context, listen: true);
     return FediIconButton(
       color: FediColors.darkGrey,
-      iconSize: 20.0,
+      iconSize: FediSizes.bigIconSize,
       icon: Icon(FediIcons.menu),
       tooltip: tr("app.status.action.more"),
       onPressed: () {

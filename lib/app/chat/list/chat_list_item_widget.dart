@@ -72,7 +72,7 @@ class ChatListItemWidget extends StatelessWidget {
     return FediIconButton(
       tooltip: tr("app.chat.action.more"),
       color: FediColors.darkGrey,
-      iconSize: 16.0,
+      iconSize: FediSizes.mediumIconSize,
       icon: Icon(FediIcons.arrow_right),
       onPressed: () {
         goToChatPage(context, chat: chatBloc.chat);
