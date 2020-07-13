@@ -66,7 +66,7 @@ class ChatMessageListItemWidget extends StatelessWidget {
             child: Padding(
               padding: isHaveTextContent
                   ? EdgeInsets.symmetric(
-                      vertical: FediSizes.middlePadding,
+                      vertical: FediSizes.mediumPadding,
                       horizontal: FediSizes.bigPadding,
                     )
                   : EdgeInsets.zero,

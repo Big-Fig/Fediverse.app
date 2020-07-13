@@ -40,7 +40,7 @@ class StatusEmojiReactionListItemWidget extends StatelessWidget {
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: FediSizes.middlePadding),
+                  padding: const EdgeInsets.symmetric(horizontal: FediSizes.mediumPadding),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
