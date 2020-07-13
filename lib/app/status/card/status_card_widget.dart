@@ -29,7 +29,7 @@ class StatusCardWidget extends StatelessWidget {
 
           return Padding(
             padding:
-                const EdgeInsets.symmetric(vertical: FediSizes.middlePadding),
+                const EdgeInsets.symmetric(vertical: FediSizes.mediumPadding),
             child: Container(
               height: _cardImageSize,
               child: ClipRRect(
@@ -62,7 +62,7 @@ class StatusCardWidget extends StatelessWidget {
                   bottomRight: Radius.circular(_cardBorderRadius)),
               border: Border.all(color: FediColors.ultraLightGrey)),
           child: Padding(
-            padding: FediPadding.allMiddlePadding,
+            padding: FediPadding.allMediumPadding,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,

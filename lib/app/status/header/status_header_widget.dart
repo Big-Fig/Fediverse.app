@@ -5,7 +5,7 @@ import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
-import 'package:fedi/app/ui/spacer/fedi_middle_horizontal_spacer.dart';
+import 'package:fedi/app/ui/spacer/fedi_medium_horizontal_spacer.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -63,13 +63,13 @@ class StatusHeaderWidget extends StatelessWidget {
           style:
               TextStyle(fontSize: 14, color: FediColors.darkGrey, height: 1.15),
         ),
-        FediMiddleHorizontalSpacer(),
+        FediMediumHorizontalSpacer(),
         Icon(
           icon,
           size: 16,
           color: FediColors.grey,
         ),
-        FediMiddleHorizontalSpacer(),
+        FediMediumHorizontalSpacer(),
         Flexible(
           child: Text(
             descText,

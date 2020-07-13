@@ -64,7 +64,7 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
       };
     }
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: FediSizes.middlePadding),
+      padding: EdgeInsets.symmetric(horizontal: FediSizes.mediumPadding),
       child: Row(
         children: <Widget>[
           Expanded(

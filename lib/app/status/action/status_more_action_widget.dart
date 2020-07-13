@@ -86,9 +86,9 @@ class StatusMoreActionWidget extends StatelessWidget {
   Padding buildAccountDescSeparator(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
-          top: FediSizes.middlePadding,
-          left: FediSizes.middlePadding,
-          right: FediSizes.middlePadding),
+          top: FediSizes.mediumPadding,
+          left: FediSizes.mediumPadding,
+          right: FediSizes.mediumPadding),
       child: Center(
         child: Text(
           tr("app.status.action.popup.more_actions_for"),
@@ -101,9 +101,9 @@ class StatusMoreActionWidget extends StatelessWidget {
   Padding buildTitleSeparator(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
-          top: FediSizes.middlePadding,
-          left: FediSizes.middlePadding,
-          right: FediSizes.middlePadding),
+          top: FediSizes.mediumPadding,
+          left: FediSizes.mediumPadding,
+          right: FediSizes.mediumPadding),
       child: Center(
         child: Text(
           tr("app.status.action.popup.title"),
@@ -203,7 +203,7 @@ class StatusMoreActionWidget extends StatelessWidget {
 
   Padding buildButton(String title, onPressed()) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: FediSizes.middlePadding),
+      padding: EdgeInsets.symmetric(horizontal: FediSizes.mediumPadding),
       child: Row(
         children: <Widget>[
           Expanded(
