@@ -1,6 +1,7 @@
 import 'package:fedi/app/status/emoji_reaction/status_emoji_reaction_bloc.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -25,7 +26,8 @@ class StatusEmojiReactionListItemWidget extends StatelessWidget {
           var color =
               emojiReaction.me ? FediColors.primaryColor : FediColors.lightGrey;
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: FediSizes.smallPadding),
+            padding:
+                const EdgeInsets.symmetric(horizontal: FediSizes.smallPadding),
             child: InkWell(
               onTap: () {
                 statusEmojiReactionBloc.requestToggleEmojiReaction();
@@ -40,7 +42,8 @@ class StatusEmojiReactionListItemWidget extends StatelessWidget {
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: FediSizes.mediumPadding),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: FediSizes.mediumPadding),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -53,10 +56,8 @@ class StatusEmojiReactionListItemWidget extends StatelessWidget {
                       const FediSmallHorizontalSpacer(),
                       Text(
                         "${emojiReaction.count}",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w300,
-                            fontSize: 14,
-                            color: color),
+                        style: FediTextStyles.mediumShortDarkGrey
+                            .copyWith(color: color),
                       ),
                     ],
                   ),

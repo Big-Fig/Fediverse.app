@@ -9,6 +9,7 @@ import 'package:fedi/app/init/app_init_page.dart';
 import 'package:fedi/app/ui/button/text/fedi_grey_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -94,8 +95,7 @@ class CurrentAuthInstanceContextLoadingWidget extends StatelessWidget {
                           currentAuthInstanceBloc.currentInstance.userAtHost
                         ]),
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: FediColors.white, fontWeight: FontWeight.w500),
+                    style: FediTextStyles.mediumShortBoldWhite,
                   ),
                 ),
                 Padding(

@@ -1,4 +1,5 @@
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/notification_overlay/fedi_notification_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -11,19 +12,12 @@ OverlaySupportEntry showErrorFediNotificationOverlay({
   return showFediNotificationOverlay(
       Text(
         contentText,
-        style: TextStyle(
-          fontSize: 12,
-          color: FediColors.white,
-        ),
+        style: FediTextStyles.smallShortWhite,
       ),
       subtitle: titleText != null
           ? Text(
               titleText,
-              style: TextStyle(
-                fontSize: 12,
-                color: FediColors.white,
-                fontWeight: FontWeight.w500,
-              ),
+              style: FediTextStyles.mediumShortBoldWhite,
             )
           : null,
       slideDismiss: true,

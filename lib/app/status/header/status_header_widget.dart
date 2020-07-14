@@ -4,6 +4,7 @@ import 'package:fedi/app/account/details/account_details_page.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/spacer/fedi_medium_horizontal_spacer.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
@@ -60,8 +61,7 @@ class StatusHeaderWidget extends StatelessWidget {
         const FediSmallHorizontalSpacer(),
         Text(
           account.acct,
-          style:
-              TextStyle(fontSize: 14, color: FediColors.darkGrey, height: 1.15),
+          style: FediTextStyles.mediumShortDarkGrey,
         ),
         FediMediumHorizontalSpacer(),
         Icon(
@@ -74,10 +74,7 @@ class StatusHeaderWidget extends StatelessWidget {
           child: Text(
             descText,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: 12,
-              color: FediColors.darkGrey,
-            ),
+            style: FediTextStyles.smallShortDarkGrey
           ),
         )
       ],

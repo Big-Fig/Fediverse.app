@@ -19,6 +19,7 @@ import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_custom_app_bar.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -50,7 +51,7 @@ class StatusThreadPage extends StatelessWidget {
           if (status == null) {
             return Text(
               tr("app.status.thread.start.loading"),
-              style: TextStyle(color: FediColors.darkGrey),
+              style: FediTextStyles.mediumShortDarkGrey,
             );
           }
 

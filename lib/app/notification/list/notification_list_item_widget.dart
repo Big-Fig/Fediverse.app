@@ -14,6 +14,7 @@ import 'package:fedi/app/notification/notification_bloc.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
@@ -67,10 +68,8 @@ class NotificationListItemWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         AccountDisplayNameWidget(
-                            textStyle: TextStyle(
-                                height: 1.5,
-                                fontSize: 16.0,
-                                color: FediColors.darkGrey)),
+                          textStyle: FediTextStyles.bigTallDarkGrey,
+                        ),
                         buildNotificationContent(context, notificationBloc)
                       ],
                     ),

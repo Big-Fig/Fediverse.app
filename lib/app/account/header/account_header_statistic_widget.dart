@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -31,21 +32,11 @@ class AccountHeaderStatisticWidget extends StatelessWidget {
         children: [
           Text(
             _numberFormat.format(value),
-            style: TextStyle(
-              color: color,
-              fontWeight: FontWeight.w500,
-              height: 1.15,
-              fontSize: 16.0,
-            ),
+            style: FediTextStyles.bigShortBoldDarkGrey.copyWith(color: color),
           ),
           Text(
             label,
-            style: TextStyle(
-              color: color,
-              fontWeight: FontWeight.w300,
-              height: 1.5,
-              fontSize: 14.0,
-            ),
+            style: FediTextStyles.mediumTallDarkGrey.copyWith(color: color),
           )
         ],
       ),

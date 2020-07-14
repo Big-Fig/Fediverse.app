@@ -5,8 +5,8 @@ import 'package:fedi/app/account/pagination/list/account_pagination_list_bloc_im
 import 'package:fedi/app/account/pagination/list/account_pagination_list_widget.dart';
 import 'package:fedi/app/status/reblog/status_reblog_account_cached_list_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,8 +26,7 @@ class StatusReblogAccountListPage extends StatelessWidget {
               child: Text(
                 "app.account.list.privacy".tr(),
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontWeight: FontWeight.w500, color: FediColors.grey),
+                style: FediTextStyles.mediumShortBoldGrey,
               ),
             ),
             Expanded(
@@ -47,14 +46,16 @@ class StatusReblogAccountListPage extends StatelessWidget {
 void goToStatusReblogAccountListPage(BuildContext context, IStatus status) {
   Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) => StatusReblogAccountCachedListBloc.provideToContext(
-        context,
-        status: status.reblog ?? status,
-        child: AccountCachedPaginationBloc.provideToContext(
-          context,
-          child: AccountPaginationListBloc.provideToContext(context,
-              child: StatusReblogAccountListPage()),
-        ),
-      )),
+    MaterialPageRoute(
+        builder: (context) =>
+            StatusReblogAccountCachedListBloc.provideToContext(
+              context,
+              status: status.reblog ?? status,
+              child: AccountCachedPaginationBloc.provideToContext(
+                context,
+                child: AccountPaginationListBloc.provideToContext(context,
+                    child: StatusReblogAccountListPage()),
+              ),
+            )),
   );
 }
