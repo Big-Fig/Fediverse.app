@@ -10,6 +10,7 @@ import 'package:fedi/app/conversation/title/conversation_title_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_shadows.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -62,10 +63,7 @@ class ConversationPage extends StatelessWidget {
           const ConversationAvatarWidget(baseAvatarSize: 36),
           const FediSmallHorizontalSpacer(),
           const ConversationTitleWidget(
-            textStyle: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-                color: FediColors.darkGrey),
+            textStyle: FediTextStyles.bigShortBoldDarkGrey,
           ),
         ],
       ),

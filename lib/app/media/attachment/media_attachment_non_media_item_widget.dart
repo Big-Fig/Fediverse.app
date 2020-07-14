@@ -81,7 +81,7 @@ class MediaAttachmentNonMediaItemWidget extends StatelessWidget {
                       ),
                       Expanded(
                         child: Padding(
-                          padding: FediPadding.allMiddlePadding,
+                          padding: FediPadding.allMediumPadding,
                           child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,

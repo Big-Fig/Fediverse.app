@@ -34,11 +34,6 @@ class AccountNoteWidget extends StatelessWidget {
               _unescape.convert(escapedText), noteEmojiText.emojis,
               isNeedToddHtmlBodyWrapper: false);
 
-//          htmlContent.replaceAll("", replace)
-//
-//          htmlContent = "<p>Test bio :firefox: Yevhenii</p> <p>Zapletin 🍪 "
-//              "Yevhenii Zapletin 🍪 </p>";
-
           var textStyle = TextStyle(
             fontSize: 16.0,
             height: 1.5,
@@ -61,7 +56,6 @@ class AccountNoteWidget extends StatelessWidget {
               },
             ),
           );
-
         });
   }
 }

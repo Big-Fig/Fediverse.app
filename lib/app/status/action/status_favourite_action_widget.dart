@@ -6,6 +6,7 @@ import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +28,7 @@ class StatusFavouriteActionWidget extends StatelessWidget {
               return PleromaAsyncOperationButtonBuilderWidget(
                   showProgressDialog: false,
                   builder: (context, onPressed) => FediIconButton(
-                        iconSize: 20.0,
+                        iconSize: FediSizes.bigIconSize,
                         color: favourited
                             ? FediColors.primaryColor
                             : FediColors.secondaryColor,

@@ -1,17 +1,15 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/conversation/conversation_bloc.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ConversationTitleWidget extends StatelessWidget {
   final TextStyle textStyle;
 
-  const ConversationTitleWidget(
-      {this.textStyle = const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w500,
-          color: FediColors.darkGrey)});
+  const ConversationTitleWidget({
+    this.textStyle = FediTextStyles.bigShortBoldDarkGrey,
+  });
 
   @override
   Widget build(BuildContext context) {

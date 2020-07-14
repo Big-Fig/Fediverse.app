@@ -4,11 +4,12 @@ import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_filled_button.dart';
 import 'package:fedi/app/ui/edit_text/fedi_filled_edit_text_field.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-const _filledEditTextIconSize = 20.0;
+
 
 class SearchInputWidget extends StatelessWidget {
   @override
@@ -24,7 +25,7 @@ class SearchInputWidget extends StatelessWidget {
             expanded: false,
             hintText: tr("app.search.field.input.hint"),
             ending: FediIconButton(
-              iconSize: _filledEditTextIconSize,
+              iconSize: FediSizes.bigIconSize,
               onPressed: () {
                 searchInputBloc.clearSearch();
               },

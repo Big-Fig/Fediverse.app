@@ -43,7 +43,7 @@ class _FediMediaCarouselWidgetState extends State<FediMediaCarouselWidget> {
               return Container(
                 width: 12.0,
                 height: 12.0,
-                margin: EdgeInsets.symmetric(vertical: FediSizes.middlePadding,
+                margin: EdgeInsets.symmetric(vertical: FediSizes.mediumPadding,
                     horizontal: 2.0),
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
