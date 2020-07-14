@@ -106,7 +106,6 @@ class CurrentAuthInstanceContextLoadingWidget extends StatelessWidget {
                     onPressed: () {
                       currentInstanceContextLoadingBloc.refresh();
                     },
-                    textColor: FediColors.darkGrey,
                   ),
                 ),
                 Padding(
@@ -117,7 +116,6 @@ class CurrentAuthInstanceContextLoadingWidget extends StatelessWidget {
                     onPressed: () {
                       showMyAccountActionListBottomSheetDialog(context);
                     },
-                    textColor: FediColors.darkGrey,
 
                   ),
                 ),
@@ -130,7 +128,6 @@ class CurrentAuthInstanceContextLoadingWidget extends StatelessWidget {
                       ICurrentAuthInstanceBloc.of(context, listen: false)
                           .logoutCurrentInstance();
                     },
-                    textColor: FediColors.darkGrey,
                   ),
                 ),
               ],

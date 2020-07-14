@@ -67,12 +67,16 @@ class _FediTextTabIndicatorItemWidgetState
     };
 
     Widget text;
+    var fontSize = 16.0;
+    var lineHeight = 1.5;
     if (isSelected) {
       text = FediPrimaryFilledTextButton(
         widget.label,
         onPressed: onPressed,
-        fontSize: 16.0,
-        lineHeight: 1.5,
+        textStyle: FediPrimaryFilledTextButton.defaultTextStyle.copyWith(
+          fontSize: fontSize,
+          height: lineHeight,
+        ),
         enabledBackgroundColor: Colors.transparent,
       );
     } else {
@@ -80,15 +84,19 @@ class _FediTextTabIndicatorItemWidgetState
         text = FediTransparentTextButton(
           widget.label,
           onPressed: onPressed,
-          fontSize: 16.0,
-          lineHeight: 1.5,
+          textStyle: FediTransparentTextButton.defaultTextStyle.copyWith(
+            fontSize: fontSize,
+            height: lineHeight,
+          ),
         );
       } else {
         text = FediGreyFilledTextButton(
           widget.label,
           onPressed: onPressed,
-          fontSize: 16.0,
-          lineHeight: 1.5,
+          textStyle: FediGreyFilledTextButton.defaultTextStyle.copyWith(
+            fontSize: fontSize,
+            height: lineHeight,
+          ),
         );
       }
     }

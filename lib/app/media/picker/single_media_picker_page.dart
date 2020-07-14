@@ -6,6 +6,7 @@ import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/header/fedi_sub_header_text.dart';
 import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_custom_app_bar.dart';
@@ -48,7 +49,8 @@ class SingleMediaPickerPage extends StatelessWidget {
               if (fileGalleryBloc.folders?.isNotEmpty != true) {
                 return Center(child: Text("file.picker.empty".tr()));
               }
-              var storagePermissionBloc = IStoragePermissionBloc.of(context, listen: false);
+              var storagePermissionBloc =
+                  IStoragePermissionBloc.of(context, listen: false);
               return StreamBuilder<AssetPathEntity>(
                   stream: fileGalleryBloc.selectedFolderStream,
                   initialData: fileGalleryBloc.selectedFolder,
@@ -104,11 +106,10 @@ class SingleMediaPickerPage extends StatelessWidget {
                           },
                           loadingWidget: FediCircularProgressIndicator(),
                           permissionButtonBuilder: (context, grantedBuilder) {
-
                             return FediGrantPermissionWidget(
-                            grantedBuilder: grantedBuilder, permissionBloc:
-                              storagePermissionBloc,
-                          );
+                              grantedBuilder: grantedBuilder,
+                              permissionBloc: storagePermissionBloc,
+                            );
                           },
 //                        galleryFileTapped: galleryFileTapped,
                         ),
@@ -187,11 +188,9 @@ class SingleMediaPickerPage extends StatelessWidget {
                         },
                         title: Text(
                           _calculateFolderTitle(folder),
-                          style: TextStyle(
-                              fontWeight:
-                                  folder == fileGalleryBloc.selectedFolder
-                                      ? FontWeight.w500
-                                      : FontWeight.w300),
+                          style: folder == fileGalleryBloc.selectedFolder
+                              ? FediTextStyles.mediumShortBoldDarkGrey
+                              : FediTextStyles.mediumShortDarkGrey,
                         ),
                       ))
                   .toList(),

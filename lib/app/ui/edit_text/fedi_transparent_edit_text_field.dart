@@ -1,4 +1,5 @@
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -49,7 +50,6 @@ class FediTransparentEditTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return TextField(
       autocorrect: autocorrect,
       focusNode: focusNode,
@@ -57,27 +57,20 @@ class FediTransparentEditTextField extends StatelessWidget {
           maxLines == 1 ? textInputAction : TextInputAction.newline,
       onSubmitted: onSubmitted,
       decoration: InputDecoration(
-          border: displayUnderlineBorder ? _border : InputBorder.none,
-          focusedBorder:  displayUnderlineBorder ? _focusedBorder :  InputBorder.none,
-          errorBorder:  displayUnderlineBorder ? _errorBorder :  InputBorder.none,
-          focusedErrorBorder:  displayUnderlineBorder ? _errorBorder :  InputBorder.none,
-          errorStyle: TextStyle(
-            fontSize: 14.0,
-            color: FediColors.error,
-            height: 1.15,
-          ),
-          errorText: errorText,
-          hintText: hintText,
-          hintStyle: TextStyle(
-            fontSize: 18.0,
-            color: FediColors.lightGrey,
-            height: 1.5,
-          )),
-      style: TextStyle(
-        fontSize: 18.0,
-        color: FediColors.darkGrey,
-        height: 1.5,
+        border: displayUnderlineBorder ? _border : InputBorder.none,
+        focusedBorder:
+            displayUnderlineBorder ? _focusedBorder : InputBorder.none,
+        errorBorder: displayUnderlineBorder ? _errorBorder : InputBorder.none,
+        focusedErrorBorder:
+            displayUnderlineBorder ? _errorBorder : InputBorder.none,
+        errorStyle: FediTextStyles.mediumShortDarkGrey.copyWith(
+          color: FediColors.error,
+        ),
+        errorText: errorText,
+        hintText: hintText,
+        hintStyle: FediTextStyles.subHeaderTallLightGrey,
       ),
+      style: FediTextStyles.subHeaderTallDarkGrey,
       obscureText: obscureText,
       autofocus: autofocus,
       controller: textEditingController,

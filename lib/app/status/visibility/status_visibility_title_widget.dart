@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/status/visibility/status_visibility_ui.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -30,9 +31,10 @@ class StatusVisibilityTitleWidget extends StatelessWidget {
     @required isSelectedVisibility,
   }) =>
       Text(mapVisibilityToTitle(context, visibility),
-          style: TextStyle(
-              color: calculateVisibilityColor(
-                  isSelectedVisibility, isPossibleToChangeVisibility)));
+          style: FediTextStyles.mediumShortDarkGrey.copyWith(
+            color: calculateVisibilityColor(
+                isSelectedVisibility, isPossibleToChangeVisibility),
+          ));
 
   static String mapVisibilityToTitle(
       BuildContext context, PleromaVisibility visibility) {

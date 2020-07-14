@@ -1,5 +1,6 @@
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -60,11 +61,9 @@ class FediFilledEditTextField extends StatelessWidget {
                   border: InputBorder.none,
                   hintText: hintText,
                   errorText: errorText,
-                  hintStyle: TextStyle(
-                      fontSize: 16.0, color: FediColors.grey, height: 1.5),
+                  hintStyle:FediTextStyles.bigTallGrey,
                 ),
-                style: TextStyle(
-                    fontSize: 16.0, color: FediColors.darkGrey, height: 1.5),
+                style:FediTextStyles.bigTallDarkGrey,
                 autofocus: autofocus,
                 controller: textEditingController,
                 minLines: null,

@@ -84,7 +84,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
             ".join_fedi"), onPressed: () {
       goToRegisterAuthInstancePage(context,
           instanceBaseUrl: Uri.parse('https://fedi.app'));
-    }, textColor: FediColors.darkGrey);
+    });
   }
 
   Padding buildJoinFediDescText(BuildContext context) {
@@ -128,7 +128,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
                     ".action"
                     ".sign_up"), onPressed: () {
               signUpToInstance(context);
-            }, textColor: FediColors.darkGrey),
+            },),
           ),
         ),
         Expanded(
@@ -141,7 +141,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
                     ".action"
                     ".login"), onPressed: () {
               logInToInstance(context);
-            }, textColor: FediColors.darkGrey),
+            }),
           ),
         ),
       ],
