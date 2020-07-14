@@ -1,5 +1,6 @@
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -34,7 +35,7 @@ class FediDrawerWidget extends StatelessWidget {
       child: DrawerHeader(
         child: Text(
           headerText,
-          style: TextStyle(color: Colors.white),
+          style: FediTextStyles.subHeaderShortWhite,
         ),
         decoration: BoxDecoration(
           color: FediColors.primaryColor,

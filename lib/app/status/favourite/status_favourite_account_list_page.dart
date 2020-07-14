@@ -5,7 +5,6 @@ import 'package:fedi/app/account/pagination/list/account_pagination_list_bloc_im
 import 'package:fedi/app/account/pagination/list/account_pagination_list_widget.dart';
 import 'package:fedi/app/status/favourite/status_favourite_account_cached_list_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';

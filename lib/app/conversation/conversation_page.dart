@@ -8,7 +8,6 @@ import 'package:fedi/app/conversation/conversation_widget.dart';
 import 'package:fedi/app/conversation/status/post/conversation_post_status_bloc_impl.dart';
 import 'package:fedi/app/conversation/title/conversation_title_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_shadows.dart';
 import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';

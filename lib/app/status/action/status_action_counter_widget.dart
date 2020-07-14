@@ -1,4 +1,3 @@
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,15 +13,15 @@ class StatusActionCounterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => InkWell(
-      onTap: onPressed,
-      child: Padding(
-        padding: const EdgeInsets.only(
-          right: 4.0,
+        onTap: onPressed,
+        child: Padding(
+          padding: const EdgeInsets.only(
+            right: 4.0,
+          ),
+          child: Text(
+            value.toString(),
+            style: FediTextStyles.smallShortDarkGrey,
+          ),
         ),
-        child: Text(
-          value.toString(),
-          style: FediTextStyles.smallShortDarkGrey,
-        ),
-      ),
-    );
+      );
 }
