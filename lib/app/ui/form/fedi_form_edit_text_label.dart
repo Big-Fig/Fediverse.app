@@ -1,4 +1,4 @@
-import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:flutter/cupertino.dart';
 
 class FediFormEditTextLabel extends StatelessWidget {
@@ -8,11 +8,7 @@ class FediFormEditTextLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Text(
-      text,
-      style: TextStyle(
-        fontSize: 14.0,
-        height: 1.5,
-        color: FediColors.grey,
-      ),
-    );
+        text,
+        style: FediTextStyles.mediumTallGrey,
+      );
 }

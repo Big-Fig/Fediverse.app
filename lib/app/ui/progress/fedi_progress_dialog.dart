@@ -1,6 +1,7 @@
 import 'package:async/async.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/dialog/base_dialog.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,7 +23,6 @@ abstract class ProgressDialog extends BaseDialog {
 
   Stream<bool> get isCanceledStream => _isCanceledSubject.stream;
 
-
   ProgressDialog({
     this.contentMessage,
     @required this.cancelableOperation,
@@ -34,10 +34,11 @@ abstract class ProgressDialog extends BaseDialog {
   Widget buildDialogContent(BuildContext context);
 
   Widget buildDialogContentMessage(BuildContext context) {
-    return Text(contentMessage ?? tr("dialog.progress.content"),
-        textAlign: TextAlign.center,
-        style: TextStyle(
-            color: Colors.black, fontSize: 18.0, fontWeight: FontWeight.bold));
+    return Text(
+      contentMessage ?? tr("dialog.progress.content"),
+      textAlign: TextAlign.center,
+      style: FediTextStyles.subHeaderShortDarkGrey,
+    );
   }
 
   @override

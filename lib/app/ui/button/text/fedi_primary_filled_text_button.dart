@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
@@ -10,12 +11,15 @@ class FediPrimaryFilledTextButton  extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
   final double height;
-  final double fontSize;
-  final double lineHeight;
   final double borderWidth;
   final bool expanded;
   final Color enabledBackgroundColor;
   final Color disabledBackgroundColor;
+
+
+  final TextStyle textStyle;
+  static const TextStyle defaultTextStyle = FediTextStyles.mediumShortBoldWhite;
+
 
   FediPrimaryFilledTextButton(
     this.text, {
@@ -23,8 +27,7 @@ class FediPrimaryFilledTextButton  extends StatelessWidget {
     this.enabledBackgroundColor = FediColors.primaryColor,
     this.disabledBackgroundColor = FediColors.lightGrey,
     this.height = FediSizes.textButtonHeight,
-    this.fontSize = 14.0,
-    this.lineHeight = 1.15,
+    this.textStyle = defaultTextStyle,
     this.borderWidth = 1,
     this.expanded = true,
   });
@@ -52,11 +55,7 @@ class FediPrimaryFilledTextButton  extends StatelessWidget {
             child: Center(
               child: Text(
                 text, textAlign: TextAlign.center, // 80% transparency
-                style: TextStyle(
-                    fontSize: fontSize,
-                    height: lineHeight,
-                    fontWeight: FontWeight.w500,
-                    color: FediColors.white),
+                style: textStyle,
               ),
             ),
           )),

@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 
 class FediTextStyles {
   static const _smallSize = 12.0;
-  static const _middleSize = 14.0;
+  static const _mediumSize = 14.0;
   static const _bigSize = 16.0;
   static const _subHeaderSize = 18.0;
   static const _headerSize = 24.0;
@@ -27,7 +27,7 @@ class FediTextStyles {
 
   static const TextStyle mediumShortWhite = TextStyle(
     color: _whiteColor,
-    fontSize: _middleSize,
+    fontSize: _mediumSize,
     height: _smallHeight,
     fontWeight: _normalWeight,
   );
@@ -55,7 +55,7 @@ class FediTextStyles {
 
   static const TextStyle mediumTallWhite = TextStyle(
     color: _whiteColor,
-    fontSize: _middleSize,
+    fontSize: _mediumSize,
     height: _tallHeight,
     fontWeight: _normalWeight,
   );
@@ -83,7 +83,7 @@ class FediTextStyles {
 
   static const TextStyle mediumShortBoldWhite = TextStyle(
     color: _whiteColor,
-    fontSize: _middleSize,
+    fontSize: _mediumSize,
     height: _smallHeight,
     fontWeight: _boldWeight,
   );
@@ -111,7 +111,7 @@ class FediTextStyles {
 
   static const TextStyle mediumTallBoldWhite = TextStyle(
     color: _whiteColor,
-    fontSize: _middleSize,
+    fontSize: _mediumSize,
     height: _tallHeight,
     fontWeight: _boldWeight,
   );
@@ -139,7 +139,7 @@ class FediTextStyles {
 
   static const TextStyle mediumShortGrey = TextStyle(
     color: _greyColor,
-    fontSize: _middleSize,
+    fontSize: _mediumSize,
     height: _smallHeight,
     fontWeight: _normalWeight,
   );
@@ -167,7 +167,7 @@ class FediTextStyles {
 
   static const TextStyle mediumTallGrey = TextStyle(
     color: _greyColor,
-    fontSize: _middleSize,
+    fontSize: _mediumSize,
     height: _tallHeight,
     fontWeight: _normalWeight,
   );
@@ -195,7 +195,7 @@ class FediTextStyles {
 
   static const TextStyle mediumShortBoldGrey = TextStyle(
     color: _greyColor,
-    fontSize: _middleSize,
+    fontSize: _mediumSize,
     height: _smallHeight,
     fontWeight: _boldWeight,
   );
@@ -223,7 +223,7 @@ class FediTextStyles {
 
   static const TextStyle mediumTallBoldGrey = TextStyle(
     color: _greyColor,
-    fontSize: _middleSize,
+    fontSize: _mediumSize,
     height: _tallHeight,
     fontWeight: _boldWeight,
   );
@@ -251,7 +251,7 @@ class FediTextStyles {
 
   static const TextStyle mediumShortDarkGrey = TextStyle(
     color: _darkGreyColor,
-    fontSize: _middleSize,
+    fontSize: _mediumSize,
     height: _smallHeight,
     fontWeight: _normalWeight,
   );
@@ -279,7 +279,7 @@ class FediTextStyles {
 
   static const TextStyle mediumTallDarkGrey = TextStyle(
     color: _darkGreyColor,
-    fontSize: _middleSize,
+    fontSize: _mediumSize,
     height: _tallHeight,
     fontWeight: _normalWeight,
   );
@@ -307,7 +307,7 @@ class FediTextStyles {
 
   static const TextStyle mediumShortBoldDarkGrey = TextStyle(
     color: _darkGreyColor,
-    fontSize: _middleSize,
+    fontSize: _mediumSize,
     height: _smallHeight,
     fontWeight: _boldWeight,
   );
@@ -335,7 +335,7 @@ class FediTextStyles {
 
   static const TextStyle mediumTallBoldDarkGrey = TextStyle(
     color: _darkGreyColor,
-    fontSize: _middleSize,
+    fontSize: _mediumSize,
     height: _tallHeight,
     fontWeight: _boldWeight,
   );
@@ -363,7 +363,7 @@ class FediTextStyles {
 
   static const TextStyle mediumShortPrimary = TextStyle(
     color: _primaryColor,
-    fontSize: _middleSize,
+    fontSize: _mediumSize,
     height: _smallHeight,
     fontWeight: _normalWeight,
   );
@@ -391,7 +391,7 @@ class FediTextStyles {
 
   static const TextStyle mediumTallPrimary = TextStyle(
     color: _primaryColor,
-    fontSize: _middleSize,
+    fontSize: _mediumSize,
     height: _tallHeight,
     fontWeight: _normalWeight,
   );
@@ -419,7 +419,7 @@ class FediTextStyles {
 
   static const TextStyle mediumShortBoldPrimary = TextStyle(
     color: _primaryColor,
-    fontSize: _middleSize,
+    fontSize: _mediumSize,
     height: _smallHeight,
     fontWeight: _boldWeight,
   );
@@ -447,7 +447,7 @@ class FediTextStyles {
 
   static const TextStyle mediumTallBoldPrimary = TextStyle(
     color: _primaryColor,
-    fontSize: _middleSize,
+    fontSize: _mediumSize,
     height: _tallHeight,
     fontWeight: _boldWeight,
   );
@@ -475,7 +475,7 @@ class FediTextStyles {
 
   static const TextStyle mediumShortLightGrey = TextStyle(
     color: _lightGreyColor,
-    fontSize: _middleSize,
+    fontSize: _mediumSize,
     height: _smallHeight,
     fontWeight: _normalWeight,
   );
@@ -503,7 +503,7 @@ class FediTextStyles {
 
   static const TextStyle mediumTallLightGrey = TextStyle(
     color: _lightGreyColor,
-    fontSize: _middleSize,
+    fontSize: _mediumSize,
     height: _tallHeight,
     fontWeight: _normalWeight,
   );
@@ -531,7 +531,7 @@ class FediTextStyles {
 
   static const TextStyle mediumShortBoldLightGrey = TextStyle(
     color: _lightGreyColor,
-    fontSize: _middleSize,
+    fontSize: _mediumSize,
     height: _smallHeight,
     fontWeight: _boldWeight,
   );
@@ -559,7 +559,7 @@ class FediTextStyles {
 
   static const TextStyle mediumTallBoldLightGrey = TextStyle(
     color: _lightGreyColor,
-    fontSize: _middleSize,
+    fontSize: _mediumSize,
     height: _tallHeight,
     fontWeight: _boldWeight,
   );
@@ -587,7 +587,7 @@ class FediTextStyles {
 
   static const TextStyle mediumShortMediumGrey = TextStyle(
     color: _mediumGreyColor,
-    fontSize: _middleSize,
+    fontSize: _mediumSize,
     height: _smallHeight,
     fontWeight: _normalWeight,
   );
@@ -615,7 +615,7 @@ class FediTextStyles {
 
   static const TextStyle mediumTallMediumGrey = TextStyle(
     color: _mediumGreyColor,
-    fontSize: _middleSize,
+    fontSize: _mediumSize,
     height: _tallHeight,
     fontWeight: _normalWeight,
   );
@@ -643,7 +643,7 @@ class FediTextStyles {
 
   static const TextStyle mediumShortBoldMediumGrey = TextStyle(
     color: _mediumGreyColor,
-    fontSize: _middleSize,
+    fontSize: _mediumSize,
     height: _smallHeight,
     fontWeight: _boldWeight,
   );
@@ -671,7 +671,7 @@ class FediTextStyles {
 
   static const TextStyle mediumTallBoldMediumGrey = TextStyle(
     color: _mediumGreyColor,
-    fontSize: _middleSize,
+    fontSize: _mediumSize,
     height: _tallHeight,
     fontWeight: _boldWeight,
   );

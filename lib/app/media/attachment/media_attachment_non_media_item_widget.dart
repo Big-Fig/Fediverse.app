@@ -3,6 +3,7 @@ import 'package:fedi/app/ui/fedi_border_radius.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
  const _nonMediaIconSize = 70.0;
@@ -72,8 +73,7 @@ class MediaAttachmentNonMediaItemWidget extends StatelessWidget {
                                 fileExtension?.toUpperCase(),
                                 maxLines: 1,
                                 minFontSize: 8.0,
-//                            overflow: TextOverflow.ellipsis,
-                                style: TextStyle(color: FediColors.darkGrey),
+                                style: FediTextStyles.mediumShortDarkGrey,
                               )),
                             ),
                           ),
@@ -89,18 +89,12 @@ class MediaAttachmentNonMediaItemWidget extends StatelessWidget {
                               Text(
                                 fileExtension?.toUpperCase(),
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    color: FediColors.grey,
-                                    height: 1.5,
-                                    fontSize: 12),
+                                style: FediTextStyles.smallTallGrey,
                               ),
                               Text(
                                 fileName,
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    color: FediColors.darkGrey,
-                                    height: 1.5,
-                                    fontSize: 15),
+                                style: FediTextStyles.mediumTallDarkGrey,
                               ),
                             ],
                           ),

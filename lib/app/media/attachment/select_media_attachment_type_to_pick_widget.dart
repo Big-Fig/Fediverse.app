@@ -7,6 +7,7 @@ import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:file_picker/file_picker.dart';
@@ -166,8 +167,7 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
           ),
           Text(
             label,
-            style: TextStyle(
-                color: FediColors.darkGrey, fontSize: 14.0, height: 1.15),
+            style: FediTextStyles.mediumShortDarkGrey,
           )
         ],
       ),
