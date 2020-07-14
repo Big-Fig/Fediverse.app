@@ -10,7 +10,9 @@ var _logger = Logger("status_content_with_emojis_widget.dart");
 class StatusContentWithEmojisWidget extends StatelessWidget {
   final bool collapsible;
 
-  const StatusContentWithEmojisWidget({@required this.collapsible});
+  const StatusContentWithEmojisWidget({
+    @required this.collapsible,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -41,21 +43,19 @@ class StatusContentWithEmojisWidget extends StatelessWidget {
                 });
 
             return StreamBuilder<bool>(
-              stream: statusBloc.isCollapsedStream,
-              initialData: statusBloc.isCollapsed,
-              builder: (context, snapshot) {
-                var isCollapsed = snapshot.data;
-                if (isCollapsed && isNeedCollapse) {
-                  return Container(
-                    height: 200,
-                    child: htmlTextWidget,
-                  );
-                } else {
-                  return htmlTextWidget;
-                }
-              }
-            );
-
+                stream: statusBloc.isCollapsedStream,
+                initialData: statusBloc.isCollapsed,
+                builder: (context, snapshot) {
+                  var isCollapsed = snapshot.data;
+                  if (isCollapsed && isNeedCollapse) {
+                    return Container(
+                      height: 200,
+                      child: htmlTextWidget,
+                    );
+                  } else {
+                    return htmlTextWidget;
+                  }
+                });
           } else {
             return SizedBox.shrink();
           }

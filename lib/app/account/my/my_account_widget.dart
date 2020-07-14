@@ -25,7 +25,7 @@ class MyAccountWidget extends StatelessWidget {
               color: FediColors.primaryColor,
               child: const AccountActionListWidget(),
             ),
-          const AccountNoteWidget(
+           AccountNoteWidget(
             color: FediColors.darkGrey,
           ),
           const AccountFieldGridWidget(),

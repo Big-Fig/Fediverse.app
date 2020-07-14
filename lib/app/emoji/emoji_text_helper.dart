@@ -1,9 +1,7 @@
 import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
 
-String addEmojiToHtmlContent(
-  String content,
-  List<IPleromaEmoji> emoji,
-) {
+String addEmojiToHtmlContent(String content, List<IPleromaEmoji> emoji,
+    {bool isNeedToddHtmlBodyWrapper = true}) {
   if (content == null) {
     return null;
   }
@@ -12,8 +10,8 @@ String addEmojiToHtmlContent(
     return "";
   }
 
-  if (emoji?.isNotEmpty != true) {
-    return "<html><body><p>$content</p></body></html>";
+  if (emoji?.isNotEmpty != true && isNeedToddHtmlBodyWrapper) {
+    return _addHtmlBodyWrapper(content);
   }
 
   List<IPleromaEmoji> customEmoji = emoji ?? [];
@@ -27,7 +25,11 @@ String addEmojiToHtmlContent(
     newHtmlContent = newHtmlContent.replaceAll(
         ":$shortcode:", '<img src="$url" width="20">');
   }
-  newHtmlContent = "<html><body><p>$newHtmlContent</p></body></html>";
-//  newHtmlContent = "<p>$newHtmlContent</p>";
+  if (isNeedToddHtmlBodyWrapper) {
+    newHtmlContent = _addHtmlBodyWrapper(newHtmlContent);
+  }
   return newHtmlContent;
 }
+
+String _addHtmlBodyWrapper(String content) =>
+    "<html><body><p>$content</p></body></html>";
