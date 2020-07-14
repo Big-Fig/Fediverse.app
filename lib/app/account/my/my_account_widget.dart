@@ -1,6 +1,6 @@
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/action/account_action_list_widget.dart';
-import 'package:fedi/app/account/field/account_field_grid_widget.dart';
+import 'package:fedi/app/account/field/account_field_list_widget.dart';
 import 'package:fedi/app/account/my/info/my_account_info_widget.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/note/account_note_widget.dart';
@@ -19,6 +19,7 @@ class MyAccountWidget extends StatelessWidget {
     var myAccountBloc = IMyAccountBloc.of(context, listen: false);
     return Container(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           MyAccountInfoWidget(onStatusesTapCallback: onStatusesTapCallback),
           if (!myAccountBloc.checkAccountIsMe(accountBloc.account))
@@ -29,7 +30,9 @@ class MyAccountWidget extends StatelessWidget {
           AccountNoteWidget(
             textStyle: FediTextStyles.bigTallBoldDarkGrey,
           ),
-          const AccountFieldGridWidget(),
+          const AccountFieldListWidget(
+            brightness: Brightness.dark,
+          ),
         ],
       ),
     );
