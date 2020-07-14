@@ -67,4 +67,17 @@ class PleromaField implements IPleromaField {
       return value;
     }
   }
+
+  @override
+  String get valueAsRawUrlWithoutSchema {
+    var rawUrl = valueAsRawUrl;
+    try {
+      var uri = Uri.parse(rawUrl);
+      return "${uri.host}${uri.path}";
+    } catch (e, stackTrace) {
+      _logger.warning(
+          () => "valueAsRawUrlWithoutSchema $rawUrl", e, stackTrace);
+      return rawUrl;
+    }
+  }
 }
