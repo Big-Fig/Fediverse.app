@@ -23,6 +23,7 @@ class HtmlTextWidget extends StatelessWidget {
   final bool drawNewLines;
   final TextAlign textAlign;
   final double imageSize;
+  final Display paragraphDisplay;
 
   const HtmlTextWidget({
     @required this.data,
@@ -34,6 +35,7 @@ class HtmlTextWidget extends StatelessWidget {
     this.linkColor = FediColors.primaryColorDark,
     this.color,
     this.textMaxLines,
+    this.paragraphDisplay = Display.INLINE,
     this.textOverflow,
     this.shrinkWrap = false,
     this.drawNewLines = true,
@@ -88,7 +90,7 @@ class HtmlTextWidget extends StatelessWidget {
           padding: EdgeInsets.zero,
           margin: EdgeInsets.zero,
           textLineHeight: lineHeight,
-          display: Display.INLINE,
+          display: paragraphDisplay,
           fontSize: FontSize(fontSize),
           fontWeight: fontWeight,
           color: color,

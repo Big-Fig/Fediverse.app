@@ -34,7 +34,7 @@ class AccountWidget extends StatelessWidget {
               AccountInfoWidget(onStatusesTapCallback: onStatusesTapCallback),
               if (!myAccountBloc.checkAccountIsMe(accountBloc.account))
                 const AccountActionListWidget(),
-              const AccountNoteWidget(
+               AccountNoteWidget(
                 color: FediColors.white,
               ),
               const AccountFieldGridWidget(),

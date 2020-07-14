@@ -11,7 +11,7 @@ description: A new Flutter project.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 2.0.8+208
+version: 2.0.9+209
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -155,6 +155,9 @@ dependencies:
 
   # file picker for media attachment
   file_picker: ^1.12.0
+
+  # unenscape account not field
+  html_unescape: ^1.0.1+3
 
 # required to build flutter test with hive https://github.com/hivedb/hive/issues/285
 dependency_overrides:
