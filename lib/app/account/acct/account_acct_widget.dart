@@ -1,16 +1,13 @@
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:flutter/cupertino.dart';
 
 class AccountAcctWidget extends StatelessWidget {
   final TextStyle textStyle;
 
   const AccountAcctWidget(
-      {this.textStyle = const TextStyle(
-        color: FediColors.darkGrey,
-        fontSize: 14.0,
-        fontWeight: FontWeight.normal,
-      )});
+      {this.textStyle = FediTextStyles.mediumShortDarkGrey});
 
   @override
   Widget build(BuildContext context) {

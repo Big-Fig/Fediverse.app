@@ -6,9 +6,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AccountNoteWidget extends StatelessWidget {
-  final Color color;
+  final TextStyle textStyle;
 
-  const AccountNoteWidget({@required this.color});
+  const AccountNoteWidget({
+    @required this.textStyle,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,12 +30,7 @@ class AccountNoteWidget extends StatelessWidget {
             child: EmojiTextWidget(
               textAlign: TextAlign.center,
               emojiText: noteEmojiText,
-              textStyle: TextStyle(
-                fontSize: 16.0,
-                height: 1.5,
-                color: color,
-                fontWeight: FontWeight.w500,
-              ),
+              textStyle: textStyle,
               textOverflow: TextOverflow.visible,
             ),
           );

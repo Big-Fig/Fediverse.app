@@ -6,8 +6,8 @@ import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_ba
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/list/fedi_list_smart_refresher_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
@@ -156,11 +156,7 @@ class ConversationStatusListWidget
                 child: Center(
                     child: Text(
                   _dateSeparatorDateFormat.format(currentCreatedAt),
-                  style: TextStyle(
-                      height: 1.15,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: FediColors.grey),
+                  style: FediTextStyles.smallShortBoldGrey,
                 )),
               ),
             ],

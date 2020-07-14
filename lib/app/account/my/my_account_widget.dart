@@ -5,6 +5,7 @@ import 'package:fedi/app/account/my/info/my_account_info_widget.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/note/account_note_widget.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:flutter/material.dart';
 
 class MyAccountWidget extends StatelessWidget {
@@ -26,7 +27,7 @@ class MyAccountWidget extends StatelessWidget {
               child: const AccountActionListWidget(),
             ),
           const AccountNoteWidget(
-            color: FediColors.darkGrey,
+            textStyle: FediTextStyles.bigTallBoldDarkGrey,
           ),
           const AccountFieldGridWidget(),
         ],
