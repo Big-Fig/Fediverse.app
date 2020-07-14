@@ -6,7 +6,6 @@ import 'package:fedi/app/chat/message/list/chat_message_list_item_widget.dart';
 import 'package:fedi/app/chat/message/pagination/list/chat_message_pagination_list_base_widget.dart';
 import 'package:fedi/app/date/date_utils.dart';
 import 'package:fedi/app/list/list_loading_footer_widget.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/list/fedi_list_smart_refresher_widget.dart';

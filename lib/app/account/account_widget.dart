@@ -5,7 +5,6 @@ import 'package:fedi/app/account/header/account_header_background_widget.dart';
 import 'package:fedi/app/account/info/account_info_widget.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/note/account_note_widget.dart';
-import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:flutter/material.dart';
