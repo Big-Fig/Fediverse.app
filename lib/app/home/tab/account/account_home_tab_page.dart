@@ -14,6 +14,7 @@ import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart'
 import 'package:fedi/app/ui/fedi_border_radius.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_without_scrollable_tabs_widget.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
@@ -134,11 +135,10 @@ class AccountHomeTabPage extends StatelessWidget {
 
     return AutoSizeText(
       currentInstanceBloc.currentInstance.userAtHost,
-      minFontSize: 12.0,
-      maxFontSize: 18.0,
+      minFontSize: FediTextStyles.smallShortBoldWhite.fontSize,
+      maxFontSize: FediTextStyles.subHeaderShortBoldWhite.fontSize,
       maxLines: 1,
-      style: TextStyle(
-          fontWeight: FontWeight.w500, color: FediColors.white, fontSize: 18.0),
+      style: FediTextStyles.subHeaderShortBoldWhite,
     );
   }
 }

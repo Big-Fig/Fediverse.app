@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +21,7 @@ class StatusShowThisThreadActionWidget extends StatelessWidget {
             child: Center(
                 child: Text(
               tr("app.status.action.show_this_thread"),
-              style: TextStyle(fontSize: 16, color: FediColors.primaryColor),
+              style: FediTextStyles.bigShortPrimary,
             ))));
   }
 }

@@ -7,6 +7,7 @@ import 'package:fedi/app/status/favourite/status_favourite_account_cached_list_b
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,8 +27,7 @@ class StatusFavouriteAccountListPage extends StatelessWidget {
               child: Text(
                 "app.account.list.privacy".tr(),
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontWeight: FontWeight.w500, color: FediColors.grey),
+                style: FediTextStyles.mediumShortBoldGrey,
               ),
             ),
             Expanded(

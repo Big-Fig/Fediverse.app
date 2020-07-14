@@ -2,6 +2,7 @@ import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/emoji/emoji_text_model.dart';
 import 'package:fedi/app/emoji/emoji_text_widget.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:flutter/cupertino.dart';
 
 class AccountDisplayNameWidget extends StatelessWidget {
@@ -11,11 +12,7 @@ class AccountDisplayNameWidget extends StatelessWidget {
 
   AccountDisplayNameWidget({
     this.textOverflow = TextOverflow.ellipsis,
-    this.textStyle = const TextStyle(
-      color: FediColors.darkGrey,
-      fontWeight: FontWeight.w500,
-      fontSize: 16.0,
-    ),
+    this.textStyle = FediTextStyles.bigShortBoldDarkGrey,
     this.textAlign = TextAlign.start,
   });
 

@@ -4,6 +4,7 @@ import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/media/attachment/media_attachments_widget.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -66,7 +67,7 @@ class ChatMessageListItemWidget extends StatelessWidget {
             child: Padding(
               padding: isHaveTextContent
                   ? EdgeInsets.symmetric(
-                      vertical: FediSizes.middlePadding,
+                      vertical: FediSizes.mediumPadding,
                       horizontal: FediSizes.bigPadding,
                     )
                   : EdgeInsets.zero,
@@ -100,10 +101,7 @@ class ChatMessageListItemWidget extends StatelessWidget {
                   child: Text(
                     TimeOfDay.fromDateTime(messageBloc.createdAt)
                         .format(context),
-                    style: TextStyle(
-                        height: 14 / 12,
-                        fontSize: 12,
-                        color: FediColors.mediumGrey),
+                    style: FediTextStyles.smallShortGrey,
                   ),
                 ))
         ],

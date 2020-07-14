@@ -2,7 +2,6 @@ import 'package:fedi/app/media/attachment/media_attachment_audio_widget.dart';
 import 'package:fedi/app/media/attachment/media_attachment_image_widget.dart';
 import 'package:fedi/app/media/attachment/media_attachment_unknown_widget.dart';
 import 'package:fedi/app/media/attachment/media_attachment_video_widget.dart';
-import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/mastodon/media/attachment/mastodon_media_attachment_model.dart';
 import 'package:fedi/app/ui/media/fedi_media_carousel_widget.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';

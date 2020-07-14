@@ -3,6 +3,7 @@ import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
@@ -29,7 +30,7 @@ class StatusCardWidget extends StatelessWidget {
 
           return Padding(
             padding:
-                const EdgeInsets.symmetric(vertical: FediSizes.middlePadding),
+                const EdgeInsets.symmetric(vertical: FediSizes.mediumPadding),
             child: Container(
               height: _cardImageSize,
               child: ClipRRect(
@@ -62,7 +63,7 @@ class StatusCardWidget extends StatelessWidget {
                   bottomRight: Radius.circular(_cardBorderRadius)),
               border: Border.all(color: FediColors.ultraLightGrey)),
           child: Padding(
-            padding: FediPadding.allMiddlePadding,
+            padding: FediPadding.allMediumPadding,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -79,23 +80,17 @@ class StatusCardWidget extends StatelessWidget {
       );
 
   Widget buildDescriptionText(IPleromaCard card) => Expanded(
-        child: Text(card.description,
-            style: TextStyle(
-              color: FediColors.darkGrey,
-              fontSize: 15.0,
-              height: 1.5,
-            )),
+        child: Text(
+          card.description,
+          style: FediTextStyles.bigTallDarkGrey,
+        ),
       );
 
   Text buildTitleText(IPleromaCard card) {
     return Text(
       card.title,
       maxLines: 2,
-      style: TextStyle(
-          color: FediColors.darkGrey,
-          fontSize: 16.0,
-          height: 1.5,
-          fontWeight: FontWeight.w500),
+      style: FediTextStyles.bigTallBoldDarkGrey,
       overflow: TextOverflow.ellipsis,
     );
   }
@@ -104,11 +99,7 @@ class StatusCardWidget extends StatelessWidget {
     return Container(
       child: Text(
         card.providerName,
-        style: TextStyle(
-          color: FediColors.grey,
-          fontSize: 12,
-          height: 1.5,
-        ),
+        style: FediTextStyles.smallTallGrey,
         overflow: TextOverflow.ellipsis,
       ),
     );

@@ -9,6 +9,7 @@ import 'package:fedi/app/chat/post/chat_post_message_bloc_impl.dart';
 import 'package:fedi/app/chat/title/chat_title_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_custom_app_bar.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
@@ -50,10 +51,7 @@ class ChatPage extends StatelessWidget {
           const ChatAvatarWidget(baseAvatarSize: 36),
           const FediBigHorizontalSpacer(),
           const ChatTitleWidget(
-            textStyle: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-                color: FediColors.darkGrey),
+            textStyle: FediTextStyles.bigShortBoldDarkGrey,
           ),
         ],
       ),

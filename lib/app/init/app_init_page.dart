@@ -1,11 +1,13 @@
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:fedi/package_info/version_package_info_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-    var _progressSize = 40.0;
+var _progressSize = 40.0;
+
 class AppInitPage extends StatelessWidget {
   final String text;
 
@@ -47,20 +49,14 @@ class AppInitPage extends StatelessWidget {
                   child: Text(
                     text,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: FediColors.white,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: FediTextStyles.mediumShortBoldWhite,
                   ),
                 ),
               Positioned(
                 right: 20.0,
                 bottom: 20.0,
                 child: VersionPackageInfoWidget(
-                  textStyle: TextStyle(
-                    color: FediColors.white,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  textStyle: FediTextStyles.mediumShortBoldWhite,
                 ),
               ),
             ]),
