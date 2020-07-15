@@ -2,6 +2,7 @@ import 'package:fedi/app/status/scheduled/list/cached/scheduled_status_cached_li
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
+import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc_proxy_provider.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
@@ -55,7 +56,7 @@ class ScheduledStatusPaginationListWithNewItemsBloc<
   static Widget provideToContext(BuildContext context,
       {@required Widget child}) {
     return DisposableProvider<
-        CachedPaginationListWithNewItemsBloc<
+        ICachedPaginationListWithNewItemsBloc<
             CachedPaginationPage<IScheduledStatus>, IScheduledStatus>>(
       create: (context) => ScheduledStatusPaginationListWithNewItemsBloc(
         scheduledStatusCachedListService:

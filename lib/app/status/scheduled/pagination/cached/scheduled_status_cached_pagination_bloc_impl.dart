@@ -78,7 +78,9 @@ class ScheduledStatusCachedPaginationBloc
         itemsCountPerPage: itemsCountPerPage,
         maximumCachedPagesCount: maximumCachedPagesCount,
       ),
-      child: CachedPaginationBlocProxyProvider(child: child),
+      child: CachedPaginationBlocProxyProvider<
+          CachedPaginationPage<IScheduledStatus>,
+          IScheduledStatus>(child: child),
     );
   }
 }
