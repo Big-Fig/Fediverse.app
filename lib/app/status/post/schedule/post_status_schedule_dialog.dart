@@ -9,49 +9,21 @@ import 'package:intl/intl.dart';
 final dateFormat = DateFormat("yyyy-MM-dd HH:mm");
 
 void showPostStatusScheduleDialog(
-    BuildContext context, IPostStatusBloc postStatusBloc) {
-  var isScheduled = postStatusBloc.isScheduled;
-  var scheduledAt = postStatusBloc.scheduledAt;
+    BuildContext context, IPostStatusBloc postStatusBloc) async {
+  var newTime = await showScheduledStatusDateTimePickerDialog(
+      context, postStatusBloc.scheduledAt);
 
-
-
-  showFediAlertDialog(
+  if (newTime != null &&
+      newTime.isBefore(DateTime.now()
+          .add(IPostStatusBloc.requiredDurationToScheduleStatus))) {
+    showFediAlertDialog(
       context: context,
-      title: tr("app.status.post.schedule.dialog.title"),
-      body: isScheduled
-          ? tr(
-              "app.status.post.schedule.dialog.content.scheduled",
-              args: [dateFormat.format(scheduledAt)])
-          : tr("app.status.post.schedule.dialog.content.not_scheduled"),
-      actions: [
-        AlertAction(
-            text: tr("app.status.post.schedule.dialog.action.cancel"),
-            onPressed: () {}),
-        AlertAction(
-            text: tr("app.status.post.schedule.dialog.action.edit"),
-            onPressed: () async {
-              var newTime = await showScheduledStatusDateTimePickerDialog(
-                  context, postStatusBloc.scheduledAt);
-
-              if (newTime.isBefore(DateTime.now()
-                  .add(IPostStatusBloc.requiredDurationToScheduleStatus))) {
-                showFediAlertDialog(
-                  context: context,
-                  title: tr("app.status.post.schedule.error.not_in_future.dialog"
-                          ".title"),
-                  body: tr("app.status.post.schedule.error.not_in_future.dialog"
-                          ".content"),
-                );
-              } else {
-                postStatusBloc.schedule(newTime);
-              }
-            }),
-        if (isScheduled)
-          AlertAction(
-              text: tr("app.status.post.schedule.dialog.action.clear"),
-              onPressed: () async {
-                postStatusBloc.clearSchedule();
-              })
-      ]);
+      title: tr("app.status.post.schedule.error.not_in_future.dialog"
+          ".title"),
+      body: tr("app.status.post.schedule.error.not_in_future.dialog"
+          ".content"),
+    );
+  } else {
+    postStatusBloc.schedule(newTime);
+  }
 }
-

@@ -74,6 +74,9 @@ dependencies:
   # better lint, should be in main dependencies to ignore async/await unnecessary warnings
   pedantic: ^1.8.0+1
 
+  # customizable datetime picker
+  flutter_datetime_picker: ^1.3.8
+
   # localization via .json files
   # easy_localization: ^2.3.2
   # it is easy_localization: ^2.3.2 with fixes for multiply runApp

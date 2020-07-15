@@ -150,6 +150,8 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
                 context: context,
                 asyncCode: () => scheduledStatusBloc.reSchedule(
                     scheduledAt: newScheduledAt));
+          } else {
+            await scheduledStatusBloc.cancelSchedule();
           }
         },
         child: Text(tr("app.status.scheduled.action.edit"),
