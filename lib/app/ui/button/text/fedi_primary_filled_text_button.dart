@@ -34,17 +34,19 @@ class FediPrimaryFilledTextButton  extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var calculatedHeight = height + borderWidth * 2;
+    var borderRadius = BorderRadius.all(Radius.circular(calculatedHeight / 2));
+
     var button = InkWell(
       onTap: onPressed,
       child: Container(
-          height: height + borderWidth * 2,
+          height: calculatedHeight,
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,
             color: onPressed != null
                 ? enabledBackgroundColor
                 : disabledBackgroundColor,
-            borderRadius: BorderRadius.all(
-                Radius.circular(FediSizes.textButtonRadiusCircle)),
+            borderRadius: borderRadius,
             border: Border.all(
               color: FediColors.white,
               width: borderWidth,

@@ -26,7 +26,7 @@ class FediSizes {
 
   static const textButtonRadiusCircle = 16.0;
   static const iconInCircleDefaultSize = 40.0;
-  static const iconInCircleDefaultIconSize = 16.0;
+  static const iconInCircleDefaultIconSize = 18.0;
 
   static const mediumIconSize = 16.0;
   static const bigIconSize = 20.0;
