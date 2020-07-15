@@ -29,17 +29,19 @@ class FediGreyFilledTextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    var calculatedHeight = height + borderWidth * 2;
+    var borderRadius = BorderRadius.all(Radius.circular(calculatedHeight / 2));
     return InkWell(
       onTap: onPressed,
       child: Container(
-          height: height + borderWidth * 2,
+          height: calculatedHeight,
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,
             color: onPressed != null
                 ? FediColors.ultraLightGrey
                 : FediColors.lightGrey,
-            borderRadius: BorderRadius.all(
-                Radius.circular(FediSizes.textButtonRadiusCircle)),
+            borderRadius: borderRadius,
             border: Border.all(
               color: FediColors.white,
               width: borderWidth,
