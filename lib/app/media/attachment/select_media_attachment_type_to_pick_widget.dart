@@ -35,7 +35,7 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
             vertical: FediSizes.bigPadding,
           ),
           child: Container(
-            height: 82,
+            height: 87,
             child: ListView(
               scrollDirection: Axis.horizontal,
               shrinkWrap: true,

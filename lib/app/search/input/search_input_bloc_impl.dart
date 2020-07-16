@@ -5,22 +5,65 @@ import 'package:rxdart/rxdart.dart';
 
 class SearchInputBloc extends DisposableOwner implements ISearchInputBloc {
   @override
-  final TextEditingController searchTextEditingController =
-      TextEditingController();
+  final TextEditingController searchTextEditingController = TextEditingController();
 
   // ignore: close_sinks
-  final BehaviorSubject<String> searchTextSubject = BehaviorSubject.seeded("");
+  final BehaviorSubject<String> confirmedSearchTermSubject = BehaviorSubject
+      .seeded("");
+
+  // ignore: close_sinks
+  final BehaviorSubject<String> currentInputSubject = BehaviorSubject.seeded(
+      "");
+
+  @override
+  String get currentInput => currentInputSubject.value;
+
+  @override
+  Stream<String> get currentInputStream => currentInputSubject.stream;
+
+  @override
+  bool get currentInputIsNotEmpty => currentInput?.isNotEmpty == true;
+
+  @override
+  Stream<bool> get currentInputIsNotEmptyStream =>
+      currentInputStream.map((currentInput) =>
+      currentInput?.isNotEmpty == true);
+
+  @override
+  bool get confirmedSearchTermIsNotEmpty =>
+      confirmedSearchTerm?.isNotEmpty == true;
+
+  @override
+  Stream<bool> get confirmedSearchTermIsNotEmptyStream =>
+      confirmedSearchTermStream.map((confirmedSearchTerm) =>
+      confirmedSearchTerm?.isNotEmpty == true);
+
+
+  @override
+  void customSearch(String search) {
+    searchTextEditingController.text = search;
+    confirmedSearchTermSubject.add(search);
+  }
 
   SearchInputBloc() {
-    addDisposable(subject: searchTextSubject);
+    addDisposable(subject: currentInputSubject);
+    addDisposable(subject: confirmedSearchTermSubject);
     addDisposable(textEditingController: searchTextEditingController);
+    var listener = () {
+      currentInputSubject.add(searchTextEditingController.text);
+    };
+    searchTextEditingController.addListener(listener);
+    addDisposable(custom: () {
+      searchTextEditingController.removeListener(listener);
+    });
   }
 
   @override
-  String get confirmedSearchTerm => searchTextSubject.value;
+  String get confirmedSearchTerm => confirmedSearchTermSubject.value;
 
   @override
-  Stream<String> get confirmedSearchTermStream => searchTextSubject.stream;
+  Stream<String> get confirmedSearchTermStream =>
+      confirmedSearchTermSubject.stream;
 
   @override
   void clearSearch() {
@@ -29,7 +72,7 @@ class SearchInputBloc extends DisposableOwner implements ISearchInputBloc {
 
   void onSearchTextChanged() {
     var newText = searchTextEditingController.text ?? "";
-    searchTextSubject.add(newText);
+    confirmedSearchTermSubject.add(newText);
   }
 
   @override

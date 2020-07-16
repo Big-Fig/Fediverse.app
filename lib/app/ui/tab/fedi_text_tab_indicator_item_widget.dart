@@ -1,6 +1,6 @@
-import 'package:fedi/app/ui/button/text/fedi_grey_filled_text_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
+import 'package:fedi/app/ui/button/text/fedi_white_filled_text_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -86,15 +86,17 @@ class _FediTextTabIndicatorItemWidgetState
           onPressed: onPressed,
           textStyle: FediTransparentTextButton.defaultTextStyle.copyWith(
             fontSize: fontSize,
+            fontWeight: FontWeight.normal,
             height: lineHeight,
           ),
         );
       } else {
-        text = FediGreyFilledTextButton(
+        text = FediWhiteFilledTextButton(
           widget.label,
           onPressed: onPressed,
-          textStyle: FediGreyFilledTextButton.defaultTextStyle.copyWith(
+          textStyle: FediWhiteFilledTextButton.defaultTextStyle.copyWith(
             fontSize: fontSize,
+            fontWeight: FontWeight.normal,
             height: lineHeight,
           ),
         );

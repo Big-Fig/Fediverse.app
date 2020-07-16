@@ -11,7 +11,6 @@ import 'package:fedi/app/status/post/input/post_status_compose_input_widget.dart
 import 'package:fedi/app/ui/divider/fedi_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -58,13 +57,10 @@ class PostStatusComposeWidget extends StatelessWidget {
                     maxLines: maxLines,
                   ),
                 ),
-          const FediBigVerticalSpacer(),
-          Padding(
-            padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
-            child: UploadMediaAttachmentsWidget(
-              scrollable: false,
-              heightOnKeyboardOpen: null,
-            ),
+//          const FediBigVerticalSpacer(),
+          UploadMediaAttachmentsWidget(
+            scrollable: false,
+            heightOnKeyboardOpen: null,
           ),
           if (!displayAccountAvatar && expanded) FediLightGreyDivider(),
           buildActions(),

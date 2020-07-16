@@ -28,6 +28,8 @@ import 'package:fedi/app/push/subscription_settings/local_preferences/push_subsc
 import 'package:fedi/app/push/subscription_settings/local_preferences/push_subscription_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/push/subscription_settings/push_subscription_settings_bloc.dart';
 import 'package:fedi/app/push/subscription_settings/push_subscription_settings_bloc_impl.dart';
+import 'package:fedi/app/search/recent/recent_search_local_preference_bloc.dart';
+import 'package:fedi/app/search/recent/recent_search_local_preference_bloc_impl.dart';
 import 'package:fedi/app/share/share_service.dart';
 import 'package:fedi/app/share/share_service_impl.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
@@ -117,6 +119,16 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     var globalProviderService = this;
 
     var userAtHost = currentInstance.userAtHost;
+
+
+    var recentSearchLocalPreferenceBloc =
+    RecentSearchLocalPreferenceBloc(
+        currentInstance.userAtHost, preferencesService);
+
+    addDisposable(disposable: recentSearchLocalPreferenceBloc);
+    await globalProviderService.asyncInitAndRegister<
+        IRecentSearchLocalPreferenceBloc>(recentSearchLocalPreferenceBloc);
+
     var moorDatabaseService = MoorDatabaseService(dbName: userAtHost);
     addDisposable(disposable: moorDatabaseService);
     await globalProviderService

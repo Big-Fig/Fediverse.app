@@ -4,6 +4,7 @@ import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.da
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_failed_notificationOverlay.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_remove_dialog.dart';
+import 'package:fedi/app/ui/button/icon/fedi_remove_icon_in_circle_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
@@ -157,26 +158,11 @@ class _UploadMediaAttachmentMediaItemWidgetState
   }
 
   Widget buildRemoveButton(BuildContext context,
-      IUploadMediaAttachmentBloc uploadMediaAttachmentBloc) {
-    return InkWell(
-      onTap: () {
+      IUploadMediaAttachmentBloc uploadMediaAttachmentBloc) => FediRemoveIconInCircleButton(
+      onPressed: () {
         showConfirmRemoveAssetDialog(context, uploadMediaAttachmentBloc);
       },
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(24.0),
-        child: Container(
-          width: 24,
-          height: 24,
-          color: FediColors.darkGrey.withOpacity(0.8),
-          child: Icon(
-            FediIcons.remove,
-            size: 14,
-            color: Colors.white,
-          ),
-        ),
-      ),
     );
-  }
 
   Widget buildMediaPreview(FilePickerFile asset) {
     var type = asset.type;

@@ -499,9 +499,14 @@
     },
     "search": {
       "title": "Search",
+      "recent": {
+        "title": "Recent",
+        "empty": "No recent searches"
+      },
       "tab": {
-        "accounts": "Accounts",
-        "statuses": "Statuses"
+        "all": "All",
+        "accounts": "Users",
+        "statuses": "Posts"
       },
       "desc": {
         "empty": "Search term is empty",

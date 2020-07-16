@@ -40,14 +40,14 @@ class StatusSubHeaderWidget extends StatelessWidget {
         const FediSmallHorizontalSpacer(),
         Text(
           descText,
-          style: FediTextStyles.mediumShortMediumGrey,
+          style: FediTextStyles.mediumShortMediumGrey.copyWith(height: 1),
         ),
         FediSmallHorizontalSpacer(),
         Flexible(
           child: Text(
             account.acct,
             overflow: TextOverflow.ellipsis,
-            style: FediTextStyles.mediumShortDarkGrey,
+            style: FediTextStyles.mediumShortDarkGrey.copyWith(height: 1),
           ),
         ),
       ],
