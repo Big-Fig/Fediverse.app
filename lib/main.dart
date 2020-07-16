@@ -54,6 +54,7 @@ import 'package:overlay_support/overlay_support.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:uni_links/uni_links.dart';
+import 'package:fedi/app/search/recent/recent_search_model.dart';
 
 var _logger = Logger("main.dart");
 
@@ -94,6 +95,7 @@ void main() async {
   Hive.registerAdapter(MastodonUrlsAdapter(), 62);
   Hive.registerAdapter(PleromaInstancePollLimitsAdapter(), 63);
   Hive.registerAdapter(PleromaAccountAdapter(), 64);
+  Hive.registerAdapter(RecentSearchListAdapter(), 65);
 
   Hive.init(directory.path);
 

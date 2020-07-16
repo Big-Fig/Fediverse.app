@@ -1,31 +1,57 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/search/input/search_input_bloc.dart';
+import 'package:fedi/app/search/input/search_input_widget.dart';
+import 'package:fedi/app/search/recent/recent_search_bloc.dart';
+import 'package:fedi/app/search/recent/recent_search_bloc_impl.dart';
+import 'package:fedi/app/search/recent/recent_search_local_preference_bloc.dart';
 import 'package:fedi/app/search/search_bloc.dart';
 import 'package:fedi/app/search/search_bloc_impl.dart';
 import 'package:fedi/app/search/search_model.dart';
 import 'package:fedi/app/search/search_widget.dart';
-import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
+import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
+import 'package:fedi/app/ui/page/fedi_sub_page_custom_app_bar.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
-      appBar: FediSubPageTitleAppBar(
-        title: tr("app.search.title"),
-      ),
-      body: SearchWidget(),
-    );
+        appBar: FediSubPageCustomAppBar(
+          leading: FediBackIconButton(),
+          child: SearchInputWidget(
+            autofocus: true,
+          ),
+        ),
+        body: SearchWidget(),
+      );
 }
 
-void goToSearchPage(BuildContext context,
-    {SearchTab startTab = SearchTab.accounts}) {
+void goToSearchPage(
+  BuildContext context, {
+//  SearchTab startTab = SearchTab.all,
+  SearchTab startTab = SearchTab.accounts,
+}) {
   Navigator.push(
     context,
     MaterialPageRoute(
-        builder: (context) => DisposableProvider<ISearchBloc>(
-            create: (context) =>
-                SearchBloc.createFromContext(context, startTab: startTab),
-            child: SearchPage())),
+      builder: (context) => DisposableProvider<ISearchBloc>(
+        create: (context) =>
+            SearchBloc.createFromContext(context, startTab: startTab),
+        child: ProxyProvider<ISearchBloc, ISearchInputBloc>(
+          update: (BuildContext context, ISearchBloc value,
+                  ISearchInputBloc previous) =>
+              value.searchInputBloc,
+          child: DisposableProvider<IRecentSearchBloc>(
+            create: (context) => RecentSearchBloc(
+              searchInputBloc: ISearchInputBloc.of(context, listen: false),
+              recentSearchLocalPreferenceBloc:
+                  IRecentSearchLocalPreferenceBloc.of(context, listen: false),
+            ),
+            child: SearchPage(),
+          ),
+        ),
+      ),
+    ),
   );
 }

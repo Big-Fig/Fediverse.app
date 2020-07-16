@@ -23,15 +23,16 @@ class FediTextTabIndicatorWidget<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var borderHeight = 2.0;
     return TabBar(
       isScrollable: true,
       indicatorSize: TabBarIndicatorSize.label,
       labelPadding: FediPadding.horizontalSmallPadding,
       indicator: FediTabIndicator(
-        indicatorHeight:FediSizes.tabIndicatorTextHeight,
-        indicatorRadius: FediSizes.textButtonRadiusCircle,
+        indicatorHeight:FediSizes.tabIndicatorTextHeight-borderHeight,
+        indicatorRadius: (FediSizes.textButtonHeight + borderHeight)/2,
         indicatorColor: FediColors.primaryColor,
-        padding: EdgeInsets.zero,
+        padding: EdgeInsets.only(top: borderHeight),
         insets: EdgeInsets.zero,
         tabBarIndicatorSize: TabBarIndicatorSize.label,
       ),

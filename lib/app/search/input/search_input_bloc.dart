@@ -11,8 +11,20 @@ abstract class ISearchInputBloc extends Disposable {
   String get confirmedSearchTerm;
 
   Stream<String> get confirmedSearchTermStream;
+  String get currentInput;
+
+  Stream<String> get currentInputStream;
+
+  bool get currentInputIsNotEmpty;
+
+  Stream<bool> get currentInputIsNotEmptyStream;
+  bool get confirmedSearchTermIsNotEmpty;
+
+  Stream<bool> get confirmedSearchTermIsNotEmptyStream;
 
   void clearSearch();
 
   void confirmSearch();
+
+  void customSearch(String search);
 }
