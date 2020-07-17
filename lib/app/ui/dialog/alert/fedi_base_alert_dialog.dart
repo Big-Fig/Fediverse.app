@@ -3,6 +3,7 @@ import 'package:fedi/app/ui/fedi_border_radius.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
 import 'package:fedi/dialog/base_dialog.dart';
 import 'package:fedi/dialog/dialog_model.dart';
@@ -62,11 +63,7 @@ class FediBaseAlertDialog extends BaseDialog {
                       const EdgeInsets.only(bottom: FediSizes.smallPadding),
                   child: Text(
                     title,
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      color: FediColors.darkGrey,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: FediTextStyles.dialogTitleBoldDarkGrey,
                   ),
                 ),
               if (content != null)
@@ -75,11 +72,7 @@ class FediBaseAlertDialog extends BaseDialog {
                       const EdgeInsets.only(bottom: FediSizes.smallPadding),
                   child: Text(
                     content,
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      height: 1.5,
-                      color: FediColors.darkGrey,
-                    ),
+                    style: FediTextStyles.dialogContentDarkGrey,
                   ),
                 ),
               FediBigVerticalSpacer(),
@@ -121,7 +114,7 @@ class FediBaseAlertDialog extends BaseDialog {
   }) =>
       buildButton(
         context: context,
-        action: createDefaultCancelAction(context),
+        action: BaseDialog.createDefaultCancelAction(context),
         color: FediColors.mediumGrey,
         isLast: isLast,
       );

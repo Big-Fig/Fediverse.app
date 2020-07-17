@@ -30,20 +30,20 @@ abstract class BaseDialog extends DisposableOwner {
   }
 
   Widget buildDialog(BuildContext context);
-}
 
-DialogAction createDefaultCancelAction(BuildContext context) {
-  return DialogAction(
-      onAction: () {
-        Navigator.of(context).pop();
-      },
-      label: tr("dialog.action.cancel"));
-}
+  static DialogAction createDefaultCancelAction(BuildContext context) {
+    return DialogAction(
+        onAction: () {
+          Navigator.of(context).pop();
+        },
+        label: tr("dialog.action.cancel"));
+  }
 
-DialogAction createOkCancelAction(BuildContext context) {
-  return DialogAction(
-      onAction: () {
-        Navigator.of(context).pop();
-      },
-      label: tr("dialog.action.ok"));
+  static DialogAction createDefaultOkAction(BuildContext context) {
+    return DialogAction(
+        onAction: () {
+          Navigator.of(context).pop();
+        },
+        label: tr("dialog.action.ok"));
+  }
 }

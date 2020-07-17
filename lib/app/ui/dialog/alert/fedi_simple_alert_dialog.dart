@@ -17,7 +17,7 @@ class FediSimpleAlertDialog extends FediBaseAlertDialog {
   }) =>
       buildButton(
         context: context,
-        action: createOkCancelAction(context),
+        action: BaseDialog.createDefaultOkAction(context),
         color: FediColors.mediumGrey,
         isLast: isLast,
       );
