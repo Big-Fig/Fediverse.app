@@ -69,10 +69,15 @@ class _BubblePainter extends BoxPainter {
   final FediTabIndicator decoration;
 
   double get indicatorHeight => decoration.indicatorHeight;
+
   Color get indicatorColor => decoration.indicatorColor;
+
   double get indicatorRadius => decoration.indicatorRadius;
+
   EdgeInsetsGeometry get padding => decoration.padding;
+
   EdgeInsetsGeometry get insets => decoration.insets;
+
   TabBarIndicatorSize get tabBarIndicatorSize => decoration.tabBarIndicatorSize;
 
   Rect _indicatorRectFor(Rect rect, TextDirection textDirection) {
@@ -84,6 +89,14 @@ class _BubblePainter extends BoxPainter {
     if (tabBarIndicatorSize == TabBarIndicatorSize.tab) {
       indicator = insets.resolve(textDirection).deflateRect(rect);
     }
+//
+//    _logger.finest(
+//      () => "_indicatorRectFor"
+//          " width = ${indicator.width}"
+//          " height = ${indicator.height}",
+//          " left = ${indicator.left}"
+//          " top = ${indicator.left}"
+//    );
 
     return Rect.fromLTWH(
       indicator.left,

@@ -14,6 +14,7 @@ class FediIconTabIndicatorWidget<T> extends StatelessWidget {
   final TabToIconMapper<T> tabToIconMapper;
   final bool expand;
 
+
   FediIconTabIndicatorWidget({
     @required this.expand,
     @required this.tabs,
@@ -22,29 +23,27 @@ class FediIconTabIndicatorWidget<T> extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return TabBar(
-      isScrollable: true,
-      indicatorSize: TabBarIndicatorSize.label,
-      labelPadding: FediPadding.horizontalSmallPadding,
-      indicator: FediTabIndicator(
-        indicatorHeight:FediSizes.tabIndicatorIconHeight,
-        indicatorColor: FediColors.primaryColor,
-        padding: EdgeInsets.zero,
-        insets: EdgeInsets.zero,
-        tabBarIndicatorSize: TabBarIndicatorSize.label,
-      ),
-      tabs: tabs.asMap().entries.map((entry) {
-        var index = entry.key;
-        var tab = entry.value;
+  Widget build(BuildContext context) => TabBar(
+        isScrollable: true,
+        indicatorSize: TabBarIndicatorSize.label,
+        labelPadding: FediPadding.horizontalSmallPadding,
+        indicator: FediTabIndicator(
+          indicatorHeight: FediSizes.tabIndicatorIconHeight,
+          indicatorColor: FediColors.primaryColor,
+          padding: EdgeInsets.zero,
+          insets: EdgeInsets.zero,
+          tabBarIndicatorSize: TabBarIndicatorSize.label,
+        ),
+        tabs: tabs.asMap().entries.map((entry) {
+          var index = entry.key;
+          var tab = entry.value;
 
-        return FediIconTabIndicatorItemWidget(
-          index: index,
-          tabController: tabController,
-          iconData: tabToIconMapper(context, tab),
-        );
-      }).toList(),
-      controller: tabController,
-    );
-  }
+          return FediIconTabIndicatorItemWidget(
+            index: index,
+            tabController: tabController,
+            iconData: tabToIconMapper(context, tab),
+          );
+        }).toList(),
+        controller: tabController,
+      );
 }
