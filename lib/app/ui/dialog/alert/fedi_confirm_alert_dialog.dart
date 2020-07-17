@@ -1,10 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/dialog/alert/base_alert_dialog.dart';
+import 'package:fedi/app/ui/dialog/alert/fedi_base_alert_dialog.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:flutter/cupertino.dart';
 
-class ConfirmAlertDialog extends BaseAlertDialog {
-  ConfirmAlertDialog(
+class FediConfirmAlertDialog extends FediBaseAlertDialog {
+  FediConfirmAlertDialog(
       {@required BuildContext context,
       @required VoidCallback onAction,
       String title,

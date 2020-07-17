@@ -13,7 +13,7 @@ void showFediModalBottomSheetDialog({
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
       builder: (BuildContext context) => ClipRRect(
-            borderRadius: FediBorderRadius.topOnlyDefaultBorderRadius,
+            borderRadius: FediBorderRadius.topOnlyBigBorderRadius,
             child: Container(
               color: Colors.white,
               constraints: BoxConstraints(

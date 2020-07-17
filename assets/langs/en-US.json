@@ -59,7 +59,7 @@
           },
           "unsaved": {
             "dialog": {
-              "title": "You have unsaved changed",
+              "title": "You have unsaved changes",
               "action": {
                 "discard": "Discard"
               }
@@ -658,6 +658,7 @@
           "post": "Post"
         },
         "visibility": {
+          "title": "Visibility",
           "state": {
             "public": "Public",
             "unlisted": "Unlisted",

@@ -4,7 +4,7 @@ import 'package:fedi/app/account/my/edit/edit_my_account_bloc_impl.dart';
 import 'package:fedi/app/account/my/edit/edit_my_account_widget.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
-import 'package:fedi/app/ui/dialog/fedi_alert_dialog.dart';
+import 'package:fedi/app/ui/dialog/alert/fedi_confirm_alert_dialog.dart';
 import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -87,21 +87,15 @@ class EditMyAccountPage extends StatelessWidget {
   }
 
   void alertUnsaved(BuildContext context) {
-    showFediAlertDialog(
+    FediConfirmAlertDialog(
       context: context,
       title: tr("app.account.my.edit.unsaved.dialog.title"),
-      //      body:
-      // "",
-      actions: [
-        AlertAction(
-          text: tr("app.account.my.edit.unsaved.dialog.action.discard"),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ],
-      cancelable: true,
-    );
+      okActionLabel: tr("app.account.my.edit.unsaved.dialog.action.discard"),
+      onAction: () {
+        Navigator.pop(context);
+        Navigator.pop(context);
+      },
+    ).show(context);
   }
 
   const EditMyAccountPage();

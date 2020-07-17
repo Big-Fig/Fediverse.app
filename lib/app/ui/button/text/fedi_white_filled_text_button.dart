@@ -12,36 +12,43 @@ class FediWhiteFilledTextButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
 
+  final double width;
   final double height;
 
   final double borderWidth;
 
   final TextStyle textStyle;
-  static const TextStyle defaultTextStyle = FediTextStyles.mediumShortBoldGrey;
+
+  final Color color;
+
+  static const TextStyle defaultTextStyle =
+      FediTextStyles.mediumShortBoldMediumGrey;
 
   FediWhiteFilledTextButton(
     this.text, {
     @required this.onPressed,
+    this.width,
     this.height = FediSizes.textButtonHeight,
     this.textStyle = defaultTextStyle,
     this.borderWidth = 1,
+    @required this.color,
   });
 
   @override
   Widget build(BuildContext context) {
-
     var calculatedHeight = height + borderWidth * 2;
     var borderRadius = BorderRadius.all(Radius.circular(calculatedHeight / 2));
     return InkWell(
       onTap: onPressed,
       child: Container(
+          width: width,
           height: calculatedHeight,
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,
             color: FediColors.white,
             borderRadius: borderRadius,
             border: Border.all(
-              color: FediColors.mediumGrey,
+              color: color,
               width: borderWidth,
             ),
           ),
@@ -50,7 +57,7 @@ class FediWhiteFilledTextButton extends StatelessWidget {
               padding: FediPadding.buttonHorizontalPadding,
               child: Text(
                 text,
-                style: defaultTextStyle,
+                style: defaultTextStyle.copyWith(color: color),
               ),
             ),
           )),

@@ -40,7 +40,7 @@ class MediaAttachmentNonMediaItemWidget extends StatelessWidget {
                 opacity: opacity,
                 child: Container(
                   decoration: BoxDecoration(
-                    borderRadius: FediBorderRadius.allSmallBorderRadius,
+                    borderRadius: FediBorderRadius.allBigBorderRadius,
                     border: Border.all(color: FediColors.ultraLightGrey),
                   ),
                   child: Row(

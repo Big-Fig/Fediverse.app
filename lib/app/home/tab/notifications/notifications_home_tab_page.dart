@@ -116,7 +116,7 @@ class _NotificationsHomeTabPageState extends State<NotificationsHomeTabPage>
             NotificationListTapToLoadOverlayWidget(),
         tabBarViewContainerBuilder: (BuildContext context, Widget child) {
           return ClipRRect(
-            borderRadius: FediBorderRadius.topOnlyDefaultBorderRadius,
+            borderRadius: FediBorderRadius.topOnlyBigBorderRadius,
             child: Container(
               color: FediColors.white,
               child: child,

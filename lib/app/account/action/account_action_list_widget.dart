@@ -7,12 +7,13 @@ import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dar
 import 'package:fedi/app/conversation/start/status/post_status_start_conversation_page.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
-import 'package:fedi/app/ui/dialog/fedi_alert_dialog.dart';
+import 'package:fedi/app/ui/dialog/chooser/fedi_chooser_dialog.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
+import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -36,9 +37,7 @@ class AccountActionListWidget extends StatelessWidget {
           var bottomPadding = FediSizes.bigPadding;
           if (relationship?.following == null) {
             return Container(
-              height: FediSizes.textButtonHeight +
-                  topPadding +
-                  bottomPadding,
+              height: FediSizes.textButtonHeight + topPadding + bottomPadding,
               child: const Center(
                 child: FediCircularProgressIndicator(
                   color: FediColors.white,
@@ -103,24 +102,24 @@ class AccountActionListWidget extends StatelessWidget {
 
   void showMoreOptions(BuildContext context, IAccountBloc accountBloc,
       IPleromaAccountRelationship relationship) {
-    showFediAlertDialog(
+    showFediChooserDialog(
       context: context,
       title: tr("app.account.action.popup.title", args: [accountBloc.acct]),
-      body: "${accountBloc.acct}",
+      subTitle: "${accountBloc.acct}",
       actions: [
-        AlertAction(
-            text: relationship.muting
+        DialogAction(
+            label: relationship.muting
                 ? tr("app.account.action.unmute")
                 : tr("app.account.action.mute"),
-            onPressed: accountBloc.toggleMute),
-        AlertAction(
-            text: relationship.blocking
+            onAction: accountBloc.toggleMute),
+        DialogAction(
+            label: relationship.blocking
                 ? tr("app.account.action.unblock")
                 : tr("app.account.action.block"),
-            onPressed: accountBloc.toggleBlock),
-        AlertAction(
-            text: tr("app.account.action.report.label"),
-            onPressed: () async {
+            onAction: accountBloc.toggleBlock),
+        DialogAction(
+            label: tr("app.account.action.report.label"),
+            onAction: () async {
               var success = await doAsyncActionReport(
                   context, IAccountBloc.of(context, listen: false));
 

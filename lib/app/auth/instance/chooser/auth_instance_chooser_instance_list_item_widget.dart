@@ -10,7 +10,7 @@ import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
-import 'package:fedi/dialog/alert/confirm_alert_dialog.dart';
+import 'package:fedi/app/ui/dialog/alert/fedi_confirm_alert_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -105,7 +105,7 @@ class AuthInstanceChooserInstanceListItemWidget extends StatelessWidget {
 
   void _showConfirmChooseInstance(
       BuildContext context, IAuthInstanceChooserBloc instanceChooserBloc) {
-    ConfirmAlertDialog(
+    FediConfirmAlertDialog(
       context: context,
       title: tr("app.auth.instance.chooser.dialog.title"),
       content: tr("app.auth.instance.chooser.dialog.title"),
@@ -126,7 +126,7 @@ class AuthInstanceChooserInstanceListItemWidget extends StatelessWidget {
           var instanceChooserBloc =
           IAuthInstanceChooserBloc.of(context, listen: false);
 
-          await ConfirmAlertDialog(
+          await FediConfirmAlertDialog(
             context: context,
             title: tr("app.auth.instance.logout.dialog.title"),
             content: tr("app.auth.instance.logout.dialog.content"),

@@ -8,7 +8,7 @@ import 'package:fedi/app/chat/chat_page.dart';
 import 'package:fedi/app/chat/repository/chat_repository.dart';
 import 'package:fedi/app/ui/async/fedi_async_dialog.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
-import 'package:fedi/dialog/alert/simple_alert_dialog.dart';
+import 'package:fedi/app/ui/dialog/alert/fedi_simple_alert_dialog.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -53,7 +53,7 @@ class StartChatPage extends StatelessWidget {
             if (chat != null) {
               goToChatPage(context, chat: chat);
             } else {
-              await SimpleAlertDialog(context: null).show(context);
+              await FediSimpleAlertDialog(context: null).show(context);
             }
           },
         ),
