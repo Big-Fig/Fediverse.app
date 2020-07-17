@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/ui/async/fedi_async_dialog.dart';
 import 'package:fedi/app/ui/notification_overlay/info_fedi_notification_overlay.dart';
-import 'package:fedi/dialog/alert/simple_alert_dialog.dart';
+import 'package:fedi/app/ui/dialog/alert/fedi_simple_alert_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +17,7 @@ Future<bool> doAsyncActionReport(
         contentText: tr("app.account.action.report.success.toast"),
         titleText: null);
   } else {
-    await SimpleAlertDialog(
+    await FediSimpleAlertDialog(
       context: context,
       title: tr("app.account.action.report.fail.dialog.title"),
       content: tr("app.account.action.report.fail.dialog.content"),

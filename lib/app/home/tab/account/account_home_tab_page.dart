@@ -81,7 +81,7 @@ class AccountHomeTabPage extends StatelessWidget {
         contentBuilder: (context) {
           return FediDarkStatusBarStyleArea(
             child: ClipRRect(
-              borderRadius: FediBorderRadius.topOnlyDefaultBorderRadius,
+              borderRadius: FediBorderRadius.topOnlyBigBorderRadius,
               child: Container(
                 color: Colors.white,
                 child: MyAccountDetailsBodyWidget(),

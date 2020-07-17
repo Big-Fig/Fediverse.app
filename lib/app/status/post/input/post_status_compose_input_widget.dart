@@ -4,7 +4,7 @@ import 'package:fedi/app/status/post/action/post_status_post_overlay_notificatio
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/ui/async/fedi_async_dialog.dart';
 import 'package:fedi/app/ui/edit_text/fedi_transparent_edit_text_field.dart';
-import 'package:fedi/dialog/alert/simple_alert_dialog.dart';
+import 'package:fedi/app/ui/dialog/alert/fedi_simple_alert_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -45,7 +45,7 @@ class PostStatusComposeInputWidget extends StatelessWidget {
             showPostStatusPostOverlayNotification(context, postStatusBloc);
           }
         } else {
-          await SimpleAlertDialog(
+          await FediSimpleAlertDialog(
                   context: context,
                   title: tr("app.status.post.error.empty.dialog.title"))
               .show(context);

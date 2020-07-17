@@ -3,7 +3,7 @@ import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dar
 import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/ui/async/fedi_async_dialog.dart';
 import 'package:fedi/app/ui/edit_text/fedi_filled_edit_text_field.dart';
-import 'package:fedi/dialog/alert/simple_alert_dialog.dart';
+import 'package:fedi/app/ui/dialog/alert/fedi_simple_alert_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -35,7 +35,7 @@ class PostMessageContentWidget extends StatelessWidget {
                 return postMessageBloc.post();
               });
         } else {
-          await SimpleAlertDialog(
+          await FediSimpleAlertDialog(
                   context: context,
                   title: tr("app.chat.post.error.empty.dialog.title"))
               .show(context);

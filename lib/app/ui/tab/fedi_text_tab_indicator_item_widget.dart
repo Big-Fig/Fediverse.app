@@ -1,6 +1,7 @@
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_white_filled_text_button.dart';
+import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -98,7 +99,7 @@ class _FediTextTabIndicatorItemWidgetState
             fontSize: fontSize,
             fontWeight: FontWeight.normal,
             height: lineHeight,
-          ),
+          ), color: FediColors.mediumGrey,
         );
       }
     }

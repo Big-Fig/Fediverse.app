@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/visibility/status_visibility_icon_widget.dart';
 import 'package:fedi/app/status/visibility/status_visibility_title_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
@@ -33,6 +35,11 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
                     child: ListView(
                       shrinkWrap: true,
                       children: <Widget>[
+                        Text(
+                          "app.status.post.visibility.title".tr(),
+                          textAlign: TextAlign.center,
+                          style: FediTextStyles.subHeaderTallBoldDarkGrey,
+                        ),
                         // TODO: why only 4 options when 5 visibilities available
                         buildVisibilityButton(
                             context, postStatusBloc, PleromaVisibility.PUBLIC),

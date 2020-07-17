@@ -148,7 +148,7 @@ class _TimelinesHomeTabPageState extends State<TimelinesHomeTabPage>
           ),
           FediDarkStatusBarStyleArea(
             child: ClipRRect(
-              borderRadius: FediBorderRadius.topOnlyDefaultBorderRadius,
+              borderRadius: FediBorderRadius.topOnlyBigBorderRadius,
               child: Container(
                 color: FediColors.offWhite,
                 child: FediListTile(
