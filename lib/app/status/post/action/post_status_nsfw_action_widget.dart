@@ -19,10 +19,13 @@ class PostStatusNsfwActionWidget extends StatelessWidget {
 
             return Container(
               height: double.infinity,
-              child: Center(
-                child: Text(tr("app.status.post.nsfw.title").toUpperCase(),
-                    style: FediTextStyles.mediumShortDarkGrey
-                        .copyWith(color: calculateColor(nsfwSensitive))),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                child: Center(
+                  child: Text(tr("app.status.post.nsfw.title").toUpperCase(),
+                      style: FediTextStyles.mediumShortDarkGrey
+                          .copyWith(color: calculateColor(nsfwSensitive))),
+                ),
               ),
             );
           }),
