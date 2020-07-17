@@ -3,10 +3,8 @@ import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/visibility/status_visibility_icon_widget.dart';
 import 'package:fedi/app/status/visibility/status_visibility_title_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
-import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/app/ui/fedi_text_styles.dart';
-import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
-import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
+import 'package:fedi/app/ui/dialog/chooser/fedi_selection_chooser_dialog.dart';
+import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -30,32 +28,24 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
           return FediIconButton(
               icon: icon,
               onPressed: () {
-                showFediModalBottomSheetDialog(
+                showFediSelectionChooserDialog(
                     context: context,
-                    child: ListView(
-                      shrinkWrap: true,
-                      children: <Widget>[
-                        Text(
-                          "app.status.post.visibility.title".tr(),
-                          textAlign: TextAlign.center,
-                          style: FediTextStyles.subHeaderTallBoldDarkGrey,
-                        ),
-                        // TODO: why only 4 options when 5 visibilities available
-                        buildVisibilityButton(
-                            context, postStatusBloc, PleromaVisibility.PUBLIC),
-                        buildVisibilityButton(
-                            context, postStatusBloc, PleromaVisibility.DIRECT),
-                        buildVisibilityButton(context, postStatusBloc,
-                            PleromaVisibility.UNLISTED),
-                        buildVisibilityButton(
-                            context, postStatusBloc, PleromaVisibility.PRIVATE),
-                      ],
-                    ));
+                    title: "app.status.post.visibility.title".tr(),
+                    actions: [
+                      buildVisibilityDialogAction(
+                          context, postStatusBloc, PleromaVisibility.PUBLIC),
+                      buildVisibilityDialogAction(
+                          context, postStatusBloc, PleromaVisibility.DIRECT),
+                      buildVisibilityDialogAction(
+                          context, postStatusBloc, PleromaVisibility.UNLISTED),
+                      buildVisibilityDialogAction(
+                          context, postStatusBloc, PleromaVisibility.PRIVATE),
+                    ]);
               });
         });
   }
 
-  Padding buildVisibilityButton(
+  SelectionDialogAction buildVisibilityDialogAction(
     BuildContext context,
     IPostStatusBloc postStatusBloc,
     PleromaVisibility visibility,
@@ -70,34 +60,13 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
         Navigator.of(context).pop();
       };
     }
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: FediSizes.mediumPadding),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: ListTile(
-              onTap: () {
-                onPressed();
-              },
-              title: Row(
-                children: <Widget>[
-                  StatusVisibilityIconWidget(
-                      visibility: visibility,
-                      isPossibleToChangeVisibility:
-                          isPossibleToChangeVisibility,
-                      isSelectedVisibility: isSelectedVisibility),
-                  const FediBigHorizontalSpacer(),
-                  StatusVisibilityTitleWidget(
-                      visibility: visibility,
-                      isPossibleToChangeVisibility:
-                          isPossibleToChangeVisibility,
-                      isSelectedVisibility: isSelectedVisibility)
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
+
+    return SelectionDialogAction(
+      icon: StatusVisibilityIconWidget.mapVisibilityToIconData(visibility),
+      label:
+          StatusVisibilityTitleWidget.mapVisibilityToTitle(context, visibility),
+      onAction: onPressed,
+      isSelected: isSelectedVisibility,
     );
   }
 }

@@ -108,7 +108,7 @@ class AuthInstanceChooserInstanceListItemWidget extends StatelessWidget {
     FediConfirmAlertDialog(
       context: context,
       title: tr("app.auth.instance.chooser.dialog.title"),
-      content: tr("app.auth.instance.chooser.dialog.title"),
+      content: tr("app.auth.instance.chooser.dialog.content"),
       onAction: () async {
         await Navigator.of(context).pop();
         await Navigator.of(context).pop();
@@ -129,7 +129,9 @@ class AuthInstanceChooserInstanceListItemWidget extends StatelessWidget {
           await FediConfirmAlertDialog(
             context: context,
             title: tr("app.auth.instance.logout.dialog.title"),
-            content: tr("app.auth.instance.logout.dialog.content"),
+            content: tr("app.auth.instance.logout.dialog.content", args: [
+              instance.userAtHost
+            ]),
             onAction: () async {
               if (isSelected) {
                 await Navigator.of(context).pop();

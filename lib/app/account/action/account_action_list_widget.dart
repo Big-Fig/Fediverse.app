@@ -1,23 +1,21 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/account/action/account_report_action.dart';
 import 'package:fedi/app/async/async_operation_button_builder_widget.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/conversation/start/status/post_status_start_conversation_page.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
-import 'package:fedi/app/ui/dialog/chooser/fedi_chooser_dialog.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
-import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:fedi/app/account/action/account_action_more_dialog.dart';
 
 var _logger = Logger("account_actions_widget.dart");
 
@@ -69,7 +67,11 @@ class AccountActionListWidget extends StatelessWidget {
     return FediIconInCircleBlurredButton(
       FediIcons.menu,
       onPressed: () async {
-        showMoreOptions(context, accountBloc, relationship);
+        showAccountActionMoreDialog(
+          context: context,
+          accountBloc: accountBloc,
+          relationship: relationship,
+        );
       },
     );
   }
@@ -97,38 +99,6 @@ class AccountActionListWidget extends StatelessWidget {
           onPressed: onPressed,
         );
       },
-    );
-  }
-
-  void showMoreOptions(BuildContext context, IAccountBloc accountBloc,
-      IPleromaAccountRelationship relationship) {
-    showFediChooserDialog(
-      context: context,
-      title: tr("app.account.action.popup.title", args: [accountBloc.acct]),
-      subTitle: "${accountBloc.acct}",
-      actions: [
-        DialogAction(
-            label: relationship.muting
-                ? tr("app.account.action.unmute")
-                : tr("app.account.action.mute"),
-            onAction: accountBloc.toggleMute),
-        DialogAction(
-            label: relationship.blocking
-                ? tr("app.account.action.unblock")
-                : tr("app.account.action.block"),
-            onAction: accountBloc.toggleBlock),
-        DialogAction(
-            label: tr("app.account.action.report.label"),
-            onAction: () async {
-              var success = await doAsyncActionReport(
-                  context, IAccountBloc.of(context, listen: false));
-
-              if (success) {
-                Navigator.of(context).pop();
-              }
-            }),
-      ],
-      cancelable: true,
     );
   }
 

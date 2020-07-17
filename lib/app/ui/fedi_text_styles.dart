@@ -10,7 +10,7 @@ class FediTextStyles {
   static const _smallHeight = 1.5;
   static const _tallHeight = 1.5;
   static const _boldWeight = FontWeight.w500;
-  static const _normalWeight = FontWeight.w300;
+  static const _normalWeight = FontWeight.normal;
   static const _whiteColor = FediColors.white;
   static const _darkGreyColor = FediColors.darkGrey;
   static const _greyColor = FediColors.grey;
@@ -694,5 +694,17 @@ class FediTextStyles {
     fontSize: _headerSize,
     fontWeight: _boldWeight,
     color: _whiteColor,
+  );
+
+
+  static const TextStyle dialogTitleBoldDarkGrey = TextStyle(
+    fontSize: 18.0,
+    fontWeight: _boldWeight,
+    color: _darkGreyColor,
+  );
+  static const TextStyle dialogContentDarkGrey = TextStyle(
+    fontSize: 16.0,
+    fontWeight: _normalWeight,
+    color: _darkGreyColor,
   );
 }
