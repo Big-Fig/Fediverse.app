@@ -30,9 +30,11 @@ class StatusFavouriteActionWidget extends StatelessWidget {
                   builder: (context, onPressed) => FediIconButton(
                         iconSize: FediSizes.bigIconSize,
                         color: favourited
-                            ? FediColors.primaryColor
-                            : FediColors.secondaryColor,
-                        icon: Icon(FediIcons.heart),
+                            ? FediColors.secondaryColor
+                            : FediColors.darkGrey,
+                        icon: favourited
+                            ? Icon(FediIcons.heart_active)
+                            : Icon(FediIcons.heart),
                         tooltip: tr("app.status.action.favourite"),
                         onPressed: onPressed,
                       ),
