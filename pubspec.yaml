@@ -58,7 +58,7 @@ dependencies:
   # positioned list view
   flutter_widgets: ^0.1.7+1
   # edit images during account editing
-  image_cropper: ^1.1.1
+  image_cropper: ^1.2.3
   # cache images locally
   cached_network_image: ^2.2.0+1
   # reactive programming
