@@ -78,7 +78,7 @@ class CurrentAuthInstanceContextLoadingWidget extends StatelessWidget {
         ICurrentAuthInstanceBloc.of(context, listen: false);
     return FediLightStatusBarStyleArea(
       child: Scaffold(
-        backgroundColor: FediColors.primaryColor,
+        backgroundColor: FediColors.primaryColorDark,
         body: SafeArea(
           child: Center(
             child: Column(
