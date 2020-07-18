@@ -54,7 +54,7 @@ class ChatMessageCachedPaginationListWithNewItemsBloc<
   @override
   bool isItemsEqual(IChatMessage a, IChatMessage b) => a.remoteId == b.remoteId;
 
-  static ChatMessageCachedPaginationListWithNewItemsBloc _createFromContext(
+  static ChatMessageCachedPaginationListWithNewItemsBloc createFromContext(
       BuildContext context,
       {@required bool mergeNewItemsImmediately}) {
     return ChatMessageCachedPaginationListWithNewItemsBloc(
@@ -76,7 +76,7 @@ class ChatMessageCachedPaginationListWithNewItemsBloc<
         ICachedPaginationListWithNewItemsBloc<
             CachedPaginationPage<IChatMessage>, IChatMessage>>(
       create: (context) =>
-          ChatMessageCachedPaginationListWithNewItemsBloc._createFromContext(
+          ChatMessageCachedPaginationListWithNewItemsBloc.createFromContext(
         context,
         mergeNewItemsImmediately: mergeNewItemsImmediately,
       ),
