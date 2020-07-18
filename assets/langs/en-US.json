@@ -161,7 +161,8 @@
           "context": {
             "loading": {
               "loading": {
-                "content": "Loading {}"
+                "title": "Loading Instance",
+                "content": "{}"
               },
               "cant_load": {
                 "content": "Can't load {} instance.\nApp error or session expired",

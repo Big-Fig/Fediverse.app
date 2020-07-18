@@ -9,7 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
-abstract class ProgressDialog extends BaseDialog {
+abstract class FediProgressDialog extends BaseDialog {
   final String titleMessage;
   final String contentMessage;
 
@@ -23,7 +23,7 @@ abstract class ProgressDialog extends BaseDialog {
 
   Stream<bool> get isCanceledStream => _isCanceledSubject.stream;
 
-  ProgressDialog({
+  FediProgressDialog({
     this.titleMessage,
     this.contentMessage,
     @required this.cancelableOperation,
