@@ -13,16 +13,16 @@ class DeterminateProgressDialog extends ProgressDialog {
       bool cancelable = false,
       @required CancelableOperation cancelableOperation})
       : super(
-            contentMessage: contentMessage,
+            titleMessage: contentMessage,
             cancelable: cancelable,
             cancelableOperation: cancelableOperation);
 
   @override
-  Widget buildDialogContent(BuildContext context) {
+  Widget buildDialogTitle(BuildContext context) {
     return Stack(
       children: <Widget>[
         Positioned(
-          child: buildDialogContentMessage(context),
+          child: buildDialogTitleMessage(context),
           top: 35.0,
         ),
         Positioned(
