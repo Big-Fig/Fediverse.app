@@ -17,7 +17,7 @@ class AppInitPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return FediLightStatusBarStyleArea(
       child: Scaffold(
-        backgroundColor: FediColors.primaryColor,
+        backgroundColor: FediColors.primaryColorDark,
         body: Center(
           child: SafeArea(
             child: Stack(children: <Widget>[
