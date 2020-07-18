@@ -39,10 +39,9 @@ class StatusSubHeaderWidget extends StatelessWidget {
         ),
         const FediSmallHorizontalSpacer(),
         Text(
-          descText,
+          "$descText ",
           style: FediTextStyles.mediumShortMediumGrey.copyWith(height: 1),
         ),
-        FediSmallHorizontalSpacer(),
         Flexible(
           child: Text(
             account.acct,

@@ -10,9 +10,13 @@ import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
+
+var _logger = Logger("thread_post_status_bloc_impl.dart");
 
 class ThreadPostStatusBloc extends PostStatusBloc {
   final IStatusThreadBloc statusThreadBloc;
+
   ThreadPostStatusBloc({
     @required IStatus inReplyToStatus,
     @required this.statusThreadBloc,
@@ -20,7 +24,7 @@ class ThreadPostStatusBloc extends PostStatusBloc {
     @required IStatusRepository statusRepository,
     @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
   }) : super(
-            inReplyToStatus: inReplyToStatus,
+            originInReplyToStatus: inReplyToStatus,
             pleromaStatusService: pleromaStatusService,
             statusRepository: statusRepository,
             pleromaMediaAttachmentService: pleromaMediaAttachmentService,
@@ -55,5 +59,44 @@ class ThreadPostStatusBloc extends PostStatusBloc {
   Future onStatusPosted(IPleromaStatus remoteStatus) async {
     var status = await statusRepository.findByRemoteId(remoteStatus.id);
     statusThreadBloc.addStatusInThread(status);
+  }
+
+  @override
+  String calculateInReplyToStatusRemoteId() {
+    String result;
+    if (originInReplyToStatus != null && originInReplyToStatusCanceled) {
+      var statuses = statusThreadBloc.statuses;
+      if (mentionedAccts?.isNotEmpty == true) {
+        IStatus statusToReply;
+        for (var acct in mentionedAccts) {
+          statusToReply = statuses.reversed.firstWhere(
+              (status) => status.account.acct == acct,
+              orElse: () => null);
+          if (statusToReply != null) {
+            _logger.finest(() => "calculateInReplyToStatusRemoteId "
+                "statusToReply by acct $acct =>$result");
+            break;
+          }
+        }
+        if (statusToReply != null) {
+
+          result = statusToReply.remoteId;
+        } else {
+          _logger.finest(() => "calculateInReplyToStatusRemoteId "
+              "statusToReply by acct not found => $result");
+          result = statuses.last.remoteId;
+        }
+      } else {
+        _logger.finest(() => "calculateInReplyToStatusRemoteId "
+            "statusToReply last => $result");
+        result = statuses.last.remoteId;
+      }
+    } else {
+      _logger.finest(() => "calculateInReplyToStatusRemoteId "
+          "statusToReply !originInReplyToStatusCanceled => $result");
+      result = super.calculateInReplyToStatusRemoteId();
+    }
+    _logger.finest(() => "calculateInReplyToStatusRemoteId $result");
+    return result;
   }
 }

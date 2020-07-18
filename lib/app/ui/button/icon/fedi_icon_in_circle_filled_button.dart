@@ -39,7 +39,7 @@ class FediIconInCircleFilledButton extends StatelessWidget {
     var backgroundColor =
         onPressed != null ? enabledBackgroundColor : disabledBackgroundColor;
     var borderColor =
-        onPressed != null ? enabledBorderColor : disabledBackgroundColor;
+        onPressed != null ? enabledBorderColor : disabledBorderColor;
     var iconColor = onPressed != null ? enabledIconColor : disabledIconColor;
     return Container(
         width: size + borderWidth * 2,

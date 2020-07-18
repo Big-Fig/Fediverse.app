@@ -25,17 +25,48 @@ abstract class PostStatusBloc extends PostMessageBloc
   final IStatusRepository statusRepository;
 
   final String conversationRemoteId;
-  final IStatus inReplyToStatus;
-  String get inReplyToStatusRemoteId => inReplyToStatus?.remoteId;
+  @override
+  final IStatus originInReplyToStatus;
+
+  String get inReplyToStatusRemoteId => originInReplyToStatus?.remoteId;
 
   String idempotencyKey;
+
+  @override
+  IStatus get notCanceledOriginInReplyToStatus =>
+      (originInReplyToStatus != null && !originInReplyToStatusCanceled)
+          ? originInReplyToStatus
+          : null;
+
+  @override
+  Stream<IStatus> get notCanceledOriginInReplyToStatusStream =>
+      originInReplyToStatusCanceledStream.map((originInReplyToStatusCanceled) =>
+          (originInReplyToStatus != null && !originInReplyToStatusCanceled)
+              ? originInReplyToStatus
+              : null);
+
+  @override
+  bool get originInReplyToStatusCanceled =>
+      originInReplyToStatusCanceledSubject.value;
+
+  @override
+  Stream<bool> get originInReplyToStatusCanceledStream =>
+      originInReplyToStatusCanceledSubject.stream;
+
+  @override
+  void cancelOriginInReplyToStatus() {
+    originInReplyToStatusCanceledSubject.add(true);
+  }
+
+  BehaviorSubject<bool> originInReplyToStatusCanceledSubject =
+      BehaviorSubject.seeded(false);
 
   PostStatusBloc({
     @required this.pleromaStatusService,
     @required this.statusRepository,
     @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
     this.conversationRemoteId,
-    this.inReplyToStatus,
+    this.originInReplyToStatus,
     int maximumMediaAttachmentCount = 8,
     PleromaVisibility initialVisibility = PleromaVisibility.PUBLIC,
     List<IAccount> initialAccountsToMention = const [],
@@ -50,6 +81,7 @@ abstract class PostStatusBloc extends PostMessageBloc
       _regenerateIdempotencyKey();
     }));
 
+    addDisposable(subject: originInReplyToStatusCanceledSubject);
     addDisposable(subject: selectedActionSubject);
     addDisposable(subject: mentionedAcctsSubject);
     addDisposable(subject: visibilitySubject);
@@ -72,6 +104,7 @@ abstract class PostStatusBloc extends PostMessageBloc
 
   @override
   bool get isHaveMentionedAccts => mentionedAccts?.isNotEmpty == true;
+
   @override
   Stream<bool> get isHaveMentionedAcctsStream => mentionedAcctsStream
       .map((mentionedAccts) => mentionedAccts?.isNotEmpty == true);
@@ -179,10 +212,11 @@ abstract class PostStatusBloc extends PostMessageBloc
 
   @override
   void onInputTextChanged() {
+    var oldInputText = inputText;
     super.onInputTextChanged();
     var text = inputTextController.text;
 
-    if (inputText != text) {
+    if (oldInputText != text) {
       var textAccts = findAcctMentionsInText(text);
 
       var mentionedAccts = this.mentionedAccts;
@@ -280,7 +314,7 @@ abstract class PostStatusBloc extends PostMessageBloc
       status: calculateStatusTextField(),
       sensitive: isNsfwSensitiveEnabled,
       visibility: pleromaVisibilityValues.reverse[visibility],
-      inReplyToId: inReplyToStatusRemoteId,
+      inReplyToId: calculateInReplyToStatusRemoteId(),
       inReplyToConversationId: conversationRemoteId,
       idempotencyKey: idempotencyKey,
       to: _calculateToField(),
@@ -317,7 +351,7 @@ abstract class PostStatusBloc extends PostMessageBloc
         ?.map((bloc) => bloc.pleromaMediaAttachment.id)
         ?.toList();
     // media ids shouldn't be empty (should be null in this case)
-    if(mediaIds?.isNotEmpty != true) {
+    if (mediaIds?.isNotEmpty != true) {
       mediaIds = null;
     }
     return mediaIds;
@@ -330,7 +364,7 @@ abstract class PostStatusBloc extends PostMessageBloc
       status: calculateStatusTextField(),
       sensitive: isNsfwSensitiveEnabled,
       visibility: pleromaVisibilityValues.reverse[visibility],
-      inReplyToId: inReplyToStatusRemoteId,
+      inReplyToId: calculateInReplyToStatusRemoteId(),
       inReplyToConversationId: conversationRemoteId,
       idempotencyKey: idempotencyKey,
       scheduledAt: scheduledAt,
@@ -410,8 +444,8 @@ abstract class PostStatusBloc extends PostMessageBloc
 
   List<String> _calculateToField() {
     if (pleromaStatusService.isPleromaInstance) {
-      if (inReplyToStatus != null) {
-        var inReplyToStatusAcct = inReplyToStatus.account.acct;
+      if (originInReplyToStatus != null && !originInReplyToStatusCanceled) {
+        var inReplyToStatusAcct = originInReplyToStatus.account.acct;
 
         var toField = [...mentionedAccts];
 
@@ -431,13 +465,17 @@ abstract class PostStatusBloc extends PostMessageBloc
     if (pleromaStatusService.isPleromaInstance) {
       return inputText;
     } else {
-      if (inReplyToStatus != null) {
-        var inReplyToStatusAcct = inReplyToStatus.account.acct;
+      if (originInReplyToStatus != null) {
+        var inReplyToStatusAcct = originInReplyToStatus.account.acct;
 
         return "@${inReplyToStatusAcct} $inputText";
       } else {
         return inputText;
       }
     }
+  }
+
+  String calculateInReplyToStatusRemoteId() {
+    return inReplyToStatusRemoteId;
   }
 }
