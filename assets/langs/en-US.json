@@ -87,7 +87,7 @@
               }
             },
             "display_name": {
-              "label": "Display name"
+              "label": "Display name*"
             },
             "note": {
               "label": "Note"
@@ -98,10 +98,10 @@
             "custom_field": {
               "label": "Link field #{}",
               "name": {
-                "label": "Name"
+                "label": "Name*"
               },
               "value": {
-                "label": "URL value"
+                "label": "URL*"
               },
               "action": {
                 "add_new": "Add link field"
@@ -207,31 +207,31 @@
           }
         },
         "register": {
-          "title": "Register new account",
+          "title": "Create account",
           "field": {
             "username": {
-              "label": "Username",
+              "label": "Username*",
               "hint": "e.g. lain",
               "error": {
                 "invalid": "Please enter a valid username"
               }
             },
             "email": {
-              "label": "Email Address",
+              "label": "Email Address*",
               "hint": "you@example.com",
               "error": {
                 "invalid": "Please enter a valid email"
               }
             },
             "password": {
-              "label": "Password",
+              "label": "Password*",
               "hint": "Password",
               "error": {
                 "too_small": "Password must be at least 4 characters"
               }
             },
             "confirm_password": {
-              "label": "Password confirmation",
+              "label": "Password confirmation*",
               "hint": "Password",
               "error": {
                 "not_match": "Password and password confirmation must match"
@@ -256,7 +256,7 @@
             }
           },
           "action": {
-            "create_account": "Create account"
+            "create_account": "Sign up"
           }
         }
       }
