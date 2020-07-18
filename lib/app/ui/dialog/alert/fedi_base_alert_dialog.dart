@@ -85,7 +85,7 @@ class FediBaseAlertDialog extends BaseDialog {
                       context: context,
                       isLast: actions?.isNotEmpty != true,
                     )),
-                  ...actions.asMap().entries?.map((entry) {
+                  ...actions?.asMap()?.entries?.map((entry) {
                         var index = entry.key;
                         var action = entry.value;
                         var isLast = actions.length - 1 == index;
