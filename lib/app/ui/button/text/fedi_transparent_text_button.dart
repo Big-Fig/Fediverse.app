@@ -11,18 +11,27 @@ import 'package:flutter/widgets.dart';
 class FediTransparentTextButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
+
+  final double width;
   final double height;
+
   final double borderWidth;
 
   final TextStyle textStyle;
-  static const TextStyle defaultTextStyle = FediTextStyles.mediumShortBoldWhite;
 
-  const FediTransparentTextButton(
+  final Color color;
+
+  static const TextStyle defaultTextStyle =
+      FediTextStyles.mediumShortBoldMediumGrey;
+
+  FediTransparentTextButton(
     this.text, {
     @required this.onPressed,
+    this.width,
     this.height = FediSizes.textButtonHeight,
     this.textStyle = defaultTextStyle,
     this.borderWidth = 1,
+    @required this.color,
   });
 
   @override
@@ -32,32 +41,23 @@ class FediTransparentTextButton extends StatelessWidget {
     return InkWell(
       onTap: onPressed,
       child: Container(
+          width: width,
           height: calculatedHeight,
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,
-            color: FediColors.darkGrey.withOpacity(0.3),
             borderRadius: borderRadius,
             border: Border.all(
-              color: FediColors.white,
+              color: color,
               width: borderWidth,
             ),
           ),
-          child: ClipRRect(
-            borderRadius: borderRadius,
-            child: BackdropFilter(
-              child: Center(
-                child: Padding(
-                  padding: FediPadding.buttonHorizontalPadding,
-                  child: Text(
-                    text,
-                    textAlign: TextAlign.center,
-                    style: textStyle.copyWith(
-                      color: textStyle.color.withOpacity(0.8),
-                    ),
-                  ),
-                ),
+          child: Center(
+            child: Padding(
+              padding: FediPadding.buttonHorizontalPadding,
+              child: Text(
+                text,
+                style: defaultTextStyle.copyWith(color: color),
               ),
-              filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
             ),
           )),
     );

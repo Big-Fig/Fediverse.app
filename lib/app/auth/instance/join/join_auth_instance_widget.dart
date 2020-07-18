@@ -5,14 +5,16 @@ import 'package:fedi/app/auth/instance/join/join_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_page.dart';
 import 'package:fedi/app/tos/tos_page.dart';
 import 'package:fedi/app/ui/async/fedi_async_dialog.dart';
-import 'package:fedi/app/ui/button/text/fedi_grey_filled_text_button.dart';
-import 'package:fedi/app/ui/edit_text/fedi_filled_edit_text_field.dart';
+import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
+import 'package:fedi/app/ui/edit_text/fedi_transparent_edit_text_field.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/error/error_data_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:logging/logging.dart';
 
 var _logger = Logger("join_auth_instance_widget.dart");
@@ -29,156 +31,148 @@ class JoinAuthInstanceWidget extends StatelessWidget {
         FocusManager.instance.primaryFocus.unfocus();
       },
       behavior: HitTestBehavior.translucent,
-      child: Form(
+      child: Padding(
+        padding: FediPadding.allBigPadding,
         child: Column(
           children: <Widget>[
+            Spacer(
+              flex: 1,
+            ),
             Padding(
               padding: FediPadding.allSmallPadding,
               child: buildLogoWidget(),
             ),
-            SizedBox(
-              height: 60,
+            Spacer(
+              flex: 1,
             ),
-            buildHostTextField(context),
-            Spacer(),
-            buildActionButtons(context),
-            Spacer(),
-            buildOrText(context),
-            Spacer(),
-            buildJoinFediDescText(context),
             Padding(
-              padding: FediPadding.allSmallPadding,
-              child: buildJoinFediButton(context),
+              padding: EdgeInsets.only(
+                bottom: FediSizes.bigPadding,
+              ),
+              child: buildHostTextField(context),
+            ),
+            Padding(
+              padding: FediPadding.verticalBigPadding,
+              child: buildActionButtons(context),
             ),
             Spacer(
-              flex: 3,
+              flex: 1,
             ),
-            buildTermsOfServiceButton(context),
+            Padding(
+              padding: EdgeInsets.only(
+                top: FediSizes.bigPadding,
+              ),
+              child: buildTermsOfServiceButton(context),
+            ),
           ],
         ),
       ),
     );
   }
 
-  FlatButton buildTermsOfServiceButton(BuildContext context) {
-    return FlatButton(
-      child: Text(
-        tr("app.auth.instance.join.action"
-            ".tos"),
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          color: FediColors.ultraLightGrey,
-        ),
-      ),
-      color: null,
-      onPressed: () {
-        goToTosPage(context);
-      },
-    );
-  }
-
-  Widget buildJoinFediButton(BuildContext context) {
-    return FediGreyFilledTextButton(
-        tr("app.auth.instance.join"
-            ".action"
-            ".join_fedi"), onPressed: () {
-      goToRegisterAuthInstancePage(context,
-          instanceBaseUrl: Uri.parse('https://fedi.app'));
-    });
-  }
-
-  Padding buildJoinFediDescText(BuildContext context) {
-    return Padding(
-      padding:
-          EdgeInsets.symmetric(horizontal: 30, vertical: FediSizes.bigPadding),
-      child: Text(
-        tr("app.auth.instance.join.no_account"
-            ".content"),
-        style: TextStyle(
-          color: FediColors.white,
-        ),
-        textAlign: TextAlign.center,
-      ),
-    );
-  }
-
-  Container buildOrText(BuildContext context) {
-    return Container(
-      child: Text(
-        tr("app.auth.instance.join.no_account"
-            ".prefix"),
-        style: TextStyle(
-          color: Colors.white,
-        ),
-      ),
-    );
-  }
-
-  Row buildActionButtons(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        Expanded(
-          flex: 1,
-          child: Padding(
-            padding: EdgeInsets.only(
-                left: FediSizes.bigPadding, right: FediSizes.smallPadding),
-            child: FediGreyFilledTextButton(
-                tr("app.auth.instance.join"
-                    ".action"
-                    ".sign_up"), onPressed: () {
-              signUpToInstance(context);
-            },),
+  Widget buildTermsOfServiceButton(BuildContext context) => InkWell(
+        onTap: () {
+          goToTosPage(context);
+        },
+        child: Text(
+          tr("app.auth.instance.join.action.tos"),
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: FediColors.ultraLightGrey,
           ),
         ),
-        Expanded(
-          flex: 1,
-          child: Padding(
-            padding: EdgeInsets.only(
-                left: FediSizes.bigPadding, right: FediSizes.smallPadding),
-            child: FediGreyFilledTextButton(
-                tr("app.auth.instance.join"
-                    ".action"
-                    ".login"), onPressed: () {
-              logInToInstance(context);
-            }),
-          ),
+      );
+
+  Widget buildActionButtons(BuildContext context) => Padding(
+        padding: FediPadding.horizontalSmallPadding,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: EdgeInsets.only(
+                    left: FediSizes.smallPadding,
+                    right: FediSizes.smallPadding),
+                child: FediTransparentTextButton(
+                  tr("app.auth.instance.join.action.sign_up"),
+                  onPressed: () {
+                    signUpToInstance(context);
+                  },
+                  color: FediColors.white,
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: EdgeInsets.only(
+                    left: FediSizes.smallPadding,
+                    right: FediSizes.smallPadding),
+                child: FediTransparentTextButton(
+                  tr("app.auth.instance.join.action.login"),
+                  onPressed: () {
+                    logInToInstance(context);
+                  },
+                  color: FediColors.white,
+                ),
+              ),
+            ),
+          ],
         ),
-      ],
-    );
-  }
+      );
 
   Widget buildHostTextField(BuildContext context) {
     var joinInstanceBloc = IJoinAuthInstanceBloc.of(context, listen: true);
 
-    return Padding(
-      padding: FediPadding.horizontalSmallPadding,
-      child: FediFilledEditTextField(
-        autocorrect: false,
-        expanded: false,
-        hintText: tr("app.auth.instance.join"
-            ".field.host.hint"),
-        onSubmitted: (String value) {
-          logInToInstance(context);
-        },
-        textInputAction: TextInputAction.go,
-        autofocus: false,
-        maxLines: 1,
-        textEditingController: joinInstanceBloc.hostTextController,
-        keyboardType: TextInputType.url,
-        errorText: null,
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        FediTransparentEditTextField(
+          autocorrect: false,
+          expanded: false,
+          hintText: tr("app.auth.instance.join"
+              ".field.host.hint"),
+          onSubmitted: (String value) {
+            logInToInstance(context);
+          },
+          textInputAction: TextInputAction.go,
+          autofocus: false,
+          maxLines: 1,
+          textEditingController: joinInstanceBloc.hostTextController,
+          keyboardType: TextInputType.url,
+          errorText: null,
+          focusNode: null,
+          displayUnderlineBorder: true,
+          customBorderColor: FediColors.white.withOpacity(0.8),
+          textStyle: FediTextStyles.subHeaderTallWhite,
+        ),
+        Text(
+          "app.auth.instance.join.field.host.helper".tr(),
+          style: FediTextStyles.mediumShortWhite
+              .copyWith(color: FediColors.white.withOpacity(0.5)),
+        )
+      ],
     );
   }
 
-  Container buildLogoWidget() {
-    return Container(
-      child: Image(
-        image: AssetImage("assets/images/theme/logo.png"),
-        width: 100,
-      ),
-    );
-  }
+  Widget buildLogoWidget() => StreamBuilder<bool>(
+      stream: KeyboardVisibility.onChange,
+      builder: (context, snapshot) {
+        var shown = snapshot.data;
+
+        double width;
+        if (shown == true) {
+          width = 75.0;
+        } else {
+          width = 175.0;
+        }
+
+        return Image(
+          image: AssetImage("assets/images/theme/logo.png"),
+          width: width,
+        );
+      });
 
   Uri extractCurrentUri(IJoinAuthInstanceBloc joinInstanceBloc) {
     var uriText = joinInstanceBloc.hostTextController.text;

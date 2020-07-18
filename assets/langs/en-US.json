@@ -179,8 +179,7 @@
             "title": "Join new instance"
           },
           "action": {
-            "tos": "By using Fedi you agree to our terms.\nTap to review",
-            "join_fedi": "Join fedi.app",
+            "tos": "By using Fedi, you agree to our Terms.",
             "login": "Login",
             "sign_up": "Sign up"
           },
@@ -200,10 +199,6 @@
               "title": "Not a valid instance (may be closed or dead)",
               "content": "Please enter a valid instance name like fedi.app or pleroma.com"
             }
-          },
-          "no_account": {
-            "prefix": "- or -",
-            "content": "Don't have an account or instance to log into?\n Create an account."
           }
         },
         "register": {
