@@ -3,6 +3,7 @@ import 'package:fedi/app/status/scheduled/pagination/list/scheduled_status_pagin
 import 'package:fedi/app/status/scheduled/scheduled_status_bloc.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_bloc_impl.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
+import 'package:fedi/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_widget.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ import 'package:provider/provider.dart';
 class ScheduledStatusPaginationListTimelineWidget
     extends ScheduledStatusPaginationListBaseWidget {
   final bool needWatchLocalRepositoryForUpdates;
+
   ScheduledStatusPaginationListTimelineWidget(
       {@required Key key, @required this.needWatchLocalRepositoryForUpdates})
       : super(key: key);
@@ -35,6 +37,9 @@ class ScheduledStatusPaginationListTimelineWidget
                             context, scheduledStatus,
                             isNeedWatchLocalRepositoryForUpdates:
                                 needWatchLocalRepositoryForUpdates),
-                    child: ScheduledStatusListItemWidget()),
+                    child: FediListTile(
+                      isFirstInList: index == 0,
+                      child: ScheduledStatusListItemWidget(),
+                    )),
               ));
 }

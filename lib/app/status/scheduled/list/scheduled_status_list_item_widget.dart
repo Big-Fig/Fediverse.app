@@ -7,38 +7,41 @@ import 'package:fedi/app/status/scheduled/scheduled_status_bloc.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/async/fedi_async_dialog.dart';
+import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
+import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-final dateFormat = DateFormat("yyyy-MM-dd HH:mm");
+final dateFormat = DateFormat("dd MMM, HH:mm a");
 
 class ScheduledStatusListItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var scheduledStatusBloc = IScheduledStatusBloc.of(context, listen: true);
 
-    return Card(
-      child: Column(
-        children: <Widget>[
-          buildScheduledHeader(context, scheduledStatusBloc),
-          ProxyProvider<IScheduledStatusBloc, IStatus>(
-              update: (context, value, previous) =>
-                  ScheduledStatusAdapterToStatus(
-                      scheduledStatus: value.scheduledStatus,
-                      account:
-                          IMyAccountBloc.of(context, listen: false).account),
-              child: StatusListItemTimelineWidget.list(
-                displayActions: false,
-                statusCallback: (_, __) {
-                  // nothing
-                },
-                collapsible: false,
-              ))
-        ],
-      ),
+    return Column(
+      children: <Widget>[
+        buildScheduledHeader(context, scheduledStatusBloc),
+        FediUltraLightGreyDivider(),
+        ProxyProvider<IScheduledStatusBloc, IStatus>(
+            update: (context, value, previous) =>
+                ScheduledStatusAdapterToStatus(
+                    scheduledStatus: value.scheduledStatus,
+                    account: IMyAccountBloc.of(context, listen: false).account),
+            child: StatusListItemTimelineWidget.list(
+              displayActions: false,
+              statusCallback: (_, __) {
+                // nothing
+              },
+              collapsible: false,
+            ))
+      ],
     );
   }
 
@@ -52,61 +55,53 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
 
           switch (state) {
             case ScheduledStatusState.scheduled:
-              return Container(
-                decoration: BoxDecoration(color: Colors.blue),
-                child: Padding(
-                  padding: FediPadding.horizontalSmallPadding,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      buildScheduledAt(context, scheduledStatusBloc),
-                      Row(
-                        children: [
-                          buildEditButton(context, scheduledStatusBloc),
-                          buildCancelButton(context, scheduledStatusBloc),
-                        ],
-                      )
-                    ],
-                  ),
+              return Padding(
+                padding: FediPadding.horizontalSmallPadding,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    buildScheduledAt(context, scheduledStatusBloc),
+                    Row(
+                      children: [
+                        buildEditButton(context, scheduledStatusBloc),
+                        buildCancelButton(context, scheduledStatusBloc),
+                      ],
+                    )
+                  ],
                 ),
               );
               break;
             case ScheduledStatusState.canceled:
-              return Container(
-                decoration: BoxDecoration(color: Colors.red),
-                child: Padding(
-                    padding: FediPadding.horizontalSmallPadding,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Padding(
-                          padding: FediPadding.allSmallPadding,
-                          child: Text(
-                            tr("app.status.scheduled.state.canceled"),
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        )
-                      ],
-                    )),
-              );
+              return Padding(
+                  padding: FediPadding.horizontalSmallPadding,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: FediPadding.allSmallPadding,
+                        child: Text(
+                          tr("app.status.scheduled.state.canceled"),
+                          style: FediTextStyles.mediumShortBoldDarkGrey,
+                        ),
+                      )
+                    ],
+                  ));
               break;
             case ScheduledStatusState.alreadyPosted:
-              return Container(
-                decoration: BoxDecoration(color: Colors.blue),
-                child: Padding(
-                    padding: FediPadding.horizontalSmallPadding,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Padding(
-                          padding: FediPadding.allSmallPadding,
-                          child: Text(
-                              tr("app.status.scheduled.state.already_posted"),
-                              style: TextStyle(color: Colors.white)),
-                        )
-                      ],
-                    )),
-              );
+              return Padding(
+                  padding: FediPadding.horizontalSmallPadding,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: FediPadding.allSmallPadding,
+                        child: Text(
+                          tr("app.status.scheduled.state.already_posted"),
+                          style: FediTextStyles.mediumShortBoldDarkGrey,
+                        ),
+                      )
+                    ],
+                  ));
           }
 
           throw "Invalid state $state";
@@ -121,40 +116,45 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
           builder: (context, snapshot) {
             var scheduledAt = snapshot.data;
             return Text(
-                tr("app.status.scheduled.state.scheduled_at",
-                    args: [dateFormat.format(scheduledAt)]),
-                style: TextStyle(color: Colors.white));
+              dateFormat.format(scheduledAt),
+              style: FediTextStyles.mediumShortBoldDarkGrey,
+            );
           });
 
   Widget buildCancelButton(
           BuildContext context, IScheduledStatusBloc scheduledStatusBloc) =>
       PleromaAsyncOperationButtonBuilderWidget(
-        builder: (context, onPressed) {
-          return FlatButton(
-              onPressed: onPressed,
-              child: Text(tr("app.status.scheduled.action.cancel"),
-                  style: TextStyle(color: Colors.white)));
-        },
+        builder: (context, onPressed) => IconButton(
+            icon: Icon(
+              FediIcons.delete,
+              color: FediColors.darkGrey,
+            ),
+            iconSize: FediSizes.bigIconSize,
+            onPressed: onPressed),
         asyncButtonAction: () => scheduledStatusBloc.cancelSchedule(),
       );
 
   Widget buildEditButton(
       BuildContext context, IScheduledStatusBloc scheduledStatusBloc) {
-    return FlatButton(
-        onPressed: () async {
-          var newScheduledAt = await showScheduledStatusDateTimePickerDialog(
-              context, scheduledStatusBloc.scheduledAt);
+    return IconButton(
+      icon: Icon(
+        FediIcons.pen,
+        color: FediColors.darkGrey,
+      ),
+      iconSize: FediSizes.bigIconSize,
+      onPressed: () async {
+        var newScheduledAt = await showScheduledStatusDateTimePickerDialog(
+            context, scheduledStatusBloc.scheduledAt);
 
-          if (newScheduledAt != null) {
-            await doAsyncOperationWithFediDialog(
-                context: context,
-                asyncCode: () => scheduledStatusBloc.reSchedule(
-                    scheduledAt: newScheduledAt));
-          } else {
-            await scheduledStatusBloc.cancelSchedule();
-          }
-        },
-        child: Text(tr("app.status.scheduled.action.edit"),
-            style: TextStyle(color: Colors.white)));
+        if (newScheduledAt != null) {
+          await doAsyncOperationWithFediDialog(
+              context: context,
+              asyncCode: () =>
+                  scheduledStatusBloc.reSchedule(scheduledAt: newScheduledAt));
+        } else {
+          await scheduledStatusBloc.cancelSchedule();
+        }
+      },
+    );
   }
 }
