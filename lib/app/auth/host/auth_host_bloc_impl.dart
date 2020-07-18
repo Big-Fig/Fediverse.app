@@ -54,7 +54,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   IAuthHostAccessTokenLocalPreferenceBloc hostAccessTokenLocalPreferenceBloc;
   ICurrentAuthInstanceBloc currentInstanceBloc;
   final IPleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc
-  pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc;
+      pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc;
   final IConnectionService connectionService;
 
   AuthHostBloc({
@@ -193,8 +193,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
       clientId: hostApplication.clientId,
     ));
 
-    return
-        await _createInstanceFromToken(token: token, authCode: authCode);
+    return await _createInstanceFromToken(token: token, authCode: authCode);
   }
 
   Future<AuthInstance> _createInstanceFromToken(
@@ -241,9 +240,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     var token = await pleromaAccountPublicService.registerAccount(
         request: request, appAccessToken: hostAccessToken.accessToken);
 
-
-    return  _createInstanceFromToken(token: token, authCode: null);
-
+    return _createInstanceFromToken(token: token, authCode: null);
   }
 
   @override
@@ -291,12 +288,15 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     assert(currentInstance != null);
 
     var instance = currentInstance;
-    await pleromaOAuthService.revokeToken(
-        revokeRequest: PleromaOAuthAppTokenRevokeRequest(
-            clientId: instance.application.clientId,
-            clientSecret: instance.application.clientSecret,
-            token: instance.token.accessToken));
-    await currentInstanceBloc.logoutCurrentInstance();
+    try {
+      await pleromaOAuthService.revokeToken(
+          revokeRequest: PleromaOAuthAppTokenRevokeRequest(
+              clientId: instance.application.clientId,
+              clientSecret: instance.application.clientSecret,
+              token: instance.token.accessToken));
+    } finally {
+      await currentInstanceBloc.logoutCurrentInstance();
+    }
   }
 
   @override
