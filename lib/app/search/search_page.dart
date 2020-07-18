@@ -3,6 +3,9 @@ import 'package:fedi/app/search/input/search_input_widget.dart';
 import 'package:fedi/app/search/recent/recent_search_bloc.dart';
 import 'package:fedi/app/search/recent/recent_search_bloc_impl.dart';
 import 'package:fedi/app/search/recent/recent_search_local_preference_bloc.dart';
+import 'package:fedi/app/search/result/list/search_result_item_network_only_list_service_impl.dart';
+import 'package:fedi/app/search/result/pagination/search_result_item_network_only_pagination_bloc_impl.dart';
+import 'package:fedi/app/search/result/pagination/search_result_item_pagination_list_bloc.dart';
 import 'package:fedi/app/search/search_bloc.dart';
 import 'package:fedi/app/search/search_bloc_impl.dart';
 import 'package:fedi/app/search/search_model.dart';
@@ -29,8 +32,7 @@ class SearchPage extends StatelessWidget {
 
 void goToSearchPage(
   BuildContext context, {
-//  SearchTab startTab = SearchTab.all,
-  SearchTab startTab = SearchTab.accounts,
+  SearchTab startTab = SearchTab.all,
 }) {
   Navigator.push(
     context,
@@ -48,7 +50,16 @@ void goToSearchPage(
               recentSearchLocalPreferenceBloc:
                   IRecentSearchLocalPreferenceBloc.of(context, listen: false),
             ),
-            child: SearchPage(),
+            child: SearchResultItemsNetworkOnlyListService.provideToContext(
+              context,
+              child: SearchResultItemNetworkOnlyPaginationBloc.provideToContext(
+                context,
+                child: SearchResultItemPaginationListBloc.provideToContext(
+                  context,
+                  child: SearchPage(),
+                ),
+              ),
+            ),
           ),
         ),
       ),

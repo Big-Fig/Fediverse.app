@@ -97,7 +97,7 @@ class AccountFollowingAccountCachedListBloc extends DisposableOwner
     return accounts;
   }
 
-  static AccountFollowingAccountCachedListBloc _createFromContext(
+  static AccountFollowingAccountCachedListBloc createFromContext(
           BuildContext context,
           {@required IAccount account}) =>
       AccountFollowingAccountCachedListBloc(
@@ -113,7 +113,7 @@ class AccountFollowingAccountCachedListBloc extends DisposableOwner
   }) {
     return DisposableProvider<IAccountCachedListBloc>(
       create: (context) =>
-          AccountFollowingAccountCachedListBloc._createFromContext(
+          AccountFollowingAccountCachedListBloc.createFromContext(
         context,
         account: account,
       ),

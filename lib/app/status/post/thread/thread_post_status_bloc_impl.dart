@@ -30,7 +30,7 @@ class ThreadPostStatusBloc extends PostStatusBloc {
             pleromaMediaAttachmentService: pleromaMediaAttachmentService,
             initialVisibility: PleromaVisibility.PUBLIC);
 
-  static ThreadPostStatusBloc _createFromContext(BuildContext context,
+  static ThreadPostStatusBloc createFromContext(BuildContext context,
           {@required IStatus inReplyToStatus}) =>
       ThreadPostStatusBloc(
           inReplyToStatus: inReplyToStatus,
@@ -44,7 +44,7 @@ class ThreadPostStatusBloc extends PostStatusBloc {
   static Widget provideToContext(BuildContext context,
       {@required IStatus inReplyToStatus, @required Widget child}) {
     return DisposableProvider<IPostStatusBloc>(
-      create: (context) => ThreadPostStatusBloc._createFromContext(
+      create: (context) => ThreadPostStatusBloc.createFromContext(
         context,
         inReplyToStatus: inReplyToStatus,
       ),
