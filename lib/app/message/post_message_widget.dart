@@ -6,13 +6,10 @@ import 'package:fedi/app/message/action/post_message_post_action_widget.dart';
 import 'package:fedi/app/message/post_message_attach_widget.dart';
 import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/message/post_message_content_widget.dart';
-import 'package:fedi/app/status/post/post_status_bloc.dart';
-import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:rxdart/rxdart.dart';
 
 class PostMessageWidget extends StatelessWidget {
@@ -48,17 +45,18 @@ class PostMessageWidget extends StatelessWidget {
   StreamBuilder<String> buildActionWidget(
     BuildContext context,
     IPostMessageBloc postMessageBloc,
-  ) => StreamBuilder<String>(
-        stream: postMessageBloc.inputTextStream,
-        initialData: postMessageBloc.inputText,
-        builder: (context, snapshot) {
-          var inputText = snapshot.data;
-          if (inputText?.trim()?.isNotEmpty == true) {
-            return PostMessageEmojiActionWidget();
-          } else {
-            return PostMessageAttachActionWidget();
-          }
-        });
+  ) =>
+      StreamBuilder<String>(
+          stream: postMessageBloc.inputTextStream,
+          initialData: postMessageBloc.inputText,
+          builder: (context, snapshot) {
+            var inputText = snapshot.data;
+            if (inputText?.trim()?.isNotEmpty == true) {
+              return PostMessageEmojiActionWidget();
+            } else {
+              return PostMessageAttachActionWidget();
+            }
+          });
 
   StreamBuilder<double> buildMediaAttachments(
     BuildContext context,

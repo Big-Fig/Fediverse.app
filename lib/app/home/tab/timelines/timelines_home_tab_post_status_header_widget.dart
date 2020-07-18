@@ -10,7 +10,7 @@ class TimelinesHomeTabPostStatusHeaderWidget extends StatelessWidget {
           expanded: false,
           goBackOnSuccess: false,
           displayAccountAvatar: true,
-          maxLines: 1,
+          maxLines: 1, showPostAction: false,
         ));
   }
 

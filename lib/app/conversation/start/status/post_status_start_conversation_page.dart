@@ -32,7 +32,7 @@ class PostStatusStartConversationPage extends StatelessWidget {
                   goBackOnSuccess: true,
                   expanded: true,
                   maxLines: null,
-                  displayAccountAvatar: false,
+                  displayAccountAvatar: false, showPostAction: true,
                 ),
               ),
             ),

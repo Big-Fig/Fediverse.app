@@ -20,11 +20,13 @@ class PostStatusComposeWidget extends StatelessWidget {
   final bool displayAccountAvatar;
   final int maxLines;
   final String hintText;
+  final bool showPostAction;
 
   const PostStatusComposeWidget({
     @required this.expanded,
     @required this.displayAccountAvatar,
     @required this.maxLines,
+    @required this.showPostAction,
     this.hintText,
     @required this.goBackOnSuccess,
   });
@@ -95,11 +97,12 @@ class PostStatusComposeWidget extends StatelessWidget {
               ),
             ),
           ),
-          PostStatusPostTextActionWidget(successCallback: (context) {
-            if (goBackOnSuccess) {
-              Navigator.of(context).pop();
-            }
-          })
+          if (showPostAction)
+            PostStatusPostTextActionWidget(successCallback: (context) {
+              if (goBackOnSuccess) {
+                Navigator.of(context).pop();
+              }
+            }),
         ],
       ),
     );
