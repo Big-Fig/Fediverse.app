@@ -4,16 +4,18 @@ import 'package:fedi/app/ui/progress/fedi_progress_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class DeterminateProgressDialog extends ProgressDialog {
+class FediDeterminateProgressDialog extends FediProgressDialog {
   final Stream<int> progressStream;
 
-  DeterminateProgressDialog(
+  FediDeterminateProgressDialog(
       {@required this.progressStream,
+      String titleMessage,
       String contentMessage,
       bool cancelable = false,
       @required CancelableOperation cancelableOperation})
       : super(
-            titleMessage: contentMessage,
+            titleMessage: titleMessage,
+            contentMessage: contentMessage,
             cancelable: cancelable,
             cancelableOperation: cancelableOperation);
 

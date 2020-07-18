@@ -33,7 +33,7 @@ Future<AsyncDialogResult<T>> doAsyncOperationWithDialog<T>({
 
   var progressDialog;
   if (showProgressDialog) {
-    progressDialog = IndeterminateProgressDialog(
+    progressDialog = FediIndeterminateProgressDialog(
         cancelable: cancelable,
         contentMessage: contentMessage ?? tr("dialog.progress.content"),
         cancelableOperation: cancelableOperation);

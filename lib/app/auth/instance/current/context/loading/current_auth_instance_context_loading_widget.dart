@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/my/action/my_account_action_list_bottom_sheet_dialog.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
@@ -10,6 +12,7 @@ import 'package:fedi/app/ui/button/text/fedi_grey_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_text_styles.dart';
+import 'package:fedi/app/ui/progress/fedi_indeterminate_progress_dialog.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,10 +20,65 @@ import 'package:logging/logging.dart';
 
 var _logger = Logger("current_instance_context_loading_widget.dart");
 
-class CurrentAuthInstanceContextLoadingWidget extends StatelessWidget {
+class CurrentAuthInstanceContextLoadingWidget extends StatefulWidget {
   final Widget child;
 
   const CurrentAuthInstanceContextLoadingWidget({@required this.child});
+
+  @override
+  _CurrentAuthInstanceContextLoadingWidgetState createState() =>
+      _CurrentAuthInstanceContextLoadingWidgetState();
+}
+
+class _CurrentAuthInstanceContextLoadingWidgetState
+    extends State<CurrentAuthInstanceContextLoadingWidget> {
+  FediIndeterminateProgressDialog dialog;
+  StreamSubscription subscription;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    var currentInstanceContextLoadingBloc =
+        ICurrentAuthInstanceContextLoadingBloc.of(context, listen: false);
+
+    if (currentInstanceContextLoadingBloc.state ==
+        CurrentAuthInstanceContextLoadingState.loading) {
+      var myAccountBloc = IMyAccountBloc.of(context, listen: false);
+      dialog = FediIndeterminateProgressDialog(
+          cancelableOperation: null,
+          titleMessage: "app.auth.instance.current.context.loading.loading"
+                  ".title"
+              .tr(),
+          contentMessage: tr(
+              "app.auth.instance.current.context.loading.loading.content",
+              args: [myAccountBloc.instance.userAtHost]));
+
+      Future.delayed(Duration(milliseconds: 500), () {
+        dialog.show(context);
+      });
+
+      subscription =
+          currentInstanceContextLoadingBloc.stateStream.listen((state) {
+        if (currentInstanceContextLoadingBloc.state !=
+            CurrentAuthInstanceContextLoadingState.loading) {
+          hideDialog();
+        }
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    hideDialog();
+  }
+
+  void hideDialog() {
+    if (dialog?.isShowing == true) {
+      dialog.hide(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,10 +100,10 @@ class CurrentAuthInstanceContextLoadingWidget extends StatelessWidget {
 
                 switch (state) {
                   case CurrentAuthInstanceContextLoadingState.loading:
-                    return _buildLoading(context);
+                    return const AppInitPage();
                     break;
                   case CurrentAuthInstanceContextLoadingState.localCacheExist:
-                    return child;
+                    return widget.child;
                   case CurrentAuthInstanceContextLoadingState
                       .cantFetchAndLocalCacheNotExist:
                     return _buildSessionExpired(
@@ -57,17 +115,6 @@ class CurrentAuthInstanceContextLoadingWidget extends StatelessWidget {
               });
         },
       ),
-    );
-  }
-
-  Widget _buildLoading(BuildContext context) {
-    var myAccountBloc = IMyAccountBloc.of(context, listen: true);
-
-    return AppInitPage(
-      text: tr(
-          "app.auth.instance.current.context.loading.loading"
-          ".content",
-          args: [myAccountBloc.instance.userAtHost]),
     );
   }
 
@@ -116,7 +163,6 @@ class CurrentAuthInstanceContextLoadingWidget extends StatelessWidget {
                     onPressed: () {
                       showMyAccountActionListBottomSheetDialog(context);
                     },
-
                   ),
                 ),
                 Padding(

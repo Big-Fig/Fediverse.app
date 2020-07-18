@@ -38,7 +38,7 @@ class FediTransparentEditTextField extends StatelessWidget {
     @required this.focusNode,
     this.hintStyle = FediTextStyles.subHeaderTallLightGrey,
     this.textStyle = FediTextStyles.subHeaderTallDarkGrey,
-    @required this.keyboardType,
+    this.keyboardType,
     Color customBorderColor,
     this.autocorrect = true,
     this.obscureText = false,
