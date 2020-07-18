@@ -548,15 +548,10 @@
         }
       },
       "scheduled": {
-        "title": "Scheduled statuses",
+        "title": "Queue",
         "state": {
-          "scheduled_at": "Scheduled: {}",
           "canceled": "Canceled",
           "already_posted": "Already posted"
-        },
-        "action": {
-          "edit": "Edit",
-          "cancel": "Cancel"
         }
       },
       "share": {
