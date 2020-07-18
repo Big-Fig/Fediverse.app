@@ -9,11 +9,11 @@ class IndeterminateProgressDialog extends ProgressDialog {
       bool cancelable = false,
       @required CancelableOperation cancelableOperation})
       : super(
-            contentMessage: contentMessage,
+            titleMessage: contentMessage,
             cancelable: cancelable,
             cancelableOperation: cancelableOperation);
 
   @override
-  Widget buildDialogContent(BuildContext context) =>
-      buildDialogContentMessage(context);
+  Widget buildDialogTitle(BuildContext context) =>
+      buildDialogTitleMessage(context);
 }
