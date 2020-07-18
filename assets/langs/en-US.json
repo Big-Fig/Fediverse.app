@@ -703,7 +703,8 @@
         "loading": {
           "progress": "Loading original status",
           "failed": "Failed to load original status"
-        }
+        },
+        "replying_to": "Replying to {}"
       }
     },
     "tos": {

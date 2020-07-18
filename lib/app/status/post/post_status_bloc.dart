@@ -1,6 +1,7 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
+import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -45,7 +46,6 @@ abstract class IPostStatusBloc implements IPostMessageBloc {
 
   void clearSchedule();
 
-
   bool get isScheduled;
 
   Stream<bool> get isScheduledStream;
@@ -53,7 +53,6 @@ abstract class IPostStatusBloc implements IPostMessageBloc {
   DateTime get scheduledAt;
 
   Stream<DateTime> get scheduledAtStream;
-
 
   String get inputWithoutMentionedAcctsText;
 
@@ -63,4 +62,15 @@ abstract class IPostStatusBloc implements IPostMessageBloc {
 
   Stream<bool> get isHaveMentionedAcctsStream;
 
+  IStatus get originInReplyToStatus;
+
+  IStatus get notCanceledOriginInReplyToStatus;
+
+  Stream<IStatus> get notCanceledOriginInReplyToStatusStream;
+
+  bool get originInReplyToStatusCanceled;
+
+  Stream<bool> get originInReplyToStatusCanceledStream;
+
+  void cancelOriginInReplyToStatus();
 }
