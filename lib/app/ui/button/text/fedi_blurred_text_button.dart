@@ -8,30 +8,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 
-class FediWhiteFilledTextButton extends StatelessWidget {
+class FediBlurredTextButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
-
-  final double width;
   final double height;
-
   final double borderWidth;
 
   final TextStyle textStyle;
+  static const TextStyle defaultTextStyle = FediTextStyles.mediumShortBoldWhite;
 
-  final Color color;
-
-  static const TextStyle defaultTextStyle =
-      FediTextStyles.mediumShortBoldMediumGrey;
-
-  FediWhiteFilledTextButton(
+  const FediBlurredTextButton(
     this.text, {
     @required this.onPressed,
-    this.width,
     this.height = FediSizes.textButtonHeight,
     this.textStyle = defaultTextStyle,
     this.borderWidth = 1,
-    @required this.color,
   });
 
   @override
@@ -41,24 +32,32 @@ class FediWhiteFilledTextButton extends StatelessWidget {
     return InkWell(
       onTap: onPressed,
       child: Container(
-          width: width,
           height: calculatedHeight,
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,
-            color: FediColors.white,
+            color: FediColors.darkGrey.withOpacity(0.3),
             borderRadius: borderRadius,
             border: Border.all(
-              color: color,
+              color: FediColors.white,
               width: borderWidth,
             ),
           ),
-          child: Center(
-            child: Padding(
-              padding: FediPadding.buttonHorizontalPadding,
-              child: Text(
-                text,
-                style: defaultTextStyle.copyWith(color: color),
+          child: ClipRRect(
+            borderRadius: borderRadius,
+            child: BackdropFilter(
+              child: Center(
+                child: Padding(
+                  padding: FediPadding.buttonHorizontalPadding,
+                  child: Text(
+                    text,
+                    textAlign: TextAlign.center,
+                    style: textStyle.copyWith(
+                      color: textStyle.color.withOpacity(0.8),
+                    ),
+                  ),
+                ),
               ),
+              filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
             ),
           )),
     );

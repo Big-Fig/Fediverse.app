@@ -8,7 +8,7 @@ import 'package:fedi/app/conversation/start/start_conversation_page.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 import 'package:fedi/app/search/search_page.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
-import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
+import 'package:fedi/app/ui/button/text/fedi_blurred_text_button.dart';
 import 'package:fedi/app/ui/fedi_border_radius.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/header/fedi_header_text.dart';
@@ -103,9 +103,9 @@ class ConversationMessagesHomeTabPage extends StatelessWidget {
           overlayBuilder: (context) =>
               ConversationListTapToLoadOverlayWidget());
 
-  FediTransparentTextButton buildSwitchToChatsActionButton(
+  FediBlurredTextButton buildSwitchToChatsActionButton(
       BuildContext context) {
-    return FediTransparentTextButton(
+    return FediBlurredTextButton(
         tr("app.home.tab.conversations.action.switch_to_chats"), onPressed: () {
       IMyAccountSettingsBloc.of(context, listen: false)
           .isNewChatsEnabledFieldBloc

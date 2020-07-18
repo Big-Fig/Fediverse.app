@@ -1,6 +1,6 @@
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
+import 'package:fedi/app/ui/button/text/fedi_blurred_text_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
-import 'package:fedi/app/ui/button/text/fedi_white_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -82,20 +82,20 @@ class _FediTextTabIndicatorItemWidgetState
       );
     } else {
       if (widget.isTransparent) {
-        text = FediTransparentTextButton(
+        text = FediBlurredTextButton(
           widget.label,
           onPressed: onPressed,
-          textStyle: FediTransparentTextButton.defaultTextStyle.copyWith(
+          textStyle: FediBlurredTextButton.defaultTextStyle.copyWith(
             fontSize: fontSize,
             fontWeight: FontWeight.normal,
             height: lineHeight,
           ),
         );
       } else {
-        text = FediWhiteFilledTextButton(
+        text = FediTransparentTextButton(
           widget.label,
           onPressed: onPressed,
-          textStyle: FediWhiteFilledTextButton.defaultTextStyle.copyWith(
+          textStyle: FediTransparentTextButton.defaultTextStyle.copyWith(
             fontSize: fontSize,
             fontWeight: FontWeight.normal,
             height: lineHeight,

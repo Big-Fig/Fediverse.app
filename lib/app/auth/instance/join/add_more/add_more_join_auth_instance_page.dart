@@ -13,13 +13,14 @@ class AddMoreJoinAuthInstancePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
       backgroundColor: FediColors.primaryColorDark,
       appBar: FediSubPageTitleAppBar(
           title: tr("app.auth.instance.join.new.title"),
           leading: const FediDismissIconButton()),
       body: SafeArea(
-        child: JoinAuthInstanceWidget(isFromScratch: false,),
+        child: JoinAuthInstanceWidget(
+          isFromScratch: false,
+        ),
       ),
     );
   }

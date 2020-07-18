@@ -5,7 +5,7 @@ import 'package:fedi/app/async/async_operation_button_builder_widget.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/conversation/start/status/post_status_start_conversation_page.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
-import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
+import 'package:fedi/app/ui/button/text/fedi_blurred_text_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -77,7 +77,7 @@ class AccountActionListWidget extends StatelessWidget {
   }
 
   Widget buildMessageButton(BuildContext context, IAccountBloc accountBloc) {
-    return FediTransparentTextButton(
+    return FediBlurredTextButton(
       tr("app.account.action.message"),
       onPressed: () async {
         goToPostStatusStartConversationPage(context,
@@ -92,7 +92,7 @@ class AccountActionListWidget extends StatelessWidget {
       showProgressDialog: false,
       asyncButtonAction: accountBloc.toggleFollow,
       builder: (BuildContext context, VoidCallback onPressed) {
-        return FediTransparentTextButton(
+        return FediBlurredTextButton(
           relationship?.following == true
               ? tr("app.account.action.unfollow")
               : tr("app.account.action.follow"),

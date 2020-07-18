@@ -1,4 +1,4 @@
-import 'package:fedi/app/ui/button/text/fedi_white_filled_text_button.dart';
+import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
 import 'package:fedi/app/ui/fedi_border_radius.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
@@ -28,7 +28,7 @@ class FediBaseAlertDialog extends BaseDialog {
     @required Color color,
     @required bool isLast,
   }) {
-    var button = FediWhiteFilledTextButton(
+    var button = FediTransparentTextButton(
       action.label,
       onPressed: action.onAction,
       color: color,
