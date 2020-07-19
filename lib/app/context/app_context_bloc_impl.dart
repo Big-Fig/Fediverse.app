@@ -11,6 +11,8 @@ import 'package:fedi/app/auth/instance/list/auth_instance_list_local_preference_
 import 'package:fedi/app/context/app_context_bloc.dart';
 import 'package:fedi/app/hive/hive_service.dart';
 import 'package:fedi/app/hive/hive_service_impl.dart';
+import 'package:fedi/app/localization/localization_service.dart';
+import 'package:fedi/app/localization/localization_service_impl.dart';
 import 'package:fedi/app/logging/logging_service.dart';
 import 'package:fedi/app/logging/logging_service_impl.dart';
 import 'package:fedi/app/media/picker/media_picker_service.dart';
@@ -59,6 +61,9 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     var hiveService = HiveService();
     await globalProviderService
         .asyncInitAndRegister<IHiveService>(hiveService);
+    var localizationService = LocalizationService();
+    await globalProviderService
+        .asyncInitAndRegister<ILocalizationService>(localizationService);
 
     var analyticsService = AnalyticsService();
 

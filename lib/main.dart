@@ -17,6 +17,8 @@ import 'package:fedi/app/home/home_model.dart';
 import 'package:fedi/app/home/home_page.dart';
 import 'package:fedi/app/init/init_bloc_impl.dart';
 import 'package:fedi/app/localization/localization_loader.dart';
+import 'package:fedi/app/localization/localization_provider_widget.dart';
+import 'package:fedi/app/localization/localization_service.dart';
 import 'package:fedi/app/splash/splash_page.dart';
 import 'package:fedi/app/ui/fedi_theme.dart';
 import 'package:fedi/async/loading/init/async_init_loading_model.dart';
@@ -56,7 +58,7 @@ void main() async {
 
     if (newState == AsyncInitLoadingState.finished) {
       var currentInstanceBloc =
-          initBloc.appContextBloc.get<ICurrentAuthInstanceBloc>();
+      initBloc.appContextBloc.get<ICurrentAuthInstanceBloc>();
 
       currentInstanceBloc.currentInstanceStream
           .distinct(
@@ -73,7 +75,7 @@ void main() async {
 CurrentAuthInstanceContextBloc currentInstanceContextBloc;
 
 void showSplashPage(AppContextBloc appContextBloc) {
-  runApp(OverlaySupport(child: MaterialApp(home: (const SplashPage()))));
+  runApp(_buildEasyLocalization(child: FediApp(home: (const SplashPage()))));
 }
 
 void buildCurrentInstanceApp(
@@ -93,7 +95,7 @@ void buildCurrentInstanceApp(
         webSocketsService: appContextBloc.get());
     await currentInstanceContextBloc.performAsyncInit();
     _logger.finest(
-        () => "buildCurrentInstanceApp CurrentInstanceContextLoadingPage");
+            () => "buildCurrentInstanceApp CurrentInstanceContextLoadingPage");
     runUserLoggedApp(appContextBloc);
   } else {
     runUserNotLoggedApp(appContextBloc);
@@ -102,18 +104,18 @@ void buildCurrentInstanceApp(
 
 void runUserLoggedApp(AppContextBloc appContextBloc) {
   runApp(
-    _buildEasyLocalization(
-      child: appContextBloc.provideContextToChild(
+    appContextBloc.provideContextToChild(
+      child: _buildEasyLocalization(
         child: currentInstanceContextBloc.provideContextToChild(
           child: DisposableProvider<ICurrentAuthInstanceContextLoadingBloc>(
             create: (context) {
               var currentAuthInstanceContextLoadingBloc =
-                  CurrentAuthInstanceContextLoadingBloc(
+              CurrentAuthInstanceContextLoadingBloc(
                 myAccountBloc: IMyAccountBloc.of(context, listen: false),
                 pleromaInstanceService:
-                    IPleromaInstanceService.of(context, listen: false),
+                IPleromaInstanceService.of(context, listen: false),
                 currentAuthInstanceBloc:
-                    ICurrentAuthInstanceBloc.of(context, listen: false),
+                ICurrentAuthInstanceBloc.of(context, listen: false),
               );
               currentAuthInstanceContextLoadingBloc.performAsyncInit();
               return currentAuthInstanceContextLoadingBloc;
@@ -134,8 +136,8 @@ void runUserLoggedApp(AppContextBloc appContextBloc) {
 
 void runUserNotLoggedApp(AppContextBloc appContextBloc) {
   runApp(
-    _buildEasyLocalization(
-      child: appContextBloc.provideContextToChild(
+    appContextBloc.provideContextToChild(
+      child: _buildEasyLocalization(
         child: DisposableProvider<IJoinAuthInstanceBloc>(
           create: (context) => JoinAuthInstanceBloc(),
           child: const FediApp(
@@ -147,12 +149,19 @@ void runUserNotLoggedApp(AppContextBloc appContextBloc) {
   );
 }
 
-Widget _buildEasyLocalization({@required Widget child}) => EasyLocalization(
-      key: PageStorageKey("EasyLocalization"),
-      assetLoader: CodegenLoader(),
-      supportedLocales: [Locale('en', 'US')],
-      path: "assets/langs",
-      child: child,
+Widget _buildEasyLocalization({
+  @required Widget child,
+}) =>
+    Builder(
+      builder: (context) => LocalizationProvider(
+        key: PageStorageKey("EasyLocalization"),
+        assetLoader: CodegenLoader(),
+        supportedLocales: [Locale('en', 'US')],
+        path: "assets/langs",
+        localizationBloc:
+        ILocalizationService.of(context, listen: false).localizationBloc,
+        child: child,
+      ),
     );
 
 class FediApp extends StatelessWidget {
@@ -165,19 +174,19 @@ class FediApp extends StatelessWidget {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return OverlaySupport(
         child: MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Fedi2',
-      localizationsDelegates: context.localizationDelegates,
-      supportedLocales: context.supportedLocales,
-      locale: context.locale,
-      theme: fediTheme,
-      initialRoute: "/",
-      home: home,
-      navigatorObservers: [
-        FirebaseAnalyticsObserver(
-            analytics:
+          debugShowCheckedModeBanner: false,
+          title: 'Fedi2',
+          localizationsDelegates: LocalizationProvider.of(context).delegates,
+          supportedLocales:  LocalizationProvider.of(context).supportedLocales,
+          locale:  LocalizationProvider.of(context).locale,
+          theme: fediTheme,
+          initialRoute: "/",
+          home: home,
+          navigatorObservers: [
+            FirebaseAnalyticsObserver(
+                analytics:
                 IAnalyticsService.of(context, listen: false).firebaseAnalytics),
-      ],
-    ));
+          ],
+        ));
   }
 }
