@@ -29,10 +29,15 @@ class CurrentAuthInstanceContextLoadingBloc extends AsyncInitLoadingBloc
     stateSubject.add(CurrentAuthInstanceContextLoadingState.loading);
 
     if (pleromaInstanceService.isApiReadyToUse) {
+      try {
       var info = await pleromaInstanceService.getInstance();
       var currentInstance = currentAuthInstanceBloc.currentInstance;
       currentInstance = currentInstance.copyWith(info: info);
       await currentAuthInstanceBloc.changeCurrentInstance(currentInstance);
+
+      } catch(e, stackTrace) {
+        _logger.warning(() => "failed to update instance info", e, stackTrace);
+      }
     }
 
     await myAccountBloc.refreshFromNetwork(false).then((_) {
