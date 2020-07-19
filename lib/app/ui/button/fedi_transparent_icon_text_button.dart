@@ -36,37 +36,39 @@ class FediTransparentIconTextButton extends StatelessWidget {
       onTap: onPressed,
       child: Container(
           height: calculatedHeight,
-          decoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            color: FediColors.darkGrey.withOpacity(0.3),
-            borderRadius: borderRadius,
-            border: Border.all(
-              color: FediColors.white,
-              width: borderWidth,
-            ),
-          ),
           child: ClipRRect(
             borderRadius: borderRadius,
             child: BackdropFilter(
-              child: Center(
-                child: Padding(
-                  padding: FediPadding.buttonHorizontalPadding,
-                  child: Row(
-                    children: [
-                      Icon(
-                        icon,
-                        color: FediColors.white,
-                        size: 18.0,
-                      ),
-                      FediMediumHorizontalSpacer(),
-                      Text(
-                        text,
-                        textAlign: TextAlign.center,
-                        style: textStyle.copyWith(
-                          color: textStyle.color.withOpacity(0.8),
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  color: FediColors.darkGrey.withOpacity(0.3),
+                  borderRadius: borderRadius,
+                  border: Border.all(
+                    color: FediColors.white,
+                    width: borderWidth,
+                  ),
+                ),
+                child: Center(
+                  child: Padding(
+                    padding: FediPadding.buttonHorizontalPadding,
+                    child: Row(
+                      children: [
+                        Icon(
+                          icon,
+                          color: FediColors.white,
+                          size: 18.0,
                         ),
-                      ),
-                    ],
+                        FediMediumHorizontalSpacer(),
+                        Text(
+                          text,
+                          textAlign: TextAlign.center,
+                          style: textStyle.copyWith(
+                            color: textStyle.color.withOpacity(0.8),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
