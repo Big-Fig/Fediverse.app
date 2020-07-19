@@ -1,3 +1,5 @@
+import 'package:fedi/app/analytics/analytics_service.dart';
+import 'package:fedi/app/analytics/analytics_service_impl.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_local_preference_bloc.dart';
@@ -7,6 +9,10 @@ import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_local_preference_bloc.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_local_preference_bloc_impl.dart';
 import 'package:fedi/app/context/app_context_bloc.dart';
+import 'package:fedi/app/hive/hive_service.dart';
+import 'package:fedi/app/hive/hive_service_impl.dart';
+import 'package:fedi/app/logging/logging_service.dart';
+import 'package:fedi/app/logging/logging_service_impl.dart';
 import 'package:fedi/app/media/picker/media_picker_service.dart';
 import 'package:fedi/app/media/picker/media_picker_service_impl.dart';
 import 'package:fedi/app/push/handler/push_handler_bloc.dart';
@@ -45,6 +51,20 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     _logger.fine(() => "internalAsyncInit");
 
     var globalProviderService = this;
+
+    var loggingService = LoggingService();
+    await globalProviderService
+        .asyncInitAndRegister<ILoggingService>(loggingService);
+
+    var hiveService = HiveService();
+    await globalProviderService
+        .asyncInitAndRegister<IHiveService>(hiveService);
+
+    var analyticsService = AnalyticsService();
+
+    await globalProviderService
+        .asyncInitAndRegister<IAnalyticsService>(analyticsService);
+
 
     var connectionService = ConnectionService();
     await globalProviderService

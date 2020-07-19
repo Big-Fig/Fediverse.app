@@ -6,8 +6,7 @@ import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/auth/instance/current/context/loading/current_auth_instance_context_loading_bloc.dart';
 import 'package:fedi/app/auth/instance/current/context/loading/current_auth_instance_context_loading_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/init/app_async_init_loading_widget.dart';
-import 'package:fedi/app/init/app_init_page.dart';
+import 'package:fedi/app/splash/splash_page.dart';
 import 'package:fedi/app/ui/button/text/fedi_grey_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
@@ -32,7 +31,7 @@ class CurrentAuthInstanceContextLoadingWidget extends StatefulWidget {
 
 class _CurrentAuthInstanceContextLoadingWidgetState
     extends State<CurrentAuthInstanceContextLoadingWidget> {
-  FediIndeterminateProgressDialog dialog;
+  FediIndeterminateProgressDialog progressDialog;
   StreamSubscription subscription;
 
   var disposed = false;
@@ -47,7 +46,7 @@ class _CurrentAuthInstanceContextLoadingWidgetState
     if (currentInstanceContextLoadingBloc.state ==
         CurrentAuthInstanceContextLoadingState.loading) {
       var myAccountBloc = IMyAccountBloc.of(context, listen: false);
-      dialog = FediIndeterminateProgressDialog(
+      progressDialog = FediIndeterminateProgressDialog(
           cancelableOperation: null,
           titleMessage: "app.auth.instance.current.context.loading.loading"
                   ".title"
@@ -58,7 +57,7 @@ class _CurrentAuthInstanceContextLoadingWidgetState
 
       Future.delayed(Duration(milliseconds: 100), () {
         if (!disposed) {
-          dialog.show(context);
+          progressDialog.show(context);
         }
       });
 
@@ -80,8 +79,8 @@ class _CurrentAuthInstanceContextLoadingWidgetState
   }
 
   void hideDialog() {
-    if (dialog?.isShowing == true) {
-      dialog.hide(context);
+    if (progressDialog?.isShowing == true) {
+      progressDialog.hide(context);
     }
   }
 
@@ -92,38 +91,30 @@ class _CurrentAuthInstanceContextLoadingWidgetState
 
     _logger.finest(() => "build");
 
-    return Scaffold(
-      body: AppAsyncInitLoadingWidget(
-        asyncInitLoadingBloc: currentInstanceContextLoadingBloc,
-        loadingFinishedBuilder: (BuildContext context) {
-          return StreamBuilder<CurrentAuthInstanceContextLoadingState>(
-              stream: currentInstanceContextLoadingBloc.stateStream.distinct(),
-              initialData: currentInstanceContextLoadingBloc.state,
-              builder: (context, snapshot) {
-                var state = snapshot.data;
-                _logger.finest(() => "state $state");
+    return StreamBuilder<CurrentAuthInstanceContextLoadingState>(
+        stream: currentInstanceContextLoadingBloc.stateStream.distinct(),
+        initialData: currentInstanceContextLoadingBloc.state,
+        builder: (context, snapshot) {
+          var state = snapshot.data;
+          _logger.finest(() => "state $state");
 
-                switch (state) {
-                  case CurrentAuthInstanceContextLoadingState.loading:
-                    return const AppInitPage();
-                    break;
-                  case CurrentAuthInstanceContextLoadingState.localCacheExist:
-                    return widget.child;
-                  case CurrentAuthInstanceContextLoadingState
-                      .cantFetchAndLocalCacheNotExist:
-                    return _buildSessionExpired(
-                        currentInstanceContextLoadingBloc, context);
-                    break;
-                }
-
-                throw "Invalid state $state";
-              });
-        },
-      ),
-    );
+          switch (state) {
+            case CurrentAuthInstanceContextLoadingState.localCacheExist:
+              return widget.child;
+            case CurrentAuthInstanceContextLoadingState
+                .cantFetchAndLocalCacheNotExist:
+              return _buildSessionExpiredPage(
+                  currentInstanceContextLoadingBloc, context);
+              break;
+            case CurrentAuthInstanceContextLoadingState.loading:
+            default:
+              return const SplashPage();
+              break;
+          }
+        });
   }
 
-  FediLightStatusBarStyleArea _buildSessionExpired(
+  Widget _buildSessionExpiredPage(
       ICurrentAuthInstanceContextLoadingBloc currentInstanceContextLoadingBloc,
       BuildContext context) {
     var currentAuthInstanceBloc =

@@ -24,6 +24,11 @@ class MoorDatabaseService extends AsyncInitLoadingBloc
 
 //    appDatabase = AppDatabase(FlutterQueryExecutor.inDatabaseFolder(
 //        path: 'db.sqlite', logStatements: true));
+
+    // todo: improve re-opening new database during account switch
+    moorRuntimeOptions.dontWarnAboutMultipleDatabases = true;
+
+
     appDatabase = AppDatabase(FlutterQueryExecutor.inDatabaseFolder(
         path: '$dbName.sqlite', logStatements: false));
 
