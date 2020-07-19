@@ -32,7 +32,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
-import 'package:overlay_support/overlay_support.dart';
 import 'package:pedantic/pedantic.dart';
 
 var _logger = Logger("main.dart");
@@ -125,11 +124,13 @@ void startUserLoggedApp(AppContextBloc appContextBloc,
             authInstanceContextLoadingBloc.performAsyncInit();
             return authInstanceContextLoadingBloc;
           },
-          child: FediApp(
-            home: CurrentAuthInstanceContextLoadingWidget(
-              child: DisposableProvider<IHomeBloc>(
-                  create: (context) => HomeBloc(startTab: HomeTab.timelines),
-                  child: const HomePage()),
+          child: buildEasyLocalization(
+            child: FediApp(
+              home: CurrentAuthInstanceContextLoadingWidget(
+                child: DisposableProvider<IHomeBloc>(
+                    create: (context) => HomeBloc(startTab: HomeTab.timelines),
+                    child: const HomePage()),
+              ),
             ),
           ),
         ),
@@ -143,12 +144,25 @@ void startUserNotLoggedApp(AppContextBloc appContextBloc) {
     appContextBloc.provideContextToChild(
       child: DisposableProvider<IJoinAuthInstanceBloc>(
         create: (context) => JoinAuthInstanceBloc(),
-        child: const FediApp(
-          home: FromScratchJoinAuthInstancePage(),
+        child: buildEasyLocalization(
+          child: const FediApp(
+            home: FromScratchJoinAuthInstancePage(),
+          ),
         ),
       ),
     ),
   );
+}
+
+Widget buildEasyLocalization({Widget child}) {
+  return EasyLocalization(
+      key: PageStorageKey("EasyLocalization"),
+      supportedLocales: [Locale('en', 'US')],
+      path: "assets/langs",
+      assetLoader: CodegenLoader(),
+      preloaderColor: FediColors.primaryColorDark,
+      preloaderWidget: _splashPageApp,
+      child: child);
 }
 
 class FediApp extends StatelessWidget {
@@ -162,31 +176,19 @@ class FediApp extends StatelessWidget {
 
     var analyticsService = IAnalyticsService.of(context, listen: false);
 
-    return EasyLocalization(
-      key: PageStorageKey("EasyLocalization"),
-      supportedLocales: [Locale('en', 'US')],
-      path: "assets/langs",
-      assetLoader: CodegenLoader(),
-      preloaderColor: FediColors.primaryColorDark,
-      preloaderWidget: _splashPageApp,
-      child: Builder(
-        builder: (context) => OverlaySupport(
-          child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Fedi2',
-            localizationsDelegates: context.localizationDelegates,
-            supportedLocales: context.supportedLocales,
-            locale: context.locale,
-            theme: fediTheme,
-            initialRoute: "/",
-            home: home,
-            navigatorObservers: [
-              FirebaseAnalyticsObserver(
-                  analytics: analyticsService.firebaseAnalytics),
-            ],
-          ),
-        ),
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Fedi2',
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
+      theme: fediTheme,
+      initialRoute: "/",
+      home: home,
+      navigatorObservers: [
+        FirebaseAnalyticsObserver(
+            analytics: analyticsService.firebaseAnalytics),
+      ],
     );
   }
 }
