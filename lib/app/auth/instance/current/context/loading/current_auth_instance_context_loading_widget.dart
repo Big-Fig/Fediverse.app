@@ -35,6 +35,8 @@ class _CurrentAuthInstanceContextLoadingWidgetState
   FediIndeterminateProgressDialog dialog;
   StreamSubscription subscription;
 
+  var disposed = false;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -54,8 +56,10 @@ class _CurrentAuthInstanceContextLoadingWidgetState
               "app.auth.instance.current.context.loading.loading.content",
               args: [myAccountBloc.instance.userAtHost]));
 
-      Future.delayed(Duration(milliseconds: 500), () {
-        dialog.show(context);
+      Future.delayed(Duration(milliseconds: 100), () {
+        if (!disposed) {
+          dialog.show(context);
+        }
       });
 
       subscription =
@@ -71,6 +75,7 @@ class _CurrentAuthInstanceContextLoadingWidgetState
   @override
   void dispose() {
     super.dispose();
+    disposed = true;
     hideDialog();
   }
 
