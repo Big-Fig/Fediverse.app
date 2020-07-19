@@ -18,6 +18,7 @@ import 'package:fedi/app/home/home_model.dart';
 import 'package:fedi/app/home/home_page.dart';
 import 'package:fedi/app/init/init_bloc.dart';
 import 'package:fedi/app/init/init_bloc_impl.dart';
+import 'package:fedi/app/localization/localization_loader.dart';
 import 'package:fedi/app/splash/splash_page.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_theme.dart';
@@ -165,6 +166,7 @@ class FediApp extends StatelessWidget {
       key: PageStorageKey("EasyLocalization"),
       supportedLocales: [Locale('en', 'US')],
       path: "assets/langs",
+      assetLoader: CodegenLoader(),
       preloaderColor: FediColors.primaryColorDark,
       preloaderWidget: _splashPageApp,
       child: Builder(
