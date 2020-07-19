@@ -78,10 +78,10 @@ dependencies:
   flutter_datetime_picker: ^1.3.8
 
   # localization via .json files
-  # easy_localization: ^2.3.2
-  # it is easy_localization: ^2.3.2 with fixes for multiply runApp
   # command to regenerate loader
   # flutter pub run easy_localization:generate -s assets/langs -O lib/app/localization -o localization_loader.dart
+  # easy_localization: ^2.3.2
+  # it is easy_localization: ^2.3.2 with fixes for multiply runApp
   easy_localization:
     git:
       url: https://github.com/xal/easy_localization.git
