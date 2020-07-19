@@ -80,7 +80,7 @@ dependencies:
   # localization via .json files
   # command to regenerate loader
   # flutter pub run easy_localization:generate -s assets/langs -O lib/app/localization -o localization_loader.dart
-  # easy_localization: ^2.3.2
+#  easy_localization: ^2.3.2
   # it is easy_localization: ^2.3.2 with fixes for multiply runApp
   easy_localization:
     git:
