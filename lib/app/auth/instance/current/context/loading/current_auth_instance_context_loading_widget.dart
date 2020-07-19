@@ -43,37 +43,37 @@ class _CurrentAuthInstanceContextLoadingWidgetState
     var currentInstanceContextLoadingBloc =
         ICurrentAuthInstanceContextLoadingBloc.of(context, listen: false);
 
-    if (currentInstanceContextLoadingBloc.state ==
-        CurrentAuthInstanceContextLoadingState.loading) {
-      var myAccountBloc = IMyAccountBloc.of(context, listen: false);
-      progressDialog = FediIndeterminateProgressDialog(
-          cancelableOperation: null,
-          titleMessage: "app.auth.instance.current.context.loading.loading"
-                  ".title"
-              .tr(),
-          contentMessage: tr(
-              "app.auth.instance.current.context.loading.loading.content",
-              args: [myAccountBloc.instance.userAtHost]));
+    Future.delayed(Duration(milliseconds: 100), () {
+      if (currentInstanceContextLoadingBloc.state ==
+              CurrentAuthInstanceContextLoadingState.loading &&
+          !disposed) {
+        var myAccountBloc = IMyAccountBloc.of(context, listen: false);
+        progressDialog = FediIndeterminateProgressDialog(
+            cancelableOperation: null,
+            titleMessage: "app.auth.instance.current.context.loading.loading"
+                    ".title"
+                .tr(),
+            contentMessage: tr(
+                "app.auth.instance.current.context.loading.loading.content",
+                args: [myAccountBloc.instance.userAtHost]));
 
-      Future.delayed(Duration(milliseconds: 100), () {
-        if (!disposed) {
-          progressDialog.show(context);
-        }
-      });
+        progressDialog.show(context);
 
-      subscription =
-          currentInstanceContextLoadingBloc.stateStream.listen((state) {
-        if (currentInstanceContextLoadingBloc.state !=
-            CurrentAuthInstanceContextLoadingState.loading) {
-          hideDialog();
-        }
-      });
-    }
+        subscription =
+            currentInstanceContextLoadingBloc.stateStream.listen((state) {
+          if (currentInstanceContextLoadingBloc.state !=
+              CurrentAuthInstanceContextLoadingState.loading) {
+            hideDialog();
+          }
+        });
+      }
+    });
   }
 
   @override
   void dispose() {
     super.dispose();
+    subscription?.cancel();
     disposed = true;
     hideDialog();
   }
