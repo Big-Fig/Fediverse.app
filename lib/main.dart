@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
+import 'package:fedi/app/analytics/analytics_service.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/context/current_auth_instance_context_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/current/context/loading/current_auth_instance_context_loading_bloc.dart';
@@ -14,14 +15,13 @@ import 'package:fedi/app/home/home_bloc.dart';
 import 'package:fedi/app/home/home_bloc_impl.dart';
 import 'package:fedi/app/home/home_model.dart';
 import 'package:fedi/app/home/home_page.dart';
-import 'package:fedi/app/init/init_bloc.dart';
 import 'package:fedi/app/init/init_bloc_impl.dart';
+import 'package:fedi/app/localization/localization_loader.dart';
 import 'package:fedi/app/splash/splash_page.dart';
 import 'package:fedi/app/ui/fedi_theme.dart';
 import 'package:fedi/async/loading/init/async_init_loading_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_service.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -33,8 +33,6 @@ import 'package:overlay_support/overlay_support.dart';
 import 'package:pedantic/pedantic.dart';
 
 var _logger = Logger("main.dart");
-
-FirebaseAnalytics analytics = FirebaseAnalytics();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,7 +47,7 @@ void main() async {
 
   runApp(MaterialApp(home: SplashPage()));
 
-  IInitBloc initBloc = InitBloc();
+  var initBloc = InitBloc();
   unawaited(initBloc.performAsyncInit());
 
   initBloc.initLoadingStateStream.listen((newState) async {
@@ -96,60 +94,77 @@ void buildCurrentInstanceApp(
     await currentInstanceContextBloc.performAsyncInit();
     _logger.finest(
         () => "buildCurrentInstanceApp CurrentInstanceContextLoadingPage");
-    runApp(_buildEasyLocalization(
-        child: appContextBloc.provideContextToChild(
-            child: currentInstanceContextBloc.provideContextToChild(
-                child: DisposableProvider<
-                        ICurrentAuthInstanceContextLoadingBloc>(
-                    create: (context) {
-                      var currentAuthInstanceContextLoadingBloc =
-                          CurrentAuthInstanceContextLoadingBloc(
-                        myAccountBloc:
-                            IMyAccountBloc.of(context, listen: false),
-                        pleromaInstanceService:
-                            IPleromaInstanceService.of(context, listen: false),
-                        currentAuthInstanceBloc:
-                            ICurrentAuthInstanceBloc.of(context, listen: false),
-                      );
-                      currentAuthInstanceContextLoadingBloc.performAsyncInit();
-                      return currentAuthInstanceContextLoadingBloc;
-                    },
-                    child: MyApp(
-                        child: CurrentAuthInstanceContextLoadingWidget(
-                      child: DisposableProvider<IHomeBloc>(
-                          create: (context) =>
-                              HomeBloc(startTab: HomeTab.timelines),
-                          child: const HomePage()),
-                    )))))));
+    runUserLoggedApp(appContextBloc);
   } else {
-    runApp(_buildEasyLocalization(
-        child: appContextBloc.provideContextToChild(
-            child: DisposableProvider<IJoinAuthInstanceBloc>(
-                create: (context) => JoinAuthInstanceBloc(),
-                child:
-                    const MyApp(child: FromScratchJoinAuthInstancePage())))));
+    runUserNotLoggedApp(appContextBloc);
   }
 }
 
-Widget _buildEasyLocalization({@required Widget child}) {
-  return EasyLocalization(
-    key: PageStorageKey("EasyLocalization"),
-    supportedLocales: [Locale('en', 'US')],
-    path: "assets/langs",
-    child: child,
+void runUserLoggedApp(AppContextBloc appContextBloc) {
+  runApp(
+    _buildEasyLocalization(
+      child: appContextBloc.provideContextToChild(
+        child: currentInstanceContextBloc.provideContextToChild(
+          child: DisposableProvider<ICurrentAuthInstanceContextLoadingBloc>(
+            create: (context) {
+              var currentAuthInstanceContextLoadingBloc =
+                  CurrentAuthInstanceContextLoadingBloc(
+                myAccountBloc: IMyAccountBloc.of(context, listen: false),
+                pleromaInstanceService:
+                    IPleromaInstanceService.of(context, listen: false),
+                currentAuthInstanceBloc:
+                    ICurrentAuthInstanceBloc.of(context, listen: false),
+              );
+              currentAuthInstanceContextLoadingBloc.performAsyncInit();
+              return currentAuthInstanceContextLoadingBloc;
+            },
+            child: FediApp(
+              home: CurrentAuthInstanceContextLoadingWidget(
+                child: DisposableProvider<IHomeBloc>(
+                    create: (context) => HomeBloc(startTab: HomeTab.timelines),
+                    child: const HomePage()),
+              ),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 }
 
-class MyApp extends StatelessWidget {
-  final Widget child;
+void runUserNotLoggedApp(AppContextBloc appContextBloc) {
+  runApp(
+    _buildEasyLocalization(
+      child: appContextBloc.provideContextToChild(
+        child: DisposableProvider<IJoinAuthInstanceBloc>(
+          create: (context) => JoinAuthInstanceBloc(),
+          child: const FediApp(
+            home: FromScratchJoinAuthInstancePage(),
+          ),
+        ),
+      ),
+    ),
+  );
+}
 
-  const MyApp({@required this.child});
+Widget _buildEasyLocalization({@required Widget child}) => EasyLocalization(
+      key: PageStorageKey("EasyLocalization"),
+      assetLoader: CodegenLoader(),
+      supportedLocales: [Locale('en', 'US')],
+      path: "assets/langs",
+      child: child,
+    );
+
+class FediApp extends StatelessWidget {
+  final Widget home;
+
+  const FediApp({@required this.home});
 
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-
-    var app = MaterialApp(
+    return OverlaySupport(
+        child: MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Fedi2',
       localizationsDelegates: context.localizationDelegates,
@@ -157,11 +172,12 @@ class MyApp extends StatelessWidget {
       locale: context.locale,
       theme: fediTheme,
       initialRoute: "/",
-      home: child,
+      home: home,
       navigatorObservers: [
-        FirebaseAnalyticsObserver(analytics: analytics),
+        FirebaseAnalyticsObserver(
+            analytics:
+                IAnalyticsService.of(context, listen: false).firebaseAnalytics),
       ],
-    );
-    return OverlaySupport(child: app);
+    ));
   }
 }
