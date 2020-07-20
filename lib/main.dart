@@ -21,6 +21,8 @@ import 'package:fedi/app/localization/localization_loader.dart';
 import 'package:fedi/app/localization/localization_provider_widget.dart';
 import 'package:fedi/app/localization/localization_service.dart';
 import 'package:fedi/app/splash/splash_page.dart';
+import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/fedi_theme.dart';
 import 'package:fedi/async/loading/init/async_init_loading_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -69,6 +71,20 @@ void main() async {
         buildCurrentInstanceApp(initBloc.appContextBloc, currentInstance);
       });
     } else if (newState == AsyncInitLoadingState.failed) {
+      runApp(MaterialApp(
+          home: Scaffold(
+        backgroundColor: FediColors.primaryColorDark,
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+            // todo: localization
+            child: Text(
+              "Failed to start app.\nTry restart or re-install app.",
+              style: FediTextStyles.mediumShortBoldWhite,
+            ),
+          ),
+        ),
+      )));
       _logger.severe(() => "failed to init App");
     }
   });
