@@ -61,12 +61,19 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
 
   @override
   Future internalAsyncInit() async {
-    var page =
-        await paginationBloc.requestPage(pageIndex: 0, forceToSkipCache: false);
-
-    if (page == null) {
+    try {
+      var page = await paginationBloc.requestPage(
+          pageIndex: 0, forceToSkipCache: false);
+      if (page == null) {
+        _logger.severe(
+            () => "failed to internalAsyncInit: fail to request first page");
+      }
+    } catch (e, stackTrace) {
       _logger.severe(
-          () => "failed to internalAsyncInit: fail to request first page");
+        () => "failed to internalAsyncInit",
+        e,
+        stackTrace,
+      );
     }
   }
 
