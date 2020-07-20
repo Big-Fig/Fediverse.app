@@ -32,7 +32,11 @@ class AccountAvatarWidget extends StatelessWidget {
       @required double progressSize,
       @required double imageSize}) {
     if (avatarUrl == null) {
-      return buildLoading(progressSize);
+      return Container(
+        width: imageSize,
+        height: imageSize,
+        child: buildLoading(progressSize),
+      );
     }
 
     return Container(

@@ -10,8 +10,12 @@ import 'package:flutter/material.dart';
 
 class RegisterAuthInstancePage extends StatelessWidget {
   final Uri instanceBaseUrl;
+  final VoidCallback successRegistrationCallback;
 
-  const RegisterAuthInstancePage({@required this.instanceBaseUrl});
+  const RegisterAuthInstancePage({
+    @required this.instanceBaseUrl,
+    @required this.successRegistrationCallback,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,18 +24,27 @@ class RegisterAuthInstancePage extends StatelessWidget {
           title: tr("app.auth.instance.register.title"),
           leading: FediDismissIconButton()),
       body: SafeArea(
-          child: RegisterAuthInstanceWidget(instanceBaseUrl: instanceBaseUrl)),
+          child: RegisterAuthInstanceWidget(
+        instanceBaseUrl: instanceBaseUrl,
+        successRegistrationCallback: successRegistrationCallback,
+      )),
     );
   }
 }
 
-void goToRegisterAuthInstancePage(BuildContext context,
-    {@required Uri instanceBaseUrl}) {
+void goToRegisterAuthInstancePage(
+  BuildContext context, {
+  @required Uri instanceBaseUrl,
+  @required VoidCallback successRegistrationCallback,
+}) {
   Navigator.push(
     context,
     MaterialPageRoute(
         builder: (context) => DisposableProvider<IRegisterAuthInstanceBloc>(
             create: (context) => JoinAuthInstanceRegisterBloc(),
-            child: RegisterAuthInstancePage(instanceBaseUrl: instanceBaseUrl))),
+            child: RegisterAuthInstancePage(
+              instanceBaseUrl: instanceBaseUrl,
+              successRegistrationCallback: successRegistrationCallback,
+            ))),
   );
 }

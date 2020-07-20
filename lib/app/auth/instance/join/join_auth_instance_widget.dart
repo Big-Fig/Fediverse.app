@@ -219,7 +219,15 @@ class JoinAuthInstanceWidget extends StatelessWidget {
           }
         ]);
     if (asyncDialogResult.success) {
-      goToRegisterAuthInstancePage(context, instanceBaseUrl: hostUri);
+      goToRegisterAuthInstancePage(context, instanceBaseUrl: hostUri,
+          successRegistrationCallback: () {
+        if (!isFromScratch) {
+          // exit from join from scratch
+          Navigator.of(context).pop();
+          // exit from bottom modal dialog, todo: refactor
+          Navigator.of(context).pop();
+        }
+      });
     }
   }
 

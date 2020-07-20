@@ -16,8 +16,12 @@ import 'package:flutter/material.dart';
 
 class RegisterAuthInstanceWidget extends StatelessWidget {
   final Uri instanceBaseUrl;
+  final VoidCallback successRegistrationCallback;
 
-  const RegisterAuthInstanceWidget({@required this.instanceBaseUrl});
+  const RegisterAuthInstanceWidget({
+    @required this.instanceBaseUrl,
+    @required this.successRegistrationCallback,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -189,6 +193,10 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
       Navigator.of(context).pop();
       await ICurrentAuthInstanceBloc.of(context, listen: false)
           .changeCurrentInstance(authInstance);
+
+      if(successRegistrationCallback != null) {
+        successRegistrationCallback();
+      }
     }
   }
 }
