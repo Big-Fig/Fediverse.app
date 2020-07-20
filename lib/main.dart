@@ -164,6 +164,8 @@ Widget _buildEasyLocalization({@required Widget child}) {
     builder: (context) => LocalizationProvider(
       key: PageStorageKey("EasyLocalization"),
       assetLoader: CodegenLoader(),
+      preloaderColor: FediColors.primaryColorDark,
+      preloaderWidget: MaterialApp(home: SplashPage()),
       supportedLocales: [Locale('en', 'US')],
       path: "assets/langs",
       localizationBloc:
