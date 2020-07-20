@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:logging/logging.dart';
+import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger("pagination_list_with_new_items_header_widget.dart");
 
@@ -35,18 +36,22 @@ class CachedPaginationListWithNewItemsMergeOverlayButton
             var scrollControllerBloc =
                 IScrollControllerBloc.of(context, listen: false);
 
-            return StreamBuilder<ScrollDirection>(
-                stream: scrollControllerBloc.scrollDirectionStream.distinct(),
-                initialData: scrollControllerBloc.scrollDirection,
+            return StreamBuilder<bool>(
+                stream: Rx.combineLatest2(
+                    scrollControllerBloc.scrollDirectionStream.distinct(),
+                    scrollControllerBloc.scrolledToTopStream,
+                    (scrollDirection, scrolledToTop) =>
+                        isNeedShowMergeItems(scrollDirection, scrolledToTop)),
+                initialData: isNeedShowMergeItems(
+                    scrollControllerBloc.scrollDirection,
+                    scrollControllerBloc.scrolledToTop),
                 builder: (context, snapshot) {
-                  var scrollDirection = snapshot.data;
+                  var isNeedShowMergeItems = snapshot.data;
 
-                  _logger.finest(() => "scrollDirection $scrollDirection");
+                  _logger.finest(
+                      () => "isNeedShowMergeItems $isNeedShowMergeItems");
 
-                  if (scrollDirection ==
-                          ScrollDirection
-                              .forward || //                        scrollDirection == ScrollDirection.idle ||
-                      scrollDirection == null) {
+                  if (isNeedShowMergeItems) {
                     return buildMergeNewItemsButton(
                         context: context,
                         paginationWithUpdatesListBloc:
@@ -61,6 +66,12 @@ class CachedPaginationListWithNewItemsMergeOverlayButton
           }
         });
   }
+
+  bool isNeedShowMergeItems(
+          ScrollDirection scrollDirection, bool scrolledToTop) =>
+      scrollDirection == ScrollDirection.forward ||
+      scrollDirection == null ||
+      scrolledToTop;
 
   Widget buildMergeNewItemsButton(
       {@required
