@@ -4,11 +4,14 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IScrollControllerBloc extends Disposable {
-  static IScrollControllerBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static IScrollControllerBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IScrollControllerBloc>(context, listen: listen);
 
   ScrollController get scrollController;
+
+  bool get scrolledToTop;
+
+  Stream<bool> get scrolledToTopStream;
 
   ScrollDirection get scrollDirection;
 
@@ -17,7 +20,6 @@ abstract class IScrollControllerBloc extends Disposable {
   ScrollDirection get longScrollDirection;
 
   Stream<ScrollDirection> get longScrollDirectionStream;
-
 
   void scrollToTop();
 }
