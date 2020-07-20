@@ -34,7 +34,7 @@ dependencies:
   # object serialization
   hive: ^0.4.1
 
-#  flutter_html: ^1.0.0
+  #  flutter_html: ^1.0.0
   # actually it is ^1.0.0 with additional text style features
   flutter_html:
     git:
@@ -80,12 +80,7 @@ dependencies:
   # localization via .json files
   # command to regenerate loader
   # flutter pub run easy_localization:generate -s assets/langs -O lib/app/localization -o localization_loader.dart
-#  easy_localization: ^2.3.2
-  # it is easy_localization: ^2.3.2 with fixes for multiply runApp
-  easy_localization:
-    git:
-      url: https://github.com/xal/easy_localization.git
-      ref: 7fa1378a64dd1caaae2bfcfad709b765bbd54391
+  easy_localization: ^2.3.2
 
   # annotations to generate json from & to methods
   json_annotation: ^3.0.1
@@ -204,16 +199,16 @@ flutter:
   uses-material-design: true
 
   fonts:
-  - family: FediIcons
-    fonts:
-      - asset: assets/fonts/FediIcons.ttf
-  - family: Rubik
-    fonts:
-      - asset: assets/fonts/Rubik-Regular.ttf
-      - asset: assets/fonts/Rubik-Light.ttf
-        weight: 300
-      - asset: assets/fonts/Rubik-Medium.ttf
-        weight: 500
+    - family: FediIcons
+      fonts:
+        - asset: assets/fonts/FediIcons.ttf
+    - family: Rubik
+      fonts:
+        - asset: assets/fonts/Rubik-Regular.ttf
+        - asset: assets/fonts/Rubik-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Rubik-Medium.ttf
+          weight: 500
 
   # To add assets to your application, add an assets section, like this:
   # assets:
