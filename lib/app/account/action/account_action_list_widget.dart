@@ -1,8 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/account/action/account_action_more_dialog.dart';
 import 'package:fedi/app/async/async_operation_button_builder_widget.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/chat/chat_helper.dart';
 import 'package:fedi/app/conversation/start/status/post_status_start_conversation_page.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_blurred_text_button.dart';
@@ -15,7 +18,6 @@ import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-import 'package:fedi/app/account/action/account_action_more_dialog.dart';
 
 var _logger = Logger("account_actions_widget.dart");
 
@@ -80,8 +82,16 @@ class AccountActionListWidget extends StatelessWidget {
     return FediBlurredTextButton(
       tr("app.account.action.message"),
       onPressed: () async {
-        goToPostStatusStartConversationPage(context,
-            conversationAccountsWithoutMe: <IAccount>[accountBloc.account]);
+        var authInstanceBloc =
+            ICurrentAuthInstanceBloc.of(context, listen: false);
+        var account = accountBloc.account;
+
+        if (authInstanceBloc.currentInstance.isSupportChats) {
+          goToChatWithAccount(context: context, account: account);
+        } else {
+          goToPostStatusStartConversationPage(context,
+              conversationAccountsWithoutMe: <IAccount>[account]);
+        }
       },
     );
   }

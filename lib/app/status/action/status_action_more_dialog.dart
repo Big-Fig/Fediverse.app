@@ -4,6 +4,8 @@ import 'package:fedi/app/account/account_bloc_impl.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/action/account_report_action.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/chat/chat_helper.dart';
 import 'package:fedi/app/conversation/start/status/post_status_start_conversation_page.dart';
 import 'package:fedi/app/share/share_service.dart';
 import 'package:fedi/app/status/status_bloc.dart';
@@ -164,9 +166,17 @@ class StatusActionMoreDialogBody extends StatelessWidget {
           BuildContext context, IAccountBloc accountBloc) =>
       DialogAction(
           label: tr("app.account.action.message"),
-          onAction: () {
-            goToPostStatusStartConversationPage(context,
-                conversationAccountsWithoutMe: <IAccount>[accountBloc.account]);
+          onAction: () async {
+            var authInstanceBloc =
+                ICurrentAuthInstanceBloc.of(context, listen: false);
+            var account = accountBloc.account;
+
+            if (authInstanceBloc.currentInstance.isSupportChats) {
+              goToChatWithAccount(context: context, account: account);
+            } else {
+              goToPostStatusStartConversationPage(context,
+                  conversationAccountsWithoutMe: <IAccount>[account]);
+            }
           });
 
   DialogAction buildOpenInBrowserAction(BuildContext context, IStatus status) =>
