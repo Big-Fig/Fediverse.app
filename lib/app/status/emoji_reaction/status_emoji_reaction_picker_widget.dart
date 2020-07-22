@@ -1,5 +1,6 @@
 import 'package:emoji_picker/emoji_picker.dart';
-import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/emoji/fedi_emoji_picker.dart';
+import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,7 +16,7 @@ class StatusEmojiReactionPickerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return EmojiPicker(
+    return FediEmojiPicker(
       bgColor: Colors.transparent,
       rows: 5,
       columns: 7,
@@ -37,18 +38,16 @@ class StatusEmojiReactionPickerWidget extends StatelessWidget {
   }
 }
 
-void showEmojiPickerModalPopup(BuildContext context, {EmojiReactionSelectedCallback emojiReactionSelectedCallback}) {
-  showModalBottomSheet(
+void showEmojiPickerModalPopup(BuildContext context,
+    {EmojiReactionSelectedCallback emojiReactionSelectedCallback}) {
+  showFediModalBottomSheetDialog(
       context: context,
-      builder: (context) => Padding(
-        padding: const EdgeInsets.only(top: FediSizes.bigPadding),
-        child: StatusEmojiReactionPickerWidget(
-          emojiReactionSelectedCallback: (String emojiName, String emoji) {
-            if(emojiReactionSelectedCallback != null) {
-              emojiReactionSelectedCallback(emojiName, emoji);
-            }
-            Navigator.of(context).pop();
-          },
-        ),
+      child: StatusEmojiReactionPickerWidget(
+        emojiReactionSelectedCallback: (String emojiName, String emoji) {
+          if (emojiReactionSelectedCallback != null) {
+            emojiReactionSelectedCallback(emojiName, emoji);
+          }
+          Navigator.of(context).pop();
+        },
       ));
 }

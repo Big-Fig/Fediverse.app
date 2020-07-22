@@ -159,6 +159,9 @@ dependencies:
   # unenscape account not field
   html_unescape: ^1.0.1+3
 
+  # shared preferences support. temporary required by custom emoji picker Todo: refactor and remove
+  shared_preferences: ^0.5.4+1
+
 # required to build flutter test with hive https://github.com/hivedb/hive/issues/285
 dependency_overrides:
   path: 1.7.0
