@@ -1,8 +1,8 @@
 import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/chat/chat_model.dart';
 import 'package:fedi/app/chat/chat_new_messages_handler_bloc.dart';
-import 'package:fedi/app/chat/list/cached/chat_cached_list_service.dart';
-import 'package:fedi/app/chat/list/cached/chat_cached_list_service_impl.dart';
+import 'package:fedi/app/chat/list/cached/chat_cached_list_bloc.dart';
+import 'package:fedi/app/chat/list/cached/chat_cached_list_bloc_impl.dart';
 import 'package:fedi/app/chat/list/chat_list_container_bloc.dart';
 import 'package:fedi/app/chat/message/repository/chat_message_repository.dart';
 import 'package:fedi/app/chat/pagination/chat_pagination_bloc.dart';
@@ -28,7 +28,7 @@ var _logger = Logger("chats_home_tab_bloc_impl.dart");
 class ChatsListContainerBloc extends DisposableOwner
     implements IChatListContainerBloc {
   @override
-  IChatCachedListService chatListService;
+  IChatCachedBloc chatListService;
 
   @override
   IChatPaginationBloc chatPaginationBloc;
@@ -61,7 +61,7 @@ class ChatsListContainerBloc extends DisposableOwner
     @required this.chatNewMessagesHandlerBloc,
   }) {
     _logger.finest(() => "constructor");
-    chatListService = ChatCachedListService(
+    chatListService = ChatCachedListBloc(
         pleromaChatService: pleromaChatService, chatRepository: chatRepository);
     addDisposable(disposable: chatListService);
     chatPaginationBloc = ChatPaginationBloc(

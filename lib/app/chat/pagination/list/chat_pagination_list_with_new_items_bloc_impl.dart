@@ -1,5 +1,5 @@
 import 'package:fedi/app/chat/chat_model.dart';
-import 'package:fedi/app/chat/list/cached/chat_cached_list_service.dart';
+import 'package:fedi/app/chat/list/cached/chat_cached_list_bloc.dart';
 import 'package:fedi/pagination/cached/cached_pagination_bloc.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc_impl.dart';
@@ -8,7 +8,7 @@ import 'package:flutter/widgets.dart';
 class ChatPaginationListWithNewItemsBloc<
         TPage extends CachedPaginationPage<IChat>>
     extends CachedPaginationListWithNewItemsBloc<TPage, IChat> {
-  final IChatCachedListService cachedListService;
+  final IChatCachedBloc cachedListService;
 
   ChatPaginationListWithNewItemsBloc(
       {@required bool mergeNewItemsImmediately,

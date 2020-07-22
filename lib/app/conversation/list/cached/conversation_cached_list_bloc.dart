@@ -4,11 +4,11 @@ import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IConversationCachedListService extends DisposableOwner
+abstract class IConversationCachedListBloc extends DisposableOwner
     implements IPleromaCachedListBloc<IConversation> {
-  static IConversationCachedListService of(BuildContext context,
+  static IConversationCachedListBloc of(BuildContext context,
           {bool listen = true}) =>
-      Provider.of<IConversationCachedListService>(context, listen: listen);
+      Provider.of<IConversationCachedListBloc>(context, listen: listen);
 
   Stream<List<IConversation>> watchLocalItemsNewerThanItem(IConversation item);
 }

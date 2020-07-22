@@ -1,5 +1,5 @@
 import 'package:fedi/app/chat/chat_model.dart';
-import 'package:fedi/app/chat/list/cached/chat_cached_list_service.dart';
+import 'package:fedi/app/chat/list/cached/chat_cached_list_bloc.dart';
 import 'package:fedi/app/chat/pagination/chat_pagination_bloc.dart';
 import 'package:fedi/app/pagination/cached/cached_pleroma_pagination_bloc_impl.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
@@ -9,7 +9,7 @@ import 'package:flutter/cupertino.dart';
 class ChatPaginationBloc
     extends CachedPleromaPaginationBloc<IChat>
     implements IChatPaginationBloc {
-  final IChatCachedListService listService;
+  final IChatCachedBloc listService;
 
   ChatPaginationBloc(
       {@required this.listService,

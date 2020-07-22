@@ -1,4 +1,4 @@
-import 'package:fedi/app/list/network_only/network_only_list_service.dart';
+import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
 import 'package:fedi/app/pagination/network_only/network_only_pleroma_pagination_bloc_impl.dart';
 import 'package:fedi/app/status/pagination/network_only/status_network_only_pagination_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 class StatusNetworkOnlyPaginationBloc
     extends NetworkOnlyPleromaPaginationBloc<IStatus>
     implements IStatusNetworkOnlyPaginationBloc {
-  final IPleromaNetworkOnlyListService<IStatus> listService;
+  final INetworkOnlyListBloc<IStatus> listService;
 
   StatusNetworkOnlyPaginationBloc(
       {@required this.listService,
@@ -28,7 +28,7 @@ class StatusNetworkOnlyPaginationBloc
       StatusNetworkOnlyPaginationBloc(
           maximumCachedPagesCount: maximumCachedPagesCount,
           itemsCountPerPage: itemsCountPerPage,
-          listService: Provider.of<IPleromaNetworkOnlyListService<IStatus>>(
+          listService: Provider.of<INetworkOnlyListBloc<IStatus>>(
               context,
               listen: false));
 
