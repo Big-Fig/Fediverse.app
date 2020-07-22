@@ -22,7 +22,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("notification_list_item_timeline_widget.dart");
+var _logger = Logger("notification_list_item_widget.dart");
 
 class NotificationListItemWidget extends StatelessWidget {
   @override

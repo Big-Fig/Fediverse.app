@@ -11,7 +11,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 
-var _logger = Logger("chat_messages_list_bloc_chat_api_impl.dart");
+var _logger = Logger("chat_message_cached_list_bloc_impl.dart");
 
 class ChatMessageListBloc extends DisposableOwner
     implements IChatMessageCachedListBloc {

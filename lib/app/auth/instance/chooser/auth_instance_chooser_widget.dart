@@ -20,7 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-var _logger = Logger("instance_chooser_widget.dart");
+var _logger = Logger("auth_instance_chooser_widget.dart");
 
 class AuthInstanceChooserWidget extends StatelessWidget {
   @override

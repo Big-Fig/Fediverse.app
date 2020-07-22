@@ -16,7 +16,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 
-var _logger = Logger("account_statuses_bloc_impl.dart");
+var _logger = Logger("account_statuses_cached_list_bloc_impl.dart");
 
 class AccountStatusesCachedListBloc extends IStatusCachedListBloc {
   final IAccount account;
