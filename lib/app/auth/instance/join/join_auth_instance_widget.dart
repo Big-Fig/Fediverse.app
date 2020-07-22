@@ -14,6 +14,7 @@ import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/error/error_data_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:logging/logging.dart';
 
@@ -70,18 +71,36 @@ class JoinAuthInstanceWidget extends StatelessWidget {
     );
   }
 
-  Widget buildTermsOfServiceButton(BuildContext context) => InkWell(
-        onTap: () {
-          goToTosPage(context);
-        },
-        child: Text(
-          tr("app.auth.instance.join.action.tos"),
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: FediColors.ultraLightGrey,
-          ),
+  Widget buildTermsOfServiceButton(BuildContext context) {
+    var textStyle = FediTextStyles.mediumShortWhite;
+    return InkWell(
+      onTap: () {
+        goToTosPage(context);
+      },
+      child: RichText(
+        textAlign: TextAlign.center,
+        text: TextSpan(
+          children: <TextSpan>[
+            TextSpan(
+              text: tr("app.auth.instance.join.action.tos.prefix"),
+              style: textStyle,
+            ),
+            TextSpan(
+              text: tr("app.auth.instance.join.action.tos.terms"),
+              style: textStyle.copyWith(
+                fontWeight: FontWeight.w500,
+                decoration: TextDecoration.underline,
+              ),
+            ),
+            TextSpan(
+              text: tr("app.auth.instance.join.action.tos.postfix"),
+              style: textStyle,
+            ),
+          ],
         ),
-      );
+      ),
+    );
+  }
 
   Widget buildActionButtons(BuildContext context) => Padding(
         padding: FediPadding.horizontalSmallPadding,

@@ -193,7 +193,11 @@ class CodegenLoader extends AssetLoader{
             "title": "Join new instance"
           },
           "action": {
-            "tos": "By using Fedi, you agree to our Terms.",
+            "tos": {
+              "prefix": "By using Fedi, you agree to our ",
+              "terms": "Terms",
+              "postfix": "."
+            },
             "login": "Login",
             "sign_up": "Sign up"
           },
