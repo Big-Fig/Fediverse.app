@@ -23,8 +23,7 @@ class AccountFieldListItemWidget extends StatelessWidget {
         UrlHelper.handleUrlClick(context, link);
       },
       child: Row(
-        mainAxisSize: MainAxisSize.min,
-//        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Icon(
             FediIcons.link,

@@ -28,7 +28,9 @@ class AccountFieldListWidget extends StatelessWidget {
 
           if (nonEmptyFields?.isNotEmpty == true) {
             return Padding(
-              padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
+              padding: const EdgeInsets.only(
+                bottom: FediSizes.smallPadding,
+              ),
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: nonEmptyFields
