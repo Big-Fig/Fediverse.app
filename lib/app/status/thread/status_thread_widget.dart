@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/message/post_message_widget.dart';
@@ -31,9 +33,27 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
 
   bool isJumpedToStartState = false;
 
+  StreamSubscription newItemsJumpSubscription;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    var statusThreadBloc = IStatusThreadBloc.of(context, listen: false);
+
+    newItemsJumpSubscription =
+        statusThreadBloc.onNewStatusAddedStream.listen((newItem) {
+      var index = statusThreadBloc.statuses.indexOf(newItem);
+
+      if (index > 0) {
+        _scrollToIndex(index);
+      }
+    });
+  }
+
   @override
   void dispose() {
     super.dispose();
+    newItemsJumpSubscription?.cancel();
   }
 
   @override
@@ -132,13 +152,10 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
       if (!isJumpedToStartState && statuses.length > 1) {
         isJumpedToStartState = true;
         Future.delayed(Duration(milliseconds: 1000), () {
-          if (itemScrollController.isAttached) {
-            var startStatusIndex =
-                statusThreadBloc.initialStatusToFetchThreadIndex;
-            itemScrollController.scrollTo(
-                index: startStatusIndex,
-                duration: Duration(milliseconds: 1000));
-          }
+          var startStatusIndex =
+              statusThreadBloc.initialStatusToFetchThreadIndex;
+
+          _scrollToIndex(startStatusIndex);
         });
       }
 
@@ -186,6 +203,15 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
             ),
           );
         },
+      );
+    }
+  }
+
+  void _scrollToIndex(int index) {
+    if (itemScrollController.isAttached) {
+      itemScrollController.scrollTo(
+        index: index,
+        duration: Duration(milliseconds: 1000),
       );
     }
   }

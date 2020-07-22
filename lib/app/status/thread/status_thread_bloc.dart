@@ -18,6 +18,7 @@ abstract class IStatusThreadBloc implements Disposable {
   int get initialStatusToFetchThreadIndex;
 
   bool get firstStatusInThreadLoaded;
+
   Stream<bool> get firstStatusInThreadLoadedStream;
 
   IStatus get firstStatusInThread;
@@ -43,4 +44,6 @@ abstract class IStatusThreadBloc implements Disposable {
   bool isFirstStatusInThread(IStatus status);
 
   void addStatusInThread(IStatus status);
+
+  Stream<IStatus> get onNewStatusAddedStream;
 }

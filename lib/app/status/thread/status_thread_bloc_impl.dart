@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -21,6 +23,10 @@ class StatusThreadBloc extends DisposableOwner implements IStatusThreadBloc {
   final BehaviorSubject<List<IStatus>> _statusesSubject;
 
   final BehaviorSubject<bool> _firstStatusInThreadSubject;
+  final StreamController<IStatus> _onNewStatusAddedStreamController = StreamController();
+  @override
+  Stream<IStatus> get onNewStatusAddedStream =>
+      _onNewStatusAddedStreamController.stream;
 
   StatusThreadBloc({
     @required this.pleromaStatusService,
@@ -31,6 +37,7 @@ class StatusThreadBloc extends DisposableOwner implements IStatusThreadBloc {
             BehaviorSubject.seeded(!initialStatusToFetchThread.isReply) {
     addDisposable(subject: _statusesSubject);
     addDisposable(subject: _firstStatusInThreadSubject);
+    addDisposable(streamController: _onNewStatusAddedStreamController);
     refresh();
   }
 
@@ -159,5 +166,6 @@ class StatusThreadBloc extends DisposableOwner implements IStatusThreadBloc {
   void addStatusInThread(IStatus status) {
     statuses.add(status);
     _statusesSubject.add(statuses);
+    _onNewStatusAddedStreamController.add(status);
   }
 }
