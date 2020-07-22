@@ -47,8 +47,15 @@ class AccountWidget extends StatelessWidget {
               AccountNoteWidget(
                 textStyle: FediTextStyles.bigTallBoldWhite,
               ),
-              const AccountFieldListWidget(
-                brightness: Brightness.light,
+              Padding(
+                padding: const EdgeInsets.only(
+                  left:
+                      FediSizes.accountAvatarBigSize + FediSizes.bigPadding * 2,
+                  right: FediSizes.bigPadding,
+                ),
+                child: const AccountFieldListWidget(
+                  brightness: Brightness.light,
+                ),
               ),
             ],
           ),
