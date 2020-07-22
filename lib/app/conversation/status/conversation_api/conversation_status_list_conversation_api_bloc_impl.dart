@@ -9,7 +9,7 @@ import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 
 var _logger =
-    Logger("conversation_statuses_list_bloc_conversation_api_impl.dart");
+    Logger("conversation_status_list_conversation_api_bloc_impl.dart");
 
 class ConversationStatusListConversationApiBloc
     extends ConversationStatusListBloc {

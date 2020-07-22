@@ -16,7 +16,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-var _logger = Logger("status_pagination_list_media_widget.dart");
+var _logger = Logger("status_cached_pagination_list_media_widget.dart");
 
 class StatusCachedPaginationListMediaWidget extends StatusCachedPaginationListBaseWidget {
   StatusCachedPaginationListMediaWidget({Key key}) : super(key: key);

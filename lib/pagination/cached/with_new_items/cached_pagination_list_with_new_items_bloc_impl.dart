@@ -9,7 +9,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("pagination_list_with_new_items_bloc_impl.dart");
+var _logger = Logger("cached_pagination_list_with_new_items_bloc_impl.dart");
 
 abstract class CachedPaginationListWithNewItemsBloc<
         TPage extends CachedPaginationPage<TItem>,

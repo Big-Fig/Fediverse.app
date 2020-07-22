@@ -12,7 +12,7 @@ import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
 var _logger =
-    Logger("scheduledStatus_pagination_list_with_new_items_bloc_impl.dart");
+    Logger("scheduled_status_pagination_list_with_new_items_bloc_impl.dart");
 
 class ScheduledStatusPaginationListWithNewItemsBloc<
         TPage extends CachedPaginationPage<IScheduledStatus>>

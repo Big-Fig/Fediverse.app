@@ -21,7 +21,7 @@ import 'package:fedi/pleroma/websockets/pleroma_websockets_service.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("conversations_home_tab_bloc_impl.dart");
+var _logger = Logger("conversations_list_bloc_impl.dart");
 
 class ConversationsListBloc extends DisposableOwner
     implements IConversationsListBloc {

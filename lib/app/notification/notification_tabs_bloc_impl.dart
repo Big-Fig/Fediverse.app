@@ -17,7 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-var _logger = Logger("notifications_home_tab_page_bloc_impl.dart");
+var _logger = Logger("notification_tabs_bloc_impl.dart");
 
 class NotificationsTabsBloc extends DisposableOwner
     implements INotificationTabsBloc {

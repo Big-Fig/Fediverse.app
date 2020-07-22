@@ -14,7 +14,7 @@ import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("push_subscription_bloc_impl.dart");
+var _logger = Logger("push_subscription_settings_bloc_impl.dart");
 
 class PushSubscriptionSettingsBloc extends DisposableOwner
     implements IPushSubscriptionSettingsBloc {

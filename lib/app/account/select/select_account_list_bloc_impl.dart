@@ -15,7 +15,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 
-var _logger = Logger("account_list_service_impl.dart");
+var _logger = Logger("select_account_list_bloc_impl.dart");
 
 class SelectAccountListBloc extends DisposableOwner
     implements ISelectAccountListBloc {
