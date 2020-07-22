@@ -50,7 +50,7 @@ void goToSearchPage(
               recentSearchLocalPreferenceBloc:
                   IRecentSearchLocalPreferenceBloc.of(context, listen: false),
             ),
-            child: SearchResultItemsNetworkOnlyListService.provideToContext(
+            child: SearchResultItemsNetworkOnlyListBloc.provideToContext(
               context,
               child: SearchResultItemNetworkOnlyPaginationBloc.provideToContext(
                 context,

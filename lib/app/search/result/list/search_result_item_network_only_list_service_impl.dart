@@ -1,6 +1,6 @@
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/search/input/search_input_bloc.dart';
-import 'package:fedi/app/search/result/list/search_result_item_network_only_list_service.dart';
+import 'package:fedi/app/search/result/list/search_result_item_network_only_list_bloc.dart';
 import 'package:fedi/app/search/result/search_result_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -9,13 +9,13 @@ import 'package:fedi/pleroma/search/pleroma_search_model.dart';
 import 'package:fedi/pleroma/search/pleroma_search_service.dart';
 import 'package:flutter/widgets.dart';
 
-class SearchResultItemsNetworkOnlyListService
-    extends ISearchResultItemNetworkOnlyListService {
+class SearchResultItemsNetworkOnlyListBloc
+    extends ISearchResultItemNetworkOnlyListBloc {
   final IPleromaSearchService pleromaSearchService;
 
   final ISearchInputBloc searchInputBloc;
 
-  SearchResultItemsNetworkOnlyListService({
+  SearchResultItemsNetworkOnlyListBloc({
     @required this.pleromaSearchService,
     @required this.searchInputBloc,
   });
@@ -59,18 +59,18 @@ class SearchResultItemsNetworkOnlyListService
   @override
   IPleromaApi get pleromaApi => pleromaSearchService;
 
-  static SearchResultItemsNetworkOnlyListService createFromContext(
+  static SearchResultItemsNetworkOnlyListBloc createFromContext(
           BuildContext context) =>
-      SearchResultItemsNetworkOnlyListService(
+      SearchResultItemsNetworkOnlyListBloc(
           searchInputBloc: ISearchInputBloc.of(context, listen: false),
           pleromaSearchService:
               IPleromaSearchService.of(context, listen: false));
 
   static Widget provideToContext(BuildContext context,
       {@required Widget child}) {
-    return DisposableProvider<ISearchResultItemNetworkOnlyListService>(
+    return DisposableProvider<ISearchResultItemNetworkOnlyListBloc>(
       create: (context) =>
-          SearchResultItemsNetworkOnlyListService.createFromContext(context),
+          SearchResultItemsNetworkOnlyListBloc.createFromContext(context),
       child: child,
     );
   }
