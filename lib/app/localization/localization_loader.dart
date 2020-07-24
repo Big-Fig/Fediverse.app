@@ -13,6 +13,14 @@ class CodegenLoader extends AssetLoader{
 
     static const Map<String,dynamic> en_US = {
   "app": {
+    "datetime": {
+      "picker": {
+        "action": {
+          "ok": "Set time",
+          "cancel": "Cancel"
+        }
+      }
+    },
     "account": {
       "list": {
         "privacy": "Some information may be missed due to privacy settings"
