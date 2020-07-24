@@ -14,7 +14,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 
-var _logger = Logger("timeline_status_list_service_impl.dart");
+var _logger = Logger("timeline_status_cached_list_bloc_impl.dart");
 
 abstract class TimelineStatusCachedListBloc extends DisposableOwner
     implements IStatusCachedListBloc {

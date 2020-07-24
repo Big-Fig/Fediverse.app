@@ -8,7 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 
-var _logger = Logger("conversation_statuses_list_bloc_impl.dart");
+var _logger = Logger("conversation_status_list_bloc_impl.dart");
 
 abstract class ConversationStatusListBloc extends DisposableOwner
     implements IStatusCachedListBloc {

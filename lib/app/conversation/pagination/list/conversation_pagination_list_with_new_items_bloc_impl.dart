@@ -1,5 +1,5 @@
 import 'package:fedi/app/conversation/conversation_model.dart';
-import 'package:fedi/app/conversation/list/cached/conversation_cached_list_service.dart';
+import 'package:fedi/app/conversation/list/cached/conversation_cached_list_bloc.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
@@ -8,7 +8,7 @@ import 'package:flutter/widgets.dart';
 class ConversationPaginationListWithNewItemsBloc<
         TPage extends CachedPaginationPage<IConversation>>
     extends CachedPaginationListWithNewItemsBloc<TPage, IConversation> {
-  final IConversationCachedListService cachedListService;
+  final IConversationCachedListBloc cachedListService;
 
   ConversationPaginationListWithNewItemsBloc(
       {@required bool mergeNewItemsImmediately,

@@ -2,8 +2,8 @@ import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/chat/chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/conversation/conversation_model.dart';
 import 'package:fedi/app/conversation/conversations_list_bloc.dart';
-import 'package:fedi/app/conversation/list/cached/conversation_cached_list_service.dart';
-import 'package:fedi/app/conversation/list/cached/conversation_cached_list_service_impl.dart';
+import 'package:fedi/app/conversation/list/cached/conversation_cached_list_bloc.dart';
+import 'package:fedi/app/conversation/list/cached/conversation_cached_list_bloc_impl.dart';
 import 'package:fedi/app/conversation/pagination/conversation_pagination_bloc.dart';
 import 'package:fedi/app/conversation/pagination/conversation_pagination_bloc_impl.dart';
 import 'package:fedi/app/conversation/pagination/list/conversation_pagination_list_with_new_items_bloc_impl.dart';
@@ -21,12 +21,12 @@ import 'package:fedi/pleroma/websockets/pleroma_websockets_service.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("conversations_home_tab_bloc_impl.dart");
+var _logger = Logger("conversations_list_bloc_impl.dart");
 
 class ConversationsListBloc extends DisposableOwner
     implements IConversationsListBloc {
   @override
-  IConversationCachedListService conversationListService;
+  IConversationCachedListBloc conversationListService;
 
   @override
   IConversationPaginationBloc conversationPaginationBloc;
@@ -55,7 +55,7 @@ class ConversationsListBloc extends DisposableOwner
     @required this.chatNewMessagesHandlerBloc,
   }) {
     _logger.finest(() => "constructor");
-    conversationListService = ConversationCachedListService(
+    conversationListService = ConversationCachedListBloc(
         pleromaConversationService: pleromaConversationService,
         conversationRepository: conversationRepository);
     addDisposable(disposable: conversationListService);

@@ -9,7 +9,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 
-var _logger = Logger("conversation_statuses_list_bloc_context_api_impl.dart");
+var _logger = Logger("conversation_status_list_context_api_bloc_impl.dart");
 
 class ConversationStatusListContextApiBloc extends ConversationStatusListBloc {
   final IPleromaStatusService pleromaStatusService;
