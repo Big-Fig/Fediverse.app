@@ -1,15 +1,18 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/media/attachment/add_to_gallery/media_attachment_add_to_gallery_exception.dart';
 import 'package:fedi/app/media/attachment/add_to_gallery/media_attachment_add_to_gallery_helper.dart';
+import 'package:fedi/app/media/player/media_video_player_widget.dart';
 import 'package:fedi/app/share/share_service.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
+import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/error/error_data_model.dart';
 import 'package:fedi/mastodon/media/attachment/mastodon_media_attachment_model.dart';
-import 'package:fedi/app/media/player/media_video_player_widget.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
@@ -37,13 +40,14 @@ class MediaAttachmentPreviewPage extends StatelessWidget {
       PleromaAsyncOperationButtonBuilderWidget(
           progressContentMessage:
               tr("app.media.attachment.share.progress.content"),
-          builder: (BuildContext context, VoidCallback onPressed) => FediIconButton(
-              icon: Icon(
-                Icons.share,
-                color: FediColors.darkGrey,
-                size: FediSizes.appBarIconSize,
-              ),
-              onPressed: onPressed),
+          builder: (BuildContext context, VoidCallback onPressed) =>
+              FediIconButton(
+                  icon: Icon(
+                    Icons.share,
+                    color: FediColors.darkGrey,
+                    size: FediSizes.appBarIconSize,
+                  ),
+                  onPressed: onPressed),
           asyncButtonAction: () {
             var shareService = IShareService.of(context, listen: false);
             String popupTitle = tr("app.media.attachment.share.title");
@@ -57,13 +61,14 @@ class MediaAttachmentPreviewPage extends StatelessWidget {
       PleromaAsyncOperationButtonBuilderWidget(
         progressContentMessage:
             tr("app.media.attachment.add_to_gallery.progress.content"),
-        builder: (BuildContext context, VoidCallback onPressed) => FediIconButton(
-            icon: Icon(
-              Icons.file_download,
-              color: FediColors.darkGrey,
-              size: FediSizes.appBarIconSize,
-            ),
-            onPressed: onPressed),
+        builder: (BuildContext context, VoidCallback onPressed) =>
+            FediIconButton(
+                icon: Icon(
+                  Icons.file_download,
+                  color: FediColors.darkGrey,
+                  size: FediSizes.appBarIconSize,
+                ),
+                onPressed: onPressed),
         successToastMessage: tr("app.media.attachment.add_to_gallery.success"
             ".toast"),
         asyncButtonAction: () async {
@@ -89,14 +94,20 @@ class MediaAttachmentPreviewPage extends StatelessWidget {
       );
 
   Widget buildBody(BuildContext context) {
-    var url = NetworkImage(mediaAttachment.url);
     switch (mediaAttachment.typeMastodon) {
       case MastodonMediaAttachmentType.image:
       case MastodonMediaAttachmentType.gifv:
-        return Container(
-          child: PhotoView(
-            imageProvider: url,
-          ),
+        return CachedNetworkImage(
+          imageBuilder: (context, imageProvider) {
+            return Container(
+              child: PhotoView(
+                imageProvider: imageProvider,
+              ),
+            );
+          },
+          placeholder: (context, url) => buildPreview(),
+          errorWidget: (context, url, error) => buildPreview(),
+          imageUrl: mediaAttachment.url,
         );
         break;
       case MastodonMediaAttachmentType.video:
@@ -114,6 +125,23 @@ class MediaAttachmentPreviewPage extends StatelessWidget {
         break;
     }
   }
+
+  Widget buildPreview() => CachedNetworkImage(
+        imageUrl: mediaAttachment.url,
+        imageBuilder: (context, imageProvider) {
+          return Container(
+            child: PhotoView(
+              imageProvider: imageProvider,
+            ),
+          );
+        },
+        placeholder: (context, url) => Center(child: FediCircularProgressIndicator()),
+        errorWidget: (context, url, error) => Center(
+          child: Icon(
+            FediIcons.failed,
+          ),
+        ),
+      );
 }
 
 void goToMediaAttachmentPreviewPage(BuildContext context,
