@@ -3,8 +3,8 @@ import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dar
 import 'package:fedi/app/status/post/action/post_status_post_overlay_notification.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/ui/async/fedi_async_dialog.dart';
-import 'package:fedi/app/ui/edit_text/fedi_transparent_edit_text_field.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_simple_alert_dialog.dart';
+import 'package:fedi/app/ui/edit_text/fedi_transparent_edit_text_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -52,6 +52,7 @@ class PostStatusComposeInputWidget extends StatelessWidget {
         }
       },
       errorText: null,
+      highlightMentions: true,
     );
   }
 }

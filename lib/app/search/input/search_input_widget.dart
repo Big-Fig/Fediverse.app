@@ -48,6 +48,7 @@ class SearchInputWidget extends StatelessWidget {
                 },
                 maxLines: 1,
                 errorText: null,
+                highlightMentions: false,
               ),
             ),
           ),

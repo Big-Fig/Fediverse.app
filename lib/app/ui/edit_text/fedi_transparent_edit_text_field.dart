@@ -1,3 +1,4 @@
+import 'package:fedi/app/ui/edit_text/fedi_base_edit_text_field.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,6 +25,7 @@ class FediTransparentEditTextField extends StatelessWidget {
 
   final TextStyle hintStyle;
   final TextStyle textStyle;
+  final bool highlightMentions;
 
   FediTransparentEditTextField({
     @required this.expanded,
@@ -42,6 +44,7 @@ class FediTransparentEditTextField extends StatelessWidget {
     Color customBorderColor,
     this.autocorrect = true,
     this.obscureText = false,
+    @required this.highlightMentions,
   })  : border = UnderlineInputBorder(
           borderSide: BorderSide(
               width: 1.0, color: customBorderColor ?? FediColors.lightGrey),
@@ -60,36 +63,28 @@ class FediTransparentEditTextField extends StatelessWidget {
         );
 
   @override
-  Widget build(BuildContext context) {
-    return TextField(
-      autocorrect: autocorrect,
-      focusNode: focusNode,
-      textInputAction:
-          maxLines == 1 ? textInputAction : TextInputAction.newline,
-      onSubmitted: onSubmitted,
-      decoration: InputDecoration(
-        border: displayUnderlineBorder ? border : InputBorder.none,
-        enabledBorder: displayUnderlineBorder ? border : InputBorder.none,
-        focusedBorder:
-            displayUnderlineBorder ? focusedBorder : InputBorder.none,
-        errorBorder: displayUnderlineBorder ? errorBorder : InputBorder.none,
-        focusedErrorBorder:
-            displayUnderlineBorder ? errorBorder : InputBorder.none,
-        errorStyle: FediTextStyles.mediumShortDarkGrey.copyWith(
-          color: FediColors.error,
-        ),
-        errorText: errorText,
+  Widget build(BuildContext context) => FediBaseEditTextField(
+        highlightMentions: highlightMentions,
+        autocorrect: autocorrect,
+        focusNode: focusNode,
+        textInputAction:
+            maxLines == 1 ? textInputAction : TextInputAction.newline,
+        onSubmitted: onSubmitted,
+        textStyle: textStyle,
+        obscureText: obscureText,
+        autofocus: autofocus,
+        textEditingController: textEditingController,
+        minLines: null,
+        maxLines: maxLines,
+        expanded: expanded,
+        keyboardType: keyboardType,
         hintText: hintText,
+        errorText: errorText,
+        border: border,
+        errorBorder: errorBorder,
+        focusedBorder: focusedBorder,
+        contentPadding: null,
+        displayBorder: displayUnderlineBorder,
         hintStyle: hintStyle,
-      ),
-      style: textStyle,
-      obscureText: obscureText,
-      autofocus: autofocus,
-      controller: textEditingController,
-      minLines: null,
-      maxLines: maxLines,
-      expands: expanded,
-      keyboardType: keyboardType,
-    );
-  }
+      );
 }
