@@ -162,6 +162,9 @@ dependencies:
   # shared preferences support. temporary required by custom emoji picker Todo: refactor and remove
   shared_preferences: ^0.5.4+1
 
+  # extended text fields with highlight mentions support
+  extended_text_field: ^3.0.1
+
 # required to build flutter test with hive https://github.com/hivedb/hive/issues/285
 dependency_overrides:
   path: 1.7.0

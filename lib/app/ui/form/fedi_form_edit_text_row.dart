@@ -45,6 +45,7 @@ class FediFormEditTextRow extends StatelessWidget {
               textEditingController: textEditingController,
               displayUnderlineBorder: true,
               errorText: errorText,
+              highlightMentions: false,
             ),
           ],
         ),

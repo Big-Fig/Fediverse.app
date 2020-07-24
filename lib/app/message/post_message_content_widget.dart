@@ -2,8 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/ui/async/fedi_async_dialog.dart';
-import 'package:fedi/app/ui/edit_text/fedi_filled_edit_text_field.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_simple_alert_dialog.dart';
+import 'package:fedi/app/ui/edit_text/fedi_filled_edit_text_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -43,6 +43,7 @@ class PostMessageContentWidget extends StatelessWidget {
       },
       maxLines: 1,
       errorText: null,
+      highlightMentions: true,
     );
   }
 }

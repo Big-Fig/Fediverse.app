@@ -60,6 +60,7 @@ class FediFormPairEditTextRow extends StatelessWidget {
                         displayUnderlineBorder: true,
                         errorText: error?.createErrorDescription(context),
                         focusNode: nameStringFieldBloc.focusNode,
+                        highlightMentions: false,
                       );
                     }),
               ),
@@ -94,6 +95,7 @@ class FediFormPairEditTextRow extends StatelessWidget {
                         displayUnderlineBorder: true,
                         errorText: error?.createErrorDescription(context),
                         focusNode: valueStringFieldBloc.focusNode,
+                        highlightMentions: false,
                       );
                     }),
               ),

@@ -1,3 +1,4 @@
+import 'package:fedi/app/ui/edit_text/fedi_base_edit_text_field.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -21,6 +22,7 @@ class FediFilledEditTextField extends StatelessWidget {
   final bool autocorrect;
   final BoxBorder border;
   final Color backgroundColor;
+  final bool highlightMentions;
 
   FediFilledEditTextField({
     @required this.textEditingController,
@@ -38,6 +40,7 @@ class FediFilledEditTextField extends StatelessWidget {
     this.focusNode,
     this.autocorrect = true,
     this.keyboardType,
+    @required this.highlightMentions,
   });
 
   @override
@@ -56,26 +59,28 @@ class FediFilledEditTextField extends StatelessWidget {
           children: [
             if (containLeading) leading,
             Flexible(
-              child: TextField(
+              child: FediBaseEditTextField(
+                highlightMentions: highlightMentions,
                 autocorrect: autocorrect,
                 focusNode: focusNode,
                 textInputAction:
                     maxLines == 1 ? textInputAction : TextInputAction.newline,
                 onSubmitted: onSubmitted,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: hintText,
-                  errorText: errorText,
-                  contentPadding: EdgeInsets.symmetric(vertical:10.0),
-                  hintStyle: FediTextStyles.bigTallGrey,
-                ),
-                style: FediTextStyles.bigTallDarkGrey,
                 autofocus: autofocus,
-                controller: textEditingController,
-                minLines: null,
+                textEditingController: textEditingController,
                 maxLines: maxLines,
-                expands: expanded,
+                expanded: expanded,
                 keyboardType: keyboardType,
+                hintText: hintText,
+                errorText: errorText,
+                textStyle: FediTextStyles.bigTallDarkGrey,
+                minLines: null,
+                hintStyle: FediTextStyles.bigTallGrey,
+                contentPadding: EdgeInsets.symmetric(vertical: 10.0),
+                border: InputBorder.none,
+                errorBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                displayBorder: false,
               ),
             ),
             if (containEnding) ending,
