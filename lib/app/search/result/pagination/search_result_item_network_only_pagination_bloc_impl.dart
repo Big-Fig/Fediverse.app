@@ -1,5 +1,5 @@
 import 'package:fedi/app/pagination/network_only/network_only_pleroma_pagination_bloc_impl.dart';
-import 'package:fedi/app/search/result/list/search_result_item_network_only_list_service.dart';
+import 'package:fedi/app/search/result/list/search_result_item_network_only_list_bloc.dart';
 import 'package:fedi/app/search/result/pagination/search_result_item_network_only_pagination_bloc.dart';
 import 'package:fedi/app/search/result/search_result_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 class SearchResultItemNetworkOnlyPaginationBloc
     extends NetworkOnlyPleromaPaginationBloc<ISearchResultItem>
     implements ISearchResultItemNetworkOnlyPaginationBloc {
-  final ISearchResultItemNetworkOnlyListService listService;
+  final ISearchResultItemNetworkOnlyListBloc listService;
 
   SearchResultItemNetworkOnlyPaginationBloc(
       {@required this.listService,
@@ -32,7 +32,7 @@ class SearchResultItemNetworkOnlyPaginationBloc
       SearchResultItemNetworkOnlyPaginationBloc(
           maximumCachedPagesCount: maximumCachedPagesCount,
           itemsCountPerPage: itemsCountPerPage,
-          listService: ISearchResultItemNetworkOnlyListService.of(context,
+          listService: ISearchResultItemNetworkOnlyListBloc.of(context,
               listen: false));
 
   static Widget provideToContext(BuildContext context,

@@ -1,5 +1,5 @@
 import 'package:fedi/app/conversation/conversation_model.dart';
-import 'package:fedi/app/conversation/list/cached/conversation_cached_list_service.dart';
+import 'package:fedi/app/conversation/list/cached/conversation_cached_list_bloc.dart';
 import 'package:fedi/app/conversation/pagination/conversation_pagination_bloc.dart';
 import 'package:fedi/app/pagination/cached/cached_pleroma_pagination_bloc_impl.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
@@ -9,7 +9,7 @@ import 'package:flutter/cupertino.dart';
 class ConversationPaginationBloc
     extends CachedPleromaPaginationBloc<IConversation>
     implements IConversationPaginationBloc {
-  final IConversationCachedListService listService;
+  final IConversationCachedListBloc listService;
 
   ConversationPaginationBloc(
       {@required this.listService,

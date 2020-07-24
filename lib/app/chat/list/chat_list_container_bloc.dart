@@ -1,5 +1,5 @@
 import 'package:fedi/app/chat/chat_model.dart';
-import 'package:fedi/app/chat/list/cached/chat_cached_list_service.dart';
+import 'package:fedi/app/chat/list/cached/chat_cached_list_bloc.dart';
 import 'package:fedi/app/chat/pagination/chat_pagination_bloc.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
@@ -14,7 +14,7 @@ abstract class IChatListContainerBloc extends Disposable {
           {bool listen = true}) =>
       Provider.of<IChatListContainerBloc>(context, listen: listen);
 
-  IChatCachedListService get chatListService;
+  IChatCachedBloc get chatListService;
 
   IChatPaginationBloc get chatPaginationBloc;
 

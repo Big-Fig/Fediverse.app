@@ -12,7 +12,7 @@ import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
 var _logger =
-    Logger("chatMessage_pagination_list_with_new_items_bloc_impl.dart");
+    Logger("chat_message_cached_pagination_list_with_new_items_bloc_impl.dart");
 
 class ChatMessageCachedPaginationListWithNewItemsBloc<
         TPage extends CachedPaginationPage<IChatMessage>>

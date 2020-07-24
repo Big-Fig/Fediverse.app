@@ -1,4 +1,4 @@
-import 'package:fedi/app/list/network_only/network_only_list_service.dart';
+import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/pagination/network_only/notification_network_only_pagination_bloc.dart';
 import 'package:fedi/app/pagination/network_only/network_only_pleroma_pagination_bloc_impl.dart';
@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 class NotificationNetworkOnlyPaginationBloc
     extends NetworkOnlyPleromaPaginationBloc<INotification>
     implements INotificationNetworkOnlyPaginationBloc {
-  final IPleromaNetworkOnlyListService<INotification> listService;
+  final INetworkOnlyListBloc<INotification> listService;
 
   NotificationNetworkOnlyPaginationBloc(
       {@required this.listService,
@@ -31,7 +31,7 @@ class NotificationNetworkOnlyPaginationBloc
           maximumCachedPagesCount: maximumCachedPagesCount,
           itemsCountPerPage: itemsCountPerPage,
           listService:
-              Provider.of<IPleromaNetworkOnlyListService<INotification>>(
+              Provider.of<INetworkOnlyListBloc<INotification>>(
                   context,
                   listen: false));
 

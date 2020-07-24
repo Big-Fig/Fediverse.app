@@ -3,7 +3,7 @@ import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc_impl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("form_field_form_bool_field_row_widget.dart");
+var _logger = Logger("form_bool_field_form_row_widget.dart");
 
 class FormBoolFieldFormRowWidget extends StatelessWidget {
   final String label;

@@ -86,7 +86,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("app_context_bloc_impl.dart");
+var _logger = Logger("current_auth_instance_context_bloc_imp.dart");
 
 class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     implements ICurrentAuthInstanceContextBloc {

@@ -1,5 +1,5 @@
 import 'package:fedi/app/chat/chat_model.dart';
-import 'package:fedi/app/chat/list/cached/chat_cached_list_service.dart';
+import 'package:fedi/app/chat/list/cached/chat_cached_list_bloc.dart';
 import 'package:fedi/app/chat/repository/chat_repository.dart';
 import 'package:fedi/app/chat/repository/chat_repository_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
@@ -9,13 +9,13 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 
-var _logger = Logger("chat_cached_list_service_impl.dart");
+var _logger = Logger("chat_cached_list_bloc_impl.dart");
 
-class ChatCachedListService extends IChatCachedListService {
+class ChatCachedListBloc extends IChatCachedBloc {
   final IPleromaChatService pleromaChatService;
   final IChatRepository chatRepository;
 
-  ChatCachedListService(
+  ChatCachedListBloc(
       {@required this.pleromaChatService,
       @required this.chatRepository});
 
