@@ -4,13 +4,13 @@ import 'package:fedi/app/account/account_bloc_impl.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/action/account_report_action.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
+import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/chat/chat_helper.dart';
 import 'package:fedi/app/conversation/start/status/post_status_start_conversation_page.dart';
 import 'package:fedi/app/share/share_service.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/app/ui/async/fedi_async_dialog.dart';
 import 'package:fedi/app/ui/dialog/chooser/fedi_chooser_dialog.dart';
 import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
 import 'package:fedi/app/ui/notification_overlay/info_fedi_notification_overlay.dart';
@@ -129,7 +129,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
               ? "app.account.action.unblock"
               : "app.account.action.block"),
           onAction: () async {
-            await doAsyncOperationWithFediDialog(
+            await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
                 context: context,
                 asyncCode: () async => accountBloc.toggleBlock());
 
@@ -143,7 +143,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
               ? "app.account.action.unmute"
               : "app.account.action.mute"),
           onAction: () async {
-            await doAsyncOperationWithFediDialog(
+            await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
                 context: context, asyncCode: () => accountBloc.toggleMute());
 
             Navigator.of(context).pop();
@@ -156,7 +156,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
               ? "app.account.action.unfollow"
               : "app.account.action.follow"),
           onAction: () async {
-            await doAsyncOperationWithFediDialog(
+            await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
                 context: context, asyncCode: () => accountBloc.toggleFollow());
 
             Navigator.of(context).pop();
@@ -205,7 +205,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
             var popupTitle = tr("app.status.share.title");
             var progressMessage = tr("app.status.share.progress.content");
 
-            await doAsyncOperationWithFediDialog(
+            await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
                 context: context,
                 contentMessage: progressMessage,
                 asyncCode: () async {

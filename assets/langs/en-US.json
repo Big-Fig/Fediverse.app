@@ -136,6 +136,12 @@
               "title": "Throttled. Server blocked action.",
               "content": "Too much operations per minute. Please wait before do something again."
             }
+          },
+          "invalid_credentials": {
+            "dialog": {
+              "title": "Invalid credentials",
+              "content": "Session expired"
+            }
           }
         }
       },

@@ -4,7 +4,6 @@ import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_exception.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_service.dart';
-import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
 import 'package:flutter/widgets.dart';
@@ -17,7 +16,6 @@ class PleromaInstanceService implements IPleromaInstanceService {
   final instanceRelativeUrlPath = "/api/v1/instance";
   @override
   final IPleromaRestService restService;
-
 
   @override
   bool get isPleromaInstance => restService.isPleromaInstance;

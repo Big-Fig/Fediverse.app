@@ -1,7 +1,7 @@
 import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/chat/chat_page.dart';
 import 'package:fedi/app/chat/repository/chat_repository.dart';
-import 'package:fedi/app/ui/async/fedi_async_dialog.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
 import 'package:flutter/widgets.dart';
 
@@ -12,19 +12,20 @@ void goToChatWithAccount(
   if (chat != null) {
     goToChatPage(context, chat: chat);
   } else {
-    var dialogResult = await doAsyncOperationWithFediDialog(
-        context: context,
-        asyncCode: () async {
-          var pleromaChatService =
-              IPleromaChatService.of(context, listen: false);
+    var dialogResult =
+        await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+            context: context,
+            asyncCode: () async {
+              var pleromaChatService =
+                  IPleromaChatService.of(context, listen: false);
 
-          var remoteChat = await pleromaChatService.getOrCreateChatByAccountId(
-              accountId: account.remoteId);
+              var remoteChat = await pleromaChatService
+                  .getOrCreateChatByAccountId(accountId: account.remoteId);
 
-          await chatRepository.upsertRemoteChat(remoteChat);
+              await chatRepository.upsertRemoteChat(remoteChat);
 
-          return await chatRepository.findByRemoteId(remoteChat.id);
-        });
+              return await chatRepository.findByRemoteId(remoteChat.id);
+            });
     chat = dialogResult.result;
     if (chat != null) {
       goToChatPage(context, chat: chat);

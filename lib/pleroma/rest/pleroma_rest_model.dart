@@ -30,3 +30,7 @@ class PleromaThrottledRestException extends PleromaRestException {
   PleromaThrottledRestException({@required int statusCode, @required String body})
       : super(statusCode: statusCode, body: body);
 }
+class PleromaInvalidCredentialsRestException extends PleromaRestException {
+  PleromaInvalidCredentialsRestException({@required int statusCode, @required String body})
+      : super(statusCode: statusCode, body: body);
+}

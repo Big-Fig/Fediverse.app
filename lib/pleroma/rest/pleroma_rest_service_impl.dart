@@ -1,7 +1,7 @@
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/pleroma/rest/pleroma_rest_exception.dart';
+import 'package:fedi/pleroma/rest/pleroma_rest_model.dart';
 import 'package:fedi/pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
 import 'package:fedi/rest/rest_service.dart';
@@ -65,6 +65,11 @@ class PleromaRestService extends DisposableOwner
     // todo: refactor pleroma errors handling
     if (response.statusCode == 429) {
       throw PleromaThrottledRestException(
+          statusCode: response.statusCode, body: response.body);
+    }
+
+    if (response.statusCode == 403) {
+      throw PleromaInvalidCredentialsRestException(
           statusCode: response.statusCode, body: response.body);
     }
     return response;

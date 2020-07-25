@@ -1,11 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/app/auth/host/auth_host_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/join/join_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_page.dart';
 import 'package:fedi/app/tos/tos_page.dart';
-import 'package:fedi/app/ui/async/fedi_async_dialog.dart';
 import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
 import 'package:fedi/app/ui/edit_text/fedi_transparent_edit_text_field.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
@@ -214,19 +214,20 @@ class JoinAuthInstanceWidget extends StatelessWidget {
   Future signUpToInstance(BuildContext context) async {
     var joinInstanceBloc = IJoinAuthInstanceBloc.of(context, listen: false);
     var hostUri = extractCurrentUri(joinInstanceBloc);
-    var asyncDialogResult = await doAsyncOperationWithFediDialog(
-        context: context,
-        contentMessage: tr("app.auth.instance.join"
-            ".progress.dialog.content"),
-        asyncCode: () async {
-          AuthHostBloc authHostBloc;
-          authHostBloc =
-              AuthHostBloc.createFromContext(context, instanceBaseUrl: hostUri);
-          await authHostBloc.checkApplicationRegistration();
-          await authHostBloc.checkIsRegistrationsEnabled();
-          authHostBloc?.dispose();
-        },
-        errorDataBuilders: [
+    var asyncDialogResult =
+        await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+            context: context,
+            contentMessage: tr("app.auth.instance.join"
+                ".progress.dialog.content"),
+            asyncCode: () async {
+              AuthHostBloc authHostBloc;
+              authHostBloc = AuthHostBloc.createFromContext(context,
+                  instanceBaseUrl: hostUri);
+              await authHostBloc.checkApplicationRegistration();
+              await authHostBloc.checkIsRegistrationsEnabled();
+              authHostBloc?.dispose();
+            },
+            errorDataBuilders: [
           (
             context,
             error,
@@ -290,25 +291,26 @@ class JoinAuthInstanceWidget extends StatelessWidget {
 
   Future logInToInstance(BuildContext context) async {
     var joinInstanceBloc = IJoinAuthInstanceBloc.of(context, listen: false);
-    var dialogResult = await doAsyncOperationWithFediDialog(
-        context: context,
-        contentMessage: tr("app.auth.instance.join"
-            ".progress.dialog.content"),
-        cancelable: true,
-        asyncCode: () async {
-          var hostUri = extractCurrentUri(joinInstanceBloc);
-          AuthHostBloc bloc;
-          try {
-            bloc = AuthHostBloc.createFromContext(context,
-                instanceBaseUrl: hostUri);
-            var instance = await bloc.launchLoginToAccount();
+    var dialogResult =
+        await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+            context: context,
+            contentMessage: tr("app.auth.instance.join"
+                ".progress.dialog.content"),
+            cancelable: true,
+            asyncCode: () async {
+              var hostUri = extractCurrentUri(joinInstanceBloc);
+              AuthHostBloc bloc;
+              try {
+                bloc = AuthHostBloc.createFromContext(context,
+                    instanceBaseUrl: hostUri);
+                var instance = await bloc.launchLoginToAccount();
 
-            return instance;
-          } finally {
-            bloc?.dispose();
-          }
-        },
-        errorDataBuilders: [
+                return instance;
+              } finally {
+                bloc?.dispose();
+              }
+            },
+            errorDataBuilders: [
           (context, error, stackTrace) {
             // todo: handle specific error
             return createInstanceDeadErrorData(context, error, stackTrace);

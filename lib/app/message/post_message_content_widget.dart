@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/message/post_message_bloc.dart';
-import 'package:fedi/app/ui/async/fedi_async_dialog.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_simple_alert_dialog.dart';
 import 'package:fedi/app/ui/edit_text/fedi_filled_edit_text_field.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,10 +26,8 @@ class PostMessageContentWidget extends StatelessWidget {
       textInputAction: TextInputAction.send,
       onSubmitted: (String value) async {
         if (postMessageBloc.isReadyToPost) {
-          await doAsyncOperationWithFediDialog(
+          await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
               context: context,
-              errorDataBuilders: PleromaAsyncOperationButtonBuilderWidget
-                  .pleromaErrorDataBuilders,
               asyncCode: () {
                 return postMessageBloc.post();
               });
