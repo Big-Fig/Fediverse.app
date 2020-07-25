@@ -14,6 +14,7 @@ class CodegenLoader extends AssetLoader{
     static const Map<String,dynamic> en_US = {
   "app": {
     "datetime": {
+      "title": "Schedule",
       "picker": {
         "action": {
           "ok": "Set time",
