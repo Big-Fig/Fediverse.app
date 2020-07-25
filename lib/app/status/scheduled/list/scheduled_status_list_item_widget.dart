@@ -138,11 +138,12 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
       BuildContext context, IScheduledStatusBloc scheduledStatusBloc) {
     return IconButton(
       icon: Icon(
-        FediIcons.pen,
+        FediIcons.schedule,
         color: FediColors.darkGrey,
       ),
       iconSize: FediSizes.bigIconSize,
       onPressed: () async {
+
         var newScheduledAt = await showScheduledStatusDateTimePickerDialog(
             context, scheduledStatusBloc.scheduledAt);
 
