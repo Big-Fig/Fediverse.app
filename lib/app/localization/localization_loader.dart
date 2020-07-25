@@ -225,6 +225,12 @@ class CodegenLoader extends AssetLoader{
               "title": "Not a valid instance (may be closed or dead)",
               "content": "Please enter a valid instance name like fedi.app or pleroma.com"
             }
+          },
+          "registration_disabled": {
+            "dialog": {
+              "title": "Instance owner disabled registration",
+              "content": "Try any other instance, like fedi.app"
+            }
           }
         },
         "register": {

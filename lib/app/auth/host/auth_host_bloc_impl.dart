@@ -5,6 +5,7 @@ import 'package:fedi/app/auth/host/auth_host_access_token_local_preference_bloc_
 import 'package:fedi/app/auth/host/auth_host_application_local_preference_bloc.dart';
 import 'package:fedi/app/auth/host/auth_host_application_local_preference_bloc_impl.dart';
 import 'package:fedi/app/auth/host/auth_host_bloc.dart';
+import 'package:fedi/app/auth/host/auth_host_model.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
@@ -236,10 +237,10 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
       {@required IPleromaAccountRegisterRequest request}) async {
     await checkApplicationRegistration();
     await checkHostAccessTokenRegistration();
+    await checkIsRegistrationsEnabled();
 
     var token = await pleromaAccountPublicService.registerAccount(
         request: request, appAccessToken: hostAccessToken.accessToken);
-
     return _createInstanceFromToken(token: token, authCode: null);
   }
 
@@ -252,8 +253,29 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
       _logger.finest(() => "checkApplicationRegistration "
           "success=$success");
       if (!success) {
-        throw "Can't register app";
+        throw CantRegisterAppAuthHostException();
       }
+    }
+  }
+
+  @override
+  Future checkIsRegistrationsEnabled() async {
+    _logger.finest(() => "checkIsRegistrationsEnabled");
+
+    PleromaInstanceService pleromaInstanceService;
+    try {
+      pleromaInstanceService = PleromaInstanceService(restService: pleromaRestService);
+      var pleromaInstance = await pleromaInstanceService.getInstance();
+
+      var isRegistrationEnabled = pleromaInstance.registrations;
+
+      if (isRegistrationEnabled != false) {
+        return true;
+      } else {
+        throw RegistrationNotEnabledAuthHostException();
+      }
+    } finally {
+      pleromaInstanceService?.dispose();
     }
   }
 
@@ -262,7 +284,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
       var success = await retrieveAppAccessToken();
 
       if (!success) {
-        throw "Can't retrieve app access token";
+        throw CantRetrieveAppTokenAuthHostException();
       }
     }
   }

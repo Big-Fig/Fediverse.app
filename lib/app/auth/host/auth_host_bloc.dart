@@ -30,6 +30,7 @@ abstract class IAuthHostBloc extends Disposable {
       {@required IPleromaAccountRegisterRequest request});
 
   Future checkApplicationRegistration();
+  Future checkIsRegistrationsEnabled();
 
   Future logout();
 }

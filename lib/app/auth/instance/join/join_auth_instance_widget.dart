@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
+import 'package:fedi/app/auth/host/auth_host_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/join/join_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_page.dart';
@@ -222,9 +223,25 @@ class JoinAuthInstanceWidget extends StatelessWidget {
           authHostBloc =
               AuthHostBloc.createFromContext(context, instanceBaseUrl: hostUri);
           await authHostBloc.checkApplicationRegistration();
+          await authHostBloc.checkIsRegistrationsEnabled();
           authHostBloc?.dispose();
         },
         errorDataBuilders: [
+          (
+            context,
+            error,
+            stackTrace,
+          ) {
+            if (error is RegistrationNotEnabledAuthHostException) {
+              return createRegistrationDisabledErrorData(
+                context,
+                error,
+                stackTrace,
+              );
+            } else {
+              return null;
+            }
+          },
           (
             context,
             error,
@@ -260,6 +277,16 @@ class JoinAuthInstanceWidget extends StatelessWidget {
               ".fail.dialog.title"),
           contentText: tr("app.auth.instance.join"
               ".fail.dialog.content"));
+
+  ErrorData createRegistrationDisabledErrorData(
+          BuildContext context, error, StackTrace stackTrace) =>
+      ErrorData(
+          error: error,
+          stackTrace: stackTrace,
+          titleText: tr("app.auth.instance.join"
+              ".registration_disabled.dialog.title"),
+          contentText: tr("app.auth.instance.join"
+              ".registration_disabled.dialog.content"));
 
   Future logInToInstance(BuildContext context) async {
     var joinInstanceBloc = IJoinAuthInstanceBloc.of(context, listen: false);
