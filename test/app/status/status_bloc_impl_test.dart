@@ -273,8 +273,8 @@ void main() {
   test('reblogOrOriginalCard', () async {
     expect(statusBloc.reblogOrOriginalCard, status.card);
 
-    var reblogValue = PleromaCard(url: "fedi1.app");
-    var newValue = PleromaCard(url: "fedi2.app");
+    var reblogValue = PleromaCard(url: "fedi_1.app");
+    var newValue = PleromaCard(url: "fedi_2.app");
 
     var reblog = await createTestStatus(seed: "reblogOrOriginalCard");
 
