@@ -59,8 +59,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         .asyncInitAndRegister<ILoggingService>(loggingService);
 
     var hiveService = HiveService();
-    await globalProviderService
-        .asyncInitAndRegister<IHiveService>(hiveService);
+    await globalProviderService.asyncInitAndRegister<IHiveService>(hiveService);
     var localizationService = LocalizationService();
     await globalProviderService
         .asyncInitAndRegister<ILocalizationService>(localizationService);
@@ -69,7 +68,6 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
 
     await globalProviderService
         .asyncInitAndRegister<IAnalyticsService>(analyticsService);
-
 
     var connectionService = ConnectionService();
     await globalProviderService
@@ -85,14 +83,16 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     await globalProviderService
         .asyncInitAndRegister<ILocalPreferencesService>(preferencesService);
 
-    var cameraPermissionBloc = CameraPermissionBloc(globalProviderService.get<IPermissionsService>());
+    var cameraPermissionBloc =
+        CameraPermissionBloc(globalProviderService.get<IPermissionsService>());
     await cameraPermissionBloc.checkPermissionStatus();
-    await globalProviderService.asyncInitAndRegister<ICameraPermissionBloc>(
-        cameraPermissionBloc);
-    var micPermissionBloc = MicPermissionBloc(globalProviderService.get<IPermissionsService>());
+    await globalProviderService
+        .asyncInitAndRegister<ICameraPermissionBloc>(cameraPermissionBloc);
+    var micPermissionBloc =
+        MicPermissionBloc(globalProviderService.get<IPermissionsService>());
     await micPermissionBloc.checkPermissionStatus();
-    await globalProviderService.asyncInitAndRegister<IMicPermissionBloc>(
-        micPermissionBloc);
+    await globalProviderService
+        .asyncInitAndRegister<IMicPermissionBloc>(micPermissionBloc);
     var storagePermissionBloc =
         StoragePermissionBloc(globalProviderService.get<IPermissionsService>());
     await storagePermissionBloc.checkPermissionStatus();
@@ -134,12 +134,14 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     var packageName = packageInfo.packageName;
     if (packageName ==
         "com.fediverse"
-            ".app2") {
-      // test app2 push relay
+            ".a"
+            "pp2") {
+      // test Fedi push relay
       pushRelayBaseUrl = "http://161.35.139.75:3000/push/";
     } else if (packageName ==
         "com.fediverse"
-            ".app") {
+            ".a"
+            "pp") {
       // production app push relay
       pushRelayBaseUrl = "https://pushrelay3.your.org/push/";
     } else {
