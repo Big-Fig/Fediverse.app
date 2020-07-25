@@ -15,7 +15,7 @@ typedef ErrorData ErrorDataBuilder(
   StackTrace stackTrace,
 );
 
-typedef void ErrorCallback(ErrorData errorData);
+typedef void ErrorCallback(BuildContext context, ErrorData errorData);
 
 Future<AsyncDialogResult<T>> doAsyncOperationWithDialog<T>({
   @required BuildContext context,
@@ -87,7 +87,7 @@ Future<AsyncDialogResult<T>> doAsyncOperationWithDialog<T>({
   } else if (error != null) {
     if (errorData != null) {
       if (errorCallback != null) {
-        errorCallback(errorData);
+        errorCallback(context, errorData);
       }
     }
 

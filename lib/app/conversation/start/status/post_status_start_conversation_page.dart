@@ -2,11 +2,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
+import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/conversation/conversation_page.dart';
 import 'package:fedi/app/conversation/repository/conversation_repository.dart';
 import 'package:fedi/app/conversation/start/status/post_status_start_conversation_bloc_impl.dart';
 import 'package:fedi/app/status/post/post_status_compose_widget.dart';
-import 'package:fedi/app/ui/async/fedi_async_dialog.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_model.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_service.dart';
@@ -32,7 +32,8 @@ class PostStatusStartConversationPage extends StatelessWidget {
                   goBackOnSuccess: true,
                   expanded: true,
                   maxLines: null,
-                  displayAccountAvatar: false, showPostAction: true,
+                  displayAccountAvatar: false,
+                  showPostAction: true,
                 ),
               ),
             ),
@@ -53,7 +54,7 @@ void goToPostStatusStartConversationPage(BuildContext context,
 
   List<IPleromaConversation> foundRemoteConversations;
   if (pleromaConversationService.isApiReadyToUse) {
-    await doAsyncOperationWithFediDialog(
+    await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
         context: context,
         asyncCode: () async {
           foundRemoteConversations =

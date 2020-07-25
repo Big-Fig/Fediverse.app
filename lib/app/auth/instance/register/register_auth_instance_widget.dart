@@ -1,10 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_bloc.dart';
 import 'package:fedi/app/form/form_string_field_form_row_widget.dart';
-import 'package:fedi/app/ui/async/fedi_async_dialog.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/error/error_data_model.dart';
@@ -151,31 +151,32 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
     final validEmail = bloc.emailFieldBloc.currentValue;
     final validPassword = bloc.passwordFieldBloc.currentValue;
 
-    var dialogResult = await doAsyncOperationWithFediDialog(
-        context: context,
-        asyncCode: () async {
-          AuthInstance authInstance;
-          AuthHostBloc authApplicationBloc;
-          try {
-            authApplicationBloc = AuthHostBloc.createFromContext(context,
-                instanceBaseUrl: instanceBaseUrl);
-            await authApplicationBloc.performAsyncInit();
+    var dialogResult =
+        await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+            context: context,
+            asyncCode: () async {
+              AuthInstance authInstance;
+              AuthHostBloc authApplicationBloc;
+              try {
+                authApplicationBloc = AuthHostBloc.createFromContext(context,
+                    instanceBaseUrl: instanceBaseUrl);
+                await authApplicationBloc.performAsyncInit();
 
-            authInstance = await authApplicationBloc.registerAccount(
-                request: PleromaAccountRegisterRequest(
-                    //todo: popup ToS before register
-                    agreement: true,
-                    email: validEmail,
-                    // todo: add locale chooser
-                    locale: "en",
-                    password: validPassword,
-                    username: validUsername));
-          } finally {
-            authApplicationBloc?.dispose();
-          }
-          return authInstance;
-        },
-        errorDataBuilders: [
+                authInstance = await authApplicationBloc.registerAccount(
+                    request: PleromaAccountRegisterRequest(
+                        //todo: popup ToS before register
+                        agreement: true,
+                        email: validEmail,
+                        // todo: add locale chooser
+                        locale: "en",
+                        password: validPassword,
+                        username: validUsername));
+              } finally {
+                authApplicationBloc?.dispose();
+              }
+              return authInstance;
+            },
+            errorDataBuilders: [
           (context, error, stackTrace) {
             // todo: handle specific error
             return ErrorData(
@@ -194,7 +195,7 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
       await ICurrentAuthInstanceBloc.of(context, listen: false)
           .changeCurrentInstance(authInstance);
 
-      if(successRegistrationCallback != null) {
+      if (successRegistrationCallback != null) {
         successRegistrationCallback();
       }
     }

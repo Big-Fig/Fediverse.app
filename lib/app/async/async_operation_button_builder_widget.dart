@@ -1,6 +1,7 @@
-import 'package:fedi/app/ui/async/fedi_async_dialog.dart';
+import 'package:fedi/app/async/async_operation_helper.dart';
 import 'package:fedi/app/ui/notification_overlay/info_fedi_notification_overlay.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
+import 'package:fedi/dialog/async/async_dialog_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -16,6 +17,7 @@ class AsyncOperationButtonBuilderWidget extends StatefulWidget {
   final bool showProgressDialog;
   final String progressContentMessage;
   final String successToastMessage;
+  final ErrorCallback errorCallback;
 
   final List<ErrorDataBuilder> errorDataBuilders;
 
@@ -25,12 +27,24 @@ class AsyncOperationButtonBuilderWidget extends StatefulWidget {
     this.showProgressDialog = true,
     this.progressContentMessage,
     this.successToastMessage,
+    this.errorCallback,
     this.errorDataBuilders = const [],
   });
 
   @override
   _AsyncOperationButtonBuilderWidgetState createState() =>
       _AsyncOperationButtonBuilderWidgetState();
+
+  Future<AsyncDialogResult<T>> performAsyncOperation<T>(
+      {BuildContext context}) {
+    return AsyncOperationHelper.performAsyncOperation(
+        context: context,
+        errorCallback: errorCallback,
+        contentMessage: progressContentMessage,
+        errorDataBuilders: errorDataBuilders,
+        showProgressDialog: showProgressDialog,
+        asyncCode: asyncButtonAction);
+  }
 }
 
 class _AsyncOperationButtonBuilderWidgetState
@@ -47,13 +61,7 @@ class _AsyncOperationButtonBuilderWidgetState
                 setState(() {
                   asyncOperationInProgress = true;
                 });
-                doAsyncOperationWithFediDialog(
-                        context: context,
-                        contentMessage: widget.progressContentMessage,
-                        errorDataBuilders: widget.errorDataBuilders,
-                        showProgressDialog: widget.showProgressDialog,
-                        asyncCode: widget.asyncButtonAction)
-                    .then((_) async {
+                widget.performAsyncOperation(context: context).then((_) async {
                   setState(() {
                     asyncOperationInProgress = false;
                   });

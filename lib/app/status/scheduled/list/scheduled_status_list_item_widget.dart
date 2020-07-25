@@ -1,12 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
 import 'package:fedi/app/status/scheduled/datetime/scheduled_status_datetime_picker_dialog.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_bloc.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/app/ui/async/fedi_async_dialog.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
@@ -147,7 +147,7 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
             context, scheduledStatusBloc.scheduledAt);
 
         if (newScheduledAt != null) {
-          await doAsyncOperationWithFediDialog(
+          await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
               context: context,
               asyncCode: () =>
                   scheduledStatusBloc.reSchedule(scheduledAt: newScheduledAt));
