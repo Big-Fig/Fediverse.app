@@ -1,4 +1,4 @@
-package com.fediverse.app2
+package com.fediverse.app
 
 import android.os.Bundle
 import io.flutter.app.FlutterActivity
