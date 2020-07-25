@@ -37,7 +37,7 @@ void main() {
     webSocketsService.getOrCreateWebSocketsChannel(
         config: TestWebSocketsChannelConfig(
             queryArgs: {"arg": "newValue"},
-            baseUrl: Uri.parse("wss://fedi2.app")));
+            baseUrl: Uri.parse("wss://fedi_2.app")));
 
     expect(webSocketsService.urlToChannel.length, 3);
   });
