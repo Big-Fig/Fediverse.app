@@ -2,9 +2,12 @@ library flutter_datetime_picker;
 
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -274,6 +277,13 @@ class _DatePickerState extends State<_FediDatePickerComponent> {
       return Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
+            child: Text(
+              "app.datetime.title".tr(),
+              style: FediTextStyles.dialogTitleBoldDarkGrey,
+            ),
+          ),
           itemView,
           _renderTitleActionsView(theme),
         ],

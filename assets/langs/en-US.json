@@ -1,6 +1,7 @@
 {
   "app": {
     "datetime": {
+      "title": "Schedule",
       "picker": {
         "action": {
           "ok": "Set time",
