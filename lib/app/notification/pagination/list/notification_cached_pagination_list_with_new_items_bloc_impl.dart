@@ -12,11 +12,11 @@ import 'package:provider/provider.dart';
 class NotificationCachedPaginationListWithNewItemsBloc<
         TPage extends CachedPaginationPage<INotification>>
     extends CachedPaginationListWithNewItemsBloc<TPage, INotification> {
-  final INotificationCachedListBloc cachedListService;
+  final INotificationCachedListBloc cachedListBloc;
 
   NotificationCachedPaginationListWithNewItemsBloc(
       {@required bool mergeNewItemsImmediately,
-      @required this.cachedListService,
+      @required this.cachedListBloc,
       @required IPaginationBloc<TPage, INotification> paginationBloc})
       : super(
             mergeNewItemsImmediately: mergeNewItemsImmediately,
@@ -27,13 +27,13 @@ class NotificationCachedPaginationListWithNewItemsBloc<
     super.onNewItemsMerged(lastMergedItems);
 
     if (lastMergedItems?.isNotEmpty == true) {
-      cachedListService.markAsRead(lastMergedItems);
+      cachedListBloc.markAsRead(lastMergedItems);
     }
   }
 
   @override
   Stream<List<INotification>> watchItemsNewerThanItem(INotification item) {
-    return cachedListService.watchLocalItemsNewerThanItem(item);
+    return cachedListBloc.watchLocalItemsNewerThanItem(item);
   }
 
   @override
@@ -84,7 +84,7 @@ class NotificationCachedPaginationListWithNewItemsBloc<
       paginationBloc: Provider.of<IPaginationBloc<TPage, INotification>>(
           context,
           listen: false),
-      cachedListService: INotificationCachedListBloc.of(context, listen: false),
+      cachedListBloc: INotificationCachedListBloc.of(context, listen: false),
     );
   }
 }
