@@ -39,20 +39,28 @@ class AccountActionMoreDialogBody extends StatelessWidget {
       content: "${accountBloc.acct}",
       actions: [
         DialogAction(
-            label: relationship.muting
-                ? tr("app.account.action.unmute")
-                : tr("app.account.action.mute"),
-            onAction: accountBloc.toggleMute),
+          label: relationship.muting
+              ? tr("app.account.action.unmute")
+              : tr("app.account.action.mute"),
+          onAction: () async {
+            await accountBloc.toggleMute();
+            Navigator.of(context).pop();
+          },
+        ),
         DialogAction(
-            label: relationship.blocking
-                ? tr("app.account.action.unblock")
-                : tr("app.account.action.block"),
-            onAction: accountBloc.toggleBlock),
+          label: relationship.blocking
+              ? tr("app.account.action.unblock")
+              : tr("app.account.action.block"),
+          onAction: () async {
+            await accountBloc.toggleBlock();
+            Navigator.of(context).pop();
+          },
+        ),
         DialogAction(
             label: tr("app.account.action.report.label"),
             onAction: () async {
               var success = await doAsyncActionReport(
-                  context, IAccountBloc.of(context, listen: false));
+                  context, accountBloc);
 
               if (success) {
                 Navigator.of(context).pop();
