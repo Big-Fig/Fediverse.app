@@ -55,7 +55,7 @@ class FediTransparentTextButton extends StatelessWidget {
               padding: FediPadding.buttonHorizontalPadding,
               child: Text(
                 text,
-                style: defaultTextStyle.copyWith(color: color),
+                style: textStyle.copyWith(color: color),
               ),
             ),
           )),
