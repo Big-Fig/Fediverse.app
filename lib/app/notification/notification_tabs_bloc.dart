@@ -1,11 +1,13 @@
+import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/tab/notification_tab_model.dart';
 import 'package:fedi/disposable/disposable.dart';
+import 'package:fedi/pagination/cached/cached_pagination_model.dart';
+import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 abstract class INotificationTabsBloc extends Disposable {
-  static INotificationTabsBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static INotificationTabsBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<INotificationTabsBloc>(context, listen: listen);
 
   List<NotificationTab> get tabs;
@@ -15,4 +17,7 @@ abstract class INotificationTabsBloc extends Disposable {
   Stream<NotificationTab> get selectedTabStream;
 
   void selectTab(NotificationTab tab);
+
+  ICachedPaginationListWithNewItemsBloc<CachedPaginationPage<INotification>,
+      INotification> retrieveTimelineTabPaginationListBloc(NotificationTab tab);
 }
