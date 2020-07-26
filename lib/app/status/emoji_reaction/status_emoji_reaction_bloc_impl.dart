@@ -33,7 +33,7 @@ class StatusEmojiReactionBloc extends DisposableOwner
   }
 
   @override
-  Future<IPleromaStatus> requestToggleEmojiReaction() async {
+  Future<IPleromaStatus> toggleEmojiReaction() async {
     IPleromaStatus remoteStatus;
     if (emojiReaction.me) {
       remoteStatus = await pleromaStatusEmojiReactionService.removeReaction(
@@ -42,12 +42,6 @@ class StatusEmojiReactionBloc extends DisposableOwner
       remoteStatus = await pleromaStatusEmojiReactionService.addReaction(
           statusRemoteId: status.remoteId, emoji: emojiReaction.name);
     }
-
-    var newReaction = remoteStatus.pleroma?.emojiReactions?.firstWhere(
-        (currentReaction) => currentReaction.name == emojiReaction.name,
-        orElse: () => null);
-
-    emojiReactionSubject.add(newReaction);
 
     await statusRepository.upsertRemoteStatus(remoteStatus,
         listRemoteId: null, conversationRemoteId: null);

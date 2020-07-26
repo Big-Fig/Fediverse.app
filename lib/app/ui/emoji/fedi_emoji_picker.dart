@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:emoji_picker/emoji_lists.dart' as emoji_list;
 import 'package:emoji_picker/emoji_picker.dart';
+import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -2021,7 +2022,7 @@ class _FediEmojiPickerState extends State<FediEmojiPicker> {
             child: Container(
               color: widget.bgColor,
               child: Center(
-                child: CircularProgressIndicator(),
+                child: FediCircularProgressIndicator(),
               ),
             ),
           ),
