@@ -67,8 +67,8 @@ class EditMyAccountPage extends StatelessWidget {
                   child: Text(
                     tr("app.account.my.edit.action.save"),
                     style: isReadyToSubmit
-                        ? FediTextStyles.bigShortGrey
-                        : FediTextStyles.bigShortPrimary,
+                        ? FediTextStyles.bigShortPrimary
+                        : FediTextStyles.bigShortGrey,
                   ),
                   onPressed: isReadyToSubmit ? onPressed : null,
                 );
