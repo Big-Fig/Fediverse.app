@@ -68,7 +68,7 @@ Future<AsyncDialogResult<T>> doAsyncOperationWithDialog<T>({
 
     if (needRethrow) {
       _logger.severe(() => "rethrow error during "
-          "doAsyncOperationWithFediDialog");
+          "doAsyncOperationWithFediDialog", error, stackTrace);
     } else {
       _logger.warning(
           () => "handled error during "
