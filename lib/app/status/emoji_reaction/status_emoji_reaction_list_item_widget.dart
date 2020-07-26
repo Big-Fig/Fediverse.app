@@ -25,8 +25,9 @@ class StatusEmojiReactionListItemWidget extends StatelessWidget {
           }
 
           return PleromaAsyncOperationButtonBuilderWidget(
+            showProgressDialog: false,
             asyncButtonAction: () =>
-                statusEmojiReactionBloc.requestToggleEmojiReaction(),
+                statusEmojiReactionBloc.toggleEmojiReaction(),
             builder: (BuildContext context, void Function() onPressed) {
               var color = emojiReaction.me
                   ? FediColors.primaryColor

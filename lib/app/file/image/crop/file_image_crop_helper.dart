@@ -7,6 +7,7 @@ import 'package:image_cropper/image_cropper.dart';
 Future<File> cropImageToSquare(File file, BuildContext context) {
   return ImageCropper.cropImage(
       sourcePath: file.path,
+      aspectRatio: CropAspectRatio(ratioY: 1, ratioX: 1),
       aspectRatioPresets: [CropAspectRatioPreset.square],
       androidUiSettings: AndroidUiSettings(
           toolbarTitle:

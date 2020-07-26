@@ -3,6 +3,7 @@ import 'package:fedi/app/home/tab/notifications/drawer/notifications_home_tab_pa
 import 'package:fedi/app/home/tab/notifications/notifications_home_tab_bloc.dart';
 import 'package:fedi/app/notification/list/cached/notification_cached_list_bloc_impl.dart';
 import 'package:fedi/app/notification/list/notification_list_tap_to_load_overlay_widget.dart';
+import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/notification_tabs_bloc.dart';
 import 'package:fedi/app/notification/notification_tabs_bloc_impl.dart';
 import 'package:fedi/app/notification/pagination/cached/notification_cached_pagination_bloc_impl.dart';
@@ -20,8 +21,12 @@ import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollabl
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_widget.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/pagination/cached/cached_pagination_model.dart';
+import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
+import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc_proxy_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 const _notificationTabs = [
   NotificationTab.all,
@@ -104,7 +109,7 @@ class _NotificationsHomeTabPageState extends State<NotificationsHomeTabPage>
             (BuildContext context, int index, Widget child) {
           var tab = _notificationTabs[index];
 
-          return _buildTabBodyProvider(tab, child);
+          return _buildTabBodyProvider(context, tab, child);
         },
         tabBodyContentBuilder: (BuildContext context) =>
             FediDarkStatusBarStyleArea(
@@ -127,17 +132,23 @@ class _NotificationsHomeTabPageState extends State<NotificationsHomeTabPage>
     );
   }
 
-  Widget _buildTabBodyProvider(NotificationTab tab, Widget child) {
-    return NotificationCachedListBloc.provideToContext(
-      context,
-      excludeTypes: tab.asExcludeTypes(),
-      child: NotificationCachedPaginationBloc.provideToContext(
-        context,
-        child:
-            NotificationCachedPaginationListWithNewItemsBloc.provideToContext(
-                context,
-                mergeNewItemsImmediately: false,
-                child: child),
+  Widget _buildTabBodyProvider(
+      BuildContext context, NotificationTab tab, Widget child) {
+    var timelineTabPaginationListBloc =
+        INotificationTabsBloc.of(context, listen: false)
+            .retrieveTimelineTabPaginationListBloc(tab);
+
+    return Provider<
+        ICachedPaginationListWithNewItemsBloc<
+            CachedPaginationPage<INotification>, INotification>>.value(
+      value: timelineTabPaginationListBloc,
+      child: ProxyProvider<
+          ICachedPaginationListWithNewItemsBloc<
+              CachedPaginationPage<INotification>, INotification>,
+          ICachedPaginationListWithNewItemsBloc>(
+        update: (context, value, previous) => value,
+        child: CachedPaginationListWithNewItemsBlocProxyProvider<
+            CachedPaginationPage<INotification>, INotification>(child: child),
       ),
     );
   }

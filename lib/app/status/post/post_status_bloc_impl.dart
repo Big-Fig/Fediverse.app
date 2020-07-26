@@ -61,6 +61,8 @@ abstract class PostStatusBloc extends PostMessageBloc
   BehaviorSubject<bool> originInReplyToStatusCanceledSubject =
       BehaviorSubject.seeded(false);
 
+  final PleromaVisibility initialVisibility;
+
   PostStatusBloc({
     @required this.pleromaStatusService,
     @required this.statusRepository,
@@ -68,7 +70,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     this.conversationRemoteId,
     this.originInReplyToStatus,
     int maximumMediaAttachmentCount = 8,
-    PleromaVisibility initialVisibility = PleromaVisibility.PUBLIC,
+    this.initialVisibility = PleromaVisibility.PUBLIC,
     List<IAccount> initialAccountsToMention = const [],
   }) : super(
             pleromaMediaAttachmentService: pleromaMediaAttachmentService,
@@ -377,6 +379,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   @override
   void clear() {
     super.clear();
+    visibilitySubject.add(initialVisibility);
     focusNode.unfocus();
     nsfwSensitiveSubject.add(false);
     _regenerateIdempotencyKey();

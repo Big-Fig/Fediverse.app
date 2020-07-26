@@ -12,5 +12,5 @@ abstract class IStatusEmojiReactionBloc implements Disposable {
 
   Stream<IPleromaStatusEmojiReaction> get emojiReactionStream;
 
-  Future<IPleromaStatus> requestToggleEmojiReaction();
+  Future<IPleromaStatus> toggleEmojiReaction();
 }
