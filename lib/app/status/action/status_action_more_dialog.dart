@@ -20,6 +20,9 @@ import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
+
+var _logger = Logger("status_action_more_dialog.dart");
 
 void showStatusActionMoreDialog({
   @required BuildContext context,
@@ -79,10 +82,14 @@ class StatusActionMoreDialogBody extends StatelessWidget {
                     builder: (context, snapshot) {
                       var accountRelationship = snapshot.data;
 
+                      _logger.finest(() => "accountRelationship $accountRelationship");
+
                       var title =
                           tr("app.status.action.popup.more_actions_for");
                       var content = "${status.account.acct}";
-                      if (accountRelationship != null) {
+                      // todo: remove hack
+                      //  we should compare accountRelationship with null
+                      if (accountRelationship?.following != null) {
                         return FediChooserDialogBody(
                             title: title,
                             content: content,
