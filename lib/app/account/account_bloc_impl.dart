@@ -155,7 +155,9 @@ class AccountBloc extends IAccountBloc {
 
   Future _updateRelationship(
       IAccount account, IPleromaAccountRelationship newRelationship) async {
-    _accountRelationshipSubject.add(newRelationship);
+    if(!_accountRelationshipSubject.isClosed) {
+      _accountRelationshipSubject.add(newRelationship);
+    }
     var newAccount = account.copyWith(pleromaRelationship: newRelationship);
     var newRemoteAccount = mapLocalAccountToRemoteAccount(newAccount);
 
