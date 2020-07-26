@@ -15,6 +15,8 @@ class FediPrimaryFilledTextButton  extends StatelessWidget {
   final bool expanded;
   final Color enabledBackgroundColor;
   final Color disabledBackgroundColor;
+  final Color enabledBorderColor;
+  final Color disabledBorderColor;
 
 
   final TextStyle textStyle;
@@ -26,6 +28,8 @@ class FediPrimaryFilledTextButton  extends StatelessWidget {
     @required this.onPressed,
     this.enabledBackgroundColor = FediColors.primaryColor,
     this.disabledBackgroundColor = FediColors.lightGrey,
+    this.enabledBorderColor = FediColors.white,
+    this.disabledBorderColor = FediColors.white,
     this.height = FediSizes.textButtonHeight,
     this.textStyle = defaultTextStyle,
     this.borderWidth = 1,
@@ -48,7 +52,9 @@ class FediPrimaryFilledTextButton  extends StatelessWidget {
                 : disabledBackgroundColor,
             borderRadius: borderRadius,
             border: Border.all(
-              color: FediColors.white,
+              color:  onPressed != null
+                  ? enabledBorderColor
+                  : disabledBorderColor,
               width: borderWidth,
             ),
           ),

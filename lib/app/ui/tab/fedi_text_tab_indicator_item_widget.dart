@@ -1,5 +1,5 @@
-import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_blurred_text_button.dart';
+import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/button/text/fedi_transparent_text_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:flutter/cupertino.dart';
@@ -70,24 +70,28 @@ class _FediTextTabIndicatorItemWidgetState
     Widget text;
     var fontSize = 16.0;
     var lineHeight = 1.5;
+
     if (isSelected) {
       text = FediPrimaryFilledTextButton(
         widget.label,
         onPressed: onPressed,
         textStyle: FediPrimaryFilledTextButton.defaultTextStyle.copyWith(
           fontSize: fontSize,
+          fontWeight: FontWeight.w500,
           height: lineHeight,
         ),
-        enabledBackgroundColor: Colors.transparent,
+        enabledBackgroundColor: FediColors.primaryColor.withOpacity(0.8),
+
       );
     } else {
+      var fontWeight = FontWeight.normal;
       if (widget.isTransparent) {
         text = FediBlurredTextButton(
           widget.label,
           onPressed: onPressed,
           textStyle: FediBlurredTextButton.defaultTextStyle.copyWith(
             fontSize: fontSize,
-            fontWeight: FontWeight.normal,
+            fontWeight: fontWeight,
             height: lineHeight,
           ),
         );
@@ -97,9 +101,10 @@ class _FediTextTabIndicatorItemWidgetState
           onPressed: onPressed,
           textStyle: FediTransparentTextButton.defaultTextStyle.copyWith(
             fontSize: fontSize,
-            fontWeight: FontWeight.normal,
+            fontWeight: fontWeight,
             height: lineHeight,
-          ), color: FediColors.mediumGrey,
+          ),
+          color: FediColors.mediumGrey,
         );
       }
     }
