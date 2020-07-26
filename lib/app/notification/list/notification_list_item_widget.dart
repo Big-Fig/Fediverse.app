@@ -88,18 +88,18 @@ class NotificationListItemWidget extends StatelessWidget {
   void onNotificationClick(
       BuildContext context, INotificationBloc notificationBloc) async {
     var status = notificationBloc.status;
+    var account = notificationBloc.account;
+    var chatRemoteId = notificationBloc.chatRemoteId;
     if (status != null) {
       goToStatusThreadPage(context, status);
-    } else {
-      var chatRemoteId = notificationBloc.chatRemoteId;
+    } else if (chatRemoteId != null) {
+      var chatRepository = IChatRepository.of(context, listen: false);
 
-      if (chatRemoteId != null) {
-        var chatRepository = IChatRepository.of(context, listen: false);
+      var chat = await chatRepository.findByRemoteId(chatRemoteId);
 
-        var chat = await chatRepository.findByRemoteId(chatRemoteId);
-
-        goToChatPage(context, chat: chat);
-      }
+      goToChatPage(context, chat: chat);
+    } else if (account != null) {
+      goToAccountDetailsPage(context, account);
     }
   }
 
