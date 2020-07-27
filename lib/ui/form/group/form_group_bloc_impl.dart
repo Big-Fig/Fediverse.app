@@ -64,12 +64,12 @@ abstract class FormGroupBloc<T extends IFormItemBloc> extends FormItemBloc
     items.forEach((IFormItemBloc item) {
       itemsErrorSubscription.addDisposable(
           streamSubscription: item.errorsStream.listen((_) {
-        _recalculateErrors();
+        recalculateErrors();
       }));
     });
   }
 
-  void _recalculateErrors() {
+  void recalculateErrors() {
     var errors = items.fold(<FormItemValidationError>[], (errors, item) {
       if (item.errors?.isNotEmpty == true) {
         errors.addAll(item.errors);
