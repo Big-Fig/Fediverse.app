@@ -72,6 +72,7 @@ class FormOneTypeGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
     _itemsSubject.add(items);
     isGroupChanged = true;
     checkIsSomethingChanged();
+    recalculateErrors();
   }
 
   @override
@@ -80,7 +81,7 @@ class FormOneTypeGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
     _itemsSubject.add(items);
     isGroupChanged = true;
     checkIsSomethingChanged();
-
+    recalculateErrors();
     Future.delayed(Duration(seconds: 1), () {
       field.dispose();
     });
