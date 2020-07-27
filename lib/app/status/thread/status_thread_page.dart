@@ -34,7 +34,7 @@ class StatusThreadPage extends StatelessWidget {
           leading: FediBackIconButton(),
           child: buildStatusStarterAccountWidget(context),
         ),
-        body: StatusThreadWidget());
+        body: SafeArea(child: StatusThreadWidget()));
   }
 
   Widget buildStatusStarterAccountWidget(BuildContext context) {
