@@ -42,85 +42,87 @@ class SingleMediaPickerPage extends StatelessWidget {
         child: _buildAppBarTitle(context),
         leading: FediBackIconButton(),
       ), //      body: SingleFilePickerWidget(),
-      body: FediGrantPermissionWidget(
-        grantedBuilder: (BuildContext context) {
-          return FediAsyncInitLoadingWidget(
-            loadingFinishedBuilder: (BuildContext context) {
-              if (fileGalleryBloc.folders?.isNotEmpty != true) {
-                return Center(child: Text("file.picker.empty".tr()));
-              }
-              var storagePermissionBloc =
-                  IStoragePermissionBloc.of(context, listen: false);
-              return StreamBuilder<AssetPathEntity>(
-                  stream: fileGalleryBloc.selectedFolderStream,
-                  initialData: fileGalleryBloc.selectedFolder,
-                  builder: (context, snapshot) {
-                    var folder = snapshot.data;
-                    if (folder == null) {
-                      return Center(child: FediCircularProgressIndicator());
-                    }
-                    return Provider<AssetPathEntity>.value(
-                      value: folder,
-                      child: DisposableProxyProvider<AssetPathEntity,
-                          IFileGalleryFolderBloc>(
-                        update: (BuildContext context, value, previous) {
-                          var folderBloc = FileGalleryFolderBloc(
-                              folder: value,
-                              storagePermissionBloc: storagePermissionBloc);
-                          folderBloc.performAsyncInit();
-                          return folderBloc;
-                        },
-                        child: FileGalleryFolderWidget(
-                          headerItemBuilder: (BuildContext context) {
-                            return InkWell(
-                              onTap: () async {
-                                var mediaPickerService = IMediaPickerService.of(
-                                    context,
-                                    listen: false);
+      body: SafeArea(
+        child: FediGrantPermissionWidget(
+          grantedBuilder: (BuildContext context) {
+            return FediAsyncInitLoadingWidget(
+              loadingFinishedBuilder: (BuildContext context) {
+                if (fileGalleryBloc.folders?.isNotEmpty != true) {
+                  return Center(child: Text("file.picker.empty".tr()));
+                }
+                var storagePermissionBloc =
+                    IStoragePermissionBloc.of(context, listen: false);
+                return StreamBuilder<AssetPathEntity>(
+                    stream: fileGalleryBloc.selectedFolderStream,
+                    initialData: fileGalleryBloc.selectedFolder,
+                    builder: (context, snapshot) {
+                      var folder = snapshot.data;
+                      if (folder == null) {
+                        return Center(child: FediCircularProgressIndicator());
+                      }
+                      return Provider<AssetPathEntity>.value(
+                        value: folder,
+                        child: DisposableProxyProvider<AssetPathEntity,
+                            IFileGalleryFolderBloc>(
+                          update: (BuildContext context, value, previous) {
+                            var folderBloc = FileGalleryFolderBloc(
+                                folder: value,
+                                storagePermissionBloc: storagePermissionBloc);
+                            folderBloc.performAsyncInit();
+                            return folderBloc;
+                          },
+                          child: FileGalleryFolderWidget(
+                            headerItemBuilder: (BuildContext context) {
+                              return InkWell(
+                                onTap: () async {
+                                  var mediaPickerService = IMediaPickerService.of(
+                                      context,
+                                      listen: false);
 
-                                var pickedFile = await mediaPickerService
-                                    .pickImageFromCamera();
+                                  var pickedFile = await mediaPickerService
+                                      .pickImageFromCamera();
 
-                                if (pickedFile != null) {
-                                  fileSelectedCallback(FilePickerFile(
-                                    type: FilePickerFileType.image,
-                                    isNeedDeleteAfterUsage: true,
-                                    file: pickedFile,
-                                  ));
-                                }
-                              },
-                              child: Container(
-                                  color: Colors.white,
-                                  width: double.infinity,
-                                  height: double.infinity,
-                                  child: Icon(
-                                    FediIcons.camera,
-                                    color: FediColors.darkGrey,
-                                    size: 40.0,
-                                  )),
-                            );
-                          },
-                          galleryFileTapped: (FileGalleryFile galleryFile) {
-                            fileSelectedCallback(
-                                mapGalleryToFilePickerFIle(galleryFile));
-                          },
-                          loadingWidget: FediCircularProgressIndicator(),
-                          permissionButtonBuilder: (context, grantedBuilder) {
-                            return FediGrantPermissionWidget(
-                              grantedBuilder: grantedBuilder,
-                              permissionBloc: storagePermissionBloc,
-                            );
-                          },
+                                  if (pickedFile != null) {
+                                    fileSelectedCallback(FilePickerFile(
+                                      type: FilePickerFileType.image,
+                                      isNeedDeleteAfterUsage: true,
+                                      file: pickedFile,
+                                    ));
+                                  }
+                                },
+                                child: Container(
+                                    color: Colors.white,
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                    child: Icon(
+                                      FediIcons.camera,
+                                      color: FediColors.darkGrey,
+                                      size: 40.0,
+                                    )),
+                              );
+                            },
+                            galleryFileTapped: (FileGalleryFile galleryFile) {
+                              fileSelectedCallback(
+                                  mapGalleryToFilePickerFIle(galleryFile));
+                            },
+                            loadingWidget: FediCircularProgressIndicator(),
+                            permissionButtonBuilder: (context, grantedBuilder) {
+                              return FediGrantPermissionWidget(
+                                grantedBuilder: grantedBuilder,
+                                permissionBloc: storagePermissionBloc,
+                              );
+                            },
 //                        galleryFileTapped: galleryFileTapped,
+                          ),
                         ),
-                      ),
-                    );
-                  });
-            },
-            asyncInitLoadingBloc: fileGalleryBloc,
-          );
-        },
-        permissionBloc: IStoragePermissionBloc.of(context, listen: false),
+                      );
+                    });
+              },
+              asyncInitLoadingBloc: fileGalleryBloc,
+            );
+          },
+          permissionBloc: IStoragePermissionBloc.of(context, listen: false),
+        ),
       ),
 //      bottomNavigationBar: FilePickerBottomNavBarWidget(),
     );

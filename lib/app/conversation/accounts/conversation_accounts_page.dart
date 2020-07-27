@@ -15,7 +15,7 @@ class ConversationAccountsPage extends StatelessWidget {
       appBar: FediSubPageTitleAppBar(
         title: tr("app.conversation.accounts.title"),
       ),
-      body: ConversationAccountsWidget(),
+      body: SafeArea(child: ConversationAccountsWidget()),
     );
   }
 }

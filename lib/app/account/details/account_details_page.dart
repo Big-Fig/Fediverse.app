@@ -24,7 +24,7 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
         leading: const FediBackIconButton(),
         child: AccountDisplayNameWidget(),
       ),
-      body: AccountDetailsWidget(),
+      body: SafeArea(child: AccountDetailsWidget()),
     );
   }
 }

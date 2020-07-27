@@ -15,7 +15,7 @@ class ChatAccountsPage extends StatelessWidget {
       appBar: FediSubPageTitleAppBar(
         title: tr("app.chat.accounts.title"),
       ),
-      body: ChatAccountsWidget(),
+      body: SafeArea(child: ChatAccountsWidget()),
     );
   }
 }
