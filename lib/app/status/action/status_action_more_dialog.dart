@@ -12,6 +12,7 @@ import 'package:fedi/app/share/share_service.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/dialog/chooser/fedi_chooser_dialog.dart';
+import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
 import 'package:fedi/app/ui/notification_overlay/info_fedi_notification_overlay.dart';
 import 'package:fedi/app/url/url_helper.dart';
@@ -82,7 +83,8 @@ class StatusActionMoreDialogBody extends StatelessWidget {
                     builder: (context, snapshot) {
                       var accountRelationship = snapshot.data;
 
-                      _logger.finest(() => "accountRelationship $accountRelationship");
+                      _logger.finest(
+                          () => "accountRelationship $accountRelationship");
 
                       var title =
                           tr("app.status.action.popup.more_actions_for");
@@ -120,6 +122,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
   DialogAction buildAccountReportAction(
           BuildContext context, IAccountBloc accountBloc) =>
       DialogAction(
+          icon: FediIcons.report,
           label: tr("app.account.action.report.label"),
           onAction: () async {
             var success = await doAsyncActionReport(context, accountBloc);
@@ -132,6 +135,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
   DialogAction buildAccountBlockAction(
           BuildContext context, IAccountBloc accountBloc) =>
       DialogAction(
+          icon: FediIcons.block,
           label: tr(accountBloc.accountRelationship?.blocking == true
               ? "app.account.action.unblock"
               : "app.account.action.block"),
@@ -146,6 +150,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
   DialogAction buildAccountMuteAction(
           BuildContext context, IAccountBloc accountBloc) =>
       DialogAction(
+          icon: FediIcons.mute,
           label: tr(accountBloc.accountRelationship?.muting == true
               ? "app.account.action.unmute"
               : "app.account.action.mute"),
@@ -159,6 +164,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
   DialogAction buildAccountFollowAction(
           BuildContext context, IAccountBloc accountBloc) =>
       DialogAction(
+        icon: FediIcons.follow,
           label: tr(accountBloc.accountRelationship?.following == true
               ? "app.account.action.unfollow"
               : "app.account.action.follow"),
@@ -172,6 +178,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
   DialogAction buildAccountMessageAction(
           BuildContext context, IAccountBloc accountBloc) =>
       DialogAction(
+          icon: FediIcons.message,
           label: tr("app.account.action.message"),
           onAction: () async {
             var authInstanceBloc =
@@ -188,6 +195,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
 
   DialogAction buildOpenInBrowserAction(BuildContext context, IStatus status) =>
       DialogAction(
+          icon: FediIcons.browser,
           label: tr("app.status.action.open_in_browser"),
           onAction: () async {
             var url = status.uri;
@@ -197,6 +205,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
 
   DialogAction buildCopyAction(BuildContext context, IStatus status) =>
       DialogAction(
+          icon: FediIcons.link,
           label: tr("app.status.action.copy_link"),
           onAction: () async {
             await Clipboard.setData(ClipboardData(text: status.uri));
@@ -207,6 +216,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
 
   DialogAction buildShareAction(BuildContext context, IStatus status) =>
       DialogAction(
+          icon: FediIcons.share,
           label: tr("app.status.action.share"),
           onAction: () async {
             var popupTitle = tr("app.status.share.title");
