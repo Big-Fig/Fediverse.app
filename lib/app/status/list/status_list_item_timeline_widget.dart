@@ -179,12 +179,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
           ),
           if (displayActions &&
               !(isReply && isFirstReplyAndDisplayReplyToStatus))
-            Column(
-              children: [
-                const FediUltraLightGreyDivider(),
-                StatusActionsListWidget(),
-              ],
-            ),
+            StatusActionsListWidget(),
           if (isReplyAndFirstReplyOrDisplayAllReplies)
             Column(
               children: [
