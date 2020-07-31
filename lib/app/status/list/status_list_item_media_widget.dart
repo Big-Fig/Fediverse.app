@@ -41,12 +41,12 @@ class StatusListItemMediaWidget extends StatelessWidget {
     var mediaAttachment = Provider.of<IPleromaMediaAttachment>(context);
     var previewUrl = mediaAttachment.previewUrl;
     return StreamBuilder<bool>(
-        stream: statusBloc.nsfwSensitiveAndDisplayEnabledStream,
-        initialData: statusBloc.nsfwSensitiveAndDisplayEnabled,
+        stream: statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabledStream,
+        initialData: statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabled,
         builder: (context, snapshot) {
-          var nsfwSensitiveAndDisplayEnabled = snapshot.data;
+          var nsfwSensitiveAndDisplayNsfwContentEnabled = snapshot.data;
 
-          if (nsfwSensitiveAndDisplayEnabled) {
+          if (nsfwSensitiveAndDisplayNsfwContentEnabled) {
             // todo: display all medias in list
             return mediaAttachmentPreviewUrlWidget(previewUrl, context);
           } else {
