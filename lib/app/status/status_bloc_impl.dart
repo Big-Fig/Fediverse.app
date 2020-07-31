@@ -646,7 +646,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
       spoilerTextStream.map((spoilerText) => spoilerText?.isNotEmpty == true);
 
   @override
-  bool get containsSpoilerAndDisplayEnabled {
+  bool get containsSpoilerAndDisplaySpoilerContentEnabled {
     if (containsSpoiler) {
       return _displaySpoilerSubject.value;
     } else {
@@ -655,7 +655,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   }
 
   @override
-  Stream<bool> get containsSpoilerAndDisplayEnabledStream =>
+  Stream<bool> get containsSpoilerAndDisplaySpoilerContentEnabledStream =>
       Rx.combineLatest2(containsSpoilerStream, _displaySpoilerSubject.stream,
           (containsSpoiler, displaySpoiler) {
         if (containsSpoiler) {
@@ -666,7 +666,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
       });
 
   @override
-  bool get nsfwSensitiveAndDisplayEnabled {
+  bool get nsfwSensitiveAndDisplayNsfwContentEnabled {
     if (nsfwSensitive) {
       return _displayNsfwSensitiveSubject.value;
     } else {
@@ -676,7 +676,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
 
   @override
   @override
-  Stream<bool> get nsfwSensitiveAndDisplayEnabledStream => Rx.combineLatest2(
+  Stream<bool> get nsfwSensitiveAndDisplayNsfwContentEnabledStream => Rx.combineLatest2(
           nsfwSensitiveStream, _displayNsfwSensitiveSubject.stream,
           (nsfwSensitive, displaySpoiler) {
         if (nsfwSensitive) {

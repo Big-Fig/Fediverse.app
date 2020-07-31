@@ -148,17 +148,17 @@ abstract class IStatusBloc implements Disposable, ICollapsibleItem {
 
   Stream<bool> get nsfwSensitiveStream;
 
-  bool get nsfwSensitiveAndDisplayEnabled;
+  bool get nsfwSensitiveAndDisplayNsfwContentEnabled;
 
-  Stream<bool> get nsfwSensitiveAndDisplayEnabledStream;
+  Stream<bool> get nsfwSensitiveAndDisplayNsfwContentEnabledStream;
 
   bool get containsSpoiler;
 
   Stream<bool> get containsSpoilerStream;
 
-  bool get containsSpoilerAndDisplayEnabled;
+  bool get containsSpoilerAndDisplaySpoilerContentEnabled;
 
-  Stream<bool> get containsSpoilerAndDisplayEnabledStream;
+  Stream<bool> get containsSpoilerAndDisplaySpoilerContentEnabledStream;
 
   void changeDisplayNsfwSensitive(bool display);
 
