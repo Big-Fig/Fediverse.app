@@ -25,8 +25,11 @@ void goToChatAccountsPage(BuildContext context, IChat chat) {
     context,
     MaterialPageRoute(
         builder: (context) => DisposableProvider<IChatBloc>(
-            create: (context) =>
-                ChatBloc.createFromContext(context, chat: chat),
+            create: (context) => ChatBloc.createFromContext(
+                  context,
+                  chat: chat,
+                  lastChatMessage: null,
+                ),
             child: ChatAccountsPage())),
   );
 }

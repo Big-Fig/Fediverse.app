@@ -8,11 +8,11 @@ import 'package:flutter/widgets.dart';
 class ChatPaginationListWithNewItemsBloc<
         TPage extends CachedPaginationPage<IChat>>
     extends CachedPaginationListWithNewItemsBloc<TPage, IChat> {
-  final IChatCachedBloc cachedListService;
+  final IChatCachedBloc cachedListBloc;
 
   ChatPaginationListWithNewItemsBloc(
       {@required bool mergeNewItemsImmediately,
-      @required this.cachedListService,
+      @required this.cachedListBloc,
       @required ICachedPaginationBloc<TPage, IChat> paginationBloc})
       : super(
             mergeNewItemsImmediately: mergeNewItemsImmediately,
@@ -20,7 +20,7 @@ class ChatPaginationListWithNewItemsBloc<
 
   @override
   Stream<List<IChat>> watchItemsNewerThanItem(IChat item) =>
-      cachedListService.watchLocalItemsNewerThanItem(item);
+      cachedListBloc.watchLocalItemsNewerThanItem(item);
 
   @override
   int compareItemsToSort(IChat a, IChat b) {
