@@ -1,17 +1,23 @@
-import 'package:flutter/widgets.dart';
+import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'push_model.g.dart';
 
 typedef dynamic PushMessageListener(PushMessage message);
 
+@HiveType()
 class PushMessage {
-  final PushMessageType type;
-  final PushNotification notification;
-  final Map<String, dynamic> data;
+  @HiveField(0)
+  PushMessageType type;
+  @HiveField(1)
+  PushNotification notification;
+  @HiveField(2)
+  Map<String, dynamic> data;
 
-  PushMessage(
-      {@required this.type, @required this.notification, @required this.data});
+  bool get isLaunchOrResume =>
+      type == PushMessageType.launch || type == PushMessageType.resume;
+
+  PushMessage({this.type, this.notification, this.data});
 
   @override
   String toString() {

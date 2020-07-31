@@ -32,6 +32,12 @@ abstract class INotification {
 
   PleromaNotificationPleromaPart get pleroma;
 
+  bool get isContainsChat;
+
+  bool get isContainsStatus;
+
+  bool get isContainsAccount;
+
   INotification copyWith(
       {int localId,
       String remoteId,
@@ -46,6 +52,13 @@ abstract class INotification {
 
 class DbNotificationPopulatedWrapper implements INotification {
   final DbNotificationPopulated dbNotificationPopulated;
+
+  @override
+  bool get isContainsChat => chatRemoteId != null;
+  @override
+  bool get isContainsStatus => status != null;
+  @override
+  bool get isContainsAccount => account != null;
 
   DbNotificationPopulatedWrapper(this.dbNotificationPopulated);
 

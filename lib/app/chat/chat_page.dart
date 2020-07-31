@@ -61,28 +61,32 @@ class ChatPage extends StatelessWidget {
 void goToChatPage(BuildContext context, {@required IChat chat}) {
   Navigator.push(
     context,
-    MaterialPageRoute(
-        builder: (context) => DisposableProvider<IChatBloc>(
-            create: (context) {
-              var chatBloc = ChatBloc.createFromContext(context, chat: chat, lastChatMessage: null);
-
-              // we don't need to await
-              chatBloc.markAsRead();
-
-              var currentChatBloc = ICurrentChatBloc.of(context, listen: false);
-
-              currentChatBloc.onChatOpened(chat);
-
-              chatBloc.addDisposable(disposable: CustomDisposable(() {
-                currentChatBloc.onChatClosed(chat);
-              }));
-
-              return chatBloc;
-            },
-            child: ChatPostMessageBloc.provideToContext(
-              context,
-              chatRemoteId: chat.remoteId,
-              child: ChatPage(),
-            ))),
+    createChatPageRoute(chat),
   );
+}
+
+MaterialPageRoute createChatPageRoute(IChat chat) {
+  return MaterialPageRoute(
+      builder: (context) => DisposableProvider<IChatBloc>(
+          create: (context) {
+            var chatBloc = ChatBloc.createFromContext(context, chat: chat, lastChatMessage: null);
+
+            // we don't need to await
+            chatBloc.markAsRead();
+
+            var currentChatBloc = ICurrentChatBloc.of(context, listen: false);
+
+            currentChatBloc.onChatOpened(chat);
+
+            chatBloc.addDisposable(disposable: CustomDisposable(() {
+              currentChatBloc.onChatClosed(chat);
+            }));
+
+            return chatBloc;
+          },
+          child: ChatPostMessageBloc.provideToContext(
+            context,
+            chatRemoteId: chat.remoteId,
+            child: ChatPage(),
+          )));
 }

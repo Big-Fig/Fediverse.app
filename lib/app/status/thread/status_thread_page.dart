@@ -120,16 +120,20 @@ class StatusThreadPage extends StatelessWidget {
 void goToStatusThreadPage(BuildContext context, IStatus status) {
   Navigator.push(
     context,
-    MaterialPageRoute(
-      builder: (context) => DisposableProvider<IStatusThreadBloc>(
-        create: (context) => StatusThreadBloc(
-            statusRepository: IStatusRepository.of(context, listen: false),
-            pleromaStatusService:
-                IPleromaStatusService.of(context, listen: false),
-            initialStatusToFetchThread: status),
-        child: ThreadPostStatusBloc.provideToContext(context,
-            inReplyToStatus: status, child: StatusThreadPage()),
-      ),
+    createStatusThreadPageRoute(status),
+  );
+}
+
+MaterialPageRoute createStatusThreadPageRoute(IStatus status) {
+  return MaterialPageRoute(
+    builder: (context) => DisposableProvider<IStatusThreadBloc>(
+      create: (context) => StatusThreadBloc(
+          statusRepository: IStatusRepository.of(context, listen: false),
+          pleromaStatusService:
+              IPleromaStatusService.of(context, listen: false),
+          initialStatusToFetchThread: status),
+      child: ThreadPostStatusBloc.provideToContext(context,
+          inReplyToStatus: status, child: StatusThreadPage()),
     ),
   );
 }
