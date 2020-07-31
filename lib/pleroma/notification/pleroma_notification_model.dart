@@ -23,6 +23,7 @@ abstract class IPleromaNotification extends IMastodonNotification {
   String get emoji;
 
   PleromaNotificationPleromaPart get pleroma;
+
 }
 
 enum PleromaNotificationType {
@@ -95,6 +96,7 @@ class PleromaNotification extends IPleromaNotification {
   @override
   @JsonKey(name: "chat_message")
   PleromaChatMessage chatMessage;
+
 
   PleromaNotification({
     this.account,

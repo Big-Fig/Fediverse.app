@@ -23,6 +23,7 @@ import 'package:fedi/app/chat/with_last_message/chat_with_last_message_repositor
 import 'package:fedi/app/conversation/repository/conversation_repository.dart';
 import 'package:fedi/app/conversation/repository/conversation_repository_impl.dart';
 import 'package:fedi/app/database/app_database_service_impl.dart';
+import 'package:fedi/app/notification/push/notification_push_loader_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_bloc_impl.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository_impl.dart';
@@ -364,6 +365,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc);
 
     addDisposable(disposable: notificationPushLoaderBloc);
+    await globalProviderService.asyncInitAndRegister<INotificationPushLoaderBloc>(
+        notificationPushLoaderBloc);
 
     var pleromaWebSocketsService = PleromaWebSocketsService(
         webSocketsService: webSocketsService,
