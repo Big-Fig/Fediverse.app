@@ -18,8 +18,11 @@ import 'package:fedi/app/chat/message/repository/chat_message_repository.dart';
 import 'package:fedi/app/chat/message/repository/chat_message_repository_impl.dart';
 import 'package:fedi/app/chat/repository/chat_repository.dart';
 import 'package:fedi/app/chat/repository/chat_repository_impl.dart';
+import 'package:fedi/app/chat/with_last_message/chat_with_last_message_repository.dart';
+import 'package:fedi/app/chat/with_last_message/chat_with_last_message_repository_impl.dart';
 import 'package:fedi/app/conversation/repository/conversation_repository.dart';
 import 'package:fedi/app/conversation/repository/conversation_repository_impl.dart';
+import 'package:fedi/app/database/app_database_service_impl.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_bloc_impl.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository_impl.dart';
@@ -39,7 +42,6 @@ import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository
 import 'package:fedi/app/timeline/settings/local_preferences/timeline_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/settings/local_preferences/timeline_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
-import 'package:fedi/app/database/app_database_service_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service_impl.dart';
@@ -120,9 +122,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
 
     var userAtHost = currentInstance.userAtHost;
 
-
-    var recentSearchLocalPreferenceBloc =
-    RecentSearchLocalPreferenceBloc(
+    var recentSearchLocalPreferenceBloc = RecentSearchLocalPreferenceBloc(
         currentInstance.userAtHost, preferencesService);
 
     addDisposable(disposable: recentSearchLocalPreferenceBloc);
@@ -182,6 +182,14 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: notificationRepository);
     await globalProviderService
         .asyncInitAndRegister<INotificationRepository>(notificationRepository);
+
+    var chatWithLastMessageRepository = ChatWithLastMessageRepository(
+      chatRepository: chatRepository,
+      chatMessageRepository: chatMessageRepository,
+    );
+    addDisposable(disposable: chatWithLastMessageRepository);
+    await globalProviderService.asyncInitAndRegister<
+        IChatWithLastMessageRepository>(chatWithLastMessageRepository);
 
     var restService = RestService(baseUrl: currentInstance.url);
     addDisposable(disposable: restService);

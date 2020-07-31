@@ -185,7 +185,7 @@ void main() {
       offset: null,
       orderingTermData: null,
       olderThanChatMessage: null,
-      onlyInChat: null,
+      onlyInChats: null,
     );
 
     await insertDbChatMessage(
@@ -212,7 +212,7 @@ void main() {
           orderingMode: OrderingMode.desc,
           orderByType: ChatMessageOrderByType.createdAt),
       olderThanChatMessage: null,
-      onlyInChat: null,
+      onlyInChats: null,
     );
 
     await insertDbChatMessage(
@@ -256,7 +256,7 @@ void main() {
           remoteId: "remoteId5"
               "",
           createdAt: DateTime(2005)),
-      onlyInChat: null,
+      onlyInChats: null,
     );
 
     await insertDbChatMessage(
@@ -304,7 +304,7 @@ void main() {
           remoteId: "remoteId5"
               "",
           createdAt: DateTime(2005)),
-      onlyInChat: null,
+      onlyInChats: null,
     );
 
     await insertDbChatMessage(
@@ -358,7 +358,7 @@ void main() {
           orderByType: ChatMessageOrderByType.remoteId,
           orderingMode: OrderingMode.asc),
       olderThanChatMessage: null,
-      onlyInChat: null,
+      onlyInChats: null,
     );
 
     var chatMessage2 = await insertDbChatMessage(
@@ -393,7 +393,7 @@ void main() {
           orderByType: ChatMessageOrderByType.remoteId,
           orderingMode: OrderingMode.desc),
       olderThanChatMessage: null,
-      onlyInChat: null,
+      onlyInChats: null,
     );
 
     var chatMessage2 = await insertDbChatMessage(
@@ -428,7 +428,7 @@ void main() {
           orderByType: ChatMessageOrderByType.remoteId,
           orderingMode: OrderingMode.desc),
       olderThanChatMessage: null,
-      onlyInChat: null,
+      onlyInChats: null,
     );
 
     var chatMessage2 = await insertDbChatMessage(
@@ -455,14 +455,16 @@ void main() {
   test('createQuery onlyInChat', () async {
     var chatRemoteId = "chatRemoteId";
     var query = chatMessageRepository.createQuery(
-      onlyInChat: DbChatPopulatedWrapper(DbChatPopulated(
-          dbChat: DbChat(
-              remoteId: chatRemoteId,
-              unread: 0,
-              id: null,
-              updatedAt: DateTime.now(),
-              accountRemoteId: dbAccount.remoteId),
-          dbAccount: dbAccount)),
+      onlyInChats: [
+        DbChatPopulatedWrapper(DbChatPopulated(
+            dbChat: DbChat(
+                remoteId: chatRemoteId,
+                unread: 0,
+                id: null,
+                updatedAt: DateTime.now(),
+                accountRemoteId: dbAccount.remoteId),
+            dbAccount: dbAccount))
+      ],
       newerThanChatMessage: null,
       limit: null,
       offset: null,
@@ -620,8 +622,9 @@ void main() {
     expect((await chatMessageRepository.dao.countAll()).length, 1);
     expect(
         (await chatMessageRepository.getChatMessages(
-                onlyInChat:
-                    await createTestChat(seed: "seed5", remoteId: chatRemoteId),
+                onlyInChats: [
+              await createTestChat(seed: "seed5", remoteId: chatRemoteId)
+            ],
                 orderingTermData: null,
                 offset: null,
                 limit: null,

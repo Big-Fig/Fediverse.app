@@ -64,7 +64,7 @@ void goToChatPage(BuildContext context, {@required IChat chat}) {
     MaterialPageRoute(
         builder: (context) => DisposableProvider<IChatBloc>(
             create: (context) {
-              var chatBloc = ChatBloc.createFromContext(context, chat: chat);
+              var chatBloc = ChatBloc.createFromContext(context, chat: chat, lastChatMessage: null);
 
               // we don't need to await
               chatBloc.markAsRead();
