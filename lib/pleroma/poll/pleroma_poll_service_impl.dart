@@ -58,7 +58,7 @@ class PleromaPollService implements IPleromaPollService {
     var request = RestRequest.post(
         relativePath: join(pollRelativeUrlPath, pollRemoteId, "votes"),
         bodyJson: {
-          "voteIndexes" : voteIndexes
+          "choices" : voteIndexes
         });
     var httpResponse = await restService.sendHttpRequest(request);
 

@@ -18,6 +18,10 @@ abstract class IMastodonPoll {
   List<IMastodonPollOption> get options;
 }
 
+extension IMastodonPollExtension on IMastodonPoll {
+  bool get isPossibleToVote => !expired && !voted;
+}
+
 abstract class IMastodonPollOption {
   String get title;
 

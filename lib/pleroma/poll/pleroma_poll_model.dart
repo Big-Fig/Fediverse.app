@@ -5,7 +5,10 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_poll_model.g.dart';
 
-abstract class IPleromaPoll implements IMastodonPoll {}
+abstract class IPleromaPoll implements IMastodonPoll {
+  @override
+  List<IPleromaPollOption> get options;
+}
 
 abstract class IPleromaPollOption implements IMastodonPollOption {}
 
@@ -19,6 +22,17 @@ class PleromaPollOption implements IPleromaPollOption {
   int votesCount;
 
   PleromaPollOption({this.title, this.votesCount});
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaPollOption &&
+          runtimeType == other.runtimeType &&
+          title == other.title &&
+          votesCount == other.votesCount;
+
+  @override
+  int get hashCode => title.hashCode ^ votesCount.hashCode;
 
   factory PleromaPollOption.fromJson(Map<String, dynamic> json) =>
       _$PleromaPollOptionFromJson(json);
@@ -84,4 +98,31 @@ class PleromaPoll implements IPleromaPoll {
   Map<String, dynamic> toJson() => _$PleromaPollToJson(this);
 
   String toJsonString() => jsonEncode(_$PleromaPollToJson(this));
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaPoll &&
+          runtimeType == other.runtimeType &&
+          expired == other.expired &&
+          expiresAt == other.expiresAt &&
+          id == other.id &&
+          multiple == other.multiple &&
+          options == other.options &&
+          ownVotes == other.ownVotes &&
+          voted == other.voted &&
+          votersCount == other.votersCount &&
+          votesCount == other.votesCount;
+
+  @override
+  int get hashCode =>
+      expired.hashCode ^
+      expiresAt.hashCode ^
+      id.hashCode ^
+      multiple.hashCode ^
+      options.hashCode ^
+      ownVotes.hashCode ^
+      voted.hashCode ^
+      votersCount.hashCode ^
+      votesCount.hashCode;
 }

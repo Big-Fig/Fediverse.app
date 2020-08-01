@@ -10,6 +10,7 @@ import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/pleroma/mention/pleroma_mention_model.dart';
+import 'package:fedi/pleroma/poll/pleroma_poll_model.dart';
 import 'package:fedi/pleroma/status/emoji_reaction/pleroma_status_emoji_reaction_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service.dart';
@@ -282,6 +283,13 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
       statusStream.map((status) => status.mediaAttachments).distinct();
 
   @override
+  IPleromaPoll get poll => status?.poll;
+
+  @override
+  Stream<IPleromaPoll> get pollStream =>
+      statusStream.map((status) => status.poll).distinct();
+
+  @override
   String get accountAvatar => account?.avatar;
 
   @override
@@ -435,8 +443,8 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
 
   @override
   Future<IStatus> toggleReblog() async {
-    _logger.finest(
-        () => "requestToggleReblog status.reblogged=${reblogOrOriginal.reblogged}");
+    _logger.finest(() =>
+        "requestToggleReblog status.reblogged=${reblogOrOriginal.reblogged}");
     IPleromaStatus remoteStatus;
     if (reblogOrOriginal.reblogged) {
       remoteStatus = await pleromaStatusService.unReblogStatus(
@@ -446,8 +454,8 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
           statusRemoteId: reblogOrOriginal.remoteId);
     }
 
-    await statusRepository.upsertRemoteStatus(remoteStatus, listRemoteId: null,
-        conversationRemoteId: null);
+    await statusRepository.upsertRemoteStatus(remoteStatus,
+        listRemoteId: null, conversationRemoteId: null);
 
     return statusRepository.findByRemoteId(remoteStatus.id);
   }
@@ -676,7 +684,8 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
 
   @override
   @override
-  Stream<bool> get nsfwSensitiveAndDisplayNsfwContentEnabledStream => Rx.combineLatest2(
+  Stream<bool> get nsfwSensitiveAndDisplayNsfwContentEnabledStream =>
+      Rx.combineLatest2(
           nsfwSensitiveStream, _displayNsfwSensitiveSubject.stream,
           (nsfwSensitive, displaySpoiler) {
         if (nsfwSensitive) {
