@@ -40,7 +40,7 @@ class ChatListWidget extends FediPaginationListWidget<IChat> {
                 value: items[index],
                 child: DisposableProxyProvider<IChat, IChatBloc>(
                     update: (context, chat, oldValue) =>
-                        ChatBloc.createFromContext(context, chat: chat),
+                        ChatBloc.createFromContext(context, chat: chat, lastChatMessage: null),
                     child: FediListTile(
                         isFirstInList: index == 0 && header == null,
                         child: ChatListItemWidget())),

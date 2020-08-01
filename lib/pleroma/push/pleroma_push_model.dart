@@ -285,7 +285,7 @@ class PleromaPushSubscriptionKeys {
 
 @HiveType()
 @JsonSerializable()
-class PleromaPushMessage {
+class PleromaPushMessageBody {
   @HiveField(0)
   @JsonKey(name: "notification_id")
   String notificationId;
@@ -297,22 +297,22 @@ class PleromaPushMessage {
   @HiveField(3)
   String notificationType;
 
-  PleromaPushMessage(
+  PleromaPushMessageBody(
       {this.notificationId, this.server, this.account, this.notificationType});
 
-  factory PleromaPushMessage.fromJson(Map<String, dynamic> json) =>
-      _$PleromaPushMessageFromJson(json);
+  factory PleromaPushMessageBody.fromJson(Map<String, dynamic> json) =>
+      _$PleromaPushMessageBodyFromJson(json);
 
-  factory PleromaPushMessage.fromJsonString(String jsonString) =>
-      _$PleromaPushMessageFromJson(jsonDecode(jsonString));
+  factory PleromaPushMessageBody.fromJsonString(String jsonString) =>
+      _$PleromaPushMessageBodyFromJson(jsonDecode(jsonString));
 
-  Map<String, dynamic> toJson() => _$PleromaPushMessageToJson(this);
+  Map<String, dynamic> toJson() => _$PleromaPushMessageBodyToJson(this);
 
-  String toJsonString() => jsonEncode(_$PleromaPushMessageToJson(this));
+  String toJsonString() => jsonEncode(_$PleromaPushMessageBodyToJson(this));
 
   @override
   String toString() {
-    return 'PleromaPushMessage{notificationId: $notificationId,'
+    return 'PleromaPushMessageBody{notificationId: $notificationId,'
         ' server: $server, account: $account,'
         ' notificationType: $notificationType}';
   }
@@ -320,7 +320,7 @@ class PleromaPushMessage {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaPushMessage &&
+      other is PleromaPushMessageBody &&
           runtimeType == other.runtimeType &&
           notificationId == other.notificationId &&
           server == other.server &&

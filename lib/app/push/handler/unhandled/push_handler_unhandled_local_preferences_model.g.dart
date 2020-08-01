@@ -15,7 +15,7 @@ class PushHandlerUnhandledListAdapter
     for (var i = 0; i < numOfFields; i++) {
       switch (reader.readByte()) {
         case 0:
-          obj.messages = (reader.read() as List)?.cast<PleromaPushMessage>();
+          obj.messages = (reader.read() as List)?.cast<PushHandlerMessage>();
           break;
       }
     }

@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/my/action/my_account_action_list_bottom_sheet_dialog.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
-import 'package:fedi/app/auth/instance/current/context/loading/current_auth_instance_context_loading_bloc.dart';
-import 'package:fedi/app/auth/instance/current/context/loading/current_auth_instance_context_loading_model.dart';
+import 'package:fedi/app/auth/instance/current/context/init/current_auth_instance_context_init_bloc.dart';
+import 'package:fedi/app/auth/instance/current/context/init/current_auth_instance_context_init_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/splash/splash_page.dart';
 import 'package:fedi/app/ui/button/text/fedi_grey_filled_text_button.dart';
@@ -19,18 +19,18 @@ import 'package:logging/logging.dart';
 
 var _logger = Logger("current_instance_context_loading_widget.dart");
 
-class CurrentAuthInstanceContextLoadingWidget extends StatefulWidget {
+class CurrentAuthInstanceContextInitWidget extends StatefulWidget {
   final Widget child;
 
-  const CurrentAuthInstanceContextLoadingWidget({@required this.child});
+  const CurrentAuthInstanceContextInitWidget({@required this.child});
 
   @override
-  _CurrentAuthInstanceContextLoadingWidgetState createState() =>
-      _CurrentAuthInstanceContextLoadingWidgetState();
+  _CurrentAuthInstanceContextInitWidgetState createState() =>
+      _CurrentAuthInstanceContextInitWidgetState();
 }
 
-class _CurrentAuthInstanceContextLoadingWidgetState
-    extends State<CurrentAuthInstanceContextLoadingWidget> {
+class _CurrentAuthInstanceContextInitWidgetState
+    extends State<CurrentAuthInstanceContextInitWidget> {
   FediIndeterminateProgressDialog progressDialog;
   StreamSubscription subscription;
 
@@ -41,11 +41,11 @@ class _CurrentAuthInstanceContextLoadingWidgetState
     super.didChangeDependencies();
 
     var currentInstanceContextLoadingBloc =
-        ICurrentAuthInstanceContextLoadingBloc.of(context, listen: false);
+        ICurrentAuthInstanceContextInitBloc.of(context, listen: false);
 
     Future.delayed(Duration(milliseconds: 100), () {
       if (currentInstanceContextLoadingBloc.state ==
-              CurrentAuthInstanceContextLoadingState.loading &&
+              CurrentAuthInstanceContextInitState.loading &&
           !disposed) {
         var myAccountBloc = IMyAccountBloc.of(context, listen: false);
         progressDialog = FediIndeterminateProgressDialog(
@@ -62,7 +62,7 @@ class _CurrentAuthInstanceContextLoadingWidgetState
         subscription =
             currentInstanceContextLoadingBloc.stateStream.listen((state) {
           if (currentInstanceContextLoadingBloc.state !=
-              CurrentAuthInstanceContextLoadingState.loading) {
+              CurrentAuthInstanceContextInitState.loading) {
             hideDialog();
           }
         });
@@ -87,11 +87,11 @@ class _CurrentAuthInstanceContextLoadingWidgetState
   @override
   Widget build(BuildContext context) {
     var currentInstanceContextLoadingBloc =
-        ICurrentAuthInstanceContextLoadingBloc.of(context, listen: false);
+        ICurrentAuthInstanceContextInitBloc.of(context, listen: false);
 
     _logger.finest(() => "build");
 
-    return StreamBuilder<CurrentAuthInstanceContextLoadingState>(
+    return StreamBuilder<CurrentAuthInstanceContextInitState>(
         stream: currentInstanceContextLoadingBloc.stateStream.distinct(),
         initialData: currentInstanceContextLoadingBloc.state,
         builder: (context, snapshot) {
@@ -99,14 +99,14 @@ class _CurrentAuthInstanceContextLoadingWidgetState
           _logger.finest(() => "state $state");
 
           switch (state) {
-            case CurrentAuthInstanceContextLoadingState.localCacheExist:
+            case CurrentAuthInstanceContextInitState.localCacheExist:
               return widget.child;
-            case CurrentAuthInstanceContextLoadingState
+            case CurrentAuthInstanceContextInitState
                 .cantFetchAndLocalCacheNotExist:
               return _buildSessionExpiredPage(
                   currentInstanceContextLoadingBloc, context);
               break;
-            case CurrentAuthInstanceContextLoadingState.loading:
+            case CurrentAuthInstanceContextInitState.loading:
             default:
               return const SplashPage();
               break;
@@ -115,7 +115,7 @@ class _CurrentAuthInstanceContextLoadingWidgetState
   }
 
   Widget _buildSessionExpiredPage(
-      ICurrentAuthInstanceContextLoadingBloc currentInstanceContextLoadingBloc,
+      ICurrentAuthInstanceContextInitBloc currentInstanceContextLoadingBloc,
       BuildContext context) {
     var currentAuthInstanceBloc =
         ICurrentAuthInstanceBloc.of(context, listen: false);

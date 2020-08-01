@@ -1,9 +1,9 @@
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
+import 'package:fedi/app/push/handler/push_handler_model.dart';
 import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_preferences_bloc.dart';
 import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_preferences_model.dart';
 import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:fedi/pleroma/push/pleroma_push_model.dart';
 import 'package:logging/logging.dart';
 
 var _logger = Logger("push_handler_unhandled_local_preferences_bloc_impl.dart");
@@ -13,32 +13,32 @@ class PushHandlerUnhandledLocalPreferencesBloc
     implements IPushHandlerUnhandledLocalPreferencesBloc {
   PushHandlerUnhandledLocalPreferencesBloc(
       ILocalPreferencesService preferencesService)
-      : super(preferencesService, "push.unhandled", 1);
+      : super(preferencesService, "push.unhandled", 2);
 
   @override
   PushHandlerUnhandledList get defaultValue =>
       PushHandlerUnhandledList(messages: []);
 
   @override
-  Future addUnhandledMessage(PleromaPushMessage pleromaPushMessage) async {
+  Future addUnhandledMessage(PushHandlerMessage pushHandlerMessage) async {
     var pleromaUnhandledList = value;
 
-    pleromaUnhandledList.messages.add(pleromaPushMessage);
+    pleromaUnhandledList.messages.add(pushHandlerMessage);
     _logger.finest(() => "loadUnhandledMessagesForInstance \n"
-        "\t pleromaPushMessage = $pleromaPushMessage"
+        "\t pushHandlerMessage = $pushHandlerMessage"
         "\t pleromaUnhandledList.messages = ${pleromaUnhandledList.messages.length}");
 
     await setValue(pleromaUnhandledList);
   }
 
   @override
-  List<PleromaPushMessage> loadUnhandledMessagesForInstance(
+  List<PushHandlerMessage> loadUnhandledMessagesForInstance(
       AuthInstance instance) {
     var pleromaUnhandledList = value;
 
     var messagesForInstances = pleromaUnhandledList.messages
         .where((message) => instance.isInstanceWithHostAndAcct(
-            host: message.server, acct: message.account))
+            host: message.body.server, acct: message.body.account))
         .toList();
 
     _logger.finest(() => "loadUnhandledMessagesForInstance \n"
@@ -49,7 +49,7 @@ class PushHandlerUnhandledLocalPreferencesBloc
   }
 
   @override
-  Future<bool> markAsHandled(List<PleromaPushMessage> messages) async {
+  Future<bool> markAsHandled(List<PushHandlerMessage> messages) async {
     var pleromaUnhandledList = value;
 
     pleromaUnhandledList.messages
