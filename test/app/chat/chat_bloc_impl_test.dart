@@ -84,13 +84,15 @@ void main() {
     chat = await createTestChat(seed: "seed1");
 
     chatBloc = ChatBloc(
-        chat: chat,
-        pleromaChatService: pleromaChatServiceMock,
-        accountRepository: accountRepository,
-        chatMessageRepository: chatMessageRepository,
-        chatRepository: chatRepository,
-        delayInit: false,
-        myAccountBloc: myAccountBloc);
+      chat: chat,
+      pleromaChatService: pleromaChatServiceMock,
+      accountRepository: accountRepository,
+      chatMessageRepository: chatMessageRepository,
+      chatRepository: chatRepository,
+      delayInit: false,
+      myAccountBloc: myAccountBloc,
+      lastChatMessage: null,
+    );
   });
 
   tearDown(() async {

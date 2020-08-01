@@ -1,4 +1,4 @@
-enum CurrentAuthInstanceContextLoadingState {
+enum CurrentAuthInstanceContextInitState {
   loading,
   localCacheExist,
   cantFetchAndLocalCacheNotExist

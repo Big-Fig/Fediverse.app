@@ -5,6 +5,7 @@ import 'package:fedi/app/account/my/settings'
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_model.dart';
 import 'package:fedi/app/hive/hive_service.dart';
+import 'package:fedi/app/push/handler/push_handler_model.dart';
 import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_preferences_model.dart';
 import 'package:fedi/app/push/subscription_settings/local_preferences/push_subscription_settings_local_preferences_model.dart';
 import 'package:fedi/app/search/recent/recent_search_model.dart';
@@ -19,6 +20,7 @@ import 'package:fedi/pleroma/field/pleroma_field_model.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
 import 'package:fedi/pleroma/oauth/pleroma_oauth_model.dart';
 import 'package:fedi/pleroma/push/pleroma_push_model.dart';
+import 'package:fedi/push/push_model.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -44,7 +46,7 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     Hive.registerAdapter(MyAccountRemoteWrapperAdapter(), 53);
     Hive.registerAdapter(PleromaMyAccountAdapter(), 54);
     Hive.registerAdapter(PushHandlerUnhandledListAdapter(), 55);
-    Hive.registerAdapter(PleromaPushMessageAdapter(), 56);
+    Hive.registerAdapter(PleromaPushMessageBodyAdapter(), 56);
     Hive.registerAdapter(MyAccountSettingsAdapter(), 57);
     Hive.registerAdapter(PleromaInstancePleromaPartAdapter(), 58);
     Hive.registerAdapter(PleromaInstanceAdapter(), 59);
@@ -54,6 +56,8 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     Hive.registerAdapter(PleromaInstancePollLimitsAdapter(), 63);
     Hive.registerAdapter(PleromaAccountAdapter(), 64);
     Hive.registerAdapter(RecentSearchListAdapter(), 65);
+    Hive.registerAdapter(PushHandlerMessageAdapter(), 66);
+    Hive.registerAdapter(PushMessageAdapter(), 67);
 
     Hive.init(directory.path);
   }

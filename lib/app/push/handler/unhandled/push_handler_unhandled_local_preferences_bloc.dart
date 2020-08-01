@@ -1,7 +1,7 @@
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
+import 'package:fedi/app/push/handler/push_handler_model.dart';
 import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_preferences_model.dart';
 import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
-import 'package:fedi/pleroma/push/pleroma_push_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -12,10 +12,10 @@ abstract class IPushHandlerUnhandledLocalPreferencesBloc
       Provider.of<IPushHandlerUnhandledLocalPreferencesBloc>(context,
           listen: listen);
 
-  Future addUnhandledMessage(PleromaPushMessage pleromaPushMessage);
+  Future addUnhandledMessage(PushHandlerMessage pushHandlerMessage);
 
-  Future<bool> markAsHandled(List<PleromaPushMessage> messages);
+  Future<bool> markAsHandled(List<PushHandlerMessage> messages);
 
-  List<PleromaPushMessage> loadUnhandledMessagesForInstance(
+  List<PushHandlerMessage> loadUnhandledMessagesForInstance(
       AuthInstance instance);
 }

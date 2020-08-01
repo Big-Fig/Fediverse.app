@@ -17,7 +17,7 @@ class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
   final BehaviorSubject<IChat> _chatSubject;
 
   // ignore: close_sinks
-  final BehaviorSubject<IChatMessage> _lastMessageSubject = BehaviorSubject();
+  final BehaviorSubject<IChatMessage> _lastMessageSubject;
 
   final IMyAccountBloc myAccountBloc;
   final IPleromaChatService pleromaChatService;
@@ -33,12 +33,14 @@ class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
     @required this.chatMessageRepository,
     @required this.accountRepository,
     @required IChat chat,
+    @required IChatMessage lastChatMessage,
     bool needRefreshFromNetworkOnInit = false,
     this.isNeedWatchLocalRepositoryForUpdates =
         true, // todo: remove hack. Don't init when bloc quickly disposed. Help
     //  improve performance in timeline unnecessary recreations
     bool delayInit = true,
-  }) : _chatSubject = BehaviorSubject.seeded(chat) {
+  })  : _chatSubject = BehaviorSubject.seeded(chat),
+        _lastMessageSubject = BehaviorSubject.seeded(lastChatMessage) {
     addDisposable(subject: _chatSubject);
     addDisposable(subject: _lastMessageSubject);
 
@@ -146,12 +148,17 @@ class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
   @override
   Stream<IChatMessage> get lastChatMessageStream => _lastMessageSubject.stream;
 
-  static ChatBloc createFromContext(BuildContext context,
-      {@required IChat chat, bool needRefreshFromNetworkOnInit = false}) {
+  static ChatBloc createFromContext(
+    BuildContext context, {
+    @required IChat chat,
+    @required IChatMessage lastChatMessage,
+    bool needRefreshFromNetworkOnInit = false,
+  }) {
     return ChatBloc(
       pleromaChatService: IPleromaChatService.of(context, listen: false),
       myAccountBloc: IMyAccountBloc.of(context, listen: false),
       chat: chat,
+      lastChatMessage: lastChatMessage,
       needRefreshFromNetworkOnInit: needRefreshFromNetworkOnInit,
       chatRepository: IChatRepository.of(context, listen: false),
       chatMessageRepository: IChatMessageRepository.of(context, listen: false),

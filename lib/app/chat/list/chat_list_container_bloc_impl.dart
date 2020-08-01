@@ -71,7 +71,7 @@ class ChatsListContainerBloc extends DisposableOwner
     addDisposable(disposable: chatListService);
     chatPaginationListWithNewItemsBloc = ChatPaginationListWithNewItemsBloc(
       paginationBloc: chatPaginationBloc,
-      cachedListService: chatListService,
+      cachedListBloc: chatListService,
       mergeNewItemsImmediately: true,
     );
     addDisposable(disposable: chatPaginationListWithNewItemsBloc);
