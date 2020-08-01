@@ -13,6 +13,16 @@ class CodegenLoader extends AssetLoader{
 
     static const Map<String,dynamic> en_US = {
   "app": {
+    "poll": {
+      "metadata": {
+        "expires": {
+          "expired": "Expired {} ago",
+          "not_expired": "Expires at {}"
+        },
+        "total_votes": "Total votes: {}"
+      },
+      "vote": "Vote"
+    },
     "datetime": {
       "title": "Schedule",
       "picker": {

@@ -1,5 +1,15 @@
 {
   "app": {
+    "poll": {
+      "metadata": {
+        "expires": {
+          "expired": "Expired {} ago",
+          "not_expired": "Expires at {}"
+        },
+        "total_votes": "Total votes: {}"
+      },
+      "vote": "Vote"
+    },
     "datetime": {
       "title": "Schedule",
       "picker": {

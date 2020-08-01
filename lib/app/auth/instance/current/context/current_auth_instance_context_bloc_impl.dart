@@ -60,6 +60,8 @@ import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.d
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service_impl.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_service.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_service_impl.dart';
+import 'package:fedi/pleroma/poll/pleroma_poll_service.dart';
+import 'package:fedi/pleroma/poll/pleroma_poll_service_impl.dart';
 import 'package:fedi/pleroma/push/pleroma_push_model.dart';
 import 'package:fedi/pleroma/push/pleroma_push_service.dart';
 import 'package:fedi/pleroma/push/pleroma_push_service_impl.dart';
@@ -285,6 +287,12 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         IPleromaNotificationService>(pleromaNotificationService);
     addDisposable(disposable: pleromaNotificationService);
 
+    var pleromaPollService =
+        PleromaPollService(restService: pleromaAuthRestService);
+    await globalProviderService
+        .asyncInitAndRegister<IPleromaPollService>(pleromaPollService);
+    addDisposable(disposable: pleromaPollService);
+
     var pleromaPushService = PleromaPushService(
         keys: PleromaPushSubscriptionKeys(
             p256dh:
@@ -365,8 +373,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc);
 
     addDisposable(disposable: notificationPushLoaderBloc);
-    await globalProviderService.asyncInitAndRegister<INotificationPushLoaderBloc>(
-        notificationPushLoaderBloc);
+    await globalProviderService.asyncInitAndRegister<
+        INotificationPushLoaderBloc>(notificationPushLoaderBloc);
 
     var pleromaWebSocketsService = PleromaWebSocketsService(
         webSocketsService: webSocketsService,

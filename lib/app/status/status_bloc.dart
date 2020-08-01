@@ -5,6 +5,7 @@ import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/pleroma/mention/pleroma_mention_model.dart';
+import 'package:fedi/pleroma/poll/pleroma_poll_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -70,6 +71,10 @@ abstract class IStatusBloc implements Disposable, ICollapsibleItem {
   List<IPleromaMediaAttachment> get mediaAttachments;
 
   Stream<List<IPleromaMediaAttachment>> get mediaAttachmentsStream;
+
+  IPleromaPoll get poll;
+
+  Stream<IPleromaPoll> get pollStream;
 
   List<IPleromaStatusEmojiReaction> get pleromaEmojiReactions;
 
