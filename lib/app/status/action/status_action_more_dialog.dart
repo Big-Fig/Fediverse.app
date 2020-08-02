@@ -12,9 +12,11 @@ import 'package:fedi/app/share/share_service.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/dialog/chooser/fedi_chooser_dialog.dart';
+import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
 import 'package:fedi/app/ui/notification_overlay/info_fedi_notification_overlay.dart';
+import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -64,7 +66,11 @@ class StatusActionMoreDialogBody extends StatelessWidget {
               buildShareAction(context, status),
             ],
             cancelable: false),
-        if (!isStatusFromMe)
+        if (!isStatusFromMe) ...[
+          FediUltraLightGreyDivider(
+            height: 4,
+          ),
+          FediBigVerticalSpacer(),
           DisposableProvider<IAccountBloc>(
             create: (context) => AccountBloc.createFromContext(
               context,
@@ -115,6 +121,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
               },
             ),
           ),
+        ]
       ],
     );
   }
@@ -164,7 +171,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
   DialogAction buildAccountFollowAction(
           BuildContext context, IAccountBloc accountBloc) =>
       DialogAction(
-        icon: FediIcons.follow,
+          icon: FediIcons.follow,
           label: tr(accountBloc.accountRelationship?.following == true
               ? "app.account.action.unfollow"
               : "app.account.action.follow"),

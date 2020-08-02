@@ -1,3 +1,5 @@
+import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
+import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/fedi_text_styles.dart';
@@ -61,28 +63,53 @@ class FediChooserDialogBody extends StatelessWidget {
               style: FediTextStyles.dialogContentDarkGrey,
             ),
           ),
-        if (loadingActions) Padding(
-          padding: FediPadding.allBigPadding,
-          child: FediCircularProgressIndicator(),
-        ),
+        FediUltraLightGreyDivider(),
+        if (loadingActions)
+          Padding(
+            padding: FediPadding.allBigPadding,
+            child: FediCircularProgressIndicator(),
+          ),
         if (!loadingActions)
-          ...actions.map((action) => _buildAction(action)).toList(),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                ...actions.map((action) => _buildAction(action)).toList()
+              ],
+            ),
+          ),
         if (cancelable)
           _buildAction(BaseDialog.createDefaultCancelAction(context)),
       ],
     );
   }
 
-  Widget _buildAction(DialogAction action) => InkWell(
-        onTap: () {
-          action.onAction();
-        },
-        child: Padding(
-          padding: FediPadding.allMediumPadding,
-          child: Text(
-            action.label,
-            style: FediTextStyles.bigTallPrimary,
-          ),
+  Widget _buildAction(DialogAction action) => Padding(
+        padding: FediPadding.horizontalBigPadding,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            InkWell(
+              onTap: () {
+                action.onAction();
+              },
+              child: Row(
+                children: [
+                  if (action.icon != null)
+                    Icon(action.icon, color: FediColors.darkGrey),
+                  Padding(
+                    padding: FediPadding.allMediumPadding,
+                    child: Text(
+                      action.label,
+                      style: FediTextStyles.bigTallPrimary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       );
 }
