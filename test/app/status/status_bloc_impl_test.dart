@@ -59,7 +59,7 @@ void main() {
         accountRepository: accountRepository,
         pleromaAccountService: pleromaAccountServiceMock,
         pleromaStatusEmojiReactionService:
-            pleromaStatusEmojiReactionServiceMock);
+            pleromaStatusEmojiReactionServiceMock, pleromaPollService: null);
   });
 
   tearDown(() async {

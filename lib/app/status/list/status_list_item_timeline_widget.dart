@@ -133,61 +133,64 @@ class StatusListItemTimelineWidget extends StatelessWidget {
         isFirstReplyAndDisplayReplyToStatus;
     return DisposableProxyProvider<IStatus, IStatusBloc>(
       update: (context, status, oldValue) => _createStatusBloc(context, status),
-      child: Column(
-        children: [
-          GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTap: () {
-              if (statusCallback != null) {
-                statusCallback(context, status);
-              }
-            },
-            child: Column(
-              children: [
-                if (status.isHaveReblog) StatusReblogHeaderWidget(),
-                if (displayAccountHeader)
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(FediSizes.bigPadding,
-                        FediSizes.bigPadding, FediSizes.bigPadding, 0.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Flexible(child: StatusAccountWidget()),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: FediSizes.smallPadding),
-                          child: StatusCreatedAtWidget(),
-                        ),
-                      ],
+      child: Builder(
+        builder: (context) => Column(
+          children: [
+            GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: () {
+                if (statusCallback != null) {
+                  var statusBloc = IStatusBloc.of(context, listen: false);
+                  statusCallback(context, statusBloc.status);
+                }
+              },
+              child: Column(
+                children: [
+                  if (status.isHaveReblog) StatusReblogHeaderWidget(),
+                  if (displayAccountHeader)
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(FediSizes.bigPadding,
+                          FediSizes.bigPadding, FediSizes.bigPadding, 0.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Flexible(child: StatusAccountWidget()),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: FediSizes.smallPadding),
+                            child: StatusCreatedAtWidget(),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                if (isReply)
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                        FediSizes.bigPadding + 52.0,
-                        FediSizes.smallPadding,
-                        FediSizes.bigPadding,
-                        0.0),
-                    child: StatusReplySubHeaderWidget(
-                      accountCallback: accountMentionCallback,
+                  if (isReply)
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                          FediSizes.bigPadding + 52.0,
+                          FediSizes.smallPadding,
+                          FediSizes.bigPadding,
+                          0.0),
+                      child: StatusReplySubHeaderWidget(
+                        accountCallback: accountMentionCallback,
+                      ),
                     ),
-                  ),
-                buildBody(isReply),
-                StatusEmojiReactionListWidget(),
-              ],
+                  buildBody(isReply),
+                  StatusEmojiReactionListWidget(),
+                ],
+              ),
             ),
-          ),
-          if (displayActions &&
-              !(isReply && isFirstReplyAndDisplayReplyToStatus))
-            StatusActionsListWidget(),
-          if (isReplyAndFirstReplyOrDisplayAllReplies)
-            Column(
-              children: [
-                const FediUltraLightGreyDivider(),
-                StatusShowThisThreadActionWidget(),
-              ],
-            ),
-        ],
+            if (displayActions &&
+                !(isReply && isFirstReplyAndDisplayReplyToStatus))
+              StatusActionsListWidget(),
+            if (isReplyAndFirstReplyOrDisplayAllReplies)
+              Column(
+                children: [
+                  const FediUltraLightGreyDivider(),
+                  StatusShowThisThreadActionWidget(),
+                ],
+              ),
+          ],
+        ),
       ),
     );
   }

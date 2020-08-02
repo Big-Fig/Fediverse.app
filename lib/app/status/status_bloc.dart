@@ -1,4 +1,5 @@
 import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/poll/poll_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/collapsible/collapsible_model.dart';
 import 'package:fedi/disposable/disposable.dart';
@@ -75,6 +76,8 @@ abstract class IStatusBloc implements Disposable, ICollapsibleItem {
   IPleromaPoll get poll;
 
   Stream<IPleromaPoll> get pollStream;
+
+  IPollBloc get pollBloc;
 
   List<IPleromaStatusEmojiReaction> get pleromaEmojiReactions;
 
@@ -192,4 +195,6 @@ abstract class IStatusBloc implements Disposable, ICollapsibleItem {
   Future<IStatus> togglePin();
 
   Future<IPleromaStatus> toggleEmojiReaction({@required String emoji});
+
+  Future onPollUpdated(IPleromaPoll poll);
 }
