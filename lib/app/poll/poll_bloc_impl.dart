@@ -103,4 +103,9 @@ class PollBloc extends DisposableOwner implements IPollBloc {
   @override
   Stream<bool> get isSelectedVotesNotEmptyStream =>
       selectedVotesStream.map((selectedVotes) => selectedVotes.isNotEmpty);
+
+  @override
+  void onPollUpdated(IPleromaPoll poll) {
+    pollSubject.add(poll);
+  }
 }

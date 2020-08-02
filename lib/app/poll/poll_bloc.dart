@@ -40,4 +40,6 @@ abstract class IPollBloc implements Disposable {
   Stream<bool> get isSelectedVotesNotEmptyStream;
 
   Future vote();
+
+  void onPollUpdated(IPleromaPoll poll);
 }

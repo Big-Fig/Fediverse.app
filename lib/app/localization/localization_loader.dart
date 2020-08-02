@@ -16,8 +16,8 @@ class CodegenLoader extends AssetLoader{
     "poll": {
       "metadata": {
         "expires": {
-          "expired": "Expired {} ago",
-          "not_expired": "Expires at {}"
+          "expired": "Ended {} ago",
+          "not_expired": "Ends at {}"
         },
         "total_votes": "Total votes: {}"
       },

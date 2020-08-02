@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/media/attachment/media_attachments_widget.dart';
 import 'package:fedi/app/poll/poll_bloc.dart';
-import 'package:fedi/app/poll/poll_bloc_impl.dart';
 import 'package:fedi/app/poll/poll_widget.dart';
 import 'package:fedi/app/status/card/status_card_widget.dart';
 import 'package:fedi/app/status/content/status_content_with_emojis_widget.dart';
@@ -11,10 +10,7 @@ import 'package:fedi/app/status/spoiler/status_spoiler_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
-import 'package:fedi/pleroma/poll/pleroma_poll_model.dart';
-import 'package:fedi/pleroma/poll/pleroma_poll_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -80,29 +76,11 @@ class StatusBodyWidget extends StatelessWidget {
               ],
             ),
           ),
-          StreamBuilder<IPleromaPoll>(
-              stream: statusBloc.pollStream,
-              initialData: statusBloc.poll,
-              builder: (context, snapshot) {
-                var poll = snapshot.data;
-
-                if (poll != null) {
-                  return Provider<IPleromaPoll>.value(
-                    value: poll,
-                    child: DisposableProxyProvider<IPleromaPoll, IPollBloc>(
-                      update: (context, value, previous) => PollBloc(
-                          poll: value,
-                          pleromaPollService: IPleromaPollService.of(
-                            context,
-                            listen: false,
-                          )),
-                      child: PollWidget(),
-                    ),
-                  );
-                } else {
-                  return SizedBox.shrink();
-                }
-              }),
+          if (statusBloc.poll != null)
+            Provider<IPollBloc>.value(
+              value: statusBloc.pollBloc,
+              child: PollWidget(),
+            ),
           StreamBuilder<List<IPleromaMediaAttachment>>(
               stream: statusBloc.mediaAttachmentsStream,
               initialData: statusBloc.mediaAttachments,

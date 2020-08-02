@@ -43,6 +43,11 @@ class PleromaPollOption implements IPleromaPollOption {
   Map<String, dynamic> toJson() => _$PleromaPollOptionToJson(this);
 
   String toJsonString() => jsonEncode(_$PleromaPollOptionToJson(this));
+
+  @override
+  String toString() {
+    return 'PleromaPollOption{title: $title, votesCount: $votesCount}';
+  }
 }
 
 @JsonSerializable()
@@ -98,6 +103,15 @@ class PleromaPoll implements IPleromaPoll {
   Map<String, dynamic> toJson() => _$PleromaPollToJson(this);
 
   String toJsonString() => jsonEncode(_$PleromaPollToJson(this));
+
+
+  @override
+  String toString() {
+    return 'PleromaPoll{expired: $expired, expiresAt: $expiresAt,'
+        ' id: $id, multiple: $multiple, options: $options,'
+        ' ownVotes: $ownVotes, voted: $voted,'
+        ' votersCount: $votersCount, votesCount: $votesCount}';
+  }
 
   @override
   bool operator ==(Object other) =>
