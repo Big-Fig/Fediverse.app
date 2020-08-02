@@ -4,8 +4,8 @@ import 'package:fedi/app/poll/poll_bloc.dart';
 import 'package:fedi/app/poll/poll_widget.dart';
 import 'package:fedi/app/status/card/status_card_widget.dart';
 import 'package:fedi/app/status/content/status_content_with_emojis_widget.dart';
-import 'package:fedi/app/status/nsfw/status_nsfw_warning_widget.dart';
-import 'package:fedi/app/status/spoiler/status_spoiler_alert_widget.dart';
+import 'package:fedi/app/status/nsfw/status_nsfw_warning_overlay_widget.dart';
+import 'package:fedi/app/status/spoiler/status_spoiler_warning_overlay_widget.dart';
 import 'package:fedi/app/status/spoiler/status_spoiler_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
@@ -31,38 +31,45 @@ class StatusBodyWidget extends StatelessWidget {
         builder: (context, snapshot) {
           var nsfwSensitiveAndDisplayNsfwContentEnabled = snapshot.data;
 
-          if (nsfwSensitiveAndDisplayNsfwContentEnabled) {
-            return StreamBuilder<bool>(
-                stream: statusBloc
-                    .containsSpoilerAndDisplaySpoilerContentEnabledStream,
-                initialData:
-                    statusBloc.containsSpoilerAndDisplaySpoilerContentEnabled,
-                builder: (context, snapshot) {
-                  var containsSpoilerAndDisplayEnabled = snapshot.data;
+          var child = StreamBuilder<bool>(
+              stream: statusBloc
+                  .containsSpoilerAndDisplaySpoilerContentEnabledStream,
+              initialData:
+                  statusBloc.containsSpoilerAndDisplaySpoilerContentEnabled,
+              builder: (context, snapshot) {
+                var containsSpoilerAndDisplayEnabled = snapshot.data;
 
-                  // todo: remove temp hack
-                  var alreadyClickedShowContent = statusBloc.nsfwSensitive;
-                  if (containsSpoilerAndDisplayEnabled ||
-                      alreadyClickedShowContent) {
-                    return buildStatusBodyWidget(statusBloc, context);
-                  } else {
-                    return buildSpoilerWithoutBodyWidget();
-                  }
-                });
+                // todo: remove temp hack
+                var alreadyClickedShowContent = statusBloc.nsfwSensitive;
+                if (containsSpoilerAndDisplayEnabled ||
+                    alreadyClickedShowContent) {
+                  return buildStatusBodyWidget(context, statusBloc);
+                } else {
+                  return buildSpoilerWithoutBodyWidget(context, statusBloc);
+                }
+              });
+          if (nsfwSensitiveAndDisplayNsfwContentEnabled) {
+            return child;
           } else {
-            return StatusNsfwWarningWidget();
+            return StatusNsfwWarningOverlayWidget(
+              child: child,
+            );
           }
         });
   }
 
-  Widget buildStatusBodyWidget(IStatusBloc statusBloc, BuildContext context) =>
+  Widget buildStatusBodyWidget(
+    BuildContext context,
+    IStatusBloc statusBloc, {
+    bool showSpoiler = true,
+  }) =>
       Column(
         children: <Widget>[
           Padding(
             padding: _defaultPadding,
             child: Column(
               children: [
-                StatusSpoilerWidget(),
+                if (showSpoiler) StatusSpoilerWidget(),
                 collapsible
                     ? StatusContentWithEmojisWidget(
                         collapsible: true,
@@ -101,13 +108,18 @@ class StatusBodyWidget extends StatelessWidget {
         ],
       );
 
-  Widget buildSpoilerWithoutBodyWidget() => Padding(
+  Widget buildSpoilerWithoutBodyWidget(
+          BuildContext context, IStatusBloc statusBloc) =>
+      Padding(
         padding: _defaultPadding,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             StatusSpoilerWidget(),
-            StatusSpoilerAlertWidget(),
+            StatusSpoilerWarningOverlayWidget(
+              child: buildStatusBodyWidget(context, statusBloc,
+                  showSpoiler: false),
+            ),
           ],
         ),
       );
