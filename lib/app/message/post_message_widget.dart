@@ -3,7 +3,7 @@ import 'package:fedi/app/media/attachment/upload/upload_media_attachments_widget
 import 'package:fedi/app/message/action/post_message_attach_action_widget.dart';
 import 'package:fedi/app/message/action/post_message_emoji_action_widget.dart';
 import 'package:fedi/app/message/action/post_message_post_action_widget.dart';
-import 'package:fedi/app/message/post_message_attach_widget.dart';
+import 'package:fedi/app/message/post_message_selected_action_widget.dart';
 import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/message/post_message_content_widget.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
@@ -36,7 +36,7 @@ class PostMessageWidget extends StatelessWidget {
               const PostMessagePostActionWidget()
             ],
           ),
-          PostMessageAttachWidget()
+          PostMessageSelectedActionWidget()
         ],
       ),
     );

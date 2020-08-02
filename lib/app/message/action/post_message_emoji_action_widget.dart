@@ -1,5 +1,4 @@
 import 'package:fedi/app/message/post_message_bloc.dart';
-import 'package:fedi/app/status/emoji_reaction/status_emoji_reaction_picker_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
@@ -17,10 +16,7 @@ class PostMessageEmojiActionWidget extends StatelessWidget {
         color: FediColors.darkGrey,
       ),
       onPressed: () {
-        showEmojiPickerModalPopup(context,
-            emojiReactionSelectedCallback: (String emojiName, String emoji) {
-          postMessageBloc.appendText("$emoji");
-        });
+        postMessageBloc.toggleEmojiActionSelection();
       },
     );
   }

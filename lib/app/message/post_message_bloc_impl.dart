@@ -2,6 +2,7 @@ import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.da
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc_impl.dart';
 import 'package:fedi/app/message/post_message_bloc.dart';
+import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
@@ -26,7 +27,7 @@ abstract class PostMessageBloc extends DisposableOwner
 
     addDisposable(textEditingController: inputTextController);
 
-    addDisposable(subject: isAttachActionSubject);
+    addDisposable(subject: selectedActionSubject);
 
     var editTextListener = () {
       onInputTextChanged();
@@ -97,16 +98,47 @@ abstract class PostMessageBloc extends DisposableOwner
     inputTextController.text = "$inputText$textToAppend";
   }
 
-  BehaviorSubject<bool> isAttachActionSubject = BehaviorSubject.seeded(false);
 
   @override
-  bool get isAttachActionSelected => isAttachActionSubject.value;
+  PostStatusSelectedAction get selectedAction => selectedActionSubject.value;
 
   @override
-  Stream<bool> get isAttachActionSelectedStream => isAttachActionSubject.stream;
+  Stream<PostStatusSelectedAction> get selectedActionStream =>
+      selectedActionSubject.stream;
+
+  BehaviorSubject<PostStatusSelectedAction> selectedActionSubject =
+  BehaviorSubject();
+
+  @override
+  bool get isAttachActionSelected =>
+      selectedAction == PostStatusSelectedAction.attach;
+
+  @override
+  Stream<bool> get isAttachActionSelectedStream => selectedActionStream.map(
+          (selectedAction) => selectedAction == PostStatusSelectedAction.attach);
+
+  bool get isEmojiActionSelected =>
+      selectedAction == PostStatusSelectedAction.emoji;
+
+  Stream<bool> get isEmojiActionSelectedStream => selectedActionStream.map(
+          (selectedAction) => selectedAction == PostStatusSelectedAction.emoji);
 
   @override
   void toggleAttachActionSelection() {
-    isAttachActionSubject.add(!isAttachActionSelected);
+    if (isAttachActionSelected) {
+      selectedActionSubject.add(null);
+    } else {
+      selectedActionSubject.add(PostStatusSelectedAction.attach);
+    }
+  }
+
+
+  @override
+  void toggleEmojiActionSelection() {
+    if (isEmojiActionSelected) {
+      selectedActionSubject.add(null);
+    } else {
+      selectedActionSubject.add(PostStatusSelectedAction.emoji);
+    }
   }
 }
