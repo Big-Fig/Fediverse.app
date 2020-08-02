@@ -1,10 +1,18 @@
+import 'dart:convert';
+
 import 'package:fedi/mastodon/emoji/mastodon_emoji_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_emoji_model.g.dart';
 
-abstract class IPleromaEmoji implements IMastodonEmoji {}
+abstract class IPleromaEmoji extends IMastodonEmoji {}
+
+abstract class IPleromaCustomEmoji {
+  List<String> get tags;
+
+  String get imageUrl;
+}
 
 @HiveType()
 @JsonSerializable()
@@ -60,4 +68,46 @@ class PleromaEmoji implements IPleromaEmoji {
       _$PleromaEmojiFromJson(json);
 
   Map<String, dynamic> toJson() => _$PleromaEmojiToJson(this);
+}
+
+@HiveType()
+@JsonSerializable()
+class PleromaCustomEmoji implements IPleromaCustomEmoji {
+  @override
+  @HiveField(0)
+  List<String> tags;
+  @override
+  @HiveField(1)
+  @JsonKey(name: "image_url")
+  String imageUrl;
+
+  PleromaCustomEmoji({
+    this.tags,
+    this.imageUrl,
+  });
+
+  @override
+  String toString() {
+    return 'PleromaCustomEmoji{tags: $tags, imageUrl: $imageUrl}';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaCustomEmoji &&
+          runtimeType == other.runtimeType &&
+          tags == other.tags &&
+          imageUrl == other.imageUrl;
+
+  @override
+  int get hashCode => tags.hashCode ^ imageUrl.hashCode;
+
+  factory PleromaCustomEmoji.fromJson(Map<String, dynamic> json) =>
+      _$PleromaCustomEmojiFromJson(json);
+
+  static List<PleromaCustomEmoji> listFromJsonString(String str) =>
+      List<PleromaCustomEmoji>.from(
+          json.decode(str).map((x) => PleromaCustomEmoji.fromJson(x)));
+
+  Map<String, dynamic> toJson() => _$PleromaCustomEmojiToJson(this);
 }

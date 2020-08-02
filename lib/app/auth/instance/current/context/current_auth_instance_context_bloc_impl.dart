@@ -54,6 +54,8 @@ import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_service_impl.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_service.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_service_impl.dart';
+import 'package:fedi/pleroma/emoji/pleroma_emoji_service.dart';
+import 'package:fedi/pleroma/emoji/pleroma_emoji_service_impl.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_service.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_service_impl.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
@@ -292,6 +294,12 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService
         .asyncInitAndRegister<IPleromaPollService>(pleromaPollService);
     addDisposable(disposable: pleromaPollService);
+
+    var pleromaEmojiService =
+        PleromaEmojiService(restService: pleromaAuthRestService);
+    await globalProviderService
+        .asyncInitAndRegister<IPleromaEmojiService>(pleromaEmojiService);
+    addDisposable(disposable: pleromaEmojiService);
 
     var pleromaPushService = PleromaPushService(
         keys: PleromaPushSubscriptionKeys(

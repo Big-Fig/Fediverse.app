@@ -49,6 +49,34 @@ class PleromaEmojiAdapter extends TypeAdapter<PleromaEmoji> {
   }
 }
 
+class PleromaCustomEmojiAdapter extends TypeAdapter<PleromaCustomEmoji> {
+  @override
+  PleromaCustomEmoji read(BinaryReader reader) {
+    var obj = PleromaCustomEmoji();
+    var numOfFields = reader.readByte();
+    for (var i = 0; i < numOfFields; i++) {
+      switch (reader.readByte()) {
+        case 0:
+          obj.tags = (reader.read() as List)?.cast<String>();
+          break;
+        case 1:
+          obj.imageUrl = reader.read() as String;
+          break;
+      }
+    }
+    return obj;
+  }
+
+  @override
+  void write(BinaryWriter writer, PleromaCustomEmoji obj) {
+    writer.writeByte(2);
+    writer.writeByte(0);
+    writer.write(obj.tags);
+    writer.writeByte(1);
+    writer.write(obj.imageUrl);
+  }
+}
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
@@ -69,4 +97,17 @@ Map<String, dynamic> _$PleromaEmojiToJson(PleromaEmoji instance) =>
       'static_url': instance.staticUrl,
       'visible_in_picker': instance.visibleInPicker,
       'category': instance.category,
+    };
+
+PleromaCustomEmoji _$PleromaCustomEmojiFromJson(Map<String, dynamic> json) {
+  return PleromaCustomEmoji(
+    tags: (json['tags'] as List)?.map((e) => e as String)?.toList(),
+    imageUrl: json['image_url'] as String,
+  );
+}
+
+Map<String, dynamic> _$PleromaCustomEmojiToJson(PleromaCustomEmoji instance) =>
+    <String, dynamic>{
+      'tags': instance.tags,
+      'image_url': instance.imageUrl,
     };
