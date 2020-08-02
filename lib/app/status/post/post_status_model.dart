@@ -1,3 +1,4 @@
 enum PostStatusSelectedAction {
-  attach
+  attach,
+  emoji,
 }

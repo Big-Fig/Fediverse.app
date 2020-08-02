@@ -1,4 +1,5 @@
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
+import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -23,9 +24,15 @@ abstract class IPostMessageBloc implements Disposable {
 
   void appendText(String textToAppend);
 
+  PostStatusSelectedAction get selectedAction;
+
+  Stream<PostStatusSelectedAction> get selectedActionStream;
+
+  void toggleAttachActionSelection();
+
+  void toggleEmojiActionSelection();
+
   bool get isAttachActionSelected;
 
   Stream<bool> get isAttachActionSelectedStream;
-
-  void toggleAttachActionSelection();
 }

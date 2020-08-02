@@ -1,7 +1,7 @@
 import 'package:fedi/app/account/my/avatar/my_account_avatar_widget.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_widget.dart';
 import 'package:fedi/app/message/action/post_message_attach_action_widget.dart';
-import 'package:fedi/app/message/post_message_attach_widget.dart';
+import 'package:fedi/app/message/post_message_selected_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_mention_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_nsfw_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_post_text_action_widget.dart';
@@ -66,7 +66,7 @@ class PostStatusComposeWidget extends StatelessWidget {
           ),
           if (!displayAccountAvatar && expanded) FediLightGreyDivider(),
           buildActions(),
-          PostMessageAttachWidget()
+          PostMessageSelectedActionWidget()
         ],
       ),
     );

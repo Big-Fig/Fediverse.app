@@ -1,8 +1,8 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:emoji_picker/emoji_lists.dart' as emoji_list;
 import 'package:emoji_picker/emoji_picker.dart';
+import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,11 +32,6 @@ class FediEmojiPicker extends StatefulWidget {
 
   /// The background color of the keyboard
   Color bgColor;
-
-  /// The color of the keyboard page indicator
-  Color indicatorColor;
-
-  final Color _defaultBgColor = Color.fromRGBO(242, 242, 242, 1);
 
   /// A list of keywords that are used to provide the user with recommended emojis in [Category.RECOMMENDED]
   List<String> recommendKeywords;
@@ -68,8 +63,7 @@ class FediEmojiPicker extends StatefulWidget {
     this.columns = 7,
     this.rows = 3,
     this.selectedCategory,
-    this.bgColor,
-    this.indicatorColor = Colors.blue,
+    this.bgColor = FediColors.white,
     this.recommendKeywords,
     this.numRecommended = 10,
     this.noRecommendationsText = "No Recommendations",
@@ -93,8 +87,6 @@ class FediEmojiPicker extends StatefulWidget {
     noRecommendationsStyle ??= TextStyle(fontSize: 20, color: Colors.black26);
 
     noRecentsStyle ??= TextStyle(fontSize: 20, color: Colors.black26);
-
-    bgColor ??= _defaultBgColor;
 
     categoryIcons ??= CategoryIcons();
   }
@@ -1285,44 +1277,10 @@ class _FediEmojiPickerState extends State<FediEmojiPicker> {
                 }),
           ),
           Container(
-              color: widget.bgColor,
-              height: 6,
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.only(top: 4, bottom: 0, right: 2, left: 2),
-              child: CustomPaint(
-                painter: _ProgressPainter(
-                    context,
-                    pageController,
-                    Map.fromIterables([
-                      Category.RECOMMENDED,
-                      Category.RECENT,
-                      Category.SMILEYS,
-                      Category.ANIMALS,
-                      Category.FOODS,
-                      Category.TRAVEL,
-                      Category.ACTIVITIES,
-                      Category.OBJECTS,
-                      Category.SYMBOLS,
-                      Category.FLAGS
-                    ], [
-                      recommendedPagesNum,
-                      recentPagesNum,
-                      smileyPagesNum,
-                      animalPagesNum,
-                      foodPagesNum,
-                      travelPagesNum,
-                      activityPagesNum,
-                      objectPagesNum,
-                      symbolPagesNum,
-                      flagPagesNum
-                    ]),
-                    widget.selectedCategory,
-                    widget.indicatorColor),
-              )),
-          Container(
               height: 50,
               color: widget.bgColor,
-              child: Row(
+              child: ListView(
+                scrollDirection: Axis.horizontal,
                 children: <Widget>[
                   widget.recommendKeywords != null
                       ? SizedBox(
@@ -2027,17 +1985,9 @@ class _FediEmojiPickerState extends State<FediEmojiPicker> {
             ),
           ),
           Container(
-            height: 6,
-            width: MediaQuery.of(context).size.width,
-            color: widget.bgColor,
-            padding: EdgeInsets.only(top: 4, left: 2, right: 2),
-            child: Container(
-              color: widget.indicatorColor,
-            ),
-          ),
-          Container(
             height: 50,
-            child: Row(
+            child: ListView(
+              scrollDirection: Axis.horizontal,
               children: <Widget>[
                 widget.recommendKeywords != null
                     ? defaultButton(widget.categoryIcons.recommendationIcon)
@@ -2059,126 +2009,3 @@ class _FediEmojiPickerState extends State<FediEmojiPicker> {
     }
   }
 }
-
-
-class _ProgressPainter extends CustomPainter {
-  final BuildContext context;
-  final PageController pageController;
-  final Map<Category, int> pages;
-  final Category selectedCategory;
-  final Color indicatorColor;
-
-  _ProgressPainter(this.context, this.pageController, this.pages,
-      this.selectedCategory, this.indicatorColor);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    double actualPageWidth = MediaQuery.of(context).size.width;
-    double offsetInPages = 0;
-    if (selectedCategory == Category.RECOMMENDED) {
-      offsetInPages = pageController.offset / actualPageWidth;
-    } else if (selectedCategory == Category.RECENT) {
-      offsetInPages = (pageController.offset -
-          (pages[Category.RECOMMENDED] * actualPageWidth)) /
-          actualPageWidth;
-    } else if (selectedCategory == Category.SMILEYS) {
-      offsetInPages = (pageController.offset -
-          ((pages[Category.RECOMMENDED] + pages[Category.RECENT]) *
-              actualPageWidth)) /
-          actualPageWidth;
-    } else if (selectedCategory == Category.ANIMALS) {
-      offsetInPages = (pageController.offset -
-          ((pages[Category.RECOMMENDED] +
-              pages[Category.RECENT] +
-              pages[Category.SMILEYS]) *
-              actualPageWidth)) /
-          actualPageWidth;
-    } else if (selectedCategory == Category.FOODS) {
-      offsetInPages = (pageController.offset -
-          ((pages[Category.RECOMMENDED] +
-              pages[Category.RECENT] +
-              pages[Category.SMILEYS] +
-              pages[Category.ANIMALS]) *
-              actualPageWidth)) /
-          actualPageWidth;
-    } else if (selectedCategory == Category.TRAVEL) {
-      offsetInPages = (pageController.offset -
-          ((pages[Category.RECOMMENDED] +
-              pages[Category.RECENT] +
-              pages[Category.SMILEYS] +
-              pages[Category.ANIMALS] +
-              pages[Category.FOODS]) *
-              actualPageWidth)) /
-          actualPageWidth;
-    } else if (selectedCategory == Category.ACTIVITIES) {
-      offsetInPages = (pageController.offset -
-          ((pages[Category.RECOMMENDED] +
-              pages[Category.RECENT] +
-              pages[Category.SMILEYS] +
-              pages[Category.ANIMALS] +
-              pages[Category.FOODS] +
-              pages[Category.TRAVEL]) *
-              actualPageWidth)) /
-          actualPageWidth;
-    } else if (selectedCategory == Category.OBJECTS) {
-      offsetInPages = (pageController.offset -
-          ((pages[Category.RECOMMENDED] +
-              pages[Category.RECENT] +
-              pages[Category.SMILEYS] +
-              pages[Category.ANIMALS] +
-              pages[Category.FOODS] +
-              pages[Category.TRAVEL] +
-              pages[Category.ACTIVITIES]) *
-              actualPageWidth)) /
-          actualPageWidth;
-    } else if (selectedCategory == Category.SYMBOLS) {
-      offsetInPages = (pageController.offset -
-          ((pages[Category.RECOMMENDED] +
-              pages[Category.RECENT] +
-              pages[Category.SMILEYS] +
-              pages[Category.ANIMALS] +
-              pages[Category.FOODS] +
-              pages[Category.TRAVEL] +
-              pages[Category.ACTIVITIES] +
-              pages[Category.OBJECTS]) *
-              actualPageWidth)) /
-          actualPageWidth;
-    } else if (selectedCategory == Category.FLAGS) {
-      offsetInPages = (pageController.offset -
-          ((pages[Category.RECOMMENDED] +
-              pages[Category.RECENT] +
-              pages[Category.SMILEYS] +
-              pages[Category.ANIMALS] +
-              pages[Category.FOODS] +
-              pages[Category.TRAVEL] +
-              pages[Category.ACTIVITIES] +
-              pages[Category.OBJECTS] +
-              pages[Category.SYMBOLS]) *
-              actualPageWidth)) /
-          actualPageWidth;
-    }
-    double indicatorPageWidth = size.width / pages[selectedCategory];
-
-    Rect bgRect = Offset(0, 0) & size;
-
-    Rect indicator = Offset(max(0, offsetInPages * indicatorPageWidth), 0) &
-    Size(
-        indicatorPageWidth -
-            max(
-                0,
-                (indicatorPageWidth +
-                    (offsetInPages * indicatorPageWidth)) -
-                    size.width) +
-            min(0, offsetInPages * indicatorPageWidth),
-        size.height);
-
-    canvas.drawRect(bgRect, Paint()..color = Colors.black12);
-    canvas.drawRect(indicator, Paint()..color = indicatorColor);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
-  }
-}
-
