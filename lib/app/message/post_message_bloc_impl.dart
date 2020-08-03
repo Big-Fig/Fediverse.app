@@ -95,7 +95,11 @@ abstract class PostMessageBloc extends DisposableOwner
 
   @override
   void appendText(String textToAppend) {
-    inputTextController.text = "$inputText$textToAppend";
+    var newText = "$inputText$textToAppend";
+    inputTextController.value = TextEditingValue(
+      text: newText,
+      selection: TextSelection.collapsed(offset: newText.length),
+    );
   }
 
   @override

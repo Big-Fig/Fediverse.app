@@ -23,39 +23,31 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: FediPadding.verticalBigPadding,
-          child: const FediUltraLightGreyDivider(),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: FediSizes.smallPadding,
-            vertical: FediSizes.bigPadding,
-          ),
-          child: Container(
-            height: 87,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              shrinkWrap: true,
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: FediSizes.smallPadding,
+        vertical: FediSizes.bigPadding,
+      ),
+      child: Container(
+        height: 87,
+        child: ListView(
+          scrollDirection: Axis.horizontal,
+          shrinkWrap: true,
 //                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _buildAttachGallery(context),
-                const FediBigHorizontalSpacer(),
-                _buildAttachPhoto(context),
-                const FediBigHorizontalSpacer(),
-                _buildAttachVideo(context),
-                const FediBigHorizontalSpacer(),
-                _buildAttachFile(context),
-                const FediBigHorizontalSpacer(),
-                _buildAttachAudio(context),
-                const FediBigHorizontalSpacer(),
-              ],
-            ),
-          ),
+          children: [
+            _buildAttachGallery(context),
+            const FediBigHorizontalSpacer(),
+            _buildAttachPhoto(context),
+            const FediBigHorizontalSpacer(),
+            _buildAttachVideo(context),
+            const FediBigHorizontalSpacer(),
+            _buildAttachFile(context),
+            const FediBigHorizontalSpacer(),
+            _buildAttachAudio(context),
+            const FediBigHorizontalSpacer(),
+          ],
         ),
-      ],
+      ),
     );
   }
 
