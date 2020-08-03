@@ -32,7 +32,7 @@ abstract class IPostMessageBloc implements Disposable {
 
   void toggleEmojiActionSelection();
 
-  bool get isAttachActionSelected;
 
-  Stream<bool> get isAttachActionSelectedStream;
+  Stream<bool> get isAnySelectedActionVisibleStream;
+  bool get isAnySelectedActionVisible;
 }
