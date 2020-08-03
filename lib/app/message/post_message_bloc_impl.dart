@@ -44,15 +44,15 @@ abstract class PostMessageBloc extends DisposableOwner
       inputText: inputText,
       mediaAttachmentBlocs: mediaAttachmentsBloc.mediaAttachmentBlocs,
       isAllAttachedMediaUploaded:
-      mediaAttachmentsBloc.isAllAttachedMediaUploaded);
+          mediaAttachmentsBloc.isAllAttachedMediaUploaded);
 
   @override
   Stream<bool> get isReadyToPostStream => Rx.combineLatest3(
       inputTextStream,
       mediaAttachmentsBloc.mediaAttachmentBlocsStream,
       mediaAttachmentsBloc.isAllAttachedMediaUploadedStream,
-          (inputWithoutMentionedAcctsText, mediaAttachmentBlocs,
-          isAllAttachedMediaUploaded) =>
+      (inputWithoutMentionedAcctsText, mediaAttachmentBlocs,
+              isAllAttachedMediaUploaded) =>
           calculateIsReadyToPost(
               inputText: inputWithoutMentionedAcctsText,
               mediaAttachmentBlocs: mediaAttachmentBlocs,
@@ -85,8 +85,8 @@ abstract class PostMessageBloc extends DisposableOwner
 
   bool calculateIsReadyToPost(
       {@required String inputText,
-        @required List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs,
-        @required bool isAllAttachedMediaUploaded}) {
+      @required List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs,
+      @required bool isAllAttachedMediaUploaded}) {
     var textIsNotEmpty = inputText?.trim()?.isEmpty != true;
     var mediaAttached = mediaAttachmentBlocs?.isEmpty != true;
 
@@ -98,7 +98,6 @@ abstract class PostMessageBloc extends DisposableOwner
     inputTextController.text = "$inputText$textToAppend";
   }
 
-
   @override
   PostStatusSelectedAction get selectedAction => selectedActionSubject.value;
 
@@ -107,21 +106,19 @@ abstract class PostMessageBloc extends DisposableOwner
       selectedActionSubject.stream;
 
   BehaviorSubject<PostStatusSelectedAction> selectedActionSubject =
-  BehaviorSubject();
+      BehaviorSubject();
 
-  @override
   bool get isAttachActionSelected =>
       selectedAction == PostStatusSelectedAction.attach;
 
-  @override
   Stream<bool> get isAttachActionSelectedStream => selectedActionStream.map(
-          (selectedAction) => selectedAction == PostStatusSelectedAction.attach);
+      (selectedAction) => selectedAction == PostStatusSelectedAction.attach);
 
   bool get isEmojiActionSelected =>
       selectedAction == PostStatusSelectedAction.emoji;
 
   Stream<bool> get isEmojiActionSelectedStream => selectedActionStream.map(
-          (selectedAction) => selectedAction == PostStatusSelectedAction.emoji);
+      (selectedAction) => selectedAction == PostStatusSelectedAction.emoji);
 
   @override
   void toggleAttachActionSelection() {
@@ -132,7 +129,6 @@ abstract class PostMessageBloc extends DisposableOwner
     }
   }
 
-
   @override
   void toggleEmojiActionSelection() {
     if (isEmojiActionSelected) {
@@ -141,4 +137,11 @@ abstract class PostMessageBloc extends DisposableOwner
       selectedActionSubject.add(PostStatusSelectedAction.emoji);
     }
   }
+
+  @override
+  Stream<bool> get isAnySelectedActionVisibleStream => selectedActionStream
+      .map((isAnySelectedActionVisible) => isAnySelectedActionVisible != null);
+
+  @override
+  bool get isAnySelectedActionVisible => isAnySelectedActionVisible != null;
 }
