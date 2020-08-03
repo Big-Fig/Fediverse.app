@@ -1,7 +1,9 @@
 import 'package:fedi/app/media/attachment/select_media_attachment_type_to_pick_widget.dart';
 import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
-import 'package:fedi/app/ui/emoji/fedi_emoji_picker.dart';
+import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
+import 'package:fedi/app/ui/emoji/fedi_emoji_picker_widget.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:flutter/widgets.dart';
 
 class PostMessageSelectedActionWidget extends StatelessWidget {
@@ -19,17 +21,33 @@ class PostMessageSelectedActionWidget extends StatelessWidget {
 
           switch (selectedAction) {
             case PostStatusSelectedAction.attach:
-              return SelectMediaAttachmentTypeToPickWidget(
-                onFileSelected: () {
-                  postMessageBloc.toggleAttachActionSelection();
-                },
+              return Column(
+                children: <Widget>[
+                  Padding(
+                    padding: FediPadding.verticalBigPadding,
+                    child: const FediUltraLightGreyDivider(),
+                  ),
+                  SelectMediaAttachmentTypeToPickWidget(
+                    onFileSelected: () {
+                      postMessageBloc.toggleAttachActionSelection();
+                    },
+                  ),
+                ],
               );
               break;
             case PostStatusSelectedAction.emoji:
-              return FediEmojiPicker(
-                onEmojiSelected: (emoji, category) {
-                  postMessageBloc.appendText(emoji.emoji);
-                },
+              return Column(
+                children: <Widget>[
+                  Padding(
+                    padding: FediPadding.verticalBigPadding,
+                    child: const FediUltraLightGreyDivider(),
+                  ),
+                  FediEmojiPickerWidget(
+                    onEmojiSelected: (emoji) {
+                      postMessageBloc.appendText(emoji.code);
+                    },
+                  ),
+                ],
               );
               break;
             default:

@@ -65,8 +65,6 @@ dependencies:
   rxdart: ^0.23.1
   # text size to fit constraints
   auto_size_text: ^2.1.0
-  # pick images modal popup
-  emoji_picker: ^0.1.0
 
   # default media picker
   image_picker: ^0.6.7+4
