@@ -4,6 +4,8 @@ import 'package:fedi/app/account/my/settings'
     '.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_model.dart';
+import 'package:fedi/app/emoji/picker/category/custom/emoji_picker_custom_image_url_category_model.dart';
+import 'package:fedi/app/emoji/picker/category/recent/emoji_picker_recent_category_model.dart';
 import 'package:fedi/app/hive/hive_service.dart';
 import 'package:fedi/app/push/handler/push_handler_model.dart';
 import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_preferences_model.dart';
@@ -11,6 +13,8 @@ import 'package:fedi/app/push/subscription_settings/local_preferences/push_subsc
 import 'package:fedi/app/search/recent/recent_search_model.dart';
 import 'package:fedi/app/timeline/settings/local_preferences/timeline_settings_local_preferences_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
+import 'package:fedi/emoji_picker/item/code/custom_emoji_picker_code_item_model.dart';
+import 'package:fedi/emoji_picker/item/image_url/custom_emoji_picker_image_url_item_model.dart';
 import 'package:fedi/mastodon/instance/mastodon_instance_model.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
@@ -58,6 +62,10 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     Hive.registerAdapter(RecentSearchListAdapter(), 65);
     Hive.registerAdapter(PushHandlerMessageAdapter(), 66);
     Hive.registerAdapter(PushMessageAdapter(), 67);
+    Hive.registerAdapter(EmojiPickerCustomImageUrlCategoryItemsAdapter(), 68);
+    Hive.registerAdapter(CustomEmojiPickerImageUrlItemAdapter(), 69);
+    Hive.registerAdapter(EmojiPickerRecentCategoryItemsListAdapter(), 70);
+    Hive.registerAdapter(CustomEmojiPickerCodeItemAdapter(), 71);
 
     Hive.init(directory.path);
   }

@@ -16,7 +16,7 @@ class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
   final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
   final IPleromaEmojiService pleromaEmojiService;
   final IEmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc
-      preferenceBloc;
+  preferenceBloc;
 
   EmojiPickerCustomImageUrlCategoryBloc({
     @required this.pleromaEmojiService,
@@ -27,13 +27,18 @@ class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
   @override
   Future internalAsyncInit() async {
     await preferenceBloc.performAsyncInit();
-    if (currentAuthInstanceBloc.currentInstance.isPleromaInstance) {
+    var currentInstance = currentAuthInstanceBloc.currentInstance;
+    if (currentInstance.isPleromaInstance) {
       // old instances may not have this API
-
+      var urlHost = currentInstance.urlHost;
+      var urlSchema = currentInstance.urlSchema;
       unawaited(
           pleromaEmojiService.getCustomEmojis().then((customEmojis) async {
         var emojiItems = customEmojis
-            .map((customEmoji) => CustomEmojiPickerImageUrlItem())
+            .map((customEmoji) => CustomEmojiPickerImageUrlItem(
+                  imageUrl: "$urlSchema://$urlHost/${customEmoji.imageUrl}",
+                  name: customEmoji.name,
+                ))
             .toList();
         await preferenceBloc.setValue(
           EmojiPickerCustomImageUrlCategoryItems(

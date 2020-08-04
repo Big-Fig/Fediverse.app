@@ -26,6 +26,7 @@ abstract class PostMessageBloc extends DisposableOwner
     addDisposable(subject: inputTextSubject);
 
     addDisposable(textEditingController: inputTextController);
+    addDisposable(focusNode: inputFocusNode);
 
     addDisposable(subject: selectedActionSubject);
 
@@ -69,6 +70,8 @@ abstract class PostMessageBloc extends DisposableOwner
 
   @override
   TextEditingController inputTextController = TextEditingController();
+  @override
+  FocusNode inputFocusNode = FocusNode();
 
   void onInputTextChanged() {
     var text = inputTextController.text;
@@ -81,6 +84,8 @@ abstract class PostMessageBloc extends DisposableOwner
   void clear() {
     inputTextController.clear();
     mediaAttachmentsBloc.clear();
+    clearSelectedAction();
+    inputFocusNode.unfocus();
   }
 
   bool calculateIsReadyToPost(
@@ -94,12 +99,13 @@ abstract class PostMessageBloc extends DisposableOwner
   }
 
   @override
-  void appendText(String textToAppend) {
+  void appendText(String textToAppend, {bool requestFocus = true}) {
     var newText = "$inputText$textToAppend";
     inputTextController.value = TextEditingValue(
       text: newText,
       selection: TextSelection.collapsed(offset: newText.length),
     );
+    inputFocusNode.requestFocus();
   }
 
   @override
@@ -148,4 +154,8 @@ abstract class PostMessageBloc extends DisposableOwner
 
   @override
   bool get isAnySelectedActionVisible => isAnySelectedActionVisible != null;
+  @override
+  void clearSelectedAction() {
+    selectedActionSubject.add(null);
+  }
 }

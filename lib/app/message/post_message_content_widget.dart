@@ -21,6 +21,7 @@ class PostMessageContentWidget extends StatelessWidget {
       leading: null,
       hintText: hintText,
       textEditingController: postMessageBloc.inputTextController,
+      focusNode: postMessageBloc.inputFocusNode,
       expanded: false,
       autofocus: false,
       textInputAction: TextInputAction.send,

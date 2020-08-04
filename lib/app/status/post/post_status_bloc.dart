@@ -15,8 +15,6 @@ abstract class IPostStatusBloc implements IPostMessageBloc {
 
   Stream<List<String>> get mentionedAcctsStream;
 
-  FocusNode get focusNode;
-
   bool get isPossibleToChangeVisibility;
 
   PleromaVisibility get visibility;

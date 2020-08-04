@@ -24,7 +24,7 @@ class PostStatusComposeInputWidget extends StatelessWidget {
 
     return FediTransparentEditTextField(
       textEditingController: postStatusBloc.inputTextController,
-      focusNode: postStatusBloc.focusNode,
+      focusNode: postStatusBloc.inputFocusNode,
       hintText: hintText ?? tr("app.status.post.field.message.hint"),
       expanded: expanded,
       autofocus: expanded,

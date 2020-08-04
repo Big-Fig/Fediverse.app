@@ -89,13 +89,13 @@ abstract class PostStatusBloc extends PostMessageBloc
     addDisposable(subject: scheduledAtSubject);
 
     var focusListener = () {
-      onFocusChange(focusNode.hasFocus);
+      onFocusChange(inputFocusNode.hasFocus);
     };
 
-    focusNode.addListener(focusListener);
+    inputFocusNode.addListener(focusListener);
 
     addDisposable(disposable: CustomDisposable(() {
-      focusNode.removeListener(focusListener);
+      inputFocusNode.removeListener(focusListener);
     }));
   }
 
@@ -188,8 +188,6 @@ abstract class PostStatusBloc extends PostMessageBloc
       (inputText, mentionedAccts) =>
           removeAcctsFromText(inputText, mentionedAccts));
 
-  @override
-  FocusNode focusNode = FocusNode();
 
   void onMentionedAccountsChanged() {
     var mentionedAccts = this.mentionedAccts;
@@ -379,7 +377,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   void clear() {
     super.clear();
     visibilitySubject.add(initialVisibility);
-    focusNode.unfocus();
+
     nsfwSensitiveSubject.add(false);
     _regenerateIdempotencyKey();
     clearSchedule();
@@ -408,10 +406,6 @@ abstract class PostStatusBloc extends PostMessageBloc
     schedule(null);
   }
 
-  @override
-  void appendText(String textToAppend) {
-    inputTextController.text = "${inputText ?? ""}$textToAppend";
-  }
 
   Future onStatusPosted(IPleromaStatus remoteStatus) async {
     // nothing by default

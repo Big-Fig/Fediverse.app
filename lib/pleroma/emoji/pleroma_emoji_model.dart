@@ -12,6 +12,7 @@ abstract class IPleromaCustomEmoji {
   List<String> get tags;
 
   String get imageUrl;
+  String get name;
 }
 
 @HiveType()
@@ -81,15 +82,16 @@ class PleromaCustomEmoji implements IPleromaCustomEmoji {
   @JsonKey(name: "image_url")
   String imageUrl;
 
+  @override
+  @HiveField(2)
+  String name;
+
   PleromaCustomEmoji({
     this.tags,
     this.imageUrl,
+    this.name,
   });
 
-  @override
-  String toString() {
-    return 'PleromaCustomEmoji{tags: $tags, imageUrl: $imageUrl}';
-  }
 
   @override
   bool operator ==(Object other) =>
@@ -97,13 +99,20 @@ class PleromaCustomEmoji implements IPleromaCustomEmoji {
       other is PleromaCustomEmoji &&
           runtimeType == other.runtimeType &&
           tags == other.tags &&
-          imageUrl == other.imageUrl;
+          imageUrl == other.imageUrl &&
+          name == other.name;
+  @override
+  int get hashCode => tags.hashCode ^ imageUrl.hashCode ^ name.hashCode;
+
 
   @override
-  int get hashCode => tags.hashCode ^ imageUrl.hashCode;
+  String toString() {
+    return 'PleromaCustomEmoji{tags: $tags, imageUrl: $imageUrl, name: $name}';
+  }
 
   factory PleromaCustomEmoji.fromJson(Map<String, dynamic> json) =>
       _$PleromaCustomEmojiFromJson(json);
+
 
   static List<PleromaCustomEmoji> listFromJsonString(String str) =>
       List<PleromaCustomEmoji>.from(

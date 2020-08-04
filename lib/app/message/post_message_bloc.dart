@@ -9,6 +9,7 @@ abstract class IPostMessageBloc implements Disposable {
       Provider.of<IPostMessageBloc>(context, listen: listen);
 
   TextEditingController get inputTextController;
+  FocusNode get inputFocusNode;
 
   IUploadMediaAttachmentsCollectionBloc get mediaAttachmentsBloc;
 
@@ -22,7 +23,7 @@ abstract class IPostMessageBloc implements Disposable {
 
   Future<bool> post();
 
-  void appendText(String textToAppend);
+  void appendText(String textToAppend, {bool requestFocus = true});
 
   PostStatusSelectedAction get selectedAction;
 
@@ -35,4 +36,6 @@ abstract class IPostMessageBloc implements Disposable {
 
   Stream<bool> get isAnySelectedActionVisibleStream;
   bool get isAnySelectedActionVisible;
+
+  void clearSelectedAction();
 }

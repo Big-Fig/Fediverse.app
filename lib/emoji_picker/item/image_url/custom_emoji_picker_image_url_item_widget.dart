@@ -9,7 +9,14 @@ class CustomEmojiPickerImageUrlItemWidget extends StatelessWidget {
       : super(key: key);
 
   @override
-  Widget build(BuildContext context) => CachedNetworkImage(
-        imageUrl: item.imageUrl,
-      );
+  Widget build(BuildContext context) {
+//    return Text("asda");
+    return Padding(
+      padding: const EdgeInsets.all(1.0),
+      child: CachedNetworkImage(
+          imageUrl: item.imageUrl,
+        fit: BoxFit.fill,
+        ),
+    );
+  }
 }
