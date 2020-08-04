@@ -19,38 +19,42 @@ class FediBlurredOverlayWarningWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => Stack(
-        children: <Widget>[
-          child,
-          Positioned(
-            top: 0.0,
-            bottom: 0.0,
-            left: 0.0,
-            right: 0.0,
-            child: ClipRect(
-              child: FediBackgroundBlur(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      descriptionText,
-                      style: FediTextStyles.bigTallDarkGrey,
-                    ),
-                    FediBigVerticalSpacer(),
-                    FediPrimaryFilledTextButton(
-                      buttonText,
-                      enabledBorderColor: Colors.transparent,
-                      disabledBorderColor: Colors.transparent,
-                      expanded: false,
-                      onPressed: buttonAction,
-                    ),
-                  ],
+  Widget build(BuildContext context) => ConstrainedBox(
+
+    constraints: BoxConstraints(minHeight: 100),
+    child: Stack(
+          children: <Widget>[
+            child,
+            Positioned(
+              top: 0.0,
+              bottom: 0.0,
+              left: 0.0,
+              right: 0.0,
+              child: ClipRect(
+                child: FediBackgroundBlur(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        descriptionText,
+                        style: FediTextStyles.bigTallDarkGrey,
+                      ),
+                      FediBigVerticalSpacer(),
+                      FediPrimaryFilledTextButton(
+                        buttonText,
+                        enabledBorderColor: Colors.transparent,
+                        disabledBorderColor: Colors.transparent,
+                        expanded: false,
+                        onPressed: buttonAction,
+                      ),
+                    ],
+                  ),
+                  sigma: 6.0,
                 ),
-                sigma: 6.0,
               ),
             ),
-          ),
-        ],
-      );
+          ],
+        ),
+  );
 }
