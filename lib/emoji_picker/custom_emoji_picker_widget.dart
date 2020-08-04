@@ -113,8 +113,7 @@ class CustomEmojiPickerWidget extends StatelessWidget {
                       child = CustomEmojiPickerCodeItemWidget(
                         item: item,
                       );
-                    }
-                    if (item is CustomEmojiPickerImageUrlItem) {
+                    } else if (item is CustomEmojiPickerImageUrlItem) {
                       child = CustomEmojiPickerImageUrlItemWidget(
                         item: item,
                       );

@@ -4,7 +4,7 @@ import 'package:fedi/app/conversation/avatar/conversation_avatar_widget.dart';
 import 'package:fedi/app/conversation/conversation_bloc.dart';
 import 'package:fedi/app/conversation/conversation_page.dart';
 import 'package:fedi/app/conversation/title/conversation_title_widget.dart';
-import 'package:fedi/app/emoji/emoji_text_helper.dart';
+import 'package:fedi/app/emoji/text/emoji_text_helper.dart';
 import 'package:fedi/app/html/html_text_helper.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/status/status_model.dart';

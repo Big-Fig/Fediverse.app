@@ -2,7 +2,7 @@ import 'package:fedi/app/media/attachment/select_media_attachment_type_to_pick_w
 import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
-import 'package:fedi/app/ui/emoji/fedi_emoji_picker_widget.dart';
+import 'package:fedi/app/emoji/picker/emoji_picker_widget.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:flutter/widgets.dart';
 

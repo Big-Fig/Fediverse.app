@@ -23,6 +23,10 @@ import 'package:fedi/app/chat/with_last_message/chat_with_last_message_repositor
 import 'package:fedi/app/conversation/repository/conversation_repository.dart';
 import 'package:fedi/app/conversation/repository/conversation_repository_impl.dart';
 import 'package:fedi/app/database/app_database_service_impl.dart';
+import 'package:fedi/app/emoji/picker/category/custom/emoji_picker_custom_image_url_category_local_preference_bloc.dart';
+import 'package:fedi/app/emoji/picker/category/custom/emoji_picker_custom_image_url_category_local_preference_bloc_impl.dart';
+import 'package:fedi/app/emoji/picker/category/recent/emoji_picker_recent_category_local_preference_bloc.dart';
+import 'package:fedi/app/emoji/picker/category/recent/emoji_picker_recent_category_local_preference_bloc_impl.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_bloc_impl.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
@@ -316,6 +320,24 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: myAccountLocalPreferenceBloc);
     await globalProviderService.asyncInitAndRegister<
         IMyAccountLocalPreferenceBloc>(myAccountLocalPreferenceBloc);
+
+    var emojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc =
+        EmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc(
+            preferencesService, userAtHost);
+    addDisposable(
+        disposable: emojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc);
+    await globalProviderService.asyncInitAndRegister<
+            IEmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc>(
+        emojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc);
+
+    var customEmojiPickerRecentCategoryLocalPreferenceBloc =
+    EmojiPickerRecentCategoryLocalPreferenceBloc(
+            preferencesService, userAtHost);
+    addDisposable(
+        disposable: customEmojiPickerRecentCategoryLocalPreferenceBloc);
+    await globalProviderService.asyncInitAndRegister<
+        IEmojiPickerRecentCategoryLocalPreferenceBloc>(
+        customEmojiPickerRecentCategoryLocalPreferenceBloc);
 
     var timelineLocalPreferenceBloc =
         TimelineSettingsLocalPreferencesBloc(preferencesService, userAtHost);
