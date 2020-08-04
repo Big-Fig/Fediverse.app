@@ -19,10 +19,14 @@ import 'package:flutter/widgets.dart';
 class FediEmojiPickerWidget extends StatelessWidget {
   final EmojiSelectedCallback onEmojiSelected;
   final bool useImageEmoji;
+  final double selectedCategoryItemsGridHeight;
+  final int rowsCount;
 
   FediEmojiPickerWidget({
     @required this.onEmojiSelected,
     @required this.useImageEmoji,
+    this.rowsCount = 3,
+    this.selectedCategoryItemsGridHeight = 108.0,
   });
 
   @override
@@ -72,6 +76,8 @@ class FediEmojiPickerWidget extends StatelessWidget {
         return customEmojiPickerBloc;
       },
       child: CustomEmojiPickerWidget(
+        selectedCategoryItemsGridHeight: selectedCategoryItemsGridHeight,
+        rowsCount: rowsCount,
         emptyCategoryBuilder: (context, categoryBloc) {
           String text;
           if (categoryBloc is EmojiPickerCustomImageUrlCategoryBloc) {
@@ -100,7 +106,6 @@ class FediEmojiPickerWidget extends StatelessWidget {
         selectedIndicatorColor: FediColors.primaryColor,
         unselectedIndicatorColor: FediColors.darkGrey,
         separatorColor: FediColors.ultraLightGrey,
-        rowsCount: 5,
         onEmojiSelected: onEmojiSelected,
       ),
     );

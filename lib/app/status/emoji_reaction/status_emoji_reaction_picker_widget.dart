@@ -16,6 +16,8 @@ class StatusEmojiReactionPickerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FediEmojiPickerWidget(
+      selectedCategoryItemsGridHeight: 200,
+      rowsCount: 5,
       onEmojiSelected: (emoji) {
         emojiReactionSelectedCallback(emoji.name, emoji.code);
       },
