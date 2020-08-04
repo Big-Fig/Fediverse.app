@@ -30,27 +30,33 @@ class FediBlurredOverlayWarningWidget extends StatelessWidget {
               bottom: 0.0,
               left: 0.0,
               right: 0.0,
-              child: ClipRect(
-                child: FediBackgroundBlur(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        descriptionText,
-                        style: FediTextStyles.bigTallDarkGrey,
-                      ),
-                      FediBigVerticalSpacer(),
-                      FediPrimaryFilledTextButton(
-                        buttonText,
-                        enabledBorderColor: Colors.transparent,
-                        disabledBorderColor: Colors.transparent,
-                        expanded: false,
-                        onPressed: buttonAction,
-                      ),
-                    ],
+              child: GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: () {
+                  // nothing, just bloc behind clicks
+                },
+                child: ClipRect(
+                  child: FediBackgroundBlur(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          descriptionText,
+                          style: FediTextStyles.bigTallDarkGrey,
+                        ),
+                        FediBigVerticalSpacer(),
+                        FediPrimaryFilledTextButton(
+                          buttonText,
+                          enabledBorderColor: Colors.transparent,
+                          disabledBorderColor: Colors.transparent,
+                          expanded: false,
+                          onPressed: buttonAction,
+                        ),
+                      ],
+                    ),
+                    sigma: 6.0,
                   ),
-                  sigma: 6.0,
                 ),
               ),
             ),
