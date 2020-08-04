@@ -13,6 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 typedef EmojiSelectedCallback = Function(CustomEmojiPickerItem item);
+typedef EmptyCategoryBuilder = Function(
+    BuildContext context, ICustomEmojiPickerCategoryBloc categoryBloc);
 
 class CustomEmojiPickerWidget extends StatelessWidget {
   final int rowsCount;
@@ -22,24 +24,27 @@ class CustomEmojiPickerWidget extends StatelessWidget {
   final Color separatorColor;
   final double selectedCategoryItemsGridHeight;
   final double indicatorHeight;
+  final EmptyCategoryBuilder emptyCategoryBuilder;
   final IconData Function(ICustomEmojiPickerCategoryBloc)
       customCategoryIconBuilder;
   final Widget Function(ICustomEmojiPickerCategoryBloc)
       customCategoryBodyBuilder;
   final Widget loadingWidget;
+  final bool useImageEmoji;
 
-  CustomEmojiPickerWidget({
-    @required this.rowsCount,
-    @required this.onEmojiSelected,
-    this.unselectedIndicatorColor = Colors.black,
-    this.separatorColor = Colors.grey,
-    this.selectedIndicatorColor = Colors.blue,
-    this.customCategoryIconBuilder,
-    this.customCategoryBodyBuilder,
-    this.loadingWidget,
-    this.indicatorHeight = 50.0,
-    this.selectedCategoryItemsGridHeight = 200.0,
-  });
+  CustomEmojiPickerWidget(
+      {@required this.rowsCount,
+      @required this.onEmojiSelected,
+      this.unselectedIndicatorColor = Colors.black,
+      this.separatorColor = Colors.grey,
+      this.selectedIndicatorColor = Colors.blue,
+      this.customCategoryIconBuilder,
+      this.customCategoryBodyBuilder,
+      this.loadingWidget,
+      this.indicatorHeight = 50.0,
+      this.selectedCategoryItemsGridHeight = 200.0,
+      this.useImageEmoji = true,
+      this.emptyCategoryBuilder});
 
   @override
   Widget build(BuildContext context) {
@@ -103,32 +108,62 @@ class CustomEmojiPickerWidget extends StatelessWidget {
               loadingWidget: loadingWidget,
               asyncInitLoadingBloc: selectedCategoryBloc,
               loadingFinishedBuilder: (BuildContext context) {
-                return GridView.count(
-                  crossAxisCount: rowsCount,
-                  scrollDirection: Axis.horizontal,
-                  children: selectedCategoryBloc.items.map((item) {
-                    Widget child;
+                return StreamBuilder<List<CustomEmojiPickerItem>>(
+                    stream: selectedCategoryBloc.itemsStream,
+                    initialData: selectedCategoryBloc.items,
+                    builder: (context, snapshot) {
+                      var items = snapshot.data ?? [];
 
-                    if (item is CustomEmojiPickerCodeItem) {
-                      child = CustomEmojiPickerCodeItemWidget(
-                        item: item,
-                      );
-                    } else if (item is CustomEmojiPickerImageUrlItem) {
-                      child = CustomEmojiPickerImageUrlItemWidget(
-                        item: item,
-                      );
-                    } else {
-                      throw "Unsupported $item";
-                    }
+                      if (!useImageEmoji) {
+                        items = items.where((item) {
+                          if (!(item is CustomEmojiPickerImageUrlItem)) {
+                            return true;
+                          } else {
+                            return false;
+                          }
+                        }).toList();
+                      }
+                      if (items.isEmpty) {
+                        return Center(
+                          child: emptyCategoryBuilder(
+                              context, selectedCategoryBloc),
+                        );
+                      }
+                      return GridView.count(
+                        crossAxisCount: rowsCount,
+                        scrollDirection: Axis.horizontal,
+                        children: items?.map((item) {
+                              Widget child;
 
-                    return InkWell(
-                      onTap: () {
-                        onEmojiSelected(item);
-                      },
-                      child: child,
-                    );
-                  }).toList(),
-                );
+                              if (item is CustomEmojiPickerCodeItem) {
+                                child = CustomEmojiPickerCodeItemWidget(
+                                  item: item,
+                                );
+                              } else if (item
+                                  is CustomEmojiPickerImageUrlItem) {
+                                child = CustomEmojiPickerImageUrlItemWidget(
+                                  item: item,
+                                );
+                              } else {
+                                throw "Unsupported $item";
+                              }
+
+                              var size =
+                                  selectedCategoryItemsGridHeight / rowsCount;
+                              return InkWell(
+                                onTap: () {
+                                  customEmojiPickerBloc.onEmojiSelected(item);
+                                  onEmojiSelected(item);
+                                },
+                                child: Container(
+                                    width: size,
+                                    height: size,
+                                    child: Center(child: child)),
+                              );
+                            })?.toList() ??
+                            [],
+                      );
+                    });
               },
             ),
           );

@@ -45,7 +45,8 @@ class PostMessageSelectedActionWidget extends StatelessWidget {
                   FediEmojiPickerWidget(
                     onEmojiSelected: (emoji) {
                       postMessageBloc.appendText(emoji.code);
-                    },
+                      postMessageBloc.clearSelectedAction();
+                    }, useImageEmoji: true,
                   ),
                 ],
               );

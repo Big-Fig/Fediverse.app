@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/emoji/pleroma_emoji_exception.dart';
 import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
@@ -44,20 +46,40 @@ class PleromaEmojiService implements IPleromaEmojiService {
   }
 
   @override
-  Future<List<IPleromaCustomEmoji>> getCustomEmojis({@required String emojiRemoteId})
-  async {
-    var request =
-    RestRequest.get(relativePath: join(emojiRelativeUrlPath, emojiRemoteId));
+  Future<List<IPleromaCustomEmoji>> getCustomEmojis(
+      {@required String emojiRemoteId}) async {
+    var request = RestRequest.get(
+        relativePath: join(emojiRelativeUrlPath, emojiRemoteId));
     var httpResponse = await restService.sendHttpRequest(request);
 
     return parsePleromaCustomEmojiListResponse(httpResponse);
   }
 
-
-  List<IPleromaCustomEmoji> parsePleromaCustomEmojiListResponse(Response httpResponse) {
-    RestResponse<List<IPleromaCustomEmoji>> restResponse = RestResponse.fromResponse(
+  List<IPleromaCustomEmoji> parsePleromaCustomEmojiListResponse(
+      Response httpResponse) {
+    RestResponse<List<IPleromaCustomEmoji>> restResponse =
+        RestResponse.fromResponse(
       response: httpResponse,
-      resultParser: (body) => PleromaCustomEmoji.listFromJsonString(httpResponse.body),
+      resultParser: (body) {
+
+        var jsonData = json.decode(body);
+        if (jsonData == null || !(jsonData is Map<String, dynamic>)) {
+          return [];
+        } else {
+          var map = jsonData as Map<String, dynamic>;
+          return map.entries.map((entry) {
+            var name = entry.key;
+            var json = entry.value;
+            var customEmoji = PleromaCustomEmoji.fromJson(json);
+            customEmoji = PleromaCustomEmoji(
+              name: name,
+              tags: customEmoji.tags,
+              imageUrl: customEmoji.imageUrl,
+            );
+            return customEmoji;
+          }).toList();
+        }
+      },
     );
 
     if (restResponse.isSuccess) {

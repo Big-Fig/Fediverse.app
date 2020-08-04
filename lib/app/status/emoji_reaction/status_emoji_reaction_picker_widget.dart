@@ -19,6 +19,7 @@ class StatusEmojiReactionPickerWidget extends StatelessWidget {
       onEmojiSelected: (emoji) {
         emojiReactionSelectedCallback(emoji.name, emoji.code);
       },
+      useImageEmoji: false,
     );
   }
 }
