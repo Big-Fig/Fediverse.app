@@ -84,8 +84,8 @@ abstract class PostMessageBloc extends DisposableOwner
   void clear() {
     inputTextController.clear();
     mediaAttachmentsBloc.clear();
-    clearSelectedAction();
     inputFocusNode.unfocus();
+    clearSelectedAction();
   }
 
   bool calculateIsReadyToPost(
@@ -154,6 +154,7 @@ abstract class PostMessageBloc extends DisposableOwner
 
   @override
   bool get isAnySelectedActionVisible => isAnySelectedActionVisible != null;
+
   @override
   void clearSelectedAction() {
     selectedActionSubject.add(null);
