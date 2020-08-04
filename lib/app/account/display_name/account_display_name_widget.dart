@@ -1,6 +1,6 @@
 import 'package:fedi/app/account/account_bloc.dart';
-import 'package:fedi/app/emoji/emoji_text_model.dart';
-import 'package:fedi/app/emoji/emoji_text_widget.dart';
+import 'package:fedi/app/emoji/text/emoji_text_model.dart';
+import 'package:fedi/app/emoji/text/emoji_text_widget.dart';
 import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:flutter/cupertino.dart';
 

@@ -1,16 +1,16 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'custom_emoji_picker_recent_category_model.dart';
+part of 'emoji_picker_recent_category_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class CustomEmojiPickerRecentCategoryItemsListAdapter
-    extends TypeAdapter<CustomEmojiPickerRecentCategoryItemsList> {
+class EmojiPickerRecentCategoryItemsListAdapter
+    extends TypeAdapter<EmojiPickerRecentCategoryItemsList> {
   @override
-  CustomEmojiPickerRecentCategoryItemsList read(BinaryReader reader) {
-    var obj = CustomEmojiPickerRecentCategoryItemsList();
+  EmojiPickerRecentCategoryItemsList read(BinaryReader reader) {
+    var obj = EmojiPickerRecentCategoryItemsList();
     var numOfFields = reader.readByte();
     for (var i = 0; i < numOfFields; i++) {
       switch (reader.readByte()) {
@@ -24,8 +24,7 @@ class CustomEmojiPickerRecentCategoryItemsListAdapter
   }
 
   @override
-  void write(
-      BinaryWriter writer, CustomEmojiPickerRecentCategoryItemsList obj) {
+  void write(BinaryWriter writer, EmojiPickerRecentCategoryItemsList obj) {
     writer.writeByte(1);
     writer.writeByte(0);
     writer.write(obj.recentItems);

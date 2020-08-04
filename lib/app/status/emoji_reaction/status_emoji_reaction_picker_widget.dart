@@ -1,4 +1,4 @@
-import 'package:fedi/app/ui/emoji/fedi_emoji_picker_widget.dart';
+import 'package:fedi/app/emoji/picker/emoji_picker_widget.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
