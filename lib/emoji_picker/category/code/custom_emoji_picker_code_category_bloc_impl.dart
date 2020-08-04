@@ -96,8 +96,9 @@ class CustomEmojiPickerCodeCategoryBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  Future internalAsyncInit() async {
+  Future internalAsyncInit() {
     // nothing
+    return null;
   }
 
   @override
