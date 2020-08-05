@@ -166,6 +166,11 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
 //        padding: EdgeInsets.symmetric(horizontal: 2.0, vertical: 10.0),
         itemCount: statuses.length,
         itemBuilder: (BuildContext context, int index) {
+          if(index < 0) {
+            // fix non-fatal from firebase. Perhaps ScrollablePositionedList
+            // sometimes want to load item out of top bounds
+            return SizedBox.shrink();
+          }
           var status = statuses[index];
           var isFirstInList = index == 0;
           return Provider.value(
