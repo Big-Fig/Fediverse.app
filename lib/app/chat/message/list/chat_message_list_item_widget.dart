@@ -25,7 +25,7 @@ class ChatMessageListItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     IChatMessageBloc messageBloc = IChatMessageBloc.of(context, listen: true);
 
-    var myAccountBloc = IMyAccountBloc.of(context, listen: true);
+    var myAccountBloc = IMyAccountBloc.of(context, listen: false);
 
     var deviceWidth = MediaQuery.of(context).size.width;
 
