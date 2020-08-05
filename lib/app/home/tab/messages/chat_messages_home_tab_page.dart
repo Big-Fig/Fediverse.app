@@ -1,11 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/chat/list/chat_list_container_bloc.dart';
-import 'package:fedi/app/chat/list/chat_list_container_bloc_impl.dart';
 import 'package:fedi/app/chat/list/chat_list_tap_to_load_overlay_widget.dart';
-import 'package:fedi/app/chat/list/chat_list_widget.dart';
 import 'package:fedi/app/chat/start/start_chat_page.dart';
+import 'package:fedi/app/chat/with_last_message/list/chat_with_last_message_list_container_bloc.dart';
+import 'package:fedi/app/chat/with_last_message/list/chat_with_last_message_list_container_bloc_impl.dart';
+import 'package:fedi/app/chat/with_last_message/list/chat_with_last_message_list_widget.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 import 'package:fedi/app/search/search_page.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
@@ -67,16 +67,18 @@ class ChatMessagesHomeTabPage extends StatelessWidget {
             ),
           ],
           providerBuilder: (context, child) =>
-              DisposableProvider<IChatListContainerBloc>(
+              DisposableProvider<IChatWithLastMessageListContainerBloc>(
                 create: (context) =>
-                    ChatsListContainerBloc.createFromContext(context),
+                    ChatWithLastMessageListContainerBloc.createFromContext(
+                        context),
                 child: Builder(builder: (context) {
-                  var chatsListBloc =
-                      IChatListContainerBloc.of(context, listen: false);
+                  var chatsListBloc = IChatWithLastMessageListContainerBloc.of(
+                      context,
+                      listen: false);
 
                   return MultiProvider(
                     providers: [
-                      Provider.value(value: chatsListBloc.chatListService),
+                      Provider.value(value: chatsListBloc.chatListBloc),
                       Provider.value(value: chatsListBloc.chatPaginationBloc),
                       Provider.value(
                           value: chatsListBloc.chatPaginationListBloc),
@@ -142,8 +144,8 @@ class ChatMessagesHomeTabPage extends StatelessWidget {
         },
       );
 
-  Widget buildPleromaBody() => ChatListWidget(
-        key: PageStorageKey("ChatsListWidget"),
+  Widget buildPleromaBody() => ChatWithLastMessageListWidget(
+        key: PageStorageKey("ChatWithLastMessageListWidget"),
       );
 
   Center buildMastodonBody(BuildContext context) {

@@ -1,10 +1,12 @@
 import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/poll/poll_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/collapsible/collapsible_model.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/pleroma/mention/pleroma_mention_model.dart';
+import 'package:fedi/pleroma/poll/pleroma_poll_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -70,6 +72,12 @@ abstract class IStatusBloc implements Disposable, ICollapsibleItem {
   List<IPleromaMediaAttachment> get mediaAttachments;
 
   Stream<List<IPleromaMediaAttachment>> get mediaAttachmentsStream;
+
+  IPleromaPoll get poll;
+
+  Stream<IPleromaPoll> get pollStream;
+
+  IPollBloc get pollBloc;
 
   List<IPleromaStatusEmojiReaction> get pleromaEmojiReactions;
 
@@ -148,17 +156,17 @@ abstract class IStatusBloc implements Disposable, ICollapsibleItem {
 
   Stream<bool> get nsfwSensitiveStream;
 
-  bool get nsfwSensitiveAndDisplayEnabled;
+  bool get nsfwSensitiveAndDisplayNsfwContentEnabled;
 
-  Stream<bool> get nsfwSensitiveAndDisplayEnabledStream;
+  Stream<bool> get nsfwSensitiveAndDisplayNsfwContentEnabledStream;
 
   bool get containsSpoiler;
 
   Stream<bool> get containsSpoilerStream;
 
-  bool get containsSpoilerAndDisplayEnabled;
+  bool get containsSpoilerAndDisplaySpoilerContentEnabled;
 
-  Stream<bool> get containsSpoilerAndDisplayEnabledStream;
+  Stream<bool> get containsSpoilerAndDisplaySpoilerContentEnabledStream;
 
   void changeDisplayNsfwSensitive(bool display);
 
@@ -187,4 +195,6 @@ abstract class IStatusBloc implements Disposable, ICollapsibleItem {
   Future<IStatus> togglePin();
 
   Future<IPleromaStatus> toggleEmojiReaction({@required String emoji});
+
+  Future onPollUpdated(IPleromaPoll poll);
 }

@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fedi/app/status/nsfw/status_nsfw_warning_widget.dart';
+import 'package:fedi/app/status/nsfw/status_nsfw_warning_overlay_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
@@ -41,16 +41,19 @@ class StatusListItemMediaWidget extends StatelessWidget {
     var mediaAttachment = Provider.of<IPleromaMediaAttachment>(context);
     var previewUrl = mediaAttachment.previewUrl;
     return StreamBuilder<bool>(
-        stream: statusBloc.nsfwSensitiveAndDisplayEnabledStream,
-        initialData: statusBloc.nsfwSensitiveAndDisplayEnabled,
+        stream: statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabledStream,
+        initialData: statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabled,
         builder: (context, snapshot) {
-          var nsfwSensitiveAndDisplayEnabled = snapshot.data;
+          var nsfwSensitiveAndDisplayNsfwContentEnabled = snapshot.data;
 
-          if (nsfwSensitiveAndDisplayEnabled) {
+          var child = mediaAttachmentPreviewUrlWidget(previewUrl, context);
+          if (nsfwSensitiveAndDisplayNsfwContentEnabled) {
             // todo: display all medias in list
-            return mediaAttachmentPreviewUrlWidget(previewUrl, context);
+            return child;
           } else {
-            return StatusNsfwWarningWidget();
+            return StatusNsfwWarningOverlayWidget(
+              child: child,
+            );
           }
         });
   }

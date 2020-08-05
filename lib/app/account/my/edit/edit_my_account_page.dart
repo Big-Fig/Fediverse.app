@@ -32,7 +32,7 @@ class EditMyAccountPage extends StatelessWidget {
             buildSaveAppBarAction(editMyAccountBloc),
           ],
         ),
-        body: EditMyAccountWidget(),
+        body: SafeArea(child: EditMyAccountWidget()),
       ),
     );
   }

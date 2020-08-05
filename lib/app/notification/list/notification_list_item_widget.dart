@@ -6,7 +6,7 @@ import 'package:fedi/app/account/details/account_details_page.dart';
 import 'package:fedi/app/account/display_name/account_display_name_widget.dart';
 import 'package:fedi/app/chat/chat_page.dart';
 import 'package:fedi/app/chat/repository/chat_repository.dart';
-import 'package:fedi/app/emoji/emoji_text_helper.dart';
+import 'package:fedi/app/emoji/text/emoji_text_helper.dart';
 import 'package:fedi/app/html/html_text_helper.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/notification/created_at/notification_created_at_widget.dart';

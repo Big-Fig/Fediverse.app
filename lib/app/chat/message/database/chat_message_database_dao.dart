@@ -19,7 +19,8 @@ var _accountAliasId = "account";
   "findLocalIdByRemoteId": "SELECT id FROM db_chat_messages WHERE remote_id = "
       ":remoteId;",
 })
-class ChatMessageDao extends DatabaseAccessor<AppDatabase> with _$ChatMessageDaoMixin {
+class ChatMessageDao extends DatabaseAccessor<AppDatabase>
+    with _$ChatMessageDaoMixin {
   @override
   final AppDatabase db;
   $DbAccountsTable accountAlias;
@@ -61,21 +62,24 @@ class ChatMessageDao extends DatabaseAccessor<AppDatabase> with _$ChatMessageDao
   }
 
   JoinedSelectStatement<Table, DataClass> _findById(int id) =>
-      (select(db.dbChatMessages)..where((chatMessage) => chatMessage.id.equals(id))).join(
-          populateChatMessageJoin());
-
-  JoinedSelectStatement<Table, DataClass> _findByRemoteId(String remoteId) =>
-      (select(db.dbChatMessages)..where((chatMessage) => chatMessage.remoteId.like(remoteId)))
+      (select(db.dbChatMessages)
+            ..where((chatMessage) => chatMessage.id.equals(id)))
           .join(populateChatMessageJoin());
 
-  Future<int> insert(Insertable<DbChatMessage> entity, {InsertMode mode}) async =>
+  JoinedSelectStatement<Table, DataClass> _findByRemoteId(String remoteId) =>
+      (select(db.dbChatMessages)
+            ..where((chatMessage) => chatMessage.remoteId.like(remoteId)))
+          .join(populateChatMessageJoin());
+
+  Future<int> insert(Insertable<DbChatMessage> entity,
+          {InsertMode mode}) async =>
       into(db.dbChatMessages).insert(entity, mode: mode);
 
   Future<int> upsert(Insertable<DbChatMessage> entity) async =>
       into(db.dbChatMessages).insert(entity, mode: InsertMode.insertOrReplace);
 
-  Future insertAll(
-          Iterable<Insertable<DbChatMessage>> entities, InsertMode mode) async =>
+  Future insertAll(Iterable<Insertable<DbChatMessage>> entities,
+          InsertMode mode) async =>
       await batch((batch) {
         batch.insertAll(db.dbChatMessages, entities, mode: mode);
       });
@@ -97,10 +101,8 @@ class ChatMessageDao extends DatabaseAccessor<AppDatabase> with _$ChatMessageDao
     return localId;
   }
 
-  SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> startSelectQuery() =>
-      (select(db.dbChatMessages));
-
-
+  SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage>
+      startSelectQuery() => (select(db.dbChatMessages));
 
   JoinedSelectStatement addChatWhere(
           JoinedSelectStatement query, String chatRemoteId) =>
@@ -108,8 +110,15 @@ class ChatMessageDao extends DatabaseAccessor<AppDatabase> with _$ChatMessageDao
         ..where(CustomExpression<bool, BoolType>(
             "db_chat_messages.chat_remote_id = '$chatRemoteId'"));
 
+  JoinedSelectStatement addChatsWhere(
+          JoinedSelectStatement query, List<String> chatRemoteIds) =>
+      query
+        ..where(CustomExpression<bool, BoolType>(
+            "db_chat_messages.chat_remote_id IN ("
+            "${chatRemoteIds.join(", ")})"));
 
-  SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> addCreatedAtBoundsWhere(
+  SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage>
+      addCreatedAtBoundsWhere(
     SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query, {
     @required DateTime minimumDateTimeExcluding,
     @required DateTime maximumDateTimeExcluding,
@@ -119,17 +128,18 @@ class ChatMessageDao extends DatabaseAccessor<AppDatabase> with _$ChatMessageDao
     assert(minimumExist || maximumExist);
 
     if (minimumExist) {
-      query = query..where((chatMessage) => chatMessage.createdAt
-          .isBiggerThanValue(minimumDateTimeExcluding));
+      query = query
+        ..where((chatMessage) =>
+            chatMessage.createdAt.isBiggerThanValue(minimumDateTimeExcluding));
     }
     if (maximumExist) {
-      query = query..where((chatMessage) => chatMessage.createdAt
-          .isSmallerThanValue(maximumDateTimeExcluding));
+      query = query
+        ..where((chatMessage) =>
+            chatMessage.createdAt.isSmallerThanValue(maximumDateTimeExcluding));
     }
 
     return query;
   }
-
 
   SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> orderBy(
           SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query,
@@ -142,7 +152,7 @@ class ChatMessageDao extends DatabaseAccessor<AppDatabase> with _$ChatMessageDao
                     case ChatMessageOrderByType.remoteId:
                       expression = item.remoteId;
                       break;
-                      case ChatMessageOrderByType.createdAt:
+                    case ChatMessageOrderByType.createdAt:
                       expression = item.createdAt;
                       break;
                   }
@@ -175,5 +185,9 @@ class ChatMessageDao extends DatabaseAccessor<AppDatabase> with _$ChatMessageDao
         accountAlias.remoteId.equalsExp(dbChatMessages.accountRemoteId),
       ),
     ];
+  }
+
+  void addGroupByChatId(JoinedSelectStatement<Table, DataClass> query) {
+    query.groupBy([dbChatMessages.chatRemoteId]);
   }
 }

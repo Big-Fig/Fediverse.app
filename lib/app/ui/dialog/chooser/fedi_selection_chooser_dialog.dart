@@ -97,10 +97,11 @@ class FediSelectionChooserDialogBody extends StatelessWidget {
               style: FediTextStyles.dialogContentDarkGrey,
             ),
           ),
-        Center(
+        Align(
+          alignment: Alignment.centerLeft,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
+            mainAxisSize: MainAxisSize.max,
             children: [
               ...actions
                   .map((action) => _buildAction(

@@ -3,7 +3,7 @@ import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/chat/message/chat_message_bloc.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/chat/message/repository/chat_message_repository.dart';
-import 'package:fedi/app/emoji/emoji_text_helper.dart';
+import 'package:fedi/app/emoji/text/emoji_text_helper.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';

@@ -13,6 +13,16 @@ class CodegenLoader extends AssetLoader{
 
     static const Map<String,dynamic> en_US = {
   "app": {
+    "poll": {
+      "metadata": {
+        "expires": {
+          "expired": "Ended {} ago",
+          "not_expired": "Ends at {}"
+        },
+        "total_votes": "Total votes: {}"
+      },
+      "vote": "Vote"
+    },
     "datetime": {
       "title": "Schedule",
       "picker": {
@@ -624,13 +634,15 @@ class CodegenLoader extends AssetLoader{
         }
       },
       "nsfw": {
+        "desc": "Status contains NSFW content",
         "action": {
-          "view": "Tap to view NSFW content"
+          "view": "Tap to view"
         }
       },
       "spoiler": {
+        "desc": "Status contains spoilers",
         "action": {
-          "view": "Tap to view spoiler content"
+          "view": "Tap to view"
         }
       },
       "copy_link": {

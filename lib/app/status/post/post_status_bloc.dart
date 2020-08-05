@@ -1,6 +1,5 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/message/post_message_bloc.dart';
-import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
@@ -16,8 +15,6 @@ abstract class IPostStatusBloc implements IPostMessageBloc {
 
   Stream<List<String>> get mentionedAcctsStream;
 
-  FocusNode get focusNode;
-
   bool get isPossibleToChangeVisibility;
 
   PleromaVisibility get visibility;
@@ -27,10 +24,6 @@ abstract class IPostStatusBloc implements IPostMessageBloc {
   bool get isNsfwSensitiveEnabled;
 
   Stream<bool> get isNsfwSensitiveEnabledStream;
-
-  PostStatusSelectedAction get selectedAction;
-
-  Stream<PostStatusSelectedAction> get selectedActionStream;
 
   void addMentionByAccount(IAccount account);
 

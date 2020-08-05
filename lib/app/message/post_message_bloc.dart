@@ -1,4 +1,5 @@
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
+import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +9,7 @@ abstract class IPostMessageBloc implements Disposable {
       Provider.of<IPostMessageBloc>(context, listen: listen);
 
   TextEditingController get inputTextController;
+  FocusNode get inputFocusNode;
 
   IUploadMediaAttachmentsCollectionBloc get mediaAttachmentsBloc;
 
@@ -21,11 +23,19 @@ abstract class IPostMessageBloc implements Disposable {
 
   Future<bool> post();
 
-  void appendText(String textToAppend);
+  void appendText(String textToAppend, {bool requestFocus = true});
 
-  bool get isAttachActionSelected;
+  PostStatusSelectedAction get selectedAction;
 
-  Stream<bool> get isAttachActionSelectedStream;
+  Stream<PostStatusSelectedAction> get selectedActionStream;
 
   void toggleAttachActionSelection();
+
+  void toggleEmojiActionSelection();
+
+
+  Stream<bool> get isAnySelectedActionVisibleStream;
+  bool get isAnySelectedActionVisible;
+
+  void clearSelectedAction();
 }

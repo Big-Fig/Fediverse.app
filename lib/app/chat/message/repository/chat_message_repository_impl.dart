@@ -67,20 +67,21 @@ class ChatMessageRepository extends AsyncInitLoadingBloc
       mapDataClassToItem(await dao.findByRemoteId(remoteId));
 
   @override
-  Future<List<DbChatMessagePopulatedWrapper>> getChatMessages(
-      {@required IChat onlyInChat,
-      @required IChatMessage olderThanChatMessage,
-      @required IChatMessage newerThanChatMessage,
-      @required int limit,
-      @required int offset,
-      @required ChatMessageOrderingTermData orderingTermData}) async {
+  Future<List<DbChatMessagePopulatedWrapper>> getChatMessages({
+    @required List<IChat> onlyInChats,
+    @required IChatMessage olderThanChatMessage,
+    @required IChatMessage newerThanChatMessage,
+    @required int limit,
+    @required int offset,
+    @required ChatMessageOrderingTermData orderingTermData,
+  }) async {
     var query = createQuery(
         olderThanChatMessage: olderThanChatMessage,
         newerThanChatMessage: newerThanChatMessage,
         limit: limit,
         offset: offset,
         orderingTermData: orderingTermData,
-        onlyInChat: onlyInChat);
+        onlyInChats: onlyInChats);
 
     return dao
         .typedResultListToPopulated(await query.get())
@@ -90,14 +91,14 @@ class ChatMessageRepository extends AsyncInitLoadingBloc
 
   @override
   Stream<List<DbChatMessagePopulatedWrapper>> watchChatMessages(
-      {@required IChat onlyInChat,
+      {@required List<IChat> onlyInChats,
       @required IChatMessage olderThanChatMessage,
       @required IChatMessage newerThanChatMessage,
       @required int limit,
       @required int offset,
       @required ChatMessageOrderingTermData orderingTermData}) {
     var query = createQuery(
-        onlyInChat: onlyInChat,
+        onlyInChats: onlyInChats,
         olderThanChatMessage: olderThanChatMessage,
         newerThanChatMessage: newerThanChatMessage,
         limit: limit,
@@ -110,20 +111,19 @@ class ChatMessageRepository extends AsyncInitLoadingBloc
   }
 
   JoinedSelectStatement createQuery(
-      {@required IChat onlyInChat,
+      {@required List<IChat> onlyInChats,
       @required IChatMessage olderThanChatMessage,
       @required IChatMessage newerThanChatMessage,
       @required int limit,
       @required int offset,
       @required ChatMessageOrderingTermData orderingTermData}) {
     _logger.fine(() => "createQuery \n"
-        "\t onlyInChat=$onlyInChat\n"
+        "\t onlyInChats=$onlyInChats\n"
         "\t olderThanChatMessage=$olderThanChatMessage\n"
         "\t newerThanChatMessage=$newerThanChatMessage\n"
         "\t limit=$limit\n"
         "\t offset=$offset\n"
         "\t orderingTermData=$orderingTermData\n");
-
 
     var query = dao.startSelectQuery();
 
@@ -143,8 +143,13 @@ class ChatMessageRepository extends AsyncInitLoadingBloc
 
     var finalQuery = joinQuery;
 
-    if (onlyInChat != null) {
-      finalQuery = dao.addChatWhere(finalQuery, onlyInChat.remoteId);
+    if (onlyInChats != null) {
+      if (onlyInChats.length == 1) {
+        finalQuery = dao.addChatWhere(finalQuery, onlyInChats.first.remoteId);
+      } else {
+        finalQuery = dao.addChatsWhere(
+            finalQuery, onlyInChats.map((chat) => chat.remoteId));
+      }
     }
 
     assert(!(limit == null && offset != null));
@@ -258,7 +263,7 @@ class ChatMessageRepository extends AsyncInitLoadingBloc
 
   @override
   Future<DbChatMessagePopulatedWrapper> getChatMessage(
-      {@required IChat onlyInChat,
+      {@required List<IChat> onlyInChats,
       @required IChatMessage olderThanChatMessage,
       @required IChatMessage newerThanChatMessage,
       @required ChatMessageOrderingTermData orderingTermData}) async {
@@ -268,7 +273,7 @@ class ChatMessageRepository extends AsyncInitLoadingBloc
         limit: 1,
         offset: null,
         orderingTermData: orderingTermData,
-        onlyInChat: onlyInChat);
+        onlyInChats: onlyInChats);
 
     return mapDataClassToItem(
         dao.typedResultToPopulated(await query.getSingle()));
@@ -276,12 +281,12 @@ class ChatMessageRepository extends AsyncInitLoadingBloc
 
   @override
   Stream<DbChatMessagePopulatedWrapper> watchChatMessage(
-      {@required IChat onlyInChat,
+      {@required List<IChat> onlyInChats,
       @required IChatMessage olderThanChatMessage,
       @required IChatMessage newerThanChatMessage,
       @required ChatMessageOrderingTermData orderingTermData}) {
     var query = createQuery(
-        onlyInChat: onlyInChat,
+        onlyInChats: onlyInChats,
         olderThanChatMessage: olderThanChatMessage,
         newerThanChatMessage: newerThanChatMessage,
         limit: 1,
@@ -297,21 +302,57 @@ class ChatMessageRepository extends AsyncInitLoadingBloc
   @override
   Future<IChatMessage> getChatLastChatMessage({@required IChat chat}) =>
       getChatMessage(
-          onlyInChat: chat,
-          olderThanChatMessage: null,
-          newerThanChatMessage: null,
-          orderingTermData: ChatMessageOrderingTermData(
-              orderingMode: OrderingMode.desc,
-              orderByType: ChatMessageOrderByType.createdAt));
+        onlyInChats: [chat],
+        olderThanChatMessage: null,
+        newerThanChatMessage: null,
+        orderingTermData: ChatMessageOrderingTermData(
+          orderingMode: OrderingMode.desc,
+          orderByType: ChatMessageOrderByType.createdAt,
+        ),
+      );
+
+  @override
+  Future<Map<IChat, IChatMessage>> getChatsLastChatMessage(
+      {@required List<IChat> chats}) async {
+    var query = createQuery(
+      olderThanChatMessage: null,
+      newerThanChatMessage: null,
+      orderingTermData: ChatMessageOrderingTermData(
+        orderingMode: OrderingMode.desc,
+        orderByType: ChatMessageOrderByType.createdAt,
+      ),
+      onlyInChats: null,
+      limit: null,
+      offset: null,
+    );
+    dao.addGroupByChatId(query);
+
+    var chatMessages = dao
+        .typedResultListToPopulated(await query.get())
+        .map(mapDataClassToItem)
+        .toList();
+
+    Map<IChat, IChatMessage> result = {};
+
+    chats.forEach((chat) {
+      result[chat] = chatMessages.firstWhere(
+        (chatMessage) => chatMessage.chatRemoteId == chat.remoteId,
+        orElse: () => null,
+      );
+    });
+
+    return result;
+  }
 
   @override
   Stream<IChatMessage> watchChatLastChatMessage({@required IChat chat}) =>
       watchChatMessage(
-          onlyInChat: chat,
-          olderThanChatMessage: null,
-          newerThanChatMessage: null,
-          orderingTermData: ChatMessageOrderingTermData(
-              orderingMode: OrderingMode.desc,
-              orderByType: ChatMessageOrderByType.createdAt));
-
+        onlyInChats: [chat],
+        olderThanChatMessage: null,
+        newerThanChatMessage: null,
+        orderingTermData: ChatMessageOrderingTermData(
+          orderingMode: OrderingMode.desc,
+          orderByType: ChatMessageOrderByType.createdAt,
+        ),
+      );
 }

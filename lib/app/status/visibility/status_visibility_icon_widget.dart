@@ -38,16 +38,16 @@ class StatusVisibilityIconWidget extends StatelessWidget {
         return FediIcons.world;
         break;
       case PleromaVisibility.UNLISTED:
-        return Icons.lock_open;
+        return FediIcons.unlisted;
         break;
       case PleromaVisibility.DIRECT:
-        return Icons.message;
+        return FediIcons.message;
         break;
       case PleromaVisibility.LIST:
         return Icons.list;
         break;
       case PleromaVisibility.PRIVATE:
-        return Icons.lock;
+        return FediIcons.private;
         break;
     }
     throw "Not supported visibility $visibility";

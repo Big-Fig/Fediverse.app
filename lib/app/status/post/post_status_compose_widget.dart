@@ -1,7 +1,9 @@
 import 'package:fedi/app/account/my/avatar/my_account_avatar_widget.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_widget.dart';
 import 'package:fedi/app/message/action/post_message_attach_action_widget.dart';
-import 'package:fedi/app/message/post_message_attach_widget.dart';
+import 'package:fedi/app/message/action/post_message_emoji_action_widget.dart';
+import 'package:fedi/app/message/post_message_bloc.dart';
+import 'package:fedi/app/message/post_message_selected_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_mention_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_nsfw_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_post_text_action_widget.dart';
@@ -64,15 +66,17 @@ class PostStatusComposeWidget extends StatelessWidget {
             scrollable: false,
             heightOnKeyboardOpen: null,
           ),
-          if (!displayAccountAvatar && expanded) FediLightGreyDivider(),
-          buildActions(),
-          PostMessageAttachWidget()
+          if (!displayAccountAvatar && expanded)
+            FediLightGreyDivider(),
+          buildActions(context),
+          PostMessageSelectedActionWidget()
         ],
       ),
     );
   }
 
-  Widget buildActions() {
+  Widget buildActions(BuildContext context) {
+    var postMessageBloc = IPostMessageBloc.of(context, listen: false);
     return Padding(
       padding: FediPadding.verticalBigPadding,
       child: Row(
@@ -87,7 +91,17 @@ class PostStatusComposeWidget extends StatelessWidget {
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
                   children: [
-                    PostMessageAttachActionWidget(),
+                    StreamBuilder<String>(
+                        stream: postMessageBloc.inputTextStream,
+                        initialData: postMessageBloc.inputText,
+                        builder: (context, snapshot) {
+                          var inputText = snapshot.data;
+                          if (inputText?.trim()?.isNotEmpty == true) {
+                            return PostMessageEmojiActionWidget();
+                          } else {
+                            return PostMessageAttachActionWidget();
+                          }
+                        }),
                     PostStatusVisibilityActionWidget(),
                     PostStatusScheduleActionWidget(),
                     PostStatusMentionActionWidget(),

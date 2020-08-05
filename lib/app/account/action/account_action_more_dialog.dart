@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/action/account_report_action.dart';
 import 'package:fedi/app/ui/dialog/chooser/fedi_chooser_dialog.dart';
+import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
@@ -39,6 +40,7 @@ class AccountActionMoreDialogBody extends StatelessWidget {
       content: "${accountBloc.acct}",
       actions: [
         DialogAction(
+          icon: FediIcons.mute,
           label: relationship.muting
               ? tr("app.account.action.unmute")
               : tr("app.account.action.mute"),
@@ -48,6 +50,7 @@ class AccountActionMoreDialogBody extends StatelessWidget {
           },
         ),
         DialogAction(
+          icon: FediIcons.block,
           label: relationship.blocking
               ? tr("app.account.action.unblock")
               : tr("app.account.action.block"),
@@ -57,6 +60,7 @@ class AccountActionMoreDialogBody extends StatelessWidget {
           },
         ),
         DialogAction(
+            icon: FediIcons.report,
             label: tr("app.account.action.report.label"),
             onAction: () async {
               var success = await doAsyncActionReport(

@@ -18,8 +18,16 @@ import 'package:fedi/app/chat/message/repository/chat_message_repository.dart';
 import 'package:fedi/app/chat/message/repository/chat_message_repository_impl.dart';
 import 'package:fedi/app/chat/repository/chat_repository.dart';
 import 'package:fedi/app/chat/repository/chat_repository_impl.dart';
+import 'package:fedi/app/chat/with_last_message/chat_with_last_message_repository.dart';
+import 'package:fedi/app/chat/with_last_message/chat_with_last_message_repository_impl.dart';
 import 'package:fedi/app/conversation/repository/conversation_repository.dart';
 import 'package:fedi/app/conversation/repository/conversation_repository_impl.dart';
+import 'package:fedi/app/database/app_database_service_impl.dart';
+import 'package:fedi/app/emoji/picker/category/custom/emoji_picker_custom_image_url_category_local_preference_bloc.dart';
+import 'package:fedi/app/emoji/picker/category/custom/emoji_picker_custom_image_url_category_local_preference_bloc_impl.dart';
+import 'package:fedi/app/emoji/picker/category/recent/emoji_picker_recent_category_local_preference_bloc.dart';
+import 'package:fedi/app/emoji/picker/category/recent/emoji_picker_recent_category_local_preference_bloc_impl.dart';
+import 'package:fedi/app/notification/push/notification_push_loader_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_bloc_impl.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository_impl.dart';
@@ -39,7 +47,6 @@ import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository
 import 'package:fedi/app/timeline/settings/local_preferences/timeline_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/settings/local_preferences/timeline_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
-import 'package:fedi/app/database/app_database_service_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service_impl.dart';
@@ -51,12 +58,16 @@ import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_service_impl.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_service.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_service_impl.dart';
+import 'package:fedi/pleroma/emoji/pleroma_emoji_service.dart';
+import 'package:fedi/pleroma/emoji/pleroma_emoji_service_impl.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_service.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_service_impl.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service_impl.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_service.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_service_impl.dart';
+import 'package:fedi/pleroma/poll/pleroma_poll_service.dart';
+import 'package:fedi/pleroma/poll/pleroma_poll_service_impl.dart';
 import 'package:fedi/pleroma/push/pleroma_push_model.dart';
 import 'package:fedi/pleroma/push/pleroma_push_service.dart';
 import 'package:fedi/pleroma/push/pleroma_push_service_impl.dart';
@@ -120,9 +131,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
 
     var userAtHost = currentInstance.userAtHost;
 
-
-    var recentSearchLocalPreferenceBloc =
-    RecentSearchLocalPreferenceBloc(
+    var recentSearchLocalPreferenceBloc = RecentSearchLocalPreferenceBloc(
         currentInstance.userAtHost, preferencesService);
 
     addDisposable(disposable: recentSearchLocalPreferenceBloc);
@@ -182,6 +191,14 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: notificationRepository);
     await globalProviderService
         .asyncInitAndRegister<INotificationRepository>(notificationRepository);
+
+    var chatWithLastMessageRepository = ChatWithLastMessageRepository(
+      chatRepository: chatRepository,
+      chatMessageRepository: chatMessageRepository,
+    );
+    addDisposable(disposable: chatWithLastMessageRepository);
+    await globalProviderService.asyncInitAndRegister<
+        IChatWithLastMessageRepository>(chatWithLastMessageRepository);
 
     var restService = RestService(baseUrl: currentInstance.url);
     addDisposable(disposable: restService);
@@ -276,6 +293,18 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         IPleromaNotificationService>(pleromaNotificationService);
     addDisposable(disposable: pleromaNotificationService);
 
+    var pleromaPollService =
+        PleromaPollService(restService: pleromaAuthRestService);
+    await globalProviderService
+        .asyncInitAndRegister<IPleromaPollService>(pleromaPollService);
+    addDisposable(disposable: pleromaPollService);
+
+    var pleromaEmojiService =
+        PleromaEmojiService(restService: pleromaAuthRestService);
+    await globalProviderService
+        .asyncInitAndRegister<IPleromaEmojiService>(pleromaEmojiService);
+    addDisposable(disposable: pleromaEmojiService);
+
     var pleromaPushService = PleromaPushService(
         keys: PleromaPushSubscriptionKeys(
             p256dh:
@@ -291,6 +320,24 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: myAccountLocalPreferenceBloc);
     await globalProviderService.asyncInitAndRegister<
         IMyAccountLocalPreferenceBloc>(myAccountLocalPreferenceBloc);
+
+    var emojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc =
+        EmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc(
+            preferencesService, userAtHost);
+    addDisposable(
+        disposable: emojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc);
+    await globalProviderService.asyncInitAndRegister<
+            IEmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc>(
+        emojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc);
+
+    var customEmojiPickerRecentCategoryLocalPreferenceBloc =
+    EmojiPickerRecentCategoryLocalPreferenceBloc(
+            preferencesService, userAtHost);
+    addDisposable(
+        disposable: customEmojiPickerRecentCategoryLocalPreferenceBloc);
+    await globalProviderService.asyncInitAndRegister<
+        IEmojiPickerRecentCategoryLocalPreferenceBloc>(
+        customEmojiPickerRecentCategoryLocalPreferenceBloc);
 
     var timelineLocalPreferenceBloc =
         TimelineSettingsLocalPreferencesBloc(preferencesService, userAtHost);
@@ -356,6 +403,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc);
 
     addDisposable(disposable: notificationPushLoaderBloc);
+    await globalProviderService.asyncInitAndRegister<
+        INotificationPushLoaderBloc>(notificationPushLoaderBloc);
 
     var pleromaWebSocketsService = PleromaWebSocketsService(
         webSocketsService: webSocketsService,

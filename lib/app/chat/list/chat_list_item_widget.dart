@@ -5,7 +5,7 @@ import 'package:fedi/app/chat/chat_bloc.dart';
 import 'package:fedi/app/chat/chat_page.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/chat/title/chat_title_widget.dart';
-import 'package:fedi/app/emoji/emoji_text_helper.dart';
+import 'package:fedi/app/emoji/text/emoji_text_helper.dart';
 import 'package:fedi/app/html/html_text_helper.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';

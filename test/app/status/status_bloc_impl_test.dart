@@ -59,7 +59,7 @@ void main() {
         accountRepository: accountRepository,
         pleromaAccountService: pleromaAccountServiceMock,
         pleromaStatusEmojiReactionService:
-            pleromaStatusEmojiReactionServiceMock);
+            pleromaStatusEmojiReactionServiceMock, pleromaPollService: null);
   });
 
   tearDown(() async {
@@ -708,7 +708,7 @@ void main() {
     var listenedValue;
 
     var subscription =
-        statusBloc.nsfwSensitiveAndDisplayEnabledStream.listen((newValue) {
+        statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabledStream.listen((newValue) {
       listenedValue = newValue;
     });
     // hack to execute notify callbacks
@@ -716,21 +716,21 @@ void main() {
 
     await _update(status.copyWith(nsfwSensitive: true));
 
-    expect(statusBloc.nsfwSensitiveAndDisplayEnabled, false);
+    expect(statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabled, false);
     expect(listenedValue, false);
 
     statusBloc.changeDisplayNsfwSensitive(true);
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 
-    expect(statusBloc.nsfwSensitiveAndDisplayEnabled, true);
+    expect(statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabled, true);
     expect(listenedValue, true);
 
     statusBloc.changeDisplayNsfwSensitive(false);
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 
-    expect(statusBloc.nsfwSensitiveAndDisplayEnabled, false);
+    expect(statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabled, false);
     expect(listenedValue, false);
 
     await subscription.cancel();
@@ -765,7 +765,7 @@ void main() {
     var listenedValue;
 
     var subscription =
-        statusBloc.containsSpoilerAndDisplayEnabledStream.listen((newValue) {
+        statusBloc.containsSpoilerAndDisplaySpoilerContentEnabledStream.listen((newValue) {
       listenedValue = newValue;
     });
     // hack to execute notify callbacks
@@ -773,21 +773,21 @@ void main() {
 
     await _update(status.copyWith(spoilerText: "newSpoilerText"));
 
-    expect(statusBloc.containsSpoilerAndDisplayEnabled, false);
+    expect(statusBloc.containsSpoilerAndDisplaySpoilerContentEnabled, false);
     expect(listenedValue, false);
 
     statusBloc.changeDisplaySpoiler(true);
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 
-    expect(statusBloc.containsSpoilerAndDisplayEnabled, true);
+    expect(statusBloc.containsSpoilerAndDisplaySpoilerContentEnabled, true);
     expect(listenedValue, true);
 
     statusBloc.changeDisplaySpoiler(false);
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
 
-    expect(statusBloc.containsSpoilerAndDisplayEnabled, false);
+    expect(statusBloc.containsSpoilerAndDisplaySpoilerContentEnabled, false);
     expect(listenedValue, false);
 
     await subscription.cancel();

@@ -54,6 +54,14 @@ class FediIcons {
   static const IconData warning = IconData(0xe82f, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData loading = IconData(0xe830, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData heart_active = IconData(0xe831, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData block = IconData(0xe832, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData browser = IconData(0xe833, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData follow = IconData(0xe834, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData private = IconData(0xe836, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData report = IconData(0xe837, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData share = IconData(0xe838, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData unlisted = IconData(0xe839, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData mute = IconData(0xe83a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData alias = IconData(0xe865, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData audio_solid = IconData(0xe866, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData audio = IconData(0xe867, fontFamily: _kFontFam, fontPackage: _kFontPkg);

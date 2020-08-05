@@ -1,7 +1,9 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
-import 'package:fedi/app/emoji/emoji_text_helper.dart';
+import 'package:fedi/app/emoji/text/emoji_text_helper.dart';
 import 'package:fedi/app/html/html_text_helper.dart';
+import 'package:fedi/app/poll/poll_bloc.dart';
+import 'package:fedi/app/poll/poll_bloc_impl.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -10,6 +12,8 @@ import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/pleroma/mention/pleroma_mention_model.dart';
+import 'package:fedi/pleroma/poll/pleroma_poll_model.dart';
+import 'package:fedi/pleroma/poll/pleroma_poll_service.dart';
 import 'package:fedi/pleroma/status/emoji_reaction/pleroma_status_emoji_reaction_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service.dart';
@@ -42,11 +46,15 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
             isNeedWatchLocalRepositoryForUpdates,
         pleromaStatusEmojiReactionService:
             IPleromaStatusEmojiReactionService.of(context, listen: false),
+        pleromaPollService: IPleromaPollService.of(context, listen: false),
       );
 
   // ignore: close_sinks
   final BehaviorSubject<bool> _isCollapsedSubject =
       BehaviorSubject.seeded(true);
+
+  @override
+  IPollBloc pollBloc;
 
   @override
   bool get isPossibleToCollapse => _isContentTooBig(status.content);
@@ -99,6 +107,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   final IPleromaStatusService pleromaStatusService;
   final IPleromaAccountService pleromaAccountService;
   final IPleromaStatusEmojiReactionService pleromaStatusEmojiReactionService;
+  final IPleromaPollService pleromaPollService;
   final IStatusRepository statusRepository;
   final IAccountRepository accountRepository;
   final bool isNeedWatchLocalRepositoryForUpdates;
@@ -107,6 +116,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
     @required this.pleromaStatusService,
     @required this.pleromaAccountService,
     @required this.pleromaStatusEmojiReactionService,
+    @required this.pleromaPollService,
     @required this.statusRepository,
     @required this.accountRepository,
     @required
@@ -119,6 +129,24 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
     this.isNeedWatchLocalRepositoryForUpdates = true,
   }) : _statusSubject = BehaviorSubject.seeded(status) {
     _logger.finest(() => "required constructor ${status.remoteId}");
+
+    if (status.poll != null) {
+      pollBloc = PollBloc(
+        pleromaPollService: pleromaPollService,
+        poll: status.poll,
+      );
+      addDisposable(disposable: pollBloc);
+      addDisposable(streamSubscription: pollBloc.pollStream.listen((poll) {
+        if (this.poll != poll) {
+          onPollUpdated(poll);
+        }
+      }));
+      addDisposable(streamSubscription: pollStream.listen((poll) {
+        if (pollBloc.poll != poll) {
+          pollBloc.onPollUpdated(poll);
+        }
+      }));
+    }
 
     addDisposable(subject: _statusSubject);
     addDisposable(subject: _displayNsfwSensitiveSubject);
@@ -282,6 +310,13 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
       statusStream.map((status) => status.mediaAttachments).distinct();
 
   @override
+  IPleromaPoll get poll => status?.poll;
+
+  @override
+  Stream<IPleromaPoll> get pollStream =>
+      statusStream.map((status) => status.poll).distinct();
+
+  @override
   String get accountAvatar => account?.avatar;
 
   @override
@@ -435,8 +470,8 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
 
   @override
   Future<IStatus> toggleReblog() async {
-    _logger.finest(
-        () => "requestToggleReblog status.reblogged=${reblogOrOriginal.reblogged}");
+    _logger.finest(() =>
+        "requestToggleReblog status.reblogged=${reblogOrOriginal.reblogged}");
     IPleromaStatus remoteStatus;
     if (reblogOrOriginal.reblogged) {
       remoteStatus = await pleromaStatusService.unReblogStatus(
@@ -446,8 +481,8 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
           statusRemoteId: reblogOrOriginal.remoteId);
     }
 
-    await statusRepository.upsertRemoteStatus(remoteStatus, listRemoteId: null,
-        conversationRemoteId: null);
+    await statusRepository.upsertRemoteStatus(remoteStatus,
+        listRemoteId: null, conversationRemoteId: null);
 
     return statusRepository.findByRemoteId(remoteStatus.id);
   }
@@ -646,7 +681,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
       spoilerTextStream.map((spoilerText) => spoilerText?.isNotEmpty == true);
 
   @override
-  bool get containsSpoilerAndDisplayEnabled {
+  bool get containsSpoilerAndDisplaySpoilerContentEnabled {
     if (containsSpoiler) {
       return _displaySpoilerSubject.value;
     } else {
@@ -655,7 +690,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   }
 
   @override
-  Stream<bool> get containsSpoilerAndDisplayEnabledStream =>
+  Stream<bool> get containsSpoilerAndDisplaySpoilerContentEnabledStream =>
       Rx.combineLatest2(containsSpoilerStream, _displaySpoilerSubject.stream,
           (containsSpoiler, displaySpoiler) {
         if (containsSpoiler) {
@@ -666,7 +701,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
       });
 
   @override
-  bool get nsfwSensitiveAndDisplayEnabled {
+  bool get nsfwSensitiveAndDisplayNsfwContentEnabled {
     if (nsfwSensitive) {
       return _displayNsfwSensitiveSubject.value;
     } else {
@@ -676,7 +711,8 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
 
   @override
   @override
-  Stream<bool> get nsfwSensitiveAndDisplayEnabledStream => Rx.combineLatest2(
+  Stream<bool> get nsfwSensitiveAndDisplayNsfwContentEnabledStream =>
+      Rx.combineLatest2(
           nsfwSensitiveStream, _displayNsfwSensitiveSubject.stream,
           (nsfwSensitive, displaySpoiler) {
         if (nsfwSensitive) {
@@ -703,4 +739,13 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   // todo: rework with mixin
   @override
   bool get isHaveReblog => status.isHaveReblog;
+
+  @override
+  Future onPollUpdated(IPleromaPoll poll) async {
+    var updatedLocalStatus = status.copyWith(poll: poll);
+    _statusSubject.add(updatedLocalStatus);
+
+    await statusRepository.updateById(
+        status.localId, dbStatusFromStatus(updatedLocalStatus));
+  }
 }

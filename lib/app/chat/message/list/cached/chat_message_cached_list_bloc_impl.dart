@@ -69,7 +69,7 @@ class ChatMessageListBloc extends DisposableOwner
         "\t olderThan=$olderThan");
 
     var messages = await chatMessageRepository.getChatMessages(
-        onlyInChat: chat,
+        onlyInChats: [chat],
         limit: limit,
         offset: null,
         orderingTermData: ChatMessageOrderingTermData(
@@ -86,7 +86,7 @@ class ChatMessageListBloc extends DisposableOwner
   @override
   Stream<List<IChatMessage>> watchLocalItemsNewerThanItem(IChatMessage item) {
     return chatMessageRepository.watchChatMessages(
-        onlyInChat: chat,
+        onlyInChats: [chat],
         limit: null,
         offset: null,
         orderingTermData: ChatMessageOrderingTermData(
