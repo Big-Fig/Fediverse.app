@@ -126,7 +126,7 @@ class ConversationListItemWidget extends StatelessWidget {
     String formattedText =
         HtmlTextHelper.extractRawStringFromHtmlString(status.content);
 
-    var myAccountBloc = IMyAccountBloc.of(context, listen: true);
+    var myAccountBloc = IMyAccountBloc.of(context, listen: false);
 
     if (myAccountBloc.checkIsStatusFromMe(status)) {
       formattedText = tr("app.conversation.preview.you", args: [formattedText]);
