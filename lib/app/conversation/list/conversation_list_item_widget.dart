@@ -34,7 +34,8 @@ class ConversationListItemWidget extends StatelessWidget {
       child: Container(
         height: FediSizes.chatListItemPreviewHeight,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: FediSizes.bigPadding,
+          padding: EdgeInsets.symmetric(
+              horizontal: FediSizes.bigPadding,
               vertical: FediSizes.smallPadding + FediSizes.bigPadding),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,8 +102,8 @@ class ConversationListItemWidget extends StatelessWidget {
           if (content?.isNotEmpty != true) {
             var mediaAttachments = lastMessage.mediaAttachments;
             content = mediaAttachments
-                .map((mediaAttachment) => mediaAttachment.description)
-                .join(", ");
+                ?.map((mediaAttachment) => mediaAttachment.description)
+                ?.join(", ") ?? "";
           } else {
             content = extractContent(context, lastMessage, content);
           }
