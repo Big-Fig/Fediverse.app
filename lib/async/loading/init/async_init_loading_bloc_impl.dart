@@ -32,7 +32,9 @@ abstract class AsyncInitLoadingBloc extends AsyncLoadingService
   @override
   Future performAsyncInit() async {
     if (initLoadingState == AsyncInitLoadingState.notStarted) {
-      _isInitLoadingSubject.add(AsyncInitLoadingState.loading);
+      if (!_isInitLoadingSubject.isClosed) {
+        _isInitLoadingSubject.add(AsyncInitLoadingState.loading);
+      }
 
       return performLoading(internalAsyncInit).then((_) {
         if (!_isInitLoadingSubject.isClosed) {

@@ -3,7 +3,6 @@ import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.da
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
 import 'package:fedi/app/message/post_message_bloc_impl.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
-import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable.dart';
@@ -90,13 +89,13 @@ abstract class PostStatusBloc extends PostMessageBloc
     addDisposable(subject: scheduledAtSubject);
 
     var focusListener = () {
-      onFocusChange(focusNode.hasFocus);
+      onFocusChange(inputFocusNode.hasFocus);
     };
 
-    focusNode.addListener(focusListener);
+    inputFocusNode.addListener(focusListener);
 
     addDisposable(disposable: CustomDisposable(() {
-      focusNode.removeListener(focusListener);
+      inputFocusNode.removeListener(focusListener);
     }));
   }
 
@@ -189,8 +188,6 @@ abstract class PostStatusBloc extends PostMessageBloc
       (inputText, mentionedAccts) =>
           removeAcctsFromText(inputText, mentionedAccts));
 
-  @override
-  FocusNode focusNode = FocusNode();
 
   void onMentionedAccountsChanged() {
     var mentionedAccts = this.mentionedAccts;
@@ -380,7 +377,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   void clear() {
     super.clear();
     visibilitySubject.add(initialVisibility);
-    focusNode.unfocus();
+
     nsfwSensitiveSubject.add(false);
     _regenerateIdempotencyKey();
     clearSchedule();
@@ -409,41 +406,11 @@ abstract class PostStatusBloc extends PostMessageBloc
     schedule(null);
   }
 
-  @override
-  void appendText(String textToAppend) {
-    inputTextController.text = "${inputText ?? ""}$textToAppend";
-  }
 
   Future onStatusPosted(IPleromaStatus remoteStatus) async {
     // nothing by default
   }
 
-  @override
-  PostStatusSelectedAction get selectedAction => selectedActionSubject.value;
-
-  @override
-  Stream<PostStatusSelectedAction> get selectedActionStream =>
-      selectedActionSubject.stream;
-
-  BehaviorSubject<PostStatusSelectedAction> selectedActionSubject =
-      BehaviorSubject();
-
-  @override
-  bool get isAttachActionSelected =>
-      selectedAction == PostStatusSelectedAction.attach;
-
-  @override
-  Stream<bool> get isAttachActionSelectedStream => selectedActionStream.map(
-      (selectedAction) => selectedAction == PostStatusSelectedAction.attach);
-
-  @override
-  void toggleAttachActionSelection() {
-    if (isAttachActionSelected) {
-      selectedActionSubject.add(null);
-    } else {
-      selectedActionSubject.add(PostStatusSelectedAction.attach);
-    }
-  }
 
   List<String> _calculateToField() {
     if (pleromaStatusService.isPleromaInstance) {

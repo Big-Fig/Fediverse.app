@@ -6,10 +6,11 @@ part of 'pleroma_push_model.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class PleromaPushMessageAdapter extends TypeAdapter<PleromaPushMessage> {
+class PleromaPushMessageBodyAdapter
+    extends TypeAdapter<PleromaPushMessageBody> {
   @override
-  PleromaPushMessage read(BinaryReader reader) {
-    var obj = PleromaPushMessage();
+  PleromaPushMessageBody read(BinaryReader reader) {
+    var obj = PleromaPushMessageBody();
     var numOfFields = reader.readByte();
     for (var i = 0; i < numOfFields; i++) {
       switch (reader.readByte()) {
@@ -31,7 +32,7 @@ class PleromaPushMessageAdapter extends TypeAdapter<PleromaPushMessage> {
   }
 
   @override
-  void write(BinaryWriter writer, PleromaPushMessage obj) {
+  void write(BinaryWriter writer, PleromaPushMessageBody obj) {
     writer.writeByte(4);
     writer.writeByte(0);
     writer.write(obj.notificationId);
@@ -169,8 +170,9 @@ Map<String, dynamic> _$PleromaPushSubscriptionKeysToJson(
       'auth': instance.auth,
     };
 
-PleromaPushMessage _$PleromaPushMessageFromJson(Map<String, dynamic> json) {
-  return PleromaPushMessage(
+PleromaPushMessageBody _$PleromaPushMessageBodyFromJson(
+    Map<String, dynamic> json) {
+  return PleromaPushMessageBody(
     notificationId: json['notification_id'] as String,
     server: json['server'] as String,
     account: json['account'] as String,
@@ -178,7 +180,8 @@ PleromaPushMessage _$PleromaPushMessageFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$PleromaPushMessageToJson(PleromaPushMessage instance) =>
+Map<String, dynamic> _$PleromaPushMessageBodyToJson(
+        PleromaPushMessageBody instance) =>
     <String, dynamic>{
       'notification_id': instance.notificationId,
       'server': instance.server,

@@ -4,6 +4,7 @@ import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc.dart';
 import 'package:fedi/app/push/handler/push_handler_bloc.dart';
+import 'package:fedi/app/push/handler/push_handler_model.dart';
 import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_preferences_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/push/pleroma_push_model.dart';
@@ -34,47 +35,52 @@ class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
   }
 
   Future handlePushMessage(PushMessage pushMessage) async {
-    var pleromaPushMessage = PleromaPushMessage.fromJson(pushMessage.data);
+    var body = PleromaPushMessageBody.fromJson(pushMessage.data);
 
+    var pushMessageHandler = PushHandlerMessage(
+      pushMessage: pushMessage,
+      body: body,
+    );
     bool handled = false;
     for (var handler in realTimeHandlers) {
-      handled = await handler(pleromaPushMessage);
+      handled = await handler(pushMessageHandler);
       if (handled) {
         break;
       }
     }
 
     _logger.finest(() => "handlePushMessage \n"
-        "\t pleromaPushMessage =$pleromaPushMessage"
+        "\t body =$body"
         "\t handled =$handled");
 
     if (!handled) {
       var instanceForMessage = instanceListBloc.findInstanceByCredentials(
-          host: pleromaPushMessage.server, acct: pleromaPushMessage.account);
+          host: body.server, acct: body.account);
 
       if (instanceForMessage != null) {
-        _logger.finest(() => "pleromaPushMessage = $pleromaPushMessage by \n"
+        _logger.finest(() => "body = $body by \n"
             "\t instanceForMessage=$instanceForMessage");
 
         if (!currentInstanceBloc.isCurrentInstance(instanceForMessage)) {
           await unhandledLocalPreferencesBloc
-              .addUnhandledMessage(pleromaPushMessage);
+              .addUnhandledMessage(pushMessageHandler);
 
-          if (pushMessage.type == PushMessageType.launch ||
-              pushMessage.type == PushMessageType.resume) {
+          if (pushMessage.isLaunchOrResume) {
             // launch after click on notification
             if (currentInstanceBloc.currentInstance != instanceForMessage) {
-              await currentInstanceBloc.changeCurrentInstance
-                (instanceForMessage);
+              await currentInstanceBloc
+                  .changeCurrentInstance(instanceForMessage);
             }
           }
         }
       } else {
-        _logger.severe(() => "Can't handle pleromaPushMessage = "
-            "$pleromaPushMessage, because instance for message not found");
+        _logger.severe(() => "Can't handle body = "
+            "$body, because instance for message not found");
       }
     }
   }
+
+
 
   @override
   void addRealTimeHandler(IPushRealTimeHandler pushHandler) {
@@ -87,11 +93,11 @@ class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
   }
 
   @override
-  List<PleromaPushMessage> loadUnhandledMessagesForInstance(
+  List<PushHandlerMessage> loadUnhandledMessagesForInstance(
           AuthInstance instance) =>
       unhandledLocalPreferencesBloc.loadUnhandledMessagesForInstance(instance);
 
   @override
-  Future<bool> markAsHandled(List<PleromaPushMessage> messages) =>
+  Future<bool> markAsHandled(List<PushHandlerMessage> messages) =>
       unhandledLocalPreferencesBloc.markAsHandled(messages);
 }

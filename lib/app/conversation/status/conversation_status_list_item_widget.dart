@@ -22,9 +22,9 @@ class ConversationStatusListItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    IStatusBloc statusBloc = IStatusBloc.of(context, listen: true);
+    IStatusBloc statusBloc = IStatusBloc.of(context, listen: false);
 
-    var myAccountBloc = IMyAccountBloc.of(context, listen: true);
+    var myAccountBloc = IMyAccountBloc.of(context, listen: false);
 
     var deviceWidth = MediaQuery.of(context).size.width;
 

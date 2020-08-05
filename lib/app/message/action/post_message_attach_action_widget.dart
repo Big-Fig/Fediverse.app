@@ -1,4 +1,5 @@
 import 'package:fedi/app/message/post_message_bloc.dart';
+import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
@@ -13,8 +14,8 @@ class PostMessageAttachActionWidget extends StatelessWidget {
     var postMessageBloc = IPostMessageBloc.of(context, listen: false);
 
     return StreamBuilder<bool>(
-        stream: postMessageBloc
-            .mediaAttachmentsBloc.isPossibleToAttachMediaStream,
+        stream:
+            postMessageBloc.mediaAttachmentsBloc.isPossibleToAttachMediaStream,
         initialData:
             postMessageBloc.mediaAttachmentsBloc.isPossibleToAttachMedia,
         builder: (context, snapshot) {
@@ -27,15 +28,24 @@ class PostMessageAttachActionWidget extends StatelessWidget {
             };
           }
 
-          return FediIconButton(
-            icon: Icon(
-              FediIcons.plus,
-              color: isPossibleToAttach
-                  ? FediColors.darkGrey
-                  : FediColors.lightGrey,
-            ),
-            onPressed: onPressed,
-          );
+          return StreamBuilder<PostStatusSelectedAction>(
+              stream: postMessageBloc.selectedActionStream,
+              initialData: postMessageBloc.selectedAction,
+              builder: (context, snapshot) {
+                var selectedAction = snapshot.data;
+
+                return FediIconButton(
+                  icon: Icon(
+                    FediIcons.plus,
+                    color: isPossibleToAttach
+                        ? selectedAction == PostStatusSelectedAction.attach
+                            ? FediColors.primaryColor
+                            : FediColors.darkGrey
+                        : FediColors.lightGrey,
+                  ),
+                  onPressed: onPressed,
+                );
+              });
         });
   }
 }

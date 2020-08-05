@@ -21,7 +21,9 @@ abstract class AsyncLoadingService extends DisposableOwner
   }
 
   Future performLoading(LoadingFunction loadingFunction) async {
-    _isLoadingSubject.add(true);
+    if (!_isLoadingSubject.isClosed) {
+      _isLoadingSubject.add(true);
+    }
     await loadingFunction();
     if (!_isLoadingSubject.isClosed) {
       _isLoadingSubject.add(false);

@@ -1,6 +1,6 @@
 import 'package:fedi/app/account/account_bloc.dart';
-import 'package:fedi/app/emoji/emoji_text_helper.dart';
-import 'package:fedi/app/emoji/emoji_text_model.dart';
+import 'package:fedi/app/emoji/text/emoji_text_helper.dart';
+import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/url/url_helper.dart';

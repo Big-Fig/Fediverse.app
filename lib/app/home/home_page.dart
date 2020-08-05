@@ -35,6 +35,10 @@ import 'package:logging/logging.dart';
 var _logger = Logger("home_page.dart");
 
 class HomePage extends StatelessWidget {
+
+
+  const HomePage();
+
   @override
   Widget build(BuildContext context) {
     _logger.finest(() => "build");
@@ -248,5 +252,4 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  const HomePage();
 }

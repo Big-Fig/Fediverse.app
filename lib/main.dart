@@ -1,14 +1,18 @@
+import 'package:fedi/app/account/details/account_details_page.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/analytics/analytics_service.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/context/current_auth_instance_context_bloc_impl.dart';
-import 'package:fedi/app/auth/instance/current/context/loading/current_auth_instance_context_loading_bloc.dart';
-import 'package:fedi/app/auth/instance/current/context/loading/current_auth_instance_context_loading_bloc_impl.dart';
-import 'package:fedi/app/auth/instance/current/context/loading/current_auth_instance_context_loading_widget.dart';
+import 'package:fedi/app/auth/instance/current/context/init/current_auth_instance_context_init_bloc.dart';
+import 'package:fedi/app/auth/instance/current/context/init/current_auth_instance_context_init_bloc_impl.dart';
+import 'package:fedi/app/auth/instance/current/context/init/current_auth_instance_context_init_model.dart';
+import 'package:fedi/app/auth/instance/current/context/init/current_auth_instance_context_init_widget.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/join/from_scratch/from_scratch_join_auth_instance_page.dart';
 import 'package:fedi/app/auth/instance/join/join_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/join/join_auth_instance_bloc_impl.dart';
+import 'package:fedi/app/chat/chat_page.dart';
+import 'package:fedi/app/chat/repository/chat_repository.dart';
 import 'package:fedi/app/context/app_context_bloc.dart';
 import 'package:fedi/app/context/app_context_bloc_impl.dart';
 import 'package:fedi/app/home/home_bloc.dart';
@@ -20,7 +24,10 @@ import 'package:fedi/app/init/init_bloc_impl.dart';
 import 'package:fedi/app/localization/localization_loader.dart';
 import 'package:fedi/app/localization/localization_provider_widget.dart';
 import 'package:fedi/app/localization/localization_service.dart';
+import 'package:fedi/app/notification/push/notification_push_loader_bloc.dart';
+import 'package:fedi/app/notification/push/notification_push_loader_model.dart';
 import 'package:fedi/app/splash/splash_page.dart';
+import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/fedi_theme.dart';
@@ -106,6 +113,8 @@ void showSplashPage(AppContextBloc appContextBloc) {
   runApp(easyLocalization);
 }
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 void buildCurrentInstanceApp(
     AppContextBloc appContextBloc, AuthInstance currentInstance) async {
   _logger.finest(() => "buildCurrentInstanceApp $buildCurrentInstanceApp");
@@ -122,16 +131,19 @@ void buildCurrentInstanceApp(
         fcmPushService: appContextBloc.get(),
         webSocketsService: appContextBloc.get());
     await currentInstanceContextBloc.performAsyncInit();
+
+    INotificationPushLoaderBloc pushLoaderBloc =
+        currentInstanceContextBloc.get();
+
     _logger.finest(
         () => "buildCurrentInstanceApp CurrentInstanceContextLoadingPage");
     runApp(appContextBloc.provideContextToChild(
         child: _buildEasyLocalization(
             child: currentInstanceContextBloc.provideContextToChild(
-                child: DisposableProvider<
-                        ICurrentAuthInstanceContextLoadingBloc>(
+                child: DisposableProvider<ICurrentAuthInstanceContextInitBloc>(
                     create: (context) {
                       var currentAuthInstanceContextLoadingBloc =
-                          CurrentAuthInstanceContextLoadingBloc(
+                          CurrentAuthInstanceContextInitBloc(
                         myAccountBloc:
                             IMyAccountBloc.of(context, listen: false),
                         pleromaInstanceService:
@@ -140,13 +152,73 @@ void buildCurrentInstanceApp(
                             ICurrentAuthInstanceBloc.of(context, listen: false),
                       );
                       currentAuthInstanceContextLoadingBloc.performAsyncInit();
+
+                      currentAuthInstanceContextLoadingBloc.addDisposable(
+                          streamSubscription:
+                              currentAuthInstanceContextLoadingBloc.stateStream
+                                  .distinct()
+                                  .listen((state) {
+                        if (state ==
+                                CurrentAuthInstanceContextInitState
+                                    .cantFetchAndLocalCacheNotExist ||
+                            state ==
+                                CurrentAuthInstanceContextInitState
+                                    .localCacheExist) {
+                          currentInstanceContextBloc.addDisposable(
+                              streamSubscription: pushLoaderBloc
+                                  .launchOrResumePushLoaderNotificationStream
+                                  .listen(
+                                      (launchOrResumePushLoaderNotification) {
+                            if (launchOrResumePushLoaderNotification != null) {
+                              Future.delayed(Duration(milliseconds: 100),
+                                  () async {
+                                var notification =
+                                    launchOrResumePushLoaderNotification
+                                        .notification;
+                                if (notification.isContainsChat) {
+                                  await navigatorKey.currentState.push(
+                                      createChatPageRoute(
+                                          await currentInstanceContextBloc
+                                              .get<IChatRepository>()
+                                              .findByRemoteId(
+                                                  notification.chatRemoteId)));
+                                } else if (notification.isContainsStatus) {
+                                  await navigatorKey.currentState.push(
+                                      createStatusThreadPageRoute(
+                                          notification.status));
+                                } else if (notification.isContainsAccount) {
+                                  await navigatorKey.currentState.push(
+                                      createAccountDetailsPageRoute(
+                                          notification.account));
+                                }
+                              });
+                            }
+                          }));
+                        }
+                      }));
+
                       return currentAuthInstanceContextLoadingBloc;
                     },
                     child: FediApp(
-                        child: CurrentAuthInstanceContextLoadingWidget(
+                        child: CurrentAuthInstanceContextInitWidget(
                       child: DisposableProvider<IHomeBloc>(
-                          create: (context) =>
-                              HomeBloc(startTab: HomeTab.timelines),
+                          create: (context) {
+                            var homeBloc = HomeBloc(
+                                startTab: calculateHomeTabForNotification(
+                                    pushLoaderBloc
+                                        .launchOrResumePushLoaderNotification));
+
+                            homeBloc.addDisposable(streamSubscription:
+                                pushLoaderBloc
+                                    .launchOrResumePushLoaderNotificationStream
+                                    .listen(
+                                        (launchOrResumePushLoaderNotification) {
+                              homeBloc.selectTab(
+                                  calculateHomeTabForNotification(
+                                      launchOrResumePushLoaderNotification));
+                            }));
+                            return homeBloc;
+                          },
                           child: const HomePage()),
                     )))))));
   } else {
@@ -157,6 +229,24 @@ void buildCurrentInstanceApp(
                 child:
                     const FediApp(child: FromScratchJoinAuthInstancePage())))));
   }
+}
+
+HomeTab calculateHomeTabForNotification(
+    NotificationPushLoaderNotification launchOrResumePushLoaderNotification) {
+  HomeTab homeTab;
+  if (launchOrResumePushLoaderNotification != null) {
+    var notification = launchOrResumePushLoaderNotification.notification;
+    if (notification.isContainsChat) {
+      homeTab = HomeTab.messages;
+    } else if (notification.isContainsStatus) {
+      homeTab = HomeTab.notifications;
+    } else if (notification.isContainsAccount) {
+      homeTab = HomeTab.notifications;
+    }
+  } else {
+    homeTab = HomeTab.timelines;
+  }
+  return homeTab;
 }
 
 Widget _buildEasyLocalization({@required Widget child}) {
@@ -194,6 +284,7 @@ class FediApp extends StatelessWidget {
       theme: fediTheme,
       initialRoute: "/",
       home: child,
+      navigatorKey: navigatorKey,
       navigatorObservers: [
         FirebaseAnalyticsObserver(
             analytics:

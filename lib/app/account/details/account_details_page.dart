@@ -24,7 +24,7 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
         leading: const FediBackIconButton(),
         child: AccountDisplayNameWidget(),
       ),
-      body: AccountDetailsWidget(),
+      body: SafeArea(child: AccountDetailsWidget()),
     );
   }
 }
@@ -32,14 +32,18 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
 void goToAccountDetailsPage(BuildContext context, IAccount account) {
   Navigator.push(
     context,
-    MaterialPageRoute(
-        builder: (context) => DisposableProvider<IAccountBloc>(
-            create: (context) => AccountBloc.createFromContext(context,
-                isNeedWatchLocalRepositoryForUpdates: true,
-                account: account,
-                isNeedRefreshFromNetworkOnInit: false,
-                isNeedWatchWebSocketsEvents: false,
-                isNeedPreFetchRelationship: true),
-            child: const AccountDetailsPage())),
+    createAccountDetailsPageRoute(account),
   );
+}
+
+MaterialPageRoute createAccountDetailsPageRoute(IAccount account) {
+  return MaterialPageRoute(
+      builder: (context) => DisposableProvider<IAccountBloc>(
+          create: (context) => AccountBloc.createFromContext(context,
+              isNeedWatchLocalRepositoryForUpdates: true,
+              account: account,
+              isNeedRefreshFromNetworkOnInit: false,
+              isNeedWatchWebSocketsEvents: false,
+              isNeedPreFetchRelationship: true),
+          child: const AccountDetailsPage()));
 }

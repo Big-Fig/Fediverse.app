@@ -4,7 +4,7 @@ import 'package:fedi/app/conversation/avatar/conversation_avatar_widget.dart';
 import 'package:fedi/app/conversation/conversation_bloc.dart';
 import 'package:fedi/app/conversation/conversation_page.dart';
 import 'package:fedi/app/conversation/title/conversation_title_widget.dart';
-import 'package:fedi/app/emoji/emoji_text_helper.dart';
+import 'package:fedi/app/emoji/text/emoji_text_helper.dart';
 import 'package:fedi/app/html/html_text_helper.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -34,7 +34,8 @@ class ConversationListItemWidget extends StatelessWidget {
       child: Container(
         height: FediSizes.chatListItemPreviewHeight,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: FediSizes.bigPadding,
+          padding: EdgeInsets.symmetric(
+              horizontal: FediSizes.bigPadding,
               vertical: FediSizes.smallPadding + FediSizes.bigPadding),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,8 +102,8 @@ class ConversationListItemWidget extends StatelessWidget {
           if (content?.isNotEmpty != true) {
             var mediaAttachments = lastMessage.mediaAttachments;
             content = mediaAttachments
-                .map((mediaAttachment) => mediaAttachment.description)
-                .join(", ");
+                ?.map((mediaAttachment) => mediaAttachment.description)
+                ?.join(", ") ?? "";
           } else {
             content = extractContent(context, lastMessage, content);
           }
@@ -126,7 +127,7 @@ class ConversationListItemWidget extends StatelessWidget {
     String formattedText =
         HtmlTextHelper.extractRawStringFromHtmlString(status.content);
 
-    var myAccountBloc = IMyAccountBloc.of(context, listen: true);
+    var myAccountBloc = IMyAccountBloc.of(context, listen: false);
 
     if (myAccountBloc.checkIsStatusFromMe(status)) {
       formattedText = tr("app.conversation.preview.you", args: [formattedText]);

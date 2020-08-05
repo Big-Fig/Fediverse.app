@@ -3,9 +3,9 @@ import 'package:fedi/app/media/attachment/upload/upload_media_attachments_widget
 import 'package:fedi/app/message/action/post_message_attach_action_widget.dart';
 import 'package:fedi/app/message/action/post_message_emoji_action_widget.dart';
 import 'package:fedi/app/message/action/post_message_post_action_widget.dart';
-import 'package:fedi/app/message/post_message_attach_widget.dart';
 import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/message/post_message_content_widget.dart';
+import 'package:fedi/app/message/post_message_selected_action_widget.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:flutter/cupertino.dart';
@@ -36,7 +36,7 @@ class PostMessageWidget extends StatelessWidget {
               const PostMessagePostActionWidget()
             ],
           ),
-          PostMessageAttachWidget()
+          PostMessageSelectedActionWidget()
         ],
       ),
     );
@@ -64,11 +64,11 @@ class PostMessageWidget extends StatelessWidget {
   ) =>
       StreamBuilder<double>(
           stream: Rx.combineLatest2(
-              postMessageBloc.isAttachActionSelectedStream,
+              postMessageBloc.isAnySelectedActionVisibleStream,
               postMessageBloc.mediaAttachmentsBloc.mediaAttachmentBlocsStream,
-              (bool isAttachActionSelected,
+              (bool isAnySelectedActionVisible,
                   List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs) {
-            bool isAttachActionVisible = isAttachActionSelected == true;
+            isAnySelectedActionVisible = isAnySelectedActionVisible ?? false;
             var mediaBlocs = mediaAttachmentBlocs
                 .where((bloc) => bloc.filePickerFile.isMedia);
 
@@ -92,7 +92,7 @@ class PostMessageWidget extends StatelessWidget {
             // input bar
             height -= 70;
             height -= 90;
-            if (isAttachActionVisible) {
+            if (isAnySelectedActionVisible) {
               height -= 120;
             }
             if (isListMediaVisible) {

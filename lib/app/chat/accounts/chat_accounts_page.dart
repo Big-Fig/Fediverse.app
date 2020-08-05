@@ -15,7 +15,7 @@ class ChatAccountsPage extends StatelessWidget {
       appBar: FediSubPageTitleAppBar(
         title: tr("app.chat.accounts.title"),
       ),
-      body: ChatAccountsWidget(),
+      body: SafeArea(child: ChatAccountsWidget()),
     );
   }
 }
@@ -25,8 +25,11 @@ void goToChatAccountsPage(BuildContext context, IChat chat) {
     context,
     MaterialPageRoute(
         builder: (context) => DisposableProvider<IChatBloc>(
-            create: (context) =>
-                ChatBloc.createFromContext(context, chat: chat),
+            create: (context) => ChatBloc.createFromContext(
+                  context,
+                  chat: chat,
+                  lastChatMessage: null,
+                ),
             child: ChatAccountsPage())),
   );
 }

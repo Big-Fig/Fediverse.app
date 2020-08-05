@@ -2,6 +2,7 @@ import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.da
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc_impl.dart';
 import 'package:fedi/app/message/post_message_bloc.dart';
+import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
@@ -25,8 +26,9 @@ abstract class PostMessageBloc extends DisposableOwner
     addDisposable(subject: inputTextSubject);
 
     addDisposable(textEditingController: inputTextController);
+    addDisposable(focusNode: inputFocusNode);
 
-    addDisposable(subject: isAttachActionSubject);
+    addDisposable(subject: selectedActionSubject);
 
     var editTextListener = () {
       onInputTextChanged();
@@ -43,15 +45,15 @@ abstract class PostMessageBloc extends DisposableOwner
       inputText: inputText,
       mediaAttachmentBlocs: mediaAttachmentsBloc.mediaAttachmentBlocs,
       isAllAttachedMediaUploaded:
-      mediaAttachmentsBloc.isAllAttachedMediaUploaded);
+          mediaAttachmentsBloc.isAllAttachedMediaUploaded);
 
   @override
   Stream<bool> get isReadyToPostStream => Rx.combineLatest3(
       inputTextStream,
       mediaAttachmentsBloc.mediaAttachmentBlocsStream,
       mediaAttachmentsBloc.isAllAttachedMediaUploadedStream,
-          (inputWithoutMentionedAcctsText, mediaAttachmentBlocs,
-          isAllAttachedMediaUploaded) =>
+      (inputWithoutMentionedAcctsText, mediaAttachmentBlocs,
+              isAllAttachedMediaUploaded) =>
           calculateIsReadyToPost(
               inputText: inputWithoutMentionedAcctsText,
               mediaAttachmentBlocs: mediaAttachmentBlocs,
@@ -68,6 +70,8 @@ abstract class PostMessageBloc extends DisposableOwner
 
   @override
   TextEditingController inputTextController = TextEditingController();
+  @override
+  FocusNode inputFocusNode = FocusNode();
 
   void onInputTextChanged() {
     var text = inputTextController.text;
@@ -80,12 +84,14 @@ abstract class PostMessageBloc extends DisposableOwner
   void clear() {
     inputTextController.clear();
     mediaAttachmentsBloc.clear();
+    inputFocusNode.unfocus();
+    clearSelectedAction();
   }
 
   bool calculateIsReadyToPost(
       {@required String inputText,
-        @required List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs,
-        @required bool isAllAttachedMediaUploaded}) {
+      @required List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs,
+      @required bool isAllAttachedMediaUploaded}) {
     var textIsNotEmpty = inputText?.trim()?.isEmpty != true;
     var mediaAttached = mediaAttachmentBlocs?.isEmpty != true;
 
@@ -93,20 +99,64 @@ abstract class PostMessageBloc extends DisposableOwner
   }
 
   @override
-  void appendText(String textToAppend) {
-    inputTextController.text = "$inputText$textToAppend";
+  void appendText(String textToAppend, {bool requestFocus = true}) {
+    var newText = "$inputText$textToAppend";
+    inputTextController.value = TextEditingValue(
+      text: newText,
+      selection: TextSelection.collapsed(offset: newText.length),
+    );
+    inputFocusNode.requestFocus();
   }
 
-  BehaviorSubject<bool> isAttachActionSubject = BehaviorSubject.seeded(false);
+  @override
+  PostStatusSelectedAction get selectedAction => selectedActionSubject.value;
 
   @override
-  bool get isAttachActionSelected => isAttachActionSubject.value;
+  Stream<PostStatusSelectedAction> get selectedActionStream =>
+      selectedActionSubject.stream;
 
-  @override
-  Stream<bool> get isAttachActionSelectedStream => isAttachActionSubject.stream;
+  BehaviorSubject<PostStatusSelectedAction> selectedActionSubject =
+      BehaviorSubject();
+
+  bool get isAttachActionSelected =>
+      selectedAction == PostStatusSelectedAction.attach;
+
+  Stream<bool> get isAttachActionSelectedStream => selectedActionStream.map(
+      (selectedAction) => selectedAction == PostStatusSelectedAction.attach);
+
+  bool get isEmojiActionSelected =>
+      selectedAction == PostStatusSelectedAction.emoji;
+
+  Stream<bool> get isEmojiActionSelectedStream => selectedActionStream.map(
+      (selectedAction) => selectedAction == PostStatusSelectedAction.emoji);
 
   @override
   void toggleAttachActionSelection() {
-    isAttachActionSubject.add(!isAttachActionSelected);
+    if (isAttachActionSelected) {
+      selectedActionSubject.add(null);
+    } else {
+      selectedActionSubject.add(PostStatusSelectedAction.attach);
+    }
+  }
+
+  @override
+  void toggleEmojiActionSelection() {
+    if (isEmojiActionSelected) {
+      selectedActionSubject.add(null);
+    } else {
+      selectedActionSubject.add(PostStatusSelectedAction.emoji);
+    }
+  }
+
+  @override
+  Stream<bool> get isAnySelectedActionVisibleStream => selectedActionStream
+      .map((isAnySelectedActionVisible) => isAnySelectedActionVisible != null);
+
+  @override
+  bool get isAnySelectedActionVisible => isAnySelectedActionVisible != null;
+
+  @override
+  void clearSelectedAction() {
+    selectedActionSubject.add(null);
   }
 }
