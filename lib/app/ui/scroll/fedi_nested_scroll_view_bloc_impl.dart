@@ -49,7 +49,11 @@ class FediNestedScrollViewBloc extends DisposableOwner
     addDisposable(subject: scrollOffsetSubject);
 
     var listener = () {
-      onScroll();
+      try {
+        onScroll();
+      } catch (e, stackTrace) {
+        _logger.warning(() => "failed to onScroll", e, stackTrace);
+      }
     };
     scrollController.addListener(listener);
 
