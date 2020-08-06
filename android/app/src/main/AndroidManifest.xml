@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.fediverse.app">
+    package="com.fediverse.app2">
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
 
@@ -13,7 +13,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="Fedi"
+        android:label="Fedi2"
         android:icon="@mipmap/ic_launcher">
 
         <meta-data
@@ -33,7 +33,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data
-                    android:scheme="com.fediverse.app"
+                    android:scheme="com.fediverse.app2"
                     />
             </intent-filter>
             <!-- This keeps the window background of the activity showing
