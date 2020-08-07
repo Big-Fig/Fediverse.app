@@ -62,6 +62,9 @@ class PleromaCustomEmojiAdapter extends TypeAdapter<PleromaCustomEmoji> {
         case 1:
           obj.imageUrl = reader.read() as String;
           break;
+        case 2:
+          obj.name = reader.read() as String;
+          break;
       }
     }
     return obj;
@@ -69,11 +72,13 @@ class PleromaCustomEmojiAdapter extends TypeAdapter<PleromaCustomEmoji> {
 
   @override
   void write(BinaryWriter writer, PleromaCustomEmoji obj) {
-    writer.writeByte(2);
+    writer.writeByte(3);
     writer.writeByte(0);
     writer.write(obj.tags);
     writer.writeByte(1);
     writer.write(obj.imageUrl);
+    writer.writeByte(2);
+    writer.write(obj.name);
   }
 }
 
@@ -103,6 +108,7 @@ PleromaCustomEmoji _$PleromaCustomEmojiFromJson(Map<String, dynamic> json) {
   return PleromaCustomEmoji(
     tags: (json['tags'] as List)?.map((e) => e as String)?.toList(),
     imageUrl: json['image_url'] as String,
+    name: json['name'] as String,
   );
 }
 
@@ -110,4 +116,5 @@ Map<String, dynamic> _$PleromaCustomEmojiToJson(PleromaCustomEmoji instance) =>
     <String, dynamic>{
       'tags': instance.tags,
       'image_url': instance.imageUrl,
+      'name': instance.name,
     };
