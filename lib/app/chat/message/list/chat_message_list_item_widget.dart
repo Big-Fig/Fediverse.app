@@ -175,6 +175,9 @@ class ChatMessageListItemWidget extends StatelessWidget {
                   color: isChatMessageFromMe
                       ? FediColors.white
                       : FediColors.darkGrey,
+                  linkColor: isChatMessageFromMe
+                      ? FediColors.white
+                      : FediColors.primaryColor,
                   fontSize: 16.0,
                   lineHeight: 1.5,
                   data: contentWithEmojis,
