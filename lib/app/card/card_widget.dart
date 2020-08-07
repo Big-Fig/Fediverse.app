@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -9,50 +8,44 @@ import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 final _cardImageSize = 114.0;
 var _cardBorderRadius = 8.0;
 
-class StatusCardWidget extends StatelessWidget {
+class CardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var statusBloc = IStatusBloc.of(context, listen: true);
+    var card = Provider.of<IPleromaCard>(context, listen: false);
 
-    return StreamBuilder<IPleromaCard>(
-        stream: statusBloc.reblogOrOriginalCardStream,
-        initialData: statusBloc.reblogOrOriginalCard,
-        builder: (context, snapshot) {
-          var card = snapshot.data;
+    if (card == null) {
+      return SizedBox.shrink();
+    }
 
-          if (card == null) {
-            return SizedBox.shrink();
-          }
-
-          return Padding(
-            padding:
-                const EdgeInsets.symmetric(vertical: FediSizes.mediumPadding),
-            child: Container(
-              height: _cardImageSize,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(_cardBorderRadius),
-                child: InkWell(
-                  onTap: () async {
-                    var url = card.url;
-                    await UrlHelper.handleUrlClick(context, url);
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.max,
-                    children: <Widget>[
-                      if (card.image != null) buildImage(card),
-                      buildContent(card)
-                    ],
-                  ),
-                ),
-              ),
+    return Padding(
+      padding:
+      const EdgeInsets.symmetric(vertical: FediSizes.mediumPadding),
+      child: Container(
+        height: _cardImageSize,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(_cardBorderRadius),
+          child: InkWell(
+            onTap: () async {
+              var url = card.url;
+              await UrlHelper.handleUrlClick(context, url);
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                if (card.image != null) buildImage(card),
+                buildContent(card)
+              ],
             ),
-          );
-        });
+          ),
+        ),
+      ),
+    );
   }
 
   Widget buildContent(IPleromaCard card) => Expanded(
@@ -117,5 +110,5 @@ class StatusCardWidget extends StatelessWidget {
         errorWidget: (context, url, error) => Icon(Icons.error),
       );
 
-  StatusCardWidget();
+  CardWidget();
 }

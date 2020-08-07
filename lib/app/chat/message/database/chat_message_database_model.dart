@@ -16,4 +16,6 @@ class DbChatMessages extends Table {
       text().map(PleromaEmojiListDatabaseConverter()).nullable()();
   TextColumn get mediaAttachment =>
       text().map(PleromaMediaAttachmentDatabaseConverter()).nullable()();
+  TextColumn get card =>
+      text().map(PleromaCardDatabaseConverter()).nullable()();
 }

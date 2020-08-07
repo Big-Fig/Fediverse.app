@@ -66,6 +66,7 @@ mixin _$ChatMessageDaoMixin on DatabaseAccessor<AppDatabase> {
           $DbChatMessagesTable.$converter0.mapToDart(row.readString('emojis')),
       mediaAttachment: $DbChatMessagesTable.$converter1
           .mapToDart(row.readString('media_attachment')),
+      card: $DbChatMessagesTable.$converter2.mapToDart(row.readString('card')),
     );
   }
 

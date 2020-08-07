@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/card/card_widget.dart';
 import 'package:fedi/app/media/attachment/media_attachments_widget.dart';
 import 'package:fedi/app/poll/poll_bloc.dart';
 import 'package:fedi/app/poll/poll_widget.dart';
-import 'package:fedi/app/status/card/status_card_widget.dart';
 import 'package:fedi/app/status/content/status_content_with_emojis_widget.dart';
 import 'package:fedi/app/status/nsfw/status_nsfw_warning_overlay_widget.dart';
 import 'package:fedi/app/status/spoiler/status_spoiler_warning_overlay_widget.dart';
@@ -10,6 +10,7 @@ import 'package:fedi/app/status/spoiler/status_spoiler_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -79,7 +80,17 @@ class StatusBodyWidget extends StatelessWidget {
                       ),
                 if (collapsible && statusBloc.isPossibleToCollapse)
                   buildCollapsibleButton(context, statusBloc),
-                StatusCardWidget(),
+                StreamBuilder<IPleromaCard>(
+                    stream: statusBloc.reblogOrOriginalCardStream,
+                    initialData: statusBloc.reblogOrOriginalCard,
+                    builder: (context, snapshot) {
+                      var card = snapshot.data;
+
+                      if (card == null) {
+                        return SizedBox.shrink();
+                      }
+                      return Provider.value(value: card, child: CardWidget());
+                    }),
               ],
             ),
           ),

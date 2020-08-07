@@ -13,14 +13,16 @@ DbChatMessagePopulatedWrapper mapRemoteChatMessageToLocalChatMessage(
 DbChatMessage mapRemoteChatMessageToDbChatMessage(
     IPleromaChatMessage remoteChatMessage) {
   return DbChatMessage(
-      id: null,
-      remoteId: remoteChatMessage.id,
-      createdAt: remoteChatMessage.createdAt,
-      content: remoteChatMessage.content,
-      emojis: remoteChatMessage.emojis,
-      mediaAttachment: remoteChatMessage.mediaAttachment,
-      accountRemoteId: remoteChatMessage.accountId,
-      chatRemoteId: remoteChatMessage.chatId);
+    id: null,
+    remoteId: remoteChatMessage.id,
+    createdAt: remoteChatMessage.createdAt,
+    content: remoteChatMessage.content,
+    emojis: remoteChatMessage.emojis,
+    card: remoteChatMessage.card,
+    mediaAttachment: remoteChatMessage.mediaAttachment,
+    accountRemoteId: remoteChatMessage.accountId,
+    chatRemoteId: remoteChatMessage.chatId,
+  );
 }
 
 PleromaChatMessage mapLocalChatMessageToRemoteChatMessage(
@@ -36,5 +38,6 @@ PleromaChatMessage mapLocalChatMessageToRemoteChatMessage(
     mediaAttachment: localChatMessage.mediaAttachment,
     accountId: localChatMessage.account.remoteId,
     chatId: localChatMessage.chatRemoteId,
+    card: localChatMessage.card,
   );
 }

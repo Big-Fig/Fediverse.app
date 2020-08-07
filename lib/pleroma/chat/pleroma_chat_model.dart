@@ -137,6 +137,7 @@ class PleromaChatMessage extends IPleromaChatMessage {
   @JsonKey(name: "attachment")
   final PleromaMediaAttachment mediaAttachment;
 
+  @override
   final PleromaCard card;
 
   PleromaChatMessage({
