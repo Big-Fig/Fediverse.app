@@ -6392,6 +6392,7 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
   final DateTime createdAt;
   final List<PleromaEmoji> emojis;
   final PleromaMediaAttachment mediaAttachment;
+  final PleromaCard card;
   DbChatMessage(
       {@required this.id,
       @required this.remoteId,
@@ -6400,7 +6401,8 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
       this.content,
       @required this.createdAt,
       this.emojis,
-      this.mediaAttachment});
+      this.mediaAttachment,
+      this.card});
   factory DbChatMessage.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -6424,6 +6426,8 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}emojis'])),
       mediaAttachment: $DbChatMessagesTable.$converter1.mapToDart(stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}media_attachment'])),
+      card: $DbChatMessagesTable.$converter2.mapToDart(
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}card'])),
     );
   }
   factory DbChatMessage.fromJson(Map<String, dynamic> json,
@@ -6439,6 +6443,7 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
       emojis: serializer.fromJson<List<PleromaEmoji>>(json['emojis']),
       mediaAttachment:
           serializer.fromJson<PleromaMediaAttachment>(json['mediaAttachment']),
+      card: serializer.fromJson<PleromaCard>(json['card']),
     );
   }
   @override
@@ -6454,6 +6459,7 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
       'emojis': serializer.toJson<List<PleromaEmoji>>(emojis),
       'mediaAttachment':
           serializer.toJson<PleromaMediaAttachment>(mediaAttachment),
+      'card': serializer.toJson<PleromaCard>(card),
     };
   }
 
@@ -6481,6 +6487,7 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
       mediaAttachment: mediaAttachment == null && nullToAbsent
           ? const Value.absent()
           : Value(mediaAttachment),
+      card: card == null && nullToAbsent ? const Value.absent() : Value(card),
     );
   }
 
@@ -6492,7 +6499,8 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
           String content,
           DateTime createdAt,
           List<PleromaEmoji> emojis,
-          PleromaMediaAttachment mediaAttachment}) =>
+          PleromaMediaAttachment mediaAttachment,
+          PleromaCard card}) =>
       DbChatMessage(
         id: id ?? this.id,
         remoteId: remoteId ?? this.remoteId,
@@ -6502,6 +6510,7 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
         createdAt: createdAt ?? this.createdAt,
         emojis: emojis ?? this.emojis,
         mediaAttachment: mediaAttachment ?? this.mediaAttachment,
+        card: card ?? this.card,
       );
   @override
   String toString() {
@@ -6513,7 +6522,8 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
           ..write('content: $content, ')
           ..write('createdAt: $createdAt, ')
           ..write('emojis: $emojis, ')
-          ..write('mediaAttachment: $mediaAttachment')
+          ..write('mediaAttachment: $mediaAttachment, ')
+          ..write('card: $card')
           ..write(')'))
         .toString();
   }
@@ -6532,7 +6542,9 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
                       $mrjc(
                           createdAt.hashCode,
                           $mrjc(
-                              emojis.hashCode, mediaAttachment.hashCode))))))));
+                              emojis.hashCode,
+                              $mrjc(mediaAttachment.hashCode,
+                                  card.hashCode)))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -6544,7 +6556,8 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
           other.content == this.content &&
           other.createdAt == this.createdAt &&
           other.emojis == this.emojis &&
-          other.mediaAttachment == this.mediaAttachment);
+          other.mediaAttachment == this.mediaAttachment &&
+          other.card == this.card);
 }
 
 class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
@@ -6556,6 +6569,7 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
   final Value<DateTime> createdAt;
   final Value<List<PleromaEmoji>> emojis;
   final Value<PleromaMediaAttachment> mediaAttachment;
+  final Value<PleromaCard> card;
   const DbChatMessagesCompanion({
     this.id = const Value.absent(),
     this.remoteId = const Value.absent(),
@@ -6565,6 +6579,7 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
     this.createdAt = const Value.absent(),
     this.emojis = const Value.absent(),
     this.mediaAttachment = const Value.absent(),
+    this.card = const Value.absent(),
   });
   DbChatMessagesCompanion.insert({
     this.id = const Value.absent(),
@@ -6575,6 +6590,7 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
     @required DateTime createdAt,
     this.emojis = const Value.absent(),
     this.mediaAttachment = const Value.absent(),
+    this.card = const Value.absent(),
   })  : remoteId = Value(remoteId),
         chatRemoteId = Value(chatRemoteId),
         accountRemoteId = Value(accountRemoteId),
@@ -6587,7 +6603,8 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
       Value<String> content,
       Value<DateTime> createdAt,
       Value<List<PleromaEmoji>> emojis,
-      Value<PleromaMediaAttachment> mediaAttachment}) {
+      Value<PleromaMediaAttachment> mediaAttachment,
+      Value<PleromaCard> card}) {
     return DbChatMessagesCompanion(
       id: id ?? this.id,
       remoteId: remoteId ?? this.remoteId,
@@ -6597,6 +6614,7 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
       createdAt: createdAt ?? this.createdAt,
       emojis: emojis ?? this.emojis,
       mediaAttachment: mediaAttachment ?? this.mediaAttachment,
+      card: card ?? this.card,
     );
   }
 }
@@ -6702,6 +6720,18 @@ class $DbChatMessagesTable extends DbChatMessages
     );
   }
 
+  final VerificationMeta _cardMeta = const VerificationMeta('card');
+  GeneratedTextColumn _card;
+  @override
+  GeneratedTextColumn get card => _card ??= _constructCard();
+  GeneratedTextColumn _constructCard() {
+    return GeneratedTextColumn(
+      'card',
+      $tableName,
+      true,
+    );
+  }
+
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -6711,7 +6741,8 @@ class $DbChatMessagesTable extends DbChatMessages
         content,
         createdAt,
         emojis,
-        mediaAttachment
+        mediaAttachment,
+        card
       ];
   @override
   $DbChatMessagesTable get asDslTable => this;
@@ -6760,6 +6791,7 @@ class $DbChatMessagesTable extends DbChatMessages
     }
     context.handle(_emojisMeta, const VerificationResult.success());
     context.handle(_mediaAttachmentMeta, const VerificationResult.success());
+    context.handle(_cardMeta, const VerificationResult.success());
     return context;
   }
 
@@ -6804,6 +6836,11 @@ class $DbChatMessagesTable extends DbChatMessages
       map['media_attachment'] = Variable<String, StringType>(
           converter.mapToSql(d.mediaAttachment.value));
     }
+    if (d.card.present) {
+      final converter = $DbChatMessagesTable.$converter2;
+      map['card'] =
+          Variable<String, StringType>(converter.mapToSql(d.card.value));
+    }
     return map;
   }
 
@@ -6816,6 +6853,8 @@ class $DbChatMessagesTable extends DbChatMessages
       PleromaEmojiListDatabaseConverter();
   static TypeConverter<PleromaMediaAttachment, String> $converter1 =
       PleromaMediaAttachmentDatabaseConverter();
+  static TypeConverter<PleromaCard, String> $converter2 =
+      PleromaCardDatabaseConverter();
 }
 
 class DbChatAccount extends DataClass implements Insertable<DbChatAccount> {

@@ -6,6 +6,7 @@ import 'package:fedi/app/chat/message/repository/chat_message_repository.dart';
 import 'package:fedi/app/emoji/text/emoji_text_helper.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
+import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/widgets.dart';
@@ -95,6 +96,13 @@ class ChatMessageBloc extends DisposableOwner implements IChatMessageBloc {
   @override
   Stream<IPleromaMediaAttachment> get mediaAttachmentStream =>
       chatMessageStream.map((chatMessage) => chatMessage.mediaAttachment);
+
+  @override
+  IPleromaCard get card => chatMessage.card;
+
+  @override
+  Stream<IPleromaCard> get cardStream =>
+      chatMessageStream.map((chatMessage) => chatMessage.card);
 
   @override
   IChatMessage get chatMessage => _chatMessageSubject.value;

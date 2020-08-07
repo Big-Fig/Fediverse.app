@@ -1,6 +1,7 @@
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/database/app_database.dart';
+import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -22,6 +23,7 @@ Future<DbChatMessage> createTestDbChatMessage({
   bool pleromaThreadMuted = false,
   String remoteId,
   String chatRemoteId,
+  PleromaCard card,
 }) async {
   DbChatMessage dbChatMessage = DbChatMessage(
     id: null,
@@ -30,6 +32,7 @@ Future<DbChatMessage> createTestDbChatMessage({
     content: seed + "content",
     accountRemoteId: dbAccount.remoteId,
     emojis: null,
+    card: card,
     chatRemoteId: chatRemoteId ?? seed + "chatRemoteId",
   );
   return dbChatMessage;
@@ -59,4 +62,5 @@ void expectDbChatMessage(IChatMessage actual, DbChatMessage expected) {
   expect(actual.emojis, expected.emojis);
   expect(actual.mediaAttachment, expected.mediaAttachment);
   expect(actual.chatRemoteId, expected.chatRemoteId);
+  expect(actual.card, expected.card);
 }

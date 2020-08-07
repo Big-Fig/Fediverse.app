@@ -1,4 +1,5 @@
 import 'package:fedi/app/account/my/my_account_bloc.dart';
+import 'package:fedi/app/card/card_widget.dart';
 import 'package:fedi/app/chat/message/chat_message_bloc.dart';
 import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/media/attachment/media_attachments_widget.dart';
@@ -6,9 +7,11 @@ import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/url/url_helper.dart';
+import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 const _borderRadius = Radius.circular(FediSizes.borderRadiusBigSize);
 
@@ -35,6 +38,7 @@ class ChatMessageListItemWidget extends StatelessWidget {
     var alignment =
         isChatMessageFromMe ? Alignment.centerRight : Alignment.centerLeft;
     var isHaveTextContent = messageBloc?.content?.isNotEmpty == true;
+    var maxWidthConstraints = BoxConstraints(maxWidth: deviceWidth * 0.80);
     return Align(
       alignment: alignment,
       child: Column(
@@ -63,7 +67,7 @@ class ChatMessageListItemWidget extends StatelessWidget {
                           bottomRight: _borderRadius)
                   : BorderRadius.zero,
             ),
-            constraints: BoxConstraints(maxWidth: deviceWidth * 0.80),
+            constraints: maxWidthConstraints,
             child: Padding(
               padding: isHaveTextContent
                   ? EdgeInsets.symmetric(
@@ -93,6 +97,9 @@ class ChatMessageListItemWidget extends StatelessWidget {
                     ),
             ),
           ),
+          Container(
+              constraints: maxWidthConstraints,
+              child: buildCardContent(messageBloc)),
           if (isFirstInMinuteGroup)
             Align(
                 alignment: alignment,
@@ -138,6 +145,20 @@ class ChatMessageListItemWidget extends StatelessWidget {
             return MediaAttachmentsWidget(
               mediaAttachments: mediaAttachments,
             );
+          });
+
+  Widget buildCardContent(IChatMessageBloc messageBloc) =>
+      StreamBuilder<IPleromaCard>(
+          stream: messageBloc.cardStream,
+          initialData: messageBloc.card,
+          builder: (context, snapshot) {
+            var card = snapshot.data;
+
+            if (card != null) {
+              return Provider.value(value: card, child: CardWidget());
+            } else {
+              return SizedBox.shrink();
+            }
           });
 
   Widget buildTextContent(
