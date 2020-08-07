@@ -49,6 +49,9 @@ PleromaChatMessage _$PleromaChatMessageFromJson(Map<String, dynamic> json) {
         ? null
         : PleromaMediaAttachment.fromJson(
             json['attachment'] as Map<String, dynamic>),
+    card: json['card'] == null
+        ? null
+        : PleromaCard.fromJson(json['card'] as Map<String, dynamic>),
   );
 }
 
@@ -61,6 +64,7 @@ Map<String, dynamic> _$PleromaChatMessageToJson(PleromaChatMessage instance) =>
       'created_at': instance.createdAt?.toIso8601String(),
       'emojis': instance.emojis?.map((e) => e?.toJson())?.toList(),
       'attachment': instance.mediaAttachment?.toJson(),
+      'card': instance.card?.toJson(),
     };
 
 PleromaChatMessageSendData _$PleromaChatMessageSendDataFromJson(

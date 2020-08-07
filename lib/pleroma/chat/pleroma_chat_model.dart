@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
+import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/widgets.dart';
@@ -112,6 +113,7 @@ abstract class IPleromaChatMessage {
   List<IPleromaEmoji> get emojis;
 
   IPleromaMediaAttachment get mediaAttachment;
+  IPleromaCard get card;
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -135,6 +137,8 @@ class PleromaChatMessage extends IPleromaChatMessage {
   @JsonKey(name: "attachment")
   final PleromaMediaAttachment mediaAttachment;
 
+  final PleromaCard card;
+
   PleromaChatMessage({
     @required this.id,
     @required this.chatId,
@@ -143,6 +147,7 @@ class PleromaChatMessage extends IPleromaChatMessage {
     @required this.createdAt,
     @required this.emojis,
     @required this.mediaAttachment,
+    @required this.card,
   });
 
   @override
@@ -151,8 +156,10 @@ class PleromaChatMessage extends IPleromaChatMessage {
         'accountId: $accountId, content: $content,'
         ' createdAt: $createdAt, emojis: $emojis,'
         ' mediaAttachment: $mediaAttachment'
+        ' card: $card'
         '}';
   }
+
 
   @override
   bool operator ==(Object other) =>
@@ -165,7 +172,8 @@ class PleromaChatMessage extends IPleromaChatMessage {
           content == other.content &&
           createdAt == other.createdAt &&
           emojis == other.emojis &&
-          mediaAttachment == other.mediaAttachment;
+          mediaAttachment == other.mediaAttachment &&
+          card == other.card;
   @override
   int get hashCode =>
       id.hashCode ^
@@ -174,7 +182,8 @@ class PleromaChatMessage extends IPleromaChatMessage {
       content.hashCode ^
       createdAt.hashCode ^
       emojis.hashCode ^
-      mediaAttachment.hashCode;
+      mediaAttachment.hashCode ^
+      card.hashCode;
 
   factory PleromaChatMessage.fromJson(Map<String, dynamic> json) =>
       _$PleromaChatMessageFromJson(json);

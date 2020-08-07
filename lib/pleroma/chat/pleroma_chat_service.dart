@@ -29,8 +29,18 @@ abstract class IPleromaChatService implements IPleromaApi {
 
   Future<IPleromaChat> getChat({@required String id});
 
-  Future<IPleromaChat> getOrCreateChatByAccountId({@required String accountId});
+  Future<IPleromaChat> getOrCreateChatByAccountId({
+    @required String accountId,
+  });
 
-  Future<IPleromaChatMessage> sendMessage(
-      {@required String chatId, @required IPleromaChatMessageSendData data});
+  Future<IPleromaChatMessage> sendMessage({
+    @required String chatId,
+    @required IPleromaChatMessageSendData data,
+  });
+
+  Future<IPleromaChatMessage> shareLink({
+    @required String chatId,
+    @required String link,
+  });
+  Future<List<IPleromaChat>> getChatsToShareLink({int limit = 8});
 }
