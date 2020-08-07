@@ -28,6 +28,7 @@ class ConversationStatusListItemWidget extends StatelessWidget {
 
     var deviceWidth = MediaQuery.of(context).size.width;
 
+
     var isStatusFromMe = myAccountBloc.checkIsStatusFromMe(statusBloc.status);
 
     var alignment =
@@ -142,6 +143,9 @@ class ConversationStatusListItemWidget extends StatelessWidget {
                   shrinkWrap: true,
                   color:
                       isStatusFromMe ? FediColors.white : FediColors.darkGrey,
+                  linkColor: isStatusFromMe
+                      ? FediColors.white
+                      : FediColors.primaryColor,
                   fontSize: 16.0,
                   lineHeight: 1.5,
                   data: contentWithEmojis,
