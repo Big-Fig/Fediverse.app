@@ -15,7 +15,6 @@ class PleromaChatService implements IPleromaChatService {
   @override
   final IPleromaAuthRestService restService;
 
-
   @override
   bool get isPleromaInstance => restService.isPleromaInstance;
 
@@ -160,6 +159,20 @@ class PleromaChatService implements IPleromaChatService {
 
     return parseChatMessageResponse(httpResponse);
   }
+
+  @override
+  Future<IPleromaChatMessage> shareLink({
+    @required String chatId,
+    @required String link,
+  }) => sendMessage(
+        chatId: chatId,
+        data: PleromaChatMessageSendData(
+          content: link,
+        ));
+
+  @override
+  Future<List<IPleromaChat>> getChatsToShareLink({int limit = 8}) =>
+      getChats(limit: 8);
 
   @override
   void dispose() {
