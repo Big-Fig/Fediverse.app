@@ -11,13 +11,12 @@ import 'package:moor_flutter/moor_flutter.dart';
 
 var _logger = Logger("chat_cached_list_bloc_impl.dart");
 
-class ChatCachedListBloc extends IChatCachedBloc {
+class ChatCachedListBloc extends IChatCachedListBloc {
   final IPleromaChatService pleromaChatService;
   final IChatRepository chatRepository;
 
   ChatCachedListBloc(
-      {@required this.pleromaChatService,
-      @required this.chatRepository});
+      {@required this.pleromaChatService, @required this.chatRepository});
 
   @override
   IPleromaApi get pleromaApi => pleromaChatService;
@@ -40,8 +39,7 @@ class ChatCachedListBloc extends IChatCachedBloc {
           limit: limit);
 
       if (remoteChats != null) {
-        await chatRepository
-            .upsertRemoteChats(remoteChats);
+        await chatRepository.upsertRemoteChats(remoteChats);
 
         return true;
       } else {
@@ -66,22 +64,21 @@ class ChatCachedListBloc extends IChatCachedBloc {
         "\t olderThan=$olderThan");
 
     var chats = await chatRepository.getChats(
-        olderThan: olderThan,
-        newerThan: newerThan,
-        limit: limit,
-        offset: null,
-        orderingTermData: ChatOrderingTermData(
-            orderingMode: OrderingMode.desc,
-            orderByType: ChatOrderByType.updatedAt));
+      olderThan: olderThan,
+      newerThan: newerThan,
+      limit: limit,
+      offset: null,
+      orderingTermData: ChatOrderingTermData(
+          orderingMode: OrderingMode.desc,
+          orderByType: ChatOrderByType.updatedAt),
+    );
 
-    _logger.finer(
-        () => "finish loadLocalItems chats ${chats.length}");
+    _logger.finer(() => "finish loadLocalItems chats ${chats.length}");
     return chats;
   }
 
   @override
-  Stream<List<IChat>> watchLocalItemsNewerThanItem(
-          IChat item) =>
+  Stream<List<IChat>> watchLocalItemsNewerThanItem(IChat item) =>
       chatRepository.watchChats(
           olderThan: null,
           newerThan: item,

@@ -134,7 +134,7 @@ class PleromaChatService implements IPleromaChatService {
     assert(accountId?.isNotEmpty == true);
     var httpResponse = await restService.sendHttpRequest(RestRequest.post(
         relativePath:
-            urlPath.join(chatRelativeUrlPath, "by-account-id", accountId)));
+        urlPath.join(chatRelativeUrlPath, "by-account-id", accountId)));
 
     return parseChatResponse(httpResponse);
   }
@@ -149,9 +149,8 @@ class PleromaChatService implements IPleromaChatService {
   }
 
   @override
-  Future<IPleromaChatMessage> sendMessage(
-      {@required String chatId,
-      @required IPleromaChatMessageSendData data}) async {
+  Future<IPleromaChatMessage> sendMessage({@required String chatId,
+    @required IPleromaChatMessageSendData data}) async {
     assert(chatId?.isNotEmpty == true);
     var httpResponse = await restService.sendHttpRequest(RestRequest.post(
         relativePath: urlPath.join(chatRelativeUrlPath, chatId, "messages"),
@@ -159,20 +158,6 @@ class PleromaChatService implements IPleromaChatService {
 
     return parseChatMessageResponse(httpResponse);
   }
-
-  @override
-  Future<IPleromaChatMessage> shareLink({
-    @required String chatId,
-    @required String link,
-  }) => sendMessage(
-        chatId: chatId,
-        data: PleromaChatMessageSendData(
-          content: link,
-        ));
-
-  @override
-  Future<List<IPleromaChat>> getChatsToShareLink({int limit = 8}) =>
-      getChats(limit: 8);
 
   @override
   void dispose() {

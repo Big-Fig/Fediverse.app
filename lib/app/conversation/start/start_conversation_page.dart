@@ -32,18 +32,23 @@ class StartConversationPage extends StatelessWidget {
 }
 
 void goToStartConversationPage(BuildContext context) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => SelectAccountListBloc.provideToContext(
+  Navigator.push(
       context,
-      excludeMyAccount: true,
-      child: AccountCachedPaginationBloc.provideToContext(
-        context,
-        child: AccountCachedPaginationBloc.provideToContext(
-          context,
-          child: SelectAccountPaginationListBloc.provideToContext(
-            context,
-            child: StartConversationPage(),
-          ),
-        ),
-      ),
-    )));
+      MaterialPageRoute(
+          builder: (context) => SelectAccountListBloc.provideToContext(
+                context,
+                excludeMyAccount: true,
+                child: AccountCachedPaginationBloc.provideToContext(
+                  context,
+                  child: AccountCachedPaginationBloc.provideToContext(
+                    context,
+                    child: SelectAccountPaginationListBloc.provideToContext(
+                      context,
+                      child: StartConversationPage(),
+                    ),
+                  ),
+                ),
+                customDefaultLocalAccountListLoader: null,
+                customDefaultRemoteAccountListLoader: null,
+              )));
 }

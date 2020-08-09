@@ -13,6 +13,19 @@ class CodegenLoader extends AssetLoader{
 
     static const Map<String,dynamic> en_US = {
   "app": {
+    "share": {
+      "with_message": {
+        "field": {
+          "message": {
+            "label": "Message",
+            "hint": "Describe content (optional)"
+          }
+        }
+      },
+      "action": {
+        "share": "Share"
+      }
+    },
     "poll": {
       "metadata": {
         "expires": {
@@ -306,6 +319,9 @@ class CodegenLoader extends AssetLoader{
       }
     },
     "chat": {
+      "share": {
+        "title": "Share to chats"
+      },
       "list": {
         "new_items": {
           "action": {
@@ -347,6 +363,9 @@ class CodegenLoader extends AssetLoader{
       }
     },
     "conversation": {
+      "share": {
+        "title": "Share to DMs"
+      },
       "post": {
         "field": {
           "content": {
@@ -503,6 +522,11 @@ class CodegenLoader extends AssetLoader{
           "title": "Share",
           "progress": {
             "content": "Sharing..."
+          },
+          "action": {
+            "share_as_media": "Share as media",
+            "share_to_chats": "Share to Chats",
+            "share_to_conversations": "Share to DMs"
           }
         },
         "add_to_gallery": {
@@ -625,7 +649,10 @@ class CodegenLoader extends AssetLoader{
         "follow": "Follow",
         "open_in_browser": "Open in browser",
         "copy_link": "Copy link",
-        "share": "Share",
+        "share_as_text": "Share as text",
+        "share_as_link": "Share as link",
+        "share_to_chats": "Share to Chats",
+        "share_to_dms": "Share to DMs",
         "more": "More",
         "show_this_thread": "Show this thread",
         "popup": {

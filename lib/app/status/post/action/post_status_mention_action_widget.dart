@@ -17,11 +17,16 @@ class PostStatusMentionActionWidget extends StatelessWidget {
         color: FediColors.darkGrey,
       ),
       onPressed: () {
-        goToSelectAccountPage(context, excludeMyAccount: true,
-            accountSelectedCallback: (context, account) {
-          postStatusBloc.addMentionByAccount(account);
-          Navigator.of(context).pop();
-        });
+        goToSelectAccountPage(
+          context,
+          excludeMyAccount: true,
+          accountSelectedCallback: (context, account) {
+            postStatusBloc.addMentionByAccount(account);
+            Navigator.of(context).pop();
+          },
+          customDefaultLocalAccountListLoader: null,
+          customDefaultRemoteAccountListLoader: null,
+        );
       },
     );
   }

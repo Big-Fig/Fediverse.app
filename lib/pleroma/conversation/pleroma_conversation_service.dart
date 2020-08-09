@@ -16,6 +16,7 @@ abstract class IPleromaConversationService implements IPleromaApi {
     String sinceId,
   });
 
+
   Future<IPleromaConversation> getConversation(
       {@required String conversationRemoteId});
 

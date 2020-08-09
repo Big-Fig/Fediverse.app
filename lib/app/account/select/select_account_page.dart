@@ -28,9 +28,13 @@ class SelectAccountPage extends StatelessWidget {
       );
 }
 
-void goToSelectAccountPage(BuildContext context,
-    {@required AccountCallback accountSelectedCallback,
-    @required bool excludeMyAccount}) {
+void goToSelectAccountPage(
+  BuildContext context, {
+  @required AccountCallback accountSelectedCallback,
+  @required bool excludeMyAccount,
+  @required PleromaAccountListLoader customDefaultRemoteAccountListLoader,
+  @required AccountListLoader customDefaultLocalAccountListLoader,
+}) {
   Navigator.push(
     context,
     MaterialPageRoute(builder: (context) {
@@ -45,6 +49,10 @@ void goToSelectAccountPage(BuildContext context,
                 accountSelectedCallback: accountSelectedCallback),
           ),
         ),
+        customDefaultLocalAccountListLoader:
+            customDefaultLocalAccountListLoader,
+        customDefaultRemoteAccountListLoader:
+            customDefaultRemoteAccountListLoader,
       );
     }),
   );

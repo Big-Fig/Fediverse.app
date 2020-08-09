@@ -2,6 +2,9 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:flutter/widgets.dart';
 
+typedef ChatCallback = Function(
+    BuildContext context, IChat chat);
+
 abstract class IChat {
   int get localId;
 

@@ -38,8 +38,6 @@ import 'package:fedi/app/push/subscription_settings/push_subscription_settings_b
 import 'package:fedi/app/push/subscription_settings/push_subscription_settings_bloc_impl.dart';
 import 'package:fedi/app/search/recent/recent_search_local_preference_bloc.dart';
 import 'package:fedi/app/search/recent/recent_search_local_preference_bloc_impl.dart';
-import 'package:fedi/app/share/share_service.dart';
-import 'package:fedi/app/share/share_service_impl.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
@@ -431,11 +429,5 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: myAccountSettingsBloc);
     await globalProviderService
         .asyncInitAndRegister<IMyAccountSettingsBloc>(myAccountSettingsBloc);
-
-    var shareService = ShareService();
-
-    addDisposable(disposable: shareService);
-    await globalProviderService
-        .asyncInitAndRegister<IShareService>(shareService);
   }
 }

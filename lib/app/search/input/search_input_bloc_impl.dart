@@ -68,6 +68,7 @@ class SearchInputBloc extends DisposableOwner implements ISearchInputBloc {
   @override
   void clearSearch() {
     searchTextEditingController.text = "";
+    confirmSearch();
   }
 
   void onSearchTextChanged() {

@@ -270,10 +270,8 @@ class PleromaStatusService implements IPleromaStatusService {
   Future<IPleromaStatus> unBookmarkStatus(
       {@required String statusRemoteId}) async {
     var request = RestRequest.post(
-        relativePath: join(
-            statusRelativeUrlPath,
-            statusRemoteId,
-            "unbookmark"));
+        relativePath:
+            join(statusRelativeUrlPath, statusRemoteId, "unbookmark"));
     var httpResponse = await restService.sendHttpRequest(request);
 
     return parseStatusResponse(httpResponse);
