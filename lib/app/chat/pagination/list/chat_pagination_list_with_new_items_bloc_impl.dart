@@ -8,7 +8,7 @@ import 'package:flutter/widgets.dart';
 class ChatPaginationListWithNewItemsBloc<
         TPage extends CachedPaginationPage<IChat>>
     extends CachedPaginationListWithNewItemsBloc<TPage, IChat> {
-  final IChatCachedBloc cachedListBloc;
+  final IChatCachedListBloc cachedListBloc;
 
   ChatPaginationListWithNewItemsBloc(
       {@required bool mergeNewItemsImmediately,

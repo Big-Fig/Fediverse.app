@@ -81,6 +81,8 @@ void goToStartChatPage(BuildContext context) {
             child: SelectAccountPaginationListBloc.provideToContext(context,
                 child: StartChatPage()),
           ),
+          customDefaultLocalAccountListLoader: null,
+          customDefaultRemoteAccountListLoader: null,
         );
       },
     ),
