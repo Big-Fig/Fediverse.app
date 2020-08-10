@@ -42,7 +42,7 @@ class PostMessageSelectedActionWidget extends StatelessWidget {
                     padding: FediPadding.verticalBigPadding,
                     child: const FediUltraLightGreyDivider(),
                   ),
-                  FediEmojiPickerWidget(
+                  EmojiPickerWidget(
                     onEmojiSelected: (emoji) {
                       postMessageBloc.appendText(emoji.code);
                       postMessageBloc.clearSelectedAction();

@@ -1,5 +1,16 @@
 {
   "app": {
+    "emoji": {
+      "custom": {
+        "empty": "This instance don't have custom emojis"
+      },
+      "recent": {
+        "empty": "No recent emojis"
+      },
+      "category": {
+        "empty": "This category don't have suitable emojis"
+      }
+    },
     "share": {
       "with_message": {
         "field": {
