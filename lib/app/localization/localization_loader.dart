@@ -13,6 +13,17 @@ class CodegenLoader extends AssetLoader{
 
     static const Map<String,dynamic> en_US = {
   "app": {
+    "emoji": {
+      "custom": {
+        "empty": "This instance don't have custom emojis"
+      },
+      "recent": {
+        "empty": "No recent emojis"
+      },
+      "category": {
+        "empty": "This category don't have suitable emojis"
+      }
+    },
     "share": {
       "with_message": {
         "field": {

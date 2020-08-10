@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/emoji/picker/category/custom/emoji_picker_custom_image_url_category_bloc_impl.dart';
 import 'package:fedi/app/emoji/picker/category/custom/emoji_picker_custom_image_url_category_local_preference_bloc.dart';
@@ -16,13 +17,13 @@ import 'package:fedi/pleroma/emoji/pleroma_emoji_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class FediEmojiPickerWidget extends StatelessWidget {
+class EmojiPickerWidget extends StatelessWidget {
   final EmojiSelectedCallback onEmojiSelected;
   final bool useImageEmoji;
   final double selectedCategoryItemsGridHeight;
   final int rowsCount;
 
-  FediEmojiPickerWidget({
+  EmojiPickerWidget({
     @required this.onEmojiSelected,
     @required this.useImageEmoji,
     this.rowsCount = 3,
@@ -81,11 +82,11 @@ class FediEmojiPickerWidget extends StatelessWidget {
         emptyCategoryBuilder: (context, categoryBloc) {
           String text;
           if (categoryBloc is EmojiPickerCustomImageUrlCategoryBloc) {
-            text = "This instance don't have custom emojis";
+            text = "app.emoji.custom.empty".tr();
           } else if (categoryBloc is EmojiPickerRecentCategoryBloc) {
-            text = "No recent emojis";
+            text = "app.emoji.recent.empty".tr();
           } else {
-            text = "This category don't have suitable emojis";
+            text = "app.emoji.category.empty".tr();
           }
           return Text(
             text,
