@@ -6,6 +6,7 @@ import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/message/post_message_selected_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_mention_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_nsfw_action_widget.dart';
+import 'package:fedi/app/status/post/action/post_status_poll_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_post_text_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_schedule_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_visibility_action_widget.dart';
@@ -106,6 +107,7 @@ class PostStatusComposeWidget extends StatelessWidget {
                     PostStatusScheduleActionWidget(),
                     PostStatusMentionActionWidget(),
                     PostStatusNsfwActionWidget(),
+                    PostStatusPollActionWidget()
                   ],
                 ),
               ),

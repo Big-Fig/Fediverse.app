@@ -2,7 +2,7 @@ import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.da
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc_impl.dart';
 import 'package:fedi/app/message/post_message_bloc.dart';
-import 'package:fedi/app/status/post/post_status_model.dart';
+import 'package:fedi/app/message/post_message_model.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
@@ -109,33 +109,36 @@ abstract class PostMessageBloc extends DisposableOwner
   }
 
   @override
-  PostStatusSelectedAction get selectedAction => selectedActionSubject.value;
+  PostMessageSelectedAction get selectedAction => selectedActionSubject.value;
 
   @override
-  Stream<PostStatusSelectedAction> get selectedActionStream =>
+  Stream<PostMessageSelectedAction> get selectedActionStream =>
       selectedActionSubject.stream;
 
-  BehaviorSubject<PostStatusSelectedAction> selectedActionSubject =
+  BehaviorSubject<PostMessageSelectedAction> selectedActionSubject =
       BehaviorSubject();
 
   bool get isAttachActionSelected =>
-      selectedAction == PostStatusSelectedAction.attach;
+      selectedAction == PostMessageSelectedAction.attach;
 
   Stream<bool> get isAttachActionSelectedStream => selectedActionStream.map(
-      (selectedAction) => selectedAction == PostStatusSelectedAction.attach);
+      (selectedAction) => selectedAction == PostMessageSelectedAction.attach);
 
   bool get isEmojiActionSelected =>
-      selectedAction == PostStatusSelectedAction.emoji;
+      selectedAction == PostMessageSelectedAction.emoji;
+
+  bool get isPollActionSelected =>
+      selectedAction == PostMessageSelectedAction.poll;
 
   Stream<bool> get isEmojiActionSelectedStream => selectedActionStream.map(
-      (selectedAction) => selectedAction == PostStatusSelectedAction.emoji);
+      (selectedAction) => selectedAction == PostMessageSelectedAction.emoji);
 
   @override
   void toggleAttachActionSelection() {
     if (isAttachActionSelected) {
       selectedActionSubject.add(null);
     } else {
-      selectedActionSubject.add(PostStatusSelectedAction.attach);
+      selectedActionSubject.add(PostMessageSelectedAction.attach);
     }
   }
 
@@ -144,7 +147,16 @@ abstract class PostMessageBloc extends DisposableOwner
     if (isEmojiActionSelected) {
       selectedActionSubject.add(null);
     } else {
-      selectedActionSubject.add(PostStatusSelectedAction.emoji);
+      selectedActionSubject.add(PostMessageSelectedAction.emoji);
+    }
+  }
+
+  @override
+  void togglePollActionSelection() {
+    if (isPollActionSelected) {
+      selectedActionSubject.add(null);
+    } else {
+      selectedActionSubject.add(PostMessageSelectedAction.poll);
     }
   }
 
