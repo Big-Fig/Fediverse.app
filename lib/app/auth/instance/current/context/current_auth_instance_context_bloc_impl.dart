@@ -52,6 +52,8 @@ import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service_impl.dart';
 import 'package:fedi/pleroma/account/public/pleroma_account_public_service.dart';
 import 'package:fedi/pleroma/account/public/pleroma_account_public_service_impl.dart';
+import 'package:fedi/pleroma/captcha/pleroma_captcha_service.dart';
+import 'package:fedi/pleroma/captcha/pleroma_captcha_service_impl.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_service.dart';
 import 'package:fedi/pleroma/chat/pleroma_chat_service_impl.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_service.dart';
@@ -221,6 +223,12 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService
         .asyncInitAndRegister<IPleromaAuthRestService>(pleromaAuthRestService);
 
+    var pleromaCaptchaService =
+    PleromaCaptchaService(restService: pleromaAuthRestService);
+    await globalProviderService.asyncInitAndRegister<
+        IPleromaCaptchaService>(pleromaCaptchaService);
+    addDisposable(disposable: pleromaCaptchaService);
+    
     var pleromaMediaAttachmentService =
         PleromaMediaAttachmentService(restService: pleromaAuthRestService);
     await globalProviderService.asyncInitAndRegister<
