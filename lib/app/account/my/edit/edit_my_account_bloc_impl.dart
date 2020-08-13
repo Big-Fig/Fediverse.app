@@ -81,6 +81,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
                 ),
               )
               .toList(),
+          minimumFieldsCount: null,
         ) {
     addDisposable(disposable: displayNameField);
     addDisposable(disposable: noteField);
@@ -154,4 +155,14 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
           pleromaMyAccountService:
               IPleromaMyAccountService.of(context, listen: false),
           maximumPossibleCustomFieldsCount: _maximumPossibleCustomFieldsCount);
+
+  @override
+  void clear() {
+    displayNameField.clear();
+    noteField.clear();
+    lockedField.clear();
+    customFieldsGroupBloc.clear();
+    avatarField.clear();
+    headerField.clear();
+  }
 }

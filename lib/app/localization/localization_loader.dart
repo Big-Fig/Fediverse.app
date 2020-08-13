@@ -48,7 +48,7 @@ class CodegenLoader extends AssetLoader{
       "vote": "Vote"
     },
     "datetime": {
-      "title": "Schedule",
+      "title": "Select date",
       "picker": {
         "action": {
           "ok": "Set time",
@@ -636,6 +636,11 @@ class CodegenLoader extends AssetLoader{
         "state": {
           "canceled": "Canceled",
           "already_posted": "Already posted"
+        },
+        "datetime": {
+          "picker": {
+            "title": "Schedule"
+          }
         }
       },
       "share": {
@@ -693,6 +698,26 @@ class CodegenLoader extends AssetLoader{
         "title": "Reblogged by"
       },
       "post": {
+        "poll": {
+          "field": {
+            "option": {
+              "label": "Option {}",
+              "hint": "Option"
+            },
+            "multiply": {
+              "label": "Multiply choices"
+            },
+            "expires_at": {
+              "label": "Expires at",
+              "picker": {
+                "title": "Expires at"
+              }
+            }
+          },
+          "action": {
+            "add_option": "Add option"
+          }
+        },
         "schedule": {
           "error": {
             "not_in_future": {

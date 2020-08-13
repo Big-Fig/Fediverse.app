@@ -12,6 +12,8 @@ import 'package:fedi/ui/form/group/one_type/form_one_type_group_bloc.dart';
 import 'package:fedi/ui/form/group/one_type/form_one_type_group_bloc_impl.dart';
 
 class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
+  PostStatusPollBloc();
+
   @override
   List<IFormItemBloc> get items => [
         expiresAtFieldBloc,
@@ -21,7 +23,8 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
 
   @override
   IFormDateTimeFieldBloc expiresAtFieldBloc = FormDateTimeFieldBloc(
-    originValue: DateTime.now().add(IPostStatusPollBloc.requiredMinimumDuration),
+    originValue:
+        DateTime.now().add(IPostStatusPollBloc.requiredMinimumDuration),
     minDate: DateTime.now().add(IPostStatusPollBloc.requiredMinimumDuration),
     maxDate: null,
   );
@@ -32,14 +35,27 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
   @override
   IFormOneTypeGroupBloc<IFormStringFieldBloc> pollOptionsGroupBloc =
       FormOneTypeGroupBloc<IFormStringFieldBloc>(
-          originalItems: <IFormStringFieldBloc>[
-        createPollOptionBloc(),
-        createPollOptionBloc(),
-      ],
-          maximumFieldsCount: 10,
-          newFieldCreator: () => createPollOptionBloc());
+    originalItems: createDefaultPollOptions(),
+    minimumFieldsCount: 2,
+    maximumFieldsCount: 10,
+    newFieldCreator: () => createPollOptionBloc(),
+  );
+
+  static List<IFormStringFieldBloc> createDefaultPollOptions() {
+    return <IFormStringFieldBloc>[
+    createPollOptionBloc(),
+    createPollOptionBloc(),
+  ];
+  }
 
   static FormStringFieldBloc createPollOptionBloc() => FormStringFieldBloc(
       originValue: null,
       validators: [NonEmptyStringFieldValidationError.createValidator()]);
+
+  @override
+  void clear() {
+    pollOptionsGroupBloc.clear();
+    expiresAtFieldBloc.clear();
+    multiplyFieldBloc.clear();
+  }
 }

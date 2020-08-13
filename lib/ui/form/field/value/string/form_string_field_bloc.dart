@@ -4,4 +4,5 @@ import 'package:flutter/widgets.dart';
 abstract class IFormStringFieldBloc extends IFormValueFieldBloc<String> {
   TextEditingController get textEditingController;
   FocusNode get focusNode;
+
 }

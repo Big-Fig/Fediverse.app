@@ -15,4 +15,6 @@ abstract class IFormItemBloc extends Disposable {
   Stream<bool> get isHaveAtLeastOneErrorStream;
 
   bool get isHaveAtLeastOneError;
+
+  void clear();
 }

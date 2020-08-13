@@ -88,10 +88,11 @@ abstract class PostMessageBloc extends DisposableOwner
     clearSelectedAction();
   }
 
-  bool calculateIsReadyToPost(
-      {@required String inputText,
-      @required List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs,
-      @required bool isAllAttachedMediaUploaded}) {
+  bool calculateIsReadyToPost({
+    @required String inputText,
+    @required List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs,
+    @required bool isAllAttachedMediaUploaded,
+  }) {
     var textIsNotEmpty = inputText?.trim()?.isEmpty != true;
     var mediaAttached = mediaAttachmentBlocs?.isEmpty != true;
 

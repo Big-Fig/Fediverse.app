@@ -41,5 +41,10 @@ class FormFilePickerOrUrlFieldBloc extends FormFieldBloc
   @override
   Stream<List<FormItemValidationError>> get errorsStream => Stream.empty();
 
+  @override
+  void clear() {
+    _currentFilePickerFileSubject.add(null);
+  }
+
 
 }

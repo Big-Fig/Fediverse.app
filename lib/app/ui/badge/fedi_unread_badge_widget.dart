@@ -2,16 +2,18 @@ import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-const _unreadBadgeSize = 8.0;
-const _unreadBadgeDefaultOffset = 2.0;
 
 abstract class FediUnreadBadgeWidget extends StatelessWidget {
   final Widget child;
   final double offset;
 
+  static const unreadBadgeSize = 8.0;
+  static const unreadBadgeDefaultOffset = 2.0;
+
+
   const FediUnreadBadgeWidget({
     @required this.child,
-    this.offset = _unreadBadgeDefaultOffset,
+    this.offset = unreadBadgeDefaultOffset,
   });
 
   Stream<bool> retrieveUnreadBadgeCountStream(BuildContext context);
@@ -31,8 +33,8 @@ abstract class FediUnreadBadgeWidget extends StatelessWidget {
                   right: offset,
                   top: offset,
                   child: Container(
-                    width: _unreadBadgeSize,
-                    height: _unreadBadgeSize,
+                    width: unreadBadgeSize,
+                    height: unreadBadgeSize,
                     decoration: BoxDecoration(
                         color: FediColors.secondaryColor,
                         shape: BoxShape.circle),

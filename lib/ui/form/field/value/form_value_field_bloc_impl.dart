@@ -9,7 +9,8 @@ class FormValueFieldBloc<T> extends FormFieldBloc
   @override
   final List<FormValueFieldValidation<T>> validators;
 
-  final BehaviorSubject<List<FormValueFieldValidationError>> _currentErrorSubject;
+  final BehaviorSubject<List<FormValueFieldValidationError>>
+      _currentErrorSubject;
 
   @override
   List<FormValueFieldValidationError> get errors => _currentErrorSubject.value;
@@ -24,7 +25,6 @@ class FormValueFieldBloc<T> extends FormFieldBloc
   final BehaviorSubject<T> _currentValueSubject;
   @override
   T get currentValue => _currentValueSubject.value;
-
 
   // distinct is important, we don't need new value in stream on each widget
   // build
@@ -65,7 +65,10 @@ class FormValueFieldBloc<T> extends FormFieldBloc
 
   void revalidate() {
     _currentErrorSubject.add(_validate(currentValue, validators));
-
   }
 
+  @override
+  void clear() {
+    _currentValueSubject.add(originValue);
+  }
 }
