@@ -29,4 +29,10 @@ class FormKeyValuePairFieldGroupBloc<K extends IFormValueFieldBloc,
 
   @override
   Stream<List<IFormItemBloc>> get itemsStream => Stream.value(items);
+
+  @override
+  void clear() {
+    keyField.clear();
+    valueField.clear();
+  }
 }

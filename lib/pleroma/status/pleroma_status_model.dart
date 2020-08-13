@@ -478,8 +478,12 @@ class PleromaPostStatusPoll implements IPleromaPostStatusPoll {
   @override
   List<String> options;
 
-  PleromaPostStatusPoll(
-      {this.expiresInSeconds, this.hideTotals, this.multiple, this.options});
+  PleromaPostStatusPoll({
+    this.expiresInSeconds,
+    this.hideTotals,
+    this.multiple,
+    this.options,
+  });
 
   factory PleromaPostStatusPoll.fromJson(Map<String, dynamic> json) =>
       _$PleromaPostStatusPollFromJson(json);

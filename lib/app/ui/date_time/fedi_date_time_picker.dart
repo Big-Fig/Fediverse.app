@@ -280,7 +280,7 @@ class _DatePickerState extends State<_FediDatePickerComponent> {
           Padding(
             padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
             child: Text(
-              "app.datetime.title".tr(),
+              theme.customTitle,
               style: FediTextStyles.dialogTitleBoldDarkGrey,
             ),
           ),
@@ -461,6 +461,7 @@ class FediDatePickerTheme with DiagnosticableMixin {
   final double containerHeight;
   final double titleHeight;
   final double itemHeight;
+  final String customTitle;
   final String customDone;
   final String customCancel;
 
@@ -473,7 +474,19 @@ class FediDatePickerTheme with DiagnosticableMixin {
     this.containerHeight = 210.0,
     this.titleHeight = 44.0,
     this.itemHeight = 36.0,
+    @required this.customTitle,
     @required this.customDone,
     @required this.customCancel,
   });
+
+  FediDatePickerTheme.byDefault({String customTitle})
+      : this(
+          headerColor: FediColors.white,
+          backgroundColor: FediColors.white,
+          itemStyle: FediTextStyles.mediumShortBoldDarkGrey,
+          doneStyle: FediTextStyles.mediumShortBoldPrimary,
+          customTitle: customTitle ?? "app.datetime.picker.title".tr(),
+          customDone: "app.datetime.picker.action.ok".tr(),
+          customCancel: "app.datetime.picker.action.cancel".tr(),
+        );
 }

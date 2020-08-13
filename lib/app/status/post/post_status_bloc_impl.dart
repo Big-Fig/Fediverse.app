@@ -2,6 +2,8 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
 import 'package:fedi/app/message/post_message_bloc_impl.dart';
+import 'package:fedi/app/status/post/poll/post_status_poll_bloc.dart';
+import 'package:fedi/app/status/post/poll/post_status_poll_bloc_impl.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -28,6 +30,9 @@ abstract class PostStatusBloc extends PostMessageBloc
   final IStatus originInReplyToStatus;
 
   String get inReplyToStatusRemoteId => originInReplyToStatus?.remoteId;
+
+  @override
+  IPostStatusPollBloc pollBloc = PostStatusPollBloc();
 
   String idempotencyKey;
 
@@ -87,6 +92,8 @@ abstract class PostStatusBloc extends PostMessageBloc
     addDisposable(subject: mentionedAcctsSubject);
     addDisposable(subject: visibilitySubject);
     addDisposable(subject: scheduledAtSubject);
+
+    addDisposable(disposable: pollBloc);
 
     var focusListener = () {
       onFocusChange(inputFocusNode.hasFocus);
@@ -159,23 +166,53 @@ abstract class PostStatusBloc extends PostMessageBloc
   Stream<bool> get isNsfwSensitiveEnabledStream => nsfwSensitiveSubject.stream;
 
   @override
-  bool get isReadyToPost => calculateIsReadyToPost(
-      inputText: inputWithoutMentionedAcctsText,
-      mediaAttachmentBlocs: mediaAttachmentsBloc.mediaAttachmentBlocs,
-      isAllAttachedMediaUploaded:
-          mediaAttachmentsBloc.isAllAttachedMediaUploaded);
+  bool get isReadyToPost => calculateStatusBlocIsReadyToPost(
+        inputText: inputWithoutMentionedAcctsText,
+        mediaAttachmentBlocs: mediaAttachmentsBloc.mediaAttachmentBlocs,
+        isAllAttachedMediaUploaded:
+            mediaAttachmentsBloc.isAllAttachedMediaUploaded,
+        isPollBlocHaveErrors: pollBloc.isHaveAtLeastOneError,
+        isPollBlocChanged: pollBloc.isSomethingChanged,
+      );
 
   @override
-  Stream<bool> get isReadyToPostStream => Rx.combineLatest3(
-      inputWithoutMentionedAcctsTextStream,
-      mediaAttachmentsBloc.mediaAttachmentBlocsStream,
-      mediaAttachmentsBloc.isAllAttachedMediaUploadedStream,
-      (inputWithoutMentionedAcctsText, mediaAttachmentBlocs,
-              isAllAttachedMediaUploaded) =>
-          calculateIsReadyToPost(
-              inputText: inputWithoutMentionedAcctsText,
-              mediaAttachmentBlocs: mediaAttachmentBlocs,
-              isAllAttachedMediaUploaded: isAllAttachedMediaUploaded));
+  Stream<bool> get isReadyToPostStream => Rx.combineLatest5(
+        inputWithoutMentionedAcctsTextStream,
+        mediaAttachmentsBloc.mediaAttachmentBlocsStream,
+        mediaAttachmentsBloc.isAllAttachedMediaUploadedStream,
+        pollBloc.isHaveAtLeastOneErrorStream,
+        pollBloc.isSomethingChangedStream,
+        (
+          inputWithoutMentionedAcctsText,
+          mediaAttachmentBlocs,
+          isAllAttachedMediaUploaded,
+          isHaveAtLeastOneError,
+          isPollBlocChanged,
+        ) =>
+            calculateStatusBlocIsReadyToPost(
+          inputText: inputWithoutMentionedAcctsText,
+          mediaAttachmentBlocs: mediaAttachmentBlocs,
+          isAllAttachedMediaUploaded: isAllAttachedMediaUploaded,
+          isPollBlocHaveErrors: isHaveAtLeastOneError,
+          isPollBlocChanged: isPollBlocChanged,
+        ),
+      );
+
+  bool calculateStatusBlocIsReadyToPost({
+    @required String inputText,
+    @required List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs,
+    @required bool isAllAttachedMediaUploaded,
+    @required bool isPollBlocHaveErrors,
+    @required bool isPollBlocChanged,
+  }) {
+    var isReady = super.calculateIsReadyToPost(
+      inputText: inputText,
+      mediaAttachmentBlocs: mediaAttachmentBlocs,
+      isAllAttachedMediaUploaded: isAllAttachedMediaUploaded,
+    );
+
+    return isReady && (!isPollBlocChanged || !isPollBlocHaveErrors);
+  }
 
   @override
   String get inputWithoutMentionedAcctsText =>
@@ -187,7 +224,6 @@ abstract class PostStatusBloc extends PostMessageBloc
       mentionedAcctsStream,
       (inputText, mentionedAccts) =>
           removeAcctsFromText(inputText, mentionedAccts));
-
 
   void onMentionedAccountsChanged() {
     var mentionedAccts = this.mentionedAccts;
@@ -317,6 +353,7 @@ abstract class PostStatusBloc extends PostMessageBloc
       inReplyToConversationId: conversationRemoteId,
       idempotencyKey: idempotencyKey,
       to: _calculateToField(),
+      poll: _calculatePollField(),
     ));
 
     var success;
@@ -368,6 +405,7 @@ abstract class PostStatusBloc extends PostMessageBloc
       idempotencyKey: idempotencyKey,
       scheduledAt: scheduledAt,
       to: _calculateToField(),
+      poll: _calculatePollField(),
     ));
     var success = scheduledStatus != null;
     return success;
@@ -376,11 +414,14 @@ abstract class PostStatusBloc extends PostMessageBloc
   @override
   void clear() {
     super.clear();
+
     visibilitySubject.add(initialVisibility);
 
     nsfwSensitiveSubject.add(false);
     _regenerateIdempotencyKey();
     clearSchedule();
+
+    pollBloc.clear();
   }
 
   String removeAcctsFromText(String inputText, List<String> mentionedAccts) {
@@ -406,11 +447,9 @@ abstract class PostStatusBloc extends PostMessageBloc
     schedule(null);
   }
 
-
   Future onStatusPosted(IPleromaStatus remoteStatus) async {
     // nothing by default
   }
-
 
   List<String> _calculateToField() {
     if (pleromaStatusService.isPleromaInstance) {
@@ -447,5 +486,22 @@ abstract class PostStatusBloc extends PostMessageBloc
 
   String calculateInReplyToStatusRemoteId() {
     return inReplyToStatusRemoteId;
+  }
+
+  PleromaPostStatusPoll _calculatePollField() {
+    var poll;
+    if (pollBloc.isSomethingChanged) {
+      var expiresAt = pollBloc.expiresAtFieldBloc.currentValue;
+      var expiresInSeconds = DateTime.now().difference(expiresAt).abs().inSeconds;
+
+      poll = PleromaPostStatusPoll(
+        expiresInSeconds: expiresInSeconds,
+        multiple: pollBloc.multiplyFieldBloc.currentValue,
+        options: pollBloc.pollOptionsGroupBloc.items
+            .map((item) => item.currentValue)
+            .toList(),
+      );
+    }
+    return poll;
   }
 }

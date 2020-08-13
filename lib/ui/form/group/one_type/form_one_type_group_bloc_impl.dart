@@ -1,5 +1,5 @@
-import 'package:fedi/ui/form/group/form_group_bloc_impl.dart';
 import 'package:fedi/ui/form/form_item_bloc.dart';
+import 'package:fedi/ui/form/group/form_group_bloc_impl.dart';
 import 'package:fedi/ui/form/group/one_type/form_one_type_group_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
@@ -10,6 +10,8 @@ class FormOneTypeGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
     implements IFormOneTypeGroupBloc<T> {
   @override
   final int maximumFieldsCount;
+  @override
+  final int minimumFieldsCount;
   final NewFieldCreator<T> newFieldCreator;
 
   final List<T> originalItems;
@@ -18,9 +20,12 @@ class FormOneTypeGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
 
   FormOneTypeGroupBloc({
     @required this.maximumFieldsCount,
+    @required this.minimumFieldsCount,
     @required this.newFieldCreator,
     @required this.originalItems,
-  }) : _itemsSubject = BehaviorSubject.seeded(originalItems) {
+  }) : _itemsSubject = BehaviorSubject.seeded([
+          ...originalItems,
+        ]) {
     addDisposable(subject: _itemsSubject);
     addDisposable(subject: _isChangedSubject);
     originalItems.forEach((field) {
@@ -35,11 +40,40 @@ class FormOneTypeGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
   final BehaviorSubject<List<T>> _itemsSubject;
 
   @override
-  bool get isMaximumFieldsCountReached => items.length >= maximumFieldsCount;
+  bool get isMaximumFieldsCountReached =>
+      maximumFieldsCount != null ? items.length >= maximumFieldsCount : false;
 
   @override
-  Stream<bool> get isMaximumFieldsCountReachedStream => itemsStream
-      .map((customFields) => items.length >= maximumFieldsCount);
+  bool get isMinimumFieldsCountReached =>
+      minimumFieldsCount != null ? items.length <= minimumFieldsCount : false;
+
+  @override
+  Stream<bool> get isMaximumFieldsCountReachedStream =>
+      itemsStream.map((customFields) => maximumFieldsCount != null
+          ? items.length >= maximumFieldsCount
+          : false);
+
+  @override
+  Stream<bool> get isMinimumFieldsCountReachedStream =>
+      itemsStream.map((customFields) => minimumFieldsCount != null
+          ? items.length <= minimumFieldsCount
+          : false);
+
+  @override
+  Stream<bool> get isPossibleToRemoveFieldsStream =>
+      isMinimumFieldsCountReachedStream
+          .map((isMinimumFieldsCountReached) => !isMinimumFieldsCountReached);
+
+  @override
+  bool get isPossibleToRemoveFields => !isMinimumFieldsCountReached;
+
+  @override
+  Stream<bool> get isPossibleToAddFieldsStream =>
+      isMaximumFieldsCountReachedStream
+          .map((isMaximumFieldsCountReached) => !isMaximumFieldsCountReached);
+
+  @override
+  bool get isPossibleToAddFields => !isMaximumFieldsCountReached;
 
   @override
   List<T> get items => _itemsSubject.value;
@@ -51,7 +85,7 @@ class FormOneTypeGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
   bool get isSomethingChanged => _isChangedSubject.value;
 
   @override
-  Stream<bool> get isSomethingChangedStream =>_isChangedSubject.stream;
+  Stream<bool> get isSomethingChangedStream => _isChangedSubject.stream;
 
   bool checkIsSomethingChanged() {
     var isChanged = isGroupChanged ||
@@ -87,4 +121,9 @@ class FormOneTypeGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
     });
   }
 
+  @override
+  void clear() {
+    originalItems.forEach((item) => item.clear());
+    _itemsSubject.add(originalItems);
+  }
 }

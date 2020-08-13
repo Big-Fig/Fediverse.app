@@ -24,8 +24,7 @@ class PostStatusStartConversationBloc extends PostStatusBloc {
             initialVisibility: PleromaVisibility.DIRECT,
             initialAccountsToMention: conversationAccountsWithoutMe);
 
-  static PostStatusStartConversationBloc createFromContext(BuildContext
-  context,
+  static PostStatusStartConversationBloc createFromContext(BuildContext context,
           {@required List<IAccount> conversationAccountsWithoutMe}) =>
       PostStatusStartConversationBloc(
           conversationAccountsWithoutMe: conversationAccountsWithoutMe,
@@ -55,16 +54,27 @@ class PostStatusStartConversationBloc extends PostStatusBloc {
       super.isReadyToPost && mentionedAccts?.isNotEmpty == true;
 
   @override
-  Stream<bool> get isReadyToPostStream => Rx.combineLatest4(
+  Stream<bool> get isReadyToPostStream => Rx.combineLatest6(
       inputWithoutMentionedAcctsTextStream,
       mediaAttachmentsBloc.mediaAttachmentBlocsStream,
       mediaAttachmentsBloc.isAllAttachedMediaUploadedStream,
+      pollBloc.isHaveAtLeastOneErrorStream,
+      pollBloc.isSomethingChangedStream,
       mentionedAcctsStream,
-      (inputWithoutMentionedAcctsText, mediaAttachmentBlocs,
-              isAllAttachedMediaUploaded, mentionedAccts) =>
-          calculateIsReadyToPost(
-              inputText: inputWithoutMentionedAcctsText,
-              mediaAttachmentBlocs: mediaAttachmentBlocs,
-              isAllAttachedMediaUploaded: isAllAttachedMediaUploaded) &&
+      (
+        inputWithoutMentionedAcctsText,
+        mediaAttachmentBlocs,
+        isAllAttachedMediaUploaded,
+        isHaveAtLeastOneError,
+        isPollBlocChanged,
+        mentionedAccts,
+      ) =>
+          calculateStatusBlocIsReadyToPost(
+            inputText: inputWithoutMentionedAcctsText,
+            mediaAttachmentBlocs: mediaAttachmentBlocs,
+            isAllAttachedMediaUploaded: isAllAttachedMediaUploaded,
+            isPollBlocHaveErrors: isHaveAtLeastOneError,
+            isPollBlocChanged: isPollBlocChanged,
+          ) &&
           mentionedAccts?.isNotEmpty == true);
 }

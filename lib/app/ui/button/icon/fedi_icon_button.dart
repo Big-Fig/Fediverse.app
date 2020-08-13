@@ -10,7 +10,7 @@ class FediIconButton extends StatelessWidget {
   final EdgeInsets padding;
 
   FediIconButton({
-    this.icon,
+    @required this.icon,
     @required this.onPressed,
     this.color,
     this.padding = const EdgeInsets.all(8.0),
