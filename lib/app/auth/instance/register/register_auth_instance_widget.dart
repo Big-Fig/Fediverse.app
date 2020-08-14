@@ -4,6 +4,7 @@ import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_bloc.dart';
+import 'package:fedi/app/form/captcha/form_captcha_string_field_row_widget.dart';
 import 'package:fedi/app/form/form_string_field_form_row_widget.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
@@ -35,6 +36,8 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
           buildEmailField(context, joinInstanceRegisterBloc),
           buildPasswordField(context, joinInstanceRegisterBloc),
           buildConfirmPasswordField(context, joinInstanceRegisterBloc),
+          if (joinInstanceRegisterBloc.isCaptchaRequired)
+            buildCaptchaField(context, joinInstanceRegisterBloc),
           SizedBox(height: 25),
           buildSubmitButton(context, joinInstanceRegisterBloc),
         ],
@@ -119,8 +122,25 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
         hintText: tr("app.auth.instance.register.field.confirm_password.hint"),
         autocorrect: false,
         obscureText: true,
-        nextFormStringFieldBloc: null,
+        nextFormStringFieldBloc:
+            bloc.isCaptchaRequired ? bloc.captchaFieldBloc : null,
       );
+
+  Widget buildCaptchaField(
+      BuildContext context, IRegisterAuthInstanceBloc bloc) {
+    return Padding(
+      padding: FediPadding.horizontalBigPadding,
+      child: FormCaptchaStringFieldFormRowWidget(
+        formCaptchaStringFieldBloc: bloc.captchaFieldBloc,
+        hint: tr("app.auth.instance.register.field.captcha.hint"),
+        label: tr("app.auth.instance.register.field.captcha.label"),
+        obscureText: false,
+        autocorrect: false,
+        onSubmitted: null,
+        textInputAction: TextInputAction.done,
+      ),
+    );
+  }
 
   Widget buildSubmitButton(
       BuildContext context, IRegisterAuthInstanceBloc bloc) {
@@ -151,6 +171,9 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
     final validEmail = bloc.emailFieldBloc.currentValue;
     final validPassword = bloc.passwordFieldBloc.currentValue;
 
+    final captcha = bloc.captchaFieldBloc?.captcha;
+    final captchaSolution = bloc.captchaFieldBloc?.currentValue;
+
     var dialogResult =
         await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
             context: context,
@@ -163,14 +186,19 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
                 await authApplicationBloc.performAsyncInit();
 
                 authInstance = await authApplicationBloc.registerAccount(
-                    request: PleromaAccountRegisterRequest(
-                        //todo: popup ToS before register
-                        agreement: true,
-                        email: validEmail,
-                        // todo: add locale chooser
-                        locale: "en",
-                        password: validPassword,
-                        username: validUsername));
+                  request: PleromaAccountRegisterRequest(
+                    //todo: popup ToS before register
+                    agreement: true,
+                    email: validEmail,
+                    // todo: add locale chooser
+                    locale: "en",
+                    password: validPassword,
+                    username: validUsername,
+                    captchaSolution: captchaSolution,
+                    captchaAnswerData: captcha?.answerData,
+                    captchaToken: captcha?.token,
+                  ),
+                );
               } finally {
                 authApplicationBloc?.dispose();
               }

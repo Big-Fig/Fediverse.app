@@ -284,6 +284,10 @@ class CodegenLoader extends AssetLoader{
                 "invalid": "Please enter a valid username"
               }
             },
+            "captcha": {
+              "label": "Captcha*",
+              "hint": "Characters from picture"
+            },
             "email": {
               "label": "Email Address*",
               "hint": "you@example.com",

@@ -4,7 +4,7 @@ import 'package:fedi/pleroma/captcha/pleroma_captcha_model.dart';
 import 'package:flutter/cupertino.dart';
 
 extension PleromaNativeCaptchaImageExtension on IPleromaCaptcha {
-  Image decodeImage() {
+  Image decodeUrlAsBase64Image() {
     assert(pleromaType == PleromaCaptchaType.native);
 
     String encoded = url;

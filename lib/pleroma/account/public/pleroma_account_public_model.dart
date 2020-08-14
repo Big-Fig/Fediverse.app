@@ -8,6 +8,13 @@ part 'pleroma_account_public_model.g.dart';
 
 abstract class IPleromaAccountRegisterRequest extends IMastodonAccountRegister {
   Map<String, dynamic> toJson();
+
+
+  String get captchaToken;
+
+  String get captchaAnswerData;
+
+  String get captchaSolution;
 }
 
 @JsonSerializable()
@@ -30,20 +37,64 @@ class PleromaAccountRegisterRequest extends IPleromaAccountRegisterRequest {
   @override
   final String username;
 
-  PleromaAccountRegisterRequest(
-      {@required this.agreement,
-      @required this.email,
-      @required this.locale,
-      @required this.password,
-      this.reason,
-      @required this.username});
+  @override
+  @JsonKey(name: "captcha_token")
+  final String captchaToken;
+  @override
+  @JsonKey(name: "captcha_answer_data")
+  final String captchaAnswerData;
+  @override
+  @JsonKey(name: "captcha_solution")
+  final String captchaSolution;
+
+  PleromaAccountRegisterRequest({
+    @required this.agreement,
+    @required this.email,
+    @required this.locale,
+    @required this.password,
+    this.reason,
+    @required this.username,
+    @required this.captchaToken,
+    @required this.captchaAnswerData,
+    @required this.captchaSolution,
+  });
+
 
   @override
   String toString() {
-    return 'PleromaAccountRegister{agreement: $agreement,'
-        ' email: $email, locale: $locale,'
-        ' password: $password, reason: $reason, username: $username}';
+    return 'PleromaAccountRegisterRequest{agreement: $agreement, '
+        'email: $email, locale: $locale, password: $password, '
+        'reason: $reason, username: $username, captchaToken: $captchaToken, '
+        'captchaAnswerData: $captchaAnswerData, '
+        'captchaSolution: $captchaSolution}';
   }
+
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaAccountRegisterRequest &&
+          runtimeType == other.runtimeType &&
+          agreement == other.agreement &&
+          email == other.email &&
+          locale == other.locale &&
+          password == other.password &&
+          reason == other.reason &&
+          username == other.username &&
+          captchaToken == other.captchaToken &&
+          captchaAnswerData == other.captchaAnswerData &&
+          captchaSolution == other.captchaSolution;
+  @override
+  int get hashCode =>
+      agreement.hashCode ^
+      email.hashCode ^
+      locale.hashCode ^
+      password.hashCode ^
+      reason.hashCode ^
+      username.hashCode ^
+      captchaToken.hashCode ^
+      captchaAnswerData.hashCode ^
+      captchaSolution.hashCode;
 
   factory PleromaAccountRegisterRequest.fromJson(Map<String, dynamic> json) =>
       _$PleromaAccountRegisterRequestFromJson(json);
