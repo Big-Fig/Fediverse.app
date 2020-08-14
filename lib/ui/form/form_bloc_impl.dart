@@ -16,7 +16,7 @@ abstract class FormBloc extends FormGroupBloc implements IFormBloc {
       (isHaveAtLeastOneError, isSomethingChanged) =>
           !isHaveAtLeastOneError &&
               isSomethingChanged
-  );
+  ).asBroadcastStream();
 
   @override
   Stream<List<IFormItemBloc>> get itemsStream => Stream.value(items);

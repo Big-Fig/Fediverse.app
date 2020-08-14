@@ -1,5 +1,6 @@
+import 'package:fedi/app/form/captcha/pleroma_form_captcha_string_field_bloc.dart';
+import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
 import 'package:fedi/ui/form/form_bloc.dart';
-import 'package:fedi/ui/form/field/value/string/form_string_field_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -8,11 +9,15 @@ abstract class IRegisterAuthInstanceBloc implements IFormBloc {
           {bool listen = true}) =>
       Provider.of<IRegisterAuthInstanceBloc>(context, listen: listen);
 
-  FormStringFieldBloc get usernameFieldBloc;
+  IFormStringFieldBloc get usernameFieldBloc;
 
-  FormStringFieldBloc get emailFieldBloc;
+  IFormStringFieldBloc get emailFieldBloc;
 
-  FormStringFieldBloc get passwordFieldBloc;
+  IFormStringFieldBloc get passwordFieldBloc;
 
-  FormStringFieldBloc get confirmPasswordFieldBloc;
+  IFormStringFieldBloc get confirmPasswordFieldBloc;
+
+  bool get isCaptchaRequired;
+
+  IPleromaFormCaptchaStringFieldBloc get captchaFieldBloc;
 }

@@ -43,6 +43,10 @@ class PleromaCaptcha implements IPleromaCaptcha {
     switch (type) {
       case "native":
         return PleromaCaptchaType.native;
+      case "none":
+        return PleromaCaptchaType.none;
+      case "kocaptcha":
+        return PleromaCaptchaType.kocaptcha;
     }
 
     return PleromaCaptchaType.unknown;
@@ -100,4 +104,6 @@ class PleromaCaptcha implements IPleromaCaptcha {
 enum PleromaCaptchaType {
   unknown,
   native,
+  kocaptcha,
+  none,
 }
