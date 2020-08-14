@@ -8,6 +8,7 @@ import 'package:fedi/app/ui/fedi_border_radius.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/header/fedi_sub_header_text.dart';
+import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
 import 'package:flutter/cupertino.dart';
 
 class ShareWithMessageWidget extends StatelessWidget {
@@ -65,14 +66,19 @@ class ShareWithMessageWidget extends StatelessWidget {
               children: <Widget>[
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: FediSubHeaderText("Share content"),
+                  child: FediSubHeaderText("app.share.content".tr()),
                 ),
+                FediSmallVerticalSpacer(),
                 Container(
-                    decoration: BoxDecoration(
-                        color: FediColors.offWhite,
-                        borderRadius: FediBorderRadius.allBigBorderRadius,
-                        border: Border.all(color: FediColors.grey)),
-                    child: child),
+                  decoration: BoxDecoration(
+                    color: FediColors.offWhite,
+                    borderRadius: FediBorderRadius.allBigBorderRadius,
+                    border: Border.all(color: FediColors.grey),
+                  ),
+                  child: ClipRRect(
+                      borderRadius: FediBorderRadius.allBigBorderRadius,
+                      child: child),
+                ),
               ],
             ),
           ),

@@ -10,8 +10,8 @@ import 'package:fedi/app/chat/chat_helper.dart';
 import 'package:fedi/app/chat/share/chat_share_status_page.dart';
 import 'package:fedi/app/conversation/share/conversation_share_status_page.dart';
 import 'package:fedi/app/conversation/start/status/post_status_start_conversation_page.dart';
-import 'package:fedi/app/share/external/external_share_status_as_link_bloc_impl.dart';
-import 'package:fedi/app/share/external/external_share_status_as_text_bloc_impl.dart';
+import 'package:fedi/app/share/external/external_share_status_page.dart';
+import 'package:fedi/app/share/share_chooser_dialog.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/dialog/chooser/fedi_chooser_dialog.dart';
@@ -58,9 +58,6 @@ class StatusActionMoreDialogBody extends StatelessWidget {
     var myAccountBloc = IMyAccountBloc.of(context, listen: false);
     var isStatusFromMe = myAccountBloc.checkIsStatusFromMe(status);
 
-    var currentAuthInstanceBloc =
-        ICurrentAuthInstanceBloc.of(context, listen: false);
-
     return ListView(
       shrinkWrap: true,
       children: [
@@ -69,11 +66,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
             actions: [
               buildCopyAction(context, status),
               buildOpenInBrowserAction(context, status),
-              buildExternalShareAsTextAction(context, status),
-              buildExternalShareAsLinkAction(context, status),
-              buildShareToDMsAction(context, status),
-              if (currentAuthInstanceBloc.currentInstance.isSupportChats)
-                buildShareToChatsAction(context, status),
+              buildShareAction(context, status),
             ],
             cancelable: false),
         if (!isStatusFromMe) ...[
@@ -231,69 +224,24 @@ class StatusActionMoreDialogBody extends StatelessWidget {
                 contentText: tr("app.status.copy_link.toast"), titleText: null);
           });
 
-  DialogAction buildExternalShareAsTextAction(
-          BuildContext context, IStatus status) =>
+  DialogAction buildShareAction(BuildContext context, IStatus status) =>
       DialogAction(
           icon: FediIcons.share,
-          label: tr("app.status.action.share_as_text"),
+          label: tr("app.share.action.share"),
           onAction: () async {
-            var progressMessage = tr("app.status.share.progress.content");
 
-            await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
-                context: context,
-                contentMessage: progressMessage,
-                asyncCode: () async {
-                  var externalShareStatusBloc = ExternalShareStatusAsTextBloc(
-                    popupTitle: tr("app.status.share.title"),
-                    status: status,
-                  );
-
-                  try {
-                    await externalShareStatusBloc.share();
-                  } finally {
-                    externalShareStatusBloc.dispose();
-                  }
-                });
-          });
-
-  DialogAction buildExternalShareAsLinkAction(
-          BuildContext context, IStatus status) =>
-      DialogAction(
-          icon: FediIcons.share,
-          label: tr("app.status.action.share_as_link"),
-          onAction: () async {
-            var progressMessage = tr("app.status.share.progress.content");
-
-            await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
-                context: context,
-                contentMessage: progressMessage,
-                asyncCode: () async {
-                  var externalShareStatusBloc = ExternalShareStatusAsLinkBloc(
-                    popupTitle: tr("app.status.share.title"),
-                    status: status,
-                  );
-
-                  try {
-                    await externalShareStatusBloc.share();
-                  } finally {
-                    externalShareStatusBloc.dispose();
-                  }
-                });
-          });
-
-  DialogAction buildShareToChatsAction(BuildContext context, IStatus status) =>
-      DialogAction(
-          icon: FediIcons.share,
-          label: tr("app.status.action.share_to_chats"),
-          onAction: () async {
-            goToChatShareStatusPage(context: context, status: status);
-          });
-
-  DialogAction buildShareToDMsAction(BuildContext context, IStatus status) =>
-      DialogAction(
-          icon: FediIcons.share,
-          label: tr("app.status.action.share_to_dms"),
-          onAction: () async {
-            goToConversationShareStatusPage(context: context, status: status);
+            showShareChooserDialog(
+              context,
+              externalShareAction: () {
+                goToExternalShareStatusPage(context: context, status: status);
+              },
+              conversationsShareAction: () {
+                goToConversationShareStatusPage(
+                    context: context, status: status);
+              },
+              chatsShareAction: () {
+                goToChatShareStatusPage(context: context, status: status);
+              },
+            );
           });
 }

@@ -25,6 +25,20 @@ class CodegenLoader extends AssetLoader{
       }
     },
     "share": {
+      "title": "Share",
+      "external": {
+        "title": "Share to external app",
+        "field": {
+          "share_as_link": "Share as link"
+        },
+        "progress": {
+          "title": "Share",
+          "progress": {
+            "content": "Sharing..."
+          }
+        }
+      },
+      "content": "Content",
       "with_message": {
         "field": {
           "message": {
@@ -34,7 +48,10 @@ class CodegenLoader extends AssetLoader{
         }
       },
       "action": {
-        "share": "Share"
+        "share": "Share",
+        "share_to_external": "Share to external app",
+        "share_to_chats": "Share to Chats",
+        "share_to_conversations": "Share to DMs"
       }
     },
     "poll": {
@@ -532,17 +549,6 @@ class CodegenLoader extends AssetLoader{
           "video": "Video",
           "file": "File",
           "audio": "Audio"
-        },
-        "share": {
-          "title": "Share",
-          "progress": {
-            "content": "Sharing..."
-          },
-          "action": {
-            "share_as_media": "Share as media",
-            "share_to_chats": "Share to Chats",
-            "share_to_conversations": "Share to DMs"
-          }
         },
         "add_to_gallery": {
           "progress": {
