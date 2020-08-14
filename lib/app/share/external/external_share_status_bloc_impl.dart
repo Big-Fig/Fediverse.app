@@ -3,23 +3,23 @@ import 'package:fedi/app/share/external/external_share_bloc_impl.dart';
 import 'package:fedi/app/share/external/external_share_bloc_proxy_provider.dart';
 import 'package:fedi/app/share/external/external_share_model.dart';
 import 'package:fedi/app/share/external/external_share_service.dart';
-import 'package:fedi/app/share/media/share_media_bloc.dart';
+import 'package:fedi/app/share/status/share_status_bloc.dart';
+import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-class ExternalShareMediaBloc extends ExternalShareBloc
-    implements IShareMediaBloc {
+class ExternalShareStatusBloc extends ExternalShareBloc
+    implements IShareStatusBloc {
   final String popupTitle;
 
   @override
-  IPleromaMediaAttachment mediaAttachment;
+  IStatus status;
 
-  ExternalShareMediaBloc({
+  ExternalShareStatusBloc({
     @required this.popupTitle,
-    @required this.mediaAttachment,
+    @required this.status,
     @required IExternalShareService externalShareService,
   }) : super(externalShareService: externalShareService);
 
@@ -31,34 +31,45 @@ class ExternalShareMediaBloc extends ExternalShareBloc
 
   @override
   Future share() {
-    String text;
+
     var asLink = asLinkBoolField.currentValue == true;
-    if (message?.isNotEmpty == true || asLink) {
-      text = message ?? "";
-      if(asLink) {
-        text += " ${mediaAttachment.url}";
+    var content = status.content;
+    var text = message ?? "";
+    if (asLink) {
+      text += " ${status.url}";
+    } else {
+      var spoilerText = status.spoilerText;
+      if (spoilerText?.isNotEmpty == true) {
+        text += " ${spoilerText}";
       }
+      text += " ${content}";
     }
     return externalShareService.share(
       popupTitle: popupTitle,
       text: text,
-      urlFiles: asLink ? null :[
-        ShareUrlFile(
-            url: mediaAttachment.url, filename: mediaAttachment.description)
-      ],
+      urlFiles: asLink
+          ? null
+          : status.mediaAttachments
+              ?.map(
+                (mediaAttachment) => ShareUrlFile(
+                  url: mediaAttachment.url,
+                  filename: mediaAttachment.description,
+                ),
+              )
+              ?.toList(),
     );
   }
 
   static Widget provideToContext(BuildContext context,
-      {@required IPleromaMediaAttachment mediaAttachment,
+      {@required IStatus status,
       @required String popupTitle,
       @required Widget child}) {
-    return DisposableProvider<ExternalShareMediaBloc>(
-      create: (context) => createFromContext(context,
-          mediaAttachment: mediaAttachment, popupTitle: popupTitle),
-      child: ProxyProvider<ExternalShareMediaBloc, IExternalShareBloc>(
+    return DisposableProvider<ExternalShareStatusBloc>(
+      create: (context) =>
+          createFromContext(context, status: status, popupTitle: popupTitle),
+      child: ProxyProvider<ExternalShareStatusBloc, IExternalShareBloc>(
         update: (context, value, previous) => value,
-        child: ProxyProvider<ExternalShareMediaBloc, IShareMediaBloc>(
+        child: ProxyProvider<ExternalShareStatusBloc, IShareStatusBloc>(
           update: (context, value, previous) => value,
           child: ExternalShareBlocProxyProvider(
             child: child,
@@ -68,13 +79,13 @@ class ExternalShareMediaBloc extends ExternalShareBloc
     );
   }
 
-  static ExternalShareMediaBloc createFromContext(
+  static ExternalShareStatusBloc createFromContext(
     BuildContext context, {
-    @required IPleromaMediaAttachment mediaAttachment,
+    @required IStatus status,
     @required String popupTitle,
   }) =>
-      ExternalShareMediaBloc(
-        mediaAttachment: mediaAttachment,
+      ExternalShareStatusBloc(
+        status: status,
         externalShareService: IExternalShareService.of(
           context,
           listen: false,

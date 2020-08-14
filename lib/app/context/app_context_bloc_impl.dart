@@ -21,6 +21,8 @@ import 'package:fedi/app/push/handler/push_handler_bloc.dart';
 import 'package:fedi/app/push/handler/push_handler_bloc_impl.dart';
 import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_preferences_bloc.dart';
 import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/share/external/external_share_service.dart';
+import 'package:fedi/app/share/external/external_share_service_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/connection/connection_service_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
@@ -59,8 +61,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         .asyncInitAndRegister<ILoggingService>(loggingService);
 
     var hiveService = HiveService();
-    await globalProviderService
-        .asyncInitAndRegister<IHiveService>(hiveService);
+    await globalProviderService.asyncInitAndRegister<IHiveService>(hiveService);
     var localizationService = LocalizationService();
     await globalProviderService
         .asyncInitAndRegister<ILocalizationService>(localizationService);
@@ -70,6 +71,10 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     await globalProviderService
         .asyncInitAndRegister<IAnalyticsService>(analyticsService);
 
+    var externalShareService = ExternalShareService();
+
+    await globalProviderService
+        .asyncInitAndRegister<IExternalShareService>(externalShareService);
 
     var connectionService = ConnectionService();
     await globalProviderService
@@ -85,14 +90,16 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     await globalProviderService
         .asyncInitAndRegister<ILocalPreferencesService>(preferencesService);
 
-    var cameraPermissionBloc = CameraPermissionBloc(globalProviderService.get<IPermissionsService>());
+    var cameraPermissionBloc =
+        CameraPermissionBloc(globalProviderService.get<IPermissionsService>());
     await cameraPermissionBloc.checkPermissionStatus();
-    await globalProviderService.asyncInitAndRegister<ICameraPermissionBloc>(
-        cameraPermissionBloc);
-    var micPermissionBloc = MicPermissionBloc(globalProviderService.get<IPermissionsService>());
+    await globalProviderService
+        .asyncInitAndRegister<ICameraPermissionBloc>(cameraPermissionBloc);
+    var micPermissionBloc =
+        MicPermissionBloc(globalProviderService.get<IPermissionsService>());
     await micPermissionBloc.checkPermissionStatus();
-    await globalProviderService.asyncInitAndRegister<IMicPermissionBloc>(
-        micPermissionBloc);
+    await globalProviderService
+        .asyncInitAndRegister<IMicPermissionBloc>(micPermissionBloc);
     var storagePermissionBloc =
         StoragePermissionBloc(globalProviderService.get<IPermissionsService>());
     await storagePermissionBloc.checkPermissionStatus();
