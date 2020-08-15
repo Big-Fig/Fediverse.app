@@ -79,7 +79,6 @@ class ThreadPostStatusBloc extends PostStatusBloc {
           }
         }
         if (statusToReply != null) {
-
           result = statusToReply.remoteId;
         } else {
           _logger.finest(() => "calculateInReplyToStatusRemoteId "
@@ -98,5 +97,20 @@ class ThreadPostStatusBloc extends PostStatusBloc {
     }
     _logger.finest(() => "calculateInReplyToStatusRemoteId $result");
     return result;
+  }
+
+  @override
+  String calculateVisibilityField() {
+    // we should force DIRECT visibility if inReplyToStatus have DIRECT too
+    var inReplyToStatus = notCanceledOriginInReplyToStatus;
+    if (inReplyToStatus != null) {
+      if (inReplyToStatus.visibility == PleromaVisibility.DIRECT) {
+        return pleromaVisibilityValues.reverse[PleromaVisibility.DIRECT];
+      } else {
+        return super.calculateVisibilityField();
+      }
+    } else {
+      return super.calculateVisibilityField();
+    }
   }
 }
