@@ -147,8 +147,13 @@ class PollMetadataExpiresAtWidget extends StatelessWidget {
       expired
           ? "app.poll.metadata.expires.expired"
               .tr(args: [timeago.format(expiresAt, locale: "en_short")])
-          : "app.poll.metadata.expires.not_expired"
-              .tr(args: [expiresDateFormat.format(expiresAt.toLocal())]),
+          : "app.poll.metadata.expires.not_expired".tr(
+              args: [
+                expiresDateFormat.format(
+                  expiresAt?.toLocal() ?? DateTime.now(),
+                ),
+              ],
+            ),
       style: FediTextStyles.mediumShortDarkGrey,
     );
   }
