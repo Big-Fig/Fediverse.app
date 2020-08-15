@@ -470,7 +470,6 @@ class PleromaPostStatusPoll implements IPleromaPostStatusPoll {
   @override
   bool hideTotals;
 
-  @JsonKey(name: "multiply")
   @override
   bool multiple;
 
@@ -574,7 +573,7 @@ class PleromaPostStatus implements IPleromaPostStatus {
     var isTextExist = status?.isNotEmpty == true;
 
     // poll & media can't be set in one time
-    assert(!(isPollExist && isMediaExist));
+//    assert(!(isPollExist && isMediaExist));
     // media, poll or status should exist
     assert(isPollExist || isMediaExist || isTextExist);
 
