@@ -38,6 +38,9 @@ class CodegenLoader extends AssetLoader{
           }
         }
       },
+      "toast": {
+        "success": "Shared successfully"
+      },
       "content": "Content",
       "with_message": {
         "field": {
