@@ -5,12 +5,12 @@ import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/chooser/auth_instance_chooser_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
+import 'package:fedi/app/ui/dialog/alert/fedi_confirm_alert_dialog.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
-import 'package:fedi/app/ui/dialog/alert/fedi_confirm_alert_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -110,9 +110,11 @@ class AuthInstanceChooserInstanceListItemWidget extends StatelessWidget {
       title: tr("app.auth.instance.chooser.dialog.title"),
       content: tr("app.auth.instance.chooser.dialog.content"),
       onAction: () async {
-        await Navigator.of(context).pop();
-        await Navigator.of(context).pop();
-        await instanceChooserBloc.chooseInstance(instance);
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+        Future.delayed(Duration(milliseconds: 500), () {
+          instanceChooserBloc.chooseInstance(instance);
+        });
       },
     ).show(context);
   }
@@ -124,14 +126,13 @@ class AuthInstanceChooserInstanceListItemWidget extends StatelessWidget {
         size: FediSizes.smallFilledButtonHeight,
         onPressed: () async {
           var instanceChooserBloc =
-          IAuthInstanceChooserBloc.of(context, listen: false);
+              IAuthInstanceChooserBloc.of(context, listen: false);
 
           await FediConfirmAlertDialog(
             context: context,
             title: tr("app.auth.instance.logout.dialog.title"),
-            content: tr("app.auth.instance.logout.dialog.content", args: [
-              instance.userAtHost
-            ]),
+            content: tr("app.auth.instance.logout.dialog.content",
+                args: [instance.userAtHost]),
             onAction: () async {
               if (isSelected) {
                 await Navigator.of(context).pop();
@@ -140,8 +141,6 @@ class AuthInstanceChooserInstanceListItemWidget extends StatelessWidget {
                     instanceBaseUrl: instance.url);
                 await authHostBloc.performAsyncInit();
                 await authHostBloc.logout();
-
-
               } else {
                 await Navigator.of(context).pop();
                 await Navigator.of(context).pop();
