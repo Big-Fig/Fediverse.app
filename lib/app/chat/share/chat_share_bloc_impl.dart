@@ -110,6 +110,8 @@ abstract class ChatShareBloc extends DisposableOwner implements IChatShareBloc {
       limit: limit,
     );
 
+    await chatRepository.upsertRemoteChats(pleromaChats);
+
     return pleromaChats.map((pleromaChat) => pleromaChat.account).toList();
   }
 }
