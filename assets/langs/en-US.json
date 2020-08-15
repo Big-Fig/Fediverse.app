@@ -25,6 +25,9 @@
           }
         }
       },
+      "toast": {
+        "success": "Shared successfully"
+      },
       "content": "Content",
       "with_message": {
         "field": {
@@ -34,7 +37,6 @@
           }
         }
       },
-
       "action": {
         "share": "Share",
         "share_to_external": "Share to external app",

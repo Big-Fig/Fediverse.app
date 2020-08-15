@@ -53,6 +53,7 @@ class ShareWithMessageWidget extends StatelessWidget {
                     onPressed: isPossibleToShare ? onPressed : null,
                   );
                 },
+                successToastMessage: "app.share.toast.success".tr(),
                 asyncButtonAction: () async {
                   await shareBloc.share();
                   Navigator.of(context).pop();
