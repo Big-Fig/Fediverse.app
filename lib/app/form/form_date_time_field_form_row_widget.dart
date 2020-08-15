@@ -79,20 +79,23 @@ class FormDateTimeFieldFormRowWidget extends StatelessWidget {
   }
 
   Future showDatePicker(BuildContext context) async {
-    var now = DateTime.now();
+    var minDateTime = field.minDateTime;
+    var maxDateTime = field.maxDateTime;
     var dateTime = await FediDatePicker.showDateTimePicker(
       context,
       showTitleActions: true,
-      minTime: now,
-      maxTime: now.add(Duration(days: 365)),
+      minDateTime: minDateTime,
+      maxDateTime: maxDateTime,
       currentTime: field.currentValue,
       theme: FediDatePickerTheme.byDefault(
-       customTitle: "app.status.post.poll.field.expires_at.picker.title".tr()
-      ),
+          customTitle:
+              "app.status.post.poll.field.expires_at.picker.title".tr()),
       onCancel: () {},
       onConfirm: (date) {},
     );
 
-    field.changeCurrentValue(dateTime);
+    if (dateTime != null) {
+      field.changeCurrentValue(dateTime);
+    }
   }
 }

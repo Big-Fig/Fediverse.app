@@ -23,10 +23,9 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
 
   @override
   IFormDateTimeFieldBloc expiresAtFieldBloc = FormDateTimeFieldBloc(
-    originValue:
-        DateTime.now().add(IPostStatusPollBloc.requiredMinimumDuration),
-    minDate: DateTime.now().add(IPostStatusPollBloc.requiredMinimumDuration),
-    maxDate: null,
+    originValue: DateTime.now().add(IPostStatusPollBloc.defaultPollDuration),
+    minDateTime: DateTime.now().add(IPostStatusPollBloc.minimumPollDuration),
+    maxDateTime: null,
   );
 
   @override
@@ -43,9 +42,9 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
 
   static List<IFormStringFieldBloc> createDefaultPollOptions() {
     return <IFormStringFieldBloc>[
-    createPollOptionBloc(),
-    createPollOptionBloc(),
-  ];
+      createPollOptionBloc(),
+      createPollOptionBloc(),
+    ];
   }
 
   static FormStringFieldBloc createPollOptionBloc() => FormStringFieldBloc(
