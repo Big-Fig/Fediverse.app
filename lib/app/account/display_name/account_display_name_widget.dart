@@ -17,7 +17,7 @@ class AccountDisplayNameWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var accountBloc = IAccountBloc.of(context, listen: true);
+    var accountBloc = IAccountBloc.of(context, listen: false);
     return StreamBuilder<EmojiText>(
         stream: accountBloc.displayNameEmojiTextStream,
         initialData: accountBloc.displayNameEmojiText,
