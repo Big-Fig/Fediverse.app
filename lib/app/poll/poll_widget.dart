@@ -184,7 +184,8 @@ class PollOptionWidget extends StatelessWidget {
 
     var backgroundColor = FediColors.white;
 
-    var votesCount = pollOption.votesCount;
+    // votes count can be hidden until poll ends
+    var votesCount = pollOption.votesCount ?? 0;
     double votesPercent;
     if (votesCount == 0) {
       votesPercent = 0.0;
