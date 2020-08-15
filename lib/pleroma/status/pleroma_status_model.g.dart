@@ -206,7 +206,7 @@ PleromaPostStatusPoll _$PleromaPostStatusPollFromJson(
   return PleromaPostStatusPoll(
     expiresInSeconds: json['expires_in'] as int,
     hideTotals: json['hide_totals'] as bool,
-    multiple: json['multiply'] as bool,
+    multiple: json['multiple'] as bool,
     options: (json['options'] as List)?.map((e) => e as String)?.toList(),
   );
 }
@@ -216,7 +216,7 @@ Map<String, dynamic> _$PleromaPostStatusPollToJson(
     <String, dynamic>{
       'expires_in': instance.expiresInSeconds,
       'hide_totals': instance.hideTotals,
-      'multiply': instance.multiple,
+      'multiple': instance.multiple,
       'options': instance.options,
     };
 
