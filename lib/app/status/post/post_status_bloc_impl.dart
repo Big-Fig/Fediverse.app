@@ -348,7 +348,7 @@ abstract class PostStatusBloc extends PostMessageBloc
       mediaIds: _calculateMediaIdsField(),
       status: calculateStatusTextField(),
       sensitive: isNsfwSensitiveEnabled,
-      visibility: pleromaVisibilityValues.reverse[visibility],
+      visibility: calculateVisibilityField(),
       inReplyToId: calculateInReplyToStatusRemoteId(),
       inReplyToConversationId: conversationRemoteId,
       idempotencyKey: idempotencyKey,
@@ -380,6 +380,8 @@ abstract class PostStatusBloc extends PostMessageBloc
     return success;
   }
 
+  String calculateVisibilityField() => pleromaVisibilityValues.reverse[visibility];
+
   List<String> _calculateMediaIdsField() {
     var mediaIds = mediaAttachmentsBloc.mediaAttachmentBlocs
         ?.where(
@@ -399,7 +401,7 @@ abstract class PostStatusBloc extends PostMessageBloc
       mediaIds: _calculateMediaIdsField(),
       status: calculateStatusTextField(),
       sensitive: isNsfwSensitiveEnabled,
-      visibility: pleromaVisibilityValues.reverse[visibility],
+      visibility: calculateVisibilityField(),
       inReplyToId: calculateInReplyToStatusRemoteId(),
       inReplyToConversationId: conversationRemoteId,
       idempotencyKey: idempotencyKey,
