@@ -50,14 +50,17 @@ class MediaAttachmentPreviewPage extends StatelessWidget {
           showShareChooserDialog(
             context,
             externalShareAction: () {
+              Navigator.of(context).pop();
               goToExternalShareMediaPage(
                   context: context, mediaAttachment: mediaAttachment);
             },
             conversationsShareAction: () {
+              Navigator.of(context).pop();
               goToConversationShareMediaPage(
                   context: context, mediaAttachment: mediaAttachment);
             },
             chatsShareAction: () {
+              Navigator.of(context).pop();
               goToChatShareMediaPage(
                   context: context, mediaAttachment: mediaAttachment);
             },

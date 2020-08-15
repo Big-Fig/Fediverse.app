@@ -229,17 +229,19 @@ class StatusActionMoreDialogBody extends StatelessWidget {
           icon: FediIcons.share,
           label: tr("app.share.action.share"),
           onAction: () async {
-
             showShareChooserDialog(
               context,
               externalShareAction: () {
+                Navigator.of(context).pop();
                 goToExternalShareStatusPage(context: context, status: status);
               },
               conversationsShareAction: () {
+                Navigator.of(context).pop();
                 goToConversationShareStatusPage(
                     context: context, status: status);
               },
               chatsShareAction: () {
+                Navigator.of(context).pop();
                 goToChatShareStatusPage(context: context, status: status);
               },
             );
