@@ -4,11 +4,13 @@ import 'package:flutter/widgets.dart';
 
 class FormDateTimeFieldBloc extends FormValueFieldBloc<DateTime>
     implements IFormDateTimeFieldBloc {
-  final DateTime minDate;
-  final DateTime maxDate;
+  @override
+  final DateTime minDateTime;
+  @override
+  final DateTime maxDateTime;
   FormDateTimeFieldBloc({
     @required DateTime originValue,
-    @required this.minDate,
-    @required this.maxDate,
+    @required this.minDateTime,
+    @required this.maxDateTime,
   }) : super(originValue: originValue, validators: []);
 }

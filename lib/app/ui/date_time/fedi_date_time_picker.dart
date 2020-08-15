@@ -118,8 +118,8 @@ class FediDatePicker {
   static Future<DateTime> showDateTimePicker(
     BuildContext context, {
     bool showTitleActions = true,
-    DateTime minTime,
-    DateTime maxTime,
+    DateTime minDateTime,
+    DateTime maxDateTime,
     DateChangedCallback onChanged,
     DateChangedCallback onConfirm,
     DateCancelledCallback onCancel,
@@ -137,8 +137,8 @@ class FediDatePicker {
       barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
       pickerModel: DateTimePickerModel(
           currentTime: currentTime,
-          minTime: minTime,
-          maxTime: maxTime,
+          minTime: minDateTime,
+          maxTime: maxDateTime,
           locale: locale),
       context: context,
     );

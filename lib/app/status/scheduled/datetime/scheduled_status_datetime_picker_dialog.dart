@@ -23,8 +23,8 @@ Future<DateTime> showScheduledStatusDateTimePickerDialog(
   var dateTime = await FediDatePicker.showDateTimePicker(
     context,
     showTitleActions: true,
-    minTime: now,
-    maxTime: now.add(Duration(days: 365)),
+    minDateTime: now,
+    maxDateTime: now.add(Duration(days: 365)),
     currentTime: initialDate,
     theme: FediDatePickerTheme.byDefault(
         customTitle: "app.status.scheduled.datetime.picker.title".tr()),
