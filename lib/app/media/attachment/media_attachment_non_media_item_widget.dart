@@ -6,8 +6,10 @@ import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
- const _nonMediaIconSize = 70.0;
+
+const _nonMediaIconSize = 70.0;
 var _rowHeight = 70.0;
+
 class MediaAttachmentNonMediaItemWidget extends StatelessWidget {
   final double opacity;
   final Widget actionsWidget;
@@ -17,7 +19,9 @@ class MediaAttachmentNonMediaItemWidget extends StatelessWidget {
     this.opacity = 1.0,
     @required this.actionsWidget,
     @required this.filePath,
-  });
+  }) {
+    assert(filePath != null);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,13 +72,13 @@ class MediaAttachmentNonMediaItemWidget extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.all(1.0),
                               child: Align(
-                                alignment: Alignment.bottomCenter,
+                                  alignment: Alignment.bottomCenter,
                                   child: AutoSizeText(
-                                fileExtension?.toUpperCase(),
-                                maxLines: 1,
-                                minFontSize: 8.0,
-                                style: FediTextStyles.mediumShortDarkGrey,
-                              )),
+                                    fileExtension?.toUpperCase(),
+                                    maxLines: 1,
+                                    minFontSize: 8.0,
+                                    style: FediTextStyles.mediumShortDarkGrey,
+                                  )),
                             ),
                           ),
                         )),
@@ -83,7 +87,7 @@ class MediaAttachmentNonMediaItemWidget extends StatelessWidget {
                         child: Padding(
                           padding: FediPadding.allMediumPadding,
                           child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
