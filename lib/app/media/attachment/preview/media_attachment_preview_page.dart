@@ -109,6 +109,9 @@ class MediaAttachmentPreviewPage extends StatelessWidget {
           imageBuilder: (context, imageProvider) {
             return Container(
               child: PhotoView(
+                backgroundDecoration: BoxDecoration(
+                    color: FediColors.ultraLightGrey
+                ),
                 imageProvider: imageProvider,
               ),
             );
@@ -139,6 +142,9 @@ class MediaAttachmentPreviewPage extends StatelessWidget {
         imageBuilder: (context, imageProvider) {
           return Container(
             child: PhotoView(
+              backgroundDecoration: BoxDecoration(
+                color: FediColors.ultraLightGrey
+              ),
               imageProvider: imageProvider,
             ),
           );
