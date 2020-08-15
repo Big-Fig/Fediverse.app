@@ -115,7 +115,9 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   Future<PaginationListLoadingState> refreshWithoutController() async {
     try {
       PaginationListLoadingState state;
-      refreshStateSubject.add(PaginationListLoadingState.loading);
+      if (!refreshStateSubject.isClosed) {
+        refreshStateSubject.add(PaginationListLoadingState.loading);
+      }
       var newPage = await paginationBloc.refreshWithoutController();
 
       if (newPage?.items?.isNotEmpty == true) {
@@ -123,10 +125,14 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       } else {
         state = PaginationListLoadingState.noData;
       }
-      refreshStateSubject.add(state);
+      if (!refreshStateSubject.isClosed) {
+        refreshStateSubject.add(state);
+      }
       return state;
     } catch (e, stackTrace) {
-      refreshStateSubject.add(PaginationListLoadingState.failed);
+      if (!refreshStateSubject.isClosed) {
+        refreshStateSubject.add(PaginationListLoadingState.failed);
+      }
       _logger.warning(
           () => "error during refreshWithoutController", e, stackTrace);
       rethrow;
