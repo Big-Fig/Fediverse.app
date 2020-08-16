@@ -18,7 +18,6 @@ class PleromaAccountService implements IPleromaAccountService {
   @override
   final IPleromaAuthRestService restService;
 
-
   @override
   bool get isPleromaInstance => restService.isPleromaInstance;
 
@@ -292,6 +291,13 @@ class PleromaAccountService implements IPleromaAccountService {
   @override
   Future<List<IPleromaStatus>> getAccountStatuses(
       {@required String accountRemoteId,
+      String tagged,
+      bool pinned,
+      bool excludeReplies,
+      bool excludeReblogs,
+      List<String> excludeVisibilities,
+      bool withMuted,
+      bool onlyMedia,
       String sinceId,
       String maxId,
       int limit = 20}) async {
@@ -303,6 +309,18 @@ class PleromaAccountService implements IPleromaAccountService {
           RestRequestQueryArg("since_id", sinceId),
           RestRequestQueryArg("max_id", maxId),
           RestRequestQueryArg("limit", limit?.toString()),
+          RestRequestQueryArg("pinned", pinned?.toString()),
+          RestRequestQueryArg("exclude_replies", excludeReplies?.toString()),
+          RestRequestQueryArg("exclude_reblogs", excludeReblogs?.toString()),
+          if (excludeVisibilities?.isNotEmpty == true)
+            ...excludeVisibilities.map(
+              (excludeVisibility) => RestRequestQueryArg(
+                "exclude_visibilities[]",
+                excludeVisibility?.toString(),
+              ),
+            ),
+          RestRequestQueryArg("with_muted", withMuted?.toString()),
+          RestRequestQueryArg("only_media", onlyMedia?.toString()),
         ]));
 
     return parseStatusListResponse(httpResponse);

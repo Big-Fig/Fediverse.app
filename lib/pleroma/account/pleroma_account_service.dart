@@ -41,6 +41,13 @@ abstract class IPleromaAccountService implements IPleromaApi {
 
   Future<List<IPleromaStatus>> getAccountStatuses({
     @required String accountRemoteId,
+    String tagged,
+    bool pinned,
+    bool excludeReplies,
+    bool excludeReblogs,
+    List<String> excludeVisibilities,
+    bool withMuted,
+    bool onlyMedia,
     String sinceId,
     String maxId,
     int limit = 20,
