@@ -7,6 +7,8 @@ import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_widget.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_page.dart';
 import 'package:fedi/app/account/statuses/account_statuses_media_widget.dart';
+import 'package:fedi/app/account/statuses/account_statuses_tab_indicator_item_widget.dart';
+import 'package:fedi/app/account/statuses/account_statuses_tab_model.dart';
 import 'package:fedi/app/account/statuses/account_statuses_timeline_widget.dart';
 import 'package:fedi/app/account/statuses/media_only/account_statuses_media_only_cached_list_bloc_impl.dart';
 import 'package:fedi/app/account/statuses/pinned_only/account_statuses_pinned_only_network_only_list_bloc_impl.dart';
@@ -14,7 +16,6 @@ import 'package:fedi/app/account/statuses/with_replies/account_statuses_with_rep
 import 'package:fedi/app/account/statuses/without_replies/account_statuses_without_replies_cached_list_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/home/tab/account/account_home_tab_bloc.dart';
-import 'package:fedi/app/home/tab/account/account_tab_text_tab_indicator_item_widget.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 import 'package:fedi/app/status/list/status_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
@@ -48,13 +49,12 @@ import 'package:provider/provider.dart';
 
 var _headerBackgroundHeight = 200.0;
 
-enum AccountTab { withReplies, withoutReplies, pinned, media }
 
-const _accountTabs = [
-  AccountTab.withoutReplies,
-  AccountTab.pinned,
-  AccountTab.withReplies,
-  AccountTab.media,
+const _tabs = [
+  AccountStatusesTab.withoutReplies,
+  AccountStatusesTab.pinned,
+  AccountStatusesTab.withReplies,
+  AccountStatusesTab.media,
 ];
 
 class AccountHomeTabPage extends StatefulWidget {
@@ -73,7 +73,7 @@ class _AccountHomeTabPageState extends State<AccountHomeTabPage>
     super.initState();
     tabController = TabController(
       vsync: this,
-      length: _accountTabs.length,
+      length: _tabs.length,
     );
   }
 
@@ -170,12 +170,12 @@ class _AccountHomeTabPageState extends State<AccountHomeTabPage>
           update: (context, value, previous) => value,
           child: Builder(
             builder: (context) {
-              var tab = _accountTabs[index];
+              var tab = _tabs[index];
 
               var accountBloc = IAccountBloc.of(context, listen: false);
 
               switch (tab) {
-                case AccountTab.withReplies:
+                case AccountStatusesTab.withReplies:
                   return AccountStatusesWithRepliesCachedListBloc
                       .provideToContext(
                     context,
@@ -187,7 +187,7 @@ class _AccountHomeTabPageState extends State<AccountHomeTabPage>
                               mergeNewItemsImmediately: true, child: child),
                     ),
                   );
-                case AccountTab.withoutReplies:
+                case AccountStatusesTab.withoutReplies:
                   return AccountStatusesWithoutRepliesListBloc.provideToContext(
                     context,
                     account: accountBloc.account,
@@ -199,7 +199,7 @@ class _AccountHomeTabPageState extends State<AccountHomeTabPage>
                     ),
                   );
                   break;
-                case AccountTab.media:
+                case AccountStatusesTab.media:
                   return AccountStatusesMediaOnlyCachedListBloc
                       .provideToContext(
                     context,
@@ -212,7 +212,7 @@ class _AccountHomeTabPageState extends State<AccountHomeTabPage>
                     ),
                   );
                   break;
-                case AccountTab.pinned:
+                case AccountStatusesTab.pinned:
                   return AccountStatusesPinnedOnlyNetworkOnlyListBloc
                       .provideToContext(
                     context,
@@ -240,17 +240,17 @@ class _AccountHomeTabPageState extends State<AccountHomeTabPage>
           ),
         ),
         tabBodyContentBuilder: (BuildContext context, int index) {
-          var tab = _accountTabs[index];
+          var tab = _tabs[index];
 
           switch (tab) {
-            case AccountTab.withReplies:
-            case AccountTab.withoutReplies:
-            case AccountTab.pinned:
+            case AccountStatusesTab.withReplies:
+            case AccountStatusesTab.withoutReplies:
+            case AccountStatusesTab.pinned:
               return CollapsibleOwnerWidget(
                 child: AccountStatusesTimelineWidget(),
               );
               break;
-            case AccountTab.media:
+            case AccountStatusesTab.media:
               return AccountStatusesMediaWidget();
               break;
             default:
@@ -258,15 +258,15 @@ class _AccountHomeTabPageState extends State<AccountHomeTabPage>
           }
         },
         tabBodyOverlayBuilder: (BuildContext context, int index) {
-          var tab = _accountTabs[index];
+          var tab = _tabs[index];
 
           switch (tab) {
-            case AccountTab.withReplies:
-            case AccountTab.withoutReplies:
-            case AccountTab.media:
+            case AccountStatusesTab.withReplies:
+            case AccountStatusesTab.withoutReplies:
+            case AccountStatusesTab.media:
               return StatusListTapToLoadOverlayWidget();
               break;
-            case AccountTab.pinned:
+            case AccountStatusesTab.pinned:
               return SizedBox.shrink();
               break;
             default:
@@ -319,7 +319,7 @@ class _AccountHomeTabPageState extends State<AccountHomeTabPage>
         padding: const EdgeInsets.only(top: 3.0, right: FediSizes.bigPadding),
         child: AccountTabTextTabIndicatorItemWidget(
           tabController: tabController,
-          accountTabs: _accountTabs,
+          accountTabs: _tabs,
         ),
       );
 
