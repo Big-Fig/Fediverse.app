@@ -2,6 +2,9 @@ import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
 import 'package:fedi/app/pagination/network_only/network_only_pleroma_pagination_bloc_impl.dart';
 import 'package:fedi/app/status/pagination/network_only/status_network_only_pagination_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/pagination/network_only/network_only_pagination_bloc.dart';
+import 'package:fedi/pagination/network_only/network_only_pagination_bloc_proxy_provider.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:flutter/cupertino.dart';
@@ -44,4 +47,20 @@ class StatusNetworkOnlyPaginationBloc
         minId: newerPage?.items?.last?.remoteId,
         maxId: olderPage?.items?.first?.remoteId,
       );
+
+  static Widget provideToContext(BuildContext context,
+      {@required Widget child,
+        int itemsCountPerPage = 20,
+        int maximumCachedPagesCount}) {
+    return DisposableProvider<
+        INetworkOnlyPaginationBloc<PaginationPage<IStatus>, IStatus>>(
+      create: (context) => StatusNetworkOnlyPaginationBloc.createFromContext(
+        context,
+        itemsCountPerPage: itemsCountPerPage,
+        maximumCachedPagesCount: maximumCachedPagesCount,
+      ),
+      child: NetworkOnlyPaginationBlocProxyProvider<PaginationPage<IStatus>,
+          IStatus>(child: child),
+    );
+  }
 }

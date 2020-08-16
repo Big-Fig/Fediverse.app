@@ -121,9 +121,7 @@ abstract class IStatusRepository
 
   Future incrementRepliesCount({@required String remoteId});
 
-
-  Future removeHomeStatusesFromAccount({
+  Future removeAccountStatusesFromHome({
     @required String accountRemoteId,
   });
-
 }
