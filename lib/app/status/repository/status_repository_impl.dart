@@ -704,7 +704,7 @@ class StatusRepository extends AsyncInitLoadingBloc
       dao.incrementRepliesCount(remoteId: remoteId);
 
   @override
-  Future removeHomeStatusesFromAccount({
+  Future removeAccountStatusesFromHome({
     @required String accountRemoteId,
   }) => homeTimelineStatusesDao.deleteByAccountRemoteId(accountRemoteId);
 }

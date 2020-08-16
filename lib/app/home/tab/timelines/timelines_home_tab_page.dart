@@ -160,9 +160,9 @@ class _TimelinesHomeTabPageState extends State<TimelinesHomeTabPage>
           child: CachedPaginationListWithNewItemsBlocProxyProvider<
               CachedPaginationPage<IStatus>, IStatus>(child: child),
         ),
-        tabBodyContentBuilder: (BuildContext context) =>
+        tabBodyContentBuilder: (BuildContext context, int index) =>
             FediDarkStatusBarStyleArea(child: TimelineWidget()),
-        tabBodyOverlayBuilder: (BuildContext context) =>
+        tabBodyOverlayBuilder: (BuildContext context, int index) =>
             StatusListTapToLoadOverlayWidget(),
         tabBarViewContainerBuilder: null,
       ),

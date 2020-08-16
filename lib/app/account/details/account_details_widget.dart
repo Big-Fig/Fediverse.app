@@ -1,6 +1,6 @@
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/details/account_details_body_widget.dart';
-import 'package:fedi/app/account/statuses/account_statuses_cached_list_bloc_impl.dart';
+import 'package:fedi/app/account/statuses/with_replies/account_statuses_with_replies_cached_list_bloc_impl.dart';
 import 'package:fedi/app/status/list/status_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_with_new_items_bloc_impl.dart';
@@ -19,7 +19,7 @@ class AccountDetailsWidget extends StatefulWidget {
       BuildContext context, Widget child) {
     var accountBloc = IAccountBloc.of(context, listen: true);
 
-    return AccountStatusesCachedListBloc.provideToContext(
+    return AccountStatusesWithRepliesCachedListBloc.provideToContext(
       context,
       account: accountBloc.account,
       child: StatusCachedPaginationBloc.provideToContext(
@@ -69,4 +69,5 @@ class _AccountDetailsWidgetState extends State<AccountDetailsWidget> {
           StatusListTapToLoadOverlayWidget(),
         ],
       );
+
 }

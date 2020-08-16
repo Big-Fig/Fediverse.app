@@ -199,7 +199,7 @@ class AccountBloc extends IAccountBloc {
             followingAccountId: account.remoteId);
       }
 
-      await statusRepository.removeHomeStatusesFromAccount(
+      await statusRepository.removeAccountStatusesFromHome(
           accountRemoteId: account.remoteId);
     } else {
       newRelationship = await pleromaAccountService.followAccount(

@@ -103,13 +103,13 @@ class _NotificationsHomeTabPageState extends State<NotificationsHomeTabPage>
 
           return _buildTabBodyProvider(context, tab, child);
         },
-        tabBodyContentBuilder: (BuildContext context) =>
+        tabBodyContentBuilder: (BuildContext context, int index) =>
             FediDarkStatusBarStyleArea(
           child: NotificationPaginationListWidget(
             needWatchLocalRepositoryForUpdates: true,
           ),
         ),
-        tabBodyOverlayBuilder: (BuildContext context) =>
+        tabBodyOverlayBuilder: (BuildContext context, int index) =>
             NotificationListTapToLoadOverlayWidget(),
         tabBarViewContainerBuilder: (BuildContext context, Widget child) {
           return ClipRRect(
