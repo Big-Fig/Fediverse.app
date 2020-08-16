@@ -24,6 +24,7 @@ import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -64,6 +65,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
         FediChooserDialogBody(
             title: tr("app.status.action.popup.title"),
             actions: [
+              if (isStatusFromMe) buildPinAction(context, status),
               buildCopyAction(context, status),
               buildOpenInBrowserAction(context, status),
               buildShareAction(context, status),
@@ -222,6 +224,19 @@ class StatusActionMoreDialogBody extends StatelessWidget {
             Navigator.of(context).pop();
             showInfoFediNotificationOverlay(
                 contentText: tr("app.status.copy_link.toast"), titleText: null);
+          });
+
+  DialogAction buildPinAction(BuildContext context, IStatus status) =>
+      DialogAction(
+          icon: FediIcons.heart,
+          label: status.pinned
+              ? tr("app.status.action.unpin")
+              : tr("app.status.action.pin"),
+          onAction: () async {
+            await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+                context: context, asyncCode: () => statusBloc.togglePin());
+
+            Navigator.of(context).pop();
           });
 
   DialogAction buildShareAction(BuildContext context, IStatus status) =>

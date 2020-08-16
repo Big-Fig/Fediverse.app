@@ -677,6 +677,8 @@ class CodegenLoader extends AssetLoader{
         "block": "Block",
         "follow": "Follow",
         "open_in_browser": "Open in browser",
+        "pin": "Pin",
+        "unpin": "Unpin",
         "copy_link": "Copy link",
         "share_as_text": "Share as text",
         "share_as_link": "Share as link",
