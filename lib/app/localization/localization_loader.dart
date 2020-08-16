@@ -77,6 +77,14 @@ class CodegenLoader extends AssetLoader{
       }
     },
     "account": {
+      "statuses": {
+        "tab": {
+          "withReplies": "With replies",
+          "withoutReplies": "Posts",
+          "pinned": "Pinned",
+          "media": "Media"
+        }
+      },
       "list": {
         "privacy": "Some information may be missed due to privacy settings"
       },

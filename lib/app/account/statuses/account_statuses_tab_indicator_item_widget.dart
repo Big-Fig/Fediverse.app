@@ -1,4 +1,4 @@
-import 'package:fedi/app/home/tab/account/account_home_tab_page.dart';
+import 'package:fedi/app/account/statuses/account_statuses_tab_model.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/shader_mask/fedi_fade_shader_mask.dart';
@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AccountTabTextTabIndicatorItemWidget extends StatelessWidget {
-  final List<AccountTab> accountTabs;
+  final List<AccountStatusesTab> accountTabs;
   final TabController tabController;
 
   AccountTabTextTabIndicatorItemWidget({
@@ -22,48 +22,35 @@ class AccountTabTextTabIndicatorItemWidget extends StatelessWidget {
           return FediFadeShaderMask(
             fadingPercent: fadingPercent,
             fadingColor: FediColors.darkGrey,
-            child: FediTextTabIndicatorWidget<AccountTab>(
+            child: FediTextTabIndicatorWidget<AccountStatusesTab>(
               customTabBuilder:
-                  (BuildContext context, Widget child, AccountTab tab) {
+                  (BuildContext context, Widget child, AccountStatusesTab tab) {
                 return child;
-//                var widget = CachedPaginationListWithNewItemsUnreadBadgeWidget(
-//                    child: child);
-//
-//                var accountTabsBloc =
-//                    IAccountTabsBloc.of(context, listen: false);
-//
-//                var tabPaginationListBloc =
-//                    accountTabsBloc.retrieveAccountTabPaginationListBloc(tab);
-//
-//                return Provider<ICachedPaginationListWithNewItemsBloc>.value(
-//                  value: tabPaginationListBloc,
-//                  child: widget,
-//                );
               },
               tabController: tabController,
               isTransparent: true,
               tabs: accountTabs,
-              tabToTextMapper: (BuildContext context, AccountTab tab) =>
+              tabToTextMapper: (BuildContext context, AccountStatusesTab tab) =>
                   mapTabToTitle(context, tab),
             ),
           );
         },
       );
 
-  static String mapTabToTitle(BuildContext context, AccountTab tab) {
+  static String mapTabToTitle(BuildContext context, AccountStatusesTab tab) {
     switch (tab) {
-      case AccountTab.withReplies:
+      case AccountStatusesTab.withReplies:
         return "With replies";
         break;
-      case AccountTab.withoutReplies:
+      case AccountStatusesTab.withoutReplies:
         return "Posts";
 
         break;
-      case AccountTab.pinned:
+      case AccountStatusesTab.pinned:
         return "Pinned";
 
         break;
-      case AccountTab.media:
+      case AccountStatusesTab.media:
         return "Media";
 
         break;
