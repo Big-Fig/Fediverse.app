@@ -30,8 +30,7 @@ class ChatShareMediaBloc extends ChatShareBloc
   @override
   PleromaChatMessageSendData createSendData() {
     var messageSendData = PleromaChatMessageSendData(
-      mediaId: mediaAttachment.id,
-      content: message,
+      content: "${mediaAttachment.url} $message".trim(),
     );
     return messageSendData;
   }
