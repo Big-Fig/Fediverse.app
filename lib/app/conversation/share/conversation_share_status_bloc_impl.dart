@@ -42,8 +42,9 @@ class ConversationShareStatusBloc extends ConversationShareBloc
     @required String to,
     @required PleromaVisibility visibility,
   }) {
-    var link = status.url;
-    var content = message == null ? link : "$message $link";
+    var url = status.url ?? "";
+    var content =
+        message == null ? url : "${message ?? ""} $url".trim();
     var messageSendData = PleromaPostStatus(
       status: "$content $to",
       visibility: pleromaVisibilityValues.reverse[visibility],

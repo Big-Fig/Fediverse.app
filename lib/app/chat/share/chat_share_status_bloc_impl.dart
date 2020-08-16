@@ -30,10 +30,10 @@ class ChatShareStatusBloc extends ChatShareBloc
 
   @override
   PleromaChatMessageSendData createSendData() {
-    var link = status.url;
-    var content = message == null ? link : "$message $link";
+    var url = status.url ?? "";
+    var content = message == null ? url : "${message ?? ""} $url";
     var messageSendData = PleromaChatMessageSendData(
-      content: content,
+      content: content?.trim(),
     );
     return messageSendData;
   }
