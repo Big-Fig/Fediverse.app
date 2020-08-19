@@ -25,7 +25,10 @@ abstract class FediNestedScrollViewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var fediNestedScrollViewBloc = IFediNestedScrollViewBloc.of(context);
+    var fediNestedScrollViewBloc = IFediNestedScrollViewBloc.of(
+      context,
+      listen: false,
+    );
 
     return Stack(
       children: [
