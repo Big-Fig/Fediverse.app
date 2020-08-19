@@ -19,7 +19,6 @@ class StatusNsfwWarningOverlayWidget extends StatelessWidget {
 
           statusBloc.changeDisplayNsfwSensitive(true);
         },
-        descriptionText: tr("app.status.nsfw.desc"),
         child: child,
       );
 }

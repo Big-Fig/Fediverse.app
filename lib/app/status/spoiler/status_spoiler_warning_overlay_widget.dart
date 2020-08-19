@@ -19,7 +19,6 @@ class StatusSpoilerWarningOverlayWidget extends StatelessWidget {
 
           statusBloc.changeDisplaySpoiler(true);
         },
-        descriptionText: tr("app.status.spoiler.desc"),
         child: child,
       );
 }
