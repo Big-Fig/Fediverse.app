@@ -700,13 +700,11 @@ class CodegenLoader extends AssetLoader{
         }
       },
       "nsfw": {
-        "desc": "Status contains NSFW content",
         "action": {
           "view": "Tap to view"
         }
       },
       "spoiler": {
-        "desc": "Status contains spoilers",
         "action": {
           "view": "Tap to view"
         }
