@@ -34,6 +34,7 @@ class PostStatusStartConversationPage extends StatelessWidget {
                   maxLines: null,
                   displayAccountAvatar: false,
                   showPostAction: true,
+                  displaySubjectField: false,
                 ),
               ),
             ),

@@ -28,6 +28,7 @@ class NewPostStatusPage extends StatelessWidget {
                   maxLines: null,
                   displayAccountAvatar: false,
                   showPostAction: true,
+                  displaySubjectField: true,
                 ),
               ),
             ),
