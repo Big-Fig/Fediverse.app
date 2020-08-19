@@ -5,7 +5,7 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_widget.dart';
 import 'package:fedi/app/account/details/account_details_bloc.dart';
 import 'package:fedi/app/account/details/account_details_bloc_impl.dart';
-import 'package:fedi/app/account/display_name/account_display_name_and_act_widget.dart';
+import 'package:fedi/app/account/display_name/account_display_name_and_acct_widget.dart';
 import 'package:fedi/app/account/header/account_header_background_widget.dart';
 import 'package:fedi/app/account/my/action/my_account_action_list_bottom_sheet_dialog.dart';
 import 'package:fedi/app/account/statuses/account_statuses_media_widget.dart';
