@@ -11,7 +11,9 @@ import 'package:fedi/app/status/post/action/post_status_post_text_action_widget.
 import 'package:fedi/app/status/post/action/post_status_schedule_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_visibility_action_widget.dart';
 import 'package:fedi/app/status/post/input/post_status_compose_input_widget.dart';
+import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/ui/divider/fedi_light_grey_divider.dart';
+import 'package:fedi/app/ui/edit_text/fedi_transparent_edit_text_field.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,6 +21,7 @@ import 'package:flutter/material.dart';
 
 class PostStatusComposeWidget extends StatelessWidget {
   final bool expanded;
+  final bool displaySubjectField;
   final bool goBackOnSuccess;
   final bool displayAccountAvatar;
   final int maxLines;
@@ -26,6 +29,7 @@ class PostStatusComposeWidget extends StatelessWidget {
   final bool showPostAction;
 
   const PostStatusComposeWidget({
+    @required this.displaySubjectField,
     @required this.expanded,
     @required this.displayAccountAvatar,
     @required this.maxLines,
@@ -36,12 +40,29 @@ class PostStatusComposeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var postStatusBloc = IPostStatusBloc.of(context, listen: false);
     return Padding(
       padding: FediPadding.allSmallPadding, //child: ListView(
 //  shrinkWrap: true,
       child: Column(
         mainAxisSize: expanded ? MainAxisSize.max : MainAxisSize.min,
         children: <Widget>[
+          if (displaySubjectField)
+            FediTransparentEditTextField(
+              textEditingController: postStatusBloc.subjectTextController,
+              focusNode: postStatusBloc.subjectFocusNode,
+              hintText: "Subject (optional)",
+              expanded: false,
+              autofocus: false,
+              maxLines: 1,
+              textInputAction: TextInputAction.next,
+              onSubmitted: (String value) async {
+                postStatusBloc.subjectFocusNode.requestFocus();
+                postStatusBloc.inputFocusNode.requestFocus();
+              },
+              errorText: null,
+              highlightMentions: true,
+            ),
           displayAccountAvatar
               ? Row(
                   children: <Widget>[
@@ -63,6 +84,7 @@ class PostStatusComposeWidget extends StatelessWidget {
                   ),
                 ),
 //          const FediBigVerticalSpacer(),
+
           UploadMediaAttachmentsWidget(
             scrollable: false,
             heightOnKeyboardOpen: null,

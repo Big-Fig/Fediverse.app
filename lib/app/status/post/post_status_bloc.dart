@@ -26,6 +26,14 @@ abstract class IPostStatusBloc implements IPostMessageBloc {
 
   Stream<bool> get isNsfwSensitiveEnabledStream;
 
+  TextEditingController get subjectTextController;
+
+  FocusNode get subjectFocusNode;
+
+  String get subjectText;
+
+  Stream<String> get subjectTextStream;
+
   void addMentionByAccount(IAccount account);
 
   void removeMentionByAccount(IAccount account);
@@ -65,8 +73,8 @@ abstract class IPostStatusBloc implements IPostMessageBloc {
   bool get originInReplyToStatusCanceled;
 
   Stream<bool> get originInReplyToStatusCanceledStream;
-  IPostStatusPollBloc get pollBloc;
 
+  IPostStatusPollBloc get pollBloc;
 
   void cancelOriginInReplyToStatus();
 }

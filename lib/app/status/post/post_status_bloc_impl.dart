@@ -104,6 +104,10 @@ abstract class PostStatusBloc extends PostMessageBloc
     addDisposable(disposable: CustomDisposable(() {
       inputFocusNode.removeListener(focusListener);
     }));
+
+    addDisposable(focusNode: subjectFocusNode);
+    addDisposable(textEditingController: subjectTextController);
+    addDisposable(subject: subjectTextSubject);
   }
 
   void onFocusChange(bool hasFocus) {
@@ -380,7 +384,8 @@ abstract class PostStatusBloc extends PostMessageBloc
     return success;
   }
 
-  String calculateVisibilityField() => pleromaVisibilityValues.reverse[visibility];
+  String calculateVisibilityField() =>
+      pleromaVisibilityValues.reverse[visibility];
 
   List<String> _calculateMediaIdsField() {
     var mediaIds = mediaAttachmentsBloc.mediaAttachmentBlocs
@@ -494,7 +499,8 @@ abstract class PostStatusBloc extends PostMessageBloc
     var poll;
     if (pollBloc.isSomethingChanged) {
       var expiresAt = pollBloc.expiresAtFieldBloc.currentValue;
-      var expiresInSeconds = DateTime.now().difference(expiresAt).abs().inSeconds;
+      var expiresInSeconds =
+          DateTime.now().difference(expiresAt).abs().inSeconds;
 
       poll = PleromaPostStatusPoll(
         expiresInSeconds: expiresInSeconds,
@@ -506,4 +512,36 @@ abstract class PostStatusBloc extends PostMessageBloc
     }
     return poll;
   }
+
+  String _calculateSpoilerTextField() {
+    var poll;
+    if (pollBloc.isSomethingChanged) {
+      var expiresAt = pollBloc.expiresAtFieldBloc.currentValue;
+      var expiresInSeconds =
+          DateTime.now().difference(expiresAt).abs().inSeconds;
+
+      poll = PleromaPostStatusPoll(
+        expiresInSeconds: expiresInSeconds,
+        multiple: pollBloc.multiplyFieldBloc.currentValue,
+        options: pollBloc.pollOptionsGroupBloc.items
+            .map((item) => item.currentValue)
+            .toList(),
+      );
+    }
+    return poll;
+  }
+
+  @override
+  final FocusNode subjectFocusNode = FocusNode();
+
+  @override
+  String get subjectText => subjectTextSubject.value;
+
+  @override
+  Stream<String> get subjectTextStream => subjectTextSubject.stream;
+
+  @override
+  final TextEditingController subjectTextController = TextEditingController();
+
+  final BehaviorSubject<String> subjectTextSubject = BehaviorSubject();
 }
