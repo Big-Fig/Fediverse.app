@@ -5,7 +5,7 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_widget.dart';
 import 'package:fedi/app/account/details/account_details_bloc.dart';
 import 'package:fedi/app/account/details/account_details_bloc_impl.dart';
-import 'package:fedi/app/account/display_name/account_display_name_widget.dart';
+import 'package:fedi/app/account/display_name/account_display_name_and_act_widget.dart';
 import 'package:fedi/app/account/header/account_header_background_widget.dart';
 import 'package:fedi/app/account/my/action/my_account_action_list_bottom_sheet_dialog.dart';
 import 'package:fedi/app/account/statuses/account_statuses_media_widget.dart';
@@ -88,7 +88,7 @@ class _AccountDetailsPageState extends State<AccountDetailsPage>
       backgroundColor: FediColors.white,
       appBar: FediSubPageCustomAppBar(
         leading: const FediBackIconButton(),
-        child: AccountDisplayNameWidget(),
+        child: AccountDisplayNameAndAcctWidget(),
       ),
       body: Stack(
         children: [
@@ -229,12 +229,18 @@ class _AccountDetailsPageState extends State<AccountDetailsPage>
                 case AccountStatusesTab.withReplies:
                 case AccountStatusesTab.withoutReplies:
                 case AccountStatusesTab.pinned:
-                  return CollapsibleOwnerWidget(
-                    child: AccountStatusesTimelineWidget(),
+                  return Container(
+                    color: Colors.white,
+                    child: CollapsibleOwnerWidget(
+                      child: AccountStatusesTimelineWidget(),
+                    ),
                   );
                   break;
                 case AccountStatusesTab.media:
-                  return AccountStatusesMediaWidget();
+                  return Container(
+                    color: Colors.white,
+                    child: AccountStatusesMediaWidget(),
+                  );
                   break;
                 default:
                   throw "Invalid tab $tab";
