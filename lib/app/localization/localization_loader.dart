@@ -812,6 +812,7 @@ class CodegenLoader extends AssetLoader{
           }
         },
         "field": {
+          "subject": "Subject (optional)",
           "message": {
             "hint": "What’s going on today?"
           }

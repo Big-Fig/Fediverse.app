@@ -108,6 +108,15 @@ abstract class PostStatusBloc extends PostMessageBloc
     addDisposable(focusNode: subjectFocusNode);
     addDisposable(textEditingController: subjectTextController);
     addDisposable(subject: subjectTextSubject);
+
+    var editTextListener = () {
+      onSubjectTextChanged();
+    };
+    subjectTextController.addListener(editTextListener);
+
+    addDisposable(disposable: CustomDisposable(() {
+      subjectTextController.removeListener(editTextListener);
+    }));
   }
 
   void onFocusChange(bool hasFocus) {
@@ -358,6 +367,7 @@ abstract class PostStatusBloc extends PostMessageBloc
       idempotencyKey: idempotencyKey,
       to: _calculateToField(),
       poll: _calculatePollField(),
+      spoilerText: _calculateSpoilerTextField(),
     ));
 
     var success;
@@ -413,6 +423,7 @@ abstract class PostStatusBloc extends PostMessageBloc
       scheduledAt: scheduledAt,
       to: _calculateToField(),
       poll: _calculatePollField(),
+      spoilerText: _calculateSpoilerTextField(),
     ));
     var success = scheduledStatus != null;
     return success;
@@ -429,6 +440,9 @@ abstract class PostStatusBloc extends PostMessageBloc
     clearSchedule();
 
     pollBloc.clear();
+
+    subjectTextController.clear();
+    subjectFocusNode.unfocus();
   }
 
   String removeAcctsFromText(String inputText, List<String> mentionedAccts) {
@@ -514,21 +528,13 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   String _calculateSpoilerTextField() {
-    var poll;
-    if (pollBloc.isSomethingChanged) {
-      var expiresAt = pollBloc.expiresAtFieldBloc.currentValue;
-      var expiresInSeconds =
-          DateTime.now().difference(expiresAt).abs().inSeconds;
+    String spoiler;
 
-      poll = PleromaPostStatusPoll(
-        expiresInSeconds: expiresInSeconds,
-        multiple: pollBloc.multiplyFieldBloc.currentValue,
-        options: pollBloc.pollOptionsGroupBloc.items
-            .map((item) => item.currentValue)
-            .toList(),
-      );
+    if (subjectText?.trim()?.isNotEmpty == true) {
+      spoiler = subjectText;
     }
-    return poll;
+
+    return spoiler;
   }
 
   @override
@@ -544,4 +550,12 @@ abstract class PostStatusBloc extends PostMessageBloc
   final TextEditingController subjectTextController = TextEditingController();
 
   final BehaviorSubject<String> subjectTextSubject = BehaviorSubject();
+
+  void onSubjectTextChanged() {
+    var text = subjectTextController.text;
+
+    if (subjectText != text) {
+      subjectTextSubject.add(text);
+    }
+  }
 }
