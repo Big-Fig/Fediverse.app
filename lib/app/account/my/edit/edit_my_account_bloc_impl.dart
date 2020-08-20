@@ -71,7 +71,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
         customFieldsGroupBloc =
             FormOneTypeGroupBloc<IFormLinkPairFieldGroupBloc>(
           maximumFieldsCount: _maximumPossibleCustomFieldsCount,
-          newFieldCreator: () =>
+          newEmptyFieldCreator: () =>
               FormLinkPairFieldGroupBloc(value: null, name: null),
           originalItems: myAccountBloc.fields
               .map(

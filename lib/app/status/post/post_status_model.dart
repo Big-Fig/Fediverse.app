@@ -1,3 +1,5 @@
+import 'package:fedi/app/status/post/poll/post_status_poll_model.dart';
+import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
@@ -8,19 +10,31 @@ abstract class IPostStatusData {
 
   String get text;
 
-  DateTime get scheduled;
+  DateTime get scheduledAt;
 
-  PleromaVisibility get pleromaVisibility;
+  PleromaVisibility get visibility;
 
   List<IPleromaMediaAttachment> get attachments;
 
-  PleromaPostStatusPoll get poll;
+  IPostStatusPoll get poll;
 
-  String get inReplyToId;
+  IStatus get inReplyToStatus;
 
   String get inReplyToConversationId;
 
-  bool get nsfwSensitive;
+  bool get isNsfwSensitiveEnabled;
+
+  PostStatusData copyWith({
+    String subject,
+    String text,
+    DateTime scheduledAt,
+    PleromaVisibility visibility,
+    IPleromaMediaAttachment attachments,
+    PleromaPostStatusPoll poll,
+    IStatus inReplyToStatus,
+    String inReplyToConversationId,
+    bool isNsfwSensitiveEnabled,
+  });
 }
 
 class PostStatusData implements IPostStatusData {
@@ -29,54 +43,57 @@ class PostStatusData implements IPostStatusData {
   @override
   final String text;
   @override
-  final DateTime scheduled;
+  final DateTime scheduledAt;
   @override
-  final PleromaVisibility pleromaVisibility;
+  final PleromaVisibility visibility;
   @override
   final List<IPleromaMediaAttachment> attachments;
   @override
-  final PleromaPostStatusPoll poll;
+  final IPostStatusPoll poll;
   @override
-  final String inReplyToId;
+  final IStatus inReplyToStatus;
   @override
   final String inReplyToConversationId;
   @override
-  final bool nsfwSensitive;
+  final bool isNsfwSensitiveEnabled;
 
   const PostStatusData({
     @required this.subject,
     @required this.text,
-    @required this.scheduled,
-    @required this.pleromaVisibility,
+    @required this.scheduledAt,
+    @required this.visibility,
     @required this.attachments,
     @required this.poll,
-    @required this.inReplyToId,
+    @required this.inReplyToStatus,
     @required this.inReplyToConversationId,
-    @required this.nsfwSensitive,
+    @required this.isNsfwSensitiveEnabled,
   });
 
+  @override
   PostStatusData copyWith({
     String subject,
     String text,
-    DateTime scheduled,
-    PleromaVisibility pleromaVisibility,
+    DateTime scheduledAt,
+    PleromaVisibility visibility,
     IPleromaMediaAttachment attachments,
     PleromaPostStatusPoll poll,
-    String inReplyToId,
+    IStatus inReplyToStatus,
     String inReplyToConversationId,
-    bool nsfwSensitive,
-  }) {
-    return PostStatusData(
+    bool isNsfwSensitiveEnabled,
+  }) =>
+      PostStatusData(
         subject: subject ?? this.subject,
-        text: null,
-        scheduled: null,
-        pleromaVisibility: null,
-        attachments: null,
-        poll: null,
-        inReplyToId: null,
-        inReplyToConversationId: null,
-        nsfwSensitive: null);
-  }
+        text: text ?? this.text,
+        scheduledAt: scheduledAt ?? this.scheduledAt,
+        visibility: visibility ?? this.visibility,
+        attachments: attachments ?? this.attachments,
+        poll: poll ?? this.poll,
+        inReplyToStatus: inReplyToStatus ?? this.inReplyToStatus,
+        inReplyToConversationId:
+            inReplyToConversationId ?? this.inReplyToConversationId,
+        isNsfwSensitiveEnabled:
+            isNsfwSensitiveEnabled ?? this.isNsfwSensitiveEnabled,
+      );
 
   @override
   bool operator ==(Object other) =>
@@ -85,35 +102,30 @@ class PostStatusData implements IPostStatusData {
           runtimeType == other.runtimeType &&
           subject == other.subject &&
           text == other.text &&
-          scheduled == other.scheduled &&
-          pleromaVisibility == other.pleromaVisibility &&
+          scheduledAt == other.scheduledAt &&
+          visibility == other.visibility &&
           attachments == other.attachments &&
           poll == other.poll &&
-          inReplyToId == other.inReplyToId &&
+          inReplyToStatus == other.inReplyToStatus &&
           inReplyToConversationId == other.inReplyToConversationId &&
-          nsfwSensitive == other.nsfwSensitive;
+          isNsfwSensitiveEnabled == other.isNsfwSensitiveEnabled;
 
   @override
   int get hashCode =>
       subject.hashCode ^
       text.hashCode ^
-      scheduled.hashCode ^
-      pleromaVisibility.hashCode ^
+      scheduledAt.hashCode ^
+      visibility.hashCode ^
       attachments.hashCode ^
       poll.hashCode ^
-      inReplyToId.hashCode ^
+      inReplyToStatus.hashCode ^
       inReplyToConversationId.hashCode ^
-      nsfwSensitive.hashCode;
-
+      isNsfwSensitiveEnabled.hashCode;
   @override
-  String toString() {
-    return 'PostStatusData{'
-        ' subject: $subject,'
-        ' text: $text, scheduled: $scheduled,'
-        ' pleromaVisibility: $pleromaVisibility,'
-        ' attachments: $attachments, poll: $poll,'
-        ' inReplyToId: $inReplyToId,'
-        ' inReplyToConversationId: $inReplyToConversationId,'
-        ' nsfwSensitive: $nsfwSensitive}';
-  }
+  String toString() => 'PostStatusData{subject: $subject, text: $text,'
+      ' scheduledAt: $scheduledAt, visibility: $visibility,'
+      ' attachments: $attachments, poll: $poll,'
+      ' inReplyToStatus: $inReplyToStatus,'
+      ' inReplyToConversationId: $inReplyToConversationId,'
+      ' isNsfwSensitiveEnabled: $isNsfwSensitiveEnabled}';
 }

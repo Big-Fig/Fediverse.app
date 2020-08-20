@@ -1,4 +1,5 @@
 import 'package:fedi/app/status/post/poll/post_status_poll_bloc.dart';
+import 'package:fedi/app/status/post/poll/post_status_poll_model.dart';
 import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc.dart';
 import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc_impl.dart';
 import 'package:fedi/ui/form/field/value/date_time/form_date_time_field_bloc.dart';
@@ -37,7 +38,7 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
     originalItems: createDefaultPollOptions(),
     minimumFieldsCount: 2,
     maximumFieldsCount: 10,
-    newFieldCreator: () => createPollOptionBloc(),
+    newEmptyFieldCreator: () => createPollOptionBloc(),
   );
 
   static List<IFormStringFieldBloc> createDefaultPollOptions() {
@@ -47,14 +48,28 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
     ];
   }
 
-  static FormStringFieldBloc createPollOptionBloc() => FormStringFieldBloc(
-      originValue: null,
-      validators: [NonEmptyStringFieldValidationError.createValidator()]);
+  static FormStringFieldBloc createPollOptionBloc() =>
+      createPollOptionFieldBloc(null);
+
+  static FormStringFieldBloc createPollOptionFieldBloc(String originValue) {
+    return FormStringFieldBloc(
+        originValue: originValue,
+        validators: [NonEmptyStringFieldValidationError.createValidator()]);
+  }
 
   @override
   void clear() {
     pollOptionsGroupBloc.clear();
     expiresAtFieldBloc.clear();
     multiplyFieldBloc.clear();
+  }
+
+  @override
+  void fillFormData(IPostStatusPoll poll) {
+    multiplyFieldBloc.changeCurrentValue(poll.multiple);
+    expiresAtFieldBloc.changeCurrentValue(poll.expiresAt);
+    poll.options.forEach((pollOption) {
+      pollOptionsGroupBloc.addNewField(createPollOptionFieldBloc(pollOption));
+    });
   }
 }
