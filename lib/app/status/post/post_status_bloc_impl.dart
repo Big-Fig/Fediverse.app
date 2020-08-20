@@ -5,6 +5,7 @@ import 'package:fedi/app/message/post_message_bloc_impl.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_bloc.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_bloc_impl.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
+import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable.dart';
@@ -65,7 +66,18 @@ abstract class PostStatusBloc extends PostMessageBloc
   BehaviorSubject<bool> originInReplyToStatusCanceledSubject =
       BehaviorSubject.seeded(false);
 
-  final PleromaVisibility initialVisibility;
+  final IPostStatusData initialData;
+
+  static const defaultInitData = PostStatusData(
+      subject: null,
+      text: null,
+      scheduled: null,
+      pleromaVisibility: PleromaVisibility.PUBLIC,
+      attachments: null,
+      poll: null,
+      inReplyToId: null,
+      inReplyToConversationId: null,
+      nsfwSensitive: false);
 
   PostStatusBloc({
     @required this.pleromaStatusService,
@@ -74,13 +86,13 @@ abstract class PostStatusBloc extends PostMessageBloc
     this.conversationRemoteId,
     this.originInReplyToStatus,
     int maximumMediaAttachmentCount = 8,
-    this.initialVisibility = PleromaVisibility.PUBLIC,
+    this.initialData = defaultInitData,
     List<IAccount> initialAccountsToMention = const [],
   }) : super(
             pleromaMediaAttachmentService: pleromaMediaAttachmentService,
             maximumMediaAttachmentCount: maximumMediaAttachmentCount) {
-    visibilitySubject = BehaviorSubject.seeded(initialVisibility);
-    nsfwSensitiveSubject = BehaviorSubject.seeded(false);
+    visibilitySubject = BehaviorSubject.seeded(initialData.pleromaVisibility);
+    nsfwSensitiveSubject = BehaviorSubject.seeded(initialData.nsfwSensitive);
 
     addDisposable(streamSubscription:
         mediaAttachmentsBloc.mediaAttachmentBlocsStream.listen((_) {
