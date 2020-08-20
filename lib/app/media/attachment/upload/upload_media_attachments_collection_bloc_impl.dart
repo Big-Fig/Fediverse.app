@@ -1,10 +1,12 @@
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc_impl.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
+import 'package:fedi/app/media/attachment/upload/upload_media_attachment_uploaded_bloc_impl.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';
+import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
@@ -61,30 +63,22 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
 
   @override
   List<IUploadMediaAttachmentBloc> get onlyMediaAttachmentBlocs =>
-      mediaAttachmentBlocs
-          ?.where((bloc) => bloc.filePickerFile.isMedia)
-          ?.toList();
+      mediaAttachmentBlocs?.where((bloc) => bloc.isMedia)?.toList();
 
   @override
   Stream<List<IUploadMediaAttachmentBloc>> get onlyMediaAttachmentBlocsStream =>
       mediaAttachmentBlocsSubject.stream.map((mediaAttachmentBlocs) =>
-          mediaAttachmentBlocs
-              ?.where((bloc) => bloc.filePickerFile.isMedia)
-              ?.toList());
+          mediaAttachmentBlocs?.where((bloc) => bloc.isMedia)?.toList());
 
   @override
   List<IUploadMediaAttachmentBloc> get onlyNonMediaAttachmentBlocs =>
-      mediaAttachmentBlocs
-          ?.where((bloc) => !bloc.filePickerFile.isMedia)
-          ?.toList();
+      mediaAttachmentBlocs?.where((bloc) => !bloc.isMedia)?.toList();
 
   @override
   Stream<List<IUploadMediaAttachmentBloc>>
       get onlyNonMediaAttachmentBlocsStream =>
           mediaAttachmentBlocsSubject.stream.map((mediaAttachmentBlocs) =>
-              mediaAttachmentBlocs
-                  ?.where((bloc) => !bloc.filePickerFile.isMedia)
-                  ?.toList());
+              mediaAttachmentBlocs?.where((bloc) => !bloc.isMedia)?.toList());
 
   @override
   bool get isMaximumMediaAttachmentCountReached => isMaximumAttachmentReached(
@@ -128,11 +122,11 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
   }
 
   @override
-  void detachMedia(FilePickerFile filePickerFile) {
-    var existedBloc = findMediaAttachmentBlocByFilePickerFile(filePickerFile);
-    if (existedBloc != null) {
-      existedBloc.dispose();
-      mediaAttachmentBlocs.remove(existedBloc);
+  void detachMediaAttachmentBloc(
+      IUploadMediaAttachmentBloc mediaAttachmentBloc) {
+    if (mediaAttachmentBloc != null) {
+      mediaAttachmentBloc.dispose();
+      mediaAttachmentBlocs.remove(mediaAttachmentBloc);
       mediaAttachmentBlocsSubject.add(mediaAttachmentBlocs);
     }
   }
@@ -140,7 +134,11 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
   IUploadMediaAttachmentBloc findMediaAttachmentBlocByFilePickerFile(
           FilePickerFile filePickerFile) =>
       mediaAttachmentBlocs.firstWhere((bloc) {
-        return bloc.filePickerFile == filePickerFile;
+        if (bloc is UploadMediaAttachmentBloc) {
+          return bloc.filePickerFile == filePickerFile;
+        } else {
+          return false;
+        }
       }, orElse: () => null);
 
   static bool isMaximumAttachmentReached(
@@ -165,5 +163,15 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
             element.uploadState == UploadMediaAttachmentState.uploaded);
 
     isAllAttachedMediaUploadedSubject.add(allUploaded);
+  }
+
+  @override
+  void addUploadedAttachment(IPleromaMediaAttachment attachment) {
+    mediaAttachmentBlocs.add(
+      UploadMediaAttachmentUploadedBloc(
+        pleromaMediaAttachment: attachment,
+      ),
+    );
+    mediaAttachmentBlocsSubject.add(mediaAttachmentBlocs);
   }
 }

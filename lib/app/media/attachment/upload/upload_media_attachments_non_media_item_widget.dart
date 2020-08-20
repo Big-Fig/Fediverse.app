@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:fedi/app/media/attachment/media_attachment_non_media_item_widget.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
-import 'package:fedi/app/media/attachment/upload/upload_media_attachment_failed_notificationOverlay.dart';
+import 'package:fedi/app/media/attachment/upload/upload_media_attachment_failed_notification_overlay.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_remove_dialog.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
@@ -59,7 +59,7 @@ class _UploadMediaAttachmentsNonMediaItemWidgetState
           return MediaAttachmentNonMediaItemWidget(
               opacity:
                   uploadState == UploadMediaAttachmentState.uploaded ? 1 : 0.5,
-              filePath: mediaItemBloc.filePickerFile.file.path,
+              filePath: mediaItemBloc.filePath,
               actionsWidget: actionsWidget);
         });
   }

@@ -1,6 +1,7 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_bloc.dart';
+import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
@@ -66,15 +67,8 @@ abstract class IPostStatusBloc implements IPostMessageBloc {
 
   IStatus get originInReplyToStatus;
 
-  IStatus get notCanceledOriginInReplyToStatus;
-
-  Stream<IStatus> get notCanceledOriginInReplyToStatusStream;
-
-  bool get originInReplyToStatusCanceled;
-
-  Stream<bool> get originInReplyToStatusCanceledStream;
 
   IPostStatusPollBloc get pollBloc;
 
-  void cancelOriginInReplyToStatus();
+  IPostStatusData calculateCurrentPostStatusData();
 }

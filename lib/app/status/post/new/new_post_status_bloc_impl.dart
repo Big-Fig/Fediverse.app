@@ -14,10 +14,12 @@ class NewPostStatusBloc extends PostStatusBloc {
     @required IStatusRepository statusRepository,
     @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
   }) : super(
-            pleromaStatusService: pleromaStatusService,
-            statusRepository: statusRepository,
-            pleromaMediaAttachmentService: pleromaMediaAttachmentService,
-            initialVisibility: PleromaVisibility.PUBLIC);
+          pleromaStatusService: pleromaStatusService,
+          statusRepository: statusRepository,
+          pleromaMediaAttachmentService: pleromaMediaAttachmentService,
+          initialData: PostStatusBloc.defaultInitData
+              .copyWith(visibility: PleromaVisibility.PUBLIC),
+        );
 
   static NewPostStatusBloc createFromContext(BuildContext context) =>
       NewPostStatusBloc(

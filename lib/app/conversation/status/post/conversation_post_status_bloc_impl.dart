@@ -20,11 +20,12 @@ class ConversationPostStatusBloc extends PostStatusBloc {
     @required IStatusRepository statusRepository,
     @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
   }) : super(
-            conversationRemoteId: conversation.remoteId,
             pleromaStatusService: pleromaStatusService,
             statusRepository: statusRepository,
             pleromaMediaAttachmentService: pleromaMediaAttachmentService,
-            initialVisibility: PleromaVisibility.PRIVATE,
+            initialData: PostStatusBloc.defaultInitData.copyWith(
+                visibility: PleromaVisibility.PRIVATE,
+                inReplyToConversationId: conversation.remoteId),
             initialAccountsToMention: conversationAccountsWithoutMe);
 
   static ConversationPostStatusBloc createFromContext(BuildContext context,

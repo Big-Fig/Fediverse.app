@@ -14,7 +14,7 @@ var _logger = Logger("upload_media_attachment_bloc_impl.dart");
 class UploadMediaAttachmentBloc extends DisposableOwner
     implements IUploadMediaAttachmentBloc {
   final IPleromaMediaAttachmentService pleromaMediaAttachmentService;
-  @override
+
   final FilePickerFile filePickerFile;
   @override
   IPleromaMediaAttachment pleromaMediaAttachment;
@@ -58,4 +58,10 @@ class UploadMediaAttachmentBloc extends DisposableOwner
       uploadStateSubject.add(UploadMediaAttachmentState.failed);
     });
   }
+
+  @override
+  String get filePath => filePickerFile.file.path;
+
+  @override
+  bool get isMedia => filePickerFile.isMedia;
 }
