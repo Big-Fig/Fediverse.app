@@ -107,6 +107,8 @@ class StatusActionMoreDialogBody extends StatelessWidget {
                             title: title,
                             content: content,
                             actions: [
+                              buildAccountOpenInBrowserAction(
+                                  context, accountBloc),
                               buildAccountFollowAction(context, accountBloc),
                               buildAccountMessageAction(context, accountBloc),
                               buildAccountMuteAction(context, accountBloc),
@@ -210,7 +212,18 @@ class StatusActionMoreDialogBody extends StatelessWidget {
           icon: FediIcons.browser,
           label: tr("app.status.action.open_in_browser"),
           onAction: () async {
-            var url = status.uri;
+            var url = status.url;
+            await UrlHelper.handleUrlClick(context, url);
+            Navigator.of(context).pop();
+          });
+
+  DialogAction buildAccountOpenInBrowserAction(
+          BuildContext context, IAccountBloc accountBloc) =>
+      DialogAction(
+          icon: FediIcons.browser,
+          label: tr("app.account.action.open_in_browser"),
+          onAction: () async {
+            var url = accountBloc.account.url;
             await UrlHelper.handleUrlClick(context, url);
             Navigator.of(context).pop();
           });

@@ -101,6 +101,7 @@ class CodegenLoader extends AssetLoader{
         "block": "Block",
         "unblock": "Unblock",
         "mute": "Mute",
+        "open_in_browser": "Open in browser",
         "unmute": "Unmute",
         "report": {
           "label": "Report",
