@@ -612,6 +612,13 @@
       }
     },
     "status": {
+      "draft": {
+        "edit": {
+          "post": {
+            "title": "Post Draft"
+          }
+        }
+      },
       "emoji": {
         "error": {
           "cant_add": {
@@ -649,6 +656,11 @@
         "datetime": {
           "picker": {
             "title": "Schedule"
+          }
+        },
+        "edit": {
+          "post": {
+            "title": "Scheduled Post"
           }
         }
       },
