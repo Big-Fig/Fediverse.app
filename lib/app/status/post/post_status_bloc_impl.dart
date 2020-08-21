@@ -86,10 +86,10 @@ abstract class PostStatusBloc extends PostMessageBloc
       scheduledAtSubject.add(initialData.scheduledAt);
     }
     if (initialData.subject != null) {
-      subjectTextSubject.add(initialData.subject);
+      subjectTextController.text = initialData.subject;
     }
     if (initialData.text != null) {
-      inputTextSubject.add(initialData.text);
+      inputTextController.text = initialData.text;
     }
     if (initialData.poll != null) {
       pollBloc.fillFormData(initialData.poll);
