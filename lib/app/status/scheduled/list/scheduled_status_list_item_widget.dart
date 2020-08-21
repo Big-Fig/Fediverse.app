@@ -138,23 +138,23 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
       BuildContext context, IScheduledStatusBloc scheduledStatusBloc) {
     return IconButton(
       icon: Icon(
-        FediIcons.schedule,
+        FediIcons.pen,
         color: FediColors.darkGrey,
       ),
       iconSize: FediSizes.bigIconSize,
       onPressed: () async {
-
-        var newScheduledAt = await showScheduledStatusDateTimePickerDialog(
-            context, scheduledStatusBloc.scheduledAt);
-
-        if (newScheduledAt != null) {
-          await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
-              context: context,
-              asyncCode: () =>
-                  scheduledStatusBloc.reSchedule(scheduledAt: newScheduledAt));
-        } else {
-          await scheduledStatusBloc.cancelSchedule();
-        }
+//
+//        var newScheduledAt = await showScheduledStatusDateTimePickerDialog(
+//            context, scheduledStatusBloc.scheduledAt);
+//
+//        if (newScheduledAt != null) {
+//          await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+//              context: context,
+//              asyncCode: () =>
+//                  scheduledStatusBloc.reSchedule(scheduledAt: newScheduledAt));
+//        } else {
+//          await scheduledStatusBloc.cancelSchedule();
+//        }
       },
     );
   }
