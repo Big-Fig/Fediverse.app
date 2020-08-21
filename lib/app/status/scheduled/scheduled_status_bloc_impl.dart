@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_bloc.dart';
@@ -198,5 +199,24 @@ class ScheduledStatusBloc extends DisposableOwner
         _stateSubject.add(ScheduledStatusState.scheduled);
       }
     }
+  }
+
+  @override
+  IPostStatusData calculatePostStatusData() {
+    assert(
+      scheduledStatus.params.inReplyToId == null,
+      "inReplyToId not supported",
+    );
+    return PostStatusData(
+      subject: scheduledStatus.params.spoilerText,
+      text: scheduledStatus.params.text,
+      scheduledAt: scheduledStatus.scheduledAt,
+      visibility: scheduledStatus.params.visibilityPleroma,
+      attachments: scheduledStatus.mediaAttachments,
+      poll: scheduledStatus.params.poll,
+      inReplyToStatus: null,
+      inReplyToConversationId: null,
+      isNsfwSensitiveEnabled: scheduledStatus.params.sensitive,
+    );
   }
 }

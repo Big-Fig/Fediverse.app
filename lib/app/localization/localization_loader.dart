@@ -663,6 +663,9 @@ class CodegenLoader extends AssetLoader{
           "picker": {
             "title": "Schedule"
           }
+        },
+        "edit": {
+          "title": "Scheduled post"
         }
       },
       "share": {

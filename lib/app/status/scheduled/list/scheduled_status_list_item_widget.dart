@@ -1,9 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
-import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
-import 'package:fedi/app/status/scheduled/datetime/scheduled_status_datetime_picker_dialog.dart';
+import 'package:fedi/app/status/post/edit/edit_post_status_page.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_bloc.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -135,27 +134,19 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
       );
 
   Widget buildEditButton(
-      BuildContext context, IScheduledStatusBloc scheduledStatusBloc) {
-    return IconButton(
+      BuildContext context, IScheduledStatusBloc scheduledStatusBloc) => IconButton(
       icon: Icon(
-        FediIcons.schedule,
+        FediIcons.pen,
         color: FediColors.darkGrey,
       ),
       iconSize: FediSizes.bigIconSize,
       onPressed: () async {
-
-        var newScheduledAt = await showScheduledStatusDateTimePickerDialog(
-            context, scheduledStatusBloc.scheduledAt);
-
-        if (newScheduledAt != null) {
-          await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
-              context: context,
-              asyncCode: () =>
-                  scheduledStatusBloc.reSchedule(scheduledAt: newScheduledAt));
-        } else {
-          await scheduledStatusBloc.cancelSchedule();
-        }
+        var postStatusData = scheduledStatusBloc.calculatePostStatusData();
+        goToEditPostStatusPage(
+          context,
+          initialData: postStatusData,
+          titleText: "app.status.scheduled.edit.title".tr(),
+        );
       },
     );
-  }
 }
