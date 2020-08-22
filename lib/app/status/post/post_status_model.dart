@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:fedi/app/status/post/poll/post_status_poll_model.dart';
-import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'post_status_model.g.dart';
 
 abstract class IPostStatusData {
   String get subject;
@@ -18,7 +22,7 @@ abstract class IPostStatusData {
 
   IPostStatusPoll get poll;
 
-  IStatus get inReplyToStatus;
+  IPleromaStatus get inReplyToPleromaStatus;
 
   String get inReplyToConversationId;
 
@@ -31,30 +35,40 @@ abstract class IPostStatusData {
     PleromaVisibility visibility,
     IPleromaMediaAttachment attachments,
     PleromaPostStatusPoll poll,
-    IStatus inReplyToStatus,
+    PleromaStatus inReplyToPleromaStatus,
     String inReplyToConversationId,
     bool isNsfwSensitiveEnabled,
   });
 }
 
+@JsonSerializable()
 class PostStatusData implements IPostStatusData {
   @override
+  @JsonKey()
   final String subject;
   @override
+  @JsonKey()
   final String text;
   @override
+  @JsonKey(name: "scheduled_at")
   final DateTime scheduledAt;
   @override
+  @JsonKey(name: "visibility")
   final PleromaVisibility visibility;
   @override
-  final List<IPleromaMediaAttachment> attachments;
+  @JsonKey(name: "attachments")
+  final List<PleromaMediaAttachment> attachments;
   @override
-  final IPostStatusPoll poll;
+  @JsonKey(name: "poll")
+  final PostStatusPoll poll;
   @override
-  final IStatus inReplyToStatus;
+  @JsonKey(name: "in_reply_to_status")
+  final PleromaStatus inReplyToPleromaStatus;
   @override
+  @JsonKey(name: "in_reply_to_conversation_id")
   final String inReplyToConversationId;
   @override
+  @JsonKey(name: "is_nsfw_sensitive_enabled")
   final bool isNsfwSensitiveEnabled;
 
   const PostStatusData({
@@ -64,10 +78,13 @@ class PostStatusData implements IPostStatusData {
     @required this.visibility,
     @required this.attachments,
     @required this.poll,
-    @required this.inReplyToStatus,
+    @required this.inReplyToPleromaStatus,
     @required this.inReplyToConversationId,
     @required this.isNsfwSensitiveEnabled,
   });
+
+  PleromaVisibility get visibilityPleroma =>
+      pleromaVisibilityValues.map[visibility];
 
   @override
   PostStatusData copyWith({
@@ -76,8 +93,8 @@ class PostStatusData implements IPostStatusData {
     DateTime scheduledAt,
     PleromaVisibility visibility,
     IPleromaMediaAttachment attachments,
-    PleromaPostStatusPoll poll,
-    IStatus inReplyToStatus,
+    IPleromaPostStatusPoll poll,
+    PleromaStatus inReplyToPleromaStatus,
     String inReplyToConversationId,
     bool isNsfwSensitiveEnabled,
   }) =>
@@ -88,7 +105,8 @@ class PostStatusData implements IPostStatusData {
         visibility: visibility ?? this.visibility,
         attachments: attachments ?? this.attachments,
         poll: poll ?? this.poll,
-        inReplyToStatus: inReplyToStatus ?? this.inReplyToStatus,
+        inReplyToPleromaStatus:
+            inReplyToPleromaStatus ?? this.inReplyToPleromaStatus,
         inReplyToConversationId:
             inReplyToConversationId ?? this.inReplyToConversationId,
         isNsfwSensitiveEnabled:
@@ -106,7 +124,7 @@ class PostStatusData implements IPostStatusData {
           visibility == other.visibility &&
           attachments == other.attachments &&
           poll == other.poll &&
-          inReplyToStatus == other.inReplyToStatus &&
+          inReplyToPleromaStatus == other.inReplyToPleromaStatus &&
           inReplyToConversationId == other.inReplyToConversationId &&
           isNsfwSensitiveEnabled == other.isNsfwSensitiveEnabled;
 
@@ -118,14 +136,25 @@ class PostStatusData implements IPostStatusData {
       visibility.hashCode ^
       attachments.hashCode ^
       poll.hashCode ^
-      inReplyToStatus.hashCode ^
+      inReplyToPleromaStatus.hashCode ^
       inReplyToConversationId.hashCode ^
       isNsfwSensitiveEnabled.hashCode;
+
   @override
   String toString() => 'PostStatusData{subject: $subject, text: $text,'
       ' scheduledAt: $scheduledAt, visibility: $visibility,'
       ' attachments: $attachments, poll: $poll,'
-      ' inReplyToStatus: $inReplyToStatus,'
+      ' inReplyToStatus: $inReplyToPleromaStatus,'
       ' inReplyToConversationId: $inReplyToConversationId,'
       ' isNsfwSensitiveEnabled: $isNsfwSensitiveEnabled}';
+
+  factory PostStatusData.fromJson(Map<String, dynamic> json) =>
+      _$PostStatusDataFromJson(json);
+
+  factory PostStatusData.fromJsonString(String jsonString) =>
+      _$PostStatusDataFromJson(jsonDecode(jsonString));
+
+  Map<String, dynamic> toJson() => _$PostStatusDataToJson(this);
+
+  String toJsonString() => jsonEncode(_$PostStatusDataToJson(this));
 }

@@ -214,7 +214,7 @@ class ScheduledStatusBloc extends DisposableOwner
       visibility: scheduledStatus.params.visibilityPleroma,
       attachments: scheduledStatus.mediaAttachments,
       poll: scheduledStatus.params.poll,
-      inReplyToStatus: null,
+      inReplyToPleromaStatus: null,
       inReplyToConversationId: null,
       isNsfwSensitiveEnabled: scheduledStatus.params.sensitive,
     );

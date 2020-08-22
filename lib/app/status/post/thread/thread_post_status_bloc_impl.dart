@@ -4,6 +4,7 @@ import 'package:fedi/app/status/post/post_status_bloc_proxy_provider.dart';
 import 'package:fedi/app/status/post/thread/thread_post_status_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
@@ -46,7 +47,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
           initialData: PostStatusBloc.defaultInitData.copyWith(
             visibility: PleromaVisibility.PUBLIC,
-            inReplyToStatus: inReplyToStatus,
+            inReplyToPleromaStatus: mapLocalStatusToRemoteStatus(inReplyToStatus),
           ),
         ) {
     addDisposable(subject: originInReplyToStatusCanceledSubject);

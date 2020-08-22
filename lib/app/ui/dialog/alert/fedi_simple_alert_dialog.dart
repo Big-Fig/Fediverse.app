@@ -19,6 +19,6 @@ class FediSimpleAlertDialog extends FediBaseAlertDialog {
         context: context,
         action: BaseDialog.createDefaultOkAction(context),
         color: FediColors.mediumGrey,
-        isLast: isLast,
+        notAddRightPadding: isLast,
       );
 }

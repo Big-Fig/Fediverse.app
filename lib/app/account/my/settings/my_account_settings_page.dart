@@ -1,10 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_widget.dart';
+import 'package:fedi/app/status/draft/draft_status_list_page.dart';
 import 'package:fedi/app/status/scheduled/list/scheduled_status_list_page.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
+import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -24,18 +26,29 @@ class MyAccountSettingsPage extends StatelessWidget {
               padding: FediPadding.verticalBigPadding,
               child: FediUltraLightGreyDivider(),
             ),
-            buildScheduledButton(context)
+            buildScheduledButton(context),
+            FediSmallVerticalSpacer(),
+            buildDraftsButton(context),
           ],
         ),
       ),
     );
   }
 
-  FediPrimaryFilledTextButton buildScheduledButton(BuildContext context) {
+  Widget buildScheduledButton(BuildContext context) {
     return FediPrimaryFilledTextButton(
       tr("app.account.my.settings.scheduled_posts"),
       onPressed: () {
         goToScheduledStatusListPage(context);
+      },
+    );
+  }
+
+  Widget buildDraftsButton(BuildContext context) {
+    return FediPrimaryFilledTextButton(
+      tr("app.account.my.settings.draft_posts"),
+      onPressed: () {
+        goToDraftStatusListPage(context);
       },
     );
   }

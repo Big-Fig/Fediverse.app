@@ -9,6 +9,9 @@ var _logger = Logger("status_model_adapter.dart");
 
 DbStatusPopulatedWrapper mapRemoteStatusToLocalStatus(
     IPleromaStatus remoteStatus) {
+  if (remoteStatus == null) {
+    return null;
+  }
   DbStatus rebloggedStatus;
   DbAccount rebloggedStatusAccount;
   if (remoteStatus.reblog != null) {
@@ -31,6 +34,10 @@ DbStatusPopulatedWrapper mapRemoteStatusToLocalStatus(
 }
 
 DbStatus mapRemoteStatusToDbStatus(IPleromaStatus remoteStatus) {
+  if (remoteStatus == null) {
+    return null;
+  }
+
 // TODO: fix when https://git.pleroma.social/pleroma/pleroma/issues/1573  will be resolved
   DateTime expiresAt;
   try {

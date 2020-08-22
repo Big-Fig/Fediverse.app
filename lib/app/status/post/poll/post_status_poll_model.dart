@@ -1,4 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/widgets.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'post_status_poll_model.g.dart';
 
 abstract class IPostStatusPoll {
   DateTime get expiresAt;
@@ -10,11 +15,14 @@ abstract class IPostStatusPoll {
   List<String> get options;
 }
 
+@JsonSerializable()
 class PostStatusPoll implements IPostStatusPoll {
   @override
+  @JsonKey(name: "expires_at")
   final DateTime expiresAt;
 
   @override
+  @JsonKey(name: "hide_totals")
   bool hideTotals;
 
   @override
@@ -52,4 +60,15 @@ class PostStatusPoll implements IPostStatusPoll {
       hideTotals.hashCode ^
       multiple.hashCode ^
       options.hashCode;
+
+
+  factory PostStatusPoll.fromJson(Map<String, dynamic> json) =>
+      _$PostStatusPollFromJson(json);
+
+  factory PostStatusPoll.fromJsonString(String jsonString) =>
+      _$PostStatusPollFromJson(jsonDecode(jsonString));
+
+  Map<String, dynamic> toJson() => _$PostStatusPollToJson(this);
+
+  String toJsonString() => jsonEncode(_$PostStatusPollToJson(this));
 }
