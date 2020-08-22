@@ -1,3 +1,4 @@
+import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/moor/moor_json_type_converter.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
@@ -63,6 +64,17 @@ class PleromaScheduledStatusParamsDatabaseConverter
 
   @override
   Map<String, dynamic> toJson(PleromaScheduledStatusParams obj) => obj.toJson();
+}
+class PostStatusDataDatabaseConverter
+    extends JsonDatabaseConverter<PostStatusData> {
+  const PostStatusDataDatabaseConverter() : super();
+
+  @override
+  PostStatusData fromJson(Map<String, dynamic> json) =>
+      PostStatusData.fromJson(json);
+
+  @override
+  Map<String, dynamic> toJson(PostStatusData obj) => obj.toJson();
 }
 
 class PleromaMyAccountPleromaPartNotificationsSettingsDatabaseConverter

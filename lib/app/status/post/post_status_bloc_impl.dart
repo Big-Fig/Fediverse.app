@@ -9,6 +9,7 @@ import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
@@ -25,6 +26,14 @@ final findAcctsRegex = RegExp(r"\B\@(([\w.@\-]+))");
 
 abstract class PostStatusBloc extends PostMessageBloc
     implements IPostStatusBloc {
+  @override
+  bool get isAnyDataEntered {
+    return inputText?.isNotEmpty == true ||
+        subjectText?.isNotEmpty == true ||
+        mediaAttachmentsBloc.mediaAttachmentBlocs.isNotEmpty ||
+        pollBloc.isSomethingChanged;
+  }
+
   PostStatusBloc({
     @required this.pleromaStatusService,
     @required this.statusRepository,
@@ -105,7 +114,8 @@ abstract class PostStatusBloc extends PostMessageBloc
   final IStatusRepository statusRepository;
 
   @override
-  IStatus get originInReplyToStatus => initialData.inReplyToStatus;
+  IStatus get originInReplyToStatus =>
+      mapRemoteStatusToLocalStatus(initialData.inReplyToPleromaStatus);
 
   String get inReplyToStatusRemoteId => originInReplyToStatus?.remoteId;
 
@@ -123,7 +133,7 @@ abstract class PostStatusBloc extends PostMessageBloc
       visibility: PleromaVisibility.PUBLIC,
       attachments: null,
       poll: null,
-      inReplyToStatus: null,
+      inReplyToPleromaStatus: null,
       inReplyToConversationId: null,
       isNsfwSensitiveEnabled: false);
 
@@ -507,7 +517,8 @@ abstract class PostStatusBloc extends PostMessageBloc
     }
   }
 
-  IStatus calculateInReplyToStatusField() => initialData.inReplyToStatus;
+  IStatus calculateInReplyToStatusField() =>
+      mapRemoteStatusToLocalStatus(initialData.inReplyToPleromaStatus);
 
   IPostStatusPoll _calculatePostStatusPoll() {
     var poll;
@@ -582,7 +593,9 @@ abstract class PostStatusBloc extends PostMessageBloc
         visibility: visibility,
         attachments: _calculateMediaAttachmentsField(),
         poll: _calculatePostStatusPoll(),
-        inReplyToStatus: calculateInReplyToStatusField(),
+        inReplyToPleromaStatus: mapLocalStatusToRemoteStatus(
+          calculateInReplyToStatusField(),
+        ),
         inReplyToConversationId: initialData.inReplyToConversationId,
         isNsfwSensitiveEnabled: isNsfwSensitiveEnabled,
       );

@@ -8,6 +8,8 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPostStatusBloc implements IPostMessageBloc {
+  bool get isAnyDataEntered;
+
   static IPostStatusBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IPostStatusBloc>(context, listen: listen);
 
