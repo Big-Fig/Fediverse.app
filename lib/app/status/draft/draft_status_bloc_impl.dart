@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/draft/draft_status_bloc.dart';
 import 'package:fedi/app/status/draft/draft_status_model.dart';
 import 'package:fedi/app/status/draft/repository/draft_status_repository.dart';
@@ -91,4 +92,13 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
 
   @override
   Future cancelDraft() => draftStatusRepository.deleteById(draftStatus.localId);
+
+  @override
+  Future updatePostStatusData(PostStatusData postStatusData) async {
+    var localId = draftStatus.localId;
+    await draftStatusRepository.updateById(
+        localId,
+        DbDraftStatus(
+            id: localId, updatedAt: DateTime.now(), data: postStatusData));
+  }
 }

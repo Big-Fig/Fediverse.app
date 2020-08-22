@@ -15,7 +15,7 @@ PostStatusData _$PostStatusDataFromJson(Map<String, dynamic> json) {
         : DateTime.parse(json['scheduled_at'] as String),
     visibility:
         _$enumDecodeNullable(_$PleromaVisibilityEnumMap, json['visibility']),
-    attachments: (json['attachments'] as List)
+    mediaAttachments: (json['media_attachments'] as List)
         ?.map((e) => e == null
             ? null
             : PleromaMediaAttachment.fromJson(e as Map<String, dynamic>))
@@ -38,7 +38,7 @@ Map<String, dynamic> _$PostStatusDataToJson(PostStatusData instance) =>
       'text': instance.text,
       'scheduled_at': instance.scheduledAt?.toIso8601String(),
       'visibility': _$PleromaVisibilityEnumMap[instance.visibility],
-      'attachments': instance.attachments,
+      'media_attachments': instance.mediaAttachments,
       'poll': instance.poll,
       'in_reply_to_status': instance.inReplyToPleromaStatus,
       'in_reply_to_conversation_id': instance.inReplyToConversationId,

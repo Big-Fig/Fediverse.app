@@ -212,7 +212,7 @@ class ScheduledStatusBloc extends DisposableOwner
       text: scheduledStatus.params.text,
       scheduledAt: scheduledStatus.scheduledAt,
       visibility: scheduledStatus.params.visibilityPleroma,
-      attachments: scheduledStatus.mediaAttachments,
+      mediaAttachments: scheduledStatus.mediaAttachments,
       poll: scheduledStatus.params.poll,
       inReplyToPleromaStatus: null,
       inReplyToConversationId: null,

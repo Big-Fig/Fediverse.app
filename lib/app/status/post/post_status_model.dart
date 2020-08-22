@@ -18,7 +18,7 @@ abstract class IPostStatusData {
 
   PleromaVisibility get visibility;
 
-  List<IPleromaMediaAttachment> get attachments;
+  List<IPleromaMediaAttachment> get mediaAttachments;
 
   IPostStatusPoll get poll;
 
@@ -33,7 +33,7 @@ abstract class IPostStatusData {
     String text,
     DateTime scheduledAt,
     PleromaVisibility visibility,
-    IPleromaMediaAttachment attachments,
+    IPleromaMediaAttachment mediaAttachments,
     PleromaPostStatusPoll poll,
     PleromaStatus inReplyToPleromaStatus,
     String inReplyToConversationId,
@@ -56,8 +56,8 @@ class PostStatusData implements IPostStatusData {
   @JsonKey(name: "visibility")
   final PleromaVisibility visibility;
   @override
-  @JsonKey(name: "attachments")
-  final List<PleromaMediaAttachment> attachments;
+  @JsonKey(name: "media_attachments")
+  final List<PleromaMediaAttachment> mediaAttachments;
   @override
   @JsonKey(name: "poll")
   final PostStatusPoll poll;
@@ -76,7 +76,7 @@ class PostStatusData implements IPostStatusData {
     @required this.text,
     @required this.scheduledAt,
     @required this.visibility,
-    @required this.attachments,
+    @required this.mediaAttachments,
     @required this.poll,
     @required this.inReplyToPleromaStatus,
     @required this.inReplyToConversationId,
@@ -92,7 +92,7 @@ class PostStatusData implements IPostStatusData {
     String text,
     DateTime scheduledAt,
     PleromaVisibility visibility,
-    IPleromaMediaAttachment attachments,
+    IPleromaMediaAttachment mediaAttachments,
     IPleromaPostStatusPoll poll,
     PleromaStatus inReplyToPleromaStatus,
     String inReplyToConversationId,
@@ -103,7 +103,7 @@ class PostStatusData implements IPostStatusData {
         text: text ?? this.text,
         scheduledAt: scheduledAt ?? this.scheduledAt,
         visibility: visibility ?? this.visibility,
-        attachments: attachments ?? this.attachments,
+        mediaAttachments: mediaAttachments ?? this.mediaAttachments,
         poll: poll ?? this.poll,
         inReplyToPleromaStatus:
             inReplyToPleromaStatus ?? this.inReplyToPleromaStatus,
@@ -122,7 +122,7 @@ class PostStatusData implements IPostStatusData {
           text == other.text &&
           scheduledAt == other.scheduledAt &&
           visibility == other.visibility &&
-          attachments == other.attachments &&
+          mediaAttachments == other.mediaAttachments &&
           poll == other.poll &&
           inReplyToPleromaStatus == other.inReplyToPleromaStatus &&
           inReplyToConversationId == other.inReplyToConversationId &&
@@ -134,7 +134,7 @@ class PostStatusData implements IPostStatusData {
       text.hashCode ^
       scheduledAt.hashCode ^
       visibility.hashCode ^
-      attachments.hashCode ^
+      mediaAttachments.hashCode ^
       poll.hashCode ^
       inReplyToPleromaStatus.hashCode ^
       inReplyToConversationId.hashCode ^
@@ -143,7 +143,7 @@ class PostStatusData implements IPostStatusData {
   @override
   String toString() => 'PostStatusData{subject: $subject, text: $text,'
       ' scheduledAt: $scheduledAt, visibility: $visibility,'
-      ' attachments: $attachments, poll: $poll,'
+      ' attachments: $mediaAttachments, poll: $poll,'
       ' inReplyToStatus: $inReplyToPleromaStatus,'
       ' inReplyToConversationId: $inReplyToConversationId,'
       ' isNsfwSensitiveEnabled: $isNsfwSensitiveEnabled}';

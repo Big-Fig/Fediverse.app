@@ -2,7 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
-import 'package:fedi/app/status/post/edit/edit_post_status_page.dart';
+import 'package:fedi/app/status/post/edit/edit_post_status_widget.dart';
+import 'package:fedi/app/status/post/post_status_model.dart';
+import 'package:fedi/app/status/scheduled/scheduled_edit_post_status_page.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_bloc.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -12,6 +14,7 @@ import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/fedi_text_styles.dart';
+import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
@@ -134,19 +137,19 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
       );
 
   Widget buildEditButton(
-      BuildContext context, IScheduledStatusBloc scheduledStatusBloc) => IconButton(
-      icon: Icon(
-        FediIcons.pen,
-        color: FediColors.darkGrey,
-      ),
-      iconSize: FediSizes.bigIconSize,
-      onPressed: () async {
-        var postStatusData = scheduledStatusBloc.calculatePostStatusData();
-        goToEditPostStatusPage(
-          context,
-          initialData: postStatusData,
-          titleText: "app.status.scheduled.edit.title".tr(),
-        );
-      },
-    );
+          BuildContext context, IScheduledStatusBloc scheduledStatusBloc) =>
+      IconButton(
+        icon: Icon(
+          FediIcons.pen,
+          color: FediColors.darkGrey,
+        ),
+        iconSize: FediSizes.bigIconSize,
+        onPressed: () async {
+          var postStatusData = scheduledStatusBloc.calculatePostStatusData();
+          goToScheduledEditPostStatusPage(
+            context,
+            initialData: postStatusData,
+          );
+        },
+      );
 }

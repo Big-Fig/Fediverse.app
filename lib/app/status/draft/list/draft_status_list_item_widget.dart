@@ -1,10 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/status/draft/draft_edit_post_status_page.dart';
 import 'package:fedi/app/status/draft/draft_status_bloc.dart';
 import 'package:fedi/app/status/draft/draft_status_model.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
-import 'package:fedi/app/status/post/edit/edit_post_status_page.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
@@ -97,10 +97,9 @@ class DraftStatusListItemWidget extends StatelessWidget {
         iconSize: FediSizes.bigIconSize,
         onPressed: () async {
           var postStatusData = draftStatusBloc.calculatePostStatusData();
-          goToEditPostStatusPage(
+          goToDraftEditPostStatusPage(
             context,
             initialData: postStatusData,
-            titleText: "app.status.draft.edit.title".tr(),
           );
         },
       );

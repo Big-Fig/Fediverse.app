@@ -217,7 +217,7 @@ class DraftStatusAdapterToStatus implements IStatus {
 
   @override
   List<PleromaMediaAttachment> get mediaAttachments =>
-      draftStatus.data.attachments;
+      draftStatus.data.mediaAttachments;
 }
 
 int adjacentElementsProduct(List<int> inputArray) {
