@@ -16,7 +16,9 @@ abstract class IPostStatusData {
 
   DateTime get scheduledAt;
 
-  PleromaVisibility get visibility;
+  String get visibility;
+
+  String get to;
 
   List<IPleromaMediaAttachment> get mediaAttachments;
 
@@ -53,13 +55,13 @@ class PostStatusData implements IPostStatusData {
   @JsonKey(name: "scheduled_at")
   final DateTime scheduledAt;
   @override
-  @JsonKey(name: "visibility")
-  final PleromaVisibility visibility;
+  final String visibility;
+  @override
+  final String to;
   @override
   @JsonKey(name: "media_attachments")
   final List<PleromaMediaAttachment> mediaAttachments;
   @override
-  @JsonKey(name: "poll")
   final PostStatusPoll poll;
   @override
   @JsonKey(name: "in_reply_to_status")
@@ -76,6 +78,7 @@ class PostStatusData implements IPostStatusData {
     @required this.text,
     @required this.scheduledAt,
     @required this.visibility,
+    @required this.to,
     @required this.mediaAttachments,
     @required this.poll,
     @required this.inReplyToPleromaStatus,
@@ -91,7 +94,8 @@ class PostStatusData implements IPostStatusData {
     String subject,
     String text,
     DateTime scheduledAt,
-    PleromaVisibility visibility,
+    String visibility,
+    String to,
     IPleromaMediaAttachment mediaAttachments,
     IPleromaPostStatusPoll poll,
     PleromaStatus inReplyToPleromaStatus,
@@ -103,6 +107,7 @@ class PostStatusData implements IPostStatusData {
         text: text ?? this.text,
         scheduledAt: scheduledAt ?? this.scheduledAt,
         visibility: visibility ?? this.visibility,
+        to: to ?? this.to,
         mediaAttachments: mediaAttachments ?? this.mediaAttachments,
         poll: poll ?? this.poll,
         inReplyToPleromaStatus:
@@ -113,6 +118,7 @@ class PostStatusData implements IPostStatusData {
             isNsfwSensitiveEnabled ?? this.isNsfwSensitiveEnabled,
       );
 
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -122,6 +128,7 @@ class PostStatusData implements IPostStatusData {
           text == other.text &&
           scheduledAt == other.scheduledAt &&
           visibility == other.visibility &&
+          to == other.to &&
           mediaAttachments == other.mediaAttachments &&
           poll == other.poll &&
           inReplyToPleromaStatus == other.inReplyToPleromaStatus &&
@@ -134,6 +141,7 @@ class PostStatusData implements IPostStatusData {
       text.hashCode ^
       scheduledAt.hashCode ^
       visibility.hashCode ^
+      to.hashCode ^
       mediaAttachments.hashCode ^
       poll.hashCode ^
       inReplyToPleromaStatus.hashCode ^
@@ -146,6 +154,7 @@ class PostStatusData implements IPostStatusData {
       ' attachments: $mediaAttachments, poll: $poll,'
       ' inReplyToStatus: $inReplyToPleromaStatus,'
       ' inReplyToConversationId: $inReplyToConversationId,'
+      ' to: $to,'
       ' isNsfwSensitiveEnabled: $isNsfwSensitiveEnabled}';
 
   factory PostStatusData.fromJson(Map<String, dynamic> json) =>
