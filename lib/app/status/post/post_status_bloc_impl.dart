@@ -103,8 +103,8 @@ abstract class PostStatusBloc extends PostMessageBloc
     if (initialData.poll != null) {
       pollBloc.fillFormData(initialData.poll);
     }
-    if (initialData.attachments?.isNotEmpty == true) {
-      initialData.attachments.forEach((attachment) {
+    if (initialData.mediaAttachments?.isNotEmpty == true) {
+      initialData.mediaAttachments.forEach((attachment) {
         mediaAttachmentsBloc.addUploadedAttachment(attachment);
       });
     }
@@ -131,7 +131,7 @@ abstract class PostStatusBloc extends PostMessageBloc
       text: null,
       scheduledAt: null,
       visibility: PleromaVisibility.PUBLIC,
-      attachments: null,
+      mediaAttachments: null,
       poll: null,
       inReplyToPleromaStatus: null,
       inReplyToConversationId: null,
@@ -360,6 +360,12 @@ abstract class PostStatusBloc extends PostMessageBloc
 
   @override
   Future<bool> post() async {
+    var postStatusData = calculateCurrentPostStatusData();
+
+    return await internalPostStatusData(postStatusData);
+  }
+
+  Future<bool> internalPostStatusData(IPostStatusData postStatusData) async {
     bool success;
     if (isScheduled) {
       success = await _scheduleStatus();
@@ -591,7 +597,7 @@ abstract class PostStatusBloc extends PostMessageBloc
         text: calculateStatusTextField(),
         scheduledAt: scheduledAt,
         visibility: visibility,
-        attachments: _calculateMediaAttachmentsField(),
+        mediaAttachments: _calculateMediaAttachmentsField(),
         poll: _calculatePostStatusPoll(),
         inReplyToPleromaStatus: mapLocalStatusToRemoteStatus(
           calculateInReplyToStatusField(),
