@@ -3,6 +3,7 @@ import 'package:fedi/app/status/post/edit/edit_post_status_bloc_impl.dart';
 import 'package:fedi/app/status/post/edit/edit_post_status_widget.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
+import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_dismiss_icon_button.dart';
@@ -11,7 +12,6 @@ import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fedi/app/status/post/post_status_model.dart';
 
 class ScheduledEditPostStatusPage extends StatelessWidget {
   final PostStatusDataCallback onBackPressed;
@@ -67,10 +67,11 @@ void goToScheduledEditPostStatusPage(
           var pleromaScheduledStatus =
               await pleromaStatusService.scheduleStatus(
                   data: PleromaScheduleStatus(
-            mediaIds: _calculateMediaIdsField(),
-            status: calculateStatusTextField(),
-            sensitive: isNsfwSensitiveEnabled,
-            visibility: calculateVisibilityField(),
+            mediaIds: postStatusData.mediaAttachments?.map((mediaAttachment)
+            => mediaAttachment.id)?.toList(),
+            status: postStatusData.text,
+            sensitive: postStatusData.isNsfwSensitiveEnabled,
+            visibility: postStatusData.visibility,
             inReplyToId: calculateInReplyToStatusField()?.remoteId,
             inReplyToConversationId: initialData.inReplyToConversationId,
             idempotencyKey: null,
