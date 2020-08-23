@@ -39,4 +39,6 @@ abstract class IScheduledStatusBloc implements Disposable {
   Future refreshFromNetwork();
 
   IPostStatusData calculatePostStatusData();
+
+  Future<bool> postScheduledPost(PostStatusData postStatusData);
 }

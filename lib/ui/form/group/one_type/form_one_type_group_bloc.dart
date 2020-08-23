@@ -28,4 +28,6 @@ abstract class IFormOneTypeGroupBloc<T extends IFormItemBloc>
   bool get isPossibleToAddFields;
 
   T addNewField(T value);
+
+  void removeAllFields();
 }

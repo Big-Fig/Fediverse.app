@@ -141,4 +141,10 @@ class FormOneTypeGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
 
     return newField;
   }
+
+  @override
+  void removeAllFields() {
+    items.clear();
+    _itemsSubject.add(items);
+  }
 }

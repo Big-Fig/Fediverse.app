@@ -233,3 +233,6 @@ int adjacentElementsProduct(List<int> inputArray) {
 
   return inputArray[resultIndex] + inputArray[resultIndex + 1];
 }
+
+
+enum DraftStatusState { draft, canceled, alreadyPosted }

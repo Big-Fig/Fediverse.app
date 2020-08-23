@@ -37,15 +37,16 @@ class PleromaMediaAttachment implements IPleromaMediaAttachment {
   @override
   PleromaMediaAttachmentPleromaPart pleroma;
 
-  PleromaMediaAttachment(
-      {this.description,
-      this.id,
-      this.previewUrl,
-      this.remoteUrl,
-      this.textUrl,
-      this.type,
-      this.url,
-      this.pleroma});
+  PleromaMediaAttachment({
+    this.description,
+    this.id,
+    this.previewUrl,
+    this.remoteUrl,
+    this.textUrl,
+    this.type,
+    this.url,
+    this.pleroma,
+  });
 
   factory PleromaMediaAttachment.fromJson(Map<String, dynamic> json) =>
       _$PleromaMediaAttachmentFromJson(json);

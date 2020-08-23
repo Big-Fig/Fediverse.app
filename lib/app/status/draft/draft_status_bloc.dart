@@ -8,6 +8,10 @@ abstract class IDraftStatusBloc implements Disposable {
   static IDraftStatusBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IDraftStatusBloc>(context, listen: listen);
 
+  DraftStatusState get state;
+
+  Stream<DraftStatusState> get stateStream;
+  
   IDraftStatus get draftStatus;
 
   Stream<IDraftStatus> get draftStatusStream;
@@ -17,6 +21,7 @@ abstract class IDraftStatusBloc implements Disposable {
   Stream<DateTime> get updatedAtStream;
 
   Future cancelDraft();
+  Future postDraft(PostStatusData postStatusData);
 
   IPostStatusData calculatePostStatusData();
 
