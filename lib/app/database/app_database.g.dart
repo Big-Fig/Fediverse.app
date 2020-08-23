@@ -7287,6 +7287,207 @@ class $DbHomeTimelineStatusesTable extends DbHomeTimelineStatuses
   }
 }
 
+class DbDraftStatus extends DataClass implements Insertable<DbDraftStatus> {
+  final int id;
+  final DateTime updatedAt;
+  final PostStatusData data;
+  DbDraftStatus(
+      {@required this.id, @required this.updatedAt, @required this.data});
+  factory DbDraftStatus.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final dateTimeType = db.typeSystem.forDartType<DateTime>();
+    final stringType = db.typeSystem.forDartType<String>();
+    return DbDraftStatus(
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      updatedAt: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}updated_at']),
+      data: $DbDraftStatusesTable.$converter0.mapToDart(
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}data'])),
+    );
+  }
+  factory DbDraftStatus.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return DbDraftStatus(
+      id: serializer.fromJson<int>(json['id']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      data: serializer.fromJson<PostStatusData>(json['data']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'data': serializer.toJson<PostStatusData>(data),
+    };
+  }
+
+  @override
+  DbDraftStatusesCompanion createCompanion(bool nullToAbsent) {
+    return DbDraftStatusesCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
+      data: data == null && nullToAbsent ? const Value.absent() : Value(data),
+    );
+  }
+
+  DbDraftStatus copyWith({int id, DateTime updatedAt, PostStatusData data}) =>
+      DbDraftStatus(
+        id: id ?? this.id,
+        updatedAt: updatedAt ?? this.updatedAt,
+        data: data ?? this.data,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('DbDraftStatus(')
+          ..write('id: $id, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('data: $data')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      $mrjf($mrjc(id.hashCode, $mrjc(updatedAt.hashCode, data.hashCode)));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is DbDraftStatus &&
+          other.id == this.id &&
+          other.updatedAt == this.updatedAt &&
+          other.data == this.data);
+}
+
+class DbDraftStatusesCompanion extends UpdateCompanion<DbDraftStatus> {
+  final Value<int> id;
+  final Value<DateTime> updatedAt;
+  final Value<PostStatusData> data;
+  const DbDraftStatusesCompanion({
+    this.id = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.data = const Value.absent(),
+  });
+  DbDraftStatusesCompanion.insert({
+    this.id = const Value.absent(),
+    @required DateTime updatedAt,
+    @required PostStatusData data,
+  })  : updatedAt = Value(updatedAt),
+        data = Value(data);
+  DbDraftStatusesCompanion copyWith(
+      {Value<int> id, Value<DateTime> updatedAt, Value<PostStatusData> data}) {
+    return DbDraftStatusesCompanion(
+      id: id ?? this.id,
+      updatedAt: updatedAt ?? this.updatedAt,
+      data: data ?? this.data,
+    );
+  }
+}
+
+class $DbDraftStatusesTable extends DbDraftStatuses
+    with TableInfo<$DbDraftStatusesTable, DbDraftStatus> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $DbDraftStatusesTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
+  @override
+  GeneratedIntColumn get id => _id ??= _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn('id', $tableName, false,
+        hasAutoIncrement: true, declaredAsPrimaryKey: true);
+  }
+
+  final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  GeneratedDateTimeColumn _updatedAt;
+  @override
+  GeneratedDateTimeColumn get updatedAt => _updatedAt ??= _constructUpdatedAt();
+  GeneratedDateTimeColumn _constructUpdatedAt() {
+    return GeneratedDateTimeColumn(
+      'updated_at',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _dataMeta = const VerificationMeta('data');
+  GeneratedTextColumn _data;
+  @override
+  GeneratedTextColumn get data => _data ??= _constructData();
+  GeneratedTextColumn _constructData() {
+    return GeneratedTextColumn(
+      'data',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [id, updatedAt, data];
+  @override
+  $DbDraftStatusesTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'db_draft_statuses';
+  @override
+  final String actualTableName = 'db_draft_statuses';
+  @override
+  VerificationContext validateIntegrity(DbDraftStatusesCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.id.present) {
+      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    }
+    if (d.updatedAt.present) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableValue(d.updatedAt.value, _updatedAtMeta));
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    context.handle(_dataMeta, const VerificationResult.success());
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  DbDraftStatus map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return DbDraftStatus.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(DbDraftStatusesCompanion d) {
+    final map = <String, Variable>{};
+    if (d.id.present) {
+      map['id'] = Variable<int, IntType>(d.id.value);
+    }
+    if (d.updatedAt.present) {
+      map['updated_at'] = Variable<DateTime, DateTimeType>(d.updatedAt.value);
+    }
+    if (d.data.present) {
+      final converter = $DbDraftStatusesTable.$converter0;
+      map['data'] =
+          Variable<String, StringType>(converter.mapToSql(d.data.value));
+    }
+    return map;
+  }
+
+  @override
+  $DbDraftStatusesTable createAlias(String alias) {
+    return $DbDraftStatusesTable(_db, alias);
+  }
+
+  static TypeConverter<PostStatusData, String> $converter0 =
+      PostStatusDataDatabaseConverter();
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $DbStatusesTable _dbStatuses;
@@ -7409,6 +7610,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   $DbHomeTimelineStatusesTable _dbHomeTimelineStatuses;
   $DbHomeTimelineStatusesTable get dbHomeTimelineStatuses =>
       _dbHomeTimelineStatuses ??= $DbHomeTimelineStatusesTable(this);
+  $DbDraftStatusesTable _dbDraftStatuses;
+  $DbDraftStatusesTable get dbDraftStatuses =>
+      _dbDraftStatuses ??= $DbDraftStatusesTable(this);
   StatusDao _statusDao;
   StatusDao get statusDao => _statusDao ??= StatusDao(this as AppDatabase);
   StatusHashtagsDao _statusHashtagsDao;
@@ -7459,6 +7663,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   HomeTimelineStatusesDao _homeTimelineStatusesDao;
   HomeTimelineStatusesDao get homeTimelineStatusesDao =>
       _homeTimelineStatusesDao ??= HomeTimelineStatusesDao(this as AppDatabase);
+  DraftStatusDao _draftStatusDao;
+  DraftStatusDao get draftStatusDao =>
+      _draftStatusDao ??= DraftStatusDao(this as AppDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
@@ -7496,6 +7703,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         dbChatMessagesChatRemoteIdIndex,
         dbChatAccounts,
         dbChatAccountsIndex,
-        dbHomeTimelineStatuses
+        dbHomeTimelineStatuses,
+        dbDraftStatuses
       ];
 }

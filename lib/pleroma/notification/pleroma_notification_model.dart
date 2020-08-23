@@ -131,12 +131,12 @@ class PleromaNotification extends IPleromaNotification {
 
   @override
   MastodonNotificationType get typeMastodon =>
-      mastodonNotificationTypeValues.map[type];
+      mastodonNotificationTypeValues.valueToEnumMap[type];
 
   @override
   PleromaNotificationType get typePleroma {
-    if (pleromaNotificationTypeValues.map.containsKey(type)) {
-      return pleromaNotificationTypeValues.map[type];
+    if (pleromaNotificationTypeValues.valueToEnumMap.containsKey(type)) {
+      return pleromaNotificationTypeValues.valueToEnumMap[type];
     } else {
       return PleromaNotificationType.unknown;
     }

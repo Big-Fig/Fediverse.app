@@ -24,7 +24,7 @@ class ConversationPostStatusBloc extends PostStatusBloc {
             statusRepository: statusRepository,
             pleromaMediaAttachmentService: pleromaMediaAttachmentService,
             initialData: PostStatusBloc.defaultInitData.copyWith(
-                visibility: PleromaVisibility.PRIVATE,
+                visibility:PleromaVisibility.PRIVATE.toJsonValue(),
                 inReplyToConversationId: conversation.remoteId),
             initialAccountsToMention: conversationAccountsWithoutMe);
 

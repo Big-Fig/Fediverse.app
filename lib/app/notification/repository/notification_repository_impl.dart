@@ -352,7 +352,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
   @override
   Future<int> countUnreadByType({@required PleromaNotificationType type}) {
     return dao
-        .countUnreadByTypeQuery(pleromaNotificationTypeValues.reverse[type])
+        .countUnreadByTypeQuery(pleromaNotificationTypeValues.enumToValueMap[type])
         .getSingle();
   }
 
@@ -364,7 +364,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
   @override
   Stream<int> watchUnreadCountByType({@required PleromaNotificationType type}) {
     return dao
-        .countUnreadByTypeQuery(pleromaNotificationTypeValues.reverse[type])
+        .countUnreadByTypeQuery(pleromaNotificationTypeValues.enumToValueMap[type])
         .watchSingle();
   }
 
@@ -373,7 +373,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
       {@required List<PleromaNotificationType> excludeTypes}) async =>
       dao
           .countUnreadExcludeTypes(excludeTypes
-          .map((type) => pleromaNotificationTypeValues.reverse[type])
+          .map((type) => pleromaNotificationTypeValues.enumToValueMap[type])
           .toList())
           .getSingle();
 
@@ -382,7 +382,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
       {@required List<PleromaNotificationType> excludeTypes}) =>
       dao
           .countUnreadExcludeTypes(excludeTypes
-          .map((type) => pleromaNotificationTypeValues.reverse[type])
+          .map((type) => pleromaNotificationTypeValues.enumToValueMap[type])
           .toList())
           .watchSingle();
 

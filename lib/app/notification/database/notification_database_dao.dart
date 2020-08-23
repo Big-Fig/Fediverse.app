@@ -127,7 +127,7 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
               List<PleromaNotificationType> excludeTypes) =>
           query
             ..where((notification) => (notification.type.isNotIn(excludeTypes
-                .map((type) => pleromaNotificationTypeValues.reverse[type])
+                .map((type) => pleromaNotificationTypeValues.enumToValueMap[type])
                 .toList())));
 
   SimpleSelectStatement<$DbNotificationsTable, DbNotification>

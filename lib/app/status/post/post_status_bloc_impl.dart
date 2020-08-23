@@ -9,6 +9,7 @@ import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
@@ -25,17 +26,27 @@ final findAcctsRegex = RegExp(r"\B\@(([\w.@\-]+))");
 
 abstract class PostStatusBloc extends PostMessageBloc
     implements IPostStatusBloc {
+  @override
+  bool get isAnyDataEntered {
+    return inputText?.isNotEmpty == true ||
+        subjectText?.isNotEmpty == true ||
+        mediaAttachmentsBloc.mediaAttachmentBlocs.isNotEmpty ||
+        pollBloc.isSomethingChanged;
+  }
+
   PostStatusBloc({
     @required this.pleromaStatusService,
     @required this.statusRepository,
     @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
     int maximumMediaAttachmentCount = 8,
-    this.initialData = defaultInitData,
+    IPostStatusData initialData,
     List<IAccount> initialAccountsToMention = const [],
   }) : super(
             pleromaMediaAttachmentService: pleromaMediaAttachmentService,
             maximumMediaAttachmentCount: maximumMediaAttachmentCount) {
-    visibilitySubject = BehaviorSubject.seeded(initialData.visibility);
+    this.initialData = initialData ?? defaultInitData;
+    visibilitySubject =
+        BehaviorSubject.seeded(initialData.visibility.toPleromaVisibility());
     nsfwSensitiveSubject =
         BehaviorSubject.seeded(initialData.isNsfwSensitiveEnabled);
 
@@ -86,16 +97,16 @@ abstract class PostStatusBloc extends PostMessageBloc
       scheduledAtSubject.add(initialData.scheduledAt);
     }
     if (initialData.subject != null) {
-      subjectTextSubject.add(initialData.subject);
+      subjectTextController.text = initialData.subject;
     }
     if (initialData.text != null) {
-      inputTextSubject.add(initialData.text);
+      inputTextController.text = initialData.text;
     }
     if (initialData.poll != null) {
       pollBloc.fillFormData(initialData.poll);
     }
-    if (initialData.attachments?.isNotEmpty == true) {
-      initialData.attachments.forEach((attachment) {
+    if (initialData.mediaAttachments?.isNotEmpty == true) {
+      initialData.mediaAttachments.forEach((attachment) {
         mediaAttachmentsBloc.addUploadedAttachment(attachment);
       });
     }
@@ -105,7 +116,8 @@ abstract class PostStatusBloc extends PostMessageBloc
   final IStatusRepository statusRepository;
 
   @override
-  IStatus get originInReplyToStatus => initialData.inReplyToStatus;
+  IStatus get originInReplyToStatus =>
+      mapRemoteStatusToLocalStatus(initialData.inReplyToPleromaStatus);
 
   String get inReplyToStatusRemoteId => originInReplyToStatus?.remoteId;
 
@@ -114,18 +126,20 @@ abstract class PostStatusBloc extends PostMessageBloc
 
   String idempotencyKey;
 
-  final IPostStatusData initialData;
+  IPostStatusData initialData;
 
-  static const defaultInitData = PostStatusData(
-      subject: null,
-      text: null,
-      scheduledAt: null,
-      visibility: PleromaVisibility.PUBLIC,
-      attachments: null,
-      poll: null,
-      inReplyToStatus: null,
-      inReplyToConversationId: null,
-      isNsfwSensitiveEnabled: false);
+  static final defaultInitData = PostStatusData(
+    subject: null,
+    text: null,
+    scheduledAt: null,
+    visibility: PleromaVisibility.PUBLIC.toJsonValue(),
+    mediaAttachments: null,
+    poll: null,
+    inReplyToPleromaStatus: null,
+    inReplyToConversationId: null,
+    isNsfwSensitiveEnabled: false,
+    to: null,
+  );
 
   void onFocusChange(bool hasFocus) {
     // nothing by default
@@ -350,6 +364,12 @@ abstract class PostStatusBloc extends PostMessageBloc
 
   @override
   Future<bool> post() async {
+    var postStatusData = calculateCurrentPostStatusData();
+
+    return await internalPostStatusData(postStatusData);
+  }
+
+  Future<bool> internalPostStatusData(IPostStatusData postStatusData) async {
     bool success;
     if (isScheduled) {
       success = await _scheduleStatus();
@@ -403,8 +423,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     return success;
   }
 
-  String calculateVisibilityField() =>
-      pleromaVisibilityValues.reverse[visibility];
+  String calculateVisibilityField() => visibility.toJsonValue();
 
   List<String> _calculateMediaIdsField() => _calculateMediaAttachmentsField()
       ?.map((mediaAttachment) => mediaAttachment.id)
@@ -446,7 +465,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   void clear() {
     super.clear();
 
-    visibilitySubject.add(initialData.visibility);
+    visibilitySubject.add(initialData.visibility.toPleromaVisibility());
 
     nsfwSensitiveSubject.add(false);
     _regenerateIdempotencyKey();
@@ -507,7 +526,8 @@ abstract class PostStatusBloc extends PostMessageBloc
     }
   }
 
-  IStatus calculateInReplyToStatusField() => initialData.inReplyToStatus;
+  IStatus calculateInReplyToStatusField() =>
+      mapRemoteStatusToLocalStatus(initialData.inReplyToPleromaStatus);
 
   IPostStatusPoll _calculatePostStatusPoll() {
     var poll;
@@ -579,11 +599,14 @@ abstract class PostStatusBloc extends PostMessageBloc
         subject: _calculateSpoilerTextField(),
         text: calculateStatusTextField(),
         scheduledAt: scheduledAt,
-        visibility: visibility,
-        attachments: _calculateMediaAttachmentsField(),
+        visibility: visibility.toJsonValue(),
+        mediaAttachments: _calculateMediaAttachmentsField(),
         poll: _calculatePostStatusPoll(),
-        inReplyToStatus: calculateInReplyToStatusField(),
+        inReplyToPleromaStatus: mapLocalStatusToRemoteStatus(
+          calculateInReplyToStatusField(),
+        ),
         inReplyToConversationId: initialData.inReplyToConversationId,
         isNsfwSensitiveEnabled: isNsfwSensitiveEnabled,
+        to: calculateToField(),
       );
 }

@@ -31,6 +31,8 @@ import 'package:fedi/app/status/database/status_lists_database_dao.dart';
 import 'package:fedi/app/status/database/status_lists_database_model.dart';
 import 'package:fedi/app/status/database/status_reblogged_accounts_database_dao.dart';
 import 'package:fedi/app/status/database/status_reblogged_accounts_database_model.dart';
+import 'package:fedi/app/status/draft/database/draft_status_database_dao.dart';
+import 'package:fedi/app/status/draft/database/draft_status_database_model.dart';
 import 'package:fedi/app/status/scheduled/database/scheduled_status_database_dao.dart';
 import 'package:fedi/app/status/scheduled/database/scheduled_status_database_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
@@ -47,6 +49,7 @@ import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:moor/moor.dart';
+import 'package:fedi/app/status/post/post_status_model.dart';
 
 part 'app_database.g.dart';
 
@@ -71,7 +74,8 @@ part 'app_database.g.dart';
 //  DbChats,
 //  DbChatAccounts,
 //  DbChatMessages,
-  DbHomeTimelineStatuses
+  DbHomeTimelineStatuses,
+  DbDraftStatuses,
 //  DbAccountRelationships
 ], daos: [
   StatusDao,
@@ -91,6 +95,8 @@ part 'app_database.g.dart';
   ChatAccountsDao,
   ChatMessageDao,
   HomeTimelineStatusesDao,
+  DraftStatusDao,
+
 //  AccountRelationshipsDao
 ], include: {
   'app_database.moor'
@@ -99,17 +105,28 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase(QueryExecutor e) : super(e);
 
   @override
-  int get schemaVersion => 2;
-
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
       onCreate: (Migrator m) => m.createAll(),
       onUpgrade: (Migrator m, int from, int to) async {
         if (from == 1 && to == 2) {
-          await m.addColumn(dbChatMessages, dbChatMessages.card);
+          await _migrate1to2(m);
         }
-      }
-  );
-}
 
+        if (from == 1 && to == 3) {
+          await _migrate1to2(m);
+          await _migrate2to3(m);
+        }
+        if (from == 2 && to == 3) {
+          await _migrate2to3(m);
+        }
+      });
+
+  Future<void> _migrate2to3(Migrator m) async =>
+      await m.createTable(dbDraftStatuses);
+
+  Future<void> _migrate1to2(Migrator m) async =>
+      await m.addColumn(dbChatMessages, dbChatMessages.card);
+}

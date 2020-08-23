@@ -71,7 +71,7 @@ abstract class IPleromaScheduledStatus extends IMastodonScheduledStatus {
 
 abstract class IPleromaScheduledStatusParams
     extends IMastodonScheduledStatusParams {
-  PleromaVisibility get pleromaVisibility =>
+  PleromaVisibility get visibilityPleroma =>
       const PleromaVisibilityTypeConverter().fromJson(visibility);
 }
 
@@ -144,7 +144,7 @@ class PleromaScheduledStatusParams extends IPleromaScheduledStatusParams {
 
   @override
   @JsonKey(name: "application_id")
-  final dynamic applicationId;
+  final String applicationId;
 
   PleromaScheduledStatusParams(
       {this.text,
@@ -478,10 +478,10 @@ class PleromaPostStatusPoll implements IPleromaPostStatusPoll {
   List<String> options;
 
   PleromaPostStatusPoll({
-    this.expiresInSeconds,
+    @required this.expiresInSeconds,
     this.hideTotals,
-    this.multiple,
-    this.options,
+    @required this.multiple,
+    @required this.options,
   });
 
   factory PleromaPostStatusPoll.fromJson(Map<String, dynamic> json) =>
@@ -527,12 +527,11 @@ class PleromaPostStatus implements IPleromaPostStatus {
   @JsonKey(ignore: true)
   @override
   MastodonVisibility get mastodonVisibility =>
-      mastodonVisibilityValues.map[visibility];
+      mastodonVisibilityValues.valueToEnumMap[visibility];
 
   @JsonKey(ignore: true)
   @override
-  PleromaVisibility get pleromaVisibility =>
-      pleromaVisibilityValues.map[visibility];
+  PleromaVisibility get pleromaVisibility => visibility.toPleromaVisibility();
 
   @JsonKey(name: "media_ids")
   @override
@@ -618,12 +617,11 @@ class PleromaScheduleStatus implements IPleromaScheduleStatus {
   @JsonKey(ignore: true)
   @override
   MastodonVisibility get mastodonVisibility =>
-      mastodonVisibilityValues.map[visibility];
+      mastodonVisibilityValues.valueToEnumMap[visibility];
 
   @JsonKey(ignore: true)
   @override
-  PleromaVisibility get pleromaVisibility =>
-      pleromaVisibilityValues.map[visibility];
+  PleromaVisibility get pleromaVisibility => visibility.toPleromaVisibility();
 
   @JsonKey(name: "media_ids")
   @override

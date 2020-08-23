@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_bloc.dart';
@@ -8,6 +9,7 @@ import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:fedi/pleroma/status/scheduled/pleroma_scheduled_status_service.dart';
+import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -198,5 +200,25 @@ class ScheduledStatusBloc extends DisposableOwner
         _stateSubject.add(ScheduledStatusState.scheduled);
       }
     }
+  }
+
+  @override
+  IPostStatusData calculatePostStatusData() {
+    assert(
+      scheduledStatus.params.inReplyToId == null,
+      "inReplyToId not supported",
+    );
+
+    return PostStatusData(
+      subject: scheduledStatus.params.spoilerText,
+      text: scheduledStatus.params.text,
+      scheduledAt: scheduledStatus.scheduledAt,
+      visibility: scheduledStatus.params.visibilityPleroma.toJsonValue(),
+      mediaAttachments: scheduledStatus.mediaAttachments,
+      poll: scheduledStatus.params.poll,
+      inReplyToPleromaStatus: null,
+      inReplyToConversationId: null,
+      isNsfwSensitiveEnabled: scheduledStatus.params.sensitive,
+    );
   }
 }

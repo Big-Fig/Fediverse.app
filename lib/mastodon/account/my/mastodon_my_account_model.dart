@@ -38,7 +38,7 @@ abstract class IMastodonMyAccountSource {
 
   /// The default post privacy to be used for new statuses.
   MastodonVisibility get privacyMastodon =>
-      mastodonVisibilityValues.map[privacy];
+      mastodonVisibilityValues.valueToEnumMap[privacy];
 
   /// Whether new statuses should be marked sensitive by default.
   bool get sensitive;

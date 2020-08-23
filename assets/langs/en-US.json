@@ -122,7 +122,8 @@
               "description": "Not supported on most instances"
             }
           },
-          "scheduled_posts": "Scheduled posts"
+          "scheduled_posts": "Scheduled posts",
+          "draft_posts": "Draft posts"
         },
         "edit": {
           "title": "Edit account",
@@ -613,10 +614,9 @@
     },
     "status": {
       "draft": {
+        "title": "Drafts",
         "edit": {
-          "post": {
-            "title": "Post Draft"
-          }
+          "title": "Edit Draft"
         }
       },
       "emoji": {
@@ -659,9 +659,7 @@
           }
         },
         "edit": {
-          "post": {
-            "title": "Scheduled Post"
-          }
+          "title": "Scheduled post"
         }
       },
       "share": {
@@ -818,7 +816,16 @@
           }
         },
         "new": {
-          "title": "New status"
+          "title": "New status",
+          "unsaved": {
+            "dialog": {
+              "title": "You have unsaved changes",
+              "action": {
+                "save_as_draft": "Save as draft",
+                "discard": "Discard"
+              }
+            }
+          }
         }
       },
       "reblog": {

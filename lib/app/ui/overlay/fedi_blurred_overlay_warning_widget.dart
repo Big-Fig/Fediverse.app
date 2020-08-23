@@ -18,7 +18,7 @@ class FediBlurredOverlayWarningWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ConstrainedBox(
 
-    constraints: BoxConstraints(minHeight: 100),
+    constraints: BoxConstraints(minHeight: 100, minWidth: 150),
     child: Stack(
           children: <Widget>[
             child,
