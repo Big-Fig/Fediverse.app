@@ -244,7 +244,7 @@ class ScheduledStatusAdapterToStatus implements IStatus {
   String get url => null;
 
   @override
-  PleromaVisibility get visibility => scheduledStatus.params.pleromaVisibility;
+  PleromaVisibility get visibility => scheduledStatus.params.visibilityPleroma;
 
   // todo: fix this, sometimes it may be reblog
   @override

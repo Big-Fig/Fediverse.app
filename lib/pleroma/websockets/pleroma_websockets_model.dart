@@ -34,7 +34,7 @@ class PleromaWebSocketsEvent extends WebSocketsEvent {
   final String event;
 
   PleromaWebSocketsEventType get eventType =>
-      pleromaWebSocketsEventTypeValues.map[event];
+      pleromaWebSocketsEventTypeValues.valueToEnumMap[event];
 
   /// Could be Status or Notification
   final String payload;

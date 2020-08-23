@@ -7,10 +7,10 @@ import 'package:fedi/error/error_data_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-typedef IPostStatusCallback = Function(BuildContext context);
+typedef PostStatusActionCallback = Function(BuildContext context);
 
 class PostStatusPostTextActionWidget extends StatelessWidget {
-  final IPostStatusCallback successCallback;
+  final PostStatusActionCallback successCallback;
 
   PostStatusPostTextActionWidget({this.successCallback});
 
@@ -28,7 +28,6 @@ class PostStatusPostTextActionWidget extends StatelessWidget {
             showProgressDialog: true,
             progressContentMessage: tr("app.status.post.dialog.async.content"),
             asyncButtonAction: () async {
-
               var success = await postStatusBloc.post();
               if (success) {
                 showPostStatusPostOverlayNotification(context, postStatusBloc);

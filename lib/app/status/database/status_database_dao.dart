@@ -254,7 +254,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
     assert(excludeVisibilities?.isNotEmpty == true);
 
     List<String> excludeVisibilityStrings = excludeVisibilities
-        .map((visibility) => pleromaVisibilityValues.reverse[visibility])
+        .map((visibility) => visibility.toJsonValue())
         .toList();
 
     return query

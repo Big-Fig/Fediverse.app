@@ -137,7 +137,7 @@ void main() {
   test('updateLocalNotificationByRemoteNotification', () async {
     var id = await notificationRepository.insert(dbNotification.copyWith(
         type: pleromaNotificationTypeValues
-            .reverse[PleromaNotificationType.follow]));
+            .enumToValueMap[PleromaNotificationType.follow]));
     assert(id != null, true);
 
     var oldLocalNotification = DbNotificationPopulatedWrapper(
@@ -171,7 +171,7 @@ void main() {
     expect(
         (await notificationRepository.findById(id)).status.content, newContent);
     expect((await notificationRepository.findById(id)).type,
-        pleromaNotificationTypeValues.reverse[newType]);
+        pleromaNotificationTypeValues.enumToValueMap[newType]);
     expect((await notificationRepository.findById(id)).account.acct, newAcct);
   });
 
@@ -297,7 +297,7 @@ void main() {
         (await createTestDbNotification(seed: "seed1", dbAccount: dbAccount))
             .copyWith(
                 type: pleromaNotificationTypeValues
-                    .reverse[PleromaNotificationType.follow]));
+                    .enumToValueMap[PleromaNotificationType.follow]));
 
     expect((await query.get()).length, 0);
 
@@ -306,7 +306,7 @@ void main() {
         (await createTestDbNotification(seed: "seed2", dbAccount: dbAccount))
             .copyWith(
                 type: pleromaNotificationTypeValues
-                    .reverse[PleromaNotificationType.reblog]));
+                    .enumToValueMap[PleromaNotificationType.reblog]));
     expect((await query.get()).length, 1);
   });
   test('countUnread', () async {
@@ -316,7 +316,7 @@ void main() {
         (await createTestDbNotification(seed: "seed1", dbAccount: dbAccount))
             .copyWith(
                 type: pleromaNotificationTypeValues
-                    .reverse[PleromaNotificationType.follow],
+                    .enumToValueMap[PleromaNotificationType.follow],
                 unread: true));
 
     expect(
@@ -334,7 +334,7 @@ void main() {
         (await createTestDbNotification(seed: "seed2", dbAccount: dbAccount))
             .copyWith(
                 type: pleromaNotificationTypeValues
-                    .reverse[PleromaNotificationType.follow],
+                    .enumToValueMap[PleromaNotificationType.follow],
                 unread: false));
 
     expect(
@@ -352,7 +352,7 @@ void main() {
         (await createTestDbNotification(seed: "seed3", dbAccount: dbAccount))
             .copyWith(
                 type: pleromaNotificationTypeValues
-                    .reverse[PleromaNotificationType.reblog],
+                    .enumToValueMap[PleromaNotificationType.reblog],
                 unread: true));
 
     expect(

@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:fedi/app/status/post/poll/post_status_poll_model.dart';
-import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'post_status_model.g.dart';
 
 abstract class IPostStatusData {
   String get subject;
@@ -12,13 +16,15 @@ abstract class IPostStatusData {
 
   DateTime get scheduledAt;
 
-  PleromaVisibility get visibility;
+  String get visibility;
 
-  List<IPleromaMediaAttachment> get attachments;
+  List<String> get to;
+
+  List<IPleromaMediaAttachment> get mediaAttachments;
 
   IPostStatusPoll get poll;
 
-  IStatus get inReplyToStatus;
+  IPleromaStatus get inReplyToPleromaStatus;
 
   String get inReplyToConversationId;
 
@@ -28,33 +34,44 @@ abstract class IPostStatusData {
     String subject,
     String text,
     DateTime scheduledAt,
-    PleromaVisibility visibility,
-    IPleromaMediaAttachment attachments,
+    String visibility,
+    String to,
+    IPleromaMediaAttachment mediaAttachments,
     PleromaPostStatusPoll poll,
-    IStatus inReplyToStatus,
+    PleromaStatus inReplyToPleromaStatus,
     String inReplyToConversationId,
     bool isNsfwSensitiveEnabled,
   });
 }
 
+@JsonSerializable()
 class PostStatusData implements IPostStatusData {
   @override
+  @JsonKey()
   final String subject;
   @override
+  @JsonKey()
   final String text;
   @override
+  @JsonKey(name: "scheduled_at")
   final DateTime scheduledAt;
   @override
-  final PleromaVisibility visibility;
+  final String visibility;
   @override
-  final List<IPleromaMediaAttachment> attachments;
+  final List<String> to;
   @override
-  final IPostStatusPoll poll;
+  @JsonKey(name: "media_attachments")
+  final List<PleromaMediaAttachment> mediaAttachments;
   @override
-  final IStatus inReplyToStatus;
+  final PostStatusPoll poll;
   @override
+  @JsonKey(name: "in_reply_to_status")
+  final PleromaStatus inReplyToPleromaStatus;
+  @override
+  @JsonKey(name: "in_reply_to_conversation_id")
   final String inReplyToConversationId;
   @override
+  @JsonKey(name: "is_nsfw_sensitive_enabled")
   final bool isNsfwSensitiveEnabled;
 
   const PostStatusData({
@@ -62,22 +79,27 @@ class PostStatusData implements IPostStatusData {
     @required this.text,
     @required this.scheduledAt,
     @required this.visibility,
-    @required this.attachments,
+    @required this.to,
+    @required this.mediaAttachments,
     @required this.poll,
-    @required this.inReplyToStatus,
+    @required this.inReplyToPleromaStatus,
     @required this.inReplyToConversationId,
     @required this.isNsfwSensitiveEnabled,
   });
+
+  PleromaVisibility get visibilityPleroma =>
+      visibility.toPleromaVisibility();
 
   @override
   PostStatusData copyWith({
     String subject,
     String text,
     DateTime scheduledAt,
-    PleromaVisibility visibility,
-    IPleromaMediaAttachment attachments,
-    PleromaPostStatusPoll poll,
-    IStatus inReplyToStatus,
+    String visibility,
+    String to,
+    IPleromaMediaAttachment mediaAttachments,
+    IPleromaPostStatusPoll poll,
+    PleromaStatus inReplyToPleromaStatus,
     String inReplyToConversationId,
     bool isNsfwSensitiveEnabled,
   }) =>
@@ -86,14 +108,17 @@ class PostStatusData implements IPostStatusData {
         text: text ?? this.text,
         scheduledAt: scheduledAt ?? this.scheduledAt,
         visibility: visibility ?? this.visibility,
-        attachments: attachments ?? this.attachments,
+        to: to ?? this.to,
+        mediaAttachments: mediaAttachments ?? this.mediaAttachments,
         poll: poll ?? this.poll,
-        inReplyToStatus: inReplyToStatus ?? this.inReplyToStatus,
+        inReplyToPleromaStatus:
+            inReplyToPleromaStatus ?? this.inReplyToPleromaStatus,
         inReplyToConversationId:
             inReplyToConversationId ?? this.inReplyToConversationId,
         isNsfwSensitiveEnabled:
             isNsfwSensitiveEnabled ?? this.isNsfwSensitiveEnabled,
       );
+
 
   @override
   bool operator ==(Object other) =>
@@ -104,9 +129,10 @@ class PostStatusData implements IPostStatusData {
           text == other.text &&
           scheduledAt == other.scheduledAt &&
           visibility == other.visibility &&
-          attachments == other.attachments &&
+          to == other.to &&
+          mediaAttachments == other.mediaAttachments &&
           poll == other.poll &&
-          inReplyToStatus == other.inReplyToStatus &&
+          inReplyToPleromaStatus == other.inReplyToPleromaStatus &&
           inReplyToConversationId == other.inReplyToConversationId &&
           isNsfwSensitiveEnabled == other.isNsfwSensitiveEnabled;
 
@@ -116,16 +142,29 @@ class PostStatusData implements IPostStatusData {
       text.hashCode ^
       scheduledAt.hashCode ^
       visibility.hashCode ^
-      attachments.hashCode ^
+      to.hashCode ^
+      mediaAttachments.hashCode ^
       poll.hashCode ^
-      inReplyToStatus.hashCode ^
+      inReplyToPleromaStatus.hashCode ^
       inReplyToConversationId.hashCode ^
       isNsfwSensitiveEnabled.hashCode;
+
   @override
   String toString() => 'PostStatusData{subject: $subject, text: $text,'
       ' scheduledAt: $scheduledAt, visibility: $visibility,'
-      ' attachments: $attachments, poll: $poll,'
-      ' inReplyToStatus: $inReplyToStatus,'
+      ' attachments: $mediaAttachments, poll: $poll,'
+      ' inReplyToStatus: $inReplyToPleromaStatus,'
       ' inReplyToConversationId: $inReplyToConversationId,'
+      ' to: $to,'
       ' isNsfwSensitiveEnabled: $isNsfwSensitiveEnabled}';
+
+  factory PostStatusData.fromJson(Map<String, dynamic> json) =>
+      _$PostStatusDataFromJson(json);
+
+  factory PostStatusData.fromJsonString(String jsonString) =>
+      _$PostStatusDataFromJson(jsonDecode(jsonString));
+
+  Map<String, dynamic> toJson() => _$PostStatusDataToJson(this);
+
+  String toJsonString() => jsonEncode(_$PostStatusDataToJson(this));
 }

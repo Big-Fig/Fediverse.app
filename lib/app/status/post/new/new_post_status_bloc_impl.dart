@@ -18,7 +18,7 @@ class NewPostStatusBloc extends PostStatusBloc {
           statusRepository: statusRepository,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
           initialData: PostStatusBloc.defaultInitData
-              .copyWith(visibility: PleromaVisibility.PUBLIC),
+              .copyWith(visibility:  PleromaVisibility.PUBLIC.toJsonValue()),
         );
 
   static NewPostStatusBloc createFromContext(BuildContext context) =>

@@ -14,11 +14,13 @@ class FediBaseAlertDialog extends BaseDialog {
   final String title;
   final String content;
   final List<DialogAction> actions;
+  final Axis actionsAxis;
 
   FediBaseAlertDialog({
     this.title,
     this.content,
     this.actions,
+    this.actionsAxis = Axis.horizontal,
     bool cancelable = true,
   }) : super(cancelable: cancelable);
 
@@ -26,14 +28,14 @@ class FediBaseAlertDialog extends BaseDialog {
     @required BuildContext context,
     @required DialogAction action,
     @required Color color,
-    @required bool isLast,
+    @required bool notAddRightPadding,
   }) {
     var button = FediTransparentTextButton(
       action.label,
       onPressed: action.onAction,
       color: color,
     );
-    if (isLast) {
+    if (notAddRightPadding) {
       return button;
     } else {
       return Padding(
@@ -56,6 +58,7 @@ class FediBaseAlertDialog extends BaseDialog {
           padding: FediPadding.allBigPadding,
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               if (title != null)
                 Padding(
@@ -76,36 +79,72 @@ class FediBaseAlertDialog extends BaseDialog {
                   ),
                 ),
               FediBigVerticalSpacer(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  if (cancelable)
-                    Expanded(
-                        child: buildCancelAction(
-                      context: context,
-                      isLast: actions?.isNotEmpty != true,
-                    )),
-                  ...actions?.asMap()?.entries?.map((entry) {
-                        var index = entry.key;
-                        var action = entry.value;
-                        var isLast = actions.length - 1 == index;
-                        return Expanded(
-                          child: buildButton(
-                            context: context,
-                            action: action,
-                            color: FediColors.primaryColor,
-                            isLast: isLast,
-                          ),
-                        );
-                      })?.toList() ??
-                      []
-                ],
-              ),
+              buildActionWidgets(context),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Widget buildActionWidgets(BuildContext context) {
+    var isHorizontal = actionsAxis == Axis.horizontal;
+    if (isHorizontal) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          if (cancelable)
+            Expanded(
+                child: buildCancelAction(
+              context: context,
+              isLast: actions?.isNotEmpty != true,
+            )),
+          ...actions?.asMap()?.entries?.map((entry) {
+                var index = entry.key;
+                var action = entry.value;
+                var isLast = actions.length - 1 == index;
+                return Expanded(
+                  child: buildButton(
+                    context: context,
+                    action: action,
+                    color: FediColors.primaryColor,
+                    notAddRightPadding: isLast,
+                  ),
+                );
+              })?.toList() ??
+              []
+        ],
+      );
+    } else {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          ...actions?.asMap()?.entries?.map((entry) {
+
+                var action = entry.value;
+                return Padding(
+                  padding: FediPadding.verticalSmallPadding,
+                  child: buildButton(
+                    context: context,
+                    action: action,
+                    color: FediColors.primaryColor,
+                    notAddRightPadding: true,
+                  ),
+                );
+              })?.toList() ??
+              [],
+          if (cancelable)
+            Padding(
+              padding: FediPadding.verticalSmallPadding,
+              child: buildCancelAction(
+                context: context,
+                isLast: true,
+              ),
+            ),
+        ],
+      );
+    }
   }
 
   Widget buildCancelAction({
@@ -116,6 +155,6 @@ class FediBaseAlertDialog extends BaseDialog {
         context: context,
         action: BaseDialog.createDefaultCancelAction(context),
         color: FediColors.mediumGrey,
-        isLast: isLast,
+        notAddRightPadding: isLast,
       );
 }

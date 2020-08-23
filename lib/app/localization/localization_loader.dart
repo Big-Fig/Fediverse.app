@@ -135,7 +135,8 @@ class CodegenLoader extends AssetLoader{
               "description": "Not supported on most instances"
             }
           },
-          "scheduled_posts": "Scheduled posts"
+          "scheduled_posts": "Scheduled posts",
+          "draft_posts": "Draft posts"
         },
         "edit": {
           "title": "Edit account",
@@ -625,6 +626,12 @@ class CodegenLoader extends AssetLoader{
       }
     },
     "status": {
+      "draft": {
+        "title": "Drafts",
+        "edit": {
+          "title": "Edit Draft"
+        }
+      },
       "emoji": {
         "error": {
           "cant_add": {
@@ -663,6 +670,9 @@ class CodegenLoader extends AssetLoader{
           "picker": {
             "title": "Schedule"
           }
+        },
+        "edit": {
+          "title": "Scheduled post"
         }
       },
       "share": {
@@ -819,7 +829,16 @@ class CodegenLoader extends AssetLoader{
           }
         },
         "new": {
-          "title": "New status"
+          "title": "New status",
+          "unsaved": {
+            "dialog": {
+              "title": "You have unsaved changes",
+              "action": {
+                "save_as_draft": "Save as draft",
+                "discard": "Discard"
+              }
+            }
+          }
         }
       },
       "reblog": {

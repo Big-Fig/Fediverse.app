@@ -46,7 +46,7 @@ abstract class IPleromaMyAccountEdit extends IMastodonMyAccountEdit {
   String get defaultScope;
 
   PleromaVisibility get defaultScopePleroma =>
-      pleromaVisibilityValues.map[defaultScope];
+      defaultScope.toPleromaVisibility();
 
   /// Opaque user settings to be saved on the backend
   Map<String, dynamic> get pleromaSettingsStore;
@@ -204,10 +204,10 @@ abstract class IPleromaMyAccountSource implements IMastodonMyAccountSource {
 class PleromaMyAccountSource implements IPleromaMyAccountSource {
   @override
   MastodonVisibility get privacyMastodon =>
-      mastodonVisibilityValues.map[privacy];
+      mastodonVisibilityValues.valueToEnumMap[privacy];
 
   @override
-  PleromaVisibility get privacyPleroma => pleromaVisibilityValues.map[privacy];
+  PleromaVisibility get privacyPleroma => privacy.toPleromaVisibility();
 
   @override
   @HiveField(1)

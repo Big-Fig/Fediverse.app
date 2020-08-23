@@ -15,8 +15,8 @@ class MastodonVisibilityTypeConverter
 
   @override
   MastodonVisibility fromJson(String value) =>
-      mastodonVisibilityValues.map[value];
+      mastodonVisibilityValues.valueToEnumMap[value];
   @override
   String toJson(MastodonVisibility value) =>
-      mastodonVisibilityValues.reverse[value];
+      mastodonVisibilityValues.enumToValueMap[value];
 }

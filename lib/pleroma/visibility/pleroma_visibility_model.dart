@@ -3,7 +3,15 @@ import 'package:json_annotation/json_annotation.dart';
 
 enum PleromaVisibility { PUBLIC, UNLISTED, DIRECT, LIST, PRIVATE }
 
-final pleromaVisibilityValues = EnumValues({
+extension PleromaVisibilityJsonValueExtension on PleromaVisibility {
+  String toJsonValue() => _pleromaVisibilityValues.enumToValueMap[this];
+}
+
+extension PleromaVisibilityStringExtension on String {
+  PleromaVisibility toPleromaVisibility() => _pleromaVisibilityValues.valueToEnumMap[this];
+}
+
+final _pleromaVisibilityValues = EnumValues({
   "public": PleromaVisibility.PUBLIC,
   "unlisted": PleromaVisibility.UNLISTED,
   "direct": PleromaVisibility.DIRECT,
@@ -17,8 +25,8 @@ class PleromaVisibilityTypeConverter
 
   @override
   PleromaVisibility fromJson(String value) =>
-      pleromaVisibilityValues.map[value];
+      value.toPleromaVisibility();
   @override
   String toJson(PleromaVisibility value) =>
-      pleromaVisibilityValues.reverse[value];
+      value.toJsonValue();
 }
