@@ -28,38 +28,93 @@ class DraftStatusListItemWidget extends StatelessWidget {
       children: <Widget>[
         buildDraftHeader(context, draftStatusBloc),
         FediUltraLightGreyDivider(),
-        ProxyProvider<IDraftStatusBloc, IStatus>(
-            update: (context, value, previous) => DraftStatusAdapterToStatus(
-                draftStatus: value.draftStatus,
-                account: IMyAccountBloc.of(context, listen: false).account),
-            child: StatusListItemTimelineWidget.list(
-              displayActions: false,
-              statusCallback: (_, __) {
-                // nothing
-              },
-              collapsible: false,
-            ))
+        StreamBuilder<IDraftStatus>(
+            stream: draftStatusBloc.draftStatusStream,
+            initialData: draftStatusBloc.draftStatus,
+            builder: (context, snapshot) {
+              var draftStatus = snapshot.data;
+              return Provider.value(
+                value: draftStatus,
+                child: ProxyProvider<IDraftStatus, IStatus>(
+                    update: (context, value, previous) =>
+                        DraftStatusAdapterToStatus(
+                            draftStatus: value,
+                            account: IMyAccountBloc.of(context, listen: false)
+                                .account),
+                    child: StatusListItemTimelineWidget.list(
+                      displayActions: false,
+                      statusCallback: (_, __) {
+                        // nothing
+                      },
+                      collapsible: false,
+                    )),
+              );
+            })
       ],
     );
   }
 
   Widget buildDraftHeader(
       BuildContext context, IDraftStatusBloc draftStatusBloc) {
-    return Padding(
-      padding: FediPadding.allSmallPadding,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          buildDraftAt(context, draftStatusBloc),
-          Row(
-            children: [
-              buildEditButton(context, draftStatusBloc),
-              buildCancelButton(context, draftStatusBloc),
-            ],
-          )
-        ],
-      ),
-    );
+    return StreamBuilder<DraftStatusState>(
+        stream: draftStatusBloc.stateStream,
+        initialData: draftStatusBloc.state,
+        builder: (context, snapshot) {
+          var state = snapshot.data;
+
+          switch (state) {
+            case DraftStatusState.draft:
+              return Padding(
+                padding: FediPadding.horizontalSmallPadding,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    buildDraftAt(context, draftStatusBloc),
+                    Row(
+                      children: [
+                        buildEditButton(context, draftStatusBloc),
+                        buildCancelButton(context, draftStatusBloc),
+                      ],
+                    )
+                  ],
+                ),
+              );
+              break;
+            case DraftStatusState.canceled:
+              return Padding(
+                  padding: FediPadding.horizontalSmallPadding,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: FediPadding.allSmallPadding,
+                        child: Text(
+                          tr("app.status.draft.state.canceled"),
+                          style: FediTextStyles.mediumShortBoldDarkGrey,
+                        ),
+                      )
+                    ],
+                  ));
+              break;
+            case DraftStatusState.alreadyPosted:
+              return Padding(
+                  padding: FediPadding.horizontalSmallPadding,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: FediPadding.allSmallPadding,
+                        child: Text(
+                          tr("app.status.draft.state.already_posted"),
+                          style: FediTextStyles.mediumShortBoldDarkGrey,
+                        ),
+                      )
+                    ],
+                  ));
+          }
+
+          throw "Invalid state $state";
+        });
   }
 
   Widget buildDraftAt(BuildContext context, IDraftStatusBloc draftStatusBloc) =>

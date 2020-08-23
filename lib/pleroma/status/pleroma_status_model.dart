@@ -667,11 +667,14 @@ class PleromaScheduleStatus implements IPleromaScheduleStatus {
     var isTextExist = status?.isNotEmpty == true;
 
     // poll & media can't be set in one time
-    assert(!(isPollExist && isMediaExist));
+    // todo: recheck. Docs says that poll & media not possible in one status,
+    //  but actually it works
+//    assert(!(isPollExist && isMediaExist));
     // media, poll or status should exist
     assert(isPollExist || isMediaExist || isTextExist);
 
-    assert(idempotencyKey != null);
+    // todo: revert assert. Skipped due to drafts/scheduled limitation
+//    assert(idempotencyKey != null);
   }
 
   factory PleromaScheduleStatus.fromJson(Map<String, dynamic> json) =>

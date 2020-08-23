@@ -628,6 +628,10 @@ class CodegenLoader extends AssetLoader{
     "status": {
       "draft": {
         "title": "Drafts",
+        "state": {
+          "canceled": "Canceled",
+          "already_posted": "Already posted"
+        },
         "edit": {
           "title": "Edit Draft"
         }

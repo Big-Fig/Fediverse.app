@@ -600,7 +600,20 @@ abstract class PostStatusBloc extends PostMessageBloc
         text: calculateStatusTextField(),
         scheduledAt: scheduledAt,
         visibility: visibility.toJsonValue(),
-        mediaAttachments: _calculateMediaAttachmentsField(),
+        mediaAttachments: _calculateMediaAttachmentsField()
+            ?.map(
+              (mediaAttachment) => PleromaMediaAttachment(
+                description: mediaAttachment.description,
+                id: mediaAttachment.id,
+                previewUrl: mediaAttachment.previewUrl,
+                remoteUrl: mediaAttachment.remoteUrl,
+                textUrl: mediaAttachment.textUrl,
+                type: mediaAttachment.type,
+                url: mediaAttachment.url,
+                pleroma: mediaAttachment.pleroma,
+              ),
+            )
+            ?.toList(),
         poll: _calculatePostStatusPoll(),
         inReplyToPleromaStatus: mapLocalStatusToRemoteStatus(
           calculateInReplyToStatusField(),

@@ -20,6 +20,12 @@ import 'package:provider/provider.dart';
 final dateFormat = DateFormat("dd MMM, HH:mm a");
 
 class ScheduledStatusListItemWidget extends StatelessWidget {
+  final VoidCallback successCallback;
+
+  ScheduledStatusListItemWidget({
+    @required this.successCallback,
+  });
+
   @override
   Widget build(BuildContext context) {
     var scheduledStatusBloc = IScheduledStatusBloc.of(context, listen: true);
@@ -146,6 +152,7 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
           goToScheduledEditPostStatusPage(
             context,
             initialData: postStatusData,
+            successCallback: successCallback,
           );
         },
       );

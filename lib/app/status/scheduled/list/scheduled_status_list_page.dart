@@ -4,6 +4,7 @@ import 'package:fedi/app/status/scheduled/pagination/cached/scheduled_status_cac
 import 'package:fedi/app/status/scheduled/pagination/list/scheduled_status_pagination_list_widget.dart';
 import 'package:fedi/app/status/scheduled/pagination/list/scheduled_status_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
+import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -29,9 +30,21 @@ class ScheduledStatusListPage extends StatelessWidget {
         maximumCachedPagesCount: null,
         child: ScheduledStatusPaginationListWithNewItemsBloc.provideToContext(
           context,
-          child: ScheduledStatusPaginationListTimelineWidget(
-            key: PageStorageKey("ScheduledStatusPaginationListTimelineWidget"),
-            needWatchLocalRepositoryForUpdates: true,
+          child: Builder(
+            builder: (context) {
+              var cachedPaginationListWithNewItemsBloc =
+                  ICachedPaginationListWithNewItemsBloc.of(context,
+                      listen: false);
+              return ScheduledStatusPaginationListTimelineWidget(
+                key: PageStorageKey(
+                    "ScheduledStatusPaginationListTimelineWidget"),
+                needWatchLocalRepositoryForUpdates: true,
+                successCallback: () {
+                  cachedPaginationListWithNewItemsBloc
+                      .refreshWithController();
+                },
+              );
+            },
           ),
         ),
       ),

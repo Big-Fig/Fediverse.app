@@ -68,8 +68,12 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
   void fillFormData(IPostStatusPoll poll) {
     multiplyFieldBloc.changeCurrentValue(poll.multiple);
     expiresAtFieldBloc.changeCurrentValue(poll.expiresAt);
-    poll.options.forEach((pollOption) {
-      pollOptionsGroupBloc.addNewField(createPollOptionFieldBloc(pollOption));
-    });
+    if (poll.options?.isNotEmpty == true) {
+      pollOptionsGroupBloc.removeAllFields();
+
+      poll.options.forEach((pollOption) {
+        pollOptionsGroupBloc.addNewField(createPollOptionFieldBloc(pollOption));
+      });
+    }
   }
 }
