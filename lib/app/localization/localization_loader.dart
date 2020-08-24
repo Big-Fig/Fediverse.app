@@ -608,7 +608,8 @@ class CodegenLoader extends AssetLoader{
       "tab": {
         "all": "All",
         "accounts": "Users",
-        "statuses": "Posts"
+        "statuses": "Posts",
+        "hashtags": "Hashtags"
       },
       "desc": {
         "empty": "Search term is empty",

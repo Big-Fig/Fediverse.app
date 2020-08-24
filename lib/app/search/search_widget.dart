@@ -1,10 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/pagination/list/account_pagination_list_bloc.dart';
+import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/search/accounts/search_accounts_list_widget.dart';
 import 'package:fedi/app/search/accounts/search_accounts_pagination_list_bloc.dart';
+import 'package:fedi/app/search/hashtags/search_hashtags_list_widget.dart';
+import 'package:fedi/app/search/hashtags/search_hashtags_pagination_list_bloc.dart';
 import 'package:fedi/app/search/recent/recent_search_widget.dart';
 import 'package:fedi/app/search/result/pagination/search_account_pagination_bloc_impl.dart';
+import 'package:fedi/app/search/result/pagination/search_hashtag_pagination_bloc_impl.dart';
 import 'package:fedi/app/search/result/pagination/search_status_pagination_bloc_impl.dart';
 import 'package:fedi/app/search/result/search_result_item_list_widget.dart';
 import 'package:fedi/app/search/search_bloc.dart';
@@ -27,6 +31,7 @@ const List<SearchTab> tabs = [
   SearchTab.all,
   SearchTab.accounts,
   SearchTab.statuses,
+  SearchTab.hashtags,
 ];
 
 class SearchWidget extends StatelessWidget {
@@ -88,6 +93,9 @@ class SearchWidget extends StatelessWidget {
       case SearchTab.all:
         return tr("app.search.tab.all");
         break;
+      case SearchTab.hashtags:
+        return tr("app.search.tab.hashtags");
+        break;
     }
 
     throw "Invalid tab $tab";
@@ -120,6 +128,9 @@ class SearchWidget extends StatelessWidget {
         return buildAllTab(context);
 
         break;
+      case SearchTab.hashtags:
+        return buildHashtagsTab(context);
+        break;
     }
     throw "Invalid tab $tab";
   }
@@ -134,6 +145,18 @@ class SearchWidget extends StatelessWidget {
         create: (context) =>
             SearchStatusesPaginationListBloc.createFromContext(context),
         child: SearchStatusesListWidget(),
+      ),
+    );
+  }
+
+  Widget buildHashtagsTab(BuildContext context) {
+    return SearchHashtagPaginationBloc.provideToContext(
+      context,
+      child: DisposableProvider<
+          IPaginationListBloc<PaginationPage<IHashtag>, IHashtag>>(
+        create: (context) =>
+            SearchHashtagsPaginationListBloc.createFromContext(context),
+        child: SearchHashtagsListWidget(),
       ),
     );
   }
