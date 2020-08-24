@@ -14,7 +14,7 @@ abstract class ISearchResultItem {
 
   bool get isAccount => account != null;
 
-  bool get isHashtag => account != null;
+  bool get isHashtag => hashtag != null;
 }
 
 class SearchResultItem extends ISearchResultItem {
