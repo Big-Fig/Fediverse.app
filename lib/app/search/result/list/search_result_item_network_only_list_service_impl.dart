@@ -1,4 +1,5 @@
 import 'package:fedi/app/account/account_model_adapter.dart';
+import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/search/input/search_input_bloc.dart';
 import 'package:fedi/app/search/result/list/search_result_item_network_only_list_bloc.dart';
 import 'package:fedi/app/search/result/search_result_model.dart';
@@ -50,6 +51,14 @@ class SearchResultItemsNetworkOnlyListBloc
       searchResult.accounts.forEach((account) {
         resultItems.add(
             SearchResultItem.account(mapRemoteAccountToLocalAccount(account)));
+      });
+
+      searchResult.hashtags.forEach((hashtag) {
+        resultItems.add(SearchResultItem.hashtag(Hashtag(
+          name: hashtag.name,
+          url: hashtag.url,
+          history: hashtag.history,
+        )));
       });
     }
 
