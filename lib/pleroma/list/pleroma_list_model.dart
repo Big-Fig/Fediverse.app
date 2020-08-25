@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:fedi/mastodon/list/mastodon_list_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'pleroma_mastodon_list_model.g.dart';
+part 'pleroma_list_model.g.dart';
 
 abstract class IPleromaList extends IMastodonList {}
 

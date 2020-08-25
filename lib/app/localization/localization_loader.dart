@@ -13,6 +13,11 @@ class CodegenLoader extends AssetLoader{
 
     static const Map<String,dynamic> en_US = {
   "app": {
+    "custom_list": {
+      "list": {
+        "title": "Lists"
+      }
+    },
     "emoji": {
       "custom": {
         "empty": "This instance don't have custom emojis"
@@ -135,8 +140,11 @@ class CodegenLoader extends AssetLoader{
               "description": "Not supported on most instances"
             }
           },
-          "scheduled_posts": "Scheduled posts",
-          "draft_posts": "Draft posts"
+          "action": {
+            "scheduled_posts": "Scheduled posts",
+            "draft_posts": "Draft posts",
+            "lists": "Lists"
+          }
         },
         "edit": {
           "title": "Edit account",
