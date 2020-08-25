@@ -11,70 +11,74 @@ description: A new Flutter project.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.3.1+30
+version: 2.0.17+217
 
 environment:
-  sdk: ">=2.2.2 <3.0.0"
+  sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
+  # firebase auth
   firebase_core: ^0.4.0+9
-  firebase_messaging: ^6.0.9
+  # push notifications FCM
+  firebase_messaging: ^6.0.16
+  # analytics events
   firebase_analytics: ^5.0.2
-  cupertino_icons: ^0.1.2
-  webview_flutter: ^0.3.9
-  http: ^0.12.0
-  uni_links: ^0.2.0
-  url_launcher: ^5.2.7
-  hive: ^0.4.1
-  hive_generator: ^0.4.0+1
-  pull_to_refresh: ^1.5.4
-  flutter_html: ^1.0.0
-  flutter_staggered_grid_view: ^0.3.0
-  video_player: ^0.10.4+1
-  path_provider: ^1.4.5
-  photo_manager: ^0.5.0
-  camera: ^0.5.7
-  carousel_pro: ^1.0.0
-  scoped_model: any
-  percent_indicator: "^2.1.1"
-  mime_type: ^0.2.4
-  # flutter_webrtc: any
-  material_segmented_control: ^2.0.3
-  flutter_alert: ^0.4.0
-  firebase_crashlytics: any
-  timeago: ^2.0.26
-  chewie: ^0.9.8+1
-  photo_view: ^0.9.0
-  indexed_list_view: ^1.0.8
-  flutter_widgets: ^0.1.7+1
-  image_cropper: ^1.1.1
-  cached_network_image: ^2.0.0
-  rxdart: ^0.23.1
-  auto_size_text: ^2.1.0
-  badges: ^1.1.0
-  vibration: ^1.2.2
-  fluttertoast: ^4.0.1
-  emoji_picker: ^0.1.0
-  shared_preferences: ^0.5.6+3
 
-  #default media picker
-  image_picker: ^0.6.3+4
+  # handle init urls. Used for login/register and navigation from notificaiton
+  uni_links: ^0.2.0
+  # launch browser to view links
+  url_launcher: ^5.2.7
+  # object serialization
+  hive: ^0.4.1
+
+  #  flutter_html: ^1.0.0
+  # actually it is ^1.0.0 with additional text style features
+  flutter_html:
+    git:
+      url: https://github.com/xal/flutter_html.git
+      ref: 0f644745261ca2b5f5057014ebe6c9299706d49e
+
+  # media grid
+  flutter_staggered_grid_view: ^0.3.0
+  # retrieve storage path to save files
+  path_provider: ^1.4.5
+  # fetch gallery albums and items
+  photo_manager: ^0.5.0
+  # detect file mime type for share
+  mime_type: ^0.2.4
+  # handle crashes and non-fatal errors
+  firebase_crashlytics: 0.1.4+1
+  # datetime formatter for statuses & chat messages
+  timeago: ^2.0.26
+  # better image viewer with gestures support
+  photo_view: ^0.9.0
+  # positioned list view
+  flutter_widgets: ^0.1.7+1
+  # edit images during account editing
+  image_cropper: ^1.2.3
+  # cache images locally
+  cached_network_image: ^2.2.0+1
+  # reactive programming
+  rxdart: ^0.23.1
+  # text size to fit constraints
+  auto_size_text: ^2.1.0
+
+  # default media picker
+  image_picker: ^0.6.7+4
 
   # better lint, should be in main dependencies to ignore async/await unnecessary warnings
   pedantic: ^1.8.0+1
 
+  # customizable datetime picker
+  flutter_datetime_picker: ^1.3.8
+
   # localization via .json files
-#  easy_localization: ^2.3.1
-  # Actually it is 1.3.1 with minor fix from me (Yevhenii Zapletin)
-  easy_localization:
-    git:
-      url: https://github.com/xal/easy_localization.git
-      ref: xal/fixQuickSwitchLocaleException
+  # command to regenerate loader
+  # flutter pub run easy_localization:generate -s assets/langs -O lib/app/localization -o localization_loader.dart
+  easy_localization: ^2.3.2
 
   # annotations to generate json from & to methods
   json_annotation: ^3.0.1
@@ -120,6 +124,45 @@ dependencies:
   # parse html to extract raw text from status content
   html: ^0.14.0+3
 
+  # fetch package info during runtime
+  package_info: ^0.4.0+18
+
+  # better scroll controller for nested scroll
+  nested_scroll_controller: ^0.2.1
+
+  # media attachments carousel
+  carousel_slider: ^2.1.0
+
+  # media video player
+  chewie: ^0.9.10
+
+  # media audio player
+  chewie_audio: ^1.0.0+1
+
+  # video/audio players
+  video_player: ^0.10.11+1
+
+  # pull to refresh and pull to load more
+  pull_to_refresh: ^1.5.8
+
+  # custom scroll view which fix bugs related to inner scrollables sync
+  extended_nested_scroll_view: ^1.0.0
+
+  # error overlay
+  overlay_support: ^1.0.4
+
+  # file picker for media attachment
+  file_picker: ^1.12.0
+
+  # unenscape account not field
+  html_unescape: ^1.0.1+3
+
+  # shared preferences support. temporary required by custom emoji picker Todo: refactor and remove
+  shared_preferences: ^0.5.4+1
+
+  # extended text fields with highlight mentions support
+  extended_text_field: ^3.0.1
+
 # required to build flutter test with hive https://github.com/hivedb/hive/issues/285
 dependency_overrides:
   path: 1.7.0
@@ -132,7 +175,7 @@ dev_dependencies:
   # build tools runner
   # usage example
   # flutter pub run build_runner build --delete-conflicting-outputs
-  build_runner: ^1.7.3
+  build_runner: ^1.10.0
   # build tool to generate json from & to methods
   json_serializable: ^3.2.5
   # sql orm generator
@@ -140,6 +183,12 @@ dev_dependencies:
 
   # in memory moor SQLite database for tests
   moor_ffi: ^0.4.0
+
+  # object serialization generator
+  hive_generator: ^0.4.0+1
+
+  # detect keyboard visibility
+  flutter_keyboard_visibility: ^3.2.1
 
 
 # For information on the generic Dart part of this file, see the
@@ -154,16 +203,16 @@ flutter:
   uses-material-design: true
 
   fonts:
-  - family: FediIcons
-    fonts:
-      - asset: assets/fonts/FediIcons.ttf
-  - family: Rubik
-    fonts:
-      - asset: assets/fonts/Rubik-Regular.ttf
-      - asset: assets/fonts/Rubik-Light.ttf
-        weight: 300
-      - asset: assets/fonts/Rubik-Medium.ttf
-        weight: 500
+    - family: FediIcons
+      fonts:
+        - asset: assets/fonts/FediIcons.ttf
+    - family: Rubik
+      fonts:
+        - asset: assets/fonts/Rubik-Regular.ttf
+        - asset: assets/fonts/Rubik-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Rubik-Medium.ttf
+          weight: 500
 
   # To add assets to your application, add an assets section, like this:
   # assets:
@@ -172,17 +221,8 @@ flutter:
   assets:
     - assets/terms/terms.rtf
     - assets/images/theme/logo.png
-    - assets/images/double_ring_loading_io.gif
-    - assets/langs/en-US.json
-    - assets/langs/refactored/en-US.json
-    - assets/images/comment-icon.png
-    - assets/images/comment.png
-    - assets/images/favorites.png
-    - assets/images/repost.png
-    - assets/images/share.png
-    - assets/images/happy.png
     - assets/images/default_timeline_header.png
-    - assets/images/addVideoFileIcon.png
+    - assets/langs/en-US.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

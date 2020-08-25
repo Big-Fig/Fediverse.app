@@ -1,0 +1,249 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/account/account_bloc.dart';
+import 'package:fedi/app/account/account_bloc_impl.dart';
+import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/account/action/account_report_action.dart';
+import 'package:fedi/app/account/my/my_account_bloc.dart';
+import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/chat/chat_helper.dart';
+import 'package:fedi/app/chat/share/chat_share_status_page.dart';
+import 'package:fedi/app/conversation/share/conversation_share_status_page.dart';
+import 'package:fedi/app/conversation/start/status/post_status_start_conversation_page.dart';
+import 'package:fedi/app/share/external/external_share_status_page.dart';
+import 'package:fedi/app/share/share_chooser_dialog.dart';
+import 'package:fedi/app/status/status_bloc.dart';
+import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/app/ui/dialog/chooser/fedi_chooser_dialog.dart';
+import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
+import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
+import 'package:fedi/app/ui/notification_overlay/info_fedi_notification_overlay.dart';
+import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
+import 'package:fedi/app/url/url_helper.dart';
+import 'package:fedi/dialog/dialog_model.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/pleroma/account/pleroma_account_model.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
+
+var _logger = Logger("status_action_more_dialog.dart");
+
+void showStatusActionMoreDialog({
+  @required BuildContext context,
+  @required IStatusBloc statusBloc,
+}) {
+  showFediModalBottomSheetDialog(
+    context: context,
+    child: StatusActionMoreDialogBody(
+      statusBloc: statusBloc,
+      cancelable: true,
+    ),
+  );
+}
+
+class StatusActionMoreDialogBody extends StatelessWidget {
+  final IStatusBloc statusBloc;
+  final bool cancelable;
+
+  StatusActionMoreDialogBody({
+    @required this.statusBloc,
+    @required this.cancelable,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    IStatus status = statusBloc.status;
+    var myAccountBloc = IMyAccountBloc.of(context, listen: false);
+    var isStatusFromMe = myAccountBloc.checkIsStatusFromMe(status);
+
+    return ListView(
+      shrinkWrap: true,
+      children: [
+        FediChooserDialogBody(
+            title: tr("app.status.action.popup.title"),
+            actions: [
+              buildCopyAction(context, status),
+              buildOpenInBrowserAction(context, status),
+              buildShareAction(context, status),
+            ],
+            cancelable: false),
+        if (!isStatusFromMe) ...[
+          FediUltraLightGreyDivider(
+            height: 4,
+          ),
+          FediBigVerticalSpacer(),
+          DisposableProvider<IAccountBloc>(
+            create: (context) => AccountBloc.createFromContext(
+              context,
+              account: statusBloc.account,
+              isNeedWatchWebSocketsEvents: false,
+              isNeedRefreshFromNetworkOnInit: false,
+              isNeedWatchLocalRepositoryForUpdates: false,
+              isNeedPreFetchRelationship: true,
+            ),
+            child: Builder(
+              builder: (context) {
+                var accountBloc = IAccountBloc.of(context, listen: false);
+                return StreamBuilder<IPleromaAccountRelationship>(
+                    initialData: accountBloc.accountRelationship,
+                    stream: accountBloc.accountRelationshipStream,
+                    builder: (context, snapshot) {
+                      var accountRelationship = snapshot.data;
+
+                      _logger.finest(
+                          () => "accountRelationship $accountRelationship");
+
+                      var title =
+                          tr("app.status.action.popup.more_actions_for");
+                      var content = "${status.account.acct}";
+                      // todo: remove hack
+                      //  we should compare accountRelationship with null
+                      if (accountRelationship?.following != null) {
+                        return FediChooserDialogBody(
+                            title: title,
+                            content: content,
+                            actions: [
+                              buildAccountFollowAction(context, accountBloc),
+                              buildAccountMessageAction(context, accountBloc),
+                              buildAccountMuteAction(context, accountBloc),
+                              buildAccountReportAction(context, accountBloc),
+                              buildAccountBlockAction(context, accountBloc),
+                            ],
+                            cancelable: cancelable);
+                      } else {
+                        return FediChooserDialogBody(
+                            title: title,
+                            content: content,
+                            actions: [],
+                            loadingActions: true,
+                            cancelable: cancelable);
+                      }
+                    });
+              },
+            ),
+          ),
+        ]
+      ],
+    );
+  }
+
+  DialogAction buildAccountReportAction(
+          BuildContext context, IAccountBloc accountBloc) =>
+      DialogAction(
+          icon: FediIcons.report,
+          label: tr("app.account.action.report.label"),
+          onAction: () async {
+            var success = await doAsyncActionReport(context, accountBloc);
+
+            if (success) {
+              Navigator.of(context).pop();
+            }
+          });
+
+  DialogAction buildAccountBlockAction(
+          BuildContext context, IAccountBloc accountBloc) =>
+      DialogAction(
+          icon: FediIcons.block,
+          label: tr(accountBloc.accountRelationship?.blocking == true
+              ? "app.account.action.unblock"
+              : "app.account.action.block"),
+          onAction: () async {
+            await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+                context: context,
+                asyncCode: () async => accountBloc.toggleBlock());
+
+            Navigator.of(context).pop();
+          });
+
+  DialogAction buildAccountMuteAction(
+          BuildContext context, IAccountBloc accountBloc) =>
+      DialogAction(
+          icon: FediIcons.mute,
+          label: tr(accountBloc.accountRelationship?.muting == true
+              ? "app.account.action.unmute"
+              : "app.account.action.mute"),
+          onAction: () async {
+            await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+                context: context, asyncCode: () => accountBloc.toggleMute());
+
+            Navigator.of(context).pop();
+          });
+
+  DialogAction buildAccountFollowAction(
+          BuildContext context, IAccountBloc accountBloc) =>
+      DialogAction(
+          icon: FediIcons.follow,
+          label: tr(accountBloc.accountRelationship?.following == true
+              ? "app.account.action.unfollow"
+              : "app.account.action.follow"),
+          onAction: () async {
+            await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+                context: context, asyncCode: () => accountBloc.toggleFollow());
+
+            Navigator.of(context).pop();
+          });
+
+  DialogAction buildAccountMessageAction(
+          BuildContext context, IAccountBloc accountBloc) =>
+      DialogAction(
+          icon: FediIcons.message,
+          label: tr("app.account.action.message"),
+          onAction: () async {
+            var authInstanceBloc =
+                ICurrentAuthInstanceBloc.of(context, listen: false);
+            var account = accountBloc.account;
+
+            if (authInstanceBloc.currentInstance.isSupportChats) {
+              goToChatWithAccount(context: context, account: account);
+            } else {
+              goToPostStatusStartConversationPage(context,
+                  conversationAccountsWithoutMe: <IAccount>[account]);
+            }
+          });
+
+  DialogAction buildOpenInBrowserAction(BuildContext context, IStatus status) =>
+      DialogAction(
+          icon: FediIcons.browser,
+          label: tr("app.status.action.open_in_browser"),
+          onAction: () async {
+            var url = status.uri;
+            await UrlHelper.handleUrlClick(context, url);
+            Navigator.of(context).pop();
+          });
+
+  DialogAction buildCopyAction(BuildContext context, IStatus status) =>
+      DialogAction(
+          icon: FediIcons.link,
+          label: tr("app.status.action.copy_link"),
+          onAction: () async {
+            await Clipboard.setData(ClipboardData(text: status.uri));
+            Navigator.of(context).pop();
+            showInfoFediNotificationOverlay(
+                contentText: tr("app.status.copy_link.toast"), titleText: null);
+          });
+
+  DialogAction buildShareAction(BuildContext context, IStatus status) =>
+      DialogAction(
+          icon: FediIcons.share,
+          label: tr("app.share.action.share"),
+          onAction: () async {
+            showShareChooserDialog(
+              context,
+              externalShareAction: () {
+                Navigator.of(context).pop();
+                goToExternalShareStatusPage(context: context, status: status);
+              },
+              conversationsShareAction: () {
+                Navigator.of(context).pop();
+                goToConversationShareStatusPage(
+                    context: context, status: status);
+              },
+              chatsShareAction: () {
+                Navigator.of(context).pop();
+                goToChatShareStatusPage(context: context, status: status);
+              },
+            );
+          });
+}

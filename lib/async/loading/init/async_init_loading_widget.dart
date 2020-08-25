@@ -7,9 +7,18 @@ import 'package:flutter/material.dart';
 class AsyncInitLoadingWidget extends StatelessWidget {
   final IAsyncInitLoadingBloc asyncInitLoadingBloc;
   final WidgetBuilder loadingFinishedBuilder;
-  AsyncInitLoadingWidget(
-      {@required this.asyncInitLoadingBloc,
-      @required this.loadingFinishedBuilder});
+  final Widget loadingWidget;
+
+  AsyncInitLoadingWidget({
+    @required this.asyncInitLoadingBloc,
+    @required this.loadingFinishedBuilder,
+    this.loadingWidget,
+  }) {
+    if (asyncInitLoadingBloc.initLoadingState ==
+        AsyncInitLoadingState.notStarted) {
+      asyncInitLoadingBloc.performAsyncInit();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,13 +33,18 @@ class AsyncInitLoadingWidget extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
-                  child: Text(AppLocalizations.of(context)
-                      .tr("async.init.state.not_started")),
+                  child: Text(tr("async.init.state.not_started")),
                 ),
               );
               break;
             case AsyncInitLoadingState.loading:
-              return Center(child: CircularProgressIndicator());
+              Widget child;
+              if (loadingWidget == null) {
+                child = CircularProgressIndicator();
+              } else {
+                child = loadingWidget;
+              }
+              return Center(child: child);
               break;
             case AsyncInitLoadingState.finished:
               return loadingFinishedBuilder(context);
@@ -39,9 +53,9 @@ class AsyncInitLoadingWidget extends StatelessWidget {
               return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Center(
-                    child: Text(AppLocalizations.of(context).tr(
-                        "async.init.state.failed",
-                        args: [asyncInitLoadingBloc.initLoadingException])),
+                    child: Text(tr("async.init.state.failed", args: [
+                      asyncInitLoadingBloc.initLoadingException.toString()
+                    ])),
                   ));
               break;
           }

@@ -1,0 +1,27 @@
+import 'package:fedi/app/account/account_bloc.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
+import 'package:flutter/cupertino.dart';
+
+class AccountAcctWidget extends StatelessWidget {
+  final TextStyle textStyle;
+
+  const AccountAcctWidget(
+      {this.textStyle = FediTextStyles.mediumShortDarkGrey});
+
+  @override
+  Widget build(BuildContext context) {
+    var accountBloc = IAccountBloc.of(context, listen: true);
+    return StreamBuilder<String>(
+        stream: accountBloc.acctStream,
+        initialData: accountBloc.acct,
+        builder: (context, snapshot) {
+          var acct = snapshot.data;
+
+          return Text(
+            acct,
+            overflow: TextOverflow.ellipsis,
+            style: textStyle,
+          );
+        });
+  }
+}

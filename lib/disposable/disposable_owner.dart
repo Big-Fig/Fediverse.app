@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:fedi/disposable/async_disposable.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/rx_disposable.dart';
@@ -10,19 +11,27 @@ class DisposableOwner extends Disposable {
   bool disposed = false;
   final CompositeDisposable _compositeDisposable = CompositeDisposable([]);
 
-  void addDisposable(
-      {Disposable disposable,
-        StreamSubscription streamSubscription,
-        TextEditingController textEditingController,
-        FocusNode focusNode,
-        Subject subject,
-        Timer timer}) {
+  void addDisposable({
+    Disposable disposable,
+    StreamSubscription streamSubscription,
+    TextEditingController textEditingController,
+    ScrollController scrollController,
+    FocusNode focusNode,
+    Subject subject,
+    StreamController streamController,
+    Timer timer,
+    VoidCallback custom,
+  }) {
     if (disposable != null) {
       _compositeDisposable.children.add(disposable);
     }
 
     if (subject != null) {
       _compositeDisposable.children.add(SubjectDisposable(subject));
+    }
+
+    if (streamController != null) {
+      _compositeDisposable.children.add(StreamControllerDisposable(streamController));
     }
 
     if (timer != null) {
@@ -39,11 +48,18 @@ class DisposableOwner extends Disposable {
           .add(TextEditingControllerDisposable(textEditingController));
     }
     if (focusNode != null) {
+      _compositeDisposable.children.add(FocusNodeDisposable(focusNode));
+    }
+    if (scrollController != null) {
       _compositeDisposable.children
-          .add(FocusNodeDisposable(focusNode));
+          .add(ScrollControllerDisposable(scrollController));
+    }
+    if (custom != null) {
+      _compositeDisposable.children.add(CustomDisposable(custom));
     }
   }
 
+  @override
   @mustCallSuper
   void dispose() {
     disposed = true;

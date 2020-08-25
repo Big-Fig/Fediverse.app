@@ -6,27 +6,37 @@ import 'package:fedi/file/gallery/file/file_gallery_file_bloc_impl.dart';
 import 'package:fedi/file/gallery/file/file_gallery_file_grid_item_widget.dart';
 import 'package:fedi/file/gallery/file_gallery_model.dart';
 import 'package:fedi/file/gallery/folder/file_gallery_folder_bloc.dart';
-import 'package:fedi/permission/grant_permission_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
+import 'package:provider/provider.dart';
+
+typedef PermissionButtonBuilder = Widget Function(
+    BuildContext context, WidgetBuilder grantedBuilder);
 
 class FileGalleryFolderWidget extends StatelessWidget {
-
   final FileGalleryFileCallback galleryFileTapped;
+  final WidgetBuilder headerItemBuilder;
+  final Widget loadingWidget;
+  final PermissionButtonBuilder permissionButtonBuilder;
 
-  FileGalleryFolderWidget({@required this.galleryFileTapped});
+  FileGalleryFolderWidget({
+    @required this.galleryFileTapped,
+    @required this.headerItemBuilder,
+    @required this.loadingWidget,
+    @required this.permissionButtonBuilder,
+  });
 
   @override
   Widget build(BuildContext context) {
     var folderBloc = IFileGalleryFolderBloc.of(context);
 
     return AsyncInitLoadingWidget(
-      loadingFinishedBuilder: (context) => GrantPermissionWidget(
-        grantedBuilder: (context) =>
-            buildPermissionGrantedView(context, folderBloc),
-        permissionBloc: folderBloc,
+      loadingFinishedBuilder: (context) => permissionButtonBuilder(
+        context,
+        (context) => buildPermissionGrantedView(context, folderBloc),
       ),
+      loadingWidget: loadingWidget,
       asyncInitLoadingBloc: folderBloc,
     );
   }
@@ -41,18 +51,18 @@ class FileGalleryFolderWidget extends StatelessWidget {
 
           switch (galleryState) {
             case FileGalleryState.loadingNotStarted:
-              return Center(child: Text(AppLocalizations.of(context)
-                  .tr("file.gallery.state.loading_not_started")));
+              return Center(
+                  child: Text(tr("file.gallery.state.loading_not_started")));
               break;
             case FileGalleryState.loading:
-              return Center(child: CircularProgressIndicator());
+              return Center(child: loadingWidget);
               break;
             case FileGalleryState.loaded:
               return buildFilesWidget(context, folderBloc);
               break;
             default:
               // null
-              return Center(child: CircularProgressIndicator());
+              return Center(child: loadingWidget);
               break;
           }
         });
@@ -68,27 +78,48 @@ class FileGalleryFolderWidget extends StatelessWidget {
 
           if (files.isEmpty) {
             return Center(
-              child: Text(AppLocalizations.of(context)
-                  .tr("file.gallery.folder.empty")),
+              child: Text(tr("file.gallery.folder.empty")),
             );
           } else {
+            var length = files.length;
+
+            var headerItemExist = headerItemBuilder != null;
+            if (headerItemExist) {
+              length += 1;
+            }
+
             return GridView.builder(
-              itemCount: files.length,
+              itemCount: length,
               gridDelegate:
                   SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-              itemBuilder: (context, index) =>
-                  _buildItem(context, files[index]),
+              itemBuilder: (context, index) {
+                if (index == 0 && headerItemExist) {
+                  return headerItemBuilder(context);
+                } else {
+                  if (headerItemExist) {
+                    index -= 1;
+                  }
+                  return _buildItem(context, files[index]);
+                }
+              },
             );
           }
         });
   }
 
-  Widget _buildItem(BuildContext context, AssetEntity assetEntity) =>
-      DisposableProvider<IFileGalleryFileBloc>(
-          create: (BuildContext context) {
-            var galleryFileBloc = FileGalleryFileBloc(assetEntity: assetEntity);
+  Widget _buildItem(BuildContext context, AssetEntity assetEntity) {
+    return Provider<AssetEntity>.value(
+      value: assetEntity,
+      child: DisposableProxyProvider<AssetEntity, IFileGalleryFileBloc>(
+          update: (BuildContext context, value, previous) {
+            var galleryFileBloc = FileGalleryFileBloc(assetEntity: value);
             galleryFileBloc.performAsyncInit();
             return galleryFileBloc;
           },
-          child: FileGalleryFolderGridItemWidget(galleryFileTapped: galleryFileTapped));
+          child: FileGalleryFolderGridItemWidget(
+            galleryFileTapped: galleryFileTapped,
+            loadingWidget: loadingWidget,
+          )),
+    );
+  }
 }

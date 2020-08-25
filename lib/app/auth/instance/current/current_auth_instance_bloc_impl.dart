@@ -1,0 +1,59 @@
+import 'package:fedi/app/auth/instance/auth_instance_model.dart';
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/auth/instance/current/current_auth_instance_local_preference_bloc.dart';
+import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc.dart';
+import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
+
+var _logger = Logger("current_auth_instance_bloc_impl.dart");
+
+class CurrentAuthInstanceBloc extends DisposableOwner
+    implements ICurrentAuthInstanceBloc {
+  final IAuthInstanceListBloc instanceListBloc;
+  final ICurrentAuthInstanceLocalPreferenceBloc currentLocalPreferenceBloc;
+
+  CurrentAuthInstanceBloc({
+    @required this.instanceListBloc,
+    @required this.currentLocalPreferenceBloc,
+  });
+
+  @override
+  AuthInstance get currentInstance => currentLocalPreferenceBloc.value;
+
+  @override
+  Stream<AuthInstance> get currentInstanceStream =>
+      currentLocalPreferenceBloc.stream;
+
+  @override
+  Future changeCurrentInstance(AuthInstance instance) async {
+    _logger.finest(() => "changeCurrentInstance $instance");
+
+    var found = instanceListBloc.availableInstances?.firstWhere(
+        (existInstance) => existInstance.userAtHost == instance.userAtHost,
+        orElse: () => null);
+
+    if (found != null) {
+      await instanceListBloc.removeInstance(found);
+    }
+    await instanceListBloc.addInstance(instance);
+
+    await currentLocalPreferenceBloc.setValue(instance);
+  }
+
+  @override
+  bool isCurrentInstance(AuthInstance instance) => currentInstance == instance;
+
+  @override
+  Future logoutCurrentInstance() async {
+    _logger.finest(() => "logoutCurrentInstance $currentInstance");
+    await instanceListBloc.removeInstance(currentInstance);
+
+    if (instanceListBloc.isHaveInstances == true) {
+      await currentLocalPreferenceBloc.setValue(instanceListBloc
+          .availableInstances.first);
+    } else {
+      await currentLocalPreferenceBloc.setValue(null);
+    }
+  }
+}

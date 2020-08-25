@@ -12,7 +12,7 @@ var _logger = Logger("async_init_loading_bloc_impl.dart");
 abstract class AsyncInitLoadingBloc extends AsyncLoadingService
     implements IAsyncInitLoadingBloc {
   // ignore: close_sinks
-  BehaviorSubject<AsyncInitLoadingState> _isInitLoadingSubject =
+  final BehaviorSubject<AsyncInitLoadingState> _isInitLoadingSubject =
       BehaviorSubject.seeded(AsyncInitLoadingState.notStarted);
 
   @override
@@ -29,9 +29,12 @@ abstract class AsyncInitLoadingBloc extends AsyncLoadingService
     addDisposable(subject: _isInitLoadingSubject);
   }
 
+  @override
   Future performAsyncInit() async {
     if (initLoadingState == AsyncInitLoadingState.notStarted) {
-      _isInitLoadingSubject.add(AsyncInitLoadingState.loading);
+      if (!_isInitLoadingSubject.isClosed) {
+        _isInitLoadingSubject.add(AsyncInitLoadingState.loading);
+      }
 
       return performLoading(internalAsyncInit).then((_) {
         if (!_isInitLoadingSubject.isClosed) {
@@ -46,6 +49,10 @@ abstract class AsyncInitLoadingBloc extends AsyncLoadingService
         throw err;
       });
     }
+  }
+
+  void markAsAlreadyInitialized() {
+    _isInitLoadingSubject.add(AsyncInitLoadingState.finished);
   }
 
   @protected

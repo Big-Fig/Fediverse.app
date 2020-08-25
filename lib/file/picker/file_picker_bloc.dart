@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IFilePickerBloc implements Disposable {
-  static IFilePickerBloc of(BuildContext context, {listen: true}) =>
+  static IFilePickerBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IFilePickerBloc>(context, listen: listen);
 
   List<FilePickerFileType> get fileTypesToPick;
@@ -17,6 +17,7 @@ abstract class IFilePickerBloc implements Disposable {
 
   Stream<List<FilePickerTab>> get availableTabsStream;
 
-  onTabSelected(FilePickerTab tab);
-  onFileSelected(FilePickerFile filePickerFile);
+  void onTabSelected(FilePickerTab tab);
+
+  void onFileSelected(FilePickerFile filePickerFile);
 }
