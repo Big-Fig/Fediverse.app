@@ -277,7 +277,7 @@ class FediApp extends StatelessWidget {
     var localizationProvider = LocalizationProvider.of(context);
     var app = MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Fedi2',
+      title: 'Fedi',
       localizationsDelegates: localizationProvider.delegates,
       supportedLocales: localizationProvider.supportedLocales,
       locale: localizationProvider.locale,
