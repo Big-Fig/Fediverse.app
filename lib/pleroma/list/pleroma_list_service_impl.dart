@@ -1,9 +1,8 @@
-import 'dart:convert';
-
+import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/pleroma/instance/pleroma_instance_exception.dart';
-import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
-import 'package:fedi/pleroma/instance/pleroma_instance_service.dart';
+import 'package:fedi/pleroma/list/pleroma_list_exception.dart';
+import 'package:fedi/pleroma/list/pleroma_list_model.dart';
+import 'package:fedi/pleroma/list/pleroma_list_service.dart';
 import 'package:fedi/pleroma/rest/pleroma_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
 import 'package:flutter/widgets.dart';
@@ -12,8 +11,8 @@ import 'package:path/path.dart' as path;
 
 var urlPath = path.Context(style: path.Style.url);
 
-class PleromaInstanceService implements IPleromaInstanceService {
-  final instanceRelativeUrlPath = "/api/v1/instance";
+class PleromaListService implements IPleromaListService {
+  final listRelativeUrlPath = "/api/v1/lists";
   @override
   final IPleromaRestService restService;
 
@@ -39,62 +38,141 @@ class PleromaInstanceService implements IPleromaInstanceService {
   @override
   Stream<bool> get isConnectedStream => restService.isConnectedStream;
 
-  PleromaInstanceService({@required this.restService});
+  PleromaListService({@required this.restService});
 
-  List<String> parseInstancePeers(Response httpResponse) {
+  IPleromaList parseListResponse(Response httpResponse) {
     if (httpResponse.statusCode == 200) {
-      return jsonDecode(httpResponse.body);
+      return PleromaList.fromJsonString(httpResponse.body);
     } else {
-      throw PleromaInstanceException(
+      throw PleromaListException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
   }
 
-  IPleromaInstance parseInstanceResponse(Response httpResponse) {
+  List<IPleromaList> parseListListResponse(Response httpResponse) {
     if (httpResponse.statusCode == 200) {
-      return PleromaInstance.fromJsonString(httpResponse.body);
+      return PleromaList.listFromJsonString(httpResponse.body);
     } else {
-      throw PleromaInstanceException(
+      throw PleromaListException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
   }
 
-  List<IPleromaInstanceHistory> parseInstanceHistoryListResponse(
-      Response httpResponse) {
+  List<IPleromaAccount> parseAccountListResponse(Response httpResponse) {
     if (httpResponse.statusCode == 200) {
-      return PleromaInstanceHistory.listFromJsonString(httpResponse.body);
+      return PleromaAccount.listFromJsonString(httpResponse.body);
     } else {
-      throw PleromaInstanceException(
+      throw PleromaListException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
     }
   }
 
   @override
-  Future<List<IPleromaInstanceHistory>> getHistory() async {
-    var httpResponse = await restService.sendHttpRequest(RestRequest.get(
-        relativePath: urlPath.join(instanceRelativeUrlPath, "activity")));
-
-    return parseInstanceHistoryListResponse(httpResponse);
-  }
-
-  @override
-  Future<IPleromaInstance> getInstance() async {
+  Future<List<IPleromaList>> getLists() async {
     var httpResponse = await restService.sendHttpRequest(
-        RestRequest.get(relativePath: instanceRelativeUrlPath));
+      RestRequest.get(
+        relativePath: urlPath.join(listRelativeUrlPath),
+      ),
+    );
 
-    return parseInstanceResponse(httpResponse);
+    return parseListListResponse(httpResponse);
   }
 
   @override
-  Future<List<String>> getPeers() async {
-    var httpResponse = await restService.sendHttpRequest(RestRequest.get(
-        relativePath: urlPath.join(instanceRelativeUrlPath, "peers")));
+  Future<IPleromaList> getList({@required String listRemoteId}) async {
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.get(
+        relativePath: urlPath.join(listRelativeUrlPath, listRemoteId),
+      ),
+    );
 
-    return parseInstancePeers(httpResponse);
+    return parseListResponse(httpResponse);
+  }
+
+  @override
+  Future deleteList({@required String listRemoteId}) async {
+    await restService.sendHttpRequest(
+      RestRequest.delete(
+        relativePath: urlPath.join(listRelativeUrlPath, listRemoteId),
+      ),
+    );
+  }
+
+  @override
+  Future<IPleromaList> createList({@required String title}) async {
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.post(
+          relativePath: urlPath.join(listRelativeUrlPath),
+          bodyJson: {
+            "title": title,
+          }),
+    );
+
+    return parseListResponse(httpResponse);
+  }
+
+  @override
+  Future<IPleromaList> updateList({
+    @required String listRemoteId,
+    @required String title,
+  }) async {
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.put(
+        relativePath: urlPath.join(listRelativeUrlPath, listRemoteId),
+          bodyJson: {
+            "title": title,
+          }),
+      ),
+    );
+
+    return parseListResponse(httpResponse);
   }
 
   @override
   void dispose() {
     // nothing
+  }
+
+  @override
+  Future<List<IPleromaAccount>> getListAccounts({
+    @required String listRemoteId,
+    String sinceId,
+    String maxId,
+    int limit = 20,
+  }) async {
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.get(
+        relativePath:
+            urlPath.join(listRelativeUrlPath, listRemoteId, "accounts"),
+      ),
+    );
+
+    return parseAccountListResponse(httpResponse);
+  }
+
+  @override
+  Future addAccountsToList({
+    @required String listRemoteId,
+    @required List<String> accountIds,
+  }) async {
+    await restService.sendHttpRequest(
+      RestRequest.post(
+          relativePath:
+              urlPath.join(listRelativeUrlPath, listRemoteId, "accounts"),
+          bodyJson: {"account_ids": accountIds}),
+    );
+  }
+
+  @override
+  Future removeAccountsFromList({
+    @required String listRemoteId,
+    @required List<String> accountIds,
+  }) async {
+    await restService.sendHttpRequest(
+      RestRequest.delete(
+          relativePath:
+              urlPath.join(listRelativeUrlPath, listRemoteId, "accounts"),
+          bodyJson: {"account_ids": accountIds}),
+    );
   }
 }
