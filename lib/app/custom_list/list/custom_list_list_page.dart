@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 class CustomListListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
         title: "app.custom_list.list.title".tr(),
@@ -17,4 +16,54 @@ class CustomListListPage extends StatelessWidget {
       ),
     );
   }
+}
+
+void goToCustomListListPage({
+  @required BuildContext context,
+}) {
+  Navigator.push(
+    context,
+    createCustomListListPageRoute(
+      context: context,
+    ),
+  );
+}
+
+MaterialPageRoute createCustomListListPageRoute({
+  @required BuildContext context,
+}) {
+  return MaterialPageRoute(
+    builder: (context) => CustomListListPage(),
+  );
+//  return MaterialPageRoute(
+//      builder: (context) => DisposableProvider<IStatusCachedListBloc>(
+//            create: (BuildContext context) =>
+//                CustomListTimelineStatusCachedListBloc(
+//                    pleromaTimelineService: IPleromaTimelineService.of(
+//                      context,
+//                      listen: false,
+//                    ),
+//                    statusRepository: IStatusRepository.of(
+//                      context,
+//                      listen: false,
+//                    ),
+//                    timelineLocalPreferencesBloc:
+//                        ITimelineSettingsLocalPreferencesBloc.of(context,
+//                            listen: false),
+//                    currentInstanceBloc: ICurrentAuthInstanceBloc.of(
+//                      context,
+//                      listen: false,
+//                    ),
+//                    customList: customList),
+//            child: ProxyProvider<IStatusCachedListBloc,
+//                    IPleromaCachedListBloc<IStatus>>(
+//                update: (context, value, previous) => value,
+//                child: StatusCachedPaginationBloc.provideToContext(context,
+//                    child: StatusCachedPaginationListWithNewItemsBloc
+//                        .provideToContext(context,
+//                            mergeNewItemsImmediately: false,
+//                            child: CustomListListPage(
+//                              customList: customList,
+//                            )))),
+//          ));
 }

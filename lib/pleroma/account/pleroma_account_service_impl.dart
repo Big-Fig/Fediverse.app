@@ -277,7 +277,7 @@ class PleromaAccountService implements IPleromaAccountService {
   }
 
   @override
-  Future<List<IPleromaList>> getAccountLists(
+  Future<List<IPleromaList>> getListsWithAccount(
       {@required String accountRemoteId}) async {
     assert(accountRemoteId?.isNotEmpty == true);
     var httpResponse = await restService.sendHttpRequest(RestRequest.get(

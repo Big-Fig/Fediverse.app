@@ -21,7 +21,7 @@ abstract class IPleromaAccountService implements IPleromaApi {
     int limit = 20,
   });
 
-  Future<List<IPleromaList>> getAccountLists({
+  Future<List<IPleromaList>> getListsWithAccount({
     @required String accountRemoteId,
   });
 
