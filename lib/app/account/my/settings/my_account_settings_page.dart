@@ -29,6 +29,8 @@ class MyAccountSettingsPage extends StatelessWidget {
             buildScheduledButton(context),
             FediSmallVerticalSpacer(),
             buildDraftsButton(context),
+            FediSmallVerticalSpacer(),
+            buildListsButton(context),
           ],
         ),
       ),
@@ -37,7 +39,7 @@ class MyAccountSettingsPage extends StatelessWidget {
 
   Widget buildScheduledButton(BuildContext context) {
     return FediPrimaryFilledTextButton(
-      tr("app.account.my.settings.scheduled_posts"),
+      tr("app.account.my.settings.action.scheduled_posts"),
       onPressed: () {
         goToScheduledStatusListPage(context);
       },
@@ -46,9 +48,17 @@ class MyAccountSettingsPage extends StatelessWidget {
 
   Widget buildDraftsButton(BuildContext context) {
     return FediPrimaryFilledTextButton(
-      tr("app.account.my.settings.draft_posts"),
+      tr("app.account.my.settings.action.draft_posts"),
       onPressed: () {
         goToDraftStatusListPage(context);
+      },
+    );
+  }
+  Widget buildListsButton(BuildContext context) {
+    return FediPrimaryFilledTextButton(
+      tr("app.account.my.settings.action.lists"),
+      onPressed: () {
+//        goToDraftStatusListPage(context);
       },
     );
   }

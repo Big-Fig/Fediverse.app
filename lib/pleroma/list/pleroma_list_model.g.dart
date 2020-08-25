@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'pleroma_mastodon_list_model.dart';
+part of 'pleroma_list_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
