@@ -1,4 +1,5 @@
 import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/poll/poll_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/collapsible/collapsible_model.dart';
@@ -175,6 +176,7 @@ abstract class IStatusBloc implements Disposable, ICollapsibleItem {
   Future refreshFromNetwork();
 
   Future<IAccount> loadAccountByMentionUrl({@required String url});
+  Future<IHashtag> loadHashtagByUrl({@required String url});
 
   Future<IAccount> getInReplyToAccount();
 
