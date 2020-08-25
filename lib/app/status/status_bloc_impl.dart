@@ -1,6 +1,8 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/emoji/text/emoji_text_helper.dart';
+import 'package:fedi/app/hashtag/hashtag_model.dart';
+import 'package:fedi/app/hashtag/hashtag_model_adapter.dart';
 import 'package:fedi/app/html/html_text_helper.dart';
 import 'package:fedi/app/poll/poll_bloc.dart';
 import 'package:fedi/app/poll/poll_bloc_impl.dart';
@@ -398,6 +400,22 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
     }
 
     return account;
+  }
+
+  @override
+  Future<IHashtag> loadHashtagByUrl({@required String url}) async {
+    var foundPleromaHashtag = status.tags?.firstWhere((pleromaHashtag) {
+      // actually status.tags contains relative url (without domain)
+      // todo: report to pleroma
+      return url.contains(pleromaHashtag.url);
+    }, orElse: () => null);
+
+    var hashtag;
+    if (foundPleromaHashtag != null) {
+      hashtag = mapRemoteToLocalHashtag(foundPleromaHashtag);
+    }
+
+    return hashtag;
   }
 
   @override
