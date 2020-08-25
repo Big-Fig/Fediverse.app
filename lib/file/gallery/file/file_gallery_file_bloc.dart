@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 abstract class IFileGalleryFileBloc
     implements Disposable, IAsyncInitLoadingBloc {
-  static IFileGalleryFileBloc of(BuildContext context, {listen: true}) =>
+  static IFileGalleryFileBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IFileGalleryFileBloc>(context, listen: listen);
 
   Future<FileGalleryFile> retrieveFile();

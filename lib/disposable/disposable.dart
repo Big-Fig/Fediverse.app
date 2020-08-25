@@ -19,13 +19,8 @@ class CompositeDisposable extends CustomDisposable {
 
   CompositeDisposable(this.children)
       : super(() {
-          children.forEach((child) => child.dispose());
+          children.reversed.forEach((child) => child.dispose());
         });
 
   void add(Disposable disposable) => children.add(disposable);
 }
-
-
-
-
-

@@ -3,18 +3,18 @@ import 'package:fedi/file/picker/file_picker_model.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 FilePickerFile mapGalleryToFilePickerFIle(FileGalleryFile galleryFile) {
-  FilePickerFile filePickerFile = FilePickerFile(file: galleryFile.file,
+  FilePickerFile filePickerFile = FilePickerFile(
+      file: galleryFile.file,
       type: mapFileGalleryToPickerType(galleryFile.type),
       isNeedDeleteAfterUsage: galleryFile.isNeedDeleteAfterUsage);
   return filePickerFile;
 }
 
 FilePickerFileType mapFileGalleryToPickerType(AssetType galleryType) {
-  if(galleryType == null) {
+  if (galleryType == null) {
     return null;
   }
-  switch(galleryType) {
-
+  switch (galleryType) {
     case AssetType.other:
       return FilePickerFileType.other;
       break;

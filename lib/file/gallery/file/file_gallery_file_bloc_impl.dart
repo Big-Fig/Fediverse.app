@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
+
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/file/gallery/file/file_gallery_file_bloc.dart';
 import 'package:fedi/file/gallery/file_gallery_model.dart';
@@ -9,7 +10,7 @@ import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:photo_manager/photo_manager.dart';
-
+var _thumbImageSize = 150;
 const heicExtension = ".heic";
 var _logger = Logger("file_gallery_file_bloc_impl.dart");
 
@@ -24,7 +25,8 @@ abstract class AbstractFileGalleryFileBloc extends AsyncInitLoadingBloc
 
   @override
   Future internalAsyncInit() async {
-    thumbImageData = await loadThumbData(width: 150, height: 150);
+
+    thumbImageData = await loadThumbData(width: _thumbImageSize, height: _thumbImageSize);
   }
 
   Future<Uint8List> loadThumbData({@required int width, @required int height});
@@ -42,6 +44,7 @@ class FileGalleryFileBloc extends AbstractFileGalleryFileBloc {
   Future<FileGalleryFile> retrieveFile() async {
     var file = await assetEntity.file;
     var isNeedDeleteAfterUsage = false;
+
     var filePath = file.absolute.path;
     _logger.fine(() => "retrieveFile \n"
         "\t file $filePath");
@@ -51,7 +54,6 @@ class FileGalleryFileBloc extends AbstractFileGalleryFileBloc {
       if (extension == heicExtension || Platform.isIOS) {
         // gallery may return photos in HEIC format from iOS gallery
         // in this case we should re-compress them to jpg
-        // gallery on iOS is selecting the old 
         file = await _compressToJpeg(file);
         isNeedDeleteAfterUsage = true;
       }
@@ -63,17 +65,16 @@ class FileGalleryFileBloc extends AbstractFileGalleryFileBloc {
         isNeedDeleteAfterUsage: isNeedDeleteAfterUsage);
   }
 
-  
-
   Future<File> _compressToJpeg(File file) async {
     var originPath = file.absolute.path;
     final Directory extDir = await getTemporaryDirectory();
     var timestamp = DateTime.now().millisecondsSinceEpoch.toString();
     final String dirPath = path.join(extDir.path, "gallery_picker", timestamp);
     await Directory(dirPath).create(recursive: true);
-    var originalFileNameWithoutExtension = path.basenameWithoutExtension(file.path);
-    final String resultPath = path.join(dirPath,
-        "$originalFileNameWithoutExtension.jpg");
+    var originalFileNameWithoutExtension =
+        path.basenameWithoutExtension(file.path);
+    final String resultPath =
+        path.join(dirPath, "$originalFileNameWithoutExtension.jpg");
     _logger.fine(() => "_compressToJpeg \n"
         "\t originPath $originPath"
         "\t resultPath $resultPath");

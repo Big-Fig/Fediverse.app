@@ -7,8 +7,12 @@ import 'package:photo_manager/photo_manager.dart';
 
 class FileGalleryFolderGridItemWidget extends StatelessWidget {
   final FileGalleryFileCallback galleryFileTapped;
+  final Widget loadingWidget;
 
-  FileGalleryFolderGridItemWidget({@required this.galleryFileTapped});
+  FileGalleryFolderGridItemWidget({
+    @required this.galleryFileTapped,
+    @required this.loadingWidget,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,23 +21,20 @@ class FileGalleryFolderGridItemWidget extends StatelessWidget {
     return AsyncInitLoadingWidget(
       loadingFinishedBuilder: (context) => buildLoadedWidget(context, fileBloc),
       asyncInitLoadingBloc: fileBloc,
+      loadingWidget: loadingWidget,
     );
   }
 
-  buildLoadedWidget(BuildContext context, IFileGalleryFileBloc fileBloc) {
-    return GestureDetector(
+  Widget buildLoadedWidget(
+      BuildContext context, IFileGalleryFileBloc galleryFileBloc) {
+    return InkWell(
       onTap: () async {
-
-        fileBloc.retrieveFile().then((file){
-          galleryFileTapped(file);
-        }).catchError((error){
-          print(error);
-        });
+        galleryFileTapped(await galleryFileBloc.retrieveFile());
       },
       child: Stack(
         children: <Widget>[
-          buildPreviewImage(fileBloc),
-          Center(child: buildIcon(fileBloc))
+          buildPreviewImage(galleryFileBloc),
+          Center(child: buildIcon(galleryFileBloc))
         ],
       ),
     );
@@ -41,16 +42,21 @@ class FileGalleryFolderGridItemWidget extends StatelessWidget {
 
   Widget buildIcon(IFileGalleryFileBloc fileBloc) {
     return fileBloc.type == AssetType.video
-            ? Icon(
-                Icons.play_circle_outline,
-                color: Colors.white,
-              )
-            : SizedBox.shrink();
+        ? Icon(
+            Icons.play_circle_outline,
+            color: Colors.white,
+          )
+        : SizedBox.shrink();
   }
 
-  Image buildPreviewImage(IFileGalleryFileBloc fileBloc) {
+  Widget buildPreviewImage(IFileGalleryFileBloc fileBloc) {
+    var thumbImageData = fileBloc.thumbImageData;
+
+    if (thumbImageData == null) {
+      return Center(child: loadingWidget);
+    }
     return Image.memory(
-      fileBloc.thumbImageData,
+      thumbImageData,
       fit: BoxFit.cover,
       width: double.infinity,
       height: double.infinity,
