@@ -1,43 +1,35 @@
 {
   "project_info": {
-    "project_number": "45262364737",
-    "firebase_url": "https://fedi2-d1cad.firebaseio.com",
-    "project_id": "fedi2-d1cad",
-    "storage_bucket": "fedi2-d1cad.appspot.com"
+    "project_number": "907077295345",
+    "firebase_url": "https://fedi-541d6.firebaseio.com",
+    "project_id": "fedi-541d6",
+    "storage_bucket": "fedi-541d6.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:45262364737:android:f9441a1273159d0aa966c0",
+        "mobilesdk_app_id": "1:907077295345:android:d7f0c4da0c967c88aa9d50",
         "android_client_info": {
-          "package_name": "com.fediverse.app2"
+          "package_name": "com.fediverse.app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "45262364737-g2jtg1pemjlfof2ij35hjgbh3kkravd7.apps.googleusercontent.com",
+          "client_id": "907077295345-l7d6d3jsfqmi77609ki3biqoipob4f4b.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBWpTQSeyQHTW-qytWj7-GmMaiD8aUO2bU"
+          "current_key": "AIzaSyAvNLC2hTysuzFMthS8g8Tq7y7Z-gtospc"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "45262364737-g2jtg1pemjlfof2ij35hjgbh3kkravd7.apps.googleusercontent.com",
+              "client_id": "907077295345-l7d6d3jsfqmi77609ki3biqoipob4f4b.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "45262364737-41bpuevnl4u3bumu368pujgba0kmm6q0.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.fediverse.app2",
-                "app_store_id": "1514926758"
-              }
             }
           ]
         }
