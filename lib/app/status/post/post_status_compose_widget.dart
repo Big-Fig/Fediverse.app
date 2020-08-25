@@ -14,6 +14,7 @@ import 'package:fedi/app/status/post/action/post_status_visibility_action_widget
 import 'package:fedi/app/status/post/input/post_status_compose_input_widget.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/ui/divider/fedi_light_grey_divider.dart';
+import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/edit_text/fedi_transparent_edit_text_field.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -28,6 +29,7 @@ class PostStatusComposeWidget extends StatelessWidget {
   final int maxLines;
   final String hintText;
   final bool showPostAction;
+  final bool autofocus;
 
   const PostStatusComposeWidget({
     @required this.displaySubjectField,
@@ -37,6 +39,7 @@ class PostStatusComposeWidget extends StatelessWidget {
     @required this.showPostAction,
     this.hintText,
     @required this.goBackOnSuccess,
+    @required this.autofocus,
   });
 
   @override
@@ -49,27 +52,31 @@ class PostStatusComposeWidget extends StatelessWidget {
         mainAxisSize: expanded ? MainAxisSize.max : MainAxisSize.min,
         children: <Widget>[
           if (displaySubjectField)
-            FediTransparentEditTextField(
-              textEditingController: postStatusBloc.subjectTextController,
-              focusNode: postStatusBloc.subjectFocusNode,
-              hintText: tr("app.status.post.field.subject.hint"),
-              expanded: false,
-              autofocus: false,
-              maxLines: 1,
-              textInputAction: TextInputAction.next,
-              onSubmitted: (String value) async {
-                postStatusBloc.subjectFocusNode.requestFocus();
-                postStatusBloc.inputFocusNode.requestFocus();
-              },
-              errorText: null,
-              highlightMentions: true,
-            ),
+            ...[
+              FediTransparentEditTextField(
+                textEditingController: postStatusBloc.subjectTextController,
+                focusNode: postStatusBloc.subjectFocusNode,
+                hintText: tr("app.status.post.field.subject.hint"),
+                expanded: false,
+                autofocus: false,
+                maxLines: 1,
+                textInputAction: TextInputAction.next,
+                onSubmitted: (String value) async {
+                  postStatusBloc.subjectFocusNode.requestFocus();
+                  postStatusBloc.inputFocusNode.requestFocus();
+                },
+                errorText: null,
+                highlightMentions: true,
+              ),
+              FediUltraLightGreyDivider(),
+            ],
           displayAccountAvatar
               ? Row(
                   children: <Widget>[
                     buildAvatar(),
                     Flexible(
                       child: PostStatusComposeInputWidget(
+                        autofocus: autofocus,
                         expanded: expanded,
                         hintText: hintText,
                         maxLines: maxLines,
@@ -79,6 +86,7 @@ class PostStatusComposeWidget extends StatelessWidget {
                 )
               : Expanded(
                   child: PostStatusComposeInputWidget(
+                    autofocus: autofocus,
                     expanded: false,
                     hintText: hintText,
                     maxLines: maxLines,

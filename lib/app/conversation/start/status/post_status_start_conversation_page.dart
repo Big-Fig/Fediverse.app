@@ -22,6 +22,7 @@ class PostStatusStartConversationPage extends StatelessWidget {
               hasScrollBody: false,
               child: UnfocusOnScrollAreaWidget(
                 child: PostStatusComposeWidget(
+                  autofocus: true,
                   goBackOnSuccess: true,
                   expanded: true,
                   maxLines: null,
