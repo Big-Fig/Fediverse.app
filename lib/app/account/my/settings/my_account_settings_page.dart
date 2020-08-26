@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_widget.dart';
-import 'package:fedi/app/custom_list/custom_list_page.dart';
 import 'package:fedi/app/custom_list/list/custom_list_list_page.dart';
 import 'package:fedi/app/status/draft/draft_status_list_page.dart';
 import 'package:fedi/app/status/scheduled/list/scheduled_status_list_page.dart';
@@ -56,6 +55,7 @@ class MyAccountSettingsPage extends StatelessWidget {
       },
     );
   }
+
   Widget buildListsButton(BuildContext context) {
     return FediPrimaryFilledTextButton(
       tr("app.account.my.settings.action.lists"),
