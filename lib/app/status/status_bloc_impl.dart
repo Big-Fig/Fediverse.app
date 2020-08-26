@@ -412,7 +412,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
 
     var hashtag;
     if (foundPleromaHashtag != null) {
-      hashtag = mapRemoteToLocalHashtag(foundPleromaHashtag);
+      hashtag = mapRemoteHashtagToLocalHashtag(foundPleromaHashtag);
     }
 
     return hashtag;

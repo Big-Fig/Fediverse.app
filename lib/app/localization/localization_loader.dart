@@ -1,4 +1,7 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
+
+// ignore_for_file: prefer_single_quotes
+
 import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart' show AssetLoader;
@@ -11,9 +14,15 @@ class CodegenLoader extends AssetLoader{
     return Future.value(mapLocales[locale.toString()]);
   }
 
-    static const Map<String,dynamic> en_US = {
+  static const Map<String,dynamic> en_US = {
   "app": {
     "custom_list": {
+      "create": {
+        "title": "Create list"
+      },
+      "edit": {
+        "title": "Edit list"
+      },
       "list": {
         "title": "Lists"
       }
@@ -999,5 +1008,5 @@ class CodegenLoader extends AssetLoader{
     }
   }
 };
-  static const Map<String, Map<String,dynamic>> mapLocales = {"en_US": en_US};
+static const Map<String, Map<String,dynamic>> mapLocales = {"en_US": en_US};
 }

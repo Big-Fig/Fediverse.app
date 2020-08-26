@@ -1,6 +1,12 @@
 {
   "app": {
     "custom_list": {
+      "create": {
+        "title": "Create list"
+      },
+      "edit": {
+        "title": "Edit list"
+      },
       "list": {
         "title": "Lists"
       }

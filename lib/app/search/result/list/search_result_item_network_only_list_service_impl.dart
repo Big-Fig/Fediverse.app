@@ -56,7 +56,7 @@ class SearchResultItemsNetworkOnlyListBloc
       searchResult.hashtags.forEach((hashtag) {
         resultItems.add(
           SearchResultItem.hashtag(
-            mapRemoteToLocalHashtag(hashtag),
+            mapRemoteHashtagToLocalHashtag(hashtag),
           ),
         );
       });
