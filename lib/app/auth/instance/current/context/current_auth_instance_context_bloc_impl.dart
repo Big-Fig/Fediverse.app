@@ -64,6 +64,8 @@ import 'package:fedi/pleroma/emoji/pleroma_emoji_service.dart';
 import 'package:fedi/pleroma/emoji/pleroma_emoji_service_impl.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_service.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_service_impl.dart';
+import 'package:fedi/pleroma/list/pleroma_list_service.dart';
+import 'package:fedi/pleroma/list/pleroma_list_service_impl.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service_impl.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_service.dart';
@@ -157,20 +159,19 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: statusRepository);
     await globalProviderService
         .asyncInitAndRegister<IStatusRepository>(statusRepository);
-    
+
     var scheduledStatusRepository =
         ScheduledStatusRepository(appDatabase: moorDatabaseService.appDatabase);
     addDisposable(disposable: scheduledStatusRepository);
     await globalProviderService.asyncInitAndRegister<
         IScheduledStatusRepository>(scheduledStatusRepository);
 
-
     var draftStatusRepository =
-    DraftStatusRepository(appDatabase: moorDatabaseService.appDatabase);
+        DraftStatusRepository(appDatabase: moorDatabaseService.appDatabase);
     addDisposable(disposable: draftStatusRepository);
-    await globalProviderService.asyncInitAndRegister<
-        IDraftStatusRepository>(draftStatusRepository);
-    
+    await globalProviderService
+        .asyncInitAndRegister<IDraftStatusRepository>(draftStatusRepository);
+
     var conversationRepository = ConversationRepository(
         appDatabase: moorDatabaseService.appDatabase,
         accountRepository: accountRepository,
@@ -235,16 +236,23 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         .asyncInitAndRegister<IPleromaAuthRestService>(pleromaAuthRestService);
 
     var pleromaCaptchaService =
-    PleromaCaptchaService(restService: pleromaAuthRestService);
-    await globalProviderService.asyncInitAndRegister<
-        IPleromaCaptchaService>(pleromaCaptchaService);
+        PleromaCaptchaService(restService: pleromaAuthRestService);
+    await globalProviderService
+        .asyncInitAndRegister<IPleromaCaptchaService>(pleromaCaptchaService);
     addDisposable(disposable: pleromaCaptchaService);
-    
+
     var pleromaMediaAttachmentService =
         PleromaMediaAttachmentService(restService: pleromaAuthRestService);
     await globalProviderService.asyncInitAndRegister<
         IPleromaMediaAttachmentService>(pleromaMediaAttachmentService);
     addDisposable(disposable: pleromaMediaAttachmentService);
+
+    var pleromaListService =
+        PleromaListService(restService: pleromaAuthRestService);
+    await globalProviderService
+        .asyncInitAndRegister<IPleromaListService>(pleromaListService);
+    addDisposable(disposable: pleromaListService);
+
     var pleromaMyAccountService =
         PleromaMyAccountService(restService: pleromaAuthRestService);
     await globalProviderService.asyncInitAndRegister<IPleromaMyAccountService>(
@@ -348,13 +356,13 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         emojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc);
 
     var customEmojiPickerRecentCategoryLocalPreferenceBloc =
-    EmojiPickerRecentCategoryLocalPreferenceBloc(
+        EmojiPickerRecentCategoryLocalPreferenceBloc(
             preferencesService, userAtHost);
     addDisposable(
         disposable: customEmojiPickerRecentCategoryLocalPreferenceBloc);
-    await globalProviderService.asyncInitAndRegister<
-        IEmojiPickerRecentCategoryLocalPreferenceBloc>(
-        customEmojiPickerRecentCategoryLocalPreferenceBloc);
+    await globalProviderService
+        .asyncInitAndRegister<IEmojiPickerRecentCategoryLocalPreferenceBloc>(
+            customEmojiPickerRecentCategoryLocalPreferenceBloc);
 
     var timelineLocalPreferenceBloc =
         TimelineSettingsLocalPreferencesBloc(preferencesService, userAtHost);

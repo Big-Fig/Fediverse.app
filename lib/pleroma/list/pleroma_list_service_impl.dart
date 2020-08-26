@@ -118,11 +118,10 @@ class PleromaListService implements IPleromaListService {
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.put(
-        relativePath: urlPath.join(listRelativeUrlPath, listRemoteId),
+          relativePath: urlPath.join(listRelativeUrlPath, listRemoteId),
           bodyJson: {
             "title": title,
           }),
-      ),
     );
 
     return parseListResponse(httpResponse);

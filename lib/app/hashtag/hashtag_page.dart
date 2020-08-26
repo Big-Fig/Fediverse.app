@@ -2,7 +2,6 @@ import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/hashtag/status/list/hashtag_timeline_status_cached_list_bloc_impl.dart';
 import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
-import 'package:fedi/app/status/content/statuc_content_link_helper.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_timeline_widget.dart';
@@ -50,11 +49,11 @@ class HashtagPage extends StatelessWidget {
 
   FediIconButton buildOpenInBrowserAction(BuildContext context) {
     return FediIconButton(
-          icon: Icon(FediIcons.browser),
-          onPressed: () {
-            UrlHelper.handleUrlClick(context, hashtag.url);
-          },
-        );
+      icon: Icon(FediIcons.browser),
+      onPressed: () {
+        UrlHelper.handleUrlClick(context, hashtag.url);
+      },
+    );
   }
 }
 
