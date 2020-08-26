@@ -77,7 +77,8 @@ dependencies:
 
   # localization via .json files
   # command to regenerate loader
-  # flutter pub run easy_localization:generate -s assets/langs -O lib/app/localization -o localization_loader.dart
+  # flutter pub run easy_localization:generate -S assets/langs -O lib/app/localization -o
+  # localization_loader.dart
   easy_localization: ^2.3.2
 
   # annotations to generate json from & to methods
