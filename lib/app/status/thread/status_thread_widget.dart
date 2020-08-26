@@ -193,14 +193,14 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
                       collapsible: false,
                       displayAccountHeader:
                           !statusThreadBloc.isFirstStatusInThread(status),
-                      displayActions: isFirstInList,
+                      displayActions: true,
                       accountMentionCallback:
                           (BuildContext context, IAccount account) {
                         IPostStatusBloc.of(context, listen: false)
                             .addMentionByAccount(account);
                       },
                     ),
-                    if (isFirstInList) FediLightGreyDivider(),
+                    FediLightGreyDivider(),
                   ],
                 ),
               ),
