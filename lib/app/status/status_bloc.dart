@@ -195,6 +195,7 @@ abstract class IStatusBloc implements Disposable, ICollapsibleItem {
   Future<IStatus> toggleBookmark();
 
   Future<IStatus> togglePin();
+  Future delete();
 
   Future<IPleromaStatus> toggleEmojiReaction({@required String emoji});
 
