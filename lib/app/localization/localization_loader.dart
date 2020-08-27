@@ -710,6 +710,7 @@ class CodegenLoader extends AssetLoader{
         }
       },
       "action": {
+        "delete": "Delete",
         "comment": "Comment",
         "favourite": "Favourite",
         "reblog": "Reblog",
@@ -736,6 +737,9 @@ class CodegenLoader extends AssetLoader{
         "action": {
           "view": "Tap to view"
         }
+      },
+      "deleted": {
+        "desc": "Status deleted"
       },
       "spoiler": {
         "action": {

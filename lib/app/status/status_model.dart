@@ -332,7 +332,8 @@ class DbStatusPopulatedWrapper extends IStatus {
   @override
   bool get pinned => dbStatusPopulated.dbStatus.pinned;
 
-  Future<bool> get deleted async => dbStatusPopulated.dbStatus.deleted;
+  @override
+  bool get deleted => dbStatusPopulated.dbStatus.deleted;
 
   @override
   IStatus get reblog {

@@ -162,11 +162,10 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyMediaWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
       query
-        ..where((status) =>
-            isNotNull(status.mediaAttachments)
+        ..where((status) => isNotNull(status.mediaAttachments)
 //            |
 //            status.mediaAttachments.equals("").not()
-        );
+            );
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyLocalWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
@@ -207,8 +206,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
         ..where((status) =>
             (status.muted.equals(false)) &
             (status.pleromaThreadMuted.equals(false) |
-                isNull(status.pleromaThreadMuted))
-        );
+                isNull(status.pleromaThreadMuted)));
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyFromAccountWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
@@ -218,6 +216,9 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyNoNsfwSensitiveWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
       query..where((status) => status.sensitive.equals(true).not());
+  SimpleSelectStatement<$DbStatusesTable, DbStatus> addNotDeletedWhere(
+          SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
+      query..where((status) => isNull(status.deleted));
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyNoRepliesWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
@@ -320,11 +321,11 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
     return [
       ...(includeHomeTimeline
           ? [
-        innerJoin(
-            homeTimelineStatusesAlias,
-            homeTimelineStatusesAlias.statusRemoteId
-                .equalsExp(dbStatuses.remoteId))
-      ]
+              innerJoin(
+                  homeTimelineStatusesAlias,
+                  homeTimelineStatusesAlias.statusRemoteId
+                      .equalsExp(dbStatuses.remoteId))
+            ]
           : []),
       innerJoin(
         accountAlias,
@@ -391,21 +392,20 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   }
 
   Future incrementRepliesCount({@required String remoteId}) {
+    var update = "UPDATE db_statuses "
+        "SET replies_count = replies_count + 1 "
+        "WHERE remote_id = '$remoteId'";
+    var query = db.customUpdate(update, updates: {dbStatuses});
 
-      var update = "UPDATE db_statuses "
-          "SET replies_count = replies_count + 1 "
-          "WHERE remote_id = '$remoteId'";
-      var query = db.customUpdate(update, updates: {dbStatuses});
-
-      return query;
+    return query;
   }
+
   Future markAsDeleted({@required String remoteId}) {
+    var update = "UPDATE db_statuses "
+        "SET deleted = 1 "
+        "WHERE remote_id = '$remoteId'";
+    var query = db.customUpdate(update, updates: {dbStatuses});
 
-      var update = "UPDATE db_statuses "
-          "SET deleted = 0 "
-          "WHERE remote_id = '$remoteId'";
-      var query = db.customUpdate(update, updates: {dbStatuses});
-
-      return query;
+    return query;
   }
 }

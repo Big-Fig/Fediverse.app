@@ -125,5 +125,5 @@ abstract class IStatusRepository
     @required String accountRemoteId,
   });
 
-  Future markStatusAsDeleted({@required IStatus status});
+  Future markStatusAsDeleted({@required String statusRemoteId});
 }

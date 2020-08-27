@@ -65,6 +65,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
         FediChooserDialogBody(
             title: tr("app.status.action.popup.title"),
             actions: [
+              if (isStatusFromMe) buildDeleteAction(context, status),
               if (isStatusFromMe) buildPinAction(context, status),
               buildCopyAction(context, status),
               buildOpenInBrowserAction(context, status),
@@ -237,6 +238,17 @@ class StatusActionMoreDialogBody extends StatelessWidget {
             Navigator.of(context).pop();
             showInfoFediNotificationOverlay(
                 contentText: tr("app.status.copy_link.toast"), titleText: null);
+          });
+
+  DialogAction buildDeleteAction(BuildContext context, IStatus status) =>
+      DialogAction(
+          icon: FediIcons.remove,
+          label: tr("app.status.action.delete"),
+          onAction: () async {
+            await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+                context: context, asyncCode: () => statusBloc.delete());
+
+            Navigator.of(context).pop();
           });
 
   DialogAction buildPinAction(BuildContext context, IStatus status) =>
