@@ -1,25 +1,27 @@
 import 'package:fedi/app/ui/background/fedi_background_blur.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
+import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FediBlurredOverlayWarningWidget extends StatelessWidget {
+  final String descriptionText;
   final String buttonText;
   final Widget child;
   final VoidCallback buttonAction;
 
   FediBlurredOverlayWarningWidget({
-    @required this.buttonText,
-    @required this.buttonAction,
+    this.descriptionText,
+    this.buttonText,
+    this.buttonAction,
     @required this.child,
   });
 
   @override
   Widget build(BuildContext context) => ConstrainedBox(
-
-    constraints: BoxConstraints(minHeight: 100, minWidth: 150),
-    child: Stack(
+        constraints: BoxConstraints(minHeight: 100),
+        child: Stack(
           children: <Widget>[
             child,
             Positioned(
@@ -38,14 +40,21 @@ class FediBlurredOverlayWarningWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        FediBigVerticalSpacer(),
-                        FediPrimaryFilledTextButton(
-                          buttonText,
-                          enabledBorderColor: Colors.transparent,
-                          disabledBorderColor: Colors.transparent,
-                          expanded: false,
-                          onPressed: buttonAction,
-                        ),
+                        if (descriptionText != null) ...[
+                          Text(
+                            descriptionText,
+                            style: FediTextStyles.bigTallDarkGrey,
+                          ),
+                          FediBigVerticalSpacer(),
+                        ],
+                        if (buttonText != null && buttonAction != null)
+                          FediPrimaryFilledTextButton(
+                            buttonText,
+                            enabledBorderColor: Colors.transparent,
+                            disabledBorderColor: Colors.transparent,
+                            expanded: false,
+                            onPressed: buttonAction,
+                          ),
                       ],
                     ),
                     sigma: 6.0,
@@ -55,5 +64,5 @@ class FediBlurredOverlayWarningWidget extends StatelessWidget {
             ),
           ],
         ),
-  );
+      );
 }

@@ -388,6 +388,7 @@ class StatusRepository extends AsyncInitLoadingBloc
       dao.addOnlyNoNsfwSensitiveWhere(query);
     }
 
+
     if (onlyNoReplies == true) {
       dao.addOnlyNoRepliesWhere(query);
     }
@@ -401,6 +402,9 @@ class StatusRepository extends AsyncInitLoadingBloc
           maximumRemoteIdExcluding: olderThanStatus?.remoteId,
           minimumRemoteIdExcluding: newerThanStatus?.remoteId);
     }
+
+    // add parameter arg here
+    dao.addNotDeletedWhere(query);
 
     if (orderingTermData != null) {
       dao.orderBy(query, [orderingTermData]);
@@ -708,6 +712,6 @@ class StatusRepository extends AsyncInitLoadingBloc
       homeTimelineStatusesDao.deleteByAccountRemoteId(accountRemoteId);
 
   @override
-  Future markStatusAsDeleted({@required IStatus status}) =>
-      dao.markAsDeleted(remoteId: status.remoteId);
+  Future markStatusAsDeleted({@required String statusRemoteId}) =>
+      dao.markAsDeleted(remoteId: statusRemoteId);
 }

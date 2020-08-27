@@ -52,8 +52,9 @@ class StatusCachedPaginationListTimelineWidget
           header: header,
           footer: footer,
           itemBuilder: (context, index) {
+            var status = items[index];
             return Provider<IStatus>.value(
-              value: items[index],
+              value: status,
               child: FediListTile(
                 isFirstInList: index == 0 && header == null && !forceFirstItemPadding,
 //                isFirstInList: false,

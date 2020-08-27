@@ -71,9 +71,9 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
         }
         break;
       case PleromaWebSocketsEventType.delete:
-        // TODO: implement remote id
-        //          var statusRemoteId = event.parsePayloadAsRemoteId();
-        //          statusRepository.deleteByRemoteId(id);
+        var statusRemoteId = event.payload;
+
+        await statusRepository.markStatusAsDeleted(statusRemoteId: statusRemoteId);
         break;
       case PleromaWebSocketsEventType.filtersChanged:
         // nothing
