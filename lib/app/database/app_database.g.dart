@@ -46,6 +46,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
   final DateTime pleromaExpiresAt;
   final bool pleromaThreadMuted;
   final List<PleromaStatusEmojiReaction> pleromaEmojiReactions;
+  final bool deleted;
   DbStatus(
       {@required this.id,
       @required this.remoteId,
@@ -84,7 +85,8 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
       this.pleromaSpoilerText,
       this.pleromaExpiresAt,
       this.pleromaThreadMuted,
-      this.pleromaEmojiReactions});
+      this.pleromaEmojiReactions,
+      this.deleted});
   factory DbStatus.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -168,6 +170,8 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
       pleromaEmojiReactions: $DbStatusesTable.$converter10.mapToDart(
           stringType.mapFromDatabaseResponse(
               data['${effectivePrefix}pleroma_emoji_reactions'])),
+      deleted:
+          boolType.mapFromDatabaseResponse(data['${effectivePrefix}deleted']),
     );
   }
   factory DbStatus.fromJson(Map<String, dynamic> json,
@@ -222,6 +226,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
       pleromaEmojiReactions:
           serializer.fromJson<List<PleromaStatusEmojiReaction>>(
               json['pleromaEmojiReactions']),
+      deleted: serializer.fromJson<bool>(json['deleted']),
     );
   }
   @override
@@ -272,6 +277,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
       'pleromaThreadMuted': serializer.toJson<bool>(pleromaThreadMuted),
       'pleromaEmojiReactions': serializer
           .toJson<List<PleromaStatusEmojiReaction>>(pleromaEmojiReactions),
+      'deleted': serializer.toJson<bool>(deleted),
     };
   }
 
@@ -379,6 +385,9 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
       pleromaEmojiReactions: pleromaEmojiReactions == null && nullToAbsent
           ? const Value.absent()
           : Value(pleromaEmojiReactions),
+      deleted: deleted == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deleted),
     );
   }
 
@@ -420,7 +429,8 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           PleromaContent pleromaSpoilerText,
           DateTime pleromaExpiresAt,
           bool pleromaThreadMuted,
-          List<PleromaStatusEmojiReaction> pleromaEmojiReactions}) =>
+          List<PleromaStatusEmojiReaction> pleromaEmojiReactions,
+          bool deleted}) =>
       DbStatus(
         id: id ?? this.id,
         remoteId: remoteId ?? this.remoteId,
@@ -465,6 +475,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
         pleromaThreadMuted: pleromaThreadMuted ?? this.pleromaThreadMuted,
         pleromaEmojiReactions:
             pleromaEmojiReactions ?? this.pleromaEmojiReactions,
+        deleted: deleted ?? this.deleted,
       );
   @override
   String toString() {
@@ -506,7 +517,8 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           ..write('pleromaSpoilerText: $pleromaSpoilerText, ')
           ..write('pleromaExpiresAt: $pleromaExpiresAt, ')
           ..write('pleromaThreadMuted: $pleromaThreadMuted, ')
-          ..write('pleromaEmojiReactions: $pleromaEmojiReactions')
+          ..write('pleromaEmojiReactions: $pleromaEmojiReactions, ')
+          ..write('deleted: $deleted')
           ..write(')'))
         .toString();
   }
@@ -554,7 +566,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
                                                                               .hashCode,
                                                                           $mrjc(
                                                                               content.hashCode,
-                                                                              $mrjc(reblogStatusRemoteId.hashCode, $mrjc(application.hashCode, $mrjc(accountRemoteId.hashCode, $mrjc(mediaAttachments.hashCode, $mrjc(mentions.hashCode, $mrjc(tags.hashCode, $mrjc(emojis.hashCode, $mrjc(poll.hashCode, $mrjc(card.hashCode, $mrjc(language.hashCode, $mrjc(pleromaContent.hashCode, $mrjc(pleromaConversationId.hashCode, $mrjc(pleromaDirectConversationId.hashCode, $mrjc(pleromaInReplyToAccountAcct.hashCode, $mrjc(pleromaLocal.hashCode, $mrjc(pleromaSpoilerText.hashCode, $mrjc(pleromaExpiresAt.hashCode, $mrjc(pleromaThreadMuted.hashCode, pleromaEmojiReactions.hashCode))))))))))))))))))))))))))))))))))))));
+                                                                              $mrjc(reblogStatusRemoteId.hashCode, $mrjc(application.hashCode, $mrjc(accountRemoteId.hashCode, $mrjc(mediaAttachments.hashCode, $mrjc(mentions.hashCode, $mrjc(tags.hashCode, $mrjc(emojis.hashCode, $mrjc(poll.hashCode, $mrjc(card.hashCode, $mrjc(language.hashCode, $mrjc(pleromaContent.hashCode, $mrjc(pleromaConversationId.hashCode, $mrjc(pleromaDirectConversationId.hashCode, $mrjc(pleromaInReplyToAccountAcct.hashCode, $mrjc(pleromaLocal.hashCode, $mrjc(pleromaSpoilerText.hashCode, $mrjc(pleromaExpiresAt.hashCode, $mrjc(pleromaThreadMuted.hashCode, $mrjc(pleromaEmojiReactions.hashCode, deleted.hashCode)))))))))))))))))))))))))))))))))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -598,7 +610,8 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           other.pleromaSpoilerText == this.pleromaSpoilerText &&
           other.pleromaExpiresAt == this.pleromaExpiresAt &&
           other.pleromaThreadMuted == this.pleromaThreadMuted &&
-          other.pleromaEmojiReactions == this.pleromaEmojiReactions);
+          other.pleromaEmojiReactions == this.pleromaEmojiReactions &&
+          other.deleted == this.deleted);
 }
 
 class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
@@ -640,6 +653,7 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
   final Value<DateTime> pleromaExpiresAt;
   final Value<bool> pleromaThreadMuted;
   final Value<List<PleromaStatusEmojiReaction>> pleromaEmojiReactions;
+  final Value<bool> deleted;
   const DbStatusesCompanion({
     this.id = const Value.absent(),
     this.remoteId = const Value.absent(),
@@ -679,6 +693,7 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
     this.pleromaExpiresAt = const Value.absent(),
     this.pleromaThreadMuted = const Value.absent(),
     this.pleromaEmojiReactions = const Value.absent(),
+    this.deleted = const Value.absent(),
   });
   DbStatusesCompanion.insert({
     this.id = const Value.absent(),
@@ -719,6 +734,7 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
     this.pleromaExpiresAt = const Value.absent(),
     this.pleromaThreadMuted = const Value.absent(),
     this.pleromaEmojiReactions = const Value.absent(),
+    this.deleted = const Value.absent(),
   })  : remoteId = Value(remoteId),
         createdAt = Value(createdAt),
         sensitive = Value(sensitive),
@@ -766,7 +782,8 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
       Value<PleromaContent> pleromaSpoilerText,
       Value<DateTime> pleromaExpiresAt,
       Value<bool> pleromaThreadMuted,
-      Value<List<PleromaStatusEmojiReaction>> pleromaEmojiReactions}) {
+      Value<List<PleromaStatusEmojiReaction>> pleromaEmojiReactions,
+      Value<bool> deleted}) {
     return DbStatusesCompanion(
       id: id ?? this.id,
       remoteId: remoteId ?? this.remoteId,
@@ -811,6 +828,7 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
       pleromaThreadMuted: pleromaThreadMuted ?? this.pleromaThreadMuted,
       pleromaEmojiReactions:
           pleromaEmojiReactions ?? this.pleromaEmojiReactions,
+      deleted: deleted ?? this.deleted,
     );
   }
 }
@@ -1299,6 +1317,18 @@ class $DbStatusesTable extends DbStatuses
     );
   }
 
+  final VerificationMeta _deletedMeta = const VerificationMeta('deleted');
+  GeneratedBoolColumn _deleted;
+  @override
+  GeneratedBoolColumn get deleted => _deleted ??= _constructDeleted();
+  GeneratedBoolColumn _constructDeleted() {
+    return GeneratedBoolColumn(
+      'deleted',
+      $tableName,
+      true,
+    );
+  }
+
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -1338,7 +1368,8 @@ class $DbStatusesTable extends DbStatuses
         pleromaSpoilerText,
         pleromaExpiresAt,
         pleromaThreadMuted,
-        pleromaEmojiReactions
+        pleromaEmojiReactions,
+        deleted
       ];
   @override
   $DbStatusesTable get asDslTable => this;
@@ -1513,6 +1544,10 @@ class $DbStatusesTable extends DbStatuses
     }
     context.handle(
         _pleromaEmojiReactionsMeta, const VerificationResult.success());
+    if (d.deleted.present) {
+      context.handle(_deletedMeta,
+          deleted.isAcceptableValue(d.deleted.value, _deletedMeta));
+    }
     return context;
   }
 
@@ -1671,6 +1706,9 @@ class $DbStatusesTable extends DbStatuses
       final converter = $DbStatusesTable.$converter10;
       map['pleroma_emoji_reactions'] = Variable<String, StringType>(
           converter.mapToSql(d.pleromaEmojiReactions.value));
+    }
+    if (d.deleted.present) {
+      map['deleted'] = Variable<bool, BoolType>(d.deleted.value);
     }
     return map;
   }

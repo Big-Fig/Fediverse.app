@@ -48,7 +48,7 @@ PleromaScheduledStatusParams _$PleromaScheduledStatusParamsFromJson(
     poll: json['poll'],
     idempotency: json['idempotency'] as String,
     inReplyToId: json['in_reply_to_id'] as String,
-    applicationId: json['application_id'],
+    applicationId: json['application_id'] as String,
   );
 }
 

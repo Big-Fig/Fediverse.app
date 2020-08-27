@@ -399,4 +399,13 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
 
       return query;
   }
+  Future markAsDeleted({@required String remoteId}) {
+
+      var update = "UPDATE db_statuses "
+          "SET deleted = 0 "
+          "WHERE remote_id = '$remoteId'";
+      var query = db.customUpdate(update, updates: {dbStatuses});
+
+      return query;
+  }
 }

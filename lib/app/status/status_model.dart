@@ -120,48 +120,52 @@ abstract class IStatus {
 
   bool get isHaveReblog => reblogStatusRemoteId != null;
 
-  IStatus copyWith(
-      {IAccount account,
-      IStatus reblog,
-      int id,
-      String remoteId,
-      DateTime createdAt,
-      IStatus inReplyToStatus,
-      String inReplyToRemoteId,
-      String inReplyToAccountRemoteId,
-      bool nsfwSensitive,
-      String spoilerText,
-      PleromaVisibility visibility,
-      String uri,
-      String url,
-      int repliesCount,
-      int reblogsCount,
-      int favouritesCount,
-      bool favourited,
-      bool reblogged,
-      bool muted,
-      bool bookmarked,
-      bool pinned,
-      String content,
-      String reblogStatusRemoteId,
-      PleromaApplication application,
-      String accountRemoteId,
-      List<PleromaMediaAttachment> mediaAttachments,
-      List<PleromaMention> mentions,
-      List<PleromaTag> tags,
-      List<PleromaEmoji> emojis,
-      PleromaPoll poll,
-      PleromaCard card,
-      String language,
-      PleromaContent pleromaContent,
-      int pleromaConversationId,
-      int pleromaDirectConversationId,
-      String pleromaInReplyToAccountAcct,
-      bool pleromaLocal,
-      PleromaContent pleromaSpoilerText,
-      DateTime pleromaExpiresAt,
-      bool pleromaThreadMuted,
-      List<PleromaStatusEmojiReaction> pleromaEmojiReactions});
+  bool get deleted;
+
+  IStatus copyWith({
+    IAccount account,
+    IStatus reblog,
+    int id,
+    String remoteId,
+    DateTime createdAt,
+    IStatus inReplyToStatus,
+    String inReplyToRemoteId,
+    String inReplyToAccountRemoteId,
+    bool nsfwSensitive,
+    String spoilerText,
+    PleromaVisibility visibility,
+    String uri,
+    String url,
+    int repliesCount,
+    int reblogsCount,
+    int favouritesCount,
+    bool favourited,
+    bool reblogged,
+    bool muted,
+    bool bookmarked,
+    bool pinned,
+    String content,
+    String reblogStatusRemoteId,
+    PleromaApplication application,
+    String accountRemoteId,
+    List<PleromaMediaAttachment> mediaAttachments,
+    List<PleromaMention> mentions,
+    List<PleromaTag> tags,
+    List<PleromaEmoji> emojis,
+    PleromaPoll poll,
+    PleromaCard card,
+    String language,
+    PleromaContent pleromaContent,
+    int pleromaConversationId,
+    int pleromaDirectConversationId,
+    String pleromaInReplyToAccountAcct,
+    bool pleromaLocal,
+    PleromaContent pleromaSpoilerText,
+    DateTime pleromaExpiresAt,
+    bool pleromaThreadMuted,
+    List<PleromaStatusEmojiReaction> pleromaEmojiReactions,
+    bool deleted,
+  });
 }
 
 class DbStatusPopulatedWrapper extends IStatus {
@@ -328,6 +332,8 @@ class DbStatusPopulatedWrapper extends IStatus {
   @override
   bool get pinned => dbStatusPopulated.dbStatus.pinned;
 
+  Future<bool> get deleted async => dbStatusPopulated.dbStatus.deleted;
+
   @override
   IStatus get reblog {
     if (dbStatusPopulated.reblogDbStatus != null &&
@@ -389,7 +395,8 @@ class DbStatusPopulatedWrapper extends IStatus {
       PleromaContent pleromaSpoilerText,
       DateTime pleromaExpiresAt,
       bool pleromaThreadMuted,
-      List<PleromaStatusEmojiReaction> pleromaEmojiReactions}) {
+      List<PleromaStatusEmojiReaction> pleromaEmojiReactions,
+      bool deleted}) {
     DbStatus reblogStatus;
     DbAccount reblogStatusAccount;
 
@@ -459,6 +466,7 @@ class DbStatusPopulatedWrapper extends IStatus {
         pleromaExpiresAt: pleromaExpiresAt,
         pleromaThreadMuted: pleromaThreadMuted,
         pleromaEmojiReactions: pleromaEmojiReactions,
+        deleted: deleted,
       ),
       account: dbStatusPopulated.dbAccount.copyWith(
           id: account?.localId,
@@ -626,5 +634,6 @@ DbStatus dbStatusFromStatus(IStatus status) {
     pleromaExpiresAt: status.pleromaExpiresAt,
     pleromaThreadMuted: status.pleromaThreadMuted,
     pleromaEmojiReactions: status.pleromaEmojiReactions,
+    deleted: null,
   );
 }
