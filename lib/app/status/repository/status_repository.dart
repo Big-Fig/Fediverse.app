@@ -124,4 +124,6 @@ abstract class IStatusRepository
   Future removeAccountStatusesFromHome({
     @required String accountRemoteId,
   });
+
+  Future markStatusAsDeleted({@required IStatus status});
 }

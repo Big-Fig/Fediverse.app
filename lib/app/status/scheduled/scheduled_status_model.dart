@@ -98,48 +98,50 @@ class ScheduledStatusAdapterToStatus implements IStatus {
   String get content => scheduledStatus.params.text;
 
   @override
-  IStatus copyWith(
-      {IAccount account,
-      IStatus reblog,
-      int id,
-      String remoteId,
-      DateTime createdAt,
-      IStatus inReplyToStatus,
-      String inReplyToRemoteId,
-      String inReplyToAccountRemoteId,
-      bool nsfwSensitive,
-      String spoilerText,
-      PleromaVisibility visibility,
-      String uri,
-      String url,
-      int repliesCount,
-      int reblogsCount,
-      int favouritesCount,
-      bool favourited,
-      bool reblogged,
-      bool muted,
-      bool bookmarked,
-      bool pinned,
-      String content,
-      String reblogStatusRemoteId,
-      PleromaApplication application,
-      String accountRemoteId,
-      List<PleromaMediaAttachment> mediaAttachments,
-      List<PleromaMention> mentions,
-      List<PleromaTag> tags,
-      List<PleromaEmoji> emojis,
-      PleromaPoll poll,
-      PleromaCard card,
-      String language,
-      PleromaContent pleromaContent,
-      int pleromaConversationId,
-      int pleromaDirectConversationId,
-      String pleromaInReplyToAccountAcct,
-      bool pleromaLocal,
-      PleromaContent pleromaSpoilerText,
-      DateTime pleromaExpiresAt,
-      bool pleromaThreadMuted,
-      List<PleromaStatusEmojiReaction> pleromaEmojiReactions}) {
+  IStatus copyWith({
+    IAccount account,
+    IStatus reblog,
+    int id,
+    String remoteId,
+    DateTime createdAt,
+    IStatus inReplyToStatus,
+    String inReplyToRemoteId,
+    String inReplyToAccountRemoteId,
+    bool nsfwSensitive,
+    String spoilerText,
+    PleromaVisibility visibility,
+    String uri,
+    String url,
+    int repliesCount,
+    int reblogsCount,
+    int favouritesCount,
+    bool favourited,
+    bool reblogged,
+    bool muted,
+    bool bookmarked,
+    bool pinned,
+    String content,
+    String reblogStatusRemoteId,
+    PleromaApplication application,
+    String accountRemoteId,
+    List<PleromaMediaAttachment> mediaAttachments,
+    List<PleromaMention> mentions,
+    List<PleromaTag> tags,
+    List<PleromaEmoji> emojis,
+    PleromaPoll poll,
+    PleromaCard card,
+    String language,
+    PleromaContent pleromaContent,
+    int pleromaConversationId,
+    int pleromaDirectConversationId,
+    String pleromaInReplyToAccountAcct,
+    bool pleromaLocal,
+    PleromaContent pleromaSpoilerText,
+    DateTime pleromaExpiresAt,
+    bool pleromaThreadMuted,
+    List<PleromaStatusEmojiReaction> pleromaEmojiReactions,
+    bool deleted,
+  }) {
     throw notSupportedError;
   }
 
@@ -257,6 +259,9 @@ class ScheduledStatusAdapterToStatus implements IStatus {
   @override
   // todo: fix this, sometimes it may be reply
   IStatus get inReplyToStatus => null;
+
+  @override
+  bool get deleted => false;
 }
 
 enum ScheduledStatusState { scheduled, canceled, alreadyPosted }

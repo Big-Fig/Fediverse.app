@@ -33,6 +33,7 @@ import 'package:fedi/app/status/database/status_reblogged_accounts_database_dao.
 import 'package:fedi/app/status/database/status_reblogged_accounts_database_model.dart';
 import 'package:fedi/app/status/draft/database/draft_status_database_dao.dart';
 import 'package:fedi/app/status/draft/database/draft_status_database_model.dart';
+import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/scheduled/database/scheduled_status_database_dao.dart';
 import 'package:fedi/app/status/scheduled/database/scheduled_status_database_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
@@ -49,7 +50,6 @@ import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:moor/moor.dart';
-import 'package:fedi/app/status/post/post_status_model.dart';
 
 part 'app_database.g.dart';
 
@@ -119,10 +119,28 @@ class AppDatabase extends _$AppDatabase {
           await _migrate1to2(m);
           await _migrate2to3(m);
         }
+
+        if (from == 1 && to == 4) {
+          await _migrate1to2(m);
+          await _migrate2to3(m);
+          await _migrate3to4(m);
+        }
+
         if (from == 2 && to == 3) {
           await _migrate2to3(m);
         }
+        if (from == 2 && to == 4) {
+          await _migrate2to3(m);
+          await _migrate3to4(m);
+        }
+
+        if (from == 3 && to == 4) {
+          await _migrate3to4(m);
+        }
       });
+
+  Future<void> _migrate3to4(Migrator m) async =>
+      await m.addColumn(dbStatuses, dbStatuses.deleted);
 
   Future<void> _migrate2to3(Migrator m) async =>
       await m.createTable(dbDraftStatuses);

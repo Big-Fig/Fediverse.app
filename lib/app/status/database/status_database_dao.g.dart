@@ -101,6 +101,7 @@ mixin _$StatusDaoMixin on DatabaseAccessor<AppDatabase> {
       pleromaThreadMuted: row.readBool('pleroma_thread_muted'),
       pleromaEmojiReactions: $DbStatusesTable.$converter10
           .mapToDart(row.readString('pleroma_emoji_reactions')),
+      deleted: row.readBool('deleted'),
     );
   }
 

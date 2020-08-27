@@ -770,7 +770,14 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   @override
   Future delete() async {
     await pleromaStatusService.deleteStatus(statusRemoteId: status.remoteId);
-    // TODO: implement delete
-    throw UnimplementedError();
+
+    await statusRepository.markStatusAsDeleted(status: status);
   }
+
+  @override
+  bool get deleted => status.deleted;
+
+  @override
+  Stream<bool> get deletedStream =>
+      statusStream.map((status) => status.deleted);
 }

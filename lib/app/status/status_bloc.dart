@@ -200,4 +200,9 @@ abstract class IStatusBloc implements Disposable, ICollapsibleItem {
   Future<IPleromaStatus> toggleEmojiReaction({@required String emoji});
 
   Future onPollUpdated(IPleromaPoll poll);
+
+  bool get deleted;
+
+  Stream<bool> get deletedStream;
+
 }
