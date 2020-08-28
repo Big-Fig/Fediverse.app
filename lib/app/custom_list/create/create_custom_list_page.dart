@@ -1,4 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/custom_list/accounts/custom_list_account_list_widget.dart';
+import 'package:fedi/app/custom_list/form/custom_list_form_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
@@ -17,6 +19,14 @@ class CreateCustomListPage extends StatelessWidget {
             onPressed: () {},
           ),
         ],
+      ),
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            CustomListFormWidget(),
+            CustomListAccountListWidget(),
+          ],
+        ),
       ),
     );
   }
