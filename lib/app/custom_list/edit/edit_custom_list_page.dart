@@ -1,5 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/custom_list/accounts/custom_list_account_list_widget.dart';
 import 'package:fedi/app/custom_list/custom_list_model.dart';
+import 'package:fedi/app/custom_list/form/custom_list_form_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
@@ -19,10 +21,17 @@ class EditCustomListPage extends StatelessWidget {
           ),
         ],
       ),
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            CustomListFormWidget(),
+            CustomListAccountListWidget(),
+          ],
+        ),
+      ),
     );
   }
 }
-
 
 void goToEditCustomListPage({
   @required BuildContext context,
@@ -41,7 +50,5 @@ MaterialPageRoute createEditCustomListPageRoute({
   @required BuildContext context,
   @required ICustomList customList,
 }) {
-  return MaterialPageRoute(
-      builder: (context) => EditCustomListPage());
+  return MaterialPageRoute(builder: (context) => EditCustomListPage());
 }
-
