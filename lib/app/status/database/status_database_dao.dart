@@ -408,4 +408,5 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
 
     return query;
   }
+
 }

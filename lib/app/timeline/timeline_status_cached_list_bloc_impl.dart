@@ -78,7 +78,7 @@ abstract class TimelineStatusCachedListBloc extends DisposableOwner
             sinceId: newerThan?.remoteId,
             limit: limit,
             onlyLocal: onlyLocal,
-            onlyWithMedia: timelineLocalPreferencesBloc.value.onlyWithMedia,
+//            onlyWithMedia: timelineLocalPreferencesBloc.value.onlyWithMedia,
             withMuted: !timelineSettings.onlyNotMuted,
             excludeVisibilities: timelineSettings.excludeVisibilities,
           );
@@ -110,7 +110,7 @@ abstract class TimelineStatusCachedListBloc extends DisposableOwner
 
       if (remoteStatuses != null) {
         await statusRepository.upsertRemoteStatuses(remoteStatuses,
-            listRemoteId: null,
+            listRemoteId: timelineSettings.onlyInListWithRemoteId,
             conversationRemoteId: null,
             isFromHomeTimeline: isFromHomeTimeline);
 

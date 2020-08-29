@@ -14,9 +14,11 @@ var _logger = Logger("account_list_item_widget.dart");
 
 class AccountListItemWidget extends StatelessWidget {
   final AccountCallback accountSelectedCallback;
+  final List<Widget> accountActions;
 
   AccountListItemWidget({
     @required this.accountSelectedCallback,
+    this.accountActions,
   });
 
   @override
@@ -36,24 +38,33 @@ class AccountListItemWidget extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            AccountAvatarWidget(
-              imageSize: FediSizes.accountAvatarDefaultSize,
-              progressSize: FediSizes.accountAvatarProgressDefaultSize,
+            Expanded(
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  AccountAvatarWidget(
+                    imageSize: FediSizes.accountAvatarDefaultSize,
+                    progressSize: FediSizes.accountAvatarProgressDefaultSize,
+                  ),
+                  const FediSmallHorizontalSpacer(),
+                  Flexible(
+                      child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AccountDisplayNameWidget(
+                        textStyle: FediTextStyles.bigShortBoldDarkGrey
+                            .copyWith(height: 1),
+                      ),
+                      AccountAcctWidget(
+                        textStyle: FediTextStyles.mediumShortDarkGrey,
+                      ),
+                    ],
+                  ))
+                ],
+              ),
             ),
-            const FediSmallHorizontalSpacer(),
-            Flexible(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AccountDisplayNameWidget(
-                  textStyle: FediTextStyles.bigShortBoldDarkGrey.copyWith
-                    (height: 1),
-                ),
-                AccountAcctWidget(
-                  textStyle: FediTextStyles.mediumShortDarkGrey,
-                ),
-              ],
-            ))
+            if (accountActions?.isNotEmpty == true) ...accountActions
           ],
         ),
       ),

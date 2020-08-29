@@ -1,6 +1,13 @@
 {
   "app": {
     "custom_list": {
+      "title": "\"{}\" list statuses",
+      "accounts": {
+        "label": "Accounts in list",
+        "action" : {
+          "add": "Add account"
+        }
+      },
       "create": {
         "title": "Create list"
       },
@@ -9,6 +16,14 @@
       },
       "list": {
         "title": "Lists"
+      },
+      "form": {
+        "field": {
+          "title": {
+            "label": "Title*",
+            "hint": "List name"
+          }
+        }
       }
     },
     "emoji": {

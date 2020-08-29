@@ -6,6 +6,7 @@ import 'package:fedi/app/custom_list/list/custom_list_network_only_pagination_bl
 import 'package:fedi/app/custom_list/list/custom_list_pagination_list_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
@@ -19,6 +20,7 @@ import 'package:provider/provider.dart';
 class CustomListListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var paginationListBloc = IPaginationListBloc.of(context, listen: false);
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
         title: "app.custom_list.list.title".tr(),
@@ -26,13 +28,20 @@ class CustomListListPage extends StatelessWidget {
           FediIconButton(
             icon: Icon(FediIcons.plus),
             onPressed: () {
-              goToCreateCustomListPage(context: context);
+              goToCreateCustomListPage(
+                  context: context,
+                  successCallback: () {
+                    paginationListBloc.refreshWithController();
+                  });
             },
           )
         ],
       ),
       body: SafeArea(
-        child: CustomListPaginationListWidget(),
+        child: Padding(
+          padding: FediPadding.allBigPadding,
+          child: CustomListPaginationListWidget(),
+        ),
       ),
     );
   }
@@ -66,7 +75,12 @@ MaterialPageRoute createCustomListListPageRoute({
               listen: false,
             ),
           ),
-          child: CustomListListPage(),
+          child: ProxyProvider<
+              IPaginationListBloc<PaginationPage<ICustomList>, ICustomList>,
+              IPaginationListBloc>(
+            update: (context, value, previous) => value,
+            child: CustomListListPage(),
+          ),
         ),
       ),
     ),

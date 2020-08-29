@@ -714,4 +714,9 @@ class StatusRepository extends AsyncInitLoadingBloc
   @override
   Future markStatusAsDeleted({@required String statusRemoteId}) =>
       dao.markAsDeleted(remoteId: statusRemoteId);
+
+  @override
+  Future clearListStatusesConnection({@required String listRemoteId}) async {
+    await listsDao.deleteByRemoteId(listRemoteId);
+  }
 }

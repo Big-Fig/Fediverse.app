@@ -97,9 +97,8 @@ class PleromaTimelineService implements IPleromaTimelineService {
   Future<List<IPleromaStatus>> getListTimeline({
     @required String listId,
     String maxId,
-      String sinceId,
-     String minId,
-    bool onlyWithMedia = false,
+    String sinceId,
+    String minId,
     bool onlyLocal = false,
     int limit = 20,
     bool withMuted = false,
@@ -114,7 +113,7 @@ class PleromaTimelineService implements IPleromaTimelineService {
         sinceId: sinceId,
         minId: minId,
         limit: limit,
-        onlyWithMedia: onlyWithMedia,
+        onlyWithMedia: null,
         onlyLocal: onlyLocal,
         withMuted: withMuted,
         excludeVisibilities: excludeVisibilities);
@@ -163,12 +162,13 @@ class PleromaTimelineService implements IPleromaTimelineService {
           RestRequestQueryArg("since_id", sinceId),
           RestRequestQueryArg("limit", limit.toString()),
           RestRequestQueryArg("local", onlyLocal.toString()),
-          RestRequestQueryArg("only_media", onlyWithMedia.toString()),
+          if (onlyWithMedia != null)
+            RestRequestQueryArg("only_media", onlyWithMedia.toString()),
           RestRequestQueryArg("with_muted", withMuted.toString()),
           // array
           ...(excludeVisibilities?.map((visibility) {
-            return RestRequestQueryArg("exclude_visibilities[]",
-                visibility.toJsonValue());
+            return RestRequestQueryArg(
+                "exclude_visibilities[]", visibility.toJsonValue());
           }))
         ]);
     var httpResponse = await restService.sendHttpRequest(request);

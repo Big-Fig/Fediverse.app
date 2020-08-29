@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/custom_list/custom_list_model.dart';
 import 'package:fedi/app/custom_list/status/list/custom_list_timeline_status_cached_list_bloc_impl.dart';
@@ -29,7 +30,11 @@ class CustomListPage extends StatelessWidget {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
         centerTitle: false,
-        title: "${customList.title}",
+        title: "app.custom_list.title".tr(
+          args: [
+            customList.title,
+          ],
+        ),
       ),
       body: SafeArea(
         child: CollapsibleOwnerWidget(

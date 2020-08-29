@@ -126,4 +126,5 @@ abstract class IStatusRepository
   });
 
   Future markStatusAsDeleted({@required String statusRemoteId});
+  Future clearListStatusesConnection({@required String listRemoteId});
 }

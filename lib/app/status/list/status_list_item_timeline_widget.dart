@@ -121,11 +121,8 @@ class StatusListItemTimelineWidget extends StatelessWidget {
         statusReplyLoaderBloc.performAsyncInit();
         return statusReplyLoaderBloc;
       },
-      child: buildDeletedStreamBuilderOverlay(
-        child: StatusReplyWidget(
-          collapsible: collapsible,
-        ),
-        statusBloc: null,
+      child: StatusReplyWidget(
+        collapsible: collapsible,
       ),
     );
   }
