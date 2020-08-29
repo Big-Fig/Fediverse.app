@@ -68,6 +68,14 @@ mixin _$StatusListsDaoMixin on DatabaseAccessor<AppDatabase> {
     );
   }
 
+  Future<int> deleteByRemoteId(String listRemoteId) {
+    return customUpdate(
+      'DELETE FROM db_status_lists WHERE list_remote_id = :listRemoteId;',
+      variables: [Variable.withString(listRemoteId)],
+      updates: {dbStatusLists},
+    );
+  }
+
   Future<int> clear() {
     return customUpdate(
       'DELETE FROM db_status_lists',

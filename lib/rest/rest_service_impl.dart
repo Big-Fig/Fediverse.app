@@ -91,8 +91,20 @@ class RestService extends DisposableOwner implements IRestService {
             headers: requestHeaders, body: requestBodyJson, encoding: encoding);
         break;
       case RestRequestType.delete:
-        assert(body?.isNotEmpty != true);
-        response = await http.delete(url, headers: requestHeaders);
+
+        var rq = http.Request('DELETE', url);
+        rq.encoding = encoding;
+        if(requestBodyJson?.isNotEmpty == true) {
+          rq.body = requestBodyJson;
+        }
+        if(requestHeaders?.isNotEmpty == true) {
+          rq.headers.addAll(requestHeaders);
+        }
+        response = await http.Client().send(rq).then(http.Response.fromStream);
+
+        // we don't use http.delete because it is don't support body
+//        response = await http.delete(url,
+//            body: requestBodyJson, headers: requestHeaders);
         break;
       case RestRequestType.put:
         response = await http.put(url,

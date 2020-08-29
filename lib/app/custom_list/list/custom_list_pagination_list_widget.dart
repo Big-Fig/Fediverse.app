@@ -10,7 +10,8 @@ import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-class CustomListPaginationListWidget extends FediPaginationListWidget<ICustomList> {
+class CustomListPaginationListWidget
+    extends FediPaginationListWidget<ICustomList> {
   CustomListPaginationListWidget();
 
   @override
@@ -29,16 +30,14 @@ class CustomListPaginationListWidget extends FediPaginationListWidget<ICustomLis
           var item = items[index];
           return Provider<ICustomList>.value(
             value: item,
-            child: Builder(
-                builder: (context) {
-                  var customList = Provider.of<ICustomList>(context, listen: false);
-                  return DisposableProvider<ICustomListBloc>(
-                    create: (context) => CustomListBloc(customList:customList),
-                    child: CustomListListItemWidget(
-                        customList: customList,
-                      ),
-                  );
-                }),
+            child: DisposableProxyProvider<ICustomList, ICustomListBloc>(
+              update: (context, value, previous) =>
+                  CustomListBloc.createFromContext(
+                context,
+                customList: value,
+              ),
+              child: CustomListListItemWidget(),
+            ),
           );
         });
   }
@@ -46,7 +45,7 @@ class CustomListPaginationListWidget extends FediPaginationListWidget<ICustomLis
   @override
   IPaginationListBloc<PaginationPage<ICustomList>, ICustomList>
       retrievePaginationListBloc(BuildContext context, {bool listen}) =>
-          Provider.of<IPaginationListBloc<PaginationPage<ICustomList>, ICustomList>>(
-              context,
-              listen: false);
+          Provider.of<
+              IPaginationListBloc<PaginationPage<ICustomList>,
+                  ICustomList>>(context, listen: false);
 }

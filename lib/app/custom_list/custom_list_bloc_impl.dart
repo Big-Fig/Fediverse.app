@@ -1,50 +1,68 @@
-import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/custom_list/custom_list_bloc.dart';
 import 'package:fedi/app/custom_list/custom_list_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/pleroma/list/pleroma_list_service.dart';
 import 'package:flutter/widgets.dart';
+import 'package:rxdart/rxdart.dart';
 
 class CustomListBloc extends DisposableOwner implements ICustomListBloc {
-  @override
-  final ICustomList customList;
+  final IPleromaListService pleromaListService;
 
+  BehaviorSubject<ICustomList> customListSubject;
 
-  CustomListBloc({@required this.customList});
-
-  @override
-  Future addAccounts({List<IAccount> accounts}) {
-    // TODO: implement addAccounts
-    throw UnimplementedError();
+  CustomListBloc(
+      {@required ICustomList customList, @required this.pleromaListService})
+      : customListSubject = BehaviorSubject.seeded(customList) {
+    addDisposable(subject: customListSubject);
   }
 
   @override
-  // TODO: implement customListStream
-  Stream<ICustomList> get customListStream => throw UnimplementedError();
+  ICustomList get customList => customListSubject.value;
 
   @override
-  Future delete() {
-    // TODO: implement delete
-    throw UnimplementedError();
+  Stream<ICustomList> get customListStream => customListSubject.stream;
+
+  @override
+  Future delete() async {
+    await pleromaListService.deleteList(listRemoteId: customList.remoteId);
   }
 
   @override
-  Future edit({String title}) {
-    // TODO: implement edit
-    throw UnimplementedError();
+  String get title => customList.title;
+
+  @override
+  Stream<String> get titleStream =>
+      customListStream.map((customList) => customList.title);
+
+  static CustomListBloc createFromContext(BuildContext context,
+          {@required ICustomList customList}) =>
+      CustomListBloc(
+        customList: customList,
+        pleromaListService: IPleromaListService.of(
+          context,
+          listen: false,
+        ),
+      );
+
+  static Widget provideToContext(BuildContext context,
+      {@required Widget child, @required ICustomList customList}) {
+    return DisposableProvider<ICustomListBloc>(
+      create: (context) => CustomListBloc.createFromContext(
+        context,
+        customList: customList,
+      ),
+      child: child,
+    );
   }
 
   @override
-  Future removeAccounts({List<IAccount> accounts}) {
-    // TODO: implement removeAccounts
-    throw UnimplementedError();
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CustomListBloc &&
+          runtimeType == other.runtimeType &&
+          customList == other.customList;
 
   @override
-  // TODO: implement title
-  String get title => throw UnimplementedError();
-
-  @override
-  // TODO: implement titleStream
-  Stream<String> get titleStream => throw UnimplementedError();
-
+  int get hashCode => customList.hashCode;
 }
