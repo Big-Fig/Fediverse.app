@@ -8,13 +8,18 @@ import 'package:moor_ffi/moor_ffi.dart';
 void main() {
   AppDatabase database;
 
+  File dbFile;
   setUp(() async {
+    var filePath = 'test_resources/app/database/fedi2_database_dump_v1.sqlite';
+    var file = File(filePath);
+    dbFile = await file.copy(filePath + ".temp");
     database = AppDatabase(VmDatabase(
-        File('test_resources/app/database/fedi2_database_dump_v1.sqlite')));
+        dbFile));
   });
 
   tearDown(() async {
     await database.close();
+    await dbFile.delete();
   });
 
   test('test updated chat message schema', () async {

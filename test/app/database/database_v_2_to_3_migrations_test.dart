@@ -7,14 +7,17 @@ import 'package:moor_ffi/moor_ffi.dart';
 
 void main() {
   AppDatabase database;
-
+  File dbFile;
   setUp(() async {
-    database = AppDatabase(VmDatabase(
-        File('test_resources/app/database/fedi2_database_dump_v2.sqlite')));
+    var filePath = 'test_resources/app/database/fedi2_database_dump_v2.sqlite';
+    var file = File(filePath);
+    dbFile = await file.copy(filePath + ".temp");
+    database = AppDatabase(VmDatabase(dbFile));
   });
 
   tearDown(() async {
     await database.close();
+    await dbFile.delete();
   });
 
   test('test scheduled', () async {
@@ -34,9 +37,11 @@ void main() {
 
     expect((await scheduledStatusDao.getAll()).isNotEmpty, true);
   });
+
   test('test draft', () async {
     var draftStatusDao = database.draftStatusDao;
 
+    await draftStatusDao.clear();
     expect((await draftStatusDao.getAll()).isNotEmpty, false);
 
     await draftStatusDao.insert(DbDraftStatus(
