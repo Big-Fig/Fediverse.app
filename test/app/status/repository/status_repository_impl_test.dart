@@ -223,23 +223,26 @@ void main() {
 
   test('createQuery empty', () async {
     var query = statusRepository.createQuery(
-        onlyInConversation: null,
-        onlyFromAccount: null,
-        onlyWithMedia: null,
-        onlyNotMuted: null,
-        excludeVisibilities: null,
-        newerThanStatus: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        onlyNoNsfwSensitive: null,
-        onlyLocal: null,
-        onlyNoReplies: null,
-        onlyWithHashtag: null,
-        onlyFromAccountsFollowingByAccount: null,
-        isFromHomeTimeline: null,
-        olderThanStatus: null,
-        onlyInListWithRemoteId: null);
+      onlyInConversation: null,
+      onlyFromAccount: null,
+      onlyWithMedia: null,
+      onlyNotMuted: null,
+      excludeVisibilities: null,
+      newerThanStatus: null,
+      limit: null,
+      offset: null,
+      orderingTermData: null,
+      onlyNoNsfwSensitive: null,
+      onlyLocal: null,
+      onlyNoReplies: null,
+      onlyWithHashtag: null,
+      onlyFromAccountsFollowingByAccount: null,
+      isFromHomeTimeline: null,
+      olderThanStatus: null,
+      onlyInListWithRemoteId: null,
+      onlyBookmarked: null,
+      onlyFavourited: null,
+    );
 
     await insertDbStatus(
         statusRepository,
@@ -274,6 +277,8 @@ void main() {
       isFromHomeTimeline: null,
       olderThanStatus: null,
       onlyInListWithRemoteId: null,
+      onlyBookmarked: null,
+      onlyFavourited: null,
     );
 
     await insertDbStatus(
@@ -308,23 +313,26 @@ void main() {
 
   test('createQuery onlyWithMedia', () async {
     var query = statusRepository.createQuery(
-        onlyInConversation: null,
-        onlyFromAccount: null,
-        onlyWithMedia: true,
-        onlyNotMuted: null,
-        excludeVisibilities: null,
-        newerThanStatus: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        onlyNoNsfwSensitive: null,
-        onlyLocal: null,
-        onlyNoReplies: null,
-        onlyWithHashtag: null,
-        onlyFromAccountsFollowingByAccount: null,
-        isFromHomeTimeline: null,
-        olderThanStatus: null,
-        onlyInListWithRemoteId: null);
+      onlyInConversation: null,
+      onlyFromAccount: null,
+      onlyWithMedia: true,
+      onlyNotMuted: null,
+      excludeVisibilities: null,
+      newerThanStatus: null,
+      limit: null,
+      offset: null,
+      orderingTermData: null,
+      onlyNoNsfwSensitive: null,
+      onlyLocal: null,
+      onlyNoReplies: null,
+      onlyWithHashtag: null,
+      onlyFromAccountsFollowingByAccount: null,
+      isFromHomeTimeline: null,
+      olderThanStatus: null,
+      onlyInListWithRemoteId: null,
+      onlyBookmarked: null,
+      onlyFavourited: null,
+    );
 
     await insertDbStatus(
         statusRepository,
@@ -350,23 +358,26 @@ void main() {
 
   test('createQuery onlyNotMuted', () async {
     var query = statusRepository.createQuery(
-        onlyInConversation: null,
-        onlyFromAccount: null,
-        onlyWithMedia: null,
-        onlyNotMuted: true,
-        excludeVisibilities: null,
-        newerThanStatus: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        onlyNoNsfwSensitive: null,
-        onlyLocal: null,
-        onlyNoReplies: null,
-        onlyWithHashtag: null,
-        onlyFromAccountsFollowingByAccount: null,
-        isFromHomeTimeline: null,
-        olderThanStatus: null,
-        onlyInListWithRemoteId: null);
+      onlyInConversation: null,
+      onlyFromAccount: null,
+      onlyWithMedia: null,
+      onlyNotMuted: true,
+      excludeVisibilities: null,
+      newerThanStatus: null,
+      limit: null,
+      offset: null,
+      orderingTermData: null,
+      onlyNoNsfwSensitive: null,
+      onlyLocal: null,
+      onlyNoReplies: null,
+      onlyWithHashtag: null,
+      onlyFromAccountsFollowingByAccount: null,
+      isFromHomeTimeline: null,
+      olderThanStatus: null,
+      onlyInListWithRemoteId: null,
+      onlyBookmarked: null,
+      onlyFavourited: null,
+    );
 
     await insertDbStatus(
         statusRepository,
@@ -419,26 +430,29 @@ void main() {
 
   test('createQuery excludeVisibilities', () async {
     var query = statusRepository.createQuery(
-        onlyInConversation: null,
-        onlyFromAccount: null,
-        onlyWithMedia: null,
-        onlyNotMuted: null,
-        excludeVisibilities: [
-          PleromaVisibility.DIRECT,
-          PleromaVisibility.UNLISTED
-        ],
-        newerThanStatus: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        onlyNoNsfwSensitive: null,
-        onlyLocal: null,
-        onlyNoReplies: null,
-        onlyWithHashtag: null,
-        onlyFromAccountsFollowingByAccount: null,
-        isFromHomeTimeline: null,
-        olderThanStatus: null,
-        onlyInListWithRemoteId: null);
+      onlyInConversation: null,
+      onlyFromAccount: null,
+      onlyWithMedia: null,
+      onlyNotMuted: null,
+      excludeVisibilities: [
+        PleromaVisibility.DIRECT,
+        PleromaVisibility.UNLISTED
+      ],
+      newerThanStatus: null,
+      limit: null,
+      offset: null,
+      orderingTermData: null,
+      onlyNoNsfwSensitive: null,
+      onlyLocal: null,
+      onlyNoReplies: null,
+      onlyWithHashtag: null,
+      onlyFromAccountsFollowingByAccount: null,
+      isFromHomeTimeline: null,
+      olderThanStatus: null,
+      onlyInListWithRemoteId: null,
+      onlyBookmarked: null,
+      onlyFavourited: null,
+    );
 
     await insertDbStatus(
         statusRepository,
@@ -471,24 +485,27 @@ void main() {
 
   test('createQuery newerThanStatus', () async {
     var query = statusRepository.createQuery(
-        onlyInConversation: null,
-        onlyFromAccount: null,
-        onlyWithMedia: null,
-        onlyNotMuted: null,
-        excludeVisibilities: null,
-        newerThanStatus:
-            await createTestStatus(seed: "remoteId5", remoteId: "remoteId5"),
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        onlyNoNsfwSensitive: null,
-        onlyLocal: null,
-        onlyNoReplies: null,
-        onlyWithHashtag: null,
-        onlyFromAccountsFollowingByAccount: null,
-        isFromHomeTimeline: null,
-        olderThanStatus: null,
-        onlyInListWithRemoteId: null);
+      onlyInConversation: null,
+      onlyFromAccount: null,
+      onlyWithMedia: null,
+      onlyNotMuted: null,
+      excludeVisibilities: null,
+      newerThanStatus:
+          await createTestStatus(seed: "remoteId5", remoteId: "remoteId5"),
+      limit: null,
+      offset: null,
+      orderingTermData: null,
+      onlyNoNsfwSensitive: null,
+      onlyLocal: null,
+      onlyNoReplies: null,
+      onlyWithHashtag: null,
+      onlyFromAccountsFollowingByAccount: null,
+      isFromHomeTimeline: null,
+      olderThanStatus: null,
+      onlyInListWithRemoteId: null,
+      onlyBookmarked: null,
+      onlyFavourited: null,
+    );
 
     await insertDbStatus(
         statusRepository,
@@ -520,24 +537,27 @@ void main() {
 
   test('createQuery notNewerThanStatus', () async {
     var query = statusRepository.createQuery(
-        onlyInConversation: null,
-        onlyFromAccount: null,
-        onlyWithMedia: null,
-        onlyNotMuted: null,
-        excludeVisibilities: null,
-        newerThanStatus: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        onlyNoNsfwSensitive: null,
-        onlyLocal: null,
-        onlyNoReplies: null,
-        onlyWithHashtag: null,
-        onlyFromAccountsFollowingByAccount: null,
-        isFromHomeTimeline: null,
-        olderThanStatus:
-            await createTestStatus(seed: "remoteId5", remoteId: "remoteId5"),
-        onlyInListWithRemoteId: null);
+      onlyInConversation: null,
+      onlyFromAccount: null,
+      onlyWithMedia: null,
+      onlyNotMuted: null,
+      excludeVisibilities: null,
+      newerThanStatus: null,
+      limit: null,
+      offset: null,
+      orderingTermData: null,
+      onlyNoNsfwSensitive: null,
+      onlyLocal: null,
+      onlyNoReplies: null,
+      onlyWithHashtag: null,
+      onlyFromAccountsFollowingByAccount: null,
+      isFromHomeTimeline: null,
+      olderThanStatus:
+          await createTestStatus(seed: "remoteId5", remoteId: "remoteId5"),
+      onlyInListWithRemoteId: null,
+      onlyBookmarked: null,
+      onlyFavourited: null,
+    );
 
     await insertDbStatus(
         statusRepository,
@@ -569,25 +589,28 @@ void main() {
 
   test('createQuery notNewerThanStatus & newerThanStatus', () async {
     var query = statusRepository.createQuery(
-        onlyInConversation: null,
-        onlyFromAccount: null,
-        onlyWithMedia: null,
-        onlyNotMuted: null,
-        excludeVisibilities: null,
-        newerThanStatus:
-            await createTestStatus(seed: "remoteId2", remoteId: "remoteId2"),
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        onlyNoNsfwSensitive: null,
-        onlyLocal: null,
-        onlyNoReplies: null,
-        onlyWithHashtag: null,
-        onlyFromAccountsFollowingByAccount: null,
-        isFromHomeTimeline: null,
-        olderThanStatus:
-            await createTestStatus(seed: "remoteId5", remoteId: "remoteId5"),
-        onlyInListWithRemoteId: null);
+      onlyInConversation: null,
+      onlyFromAccount: null,
+      onlyWithMedia: null,
+      onlyNotMuted: null,
+      excludeVisibilities: null,
+      newerThanStatus:
+          await createTestStatus(seed: "remoteId2", remoteId: "remoteId2"),
+      limit: null,
+      offset: null,
+      orderingTermData: null,
+      onlyNoNsfwSensitive: null,
+      onlyLocal: null,
+      onlyNoReplies: null,
+      onlyWithHashtag: null,
+      onlyFromAccountsFollowingByAccount: null,
+      isFromHomeTimeline: null,
+      olderThanStatus:
+          await createTestStatus(seed: "remoteId5", remoteId: "remoteId5"),
+      onlyInListWithRemoteId: null,
+      onlyBookmarked: null,
+      onlyFavourited: null,
+    );
 
     await insertDbStatus(
         statusRepository,
@@ -633,25 +656,28 @@ void main() {
 
   test('createQuery orderingTermData remoteId asc no limit', () async {
     var query = statusRepository.createQuery(
-        onlyInConversation: null,
-        onlyFromAccount: null,
-        onlyWithMedia: null,
-        onlyNotMuted: null,
-        excludeVisibilities: null,
-        newerThanStatus: null,
-        limit: null,
-        offset: null,
-        orderingTermData: StatusOrderingTermData(
-            orderByType: StatusOrderByType.remoteId,
-            orderingMode: OrderingMode.asc),
-        onlyNoNsfwSensitive: null,
-        onlyLocal: null,
-        onlyNoReplies: null,
-        onlyWithHashtag: null,
-        onlyFromAccountsFollowingByAccount: null,
-        isFromHomeTimeline: null,
-        olderThanStatus: null,
-        onlyInListWithRemoteId: null);
+      onlyInConversation: null,
+      onlyFromAccount: null,
+      onlyWithMedia: null,
+      onlyNotMuted: null,
+      excludeVisibilities: null,
+      newerThanStatus: null,
+      limit: null,
+      offset: null,
+      orderingTermData: StatusOrderingTermData(
+          orderByType: StatusOrderByType.remoteId,
+          orderingMode: OrderingMode.asc),
+      onlyNoNsfwSensitive: null,
+      onlyLocal: null,
+      onlyNoReplies: null,
+      onlyWithHashtag: null,
+      onlyFromAccountsFollowingByAccount: null,
+      isFromHomeTimeline: null,
+      olderThanStatus: null,
+      onlyInListWithRemoteId: null,
+      onlyBookmarked: null,
+      onlyFavourited: null,
+    );
 
     var status2 = await insertDbStatus(
         statusRepository,
@@ -677,25 +703,28 @@ void main() {
 
   test('createQuery orderingTermData remoteId desc no limit', () async {
     var query = statusRepository.createQuery(
-        onlyInConversation: null,
-        onlyFromAccount: null,
-        onlyWithMedia: null,
-        onlyNotMuted: null,
-        excludeVisibilities: null,
-        newerThanStatus: null,
-        limit: null,
-        offset: null,
-        orderingTermData: StatusOrderingTermData(
-            orderByType: StatusOrderByType.remoteId,
-            orderingMode: OrderingMode.desc),
-        onlyNoNsfwSensitive: null,
-        onlyLocal: null,
-        onlyNoReplies: null,
-        onlyWithHashtag: null,
-        onlyFromAccountsFollowingByAccount: null,
-        isFromHomeTimeline: null,
-        olderThanStatus: null,
-        onlyInListWithRemoteId: null);
+      onlyInConversation: null,
+      onlyFromAccount: null,
+      onlyWithMedia: null,
+      onlyNotMuted: null,
+      excludeVisibilities: null,
+      newerThanStatus: null,
+      limit: null,
+      offset: null,
+      orderingTermData: StatusOrderingTermData(
+          orderByType: StatusOrderByType.remoteId,
+          orderingMode: OrderingMode.desc),
+      onlyNoNsfwSensitive: null,
+      onlyLocal: null,
+      onlyNoReplies: null,
+      onlyWithHashtag: null,
+      onlyFromAccountsFollowingByAccount: null,
+      isFromHomeTimeline: null,
+      olderThanStatus: null,
+      onlyInListWithRemoteId: null,
+      onlyBookmarked: null,
+      onlyFavourited: null,
+    );
 
     var status2 = await insertDbStatus(
         statusRepository,
@@ -721,25 +750,28 @@ void main() {
 
   test('createQuery orderingTermData remoteId desc & limit & offset', () async {
     var query = statusRepository.createQuery(
-        onlyInConversation: null,
-        onlyFromAccount: null,
-        onlyWithMedia: null,
-        onlyNotMuted: null,
-        excludeVisibilities: null,
-        newerThanStatus: null,
-        limit: 1,
-        offset: 1,
-        orderingTermData: StatusOrderingTermData(
-            orderByType: StatusOrderByType.remoteId,
-            orderingMode: OrderingMode.desc),
-        onlyNoNsfwSensitive: null,
-        onlyLocal: null,
-        onlyNoReplies: null,
-        onlyWithHashtag: null,
-        onlyFromAccountsFollowingByAccount: null,
-        isFromHomeTimeline: null,
-        olderThanStatus: null,
-        onlyInListWithRemoteId: null);
+      onlyInConversation: null,
+      onlyFromAccount: null,
+      onlyWithMedia: null,
+      onlyNotMuted: null,
+      excludeVisibilities: null,
+      newerThanStatus: null,
+      limit: 1,
+      offset: 1,
+      orderingTermData: StatusOrderingTermData(
+          orderByType: StatusOrderByType.remoteId,
+          orderingMode: OrderingMode.desc),
+      onlyNoNsfwSensitive: null,
+      onlyLocal: null,
+      onlyNoReplies: null,
+      onlyWithHashtag: null,
+      onlyFromAccountsFollowingByAccount: null,
+      isFromHomeTimeline: null,
+      olderThanStatus: null,
+      onlyInListWithRemoteId: null,
+      onlyBookmarked: null,
+      onlyFavourited: null,
+    );
 
     var status2 = await insertDbStatus(
         statusRepository,
@@ -763,23 +795,26 @@ void main() {
 
   test('createQuery onlyNoNsfwSensitive', () async {
     var query = statusRepository.createQuery(
-        onlyInConversation: null,
-        onlyFromAccount: null,
-        onlyWithMedia: null,
-        onlyNotMuted: null,
-        excludeVisibilities: null,
-        newerThanStatus: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        onlyNoNsfwSensitive: true,
-        onlyLocal: null,
-        onlyNoReplies: null,
-        onlyWithHashtag: null,
-        onlyFromAccountsFollowingByAccount: null,
-        isFromHomeTimeline: null,
-        olderThanStatus: null,
-        onlyInListWithRemoteId: null);
+      onlyInConversation: null,
+      onlyFromAccount: null,
+      onlyWithMedia: null,
+      onlyNotMuted: null,
+      excludeVisibilities: null,
+      newerThanStatus: null,
+      limit: null,
+      offset: null,
+      orderingTermData: null,
+      onlyNoNsfwSensitive: true,
+      onlyLocal: null,
+      onlyNoReplies: null,
+      onlyWithHashtag: null,
+      onlyFromAccountsFollowingByAccount: null,
+      isFromHomeTimeline: null,
+      olderThanStatus: null,
+      onlyInListWithRemoteId: null,
+      onlyBookmarked: null,
+      onlyFavourited: null,
+    );
 
     await insertDbStatus(
         statusRepository,
@@ -797,23 +832,26 @@ void main() {
 
   test('createQuery onlyNoReplies', () async {
     var query = statusRepository.createQuery(
-        onlyInConversation: null,
-        onlyFromAccount: null,
-        onlyWithMedia: null,
-        onlyNotMuted: null,
-        excludeVisibilities: null,
-        newerThanStatus: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        onlyNoNsfwSensitive: null,
-        onlyLocal: null,
-        onlyNoReplies: true,
-        onlyWithHashtag: null,
-        onlyFromAccountsFollowingByAccount: null,
-        isFromHomeTimeline: null,
-        olderThanStatus: null,
-        onlyInListWithRemoteId: null);
+      onlyInConversation: null,
+      onlyFromAccount: null,
+      onlyWithMedia: null,
+      onlyNotMuted: null,
+      excludeVisibilities: null,
+      newerThanStatus: null,
+      limit: null,
+      offset: null,
+      orderingTermData: null,
+      onlyNoNsfwSensitive: null,
+      onlyLocal: null,
+      onlyNoReplies: true,
+      onlyWithHashtag: null,
+      onlyFromAccountsFollowingByAccount: null,
+      isFromHomeTimeline: null,
+      olderThanStatus: null,
+      onlyInListWithRemoteId: null,
+      onlyBookmarked: null,
+      onlyFavourited: null,
+    );
 
     await insertDbStatus(
         statusRepository,
@@ -846,40 +884,43 @@ void main() {
     ]);
 
     var query = statusRepository.createQuery(
-        onlyInConversation: null,
-        onlyFromAccount: null,
-        onlyWithMedia: null,
-        onlyNotMuted: null,
-        excludeVisibilities: null,
-        newerThanStatus: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        onlyNoNsfwSensitive: null,
-        onlyLocal: null,
-        onlyNoReplies: null,
-        onlyWithHashtag: null,
-        onlyFromAccountsFollowingByAccount: DbAccountWrapper(DbAccount(
-            id: null,
-            remoteId: followingAccountRemoteId,
-            username: null,
-            url: null,
-            note: null,
-            locked: null,
-            headerStatic: null,
-            header: null,
-            followingCount: null,
-            followersCount: null,
-            statusesCount: null,
-            displayName: null,
-            createdAt: null,
-            avatarStatic: null,
-            avatar: null,
-            acct: null,
-            lastStatusAt: null)),
-        olderThanStatus: null,
-        onlyInListWithRemoteId: null,
-        isFromHomeTimeline: null);
+      onlyInConversation: null,
+      onlyFromAccount: null,
+      onlyWithMedia: null,
+      onlyNotMuted: null,
+      excludeVisibilities: null,
+      newerThanStatus: null,
+      limit: null,
+      offset: null,
+      orderingTermData: null,
+      onlyNoNsfwSensitive: null,
+      onlyLocal: null,
+      onlyNoReplies: null,
+      onlyWithHashtag: null,
+      onlyFromAccountsFollowingByAccount: DbAccountWrapper(DbAccount(
+          id: null,
+          remoteId: followingAccountRemoteId,
+          username: null,
+          url: null,
+          note: null,
+          locked: null,
+          headerStatic: null,
+          header: null,
+          followingCount: null,
+          followersCount: null,
+          statusesCount: null,
+          displayName: null,
+          createdAt: null,
+          avatarStatic: null,
+          avatar: null,
+          acct: null,
+          lastStatusAt: null)),
+      olderThanStatus: null,
+      onlyInListWithRemoteId: null,
+      isFromHomeTimeline: null,
+      onlyBookmarked: null,
+      onlyFavourited: null,
+    );
 
     await insertDbStatus(
         statusRepository,
@@ -903,23 +944,26 @@ void main() {
 
   test('createQuery withHashtag', () async {
     var query = statusRepository.createQuery(
-        onlyInConversation: null,
-        onlyFromAccount: null,
-        onlyWithMedia: null,
-        onlyNotMuted: null,
-        excludeVisibilities: null,
-        newerThanStatus: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        onlyNoNsfwSensitive: null,
-        onlyLocal: null,
-        onlyNoReplies: null,
-        onlyWithHashtag: "#cats",
-        onlyFromAccountsFollowingByAccount: null,
-        isFromHomeTimeline: null,
-        olderThanStatus: null,
-        onlyInListWithRemoteId: null);
+      onlyInConversation: null,
+      onlyFromAccount: null,
+      onlyWithMedia: null,
+      onlyNotMuted: null,
+      excludeVisibilities: null,
+      newerThanStatus: null,
+      limit: null,
+      offset: null,
+      orderingTermData: null,
+      onlyNoNsfwSensitive: null,
+      onlyLocal: null,
+      onlyNoReplies: null,
+      onlyWithHashtag: "#cats",
+      onlyFromAccountsFollowingByAccount: null,
+      isFromHomeTimeline: null,
+      olderThanStatus: null,
+      onlyInListWithRemoteId: null,
+      onlyBookmarked: null,
+      onlyFavourited: null,
+    );
 
     var dbStatus1 =
         (await createTestDbStatus(seed: "seed1", dbAccount: dbAccount))
@@ -980,23 +1024,26 @@ void main() {
   test('createQuery onlyInListWithRemoteId', () async {
     var listWithRemoteId = "listRemoteId";
     var query = statusRepository.createQuery(
-        onlyInConversation: null,
-        onlyFromAccount: null,
-        onlyWithMedia: null,
-        onlyNotMuted: null,
-        excludeVisibilities: null,
-        newerThanStatus: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        onlyNoNsfwSensitive: null,
-        onlyLocal: null,
-        onlyNoReplies: null,
-        onlyWithHashtag: null,
-        onlyFromAccountsFollowingByAccount: null,
-        isFromHomeTimeline: null,
-        olderThanStatus: null,
-        onlyInListWithRemoteId: listWithRemoteId);
+      onlyInConversation: null,
+      onlyFromAccount: null,
+      onlyWithMedia: null,
+      onlyNotMuted: null,
+      excludeVisibilities: null,
+      newerThanStatus: null,
+      limit: null,
+      offset: null,
+      orderingTermData: null,
+      onlyNoNsfwSensitive: null,
+      onlyLocal: null,
+      onlyNoReplies: null,
+      onlyWithHashtag: null,
+      onlyFromAccountsFollowingByAccount: null,
+      isFromHomeTimeline: null,
+      olderThanStatus: null,
+      onlyInListWithRemoteId: listWithRemoteId,
+      onlyBookmarked: null,
+      onlyFavourited: null,
+    );
 
     var dbStatus1 =
         (await createTestDbStatus(seed: "seed1", dbAccount: dbAccount))
@@ -1041,24 +1088,27 @@ void main() {
   test('createQuery onlyInConversation', () async {
     var conversationRemoteId = "conversationRemoteId";
     var query = statusRepository.createQuery(
-        onlyInConversation: DbConversationWrapper(DbConversation(
-            remoteId: conversationRemoteId, unread: false, id: null)),
-        onlyFromAccount: null,
-        onlyWithMedia: null,
-        onlyNotMuted: null,
-        excludeVisibilities: null,
-        newerThanStatus: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        onlyNoNsfwSensitive: null,
-        onlyLocal: null,
-        onlyNoReplies: null,
-        onlyWithHashtag: null,
-        onlyFromAccountsFollowingByAccount: null,
-        isFromHomeTimeline: null,
-        olderThanStatus: null,
-        onlyInListWithRemoteId: null);
+      onlyInConversation: DbConversationWrapper(DbConversation(
+          remoteId: conversationRemoteId, unread: false, id: null)),
+      onlyFromAccount: null,
+      onlyWithMedia: null,
+      onlyNotMuted: null,
+      excludeVisibilities: null,
+      newerThanStatus: null,
+      limit: null,
+      offset: null,
+      orderingTermData: null,
+      onlyNoNsfwSensitive: null,
+      onlyLocal: null,
+      onlyNoReplies: null,
+      onlyWithHashtag: null,
+      onlyFromAccountsFollowingByAccount: null,
+      isFromHomeTimeline: null,
+      olderThanStatus: null,
+      onlyInListWithRemoteId: null,
+      onlyBookmarked: null,
+      onlyFavourited: null,
+    );
 
     var dbStatus1 =
         (await createTestDbStatus(seed: "seed1", dbAccount: dbAccount))
@@ -1102,23 +1152,26 @@ void main() {
 
   test('createQuery onlyFromAccount', () async {
     var query = statusRepository.createQuery(
-        onlyInConversation: null,
-        onlyFromAccount: DbAccountWrapper(dbAccount),
-        onlyWithMedia: null,
-        onlyNotMuted: null,
-        excludeVisibilities: null,
-        newerThanStatus: null,
-        limit: null,
-        offset: null,
-        orderingTermData: null,
-        onlyNoNsfwSensitive: null,
-        onlyLocal: null,
-        onlyNoReplies: null,
-        onlyWithHashtag: null,
-        onlyFromAccountsFollowingByAccount: null,
-        isFromHomeTimeline: null,
-        olderThanStatus: null,
-        onlyInListWithRemoteId: null);
+      onlyInConversation: null,
+      onlyFromAccount: DbAccountWrapper(dbAccount),
+      onlyWithMedia: null,
+      onlyNotMuted: null,
+      excludeVisibilities: null,
+      newerThanStatus: null,
+      limit: null,
+      offset: null,
+      orderingTermData: null,
+      onlyNoNsfwSensitive: null,
+      onlyLocal: null,
+      onlyNoReplies: null,
+      onlyWithHashtag: null,
+      onlyFromAccountsFollowingByAccount: null,
+      isFromHomeTimeline: null,
+      olderThanStatus: null,
+      onlyInListWithRemoteId: null,
+      onlyBookmarked: null,
+      onlyFavourited: null,
+    );
 
     expect((await query.get()).length, 0);
     await insertDbStatus(
@@ -1262,24 +1315,27 @@ void main() {
         (await statusRepository.conversationStatusesDao.countAll()).length, 1);
     expect(
         (await statusRepository.getStatuses(
-                onlyInListWithRemoteId: null,
-                onlyWithHashtag: null,
-                onlyFromAccountsFollowingByAccount: null,
-                isFromHomeTimeline: null,
-                onlyFromAccount: null,
-                onlyInConversation: await createTestConversation(
-                    seed: "seed5", remoteId: conversationRemoteId),
-                onlyLocal: null,
-                onlyWithMedia: null,
-                onlyNotMuted: null,
-                excludeVisibilities: null,
-                olderThanStatus: null,
-                newerThanStatus: null,
-                onlyNoNsfwSensitive: null,
-                onlyNoReplies: null,
-                orderingTermData: null,
-                offset: null,
-                limit: null))
+          onlyInListWithRemoteId: null,
+          onlyWithHashtag: null,
+          onlyFromAccountsFollowingByAccount: null,
+          isFromHomeTimeline: null,
+          onlyFromAccount: null,
+          onlyInConversation: await createTestConversation(
+              seed: "seed5", remoteId: conversationRemoteId),
+          onlyLocal: null,
+          onlyWithMedia: null,
+          onlyNotMuted: null,
+          excludeVisibilities: null,
+          olderThanStatus: null,
+          newerThanStatus: null,
+          onlyNoNsfwSensitive: null,
+          onlyNoReplies: null,
+          orderingTermData: null,
+          offset: null,
+          limit: null,
+          onlyBookmarked: null,
+          onlyFavourited: null,
+        ))
             .length,
         1);
     expectDbStatus(

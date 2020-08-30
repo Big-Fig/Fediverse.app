@@ -4,6 +4,7 @@ import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
+import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/rest/rest_request_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
@@ -19,7 +20,6 @@ class PleromaMyAccountService implements IPleromaMyAccountService {
   final editProfileRelativeUrlPath = "/api/v1/accounts/update_credentials";
   @override
   final IPleromaAuthRestService restService;
-
 
   @override
   bool get isPleromaInstance => restService.isPleromaInstance;
@@ -48,6 +48,15 @@ class PleromaMyAccountService implements IPleromaMyAccountService {
   IPleromaAccount parseMyAccountResponse(Response httpResponse) {
     if (httpResponse.statusCode == 200) {
       return PleromaMyAccount.fromJsonString(httpResponse.body);
+    } else {
+      throw PleromaMyAccountException(
+          statusCode: httpResponse.statusCode, body: httpResponse.body);
+    }
+  }
+
+  List<IPleromaStatus> parseStatusListResponse(Response httpResponse) {
+    if (httpResponse.statusCode == 200) {
+      return PleromaStatus.listFromJsonString(httpResponse.body);
     } else {
       throw PleromaMyAccountException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
@@ -87,6 +96,40 @@ class PleromaMyAccountService implements IPleromaMyAccountService {
     );
 
     return parseMyAccountResponse(httpResponse);
+  }
+
+  @override
+  Future<List<IPleromaStatus>> getBookmarks({
+    String sinceId,
+    String maxId,
+    int limit = 20,
+  }) async {
+    var httpResponse = await restService.sendHttpRequest(RestRequest.get(
+        relativePath: urlPath.join("api/v1/bookmarks"),
+        queryArgs: [
+          RestRequestQueryArg("since_id", sinceId),
+          RestRequestQueryArg("max_id", maxId),
+          RestRequestQueryArg("limit", limit?.toString()),
+        ]));
+
+    return parseStatusListResponse(httpResponse);
+  }
+
+  @override
+  Future<List<IPleromaStatus>> getFavourites({
+    String sinceId,
+    String maxId,
+    int limit = 20,
+  }) async {
+    var httpResponse = await restService.sendHttpRequest(RestRequest.get(
+        relativePath: urlPath.join("api/v1/favourites"),
+        queryArgs: [
+          RestRequestQueryArg("since_id", sinceId),
+          RestRequestQueryArg("max_id", maxId),
+          RestRequestQueryArg("limit", limit?.toString()),
+        ]));
+
+    return parseStatusListResponse(httpResponse);
   }
 
   @override

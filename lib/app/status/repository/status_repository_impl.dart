@@ -256,25 +256,30 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required int offset,
     @required StatusOrderingTermData orderingTermData,
     @required bool isFromHomeTimeline,
+    @required bool onlyFavourited,
+    @required bool onlyBookmarked,
   }) async {
     var query = createQuery(
-        onlyFromAccount: onlyFromAccount,
-        onlyInListWithRemoteId: onlyInListWithRemoteId,
-        onlyWithHashtag: onlyWithHashtag,
-        onlyFromAccountsFollowingByAccount: onlyFromAccountsFollowingByAccount,
-        onlyLocal: onlyLocal,
-        onlyWithMedia: onlyWithMedia,
-        onlyNotMuted: onlyNotMuted,
-        excludeVisibilities: excludeVisibilities,
-        olderThanStatus: olderThanStatus,
-        newerThanStatus: newerThanStatus,
-        onlyNoNsfwSensitive: onlyNoNsfwSensitive,
-        onlyNoReplies: onlyNoReplies,
-        limit: limit,
-        offset: offset,
-        orderingTermData: orderingTermData,
-        onlyInConversation: onlyInConversation,
-        isFromHomeTimeline: isFromHomeTimeline);
+      onlyFromAccount: onlyFromAccount,
+      onlyInListWithRemoteId: onlyInListWithRemoteId,
+      onlyWithHashtag: onlyWithHashtag,
+      onlyFromAccountsFollowingByAccount: onlyFromAccountsFollowingByAccount,
+      onlyLocal: onlyLocal,
+      onlyWithMedia: onlyWithMedia,
+      onlyNotMuted: onlyNotMuted,
+      excludeVisibilities: excludeVisibilities,
+      olderThanStatus: olderThanStatus,
+      newerThanStatus: newerThanStatus,
+      onlyNoNsfwSensitive: onlyNoNsfwSensitive,
+      onlyNoReplies: onlyNoReplies,
+      limit: limit,
+      offset: offset,
+      orderingTermData: orderingTermData,
+      onlyInConversation: onlyInConversation,
+      isFromHomeTimeline: isFromHomeTimeline,
+      onlyBookmarked: onlyBookmarked,
+      onlyFavourited: onlyFavourited,
+    );
 
     return dao
         .typedResultListToPopulated(await query.get())
@@ -301,25 +306,30 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required int offset,
     @required StatusOrderingTermData orderingTermData,
     @required bool isFromHomeTimeline,
+    @required bool onlyFavourited,
+    @required bool onlyBookmarked,
   }) {
     var query = createQuery(
-        onlyInListWithRemoteId: onlyInListWithRemoteId,
-        onlyWithHashtag: onlyWithHashtag,
-        onlyFromAccountsFollowingByAccount: onlyFromAccountsFollowingByAccount,
-        onlyInConversation: onlyInConversation,
-        onlyLocal: onlyLocal,
-        onlyWithMedia: onlyWithMedia,
-        onlyNotMuted: onlyNotMuted,
-        excludeVisibilities: excludeVisibilities,
-        olderThanStatus: olderThanStatus,
-        newerThanStatus: newerThanStatus,
-        onlyNoNsfwSensitive: onlyNoNsfwSensitive,
-        onlyNoReplies: onlyNoReplies,
-        limit: limit,
-        offset: offset,
-        orderingTermData: orderingTermData,
-        onlyFromAccount: onlyFromAccount,
-        isFromHomeTimeline: isFromHomeTimeline);
+      onlyInListWithRemoteId: onlyInListWithRemoteId,
+      onlyWithHashtag: onlyWithHashtag,
+      onlyFromAccountsFollowingByAccount: onlyFromAccountsFollowingByAccount,
+      onlyInConversation: onlyInConversation,
+      onlyLocal: onlyLocal,
+      onlyWithMedia: onlyWithMedia,
+      onlyNotMuted: onlyNotMuted,
+      excludeVisibilities: excludeVisibilities,
+      olderThanStatus: olderThanStatus,
+      newerThanStatus: newerThanStatus,
+      onlyNoNsfwSensitive: onlyNoNsfwSensitive,
+      onlyNoReplies: onlyNoReplies,
+      limit: limit,
+      offset: offset,
+      orderingTermData: orderingTermData,
+      onlyFromAccount: onlyFromAccount,
+      isFromHomeTimeline: isFromHomeTimeline,
+      onlyBookmarked: onlyBookmarked,
+      onlyFavourited: onlyFavourited,
+    );
 
     Stream<List<DbStatusPopulated>> stream =
         query.watch().map(dao.typedResultListToPopulated);
@@ -344,6 +354,8 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required int offset,
     @required StatusOrderingTermData orderingTermData,
     @required bool isFromHomeTimeline,
+    @required bool onlyFavourited,
+    @required bool onlyBookmarked,
   }) {
     _logger.fine(() => "createQuery \n"
         "\t onlyInListWithRemoteId=$onlyInListWithRemoteId\n"
@@ -359,6 +371,8 @@ class StatusRepository extends AsyncInitLoadingBloc
         "\t newerThanStatus=$newerThanStatus\n"
         "\t onlyNoNsfwSensitive=$onlyNoNsfwSensitive\n"
         "\t onlyNoReplies=$onlyNoReplies\n"
+        "\t onlyBookmarked=$onlyBookmarked\n"
+        "\t onlyFavourited=$onlyFavourited\n"
         "\t limit=$limit\n"
         "\t offset=$offset\n"
         "\t isFromHomeTimeline=$isFromHomeTimeline\n"
@@ -388,6 +402,13 @@ class StatusRepository extends AsyncInitLoadingBloc
       dao.addOnlyNoNsfwSensitiveWhere(query);
     }
 
+    if (onlyBookmarked == true) {
+      dao.addOnlyBookmarkedWhere(query);
+    }
+
+    if (onlyFavourited == true) {
+      dao.addOnlyFavouritedWhere(query);
+    }
 
     if (onlyNoReplies == true) {
       dao.addOnlyNoRepliesWhere(query);
@@ -576,80 +597,92 @@ class StatusRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<DbStatusPopulatedWrapper> getStatus(
-      {@required String onlyInListWithRemoteId,
-      @required String onlyWithHashtag,
-      @required IAccount onlyFromAccountsFollowingByAccount,
-      @required IAccount onlyFromAccount,
-      @required IConversation onlyInConversation,
-      @required OnlyLocalStatusFilter onlyLocal,
-      @required bool onlyWithMedia,
-      @required bool onlyNotMuted,
-      @required List<PleromaVisibility> excludeVisibilities,
-      @required IStatus olderThanStatus,
-      @required IStatus newerThanStatus,
-      @required bool onlyNoNsfwSensitive,
-      @required bool onlyNoReplies,
-      @required StatusOrderingTermData orderingTermData,
-      @required bool isFromHomeTimeline}) async {
+  Future<DbStatusPopulatedWrapper> getStatus({
+    @required String onlyInListWithRemoteId,
+    @required String onlyWithHashtag,
+    @required IAccount onlyFromAccountsFollowingByAccount,
+    @required IAccount onlyFromAccount,
+    @required IConversation onlyInConversation,
+    @required OnlyLocalStatusFilter onlyLocal,
+    @required bool onlyWithMedia,
+    @required bool onlyNotMuted,
+    @required List<PleromaVisibility> excludeVisibilities,
+    @required IStatus olderThanStatus,
+    @required IStatus newerThanStatus,
+    @required bool onlyNoNsfwSensitive,
+    @required bool onlyNoReplies,
+    @required StatusOrderingTermData orderingTermData,
+    @required bool isFromHomeTimeline,
+    @required bool onlyFavourited,
+    @required bool onlyBookmarked,
+  }) async {
     var query = createQuery(
-        onlyFromAccount: onlyFromAccount,
-        onlyInListWithRemoteId: onlyInListWithRemoteId,
-        onlyWithHashtag: onlyWithHashtag,
-        onlyFromAccountsFollowingByAccount: onlyFromAccountsFollowingByAccount,
-        onlyLocal: onlyLocal,
-        onlyWithMedia: onlyWithMedia,
-        onlyNotMuted: onlyNotMuted,
-        excludeVisibilities: excludeVisibilities,
-        olderThanStatus: olderThanStatus,
-        newerThanStatus: newerThanStatus,
-        onlyNoNsfwSensitive: onlyNoNsfwSensitive,
-        onlyNoReplies: onlyNoReplies,
-        limit: 1,
-        offset: null,
-        orderingTermData: orderingTermData,
-        onlyInConversation: onlyInConversation,
-        isFromHomeTimeline: isFromHomeTimeline);
+      onlyFromAccount: onlyFromAccount,
+      onlyInListWithRemoteId: onlyInListWithRemoteId,
+      onlyWithHashtag: onlyWithHashtag,
+      onlyFromAccountsFollowingByAccount: onlyFromAccountsFollowingByAccount,
+      onlyLocal: onlyLocal,
+      onlyWithMedia: onlyWithMedia,
+      onlyNotMuted: onlyNotMuted,
+      excludeVisibilities: excludeVisibilities,
+      olderThanStatus: olderThanStatus,
+      newerThanStatus: newerThanStatus,
+      onlyNoNsfwSensitive: onlyNoNsfwSensitive,
+      onlyNoReplies: onlyNoReplies,
+      limit: 1,
+      offset: null,
+      orderingTermData: orderingTermData,
+      onlyInConversation: onlyInConversation,
+      isFromHomeTimeline: isFromHomeTimeline,
+      onlyBookmarked: onlyBookmarked,
+      onlyFavourited: onlyFavourited,
+    );
 
     return mapDataClassToItem(
         dao.typedResultToPopulated(await query.getSingle()));
   }
 
   @override
-  Stream<DbStatusPopulatedWrapper> watchStatus(
-      {@required String onlyInListWithRemoteId,
-      @required String onlyWithHashtag,
-      @required IAccount onlyFromAccount,
-      @required IAccount onlyFromAccountsFollowingByAccount,
-      @required IConversation onlyInConversation,
-      @required OnlyLocalStatusFilter onlyLocal,
-      @required bool onlyWithMedia,
-      @required bool onlyNotMuted,
-      @required List<PleromaVisibility> excludeVisibilities,
-      @required IStatus olderThanStatus,
-      @required IStatus newerThanStatus,
-      @required bool onlyNoNsfwSensitive,
-      @required bool onlyNoReplies,
-      @required StatusOrderingTermData orderingTermData,
-      @required bool isFromHomeTimeline}) {
+  Stream<DbStatusPopulatedWrapper> watchStatus({
+    @required String onlyInListWithRemoteId,
+    @required String onlyWithHashtag,
+    @required IAccount onlyFromAccount,
+    @required IAccount onlyFromAccountsFollowingByAccount,
+    @required IConversation onlyInConversation,
+    @required OnlyLocalStatusFilter onlyLocal,
+    @required bool onlyWithMedia,
+    @required bool onlyNotMuted,
+    @required List<PleromaVisibility> excludeVisibilities,
+    @required IStatus olderThanStatus,
+    @required IStatus newerThanStatus,
+    @required bool onlyNoNsfwSensitive,
+    @required bool onlyNoReplies,
+    @required StatusOrderingTermData orderingTermData,
+    @required bool isFromHomeTimeline,
+    @required bool onlyFavourited,
+    @required bool onlyBookmarked,
+  }) {
     var query = createQuery(
-        onlyInListWithRemoteId: onlyInListWithRemoteId,
-        onlyWithHashtag: onlyWithHashtag,
-        onlyFromAccountsFollowingByAccount: onlyFromAccountsFollowingByAccount,
-        onlyInConversation: onlyInConversation,
-        onlyLocal: onlyLocal,
-        onlyWithMedia: onlyWithMedia,
-        onlyNotMuted: onlyNotMuted,
-        excludeVisibilities: excludeVisibilities,
-        olderThanStatus: olderThanStatus,
-        newerThanStatus: newerThanStatus,
-        onlyNoNsfwSensitive: onlyNoNsfwSensitive,
-        onlyNoReplies: onlyNoReplies,
-        limit: 1,
-        offset: null,
-        orderingTermData: orderingTermData,
-        onlyFromAccount: onlyFromAccount,
-        isFromHomeTimeline: isFromHomeTimeline);
+      onlyInListWithRemoteId: onlyInListWithRemoteId,
+      onlyWithHashtag: onlyWithHashtag,
+      onlyFromAccountsFollowingByAccount: onlyFromAccountsFollowingByAccount,
+      onlyInConversation: onlyInConversation,
+      onlyLocal: onlyLocal,
+      onlyWithMedia: onlyWithMedia,
+      onlyNotMuted: onlyNotMuted,
+      excludeVisibilities: excludeVisibilities,
+      olderThanStatus: olderThanStatus,
+      newerThanStatus: newerThanStatus,
+      onlyNoNsfwSensitive: onlyNoNsfwSensitive,
+      onlyNoReplies: onlyNoReplies,
+      limit: 1,
+      offset: null,
+      orderingTermData: orderingTermData,
+      onlyFromAccount: onlyFromAccount,
+      isFromHomeTimeline: isFromHomeTimeline,
+      onlyBookmarked: onlyBookmarked,
+      onlyFavourited: onlyFavourited,
+    );
 
     Stream<DbStatusPopulated> stream = query
         .watchSingle()
@@ -675,6 +708,8 @@ class StatusRepository extends AsyncInitLoadingBloc
           onlyNoNsfwSensitive: null,
           onlyNoReplies: null,
           isFromHomeTimeline: null,
+          onlyBookmarked: null,
+          onlyFavourited: null,
           orderingTermData: StatusOrderingTermData(
               orderingMode: OrderingMode.desc,
               orderByType: StatusOrderByType.remoteId));
@@ -697,6 +732,8 @@ class StatusRepository extends AsyncInitLoadingBloc
           onlyNoNsfwSensitive: null,
           onlyNoReplies: null,
           isFromHomeTimeline: null,
+          onlyBookmarked: null,
+          onlyFavourited: null,
           orderingTermData: StatusOrderingTermData(
               orderingMode: OrderingMode.desc,
               orderByType: StatusOrderByType.remoteId));

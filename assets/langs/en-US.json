@@ -4,7 +4,7 @@
       "title": "\"{}\" list statuses",
       "accounts": {
         "label": "Accounts in list",
-        "action" : {
+        "action": {
           "add": "Add account"
         }
       },
@@ -136,6 +136,14 @@
         "statuses": "Statuses"
       },
       "my": {
+        "statuses": {
+          "bookmarked": {
+            "title": "Bookmarks"
+          },
+          "favourited": {
+            "title": "Favourites"
+          }
+        },
         "settings": {
           "title": "Account settings",
           "field": {
@@ -151,7 +159,9 @@
           "action": {
             "scheduled_posts": "Scheduled posts",
             "draft_posts": "Draft posts",
-            "lists": "Lists"
+            "lists": "Lists",
+            "bookmarked": "Bookmarked",
+            "favourited": "Favourited"
           }
         },
         "edit": {

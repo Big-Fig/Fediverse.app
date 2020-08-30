@@ -67,6 +67,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
             actions: [
               if (isStatusFromMe) buildDeleteAction(context, status),
               if (isStatusFromMe) buildPinAction(context, status),
+              buildBookmarkAction(context, status),
               buildCopyAction(context, status),
               buildOpenInBrowserAction(context, status),
               buildShareAction(context, status),
@@ -260,6 +261,19 @@ class StatusActionMoreDialogBody extends StatelessWidget {
           onAction: () async {
             await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
                 context: context, asyncCode: () => statusBloc.togglePin());
+
+            Navigator.of(context).pop();
+          });
+
+  DialogAction buildBookmarkAction(BuildContext context, IStatus status) =>
+      DialogAction(
+          icon: Icons.bookmark,
+          label: status.pinned
+              ? tr("app.status.action.unbookmark")
+              : tr("app.status.action.bookmark"),
+          onAction: () async {
+            await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+                context: context, asyncCode: () => statusBloc.toggleBookmark());
 
             Navigator.of(context).pop();
           });

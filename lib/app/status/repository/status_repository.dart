@@ -55,6 +55,8 @@ abstract class IStatusRepository
     @required int offset,
     @required StatusOrderingTermData orderingTermData,
     @required bool isFromHomeTimeline,
+    @required bool onlyFavourited,
+    @required bool onlyBookmarked,
   });
 
   Stream<List<IStatus>> watchStatuses({
@@ -75,6 +77,8 @@ abstract class IStatusRepository
     @required int offset,
     @required StatusOrderingTermData orderingTermData,
     @required bool isFromHomeTimeline,
+    @required bool onlyFavourited,
+    @required bool onlyBookmarked,
   });
 
   Future<IStatus> getStatus({
@@ -93,6 +97,8 @@ abstract class IStatusRepository
     @required bool onlyNoReplies,
     @required StatusOrderingTermData orderingTermData,
     @required bool isFromHomeTimeline,
+    @required bool onlyFavourited,
+    @required bool onlyBookmarked,
   });
 
   Stream<IStatus> watchStatus({
@@ -111,6 +117,8 @@ abstract class IStatusRepository
     @required bool onlyNoReplies,
     @required StatusOrderingTermData orderingTermData,
     @required bool isFromHomeTimeline,
+    @required bool onlyFavourited,
+    @required bool onlyBookmarked,
   });
 
   Stream<IStatus> watchConversationLastStatus(

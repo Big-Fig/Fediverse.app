@@ -1,5 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_widget.dart';
+import 'package:fedi/app/account/my/statuses/bookmarked/my_account_bookmarked_statuses_page.dart';
+import 'package:fedi/app/account/my/statuses/favourited/my_account_favourited_statuses_page.dart';
 import 'package:fedi/app/custom_list/list/custom_list_list_page.dart';
 import 'package:fedi/app/status/draft/draft_status_list_page.dart';
 import 'package:fedi/app/status/scheduled/list/scheduled_status_list_page.dart';
@@ -32,6 +34,10 @@ class MyAccountSettingsPage extends StatelessWidget {
             buildDraftsButton(context),
             FediSmallVerticalSpacer(),
             buildListsButton(context),
+            FediSmallVerticalSpacer(),
+            buildBookmarkedButton(context),
+            FediSmallVerticalSpacer(),
+            buildFavouritedButton(context)
           ],
         ),
       ),
@@ -61,6 +67,24 @@ class MyAccountSettingsPage extends StatelessWidget {
       tr("app.account.my.settings.action.lists"),
       onPressed: () {
         goToCustomListListPage(context: context);
+      },
+    );
+  }
+
+  Widget buildBookmarkedButton(BuildContext context) {
+    return FediPrimaryFilledTextButton(
+      tr("app.account.my.settings.action.bookmarked"),
+      onPressed: () {
+        goToMyAccountBookmarkedStatusesPage(context);
+      },
+    );
+  }
+
+  Widget buildFavouritedButton(BuildContext context) {
+    return FediPrimaryFilledTextButton(
+      tr("app.account.my.settings.action.favourited"),
+      onPressed: () {
+        goToMyAccountFavouritedStatusesPage(context);
       },
     );
   }

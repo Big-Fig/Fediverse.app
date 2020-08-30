@@ -149,6 +149,14 @@ class CodegenLoader extends AssetLoader{
         "statuses": "Statuses"
       },
       "my": {
+        "statuses": {
+          "bookmarked": {
+            "title": "Bookmarks"
+          },
+          "favourited": {
+            "title": "Favourites"
+          }
+        },
         "settings": {
           "title": "Account settings",
           "field": {
@@ -164,7 +172,9 @@ class CodegenLoader extends AssetLoader{
           "action": {
             "scheduled_posts": "Scheduled posts",
             "draft_posts": "Draft posts",
-            "lists": "Lists"
+            "lists": "Lists",
+            "bookmarked": "Bookmarked",
+            "favourited": "Favourited"
           }
         },
         "edit": {

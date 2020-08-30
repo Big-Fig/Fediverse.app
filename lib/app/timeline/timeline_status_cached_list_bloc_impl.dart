@@ -25,6 +25,7 @@ abstract class TimelineStatusCachedListBloc extends DisposableOwner
   final bool isFromHomeTimeline;
 
   TimelineSettingsLocalPreferences _previousPreferences;
+
   @override
   Stream<bool> get settingsChangedStream =>
       timelineLocalPreferencesBloc.stream.map((preferences) {
@@ -140,25 +141,28 @@ abstract class TimelineStatusCachedListBloc extends DisposableOwner
     }
     var timelineLocalPreferences = timelineLocalPreferencesBloc.value;
     return statusRepository.watchStatuses(
-        onlyInConversation: null,
-        onlyFromAccount: null,
-        onlyInListWithRemoteId: timelineSettings.onlyInListWithRemoteId,
-        onlyWithHashtag: timelineSettings.withHashtag,
-        onlyFromAccountsFollowingByAccount: null,
-        onlyLocal: onlyLocalFilter,
-        onlyWithMedia: timelineLocalPreferences.onlyWithMedia,
-        onlyNotMuted: timelineSettings.onlyNotMuted,
-        excludeVisibilities: timelineSettings.excludeVisibilities,
-        olderThanStatus: null,
-        newerThanStatus: item,
-        isFromHomeTimeline: isFromHomeTimeline,
-        onlyNoNsfwSensitive: timelineLocalPreferences.onlyNoNsfwSensitive,
-        onlyNoReplies: timelineLocalPreferences.onlyNoReplies,
-        limit: null,
-        offset: null,
-        orderingTermData: StatusOrderingTermData(
-            orderingMode: OrderingMode.desc,
-            orderByType: StatusOrderByType.remoteId));
+      onlyInConversation: null,
+      onlyFromAccount: null,
+      onlyInListWithRemoteId: timelineSettings.onlyInListWithRemoteId,
+      onlyWithHashtag: timelineSettings.withHashtag,
+      onlyFromAccountsFollowingByAccount: null,
+      onlyLocal: onlyLocalFilter,
+      onlyWithMedia: timelineLocalPreferences.onlyWithMedia,
+      onlyNotMuted: timelineSettings.onlyNotMuted,
+      excludeVisibilities: timelineSettings.excludeVisibilities,
+      olderThanStatus: null,
+      newerThanStatus: item,
+      isFromHomeTimeline: isFromHomeTimeline,
+      onlyNoNsfwSensitive: timelineLocalPreferences.onlyNoNsfwSensitive,
+      onlyNoReplies: timelineLocalPreferences.onlyNoReplies,
+      limit: null,
+      offset: null,
+      orderingTermData: StatusOrderingTermData(
+          orderingMode: OrderingMode.desc,
+          orderByType: StatusOrderByType.remoteId),
+      onlyBookmarked: null,
+      onlyFavourited: null,
+    );
   }
 
   @override
@@ -178,25 +182,28 @@ abstract class TimelineStatusCachedListBloc extends DisposableOwner
     }
     var timelineLocalPreferences = timelineLocalPreferencesBloc.value;
     var statuses = await statusRepository.getStatuses(
-        onlyInConversation: null,
-        onlyFromAccount: null,
-        onlyInListWithRemoteId: timelineSettings.onlyInListWithRemoteId,
-        onlyWithHashtag: timelineSettings.withHashtag,
-        onlyFromAccountsFollowingByAccount: null,
-        onlyLocal: onlyLocalFilter,
-        onlyWithMedia: timelineLocalPreferences.onlyWithMedia,
-        onlyNotMuted: timelineSettings.onlyNotMuted,
-        excludeVisibilities: timelineSettings.excludeVisibilities,
-        olderThanStatus: olderThan,
-        newerThanStatus: newerThan,
-        onlyNoNsfwSensitive: timelineLocalPreferences.onlyNoNsfwSensitive,
-        onlyNoReplies: timelineLocalPreferences.onlyNoReplies,
-        limit: limit,
-        offset: null,
-        orderingTermData: StatusOrderingTermData(
-            orderingMode: OrderingMode.desc,
-            orderByType: StatusOrderByType.remoteId),
-        isFromHomeTimeline: isFromHomeTimeline);
+      onlyInConversation: null,
+      onlyFromAccount: null,
+      onlyInListWithRemoteId: timelineSettings.onlyInListWithRemoteId,
+      onlyWithHashtag: timelineSettings.withHashtag,
+      onlyFromAccountsFollowingByAccount: null,
+      onlyLocal: onlyLocalFilter,
+      onlyWithMedia: timelineLocalPreferences.onlyWithMedia,
+      onlyNotMuted: timelineSettings.onlyNotMuted,
+      excludeVisibilities: timelineSettings.excludeVisibilities,
+      olderThanStatus: olderThan,
+      newerThanStatus: newerThan,
+      onlyNoNsfwSensitive: timelineLocalPreferences.onlyNoNsfwSensitive,
+      onlyNoReplies: timelineLocalPreferences.onlyNoReplies,
+      limit: limit,
+      offset: null,
+      orderingTermData: StatusOrderingTermData(
+          orderingMode: OrderingMode.desc,
+          orderByType: StatusOrderByType.remoteId),
+      isFromHomeTimeline: isFromHomeTimeline,
+      onlyBookmarked: null,
+      onlyFavourited: null,
+    );
 
     _logger.finer(() =>
         "finish loadLocalItems for $timelineSettings statuses ${statuses.length}");
