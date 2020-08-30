@@ -16,7 +16,8 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 
-var _logger = Logger("account_statuses_with_replies_cached_list_bloc_impl.dart");
+var _logger =
+    Logger("account_statuses_with_replies_cached_list_bloc_impl.dart");
 
 class AccountStatusesWithRepliesCachedListBloc
     extends AccountStatusesCachedListBloc {
@@ -69,25 +70,28 @@ class AccountStatusesWithRepliesCachedListBloc
       @required IStatus newerThan,
       @required IStatus olderThan}) async {
     var statuses = await statusRepository.getStatuses(
-        onlyInListWithRemoteId: null,
-        onlyWithHashtag: null,
-        onlyFromAccountsFollowingByAccount: null,
-        onlyLocal: null,
-        onlyWithMedia: false,
-        onlyNotMuted: false,
-        excludeVisibilities: null,
-        olderThanStatus: olderThan,
-        newerThanStatus: newerThan,
-        onlyNoNsfwSensitive: false,
-        onlyNoReplies: false,
-        onlyFromAccount: account,
-        limit: limit,
-        offset: null,
-        orderingTermData: StatusOrderingTermData(
-            orderingMode: OrderingMode.desc,
-            orderByType: StatusOrderByType.remoteId),
-        onlyInConversation: null,
-        isFromHomeTimeline: null);
+      onlyInListWithRemoteId: null,
+      onlyWithHashtag: null,
+      onlyFromAccountsFollowingByAccount: null,
+      onlyLocal: null,
+      onlyWithMedia: false,
+      onlyNotMuted: false,
+      excludeVisibilities: null,
+      olderThanStatus: olderThan,
+      newerThanStatus: newerThan,
+      onlyNoNsfwSensitive: false,
+      onlyNoReplies: false,
+      onlyFromAccount: account,
+      limit: limit,
+      offset: null,
+      orderingTermData: StatusOrderingTermData(
+          orderingMode: OrderingMode.desc,
+          orderByType: StatusOrderByType.remoteId),
+      onlyInConversation: null,
+      isFromHomeTimeline: null,
+      onlyBookmarked: null,
+      onlyFavourited: null,
+    );
 
     return statuses;
   }
@@ -95,25 +99,28 @@ class AccountStatusesWithRepliesCachedListBloc
   @override
   Stream<List<IStatus>> watchLocalItemsNewerThanItem(IStatus item) {
     return statusRepository.watchStatuses(
-        onlyInListWithRemoteId: null,
-        onlyWithHashtag: null,
-        onlyFromAccountsFollowingByAccount: null,
-        onlyLocal: null,
-        onlyWithMedia: false,
-        onlyNotMuted: false,
-        excludeVisibilities: null,
-        olderThanStatus: null,
-        newerThanStatus: item,
-        onlyNoNsfwSensitive: false,
-        onlyNoReplies: false,
-        onlyFromAccount: account,
-        limit: null,
-        offset: null,
-        orderingTermData: StatusOrderingTermData(
-            orderingMode: OrderingMode.desc,
-            orderByType: StatusOrderByType.remoteId),
-        onlyInConversation: null,
-        isFromHomeTimeline: null);
+      onlyInListWithRemoteId: null,
+      onlyWithHashtag: null,
+      onlyFromAccountsFollowingByAccount: null,
+      onlyLocal: null,
+      onlyWithMedia: false,
+      onlyNotMuted: false,
+      excludeVisibilities: null,
+      olderThanStatus: null,
+      newerThanStatus: item,
+      onlyNoNsfwSensitive: false,
+      onlyNoReplies: false,
+      onlyFromAccount: account,
+      limit: null,
+      offset: null,
+      orderingTermData: StatusOrderingTermData(
+          orderingMode: OrderingMode.desc,
+          orderByType: StatusOrderByType.remoteId),
+      onlyInConversation: null,
+      isFromHomeTimeline: null,
+      onlyBookmarked: null,
+      onlyFavourited: null,
+    );
   }
 
   @override

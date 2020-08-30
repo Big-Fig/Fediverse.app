@@ -216,6 +216,15 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyNoNsfwSensitiveWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
       query..where((status) => status.sensitive.equals(true).not());
+
+  SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyFavouritedWhere(
+          SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
+      query..where((status) => status.favourited.equals(true).not());
+
+  SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyBookmarkedWhere(
+          SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
+      query..where((status) => status.bookmarked.equals(true).not());
+
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addNotDeletedWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
       query..where((status) => isNull(status.deleted));
@@ -408,5 +417,4 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
 
     return query;
   }
-
 }
