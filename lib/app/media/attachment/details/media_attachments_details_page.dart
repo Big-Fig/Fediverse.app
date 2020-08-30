@@ -12,6 +12,7 @@ import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/indicator/fedi_indicator_widget.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/error/error_data_model.dart';
@@ -19,17 +20,71 @@ import 'package:fedi/mastodon/media/attachment/mastodon_media_attachment_model.d
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:rxdart/rxdart.dart';
 
-class MediaAttachmentPreviewPage extends StatelessWidget {
-  final IPleromaMediaAttachment mediaAttachment;
+class MediaAttachmentDetailsPage extends StatefulWidget {
+  final List<IPleromaMediaAttachment> mediaAttachments;
+  final IPleromaMediaAttachment initialMediaAttachment;
+  int get initialIndex => mediaAttachments.indexOf(initialMediaAttachment);
 
-  const MediaAttachmentPreviewPage({@required this.mediaAttachment});
+  MediaAttachmentDetailsPage.multi({
+    @required this.mediaAttachments,
+    @required this.initialMediaAttachment,
+  });
+
+  MediaAttachmentDetailsPage.single(
+      {@required IPleromaMediaAttachment mediaAttachment})
+      : this.multi(
+            mediaAttachments: [mediaAttachment],
+            initialMediaAttachment: mediaAttachment);
+
+  @override
+  _MediaAttachmentDetailsPageState createState() =>
+      _MediaAttachmentDetailsPageState(initialMediaAttachment, initialIndex);
+}
+
+class _MediaAttachmentDetailsPageState
+    extends State<MediaAttachmentDetailsPage> {
+  IPleromaMediaAttachment get mediaAttachment =>
+      widget.mediaAttachments[_controller.page.toInt()];
+
+  final PageController _controller;
+
+  BehaviorSubject<IPleromaMediaAttachment> selectedMediaAttachmentSubject;
+  Stream<IPleromaMediaAttachment> get selectedMediaAttachmentStream =>
+      selectedMediaAttachmentSubject.stream;
+
+  IPleromaMediaAttachment get selectedMediaAttachment =>
+      selectedMediaAttachmentSubject.value;
+  VoidCallback listener;
+
+  _MediaAttachmentDetailsPageState(
+      IPleromaMediaAttachment initialMediaAttachment, int initialIndex)
+      : _controller = PageController(
+          initialPage: initialIndex,
+        ),
+        selectedMediaAttachmentSubject =
+            BehaviorSubject.seeded(initialMediaAttachment) {
+    listener = () {
+      selectedMediaAttachmentSubject
+          .add(widget.mediaAttachments[_controller.page.toInt()]);
+    };
+    _controller.addListener(listener);
+  }
+
+  @override
+  void dispose() {
+    _controller.removeListener(listener);
+    _controller.dispose();
+    selectedMediaAttachmentSubject.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
-        title: tr("app.media.attachment.preview.title"),
+        title: tr("app.media.attachment.details.title"),
         actions: <Widget>[
           buildAddToGalleryAction(context),
           buildShareAction(context)
@@ -104,7 +159,7 @@ class MediaAttachmentPreviewPage extends StatelessWidget {
     );
   }
 
-  Widget buildBody(BuildContext context) {
+  Widget buildMediaAttachmentBody(IPleromaMediaAttachment mediaAttachment) {
     switch (mediaAttachment.typeMastodon) {
       case MastodonMediaAttachmentType.image:
       case MastodonMediaAttachmentType.gifv:
@@ -112,15 +167,14 @@ class MediaAttachmentPreviewPage extends StatelessWidget {
           imageBuilder: (context, imageProvider) {
             return Container(
               child: PhotoView(
-                backgroundDecoration: BoxDecoration(
-                    color: FediColors.ultraLightGrey
-                ),
+                backgroundDecoration:
+                    BoxDecoration(color: FediColors.ultraLightGrey),
                 imageProvider: imageProvider,
               ),
             );
           },
-          placeholder: (context, url) => buildPreview(),
-          errorWidget: (context, url, error) => buildPreview(),
+          placeholder: (context, url) => buildDetails(),
+          errorWidget: (context, url, error) => buildDetails(),
           imageUrl: mediaAttachment.url,
         );
         break;
@@ -134,20 +188,58 @@ class MediaAttachmentPreviewPage extends StatelessWidget {
       case MastodonMediaAttachmentType.unknown:
       default:
         return Center(
-            child: Text(tr("app.media.attachment.preview.not_supported_type",
+            child: Text(tr("app.media.attachment.details.not_supported_type",
                 args: [mediaAttachment.type])));
         break;
     }
   }
 
-  Widget buildPreview() => CachedNetworkImage(
+  Widget buildBody(BuildContext context) {
+    if (widget.mediaAttachments.length == 1) {
+      return buildMediaAttachmentBody(mediaAttachment);
+    } else {
+      return Stack(
+        children: <Widget>[
+          PageView(
+            controller: _controller,
+            children: widget.mediaAttachments
+                .map((mediaAttachment) =>
+                    buildMediaAttachmentBody(mediaAttachment))
+                .toList(),
+          ),
+          Positioned(
+            left: 0.0,
+            right: 0.0,
+            bottom: 12.0,
+            child: StreamBuilder<IPleromaMediaAttachment>(
+                stream: selectedMediaAttachmentStream,
+                initialData: selectedMediaAttachment,
+                builder: (context, snapshot) {
+                  var selectedMediaAttachment = snapshot.data;
+
+                  return Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: widget.mediaAttachments
+                        .map((mediaAttachment) => FediIndicatorWidget(
+                            active: selectedMediaAttachment == mediaAttachment))
+                        .toList(),
+                  );
+                }),
+          )
+        ],
+      );
+    }
+  }
+
+  Widget buildDetails() => CachedNetworkImage(
         imageUrl: mediaAttachment.url,
         imageBuilder: (context, imageProvider) {
           return Container(
             child: PhotoView(
-              backgroundDecoration: BoxDecoration(
-                color: FediColors.ultraLightGrey
-              ),
+              backgroundDecoration:
+                  BoxDecoration(color: FediColors.ultraLightGrey),
               imageProvider: imageProvider,
             ),
           );
@@ -162,12 +254,25 @@ class MediaAttachmentPreviewPage extends StatelessWidget {
       );
 }
 
-void goToMediaAttachmentPreviewPage(BuildContext context,
+void goToSingleMediaAttachmentDetailsPage(BuildContext context,
     {@required IPleromaMediaAttachment mediaAttachment}) {
   Navigator.push(
     context,
     MaterialPageRoute(
-        builder: (context) =>
-            MediaAttachmentPreviewPage(mediaAttachment: mediaAttachment)),
+        builder: (context) => MediaAttachmentDetailsPage.single(
+            mediaAttachment: mediaAttachment)),
+  );
+}
+
+void goToMultiMediaAttachmentDetailsPage(BuildContext context,
+    {@required List<IPleromaMediaAttachment> mediaAttachments,
+    @required IPleromaMediaAttachment initialMediaAttachment}) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+        builder: (context) => MediaAttachmentDetailsPage.multi(
+              mediaAttachments: mediaAttachments,
+              initialMediaAttachment: initialMediaAttachment,
+            )),
   );
 }
