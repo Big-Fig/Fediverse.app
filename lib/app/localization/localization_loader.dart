@@ -619,7 +619,7 @@ class CodegenLoader extends AssetLoader{
             }
           }
         },
-        "preview": {
+        "details": {
           "title": "Media attachment",
           "not_supported_type": "Not supported type {}"
         },
