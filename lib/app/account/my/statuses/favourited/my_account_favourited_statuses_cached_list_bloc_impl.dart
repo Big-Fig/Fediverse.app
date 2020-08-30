@@ -89,7 +89,7 @@ class MyAccountFavouritedStatusesCachedListBloc extends DisposableOwner
     IStatus olderThan,
   }) async {
     try {
-      var remoteStatuses = await pleromaMyAccountService.getBookmarks(
+      var remoteStatuses = await pleromaMyAccountService.getFavourites(
         sinceId: newerThan?.remoteId,
         maxId: olderThan?.remoteId,
         limit: limit,
