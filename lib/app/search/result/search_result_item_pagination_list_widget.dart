@@ -42,103 +42,63 @@ class SearchResultItemPaginationListWidget
       @required List<ISearchResultItem> items,
       @required Widget header,
       @required Widget footer}) {
-    var previousIsAccount = false;
-    var previousIsStatus = false;
-    var previousIsHashtag = false;
-    return PaginationListWidget.buildItemsListView(
+    SearchResultItemType previousType;
+
+    var itemWithSeparators = <_ItemOrSeparator<ISearchResultItem>>[];
+    items.forEach((item) {
+      if (item.type != previousType) {
+        switch (item.type) {
+          case SearchResultItemType.status:
+            itemWithSeparators.add(_ItemOrSeparator<ISearchResultItem>(
+                item: null, separator: "app.search.tab.statuses".tr()));
+            break;
+          case SearchResultItemType.account:
+            itemWithSeparators.add(_ItemOrSeparator<ISearchResultItem>(
+                item: null, separator: "app.search.tab.accounts".tr()));
+            break;
+          case SearchResultItemType.hashtag:
+            itemWithSeparators.add(_ItemOrSeparator<ISearchResultItem>(
+                item: null, separator: "app.search.tab.hashtags".tr()));
+            break;
+        }
+      }
+      previousType = item.type;
+
+      itemWithSeparators.add(_ItemOrSeparator(item: item, separator: null));
+    });
+
+    return PaginationListWidget.buildItemsListView<
+            _ItemOrSeparator<ISearchResultItem>>(
         context: context,
-        items: items,
+        items: itemWithSeparators,
         header: header,
         footer: footer,
         itemBuilder: (context, index) {
-          var item = items[index];
+          var itemOrSeparator = itemWithSeparators[index];
 
-          if (item.isAccount) {
-            var account = item.account;
-
-            var isNeedAccountHeader = !previousIsAccount;
-
-            previousIsAccount = true;
-            previousIsStatus = false;
-            previousIsHashtag = false;
-
-            if (isNeedAccountHeader) {
-              return Column(
-                children: [
-                  Padding(
-                    padding: FediPadding.allBigPadding,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          "app.search.tab.accounts".tr(),
-                          style: FediTextStyles.bigTallBoldDarkGrey,
-                        ),
-                      ],
-                    ),
-                  ),
-                  buildAccountListItem(account),
-                ],
-              );
-            } else {
-              return buildAccountListItem(account);
-            }
-          }
-          if (item.isHashtag) {
-            var isNeedHashtagHeader = !previousIsHashtag;
-
-            previousIsAccount = false;
-            previousIsStatus = false;
-            previousIsHashtag = true;
-
-            if (isNeedHashtagHeader) {
-              return Column(
-                children: [
-                  Padding(
-                    padding: FediPadding.allBigPadding,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          "app.search.tab.hashtags".tr(),
-                          style: FediTextStyles.bigTallBoldDarkGrey,
-                        ),
-                      ],
-                    ),
-                  ),
-                  buildHashtagListItem(item, index),
-                ],
-              );
-            } else {
-              return buildHashtagListItem(item, index);
-            }
+          if (itemOrSeparator.separator != null) {
+            return Padding(
+              padding: FediPadding.allMediumPadding,
+              child: Text(
+                itemOrSeparator.separator,
+                style: FediTextStyles.bigTallBoldDarkGrey,
+              ),
+            );
           } else {
-            var isNeedStatusHeader = !previousIsStatus;
+            var item = itemOrSeparator.item;
 
-            previousIsAccount = false;
-            previousIsStatus = true;
-            previousIsHashtag = false;
-
-            if (isNeedStatusHeader) {
-              return Column(
-                children: [
-                  Padding(
-                    padding: FediPadding.allBigPadding,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          "app.search.tab.statuses".tr(),
-                          style: FediTextStyles.bigTallBoldDarkGrey,
-                        ),
-                      ],
-                    ),
-                  ),
-                  buildStatusListItem(item, index),
-                ],
-              );
-            } else {
-              return buildStatusListItem(item, index);
+            switch (item.type) {
+              case SearchResultItemType.status:
+                return buildStatusListItem(item, index);
+                break;
+              case SearchResultItemType.account:
+                return buildAccountListItem(item.account);
+                break;
+              case SearchResultItemType.hashtag:
+                return buildHashtagListItem(item, index);
+                break;
+              default:
+                throw "Invalid item.type ${item.type}";
             }
           }
         });
@@ -197,4 +157,13 @@ class SearchResultItemPaginationListWidget
           Provider.of<
               IPaginationListBloc<PaginationPage<ISearchResultItem>,
                   ISearchResultItem>>(context, listen: listen);
+}
+
+class _ItemOrSeparator<T> {
+  final T item;
+  final String separator;
+  _ItemOrSeparator({@required this.item, @required this.separator}) {
+    assert(item != null || separator != null);
+    assert(!(item != null && separator != null));
+  }
 }

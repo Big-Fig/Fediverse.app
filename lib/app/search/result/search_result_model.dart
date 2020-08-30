@@ -3,6 +3,8 @@ import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:flutter/widgets.dart';
 
+enum SearchResultItemType { status, account, hashtag }
+
 abstract class ISearchResultItem {
   IStatus get status;
 
@@ -10,11 +12,7 @@ abstract class ISearchResultItem {
 
   IHashtag get hashtag;
 
-  bool get isStatus => status != null;
-
-  bool get isAccount => account != null;
-
-  bool get isHashtag => hashtag != null;
+  SearchResultItemType get type;
 }
 
 class SearchResultItem extends ISearchResultItem {
@@ -26,10 +24,14 @@ class SearchResultItem extends ISearchResultItem {
   @override
   final IHashtag hashtag;
 
+  @override
+  final SearchResultItemType type;
+
   SearchResultItem._private({
     @required this.status,
     @required this.account,
     @required this.hashtag,
+    @required this.type,
   });
 
   SearchResultItem.hashtag(
@@ -38,6 +40,7 @@ class SearchResultItem extends ISearchResultItem {
           hashtag: hashtag,
           status: null,
           account: null,
+          type: SearchResultItemType.hashtag,
         );
 
   SearchResultItem.status(
@@ -46,6 +49,7 @@ class SearchResultItem extends ISearchResultItem {
           status: status,
           account: null,
           hashtag: null,
+          type: SearchResultItemType.status,
         );
 
   SearchResultItem.account(
@@ -54,5 +58,6 @@ class SearchResultItem extends ISearchResultItem {
           hashtag: null,
           status: null,
           account: account,
+          type: SearchResultItemType.account,
         );
 }
