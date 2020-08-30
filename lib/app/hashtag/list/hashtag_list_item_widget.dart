@@ -23,7 +23,7 @@ class HashtagListItemWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
-            padding: FediPadding.allSmallPadding,
+            padding: FediPadding.allBigPadding,
             child: Text(
               "#${hashtag.name}",
               textAlign: TextAlign.left,
