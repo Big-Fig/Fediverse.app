@@ -268,7 +268,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
   DialogAction buildBookmarkAction(BuildContext context, IStatus status) =>
       DialogAction(
           icon: Icons.bookmark,
-          label: status.pinned
+          label: status.bookmarked
               ? tr("app.status.action.unbookmark")
               : tr("app.status.action.bookmark"),
           onAction: () async {

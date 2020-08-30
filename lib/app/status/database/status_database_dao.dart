@@ -219,11 +219,11 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyFavouritedWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
-      query..where((status) => status.favourited.equals(true).not());
+      query..where((status) => status.favourited.equals(true));
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyBookmarkedWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
-      query..where((status) => status.bookmarked.equals(true).not());
+      query..where((status) => status.bookmarked.equals(true));
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addNotDeletedWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>

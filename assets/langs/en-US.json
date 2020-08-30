@@ -160,8 +160,8 @@
             "scheduled_posts": "Scheduled posts",
             "draft_posts": "Draft posts",
             "lists": "Lists",
-            "bookmarked": "Bookmarked",
-            "favourited": "Favourited"
+            "bookmarked": "Bookmarks",
+            "favourited": "Favourites"
           }
         },
         "edit": {
@@ -730,6 +730,8 @@
         "open_in_browser": "Open in browser",
         "pin": "Pin",
         "unpin": "Unpin",
+        "bookmark": "Bookmark",
+        "unbookmark": "Unbookmark",
         "copy_link": "Copy link",
         "share_as_text": "Share as text",
         "share_as_link": "Share as link",

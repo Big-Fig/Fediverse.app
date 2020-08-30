@@ -1,4 +1,7 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
+
+// ignore_for_file: prefer_single_quotes
+
 import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart' show AssetLoader;
@@ -11,7 +14,7 @@ class CodegenLoader extends AssetLoader{
     return Future.value(mapLocales[locale.toString()]);
   }
 
-    static const Map<String,dynamic> en_US = {
+  static const Map<String,dynamic> en_US = {
   "app": {
     "custom_list": {
       "title": "\"{}\" list statuses",
@@ -173,8 +176,8 @@ class CodegenLoader extends AssetLoader{
             "scheduled_posts": "Scheduled posts",
             "draft_posts": "Draft posts",
             "lists": "Lists",
-            "bookmarked": "Bookmarked",
-            "favourited": "Favourited"
+            "bookmarked": "Bookmarks",
+            "favourited": "Favourites"
           }
         },
         "edit": {
@@ -743,6 +746,8 @@ class CodegenLoader extends AssetLoader{
         "open_in_browser": "Open in browser",
         "pin": "Pin",
         "unpin": "Unpin",
+        "bookmark": "Bookmark",
+        "unbookmark": "Unbookmark",
         "copy_link": "Copy link",
         "share_as_text": "Share as text",
         "share_as_link": "Share as link",
@@ -1034,5 +1039,5 @@ class CodegenLoader extends AssetLoader{
     }
   }
 };
-  static const Map<String, Map<String,dynamic>> mapLocales = {"en_US": en_US};
+static const Map<String, Map<String,dynamic>> mapLocales = {"en_US": en_US};
 }
