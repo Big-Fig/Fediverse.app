@@ -4,6 +4,8 @@ import 'package:fedi/app/account/account_bloc_impl.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/details/account_details_page.dart';
 import 'package:fedi/app/account/list/account_list_item_widget.dart';
+import 'package:fedi/app/hashtag/hashtag_model.dart';
+import 'package:fedi/app/hashtag/list/hashtag_list_item_widget.dart';
 import 'package:fedi/app/search/result/search_result_model.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -42,6 +44,7 @@ class SearchResultItemPaginationListWidget
       @required Widget footer}) {
     var previousIsAccount = false;
     var previousIsStatus = false;
+    var previousIsHashtag = false;
     return PaginationListWidget.buildItemsListView(
         context: context,
         items: items,
@@ -57,6 +60,7 @@ class SearchResultItemPaginationListWidget
 
             previousIsAccount = true;
             previousIsStatus = false;
+            previousIsHashtag = false;
 
             if (isNeedAccountHeader) {
               return Column(
@@ -79,11 +83,41 @@ class SearchResultItemPaginationListWidget
             } else {
               return buildAccountListItem(account);
             }
+          }
+          if (item.isHashtag) {
+            var isNeedHashtagHeader = !previousIsHashtag;
+
+            previousIsAccount = false;
+            previousIsStatus = false;
+            previousIsHashtag = true;
+
+            if (isNeedHashtagHeader) {
+              return Column(
+                children: [
+                  Padding(
+                    padding: FediPadding.allBigPadding,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          "app.search.tab.hashtags".tr(),
+                          style: FediTextStyles.bigTallBoldDarkGrey,
+                        ),
+                      ],
+                    ),
+                  ),
+                  buildHashtagListItem(item, index),
+                ],
+              );
+            } else {
+              return buildHashtagListItem(item, index);
+            }
           } else {
             var isNeedStatusHeader = !previousIsStatus;
 
             previousIsAccount = false;
             previousIsStatus = true;
+            previousIsHashtag = false;
 
             if (isNeedStatusHeader) {
               return Column(
@@ -110,12 +144,23 @@ class SearchResultItemPaginationListWidget
         });
   }
 
+  Widget buildHashtagListItem(ISearchResultItem item, int index) {
+    return Provider<IHashtag>.value(
+      value: item.hashtag,
+      child: FediListTile(
+        isFirstInList: index == 0, //                isFirstInList: false,
+        child: HashtagListItemWidget(
+          hashtag: item.hashtag,
+        ),
+      ),
+    );
+  }
+
   Provider<IStatus> buildStatusListItem(ISearchResultItem item, int index) {
     return Provider<IStatus>.value(
       value: item.status,
       child: FediListTile(
-        isFirstInList: index == 0,
-//                isFirstInList: false,
+        isFirstInList: index == 0, //                isFirstInList: false,
         child: StatusListItemTimelineWidget.list(
           collapsible: true,
         ),
