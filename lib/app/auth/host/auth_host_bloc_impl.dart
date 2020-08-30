@@ -32,7 +32,7 @@ import 'package:fedi/rest/rest_service_impl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:logging/logging.dart';
 
-final redirectUri = "com.fediverse.app://addNewInstance";
+final redirectUri = "com.fediverse.app2://addNewInstance";
 final scopes = "read write follow push";
 
 var _logger = Logger("auth_host_bloc_impl.dart");
