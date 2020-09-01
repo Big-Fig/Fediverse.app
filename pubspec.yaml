@@ -98,7 +98,7 @@ dependencies:
   flutter_image_compress: ^0.6.5+1
 
   # commandline script to pull database from emulator
-  # adb exec-out run-as com.fediverse.app2 cat ./databases/jffdev@fedi.app.sqlite > database.sqlite
+  # adb exec-out run-as com.fediverse.app cat ./databases/jffdev@fedi.app.sqlite > database.sqlite
   # sqlite orm
   moor: ^2.4.0
 
