@@ -16,25 +16,27 @@ class StatusCachedPaginationListTimelineWidget
 
   @override
   IPaginationListBloc<PaginationPage<IStatus>, IStatus>
-  retrievePaginationListBloc(BuildContext context,
-      {@required bool listen}) {
-    var timelinePaginationListBloc =
-    Provider.of<IPaginationListBloc<CachedPaginationPage<IStatus>, IStatus>>(
+      retrievePaginationListBloc(BuildContext context,
+          {@required bool listen}) {
+    var timelinePaginationListBloc = Provider.of<
+            IPaginationListBloc<CachedPaginationPage<IStatus>, IStatus>>(
         context,
         listen: listen);
     return timelinePaginationListBloc;
   }
 
-  const StatusCachedPaginationListTimelineWidget(
-      {Key key,
-      Widget header,
-      this.forceFirstItemPadding = false,
-      Widget footer,
-      bool alwaysShowHeader,
-      bool alwaysShowFooter,
-      @required this.needWatchLocalRepositoryForUpdates})
-      : super(
+  const StatusCachedPaginationListTimelineWidget({
+    Key key,
+    Widget header,
+    this.forceFirstItemPadding = false,
+    Widget footer,
+    bool alwaysShowHeader,
+    bool alwaysShowFooter,
+    @required this.needWatchLocalRepositoryForUpdates,
+    ScrollController scrollController,
+  }) : super(
             key: key,
+            scrollController: scrollController,
             header: header,
             footer: footer,
             alwaysShowFooter: alwaysShowFooter,
@@ -56,7 +58,8 @@ class StatusCachedPaginationListTimelineWidget
             return Provider<IStatus>.value(
               value: status,
               child: FediListTile(
-                isFirstInList: index == 0 && header == null && !forceFirstItemPadding,
+                isFirstInList:
+                    index == 0 && header == null && !forceFirstItemPadding,
 //                isFirstInList: false,
                 child: StatusListItemTimelineWidget.list(
                   collapsible: true,
