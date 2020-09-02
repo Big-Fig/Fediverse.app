@@ -17,6 +17,9 @@ class PleromaInstancePleromaPartAdapter
         case 0:
           obj.metadata = reader.read() as PleromaInstancePleromaPartMetadata;
           break;
+        case 1:
+          obj.vapidPublicKey = reader.read() as String;
+          break;
       }
     }
     return obj;
@@ -24,9 +27,51 @@ class PleromaInstancePleromaPartAdapter
 
   @override
   void write(BinaryWriter writer, PleromaInstancePleromaPart obj) {
-    writer.writeByte(1);
+    writer.writeByte(2);
     writer.writeByte(0);
     writer.write(obj.metadata);
+    writer.writeByte(1);
+    writer.write(obj.vapidPublicKey);
+  }
+}
+
+class PleromaInstancePleromaPartMetadataFieldLimitsAdapter
+    extends TypeAdapter<PleromaInstancePleromaPartMetadataFieldLimits> {
+  @override
+  PleromaInstancePleromaPartMetadataFieldLimits read(BinaryReader reader) {
+    var obj = PleromaInstancePleromaPartMetadataFieldLimits();
+    var numOfFields = reader.readByte();
+    for (var i = 0; i < numOfFields; i++) {
+      switch (reader.readByte()) {
+        case 0:
+          obj.maxFields = reader.read() as int;
+          break;
+        case 1:
+          obj.maxRemoteFields = reader.read() as int;
+          break;
+        case 2:
+          obj.nameLength = reader.read() as int;
+          break;
+        case 3:
+          obj.valueLength = reader.read() as int;
+          break;
+      }
+    }
+    return obj;
+  }
+
+  @override
+  void write(
+      BinaryWriter writer, PleromaInstancePleromaPartMetadataFieldLimits obj) {
+    writer.writeByte(4);
+    writer.writeByte(0);
+    writer.write(obj.maxFields);
+    writer.writeByte(1);
+    writer.write(obj.maxRemoteFields);
+    writer.writeByte(2);
+    writer.write(obj.nameLength);
+    writer.writeByte(3);
+    writer.write(obj.valueLength);
   }
 }
 
@@ -39,10 +84,20 @@ class PleromaInstancePleromaPartMetadataAdapter
     for (var i = 0; i < numOfFields; i++) {
       switch (reader.readByte()) {
         case 0:
-          obj.features = reader.read() as dynamic;
+          obj.features = (reader.read() as List)?.cast<String>();
           break;
         case 1:
           obj.federation = reader.read() as dynamic;
+          break;
+        case 2:
+          obj.postFormats = (reader.read() as List)?.cast<String>();
+          break;
+        case 3:
+          obj.accountActivationRequired = reader.read() as bool;
+          break;
+        case 4:
+          obj.fieldsLimits =
+              reader.read() as PleromaInstancePleromaPartMetadataFieldLimits;
           break;
       }
     }
@@ -51,11 +106,17 @@ class PleromaInstancePleromaPartMetadataAdapter
 
   @override
   void write(BinaryWriter writer, PleromaInstancePleromaPartMetadata obj) {
-    writer.writeByte(2);
+    writer.writeByte(5);
     writer.writeByte(0);
     writer.write(obj.features);
     writer.writeByte(1);
     writer.write(obj.federation);
+    writer.writeByte(2);
+    writer.write(obj.postFormats);
+    writer.writeByte(3);
+    writer.write(obj.accountActivationRequired);
+    writer.writeByte(4);
+    writer.write(obj.fieldsLimits);
   }
 }
 
@@ -168,6 +229,18 @@ class PleromaInstanceAdapter extends TypeAdapter<PleromaInstance> {
         case 20:
           obj.backgroundImage = reader.read() as String;
           break;
+        case 21:
+          obj.chatLimit = reader.read() as int;
+          break;
+        case 22:
+          obj.description = reader.read() as String;
+          break;
+        case 23:
+          obj.descriptionLimit = reader.read() as int;
+          break;
+        case 24:
+          obj.invitesEnabled = reader.read() as bool;
+          break;
       }
     }
     return obj;
@@ -175,7 +248,7 @@ class PleromaInstanceAdapter extends TypeAdapter<PleromaInstance> {
 
   @override
   void write(BinaryWriter writer, PleromaInstance obj) {
-    writer.writeByte(21);
+    writer.writeByte(25);
     writer.writeByte(0);
     writer.write(obj.approvalRequired);
     writer.writeByte(1);
@@ -218,6 +291,14 @@ class PleromaInstanceAdapter extends TypeAdapter<PleromaInstance> {
     writer.write(obj.version);
     writer.writeByte(20);
     writer.write(obj.backgroundImage);
+    writer.writeByte(21);
+    writer.write(obj.chatLimit);
+    writer.writeByte(22);
+    writer.write(obj.description);
+    writer.writeByte(23);
+    writer.write(obj.descriptionLimit);
+    writer.writeByte(24);
+    writer.write(obj.invitesEnabled);
   }
 }
 
@@ -251,6 +332,7 @@ PleromaInstancePleromaPart _$PleromaInstancePleromaPartFromJson(
         ? null
         : PleromaInstancePleromaPartMetadata.fromJson(
             json['metadata'] as Map<String, dynamic>),
+    vapidPublicKey: json['vapid_public_key'] as String,
   );
 }
 
@@ -258,13 +340,41 @@ Map<String, dynamic> _$PleromaInstancePleromaPartToJson(
         PleromaInstancePleromaPart instance) =>
     <String, dynamic>{
       'metadata': instance.metadata?.toJson(),
+      'vapid_public_key': instance.vapidPublicKey,
+    };
+
+PleromaInstancePleromaPartMetadataFieldLimits
+    _$PleromaInstancePleromaPartMetadataFieldLimitsFromJson(
+        Map<String, dynamic> json) {
+  return PleromaInstancePleromaPartMetadataFieldLimits(
+    maxFields: json['max_fields'] as int,
+    maxRemoteFields: json['max_remote_fields'] as int,
+    nameLength: json['name_length'] as int,
+    valueLength: json['value_length'] as int,
+  );
+}
+
+Map<String, dynamic> _$PleromaInstancePleromaPartMetadataFieldLimitsToJson(
+        PleromaInstancePleromaPartMetadataFieldLimits instance) =>
+    <String, dynamic>{
+      'max_fields': instance.maxFields,
+      'max_remote_fields': instance.maxRemoteFields,
+      'name_length': instance.nameLength,
+      'value_length': instance.valueLength,
     };
 
 PleromaInstancePleromaPartMetadata _$PleromaInstancePleromaPartMetadataFromJson(
     Map<String, dynamic> json) {
   return PleromaInstancePleromaPartMetadata(
-    features: json['features'],
+    features: (json['features'] as List)?.map((e) => e as String)?.toList(),
     federation: json['federation'],
+    postFormats:
+        (json['post_formats'] as List)?.map((e) => e as String)?.toList(),
+    accountActivationRequired: json['account_activation_required'] as bool,
+    fieldsLimits: json['fields_limits'] == null
+        ? null
+        : PleromaInstancePleromaPartMetadataFieldLimits.fromJson(
+            json['fields_limits'] as Map<String, dynamic>),
   );
 }
 
@@ -273,6 +383,9 @@ Map<String, dynamic> _$PleromaInstancePleromaPartMetadataToJson(
     <String, dynamic>{
       'features': instance.features,
       'federation': instance.federation,
+      'post_formats': instance.postFormats,
+      'account_activation_required': instance.accountActivationRequired,
+      'fields_limits': instance.fieldsLimits?.toJson(),
     };
 
 PleromaInstancePollLimits _$PleromaInstancePollLimitsFromJson(
@@ -330,6 +443,10 @@ PleromaInstance _$PleromaInstanceFromJson(Map<String, dynamic> json) {
     vapidPublicKey: json['vapid_public_key'] as String,
     version: json['version'] as String,
     backgroundImage: json['background_image'] as String,
+    chatLimit: json['chat_limit'] as int,
+    description: json['description'] as String,
+    descriptionLimit: json['description_limit'] as int,
+    invitesEnabled: json['invites_enabled'] as bool,
   );
 }
 
@@ -356,4 +473,8 @@ Map<String, dynamic> _$PleromaInstanceToJson(PleromaInstance instance) =>
       'vapid_public_key': instance.vapidPublicKey,
       'version': instance.version,
       'background_image': instance.backgroundImage,
+      'chat_limit': instance.chatLimit,
+      'description': instance.description,
+      'description_limit': instance.descriptionLimit,
+      'invites_enabled': instance.invitesEnabled,
     };
