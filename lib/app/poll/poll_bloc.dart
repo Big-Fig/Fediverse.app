@@ -42,4 +42,6 @@ abstract class IPollBloc implements Disposable {
   Future vote();
 
   void onPollUpdated(IPleromaPoll poll);
+
+  Future<bool> refreshFromNetwork();
 }
