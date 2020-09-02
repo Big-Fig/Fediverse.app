@@ -26,7 +26,6 @@ abstract class AccountStatusesWidget extends FediPaginationListWidget<IStatus> {
   @override
   Future<bool> additionalPreRefreshAction(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);
-
     return accountBloc.refreshFromNetwork(true);
   }
 

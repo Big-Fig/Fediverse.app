@@ -66,42 +66,36 @@ class SelectAccountListBloc extends DisposableOwner
         "\t newerThan = $newerThan"
         "\t olderThan = $olderThan");
 
-    try {
-      List<IPleromaAccount> remoteAccounts;
+    List<IPleromaAccount> remoteAccounts;
 
-      var searchTermExist = searchText?.isNotEmpty == true;
-      if (searchTermExist) {
-        remoteAccounts = await pleromaAccountService.search(
-            query: searchText, resolve: true);
+    var searchTermExist = searchText?.isNotEmpty == true;
+    if (searchTermExist) {
+      remoteAccounts =
+          await pleromaAccountService.search(query: searchText, resolve: true);
+    } else {
+      if (customDefaultRemoteAccountListLoader != null) {
+        remoteAccounts = await customDefaultRemoteAccountListLoader(
+          limit: limit,
+          olderThan: olderThan,
+          newerThan: newerThan,
+        );
       } else {
-        if (customDefaultRemoteAccountListLoader != null) {
-          remoteAccounts = await customDefaultRemoteAccountListLoader(
+        remoteAccounts = await pleromaAccountService.getAccountFollowings(
+            maxId: olderThan?.remoteId,
+            sinceId: newerThan?.remoteId,
             limit: limit,
-            olderThan: olderThan,
-            newerThan: newerThan,
-          );
-        } else {
-          remoteAccounts = await pleromaAccountService.getAccountFollowings(
-              maxId: olderThan?.remoteId,
-              sinceId: newerThan?.remoteId,
-              limit: limit,
-              accountRemoteId: myAccountBloc.account.remoteId);
-        }
+            accountRemoteId: myAccountBloc.account.remoteId);
       }
+    }
 
-      if (remoteAccounts != null) {
-        await accountRepository.upsertRemoteAccounts(remoteAccounts,
-            conversationRemoteId: null, chatRemoteId: null);
+    if (remoteAccounts != null) {
+      await accountRepository.upsertRemoteAccounts(remoteAccounts,
+          conversationRemoteId: null, chatRemoteId: null);
 
-        return true;
-      } else {
-        _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
-            "accounts is null");
-        return false;
-      }
-    } catch (e, stackTrace) {
-      _logger.severe(
-          () => "error during refreshItemsFromRemoteForPage", e, stackTrace);
+      return true;
+    } else {
+      _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
+          "accounts is null");
       return false;
     }
   }

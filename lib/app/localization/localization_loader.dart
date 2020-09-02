@@ -584,6 +584,7 @@ class CodegenLoader extends AssetLoader{
     },
     "list": {
       "empty": "Items not found",
+      "cant_update_from_network": "Can't update from network",
       "loading": {
         "state": {
           "can_loading": "Can load more",

@@ -32,32 +32,38 @@ class _FediPaginationListLoadingErrorNotificationOverlayBuilderWidgetState
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    disposable.addDisposable(streamSubscription:
-        widget.paginationListBloc.refreshStateStream.listen((state) {
-      if (state == PaginationListLoadingState.failed) {
-        var now = DateTime.now();
-        var difference = now.difference(_lastRefreshErrorShowedDateTime);
-        if (difference > _throttleDuration) {
-          _lastRefreshErrorShowedDateTime = now;
-          showErrorFediNotificationOverlay(
-              contentText: "app.list.refresh.unable_to_fetch".tr(),
-              titleText: null);
-        }
+    disposable.addDisposable(streamSubscription: widget
+        .paginationListBloc.refreshErrorStream
+        .listen((paginationListLoadingError) {
+      var now = DateTime.now();
+      var difference = now.difference(_lastRefreshErrorShowedDateTime);
+      if (difference > _throttleDuration) {
+        _lastRefreshErrorShowedDateTime = now;
+        showErrorFediNotificationOverlay(
+            contentText: "${_errorToString(paginationListLoadingError)}",
+            titleText: "app.list.refresh.unable_to_fetch".tr());
       }
     }));
-    disposable.addDisposable(streamSubscription:
-        widget.paginationListBloc.loadMoreStateStream.listen((state) {
-      if (state == PaginationListLoadingState.failed) {
-        var now = DateTime.now();
-        var difference = now.difference(_lastLoadMoreErrorShowedDateTime);
-        if (difference > _throttleDuration) {
-          _lastLoadMoreErrorShowedDateTime = now;
-          showErrorFediNotificationOverlay(
-              contentText: "app.list.loading.state.failed".tr(),
-              titleText: null);
-        }
+    disposable.addDisposable(streamSubscription: widget
+        .paginationListBloc.loadMoreErrorStream
+        .listen((paginationListLoadingError) {
+      var now = DateTime.now();
+      var difference = now.difference(_lastLoadMoreErrorShowedDateTime);
+      if (difference > _throttleDuration) {
+        _lastLoadMoreErrorShowedDateTime = now;
+        showErrorFediNotificationOverlay(
+            contentText: "${_errorToString(paginationListLoadingError)}",
+            titleText: "app.list.loading.unable_to_fetch".tr());
       }
     }));
+  }
+
+  String _errorToString(PaginationListLoadingError paginationListLoadingError) {
+    if(paginationListLoadingError.error is CantUpdateFromNetworkException) {
+      return "app.list.cant_update_from_network".tr();
+    } else {
+      return paginationListLoadingError.error.toString();
+    }
   }
 
   @override
