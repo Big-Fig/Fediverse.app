@@ -60,7 +60,13 @@ class ConversationStatusListWidget
           return AsyncSmartRefresherHelper.doAsyncRefresh(
               controller: refreshController,
               action: () async {
-                bool success = await additionalPreRefreshAction(context);
+                var success;
+                try {
+                  success = await additionalPreRefreshAction(context);
+                } catch (e, stackTrace) {
+                  success = false;
+                  _logger.severe(() => "additionalPreRefreshAction()", e, stackTrace);
+                }
                 _logger.finest(() => "additionalPreRefreshAction() $success");
                 var state = await paginationListBloc.refreshWithoutController();
                 _logger.finest(() =>

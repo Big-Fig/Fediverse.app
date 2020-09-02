@@ -88,29 +88,23 @@ class MyAccountFavouritedStatusesCachedListBloc extends DisposableOwner
     IStatus newerThan,
     IStatus olderThan,
   }) async {
-    try {
-      var remoteStatuses = await pleromaMyAccountService.getFavourites(
-        sinceId: newerThan?.remoteId,
-        maxId: olderThan?.remoteId,
-        limit: limit,
+    var remoteStatuses = await pleromaMyAccountService.getFavourites(
+      sinceId: newerThan?.remoteId,
+      maxId: olderThan?.remoteId,
+      limit: limit,
+    );
+
+    if (remoteStatuses != null) {
+      await statusRepository.upsertRemoteStatuses(
+        remoteStatuses,
+        listRemoteId: null,
+        conversationRemoteId: null,
       );
 
-      if (remoteStatuses != null) {
-        await statusRepository.upsertRemoteStatuses(
-          remoteStatuses,
-          listRemoteId: null,
-          conversationRemoteId: null,
-        );
-
-        return true;
-      } else {
-        _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
-            "accounts is null");
-        return false;
-      }
-    } catch (e, stackTrace) {
-      _logger.severe(
-          () => "error during refreshItemsFromRemoteForPage", e, stackTrace);
+      return true;
+    } else {
+      _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
+          "accounts is null");
       return false;
     }
   }

@@ -30,6 +30,10 @@ class CachedPaginationListBloc<TPage extends CachedPaginationPage<TItem>, TItem>
           state = PaginationListLoadingState.noData;
         } else {
           state = PaginationListLoadingState.failed;
+          if (!loadMoreErrorStreamController.isClosed) {
+            loadMoreErrorStreamController.add(PaginationListLoadingError(
+                error: CantUpdateFromNetworkException(), stackTrace: null));
+          }
         }
       }
       if (!loadMoreStateSubject.isClosed) {
@@ -38,9 +42,16 @@ class CachedPaginationListBloc<TPage extends CachedPaginationPage<TItem>, TItem>
 
       return state;
     } catch (e, stackTrace) {
+      // todo: refactor copy-pasted code
       if (!loadMoreStateSubject.isClosed) {
         loadMoreStateSubject.add(PaginationListLoadingState.failed);
       }
+
+      if (!loadMoreErrorStreamController.isClosed) {
+        loadMoreErrorStreamController
+            .add(PaginationListLoadingError(error: e, stackTrace: stackTrace));
+      }
+
       _logger.warning(
           () => "error during loadMoreWithoutController", e, stackTrace);
       rethrow;
@@ -61,12 +72,20 @@ class CachedPaginationListBloc<TPage extends CachedPaginationPage<TItem>, TItem>
           state = PaginationListLoadingState.loaded;
         } else {
           state = PaginationListLoadingState.failed;
+          if (!loadMoreErrorStreamController.isClosed) {
+            refreshErrorStreamController.add(PaginationListLoadingError(
+                error: CantUpdateFromNetworkException(), stackTrace: null));
+          }
         }
       } else {
         if (newPage?.isActuallyRefreshedFromRemote == true) {
           state = PaginationListLoadingState.noData;
         } else {
           state = PaginationListLoadingState.failed;
+          if (!loadMoreErrorStreamController.isClosed) {
+            refreshErrorStreamController.add(PaginationListLoadingError(
+                error: CantUpdateFromNetworkException(), stackTrace: null));
+          }
         }
       }
       if (!refreshStateSubject.isClosed) {
@@ -75,8 +94,13 @@ class CachedPaginationListBloc<TPage extends CachedPaginationPage<TItem>, TItem>
 
       return state;
     } catch (e, stackTrace) {
+      // todo: refactor copy-pasted code
       if (!refreshStateSubject.isClosed) {
         refreshStateSubject.add(PaginationListLoadingState.failed);
+      }
+      if (!refreshErrorStreamController.isClosed) {
+        refreshErrorStreamController
+            .add(PaginationListLoadingError(error: e, stackTrace: stackTrace));
       }
       _logger.warning(
           () => "error during refreshWithoutController", e, stackTrace);

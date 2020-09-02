@@ -57,7 +57,7 @@ abstract class TimelineStatusCachedListBloc extends DisposableOwner
         "\t timelineSettings = $timelineSettings"
         "\t newerThan = $newerThan"
         "\t olderThan = $olderThan");
-    try {
+
       List<IPleromaStatus> remoteStatuses;
       var onlyLocal = timelineSettings.onlyLocal == true;
       switch (timelineSettings.remoteType) {
@@ -121,11 +121,6 @@ abstract class TimelineStatusCachedListBloc extends DisposableOwner
             "statuses is null");
         return false;
       }
-    } catch (e, stackTrace) {
-      _logger.severe(
-          () => "error during refreshItemsFromRemoteForPage", e, stackTrace);
-      return false;
-    }
   }
 
   @override

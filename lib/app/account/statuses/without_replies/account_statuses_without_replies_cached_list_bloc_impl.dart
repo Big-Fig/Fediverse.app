@@ -133,27 +133,21 @@ class AccountStatusesWithoutRepliesListBloc
         "\t newerThan=$newerThan"
         "\t olderThan=$olderThan");
 
-    try {
-      var remoteStatuses = await pleromaAccountService.getAccountStatuses(
-          excludeReplies: true,
-          accountRemoteId: account.remoteId,
-          limit: limit,
-          sinceId: newerThan?.remoteId,
-          maxId: olderThan?.remoteId);
+    var remoteStatuses = await pleromaAccountService.getAccountStatuses(
+        excludeReplies: true,
+        accountRemoteId: account.remoteId,
+        limit: limit,
+        sinceId: newerThan?.remoteId,
+        maxId: olderThan?.remoteId);
 
-      if (remoteStatuses != null) {
-        await statusRepository.upsertRemoteStatuses(remoteStatuses,
-            listRemoteId: null, conversationRemoteId: null);
+    if (remoteStatuses != null) {
+      await statusRepository.upsertRemoteStatuses(remoteStatuses,
+          listRemoteId: null, conversationRemoteId: null);
 
-        return true;
-      } else {
-        _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
-            "statuses is null");
-        return false;
-      }
-    } catch (e, stackTrace) {
-      _logger.severe(
-          () => "error during refreshItemsFromRemoteForPage", e, stackTrace);
+      return true;
+    } else {
+      _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
+          "statuses is null");
       return false;
     }
   }

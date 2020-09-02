@@ -33,27 +33,22 @@ class ConversationStatusListConversationApiBloc
         "\t conversation = $conversation"
         "\t newerThan = $newerThan"
         "\t olderThan = $olderThan");
-    try {
-      var remoteStatuses =
-          await pleromaConversationService.getConversationStatuses(
-              conversationRemoteId: conversation.remoteId,
-              maxId: olderThan?.remoteId,
-              sinceId: newerThan?.remoteId,
-              limit: limit);
 
-      if (remoteStatuses != null) {
-        await statusRepository.upsertRemoteStatuses(remoteStatuses,
-            listRemoteId: null, conversationRemoteId: conversation.remoteId);
+    var remoteStatuses =
+        await pleromaConversationService.getConversationStatuses(
+            conversationRemoteId: conversation.remoteId,
+            maxId: olderThan?.remoteId,
+            sinceId: newerThan?.remoteId,
+            limit: limit);
 
-        return true;
-      } else {
-        _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
-            "statuses is null");
-        return false;
-      }
-    } catch (e, stackTrace) {
-      _logger.severe(
-          () => "error during refreshItemsFromRemoteForPage", e, stackTrace);
+    if (remoteStatuses != null) {
+      await statusRepository.upsertRemoteStatuses(remoteStatuses,
+          listRemoteId: null, conversationRemoteId: conversation.remoteId);
+
+      return true;
+    } else {
+      _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
+          "statuses is null");
       return false;
     }
   }
