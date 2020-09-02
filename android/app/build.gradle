@@ -67,6 +67,23 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
            signingConfig signingConfigs.release
        }
    }
+
+   flavorDimensions "app"
+
+   productFlavors {
+       dev {
+           dimension "app"
+           resValue "string", "app_name", "Fedi2(dev)"
+           applicationId "com.fediverse.app2"
+           manifestPlaceholders.scheme = "com.fediverse.app2"
+       }
+       prod {
+           dimension "app"
+           resValue "string", "app_name", "Fedi"
+           applicationId "com.fediverse.app"
+           manifestPlaceholders.scheme = "com.fediverse.app"
+       }
+   }
 }
 
 flutter {

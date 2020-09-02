@@ -26,6 +26,7 @@ import 'package:fedi/app/localization/localization_provider_widget.dart';
 import 'package:fedi/app/localization/localization_service.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_model.dart';
+import 'package:fedi/app/package_info/package_info_helper.dart';
 import 'package:fedi/app/splash/splash_page.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
@@ -58,6 +59,7 @@ void main() async {
   // Pass all uncaught errors from the framework to Crashlytics.
   FlutterError.onError = Crashlytics.instance.recordFlutterError;
 
+  var appTitle = await FediPackageInfoHelper.getAppName();
   runApp(MaterialApp(home: SplashPage()));
 
   IInitBloc initBloc = InitBloc();
@@ -75,7 +77,11 @@ void main() async {
           .distinct(
               (previous, next) => previous?.userAtHost == next?.userAtHost)
           .listen((currentInstance) {
-        buildCurrentInstanceApp(initBloc.appContextBloc, currentInstance);
+        buildCurrentInstanceApp(
+          initBloc.appContextBloc,
+          currentInstance,
+          appTitle,
+        );
       });
     } else if (newState == AsyncInitLoadingState.failed) {
       runApp(MaterialApp(
@@ -99,10 +105,11 @@ void main() async {
 
 CurrentAuthInstanceContextBloc currentInstanceContextBloc;
 
-void showSplashPage(AppContextBloc appContextBloc) {
+void showSplashPage(AppContextBloc appContextBloc, String appTitle) {
   var easyLocalization = appContextBloc.provideContextToChild(
     child: _buildEasyLocalization(
       child: FediApp(
+        appTitle: appTitle,
         child: Provider<IAppContextBloc>.value(
           value: appContextBloc,
           child: (const SplashPage()),
@@ -116,10 +123,13 @@ void showSplashPage(AppContextBloc appContextBloc) {
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void buildCurrentInstanceApp(
-    AppContextBloc appContextBloc, AuthInstance currentInstance) async {
+  AppContextBloc appContextBloc,
+  AuthInstance currentInstance,
+  String appTitle,
+) async {
   _logger.finest(() => "buildCurrentInstanceApp $buildCurrentInstanceApp");
   if (currentInstance != null) {
-    showSplashPage(appContextBloc);
+    showSplashPage(appContextBloc, appTitle);
     currentInstanceContextBloc?.dispose();
 
     currentInstanceContextBloc = CurrentAuthInstanceContextBloc(
@@ -200,34 +210,42 @@ void buildCurrentInstanceApp(
                       return currentAuthInstanceContextLoadingBloc;
                     },
                     child: FediApp(
+                        appTitle: appTitle,
                         child: CurrentAuthInstanceContextInitWidget(
-                      child: DisposableProvider<IHomeBloc>(
-                          create: (context) {
-                            var homeBloc = HomeBloc(
-                                startTab: calculateHomeTabForNotification(
-                                    pushLoaderBloc
-                                        .launchOrResumePushLoaderNotification));
+                          child: DisposableProvider<IHomeBloc>(
+                              create: (context) {
+                                var homeBloc = HomeBloc(
+                                    startTab: calculateHomeTabForNotification(
+                                        pushLoaderBloc
+                                            .launchOrResumePushLoaderNotification));
 
-                            homeBloc.addDisposable(streamSubscription:
-                                pushLoaderBloc
-                                    .launchOrResumePushLoaderNotificationStream
-                                    .listen(
-                                        (launchOrResumePushLoaderNotification) {
-                              homeBloc.selectTab(
-                                  calculateHomeTabForNotification(
-                                      launchOrResumePushLoaderNotification));
-                            }));
-                            return homeBloc;
-                          },
-                          child: const HomePage()),
-                    )))))));
+                                homeBloc.addDisposable(streamSubscription:
+                                    pushLoaderBloc
+                                        .launchOrResumePushLoaderNotificationStream
+                                        .listen(
+                                            (launchOrResumePushLoaderNotification) {
+                                  homeBloc.selectTab(
+                                      calculateHomeTabForNotification(
+                                          launchOrResumePushLoaderNotification));
+                                }));
+                                return homeBloc;
+                              },
+                              child: const HomePage()),
+                        )))))));
   } else {
-    runApp(appContextBloc.provideContextToChild(
+    runApp(
+      appContextBloc.provideContextToChild(
         child: _buildEasyLocalization(
-            child: DisposableProvider<IJoinAuthInstanceBloc>(
-                create: (context) => JoinAuthInstanceBloc(),
-                child:
-                    const FediApp(child: FromScratchJoinAuthInstancePage())))));
+          child: DisposableProvider<IJoinAuthInstanceBloc>(
+            create: (context) => JoinAuthInstanceBloc(),
+            child: FediApp(
+              appTitle: appTitle,
+              child: FromScratchJoinAuthInstancePage(),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 
@@ -267,8 +285,12 @@ Widget _buildEasyLocalization({@required Widget child}) {
 
 class FediApp extends StatelessWidget {
   final Widget child;
+  final String appTitle;
 
-  const FediApp({@required this.child});
+  FediApp({
+    @required this.child,
+    @required this.appTitle,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -277,7 +299,7 @@ class FediApp extends StatelessWidget {
     var localizationProvider = LocalizationProvider.of(context);
     var app = MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Fedi2',
+      title: appTitle,
       localizationsDelegates: localizationProvider.delegates,
       supportedLocales: localizationProvider.supportedLocales,
       locale: localizationProvider.locale,

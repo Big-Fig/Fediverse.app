@@ -21,9 +21,9 @@ dependencies:
     sdk: flutter
 
   # firebase auth
-  firebase_core: ^0.4.0+9
+  firebase_core: ^0.5.0
   # push notifications FCM
-  firebase_messaging: ^6.0.16
+  firebase_messaging: ^7.0.0
   # analytics events
   firebase_analytics: ^5.0.2
 
@@ -99,7 +99,7 @@ dependencies:
   flutter_image_compress: ^0.6.5+1
 
   # commandline script to pull database from emulator
-  # adb exec-out run-as com.fediverse.app2 cat ./databases/jffdev@fedi.app.sqlite > database.sqlite
+  # adb exec-out run-as com.fediverse.app cat ./databases/jffdev@fedi.app.sqlite > database.sqlite
   # sqlite orm
   moor: ^2.4.0
 
