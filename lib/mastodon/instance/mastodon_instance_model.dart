@@ -23,6 +23,8 @@ abstract class IMastodonInstance {
 
   String get shortDescription;
 
+  String get description;
+
   String get email;
 
   String get version;
@@ -38,6 +40,8 @@ abstract class IMastodonInstance {
   bool get registrations;
 
   bool get approvalRequired;
+
+  bool get invitesEnabled;
 
   IMastodonAccount get contactAccount;
 }
