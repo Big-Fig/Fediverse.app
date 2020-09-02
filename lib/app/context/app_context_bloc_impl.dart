@@ -17,6 +17,7 @@ import 'package:fedi/app/logging/logging_service.dart';
 import 'package:fedi/app/logging/logging_service_impl.dart';
 import 'package:fedi/app/media/picker/media_picker_service.dart';
 import 'package:fedi/app/media/picker/media_picker_service_impl.dart';
+import 'package:fedi/app/package_info/package_info_helper.dart';
 import 'package:fedi/app/push/handler/push_handler_bloc.dart';
 import 'package:fedi/app/push/handler/push_handler_bloc_impl.dart';
 import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_preferences_bloc.dart';
@@ -45,7 +46,6 @@ import 'package:fedi/push/relay/push_relay_service_impl.dart';
 import 'package:fedi/websockets/websockets_service.dart';
 import 'package:fedi/websockets/websockets_service_impl.dart';
 import 'package:logging/logging.dart';
-import 'package:package_info/package_info.dart';
 
 var _logger = Logger("app_context_bloc_impl.dart");
 
@@ -136,22 +136,15 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         .asyncInitAndRegister<ICurrentAuthInstanceBloc>(currentInstanceBloc);
 
     String pushRelayBaseUrl;
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    // different
-    var packageName = packageInfo.packageName;
-    if (packageName ==
-        "com.fediverse"
-            ".app2") {
-      // test app2 push relay
-      pushRelayBaseUrl = "http://161.35.139.75:3000/push/";
-    } else if (packageName ==
-        "com.fediverse"
-            ".app") {
-      // production app push relay
+    if (await FediPackageInfoHelper.isProdPackageId()) {
       pushRelayBaseUrl = "https://pushrelay3.your.org/push/";
+    } else if (await FediPackageInfoHelper.isDevPackageId()) {
+      pushRelayBaseUrl = "http://161.35.139.75:3000/push/";
     } else {
+      var packageName = await FediPackageInfoHelper.getPackageId();
       throw "Invalid packageName $packageName";
     }
+
     var pushRelayService = PushRelayService(pushRelayBaseUrl: pushRelayBaseUrl);
     addDisposable(disposable: pushRelayService);
     await globalProviderService
