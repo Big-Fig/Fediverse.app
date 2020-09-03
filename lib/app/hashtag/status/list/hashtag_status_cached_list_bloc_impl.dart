@@ -9,7 +9,7 @@ import 'package:fedi/pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 
-class HashtagTimelineStatusCachedListBloc extends TimelineStatusCachedListBloc
+class HashtagStatusCachedListBloc extends TimelineStatusCachedListBloc
     implements IStatusCachedListBloc {
   final IHashtag hashtag;
 
@@ -23,7 +23,7 @@ class HashtagTimelineStatusCachedListBloc extends TimelineStatusCachedListBloc
         withHashtag: hashtag.name,
       );
 
-  HashtagTimelineStatusCachedListBloc({
+  HashtagStatusCachedListBloc({
     @required IPleromaTimelineService pleromaTimelineService,
     @required IStatusRepository statusRepository,
     @required TimelineSettingsLocalPreferencesBloc timelineLocalPreferencesBloc,
@@ -34,5 +34,5 @@ class HashtagTimelineStatusCachedListBloc extends TimelineStatusCachedListBloc
             pleromaTimelineService: pleromaTimelineService,
             timelineLocalPreferencesBloc: timelineLocalPreferencesBloc,
             statusRepository: statusRepository,
-            isFromHomeTimeline: true);
+            isFromHomeTimeline: false);
 }

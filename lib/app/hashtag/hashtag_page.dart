@@ -1,8 +1,8 @@
 import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
-import 'package:fedi/app/hashtag/status/list/hashtag_timeline_status_cached_list_bloc_impl.dart';
-import 'package:fedi/app/hashtag/status/list/hashtag_timeline_websockets_handler_impl.dart';
+import 'package:fedi/app/hashtag/status/list/hashtag_status_cached_list_bloc_impl.dart';
+import 'package:fedi/app/hashtag/status/list/hashtag_status_list_websockets_handler_impl.dart';
 import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/list/status_list_tap_to_load_overlay_widget.dart';
@@ -110,7 +110,7 @@ MaterialPageRoute createHashtagPageRoute({
     return DisposableProvider<IStatusCachedListBloc>(
       create: (BuildContext context) {
         var hashtagTimelineStatusCachedListBloc =
-            HashtagTimelineStatusCachedListBloc(
+            HashtagStatusCachedListBloc(
                 pleromaTimelineService: IPleromaTimelineService.of(
                   context,
                   listen: false,
@@ -129,7 +129,7 @@ MaterialPageRoute createHashtagPageRoute({
                 hashtag: hashtag);
         if (isRealtimeWebSocketsEnabled) {
           hashtagTimelineStatusCachedListBloc.addDisposable(
-            disposable: HashtagTimelineWebSocketsHandler.createFromContext(
+            disposable: HashtagStatusListWebSocketsHandler.createFromContext(
                 context,
                 hashtag: hashtag.name),
           );

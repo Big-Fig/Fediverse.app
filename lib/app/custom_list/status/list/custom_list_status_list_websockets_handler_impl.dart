@@ -6,8 +6,8 @@ import 'package:fedi/app/websockets/web_sockets_handler_impl.dart';
 import 'package:fedi/pleroma/websockets/pleroma_websockets_service.dart';
 import 'package:flutter/cupertino.dart';
 
-class CustomListTimelineWebSocketsHandler extends WebSocketsChannelHandler {
-  CustomListTimelineWebSocketsHandler({
+class CustomListStatusListWebSocketsHandler extends WebSocketsChannelHandler {
+  CustomListStatusListWebSocketsHandler({
     @required String customListRemoteId,
     @required IPleromaWebSocketsService pleromaWebSocketsService,
     @required IStatusRepository statusRepository,
@@ -26,10 +26,10 @@ class CustomListTimelineWebSocketsHandler extends WebSocketsChannelHandler {
           isFromHomeTimeline: false,
         );
 
-  static CustomListTimelineWebSocketsHandler createFromContext(
+  static CustomListStatusListWebSocketsHandler createFromContext(
           BuildContext context,
           {@required String customListRemoteId}) =>
-      CustomListTimelineWebSocketsHandler(
+      CustomListStatusListWebSocketsHandler(
         customListRemoteId: customListRemoteId,
         pleromaWebSocketsService:
             IPleromaWebSocketsService.of(context, listen: false),

@@ -333,7 +333,10 @@ class StatusRepository extends AsyncInitLoadingBloc
 
     Stream<List<DbStatusPopulated>> stream =
         query.watch().map(dao.typedResultListToPopulated);
-    return stream.map((list) => list.map(mapDataClassToItem).toList());
+    return stream.map((list) {
+      var statuses = list.map(mapDataClassToItem).toList();
+      return statuses;
+    });
   }
 
   JoinedSelectStatement createQuery({
