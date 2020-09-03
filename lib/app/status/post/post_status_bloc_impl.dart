@@ -11,6 +11,7 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/disposable/disposable.dart';
+import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
@@ -39,9 +40,12 @@ abstract class PostStatusBloc extends PostMessageBloc
     @required this.statusRepository,
     @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
     int maximumMediaAttachmentCount = 8,
+    @required int maximumMessageLength,
     IPostStatusData initialData,
     List<IAccount> initialAccountsToMention = const [],
+    @required PleromaInstancePollLimits pleromaInstancePollLimits,
   }) : super(
+            maximumMessageLength: maximumMessageLength,
             pleromaMediaAttachmentService: pleromaMediaAttachmentService,
             maximumMediaAttachmentCount: maximumMediaAttachmentCount) {
     this.initialData = initialData ?? defaultInitData;
@@ -54,6 +58,10 @@ abstract class PostStatusBloc extends PostMessageBloc
         mediaAttachmentsBloc.mediaAttachmentBlocsStream.listen((_) {
       _regenerateIdempotencyKey();
     }));
+
+    pollBloc = PostStatusPollBloc(
+      pollLimits: pleromaInstancePollLimits,
+    );
 
     addDisposable(subject: selectedActionSubject);
     addDisposable(subject: mentionedAcctsSubject);
@@ -122,7 +130,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   String get inReplyToStatusRemoteId => originInReplyToStatus?.remoteId;
 
   @override
-  IPostStatusPollBloc pollBloc = PostStatusPollBloc();
+  IPostStatusPollBloc pollBloc;
 
   String idempotencyKey;
 

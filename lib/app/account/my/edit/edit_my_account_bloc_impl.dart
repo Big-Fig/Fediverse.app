@@ -1,8 +1,10 @@
 import 'package:fedi/app/account/my/edit/edit_my_account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_model.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
 import 'package:fedi/pleroma/field/pleroma_field_model.dart';
+import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
 import 'package:fedi/ui/form/field/file/image/form_image_file_picker_or_url_field_bloc.dart';
 import 'package:fedi/ui/form/field/file/image/form_image_file_picker_or_url_field_bloc_impl.dart';
 import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc_impl.dart';
@@ -16,13 +18,9 @@ import 'package:fedi/ui/form/group/pair/form_link_pair_field_group_bloc.dart';
 import 'package:fedi/ui/form/group/pair/form_link_pair_field_group_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
 
-// todo: default server config is 4, should be fetched from server
-var _maximumPossibleCustomFieldsCount = 4;
-
 class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
   final IMyAccountBloc myAccountBloc;
   final IPleromaMyAccountService pleromaMyAccountService;
-  final int maximumPossibleCustomFieldsCount;
 
   @override
   final FormStringFieldBloc displayNameField;
@@ -56,12 +54,18 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
   EditMyAccountBloc({
     @required this.myAccountBloc,
     @required this.pleromaMyAccountService,
-    @required this.maximumPossibleCustomFieldsCount,
+    @required int noteMaxLength,
+    @required PleromaInstancePleromaPartMetadataFieldLimits customFieldLimits,
   })  : displayNameField = FormStringFieldBloc(
-            originValue: myAccountBloc.displayNameEmojiText.text,
-            validators: [NonEmptyStringFieldValidationError.createValidator()]),
+          originValue: myAccountBloc.displayNameEmojiText.text,
+          validators: [NonEmptyStringFieldValidationError.createValidator()],
+          maxLength: null,
+        ),
         noteField = FormStringFieldBloc(
-            originValue: myAccountBloc.note, validators: []),
+          originValue: myAccountBloc.note,
+          validators: [],
+          maxLength: noteMaxLength,
+        ),
         lockedField =
             FormBoolFieldBloc(originValue: myAccountBloc.account.locked),
         avatarField = FormImageFilePickerOrUrlFieldBloc(
@@ -70,14 +74,20 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
             originalUrl: myAccountBloc.account.header),
         customFieldsGroupBloc =
             FormOneTypeGroupBloc<IFormLinkPairFieldGroupBloc>(
-          maximumFieldsCount: _maximumPossibleCustomFieldsCount,
-          newEmptyFieldCreator: () =>
-              FormLinkPairFieldGroupBloc(value: null, name: null),
+          maximumFieldsCount: customFieldLimits?.maxFields ?? 20,
+          newEmptyFieldCreator: () => FormLinkPairFieldGroupBloc(
+            value: null,
+            name: null,
+            nameMaxLength: customFieldLimits?.nameLength,
+            valueMaxLength: customFieldLimits?.valueLength,
+          ),
           originalItems: myAccountBloc.fields
               .map(
                 (field) => FormLinkPairFieldGroupBloc(
                   name: field.name,
                   value: field.valueAsRawUrl,
+                  nameMaxLength: customFieldLimits?.nameLength,
+                  valueMaxLength: customFieldLimits?.valueLength,
                 ),
               )
               .toList(),
@@ -149,12 +159,18 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
     }
   }
 
-  static EditMyAccountBloc createFromContext(BuildContext context) =>
-      EditMyAccountBloc(
-          myAccountBloc: IMyAccountBloc.of(context, listen: false),
-          pleromaMyAccountService:
-              IPleromaMyAccountService.of(context, listen: false),
-          maximumPossibleCustomFieldsCount: _maximumPossibleCustomFieldsCount);
+  static EditMyAccountBloc createFromContext(BuildContext context) {
+    var info = ICurrentAuthInstanceBloc.of(context, listen: false)
+        .currentInstance
+        .info;
+    return EditMyAccountBloc(
+      myAccountBloc: IMyAccountBloc.of(context, listen: false),
+      pleromaMyAccountService:
+          IPleromaMyAccountService.of(context, listen: false),
+      customFieldLimits: info?.pleroma?.metadata?.fieldsLimits,
+      noteMaxLength: info?.descriptionLimit,
+    );
+  }
 
   @override
   void clear() {

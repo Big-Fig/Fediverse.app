@@ -9,11 +9,14 @@ abstract class IPostMessageBloc implements Disposable {
       Provider.of<IPostMessageBloc>(context, listen: listen);
 
   TextEditingController get inputTextController;
+
   FocusNode get inputFocusNode;
 
   IUploadMediaAttachmentsCollectionBloc get mediaAttachmentsBloc;
 
   bool get isReadyToPost;
+
+  int get maximumMessageLength;
 
   Stream<bool> get isReadyToPostStream;
 
@@ -32,10 +35,11 @@ abstract class IPostMessageBloc implements Disposable {
   void toggleAttachActionSelection();
 
   void toggleEmojiActionSelection();
+
   void togglePollActionSelection();
 
-
   Stream<bool> get isAnySelectedActionVisibleStream;
+
   bool get isAnySelectedActionVisible;
 
   void clearSelectedAction();

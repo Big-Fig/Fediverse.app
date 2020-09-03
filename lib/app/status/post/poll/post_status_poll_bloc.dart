@@ -12,8 +12,9 @@ abstract class IPostStatusPollBloc implements IFormBloc, Disposable {
   static IPostStatusPollBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IPostStatusPollBloc>(context, listen: listen);
 
-  static final Duration minimumPollDuration = Duration(minutes: 10);
-  static final Duration defaultPollDuration = Duration(days: 1);
+  static final Duration minimumPollExpiration = Duration(minutes: 10);
+  static final Duration defaultPollExpiration = Duration(days: 1);
+  static final int maxPollOptions = 20;
 
   IFormOneTypeGroupBloc<IFormStringFieldBloc> get pollOptionsGroupBloc;
 
