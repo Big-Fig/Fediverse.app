@@ -5,4 +5,6 @@ abstract class IFormStringFieldBloc extends IFormValueFieldBloc<String> {
   TextEditingController get textEditingController;
   FocusNode get focusNode;
 
+  int get maxLength;
+
 }

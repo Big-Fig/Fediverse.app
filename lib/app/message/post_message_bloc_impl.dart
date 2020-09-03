@@ -14,9 +14,13 @@ abstract class PostMessageBloc extends DisposableOwner
   @override
   final IUploadMediaAttachmentsCollectionBloc mediaAttachmentsBloc;
 
+  @override
+  final int maximumMessageLength;
+
   PostMessageBloc({
     @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
     @required int maximumMediaAttachmentCount,
+    @required this.maximumMessageLength,
   }) : mediaAttachmentsBloc = UploadMediaAttachmentsCollectionBloc(
             maximumMediaAttachmentCount: maximumMediaAttachmentCount,
             pleromaMediaAttachmentService: pleromaMediaAttachmentService) {

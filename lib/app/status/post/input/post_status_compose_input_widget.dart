@@ -13,7 +13,6 @@ class PostStatusComposeInputWidget extends StatelessWidget {
   final int maxLines;
   final String hintText;
 
-
   PostStatusComposeInputWidget({
     @required this.expanded,
     @required this.autofocus,
@@ -53,6 +52,7 @@ class PostStatusComposeInputWidget extends StatelessWidget {
       },
       errorText: null,
       highlightMentions: true,
+      maxLength: postStatusBloc.maximumMessageLength,
     );
   }
 }

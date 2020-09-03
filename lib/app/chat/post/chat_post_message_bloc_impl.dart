@@ -1,3 +1,4 @@
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/chat/message/repository/chat_message_repository.dart';
 import 'package:fedi/app/chat/post/chat_post_message_bloc.dart';
 import 'package:fedi/app/chat/post/chat_post_message_bloc_proxy_provider.dart';
@@ -22,8 +23,10 @@ class ChatPostMessageBloc extends PostMessageBloc
     @required this.pleromaChatService,
     @required this.chatMessageRepository,
     @required this.chatRemoteId,
+    @required int maximumMessageLength,
     @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
   }) : super(
+          maximumMessageLength: maximumMessageLength,
           maximumMediaAttachmentCount: 1,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
         );
@@ -68,12 +71,18 @@ class ChatPostMessageBloc extends PostMessageBloc
   static ChatPostMessageBloc createFromContext(BuildContext context,
           {@required String chatRemoteId}) =>
       ChatPostMessageBloc(
-          chatRemoteId: chatRemoteId,
-          chatMessageRepository:
-              IChatMessageRepository.of(context, listen: false),
-          pleromaChatService: IPleromaChatService.of(context, listen: false),
-          pleromaMediaAttachmentService:
-              IPleromaMediaAttachmentService.of(context, listen: false));
+        chatRemoteId: chatRemoteId,
+        chatMessageRepository:
+            IChatMessageRepository.of(context, listen: false),
+        pleromaChatService: IPleromaChatService.of(context, listen: false),
+        pleromaMediaAttachmentService:
+            IPleromaMediaAttachmentService.of(context, listen: false),
+        maximumMessageLength:
+            ICurrentAuthInstanceBloc.of(context, listen: false)
+                .currentInstance
+                .info
+                .chatLimit,
+      );
 
   static Widget provideToContext(BuildContext context,
       {@required String chatRemoteId, @required Widget child}) {

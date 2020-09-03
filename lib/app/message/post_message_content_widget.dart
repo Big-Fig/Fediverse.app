@@ -42,6 +42,7 @@ class PostMessageContentWidget extends StatelessWidget {
       maxLines: 1,
       errorText: null,
       highlightMentions: true,
+      maxLength: postMessageBloc.maximumMessageLength,
     );
   }
 }

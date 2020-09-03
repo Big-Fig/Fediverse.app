@@ -51,25 +51,25 @@ class PostStatusComposeWidget extends StatelessWidget {
       child: Column(
         mainAxisSize: expanded ? MainAxisSize.max : MainAxisSize.min,
         children: <Widget>[
-          if (displaySubjectField)
-            ...[
-              FediTransparentEditTextField(
-                textEditingController: postStatusBloc.subjectTextController,
-                focusNode: postStatusBloc.subjectFocusNode,
-                hintText: tr("app.status.post.field.subject.hint"),
-                expanded: false,
-                autofocus: false,
-                maxLines: 1,
-                textInputAction: TextInputAction.next,
-                onSubmitted: (String value) async {
-                  postStatusBloc.subjectFocusNode.requestFocus();
-                  postStatusBloc.inputFocusNode.requestFocus();
-                },
-                errorText: null,
-                highlightMentions: true,
-              ),
-              FediUltraLightGreyDivider(),
-            ],
+          if (displaySubjectField) ...[
+            FediTransparentEditTextField(
+              textEditingController: postStatusBloc.subjectTextController,
+              focusNode: postStatusBloc.subjectFocusNode,
+              hintText: tr("app.status.post.field.subject.hint"),
+              expanded: false,
+              autofocus: false,
+              maxLines: 1,
+              textInputAction: TextInputAction.next,
+              onSubmitted: (String value) async {
+                postStatusBloc.subjectFocusNode.requestFocus();
+                postStatusBloc.inputFocusNode.requestFocus();
+              },
+              errorText: null,
+              highlightMentions: true,
+              maxLength: null,
+            ),
+            FediUltraLightGreyDivider(),
+          ],
           displayAccountAvatar
               ? Row(
                   children: <Widget>[

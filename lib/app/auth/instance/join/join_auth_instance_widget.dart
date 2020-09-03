@@ -167,6 +167,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
           customBorderColor: FediColors.white.withOpacity(0.8),
           textStyle: FediTextStyles.subHeaderTallWhite,
           highlightMentions: false,
+          maxLength: null,
         ),
         Text(
           "app.auth.instance.join.field.host.helper".tr(),
