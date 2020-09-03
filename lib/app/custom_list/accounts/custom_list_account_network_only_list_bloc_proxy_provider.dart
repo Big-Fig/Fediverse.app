@@ -27,7 +27,7 @@ class CustomListAccountListBlocProxyProvider extends StatelessWidget {
           return AccountNetworkOnlyPaginationBloc(
             itemsCountPerPage: 20,
             maximumCachedPagesCount: null,
-            listService: ICustomListAccountNetworkOnlyListBloc.of(context,
+            listBloc: ICustomListAccountNetworkOnlyListBloc.of(context,
                 listen: false),
           );
         },

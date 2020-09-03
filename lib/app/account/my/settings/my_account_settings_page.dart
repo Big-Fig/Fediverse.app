@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/account/my/follow_request/my_account_follow_request_list_page.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_widget.dart';
 import 'package:fedi/app/account/my/statuses/bookmarked/my_account_bookmarked_statuses_page.dart';
 import 'package:fedi/app/account/my/statuses/favourited/my_account_favourited_statuses_page.dart';
@@ -37,7 +38,9 @@ class MyAccountSettingsPage extends StatelessWidget {
             FediSmallVerticalSpacer(),
             buildBookmarkedButton(context),
             FediSmallVerticalSpacer(),
-            buildFavouritedButton(context)
+            buildFavouritedButton(context),
+            FediSmallVerticalSpacer(),
+            buildFollowRequestsButton(context),
           ],
         ),
       ),
@@ -85,6 +88,15 @@ class MyAccountSettingsPage extends StatelessWidget {
       tr("app.account.my.settings.action.favourited"),
       onPressed: () {
         goToMyAccountFavouritedStatusesPage(context);
+      },
+    );
+  }
+
+  Widget buildFollowRequestsButton(BuildContext context) {
+    return FediPrimaryFilledTextButton(
+      tr("app.account.my.settings.action.follow_requests"),
+      onPressed: () {
+        goToMyAccountFollowRequestListPage(context);
       },
     );
   }

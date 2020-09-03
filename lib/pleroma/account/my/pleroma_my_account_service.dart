@@ -1,4 +1,5 @@
 import 'package:fedi/pleroma/account/my/pleroma_my_account_model.dart';
+import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:flutter/widgets.dart';
@@ -22,9 +23,24 @@ abstract class IPleromaMyAccountService implements IPleromaApi {
     String maxId,
     int limit = 20,
   });
+
   Future<List<IPleromaStatus>> getFavourites({
     String sinceId,
     String maxId,
     int limit = 20,
+  });
+
+  Future<List<IPleromaAccount>> getFollowRequests({
+    String sinceId,
+    String maxId,
+    int limit = 20,
+  });
+
+  Future<IPleromaAccountRelationship> acceptFollowRequest({
+    String accountRemoteId,
+  });
+
+  Future<IPleromaAccountRelationship> rejectFollowRequest({
+    String accountRemoteId,
   });
 }

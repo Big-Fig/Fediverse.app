@@ -54,9 +54,28 @@ class PleromaMyAccountService implements IPleromaMyAccountService {
     }
   }
 
+  IPleromaAccountRelationship parseAccountRelationshipResponse(
+      Response httpResponse) {
+    if (httpResponse.statusCode == 200) {
+      return PleromaAccountRelationship.fromJsonString(httpResponse.body);
+    } else {
+      throw PleromaMyAccountException(
+          statusCode: httpResponse.statusCode, body: httpResponse.body);
+    }
+  }
+
   List<IPleromaStatus> parseStatusListResponse(Response httpResponse) {
     if (httpResponse.statusCode == 200) {
       return PleromaStatus.listFromJsonString(httpResponse.body);
+    } else {
+      throw PleromaMyAccountException(
+          statusCode: httpResponse.statusCode, body: httpResponse.body);
+    }
+  }
+
+  List<IPleromaAccount> parseAccountListResponse(Response httpResponse) {
+    if (httpResponse.statusCode == 200) {
+      return PleromaAccount.listFromJsonString(httpResponse.body);
     } else {
       throw PleromaMyAccountException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
@@ -133,7 +152,46 @@ class PleromaMyAccountService implements IPleromaMyAccountService {
   }
 
   @override
+  Future<List<IPleromaAccount>> getFollowRequests({
+    String sinceId,
+    String maxId,
+    int limit = 20,
+  }) async {
+    var httpResponse = await restService.sendHttpRequest(RestRequest.get(
+        relativePath: urlPath.join("api/v1/follow_requests"),
+        queryArgs: [
+          RestRequestQueryArg("since_id", sinceId),
+          RestRequestQueryArg("max_id", maxId),
+          RestRequestQueryArg("limit", limit?.toString()),
+        ]));
+
+    return parseAccountListResponse(httpResponse);
+  }
+
+  @override
   void dispose() {
     // nothing
+  }
+
+  @override
+  Future<IPleromaAccountRelationship> acceptFollowRequest(
+      {@required String accountRemoteId}) async {
+    var httpResponse = await restService.sendHttpRequest(RestRequest.post(
+      relativePath:
+          urlPath.join("api/v1/follow_requests", accountRemoteId, "authorize"),
+    ));
+
+    return parseAccountRelationshipResponse(httpResponse);
+  }
+
+  @override
+  Future<IPleromaAccountRelationship> rejectFollowRequest(
+      {@required String accountRemoteId}) async {
+    var httpResponse = await restService.sendHttpRequest(RestRequest.post(
+      relativePath:
+          urlPath.join("api/v1/follow_requests", accountRemoteId, "reject"),
+    ));
+
+    return parseAccountRelationshipResponse(httpResponse);
   }
 }

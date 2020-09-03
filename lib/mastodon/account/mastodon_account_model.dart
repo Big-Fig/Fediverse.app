@@ -42,7 +42,9 @@ abstract class IMastodonAccount {
 }
 
 abstract class IMastodonAccountRelationship {
-  bool blocking;
+  bool get blocking;
+
+  bool get blockedBy;
 
   bool get domainBlocking;
 

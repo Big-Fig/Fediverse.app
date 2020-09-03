@@ -136,6 +136,9 @@
         "statuses": "Statuses"
       },
       "my": {
+        "follow_request": {
+          "title": "Follow requests"
+        },
         "statuses": {
           "bookmarked": {
             "title": "Bookmarks"
@@ -161,7 +164,8 @@
             "draft_posts": "Draft posts",
             "lists": "Lists",
             "bookmarked": "Bookmarks",
-            "favourited": "Favourites"
+            "favourited": "Favourites",
+            "follow_requests": "Follow requests"
           }
         },
         "edit": {
