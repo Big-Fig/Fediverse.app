@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/action/account_action_more_dialog.dart';
-import 'package:fedi/app/async/async_operation_button_builder_widget.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/chat/chat_helper.dart';
@@ -110,26 +109,24 @@ class AccountActionListWidget extends StatelessWidget {
 
   Widget buildFollowButton(
       IAccountBloc accountBloc, IPleromaAccountRelationship relationship) {
-
-    if(relationship.requested) {
+    if (relationship.requested) {
       return FediBlurredTextButton(
         tr("app.account.action.follow_requested"),
         onPressed: null,
       );
     } else {
-
-    return PleromaAsyncOperationButtonBuilderWidget(
-      showProgressDialog: false,
-      asyncButtonAction: accountBloc.toggleFollow,
-      builder: (BuildContext context, VoidCallback onPressed) {
-        return FediBlurredTextButton(
-          relationship?.following == true
-              ? tr("app.account.action.unfollow")
-              : tr("app.account.action.follow"),
-          onPressed: onPressed,
-        );
-      },
-    );
+      return PleromaAsyncOperationButtonBuilderWidget(
+        showProgressDialog: false,
+        asyncButtonAction: accountBloc.toggleFollow,
+        builder: (BuildContext context, VoidCallback onPressed) {
+          return FediBlurredTextButton(
+            relationship?.following == true
+                ? tr("app.account.action.unfollow")
+                : tr("app.account.action.follow"),
+            onPressed: onPressed,
+          );
+        },
+      );
     }
   }
 
