@@ -4,6 +4,7 @@ import 'package:fedi/app/account/account_bloc_impl.dart';
 import 'package:fedi/app/account/avatar/account_avatar_widget.dart';
 import 'package:fedi/app/account/details/account_details_page.dart';
 import 'package:fedi/app/account/display_name/account_display_name_widget.dart';
+import 'package:fedi/app/account/my/follow_request/my_account_follow_request_list_page.dart';
 import 'package:fedi/app/chat/chat_page.dart';
 import 'package:fedi/app/chat/repository/chat_repository.dart';
 import 'package:fedi/app/emoji/text/emoji_text_helper.dart';
@@ -90,7 +91,9 @@ class NotificationListItemWidget extends StatelessWidget {
     var status = notificationBloc.status;
     var account = notificationBloc.account;
     var chatRemoteId = notificationBloc.chatRemoteId;
-    if (status != null) {
+    if (notificationBloc.typePleroma == PleromaNotificationType.followRequest) {
+      goToMyAccountFollowRequestListPage(context);
+    } else if (status != null) {
       goToStatusThreadPage(context, status);
     } else if (chatRemoteId != null) {
       var chatRepository = IChatRepository.of(context, listen: false);
