@@ -10,10 +10,10 @@ import 'package:provider/provider.dart';
 class AccountNetworkOnlyPaginationBloc
     extends NetworkOnlyPleromaPaginationBloc<IAccount>
     implements IAccountNetworkOnlyPaginationBloc {
-  final INetworkOnlyListBloc<IAccount> listService;
+  final INetworkOnlyListBloc<IAccount> listBloc;
 
   AccountNetworkOnlyPaginationBloc(
-      {@required this.listService,
+      {@required this.listBloc,
       @required int itemsCountPerPage,
       @required int maximumCachedPagesCount})
       : super(
@@ -21,7 +21,7 @@ class AccountNetworkOnlyPaginationBloc
             itemsCountPerPage: itemsCountPerPage);
 
   @override
-  IPleromaApi get pleromaApi => listService.pleromaApi;
+  IPleromaApi get pleromaApi => listBloc.pleromaApi;
 
   static AccountNetworkOnlyPaginationBloc createFromContext(
           BuildContext context,
@@ -30,7 +30,7 @@ class AccountNetworkOnlyPaginationBloc
       AccountNetworkOnlyPaginationBloc(
           maximumCachedPagesCount: maximumCachedPagesCount,
           itemsCountPerPage: itemsCountPerPage,
-          listService: Provider.of<INetworkOnlyListBloc<IAccount>>(
+          listBloc: Provider.of<INetworkOnlyListBloc<IAccount>>(
               context,
               listen: false));
 
@@ -40,7 +40,7 @@ class AccountNetworkOnlyPaginationBloc
           @required int itemsCountPerPage,
           @required PaginationPage<IAccount> olderPage,
           @required PaginationPage<IAccount> newerPage}) =>
-      listService.loadItemsFromRemoteForPage(
+      listBloc.loadItemsFromRemoteForPage(
           itemsCountPerPage: itemsCountPerPage,
           maxId: newerPage?.items?.last?.remoteId,
           minId: olderPage?.items?.first?.remoteId,

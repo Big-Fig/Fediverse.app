@@ -165,6 +165,9 @@ class PleromaAccountRelationshipAdapter
         case 12:
           obj.subscribing = reader.read() as bool;
           break;
+        case 13:
+          obj.blockedBy = reader.read() as bool;
+          break;
       }
     }
     return obj;
@@ -172,7 +175,7 @@ class PleromaAccountRelationshipAdapter
 
   @override
   void write(BinaryWriter writer, PleromaAccountRelationship obj) {
-    writer.writeByte(11);
+    writer.writeByte(12);
     writer.writeByte(1);
     writer.write(obj.blocking);
     writer.writeByte(2);
@@ -195,6 +198,8 @@ class PleromaAccountRelationshipAdapter
     writer.write(obj.showingReblogs);
     writer.writeByte(12);
     writer.write(obj.subscribing);
+    writer.writeByte(13);
+    writer.write(obj.blockedBy);
   }
 }
 
@@ -322,6 +327,7 @@ PleromaAccountRelationship _$PleromaAccountRelationshipFromJson(
     requested: json['requested'] as bool,
     showingReblogs: json['showing_reblogs'] as bool,
     subscribing: json['subscribing'] as bool,
+    blockedBy: json['blocked_by'] as bool,
   );
 }
 
@@ -339,6 +345,7 @@ Map<String, dynamic> _$PleromaAccountRelationshipToJson(
       'requested': instance.requested,
       'showing_reblogs': instance.showingReblogs,
       'subscribing': instance.subscribing,
+      'blocked_by': instance.blockedBy,
     };
 
 PleromaAccountIdentityProof _$PleromaAccountIdentityProofFromJson(

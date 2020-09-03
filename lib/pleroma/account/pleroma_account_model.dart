@@ -415,6 +415,11 @@ class PleromaAccountRelationship implements IPleromaAccountRelationship {
   @HiveField(12)
   bool subscribing;
 
+  @override
+  @HiveField(13)
+  @JsonKey(name: "blocked_by")
+  bool blockedBy;
+
   PleromaAccountRelationship({
     this.blocking,
     this.domainBlocking,
@@ -427,20 +432,23 @@ class PleromaAccountRelationship implements IPleromaAccountRelationship {
     this.requested,
     this.showingReblogs,
     this.subscribing,
+    this.blockedBy,
   });
 
-  PleromaAccountRelationship copyWith(
-          {int id,
-          bool blocking,
-          bool domainBlocking,
-          bool endorsed,
-          bool followedBy,
-          bool following,
-          bool muting,
-          bool mutingNotifications,
-          bool requested,
-          bool showingReblogs,
-          bool subscribing}) =>
+  PleromaAccountRelationship copyWith({
+    int id,
+    bool blocking,
+    bool domainBlocking,
+    bool endorsed,
+    bool followedBy,
+    bool following,
+    bool muting,
+    bool mutingNotifications,
+    bool requested,
+    bool showingReblogs,
+    bool subscribing,
+    bool blockedBy,
+  }) =>
       PleromaAccountRelationship(
         id: id ?? this.id,
         blocking: blocking ?? this.blocking,
@@ -453,6 +461,7 @@ class PleromaAccountRelationship implements IPleromaAccountRelationship {
         requested: requested ?? this.requested,
         showingReblogs: showingReblogs ?? this.showingReblogs,
         subscribing: subscribing ?? this.subscribing,
+        blockedBy: blockedBy ?? this.blockedBy,
       );
 
   @override
@@ -470,6 +479,7 @@ class PleromaAccountRelationship implements IPleromaAccountRelationship {
           mutingNotifications == other.mutingNotifications &&
           requested == other.requested &&
           showingReblogs == other.showingReblogs &&
+          blockedBy == other.blockedBy &&
           subscribing == other.subscribing;
 
   @override
@@ -484,6 +494,7 @@ class PleromaAccountRelationship implements IPleromaAccountRelationship {
       mutingNotifications.hashCode ^
       requested.hashCode ^
       showingReblogs.hashCode ^
+      blockedBy.hashCode ^
       subscribing.hashCode;
 
   @override
@@ -493,7 +504,9 @@ class PleromaAccountRelationship implements IPleromaAccountRelationship {
         ' followedBy: $followedBy, following: $following, id: $id,'
         ' muting: $muting, mutingNotifications: $mutingNotifications,'
         ' requested: $requested, showingReblogs: $showingReblogs,'
-        ' subscribing: $subscribing}';
+        ' subscribing: $subscribing,'
+        ' blockedBy: $blockedBy'
+        '}';
   }
 
   factory PleromaAccountRelationship.fromJson(Map<String, dynamic> json) =>

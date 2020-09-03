@@ -152,6 +152,9 @@ class CodegenLoader extends AssetLoader{
         "statuses": "Statuses"
       },
       "my": {
+        "follow_request": {
+          "title": "Follow requests"
+        },
         "statuses": {
           "bookmarked": {
             "title": "Bookmarks"
@@ -177,7 +180,8 @@ class CodegenLoader extends AssetLoader{
             "draft_posts": "Draft posts",
             "lists": "Lists",
             "bookmarked": "Bookmarks",
-            "favourited": "Favourites"
+            "favourited": "Favourites",
+            "follow_requests": "Follow requests"
           }
         },
         "edit": {
