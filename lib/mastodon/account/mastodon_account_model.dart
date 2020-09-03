@@ -65,6 +65,8 @@ abstract class IMastodonAccountRelationship {
   bool get showingReblogs;
 
   bool get subscribing;
+
+  String get note;
 }
 
 abstract class IMastodonAccountIdentityProof {
