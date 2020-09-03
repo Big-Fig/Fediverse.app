@@ -1,3 +1,4 @@
+import 'package:fedi/app/html/html_text_helper.dart';
 import 'package:fedi/app/share/external/external_share_bloc.dart';
 import 'package:fedi/app/share/external/external_share_bloc_impl.dart';
 import 'package:fedi/app/share/external/external_share_bloc_proxy_provider.dart';
@@ -31,17 +32,18 @@ class ExternalShareStatusBloc extends ExternalShareBloc
 
   @override
   Future share() {
-
     var asLink = asLinkBoolField.currentValue == true;
-    var content = status.content;
+    var content = HtmlTextHelper.extractRawStringFromHtmlString(status.content);
     var text = message ?? "";
     if (asLink) {
       text += " ${status.url}";
     } else {
       var spoilerText = status.spoilerText;
       if (spoilerText?.isNotEmpty == true) {
-        text += " ${spoilerText}";
+        text +=
+            " ${HtmlTextHelper.extractRawStringFromHtmlString(spoilerText)}";
       }
+
       text += " ${content}";
     }
     return externalShareService.share(
