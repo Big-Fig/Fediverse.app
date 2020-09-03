@@ -1343,4 +1343,91 @@ void main() {
     expectDbAccount(
         await accountRepository.findByRemoteId(dbAccount.remoteId), dbAccount);
   });
+
+  test('watch new by listRemoteId', () async {
+    var listRemoteId = "listRemoteId";
+
+    var dbStatus1 =
+        (await createTestDbStatus(seed: "seed1", dbAccount: dbAccount))
+            .copyWith(remoteId: "1");
+
+    var status1Populated =
+        await createTestDbStatusPopulated(dbStatus1, accountRepository);
+
+    await statusRepository.upsertRemoteStatus(
+        mapLocalStatusToRemoteStatus(
+            DbStatusPopulatedWrapper(status1Populated)),
+        listRemoteId: listRemoteId,
+        conversationRemoteId: null);
+
+    List<IStatus> watchedStatuses;
+    var subscription = statusRepository
+        .watchStatuses(
+      onlyInConversation: null,
+      onlyFromAccount: null,
+      onlyWithMedia: null,
+      onlyNotMuted: null,
+      excludeVisibilities: null,
+      newerThanStatus:
+          await statusRepository.findByRemoteId(dbStatus1.remoteId),
+      limit: null,
+      offset: null,
+      orderingTermData: StatusOrderingTermData(
+          orderingMode: OrderingMode.desc,
+          orderByType: StatusOrderByType.remoteId),
+      onlyNoNsfwSensitive: null,
+      onlyLocal: null,
+      onlyNoReplies: null,
+      onlyWithHashtag: null,
+      onlyFromAccountsFollowingByAccount: null,
+      isFromHomeTimeline: null,
+      olderThanStatus: null,
+      onlyInListWithRemoteId: listRemoteId,
+      onlyBookmarked: null,
+      onlyFavourited: null,
+    )
+        .listen((statuses) {
+      watchedStatuses = statuses;
+    });
+
+    await Future.delayed(Duration(milliseconds: 100), () {});
+
+    expect(watchedStatuses.length, 0);
+
+    var dbStatus2 =
+        (await createTestDbStatus(seed: "seed2", dbAccount: dbAccount))
+            .copyWith(remoteId: "2");
+
+    var status2Populated =
+        await createTestDbStatusPopulated(dbStatus2, accountRepository);
+
+    await statusRepository.upsertRemoteStatus(
+        mapLocalStatusToRemoteStatus(
+            DbStatusPopulatedWrapper(status2Populated)),
+        listRemoteId: listRemoteId,
+        conversationRemoteId: null);
+
+    await Future.delayed(Duration(milliseconds: 100), () {});
+
+    expect(watchedStatuses.length, 1);
+
+    var dbStatus0 =
+        (await createTestDbStatus(seed: "seed0", dbAccount: dbAccount))
+            .copyWith(remoteId: "0");
+
+    var status0Populated =
+        await createTestDbStatusPopulated(dbStatus0, accountRepository);
+
+    await statusRepository.upsertRemoteStatus(
+        mapLocalStatusToRemoteStatus(
+            DbStatusPopulatedWrapper(status0Populated)),
+        listRemoteId: listRemoteId,
+        conversationRemoteId: null);
+
+    await Future.delayed(Duration(milliseconds: 100), () {});
+
+    expect(watchedStatuses.length, 1);
+
+    await subscription.cancel();
+  });
 }

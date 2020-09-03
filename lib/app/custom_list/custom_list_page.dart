@@ -2,8 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/custom_list/custom_list_model.dart';
-import 'package:fedi/app/custom_list/status/list/custom_list_timeline_status_cached_list_bloc_impl.dart';
-import 'package:fedi/app/custom_list/status/list/custom_list_timeline_websockets_handler_impl.dart';
+import 'package:fedi/app/custom_list/status/list/custom_list_status_cached_list_bloc_impl.dart';
+import 'package:fedi/app/custom_list/status/list/custom_list_status_list_websockets_handler_impl.dart';
 import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/list/status_list_tap_to_load_overlay_widget.dart';
@@ -100,7 +100,7 @@ MaterialPageRoute createCustomListPageRoute({
     return DisposableProvider<IStatusCachedListBloc>(
       create: (BuildContext context) {
         var customListTimelineStatusCachedListBloc =
-            CustomListTimelineStatusCachedListBloc(
+            CustomListStatusCachedListBloc(
                 pleromaTimelineService: IPleromaTimelineService.of(
                   context,
                   listen: false,
@@ -119,9 +119,10 @@ MaterialPageRoute createCustomListPageRoute({
                 customList: customList);
         if (isRealtimeWebSocketsEnabled) {
           customListTimelineStatusCachedListBloc.addDisposable(
-              disposable: CustomListTimelineWebSocketsHandler.createFromContext(
-                  context,
-                  customListRemoteId: customList.remoteId));
+              disposable:
+                  CustomListStatusListWebSocketsHandler.createFromContext(
+                      context,
+                      customListRemoteId: customList.remoteId));
         }
         return customListTimelineStatusCachedListBloc;
       },

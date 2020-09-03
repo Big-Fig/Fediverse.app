@@ -6,8 +6,8 @@ import 'package:fedi/app/websockets/web_sockets_handler_impl.dart';
 import 'package:fedi/pleroma/websockets/pleroma_websockets_service.dart';
 import 'package:flutter/cupertino.dart';
 
-class HashtagTimelineWebSocketsHandler extends WebSocketsChannelHandler {
-  HashtagTimelineWebSocketsHandler({
+class HashtagStatusListWebSocketsHandler extends WebSocketsChannelHandler {
+  HashtagStatusListWebSocketsHandler({
     @required String hashtag,
     @required IPleromaWebSocketsService pleromaWebSocketsService,
     @required IStatusRepository statusRepository,
@@ -23,10 +23,10 @@ class HashtagTimelineWebSocketsHandler extends WebSocketsChannelHandler {
             chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
             isFromHomeTimeline: false);
 
-  static HashtagTimelineWebSocketsHandler createFromContext(
+  static HashtagStatusListWebSocketsHandler createFromContext(
           BuildContext context,
           {@required String hashtag}) =>
-      HashtagTimelineWebSocketsHandler(
+      HashtagStatusListWebSocketsHandler(
         hashtag: hashtag,
         pleromaWebSocketsService:
             IPleromaWebSocketsService.of(context, listen: false),

@@ -147,7 +147,6 @@ abstract class TimelineStatusCachedListBloc extends DisposableOwner
       excludeVisibilities: timelineSettings.excludeVisibilities,
       olderThanStatus: null,
       newerThanStatus: item,
-      isFromHomeTimeline: isFromHomeTimeline,
       onlyNoNsfwSensitive: timelineLocalPreferences.onlyNoNsfwSensitive,
       onlyNoReplies: timelineLocalPreferences.onlyNoReplies,
       limit: null,
@@ -155,6 +154,7 @@ abstract class TimelineStatusCachedListBloc extends DisposableOwner
       orderingTermData: StatusOrderingTermData(
           orderingMode: OrderingMode.desc,
           orderByType: StatusOrderByType.remoteId),
+      isFromHomeTimeline: isFromHomeTimeline,
       onlyBookmarked: null,
       onlyFavourited: null,
     );

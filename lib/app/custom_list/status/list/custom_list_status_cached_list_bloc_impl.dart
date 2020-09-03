@@ -9,7 +9,7 @@ import 'package:fedi/pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 
-class CustomListTimelineStatusCachedListBloc
+class CustomListStatusCachedListBloc
     extends TimelineStatusCachedListBloc implements IStatusCachedListBloc {
   final ICustomList customList;
 
@@ -23,7 +23,7 @@ class CustomListTimelineStatusCachedListBloc
         onlyInListWithRemoteId: customList.remoteId,
       );
 
-  CustomListTimelineStatusCachedListBloc({
+  CustomListStatusCachedListBloc({
     @required IPleromaTimelineService pleromaTimelineService,
     @required IStatusRepository statusRepository,
     @required TimelineSettingsLocalPreferencesBloc timelineLocalPreferencesBloc,
@@ -34,5 +34,5 @@ class CustomListTimelineStatusCachedListBloc
             pleromaTimelineService: pleromaTimelineService,
             timelineLocalPreferencesBloc: timelineLocalPreferencesBloc,
             statusRepository: statusRepository,
-            isFromHomeTimeline: true);
+            isFromHomeTimeline: false);
 }
