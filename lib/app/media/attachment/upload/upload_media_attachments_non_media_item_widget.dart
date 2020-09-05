@@ -31,8 +31,8 @@ class _UploadMediaAttachmentsNonMediaItemWidgetState
 
     streamSubscription =
         uploadMediaAttachmentBloc.uploadStateStream.listen((state) {
-      if (state == UploadMediaAttachmentState.failed) {
-        showMediaAttachmentFailedNotificationOverlay(context);
+      if (state.type == UploadMediaAttachmentStateType.failed) {
+        showMediaAttachmentFailedNotificationOverlay(context, state.error);
       }
     });
   }
@@ -58,7 +58,9 @@ class _UploadMediaAttachmentsNonMediaItemWidgetState
           var uploadState = snapshot.data;
           return MediaAttachmentNonMediaItemWidget(
               opacity:
-                  uploadState == UploadMediaAttachmentState.uploaded ? 1 : 0.5,
+                  uploadState.type == UploadMediaAttachmentStateType.uploaded
+                      ? 1
+                      : 0.5,
               filePath: mediaItemBloc.filePath,
               actionsWidget: actionsWidget);
         });
@@ -72,14 +74,14 @@ class _UploadMediaAttachmentsNonMediaItemWidgetState
         builder: (context, snapshot) {
           var uploadState = snapshot.data;
 
-          switch (uploadState) {
-            case UploadMediaAttachmentState.uploading:
+          switch (uploadState.type) {
+            case UploadMediaAttachmentStateType.uploading:
               return buildLoading();
               break;
-            case UploadMediaAttachmentState.notUploaded:
-            case UploadMediaAttachmentState.uploaded:
+            case UploadMediaAttachmentStateType.notUploaded:
+            case UploadMediaAttachmentStateType.uploaded:
               return buildRemoveButton(context, mediaItemBloc);
-            case UploadMediaAttachmentState.failed:
+            case UploadMediaAttachmentStateType.failed:
               return buildErrorButton(context, mediaItemBloc);
             default:
               throw "Invalid state uploadState ${uploadState}";
@@ -104,11 +106,12 @@ class _UploadMediaAttachmentsNonMediaItemWidgetState
   }
 
   Widget buildRemoveButton(
-      BuildContext context, IUploadMediaAttachmentBloc mediaItemBloc) => FediRemoveIconInCircleButton(
-      onPressed: () {
-        showConfirmRemoveAssetDialog(context, mediaItemBloc);
-      },
-    );
+          BuildContext context, IUploadMediaAttachmentBloc mediaItemBloc) =>
+      FediRemoveIconInCircleButton(
+        onPressed: () {
+          showConfirmRemoveAssetDialog(context, mediaItemBloc);
+        },
+      );
 
   Widget buildErrorButton(
       BuildContext context, IUploadMediaAttachmentBloc mediaItemBloc) {

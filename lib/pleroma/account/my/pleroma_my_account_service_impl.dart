@@ -103,6 +103,7 @@ class PleromaMyAccountService implements IPleromaMyAccountService {
             files: {
           "header": accountFiles.header,
           "avatar": accountFiles.avatar,
+          "pleroma_background_image": accountFiles.pleromaBackgroundImage,
         }));
 
     return parseMyAccountResponse(httpResponse);

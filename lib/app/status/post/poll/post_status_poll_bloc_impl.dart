@@ -27,7 +27,10 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
 
     var now = DateTime.now();
     var minDateTime = now.add(pollMinimumExpiration);
-    var maxDateTime = now.add(pollMaximumExpiration);
+    DateTime maxDateTime;
+    if(pollMaximumExpiration != null) {
+      maxDateTime = now.add(pollMaximumExpiration);
+    }
     var originValue = now.add(IPostStatusPollBloc.defaultPollExpiration);
 
     if (originValue.isBefore(minDateTime)) {
@@ -61,7 +64,7 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
   })  : pollOptionsGroupBloc = FormOneTypeGroupBloc<IFormStringFieldBloc>(
           originalItems: createDefaultPollOptions(pollLimits?.maxOptionChars),
           minimumFieldsCount: 2,
-          maximumFieldsCount: pollLimits.maxOptions,
+          maximumFieldsCount: pollLimits?.maxOptions ?? 20,
           newEmptyFieldCreator: () =>
               createPollOptionBloc(pollLimits?.maxOptionChars),
         ),

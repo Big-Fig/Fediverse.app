@@ -105,7 +105,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase(QueryExecutor e) : super(e);
 
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -113,31 +113,35 @@ class AppDatabase extends _$AppDatabase {
       onUpgrade: (Migrator m, int from, int to) async {
         if (from == 1 && to == 2) {
           await _migrate1to2(m);
-        }
-
-        if (from == 1 && to == 3) {
+        } else if (from == 1 && to == 3) {
           await _migrate1to2(m);
           await _migrate2to3(m);
-        }
-
-        if (from == 1 && to == 4) {
+        } else if (from == 1 && to == 5) {
           await _migrate1to2(m);
           await _migrate2to3(m);
           await _migrate3to4(m);
-        }
-
-        if (from == 2 && to == 3) {
+          await _migrate4to5(m);
+        } else if (from == 2 && to == 3) {
           await _migrate2to3(m);
-        }
-        if (from == 2 && to == 4) {
+        } else if (from == 2 && to == 4) {
           await _migrate2to3(m);
           await _migrate3to4(m);
-        }
-
-        if (from == 3 && to == 4) {
+        } else if (from == 2 && to == 5) {
+          await _migrate2to3(m);
           await _migrate3to4(m);
+          await _migrate4to5(m);
+        } else if (from == 3 && to == 4) {
+          await _migrate3to4(m);
+        } else if (from == 3 && to == 5) {
+          await _migrate3to4(m);
+          await _migrate4to5(m);
+        } else if (from == 4 && to == 5) {
+          await _migrate4to5(m);
         }
       });
+
+  Future<void> _migrate4to5(Migrator m) async =>
+      await m.addColumn(dbAccounts, dbAccounts.pleromaBackgroundImage);
 
   Future<void> _migrate3to4(Migrator m) async =>
       await m.addColumn(dbStatuses, dbStatuses.deleted);

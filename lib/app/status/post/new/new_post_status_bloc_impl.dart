@@ -17,6 +17,7 @@ class NewPostStatusBloc extends PostStatusBloc {
     @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
     @required int maximumMessageLength,
     @required PleromaInstancePollLimits pleromaInstancePollLimits,
+    @required int maximumFileSizeInBytes,
   }) : super(
           pleromaStatusService: pleromaStatusService,
           statusRepository: statusRepository,
@@ -25,6 +26,7 @@ class NewPostStatusBloc extends PostStatusBloc {
           initialData: PostStatusBloc.defaultInitData
               .copyWith(visibility: PleromaVisibility.PUBLIC.toJsonValue()),
           pleromaInstancePollLimits: pleromaInstancePollLimits,
+          maximumFileSizeInBytes: maximumFileSizeInBytes,
         );
 
   static NewPostStatusBloc createFromContext(BuildContext context) {
@@ -38,6 +40,7 @@ class NewPostStatusBloc extends PostStatusBloc {
           IPleromaMediaAttachmentService.of(context, listen: false),
       maximumMessageLength: info.maxTootChars,
       pleromaInstancePollLimits: info.pollLimits,
+      maximumFileSizeInBytes: info.uploadLimit,
     );
   }
 

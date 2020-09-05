@@ -24,6 +24,7 @@ class EditPostStatusBloc extends PostStatusBloc {
     @required this.postStatusDataCallback,
     @required int maximumMessageLength,
     @required PleromaInstancePollLimits pleromaInstancePollLimits,
+    @required int maximumFileSizeInBytes,
   }) : super(
           pleromaStatusService: pleromaStatusService,
           statusRepository: statusRepository,
@@ -31,6 +32,7 @@ class EditPostStatusBloc extends PostStatusBloc {
           initialData: initialData,
           maximumMessageLength: maximumMessageLength,
           pleromaInstancePollLimits: pleromaInstancePollLimits,
+          maximumFileSizeInBytes: maximumFileSizeInBytes,
         );
 
   static EditPostStatusBloc createFromContext(
@@ -50,6 +52,7 @@ class EditPostStatusBloc extends PostStatusBloc {
       postStatusDataCallback: postStatusDataCallback,
       maximumMessageLength: info.maxTootChars,
       pleromaInstancePollLimits: info.pollLimits,
+      maximumFileSizeInBytes: info.uploadLimit,
     );
   }
 

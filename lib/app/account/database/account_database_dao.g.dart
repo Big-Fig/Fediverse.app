@@ -44,6 +44,7 @@ mixin _$AccountDaoMixin on DatabaseAccessor<AppDatabase> {
       lastStatusAt: row.readDateTime('last_status_at'),
       fields: $DbAccountsTable.$converter0.mapToDart(row.readString('fields')),
       emojis: $DbAccountsTable.$converter1.mapToDart(row.readString('emojis')),
+      pleromaBackgroundImage: row.readString('pleroma_background_image'),
       pleromaTags: $DbAccountsTable.$converter2
           .mapToDart(row.readString('pleroma_tags')),
       pleromaRelationship: $DbAccountsTable.$converter3
