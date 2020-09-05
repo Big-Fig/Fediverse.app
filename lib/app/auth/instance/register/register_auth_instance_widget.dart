@@ -8,6 +8,7 @@ import 'package:fedi/app/form/captcha/form_captcha_string_field_row_widget.dart'
 import 'package:fedi/app/form/form_string_field_form_row_widget.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/notification_overlay/info_fedi_notification_overlay.dart';
 import 'package:fedi/error/error_data_model.dart';
 import 'package:fedi/pleroma/account/public/pleroma_account_public_model.dart';
 import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
@@ -220,8 +221,17 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
     var authInstance = dialogResult.result;
     if (authInstance != null) {
       Navigator.of(context).pop();
-      await ICurrentAuthInstanceBloc.of(context, listen: false)
-          .changeCurrentInstance(authInstance);
+      if (authInstance.info.approvalRequired == true) {
+        showInfoFediNotificationOverlay(
+          titleText:  "app.auth.instance.register.approval_required"
+              ".notification.title".tr(),
+          contentText: "app.auth.instance.register.approval_required"
+              ".notification.content".tr(),
+        );
+      } else {
+        await ICurrentAuthInstanceBloc.of(context, listen: false)
+            .changeCurrentInstance(authInstance);
+      }
 
       if (successRegistrationCallback != null) {
         successRegistrationCallback();

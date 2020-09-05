@@ -361,10 +361,22 @@ class CodegenLoader extends AssetLoader{
               "title": "Instance owner disabled registration",
               "content": "Try any other instance, like fedi.app"
             }
+          },
+          "invites_only": {
+            "dialog": {
+              "title": "Instance owner limit registration to invites-only",
+              "content": "Try any other instance, or register by invite link in your browser"
+            }
           }
         },
         "register": {
           "title": "Create account",
+          "approval_required": {
+            "notification": {
+              "title": "Success registration",
+              "content": "You can once moderators will approve your account"
+            }
+          },
           "field": {
             "username": {
               "label": "Username*",
