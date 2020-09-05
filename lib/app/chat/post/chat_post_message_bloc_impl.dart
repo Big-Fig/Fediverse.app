@@ -25,10 +25,12 @@ class ChatPostMessageBloc extends PostMessageBloc
     @required this.chatRemoteId,
     @required int maximumMessageLength,
     @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
+    @required int maximumFileSizeInBytes,
   }) : super(
           maximumMessageLength: maximumMessageLength,
           maximumMediaAttachmentCount: 1,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
+          maximumFileSizeInBytes: maximumFileSizeInBytes,
         );
 
   @override
@@ -36,7 +38,8 @@ class ChatPostMessageBloc extends PostMessageBloc
     bool success;
 
     var mediaAttachmentBlocs = mediaAttachmentsBloc.mediaAttachmentBlocs?.where(
-        (bloc) => bloc.uploadState == UploadMediaAttachmentState.uploaded);
+        (bloc) =>
+            bloc.uploadState.type == UploadMediaAttachmentStateType.uploaded);
     var mediaId;
     if (mediaAttachmentBlocs?.isNotEmpty == true) {
       mediaId = mediaAttachmentBlocs.first.pleromaMediaAttachment.id;
@@ -69,20 +72,20 @@ class ChatPostMessageBloc extends PostMessageBloc
   }
 
   static ChatPostMessageBloc createFromContext(BuildContext context,
-          {@required String chatRemoteId}) =>
-      ChatPostMessageBloc(
-        chatRemoteId: chatRemoteId,
-        chatMessageRepository:
-            IChatMessageRepository.of(context, listen: false),
-        pleromaChatService: IPleromaChatService.of(context, listen: false),
-        pleromaMediaAttachmentService:
-            IPleromaMediaAttachmentService.of(context, listen: false),
-        maximumMessageLength:
-            ICurrentAuthInstanceBloc.of(context, listen: false)
-                .currentInstance
-                .info
-                .chatLimit,
-      );
+      {@required String chatRemoteId}) {
+    var info = ICurrentAuthInstanceBloc.of(context, listen: false)
+        .currentInstance
+        .info;
+    return ChatPostMessageBloc(
+      chatRemoteId: chatRemoteId,
+      chatMessageRepository: IChatMessageRepository.of(context, listen: false),
+      pleromaChatService: IPleromaChatService.of(context, listen: false),
+      pleromaMediaAttachmentService:
+          IPleromaMediaAttachmentService.of(context, listen: false),
+      maximumMessageLength: info.chatLimit,
+      maximumFileSizeInBytes: info.uploadLimit,
+    );
+  }
 
   static Widget provideToContext(BuildContext context,
       {@required String chatRemoteId, @required Widget child}) {

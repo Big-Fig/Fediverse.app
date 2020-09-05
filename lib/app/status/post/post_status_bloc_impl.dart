@@ -44,10 +44,13 @@ abstract class PostStatusBloc extends PostMessageBloc
     IPostStatusData initialData,
     List<IAccount> initialAccountsToMention = const [],
     @required PleromaInstancePollLimits pleromaInstancePollLimits,
+    @required int maximumFileSizeInBytes,
   }) : super(
-            maximumMessageLength: maximumMessageLength,
-            pleromaMediaAttachmentService: pleromaMediaAttachmentService,
-            maximumMediaAttachmentCount: maximumMediaAttachmentCount) {
+          maximumMessageLength: maximumMessageLength,
+          pleromaMediaAttachmentService: pleromaMediaAttachmentService,
+          maximumMediaAttachmentCount: maximumMediaAttachmentCount,
+          maximumFileSizeInBytes: maximumFileSizeInBytes,
+        ) {
     this.initialData = initialData ?? defaultInitData;
     visibilitySubject =
         BehaviorSubject.seeded(initialData.visibility.toPleromaVisibility());
@@ -440,7 +443,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   List<IPleromaMediaAttachment> _calculateMediaAttachmentsField() {
     var mediaAttachments = mediaAttachmentsBloc.mediaAttachmentBlocs
         ?.where(
-            (bloc) => bloc.uploadState == UploadMediaAttachmentState.uploaded)
+            (bloc) => bloc.uploadState.type == UploadMediaAttachmentStateType.uploaded)
         ?.map((bloc) => bloc.pleromaMediaAttachment)
         ?.toList();
     // media ids shouldn't be empty (should be null in this case)

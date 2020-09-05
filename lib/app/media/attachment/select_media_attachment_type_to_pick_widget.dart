@@ -77,7 +77,7 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
           );
           var attachmentsCollectionBloc =
               IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);
-          attachmentsCollectionBloc.attachMedia(filePickerFile);
+          await attachmentsCollectionBloc.attachMedia(filePickerFile);
           onFileSelected();
         }
       });
@@ -97,7 +97,7 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
           );
           var attachmentsCollectionBloc =
               IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);
-          attachmentsCollectionBloc.attachMedia(filePickerFile);
+          await attachmentsCollectionBloc.attachMedia(filePickerFile);
           onFileSelected();
         }
       });
@@ -115,7 +115,7 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
 
           var attachmentsCollectionBloc =
               IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);
-          attachmentsCollectionBloc.attachMedia(filePickerFile);
+          await attachmentsCollectionBloc.attachMedia(filePickerFile);
           onFileSelected();
         }
       });
@@ -132,7 +132,7 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
           );
           var attachmentsCollectionBloc =
               IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);
-          attachmentsCollectionBloc.attachMedia(filePickerFile);
+          await attachmentsCollectionBloc.attachMedia(filePickerFile);
           onFileSelected();
         }
       });

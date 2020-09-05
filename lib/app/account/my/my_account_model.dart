@@ -222,6 +222,9 @@ class MyAccountRemoteWrapper extends IMyAccount {
   String toString() {
     return 'MyAccountRemoteWrapper{remoteAccount: $remoteAccount}';
   }
+
+  @override
+  String get pleromaBackgroundImage => remoteAccount.pleroma?.backgroundImage;
 }
 
 class SelfActionNotPossibleException implements Exception {

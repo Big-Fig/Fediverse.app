@@ -41,8 +41,8 @@ class _UploadMediaAttachmentMediaItemWidgetState
 
     streamSubscription =
         uploadMediaAttachmentBloc.uploadStateStream.listen((state) {
-      if (state == UploadMediaAttachmentState.failed) {
-        showMediaAttachmentFailedNotificationOverlay(context);
+      if (state.type == UploadMediaAttachmentStateType.failed) {
+        showMediaAttachmentFailedNotificationOverlay(context, state.error);
       }
     });
   }
@@ -87,7 +87,8 @@ class _UploadMediaAttachmentMediaItemWidgetState
                     throw "Unsupported bloc type $bloc";
                   }
 
-                  if (uploadState == UploadMediaAttachmentState.uploaded) {
+                  if (uploadState.type == UploadMediaAttachmentStateType
+                      .uploaded) {
                     return mediaPreview;
                   } else {
                     return Opacity(
@@ -116,14 +117,14 @@ class _UploadMediaAttachmentMediaItemWidgetState
           builder: (context, snapshot) {
             var uploadState = snapshot.data;
 
-            switch (uploadState) {
-              case UploadMediaAttachmentState.notUploaded:
-              case UploadMediaAttachmentState.uploading:
+            switch (uploadState.type) {
+              case UploadMediaAttachmentStateType.notUploaded:
+              case UploadMediaAttachmentStateType.uploading:
                 return buildLoading();
                 break;
-              case UploadMediaAttachmentState.uploaded:
+              case UploadMediaAttachmentStateType.uploaded:
                 return buildRemoveButton(context, uploadMediaAttachmentBloc);
-              case UploadMediaAttachmentState.failed:
+              case UploadMediaAttachmentStateType.failed:
                 return buildErrorButton(context, uploadMediaAttachmentBloc);
                 break;
             }

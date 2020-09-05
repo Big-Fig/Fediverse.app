@@ -187,6 +187,18 @@ class CodegenLoader extends AssetLoader{
         },
         "edit": {
           "title": "Edit account",
+          "media": {
+            "upload": {
+              "failed": {
+                "notification": {
+                  "title": "Failed to upload",
+                  "exceed_size": {
+                    "content": "File size is {} MB, but max is {} MB"
+                  }
+                }
+              }
+            }
+          },
           "action": {
             "save": "Save"
           },
@@ -632,7 +644,10 @@ class CodegenLoader extends AssetLoader{
         "upload": {
           "failed": {
             "notification": {
-              "content": "Failed to upload"
+              "title": "Failed to upload",
+              "exceed_size": {
+                "content": "File size is {} MB, but max is {} MB"
+              }
             }
           },
           "remove": {

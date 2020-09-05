@@ -1763,6 +1763,7 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
   final DateTime lastStatusAt;
   final List<PleromaField> fields;
   final List<PleromaEmoji> emojis;
+  final String pleromaBackgroundImage;
   final List<PleromaTag> pleromaTags;
   final PleromaAccountRelationship pleromaRelationship;
   final bool pleromaIsAdmin;
@@ -1797,6 +1798,7 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
       this.lastStatusAt,
       this.fields,
       this.emojis,
+      this.pleromaBackgroundImage,
       this.pleromaTags,
       this.pleromaRelationship,
       this.pleromaIsAdmin,
@@ -1853,6 +1855,8 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}fields'])),
       emojis: $DbAccountsTable.$converter1.mapToDart(
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}emojis'])),
+      pleromaBackgroundImage: stringType.mapFromDatabaseResponse(
+          data['${effectivePrefix}pleroma_background_image']),
       pleromaTags: $DbAccountsTable.$converter2.mapToDart(stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}pleroma_tags'])),
       pleromaRelationship: $DbAccountsTable.$converter3.mapToDart(
@@ -1906,6 +1910,8 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
       lastStatusAt: serializer.fromJson<DateTime>(json['lastStatusAt']),
       fields: serializer.fromJson<List<PleromaField>>(json['fields']),
       emojis: serializer.fromJson<List<PleromaEmoji>>(json['emojis']),
+      pleromaBackgroundImage:
+          serializer.fromJson<String>(json['pleromaBackgroundImage']),
       pleromaTags: serializer.fromJson<List<PleromaTag>>(json['pleromaTags']),
       pleromaRelationship: serializer
           .fromJson<PleromaAccountRelationship>(json['pleromaRelationship']),
@@ -1953,6 +1959,8 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
       'lastStatusAt': serializer.toJson<DateTime>(lastStatusAt),
       'fields': serializer.toJson<List<PleromaField>>(fields),
       'emojis': serializer.toJson<List<PleromaEmoji>>(emojis),
+      'pleromaBackgroundImage':
+          serializer.toJson<String>(pleromaBackgroundImage),
       'pleromaTags': serializer.toJson<List<PleromaTag>>(pleromaTags),
       'pleromaRelationship':
           serializer.toJson<PleromaAccountRelationship>(pleromaRelationship),
@@ -2023,6 +2031,9 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           fields == null && nullToAbsent ? const Value.absent() : Value(fields),
       emojis:
           emojis == null && nullToAbsent ? const Value.absent() : Value(emojis),
+      pleromaBackgroundImage: pleromaBackgroundImage == null && nullToAbsent
+          ? const Value.absent()
+          : Value(pleromaBackgroundImage),
       pleromaTags: pleromaTags == null && nullToAbsent
           ? const Value.absent()
           : Value(pleromaTags),
@@ -2090,6 +2101,7 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           DateTime lastStatusAt,
           List<PleromaField> fields,
           List<PleromaEmoji> emojis,
+          String pleromaBackgroundImage,
           List<PleromaTag> pleromaTags,
           PleromaAccountRelationship pleromaRelationship,
           bool pleromaIsAdmin,
@@ -2124,6 +2136,8 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
         lastStatusAt: lastStatusAt ?? this.lastStatusAt,
         fields: fields ?? this.fields,
         emojis: emojis ?? this.emojis,
+        pleromaBackgroundImage:
+            pleromaBackgroundImage ?? this.pleromaBackgroundImage,
         pleromaTags: pleromaTags ?? this.pleromaTags,
         pleromaRelationship: pleromaRelationship ?? this.pleromaRelationship,
         pleromaIsAdmin: pleromaIsAdmin ?? this.pleromaIsAdmin,
@@ -2166,6 +2180,7 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           ..write('lastStatusAt: $lastStatusAt, ')
           ..write('fields: $fields, ')
           ..write('emojis: $emojis, ')
+          ..write('pleromaBackgroundImage: $pleromaBackgroundImage, ')
           ..write('pleromaTags: $pleromaTags, ')
           ..write('pleromaRelationship: $pleromaRelationship, ')
           ..write('pleromaIsAdmin: $pleromaIsAdmin, ')
@@ -2226,7 +2241,7 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
                                                                               .hashCode,
                                                                           $mrjc(
                                                                               fields.hashCode,
-                                                                              $mrjc(emojis.hashCode, $mrjc(pleromaTags.hashCode, $mrjc(pleromaRelationship.hashCode, $mrjc(pleromaIsAdmin.hashCode, $mrjc(pleromaIsModerator.hashCode, $mrjc(pleromaConfirmationPending.hashCode, $mrjc(pleromaHideFavorites.hashCode, $mrjc(pleromaHideFollowers.hashCode, $mrjc(pleromaHideFollows.hashCode, $mrjc(pleromaHideFollowersCount.hashCode, $mrjc(pleromaHideFollowsCount.hashCode, $mrjc(pleromaDeactivated.hashCode, $mrjc(pleromaAllowFollowingMove.hashCode, pleromaSkipThreadContainment.hashCode)))))))))))))))))))))))))))))))));
+                                                                              $mrjc(emojis.hashCode, $mrjc(pleromaBackgroundImage.hashCode, $mrjc(pleromaTags.hashCode, $mrjc(pleromaRelationship.hashCode, $mrjc(pleromaIsAdmin.hashCode, $mrjc(pleromaIsModerator.hashCode, $mrjc(pleromaConfirmationPending.hashCode, $mrjc(pleromaHideFavorites.hashCode, $mrjc(pleromaHideFollowers.hashCode, $mrjc(pleromaHideFollows.hashCode, $mrjc(pleromaHideFollowersCount.hashCode, $mrjc(pleromaHideFollowsCount.hashCode, $mrjc(pleromaDeactivated.hashCode, $mrjc(pleromaAllowFollowingMove.hashCode, pleromaSkipThreadContainment.hashCode))))))))))))))))))))))))))))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -2251,6 +2266,7 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           other.lastStatusAt == this.lastStatusAt &&
           other.fields == this.fields &&
           other.emojis == this.emojis &&
+          other.pleromaBackgroundImage == this.pleromaBackgroundImage &&
           other.pleromaTags == this.pleromaTags &&
           other.pleromaRelationship == this.pleromaRelationship &&
           other.pleromaIsAdmin == this.pleromaIsAdmin &&
@@ -2288,6 +2304,7 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
   final Value<DateTime> lastStatusAt;
   final Value<List<PleromaField>> fields;
   final Value<List<PleromaEmoji>> emojis;
+  final Value<String> pleromaBackgroundImage;
   final Value<List<PleromaTag>> pleromaTags;
   final Value<PleromaAccountRelationship> pleromaRelationship;
   final Value<bool> pleromaIsAdmin;
@@ -2322,6 +2339,7 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
     this.lastStatusAt = const Value.absent(),
     this.fields = const Value.absent(),
     this.emojis = const Value.absent(),
+    this.pleromaBackgroundImage = const Value.absent(),
     this.pleromaTags = const Value.absent(),
     this.pleromaRelationship = const Value.absent(),
     this.pleromaIsAdmin = const Value.absent(),
@@ -2357,6 +2375,7 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
     this.lastStatusAt = const Value.absent(),
     this.fields = const Value.absent(),
     this.emojis = const Value.absent(),
+    this.pleromaBackgroundImage = const Value.absent(),
     this.pleromaTags = const Value.absent(),
     this.pleromaRelationship = const Value.absent(),
     this.pleromaIsAdmin = const Value.absent(),
@@ -2406,6 +2425,7 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
       Value<DateTime> lastStatusAt,
       Value<List<PleromaField>> fields,
       Value<List<PleromaEmoji>> emojis,
+      Value<String> pleromaBackgroundImage,
       Value<List<PleromaTag>> pleromaTags,
       Value<PleromaAccountRelationship> pleromaRelationship,
       Value<bool> pleromaIsAdmin,
@@ -2440,6 +2460,8 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
       lastStatusAt: lastStatusAt ?? this.lastStatusAt,
       fields: fields ?? this.fields,
       emojis: emojis ?? this.emojis,
+      pleromaBackgroundImage:
+          pleromaBackgroundImage ?? this.pleromaBackgroundImage,
       pleromaTags: pleromaTags ?? this.pleromaTags,
       pleromaRelationship: pleromaRelationship ?? this.pleromaRelationship,
       pleromaIsAdmin: pleromaIsAdmin ?? this.pleromaIsAdmin,
@@ -2715,6 +2737,20 @@ class $DbAccountsTable extends DbAccounts
     );
   }
 
+  final VerificationMeta _pleromaBackgroundImageMeta =
+      const VerificationMeta('pleromaBackgroundImage');
+  GeneratedTextColumn _pleromaBackgroundImage;
+  @override
+  GeneratedTextColumn get pleromaBackgroundImage =>
+      _pleromaBackgroundImage ??= _constructPleromaBackgroundImage();
+  GeneratedTextColumn _constructPleromaBackgroundImage() {
+    return GeneratedTextColumn(
+      'pleroma_background_image',
+      $tableName,
+      true,
+    );
+  }
+
   final VerificationMeta _pleromaTagsMeta =
       const VerificationMeta('pleromaTags');
   GeneratedTextColumn _pleromaTags;
@@ -2920,6 +2956,7 @@ class $DbAccountsTable extends DbAccounts
         lastStatusAt,
         fields,
         emojis,
+        pleromaBackgroundImage,
         pleromaTags,
         pleromaRelationship,
         pleromaIsAdmin,
@@ -3057,6 +3094,12 @@ class $DbAccountsTable extends DbAccounts
     }
     context.handle(_fieldsMeta, const VerificationResult.success());
     context.handle(_emojisMeta, const VerificationResult.success());
+    if (d.pleromaBackgroundImage.present) {
+      context.handle(
+          _pleromaBackgroundImageMeta,
+          pleromaBackgroundImage.isAcceptableValue(
+              d.pleromaBackgroundImage.value, _pleromaBackgroundImageMeta));
+    }
     context.handle(_pleromaTagsMeta, const VerificationResult.success());
     context.handle(
         _pleromaRelationshipMeta, const VerificationResult.success());
@@ -3208,6 +3251,10 @@ class $DbAccountsTable extends DbAccounts
       final converter = $DbAccountsTable.$converter1;
       map['emojis'] =
           Variable<String, StringType>(converter.mapToSql(d.emojis.value));
+    }
+    if (d.pleromaBackgroundImage.present) {
+      map['pleroma_background_image'] =
+          Variable<String, StringType>(d.pleromaBackgroundImage.value);
     }
     if (d.pleromaTags.present) {
       final converter = $DbAccountsTable.$converter2;

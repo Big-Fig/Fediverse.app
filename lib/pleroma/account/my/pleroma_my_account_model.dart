@@ -9,6 +9,7 @@ import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/pleroma/field/pleroma_field_model.dart';
 import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
+import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -292,15 +293,20 @@ class PleromaMyAccountSourcePleromaPart {
 }
 
 class PleromaMyAccountFilesRequest {
-  /// Avatar image
   final File avatar;
   final File header;
+  final File pleromaBackgroundImage;
 
-  PleromaMyAccountFilesRequest({this.avatar, this.header});
+  PleromaMyAccountFilesRequest({
+    @required this.avatar,
+    @required this.header,
+    @required this.pleromaBackgroundImage,
+  });
 
   @override
   String toString() {
-    return 'PleromaAccountFiles{avatar: $avatar, header: $header}';
+    return 'PleromaMyAccountFilesRequest{avatar: $avatar, header: $header,'
+        ' pleromaBackgroundImage: $pleromaBackgroundImage}';
   }
 }
 

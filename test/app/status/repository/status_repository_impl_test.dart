@@ -914,6 +914,7 @@ void main() {
           avatarStatic: null,
           avatar: null,
           acct: null,
+          pleromaBackgroundImage: null,
           lastStatusAt: null)),
       olderThanStatus: null,
       onlyInListWithRemoteId: null,

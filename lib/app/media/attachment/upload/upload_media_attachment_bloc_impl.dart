@@ -1,5 +1,6 @@
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
+import 'package:fedi/app/media/attachment/upload/upload_media_exception.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/file/picker/file_picker_model.dart';
@@ -15,13 +16,19 @@ class UploadMediaAttachmentBloc extends DisposableOwner
     implements IUploadMediaAttachmentBloc {
   final IPleromaMediaAttachmentService pleromaMediaAttachmentService;
 
+  @override
+  final int maximumFileSizeInBytes;
+
   final FilePickerFile filePickerFile;
   @override
   IPleromaMediaAttachment pleromaMediaAttachment;
 
   // ignore: close_sinks
   BehaviorSubject<UploadMediaAttachmentState> uploadStateSubject =
-      BehaviorSubject.seeded(UploadMediaAttachmentState.notUploaded);
+      BehaviorSubject.seeded(
+    UploadMediaAttachmentState(
+        type: UploadMediaAttachmentStateType.notUploaded),
+  );
 
   @override
   Stream<UploadMediaAttachmentState> get uploadStateStream =>
@@ -30,9 +37,11 @@ class UploadMediaAttachmentBloc extends DisposableOwner
   @override
   UploadMediaAttachmentState get uploadState => uploadStateSubject.value;
 
-  UploadMediaAttachmentBloc(
-      {@required this.pleromaMediaAttachmentService,
-      @required this.filePickerFile}) {
+  UploadMediaAttachmentBloc({
+    @required this.pleromaMediaAttachmentService,
+    @required this.filePickerFile,
+    @required this.maximumFileSizeInBytes,
+  }) {
     assert(pleromaMediaAttachmentService != null);
     addDisposable(subject: uploadStateSubject);
     addDisposable(disposable: CustomDisposable(() async {
@@ -43,19 +52,50 @@ class UploadMediaAttachmentBloc extends DisposableOwner
   }
 
   @override
-  void startUpload() {
-    assert(uploadState == UploadMediaAttachmentState.notUploaded ||
-        uploadState == UploadMediaAttachmentState.failed);
-    uploadStateSubject.add(UploadMediaAttachmentState.uploading);
+  Future startUpload() async {
+    assert(uploadState.type == UploadMediaAttachmentStateType.notUploaded ||
+        uploadState.type == UploadMediaAttachmentStateType.failed);
 
-    pleromaMediaAttachmentService
+    var fileLength = await filePickerFile.file.length();
+
+    if (fileLength > maximumFileSizeInBytes) {
+      uploadStateSubject.add(
+        UploadMediaAttachmentState(
+          type: UploadMediaAttachmentStateType.failed,
+          error: UploadMediaExceedFileSizeLimitException(
+            currentFileSizeInBytes: fileLength,
+            maximumFileSizeInBytes: maximumFileSizeInBytes,
+            file: filePickerFile.file,
+          ),
+          stackTrace: null,
+        ),
+      );
+    }
+
+    uploadStateSubject.add(
+      UploadMediaAttachmentState(
+        type: UploadMediaAttachmentStateType.uploading,
+      ),
+    );
+
+    await pleromaMediaAttachmentService
         .uploadMedia(file: filePickerFile.file)
         .then((pleromaMediaAttachment) {
       this.pleromaMediaAttachment = pleromaMediaAttachment;
-      uploadStateSubject.add(UploadMediaAttachmentState.uploaded);
+      uploadStateSubject.add(
+        UploadMediaAttachmentState(
+          type: UploadMediaAttachmentStateType.uploaded,
+        ),
+      );
     }).catchError((error, stackTrace) {
       _logger.severe(() => "error during uploading", error, stackTrace);
-      uploadStateSubject.add(UploadMediaAttachmentState.failed);
+      uploadStateSubject.add(
+        UploadMediaAttachmentState(
+          type: UploadMediaAttachmentStateType.failed,
+          error: error,
+          stackTrace: stackTrace,
+        ),
+      );
     });
   }
 

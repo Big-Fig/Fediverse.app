@@ -15,13 +15,14 @@ class UploadMediaAttachmentUploadedBloc extends DisposableOwner
   });
 
   @override
-  void startUpload() {
+  Future startUpload() async {
     throw UnsupportedError("UploadMediaAttachmentUploadedBloc always uploaded");
   }
 
   @override
-  UploadMediaAttachmentState get uploadState =>
-      UploadMediaAttachmentState.uploaded;
+  UploadMediaAttachmentState get uploadState => UploadMediaAttachmentState(
+        type: UploadMediaAttachmentStateType.uploaded,
+      );
 
   @override
   Stream<UploadMediaAttachmentState> get uploadStateStream =>
@@ -44,4 +45,7 @@ class UploadMediaAttachmentUploadedBloc extends DisposableOwner
         break;
     }
   }
+
+  @override
+  int get maximumFileSizeInBytes => null;
 }

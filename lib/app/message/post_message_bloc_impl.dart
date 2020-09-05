@@ -21,9 +21,12 @@ abstract class PostMessageBloc extends DisposableOwner
     @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
     @required int maximumMediaAttachmentCount,
     @required this.maximumMessageLength,
+    @required int maximumFileSizeInBytes,
   }) : mediaAttachmentsBloc = UploadMediaAttachmentsCollectionBloc(
-            maximumMediaAttachmentCount: maximumMediaAttachmentCount,
-            pleromaMediaAttachmentService: pleromaMediaAttachmentService) {
+          maximumMediaAttachmentCount: maximumMediaAttachmentCount,
+          pleromaMediaAttachmentService: pleromaMediaAttachmentService,
+          maximumFileSizeInBytes: maximumFileSizeInBytes,
+        ) {
     assert(pleromaMediaAttachmentService != null);
     addDisposable(disposable: mediaAttachmentsBloc);
 

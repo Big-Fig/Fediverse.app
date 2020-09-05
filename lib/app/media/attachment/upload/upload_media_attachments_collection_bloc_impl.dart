@@ -15,14 +15,18 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
     implements IUploadMediaAttachmentsCollectionBloc {
   @override
   final int maximumMediaAttachmentCount;
+  @override
+  final int maximumFileSizeInBytes;
 
   final IPleromaMediaAttachmentService pleromaMediaAttachmentService;
 
   DisposableOwner uploadedSubscription;
 
-  UploadMediaAttachmentsCollectionBloc(
-      {@required this.maximumMediaAttachmentCount,
-      @required this.pleromaMediaAttachmentService}) {
+  UploadMediaAttachmentsCollectionBloc({
+    @required this.maximumMediaAttachmentCount,
+    @required this.pleromaMediaAttachmentService,
+    @required this.maximumFileSizeInBytes,
+  }) {
     addDisposable(subject: mediaAttachmentBlocsSubject);
     addDisposable(subject: isAllAttachedMediaUploadedSubject);
     addDisposable(disposable: CustomDisposable(() {
@@ -108,16 +112,18 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
       mediaAttachmentBlocsSubject.stream;
 
   @override
-  void attachMedia(FilePickerFile filePickerFile) {
+  Future attachMedia(FilePickerFile filePickerFile) async {
     var existedBloc = findMediaAttachmentBlocByFilePickerFile(filePickerFile);
 
     if (existedBloc == null) {
       var uploadMediaAttachmentBloc = UploadMediaAttachmentBloc(
-          filePickerFile: filePickerFile,
-          pleromaMediaAttachmentService: pleromaMediaAttachmentService);
-      uploadMediaAttachmentBloc.startUpload();
+        filePickerFile: filePickerFile,
+        pleromaMediaAttachmentService: pleromaMediaAttachmentService,
+        maximumFileSizeInBytes: maximumFileSizeInBytes,
+      );
       mediaAttachmentBlocs.add(uploadMediaAttachmentBloc);
       mediaAttachmentBlocsSubject.add(mediaAttachmentBlocs);
+      await uploadMediaAttachmentBloc.startUpload();
     }
   }
 
@@ -160,7 +166,7 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
         true,
         (previousValue, element) =>
             previousValue &&
-            element.uploadState == UploadMediaAttachmentState.uploaded);
+            element.uploadState.type == UploadMediaAttachmentStateType.uploaded);
 
     isAllAttachedMediaUploadedSubject.add(allUploaded);
   }

@@ -22,6 +22,7 @@ class PostStatusStartConversationBloc extends PostStatusBloc {
     @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
     @required int maximumMessageLength,
     @required PleromaInstancePollLimits pleromaInstancePollLimits,
+    @required int maximumFileSizeInBytes,
   }) : super(
           pleromaStatusService: pleromaStatusService,
           statusRepository: statusRepository,
@@ -31,6 +32,7 @@ class PostStatusStartConversationBloc extends PostStatusBloc {
           initialAccountsToMention: conversationAccountsWithoutMe,
           maximumMessageLength: maximumMessageLength,
           pleromaInstancePollLimits: pleromaInstancePollLimits,
+          maximumFileSizeInBytes: maximumFileSizeInBytes,
         );
 
   static PostStatusStartConversationBloc createFromContext(BuildContext context,
@@ -46,6 +48,7 @@ class PostStatusStartConversationBloc extends PostStatusBloc {
           IPleromaMediaAttachmentService.of(context, listen: false),
       maximumMessageLength: info.maxTootChars,
       pleromaInstancePollLimits: info.pollLimits,
+      maximumFileSizeInBytes: info.uploadLimit,
     );
   }
 
