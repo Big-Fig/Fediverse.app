@@ -15,7 +15,7 @@ abstract class IConversationShareBloc extends IShareBloc {
 
   IShareSelectAccountBloc get shareSelectAccountBloc;
 
-  Future<List<IAccount>> customDefaultLocalAccountListLoader();
+  Future<List<IAccount>> customLocalAccountListLoader();
 
-  Future<List<IPleromaAccount>> customDefaultRemoteAccountListLoader();
+  Future<List<IPleromaAccount>> customRemoteAccountListLoader();
 }

@@ -36,8 +36,8 @@ class SelectAccountListBloc extends DisposableOwner
   final IMyAccountBloc myAccountBloc;
   final bool excludeMyAccount;
 
-  final PleromaAccountListLoader customDefaultRemoteAccountListLoader;
-  final AccountListLoader customDefaultLocalAccountListLoader;
+  final PleromaAccountListLoader customRemoteAccountListLoader;
+  final AccountListLoader customLocalAccountListLoader;
   @override
   ISearchInputBloc searchInputBloc;
 
@@ -48,8 +48,8 @@ class SelectAccountListBloc extends DisposableOwner
     @required this.accountRepository,
     @required this.myAccountBloc,
     @required this.excludeMyAccount,
-    @required this.customDefaultRemoteAccountListLoader,
-    @required this.customDefaultLocalAccountListLoader,
+    @required this.customRemoteAccountListLoader,
+    @required this.customLocalAccountListLoader,
   }) : searchInputBloc = SearchInputBloc() {
     addDisposable(disposable: searchInputBloc);
   }
@@ -73,8 +73,8 @@ class SelectAccountListBloc extends DisposableOwner
       remoteAccounts =
           await pleromaAccountService.search(query: searchText, resolve: true);
     } else {
-      if (customDefaultRemoteAccountListLoader != null) {
-        remoteAccounts = await customDefaultRemoteAccountListLoader(
+      if (customRemoteAccountListLoader != null) {
+        remoteAccounts = await customRemoteAccountListLoader(
           limit: limit,
           olderThan: olderThan,
           newerThan: newerThan,
@@ -128,8 +128,8 @@ class SelectAccountListBloc extends DisposableOwner
           searchQuery: searchText,
           onlyInChat: null);
     } else {
-      if (customDefaultLocalAccountListLoader != null) {
-        accounts = await customDefaultLocalAccountListLoader(
+      if (customLocalAccountListLoader != null) {
+        accounts = await customLocalAccountListLoader(
           limit: limit,
           olderThan: olderThan,
           newerThan: newerThan,
@@ -176,8 +176,8 @@ class SelectAccountListBloc extends DisposableOwner
   static SelectAccountListBloc createFromContext(
     BuildContext context, {
     @required bool excludeMyAccount,
-    @required PleromaAccountListLoader customDefaultRemoteAccountListLoader,
-    @required AccountListLoader customDefaultLocalAccountListLoader,
+    @required PleromaAccountListLoader customRemoteAccountListLoader,
+    @required AccountListLoader customLocalAccountListLoader,
   }) =>
       SelectAccountListBloc(
         excludeMyAccount: excludeMyAccount,
@@ -185,27 +185,27 @@ class SelectAccountListBloc extends DisposableOwner
         accountRepository: IAccountRepository.of(context, listen: false),
         pleromaAccountService:
             IPleromaAccountService.of(context, listen: false),
-        customDefaultRemoteAccountListLoader:
-            customDefaultRemoteAccountListLoader,
-        customDefaultLocalAccountListLoader:
-            customDefaultLocalAccountListLoader,
+        customRemoteAccountListLoader:
+            customRemoteAccountListLoader,
+        customLocalAccountListLoader:
+            customLocalAccountListLoader,
       );
 
   static Widget provideToContext(
     BuildContext context, {
     @required bool excludeMyAccount,
     @required Widget child,
-    @required PleromaAccountListLoader customDefaultRemoteAccountListLoader,
-    @required AccountListLoader customDefaultLocalAccountListLoader,
+    @required PleromaAccountListLoader customRemoteAccountListLoader,
+    @required AccountListLoader customLocalAccountListLoader,
   }) {
     return DisposableProvider<ISelectAccountListBloc>(
       create: (context) => SelectAccountListBloc.createFromContext(
         context,
         excludeMyAccount: excludeMyAccount,
-        customDefaultRemoteAccountListLoader:
-            customDefaultRemoteAccountListLoader,
-        customDefaultLocalAccountListLoader:
-            customDefaultLocalAccountListLoader,
+        customRemoteAccountListLoader:
+            customRemoteAccountListLoader,
+        customLocalAccountListLoader:
+            customLocalAccountListLoader,
       ),
       child: SelectAccountListBlocProxyProvider(child: child),
     );

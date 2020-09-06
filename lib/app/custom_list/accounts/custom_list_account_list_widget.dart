@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/details/account_details_page.dart';
 import 'package:fedi/app/account/pagination/list/account_pagination_list_widget.dart';
-import 'package:fedi/app/account/select/select_account_page.dart';
+import 'package:fedi/app/account/select/multi/multi_select_account_page.dart';
 import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/custom_list/accounts/custom_list_account_network_only_list_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
@@ -43,7 +43,7 @@ class CustomListAccountListWidget extends StatelessWidget {
                             context: context,
                             asyncCode: () async {
                               await customListAccountNetworkOnlyListBloc
-                                  .removeAccount(account);
+                                  .removeAccounts([account]);
                             });
 
                     paginationListBloc.refreshWithController();
@@ -58,22 +58,22 @@ class CustomListAccountListWidget extends StatelessWidget {
                 "app.custom_list.accounts.action.add".tr(),
                 expanded: false,
                 onPressed: () {
-                  goToSelectAccountPage(context,
-                      accountSelectedCallback: (context, account) async {
+                  goToMultiSelectAccountPage(context,
+                      accountsListSelectedCallback: (context, accounts) async {
                     await PleromaAsyncOperationHelper
                         .performPleromaAsyncOperation(
                             context: context,
                             asyncCode: () async {
                               await customListAccountNetworkOnlyListBloc
-                                  .addAccount(account);
+                                  .addAccounts(accounts);
                             });
 
                     paginationListBloc.refreshWithController();
                     Navigator.of(context).pop();
                   },
                       excludeMyAccount: true,
-                      customDefaultRemoteAccountListLoader: null,
-                      customDefaultLocalAccountListLoader: null);
+                      customRemoteAccountListLoader: null,
+                      customLocalAccountListLoader: null);
                 },
               ),
             ),

@@ -336,17 +336,23 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   @override
-  void addMentionByAccount(IAccount account) {
-    var acct = account.acct;
-    if (!mentionedAccts.contains(acct)) {
-      mentionedAccts.add(acct);
-      onMentionedAccountsChanged();
-    }
+  void addAccountMentions(List<IAccount> accounts) {
+    var accts = accounts.map((account) => account.acct);
+
+    // remove duplicates
+    removeAccountMentions(accounts);
+    mentionedAccts.addAll(accts);
+
+    onMentionedAccountsChanged();
   }
 
   @override
-  void removeMentionByAccount(IAccount account) {
-    removeMentionByAcct(account.acct);
+  void removeAccountMentions(List<IAccount> accounts) {
+    var accts = accounts.map((account) => account.acct);
+
+    mentionedAccts.removeWhere((acct) => accts.contains(acct));
+
+    onMentionedAccountsChanged();
   }
 
   @override
@@ -442,8 +448,8 @@ abstract class PostStatusBloc extends PostMessageBloc
 
   List<IPleromaMediaAttachment> _calculateMediaAttachmentsField() {
     var mediaAttachments = mediaAttachmentsBloc.mediaAttachmentBlocs
-        ?.where(
-            (bloc) => bloc.uploadState.type == UploadMediaAttachmentStateType.uploaded)
+        ?.where((bloc) =>
+            bloc.uploadState.type == UploadMediaAttachmentStateType.uploaded)
         ?.map((bloc) => bloc.pleromaMediaAttachment)
         ?.toList();
     // media ids shouldn't be empty (should be null in this case)

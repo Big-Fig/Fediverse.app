@@ -197,7 +197,7 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
                       accountMentionCallback:
                           (BuildContext context, IAccount account) {
                         IPostStatusBloc.of(context, listen: false)
-                            .addMentionByAccount(account);
+                            .addAccountMentions([account]);
                       },
                     ),
                     FediLightGreyDivider(),

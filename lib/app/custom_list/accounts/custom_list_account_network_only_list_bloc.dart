@@ -10,7 +10,7 @@ abstract class ICustomListAccountNetworkOnlyListBloc
       Provider.of<ICustomListAccountNetworkOnlyListBloc>(context,
           listen: listen);
 
-  Future addAccount(IAccount account);
+  Future addAccounts(List<IAccount> account);
 
-  Future removeAccount(IAccount account);
+  Future removeAccounts(List<IAccount> account);
 }

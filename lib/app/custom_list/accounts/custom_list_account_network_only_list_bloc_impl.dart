@@ -40,15 +40,20 @@ class CustomListAccountNetworkOnlyListBloc extends DisposableOwner
   }
 
   @override
-  Future addAccount(IAccount account) async {
+  Future addAccounts(List<IAccount> accounts) async {
     await pleromaListService.addAccountsToList(
-        listRemoteId: customList.remoteId, accountIds: [account.remoteId]);
+      listRemoteId: customList.remoteId,
+      accountIds: accounts.map((account) => account.remoteId),
+    );
   }
 
   @override
-  Future removeAccount(IAccount account) async {
+  Future removeAccounts(List<IAccount> accounts) async {
+
     await pleromaListService.removeAccountsFromList(
-        listRemoteId: customList.remoteId, accountIds: [account.remoteId]);
+      listRemoteId: customList.remoteId,
+      accountIds: accounts.map((account) => account.remoteId),
+    );
 
     await statusRepository.clearListStatusesConnection(
         listRemoteId: customList.remoteId);

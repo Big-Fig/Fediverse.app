@@ -3,16 +3,16 @@ import 'package:fedi/app/account/pagination/list/account_pagination_list_widget.
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class SelectAccountWidget extends StatelessWidget {
+class SingleSelectAccountWidget extends StatelessWidget {
   final AccountCallback accountSelectedCallback;
 
-  const SelectAccountWidget({@required this.accountSelectedCallback});
+  const SingleSelectAccountWidget({@required this.accountSelectedCallback});
 
   @override
   Widget build(BuildContext context) {
     return AccountPaginationListWidget(
       accountSelectedCallback: accountSelectedCallback,
-      key: PageStorageKey("SelectAccountWidget"),
+      key: PageStorageKey("SingleSelectAccountWidget"),
     );
   }
 }

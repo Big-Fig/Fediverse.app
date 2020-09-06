@@ -2,17 +2,17 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/pagination/cached/account_cached_pagination_bloc_impl.dart';
 import 'package:fedi/app/account/select/select_account_list_bloc_impl.dart';
 import 'package:fedi/app/account/select/select_account_pagination_list_bloc.dart';
-import 'package:fedi/app/account/select/select_account_widget.dart';
+import 'package:fedi/app/account/select/single/single_select_account_widget.dart';
 import 'package:fedi/app/search/input/search_input_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_custom_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class SelectAccountPage extends StatelessWidget {
+class SingleSelectAccountPage extends StatelessWidget {
   final AccountCallback accountSelectedCallback;
 
-  const SelectAccountPage({@required this.accountSelectedCallback});
+  const SingleSelectAccountPage({@required this.accountSelectedCallback});
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -21,19 +21,19 @@ class SelectAccountPage extends StatelessWidget {
           child: SearchInputWidget(),
         ),
         body: SafeArea(
-          child: SelectAccountWidget(
+          child: SingleSelectAccountWidget(
             accountSelectedCallback: accountSelectedCallback,
           ),
         ),
       );
 }
 
-void goToSelectAccountPage(
+void goToSingleSelectAccountPage(
   BuildContext context, {
   @required AccountCallback accountSelectedCallback,
   @required bool excludeMyAccount,
-  @required PleromaAccountListLoader customDefaultRemoteAccountListLoader,
-  @required AccountListLoader customDefaultLocalAccountListLoader,
+  @required PleromaAccountListLoader customRemoteAccountListLoader,
+  @required AccountListLoader customLocalAccountListLoader,
 }) {
   Navigator.push(
     context,
@@ -45,14 +45,14 @@ void goToSelectAccountPage(
           context,
           child: SelectAccountPaginationListBloc.provideToContext(
             context,
-            child: SelectAccountPage(
+            child: SingleSelectAccountPage(
                 accountSelectedCallback: accountSelectedCallback),
           ),
         ),
-        customDefaultLocalAccountListLoader:
-            customDefaultLocalAccountListLoader,
-        customDefaultRemoteAccountListLoader:
-            customDefaultRemoteAccountListLoader,
+        customLocalAccountListLoader:
+            customLocalAccountListLoader,
+        customRemoteAccountListLoader:
+            customRemoteAccountListLoader,
       );
     }),
   );

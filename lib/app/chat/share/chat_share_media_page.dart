@@ -24,10 +24,10 @@ class ChatShareMediaPage extends StatelessWidget {
       body: ShareMediaWithMessageWidget(
         mediaAttachment: mediaAttachment,
         header: ShareSelectAccountWidget(
-          customDefaultLocalAccountListLoader:
-              chatShareBloc.customDefaultLocalAccountListLoader,
-          customDefaultRemoteAccountListLoader:
-              chatShareBloc.customDefaultRemoteAccountListLoader,
+          customLocalAccountListLoader:
+              chatShareBloc.customLocalAccountListLoader,
+          customRemoteAccountListLoader:
+              chatShareBloc.customRemoteAccountListLoader,
         ),
       ),
     );
