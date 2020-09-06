@@ -14,7 +14,7 @@ abstract class IChatShareBloc extends IShareBloc {
 
   IShareMessageInputBloc get shareMessageInputBloc;
 
-  Future<List<IAccount>> customDefaultLocalAccountListLoader();
+  Future<List<IAccount>> customLocalAccountListLoader();
 
-  Future<List<IPleromaAccount>> customDefaultRemoteAccountListLoader();
+  Future<List<IPleromaAccount>> customRemoteAccountListLoader();
 }

@@ -37,9 +37,9 @@ abstract class IPostStatusBloc implements IPostMessageBloc {
 
   Stream<String> get subjectTextStream;
 
-  void addMentionByAccount(IAccount account);
+  void addAccountMentions(List<IAccount> accounts);
 
-  void removeMentionByAccount(IAccount account);
+  void removeAccountMentions(List<IAccount> accounts);
 
   void removeMentionByAcct(String acct);
 

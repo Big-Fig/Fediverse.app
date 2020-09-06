@@ -76,7 +76,7 @@ abstract class ChatShareBloc extends DisposableOwner implements IChatShareBloc {
   PleromaChatMessageSendData createSendData();
 
   @override
-  Future<List<IAccount>> customDefaultLocalAccountListLoader({
+  Future<List<IAccount>> customLocalAccountListLoader({
     @required int limit,
     @required IAccount newerThan,
     @required IAccount olderThan,
@@ -98,7 +98,7 @@ abstract class ChatShareBloc extends DisposableOwner implements IChatShareBloc {
   }
 
   @override
-  Future<List<IPleromaAccount>> customDefaultRemoteAccountListLoader({
+  Future<List<IPleromaAccount>> customRemoteAccountListLoader({
     @required int limit,
     @required IAccount newerThan,
     @required IAccount olderThan,

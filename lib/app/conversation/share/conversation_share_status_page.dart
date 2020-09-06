@@ -28,10 +28,10 @@ class ConversationShareStatusPage extends StatelessWidget {
       body: ShareStatusWithMessageWidget(
         status: status,
         header: ShareSelectAccountWidget(
-          customDefaultLocalAccountListLoader:
-              conversationShareBloc.customDefaultLocalAccountListLoader,
-          customDefaultRemoteAccountListLoader:
-              conversationShareBloc.customDefaultRemoteAccountListLoader,
+          customLocalAccountListLoader:
+              conversationShareBloc.customLocalAccountListLoader,
+          customRemoteAccountListLoader:
+              conversationShareBloc.customRemoteAccountListLoader,
         ),
       ),
     );
