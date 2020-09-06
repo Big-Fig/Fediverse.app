@@ -7,6 +7,9 @@ import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/list/pleroma_list_service.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
+
+var _logger = Logger("custom_list_account_network_only_list_bloc_impl.dart");
 
 class CustomListAccountNetworkOnlyListBloc extends DisposableOwner
     implements ICustomListAccountNetworkOnlyListBloc {
@@ -41,18 +44,19 @@ class CustomListAccountNetworkOnlyListBloc extends DisposableOwner
 
   @override
   Future addAccounts(List<IAccount> accounts) async {
+    _logger.finest(() => "addAccounts ${accounts.length} ${accounts}");
     await pleromaListService.addAccountsToList(
       listRemoteId: customList.remoteId,
-      accountIds: accounts.map((account) => account.remoteId),
+      accountIds: accounts.map((account) => account.remoteId).toList(),
     );
   }
 
   @override
   Future removeAccounts(List<IAccount> accounts) async {
-
+    _logger.finest(() => "removeAccounts ${accounts.length} ${accounts}");
     await pleromaListService.removeAccountsFromList(
       listRemoteId: customList.remoteId,
-      accountIds: accounts.map((account) => account.remoteId),
+      accountIds: accounts.map((account) => account.remoteId).toList(),
     );
 
     await statusRepository.clearListStatusesConnection(
