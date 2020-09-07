@@ -28,10 +28,10 @@ abstract class IAccountRepository
   Future upsertRemoteAccount(IPleromaAccount remoteAccount,
       {@required conversationRemoteId, @required String chatRemoteId});
 
-  Future updateAccountFollowings(
+  Future addAccountFollowings(
       String accountRemoteId, List<PleromaAccount> followings);
 
-  Future updateAccountFollowers(
+  Future addAccountFollowers(
       String accountRemoteId, List<PleromaAccount> followers);
 
   Future updateStatusRebloggedBy(

@@ -51,6 +51,7 @@ class ShareSelectAccountWidget extends StatelessWidget {
                   excludeMyAccount: true,
                   customLocalAccountListLoader: customLocalAccountListLoader,
                   customRemoteAccountListLoader: customRemoteAccountListLoader,
+                  followingsOnly: false,
                 );
               },
             ),

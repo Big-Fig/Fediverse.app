@@ -449,11 +449,11 @@ class AccountRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future updateAccountFollowings(
+  Future addAccountFollowings(
       String accountRemoteId, List<PleromaAccount> followings) async {
     await upsertRemoteAccounts(followings,
         conversationRemoteId: null, chatRemoteId: null);
-    await accountFollowingsDao.deleteByAccountRemoteId(accountRemoteId);
+    // await accountFollowingsDao.deleteByAccountRemoteId(accountRemoteId);
     await accountFollowingsDao.insertAll(
         followings
             .map((followingAccount) => DbAccountFollowing(
@@ -465,11 +465,11 @@ class AccountRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future updateAccountFollowers(
+  Future addAccountFollowers(
       String accountRemoteId, List<PleromaAccount> followers) async {
     await upsertRemoteAccounts(followers,
         conversationRemoteId: null, chatRemoteId: null);
-    await accountFollowersDao.deleteByAccountRemoteId(accountRemoteId);
+    // await accountFollowersDao.deleteByAccountRemoteId(accountRemoteId);
     await accountFollowersDao.insertAll(
         followers
             .map((followerAccount) => DbAccountFollower(

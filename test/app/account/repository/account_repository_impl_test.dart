@@ -293,17 +293,17 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    await accountRepository.updateAccountFollowers(dbAccount1.remoteId,
+    await accountRepository.addAccountFollowers(dbAccount1.remoteId,
         [mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount2))]);
     expect((await query.get()).length, 1);
 
-    await accountRepository.updateAccountFollowers(dbAccount1.remoteId, [
+    await accountRepository.addAccountFollowers(dbAccount1.remoteId, [
       mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount1)),
       mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount2))
     ]);
     expect((await query.get()).length, 2);
 
-    await accountRepository.updateAccountFollowers(dbAccount1.remoteId,
+    await accountRepository.addAccountFollowers(dbAccount1.remoteId,
         [mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount2))]);
     expect((await query.get()).length, 1);
   });
@@ -327,17 +327,17 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    await accountRepository.updateAccountFollowings(dbAccount1.remoteId,
+    await accountRepository.addAccountFollowings(dbAccount1.remoteId,
         [mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount2))]);
     expect((await query.get()).length, 1);
 
-    await accountRepository.updateAccountFollowings(dbAccount1.remoteId, [
+    await accountRepository.addAccountFollowings(dbAccount1.remoteId, [
       mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount1)),
       mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount2))
     ]);
     expect((await query.get()).length, 2);
 
-    await accountRepository.updateAccountFollowings(dbAccount1.remoteId,
+    await accountRepository.addAccountFollowings(dbAccount1.remoteId,
         [mapLocalAccountToRemoteAccount(DbAccountWrapper(dbAccount2))]);
     expect((await query.get()).length, 1);
   });

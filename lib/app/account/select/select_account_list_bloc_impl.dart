@@ -35,9 +35,10 @@ class SelectAccountListBloc extends DisposableOwner
   final IAccountRepository accountRepository;
   final IMyAccountBloc myAccountBloc;
   final bool excludeMyAccount;
+  final bool followingsOnly;
 
-  final PleromaAccountListLoader customRemoteAccountListLoader;
-  final AccountListLoader customLocalAccountListLoader;
+  final PleromaAccountListLoader customEmptySearchRemoteAccountListLoader;
+  final AccountListLoader customEmptySearchLocalAccountListLoader;
   @override
   ISearchInputBloc searchInputBloc;
 
@@ -48,8 +49,9 @@ class SelectAccountListBloc extends DisposableOwner
     @required this.accountRepository,
     @required this.myAccountBloc,
     @required this.excludeMyAccount,
-    @required this.customRemoteAccountListLoader,
-    @required this.customLocalAccountListLoader,
+    @required this.customEmptySearchRemoteAccountListLoader,
+    @required this.customEmptySearchLocalAccountListLoader,
+    @required this.followingsOnly,
   }) : searchInputBloc = SearchInputBloc() {
     addDisposable(disposable: searchInputBloc);
   }
@@ -70,21 +72,32 @@ class SelectAccountListBloc extends DisposableOwner
 
     var searchTermExist = searchText?.isNotEmpty == true;
     if (searchTermExist) {
-      remoteAccounts =
-          await pleromaAccountService.search(query: searchText, resolve: true);
+      var following = followingsOnly == true;
+      remoteAccounts = await pleromaAccountService.search(
+        query: searchText,
+        resolve: true,
+        following: following,
+      );
+
+      if (following) {
+        await accountRepository.addAccountFollowings(
+            myAccountBloc.account.remoteId, remoteAccounts);
+      }
     } else {
-      if (customRemoteAccountListLoader != null) {
-        remoteAccounts = await customRemoteAccountListLoader(
+      if (customEmptySearchRemoteAccountListLoader != null) {
+        remoteAccounts = await customEmptySearchRemoteAccountListLoader(
           limit: limit,
           olderThan: olderThan,
           newerThan: newerThan,
         );
       } else {
-        remoteAccounts = await pleromaAccountService.getAccountFollowings(
-            maxId: olderThan?.remoteId,
-            sinceId: newerThan?.remoteId,
-            limit: limit,
-            accountRemoteId: myAccountBloc.account.remoteId);
+        remoteAccounts = await defaultEmptySearchRemoteAccountListLoader(
+          limit: limit,
+          olderThan: olderThan,
+          newerThan: newerThan,
+        );
+        await accountRepository.addAccountFollowings(
+            myAccountBloc.account.remoteId, remoteAccounts);
       }
     }
 
@@ -92,12 +105,26 @@ class SelectAccountListBloc extends DisposableOwner
       await accountRepository.upsertRemoteAccounts(remoteAccounts,
           conversationRemoteId: null, chatRemoteId: null);
 
+
       return true;
     } else {
       _logger.severe(() => "error during refreshItemsFromRemoteForPage: "
           "accounts is null");
       return false;
     }
+  }
+
+  Future<List<IPleromaAccount>> defaultEmptySearchRemoteAccountListLoader({
+    @required IAccount olderThan,
+    @required IAccount newerThan,
+    @required int limit,
+  }) async {
+    // my account followings by default
+    return await pleromaAccountService.getAccountFollowings(
+        maxId: olderThan?.remoteId,
+        sinceId: newerThan?.remoteId,
+        limit: limit,
+        accountRemoteId: myAccountBloc.account.remoteId);
   }
 
   @override
@@ -112,6 +139,10 @@ class SelectAccountListBloc extends DisposableOwner
     List<IAccount> accounts;
     var searchTermExist = searchText?.isNotEmpty == true;
     if (searchTermExist) {
+      var onlyInAccountFollowing;
+      if (followingsOnly == true) {
+        onlyInAccountFollowing = myAccountBloc.account;
+      }
       accounts = await accountRepository.getAccounts(
           olderThanAccount: olderThan,
           newerThanAccount: newerThan,
@@ -123,33 +154,23 @@ class SelectAccountListBloc extends DisposableOwner
           onlyInConversation: null,
           onlyInAccountFollowers: null,
           onlyInStatusFavouritedBy: null,
-          onlyInAccountFollowing: null,
+          onlyInAccountFollowing: onlyInAccountFollowing,
           onlyInStatusRebloggedBy: null,
           searchQuery: searchText,
           onlyInChat: null);
     } else {
-      if (customLocalAccountListLoader != null) {
-        accounts = await customLocalAccountListLoader(
+      if (customEmptySearchLocalAccountListLoader != null) {
+        accounts = await customEmptySearchLocalAccountListLoader(
           limit: limit,
           olderThan: olderThan,
           newerThan: newerThan,
         );
       } else {
-        accounts = await accountRepository.getAccounts(
-            olderThanAccount: olderThan,
-            newerThanAccount: newerThan,
-            limit: limit,
-            offset: null,
-            orderingTermData: AccountOrderingTermData(
-                orderingMode: OrderingMode.desc,
-                orderByType: AccountOrderByType.remoteId),
-            onlyInConversation: null,
-            onlyInAccountFollowers: null,
-            onlyInStatusFavouritedBy: null,
-            onlyInAccountFollowing: null,
-            onlyInStatusRebloggedBy: null,
-            searchQuery: null,
-            onlyInChat: null);
+        accounts = await defaultEmptySearchLocalAccountListLoader(
+          limit: limit,
+          olderThan: olderThan,
+          newerThan: newerThan,
+        );
       }
     }
 
@@ -173,11 +194,34 @@ class SelectAccountListBloc extends DisposableOwner
     return accounts;
   }
 
+  Future<List<IAccount>> defaultEmptySearchLocalAccountListLoader({
+    @required IAccount olderThan,
+    @required IAccount newerThan,
+    @required int limit,
+  }) async {
+    return await accountRepository.getAccounts(
+        olderThanAccount: olderThan,
+        newerThanAccount: newerThan,
+        limit: limit,
+        offset: null,
+        orderingTermData: AccountOrderingTermData(
+            orderingMode: OrderingMode.desc,
+            orderByType: AccountOrderByType.remoteId),
+        onlyInAccountFollowing: myAccountBloc.account,
+        onlyInConversation: null,
+        onlyInAccountFollowers: null,
+        onlyInStatusFavouritedBy: null,
+        onlyInStatusRebloggedBy: null,
+        searchQuery: null,
+        onlyInChat: null);
+  }
+
   static SelectAccountListBloc createFromContext(
     BuildContext context, {
     @required bool excludeMyAccount,
     @required PleromaAccountListLoader customRemoteAccountListLoader,
     @required AccountListLoader customLocalAccountListLoader,
+    @required bool followingsOnly,
   }) =>
       SelectAccountListBloc(
         excludeMyAccount: excludeMyAccount,
@@ -185,15 +229,15 @@ class SelectAccountListBloc extends DisposableOwner
         accountRepository: IAccountRepository.of(context, listen: false),
         pleromaAccountService:
             IPleromaAccountService.of(context, listen: false),
-        customRemoteAccountListLoader:
-            customRemoteAccountListLoader,
-        customLocalAccountListLoader:
-            customLocalAccountListLoader,
+        customEmptySearchRemoteAccountListLoader: customRemoteAccountListLoader,
+        customEmptySearchLocalAccountListLoader: customLocalAccountListLoader,
+        followingsOnly: followingsOnly,
       );
 
   static Widget provideToContext(
     BuildContext context, {
     @required bool excludeMyAccount,
+    @required bool followingsOnly,
     @required Widget child,
     @required PleromaAccountListLoader customRemoteAccountListLoader,
     @required AccountListLoader customLocalAccountListLoader,
@@ -201,11 +245,10 @@ class SelectAccountListBloc extends DisposableOwner
     return DisposableProvider<ISelectAccountListBloc>(
       create: (context) => SelectAccountListBloc.createFromContext(
         context,
+        followingsOnly: followingsOnly,
         excludeMyAccount: excludeMyAccount,
-        customRemoteAccountListLoader:
-            customRemoteAccountListLoader,
-        customLocalAccountListLoader:
-            customLocalAccountListLoader,
+        customRemoteAccountListLoader: customRemoteAccountListLoader,
+        customLocalAccountListLoader: customLocalAccountListLoader,
       ),
       child: SelectAccountListBlocProxyProvider(child: child),
     );
