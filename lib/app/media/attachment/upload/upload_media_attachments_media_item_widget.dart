@@ -87,8 +87,8 @@ class _UploadMediaAttachmentMediaItemWidgetState
                     throw "Unsupported bloc type $bloc";
                   }
 
-                  if (uploadState.type == UploadMediaAttachmentStateType
-                      .uploaded) {
+                  if (uploadState.type ==
+                      UploadMediaAttachmentStateType.uploaded) {
                     return mediaPreview;
                   } else {
                     return Opacity(
@@ -101,13 +101,17 @@ class _UploadMediaAttachmentMediaItemWidgetState
           Align(
             alignment: Alignment.topRight,
             child: buildTopRightAction(bloc),
+          ),
+          Align(
+            alignment: Alignment.topLeft,
+            child: buildTopLeftAction(bloc),
           )
         ],
       ),
     );
   }
 
-  Padding buildTopRightAction(
+  Widget buildTopRightAction(
       IUploadMediaAttachmentBloc uploadMediaAttachmentBloc) {
     return Padding(
       padding: widget.contentPadding,
@@ -126,6 +130,34 @@ class _UploadMediaAttachmentMediaItemWidgetState
                 return buildRemoveButton(context, uploadMediaAttachmentBloc);
               case UploadMediaAttachmentStateType.failed:
                 return buildErrorButton(context, uploadMediaAttachmentBloc);
+                break;
+            }
+
+            throw "invalid state $uploadState";
+          }),
+    );
+  }
+
+  Widget buildTopLeftAction(
+      IUploadMediaAttachmentBloc uploadMediaAttachmentBloc) {
+    return Padding(
+      padding: widget.contentPadding,
+      child: StreamBuilder<UploadMediaAttachmentState>(
+          stream: uploadMediaAttachmentBloc.uploadStateStream,
+          initialData: uploadMediaAttachmentBloc.uploadState,
+          builder: (context, snapshot) {
+            var uploadState = snapshot.data;
+
+            switch (uploadState.type) {
+              case UploadMediaAttachmentStateType.failed:
+                return buildRemoveButton(context, uploadMediaAttachmentBloc);
+
+                break;
+              case UploadMediaAttachmentStateType.notUploaded:
+              case UploadMediaAttachmentStateType.uploading:
+
+              case UploadMediaAttachmentStateType.uploaded:
+                return SizedBox.shrink();
                 break;
             }
 
