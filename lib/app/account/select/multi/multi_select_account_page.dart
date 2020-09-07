@@ -59,6 +59,7 @@ void goToMultiSelectAccountPage(
   BuildContext context, {
   @required AccountsListCallback accountsListSelectedCallback,
   @required bool excludeMyAccount,
+  @required bool followingsOnly,
   @required PleromaAccountListLoader customRemoteAccountListLoader,
   @required AccountListLoader customLocalAccountListLoader,
 }) {
@@ -82,6 +83,7 @@ void goToMultiSelectAccountPage(
         ),
         customLocalAccountListLoader: customLocalAccountListLoader,
         customRemoteAccountListLoader: customRemoteAccountListLoader,
+        followingsOnly: followingsOnly,
       );
     }),
   );

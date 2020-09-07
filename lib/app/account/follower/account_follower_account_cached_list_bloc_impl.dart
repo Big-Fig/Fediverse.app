@@ -50,7 +50,7 @@ class AccountFollowerAccountCachedListBloc extends DisposableOwner
         await accountRepository.upsertRemoteAccounts(remoteAccounts,
             conversationRemoteId: null, chatRemoteId: null);
 
-        await accountRepository.updateAccountFollowers(
+        await accountRepository.addAccountFollowers(
             account.remoteId, remoteAccounts);
 
         return true;

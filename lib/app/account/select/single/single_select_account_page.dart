@@ -32,6 +32,7 @@ void goToSingleSelectAccountPage(
   BuildContext context, {
   @required AccountCallback accountSelectedCallback,
   @required bool excludeMyAccount,
+  @required bool followingsOnly,
   @required PleromaAccountListLoader customRemoteAccountListLoader,
   @required AccountListLoader customLocalAccountListLoader,
 }) {
@@ -40,6 +41,7 @@ void goToSingleSelectAccountPage(
     MaterialPageRoute(builder: (context) {
       return SelectAccountListBloc.provideToContext(
         context,
+        followingsOnly: followingsOnly,
         excludeMyAccount: excludeMyAccount,
         child: AccountCachedPaginationBloc.provideToContext(
           context,
@@ -49,10 +51,8 @@ void goToSingleSelectAccountPage(
                 accountSelectedCallback: accountSelectedCallback),
           ),
         ),
-        customLocalAccountListLoader:
-            customLocalAccountListLoader,
-        customRemoteAccountListLoader:
-            customRemoteAccountListLoader,
+        customLocalAccountListLoader: customLocalAccountListLoader,
+        customRemoteAccountListLoader: customRemoteAccountListLoader,
       );
     }),
   );

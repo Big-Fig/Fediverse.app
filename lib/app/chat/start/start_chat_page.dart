@@ -83,6 +83,7 @@ void goToStartChatPage(BuildContext context) {
           ),
           customLocalAccountListLoader: null,
           customRemoteAccountListLoader: null,
+          followingsOnly: false,
         );
       },
     ),

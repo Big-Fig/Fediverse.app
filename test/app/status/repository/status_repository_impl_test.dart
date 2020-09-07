@@ -877,7 +877,7 @@ void main() {
     var accountInvalidRemoteId = "accountInvalidRemoteId";
     var followingAccountRemoteId = "followingAccountRemoteId";
 
-    await accountRepository.updateAccountFollowings(accountRemoteId, [
+    await accountRepository.addAccountFollowings(accountRemoteId, [
       mapLocalAccountToRemoteAccount(DbAccountWrapper(
           (await createTestDbAccount(seed: followingAccountRemoteId))
               .copyWith(remoteId: followingAccountRemoteId)))

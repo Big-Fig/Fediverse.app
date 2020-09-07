@@ -26,6 +26,7 @@ class PostStatusMentionActionWidget extends StatelessWidget {
           },
           customLocalAccountListLoader: null,
           customRemoteAccountListLoader: null,
+          followingsOnly: false,
         );
       },
     );
