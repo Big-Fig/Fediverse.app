@@ -10,6 +10,7 @@ import 'package:fedi/app/ui/button/icon/fedi_remove_icon_in_circle_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
+import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -82,7 +83,14 @@ class _UploadMediaAttachmentsNonMediaItemWidgetState
             case UploadMediaAttachmentStateType.uploaded:
               return buildRemoveButton(context, mediaItemBloc);
             case UploadMediaAttachmentStateType.failed:
-              return buildErrorButton(context, mediaItemBloc);
+              return Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  buildErrorButton(context, mediaItemBloc),
+                  const FediSmallHorizontalSpacer(),
+                  buildRemoveButton(context, mediaItemBloc),
+                ],
+              );
             default:
               throw "Invalid state uploadState ${uploadState}";
               break;

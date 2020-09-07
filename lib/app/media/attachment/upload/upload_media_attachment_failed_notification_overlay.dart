@@ -21,6 +21,8 @@ OverlaySupportEntry showMediaAttachmentFailedNotificationOverlay(
         _numberFormat.format(e.maximumFileSizeInBytes / pow(1024, 2)),
       ],
     );
+  } else {
+    contentText = e.toString();
   }
   return showErrorFediNotificationOverlay(
     contentText: contentText,
