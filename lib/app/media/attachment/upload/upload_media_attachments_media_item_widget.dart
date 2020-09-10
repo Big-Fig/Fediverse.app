@@ -56,6 +56,17 @@ class _UploadMediaAttachmentMediaItemWidgetState
   @override
   Widget build(BuildContext context) {
     var bloc = IUploadMediaAttachmentBloc.of(context, listen: false);
+    Widget mediaPreview;
+    if (bloc is UploadMediaAttachmentBloc) {
+      mediaPreview = buildFilePickerFileMediaPreview(bloc.filePickerFile);
+    } else if (bloc is UploadMediaAttachmentUploadedBloc) {
+      var pleromaMediaAttachment = bloc.pleromaMediaAttachment;
+      mediaPreview = MediaAttachmentWidget(
+        mediaAttachment: pleromaMediaAttachment,
+      );
+    } else {
+      throw "Unsupported bloc type $bloc";
+    }
     return ClipRRect(
       borderRadius: BorderRadius.all(
         Radius.circular(FediSizes.borderRadiusBigSize),
@@ -73,19 +84,6 @@ class _UploadMediaAttachmentMediaItemWidgetState
                 initialData: bloc.uploadState,
                 builder: (context, snapshot) {
                   var uploadState = snapshot.data;
-
-                  Widget mediaPreview;
-                  if (bloc is UploadMediaAttachmentBloc) {
-                    mediaPreview =
-                        buildFilePickerFileMediaPreview(bloc.filePickerFile);
-                  } else if (bloc is UploadMediaAttachmentUploadedBloc) {
-                    var pleromaMediaAttachment = bloc.pleromaMediaAttachment;
-                    mediaPreview = MediaAttachmentWidget(
-                      mediaAttachment: pleromaMediaAttachment,
-                    );
-                  } else {
-                    throw "Unsupported bloc type $bloc";
-                  }
 
                   if (uploadState.type ==
                       UploadMediaAttachmentStateType.uploaded) {
