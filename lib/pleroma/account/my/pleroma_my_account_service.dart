@@ -30,7 +30,7 @@ abstract class IPleromaMyAccountService implements IPleromaApi {
     int limit = 20,
   });
 
-  Future<List<IPleromaAccount>> getMutes({
+  Future<List<IPleromaAccount>> getAccountMutes({
     String sinceId,
     String maxId,
     int limit = 20,

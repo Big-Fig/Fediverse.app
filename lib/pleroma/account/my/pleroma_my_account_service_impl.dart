@@ -257,7 +257,7 @@ class PleromaMyAccountService implements IPleromaMyAccountService {
   }
 
   @override
-  Future<List<IPleromaAccount>> getMutes({
+  Future<List<IPleromaAccount>> getAccountMutes({
     String sinceId,
     String maxId,
     int limit = 20,

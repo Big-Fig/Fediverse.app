@@ -161,6 +161,9 @@ class CodegenLoader extends AssetLoader{
         "account_block": {
           "title": "Account blocks"
         },
+        "account_mute": {
+          "title": "Account mutes"
+        },
         "domain_block": {
           "title": "Domain blocks"
         },
@@ -204,6 +207,7 @@ class CodegenLoader extends AssetLoader{
             "favourited": "Favourites",
             "follow_requests": "Follow requests",
             "account_blocks": "Account blocks",
+            "account_mutes": "Account mutes",
             "domain_blocks": "Domain blocks"
           }
         },
