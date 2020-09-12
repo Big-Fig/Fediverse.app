@@ -109,7 +109,7 @@ class AccountActionListWidget extends StatelessWidget {
 
   Widget buildFollowButton(
       IAccountBloc accountBloc, IPleromaAccountRelationship relationship) {
-    if (relationship.requested) {
+    if (relationship.requested && !relationship.following) {
       return FediBlurredTextButton(
         tr("app.account.action.follow_requested"),
         onPressed: null,
