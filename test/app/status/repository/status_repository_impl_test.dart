@@ -242,6 +242,7 @@ void main() {
       onlyInListWithRemoteId: null,
       onlyBookmarked: null,
       onlyFavourited: null,
+      onlyNotDeleted: null,
     );
 
     await insertDbStatus(
@@ -279,6 +280,7 @@ void main() {
       onlyInListWithRemoteId: null,
       onlyBookmarked: null,
       onlyFavourited: null,
+      onlyNotDeleted: null,
     );
 
     await insertDbStatus(
@@ -332,6 +334,7 @@ void main() {
       onlyInListWithRemoteId: null,
       onlyBookmarked: null,
       onlyFavourited: null,
+      onlyNotDeleted: null,
     );
 
     await insertDbStatus(
@@ -377,6 +380,7 @@ void main() {
       onlyInListWithRemoteId: null,
       onlyBookmarked: null,
       onlyFavourited: null,
+      onlyNotDeleted: null,
     );
 
     await insertDbStatus(
@@ -452,6 +456,7 @@ void main() {
       onlyInListWithRemoteId: null,
       onlyBookmarked: null,
       onlyFavourited: null,
+      onlyNotDeleted: null,
     );
 
     await insertDbStatus(
@@ -505,6 +510,7 @@ void main() {
       onlyInListWithRemoteId: null,
       onlyBookmarked: null,
       onlyFavourited: null,
+      onlyNotDeleted: null,
     );
 
     await insertDbStatus(
@@ -557,6 +563,7 @@ void main() {
       onlyInListWithRemoteId: null,
       onlyBookmarked: null,
       onlyFavourited: null,
+      onlyNotDeleted: null,
     );
 
     await insertDbStatus(
@@ -610,6 +617,7 @@ void main() {
       onlyInListWithRemoteId: null,
       onlyBookmarked: null,
       onlyFavourited: null,
+      onlyNotDeleted: null,
     );
 
     await insertDbStatus(
@@ -677,6 +685,7 @@ void main() {
       onlyInListWithRemoteId: null,
       onlyBookmarked: null,
       onlyFavourited: null,
+      onlyNotDeleted: null,
     );
 
     var status2 = await insertDbStatus(
@@ -724,6 +733,7 @@ void main() {
       onlyInListWithRemoteId: null,
       onlyBookmarked: null,
       onlyFavourited: null,
+      onlyNotDeleted: null,
     );
 
     var status2 = await insertDbStatus(
@@ -771,6 +781,7 @@ void main() {
       onlyInListWithRemoteId: null,
       onlyBookmarked: null,
       onlyFavourited: null,
+      onlyNotDeleted: null,
     );
 
     var status2 = await insertDbStatus(
@@ -814,6 +825,7 @@ void main() {
       onlyInListWithRemoteId: null,
       onlyBookmarked: null,
       onlyFavourited: null,
+      onlyNotDeleted: null,
     );
 
     await insertDbStatus(
@@ -851,6 +863,7 @@ void main() {
       onlyInListWithRemoteId: null,
       onlyBookmarked: null,
       onlyFavourited: null,
+      onlyNotDeleted: null,
     );
 
     await insertDbStatus(
@@ -921,6 +934,7 @@ void main() {
       isFromHomeTimeline: null,
       onlyBookmarked: null,
       onlyFavourited: null,
+      onlyNotDeleted: null,
     );
 
     await insertDbStatus(
@@ -964,6 +978,7 @@ void main() {
       onlyInListWithRemoteId: null,
       onlyBookmarked: null,
       onlyFavourited: null,
+      onlyNotDeleted: null,
     );
 
     var dbStatus1 =
@@ -1044,6 +1059,7 @@ void main() {
       onlyInListWithRemoteId: listWithRemoteId,
       onlyBookmarked: null,
       onlyFavourited: null,
+      onlyNotDeleted: null,
     );
 
     var dbStatus1 =
@@ -1109,6 +1125,7 @@ void main() {
       onlyInListWithRemoteId: null,
       onlyBookmarked: null,
       onlyFavourited: null,
+      onlyNotDeleted: null,
     );
 
     var dbStatus1 =
@@ -1172,6 +1189,7 @@ void main() {
       onlyInListWithRemoteId: null,
       onlyBookmarked: null,
       onlyFavourited: null,
+      onlyNotDeleted: null,
     );
 
     expect((await query.get()).length, 0);
