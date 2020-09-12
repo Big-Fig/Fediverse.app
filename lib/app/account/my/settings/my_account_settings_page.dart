@@ -1,4 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/account/my/account_block/my_account_account_block_list_page.dart';
+import 'package:fedi/app/account/my/domain_block/my_account_domain_block_list_page.dart';
 import 'package:fedi/app/account/my/follow_request/my_account_follow_request_list_page.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_widget.dart';
 import 'package:fedi/app/account/my/statuses/bookmarked/my_account_bookmarked_statuses_page.dart';
@@ -41,6 +43,10 @@ class MyAccountSettingsPage extends StatelessWidget {
             buildFavouritedButton(context),
             FediSmallVerticalSpacer(),
             buildFollowRequestsButton(context),
+            FediSmallVerticalSpacer(),
+            buildAccountBlocksButton(context),
+            FediSmallVerticalSpacer(),
+            buildDomainBlocksButton(context),
           ],
         ),
       ),
@@ -97,6 +103,23 @@ class MyAccountSettingsPage extends StatelessWidget {
       tr("app.account.my.settings.action.follow_requests"),
       onPressed: () {
         goToMyAccountFollowRequestListPage(context);
+      },
+    );
+  }
+
+  Widget buildAccountBlocksButton(BuildContext context) {
+    return FediPrimaryFilledTextButton(
+      tr("app.account.my.settings.action.account_blocks"),
+      onPressed: () {
+        goToMyAccountAccountBlockListPage(context);
+      },
+    );
+  }
+  Widget buildDomainBlocksButton(BuildContext context) {
+    return FediPrimaryFilledTextButton(
+      tr("app.account.my.settings.action.domain_blocks"),
+      onPressed: () {
+        goToMyAccountDomainBlockListPage(context);
       },
     );
   }

@@ -86,7 +86,16 @@ class PleromaMyAccountService implements IPleromaMyAccountService {
 
   List<String> parseStringListResponse(Response httpResponse) {
     if (httpResponse.statusCode == 200) {
-      return json.decode(httpResponse.body);
+      var result = <String>[];
+      try {
+        var list = json.decode(httpResponse.body) as List;
+        list.forEach((element) {
+          result.add(element.toString());
+        });
+      } catch (e, stackTrace) {
+        _logger.severe(() => "failed to parse domain list", e, stackTrace);
+      }
+      return result;
     } else {
       throw PleromaMyAccountException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
@@ -207,7 +216,6 @@ class PleromaMyAccountService implements IPleromaMyAccountService {
     return parseAccountRelationshipResponse(httpResponse);
   }
 
-
   @override
   Future<List<String>> getDomainBlocks({
     String sinceId,
@@ -229,7 +237,7 @@ class PleromaMyAccountService implements IPleromaMyAccountService {
   }
 
   @override
-  Future<List<IPleromaAccount>> getBlocks({
+  Future<List<IPleromaAccount>> getAccountBlocks({
     String sinceId,
     String maxId,
     int limit = 20,
