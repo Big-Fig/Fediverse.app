@@ -157,7 +157,27 @@
             },
             "new_chats_enabled": {
               "label": "Replace DM with chats",
-              "description": "Not supported on most instances"
+              "description": "Not supported on non-Pleroma instances"
+            },
+            "always_show_spoiler": {
+              "label": "Show spoilers by default"
+            },
+            "always_show_nsfw": {
+              "label": "Show NSFW by default"
+            },
+            "default_visibility": {
+              "label": "Default post visibility"
+            },
+            "media_nsfw_by_default": {
+              "label": "Mark media NSFW by default"
+            },
+            "foreground_sound_for_chat_and_dm": {
+              "label": "Sound for new Chat & DM messages",
+              "description": "When app in foreground"
+            },
+            "foreground_sound_for_mention": {
+              "label": "Sound for new mention",
+              "description": "When app in foreground"
             }
           },
           "action": {

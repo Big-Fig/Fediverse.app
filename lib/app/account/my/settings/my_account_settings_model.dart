@@ -1,4 +1,5 @@
 import 'package:fedi/local_preferences/local_preferences_model.dart';
+import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:hive/hive.dart';
 
 part 'my_account_settings_model.g.dart';
@@ -9,15 +10,52 @@ class MyAccountSettings implements IPreferencesObject {
   bool isRealtimeWebSocketsEnabled;
   @HiveField(1)
   bool isNewChatsEnabled;
+  @HiveField(2)
+  bool isAlwaysShowSpoiler;
+  @HiveField(3)
+  bool isAlwaysShowNsfw;
+  @HiveField(4)
+  PleromaVisibility defaultVisibility;
+  @HiveField(5)
+  bool markMediaNsfwByDefault;
+  @HiveField(6)
+  bool foregroundSoundForChatAndDm;
+  @HiveField(7)
+  bool foregroundSoundForMention;
 
-  MyAccountSettings(
-      {this.isRealtimeWebSocketsEnabled, this.isNewChatsEnabled});
+  MyAccountSettings({
+    this.isRealtimeWebSocketsEnabled,
+    this.isNewChatsEnabled,
+    this.isAlwaysShowSpoiler,
+    this.isAlwaysShowNsfw,
+    this.defaultVisibility,
+    this.markMediaNsfwByDefault,
+    this.foregroundSoundForChatAndDm,
+    this.foregroundSoundForMention,
+  });
 
-  MyAccountSettings copyWith(
-          {bool isRealtimeWebSocketsEnabled, bool isNewChatsEnabled}) =>
+  MyAccountSettings copyWith({
+    bool isRealtimeWebSocketsEnabled,
+    bool isNewChatsEnabled,
+    bool isAlwaysShowSpoiler,
+    bool isAlwaysShowNsfw,
+    PleromaVisibility defaultVisibility,
+    bool markMediaNsfwByDefault,
+    bool foregroundSoundForChatAndDm,
+    bool foregroundSoundForMention,
+  }) =>
       MyAccountSettings(
-          isRealtimeWebSocketsEnabled:
-              isRealtimeWebSocketsEnabled ?? this.isRealtimeWebSocketsEnabled,
-          isNewChatsEnabled:
-              isNewChatsEnabled ?? this.isNewChatsEnabled);
+        isRealtimeWebSocketsEnabled:
+            isRealtimeWebSocketsEnabled ?? this.isRealtimeWebSocketsEnabled,
+        isNewChatsEnabled: isNewChatsEnabled ?? this.isNewChatsEnabled,
+        isAlwaysShowSpoiler: isAlwaysShowSpoiler ?? this.isAlwaysShowSpoiler,
+        isAlwaysShowNsfw: isAlwaysShowNsfw ?? this.isAlwaysShowNsfw,
+        defaultVisibility: defaultVisibility ?? this.defaultVisibility,
+        markMediaNsfwByDefault:
+            markMediaNsfwByDefault ?? this.markMediaNsfwByDefault,
+        foregroundSoundForChatAndDm:
+            foregroundSoundForChatAndDm ?? this.foregroundSoundForChatAndDm,
+        foregroundSoundForMention:
+            foregroundSoundForMention ?? this.foregroundSoundForMention,
+      );
 }
