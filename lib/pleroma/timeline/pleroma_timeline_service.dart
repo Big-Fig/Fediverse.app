@@ -19,7 +19,7 @@ abstract class IPleromaTimelineService implements IPleromaApi {
     bool onlyLocal = false,
     bool withMuted = false,
     List<PleromaVisibility> excludeVisibilities = const [
-      PleromaVisibility.DIRECT
+      PleromaVisibility.direct
     ],
   });
 
@@ -33,7 +33,7 @@ abstract class IPleromaTimelineService implements IPleromaApi {
     bool onlyLocal = false,
     bool withMuted = false,
     List<PleromaVisibility> excludeVisibilities = const [
-      PleromaVisibility.DIRECT
+      PleromaVisibility.direct
     ],
   });
 
@@ -46,7 +46,7 @@ abstract class IPleromaTimelineService implements IPleromaApi {
     bool onlyLocal = false,
     bool withMuted = false,
     List<PleromaVisibility> excludeVisibilities = const [
-      PleromaVisibility.DIRECT
+      PleromaVisibility.direct
     ],
   });
 
@@ -59,7 +59,7 @@ abstract class IPleromaTimelineService implements IPleromaApi {
     bool onlyLocal = false,
     bool withMuted = false,
     List<PleromaVisibility> excludeVisibilities = const [
-      PleromaVisibility.DIRECT
+      PleromaVisibility.direct
     ],
   });
 }

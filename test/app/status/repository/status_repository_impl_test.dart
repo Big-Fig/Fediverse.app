@@ -435,8 +435,8 @@ void main() {
       onlyWithMedia: null,
       onlyNotMuted: null,
       excludeVisibilities: [
-        PleromaVisibility.DIRECT,
-        PleromaVisibility.UNLISTED
+        PleromaVisibility.direct,
+        PleromaVisibility.unlisted
       ],
       newerThanStatus: null,
       limit: null,
@@ -457,28 +457,28 @@ void main() {
     await insertDbStatus(
         statusRepository,
         (await createTestDbStatus(seed: "seed1", dbAccount: dbAccount))
-            .copyWith(visibility: PleromaVisibility.DIRECT));
+            .copyWith(visibility: PleromaVisibility.direct));
 
     expect((await query.get()).length, 0);
 
     await insertDbStatus(
         statusRepository,
         (await createTestDbStatus(seed: "seed2", dbAccount: dbAccount))
-            .copyWith(visibility: PleromaVisibility.UNLISTED));
+            .copyWith(visibility: PleromaVisibility.unlisted));
 
     expect((await query.get()).length, 0);
 
     await insertDbStatus(
         statusRepository,
         (await createTestDbStatus(seed: "seed3", dbAccount: dbAccount))
-            .copyWith(visibility: PleromaVisibility.PUBLIC));
+            .copyWith(visibility: PleromaVisibility.public));
 
     expect((await query.get()).length, 1);
 
     await insertDbStatus(
         statusRepository,
         (await createTestDbStatus(seed: "seed4", dbAccount: dbAccount))
-            .copyWith(visibility: PleromaVisibility.LIST));
+            .copyWith(visibility: PleromaVisibility.list));
 
     expect((await query.get()).length, 2);
   });

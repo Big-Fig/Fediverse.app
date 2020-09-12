@@ -16,7 +16,7 @@ class HashtagStatusCachedListBloc extends TimelineStatusCachedListBloc
   @override
   ITimelineSettings retrieveTimelineSettings() => TimelineSettings.hashtag(
         excludeVisibilities: [
-          PleromaVisibility.DIRECT,
+          PleromaVisibility.direct,
         ],
         onlyLocal: null,
         onlyNotMuted: true,

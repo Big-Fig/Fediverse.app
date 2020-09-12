@@ -40,7 +40,7 @@ Future<DbStatus> createTestDbStatus({
       inReplyToAccountRemoteId: seed + "inReplyToAccountRemoteId",
       sensitive: true,
       spoilerText: seed + "spoilerText",
-      visibility: PleromaVisibility.PUBLIC,
+      visibility: PleromaVisibility.public,
       uri: seed + "uri",
       url: seed + "url",
       repliesCount: 3,

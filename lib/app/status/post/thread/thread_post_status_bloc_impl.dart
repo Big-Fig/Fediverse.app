@@ -51,7 +51,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
           statusRepository: statusRepository,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
           initialData: PostStatusBloc.defaultInitData.copyWith(
-            visibility: PleromaVisibility.PUBLIC.toJsonValue(),
+            visibility: PleromaVisibility.public.toJsonValue(),
             inReplyToPleromaStatus:
                 mapLocalStatusToRemoteStatus(inReplyToStatus),
           ),
@@ -161,8 +161,8 @@ class ThreadPostStatusBloc extends PostStatusBloc
     // we should force DIRECT visibility if inReplyToStatus have DIRECT too
     var inReplyToStatus = notCanceledOriginInReplyToStatus;
     if (inReplyToStatus != null) {
-      if (inReplyToStatus.visibility == PleromaVisibility.DIRECT) {
-        return PleromaVisibility.DIRECT.toJsonValue();
+      if (inReplyToStatus.visibility == PleromaVisibility.direct) {
+        return PleromaVisibility.direct.toJsonValue();
       } else {
         return super.calculateVisibilityField();
       }

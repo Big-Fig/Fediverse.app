@@ -44,7 +44,7 @@ class MyAccountSettingsBloc extends DisposableOwner
             originValue: localPreferencesBloc.value?.isAlwaysShowNsfw ?? false),
         defaultVisibilityFieldBloc = FormValueFieldBloc<PleromaVisibility>(
             originValue: localPreferencesBloc.value?.defaultVisibility ??
-                PleromaVisibility.PUBLIC,
+                PleromaVisibility.public,
             validators: <
                 FormValueFieldValidationError Function(PleromaVisibility)>[]),
         markMediaNsfwByDefaultFieldBloc = FormBoolFieldBloc(

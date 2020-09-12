@@ -52,7 +52,7 @@ class PleromaTimelineService implements IPleromaTimelineService {
     bool onlyLocal = false,
     bool withMuted = false,
     List<PleromaVisibility> excludeVisibilities = const [
-      PleromaVisibility.DIRECT
+      PleromaVisibility.direct
     ],
   }) {
     assert(hashtag != null);
@@ -78,7 +78,7 @@ class PleromaTimelineService implements IPleromaTimelineService {
     bool onlyLocal = false,
     bool withMuted = false,
     List<PleromaVisibility> excludeVisibilities = const [
-      PleromaVisibility.DIRECT
+      PleromaVisibility.direct
     ],
   }) {
     return getTimeline(
@@ -103,7 +103,7 @@ class PleromaTimelineService implements IPleromaTimelineService {
     int limit = 20,
     bool withMuted = false,
     List<PleromaVisibility> excludeVisibilities = const [
-      PleromaVisibility.DIRECT
+      PleromaVisibility.direct
     ],
   }) {
     assert(listId != null);
@@ -129,7 +129,7 @@ class PleromaTimelineService implements IPleromaTimelineService {
     bool onlyLocal = false,
     bool withMuted = false,
     List<PleromaVisibility> excludeVisibilities = const [
-      PleromaVisibility.DIRECT
+      PleromaVisibility.direct
     ],
   }) {
     return getTimeline(

@@ -22,7 +22,7 @@ async =>
             mediaIds: [seed + "mediaIds1"],
             sensitive: seed.hashCode % 2 == 0,
             spoilerText: seed + "spoilerText1",
-            visibility: PleromaVisibility.PUBLIC.toJsonValue(),
+            visibility: PleromaVisibility.public.toJsonValue(),
             scheduledAt: DateTime(seed.hashCode % 10),
             poll: seed + "poll1",
             idempotency: seed + "idempotency1",

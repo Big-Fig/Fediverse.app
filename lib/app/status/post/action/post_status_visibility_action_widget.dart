@@ -33,13 +33,13 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
                     title: "app.status.post.visibility.title".tr(),
                     actions: [
                       buildVisibilityDialogAction(
-                          context, postStatusBloc, PleromaVisibility.PUBLIC),
+                          context, postStatusBloc, PleromaVisibility.public),
                       buildVisibilityDialogAction(
-                          context, postStatusBloc, PleromaVisibility.DIRECT),
+                          context, postStatusBloc, PleromaVisibility.direct),
                       buildVisibilityDialogAction(
-                          context, postStatusBloc, PleromaVisibility.UNLISTED),
+                          context, postStatusBloc, PleromaVisibility.unlisted),
                       buildVisibilityDialogAction(
-                          context, postStatusBloc, PleromaVisibility.PRIVATE),
+                          context, postStatusBloc, PleromaVisibility.private),
                     ]);
               });
         });
