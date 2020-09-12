@@ -35,6 +35,8 @@ abstract class PostStatusBloc extends PostMessageBloc
         pollBloc.isSomethingChanged;
   }
 
+  final bool markMediaNsfwByDefault;
+
   PostStatusBloc({
     @required this.pleromaStatusService,
     @required this.statusRepository,
@@ -45,6 +47,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     List<IAccount> initialAccountsToMention = const [],
     @required PleromaInstancePollLimits pleromaInstancePollLimits,
     @required int maximumFileSizeInBytes,
+    @required this.markMediaNsfwByDefault,
   }) : super(
           maximumMessageLength: maximumMessageLength,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
@@ -639,4 +642,13 @@ abstract class PostStatusBloc extends PostMessageBloc
         isNsfwSensitiveEnabled: isNsfwSensitiveEnabled,
         to: calculateToField(),
       );
+
+
+  @override
+  void onFileSelected() {
+    super.onFileSelected();
+    if(markMediaNsfwByDefault) {
+      nsfwSensitiveSubject.add(true);
+    }
+  }
 }

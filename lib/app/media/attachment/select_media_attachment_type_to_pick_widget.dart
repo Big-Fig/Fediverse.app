@@ -53,14 +53,26 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
       _buildAction(FediIcons.image, "app.media.attachment.type.gallery".tr(),
           () async {
         goToSingleMediaPickerPage(context,
-            fileSelectedCallback: (FilePickerFile filePickerFile) {
+            fileSelectedCallback: (FilePickerFile filePickerFile) async {
           var attachmentsCollectionBloc =
               IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);
-          attachmentsCollectionBloc.attachMedia(filePickerFile);
-          onFileSelected();
+          await _attachMedia(
+            context,
+            attachmentsCollectionBloc,
+            filePickerFile,
+          );
           Navigator.of(context).pop();
         });
       });
+
+  Future _attachMedia(
+    BuildContext context,
+    IUploadMediaAttachmentsCollectionBloc attachmentsCollectionBloc,
+    FilePickerFile filePickerFile,
+  ) async {
+    await attachmentsCollectionBloc.attachMedia(filePickerFile);
+    onFileSelected();
+  }
 
   Widget _buildAttachPhoto(BuildContext context) =>
       _buildAction(FediIcons.camera, "app.media.attachment.type.photo".tr(),
@@ -77,8 +89,8 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
           );
           var attachmentsCollectionBloc =
               IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);
-          await attachmentsCollectionBloc.attachMedia(filePickerFile);
-          onFileSelected();
+          await _attachMedia(
+              context, attachmentsCollectionBloc, filePickerFile);
         }
       });
 
@@ -97,8 +109,8 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
           );
           var attachmentsCollectionBloc =
               IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);
-          await attachmentsCollectionBloc.attachMedia(filePickerFile);
-          onFileSelected();
+          await _attachMedia(
+              context, attachmentsCollectionBloc, filePickerFile);
         }
       });
 
@@ -115,8 +127,8 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
 
           var attachmentsCollectionBloc =
               IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);
-          await attachmentsCollectionBloc.attachMedia(filePickerFile);
-          onFileSelected();
+          await _attachMedia(
+              context, attachmentsCollectionBloc, filePickerFile);
         }
       });
 
@@ -132,8 +144,8 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
           );
           var attachmentsCollectionBloc =
               IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);
-          await attachmentsCollectionBloc.attachMedia(filePickerFile);
-          onFileSelected();
+          await _attachMedia(
+              context, attachmentsCollectionBloc, filePickerFile);
         }
       });
 

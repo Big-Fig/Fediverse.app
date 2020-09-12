@@ -179,4 +179,9 @@ abstract class PostMessageBloc extends DisposableOwner
   void clearSelectedAction() {
     selectedActionSubject.add(null);
   }
+
+  @override
+  void onFileSelected() {
+    toggleAttachActionSelection();
+  }
 }

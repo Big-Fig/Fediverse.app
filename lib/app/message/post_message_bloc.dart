@@ -43,4 +43,6 @@ abstract class IPostMessageBloc implements Disposable {
   bool get isAnySelectedActionVisible;
 
   void clearSelectedAction();
+
+  void onFileSelected();
 }
