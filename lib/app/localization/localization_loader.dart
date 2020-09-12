@@ -186,14 +186,6 @@ class CodegenLoader extends AssetLoader{
             },
             "media_nsfw_by_default": {
               "label": "Mark media NSFW by default"
-            },
-            "foreground_sound_for_chat_and_dm": {
-              "label": "Sound for new Chat & DM messages",
-              "description": "When app in foreground"
-            },
-            "foreground_sound_for_mention": {
-              "label": "Sound for new mention",
-              "description": "When app in foreground"
             }
           },
           "action": {

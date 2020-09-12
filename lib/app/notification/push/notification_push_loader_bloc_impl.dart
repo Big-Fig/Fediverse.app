@@ -9,6 +9,7 @@ import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_service.dart';
 import 'package:fedi/pleroma/push/pleroma_push_model.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -27,9 +28,11 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
 
   BehaviorSubject<NotificationPushLoaderNotification>
       launchOrResumePushLoaderNotificationSubject = BehaviorSubject();
+
   @override
   NotificationPushLoaderNotification get launchOrResumePushLoaderNotification =>
       launchOrResumePushLoaderNotificationSubject.value;
+
   @override
   Stream<NotificationPushLoaderNotification>
       get launchOrResumePushLoaderNotificationStream =>
@@ -80,6 +83,8 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
             "\t alreadyExistNotification = $alreadyExistNotification");
 
         var unread = alreadyExistNotification?.unread ?? true;
+
+        await SystemSound.play(SystemSoundType.click);
 
         await notificationRepository
             .upsertRemoteNotification(remoteNotification, unread: unread);
