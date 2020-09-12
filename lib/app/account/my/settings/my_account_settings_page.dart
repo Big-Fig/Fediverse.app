@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/my/account_block/my_account_account_block_list_page.dart';
+import 'package:fedi/app/account/my/account_mute/my_account_account_mute_list_page.dart';
 import 'package:fedi/app/account/my/domain_block/my_account_domain_block_list_page.dart';
 import 'package:fedi/app/account/my/follow_request/my_account_follow_request_list_page.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_widget.dart';
@@ -45,6 +46,8 @@ class MyAccountSettingsPage extends StatelessWidget {
             buildFollowRequestsButton(context),
             FediSmallVerticalSpacer(),
             buildAccountBlocksButton(context),
+            FediSmallVerticalSpacer(),
+            buildAccountMutesButton(context),
             FediSmallVerticalSpacer(),
             buildDomainBlocksButton(context),
           ],
@@ -115,6 +118,16 @@ class MyAccountSettingsPage extends StatelessWidget {
       },
     );
   }
+
+  Widget buildAccountMutesButton(BuildContext context) {
+    return FediPrimaryFilledTextButton(
+      tr("app.account.my.settings.action.account_mutes"),
+      onPressed: () {
+        goToMyAccountAccountMuteListPage(context);
+      },
+    );
+  }
+
   Widget buildDomainBlocksButton(BuildContext context) {
     return FediPrimaryFilledTextButton(
       tr("app.account.my.settings.action.domain_blocks"),
