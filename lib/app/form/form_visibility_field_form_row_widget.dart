@@ -47,13 +47,13 @@ class FormPleromaVisibilityFieldFormRowWidget extends StatelessWidget {
                             title: "app.status.post.visibility.title".tr(),
                             actions: [
                               buildVisibilityDialogAction(context, field,
-                                  PleromaVisibility.PUBLIC, currentValue),
+                                  PleromaVisibility.public, currentValue),
                               buildVisibilityDialogAction(context, field,
-                                  PleromaVisibility.DIRECT, currentValue),
+                                  PleromaVisibility.direct, currentValue),
                               buildVisibilityDialogAction(context, field,
-                                  PleromaVisibility.UNLISTED, currentValue),
+                                  PleromaVisibility.unlisted, currentValue),
                               buildVisibilityDialogAction(context, field,
-                                  PleromaVisibility.PRIVATE, currentValue),
+                                  PleromaVisibility.private, currentValue),
                             ]);
                       },
                       icon: Icon(

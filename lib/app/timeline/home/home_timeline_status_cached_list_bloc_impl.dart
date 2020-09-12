@@ -18,7 +18,7 @@ class HomeTimelineStatusCachedListBloc extends TimelineStatusCachedListBloc
   @override
   ITimelineSettings retrieveTimelineSettings() =>
       TimelineSettings.home(excludeVisibilities: [
-        PleromaVisibility.DIRECT,
+        PleromaVisibility.direct,
       ], onlyLocal: null, onlyNotMuted: true);
 
   HomeTimelineStatusCachedListBloc({

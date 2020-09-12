@@ -57,7 +57,7 @@ abstract class ConversationShareBloc extends DisposableOwner
 
   @override
   Future share() async {
-    final pleromaVisibility = PleromaVisibility.DIRECT;
+    final pleromaVisibility = PleromaVisibility.direct;
 
     var accountsPleromaStatus = await pleromaStatusService.postStatus(
         data: createSendData(

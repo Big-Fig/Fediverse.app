@@ -143,7 +143,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     subject: null,
     text: null,
     scheduledAt: null,
-    visibility: PleromaVisibility.PUBLIC.toJsonValue(),
+    visibility: PleromaVisibility.public.toJsonValue(),
     mediaAttachments: null,
     poll: null,
     inReplyToPleromaStatus: null,

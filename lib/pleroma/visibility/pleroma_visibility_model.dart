@@ -1,7 +1,7 @@
 import 'package:fedi/enum/enum_values.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-enum PleromaVisibility { PUBLIC, UNLISTED, DIRECT, LIST, PRIVATE }
+enum PleromaVisibility { public, unlisted, direct, list, private }
 
 extension PleromaVisibilityJsonValueExtension on PleromaVisibility {
   String toJsonValue() => _pleromaVisibilityValues.enumToValueMap[this];
@@ -12,11 +12,11 @@ extension PleromaVisibilityStringExtension on String {
 }
 
 final _pleromaVisibilityValues = EnumValues({
-  "public": PleromaVisibility.PUBLIC,
-  "unlisted": PleromaVisibility.UNLISTED,
-  "direct": PleromaVisibility.DIRECT,
-  "list": PleromaVisibility.LIST,
-  "private": PleromaVisibility.PRIVATE
+  "public": PleromaVisibility.public,
+  "unlisted": PleromaVisibility.unlisted,
+  "direct": PleromaVisibility.direct,
+  "list": PleromaVisibility.list,
+  "private": PleromaVisibility.private
 });
 
 class PleromaVisibilityTypeConverter

@@ -16,7 +16,7 @@ class CustomListStatusCachedListBloc
   @override
   ITimelineSettings retrieveTimelineSettings() => TimelineSettings.list(
         excludeVisibilities: [
-          PleromaVisibility.DIRECT,
+          PleromaVisibility.direct,
         ],
         onlyLocal: null,
         onlyNotMuted: true,

@@ -30,7 +30,7 @@ class ConversationPostStatusBloc extends PostStatusBloc {
           statusRepository: statusRepository,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
           initialData: PostStatusBloc.defaultInitData.copyWith(
-              visibility: PleromaVisibility.PRIVATE.toJsonValue(),
+              visibility: PleromaVisibility.private.toJsonValue(),
               inReplyToConversationId: conversation.remoteId),
           initialAccountsToMention: conversationAccountsWithoutMe,
           maximumMessageLength: maximumMessageLength,

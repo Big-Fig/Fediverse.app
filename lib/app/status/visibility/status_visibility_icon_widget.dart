@@ -34,19 +34,19 @@ class StatusVisibilityIconWidget extends StatelessWidget {
 
   static IconData mapVisibilityToIconData(PleromaVisibility visibility) {
     switch (visibility) {
-      case PleromaVisibility.PUBLIC:
+      case PleromaVisibility.public:
         return FediIcons.world;
         break;
-      case PleromaVisibility.UNLISTED:
+      case PleromaVisibility.unlisted:
         return FediIcons.unlisted;
         break;
-      case PleromaVisibility.DIRECT:
+      case PleromaVisibility.direct:
         return FediIcons.message;
         break;
-      case PleromaVisibility.LIST:
+      case PleromaVisibility.list:
         return Icons.list;
         break;
-      case PleromaVisibility.PRIVATE:
+      case PleromaVisibility.private:
         return FediIcons.private;
         break;
     }
