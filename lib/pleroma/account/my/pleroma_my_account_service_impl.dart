@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:fedi/pleroma/account/my/pleroma_my_account_exception.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_model.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
@@ -76,6 +78,15 @@ class PleromaMyAccountService implements IPleromaMyAccountService {
   List<IPleromaAccount> parseAccountListResponse(Response httpResponse) {
     if (httpResponse.statusCode == 200) {
       return PleromaAccount.listFromJsonString(httpResponse.body);
+    } else {
+      throw PleromaMyAccountException(
+          statusCode: httpResponse.statusCode, body: httpResponse.body);
+    }
+  }
+
+  List<String> parseStringListResponse(Response httpResponse) {
+    if (httpResponse.statusCode == 200) {
+      return json.decode(httpResponse.body);
     } else {
       throw PleromaMyAccountException(
           statusCode: httpResponse.statusCode, body: httpResponse.body);
@@ -194,5 +205,95 @@ class PleromaMyAccountService implements IPleromaMyAccountService {
     ));
 
     return parseAccountRelationshipResponse(httpResponse);
+  }
+
+  @override
+  Future blockDomain({@required String domain}) async {
+    var httpResponse = await restService.sendHttpRequest(RestRequest.post(
+      relativePath: urlPath.join("api/v1/domain_blocks"),
+      queryArgs: [
+        RestRequestQueryArg("domain", domain),
+      ],
+    ));
+
+    if (httpResponse.statusCode != 200) {
+      throw PleromaMyAccountException(
+          statusCode: httpResponse.statusCode, body: httpResponse.body);
+    }
+  }
+
+  @override
+  Future unblockDomain({@required String domain}) async {
+    var httpResponse = await restService.sendHttpRequest(RestRequest.delete(
+      relativePath: urlPath.join("api/v1/domain_blocks"),
+      queryArgs: [
+        RestRequestQueryArg("domain", domain),
+      ],
+    ));
+
+    if (httpResponse.statusCode != 200) {
+      throw PleromaMyAccountException(
+          statusCode: httpResponse.statusCode, body: httpResponse.body);
+    }
+  }
+
+  @override
+  Future<List<String>> getDomainBlocks({
+    String sinceId,
+    String maxId,
+    int limit = 20,
+  }) async {
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.get(
+        relativePath: urlPath.join("api/v1/domain_blocks"),
+        queryArgs: [
+          RestRequestQueryArg("since_id", sinceId),
+          RestRequestQueryArg("max_id", maxId),
+          RestRequestQueryArg("limit", limit?.toString()),
+        ],
+      ),
+    );
+
+    return parseStringListResponse(httpResponse);
+  }
+
+  @override
+  Future<List<IPleromaAccount>> getBlocks({
+    String sinceId,
+    String maxId,
+    int limit = 20,
+  }) async {
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.get(
+        relativePath: urlPath.join("api/v1/blocks"),
+        queryArgs: [
+          RestRequestQueryArg("since_id", sinceId),
+          RestRequestQueryArg("max_id", maxId),
+          RestRequestQueryArg("limit", limit?.toString()),
+        ],
+      ),
+    );
+
+    return parseAccountListResponse(httpResponse);
+  }
+
+  @override
+  Future<List<IPleromaAccount>> getMutes({
+    String sinceId,
+    String maxId,
+    int limit = 20,
+  }) async {
+    var httpResponse = await restService.sendHttpRequest(
+      RestRequest.get(
+        relativePath: urlPath.join("api/v1/mutes"),
+        queryArgs: [
+          RestRequestQueryArg("since_id", sinceId),
+          RestRequestQueryArg("max_id", maxId),
+          RestRequestQueryArg("limit", limit?.toString()),
+        ],
+      ),
+    );
+
+    return parseAccountListResponse(httpResponse);
   }
 }
