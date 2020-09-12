@@ -1,3 +1,4 @@
+import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/post/post_status_bloc_impl.dart';
@@ -18,13 +19,14 @@ class NewPostStatusBloc extends PostStatusBloc {
     @required int maximumMessageLength,
     @required PleromaInstancePollLimits pleromaInstancePollLimits,
     @required int maximumFileSizeInBytes,
+    @required PleromaVisibility initialVisibility,
   }) : super(
           pleromaStatusService: pleromaStatusService,
           statusRepository: statusRepository,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
           maximumMessageLength: maximumMessageLength,
           initialData: PostStatusBloc.defaultInitData
-              .copyWith(visibility: PleromaVisibility.public.toJsonValue()),
+              .copyWith(visibility: initialVisibility.toJsonValue()),
           pleromaInstancePollLimits: pleromaInstancePollLimits,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
         );
@@ -33,6 +35,10 @@ class NewPostStatusBloc extends PostStatusBloc {
     var info = ICurrentAuthInstanceBloc.of(context, listen: false)
         .currentInstance
         .info;
+
+    var myAccountSettingsBloc =
+        IMyAccountSettingsBloc.of(context, listen: false);
+
     return NewPostStatusBloc(
       pleromaStatusService: IPleromaStatusService.of(context, listen: false),
       statusRepository: IStatusRepository.of(context, listen: false),
@@ -41,6 +47,8 @@ class NewPostStatusBloc extends PostStatusBloc {
       maximumMessageLength: info.maxTootChars,
       pleromaInstancePollLimits: info.pollLimits,
       maximumFileSizeInBytes: info.uploadLimit,
+      initialVisibility:
+          myAccountSettingsBloc.defaultVisibilityFieldBloc.currentValue,
     );
   }
 

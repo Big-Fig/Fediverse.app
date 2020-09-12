@@ -41,7 +41,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     @required IPleromaMediaAttachmentService pleromaMediaAttachmentService,
     int maximumMediaAttachmentCount = 8,
     @required int maximumMessageLength,
-    IPostStatusData initialData,
+    @required IPostStatusData initialData,
     List<IAccount> initialAccountsToMention = const [],
     @required PleromaInstancePollLimits pleromaInstancePollLimits,
     @required int maximumFileSizeInBytes,
