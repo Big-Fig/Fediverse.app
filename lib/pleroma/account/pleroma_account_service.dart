@@ -90,6 +90,11 @@ abstract class IPleromaAccountService implements IPleromaApi {
     @required String accountRemoteId,
   });
 
+  Future blockDomain({@required String domain});
+
+  Future unBlockDomain({@required String domain});
+
+
   Future<bool> reportAccount({
     @required IPleromaAccountReportRequest reportRequest,
   });

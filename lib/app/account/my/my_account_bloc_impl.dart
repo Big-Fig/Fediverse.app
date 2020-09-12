@@ -38,7 +38,8 @@ class MyAccountBloc extends IMyAccountBloc {
       if (myAccount != null) {
         accountRepository.upsertRemoteAccount(
             mapLocalAccountToRemoteAccount(myAccount),
-            conversationRemoteId: null, chatRemoteId: null);
+            conversationRemoteId: null,
+            chatRemoteId: null);
       }
     }));
   }
@@ -107,6 +108,10 @@ class MyAccountBloc extends IMyAccountBloc {
   Future<IPleromaAccountRelationship> togglePin() => throw selfActionError;
 
   @override
+  Future<IPleromaAccountRelationship> toggleBlockDomain() =>
+      throw selfActionError;
+
+  @override
   void updateMyAccountByRemote(IPleromaMyAccount remoteMyAccount) {
     myAccountLocalPreferenceBloc
         .setValue(MyAccountRemoteWrapper(remoteAccount: remoteMyAccount));
@@ -116,4 +121,7 @@ class MyAccountBloc extends IMyAccountBloc {
   bool checkIsChatMessageFromMe(IChatMessage chatMessage) {
     return myAccount.remoteId == chatMessage.account.remoteId;
   }
+
+  @override
+  String get remoteDomainOrNull => null;
 }

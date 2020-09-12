@@ -68,6 +68,19 @@ class AccountActionMoreDialogBody extends StatelessWidget {
             Navigator.of(context).pop();
           },
         ),
+        if (accountBloc.isOnRemoteDomain)
+          DialogAction(
+            icon: FediIcons.block,
+            label: relationship.domainBlocking
+                ? tr("app.account.action.unblock_domain",
+                    args: [accountBloc.remoteDomainOrNull])
+                : tr("app.account.action.block_domain",
+                    args: [accountBloc.remoteDomainOrNull]),
+            onAction: () async {
+              await accountBloc.toggleBlockDomain();
+              Navigator.of(context).pop();
+            },
+          ),
         DialogAction(
             icon: FediIcons.report,
             label: tr("app.account.action.report.label"),

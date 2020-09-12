@@ -14,6 +14,8 @@ abstract class IAccountBloc extends DisposableOwner {
 
   Stream<IAccount> get accountStream;
 
+  bool get isOnRemoteDomain => remoteDomainOrNull != null;
+  String get remoteDomainOrNull;
   String get acct => account.acct;
 
   Stream<String> get acctStream => accountStream.map((account) => account.acct);
@@ -88,6 +90,7 @@ abstract class IAccountBloc extends DisposableOwner {
   Future<IPleromaAccountRelationship> togglePin();
 
   Future<IPleromaAccountRelationship> toggleBlock();
+  Future<IPleromaAccountRelationship> toggleBlockDomain();
 
   Future report();
 

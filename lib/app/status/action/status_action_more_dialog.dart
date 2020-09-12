@@ -67,6 +67,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
             actions: [
               if (isStatusFromMe) buildDeleteAction(context, status),
               if (isStatusFromMe) buildPinAction(context, status),
+              if (isStatusFromMe) buildMuteConversationAction(context, status),
               buildBookmarkAction(context, status),
               buildCopyAction(context, status),
               buildOpenInBrowserAction(context, status),
@@ -116,6 +117,9 @@ class StatusActionMoreDialogBody extends StatelessWidget {
                               buildAccountMuteAction(context, accountBloc),
                               buildAccountReportAction(context, accountBloc),
                               buildAccountBlockAction(context, accountBloc),
+                              if (accountBloc.isOnRemoteDomain)
+                                buildAccountBlockDomainAction(
+                                    context, accountBloc),
                             ],
                             cancelable: cancelable);
                       } else {
@@ -162,6 +166,21 @@ class StatusActionMoreDialogBody extends StatelessWidget {
 
             Navigator.of(context).pop();
           });
+
+  DialogAction buildAccountBlockDomainAction(
+          BuildContext context, IAccountBloc accountBloc) =>
+      DialogAction(
+        icon: FediIcons.block,
+        label: accountBloc.accountRelationship.domainBlocking
+            ? tr("app.account.action.unblock_domain",
+                args: [accountBloc.remoteDomainOrNull])
+            : tr("app.account.action.block_domain",
+                args: [accountBloc.remoteDomainOrNull]),
+        onAction: () async {
+          await accountBloc.toggleBlockDomain();
+          Navigator.of(context).pop();
+        },
+      );
 
   DialogAction buildAccountMuteAction(
           BuildContext context, IAccountBloc accountBloc) =>
@@ -261,6 +280,19 @@ class StatusActionMoreDialogBody extends StatelessWidget {
           onAction: () async {
             await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
                 context: context, asyncCode: () => statusBloc.togglePin());
+
+            Navigator.of(context).pop();
+          });
+
+  DialogAction buildMuteConversationAction(BuildContext context, IStatus status) =>
+      DialogAction(
+          icon: FediIcons.mute,
+          label: status.muted
+              ? tr("app.status.action.unmute")
+              : tr("app.status.action.mute"),
+          onAction: () async {
+            await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+                context: context, asyncCode: () => statusBloc.toggleMute());
 
             Navigator.of(context).pop();
           });

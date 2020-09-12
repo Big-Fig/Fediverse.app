@@ -357,6 +357,36 @@ class PleromaAccountService implements IPleromaAccountService {
   }
 
   @override
+  Future blockDomain({@required String domain}) async {
+    var httpResponse = await restService.sendHttpRequest(RestRequest.post(
+      relativePath: urlPath.join("api/v1/domain_blocks"),
+      queryArgs: [
+        RestRequestQueryArg("domain", domain),
+      ],
+    ));
+
+    if (httpResponse.statusCode != 200) {
+      throw PleromaAccountException(
+          statusCode: httpResponse.statusCode, body: httpResponse.body);
+    }
+  }
+
+  @override
+  Future unBlockDomain({@required String domain}) async {
+    var httpResponse = await restService.sendHttpRequest(RestRequest.delete(
+      relativePath: urlPath.join("api/v1/domain_blocks"),
+      queryArgs: [
+        RestRequestQueryArg("domain", domain),
+      ],
+    ));
+
+    if (httpResponse.statusCode != 200) {
+      throw PleromaAccountException(
+          statusCode: httpResponse.statusCode, body: httpResponse.body);
+    }
+  }
+
+  @override
   void dispose() {
     // nothing
   }
