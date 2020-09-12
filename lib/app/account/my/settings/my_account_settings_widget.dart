@@ -49,21 +49,7 @@ class MyAccountSettingsWidget extends StatelessWidget {
               tr("app.account.my.settings.field.media_nsfw_by_default.label"),
           desc: null,
           field: myAccountSettingsBloc.markMediaNsfwByDefaultFieldBloc,
-        ),
-        FormBoolFieldFormRowWidget(
-          label: tr(
-              "app.account.my.settings.field.foreground_sound_for_chat_and_dm.label"),
-          desc: tr(
-              "app.account.my.settings.field.foreground_sound_for_chat_and_dm.description"),
-          field: myAccountSettingsBloc.foregroundSoundForChatAndDmFieldBloc,
-        ),
-        FormBoolFieldFormRowWidget(
-          label: tr(
-              "app.account.my.settings.field.foreground_sound_for_mention.label"),
-          desc: tr(
-              "app.account.my.settings.field.foreground_sound_for_mention.description"),
-          field: myAccountSettingsBloc.foregroundSoundForMentionFieldBloc,
-        ),
+        )
       ],
     );
   }
