@@ -84,8 +84,6 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
 
         var unread = alreadyExistNotification?.unread ?? true;
 
-        await SystemSound.play(SystemSoundType.click);
-
         await notificationRepository
             .upsertRemoteNotification(remoteNotification, unread: unread);
 
