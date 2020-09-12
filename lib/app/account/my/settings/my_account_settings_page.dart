@@ -23,7 +23,7 @@ class MyAccountSettingsPage extends StatelessWidget {
       ),
       body: Padding(
         padding: FediPadding.allBigPadding,
-        child: Column(
+        child: ListView(
           children: [
             MyAccountSettingsWidget(),
             Padding(
