@@ -26,7 +26,7 @@ class MyAccountSettingsAdapter extends TypeAdapter<MyAccountSettings> {
           obj.isAlwaysShowNsfw = reader.read() as bool;
           break;
         case 4:
-          obj.defaultVisibility = reader.read() as PleromaVisibility;
+          obj.defaultVisibility = reader.read() as String;
           break;
         case 5:
           obj.markMediaNsfwByDefault = reader.read() as bool;

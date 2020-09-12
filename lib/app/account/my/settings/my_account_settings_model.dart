@@ -15,7 +15,7 @@ class MyAccountSettings implements IPreferencesObject {
   @HiveField(3)
   bool isAlwaysShowNsfw;
   @HiveField(4)
-  PleromaVisibility defaultVisibility;
+  String defaultVisibility;
   @HiveField(5)
   bool markMediaNsfwByDefault;
   @HiveField(6)
@@ -39,7 +39,7 @@ class MyAccountSettings implements IPreferencesObject {
     bool isNewChatsEnabled,
     bool isAlwaysShowSpoiler,
     bool isAlwaysShowNsfw,
-    PleromaVisibility defaultVisibility,
+    String defaultVisibility,
     bool markMediaNsfwByDefault,
     bool foregroundSoundForChatAndDm,
     bool foregroundSoundForMention,

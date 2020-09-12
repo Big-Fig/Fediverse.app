@@ -43,7 +43,8 @@ class MyAccountSettingsBloc extends DisposableOwner
         isAlwaysShowNsfwFieldBloc = FormBoolFieldBloc(
             originValue: localPreferencesBloc.value?.isAlwaysShowNsfw ?? false),
         defaultVisibilityFieldBloc = FormValueFieldBloc<PleromaVisibility>(
-            originValue: localPreferencesBloc.value?.defaultVisibility ??
+            originValue: localPreferencesBloc.value?.defaultVisibility
+                    ?.toPleromaVisibility() ??
                 PleromaVisibility.public,
             validators: <
                 FormValueFieldValidationError Function(PleromaVisibility)>[]),
@@ -107,7 +108,7 @@ class MyAccountSettingsBloc extends DisposableOwner
       isNewChatsEnabled: isNewChatsEnabledFieldBloc.currentValue,
       isAlwaysShowSpoiler: isAlwaysShowSpoilerFieldBloc.currentValue,
       isAlwaysShowNsfw: isAlwaysShowNsfwFieldBloc.currentValue,
-      defaultVisibility: defaultVisibilityFieldBloc.currentValue,
+      defaultVisibility: defaultVisibilityFieldBloc.currentValue.toJsonValue(),
       markMediaNsfwByDefault: markMediaNsfwByDefaultFieldBloc.currentValue,
       foregroundSoundForChatAndDm:
           foregroundSoundForChatAndDmFieldBloc.currentValue,
