@@ -57,6 +57,7 @@ abstract class IStatusRepository
     @required bool isFromHomeTimeline,
     @required bool onlyFavourited,
     @required bool onlyBookmarked,
+    bool onlyNotDeleted = true,
   });
 
   Stream<List<IStatus>> watchStatuses({
@@ -79,6 +80,7 @@ abstract class IStatusRepository
     @required bool isFromHomeTimeline,
     @required bool onlyFavourited,
     @required bool onlyBookmarked,
+    bool onlyNotDeleted = true,
   });
 
   Future<IStatus> getStatus({
@@ -99,6 +101,7 @@ abstract class IStatusRepository
     @required bool isFromHomeTimeline,
     @required bool onlyFavourited,
     @required bool onlyBookmarked,
+    bool onlyNotDeleted = true,
   });
 
   Stream<IStatus> watchStatus({
@@ -119,13 +122,18 @@ abstract class IStatusRepository
     @required bool isFromHomeTimeline,
     @required bool onlyFavourited,
     @required bool onlyBookmarked,
+    bool onlyNotDeleted = true,
   });
 
-  Stream<IStatus> watchConversationLastStatus(
-      {@required IConversation conversation});
+  Stream<IStatus> watchConversationLastStatus({
+    @required IConversation conversation,
+    bool onlyNotDeleted = true,
+  });
 
-  Future<IStatus> getConversationLastStatus(
-      {@required IConversation conversation});
+  Future<IStatus> getConversationLastStatus({
+    @required IConversation conversation,
+    bool onlyNotDeleted = true,
+  });
 
   Future incrementRepliesCount({@required String remoteId});
 
@@ -134,5 +142,6 @@ abstract class IStatusRepository
   });
 
   Future markStatusAsDeleted({@required String statusRemoteId});
+
   Future clearListStatusesConnection({@required String listRemoteId});
 }

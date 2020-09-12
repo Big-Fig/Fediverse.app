@@ -258,6 +258,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required bool isFromHomeTimeline,
     @required bool onlyFavourited,
     @required bool onlyBookmarked,
+    bool onlyNotDeleted = true,
   }) async {
     var query = createQuery(
       onlyFromAccount: onlyFromAccount,
@@ -279,6 +280,7 @@ class StatusRepository extends AsyncInitLoadingBloc
       isFromHomeTimeline: isFromHomeTimeline,
       onlyBookmarked: onlyBookmarked,
       onlyFavourited: onlyFavourited,
+      onlyNotDeleted: onlyNotDeleted,
     );
 
     return dao
@@ -308,6 +310,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required bool isFromHomeTimeline,
     @required bool onlyFavourited,
     @required bool onlyBookmarked,
+    bool onlyNotDeleted = true,
   }) {
     var query = createQuery(
       onlyInListWithRemoteId: onlyInListWithRemoteId,
@@ -329,6 +332,7 @@ class StatusRepository extends AsyncInitLoadingBloc
       isFromHomeTimeline: isFromHomeTimeline,
       onlyBookmarked: onlyBookmarked,
       onlyFavourited: onlyFavourited,
+      onlyNotDeleted: onlyNotDeleted,
     );
 
     Stream<List<DbStatusPopulated>> stream =
@@ -359,6 +363,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required bool isFromHomeTimeline,
     @required bool onlyFavourited,
     @required bool onlyBookmarked,
+    @required bool onlyNotDeleted,
   }) {
     _logger.fine(() => "createQuery \n"
         "\t onlyInListWithRemoteId=$onlyInListWithRemoteId\n"
@@ -427,8 +432,9 @@ class StatusRepository extends AsyncInitLoadingBloc
           minimumRemoteIdExcluding: newerThanStatus?.remoteId);
     }
 
-    // add parameter arg here
-    dao.addNotDeletedWhere(query);
+    if (onlyNotDeleted == true) {
+      dao.addNotDeletedWhere(query);
+    }
 
     if (orderingTermData != null) {
       dao.orderBy(query, [orderingTermData]);
@@ -618,6 +624,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required bool isFromHomeTimeline,
     @required bool onlyFavourited,
     @required bool onlyBookmarked,
+    bool onlyNotDeleted = true,
   }) async {
     var query = createQuery(
       onlyFromAccount: onlyFromAccount,
@@ -639,6 +646,7 @@ class StatusRepository extends AsyncInitLoadingBloc
       isFromHomeTimeline: isFromHomeTimeline,
       onlyBookmarked: onlyBookmarked,
       onlyFavourited: onlyFavourited,
+      onlyNotDeleted: onlyNotDeleted,
     );
 
     return mapDataClassToItem(
@@ -664,6 +672,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required bool isFromHomeTimeline,
     @required bool onlyFavourited,
     @required bool onlyBookmarked,
+    bool onlyNotDeleted = true,
   }) {
     var query = createQuery(
       onlyInListWithRemoteId: onlyInListWithRemoteId,
@@ -685,6 +694,7 @@ class StatusRepository extends AsyncInitLoadingBloc
       isFromHomeTimeline: isFromHomeTimeline,
       onlyBookmarked: onlyBookmarked,
       onlyFavourited: onlyFavourited,
+      onlyNotDeleted: onlyNotDeleted,
     );
 
     Stream<DbStatusPopulated> stream = query
@@ -694,52 +704,60 @@ class StatusRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<IStatus> getConversationLastStatus(
-          {@required IConversation conversation}) =>
+  Future<IStatus> getConversationLastStatus({
+    @required IConversation conversation,
+    bool onlyNotDeleted = true,
+  }) =>
       getStatus(
-          onlyInListWithRemoteId: null,
-          onlyWithHashtag: null,
-          onlyFromAccountsFollowingByAccount: null,
-          onlyFromAccount: null,
-          onlyInConversation: conversation,
-          onlyLocal: null,
-          onlyWithMedia: null,
-          onlyNotMuted: null,
-          excludeVisibilities: null,
-          olderThanStatus: null,
-          newerThanStatus: null,
-          onlyNoNsfwSensitive: null,
-          onlyNoReplies: null,
-          isFromHomeTimeline: null,
-          onlyBookmarked: null,
-          onlyFavourited: null,
-          orderingTermData: StatusOrderingTermData(
-              orderingMode: OrderingMode.desc,
-              orderByType: StatusOrderByType.remoteId));
+        onlyInListWithRemoteId: null,
+        onlyWithHashtag: null,
+        onlyFromAccountsFollowingByAccount: null,
+        onlyFromAccount: null,
+        onlyInConversation: conversation,
+        onlyLocal: null,
+        onlyWithMedia: null,
+        onlyNotMuted: null,
+        excludeVisibilities: null,
+        olderThanStatus: null,
+        newerThanStatus: null,
+        onlyNoNsfwSensitive: null,
+        onlyNoReplies: null,
+        isFromHomeTimeline: null,
+        onlyBookmarked: null,
+        onlyFavourited: null,
+        orderingTermData: StatusOrderingTermData(
+            orderingMode: OrderingMode.desc,
+            orderByType: StatusOrderByType.remoteId),
+        onlyNotDeleted: onlyNotDeleted,
+      );
 
   @override
-  Stream<IStatus> watchConversationLastStatus(
-          {@required IConversation conversation}) =>
+  Stream<IStatus> watchConversationLastStatus({
+    @required IConversation conversation,
+    bool onlyNotDeleted = true,
+  }) =>
       watchStatus(
-          onlyInListWithRemoteId: null,
-          onlyWithHashtag: null,
-          onlyFromAccountsFollowingByAccount: null,
-          onlyFromAccount: null,
-          onlyInConversation: conversation,
-          onlyLocal: null,
-          onlyWithMedia: null,
-          onlyNotMuted: null,
-          excludeVisibilities: null,
-          olderThanStatus: null,
-          newerThanStatus: null,
-          onlyNoNsfwSensitive: null,
-          onlyNoReplies: null,
-          isFromHomeTimeline: null,
-          onlyBookmarked: null,
-          onlyFavourited: null,
-          orderingTermData: StatusOrderingTermData(
-              orderingMode: OrderingMode.desc,
-              orderByType: StatusOrderByType.remoteId));
+        onlyInListWithRemoteId: null,
+        onlyWithHashtag: null,
+        onlyFromAccountsFollowingByAccount: null,
+        onlyFromAccount: null,
+        onlyInConversation: conversation,
+        onlyLocal: null,
+        onlyWithMedia: null,
+        onlyNotMuted: null,
+        excludeVisibilities: null,
+        olderThanStatus: null,
+        newerThanStatus: null,
+        onlyNoNsfwSensitive: null,
+        onlyNoReplies: null,
+        isFromHomeTimeline: null,
+        onlyBookmarked: null,
+        onlyFavourited: null,
+        orderingTermData: StatusOrderingTermData(
+            orderingMode: OrderingMode.desc,
+            orderByType: StatusOrderByType.remoteId),
+        onlyNotDeleted: onlyNotDeleted,
+      );
 
   @override
   Future incrementRepliesCount({@required String remoteId}) =>
