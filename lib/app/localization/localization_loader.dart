@@ -158,6 +158,12 @@ class CodegenLoader extends AssetLoader{
         "follow_request": {
           "title": "Follow requests"
         },
+        "account_block": {
+          "title": "Account blocks"
+        },
+        "domain_block": {
+          "title": "Domain blocks"
+        },
         "statuses": {
           "bookmarked": {
             "title": "Bookmarks"
@@ -196,7 +202,9 @@ class CodegenLoader extends AssetLoader{
             "lists": "Lists",
             "bookmarked": "Bookmarks",
             "favourited": "Favourites",
-            "follow_requests": "Follow requests"
+            "follow_requests": "Follow requests",
+            "account_blocks": "Account blocks",
+            "domain_blocks": "Domain blocks"
           }
         },
         "edit": {

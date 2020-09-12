@@ -24,7 +24,7 @@ abstract class IPleromaMyAccountService implements IPleromaApi {
     int limit = 20,
   });
 
-  Future<List<IPleromaAccount>> getBlocks({
+  Future<List<IPleromaAccount>> getAccountBlocks({
     String sinceId,
     String maxId,
     int limit = 20,
