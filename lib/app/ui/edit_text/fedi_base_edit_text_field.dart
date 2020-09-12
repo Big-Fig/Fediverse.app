@@ -86,6 +86,9 @@ class FediBaseEditTextField extends StatelessWidget {
       maxLines: maxLines,
       expands: expanded,
       keyboardType: keyboardType,
+      buildCounter: (BuildContext context,
+              {int currentLength, int maxLength, bool isFocused}) =>
+          null,
     );
   }
 }
