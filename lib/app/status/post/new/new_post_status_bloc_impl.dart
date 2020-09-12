@@ -20,6 +20,7 @@ class NewPostStatusBloc extends PostStatusBloc {
     @required PleromaInstancePollLimits pleromaInstancePollLimits,
     @required int maximumFileSizeInBytes,
     @required PleromaVisibility initialVisibility,
+    @required bool markMediaNsfwByDefault,
   }) : super(
           pleromaStatusService: pleromaStatusService,
           statusRepository: statusRepository,
@@ -29,6 +30,7 @@ class NewPostStatusBloc extends PostStatusBloc {
               .copyWith(visibility: initialVisibility.toJsonValue()),
           pleromaInstancePollLimits: pleromaInstancePollLimits,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
+    markMediaNsfwByDefault: markMediaNsfwByDefault,
         );
 
   static NewPostStatusBloc createFromContext(BuildContext context) {
@@ -49,6 +51,8 @@ class NewPostStatusBloc extends PostStatusBloc {
       maximumFileSizeInBytes: info.uploadLimit,
       initialVisibility:
           myAccountSettingsBloc.defaultVisibilityFieldBloc.currentValue,
+      markMediaNsfwByDefault:
+      myAccountSettingsBloc.markMediaNsfwByDefaultFieldBloc.currentValue,
     );
   }
 

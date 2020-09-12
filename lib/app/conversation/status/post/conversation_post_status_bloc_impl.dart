@@ -1,4 +1,5 @@
 import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/conversation/conversation_model.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
@@ -25,6 +26,7 @@ class ConversationPostStatusBloc extends PostStatusBloc {
     @required int maximumMessageLength,
     @required PleromaInstancePollLimits pleromaInstancePollLimits,
     @required int maximumFileSizeInBytes,
+    @required bool markMediaNsfwByDefault,
   }) : super(
           pleromaStatusService: pleromaStatusService,
           statusRepository: statusRepository,
@@ -36,6 +38,7 @@ class ConversationPostStatusBloc extends PostStatusBloc {
           maximumMessageLength: maximumMessageLength,
           pleromaInstancePollLimits: pleromaInstancePollLimits,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
+          markMediaNsfwByDefault: markMediaNsfwByDefault,
         );
 
   static ConversationPostStatusBloc createFromContext(BuildContext context,
@@ -44,6 +47,8 @@ class ConversationPostStatusBloc extends PostStatusBloc {
     var info = ICurrentAuthInstanceBloc.of(context, listen: false)
         .currentInstance
         .info;
+    var myAccountSettingsBloc =
+        IMyAccountSettingsBloc.of(context, listen: false);
     return ConversationPostStatusBloc(
       conversation: conversation,
       conversationAccountsWithoutMe: conversationAccountsWithoutMe,
@@ -54,6 +59,8 @@ class ConversationPostStatusBloc extends PostStatusBloc {
       maximumMessageLength: info.maxTootChars,
       pleromaInstancePollLimits: info.pollLimits,
       maximumFileSizeInBytes: info.uploadLimit,
+      markMediaNsfwByDefault:
+          myAccountSettingsBloc.markMediaNsfwByDefaultFieldBloc.currentValue,
     );
   }
 
