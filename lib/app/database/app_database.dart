@@ -105,40 +105,42 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase(QueryExecutor e) : super(e);
 
   @override
-  int get schemaVersion => 5;
+  int get schemaVersion => 6;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
       onCreate: (Migrator m) => m.createAll(),
       onUpgrade: (Migrator m, int from, int to) async {
-        if (from == 1 && to == 2) {
-          await _migrate1to2(m);
-        } else if (from == 1 && to == 3) {
-          await _migrate1to2(m);
-          await _migrate2to3(m);
-        } else if (from == 1 && to == 5) {
-          await _migrate1to2(m);
-          await _migrate2to3(m);
-          await _migrate3to4(m);
-          await _migrate4to5(m);
-        } else if (from == 2 && to == 3) {
-          await _migrate2to3(m);
-        } else if (from == 2 && to == 4) {
-          await _migrate2to3(m);
-          await _migrate3to4(m);
-        } else if (from == 2 && to == 5) {
-          await _migrate2to3(m);
-          await _migrate3to4(m);
-          await _migrate4to5(m);
-        } else if (from == 3 && to == 4) {
-          await _migrate3to4(m);
-        } else if (from == 3 && to == 5) {
-          await _migrate3to4(m);
-          await _migrate4to5(m);
-        } else if (from == 4 && to == 5) {
-          await _migrate4to5(m);
+
+        var currentVersion = from;
+
+        while(currentVersion < to) {
+          switch(currentVersion) {
+            case 1:
+              await _migrate1to2(m);
+              break;
+            case 2:
+              await _migrate2to3(m);
+              break;
+            case 3:
+              await _migrate3to4(m);
+              break;
+            case 4:
+              await _migrate4to5(m);
+              break;
+            case 5:
+              await _migrate5to6(m);
+              break;
+            default:
+              throw "invalid currentVersion $currentVersion";
+          }
+          currentVersion++;
         }
+
       });
+
+  Future<void> _migrate5to6(Migrator m) async =>
+      await m.addColumn(dbNotifications, dbNotifications.dismissed);
 
   Future<void> _migrate4to5(Migrator m) async =>
       await m.addColumn(dbAccounts, dbAccounts.pleromaBackgroundImage);

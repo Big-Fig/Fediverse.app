@@ -14,4 +14,7 @@ abstract class IPleromaNotificationService implements IPleromaApi {
 
   Future<IPleromaNotification> getNotification(
       {@required String notificationRemoteId});
+  Future dismissNotification(
+      {@required String notificationRemoteId});
+  Future dismissAll();
 }

@@ -3539,6 +3539,7 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
   final bool unread;
   final String type;
   final DateTime createdAt;
+  final bool dismissed;
   DbNotification(
       {@required this.id,
       @required this.remoteId,
@@ -3550,7 +3551,8 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
       this.pleroma,
       this.unread,
       this.type,
-      @required this.createdAt});
+      @required this.createdAt,
+      this.dismissed});
   factory DbNotification.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -3580,6 +3582,8 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
       type: stringType.mapFromDatabaseResponse(data['${effectivePrefix}type']),
       createdAt: dateTimeType
           .mapFromDatabaseResponse(data['${effectivePrefix}created_at']),
+      dismissed:
+          boolType.mapFromDatabaseResponse(data['${effectivePrefix}dismissed']),
     );
   }
   factory DbNotification.fromJson(Map<String, dynamic> json,
@@ -3599,6 +3603,7 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
       unread: serializer.fromJson<bool>(json['unread']),
       type: serializer.fromJson<String>(json['type']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      dismissed: serializer.fromJson<bool>(json['dismissed']),
     );
   }
   @override
@@ -3616,6 +3621,7 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
       'unread': serializer.toJson<bool>(unread),
       'type': serializer.toJson<String>(type),
       'createdAt': serializer.toJson<DateTime>(createdAt),
+      'dismissed': serializer.toJson<bool>(dismissed),
     };
   }
 
@@ -3649,6 +3655,9 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
       createdAt: createdAt == null && nullToAbsent
           ? const Value.absent()
           : Value(createdAt),
+      dismissed: dismissed == null && nullToAbsent
+          ? const Value.absent()
+          : Value(dismissed),
     );
   }
 
@@ -3663,7 +3672,8 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
           PleromaNotificationPleromaPart pleroma,
           bool unread,
           String type,
-          DateTime createdAt}) =>
+          DateTime createdAt,
+          bool dismissed}) =>
       DbNotification(
         id: id ?? this.id,
         remoteId: remoteId ?? this.remoteId,
@@ -3676,6 +3686,7 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
         unread: unread ?? this.unread,
         type: type ?? this.type,
         createdAt: createdAt ?? this.createdAt,
+        dismissed: dismissed ?? this.dismissed,
       );
   @override
   String toString() {
@@ -3690,7 +3701,8 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
           ..write('pleroma: $pleroma, ')
           ..write('unread: $unread, ')
           ..write('type: $type, ')
-          ..write('createdAt: $createdAt')
+          ..write('createdAt: $createdAt, ')
+          ..write('dismissed: $dismissed')
           ..write(')'))
         .toString();
   }
@@ -3714,8 +3726,10 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
                                   pleroma.hashCode,
                                   $mrjc(
                                       unread.hashCode,
-                                      $mrjc(type.hashCode,
-                                          createdAt.hashCode)))))))))));
+                                      $mrjc(
+                                          type.hashCode,
+                                          $mrjc(createdAt.hashCode,
+                                              dismissed.hashCode))))))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -3730,7 +3744,8 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
           other.pleroma == this.pleroma &&
           other.unread == this.unread &&
           other.type == this.type &&
-          other.createdAt == this.createdAt);
+          other.createdAt == this.createdAt &&
+          other.dismissed == this.dismissed);
 }
 
 class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
@@ -3745,6 +3760,7 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
   final Value<bool> unread;
   final Value<String> type;
   final Value<DateTime> createdAt;
+  final Value<bool> dismissed;
   const DbNotificationsCompanion({
     this.id = const Value.absent(),
     this.remoteId = const Value.absent(),
@@ -3757,6 +3773,7 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
     this.unread = const Value.absent(),
     this.type = const Value.absent(),
     this.createdAt = const Value.absent(),
+    this.dismissed = const Value.absent(),
   });
   DbNotificationsCompanion.insert({
     this.id = const Value.absent(),
@@ -3770,6 +3787,7 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
     this.unread = const Value.absent(),
     this.type = const Value.absent(),
     @required DateTime createdAt,
+    this.dismissed = const Value.absent(),
   })  : remoteId = Value(remoteId),
         accountRemoteId = Value(accountRemoteId),
         createdAt = Value(createdAt);
@@ -3784,7 +3802,8 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
       Value<PleromaNotificationPleromaPart> pleroma,
       Value<bool> unread,
       Value<String> type,
-      Value<DateTime> createdAt}) {
+      Value<DateTime> createdAt,
+      Value<bool> dismissed}) {
     return DbNotificationsCompanion(
       id: id ?? this.id,
       remoteId: remoteId ?? this.remoteId,
@@ -3797,6 +3816,7 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
       unread: unread ?? this.unread,
       type: type ?? this.type,
       createdAt: createdAt ?? this.createdAt,
+      dismissed: dismissed ?? this.dismissed,
     );
   }
 }
@@ -3940,6 +3960,18 @@ class $DbNotificationsTable extends DbNotifications
     );
   }
 
+  final VerificationMeta _dismissedMeta = const VerificationMeta('dismissed');
+  GeneratedBoolColumn _dismissed;
+  @override
+  GeneratedBoolColumn get dismissed => _dismissed ??= _constructDismissed();
+  GeneratedBoolColumn _constructDismissed() {
+    return GeneratedBoolColumn(
+      'dismissed',
+      $tableName,
+      true,
+    );
+  }
+
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -3952,7 +3984,8 @@ class $DbNotificationsTable extends DbNotifications
         pleroma,
         unread,
         type,
-        createdAt
+        createdAt,
+        dismissed
       ];
   @override
   $DbNotificationsTable get asDslTable => this;
@@ -4018,6 +4051,10 @@ class $DbNotificationsTable extends DbNotifications
     } else if (isInserting) {
       context.missing(_createdAtMeta);
     }
+    if (d.dismissed.present) {
+      context.handle(_dismissedMeta,
+          dismissed.isAcceptableValue(d.dismissed.value, _dismissedMeta));
+    }
     return context;
   }
 
@@ -4070,6 +4107,9 @@ class $DbNotificationsTable extends DbNotifications
     }
     if (d.createdAt.present) {
       map['created_at'] = Variable<DateTime, DateTimeType>(d.createdAt.value);
+    }
+    if (d.dismissed.present) {
+      map['dismissed'] = Variable<bool, BoolType>(d.dismissed.value);
     }
     return map;
   }
