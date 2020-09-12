@@ -18,6 +18,28 @@ abstract class IPleromaMyAccountService implements IPleromaApi {
 
   Future<IPleromaMyAccount> verifyCredentials();
 
+  Future blockDomain({@required String domain});
+
+  Future unblockDomain({@required String domain});
+
+  Future<List<String>> getDomainBlocks({
+    String sinceId,
+    String maxId,
+    int limit = 20,
+  });
+
+  Future<List<IPleromaAccount>> getBlocks({
+    String sinceId,
+    String maxId,
+    int limit = 20,
+  });
+
+  Future<List<IPleromaAccount>> getMutes({
+    String sinceId,
+    String maxId,
+    int limit = 20,
+  });
+
   Future<List<IPleromaStatus>> getBookmarks({
     String sinceId,
     String maxId,
