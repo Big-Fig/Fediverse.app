@@ -371,7 +371,23 @@ class PleromaAccountPleromaPart implements IPleromaAccountPleromaPart {
 }
 
 abstract class IPleromaAccountRelationship
-    implements IMastodonAccountRelationship {}
+    implements IMastodonAccountRelationship {
+  IPleromaAccountRelationship copyWith({
+    int id,
+    bool blocking,
+    bool domainBlocking,
+    bool endorsed,
+    bool followedBy,
+    bool following,
+    bool muting,
+    bool mutingNotifications,
+    bool requested,
+    bool showingReblogs,
+    bool subscribing,
+    bool blockedBy,
+    bool note,
+  });
+}
 
 @HiveType()
 @JsonSerializable()
@@ -440,6 +456,7 @@ class PleromaAccountRelationship implements IPleromaAccountRelationship {
     this.note,
   });
 
+  @override
   PleromaAccountRelationship copyWith({
     int id,
     bool blocking,
