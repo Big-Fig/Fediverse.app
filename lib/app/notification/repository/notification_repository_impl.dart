@@ -39,8 +39,7 @@ class NotificationRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future upsertRemoteNotification(
-      IPleromaNotification remoteNotification,
+  Future upsertRemoteNotification(IPleromaNotification remoteNotification,
       {@required bool unread}) async {
     _logger.finer(() => "upsertRemoteNotification ${remoteNotification.id} "
         "$remoteNotification");
@@ -387,20 +386,16 @@ class NotificationRepository extends AsyncInitLoadingBloc
 
   @override
   Future markAsRead({@required INotification notification}) {
-    return updateById(
-        notification.localId,
-        DbNotification(
-          id: notification.localId,
-          remoteId: notification.remoteId,
-          accountRemoteId: notification.account.remoteId,
-          statusRemoteId: notification.status?.remoteId,
-          chatRemoteId: notification.chatRemoteId,
-          chatMessageRemoteId: notification.chatMessageRemoteId,
-          emoji: notification.emoji,
-          pleroma: notification.pleroma,
-          unread: false,
-          type: notification.type,
-          createdAt: notification.createdAt,
-        ));
+    return dao.markAsRead(remoteId: notification.remoteId);
+  }
+
+  @override
+  Future dismiss({@required INotification notification}) {
+    return dao.markAsDismissed(remoteId: notification.remoteId);
+  }
+
+  @override
+  Future dismissAll() {
+    return dao.markAllAsDismissed();
   }
 }

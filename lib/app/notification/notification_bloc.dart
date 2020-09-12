@@ -41,4 +41,6 @@ abstract class INotificationBloc implements Disposable {
   DateTime get createdAt;
 
   Stream<DateTime> get createdAtStream;
+
+  Future dismiss();
 }

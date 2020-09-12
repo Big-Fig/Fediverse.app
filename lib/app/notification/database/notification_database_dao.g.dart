@@ -103,6 +103,7 @@ mixin _$NotificationDaoMixin on DatabaseAccessor<AppDatabase> {
       unread: row.readBool('unread'),
       type: row.readString('type'),
       createdAt: row.readDateTime('created_at'),
+      dismissed: row.readBool('dismissed'),
     );
   }
 

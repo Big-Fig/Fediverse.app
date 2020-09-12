@@ -75,4 +75,8 @@ abstract class INotificationRepository
       @required NotificationOrderingTermData orderingTermData});
 
   Future markAsRead({@required INotification notification});
+
+  Future dismiss({@required INotification notification});
+
+  Future dismissAll();
 }

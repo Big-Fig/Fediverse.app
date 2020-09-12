@@ -120,15 +120,14 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
     return localId;
   }
 
-  SimpleSelectStatement<$DbNotificationsTable, DbNotification>
-      addExcludeTypeWhere(
-              SimpleSelectStatement<$DbNotificationsTable, DbNotification>
-                  query,
-              List<PleromaNotificationType> excludeTypes) =>
-          query
-            ..where((notification) => (notification.type.isNotIn(excludeTypes
-                .map((type) => pleromaNotificationTypeValues.enumToValueMap[type])
-                .toList())));
+  SimpleSelectStatement<$DbNotificationsTable,
+      DbNotification> addExcludeTypeWhere(
+          SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
+          List<PleromaNotificationType> excludeTypes) =>
+      query
+        ..where((notification) => (notification.type.isNotIn(excludeTypes
+            .map((type) => pleromaNotificationTypeValues.enumToValueMap[type])
+            .toList())));
 
   SimpleSelectStatement<$DbNotificationsTable, DbNotification>
       startSelectQuery() => (select(db.dbNotifications));
@@ -250,6 +249,31 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
         '(${excludeTypes.map((type) => "'$type'").join(", ")})';
     return customSelectQuery(query, readsFrom: {dbNotifications})
         .map((QueryRow row) => row.readInt('COUNT(*)'));
+  }
+
+  Future markAsRead({@required String remoteId}) {
+    var update = "UPDATE db_notifications "
+        "SET unread = 0 "
+        "WHERE remote_id = '$remoteId'";
+    var query = db.customUpdate(update, updates: {dbNotifications});
+
+    return query;
+  }
+
+  Future markAsDismissed({@required String remoteId}) {
+    var update = "UPDATE db_notifications "
+        "SET dismissed = 1 "
+        "WHERE remote_id = '$remoteId'";
+    var query = db.customUpdate(update, updates: {dbNotifications});
+
+    return query;
+  }
+  Future markAllAsDismissed() {
+    var update = "UPDATE db_notifications "
+        "SET dismissed = 1 ";
+    var query = db.customUpdate(update, updates: {dbNotifications});
+
+    return query;
   }
 
   List<Join<Table, DataClass>> populateNotificationJoin() {
