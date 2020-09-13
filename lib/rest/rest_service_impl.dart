@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:fedi/disposable/disposable_owner.dart';
@@ -19,6 +20,9 @@ Map<RestRequestType, String> requestTypeToStringMap = {
   RestRequestType.delete: "delete",
   RestRequestType.patch: "patch",
 };
+
+final _defaultTimeoutDuration = Duration(seconds: 20);
+final _uploadTimeoutDuration = Duration(seconds: 300);
 
 var urlPath = p.Context(style: p.Style.url);
 final Encoding _defaultEncoding = Encoding.getByName("utf-8");
@@ -52,7 +56,7 @@ class RestService extends DisposableOwner implements IRestService {
 
     String body;
 
-    http.Response response;
+    Future<http.Response> responseFuture;
     var requestType = request.type;
     var bodyJson = request.bodyJson;
     bodyJson.removeWhere((key, value) => value == null);
@@ -80,41 +84,48 @@ class RestService extends DisposableOwner implements IRestService {
     switch (request.type) {
       case RestRequestType.get:
         assert(body?.isNotEmpty != true);
-        response = await http.get(url, headers: requestHeaders);
+        responseFuture = http.get(url, headers: requestHeaders);
         break;
       case RestRequestType.post:
-        response = await http.post(url,
+        responseFuture = http.post(url,
             headers: requestHeaders, body: requestBodyJson, encoding: encoding);
         break;
       case RestRequestType.patch:
-        response = await http.patch(url,
+        responseFuture = http.patch(url,
             headers: requestHeaders, body: requestBodyJson, encoding: encoding);
         break;
       case RestRequestType.delete:
-
         var rq = http.Request('DELETE', url);
         rq.encoding = encoding;
-        if(requestBodyJson?.isNotEmpty == true) {
+        if (requestBodyJson?.isNotEmpty == true) {
           rq.body = requestBodyJson;
         }
-        if(requestHeaders?.isNotEmpty == true) {
+        if (requestHeaders?.isNotEmpty == true) {
           rq.headers.addAll(requestHeaders);
         }
-        response = await http.Client().send(rq).then(http.Response.fromStream);
+        responseFuture = http.Client().send(rq).then(http.Response.fromStream);
 
         // we don't use http.delete because it is don't support body
 //        response = await http.delete(url,
 //            body: requestBodyJson, headers: requestHeaders);
         break;
       case RestRequestType.put:
-        response = await http.put(url,
+        responseFuture = http.put(url,
             headers: requestHeaders, body: requestBodyJson, encoding: encoding);
         break;
       case RestRequestType.head:
         assert(body?.isNotEmpty != true);
-        response = await http.head(url, headers: requestHeaders);
+        responseFuture = http.head(url, headers: requestHeaders);
         break;
     }
+
+    responseFuture = responseFuture.timeout(_defaultTimeoutDuration,
+        onTimeout: () => throw TimeoutException(
+              "TimeoutReached",
+              _defaultTimeoutDuration,
+            ));
+
+    http.Response response = await responseFuture;
 
     var log = () => "response sendHttpRequest \n"
         "\t url($requestType): $url \n"
@@ -210,7 +221,13 @@ class RestService extends DisposableOwner implements IRestService {
         "\t headers: ${request.headers} \n"
         "\t bodyJson: ${request.bodyJson} \n"
         "\t files: ${request.files} \n");
-    var streamedResponse = await multipartRequest.send();
+    var sendFuture = multipartRequest.send();
+    sendFuture = sendFuture.timeout(_uploadTimeoutDuration,
+        onTimeout: () => throw TimeoutException(
+              "TimeoutReached",
+              _uploadTimeoutDuration,
+            ));
+    var streamedResponse = await sendFuture;
 
     var response = await http.Response.fromStream(streamedResponse);
 

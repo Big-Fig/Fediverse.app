@@ -315,6 +315,14 @@ class CodegenLoader extends AssetLoader{
             "content": "No network or remote server unavailable"
           }
         }
+      },
+      "timeout": {
+        "error": {
+          "dialog": {
+            "title": "Timeout reached",
+            "content": "No network or remote server unavailable"
+          }
+        }
       }
     },
     "auth": {
