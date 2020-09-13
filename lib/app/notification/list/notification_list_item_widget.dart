@@ -13,7 +13,7 @@ import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/notification/created_at/notification_created_at_widget.dart';
 import 'package:fedi/app/notification/notification_bloc.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
-import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
+import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -36,15 +36,14 @@ class NotificationListItemWidget extends StatelessWidget {
     _logger.finest(() => "build ${notificationBloc.remoteId}");
 
     var child = DisposableProxyProvider<INotificationBloc, IAccountBloc>(
-      update: (context, value, previous) =>
-          AccountBloc.createFromContext(
-            context,
-            account: value.account,
-            isNeedWatchWebSocketsEvents: false,
-            isNeedRefreshFromNetworkOnInit: false,
-            isNeedWatchLocalRepositoryForUpdates: false,
-            isNeedPreFetchRelationship: false,
-          ),
+      update: (context, value, previous) => AccountBloc.createFromContext(
+        context,
+        account: value.account,
+        isNeedWatchWebSocketsEvents: false,
+        isNeedRefreshFromNetworkOnInit: false,
+        isNeedWatchLocalRepositoryForUpdates: false,
+        isNeedPreFetchRelationship: false,
+      ),
       child: Padding(
         padding: EdgeInsets.symmetric(
             horizontal: FediSizes.bigPadding,
@@ -55,12 +54,10 @@ class NotificationListItemWidget extends StatelessWidget {
               children: <Widget>[
                 InkWell(
                     onTap: () {
-                      goToAccountDetailsPage(
-                          context, notificationBloc.account);
+                      goToAccountDetailsPage(context, notificationBloc.account);
                     },
                     child: AccountAvatarWidget(
-                      progressSize:
-                      FediSizes.accountAvatarProgressDefaultSize,
+                      progressSize: FediSizes.accountAvatarProgressDefaultSize,
                       imageSize: FediSizes.accountAvatarDefaultSize,
                     )),
                 const FediBigHorizontalSpacer(),
@@ -83,11 +80,22 @@ class NotificationListItemWidget extends StatelessWidget {
                   ),
                 ),
                 const FediBigHorizontalSpacer(),
-                NotificationCreatedAtWidget(),
-                FediIconButton(icon: Icon(FediIcons.remove_circle),
-                  onPressed: () async {
-                    await notificationBloc.dismiss();
-                  },),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    FediIconInCircleTransparentButton(
+                      FediIcons.close,
+                      onPressed: () async {
+                        await notificationBloc.dismiss();
+                      },
+                      color: FediColors.darkGrey,
+                      iconSize : 12.0,
+                      size : 24.0,
+                    ),
+                    NotificationCreatedAtWidget(),
+                  ],
+                ),
+
               ],
             ),
           ],
@@ -110,8 +118,8 @@ class NotificationListItemWidget extends StatelessWidget {
         });
   }
 
-  void onNotificationClick(BuildContext context,
-      INotificationBloc notificationBloc) async {
+  void onNotificationClick(
+      BuildContext context, INotificationBloc notificationBloc) async {
     var status = notificationBloc.status;
     var account = notificationBloc.account;
     var chatRemoteId = notificationBloc.chatRemoteId;
@@ -130,8 +138,8 @@ class NotificationListItemWidget extends StatelessWidget {
     }
   }
 
-  Widget buildNotificationContent(BuildContext context,
-      INotificationBloc notificationBloc) {
+  Widget buildNotificationContent(
+      BuildContext context, INotificationBloc notificationBloc) {
     var rawText;
 
     switch (notificationBloc.typePleroma) {
