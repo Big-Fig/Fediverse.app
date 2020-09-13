@@ -617,7 +617,8 @@ class CodegenLoader extends AssetLoader{
         "pleromaEmojiReaction": "{} for \"{}\"",
         "pleromaChatMention": "Chat mention in \"{}\"",
         "unknown": "Unknown: {}"
-      }
+      },
+      "dismissed": "Dismissed"
     },
     "timeline": {
       "display": {

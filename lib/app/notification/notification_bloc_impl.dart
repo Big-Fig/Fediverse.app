@@ -159,4 +159,11 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
 
     await notificationRepository.dismiss(notification: notification);
   }
+
+  @override
+  bool get dismissed => notification.dismissed;
+
+  @override
+  Stream<bool> get dismissedStream =>
+      notificationStream.map((notification) => notification.dismissed);
 }
