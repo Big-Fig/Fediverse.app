@@ -40,10 +40,11 @@ mixin _$NotificationDaoMixin on DatabaseAccessor<AppDatabase> {
 
   Selectable<int> countUnreadAllQuery() {
     return customSelectQuery(
-            'SELECT COUNT(*) FROM db_notifications WHERE unread = 1;',
-            variables: [],
-            readsFrom: {dbNotifications})
-        .map((QueryRow row) => row.readInt('COUNT(*)'));
+        'SELECT COUNT(*) FROM db_notifications WHERE unread = 1 AND dismissed;',
+        variables: [],
+        readsFrom: {
+          dbNotifications
+        }).map((QueryRow row) => row.readInt('COUNT(*)'));
   }
 
   Future<List<int>> countUnreadAll() {
@@ -52,6 +53,23 @@ mixin _$NotificationDaoMixin on DatabaseAccessor<AppDatabase> {
 
   Stream<List<int>> watchCountUnreadAll() {
     return countUnreadAllQuery().watch();
+  }
+
+  Selectable<int> countUnreadAllNotDismissedQuery() {
+    return customSelectQuery(
+        'SELECT COUNT(*) FROM db_notifications WHERE unread = 1 AND dismissed IS NULL;',
+        variables: [],
+        readsFrom: {
+          dbNotifications
+        }).map((QueryRow row) => row.readInt('COUNT(*)'));
+  }
+
+  Future<List<int>> countUnreadAllNotDismissed() {
+    return countUnreadAllNotDismissedQuery().get();
+  }
+
+  Stream<List<int>> watchCountUnreadAllNotDismissed() {
+    return countUnreadAllNotDismissedQuery().watch();
   }
 
   Selectable<int> countUnreadByTypeQuery(String type) {
@@ -71,6 +89,25 @@ mixin _$NotificationDaoMixin on DatabaseAccessor<AppDatabase> {
 
   Stream<List<int>> watchCountUnreadByType(String type) {
     return countUnreadByTypeQuery(type).watch();
+  }
+
+  Selectable<int> countUnreadByTypeNotDismissedQuery(String type) {
+    return customSelectQuery(
+        'SELECT COUNT(*) FROM db_notifications WHERE unread = 1 AND type = :type AND dismissed IS NULL;',
+        variables: [
+          Variable.withString(type)
+        ],
+        readsFrom: {
+          dbNotifications
+        }).map((QueryRow row) => row.readInt('COUNT(*)'));
+  }
+
+  Future<List<int>> countUnreadByTypeNotDismissed(String type) {
+    return countUnreadByTypeNotDismissedQuery(type).get();
+  }
+
+  Stream<List<int>> watchCountUnreadByTypeNotDismissed(String type) {
+    return countUnreadByTypeNotDismissedQuery(type).watch();
   }
 
   Future<int> deleteById(int id) {

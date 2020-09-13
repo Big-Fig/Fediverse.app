@@ -107,20 +107,24 @@ class NotificationRepository extends AsyncInitLoadingBloc
       mapDataClassToItem(await dao.findByRemoteId(remoteId));
 
   @override
-  Future<List<DbNotificationPopulatedWrapper>> getNotifications(
-      {@required List<PleromaNotificationType> excludeTypes,
-      @required INotification olderThanNotification,
-      @required INotification newerThanNotification,
-      @required int limit,
-      @required int offset,
-      @required NotificationOrderingTermData orderingTermData}) async {
+  Future<List<DbNotificationPopulatedWrapper>> getNotifications({
+    @required List<PleromaNotificationType> excludeTypes,
+    @required INotification olderThanNotification,
+    @required INotification newerThanNotification,
+    @required int limit,
+    @required int offset,
+    @required NotificationOrderingTermData orderingTermData,
+    bool onlyNotDismissed = true,
+  }) async {
     var query = createQuery(
-        excludeTypes: excludeTypes,
-        olderThanNotification: olderThanNotification,
-        newerThanNotification: newerThanNotification,
-        limit: limit,
-        offset: offset,
-        orderingTermData: orderingTermData);
+      excludeTypes: excludeTypes,
+      olderThanNotification: olderThanNotification,
+      newerThanNotification: newerThanNotification,
+      limit: limit,
+      offset: offset,
+      orderingTermData: orderingTermData,
+      onlyNotDismissed: onlyNotDismissed,
+    );
 
     return dao
         .typedResultListToPopulated(await query.get())
@@ -129,33 +133,39 @@ class NotificationRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Stream<List<DbNotificationPopulatedWrapper>> watchNotifications(
-      {@required List<PleromaNotificationType> excludeTypes,
-      @required INotification olderThanNotification,
-      @required INotification newerThanNotification,
-      @required int limit,
-      @required int offset,
-      @required NotificationOrderingTermData orderingTermData}) {
+  Stream<List<DbNotificationPopulatedWrapper>> watchNotifications({
+    @required List<PleromaNotificationType> excludeTypes,
+    @required INotification olderThanNotification,
+    @required INotification newerThanNotification,
+    @required int limit,
+    @required int offset,
+    @required NotificationOrderingTermData orderingTermData,
+    bool onlyNotDismissed = true,
+  }) {
     var query = createQuery(
-        excludeTypes: excludeTypes,
-        olderThanNotification: olderThanNotification,
-        newerThanNotification: newerThanNotification,
-        limit: limit,
-        offset: offset,
-        orderingTermData: orderingTermData);
+      excludeTypes: excludeTypes,
+      olderThanNotification: olderThanNotification,
+      newerThanNotification: newerThanNotification,
+      limit: limit,
+      offset: offset,
+      orderingTermData: orderingTermData,
+      onlyNotDismissed: onlyNotDismissed,
+    );
 
     Stream<List<DbNotificationPopulated>> stream =
         query.watch().map(dao.typedResultListToPopulated);
     return stream.map((list) => list.map(mapDataClassToItem).toList());
   }
 
-  JoinedSelectStatement createQuery(
-      {@required List<PleromaNotificationType> excludeTypes,
-      @required INotification olderThanNotification,
-      @required INotification newerThanNotification,
-      @required int limit,
-      @required int offset,
-      @required NotificationOrderingTermData orderingTermData}) {
+  JoinedSelectStatement createQuery({
+    @required List<PleromaNotificationType> excludeTypes,
+    @required INotification olderThanNotification,
+    @required INotification newerThanNotification,
+    @required int limit,
+    @required int offset,
+    @required NotificationOrderingTermData orderingTermData,
+    @required bool onlyNotDismissed,
+  }) {
     _logger.fine(() => "createQuery \n"
         "\t excludeTypes=$excludeTypes\n"
         "\t olderThanNotification=$olderThanNotification\n"
@@ -174,6 +184,10 @@ class NotificationRepository extends AsyncInitLoadingBloc
 
     if (excludeTypes?.isNotEmpty == true) {
       dao.addExcludeTypeWhere(query, excludeTypes);
+    }
+
+    if (onlyNotDismissed == true) {
+      dao.addOnlyNotDismissedWhere(query);
     }
 
     if (orderingTermData != null) {
@@ -303,36 +317,44 @@ class NotificationRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<DbNotificationPopulatedWrapper> getNotification(
-      {@required List<PleromaNotificationType> excludeTypes,
-      @required INotification olderThanNotification,
-      @required INotification newerThanNotification,
-      @required NotificationOrderingTermData orderingTermData}) async {
+  Future<DbNotificationPopulatedWrapper> getNotification({
+    @required List<PleromaNotificationType> excludeTypes,
+    @required INotification olderThanNotification,
+    @required INotification newerThanNotification,
+    @required NotificationOrderingTermData orderingTermData,
+    bool onlyNotDismissed = true,
+  }) async {
     var query = createQuery(
-        excludeTypes: excludeTypes,
-        olderThanNotification: olderThanNotification,
-        newerThanNotification: newerThanNotification,
-        limit: 1,
-        offset: null,
-        orderingTermData: orderingTermData);
+      excludeTypes: excludeTypes,
+      olderThanNotification: olderThanNotification,
+      newerThanNotification: newerThanNotification,
+      limit: 1,
+      offset: null,
+      orderingTermData: orderingTermData,
+      onlyNotDismissed: onlyNotDismissed,
+    );
 
     return mapDataClassToItem(
         dao.typedResultToPopulated(await query.getSingle()));
   }
 
   @override
-  Stream<DbNotificationPopulatedWrapper> watchNotification(
-      {@required List<PleromaNotificationType> excludeTypes,
-      @required INotification olderThanNotification,
-      @required INotification newerThanNotification,
-      @required NotificationOrderingTermData orderingTermData}) {
+  Stream<DbNotificationPopulatedWrapper> watchNotification({
+    @required List<PleromaNotificationType> excludeTypes,
+    @required INotification olderThanNotification,
+    @required INotification newerThanNotification,
+    @required NotificationOrderingTermData orderingTermData,
+    bool onlyNotDismissed = true,
+  }) {
     var query = createQuery(
-        excludeTypes: excludeTypes,
-        olderThanNotification: olderThanNotification,
-        newerThanNotification: newerThanNotification,
-        limit: 1,
-        offset: null,
-        orderingTermData: orderingTermData);
+      excludeTypes: excludeTypes,
+      olderThanNotification: olderThanNotification,
+      newerThanNotification: newerThanNotification,
+      limit: 1,
+      offset: null,
+      orderingTermData: orderingTermData,
+      onlyNotDismissed: onlyNotDismissed,
+    );
 
     Stream<DbNotificationPopulated> stream = query
         .watchSingle()
@@ -341,47 +363,92 @@ class NotificationRepository extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<int> countUnreadAnyType() {
-    return dao.countUnreadAllQuery().getSingle();
+  Future<int> countUnreadAnyType({
+    bool onlyNotDismissed = true,
+  }) {
+    if (onlyNotDismissed) {
+      return dao.countUnreadAllNotDismissedQuery().getSingle();
+    } else {
+      return dao.countUnreadAllQuery().getSingle();
+    }
   }
 
   @override
-  Future<int> countUnreadByType({@required PleromaNotificationType type}) {
-    return dao
-        .countUnreadByTypeQuery(
-            pleromaNotificationTypeValues.enumToValueMap[type])
-        .getSingle();
+  Future<int> countUnreadByType({
+    @required PleromaNotificationType type,
+    bool onlyNotDismissed = true,
+  }) {
+    if (onlyNotDismissed) {
+      return dao
+          .countUnreadByTypeNotDismissedQuery(
+              pleromaNotificationTypeValues.enumToValueMap[type])
+          .getSingle();
+    } else {
+      return dao
+          .countUnreadByTypeQuery(
+              pleromaNotificationTypeValues.enumToValueMap[type])
+          .getSingle();
+    }
   }
 
   @override
-  Stream<int> watchUnreadCountAnyType() {
-    return dao.countUnreadAllQuery().watchSingle();
+  Stream<int> watchUnreadCountAnyType({
+    bool onlyNotDismissed = true,
+  }) {
+    if (onlyNotDismissed) {
+      return dao.countUnreadAllNotDismissedQuery().watchSingle();
+    } else {
+      return dao.countUnreadAllQuery().watchSingle();
+    }
   }
 
   @override
-  Stream<int> watchUnreadCountByType({@required PleromaNotificationType type}) {
-    return dao
-        .countUnreadByTypeQuery(
-            pleromaNotificationTypeValues.enumToValueMap[type])
-        .watchSingle();
+  Stream<int> watchUnreadCountByType({
+    @required PleromaNotificationType type,
+    bool onlyNotDismissed = true,
+  }) {
+    if (onlyNotDismissed) {
+      return dao
+          .countUnreadByTypeNotDismissedQuery(
+            pleromaNotificationTypeValues.enumToValueMap[type],
+          )
+          .watchSingle();
+    } else {
+      return dao
+          .countUnreadByTypeQuery(
+              pleromaNotificationTypeValues.enumToValueMap[type])
+          .watchSingle();
+    }
   }
 
   @override
-  Future<int> getUnreadCountExcludeTypes(
-          {@required List<PleromaNotificationType> excludeTypes}) async =>
+  Future<int> getUnreadCountExcludeTypes({
+    @required List<PleromaNotificationType> excludeTypes,
+    bool onlyNotDismissed = true,
+  }) async =>
       dao
-          .countUnreadExcludeTypes(excludeTypes
-              .map((type) => pleromaNotificationTypeValues.enumToValueMap[type])
-              .toList())
+          .countUnreadExcludeTypes(
+            excludeTypes
+                .map((type) =>
+                    pleromaNotificationTypeValues.enumToValueMap[type])
+                .toList(),
+            onlyNotDismissed: onlyNotDismissed,
+          )
           .getSingle();
 
   @override
-  Stream<int> watchUnreadCountExcludeTypes(
-          {@required List<PleromaNotificationType> excludeTypes}) =>
+  Stream<int> watchUnreadCountExcludeTypes({
+    @required List<PleromaNotificationType> excludeTypes,
+    bool onlyNotDismissed = true,
+  }) =>
       dao
-          .countUnreadExcludeTypes(excludeTypes
-              .map((type) => pleromaNotificationTypeValues.enumToValueMap[type])
-              .toList())
+          .countUnreadExcludeTypes(
+            excludeTypes
+                .map((type) =>
+                    pleromaNotificationTypeValues.enumToValueMap[type])
+                .toList(),
+            onlyNotDismissed: onlyNotDismissed,
+          )
           .watchSingle();
 
   @override

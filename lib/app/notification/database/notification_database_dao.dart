@@ -20,9 +20,13 @@ var _statusReblogAccountAliasId = "status_reblog_account";
   "countAll": "SELECT Count(*) FROM db_notifications;",
   "countById": "SELECT COUNT(*) FROM db_notifications WHERE id = :id;",
   "countUnreadAll": "SELECT COUNT(*) FROM db_notifications"
-      " WHERE unread = 1;",
+      " WHERE unread = 1 AND dismissed;",
+  "countUnreadAllNotDismissed": "SELECT COUNT(*) FROM db_notifications"
+      " WHERE unread = 1 AND dismissed IS NULL;",
   "countUnreadByType": "SELECT COUNT(*) FROM db_notifications"
       " WHERE unread = 1 AND type = :type;",
+  "countUnreadByTypeNotDismissed": "SELECT COUNT(*) FROM db_notifications"
+      " WHERE unread = 1 AND type = :type AND dismissed IS NULL;",
   "deleteById": "DELETE FROM db_notifications WHERE id = :id;",
   "clear": "DELETE FROM db_notifications",
   "getAll": "SELECT * FROM db_notifications",
@@ -243,7 +247,9 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
     );
   }
 
-  Selectable<int> countUnreadExcludeTypes(List<String> excludeTypes) {
+  Selectable<int> countUnreadExcludeTypes(List<String> excludeTypes,
+  {@required bool onlyNotDismissed,}) {
+    // asd
     var query = 'SELECT COUNT(*) FROM db_notifications WHERE unread = 1 AND '
         'type NOT IN '
         '(${excludeTypes.map((type) => "'$type'").join(", ")})';
@@ -268,6 +274,7 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
 
     return query;
   }
+
   Future markAllAsDismissed() {
     var update = "UPDATE db_notifications "
         "SET dismissed = 1 ";
@@ -301,4 +308,9 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
       ),
     ];
   }
+
+  SimpleSelectStatement<$DbNotificationsTable,
+      DbNotification> addOnlyNotDismissedWhere(
+          SimpleSelectStatement<$DbNotificationsTable, DbNotification> query) =>
+      query..where((status) => isNull(status.dismissed));
 }
