@@ -145,9 +145,9 @@ class _NotificationsHomeTabPageState extends State<NotificationsHomeTabPage>
     );
   }
 
-  List<Widget> _buildEndingWidgets(BuildContext context) {
-    return [buildFilterActionButton()];
-  }
+  List<Widget> _buildEndingWidgets(BuildContext context) => [
+        buildFilterActionButton(),
+      ];
 
   Widget buildFilterActionButton() => FediIconInCircleBlurredButton(
         FediIcons.filter,

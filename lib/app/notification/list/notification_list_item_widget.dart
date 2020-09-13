@@ -13,9 +13,12 @@ import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/notification/created_at/notification_created_at_widget.dart';
 import 'package:fedi/app/notification/notification_bloc.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
+import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/fedi_text_styles.dart';
+import 'package:fedi/app/ui/overlay/fedi_blurred_overlay_warning_widget.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
@@ -32,15 +35,16 @@ class NotificationListItemWidget extends StatelessWidget {
 
     _logger.finest(() => "build ${notificationBloc.remoteId}");
 
-    return DisposableProxyProvider<INotificationBloc, IAccountBloc>(
-      update: (context, value, previous) => AccountBloc.createFromContext(
-        context,
-        account: value.account,
-        isNeedWatchWebSocketsEvents: false,
-        isNeedRefreshFromNetworkOnInit: false,
-        isNeedWatchLocalRepositoryForUpdates: false,
-        isNeedPreFetchRelationship: false,
-      ),
+    var child = DisposableProxyProvider<INotificationBloc, IAccountBloc>(
+      update: (context, value, previous) =>
+          AccountBloc.createFromContext(
+            context,
+            account: value.account,
+            isNeedWatchWebSocketsEvents: false,
+            isNeedRefreshFromNetworkOnInit: false,
+            isNeedWatchLocalRepositoryForUpdates: false,
+            isNeedPreFetchRelationship: false,
+          ),
       child: Padding(
         padding: EdgeInsets.symmetric(
             horizontal: FediSizes.bigPadding,
@@ -51,10 +55,12 @@ class NotificationListItemWidget extends StatelessWidget {
               children: <Widget>[
                 InkWell(
                     onTap: () {
-                      goToAccountDetailsPage(context, notificationBloc.account);
+                      goToAccountDetailsPage(
+                          context, notificationBloc.account);
                     },
                     child: AccountAvatarWidget(
-                      progressSize: FediSizes.accountAvatarProgressDefaultSize,
+                      progressSize:
+                      FediSizes.accountAvatarProgressDefaultSize,
                       imageSize: FediSizes.accountAvatarDefaultSize,
                     )),
                 const FediBigHorizontalSpacer(),
@@ -77,17 +83,35 @@ class NotificationListItemWidget extends StatelessWidget {
                   ),
                 ),
                 const FediBigHorizontalSpacer(),
-                NotificationCreatedAtWidget()
+                NotificationCreatedAtWidget(),
+                FediIconButton(icon: Icon(FediIcons.remove_circle),
+                  onPressed: () async {
+                    await notificationBloc.dismiss();
+                  },),
               ],
             ),
           ],
         ),
       ),
     );
+    return StreamBuilder<bool>(
+        stream: notificationBloc.dismissedStream,
+        initialData: notificationBloc.dismissed,
+        builder: (context, snapshot) {
+          var dismissed = snapshot.data;
+          if (dismissed == true) {
+            return FediBlurredOverlayWarningWidget(
+              descriptionText: "app.notification.dismissed".tr(),
+              child: child,
+            );
+          } else {
+            return child;
+          }
+        });
   }
 
-  void onNotificationClick(
-      BuildContext context, INotificationBloc notificationBloc) async {
+  void onNotificationClick(BuildContext context,
+      INotificationBloc notificationBloc) async {
     var status = notificationBloc.status;
     var account = notificationBloc.account;
     var chatRemoteId = notificationBloc.chatRemoteId;
@@ -106,8 +130,8 @@ class NotificationListItemWidget extends StatelessWidget {
     }
   }
 
-  Widget buildNotificationContent(
-      BuildContext context, INotificationBloc notificationBloc) {
+  Widget buildNotificationContent(BuildContext context,
+      INotificationBloc notificationBloc) {
     var rawText;
 
     switch (notificationBloc.typePleroma) {
