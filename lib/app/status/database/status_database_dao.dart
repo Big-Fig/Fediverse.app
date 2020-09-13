@@ -225,7 +225,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
       query..where((status) => status.bookmarked.equals(true));
 
-  SimpleSelectStatement<$DbStatusesTable, DbStatus> addNotDeletedWhere(
+  SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyNotDeletedWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
       query..where((status) => isNull(status.deleted));
 

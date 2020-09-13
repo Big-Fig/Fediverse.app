@@ -40,7 +40,7 @@ void main() {
     expect((await statusDao.getAll()).isNotEmpty, true);
 
     var query = statusDao.startSelectQuery();
-    statusDao.addNotDeletedWhere(query);
+    statusDao.addOnlyNotDeletedWhere(query);
     expect((await query.get()).isNotEmpty, false);
   });
 }

@@ -433,7 +433,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     }
 
     if (onlyNotDeleted == true) {
-      dao.addNotDeletedWhere(query);
+      dao.addOnlyNotDeletedWhere(query);
     }
 
     if (orderingTermData != null) {
