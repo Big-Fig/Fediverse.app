@@ -1,5 +1,4 @@
 import 'package:fedi/local_preferences/local_preferences_model.dart';
-import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:hive/hive.dart';
 
 part 'my_account_settings_model.g.dart';

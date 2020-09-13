@@ -1,3 +1,4 @@
+import 'package:fedi/enum/enum_values.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -7,17 +8,21 @@ typedef dynamic PushMessageListener(PushMessage message);
 
 @HiveType()
 class PushMessage {
-  @HiveField(0)
-  PushMessageType type;
+  PushMessageType get type =>
+      pushMessageTypeEnumValues.valueToEnumMap[typeString];
+
   @HiveField(1)
   PushNotification notification;
   @HiveField(2)
   Map<String, dynamic> data;
 
+  @HiveField(3)
+  String typeString;
+
   bool get isLaunchOrResume =>
       type == PushMessageType.launch || type == PushMessageType.resume;
 
-  PushMessage({this.type, this.notification, this.data});
+  PushMessage({this.typeString, this.notification, this.data});
 
   @override
   String toString() {
@@ -27,14 +32,27 @@ class PushMessage {
   }
 }
 
-enum PushMessageType { foreground, launch, resume }
+enum PushMessageType {
+  foreground,
+  launch,
+  resume,
+}
 
+EnumValues<PushMessageType> pushMessageTypeEnumValues = EnumValues({
+  "foreground": PushMessageType.foreground,
+  "launch": PushMessageType.launch,
+  "resume": PushMessageType.resume,
+});
+
+@HiveType()
 @JsonSerializable()
 class PushNotification {
-  final String title;
-  final String body;
+  @HiveField(0)
+  String title;
+  @HiveField(1)
+  String body;
 
-  PushNotification(this.title, this.body);
+  PushNotification({this.title, this.body});
 
   @override
   String toString() {

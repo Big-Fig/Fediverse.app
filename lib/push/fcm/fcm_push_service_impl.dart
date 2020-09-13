@@ -118,7 +118,7 @@ Map<String, dynamic> _remapToStringObjectMap(Map data) {
 }
 
 PushMessage _parsePushMessageOnIos(
-    PushMessageType cloudMessageType, Map<String, dynamic> data) {
+    PushMessageType pushMessageType, Map<String, dynamic> data) {
   // ios notification always have own format
 
   _logger.finest(() => "_parseChatCloudMessageOnIos $data");
@@ -131,14 +131,15 @@ PushMessage _parsePushMessageOnIos(
   var messageData = _remapForJson(data);
   _logger.finest(() => "_parseChatCloudMessageOnIos  messageData $messageData");
   return PushMessage(
-      notification:
-          data?.isNotEmpty == true ? PushNotification.fromJson(data) : null,
-      data: data ?? {},
-      type: cloudMessageType);
+    notification:
+        data?.isNotEmpty == true ? PushNotification.fromJson(data) : null,
+    data: data ?? {},
+    typeString: pushMessageTypeEnumValues.enumToValueMap[pushMessageType],
+  );
 }
 
 PushMessage _parsePushMessageOnAndroid(
-    PushMessageType cloudMessageType, Map<String, dynamic> rawData) {
+    PushMessageType pushMessageType, Map<String, dynamic> rawData) {
   _logger.finest(() => "_parsePushMessageOnAndroid rawData $rawData");
   var dataJson = rawData.containsKey(_dataKey) ? rawData[_dataKey] : null;
   var notificationJson =
@@ -152,5 +153,5 @@ PushMessage _parsePushMessageOnAndroid(
           ? PushNotification.fromJson(notificationJson)
           : null,
       data: dataJson,
-      type: cloudMessageType);
+    typeString: pushMessageTypeEnumValues.enumToValueMap[pushMessageType],);
 }
