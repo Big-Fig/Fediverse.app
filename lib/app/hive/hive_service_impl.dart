@@ -68,6 +68,8 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     Hive.registerAdapter(CustomEmojiPickerCodeItemAdapter(), 71);
     Hive.registerAdapter(
         PleromaInstancePleromaPartMetadataFieldLimitsAdapter(), 72);
+    Hive.registerAdapter(
+        PushNotificationAdapter(), 73);
 
     Hive.init(directory.path);
   }
