@@ -124,4 +124,10 @@ class MyAccountBloc extends IMyAccountBloc {
 
   @override
   String get remoteDomainOrNull => null;
+
+  @override
+  bool get isLocked => account.locked;
+
+  @override
+  bool get isBot => account.bot;
 }

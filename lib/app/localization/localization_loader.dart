@@ -125,6 +125,7 @@ class CodegenLoader extends AssetLoader{
       },
       "action": {
         "follow": "Follow",
+        "request_follow": "Request follow",
         "unfollow": "Unfollow",
         "follow_requested": "Requested",
         "message": "Message",
