@@ -34,12 +34,12 @@ dependencies:
   # object serialization
   hive: ^0.4.1
 
-  #  flutter_html: ^1.0.0
-  # actually it is ^1.0.0 with additional text style features
+  #flutter_html: ^1.0.2
+  # actually it is ^1.0.2 with additional text style features
   flutter_html:
     git:
       url: https://github.com/xal/flutter_html.git
-      ref: 0f644745261ca2b5f5057014ebe6c9299706d49e
+      ref: 182bc3e3b9bb6704abbd1576be4dca2947616f51
 
   # media grid
   flutter_staggered_grid_view: ^0.3.0
@@ -164,7 +164,7 @@ dependencies:
   shared_preferences: ^0.5.4+1
 
   # extended text fields with highlight mentions support
-  extended_text_field: ^3.0.1
+  extended_text_field: ^4.0.0
 
 # required to build flutter test with hive https://github.com/hivedb/hive/issues/285
 dependency_overrides:
