@@ -6,6 +6,7 @@ import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:fedi/media/device/file/pagination/media_device_file_pagination_list_bloc.dart';
 import 'package:fedi/media/device/file/photo_manager/photo_manager_media_device_file_bloc_impl.dart';
 import 'package:fedi/media/device/file/photo_manager/photo_manager_media_device_file_model.dart';
+import 'package:fedi/media/device/gallery/media_device_gallery_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -29,6 +30,14 @@ class MediaPickerFileGridWidget
           key: key,
           scrollController: scrollController,
         );
+
+  @override
+  Future<bool> additionalPreRefreshAction(BuildContext context) async {
+    var mediaDeviceGalleryBloc =
+        IMediaDeviceGalleryBloc.of(context, listen: false);
+    await mediaDeviceGalleryBloc.refreshFoldersInformation();
+    return true;
+  }
 
   @override
   ScrollView buildItemsCollectionView({
