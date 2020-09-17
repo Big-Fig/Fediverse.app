@@ -27,17 +27,17 @@ void main() {
 
     await statusDao.clear();
 
-    expect((await statusDao.getAll()).isNotEmpty, false);
+    expect((await statusDao.getAll().get()).isNotEmpty, false);
 
     var testDbStatus = await createTestDbStatus(
         seed: "seed1", dbAccount: await createTestDbAccount(seed: "seed2"));
     await statusDao.insert(testDbStatus);
 
-    expect((await statusDao.getAll()).isNotEmpty, true);
+    expect((await statusDao.getAll().get()).isNotEmpty, true);
 
     await statusDao.markAsDeleted(remoteId: testDbStatus.remoteId);
 
-    expect((await statusDao.getAll()).isNotEmpty, true);
+    expect((await statusDao.getAll().get()).isNotEmpty, true);
 
     var query = statusDao.startSelectQuery();
     statusDao.addOnlyNotDeletedWhere(query);

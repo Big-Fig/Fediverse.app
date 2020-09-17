@@ -166,7 +166,7 @@ class StatusRepository extends AsyncInitLoadingBloc
   Future addStatusesToList(
       List<String> statusRemoteIds, String listRemoteId) async {
     List<DbStatusList> alreadyAddedListStatuses =
-        await listsDao.findByListRemoteId(listRemoteId);
+        await listsDao.findByListRemoteId(listRemoteId).get();
     Iterable<String> alreadyAddedListStatusesIds =
         alreadyAddedListStatuses.map((listStatus) => listStatus.statusRemoteId);
     Iterable<String> notAddedYetStatusRemoteIds =
@@ -190,7 +190,7 @@ class StatusRepository extends AsyncInitLoadingBloc
       List<String> statusRemoteIds, String conversationRemoteId) async {
     List<DbConversationStatus> alreadyAddedConversationStatuses =
         await conversationStatusesDao
-            .findByConversationRemoteId(conversationRemoteId);
+            .findByConversationRemoteId(conversationRemoteId).get();
     Iterable<String> alreadyAddedConversationStatusesIds =
         alreadyAddedConversationStatuses
             .map((conversationStatus) => conversationStatus.statusRemoteId);
@@ -523,14 +523,14 @@ class StatusRepository extends AsyncInitLoadingBloc
 
   @override
   Future<bool> isExistWithId(int id) =>
-      dao.countByIdQuery(id).map((count) => count > 0).getSingle();
+      dao.countById(id).map((count) => count > 0).getSingle();
 
   @override
   Future<List<DbStatusPopulatedWrapper>> getAll() async =>
       (await dao.findAll()).map(mapDataClassToItem).toList();
 
   @override
-  Future<int> countAll() => dao.countAllQuery().getSingle();
+  Future<int> countAll() => dao.countAll().getSingle();
 
   @override
   Stream<List<DbStatusPopulatedWrapper>> watchAll() =>

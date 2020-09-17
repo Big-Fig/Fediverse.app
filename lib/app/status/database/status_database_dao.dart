@@ -33,8 +33,7 @@ var _homeTimelineStatusesAliasId = "homeTimelineStatuses";
       ":remoteId;",
 })
 class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
-  @override
-  final AppDatabase db;
+    final AppDatabase db;
   $DbAccountsTable accountAlias;
   $DbStatusesTable reblogAlias;
   $DbAccountsTable reblogAccountAlias;
@@ -143,7 +142,7 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
 
   Future<int> updateByRemoteId(
       String remoteId, Insertable<DbStatus> entity) async {
-    var localId = await findLocalIdByRemoteIdQuery(remoteId).getSingle();
+    var localId = await findLocalIdByRemoteId(remoteId).getSingle();
 
     if (localId != null && localId >= 0) {
       await (update(db.dbStatuses)..where((i) => i.id.equals(localId)))
@@ -178,25 +177,25 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
   JoinedSelectStatement addFollowingWhere(
           JoinedSelectStatement query, String accountRemoteId) =>
       query
-        ..where(CustomExpression<bool, BoolType>(
+        ..where(CustomExpression<bool>(
             "$_accountFollowingsAliasId.account_remote_id = '$accountRemoteId'"));
 
   JoinedSelectStatement addHashtagWhere(
           JoinedSelectStatement query, String hashtag) =>
       query
-        ..where(CustomExpression<bool, BoolType>(
+        ..where(CustomExpression<bool>(
             "$_statusHashtagsAliasId.hashtag = '$hashtag'"));
 
   JoinedSelectStatement addListWhere(
           JoinedSelectStatement query, String listRemoteId) =>
       query
-        ..where(CustomExpression<bool, BoolType>(
+        ..where(CustomExpression<bool>(
             "$_statusListsAliasId.list_remote_id = '$listRemoteId'"));
 
   JoinedSelectStatement addConversationWhere(
           JoinedSelectStatement query, String conversationRemoteId) =>
       query
-        ..where(CustomExpression<bool, BoolType>(
+        ..where(CustomExpression<bool>(
             "$_conversationStatusesAliasId.conversation_remote_id"
             " = '$conversationRemoteId'"));
 
@@ -245,12 +244,12 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
     assert(minimumExist || maximumExist);
 
     if (minimumExist) {
-      var biggerExp = CustomExpression<bool, BoolType>(
+      var biggerExp = CustomExpression<bool>(
           "db_statuses.remote_id > '$minimumRemoteIdExcluding'");
       query = query..where((status) => biggerExp);
     }
     if (maximumExist) {
-      var smallerExp = CustomExpression<bool, BoolType>(
+      var smallerExp = CustomExpression<bool>(
           "db_statuses.remote_id < '$maximumRemoteIdExcluding'");
       query = query..where((status) => smallerExp);
     }

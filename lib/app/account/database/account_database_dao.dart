@@ -27,8 +27,7 @@ var _chatAccountsAliasId = "chatAccountsAliasId";
       ":remoteId;",
 })
 class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
-  @override
-  final AppDatabase db;
+    final AppDatabase db;
   $DbAccountsTable accountAlias;
   $DbAccountFollowingsTable accountFollowingsAlias;
   $DbAccountFollowersTable accountFollowersAlias;
@@ -70,7 +69,7 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
 
   Future<int> updateByRemoteId(
       String remoteId, Insertable<DbAccount> entity) async {
-    var localId = await findLocalIdByRemoteIdQuery(remoteId).getSingle();
+    var localId = await findLocalIdByRemoteId(remoteId).getSingle();
 
     if (localId != null && localId >= 0) {
       await (update(dbAccounts)..where((i) => i.id.equals(localId)))
@@ -97,12 +96,12 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
     assert(minimumExist || maximumExist);
 
     if (minimumExist) {
-      var biggerExp = CustomExpression<bool, BoolType>(
+      var biggerExp = CustomExpression<bool>(
           "db_accounts.remote_id > '$minimumRemoteIdExcluding'");
       query = query..where((account) => biggerExp);
     }
     if (maximumExist) {
-      var smallerExp = CustomExpression<bool, BoolType>(
+      var smallerExp = CustomExpression<bool>(
           "db_accounts.remote_id < '$maximumRemoteIdExcluding'");
       query = query..where((account) => smallerExp);
     }
@@ -196,28 +195,28 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
   JoinedSelectStatement addConversationWhere(
           JoinedSelectStatement query, String conversationRemoteId) =>
       query
-        ..where(CustomExpression<bool, BoolType>(
+        ..where(CustomExpression<bool>(
             "$_conversationAccountsAliasId.conversation_remote_id"
             " = '$conversationRemoteId'"));
 
   JoinedSelectStatement addChatWhere(
           JoinedSelectStatement query, String chatRemoteId) =>
       query
-        ..where(CustomExpression<bool, BoolType>(
+        ..where(CustomExpression<bool>(
             "$_chatAccountsAliasId.chat_remote_id"
             " = '$chatRemoteId'"));
 
   JoinedSelectStatement addStatusFavouritedByWhere(
           JoinedSelectStatement query, String statusRemoteId) =>
       query
-        ..where(CustomExpression<bool, BoolType>(
+        ..where(CustomExpression<bool>(
             "$_statusFavouritedAccounts.status_remote_id"
             " = '$statusRemoteId'"));
 
   JoinedSelectStatement addStatusRebloggedByWhere(
           JoinedSelectStatement query, String statusRemoteId) =>
       query
-        ..where(CustomExpression<bool, BoolType>(
+        ..where(CustomExpression<bool>(
             "$_statusRebloggedAccounts.status_remote_id"
             " = '$statusRemoteId'"));
 
@@ -225,7 +224,7 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
   JoinedSelectStatement addFollowingsWhere(
           JoinedSelectStatement query, String followingAccountRemoteId) =>
       query
-        ..where(CustomExpression<bool, BoolType>(
+        ..where(CustomExpression<bool>(
             "$_accountFollowingsAliasId.account_remote_id"
             " = '$followingAccountRemoteId'"));
 
@@ -233,7 +232,7 @@ class AccountDao extends DatabaseAccessor<AppDatabase> with _$AccountDaoMixin {
   JoinedSelectStatement addFollowersWhere(
           JoinedSelectStatement query, String followerAccountRemoteId) =>
       query
-        ..where(CustomExpression<bool, BoolType>(
+        ..where(CustomExpression<bool>(
             "$_accountFollowersAliasId.account_remote_id"
             " = '$followerAccountRemoteId'"));
 

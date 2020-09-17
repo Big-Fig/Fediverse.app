@@ -692,7 +692,7 @@ void main() {
             .length,
         1);
     expect(
-        (await accountRepository.conversationAccountsDao.getAll()).length, 1);
+        (await accountRepository.conversationAccountsDao.getAll().get()).length, 1);
 
     expect(
         (await accountRepository.getAccounts(

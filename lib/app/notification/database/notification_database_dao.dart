@@ -35,8 +35,7 @@ var _statusReblogAccountAliasId = "status_reblog_account";
 })
 class NotificationDao extends DatabaseAccessor<AppDatabase>
     with _$NotificationDaoMixin {
-  @override
-  final AppDatabase db;
+    final AppDatabase db;
   $DbAccountsTable accountAlias;
   $DbStatusesTable statusAlias;
   $DbAccountsTable statusAccountAlias;
@@ -112,7 +111,7 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
 
   Future<int> updateByRemoteId(
       String remoteId, Insertable<DbNotification> entity) async {
-    var localId = await findLocalIdByRemoteIdQuery(remoteId).getSingle();
+    var localId = await findLocalIdByRemoteId(remoteId).getSingle();
 
     if (localId != null && localId >= 0) {
       await (update(db.dbNotifications)..where((i) => i.id.equals(localId)))
@@ -148,12 +147,12 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
 //    assert(minimumExist || maximumExist);
 //
 //    if (minimumExist) {
-//      var biggerExp = CustomExpression<bool, BoolType>(
+//      var biggerExp = CustomExpression<bool>(
 //          "db_notifications.remote_id > '$minimumRemoteIdExcluding'");
 //      query = query..where((notification) => biggerExp);
 //    }
 //    if (maximumExist) {
-//      var smallerExp = CustomExpression<bool, BoolType>(
+//      var smallerExp = CustomExpression<bool>(
 //          "db_notifications.remote_id < '$maximumRemoteIdExcluding'");
 //      query = query..where((notification) => smallerExp);
 //    }
@@ -253,7 +252,7 @@ class NotificationDao extends DatabaseAccessor<AppDatabase>
     var query = 'SELECT COUNT(*) FROM db_notifications WHERE unread = 1 AND '
         'type NOT IN '
         '(${excludeTypes.map((type) => "'$type'").join(", ")})';
-    return customSelectQuery(query, readsFrom: {dbNotifications})
+    return customSelect(query, readsFrom: {dbNotifications})
         .map((QueryRow row) => row.readInt('COUNT(*)'));
   }
 

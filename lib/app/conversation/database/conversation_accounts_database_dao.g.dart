@@ -8,66 +8,37 @@ part of 'conversation_accounts_database_dao.dart';
 
 mixin _$ConversationAccountsDaoMixin on DatabaseAccessor<AppDatabase> {
   $DbConversationAccountsTable get dbConversationAccounts =>
-      db.dbConversationAccounts;
-  Selectable<int> countAllQuery() {
-    return customSelectQuery('SELECT Count(*) FROM db_conversation_accounts;',
+      attachedDatabase.dbConversationAccounts;
+  Selectable<int> countAll() {
+    return customSelect('SELECT Count(*) FROM db_conversation_accounts;',
             variables: [], readsFrom: {dbConversationAccounts})
         .map((QueryRow row) => row.readInt('Count(*)'));
   }
 
-  Future<List<int>> countAll() {
-    return countAllQuery().get();
+  Selectable<DbConversationAccount> findById(int id) {
+    return customSelect(
+            'SELECT * FROM db_conversation_accounts WHERE id = :id;',
+            variables: [Variable.withInt(id)],
+            readsFrom: {dbConversationAccounts})
+        .map(dbConversationAccounts.mapFromRow);
   }
 
-  Stream<List<int>> watchCountAll() {
-    return countAllQuery().watch();
-  }
-
-  DbConversationAccount _rowToDbConversationAccount(QueryRow row) {
-    return DbConversationAccount(
-      id: row.readInt('id'),
-      conversationRemoteId: row.readString('conversation_remote_id'),
-      accountRemoteId: row.readString('account_remote_id'),
-    );
-  }
-
-  Selectable<DbConversationAccount> findByIdQuery(int id) {
-    return customSelectQuery(
-        'SELECT * FROM db_conversation_accounts WHERE id = :id;',
-        variables: [Variable.withInt(id)],
-        readsFrom: {dbConversationAccounts}).map(_rowToDbConversationAccount);
-  }
-
-  Future<List<DbConversationAccount>> findById(int id) {
-    return findByIdQuery(id).get();
-  }
-
-  Stream<List<DbConversationAccount>> watchFindById(int id) {
-    return findByIdQuery(id).watch();
-  }
-
-  Selectable<DbConversationAccount> findByConversationRemoteIdQuery(
+  Selectable<DbConversationAccount> findByConversationRemoteId(
       String conversationRemoteId) {
-    return customSelectQuery(
+    return customSelect(
         'SELECT * FROM db_conversation_accounts WHERE conversation_remote_id = :conversationRemoteId;',
-        variables: [Variable.withString(conversationRemoteId)],
-        readsFrom: {dbConversationAccounts}).map(_rowToDbConversationAccount);
-  }
-
-  Future<List<DbConversationAccount>> findByConversationRemoteId(
-      String conversationRemoteId) {
-    return findByConversationRemoteIdQuery(conversationRemoteId).get();
-  }
-
-  Stream<List<DbConversationAccount>> watchFindByConversationRemoteId(
-      String conversationRemoteId) {
-    return findByConversationRemoteIdQuery(conversationRemoteId).watch();
+        variables: [
+          Variable.withString(conversationRemoteId)
+        ],
+        readsFrom: {
+          dbConversationAccounts
+        }).map(dbConversationAccounts.mapFromRow);
   }
 
   Selectable<DbConversationAccount>
-      findByConversationRemoteIdAndAccountRemoteIdQuery(
+      findByConversationRemoteIdAndAccountRemoteId(
           String conversationRemoteId, String accountRemoteId) {
-    return customSelectQuery(
+    return customSelect(
         'SELECT * FROM db_conversation_accounts WHERE conversation_remote_id = :conversationRemoteId AND account_remote_id = :accountRemoteId;',
         variables: [
           Variable.withString(conversationRemoteId),
@@ -75,39 +46,15 @@ mixin _$ConversationAccountsDaoMixin on DatabaseAccessor<AppDatabase> {
         ],
         readsFrom: {
           dbConversationAccounts
-        }).map(_rowToDbConversationAccount);
+        }).map(dbConversationAccounts.mapFromRow);
   }
 
-  Future<List<DbConversationAccount>>
-      findByConversationRemoteIdAndAccountRemoteId(
-          String conversationRemoteId, String accountRemoteId) {
-    return findByConversationRemoteIdAndAccountRemoteIdQuery(
-            conversationRemoteId, accountRemoteId)
-        .get();
-  }
-
-  Stream<List<DbConversationAccount>>
-      watchFindByConversationRemoteIdAndAccountRemoteId(
-          String conversationRemoteId, String accountRemoteId) {
-    return findByConversationRemoteIdAndAccountRemoteIdQuery(
-            conversationRemoteId, accountRemoteId)
-        .watch();
-  }
-
-  Selectable<int> countByIdQuery(int id) {
-    return customSelectQuery(
+  Selectable<int> countById(int id) {
+    return customSelect(
             'SELECT COUNT(*) FROM db_conversation_accounts WHERE id = :id;',
             variables: [Variable.withInt(id)],
             readsFrom: {dbConversationAccounts})
         .map((QueryRow row) => row.readInt('COUNT(*)'));
-  }
-
-  Future<List<int>> countById(int id) {
-    return countByIdQuery(id).get();
-  }
-
-  Stream<List<int>> watchCountById(int id) {
-    return countByIdQuery(id).watch();
   }
 
   Future<int> deleteById(int id) {
@@ -115,6 +62,7 @@ mixin _$ConversationAccountsDaoMixin on DatabaseAccessor<AppDatabase> {
       'DELETE FROM db_conversation_accounts WHERE id = :id;',
       variables: [Variable.withInt(id)],
       updates: {dbConversationAccounts},
+      updateKind: UpdateKind.delete,
     );
   }
 
@@ -123,6 +71,7 @@ mixin _$ConversationAccountsDaoMixin on DatabaseAccessor<AppDatabase> {
       'DELETE FROM db_conversation_accounts WHERE conversation_remote_id = :conversationRemoteId;',
       variables: [Variable.withString(conversationRemoteId)],
       updates: {dbConversationAccounts},
+      updateKind: UpdateKind.delete,
     );
   }
 
@@ -131,20 +80,13 @@ mixin _$ConversationAccountsDaoMixin on DatabaseAccessor<AppDatabase> {
       'DELETE FROM db_conversation_accounts',
       variables: [],
       updates: {dbConversationAccounts},
+      updateKind: UpdateKind.delete,
     );
   }
 
-  Selectable<DbConversationAccount> getAllQuery() {
-    return customSelectQuery('SELECT * FROM db_conversation_accounts',
-        variables: [],
-        readsFrom: {dbConversationAccounts}).map(_rowToDbConversationAccount);
-  }
-
-  Future<List<DbConversationAccount>> getAll() {
-    return getAllQuery().get();
-  }
-
-  Stream<List<DbConversationAccount>> watchGetAll() {
-    return getAllQuery().watch();
+  Selectable<DbConversationAccount> getAll() {
+    return customSelect('SELECT * FROM db_conversation_accounts',
+            variables: [], readsFrom: {dbConversationAccounts})
+        .map(dbConversationAccounts.mapFromRow);
   }
 }

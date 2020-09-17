@@ -248,14 +248,14 @@ class NotificationRepository extends AsyncInitLoadingBloc
 
   @override
   Future<bool> isExistWithId(int id) =>
-      dao.countByIdQuery(id).map((count) => count > 0).getSingle();
+      dao.countById(id).map((count) => count > 0).getSingle();
 
   @override
   Future<List<DbNotificationPopulatedWrapper>> getAll() async =>
       (await dao.findAll()).map(mapDataClassToItem).toList();
 
   @override
-  Future<int> countAll() => dao.countAllQuery().getSingle();
+  Future<int> countAll() => dao.countAll().getSingle();
 
   @override
   Stream<List<DbNotificationPopulatedWrapper>> watchAll() =>
@@ -367,9 +367,9 @@ class NotificationRepository extends AsyncInitLoadingBloc
     bool onlyNotDismissed = true,
   }) {
     if (onlyNotDismissed) {
-      return dao.countUnreadAllNotDismissedQuery().getSingle();
+      return dao.countUnreadAllNotDismissed().getSingle();
     } else {
-      return dao.countUnreadAllQuery().getSingle();
+      return dao.countUnreadAll().getSingle();
     }
   }
 
@@ -380,12 +380,12 @@ class NotificationRepository extends AsyncInitLoadingBloc
   }) {
     if (onlyNotDismissed) {
       return dao
-          .countUnreadByTypeNotDismissedQuery(
+          .countUnreadByTypeNotDismissed(
               pleromaNotificationTypeValues.enumToValueMap[type])
           .getSingle();
     } else {
       return dao
-          .countUnreadByTypeQuery(
+          .countUnreadByType(
               pleromaNotificationTypeValues.enumToValueMap[type])
           .getSingle();
     }
@@ -396,9 +396,9 @@ class NotificationRepository extends AsyncInitLoadingBloc
     bool onlyNotDismissed = true,
   }) {
     if (onlyNotDismissed) {
-      return dao.countUnreadAllNotDismissedQuery().watchSingle();
+      return dao.countUnreadAllNotDismissed().watchSingle();
     } else {
-      return dao.countUnreadAllQuery().watchSingle();
+      return dao.countUnreadAll().watchSingle();
     }
   }
 
@@ -409,13 +409,13 @@ class NotificationRepository extends AsyncInitLoadingBloc
   }) {
     if (onlyNotDismissed) {
       return dao
-          .countUnreadByTypeNotDismissedQuery(
+          .countUnreadByTypeNotDismissed(
             pleromaNotificationTypeValues.enumToValueMap[type],
           )
           .watchSingle();
     } else {
       return dao
-          .countUnreadByTypeQuery(
+          .countUnreadByType(
               pleromaNotificationTypeValues.enumToValueMap[type])
           .watchSingle();
     }

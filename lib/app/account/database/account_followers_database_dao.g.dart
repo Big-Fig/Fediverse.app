@@ -7,76 +7,33 @@ part of 'account_followers_database_dao.dart';
 // **************************************************************************
 
 mixin _$AccountFollowersDaoMixin on DatabaseAccessor<AppDatabase> {
-  $DbAccountFollowersTable get dbAccountFollowers => db.dbAccountFollowers;
-  Selectable<int> countAllQuery() {
-    return customSelectQuery('SELECT Count(*) FROM db_account_followers;',
+  $DbAccountFollowersTable get dbAccountFollowers =>
+      attachedDatabase.dbAccountFollowers;
+  Selectable<int> countAll() {
+    return customSelect('SELECT Count(*) FROM db_account_followers;',
             variables: [], readsFrom: {dbAccountFollowers})
         .map((QueryRow row) => row.readInt('Count(*)'));
   }
 
-  Future<List<int>> countAll() {
-    return countAllQuery().get();
-  }
-
-  Stream<List<int>> watchCountAll() {
-    return countAllQuery().watch();
-  }
-
-  DbAccountFollower _rowToDbAccountFollower(QueryRow row) {
-    return DbAccountFollower(
-      id: row.readInt('id'),
-      accountRemoteId: row.readString('account_remote_id'),
-      followerAccountRemoteId: row.readString('follower_account_remote_id'),
-    );
-  }
-
-  Selectable<DbAccountFollower> findByIdQuery(int id) {
-    return customSelectQuery(
-        'SELECT * FROM db_account_followers WHERE id = :id;',
+  Selectable<DbAccountFollower> findById(int id) {
+    return customSelect('SELECT * FROM db_account_followers WHERE id = :id;',
         variables: [Variable.withInt(id)],
-        readsFrom: {dbAccountFollowers}).map(_rowToDbAccountFollower);
+        readsFrom: {dbAccountFollowers}).map(dbAccountFollowers.mapFromRow);
   }
 
-  Future<List<DbAccountFollower>> findById(int id) {
-    return findByIdQuery(id).get();
-  }
-
-  Stream<List<DbAccountFollower>> watchFindById(int id) {
-    return findByIdQuery(id).watch();
-  }
-
-  Selectable<DbAccountFollower> findByAccountRemoteIdQuery(
-      String accountRemoteId) {
-    return customSelectQuery(
+  Selectable<DbAccountFollower> findByAccountRemoteId(String accountRemoteId) {
+    return customSelect(
         'SELECT * FROM db_account_followers WHERE account_remote_id = :accountRemoteId;',
         variables: [Variable.withString(accountRemoteId)],
-        readsFrom: {dbAccountFollowers}).map(_rowToDbAccountFollower);
+        readsFrom: {dbAccountFollowers}).map(dbAccountFollowers.mapFromRow);
   }
 
-  Future<List<DbAccountFollower>> findByAccountRemoteId(
-      String accountRemoteId) {
-    return findByAccountRemoteIdQuery(accountRemoteId).get();
-  }
-
-  Stream<List<DbAccountFollower>> watchFindByAccountRemoteId(
-      String accountRemoteId) {
-    return findByAccountRemoteIdQuery(accountRemoteId).watch();
-  }
-
-  Selectable<int> countByIdQuery(int id) {
-    return customSelectQuery(
+  Selectable<int> countById(int id) {
+    return customSelect(
             'SELECT COUNT(*) FROM db_account_followers WHERE id = :id;',
             variables: [Variable.withInt(id)],
             readsFrom: {dbAccountFollowers})
         .map((QueryRow row) => row.readInt('COUNT(*)'));
-  }
-
-  Future<List<int>> countById(int id) {
-    return countByIdQuery(id).get();
-  }
-
-  Stream<List<int>> watchCountById(int id) {
-    return countByIdQuery(id).watch();
   }
 
   Future<int> deleteById(int id) {
@@ -84,6 +41,7 @@ mixin _$AccountFollowersDaoMixin on DatabaseAccessor<AppDatabase> {
       'DELETE FROM db_account_followers WHERE id = :id;',
       variables: [Variable.withInt(id)],
       updates: {dbAccountFollowers},
+      updateKind: UpdateKind.delete,
     );
   }
 
@@ -92,6 +50,7 @@ mixin _$AccountFollowersDaoMixin on DatabaseAccessor<AppDatabase> {
       'DELETE FROM db_account_followers WHERE account_remote_id = :accountRemoteId;',
       variables: [Variable.withString(accountRemoteId)],
       updates: {dbAccountFollowers},
+      updateKind: UpdateKind.delete,
     );
   }
 
@@ -100,6 +59,7 @@ mixin _$AccountFollowersDaoMixin on DatabaseAccessor<AppDatabase> {
       'DELETE FROM db_account_followers WHERE follower_account_remote_id = :accountRemoteId;',
       variables: [Variable.withString(accountRemoteId)],
       updates: {dbAccountFollowers},
+      updateKind: UpdateKind.delete,
     );
   }
 
@@ -112,6 +72,7 @@ mixin _$AccountFollowersDaoMixin on DatabaseAccessor<AppDatabase> {
         Variable.withString(accountRemoteId)
       ],
       updates: {dbAccountFollowers},
+      updateKind: UpdateKind.delete,
     );
   }
 
@@ -120,20 +81,13 @@ mixin _$AccountFollowersDaoMixin on DatabaseAccessor<AppDatabase> {
       'DELETE FROM db_account_followers',
       variables: [],
       updates: {dbAccountFollowers},
+      updateKind: UpdateKind.delete,
     );
   }
 
-  Selectable<DbAccountFollower> getAllQuery() {
-    return customSelectQuery('SELECT * FROM db_account_followers',
+  Selectable<DbAccountFollower> getAll() {
+    return customSelect('SELECT * FROM db_account_followers',
         variables: [],
-        readsFrom: {dbAccountFollowers}).map(_rowToDbAccountFollower);
-  }
-
-  Future<List<DbAccountFollower>> getAll() {
-    return getAllQuery().get();
-  }
-
-  Stream<List<DbAccountFollower>> watchGetAll() {
-    return getAllQuery().watch();
+        readsFrom: {dbAccountFollowers}).map(dbAccountFollowers.mapFromRow);
   }
 }

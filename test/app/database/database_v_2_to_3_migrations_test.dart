@@ -23,11 +23,11 @@ void main() {
   test('test scheduled', () async {
     var scheduledStatusDao = database.scheduledStatusDao;
     // sqldump should have old scheduled
-    expect((await scheduledStatusDao.getAll()).isNotEmpty, true);
+    expect((await scheduledStatusDao.getAll().get()).isNotEmpty, true);
 
     await scheduledStatusDao.clear();
 
-    expect((await scheduledStatusDao.getAll()).isNotEmpty, false);
+    expect((await scheduledStatusDao.getAll().get()).isNotEmpty, false);
 
     await scheduledStatusDao.insert(DbScheduledStatus(
         scheduledAt: DateTime.now(),
@@ -35,14 +35,14 @@ void main() {
         id: null,
         remoteId: "asda"));
 
-    expect((await scheduledStatusDao.getAll()).isNotEmpty, true);
+    expect((await scheduledStatusDao.getAll().get()).isNotEmpty, true);
   });
 
   test('test draft', () async {
     var draftStatusDao = database.draftStatusDao;
 
     await draftStatusDao.clear();
-    expect((await draftStatusDao.getAll()).isNotEmpty, false);
+    expect((await draftStatusDao.getAll().get()).isNotEmpty, false);
 
     await draftStatusDao.insert(DbDraftStatus(
         id: null,
@@ -59,6 +59,6 @@ void main() {
             inReplyToConversationId: null,
             isNsfwSensitiveEnabled: null)));
 
-    expect((await draftStatusDao.getAll()).isNotEmpty, true);
+    expect((await draftStatusDao.getAll().get()).isNotEmpty, true);
   });
 }
