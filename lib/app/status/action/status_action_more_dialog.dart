@@ -200,11 +200,9 @@ class StatusActionMoreDialogBody extends StatelessWidget {
           BuildContext context, IAccountBloc accountBloc) =>
       DialogAction(
           icon: FediIcons.follow,
-          label: accountBloc.accountRelationship?.following == true
-              ? tr("app.account.action.unfollow")
-              : accountBloc.isLocked == true
-                  ? tr("app.account.action.request_follow")
-                  : tr("app.account.action.follow"),
+          label: tr(accountBloc.accountRelationship?.following == true
+              ? "app.account.action.unfollow"
+              : "app.account.action.follow"),
           onAction: () async {
             await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
                 context: context, asyncCode: () => accountBloc.toggleFollow());
@@ -286,8 +284,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
             Navigator.of(context).pop();
           });
 
-  DialogAction buildMuteConversationAction(
-          BuildContext context, IStatus status) =>
+  DialogAction buildMuteConversationAction(BuildContext context, IStatus status) =>
       DialogAction(
           icon: FediIcons.mute,
           label: status.muted

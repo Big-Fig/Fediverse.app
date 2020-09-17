@@ -122,9 +122,7 @@ class AccountActionListWidget extends StatelessWidget {
           return FediBlurredTextButton(
             relationship?.following == true
                 ? tr("app.account.action.unfollow")
-                : accountBloc.isLocked == true
-                    ? tr("app.account.action.request_follow")
-                    : tr("app.account.action.follow"),
+                : tr("app.account.action.follow"),
             onPressed: onPressed,
           );
         },
