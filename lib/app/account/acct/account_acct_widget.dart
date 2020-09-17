@@ -4,12 +4,9 @@ import 'package:flutter/cupertino.dart';
 
 class AccountAcctWidget extends StatelessWidget {
   final TextStyle textStyle;
-  final bool displayBotIconIfNecessary;
 
-  const AccountAcctWidget({
-    this.textStyle = FediTextStyles.mediumShortDarkGrey,
-    this.displayBotIconIfNecessary = true,
-  });
+  const AccountAcctWidget(
+      {this.textStyle = FediTextStyles.mediumShortDarkGrey});
 
   @override
   Widget build(BuildContext context) {
@@ -19,15 +16,9 @@ class AccountAcctWidget extends StatelessWidget {
         initialData: accountBloc.acct,
         builder: (context, snapshot) {
           var acct = snapshot.data;
-          String text;
-          if (displayBotIconIfNecessary && accountBloc.isBot == true) {
-            text = "🤖 $acct";
-          } else {
-            text = acct;
-          }
 
           return Text(
-            text,
+            acct,
             overflow: TextOverflow.ellipsis,
             style: textStyle,
           );

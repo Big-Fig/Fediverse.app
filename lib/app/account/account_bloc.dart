@@ -7,10 +7,6 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IAccountBloc extends DisposableOwner {
-  bool get isLocked;
-
-  bool get isBot;
-
   static IAccountBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IAccountBloc>(context, listen: listen);
 

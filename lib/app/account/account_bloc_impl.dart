@@ -340,10 +340,4 @@ class AccountBloc extends IAccountBloc {
       return null;
     }
   }
-
-  @override
-  bool get isLocked => account.locked;
-
-  @override
-  bool get isBot => account.bot;
 }

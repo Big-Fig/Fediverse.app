@@ -217,16 +217,16 @@ class StatusListItemTimelineWidget extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                StatusCreatedAtWidget(),
+                Icon(
+                  StatusVisibilityIconWidget.mapVisibilityToIconData(
+                    status.visibility,
+                  ),
+                  size: FediSizes.mediumIconSize,
+                  color: FediColors.darkGrey,
+                ),
                 Padding(
                   padding: const EdgeInsets.only(left: FediSizes.smallPadding),
-                  child: Icon(
-                    StatusVisibilityIconWidget.mapVisibilityToIconData(
-                      status.visibility,
-                    ),
-                    size: FediSizes.mediumIconSize,
-                    color: FediColors.darkGrey,
-                  ),
+                  child: StatusCreatedAtWidget(),
                 ),
               ],
             ),
