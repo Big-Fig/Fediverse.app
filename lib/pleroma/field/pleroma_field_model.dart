@@ -10,7 +10,7 @@ var _logger = Logger("pleroma_field_model.dart");
 
 abstract class IPleromaField implements IMastodonField {}
 
-@HiveType()
+@HiveType(typeId: -32 + 37)
 @JsonSerializable()
 class PleromaField implements IPleromaField {
   @override

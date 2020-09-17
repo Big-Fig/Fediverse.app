@@ -8,58 +8,55 @@ part of 'auth_instance_model.dart';
 
 class AuthInstanceAdapter extends TypeAdapter<AuthInstance> {
   @override
+  final int typeId = 18;
+
+  @override
   AuthInstance read(BinaryReader reader) {
-    var obj = AuthInstance();
-    var numOfFields = reader.readByte();
-    for (var i = 0; i < numOfFields; i++) {
-      switch (reader.readByte()) {
-        case 0:
-          obj.urlSchema = reader.read() as String;
-          break;
-        case 1:
-          obj.urlHost = reader.read() as String;
-          break;
-        case 2:
-          obj.acct = reader.read() as String;
-          break;
-        case 3:
-          obj.token = reader.read() as PleromaOAuthToken;
-          break;
-        case 4:
-          obj.authCode = reader.read() as String;
-          break;
-        case 5:
-          obj.isPleromaInstance = reader.read() as bool;
-          break;
-        case 6:
-          obj.application = reader.read() as PleromaClientApplication;
-          break;
-        case 7:
-          obj.info = reader.read() as PleromaInstance;
-          break;
-      }
-    }
-    return obj;
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return AuthInstance(
+      urlSchema: fields[0] as String,
+      urlHost: fields[1] as String,
+      acct: fields[2] as String,
+      token: fields[3] as PleromaOAuthToken,
+      authCode: fields[4] as String,
+      isPleromaInstance: fields[5] as bool,
+      application: fields[6] as PleromaClientApplication,
+      info: fields[7] as PleromaInstance,
+    );
   }
 
   @override
   void write(BinaryWriter writer, AuthInstance obj) {
-    writer.writeByte(8);
-    writer.writeByte(0);
-    writer.write(obj.urlSchema);
-    writer.writeByte(1);
-    writer.write(obj.urlHost);
-    writer.writeByte(2);
-    writer.write(obj.acct);
-    writer.writeByte(3);
-    writer.write(obj.token);
-    writer.writeByte(4);
-    writer.write(obj.authCode);
-    writer.writeByte(5);
-    writer.write(obj.isPleromaInstance);
-    writer.writeByte(6);
-    writer.write(obj.application);
-    writer.writeByte(7);
-    writer.write(obj.info);
+    writer
+      ..writeByte(8)
+      ..writeByte(0)
+      ..write(obj.urlSchema)
+      ..writeByte(1)
+      ..write(obj.urlHost)
+      ..writeByte(2)
+      ..write(obj.acct)
+      ..writeByte(3)
+      ..write(obj.token)
+      ..writeByte(4)
+      ..write(obj.authCode)
+      ..writeByte(5)
+      ..write(obj.isPleromaInstance)
+      ..writeByte(6)
+      ..write(obj.application)
+      ..writeByte(7)
+      ..write(obj.info);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AuthInstanceAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }

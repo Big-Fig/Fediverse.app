@@ -12,7 +12,7 @@ abstract class IPleromaTag implements IMastodonTag {
   List<IPleromaHistory> get history;
 }
 
-@HiveType()
+@HiveType(typeId: -32 + 74)
 @JsonSerializable()
 class PleromaTag implements IPleromaTag {
   @override

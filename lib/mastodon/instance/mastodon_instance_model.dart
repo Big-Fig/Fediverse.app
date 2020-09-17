@@ -47,7 +47,7 @@ abstract class IMastodonInstance {
 }
 
 @JsonSerializable()
-@HiveType()
+@HiveType(typeId: -32 + 61)
 class MastodonInstanceStats {
   @JsonKey(name: "user_count")
   @HiveField(0)
@@ -96,7 +96,7 @@ class MastodonInstanceStats {
 }
 
 @JsonSerializable()
-@HiveType()
+@HiveType(typeId: -32 + 62)
 class MastodonUrls {
   @JsonKey(name: "streaming_api")
   @HiveField(0)

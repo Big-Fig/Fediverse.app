@@ -92,7 +92,7 @@ abstract class IPleromaInstance extends IMastodonInstance {
 }
 
 @JsonSerializable(explicitToJson: true)
-@HiveType()
+@HiveType(typeId: -32 + 58)
 class PleromaInstancePleromaPart {
   @HiveField(0)
   PleromaInstancePleromaPartMetadata metadata;
@@ -139,7 +139,7 @@ class PleromaInstancePleromaPart {
 }
 
 @JsonSerializable(explicitToJson: true)
-@HiveType()
+@HiveType(typeId: -32 + 72)
 class PleromaInstancePleromaPartMetadataFieldLimits {
   @HiveField(0)
   @JsonKey(name: "max_fields")
@@ -185,7 +185,7 @@ class PleromaInstancePleromaPartMetadataFieldLimits {
 }
 
 @JsonSerializable(explicitToJson: true)
-@HiveType()
+@HiveType(typeId: -32 + 60)
 class PleromaInstancePleromaPartMetadata {
   @HiveField(0)
   List<String> features;
@@ -276,7 +276,7 @@ class PleromaInstancePleromaPartMetadata {
 }
 
 @JsonSerializable(explicitToJson: true)
-@HiveType()
+@HiveType(typeId: -32 + 63)
 class PleromaInstancePollLimits {
   @HiveField(0)
   @JsonKey(name: "max_expiration")
@@ -313,7 +313,7 @@ class PleromaInstancePollLimits {
 }
 
 @JsonSerializable(explicitToJson: true)
-@HiveType()
+@HiveType(typeId: -32 + 59)
 class PleromaInstance extends IPleromaInstance {
   @override
   @HiveField(0)

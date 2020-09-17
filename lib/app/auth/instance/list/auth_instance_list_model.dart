@@ -4,7 +4,7 @@ import 'package:hive/hive.dart';
 
 part 'auth_instance_list_model.g.dart';
 
-@HiveType()
+@HiveType(typeId: -32 + 49)
 class AuthInstanceList extends IPreferencesObject {
   @HiveField(0)
   List<AuthInstance> instances;

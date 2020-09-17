@@ -8,23 +8,34 @@ part of 'recent_search_model.dart';
 
 class RecentSearchListAdapter extends TypeAdapter<RecentSearchList> {
   @override
+  final int typeId = 33;
+
+  @override
   RecentSearchList read(BinaryReader reader) {
-    var obj = RecentSearchList();
-    var numOfFields = reader.readByte();
-    for (var i = 0; i < numOfFields; i++) {
-      switch (reader.readByte()) {
-        case 0:
-          obj.recentItems = (reader.read() as List)?.cast<String>();
-          break;
-      }
-    }
-    return obj;
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return RecentSearchList(
+      recentItems: (fields[0] as List)?.cast<String>(),
+    );
   }
 
   @override
   void write(BinaryWriter writer, RecentSearchList obj) {
-    writer.writeByte(1);
-    writer.writeByte(0);
-    writer.write(obj.recentItems);
+    writer
+      ..writeByte(1)
+      ..writeByte(0)
+      ..write(obj.recentItems);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is RecentSearchListAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }

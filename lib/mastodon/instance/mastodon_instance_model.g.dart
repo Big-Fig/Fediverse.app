@@ -8,58 +8,76 @@ part of 'mastodon_instance_model.dart';
 
 class MastodonInstanceStatsAdapter extends TypeAdapter<MastodonInstanceStats> {
   @override
+  final int typeId = 29;
+
+  @override
   MastodonInstanceStats read(BinaryReader reader) {
-    var obj = MastodonInstanceStats();
-    var numOfFields = reader.readByte();
-    for (var i = 0; i < numOfFields; i++) {
-      switch (reader.readByte()) {
-        case 0:
-          obj.userCount = reader.read() as int;
-          break;
-        case 1:
-          obj.statusCount = reader.read() as int;
-          break;
-        case 2:
-          obj.domainCount = reader.read() as int;
-          break;
-      }
-    }
-    return obj;
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return MastodonInstanceStats(
+      userCount: fields[0] as int,
+      statusCount: fields[1] as int,
+      domainCount: fields[2] as int,
+    );
   }
 
   @override
   void write(BinaryWriter writer, MastodonInstanceStats obj) {
-    writer.writeByte(3);
-    writer.writeByte(0);
-    writer.write(obj.userCount);
-    writer.writeByte(1);
-    writer.write(obj.statusCount);
-    writer.writeByte(2);
-    writer.write(obj.domainCount);
+    writer
+      ..writeByte(3)
+      ..writeByte(0)
+      ..write(obj.userCount)
+      ..writeByte(1)
+      ..write(obj.statusCount)
+      ..writeByte(2)
+      ..write(obj.domainCount);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MastodonInstanceStatsAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 class MastodonUrlsAdapter extends TypeAdapter<MastodonUrls> {
   @override
+  final int typeId = 30;
+
+  @override
   MastodonUrls read(BinaryReader reader) {
-    var obj = MastodonUrls();
-    var numOfFields = reader.readByte();
-    for (var i = 0; i < numOfFields; i++) {
-      switch (reader.readByte()) {
-        case 0:
-          obj.streamingApi = reader.read() as String;
-          break;
-      }
-    }
-    return obj;
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return MastodonUrls(
+      streamingApi: fields[0] as String,
+    );
   }
 
   @override
   void write(BinaryWriter writer, MastodonUrls obj) {
-    writer.writeByte(1);
-    writer.writeByte(0);
-    writer.write(obj.streamingApi);
+    writer
+      ..writeByte(1)
+      ..writeByte(0)
+      ..write(obj.streamingApi);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MastodonUrlsAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 // **************************************************************************

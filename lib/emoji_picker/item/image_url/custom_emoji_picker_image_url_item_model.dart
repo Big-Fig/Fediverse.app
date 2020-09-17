@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 
 part 'custom_emoji_picker_image_url_item_model.g.dart';
 
-@HiveType()
+@HiveType(typeId: -32 + 69)
 class CustomEmojiPickerImageUrlItem extends CustomEmojiPickerItem {
   @override
   @HiveField(0)

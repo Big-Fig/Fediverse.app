@@ -9,23 +9,34 @@ part of 'push_handler_unhandled_local_preferences_model.dart';
 class PushHandlerUnhandledListAdapter
     extends TypeAdapter<PushHandlerUnhandledList> {
   @override
+  final int typeId = 23;
+
+  @override
   PushHandlerUnhandledList read(BinaryReader reader) {
-    var obj = PushHandlerUnhandledList();
-    var numOfFields = reader.readByte();
-    for (var i = 0; i < numOfFields; i++) {
-      switch (reader.readByte()) {
-        case 0:
-          obj.messages = (reader.read() as List)?.cast<PushHandlerMessage>();
-          break;
-      }
-    }
-    return obj;
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return PushHandlerUnhandledList(
+      messages: (fields[0] as List)?.cast<PushHandlerMessage>(),
+    );
   }
 
   @override
   void write(BinaryWriter writer, PushHandlerUnhandledList obj) {
-    writer.writeByte(1);
-    writer.writeByte(0);
-    writer.write(obj.messages);
+    writer
+      ..writeByte(1)
+      ..writeByte(0)
+      ..write(obj.messages);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PushHandlerUnhandledListAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }

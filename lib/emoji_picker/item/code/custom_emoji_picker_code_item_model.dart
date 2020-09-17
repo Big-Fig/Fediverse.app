@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 
 part 'custom_emoji_picker_code_item_model.g.dart';
 
-@HiveType()
+@HiveType(typeId: -32 + 71)
 class CustomEmojiPickerCodeItem extends CustomEmojiPickerItem {
   @override
   @HiveField(0)

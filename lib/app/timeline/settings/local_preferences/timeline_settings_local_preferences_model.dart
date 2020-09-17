@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 
 part 'timeline_settings_local_preferences_model.g.dart';
 
-@HiveType()
+@HiveType(typeId: -32 + 46)
 class TimelineSettingsLocalPreferences extends IPreferencesObject {
   @HiveField(1)
   bool onlyWithMedia;

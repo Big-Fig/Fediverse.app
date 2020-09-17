@@ -200,7 +200,7 @@ abstract class IPleromaMyAccountSource implements IMastodonMyAccountSource {
   PleromaVisibility get privacyPleroma;
 }
 
-@HiveType()
+@HiveType(typeId: -32 + 43)
 @JsonSerializable()
 class PleromaMyAccountSource implements IPleromaMyAccountSource {
   @override
@@ -253,7 +253,7 @@ class PleromaMyAccountSource implements IPleromaMyAccountSource {
   String toJsonString() => jsonEncode(_$PleromaMyAccountSourceToJson(this));
 }
 
-@HiveType()
+@HiveType(typeId: -32 + 44)
 @JsonSerializable()
 class PleromaMyAccountSourcePleromaPart {
   //  show_role: boolean, nullable, true when the user wants his role (e.g admin, moderator) to be shown
@@ -310,7 +310,7 @@ class PleromaMyAccountFilesRequest {
   }
 }
 
-@HiveType()
+@HiveType(typeId: -32 + 75)
 @JsonSerializable(explicitToJson: true)
 class PleromaAccountPleromaPart {
   // TODO: CHECK, was in previous implementation, but not exist at https://docs-develop.pleroma.social/backend/API/differences_in_mastoapi_responses/
@@ -448,7 +448,7 @@ abstract class IPleromaMyAccountPleromaPart
   PleromaMyAccountPleromaPartNotificationsSettings get notificationSettings;
 }
 
-@HiveType()
+@HiveType(typeId: -32 + 54)
 @JsonSerializable(explicitToJson: true)
 class PleromaMyAccount implements IPleromaMyAccount, IPreferencesObject {
   @override
@@ -618,14 +618,18 @@ class PleromaMyAccount implements IPleromaMyAccount, IPreferencesObject {
   }
 }
 
-@HiveType()
+@HiveType(typeId: -32 + 41)
 @JsonSerializable()
 class PleromaMyAccountPleromaPartNotificationsSettings {
+  @HiveField(0)
   bool followers;
+  @HiveField(1)
   bool follows;
   @JsonKey(name: "non_followers")
+  @HiveField(2)
   bool nonFollowers;
   @JsonKey(name: "non_follows")
+  @HiveField(3)
   bool nonFollows;
 
   PleromaMyAccountPleromaPartNotificationsSettings(
@@ -655,7 +659,7 @@ class PleromaMyAccountPleromaPartNotificationsSettings {
       _$PleromaMyAccountPleromaPartNotificationsSettingsToJson(this));
 }
 
-@HiveType()
+@HiveType(typeId: -32 + 40)
 @JsonSerializable(explicitToJson: true)
 class PleromaMyAccountPleromaPart implements IPleromaMyAccountPleromaPart {
   // TODO: CHECK, was in previous implementation, but not exist at https://docs-develop.pleroma.social/backend/API/differences_in_mastoapi_responses/

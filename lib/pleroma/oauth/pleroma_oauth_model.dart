@@ -8,7 +8,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'pleroma_oauth_model.g.dart';
 
 @JsonSerializable()
-@HiveType()
+@HiveType(typeId: -32 + 51)
 class PleromaOAuthToken implements IPreferencesObject {
   @HiveField(0)
   @JsonKey(name: "access_token")

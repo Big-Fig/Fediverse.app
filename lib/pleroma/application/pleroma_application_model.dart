@@ -51,7 +51,7 @@ class PleromaApplication implements IPleromaApplication {
   int get hashCode => name.hashCode ^ website.hashCode ^ vapidKey.hashCode;
 }
 
-@HiveType()
+@HiveType(typeId: -32 + 52)
 @JsonSerializable()
 class PleromaClientApplication
     implements IPleromaClientApplication, IPreferencesObject {

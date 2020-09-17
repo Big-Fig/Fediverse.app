@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 
 part 'recent_search_model.g.dart';
 
-@HiveType()
+@HiveType(typeId: -32 + 65)
 class RecentSearchList implements IPreferencesObject {
   @HiveField(0)
   List<String> recentItems;

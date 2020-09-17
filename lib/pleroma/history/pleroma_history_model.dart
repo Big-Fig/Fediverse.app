@@ -8,7 +8,7 @@ part 'pleroma_history_model.g.dart';
 
 abstract class IPleromaHistory extends IMastodonHistory {}
 
-@HiveType()
+@HiveType(typeId: -32 + 77)
 @JsonSerializable()
 class PleromaHistory implements IPleromaHistory {
   @override
