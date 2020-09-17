@@ -6,5 +6,5 @@ import 'package:permission_handler/permission_handler.dart';
 class StoragePermissionBloc extends PermissionBloc
     implements IStoragePermissionBloc {
   StoragePermissionBloc(IPermissionsService permissionsService)
-      : super(permissionsService, PermissionGroup.storage);
+      : super(permissionsService, Permission.storage);
 }

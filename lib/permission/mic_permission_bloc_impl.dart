@@ -5,5 +5,5 @@ import 'package:permission_handler/permission_handler.dart';
 
 class MicPermissionBloc extends PermissionBloc implements IMicPermissionBloc {
   MicPermissionBloc(IPermissionsService permissionsService)
-      : super(permissionsService, PermissionGroup.microphone);
+      : super(permissionsService, Permission.microphone);
 }

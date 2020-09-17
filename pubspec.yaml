@@ -91,13 +91,13 @@ dependencies:
   provider: ^4.3.2+2
 
   # fancy permission handler
-  permission_handler: ^4.2.0+hotfix.3
+  permission_handler: ^5.0.1+1
 
   # better tab indicator
   md2_tab_indicator: ^1.0.2
 
   # native kotlin/swift image convert & compress
-  flutter_image_compress: ^0.6.5+1
+  flutter_image_compress: ^0.7.0
 
   # commandline script to pull database from emulator
   # adb exec-out run-as com.fediverse.app cat ./databases/jffdev@fedi.app.sqlite > database.sqlite
