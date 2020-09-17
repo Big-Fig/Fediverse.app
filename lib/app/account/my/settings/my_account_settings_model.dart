@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 
 part 'my_account_settings_model.g.dart';
 
-@HiveType()
+@HiveType(typeId: -32 + 57)
 class MyAccountSettings implements IPreferencesObject {
   @HiveField(0)
   bool isRealtimeWebSocketsEnabled;

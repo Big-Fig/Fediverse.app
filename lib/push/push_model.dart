@@ -6,7 +6,7 @@ part 'push_model.g.dart';
 
 typedef dynamic PushMessageListener(PushMessage message);
 
-@HiveType()
+@HiveType(typeId: -32 + 67)
 class PushMessage {
   PushMessageType get type =>
       pushMessageTypeEnumValues.valueToEnumMap[typeString];
@@ -44,7 +44,7 @@ EnumValues<PushMessageType> pushMessageTypeEnumValues = EnumValues({
   "resume": PushMessageType.resume,
 });
 
-@HiveType()
+@HiveType(typeId: -32 + 73)
 @JsonSerializable()
 class PushNotification {
   @HiveField(0)

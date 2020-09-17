@@ -8,35 +8,42 @@ part of 'pleroma_history_model.dart';
 
 class PleromaHistoryAdapter extends TypeAdapter<PleromaHistory> {
   @override
+  final int typeId = 45;
+
+  @override
   PleromaHistory read(BinaryReader reader) {
-    var obj = PleromaHistory();
-    var numOfFields = reader.readByte();
-    for (var i = 0; i < numOfFields; i++) {
-      switch (reader.readByte()) {
-        case 0:
-          obj.accounts = reader.read() as int;
-          break;
-        case 1:
-          obj.dayInUnixTimestamp = reader.read() as int;
-          break;
-        case 2:
-          obj.uses = reader.read() as int;
-          break;
-      }
-    }
-    return obj;
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return PleromaHistory(
+      accounts: fields[0] as int,
+      dayInUnixTimestamp: fields[1] as int,
+      uses: fields[2] as int,
+    );
   }
 
   @override
   void write(BinaryWriter writer, PleromaHistory obj) {
-    writer.writeByte(3);
-    writer.writeByte(0);
-    writer.write(obj.accounts);
-    writer.writeByte(1);
-    writer.write(obj.dayInUnixTimestamp);
-    writer.writeByte(2);
-    writer.write(obj.uses);
+    writer
+      ..writeByte(3)
+      ..writeByte(0)
+      ..write(obj.accounts)
+      ..writeByte(1)
+      ..write(obj.dayInUnixTimestamp)
+      ..writeByte(2)
+      ..write(obj.uses);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaHistoryAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 // **************************************************************************

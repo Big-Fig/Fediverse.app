@@ -4,7 +4,7 @@ import 'package:hive/hive.dart';
 
 part 'push_handler_model.g.dart';
 
-@HiveType()
+@HiveType(typeId: -32 + 66)
 class PushHandlerMessage {
   @HiveField(0)
   PleromaPushMessageBody body;

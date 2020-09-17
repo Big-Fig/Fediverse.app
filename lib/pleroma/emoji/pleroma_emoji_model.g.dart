@@ -8,78 +8,87 @@ part of 'pleroma_emoji_model.dart';
 
 class PleromaEmojiAdapter extends TypeAdapter<PleromaEmoji> {
   @override
+  final int typeId = 6;
+
+  @override
   PleromaEmoji read(BinaryReader reader) {
-    var obj = PleromaEmoji();
-    var numOfFields = reader.readByte();
-    for (var i = 0; i < numOfFields; i++) {
-      switch (reader.readByte()) {
-        case 0:
-          obj.shortcode = reader.read() as String;
-          break;
-        case 1:
-          obj.url = reader.read() as String;
-          break;
-        case 2:
-          obj.staticUrl = reader.read() as String;
-          break;
-        case 3:
-          obj.visibleInPicker = reader.read() as bool;
-          break;
-        case 4:
-          obj.category = reader.read() as String;
-          break;
-      }
-    }
-    return obj;
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return PleromaEmoji(
+      shortcode: fields[0] as String,
+      url: fields[1] as String,
+      staticUrl: fields[2] as String,
+      visibleInPicker: fields[3] as bool,
+    )..category = fields[4] as String;
   }
 
   @override
   void write(BinaryWriter writer, PleromaEmoji obj) {
-    writer.writeByte(5);
-    writer.writeByte(0);
-    writer.write(obj.shortcode);
-    writer.writeByte(1);
-    writer.write(obj.url);
-    writer.writeByte(2);
-    writer.write(obj.staticUrl);
-    writer.writeByte(3);
-    writer.write(obj.visibleInPicker);
-    writer.writeByte(4);
-    writer.write(obj.category);
+    writer
+      ..writeByte(5)
+      ..writeByte(0)
+      ..write(obj.shortcode)
+      ..writeByte(1)
+      ..write(obj.url)
+      ..writeByte(2)
+      ..write(obj.staticUrl)
+      ..writeByte(3)
+      ..write(obj.visibleInPicker)
+      ..writeByte(4)
+      ..write(obj.category);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaEmojiAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 class PleromaCustomEmojiAdapter extends TypeAdapter<PleromaCustomEmoji> {
   @override
+  final int typeId = 44;
+
+  @override
   PleromaCustomEmoji read(BinaryReader reader) {
-    var obj = PleromaCustomEmoji();
-    var numOfFields = reader.readByte();
-    for (var i = 0; i < numOfFields; i++) {
-      switch (reader.readByte()) {
-        case 0:
-          obj.tags = (reader.read() as List)?.cast<String>();
-          break;
-        case 1:
-          obj.imageUrl = reader.read() as String;
-          break;
-        case 2:
-          obj.name = reader.read() as String;
-          break;
-      }
-    }
-    return obj;
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return PleromaCustomEmoji(
+      tags: (fields[0] as List)?.cast<String>(),
+      imageUrl: fields[1] as String,
+      name: fields[2] as String,
+    );
   }
 
   @override
   void write(BinaryWriter writer, PleromaCustomEmoji obj) {
-    writer.writeByte(3);
-    writer.writeByte(0);
-    writer.write(obj.tags);
-    writer.writeByte(1);
-    writer.write(obj.imageUrl);
-    writer.writeByte(2);
-    writer.write(obj.name);
+    writer
+      ..writeByte(3)
+      ..writeByte(0)
+      ..write(obj.tags)
+      ..writeByte(1)
+      ..write(obj.imageUrl)
+      ..writeByte(2)
+      ..write(obj.name);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaCustomEmojiAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 // **************************************************************************

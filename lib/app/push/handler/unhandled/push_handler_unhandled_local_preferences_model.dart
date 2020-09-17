@@ -4,7 +4,7 @@ import 'package:hive/hive.dart';
 
 part 'push_handler_unhandled_local_preferences_model.g.dart';
 
-@HiveType()
+@HiveType(typeId: -32 + 55)
 class PushHandlerUnhandledList implements IPreferencesObject {
   @HiveField(0)
   List<PushHandlerMessage> messages;

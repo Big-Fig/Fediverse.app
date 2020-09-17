@@ -7,7 +7,7 @@ import 'package:hive/hive.dart';
 
 part 'auth_instance_model.g.dart';
 
-@HiveType()
+@HiveType(typeId: -32 + 50)
 class AuthInstance extends IPreferencesObject {
   @HiveField(0)
   String urlSchema;

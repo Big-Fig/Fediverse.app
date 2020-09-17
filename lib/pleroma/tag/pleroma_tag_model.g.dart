@@ -8,35 +8,42 @@ part of 'pleroma_tag_model.dart';
 
 class PleromaTagAdapter extends TypeAdapter<PleromaTag> {
   @override
+  final int typeId = 42;
+
+  @override
   PleromaTag read(BinaryReader reader) {
-    var obj = PleromaTag();
-    var numOfFields = reader.readByte();
-    for (var i = 0; i < numOfFields; i++) {
-      switch (reader.readByte()) {
-        case 0:
-          obj.name = reader.read() as String;
-          break;
-        case 1:
-          obj.url = reader.read() as String;
-          break;
-        case 2:
-          obj.history = (reader.read() as List)?.cast<PleromaHistory>();
-          break;
-      }
-    }
-    return obj;
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return PleromaTag(
+      name: fields[0] as String,
+      url: fields[1] as String,
+      history: (fields[2] as List)?.cast<PleromaHistory>(),
+    );
   }
 
   @override
   void write(BinaryWriter writer, PleromaTag obj) {
-    writer.writeByte(3);
-    writer.writeByte(0);
-    writer.write(obj.name);
-    writer.writeByte(1);
-    writer.write(obj.url);
-    writer.writeByte(2);
-    writer.write(obj.history);
+    writer
+      ..writeByte(3)
+      ..writeByte(0)
+      ..write(obj.name)
+      ..writeByte(1)
+      ..write(obj.url)
+      ..writeByte(2)
+      ..write(obj.history);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaTagAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 // **************************************************************************

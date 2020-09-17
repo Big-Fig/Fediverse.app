@@ -283,7 +283,7 @@ class PleromaPushSubscriptionKeys {
       jsonEncode(_$PleromaPushSubscriptionKeysToJson(this));
 }
 
-@HiveType()
+@HiveType(typeId: -32 + 56)
 @JsonSerializable()
 class PleromaPushMessageBody {
   @HiveField(0)

@@ -9,33 +9,40 @@ part of 'timeline_settings_local_preferences_model.dart';
 class TimelineSettingsLocalPreferencesAdapter
     extends TypeAdapter<TimelineSettingsLocalPreferences> {
   @override
+  final int typeId = 14;
+
+  @override
   TimelineSettingsLocalPreferences read(BinaryReader reader) {
-    var obj = TimelineSettingsLocalPreferences();
-    var numOfFields = reader.readByte();
-    for (var i = 0; i < numOfFields; i++) {
-      switch (reader.readByte()) {
-        case 1:
-          obj.onlyWithMedia = reader.read() as bool;
-          break;
-        case 2:
-          obj.onlyNoReplies = reader.read() as bool;
-          break;
-        case 3:
-          obj.onlyNoNsfwSensitive = reader.read() as bool;
-          break;
-      }
-    }
-    return obj;
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return TimelineSettingsLocalPreferences(
+      onlyWithMedia: fields[1] as bool,
+      onlyNoReplies: fields[2] as bool,
+      onlyNoNsfwSensitive: fields[3] as bool,
+    );
   }
 
   @override
   void write(BinaryWriter writer, TimelineSettingsLocalPreferences obj) {
-    writer.writeByte(3);
-    writer.writeByte(1);
-    writer.write(obj.onlyWithMedia);
-    writer.writeByte(2);
-    writer.write(obj.onlyNoReplies);
-    writer.writeByte(3);
-    writer.write(obj.onlyNoNsfwSensitive);
+    writer
+      ..writeByte(3)
+      ..writeByte(1)
+      ..write(obj.onlyWithMedia)
+      ..writeByte(2)
+      ..write(obj.onlyNoReplies)
+      ..writeByte(3)
+      ..write(obj.onlyNoNsfwSensitive);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TimelineSettingsLocalPreferencesAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }

@@ -18,7 +18,7 @@ abstract class IMyAccount extends IAccount implements IPreferencesObject {
   String get pleromaChatToken;
 }
 
-@HiveType()
+@HiveType(typeId: -32 + 53)
 class MyAccountRemoteWrapper extends IMyAccount {
   @HiveField(0)
   PleromaMyAccount remoteAccount;

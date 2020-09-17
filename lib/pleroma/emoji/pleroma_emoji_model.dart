@@ -15,7 +15,7 @@ abstract class IPleromaCustomEmoji {
   String get name;
 }
 
-@HiveType()
+@HiveType(typeId: -32 + 38)
 @JsonSerializable()
 class PleromaEmoji implements IPleromaEmoji {
   @override
@@ -71,7 +71,7 @@ class PleromaEmoji implements IPleromaEmoji {
   Map<String, dynamic> toJson() => _$PleromaEmojiToJson(this);
 }
 
-@HiveType()
+@HiveType(typeId: -32 + 76)
 @JsonSerializable()
 class PleromaCustomEmoji implements IPleromaCustomEmoji {
   @override

@@ -4,7 +4,7 @@ import 'package:hive/hive.dart';
 
 part 'emoji_picker_recent_category_model.g.dart';
 
-@HiveType()
+@HiveType(typeId: -32 + 70)
 class EmojiPickerRecentCategoryItemsList implements IPreferencesObject {
   @HiveField(0)
   List<CustomEmojiPickerItem> recentItems;

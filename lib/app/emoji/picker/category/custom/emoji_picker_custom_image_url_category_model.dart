@@ -4,7 +4,7 @@ import 'package:hive/hive.dart';
 
 part 'emoji_picker_custom_image_url_category_model.g.dart';
 
-@HiveType()
+@HiveType(typeId: -32 + 68)
 class EmojiPickerCustomImageUrlCategoryItems implements IPreferencesObject {
   @HiveField(0)
   List<CustomEmojiPickerImageUrlItem> items;

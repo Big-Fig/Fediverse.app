@@ -19,7 +19,7 @@ abstract class IPleromaAccount implements IMastodonAccount {
   IPleromaAccountPleromaPart get pleroma;
 }
 
-@HiveType()
+@HiveType(typeId: -32 + 64)
 @JsonSerializable(explicitToJson: true)
 class PleromaAccount implements IPleromaAccount {
   @override
@@ -389,7 +389,7 @@ abstract class IPleromaAccountRelationship
   });
 }
 
-@HiveType()
+@HiveType(typeId: -32 + 42)
 @JsonSerializable()
 class PleromaAccountRelationship implements IPleromaAccountRelationship {
   @override

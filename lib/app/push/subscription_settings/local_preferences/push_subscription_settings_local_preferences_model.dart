@@ -7,7 +7,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'push_subscription_settings_local_preferences_model.g.dart';
 
 @JsonSerializable()
-@HiveType()
+@HiveType(typeId: -32 + 47)
 class PushSubscriptionSettingsLocalPreferences extends IPreferencesObject {
   @HiveField(1)
   bool favourite;

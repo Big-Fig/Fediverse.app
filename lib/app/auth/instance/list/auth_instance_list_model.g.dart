@@ -8,23 +8,34 @@ part of 'auth_instance_list_model.dart';
 
 class AuthInstanceListAdapter extends TypeAdapter<AuthInstanceList> {
   @override
+  final int typeId = 17;
+
+  @override
   AuthInstanceList read(BinaryReader reader) {
-    var obj = AuthInstanceList();
-    var numOfFields = reader.readByte();
-    for (var i = 0; i < numOfFields; i++) {
-      switch (reader.readByte()) {
-        case 0:
-          obj.instances = (reader.read() as List)?.cast<AuthInstance>();
-          break;
-      }
-    }
-    return obj;
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return AuthInstanceList(
+      instances: (fields[0] as List)?.cast<AuthInstance>(),
+    );
   }
 
   @override
   void write(BinaryWriter writer, AuthInstanceList obj) {
-    writer.writeByte(1);
-    writer.writeByte(0);
-    writer.write(obj.instances);
+    writer
+      ..writeByte(1)
+      ..writeByte(0)
+      ..write(obj.instances);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AuthInstanceListAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }

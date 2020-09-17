@@ -9,297 +9,281 @@ part of 'pleroma_instance_model.dart';
 class PleromaInstancePleromaPartAdapter
     extends TypeAdapter<PleromaInstancePleromaPart> {
   @override
+  final int typeId = 26;
+
+  @override
   PleromaInstancePleromaPart read(BinaryReader reader) {
-    var obj = PleromaInstancePleromaPart();
-    var numOfFields = reader.readByte();
-    for (var i = 0; i < numOfFields; i++) {
-      switch (reader.readByte()) {
-        case 0:
-          obj.metadata = reader.read() as PleromaInstancePleromaPartMetadata;
-          break;
-        case 1:
-          obj.vapidPublicKey = reader.read() as String;
-          break;
-      }
-    }
-    return obj;
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return PleromaInstancePleromaPart(
+      metadata: fields[0] as PleromaInstancePleromaPartMetadata,
+      vapidPublicKey: fields[1] as String,
+    );
   }
 
   @override
   void write(BinaryWriter writer, PleromaInstancePleromaPart obj) {
-    writer.writeByte(2);
-    writer.writeByte(0);
-    writer.write(obj.metadata);
-    writer.writeByte(1);
-    writer.write(obj.vapidPublicKey);
+    writer
+      ..writeByte(2)
+      ..writeByte(0)
+      ..write(obj.metadata)
+      ..writeByte(1)
+      ..write(obj.vapidPublicKey);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaInstancePleromaPartAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 class PleromaInstancePleromaPartMetadataFieldLimitsAdapter
     extends TypeAdapter<PleromaInstancePleromaPartMetadataFieldLimits> {
   @override
+  final int typeId = 40;
+
+  @override
   PleromaInstancePleromaPartMetadataFieldLimits read(BinaryReader reader) {
-    var obj = PleromaInstancePleromaPartMetadataFieldLimits();
-    var numOfFields = reader.readByte();
-    for (var i = 0; i < numOfFields; i++) {
-      switch (reader.readByte()) {
-        case 0:
-          obj.maxFields = reader.read() as int;
-          break;
-        case 1:
-          obj.maxRemoteFields = reader.read() as int;
-          break;
-        case 2:
-          obj.nameLength = reader.read() as int;
-          break;
-        case 3:
-          obj.valueLength = reader.read() as int;
-          break;
-      }
-    }
-    return obj;
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return PleromaInstancePleromaPartMetadataFieldLimits(
+      maxFields: fields[0] as int,
+      maxRemoteFields: fields[1] as int,
+      nameLength: fields[2] as int,
+      valueLength: fields[3] as int,
+    );
   }
 
   @override
   void write(
       BinaryWriter writer, PleromaInstancePleromaPartMetadataFieldLimits obj) {
-    writer.writeByte(4);
-    writer.writeByte(0);
-    writer.write(obj.maxFields);
-    writer.writeByte(1);
-    writer.write(obj.maxRemoteFields);
-    writer.writeByte(2);
-    writer.write(obj.nameLength);
-    writer.writeByte(3);
-    writer.write(obj.valueLength);
+    writer
+      ..writeByte(4)
+      ..writeByte(0)
+      ..write(obj.maxFields)
+      ..writeByte(1)
+      ..write(obj.maxRemoteFields)
+      ..writeByte(2)
+      ..write(obj.nameLength)
+      ..writeByte(3)
+      ..write(obj.valueLength);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaInstancePleromaPartMetadataFieldLimitsAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 class PleromaInstancePleromaPartMetadataAdapter
     extends TypeAdapter<PleromaInstancePleromaPartMetadata> {
   @override
+  final int typeId = 28;
+
+  @override
   PleromaInstancePleromaPartMetadata read(BinaryReader reader) {
-    var obj = PleromaInstancePleromaPartMetadata();
-    var numOfFields = reader.readByte();
-    for (var i = 0; i < numOfFields; i++) {
-      switch (reader.readByte()) {
-        case 0:
-          obj.features = (reader.read() as List)?.cast<String>();
-          break;
-        case 1:
-          obj.federation = reader.read() as dynamic;
-          break;
-        case 2:
-          obj.postFormats = (reader.read() as List)?.cast<String>();
-          break;
-        case 3:
-          obj.accountActivationRequired = reader.read() as bool;
-          break;
-        case 4:
-          obj.fieldsLimits =
-              reader.read() as PleromaInstancePleromaPartMetadataFieldLimits;
-          break;
-      }
-    }
-    return obj;
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return PleromaInstancePleromaPartMetadata(
+      features: (fields[0] as List)?.cast<String>(),
+      federation: fields[1] as dynamic,
+      postFormats: (fields[2] as List)?.cast<String>(),
+      accountActivationRequired: fields[3] as bool,
+      fieldsLimits: fields[4] as PleromaInstancePleromaPartMetadataFieldLimits,
+    );
   }
 
   @override
   void write(BinaryWriter writer, PleromaInstancePleromaPartMetadata obj) {
-    writer.writeByte(5);
-    writer.writeByte(0);
-    writer.write(obj.features);
-    writer.writeByte(1);
-    writer.write(obj.federation);
-    writer.writeByte(2);
-    writer.write(obj.postFormats);
-    writer.writeByte(3);
-    writer.write(obj.accountActivationRequired);
-    writer.writeByte(4);
-    writer.write(obj.fieldsLimits);
+    writer
+      ..writeByte(5)
+      ..writeByte(0)
+      ..write(obj.features)
+      ..writeByte(1)
+      ..write(obj.federation)
+      ..writeByte(2)
+      ..write(obj.postFormats)
+      ..writeByte(3)
+      ..write(obj.accountActivationRequired)
+      ..writeByte(4)
+      ..write(obj.fieldsLimits);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaInstancePleromaPartMetadataAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 class PleromaInstancePollLimitsAdapter
     extends TypeAdapter<PleromaInstancePollLimits> {
   @override
+  final int typeId = 31;
+
+  @override
   PleromaInstancePollLimits read(BinaryReader reader) {
-    var obj = PleromaInstancePollLimits();
-    var numOfFields = reader.readByte();
-    for (var i = 0; i < numOfFields; i++) {
-      switch (reader.readByte()) {
-        case 0:
-          obj.maxExpiration = reader.read() as int;
-          break;
-        case 1:
-          obj.maxOptionChars = reader.read() as int;
-          break;
-        case 2:
-          obj.maxOptions = reader.read() as int;
-          break;
-        case 3:
-          obj.minExpiration = reader.read() as int;
-          break;
-      }
-    }
-    return obj;
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return PleromaInstancePollLimits(
+      maxExpiration: fields[0] as int,
+      maxOptionChars: fields[1] as int,
+      maxOptions: fields[2] as int,
+      minExpiration: fields[3] as int,
+    );
   }
 
   @override
   void write(BinaryWriter writer, PleromaInstancePollLimits obj) {
-    writer.writeByte(4);
-    writer.writeByte(0);
-    writer.write(obj.maxExpiration);
-    writer.writeByte(1);
-    writer.write(obj.maxOptionChars);
-    writer.writeByte(2);
-    writer.write(obj.maxOptions);
-    writer.writeByte(3);
-    writer.write(obj.minExpiration);
+    writer
+      ..writeByte(4)
+      ..writeByte(0)
+      ..write(obj.maxExpiration)
+      ..writeByte(1)
+      ..write(obj.maxOptionChars)
+      ..writeByte(2)
+      ..write(obj.maxOptions)
+      ..writeByte(3)
+      ..write(obj.minExpiration);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaInstancePollLimitsAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 class PleromaInstanceAdapter extends TypeAdapter<PleromaInstance> {
   @override
+  final int typeId = 27;
+
+  @override
   PleromaInstance read(BinaryReader reader) {
-    var obj = PleromaInstance();
-    var numOfFields = reader.readByte();
-    for (var i = 0; i < numOfFields; i++) {
-      switch (reader.readByte()) {
-        case 0:
-          obj.approvalRequired = reader.read() as bool;
-          break;
-        case 1:
-          obj.avatarUploadLimit = reader.read() as int;
-          break;
-        case 2:
-          obj.backgroundUploadLimit = reader.read() as int;
-          break;
-        case 3:
-          obj.bannerUploadLimit = reader.read() as int;
-          break;
-        case 4:
-          obj.contactAccount = reader.read() as PleromaAccount;
-          break;
-        case 5:
-          obj.email = reader.read() as String;
-          break;
-        case 6:
-          obj.languages = (reader.read() as List)?.cast<String>();
-          break;
-        case 7:
-          obj.maxTootChars = reader.read() as int;
-          break;
-        case 8:
-          obj.pleroma = reader.read() as PleromaInstancePleromaPart;
-          break;
-        case 9:
-          obj.pollLimits = reader.read() as PleromaInstancePollLimits;
-          break;
-        case 10:
-          obj.registrations = reader.read() as bool;
-          break;
-        case 11:
-          obj.shortDescription = reader.read() as String;
-          break;
-        case 12:
-          obj.stats = reader.read() as MastodonInstanceStats;
-          break;
-        case 13:
-          obj.thumbnail = reader.read() as String;
-          break;
-        case 14:
-          obj.title = reader.read() as String;
-          break;
-        case 15:
-          obj.uploadLimit = reader.read() as int;
-          break;
-        case 16:
-          obj.uri = reader.read() as String;
-          break;
-        case 17:
-          obj.urls = reader.read() as MastodonUrls;
-          break;
-        case 18:
-          obj.vapidPublicKey = reader.read() as String;
-          break;
-        case 19:
-          obj.version = reader.read() as String;
-          break;
-        case 20:
-          obj.backgroundImage = reader.read() as String;
-          break;
-        case 21:
-          obj.chatLimit = reader.read() as int;
-          break;
-        case 22:
-          obj.description = reader.read() as String;
-          break;
-        case 23:
-          obj.descriptionLimit = reader.read() as int;
-          break;
-        case 24:
-          obj.invitesEnabled = reader.read() as bool;
-          break;
-      }
-    }
-    return obj;
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return PleromaInstance(
+      approvalRequired: fields[0] as bool,
+      avatarUploadLimit: fields[1] as int,
+      backgroundUploadLimit: fields[2] as int,
+      bannerUploadLimit: fields[3] as int,
+      contactAccount: fields[4] as PleromaAccount,
+      email: fields[5] as String,
+      languages: (fields[6] as List)?.cast<String>(),
+      maxTootChars: fields[7] as int,
+      pleroma: fields[8] as PleromaInstancePleromaPart,
+      pollLimits: fields[9] as PleromaInstancePollLimits,
+      registrations: fields[10] as bool,
+      shortDescription: fields[11] as String,
+      stats: fields[12] as MastodonInstanceStats,
+      thumbnail: fields[13] as String,
+      title: fields[14] as String,
+      uploadLimit: fields[15] as int,
+      uri: fields[16] as String,
+      urls: fields[17] as MastodonUrls,
+      vapidPublicKey: fields[18] as String,
+      version: fields[19] as String,
+      backgroundImage: fields[20] as String,
+      chatLimit: fields[21] as int,
+      description: fields[22] as String,
+      descriptionLimit: fields[23] as int,
+      invitesEnabled: fields[24] as bool,
+    );
   }
 
   @override
   void write(BinaryWriter writer, PleromaInstance obj) {
-    writer.writeByte(25);
-    writer.writeByte(0);
-    writer.write(obj.approvalRequired);
-    writer.writeByte(1);
-    writer.write(obj.avatarUploadLimit);
-    writer.writeByte(2);
-    writer.write(obj.backgroundUploadLimit);
-    writer.writeByte(3);
-    writer.write(obj.bannerUploadLimit);
-    writer.writeByte(4);
-    writer.write(obj.contactAccount);
-    writer.writeByte(5);
-    writer.write(obj.email);
-    writer.writeByte(6);
-    writer.write(obj.languages);
-    writer.writeByte(7);
-    writer.write(obj.maxTootChars);
-    writer.writeByte(8);
-    writer.write(obj.pleroma);
-    writer.writeByte(9);
-    writer.write(obj.pollLimits);
-    writer.writeByte(10);
-    writer.write(obj.registrations);
-    writer.writeByte(11);
-    writer.write(obj.shortDescription);
-    writer.writeByte(12);
-    writer.write(obj.stats);
-    writer.writeByte(13);
-    writer.write(obj.thumbnail);
-    writer.writeByte(14);
-    writer.write(obj.title);
-    writer.writeByte(15);
-    writer.write(obj.uploadLimit);
-    writer.writeByte(16);
-    writer.write(obj.uri);
-    writer.writeByte(17);
-    writer.write(obj.urls);
-    writer.writeByte(18);
-    writer.write(obj.vapidPublicKey);
-    writer.writeByte(19);
-    writer.write(obj.version);
-    writer.writeByte(20);
-    writer.write(obj.backgroundImage);
-    writer.writeByte(21);
-    writer.write(obj.chatLimit);
-    writer.writeByte(22);
-    writer.write(obj.description);
-    writer.writeByte(23);
-    writer.write(obj.descriptionLimit);
-    writer.writeByte(24);
-    writer.write(obj.invitesEnabled);
+    writer
+      ..writeByte(25)
+      ..writeByte(0)
+      ..write(obj.approvalRequired)
+      ..writeByte(1)
+      ..write(obj.avatarUploadLimit)
+      ..writeByte(2)
+      ..write(obj.backgroundUploadLimit)
+      ..writeByte(3)
+      ..write(obj.bannerUploadLimit)
+      ..writeByte(4)
+      ..write(obj.contactAccount)
+      ..writeByte(5)
+      ..write(obj.email)
+      ..writeByte(6)
+      ..write(obj.languages)
+      ..writeByte(7)
+      ..write(obj.maxTootChars)
+      ..writeByte(8)
+      ..write(obj.pleroma)
+      ..writeByte(9)
+      ..write(obj.pollLimits)
+      ..writeByte(10)
+      ..write(obj.registrations)
+      ..writeByte(11)
+      ..write(obj.shortDescription)
+      ..writeByte(12)
+      ..write(obj.stats)
+      ..writeByte(13)
+      ..write(obj.thumbnail)
+      ..writeByte(14)
+      ..write(obj.title)
+      ..writeByte(15)
+      ..write(obj.uploadLimit)
+      ..writeByte(16)
+      ..write(obj.uri)
+      ..writeByte(17)
+      ..write(obj.urls)
+      ..writeByte(18)
+      ..write(obj.vapidPublicKey)
+      ..writeByte(19)
+      ..write(obj.version)
+      ..writeByte(20)
+      ..write(obj.backgroundImage)
+      ..writeByte(21)
+      ..write(obj.chatLimit)
+      ..writeByte(22)
+      ..write(obj.description)
+      ..writeByte(23)
+      ..write(obj.descriptionLimit)
+      ..writeByte(24)
+      ..write(obj.invitesEnabled);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PleromaInstanceAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 // **************************************************************************
