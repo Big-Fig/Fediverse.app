@@ -57,13 +57,20 @@ class _UploadMediaAttachmentsNonMediaItemWidgetState
         initialData: mediaItemBloc.uploadState,
         builder: (context, snapshot) {
           var uploadState = snapshot.data;
-          return MediaAttachmentNonMediaItemWidget(
-              opacity:
-                  uploadState.type == UploadMediaAttachmentStateType.uploaded
+          return FutureBuilder(
+            future: mediaItemBloc.calculateFilePath(),
+            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+              var filePath = snapshot.data;
+
+              return MediaAttachmentNonMediaItemWidget(
+                  opacity: uploadState.type ==
+                          UploadMediaAttachmentStateType.uploaded
                       ? 1
                       : 0.5,
-              filePath: mediaItemBloc.filePath,
-              actionsWidget: actionsWidget);
+                  filePath: filePath ?? "",
+                  actionsWidget: actionsWidget);
+            },
+          );
         });
   }
 

@@ -7,7 +7,7 @@ import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
-import 'package:fedi/file/picker/file_picker_model.dart';
+import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -53,13 +53,13 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
       _buildAction(FediIcons.image, "app.media.attachment.type.gallery".tr(),
           () async {
         goToSingleMediaPickerPage(context,
-            fileSelectedCallback: (FilePickerFile filePickerFile) async {
+            onFileSelectedCallback: (IMediaDeviceFile mediaDeviceFile) async {
           var attachmentsCollectionBloc =
               IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);
           await _attachMedia(
             context,
             attachmentsCollectionBloc,
-            filePickerFile,
+            mediaDeviceFile,
           );
           Navigator.of(context).pop();
         });
@@ -68,9 +68,9 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
   Future _attachMedia(
     BuildContext context,
     IUploadMediaAttachmentsCollectionBloc attachmentsCollectionBloc,
-    FilePickerFile filePickerFile,
+    IMediaDeviceFile mediaDeviceFile,
   ) async {
-    await attachmentsCollectionBloc.attachMedia(filePickerFile);
+    await attachmentsCollectionBloc.attachMedia(mediaDeviceFile);
     onFileSelected();
   }
 
@@ -82,10 +82,10 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
         var pickedFile = await mediaPickerService.pickImageFromCamera();
 
         if (pickedFile != null) {
-          var filePickerFile = FilePickerFile(
-            type: FilePickerFileType.image,
+          var filePickerFile = FileMediaDeviceFile(
+            type: MediaDeviceFileType.image,
             isNeedDeleteAfterUsage: true,
-            file: pickedFile,
+            originalFile: pickedFile,
           );
           var attachmentsCollectionBloc =
               IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);
@@ -102,10 +102,10 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
         var pickedFile = await mediaPickerService.pickVideoFromCamera();
 
         if (pickedFile != null) {
-          var filePickerFile = FilePickerFile(
-            type: FilePickerFileType.video,
+          var filePickerFile = FileMediaDeviceFile(
+            type: MediaDeviceFileType.video,
             isNeedDeleteAfterUsage: true,
-            file: pickedFile,
+            originalFile: pickedFile,
           );
           var attachmentsCollectionBloc =
               IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);
@@ -119,10 +119,10 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
           () async {
         var pickedFile = await FilePicker.getFile();
         if (pickedFile != null) {
-          var filePickerFile = FilePickerFile(
-            type: FilePickerFileType.other,
+          var filePickerFile = FileMediaDeviceFile(
+            type: MediaDeviceFileType.other,
             isNeedDeleteAfterUsage: false,
-            file: pickedFile,
+            originalFile: pickedFile,
           );
 
           var attachmentsCollectionBloc =
@@ -137,10 +137,10 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
           () async {
         var pickedFile = await FilePicker.getFile(type: FileType.audio);
         if (pickedFile != null) {
-          var filePickerFile = FilePickerFile(
-            type: FilePickerFileType.other,
+          var filePickerFile = FileMediaDeviceFile(
+            type: MediaDeviceFileType.other,
             isNeedDeleteAfterUsage: false,
-            file: pickedFile,
+            originalFile: pickedFile,
           );
           var attachmentsCollectionBloc =
               IUploadMediaAttachmentsCollectionBloc.of(context, listen: false);

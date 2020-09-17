@@ -19,7 +19,7 @@ abstract class IUploadMediaAttachmentBloc implements Disposable {
 
   bool get isMedia;
 
-  String get filePath;
+  Future<String> calculateFilePath();
 
   Future startUpload();
 }

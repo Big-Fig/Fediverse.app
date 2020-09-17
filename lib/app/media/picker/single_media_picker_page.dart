@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/media/picker/media_picker_gallery_folder_widget.dart';
 import 'package:fedi/app/media/picker/media_picker_service.dart';
 import 'package:fedi/app/navigation/navigation_slide_bottom_route_builder.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
@@ -14,28 +15,26 @@ import 'package:fedi/app/ui/permission/fedi_grant_permission_widget.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
-import 'package:fedi/file/gallery/file_gallery_bloc.dart';
-import 'package:fedi/file/gallery/file_gallery_bloc_impl.dart';
-import 'package:fedi/file/gallery/file_gallery_model.dart';
-import 'package:fedi/file/gallery/folder/file_gallery_folder_bloc.dart';
-import 'package:fedi/file/gallery/folder/file_gallery_folder_bloc_impl.dart';
-import 'package:fedi/file/gallery/folder/file_gallery_folder_widget.dart';
-import 'package:fedi/file/picker/file_picker_model.dart';
-import 'package:fedi/file/picker/gallery/file_picker_gallery_adapter.dart';
+import 'package:fedi/media/device/file/media_device_file_model.dart';
+import 'package:fedi/media/device/folder/media_device_folder_bloc.dart';
+import 'package:fedi/media/device/folder/media_device_folder_model.dart';
+import 'package:fedi/media/device/folder/photo_manager/photo_manager_media_device_folder_bloc_impl.dart';
+import 'package:fedi/media/device/gallery/media_device_gallery_bloc.dart';
+import 'package:fedi/media/device/gallery/photo_manager/photo_manager_device_gallery_bloc_impl.dart';
 import 'package:fedi/permission/storage_permission_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:photo_manager/photo_manager.dart';
 import 'package:provider/provider.dart';
 
 class SingleMediaPickerPage extends StatelessWidget {
-  final FilePickerSelectedFileCallback fileSelectedCallback;
+  final MediaDeviceFileCallback fileSelectedCallback;
 
   SingleMediaPickerPage({@required this.fileSelectedCallback});
 
   @override
   Widget build(BuildContext context) {
-    var fileGalleryBloc = IFileGalleryBloc.of(context, listen: false);
+    var mediaDeviceGalleryBloc =
+        IMediaDeviceGalleryBloc.of(context, listen: false);
     return Scaffold(
       appBar: FediSubPageCustomAppBar(
         centerTitle: true,
@@ -47,27 +46,29 @@ class SingleMediaPickerPage extends StatelessWidget {
           grantedBuilder: (BuildContext context) {
             return FediAsyncInitLoadingWidget(
               loadingFinishedBuilder: (BuildContext context) {
-                if (fileGalleryBloc.folders?.isNotEmpty != true) {
+                if (mediaDeviceGalleryBloc.folders?.isNotEmpty != true) {
                   return Center(child: Text("file.picker.empty".tr()));
                 }
                 var storagePermissionBloc =
                     IStoragePermissionBloc.of(context, listen: false);
-                return StreamBuilder<AssetPathEntity>(
-                    stream: fileGalleryBloc.selectedFolderStream,
-                    initialData: fileGalleryBloc.selectedFolder,
+                return StreamBuilder<IMediaDeviceFolder>(
+                    stream: mediaDeviceGalleryBloc.selectedFolderStream
+                        .distinct((old, current) => old?.id == current?.id),
+                    initialData: mediaDeviceGalleryBloc.selectedFolder,
                     builder: (context, snapshot) {
                       var folder = snapshot.data;
                       if (folder == null) {
                         return Center(child: FediCircularProgressIndicator());
                       }
-                      return Provider<AssetPathEntity>.value(
+                      return Provider<IMediaDeviceFolder>.value(
                         value: folder,
-                        child: DisposableProxyProvider<AssetPathEntity,
-                            IFileGalleryFolderBloc>(
+                        child: DisposableProxyProvider<IMediaDeviceFolder,
+                            IMediaDeviceFolderBloc>(
                           update: (BuildContext context, value, previous) {
-                            var folderBloc = FileGalleryFolderBloc(
-                                folder: value,
-                                storagePermissionBloc: storagePermissionBloc);
+                            var folderBloc = PhotoManagerFileGalleryFolderBloc(
+                              storagePermissionBloc: storagePermissionBloc,
+                              folder: value,
+                            );
                             folderBloc.performAsyncInit();
                             return folderBloc;
                           },
@@ -75,19 +76,21 @@ class SingleMediaPickerPage extends StatelessWidget {
                             headerItemBuilder: (BuildContext context) {
                               return InkWell(
                                 onTap: () async {
-                                  var mediaPickerService = IMediaPickerService.of(
-                                      context,
-                                      listen: false);
+                                  var mediaPickerService =
+                                      IMediaPickerService.of(context,
+                                          listen: false);
 
                                   var pickedFile = await mediaPickerService
                                       .pickImageFromCamera();
 
                                   if (pickedFile != null) {
-                                    fileSelectedCallback(FilePickerFile(
-                                      type: FilePickerFileType.image,
-                                      isNeedDeleteAfterUsage: true,
-                                      file: pickedFile,
-                                    ));
+                                    fileSelectedCallback(
+                                      FileMediaDeviceFile(
+                                        type: MediaDeviceFileType.image,
+                                        isNeedDeleteAfterUsage: true,
+                                        originalFile: pickedFile,
+                                      ),
+                                    );
                                   }
                                 },
                                 child: Container(
@@ -101,9 +104,9 @@ class SingleMediaPickerPage extends StatelessWidget {
                                     )),
                               );
                             },
-                            galleryFileTapped: (FileGalleryFile galleryFile) {
-                              fileSelectedCallback(
-                                  mapGalleryToFilePickerFIle(galleryFile));
+                            onFileSelectedCallback:
+                                (IMediaDeviceFile mediaDeviceFile) {
+                              fileSelectedCallback(mediaDeviceFile);
                             },
                             loadingWidget: FediCircularProgressIndicator(),
                             permissionButtonBuilder: (context, grantedBuilder) {
@@ -118,7 +121,7 @@ class SingleMediaPickerPage extends StatelessWidget {
                       );
                     });
               },
-              asyncInitLoadingBloc: fileGalleryBloc,
+              asyncInitLoadingBloc: mediaDeviceGalleryBloc,
             );
           },
           permissionBloc: IStoragePermissionBloc.of(context, listen: false),
@@ -129,24 +132,25 @@ class SingleMediaPickerPage extends StatelessWidget {
   }
 
   Widget _buildAppBarTitle(BuildContext context) {
-    var fileGalleryBloc = IFileGalleryBloc.of(context, listen: false);
-    return StreamBuilder<List<AssetPathEntity>>(
-        stream: fileGalleryBloc.foldersStream,
-        initialData: fileGalleryBloc.folders,
+    var mediaDeviceGalleryBloc =
+        IMediaDeviceGalleryBloc.of(context, listen: false);
+    return StreamBuilder<List<IMediaDeviceFolder>>(
+        stream: mediaDeviceGalleryBloc.foldersStream,
+        initialData: mediaDeviceGalleryBloc.folders,
         builder: (context, snapshot) {
           var folders = snapshot.data;
 
           if (folders?.isNotEmpty == true) {
-            return StreamBuilder<AssetPathEntity>(
-                stream: fileGalleryBloc.selectedFolderStream,
-                initialData: fileGalleryBloc.selectedFolder,
+            return StreamBuilder<IMediaDeviceFolder>(
+                stream: mediaDeviceGalleryBloc.selectedFolderStream,
+                initialData: mediaDeviceGalleryBloc.selectedFolder,
                 builder: (context, snapshot) {
                   var selectedFolder = snapshot.data;
 
                   return InkWell(
                     onTap: () {
                       _showFolderChooserModalBottomSheet(
-                          context, fileGalleryBloc);
+                          context, mediaDeviceGalleryBloc);
                     },
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -169,28 +173,28 @@ class SingleMediaPickerPage extends StatelessWidget {
         });
   }
 
-  String _calculateFolderTitle(AssetPathEntity selectedFolder) =>
+  String _calculateFolderTitle(IMediaDeviceFolder selectedFolder) =>
       "${selectedFolder.name} (${selectedFolder.assetCount})";
 
   void _showFolderChooserModalBottomSheet(
-      BuildContext context, IFileGalleryBloc fileGalleryBloc) {
+      BuildContext context, IMediaDeviceGalleryBloc mediaDeviceGalleryBloc) {
     return showFediModalBottomSheetDialog(
         context: context,
         child: Provider.value(
-          value: fileGalleryBloc,
+          value: mediaDeviceGalleryBloc,
           child: Padding(
             padding: FediPadding.allBigPadding,
             child: ListView(
               shrinkWrap: true,
-              children: fileGalleryBloc.folders
+              children: mediaDeviceGalleryBloc.folders
                   .map((folder) => ListTile(
                         onTap: () {
-                          fileGalleryBloc.selectFolder(folder);
+                          mediaDeviceGalleryBloc.selectFolder(folder);
                           Navigator.of(context).pop();
                         },
                         title: Text(
                           _calculateFolderTitle(folder),
-                          style: folder == fileGalleryBloc.selectedFolder
+                          style: folder == mediaDeviceGalleryBloc.selectedFolder
                               ? FediTextStyles.mediumShortBoldDarkGrey
                               : FediTextStyles.mediumShortDarkGrey,
                         ),
@@ -203,22 +207,24 @@ class SingleMediaPickerPage extends StatelessWidget {
 }
 
 void goToSingleMediaPickerPage(BuildContext context,
-    {@required FilePickerSelectedFileCallback fileSelectedCallback,
-    List<FilePickerFileType> fileTypesToPick = const [
-      FilePickerFileType.image,
-      FilePickerFileType.video
+    {@required MediaDeviceFileCallback onFileSelectedCallback,
+    List<MediaDeviceFileType> typesToPick = const [
+      MediaDeviceFileType.image,
+      MediaDeviceFileType.video
     ]}) {
   Navigator.push(
     context,
     NavigationSlideBottomRouteBuilder(
-        page: DisposableProvider<IFileGalleryBloc>(
-            create: (context) {
-              return FileGalleryBloc(
-                  fileTypesToPick: fileTypesToPick,
-                  storagePermissionBloc:
-                      IStoragePermissionBloc.of(context, listen: false));
-            }, // provide parent abstract implementation by type
-            child: SingleMediaPickerPage(
-                fileSelectedCallback: fileSelectedCallback))),
+      page: DisposableProvider<IMediaDeviceGalleryBloc>(
+        create: (context) {
+          return PhotoManagerMediaDeviceGalleryBloc(
+              typesToPick: typesToPick,
+              storagePermissionBloc:
+                  IStoragePermissionBloc.of(context, listen: false));
+        }, // provide parent abstract implementation by type
+        child:
+            SingleMediaPickerPage(fileSelectedCallback: onFileSelectedCallback),
+      ),
+    ),
   );
 }
