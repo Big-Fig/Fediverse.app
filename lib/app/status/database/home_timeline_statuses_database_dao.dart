@@ -18,8 +18,7 @@ part 'home_timeline_statuses_database_dao.g.dart';
 })
 class HomeTimelineStatusesDao extends DatabaseAccessor<AppDatabase>
     with _$HomeTimelineStatusesDaoMixin {
-  @override
-  final AppDatabase db;
+    final AppDatabase db;
 
   // Called by the AppDatabase class
   HomeTimelineStatusesDao(this.db) : super(db);

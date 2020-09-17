@@ -49,11 +49,11 @@ class AccountRepository extends AsyncInitLoadingBloc
 
   @override
   Future<DbAccountWrapper> findByRemoteId(String remoteId) async =>
-      mapDataClassToItem(await dao.findByRemoteIdQuery(remoteId).getSingle());
+      mapDataClassToItem(await dao.findByRemoteId(remoteId).getSingle());
 
   @override
   Stream<DbAccountWrapper> watchByRemoteId(String remoteId) =>
-      dao.findByRemoteIdQuery(remoteId).watchSingle().map(mapDataClassToItem);
+      dao.findByRemoteId(remoteId).watchSingle().map(mapDataClassToItem);
 
   @override
   Future upsertAll(Iterable<DbAccount> items) async {
@@ -83,26 +83,26 @@ class AccountRepository extends AsyncInitLoadingBloc
 
   @override
   Future<DbAccountWrapper> findById(int id) =>
-      dao.findByIdQuery(id).map(mapDataClassToItem).getSingle();
+      dao.findById(id).map(mapDataClassToItem).getSingle();
 
   @override
   Stream<DbAccountWrapper> watchById(int id) =>
-      dao.findByIdQuery(id).map(mapDataClassToItem).watchSingle();
+      dao.findById(id).map(mapDataClassToItem).watchSingle();
 
   @override
   Future<bool> isExistWithId(int id) =>
-      dao.countByIdQuery(id).map((count) => count > 0).getSingle();
+      dao.countById(id).map((count) => count > 0).getSingle();
 
   @override
   Future<List<DbAccountWrapper>> getAll() =>
-      dao.getAllQuery().map(mapDataClassToItem).get();
+      dao.getAll().map(mapDataClassToItem).get();
 
   @override
-  Future<int> countAll() => dao.countAllQuery().getSingle();
+  Future<int> countAll() => dao.countAll().getSingle();
 
   @override
   Stream<List<DbAccountWrapper>> watchAll() =>
-      dao.getAllQuery().map(mapDataClassToItem).watch();
+      dao.getAll().map(mapDataClassToItem).watch();
 
   @override
   Future<int> insert(DbAccount item) => dao.insert(item);
@@ -161,7 +161,7 @@ class AccountRepository extends AsyncInitLoadingBloc
       @required String chatRemoteId}) async {
     if (conversationRemoteId != null) {
       var existConversationAccount = await conversationAccountsDao
-          .findByConversationRemoteId(conversationRemoteId);
+          .findByConversationRemoteId(conversationRemoteId).get();
 
       var accountsToInsert = remoteAccounts?.where((remoteAccount) {
         var found = existConversationAccount.firstWhere(
@@ -185,11 +185,11 @@ class AccountRepository extends AsyncInitLoadingBloc
     }
 
     if (chatRemoteId != null) {
-      var existChatAccount =
-          await chatAccountsDao.findByChatRemoteId(chatRemoteId);
+      var existChatAccounts =
+          await chatAccountsDao.findByChatRemoteId(chatRemoteId).get();
 
       var accountsToInsert = remoteAccounts?.where((remoteAccount) {
-        var found = existChatAccount.firstWhere(
+        var found = existChatAccounts.firstWhere(
             (chatAccount) => chatAccount.accountRemoteId == remoteAccount.id,
             orElse: () => null);
         var exist = found != null;

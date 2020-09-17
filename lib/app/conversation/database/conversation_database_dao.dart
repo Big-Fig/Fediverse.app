@@ -24,8 +24,7 @@ var _conversationAccountsAliasId = "conversationAccounts";
 })
 class ConversationDao extends DatabaseAccessor<AppDatabase>
     with _$ConversationDaoMixin {
-  @override
-  final AppDatabase db;
+    final AppDatabase db;
   $DbAccountsTable accountAlias;
   $DbConversationAccountsTable conversationAccountsAlias;
 
@@ -54,7 +53,7 @@ class ConversationDao extends DatabaseAccessor<AppDatabase>
 
   Future<int> updateByRemoteId(
       String remoteId, Insertable<DbConversation> entity) async {
-    var localId = await findLocalIdByRemoteIdQuery(remoteId).getSingle();
+    var localId = await findLocalIdByRemoteId(remoteId).getSingle();
 
     if (localId != null && localId >= 0) {
       await (update(db.dbConversations)..where((i) => i.id.equals(localId)))
@@ -82,12 +81,12 @@ class ConversationDao extends DatabaseAccessor<AppDatabase>
     assert(minimumExist || maximumExist);
 
     if (minimumExist) {
-      var biggerExp = CustomExpression<bool, BoolType>(
+      var biggerExp = CustomExpression<bool>(
           "db_conversations.remote_id > '$minimumRemoteIdExcluding'");
       query = query..where((conversation) => biggerExp);
     }
     if (maximumExist) {
-      var smallerExp = CustomExpression<bool, BoolType>(
+      var smallerExp = CustomExpression<bool>(
           "db_conversations.remote_id < '$maximumRemoteIdExcluding'");
       query = query..where((conversation) => smallerExp);
     }

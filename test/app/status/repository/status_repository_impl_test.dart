@@ -1277,17 +1277,17 @@ void main() {
   });
 
   test('addStatusesToConversation', () async {
-    expect((await statusRepository.conversationStatusesDao.getAll()).length, 0);
+    expect((await statusRepository.conversationStatusesDao.getAll().get()).length, 0);
 
     await statusRepository.addStatusesToConversation(
         ["statusRemoteId1"], "conversationRemoteId1");
 
-    expect((await statusRepository.conversationStatusesDao.getAll()).length, 1);
+    expect((await statusRepository.conversationStatusesDao.getAll().get()).length, 1);
 
     await statusRepository.addStatusesToConversation(
         ["statusRemoteId1"], "conversationRemoteId1");
 
-    expect((await statusRepository.conversationStatusesDao.getAll()).length, 1);
+    expect((await statusRepository.conversationStatusesDao.getAll().get()).length, 1);
   });
 
   test('upsertRemoteStatus duplicated parallel upsert', () async {
@@ -1331,7 +1331,7 @@ void main() {
     expect(await statusRepository.countAll(), 1);
     expect(await accountRepository.countAll(), 1);
     expect(
-        (await statusRepository.conversationStatusesDao.countAll()).length, 1);
+        (await statusRepository.conversationStatusesDao.countAll().get()).length, 1);
     expect(
         (await statusRepository.getStatuses(
           onlyInListWithRemoteId: null,

@@ -22,8 +22,7 @@ part 'scheduled_status_database_dao.g.dart';
 })
 class ScheduledStatusDao extends DatabaseAccessor<AppDatabase>
     with _$ScheduledStatusDaoMixin {
-  @override
-  final AppDatabase db;
+    final AppDatabase db;
 
   // Called by the AppDatabase class
   ScheduledStatusDao(this.db) : super(db);
@@ -46,7 +45,7 @@ class ScheduledStatusDao extends DatabaseAccessor<AppDatabase>
 
   Future<int> updateByRemoteId(
       String remoteId, Insertable<DbScheduledStatus> entity) async {
-    var localId = await findLocalIdByRemoteIdQuery(remoteId).getSingle();
+    var localId = await findLocalIdByRemoteId(remoteId).getSingle();
 
     if (localId != null && localId >= 0) {
       await (update(dbScheduledStatuses)..where((i) => i.id.equals(localId)))
@@ -74,12 +73,12 @@ class ScheduledStatusDao extends DatabaseAccessor<AppDatabase>
     assert(minimumExist || maximumExist);
 
     if (minimumExist) {
-      var biggerExp = CustomExpression<bool, BoolType>(
+      var biggerExp = CustomExpression<bool>(
           "db_scheduled_statuses.remote_id > '$minimumRemoteIdExcluding'");
       query = query..where((scheduledStatus) => biggerExp);
     }
     if (maximumExist) {
-      var smallerExp = CustomExpression<bool, BoolType>(
+      var smallerExp = CustomExpression<bool>(
           "db_scheduled_statuses.remote_id < '$maximumRemoteIdExcluding'");
       query = query..where((scheduledStatus) => smallerExp);
     }

@@ -77,11 +77,11 @@ class ConversationRepository extends AsyncInitLoadingBloc
 
   @override
   Future<DbConversationWrapper> findByRemoteId(String remoteId) async =>
-      mapDataClassToItem(await dao.findByRemoteIdQuery(remoteId).getSingle());
+      mapDataClassToItem(await dao.findByRemoteId(remoteId).getSingle());
 
   @override
   Stream<DbConversationWrapper> watchByRemoteId(String remoteId) =>
-      dao.findByRemoteIdQuery(remoteId).watchSingle().map(mapDataClassToItem);
+      dao.findByRemoteId(remoteId).watchSingle().map(mapDataClassToItem);
 
   @override
   Future upsertAll(Iterable<DbConversation> items) async {
@@ -111,26 +111,26 @@ class ConversationRepository extends AsyncInitLoadingBloc
 
   @override
   Future<DbConversationWrapper> findById(int id) =>
-      dao.findByIdQuery(id).map(mapDataClassToItem).getSingle();
+      dao.findById(id).map(mapDataClassToItem).getSingle();
 
   @override
   Stream<DbConversationWrapper> watchById(int id) =>
-      dao.findByIdQuery(id).map(mapDataClassToItem).watchSingle();
+      dao.findById(id).map(mapDataClassToItem).watchSingle();
 
   @override
   Future<bool> isExistWithId(int id) =>
-      dao.countByIdQuery(id).map((count) => count > 0).getSingle();
+      dao.countById(id).map((count) => count > 0).getSingle();
 
   @override
   Future<List<DbConversationWrapper>> getAll() =>
-      dao.getAllQuery().map(mapDataClassToItem).get();
+      dao.getAll().map(mapDataClassToItem).get();
 
   @override
-  Future<int> countAll() => dao.countAllQuery().getSingle();
+  Future<int> countAll() => dao.countAll().getSingle();
 
   @override
   Stream<List<DbConversationWrapper>> watchAll() =>
-      dao.getAllQuery().map(mapDataClassToItem).watch();
+      dao.getAll().map(mapDataClassToItem).watch();
 
   @override
   Future<int> insert(DbConversation item) => dao.insert(item);
