@@ -1,10 +1,11 @@
-import 'package:fedi/file/picker/file_picker_model.dart';
+
+import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:fedi/ui/form/field/form_field_bloc.dart';
 
 abstract class IFormFilePickerOrUrlFieldBloc extends IFormFieldBloc {
   int get maximumFileSizeInBytes;
 
-  FilePickerFile get currentFilePickerFile;
+  IMediaDeviceFile get currentMediaDeviceFile;
 
   bool get isPossibleToDeleteOriginal;
 
@@ -14,9 +15,9 @@ abstract class IFormFilePickerOrUrlFieldBloc extends IFormFieldBloc {
   bool get isOriginalExist;
   Stream<bool> get isOriginalExistStream;
 
-  Stream<FilePickerFile> get currentFilePickerFileStream;
+  Stream<IMediaDeviceFile> get currentFilePickerFileStream;
 
-  Future pickNewFile(FilePickerFile filePickerFile);
+  Future pickNewFile(IMediaDeviceFile filePickerFile);
 
   void deleteOriginal();
 }

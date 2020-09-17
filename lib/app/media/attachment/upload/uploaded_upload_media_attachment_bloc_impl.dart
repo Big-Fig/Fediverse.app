@@ -5,12 +5,12 @@ import 'package:fedi/mastodon/media/attachment/mastodon_media_attachment_model.d
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
 
-class UploadMediaAttachmentUploadedBloc extends DisposableOwner
+class UploadedUploadMediaAttachmentBloc extends DisposableOwner
     implements IUploadMediaAttachmentBloc {
   @override
   final IPleromaMediaAttachment pleromaMediaAttachment;
 
-  UploadMediaAttachmentUploadedBloc({
+  UploadedUploadMediaAttachmentBloc({
     @required this.pleromaMediaAttachment,
   });
 
@@ -29,7 +29,7 @@ class UploadMediaAttachmentUploadedBloc extends DisposableOwner
       Stream.value(uploadState);
 
   @override
-  String get filePath => pleromaMediaAttachment.url;
+  Future<String> calculateFilePath() async => pleromaMediaAttachment.url;
 
   @override
   bool get isMedia {

@@ -1,5 +1,5 @@
 import 'package:fedi/app/media/attachment/upload/upload_media_exception.dart';
-import 'package:fedi/file/picker/file_picker_model.dart';
+import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:fedi/ui/form/field/file/form_file_picker_or_url_field_bloc.dart';
 import 'package:fedi/ui/form/field/form_field_bloc_impl.dart';
 import 'package:fedi/ui/form/form_item_validation.dart';
@@ -36,16 +36,16 @@ class FormFilePickerOrUrlFieldBloc extends FormFieldBloc
       isOriginalDeletedStream.map((isOriginalDeleted) =>
           originalUrl?.isNotEmpty == true && !isOriginalDeleted);
 
-  final BehaviorSubject<FilePickerFile> _currentFilePickerFileSubject =
+  final BehaviorSubject<IMediaDeviceFile> _currentMediaDeviceFileSubject =
       BehaviorSubject.seeded(null);
 
   @override
-  FilePickerFile get currentFilePickerFile =>
-      _currentFilePickerFileSubject.value;
+  IMediaDeviceFile get currentMediaDeviceFile =>
+      _currentMediaDeviceFileSubject.value;
 
   @override
-  Stream<FilePickerFile> get currentFilePickerFileStream =>
-      _currentFilePickerFileSubject.stream;
+  Stream<IMediaDeviceFile> get currentFilePickerFileStream =>
+      _currentMediaDeviceFileSubject.stream;
 
   FormFilePickerOrUrlFieldBloc({
     @required this.originalUrl,
@@ -71,15 +71,16 @@ class FormFilePickerOrUrlFieldBloc extends FormFieldBloc
   }
 
   void _recalculateIsSomethingChanged() {
-    isChangedSubject.add(currentFilePickerFile != null || isOriginalDeleted);
+    isChangedSubject.add(currentMediaDeviceFile != null || isOriginalDeleted);
   }
 
   @override
-  Future pickNewFile(FilePickerFile filePickerFile) async {
-    var length = await filePickerFile.file.length();
+  Future pickNewFile(IMediaDeviceFile mediaDeviceFile) async {
+    var file = await mediaDeviceFile.loadFile();
+    var length = await file.length();
     if (length > maximumFileSizeInBytes) {
       throw UploadMediaExceedFileSizeLimitException(
-        file: filePickerFile.file,
+        file: file,
         maximumFileSizeInBytes: maximumFileSizeInBytes,
         currentFileSizeInBytes: length,
       );
@@ -87,18 +88,18 @@ class FormFilePickerOrUrlFieldBloc extends FormFieldBloc
 
     // restore original deletion if we have something to replace original
     isOriginalDeletedSubject.add(false);
-    if (currentFilePickerFile?.isNeedDeleteAfterUsage == true) {
-      await currentFilePickerFile.file.delete();
+    if (currentMediaDeviceFile?.isNeedDeleteAfterUsage == true) {
+      await currentMediaDeviceFile.delete();
     }
-    _currentFilePickerFileSubject.add(filePickerFile);
+    _currentMediaDeviceFileSubject.add(mediaDeviceFile);
   }
 
   @override
   void deleteOriginal() {
-    var pickedFileExist = currentFilePickerFile != null;
+    var pickedFileExist = currentMediaDeviceFile != null;
     _logger.finest(() => "deleteOriginal() pickedFileExist $pickedFileExist ");
     if (pickedFileExist) {
-      _currentFilePickerFileSubject.add(null);
+      _currentMediaDeviceFileSubject.add(null);
     } else {
       assert(isPossibleToDeleteOriginal);
       isOriginalDeletedSubject.add(true);
@@ -113,6 +114,6 @@ class FormFilePickerOrUrlFieldBloc extends FormFieldBloc
 
   @override
   void clear() {
-    _currentFilePickerFileSubject.add(null);
+    _currentMediaDeviceFileSubject.add(null);
   }
 }

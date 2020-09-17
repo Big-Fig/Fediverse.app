@@ -1,4 +1,4 @@
-import 'package:fedi/file/picker/file_picker_model.dart';
+import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:fedi/media/media_image_source_model.dart';
 import 'package:fedi/ui/form/field/file/form_file_picker_or_url_field_bloc_impl.dart';
 import 'package:fedi/ui/form/field/file/image/form_image_file_picker_or_url_field_bloc.dart';
@@ -29,20 +29,23 @@ class FormImageFilePickerOrUrlFieldBloc extends FormFilePickerOrUrlFieldBloc
           originalUrl,
           isOriginalDeleted,
         ),
-      );
+      ).asyncMap((future) async => await future);
 
   @override
-  MediaImageSource get imageSource =>
-      createMediaSource(currentFilePickerFile, originalUrl, isOriginalDeleted);
+  Future<MediaImageSource> get imageSource =>
+      createMediaSource(currentMediaDeviceFile, originalUrl, isOriginalDeleted);
 
-  MediaImageSource createMediaSource(
-      FilePickerFile filePickerFile, String url, bool isOriginalDeleted) {
+  Future<MediaImageSource> createMediaSource(
+    IMediaDeviceFile filePickerFile,
+    String url,
+    bool isOriginalDeleted,
+  ) async {
     _logger.finest(() => "createMediaSource filePickerFile = $filePickerFile "
         "url = $url "
         "isOriginalDeleted = $isOriginalDeleted ");
     MediaImageSource result;
     if (filePickerFile != null) {
-      result = MediaImageSource(file: filePickerFile.file);
+      result = MediaImageSource(file: await filePickerFile.loadFile());
     } else if (url != null && !isOriginalDeleted) {
       result = MediaImageSource(url: url);
     }

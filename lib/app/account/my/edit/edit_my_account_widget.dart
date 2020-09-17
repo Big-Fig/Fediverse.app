@@ -23,7 +23,7 @@ import 'package:fedi/app/ui/form/fedi_form_pair_edit_text_row.dart';
 import 'package:fedi/app/ui/notification_overlay/error_fedi_notification_overlay.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
-import 'package:fedi/file/picker/file_picker_model.dart';
+import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:fedi/media/media_image_source_model.dart';
 import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
 import 'package:fedi/ui/form/group/one_type/form_one_type_group_bloc.dart';
@@ -141,10 +141,10 @@ class EditMyAccountWidget extends StatelessWidget {
 
   void startChoosingFileToUploadHeader(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    goToSingleMediaPickerPage(context, fileTypesToPick: [
-      FilePickerFileType.image,
-    ], fileSelectedCallback: (FilePickerFile filePickerFile) async {
-      showEditMyAccountHeaderDialog(context, filePickerFile,
+    goToSingleMediaPickerPage(context, typesToPick: [
+      MediaDeviceFileType.image,
+    ], onFileSelectedCallback: (IMediaDeviceFile mediaDeviceFile) async {
+      showEditMyAccountHeaderDialog(context, mediaDeviceFile,
           (filePickerFile) async {
         try {
           await editMyAccountBloc.headerField.pickNewFile(filePickerFile);
@@ -160,10 +160,10 @@ class EditMyAccountWidget extends StatelessWidget {
 
   void startChoosingFileToUploadBackground(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    goToSingleMediaPickerPage(context, fileTypesToPick: [
-      FilePickerFileType.image,
-    ], fileSelectedCallback: (FilePickerFile filePickerFile) async {
-      showEditMyAccountHeaderDialog(context, filePickerFile,
+    goToSingleMediaPickerPage(context, typesToPick: [
+      MediaDeviceFileType.image,
+    ], onFileSelectedCallback: (IMediaDeviceFile mediaDeviceFile) async {
+      showEditMyAccountHeaderDialog(context, mediaDeviceFile,
           (filePickerFile) async {
         try {
           await editMyAccountBloc.backgroundField.pickNewFile(filePickerFile);
@@ -196,10 +196,10 @@ class EditMyAccountWidget extends StatelessWidget {
 
   void startChoosingFileToUploadAvatar(
       BuildContext context, IEditMyAccountBloc editMyAccountBloc) {
-    goToSingleMediaPickerPage(context, fileTypesToPick: [
-      FilePickerFileType.image,
-    ], fileSelectedCallback: (FilePickerFile filePickerFile) async {
-      showEditMyAccountAvatarDialog(context, filePickerFile,
+    goToSingleMediaPickerPage(context, typesToPick: [
+      MediaDeviceFileType.image,
+    ], onFileSelectedCallback: (IMediaDeviceFile mediaDeviceFile) async {
+      showEditMyAccountAvatarDialog(context, mediaDeviceFile,
           (filePickerFile) async {
         try {
           await editMyAccountBloc.avatarField.pickNewFile(filePickerFile);
@@ -238,10 +238,12 @@ class EditMyAccountWidget extends StatelessWidget {
       ),
       child: StreamBuilder<MediaImageSource>(
           stream: editMyAccountBloc.avatarField.imageSourceStream,
-          initialData: editMyAccountBloc.avatarField.imageSource,
           builder: (context, snapshot) {
             var source = snapshot.data;
 
+            if (source == null) {
+              return FediCircularProgressIndicator();
+            }
             if (source.url != null) {
               var url = source.url;
               return CachedNetworkImage(
@@ -300,9 +302,11 @@ class EditMyAccountWidget extends StatelessWidget {
       height: double.infinity,
       child: StreamBuilder<MediaImageSource>(
           stream: editMyAccountBloc.headerField.imageSourceStream,
-          initialData: editMyAccountBloc.headerField.imageSource,
           builder: (context, snapshot) {
             var source = snapshot.data;
+            if (source == null) {
+              return FediCircularProgressIndicator();
+            }
             if (source.url != null) {
               var url = source.url;
               return CachedNetworkImage(
@@ -336,10 +340,12 @@ class EditMyAccountWidget extends StatelessWidget {
         FediSmallVerticalSpacer(),
         StreamBuilder<MediaImageSource>(
             stream: editMyAccountBloc.backgroundField.imageSourceStream,
-            initialData: editMyAccountBloc.backgroundField.imageSource,
             builder: (context, snapshot) {
-              var imageSource = snapshot.data;
-              if (imageSource != null) {
+              var source = snapshot.data;
+              if (source == null) {
+                return FediCircularProgressIndicator();
+              }
+              if (source != null) {
                 return Stack(
                   children: <Widget>[
                     ClipRRect(
@@ -347,8 +353,7 @@ class EditMyAccountWidget extends StatelessWidget {
                       child: Container(
                           width: double.infinity,
                           height: editAccountBackgroundHeight,
-                          child:
-                              buildBackgroundImageFromImageSource(imageSource)),
+                          child: buildBackgroundImageFromImageSource(source)),
                     ),
                     Positioned(
                       bottom: FediSizes.bigPadding,
