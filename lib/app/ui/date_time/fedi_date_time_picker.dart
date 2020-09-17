@@ -451,7 +451,7 @@ class _DatePickerState extends State<_FediDatePickerComponent> {
   }
 }
 
-class FediDatePickerTheme with DiagnosticableMixin {
+class FediDatePickerTheme {
   final TextStyle cancelStyle;
   final TextStyle doneStyle;
   final TextStyle itemStyle;
