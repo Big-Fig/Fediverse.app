@@ -17,12 +17,14 @@ class MediaPickerFileGridWidget
     extends FediPaginationListWidget<IMediaDeviceFile> {
   final MediaDeviceFileCallback onFileSelectedCallback;
   final Widget loadingWidget;
+  final WidgetBuilder headerItemBuilder;
 
   MediaPickerFileGridWidget({
     Key key,
     ScrollController scrollController,
     @required this.onFileSelectedCallback,
     @required this.loadingWidget,
+    @required this.headerItemBuilder,
   }) : super(
           key: key,
           scrollController: scrollController,
@@ -38,14 +40,27 @@ class MediaPickerFileGridWidget
     assert(header == null && footer == null,
         "Grid view don't support header or footer");
 
+    var itemCount = items.length;
+    if (headerItemBuilder != null) {
+      itemCount++;
+    }
     return GridView.builder(
       gridDelegate:
           SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-      itemCount: items.length,
-      itemBuilder: (context, index) => _buildItem(
-        context,
-        items[index],
-      ),
+      itemCount: itemCount,
+      itemBuilder: (context, index) {
+        if (headerItemBuilder != null) {
+          if (index == 0) {
+            return headerItemBuilder(context);
+          } else {
+            index--;
+          }
+        }
+        return _buildItem(
+          context,
+          items[index],
+        );
+      },
     );
   }
 
