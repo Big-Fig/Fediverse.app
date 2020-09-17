@@ -50,6 +50,7 @@ class FileGalleryFolderWidget extends StatelessWidget {
           child: MediaPickerFileGridWidget(
             onFileSelectedCallback: onFileSelectedCallback,
             loadingWidget: loadingWidget,
+            headerItemBuilder: headerItemBuilder,
           ),
         ),
       ),
