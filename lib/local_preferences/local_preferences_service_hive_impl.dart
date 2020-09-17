@@ -14,7 +14,7 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
   @override
   Future internalAsyncInit() async {
     _logger.fine(() => "internalAsyncInit");
-    preferences = await Hive.openBox("local_preferences_v2");
+    preferences = await Hive.openBox("local_preferences_hive_v1");
   }
 
   @override
