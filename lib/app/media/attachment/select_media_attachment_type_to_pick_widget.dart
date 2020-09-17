@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachments_collection_bloc.dart';
 import 'package:fedi/app/media/picker/media_picker_service.dart';
@@ -117,7 +119,12 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
   Widget _buildAttachFile(BuildContext context) =>
       _buildAction(FediIcons.file, "app.media.attachment.type.file".tr(),
           () async {
-        var pickedFile = await FilePicker.getFile();
+        var pickedFilesResult = await FilePicker.platform.pickFiles();
+        var pickedFile;
+
+        if (pickedFilesResult.files?.isNotEmpty == true) {
+          pickedFile = File(pickedFilesResult.files.first.path);
+        }
         if (pickedFile != null) {
           var filePickerFile = FileMediaDeviceFile(
             type: MediaDeviceFileType.other,
@@ -135,7 +142,13 @@ class SelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
   Widget _buildAttachAudio(BuildContext context) =>
       _buildAction(FediIcons.audio, "app.media.attachment.type.audio".tr(),
           () async {
-        var pickedFile = await FilePicker.getFile(type: FileType.audio);
+        var pickedFilesResult =
+            await FilePicker.platform.pickFiles(type: FileType.audio);
+        var pickedFile;
+
+        if (pickedFilesResult.files?.isNotEmpty == true) {
+          pickedFile = File(pickedFilesResult.files.first.path);
+        }
         if (pickedFile != null) {
           var filePickerFile = FileMediaDeviceFile(
             type: MediaDeviceFileType.other,
