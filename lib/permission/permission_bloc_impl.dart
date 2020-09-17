@@ -7,7 +7,7 @@ import 'package:rxdart/rxdart.dart';
 abstract class PermissionBloc extends DisposableOwner
     implements IPermissionBloc {
   final IPermissionsService permissionsService;
-  final PermissionGroup permission;
+  final Permission permission;
 
   PermissionBloc(this.permissionsService, this.permission); // ignore:
 
