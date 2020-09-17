@@ -6,18 +6,21 @@ part 'push_model.g.dart';
 
 typedef dynamic PushMessageListener(PushMessage message);
 
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
 @HiveType(typeId: -32 + 67)
 class PushMessage {
   PushMessageType get type =>
       pushMessageTypeEnumValues.valueToEnumMap[typeString];
 
   @HiveField(1)
-  PushNotification notification;
+  final PushNotification notification;
   @HiveField(2)
-  Map<String, dynamic> data;
+  final Map<String, dynamic> data;
 
   @HiveField(3)
-  String typeString;
+  final String typeString;
 
   bool get isLaunchOrResume =>
       type == PushMessageType.launch || type == PushMessageType.resume;
@@ -44,13 +47,16 @@ EnumValues<PushMessageType> pushMessageTypeEnumValues = EnumValues({
   "resume": PushMessageType.resume,
 });
 
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
 @HiveType(typeId: -32 + 73)
 @JsonSerializable()
 class PushNotification {
   @HiveField(0)
-  String title;
+  final String title;
   @HiveField(1)
-  String body;
+  final String body;
 
   PushNotification({this.title, this.body});
 

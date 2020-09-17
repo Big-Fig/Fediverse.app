@@ -92,14 +92,17 @@ abstract class IPleromaInstance extends IMastodonInstance {
 }
 
 @JsonSerializable(explicitToJson: true)
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
 @HiveType(typeId: -32 + 58)
 class PleromaInstancePleromaPart {
   @HiveField(0)
-  PleromaInstancePleromaPartMetadata metadata;
+  final PleromaInstancePleromaPartMetadata metadata;
 
   @HiveField(1)
   @JsonKey(name: "vapid_public_key")
-  String vapidPublicKey;
+  final String vapidPublicKey;
 
   PleromaInstancePleromaPart({
     this.metadata,
@@ -139,20 +142,23 @@ class PleromaInstancePleromaPart {
 }
 
 @JsonSerializable(explicitToJson: true)
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
 @HiveType(typeId: -32 + 72)
 class PleromaInstancePleromaPartMetadataFieldLimits {
   @HiveField(0)
   @JsonKey(name: "max_fields")
-  int maxFields;
+  final int maxFields;
   @JsonKey(name: "max_remote_fields")
   @HiveField(1)
-  int maxRemoteFields;
+  final int maxRemoteFields;
   @JsonKey(name: "name_length")
   @HiveField(2)
-  int nameLength;
+  final int nameLength;
   @JsonKey(name: "value_length")
   @HiveField(3)
-  int valueLength;
+  final int valueLength;
 
   PleromaInstancePleromaPartMetadataFieldLimits({
     this.maxFields,
@@ -185,12 +191,15 @@ class PleromaInstancePleromaPartMetadataFieldLimits {
 }
 
 @JsonSerializable(explicitToJson: true)
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
 @HiveType(typeId: -32 + 60)
 class PleromaInstancePleromaPartMetadata {
   @HiveField(0)
-  List<String> features;
+  final List<String> features;
   @HiveField(1)
-  dynamic federation;
+  final dynamic federation;
 
   // "federation":{
   //            "enabled":true,
@@ -212,13 +221,13 @@ class PleromaInstancePleromaPartMetadata {
 
   @HiveField(2)
   @JsonKey(name: "post_formats")
-  List<String> postFormats;
+  final List<String> postFormats;
   @HiveField(3)
   @JsonKey(name: "account_activation_required")
-  bool accountActivationRequired;
+  final bool accountActivationRequired;
   @HiveField(4)
   @JsonKey(name: "fields_limits")
-  PleromaInstancePleromaPartMetadataFieldLimits fieldsLimits;
+  final PleromaInstancePleromaPartMetadataFieldLimits fieldsLimits;
 
   PleromaInstancePleromaPartMetadata(
       {this.features,
@@ -276,20 +285,23 @@ class PleromaInstancePleromaPartMetadata {
 }
 
 @JsonSerializable(explicitToJson: true)
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
 @HiveType(typeId: -32 + 63)
 class PleromaInstancePollLimits {
   @HiveField(0)
   @JsonKey(name: "max_expiration")
-  int maxExpiration;
+  final int maxExpiration;
   @HiveField(1)
   @JsonKey(name: "max_option_chars")
-  int maxOptionChars;
+  final int maxOptionChars;
   @HiveField(2)
   @JsonKey(name: "max_options")
-  int maxOptions;
+  final int maxOptions;
   @HiveField(3)
   @JsonKey(name: "min_expiration")
-  int minExpiration;
+  final int minExpiration;
 
   PleromaInstancePollLimits(
       {this.maxExpiration,
@@ -313,121 +325,124 @@ class PleromaInstancePollLimits {
 }
 
 @JsonSerializable(explicitToJson: true)
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
 @HiveType(typeId: -32 + 59)
 class PleromaInstance extends IPleromaInstance {
   @override
   @HiveField(0)
   @JsonKey(name: "approval_required")
-  bool approvalRequired;
+  final bool approvalRequired;
 
   @override
   @HiveField(1)
   @JsonKey(name: "avatar_upload_limit")
-  int avatarUploadLimit;
+  final int avatarUploadLimit;
 
   @override
   @HiveField(2)
   @JsonKey(name: "background_upload_limit")
-  int backgroundUploadLimit;
+  final int backgroundUploadLimit;
 
   @override
   @HiveField(3)
   @JsonKey(name: "banner_upload_limit")
-  int bannerUploadLimit;
+  final int bannerUploadLimit;
 
   @override
   @HiveField(4)
   @JsonKey(name: "contact_account")
-  PleromaAccount contactAccount;
+  final PleromaAccount contactAccount;
 
   @override
   @HiveField(5)
-  String email;
+  final String email;
 
   @override
   @HiveField(6)
-  List<String> languages;
+  final List<String> languages;
 
   @override
   @HiveField(7)
   @JsonKey(name: "max_toot_chars")
-  int maxTootChars;
+  final int maxTootChars;
 
   @override
   @HiveField(8)
-  PleromaInstancePleromaPart pleroma;
+  final PleromaInstancePleromaPart pleroma;
 
   @override
   @HiveField(9)
   @JsonKey(name: "poll_limits")
-  PleromaInstancePollLimits pollLimits;
+  final PleromaInstancePollLimits pollLimits;
 
   @override
   @HiveField(10)
-  bool registrations;
+  final bool registrations;
 
   @override
   @HiveField(11)
   @JsonKey(name: "short_description")
-  String shortDescription;
+  final String shortDescription;
 
   @override
   @HiveField(12)
-  MastodonInstanceStats stats;
+  final MastodonInstanceStats stats;
 
   @override
   @HiveField(13)
-  String thumbnail;
+  final String thumbnail;
 
   @override
   @HiveField(14)
-  String title;
+  final String title;
 
   @override
   @HiveField(15)
   @JsonKey(name: "upload_limit")
-  int uploadLimit;
+  final int uploadLimit;
 
   @override
   @HiveField(16)
-  String uri;
+  final String uri;
 
   @override
   @HiveField(17)
-  MastodonUrls urls;
+  final MastodonUrls urls;
 
   @override
   @HiveField(18)
   @JsonKey(name: "vapid_public_key")
-  String vapidPublicKey;
+  final String vapidPublicKey;
 
   @override
   @HiveField(19)
-  String version;
+  final String version;
 
   @override
   @HiveField(20)
   @JsonKey(name: "background_image")
-  String backgroundImage;
+  final String backgroundImage;
 
   @override
   @HiveField(21)
   @JsonKey(name: "chat_limit")
-  int chatLimit;
+  final int chatLimit;
 
   @override
   @HiveField(22)
-  String description;
+  final String description;
 
   @override
   @HiveField(23)
   @JsonKey(name: "description_limit")
-  int descriptionLimit;
+  final int descriptionLimit;
 
   @override
   @HiveField(24)
   @JsonKey(name: "invites_enabled")
-  bool invitesEnabled;
+  final bool invitesEnabled;
 
   PleromaInstance({
     this.approvalRequired,

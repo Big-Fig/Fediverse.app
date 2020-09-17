@@ -7,27 +7,30 @@ import 'package:hive/hive.dart';
 
 part 'auth_instance_model.g.dart';
 
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
 @HiveType(typeId: -32 + 50)
 class AuthInstance extends IPreferencesObject {
   @HiveField(0)
-  String urlSchema;
+  final String urlSchema;
   @HiveField(1)
-  String urlHost;
+  final String urlHost;
   @HiveField(2)
-  String acct;
+  final String acct;
   @HiveField(3)
-  PleromaOAuthToken token;
+  final PleromaOAuthToken token;
   @HiveField(4)
-  String authCode;
+  final String authCode;
 
   @HiveField(5)
-  bool isPleromaInstance;
+  final bool isPleromaInstance;
 
   @HiveField(6)
-  PleromaClientApplication application;
+  final PleromaClientApplication application;
 
   @HiveField(7)
-  PleromaInstance info;
+  final PleromaInstance info;
 
   bool get isSupportChats =>
       info?.pleroma?.metadata?.features?.contains("pleroma_chat_messages") ==

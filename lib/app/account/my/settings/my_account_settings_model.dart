@@ -3,24 +3,27 @@ import 'package:hive/hive.dart';
 
 part 'my_account_settings_model.g.dart';
 
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
 @HiveType(typeId: -32 + 57)
 class MyAccountSettings implements IPreferencesObject {
   @HiveField(0)
-  bool isRealtimeWebSocketsEnabled;
+  final bool isRealtimeWebSocketsEnabled;
   @HiveField(1)
-  bool isNewChatsEnabled;
+  final bool isNewChatsEnabled;
   @HiveField(2)
-  bool isAlwaysShowSpoiler;
+  final bool isAlwaysShowSpoiler;
   @HiveField(3)
-  bool isAlwaysShowNsfw;
+  final bool isAlwaysShowNsfw;
   @HiveField(4)
-  String defaultVisibility;
+  final String defaultVisibility;
   @HiveField(5)
-  bool markMediaNsfwByDefault;
+  final bool markMediaNsfwByDefault;
   @HiveField(6)
-  bool foregroundSoundForChatAndDm;
+  final bool foregroundSoundForChatAndDm;
   @HiveField(7)
-  bool foregroundSoundForMention;
+  final bool foregroundSoundForMention;
 
   MyAccountSettings({
     this.isRealtimeWebSocketsEnabled,

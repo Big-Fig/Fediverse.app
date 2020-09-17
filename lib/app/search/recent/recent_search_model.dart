@@ -3,10 +3,13 @@ import 'package:hive/hive.dart';
 
 part 'recent_search_model.g.dart';
 
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
 @HiveType(typeId: -32 + 65)
 class RecentSearchList implements IPreferencesObject {
   @HiveField(0)
-  List<String> recentItems;
+  final List<String> recentItems;
   RecentSearchList({this.recentItems});
 
   @override

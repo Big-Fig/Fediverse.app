@@ -21,7 +21,8 @@ class PleromaEmojiAdapter extends TypeAdapter<PleromaEmoji> {
       url: fields[1] as String,
       staticUrl: fields[2] as String,
       visibleInPicker: fields[3] as bool,
-    )..category = fields[4] as String;
+      category: fields[4] as String,
+    );
   }
 
   @override
@@ -101,7 +102,8 @@ PleromaEmoji _$PleromaEmojiFromJson(Map<String, dynamic> json) {
     url: json['url'] as String,
     staticUrl: json['static_url'] as String,
     visibleInPicker: json['visible_in_picker'] as bool,
-  )..category = json['category'] as String;
+    category: json['category'] as String,
+  );
 }
 
 Map<String, dynamic> _$PleromaEmojiToJson(PleromaEmoji instance) =>

@@ -19,77 +19,80 @@ abstract class IPleromaAccount implements IMastodonAccount {
   IPleromaAccountPleromaPart get pleroma;
 }
 
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
 @HiveType(typeId: -32 + 64)
 @JsonSerializable(explicitToJson: true)
 class PleromaAccount implements IPleromaAccount {
   @override
   @HiveField(0)
-  String username;
+  final String username;
   @override
   @HiveField(1)
-  String url;
+  final String url;
   @override
   @HiveField(2)
   @JsonKey(name: "statuses_count")
-  int statusesCount;
+  final int statusesCount;
   @override
   @HiveField(3)
-  String note;
+  final String note;
   @override
   @HiveField(4)
-  bool locked;
+  final bool locked;
   @override
   @HiveField(5)
-  String id;
+  final String id;
   @override
   @HiveField(6)
   @JsonKey(name: "header_static")
-  String headerStatic;
+  final String headerStatic;
   @override
   @HiveField(7)
-  String header;
+  final String header;
   @override
   @HiveField(8)
   @JsonKey(name: "following_count")
-  int followingCount;
+  final int followingCount;
   @override
   @HiveField(9)
   @JsonKey(name: "followers_count")
-  int followersCount;
+  final int followersCount;
   @override
   @HiveField(10)
-  List<PleromaField> fields;
+  final List<PleromaField> fields;
   @override
   @HiveField(11)
-  List<PleromaEmoji> emojis;
+  final List<PleromaEmoji> emojis;
   @override
   @HiveField(12)
   @JsonKey(name: "display_name")
-  String displayName;
+  final String displayName;
   @override
   @HiveField(13)
   @JsonKey(name: "created_at")
-  DateTime createdAt;
+  final DateTime createdAt;
   @override
   @HiveField(14)
-  bool bot;
+  final bool bot;
   @override
   @HiveField(15)
   @JsonKey(name: "avatar_static")
-  String avatarStatic;
+  final String avatarStatic;
   @override
   @HiveField(16)
-  String avatar;
+  final String avatar;
   @override
   @HiveField(17)
-  String acct;
+  final String acct;
   @override
   @HiveField(19)
-  PleromaAccountPleromaPart pleroma;
+  final PleromaAccountPleromaPart pleroma;
   @override
   @HiveField(20)
   @JsonKey(name: "last_status_at")
-  DateTime lastStatusAt;
+  final DateTime lastStatusAt;
 
   PleromaAccount(
       {this.username,
@@ -389,56 +392,59 @@ abstract class IPleromaAccountRelationship
   });
 }
 
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
 @HiveType(typeId: -32 + 42)
 @JsonSerializable()
 class PleromaAccountRelationship implements IPleromaAccountRelationship {
   @override
   @HiveField(1)
-  bool blocking;
+  final bool blocking;
   @override
   @JsonKey(name: "domain_blocking")
   @HiveField(2)
-  bool domainBlocking;
+  final bool domainBlocking;
   @override
   @HiveField(3)
-  bool endorsed;
+  final bool endorsed;
   @override
   @HiveField(4)
   @JsonKey(name: "followed_by")
-  bool followedBy;
+  final bool followedBy;
   @override
   @HiveField(5)
-  bool following;
+  final bool following;
   @override
   @HiveField(6)
-  String id;
+  final String id;
   @override
   @HiveField(7)
-  bool muting;
+  final bool muting;
   @override
   @HiveField(8)
   @JsonKey(name: "muting_notifications")
   @HiveField(9)
-  bool mutingNotifications;
+  final bool mutingNotifications;
   @override
   @HiveField(10)
-  bool requested;
+  final bool requested;
   @override
   @JsonKey(name: "showing_reblogs")
   @HiveField(11)
-  bool showingReblogs;
+  final bool showingReblogs;
   @override
   @HiveField(12)
-  bool subscribing;
+  final bool subscribing;
 
   @override
   @HiveField(13)
   @JsonKey(name: "blocked_by")
-  bool blockedBy;
+  final bool blockedBy;
 
   @override
   @HiveField(14)
-  String note;
+  final String note;
 
   PleromaAccountRelationship({
     this.blocking,
