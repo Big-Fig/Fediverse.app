@@ -354,6 +354,7 @@ class PleromaMyAccountPleromaPartAdapter
       deactivated: fields[16] as bool,
       allowFollowingMove: fields[17] as bool,
       unreadConversationCount: fields[18] as int,
+      skipThreadContainment: fields[20] as bool,
       notificationSettings:
           fields[19] as PleromaMyAccountPleromaPartNotificationsSettings,
     );
@@ -362,7 +363,7 @@ class PleromaMyAccountPleromaPartAdapter
   @override
   void write(BinaryWriter writer, PleromaMyAccountPleromaPart obj) {
     writer
-      ..writeByte(17)
+      ..writeByte(18)
       ..writeByte(1)
       ..write(obj.backgroundImage)
       ..writeByte(2)
@@ -396,7 +397,9 @@ class PleromaMyAccountPleromaPartAdapter
       ..writeByte(18)
       ..write(obj.unreadConversationCount)
       ..writeByte(19)
-      ..write(obj.notificationSettings);
+      ..write(obj.notificationSettings)
+      ..writeByte(20)
+      ..write(obj.skipThreadContainment);
   }
 
   @override
@@ -711,6 +714,6 @@ Map<String, dynamic> _$PleromaMyAccountPleromaPartToJson(
       'deactivated': instance.deactivated,
       'allow_following_move': instance.allowFollowingMove,
       'unread_conversation_count': instance.unreadConversationCount,
-      'skip_thread_containment': instance.skipThreadContainment,
       'notifications_settings': instance.notificationSettings?.toJson(),
+      'skip_thread_containment': instance.skipThreadContainment,
     };

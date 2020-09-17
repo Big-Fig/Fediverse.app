@@ -3,14 +3,17 @@ import 'package:hive/hive.dart';
 
 part 'timeline_settings_local_preferences_model.g.dart';
 
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
 @HiveType(typeId: -32 + 46)
 class TimelineSettingsLocalPreferences extends IPreferencesObject {
   @HiveField(1)
-  bool onlyWithMedia;
+  final bool onlyWithMedia;
   @HiveField(2)
-  bool onlyNoReplies;
+  final bool onlyNoReplies;
   @HiveField(3)
-  bool onlyNoNsfwSensitive;
+  final bool onlyNoNsfwSensitive;
 
   TimelineSettingsLocalPreferences(
       {this.onlyWithMedia, this.onlyNoReplies, this.onlyNoNsfwSensitive});

@@ -8,20 +8,23 @@ import 'package:json_annotation/json_annotation.dart';
 part 'pleroma_oauth_model.g.dart';
 
 @JsonSerializable()
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
 @HiveType(typeId: -32 + 51)
 class PleromaOAuthToken implements IPreferencesObject {
   @HiveField(0)
   @JsonKey(name: "access_token")
-  String accessToken;
+  final String accessToken;
   @HiveField(1)
   @JsonKey(name: "token_type")
-  String tokenType;
+  final String tokenType;
 
   @HiveField(2)
-  dynamic scope;
+  final dynamic scope;
   @JsonKey(name: "created_at")
   @HiveField(3)
-  dynamic createdAt;
+  final dynamic createdAt;
 
   PleromaOAuthToken({
     this.accessToken,

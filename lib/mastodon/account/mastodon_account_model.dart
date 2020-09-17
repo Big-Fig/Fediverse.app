@@ -52,11 +52,11 @@ abstract class IMastodonAccountRelationship {
 
   bool get followedBy;
 
-  bool following;
+  bool get following;
 
   String get id;
 
-  bool muting;
+  bool get muting;
 
   bool get mutingNotifications;
 
