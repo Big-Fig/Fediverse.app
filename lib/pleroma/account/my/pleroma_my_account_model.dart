@@ -571,6 +571,7 @@ class PleromaMyAccount implements IPleromaMyAccount, IPreferencesObject {
       List<PleromaMyAccount>.from(
           json.decode(str).map((x) => PleromaMyAccount.fromJson(x)));
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaMyAccountToJson(this);
 
   String toJsonString() => jsonEncode(_$PleromaMyAccountToJson(this));

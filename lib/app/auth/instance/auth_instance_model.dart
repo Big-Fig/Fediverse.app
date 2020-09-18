@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:fedi/local_preferences/local_preferences_model.dart';
 import 'package:fedi/pleroma/application/pleroma_application_model.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
 import 'package:fedi/pleroma/oauth/pleroma_oauth_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'auth_instance_model.g.dart';
 
@@ -12,19 +15,24 @@ part 'auth_instance_model.g.dart';
 // which not exist in Hive 0.x
 @HiveType()
 // @HiveType(typeId: -32 + 50)
+@JsonSerializable(explicitToJson: true)
 class AuthInstance extends IPreferencesObject {
   @HiveField(0)
+  @JsonKey(name: "url_schema")
   final String urlSchema;
   @HiveField(1)
+  @JsonKey(name: "url_host")
   final String urlHost;
   @HiveField(2)
   final String acct;
   @HiveField(3)
   final PleromaOAuthToken token;
   @HiveField(4)
+  @JsonKey(name: "auth_code")
   final String authCode;
 
   @HiveField(5)
+  @JsonKey(name: "is_pleroma_instance")
   final bool isPleromaInstance;
 
   @HiveField(6)
@@ -111,4 +119,19 @@ class AuthInstance extends IPreferencesObject {
       info: info ?? this.info,
     );
   }
+
+  factory AuthInstance.fromJson(Map<String, dynamic> json) =>
+      _$AuthInstanceFromJson(json);
+
+  factory AuthInstance.fromJsonString(String jsonString) =>
+      _$AuthInstanceFromJson(jsonDecode(jsonString));
+
+  static List<AuthInstance> listFromJsonString(String str) =>
+      List<AuthInstance>.from(
+          json.decode(str).map((x) => AuthInstance.fromJson(x)));
+
+  @override
+  Map<String, dynamic> toJson() => _$AuthInstanceToJson(this);
+
+  String toJsonString() => jsonEncode(_$AuthInstanceToJson(this));
 }

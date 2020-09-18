@@ -47,3 +47,39 @@ class AuthInstanceAdapter extends TypeAdapter<AuthInstance> {
       ..write(obj.info);
   }
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+AuthInstance _$AuthInstanceFromJson(Map<String, dynamic> json) {
+  return AuthInstance(
+    urlSchema: json['url_schema'] as String,
+    urlHost: json['url_host'] as String,
+    acct: json['acct'] as String,
+    token: json['token'] == null
+        ? null
+        : PleromaOAuthToken.fromJson(json['token'] as Map<String, dynamic>),
+    authCode: json['auth_code'] as String,
+    isPleromaInstance: json['is_pleroma_instance'] as bool,
+    application: json['application'] == null
+        ? null
+        : PleromaClientApplication.fromJson(
+            json['application'] as Map<String, dynamic>),
+    info: json['info'] == null
+        ? null
+        : PleromaInstance.fromJson(json['info'] as Map<String, dynamic>),
+  );
+}
+
+Map<String, dynamic> _$AuthInstanceToJson(AuthInstance instance) =>
+    <String, dynamic>{
+      'url_schema': instance.urlSchema,
+      'url_host': instance.urlHost,
+      'acct': instance.acct,
+      'token': instance.token?.toJson(),
+      'auth_code': instance.authCode,
+      'is_pleroma_instance': instance.isPleromaInstance,
+      'application': instance.application?.toJson(),
+      'info': instance.info?.toJson(),
+    };

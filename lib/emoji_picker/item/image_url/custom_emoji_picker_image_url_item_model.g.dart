@@ -30,3 +30,22 @@ class CustomEmojiPickerImageUrlItemAdapter
       ..write(obj.imageUrl);
   }
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+CustomEmojiPickerImageUrlItem _$CustomEmojiPickerImageUrlItemFromJson(
+    Map<String, dynamic> json) {
+  return CustomEmojiPickerImageUrlItem(
+    imageUrl: json['image_url'] as String,
+    name: json['name'] as String,
+  );
+}
+
+Map<String, dynamic> _$CustomEmojiPickerImageUrlItemToJson(
+        CustomEmojiPickerImageUrlItem instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'image_url': instance.imageUrl,
+    };

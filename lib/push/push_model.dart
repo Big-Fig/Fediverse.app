@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:fedi/enum/enum_values.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -11,6 +13,7 @@ typedef dynamic PushMessageListener(PushMessage message);
 // which not exist in Hive 0.x
 @HiveType()
 // @HiveType(typeId: -32 + 67)
+@JsonSerializable(explicitToJson: true)
 class PushMessage {
   PushMessageType get type =>
       pushMessageTypeEnumValues.valueToEnumMap[typeString];
@@ -34,6 +37,20 @@ class PushMessage {
         ' notification: $notification,'
         ' data: $data}';
   }
+
+  factory PushMessage.fromJson(Map<String, dynamic> json) =>
+      _$PushMessageFromJson(json);
+
+  factory PushMessage.fromJsonString(String jsonString) =>
+      _$PushMessageFromJson(jsonDecode(jsonString));
+
+  static List<PushMessage> listFromJsonString(String str) =>
+      List<PushMessage>.from(
+          json.decode(str).map((x) => PushMessage.fromJson(x)));
+
+  Map<String, dynamic> toJson() => _$PushMessageToJson(this);
+
+  String toJsonString() => jsonEncode(_$PushMessageToJson(this));
 }
 
 enum PushMessageType {
@@ -53,7 +70,7 @@ EnumValues<PushMessageType> pushMessageTypeEnumValues = EnumValues({
 // which not exist in Hive 0.x
 @HiveType()
 // @HiveType(typeId: -32 + 73)
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class PushNotification {
   @HiveField(0)
   final String title;

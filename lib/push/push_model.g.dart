@@ -61,6 +61,24 @@ class PushNotificationAdapter extends TypeAdapter<PushNotification> {
 // JsonSerializableGenerator
 // **************************************************************************
 
+PushMessage _$PushMessageFromJson(Map<String, dynamic> json) {
+  return PushMessage(
+    typeString: json['typeString'] as String,
+    notification: json['notification'] == null
+        ? null
+        : PushNotification.fromJson(
+            json['notification'] as Map<String, dynamic>),
+    data: json['data'] as Map<String, dynamic>,
+  );
+}
+
+Map<String, dynamic> _$PushMessageToJson(PushMessage instance) =>
+    <String, dynamic>{
+      'notification': instance.notification?.toJson(),
+      'data': instance.data,
+      'typeString': instance.typeString,
+    };
+
 PushNotification _$PushNotificationFromJson(Map<String, dynamic> json) {
   return PushNotification(
     title: json['title'] as String,

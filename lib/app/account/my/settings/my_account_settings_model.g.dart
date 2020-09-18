@@ -47,3 +47,34 @@ class MyAccountSettingsAdapter extends TypeAdapter<MyAccountSettings> {
       ..write(obj.foregroundSoundForMention);
   }
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+MyAccountSettings _$MyAccountSettingsFromJson(Map<String, dynamic> json) {
+  return MyAccountSettings(
+    isRealtimeWebSocketsEnabled:
+        json['is_realtime_web_sockets_enabled'] as bool,
+    isNewChatsEnabled: json['is_new_chats_enabled'] as bool,
+    isAlwaysShowSpoiler: json['is_always_show_spoiler'] as bool,
+    isAlwaysShowNsfw: json['is_always_show_nsfw'] as bool,
+    defaultVisibility: json['default_visibility'] as String,
+    markMediaNsfwByDefault: json['mark_media_nsfw_by_default'] as bool,
+    foregroundSoundForChatAndDm:
+        json['foreground_sound_for_chat_and_dm'] as bool,
+    foregroundSoundForMention: json['foreground_sound_mention'] as bool,
+  );
+}
+
+Map<String, dynamic> _$MyAccountSettingsToJson(MyAccountSettings instance) =>
+    <String, dynamic>{
+      'is_realtime_web_sockets_enabled': instance.isRealtimeWebSocketsEnabled,
+      'is_new_chats_enabled': instance.isNewChatsEnabled,
+      'is_always_show_spoiler': instance.isAlwaysShowSpoiler,
+      'is_always_show_nsfw': instance.isAlwaysShowNsfw,
+      'default_visibility': instance.defaultVisibility,
+      'mark_media_nsfw_by_default': instance.markMediaNsfwByDefault,
+      'foreground_sound_for_chat_and_dm': instance.foregroundSoundForChatAndDm,
+      'foreground_sound_mention': instance.foregroundSoundForMention,
+    };

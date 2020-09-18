@@ -27,3 +27,23 @@ class MyAccountRemoteWrapperAdapter
       ..write(obj.remoteAccount);
   }
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+MyAccountRemoteWrapper _$MyAccountRemoteWrapperFromJson(
+    Map<String, dynamic> json) {
+  return MyAccountRemoteWrapper(
+    remoteAccount: json['remote_account'] == null
+        ? null
+        : PleromaMyAccount.fromJson(
+            json['remote_account'] as Map<String, dynamic>),
+  );
+}
+
+Map<String, dynamic> _$MyAccountRemoteWrapperToJson(
+        MyAccountRemoteWrapper instance) =>
+    <String, dynamic>{
+      'remote_account': instance.remoteAccount?.toJson(),
+    };

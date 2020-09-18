@@ -21,7 +21,9 @@ abstract class ILocalPreferencesService extends DisposableOwner
   Future<bool> setBoolPreference(String key, bool value);
 
   Future<bool> setObjectPreference(
-      String key, IPreferencesObject preferencesObject);
+    String key,
+    IPreferencesObject preferencesObject,
+  );
 
   bool getBoolPreference(
     String key,
@@ -31,7 +33,10 @@ abstract class ILocalPreferencesService extends DisposableOwner
 
   int getIntPreference(String key);
 
-  T getObjectPreference<T>(String key);
+  T getObjectPreference<T>(
+    String key,
+    T jsonConverter(Map<String, dynamic> jsonData),
+  );
 
   static ILocalPreferencesService of(BuildContext context,
           {bool listen = true}) =>

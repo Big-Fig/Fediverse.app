@@ -27,3 +27,25 @@ class EmojiPickerCustomImageUrlCategoryItemsAdapter
       ..write(obj.items);
   }
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+EmojiPickerCustomImageUrlCategoryItems
+    _$EmojiPickerCustomImageUrlCategoryItemsFromJson(
+        Map<String, dynamic> json) {
+  return EmojiPickerCustomImageUrlCategoryItems(
+    items: (json['items'] as List)
+        ?.map((e) => e == null
+            ? null
+            : CustomEmojiPickerImageUrlItem.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+  );
+}
+
+Map<String, dynamic> _$EmojiPickerCustomImageUrlCategoryItemsToJson(
+        EmojiPickerCustomImageUrlCategoryItems instance) =>
+    <String, dynamic>{
+      'items': instance.items?.map((e) => e?.toJson())?.toList(),
+    };

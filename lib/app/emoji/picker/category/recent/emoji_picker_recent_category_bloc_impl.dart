@@ -2,7 +2,9 @@ import 'package:fedi/app/emoji/picker/category/recent/emoji_picker_recent_catego
 import 'package:fedi/app/emoji/picker/category/recent/emoji_picker_recent_category_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/emoji_picker/category/custom_emoji_picker_category_bloc.dart';
+import 'package:fedi/emoji_picker/item/code/custom_emoji_picker_code_item_model.dart';
 import 'package:fedi/emoji_picker/item/custom_emoji_picker_item_model.dart';
+import 'package:fedi/emoji_picker/item/image_url/custom_emoji_picker_image_url_item_model.dart';
 import 'package:flutter/widgets.dart';
 
 class EmojiPickerRecentCategoryBloc extends AsyncInitLoadingBloc
@@ -29,8 +31,11 @@ class EmojiPickerRecentCategoryBloc extends AsyncInitLoadingBloc
   void onEmojiSelected(CustomEmojiPickerItem emojiItem) {
     if (!items.contains(emojiItem)) {
       items.add(emojiItem);
-      preferenceBloc
-          .setValue(EmojiPickerRecentCategoryItemsList(recentItems: items));
+      preferenceBloc.setValue(EmojiPickerRecentCategoryItemsList(
+          recentCodeItems:
+              items?.whereType<CustomEmojiPickerCodeItem>()?.toList(),
+          recentImageItems:
+              items?.whereType<CustomEmojiPickerImageUrlItem>()?.toList()));
     }
   }
 }

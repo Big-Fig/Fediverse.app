@@ -29,3 +29,24 @@ class PushHandlerMessageAdapter extends TypeAdapter<PushHandlerMessage> {
       ..write(obj.pushMessage);
   }
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+PushHandlerMessage _$PushHandlerMessageFromJson(Map<String, dynamic> json) {
+  return PushHandlerMessage(
+    body: json['body'] == null
+        ? null
+        : PleromaPushMessageBody.fromJson(json['body'] as Map<String, dynamic>),
+    pushMessage: json['push_message'] == null
+        ? null
+        : PushMessage.fromJson(json['push_message'] as Map<String, dynamic>),
+  );
+}
+
+Map<String, dynamic> _$PushHandlerMessageToJson(PushHandlerMessage instance) =>
+    <String, dynamic>{
+      'body': instance.body?.toJson(),
+      'push_message': instance.pushMessage?.toJson(),
+    };

@@ -7,7 +7,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_oauth_model.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
@@ -63,6 +63,7 @@ class PleromaOAuthToken implements IPreferencesObject {
   factory PleromaOAuthToken.fromJsonString(String jsonString) =>
       _$PleromaOAuthTokenFromJson(jsonDecode(jsonString));
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaOAuthTokenToJson(this);
 }
 

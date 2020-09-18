@@ -8,5 +8,10 @@ class AuthInstanceListLocalPreferenceBloc
     implements IAuthInstanceListLocalPreferenceBloc {
   AuthInstanceListLocalPreferenceBloc(
       ILocalPreferencesService preferencesService)
-      : super(preferencesService, "instance.list", 1);
+      : super(
+          preferencesService,
+          "instance.list",
+          1,
+          (json) => AuthInstanceList.fromJson(json),
+        );
 }

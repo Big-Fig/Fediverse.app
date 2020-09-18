@@ -27,3 +27,24 @@ class PushHandlerUnhandledListAdapter
       ..write(obj.messages);
   }
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+PushHandlerUnhandledList _$PushHandlerUnhandledListFromJson(
+    Map<String, dynamic> json) {
+  return PushHandlerUnhandledList(
+    messages: (json['messages'] as List)
+        ?.map((e) => e == null
+            ? null
+            : PushHandlerMessage.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+  );
+}
+
+Map<String, dynamic> _$PushHandlerUnhandledListToJson(
+        PushHandlerUnhandledList instance) =>
+    <String, dynamic>{
+      'messages': instance.messages?.map((e) => e?.toJson())?.toList(),
+    };
