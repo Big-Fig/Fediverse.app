@@ -27,7 +27,7 @@ import 'package:fedi/app/share/external/external_share_service_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/connection/connection_service_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:fedi/local_preferences/local_preferences_service_hive_impl.dart';
+import 'package:fedi/local_preferences/hive_local_preferences_service_impl.dart';
 import 'package:fedi/permission/camera_permission_bloc.dart';
 import 'package:fedi/permission/camera_permission_bloc_impl.dart';
 import 'package:fedi/permission/mic_permission_bloc.dart';

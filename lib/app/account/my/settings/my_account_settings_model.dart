@@ -6,7 +6,8 @@ part 'my_account_settings_model.g.dart';
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
-@HiveType(typeId: -32 + 57)
+@HiveType()
+// @HiveType(typeId: -32 + 57)
 class MyAccountSettings implements IPreferencesObject {
   @HiveField(0)
   final bool isRealtimeWebSocketsEnabled;

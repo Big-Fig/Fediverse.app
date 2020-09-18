@@ -8,13 +8,10 @@ part of 'pleroma_field_model.dart';
 
 class PleromaFieldAdapter extends TypeAdapter<PleromaField> {
   @override
-  final int typeId = 5;
-
-  @override
   PleromaField read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    var numOfFields = reader.readByte();
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaField(
       name: fields[0] as String,
@@ -34,16 +31,6 @@ class PleromaFieldAdapter extends TypeAdapter<PleromaField> {
       ..writeByte(2)
       ..write(obj.verifiedAt);
   }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PleromaFieldAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
 }
 
 // **************************************************************************

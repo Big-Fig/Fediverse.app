@@ -7,7 +7,8 @@ part 'emoji_picker_custom_image_url_category_model.g.dart';
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
-@HiveType(typeId: -32 + 68)
+@HiveType()
+// @HiveType(typeId: -32 + 68)
 class EmojiPickerCustomImageUrlCategoryItems implements IPreferencesObject {
   @HiveField(0)
   final List<CustomEmojiPickerImageUrlItem> items;

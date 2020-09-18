@@ -9,13 +9,10 @@ part of 'pleroma_instance_model.dart';
 class PleromaInstancePleromaPartAdapter
     extends TypeAdapter<PleromaInstancePleromaPart> {
   @override
-  final int typeId = 26;
-
-  @override
   PleromaInstancePleromaPart read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    var numOfFields = reader.readByte();
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaInstancePleromaPart(
       metadata: fields[0] as PleromaInstancePleromaPartMetadata,
@@ -32,28 +29,15 @@ class PleromaInstancePleromaPartAdapter
       ..writeByte(1)
       ..write(obj.vapidPublicKey);
   }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PleromaInstancePleromaPartAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
 }
 
 class PleromaInstancePleromaPartMetadataFieldLimitsAdapter
     extends TypeAdapter<PleromaInstancePleromaPartMetadataFieldLimits> {
   @override
-  final int typeId = 40;
-
-  @override
   PleromaInstancePleromaPartMetadataFieldLimits read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    var numOfFields = reader.readByte();
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaInstancePleromaPartMetadataFieldLimits(
       maxFields: fields[0] as int,
@@ -77,28 +61,15 @@ class PleromaInstancePleromaPartMetadataFieldLimitsAdapter
       ..writeByte(3)
       ..write(obj.valueLength);
   }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PleromaInstancePleromaPartMetadataFieldLimitsAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
 }
 
 class PleromaInstancePleromaPartMetadataAdapter
     extends TypeAdapter<PleromaInstancePleromaPartMetadata> {
   @override
-  final int typeId = 28;
-
-  @override
   PleromaInstancePleromaPartMetadata read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    var numOfFields = reader.readByte();
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaInstancePleromaPartMetadata(
       features: (fields[0] as List)?.cast<String>(),
@@ -124,28 +95,15 @@ class PleromaInstancePleromaPartMetadataAdapter
       ..writeByte(4)
       ..write(obj.fieldsLimits);
   }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PleromaInstancePleromaPartMetadataAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
 }
 
 class PleromaInstancePollLimitsAdapter
     extends TypeAdapter<PleromaInstancePollLimits> {
   @override
-  final int typeId = 31;
-
-  @override
   PleromaInstancePollLimits read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    var numOfFields = reader.readByte();
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaInstancePollLimits(
       maxExpiration: fields[0] as int,
@@ -168,27 +126,14 @@ class PleromaInstancePollLimitsAdapter
       ..writeByte(3)
       ..write(obj.minExpiration);
   }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PleromaInstancePollLimitsAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
 }
 
 class PleromaInstanceAdapter extends TypeAdapter<PleromaInstance> {
   @override
-  final int typeId = 27;
-
-  @override
   PleromaInstance read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    var numOfFields = reader.readByte();
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaInstance(
       approvalRequired: fields[0] as bool,
@@ -274,16 +219,6 @@ class PleromaInstanceAdapter extends TypeAdapter<PleromaInstance> {
       ..writeByte(24)
       ..write(obj.invitesEnabled);
   }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PleromaInstanceAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
 }
 
 // **************************************************************************

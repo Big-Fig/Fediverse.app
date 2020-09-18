@@ -95,7 +95,8 @@ abstract class IPleromaInstance extends IMastodonInstance {
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
-@HiveType(typeId: -32 + 58)
+@HiveType()
+// @HiveType(typeId: -32 + 58)
 class PleromaInstancePleromaPart {
   @HiveField(0)
   final PleromaInstancePleromaPartMetadata metadata;
@@ -145,7 +146,8 @@ class PleromaInstancePleromaPart {
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
-@HiveType(typeId: -32 + 72)
+@HiveType()
+// @HiveType(typeId: -32 + 72)
 class PleromaInstancePleromaPartMetadataFieldLimits {
   @HiveField(0)
   @JsonKey(name: "max_fields")
@@ -194,7 +196,8 @@ class PleromaInstancePleromaPartMetadataFieldLimits {
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
-@HiveType(typeId: -32 + 60)
+@HiveType()
+// @HiveType(typeId: -32 + 60)
 class PleromaInstancePleromaPartMetadata {
   @HiveField(0)
   final List<String> features;
@@ -288,7 +291,8 @@ class PleromaInstancePleromaPartMetadata {
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
-@HiveType(typeId: -32 + 63)
+@HiveType()
+// @HiveType(typeId: -32 + 63)
 class PleromaInstancePollLimits {
   @HiveField(0)
   @JsonKey(name: "max_expiration")
@@ -328,7 +332,8 @@ class PleromaInstancePollLimits {
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
-@HiveType(typeId: -32 + 59)
+@HiveType()
+// @HiveType(typeId: -32 + 59)
 class PleromaInstance extends IPleromaInstance {
   @override
   @HiveField(0)

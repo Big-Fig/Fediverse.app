@@ -8,13 +8,10 @@ part of 'pleroma_tag_model.dart';
 
 class PleromaTagAdapter extends TypeAdapter<PleromaTag> {
   @override
-  final int typeId = 42;
-
-  @override
   PleromaTag read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    var numOfFields = reader.readByte();
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaTag(
       name: fields[0] as String,
@@ -34,16 +31,6 @@ class PleromaTagAdapter extends TypeAdapter<PleromaTag> {
       ..writeByte(2)
       ..write(obj.history);
   }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PleromaTagAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
 }
 
 // **************************************************************************

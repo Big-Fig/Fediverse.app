@@ -9,13 +9,10 @@ part of 'pleroma_push_model.dart';
 class PleromaPushMessageBodyAdapter
     extends TypeAdapter<PleromaPushMessageBody> {
   @override
-  final int typeId = 24;
-
-  @override
   PleromaPushMessageBody read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    var numOfFields = reader.readByte();
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaPushMessageBody(
       notificationId: fields[0] as String,
@@ -38,16 +35,6 @@ class PleromaPushMessageBodyAdapter
       ..writeByte(3)
       ..write(obj.notificationType);
   }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PleromaPushMessageBodyAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
 }
 
 // **************************************************************************

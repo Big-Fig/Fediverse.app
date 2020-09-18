@@ -9,13 +9,10 @@ part of 'pleroma_application_model.dart';
 class PleromaClientApplicationAdapter
     extends TypeAdapter<PleromaClientApplication> {
   @override
-  final int typeId = 20;
-
-  @override
   PleromaClientApplication read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    var numOfFields = reader.readByte();
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaClientApplication(
       name: fields[0] as String,
@@ -41,16 +38,6 @@ class PleromaClientApplicationAdapter
       ..writeByte(4)
       ..write(obj.clientSecret);
   }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PleromaClientApplicationAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
 }
 
 // **************************************************************************

@@ -9,13 +9,10 @@ part of 'timeline_settings_local_preferences_model.dart';
 class TimelineSettingsLocalPreferencesAdapter
     extends TypeAdapter<TimelineSettingsLocalPreferences> {
   @override
-  final int typeId = 14;
-
-  @override
   TimelineSettingsLocalPreferences read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    var numOfFields = reader.readByte();
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return TimelineSettingsLocalPreferences(
       onlyWithMedia: fields[1] as bool,
@@ -35,14 +32,4 @@ class TimelineSettingsLocalPreferencesAdapter
       ..writeByte(3)
       ..write(obj.onlyNoNsfwSensitive);
   }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is TimelineSettingsLocalPreferencesAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
 }

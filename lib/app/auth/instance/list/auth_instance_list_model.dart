@@ -7,7 +7,8 @@ part 'auth_instance_list_model.g.dart';
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
-@HiveType(typeId: -32 + 49)
+@HiveType()
+// @HiveType(typeId: -32 + 49)
 class AuthInstanceList extends IPreferencesObject {
   @HiveField(0)
   final List<AuthInstance> instances;
