@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/local_preferences/local_preferences_model.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_model.dart';
@@ -6,6 +8,7 @@ import 'package:fedi/pleroma/emoji/pleroma_emoji_model.dart';
 import 'package:fedi/pleroma/field/pleroma_field_model.dart';
 import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
 import 'package:hive/hive.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'my_account_model.g.dart';
 
@@ -23,8 +26,10 @@ abstract class IMyAccount extends IAccount implements IPreferencesObject {
 // which not exist in Hive 0.x
 @HiveType()
 // @HiveType(typeId: -32 + 53)
+@JsonSerializable(explicitToJson: true)
 class MyAccountRemoteWrapper extends IMyAccount {
   @HiveField(0)
+  @JsonKey(name: "remote_account")
   final PleromaMyAccount remoteAccount;
 
   MyAccountRemoteWrapper({this.remoteAccount});
@@ -229,6 +234,22 @@ class MyAccountRemoteWrapper extends IMyAccount {
 
   @override
   String get pleromaBackgroundImage => remoteAccount.pleroma?.backgroundImage;
+
+
+  factory MyAccountRemoteWrapper.fromJson(Map<String, dynamic> json) =>
+      _$MyAccountRemoteWrapperFromJson(json);
+
+  factory MyAccountRemoteWrapper.fromJsonString(String jsonString) =>
+      _$MyAccountRemoteWrapperFromJson(jsonDecode(jsonString));
+
+  static List<MyAccountRemoteWrapper> listFromJsonString(String str) =>
+      List<MyAccountRemoteWrapper>.from(
+          json.decode(str).map((x) => MyAccountRemoteWrapper.fromJson(x)));
+
+  @override
+  Map<String, dynamic> toJson() => _$MyAccountRemoteWrapperToJson(this);
+
+  String toJsonString() => jsonEncode(_$MyAccountRemoteWrapperToJson(this));
 }
 
 class SelfActionNotPossibleException implements Exception {

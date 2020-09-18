@@ -8,5 +8,10 @@ class MyAccountLocalPreferenceBloc
     implements IMyAccountLocalPreferenceBloc {
   MyAccountLocalPreferenceBloc(
       ILocalPreferencesService preferencesService, String acctAtHost)
-      : super(preferencesService, "account.my.$acctAtHost", 1);
+      : super(
+          preferencesService,
+          "account.my.$acctAtHost",
+          1,
+          (json) => MyAccountRemoteWrapper.fromJson(json),
+        );
 }

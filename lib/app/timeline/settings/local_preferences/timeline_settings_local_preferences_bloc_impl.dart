@@ -8,9 +8,17 @@ class TimelineSettingsLocalPreferencesBloc
     implements ITimelineSettingsLocalPreferencesBloc {
   TimelineSettingsLocalPreferencesBloc(
       ILocalPreferencesService preferencesService, String userAtHost)
-      : super(preferencesService, "$userAtHost.timeline.display", 1);
+      : super(
+          preferencesService,
+          "$userAtHost.timeline.display",
+          1,
+          (json) => TimelineSettingsLocalPreferences.fromJson(json),
+        );
 
   @override
-  TimelineSettingsLocalPreferences get defaultValue => TimelineSettingsLocalPreferences(
-      onlyNoReplies: false, onlyWithMedia: false, onlyNoNsfwSensitive: false);
+  TimelineSettingsLocalPreferences get defaultValue =>
+      TimelineSettingsLocalPreferences(
+          onlyNoReplies: false,
+          onlyWithMedia: false,
+          onlyNoNsfwSensitive: false);
 }

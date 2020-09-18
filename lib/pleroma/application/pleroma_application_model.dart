@@ -56,7 +56,7 @@ class PleromaApplication implements IPleromaApplication {
 // which not exist in Hive 0.x
 @HiveType()
 // @HiveType(typeId: -32 + 52)
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class PleromaClientApplication
     implements IPleromaClientApplication, IPreferencesObject {
   @HiveField(0)
@@ -88,6 +88,7 @@ class PleromaClientApplication
   factory PleromaClientApplication.fromJsonString(String jsonString) =>
       _$PleromaClientApplicationFromJson(jsonDecode(jsonString));
 
+  @override
   Map<String, dynamic> toJson() => _$PleromaClientApplicationToJson(this);
 
   String toJsonString() => jsonEncode(_$PleromaClientApplicationToJson(this));

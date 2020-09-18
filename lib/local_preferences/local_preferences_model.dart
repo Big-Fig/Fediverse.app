@@ -1,1 +1,3 @@
-abstract class IPreferencesObject {}
+abstract class IPreferencesObject {
+  Map<String, dynamic> toJson();
+}

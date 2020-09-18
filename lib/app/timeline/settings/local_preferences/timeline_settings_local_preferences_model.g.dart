@@ -33,3 +33,24 @@ class TimelineSettingsLocalPreferencesAdapter
       ..write(obj.onlyNoNsfwSensitive);
   }
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+TimelineSettingsLocalPreferences _$TimelineSettingsLocalPreferencesFromJson(
+    Map<String, dynamic> json) {
+  return TimelineSettingsLocalPreferences(
+    onlyWithMedia: json['only_with_media'] as bool,
+    onlyNoReplies: json['only_no_replies'] as bool,
+    onlyNoNsfwSensitive: json['only_no_nsfw_sensitive'] as bool,
+  );
+}
+
+Map<String, dynamic> _$TimelineSettingsLocalPreferencesToJson(
+        TimelineSettingsLocalPreferences instance) =>
+    <String, dynamic>{
+      'only_with_media': instance.onlyWithMedia,
+      'only_no_replies': instance.onlyNoReplies,
+      'only_no_nsfw_sensitive': instance.onlyNoNsfwSensitive,
+    };

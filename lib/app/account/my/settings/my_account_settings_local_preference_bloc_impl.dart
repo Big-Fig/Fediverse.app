@@ -8,7 +8,12 @@ class MyAccountSettingsLocalPreferenceBloc
     implements IMyAccountSettingsLocalPreferenceBloc {
   MyAccountSettingsLocalPreferenceBloc(
       String userAtHost, ILocalPreferencesService preferencesService)
-      : super(preferencesService, "account.my.$userAtHost.settings", 1);
+      : super(
+          preferencesService,
+          "account.my.$userAtHost.settings",
+          1,
+          (json) => MyAccountSettings.fromJson(json),
+        );
 
   @override
   MyAccountSettings get defaultValue =>

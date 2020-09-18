@@ -8,5 +8,10 @@ class EmojiPickerRecentCategoryLocalPreferenceBloc
     implements IEmojiPickerRecentCategoryLocalPreferenceBloc {
   EmojiPickerRecentCategoryLocalPreferenceBloc(
       ILocalPreferencesService preferencesService, String userAtHost)
-      : super(preferencesService, "$userAtHost.emoji.recent", 1);
+      : super(
+          preferencesService,
+          "$userAtHost.emoji.recent",
+          1,
+          (json) => EmojiPickerRecentCategoryItemsList.fromJson(json),
+        );
 }

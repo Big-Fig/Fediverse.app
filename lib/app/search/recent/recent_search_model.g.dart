@@ -26,3 +26,19 @@ class RecentSearchListAdapter extends TypeAdapter<RecentSearchList> {
       ..write(obj.recentItems);
   }
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+RecentSearchList _$RecentSearchListFromJson(Map<String, dynamic> json) {
+  return RecentSearchList(
+    recentItems:
+        (json['recentItems'] as List)?.map((e) => e as String)?.toList(),
+  );
+}
+
+Map<String, dynamic> _$RecentSearchListToJson(RecentSearchList instance) =>
+    <String, dynamic>{
+      'recentItems': instance.recentItems,
+    };

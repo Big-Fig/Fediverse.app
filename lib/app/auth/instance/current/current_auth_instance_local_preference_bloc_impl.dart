@@ -8,5 +8,10 @@ class CurrentAuthInstanceLocalPreferenceBloc
     implements ICurrentAuthInstanceLocalPreferenceBloc {
   CurrentAuthInstanceLocalPreferenceBloc(
       ILocalPreferencesService preferencesService)
-      : super(preferencesService, "instance.current", 1);
+      : super(
+          preferencesService,
+          "instance.current",
+          1,
+          (json) => AuthInstance.fromJson(json),
+        );
 }

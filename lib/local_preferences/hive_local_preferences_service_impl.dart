@@ -9,55 +9,59 @@ var _logger = Logger("hive_local_preferences_service_impl.dart");
 
 class HiveLocalPreferencesService extends AsyncInitLoadingBloc
     implements ILocalPreferencesService {
-  Box preferences;
+  final String boxName;
+
+  HiveLocalPreferencesService({@required this.boxName});
+
+  Box _preferences;
 
   @override
   Future internalAsyncInit() async {
     _logger.fine(() => "internalAsyncInit");
-    preferences = await Hive.openBox("local_preferences");
+    _preferences = await Hive.openBox(boxName);
   }
 
   @override
   Future<bool> clear() async {
-    var clearedKeysCount = await preferences.clear();
+    var clearedKeysCount = await _preferences.clear();
     return clearedKeysCount > 0;
   }
 
   @override
   bool isKeyExist(String key) {
-    var contains = preferences.containsKey(key);
+    var contains = _preferences.containsKey(key);
     _logger.fine(() => "isKeyExist $key => $contains");
     return contains;
   }
 
   @override
   Future<bool> clearValue(String key) async {
-    await preferences.delete(key);
+    await _preferences.delete(key);
     return true;
   }
 
   @override
   Future<bool> setString(String key, String value) async {
-    await preferences.put(key, value);
+    await _preferences.put(key, value);
     return true;
   }
 
   @override
   Future<bool> setIntPreference(String key, int value) async {
-    await preferences.put(key, value);
+    await _preferences.put(key, value);
     return true;
   }
 
   @override
   Future<bool> setBoolPreference(String key, bool value) async {
-    await preferences.put(key, value);
+    await _preferences.put(key, value);
     return true;
   }
 
   @override
   Future<bool> setObjectPreference(
       String key, IPreferencesObject preferencesObject) async {
-    await preferences.put(key, preferencesObject);
+    await _preferences.put(key, preferencesObject);
     return true;
   }
 
@@ -65,17 +69,20 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
   bool getBoolPreference(
     String key,
   ) =>
-      preferences.get(key);
+      _preferences.get(key);
 
   @override
-  String getStringPreference(String key) => preferences.get(key);
+  String getStringPreference(String key) => _preferences.get(key);
 
   @override
   int getIntPreference(String key, {@required int defaultValue}) =>
-      preferences.get(key);
+      _preferences.get(key);
 
   @override
-  T getObjectPreference<T>(String key) {
-    return preferences.get(key);
+  T getObjectPreference<T>(
+    String key,
+    T jsonConverter(Map<String, dynamic> jsonData),
+  ) {
+    return _preferences.get(key);
   }
 }

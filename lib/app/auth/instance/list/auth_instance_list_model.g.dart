@@ -26,3 +26,21 @@ class AuthInstanceListAdapter extends TypeAdapter<AuthInstanceList> {
       ..write(obj.instances);
   }
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+AuthInstanceList _$AuthInstanceListFromJson(Map<String, dynamic> json) {
+  return AuthInstanceList(
+    instances: (json['instances'] as List)
+        ?.map((e) =>
+            e == null ? null : AuthInstance.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+  );
+}
+
+Map<String, dynamic> _$AuthInstanceListToJson(AuthInstanceList instance) =>
+    <String, dynamic>{
+      'instances': instance.instances?.map((e) => e?.toJson())?.toList(),
+    };

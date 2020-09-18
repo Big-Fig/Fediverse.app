@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:fedi/emoji_picker/item/image_url/custom_emoji_picker_image_url_item_model.dart';
 import 'package:fedi/local_preferences/local_preferences_model.dart';
 import 'package:hive/hive.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'emoji_picker_custom_image_url_category_model.g.dart';
 
@@ -9,6 +12,7 @@ part 'emoji_picker_custom_image_url_category_model.g.dart';
 // which not exist in Hive 0.x
 @HiveType()
 // @HiveType(typeId: -32 + 68)
+@JsonSerializable(explicitToJson: true)
 class EmojiPickerCustomImageUrlCategoryItems implements IPreferencesObject {
   @HiveField(0)
   final List<CustomEmojiPickerImageUrlItem> items;
@@ -29,4 +33,20 @@ class EmojiPickerCustomImageUrlCategoryItems implements IPreferencesObject {
 
   @override
   int get hashCode => items.hashCode;
+
+
+  factory EmojiPickerCustomImageUrlCategoryItems.fromJson(Map<String, dynamic> json) =>
+      _$EmojiPickerCustomImageUrlCategoryItemsFromJson(json);
+
+  factory EmojiPickerCustomImageUrlCategoryItems.fromJsonString(String jsonString) =>
+      _$EmojiPickerCustomImageUrlCategoryItemsFromJson(jsonDecode(jsonString));
+
+  static List<EmojiPickerCustomImageUrlCategoryItems> listFromJsonString(String str) =>
+      List<EmojiPickerCustomImageUrlCategoryItems>.from(
+          json.decode(str).map((x) => EmojiPickerCustomImageUrlCategoryItems.fromJson(x)));
+
+  @override
+  Map<String, dynamic> toJson() => _$EmojiPickerCustomImageUrlCategoryItemsToJson(this);
+
+  String toJsonString() => jsonEncode(_$EmojiPickerCustomImageUrlCategoryItemsToJson(this));
 }
