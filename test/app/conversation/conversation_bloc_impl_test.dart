@@ -18,7 +18,7 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:fedi/local_preferences/local_preferences_service_memory_impl.dart';
+import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:moor_ffi/moor_ffi.dart';

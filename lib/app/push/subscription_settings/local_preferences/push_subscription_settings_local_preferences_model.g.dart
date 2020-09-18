@@ -9,13 +9,10 @@ part of 'push_subscription_settings_local_preferences_model.dart';
 class PushSubscriptionSettingsLocalPreferencesAdapter
     extends TypeAdapter<PushSubscriptionSettingsLocalPreferences> {
   @override
-  final int typeId = 15;
-
-  @override
   PushSubscriptionSettingsLocalPreferences read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    var numOfFields = reader.readByte();
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PushSubscriptionSettingsLocalPreferences(
       favourite: fields[1] as bool,
@@ -45,16 +42,6 @@ class PushSubscriptionSettingsLocalPreferencesAdapter
       ..writeByte(6)
       ..write(obj.chat);
   }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PushSubscriptionSettingsLocalPreferencesAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
 }
 
 // **************************************************************************

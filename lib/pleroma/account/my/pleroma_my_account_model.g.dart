@@ -9,13 +9,10 @@ part of 'pleroma_my_account_model.dart';
 class PleromaMyAccountSourceAdapter
     extends TypeAdapter<PleromaMyAccountSource> {
   @override
-  final int typeId = 11;
-
-  @override
   PleromaMyAccountSource read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    var numOfFields = reader.readByte();
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaMyAccountSource(
       privacy: fields[1] as String,
@@ -47,28 +44,15 @@ class PleromaMyAccountSourceAdapter
       ..writeByte(7)
       ..write(obj.pleroma);
   }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PleromaMyAccountSourceAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
 }
 
 class PleromaMyAccountSourcePleromaPartAdapter
     extends TypeAdapter<PleromaMyAccountSourcePleromaPart> {
   @override
-  final int typeId = 12;
-
-  @override
   PleromaMyAccountSourcePleromaPart read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    var numOfFields = reader.readByte();
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaMyAccountSourcePleromaPart(
       showRole: fields[1] as bool,
@@ -91,28 +75,15 @@ class PleromaMyAccountSourcePleromaPartAdapter
       ..writeByte(4)
       ..write(obj.actorType);
   }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PleromaMyAccountSourcePleromaPartAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
 }
 
 class PleromaAccountPleromaPartAdapter
     extends TypeAdapter<PleromaAccountPleromaPart> {
   @override
-  final int typeId = 43;
-
-  @override
   PleromaAccountPleromaPart read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    var numOfFields = reader.readByte();
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaAccountPleromaPart(
       backgroundImage: fields[1] as dynamic,
@@ -175,27 +146,14 @@ class PleromaAccountPleromaPartAdapter
       ..writeByte(19)
       ..write(obj.notificationSettings);
   }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PleromaAccountPleromaPartAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
 }
 
 class PleromaMyAccountAdapter extends TypeAdapter<PleromaMyAccount> {
   @override
-  final int typeId = 22;
-
-  @override
   PleromaMyAccount read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    var numOfFields = reader.readByte();
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaMyAccount(
       username: fields[0] as String,
@@ -269,28 +227,15 @@ class PleromaMyAccountAdapter extends TypeAdapter<PleromaMyAccount> {
       ..writeByte(21)
       ..write(obj.source);
   }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PleromaMyAccountAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
 }
 
 class PleromaMyAccountPleromaPartNotificationsSettingsAdapter
     extends TypeAdapter<PleromaMyAccountPleromaPartNotificationsSettings> {
   @override
-  final int typeId = 9;
-
-  @override
   PleromaMyAccountPleromaPartNotificationsSettings read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    var numOfFields = reader.readByte();
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaMyAccountPleromaPartNotificationsSettings(
       followers: fields[0] as bool,
@@ -314,28 +259,15 @@ class PleromaMyAccountPleromaPartNotificationsSettingsAdapter
       ..writeByte(3)
       ..write(obj.nonFollows);
   }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PleromaMyAccountPleromaPartNotificationsSettingsAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
 }
 
 class PleromaMyAccountPleromaPartAdapter
     extends TypeAdapter<PleromaMyAccountPleromaPart> {
   @override
-  final int typeId = 8;
-
-  @override
   PleromaMyAccountPleromaPart read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    var numOfFields = reader.readByte();
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaMyAccountPleromaPart(
       backgroundImage: fields[1] as dynamic,
@@ -401,16 +333,6 @@ class PleromaMyAccountPleromaPartAdapter
       ..writeByte(20)
       ..write(obj.skipThreadContainment);
   }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PleromaMyAccountPleromaPartAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
 }
 
 // **************************************************************************

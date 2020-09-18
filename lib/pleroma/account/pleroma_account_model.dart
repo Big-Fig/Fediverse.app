@@ -22,7 +22,8 @@ abstract class IPleromaAccount implements IMastodonAccount {
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
-@HiveType(typeId: -32 + 64)
+@HiveType()
+// @HiveType(typeId: -32 + 64)
 @JsonSerializable(explicitToJson: true)
 class PleromaAccount implements IPleromaAccount {
   @override
@@ -395,7 +396,8 @@ abstract class IPleromaAccountRelationship
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
-@HiveType(typeId: -32 + 42)
+@HiveType()
+// @HiveType(typeId: -32 + 42)
 @JsonSerializable()
 class PleromaAccountRelationship implements IPleromaAccountRelationship {
   @override

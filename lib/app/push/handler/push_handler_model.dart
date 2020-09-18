@@ -7,7 +7,8 @@ part 'push_handler_model.g.dart';
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
-@HiveType(typeId: -32 + 66)
+@HiveType()
+// @HiveType(typeId: -32 + 66)
 class PushHandlerMessage {
   @HiveField(0)
   final PleromaPushMessageBody body;

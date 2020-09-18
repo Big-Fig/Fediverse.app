@@ -4,7 +4,7 @@ import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("local_preferences_service_memory_impl.dart");
+var _logger = Logger("memory_local_preferences_service_impl.dart");
 
 class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
     implements ILocalPreferencesService {

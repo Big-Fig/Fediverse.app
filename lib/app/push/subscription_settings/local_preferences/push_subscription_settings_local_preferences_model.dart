@@ -10,7 +10,8 @@ part 'push_subscription_settings_local_preferences_model.g.dart';
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
-@HiveType(typeId: -32 + 47)
+@HiveType()
+// @HiveType(typeId: -32 + 47)
 class PushSubscriptionSettingsLocalPreferences extends IPreferencesObject {
   @HiveField(1)
   final bool favourite;

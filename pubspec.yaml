@@ -32,8 +32,8 @@ dependencies:
   # launch browser to view links
   url_launcher: ^5.6.0
   # object serialization
-  hive: ^1.4.4
-  hive_flutter: ^0.3.1
+  hive: ^0.4.1
+#  hive_flutter: ^0.3.1
 
   #flutter_html: ^1.0.2
   # actually it is ^1.0.2 with additional text style features
@@ -170,6 +170,9 @@ dependencies:
   # detect keyboard visibility
   flutter_keyboard_visibility: ^3.2.2
 
+dependency_overrides:
+  path: ^1.7.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -191,7 +194,7 @@ dev_dependencies:
   sqlite3_flutter_libs: ^0.2.0
 
   # object serialization generator
-  hive_generator: ^0.7.1
+  hive_generator: ^0.5.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("local_preferences_service_hive_impl.dart");
+var _logger = Logger("hive_local_preferences_service_impl.dart");
 
 class HiveLocalPreferencesService extends AsyncInitLoadingBloc
     implements ILocalPreferencesService {
@@ -14,7 +14,7 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
   @override
   Future internalAsyncInit() async {
     _logger.fine(() => "internalAsyncInit");
-    preferences = await Hive.openBox("local_preferences_hive_v1");
+    preferences = await Hive.openBox("local_preferences");
   }
 
   @override

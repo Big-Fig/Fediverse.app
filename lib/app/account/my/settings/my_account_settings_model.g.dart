@@ -8,13 +8,10 @@ part of 'my_account_settings_model.dart';
 
 class MyAccountSettingsAdapter extends TypeAdapter<MyAccountSettings> {
   @override
-  final int typeId = 25;
-
-  @override
   MyAccountSettings read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    var numOfFields = reader.readByte();
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return MyAccountSettings(
       isRealtimeWebSocketsEnabled: fields[0] as bool,
@@ -49,14 +46,4 @@ class MyAccountSettingsAdapter extends TypeAdapter<MyAccountSettings> {
       ..writeByte(7)
       ..write(obj.foregroundSoundForMention);
   }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is MyAccountSettingsAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
 }

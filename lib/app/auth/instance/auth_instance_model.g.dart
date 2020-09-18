@@ -8,13 +8,10 @@ part of 'auth_instance_model.dart';
 
 class AuthInstanceAdapter extends TypeAdapter<AuthInstance> {
   @override
-  final int typeId = 18;
-
-  @override
   AuthInstance read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    var numOfFields = reader.readByte();
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return AuthInstance(
       urlSchema: fields[0] as String,
@@ -49,14 +46,4 @@ class AuthInstanceAdapter extends TypeAdapter<AuthInstance> {
       ..writeByte(7)
       ..write(obj.info);
   }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is AuthInstanceAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
 }

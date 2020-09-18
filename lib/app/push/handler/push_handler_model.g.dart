@@ -8,13 +8,10 @@ part of 'push_handler_model.dart';
 
 class PushHandlerMessageAdapter extends TypeAdapter<PushHandlerMessage> {
   @override
-  final int typeId = 34;
-
-  @override
   PushHandlerMessage read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    var numOfFields = reader.readByte();
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PushHandlerMessage(
       body: fields[0] as PleromaPushMessageBody,
@@ -31,14 +28,4 @@ class PushHandlerMessageAdapter extends TypeAdapter<PushHandlerMessage> {
       ..writeByte(1)
       ..write(obj.pushMessage);
   }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PushHandlerMessageAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
 }
