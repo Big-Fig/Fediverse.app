@@ -55,8 +55,11 @@ class StatusRepository extends AsyncInitLoadingBloc
     conversationRemoteId = conversationRemoteId ??
         remoteStatus?.pleroma?.conversationId?.toString();
 
-    _logger.finer(() => "upsertRemoteStatus $remoteStatus listRemoteId=> "
-        "$listRemoteId");
+    _logger.finer(() => "upsertRemoteStatus $remoteStatus "
+        "listRemoteId => $listRemoteId "
+        "conversationRemoteId => $conversationRemoteId "
+        "isFromHomeTimeline => $isFromHomeTimeline ");
+
     var remoteAccount = remoteStatus.account;
 
     await accountRepository.upsertRemoteAccount(remoteAccount,
@@ -103,7 +106,9 @@ class StatusRepository extends AsyncInitLoadingBloc
       @required String conversationRemoteId,
       bool isFromHomeTimeline = false}) async {
     _logger.finer(() => "upsertRemoteStatuses ${remoteStatuses.length} "
-        "listRemoteId => $listRemoteId");
+        "listRemoteId => $listRemoteId"
+        "conversationRemoteId => $conversationRemoteId"
+        "isFromHomeTimeline => $isFromHomeTimeline");
     if (remoteStatuses.isEmpty) {
       return;
     }
@@ -190,7 +195,8 @@ class StatusRepository extends AsyncInitLoadingBloc
       List<String> statusRemoteIds, String conversationRemoteId) async {
     List<DbConversationStatus> alreadyAddedConversationStatuses =
         await conversationStatusesDao
-            .findByConversationRemoteId(conversationRemoteId).get();
+            .findByConversationRemoteId(conversationRemoteId)
+            .get();
     Iterable<String> alreadyAddedConversationStatusesIds =
         alreadyAddedConversationStatuses
             .map((conversationStatus) => conversationStatus.statusRemoteId);
