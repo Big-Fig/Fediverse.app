@@ -139,7 +139,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     if (await FediPackageInfoHelper.isProdPackageId()) {
       pushRelayBaseUrl = "https://pushrelay3.your.org/push/";
     } else if (await FediPackageInfoHelper.isDevPackageId()) {
-      pushRelayBaseUrl = "http://161.35.139.75:3000/push/";
+      pushRelayBaseUrl = "https://pushrelay.jff.name/push/";
     } else {
       var packageName = await FediPackageInfoHelper.getPackageId();
       throw "Invalid packageName $packageName";
