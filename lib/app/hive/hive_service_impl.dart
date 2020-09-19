@@ -32,6 +32,11 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
   @override
   Future internalAsyncInit() async {
     final directory = await getApplicationDocumentsDirectory();
+    registerAdapters();
+    Hive.init(directory.path);
+  }
+
+  static void registerAdapters() {
     Hive.registerAdapter(PleromaFieldAdapter(), 37);
     Hive.registerAdapter(PleromaEmojiAdapter(), 38);
     Hive.registerAdapter(PleromaMyAccountPleromaPartAdapter(), 40);
@@ -73,6 +78,5 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     Hive.registerAdapter(PleromaAccountPleromaPartAdapter(), 75); // 75
     Hive.registerAdapter(PleromaCustomEmojiAdapter(), 76); // 76
     Hive.registerAdapter(PleromaHistoryAdapter(), 77); // 77
-    Hive.init(directory.path);
   }
 }
