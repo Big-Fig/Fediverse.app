@@ -9,6 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 var _logger = Logger("shared_preferences_local_preferences_service_impl.dart");
 
+var _specialStorageKeyCreatedKey = "_specialStorageKeyCreatedKey";
+
 class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
     implements ILocalPreferencesService {
   SharedPreferences preferences;
@@ -19,8 +21,13 @@ class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
     preferences = await SharedPreferences.getInstance();
   }
 
+  Future putStorageCreatedKey() async {
+    await preferences.setString(
+        _specialStorageKeyCreatedKey, _specialStorageKeyCreatedKey);
+  }
+
   @override
-  Future<bool> clear() => preferences.clear();
+  Future<bool> clearAllValues() => preferences.clear();
 
   @override
   bool isKeyExist(String key) {
@@ -47,7 +54,7 @@ class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
   @override
   Future<bool> setObjectPreference(
           String key, IPreferencesObject preferencesObject) =>
-      setJsonObjectAsString(key, preferencesObject.toJson());
+      setJsonObjectAsString(key, preferencesObject?.toJson());
 
   @override
   bool getBoolPreference(
@@ -68,7 +75,7 @@ class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
     T jsonConverter(Map<String, dynamic> jsonData),
   ) {
     var stringPreference = getStringPreference(key);
-    if (stringPreference == null) {
+    if (stringPreference?.isNotEmpty != true) {
       return null;
     }
     var jsonObject = json.decode(stringPreference);
@@ -79,5 +86,12 @@ class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
     String key,
     Map<String, dynamic> jsonObject,
   ) =>
-      setString(key, json.encode(jsonObject));
+      setString(key, jsonObject != null ? json.encode(jsonObject) : null);
+
+  @override
+  Future<bool> clearAllValuesAndDeleteStorage() => clearAllValues();
+
+  @override
+  Future<bool> isStorageExist() async =>
+      preferences.containsKey(_specialStorageKeyCreatedKey);
 }

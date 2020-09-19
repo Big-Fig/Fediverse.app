@@ -16,7 +16,7 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<bool> clear() async {
+  Future<bool> clearAllValues() async {
     preferences.clear();
     return true;
   }
@@ -79,4 +79,10 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
   ) {
     return preferences[key];
   }
+
+  @override
+  Future<bool> clearAllValuesAndDeleteStorage() => clearAllValues();
+
+  @override
+  Future<bool> isStorageExist() async => preferences.isNotEmpty;
 }

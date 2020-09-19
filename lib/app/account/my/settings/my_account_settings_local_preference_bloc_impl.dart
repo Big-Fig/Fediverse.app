@@ -7,8 +7,9 @@ class MyAccountSettingsLocalPreferenceBloc
     extends ObjectLocalPreferenceBloc<MyAccountSettings>
     implements IMyAccountSettingsLocalPreferenceBloc {
   MyAccountSettingsLocalPreferenceBloc(
-      String userAtHost, ILocalPreferencesService preferencesService)
-      : super(
+    ILocalPreferencesService preferencesService,
+    String userAtHost,
+  ) : super(
           preferencesService,
           "account.my.$userAtHost.settings",
           1,

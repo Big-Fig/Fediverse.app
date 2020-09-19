@@ -13,55 +13,55 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
 
   HiveLocalPreferencesService({@required this.boxName});
 
-  Box _preferences;
+  Box _box;
 
   @override
   Future internalAsyncInit() async {
     _logger.fine(() => "internalAsyncInit");
-    _preferences = await Hive.openBox(boxName);
+    _box = await Hive.openBox(boxName);
   }
 
   @override
-  Future<bool> clear() async {
-    var clearedKeysCount = await _preferences.clear();
+  Future<bool> clearAllValues() async {
+    var clearedKeysCount = await _box.clear();
     return clearedKeysCount > 0;
   }
 
   @override
   bool isKeyExist(String key) {
-    var contains = _preferences.containsKey(key);
+    var contains = _box.containsKey(key);
     _logger.fine(() => "isKeyExist $key => $contains");
     return contains;
   }
 
   @override
   Future<bool> clearValue(String key) async {
-    await _preferences.delete(key);
+    await _box.delete(key);
     return true;
   }
 
   @override
   Future<bool> setString(String key, String value) async {
-    await _preferences.put(key, value);
+    await _box.put(key, value);
     return true;
   }
 
   @override
   Future<bool> setIntPreference(String key, int value) async {
-    await _preferences.put(key, value);
+    await _box.put(key, value);
     return true;
   }
 
   @override
   Future<bool> setBoolPreference(String key, bool value) async {
-    await _preferences.put(key, value);
+    await _box.put(key, value);
     return true;
   }
 
   @override
   Future<bool> setObjectPreference(
       String key, IPreferencesObject preferencesObject) async {
-    await _preferences.put(key, preferencesObject);
+    await _box.put(key, preferencesObject);
     return true;
   }
 
@@ -69,20 +69,30 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
   bool getBoolPreference(
     String key,
   ) =>
-      _preferences.get(key);
+      _box.get(key);
 
   @override
-  String getStringPreference(String key) => _preferences.get(key);
+  String getStringPreference(String key) => _box.get(key);
 
   @override
   int getIntPreference(String key, {@required int defaultValue}) =>
-      _preferences.get(key);
+      _box.get(key);
 
   @override
   T getObjectPreference<T>(
     String key,
     T jsonConverter(Map<String, dynamic> jsonData),
   ) {
-    return _preferences.get(key);
+    return _box.get(key);
   }
+
+  @override
+  Future<bool> clearAllValuesAndDeleteStorage() async {
+    await _box.deleteFromDisk();
+
+    return true;
+  }
+
+  @override
+  Future<bool> isStorageExist() async => _box.length > 0;
 }

@@ -10,7 +10,11 @@ abstract class ILocalPreferencesService extends DisposableOwner
     implements IAsyncInitLoadingBloc {
   bool isKeyExist(String key);
 
-  Future<bool> clear();
+  Future<bool> clearAllValues();
+
+  Future<bool> isStorageExist();
+
+  Future<bool> clearAllValuesAndDeleteStorage();
 
   Future<bool> clearValue(String key);
 
