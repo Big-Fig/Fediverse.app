@@ -33,7 +33,7 @@ class StatusCachedPaginationListMediaWidget
     return timelinePaginationListBloc;
   }
 
-  static ScrollView buildStaggeredGridView({
+  static ScrollView buildStaggeredMediaGridView({
     @required BuildContext context,
     @required List<IStatus> items,
     @required Widget header,
@@ -45,7 +45,7 @@ class StatusCachedPaginationListMediaWidget
     items = items
         .where((status) =>
     status.mediaAttachments
-        ?.where((mediaAttachment) => mediaAttachment.isMedia)
+        ?.where((mediaAttachment) => mediaAttachment.isImageOrGif)
         ?.isNotEmpty ==
         true)
         .toList();
@@ -54,7 +54,7 @@ class StatusCachedPaginationListMediaWidget
 
     items.forEach((status) {
       var mediaAttachments = status.mediaAttachments
-          ?.where((mediaAttachment) => mediaAttachment.isMedia);
+          ?.where((mediaAttachment) => mediaAttachment.isImageOrGif);
       mediaAttachments.forEach((mediaAttachment) {
         statusesWithMediaAttachment.add(_StatusWithMediaAttachment(
             status: status, mediaAttachment: mediaAttachment));
@@ -119,7 +119,7 @@ class StatusCachedPaginationListMediaWidget
   ScrollView buildItemsCollectionView({@required BuildContext context,
     @required List<IStatus> items,
     @required Widget header,
-    @required Widget footer}) => buildStaggeredGridView(context: context, items: items,
+    @required Widget footer}) => buildStaggeredMediaGridView(context: context, items: items,
       header: header, footer: footer,);
 }
 

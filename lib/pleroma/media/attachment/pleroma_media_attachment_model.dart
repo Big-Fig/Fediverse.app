@@ -71,6 +71,20 @@ class PleromaMediaAttachment implements IPleromaMediaAttachment {
     }
   }
 
+  bool get isImageOrGif {
+    switch (typeMastodon) {
+      case MastodonMediaAttachmentType.image:
+      case MastodonMediaAttachmentType.gifv:
+      return true;
+      case MastodonMediaAttachmentType.video:
+      case MastodonMediaAttachmentType.audio:
+      case MastodonMediaAttachmentType.unknown:
+      default:
+        return false;
+        break;
+    }
+  }
+
   Map<String, dynamic> toJson() => _$PleromaMediaAttachmentToJson(this);
 
   String toJsonString() => jsonEncode(_$PleromaMediaAttachmentToJson(this));
