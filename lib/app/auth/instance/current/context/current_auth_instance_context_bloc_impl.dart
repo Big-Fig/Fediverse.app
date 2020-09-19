@@ -136,7 +136,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     var userAtHost = currentInstance.userAtHost;
 
     var recentSearchLocalPreferenceBloc = RecentSearchLocalPreferenceBloc(
-        currentInstance.userAtHost, preferencesService);
+        preferencesService, currentInstance.userAtHost);
 
     addDisposable(disposable: recentSearchLocalPreferenceBloc);
     await globalProviderService.asyncInitAndRegister<
@@ -443,7 +443,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
 
     var myAccountSettingsLocalPreferenceBloc =
         MyAccountSettingsLocalPreferenceBloc(
-            currentInstance.userAtHost, preferencesService);
+            preferencesService, currentInstance.userAtHost);
 
     addDisposable(disposable: myAccountSettingsLocalPreferenceBloc);
     await globalProviderService
