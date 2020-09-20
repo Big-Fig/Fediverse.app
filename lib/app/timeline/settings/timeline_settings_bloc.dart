@@ -3,12 +3,19 @@ import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class ITimelinesSettingsBloc extends Disposable {
-  static ITimelinesSettingsBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<ITimelinesSettingsBloc>(context, listen: listen);
+abstract class ITimelineSettingsBloc extends Disposable {
+  static ITimelineSettingsBloc of(BuildContext context, {bool listen = true}) =>
+      Provider.of<ITimelineSettingsBloc>(context, listen: listen);
 
   IFormBoolFieldBloc get onlyNoRepliesFieldBloc;
+
   IFormBoolFieldBloc get onlyWithMediaFieldBloc;
+
   IFormBoolFieldBloc get onlyNoNsfwSensitiveFieldBloc;
+
+  IFormBoolFieldBloc get onlyRemoteFieldBloc;
+
+  IFormBoolFieldBloc get onlyLocalFieldBloc;
+
+  IFormBoolFieldBloc get onlyNotMutedFieldBloc;
 }

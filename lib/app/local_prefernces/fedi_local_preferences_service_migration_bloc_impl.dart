@@ -9,7 +9,9 @@ import 'package:fedi/app/emoji/picker/category/recent/emoji_picker_recent_catego
 import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/push/subscription_settings/local_preferences/push_subscription_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/search/recent/recent_search_local_preference_bloc_impl.dart';
-import 'package:fedi/app/timeline/settings/local_preferences/timeline_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/timeline/settings/home/home_timeline_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/timeline/settings/local/local_timeline_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/timeline/settings/public/public_timeline_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/local_preferences/local_preferences_service_migration_bloc.dart';
 import 'package:fedi/local_preferences/local_preferences_service_migration_bloc_impl.dart';
@@ -51,7 +53,12 @@ class FediLocalPreferencesServiceMigrationBloc
         (lps) => MyAccountSettingsLocalPreferenceBloc(lps, userAtHost),
         (lps) => RecentSearchLocalPreferenceBloc(lps, userAtHost),
         (lps) => PushSubscriptionSettingsLocalPreferencesBloc(lps, userAtHost),
-        (lps) => TimelineSettingsLocalPreferencesBloc(lps, userAtHost),
+        (lps) => HomeTimelineSettingsLocalPreferencesBloc(lps,
+            userAtHost: userAtHost),
+        (lps) => LocalTimelineSettingsLocalPreferencesBloc(lps,
+            userAtHost: userAtHost),
+        (lps) => PublicTimelineSettingsLocalPreferencesBloc(lps,
+            userAtHost: userAtHost),
       ]);
     }
 

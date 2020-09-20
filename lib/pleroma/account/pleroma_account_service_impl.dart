@@ -297,7 +297,7 @@ class PleromaAccountService implements IPleromaAccountService {
       bool excludeReblogs,
       List<String> excludeVisibilities,
       bool withMuted,
-      bool onlyMedia,
+      bool onlyWithMedia,
       String sinceId,
       String maxId,
       int limit = 20}) async {
@@ -320,7 +320,7 @@ class PleromaAccountService implements IPleromaAccountService {
               ),
             ),
           RestRequestQueryArg("with_muted", withMuted?.toString()),
-          RestRequestQueryArg("only_media", onlyMedia?.toString()),
+          RestRequestQueryArg("only_media", onlyWithMedia?.toString()),
         ]));
 
     return parseStatusListResponse(httpResponse);

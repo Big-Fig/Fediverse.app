@@ -69,11 +69,14 @@ class _NotificationsHomeTabPageBodyState
 
     listener = () {
       var tab = _notificationTabs[tabController.index];
-      var paginationListBloc = INotificationTabsBloc.of(context, listen: false)
-          .retrieveTimelineTabPaginationListBloc(tab);
+      var notificationTabsBloc =
+          INotificationTabsBloc.of(context, listen: false);
+      var paginationListBloc =
+          notificationTabsBloc.retrieveTimelineTabPaginationListBloc(tab);
       if (paginationListBloc.unmergedNewItemsCount > 0) {
         paginationListBloc.mergeNewItems();
       }
+      notificationTabsBloc.selectTab(tab);
     };
     tabController.addListener(listener);
   }

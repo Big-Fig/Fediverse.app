@@ -44,8 +44,12 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository_impl.dart';
-import 'package:fedi/app/timeline/settings/local_preferences/timeline_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/timeline/settings/local_preferences/timeline_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/timeline/settings/home/home_timeline_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/timeline/settings/home/home_timeline_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/timeline/settings/local/local_timeline_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/timeline/settings/local/local_timeline_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/timeline/settings/public/public_timeline_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/timeline/settings/public/public_timeline_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
@@ -364,11 +368,36 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         .asyncInitAndRegister<IEmojiPickerRecentCategoryLocalPreferenceBloc>(
             customEmojiPickerRecentCategoryLocalPreferenceBloc);
 
-    var timelineLocalPreferenceBloc =
-        TimelineSettingsLocalPreferencesBloc(preferencesService, userAtHost);
-    addDisposable(disposable: timelineLocalPreferenceBloc);
-    await globalProviderService.asyncInitAndRegister<
-        ITimelineSettingsLocalPreferencesBloc>(timelineLocalPreferenceBloc);
+    var homeTimelineLocalPreferenceBloc =
+        HomeTimelineSettingsLocalPreferencesBloc(
+      preferencesService,
+      userAtHost: userAtHost,
+    );
+    addDisposable(disposable: homeTimelineLocalPreferenceBloc);
+    await globalProviderService
+        .asyncInitAndRegister<IHomeTimelineSettingsLocalPreferencesBloc>(
+            homeTimelineLocalPreferenceBloc);
+
+    var localTimelineLocalPreferenceBloc =
+        LocalTimelineSettingsLocalPreferencesBloc(
+      preferencesService,
+      userAtHost: userAtHost,
+    );
+    addDisposable(disposable: localTimelineLocalPreferenceBloc);
+    await globalProviderService
+        .asyncInitAndRegister<ILocalTimelineSettingsLocalPreferencesBloc>(
+            localTimelineLocalPreferenceBloc);
+
+    var publicTimelineLocalPreferenceBloc =
+        PublicTimelineSettingsLocalPreferencesBloc(
+      preferencesService,
+      userAtHost: userAtHost,
+    );
+    addDisposable(disposable: publicTimelineLocalPreferenceBloc);
+    await globalProviderService
+        .asyncInitAndRegister<IPublicTimelineSettingsLocalPreferencesBloc>(
+            publicTimelineLocalPreferenceBloc);
+
     var pushSubscriptionLocalPreferenceBloc =
         PushSubscriptionSettingsLocalPreferencesBloc(
             preferencesService, userAtHost);

@@ -47,7 +47,7 @@ abstract class IPleromaAccountService implements IPleromaApi {
     bool excludeReblogs,
     List<String> excludeVisibilities,
     bool withMuted,
-    bool onlyMedia,
+    bool onlyWithMedia,
     String sinceId,
     String maxId,
     int limit = 20,
