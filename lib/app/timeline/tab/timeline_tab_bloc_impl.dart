@@ -3,7 +3,7 @@ import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc.
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/app/timeline/settings/local_preferences/timeline_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_bloc.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';

@@ -125,6 +125,7 @@ class CodegenLoader extends AssetLoader{
       },
       "action": {
         "follow": "Follow",
+        "request_follow": "Request follow",
         "unfollow": "Unfollow",
         "follow_requested": "Requested",
         "message": "Message",
@@ -631,7 +632,15 @@ class CodegenLoader extends AssetLoader{
     "timeline": {
       "display": {
         "settings": {
-          "title": "Timeline settings",
+          "home": {
+            "title": "Home timeline settings"
+          },
+          "local": {
+            "title": "Local timeline settings"
+          },
+          "public": {
+            "title": "Public timeline settings"
+          },
           "field": {
             "only_with_media": {
               "label": "Only with media"
@@ -641,6 +650,15 @@ class CodegenLoader extends AssetLoader{
             },
             "hide_nsfw": {
               "label": "Hide NSFW"
+            },
+            "only_remote": {
+              "label": "Only remote"
+            },
+            "only_local": {
+              "label": "Only local"
+            },
+            "only_not_muted": {
+              "label": "Only not muted"
             }
           }
         }

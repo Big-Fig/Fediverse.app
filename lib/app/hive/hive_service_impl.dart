@@ -9,7 +9,8 @@ import 'package:fedi/app/push/handler/push_handler_model.dart';
 import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_local_preferences_model.dart';
 import 'package:fedi/app/push/subscription_settings/local_preferences/push_subscription_settings_local_preferences_model.dart';
 import 'package:fedi/app/search/recent/recent_search_model.dart';
-import 'package:fedi/app/timeline/settings/local_preferences/timeline_settings_local_preferences_model.dart';
+import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
+
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/emoji_picker/item/code/custom_emoji_picker_code_item_model.dart';
 import 'package:fedi/emoji_picker/item/image_url/custom_emoji_picker_image_url_item_model.dart';
@@ -45,7 +46,7 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     Hive.registerAdapter(PleromaAccountRelationshipAdapter(), 42);
     Hive.registerAdapter(PleromaMyAccountSourceAdapter(), 43);
     Hive.registerAdapter(PleromaMyAccountSourcePleromaPartAdapter(), 44);
-    Hive.registerAdapter(TimelineSettingsLocalPreferencesAdapter(), 46);
+    Hive.registerAdapter(TimelineSettingsAdapter(), 46);
     Hive.registerAdapter(PushSubscriptionSettingsLocalPreferencesAdapter(), 47);
 
     Hive.registerAdapter(AuthInstanceListAdapter(), 49);

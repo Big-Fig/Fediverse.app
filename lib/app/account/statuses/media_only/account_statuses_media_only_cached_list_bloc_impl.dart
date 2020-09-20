@@ -133,7 +133,7 @@ class AccountStatusesMediaOnlyCachedListBloc
         "\t olderThan=$olderThan");
 
     var remoteStatuses = await pleromaAccountService.getAccountStatuses(
-        onlyMedia: true,
+        onlyWithMedia: true,
         accountRemoteId: account.remoteId,
         limit: limit,
         sinceId: newerThan?.remoteId,

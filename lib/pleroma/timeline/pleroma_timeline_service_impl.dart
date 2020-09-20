@@ -74,7 +74,6 @@ class PleromaTimelineService implements IPleromaTimelineService {
     String sinceId,
     String minId,
     int limit = 20,
-    bool onlyWithMedia = false,
     bool onlyLocal = false,
     bool withMuted = false,
     List<PleromaVisibility> excludeVisibilities = const [
@@ -87,7 +86,7 @@ class PleromaTimelineService implements IPleromaTimelineService {
         sinceId: sinceId,
         minId: minId,
         limit: limit,
-        onlyWithMedia: onlyWithMedia,
+        onlyWithMedia: false,
         onlyLocal: onlyLocal,
         withMuted: withMuted,
         excludeVisibilities: excludeVisibilities);
@@ -169,7 +168,7 @@ class PleromaTimelineService implements IPleromaTimelineService {
           ...(excludeVisibilities?.map((visibility) {
             return RestRequestQueryArg(
                 "exclude_visibilities[]", visibility.toJsonValue());
-          }))
+          }) ?? [])
         ]);
     var httpResponse = await restService.sendHttpRequest(request);
 
