@@ -28,7 +28,7 @@ class TimelineSettingsBloc extends DisposableOwner
   final IFormBoolFieldBloc onlyLocalFieldBloc;
 
   @override
-  final IFormBoolFieldBloc onlyNotMutedFieldBloc;
+  final IFormBoolFieldBloc withMutedFieldBloc;
 
   TimelineSettingsBloc({this.settingsLocalPreferencesBloc})
       : onlyNoRepliesFieldBloc = FormBoolFieldBloc(
@@ -47,15 +47,15 @@ class TimelineSettingsBloc extends DisposableOwner
         onlyLocalFieldBloc = FormBoolFieldBloc(
             originValue:
                 settingsLocalPreferencesBloc.value?.onlyLocal ?? false),
-        onlyNotMutedFieldBloc = FormBoolFieldBloc(
+        withMutedFieldBloc = FormBoolFieldBloc(
             originValue:
-                settingsLocalPreferencesBloc.value?.onlyNotMuted ?? false) {
+                settingsLocalPreferencesBloc.value?.withMuted ?? false) {
     addDisposable(disposable: onlyNoRepliesFieldBloc);
     addDisposable(disposable: onlyWithMediaFieldBloc);
     addDisposable(disposable: onlyNoNsfwSensitiveFieldBloc);
     addDisposable(disposable: onlyRemoteFieldBloc);
     addDisposable(disposable: onlyLocalFieldBloc);
-    addDisposable(disposable: onlyNotMutedFieldBloc);
+    addDisposable(disposable: withMutedFieldBloc);
 
     addDisposable(streamSubscription:
         onlyNoRepliesFieldBloc.currentValueStream.listen((_) {
@@ -78,7 +78,7 @@ class TimelineSettingsBloc extends DisposableOwner
       _onSomethingChanged();
     }));
     addDisposable(streamSubscription:
-        onlyNotMutedFieldBloc.currentValueStream.listen((_) {
+        withMutedFieldBloc.currentValueStream.listen((_) {
       _onSomethingChanged();
     }));
   }
@@ -91,7 +91,7 @@ class TimelineSettingsBloc extends DisposableOwner
       onlyNoReplies: onlyNoRepliesFieldBloc.currentValue,
       onlyRemote: onlyRemoteFieldBloc.currentValue,
       onlyLocal: onlyLocalFieldBloc.currentValue,
-      onlyNotMuted: onlyNotMutedFieldBloc.currentValue,
+      withMuted: withMutedFieldBloc.currentValue,
       id: oldPreferences.id,
       excludeVisibilitiesStrings: oldPreferences.excludeVisibilitiesStrings,
       remoteTypeString: oldPreferences.remoteTypeString,

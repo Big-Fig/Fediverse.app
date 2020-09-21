@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/app/timeline/settings/home/home_timeline_settings_widget.dart';
 import 'package:fedi/app/timeline/settings/local/local_timeline_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/settings/local/local_timeline_settings_widget.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_bloc.dart';

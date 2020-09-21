@@ -23,7 +23,7 @@ class CustomListTimelineSettingsLocalPreferencesBloc
   TimelineSettings get defaultValue => TimelineSettings.list(
         id: "list.$customListId",
         onlyInListWithRemoteId: customListId,
-        onlyNotMuted: false,
-        excludeVisibilities: null,
+        withMuted: false,
+        excludeVisibilities: [],
       );
 }

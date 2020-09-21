@@ -252,7 +252,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required IConversation onlyInConversation,
     @required OnlyLocalStatusFilter onlyLocal,
     @required bool onlyWithMedia,
-    @required bool onlyNotMuted,
+    @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
     @required IStatus olderThanStatus,
     @required IStatus newerThanStatus,
@@ -273,7 +273,7 @@ class StatusRepository extends AsyncInitLoadingBloc
       onlyFromAccountsFollowingByAccount: onlyFromAccountsFollowingByAccount,
       onlyLocal: onlyLocal,
       onlyWithMedia: onlyWithMedia,
-      onlyNotMuted: onlyNotMuted,
+      withMuted: withMuted,
       excludeVisibilities: excludeVisibilities,
       olderThanStatus: olderThanStatus,
       newerThanStatus: newerThanStatus,
@@ -304,7 +304,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required IConversation onlyInConversation,
     @required OnlyLocalStatusFilter onlyLocal,
     @required bool onlyWithMedia,
-    @required bool onlyNotMuted,
+    @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
     @required IStatus olderThanStatus,
     @required IStatus newerThanStatus,
@@ -325,7 +325,7 @@ class StatusRepository extends AsyncInitLoadingBloc
       onlyInConversation: onlyInConversation,
       onlyLocal: onlyLocal,
       onlyWithMedia: onlyWithMedia,
-      onlyNotMuted: onlyNotMuted,
+      withMuted: withMuted,
       excludeVisibilities: excludeVisibilities,
       olderThanStatus: olderThanStatus,
       newerThanStatus: newerThanStatus,
@@ -357,7 +357,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required IConversation onlyInConversation,
     @required OnlyLocalStatusFilter onlyLocal,
     @required bool onlyWithMedia,
-    @required bool onlyNotMuted,
+    @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
     @required IStatus olderThanStatus,
     @required IStatus newerThanStatus,
@@ -379,7 +379,7 @@ class StatusRepository extends AsyncInitLoadingBloc
         "\t onlyInConversation=$onlyInConversation\n"
         "\t onlyLocal=$onlyLocal\n"
         "\t onlyWithMedia=$onlyWithMedia\n"
-        "\t onlyNotMuted=$onlyNotMuted\n"
+        "\t withMuted=$withMuted\n"
         "\t excludeVisibilities=$excludeVisibilities\n"
         "\t olderThanStatus=$olderThanStatus\n"
         "\t newerThanStatus=$newerThanStatus\n"
@@ -408,7 +408,7 @@ class StatusRepository extends AsyncInitLoadingBloc
       dao.addOnlyFromAccountWhere(query, onlyFromAccount.remoteId);
     }
 
-    if (onlyNotMuted == true) {
+    if (withMuted != true) {
       dao.addOnlyNotMutedWhere(query);
     }
 
@@ -620,7 +620,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required IConversation onlyInConversation,
     @required OnlyLocalStatusFilter onlyLocal,
     @required bool onlyWithMedia,
-    @required bool onlyNotMuted,
+    @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
     @required IStatus olderThanStatus,
     @required IStatus newerThanStatus,
@@ -639,7 +639,7 @@ class StatusRepository extends AsyncInitLoadingBloc
       onlyFromAccountsFollowingByAccount: onlyFromAccountsFollowingByAccount,
       onlyLocal: onlyLocal,
       onlyWithMedia: onlyWithMedia,
-      onlyNotMuted: onlyNotMuted,
+      withMuted: withMuted,
       excludeVisibilities: excludeVisibilities,
       olderThanStatus: olderThanStatus,
       newerThanStatus: newerThanStatus,
@@ -668,7 +668,7 @@ class StatusRepository extends AsyncInitLoadingBloc
     @required IConversation onlyInConversation,
     @required OnlyLocalStatusFilter onlyLocal,
     @required bool onlyWithMedia,
-    @required bool onlyNotMuted,
+    @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
     @required IStatus olderThanStatus,
     @required IStatus newerThanStatus,
@@ -687,7 +687,7 @@ class StatusRepository extends AsyncInitLoadingBloc
       onlyInConversation: onlyInConversation,
       onlyLocal: onlyLocal,
       onlyWithMedia: onlyWithMedia,
-      onlyNotMuted: onlyNotMuted,
+      withMuted: withMuted,
       excludeVisibilities: excludeVisibilities,
       olderThanStatus: olderThanStatus,
       newerThanStatus: newerThanStatus,
@@ -722,7 +722,7 @@ class StatusRepository extends AsyncInitLoadingBloc
         onlyInConversation: conversation,
         onlyLocal: null,
         onlyWithMedia: null,
-        onlyNotMuted: null,
+        withMuted: null,
         excludeVisibilities: null,
         olderThanStatus: null,
         newerThanStatus: null,
@@ -750,7 +750,7 @@ class StatusRepository extends AsyncInitLoadingBloc
         onlyInConversation: conversation,
         onlyLocal: null,
         onlyWithMedia: null,
-        onlyNotMuted: null,
+        withMuted: null,
         excludeVisibilities: null,
         olderThanStatus: null,
         newerThanStatus: null,

@@ -20,7 +20,7 @@ class TimelineSettingsAdapter extends TypeAdapter<TimelineSettings> {
       onlyNoNsfwSensitive: fields[3] as bool,
       onlyRemote: fields[4] as bool,
       onlyLocal: fields[5] as bool,
-      onlyNotMuted: fields[6] as bool,
+      withMuted: fields[6] as bool,
       excludeVisibilitiesStrings: (fields[7] as List)?.cast<String>(),
       remoteTypeString: fields[8] as String,
       onlyInListWithRemoteId: fields[9] as String,
@@ -45,7 +45,7 @@ class TimelineSettingsAdapter extends TypeAdapter<TimelineSettings> {
       ..writeByte(5)
       ..write(obj.onlyLocal)
       ..writeByte(6)
-      ..write(obj.onlyNotMuted)
+      ..write(obj.withMuted)
       ..writeByte(7)
       ..write(obj.excludeVisibilitiesStrings)
       ..writeByte(8)
@@ -75,7 +75,7 @@ TimelineSettings _$TimelineSettingsFromJson(Map<String, dynamic> json) {
     onlyNoNsfwSensitive: json['only_no_nsfw_sensitive'] as bool,
     onlyRemote: json['only_remote'] as bool,
     onlyLocal: json['only_local'] as bool,
-    onlyNotMuted: json['only_not_muted'] as bool,
+    withMuted: json['with_muted'] as bool,
     excludeVisibilitiesStrings: (json['exclude_visibilities'] as List)
         ?.map((e) => e as String)
         ?.toList(),
@@ -96,7 +96,7 @@ Map<String, dynamic> _$TimelineSettingsToJson(TimelineSettings instance) =>
       'only_no_nsfw_sensitive': instance.onlyNoNsfwSensitive,
       'only_remote': instance.onlyRemote,
       'only_local': instance.onlyLocal,
-      'only_not_muted': instance.onlyNotMuted,
+      'with_muted': instance.withMuted,
       'exclude_visibilities': instance.excludeVisibilitiesStrings,
       'remote_type': instance.remoteTypeString,
       'only_in_list_with_remote_id': instance.onlyInListWithRemoteId,

@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/local_preferences/local_preferences_model.dart';
-import 'package:fedi/pleroma/notification/pleroma_notification_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
@@ -44,8 +43,8 @@ class TimelineSettings extends IPreferencesObject implements ITimelineSettings {
 
   @override
   @HiveField(6)
-  @JsonKey(name: "only_not_muted")
-  final bool onlyNotMuted;
+  @JsonKey(name: "with_muted")
+  final bool withMuted;
 
   @HiveField(7)
   @JsonKey(name: "exclude_visibilities")
@@ -84,7 +83,7 @@ class TimelineSettings extends IPreferencesObject implements ITimelineSettings {
     @required this.onlyNoNsfwSensitive,
     @required this.onlyRemote,
     @required this.onlyLocal,
-    @required this.onlyNotMuted,
+    @required this.withMuted,
     @required this.excludeVisibilitiesStrings,
     @required this.remoteTypeString,
     @required this.onlyInListWithRemoteId,
@@ -96,7 +95,7 @@ class TimelineSettings extends IPreferencesObject implements ITimelineSettings {
   TimelineSettings.home({
     @required String id,
     @required bool onlyLocal,
-    @required bool onlyNotMuted,
+    @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
   }) : this(
           id: id,
@@ -105,13 +104,11 @@ class TimelineSettings extends IPreferencesObject implements ITimelineSettings {
           onlyNoNsfwSensitive: null,
           onlyRemote: null,
           onlyLocal: onlyLocal,
-          onlyNotMuted: onlyNotMuted,
+          withMuted: withMuted,
           excludeVisibilitiesStrings: excludeVisibilities
-              ?.map((excludeVisibility) => pleromaNotificationTypeValues
-                  .enumToValueMap[excludeVisibility])
+              ?.map((excludeVisibility) => excludeVisibility.toJsonValue())
               ?.toList(),
-          remoteTypeString: timelineRemoteTypeEnumValues
-              .enumToValueMap[TimelineRemoteType.home],
+          remoteTypeString: TimelineRemoteType.home.toJsonValue(),
           onlyInListWithRemoteId: null,
           withHashtag: null,
           timelineReplyVisibilityFilterString: null,
@@ -123,7 +120,7 @@ class TimelineSettings extends IPreferencesObject implements ITimelineSettings {
     @required bool onlyWithMedia,
     @required bool onlyRemote,
     @required bool onlyLocal,
-    @required bool onlyNotMuted,
+    @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
   }) : this(
           id: id,
@@ -132,13 +129,11 @@ class TimelineSettings extends IPreferencesObject implements ITimelineSettings {
           onlyNoNsfwSensitive: null,
           onlyRemote: onlyRemote,
           onlyLocal: onlyLocal,
-          onlyNotMuted: onlyNotMuted,
+          withMuted: withMuted,
           excludeVisibilitiesStrings: excludeVisibilities
-              ?.map((excludeVisibility) => pleromaNotificationTypeValues
-                  .enumToValueMap[excludeVisibility])
+              ?.map((excludeVisibility) => excludeVisibility.toJsonValue())
               ?.toList(),
-          remoteTypeString: timelineRemoteTypeEnumValues
-              .enumToValueMap[TimelineRemoteType.public],
+          remoteTypeString: TimelineRemoteType.public.toJsonValue(),
           onlyInListWithRemoteId: null,
           withHashtag: null,
           timelineReplyVisibilityFilterString: null,
@@ -149,7 +144,7 @@ class TimelineSettings extends IPreferencesObject implements ITimelineSettings {
     @required String id,
     @required bool onlyWithMedia,
     @required bool onlyLocal,
-    @required bool onlyNotMuted,
+    @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
     @required String withHashtag,
   }) : this(
@@ -159,13 +154,11 @@ class TimelineSettings extends IPreferencesObject implements ITimelineSettings {
           onlyNoNsfwSensitive: null,
           onlyRemote: null,
           onlyLocal: onlyLocal,
-          onlyNotMuted: onlyNotMuted,
+          withMuted: withMuted,
           excludeVisibilitiesStrings: excludeVisibilities
-              ?.map((excludeVisibility) => pleromaNotificationTypeValues
-                  .enumToValueMap[excludeVisibility])
+              ?.map((excludeVisibility) => excludeVisibility.toJsonValue())
               ?.toList(),
-          remoteTypeString: timelineRemoteTypeEnumValues
-              .enumToValueMap[TimelineRemoteType.hashtag],
+          remoteTypeString: TimelineRemoteType.hashtag.toJsonValue(),
           onlyInListWithRemoteId: null,
           withHashtag: withHashtag,
           timelineReplyVisibilityFilterString: null,
@@ -174,7 +167,7 @@ class TimelineSettings extends IPreferencesObject implements ITimelineSettings {
 
   TimelineSettings.list({
     @required String id,
-    @required bool onlyNotMuted,
+    @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
     @required String onlyInListWithRemoteId,
   }) : this(
@@ -184,13 +177,11 @@ class TimelineSettings extends IPreferencesObject implements ITimelineSettings {
           onlyNoNsfwSensitive: null,
           onlyRemote: null,
           onlyLocal: null,
-          onlyNotMuted: onlyNotMuted,
+          withMuted: withMuted,
           excludeVisibilitiesStrings: excludeVisibilities
-              ?.map((excludeVisibility) => pleromaNotificationTypeValues
-                  .enumToValueMap[excludeVisibility])
+              ?.map((excludeVisibility) => excludeVisibility.toJsonValue())
               ?.toList(),
-          remoteTypeString: timelineRemoteTypeEnumValues
-              .enumToValueMap[TimelineRemoteType.list],
+          remoteTypeString: TimelineRemoteType.list.toJsonValue(),
           onlyInListWithRemoteId: onlyInListWithRemoteId,
           withHashtag: null,
           timelineReplyVisibilityFilterString: null,
@@ -208,10 +199,9 @@ class TimelineSettings extends IPreferencesObject implements ITimelineSettings {
           onlyNoNsfwSensitive: null,
           onlyRemote: null,
           onlyLocal: null,
-          onlyNotMuted: null,
-          excludeVisibilitiesStrings: null,
-          remoteTypeString: timelineRemoteTypeEnumValues
-              .enumToValueMap[TimelineRemoteType.account],
+          withMuted: null,
+          excludeVisibilitiesStrings: [],
+          remoteTypeString: TimelineRemoteType.account.toJsonValue(),
           onlyInListWithRemoteId: null,
           withHashtag: null,
           timelineReplyVisibilityFilterString: null,
@@ -225,7 +215,7 @@ class TimelineSettings extends IPreferencesObject implements ITimelineSettings {
     bool onlyNoNsfwSensitive,
     bool onlyRemote,
     bool onlyLocal,
-    bool onlyNotMuted,
+    bool withMuted,
     List<String> excludeVisibilitiesStrings,
     String remoteTypeString,
     String onlyInListWithRemoteId,
@@ -240,7 +230,7 @@ class TimelineSettings extends IPreferencesObject implements ITimelineSettings {
         onlyNoNsfwSensitive: onlyNoNsfwSensitive ?? this.onlyNoNsfwSensitive,
         onlyRemote: onlyRemote ?? this.onlyRemote,
         onlyLocal: onlyLocal ?? this.onlyLocal,
-        onlyNotMuted: onlyNotMuted ?? this.onlyNotMuted,
+        withMuted: withMuted ?? this.withMuted,
         excludeVisibilitiesStrings:
             excludeVisibilitiesStrings ?? this.excludeVisibilitiesStrings,
         remoteTypeString: remoteTypeString ?? this.remoteTypeString,
@@ -264,7 +254,7 @@ class TimelineSettings extends IPreferencesObject implements ITimelineSettings {
           onlyNoNsfwSensitive == other.onlyNoNsfwSensitive &&
           onlyRemote == other.onlyRemote &&
           onlyLocal == other.onlyLocal &&
-          onlyNotMuted == other.onlyNotMuted &&
+          withMuted == other.withMuted &&
           excludeVisibilitiesStrings == other.excludeVisibilitiesStrings &&
           remoteTypeString == other.remoteTypeString &&
           onlyInListWithRemoteId == other.onlyInListWithRemoteId &&
@@ -281,7 +271,7 @@ class TimelineSettings extends IPreferencesObject implements ITimelineSettings {
       onlyNoNsfwSensitive.hashCode ^
       onlyRemote.hashCode ^
       onlyLocal.hashCode ^
-      onlyNotMuted.hashCode ^
+      withMuted.hashCode ^
       excludeVisibilitiesStrings.hashCode ^
       remoteTypeString.hashCode ^
       onlyInListWithRemoteId.hashCode ^
@@ -298,7 +288,7 @@ class TimelineSettings extends IPreferencesObject implements ITimelineSettings {
         ' onlyNoNsfwSensitive: $onlyNoNsfwSensitive,'
         ' onlyRemote: $onlyRemote,'
         ' onlyLocal: $onlyLocal,'
-        ' onlyNotMuted: $onlyNotMuted,'
+        ' withMuted: $withMuted,'
         ' excludeVisibilitiesStrings: $excludeVisibilitiesStrings,'
         ' remoteTypeString: $remoteTypeString,'
         ' onlyInListWithRemoteId: $onlyInListWithRemoteId,'
@@ -349,7 +339,7 @@ abstract class ITimelineSettings {
 
   bool get onlyLocal;
 
-  bool get onlyNotMuted;
+  bool get withMuted;
 
   List<PleromaVisibility> get excludeVisibilities;
 

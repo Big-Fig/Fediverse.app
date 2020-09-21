@@ -63,7 +63,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
 
     List<IPleromaStatus> remoteStatuses;
     var onlyLocal = _timelineSettings.onlyLocal == true;
-    var withMuted = _timelineSettings.onlyNotMuted != true;
+    var withMuted = _timelineSettings.withMuted == true;
     var onlyWithMedia = _timelineSettings.onlyWithMedia;
     var excludeVisibilities = _timelineSettings.excludeVisibilities;
     var maxId = olderThan?.remoteId;
@@ -154,7 +154,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
       onlyFromAccountsFollowingByAccount: null,
       onlyLocal: onlyLocalFilter,
       onlyWithMedia: timelineLocalPreferences.onlyWithMedia,
-      onlyNotMuted: _timelineSettings.onlyNotMuted,
+      withMuted: _timelineSettings.withMuted,
       excludeVisibilities: _timelineSettings.excludeVisibilities,
       olderThanStatus: null,
       newerThanStatus: item,
@@ -194,7 +194,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
       onlyFromAccountsFollowingByAccount: null,
       onlyLocal: onlyLocalFilter,
       onlyWithMedia: timelineLocalPreferences.onlyWithMedia,
-      onlyNotMuted: _timelineSettings.onlyNotMuted,
+      withMuted: _timelineSettings.withMuted,
       excludeVisibilities: _timelineSettings.excludeVisibilities,
       olderThanStatus: olderThan,
       newerThanStatus: newerThan,
