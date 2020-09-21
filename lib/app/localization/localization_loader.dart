@@ -657,8 +657,8 @@ class CodegenLoader extends AssetLoader{
             "only_local": {
               "label": "Only local"
             },
-            "only_not_muted": {
-              "label": "Only not muted"
+            "with_muted": {
+              "label": "With muted"
             }
           }
         }
