@@ -46,7 +46,7 @@ class MediaAttachmentDetailsPage extends StatefulWidget {
 class _MediaAttachmentDetailsPageState
     extends State<MediaAttachmentDetailsPage> {
   IPleromaMediaAttachment get mediaAttachment =>
-      widget.mediaAttachments[_controller.page.toInt()];
+      selectedMediaAttachmentSubject.value;
 
   final PageController _controller;
 
