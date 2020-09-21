@@ -258,6 +258,12 @@ class CodegenLoader extends AssetLoader{
                 }
               }
             },
+            "background_image": {
+              "label": "Background image",
+              "action": {
+                "add": "Add"
+              }
+            },
             "display_name": {
               "label": "Display name*"
             },

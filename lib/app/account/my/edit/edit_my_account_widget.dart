@@ -336,15 +336,15 @@ class EditMyAccountWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        FediFormEditTextLabel("Background Image"),
+        FediFormEditTextLabel(
+          tr("app.account.my.edit.field.background_image.label"),
+        ),
         FediSmallVerticalSpacer(),
         StreamBuilder<MediaImageSource>(
             stream: editMyAccountBloc.backgroundField.imageSourceStream,
             builder: (context, snapshot) {
               var source = snapshot.data;
-              if (source == null) {
-                return FediCircularProgressIndicator();
-              }
+
               if (source != null) {
                 return Stack(
                   children: <Widget>[
@@ -373,7 +373,7 @@ class EditMyAccountWidget extends StatelessWidget {
                 return Padding(
                   padding: FediPadding.allSmallPadding,
                   child: FediPrimaryFilledTextButton(
-                    "Add",
+                    tr("app.account.my.edit.field.background_image.action.add"),
                     onPressed: () {
                       startChoosingFileToUploadBackground(
                           context, editMyAccountBloc);
