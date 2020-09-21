@@ -17,5 +17,5 @@ abstract class ITimelineSettingsBloc extends Disposable {
 
   IFormBoolFieldBloc get onlyLocalFieldBloc;
 
-  IFormBoolFieldBloc get onlyNotMutedFieldBloc;
+  IFormBoolFieldBloc get withMutedFieldBloc;
 }

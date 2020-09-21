@@ -24,7 +24,7 @@ class HashtagTimelineSettingsLocalPreferencesBloc
         id: "hashtag.$hashtag",
         onlyLocal: false,
         onlyWithMedia: true,
-        onlyNotMuted: false,
+        withMuted: false,
         excludeVisibilities: null,
         withHashtag: hashtag,
       );

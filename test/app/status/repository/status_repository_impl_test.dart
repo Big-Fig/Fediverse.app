@@ -33,7 +33,7 @@ void main() {
   DbAccount dbAccount;
 
   setUp(() async {
-    database = AppDatabase(VmDatabase.memory(logStatements: true));
+    database = AppDatabase(VmDatabase.memory(logStatements: false));
     accountRepository = AccountRepository(appDatabase: database);
     statusRepository = StatusRepository(
         appDatabase: database, accountRepository: accountRepository);
@@ -226,7 +226,7 @@ void main() {
       onlyInConversation: null,
       onlyFromAccount: null,
       onlyWithMedia: null,
-      onlyNotMuted: null,
+      withMuted: null,
       excludeVisibilities: null,
       newerThanStatus: null,
       limit: null,
@@ -264,7 +264,7 @@ void main() {
       onlyInConversation: null,
       onlyFromAccount: null,
       onlyWithMedia: null,
-      onlyNotMuted: null,
+      withMuted: null,
       excludeVisibilities: null,
       newerThanStatus: null,
       limit: null,
@@ -318,7 +318,7 @@ void main() {
       onlyInConversation: null,
       onlyFromAccount: null,
       onlyWithMedia: true,
-      onlyNotMuted: null,
+      withMuted: null,
       excludeVisibilities: null,
       newerThanStatus: null,
       limit: null,
@@ -359,12 +359,12 @@ void main() {
     expect((await query.get()).length, 1);
   });
 
-  test('createQuery onlyNotMuted', () async {
+  test('createQuery withMuted', () async {
     var query = statusRepository.createQuery(
       onlyInConversation: null,
       onlyFromAccount: null,
       onlyWithMedia: null,
-      onlyNotMuted: true,
+      withMuted: true,
       excludeVisibilities: null,
       newerThanStatus: null,
       limit: null,
@@ -389,7 +389,7 @@ void main() {
                 seed: "seed1", dbAccount: dbAccount, pleromaThreadMuted: null))
             .copyWith(muted: true));
 
-    expect((await query.get()).length, 0);
+    expect((await query.get()).length, 1);
 
     await insertDbStatus(
         statusRepository,
@@ -397,7 +397,7 @@ void main() {
                 seed: "seed2", dbAccount: dbAccount, pleromaThreadMuted: false))
             .copyWith(muted: true));
 
-    expect((await query.get()).length, 0);
+    expect((await query.get()).length, 2);
 
     await insertDbStatus(
         statusRepository,
@@ -405,7 +405,7 @@ void main() {
                 seed: "seed3", dbAccount: dbAccount, pleromaThreadMuted: true))
             .copyWith(muted: false));
 
-    expect((await query.get()).length, 0);
+    expect((await query.get()).length, 3);
 
     await insertDbStatus(
         statusRepository,
@@ -413,7 +413,7 @@ void main() {
                 seed: "seed4", dbAccount: dbAccount, pleromaThreadMuted: true))
             .copyWith(muted: true));
 
-    expect((await query.get()).length, 0);
+    expect((await query.get()).length, 4);
 
     await insertDbStatus(
         statusRepository,
@@ -421,7 +421,7 @@ void main() {
                 seed: "seed5", dbAccount: dbAccount, pleromaThreadMuted: false))
             .copyWith(muted: false));
 
-    expect((await query.get()).length, 1);
+    expect((await query.get()).length, 5);
 
     await insertDbStatus(
         statusRepository,
@@ -429,7 +429,7 @@ void main() {
                 seed: "seed6", dbAccount: dbAccount, pleromaThreadMuted: null))
             .copyWith(muted: false));
 
-    expect((await query.get()).length, 2);
+    expect((await query.get()).length, 6);
   });
 
   test('createQuery excludeVisibilities', () async {
@@ -437,7 +437,7 @@ void main() {
       onlyInConversation: null,
       onlyFromAccount: null,
       onlyWithMedia: null,
-      onlyNotMuted: null,
+      withMuted: null,
       excludeVisibilities: [
         PleromaVisibility.direct,
         PleromaVisibility.unlisted
@@ -493,7 +493,7 @@ void main() {
       onlyInConversation: null,
       onlyFromAccount: null,
       onlyWithMedia: null,
-      onlyNotMuted: null,
+      withMuted: null,
       excludeVisibilities: null,
       newerThanStatus:
           await createTestStatus(seed: "remoteId5", remoteId: "remoteId5"),
@@ -546,7 +546,7 @@ void main() {
       onlyInConversation: null,
       onlyFromAccount: null,
       onlyWithMedia: null,
-      onlyNotMuted: null,
+      withMuted: null,
       excludeVisibilities: null,
       newerThanStatus: null,
       limit: null,
@@ -599,7 +599,7 @@ void main() {
       onlyInConversation: null,
       onlyFromAccount: null,
       onlyWithMedia: null,
-      onlyNotMuted: null,
+      withMuted: null,
       excludeVisibilities: null,
       newerThanStatus:
           await createTestStatus(seed: "remoteId2", remoteId: "remoteId2"),
@@ -667,7 +667,7 @@ void main() {
       onlyInConversation: null,
       onlyFromAccount: null,
       onlyWithMedia: null,
-      onlyNotMuted: null,
+      withMuted: null,
       excludeVisibilities: null,
       newerThanStatus: null,
       limit: null,
@@ -715,7 +715,7 @@ void main() {
       onlyInConversation: null,
       onlyFromAccount: null,
       onlyWithMedia: null,
-      onlyNotMuted: null,
+      withMuted: null,
       excludeVisibilities: null,
       newerThanStatus: null,
       limit: null,
@@ -763,7 +763,7 @@ void main() {
       onlyInConversation: null,
       onlyFromAccount: null,
       onlyWithMedia: null,
-      onlyNotMuted: null,
+      withMuted: null,
       excludeVisibilities: null,
       newerThanStatus: null,
       limit: 1,
@@ -809,7 +809,7 @@ void main() {
       onlyInConversation: null,
       onlyFromAccount: null,
       onlyWithMedia: null,
-      onlyNotMuted: null,
+      withMuted: null,
       excludeVisibilities: null,
       newerThanStatus: null,
       limit: null,
@@ -847,7 +847,7 @@ void main() {
       onlyInConversation: null,
       onlyFromAccount: null,
       onlyWithMedia: null,
-      onlyNotMuted: null,
+      withMuted: null,
       excludeVisibilities: null,
       newerThanStatus: null,
       limit: null,
@@ -900,7 +900,7 @@ void main() {
       onlyInConversation: null,
       onlyFromAccount: null,
       onlyWithMedia: null,
-      onlyNotMuted: null,
+      withMuted: null,
       excludeVisibilities: null,
       newerThanStatus: null,
       limit: null,
@@ -962,7 +962,7 @@ void main() {
       onlyInConversation: null,
       onlyFromAccount: null,
       onlyWithMedia: null,
-      onlyNotMuted: null,
+      withMuted: null,
       excludeVisibilities: null,
       newerThanStatus: null,
       limit: null,
@@ -1043,7 +1043,7 @@ void main() {
       onlyInConversation: null,
       onlyFromAccount: null,
       onlyWithMedia: null,
-      onlyNotMuted: null,
+      withMuted: null,
       excludeVisibilities: null,
       newerThanStatus: null,
       limit: null,
@@ -1109,7 +1109,7 @@ void main() {
           remoteId: conversationRemoteId, unread: false, id: null)),
       onlyFromAccount: null,
       onlyWithMedia: null,
-      onlyNotMuted: null,
+      withMuted: null,
       excludeVisibilities: null,
       newerThanStatus: null,
       limit: null,
@@ -1173,7 +1173,7 @@ void main() {
       onlyInConversation: null,
       onlyFromAccount: DbAccountWrapper(dbAccount),
       onlyWithMedia: null,
-      onlyNotMuted: null,
+      withMuted: null,
       excludeVisibilities: null,
       newerThanStatus: null,
       limit: null,
@@ -1351,7 +1351,7 @@ void main() {
               seed: "seed5", remoteId: conversationRemoteId),
           onlyLocal: null,
           onlyWithMedia: null,
-          onlyNotMuted: null,
+          withMuted: null,
           excludeVisibilities: null,
           olderThanStatus: null,
           newerThanStatus: null,
@@ -1393,7 +1393,7 @@ void main() {
       onlyInConversation: null,
       onlyFromAccount: null,
       onlyWithMedia: null,
-      onlyNotMuted: null,
+      withMuted: null,
       excludeVisibilities: null,
       newerThanStatus:
           await statusRepository.findByRemoteId(dbStatus1.remoteId),
@@ -1466,7 +1466,7 @@ void main() {
   //     onlyInConversation: null,
   //     onlyFromAccount: null,
   //     onlyWithMedia: true,
-  //     onlyNotMuted: null,
+  //     withMuted: null,
   //     excludeVisibilities: null,
   //     newerThanStatus: null,
   //     limit: null,

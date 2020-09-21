@@ -12,9 +12,13 @@ class HomeTimelineSettingsWidget extends StatelessWidget {
     return ListView(
       children: [
         FormBoolFieldFormRowWidget(
-          label: tr("app.timeline.display.settings.field.only_not_muted"
+          label: tr("app.timeline.display.settings.field.with_muted.label"),
+          field: settingsBloc.withMutedFieldBloc,
+        ),
+        FormBoolFieldFormRowWidget(
+          label: tr("app.timeline.display.settings.field.only_local"
               ".label"),
-          field: settingsBloc.onlyNotMutedFieldBloc,
+          field: settingsBloc.onlyLocalFieldBloc,
         ),
       ],
     );

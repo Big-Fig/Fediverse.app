@@ -17,7 +17,11 @@ EnumValues<TimelineRemoteType> timelineRemoteTypeEnumValues = EnumValues({
 });
 
 extension TimelineRemoteTypeExtension on TimelineRemoteType {
-  String toStringValue() => timelineRemoteTypeEnumValues.enumToValueMap[this];
+  String toJsonValue() {
+    var type = timelineRemoteTypeEnumValues.enumToValueMap[this];
+    assert(type != null, "invalid type $this");
+    return type;
+  }
 }
 
 extension TimelineRemoteTypeStringExtension on String {
@@ -32,8 +36,12 @@ enum TimelineReplyVisibilityFilter {
 
 extension TimelineReplyVisibilityFilterExtension
     on TimelineReplyVisibilityFilter {
-  String toStringValue() =>
-      timelineReplyVisibilityFilterEnumValues.enumToValueMap[this];
+  String toJsonValue() {
+    var filter = timelineReplyVisibilityFilterEnumValues.enumToValueMap[this];
+    assert(filter != null, "invalid type $filter");
+    return filter;
+  }
+
 }
 
 extension TimelineReplyVisibilityFilterStringExtension on String {

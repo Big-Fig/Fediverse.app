@@ -8,7 +8,11 @@ extension PleromaVisibilityJsonValueExtension on PleromaVisibility {
 }
 
 extension PleromaVisibilityStringExtension on String {
-  PleromaVisibility toPleromaVisibility() => _pleromaVisibilityValues.valueToEnumMap[this];
+  PleromaVisibility toPleromaVisibility() {
+    var visibility = _pleromaVisibilityValues.valueToEnumMap[this];
+    assert(visibility != null, "invalid visibility $this");
+    return visibility;
+  }
 }
 
 final _pleromaVisibilityValues = EnumValues({
@@ -24,9 +28,8 @@ class PleromaVisibilityTypeConverter
   const PleromaVisibilityTypeConverter();
 
   @override
-  PleromaVisibility fromJson(String value) =>
-      value.toPleromaVisibility();
+  PleromaVisibility fromJson(String value) => value.toPleromaVisibility();
+
   @override
-  String toJson(PleromaVisibility value) =>
-      value.toJsonValue();
+  String toJson(PleromaVisibility value) => value.toJsonValue();
 }

@@ -49,7 +49,7 @@ Future<DbStatus> createTestDbStatus({
       favourited: true,
       reblogged: false,
       pinned: false,
-      muted: true,
+      muted: false,
       bookmarked: false,
       content: seed + "content",
       reblogStatusRemoteId: null,

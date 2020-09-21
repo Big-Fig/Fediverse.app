@@ -33,7 +33,7 @@ var _homeTimelineStatusesAliasId = "homeTimelineStatuses";
       ":remoteId;",
 })
 class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
-    final AppDatabase db;
+  final AppDatabase db;
   $DbAccountsTable accountAlias;
   $DbStatusesTable reblogAlias;
   $DbAccountsTable reblogAccountAlias;
@@ -203,9 +203,11 @@ class StatusDao extends DatabaseAccessor<AppDatabase> with _$StatusDaoMixin {
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query) =>
       query
         ..where((status) =>
-            (status.muted.equals(false)) &
-            (status.pleromaThreadMuted.equals(false) |
-                isNull(status.pleromaThreadMuted)));
+            status.muted.equals(false)
+            // (status.muted.equals(false)) &
+            // (status.pleromaThreadMuted.equals(false) |
+            //     isNull(status.pleromaThreadMuted))
+        );
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyFromAccountWhere(
           SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
