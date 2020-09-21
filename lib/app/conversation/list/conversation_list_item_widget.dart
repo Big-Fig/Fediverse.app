@@ -16,6 +16,7 @@ import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:path/path.dart' as path;
 
 class ConversationListItemWidget extends StatelessWidget {
   ConversationListItemWidget();
@@ -36,7 +37,7 @@ class ConversationListItemWidget extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.symmetric(
               horizontal: FediSizes.bigPadding,
-              vertical: FediSizes.smallPadding + FediSizes.bigPadding),
+              vertical: FediSizes.bigPadding),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -61,7 +62,7 @@ class ConversationListItemWidget extends StatelessWidget {
     );
   }
 
-  Column buildConversationPreview(
+  Widget buildConversationPreview(
       BuildContext context, IConversationBloc conversationBloc) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,11 +99,20 @@ class ConversationListItemWidget extends StatelessWidget {
           if (lastMessage == null) {
             return SizedBox.shrink();
           }
+
           var content = lastMessage.content;
           if (content?.isNotEmpty != true) {
             var mediaAttachments = lastMessage.mediaAttachments;
             content = mediaAttachments
-                ?.map((mediaAttachment) => mediaAttachment.description)
+                ?.map((mediaAttachment) {
+                  var description = mediaAttachment.description;
+                  if(description?.isNotEmpty == true) {
+                    return description;
+                  } else {
+                    return path.basename(mediaAttachment.url);
+                  }
+
+                })
                 ?.join(", ") ?? "";
           } else {
             content = extractContent(context, lastMessage, content);
@@ -114,7 +124,7 @@ class ConversationListItemWidget extends StatelessWidget {
             drawNewLines: false,
             textMaxLines: 1,
             textOverflow: TextOverflow.ellipsis,
-            data: contentWithEmojis,
+            data: contentWithEmojis ?? "",
             onLinkTap: null,
             fontSize: 16.0,
             fontWeight: FontWeight.w300,
