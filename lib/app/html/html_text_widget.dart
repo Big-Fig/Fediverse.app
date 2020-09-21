@@ -53,6 +53,8 @@ class HtmlTextWidget extends StatelessWidget {
       htmlData = data?.replaceAll("<(/)*br>", "");
     }
 
+    _logger.finest(() => "htmlData $htmlData");
+
     var textScaleFactor = MediaQuery.textScaleFactorOf(context);
 
     // todo: remove hack
@@ -131,7 +133,7 @@ class HtmlTextWidget extends StatelessWidget {
       onImageError: (exception, stackTrace) {
         _logger.warning(() => "onImageError", exception, stackTrace);
       },
-      data: htmlData,
+      data: htmlData ?? "",
       onLinkTap: onLinkTap,
     );
   }
