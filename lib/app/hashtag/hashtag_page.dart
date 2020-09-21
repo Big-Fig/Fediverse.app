@@ -13,6 +13,7 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/timeline/settings/hashtag/hashtag_timeline_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/timeline_status_cached_list_bloc_impl.dart';
+import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
@@ -119,52 +120,66 @@ MaterialPageRoute createHashtagPageRoute({
         userAtHost: currentAuthInstanceBloc.currentInstance.userAtHost,
         hashtag: hashtag.name,
       ),
-      child: DisposableProvider<IStatusCachedListBloc>(
-        create: (BuildContext context) {
-          var hashtagTimelineStatusCachedListBloc =
-              TimelineStatusCachedListBloc(
-                  pleromaTimelineService: IPleromaTimelineService.of(
-                    context,
-                    listen: false,
-                  ),
-                  statusRepository: IStatusRepository.of(
-                    context,
-                    listen: false,
-                  ),
-                  timelineLocalPreferencesBloc:
-                      ITimelineSettingsLocalPreferencesBloc.of(context,
-                          listen: false),
-                  currentInstanceBloc: ICurrentAuthInstanceBloc.of(
-                    context,
-                    listen: false,
-                  ),
-                  pleromaAccountService: IPleromaAccountService.of(
-                    context,
-                    listen: false,
-                  ));
-          if (isRealtimeWebSocketsEnabled) {
-            hashtagTimelineStatusCachedListBloc.addDisposable(
-              disposable: HashtagStatusListWebSocketsHandler.createFromContext(
-                  context,
-                  hashtag: hashtag.name),
-            );
-          }
-          return hashtagTimelineStatusCachedListBloc;
-        },
-        child: ProxyProvider<IStatusCachedListBloc,
-            IPleromaCachedListBloc<IStatus>>(
-          update: (context, value, previous) => value,
-          child: StatusCachedPaginationBloc.provideToContext(
-            context,
-            child: StatusCachedPaginationListWithNewItemsBloc.provideToContext(
+      child: Builder(
+        builder: (context) {
+          return FediAsyncInitLoadingWidget(
+            asyncInitLoadingBloc: ITimelineSettingsLocalPreferencesBloc.of(
               context,
-              mergeNewItemsImmediately: false,
-              child: HashtagPage(
-                hashtag: hashtag,
-              ),
+              listen: false,
             ),
-          ),
-        ),
+            loadingFinishedBuilder: (BuildContext context) {
+              return DisposableProvider<IStatusCachedListBloc>(
+                create: (BuildContext context) {
+                  var hashtagTimelineStatusCachedListBloc =
+                      TimelineStatusCachedListBloc(
+                          pleromaTimelineService: IPleromaTimelineService.of(
+                            context,
+                            listen: false,
+                          ),
+                          statusRepository: IStatusRepository.of(
+                            context,
+                            listen: false,
+                          ),
+                          timelineLocalPreferencesBloc:
+                              ITimelineSettingsLocalPreferencesBloc.of(context,
+                                  listen: false),
+                          currentInstanceBloc: ICurrentAuthInstanceBloc.of(
+                            context,
+                            listen: false,
+                          ),
+                          pleromaAccountService: IPleromaAccountService.of(
+                            context,
+                            listen: false,
+                          ));
+                  if (isRealtimeWebSocketsEnabled) {
+                    hashtagTimelineStatusCachedListBloc.addDisposable(
+                      disposable:
+                          HashtagStatusListWebSocketsHandler.createFromContext(
+                              context,
+                              hashtag: hashtag.name),
+                    );
+                  }
+                  return hashtagTimelineStatusCachedListBloc;
+                },
+                child: ProxyProvider<IStatusCachedListBloc,
+                    IPleromaCachedListBloc<IStatus>>(
+                  update: (context, value, previous) => value,
+                  child: StatusCachedPaginationBloc.provideToContext(
+                    context,
+                    child: StatusCachedPaginationListWithNewItemsBloc
+                        .provideToContext(
+                      context,
+                      mergeNewItemsImmediately: false,
+                      child: HashtagPage(
+                        hashtag: hashtag,
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+        },
       ),
     );
   });

@@ -23,7 +23,7 @@ class HashtagTimelineSettingsLocalPreferencesBloc
   TimelineSettings get defaultValue => TimelineSettings.hashtag(
         id: "hashtag.$hashtag",
         onlyLocal: false,
-        onlyWithMedia: true,
+        onlyWithMedia: false,
         withMuted: false,
         excludeVisibilities: null,
         withHashtag: hashtag,

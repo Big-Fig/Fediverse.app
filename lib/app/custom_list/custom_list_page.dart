@@ -14,6 +14,7 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/timeline/settings/custom_list/custom_list_timeline_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/timeline_status_cached_list_bloc_impl.dart';
+import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/collapsible/collapsible_owner_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -104,57 +105,74 @@ MaterialPageRoute createCustomListPageRoute({
 
   return MaterialPageRoute(builder: (context) {
     return DisposableProvider<ITimelineSettingsLocalPreferencesBloc>(
-      create: (context) => CustomListTimelineSettingsLocalPreferencesBloc(
-        ILocalPreferencesService.of(context, listen: false),
-        userAtHost: currentAuthInstanceBloc.currentInstance.userAtHost,
-        customListId: customList.remoteId,
-      ),
-      child: DisposableProvider<IStatusCachedListBloc>(
-        create: (BuildContext context) {
-          var customListTimelineStatusCachedListBloc =
-              TimelineStatusCachedListBloc(
-                  pleromaTimelineService: IPleromaTimelineService.of(
-                    context,
-                    listen: false,
-                  ),
-                  statusRepository: IStatusRepository.of(
-                    context,
-                    listen: false,
-                  ),
-                  timelineLocalPreferencesBloc:
+      create: (context) {
+        var bloc = CustomListTimelineSettingsLocalPreferencesBloc(
+          ILocalPreferencesService.of(context, listen: false),
+          userAtHost: currentAuthInstanceBloc.currentInstance.userAtHost,
+          customListId: customList.remoteId,
+        );
+
+        bloc.performAsyncInit();
+        return bloc;
+      },
+      child: Builder(
+        builder: (context) {
+          return FediAsyncInitLoadingWidget(
+            asyncInitLoadingBloc: ITimelineSettingsLocalPreferencesBloc.of(context, listen: false),
+            loadingFinishedBuilder: (BuildContext context) {
+              return DisposableProvider<IStatusCachedListBloc>(
+                create: (BuildContext context) {
+                  var customListTimelineStatusCachedListBloc =
+                  TimelineStatusCachedListBloc(
+                      pleromaTimelineService: IPleromaTimelineService.of(
+                        context,
+                        listen: false,
+                      ),
+                      statusRepository: IStatusRepository.of(
+                        context,
+                        listen: false,
+                      ),
+                      timelineLocalPreferencesBloc:
                       ITimelineSettingsLocalPreferencesBloc.of(context,
                           listen: false),
-                  currentInstanceBloc: ICurrentAuthInstanceBloc.of(
-                    context,
-                    listen: false,
-                  ),
-                  pleromaAccountService: IPleromaAccountService.of(
-                    context,
-                    listen: false,
-                  ));
-          if (isRealtimeWebSocketsEnabled) {
-            customListTimelineStatusCachedListBloc.addDisposable(
-                disposable:
-                    CustomListStatusListWebSocketsHandler.createFromContext(
+                      currentInstanceBloc: ICurrentAuthInstanceBloc.of(
                         context,
-                        customListRemoteId: customList.remoteId));
-          }
-          return customListTimelineStatusCachedListBloc;
+                        listen: false,
+                      ),
+                      pleromaAccountService: IPleromaAccountService.of(
+                        context,
+                        listen: false,
+                      ));
+                  if (isRealtimeWebSocketsEnabled) {
+                    customListTimelineStatusCachedListBloc.addDisposable(
+                        disposable:
+                        CustomListStatusListWebSocketsHandler.createFromContext(
+                            context,
+                            customListRemoteId: customList.remoteId));
+                  }
+                  return customListTimelineStatusCachedListBloc;
+                },
+                child: ProxyProvider<IStatusCachedListBloc,
+                    IPleromaCachedListBloc<IStatus>>(
+                  update: (context, value, previous) => value,
+                  child: StatusCachedPaginationBloc.provideToContext(
+                    context,
+                    child:
+                    StatusCachedPaginationListWithNewItemsBloc.provideToContext(
+                      context,
+                      mergeNewItemsImmediately: false,
+                      child: CustomListPage(
+                        customList: customList,
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+
+
         },
-        child: ProxyProvider<IStatusCachedListBloc,
-            IPleromaCachedListBloc<IStatus>>(
-          update: (context, value, previous) => value,
-          child: StatusCachedPaginationBloc.provideToContext(
-            context,
-            child: StatusCachedPaginationListWithNewItemsBloc.provideToContext(
-              context,
-              mergeNewItemsImmediately: false,
-              child: CustomListPage(
-                customList: customList,
-              ),
-            ),
-          ),
-        ),
       ),
     );
   });
