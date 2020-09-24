@@ -636,6 +636,10 @@ class CodegenLoader extends AssetLoader{
       "dismissed": "Dismissed"
     },
     "timeline": {
+      "storage": {
+        "title": "Timelines",
+        "empty": "Nothing found"
+      },
       "settings": {
         "title": "{} timeline settings",
         "field": {

@@ -26,6 +26,11 @@ class TimelinesHomeTabStorage implements IPreferencesObject {
   @override
   int get hashCode => items.hashCode;
 
+  TimelinesHomeTabStorage copyWith({
+    List<TimelinesHomeTabItem> items,
+  }) =>
+      TimelinesHomeTabStorage(items: items ?? this.items);
+
   @override
   String toString() {
     return 'TimelinesHomeTabStorage{items: $items}';
