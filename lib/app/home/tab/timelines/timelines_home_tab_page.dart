@@ -1,10 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/home/home_bloc.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 import 'package:fedi/app/home/tab/timelines/item/timelines_home_tab_item_model.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc_impl.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_local_preferences_bloc.dart';
+import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_page.dart';
 import 'package:fedi/app/home/tab/timelines/timelines_home_tab_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/timelines_home_tab_overlay_on_long_scroll_widget.dart';
 import 'package:fedi/app/home/tab/timelines/timelines_home_tab_post_status_header_widget.dart';
@@ -12,7 +14,6 @@ import 'package:fedi/app/search/search_page.dart';
 import 'package:fedi/app/status/list/status_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/timeline/settings/timeline_settings_page.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_text_tab_indicator_item_widget.dart';
 import 'package:fedi/app/timeline/timeline_tabs_bloc.dart';
 import 'package:fedi/app/timeline/timeline_tabs_bloc_impl.dart';
@@ -33,6 +34,7 @@ import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc_proxy_provider.dart';
@@ -47,6 +49,12 @@ class TimelinesHomeTabPage extends StatelessWidget {
     return DisposableProvider<ITimelinesHomeTabStorageBloc>(
       create: (context) => TimelinesHomeTabStorageBloc(
         preferences: ITimelinesHomeTabStorageLocalPreferences.of(
+          context,
+          listen: false,
+        ),
+        authInstance:
+            ICurrentAuthInstanceBloc.of(context, listen: false).currentInstance,
+        preferencesService: ILocalPreferencesService.of(
           context,
           listen: false,
         ),
@@ -233,12 +241,7 @@ class _TimelinesHomeTabPageBodyState extends State<TimelinesHomeTabPageBody>
     return FediIconInCircleBlurredButton(
       FediIcons.filter,
       onPressed: () {
-        var selectedTab = timelineTabsBloc.selectedTab;
-
-        goToTimelineSettingsPage(context,
-            settingsBloc:
-                timelineTabsBloc.retrieveTimelineTabSettingsBloc(selectedTab),
-            timelinesHomeTabItem: selectedTab);
+        goToTimelinesHomeTabStoragePage(context);
       },
     );
   }

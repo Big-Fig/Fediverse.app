@@ -25,7 +25,6 @@ class TimelinesHomeTabItem implements IPreferencesObject {
     @required this.isPossibleToDelete,
   });
 
-
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -40,7 +39,6 @@ class TimelinesHomeTabItem implements IPreferencesObject {
       label.hashCode ^
       timelineSettingsId.hashCode ^
       isPossibleToDelete.hashCode;
-
 
   @override
   String toString() {

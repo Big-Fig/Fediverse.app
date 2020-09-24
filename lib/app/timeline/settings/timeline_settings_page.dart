@@ -6,6 +6,7 @@ import 'package:fedi/app/home/tab/timelines/item/timelines_home_tab_item_model.d
 import 'package:fedi/app/timeline/settings/timeline_settings_bloc.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_widget.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
@@ -35,14 +36,12 @@ class TimelineSettingsPage extends StatelessWidget {
 
 void goToTimelineSettingsPage(
   BuildContext context, {
-  @required ITimelineSettingsLocalPreferencesBloc settingsBloc,
   @required TimelinesHomeTabItem timelinesHomeTabItem,
 }) {
   Navigator.push(
     context,
     createTimelineSettingsPageRoute(
       context,
-      settingsBloc: settingsBloc,
       timelinesHomeTabItem: timelinesHomeTabItem,
     ),
   );
@@ -50,25 +49,41 @@ void goToTimelineSettingsPage(
 
 MaterialPageRoute createTimelineSettingsPageRoute(
   BuildContext context, {
-  @required ITimelineSettingsLocalPreferencesBloc settingsBloc,
   @required TimelinesHomeTabItem timelinesHomeTabItem,
 }) {
   var localPreferencesService =
       ILocalPreferencesService.of(context, listen: false);
   var currentAuthInstanceBloc =
       ICurrentAuthInstanceBloc.of(context, listen: false);
+  var currentInstance = currentAuthInstanceBloc.currentInstance;
   return MaterialPageRoute(
-    builder: (context) => DisposableProvider<ITimelineSettingsBloc>(
-      create: (BuildContext context) => TimelineSettingsBloc(
-        settingsLocalPreferencesBloc: settingsBloc,
-      ),
-      child: DisposableProvider<ITimelinesHomeTabItemBloc>(
-        create: (context) => TimelinesHomeTabItemBloc(
-          preferencesService: localPreferencesService,
-          timelinesHomeTabItem: timelinesHomeTabItem,
-          currentInstance: currentAuthInstanceBloc.currentInstance,
+    builder: (context) =>
+        DisposableProvider<ITimelineSettingsLocalPreferencesBloc>(
+      create: (context) {
+        return TimelineSettingsLocalPreferencesBloc.byId(
+          localPreferencesService,
+          userAtHost: currentInstance.userAtHost,
+          timelineId: timelinesHomeTabItem.timelineSettingsId,
+        );
+      },
+      child: DisposableProvider<ITimelineSettingsBloc>(
+        create: (BuildContext context) => TimelineSettingsBloc(
+          settingsLocalPreferencesBloc:
+              ITimelineSettingsLocalPreferencesBloc.of(
+            context,
+            listen: false,
+          ),
         ),
-        child: const TimelineSettingsPage(),
+        child: DisposableProvider<ITimelinesHomeTabItemBloc>(
+          create: (context) {
+            return TimelinesHomeTabItemBloc(
+              preferencesService: localPreferencesService,
+              timelinesHomeTabItem: timelinesHomeTabItem,
+              currentInstance: currentInstance,
+            );
+          },
+          child: const TimelineSettingsPage(),
+        ),
       ),
     ),
   );

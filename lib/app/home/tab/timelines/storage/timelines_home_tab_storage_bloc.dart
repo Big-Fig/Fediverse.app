@@ -16,4 +16,8 @@ abstract class ITimelinesHomeTabStorageBloc extends Disposable {
   List<TimelinesHomeTabItem> get items;
 
   Stream<List<TimelinesHomeTabItem>> get itemsStream;
+
+  Future onItemsUpdated(List<TimelinesHomeTabItem> items);
+
+  Future remove(TimelinesHomeTabItem item);
 }
