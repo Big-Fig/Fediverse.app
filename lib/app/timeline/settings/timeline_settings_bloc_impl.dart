@@ -17,29 +17,34 @@ class TimelineSettingsBloc extends DisposableOwner
   @override
   final IFormBoolFieldBloc onlyWithMediaFieldBloc;
   @override
-  final IFormBoolFieldBloc onlyNoRepliesFieldBloc;
+  final IFormBoolFieldBloc excludeRepliesFieldBloc;
   @override
-  final IFormBoolFieldBloc onlyNoNsfwSensitiveFieldBloc;
+  final IFormBoolFieldBloc excludeNsfwSensitiveFieldBloc;
 
   @override
   final IFormBoolFieldBloc onlyRemoteFieldBloc;
 
   @override
   final IFormBoolFieldBloc onlyLocalFieldBloc;
+  @override
+  final IFormBoolFieldBloc onlyPinnedFieldBloc;
 
   @override
   final IFormBoolFieldBloc withMutedFieldBloc;
 
+  @override
+  final IFormBoolFieldBloc excludeReblogsFieldBloc;
+
   TimelineSettingsBloc({this.settingsLocalPreferencesBloc})
-      : onlyNoRepliesFieldBloc = FormBoolFieldBloc(
+      : excludeRepliesFieldBloc = FormBoolFieldBloc(
             originValue:
-                settingsLocalPreferencesBloc.value?.onlyNoReplies ?? false),
+                settingsLocalPreferencesBloc.value?.excludeReplies ?? false),
         onlyWithMediaFieldBloc = FormBoolFieldBloc(
             originValue:
                 settingsLocalPreferencesBloc.value?.onlyWithMedia ?? false),
-        onlyNoNsfwSensitiveFieldBloc = FormBoolFieldBloc(
+        excludeNsfwSensitiveFieldBloc = FormBoolFieldBloc(
             originValue:
-                settingsLocalPreferencesBloc.value?.onlyNoNsfwSensitive ??
+                settingsLocalPreferencesBloc.value?.excludeNsfwSensitive ??
                     false),
         onlyRemoteFieldBloc = FormBoolFieldBloc(
             originValue:
@@ -47,18 +52,25 @@ class TimelineSettingsBloc extends DisposableOwner
         onlyLocalFieldBloc = FormBoolFieldBloc(
             originValue:
                 settingsLocalPreferencesBloc.value?.onlyLocal ?? false),
+        onlyPinnedFieldBloc = FormBoolFieldBloc(
+            originValue:
+                settingsLocalPreferencesBloc.value?.onlyPinned ?? false),
+        excludeReblogsFieldBloc = FormBoolFieldBloc(
+            originValue:
+                settingsLocalPreferencesBloc.value?.excludeReblogs ?? false),
         withMutedFieldBloc = FormBoolFieldBloc(
             originValue:
                 settingsLocalPreferencesBloc.value?.withMuted ?? false) {
-    addDisposable(disposable: onlyNoRepliesFieldBloc);
+    addDisposable(disposable: excludeRepliesFieldBloc);
     addDisposable(disposable: onlyWithMediaFieldBloc);
-    addDisposable(disposable: onlyNoNsfwSensitiveFieldBloc);
+    addDisposable(disposable: excludeNsfwSensitiveFieldBloc);
     addDisposable(disposable: onlyRemoteFieldBloc);
     addDisposable(disposable: onlyLocalFieldBloc);
+    addDisposable(disposable: excludeReblogsFieldBloc);
     addDisposable(disposable: withMutedFieldBloc);
 
     addDisposable(streamSubscription:
-        onlyNoRepliesFieldBloc.currentValueStream.listen((_) {
+        excludeRepliesFieldBloc.currentValueStream.listen((_) {
       _onSomethingChanged();
     }));
     addDisposable(streamSubscription:
@@ -66,7 +78,7 @@ class TimelineSettingsBloc extends DisposableOwner
       _onSomethingChanged();
     }));
     addDisposable(streamSubscription:
-        onlyNoNsfwSensitiveFieldBloc.currentValueStream.listen((_) {
+        excludeNsfwSensitiveFieldBloc.currentValueStream.listen((_) {
       _onSomethingChanged();
     }));
     addDisposable(
@@ -78,7 +90,11 @@ class TimelineSettingsBloc extends DisposableOwner
       _onSomethingChanged();
     }));
     addDisposable(streamSubscription:
-        withMutedFieldBloc.currentValueStream.listen((_) {
+        excludeReblogsFieldBloc.currentValueStream.listen((_) {
+      _onSomethingChanged();
+    }));
+    addDisposable(
+        streamSubscription: withMutedFieldBloc.currentValueStream.listen((_) {
       _onSomethingChanged();
     }));
   }
@@ -87,22 +103,27 @@ class TimelineSettingsBloc extends DisposableOwner
     var oldPreferences = settingsLocalPreferencesBloc.value;
     var newPreferences = TimelineSettings(
       onlyWithMedia: onlyWithMediaFieldBloc.currentValue,
-      onlyNoNsfwSensitive: onlyNoNsfwSensitiveFieldBloc.currentValue,
-      onlyNoReplies: onlyNoRepliesFieldBloc.currentValue,
+      excludeNsfwSensitive: excludeNsfwSensitiveFieldBloc.currentValue,
+      excludeReplies: excludeRepliesFieldBloc.currentValue,
       onlyRemote: onlyRemoteFieldBloc.currentValue,
       onlyLocal: onlyLocalFieldBloc.currentValue,
       withMuted: withMutedFieldBloc.currentValue,
       id: oldPreferences.id,
       excludeVisibilitiesStrings: oldPreferences.excludeVisibilitiesStrings,
-      remoteTypeString: oldPreferences.remoteTypeString,
+      typeString: oldPreferences.typeString,
       onlyInListWithRemoteId: oldPreferences.onlyInListWithRemoteId,
       withHashtag: oldPreferences.withHashtag,
       timelineReplyVisibilityFilterString:
           oldPreferences.timelineReplyVisibilityFilterString,
       onlyFromAccountWithRemoteId: oldPreferences.onlyInListWithRemoteId,
+      excludeReblogs: excludeReblogsFieldBloc.currentValue,
+      onlyPinned: onlyPinnedFieldBloc.currentValue,
     );
     if (newPreferences != oldPreferences) {
       settingsLocalPreferencesBloc.setValue(newPreferences);
     }
   }
+
+  @override
+  ITimelineSettings get timelineSettings => settingsLocalPreferencesBloc.value;
 }

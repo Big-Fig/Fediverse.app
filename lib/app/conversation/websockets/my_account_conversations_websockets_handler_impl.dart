@@ -7,24 +7,28 @@ import 'package:fedi/pleroma/websockets/pleroma_websockets_service.dart';
 import 'package:flutter/widgets.dart';
 
 class MyAccountConversationsWebSocketsHandler extends WebSocketsChannelHandler {
-  MyAccountConversationsWebSocketsHandler(
-      {@required IPleromaWebSocketsService pleromaWebSocketsService,
-      @required IStatusRepository statusRepository,
-      @required INotificationRepository notificationRepository,
-      @required IConversationRepository conversationRepository,
-        @required IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,})
-      : super(
+  MyAccountConversationsWebSocketsHandler({
+    @required IPleromaWebSocketsService pleromaWebSocketsService,
+    @required IStatusRepository statusRepository,
+    @required INotificationRepository notificationRepository,
+    @required IConversationRepository conversationRepository,
+    @required IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
+    @required String accountId,
+  }) : super(
           webSocketsChannel:
-              pleromaWebSocketsService.getDirectChannel(accountId: null),
+              pleromaWebSocketsService.getDirectChannel(accountId: accountId),
           statusRepository: statusRepository,
           notificationRepository: notificationRepository,
           conversationRepository: conversationRepository,
-    chatNewMessagesHandlerBloc:chatNewMessagesHandlerBloc,
+          chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
         );
 
   static MyAccountConversationsWebSocketsHandler createFromContext(
-          BuildContext context) =>
+    BuildContext context, {
+    @required String accountId,
+  }) =>
       MyAccountConversationsWebSocketsHandler(
+        accountId: accountId,
         pleromaWebSocketsService:
             IPleromaWebSocketsService.of(context, listen: false),
         notificationRepository:
@@ -32,9 +36,9 @@ class MyAccountConversationsWebSocketsHandler extends WebSocketsChannelHandler {
         conversationRepository:
             IConversationRepository.of(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
-        chatNewMessagesHandlerBloc: IChatNewMessagesHandlerBloc.of(context, listen: false),
+        chatNewMessagesHandlerBloc:
+            IChatNewMessagesHandlerBloc.of(context, listen: false),
       );
-
 
   @override
   String get logTag => "my_account_conversations_websockets_handler_impl.dart";

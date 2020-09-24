@@ -32,12 +32,14 @@ abstract class AccountStatusesCachedListBloc extends IStatusCachedListBloc {
     if (listenWebSocketsChanges) {
       addDisposable(
           disposable: AccountWebSocketsHandler(
-              statusRepository: statusRepository,
-              accountId: account.remoteId,
-              notificationRepository: notificationRepository,
-              conversationRepository: conversationRepository,
-              pleromaWebSocketsService: pleromaWebSocketsService,
-              chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc));
+        statusRepository: statusRepository,
+        accountId: account.remoteId,
+        notificationRepository: notificationRepository,
+        conversationRepository: conversationRepository,
+        pleromaWebSocketsService: pleromaWebSocketsService,
+        chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+        notification: false,
+      ));
     }
   }
 

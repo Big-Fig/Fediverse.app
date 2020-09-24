@@ -7,11 +7,13 @@ class FediFormSwitchRow extends StatelessWidget {
   final String label;
   final bool value;
   final ValueChanged<bool> onChanged;
+  final bool enabled;
 
   FediFormSwitchRow({
     @required this.label,
     @required this.value,
     @required this.onChanged,
+    this.enabled = true,
   });
 
   @override
@@ -24,6 +26,7 @@ class FediFormSwitchRow extends StatelessWidget {
             FediSwitch(
               value: value,
               onChanged: onChanged,
+              enabled: enabled,
             ),
           ],
         ),

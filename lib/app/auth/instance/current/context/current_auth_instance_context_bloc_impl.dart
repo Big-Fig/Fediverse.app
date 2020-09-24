@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_bloc_impl.dart';
 import 'package:fedi/app/account/my/my_account_local_preference_bloc.dart';
@@ -27,6 +28,10 @@ import 'package:fedi/app/emoji/picker/category/custom/emoji_picker_custom_image_
 import 'package:fedi/app/emoji/picker/category/custom/emoji_picker_custom_image_url_category_local_preference_bloc_impl.dart';
 import 'package:fedi/app/emoji/picker/category/recent/emoji_picker_recent_category_local_preference_bloc.dart';
 import 'package:fedi/app/emoji/picker/category/recent/emoji_picker_recent_category_local_preference_bloc_impl.dart';
+import 'package:fedi/app/home/tab/timelines/item/timelines_home_tab_item_model.dart';
+import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_local_preferences_bloc.dart';
+import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_model.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_bloc_impl.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
@@ -44,12 +49,10 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository_impl.dart';
-import 'package:fedi/app/timeline/settings/home/home_timeline_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/timeline/settings/home/home_timeline_settings_local_preferences_bloc_impl.dart';
-import 'package:fedi/app/timeline/settings/local/local_timeline_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/timeline/settings/local/local_timeline_settings_local_preferences_bloc_impl.dart';
-import 'package:fedi/app/timeline/settings/public/public_timeline_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/timeline/settings/public/public_timeline_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
+import 'package:fedi/app/websockets/web_sockets_handler_manager_bloc.dart';
+import 'package:fedi/app/websockets/web_sockets_handler_manager_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pleroma/account/my/pleroma_my_account_service.dart';
@@ -368,35 +371,15 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         .asyncInitAndRegister<IEmojiPickerRecentCategoryLocalPreferenceBloc>(
             customEmojiPickerRecentCategoryLocalPreferenceBloc);
 
-    var homeTimelineLocalPreferenceBloc =
-        HomeTimelineSettingsLocalPreferencesBloc(
+    var timelinesHomeTabStorageLocalPreferences =
+        TimelinesHomeTabStorageLocalPreferences(
       preferencesService,
       userAtHost: userAtHost,
     );
-    addDisposable(disposable: homeTimelineLocalPreferenceBloc);
+    addDisposable(disposable: timelinesHomeTabStorageLocalPreferences);
     await globalProviderService
-        .asyncInitAndRegister<IHomeTimelineSettingsLocalPreferencesBloc>(
-            homeTimelineLocalPreferenceBloc);
-
-    var localTimelineLocalPreferenceBloc =
-        LocalTimelineSettingsLocalPreferencesBloc(
-      preferencesService,
-      userAtHost: userAtHost,
-    );
-    addDisposable(disposable: localTimelineLocalPreferenceBloc);
-    await globalProviderService
-        .asyncInitAndRegister<ILocalTimelineSettingsLocalPreferencesBloc>(
-            localTimelineLocalPreferenceBloc);
-
-    var publicTimelineLocalPreferenceBloc =
-        PublicTimelineSettingsLocalPreferencesBloc(
-      preferencesService,
-      userAtHost: userAtHost,
-    );
-    addDisposable(disposable: publicTimelineLocalPreferenceBloc);
-    await globalProviderService
-        .asyncInitAndRegister<IPublicTimelineSettingsLocalPreferencesBloc>(
-            publicTimelineLocalPreferenceBloc);
+        .asyncInitAndRegister<ITimelinesHomeTabStorageLocalPreferences>(
+            timelinesHomeTabStorageLocalPreferences);
 
     var pushSubscriptionLocalPreferenceBloc =
         PushSubscriptionSettingsLocalPreferencesBloc(
@@ -485,5 +468,95 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     addDisposable(disposable: myAccountSettingsBloc);
     await globalProviderService
         .asyncInitAndRegister<IMyAccountSettingsBloc>(myAccountSettingsBloc);
+
+    var webSocketsHandlerManagerBloc = WebSocketsHandlerManagerBloc(
+      pleromaWebSocketsService: pleromaWebSocketsService,
+      conversationRepository: conversationRepository,
+      notificationRepository: notificationRepository,
+      statusRepository: statusRepository,
+      chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+    );
+
+    addDisposable(disposable: webSocketsHandlerManagerBloc);
+    await globalProviderService.asyncInitAndRegister<
+        IWebSocketsHandlerManagerBloc>(webSocketsHandlerManagerBloc);
+
+    if (timelinesHomeTabStorageLocalPreferences.value?.items?.isNotEmpty !=
+        true) {
+      var homeTimelineId = "home";
+      var localTimelineId = "local";
+      var publicTimelineId = "public";
+      var storage = TimelinesHomeTabStorage(items: [
+        TimelinesHomeTabItem(
+          label: "app.home.tab.timelines.tab.home".tr(),
+          timelineSettingsId: homeTimelineId,
+          isPossibleToDelete: false,
+        ),
+        TimelinesHomeTabItem(
+          label: "app.home.tab.timelines.tab.local".tr(),
+          timelineSettingsId: localTimelineId,
+          isPossibleToDelete: true,
+        ),
+        TimelinesHomeTabItem(
+          label: "app.home.tab.timelines.tab.public".tr(),
+          timelineSettingsId: publicTimelineId,
+          isPossibleToDelete: true,
+        ),
+      ]);
+
+      var homeBloc = TimelineSettingsLocalPreferencesBloc.byId(
+          preferencesService,
+          userAtHost: userAtHost,
+          timelineId: homeTimelineId);
+      await homeBloc.performAsyncInit();
+
+      await homeBloc.setValue(
+        TimelineSettings.home(
+          id: homeTimelineId,
+          onlyLocal: false,
+          withMuted: false,
+          excludeVisibilities: [],
+        ),
+      );
+      homeBloc.dispose();
+
+      var localBloc = TimelineSettingsLocalPreferencesBloc.byId(
+          preferencesService,
+          userAtHost: userAtHost,
+          timelineId: localTimelineId);
+      await localBloc.performAsyncInit();
+
+      await localBloc.setValue(
+        TimelineSettings.public(
+          id: localTimelineId,
+          onlyLocal: true,
+          withMuted: false,
+          onlyWithMedia: false,
+          onlyRemote: false,
+          excludeVisibilities: [],
+        ),
+      );
+      localBloc.dispose();
+
+      var publicBloc = TimelineSettingsLocalPreferencesBloc.byId(
+          preferencesService,
+          userAtHost: userAtHost,
+          timelineId: publicTimelineId);
+      await publicBloc.performAsyncInit();
+
+      await publicBloc.setValue(
+        TimelineSettings.public(
+          id: publicTimelineId,
+          onlyLocal: false,
+          withMuted: false,
+          onlyWithMedia: false,
+          onlyRemote: false,
+          excludeVisibilities: [],
+        ),
+      );
+      publicBloc.dispose();
+
+      await timelinesHomeTabStorageLocalPreferences.setValue(storage);
+    }
   }
 }
