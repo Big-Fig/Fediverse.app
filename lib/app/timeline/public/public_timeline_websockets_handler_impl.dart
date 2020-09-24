@@ -13,9 +13,13 @@ class PublicTimelineWebSocketsHandler extends WebSocketsChannelHandler {
     @required INotificationRepository notificationRepository,
     @required IConversationRepository conversationRepository,
     @required IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
+    @required bool local,
+    @required bool onlyMedia,
   }) : super(
           webSocketsChannel: pleromaWebSocketsService.getPublicChannel(
-              local: false, onlyMedia: false),
+            local: local,
+            onlyMedia: local,
+          ),
           statusRepository: statusRepository,
           notificationRepository: notificationRepository,
           conversationRepository: conversationRepository,
@@ -23,8 +27,13 @@ class PublicTimelineWebSocketsHandler extends WebSocketsChannelHandler {
         );
 
   static PublicTimelineWebSocketsHandler createFromContext(
-          BuildContext context) =>
+    BuildContext context, {
+    @required bool local,
+    @required bool onlyMedia,
+  }) =>
       PublicTimelineWebSocketsHandler(
+        local: local,
+        onlyMedia: local,
         pleromaWebSocketsService:
             IPleromaWebSocketsService.of(context, listen: false),
         notificationRepository:

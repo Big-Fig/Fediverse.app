@@ -3,9 +3,11 @@ import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
+import 'package:fedi/app/websockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
@@ -24,6 +26,8 @@ class TimelineStatusCachedListBloc extends DisposableOwner
   final IStatusRepository statusRepository;
   final ICurrentAuthInstanceBloc currentInstanceBloc;
   final TimelineSettingsLocalPreferencesBloc timelineLocalPreferencesBloc;
+  final IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc;
+  final bool listenWebSockets;
 
   TimelineSettings _timelineSettings;
 
@@ -41,15 +45,57 @@ class TimelineStatusCachedListBloc extends DisposableOwner
     @required this.statusRepository,
     @required this.currentInstanceBloc,
     @required this.timelineLocalPreferencesBloc,
+    @required this.listenWebSockets,
+    @required this.webSocketsHandlerManagerBloc,
   }) {
     _timelineSettings = timelineLocalPreferencesBloc.value;
+
+    if (listenWebSockets) {
+      switch (_timelineSettings.type) {
+        case TimelineType.public:
+          addDisposable(
+              disposable: webSocketsHandlerManagerBloc.listenPublicChannel(
+            local: _timelineSettings.onlyLocal,
+            onlyMedia: _timelineSettings.onlyWithMedia,
+          ));
+
+          break;
+        case TimelineType.home:
+          addDisposable(
+              disposable: webSocketsHandlerManagerBloc.listenMyAccountChannel(
+            notification: false,
+            chat: false,
+          ));
+          break;
+        case TimelineType.list:
+          addDisposable(
+              disposable: webSocketsHandlerManagerBloc.listenListChannel(
+            listId: _timelineSettings.onlyInListWithRemoteId,
+          ));
+          break;
+
+        case TimelineType.hashtag:
+          addDisposable(
+              disposable: webSocketsHandlerManagerBloc.listenHashtagChannel(
+            hashtag: _timelineSettings.withHashtag,
+            local: _timelineSettings.onlyLocal,
+          ));
+          break;
+        case TimelineType.account:
+          addDisposable(
+              disposable: webSocketsHandlerManagerBloc.listenAccountChannel(
+            accountId: _timelineSettings.onlyFromAccountWithRemoteId,
+            notification: false,
+          ));
+          break;
+      }
+    }
   }
 
   @override
   IPleromaApi get pleromaApi => pleromaTimelineService;
 
-  bool get isFromHomeTimeline =>
-      _timelineSettings.remoteType == TimelineRemoteType.home;
+  bool get isFromHomeTimeline => _timelineSettings.type == TimelineType.home;
 
   @override
   Future<bool> refreshItemsFromRemoteForPage(
@@ -68,8 +114,8 @@ class TimelineStatusCachedListBloc extends DisposableOwner
     var excludeVisibilities = _timelineSettings.excludeVisibilities;
     var maxId = olderThan?.remoteId;
     var sinceId = newerThan?.remoteId;
-    switch (_timelineSettings.remoteType) {
-      case TimelineRemoteType.public:
+    switch (_timelineSettings.type) {
+      case TimelineType.public:
         remoteStatuses = await pleromaTimelineService.getPublicTimeline(
           maxId: maxId,
           sinceId: sinceId,
@@ -80,7 +126,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
           excludeVisibilities: excludeVisibilities,
         );
         break;
-      case TimelineRemoteType.list:
+      case TimelineType.list:
         remoteStatuses = await pleromaTimelineService.getListTimeline(
           listId: _timelineSettings.onlyInListWithRemoteId,
           maxId: maxId,
@@ -91,7 +137,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
           excludeVisibilities: excludeVisibilities,
         );
         break;
-      case TimelineRemoteType.home:
+      case TimelineType.home:
         remoteStatuses = await pleromaTimelineService.getHomeTimeline(
           maxId: maxId,
           sinceId: sinceId,
@@ -101,7 +147,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
           excludeVisibilities: excludeVisibilities,
         );
         break;
-      case TimelineRemoteType.hashtag:
+      case TimelineType.hashtag:
         remoteStatuses = await pleromaTimelineService.getHashtagTimeline(
           hashtag: _timelineSettings.withHashtag,
           maxId: maxId,
@@ -113,7 +159,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
           excludeVisibilities: excludeVisibilities,
         );
         break;
-      case TimelineRemoteType.account:
+      case TimelineType.account:
         remoteStatuses = await pleromaAccountService.getAccountStatuses(
           accountRemoteId: _timelineSettings.onlyFromAccountWithRemoteId,
           onlyWithMedia: onlyWithMedia,
@@ -158,8 +204,8 @@ class TimelineStatusCachedListBloc extends DisposableOwner
       excludeVisibilities: _timelineSettings.excludeVisibilities,
       olderThanStatus: null,
       newerThanStatus: item,
-      onlyNoNsfwSensitive: timelineLocalPreferences.onlyNoNsfwSensitive,
-      onlyNoReplies: timelineLocalPreferences.onlyNoReplies,
+      onlyNoNsfwSensitive: timelineLocalPreferences.excludeNsfwSensitive,
+      onlyNoReplies: timelineLocalPreferences.excludeReplies,
       limit: null,
       offset: null,
       orderingTermData: StatusOrderingTermData(
@@ -198,8 +244,8 @@ class TimelineStatusCachedListBloc extends DisposableOwner
       excludeVisibilities: _timelineSettings.excludeVisibilities,
       olderThanStatus: olderThan,
       newerThanStatus: newerThan,
-      onlyNoNsfwSensitive: timelineLocalPreferences.onlyNoNsfwSensitive,
-      onlyNoReplies: timelineLocalPreferences.onlyNoReplies,
+      onlyNoNsfwSensitive: timelineLocalPreferences.excludeNsfwSensitive,
+      onlyNoReplies: timelineLocalPreferences.excludeReplies,
       limit: limit,
       offset: null,
       orderingTermData: StatusOrderingTermData(
@@ -214,4 +260,35 @@ class TimelineStatusCachedListBloc extends DisposableOwner
         "finish loadLocalItems for $_timelineSettings statuses ${statuses.length}");
     return statuses;
   }
+
+  static TimelineStatusCachedListBloc createFromContext(
+    BuildContext context, {
+    @required
+        ITimelineSettingsLocalPreferencesBloc timelineLocalPreferencesBloc,
+    @required bool listenWebSockets,
+  }) =>
+      TimelineStatusCachedListBloc(
+        pleromaAccountService: IPleromaAccountService.of(
+          context,
+          listen: false,
+        ),
+        pleromaTimelineService: IPleromaTimelineService.of(
+          context,
+          listen: false,
+        ),
+        statusRepository: IStatusRepository.of(
+          context,
+          listen: false,
+        ),
+        currentInstanceBloc: ICurrentAuthInstanceBloc.of(
+          context,
+          listen: false,
+        ),
+        timelineLocalPreferencesBloc: timelineLocalPreferencesBloc,
+        listenWebSockets: listenWebSockets,
+        webSocketsHandlerManagerBloc: IWebSocketsHandlerManagerBloc.of(
+          context,
+          listen: false,
+        ),
+      );
 }

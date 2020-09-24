@@ -14,9 +14,12 @@ class HashtagStatusListWebSocketsHandler extends WebSocketsChannelHandler {
     @required INotificationRepository notificationRepository,
     @required IConversationRepository conversationRepository,
     @required IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
+    @required bool local,
   }) : super(
             webSocketsChannel: pleromaWebSocketsService.getHashtagChannel(
-                hashtag: hashtag, local: false),
+              hashtag: hashtag,
+              local: local,
+            ),
             statusRepository: statusRepository,
             notificationRepository: notificationRepository,
             conversationRepository: conversationRepository,
@@ -24,10 +27,13 @@ class HashtagStatusListWebSocketsHandler extends WebSocketsChannelHandler {
             isFromHomeTimeline: false);
 
   static HashtagStatusListWebSocketsHandler createFromContext(
-          BuildContext context,
-          {@required String hashtag}) =>
+    BuildContext context, {
+    @required String hashtag,
+    @required bool local,
+  }) =>
       HashtagStatusListWebSocketsHandler(
         hashtag: hashtag,
+        local: local,
         pleromaWebSocketsService:
             IPleromaWebSocketsService.of(context, listen: false),
         notificationRepository:

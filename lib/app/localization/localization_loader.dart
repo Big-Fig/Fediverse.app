@@ -636,36 +636,35 @@ class CodegenLoader extends AssetLoader{
       "dismissed": "Dismissed"
     },
     "timeline": {
-      "display": {
-        "settings": {
-          "home": {
-            "title": "Home timeline settings"
+      "settings": {
+        "title": "{} timeline settings",
+        "field": {
+          "not_supported": {
+            "desc": "Not supported on this instance"
           },
-          "local": {
-            "title": "Local timeline settings"
+          "only_with_media": {
+            "label": "Only with media"
           },
-          "public": {
-            "title": "Public timeline settings"
+          "only_remote": {
+            "label": "Only remote"
           },
-          "field": {
-            "only_with_media": {
-              "label": "Only with media"
-            },
-            "hide_replies": {
-              "label": "Hide replies"
-            },
-            "hide_nsfw": {
-              "label": "Hide NSFW"
-            },
-            "only_remote": {
-              "label": "Only remote"
-            },
-            "only_local": {
-              "label": "Only local"
-            },
-            "with_muted": {
-              "label": "With muted"
-            }
+          "only_local": {
+            "label": "Only local"
+          },
+          "only_pinned": {
+            "label": "Only pinned"
+          },
+          "with_muted": {
+            "label": "With muted"
+          },
+          "exclude_reblogs": {
+            "label": "Exclude reblogs"
+          },
+          "exclude_replies": {
+            "label": "Exclude replies"
+          },
+          "exclude_nsfw": {
+            "label": "Exclude NSFW"
           }
         }
       }

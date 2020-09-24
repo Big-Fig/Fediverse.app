@@ -1,6 +1,6 @@
 import 'package:fedi/enum/enum_values.dart';
 
-enum TimelineRemoteType {
+enum TimelineType {
   public,
   list,
   home,
@@ -8,49 +8,47 @@ enum TimelineRemoteType {
   account,
 }
 
-EnumValues<TimelineRemoteType> timelineRemoteTypeEnumValues = EnumValues({
-  "public": TimelineRemoteType.public,
-  "list": TimelineRemoteType.list,
-  "home": TimelineRemoteType.home,
-  "hashtag": TimelineRemoteType.hashtag,
-  "account": TimelineRemoteType.account,
+EnumValues<TimelineType> timelineTypeEnumValues = EnumValues({
+  "public": TimelineType.public,
+  "list": TimelineType.list,
+  "home": TimelineType.home,
+  "hashtag": TimelineType.hashtag,
+  "account": TimelineType.account,
 });
 
-extension TimelineRemoteTypeExtension on TimelineRemoteType {
+extension TimelineTypeExtension on TimelineType {
   String toJsonValue() {
-    var type = timelineRemoteTypeEnumValues.enumToValueMap[this];
+    var type = timelineTypeEnumValues.enumToValueMap[this];
     assert(type != null, "invalid type $this");
     return type;
   }
 }
 
-extension TimelineRemoteTypeStringExtension on String {
-  TimelineRemoteType toTimelineRemoteType() =>
-      timelineRemoteTypeEnumValues.valueToEnumMap[this];
+extension TimelineTypeStringExtension on String {
+  TimelineType toTimelineType() => timelineTypeEnumValues.valueToEnumMap[this];
 }
 
-enum TimelineReplyVisibilityFilter {
+enum PleromaTimelineReplyVisibilityFilter {
   following,
   self,
 }
 
 extension TimelineReplyVisibilityFilterExtension
-    on TimelineReplyVisibilityFilter {
+    on PleromaTimelineReplyVisibilityFilter {
   String toJsonValue() {
     var filter = timelineReplyVisibilityFilterEnumValues.enumToValueMap[this];
     assert(filter != null, "invalid type $filter");
     return filter;
   }
-
 }
 
-extension TimelineReplyVisibilityFilterStringExtension on String {
-  TimelineReplyVisibilityFilter toTimelineReplyVisibilityFilter() =>
+extension PleromaTimelineReplyVisibilityFilterStringExtension on String {
+  PleromaTimelineReplyVisibilityFilter toTimelineReplyVisibilityFilter() =>
       timelineReplyVisibilityFilterEnumValues.valueToEnumMap[this];
 }
 
-EnumValues<TimelineReplyVisibilityFilter>
+EnumValues<PleromaTimelineReplyVisibilityFilter>
     timelineReplyVisibilityFilterEnumValues = EnumValues({
-  "following": TimelineReplyVisibilityFilter.following,
-  "self": TimelineReplyVisibilityFilter.self,
+  "following": PleromaTimelineReplyVisibilityFilter.following,
+  "self": PleromaTimelineReplyVisibilityFilter.self,
 });

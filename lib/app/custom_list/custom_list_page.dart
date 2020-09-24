@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/my/settings/my_account_settings_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/custom_list/custom_list_model.dart';
-import 'package:fedi/app/custom_list/status/list/custom_list_status_list_websockets_handler_impl.dart';
 import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/list/status_list_tap_to_load_overlay_widget.dart';
@@ -11,11 +10,12 @@ import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_ti
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/app/timeline/settings/custom_list/custom_list_timeline_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/timeline/timeline_status_cached_list_bloc_impl.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
+import 'package:fedi/app/websockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/collapsible/collapsible_owner_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
@@ -106,10 +106,10 @@ MaterialPageRoute createCustomListPageRoute({
   return MaterialPageRoute(builder: (context) {
     return DisposableProvider<ITimelineSettingsLocalPreferencesBloc>(
       create: (context) {
-        var bloc = CustomListTimelineSettingsLocalPreferencesBloc(
+        var bloc = TimelineSettingsLocalPreferencesBloc.customList(
           ILocalPreferencesService.of(context, listen: false),
           userAtHost: currentAuthInstanceBloc.currentInstance.userAtHost,
-          customListId: customList.remoteId,
+          customList: customList,
         );
 
         bloc.performAsyncInit();
@@ -118,38 +118,40 @@ MaterialPageRoute createCustomListPageRoute({
       child: Builder(
         builder: (context) {
           return FediAsyncInitLoadingWidget(
-            asyncInitLoadingBloc: ITimelineSettingsLocalPreferencesBloc.of(context, listen: false),
+            asyncInitLoadingBloc: ITimelineSettingsLocalPreferencesBloc.of(
+                context,
+                listen: false),
             loadingFinishedBuilder: (BuildContext context) {
               return DisposableProvider<IStatusCachedListBloc>(
                 create: (BuildContext context) {
                   var customListTimelineStatusCachedListBloc =
-                  TimelineStatusCachedListBloc(
-                      pleromaTimelineService: IPleromaTimelineService.of(
-                        context,
-                        listen: false,
-                      ),
-                      statusRepository: IStatusRepository.of(
-                        context,
-                        listen: false,
-                      ),
-                      timelineLocalPreferencesBloc:
-                      ITimelineSettingsLocalPreferencesBloc.of(context,
-                          listen: false),
-                      currentInstanceBloc: ICurrentAuthInstanceBloc.of(
-                        context,
-                        listen: false,
-                      ),
-                      pleromaAccountService: IPleromaAccountService.of(
-                        context,
-                        listen: false,
-                      ));
-                  if (isRealtimeWebSocketsEnabled) {
-                    customListTimelineStatusCachedListBloc.addDisposable(
-                        disposable:
-                        CustomListStatusListWebSocketsHandler.createFromContext(
-                            context,
-                            customListRemoteId: customList.remoteId));
-                  }
+                      TimelineStatusCachedListBloc(
+                    pleromaTimelineService: IPleromaTimelineService.of(
+                      context,
+                      listen: false,
+                    ),
+                    statusRepository: IStatusRepository.of(
+                      context,
+                      listen: false,
+                    ),
+                    timelineLocalPreferencesBloc:
+                        ITimelineSettingsLocalPreferencesBloc.of(context,
+                            listen: false),
+                    currentInstanceBloc: ICurrentAuthInstanceBloc.of(
+                      context,
+                      listen: false,
+                    ),
+                    pleromaAccountService: IPleromaAccountService.of(
+                      context,
+                      listen: false,
+                    ),
+                    listenWebSockets: isRealtimeWebSocketsEnabled,
+                    webSocketsHandlerManagerBloc:
+                        IWebSocketsHandlerManagerBloc.of(
+                      context,
+                      listen: false,
+                    ),
+                  );
                   return customListTimelineStatusCachedListBloc;
                 },
                 child: ProxyProvider<IStatusCachedListBloc,
@@ -157,8 +159,8 @@ MaterialPageRoute createCustomListPageRoute({
                   update: (context, value, previous) => value,
                   child: StatusCachedPaginationBloc.provideToContext(
                     context,
-                    child:
-                    StatusCachedPaginationListWithNewItemsBloc.provideToContext(
+                    child: StatusCachedPaginationListWithNewItemsBloc
+                        .provideToContext(
                       context,
                       mergeNewItemsImmediately: false,
                       child: CustomListPage(
@@ -170,8 +172,6 @@ MaterialPageRoute createCustomListPageRoute({
               );
             },
           );
-
-
         },
       ),
     );

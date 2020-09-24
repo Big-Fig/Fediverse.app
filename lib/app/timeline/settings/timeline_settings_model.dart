@@ -23,13 +23,13 @@ class TimelineSettings extends IPreferencesObject implements ITimelineSettings {
 
   @override
   @HiveField(2)
-  @JsonKey(name: "only_no_replies")
-  final bool onlyNoReplies;
+  @JsonKey(name: "exclude_replies")
+  final bool excludeReplies;
 
   @override
   @HiveField(3)
-  @JsonKey(name: "only_no_nsfw_sensitive")
-  final bool onlyNoNsfwSensitive;
+  @JsonKey(name: "exclude_nsfw_sensitive")
+  final bool excludeNsfwSensitive;
 
   @override
   @HiveField(4)
@@ -47,12 +47,12 @@ class TimelineSettings extends IPreferencesObject implements ITimelineSettings {
   final bool withMuted;
 
   @HiveField(7)
-  @JsonKey(name: "exclude_visibilities")
+  @JsonKey(name: "exclude_visibilities_strings")
   final List<String> excludeVisibilitiesStrings;
 
   @HiveField(8)
-  @JsonKey(name: "remote_type")
-  final String remoteTypeString;
+  @JsonKey(name: "type_string")
+  final String typeString;
 
   @override
   @HiveField(9)
@@ -65,7 +65,7 @@ class TimelineSettings extends IPreferencesObject implements ITimelineSettings {
   final String withHashtag;
 
   @HiveField(11)
-  @JsonKey(name: "timeline_reply_visibility_filter")
+  @JsonKey(name: "timeline_reply_visibility_filter_string")
   final String timelineReplyVisibilityFilterString;
 
   @HiveField(12)
@@ -76,20 +76,32 @@ class TimelineSettings extends IPreferencesObject implements ITimelineSettings {
   @JsonKey(name: "only_from_account_with_remote_id")
   final String onlyFromAccountWithRemoteId;
 
+  @override
+  @HiveField(14)
+  @JsonKey(name: "only_pinned")
+  final bool onlyPinned;
+
+  @override
+  @HiveField(15)
+  @JsonKey(name: "exclude_reblogs")
+  final bool excludeReblogs;
+
   TimelineSettings({
     @required this.id,
     @required this.onlyWithMedia,
-    @required this.onlyNoReplies,
-    @required this.onlyNoNsfwSensitive,
+    @required this.excludeReplies,
+    @required this.excludeNsfwSensitive,
     @required this.onlyRemote,
     @required this.onlyLocal,
     @required this.withMuted,
     @required this.excludeVisibilitiesStrings,
-    @required this.remoteTypeString,
+    @required this.typeString,
     @required this.onlyInListWithRemoteId,
     @required this.withHashtag,
     @required this.timelineReplyVisibilityFilterString,
     @required this.onlyFromAccountWithRemoteId,
+    @required this.onlyPinned,
+    @required this.excludeReblogs,
   });
 
   TimelineSettings.home({
@@ -100,19 +112,21 @@ class TimelineSettings extends IPreferencesObject implements ITimelineSettings {
   }) : this(
           id: id,
           onlyWithMedia: null,
-          onlyNoReplies: null,
-          onlyNoNsfwSensitive: null,
+          excludeReplies: null,
+          excludeNsfwSensitive: null,
           onlyRemote: null,
           onlyLocal: onlyLocal,
           withMuted: withMuted,
           excludeVisibilitiesStrings: excludeVisibilities
               ?.map((excludeVisibility) => excludeVisibility.toJsonValue())
               ?.toList(),
-          remoteTypeString: TimelineRemoteType.home.toJsonValue(),
+          typeString: TimelineType.home.toJsonValue(),
           onlyInListWithRemoteId: null,
           withHashtag: null,
           timelineReplyVisibilityFilterString: null,
           onlyFromAccountWithRemoteId: null,
+          onlyPinned: null,
+          excludeReblogs: null,
         );
 
   TimelineSettings.public({
@@ -125,19 +139,21 @@ class TimelineSettings extends IPreferencesObject implements ITimelineSettings {
   }) : this(
           id: id,
           onlyWithMedia: onlyWithMedia,
-          onlyNoReplies: null,
-          onlyNoNsfwSensitive: null,
+          excludeReplies: null,
+          excludeNsfwSensitive: null,
           onlyRemote: onlyRemote,
           onlyLocal: onlyLocal,
           withMuted: withMuted,
           excludeVisibilitiesStrings: excludeVisibilities
               ?.map((excludeVisibility) => excludeVisibility.toJsonValue())
               ?.toList(),
-          remoteTypeString: TimelineRemoteType.public.toJsonValue(),
+          typeString: TimelineType.public.toJsonValue(),
           onlyInListWithRemoteId: null,
           withHashtag: null,
           timelineReplyVisibilityFilterString: null,
           onlyFromAccountWithRemoteId: null,
+          onlyPinned: null,
+          excludeReblogs: null,
         );
 
   TimelineSettings.hashtag({
@@ -150,19 +166,21 @@ class TimelineSettings extends IPreferencesObject implements ITimelineSettings {
   }) : this(
           id: id,
           onlyWithMedia: onlyWithMedia,
-          onlyNoReplies: null,
-          onlyNoNsfwSensitive: null,
+          excludeReplies: null,
+          excludeNsfwSensitive: null,
           onlyRemote: null,
           onlyLocal: onlyLocal,
           withMuted: withMuted,
           excludeVisibilitiesStrings: excludeVisibilities
               ?.map((excludeVisibility) => excludeVisibility.toJsonValue())
               ?.toList(),
-          remoteTypeString: TimelineRemoteType.hashtag.toJsonValue(),
+          typeString: TimelineType.hashtag.toJsonValue(),
           onlyInListWithRemoteId: null,
           withHashtag: withHashtag,
           timelineReplyVisibilityFilterString: null,
           onlyFromAccountWithRemoteId: null,
+          onlyPinned: null,
+          excludeReblogs: null,
         );
 
   TimelineSettings.list({
@@ -173,67 +191,76 @@ class TimelineSettings extends IPreferencesObject implements ITimelineSettings {
   }) : this(
           id: id,
           onlyWithMedia: null,
-          onlyNoReplies: null,
-          onlyNoNsfwSensitive: null,
+          excludeReplies: null,
+          excludeNsfwSensitive: null,
           onlyRemote: null,
           onlyLocal: null,
           withMuted: withMuted,
           excludeVisibilitiesStrings: excludeVisibilities
               ?.map((excludeVisibility) => excludeVisibility.toJsonValue())
               ?.toList(),
-          remoteTypeString: TimelineRemoteType.list.toJsonValue(),
+          typeString: TimelineType.list.toJsonValue(),
           onlyInListWithRemoteId: onlyInListWithRemoteId,
           withHashtag: null,
           timelineReplyVisibilityFilterString: null,
           onlyFromAccountWithRemoteId: null,
+          onlyPinned: null,
+          excludeReblogs: null,
         );
 
   TimelineSettings.account({
     @required String id,
     @required String onlyFromAccountWithRemoteId,
     @required bool onlyWithMedia,
+    @required bool excludeReplies,
+    @required bool excludeReblogs,
+    @required bool onlyPinned,
   }) : this(
           id: id,
           onlyWithMedia: onlyWithMedia,
-          onlyNoReplies: null,
-          onlyNoNsfwSensitive: null,
+          excludeReplies: excludeReplies,
+          excludeNsfwSensitive: null,
           onlyRemote: null,
           onlyLocal: null,
           withMuted: null,
           excludeVisibilitiesStrings: [],
-          remoteTypeString: TimelineRemoteType.account.toJsonValue(),
+          typeString: TimelineType.account.toJsonValue(),
           onlyInListWithRemoteId: null,
           withHashtag: null,
           timelineReplyVisibilityFilterString: null,
           onlyFromAccountWithRemoteId: onlyFromAccountWithRemoteId,
+          onlyPinned: onlyPinned,
+          excludeReblogs: excludeReblogs,
         );
 
   TimelineSettings copyWith({
     String id,
     bool onlyWithMedia,
-    bool onlyNoReplies,
-    bool onlyNoNsfwSensitive,
+    bool excludeReplies,
+    bool excludeNsfwSensitive,
     bool onlyRemote,
     bool onlyLocal,
     bool withMuted,
     List<String> excludeVisibilitiesStrings,
-    String remoteTypeString,
+    String typeString,
     String onlyInListWithRemoteId,
     bool withHashtag,
     String timelineReplyVisibilityFilterString,
     String onlyFromAccountWithRemoteId,
+    bool excludeReblogs,
+    bool onlyPinned,
   }) =>
       TimelineSettings(
         id: id ?? this.id,
         onlyWithMedia: onlyWithMedia ?? this.onlyWithMedia,
-        onlyNoReplies: onlyNoReplies ?? this.onlyNoReplies,
-        onlyNoNsfwSensitive: onlyNoNsfwSensitive ?? this.onlyNoNsfwSensitive,
+        excludeReplies: excludeReplies ?? this.excludeReplies,
+        excludeNsfwSensitive: excludeNsfwSensitive ?? this.excludeNsfwSensitive,
         onlyRemote: onlyRemote ?? this.onlyRemote,
         onlyLocal: onlyLocal ?? this.onlyLocal,
         withMuted: withMuted ?? this.withMuted,
         excludeVisibilitiesStrings:
             excludeVisibilitiesStrings ?? this.excludeVisibilitiesStrings,
-        remoteTypeString: remoteTypeString ?? this.remoteTypeString,
+        typeString: typeString ?? this.typeString,
         onlyInListWithRemoteId:
             onlyInListWithRemoteId ?? this.onlyInListWithRemoteId,
         withHashtag: withHashtag ?? this.withHashtag,
@@ -242,6 +269,8 @@ class TimelineSettings extends IPreferencesObject implements ITimelineSettings {
                 this.timelineReplyVisibilityFilterString,
         onlyFromAccountWithRemoteId:
             onlyFromAccountWithRemoteId ?? this.onlyFromAccountWithRemoteId,
+        excludeReblogs:  excludeReblogs ?? this.excludeReblogs,
+        onlyPinned:  onlyPinned ?? this.onlyPinned,
       );
 
   @override
@@ -250,53 +279,56 @@ class TimelineSettings extends IPreferencesObject implements ITimelineSettings {
       other is TimelineSettings &&
           runtimeType == other.runtimeType &&
           onlyWithMedia == other.onlyWithMedia &&
-          onlyNoReplies == other.onlyNoReplies &&
-          onlyNoNsfwSensitive == other.onlyNoNsfwSensitive &&
+          excludeReplies == other.excludeReplies &&
+          excludeNsfwSensitive == other.excludeNsfwSensitive &&
           onlyRemote == other.onlyRemote &&
           onlyLocal == other.onlyLocal &&
           withMuted == other.withMuted &&
           excludeVisibilitiesStrings == other.excludeVisibilitiesStrings &&
-          remoteTypeString == other.remoteTypeString &&
+          typeString == other.typeString &&
           onlyInListWithRemoteId == other.onlyInListWithRemoteId &&
           withHashtag == other.withHashtag &&
           timelineReplyVisibilityFilterString ==
               other.timelineReplyVisibilityFilterString &&
           id == other.id &&
-          onlyFromAccountWithRemoteId == other.onlyFromAccountWithRemoteId;
+          onlyFromAccountWithRemoteId == other.onlyFromAccountWithRemoteId &&
+          onlyPinned == other.onlyPinned &&
+          excludeReblogs == other.excludeReblogs;
 
   @override
   int get hashCode =>
       onlyWithMedia.hashCode ^
-      onlyNoReplies.hashCode ^
-      onlyNoNsfwSensitive.hashCode ^
+      excludeReplies.hashCode ^
+      excludeNsfwSensitive.hashCode ^
       onlyRemote.hashCode ^
       onlyLocal.hashCode ^
       withMuted.hashCode ^
       excludeVisibilitiesStrings.hashCode ^
-      remoteTypeString.hashCode ^
+      typeString.hashCode ^
       onlyInListWithRemoteId.hashCode ^
       withHashtag.hashCode ^
       timelineReplyVisibilityFilterString.hashCode ^
       id.hashCode ^
-      onlyFromAccountWithRemoteId.hashCode;
+      onlyFromAccountWithRemoteId.hashCode ^
+      onlyPinned.hashCode ^
+      excludeReblogs.hashCode;
 
   @override
   String toString() {
     return 'TimelineSettings{'
         ' onlyWithMedia: $onlyWithMedia,'
-        ' onlyNoReplies: $onlyNoReplies,'
-        ' onlyNoNsfwSensitive: $onlyNoNsfwSensitive,'
-        ' onlyRemote: $onlyRemote,'
-        ' onlyLocal: $onlyLocal,'
+        ' excludeReplies: $excludeReplies,'
+        ' excludeNsfwSensitive: $excludeNsfwSensitive,'
+        ' onlyRemote: $onlyRemote, onlyLocal: $onlyLocal,'
         ' withMuted: $withMuted,'
         ' excludeVisibilitiesStrings: $excludeVisibilitiesStrings,'
-        ' remoteTypeString: $remoteTypeString,'
+        ' remoteTypeString: $typeString,'
         ' onlyInListWithRemoteId: $onlyInListWithRemoteId,'
         ' withHashtag: $withHashtag,'
         ' timelineReplyVisibilityFilterString:'
         ' $timelineReplyVisibilityFilterString,'
-        ' onlyFromAccountWithRemoteId: $onlyFromAccountWithRemoteId,'
-        ' id: $id}';
+        ' id: $id, onlyFromAccountWithRemoteId: $onlyFromAccountWithRemoteId,'
+        ' onlyPinned: $onlyPinned, excludeReblogs: $excludeReblogs}';
   }
 
   factory TimelineSettings.fromJson(Map<String, dynamic> json) =>
@@ -321,19 +353,19 @@ class TimelineSettings extends IPreferencesObject implements ITimelineSettings {
       ?.toList();
 
   @override
-  TimelineRemoteType get remoteType => remoteTypeString?.toTimelineRemoteType();
+  TimelineType get type => typeString?.toTimelineType();
 
   @override
-  TimelineReplyVisibilityFilter get timelineReplyVisibilityFilter =>
+  PleromaTimelineReplyVisibilityFilter get timelineReplyVisibilityFilter =>
       timelineReplyVisibilityFilterString?.toTimelineReplyVisibilityFilter();
 }
 
 abstract class ITimelineSettings {
   bool get onlyWithMedia;
 
-  bool get onlyNoReplies;
+  bool get excludeReplies;
 
-  bool get onlyNoNsfwSensitive;
+  bool get excludeNsfwSensitive;
 
   bool get onlyRemote;
 
@@ -343,7 +375,7 @@ abstract class ITimelineSettings {
 
   List<PleromaVisibility> get excludeVisibilities;
 
-  TimelineRemoteType get remoteType;
+  TimelineType get type;
 
   String get onlyInListWithRemoteId;
 
@@ -351,5 +383,9 @@ abstract class ITimelineSettings {
 
   String get withHashtag;
 
-  TimelineReplyVisibilityFilter get timelineReplyVisibilityFilter;
+  PleromaTimelineReplyVisibilityFilter get timelineReplyVisibilityFilter;
+
+  bool get onlyPinned;
+
+  bool get excludeReblogs;
 }

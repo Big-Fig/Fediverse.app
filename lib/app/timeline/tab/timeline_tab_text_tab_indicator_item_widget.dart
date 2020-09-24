@@ -1,6 +1,5 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/home/tab/timelines/item/timelines_home_tab_item_model.dart';
 import 'package:fedi/app/pagination/cached/cached_pagination_list_with_new_items_unread_badge_widget.dart';
-import 'package:fedi/app/timeline/tab/timeline_tab_model.dart';
 import 'package:fedi/app/timeline/timeline_tabs_bloc.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -12,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class TimelineTabTextTabIndicatorItemWidget extends StatelessWidget {
-  final List<TimelineTab> timelineTabs;
+  final List<TimelinesHomeTabItem> timelineTabs;
   final TabController tabController;
 
   TimelineTabTextTabIndicatorItemWidget({
@@ -27,9 +26,9 @@ class TimelineTabTextTabIndicatorItemWidget extends StatelessWidget {
           return FediFadeShaderMask(
             fadingPercent: fadingPercent,
             fadingColor: FediColors.darkGrey,
-            child: FediTextTabIndicatorWidget<TimelineTab>(
-              customTabBuilder:
-                  (BuildContext context, Widget child, TimelineTab tab) {
+            child: FediTextTabIndicatorWidget<TimelinesHomeTabItem>(
+              customTabBuilder: (BuildContext context, Widget child,
+                  TimelinesHomeTabItem tab) {
                 var widget = CachedPaginationListWithNewItemsUnreadBadgeWidget(
                     child: child);
 
@@ -47,27 +46,14 @@ class TimelineTabTextTabIndicatorItemWidget extends StatelessWidget {
               tabController: tabController,
               isTransparent: true,
               tabs: timelineTabs,
-              tabToTextMapper: (BuildContext context, TimelineTab tab) =>
-                  mapTabToTitle(context, tab),
+              tabToTextMapper:
+                  (BuildContext context, TimelinesHomeTabItem tab) =>
+                      mapTabToTitle(context, tab),
             ),
           );
         },
       );
 
-  static String mapTabToTitle(BuildContext context, TimelineTab tab) {
-    switch (tab) {
-      case TimelineTab.public:
-        return tr("app.home.tab.timelines.tab.public");
-        break;
-      case TimelineTab.home:
-        return tr("app.home.tab.timelines.tab.home");
-
-        break;
-      case TimelineTab.local:
-        return tr("app.home.tab.timelines.tab.local");
-        break;
-    }
-
-    throw "Invalid tab $tab";
-  }
+  static String mapTabToTitle(BuildContext context, TimelinesHomeTabItem tab) =>
+      tab.label;
 }
