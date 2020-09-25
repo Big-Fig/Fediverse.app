@@ -4,7 +4,7 @@ import 'package:fedi/app/status/visibility/status_visibility_title_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/dialog/chooser/fedi_selection_chooser_dialog.dart';
 import 'package:fedi/app/ui/form/fedi_form_row.dart';
-import 'package:fedi/app/ui/form/fedi_form_switch_label.dart';
+import 'package:fedi/app/ui/form/fedi_form_row_label.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/ui/form/field/value/form_value_field_bloc.dart';
@@ -39,7 +39,7 @@ class FormPleromaVisibilityFieldFormRowWidget extends StatelessWidget {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    FediFormSwitchLabel(label),
+                    FediFormRowLabel(label),
                     FediIconButton(
                       onPressed: () {
                         showFediSelectionChooserDialog(

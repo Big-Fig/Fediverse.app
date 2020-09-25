@@ -102,7 +102,7 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
   ) {
     return FormStringFieldBloc(
         originValue: originValue,
-        validators: [NonEmptyStringFieldValidationError.createValidator()],
+        validators: [FormNonEmptyStringFieldValidationError.createValidator()],
         maxLength: maximumOptionLength);
   }
 

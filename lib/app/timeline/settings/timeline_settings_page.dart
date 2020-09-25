@@ -3,11 +3,12 @@ import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/item/timelines_home_tab_item_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/item/timelines_home_tab_item_bloc_impl.dart';
 import 'package:fedi/app/home/tab/timelines/item/timelines_home_tab_item_model.dart';
+import 'package:fedi/app/timeline/settings/local_preferences_timeline_settings_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_bloc.dart';
-import 'package:fedi/app/timeline/settings/timeline_settings_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_widget.dart';
+import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -26,7 +27,13 @@ class TimelineSettingsPage extends StatelessWidget {
       ),
       body: Padding(
         padding: FediPadding.allBigPadding,
-        child: TimelineSettingsWidget(),
+        child: FediAsyncInitLoadingWidget(
+          asyncInitLoadingBloc: ITimelineSettingsLocalPreferencesBloc.of(
+            context,
+            listen: false,
+          ),
+          loadingFinishedBuilder: (context) => TimelineSettingsWidget(),
+        ),
       ),
     );
   }
@@ -67,13 +74,17 @@ MaterialPageRoute createTimelineSettingsPageRoute(
         );
       },
       child: DisposableProvider<ITimelineSettingsBloc>(
-        create: (BuildContext context) => TimelineSettingsBloc(
-          settingsLocalPreferencesBloc:
+        create: (BuildContext context) {
+          var timelineSettingsLocalPreferencesBloc =
               ITimelineSettingsLocalPreferencesBloc.of(
             context,
             listen: false,
-          ),
-        ),
+          );
+          return LocalPreferencesTimelineSettingsBloc(
+            settingsLocalPreferencesBloc: timelineSettingsLocalPreferencesBloc,
+            originalSettings: timelineSettingsLocalPreferencesBloc.value,
+          );
+        },
         child: DisposableProvider<ITimelinesHomeTabItemBloc>(
           create: (context) {
             return TimelinesHomeTabItemBloc(

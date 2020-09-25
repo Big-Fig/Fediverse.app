@@ -1,18 +1,21 @@
 import 'package:fedi/app/timeline/settings/timeline_settings_bloc.dart';
-import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc.dart';
 import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc_impl.dart';
+import 'package:flutter/widgets.dart';
+import 'package:rxdart/rxdart.dart';
 
-class TimelineSettingsBloc extends DisposableOwner
+abstract class TimelineSettingsBloc extends DisposableOwner
     implements ITimelineSettingsBloc {
-  final ITimelineSettingsLocalPreferencesBloc settingsLocalPreferencesBloc;
+  final BehaviorSubject<TimelineSettings> _timelineSettingsSubject;
 
-  TimelineSettings get settings => settingsLocalPreferencesBloc.value;
+  @override
+  TimelineSettings get timelineSettings => _timelineSettingsSubject.value;
 
-  Stream<TimelineSettings> get settingsStream =>
-      settingsLocalPreferencesBloc.stream;
+  @override
+  Stream<TimelineSettings> get timelineSettingsStream =>
+      _timelineSettingsSubject.stream;
 
   @override
   final IFormBoolFieldBloc onlyWithMediaFieldBloc;
@@ -35,32 +38,26 @@ class TimelineSettingsBloc extends DisposableOwner
   @override
   final IFormBoolFieldBloc excludeReblogsFieldBloc;
 
-  TimelineSettingsBloc({this.settingsLocalPreferencesBloc})
-      : excludeRepliesFieldBloc = FormBoolFieldBloc(
-            originValue:
-                settingsLocalPreferencesBloc.value?.excludeReplies ?? false),
+  TimelineSettingsBloc({@required TimelineSettings originalSettings})
+      : _timelineSettingsSubject = BehaviorSubject.seeded(originalSettings),
+        excludeRepliesFieldBloc = FormBoolFieldBloc(
+            originValue: originalSettings?.excludeReplies ?? false),
         onlyWithMediaFieldBloc = FormBoolFieldBloc(
-            originValue:
-                settingsLocalPreferencesBloc.value?.onlyWithMedia ?? false),
+            originValue: originalSettings?.onlyWithMedia ?? false),
         excludeNsfwSensitiveFieldBloc = FormBoolFieldBloc(
-            originValue:
-                settingsLocalPreferencesBloc.value?.excludeNsfwSensitive ??
-                    false),
+            originValue: originalSettings?.excludeNsfwSensitive ?? false),
         onlyRemoteFieldBloc = FormBoolFieldBloc(
-            originValue:
-                settingsLocalPreferencesBloc.value?.onlyRemote ?? false),
+            originValue: originalSettings?.onlyRemote ?? false),
         onlyLocalFieldBloc = FormBoolFieldBloc(
-            originValue:
-                settingsLocalPreferencesBloc.value?.onlyLocal ?? false),
+            originValue: originalSettings?.onlyLocal ?? false),
         onlyPinnedFieldBloc = FormBoolFieldBloc(
-            originValue:
-                settingsLocalPreferencesBloc.value?.onlyPinned ?? false),
+            originValue: originalSettings?.onlyPinned ?? false),
         excludeReblogsFieldBloc = FormBoolFieldBloc(
-            originValue:
-                settingsLocalPreferencesBloc.value?.excludeReblogs ?? false),
+            originValue: originalSettings?.excludeReblogs ?? false),
         withMutedFieldBloc = FormBoolFieldBloc(
-            originValue:
-                settingsLocalPreferencesBloc.value?.withMuted ?? false) {
+            originValue: originalSettings?.withMuted ?? false) {
+    addDisposable(subject: _timelineSettingsSubject);
+
     addDisposable(disposable: excludeRepliesFieldBloc);
     addDisposable(disposable: onlyWithMediaFieldBloc);
     addDisposable(disposable: excludeNsfwSensitiveFieldBloc);
@@ -100,7 +97,7 @@ class TimelineSettingsBloc extends DisposableOwner
   }
 
   void _onSomethingChanged() {
-    var oldPreferences = settingsLocalPreferencesBloc.value;
+    var oldPreferences = timelineSettings;
     var newPreferences = TimelineSettings(
       onlyWithMedia: onlyWithMediaFieldBloc.currentValue,
       excludeNsfwSensitive: excludeNsfwSensitiveFieldBloc.currentValue,
@@ -120,10 +117,7 @@ class TimelineSettingsBloc extends DisposableOwner
       onlyPinned: onlyPinnedFieldBloc.currentValue,
     );
     if (newPreferences != oldPreferences) {
-      settingsLocalPreferencesBloc.setValue(newPreferences);
+      _timelineSettingsSubject.add(newPreferences);
     }
   }
-
-  @override
-  ITimelineSettings get timelineSettings => settingsLocalPreferencesBloc.value;
 }

@@ -7,7 +7,7 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
       case TimelineType.public:
         return true;
         break;
-      case TimelineType.list:
+      case TimelineType.customList:
         return false;
         break;
       case TimelineType.home:
@@ -29,7 +29,7 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
       case TimelineType.public:
         return false;
         break;
-      case TimelineType.list:
+      case TimelineType.customList:
         return false;
         break;
       case TimelineType.home:
@@ -58,7 +58,7 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
       case TimelineType.public:
         return true;
         break;
-      case TimelineType.list:
+      case TimelineType.customList:
         return false;
         break;
       case TimelineType.home:
@@ -80,7 +80,7 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
       case TimelineType.public:
         return true;
         break;
-      case TimelineType.list:
+      case TimelineType.customList:
         return false;
         break;
       case TimelineType.home:
@@ -105,7 +105,7 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
       case TimelineType.home:
         return authInstance.isPleromaInstance;
         break;
-      case TimelineType.list:
+      case TimelineType.customList:
         return authInstance.isPleromaInstance;
         break;
       case TimelineType.hashtag:
@@ -128,7 +128,7 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
       case TimelineType.home:
         return authInstance.isPleromaInstance;
         break;
-      case TimelineType.list:
+      case TimelineType.customList:
         return authInstance.isPleromaInstance;
         break;
       case TimelineType.hashtag:
@@ -148,7 +148,7 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
       case TimelineType.public:
         return false;
         break;
-      case TimelineType.list:
+      case TimelineType.customList:
         return true;
         break;
       case TimelineType.home:
@@ -171,7 +171,7 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
       case TimelineType.public:
         return false;
         break;
-      case TimelineType.list:
+      case TimelineType.customList:
         return false;
         break;
       case TimelineType.home:
@@ -193,7 +193,7 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
       case TimelineType.public:
         return false;
         break;
-      case TimelineType.list:
+      case TimelineType.customList:
         return false;
         break;
       case TimelineType.home:
@@ -219,7 +219,7 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
       case TimelineType.home:
         return authInstance.isPleromaInstance;
         break;
-      case TimelineType.list:
+      case TimelineType.customList:
         return false;
         break;
       case TimelineType.hashtag:
@@ -238,7 +238,7 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
       case TimelineType.public:
         return false;
         break;
-      case TimelineType.list:
+      case TimelineType.customList:
         return false;
         break;
       case TimelineType.home:
@@ -260,7 +260,7 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
       case TimelineType.public:
         return false;
         break;
-      case TimelineType.list:
+      case TimelineType.customList:
         return false;
         break;
       case TimelineType.home:

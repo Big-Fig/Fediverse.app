@@ -69,7 +69,7 @@ void goToRegisterAuthInstancePage(
             initialCaptcha: captcha,
             pleromaCaptchaService: pleromaCaptchaService,
             originValue: null,
-            validators: [NonEmptyStringFieldValidationError.createValidator()],
+            validators: [FormNonEmptyStringFieldValidationError.createValidator()],
           );
         }
       } catch (stackTrace, e) {

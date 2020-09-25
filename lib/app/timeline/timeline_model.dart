@@ -2,7 +2,7 @@ import 'package:fedi/enum/enum_values.dart';
 
 enum TimelineType {
   public,
-  list,
+  customList,
   home,
   hashtag,
   account,
@@ -10,7 +10,7 @@ enum TimelineType {
 
 EnumValues<TimelineType> timelineTypeEnumValues = EnumValues({
   "public": TimelineType.public,
-  "list": TimelineType.list,
+  "custom_list": TimelineType.customList,
   "home": TimelineType.home,
   "hashtag": TimelineType.hashtag,
   "account": TimelineType.account,

@@ -636,12 +636,36 @@ class CodegenLoader extends AssetLoader{
       "dismissed": "Dismissed"
     },
     "timeline": {
+      "create": {
+        "title": "Create new timeline",
+        "field": {
+          "title": {
+            "label": "Title",
+            "hint": "Timeline name"
+          },
+          "type": {
+            "label": "Type"
+          }
+        }
+      },
+      "type": {
+        "home": "Home",
+        "public": "Public",
+        "custom_list": "List",
+        "hashtag": "Hashtag",
+        "account": "Account",
+        "chooser": {
+          "dialog": {
+            "title": "Choose timeline type"
+          }
+        }
+      },
       "storage": {
         "title": "Timelines",
         "empty": "Nothing found"
       },
       "settings": {
-        "title": "{} timeline settings",
+        "title": "'{}' timeline settings",
         "field": {
           "not_supported": {
             "desc": "Not supported on this instance"
@@ -1077,6 +1101,13 @@ class CodegenLoader extends AssetLoader{
   },
   "form": {
     "field": {
+      "value": {
+        "error": {
+          "null": {
+            "desc": "Should be not null"
+          }
+        }
+      },
       "text": {
         "email": {
           "error": {

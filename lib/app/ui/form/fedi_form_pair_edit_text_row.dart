@@ -1,5 +1,5 @@
 import 'package:fedi/app/ui/edit_text/fedi_transparent_edit_text_field.dart';
-import 'package:fedi/app/ui/form/fedi_form_edit_text_label.dart';
+import 'package:fedi/app/ui/form/fedi_form_column_label.dart';
 import 'package:fedi/app/ui/form/fedi_form_row.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/ui/form/field/value/string/form_string_field_bloc_impl.dart';
@@ -32,7 +32,7 @@ class FediFormPairEditTextRow extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          FediFormEditTextLabel(label),
+          FediFormColumnLabel(label),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

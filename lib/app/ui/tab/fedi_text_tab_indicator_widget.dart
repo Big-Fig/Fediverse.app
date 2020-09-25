@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 
 typedef TabToTextMapper<T> = String Function(BuildContext context, T tab);
 
-
 class FediTextTabIndicatorWidget<T> extends StatelessWidget {
   final List<T> tabs;
   final TabController tabController;
@@ -41,22 +40,26 @@ class FediTextTabIndicatorWidget<T> extends StatelessWidget {
         insets: EdgeInsets.zero,
         tabBarIndicatorSize: TabBarIndicatorSize.label,
       ),
-      tabs: tabs.asMap().entries.map((entry) {
-        var index = entry.key;
-        var tab = entry.value;
+      tabs: [
+        ...tabs.asMap().entries.map(
+          (entry) {
+            var index = entry.key;
+            var tab = entry.value;
 
-        Widget tabWidget = FediTextTabIndicatorItemWidget(
-          index: index,
-          tabController: tabController,
-          label: tabToTextMapper(context, tab),
-          isTransparent: isTransparent,
-        );
+            Widget tabWidget = FediTextTabIndicatorItemWidget(
+              index: index,
+              tabController: tabController,
+              label: tabToTextMapper(context, tab),
+              isTransparent: isTransparent,
+            );
 
-        if (customTabBuilder != null) {
-          tabWidget = customTabBuilder(context, tabWidget, tab);
-        }
-        return tabWidget;
-      }).toList(),
+            if (customTabBuilder != null) {
+              tabWidget = customTabBuilder(context, tabWidget, tab);
+            }
+            return tabWidget;
+          },
+        ),
+      ],
       controller: tabController,
     );
   }

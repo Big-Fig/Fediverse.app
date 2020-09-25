@@ -14,7 +14,7 @@ class JoinAuthInstanceRegisterBloc extends FormBloc
   @override
   final FormStringFieldBloc usernameFieldBloc = FormStringFieldBloc(
     originValue: "",
-    validators: [NonEmptyStringFieldValidationError.createValidator()],
+    validators: [FormNonEmptyStringFieldValidationError.createValidator()],
     maxLength: null,
   );
 
