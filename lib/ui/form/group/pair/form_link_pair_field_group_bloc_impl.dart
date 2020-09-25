@@ -18,7 +18,7 @@ class FormLinkPairFieldGroupBloc extends FormKeyValuePairFieldGroupBloc<
           keyField: FormStringFieldBloc(
             originValue: name,
             validators: [
-              NonEmptyStringFieldValidationError.createValidator(),
+              FormNonEmptyStringFieldValidationError.createValidator(),
             ],
             maxLength: nameMaxLength,
           ),

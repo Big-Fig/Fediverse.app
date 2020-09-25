@@ -1,5 +1,5 @@
 import 'package:fedi/app/ui/edit_text/fedi_transparent_edit_text_field.dart';
-import 'package:fedi/app/ui/form/fedi_form_edit_text_label.dart';
+import 'package:fedi/app/ui/form/fedi_form_column_label.dart';
 import 'package:fedi/app/ui/form/fedi_form_row.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -33,7 +33,7 @@ class FediFormEditTextRow extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            FediFormEditTextLabel(label),
+            FediFormColumnLabel(label),
             FediTransparentEditTextField(
               focusNode: focusNode,
               autocorrect: autocorrect,

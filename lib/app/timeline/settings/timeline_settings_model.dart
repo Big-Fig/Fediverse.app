@@ -16,6 +16,68 @@ part 'timeline_settings_model.g.dart';
 // @HiveType(typeId: -32 + 46)
 @JsonSerializable(explicitToJson: true)
 class TimelineSettings extends IPreferencesObject implements ITimelineSettings {
+  static String generateUniqueTimelineId() =>
+      "${DateTime.now().millisecondsSinceEpoch}";
+
+  static TimelineSettings createDefaultPublicSettings({
+    @required String id,
+  }) =>
+      TimelineSettings.public(
+        id: id,
+        onlyWithMedia: false,
+        onlyRemote: false,
+        onlyLocal: false,
+        withMuted: false,
+        excludeVisibilities: [],
+      );
+
+  static TimelineSettings createDefaultHomeSettings({
+    @required String id,
+  }) =>
+      TimelineSettings.home(
+        id: id,
+        onlyLocal: false,
+        withMuted: false,
+        excludeVisibilities: [],
+      );
+
+  static TimelineSettings createDefaultCustomListSettings({
+    @required String id,
+    @required String onlyInListWithRemoteId,
+  }) =>
+      TimelineSettings.list(
+        id: id,
+        withMuted: false,
+        excludeVisibilities: [],
+        onlyInListWithRemoteId: onlyInListWithRemoteId,
+      );
+
+  static TimelineSettings createDefaultHashtagSettings({
+    @required String id,
+    @required String withHashtag,
+  }) =>
+      TimelineSettings.hashtag(
+        id: id,
+        onlyWithMedia: false,
+        onlyLocal: false,
+        withMuted: false,
+        excludeVisibilities: [],
+        withHashtag: withHashtag,
+      );
+
+  static TimelineSettings createDefaultAccountSettings({
+    @required String id,
+    @required String onlyFromAccountWithRemoteId,
+  }) =>
+      TimelineSettings.account(
+        id: id,
+        onlyWithMedia: false,
+        excludeReblogs: false,
+        excludeReplies: false,
+        onlyPinned: false,
+        onlyFromAccountWithRemoteId: onlyFromAccountWithRemoteId,
+      );
+
   @override
   @HiveField(1)
   @JsonKey(name: "only_with_media")
@@ -199,7 +261,7 @@ class TimelineSettings extends IPreferencesObject implements ITimelineSettings {
           excludeVisibilitiesStrings: excludeVisibilities
               ?.map((excludeVisibility) => excludeVisibility.toJsonValue())
               ?.toList(),
-          typeString: TimelineType.list.toJsonValue(),
+          typeString: TimelineType.customList.toJsonValue(),
           onlyInListWithRemoteId: onlyInListWithRemoteId,
           withHashtag: null,
           timelineReplyVisibilityFilterString: null,
@@ -269,8 +331,8 @@ class TimelineSettings extends IPreferencesObject implements ITimelineSettings {
                 this.timelineReplyVisibilityFilterString,
         onlyFromAccountWithRemoteId:
             onlyFromAccountWithRemoteId ?? this.onlyFromAccountWithRemoteId,
-        excludeReblogs:  excludeReblogs ?? this.excludeReblogs,
-        onlyPinned:  onlyPinned ?? this.onlyPinned,
+        excludeReblogs: excludeReblogs ?? this.excludeReblogs,
+        onlyPinned: onlyPinned ?? this.onlyPinned,
       );
 
   @override

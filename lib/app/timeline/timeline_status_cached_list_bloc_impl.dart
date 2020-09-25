@@ -67,7 +67,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
             chat: false,
           ));
           break;
-        case TimelineType.list:
+        case TimelineType.customList:
           addDisposable(
               disposable: webSocketsHandlerManagerBloc.listenListChannel(
             listId: _timelineSettings.onlyInListWithRemoteId,
@@ -126,7 +126,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
           excludeVisibilities: excludeVisibilities,
         );
         break;
-      case TimelineType.list:
+      case TimelineType.customList:
         remoteStatuses = await pleromaTimelineService.getListTimeline(
           listId: _timelineSettings.onlyInListWithRemoteId,
           maxId: maxId,

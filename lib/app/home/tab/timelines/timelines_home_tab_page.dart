@@ -3,6 +3,7 @@ import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/home/home_bloc.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 import 'package:fedi/app/home/tab/timelines/item/timelines_home_tab_item_model.dart';
+import 'package:fedi/app/home/tab/timelines/storage/create_item/create_item_timelines_home_tab_storage_page.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc_impl.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_local_preferences_bloc.dart';
@@ -181,7 +182,17 @@ class _TimelinesHomeTabPageBodyState extends State<TimelinesHomeTabPageBody>
                   ),
                 ),
                 FediBigVerticalSpacer(),
-                _buildTabIndicatorWidget(),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _buildTabIndicatorWidget(),
+                    ),
+                    Padding(
+                      padding: FediPadding.horizontalSmallPadding,
+                      child: buildAddTimelineActionButton(context),
+                    ),
+                  ],
+                ),
               ],
             ),
             endingWidgets: null,
@@ -242,6 +253,15 @@ class _TimelinesHomeTabPageBodyState extends State<TimelinesHomeTabPageBody>
       FediIcons.filter,
       onPressed: () {
         goToTimelinesHomeTabStoragePage(context);
+      },
+    );
+  }
+
+  Widget buildAddTimelineActionButton(BuildContext context) {
+    return FediIconInCircleBlurredButton(
+      FediIcons.plus,
+      onPressed: () {
+        goToCreateItemTimelinesHomeTabStoragePage(context);
       },
     );
   }

@@ -1,10 +1,10 @@
 import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:flutter/cupertino.dart';
 
-class FediFormSwitchLabel extends StatelessWidget {
+class FediFormRowLabel extends StatelessWidget {
   final String text;
 
-  FediFormSwitchLabel(this.text);
+  FediFormRowLabel(this.text);
 
   @override
   Widget build(BuildContext context) {

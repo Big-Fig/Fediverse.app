@@ -19,7 +19,7 @@ class TimelineSettingsWidget extends StatelessWidget {
 
     var authInstance = currentAuthInstanceBloc.currentInstance;
 
-    List<FormBoolFieldFormRowWidget> children;
+    List<Widget> children;
 
     var timelineType = settingsBloc.timelineSettings.type;
     switch (timelineType) {
@@ -31,7 +31,7 @@ class TimelineSettingsWidget extends StatelessWidget {
           buildOnlyRemoteField(context, settingsBloc, authInstance),
         ];
         break;
-      case TimelineType.list:
+      case TimelineType.customList:
         children = [
           buildWithMutedField(context, settingsBloc, authInstance),
           buildOnlyMediaField(context, settingsBloc, authInstance),

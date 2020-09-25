@@ -10,6 +10,8 @@ abstract class ITimelineSettingsBloc extends Disposable {
 
   ITimelineSettings get timelineSettings;
 
+  Stream<TimelineSettings> get timelineSettingsStream;
+
   IFormBoolFieldBloc get excludeRepliesFieldBloc;
 
   IFormBoolFieldBloc get onlyWithMediaFieldBloc;
