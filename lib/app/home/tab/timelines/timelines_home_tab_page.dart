@@ -61,43 +61,68 @@ class TimelinesHomeTabPage extends StatelessWidget {
           listen: false,
         ),
       ),
-      child: DisposableProvider<ITimelineTabsListBloc>(
-        create: (BuildContext context) {
-          var homeBloc = IHomeBloc.of(context, listen: false);
-          var timelineTabsBloc = TimelineTabsBloc.createFromContext(context);
+      child: Builder(
+        builder: (context) {
+          return DisposableProvider<ITimelineTabsListBloc>(
+            create: (context) {
+              var homeBloc = IHomeBloc.of(context, listen: false);
 
-          timelineTabsBloc.performAsyncInit().then((_) {
-            var blocForUnreadBadge = timelineTabsBloc.tabBlocs
-                .firstWhere((bloc) => bloc.timeline.type == TimelineType.home);
+              var timelineTabsBloc =
+                  TimelineTabsBloc.createFromContext(context);
 
-            timelineTabsBloc.addDisposable(
-              streamSubscription: blocForUnreadBadge
-                  .paginationListWithNewItemsBloc.unmergedNewItemsCountStream
-                  .listen((unreadCount) {
-                homeBloc.updateTimelinesUnread(
-                    unreadCount != null && unreadCount > 0);
-              }),
-            );
-          });
+              timelineTabsBloc.performAsyncInit().then((_) {
+                var blocForUnreadBadge = timelineTabsBloc.tabBlocs.firstWhere(
+                    (bloc) => bloc.timeline.type == TimelineType.home);
 
-          return timelineTabsBloc;
+                timelineTabsBloc.addDisposable(
+                  streamSubscription: blocForUnreadBadge
+                      .paginationListWithNewItemsBloc
+                      .unmergedNewItemsCountStream
+                      .listen((unreadCount) {
+                    homeBloc.updateTimelinesUnread(
+                        unreadCount != null && unreadCount > 0);
+                  }),
+                );
+              });
+
+              return timelineTabsBloc;
+            },
+            child: Builder(
+                builder: (context) => FediAsyncInitLoadingWidget(
+                      asyncInitLoadingBloc: ITimelinesHomeTabStorageBloc.of(
+                          context,
+                          listen: false),
+                      loadingFinishedBuilder: (context) =>
+                          FediAsyncInitLoadingWidget(
+                        asyncInitLoadingBloc:
+                            ITimelineTabsListBloc.of(context, listen: false),
+                        loadingFinishedBuilder: (BuildContext context) {
+                          var timelineTabsListBloc =
+                              ITimelineTabsListBloc.of(context, listen: false);
+
+                          return StreamBuilder<List<ITimelineTabBloc>>(
+                              stream: timelineTabsListBloc.tabBlocsStream,
+                              initialData: timelineTabsListBloc.tabBlocs,
+                              builder: (context, snapshot) {
+                                var tabBlocs = snapshot.data;
+                                return Provider<List<ITimelineTabBloc>>.value(
+                                  value: tabBlocs,
+                                  child: Builder(
+                                    builder: (context) =>
+                                        TimelinesHomeTabPageBody(
+                                      timelineTabBlocs:
+                                          Provider.of<List<ITimelineTabBloc>>(
+                                              context,
+                                              listen: true),
+                                    ),
+                                  ),
+                                );
+                              });
+                        },
+                      ),
+                    )),
+          );
         },
-        child: Builder(
-            builder: (context) => FediAsyncInitLoadingWidget(
-                  asyncInitLoadingBloc:
-                      ITimelinesHomeTabStorageBloc.of(context, listen: false),
-                  loadingFinishedBuilder: (context) =>
-                      FediAsyncInitLoadingWidget(
-                    asyncInitLoadingBloc:
-                        ITimelineTabsListBloc.of(context, listen: false),
-                    loadingFinishedBuilder: (BuildContext context) =>
-                        TimelinesHomeTabPageBody(
-                      timelineTabBlocs:
-                          ITimelineTabsListBloc.of(context, listen: false)
-                              .tabBlocs,
-                    ),
-                  ),
-                )),
       ),
     );
   }
@@ -289,7 +314,9 @@ class _TimelinesHomeTabPageBodyState extends State<TimelinesHomeTabPageBody>
         padding: const EdgeInsets.only(top: 3.0, right: FediSizes.bigPadding),
         child: TimelineTabTextTabIndicatorItemWidget(
           tabController: tabController,
-          timelineTabBlocs: timelineTabBlocs,
+          timelineTabBlocs: Provider.of<List<ITimelineTabBloc>>(
+              context,
+              listen: true),
         ),
       );
 }

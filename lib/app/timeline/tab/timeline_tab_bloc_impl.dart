@@ -100,4 +100,14 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
     }));
     addDisposable(disposable: timelineLocalPreferencesBloc);
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TimelineTabBloc &&
+          runtimeType == other.runtimeType &&
+          timelineLocalPreferencesBloc == other.timelineLocalPreferencesBloc;
+
+  @override
+  int get hashCode => timelineLocalPreferencesBloc.hashCode;
 }

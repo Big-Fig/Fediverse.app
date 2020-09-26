@@ -197,8 +197,8 @@ class TimelineStatusCachedListBloc extends DisposableOwner
       onlyFromAccount: _timeline.onlyFromRemoteAccount != null
           ? mapRemoteAccountToLocalAccount(_timeline.onlyFromRemoteAccount)
           : null,
-      onlyInListWithRemoteId: _timeline.onlyInRemoteList.id,
-      onlyWithHashtag: _timeline.withRemoteHashtag.name,
+      onlyInListWithRemoteId: _timeline.onlyInRemoteList?.id,
+      onlyWithHashtag: _timeline.withRemoteHashtag?.name,
       onlyFromAccountsFollowingByAccount: null,
       onlyLocal: onlyLocalFilter,
       onlyWithMedia: _timeline.onlyWithMedia,
