@@ -10,11 +10,9 @@ import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_ti
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/status/timeline_status_cached_list_bloc_impl.dart';
 import 'package:fedi/app/timeline/timeline_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
-import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/app/websockets/web_sockets_handler_manager_bloc.dart';
@@ -120,9 +118,8 @@ MaterialPageRoute createCustomListPageRoute({
       child: Builder(
         builder: (context) {
           return FediAsyncInitLoadingWidget(
-            asyncInitLoadingBloc: ITimelineSettingsLocalPreferencesBloc.of(
-                context,
-                listen: false),
+            asyncInitLoadingBloc:
+                ITimelineLocalPreferencesBloc.of(context, listen: false),
             loadingFinishedBuilder: (BuildContext context) {
               return DisposableProvider<IStatusCachedListBloc>(
                 create: (BuildContext context) {
@@ -136,8 +133,8 @@ MaterialPageRoute createCustomListPageRoute({
                       context,
                       listen: false,
                     ),
-                    timelineSettingsLocalPreferencesBloc:
-                        ITimelineSettingsLocalPreferencesBloc.of(context,
+                    timelineLocalPreferencesBloc:
+                        ITimelineLocalPreferencesBloc.of(context,
                             listen: false),
                     currentInstanceBloc: ICurrentAuthInstanceBloc.of(
                       context,
@@ -153,7 +150,6 @@ MaterialPageRoute createCustomListPageRoute({
                       context,
                       listen: false,
                     ),
-                    timelineType: TimelineType.customList,
                   );
                   return customListTimelineStatusCachedListBloc;
                 },

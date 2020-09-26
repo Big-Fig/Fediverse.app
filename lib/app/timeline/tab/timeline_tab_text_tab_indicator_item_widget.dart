@@ -1,5 +1,5 @@
 import 'package:fedi/app/pagination/cached/cached_pagination_list_with_new_items_unread_badge_widget.dart';
-import 'package:fedi/app/timeline/tab/timeline_tab_list_bloc.dart';
+import 'package:fedi/app/timeline/tab/timeline_tab_bloc.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -11,11 +11,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class TimelineTabTextTabIndicatorItemWidget extends StatelessWidget {
-  final List<Timeline> timelineTabs;
+  final List<ITimelineTabBloc> timelineTabBlocs;
   final TabController tabController;
 
   TimelineTabTextTabIndicatorItemWidget({
-    @required this.timelineTabs,
+    @required this.timelineTabBlocs,
     @required this.tabController,
   });
 
@@ -26,17 +26,14 @@ class TimelineTabTextTabIndicatorItemWidget extends StatelessWidget {
           return FediFadeShaderMask(
             fadingPercent: fadingPercent,
             fadingColor: FediColors.darkGrey,
-            child: FediTextTabIndicatorWidget<Timeline>(
+            child: FediTextTabIndicatorWidget<ITimelineTabBloc>(
               customTabBuilder: (BuildContext context, Widget child,
-                  Timeline tab) {
+                  ITimelineTabBloc timelineTabBloc) {
                 var widget = CachedPaginationListWithNewItemsUnreadBadgeWidget(
                     child: child);
 
-                var timelineTabsBloc =
-                    ITimelineTabsListBloc.of(context, listen: false);
-
                 var tabPaginationListBloc =
-                    timelineTabsBloc.retrieveTimelineTabPaginationListBloc(tab);
+                    timelineTabBloc.paginationListWithNewItemsBloc;
 
                 return Provider<ICachedPaginationListWithNewItemsBloc>.value(
                   value: tabPaginationListBloc,
@@ -45,15 +42,19 @@ class TimelineTabTextTabIndicatorItemWidget extends StatelessWidget {
               },
               tabController: tabController,
               isTransparent: true,
-              tabs: timelineTabs,
-              tabToTextMapper:
-                  (BuildContext context, Timeline tab) =>
-                      mapTabToTitle(context, tab),
+              tabs: timelineTabBlocs,
+              tabToTextMapper: (
+                BuildContext context,
+                ITimelineTabBloc timelineTabBloc,
+              ) =>
+                  mapTabToTitle(
+                context,
+                timelineTabBloc.timeline,
+              ),
             ),
           );
         },
       );
 
-  static String mapTabToTitle(BuildContext context, Timeline tab) =>
-      tab.label;
+  static String mapTabToTitle(BuildContext context, Timeline tab) => tab.label;
 }

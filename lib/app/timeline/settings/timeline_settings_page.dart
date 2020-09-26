@@ -30,7 +30,7 @@ class TimelineSettingsPage extends StatelessWidget {
       body: Padding(
         padding: FediPadding.allBigPadding,
         child: FediAsyncInitLoadingWidget(
-          asyncInitLoadingBloc: ITimelineSettingsLocalPreferencesBloc.of(
+          asyncInitLoadingBloc: ITimelineLocalPreferencesBloc.of(
             context,
             listen: false,
           ),
@@ -83,16 +83,7 @@ MaterialPageRoute createTimelineSettingsPageRoute(
             listen: false,
           );
           var timelineSettingsBloc = TimelineSettingsFormBloc(
-            originalSettings: timelineLocalPreferencesBloc.value,
-          );
-
-          timelineSettingsBloc.addDisposable(
-            streamSubscription:
-                timelineSettingsBloc.timelineSettingsStream.listen(
-              (timelineSettings) {
-                timelineLocalPreferencesBloc.setValue(timelineSettings);
-              },
-            ),
+            originalSettings: timelineLocalPreferencesBloc.value?.settings,
           );
           return timelineSettingsBloc;
         },

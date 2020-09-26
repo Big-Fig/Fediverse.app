@@ -1,9 +1,12 @@
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_model.dart';
+import 'package:fedi/app/timeline/timeline_model.dart';
+import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class ITimelinesHomeTabStorageBloc extends Disposable {
+abstract class ITimelinesHomeTabStorageBloc
+    implements IAsyncInitLoadingBloc, Disposable {
   static ITimelinesHomeTabStorageBloc of(BuildContext context,
           {bool listen = true}) =>
       Provider.of<ITimelinesHomeTabStorageBloc>(context, listen: listen);
@@ -16,7 +19,11 @@ abstract class ITimelinesHomeTabStorageBloc extends Disposable {
 
   Stream<List<String>> get timelineIdsStream;
 
-  Future onItemsUpdated(List<String> timelineIds);
+  List<Timeline> get timelines;
 
-  Future remove(String timelineId);
+  Stream<List<Timeline>> get timelinesStream;
+
+  Future onItemsUpdated(List<Timeline> timelines);
+
+  Future remove(Timeline timeline);
 }

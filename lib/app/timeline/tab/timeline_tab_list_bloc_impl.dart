@@ -7,19 +7,13 @@ import 'package:fedi/app/conversation/repository/conversation_repository.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
-import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_bloc.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_bloc_impl.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_list_bloc.dart';
-import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
-import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/websockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:fedi/pagination/cached/cached_pagination_model.dart';
-import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:fedi/pleroma/websockets/pleroma_websockets_service.dart';
@@ -126,7 +120,7 @@ class TimelineTabsBloc extends AsyncInitLoadingBloc
     for (var timelineId in timelinesHomeTabStorageBloc.timelineIds) {
       var timelineTabBloc = TimelineTabBloc(
         preferencesService: preferencesService,
-        timeline: tabItem,
+        timelineId: timelineId,
         pleromaTimelineService: pleromaTimelineService,
         statusRepository: statusRepository,
         listenWebSockets: listenWebSockets,

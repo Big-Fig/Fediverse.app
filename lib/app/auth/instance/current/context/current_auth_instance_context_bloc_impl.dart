@@ -489,7 +489,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService.asyncInitAndRegister<
         IWebSocketsHandlerManagerBloc>(webSocketsHandlerManagerBloc);
 
-    if (timelinesHomeTabStorageLocalPreferences.value?.items?.isNotEmpty !=
+    if (timelinesHomeTabStorageLocalPreferences
+            .value?.timelineIds?.isNotEmpty !=
         true) {
       var remoteLists = await pleromaListService.getLists();
 
