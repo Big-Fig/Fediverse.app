@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/local_preferences/local_preferences_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
@@ -8,32 +7,37 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'timelines_home_tab_storage_model.g.dart';
 
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
 @HiveType()
+// @HiveType(typeId: -32 + 81)
 @JsonSerializable()
 class TimelinesHomeTabStorage implements IPreferencesObject {
   @HiveField(0)
-  final List<Timeline> items;
+  @JsonKey(name: "timeline_ids")
+  final List<String> timelineIds;
 
-  TimelinesHomeTabStorage({@required this.items});
+  TimelinesHomeTabStorage({@required this.timelineIds});
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is TimelinesHomeTabStorage &&
           runtimeType == other.runtimeType &&
-          items == other.items;
+          timelineIds == other.timelineIds;
 
   @override
-  int get hashCode => items.hashCode;
+  int get hashCode => timelineIds.hashCode;
 
   TimelinesHomeTabStorage copyWith({
-    List<Timeline> items,
+    List<String> timelineIds,
   }) =>
-      TimelinesHomeTabStorage(items: items ?? this.items);
+      TimelinesHomeTabStorage(timelineIds: timelineIds ?? this.timelineIds);
 
   @override
   String toString() {
-    return 'TimelinesHomeTabStorage{items: $items}';
+    return 'TimelinesHomeTabStorage{timelineIds: $timelineIds}';
   }
 
   factory TimelinesHomeTabStorage.fromJson(Map<String, dynamic> json) =>

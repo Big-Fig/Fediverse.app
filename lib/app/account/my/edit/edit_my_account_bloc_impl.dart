@@ -209,13 +209,4 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
     );
   }
 
-  @override
-  void clear() {
-    displayNameField.clear();
-    noteField.clear();
-    lockedField.clear();
-    customFieldsGroupBloc.clear();
-    avatarField.clear();
-    headerField.clear();
-  }
 }

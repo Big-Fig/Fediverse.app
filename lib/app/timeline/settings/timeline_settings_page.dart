@@ -1,12 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/timeline/settings/local_preferences_timeline_settings_bloc_impl.dart';
-import 'package:fedi/app/timeline/settings/timeline_settings_bloc.dart';
-import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/timeline/settings/timeline_settings_form_bloc.dart';
+import 'package:fedi/app/timeline/settings/timeline_settings_form_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_widget.dart';
 import 'package:fedi/app/timeline/timeline_bloc.dart';
 import 'package:fedi/app/timeline/timeline_bloc_impl.dart';
+import 'package:fedi/app/timeline/timeline_local_preferences_bloc.dart';
+import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
@@ -19,7 +19,9 @@ import 'package:flutter/material.dart';
 class TimelineSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var label = ITimelineBloc.of(context, listen: false).label;
+    var timelineBloc = ITimelineBloc.of(context, listen: false);
+    var timeline = timelineBloc.timeline;
+    var label = timeline.label;
 
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
@@ -32,7 +34,9 @@ class TimelineSettingsPage extends StatelessWidget {
             context,
             listen: false,
           ),
-          loadingFinishedBuilder: (context) => TimelineSettingsWidget(),
+          loadingFinishedBuilder: (context) => TimelineSettingsWidget(
+            type: timeline.type,
+          ),
         ),
       ),
     );
@@ -64,26 +68,33 @@ MaterialPageRoute createTimelineSettingsPageRoute(
       ICurrentAuthInstanceBloc.of(context, listen: false);
   var currentInstance = currentAuthInstanceBloc.currentInstance;
   return MaterialPageRoute(
-    builder: (context) =>
-        DisposableProvider<ITimelineSettingsLocalPreferencesBloc>(
+    builder: (context) => DisposableProvider<ITimelineLocalPreferencesBloc>(
       create: (context) {
-        return TimelineSettingsLocalPreferencesBloc.byId(
+        return TimelineLocalPreferencesBloc.byId(
           localPreferencesService,
           userAtHost: currentInstance.userAtHost,
-          timelineId: timeline.timelineSettingsId,
+          timelineId: timeline.id,
         );
       },
-      child: DisposableProvider<ITimelineSettingsBloc>(
+      child: DisposableProvider<ITimelineSettingsFormBloc>(
         create: (BuildContext context) {
-          var timelineSettingsLocalPreferencesBloc =
-              ITimelineSettingsLocalPreferencesBloc.of(
+          var timelineLocalPreferencesBloc = ITimelineLocalPreferencesBloc.of(
             context,
             listen: false,
           );
-          return LocalPreferencesTimelineSettingsBloc(
-            settingsLocalPreferencesBloc: timelineSettingsLocalPreferencesBloc,
-            originalSettings: timelineSettingsLocalPreferencesBloc.value,
+          var timelineSettingsBloc = TimelineSettingsFormBloc(
+            originalSettings: timelineLocalPreferencesBloc.value,
           );
+
+          timelineSettingsBloc.addDisposable(
+            streamSubscription:
+                timelineSettingsBloc.timelineSettingsStream.listen(
+              (timelineSettings) {
+                timelineLocalPreferencesBloc.setValue(timelineSettings);
+              },
+            ),
+          );
+          return timelineSettingsBloc;
         },
         child: DisposableProvider<ITimelineBloc>(
           create: (context) {

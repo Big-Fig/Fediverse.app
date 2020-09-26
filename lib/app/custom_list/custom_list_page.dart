@@ -11,8 +11,10 @@ import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_wi
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/timeline/status/timeline_status_cached_list_bloc_impl.dart';
+import 'package:fedi/app/timeline/timeline_local_preferences_bloc.dart';
+import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/app/websockets/web_sockets_handler_manager_bloc.dart';
@@ -104,9 +106,9 @@ MaterialPageRoute createCustomListPageRoute({
       ICurrentAuthInstanceBloc.of(context, listen: false);
 
   return MaterialPageRoute(builder: (context) {
-    return DisposableProvider<ITimelineSettingsLocalPreferencesBloc>(
+    return DisposableProvider<ITimelineLocalPreferencesBloc>(
       create: (context) {
-        var bloc = TimelineSettingsLocalPreferencesBloc.customList(
+        var bloc = TimelineLocalPreferencesBloc.customList(
           ILocalPreferencesService.of(context, listen: false),
           userAtHost: currentAuthInstanceBloc.currentInstance.userAtHost,
           customList: customList,
@@ -134,7 +136,7 @@ MaterialPageRoute createCustomListPageRoute({
                       context,
                       listen: false,
                     ),
-                    timelineLocalPreferencesBloc:
+                    timelineSettingsLocalPreferencesBloc:
                         ITimelineSettingsLocalPreferencesBloc.of(context,
                             listen: false),
                     currentInstanceBloc: ICurrentAuthInstanceBloc.of(
@@ -151,6 +153,7 @@ MaterialPageRoute createCustomListPageRoute({
                       context,
                       listen: false,
                     ),
+                    timelineType: TimelineType.customList,
                   );
                   return customListTimelineStatusCachedListBloc;
                 },

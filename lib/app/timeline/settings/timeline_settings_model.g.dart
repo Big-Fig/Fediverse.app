@@ -14,7 +14,6 @@ class TimelineSettingsAdapter extends TypeAdapter<TimelineSettings> {
       for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return TimelineSettings(
-      id: fields[12] as String,
       onlyWithMedia: fields[1] as bool,
       excludeReplies: fields[2] as bool,
       excludeNsfwSensitive: fields[3] as bool,
@@ -22,11 +21,10 @@ class TimelineSettingsAdapter extends TypeAdapter<TimelineSettings> {
       onlyLocal: fields[5] as bool,
       withMuted: fields[6] as bool,
       excludeVisibilitiesStrings: (fields[7] as List)?.cast<String>(),
-      typeString: fields[8] as String,
-      onlyInListWithRemoteId: fields[9] as String,
-      withHashtag: fields[10] as String,
-      timelineReplyVisibilityFilterString: fields[11] as String,
-      onlyFromAccountWithRemoteId: fields[13] as String,
+      onlyInRemoteList: fields[9] as PleromaList,
+      withRemoteHashtag: fields[10] as PleromaTag,
+      timelineSettingsReplyVisibilityFilterString: fields[11] as String,
+      onlyFromRemoteAccount: fields[13] as PleromaAccount,
       onlyPinned: fields[14] as bool,
       excludeReblogs: fields[15] as bool,
     );
@@ -35,7 +33,7 @@ class TimelineSettingsAdapter extends TypeAdapter<TimelineSettings> {
   @override
   void write(BinaryWriter writer, TimelineSettings obj) {
     writer
-      ..writeByte(15)
+      ..writeByte(13)
       ..writeByte(1)
       ..write(obj.onlyWithMedia)
       ..writeByte(2)
@@ -50,18 +48,14 @@ class TimelineSettingsAdapter extends TypeAdapter<TimelineSettings> {
       ..write(obj.withMuted)
       ..writeByte(7)
       ..write(obj.excludeVisibilitiesStrings)
-      ..writeByte(8)
-      ..write(obj.typeString)
       ..writeByte(9)
-      ..write(obj.onlyInListWithRemoteId)
+      ..write(obj.onlyInRemoteList)
       ..writeByte(10)
-      ..write(obj.withHashtag)
+      ..write(obj.withRemoteHashtag)
       ..writeByte(11)
-      ..write(obj.timelineReplyVisibilityFilterString)
-      ..writeByte(12)
-      ..write(obj.id)
+      ..write(obj.timelineSettingsReplyVisibilityFilterString)
       ..writeByte(13)
-      ..write(obj.onlyFromAccountWithRemoteId)
+      ..write(obj.onlyFromRemoteAccount)
       ..writeByte(14)
       ..write(obj.onlyPinned)
       ..writeByte(15)
@@ -75,7 +69,6 @@ class TimelineSettingsAdapter extends TypeAdapter<TimelineSettings> {
 
 TimelineSettings _$TimelineSettingsFromJson(Map<String, dynamic> json) {
   return TimelineSettings(
-    id: json['id'] as String,
     onlyWithMedia: json['only_with_media'] as bool,
     excludeReplies: json['exclude_replies'] as bool,
     excludeNsfwSensitive: json['exclude_nsfw_sensitive'] as bool,
@@ -85,13 +78,19 @@ TimelineSettings _$TimelineSettingsFromJson(Map<String, dynamic> json) {
     excludeVisibilitiesStrings: (json['exclude_visibilities_strings'] as List)
         ?.map((e) => e as String)
         ?.toList(),
-    typeString: json['type_string'] as String,
-    onlyInListWithRemoteId: json['only_in_list_with_remote_id'] as String,
-    withHashtag: json['with_hashtag'] as String,
-    timelineReplyVisibilityFilterString:
+    onlyInRemoteList: json['only_in_list'] == null
+        ? null
+        : PleromaList.fromJson(json['only_in_list'] as Map<String, dynamic>),
+    withRemoteHashtag: json['with_remote_hashtag'] == null
+        ? null
+        : PleromaTag.fromJson(
+            json['with_remote_hashtag'] as Map<String, dynamic>),
+    timelineSettingsReplyVisibilityFilterString:
         json['timeline_reply_visibility_filter_string'] as String,
-    onlyFromAccountWithRemoteId:
-        json['only_from_account_with_remote_id'] as String,
+    onlyFromRemoteAccount: json['only_from_remote_account'] == null
+        ? null
+        : PleromaAccount.fromJson(
+            json['only_from_remote_account'] as Map<String, dynamic>),
     onlyPinned: json['only_pinned'] as bool,
     excludeReblogs: json['exclude_reblogs'] as bool,
   );
@@ -106,13 +105,11 @@ Map<String, dynamic> _$TimelineSettingsToJson(TimelineSettings instance) =>
       'only_local': instance.onlyLocal,
       'with_muted': instance.withMuted,
       'exclude_visibilities_strings': instance.excludeVisibilitiesStrings,
-      'type_string': instance.typeString,
-      'only_in_list_with_remote_id': instance.onlyInListWithRemoteId,
-      'with_hashtag': instance.withHashtag,
+      'only_in_list': instance.onlyInRemoteList?.toJson(),
+      'with_remote_hashtag': instance.withRemoteHashtag?.toJson(),
       'timeline_reply_visibility_filter_string':
-          instance.timelineReplyVisibilityFilterString,
-      'id': instance.id,
-      'only_from_account_with_remote_id': instance.onlyFromAccountWithRemoteId,
+          instance.timelineSettingsReplyVisibilityFilterString,
+      'only_from_remote_account': instance.onlyFromRemoteAccount?.toJson(),
       'only_pinned': instance.onlyPinned,
       'exclude_reblogs': instance.excludeReblogs,
     };

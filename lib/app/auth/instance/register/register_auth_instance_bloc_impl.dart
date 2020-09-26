@@ -67,12 +67,4 @@ class JoinAuthInstanceRegisterBloc extends FormBloc
     }));
   }
 
-  @override
-  void clear() {
-    usernameFieldBloc.dispose();
-    emailFieldBloc.dispose();
-    passwordFieldBloc.dispose();
-    confirmPasswordFieldBloc.dispose();
-    captchaFieldBloc?.dispose();
-  }
 }

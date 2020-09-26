@@ -1,10 +1,11 @@
 import 'package:fedi/app/timeline/create/create_timeline_bloc.dart';
+import 'package:fedi/app/timeline/settings/timeline_settings_form_bloc.dart';
+import 'package:fedi/app/timeline/settings/timeline_settings_form_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/ui/form/field/value/form_value_field_bloc.dart';
 import 'package:fedi/ui/form/field/value/form_value_field_bloc_impl.dart';
 import 'package:fedi/ui/form/field/value/string/form_non_empty_string_field_validation.dart';
-import 'package:fedi/ui/form/field/value/string/form_non_null_value_field_validation.dart';
 import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
 import 'package:fedi/ui/form/field/value/string/form_string_field_bloc_impl.dart';
 import 'package:fedi/ui/form/form_bloc_impl.dart';
@@ -12,8 +13,13 @@ import 'package:fedi/ui/form/form_item_bloc.dart';
 
 class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
   @override
-  IFormValueFieldBloc<TimelineType> timelineTypeFieldBloc =
-      FormValueFieldBloc(originValue: TimelineType.public, validators: []);
+  IFormStringFieldBloc idFieldBloc = FormStringFieldBloc(
+    originValue: TimelineSettings.generateUniqueTimelineId(),
+    validators: [
+      FormNonEmptyStringFieldValidationError.createValidator(),
+    ],
+    maxLength: 50,
+  );
 
   @override
   IFormStringFieldBloc nameFieldBloc = FormStringFieldBloc(
@@ -25,69 +31,54 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
   );
 
   @override
-  final IFormValueFieldBloc<TimelineSettings> timelineSettingsFieldBloc =
-      FormValueFieldBloc<TimelineSettings>(
-          originValue: TimelineSettings.createDefaultPublicSettings(
-            id: TimelineSettings.generateUniqueTimelineId(),
-          ),
-          validators: [FormNonNullValueFieldValidationError.createValidator()]);
+  IFormValueFieldBloc<TimelineType> typeFieldBloc =
+      FormValueFieldBloc(originValue: TimelineType.public, validators: []);
+
+  @override
+  final ITimelineSettingsFormBloc settingsFormBloc = TimelineSettingsFormBloc(
+      originalSettings: TimelineSettings.createDefaultPublicSettings());
 
   CreateTimelineBloc() {
-    addDisposable(disposable: timelineTypeFieldBloc);
-    addDisposable(disposable: timelineSettingsFieldBloc);
     addDisposable(disposable: nameFieldBloc);
+    addDisposable(disposable: typeFieldBloc);
+    addDisposable(disposable: settingsFormBloc);
 
-    timelineTypeFieldBloc.currentValueStream.listen((type) {
+    typeFieldBloc.currentValueStream.listen((type) {
       switch (type) {
+        case TimelineType.home:
+          settingsFormBloc.fill(TimelineSettings.createDefaultHomeSettings());
+          break;
         case TimelineType.public:
-          timelineSettingsFieldBloc
-              .changeCurrentValue(TimelineSettings.createDefaultPublicSettings(
-            id: TimelineSettings.generateUniqueTimelineId(),
-          ));
+          settingsFormBloc.fill(TimelineSettings.createDefaultPublicSettings());
           break;
         case TimelineType.customList:
-          timelineSettingsFieldBloc.changeCurrentValue(
-              TimelineSettings.createDefaultCustomListSettings(
-            id: TimelineSettings.generateUniqueTimelineId(),
-            onlyInListWithRemoteId: null,
-          ));
+          settingsFormBloc.fill(
+            TimelineSettings.createDefaultCustomListSettings(
+                onlyInRemoteList: null),
+          );
           break;
-        case TimelineType.home:
-          timelineSettingsFieldBloc
-              .changeCurrentValue(TimelineSettings.createDefaultHomeSettings(
-            id: TimelineSettings.generateUniqueTimelineId(),
-          ));
-          break;
+
         case TimelineType.hashtag:
-          timelineSettingsFieldBloc
-              .changeCurrentValue(TimelineSettings.createDefaultHashtagSettings(
-            id: TimelineSettings.generateUniqueTimelineId(),
-            withHashtag: null,
-          ));
+          settingsFormBloc.fill(
+            TimelineSettings.createDefaultHashtagSettings(
+                withRemoteHashtag: null),
+          );
           break;
         case TimelineType.account:
-          timelineSettingsFieldBloc
-              .changeCurrentValue(TimelineSettings.createDefaultAccountSettings(
-            id: TimelineSettings.generateUniqueTimelineId(),
-            onlyFromAccountWithRemoteId: null,
-          ));
+          settingsFormBloc.fill(
+            TimelineSettings.createDefaultAccountSettings(
+                onlyFromRemoteAccount: null),
+          );
           break;
       }
     });
   }
 
   @override
-  void clear() {
-    nameFieldBloc.clear();
-    timelineTypeFieldBloc.clear();
-    timelineSettingsFieldBloc.clear();
-  }
-
-  @override
   List<IFormItemBloc> get items => [
         nameFieldBloc,
-        timelineTypeFieldBloc,
-        timelineSettingsFieldBloc,
+        typeFieldBloc,
+        settingsFormBloc,
       ];
 
   @override

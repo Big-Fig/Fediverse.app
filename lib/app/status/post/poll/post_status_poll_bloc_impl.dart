@@ -28,7 +28,7 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
     var now = DateTime.now();
     var minDateTime = now.add(pollMinimumExpiration);
     DateTime maxDateTime;
-    if(pollMaximumExpiration != null) {
+    if (pollMaximumExpiration != null) {
       maxDateTime = now.add(pollMaximumExpiration);
     }
     var originValue = now.add(IPostStatusPollBloc.defaultPollExpiration);
@@ -104,13 +104,6 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
         originValue: originValue,
         validators: [FormNonEmptyStringFieldValidationError.createValidator()],
         maxLength: maximumOptionLength);
-  }
-
-  @override
-  void clear() {
-    pollOptionsGroupBloc.clear();
-    expiresAtFieldBloc.clear();
-    multiplyFieldBloc.clear();
   }
 
   @override

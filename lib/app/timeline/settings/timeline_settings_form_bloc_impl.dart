@@ -1,13 +1,14 @@
-import 'package:fedi/app/timeline/settings/timeline_settings_bloc.dart';
+import 'package:fedi/app/timeline/settings/timeline_settings_form_bloc.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc.dart';
 import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc_impl.dart';
+import 'package:fedi/ui/form/form_bloc_impl.dart';
+import 'package:fedi/ui/form/form_item_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
-abstract class TimelineSettingsBloc extends DisposableOwner
-    implements ITimelineSettingsBloc {
+class TimelineSettingsFormBloc extends FormBloc
+    implements ITimelineSettingsFormBloc {
   final BehaviorSubject<TimelineSettings> _timelineSettingsSubject;
 
   @override
@@ -38,7 +39,7 @@ abstract class TimelineSettingsBloc extends DisposableOwner
   @override
   final IFormBoolFieldBloc excludeReblogsFieldBloc;
 
-  TimelineSettingsBloc({@required TimelineSettings originalSettings})
+  TimelineSettingsFormBloc({@required TimelineSettings originalSettings})
       : _timelineSettingsSubject = BehaviorSubject.seeded(originalSettings),
         excludeRepliesFieldBloc = FormBoolFieldBloc(
             originValue: originalSettings?.excludeReplies ?? false),
@@ -105,19 +106,42 @@ abstract class TimelineSettingsBloc extends DisposableOwner
       onlyRemote: onlyRemoteFieldBloc.currentValue,
       onlyLocal: onlyLocalFieldBloc.currentValue,
       withMuted: withMutedFieldBloc.currentValue,
-      id: oldPreferences.id,
       excludeVisibilitiesStrings: oldPreferences.excludeVisibilitiesStrings,
-      typeString: oldPreferences.typeString,
-      onlyInListWithRemoteId: oldPreferences.onlyInListWithRemoteId,
-      withHashtag: oldPreferences.withHashtag,
-      timelineReplyVisibilityFilterString:
-          oldPreferences.timelineReplyVisibilityFilterString,
-      onlyFromAccountWithRemoteId: oldPreferences.onlyInListWithRemoteId,
+      onlyInRemoteList: oldPreferences.onlyInRemoteList,
+      withRemoteHashtag: oldPreferences.withRemoteHashtag,
+      timelineSettingsReplyVisibilityFilterString:
+          oldPreferences.timelineSettingsReplyVisibilityFilterString,
+      onlyFromRemoteAccount: oldPreferences.onlyFromRemoteAccount,
       excludeReblogs: excludeReblogsFieldBloc.currentValue,
       onlyPinned: onlyPinnedFieldBloc.currentValue,
     );
     if (newPreferences != oldPreferences) {
       _timelineSettingsSubject.add(newPreferences);
     }
+  }
+
+  @override
+  List<IFormItemBloc> get items => [
+        onlyWithMediaFieldBloc,
+        excludeNsfwSensitiveFieldBloc,
+        excludeRepliesFieldBloc,
+        onlyRemoteFieldBloc,
+        onlyLocalFieldBloc,
+        withMutedFieldBloc,
+        excludeReblogsFieldBloc,
+        onlyPinnedFieldBloc,
+      ];
+
+  @override
+  void fill(TimelineSettings newSettings) {
+    onlyWithMediaFieldBloc.changeCurrentValue(newSettings.onlyWithMedia);
+    excludeNsfwSensitiveFieldBloc
+        .changeCurrentValue(newSettings.excludeNsfwSensitive);
+    excludeRepliesFieldBloc.changeCurrentValue(newSettings.excludeReplies);
+    onlyRemoteFieldBloc.changeCurrentValue(newSettings.onlyRemote);
+    onlyLocalFieldBloc.changeCurrentValue(newSettings.onlyLocal);
+    withMutedFieldBloc.changeCurrentValue(newSettings.withMuted);
+    excludeReblogsFieldBloc.changeCurrentValue(newSettings.excludeReblogs);
+    onlyPinnedFieldBloc.changeCurrentValue(newSettings.onlyPinned);
   }
 }

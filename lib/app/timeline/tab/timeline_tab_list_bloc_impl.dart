@@ -9,10 +9,10 @@ import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_bloc.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_bloc_impl.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_list_bloc.dart';
+import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/websockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
@@ -27,7 +27,7 @@ import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
 class TimelineTabsBloc extends AsyncInitLoadingBloc
-    implements ITimelineTabsBloc {
+    implements ITimelineTabsListBloc {
   static TimelineTabsBloc createFromContext(BuildContext context) =>
       TimelineTabsBloc(
         pleromaTimelineService:
@@ -64,23 +64,21 @@ class TimelineTabsBloc extends AsyncInitLoadingBloc
             true,
       );
 
-  final Map<Timeline, ITimelineTabBloc> tabsMap = {};
-  final Map<Timeline, ITimelineSettingsLocalPreferencesBloc>
-      tabsPreferenceMap = {};
+  final Map<String, ITimelineTabBloc> timelineIdToTabBlocMap = {};
 
   @override
-  void selectTab(Timeline tab) {
-    selectedTabSubject.add(tab);
+  void selectTab(ITimelineTabBloc tabBloc) {
+    selectedTabSubject.add(tabBloc);
   }
 
   // ignore: close_sinks
-  BehaviorSubject<Timeline> selectedTabSubject;
+  BehaviorSubject<ITimelineTabBloc> selectedTabSubject;
 
   @override
-  Timeline get selectedTab => selectedTabSubject.value;
+  ITimelineTabBloc get selectedTabBloc => selectedTabSubject.value;
 
   @override
-  Stream<Timeline> get selectedTabStream =>
+  Stream<ITimelineTabBloc> get selectedTabBlocStream =>
       selectedTabSubject.stream;
 
   final ITimelinesHomeTabStorageBloc timelinesHomeTabStorageBloc;
@@ -120,34 +118,15 @@ class TimelineTabsBloc extends AsyncInitLoadingBloc
   });
 
   @override
-  ICachedPaginationListWithNewItemsBloc<CachedPaginationPage<IStatus>, IStatus>
-      retrieveTimelineTabPaginationListBloc(Timeline tab) =>
-          tabsMap[tab].paginationListWithNewItemsBloc;
-
-  @override
-  List<Timeline> get tabs => tabsMap.keys.toList();
-
-  @override
-  ITimelineSettingsLocalPreferencesBloc retrieveTimelineTabSettingsBloc(
-          Timeline tab) =>
-      tabsPreferenceMap[tab];
+  List<ITimelineTabBloc> get tabBlocs => timelineIdToTabBlocMap.values.toList();
 
   @override
   Future internalAsyncInit() async {
-    selectedTabSubject =
-        BehaviorSubject.seeded(timelinesHomeTabStorageBloc.items.first);
-
-    for (var tabItem in timelinesHomeTabStorageBloc.items) {
-      var preferencesBloc = TimelineSettingsLocalPreferencesBloc.byId(
-        preferencesService,
-        userAtHost: currentAuthInstanceBloc.currentInstance.userAtHost,
-        timelineId: tabItem.timelineSettingsId,
-      );
-      await preferencesBloc.performAsyncInit();
-      tabsPreferenceMap[tabItem] = preferencesBloc;
-      tabsMap[tabItem] = TimelineTabBloc(
-        timelineLocalPreferencesBloc: preferencesBloc,
-        tab: tabItem,
+    TimelineTabBloc first;
+    for (var timelineId in timelinesHomeTabStorageBloc.timelineIds) {
+      var timelineTabBloc = TimelineTabBloc(
+        preferencesService: preferencesService,
+        timeline: tabItem,
         pleromaTimelineService: pleromaTimelineService,
         statusRepository: statusRepository,
         listenWebSockets: listenWebSockets,
@@ -155,13 +134,18 @@ class TimelineTabsBloc extends AsyncInitLoadingBloc
         webSocketsHandlerManagerBloc: webSocketsHandlerManagerBloc,
         currentAuthInstanceBloc: currentAuthInstanceBloc,
       );
+
+      await timelineTabBloc.performAsyncInit();
+      first ??= timelineTabBloc;
+      timelineIdToTabBlocMap[timelineId] = timelineTabBloc;
     }
+
+    selectedTabSubject = BehaviorSubject.seeded(first);
 
     addDisposable(subject: selectedTabSubject);
 
     addDisposable(disposable: CustomDisposable(() {
-      tabsMap.values.forEach((bloc) => bloc.dispose());
-      tabsPreferenceMap.values.forEach((bloc) => bloc.dispose());
+      timelineIdToTabBlocMap.values.forEach((bloc) => bloc.dispose());
     }));
   }
 }

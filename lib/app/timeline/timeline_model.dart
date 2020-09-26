@@ -1,53 +1,152 @@
 import 'dart:convert';
 
+import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/custom_list/custom_list_model.dart';
+import 'package:fedi/app/hashtag/hashtag_model.dart';
+import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
 import 'package:fedi/enum/enum_values.dart';
 import 'package:fedi/local_preferences/local_preferences_model.dart';
+import 'package:fedi/pleroma/account/pleroma_account_model.dart';
+import 'package:fedi/pleroma/list/pleroma_list_model.dart';
+import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'timeline_model.g.dart';
 
+// -32 is hack for hive 0.x backward ids compatibility
+// see reservedIds in Hive,
+// which not exist in Hive 0.x
 @HiveType()
-@JsonSerializable()
+// @HiveType(typeId: -32 + 78)
+@JsonSerializable(explicitToJson: true)
 class Timeline implements IPreferencesObject {
   @HiveField(0)
-  final String label;
+  final String id;
   @HiveField(1)
-  @JsonKey(name: "timeline_settings_id")
-  final String timelineSettingsId;
+  final String label;
   @HiveField(2)
   @JsonKey(name: "is_possible_to_delete")
   final bool isPossibleToDelete;
 
+  @HiveField(3)
+  @JsonKey(name: "type_string")
+  final String typeString;
+
+  TimelineType get type => typeString?.toTimelineType();
+
+  @HiveField(4)
+  final TimelineSettings settings;
+
   Timeline({
+    @required this.id,
+    @required this.typeString,
+    @required this.settings,
     @required this.label,
-    @required this.timelineSettingsId,
     @required this.isPossibleToDelete,
   });
+
+  Timeline.byType({
+    @required String id,
+    @required TimelineType type,
+    @required TimelineSettings settings,
+    @required String label,
+    @required bool isPossibleToDelete,
+  }) : this(
+          id: id,
+          typeString: type.toJsonValue(),
+          settings: settings,
+          label: label,
+          isPossibleToDelete: isPossibleToDelete,
+        );
+
+  Timeline.home({
+    @required String id,
+    @required String label,
+    @required TimelineSettings settings,
+    bool isPossibleToDelete = true,
+  }) : this.byType(
+          id: id,
+          type: TimelineType.home,
+          settings: settings,
+          label: label,
+          isPossibleToDelete: isPossibleToDelete,
+        );
+
+  Timeline.public({
+    @required String id,
+    @required TimelineSettings settings,
+    @required String label,
+    bool isPossibleToDelete = true,
+  }) : this.byType(
+          id: id,
+          type: TimelineType.public,
+          settings: settings,
+          label: label,
+          isPossibleToDelete: isPossibleToDelete,
+        );
+
+  Timeline.hashtag({
+    @required IPleromaTag remoteTag,
+    @required TimelineSettings settings,
+    bool isPossibleToDelete = true,
+  }) : this.byType(
+          id: remoteTag.calculateTimelineId(),
+          type: TimelineType.hashtag,
+          settings: settings,
+          label: remoteTag.name,
+          isPossibleToDelete: isPossibleToDelete,
+        );
+
+  Timeline.customList({
+    @required IPleromaList remoteList,
+    @required TimelineSettings settings,
+    bool isPossibleToDelete = true,
+  }) : this.byType(
+          id: remoteList.calculateTimelineId(),
+          type: TimelineType.customList,
+          settings: settings,
+          label: remoteList.id,
+          isPossibleToDelete: isPossibleToDelete,
+        );
+
+  Timeline.account({
+    @required IPleromaAccount account,
+    @required TimelineSettings settings,
+    bool isPossibleToDelete = true,
+  }) : this.byType(
+          id: account.calculateTimelineId(),
+          type: TimelineType.account,
+          settings: settings,
+          label: account.acct,
+          isPossibleToDelete: isPossibleToDelete,
+        );
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is Timeline &&
-              runtimeType == other.runtimeType &&
-              label == other.label &&
-              timelineSettingsId == other.timelineSettingsId &&
-              isPossibleToDelete == other.isPossibleToDelete;
+      other is Timeline &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          label == other.label &&
+          isPossibleToDelete == other.isPossibleToDelete &&
+          typeString == other.typeString &&
+          settings == other.settings;
 
   @override
   int get hashCode =>
+      id.hashCode ^
       label.hashCode ^
-      timelineSettingsId.hashCode ^
-      isPossibleToDelete.hashCode;
+      isPossibleToDelete.hashCode ^
+      typeString.hashCode ^
+      settings.hashCode;
 
   @override
   String toString() {
-    return 'Timeline{'
-        ' label: $label,'
-        ' timelineSettingsId: $timelineSettingsId,'
-        ' isPossibleToDelete: $isPossibleToDelete'
-        '}';
+    return 'Timeline{id: $id, label: $label,'
+        ' isPossibleToDelete: $isPossibleToDelete,'
+        ' typeString: $typeString, settings: $settings}';
   }
 
   factory Timeline.fromJson(Map<String, dynamic> json) =>
@@ -81,6 +180,30 @@ EnumValues<TimelineType> timelineTypeEnumValues = EnumValues({
   "account": TimelineType.account,
 });
 
+extension TimelineIdPleromaListExtension on IPleromaList {
+  String calculateTimelineId() => "list.$id";
+}
+
+extension TimelineIdPleromaTagExtension on IPleromaTag {
+  String calculateTimelineId() => "hashtag.$name";
+}
+
+extension TimelineIdPleromaAccountExtension on IPleromaAccount {
+  String calculateTimelineId() => "account.$id";
+}
+
+extension TimelineIdCustomListExtension on ICustomList {
+  String calculateTimelineId() => "list.$remoteId";
+}
+
+extension TimelineIdHashTagExtension on IHashtag {
+  String calculateTimelineId() => "hashtag.$name";
+}
+
+extension TimelineIdAccountExtension on IAccount {
+  String calculateTimelineId() => "account.$remoteId";
+}
+
 extension TimelineTypeExtension on TimelineType {
   String toJsonValue() {
     var type = timelineTypeEnumValues.enumToValueMap[this];
@@ -92,28 +215,3 @@ extension TimelineTypeExtension on TimelineType {
 extension TimelineTypeStringExtension on String {
   TimelineType toTimelineType() => timelineTypeEnumValues.valueToEnumMap[this];
 }
-
-enum PleromaTimelineReplyVisibilityFilter {
-  following,
-  self,
-}
-
-extension TimelineReplyVisibilityFilterExtension
-on PleromaTimelineReplyVisibilityFilter {
-  String toJsonValue() {
-    var filter = timelineReplyVisibilityFilterEnumValues.enumToValueMap[this];
-    assert(filter != null, "invalid type $filter");
-    return filter;
-  }
-}
-
-extension PleromaTimelineReplyVisibilityFilterStringExtension on String {
-  PleromaTimelineReplyVisibilityFilter toTimelineReplyVisibilityFilter() =>
-      timelineReplyVisibilityFilterEnumValues.valueToEnumMap[this];
-}
-
-EnumValues<PleromaTimelineReplyVisibilityFilter>
-timelineReplyVisibilityFilterEnumValues = EnumValues({
-  "following": PleromaTimelineReplyVisibilityFilter.following,
-  "self": PleromaTimelineReplyVisibilityFilter.self,
-});
