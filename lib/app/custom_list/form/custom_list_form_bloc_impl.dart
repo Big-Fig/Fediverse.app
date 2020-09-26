@@ -12,15 +12,12 @@ class CustomListFormBloc extends FormBloc implements ICustomListFormBloc {
   CustomListFormBloc({@required String initialTitleValue})
       : titleField = FormStringFieldBloc(
           originValue: initialTitleValue,
-          validators: [FormNonEmptyStringFieldValidationError.createValidator()],
+          validators: [
+            FormNonEmptyStringFieldValidationError.createValidator()
+          ],
           maxLength: null,
         ) {
     addDisposable(disposable: titleField);
-  }
-
-  @override
-  void clear() {
-    titleField.clear();
   }
 
   @override

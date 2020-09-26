@@ -33,7 +33,7 @@ class TimelineTabTextTabIndicatorItemWidget extends StatelessWidget {
                     child: child);
 
                 var timelineTabsBloc =
-                    ITimelineTabsBloc.of(context, listen: false);
+                    ITimelineTabsListBloc.of(context, listen: false);
 
                 var tabPaginationListBloc =
                     timelineTabsBloc.retrieveTimelineTabPaginationListBloc(tab);

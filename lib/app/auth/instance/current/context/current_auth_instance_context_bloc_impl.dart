@@ -48,8 +48,8 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository_impl.dart';
-import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
+import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/websockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/app/websockets/web_sockets_handler_manager_bloc_impl.dart';
@@ -491,78 +491,55 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
 
     if (timelinesHomeTabStorageLocalPreferences.value?.items?.isNotEmpty !=
         true) {
-      var homeTimelineId = "home";
-      var localTimelineId = "local";
-      var publicTimelineId = "public";
-      var storage = TimelinesHomeTabStorage(items: [
-        Timeline(
+      var remoteLists = await pleromaListService.getLists();
+
+      var timelines = [
+        Timeline.home(
           label: "app.home.tab.timelines.tab.home".tr(),
-          timelineSettingsId: homeTimelineId,
+          id: "home",
           isPossibleToDelete: false,
+          settings: TimelineSettings.createDefaultHomeSettings(),
         ),
-        Timeline(
+        Timeline.public(
           label: "app.home.tab.timelines.tab.local".tr(),
-          timelineSettingsId: localTimelineId,
-          isPossibleToDelete: true,
+          id: "local",
+          settings: TimelineSettings.createDefaultPublicSettings().copyWith(
+            onlyLocal: true,
+          ),
         ),
-        Timeline(
+        Timeline.public(
           label: "app.home.tab.timelines.tab.public".tr(),
-          timelineSettingsId: publicTimelineId,
-          isPossibleToDelete: true,
+          id: "public",
+          settings: TimelineSettings.createDefaultPublicSettings().copyWith(
+            onlyLocal: false,
+          ),
         ),
-      ]);
-
-      var homeBloc = TimelineSettingsLocalPreferencesBloc.byId(
-          preferencesService,
-          userAtHost: userAtHost,
-          timelineId: homeTimelineId);
-      await homeBloc.performAsyncInit();
-
-      await homeBloc.setValue(
-        TimelineSettings.home(
-          id: homeTimelineId,
-          onlyLocal: false,
-          withMuted: false,
-          excludeVisibilities: [],
-        ),
+        if (remoteLists?.isNotEmpty == true)
+          ...remoteLists.map((remoteList) => Timeline.customList(
+                remoteList: remoteList,
+                settings: TimelineSettings.createDefaultCustomListSettings(
+                  onlyInRemoteList: remoteList,
+                ),
+              )),
+      ];
+      var storage = TimelinesHomeTabStorage(
+        timelineIds: timelines
+            .map(
+              (timeline) => timeline.id,
+            )
+            .toList(),
       );
-      homeBloc.dispose();
 
-      var localBloc = TimelineSettingsLocalPreferencesBloc.byId(
+      for (var timeline in timelines) {
+        var timelineLocalPreferencesBloc = TimelineLocalPreferencesBloc.byId(
           preferencesService,
-          userAtHost: userAtHost,
-          timelineId: localTimelineId);
-      await localBloc.performAsyncInit();
-
-      await localBloc.setValue(
-        TimelineSettings.public(
-          id: localTimelineId,
-          onlyLocal: true,
-          withMuted: false,
-          onlyWithMedia: false,
-          onlyRemote: false,
-          excludeVisibilities: [],
-        ),
-      );
-      localBloc.dispose();
-
-      var publicBloc = TimelineSettingsLocalPreferencesBloc.byId(
-          preferencesService,
-          userAtHost: userAtHost,
-          timelineId: publicTimelineId);
-      await publicBloc.performAsyncInit();
-
-      await publicBloc.setValue(
-        TimelineSettings.public(
-          id: publicTimelineId,
-          onlyLocal: false,
-          withMuted: false,
-          onlyWithMedia: false,
-          onlyRemote: false,
-          excludeVisibilities: [],
-        ),
-      );
-      publicBloc.dispose();
+          userAtHost: currentInstance.userAtHost,
+          timelineId: timeline.id,
+        );
+        await timelineLocalPreferencesBloc.performAsyncInit();
+        await timelineLocalPreferencesBloc.setValue(timeline);
+        timelineLocalPreferencesBloc.dispose();
+      }
 
       await timelinesHomeTabStorageLocalPreferences.setValue(storage);
     }

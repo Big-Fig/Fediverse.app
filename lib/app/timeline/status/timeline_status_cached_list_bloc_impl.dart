@@ -4,7 +4,6 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/websockets/web_sockets_handler_manager_bloc.dart';
@@ -25,17 +24,20 @@ class TimelineStatusCachedListBloc extends DisposableOwner
   final IPleromaTimelineService pleromaTimelineService;
   final IStatusRepository statusRepository;
   final ICurrentAuthInstanceBloc currentInstanceBloc;
-  final TimelineSettingsLocalPreferencesBloc timelineLocalPreferencesBloc;
+  final ITimelineSettingsLocalPreferencesBloc
+      timelineSettingsLocalPreferencesBloc;
   final IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc;
   final bool listenWebSockets;
+
+  final TimelineType timelineType;
 
   TimelineSettings _timelineSettings;
 
   @override
   Stream<bool> get settingsChangedStream =>
-      timelineLocalPreferencesBloc.stream.map((preferences) {
-        var changed = preferences != _timelineSettings;
-        _timelineSettings = preferences;
+      timelineSettingsLocalPreferencesBloc.stream.map((newTimeline) {
+        var changed = newTimeline != _timelineSettings;
+        _timelineSettings = newTimeline;
         return changed;
       }).distinct();
 
@@ -44,14 +46,15 @@ class TimelineStatusCachedListBloc extends DisposableOwner
     @required this.pleromaTimelineService,
     @required this.statusRepository,
     @required this.currentInstanceBloc,
-    @required this.timelineLocalPreferencesBloc,
+    @required this.timelineSettingsLocalPreferencesBloc,
     @required this.listenWebSockets,
     @required this.webSocketsHandlerManagerBloc,
+    @required this.timelineType,
   }) {
-    _timelineSettings = timelineLocalPreferencesBloc.value;
+    _timelineSettings = timelineSettingsLocalPreferencesBloc.value;
 
     if (listenWebSockets) {
-      switch (_timelineSettings.type) {
+      switch (timelineType) {
         case TimelineType.public:
           addDisposable(
               disposable: webSocketsHandlerManagerBloc.listenPublicChannel(
@@ -70,21 +73,21 @@ class TimelineStatusCachedListBloc extends DisposableOwner
         case TimelineType.customList:
           addDisposable(
               disposable: webSocketsHandlerManagerBloc.listenListChannel(
-            listId: _timelineSettings.onlyInListWithRemoteId,
+            listId: _timelineSettings.onlyInRemoteList.id,
           ));
           break;
 
         case TimelineType.hashtag:
           addDisposable(
               disposable: webSocketsHandlerManagerBloc.listenHashtagChannel(
-            hashtag: _timelineSettings.withHashtag,
+            hashtag: _timelineSettings.withRemoteHashtag.name,
             local: _timelineSettings.onlyLocal,
           ));
           break;
         case TimelineType.account:
           addDisposable(
               disposable: webSocketsHandlerManagerBloc.listenAccountChannel(
-            accountId: _timelineSettings.onlyFromAccountWithRemoteId,
+            accountId: _timelineSettings.onlyFromRemoteAccount.id,
             notification: false,
           ));
           break;
@@ -95,7 +98,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
   @override
   IPleromaApi get pleromaApi => pleromaTimelineService;
 
-  bool get isFromHomeTimeline => _timelineSettings.type == TimelineType.home;
+  bool get isFromHomeTimeline => timelineType == TimelineType.home;
 
   @override
   Future<bool> refreshItemsFromRemoteForPage(
@@ -103,7 +106,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
       @required IStatus newerThan,
       @required IStatus olderThan}) async {
     _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
-        "\t _timelineSettings = $_timelineSettings"
+        "\t _timeline = $_timelineSettings"
         "\t newerThan = $newerThan"
         "\t olderThan = $olderThan");
 
@@ -114,7 +117,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
     var excludeVisibilities = _timelineSettings.excludeVisibilities;
     var maxId = olderThan?.remoteId;
     var sinceId = newerThan?.remoteId;
-    switch (_timelineSettings.type) {
+    switch (timelineType) {
       case TimelineType.public:
         remoteStatuses = await pleromaTimelineService.getPublicTimeline(
           maxId: maxId,
@@ -128,7 +131,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
         break;
       case TimelineType.customList:
         remoteStatuses = await pleromaTimelineService.getListTimeline(
-          listId: _timelineSettings.onlyInListWithRemoteId,
+          listId: _timelineSettings.onlyInRemoteList.id,
           maxId: maxId,
           sinceId: sinceId,
           limit: limit,
@@ -149,19 +152,19 @@ class TimelineStatusCachedListBloc extends DisposableOwner
         break;
       case TimelineType.hashtag:
         remoteStatuses = await pleromaTimelineService.getHashtagTimeline(
-          hashtag: _timelineSettings.withHashtag,
+          hashtag: _timelineSettings.withRemoteHashtag.name,
           maxId: maxId,
           sinceId: sinceId,
           limit: limit,
           onlyLocal: onlyLocal,
-          onlyWithMedia: timelineLocalPreferencesBloc.value.onlyWithMedia,
+          onlyWithMedia: onlyWithMedia,
           withMuted: withMuted,
           excludeVisibilities: excludeVisibilities,
         );
         break;
       case TimelineType.account:
         remoteStatuses = await pleromaAccountService.getAccountStatuses(
-          accountRemoteId: _timelineSettings.onlyFromAccountWithRemoteId,
+          accountRemoteId: _timelineSettings.onlyFromRemoteAccount.id,
           onlyWithMedia: onlyWithMedia,
         );
         break;
@@ -169,7 +172,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
 
     if (remoteStatuses != null) {
       await statusRepository.upsertRemoteStatuses(remoteStatuses,
-          listRemoteId: _timelineSettings.onlyInListWithRemoteId,
+          listRemoteId: _timelineSettings.onlyInRemoteList.id,
           conversationRemoteId: null,
           isFromHomeTimeline: isFromHomeTimeline);
 
@@ -191,21 +194,20 @@ class TimelineStatusCachedListBloc extends DisposableOwner
       var localUrlHost = currentInstanceBloc.currentInstance.urlHost;
       onlyLocalFilter = OnlyLocalStatusFilter(localUrlHost);
     }
-    var timelineLocalPreferences = timelineLocalPreferencesBloc.value;
     return statusRepository.watchStatuses(
       onlyInConversation: null,
       onlyFromAccount: null,
-      onlyInListWithRemoteId: _timelineSettings.onlyInListWithRemoteId,
-      onlyWithHashtag: _timelineSettings.withHashtag,
+      onlyInListWithRemoteId: _timelineSettings.onlyInRemoteList.id,
+      onlyWithHashtag: _timelineSettings.withRemoteHashtag.name,
       onlyFromAccountsFollowingByAccount: null,
       onlyLocal: onlyLocalFilter,
-      onlyWithMedia: timelineLocalPreferences.onlyWithMedia,
+      onlyWithMedia: _timelineSettings.onlyWithMedia,
       withMuted: _timelineSettings.withMuted,
       excludeVisibilities: _timelineSettings.excludeVisibilities,
       olderThanStatus: null,
       newerThanStatus: item,
-      onlyNoNsfwSensitive: timelineLocalPreferences.excludeNsfwSensitive,
-      onlyNoReplies: timelineLocalPreferences.excludeReplies,
+      onlyNoNsfwSensitive: _timelineSettings.excludeNsfwSensitive,
+      onlyNoReplies: _timelineSettings.excludeReplies,
       limit: null,
       offset: null,
       orderingTermData: StatusOrderingTermData(
@@ -231,21 +233,20 @@ class TimelineStatusCachedListBloc extends DisposableOwner
       var localUrlHost = currentInstanceBloc.currentInstance.urlHost;
       onlyLocalFilter = OnlyLocalStatusFilter(localUrlHost);
     }
-    var timelineLocalPreferences = timelineLocalPreferencesBloc.value;
     var statuses = await statusRepository.getStatuses(
       onlyInConversation: null,
       onlyFromAccount: null,
-      onlyInListWithRemoteId: _timelineSettings.onlyInListWithRemoteId,
-      onlyWithHashtag: _timelineSettings.withHashtag,
+      onlyInListWithRemoteId: _timelineSettings.onlyInRemoteList.id,
+      onlyWithHashtag: _timelineSettings.withRemoteHashtag.name,
       onlyFromAccountsFollowingByAccount: null,
       onlyLocal: onlyLocalFilter,
-      onlyWithMedia: timelineLocalPreferences.onlyWithMedia,
+      onlyWithMedia: _timelineSettings.onlyWithMedia,
       withMuted: _timelineSettings.withMuted,
       excludeVisibilities: _timelineSettings.excludeVisibilities,
       olderThanStatus: olderThan,
       newerThanStatus: newerThan,
-      onlyNoNsfwSensitive: timelineLocalPreferences.excludeNsfwSensitive,
-      onlyNoReplies: timelineLocalPreferences.excludeReplies,
+      onlyNoNsfwSensitive: _timelineSettings.excludeNsfwSensitive,
+      onlyNoReplies: _timelineSettings.excludeReplies,
       limit: limit,
       offset: null,
       orderingTermData: StatusOrderingTermData(
@@ -263,8 +264,10 @@ class TimelineStatusCachedListBloc extends DisposableOwner
 
   static TimelineStatusCachedListBloc createFromContext(
     BuildContext context, {
+    @required TimelineType timelineType,
     @required
-        ITimelineSettingsLocalPreferencesBloc timelineLocalPreferencesBloc,
+        ITimelineSettingsLocalPreferencesBloc
+            timelineSettingsLocalPreferencesBloc,
     @required bool listenWebSockets,
   }) =>
       TimelineStatusCachedListBloc(
@@ -284,7 +287,9 @@ class TimelineStatusCachedListBloc extends DisposableOwner
           context,
           listen: false,
         ),
-        timelineLocalPreferencesBloc: timelineLocalPreferencesBloc,
+        timelineType: timelineType,
+        timelineSettingsLocalPreferencesBloc:
+            timelineSettingsLocalPreferencesBloc,
         listenWebSockets: listenWebSockets,
         webSocketsHandlerManagerBloc: IWebSocketsHandlerManagerBloc.of(
           context,

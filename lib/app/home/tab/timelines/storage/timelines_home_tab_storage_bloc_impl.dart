@@ -2,8 +2,7 @@ import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_local_preferences_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_model.dart';
-import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc_impl.dart';
-import 'package:fedi/app/timeline/timeline_model.dart';
+import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:flutter/widgets.dart';
@@ -24,11 +23,11 @@ class TimelinesHomeTabStorageBloc extends DisposableOwner
   });
 
   @override
-  List<Timeline> get items => storage?.items;
+  List<String> get timelineIds => storage?.timelineIds;
 
   @override
-  Stream<List<Timeline>> get itemsStream =>
-      storageStream.map((storage) => storage?.items);
+  Stream<List<String>> get timelineIdsStream =>
+      storageStream.map((storage) => storage?.timelineIds);
 
   @override
   TimelinesHomeTabStorage get storage => preferences.value;
@@ -37,22 +36,21 @@ class TimelinesHomeTabStorageBloc extends DisposableOwner
   Stream<TimelinesHomeTabStorage> get storageStream => preferences.stream;
 
   @override
-  Future onItemsUpdated(List<Timeline> items) async {
-    _logger.finest(() => "onItemsChanged $items");
-    var updatedStorage = storage.copyWith(items: items);
+  Future onItemsUpdated(List<String> timelineIds) async {
+    _logger.finest(() => "onItemsChanged $timelineIds");
+    var updatedStorage = storage.copyWith(timelineIds: timelineIds);
     await preferences.setValue(updatedStorage);
   }
 
   @override
-  Future remove(Timeline item) async {
-    items.remove(item);
-    await onItemsUpdated(items);
+  Future remove(String timelineId) async {
+    timelineIds.remove(timelineIds);
+    await onItemsUpdated(timelineIds);
 
-    var settingsLocalPreferencesBloc =
-        TimelineSettingsLocalPreferencesBloc.byId(
+    var settingsLocalPreferencesBloc = TimelineLocalPreferencesBloc.byId(
       preferencesService,
       userAtHost: authInstance.userAtHost,
-      timelineId: item.timelineSettingsId,
+      timelineId: timelineId,
     );
 
     await settingsLocalPreferencesBloc.clearValue();

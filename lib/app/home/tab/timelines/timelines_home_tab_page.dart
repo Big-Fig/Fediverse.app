@@ -13,10 +13,9 @@ import 'package:fedi/app/search/search_page.dart';
 import 'package:fedi/app/status/list/status_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/timeline/create/create_timeline_page.dart';
-import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/timeline/tab/timeline_tab_list_bloc.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_list_bloc_impl.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_text_tab_indicator_item_widget.dart';
-import 'package:fedi/app/timeline/tab/timeline_tab_list_bloc.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/timeline/timeline_widget.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
@@ -60,14 +59,14 @@ class TimelinesHomeTabPage extends StatelessWidget {
           listen: false,
         ),
       ),
-      child: DisposableProvider<ITimelineTabsBloc>(
+      child: DisposableProvider<ITimelineTabsListBloc>(
         create: (BuildContext context) {
           var homeBloc = IHomeBloc.of(context, listen: false);
           var timelineTabsBloc = TimelineTabsBloc.createFromContext(context);
 
           timelineTabsBloc.performAsyncInit().then((_) {
             timelineTabsBloc.addDisposable(
-              streamSubscription: timelineTabsBloc.tabsMap.values.first
+              streamSubscription: timelineTabsBloc.timelineIdToTabBlocMap.values.first
                   .paginationListWithNewItemsBloc.unmergedNewItemsCountStream
                   .listen((unreadCount) {
                 homeBloc.updateTimelinesUnread(
@@ -81,11 +80,11 @@ class TimelinesHomeTabPage extends StatelessWidget {
         child: Builder(
             builder: (context) => FediAsyncInitLoadingWidget(
                   asyncInitLoadingBloc:
-                      ITimelineTabsBloc.of(context, listen: false),
+                      ITimelineTabsListBloc.of(context, listen: false),
                   loadingFinishedBuilder: (BuildContext context) =>
                       TimelinesHomeTabPageBody(
                     timelineTabs:
-                        ITimelineTabsBloc.of(context, listen: false).tabs,
+                        ITimelineTabsListBloc.of(context, listen: false).tabBlocs,
                   ),
                 )),
       ),
@@ -126,7 +125,7 @@ class _TimelinesHomeTabPageBodyState extends State<TimelinesHomeTabPageBody>
 
     listener = () {
       var tab = timelineTabs[tabController.index];
-      var notificationTabsBloc = ITimelineTabsBloc.of(context, listen: false);
+      var notificationTabsBloc = ITimelineTabsListBloc.of(context, listen: false);
       var paginationListBloc =
           notificationTabsBloc.retrieveTimelineTabPaginationListBloc(tab);
       if (paginationListBloc.unmergedNewItemsCount > 0) {
@@ -153,7 +152,7 @@ class _TimelinesHomeTabPageBodyState extends State<TimelinesHomeTabPageBody>
   }
 
   Widget _buildBodyWidget(BuildContext context) {
-    var timelineTabsBloc = ITimelineTabsBloc.of(context, listen: false);
+    var timelineTabsBloc = ITimelineTabsListBloc.of(context, listen: false);
     var timelinesHomeTabBloc = ITimelinesHomeTabBloc.of(context, listen: false);
     return DisposableProvider<
         IFediNestedScrollViewWithNestedScrollableTabsBloc>(
@@ -217,7 +216,7 @@ class _TimelinesHomeTabPageBodyState extends State<TimelinesHomeTabPageBody>
         tabKeyPrefix: "TimelineTab",
         tabBodyProviderBuilder:
             (BuildContext context, int index, Widget child) {
-          var tab = timelineTabsBloc.tabs[index];
+          var tab = timelineTabsBloc.tabBlocs[index];
           return Provider<ITimelineSettingsLocalPreferencesBloc>.value(
             value: timelineTabsBloc.retrieveTimelineTabSettingsBloc(tab),
             child: Provider<
@@ -231,7 +230,7 @@ class _TimelinesHomeTabPageBodyState extends State<TimelinesHomeTabPageBody>
           );
         },
         tabBodyContentBuilder: (BuildContext context, int index) {
-          var tab = timelineTabsBloc.tabs[index];
+          var tab = timelineTabsBloc.tabBlocs[index];
 
           return Provider<ITimelineSettingsLocalPreferencesBloc>.value(
             value: timelineTabsBloc.retrieveTimelineTabSettingsBloc(tab),
@@ -248,7 +247,7 @@ class _TimelinesHomeTabPageBodyState extends State<TimelinesHomeTabPageBody>
   }
 
   Widget buildFilterActionButton(
-      BuildContext context, ITimelineTabsBloc timelineTabsBloc) {
+      BuildContext context, ITimelineTabsListBloc timelineTabsBloc) {
     return FediIconInCircleBlurredButton(
       FediIcons.filter,
       onPressed: () {

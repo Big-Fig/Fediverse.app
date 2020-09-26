@@ -8,13 +8,9 @@ abstract class ITimelineBloc extends Disposable {
   static ITimelineBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<ITimelineBloc>(context, listen: listen);
 
-  Timeline get item;
+  Timeline get timeline;
 
-  Stream<Timeline> get itemStream;
-
-  String get label;
-
-  Stream<String> get labelStream;
+  Stream<Timeline> get timelineStream;
 
   TimelineSettings get settings;
 

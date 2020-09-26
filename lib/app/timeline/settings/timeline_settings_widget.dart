@@ -2,17 +2,21 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/form/form_bool_field_form_row_widget.dart';
-import 'package:fedi/app/timeline/settings/timeline_settings_bloc.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_filter_support_extension.dart';
+import 'package:fedi/app/timeline/settings/timeline_settings_form_bloc.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TimelineSettingsWidget extends StatelessWidget {
+  final TimelineType type;
+
+  TimelineSettingsWidget({@required this.type});
+
   @override
   Widget build(BuildContext context) {
-    var settingsBloc = ITimelineSettingsBloc.of(context, listen: true);
+    var settingsBloc = ITimelineSettingsFormBloc.of(context, listen: true);
 
     var currentAuthInstanceBloc =
         ICurrentAuthInstanceBloc.of(context, listen: false);
@@ -21,8 +25,7 @@ class TimelineSettingsWidget extends StatelessWidget {
 
     List<Widget> children;
 
-    var timelineType = settingsBloc.timelineSettings.type;
-    switch (timelineType) {
+    switch (type) {
       case TimelineType.public:
         children = [
           buildWithMutedField(context, settingsBloc, authInstance),
@@ -62,7 +65,7 @@ class TimelineSettingsWidget extends StatelessWidget {
         break;
 
       default:
-        throw "Invalid timelineType $timelineType";
+        throw "Invalid timelineType $type";
     }
 
     return ListView(
@@ -72,105 +75,98 @@ class TimelineSettingsWidget extends StatelessWidget {
 
   FormBoolFieldFormRowWidget buildWithMutedField(
     BuildContext context,
-    ITimelineSettingsBloc settingsBloc,
+    ITimelineSettingsFormBloc settingsBloc,
     AuthInstance authInstance,
   ) {
     return buildBoolField(
       label: tr("app.timeline.settings.field.with_muted.label"),
       fieldBloc: settingsBloc.withMutedFieldBloc,
-      isSupported: settingsBloc.timelineSettings.type
-          .isWithMutedFilterSupportedOnInstance(authInstance),
+      isSupported: type.isWithMutedFilterSupportedOnInstance(authInstance),
     );
   }
 
   FormBoolFieldFormRowWidget buildOnlyMediaField(
     BuildContext context,
-    ITimelineSettingsBloc settingsBloc,
+    ITimelineSettingsFormBloc settingsBloc,
     AuthInstance authInstance,
   ) {
     return buildBoolField(
       label: tr("app.timeline.settings.field.only_with_media.label"),
       fieldBloc: settingsBloc.onlyWithMediaFieldBloc,
-      isSupported: settingsBloc.timelineSettings.type
-          .isOnlyWithMediaFilterSupportedOnInstance(authInstance),
+      isSupported: type.isOnlyWithMediaFilterSupportedOnInstance(authInstance),
     );
   }
 
   FormBoolFieldFormRowWidget buildOnlyLocalField(
     BuildContext context,
-    ITimelineSettingsBloc settingsBloc,
+    ITimelineSettingsFormBloc settingsBloc,
     AuthInstance authInstance,
   ) {
     return buildBoolField(
       label: tr("app.timeline.settings.field.only_local.label"),
       fieldBloc: settingsBloc.onlyLocalFieldBloc,
-      isSupported: settingsBloc.timelineSettings.type
-          .isOnlyLocalFilterSupportedOnInstance(authInstance),
+      isSupported: type.isOnlyLocalFilterSupportedOnInstance(authInstance),
     );
   }
 
   FormBoolFieldFormRowWidget buildOnlyRemoteField(
     BuildContext context,
-    ITimelineSettingsBloc settingsBloc,
+    ITimelineSettingsFormBloc settingsBloc,
     AuthInstance authInstance,
   ) {
     return buildBoolField(
       label: tr("app.timeline.settings.field.only_remote.label"),
       fieldBloc: settingsBloc.onlyRemoteFieldBloc,
-      isSupported: settingsBloc.timelineSettings.type
-          .isOnlyRemoteFilterSupportedOnInstance(authInstance),
+      isSupported: type.isOnlyRemoteFilterSupportedOnInstance(authInstance),
     );
   }
 
   FormBoolFieldFormRowWidget buildOnlyPinnedField(
     BuildContext context,
-    ITimelineSettingsBloc settingsBloc,
+    ITimelineSettingsFormBloc settingsBloc,
     AuthInstance authInstance,
   ) {
     return buildBoolField(
       label: tr("app.timeline.settings.field.only_pinned.label"),
       fieldBloc: settingsBloc.onlyPinnedFieldBloc,
-      isSupported: settingsBloc.timelineSettings.type
-          .isOnlyPinnedFilterSupportedOnInstance(authInstance),
+      isSupported: type.isOnlyPinnedFilterSupportedOnInstance(authInstance),
     );
   }
 
   FormBoolFieldFormRowWidget buildExcludeReblogsField(
     BuildContext context,
-    ITimelineSettingsBloc settingsBloc,
+    ITimelineSettingsFormBloc settingsBloc,
     AuthInstance authInstance,
   ) {
     return buildBoolField(
       label: tr("app.timeline.settings.field.exclude_reblogs.label"),
       fieldBloc: settingsBloc.excludeReblogsFieldBloc,
-      isSupported: settingsBloc.timelineSettings.type
-          .isExcludeReblogsSupportedOnInstance(authInstance),
+      isSupported: type.isExcludeReblogsSupportedOnInstance(authInstance),
     );
   }
 
   FormBoolFieldFormRowWidget buildExcludeRepliesField(
     BuildContext context,
-    ITimelineSettingsBloc settingsBloc,
+    ITimelineSettingsFormBloc settingsBloc,
     AuthInstance authInstance,
   ) {
     return buildBoolField(
       label: tr("app.timeline.settings.field.exclude_replies.label"),
       fieldBloc: settingsBloc.excludeRepliesFieldBloc,
-      isSupported: settingsBloc.timelineSettings.type
-          .isExcludeRepliesFilterSupportedOnInstance(authInstance),
+      isSupported: type.isExcludeRepliesFilterSupportedOnInstance(authInstance),
     );
   }
 
   FormBoolFieldFormRowWidget buildExcludeNsfwField(
     BuildContext context,
-    ITimelineSettingsBloc settingsBloc,
+    ITimelineSettingsFormBloc settingsBloc,
     AuthInstance authInstance,
   ) {
     return buildBoolField(
       label: tr("app.timeline.settings.field.exclude_nsfw.label"),
       fieldBloc: settingsBloc.excludeNsfwSensitiveFieldBloc,
-      isSupported: settingsBloc.timelineSettings.type
-          .isExcludeNsfwSensitiveFilterSupportedOnInstance(authInstance),
+      isSupported:
+          type.isExcludeNsfwSensitiveFilterSupportedOnInstance(authInstance),
     );
   }
 
@@ -188,6 +184,4 @@ class TimelineSettingsWidget extends StatelessWidget {
           : "app.timeline.settings.field.not_supported.desc".tr(),
     );
   }
-
-  const TimelineSettingsWidget();
 }

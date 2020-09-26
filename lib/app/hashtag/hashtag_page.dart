@@ -10,8 +10,10 @@ import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_wi
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/timeline/status/timeline_status_cached_list_bloc_impl.dart';
+import 'package:fedi/app/timeline/timeline_local_preferences_bloc.dart';
+import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
@@ -114,8 +116,8 @@ MaterialPageRoute createHashtagPageRoute({
       ICurrentAuthInstanceBloc.of(context, listen: false);
 
   return MaterialPageRoute(builder: (context) {
-    return DisposableProvider<ITimelineSettingsLocalPreferencesBloc>(
-      create: (context) => TimelineSettingsLocalPreferencesBloc.hashtag(
+    return DisposableProvider<ITimelineLocalPreferencesBloc>(
+      create: (context) => TimelineLocalPreferencesBloc.hashtag(
         ILocalPreferencesService.of(context, listen: false),
         userAtHost: currentAuthInstanceBloc.currentInstance.userAtHost,
         hashtag: hashtag,
@@ -123,7 +125,7 @@ MaterialPageRoute createHashtagPageRoute({
       child: Builder(
         builder: (context) {
           return FediAsyncInitLoadingWidget(
-            asyncInitLoadingBloc: ITimelineSettingsLocalPreferencesBloc.of(
+            asyncInitLoadingBloc: ITimelineLocalPreferencesBloc.of(
               context,
               listen: false,
             ),
@@ -132,31 +134,33 @@ MaterialPageRoute createHashtagPageRoute({
                 create: (BuildContext context) {
                   var hashtagTimelineStatusCachedListBloc =
                       TimelineStatusCachedListBloc(
-                          pleromaTimelineService: IPleromaTimelineService.of(
-                            context,
-                            listen: false,
-                          ),
-                          statusRepository: IStatusRepository.of(
-                            context,
-                            listen: false,
-                          ),
-                          timelineLocalPreferencesBloc:
-                              ITimelineSettingsLocalPreferencesBloc.of(context,
-                                  listen: false),
-                          currentInstanceBloc: ICurrentAuthInstanceBloc.of(
-                            context,
-                            listen: false,
-                          ),
-                          pleromaAccountService: IPleromaAccountService.of(
-                            context,
-                            listen: false,
-                          ),
-                          webSocketsHandlerManagerBloc:
-                              IWebSocketsHandlerManagerBloc.of(
-                            context,
-                            listen: false,
-                          ),
-                          listenWebSockets: isRealtimeWebSocketsEnabled);
+                    pleromaTimelineService: IPleromaTimelineService.of(
+                      context,
+                      listen: false,
+                    ),
+                    statusRepository: IStatusRepository.of(
+                      context,
+                      listen: false,
+                    ),
+                    timelineSettingsLocalPreferencesBloc:
+                        ITimelineSettingsLocalPreferencesBloc.of(context,
+                            listen: false),
+                    currentInstanceBloc: ICurrentAuthInstanceBloc.of(
+                      context,
+                      listen: false,
+                    ),
+                    pleromaAccountService: IPleromaAccountService.of(
+                      context,
+                      listen: false,
+                    ),
+                    webSocketsHandlerManagerBloc:
+                        IWebSocketsHandlerManagerBloc.of(
+                      context,
+                      listen: false,
+                    ),
+                    listenWebSockets: isRealtimeWebSocketsEnabled,
+                    timelineType: TimelineType.customList,
+                  );
                   return hashtagTimelineStatusCachedListBloc;
                 },
                 child: ProxyProvider<IStatusCachedListBloc,

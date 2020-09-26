@@ -1,17 +1,15 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/custom_list/custom_list_model.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
-import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc.dart';
-import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
+import 'package:fedi/app/timeline/timeline_local_preferences_bloc.dart';
+import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:flutter/widgets.dart';
-import 'package:fedi/app/timeline/timeline_model.dart';
 
-class TimelineSettingsLocalPreferencesBloc
-    extends ObjectLocalPreferenceBloc<TimelineSettings>
-    implements ITimelineSettingsLocalPreferencesBloc {
-  TimelineSettingsLocalPreferencesBloc.byId(
+class TimelineLocalPreferencesBloc extends ObjectLocalPreferenceBloc<Timeline>
+    implements ITimelineLocalPreferencesBloc {
+  TimelineLocalPreferencesBloc.byId(
     ILocalPreferencesService preferencesService, {
     @required String userAtHost,
     @required String timelineId,
@@ -19,10 +17,10 @@ class TimelineSettingsLocalPreferencesBloc
           preferencesService,
           "$userAtHost.timeline.$timelineId",
           1,
-          (json) => TimelineSettings.fromJson(json),
+          (json) => Timeline.fromJson(json),
         );
 
-  TimelineSettingsLocalPreferencesBloc.customList(
+  TimelineLocalPreferencesBloc.customList(
     ILocalPreferencesService preferencesService, {
     @required String userAtHost,
     @required ICustomList customList,
@@ -31,7 +29,8 @@ class TimelineSettingsLocalPreferencesBloc
           userAtHost: userAtHost,
           timelineId: customList.calculateTimelineId(),
         );
-  TimelineSettingsLocalPreferencesBloc.hashtag(
+
+  TimelineLocalPreferencesBloc.hashtag(
     ILocalPreferencesService preferencesService, {
     @required String userAtHost,
     @required IHashtag hashtag,
@@ -40,17 +39,17 @@ class TimelineSettingsLocalPreferencesBloc
           userAtHost: userAtHost,
           timelineId: hashtag.calculateTimelineId(),
         );
-  TimelineSettingsLocalPreferencesBloc.account(
-      ILocalPreferencesService preferencesService, {
-        @required String userAtHost,
-        @required IAccount account,
-      }) : this.byId(
-    preferencesService,
-    userAtHost: userAtHost,
-    timelineId: account.calculateTimelineId(),
-  );
 
+  TimelineLocalPreferencesBloc.account(
+    ILocalPreferencesService preferencesService, {
+    @required String userAtHost,
+    @required IAccount account,
+  }) : this.byId(
+          preferencesService,
+          userAtHost: userAtHost,
+          timelineId: account.calculateTimelineId(),
+        );
 
   @override
-  TimelineSettings get defaultValue => null;
+  Timeline get defaultValue => null;
 }

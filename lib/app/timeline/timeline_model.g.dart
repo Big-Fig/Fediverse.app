@@ -14,8 +14,10 @@ class TimelineAdapter extends TypeAdapter<Timeline> {
       for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Timeline(
-      label: fields[0] as String,
-      timelineSettingsId: fields[1] as String,
+      id: fields[0] as String,
+      typeString: fields[3] as String,
+      settings: fields[4] as TimelineSettings,
+      label: fields[1] as String,
       isPossibleToDelete: fields[2] as bool,
     );
   }
@@ -23,13 +25,17 @@ class TimelineAdapter extends TypeAdapter<Timeline> {
   @override
   void write(BinaryWriter writer, Timeline obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(5)
       ..writeByte(0)
-      ..write(obj.label)
+      ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.timelineSettingsId)
+      ..write(obj.label)
       ..writeByte(2)
-      ..write(obj.isPossibleToDelete);
+      ..write(obj.isPossibleToDelete)
+      ..writeByte(3)
+      ..write(obj.typeString)
+      ..writeByte(4)
+      ..write(obj.settings);
   }
 }
 
@@ -39,14 +45,20 @@ class TimelineAdapter extends TypeAdapter<Timeline> {
 
 Timeline _$TimelineFromJson(Map<String, dynamic> json) {
   return Timeline(
+    id: json['id'] as String,
+    typeString: json['type_string'] as String,
+    settings: json['settings'] == null
+        ? null
+        : TimelineSettings.fromJson(json['settings'] as Map<String, dynamic>),
     label: json['label'] as String,
-    timelineSettingsId: json['timeline_settings_id'] as String,
     isPossibleToDelete: json['is_possible_to_delete'] as bool,
   );
 }
 
 Map<String, dynamic> _$TimelineToJson(Timeline instance) => <String, dynamic>{
+      'id': instance.id,
       'label': instance.label,
-      'timeline_settings_id': instance.timelineSettingsId,
       'is_possible_to_delete': instance.isPossibleToDelete,
+      'type_string': instance.typeString,
+      'settings': instance.settings?.toJson(),
     };
