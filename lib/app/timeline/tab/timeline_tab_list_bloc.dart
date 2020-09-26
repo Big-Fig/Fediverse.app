@@ -12,6 +12,8 @@ abstract class ITimelineTabsListBloc
 
   List<ITimelineTabBloc> get tabBlocs;
 
+  Stream<List<ITimelineTabBloc>> get tabBlocsStream;
+
   ITimelineTabBloc get selectedTabBloc;
 
   Stream<ITimelineTabBloc> get selectedTabBlocStream;
