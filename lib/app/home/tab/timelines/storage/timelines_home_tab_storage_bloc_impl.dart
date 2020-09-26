@@ -1,9 +1,9 @@
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
-import 'package:fedi/app/home/tab/timelines/item/timelines_home_tab_item_model.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_local_preferences_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_model.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc_impl.dart';
+import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:flutter/widgets.dart';
@@ -24,10 +24,10 @@ class TimelinesHomeTabStorageBloc extends DisposableOwner
   });
 
   @override
-  List<TimelinesHomeTabItem> get items => storage?.items;
+  List<Timeline> get items => storage?.items;
 
   @override
-  Stream<List<TimelinesHomeTabItem>> get itemsStream =>
+  Stream<List<Timeline>> get itemsStream =>
       storageStream.map((storage) => storage?.items);
 
   @override
@@ -37,14 +37,14 @@ class TimelinesHomeTabStorageBloc extends DisposableOwner
   Stream<TimelinesHomeTabStorage> get storageStream => preferences.stream;
 
   @override
-  Future onItemsUpdated(List<TimelinesHomeTabItem> items) async {
+  Future onItemsUpdated(List<Timeline> items) async {
     _logger.finest(() => "onItemsChanged $items");
     var updatedStorage = storage.copyWith(items: items);
     await preferences.setValue(updatedStorage);
   }
 
   @override
-  Future remove(TimelinesHomeTabItem item) async {
+  Future remove(Timeline item) async {
     items.remove(item);
     await onItemsUpdated(items);
 

@@ -1,4 +1,4 @@
-import 'package:fedi/app/home/tab/timelines/storage/create_item/create_item_timelines_home_tab_storage_bloc.dart';
+import 'package:fedi/app/timeline/create/create_timeline_bloc.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/ui/form/field/value/form_value_field_bloc.dart';
@@ -10,8 +10,7 @@ import 'package:fedi/ui/form/field/value/string/form_string_field_bloc_impl.dart
 import 'package:fedi/ui/form/form_bloc_impl.dart';
 import 'package:fedi/ui/form/form_item_bloc.dart';
 
-class CreateItemTimelinesHomeTabStorageBloc extends FormBloc
-    implements ICreateItemTimelinesHomeTabStorageBloc {
+class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
   @override
   IFormValueFieldBloc<TimelineType> timelineTypeFieldBloc =
       FormValueFieldBloc(originValue: TimelineType.public, validators: []);
@@ -33,7 +32,7 @@ class CreateItemTimelinesHomeTabStorageBloc extends FormBloc
           ),
           validators: [FormNonNullValueFieldValidationError.createValidator()]);
 
-  CreateItemTimelinesHomeTabStorageBloc() {
+  CreateTimelineBloc() {
     addDisposable(disposable: timelineTypeFieldBloc);
     addDisposable(disposable: timelineSettingsFieldBloc);
     addDisposable(disposable: nameFieldBloc);

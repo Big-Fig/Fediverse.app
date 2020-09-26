@@ -28,7 +28,6 @@ import 'package:fedi/app/emoji/picker/category/custom/emoji_picker_custom_image_
 import 'package:fedi/app/emoji/picker/category/custom/emoji_picker_custom_image_url_category_local_preference_bloc_impl.dart';
 import 'package:fedi/app/emoji/picker/category/recent/emoji_picker_recent_category_local_preference_bloc.dart';
 import 'package:fedi/app/emoji/picker/category/recent/emoji_picker_recent_category_local_preference_bloc_impl.dart';
-import 'package:fedi/app/home/tab/timelines/item/timelines_home_tab_item_model.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_local_preferences_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_model.dart';
@@ -51,6 +50,7 @@ import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository_impl.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
+import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/websockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/app/websockets/web_sockets_handler_manager_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
@@ -495,17 +495,17 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       var localTimelineId = "local";
       var publicTimelineId = "public";
       var storage = TimelinesHomeTabStorage(items: [
-        TimelinesHomeTabItem(
+        Timeline(
           label: "app.home.tab.timelines.tab.home".tr(),
           timelineSettingsId: homeTimelineId,
           isPossibleToDelete: false,
         ),
-        TimelinesHomeTabItem(
+        Timeline(
           label: "app.home.tab.timelines.tab.local".tr(),
           timelineSettingsId: localTimelineId,
           isPossibleToDelete: true,
         ),
-        TimelinesHomeTabItem(
+        Timeline(
           label: "app.home.tab.timelines.tab.public".tr(),
           timelineSettingsId: publicTimelineId,
           isPossibleToDelete: true,

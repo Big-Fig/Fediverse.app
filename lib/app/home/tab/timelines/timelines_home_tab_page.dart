@@ -2,8 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/home/home_bloc.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
-import 'package:fedi/app/home/tab/timelines/item/timelines_home_tab_item_model.dart';
-import 'package:fedi/app/home/tab/timelines/storage/create_item/create_item_timelines_home_tab_storage_page.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc_impl.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_local_preferences_bloc.dart';
@@ -14,10 +12,12 @@ import 'package:fedi/app/home/tab/timelines/timelines_home_tab_post_status_heade
 import 'package:fedi/app/search/search_page.dart';
 import 'package:fedi/app/status/list/status_list_tap_to_load_overlay_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/app/timeline/create/create_timeline_page.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/timeline/tab/timeline_tab_list_bloc_impl.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_text_tab_indicator_item_widget.dart';
-import 'package:fedi/app/timeline/timeline_tabs_bloc.dart';
-import 'package:fedi/app/timeline/timeline_tabs_bloc_impl.dart';
+import 'package:fedi/app/timeline/tab/timeline_tab_list_bloc.dart';
+import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/timeline/timeline_widget.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/button/fedi_transparent_icon_text_button.dart';
@@ -94,7 +94,7 @@ class TimelinesHomeTabPage extends StatelessWidget {
 }
 
 class TimelinesHomeTabPageBody extends StatefulWidget {
-  final List<TimelinesHomeTabItem> timelineTabs;
+  final List<Timeline> timelineTabs;
 
   TimelinesHomeTabPageBody({
     Key key,
@@ -108,7 +108,7 @@ class TimelinesHomeTabPageBody extends StatefulWidget {
 
 class _TimelinesHomeTabPageBodyState extends State<TimelinesHomeTabPageBody>
     with TickerProviderStateMixin {
-  final List<TimelinesHomeTabItem> timelineTabs;
+  final List<Timeline> timelineTabs;
 
   _TimelinesHomeTabPageBodyState({@required this.timelineTabs});
 

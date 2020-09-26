@@ -4,7 +4,6 @@ import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/chat/chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/conversation/repository/conversation_repository.dart';
-import 'package:fedi/app/home/tab/timelines/item/timelines_home_tab_item_model.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
@@ -13,7 +12,8 @@ import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_b
 import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_bloc.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_bloc_impl.dart';
-import 'package:fedi/app/timeline/timeline_tabs_bloc.dart';
+import 'package:fedi/app/timeline/tab/timeline_tab_list_bloc.dart';
+import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/websockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/disposable/disposable.dart';
@@ -64,23 +64,23 @@ class TimelineTabsBloc extends AsyncInitLoadingBloc
             true,
       );
 
-  final Map<TimelinesHomeTabItem, ITimelineTabBloc> tabsMap = {};
-  final Map<TimelinesHomeTabItem, ITimelineSettingsLocalPreferencesBloc>
+  final Map<Timeline, ITimelineTabBloc> tabsMap = {};
+  final Map<Timeline, ITimelineSettingsLocalPreferencesBloc>
       tabsPreferenceMap = {};
 
   @override
-  void selectTab(TimelinesHomeTabItem tab) {
+  void selectTab(Timeline tab) {
     selectedTabSubject.add(tab);
   }
 
   // ignore: close_sinks
-  BehaviorSubject<TimelinesHomeTabItem> selectedTabSubject;
+  BehaviorSubject<Timeline> selectedTabSubject;
 
   @override
-  TimelinesHomeTabItem get selectedTab => selectedTabSubject.value;
+  Timeline get selectedTab => selectedTabSubject.value;
 
   @override
-  Stream<TimelinesHomeTabItem> get selectedTabStream =>
+  Stream<Timeline> get selectedTabStream =>
       selectedTabSubject.stream;
 
   final ITimelinesHomeTabStorageBloc timelinesHomeTabStorageBloc;
@@ -121,15 +121,15 @@ class TimelineTabsBloc extends AsyncInitLoadingBloc
 
   @override
   ICachedPaginationListWithNewItemsBloc<CachedPaginationPage<IStatus>, IStatus>
-      retrieveTimelineTabPaginationListBloc(TimelinesHomeTabItem tab) =>
+      retrieveTimelineTabPaginationListBloc(Timeline tab) =>
           tabsMap[tab].paginationListWithNewItemsBloc;
 
   @override
-  List<TimelinesHomeTabItem> get tabs => tabsMap.keys.toList();
+  List<Timeline> get tabs => tabsMap.keys.toList();
 
   @override
   ITimelineSettingsLocalPreferencesBloc retrieveTimelineTabSettingsBloc(
-          TimelinesHomeTabItem tab) =>
+          Timeline tab) =>
       tabsPreferenceMap[tab];
 
   @override

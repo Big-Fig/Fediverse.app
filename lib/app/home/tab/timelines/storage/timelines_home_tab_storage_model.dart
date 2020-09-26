@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:fedi/app/home/tab/timelines/item/timelines_home_tab_item_model.dart';
+import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/local_preferences/local_preferences_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
@@ -12,7 +12,7 @@ part 'timelines_home_tab_storage_model.g.dart';
 @JsonSerializable()
 class TimelinesHomeTabStorage implements IPreferencesObject {
   @HiveField(0)
-  final List<TimelinesHomeTabItem> items;
+  final List<Timeline> items;
 
   TimelinesHomeTabStorage({@required this.items});
 
@@ -27,7 +27,7 @@ class TimelinesHomeTabStorage implements IPreferencesObject {
   int get hashCode => items.hashCode;
 
   TimelinesHomeTabStorage copyWith({
-    List<TimelinesHomeTabItem> items,
+    List<Timeline> items,
   }) =>
       TimelinesHomeTabStorage(items: items ?? this.items);
 

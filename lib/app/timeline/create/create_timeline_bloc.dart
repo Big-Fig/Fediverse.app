@@ -6,14 +6,14 @@ import 'package:fedi/ui/form/form_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class ICreateItemTimelinesHomeTabStorageBloc implements IFormBloc {
-  static ICreateItemTimelinesHomeTabStorageBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<ICreateItemTimelinesHomeTabStorageBloc>(context,
-          listen: listen);
+abstract class ICreateTimelineBloc implements IFormBloc {
+  static ICreateTimelineBloc of(BuildContext context, {bool listen = true}) =>
+      Provider.of<ICreateTimelineBloc>(context, listen: listen);
 
   IFormValueFieldBloc<TimelineType> get timelineTypeFieldBloc;
+
   IFormValueFieldBloc<TimelineSettings> get timelineSettingsFieldBloc;
+
   IFormStringFieldBloc get nameFieldBloc;
 
   Future save();
