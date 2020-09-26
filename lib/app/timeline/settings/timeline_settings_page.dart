@@ -1,13 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/home/tab/timelines/item/timelines_home_tab_item_bloc.dart';
-import 'package:fedi/app/home/tab/timelines/item/timelines_home_tab_item_bloc_impl.dart';
-import 'package:fedi/app/home/tab/timelines/item/timelines_home_tab_item_model.dart';
 import 'package:fedi/app/timeline/settings/local_preferences_timeline_settings_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_bloc.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_widget.dart';
+import 'package:fedi/app/timeline/timeline_bloc.dart';
+import 'package:fedi/app/timeline/timeline_bloc_impl.dart';
+import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
@@ -19,7 +19,7 @@ import 'package:flutter/material.dart';
 class TimelineSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var label = ITimelinesHomeTabItemBloc.of(context, listen: false).label;
+    var label = ITimelineBloc.of(context, listen: false).label;
 
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
@@ -43,20 +43,20 @@ class TimelineSettingsPage extends StatelessWidget {
 
 void goToTimelineSettingsPage(
   BuildContext context, {
-  @required TimelinesHomeTabItem timelinesHomeTabItem,
+  @required Timeline Timeline,
 }) {
   Navigator.push(
     context,
     createTimelineSettingsPageRoute(
       context,
-      timelinesHomeTabItem: timelinesHomeTabItem,
+      timeline: Timeline,
     ),
   );
 }
 
 MaterialPageRoute createTimelineSettingsPageRoute(
   BuildContext context, {
-  @required TimelinesHomeTabItem timelinesHomeTabItem,
+  @required Timeline timeline,
 }) {
   var localPreferencesService =
       ILocalPreferencesService.of(context, listen: false);
@@ -70,7 +70,7 @@ MaterialPageRoute createTimelineSettingsPageRoute(
         return TimelineSettingsLocalPreferencesBloc.byId(
           localPreferencesService,
           userAtHost: currentInstance.userAtHost,
-          timelineId: timelinesHomeTabItem.timelineSettingsId,
+          timelineId: timeline.timelineSettingsId,
         );
       },
       child: DisposableProvider<ITimelineSettingsBloc>(
@@ -85,11 +85,11 @@ MaterialPageRoute createTimelineSettingsPageRoute(
             originalSettings: timelineSettingsLocalPreferencesBloc.value,
           );
         },
-        child: DisposableProvider<ITimelinesHomeTabItemBloc>(
+        child: DisposableProvider<ITimelineBloc>(
           create: (context) {
-            return TimelinesHomeTabItemBloc(
+            return TimelineBloc(
               preferencesService: localPreferencesService,
-              timelinesHomeTabItem: timelinesHomeTabItem,
+              timeline: timeline,
               currentInstance: currentInstance,
             );
           },

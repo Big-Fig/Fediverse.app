@@ -1,39 +1,37 @@
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
-import 'package:fedi/app/home/tab/timelines/item/timelines_home_tab_item_bloc.dart';
-import 'package:fedi/app/home/tab/timelines/item/timelines_home_tab_item_model.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
+import 'package:fedi/app/timeline/timeline_bloc.dart';
+import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:flutter/widgets.dart';
 
-class TimelinesHomeTabItemBloc extends DisposableOwner
-    implements ITimelinesHomeTabItemBloc {
-  final TimelinesHomeTabItem timelinesHomeTabItem;
+class TimelineBloc extends DisposableOwner implements ITimelineBloc {
+  final Timeline timeline;
 
   final ITimelineSettingsLocalPreferencesBloc
       timelineSettingsLocalPreferencesBloc;
 
-  TimelinesHomeTabItemBloc({
+  TimelineBloc({
     @required ILocalPreferencesService preferencesService,
-    @required this.timelinesHomeTabItem,
+    @required this.timeline,
     @required AuthInstance currentInstance,
   }) : timelineSettingsLocalPreferencesBloc =
             TimelineSettingsLocalPreferencesBloc.byId(
           preferencesService,
           userAtHost: currentInstance.userAtHost,
-          timelineId: timelinesHomeTabItem.timelineSettingsId,
+          timelineId: timeline.timelineSettingsId,
         ) {
     addDisposable(disposable: timelineSettingsLocalPreferencesBloc);
   }
 
   @override
-  TimelinesHomeTabItem get item => timelinesHomeTabItem;
+  Timeline get item => timeline;
 
   @override
-  Stream<TimelinesHomeTabItem> get itemStream =>
-      Stream.value(timelinesHomeTabItem);
+  Stream<Timeline> get itemStream => Stream.value(timeline);
 
   @override
   String get label => item.label;

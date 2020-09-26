@@ -1,5 +1,5 @@
-import 'package:fedi/app/home/tab/timelines/item/timelines_home_tab_item_model.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_model.dart';
+import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -13,11 +13,11 @@ abstract class ITimelinesHomeTabStorageBloc extends Disposable {
 
   Stream<TimelinesHomeTabStorage> get storageStream;
 
-  List<TimelinesHomeTabItem> get items;
+  List<Timeline> get items;
 
-  Stream<List<TimelinesHomeTabItem>> get itemsStream;
+  Stream<List<Timeline>> get itemsStream;
 
-  Future onItemsUpdated(List<TimelinesHomeTabItem> items);
+  Future onItemsUpdated(List<Timeline> items);
 
-  Future remove(TimelinesHomeTabItem item);
+  Future remove(Timeline item);
 }

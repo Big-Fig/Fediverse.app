@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/form/form_string_field_form_row_widget.dart';
-import 'package:fedi/app/home/tab/timelines/storage/create_item/create_item_timelines_home_tab_storage_bloc.dart';
-import 'package:fedi/app/home/tab/timelines/storage/create_item/create_item_timelines_home_tab_storage_timeline_settings_bloc_impl.dart';
+import 'package:fedi/app/timeline/create/create_timeline_bloc.dart';
+import 'package:fedi/app/timeline/create/create_timeline_settings_bloc_impl.dart';
 import 'package:fedi/app/timeline/form/timeline_type_form_field_row_widget.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_bloc.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
@@ -13,11 +13,9 @@ import 'package:flutter/cupertino.dart';
 class CreateItemTimelinesHomeTabStorageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var createItemTimelinesHomeTabStorageBloc =
-        ICreateItemTimelinesHomeTabStorageBloc.of(context, listen: false);
+    var createTimelineBloc = ICreateTimelineBloc.of(context, listen: false);
 
-    var timelineTypeFieldBloc =
-        createItemTimelinesHomeTabStorageBloc.timelineTypeFieldBloc;
+    var timelineTypeFieldBloc = createTimelineBloc.timelineTypeFieldBloc;
 
     return Column(
       children: [
@@ -27,8 +25,7 @@ class CreateItemTimelinesHomeTabStorageWidget extends StatelessWidget {
           hint: "app.timeline.create.field.title.hint".tr(),
           textInputAction: TextInputAction.done,
           onSubmitted: null,
-          formStringFieldBloc:
-              createItemTimelinesHomeTabStorageBloc.nameFieldBloc,
+          formStringFieldBloc: createTimelineBloc.nameFieldBloc,
         ),
         TimelineTypeFormFieldRowWidget(
           formValueFieldBloc: timelineTypeFieldBloc,
@@ -77,9 +74,8 @@ class CreateItemTimelinesHomeTabStorageWidget extends StatelessWidget {
               }
               return DisposableProvider<ITimelineSettingsBloc>(
                 create: (context) {
-                  return CreateItemTimelinesHomeTabStorageBlocTimelineSettingsBloc(
-                    createItemTimelinesHomeTabStorageBloc:
-                        createItemTimelinesHomeTabStorageBloc,
+                  return CreateTimelineBlocTimelineSettingsBloc(
+                    createTimelineBloc: createTimelineBloc,
                     originalSettings: timelineSettings,
                   );
                 },

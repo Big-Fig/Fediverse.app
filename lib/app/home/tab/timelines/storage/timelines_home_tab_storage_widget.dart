@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fedi/app/home/tab/timelines/item/timelines_home_tab_item_model.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_page.dart';
+import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
@@ -26,7 +26,7 @@ class _TimelinesHomeTabStorageWidgetState
     var timelinesHomeTabStorageBloc =
         ITimelinesHomeTabStorageBloc.of(context, listen: false);
 
-    return StreamBuilder<List<TimelinesHomeTabItem>>(
+    return StreamBuilder<List<Timeline>>(
         stream: timelinesHomeTabStorageBloc.itemsStream,
         builder: (context, snapshot) {
           var items = snapshot.data;
@@ -52,7 +52,7 @@ class _TimelinesHomeTabStorageWidgetState
                         onPressed: () {
                           goToTimelineSettingsPage(
                             context,
-                            timelinesHomeTabItem: item,
+                            Timeline: item,
                           );
                         },
                       ),

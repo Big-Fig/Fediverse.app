@@ -15,7 +15,7 @@ class TimelinesHomeTabStorageAdapter
       for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return TimelinesHomeTabStorage(
-      items: (fields[0] as List)?.cast<TimelinesHomeTabItem>(),
+      items: (fields[0] as List)?.cast<Timeline>(),
     );
   }
 
@@ -36,9 +36,8 @@ TimelinesHomeTabStorage _$TimelinesHomeTabStorageFromJson(
     Map<String, dynamic> json) {
   return TimelinesHomeTabStorage(
     items: (json['items'] as List)
-        ?.map((e) => e == null
-            ? null
-            : TimelinesHomeTabItem.fromJson(e as Map<String, dynamic>))
+        ?.map((e) =>
+            e == null ? null : Timeline.fromJson(e as Map<String, dynamic>))
         ?.toList(),
   );
 }

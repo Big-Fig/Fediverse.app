@@ -1,21 +1,21 @@
-import 'package:fedi/app/home/tab/timelines/storage/create_item/create_item_timelines_home_tab_storage_bloc.dart';
+import 'package:fedi/app/timeline/create/create_timeline_bloc.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
 import 'package:flutter/widgets.dart';
 
-class CreateItemTimelinesHomeTabStorageBlocTimelineSettingsBloc
+class CreateTimelineBlocTimelineSettingsBloc
     extends TimelineSettingsBloc {
-  final ICreateItemTimelinesHomeTabStorageBloc
-      createItemTimelinesHomeTabStorageBloc;
+  final ICreateTimelineBloc
+      createTimelineBloc;
 
-  CreateItemTimelinesHomeTabStorageBlocTimelineSettingsBloc({
-    @required this.createItemTimelinesHomeTabStorageBloc,
+  CreateTimelineBlocTimelineSettingsBloc({
+    @required this.createTimelineBloc,
     @required TimelineSettings originalSettings,
   }) : super(originalSettings: originalSettings) {
     addDisposable(
       streamSubscription: timelineSettingsStream.listen(
         (timelineSettings) {
-          createItemTimelinesHomeTabStorageBloc.timelineSettingsFieldBloc
+          createTimelineBloc.timelineSettingsFieldBloc
               .changeCurrentValue(timelineSettings);
         },
       ),

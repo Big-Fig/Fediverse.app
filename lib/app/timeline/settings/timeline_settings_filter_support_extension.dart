@@ -1,6 +1,7 @@
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 
+
 extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
   bool isOnlyWithMediaFilterSupportedOnInstance(AuthInstance authInstance) {
     switch (this) {
