@@ -9,11 +9,9 @@ import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_ti
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/status/timeline_status_cached_list_bloc_impl.dart';
 import 'package:fedi/app/timeline/timeline_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
-import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
@@ -142,8 +140,8 @@ MaterialPageRoute createHashtagPageRoute({
                       context,
                       listen: false,
                     ),
-                    timelineSettingsLocalPreferencesBloc:
-                        ITimelineSettingsLocalPreferencesBloc.of(context,
+                    timelineLocalPreferencesBloc:
+                        ITimelineLocalPreferencesBloc.of(context,
                             listen: false),
                     currentInstanceBloc: ICurrentAuthInstanceBloc.of(
                       context,
@@ -159,7 +157,6 @@ MaterialPageRoute createHashtagPageRoute({
                       listen: false,
                     ),
                     listenWebSockets: isRealtimeWebSocketsEnabled,
-                    timelineType: TimelineType.customList,
                   );
                   return hashtagTimelineStatusCachedListBloc;
                 },

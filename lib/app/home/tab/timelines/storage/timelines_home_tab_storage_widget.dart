@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_page.dart';
+import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
@@ -25,16 +26,16 @@ class _TimelinesHomeTabStorageWidgetState
     var timelinesHomeTabStorageBloc =
         ITimelinesHomeTabStorageBloc.of(context, listen: false);
 
-    return StreamBuilder<List<String>>(
-        stream: timelinesHomeTabStorageBloc.timelineIdsStream,
+    return StreamBuilder<List<Timeline>>(
+        stream: timelinesHomeTabStorageBloc.timelinesStream,
         builder: (context, snapshot) {
-          var timelineIds = snapshot.data;
+          var items = snapshot.data;
 
-          if (timelineIds == null) {
+          if (items == null) {
             return FediCircularProgressIndicator();
           }
 
-          if (timelineIds.isEmpty) {
+          if (items.isEmpty) {
             return Center(child: Text("app.timeline.storage.empty".tr()));
           }
           return ReorderableListView(

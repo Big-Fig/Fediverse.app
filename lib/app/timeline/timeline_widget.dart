@@ -1,6 +1,6 @@
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_media_widget.dart';
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_timeline_widget.dart';
-import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc.dart';
+import 'package:fedi/app/timeline/timeline_local_preferences_bloc.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/collapsible/collapsible_owner_widget.dart';
 import 'package:flutter/widgets.dart';
@@ -14,17 +14,18 @@ class TimelineWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var timelineLocalPreferencesBloc =
-        ITimelineSettingsLocalPreferencesBloc.of(context, listen: false);
+        ITimelineLocalPreferencesBloc.of(context, listen: false);
 
+    var timeline = timelineLocalPreferencesBloc.value?.onlyWithMedia;
     return Container(
       color: FediColors.offWhite,
       child: StreamBuilder<bool>(
           stream: timelineLocalPreferencesBloc.stream
-              .map((timelineLocalPreferences) =>
-                  timelineLocalPreferences?.onlyWithMedia == true)
+              .map((timeline) =>
+                  timeline?.onlyWithMedia == true)
               .distinct(),
           initialData:
-              timelineLocalPreferencesBloc.value?.onlyWithMedia == true,
+              timeline == true,
           builder: (context, snapshot) {
             var onlyWithMedia = snapshot.data;
 

@@ -5,13 +5,13 @@ import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc_
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/app/timeline/settings/timeline_settings_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/status/timeline_status_cached_list_bloc_impl.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_bloc.dart';
+import 'package:fedi/app/timeline/timeline_local_preferences_bloc.dart';
+import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/websockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
@@ -20,11 +20,12 @@ import 'package:fedi/pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:flutter/widgets.dart';
 
 class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
-  final Timeline timeline;
+  @override
+  Timeline get timeline => timelineLocalPreferencesBloc.value;
   IStatusCachedListBloc statusCachedListService;
   IStatusCachedPaginationBloc statusCachedPaginationBloc;
-  final ITimelineSettingsLocalPreferencesBloc
-      timelineSettingsLocalPreferencesBloc;
+  @override
+  ITimelineLocalPreferencesBloc timelineLocalPreferencesBloc;
 
   @override
   ICachedPaginationListWithNewItemsBloc<CachedPaginationPage<IStatus>, IStatus>
@@ -41,7 +42,6 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
   TimelineTabBloc({
     @required String timelineId,
     @required this.preferencesService,
-    @required this.timelineSettingsLocalPreferencesBloc,
     @required this.pleromaTimelineService,
     @required this.pleromaAccountService,
     @required this.statusRepository,
@@ -49,12 +49,27 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
     @required this.listenWebSockets,
     @required this.webSocketsHandlerManagerBloc,
   }) {
-
-    var timelineLocalPreferencesBloc = TimelineLocalPreferencesBloc.byId(
+    timelineLocalPreferencesBloc = TimelineLocalPreferencesBloc.byId(
       preferencesService,
       userAtHost: currentAuthInstanceBloc.currentInstance.userAtHost,
       timelineId: timelineId,
     );
+  }
+
+  IStatusCachedListBloc createListService() => TimelineStatusCachedListBloc(
+        pleromaAccountService: pleromaAccountService,
+        pleromaTimelineService: pleromaTimelineService,
+        statusRepository: statusRepository,
+        currentInstanceBloc: currentAuthInstanceBloc,
+        timelineLocalPreferencesBloc: timelineLocalPreferencesBloc,
+        listenWebSockets: listenWebSockets,
+        webSocketsHandlerManagerBloc: webSocketsHandlerManagerBloc,
+      );
+
+  @override
+  Future internalAsyncInit() async {
+    await timelineLocalPreferencesBloc.performAsyncInit();
+
     statusCachedListService = createListService();
     addDisposable(disposable: statusCachedListService);
 
@@ -74,7 +89,7 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
     // skip first value to avoid duplicated update on first build
     var initValueSkipped = false;
     addDisposable(
-        streamSubscription: timelineSettingsLocalPreferencesBloc.stream
+        streamSubscription: timelineLocalPreferencesBloc.stream
             .distinct()
             .listen((newPreferences) {
       if (!initValueSkipped) {
@@ -83,22 +98,6 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
         initValueSkipped = true;
       }
     }));
-  }
-
-  IStatusCachedListBloc createListService() => TimelineStatusCachedListBloc(
-        pleromaAccountService: pleromaAccountService,
-        pleromaTimelineService: pleromaTimelineService,
-        statusRepository: statusRepository,
-        currentInstanceBloc: currentAuthInstanceBloc,
-        timelineSettingsLocalPreferencesBloc:
-            timelineSettingsLocalPreferencesBloc,
-        listenWebSockets: listenWebSockets,
-        webSocketsHandlerManagerBloc: webSocketsHandlerManagerBloc,
-        timelineType: timeline.type,
-      );
-
-  @override
-  Future internalAsyncInit() {
-    await timelineLocalPreferencesBloc.performAsyncInit();
+    addDisposable(disposable: timelineLocalPreferencesBloc);
   }
 }
