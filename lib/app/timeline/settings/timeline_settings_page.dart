@@ -3,8 +3,6 @@ import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_form_bloc.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_form_bloc_impl.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_widget.dart';
-import 'package:fedi/app/timeline/timeline_bloc.dart';
-import 'package:fedi/app/timeline/timeline_bloc_impl.dart';
 import 'package:fedi/app/timeline/timeline_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/timeline_local_preferences_bloc_impl.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
@@ -17,11 +15,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TimelineSettingsPage extends StatelessWidget {
+  final Timeline originalTimeline;
+
+  TimelineSettingsPage({@required this.originalTimeline});
+
   @override
   Widget build(BuildContext context) {
-    var timelineBloc = ITimelineBloc.of(context, listen: false);
-    var timeline = timelineBloc.timeline;
-    var label = timeline.label;
+    var label = originalTimeline.label;
 
     return Scaffold(
       appBar: FediSubPageTitleAppBar(
@@ -35,14 +35,12 @@ class TimelineSettingsPage extends StatelessWidget {
             listen: false,
           ),
           loadingFinishedBuilder: (context) => TimelineSettingsWidget(
-            type: timeline.type,
+            type: originalTimeline.type,
           ),
         ),
       ),
     );
   }
-
-  const TimelineSettingsPage();
 }
 
 void goToTimelineSettingsPage(
@@ -87,15 +85,8 @@ MaterialPageRoute createTimelineSettingsPageRoute(
           );
           return timelineSettingsBloc;
         },
-        child: DisposableProvider<ITimelineBloc>(
-          create: (context) {
-            return TimelineBloc(
-              preferencesService: localPreferencesService,
-              timeline: timeline,
-              currentInstance: currentInstance,
-            );
-          },
-          child: const TimelineSettingsPage(),
+        child: TimelineSettingsPage(
+          originalTimeline: timeline,
         ),
       ),
     ),
