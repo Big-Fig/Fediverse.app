@@ -35,6 +35,8 @@ import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollabl
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
+import 'package:fedi/disposable/disposable.dart';
+import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
@@ -108,13 +110,17 @@ class TimelinesHomeTabPage extends StatelessWidget {
                                 return Provider<List<ITimelineTabBloc>>.value(
                                   value: tabBlocs,
                                   child: Builder(
-                                    builder: (context) =>
-                                        TimelinesHomeTabPageBody(
-                                      timelineTabBlocs:
-                                          Provider.of<List<ITimelineTabBloc>>(
-                                              context,
-                                              listen: true),
-                                    ),
+                                    builder: (context) {
+                                      return DisposableProxyProvider<
+                                          List<ITimelineTabBloc>,
+                                          ITimelinesHomeTabPageBodyBloc>(
+                                        update: (context, value, previous) =>
+                                            TimelinesHomeTabPageBodyBloc(
+                                          timelineBlocs: value,
+                                        ),
+                                        child: TimelinesHomeTabPageBody(),
+                                      );
+                                    },
                                   ),
                                 );
                               });
@@ -128,32 +134,44 @@ class TimelinesHomeTabPage extends StatelessWidget {
   }
 }
 
-class TimelinesHomeTabPageBody extends StatefulWidget {
-  final List<ITimelineTabBloc> timelineTabBlocs;
+abstract class ITimelinesHomeTabPageBodyBloc extends Disposable {
+  static ITimelinesHomeTabPageBodyBloc of(BuildContext context,
+          {bool listen = true}) =>
+      Provider.of<ITimelinesHomeTabPageBodyBloc>(context, listen: listen);
 
+  List<ITimelineTabBloc> get timelineBlocs;
+}
+
+class TimelinesHomeTabPageBodyBloc extends DisposableOwner
+    implements ITimelinesHomeTabPageBodyBloc {
+  @override
+  final List<ITimelineTabBloc> timelineBlocs;
+
+  TimelinesHomeTabPageBodyBloc({@required this.timelineBlocs});
+}
+
+class TimelinesHomeTabPageBody extends StatefulWidget {
   TimelinesHomeTabPageBody({
     Key key,
-    @required this.timelineTabBlocs,
   }) : super(key: key);
 
   @override
   _TimelinesHomeTabPageBodyState createState() =>
-      _TimelinesHomeTabPageBodyState(timelineTabBlocs: timelineTabBlocs);
+      _TimelinesHomeTabPageBodyState();
 }
 
 class _TimelinesHomeTabPageBodyState extends State<TimelinesHomeTabPageBody>
     with TickerProviderStateMixin {
-  final List<ITimelineTabBloc> timelineTabBlocs;
-
-  _TimelinesHomeTabPageBodyState({@required this.timelineTabBlocs});
-
   TabController tabController;
 
   VoidCallback listener;
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    var timelineTabBlocs =
+        ITimelinesHomeTabPageBodyBloc.of(context, listen: false).timelineBlocs;
     tabController = TabController(
       vsync: this,
       length: timelineTabBlocs.length,
@@ -175,6 +193,7 @@ class _TimelinesHomeTabPageBodyState extends State<TimelinesHomeTabPageBody>
   @override
   void dispose() {
     super.dispose();
+
     tabController.removeListener(listener);
     tabController.dispose();
   }
@@ -220,7 +239,7 @@ class _TimelinesHomeTabPageBodyState extends State<TimelinesHomeTabPageBody>
                 Row(
                   children: [
                     Expanded(
-                      child: _buildTabIndicatorWidget(),
+                      child: _buildTabIndicatorWidget(context),
                     ),
                     Padding(
                       padding: FediPadding.horizontalSmallPadding,
@@ -310,13 +329,15 @@ class _TimelinesHomeTabPageBodyState extends State<TimelinesHomeTabPageBody>
         height: FediSizes.iconInCircleDefaultSize,
       );
 
-  Widget _buildTabIndicatorWidget() => Padding(
-        padding: const EdgeInsets.only(top: 3.0, right: FediSizes.bigPadding),
-        child: TimelineTabTextTabIndicatorItemWidget(
-          tabController: tabController,
-          timelineTabBlocs: Provider.of<List<ITimelineTabBloc>>(
-              context,
-              listen: true),
-        ),
-      );
+  Widget _buildTabIndicatorWidget(BuildContext context) {
+    var timelineTabBlocs =
+        ITimelinesHomeTabPageBodyBloc.of(context, listen: false).timelineBlocs;
+    return Padding(
+      padding: const EdgeInsets.only(top: 3.0, right: FediSizes.bigPadding),
+      child: TimelineTabTextTabIndicatorItemWidget(
+        tabController: tabController,
+        timelineTabBlocs: timelineTabBlocs,
+      ),
+    );
+  }
 }
