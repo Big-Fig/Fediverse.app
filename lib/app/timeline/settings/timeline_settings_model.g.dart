@@ -23,7 +23,7 @@ class TimelineSettingsAdapter extends TypeAdapter<TimelineSettings> {
       excludeVisibilitiesStrings: (fields[7] as List)?.cast<String>(),
       onlyInRemoteList: fields[9] as PleromaList,
       withRemoteHashtag: fields[10] as PleromaTag,
-      timelineSettingsReplyVisibilityFilterString: fields[11] as String,
+      replyVisibilityFilterString: fields[11] as String,
       onlyFromRemoteAccount: fields[13] as PleromaAccount,
       onlyPinned: fields[14] as bool,
       excludeReblogs: fields[15] as bool,
@@ -53,7 +53,7 @@ class TimelineSettingsAdapter extends TypeAdapter<TimelineSettings> {
       ..writeByte(10)
       ..write(obj.withRemoteHashtag)
       ..writeByte(11)
-      ..write(obj.timelineSettingsReplyVisibilityFilterString)
+      ..write(obj.replyVisibilityFilterString)
       ..writeByte(13)
       ..write(obj.onlyFromRemoteAccount)
       ..writeByte(14)
@@ -85,8 +85,8 @@ TimelineSettings _$TimelineSettingsFromJson(Map<String, dynamic> json) {
         ? null
         : PleromaTag.fromJson(
             json['with_remote_hashtag'] as Map<String, dynamic>),
-    timelineSettingsReplyVisibilityFilterString:
-        json['timeline_reply_visibility_filter_string'] as String,
+    replyVisibilityFilterString:
+        json['reply_visibility_filter_string'] as String,
     onlyFromRemoteAccount: json['only_from_remote_account'] == null
         ? null
         : PleromaAccount.fromJson(
@@ -107,8 +107,7 @@ Map<String, dynamic> _$TimelineSettingsToJson(TimelineSettings instance) =>
       'exclude_visibilities_strings': instance.excludeVisibilitiesStrings,
       'only_in_list': instance.onlyInRemoteList?.toJson(),
       'with_remote_hashtag': instance.withRemoteHashtag?.toJson(),
-      'timeline_reply_visibility_filter_string':
-          instance.timelineSettingsReplyVisibilityFilterString,
+      'reply_visibility_filter_string': instance.replyVisibilityFilterString,
       'only_from_remote_account': instance.onlyFromRemoteAccount?.toJson(),
       'only_pinned': instance.onlyPinned,
       'exclude_reblogs': instance.excludeReblogs,

@@ -27,6 +27,7 @@ class FediBaseEditTextField extends StatelessWidget {
   final InputBorder errorBorder;
   final bool highlightMentions;
   final int maxLength;
+  final bool enabled;
 
   FediBaseEditTextField({
     @required this.textEditingController,
@@ -51,11 +52,13 @@ class FediBaseEditTextField extends StatelessWidget {
     @required this.focusedBorder,
     @required this.highlightMentions,
     @required this.maxLength,
+    this.enabled = true,
   });
 
   @override
   Widget build(BuildContext context) {
     return ExtendedTextField(
+      enabled: enabled,
       specialTextSpanBuilder: _SpecialTextSpanBuilder(),
 //    return TextField(
       maxLength: maxLength,

@@ -9,6 +9,7 @@ import 'package:fedi/local_preferences/local_preferences_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/list/pleroma_list_model.dart';
 import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
+import 'package:fedi/pleroma/timeline/pleroma_timeline_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
@@ -186,12 +187,12 @@ class Timeline implements IPreferencesObject {
 
   PleromaTag get withRemoteHashtag => settings?.withRemoteHashtag;
 
-  String get timelineSettingsReplyVisibilityFilterString =>
-      settings?.timelineSettingsReplyVisibilityFilterString;
+  String get PleromaReplyVisibilityFilterString =>
+      settings?.replyVisibilityFilterString;
 
-  TimelineSettingsReplyVisibilityFilter
-      get timelineSettingsReplyVisibilityFilter =>
-          settings?.timelineSettingsReplyVisibilityFilter;
+  PleromaReplyVisibilityFilter
+      get replyVisibilityFilter =>
+          settings?.replyVisibilityFilter;
 
   PleromaAccount get onlyFromRemoteAccount => settings?.onlyFromRemoteAccount;
 

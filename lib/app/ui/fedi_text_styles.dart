@@ -17,6 +17,7 @@ class FediTextStyles {
   static const _lightGreyColor = FediColors.lightGrey;
   static const _mediumGreyColor = FediColors.mediumGrey;
   static const _primaryColor = FediColors.primaryColor;
+  static const _errorColor = FediColors.error;
 
   static const TextStyle smallShortWhite = TextStyle(
     color: _whiteColor,
@@ -466,6 +467,118 @@ class FediTextStyles {
     fontWeight: _boldWeight,
   );
 
+  static const TextStyle smallShortError = TextStyle(
+    color: _errorColor,
+    fontSize: _smallSize,
+    height: _smallHeight,
+    fontWeight: _normalWeight,
+  );
+
+  static const TextStyle mediumShortError = TextStyle(
+    color: _errorColor,
+    fontSize: _mediumSize,
+    height: _smallHeight,
+    fontWeight: _normalWeight,
+  );
+
+  static const TextStyle bigShortError = TextStyle(
+    color: _errorColor,
+    fontSize: _bigSize,
+    height: _smallHeight,
+    fontWeight: _normalWeight,
+  );
+
+  static const TextStyle subHeaderShortError = TextStyle(
+    color: _errorColor,
+    fontSize: _subHeaderSize,
+    height: _smallHeight,
+    fontWeight: _normalWeight,
+  );
+
+  static const TextStyle smallTallError = TextStyle(
+    color: _errorColor,
+    fontSize: _smallSize,
+    height: _tallHeight,
+    fontWeight: _normalWeight,
+  );
+
+  static const TextStyle mediumTallError = TextStyle(
+    color: _errorColor,
+    fontSize: _mediumSize,
+    height: _tallHeight,
+    fontWeight: _normalWeight,
+  );
+
+  static const TextStyle bigTallError = TextStyle(
+    color: _errorColor,
+    fontSize: _bigSize,
+    height: _tallHeight,
+    fontWeight: _normalWeight,
+  );
+
+  static const TextStyle subHeaderTallError = TextStyle(
+    color: _errorColor,
+    fontSize: _subHeaderSize,
+    height: _tallHeight,
+    fontWeight: _normalWeight,
+  );
+
+  static const TextStyle smallShortBoldError = TextStyle(
+    color: _errorColor,
+    fontSize: _smallSize,
+    height: _smallHeight,
+    fontWeight: _boldWeight,
+  );
+
+  static const TextStyle mediumShortBoldError = TextStyle(
+    color: _errorColor,
+    fontSize: _mediumSize,
+    height: _smallHeight,
+    fontWeight: _boldWeight,
+  );
+
+  static const TextStyle bigShortBoldError = TextStyle(
+    color: _errorColor,
+    fontSize: _bigSize,
+    height: _smallHeight,
+    fontWeight: _boldWeight,
+  );
+
+  static const TextStyle subHeaderShortBoldError = TextStyle(
+    color: _errorColor,
+    fontSize: _subHeaderSize,
+    height: _smallHeight,
+    fontWeight: _boldWeight,
+  );
+
+  static const TextStyle smallTallBoldError = TextStyle(
+    color: _errorColor,
+    fontSize: _smallSize,
+    height: _tallHeight,
+    fontWeight: _boldWeight,
+  );
+
+  static const TextStyle mediumTallBoldError = TextStyle(
+    color: _errorColor,
+    fontSize: _mediumSize,
+    height: _tallHeight,
+    fontWeight: _boldWeight,
+  );
+
+  static const TextStyle bigTallBoldError = TextStyle(
+    color: _errorColor,
+    fontSize: _bigSize,
+    height: _tallHeight,
+    fontWeight: _boldWeight,
+  );
+
+  static const TextStyle subHeaderTallBoldError = TextStyle(
+    color: _errorColor,
+    fontSize: _subHeaderSize,
+    height: _tallHeight,
+    fontWeight: _boldWeight,
+  );
+
   static const TextStyle smallShortLightGrey = TextStyle(
     color: _lightGreyColor,
     fontSize: _smallSize,
@@ -695,7 +808,6 @@ class FediTextStyles {
     fontWeight: _boldWeight,
     color: _whiteColor,
   );
-
 
   static const TextStyle dialogTitleBoldDarkGrey = TextStyle(
     fontSize: 18.0,

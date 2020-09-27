@@ -33,7 +33,7 @@ class FormBoolFieldFormRowWidget extends StatelessWidget {
               FediFormSwitchRow(
                 label: label,
                 onChanged: field.changeCurrentValue,
-                value: currentValue,
+                value: currentValue == true,
                 enabled: enabled,
               ),
               if (desc != null) Text(desc),

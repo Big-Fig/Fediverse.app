@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:fedi/enum/enum_values.dart';
 import 'package:fedi/local_preferences/local_preferences_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/list/pleroma_list_model.dart';
 import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
+import 'package:fedi/pleroma/timeline/pleroma_timeline_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
@@ -102,8 +102,8 @@ class TimelineSettings extends IPreferencesObject {
   final PleromaTag withRemoteHashtag;
 
   @HiveField(11)
-  @JsonKey(name: "timeline_reply_visibility_filter_string")
-  final String timelineSettingsReplyVisibilityFilterString;
+  @JsonKey(name: "reply_visibility_filter_string")
+  final String replyVisibilityFilterString;
 
   @HiveField(13)
   @JsonKey(name: "only_from_remote_account")
@@ -127,7 +127,7 @@ class TimelineSettings extends IPreferencesObject {
     @required this.excludeVisibilitiesStrings,
     @required this.onlyInRemoteList,
     @required this.withRemoteHashtag,
-    @required this.timelineSettingsReplyVisibilityFilterString,
+    @required this.replyVisibilityFilterString,
     @required this.onlyFromRemoteAccount,
     @required this.onlyPinned,
     @required this.excludeReblogs,
@@ -149,7 +149,7 @@ class TimelineSettings extends IPreferencesObject {
               ?.toList(),
           onlyInRemoteList: null,
           withRemoteHashtag: null,
-          timelineSettingsReplyVisibilityFilterString: null,
+          replyVisibilityFilterString: null,
           onlyFromRemoteAccount: null,
           onlyPinned: null,
           excludeReblogs: null,
@@ -173,7 +173,7 @@ class TimelineSettings extends IPreferencesObject {
               ?.toList(),
           onlyInRemoteList: null,
           withRemoteHashtag: null,
-          timelineSettingsReplyVisibilityFilterString: null,
+          replyVisibilityFilterString: null,
           onlyFromRemoteAccount: null,
           onlyPinned: null,
           excludeReblogs: null,
@@ -197,7 +197,7 @@ class TimelineSettings extends IPreferencesObject {
               ?.toList(),
           onlyInRemoteList: null,
           withRemoteHashtag: withRemoteHashtag,
-          timelineSettingsReplyVisibilityFilterString: null,
+          replyVisibilityFilterString: null,
           onlyFromRemoteAccount: null,
           onlyPinned: null,
           excludeReblogs: null,
@@ -219,7 +219,7 @@ class TimelineSettings extends IPreferencesObject {
               ?.toList(),
           onlyInRemoteList: onlyInRemoteList,
           withRemoteHashtag: null,
-          timelineSettingsReplyVisibilityFilterString: null,
+          replyVisibilityFilterString: null,
           onlyFromRemoteAccount: null,
           onlyPinned: null,
           excludeReblogs: null,
@@ -241,7 +241,7 @@ class TimelineSettings extends IPreferencesObject {
           excludeVisibilitiesStrings: [],
           onlyInRemoteList: null,
           withRemoteHashtag: null,
-          timelineSettingsReplyVisibilityFilterString: null,
+          replyVisibilityFilterString: null,
           onlyFromRemoteAccount: onlyFromRemoteAccount,
           onlyPinned: onlyPinned,
           excludeReblogs: excludeReblogs,
@@ -258,7 +258,7 @@ class TimelineSettings extends IPreferencesObject {
     String typeString,
     PleromaList onlyInRemoteList,
     PleromaTag withRemoteHashtag,
-    String timelineSettingsReplyVisibilityFilterString,
+    String replyVisibilityFilterString,
     PleromaAccount onlyFromRemoteAccount,
     bool excludeReblogs,
     bool onlyPinned,
@@ -274,9 +274,8 @@ class TimelineSettings extends IPreferencesObject {
             excludeVisibilitiesStrings ?? this.excludeVisibilitiesStrings,
         onlyInRemoteList: onlyInRemoteList ?? this.onlyInRemoteList,
         withRemoteHashtag: withRemoteHashtag ?? this.withRemoteHashtag,
-        timelineSettingsReplyVisibilityFilterString:
-            timelineSettingsReplyVisibilityFilterString ??
-                this.timelineSettingsReplyVisibilityFilterString,
+        replyVisibilityFilterString:
+            replyVisibilityFilterString ?? this.replyVisibilityFilterString,
         onlyFromRemoteAccount:
             onlyFromRemoteAccount ?? this.onlyFromRemoteAccount,
         excludeReblogs: excludeReblogs ?? this.excludeReblogs,
@@ -297,8 +296,7 @@ class TimelineSettings extends IPreferencesObject {
           excludeVisibilitiesStrings == other.excludeVisibilitiesStrings &&
           onlyInRemoteList == other.onlyInRemoteList &&
           withRemoteHashtag == other.withRemoteHashtag &&
-          timelineSettingsReplyVisibilityFilterString ==
-              other.timelineSettingsReplyVisibilityFilterString &&
+          replyVisibilityFilterString == other.replyVisibilityFilterString &&
           onlyFromRemoteAccount == other.onlyFromRemoteAccount &&
           onlyPinned == other.onlyPinned &&
           excludeReblogs == other.excludeReblogs;
@@ -314,7 +312,7 @@ class TimelineSettings extends IPreferencesObject {
       excludeVisibilitiesStrings.hashCode ^
       onlyInRemoteList.hashCode ^
       withRemoteHashtag.hashCode ^
-      timelineSettingsReplyVisibilityFilterString.hashCode ^
+      replyVisibilityFilterString.hashCode ^
       onlyFromRemoteAccount.hashCode ^
       onlyPinned.hashCode ^
       excludeReblogs.hashCode;
@@ -330,8 +328,8 @@ class TimelineSettings extends IPreferencesObject {
         ' excludeVisibilitiesStrings: $excludeVisibilitiesStrings,'
         ' onlyInListWithRemoteId: $onlyInRemoteList,'
         ' withHashtag: $withRemoteHashtag,'
-        ' timelineSettingsReplyVisibilityFilterString:'
-        ' $timelineSettingsReplyVisibilityFilterString,'
+        ' PleromaReplyVisibilityFilterString:'
+        ' $replyVisibilityFilterString,'
         ' onlyFromAccountWithRemoteId: $onlyFromRemoteAccount,'
         ' onlyPinned: $onlyPinned, excludeReblogs: $excludeReblogs}';
   }
@@ -356,38 +354,9 @@ class TimelineSettings extends IPreferencesObject {
           excludeVisibilityString.toPleromaVisibility())
       ?.toList();
 
-  TimelineSettingsReplyVisibilityFilter
-      get timelineSettingsReplyVisibilityFilter =>
-          timelineSettingsReplyVisibilityFilterString
-              ?.toTimelineSettingsReplyVisibilityFilter();
+  PleromaReplyVisibilityFilter get replyVisibilityFilter =>
+      replyVisibilityFilterString?.toPleromaReplyVisibilityFilter();
 
   static String generateUniqueTimelineId() =>
       "${DateTime.now().millisecondsSinceEpoch}";
 }
-
-enum TimelineSettingsReplyVisibilityFilter {
-  following,
-  self,
-}
-
-extension TimelineSettingsReplyVisibilityFilterExtension
-    on TimelineSettingsReplyVisibilityFilter {
-  String toJsonValue() {
-    var filter =
-        timelineSettingsReplyVisibilityFilterEnumValues.enumToValueMap[this];
-    assert(filter != null, "invalid type $filter");
-    return filter;
-  }
-}
-
-extension TimelineSettingsReplyVisibilityFilterStringExtension on String {
-  TimelineSettingsReplyVisibilityFilter
-      toTimelineSettingsReplyVisibilityFilter() =>
-          timelineSettingsReplyVisibilityFilterEnumValues.valueToEnumMap[this];
-}
-
-EnumValues<TimelineSettingsReplyVisibilityFilter>
-    timelineSettingsReplyVisibilityFilterEnumValues = EnumValues({
-  "following": TimelineSettingsReplyVisibilityFilter.following,
-  "self": TimelineSettingsReplyVisibilityFilter.self,
-});

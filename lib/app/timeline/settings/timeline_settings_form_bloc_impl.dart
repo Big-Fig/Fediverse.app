@@ -1,7 +1,17 @@
 import 'package:fedi/app/timeline/settings/timeline_settings_form_bloc.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
+import 'package:fedi/app/timeline/timeline_model.dart';
+import 'package:fedi/pleroma/account/pleroma_account_model.dart';
+import 'package:fedi/pleroma/list/pleroma_list_model.dart';
+import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
+import 'package:fedi/pleroma/timeline/pleroma_timeline_model.dart';
+import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc.dart';
 import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc_impl.dart';
+import 'package:fedi/ui/form/field/value/form_value_field_bloc.dart';
+import 'package:fedi/ui/form/field/value/form_value_field_bloc_impl.dart';
+import 'package:fedi/ui/form/field/value/list/form_list_value_field_bloc_impl.dart';
+import 'package:fedi/ui/form/field/value/string/form_non_null_value_field_validation.dart';
 import 'package:fedi/ui/form/form_bloc_impl.dart';
 import 'package:fedi/ui/form/form_item_bloc.dart';
 import 'package:flutter/widgets.dart';
@@ -39,8 +49,28 @@ class TimelineSettingsFormBloc extends FormBloc
   @override
   final IFormBoolFieldBloc excludeReblogsFieldBloc;
 
-  TimelineSettingsFormBloc({@required TimelineSettings originalSettings})
-      : _timelineSettingsSubject = BehaviorSubject.seeded(originalSettings),
+  @override
+  final IFormValueFieldBloc<PleromaAccount> onlyFromRemoteAccountFieldBloc;
+
+  @override
+  final IFormValueFieldBloc<PleromaTag> withRemoteHashtagFieldBloc;
+
+  @override
+  final IFormValueFieldBloc<PleromaList> onlyInRemoteListFieldBloc;
+
+  @override
+  final IFormValueFieldBloc<PleromaReplyVisibilityFilter>
+      replyVisibilityFilterFieldBloc;
+
+  @override
+  FormListValueFieldBloc<PleromaVisibility> excludeVisibilitiesFieldBloc;
+
+  TimelineType type;
+
+  TimelineSettingsFormBloc({
+    @required TimelineSettings originalSettings,
+    @required this.type,
+  })  : _timelineSettingsSubject = BehaviorSubject.seeded(originalSettings),
         excludeRepliesFieldBloc = FormBoolFieldBloc(
             originValue: originalSettings?.excludeReplies ?? false),
         onlyWithMediaFieldBloc = FormBoolFieldBloc(
@@ -56,7 +86,46 @@ class TimelineSettingsFormBloc extends FormBloc
         excludeReblogsFieldBloc = FormBoolFieldBloc(
             originValue: originalSettings?.excludeReblogs ?? false),
         withMutedFieldBloc = FormBoolFieldBloc(
-            originValue: originalSettings?.withMuted ?? false) {
+            originValue: originalSettings?.withMuted ?? false),
+        onlyFromRemoteAccountFieldBloc = FormValueFieldBloc(
+            originValue: originalSettings?.onlyFromRemoteAccount,
+            validators: [
+              (currentValue) {
+                if (type != TimelineType.account || currentValue != null) {
+                  return null;
+                } else {
+                  return FormNonNullValueFieldValidationError();
+                }
+              }
+            ]),
+        withRemoteHashtagFieldBloc = FormValueFieldBloc(
+            originValue: originalSettings?.withRemoteHashtag,
+            validators: [
+              (currentValue) {
+                if (type != TimelineType.hashtag || currentValue != null) {
+                  return null;
+                } else {
+                  return FormNonNullValueFieldValidationError();
+                }
+              },
+            ]),
+        onlyInRemoteListFieldBloc = FormValueFieldBloc(
+            originValue: originalSettings?.onlyInRemoteList,
+            validators: [
+              (currentValue) {
+                if (type != TimelineType.customList || currentValue != null) {
+                  return null;
+                } else {
+                  return FormNonNullValueFieldValidationError();
+                }
+              }
+            ]),
+        replyVisibilityFilterFieldBloc = FormValueFieldBloc(
+            originValue: originalSettings?.replyVisibilityFilter,
+            validators: []),
+        excludeVisibilitiesFieldBloc = FormListValueFieldBloc(
+            originValue: originalSettings?.excludeVisibilities,
+            validators: []) {
     addDisposable(subject: _timelineSettingsSubject);
 
     addDisposable(disposable: excludeRepliesFieldBloc);
@@ -66,6 +135,12 @@ class TimelineSettingsFormBloc extends FormBloc
     addDisposable(disposable: onlyLocalFieldBloc);
     addDisposable(disposable: excludeReblogsFieldBloc);
     addDisposable(disposable: withMutedFieldBloc);
+
+    addDisposable(disposable: onlyFromRemoteAccountFieldBloc);
+    addDisposable(disposable: withRemoteHashtagFieldBloc);
+    addDisposable(disposable: onlyInRemoteListFieldBloc);
+    addDisposable(disposable: replyVisibilityFilterFieldBloc);
+    addDisposable(disposable: excludeVisibilitiesFieldBloc);
 
     addDisposable(streamSubscription:
         excludeRepliesFieldBloc.currentValueStream.listen((_) {
@@ -95,6 +170,27 @@ class TimelineSettingsFormBloc extends FormBloc
         streamSubscription: withMutedFieldBloc.currentValueStream.listen((_) {
       _onSomethingChanged();
     }));
+
+    addDisposable(streamSubscription:
+        onlyFromRemoteAccountFieldBloc.currentValueStream.listen((_) {
+      _onSomethingChanged();
+    }));
+    addDisposable(streamSubscription:
+        withRemoteHashtagFieldBloc.currentValueStream.listen((_) {
+      _onSomethingChanged();
+    }));
+    addDisposable(streamSubscription:
+        onlyInRemoteListFieldBloc.currentValueStream.listen((_) {
+      _onSomethingChanged();
+    }));
+    addDisposable(streamSubscription:
+        replyVisibilityFilterFieldBloc.currentValueStream.listen((_) {
+      _onSomethingChanged();
+    }));
+    addDisposable(streamSubscription:
+        excludeVisibilitiesFieldBloc.currentValueStream.listen((_) {
+      _onSomethingChanged();
+    }));
   }
 
   void _onSomethingChanged() {
@@ -106,12 +202,14 @@ class TimelineSettingsFormBloc extends FormBloc
       onlyRemote: onlyRemoteFieldBloc.currentValue,
       onlyLocal: onlyLocalFieldBloc.currentValue,
       withMuted: withMutedFieldBloc.currentValue,
-      excludeVisibilitiesStrings: oldPreferences.excludeVisibilitiesStrings,
-      onlyInRemoteList: oldPreferences.onlyInRemoteList,
-      withRemoteHashtag: oldPreferences.withRemoteHashtag,
-      timelineSettingsReplyVisibilityFilterString:
-          oldPreferences.timelineSettingsReplyVisibilityFilterString,
-      onlyFromRemoteAccount: oldPreferences.onlyFromRemoteAccount,
+      excludeVisibilitiesStrings: excludeVisibilitiesFieldBloc.currentValue
+          ?.map((visibility) => visibility.toJsonValue())
+          ?.toList(),
+      onlyInRemoteList: onlyInRemoteListFieldBloc.currentValue,
+      withRemoteHashtag: withRemoteHashtagFieldBloc.currentValue,
+      replyVisibilityFilterString:
+          replyVisibilityFilterFieldBloc.currentValue?.toJsonValue(),
+      onlyFromRemoteAccount: onlyFromRemoteAccountFieldBloc.currentValue,
       excludeReblogs: excludeReblogsFieldBloc.currentValue,
       onlyPinned: onlyPinnedFieldBloc.currentValue,
     );
@@ -130,10 +228,49 @@ class TimelineSettingsFormBloc extends FormBloc
         withMutedFieldBloc,
         excludeReblogsFieldBloc,
         onlyPinnedFieldBloc,
+        onlyFromRemoteAccountFieldBloc,
+        withRemoteHashtagFieldBloc,
+        onlyInRemoteListFieldBloc,
+        replyVisibilityFilterFieldBloc,
+        excludeVisibilitiesFieldBloc,
       ];
 
   @override
-  void fill(TimelineSettings newSettings) {
+  void fill({
+    @required TimelineType type,
+    @required TimelineSettings newSettings,
+  }) {
+    this.type = type;
+
+    // todo: refactor
+    withRemoteHashtagFieldBloc.updateValidators([
+      (currentValue) {
+        if (type != TimelineType.hashtag || currentValue != null) {
+          return null;
+        } else {
+          return FormNonNullValueFieldValidationError();
+        }
+      }
+    ]);
+    onlyInRemoteListFieldBloc.updateValidators([
+      (currentValue) {
+        if (type != TimelineType.customList || currentValue != null) {
+          return null;
+        } else {
+          return FormNonNullValueFieldValidationError();
+        }
+      }
+    ]);
+    onlyFromRemoteAccountFieldBloc.updateValidators([
+      (currentValue) {
+        if (type != TimelineType.account || currentValue != null) {
+          return null;
+        } else {
+          return FormNonNullValueFieldValidationError();
+        }
+      }
+    ]);
+
     onlyWithMediaFieldBloc.changeCurrentValue(newSettings.onlyWithMedia);
     excludeNsfwSensitiveFieldBloc
         .changeCurrentValue(newSettings.excludeNsfwSensitive);
@@ -143,5 +280,17 @@ class TimelineSettingsFormBloc extends FormBloc
     withMutedFieldBloc.changeCurrentValue(newSettings.withMuted);
     excludeReblogsFieldBloc.changeCurrentValue(newSettings.excludeReblogs);
     onlyPinnedFieldBloc.changeCurrentValue(newSettings.onlyPinned);
+
+    onlyFromRemoteAccountFieldBloc
+        .changeCurrentValue(newSettings.onlyFromRemoteAccount);
+    onlyFromRemoteAccountFieldBloc
+        .changeCurrentValue(newSettings.onlyFromRemoteAccount);
+    withRemoteHashtagFieldBloc
+        .changeCurrentValue(newSettings.withRemoteHashtag);
+    onlyInRemoteListFieldBloc.changeCurrentValue(newSettings.onlyInRemoteList);
+    replyVisibilityFilterFieldBloc
+        .changeCurrentValue(newSettings.replyVisibilityFilter);
+    excludeVisibilitiesFieldBloc
+        .changeCurrentValue(newSettings.excludeVisibilities);
   }
 }

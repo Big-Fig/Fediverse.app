@@ -7,7 +7,7 @@ import 'package:rxdart/rxdart.dart';
 class FormValueFieldBloc<T> extends FormFieldBloc
     implements IFormValueFieldBloc<T> {
   @override
-  final List<FormValueFieldValidation<T>> validators;
+  List<FormValueFieldValidation<T>> validators;
 
   final BehaviorSubject<List<FormValueFieldValidationError>>
       _currentErrorSubject;
@@ -40,6 +40,8 @@ class FormValueFieldBloc<T> extends FormFieldBloc
     addDisposable(subject: _currentValueSubject);
     addDisposable(subject: _currentErrorSubject);
 
+    revalidate();
+
     addDisposable(streamSubscription: _currentValueSubject.listen((newValue) {
       var changed = isValueChanged(newValue, originValue);
       isChangedSubject.add(changed);
@@ -70,5 +72,11 @@ class FormValueFieldBloc<T> extends FormFieldBloc
   @override
   void clear() {
     _currentValueSubject.add(originValue);
+  }
+
+  @override
+  void updateValidators(List<FormValueFieldValidation<T>> validators) {
+    this.validators = validators;
+    revalidate();
   }
 }

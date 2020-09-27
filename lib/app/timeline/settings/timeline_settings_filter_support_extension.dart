@@ -211,7 +211,7 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
     throw Exception("Invalid TimelineType $this");
   }
 
-  bool isTimelineReplyVisibilityFilterSupportedOnInstance(
+  bool isReplyVisibilityFilterSupportedOnInstance(
       AuthInstance authInstance) {
     switch (this) {
       case TimelineType.public:

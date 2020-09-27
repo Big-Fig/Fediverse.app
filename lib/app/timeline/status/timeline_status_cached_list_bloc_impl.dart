@@ -56,38 +56,38 @@ class TimelineStatusCachedListBloc extends DisposableOwner
         case TimelineType.public:
           addDisposable(
               disposable: webSocketsHandlerManagerBloc.listenPublicChannel(
-            local: _timeline.onlyLocal,
-            onlyMedia: _timeline.onlyWithMedia,
-          ));
+                local: _timeline.onlyLocal,
+                onlyMedia: _timeline.onlyWithMedia,
+              ));
 
           break;
         case TimelineType.home:
           addDisposable(
               disposable: webSocketsHandlerManagerBloc.listenMyAccountChannel(
-            notification: false,
-            chat: false,
-          ));
+                notification: false,
+                chat: false,
+              ));
           break;
         case TimelineType.customList:
           addDisposable(
               disposable: webSocketsHandlerManagerBloc.listenListChannel(
-            listId: _timeline.onlyInRemoteList.id,
-          ));
+                listId: _timeline.onlyInRemoteList.id,
+              ));
           break;
 
         case TimelineType.hashtag:
           addDisposable(
               disposable: webSocketsHandlerManagerBloc.listenHashtagChannel(
-            hashtag: _timeline.withRemoteHashtag.name,
-            local: _timeline.onlyLocal,
-          ));
+                hashtag: _timeline.withRemoteHashtag.name,
+                local: _timeline.onlyLocal,
+              ));
           break;
         case TimelineType.account:
           addDisposable(
               disposable: webSocketsHandlerManagerBloc.listenAccountChannel(
-            accountId: _timeline.onlyFromRemoteAccount.id,
-            notification: false,
-          ));
+                accountId: _timeline.onlyFromRemoteAccount.id,
+                notification: false,
+              ));
           break;
       }
     }
@@ -99,10 +99,9 @@ class TimelineStatusCachedListBloc extends DisposableOwner
   bool get isFromHomeTimeline => timelineType == TimelineType.home;
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage(
-      {@required int limit,
-      @required IStatus newerThan,
-      @required IStatus olderThan}) async {
+  Future<bool> refreshItemsFromRemoteForPage({@required int limit,
+    @required IStatus newerThan,
+    @required IStatus olderThan}) async {
     _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
         "\t _timeline = $_timeline"
         "\t newerThan = $newerThan"
@@ -113,6 +112,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
     var withMuted = _timeline.withMuted == true;
     var onlyWithMedia = _timeline.onlyWithMedia;
     var excludeVisibilities = _timeline.excludeVisibilities;
+    var pleromaReplyVisibilityFilter = _timeline.replyVisibilityFilter;
     var maxId = olderThan?.remoteId;
     var sinceId = newerThan?.remoteId;
     switch (timelineType) {
@@ -125,6 +125,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
           onlyWithMedia: onlyWithMedia,
           withMuted: withMuted,
           excludeVisibilities: excludeVisibilities,
+          pleromaReplyVisibilityFilter: pleromaReplyVisibilityFilter,
         );
         break;
       case TimelineType.customList:
@@ -140,12 +141,13 @@ class TimelineStatusCachedListBloc extends DisposableOwner
         break;
       case TimelineType.home:
         remoteStatuses = await pleromaTimelineService.getHomeTimeline(
-          maxId: maxId,
-          sinceId: sinceId,
-          limit: limit,
-          onlyLocal: onlyLocal,
-          withMuted: withMuted,
-          excludeVisibilities: excludeVisibilities,
+            maxId: maxId,
+            sinceId: sinceId,
+            limit: limit,
+            onlyLocal: onlyLocal,
+            withMuted: withMuted,
+            excludeVisibilities: excludeVisibilities,
+          pleromaReplyVisibilityFilter: pleromaReplyVisibilityFilter,
         );
         break;
       case TimelineType.hashtag:
@@ -220,10 +222,9 @@ class TimelineStatusCachedListBloc extends DisposableOwner
   }
 
   @override
-  Future<List<IStatus>> loadLocalItems(
-      {@required int limit,
-      @required IStatus newerThan,
-      @required IStatus olderThan}) async {
+  Future<List<IStatus>> loadLocalItems({@required int limit,
+    @required IStatus newerThan,
+    @required IStatus olderThan}) async {
     _logger.finest(() => "start loadLocalItems \n"
         "\t newerThan=$newerThan"
         "\t olderThan=$olderThan");
@@ -260,12 +261,11 @@ class TimelineStatusCachedListBloc extends DisposableOwner
     );
 
     _logger.finer(() =>
-        "finish loadLocalItems for $_timeline statuses ${statuses.length}");
+    "finish loadLocalItems for $_timeline statuses ${statuses.length}");
     return statuses;
   }
 
-  static TimelineStatusCachedListBloc createFromContext(
-    BuildContext context, {
+  static TimelineStatusCachedListBloc createFromContext(BuildContext context, {
     @required TimelineType timelineType,
     @required ITimelineLocalPreferencesBloc timelineLocalPreferencesBloc,
     @required bool listenWebSockets,
