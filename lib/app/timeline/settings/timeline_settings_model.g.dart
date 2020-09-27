@@ -22,7 +22,7 @@ class TimelineSettingsAdapter extends TypeAdapter<TimelineSettings> {
       withMuted: fields[6] as bool,
       excludeVisibilitiesStrings: (fields[7] as List)?.cast<String>(),
       onlyInRemoteList: fields[9] as PleromaList,
-      withRemoteHashtag: fields[10] as PleromaTag,
+      withRemoteHashtag: fields[10] as String,
       replyVisibilityFilterString: fields[11] as String,
       onlyFromRemoteAccount: fields[13] as PleromaAccount,
       onlyPinned: fields[14] as bool,
@@ -81,10 +81,7 @@ TimelineSettings _$TimelineSettingsFromJson(Map<String, dynamic> json) {
     onlyInRemoteList: json['only_in_list'] == null
         ? null
         : PleromaList.fromJson(json['only_in_list'] as Map<String, dynamic>),
-    withRemoteHashtag: json['with_remote_hashtag'] == null
-        ? null
-        : PleromaTag.fromJson(
-            json['with_remote_hashtag'] as Map<String, dynamic>),
+    withRemoteHashtag: json['with_remote_hashtag'] as String,
     replyVisibilityFilterString:
         json['reply_visibility_filter_string'] as String,
     onlyFromRemoteAccount: json['only_from_remote_account'] == null
@@ -106,7 +103,7 @@ Map<String, dynamic> _$TimelineSettingsToJson(TimelineSettings instance) =>
       'with_muted': instance.withMuted,
       'exclude_visibilities_strings': instance.excludeVisibilitiesStrings,
       'only_in_list': instance.onlyInRemoteList?.toJson(),
-      'with_remote_hashtag': instance.withRemoteHashtag?.toJson(),
+      'with_remote_hashtag': instance.withRemoteHashtag,
       'reply_visibility_filter_string': instance.replyVisibilityFilterString,
       'only_from_remote_account': instance.onlyFromRemoteAccount?.toJson(),
       'only_pinned': instance.onlyPinned,

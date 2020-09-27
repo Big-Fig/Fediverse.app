@@ -185,7 +185,7 @@ class Timeline implements IPreferencesObject {
 
   PleromaList get onlyInRemoteList => settings?.onlyInRemoteList;
 
-  PleromaTag get withRemoteHashtag => settings?.withRemoteHashtag;
+  String get withRemoteHashtag => settings?.withRemoteHashtag;
 
   String get PleromaReplyVisibilityFilterString =>
       settings?.replyVisibilityFilterString;

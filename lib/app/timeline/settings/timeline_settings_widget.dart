@@ -2,12 +2,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/form/form_bool_field_form_row_widget.dart';
+import 'package:fedi/app/form/form_string_field_form_row_widget.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_filter_support_extension.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_form_bloc.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_only_from_remote_account_form_field_row_widget.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_only_in_remote_list_form_field_row_widget.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_reply_visibility_form_field_row_widget.dart';
-import 'package:fedi/app/timeline/settings/timeline_settings_with_remote_hashtag_form_field_row_widget.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc.dart';
 import 'package:flutter/cupertino.dart';
@@ -240,12 +240,14 @@ class TimelineSettingsWidget extends StatelessWidget {
   ) {
     var isSupported = type.isWithHashtagFilterSupportedOnInstance(authInstance);
 
-    return TimelineSettingsWithRemoteHashtagFormFieldRowWidget(
-      formValueFieldBloc: settingsBloc.withRemoteHashtagFieldBloc,
+    return FormStringFieldFormRowWidget(
       enabled: isSupported,
-      desc: isSupported
-          ? null
-          : "app.timeline.settings.field.not_supported.desc".tr(),
+      label: "app.timeline.settings.with_remote_hashtag.field.label".tr(),
+      autocorrect: false,
+      hint: "app.timeline.settings.with_remote_hashtag.field.hint".tr(),
+      formStringFieldBloc: settingsBloc.withRemoteHashtagFieldBloc,
+      onSubmitted: null,
+      textInputAction: TextInputAction.done,
     );
   }
 

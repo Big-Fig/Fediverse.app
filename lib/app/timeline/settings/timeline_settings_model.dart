@@ -44,7 +44,7 @@ class TimelineSettings extends IPreferencesObject {
       );
 
   static TimelineSettings createDefaultHashtagSettings({
-    @required IPleromaTag withRemoteHashtag,
+    @required String withRemoteHashtag,
   }) =>
       TimelineSettings.hashtag(
         onlyWithMedia: false,
@@ -99,7 +99,7 @@ class TimelineSettings extends IPreferencesObject {
 
   @HiveField(10)
   @JsonKey(name: "with_remote_hashtag")
-  final PleromaTag withRemoteHashtag;
+  final String withRemoteHashtag;
 
   @HiveField(11)
   @JsonKey(name: "reply_visibility_filter_string")
@@ -184,7 +184,7 @@ class TimelineSettings extends IPreferencesObject {
     @required bool onlyLocal,
     @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
-    @required IPleromaTag withRemoteHashtag,
+    @required String withRemoteHashtag,
   }) : this(
           onlyWithMedia: onlyWithMedia,
           excludeReplies: null,

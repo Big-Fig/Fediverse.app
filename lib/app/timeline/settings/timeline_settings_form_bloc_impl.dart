@@ -3,7 +3,6 @@ import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
 import 'package:fedi/pleroma/list/pleroma_list_model.dart';
-import 'package:fedi/pleroma/tag/pleroma_tag_model.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc.dart';
@@ -12,6 +11,8 @@ import 'package:fedi/ui/form/field/value/form_value_field_bloc.dart';
 import 'package:fedi/ui/form/field/value/form_value_field_bloc_impl.dart';
 import 'package:fedi/ui/form/field/value/list/form_list_value_field_bloc_impl.dart';
 import 'package:fedi/ui/form/field/value/string/form_non_null_value_field_validation.dart';
+import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
+import 'package:fedi/ui/form/field/value/string/form_string_field_bloc_impl.dart';
 import 'package:fedi/ui/form/form_bloc_impl.dart';
 import 'package:fedi/ui/form/form_item_bloc.dart';
 import 'package:flutter/widgets.dart';
@@ -53,7 +54,7 @@ class TimelineSettingsFormBloc extends FormBloc
   final IFormValueFieldBloc<PleromaAccount> onlyFromRemoteAccountFieldBloc;
 
   @override
-  final IFormValueFieldBloc<PleromaTag> withRemoteHashtagFieldBloc;
+  final IFormStringFieldBloc withRemoteHashtagFieldBloc;
 
   @override
   final IFormValueFieldBloc<PleromaList> onlyInRemoteListFieldBloc;
@@ -98,11 +99,13 @@ class TimelineSettingsFormBloc extends FormBloc
                 }
               }
             ]),
-        withRemoteHashtagFieldBloc = FormValueFieldBloc(
+        withRemoteHashtagFieldBloc = FormStringFieldBloc(
             originValue: originalSettings?.withRemoteHashtag,
+            maxLength: 50,
             validators: [
               (currentValue) {
-                if (type != TimelineType.hashtag || currentValue != null) {
+                if (type != TimelineType.hashtag ||
+                    currentValue?.isNotEmpty == true) {
                   return null;
                 } else {
                   return FormNonNullValueFieldValidationError();
@@ -245,7 +248,7 @@ class TimelineSettingsFormBloc extends FormBloc
     // todo: refactor
     withRemoteHashtagFieldBloc.updateValidators([
       (currentValue) {
-        if (type != TimelineType.hashtag || currentValue != null) {
+        if (type != TimelineType.hashtag || currentValue?.isNotEmpty == true) {
           return null;
         } else {
           return FormNonNullValueFieldValidationError();
