@@ -15,8 +15,12 @@ import 'package:flutter/material.dart';
 
 class TimelineSettingsWidget extends StatelessWidget {
   final TimelineType type;
+  final bool isNullablePossible;
 
-  TimelineSettingsWidget({@required this.type});
+  TimelineSettingsWidget({
+    @required this.type,
+    @required this.isNullablePossible,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -213,6 +217,7 @@ class TimelineSettingsWidget extends StatelessWidget {
       desc: isSupported
           ? null
           : "app.timeline.settings.field.not_supported.desc".tr(),
+      nullable: isNullablePossible,
     );
   }
 
@@ -230,6 +235,7 @@ class TimelineSettingsWidget extends StatelessWidget {
       desc: isSupported
           ? null
           : "app.timeline.settings.field.not_supported.desc".tr(),
+      nullable: isNullablePossible,
     );
   }
 

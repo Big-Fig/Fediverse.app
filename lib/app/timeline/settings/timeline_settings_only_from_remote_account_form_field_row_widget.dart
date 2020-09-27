@@ -10,12 +10,14 @@ class TimelineSettingsOnlyFromRemoteAccountFormFieldRowWidget
     extends StatelessWidget {
   final IFormValueFieldBloc<PleromaAccount> formValueFieldBloc;
   final bool enabled;
+  final bool nullable;
   final String desc;
 
   TimelineSettingsOnlyFromRemoteAccountFormFieldRowWidget({
     @required this.formValueFieldBloc,
     this.enabled = true,
     @required this.desc,
+    @required this.nullable,
   });
 
   @override
@@ -25,7 +27,7 @@ class TimelineSettingsOnlyFromRemoteAccountFormFieldRowWidget
       builder: (context, snapshot) {
         var currentValue = snapshot.data;
         return FediFormSingleChooseCustomFromListFieldRow<PleromaAccount>(
-          nullable: true,
+          nullable: nullable,
           enabled: enabled,
           error: formValueFieldBloc.isHaveAtLeastOneError
               ? "form.field.value.error.null.desc".tr()

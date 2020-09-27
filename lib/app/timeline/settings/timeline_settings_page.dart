@@ -36,6 +36,7 @@ class TimelineSettingsPage extends StatelessWidget {
           ),
           loadingFinishedBuilder: (context) => TimelineSettingsWidget(
             type: originalTimeline.type,
+            isNullablePossible: false,
           ),
         ),
       ),
