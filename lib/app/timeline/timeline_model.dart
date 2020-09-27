@@ -198,6 +198,21 @@ class Timeline implements IPreferencesObject {
   bool get onlyPinned => settings?.onlyPinned;
 
   bool get excludeReblogs => settings?.excludeReblogs;
+
+  Timeline copyWith({
+    String id,
+    TimelineType type,
+    TimelineSettings settings,
+    String label,
+    bool isPossibleToDelete,
+  }) =>
+      Timeline(
+        id: id ?? this.id,
+        typeString: type?.toJsonValue() ?? typeString,
+        settings: settings ?? this.settings,
+        label: label ?? this.label,
+        isPossibleToDelete: isPossibleToDelete ?? this.isPossibleToDelete,
+      );
 }
 
 enum TimelineType {
