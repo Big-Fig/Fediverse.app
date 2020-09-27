@@ -19,8 +19,6 @@ typedef TimelineSavedCallback = Function(Timeline timeline);
 class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
   final TimelineSavedCallback timelineSavedCallback;
 
-
-
   @override
   IFormStringFieldBloc idFieldBloc = FormStringFieldBloc(
     originValue: TimelineSettings.generateUniqueTimelineId(),
@@ -44,8 +42,10 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
       FormValueFieldBloc(originValue: TimelineType.public, validators: []);
 
   @override
-  final ITimelineSettingsFormBloc settingsFormBloc = TimelineSettingsFormBloc(
-      originalSettings: TimelineSettings.createDefaultPublicSettings());
+  ITimelineSettingsFormBloc settingsFormBloc = TimelineSettingsFormBloc(
+    type: TimelineType.public,
+    originalSettings: TimelineSettings.createDefaultPublicSettings(),
+  );
 
   CreateTimelineBloc({@required this.timelineSavedCallback}) {
     addDisposable(disposable: nameFieldBloc);
@@ -55,27 +55,34 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
     typeFieldBloc.currentValueStream.listen((type) {
       switch (type) {
         case TimelineType.home:
-          settingsFormBloc.fill(TimelineSettings.createDefaultHomeSettings());
+          settingsFormBloc.fill(
+              type: type,
+              newSettings: TimelineSettings.createDefaultHomeSettings());
           break;
         case TimelineType.public:
-          settingsFormBloc.fill(TimelineSettings.createDefaultPublicSettings());
+          settingsFormBloc.fill(
+              type: type,
+              newSettings: TimelineSettings.createDefaultPublicSettings());
           break;
         case TimelineType.customList:
           settingsFormBloc.fill(
-            TimelineSettings.createDefaultCustomListSettings(
+            type: type,
+            newSettings: TimelineSettings.createDefaultCustomListSettings(
                 onlyInRemoteList: null),
           );
           break;
 
         case TimelineType.hashtag:
           settingsFormBloc.fill(
-            TimelineSettings.createDefaultHashtagSettings(
+            type: type,
+            newSettings: TimelineSettings.createDefaultHashtagSettings(
                 withRemoteHashtag: null),
           );
           break;
         case TimelineType.account:
           settingsFormBloc.fill(
-            TimelineSettings.createDefaultAccountSettings(
+            type: type,
+            newSettings: TimelineSettings.createDefaultAccountSettings(
                 onlyFromRemoteAccount: null),
           );
           break;

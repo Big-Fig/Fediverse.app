@@ -2,6 +2,7 @@ import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/rest/auth/pleroma_auth_rest_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_exception.dart';
+import 'package:fedi/pleroma/timeline/pleroma_timeline_model.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:fedi/rest/rest_request_model.dart';
@@ -57,15 +58,17 @@ class PleromaTimelineService implements IPleromaTimelineService {
   }) {
     assert(hashtag != null);
     return getTimeline(
-        relativeTimeLineUrlPath: "tag/$hashtag",
-        maxId: maxId,
-        sinceId: sinceId,
-        minId: minId,
-        limit: limit,
-        onlyWithMedia: onlyWithMedia,
-        onlyLocal: onlyLocal,
-        withMuted: withMuted,
-        excludeVisibilities: excludeVisibilities);
+      relativeTimeLineUrlPath: "tag/$hashtag",
+      maxId: maxId,
+      sinceId: sinceId,
+      minId: minId,
+      limit: limit,
+      onlyWithMedia: onlyWithMedia,
+      onlyLocal: onlyLocal,
+      withMuted: withMuted,
+      excludeVisibilities: excludeVisibilities,
+      pleromaReplyVisibilityFilter: null,
+    );
   }
 
   @override
@@ -79,17 +82,20 @@ class PleromaTimelineService implements IPleromaTimelineService {
     List<PleromaVisibility> excludeVisibilities = const [
       PleromaVisibility.direct
     ],
+    PleromaReplyVisibilityFilter pleromaReplyVisibilityFilter,
   }) {
     return getTimeline(
-        relativeTimeLineUrlPath: "home",
-        maxId: maxId,
-        sinceId: sinceId,
-        minId: minId,
-        limit: limit,
-        onlyWithMedia: false,
-        onlyLocal: onlyLocal,
-        withMuted: withMuted,
-        excludeVisibilities: excludeVisibilities);
+      relativeTimeLineUrlPath: "home",
+      maxId: maxId,
+      sinceId: sinceId,
+      minId: minId,
+      limit: limit,
+      onlyWithMedia: false,
+      onlyLocal: onlyLocal,
+      withMuted: withMuted,
+      excludeVisibilities: excludeVisibilities,
+      pleromaReplyVisibilityFilter: pleromaReplyVisibilityFilter,
+    );
   }
 
   @override
@@ -107,15 +113,17 @@ class PleromaTimelineService implements IPleromaTimelineService {
   }) {
     assert(listId != null);
     return getTimeline(
-        relativeTimeLineUrlPath: "list/$listId",
-        maxId: maxId,
-        sinceId: sinceId,
-        minId: minId,
-        limit: limit,
-        onlyWithMedia: null,
-        onlyLocal: onlyLocal,
-        withMuted: withMuted,
-        excludeVisibilities: excludeVisibilities);
+      relativeTimeLineUrlPath: "list/$listId",
+      maxId: maxId,
+      sinceId: sinceId,
+      minId: minId,
+      limit: limit,
+      onlyWithMedia: null,
+      onlyLocal: onlyLocal,
+      withMuted: withMuted,
+      excludeVisibilities: excludeVisibilities,
+      pleromaReplyVisibilityFilter: null,
+    );
   }
 
   @override
@@ -130,29 +138,34 @@ class PleromaTimelineService implements IPleromaTimelineService {
     List<PleromaVisibility> excludeVisibilities = const [
       PleromaVisibility.direct
     ],
+    PleromaReplyVisibilityFilter pleromaReplyVisibilityFilter,
   }) {
     return getTimeline(
-        relativeTimeLineUrlPath: "public",
-        maxId: maxId,
-        sinceId: sinceId,
-        minId: minId,
-        limit: limit,
-        onlyWithMedia: onlyWithMedia,
-        onlyLocal: onlyLocal,
-        withMuted: withMuted,
-        excludeVisibilities: excludeVisibilities);
+      relativeTimeLineUrlPath: "public",
+      maxId: maxId,
+      sinceId: sinceId,
+      minId: minId,
+      limit: limit,
+      onlyWithMedia: onlyWithMedia,
+      onlyLocal: onlyLocal,
+      withMuted: withMuted,
+      excludeVisibilities: excludeVisibilities,
+      pleromaReplyVisibilityFilter: pleromaReplyVisibilityFilter,
+    );
   }
 
-  Future<List<IPleromaStatus>> getTimeline(
-      {@required String relativeTimeLineUrlPath,
-      @required String maxId,
-      @required String sinceId,
-      @required String minId,
-      @required int limit,
-      @required bool onlyWithMedia,
-      @required bool onlyLocal,
-      @required bool withMuted,
-      @required List<PleromaVisibility> excludeVisibilities}) async {
+  Future<List<IPleromaStatus>> getTimeline({
+    @required String relativeTimeLineUrlPath,
+    @required String maxId,
+    @required String sinceId,
+    @required String minId,
+    @required int limit,
+    @required bool onlyWithMedia,
+    @required bool onlyLocal,
+    @required bool withMuted,
+    @required List<PleromaVisibility> excludeVisibilities,
+    @required PleromaReplyVisibilityFilter pleromaReplyVisibilityFilter,
+  }) async {
     var request = RestRequest.get(
         relativePath: join("/api/v1/timelines/", relativeTimeLineUrlPath),
         queryArgs: [
@@ -164,11 +177,15 @@ class PleromaTimelineService implements IPleromaTimelineService {
           if (onlyWithMedia != null)
             RestRequestQueryArg("only_media", onlyWithMedia.toString()),
           RestRequestQueryArg("with_muted", withMuted.toString()),
+          if (pleromaReplyVisibilityFilter != null)
+            RestRequestQueryArg(
+                "reply_visibility", pleromaReplyVisibilityFilter.toJsonValue()),
           // array
           ...(excludeVisibilities?.map((visibility) {
-            return RestRequestQueryArg(
-                "exclude_visibilities[]", visibility.toJsonValue());
-          }) ?? [])
+                return RestRequestQueryArg(
+                    "exclude_visibilities[]", visibility.toJsonValue());
+              }) ??
+              [])
         ]);
     var httpResponse = await restService.sendHttpRequest(request);
 

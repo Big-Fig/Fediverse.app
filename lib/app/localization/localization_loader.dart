@@ -643,8 +643,8 @@ class CodegenLoader extends AssetLoader{
             "label": "Title",
             "hint": "Timeline name"
           },
-          "type": {
-            "label": "Type"
+          "id": {
+            "label": "Unique id"
           }
         }
       },
@@ -654,9 +654,13 @@ class CodegenLoader extends AssetLoader{
         "custom_list": "List",
         "hashtag": "Hashtag",
         "account": "Account",
-        "chooser": {
-          "dialog": {
-            "title": "Choose timeline type"
+        "field": {
+          "label": "Type",
+          "null": "Not selected",
+          "chooser": {
+            "dialog": {
+              "title": "Choose timeline type"
+            }
           }
         }
       },
@@ -666,6 +670,37 @@ class CodegenLoader extends AssetLoader{
       },
       "settings": {
         "title": "'{}' timeline settings",
+        "reply_visibility_filter": {
+          "self": "Self",
+          "following": "Following",
+          "field": {
+            "label": "Reply visibility filter",
+            "null": "Not selected",
+            "chooser": {
+              "dialog": {
+                "title": "Choose reply visibility filter"
+              }
+            }
+          }
+        },
+        "only_from_remote_account": {
+          "field": {
+            "label": "Only from account",
+            "null": "Not selected"
+          }
+        },
+        "with_remote_hashtag": {
+          "field": {
+            "label": "With hashtag",
+            "null": "Not selected"
+          }
+        },
+        "only_in_remote_list": {
+          "field": {
+            "label": "Only in list",
+            "null": "Not selected"
+          }
+        },
         "field": {
           "not_supported": {
             "desc": "Not supported on this instance"
@@ -1104,7 +1139,7 @@ class CodegenLoader extends AssetLoader{
       "value": {
         "error": {
           "null": {
-            "desc": "Should be not null"
+            "desc": "Required"
           }
         }
       },

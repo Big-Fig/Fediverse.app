@@ -1,5 +1,6 @@
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
+import 'package:fedi/pleroma/timeline/pleroma_timeline_model.dart';
 import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +22,7 @@ abstract class IPleromaTimelineService implements IPleromaApi {
     List<PleromaVisibility> excludeVisibilities = const [
       PleromaVisibility.direct
     ],
+    PleromaReplyVisibilityFilter pleromaReplyVisibilityFilter,
   });
 
   Future<List<IPleromaStatus>> getHashtagTimeline({
@@ -47,6 +49,7 @@ abstract class IPleromaTimelineService implements IPleromaApi {
     List<PleromaVisibility> excludeVisibilities = const [
       PleromaVisibility.direct
     ],
+    PleromaReplyVisibilityFilter pleromaReplyVisibilityFilter,
   });
 
   Future<List<IPleromaStatus>> getListTimeline({

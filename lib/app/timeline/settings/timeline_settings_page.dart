@@ -80,8 +80,10 @@ MaterialPageRoute createTimelineSettingsPageRoute(
             context,
             listen: false,
           );
+          var timeline = timelineLocalPreferencesBloc.value;
           var timelineSettingsBloc = TimelineSettingsFormBloc(
-            originalSettings: timelineLocalPreferencesBloc.value?.settings,
+            originalSettings: timeline?.settings,
+            type: timeline.type,
           );
 
           timelineSettingsBloc.addDisposable(

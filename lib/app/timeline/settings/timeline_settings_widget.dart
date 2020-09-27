@@ -4,6 +4,10 @@ import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/form/form_bool_field_form_row_widget.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_filter_support_extension.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_form_bloc.dart';
+import 'package:fedi/app/timeline/settings/timeline_settings_only_from_remote_account_form_field_row_widget.dart';
+import 'package:fedi/app/timeline/settings/timeline_settings_only_in_remote_list_form_field_row_widget.dart';
+import 'package:fedi/app/timeline/settings/timeline_settings_reply_visibility_form_field_row_widget.dart';
+import 'package:fedi/app/timeline/settings/timeline_settings_with_remote_hashtag_form_field_row_widget.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,29 +30,34 @@ class TimelineSettingsWidget extends StatelessWidget {
     List<Widget> children;
 
     switch (type) {
+      case TimelineType.home:
+        children = [
+          buildWithMutedField(context, settingsBloc, authInstance),
+          buildOnlyMediaField(context, settingsBloc, authInstance),
+          buildOnlyLocalField(context, settingsBloc, authInstance),
+          buildReplyVisibilityFilterField(context, settingsBloc, authInstance),
+        ];
+        break;
       case TimelineType.public:
         children = [
           buildWithMutedField(context, settingsBloc, authInstance),
           buildOnlyMediaField(context, settingsBloc, authInstance),
           buildOnlyLocalField(context, settingsBloc, authInstance),
           buildOnlyRemoteField(context, settingsBloc, authInstance),
+          buildReplyVisibilityFilterField(context, settingsBloc, authInstance),
         ];
         break;
       case TimelineType.customList:
         children = [
+          buildCustomListField(context, settingsBloc, authInstance),
           buildWithMutedField(context, settingsBloc, authInstance),
           buildOnlyMediaField(context, settingsBloc, authInstance),
         ];
         break;
-      case TimelineType.home:
-        children = [
-          buildWithMutedField(context, settingsBloc, authInstance),
-          buildOnlyMediaField(context, settingsBloc, authInstance),
-          buildOnlyLocalField(context, settingsBloc, authInstance),
-        ];
-        break;
+
       case TimelineType.hashtag:
         children = [
+          buildHashtagField(context, settingsBloc, authInstance),
           buildWithMutedField(context, settingsBloc, authInstance),
           buildOnlyMediaField(context, settingsBloc, authInstance),
           buildOnlyLocalField(context, settingsBloc, authInstance),
@@ -56,11 +65,12 @@ class TimelineSettingsWidget extends StatelessWidget {
         break;
       case TimelineType.account:
         children = [
+          buildAccountField(context, settingsBloc, authInstance),
           buildOnlyMediaField(context, settingsBloc, authInstance),
           buildOnlyPinnedField(context, settingsBloc, authInstance),
           buildExcludeReblogsField(context, settingsBloc, authInstance),
           buildExcludeRepliesField(context, settingsBloc, authInstance),
-          // todo: tagged arg support?
+          buildHashtagField(context, settingsBloc, authInstance),
         ];
         break;
 
@@ -167,6 +177,75 @@ class TimelineSettingsWidget extends StatelessWidget {
       fieldBloc: settingsBloc.excludeNsfwSensitiveFieldBloc,
       isSupported:
           type.isExcludeNsfwSensitiveFilterSupportedOnInstance(authInstance),
+    );
+  }
+
+  Widget buildReplyVisibilityFilterField(
+    BuildContext context,
+    ITimelineSettingsFormBloc settingsBloc,
+    AuthInstance authInstance,
+  ) {
+    // TODO: not supported in local repository yet
+    return SizedBox.shrink();
+    var isSupported =
+        type.isReplyVisibilityFilterSupportedOnInstance(authInstance);
+
+    return TimelineSettingsReplyVisibilityFormFieldRowWidget(
+      formValueFieldBloc: settingsBloc.replyVisibilityFilterFieldBloc,
+      enabled: isSupported,
+      desc: isSupported
+          ? null
+          : "app.timeline.settings.field.not_supported.desc".tr(),
+    );
+  }
+
+  Widget buildCustomListField(
+    BuildContext context,
+    ITimelineSettingsFormBloc settingsBloc,
+    AuthInstance authInstance,
+  ) {
+    var isSupported =
+        type.isOnlyInListWithRemoteIdFilterSupportedOnInstance(authInstance);
+
+    return TimelineSettingsOnlyInRemoteListFormFieldRowWidget(
+      formValueFieldBloc: settingsBloc.onlyInRemoteListFieldBloc,
+      enabled: isSupported,
+      desc: isSupported
+          ? null
+          : "app.timeline.settings.field.not_supported.desc".tr(),
+    );
+  }
+
+  Widget buildAccountField(
+    BuildContext context,
+    ITimelineSettingsFormBloc settingsBloc,
+    AuthInstance authInstance,
+  ) {
+    var isSupported = type
+        .isOnlyFromAccountWithRemoteIdFilterSupportedOnInstance(authInstance);
+
+    return TimelineSettingsOnlyFromRemoteAccountFormFieldRowWidget(
+      formValueFieldBloc: settingsBloc.onlyFromRemoteAccountFieldBloc,
+      enabled: isSupported,
+      desc: isSupported
+          ? null
+          : "app.timeline.settings.field.not_supported.desc".tr(),
+    );
+  }
+
+  Widget buildHashtagField(
+    BuildContext context,
+    ITimelineSettingsFormBloc settingsBloc,
+    AuthInstance authInstance,
+  ) {
+    var isSupported = type.isWithHashtagFilterSupportedOnInstance(authInstance);
+
+    return TimelineSettingsWithRemoteHashtagFormFieldRowWidget(
+      formValueFieldBloc: settingsBloc.withRemoteHashtagFieldBloc,
+      enabled: isSupported,
+      desc: isSupported
+          ? null
+          : "app.timeline.settings.field.not_supported.desc".tr(),
     );
   }
 
