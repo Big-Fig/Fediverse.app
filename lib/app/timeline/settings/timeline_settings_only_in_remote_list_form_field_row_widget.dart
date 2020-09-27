@@ -13,11 +13,13 @@ class TimelineSettingsOnlyInRemoteListFormFieldRowWidget
   final IFormValueFieldBloc<PleromaList> formValueFieldBloc;
   final bool enabled;
   final String desc;
+  final bool nullable;
 
   TimelineSettingsOnlyInRemoteListFormFieldRowWidget({
     @required this.formValueFieldBloc,
     this.enabled = true,
     @required this.desc,
+    @required this.nullable,
   });
 
   @override
@@ -32,7 +34,7 @@ class TimelineSettingsOnlyInRemoteListFormFieldRowWidget
           error: formValueFieldBloc.isHaveAtLeastOneError
               ? "form.field.value.error.null.desc".tr()
               : null,
-          nullable: true,
+          nullable: nullable,
           clearCallback: () {
             formValueFieldBloc.changeCurrentValue(null);
           },

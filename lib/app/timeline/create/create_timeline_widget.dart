@@ -48,6 +48,7 @@ class CreateItemTimelinesHomeTabStorageWidget extends StatelessWidget {
                   var currentValue = snapshot.data;
                   return TimelineSettingsWidget(
                     type: currentValue,
+                    isNullablePossible: true,
                   );
                 }),
           ),
