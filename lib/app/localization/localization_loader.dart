@@ -698,7 +698,12 @@ class CodegenLoader extends AssetLoader{
         "only_in_remote_list": {
           "field": {
             "label": "Only in list",
-            "null": "Not selected"
+            "null": "Not selected",
+            "chooser": {
+              "dialog": {
+                "title": "Choose list"
+              }
+            }
           }
         },
         "field": {
