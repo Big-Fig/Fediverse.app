@@ -95,6 +95,7 @@ class TimelineTabsBloc extends AsyncInitLoadingBloc
   }
 
   Future updateTabBlocs() async {
+    tabBlocsSubject.add(null);
     tabBlocs?.forEach((bloc) => bloc.dispose());
 
     var newTabBlocs = <ITimelineTabBloc>[];
@@ -114,11 +115,12 @@ class TimelineTabsBloc extends AsyncInitLoadingBloc
       newTabBlocs.add(timelineTabBloc);
     }
 
-    tabBlocsSubject.add(newTabBlocs);
-
-    if (selectedTabBloc == null) {
-      selectedTabSubject.add(tabBlocs.first);
-    }
+    Future.delayed(Duration(seconds: 1), () {
+      tabBlocsSubject.add(newTabBlocs);
+      if (selectedTabBloc == null) {
+        selectedTabSubject.add(tabBlocs.first);
+      }
+    });
   }
 
   @override

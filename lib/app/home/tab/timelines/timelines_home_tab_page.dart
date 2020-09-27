@@ -29,6 +29,7 @@ import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
+import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_bloc.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_bloc_impl.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_widget.dart';
@@ -65,68 +66,76 @@ class TimelinesHomeTabPage extends StatelessWidget {
       ),
       child: Builder(
         builder: (context) {
-          return DisposableProvider<ITimelineTabsListBloc>(
-            create: (context) {
-              var homeBloc = IHomeBloc.of(context, listen: false);
+          return StreamBuilder<List<String>>(
+            stream: ITimelinesHomeTabStorageBloc.of(context, listen: false).timelineIdsStream,
+            builder: (context, snapshot) {
 
-              var timelineTabsBloc =
-                  TimelineTabsBloc.createFromContext(context);
+              return DisposableProvider<ITimelineTabsListBloc>(
+                create: (context) {
+                  var homeBloc = IHomeBloc.of(context, listen: false);
 
-              timelineTabsBloc.performAsyncInit().then((_) {
-                var blocForUnreadBadge = timelineTabsBloc.tabBlocs.firstWhere(
-                    (bloc) => bloc.timeline.type == TimelineType.home);
+                  var timelineTabsBloc =
+                      TimelineTabsBloc.createFromContext(context);
 
-                timelineTabsBloc.addDisposable(
-                  streamSubscription: blocForUnreadBadge
-                      .paginationListWithNewItemsBloc
-                      .unmergedNewItemsCountStream
-                      .listen((unreadCount) {
-                    homeBloc.updateTimelinesUnread(
-                        unreadCount != null && unreadCount > 0);
-                  }),
-                );
-              });
+                  timelineTabsBloc.performAsyncInit().then((_) {
+                    var blocForUnreadBadge = timelineTabsBloc.tabBlocs.firstWhere(
+                        (bloc) => bloc.timeline.type == TimelineType.home);
 
-              return timelineTabsBloc;
-            },
-            child: Builder(
-                builder: (context) => FediAsyncInitLoadingWidget(
-                      asyncInitLoadingBloc: ITimelinesHomeTabStorageBloc.of(
-                          context,
-                          listen: false),
-                      loadingFinishedBuilder: (context) =>
-                          FediAsyncInitLoadingWidget(
-                        asyncInitLoadingBloc:
-                            ITimelineTabsListBloc.of(context, listen: false),
-                        loadingFinishedBuilder: (BuildContext context) {
-                          var timelineTabsListBloc =
-                              ITimelineTabsListBloc.of(context, listen: false);
+                    timelineTabsBloc.addDisposable(
+                      streamSubscription: blocForUnreadBadge
+                          .paginationListWithNewItemsBloc
+                          .unmergedNewItemsCountStream
+                          .listen((unreadCount) {
+                        homeBloc.updateTimelinesUnread(
+                            unreadCount != null && unreadCount > 0);
+                      }),
+                    );
+                  });
 
-                          return StreamBuilder<List<ITimelineTabBloc>>(
-                              stream: timelineTabsListBloc.tabBlocsStream,
-                              initialData: timelineTabsListBloc.tabBlocs,
-                              builder: (context, snapshot) {
-                                var tabBlocs = snapshot.data;
-                                return Provider<List<ITimelineTabBloc>>.value(
-                                  value: tabBlocs,
-                                  child: Builder(
-                                    builder: (context) {
-                                      return DisposableProxyProvider<
-                                          List<ITimelineTabBloc>,
-                                          ITimelinesHomeTabPageBodyBloc>(
-                                        update: (context, value, previous) =>
-                                            TimelinesHomeTabPageBodyBloc(
-                                          timelineBlocs: value,
-                                        ),
-                                        child: TimelinesHomeTabPageBody(),
-                                      );
-                                    },
-                                  ),
-                                );
-                              });
-                        },
-                      ),
-                    )),
+                  return timelineTabsBloc;
+                },
+                child: Builder(
+                    builder: (context) => FediAsyncInitLoadingWidget(
+                          asyncInitLoadingBloc: ITimelinesHomeTabStorageBloc.of(
+                              context,
+                              listen: false),
+                          loadingFinishedBuilder: (context) =>
+                              FediAsyncInitLoadingWidget(
+                            asyncInitLoadingBloc:
+                                ITimelineTabsListBloc.of(context, listen: false),
+                            loadingFinishedBuilder: (BuildContext context) {
+                              var timelineTabsListBloc =
+                                  ITimelineTabsListBloc.of(context, listen: false);
+
+                              return StreamBuilder<List<ITimelineTabBloc>>(
+                                  stream: timelineTabsListBloc.tabBlocsStream,
+                                  builder: (context, snapshot) {
+                                    var tabBlocs = snapshot.data;
+                                    if (tabBlocs == null) {
+                                      return Center(child: FediCircularProgressIndicator());
+                                    }
+                                    return Provider<List<ITimelineTabBloc>>.value(
+                                      value: tabBlocs,
+                                      child: Builder(
+                                        builder: (context) {
+                                          return DisposableProxyProvider<
+                                              List<ITimelineTabBloc>,
+                                              ITimelinesHomeTabPageBodyBloc>(
+                                            update: (context, value, previous) =>
+                                                TimelinesHomeTabPageBodyBloc(
+                                              timelineBlocs: value,
+                                            ),
+                                            child: TimelinesHomeTabPageBody(),
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  });
+                            },
+                          ),
+                        )),
+              );
+            }
           );
         },
       ),
@@ -179,13 +188,13 @@ class _TimelinesHomeTabPageBodyState extends State<TimelinesHomeTabPageBody>
 
     listener = () {
       var tabBloc = timelineTabBlocs[tabController.index];
-      var notificationTabsBloc =
+      var timelineTabsBloc =
           ITimelineTabsListBloc.of(context, listen: false);
       var paginationListBloc = tabBloc.paginationListWithNewItemsBloc;
       if (paginationListBloc.unmergedNewItemsCount > 0) {
         paginationListBloc.mergeNewItems();
       }
-      notificationTabsBloc.selectTab(tabBloc);
+      timelineTabsBloc.selectTab(tabBloc);
     };
     tabController.addListener(listener);
   }
