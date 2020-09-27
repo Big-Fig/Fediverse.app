@@ -25,5 +25,6 @@ abstract class ITimelinesHomeTabStorageBloc
 
   Future onItemsUpdated(List<Timeline> timelines);
 
+  Future add(Timeline timeline);
   Future remove(Timeline timeline);
 }

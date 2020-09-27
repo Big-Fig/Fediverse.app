@@ -80,6 +80,23 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
   }
 
   @override
+  Future add(Timeline timeline) async {
+    var settingsLocalPreferencesBloc = TimelineLocalPreferencesBloc.byId(
+      preferencesService,
+      userAtHost: authInstance.userAtHost,
+      timelineId: timeline.id,
+    );
+
+    await settingsLocalPreferencesBloc.setValue(timeline);
+
+    settingsLocalPreferencesBloc.dispose();
+
+    timelines.add(timeline);
+
+    await onItemsUpdated(timelines);
+  }
+
+  @override
   Future remove(Timeline timeline) async {
     timelines.remove(timeline);
     await onItemsUpdated(timelines);

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:fedi/app/timeline/create/create_timeline_bloc.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_form_bloc.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_form_bloc_impl.dart';
@@ -10,8 +12,15 @@ import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
 import 'package:fedi/ui/form/field/value/string/form_string_field_bloc_impl.dart';
 import 'package:fedi/ui/form/form_bloc_impl.dart';
 import 'package:fedi/ui/form/form_item_bloc.dart';
+import 'package:flutter/widgets.dart';
+
+typedef TimelineSavedCallback = Function(Timeline timeline);
 
 class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
+  final TimelineSavedCallback timelineSavedCallback;
+
+
+
   @override
   IFormStringFieldBloc idFieldBloc = FormStringFieldBloc(
     originValue: TimelineSettings.generateUniqueTimelineId(),
@@ -38,7 +47,7 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
   final ITimelineSettingsFormBloc settingsFormBloc = TimelineSettingsFormBloc(
       originalSettings: TimelineSettings.createDefaultPublicSettings());
 
-  CreateTimelineBloc() {
+  CreateTimelineBloc({@required this.timelineSavedCallback}) {
     addDisposable(disposable: nameFieldBloc);
     addDisposable(disposable: typeFieldBloc);
     addDisposable(disposable: settingsFormBloc);
@@ -82,8 +91,14 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
       ];
 
   @override
-  Future save() {
-    // TODO: implement save
-    throw UnimplementedError();
+  Future save() async {
+    var timeline = Timeline(
+      id: idFieldBloc.currentValue,
+      label: nameFieldBloc.currentValue,
+      typeString: typeFieldBloc.currentValue.toJsonValue(),
+      isPossibleToDelete: true,
+      settings: settingsFormBloc.timelineSettings,
+    );
+    timelineSavedCallback(timeline);
   }
 }

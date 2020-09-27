@@ -1,8 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/async/async_operation_button_builder_widget.dart';
+import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
 import 'package:fedi/app/timeline/create/create_timeline_bloc.dart';
 import 'package:fedi/app/timeline/create/create_timeline_bloc_impl.dart';
 import 'package:fedi/app/timeline/create/create_timeline_widget.dart';
+import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
@@ -51,14 +53,22 @@ class CreateItemTimelinesHomeTabStoragePage extends StatelessWidget {
 void goToCreateItemTimelinesHomeTabStoragePage(BuildContext context) {
   Navigator.push(
     context,
-    createCreateItemTimelinesHomeTabStoragePageRoute(),
+    createCreateItemTimelinesHomeTabStoragePageRoute(context),
   );
 }
 
-MaterialPageRoute createCreateItemTimelinesHomeTabStoragePageRoute() =>
-    MaterialPageRoute(
-      builder: (context) => DisposableProvider<ICreateTimelineBloc>(
-        create: (context) => CreateTimelineBloc(),
-        child: const CreateItemTimelinesHomeTabStoragePage(),
-      ),
-    );
+MaterialPageRoute createCreateItemTimelinesHomeTabStoragePageRoute(
+    BuildContext context) {
+  var timelinesHomeTabStorageBloc =
+      ITimelinesHomeTabStorageBloc.of(context, listen: false);
+  return MaterialPageRoute(
+    builder: (context) => DisposableProvider<ICreateTimelineBloc>(
+      create: (context) =>
+          CreateTimelineBloc(timelineSavedCallback: (Timeline timeline) {
+        timelinesHomeTabStorageBloc.add(timeline);
+        Navigator.of(context).pop();
+      }),
+      child: const CreateItemTimelinesHomeTabStoragePage(),
+    ),
+  );
+}

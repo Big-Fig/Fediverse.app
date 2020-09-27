@@ -83,6 +83,20 @@ MaterialPageRoute createTimelineSettingsPageRoute(
           var timelineSettingsBloc = TimelineSettingsFormBloc(
             originalSettings: timelineLocalPreferencesBloc.value?.settings,
           );
+
+          timelineSettingsBloc.addDisposable(
+            streamSubscription:
+                timelineSettingsBloc.timelineSettingsStream.listen(
+              (timelineSettings) {
+                var oldValue = timelineLocalPreferencesBloc.value;
+                timelineLocalPreferencesBloc.setValue(
+                  oldValue.copyWith(
+                    settings: timelineSettings,
+                  ),
+                );
+              },
+            ),
+          );
           return timelineSettingsBloc;
         },
         child: TimelineSettingsPage(
