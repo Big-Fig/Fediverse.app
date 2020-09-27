@@ -25,7 +25,6 @@ class Hashtag extends IHashtag {
     @required this.history,
   });
 
-
   @override
   String toString() {
     return 'Hashtag{name: $name, history: $history, url: $url}';

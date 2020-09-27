@@ -78,7 +78,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
         case TimelineType.hashtag:
           addDisposable(
               disposable: webSocketsHandlerManagerBloc.listenHashtagChannel(
-                hashtag: _timeline.withRemoteHashtag.name,
+                hashtag: _timeline.withRemoteHashtag,
                 local: _timeline.onlyLocal,
               ));
           break;
@@ -152,7 +152,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
         break;
       case TimelineType.hashtag:
         remoteStatuses = await pleromaTimelineService.getHashtagTimeline(
-          hashtag: _timeline.withRemoteHashtag.name,
+          hashtag: _timeline.withRemoteHashtag,
           maxId: maxId,
           sinceId: sinceId,
           limit: limit,
@@ -200,7 +200,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
           ? mapRemoteAccountToLocalAccount(_timeline.onlyFromRemoteAccount)
           : null,
       onlyInListWithRemoteId: _timeline.onlyInRemoteList?.id,
-      onlyWithHashtag: _timeline.withRemoteHashtag?.name,
+      onlyWithHashtag: _timeline.withRemoteHashtag,
       onlyFromAccountsFollowingByAccount: null,
       onlyLocal: onlyLocalFilter,
       onlyWithMedia: _timeline.onlyWithMedia,
@@ -240,7 +240,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
           ? mapRemoteAccountToLocalAccount(_timeline.onlyFromRemoteAccount)
           : null,
       onlyInListWithRemoteId: _timeline.onlyInRemoteList?.id,
-      onlyWithHashtag: _timeline.withRemoteHashtag?.name,
+      onlyWithHashtag: _timeline.withRemoteHashtag,
       onlyFromAccountsFollowingByAccount: null,
       onlyLocal: onlyLocalFilter,
       onlyWithMedia: _timeline.onlyWithMedia,

@@ -692,7 +692,7 @@ class CodegenLoader extends AssetLoader{
         "with_remote_hashtag": {
           "field": {
             "label": "With hashtag",
-            "null": "Not selected"
+            "hint": "#pleroma"
           }
         },
         "only_in_remote_list": {
