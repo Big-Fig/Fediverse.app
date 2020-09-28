@@ -47,9 +47,18 @@ import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_wit
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
-class TimelinesHomeTabPage extends StatelessWidget {
+final _logger = Logger("timelines_home_tab_page.dart");
+
+class TimelinesHomeTabPage extends StatefulWidget {
+  @override
+  _TimelinesHomeTabPageState createState() => _TimelinesHomeTabPageState();
+}
+
+class _TimelinesHomeTabPageState extends State<TimelinesHomeTabPage>
+    with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return DisposableProvider<ITimelinesHomeTabStorageBloc>(
@@ -71,93 +80,104 @@ class TimelinesHomeTabPage extends StatelessWidget {
               stream: ITimelinesHomeTabStorageBloc.of(context, listen: false)
                   .timelineIdsStream,
               builder: (context, snapshot) {
-                return DisposableProvider<ITimelineTabsListBloc>(
-                  create: (context) {
-                    var homeBloc = IHomeBloc.of(context, listen: false);
+                return Provider<List<String>>.value(
+                  value: snapshot.data,
+                  child: DisposableProxyProvider<List<String>,
+                      ITimelineTabsListBloc>(
+                    update: (context, previous, value) {
+                      var homeBloc = IHomeBloc.of(context, listen: false);
 
-                    var timelineTabsBloc =
-                        TimelineTabsBloc.createFromContext(context);
+                      var timelineTabsBloc =
+                          TimelineTabsBloc.createFromContext(context);
 
-                    timelineTabsBloc.performAsyncInit().then((_) {
-                      var blocForUnreadBadge = timelineTabsBloc.tabBlocs
-                          .firstWhere((bloc) =>
-                              bloc.timeline.type == TimelineType.home);
+                      timelineTabsBloc.performAsyncInit().then((_) {
+                        var blocForUnreadBadge = timelineTabsBloc.tabBlocs
+                            .firstWhere((bloc) =>
+                                bloc.timeline.type == TimelineType.home);
 
-                      timelineTabsBloc.addDisposable(
-                        streamSubscription: blocForUnreadBadge
-                            .paginationListWithNewItemsBloc
-                            .unmergedNewItemsCountStream
-                            .listen((unreadCount) {
-                          homeBloc.updateTimelinesUnread(
-                              unreadCount != null && unreadCount > 0);
-                        }),
-                      );
-                    });
+                        timelineTabsBloc.addDisposable(
+                          streamSubscription: blocForUnreadBadge
+                              .paginationListWithNewItemsBloc
+                              .unmergedNewItemsCountStream
+                              .listen((unreadCount) {
+                            homeBloc.updateTimelinesUnread(
+                                unreadCount != null && unreadCount > 0);
+                          }),
+                        );
+                      });
 
-                    return timelineTabsBloc;
-                  },
-                  child: Builder(
-                      builder: (context) => FediAsyncInitLoadingWidget(
-                            asyncInitLoadingBloc:
-                                ITimelinesHomeTabStorageBloc.of(context,
+                      return timelineTabsBloc;
+                    },
+                    child: Builder(
+                        builder: (context) => FediAsyncInitLoadingWidget(
+                              asyncInitLoadingBloc:
+                                  ITimelinesHomeTabStorageBloc.of(context,
+                                      listen: false),
+                              loadingFinishedBuilder: (context) =>
+                                  FediAsyncInitLoadingWidget(
+                                asyncInitLoadingBloc: ITimelineTabsListBloc.of(
+                                    context,
                                     listen: false),
-                            loadingFinishedBuilder: (context) =>
-                                FediAsyncInitLoadingWidget(
-                              asyncInitLoadingBloc: ITimelineTabsListBloc.of(
-                                  context,
-                                  listen: false),
-                              loadingFinishedBuilder: (BuildContext context) {
-                                var timelineTabsListBloc =
-                                    ITimelineTabsListBloc.of(context,
-                                        listen: false);
+                                loadingFinishedBuilder: (BuildContext context) {
+                                  var timelineTabsListBloc =
+                                      ITimelineTabsListBloc.of(context,
+                                          listen: false);
 
-                                return StreamBuilder<List<ITimelineTabBloc>>(
-                                    stream: timelineTabsListBloc.tabBlocsStream,
-                                    builder: (context, snapshot) {
-                                      var tabBlocs = snapshot.data;
-                                      if (tabBlocs == null) {
-                                        return Container(
-                                          width: double.infinity,
-                                          height: double.infinity,
-                                          color: FediColors.offWhite,
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              FediCircularProgressIndicator(),
-                                              Text(
-                                                "app.timeline.loading".tr(),
-                                                style: FediTextStyles
-                                                    .bigShortBoldDarkGrey,
-                                              )
-                                            ],
+                                  return StreamBuilder<List<ITimelineTabBloc>>(
+                                      stream:
+                                          timelineTabsListBloc.tabBlocsStream,
+                                      builder: (context, snapshot) {
+                                        var tabBlocs = snapshot.data;
+                                        if (tabBlocs == null) {
+                                          return Container(
+                                            width: double.infinity,
+                                            height: double.infinity,
+                                            color: FediColors.offWhite,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                FediCircularProgressIndicator(),
+                                                Text(
+                                                  "app.timeline.loading".tr(),
+                                                  style: FediTextStyles
+                                                      .bigShortBoldDarkGrey,
+                                                )
+                                              ],
+                                            ),
+                                          );
+                                        }
+                                        return Provider<
+                                            List<ITimelineTabBloc>>.value(
+                                          value: tabBlocs,
+                                          child: Builder(
+                                            builder: (context) {
+                                              return DisposableProxyProvider<
+                                                  List<ITimelineTabBloc>,
+                                                  ITimelinesHomeTabPageBodyBloc>(
+                                                update: (context, value,
+                                                        previous) =>
+                                                    TimelinesHomeTabPageBodyBloc(
+                                                  vsync: this,
+                                                  timelineTabsBloc:
+                                                      ITimelineTabsListBloc.of(
+                                                    context,
+                                                    listen: false,
+                                                  ),
+                                                ),
+                                                child:
+                                                    TimelinesHomeTabPageBody(),
+                                              );
+                                            },
                                           ),
                                         );
-                                      }
-                                      return Provider<
-                                          List<ITimelineTabBloc>>.value(
-                                        value: tabBlocs,
-                                        child: Builder(
-                                          builder: (context) {
-                                            return DisposableProxyProvider<
-                                                List<ITimelineTabBloc>,
-                                                ITimelinesHomeTabPageBodyBloc>(
-                                              update: (context, value,
-                                                      previous) =>
-                                                  TimelinesHomeTabPageBodyBloc(
-                                                timelineBlocs: value,
-                                              ),
-                                              child: TimelinesHomeTabPageBody(),
-                                            );
-                                          },
-                                        ),
-                                      );
-                                    });
-                              },
-                            ),
-                          )),
+                                      });
+                                },
+                              ),
+                            )),
+                  ),
                 );
               });
         },
@@ -166,69 +186,7 @@ class TimelinesHomeTabPage extends StatelessWidget {
   }
 }
 
-abstract class ITimelinesHomeTabPageBodyBloc extends Disposable {
-  static ITimelinesHomeTabPageBodyBloc of(BuildContext context,
-          {bool listen = true}) =>
-      Provider.of<ITimelinesHomeTabPageBodyBloc>(context, listen: listen);
-
-  List<ITimelineTabBloc> get timelineBlocs;
-}
-
-class TimelinesHomeTabPageBodyBloc extends DisposableOwner
-    implements ITimelinesHomeTabPageBodyBloc {
-  @override
-  final List<ITimelineTabBloc> timelineBlocs;
-
-  TimelinesHomeTabPageBodyBloc({@required this.timelineBlocs});
-}
-
-class TimelinesHomeTabPageBody extends StatefulWidget {
-  TimelinesHomeTabPageBody({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  _TimelinesHomeTabPageBodyState createState() =>
-      _TimelinesHomeTabPageBodyState();
-}
-
-class _TimelinesHomeTabPageBodyState extends State<TimelinesHomeTabPageBody>
-    with TickerProviderStateMixin {
-  TabController tabController;
-
-  VoidCallback listener;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    var timelineTabBlocs =
-        ITimelinesHomeTabPageBodyBloc.of(context, listen: false).timelineBlocs;
-    tabController = TabController(
-      vsync: this,
-      length: timelineTabBlocs.length,
-    );
-
-    listener = () {
-      var tabBloc = timelineTabBlocs[tabController.index];
-      var timelineTabsBloc = ITimelineTabsListBloc.of(context, listen: false);
-      var paginationListBloc = tabBloc.paginationListWithNewItemsBloc;
-      if (paginationListBloc.unmergedNewItemsCount > 0) {
-        paginationListBloc.mergeNewItems();
-      }
-      timelineTabsBloc.selectTab(tabBloc);
-    };
-    tabController.addListener(listener);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-
-    tabController.removeListener(listener);
-    tabController.dispose();
-  }
-
+class TimelinesHomeTabPageBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -238,8 +196,15 @@ class _TimelinesHomeTabPageBodyState extends State<TimelinesHomeTabPageBody>
   }
 
   Widget _buildBodyWidget(BuildContext context) {
-    var timelineTabsBloc = ITimelineTabsListBloc.of(context, listen: false);
+    var timelinesHomeTabPageBodyBloc =
+        ITimelinesHomeTabPageBodyBloc.of(context, listen: false);
     var timelinesHomeTabBloc = ITimelinesHomeTabBloc.of(context, listen: false);
+    var timelineTabBlocs = timelinesHomeTabPageBodyBloc.timelineBlocs;
+    var tabController = timelinesHomeTabPageBodyBloc.tabController;
+    _logger.finest(() => "_buildBodyWidget \n"
+        " tabController ${tabController.length} \n"
+        " timelineTabBlocs ${timelineTabBlocs.length} \n");
+
     return DisposableProvider<
         IFediNestedScrollViewWithNestedScrollableTabsBloc>(
       create: (context) => FediNestedScrollViewWithNestedScrollableTabsBloc(
@@ -262,7 +227,7 @@ class _TimelinesHomeTabPageBodyState extends State<TimelinesHomeTabPageBody>
                     children: [
                       Expanded(child: buildSearchActionButton(context)),
                       FediBigHorizontalSpacer(),
-                      buildFilterActionButton(context, timelineTabsBloc)
+                      buildFilterActionButton(context)
                     ],
                   ),
                 ),
@@ -302,7 +267,7 @@ class _TimelinesHomeTabPageBodyState extends State<TimelinesHomeTabPageBody>
         tabKeyPrefix: "TimelineTab",
         tabBodyProviderBuilder:
             (BuildContext context, int index, Widget child) {
-          var tabBloc = timelineTabsBloc.tabBlocs[index];
+          var tabBloc = timelinesHomeTabPageBodyBloc.timelineBlocs[index];
           return Provider<ITimelineLocalPreferencesBloc>.value(
             value: tabBloc.timelineLocalPreferencesBloc,
             child: Provider<
@@ -315,7 +280,7 @@ class _TimelinesHomeTabPageBodyState extends State<TimelinesHomeTabPageBody>
           );
         },
         tabBodyContentBuilder: (BuildContext context, int index) {
-          var tabBloc = timelineTabsBloc.tabBlocs[index];
+          var tabBloc = timelinesHomeTabPageBodyBloc.timelineBlocs[index];
 
           return Provider<ITimelineLocalPreferencesBloc>.value(
             value: tabBloc.timelineLocalPreferencesBloc,
@@ -331,8 +296,7 @@ class _TimelinesHomeTabPageBodyState extends State<TimelinesHomeTabPageBody>
     );
   }
 
-  Widget buildFilterActionButton(
-      BuildContext context, ITimelineTabsListBloc timelineTabsBloc) {
+  Widget buildFilterActionButton(BuildContext context) {
     return FediIconInCircleBlurredButton(
       FediIcons.filter,
       onPressed: () {
@@ -361,8 +325,14 @@ class _TimelinesHomeTabPageBodyState extends State<TimelinesHomeTabPageBody>
       );
 
   Widget _buildTabIndicatorWidget(BuildContext context) {
-    var timelineTabBlocs =
-        ITimelinesHomeTabPageBodyBloc.of(context, listen: false).timelineBlocs;
+    var timelinesHomeTabPageBodyBloc =
+        ITimelinesHomeTabPageBodyBloc.of(context, listen: false);
+    var timelineTabBlocs = timelinesHomeTabPageBodyBloc.timelineBlocs;
+    var tabController = timelinesHomeTabPageBodyBloc.tabController;
+    _logger.finest(() => "_buildTabIndicatorWidget \n"
+        " tabController ${tabController.length} \n"
+        " timelineTabBlocs ${timelineTabBlocs.length} \n");
+
     return Padding(
       padding: const EdgeInsets.only(top: 3.0, right: FediSizes.bigPadding),
       child: TimelineTabTextTabIndicatorItemWidget(
@@ -371,4 +341,54 @@ class _TimelinesHomeTabPageBodyState extends State<TimelinesHomeTabPageBody>
       ),
     );
   }
+}
+
+abstract class ITimelinesHomeTabPageBodyBloc extends Disposable {
+  static ITimelinesHomeTabPageBodyBloc of(BuildContext context,
+          {bool listen = true}) =>
+      Provider.of<ITimelinesHomeTabPageBodyBloc>(context, listen: listen);
+
+  List<ITimelineTabBloc> get timelineBlocs;
+
+  TabController get tabController;
+}
+
+class TimelinesHomeTabPageBodyBloc extends DisposableOwner
+    implements ITimelinesHomeTabPageBodyBloc {
+  @override
+  final TabController tabController;
+  final ITimelineTabsListBloc timelineTabsBloc;
+
+  TimelinesHomeTabPageBodyBloc({
+    @required TickerProvider vsync,
+    @required this.timelineTabsBloc,
+  }) : tabController = TabController(
+          vsync: vsync,
+          length: timelineTabsBloc.tabBlocs.length,
+        ) {
+    addDisposable(custom: () {
+      tabController.dispose();
+    });
+
+    var listener = () {
+      _logger.finest(() => "listener length ${tabController.index}\n"
+          "index ${tabController.index} \n"
+          "index ${tabController.index} \n");
+      var tabBloc = timelineTabsBloc.tabBlocs[tabController.index];
+
+      var paginationListBloc = tabBloc.paginationListWithNewItemsBloc;
+      if (paginationListBloc.unmergedNewItemsCount > 0) {
+        paginationListBloc.mergeNewItems();
+      }
+      timelineTabsBloc.selectTab(tabBloc);
+    };
+    tabController.addListener(listener);
+
+    addDisposable(custom: () {
+      tabController.removeListener(listener);
+    });
+  }
+
+  @override
+  List<ITimelineTabBloc> get timelineBlocs => timelineTabsBloc.tabBlocs;
 }

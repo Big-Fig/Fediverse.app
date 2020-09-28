@@ -8,7 +8,10 @@ import 'package:fedi/app/ui/tab/fedi_text_tab_indicator_widget.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+
+final _logger = Logger("timeline_tab_text_tab_indicator_item_widget.dart");
 
 class TimelineTabTextTabIndicatorItemWidget extends StatelessWidget {
   final List<ITimelineTabBloc> timelineTabBlocs;
@@ -20,41 +23,47 @@ class TimelineTabTextTabIndicatorItemWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          var fadingPercent = FediSizes.smallPadding / constraints.maxWidth;
-          return FediFadeShaderMask(
-            fadingPercent: fadingPercent,
-            fadingColor: FediColors.darkGrey,
-            child: FediTextTabIndicatorWidget<ITimelineTabBloc>(
-              customTabBuilder: (BuildContext context, Widget child,
-                  ITimelineTabBloc timelineTabBloc) {
-                var widget = CachedPaginationListWithNewItemsUnreadBadgeWidget(
-                    child: child);
+  Widget build(BuildContext context) {
+    _logger.finest(() => "build \n"
+        " tabController ${tabController.length} \n"
+        " timelineTabBlocs ${timelineTabBlocs.length} \n");
 
-                var tabPaginationListBloc =
-                    timelineTabBloc.paginationListWithNewItemsBloc;
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        var fadingPercent = FediSizes.smallPadding / constraints.maxWidth;
+        return FediFadeShaderMask(
+          fadingPercent: fadingPercent,
+          fadingColor: FediColors.darkGrey,
+          child: FediTextTabIndicatorWidget<ITimelineTabBloc>(
+            customTabBuilder: (BuildContext context, Widget child,
+                ITimelineTabBloc timelineTabBloc) {
+              var widget = CachedPaginationListWithNewItemsUnreadBadgeWidget(
+                  child: child);
 
-                return Provider<ICachedPaginationListWithNewItemsBloc>.value(
-                  value: tabPaginationListBloc,
-                  child: widget,
-                );
-              },
-              tabController: tabController,
-              isTransparent: true,
-              tabs: timelineTabBlocs,
-              tabToTextMapper: (
-                BuildContext context,
-                ITimelineTabBloc timelineTabBloc,
-              ) =>
-                  mapTabToTitle(
-                context,
-                timelineTabBloc.timeline,
-              ),
+              var tabPaginationListBloc =
+                  timelineTabBloc.paginationListWithNewItemsBloc;
+
+              return Provider<ICachedPaginationListWithNewItemsBloc>.value(
+                value: tabPaginationListBloc,
+                child: widget,
+              );
+            },
+            tabController: tabController,
+            isTransparent: true,
+            tabs: timelineTabBlocs,
+            tabToTextMapper: (
+              BuildContext context,
+              ITimelineTabBloc timelineTabBloc,
+            ) =>
+                mapTabToTitle(
+              context,
+              timelineTabBloc.timeline,
             ),
-          );
-        },
-      );
+          ),
+        );
+      },
+    );
+  }
 
   static String mapTabToTitle(BuildContext context, Timeline tab) => tab.label;
 }
