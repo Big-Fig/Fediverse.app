@@ -16,18 +16,23 @@ class TimelineWidget extends StatelessWidget {
     var timelineLocalPreferencesBloc =
         ITimelineLocalPreferencesBloc.of(context, listen: false);
 
-    var timeline = timelineLocalPreferencesBloc.value?.onlyWithMedia;
+    // todo: remove hack
+    timelineLocalPreferencesBloc.reload();
+
     return Container(
       color: FediColors.offWhite,
       child: StreamBuilder<bool>(
           stream: timelineLocalPreferencesBloc.stream
-              .map((timeline) =>
-                  timeline?.onlyWithMedia == true)
-              .distinct(),
-          initialData:
-              timeline == true,
+              .map((timeline) => timeline?.onlyWithMedia == true),
+          initialData: timelineLocalPreferencesBloc.value?.onlyWithMedia == true,
           builder: (context, snapshot) {
+            var timeline = timelineLocalPreferencesBloc.value;
             var onlyWithMedia = snapshot.data;
+            // var onlyWithMedia = timeline?.onlyWithMedia == true;
+
+            _logger.finest(() => "timeline $timeline");
+            _logger.finest(() => "onlyWithMedia $onlyWithMedia");
+            // _logger.finest(() => "onlyWithMedia timeline $timeline");
 
             Widget bodyWidget;
 

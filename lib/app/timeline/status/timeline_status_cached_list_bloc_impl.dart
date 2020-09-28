@@ -28,9 +28,9 @@ class TimelineStatusCachedListBloc extends DisposableOwner
   final IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc;
   final bool listenWebSockets;
 
-  Timeline get _timeline => timelineLocalPreferencesBloc.value;
+  Timeline get timeline => timelineLocalPreferencesBloc.value;
 
-  TimelineType get timelineType => _timeline.type;
+  TimelineType get timelineType => timeline.type;
 
   @override
   Stream<bool> get settingsChangedStream => timelineLocalPreferencesBloc.stream
@@ -55,8 +55,8 @@ class TimelineStatusCachedListBloc extends DisposableOwner
         case TimelineType.public:
           addDisposable(
               disposable: webSocketsHandlerManagerBloc.listenPublicChannel(
-            local: _timeline.onlyLocal,
-            onlyMedia: _timeline.onlyWithMedia,
+            local: timeline.onlyLocal,
+            onlyMedia: timeline.onlyWithMedia,
           ));
 
           break;
@@ -70,21 +70,21 @@ class TimelineStatusCachedListBloc extends DisposableOwner
         case TimelineType.customList:
           addDisposable(
               disposable: webSocketsHandlerManagerBloc.listenListChannel(
-            listId: _timeline.onlyInRemoteList.id,
+            listId: timeline.onlyInRemoteList.id,
           ));
           break;
 
         case TimelineType.hashtag:
           addDisposable(
               disposable: webSocketsHandlerManagerBloc.listenHashtagChannel(
-            hashtag: _timeline.withRemoteHashtag,
-            local: _timeline.onlyLocal,
+            hashtag: timeline.withRemoteHashtag,
+            local: timeline.onlyLocal,
           ));
           break;
         case TimelineType.account:
           addDisposable(
               disposable: webSocketsHandlerManagerBloc.listenAccountChannel(
-            accountId: _timeline.onlyFromRemoteAccount.id,
+            accountId: timeline.onlyFromRemoteAccount.id,
             notification: false,
           ));
           break;
@@ -103,16 +103,16 @@ class TimelineStatusCachedListBloc extends DisposableOwner
       @required IStatus newerThan,
       @required IStatus olderThan}) async {
     _logger.fine(() => "start refreshItemsFromRemoteForPage \n"
-        "\t _timeline = $_timeline"
+        "\t _timeline = $timeline"
         "\t newerThan = $newerThan"
         "\t olderThan = $olderThan");
 
     List<IPleromaStatus> remoteStatuses;
-    var onlyLocal = _timeline.onlyLocal == true;
-    var withMuted = _timeline.withMuted == true;
-    var onlyWithMedia = _timeline.onlyWithMedia;
-    var excludeVisibilities = _timeline.excludeVisibilities;
-    var pleromaReplyVisibilityFilter = _timeline.replyVisibilityFilter;
+    var onlyLocal = timeline.onlyLocal == true;
+    var withMuted = timeline.withMuted == true;
+    var onlyWithMedia = timeline.onlyWithMedia;
+    var excludeVisibilities = timeline.excludeVisibilities;
+    var pleromaReplyVisibilityFilter = timeline.replyVisibilityFilter;
     var maxId = olderThan?.remoteId;
     var sinceId = newerThan?.remoteId;
     switch (timelineType) {
@@ -130,7 +130,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
         break;
       case TimelineType.customList:
         remoteStatuses = await pleromaTimelineService.getListTimeline(
-          listId: _timeline.onlyInRemoteList.id,
+          listId: timeline.onlyInRemoteList.id,
           maxId: maxId,
           sinceId: sinceId,
           limit: limit,
@@ -152,7 +152,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
         break;
       case TimelineType.hashtag:
         remoteStatuses = await pleromaTimelineService.getHashtagTimeline(
-          hashtag: _timeline.withRemoteHashtag,
+          hashtag: timeline.withRemoteHashtag,
           maxId: maxId,
           sinceId: sinceId,
           limit: limit,
@@ -164,7 +164,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
         break;
       case TimelineType.account:
         remoteStatuses = await pleromaAccountService.getAccountStatuses(
-          accountRemoteId: _timeline.onlyFromRemoteAccount.id,
+          accountRemoteId: timeline.onlyFromRemoteAccount.id,
           onlyWithMedia: onlyWithMedia,
         );
         break;
@@ -172,7 +172,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
 
     if (remoteStatuses != null) {
       await statusRepository.upsertRemoteStatuses(remoteStatuses,
-          listRemoteId: _timeline.onlyInRemoteList?.id,
+          listRemoteId: timeline.onlyInRemoteList?.id,
           conversationRemoteId: null,
           isFromHomeTimeline: isFromHomeTimeline);
 
@@ -190,26 +190,26 @@ class TimelineStatusCachedListBloc extends DisposableOwner
         "\t item=$item");
 
     var onlyLocalFilter;
-    if (_timeline.onlyLocal == true) {
+    if (timeline.onlyLocal == true) {
       var localUrlHost = currentInstanceBloc.currentInstance.urlHost;
       onlyLocalFilter = OnlyLocalStatusFilter(localUrlHost);
     }
     return statusRepository.watchStatuses(
       onlyInConversation: null,
-      onlyFromAccount: _timeline.onlyFromRemoteAccount != null
-          ? mapRemoteAccountToLocalAccount(_timeline.onlyFromRemoteAccount)
+      onlyFromAccount: timeline.onlyFromRemoteAccount != null
+          ? mapRemoteAccountToLocalAccount(timeline.onlyFromRemoteAccount)
           : null,
-      onlyInListWithRemoteId: _timeline.onlyInRemoteList?.id,
-      onlyWithHashtag: _timeline.withRemoteHashtag,
+      onlyInListWithRemoteId: timeline.onlyInRemoteList?.id,
+      onlyWithHashtag: timeline.withRemoteHashtag,
       onlyFromAccountsFollowingByAccount: null,
       onlyLocal: onlyLocalFilter,
-      onlyWithMedia: _timeline.onlyWithMedia,
-      withMuted: _timeline.withMuted,
-      excludeVisibilities: _timeline.excludeVisibilities,
+      onlyWithMedia: timeline.onlyWithMedia,
+      withMuted: timeline.withMuted,
+      excludeVisibilities: timeline.excludeVisibilities,
       olderThanStatus: null,
       newerThanStatus: item,
-      onlyNoNsfwSensitive: _timeline.excludeNsfwSensitive,
-      onlyNoReplies: _timeline.excludeReplies,
+      onlyNoNsfwSensitive: timeline.excludeNsfwSensitive,
+      onlyNoReplies: timeline.excludeReplies,
       limit: null,
       offset: null,
       orderingTermData: StatusOrderingTermData(
@@ -231,26 +231,26 @@ class TimelineStatusCachedListBloc extends DisposableOwner
         "\t olderThan=$olderThan");
 
     var onlyLocalFilter;
-    if (_timeline.onlyLocal == true) {
+    if (timeline.onlyLocal == true) {
       var localUrlHost = currentInstanceBloc.currentInstance.urlHost;
       onlyLocalFilter = OnlyLocalStatusFilter(localUrlHost);
     }
     var statuses = await statusRepository.getStatuses(
       onlyInConversation: null,
-      onlyFromAccount: _timeline.onlyFromRemoteAccount != null
-          ? mapRemoteAccountToLocalAccount(_timeline.onlyFromRemoteAccount)
+      onlyFromAccount: timeline.onlyFromRemoteAccount != null
+          ? mapRemoteAccountToLocalAccount(timeline.onlyFromRemoteAccount)
           : null,
-      onlyInListWithRemoteId: _timeline.onlyInRemoteList?.id,
-      onlyWithHashtag: _timeline.withRemoteHashtag,
+      onlyInListWithRemoteId: timeline.onlyInRemoteList?.id,
+      onlyWithHashtag: timeline.withRemoteHashtag,
       onlyFromAccountsFollowingByAccount: null,
       onlyLocal: onlyLocalFilter,
-      onlyWithMedia: _timeline.onlyWithMedia,
-      withMuted: _timeline.withMuted,
-      excludeVisibilities: _timeline.excludeVisibilities,
+      onlyWithMedia: timeline.onlyWithMedia,
+      withMuted: timeline.withMuted,
+      excludeVisibilities: timeline.excludeVisibilities,
       olderThanStatus: olderThan,
       newerThanStatus: newerThan,
-      onlyNoNsfwSensitive: _timeline.excludeNsfwSensitive,
-      onlyNoReplies: _timeline.excludeReplies,
+      onlyNoNsfwSensitive: timeline.excludeNsfwSensitive,
+      onlyNoReplies: timeline.excludeReplies,
       limit: limit,
       offset: null,
       orderingTermData: StatusOrderingTermData(
@@ -262,7 +262,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
     );
 
     _logger.finer(() =>
-        "finish loadLocalItems for $_timeline statuses ${statuses.length}");
+        "finish loadLocalItems for $timeline statuses ${statuses.length}");
     return statuses;
   }
 

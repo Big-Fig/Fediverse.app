@@ -282,6 +282,7 @@ class TimelineSettings extends IPreferencesObject {
         onlyPinned: onlyPinned ?? this.onlyPinned,
       );
 
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
