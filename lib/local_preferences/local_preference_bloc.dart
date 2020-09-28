@@ -12,4 +12,6 @@ abstract class ILocalPreferenceBloc<T> extends DisposableOwner
   Future<bool> clearValue();
 
   Future<bool> setValue(T newValue);
+
+  Future reload();
 }

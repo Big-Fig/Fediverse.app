@@ -50,6 +50,11 @@ abstract class LocalPreferenceBloc<T> extends AsyncInitLoadingBloc
     return future;
   }
 
+  @override
+  Future reload() async {
+    _subject.add(await getValueInternal());
+  }
+
   @protected
   Future<T> getValueInternal();
 
