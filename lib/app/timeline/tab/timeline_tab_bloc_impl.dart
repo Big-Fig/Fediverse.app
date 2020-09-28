@@ -39,8 +39,11 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
   final IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc;
   final ILocalPreferencesService preferencesService;
 
+  @override
+  final String timelineId;
+
   TimelineTabBloc({
-    @required String timelineId,
+    @required this.timelineId,
     @required this.preferencesService,
     @required this.pleromaTimelineService,
     @required this.pleromaAccountService,
@@ -106,8 +109,8 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
       identical(this, other) ||
       other is TimelineTabBloc &&
           runtimeType == other.runtimeType &&
-          timelineLocalPreferencesBloc == other.timelineLocalPreferencesBloc;
+          timelineId == other.timelineId;
 
   @override
-  int get hashCode => timelineLocalPreferencesBloc.hashCode;
+  int get hashCode => timelineId.hashCode;
 }

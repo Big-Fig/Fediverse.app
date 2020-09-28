@@ -12,4 +12,6 @@ abstract class ITimelineTabBloc extends Disposable {
   Timeline get timeline;
 
   ITimelineLocalPreferencesBloc get timelineLocalPreferencesBloc;
+
+  String get timelineId;
 }

@@ -8,10 +8,7 @@ import 'package:fedi/app/ui/tab/fedi_text_tab_indicator_widget.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
-
-final _logger = Logger("timeline_tab_text_tab_indicator_item_widget.dart");
 
 class TimelineTabTextTabIndicatorItemWidget extends StatelessWidget {
   final List<ITimelineTabBloc> timelineTabBlocs;
@@ -24,10 +21,6 @@ class TimelineTabTextTabIndicatorItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _logger.finest(() => "build \n"
-        " tabController ${tabController.length} \n"
-        " timelineTabBlocs ${timelineTabBlocs.length} \n");
-
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         var fadingPercent = FediSizes.smallPadding / constraints.maxWidth;
