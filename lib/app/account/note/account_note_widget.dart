@@ -51,7 +51,7 @@ class AccountNoteWidget extends StatelessWidget {
                 if (tagUrlPartIndex > 0) {
                   var tag = url.substring(tagUrlPartIndex + tagUrlPart.length);
 
-                  if (htmlContent.contains(tag)) {
+                  if (htmlContent.contains("#$tag")) {
                     goToHashtagPage(
                       context: context,
                       hashtag: Hashtag(name: tag, url: url, history: []),
