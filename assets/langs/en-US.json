@@ -377,8 +377,8 @@
           },
           "fail": {
             "dialog": {
-              "title": "Not a valid instance (may be closed or dead)",
-              "content": "Please enter a valid instance name like fedi.app or pleroma.com"
+              "title": "Fail to connect to instance. You can try verified fedi.app or pleroma.com",
+              "content": "Details: {}"
             }
           },
           "registration_disabled": {

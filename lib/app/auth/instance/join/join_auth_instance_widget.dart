@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/app/auth/host/auth_host_model.dart';
+import 'package:fedi/app/auth/instance/auth_instance_pleroma_rest_error_data.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/join/join_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_page.dart';
@@ -278,13 +279,10 @@ class JoinAuthInstanceWidget extends StatelessWidget {
 
   ErrorData createInstanceDeadErrorData(
           BuildContext context, error, StackTrace stackTrace) =>
-      ErrorData(
-          error: error,
-          stackTrace: stackTrace,
-          titleText: tr("app.auth.instance.join"
-              ".fail.dialog.title"),
-          contentText: tr("app.auth.instance.join"
-              ".fail.dialog.content"));
+      AuthInstancePleromaRestErrorData(
+        error: error,
+        stackTrace: stackTrace,
+      );
 
   ErrorData createRegistrationDisabledErrorData(
           BuildContext context, error, StackTrace stackTrace) =>
