@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/async/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
+import 'package:fedi/app/auth/instance/auth_instance_pleroma_rest_error_data.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_bloc.dart';
 import 'package:fedi/app/form/captcha/form_captcha_string_field_row_widget.dart';
@@ -9,7 +10,6 @@ import 'package:fedi/app/form/form_string_field_form_row_widget.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/notification_overlay/info_fedi_notification_overlay.dart';
-import 'package:fedi/error/error_data_model.dart';
 import 'package:fedi/pleroma/account/public/pleroma_account_public_model.dart';
 import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
 import 'package:fedi/ui/scroll/unfocus_on_scroll_area_widget.dart';
@@ -207,14 +207,10 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
             },
             errorDataBuilders: [
           (context, error, stackTrace) {
-            // todo: handle specific error
-            return ErrorData(
-                error: error,
-                stackTrace: stackTrace,
-                titleText: tr("app.auth.instance.register.fail.dialog.title"),
-                contentText: tr(
-                    "app.auth.instance.register.fail.dialog.content",
-                    args: [error.toString()]));
+            return AuthInstancePleromaRestErrorData(
+              error: error,
+              stackTrace: stackTrace,
+            );
           }
         ]);
 
@@ -223,10 +219,12 @@ class RegisterAuthInstanceWidget extends StatelessWidget {
       Navigator.of(context).pop();
       if (authInstance.info.approvalRequired == true) {
         showInfoFediNotificationOverlay(
-          titleText:  "app.auth.instance.register.approval_required"
-              ".notification.title".tr(),
+          titleText: "app.auth.instance.register.approval_required"
+                  ".notification.title"
+              .tr(),
           contentText: "app.auth.instance.register.approval_required"
-              ".notification.content".tr(),
+                  ".notification.content"
+              .tr(),
         );
       } else {
         await ICurrentAuthInstanceBloc.of(context, listen: false)

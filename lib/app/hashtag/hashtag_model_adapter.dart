@@ -6,3 +6,9 @@ IHashtag mapRemoteHashtagToLocalHashtag(IPleromaTag pleromaTag) => Hashtag(
       url: pleromaTag.url,
       history: pleromaTag.history,
     );
+
+PleromaTag mapLocalHashtagToRemoteHashtag(IHashtag hashtag) => PleromaTag(
+      name: hashtag.name,
+      url: hashtag.url,
+      history: hashtag.history,
+    );

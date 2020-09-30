@@ -115,11 +115,15 @@ MaterialPageRoute createHashtagPageRoute({
 
   return MaterialPageRoute(builder: (context) {
     return DisposableProvider<ITimelineLocalPreferencesBloc>(
-      create: (context) => TimelineLocalPreferencesBloc.hashtag(
-        ILocalPreferencesService.of(context, listen: false),
-        userAtHost: currentAuthInstanceBloc.currentInstance.userAtHost,
-        hashtag: hashtag,
-      ),
+      create: (context) {
+        var timelineLocalPreferencesBloc = TimelineLocalPreferencesBloc.hashtag(
+          ILocalPreferencesService.of(context, listen: false),
+          userAtHost: currentAuthInstanceBloc.currentInstance.userAtHost,
+          hashtag: hashtag,
+        );
+        timelineLocalPreferencesBloc.performAsyncInit();
+        return timelineLocalPreferencesBloc;
+      },
       child: Builder(
         builder: (context) {
           return FediAsyncInitLoadingWidget(

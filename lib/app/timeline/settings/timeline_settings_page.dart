@@ -73,6 +73,7 @@ MaterialPageRoute createTimelineSettingsPageRoute(
           localPreferencesService,
           userAtHost: currentInstance.userAtHost,
           timelineId: timeline.id,
+          defaultValue: null,
         );
       },
       child: DisposableProvider<ITimelineSettingsFormBloc>(

@@ -5,3 +5,8 @@ ICustomList mapRemoteListToLocalCustomList(IPleromaList pleromaList) => CustomLi
       remoteId: pleromaList.id,
       title: pleromaList.title,
     );
+
+IPleromaList mapLocalCustomListToRemoteList(ICustomList customList) => PleromaList(
+      id: customList.remoteId,
+      title: customList.title,
+    );

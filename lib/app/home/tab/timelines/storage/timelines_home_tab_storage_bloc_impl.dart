@@ -37,8 +37,12 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
   Future updateTimelines() async {
     var timelines = <Timeline>[];
     for (var timelineId in timelineIds) {
-      var bloc = TimelineLocalPreferencesBloc.byId(preferencesService,
-          userAtHost: authInstance.userAtHost, timelineId: timelineId);
+      var bloc = TimelineLocalPreferencesBloc.byId(
+        preferencesService,
+        userAtHost: authInstance.userAtHost,
+        timelineId: timelineId,
+        defaultValue: null,
+      );
 
       await bloc.performAsyncInit();
 
@@ -85,6 +89,7 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
       preferencesService,
       userAtHost: authInstance.userAtHost,
       timelineId: timeline.id,
+      defaultValue: null,
     );
 
     await settingsLocalPreferencesBloc.setValue(timeline);
@@ -105,6 +110,7 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
       preferencesService,
       userAtHost: authInstance.userAtHost,
       timelineId: timeline.id,
+      defaultValue: null,
     );
 
     await settingsLocalPreferencesBloc.clearValue();
