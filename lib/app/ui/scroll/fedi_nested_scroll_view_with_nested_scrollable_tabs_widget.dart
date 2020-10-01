@@ -7,6 +7,10 @@ import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_widget.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollable_tabs_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart' hide NestedScrollView;
+import 'package:logging/logging.dart';
+
+var _logger =
+    Logger("fedi_nested_scroll_view_with_nested_scrollable_tabs_widget.dart");
 
 typedef TabBarViewContainerBuilder = Widget Function(
     BuildContext context, Widget child);
@@ -148,6 +152,9 @@ class _NestedBodyWidgetState extends State<_NestedBodyWidget>
 
     var tabController =
         fediNestedScrollViewWithNestedScrollableTabsBloc.tabController;
+
+    _logger.finest(
+        () => "_buildTabBarView tabController ${tabController.hashCode}");
 
     if (tabController == null || tabController.length == 0) {
       var tabsEmptyBuilder = widget.tabsEmptyBuilder;

@@ -29,7 +29,8 @@ class FediTextTabIndicatorWidget<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     var borderHeight = 2.0;
 
-    var fediTabIndicatorBloc = IFediTabIndicatorBloc.of<T>(context, listen: false);
+    var fediTabIndicatorBloc =
+        IFediTabIndicatorBloc.of<T>(context, listen: false);
     return TabBar(
       isScrollable: true,
       indicatorSize: TabBarIndicatorSize.label,
@@ -48,9 +49,11 @@ class FediTextTabIndicatorWidget<T> extends StatelessWidget {
             var index = entry.key;
             var tab = entry.value;
 
-            Widget tabWidget = DisposableProvider<IFediTabIndicatorItemBloc<T>>(
-              create: (BuildContext context) => FediTabIndicatorItemBloc<T>(
-                fediTabIndicatorBloc: fediTabIndicatorBloc,
+            Widget tabWidget = DisposableProxyProvider<IFediTabIndicatorBloc<T>,
+                IFediTabIndicatorItemBloc<T>>(
+              // create: (BuildContext context) =>
+              update: (context, value, previous) => FediTabIndicatorItemBloc<T>(
+                fediTabIndicatorBloc: value,
                 index: index,
                 item: tab,
               ),

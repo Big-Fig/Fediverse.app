@@ -20,10 +20,6 @@ class FediTextTabIndicatorItemWidget<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     var fediTabIndicatorItemBloc =
         IFediTabIndicatorItemBloc.of<T>(context, listen: false);
-    var onPressed = () {
-      fediTabIndicatorItemBloc.select();
-    };
-
     var fontSize = 16.0;
     var lineHeight = 1.5;
 
@@ -39,7 +35,9 @@ class FediTextTabIndicatorItemWidget<T> extends StatelessWidget {
           if (isSelected) {
             return FediPrimaryFilledTextButton(
               label,
-              onPressed: onPressed,
+              onPressed: () {
+                onSelect(fediTabIndicatorItemBloc);
+              },
               textStyle: FediPrimaryFilledTextButton.defaultTextStyle.copyWith(
                 fontSize: fontSize,
                 fontWeight: FontWeight.w500,
@@ -52,7 +50,9 @@ class FediTextTabIndicatorItemWidget<T> extends StatelessWidget {
             if (isTransparent) {
               text = FediBlurredTextButton(
                 label,
-                onPressed: onPressed,
+                onPressed: () {
+                  onSelect(fediTabIndicatorItemBloc);
+                },
                 textStyle: FediBlurredTextButton.defaultTextStyle.copyWith(
                   fontSize: fontSize,
                   fontWeight: fontWeight,
@@ -62,7 +62,9 @@ class FediTextTabIndicatorItemWidget<T> extends StatelessWidget {
             } else {
               text = FediTransparentTextButton(
                 label,
-                onPressed: onPressed,
+                onPressed: () {
+                  onSelect(fediTabIndicatorItemBloc);
+                },
                 textStyle: FediTransparentTextButton.defaultTextStyle.copyWith(
                   fontSize: fontSize,
                   fontWeight: fontWeight,
@@ -75,5 +77,9 @@ class FediTextTabIndicatorItemWidget<T> extends StatelessWidget {
 
           return text;
         });
+  }
+
+  void onSelect(IFediTabIndicatorItemBloc fediTabIndicatorItemBloc) {
+    fediTabIndicatorItemBloc.select();
   }
 }

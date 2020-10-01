@@ -2,6 +2,7 @@ import 'package:fedi/app/account/statuses/account_statuses_tab_model.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/shader_mask/fedi_fade_shader_mask.dart';
+import 'package:fedi/app/ui/tab/fedi_tab_indicator_bloc.dart';
 import 'package:fedi/app/ui/tab/fedi_tab_indicator_bloc_impl.dart';
 import 'package:fedi/app/ui/tab/fedi_text_tab_indicator_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
@@ -24,8 +25,9 @@ class AccountTabTextTabIndicatorItemWidget extends StatelessWidget {
           return FediFadeShaderMask(
             fadingPercent: fadingPercent,
             fadingColor: FediColors.darkGrey,
-            child: DisposableProvider(
-              create: (context) => FediTabIndicatorBloc(
+            child:
+                DisposableProvider<IFediTabIndicatorBloc<AccountStatusesTab>>(
+              create: (context) => FediTabIndicatorBloc<AccountStatusesTab>(
                 items: accountTabs,
                 tabController: tabController,
               ),

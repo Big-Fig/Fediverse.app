@@ -15,6 +15,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class TimelineTabListTextTabIndicatorItemWidget extends StatelessWidget {
+  TimelineTabListTextTabIndicatorItemWidget();
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -25,9 +27,12 @@ class TimelineTabListTextTabIndicatorItemWidget extends StatelessWidget {
           fadingColor: FediColors.darkGrey,
           child: DisposableProxyProvider<ITimelineTabListBloc,
               IFediTabIndicatorBloc<ITimelineTabBloc>>(
-            update: (context, value, previous) => FediTabIndicatorBloc(
-                items: value.timelineTabBlocsList.timelineTabBlocs,
-                tabController: value.timelineTabBlocsList.tabController),
+            update: (context, value, previous) {
+              var timelineTabBlocsList = value.timelineTabBlocsList;
+              return FediTabIndicatorBloc<ITimelineTabBloc>(
+                  items: timelineTabBlocsList.timelineTabBlocs,
+                  tabController: timelineTabBlocsList.tabController);
+            },
             child: FediTextTabIndicatorWidget<ITimelineTabBloc>(
               customTabBuilder: (BuildContext context, Widget child,
                   ITimelineTabBloc timelineTabBloc) {

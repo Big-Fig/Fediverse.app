@@ -22,7 +22,11 @@ class FediTabIndicatorBloc<T> extends DisposableOwner
     tabController.addListener(listener);
 
     addDisposable(custom: () {
-      tabController.removeListener(listener);
+      // try {
+        tabController.removeListener(listener);
+    //   } catch (e, stackTrace) {
+    //     _logger.warning(() => "Failed to remove tab listener", e, stackTrace);
+    //   }
     });
   }
 

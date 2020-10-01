@@ -12,11 +12,11 @@ class FediTabIndicatorItemBloc<T> extends DisposableOwner
   final int index;
 
   @override
-  bool get isSelected => fediTabIndicatorBloc.selectedIndex == index;
+  bool get isSelected => fediTabIndicatorBloc.selectedItem == item;
 
   @override
-  Stream<bool> get isSelectedStream => fediTabIndicatorBloc.selectedIndexStream
-      .map((selectedIndex) => selectedIndex == index);
+  Stream<bool> get isSelectedStream => fediTabIndicatorBloc.selectedItemStream
+      .map((selectedItem) => selectedItem == item);
 
   FediTabIndicatorItemBloc({
     @required this.fediTabIndicatorBloc,

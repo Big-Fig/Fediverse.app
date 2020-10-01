@@ -138,9 +138,6 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
 
     var oldSelectedIndex = oldTabController?.index;
 
-    oldBlocs?.forEach((bloc) => bloc.dispose());
-    oldTabController?.dispose();
-
     var newTabBlocs = <ITimelineTabBloc>[];
     for (var timelineId in newTimelineIds) {
       var timelineTabBloc = TimelineTabBloc(
@@ -173,8 +170,10 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
     var tabController = TabController(
       length: newTabBlocs.length,
       vsync: vsync,
-      initialIndex: initialIndex ?? 0,
+      // initialIndex: initialIndex ?? 0,
     );
+
+    tabController.animateTo(initialIndex ?? 0);
 
     tabControllerListener = () {
       var index = tabController.index;
@@ -194,6 +193,11 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
         timelineTabBlocs: newTabBlocs,
       ),
     );
+
+    Future.delayed(Duration(seconds: 1), () {
+      oldBlocs?.forEach((bloc) => bloc.dispose());
+      oldTabController?.dispose();
+    });
   }
 
   static TimelineTabListBloc createFromContext(
