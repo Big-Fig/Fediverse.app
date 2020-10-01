@@ -18,6 +18,7 @@ import 'package:fedi/app/search/statuses/search_statuses_pagination_list_bloc.da
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/tab/fedi_tab_indicator_bloc_impl.dart';
 import 'package:fedi/app/ui/tab/fedi_text_tab_indicator_widget.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
@@ -73,11 +74,15 @@ class SearchWidget extends StatelessWidget {
       Padding(
         padding: FediPadding.allBigPadding,
         child: Builder(
-          builder: (context) => FediTextTabIndicatorWidget(
-            isTransparent: false,
-            tabs: tabs,
-            tabController: DefaultTabController.of(context),
-            tabToTextMapper: mapTabToTitle,
+          builder: (context) => DisposableProvider(
+            create: (context) => FediTabIndicatorBloc(
+              items: tabs,
+              tabController: DefaultTabController.of(context),
+            ),
+            child: FediTextTabIndicatorWidget(
+              isTransparent: false,
+              tabToTextMapper: mapTabToTitle,
+            ),
           ),
         ),
       );
