@@ -2,7 +2,9 @@ import 'package:fedi/app/account/statuses/account_statuses_tab_model.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/shader_mask/fedi_fade_shader_mask.dart';
+import 'package:fedi/app/ui/tab/fedi_tab_indicator_bloc_impl.dart';
 import 'package:fedi/app/ui/tab/fedi_text_tab_indicator_widget.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -22,16 +24,21 @@ class AccountTabTextTabIndicatorItemWidget extends StatelessWidget {
           return FediFadeShaderMask(
             fadingPercent: fadingPercent,
             fadingColor: FediColors.darkGrey,
-            child: FediTextTabIndicatorWidget<AccountStatusesTab>(
-              customTabBuilder:
-                  (BuildContext context, Widget child, AccountStatusesTab tab) {
-                return child;
-              },
-              tabController: tabController,
-              isTransparent: true,
-              tabs: accountTabs,
-              tabToTextMapper: (BuildContext context, AccountStatusesTab tab) =>
-                  mapTabToTitle(context, tab),
+            child: DisposableProvider(
+              create: (context) => FediTabIndicatorBloc(
+                items: accountTabs,
+                tabController: tabController,
+              ),
+              child: FediTextTabIndicatorWidget<AccountStatusesTab>(
+                customTabBuilder: (BuildContext context, Widget child,
+                    AccountStatusesTab tab) {
+                  return child;
+                },
+                isTransparent: true,
+                tabToTextMapper:
+                    (BuildContext context, AccountStatusesTab tab) =>
+                        mapTabToTitle(context, tab),
+              ),
             ),
           );
         },

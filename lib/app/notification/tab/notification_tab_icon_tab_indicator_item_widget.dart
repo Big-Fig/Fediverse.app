@@ -6,6 +6,9 @@ import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/shader_mask/fedi_fade_shader_mask.dart';
 import 'package:fedi/app/ui/tab/fedi_icon_tab_indicator_widget.dart';
+import 'package:fedi/app/ui/tab/fedi_tab_indicator_bloc.dart';
+import 'package:fedi/app/ui/tab/fedi_tab_indicator_bloc_impl.dart';
+import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -30,28 +33,35 @@ class NotificationTabTextTabIndicatorItemWidget extends StatelessWidget {
             return FediFadeShaderMask(
               fadingPercent: fadingPercent,
               fadingColor: FediColors.darkGrey,
-              child: FediIconTabIndicatorWidget(
-                customTabBuilder:
-                    (BuildContext context, Widget child, NotificationTab tab) {
-                  var widget = CachedPaginationListWithNewItemsUnreadBadgeWidget(
-                      child: child);
+              child: DisposableProvider<IFediTabIndicatorBloc<NotificationTab>>(
+                create: (context) => FediTabIndicatorBloc<NotificationTab>(
+                  tabController: tabController,
+                  items: notificationTabs,
+                ),
+                child: FediIconTabIndicatorWidget(
+                  customTabBuilder: (BuildContext context, Widget child,
+                      NotificationTab tab) {
+                    var widget =
+                        CachedPaginationListWithNewItemsUnreadBadgeWidget(
+                            child: child);
 
-                  var notificationTabsBloc =
-                  INotificationTabsBloc.of(context, listen: false);
+                    var notificationTabsBloc =
+                        INotificationTabsBloc.of(context, listen: false);
 
-                  var paginationListBloc =
-                  notificationTabsBloc.retrieveTimelineTabPaginationListBloc(tab);
+                    var paginationListBloc = notificationTabsBloc
+                        .retrieveTimelineTabPaginationListBloc(tab);
 
-                  return Provider<ICachedPaginationListWithNewItemsBloc>.value(
-                    value: paginationListBloc,
-                    child: widget,
-                  );
-                },
-                tabController: tabController,
-                tabs: notificationTabs,
-                tabToIconMapper: (BuildContext context, NotificationTab tab) =>
-                    mapTabToIconData(context, tab),
-                expand: true,
+                    return Provider<
+                        ICachedPaginationListWithNewItemsBloc>.value(
+                      value: paginationListBloc,
+                      child: widget,
+                    );
+                  },
+                  tabToIconMapper:
+                      (BuildContext context, NotificationTab tab) =>
+                          mapTabToIconData(context, tab),
+                  expand: true,
+                ),
               ),
             );
           },

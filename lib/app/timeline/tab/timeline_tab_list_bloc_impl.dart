@@ -136,6 +136,8 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
 
     timelineTabBlocsListSubject.add(null);
 
+    var oldSelectedIndex = oldTabController?.index;
+
     oldBlocs?.forEach((bloc) => bloc.dispose());
     oldTabController?.dispose();
 
@@ -155,10 +157,23 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
       await timelineTabBloc.performAsyncInit();
       newTabBlocs.add(timelineTabBloc);
     }
+    int initialIndex;
+
+    if (oldBlocs != null && oldSelectedIndex != null) {
+      var oldSelectedBloc = oldBlocs[oldSelectedIndex];
+
+      initialIndex = newTabBlocs
+          .indexWhere((bloc) => bloc.timelineId == oldSelectedBloc.timelineId);
+
+      if (initialIndex == -1) {
+        initialIndex = null;
+      }
+    }
 
     var tabController = TabController(
       length: newTabBlocs.length,
       vsync: vsync,
+      initialIndex: initialIndex ?? 0,
     );
 
     tabControllerListener = () {

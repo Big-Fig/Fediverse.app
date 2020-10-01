@@ -14,7 +14,7 @@ import 'package:fedi/app/timeline/create/create_timeline_page.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_list_bloc.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_list_bloc_impl.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_list_model.dart';
-import 'package:fedi/app/timeline/tab/timeline_tab_text_tab_indicator_item_widget.dart';
+import 'package:fedi/app/timeline/tab/timeline_tab_list_text_tab_indicator_item_widget.dart';
 import 'package:fedi/app/timeline/timeline_local_preferences_bloc.dart';
 import 'package:fedi/app/timeline/timeline_widget.dart';
 import 'package:fedi/app/ui/button/fedi_transparent_icon_text_button.dart';
@@ -244,10 +244,7 @@ class TimelinesHomeTabPageBody extends StatelessWidget {
     }
     return Padding(
       padding: const EdgeInsets.only(top: 3.0, right: FediSizes.bigPadding),
-      child: TimelineTabTextTabIndicatorItemWidget(
-        tabController: timelineTabBlocsList.tabController,
-        timelineTabBlocs: timelineTabBlocsList.timelineTabBlocs,
-      ),
+      child: TimelineTabListTextTabIndicatorItemWidget(),
     );
   }
 
