@@ -20,8 +20,12 @@ const _defaultPadding = FediPadding.horizontalBigPadding;
 
 class StatusBodyWidget extends StatelessWidget {
   final bool collapsible;
+  final IPleromaMediaAttachment initialMediaAttachment;
 
-  StatusBodyWidget({@required this.collapsible});
+  StatusBodyWidget({
+    @required this.collapsible,
+    @required this.initialMediaAttachment,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -110,6 +114,7 @@ class StatusBodyWidget extends StatelessWidget {
                     padding: FediPadding.verticalSmallPadding,
                     child: MediaAttachmentsWidget(
                       mediaAttachments: snapshot.data,
+                      initialMediaAttachment: initialMediaAttachment,
                     ),
                   );
                 } else {

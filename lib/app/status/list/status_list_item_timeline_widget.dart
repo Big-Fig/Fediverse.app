@@ -14,7 +14,6 @@ import 'package:fedi/app/status/reply/status_reply_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:fedi/app/status/visibility/status_visibility_icon_widget.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
@@ -22,6 +21,7 @@ import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/collapsible/collapsible_bloc.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -38,6 +38,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
   final bool displayReplyToStatus;
   final bool isFirstReplyInThread;
   final bool collapsible;
+  final IPleromaMediaAttachment initialMediaAttachment;
 
   bool get isFirstReplyAndDisplayReplyToStatus =>
       (displayReplyToStatus && isFirstReplyInThread);
@@ -50,14 +51,16 @@ class StatusListItemTimelineWidget extends StatelessWidget {
     @required this.displayReplyToStatus,
     @required this.isFirstReplyInThread,
     @required this.accountMentionCallback,
-    this.statusCallback = goToStatusThreadPage,
+    @required this.statusCallback,
+    @required this.initialMediaAttachment,
   }) : super();
 
   static StatusListItemTimelineWidget list({
     @required bool collapsible,
     bool isFirstReplyInThread = true,
     bool displayActions = true,
-    IStatusCallback statusCallback = goToStatusThreadPage,
+    @required IStatusCallback statusCallback,
+    @required IPleromaMediaAttachment initialMediaAttachment,
   }) =>
       StatusListItemTimelineWidget._private(
         collapsible: collapsible,
@@ -68,14 +71,16 @@ class StatusListItemTimelineWidget extends StatelessWidget {
         displayThisThreadAction: true,
         displayAccountHeader: true,
         accountMentionCallback: null,
+        initialMediaAttachment: initialMediaAttachment,
       );
 
   static StatusListItemTimelineWidget thread({
     @required bool collapsible,
     @required bool displayAccountHeader,
     @required bool displayActions,
-    IStatusCallback statusCallback = goToStatusThreadPage,
+    @required IStatusCallback statusCallback,
     @required AccountCallback accountMentionCallback,
+    @required IPleromaMediaAttachment initialMediaAttachment,
   }) =>
       StatusListItemTimelineWidget._private(
         collapsible: collapsible,
@@ -86,6 +91,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
         displayThisThreadAction: false,
         accountMentionCallback: accountMentionCallback,
         displayAccountHeader: displayAccountHeader,
+        initialMediaAttachment: initialMediaAttachment,
       );
 
   @override
@@ -255,6 +261,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
             FediSizes.smallPadding, 0.0, FediSizes.bigPadding),
         child: StatusBodyWidget(
           collapsible: collapsible,
+          initialMediaAttachment: initialMediaAttachment,
         ),
       );
     } else {
@@ -262,6 +269,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: FediSizes.smallPadding),
         child: StatusBodyWidget(
           collapsible: collapsible,
+          initialMediaAttachment: initialMediaAttachment,
         ),
       );
     }

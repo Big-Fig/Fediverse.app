@@ -47,6 +47,7 @@ class DraftStatusListItemWidget extends StatelessWidget {
                         // nothing
                       },
                       collapsible: false,
+                      initialMediaAttachment: null,
                     )),
               );
             })

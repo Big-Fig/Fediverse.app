@@ -6,6 +6,7 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/pleroma/mention/pleroma_mention_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service.dart';
 import 'package:flutter/widgets.dart';
@@ -28,10 +29,14 @@ class StatusThreadBloc extends DisposableOwner implements IStatusThreadBloc {
   Stream<IStatus> get onNewStatusAddedStream =>
       _onNewStatusAddedStreamController.stream;
 
+  @override
+  final IPleromaMediaAttachment initialMediaAttachment;
+
   StatusThreadBloc({
     @required this.pleromaStatusService,
     @required this.statusRepository,
     @required this.initialStatusToFetchThread,
+    @required this.initialMediaAttachment,
   })  : _statusesSubject = BehaviorSubject.seeded([initialStatusToFetchThread]),
         _firstStatusInThreadSubject =
             BehaviorSubject.seeded(!initialStatusToFetchThread.isReply) {
