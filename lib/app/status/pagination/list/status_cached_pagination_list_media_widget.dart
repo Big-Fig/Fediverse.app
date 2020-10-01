@@ -24,30 +24,29 @@ class StatusCachedPaginationListMediaWidget
 
   @override
   IPaginationListBloc<PaginationPage<IStatus>, IStatus>
-  retrievePaginationListBloc(BuildContext context,
-      {@required bool listen}) {
-    var timelinePaginationListBloc =
-    Provider.of<IPaginationListBloc<CachedPaginationPage<IStatus>, IStatus>>(
+      retrievePaginationListBloc(BuildContext context,
+          {@required bool listen}) {
+    var timelinePaginationListBloc = Provider.of<
+            IPaginationListBloc<CachedPaginationPage<IStatus>, IStatus>>(
         context,
         listen: listen);
     return timelinePaginationListBloc;
   }
 
-  static ScrollView buildStaggeredMediaGridView({
-    @required BuildContext context,
-    @required List<IStatus> items,
-    @required Widget header,
-    @required Widget footer
-  }) {
+  static ScrollView buildStaggeredMediaGridView(
+      {@required BuildContext context,
+      @required List<IStatus> items,
+      @required Widget header,
+      @required Widget footer}) {
     _logger.finest(() => "buildStaggeredGridView ${items?.length}");
 
     // all statuses should be already with media attachments
     items = items
         .where((status) =>
-    status.mediaAttachments
-        ?.where((mediaAttachment) => mediaAttachment.isImageOrGif)
-        ?.isNotEmpty ==
-        true)
+            status.mediaAttachments
+                ?.where((mediaAttachment) => mediaAttachment.isImageOrGif)
+                ?.isNotEmpty ==
+            true)
         .toList();
 
     var statusesWithMediaAttachment = <_StatusWithMediaAttachment>[];
@@ -95,7 +94,10 @@ class StatusCachedPaginationListMediaWidget
               child: InkWell(
                 onTap: () {
                   goToStatusThreadPage(
-                      context, statusWithMediaAttachment.status);
+                    context,
+                    status: statusWithMediaAttachment.status,
+                    initialMediaAttachment: statusWithMediaAttachment.mediaAttachment,
+                  );
                 },
                 child: Padding(
                   padding: FediPadding.allSmallPadding,
@@ -116,11 +118,17 @@ class StatusCachedPaginationListMediaWidget
   }
 
   @override
-  ScrollView buildItemsCollectionView({@required BuildContext context,
-    @required List<IStatus> items,
-    @required Widget header,
-    @required Widget footer}) => buildStaggeredMediaGridView(context: context, items: items,
-      header: header, footer: footer,);
+  ScrollView buildItemsCollectionView(
+          {@required BuildContext context,
+          @required List<IStatus> items,
+          @required Widget header,
+          @required Widget footer}) =>
+      buildStaggeredMediaGridView(
+        context: context,
+        items: items,
+        header: header,
+        footer: footer,
+      );
 }
 
 class _StatusWithMediaAttachment {

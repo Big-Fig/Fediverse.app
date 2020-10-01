@@ -1,6 +1,7 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/disposable/disposable.dart';
+import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:fedi/pleroma/mention/pleroma_mention_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -14,6 +15,7 @@ abstract class IStatusThreadBloc implements Disposable {
   Stream<List<IPleromaMention>> get mentionsStream;
 
   IStatus get initialStatusToFetchThread;
+  IPleromaMediaAttachment get initialMediaAttachment;
 
   int get initialStatusToFetchThreadIndex;
 

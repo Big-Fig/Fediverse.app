@@ -21,7 +21,11 @@ class StatusCommentActionWidget extends StatelessWidget {
           icon: Icon(FediIcons.message),
           tooltip: tr("app.status.action.comment"),
           onPressed: () {
-            goToStatusThreadPage(context, statusBloc.status);
+            goToStatusThreadPage(
+              context,
+              status: statusBloc.status,
+              initialMediaAttachment: null,
+            );
           },
         ),
         StreamBuilder<int>(
@@ -36,7 +40,11 @@ class StatusCommentActionWidget extends StatelessWidget {
               return StatusActionCounterWidget(
                 value: repliesCount,
                 onPressed: () {
-                  goToStatusThreadPage(context, statusBloc.status);
+                  goToStatusThreadPage(
+                    context,
+                    status: statusBloc.status,
+                    initialMediaAttachment: null,
+                  );
                 },
               );
             })

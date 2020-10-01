@@ -28,7 +28,6 @@ class ConversationStatusListItemWidget extends StatelessWidget {
 
     var deviceWidth = MediaQuery.of(context).size.width;
 
-
     var isStatusFromMe = myAccountBloc.checkIsStatusFromMe(statusBloc.status);
 
     var alignment =
@@ -128,6 +127,7 @@ class ConversationStatusListItemWidget extends StatelessWidget {
 
             return MediaAttachmentsWidget(
               mediaAttachments: mediaAttachments,
+              initialMediaAttachment: null,
             );
           });
 

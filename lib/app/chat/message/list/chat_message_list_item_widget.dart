@@ -144,6 +144,7 @@ class ChatMessageListItemWidget extends StatelessWidget {
 
             return MediaAttachmentsWidget(
               mediaAttachments: mediaAttachments,
+              initialMediaAttachment: null,
             );
           });
 

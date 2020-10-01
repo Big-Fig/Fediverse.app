@@ -1,6 +1,7 @@
 import 'package:fedi/app/account/statuses/account_statuses_widget.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/pagination/list/pagination_list_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -40,6 +41,11 @@ class AccountStatusesTimelineWidget extends AccountStatusesWidget {
                   isFirstInList: index == 0 && alwaysShowHeader != true,
                   child: StatusListItemTimelineWidget.list(
                     collapsible: true,
+                    statusCallback: (BuildContext context, IStatus status) {
+                      goToStatusThreadPage(context,
+                          status: status, initialMediaAttachment: null);
+                    },
+                    initialMediaAttachment: null,
                   ),
                 ),
               ));

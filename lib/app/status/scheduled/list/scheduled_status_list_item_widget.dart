@@ -45,6 +45,7 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
                 // nothing
               },
               collapsible: false,
+              initialMediaAttachment: null,
             ))
       ],
     );

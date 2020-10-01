@@ -1,6 +1,7 @@
 import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_base_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
@@ -63,6 +64,11 @@ class StatusCachedPaginationListTimelineWidget
 //                isFirstInList: false,
                 child: StatusListItemTimelineWidget.list(
                   collapsible: true,
+                  statusCallback: (BuildContext context, IStatus status) {
+                    goToStatusThreadPage(context,
+                        status: status, initialMediaAttachment: null);
+                  },
+                  initialMediaAttachment: null,
                 ),
               ),
             );

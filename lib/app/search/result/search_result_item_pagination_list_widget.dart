@@ -9,6 +9,7 @@ import 'package:fedi/app/hashtag/list/hashtag_list_item_widget.dart';
 import 'package:fedi/app/search/result/search_result_model.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_text_styles.dart';
@@ -123,6 +124,10 @@ class SearchResultItemPaginationListWidget
         isFirstInList: index == 0, //                isFirstInList: false,
         child: StatusListItemTimelineWidget.list(
           collapsible: true,
+          statusCallback: (BuildContext context, IStatus status) {
+            goToStatusThreadPage(context,
+                status: status, initialMediaAttachment: null);
+          }, initialMediaAttachment: null,
         ),
       ),
     );
@@ -162,6 +167,7 @@ class SearchResultItemPaginationListWidget
 class _ItemOrSeparator<T> {
   final T item;
   final String separator;
+
   _ItemOrSeparator({@required this.item, @required this.separator}) {
     assert(item != null || separator != null);
     assert(!(item != null && separator != null));

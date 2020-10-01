@@ -11,8 +11,12 @@ var _logger = Logger("status_media_attachments_widget.dart");
 
 class MediaAttachmentsWidget extends StatelessWidget {
   final List<IPleromaMediaAttachment> mediaAttachments;
+  final IPleromaMediaAttachment initialMediaAttachment;
 
-  const MediaAttachmentsWidget({@required this.mediaAttachments});
+  const MediaAttachmentsWidget({
+    @required this.mediaAttachments,
+    @required this.initialMediaAttachment,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +56,15 @@ class MediaAttachmentsWidget extends StatelessWidget {
     if (children.length == 1) {
       return children.first;
     } else {
+      var initialPageIndex = 0;
+      if (initialMediaAttachment != null) {
+        initialPageIndex = mediaAttachments.indexOf(initialMediaAttachment);
+        if (initialPageIndex == -1) {
+          initialPageIndex = 0;
+        }
+      }
       return FediMediaCarouselWidget(
+        initialPageIndex: initialPageIndex,
         children: children,
       );
     }

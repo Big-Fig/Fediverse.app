@@ -89,13 +89,12 @@ class NotificationListItemWidget extends StatelessWidget {
                         await notificationBloc.dismiss();
                       },
                       color: FediColors.darkGrey,
-                      iconSize : 12.0,
-                      size : 24.0,
+                      iconSize: 12.0,
+                      size: 24.0,
                     ),
                     NotificationCreatedAtWidget(),
                   ],
                 ),
-
               ],
             ),
           ],
@@ -126,7 +125,11 @@ class NotificationListItemWidget extends StatelessWidget {
     if (notificationBloc.typePleroma == PleromaNotificationType.followRequest) {
       goToMyAccountFollowRequestListPage(context);
     } else if (status != null) {
-      goToStatusThreadPage(context, status);
+      goToStatusThreadPage(
+        context,
+        status: status,
+        initialMediaAttachment: null,
+      );
     } else if (chatRemoteId != null) {
       var chatRepository = IChatRepository.of(context, listen: false);
 

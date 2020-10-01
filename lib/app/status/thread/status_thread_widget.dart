@@ -175,7 +175,8 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
           var isFirstInList = index == 0;
           var isInFocus =
               index == statusThreadBloc.initialStatusToFetchThreadIndex;
-          var firstStatusInThread = statusThreadBloc.isFirstStatusInThread(status);
+          var firstStatusInThread =
+              statusThreadBloc.isFirstStatusInThread(status);
           return Provider.value(
             value: status,
             child: Padding(
@@ -193,18 +194,23 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
                         if (status.remoteId !=
                             statusThreadBloc
                                 .initialStatusToFetchThread.remoteId) {
-                          goToStatusThreadPage(context, status);
+                          goToStatusThreadPage(
+                            context,
+                            status: status,
+                            initialMediaAttachment: null,
+                          );
                         }
                       },
                       collapsible: false,
-                      displayAccountHeader:
-                          !firstStatusInThread,
+                      displayAccountHeader: !firstStatusInThread,
                       displayActions: firstStatusInThread || isInFocus,
                       accountMentionCallback:
                           (BuildContext context, IAccount account) {
                         IPostStatusBloc.of(context, listen: false)
                             .addAccountMentions([account]);
                       },
+                      initialMediaAttachment:
+                          statusThreadBloc.initialMediaAttachment,
                     ),
                     FediLightGreyDivider(),
                   ],

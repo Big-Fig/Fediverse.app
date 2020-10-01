@@ -5,16 +5,23 @@ import 'package:flutter/material.dart';
 
 class FediMediaCarouselWidget extends StatefulWidget {
   final List<Widget> children;
+  final int initialPageIndex;
 
-  FediMediaCarouselWidget({@required this.children});
+  FediMediaCarouselWidget({
+    @required this.children,
+    @required this.initialPageIndex,
+  });
 
   @override
-  _FediMediaCarouselWidgetState createState() =>
-      _FediMediaCarouselWidgetState();
+  _FediMediaCarouselWidgetState createState() => _FediMediaCarouselWidgetState(
+        currentPageIndex: initialPageIndex,
+      );
 }
 
 class _FediMediaCarouselWidgetState extends State<FediMediaCarouselWidget> {
-  int _current = 0;
+  int currentPageIndex;
+
+  _FediMediaCarouselWidgetState({this.currentPageIndex = 0});
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +30,12 @@ class _FediMediaCarouselWidgetState extends State<FediMediaCarouselWidget> {
         CarouselSlider(
           items: widget.children,
           options: CarouselOptions(
+              initialPage: currentPageIndex,
               viewportFraction: 0.9,
               enableInfiniteScroll: false,
               onPageChanged: (index, reason) {
                 setState(() {
-                  _current = index;
+                  currentPageIndex = index;
                 });
               }),
         ),
@@ -41,7 +49,7 @@ class _FediMediaCarouselWidgetState extends State<FediMediaCarouselWidget> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: widget.children.map((url) {
               int index = widget.children.indexOf(url);
-              var active = _current == index;
+              var active = currentPageIndex == index;
               return FediIndicatorWidget(active: active);
             }).toList(),
           ),

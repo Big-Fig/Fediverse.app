@@ -193,9 +193,11 @@ void buildCurrentInstanceApp(
                                               .findByRemoteId(
                                                   notification.chatRemoteId)));
                                 } else if (notification.isContainsStatus) {
-                                  await navigatorKey.currentState.push(
-                                      createStatusThreadPageRoute(
-                                          notification.status));
+                                  await navigatorKey.currentState
+                                      .push(createStatusThreadPageRoute(
+                                    status: notification.status,
+                                    initialMediaAttachment: null,
+                                  ));
                                 } else if (notification.isContainsAccount) {
                                   await navigatorKey.currentState.push(
                                       createAccountDetailsPageRoute(

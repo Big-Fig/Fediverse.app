@@ -13,7 +13,11 @@ class StatusShowThisThreadActionWidget extends StatelessWidget {
     var statusBloc = IStatusBloc.of(context, listen: false);
     return InkWell(
         onTap: () {
-          goToStatusThreadPage(context, statusBloc.status);
+          goToStatusThreadPage(
+            context,
+            status: statusBloc.status,
+            initialMediaAttachment: null,
+          );
         },
         child: Container(
             height: _showThisThreadContainerHeight,
