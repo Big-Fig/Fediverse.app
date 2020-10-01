@@ -108,8 +108,8 @@ class CodegenLoader extends AssetLoader{
     "account": {
       "statuses": {
         "tab": {
-          "withReplies": "With replies",
-          "withoutReplies": "Posts",
+          "with_replies": "With replies",
+          "without_replies": "Posts",
           "pinned": "Pinned",
           "media": "Media"
         }
