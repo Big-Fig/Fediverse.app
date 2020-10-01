@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>45262364737-41bpuevnl4u3bumu368pujgba0kmm6q0.apps.googleusercontent.com</string>
+	<string>907077295345-0fkuvn0tdmofdbnkucckouqlgugq2159.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.45262364737-41bpuevnl4u3bumu368pujgba0kmm6q0</string>
+	<string>com.googleusercontent.apps.907077295345-0fkuvn0tdmofdbnkucckouqlgugq2159</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDiSL3bMq6jL5f8TuXU4Pt1c9wTfL4K2Mk</string>
+	<string>AIzaSyAhhwzE_tNw1ZvSodoqDNRTwyHgfFXRqao</string>
 	<key>GCM_SENDER_ID</key>
-	<string>45262364737</string>
+	<string>907077295345</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.fediverse.app2</string>
+	<string>com.fediverse.app</string>
 	<key>PROJECT_ID</key>
-	<string>fedi2-d1cad</string>
+	<string>fedi-541d6</string>
 	<key>STORAGE_BUCKET</key>
-	<string>fedi2-d1cad.appspot.com</string>
+	<string>fedi-541d6.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +29,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:45262364737:ios:ffbf98912dc53184a966c0</string>
+	<string>1:907077295345:ios:78a6691994008b17aa9d50</string>
 	<key>DATABASE_URL</key>
-	<string>https://fedi2-d1cad.firebaseio.com</string>
+	<string>https://fedi-541d6.firebaseio.com</string>
 </dict>
 </plist>
