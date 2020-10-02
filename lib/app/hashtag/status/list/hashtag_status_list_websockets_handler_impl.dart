@@ -16,15 +16,18 @@ class HashtagStatusListWebSocketsHandler extends WebSocketsChannelHandler {
     @required IChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
     @required bool local,
   }) : super(
-            webSocketsChannel: pleromaWebSocketsService.getHashtagChannel(
-              hashtag: hashtag,
-              local: local,
-            ),
-            statusRepository: statusRepository,
-            notificationRepository: notificationRepository,
-            conversationRepository: conversationRepository,
-            chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
-            isFromHomeTimeline: false);
+          webSocketsChannel: pleromaWebSocketsService.getHashtagChannel(
+            hashtag: hashtag,
+            local: local,
+          ),
+          statusRepository: statusRepository,
+          notificationRepository: notificationRepository,
+          conversationRepository: conversationRepository,
+          chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+          statusListRemoteId: null,
+          statusConversationRemoteId: null,
+          isFromHomeTimeline: false,
+        );
 
   static HashtagStatusListWebSocketsHandler createFromContext(
     BuildContext context, {

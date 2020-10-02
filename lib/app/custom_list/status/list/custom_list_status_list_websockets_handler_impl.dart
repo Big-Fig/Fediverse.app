@@ -24,6 +24,8 @@ class CustomListStatusListWebSocketsHandler extends WebSocketsChannelHandler {
           chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
           statusListRemoteId: customListRemoteId,
           isFromHomeTimeline: false,
+    statusConversationRemoteId: null,
+
         );
 
   static CustomListStatusListWebSocketsHandler createFromContext(

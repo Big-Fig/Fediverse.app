@@ -69,9 +69,11 @@ abstract class CachedPaginationListWithNewItemsBloc<
         // for example chat updateAt updated
         actuallyNew = removeDuplicates(actuallyNew);
 
-        _logger.finest(() => "watchItemsNewerThanItem \n"
-            "\t newItems ${newItems.length} \n"
-            "\t actuallyNew = ${actuallyNew.length}");
+        _logger.finest(() => "watchItemsNewerThanItem "
+            // "\n"
+            // "\t newItems ${newItems.length} \n"
+            // "\t actuallyNew = ${actuallyNew.length}"
+        );
 
         if (items?.isNotEmpty != true &&
             mergeNewItemsImmediatelyWhenItemsIsEmpty) {
@@ -137,10 +139,12 @@ abstract class CachedPaginationListWithNewItemsBloc<
       result = [...(mergedNewItems ?? []), ...items];
     }
 
-    _logger.finest(() => "_calculateNewItems \n"
-        "\t items = ${items?.length} \n"
-        "\t mergedNewItems = ${mergedNewItems.length} \n"
-        "\t result = ${result?.length}");
+    _logger.finest(() => "_calculateNewItems"
+        // " \n"
+        // "\t items = ${items?.length} \n"
+        // "\t mergedNewItems = ${mergedNewItems.length} \n"
+        // "\t result = ${result?.length}"
+    );
 
     return result;
   }

@@ -32,9 +32,9 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
     @required this.conversationRepository,
     @required this.notificationRepository,
     @required this.chatNewMessagesHandlerBloc,
-    this.statusListRemoteId,
-    this.statusConversationRemoteId,
-    this.isFromHomeTimeline,
+    @required this.statusListRemoteId,
+    @required this.statusConversationRemoteId,
+    @required this.isFromHomeTimeline,
   }) {
     _logger = Logger(logTag);
     _logger.finest(() =>

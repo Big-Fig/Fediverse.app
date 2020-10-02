@@ -21,6 +21,9 @@ class MyAccountConversationsWebSocketsHandler extends WebSocketsChannelHandler {
           notificationRepository: notificationRepository,
           conversationRepository: conversationRepository,
           chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
+          statusListRemoteId: null,
+          statusConversationRemoteId: null,
+          isFromHomeTimeline: false,
         );
 
   static MyAccountConversationsWebSocketsHandler createFromContext(
