@@ -1,4 +1,6 @@
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
+import 'package:fedi/disposable/async_disposable.dart';
+import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/local_preferences/local_preferences_model.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:flutter/widgets.dart';
@@ -95,4 +97,14 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
 
   @override
   Future<bool> isStorageExist() async => _box.length > 0;
+
+  @override
+  Disposable listenKeyPreferenceChanged<T>(String key, ValueCallback<T> onChanged) =>
+      StreamSubscriptionDisposable(
+        _box.watch().listen(
+          (boxEvent) {
+            onChanged(boxEvent.value);
+          },
+        ),
+      );
 }

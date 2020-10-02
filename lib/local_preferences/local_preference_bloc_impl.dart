@@ -29,6 +29,12 @@ abstract class LocalPreferenceBloc<T> extends AsyncInitLoadingBloc
   @override
   Future internalAsyncInit() async {
     _subject.add((await getValueInternal()) ?? defaultValue);
+
+    _preferenceService.listenKeyPreferenceChanged(key, (newValue) {
+      if (value != newValue) {
+        _subject.add(newValue);
+      }
+    });
   }
 
   @override

@@ -1,10 +1,13 @@
 import 'dart:async';
 
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
+import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/local_preferences/local_preferences_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+
+typedef ValueCallback<T> = Function(T value);
 
 abstract class ILocalPreferencesService extends DisposableOwner
     implements IAsyncInitLoadingBloc {
@@ -41,6 +44,8 @@ abstract class ILocalPreferencesService extends DisposableOwner
     String key,
     T jsonConverter(Map<String, dynamic> jsonData),
   );
+
+  Disposable listenKeyPreferenceChanged<T>(String key, ValueCallback onChanged);
 
   static ILocalPreferencesService of(BuildContext context,
           {bool listen = true}) =>

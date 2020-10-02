@@ -204,46 +204,46 @@ class TimelinesHomeTabPageBody extends StatelessWidget {
           _logger.finest(() => "tabBodyProviderBuilder index ${index} "
               "tabBloc ${tabBloc.timelineId}");
 
-          return Provider<ITimelineTabBloc>.value(
-            value: tabBloc,
-            child: Provider<ITimelineLocalPreferencesBloc>.value(
-              value: tabBloc.timelineLocalPreferencesBloc,
-              child: Provider<
-                  ICachedPaginationListWithNewItemsBloc<
-                      CachedPaginationPage<IStatus>, IStatus>>.value(
-                value: tabBloc.paginationListWithNewItemsBloc,
-                child: CachedPaginationListWithNewItemsBlocProxyProvider<
-                    CachedPaginationPage<IStatus>, IStatus>(child: child),
-              ),
-            ),
-          );
-
           // return Provider<ITimelineTabBloc>.value(
           //   value: tabBloc,
-          //   child:
-          //       ProxyProvider<ITimelineTabBloc, ITimelineLocalPreferencesBloc>(
-          //     update: (context, value, previous) =>
-          //         value.timelineLocalPreferencesBloc,
-          //     // value: tabBloc.timelineLocalPreferencesBloc,
-          //     child: ProxyProvider<
-          //         ITimelineTabBloc,
+          //   child: Provider<ITimelineLocalPreferencesBloc>.value(
+          //     value: tabBloc.timelineLocalPreferencesBloc,
+          //     child: Provider<
           //         ICachedPaginationListWithNewItemsBloc<
-          //             CachedPaginationPage<IStatus>, IStatus>>(
-          //       // value: tabBloc.paginationListWithNewItemsBloc,
-          //       update: (context, value, previous) =>
-          //           value.paginationListWithNewItemsBloc,
+          //             CachedPaginationPage<IStatus>, IStatus>>.value(
+          //       value: tabBloc.paginationListWithNewItemsBloc,
           //       child: CachedPaginationListWithNewItemsBlocProxyProvider<
           //           CachedPaginationPage<IStatus>, IStatus>(child: child),
           //     ),
           //   ),
           // );
+
+          return Provider<ITimelineTabBloc>.value(
+            value: tabBloc,
+            child:
+                ProxyProvider<ITimelineTabBloc, ITimelineLocalPreferencesBloc>(
+              update: (context, value, previous) =>
+                  value.timelineLocalPreferencesBloc,
+              // value: tabBloc.timelineLocalPreferencesBloc,
+              child: ProxyProvider<
+                  ITimelineTabBloc,
+                  ICachedPaginationListWithNewItemsBloc<
+                      CachedPaginationPage<IStatus>, IStatus>>(
+                // value: tabBloc.paginationListWithNewItemsBloc,
+                update: (context, value, previous) =>
+                    value.paginationListWithNewItemsBloc,
+                child: CachedPaginationListWithNewItemsBlocProxyProvider<
+                    CachedPaginationPage<IStatus>, IStatus>(child: child),
+              ),
+            ),
+          );
         },
         tabBodyContentBuilder: (BuildContext context, int index) {
           // var tabBloc = timelineTabBlocs[index];
 
           _logger.finest(() => "tabBodyContentBuilder index $index");
 
-          return const FediDarkStatusBarStyleArea(
+          return FediDarkStatusBarStyleArea(
             child: TimelineWidget(),
           );
         },
