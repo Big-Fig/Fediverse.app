@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
+import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/local_preferences/local_preferences_model.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:flutter/widgets.dart';
@@ -15,6 +16,8 @@ class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
     implements ILocalPreferencesService {
   SharedPreferences preferences;
 
+  final Map<String, List<ValueCallback>> listeners = {};
+
   @override
   Future internalAsyncInit() async {
     _logger.fine(() => "internalAsyncInit");
@@ -27,7 +30,17 @@ class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<bool> clearAllValues() => preferences.clear();
+  Future<bool> clearAllValues() async {
+    var result = await preferences.clear();
+
+    listeners.forEach((key, value) {
+      value.forEach((listener) {
+        listener(null);
+      });
+    });
+
+    return result;
+  }
 
   @override
   bool isKeyExist(String key) {
@@ -37,24 +50,40 @@ class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<bool> clearValue(String key) => preferences.remove(key);
+  Future<bool> clearValue(String key) async {
+    var result = await preferences.remove(key);
+    notifyKeyValueChanged(key, null);
+    return result;
+  }
 
   @override
-  Future<bool> setString(String key, String value) =>
-      preferences.setString(key, value);
+  Future<bool> setString(String key, String value) async {
+    var result = await preferences.setString(key, value);
+    notifyKeyValueChanged(key, value);
+    return result;
+  }
 
   @override
-  Future<bool> setIntPreference(String key, int value) =>
-      preferences.setInt(key, value);
+  Future<bool> setIntPreference(String key, int value) async {
+    var result = await preferences.setInt(key, value);
+    notifyKeyValueChanged(key, value);
+    return result;
+  }
 
   @override
-  Future<bool> setBoolPreference(String key, bool value) =>
-      preferences.setBool(key, value);
+  Future<bool> setBoolPreference(String key, bool value) async {
+    var result = await preferences.setBool(key, value);
+    notifyKeyValueChanged(key, value);
+    return result;
+  }
 
   @override
   Future<bool> setObjectPreference(
-          String key, IPreferencesObject preferencesObject) =>
-      setJsonObjectAsString(key, preferencesObject?.toJson());
+      String key, IPreferencesObject preferencesObject) async {
+    var result = await setJsonObjectAsString(key, preferencesObject?.toJson());
+    notifyKeyValueChanged(key, preferencesObject);
+    return result;
+  }
 
   @override
   bool getBoolPreference(
@@ -85,8 +114,11 @@ class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
   Future<bool> setJsonObjectAsString(
     String key,
     Map<String, dynamic> jsonObject,
-  ) =>
-      setString(key, jsonObject != null ? json.encode(jsonObject) : null);
+  ) async {
+    var result = await preferences.setString(
+        key, jsonObject != null ? json.encode(jsonObject) : null);
+    return result;
+  }
 
   @override
   Future<bool> clearAllValuesAndDeleteStorage() => clearAllValues();
@@ -94,4 +126,26 @@ class SharedPreferencesLocalPreferencesService extends AsyncInitLoadingBloc
   @override
   Future<bool> isStorageExist() async =>
       preferences.containsKey(_specialStorageKeyCreatedKey);
+
+  @override
+  Disposable listenKeyPreferenceChanged<T>(
+      String key, ValueCallback<T> onChanged) {
+    if (!listeners.containsKey(key)) {
+      listeners[key] = [];
+    }
+
+    listeners[key].add(onChanged);
+
+    return CustomDisposable(() {
+      listeners[key].remove(onChanged);
+    });
+  }
+
+  void notifyKeyValueChanged(String key, dynamic value) {
+    if (listeners.containsKey(key)) {
+      listeners[key].forEach((listener) {
+        listener(value);
+      });
+    }
+  }
 }
