@@ -95,7 +95,9 @@ abstract class FediProgressDialog extends BaseDialog {
                     onPressed = () async {
                       _isCanceledSubject.add(true);
                       await cancelableOperation.cancel();
-                      hide(context);
+                      if(isShowing) {
+                        hide(context);
+                      }
                     };
                   }
                   return InkWell(
