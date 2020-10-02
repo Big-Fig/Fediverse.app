@@ -55,6 +55,8 @@ class _TimelinesHomeTabPageState extends State<TimelinesHomeTabPage>
     with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
+    _logger.finest(() => "build");
+
     return DisposableProvider<ITimelineTabListBloc>(
       create: (context) {
         var homeBloc = IHomeBloc.of(context, listen: false);
@@ -63,6 +65,8 @@ class _TimelinesHomeTabPageState extends State<TimelinesHomeTabPage>
           context,
           vsync: this,
         );
+
+        _logger.finest(() => "create timelineTabListBloc");
 
         StreamSubscription listener;
         timelineTabListBloc.performAsyncInit();
@@ -92,6 +96,8 @@ class _TimelinesHomeTabPageState extends State<TimelinesHomeTabPage>
                 .timelineTabBlocsListStream,
             builder: (context, snapshot) {
               var timelineTabBlocsList = snapshot.data;
+
+              _logger.finest(() => "StreamBuilder timelineTabBlocsList $timelineTabBlocsList");
               return Provider<TimelineTabBlocsList>.value(
                 value: timelineTabBlocsList,
                 child: TimelinesHomeTabPageBody(),
@@ -103,7 +109,9 @@ class _TimelinesHomeTabPageState extends State<TimelinesHomeTabPage>
 }
 
 class TimelinesHomeTabPageBody extends StatelessWidget {
-  TimelinesHomeTabPageBody();
+  TimelinesHomeTabPageBody() {
+    _logger.finest(() => "TimelinesHomeTabPageBody constructor");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -121,12 +129,16 @@ class TimelinesHomeTabPageBody extends StatelessWidget {
 
     return DisposableProxyProvider<TimelineTabBlocsList,
         IFediNestedScrollViewWithNestedScrollableTabsBloc>(
-      update: (context, value, previous) =>
-          FediNestedScrollViewWithNestedScrollableTabsBloc(
+      update: (context, value, previous) {
+
+        _logger.finest(() => "IFediNestedScrollViewWithNestedScrollableTabsBloc update");
+
+        return FediNestedScrollViewWithNestedScrollableTabsBloc(
         nestedScrollControllerBloc:
             timelinesHomeTabBloc.nestedScrollControllerBloc,
         tabController: value?.tabController,
-      ),
+      );
+      },
       child: FediNestedScrollViewWithNestedScrollableTabsWidget(
         tabsEmptyBuilder: (context) => _buildLoading(),
         onLongScrollUpTopOverlayWidget:
@@ -194,28 +206,44 @@ class TimelinesHomeTabPageBody extends StatelessWidget {
 
           return Provider<ITimelineTabBloc>.value(
             value: tabBloc,
-            child:
-                ProxyProvider<ITimelineTabBloc, ITimelineLocalPreferencesBloc>(
-              update: (context, value, previous) =>
-                  value.timelineLocalPreferencesBloc,
-              // value: tabBloc.timelineLocalPreferencesBloc,
-              child: ProxyProvider<
-                  ITimelineTabBloc,
+            child: Provider<ITimelineLocalPreferencesBloc>.value(
+              value: tabBloc.timelineLocalPreferencesBloc,
+              child: Provider<
                   ICachedPaginationListWithNewItemsBloc<
-                      CachedPaginationPage<IStatus>, IStatus>>(
-                // value: tabBloc.paginationListWithNewItemsBloc,
-                update: (context, value, previous) =>
-                    value.paginationListWithNewItemsBloc,
+                      CachedPaginationPage<IStatus>, IStatus>>.value(
+                value: tabBloc.paginationListWithNewItemsBloc,
                 child: CachedPaginationListWithNewItemsBlocProxyProvider<
                     CachedPaginationPage<IStatus>, IStatus>(child: child),
               ),
             ),
           );
+
+          // return Provider<ITimelineTabBloc>.value(
+          //   value: tabBloc,
+          //   child:
+          //       ProxyProvider<ITimelineTabBloc, ITimelineLocalPreferencesBloc>(
+          //     update: (context, value, previous) =>
+          //         value.timelineLocalPreferencesBloc,
+          //     // value: tabBloc.timelineLocalPreferencesBloc,
+          //     child: ProxyProvider<
+          //         ITimelineTabBloc,
+          //         ICachedPaginationListWithNewItemsBloc<
+          //             CachedPaginationPage<IStatus>, IStatus>>(
+          //       // value: tabBloc.paginationListWithNewItemsBloc,
+          //       update: (context, value, previous) =>
+          //           value.paginationListWithNewItemsBloc,
+          //       child: CachedPaginationListWithNewItemsBlocProxyProvider<
+          //           CachedPaginationPage<IStatus>, IStatus>(child: child),
+          //     ),
+          //   ),
+          // );
         },
         tabBodyContentBuilder: (BuildContext context, int index) {
           // var tabBloc = timelineTabBlocs[index];
 
-          return FediDarkStatusBarStyleArea(
+          _logger.finest(() => "tabBodyContentBuilder index $index");
+
+          return const FediDarkStatusBarStyleArea(
             child: TimelineWidget(),
           );
         },
@@ -268,6 +296,7 @@ class TimelinesHomeTabPageBody extends StatelessWidget {
   }
 
   Widget _buildLoading() {
+    _logger.finest(() => "_buildLoading");
     return Container(
       width: double.infinity,
       color: FediColors.white,
