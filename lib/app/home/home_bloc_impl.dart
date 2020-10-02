@@ -45,6 +45,8 @@ class HomeBloc extends DisposableOwner implements IHomeBloc {
 
   @override
   void selectTab(HomeTab tab) {
+
+    _logger.finest(() => "selectTab $tab");
     if (selectedTab == tab) {
       _reselectedTabStreamController.add(tab);
     } else {
