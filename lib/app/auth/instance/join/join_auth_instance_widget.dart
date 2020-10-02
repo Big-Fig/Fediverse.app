@@ -21,6 +21,7 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:logging/logging.dart';
 
 var _logger = Logger("join_auth_instance_widget.dart");
+const _defaultInstanceDomain = "fedi.app";
 
 class JoinAuthInstanceWidget extends StatelessWidget {
   final bool isFromScratch;
@@ -199,6 +200,11 @@ class JoinAuthInstanceWidget extends StatelessWidget {
 
   Uri extractCurrentUri(IJoinAuthInstanceBloc joinInstanceBloc) {
     var uriText = joinInstanceBloc.hostTextController.text;
+
+    if (uriText?.isNotEmpty != true) {
+      uriText = _defaultInstanceDomain;
+    }
+
     var parsedUri = Uri.parse(uriText);
 
     Uri uri;
