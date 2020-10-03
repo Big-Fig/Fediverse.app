@@ -99,6 +99,5 @@ dependencies {
 
 }
 // ADD THIS AT THE BOTTOM
-apply plugin: 'io.fabric'
 apply plugin: 'com.google.gms.google-services'
-
+apply plugin: 'com.google.firebase.crashlytics'
