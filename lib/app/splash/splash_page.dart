@@ -8,7 +8,7 @@ class SplashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        backgroundColor: FediColors.primaryColorDark,
+        backgroundColor: FediColors.primaryDark,
         body: SplashWidget(),
       );
 }

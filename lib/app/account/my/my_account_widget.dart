@@ -25,7 +25,7 @@ class MyAccountWidget extends StatelessWidget {
           MyAccountInfoWidget(onStatusesTapCallback: onStatusesTapCallback),
           if (!myAccountBloc.checkAccountIsMe(accountBloc.account))
             Container(
-              color: FediColors.primaryColor,
+              color: FediColors.primary,
               child: const AccountActionListWidget(),
             ),
           AccountNoteWidget(

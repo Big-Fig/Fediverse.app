@@ -26,7 +26,7 @@ class PostStatusScheduleActionWidget extends StatelessWidget {
             icon: Icon(
               FediIcons.schedule,
               color:
-                  isScheduled ? FediColors.primaryColor : FediColors.darkGrey,
+                  isScheduled ? FediColors.primary : FediColors.darkGrey,
             ),
             onPressed: onPressed,
           );

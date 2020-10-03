@@ -5,7 +5,7 @@ import 'package:fedi/app/ui/fedi_colors.dart';
 Color calculateVisibilityColor(
     isSelectedVisibility, isPossibleToChangeVisibility) {
   return isSelectedVisibility
-      ? FediColors.primaryColor
+      ? FediColors.primary
       : isPossibleToChangeVisibility
       ? FediColors.darkGrey
       : FediColors.lightGrey;

@@ -26,7 +26,7 @@ class FediPrimaryFilledTextButton  extends StatelessWidget {
   FediPrimaryFilledTextButton(
     this.text, {
     @required this.onPressed,
-    this.enabledBackgroundColor = FediColors.primaryColor,
+    this.enabledBackgroundColor = FediColors.primary,
     this.disabledBackgroundColor = FediColors.lightGrey,
     this.enabledBorderColor = FediColors.white,
     this.disabledBorderColor = FediColors.white,

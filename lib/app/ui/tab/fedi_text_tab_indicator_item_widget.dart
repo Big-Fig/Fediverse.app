@@ -43,7 +43,7 @@ class FediTextTabIndicatorItemWidget<T> extends StatelessWidget {
                 fontWeight: FontWeight.w500,
                 height: lineHeight,
               ),
-              enabledBackgroundColor: FediColors.primaryColor.withOpacity(0.8),
+              enabledBackgroundColor: FediColors.primary.withOpacity(0.8),
             );
           } else {
             var fontWeight = FontWeight.normal;

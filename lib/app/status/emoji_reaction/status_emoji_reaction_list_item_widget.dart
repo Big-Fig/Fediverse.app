@@ -30,7 +30,7 @@ class StatusEmojiReactionListItemWidget extends StatelessWidget {
                 statusEmojiReactionBloc.toggleEmojiReaction(),
             builder: (BuildContext context, void Function() onPressed) {
               var color = emojiReaction.me
-                  ? FediColors.primaryColor
+                  ? FediColors.primary
                   : FediColors.lightGrey;
               return Padding(
                 padding: const EdgeInsets.symmetric(

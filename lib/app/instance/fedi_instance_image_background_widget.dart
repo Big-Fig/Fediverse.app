@@ -56,7 +56,7 @@ class FediInstanceImageBackgroundWidget extends StatelessWidget {
         placeholder: (_, __) => Container(
           width: double.infinity,
           height: double.infinity,
-          color: FediColors.primaryColorDark,
+          color: FediColors.primaryDark,
           child: child,
         ),
         imageBuilder: (BuildContext context, ImageProvider imageProvider) =>

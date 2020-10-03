@@ -59,7 +59,7 @@ class FediSelectionChooserDialogBody extends StatelessWidget {
                   if (action.icon != null)
                     Icon(action.icon,
                         color: isSelected
-                            ? FediColors.primaryColor
+                            ? FediColors.primary
                             : FediColors.darkGrey),
                   Padding(
                     padding: FediPadding.allMediumPadding,

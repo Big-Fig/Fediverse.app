@@ -56,7 +56,7 @@ class FediTransparentEditTextField extends StatelessWidget {
         focusedBorder = UnderlineInputBorder(
           borderSide: BorderSide(
             width: 1.0,
-            color: customBorderColor ?? FediColors.primaryColor,
+            color: customBorderColor ?? FediColors.primary,
           ),
         ),
         errorBorder = UnderlineInputBorder(

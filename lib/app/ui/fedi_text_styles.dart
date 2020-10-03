@@ -16,7 +16,8 @@ class FediTextStyles {
   static const _greyColor = FediColors.grey;
   static const _lightGreyColor = FediColors.lightGrey;
   static const _mediumGreyColor = FediColors.mediumGrey;
-  static const _primaryColor = FediColors.primaryColor;
+  static const _primaryColor = FediColors.primary;
+  static const _primaryDarkColor = FediColors.primaryDark;
   static const _errorColor = FediColors.error;
 
   static const TextStyle smallShortWhite = TextStyle(
@@ -462,6 +463,118 @@ class FediTextStyles {
 
   static const TextStyle subHeaderTallBoldPrimary = TextStyle(
     color: _primaryColor,
+    fontSize: _subHeaderSize,
+    height: _tallHeight,
+    fontWeight: _boldWeight,
+  );
+
+  static const TextStyle smallShortPrimaryDark = TextStyle(
+    color: _primaryDarkColor,
+    fontSize: _smallSize,
+    height: _smallHeight,
+    fontWeight: _normalWeight,
+  );
+
+  static const TextStyle mediumShortPrimaryDark = TextStyle(
+    color: _primaryDarkColor,
+    fontSize: _mediumSize,
+    height: _smallHeight,
+    fontWeight: _normalWeight,
+  );
+
+  static const TextStyle bigShortPrimaryDark = TextStyle(
+    color: _primaryDarkColor,
+    fontSize: _bigSize,
+    height: _smallHeight,
+    fontWeight: _normalWeight,
+  );
+
+  static const TextStyle subHeaderShortPrimaryDark = TextStyle(
+    color: _primaryDarkColor,
+    fontSize: _subHeaderSize,
+    height: _smallHeight,
+    fontWeight: _normalWeight,
+  );
+
+  static const TextStyle smallTallPrimaryDark = TextStyle(
+    color: _primaryDarkColor,
+    fontSize: _smallSize,
+    height: _tallHeight,
+    fontWeight: _normalWeight,
+  );
+
+  static const TextStyle mediumTallPrimaryDark = TextStyle(
+    color: _primaryDarkColor,
+    fontSize: _mediumSize,
+    height: _tallHeight,
+    fontWeight: _normalWeight,
+  );
+
+  static const TextStyle bigTallPrimaryDark = TextStyle(
+    color: _primaryDarkColor,
+    fontSize: _bigSize,
+    height: _tallHeight,
+    fontWeight: _normalWeight,
+  );
+
+  static const TextStyle subHeaderTallPrimaryDark = TextStyle(
+    color: _primaryDarkColor,
+    fontSize: _subHeaderSize,
+    height: _tallHeight,
+    fontWeight: _normalWeight,
+  );
+
+  static const TextStyle smallShortBoldPrimaryDark = TextStyle(
+    color: _primaryDarkColor,
+    fontSize: _smallSize,
+    height: _smallHeight,
+    fontWeight: _boldWeight,
+  );
+
+  static const TextStyle mediumShortBoldPrimaryDark = TextStyle(
+    color: _primaryDarkColor,
+    fontSize: _mediumSize,
+    height: _smallHeight,
+    fontWeight: _boldWeight,
+  );
+
+  static const TextStyle bigShortBoldPrimaryDark = TextStyle(
+    color: _primaryDarkColor,
+    fontSize: _bigSize,
+    height: _smallHeight,
+    fontWeight: _boldWeight,
+  );
+
+  static const TextStyle subHeaderShortBoldPrimaryDark = TextStyle(
+    color: _primaryDarkColor,
+    fontSize: _subHeaderSize,
+    height: _smallHeight,
+    fontWeight: _boldWeight,
+  );
+
+  static const TextStyle smallTallBoldPrimaryDark = TextStyle(
+    color: _primaryDarkColor,
+    fontSize: _smallSize,
+    height: _tallHeight,
+    fontWeight: _boldWeight,
+  );
+
+  static const TextStyle mediumTallBoldPrimaryDark = TextStyle(
+    color: _primaryDarkColor,
+    fontSize: _mediumSize,
+    height: _tallHeight,
+    fontWeight: _boldWeight,
+  );
+
+  static const TextStyle bigTallBoldPrimaryDark = TextStyle(
+    color: _primaryDarkColor,
+    fontSize: _bigSize,
+    height: _tallHeight,
+    fontWeight: _boldWeight,
+  );
+
+  static const TextStyle subHeaderTallBoldPrimaryDark = TextStyle(
+    color: _primaryDarkColor,
     fontSize: _subHeaderSize,
     height: _tallHeight,
     fontWeight: _boldWeight,

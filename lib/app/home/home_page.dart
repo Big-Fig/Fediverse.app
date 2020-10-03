@@ -83,7 +83,7 @@ class HomePage extends StatelessWidget {
 
   FediLightStatusBarStyleArea _buildBackground() => FediLightStatusBarStyleArea(
         child: Container(
-          color: FediColors.primaryColor,
+          color: FediColors.primary,
           child: FediInstanceImageBackgroundWidget(
             child: Container(),
           ),

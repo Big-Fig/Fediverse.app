@@ -36,7 +36,7 @@ class FediIconTabIndicatorWidget<T> extends StatelessWidget {
       labelPadding: FediPadding.horizontalSmallPadding,
       indicator: FediTabIndicator(
         indicatorHeight: FediSizes.tabIndicatorIconHeight,
-        indicatorColor: FediColors.primaryColor,
+        indicatorColor: FediColors.primary,
         padding: EdgeInsets.zero,
         insets: EdgeInsets.zero,
         tabBarIndicatorSize: TabBarIndicatorSize.label,

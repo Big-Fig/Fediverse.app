@@ -78,7 +78,7 @@ abstract class FediProgressDialog extends BaseDialog {
             padding: const EdgeInsets.all(2.0),
             child: FediCircularProgressIndicator(
               size: 35.0,
-              color: FediColors.primaryColor,
+              color: FediColors.primary,
             ),
           ),
           buildDialogTitle(context),

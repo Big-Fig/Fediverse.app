@@ -104,7 +104,7 @@ class EmojiPickerWidget extends StatelessWidget {
           }
         },
         loadingWidget: const FediCircularProgressIndicator(),
-        selectedIndicatorColor: FediColors.primaryColor,
+        selectedIndicatorColor: FediColors.primary,
         unselectedIndicatorColor: FediColors.darkGrey,
         separatorColor: FediColors.ultraLightGrey,
         onEmojiSelected: onEmojiSelected,

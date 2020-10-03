@@ -121,7 +121,7 @@ class _CurrentAuthInstanceContextInitWidgetState
         ICurrentAuthInstanceBloc.of(context, listen: false);
     return FediLightStatusBarStyleArea(
       child: Scaffold(
-        backgroundColor: FediColors.primaryColorDark,
+        backgroundColor: FediColors.primaryDark,
         body: SafeArea(
           child: Center(
             child: Column(

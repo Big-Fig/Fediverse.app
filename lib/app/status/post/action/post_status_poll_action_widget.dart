@@ -22,7 +22,7 @@ class PostStatusPollActionWidget extends StatelessWidget {
             icon: Icon(
               Icons.poll,
               color: selectedAction == PostMessageSelectedAction.poll
-                  ? FediColors.primaryColor
+                  ? FediColors.primary
                   : FediColors.darkGrey,
             ),
             onPressed: () {

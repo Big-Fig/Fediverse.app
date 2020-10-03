@@ -39,7 +39,7 @@ class PostMessageAttachActionWidget extends StatelessWidget {
                     FediIcons.plus,
                     color: isPossibleToAttach
                         ? selectedAction == PostMessageSelectedAction.attach
-                            ? FediColors.primaryColor
+                            ? FediColors.primary
                             : FediColors.darkGrey
                         : FediColors.lightGrey,
                   ),

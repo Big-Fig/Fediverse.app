@@ -21,5 +21,5 @@ OverlaySupportEntry showInfoFediNotificationOverlay({
             )
           : null,
       slideDismiss: true,
-      background: FediColors.primaryColor);
+      background: FediColors.primary);
 }

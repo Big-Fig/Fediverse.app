@@ -32,7 +32,7 @@ class HtmlTextWidget extends StatelessWidget {
     this.lineHeight = 1.0,
     this.imageSize = 20.0,
     this.fontWeight = FontWeight.normal,
-    this.linkColor = FediColors.primaryColorDark,
+    this.linkColor = FediColors.primaryDark,
     this.color,
     this.textMaxLines,
     this.paragraphDisplay = Display.INLINE,
