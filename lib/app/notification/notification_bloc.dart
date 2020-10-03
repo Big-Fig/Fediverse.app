@@ -52,4 +52,6 @@ abstract class INotificationBloc implements Disposable {
   Stream<bool> get unreadStream;
 
   Future dismiss();
+
+  Future markAsRead();
 }
