@@ -60,12 +60,12 @@ class AccountBloc extends IAccountBloc {
         _accountRelationshipSubject =
             BehaviorSubject.seeded(account.pleromaRelationship) {
     assert(account != null);
-    _logger.finest(() => "AccountBloc constructor ${account.remoteId}");
+    // _logger.finest(() => "AccountBloc constructor ${account.remoteId}");
     addDisposable(subject: _accountSubject);
     addDisposable(subject: _accountRelationshipSubject);
     addDisposable(streamSubscription: _accountSubject.stream.listen((account) {
       var pleromaRelationship = account?.pleromaRelationship;
-      _logger.finest(() => "pleromaRelationship $pleromaRelationship");
+      // _logger.finest(() => "pleromaRelationship $pleromaRelationship");
       if (pleromaRelationship?.following != null) {
         _accountRelationshipSubject.add(pleromaRelationship);
       }
@@ -82,7 +82,7 @@ class AccountBloc extends IAccountBloc {
   @override
   void dispose() {
     super.dispose();
-    _logger.finest(() => "AccountBloc dispose");
+    // _logger.finest(() => "AccountBloc dispose");
   }
 
   void _init(IAccount account, bool needRefreshFromNetworkOnInit) {

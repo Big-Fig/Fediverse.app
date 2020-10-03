@@ -64,9 +64,9 @@ class HtmlTextWidget extends StatelessWidget {
     // textScaleFactor twice
     // Usually textScaleFactor is 1.0 and this don't have any effect
     var fontSizeValue = fontSize / textScaleFactor / textScaleFactor;
-    _logger.finest(() => "textScaleFactor $textScaleFactor "
-        " fontSize $fontSize "
-        " fontSizeValue $fontSizeValue");
+    // _logger.finest(() => "textScaleFactor $textScaleFactor "
+    //     " fontSize $fontSize "
+    //     " fontSizeValue $fontSizeValue");
 
     var fontSizeObject = FontSize(fontSizeValue);
     return Html(

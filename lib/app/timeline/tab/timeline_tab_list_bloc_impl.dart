@@ -21,7 +21,10 @@ import 'package:fedi/pleroma/websockets/pleroma_websockets_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
+
+final _logger = Logger("timeline_tab_list_bloc_impl.dart");
 
 class TimelineTabListBloc extends AsyncInitLoadingBloc
     implements ITimelineTabListBloc {
@@ -116,7 +119,19 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
     await updateTabBlocs();
   }
 
+  bool updateTabBlocsInProgress = false;
+
   Future updateTabBlocs() async {
+
+    _logger.finest(() => "updateTabBlocs "
+        "updateTabBlocsInProgress $updateTabBlocsInProgress");
+
+    if(updateTabBlocsInProgress) {
+      return;
+    }
+
+    updateTabBlocsInProgress = true;
+
     var oldTimelineIds = timelineTabBlocsList?.timelineTabBlocs
             ?.map((timelineTabBloc) => timelineTabBloc.timelineId)
             ?.toList() ??
@@ -194,6 +209,8 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
         timelineTabBlocs: newTabBlocs,
       ),
     );
+
+    updateTabBlocsInProgress = false;
 
     Future.delayed(Duration(seconds: 1), () {
       oldBlocs?.forEach((bloc) => bloc.dispose());

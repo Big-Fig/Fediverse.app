@@ -19,6 +19,9 @@ import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_wit
 import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/timeline/pleroma_timeline_service.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
+
+var _logger = Logger("timeline_tab_bloc_impl.dart");
 
 class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
   @override
@@ -55,12 +58,16 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
     @required this.webSocketsHandlerManagerBloc,
     @required this.myAccountBloc,
   }) {
+    _logger.finest(() => "TimelineTabBloc timelineId $timelineId");
+
     timelineLocalPreferencesBloc = TimelineLocalPreferencesBloc.byId(
       preferencesService,
       userAtHost: currentAuthInstanceBloc.currentInstance.userAtHost,
       timelineId: timelineId,
       defaultValue: null,
     );
+
+    addDisposable(disposable: timelineLocalPreferencesBloc);
   }
 
   IStatusCachedListBloc createListService() => TimelineStatusCachedListBloc(
