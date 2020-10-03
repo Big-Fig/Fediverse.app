@@ -623,13 +623,13 @@ class CodegenLoader extends AssetLoader{
       },
       "header": {
         "follow": "Followed you",
-        "favourite": "Liked your status \"{}\"",
-        "mention": "Mentioned you in status \"{}\"",
-        "reblog": "Reblogged your status \"{}\"",
+        "favourite": "Liked: {}",
+        "mention": "<b>Mentioned you:</b> {}",
+        "reblog": "Reblogged: {}",
         "poll": "Poll notification",
         "move": "Move notification",
         "followRequest": "Follow request",
-        "pleromaEmojiReaction": "{} for \"{}\"",
+        "pleromaEmojiReaction": "{} for: \"{}\"",
         "pleromaChatMention": "Chat mention in \"{}\"",
         "unknown": "Unknown: {}"
       },

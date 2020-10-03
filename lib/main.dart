@@ -86,7 +86,7 @@ void main() async {
     } else if (newState == AsyncInitLoadingState.failed) {
       runApp(MaterialApp(
           home: Scaffold(
-        backgroundColor: FediColors.primaryColorDark,
+        backgroundColor: FediColors.primaryDark,
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Center(
@@ -274,7 +274,7 @@ Widget _buildEasyLocalization({@required Widget child}) {
     builder: (context) => LocalizationProvider(
       key: PageStorageKey("EasyLocalization"),
       assetLoader: CodegenLoader(),
-      preloaderColor: FediColors.primaryColorDark,
+      preloaderColor: FediColors.primaryDark,
       preloaderWidget: MaterialApp(home: SplashPage()),
       supportedLocales: [Locale('en', 'US')],
       path: "assets/langs",

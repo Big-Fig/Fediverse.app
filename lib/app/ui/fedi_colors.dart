@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 
 class FediColors {
-  static const Color primaryColor = Color(0xff00BCEC);
-  static const Color primaryColorDark = Color(0xff009DC5);
-  static const Color secondaryColor = Color(0xffEA4B98);
+  static const Color primary = Color(0xff00BCEC);
+  static const Color primaryDark = Color(0xff009DC5);
+  static const Color secondary = Color(0xffEA4B98);
   static const Color darkGrey = Color(0xff2B2B2B);
   static const Color mediumGrey = Color(0xff5F5F5F);
   static const Color grey = Color(0xff969696);

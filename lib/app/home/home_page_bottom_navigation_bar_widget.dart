@@ -70,7 +70,7 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
           });
 
   Widget mapTabToIcon(BuildContext context, HomeTab tab, bool isSelected) {
-    var color = isSelected ? FediColors.primaryColor : FediColors.darkGrey;
+    var color = isSelected ? FediColors.primary : FediColors.darkGrey;
 
     // todo: refactor UI
     const insets = FediPadding.allBigPadding;

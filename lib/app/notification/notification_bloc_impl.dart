@@ -119,6 +119,13 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
       .map((notification) => notification?.createdAt)
       .distinct();
 
+  @override
+  bool get unread => notification?.unread;
+
+  @override
+  Stream<bool> get unreadStream =>
+      notificationStream.map((notification) => notification?.unread).distinct();
+
   Future refreshFromNetwork() async {
     var remoteNotification = await pleromaNotificationService.getNotification(
         notificationRemoteId: remoteId);

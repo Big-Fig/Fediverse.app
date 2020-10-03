@@ -38,7 +38,7 @@ class FediTextTabIndicatorWidget<T> extends StatelessWidget {
       indicator: FediTabIndicator(
         indicatorHeight: FediSizes.tabIndicatorTextHeight - borderHeight,
         indicatorRadius: (FediSizes.textButtonHeight + borderHeight) / 2,
-        indicatorColor: FediColors.primaryColor,
+        indicatorColor: FediColors.primary,
         padding: EdgeInsets.only(top: borderHeight),
         insets: EdgeInsets.zero,
         tabBarIndicatorSize: TabBarIndicatorSize.label,

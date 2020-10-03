@@ -33,7 +33,7 @@ class MultiSelectAccountWidget extends StatelessWidget {
                 return FediIconInCircleTransparentButton(
                   FediIcons.check_circle,
                   color: isAccountSelected
-                      ? FediColors.primaryColor
+                      ? FediColors.primary
                       : FediColors.darkGrey,
                   onPressed: () {
                     if (isAccountSelected) {

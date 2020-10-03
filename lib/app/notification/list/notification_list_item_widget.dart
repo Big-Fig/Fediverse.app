@@ -44,62 +44,90 @@ class NotificationListItemWidget extends StatelessWidget {
         isNeedWatchLocalRepositoryForUpdates: false,
         isNeedPreFetchRelationship: false,
       ),
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-            horizontal: FediSizes.bigPadding,
-            vertical: FediSizes.bigPadding + FediSizes.smallPadding),
-        child: Column(
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                InkWell(
-                    onTap: () {
-                      goToAccountDetailsPage(context, notificationBloc.account);
-                    },
-                    child: AccountAvatarWidget(
-                      progressSize: FediSizes.accountAvatarProgressDefaultSize,
-                      imageSize: FediSizes.accountAvatarDefaultSize,
-                    )),
-                const FediBigHorizontalSpacer(),
-                Expanded(
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: () {
-                      onNotificationClick(context, notificationBloc);
-                    },
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: StreamBuilder<bool>(
+          stream: notificationBloc.unreadStream,
+          initialData: notificationBloc.unread,
+          builder: (context, snapshot) {
+            var unread = snapshot.data;
+            return Opacity(
+              opacity: unread ? 1.0 : 0.6,
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: FediSizes.bigPadding,
+                    vertical: FediSizes.bigPadding + FediSizes.smallPadding),
+                child: Column(
+                  children: <Widget>[
+                    Row(
                       children: <Widget>[
-                        AccountDisplayNameWidget(
-                          textStyle: FediTextStyles.bigTallDarkGrey,
+                        InkWell(
+                            onTap: () {
+                              goToAccountDetailsPage(
+                                  context, notificationBloc.account);
+                            },
+                            child: AccountAvatarWidget(
+                              progressSize:
+                                  FediSizes.accountAvatarProgressDefaultSize,
+                              imageSize: FediSizes.accountAvatarDefaultSize,
+                            )),
+                        const FediBigHorizontalSpacer(),
+                        Expanded(
+                          child: GestureDetector(
+                            behavior: HitTestBehavior.translucent,
+                            onTap: () {
+                              onNotificationClick(context, notificationBloc);
+                            },
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                AccountDisplayNameWidget(
+                                  textStyle: FediTextStyles.bigTallDarkGrey,
+                                ),
+                                Row(
+                                  children: [
+                                    buildNotificationIcon(
+                                      context,
+                                      notificationBloc,
+                                    ),
+                                    Expanded(
+                                      child: buildNotificationContent(
+                                        context,
+                                        notificationBloc,
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
                         ),
-                        buildNotificationContent(context, notificationBloc)
+                        const FediBigHorizontalSpacer(),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            FediIconInCircleTransparentButton(
+                              FediIcons.close,
+                              onPressed: () async {
+                                await notificationBloc.dismiss();
+                              },
+                              color: FediColors.darkGrey,
+                              iconSize: 12.0,
+                              size: 24.0,
+                            ),
+                            NotificationCreatedAtWidget(
+                              textStyle: unread
+                                  ? FediTextStyles.smallShortPrimaryDark
+                                  : FediTextStyles.smallShortGrey,
+                            ),
+                          ],
+                        ),
                       ],
                     ),
-                  ),
-                ),
-                const FediBigHorizontalSpacer(),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    FediIconInCircleTransparentButton(
-                      FediIcons.close,
-                      onPressed: () async {
-                        await notificationBloc.dismiss();
-                      },
-                      color: FediColors.darkGrey,
-                      iconSize: 12.0,
-                      size: 24.0,
-                    ),
-                    NotificationCreatedAtWidget(),
                   ],
                 ),
-              ],
-            ),
-          ],
-        ),
-      ),
+              ),
+            );
+          }),
     );
     return StreamBuilder<bool>(
         stream: notificationBloc.dismissedStream,
@@ -138,6 +166,64 @@ class NotificationListItemWidget extends StatelessWidget {
       goToChatPage(context, chat: chat);
     } else if (account != null) {
       goToAccountDetailsPage(context, account);
+    }
+  }
+
+  Widget buildNotificationIcon(
+      BuildContext context, INotificationBloc notificationBloc) {
+    IconData iconData;
+    Color iconColor = FediColors.primary;
+
+    switch (notificationBloc.typePleroma) {
+      case PleromaNotificationType.follow:
+        iconData = FediIcons.follow;
+        iconColor = FediColors.primary;
+        break;
+      case PleromaNotificationType.favourite:
+        iconData = FediIcons.heart_active;
+        iconColor = FediColors.secondary;
+        break;
+      case PleromaNotificationType.reblog:
+        iconData = FediIcons.reply;
+        iconColor = FediColors.primary;
+        break;
+      case PleromaNotificationType.mention:
+        iconData = null;
+        break;
+      case PleromaNotificationType.poll:
+        iconData = Icons.poll;
+        iconColor = FediColors.primary;
+        break;
+      case PleromaNotificationType.move:
+        iconData = Icons.forward;
+        iconColor = FediColors.primary;
+        break;
+      case PleromaNotificationType.followRequest:
+        iconData = FediIcons.add_user;
+        iconColor = FediColors.primary;
+        break;
+      case PleromaNotificationType.pleromaEmojiReaction:
+        iconData = null;
+        break;
+      case PleromaNotificationType.pleromaChatMention:
+        iconData = FediIcons.chat;
+        iconColor = FediColors.primary;
+        break;
+      case PleromaNotificationType.unknown:
+        iconData = null;
+        break;
+    }
+
+    if (iconData != null) {
+      return Padding(
+        padding: const EdgeInsets.only(right: FediSizes.smallPadding),
+        child: Icon(
+          iconData,
+          color: iconColor,
+        ),
+      );
+    } else {
+      return SizedBox.shrink();
     }
   }
 

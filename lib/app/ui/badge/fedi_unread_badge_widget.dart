@@ -36,7 +36,7 @@ abstract class FediUnreadBadgeWidget extends StatelessWidget {
                     width: unreadBadgeSize,
                     height: unreadBadgeSize,
                     decoration: BoxDecoration(
-                        color: FediColors.secondaryColor,
+                        color: FediColors.secondary,
                         shape: BoxShape.circle),
                   ),
                 ),

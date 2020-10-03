@@ -4,6 +4,12 @@ import 'package:fedi/date_time/date_time_dynamic_time_ago_widget.dart';
 import 'package:flutter/cupertino.dart';
 
 class NotificationCreatedAtWidget extends StatelessWidget {
+  final TextStyle textStyle;
+
+  NotificationCreatedAtWidget({
+    this.textStyle = FediTextStyles.smallShortGrey,
+  });
+
   @override
   Widget build(BuildContext context) {
     var notificationBloc = INotificationBloc.of(context, listen: false);
@@ -16,7 +22,7 @@ class NotificationCreatedAtWidget extends StatelessWidget {
 
           return DateTimeDynamicTimeAgoWidget(
             dateTime: createdAt,
-            textStyle: FediTextStyles.smallShortGrey,
+            textStyle: textStyle,
           );
         });
   }

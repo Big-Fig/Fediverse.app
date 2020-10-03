@@ -50,7 +50,7 @@ class ChatMessageListItemWidget extends StatelessWidget {
             decoration: BoxDecoration(
               color: isHaveTextContent
                   ? isChatMessageFromMe
-                      ? FediColors.primaryColorDark
+                      ? FediColors.primaryDark
                       : FediColors.ultraLightGrey
                   : Colors.transparent,
               borderRadius: isHaveTextContent
@@ -178,7 +178,7 @@ class ChatMessageListItemWidget extends StatelessWidget {
                       : FediColors.darkGrey,
                   linkColor: isChatMessageFromMe
                       ? FediColors.white
-                      : FediColors.primaryColor,
+                      : FediColors.primary,
                   fontSize: 16.0,
                   lineHeight: 1.5,
                   data: contentWithEmojis,

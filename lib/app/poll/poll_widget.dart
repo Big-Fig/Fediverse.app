@@ -190,7 +190,7 @@ class PollOptionWidget extends StatelessWidget {
 
     var fillColor = isPossibleToVote
         ? FediColors.white
-        : isOwnVote ? FediColors.primaryColor : FediColors.ultraLightGrey;
+        : isOwnVote ? FediColors.primary : FediColors.ultraLightGrey;
 
     var backgroundColor = FediColors.white;
 
@@ -260,7 +260,7 @@ class PollOptionWidget extends StatelessWidget {
                       var isSelected =
                           selectedVotes?.contains(pollOption) ?? false;
                       var color = isSelected
-                          ? FediColors.primaryColor
+                          ? FediColors.primary
                           : FediColors.ultraLightGrey;
                       var size = 35.0;
                       return Padding(

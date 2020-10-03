@@ -134,7 +134,7 @@ class _SpecialTextSpanBuilder extends SpecialTextSpanBuilder {
     ///index is end index of start flag, so text start index should be index-(flag.length-1)
     if (flag?.isNotEmpty == true && isStart(flag, _MentionSpecialText.flag)) {
       return _MentionSpecialText(
-        textStyle: textStyle?.copyWith(color: FediColors.primaryColor),
+        textStyle: textStyle?.copyWith(color: FediColors.primary),
         onTap: onTap,
         start: index - (_MentionSpecialText.flag.length - 1),
       );

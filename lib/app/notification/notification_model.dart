@@ -37,21 +37,21 @@ abstract class INotification {
   bool get isContainsStatus;
 
   bool get isContainsAccount;
+
   bool get dismissed;
 
-  INotification copyWith(
-      {int localId,
-      String remoteId,
-      bool unread,
-      DateTime createdAt,
-      IStatus status,
-      String emoji,
-      PleromaNotificationPleromaPart pleroma,
-      IAccount account,
-      MastodonNotificationType type,
-      bool dismissed,
-
-      });
+  INotification copyWith({
+    int localId,
+    String remoteId,
+    bool unread,
+    DateTime createdAt,
+    IStatus status,
+    String emoji,
+    PleromaNotificationPleromaPart pleroma,
+    IAccount account,
+    MastodonNotificationType type,
+    bool dismissed,
+  });
 }
 
 class DbNotificationPopulatedWrapper implements INotification {
@@ -59,8 +59,10 @@ class DbNotificationPopulatedWrapper implements INotification {
 
   @override
   bool get isContainsChat => chatRemoteId != null;
+
   @override
   bool get isContainsStatus => status != null;
+
   @override
   bool get isContainsAccount => account != null;
 
@@ -110,17 +112,18 @@ class DbNotificationPopulatedWrapper implements INotification {
   bool get unread => dbNotificationPopulated.dbNotification.unread == true;
 
   @override
-  DbNotificationPopulatedWrapper copyWith(
-          {int localId,
-          String remoteId,
-          bool unread,
-          DateTime createdAt,
-          IStatus status,
-          IAccount account,
-          String emoji,
-          PleromaNotificationPleromaPart pleroma,
-          MastodonNotificationType type,
-            bool dismissed,}) =>
+  DbNotificationPopulatedWrapper copyWith({
+    int localId,
+    String remoteId,
+    bool unread,
+    DateTime createdAt,
+    IStatus status,
+    IAccount account,
+    String emoji,
+    PleromaNotificationPleromaPart pleroma,
+    MastodonNotificationType type,
+    bool dismissed,
+  }) =>
       DbNotificationPopulatedWrapper(DbNotificationPopulated(
           dbNotification: dbNotificationPopulated.dbNotification.copyWith(
             id: localId ?? this.localId,
