@@ -169,6 +169,9 @@ dependencies:
   # detect keyboard visibility
   flutter_keyboard_visibility: ^3.2.2
 
+  # list view item slide actions
+  flutter_slidable: ^0.5.7
+
 dependency_overrides:
   path: ^1.7.0
 

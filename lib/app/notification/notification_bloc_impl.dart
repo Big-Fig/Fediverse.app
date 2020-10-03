@@ -168,6 +168,11 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
   }
 
   @override
+  Future markAsRead() async {
+    await notificationRepository.markAsRead(notification: notification);
+  }
+
+  @override
   bool get dismissed => notification.dismissed;
 
   @override

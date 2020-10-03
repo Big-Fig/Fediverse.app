@@ -101,13 +101,6 @@ class NotificationCachedListBloc extends INotificationCachedListBloc {
               orderByType: NotificationOrderByType.createdAt));
 
   @override
-  Future markAsRead(List<INotification> notifications) async {
-    for (var notification in notifications) {
-      await notificationRepository.markAsRead(notification: notification);
-    }
-  }
-
-  @override
   Future dismissAll() async {
     await pleromaNotificationService.dismissAll();
     await notificationRepository.dismissAll();

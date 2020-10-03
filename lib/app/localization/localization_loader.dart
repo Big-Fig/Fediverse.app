@@ -586,6 +586,13 @@ class CodegenLoader extends AssetLoader{
       }
     },
     "notification": {
+      "action": {
+        "popup": {
+          "title": "Notification actions"
+        },
+        "mark_as_read": "Mark as read",
+        "dismiss": "Dismiss"
+      },
       "list": {
         "new_items": {
           "action": {

@@ -23,15 +23,6 @@ class NotificationCachedPaginationListWithNewItemsBloc<
             paginationBloc: paginationBloc);
 
   @override
-  void onNewItemsMerged(List<INotification> lastMergedItems) {
-    super.onNewItemsMerged(lastMergedItems);
-
-    if (lastMergedItems?.isNotEmpty == true) {
-      cachedListBloc.markAsRead(lastMergedItems);
-    }
-  }
-
-  @override
   Stream<List<INotification>> watchItemsNewerThanItem(INotification item) {
     return cachedListBloc.watchLocalItemsNewerThanItem(item);
   }
