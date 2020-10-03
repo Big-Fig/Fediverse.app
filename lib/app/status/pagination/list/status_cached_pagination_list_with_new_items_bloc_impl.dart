@@ -43,9 +43,6 @@ class StatusCachedPaginationListWithNewItemsBloc<
       addDisposable(
         streamSubscription: unmergedNewItemsStream.distinct().listen(
           (unmergedNewItems) {
-            var ownNewStatuses = <IStatus>[];
-            var notOwnNewStatuses = <IStatus>[];
-
             if (unmergedNewItems?.isNotEmpty == true) {
               var firstUnmergedItem = unmergedNewItems.first;
 
