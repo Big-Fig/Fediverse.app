@@ -67,6 +67,7 @@ MaterialPageRoute createMyAccountFavouritedStatusesPage() {
               context,
               child: MyAccountFavouritedStatusesPage(),
               mergeNewItemsImmediately: false,
+              mergeOwnStatusesImmediately: false,
             ),
           ),
         ),

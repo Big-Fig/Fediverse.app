@@ -26,8 +26,7 @@ class ConversationWidget extends StatelessWidget {
         loadingFinishedBuilder: (context) {
           return DisposableProvider<IStatusCachedListBloc>(
             create: (context) {
-              return _createStatusListBloc(
-                  context, conversationBloc);
+              return _createStatusListBloc(context, conversationBloc);
             },
             child: StatusCachedPaginationBloc.provideToContext(
               context,
@@ -36,6 +35,7 @@ class ConversationWidget extends StatelessWidget {
                 context,
                 mergeNewItemsImmediately: true,
                 child: _buildBody(conversationBloc),
+                mergeOwnStatusesImmediately: false,
               ),
             ),
           );

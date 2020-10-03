@@ -49,7 +49,6 @@ import 'package:provider/provider.dart';
 
 var _headerBackgroundHeight = 200.0;
 
-
 const _tabs = [
   AccountStatusesTab.withoutReplies,
   AccountStatusesTab.pinned,
@@ -183,8 +182,12 @@ class _AccountHomeTabPageState extends State<AccountHomeTabPage>
                     child: StatusCachedPaginationBloc.provideToContext(
                       context,
                       child: StatusCachedPaginationListWithNewItemsBloc
-                          .provideToContext(context,
-                              mergeNewItemsImmediately: true, child: child),
+                          .provideToContext(
+                        context,
+                        mergeNewItemsImmediately: true,
+                        child: child,
+                        mergeOwnStatusesImmediately: false,
+                      ),
                     ),
                   );
                 case AccountStatusesTab.withoutReplies:
@@ -194,8 +197,12 @@ class _AccountHomeTabPageState extends State<AccountHomeTabPage>
                     child: StatusCachedPaginationBloc.provideToContext(
                       context,
                       child: StatusCachedPaginationListWithNewItemsBloc
-                          .provideToContext(context,
-                              mergeNewItemsImmediately: true, child: child),
+                          .provideToContext(
+                        context,
+                        mergeNewItemsImmediately: true,
+                        child: child,
+                        mergeOwnStatusesImmediately: false,
+                      ),
                     ),
                   );
                   break;
@@ -207,8 +214,12 @@ class _AccountHomeTabPageState extends State<AccountHomeTabPage>
                     child: StatusCachedPaginationBloc.provideToContext(
                       context,
                       child: StatusCachedPaginationListWithNewItemsBloc
-                          .provideToContext(context,
-                              mergeNewItemsImmediately: true, child: child),
+                          .provideToContext(
+                        context,
+                        mergeNewItemsImmediately: true,
+                        child: child,
+                        mergeOwnStatusesImmediately: false,
+                      ),
                     ),
                   );
                   break;
