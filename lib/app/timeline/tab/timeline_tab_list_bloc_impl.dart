@@ -149,6 +149,7 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
         pleromaAccountService: pleromaAccountService,
         webSocketsHandlerManagerBloc: webSocketsHandlerManagerBloc,
         currentAuthInstanceBloc: currentAuthInstanceBloc,
+        myAccountBloc: myAccountBloc,
       );
 
       await timelineTabBloc.performAsyncInit();

@@ -165,6 +165,7 @@ MaterialPageRoute createCustomListPageRoute({
                       child: CustomListPage(
                         customList: customList,
                       ),
+                      mergeOwnStatusesImmediately: false,
                     ),
                   ),
                 ),

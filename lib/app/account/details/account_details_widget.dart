@@ -25,9 +25,11 @@ class AccountDetailsWidget extends StatefulWidget {
       child: StatusCachedPaginationBloc.provideToContext(
         context,
         child: StatusCachedPaginationListWithNewItemsBloc.provideToContext(
-            context,
-            mergeNewItemsImmediately: true,
-            child: child),
+          context,
+          mergeNewItemsImmediately: true,
+          child: child,
+          mergeOwnStatusesImmediately: false,
+        ),
       ),
     );
   }
@@ -69,5 +71,4 @@ class _AccountDetailsWidgetState extends State<AccountDetailsWidget> {
           StatusListTapToLoadOverlayWidget(),
         ],
       );
-
 }

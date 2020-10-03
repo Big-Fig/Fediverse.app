@@ -176,6 +176,7 @@ MaterialPageRoute createHashtagPageRoute({
                       child: HashtagPage(
                         hashtag: hashtag,
                       ),
+                      mergeOwnStatusesImmediately: false,
                     ),
                   ),
                 ),

@@ -166,8 +166,12 @@ class _AccountDetailsPageState extends State<AccountDetailsPage>
                       child: StatusCachedPaginationBloc.provideToContext(
                         context,
                         child: StatusCachedPaginationListWithNewItemsBloc
-                            .provideToContext(context,
-                                mergeNewItemsImmediately: true, child: child),
+                            .provideToContext(
+                          context,
+                          mergeNewItemsImmediately: true,
+                          child: child,
+                          mergeOwnStatusesImmediately: false,
+                        ),
                       ),
                     );
                   case AccountStatusesTab.withoutReplies:
@@ -178,8 +182,12 @@ class _AccountDetailsPageState extends State<AccountDetailsPage>
                       child: StatusCachedPaginationBloc.provideToContext(
                         context,
                         child: StatusCachedPaginationListWithNewItemsBloc
-                            .provideToContext(context,
-                                mergeNewItemsImmediately: true, child: child),
+                            .provideToContext(
+                          context,
+                          mergeNewItemsImmediately: true,
+                          child: child,
+                          mergeOwnStatusesImmediately: false,
+                        ),
                       ),
                     );
                     break;
@@ -191,8 +199,12 @@ class _AccountDetailsPageState extends State<AccountDetailsPage>
                       child: StatusCachedPaginationBloc.provideToContext(
                         context,
                         child: StatusCachedPaginationListWithNewItemsBloc
-                            .provideToContext(context,
-                                mergeNewItemsImmediately: true, child: child),
+                            .provideToContext(
+                          context,
+                          mergeNewItemsImmediately: true,
+                          child: child,
+                          mergeOwnStatusesImmediately: false,
+                        ),
                       ),
                     );
                     break;

@@ -1,3 +1,4 @@
+import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc.dart';
@@ -38,6 +39,7 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
   final bool listenWebSockets;
   final IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc;
   final ILocalPreferencesService preferencesService;
+  final IMyAccountBloc myAccountBloc;
 
   @override
   final String timelineId;
@@ -51,6 +53,7 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
     @required this.currentAuthInstanceBloc,
     @required this.listenWebSockets,
     @required this.webSocketsHandlerManagerBloc,
+    @required this.myAccountBloc,
   }) {
     timelineLocalPreferencesBloc = TimelineLocalPreferencesBloc.byId(
       preferencesService,
@@ -84,10 +87,13 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
     addDisposable(disposable: statusCachedPaginationBloc);
 
     paginationListWithNewItemsBloc = StatusCachedPaginationListWithNewItemsBloc<
-            CachedPaginationPage<IStatus>>(
-        paginationBloc: statusCachedPaginationBloc,
-        mergeNewItemsImmediately: false,
-        statusCachedListBloc: statusCachedListService);
+        CachedPaginationPage<IStatus>>(
+      paginationBloc: statusCachedPaginationBloc,
+      mergeNewItemsImmediately: false,
+      mergeOwnStatusesImmediately: true,
+      statusCachedListBloc: statusCachedListService,
+      myAccountBloc: myAccountBloc,
+    );
     addDisposable(disposable: paginationListWithNewItemsBloc);
 
     // skip first value to avoid duplicated update on first build

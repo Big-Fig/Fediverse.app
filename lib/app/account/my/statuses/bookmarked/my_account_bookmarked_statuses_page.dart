@@ -67,6 +67,7 @@ MaterialPageRoute createMyAccountBookmarkedStatusesPage() {
               context,
               child: MyAccountBookmarkedStatusesPage(),
               mergeNewItemsImmediately: false,
+              mergeOwnStatusesImmediately: false,
             ),
           ),
         ),
