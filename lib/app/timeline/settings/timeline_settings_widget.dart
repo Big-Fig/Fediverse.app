@@ -39,6 +39,7 @@ class TimelineSettingsWidget extends StatelessWidget {
           buildWithMutedField(context, settingsBloc, authInstance),
           buildOnlyMediaField(context, settingsBloc, authInstance),
           buildOnlyLocalField(context, settingsBloc, authInstance),
+          buildWebSocketsUpdatesField(context, settingsBloc, authInstance),
           buildReplyVisibilityFilterField(context, settingsBloc, authInstance),
         ];
         break;
@@ -48,6 +49,7 @@ class TimelineSettingsWidget extends StatelessWidget {
           buildOnlyMediaField(context, settingsBloc, authInstance),
           buildOnlyLocalField(context, settingsBloc, authInstance),
           buildOnlyRemoteField(context, settingsBloc, authInstance),
+          buildWebSocketsUpdatesField(context, settingsBloc, authInstance),
           buildReplyVisibilityFilterField(context, settingsBloc, authInstance),
         ];
         break;
@@ -56,6 +58,7 @@ class TimelineSettingsWidget extends StatelessWidget {
           buildCustomListField(context, settingsBloc, authInstance),
           buildWithMutedField(context, settingsBloc, authInstance),
           buildOnlyMediaField(context, settingsBloc, authInstance),
+          buildWebSocketsUpdatesField(context, settingsBloc, authInstance),
         ];
         break;
 
@@ -65,6 +68,7 @@ class TimelineSettingsWidget extends StatelessWidget {
           buildWithMutedField(context, settingsBloc, authInstance),
           buildOnlyMediaField(context, settingsBloc, authInstance),
           buildOnlyLocalField(context, settingsBloc, authInstance),
+          buildWebSocketsUpdatesField(context, settingsBloc, authInstance),
         ];
         break;
       case TimelineType.account:
@@ -74,6 +78,7 @@ class TimelineSettingsWidget extends StatelessWidget {
           buildOnlyPinnedField(context, settingsBloc, authInstance),
           buildExcludeReblogsField(context, settingsBloc, authInstance),
           buildExcludeRepliesField(context, settingsBloc, authInstance),
+          buildWebSocketsUpdatesField(context, settingsBloc, authInstance),
           buildHashtagField(context, settingsBloc, authInstance),
         ];
         break;
@@ -171,6 +176,20 @@ class TimelineSettingsWidget extends StatelessWidget {
     );
   }
 
+  FormBoolFieldFormRowWidget buildWebSocketsUpdatesField(
+    BuildContext context,
+    ITimelineSettingsFormBloc settingsBloc,
+    AuthInstance authInstance,
+  ) {
+    return buildBoolField(
+      label: tr("app.timeline.settings.field.web_sockets_updates.label"),
+      fieldBloc: settingsBloc.webSocketsUpdatesFieldBloc,
+      isSupported: type.isWebSocketsUpdatesFilterSupportedOnInstance(context),
+      errorDesc:
+          tr("app.timeline.settings.field.web_sockets_updates.disabled.desc"),
+    );
+  }
+
   FormBoolFieldFormRowWidget buildExcludeNsfwField(
     BuildContext context,
     ITimelineSettingsFormBloc settingsBloc,
@@ -261,6 +280,7 @@ class TimelineSettingsWidget extends StatelessWidget {
     @required String label,
     @required IFormBoolFieldBloc fieldBloc,
     @required bool isSupported,
+    String errorDesc,
   }) {
     return FormBoolFieldFormRowWidget(
       label: label,
@@ -268,7 +288,7 @@ class TimelineSettingsWidget extends StatelessWidget {
       enabled: isSupported,
       desc: isSupported
           ? null
-          : "app.timeline.settings.field.not_supported.desc".tr(),
+          : errorDesc ?? "app.timeline.settings.field.not_supported.desc".tr(),
     );
   }
 }

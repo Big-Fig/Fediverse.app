@@ -26,12 +26,14 @@ class TimelineSettings extends IPreferencesObject {
         onlyLocal: false,
         withMuted: false,
         excludeVisibilities: [],
+        websocketsUpdates: true,
       );
 
   static TimelineSettings createDefaultHomeSettings() => TimelineSettings.home(
         onlyLocal: false,
         withMuted: false,
         excludeVisibilities: [],
+        websocketsUpdates: true,
       );
 
   static TimelineSettings createDefaultCustomListSettings({
@@ -41,6 +43,7 @@ class TimelineSettings extends IPreferencesObject {
         withMuted: false,
         excludeVisibilities: [],
         onlyInRemoteList: onlyInRemoteList,
+        websocketsUpdates: true,
       );
 
   static TimelineSettings createDefaultHashtagSettings({
@@ -52,6 +55,7 @@ class TimelineSettings extends IPreferencesObject {
         withMuted: false,
         excludeVisibilities: [],
         withRemoteHashtag: withRemoteHashtag,
+        websocketsUpdates: true,
       );
 
   static TimelineSettings createDefaultAccountSettings({
@@ -63,6 +67,7 @@ class TimelineSettings extends IPreferencesObject {
         excludeReplies: false,
         onlyPinned: false,
         onlyFromRemoteAccount: onlyFromRemoteAccount,
+        websocketsUpdates: true,
       );
 
   @HiveField(1)
@@ -117,6 +122,10 @@ class TimelineSettings extends IPreferencesObject {
   @JsonKey(name: "exclude_reblogs")
   final bool excludeReblogs;
 
+  @HiveField(16)
+  @JsonKey(name: "web_sockets_updates")
+  final bool webSocketsUpdates;
+
   TimelineSettings({
     @required this.onlyWithMedia,
     @required this.excludeReplies,
@@ -131,12 +140,14 @@ class TimelineSettings extends IPreferencesObject {
     @required this.onlyFromRemoteAccount,
     @required this.onlyPinned,
     @required this.excludeReblogs,
+    @required this.webSocketsUpdates,
   });
 
   TimelineSettings.home({
     @required bool onlyLocal,
     @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
+    @required bool websocketsUpdates,
   }) : this(
           onlyWithMedia: null,
           excludeReplies: null,
@@ -153,6 +164,7 @@ class TimelineSettings extends IPreferencesObject {
           onlyFromRemoteAccount: null,
           onlyPinned: null,
           excludeReblogs: null,
+          webSocketsUpdates: websocketsUpdates,
         );
 
   TimelineSettings.public({
@@ -161,6 +173,7 @@ class TimelineSettings extends IPreferencesObject {
     @required bool onlyLocal,
     @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
+    @required bool websocketsUpdates,
   }) : this(
           onlyWithMedia: onlyWithMedia,
           excludeReplies: null,
@@ -177,6 +190,7 @@ class TimelineSettings extends IPreferencesObject {
           onlyFromRemoteAccount: null,
           onlyPinned: null,
           excludeReblogs: null,
+          webSocketsUpdates: websocketsUpdates,
         );
 
   TimelineSettings.hashtag({
@@ -185,6 +199,7 @@ class TimelineSettings extends IPreferencesObject {
     @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
     @required String withRemoteHashtag,
+    @required bool websocketsUpdates,
   }) : this(
           onlyWithMedia: onlyWithMedia,
           excludeReplies: null,
@@ -201,12 +216,14 @@ class TimelineSettings extends IPreferencesObject {
           onlyFromRemoteAccount: null,
           onlyPinned: null,
           excludeReblogs: null,
+          webSocketsUpdates: websocketsUpdates,
         );
 
   TimelineSettings.list({
     @required bool withMuted,
     @required List<PleromaVisibility> excludeVisibilities,
     @required IPleromaList onlyInRemoteList,
+    @required bool websocketsUpdates,
   }) : this(
           onlyWithMedia: null,
           excludeReplies: null,
@@ -223,6 +240,7 @@ class TimelineSettings extends IPreferencesObject {
           onlyFromRemoteAccount: null,
           onlyPinned: null,
           excludeReblogs: null,
+          webSocketsUpdates: websocketsUpdates,
         );
 
   TimelineSettings.account({
@@ -231,6 +249,7 @@ class TimelineSettings extends IPreferencesObject {
     @required bool excludeReplies,
     @required bool excludeReblogs,
     @required bool onlyPinned,
+    @required bool websocketsUpdates,
   }) : this(
           onlyWithMedia: onlyWithMedia,
           excludeReplies: excludeReplies,
@@ -245,6 +264,7 @@ class TimelineSettings extends IPreferencesObject {
           onlyFromRemoteAccount: onlyFromRemoteAccount,
           onlyPinned: onlyPinned,
           excludeReblogs: excludeReblogs,
+          webSocketsUpdates: websocketsUpdates,
         );
 
   TimelineSettings copyWith({
@@ -260,8 +280,9 @@ class TimelineSettings extends IPreferencesObject {
     PleromaTag withRemoteHashtag,
     String replyVisibilityFilterString,
     PleromaAccount onlyFromRemoteAccount,
-    bool excludeReblogs,
     bool onlyPinned,
+    bool excludeReblogs,
+    bool webSocketsUpdates,
   }) =>
       TimelineSettings(
         onlyWithMedia: onlyWithMedia ?? this.onlyWithMedia,
@@ -278,10 +299,10 @@ class TimelineSettings extends IPreferencesObject {
             replyVisibilityFilterString ?? this.replyVisibilityFilterString,
         onlyFromRemoteAccount:
             onlyFromRemoteAccount ?? this.onlyFromRemoteAccount,
-        excludeReblogs: excludeReblogs ?? this.excludeReblogs,
         onlyPinned: onlyPinned ?? this.onlyPinned,
+        excludeReblogs: excludeReblogs ?? this.excludeReblogs,
+        webSocketsUpdates: webSocketsUpdates ?? this.webSocketsUpdates,
       );
-
 
   @override
   bool operator ==(Object other) =>
@@ -300,7 +321,8 @@ class TimelineSettings extends IPreferencesObject {
           replyVisibilityFilterString == other.replyVisibilityFilterString &&
           onlyFromRemoteAccount == other.onlyFromRemoteAccount &&
           onlyPinned == other.onlyPinned &&
-          excludeReblogs == other.excludeReblogs;
+          excludeReblogs == other.excludeReblogs &&
+          webSocketsUpdates == other.webSocketsUpdates;
 
   @override
   int get hashCode =>
@@ -316,6 +338,7 @@ class TimelineSettings extends IPreferencesObject {
       replyVisibilityFilterString.hashCode ^
       onlyFromRemoteAccount.hashCode ^
       onlyPinned.hashCode ^
+      webSocketsUpdates.hashCode ^
       excludeReblogs.hashCode;
 
   @override
@@ -332,6 +355,7 @@ class TimelineSettings extends IPreferencesObject {
         ' PleromaReplyVisibilityFilterString:'
         ' $replyVisibilityFilterString,'
         ' onlyFromAccountWithRemoteId: $onlyFromRemoteAccount,'
+        ' websocketsUpdates: $webSocketsUpdates,'
         ' onlyPinned: $onlyPinned, excludeReblogs: $excludeReblogs}';
   }
 

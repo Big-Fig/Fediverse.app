@@ -27,13 +27,14 @@ class TimelineSettingsAdapter extends TypeAdapter<TimelineSettings> {
       onlyFromRemoteAccount: fields[13] as PleromaAccount,
       onlyPinned: fields[14] as bool,
       excludeReblogs: fields[15] as bool,
+      webSocketsUpdates: fields[16] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, TimelineSettings obj) {
     writer
-      ..writeByte(13)
+      ..writeByte(14)
       ..writeByte(1)
       ..write(obj.onlyWithMedia)
       ..writeByte(2)
@@ -59,7 +60,9 @@ class TimelineSettingsAdapter extends TypeAdapter<TimelineSettings> {
       ..writeByte(14)
       ..write(obj.onlyPinned)
       ..writeByte(15)
-      ..write(obj.excludeReblogs);
+      ..write(obj.excludeReblogs)
+      ..writeByte(16)
+      ..write(obj.webSocketsUpdates);
   }
 }
 
@@ -90,6 +93,7 @@ TimelineSettings _$TimelineSettingsFromJson(Map<String, dynamic> json) {
             json['only_from_remote_account'] as Map<String, dynamic>),
     onlyPinned: json['only_pinned'] as bool,
     excludeReblogs: json['exclude_reblogs'] as bool,
+    webSocketsUpdates: json['web_sockets_updates'] as bool,
   );
 }
 
@@ -108,4 +112,5 @@ Map<String, dynamic> _$TimelineSettingsToJson(TimelineSettings instance) =>
       'only_from_remote_account': instance.onlyFromRemoteAccount?.toJson(),
       'only_pinned': instance.onlyPinned,
       'exclude_reblogs': instance.excludeReblogs,
+      'web_sockets_updates': instance.webSocketsUpdates,
     };

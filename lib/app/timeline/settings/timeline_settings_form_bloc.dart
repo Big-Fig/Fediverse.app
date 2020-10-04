@@ -48,6 +48,8 @@ abstract class ITimelineSettingsFormBloc extends IFormBloc {
 
   FormListValueFieldBloc<PleromaVisibility> get excludeVisibilitiesFieldBloc;
 
+  IFormBoolFieldBloc get webSocketsUpdatesFieldBloc;
+
   void fill({
     @required TimelineType type,
     @required TimelineSettings newSettings,

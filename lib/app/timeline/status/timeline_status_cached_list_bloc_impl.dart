@@ -50,7 +50,7 @@ class TimelineStatusCachedListBloc extends DisposableOwner
     @required this.webSocketsHandlerManagerBloc,
   }) {
     // todo: rework listen, due to settings change
-    if (listenWebSockets) {
+    if (listenWebSockets && (timeline.webSocketsUpdates ?? true)) {
       switch (timelineType) {
         case TimelineType.public:
           addDisposable(

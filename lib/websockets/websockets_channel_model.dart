@@ -3,9 +3,6 @@ import 'package:fedi/websockets/websockets_channel_source.dart';
 import 'package:fedi/websockets/websockets_channel_source_impl.dart';
 import 'package:fedi/websockets/websockets_model.dart';
 import 'package:flutter/widgets.dart';
-import 'package:logging/logging.dart';
-
-var _logger = Logger("websockets_channel_model.dart");
 
 abstract class IWebSocketsChannelConfig<T extends WebSocketsEvent> {
   IWebSocketsChannelSource<T> createChannelSource();

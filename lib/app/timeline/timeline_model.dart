@@ -175,6 +175,8 @@ class Timeline implements IPreferencesObject {
 
   bool get onlyLocal => settings?.onlyLocal;
 
+  bool get webSocketsUpdates => settings?.webSocketsUpdates;
+
   bool get withMuted => settings?.withMuted;
 
   List<String> get excludeVisibilitiesStrings =>
@@ -190,9 +192,8 @@ class Timeline implements IPreferencesObject {
   String get PleromaReplyVisibilityFilterString =>
       settings?.replyVisibilityFilterString;
 
-  PleromaReplyVisibilityFilter
-      get replyVisibilityFilter =>
-          settings?.replyVisibilityFilter;
+  PleromaReplyVisibilityFilter get replyVisibilityFilter =>
+      settings?.replyVisibilityFilter;
 
   PleromaAccount get onlyFromRemoteAccount => settings?.onlyFromRemoteAccount;
 
