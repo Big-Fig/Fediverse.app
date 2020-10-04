@@ -80,6 +80,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
 
   @override
   Future internalAsyncInit() async {
+    _logger.finest(() => "internalAsyncInit");
     try {
       var page = await paginationBloc.requestPage(
           pageIndex: 0, forceToSkipCache: false);
@@ -105,6 +106,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
 
   @override
   Future<PaginationListLoadingState> loadMoreWithoutController() async {
+    _logger.finest(() => "loadMoreWithoutController");
     loadMoreStateSubject.add(PaginationListLoadingState.loading);
 
     try {
@@ -140,6 +142,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
 
   @override
   Future<PaginationListLoadingState> refreshWithoutController() async {
+    _logger.finest(() => "refreshWithoutController");
     try {
       PaginationListLoadingState state;
       if (!refreshStateSubject.isClosed) {
@@ -185,6 +188,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
 
   @override
   void refreshWithController() {
+    _logger.finest(() => "refreshWithController");
     // refresh controller if it attached
     if (refreshController.position != null) {
       try {

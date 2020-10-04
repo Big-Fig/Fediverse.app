@@ -42,7 +42,7 @@ abstract class WebSocketsChannelConfig<T extends WebSocketsEvent>
         .join("&");
 
     var webSocketPath = baseUrl.toString() + "?$queryArgsString";
-    _logger.finest(() => "calculateUrl $webSocketPath");
+    // _logger.finest(() => "calculateUrl $webSocketPath");
     return Uri.parse(webSocketPath);
   }
 
