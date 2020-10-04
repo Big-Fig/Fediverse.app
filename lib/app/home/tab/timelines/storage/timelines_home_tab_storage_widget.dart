@@ -52,7 +52,7 @@ class _TimelinesHomeTabStorageWidgetState
                         onPressed: () {
                           goToTimelineSettingsPage(
                             context,
-                            Timeline: item,
+                            timeline: item,
                           );
                         },
                       ),

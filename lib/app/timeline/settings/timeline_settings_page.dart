@@ -46,13 +46,13 @@ class TimelineSettingsPage extends StatelessWidget {
 
 void goToTimelineSettingsPage(
   BuildContext context, {
-  @required Timeline Timeline,
+  @required Timeline timeline,
 }) {
   Navigator.push(
     context,
     createTimelineSettingsPageRoute(
       context,
-      timeline: Timeline,
+      timeline: timeline,
     ),
   );
 }
@@ -61,6 +61,7 @@ MaterialPageRoute createTimelineSettingsPageRoute(
   BuildContext context, {
   @required Timeline timeline,
 }) {
+  assert(timeline != null);
   var localPreferencesService =
       ILocalPreferencesService.of(context, listen: false);
   var currentAuthInstanceBloc =
@@ -73,38 +74,46 @@ MaterialPageRoute createTimelineSettingsPageRoute(
           localPreferencesService,
           userAtHost: currentInstance.userAtHost,
           timelineId: timeline.id,
-          defaultValue: null,
+          defaultValue: timeline,
         );
       },
-      child: DisposableProvider<ITimelineSettingsFormBloc>(
-        create: (BuildContext context) {
-          var timelineLocalPreferencesBloc = ITimelineLocalPreferencesBloc.of(
-            context,
-            listen: false,
-          );
-          var timeline = timelineLocalPreferencesBloc.value;
-          var timelineSettingsBloc = TimelineSettingsFormBloc(
-            originalSettings: timeline?.settings,
-            type: timeline.type,
-          );
+      child: Builder(
+        builder: (context) => FediAsyncInitLoadingWidget(
+          asyncInitLoadingBloc:
+              ITimelineLocalPreferencesBloc.of(context, listen: false),
+          loadingFinishedBuilder: (context) =>
+              DisposableProvider<ITimelineSettingsFormBloc>(
+            create: (BuildContext context) {
+              var timelineLocalPreferencesBloc =
+                  ITimelineLocalPreferencesBloc.of(
+                context,
+                listen: false,
+              );
+              var currentTimeline = timelineLocalPreferencesBloc.value ?? timeline;
+              var timelineSettingsBloc = TimelineSettingsFormBloc(
+                originalSettings: currentTimeline?.settings,
+                type: currentTimeline.type,
+              );
 
-          timelineSettingsBloc.addDisposable(
-            streamSubscription:
-                timelineSettingsBloc.timelineSettingsStream.listen(
-              (timelineSettings) {
-                var oldValue = timelineLocalPreferencesBloc.value;
-                timelineLocalPreferencesBloc.setValue(
-                  oldValue.copyWith(
-                    settings: timelineSettings,
-                  ),
-                );
-              },
+              timelineSettingsBloc.addDisposable(
+                streamSubscription:
+                    timelineSettingsBloc.timelineSettingsStream.listen(
+                  (timelineSettings) {
+                    var oldValue = timelineLocalPreferencesBloc.value;
+                    timelineLocalPreferencesBloc.setValue(
+                      oldValue.copyWith(
+                        settings: timelineSettings,
+                      ),
+                    );
+                  },
+                ),
+              );
+              return timelineSettingsBloc;
+            },
+            child: TimelineSettingsPage(
+              originalTimeline: timeline,
             ),
-          );
-          return timelineSettingsBloc;
-        },
-        child: TimelineSettingsPage(
-          originalTimeline: timeline,
+          ),
         ),
       ),
     ),

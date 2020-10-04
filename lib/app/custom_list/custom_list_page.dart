@@ -60,6 +60,7 @@ class _CustomListPageState extends State<CustomListPage> {
               widget.customList.title,
             ],
           ),
+          actions: [],
         ),
         body: SafeArea(
           child: CollapsibleOwnerWidget(
