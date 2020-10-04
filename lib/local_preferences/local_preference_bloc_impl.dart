@@ -32,7 +32,9 @@ abstract class LocalPreferenceBloc<T> extends AsyncInitLoadingBloc
 
     _preferenceService.listenKeyPreferenceChanged(key, (newValue) {
       if (value != newValue) {
-        _subject.add(newValue);
+        if (!_subject.isClosed) {
+          _subject.add(newValue);
+        }
       }
     });
   }
