@@ -66,6 +66,9 @@ class TimelineSettingsFormBloc extends FormBloc
   @override
   FormListValueFieldBloc<PleromaVisibility> excludeVisibilitiesFieldBloc;
 
+  @override
+  final IFormBoolFieldBloc webSocketsUpdatesFieldBloc;
+
   TimelineType type;
 
   TimelineSettingsFormBloc({
@@ -127,8 +130,9 @@ class TimelineSettingsFormBloc extends FormBloc
             originValue: originalSettings?.replyVisibilityFilter,
             validators: []),
         excludeVisibilitiesFieldBloc = FormListValueFieldBloc(
-            originValue: originalSettings?.excludeVisibilities,
-            validators: []) {
+            originValue: originalSettings?.excludeVisibilities, validators: []),
+        webSocketsUpdatesFieldBloc = FormBoolFieldBloc(
+            originValue: originalSettings?.webSocketsUpdates ?? true) {
     addDisposable(subject: _timelineSettingsSubject);
 
     addDisposable(disposable: excludeRepliesFieldBloc);
@@ -215,6 +219,7 @@ class TimelineSettingsFormBloc extends FormBloc
       onlyFromRemoteAccount: onlyFromRemoteAccountFieldBloc.currentValue,
       excludeReblogs: excludeReblogsFieldBloc.currentValue,
       onlyPinned: onlyPinnedFieldBloc.currentValue,
+      webSocketsUpdates: webSocketsUpdatesFieldBloc.currentValue
     );
     if (newPreferences != oldPreferences) {
       _timelineSettingsSubject.add(newPreferences);

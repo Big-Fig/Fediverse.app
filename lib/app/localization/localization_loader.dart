@@ -724,6 +724,12 @@ class CodegenLoader extends AssetLoader{
           "only_remote": {
             "label": "Only remote"
           },
+          "web_sockets_updates": {
+            "label": "WebSockets updates",
+            "disabled": {
+              "desc": "WebSockets disabled in account settings"
+            }
+          },
           "only_local": {
             "label": "Only local"
           },
