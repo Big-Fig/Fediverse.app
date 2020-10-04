@@ -14,11 +14,11 @@ class StatusCachedPaginationBloc extends CachedPleromaPaginationBloc<IStatus>
     implements IStatusCachedPaginationBloc {
   final IStatusCachedListBloc statusListService;
 
-  StatusCachedPaginationBloc(
-      {@required this.statusListService,
-      @required int itemsCountPerPage,
-      @required int maximumCachedPagesCount})
-      : super(
+  StatusCachedPaginationBloc({
+    @required this.statusListService,
+    @required int itemsCountPerPage,
+    @required int maximumCachedPagesCount,
+  }) : super(
             maximumCachedPagesCount: maximumCachedPagesCount,
             itemsCountPerPage: itemsCountPerPage);
 

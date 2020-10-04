@@ -102,20 +102,6 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
       myAccountBloc: myAccountBloc,
     );
     addDisposable(disposable: paginationListWithNewItemsBloc);
-
-    // skip first value to avoid duplicated update on first build
-    var initValueSkipped = false;
-    addDisposable(
-        streamSubscription: timelineLocalPreferencesBloc.stream
-            .distinct()
-            .listen((newPreferences) {
-      if (!initValueSkipped) {
-        paginationListWithNewItemsBloc.refreshWithController();
-      } else {
-        initValueSkipped = true;
-      }
-    }));
-    addDisposable(disposable: timelineLocalPreferencesBloc);
   }
 
   @override
@@ -127,4 +113,9 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
 
   @override
   int get hashCode => timelineId.hashCode;
+
+  @override
+  String toString() {
+    return 'TimelineTabBloc{timelineId: $timelineId}';
+  }
 }

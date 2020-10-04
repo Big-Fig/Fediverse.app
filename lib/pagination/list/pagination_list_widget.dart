@@ -129,6 +129,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
   }
 
   void askToRefresh(BuildContext context) {
+    _logger.finest(() => "askToRefresh");
     // delay required to be sure that widget will be built during initial
     // refresh
     Future.delayed(Duration(milliseconds: 1000), () {
