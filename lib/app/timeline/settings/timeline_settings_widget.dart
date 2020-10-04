@@ -24,7 +24,7 @@ class TimelineSettingsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var settingsBloc = ITimelineSettingsFormBloc.of(context, listen: true);
+    var settingsBloc = ITimelineSettingsFormBloc.of(context, listen: false);
 
     var currentAuthInstanceBloc =
         ICurrentAuthInstanceBloc.of(context, listen: false);
