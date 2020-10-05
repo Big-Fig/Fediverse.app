@@ -12,5 +12,6 @@ abstract class IMyAccountAccountBlockNetworkOnlyAccountListBloc
       Provider.of<IMyAccountAccountBlockNetworkOnlyAccountListBloc>(context,
           listen: listen);
 
+  Future addAccountBlock({@required IAccount account});
   Future removeAccountBlock({@required IAccount account});
 }

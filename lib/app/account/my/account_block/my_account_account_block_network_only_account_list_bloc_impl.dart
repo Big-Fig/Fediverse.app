@@ -36,6 +36,18 @@ class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
     await accountRepository.upsertRemoteAccount(remoteAccount,
         conversationRemoteId: null, chatRemoteId: null);
   }
+  @override
+  Future addAccountBlock({@required IAccount account}) async {
+    var accountRelationship = await pleromaAccountService.blockAccount(
+        accountRemoteId: account.remoteId);
+
+    var remoteAccount = mapLocalAccountToRemoteAccount(
+      account.copyWith(pleromaRelationship: accountRelationship),
+    );
+
+    await accountRepository.upsertRemoteAccount(remoteAccount,
+        conversationRemoteId: null, chatRemoteId: null);
+  }
 
   @override
   Future<List<IAccount>> loadItemsFromRemoteForPage({
