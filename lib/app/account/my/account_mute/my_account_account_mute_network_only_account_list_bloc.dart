@@ -13,4 +13,6 @@ abstract class IMyAccountAccountMuteNetworkOnlyAccountListBloc
           listen: listen);
 
   Future removeAccountMute({@required IAccount account});
+
+  Future addAccountMute({@required IAccount account});
 }

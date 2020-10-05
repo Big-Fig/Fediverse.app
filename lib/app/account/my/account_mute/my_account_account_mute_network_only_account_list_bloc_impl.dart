@@ -38,6 +38,19 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
   }
 
   @override
+  Future addAccountMute({@required IAccount account}) async {
+    var accountRelationship = await pleromaAccountService.muteAccount(
+        accountRemoteId: account.remoteId);
+
+    var remoteAccount = mapLocalAccountToRemoteAccount(
+      account.copyWith(pleromaRelationship: accountRelationship),
+    );
+
+    await accountRepository.upsertRemoteAccount(remoteAccount,
+        conversationRemoteId: null, chatRemoteId: null);
+  }
+
+  @override
   Future<List<IAccount>> loadItemsFromRemoteForPage({
     @required int pageIndex,
     int itemsCountPerPage,
