@@ -917,6 +917,7 @@
         }
       },
       "nsfw": {
+        "chip": "NSFW!",
         "action": {
           "view": "Tap to view"
         }
@@ -925,6 +926,7 @@
         "desc": "Status deleted"
       },
       "spoiler": {
+        "chip": "Spoilers!",
         "action": {
           "view": "Tap to view"
         }

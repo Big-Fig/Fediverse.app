@@ -669,7 +669,7 @@ class StatusBloc extends DisposableOwner implements IStatusBloc {
   }
 
   @override
-  bool get nsfwSensitive => reblogOrOriginal.nsfwSensitive;
+  bool get nsfwSensitive => reblogOrOriginal.nsfwSensitive == true;
 
   @override
   Stream<bool> get nsfwSensitiveStream =>
