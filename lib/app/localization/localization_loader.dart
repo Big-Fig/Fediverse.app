@@ -933,6 +933,7 @@ class CodegenLoader extends AssetLoader{
         }
       },
       "nsfw": {
+        "chip": "NSFW!",
         "action": {
           "view": "Tap to view"
         }
@@ -941,6 +942,7 @@ class CodegenLoader extends AssetLoader{
         "desc": "Status deleted"
       },
       "spoiler": {
+        "chip": "Spoilers!",
         "action": {
           "view": "Tap to view"
         }

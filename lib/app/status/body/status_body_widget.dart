@@ -9,7 +9,9 @@ import 'package:fedi/app/status/spoiler/status_spoiler_warning_overlay_widget.da
 import 'package:fedi/app/status/spoiler/status_spoiler_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
+import 'package:fedi/app/ui/chip/fedi_grey_chip.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -30,37 +32,42 @@ class StatusBodyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     IStatusBloc statusBloc = IStatusBloc.of(context, listen: false);
-    return StreamBuilder<bool>(
-        stream: statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabledStream,
-        initialData: statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabled,
-        builder: (context, snapshot) {
-          var nsfwSensitiveAndDisplayNsfwContentEnabled = snapshot.data;
+    return Column(
+      children: [
+        buildChips(context, statusBloc),
+        StreamBuilder<bool>(
+            stream: statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabledStream,
+            initialData: statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabled,
+            builder: (context, snapshot) {
+              var nsfwSensitiveAndDisplayNsfwContentEnabled = snapshot.data;
 
-          var child = StreamBuilder<bool>(
-              stream: statusBloc
-                  .containsSpoilerAndDisplaySpoilerContentEnabledStream,
-              initialData:
-                  statusBloc.containsSpoilerAndDisplaySpoilerContentEnabled,
-              builder: (context, snapshot) {
-                var containsSpoilerAndDisplayEnabled = snapshot.data;
+              var child = StreamBuilder<bool>(
+                  stream: statusBloc
+                      .containsSpoilerAndDisplaySpoilerContentEnabledStream,
+                  initialData:
+                      statusBloc.containsSpoilerAndDisplaySpoilerContentEnabled,
+                  builder: (context, snapshot) {
+                    var containsSpoilerAndDisplayEnabled = snapshot.data;
 
-                // todo: remove temp hack
-                var alreadyClickedShowContent = statusBloc.nsfwSensitive;
-                if (containsSpoilerAndDisplayEnabled ||
-                    alreadyClickedShowContent) {
-                  return buildStatusBodyWidget(context, statusBloc);
-                } else {
-                  return buildSpoilerWithoutBodyWidget(context, statusBloc);
-                }
-              });
-          if (nsfwSensitiveAndDisplayNsfwContentEnabled) {
-            return child;
-          } else {
-            return StatusNsfwWarningOverlayWidget(
-              child: child,
-            );
-          }
-        });
+                    // todo: remove temp hack
+                    var alreadyClickedShowContent = statusBloc.nsfwSensitive;
+                    if (containsSpoilerAndDisplayEnabled ||
+                        alreadyClickedShowContent) {
+                      return buildStatusBodyWidget(context, statusBloc);
+                    } else {
+                      return buildSpoilerWithoutBodyWidget(context, statusBloc);
+                    }
+                  });
+              if (nsfwSensitiveAndDisplayNsfwContentEnabled) {
+                return child;
+              } else {
+                return StatusNsfwWarningOverlayWidget(
+                  child: child,
+                );
+              }
+            }),
+      ],
+    );
   }
 
   Widget buildStatusBodyWidget(
@@ -156,4 +163,35 @@ class StatusBodyWidget extends StatelessWidget {
                   },
                 );
               }));
+
+  Widget buildChips(BuildContext context, IStatusBloc statusBloc) {
+    final containsNsfw = statusBloc.nsfwSensitive;
+    final containsSpoiler = statusBloc.containsSpoiler;
+
+    if (containsNsfw || containsSpoiler) {
+      return Padding(
+        padding: FediPadding.horizontalBigPadding,
+        child: Row(
+          children: [
+            if (containsNsfw)
+              Padding(
+                padding: EdgeInsets.only(right: FediSizes.smallPadding),
+                child: FediGreyChip(
+                  label: "app.status.nsfw.chip".tr(),
+                ),
+              ),
+            if (containsSpoiler)
+              Padding(
+                padding: EdgeInsets.only(right: FediSizes.smallPadding),
+                child: FediGreyChip(
+                  label: "app.status.spoiler.chip".tr(),
+                ),
+              ),
+          ],
+        ),
+      );
+    } else {
+      return SizedBox.shrink();
+    }
+  }
 }
