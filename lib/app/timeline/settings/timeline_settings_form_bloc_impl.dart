@@ -16,7 +16,10 @@ import 'package:fedi/ui/form/field/value/string/form_string_field_bloc_impl.dart
 import 'package:fedi/ui/form/form_bloc_impl.dart';
 import 'package:fedi/ui/form/form_item_bloc.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
+
+final _logger = Logger("timeline_settings_form_bloc_impl.dart");
 
 class TimelineSettingsFormBloc extends FormBloc
     implements ITimelineSettingsFormBloc {
@@ -203,25 +206,26 @@ class TimelineSettingsFormBloc extends FormBloc
   void _onSomethingChanged() {
     var oldPreferences = timelineSettings;
     var newPreferences = TimelineSettings(
-      onlyWithMedia: onlyWithMediaFieldBloc.currentValue,
-      excludeNsfwSensitive: excludeNsfwSensitiveFieldBloc.currentValue,
-      excludeReplies: excludeRepliesFieldBloc.currentValue,
-      onlyRemote: onlyRemoteFieldBloc.currentValue,
-      onlyLocal: onlyLocalFieldBloc.currentValue,
-      withMuted: withMutedFieldBloc.currentValue,
-      excludeVisibilitiesStrings: excludeVisibilitiesFieldBloc.currentValue
-          ?.map((visibility) => visibility.toJsonValue())
-          ?.toList(),
-      onlyInRemoteList: onlyInRemoteListFieldBloc.currentValue,
-      withRemoteHashtag: withRemoteHashtagFieldBloc.currentValue,
-      replyVisibilityFilterString:
-          replyVisibilityFilterFieldBloc.currentValue?.toJsonValue(),
-      onlyFromRemoteAccount: onlyFromRemoteAccountFieldBloc.currentValue,
-      excludeReblogs: excludeReblogsFieldBloc.currentValue,
-      onlyPinned: onlyPinnedFieldBloc.currentValue,
-      webSocketsUpdates: webSocketsUpdatesFieldBloc.currentValue
-    );
-    if (newPreferences != oldPreferences) {
+        onlyWithMedia: onlyWithMediaFieldBloc.currentValue,
+        excludeNsfwSensitive: excludeNsfwSensitiveFieldBloc.currentValue,
+        excludeReplies: excludeRepliesFieldBloc.currentValue,
+        onlyRemote: onlyRemoteFieldBloc.currentValue,
+        onlyLocal: onlyLocalFieldBloc.currentValue,
+        withMuted: withMutedFieldBloc.currentValue,
+        excludeVisibilitiesStrings: excludeVisibilitiesFieldBloc.currentValue
+            ?.map((visibility) => visibility.toJsonValue())
+            ?.toList(),
+        onlyInRemoteList: onlyInRemoteListFieldBloc.currentValue,
+        withRemoteHashtag: withRemoteHashtagFieldBloc.currentValue,
+        replyVisibilityFilterString:
+            replyVisibilityFilterFieldBloc.currentValue?.toJsonValue(),
+        onlyFromRemoteAccount: onlyFromRemoteAccountFieldBloc.currentValue,
+        excludeReblogs: excludeReblogsFieldBloc.currentValue,
+        onlyPinned: onlyPinnedFieldBloc.currentValue,
+        webSocketsUpdates: webSocketsUpdatesFieldBloc.currentValue);
+    var changed = newPreferences != oldPreferences;
+    _logger.finest(() => "_onSomethingChanged $changed");
+    if (changed) {
       _timelineSettingsSubject.add(newPreferences);
     }
   }

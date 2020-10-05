@@ -9,8 +9,11 @@ import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:collection/collection.dart';
 
 part 'timeline_settings_model.g.dart';
+
+Function eq = const ListEquality().equals;
 
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
@@ -315,7 +318,7 @@ class TimelineSettings extends IPreferencesObject {
           onlyRemote == other.onlyRemote &&
           onlyLocal == other.onlyLocal &&
           withMuted == other.withMuted &&
-          excludeVisibilitiesStrings == other.excludeVisibilitiesStrings &&
+          eq(excludeVisibilitiesStrings, other.excludeVisibilitiesStrings) &&
           onlyInRemoteList == other.onlyInRemoteList &&
           withRemoteHashtag == other.withRemoteHashtag &&
           replyVisibilityFilterString == other.replyVisibilityFilterString &&
@@ -338,8 +341,8 @@ class TimelineSettings extends IPreferencesObject {
       replyVisibilityFilterString.hashCode ^
       onlyFromRemoteAccount.hashCode ^
       onlyPinned.hashCode ^
-      webSocketsUpdates.hashCode ^
-      excludeReblogs.hashCode;
+      excludeReblogs.hashCode ^
+      webSocketsUpdates.hashCode;
 
   @override
   String toString() {
