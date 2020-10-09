@@ -30,6 +30,12 @@ class MyAccountSettingsBloc extends DisposableOwner
   @override
   final FormBoolFieldBloc foregroundSoundForMentionFieldBloc;
 
+  @override
+  final FormBoolFieldBloc mediaAutoInitFieldBloc;
+
+  @override
+  final FormBoolFieldBloc mediaAutoPlayFieldBloc;
+
   MyAccountSettingsBloc({@required this.localPreferencesBloc})
       : isRealtimeWebSocketsEnabledFieldBloc = FormBoolFieldBloc(
             originValue:
@@ -57,7 +63,11 @@ class MyAccountSettingsBloc extends DisposableOwner
                     true),
         foregroundSoundForMentionFieldBloc = FormBoolFieldBloc(
             originValue:
-                localPreferencesBloc.value?.foregroundSoundForMention ?? true) {
+                localPreferencesBloc.value?.foregroundSoundForMention ?? true),
+        mediaAutoInitFieldBloc = FormBoolFieldBloc(
+            originValue: localPreferencesBloc.value?.mediaAutoInit ?? false),
+        mediaAutoPlayFieldBloc = FormBoolFieldBloc(
+            originValue: localPreferencesBloc.value?.mediaAutoPlay ?? false) {
     addDisposable(disposable: isRealtimeWebSocketsEnabledFieldBloc);
     addDisposable(disposable: isNewChatsEnabledFieldBloc);
     addDisposable(disposable: isAlwaysShowSpoilerFieldBloc);
@@ -66,6 +76,8 @@ class MyAccountSettingsBloc extends DisposableOwner
     addDisposable(disposable: markMediaNsfwByDefaultFieldBloc);
     addDisposable(disposable: foregroundSoundForChatAndDmFieldBloc);
     addDisposable(disposable: foregroundSoundForMentionFieldBloc);
+    addDisposable(disposable: mediaAutoInitFieldBloc);
+    addDisposable(disposable: mediaAutoPlayFieldBloc);
 
     addDisposable(
         streamSubscription: isRealtimeWebSocketsEnabledFieldBloc
@@ -94,6 +106,12 @@ class MyAccountSettingsBloc extends DisposableOwner
         streamSubscription: foregroundSoundForMentionFieldBloc
             .currentValueStream
             .listen(onSomethingChanged));
+    addDisposable(
+        streamSubscription: mediaAutoInitFieldBloc.currentValueStream
+            .listen(onSomethingChanged));
+    addDisposable(
+        streamSubscription: mediaAutoPlayFieldBloc.currentValueStream
+            .listen(onSomethingChanged));
   }
 
   void onSomethingChanged(_) {
@@ -114,6 +132,8 @@ class MyAccountSettingsBloc extends DisposableOwner
           foregroundSoundForChatAndDmFieldBloc.currentValue,
       foregroundSoundForMention:
           foregroundSoundForMentionFieldBloc.currentValue,
+      mediaAutoInit: mediaAutoInitFieldBloc.currentValue,
+      mediaAutoPlay: mediaAutoPlayFieldBloc.currentValue,
     );
     if (newPreferences != oldPreferences) {
       localPreferencesBloc.setValue(newPreferences);

@@ -8,26 +8,41 @@ import 'package:provider/provider.dart';
 
 class AudioMediaPlayerBloc extends MediaPlayerBloc
     implements IAudioMediaPlayerBloc {
-  AudioMediaPlayerBloc({@required MediaPlayerSource mediaPlayerSource})
-      : super(
+  AudioMediaPlayerBloc({
+    @required MediaPlayerSource mediaPlayerSource,
+    @required bool autoInit,
+    @required bool autoPlay,
+  }) : super(
           mediaPlayerSource: mediaPlayerSource,
+          autoInit: autoInit,
+          autoPlay: autoPlay,
         );
 
   static AudioMediaPlayerBloc createFromContext(
     BuildContext context, {
     @required MediaPlayerSource mediaPlayerSource,
+    @required bool autoInit,
+    @required bool autoPlay,
   }) =>
-      AudioMediaPlayerBloc(mediaPlayerSource: mediaPlayerSource);
+      AudioMediaPlayerBloc(
+        mediaPlayerSource: mediaPlayerSource,
+        autoInit: autoInit,
+        autoPlay: autoPlay,
+      );
 
   static Widget provideToContext(
     BuildContext context, {
     @required MediaPlayerSource mediaPlayerSource,
     @required Widget child,
+    @required bool autoInit,
+    @required bool autoPlay,
   }) {
     return DisposableProvider<IAudioMediaPlayerBloc>(
       create: (context) => AudioMediaPlayerBloc.createFromContext(
         context,
         mediaPlayerSource: mediaPlayerSource,
+        autoInit: autoInit,
+        autoPlay: autoPlay,
       ),
       child: ProxyProvider<IAudioMediaPlayerBloc, IMediaPlayerBloc>(
         update: (context, value, previous) => value,

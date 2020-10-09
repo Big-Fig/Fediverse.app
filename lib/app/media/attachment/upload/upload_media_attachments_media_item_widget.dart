@@ -237,6 +237,8 @@ class _UploadMediaAttachmentMediaItemWidgetState
               desiredAspectRatio:
                   VideoMediaPlayerBloc.calculateDefaultAspectRatio(context),
               child: FediVideoPlayerWidget(),
+              autoInit: true,
+              autoPlay: false,
             );
             break;
           case MediaDeviceFileType.other:

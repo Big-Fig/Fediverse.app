@@ -37,6 +37,8 @@ class VideoMediaPlayerBloc extends MediaPlayerBloc
     @required MediaPlayerSource mediaPlayerSource,
     @required this.desiredAspectRatio,
     @required this.isFullScreenSupportEnabled,
+    @required bool autoInit,
+    @required bool autoPlay,
     this.systemOverlaysAfterFullScreen = SystemUiOverlay.values,
     this.isNeedEnableWakelockOnFullScreen = true,
     this.deviceOrientationsAfterFullScreen = const [
@@ -47,6 +49,8 @@ class VideoMediaPlayerBloc extends MediaPlayerBloc
     ],
   }) : super(
           mediaPlayerSource: mediaPlayerSource,
+          autoInit: autoInit,
+          autoPlay: autoPlay,
         ) {
     addDisposable(subject: isFullscreenSubject);
     addDisposable(subject: lastIterationDateTimeSubject);
@@ -57,11 +61,15 @@ class VideoMediaPlayerBloc extends MediaPlayerBloc
     @required MediaPlayerSource mediaPlayerSource,
     @required double desiredAspectRatio,
     bool isFullScreenSupportEnabled = true,
+    @required bool autoInit,
+    @required bool autoPlay,
   }) {
     return VideoMediaPlayerBloc(
       mediaPlayerSource: mediaPlayerSource,
       desiredAspectRatio: desiredAspectRatio,
       isFullScreenSupportEnabled: isFullScreenSupportEnabled,
+      autoInit: autoInit,
+      autoPlay: autoPlay,
     );
   }
 
@@ -71,6 +79,8 @@ class VideoMediaPlayerBloc extends MediaPlayerBloc
     @required Widget child,
     @required double desiredAspectRatio,
     bool isFullScreenSupportEnabled = true,
+    @required bool autoInit,
+    @required bool autoPlay,
   }) {
     return DisposableProvider<IVideoMediaPlayerBloc>(
       create: (context) => VideoMediaPlayerBloc.createFromContext(
@@ -78,6 +88,8 @@ class VideoMediaPlayerBloc extends MediaPlayerBloc
         mediaPlayerSource: mediaPlayerSource,
         desiredAspectRatio: desiredAspectRatio,
         isFullScreenSupportEnabled: isFullScreenSupportEnabled,
+        autoInit: autoInit,
+        autoPlay: autoPlay,
       ),
       child: ProxyProvider<IVideoMediaPlayerBloc, IMediaPlayerBloc>(
         update: (context, value, previous) => value,

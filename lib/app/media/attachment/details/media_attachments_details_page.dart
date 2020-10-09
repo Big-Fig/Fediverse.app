@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fedi/app/account/my/settings/my_account_settings_local_preference_bloc.dart';
 import 'package:fedi/app/async/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/chat/share/chat_share_media_page.dart';
 import 'package:fedi/app/conversation/share/conversation_share_media_page.dart';
@@ -165,7 +166,8 @@ class _MediaAttachmentDetailsPageState
     );
   }
 
-  Widget buildMediaAttachmentBody(BuildContext context, IPleromaMediaAttachment mediaAttachment) {
+  Widget buildMediaAttachmentBody(
+      BuildContext context, IPleromaMediaAttachment mediaAttachment) {
     switch (mediaAttachment.typeMastodon) {
       case MastodonMediaAttachmentType.image:
       case MastodonMediaAttachmentType.gifv:
@@ -185,7 +187,11 @@ class _MediaAttachmentDetailsPageState
         );
         break;
       case MastodonMediaAttachmentType.video:
+        var settingsLocalPreferenceBloc =
+            IMyAccountSettingsLocalPreferenceBloc.of(context, listen: false);
         return VideoMediaPlayerBloc.provideToContext(context,
+            autoInit: settingsLocalPreferenceBloc.value?.mediaAutoInit == true,
+            autoPlay: settingsLocalPreferenceBloc.value?.mediaAutoPlay == true,
             mediaPlayerSource:
                 MediaPlayerSource.network(networkUrl: mediaAttachment.url),
             child: FediVideoPlayerWidget(),
@@ -194,7 +200,11 @@ class _MediaAttachmentDetailsPageState
 
         break;
       case MastodonMediaAttachmentType.audio:
+        var settingsLocalPreferenceBloc =
+            IMyAccountSettingsLocalPreferenceBloc.of(context, listen: false);
         return AudioMediaPlayerBloc.provideToContext(context,
+            autoInit: settingsLocalPreferenceBloc.value?.mediaAutoInit == true,
+            autoPlay: settingsLocalPreferenceBloc.value?.mediaAutoPlay == true,
             mediaPlayerSource:
                 MediaPlayerSource.network(networkUrl: mediaAttachment.url),
             child: FediAudioPlayerWidget());

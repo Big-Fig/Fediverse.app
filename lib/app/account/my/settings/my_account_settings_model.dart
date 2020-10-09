@@ -38,6 +38,13 @@ class MyAccountSettings implements IPreferencesObject {
   @JsonKey(name: "foreground_sound_mention")
   final bool foregroundSoundForMention;
 
+  @HiveField(8)
+  @JsonKey(name: "media_auto_init")
+  final bool mediaAutoInit;
+  @HiveField(9)
+  @JsonKey(name: "media_auto_play")
+  final bool mediaAutoPlay;
+
   MyAccountSettings({
     this.isRealtimeWebSocketsEnabled,
     this.isNewChatsEnabled,
@@ -47,6 +54,8 @@ class MyAccountSettings implements IPreferencesObject {
     this.markMediaNsfwByDefault,
     this.foregroundSoundForChatAndDm,
     this.foregroundSoundForMention,
+    this.mediaAutoInit,
+    this.mediaAutoPlay,
   });
 
   MyAccountSettings copyWith({
@@ -58,6 +67,8 @@ class MyAccountSettings implements IPreferencesObject {
     bool markMediaNsfwByDefault,
     bool foregroundSoundForChatAndDm,
     bool foregroundSoundForMention,
+    bool mediaAutoInit,
+    bool mediaAutoPlay,
   }) =>
       MyAccountSettings(
         isRealtimeWebSocketsEnabled:
@@ -72,6 +83,8 @@ class MyAccountSettings implements IPreferencesObject {
             foregroundSoundForChatAndDm ?? this.foregroundSoundForChatAndDm,
         foregroundSoundForMention:
             foregroundSoundForMention ?? this.foregroundSoundForMention,
+        mediaAutoInit: mediaAutoInit ?? this.mediaAutoInit,
+        mediaAutoPlay: mediaAutoPlay ?? this.mediaAutoPlay,
       );
 
   factory MyAccountSettings.fromJson(Map<String, dynamic> json) =>
@@ -99,6 +112,8 @@ class MyAccountSettings implements IPreferencesObject {
         ' defaultVisibility: $defaultVisibility,'
         ' markMediaNsfwByDefault: $markMediaNsfwByDefault,'
         ' foregroundSoundForChatAndDm: $foregroundSoundForChatAndDm,'
+        ' mediaAutoPlay: $mediaAutoPlay,'
+        ' mediaAutoInit: $mediaAutoInit,'
         ' foregroundSoundForMention: $foregroundSoundForMention}';
   }
 
@@ -114,7 +129,9 @@ class MyAccountSettings implements IPreferencesObject {
           defaultVisibility == other.defaultVisibility &&
           markMediaNsfwByDefault == other.markMediaNsfwByDefault &&
           foregroundSoundForChatAndDm == other.foregroundSoundForChatAndDm &&
-          foregroundSoundForMention == other.foregroundSoundForMention;
+          foregroundSoundForMention == other.foregroundSoundForMention &&
+          mediaAutoInit == other.mediaAutoInit &&
+          mediaAutoPlay == other.mediaAutoPlay;
 
   @override
   int get hashCode =>
@@ -125,5 +142,7 @@ class MyAccountSettings implements IPreferencesObject {
       defaultVisibility.hashCode ^
       markMediaNsfwByDefault.hashCode ^
       foregroundSoundForChatAndDm.hashCode ^
-      foregroundSoundForMention.hashCode;
+      foregroundSoundForMention.hashCode ^
+      mediaAutoInit.hashCode ^
+      mediaAutoPlay.hashCode;
 }
