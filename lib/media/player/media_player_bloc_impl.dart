@@ -15,6 +15,9 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
 
   final MediaPlayerSource mediaPlayerSource;
 
+  final bool autoInit;
+  final bool autoPlay;
+
   final BehaviorSubject<VideoPlayerValue> videoPlayerValueSubject =
       BehaviorSubject();
 
@@ -49,10 +52,15 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
 
   MediaPlayerBloc({
     @required this.mediaPlayerSource,
+    @required this.autoInit,
+    @required this.autoPlay,
   }) {
     addDisposable(subject: playerStateSubject);
     addDisposable(subject: videoPlayerValueSubject);
     addDisposable(subject: isBufferingSubject);
+    if (autoInit == true) {
+      performAsyncInit();
+    }
   }
 
   @override
@@ -166,6 +174,10 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
       this.videoPlayerController = videoPlayerController;
 
       playerStateSubject.add(MediaPlayerState.initialized);
+
+      if (autoPlay == true) {
+        await play();
+      }
     } catch (error, stackTrace) {
       this.error = error;
       this.stackTrace = stackTrace;

@@ -25,4 +25,8 @@ abstract class IMyAccountSettingsBloc extends Disposable {
   FormBoolFieldBloc get foregroundSoundForChatAndDmFieldBloc;
 
   FormBoolFieldBloc get foregroundSoundForMentionFieldBloc;
+
+  FormBoolFieldBloc get mediaAutoInitFieldBloc;
+
+  FormBoolFieldBloc get mediaAutoPlayFieldBloc;
 }

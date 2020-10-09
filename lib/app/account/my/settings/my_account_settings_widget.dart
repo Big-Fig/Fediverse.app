@@ -49,7 +49,19 @@ class MyAccountSettingsWidget extends StatelessWidget {
               tr("app.account.my.settings.field.media_nsfw_by_default.label"),
           desc: null,
           field: myAccountSettingsBloc.markMediaNsfwByDefaultFieldBloc,
-        )
+        ),
+        FormBoolFieldFormRowWidget(
+          label:
+              tr("app.account.my.settings.field.media_auto_init.label"),
+          desc: null,
+          field: myAccountSettingsBloc.mediaAutoInitFieldBloc,
+        ),
+        FormBoolFieldFormRowWidget(
+          label:
+              tr("app.account.my.settings.field.media_auto_play.label"),
+          desc: null,
+          field: myAccountSettingsBloc.mediaAutoPlayFieldBloc,
+        ),
       ],
     );
   }

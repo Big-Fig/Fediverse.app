@@ -198,6 +198,12 @@ class CodegenLoader extends AssetLoader{
             },
             "media_nsfw_by_default": {
               "label": "Mark media NSFW by default"
+            },
+            "media_auto_init": {
+              "label": "Media auto-init"
+            },
+            "media_auto_play": {
+              "label": "Media auto-play"
             }
           },
           "action": {

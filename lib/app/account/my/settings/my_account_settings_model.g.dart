@@ -22,13 +22,15 @@ class MyAccountSettingsAdapter extends TypeAdapter<MyAccountSettings> {
       markMediaNsfwByDefault: fields[5] as bool,
       foregroundSoundForChatAndDm: fields[6] as bool,
       foregroundSoundForMention: fields[7] as bool,
+      mediaAutoInit: fields[8] as bool,
+      mediaAutoPlay: fields[9] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, MyAccountSettings obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.isRealtimeWebSocketsEnabled)
       ..writeByte(1)
@@ -44,7 +46,11 @@ class MyAccountSettingsAdapter extends TypeAdapter<MyAccountSettings> {
       ..writeByte(6)
       ..write(obj.foregroundSoundForChatAndDm)
       ..writeByte(7)
-      ..write(obj.foregroundSoundForMention);
+      ..write(obj.foregroundSoundForMention)
+      ..writeByte(8)
+      ..write(obj.mediaAutoInit)
+      ..writeByte(9)
+      ..write(obj.mediaAutoPlay);
   }
 }
 
@@ -64,6 +70,8 @@ MyAccountSettings _$MyAccountSettingsFromJson(Map<String, dynamic> json) {
     foregroundSoundForChatAndDm:
         json['foreground_sound_for_chat_and_dm'] as bool,
     foregroundSoundForMention: json['foreground_sound_mention'] as bool,
+    mediaAutoInit: json['media_auto_init'] as bool,
+    mediaAutoPlay: json['media_auto_play'] as bool,
   );
 }
 
@@ -77,4 +85,6 @@ Map<String, dynamic> _$MyAccountSettingsToJson(MyAccountSettings instance) =>
       'mark_media_nsfw_by_default': instance.markMediaNsfwByDefault,
       'foreground_sound_for_chat_and_dm': instance.foregroundSoundForChatAndDm,
       'foreground_sound_mention': instance.foregroundSoundForMention,
+      'media_auto_init': instance.mediaAutoInit,
+      'media_auto_play': instance.mediaAutoPlay,
     };
