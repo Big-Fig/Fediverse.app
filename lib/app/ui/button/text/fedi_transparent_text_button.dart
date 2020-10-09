@@ -20,6 +20,8 @@ class FediTransparentTextButton extends StatelessWidget {
 
   final Color color;
 
+  final bool expanded;
+
   static const TextStyle defaultTextStyle =
       FediTextStyles.mediumShortBoldMediumGrey;
 
@@ -31,13 +33,14 @@ class FediTransparentTextButton extends StatelessWidget {
     this.textStyle = defaultTextStyle,
     this.borderWidth = 1,
     @required this.color,
+    this.expanded = true,
   });
 
   @override
   Widget build(BuildContext context) {
     var calculatedHeight = height + borderWidth * 2;
     var borderRadius = BorderRadius.all(Radius.circular(calculatedHeight / 2));
-    return InkWell(
+    var button = InkWell(
       onTap: onPressed,
       child: Container(
           width: width,
@@ -60,5 +63,13 @@ class FediTransparentTextButton extends StatelessWidget {
             ),
           )),
     );
+    if (expanded) {
+      return button;
+    } else {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [button],
+      );
+    }
   }
 }

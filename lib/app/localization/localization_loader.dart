@@ -767,6 +767,15 @@ class CodegenLoader extends AssetLoader{
       }
     },
     "media": {
+      "player": {
+        "error": {
+          "desc": "Something wrong",
+          "action": {
+            "reload": "Reload",
+            "more_details": "More details"
+          }
+        }
+      },
       "attachment": {
         "type": {
           "gallery": "Gallery",

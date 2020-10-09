@@ -73,14 +73,18 @@ class FediNestedScrollViewBloc extends DisposableOwner
     var pixels = scrollController.position.pixels;
     var maxScrollExtent = scrollController.position.maxScrollExtent;
 
-    scrollOffsetSubject.add(pixels.toInt());
+    if (!scrollOffsetSubject.isClosed) {
+      scrollOffsetSubject.add(pixels.toInt());
+    }
 
     // -1 is hack, because scroll extent sometimes invalid
     // it should be equal to maxScrollExtent when nested scroll body start
     // scrolls but actually it is a little smaller (0.00001 difference)
     maxScrollExtent = maxScrollExtent - 1;
     var isAtLeastStartExpand = pixels <= maxScrollExtent;
-    isNestedScrollViewBodyStartedScrollSubject.add(isAtLeastStartExpand);
+    if(!isNestedScrollViewBodyStartedScrollSubject.isClosed) {
+      isNestedScrollViewBodyStartedScrollSubject.add(isAtLeastStartExpand);
+    }
   }
 
   @override

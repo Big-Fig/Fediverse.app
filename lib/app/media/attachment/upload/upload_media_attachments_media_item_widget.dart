@@ -8,14 +8,16 @@ import 'package:fedi/app/media/attachment/upload/upload_media_attachment_failed_
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_remove_dialog.dart';
 import 'package:fedi/app/media/attachment/upload/uploaded_upload_media_attachment_bloc_impl.dart';
-import 'package:fedi/app/media/player/media_video_player_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_remove_icon_in_circle_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/media/player/video/fedi_video_player_widget.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
+import 'package:fedi/media/player/media_player_model.dart';
+import 'package:fedi/media/player/video/video_media_player_bloc_impl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -229,8 +231,12 @@ class _UploadMediaAttachmentMediaItemWidgetState
             );
             break;
           case MediaDeviceFileType.video:
-            preview = MediaVideoPlayerWidget.localFile(
-              localFile: file,
+            preview = VideoMediaPlayerBloc.provideToContext(
+              context,
+              mediaPlayerSource: MediaPlayerSource.file(file: file),
+              desiredAspectRatio:
+                  VideoMediaPlayerBloc.calculateDefaultAspectRatio(context),
+              child: FediVideoPlayerWidget(),
             );
             break;
           case MediaDeviceFileType.other:
