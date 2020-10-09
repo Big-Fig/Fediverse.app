@@ -5,7 +5,6 @@ import 'package:fedi/app/chat/share/chat_share_media_page.dart';
 import 'package:fedi/app/conversation/share/conversation_share_media_page.dart';
 import 'package:fedi/app/media/attachment/add_to_gallery/media_attachment_add_to_gallery_exception.dart';
 import 'package:fedi/app/media/attachment/add_to_gallery/media_attachment_add_to_gallery_helper.dart';
-import 'package:fedi/app/media/player/media_video_player_widget.dart';
 import 'package:fedi/app/share/external/external_share_media_page.dart';
 import 'package:fedi/app/share/share_chooser_dialog.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
@@ -13,10 +12,15 @@ import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/indicator/fedi_indicator_widget.dart';
+import 'package:fedi/app/ui/media/player/audio/fedi_audio_player_widget.dart';
+import 'package:fedi/app/ui/media/player/video/fedi_video_player_widget.dart';
 import 'package:fedi/app/ui/page/fedi_sub_page_title_app_bar.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/error/error_data_model.dart';
 import 'package:fedi/mastodon/media/attachment/mastodon_media_attachment_model.dart';
+import 'package:fedi/media/player/audio/audio_media_player_bloc_impl.dart';
+import 'package:fedi/media/player/media_player_model.dart';
+import 'package:fedi/media/player/video/video_media_player_bloc_impl.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
@@ -25,6 +29,7 @@ import 'package:rxdart/rxdart.dart';
 class MediaAttachmentDetailsPage extends StatefulWidget {
   final List<IPleromaMediaAttachment> mediaAttachments;
   final IPleromaMediaAttachment initialMediaAttachment;
+
   int get initialIndex => mediaAttachments.indexOf(initialMediaAttachment);
 
   MediaAttachmentDetailsPage.multi({
@@ -51,6 +56,7 @@ class _MediaAttachmentDetailsPageState
   final PageController _controller;
 
   BehaviorSubject<IPleromaMediaAttachment> selectedMediaAttachmentSubject;
+
   Stream<IPleromaMediaAttachment> get selectedMediaAttachmentStream =>
       selectedMediaAttachmentSubject.stream;
 
@@ -159,7 +165,7 @@ class _MediaAttachmentDetailsPageState
     );
   }
 
-  Widget buildMediaAttachmentBody(IPleromaMediaAttachment mediaAttachment) {
+  Widget buildMediaAttachmentBody(BuildContext context, IPleromaMediaAttachment mediaAttachment) {
     switch (mediaAttachment.typeMastodon) {
       case MastodonMediaAttachmentType.image:
       case MastodonMediaAttachmentType.gifv:
@@ -179,11 +185,19 @@ class _MediaAttachmentDetailsPageState
         );
         break;
       case MastodonMediaAttachmentType.video:
-        return MediaVideoPlayerWidget.network(networkUrl: mediaAttachment.url);
+        return VideoMediaPlayerBloc.provideToContext(context,
+            mediaPlayerSource:
+                MediaPlayerSource.network(networkUrl: mediaAttachment.url),
+            child: FediVideoPlayerWidget(),
+            desiredAspectRatio:
+                VideoMediaPlayerBloc.calculateDefaultAspectRatio(context));
+
         break;
       case MastodonMediaAttachmentType.audio:
-        // TODO: use special UI for audio
-        return MediaVideoPlayerWidget.network(networkUrl: mediaAttachment.url);
+        return AudioMediaPlayerBloc.provideToContext(context,
+            mediaPlayerSource:
+                MediaPlayerSource.network(networkUrl: mediaAttachment.url),
+            child: FediAudioPlayerWidget());
         break;
       case MastodonMediaAttachmentType.unknown:
       default:
@@ -196,7 +210,7 @@ class _MediaAttachmentDetailsPageState
 
   Widget buildBody(BuildContext context) {
     if (widget.mediaAttachments.length == 1) {
-      return buildMediaAttachmentBody(mediaAttachment);
+      return buildMediaAttachmentBody(context, mediaAttachment);
     } else {
       return Stack(
         children: <Widget>[
@@ -204,7 +218,7 @@ class _MediaAttachmentDetailsPageState
             controller: _controller,
             children: widget.mediaAttachments
                 .map((mediaAttachment) =>
-                    buildMediaAttachmentBody(mediaAttachment))
+                    buildMediaAttachmentBody(context, mediaAttachment))
                 .toList(),
           ),
           Positioned(

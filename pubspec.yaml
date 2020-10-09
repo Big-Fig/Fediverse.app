@@ -136,14 +136,8 @@ dependencies:
   # media attachments carousel
   carousel_slider: ^2.2.1
 
-  # media video player
-  chewie: ^0.9.10
-
-  # media audio player
-  chewie_audio: ^1.0.0+1
-
   # video/audio players
-  video_player: ^0.10.12+3
+  video_player: '>=0.10.11+2 <2.0.0'
 
   # pull to refresh and pull to load more
   pull_to_refresh: ^1.6.1
@@ -171,6 +165,9 @@ dependencies:
 
   # list view item slide actions
   flutter_slidable: ^0.5.7
+
+  # disable wakelock for video player
+  wakelock: ^0.1.4+2
 
 dependency_overrides:
   path: ^1.7.0
