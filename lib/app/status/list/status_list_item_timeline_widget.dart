@@ -266,7 +266,7 @@ class StatusListItemTimelineWidget extends StatelessWidget {
       );
     } else {
       return Padding(
-        padding: EdgeInsets.symmetric(vertical: FediSizes.smallPadding),
+        padding: EdgeInsets.only(top: FediSizes.smallPadding),
         child: StatusBodyWidget(
           collapsible: collapsible,
           initialMediaAttachment: initialMediaAttachment,

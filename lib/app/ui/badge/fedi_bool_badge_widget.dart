@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 
-abstract class FediUnreadBadgeWidget extends StatelessWidget {
+abstract class FediBoolBadgeWidget extends StatelessWidget {
   final Widget child;
   final double offset;
 
@@ -11,17 +11,17 @@ abstract class FediUnreadBadgeWidget extends StatelessWidget {
   static const unreadBadgeDefaultOffset = 2.0;
 
 
-  const FediUnreadBadgeWidget({
+  const FediBoolBadgeWidget({
     @required this.child,
     this.offset = unreadBadgeDefaultOffset,
   });
 
-  Stream<bool> retrieveUnreadBadgeCountStream(BuildContext context);
+  Stream<bool> retrieveBoolStream(BuildContext context);
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<bool>(
-        stream: retrieveUnreadBadgeCountStream(context).distinct(),
+        stream: retrieveBoolStream(context).distinct(),
         builder: (context, snapshot) {
           var unread = snapshot.data;
 

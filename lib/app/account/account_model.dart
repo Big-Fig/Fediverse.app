@@ -7,7 +7,7 @@ import 'package:flutter/widgets.dart';
 
 typedef AccountCallback = Function(BuildContext context, IAccount account);
 typedef AccountsListCallback = Function(
-    BuildContext context, List<IAccount> account);
+    BuildContext context, List<IAccount> accounts);
 
 abstract class IAccount {
   static List<IAccount> excludeAccountFromList(

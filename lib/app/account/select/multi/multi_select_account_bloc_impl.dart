@@ -46,13 +46,32 @@ class MultiSelectAccountBloc extends DisposableOwner
   Stream<List<IAccount>> get selectedAccountsStream =>
       selectedAccountsSubject.stream;
 
-  static MultiSelectAccountBloc createFromContext(BuildContext context) =>
-      MultiSelectAccountBloc();
+  static MultiSelectAccountBloc createFromContext(
+    BuildContext context, {
+    AccountsListCallback accountsListSelectedCallback,
+  }) {
+    var multiSelectAccountBloc = MultiSelectAccountBloc();
 
-  static Widget provideToContext(BuildContext context,
-      {@required Widget child}) {
+    if (accountsListSelectedCallback != null) {
+      multiSelectAccountBloc.addDisposable(streamSubscription:
+          multiSelectAccountBloc.selectedAccountsStream
+              .listen((selectedAccounts) {
+        accountsListSelectedCallback(context, selectedAccounts);
+      }));
+    }
+    return multiSelectAccountBloc;
+  }
+
+  static Widget provideToContext(
+    BuildContext context, {
+    @required Widget child,
+    AccountsListCallback accountsListSelectedCallback,
+  }) {
     return DisposableProvider<IMultiSelectAccountBloc>(
-      create: (context) => MultiSelectAccountBloc.createFromContext(context),
+      create: (context) => MultiSelectAccountBloc.createFromContext(
+        context,
+        accountsListSelectedCallback: accountsListSelectedCallback,
+      ),
       child: child,
     );
   }

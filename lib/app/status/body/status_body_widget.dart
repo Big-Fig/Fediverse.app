@@ -12,6 +12,7 @@ import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
 import 'package:fedi/app/ui/chip/fedi_grey_chip.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
 import 'package:fedi/pleroma/card/pleroma_card_model.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -110,6 +111,10 @@ class StatusBodyWidget extends StatelessWidget {
               value: statusBloc.pollBloc,
               child: PollWidget(),
             ),
+          if (statusBloc.mediaAttachments?.isNotEmpty == true &&
+              (statusBloc.content?.isNotEmpty == true ||
+                  statusBloc.poll != null))
+            FediSmallVerticalSpacer(),
           StreamBuilder<List<IPleromaMediaAttachment>>(
               stream: statusBloc.mediaAttachmentsStream,
               initialData: statusBloc.mediaAttachments,
@@ -117,12 +122,9 @@ class StatusBodyWidget extends StatelessWidget {
                 var mediaAttachments = snapshot.data;
 
                 if (mediaAttachments?.isNotEmpty == true) {
-                  return Padding(
-                    padding: FediPadding.verticalSmallPadding,
-                    child: MediaAttachmentsWidget(
-                      mediaAttachments: snapshot.data,
-                      initialMediaAttachment: initialMediaAttachment,
-                    ),
+                  return MediaAttachmentsWidget(
+                    mediaAttachments: snapshot.data,
+                    initialMediaAttachment: initialMediaAttachment,
                   );
                 } else {
                   return SizedBox.shrink();

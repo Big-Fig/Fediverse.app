@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/share/external/external_share_as_link_field_widget.dart';
 import 'package:fedi/app/share/external/external_share_status_bloc_impl.dart';
+import 'package:fedi/app/share/share_icon_button_widget.dart';
 import 'package:fedi/app/share/status/share_status_with_message_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_bloc_impl.dart';
@@ -21,10 +22,13 @@ class ExternalShareStatusPage extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         appBar: FediSubPageTitleAppBar(
           title: "app.share.external.title".tr(),
+          actions: [
+            ShareIconButtonWidget(),
+          ],
         ),
         body: ShareStatusWithMessageWidget(
           status: status,
-          header: Padding(
+          footer: Padding(
             padding: FediPadding.horizontalSmallPadding,
             child: ExternalShareAsLinkFieldWidget(),
           ),
