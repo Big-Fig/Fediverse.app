@@ -6,7 +6,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'post_status_poll_model.g.dart';
 
 abstract class IPostStatusPoll {
-  DateTime get expiresAt;
+  Duration get durationLength;
 
   bool get hideTotals;
 
@@ -18,8 +18,8 @@ abstract class IPostStatusPoll {
 @JsonSerializable()
 class PostStatusPoll implements IPostStatusPoll {
   @override
-  @JsonKey(name: "expires_at")
-  final DateTime expiresAt;
+  @JsonKey(name: "duration_length")
+  final Duration durationLength;
 
   @override
   @JsonKey(name: "hide_totals")
@@ -30,17 +30,17 @@ class PostStatusPoll implements IPostStatusPoll {
 
   @override
   List<String> options;
+
   PostStatusPoll({
-    @required this.expiresAt,
+    @required this.durationLength,
     @required this.hideTotals,
     @required this.multiple,
     @required this.options,
   });
 
-
   @override
   String toString() {
-    return 'PostStatusPoll{expiresAt: $expiresAt,'
+    return 'PostStatusPoll{durationLength: $durationLength,'
         ' hideTotals: $hideTotals, multiple: $multiple,'
         ' options: $options}';
   }
@@ -50,17 +50,17 @@ class PostStatusPoll implements IPostStatusPoll {
       identical(this, other) ||
       other is PostStatusPoll &&
           runtimeType == other.runtimeType &&
-          expiresAt == other.expiresAt &&
+          durationLength == other.durationLength &&
           hideTotals == other.hideTotals &&
           multiple == other.multiple &&
           options == other.options;
+
   @override
   int get hashCode =>
-      expiresAt.hashCode ^
+      durationLength.hashCode ^
       hideTotals.hashCode ^
       multiple.hashCode ^
       options.hashCode;
-
 
   factory PostStatusPoll.fromJson(Map<String, dynamic> json) =>
       _$PostStatusPollFromJson(json);

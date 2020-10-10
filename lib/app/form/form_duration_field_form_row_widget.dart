@@ -5,36 +5,30 @@ import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_text_styles.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
-import 'package:fedi/ui/form/field/value/date_time/form_date_time_field_bloc.dart';
+import 'package:fedi/ui/form/field/value/duration/form_duration_field_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
-var _logger = Logger("form_date_time_field_form_row_widget.dart");
+var _logger = Logger("form_duration_field_form_row_widget.dart");
 
-class FormDateTimeFieldFormRowWidget extends StatelessWidget {
+class FormDurationFieldFormRowWidget extends StatelessWidget {
   final String label;
   final String desc;
-  final IFormDateTimeFieldBloc field;
-  final DateFormat dateFormat;
+  final IFormDurationFieldBloc field;
 
   final String popupTitle;
 
-  static final DateFormat defaultDateFormat =
-      DateFormat('MMMM dd, yyyy, HH:mm');
-
-  FormDateTimeFieldFormRowWidget({
+  FormDurationFieldFormRowWidget({
     @required this.label,
     @required this.popupTitle,
     this.desc,
-    this.dateFormat,
     @required this.field,
   });
 
   @override
   Widget build(BuildContext context) {
-    var format = dateFormat ?? defaultDateFormat;
-    return StreamBuilder<DateTime>(
+    return StreamBuilder<Duration>(
         stream: field.currentValueStream.distinct(),
         initialData: field.currentValue,
         builder: (context, snapshot) {
@@ -59,8 +53,8 @@ class FormDateTimeFieldFormRowWidget extends StatelessWidget {
                           showDatePicker(context);
                         },
                         child: Text(
-                          format.format(field.currentValue),
-                          style: FediTextStyles.bigTallMediumGrey,
+                          formatDuration(field.currentValue),
+                          style: FediTextStyles.bigTallBoldMediumGrey,
                         ),
                       ),
                       const FediSmallHorizontalSpacer(),
@@ -82,21 +76,52 @@ class FormDateTimeFieldFormRowWidget extends StatelessWidget {
   }
 
   Future showDatePicker(BuildContext context) async {
-    var minDateTime = field.minDateTime;
-    var maxDateTime = field.maxDateTime;
+    var minDuration = field.minDuration;
+    var maxDuration = field.maxDuration;
+
+    var now = DateTime.now();
     var dateTime = await FediDatePicker.showDateTimePicker(
       context,
       showTitleActions: true,
-      minDateTime: minDateTime,
-      maxDateTime: maxDateTime,
-      currentDateTime: field.currentValue,
+      minDateTime: minDuration != null ? now.add(minDuration) : null,
+      maxDateTime: maxDuration != null ? now.add(maxDuration) : null,
+      currentDateTime: now.add(field.currentValue ?? now),
       theme: FediDatePickerTheme.byDefault(customTitle: popupTitle),
       onCancel: () {},
       onConfirm: (date) {},
     );
 
     if (dateTime != null) {
-      field.changeCurrentValue(dateTime);
+      var diffDuration = dateTime.difference(now).abs();
+
+      if ((maxDuration == null || diffDuration < maxDuration) &&
+          (minDuration == null || diffDuration > minDuration)) {
+        field.changeCurrentValue(diffDuration);
+      } else {
+        field.changeCurrentValue(minDuration);
+      }
+    }
+  }
+
+  String formatDuration(Duration duration) {
+    var inDays = duration.inDays;
+
+    if (inDays > 0) {
+      return "duration.day".plural(inDays);
+    } else {
+      var inHours = duration.inHours;
+
+      if (inHours > 0) {
+        return "duration.hour".plural(inHours);
+      } else {
+        var inMinutes = duration.inMinutes;
+
+        if (inMinutes == 0) {
+          inMinutes = 1;
+        }
+
+        return "duration.minute".plural(inMinutes);
+      }
     }
   }
 }

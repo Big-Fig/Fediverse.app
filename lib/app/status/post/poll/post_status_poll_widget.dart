@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/form/form_bool_field_form_row_widget.dart';
-import 'package:fedi/app/form/form_date_time_field_form_row_widget.dart';
+import 'package:fedi/app/form/form_duration_field_form_row_widget.dart';
 import 'package:fedi/app/status/post/poll/poll_status_option_form_string_field_form_row_widget.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
@@ -8,7 +8,7 @@ import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc.dart';
-import 'package:fedi/ui/form/field/value/date_time/form_date_time_field_bloc.dart';
+import 'package:fedi/ui/form/field/value/duration/form_duration_field_bloc.dart';
 import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
 import 'package:fedi/ui/form/group/one_type/form_one_type_group_bloc.dart';
 import 'package:flutter/cupertino.dart';
@@ -30,8 +30,7 @@ class PostStatusPollWidget extends StatelessWidget {
             context: context,
             multiplyFieldBloc: postStatusPollBloc.multiplyFieldBloc),
         buildPollLengthField(
-            context: context,
-            expiresAtBloc: postStatusPollBloc.expiresAtFieldBloc),
+            context: context, lengthBloc: postStatusPollBloc.durationLengthFieldBloc),
       ],
     );
   }
@@ -46,9 +45,9 @@ class PostStatusPollWidget extends StatelessWidget {
 
   Widget buildPollLengthField(
           {@required BuildContext context,
-          @required IFormDateTimeFieldBloc expiresAtBloc}) =>
-      FormDateTimeFieldFormRowWidget(
-        field: expiresAtBloc,
+          @required IFormDurationFieldBloc lengthBloc}) =>
+      FormDurationFieldFormRowWidget(
+        field: lengthBloc,
         label: "app.status.post.poll.field.length.label".tr(),
         popupTitle: "app.status.post.poll.field.length.picker.title".tr(),
       );

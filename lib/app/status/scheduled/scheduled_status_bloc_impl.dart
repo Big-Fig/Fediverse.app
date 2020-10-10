@@ -207,32 +207,32 @@ class ScheduledStatusBloc extends DisposableOwner
   Future<bool> postScheduledPost(PostStatusData postStatusData) async {
     await cancelSchedule();
 
-
-
-    var pleromaScheduledStatus =
-        await pleromaStatusService.scheduleStatus(
+    var pleromaScheduledStatus = await pleromaStatusService.scheduleStatus(
         data: PleromaScheduleStatus(
-          mediaIds: postStatusData.mediaAttachments
-              ?.map((mediaAttachment) => mediaAttachment.id)
-              ?.toList(),
-          status: postStatusData.text,
-          sensitive: postStatusData.isNsfwSensitiveEnabled,
-          visibility: postStatusData.visibility,
-          inReplyToId: postStatusData.inReplyToPleromaStatus?.id,
-          inReplyToConversationId: postStatusData.inReplyToConversationId,
-          idempotencyKey: null,
-          scheduledAt: postStatusData.scheduledAt,
-          to: postStatusData.to,
-          poll: postStatusData.poll != null ? PleromaPostStatusPoll(
-            expiresInSeconds: DateTime.now().difference(
-                postStatusData.poll.expiresAt).abs().inSeconds,
-            multiple: postStatusData.poll.multiple,
-            options: postStatusData.poll.options,
-            hideTotals: postStatusData.poll.hideTotals,
-          ) : null,
-          spoilerText: postStatusData.subject,
-        ));
-
+      mediaIds: postStatusData.mediaAttachments
+          ?.map((mediaAttachment) => mediaAttachment.id)
+          ?.toList(),
+      status: postStatusData.text,
+      sensitive: postStatusData.isNsfwSensitiveEnabled,
+      visibility: postStatusData.visibility,
+      inReplyToId: postStatusData.inReplyToPleromaStatus?.id,
+      inReplyToConversationId: postStatusData.inReplyToConversationId,
+      idempotencyKey: null,
+      scheduledAt: postStatusData.scheduledAt,
+      to: postStatusData.to,
+      poll: postStatusData.poll != null
+          ? PleromaPostStatusPoll(
+              expiresInSeconds:
+                  (postStatusData.poll.durationLength.inMicroseconds /
+                          Duration.microsecondsPerSecond)
+                      .floor(),
+              multiple: postStatusData.poll.multiple,
+              options: postStatusData.poll.options,
+              hideTotals: postStatusData.poll.hideTotals,
+            )
+          : null,
+      spoilerText: postStatusData.subject,
+    ));
 
     await scheduledStatusRepository
         .upsertRemoteScheduledStatus(pleromaScheduledStatus);
@@ -258,7 +258,7 @@ class ScheduledStatusBloc extends DisposableOwner
       inReplyToConversationId: null,
       isNsfwSensitiveEnabled: scheduledStatus.params.sensitive,
       // actually to should be extracted fro
-      to:null,
+      to: null,
     );
   }
 }

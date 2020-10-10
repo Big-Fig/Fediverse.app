@@ -1230,6 +1230,23 @@ class CodegenLoader extends AssetLoader{
       "initializing": "Initializing: {}",
       "failed": "Failed to load: {}"
     }
+  },
+  "duration": {
+    "day": {
+      "one": "{} day",
+      "many": "{} days",
+      "other": "{} days"
+    },
+    "hour": {
+      "one": "{} hour",
+      "many": "{} hours",
+      "other": "{} hours"
+    },
+    "minute": {
+      "one": "{} minute",
+      "many": "{} minutes",
+      "other": "{} minutes"
+    }
   }
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"en_US": en_US};
