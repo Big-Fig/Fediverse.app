@@ -80,6 +80,7 @@ class PollWidget extends StatelessWidget {
                                         FediPrimaryFilledTextButton(
                                       "app.poll.vote".tr(),
                                       expanded: false,
+                                      limitMinWidth: true,
                                       onPressed: isSelectedVotesNotEmpty
                                           ? onPressed
                                           : null,

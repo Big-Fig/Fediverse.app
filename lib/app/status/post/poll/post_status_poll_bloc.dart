@@ -14,7 +14,7 @@ abstract class IPostStatusPollBloc implements IFormBloc, Disposable {
 
   static final Duration minimumPollExpiration = Duration(minutes: 10);
   static final Duration defaultPollExpiration = Duration(days: 1);
-  static final int maxPollOptions = 20;
+  static final int defaultMaxPollOptions = 20;
 
   IFormOneTypeGroupBloc<IFormStringFieldBloc> get pollOptionsGroupBloc;
 
@@ -23,4 +23,6 @@ abstract class IPostStatusPollBloc implements IFormBloc, Disposable {
   IFormDateTimeFieldBloc get expiresAtFieldBloc;
 
   void fillFormData(IPostStatusPoll poll);
+
+
 }

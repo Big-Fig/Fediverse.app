@@ -17,6 +17,9 @@ class FediGreyFilledTextButton extends StatelessWidget {
   final double borderWidth;
 
   final TextStyle textStyle;
+
+  final bool limitMinWidth;
+
   static const TextStyle defaultTextStyle = FediTextStyles.mediumShortBoldGrey;
 
   FediGreyFilledTextButton(
@@ -25,6 +28,7 @@ class FediGreyFilledTextButton extends StatelessWidget {
     this.height = FediSizes.textButtonHeight,
     this.textStyle = defaultTextStyle,
     this.borderWidth = 1,
+    this.limitMinWidth = false,
   });
 
   @override
@@ -35,7 +39,7 @@ class FediGreyFilledTextButton extends StatelessWidget {
       onTap: onPressed,
       child: ConstrainedBox(
         constraints: BoxConstraints(
-          minWidth: 120,
+          minWidth: limitMinWidth == true ? 120.0 : 0.0,
         ),
         child: Container(
             height: calculatedHeight,

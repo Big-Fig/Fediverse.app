@@ -47,7 +47,7 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
   final PleromaInstancePollLimits pollLimits;
 
   int get pollMaximumOptionsCount =>
-      pollLimits?.maxOptions ?? IPostStatusPollBloc.maxPollOptions;
+      pollLimits?.maxOptions ?? IPostStatusPollBloc.defaultMaxPollOptions;
 
   int get pollMaximumOptionLength => pollLimits?.maxOptionChars;
 
@@ -102,7 +102,9 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
   ) {
     return FormStringFieldBloc(
         originValue: originValue,
-        validators: [FormNonEmptyStringFieldValidationError.createValidator()],
+        validators: [
+          FormNonEmptyStringFieldValidationError.createValidator(),
+        ],
         maxLength: maximumOptionLength);
   }
 
