@@ -19,6 +19,8 @@ class FediPrimaryFilledTextButton extends StatelessWidget {
   final Color enabledBorderColor;
   final Color disabledBorderColor;
 
+  final bool limitMinWidth;
+
   final TextStyle textStyle;
   static const TextStyle defaultTextStyle = FediTextStyles.mediumShortBoldWhite;
 
@@ -33,6 +35,7 @@ class FediPrimaryFilledTextButton extends StatelessWidget {
     this.textStyle = defaultTextStyle,
     this.borderWidth = 1,
     this.expanded = true,
+    this.limitMinWidth = false,
   });
 
   @override
@@ -44,7 +47,7 @@ class FediPrimaryFilledTextButton extends StatelessWidget {
       onTap: onPressed,
       child: ConstrainedBox(
         constraints: BoxConstraints(
-          minWidth: 120,
+          minWidth: limitMinWidth == true ? 120.0 : 0.0,
         ),
         child: Container(
             height: calculatedHeight,

@@ -976,21 +976,17 @@ class CodegenLoader extends AssetLoader{
         "poll": {
           "field": {
             "option": {
-              "label": "Option {}",
-              "hint": "Option"
+              "hint": "Option {}"
             },
             "multiply": {
-              "label": "Multiply choices"
+              "label": "Multiple selection"
             },
-            "expires_at": {
-              "label": "Expires at",
+            "length": {
+              "label": "Poll length",
               "picker": {
-                "title": "Expires at"
+                "title": "Poll length"
               }
             }
-          },
-          "action": {
-            "add_option": "Add option"
           }
         },
         "schedule": {

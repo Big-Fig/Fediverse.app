@@ -18,11 +18,14 @@ class FormDateTimeFieldFormRowWidget extends StatelessWidget {
   final IFormDateTimeFieldBloc field;
   final DateFormat dateFormat;
 
+  final String popupTitle;
+
   static final DateFormat defaultDateFormat =
       DateFormat('MMMM dd, yyyy, HH:mm');
 
   FormDateTimeFieldFormRowWidget({
     @required this.label,
+    @required this.popupTitle,
     this.desc,
     this.dateFormat,
     @required this.field,
@@ -62,7 +65,7 @@ class FormDateTimeFieldFormRowWidget extends StatelessWidget {
                       ),
                       const FediSmallHorizontalSpacer(),
                       FediIconButton(
-                        icon: Icon(FediIcons.pen),
+                        icon: Icon(FediIcons.chevron_down),
                         color: FediColors.darkGrey,
                         onPressed: () {
                           showDatePicker(context);
@@ -87,9 +90,7 @@ class FormDateTimeFieldFormRowWidget extends StatelessWidget {
       minDateTime: minDateTime,
       maxDateTime: maxDateTime,
       currentTime: field.currentValue,
-      theme: FediDatePickerTheme.byDefault(
-          customTitle:
-              "app.status.post.poll.field.expires_at.picker.title".tr()),
+      theme: FediDatePickerTheme.byDefault(customTitle: popupTitle),
       onCancel: () {},
       onConfirm: (date) {},
     );

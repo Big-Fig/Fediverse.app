@@ -35,7 +35,7 @@ class FediFormEditTextRow extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            FediFormColumnLabel(label),
+            if (label != null) FediFormColumnLabel(label),
             FediTransparentEditTextField(
               enabled: enabled,
               focusNode: focusNode,

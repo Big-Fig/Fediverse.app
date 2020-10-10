@@ -22,6 +22,8 @@ class FediTransparentTextButton extends StatelessWidget {
 
   final bool expanded;
 
+  final bool limitMinWidth;
+
   static const TextStyle defaultTextStyle =
       FediTextStyles.mediumShortBoldMediumGrey;
 
@@ -34,6 +36,7 @@ class FediTransparentTextButton extends StatelessWidget {
     this.borderWidth = 1,
     @required this.color,
     this.expanded = true,
+    this.limitMinWidth = false,
   });
 
   @override
@@ -44,7 +47,7 @@ class FediTransparentTextButton extends StatelessWidget {
       onTap: onPressed,
       child: ConstrainedBox(
         constraints: BoxConstraints(
-          minWidth: 120,
+          minWidth: limitMinWidth == true ? 120.0 : 0.0,
         ),
         child: Container(
             width: width,

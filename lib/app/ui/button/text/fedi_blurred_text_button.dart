@@ -14,6 +14,8 @@ class FediBlurredTextButton extends StatelessWidget {
   final double height;
   final double borderWidth;
 
+  final bool limitMinWidth;
+
   final TextStyle textStyle;
   static const TextStyle defaultTextStyle = FediTextStyles.mediumShortBoldWhite;
 
@@ -23,6 +25,7 @@ class FediBlurredTextButton extends StatelessWidget {
     this.height = FediSizes.textButtonHeight,
     this.textStyle = defaultTextStyle,
     this.borderWidth = 1,
+    this.limitMinWidth = false,
   });
 
   @override
@@ -33,7 +36,7 @@ class FediBlurredTextButton extends StatelessWidget {
       onTap: onPressed,
       child: ConstrainedBox(
         constraints: BoxConstraints(
-          minWidth: 120,
+          minWidth: limitMinWidth == true ? 120.0 : 0.0,
         ),
         child: ClipRRect(
           borderRadius: borderRadius,
