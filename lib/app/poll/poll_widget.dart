@@ -1,15 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/async/async_operation_button_builder_widget.dart';
+import 'package:fedi/app/async/async_operation_helper.dart';
 import 'package:fedi/app/poll/poll_bloc.dart';
 import 'package:fedi/app/ui/button/text/fedi_primary_filled_text_button.dart';
-import 'package:fedi/app/ui/fedi_border_radius.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/fedi_text_styles.dart';
-import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
-import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
 import 'package:fedi/date_time/date_time_dynamic_time_ago_widget.dart';
 import 'package:fedi/mastodon/poll/mastodon_poll_model.dart';
@@ -35,11 +33,21 @@ class PollWidget extends StatelessWidget {
                   var pollOption = entry.value;
 
                   var isOwnVote = poll.ownVotes?.contains(index) ?? false;
+
                   return Padding(
-                    padding: const EdgeInsets.only(top: FediSizes.smallPadding),
+                    padding:
+                        const EdgeInsets.only(top: FediSizes.mediumPadding),
                     child: InkWell(
                       onTap: () {
                         pollBloc.onPollOptionSelected(pollOption);
+                        if (!poll.multiple) {
+                          AsyncOperationHelper.performAsyncOperation(
+                            context: context,
+                            asyncCode: () async {
+                              await pollBloc.vote();
+                            },
+                          );
+                        }
                       },
                       child: PollOptionWidget(
                         index: index,
@@ -52,40 +60,41 @@ class PollWidget extends StatelessWidget {
                   );
                 }).toList(),
                 FediSmallVerticalSpacer(),
+                if (pollBloc.multiple)
+                  StreamBuilder<bool>(
+                      stream: pollBloc.isPossibleToVoteStream,
+                      initialData: pollBloc.isPossibleToVote,
+                      builder: (context, snapshot) {
+                        var isPossibleToVote = snapshot.data;
+
+                        if (isPossibleToVote) {
+                          return StreamBuilder<bool>(
+                              stream: pollBloc.isVotedStream,
+                              initialData: pollBloc.isVoted,
+                              builder: (context, snapshot) {
+                                var isSelectedVotesNotEmpty = snapshot.data;
+                                return Padding(
+                                  padding: FediPadding.allSmallPadding,
+                                  child: AsyncOperationButtonBuilderWidget(
+                                    builder: (context, onPressed) =>
+                                        FediPrimaryFilledTextButton(
+                                      "app.poll.vote".tr(),
+                                      expanded: false,
+                                      onPressed: isSelectedVotesNotEmpty
+                                          ? onPressed
+                                          : null,
+                                    ),
+                                    asyncButtonAction: () => pollBloc.vote(),
+                                  ),
+                                );
+                              });
+                        } else {
+                          return SizedBox.shrink();
+                        }
+                      }),
                 PollMetadataWidget(
                   poll: poll,
                 ),
-                StreamBuilder<bool>(
-                    stream: pollBloc.isPossibleToVoteStream,
-                    initialData: pollBloc.isPossibleToVote,
-                    builder: (context, snapshot) {
-                      var isPossibleToVote = snapshot.data;
-
-                      if (isPossibleToVote) {
-                        return StreamBuilder<bool>(
-                            stream: pollBloc.isSelectedVotesNotEmptyStream,
-                            initialData: pollBloc.isSelectedVotesNotEmpty,
-                            builder: (context, snapshot) {
-                              var isSelectedVotesNotEmpty = snapshot.data;
-                              return Padding(
-                                padding: FediPadding.allSmallPadding,
-                                child: AsyncOperationButtonBuilderWidget(
-                                  builder: (context, onPressed) =>
-                                      FediPrimaryFilledTextButton(
-                                    "app.poll.vote".tr(),
-                                    expanded: false,
-                                    onPressed: isSelectedVotesNotEmpty
-                                        ? onPressed
-                                        : null,
-                                  ),
-                                  asyncButtonAction: () => pollBloc.vote(),
-                                ),
-                              );
-                            });
-                      } else {
-                        return SizedBox.shrink();
-                      }
-                    }),
               ],
             );
           }),
@@ -103,18 +112,28 @@ class PollMetadataWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         PollMetadataTotalVotesCountWidget(
           votesCount: poll.votesCount,
         ),
+        buildDotSeparatorWidget(),
         PollMetadataExpiresAtWidget(
           expiresAt: poll.expiresAt,
           expired: poll.expired,
         ),
+        if (poll.isPossibleToVote) buildDotSeparatorWidget(),
+        if (poll.isPossibleToVote) PollMetadataShowHideResultsWidget()
       ],
     );
   }
+}
+
+Text buildDotSeparatorWidget() {
+  return Text(
+    " · ",
+    style: FediTextStyles.mediumShortGrey,
+  );
 }
 
 class PollMetadataTotalVotesCountWidget extends StatelessWidget {
@@ -126,13 +145,42 @@ class PollMetadataTotalVotesCountWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       "app.poll.metadata.total_votes".tr(args: [votesCount.toString()]),
-      style: FediTextStyles.mediumShortDarkGrey,
+      style: FediTextStyles.mediumShortGrey,
     );
   }
 }
 
+class PollMetadataShowHideResultsWidget extends StatelessWidget {
+  PollMetadataShowHideResultsWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    var pollBloc = IPollBloc.of(context, listen: false);
+    return StreamBuilder<bool>(
+        stream: pollBloc.isNeedShowResultsWithoutVoteStream,
+        initialData: pollBloc.isNeedShowResultsWithoutVote,
+        builder: (context, snapshot) {
+          var isNeedShowResultsWithoutVote = snapshot.data;
+          return InkWell(
+            onTap: () {
+              if (isNeedShowResultsWithoutVote) {
+                pollBloc.hideResultsWithoutVote();
+              } else {
+                pollBloc.showResultsWithoutVote();
+              }
+            },
+            child: Text(
+              isNeedShowResultsWithoutVote
+                  ? "app.poll.metadata.hide_results".tr()
+                  : "app.poll.metadata.show_results".tr(),
+              style: FediTextStyles.mediumShortPrimary,
+            ),
+          );
+        });
+  }
+}
+
 class PollMetadataExpiresAtWidget extends StatelessWidget {
-  static final DateFormat expiresDateFormat = DateFormat('yyyy-MM-dd hh:mm');
   final DateTime expiresAt;
   final bool expired;
 
@@ -146,27 +194,20 @@ class PollMetadataExpiresAtWidget extends StatelessWidget {
       expired ? buildExpired() : buildNotExpired();
 
   Widget buildNotExpired() {
-    return Text(
-      "app.poll.metadata.expires.not_expired".tr(
-        args: [
-          expiresDateFormat.format(
-            expiresAt?.toLocal() ?? DateTime.now(),
-          ),
-        ],
-      ),
-      style: FediTextStyles.mediumShortDarkGrey,
-    );
-  }
-
-  Widget buildExpired() {
     return DateTimeDynamicTimeAgoWidget(
       dateTime: expiresAt,
-      textStyle: FediTextStyles.mediumShortDarkGrey,
-      customTextBuilder: (timeAgoString) {
-        return "app.poll.metadata.expires.expired".tr(args: [timeAgoString]);
+      textStyle: FediTextStyles.mediumShortGrey,
+      customTextBuilder: (String timeAgoString) {
+        return "app.poll.metadata.expires.not_expired"
+            .tr(args: [timeAgoString]);
       },
     );
   }
+
+  Widget buildExpired() => Text(
+        "app.poll.metadata.expires.expired".tr(),
+        style: FediTextStyles.mediumShortGrey,
+      );
 }
 
 class PollOptionWidget extends StatelessWidget {
@@ -202,99 +243,140 @@ class PollOptionWidget extends StatelessWidget {
     } else {
       votesPercent = votesCount / poll.votesCount;
     }
+    var borderRadius = BorderRadius.circular(8.0);
     return Row(
       children: <Widget>[
         Expanded(
           child: Container(
+            height: 40,
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: [
-                  fillColor,
-                  fillColor,
-                  backgroundColor,
-                  backgroundColor
-                ],
-                stops: [0, votesPercent, votesPercent, 1],
-              ),
-              borderRadius: FediBorderRadius.allBigBorderRadius,
-              border: Border.all(color: FediColors.ultraLightGrey),
+              borderRadius: borderRadius,
+              color: backgroundColor,
+              border: Border.all(
+                  color: isPossibleToVote
+                      ? FediColors.primaryDark
+                      : isOwnVote
+                          ? FediColors.primaryDark
+                          : FediColors.ultraLightGrey),
             ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: FediSizes.bigPadding,
-                vertical: FediSizes.mediumPadding,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      PollOptionVotesPercentWidget(votesPercent),
-                      FediSmallHorizontalSpacer(),
-                      PollOptionVotesCountWidget(votesCount),
-                      FediBigHorizontalSpacer(),
-                    ],
-                  ),
-                  PollOptionTitleWidget(pollOption.title),
-                ],
-              ),
+            child: Stack(
+              alignment: Alignment.centerLeft,
+              children: [
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    return Container(
+                      width: constraints.maxWidth * votesPercent,
+                      decoration: BoxDecoration(
+                        borderRadius: borderRadius,
+                        color: fillColor,
+                      ),
+                    );
+                  },
+                ),
+                _buildOptionContent(),
+              ],
             ),
           ),
         ),
-        StreamBuilder<bool>(
-            stream: pollBloc.isPossibleToVoteStream,
-            initialData: pollBloc.isPossibleToVote,
+        if (pollBloc.multiple) _buildOptionSelection(pollBloc, borderRadius),
+        StreamBuilder<Object>(
+            stream: pollBloc.isNeedShowResultsWithoutVoteStream,
+            initialData: pollBloc.isNeedShowResultsWithoutVote,
             builder: (context, snapshot) {
-              var isPossibleToVote = snapshot.data;
-              if (isPossibleToVote) {
-                return StreamBuilder<List<IPleromaPollOption>>(
-                    stream: pollBloc.selectedVotesStream,
-                    initialData: pollBloc.selectedVotes,
-                    builder: (context, snapshot) {
-                      var selectedVotes = snapshot.data;
-                      var multiple = poll.multiple;
+              var isNeedShowResultsWithoutVote = snapshot.data;
 
-                      var isSelected =
-                          selectedVotes?.contains(pollOption) ?? false;
-                      var color = isSelected
-                          ? FediColors.primary
-                          : FediColors.ultraLightGrey;
-                      var size = 35.0;
-                      return Padding(
-                        padding:
-                            const EdgeInsets.only(left: FediSizes.smallPadding),
-                        child: Container(
-                          width: size,
-                          height: size,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: color,
-                            ),
-                            borderRadius: multiple
-                                ? BorderRadius.zero
-                                : BorderRadius.all(
-                                    Radius.circular(size / 2),
-                                  ),
-                          ),
-                          child: isSelected
-                              ? Center(
-                                  child: Icon(
-                                    FediIcons.check,
-                                    color: color,
-                                  ),
-                                )
-                              : SizedBox.shrink(),
-                        ),
-                      );
-                    });
+              if (!pollBloc.isPossibleToVote || isNeedShowResultsWithoutVote) {
+                return PollOptionVotesPercentWidget(
+                  votesPercent: votesPercent,
+                  isOwnVote: isOwnVote,
+                );
               } else {
                 return SizedBox.shrink();
               }
             }),
       ],
+    );
+  }
+
+  StreamBuilder<bool> _buildOptionSelection(
+      IPollBloc pollBloc, BorderRadius borderRadius) {
+    return StreamBuilder<bool>(
+        stream: pollBloc.isPossibleToVoteStream,
+        initialData: pollBloc.isPossibleToVote,
+        builder: (context, snapshot) {
+          var isPossibleToVote = snapshot.data;
+          if (isPossibleToVote) {
+            return StreamBuilder<List<IPleromaPollOption>>(
+                stream: pollBloc.selectedVotesStream,
+                initialData: pollBloc.selectedVotes,
+                builder: (context, snapshot) {
+                  var selectedVotes = snapshot.data;
+                  var multiple = poll.multiple;
+
+                  var isSelected = selectedVotes?.contains(pollOption) ?? false;
+                  var borderColor =
+                      isSelected ? FediColors.primary : FediColors.grey;
+                  var backgroundColor =
+                      isSelected ? FediColors.primary : FediColors.white;
+                  var size = 28.0;
+                  return Padding(
+                    padding: const EdgeInsets.only(left: FediSizes.bigPadding),
+                    child: Container(
+                      width: size,
+                      height: size,
+                      decoration: BoxDecoration(
+                        color: backgroundColor,
+                        border: Border.all(
+                          color: borderColor,
+                        ),
+                        borderRadius: multiple
+                            ? borderRadius
+                            : BorderRadius.circular(size / 2),
+                      ),
+                      child: isSelected
+                          ? Center(
+                              child: Icon(
+                                FediIcons.check,
+                                color: FediColors.white,
+                                size: 16.0,
+                              ),
+                            )
+                          : SizedBox.shrink(),
+                    ),
+                  );
+                });
+          } else {
+            return SizedBox.shrink();
+          }
+        });
+  }
+
+  Padding _buildOptionContent() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: FediSizes.mediumPadding,
+      ),
+      child: Row(
+        mainAxisAlignment: isPossibleToVote && !poll.multiple
+            ? MainAxisAlignment.center
+            : MainAxisAlignment.start,
+        children: <Widget>[
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.start,
+          //   children: <Widget>[
+          //     PollOptionVotesPercentWidget(votesPercent),
+          //     FediSmallHorizontalSpacer(),
+          //     PollOptionVotesCountWidget(votesCount),
+          //     FediBigHorizontalSpacer(),
+          //   ],
+          // ),
+          PollOptionTitleWidget(
+            title: pollOption.title,
+            isOwnVote: isOwnVote,
+            isPossibleToVote: isPossibleToVote,
+          ),
+        ],
+      ),
     );
   }
 }
@@ -313,17 +395,24 @@ class PollOptionVotesCountWidget extends StatelessWidget {
 
 class PollOptionVotesPercentWidget extends StatelessWidget {
   static final NumberFormat _format = NumberFormat("#%");
-  final double votesPercent;
 
-  PollOptionVotesPercentWidget(this.votesPercent);
+  final double votesPercent;
+  final bool isOwnVote;
+
+  PollOptionVotesPercentWidget({
+    @required this.votesPercent,
+    @required this.isOwnVote,
+  });
 
   @override
   Widget build(BuildContext context) => Container(
-        width: 40,
+        width: 60,
         child: Center(
           child: Text(
             _format.format(votesPercent),
-            style: FediTextStyles.mediumShortDarkGrey,
+            style: isOwnVote
+                ? FediTextStyles.bigTallPrimaryDark
+                : FediTextStyles.bigTallGrey,
           ),
         ),
       );
@@ -331,13 +420,23 @@ class PollOptionVotesPercentWidget extends StatelessWidget {
 
 class PollOptionTitleWidget extends StatelessWidget {
   final String title;
+  final bool isPossibleToVote;
+  final bool isOwnVote;
 
-  PollOptionTitleWidget(this.title);
+  PollOptionTitleWidget({
+    @required this.title,
+    @required this.isOwnVote,
+    @required this.isPossibleToVote,
+  });
 
   @override
   Widget build(BuildContext context) => Text(
         title,
-        style: FediTextStyles.mediumShortDarkGrey,
+        style: isPossibleToVote
+            ? FediTextStyles.bigTallPrimaryDark
+            : isOwnVote
+                ? FediTextStyles.bigTallWhite
+                : FediTextStyles.bigTallGrey,
         overflow: TextOverflow.ellipsis,
       );
 }

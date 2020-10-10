@@ -87,11 +87,13 @@ class CodegenLoader extends AssetLoader{
     },
     "poll": {
       "metadata": {
+        "hide_results": "Hide results",
+        "show_results": "View results",
         "expires": {
-          "expired": "Ended {} ago",
-          "not_expired": "Ends at {}"
+          "expired": "Poll ended",
+          "not_expired": "{} left"
         },
-        "total_votes": "Total votes: {}"
+        "total_votes": "{} votes"
       },
       "vote": "Vote"
     },
