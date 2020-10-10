@@ -29,33 +29,37 @@ class FediGreyFilledTextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     var calculatedHeight = height + borderWidth * 2;
     var borderRadius = BorderRadius.all(Radius.circular(calculatedHeight / 2));
     return InkWell(
       onTap: onPressed,
-      child: Container(
-          height: calculatedHeight,
-          decoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            color: onPressed != null
-                ? FediColors.ultraLightGrey
-                : FediColors.lightGrey,
-            borderRadius: borderRadius,
-            border: Border.all(
-              color: FediColors.white,
-              width: borderWidth,
-            ),
-          ),
-          child: Center(
-            child: Padding(
-              padding: FediPadding.buttonHorizontalPadding,
-              child: Text(
-                text,
-                style: defaultTextStyle,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minWidth: 120,
+        ),
+        child: Container(
+            height: calculatedHeight,
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              color: onPressed != null
+                  ? FediColors.ultraLightGrey
+                  : FediColors.lightGrey,
+              borderRadius: borderRadius,
+              border: Border.all(
+                color: FediColors.white,
+                width: borderWidth,
               ),
             ),
-          )),
+            child: Center(
+              child: Padding(
+                padding: FediPadding.buttonHorizontalPadding,
+                child: Text(
+                  text,
+                  style: defaultTextStyle,
+                ),
+              ),
+            )),
+      ),
     );
   }
 }

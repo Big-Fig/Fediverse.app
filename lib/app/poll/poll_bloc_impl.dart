@@ -10,6 +10,18 @@ import 'package:rxdart/rxdart.dart';
 
 class PollBloc extends DisposableOwner implements IPollBloc {
   final BehaviorSubject<IPleromaPoll> pollSubject;
+
+  BehaviorSubject<bool> isNeedShowResultsWithoutVoteSubject =
+      BehaviorSubject.seeded(false);
+
+  @override
+  bool get isNeedShowResultsWithoutVote =>
+      isNeedShowResultsWithoutVoteSubject.value;
+
+  @override
+  Stream<bool> get isNeedShowResultsWithoutVoteStream =>
+      isNeedShowResultsWithoutVoteSubject.stream;
+
   final BehaviorSubject<List<IPleromaPollOption>> selectedVotesSubject =
       BehaviorSubject.seeded([]);
 
@@ -21,6 +33,7 @@ class PollBloc extends DisposableOwner implements IPollBloc {
   }) : pollSubject = BehaviorSubject.seeded(poll) {
     addDisposable(subject: pollSubject);
     addDisposable(subject: selectedVotesSubject);
+    addDisposable(subject: isNeedShowResultsWithoutVoteSubject);
 
     if (!poll.expired) {
       var diff = DateTime.now().difference(poll.expiresAt).abs();
@@ -109,10 +122,10 @@ class PollBloc extends DisposableOwner implements IPollBloc {
       selectedVotesSubject.stream;
 
   @override
-  bool get isSelectedVotesNotEmpty => selectedVotes.isNotEmpty;
+  bool get isVoted => selectedVotes.isNotEmpty;
 
   @override
-  Stream<bool> get isSelectedVotesNotEmptyStream =>
+  Stream<bool> get isVotedStream =>
       selectedVotesStream.map((selectedVotes) => selectedVotes.isNotEmpty);
 
   @override
@@ -130,5 +143,15 @@ class PollBloc extends DisposableOwner implements IPollBloc {
     }
 
     return success;
+  }
+
+  @override
+  void showResultsWithoutVote() {
+    isNeedShowResultsWithoutVoteSubject.add(true);
+  }
+
+  @override
+  void hideResultsWithoutVote() {
+    isNeedShowResultsWithoutVoteSubject.add(false);
   }
 }

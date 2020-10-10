@@ -52,7 +52,11 @@ class _DateTimeDynamicTimeAgoWidgetState
   @override
   Widget build(BuildContext context) {
     // todo: localize
-    var timeAgoString = timeago.format(widget.dateTime, locale: 'en_short');
+    var timeAgoString = timeago.format(
+      widget.dateTime,
+      locale: 'en_short',
+      allowFromNow: true,
+    );
     return Text(
       widget.customTextBuilder != null
           ? widget.customTextBuilder(timeAgoString)
