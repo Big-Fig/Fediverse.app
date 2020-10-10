@@ -3,8 +3,8 @@ import 'package:fedi/app/status/post/poll/post_status_poll_model.dart';
 import 'package:fedi/pleroma/instance/pleroma_instance_model.dart';
 import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc.dart';
 import 'package:fedi/ui/form/field/value/bool/form_bool_field_bloc_impl.dart';
-import 'package:fedi/ui/form/field/value/date_time/form_date_time_field_bloc.dart';
-import 'package:fedi/ui/form/field/value/date_time/form_date_time_field_bloc_impl.dart';
+import 'package:fedi/ui/form/field/value/duration/form_duration_field_bloc.dart';
+import 'package:fedi/ui/form/field/value/duration/form_duration_field_bloc_impl.dart';
 import 'package:fedi/ui/form/field/value/string/form_non_empty_string_field_validation.dart';
 import 'package:fedi/ui/form/field/value/string/form_string_field_bloc.dart';
 import 'package:fedi/ui/form/field/value/string/form_string_field_bloc_impl.dart';
@@ -15,7 +15,7 @@ import 'package:fedi/ui/form/group/one_type/form_one_type_group_bloc_impl.dart';
 import 'package:flutter/cupertino.dart';
 
 class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
-  static FormDateTimeFieldBloc createExpiresAtBloc(
+  static FormDurationFieldBloc createDurationLengthBloc(
       PleromaInstancePollLimits pollLimits) {
     Duration pollMinimumExpiration = pollLimits?.minExpiration != null
         ? Duration(seconds: pollLimits?.minExpiration)
@@ -25,22 +25,12 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
         ? Duration(seconds: pollLimits?.maxExpiration)
         : null;
 
-    var now = DateTime.now();
-    var minDateTime = now.add(pollMinimumExpiration);
-    DateTime maxDateTime;
-    if (pollMaximumExpiration != null) {
-      maxDateTime = now.add(pollMaximumExpiration);
-    }
-    var originValue = now.add(IPostStatusPollBloc.defaultPollExpiration);
 
-    if (originValue.isBefore(minDateTime)) {
-      originValue = minDateTime;
-    }
-
-    return FormDateTimeFieldBloc(
+    var originValue = IPostStatusPollBloc.defaultPollExpiration;
+    return FormDurationFieldBloc(
       originValue: originValue,
-      minDateTime: minDateTime,
-      maxDateTime: maxDateTime,
+      minDuration: pollMinimumExpiration,
+      maxDuration: pollMaximumExpiration,
     );
   }
 
@@ -68,17 +58,17 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
           newEmptyFieldCreator: () =>
               createPollOptionBloc(pollLimits?.maxOptionChars),
         ),
-        expiresAtFieldBloc = createExpiresAtBloc(pollLimits);
+        durationLengthFieldBloc = createDurationLengthBloc(pollLimits);
 
   @override
   List<IFormItemBloc> get items => [
-        expiresAtFieldBloc,
+        durationLengthFieldBloc,
         multiplyFieldBloc,
         pollOptionsGroupBloc,
       ];
 
   @override
-  IFormDateTimeFieldBloc expiresAtFieldBloc;
+  IFormDurationFieldBloc durationLengthFieldBloc;
   @override
   IFormBoolFieldBloc multiplyFieldBloc = FormBoolFieldBloc(originValue: false);
 
@@ -111,7 +101,8 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
   @override
   void fillFormData(IPostStatusPoll poll) {
     multiplyFieldBloc.changeCurrentValue(poll.multiple);
-    expiresAtFieldBloc.changeCurrentValue(poll.expiresAt);
+
+    durationLengthFieldBloc.changeCurrentValue(poll.durationLength);
     if (poll.options?.isNotEmpty == true) {
       pollOptionsGroupBloc.removeAllFields();
 

@@ -553,7 +553,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     var poll;
     if (pollBloc.isSomethingChanged) {
       poll = PostStatusPoll(
-        expiresAt: pollBloc.expiresAtFieldBloc.currentValue,
+        durationLength: pollBloc.durationLengthFieldBloc.currentValue,
         multiple: pollBloc.multiplyFieldBloc.currentValue,
         options: pollBloc.pollOptionsGroupBloc.items
             .map((item) => item.currentValue)
@@ -567,9 +567,10 @@ abstract class PostStatusBloc extends PostMessageBloc
   PleromaPostStatusPoll _calculatePleromaPostStatusPollField() {
     var poll;
     if (pollBloc.isSomethingChanged) {
-      var expiresAt = pollBloc.expiresAtFieldBloc.currentValue;
       var expiresInSeconds =
-          DateTime.now().difference(expiresAt).abs().inSeconds;
+          (pollBloc.durationLengthFieldBloc.currentValue.inMicroseconds /
+                  Duration.microsecondsPerSecond)
+              .floor();
 
       poll = PleromaPostStatusPoll(
         expiresInSeconds: expiresInSeconds,
@@ -643,11 +644,10 @@ abstract class PostStatusBloc extends PostMessageBloc
         to: calculateToField(),
       );
 
-
   @override
   void onFileSelected() {
     super.onFileSelected();
-    if(markMediaNsfwByDefault) {
+    if (markMediaNsfwByDefault) {
       nsfwSensitiveSubject.add(true);
     }
   }
