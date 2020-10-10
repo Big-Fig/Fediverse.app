@@ -47,9 +47,7 @@ class MultiSelectAccountPage extends StatelessWidget {
         ],
       ),
       body: SafeArea(
-        child: MultiSelectAccountWidget(
-          accountsListSelectedCallback: accountsListSelectedCallback,
-        ),
+        child: MultiSelectAccountWidget(),
       ),
     );
   }

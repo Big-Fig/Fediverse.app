@@ -7,10 +7,10 @@ import 'package:fedi/app/conversation/share/conversation_share_bloc.dart';
 import 'package:fedi/app/share/message_input/share_message_input_bloc.dart';
 import 'package:fedi/app/share/message_input/share_message_input_bloc_impl.dart';
 import 'package:fedi/app/share/select/share_select_account_bloc.dart';
-import 'package:fedi/app/share/select/share_select_account_bloc_impl.dart';
+import 'package:fedi/app/share/to_account/share_to_account_bloc_impl.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/account/pleroma_account_model.dart';
+import 'package:fedi/pleroma/account/pleroma_account_service.dart';
 import 'package:fedi/pleroma/conversation/pleroma_conversation_service.dart';
 import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 import 'package:fedi/pleroma/status/pleroma_status_service.dart';
@@ -18,7 +18,7 @@ import 'package:fedi/pleroma/visibility/pleroma_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 
-abstract class ConversationShareBloc extends DisposableOwner
+abstract class ConversationShareBloc extends ShareToAccountBloc
     implements IConversationShareBloc {
   final IConversationRepository conversationRepository;
   final IStatusRepository statusRepository;
@@ -41,18 +41,22 @@ abstract class ConversationShareBloc extends DisposableOwner
   IShareMessageInputBloc shareMessageInputBloc = ShareMessageInputBloc();
 
   @override
-  IShareSelectAccountBloc shareSelectAccountBloc = ShareSelectAccountBloc();
+  IShareSelectAccountBloc shareSelectAccountBloc;
 
   ConversationShareBloc({
     @required this.conversationRepository,
     @required this.statusRepository,
     @required this.pleromaConversationService,
     @required this.pleromaStatusService,
+    @required IPleromaAccountService pleromaAccountService,
     @required this.myAccountBloc,
     @required this.accountRepository,
-  }) {
+  }) : super(
+          myAccountBloc: myAccountBloc,
+          accountRepository: accountRepository,
+          pleromaAccountService: pleromaAccountService,
+        ) {
     addDisposable(disposable: shareMessageInputBloc);
-    addDisposable(disposable: shareSelectAccountBloc);
   }
 
   @override
@@ -131,8 +135,8 @@ abstract class ConversationShareBloc extends DisposableOwner
     var pleromaConversations =
         await pleromaConversationService.getConversations(limit: limit);
 
-    await conversationRepository.upsertRemoteConversations
-      (pleromaConversations);
+    await conversationRepository
+        .upsertRemoteConversations(pleromaConversations);
 
     var pleromaAccounts = <IPleromaAccount>[];
 

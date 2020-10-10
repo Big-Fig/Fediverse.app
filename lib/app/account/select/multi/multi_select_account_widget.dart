@@ -9,15 +9,27 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class MultiSelectAccountWidget extends StatelessWidget {
-  final AccountsListCallback accountsListSelectedCallback;
+  final bool alwaysShowHeader;
+  final Widget header;
+  final bool alwaysShowFooter;
+  final Widget footer;
 
-  const MultiSelectAccountWidget({@required this.accountsListSelectedCallback});
+  const MultiSelectAccountWidget({
+    this.header,
+    this.footer,
+    this.alwaysShowHeader,
+    this.alwaysShowFooter,
+  });
 
   @override
   Widget build(BuildContext context) {
     var multiSelectAccountBloc =
         IMultiSelectAccountBloc.of(context, listen: false);
     return AccountPaginationListWidget(
+      header: header,
+      footer: footer,
+      alwaysShowHeader: alwaysShowHeader,
+      alwaysShowFooter: alwaysShowFooter,
       accountSelectedCallback: (_, __) {
         // nothing
       },
@@ -31,7 +43,7 @@ class MultiSelectAccountWidget extends StatelessWidget {
                 var isAccountSelected = snapshot.data == true;
 
                 return FediIconInCircleTransparentButton(
-                  FediIcons.check_circle,
+                  FediIcons.check,
                   color: isAccountSelected
                       ? FediColors.primary
                       : FediColors.darkGrey,

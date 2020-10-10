@@ -1,10 +1,10 @@
-import 'package:fedi/app/ui/badge/fedi_unread_badge_widget.dart';
+import 'package:fedi/app/ui/badge/fedi_bool_badge_widget.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:flutter/cupertino.dart';
 
 class CachedPaginationListWithNewItemsUnreadBadgeWidget
-    extends FediUnreadBadgeWidget {
+    extends FediBoolBadgeWidget {
   const CachedPaginationListWithNewItemsUnreadBadgeWidget({
     @required Widget child,
   }) : super(
@@ -13,7 +13,7 @@ class CachedPaginationListWithNewItemsUnreadBadgeWidget
         );
 
   @override
-  Stream<bool> retrieveUnreadBadgeCountStream(BuildContext context) {
+  Stream<bool> retrieveBoolStream(BuildContext context) {
     var paginationListWithNewItemsBloc =
         ICachedPaginationListWithNewItemsBloc.of(context, listen: false);
 

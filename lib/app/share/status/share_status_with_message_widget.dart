@@ -6,11 +6,11 @@ import 'package:flutter/cupertino.dart';
 
 class ShareStatusWithMessageWidget extends StatelessWidget {
   final IStatus status;
-  final Widget header;
+  final Widget footer;
 
   ShareStatusWithMessageWidget({
     @required this.status,
-    @required this.header,
+    @required this.footer,
   });
 
   @override
@@ -24,6 +24,6 @@ class ShareStatusWithMessageWidget extends StatelessWidget {
           },
           initialMediaAttachment: null,
         ),
-        header: header,
+        footer: footer,
       );
 }
