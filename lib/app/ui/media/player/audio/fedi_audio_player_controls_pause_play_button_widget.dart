@@ -32,6 +32,7 @@ class FediAudioPlayerControlsPausePlayButtonWidget extends StatelessWidget {
                       return FediIconButton(
                         icon:
                             Icon(isPlaying ? FediIcons.pause : FediIcons.play),
+                        iconSize: 16.0,
                         color: FediColors.white,
                         onPressed: onPressed,
                       );

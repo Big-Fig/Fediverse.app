@@ -30,6 +30,7 @@ class FediPlayerControlToggleMuteButtonWidget extends StatelessWidget {
                         icon: Icon(
                             isMuted ? FediIcons.sound_off : FediIcons.sound_on),
                         color: FediColors.white,
+                        iconSize: 16.0,
                         onPressed: onPressed,
                       );
                     },
@@ -40,6 +41,7 @@ class FediPlayerControlToggleMuteButtonWidget extends StatelessWidget {
             return FediIconButton(
               icon: Icon(FediIcons.sound_on),
               color: FediColors.grey,
+              iconSize: 16.0,
               onPressed: () {},
             );
           }
