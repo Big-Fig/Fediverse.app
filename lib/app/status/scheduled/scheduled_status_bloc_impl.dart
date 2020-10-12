@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:fedi/app/status/post/poll/post_status_poll_model.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
@@ -253,7 +254,15 @@ class ScheduledStatusBloc extends DisposableOwner
       scheduledAt: scheduledStatus.scheduledAt,
       visibility: scheduledStatus.params.visibilityPleroma.toJsonValue(),
       mediaAttachments: scheduledStatus.mediaAttachments,
-      poll: scheduledStatus.params.poll,
+      poll: scheduledStatus.params?.poll != null
+          ? PostStatusPoll(
+              durationLength: Duration(
+                  seconds: scheduledStatus.params.poll.expiresInSeconds),
+              hideTotals: scheduledStatus.params.poll.hideTotals,
+              multiple: scheduledStatus.params.poll.multiple,
+              options: scheduledStatus.params.poll.options,
+            )
+          : null,
       inReplyToPleromaStatus: null,
       inReplyToConversationId: null,
       isNsfwSensitiveEnabled: scheduledStatus.params.sensitive,
