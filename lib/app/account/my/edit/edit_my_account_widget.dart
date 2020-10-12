@@ -256,7 +256,7 @@ class EditMyAccountWidget extends StatelessWidget {
                 imageBuilder: (context, imageProvider) {
                   return buildAvatarImageContainer(imageProvider);
                 },
-                errorWidget: (context, url, error) => Icon(Icons.error),
+                errorWidget: (context, url, error) => Icon(FediIcons.warning),
                 height: editAccountAvatarSize,
                 width: editAccountAvatarSize,
               );
@@ -319,7 +319,7 @@ class EditMyAccountWidget extends StatelessWidget {
                     child: FediCircularProgressIndicator(),
                   ),
                 ),
-                errorWidget: (context, url, error) => Icon(Icons.error),
+                errorWidget: (context, url, error) => Icon(FediIcons.warning),
               );
             } else {
               return Image.file(
@@ -399,7 +399,7 @@ class EditMyAccountWidget extends StatelessWidget {
             child: FediCircularProgressIndicator(),
           ),
         ),
-        errorWidget: (context, url, error) => Icon(Icons.error),
+        errorWidget: (context, url, error) => Icon(FediIcons.warning),
       );
     } else if (imageSource?.file != null) {
       return Image.file(

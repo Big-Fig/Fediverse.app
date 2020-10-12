@@ -71,7 +71,7 @@ class _TimelinesHomeTabStorageWidgetState
                     ],
                   ),
                   leading: Icon(
-                    Icons.reorder,
+                    FediIcons.reorder,
                     color: FediColors.darkGrey,
                   ),
                   key: Key(

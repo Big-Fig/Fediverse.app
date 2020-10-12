@@ -87,4 +87,9 @@ class FediIcons {
   static const IconData fullscreen = Icons.fullscreen;
   static const IconData fullscreen_exit = Icons.fullscreen_exit;
   static const IconData reload = Icons.refresh;
+  static const IconData chevron_up = Icons.keyboard_arrow_up;
+  static const IconData forward = Icons.forward;
+  static const IconData reorder = Icons.reorder;
+  static const IconData bookmark = Icons.bookmark;
+  static const IconData list = Icons.list;
 }

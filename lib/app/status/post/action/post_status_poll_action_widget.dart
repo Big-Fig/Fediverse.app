@@ -4,6 +4,7 @@ import 'package:fedi/app/status/post/poll/post_status_poll_bloc.dart';
 import 'package:fedi/app/ui/badge/fedi_stream_bool_badge_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +21,7 @@ class PostStatusPollActionWidget extends StatelessWidget {
 
           var button = FediIconButton(
             icon: Icon(
-              Icons.poll,
+              FediIcons.poll,
               color: selectedAction == PostMessageSelectedAction.poll
                   ? FediColors.primary
                   : FediColors.darkGrey,

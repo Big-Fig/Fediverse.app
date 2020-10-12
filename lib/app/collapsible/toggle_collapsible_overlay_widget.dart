@@ -1,4 +1,5 @@
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_filled_button.dart';
+import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/collapsible/collapsible_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -16,7 +17,7 @@ class ToggleCollapsibleOverlayWidget extends StatelessWidget {
 
           if (isAtLeastOneVisibleItemExpanded) {
             return FediIconInCircleFilledButton(
-              Icons.keyboard_arrow_up,
+              FediIcons.chevron_down,
               onPressed: collapsibleBloc.collapseAllVisibleItems,
             );
           } else {
