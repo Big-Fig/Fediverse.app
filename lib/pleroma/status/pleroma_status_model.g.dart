@@ -45,7 +45,9 @@ PleromaScheduledStatusParams _$PleromaScheduledStatusParamsFromJson(
     scheduledAt: json['scheduled_at'] == null
         ? null
         : DateTime.parse(json['scheduled_at'] as String),
-    poll: json['poll'],
+    poll: json['poll'] == null
+        ? null
+        : PleromaPostStatusPoll.fromJson(json['poll'] as Map<String, dynamic>),
     idempotency: json['idempotency'] as String,
     inReplyToId: json['in_reply_to_id'] as String,
     applicationId: json['application_id'] as String,
@@ -61,7 +63,7 @@ Map<String, dynamic> _$PleromaScheduledStatusParamsToJson(
       'spoiler_text': instance.spoilerText,
       'visibility': instance.visibility,
       'scheduled_at': instance.scheduledAt?.toIso8601String(),
-      'poll': instance.poll,
+      'poll': instance.poll?.toJson(),
       'idempotency': instance.idempotency,
       'in_reply_to_id': instance.inReplyToId,
       'application_id': instance.applicationId,

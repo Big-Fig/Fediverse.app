@@ -24,7 +24,7 @@ async =>
             spoilerText: seed + "spoilerText1",
             visibility: PleromaVisibility.public.toJsonValue(),
             scheduledAt: DateTime(seed.hashCode % 10),
-            poll: seed + "poll1",
+            poll: null,
             idempotency: seed + "idempotency1",
             inReplyToId: seed + "inReplyToId1",
             applicationId: seed + "textId1"));

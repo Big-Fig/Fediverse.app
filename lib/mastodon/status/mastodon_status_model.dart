@@ -7,6 +7,7 @@ import 'package:fedi/mastodon/mention/mastodon_mention_model.dart';
 import 'package:fedi/mastodon/poll/mastodon_poll_model.dart';
 import 'package:fedi/mastodon/tag/mastodon_tag_model.dart';
 import 'package:fedi/mastodon/visibility/mastodon_visibility_model.dart';
+import 'package:fedi/pleroma/status/pleroma_status_model.dart';
 
 abstract class IMastodonStatus {
   String get id;
@@ -95,7 +96,7 @@ abstract class IMastodonScheduledStatusParams {
   // request or result type?
   // IMastodonPostStatusRequestPoll
   // IMastodonPoll
-  dynamic get poll;
+  PleromaPostStatusPoll get poll;
 
   String get idempotency;
 
