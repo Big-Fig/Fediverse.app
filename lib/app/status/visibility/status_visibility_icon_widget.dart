@@ -44,7 +44,7 @@ class StatusVisibilityIconWidget extends StatelessWidget {
         return FediIcons.message;
         break;
       case PleromaVisibility.list:
-        return Icons.list;
+        return FediIcons.list;
         break;
       case PleromaVisibility.private:
         return FediIcons.private;

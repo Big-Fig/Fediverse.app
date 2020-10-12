@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/pleroma/media/attachment/pleroma_media_attachment_model.dart';
@@ -45,7 +46,7 @@ class MediaAttachmentImageWidget extends StatelessWidget {
             );
           }
         },
-        errorWidget: (context, url, error) => Icon(Icons.error),
+        errorWidget: (context, url, error) => Icon(FediIcons.warning),
       ),
     );
   }

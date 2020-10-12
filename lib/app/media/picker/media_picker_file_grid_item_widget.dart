@@ -1,3 +1,4 @@
+import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
 import 'package:fedi/media/device/file/media_device_file_bloc.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
@@ -42,7 +43,7 @@ class MediaPickerFileGridItemWidget extends StatelessWidget {
   Widget buildIcon(IMediaDeviceFileBloc fileBloc) {
     return fileBloc.type == MediaDeviceFileType.video
         ? Icon(
-            Icons.play_circle_outline,
+            FediIcons.play,
             color: Colors.white,
           )
         : SizedBox.shrink();

@@ -108,11 +108,11 @@ class NotificationListItemWidget extends StatelessWidget {
         iconData = null;
         break;
       case PleromaNotificationType.poll:
-        iconData = Icons.poll;
+        iconData = FediIcons.poll;
         iconColor = FediColors.primary;
         break;
       case PleromaNotificationType.move:
-        iconData = Icons.forward;
+        iconData = FediIcons.forward;
         iconColor = FediColors.primary;
         break;
       case PleromaNotificationType.followRequest:
@@ -267,7 +267,7 @@ class NotificationListItemWidget extends StatelessWidget {
               secondaryActions: <Widget>[
                 if (unread == true)
                   IconSlideAction(
-                    icon: Icons.check,
+                    icon: FediIcons.check,
                     caption: "app.notification.action.mark_as_read".tr(),
                     color: FediColors.white,
                     onTap: () {
