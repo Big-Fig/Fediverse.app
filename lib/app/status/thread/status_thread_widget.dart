@@ -2,9 +2,10 @@ import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/message/post_message_widget.dart';
+import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
+import 'package:fedi/app/status/post/post_status_widget.dart';
 import 'package:fedi/app/status/post/thread/thread_post_status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc.dart';
@@ -62,31 +63,45 @@ class _StatusThreadWidgetState extends State<StatusThreadWidget> {
   Widget build(BuildContext context) {
     var statusThreadBloc = IStatusThreadBloc.of(context, listen: false);
 
-    return Column(
-      children: <Widget>[
-        Expanded(
-          child: Container(
-            color: FediColors.offWhite,
-            child: UnfocusOnScrollAreaWidget(
-              child: buildMessageList(context, statusThreadBloc),
-            ),
-          ),
-        ),
-        buildInReplyToStatusWidget(context),
-        FediUltraLightGreyDivider(),
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: [FediShadows.forBottomBar],
-          ),
-          child: PostMessageWidget(
-            hintText: "app.status.thread.post.hint".tr(
-              args: [statusThreadBloc.initialStatusToFetchThread.account.acct],
-            ),
-          ),
-        )
-      ],
+    var postMessageWidget = PostStatusWidget(
+      hintText: "app.status.thread.post.hint".tr(
+        args: [statusThreadBloc.initialStatusToFetchThread.account.acct],
+      ),
     );
+
+    var postMessageBloc = IPostMessageBloc.of(context, listen: false);
+    return StreamBuilder<bool>(
+        stream: postMessageBloc.isExpandedStream,
+        initialData: postMessageBloc.isExpanded,
+        builder: (context, snapshot) {
+          var isPostMessageExpanded = snapshot.data;
+
+          if (isPostMessageExpanded) {
+            return postMessageWidget;
+          } else {
+            return Column(
+              children: <Widget>[
+                Expanded(
+                  child: Container(
+                    color: FediColors.offWhite,
+                    child: UnfocusOnScrollAreaWidget(
+                      child: buildMessageList(context, statusThreadBloc),
+                    ),
+                  ),
+                ),
+                buildInReplyToStatusWidget(context),
+                FediUltraLightGreyDivider(),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [FediShadows.forBottomBar],
+                  ),
+                  child: postMessageWidget,
+                )
+              ],
+            );
+          }
+        });
   }
 
   StreamBuilder<IStatus> buildInReplyToStatusWidget(BuildContext context) {

@@ -93,6 +93,7 @@ abstract class PostMessageBloc extends DisposableOwner
     mediaAttachmentsBloc.clear();
     inputFocusNode.unfocus();
     clearSelectedAction();
+    isExpandedSubject.add(false);
   }
 
   bool calculateIsReadyToPost({
@@ -183,5 +184,24 @@ abstract class PostMessageBloc extends DisposableOwner
   @override
   void onFileSelected() {
     toggleAttachActionSelection();
+  }
+
+  BehaviorSubject<bool> isExpandedSubject = BehaviorSubject.seeded(false);
+
+  @override
+  Stream<bool> get isExpandedStream => isExpandedSubject.stream;
+
+  @override
+  bool get isExpanded => isExpandedSubject.value;
+
+  @override
+  void toggleExpanded() {
+    var newValue = !isExpanded;
+    isExpandedSubject.add(newValue);
+    Future.delayed(Duration(seconds: 1), () {
+      if (newValue == true) {
+        inputFocusNode.requestFocus();
+      }
+    });
   }
 }

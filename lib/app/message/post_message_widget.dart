@@ -6,8 +6,10 @@ import 'package:fedi/app/message/action/post_message_post_action_widget.dart';
 import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/message/post_message_content_widget.dart';
 import 'package:fedi/app/message/post_message_selected_action_widget.dart';
+import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
+import 'package:fedi/app/ui/fedi_colors.dart';
+import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
-import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
@@ -30,10 +32,31 @@ class PostMessageWidget extends StatelessWidget {
           buildMediaAttachments(context, postMessageBloc),
           Row(
             children: [
-              buildActionWidget(context, postMessageBloc),
               Expanded(child: PostMessageContentWidget(hintText: hintText)),
-              const FediSmallHorizontalSpacer(),
-              const PostMessagePostActionWidget()
+              StreamBuilder<bool>(
+                  stream: postMessageBloc.isExpandedStream,
+                  initialData: postMessageBloc.isExpanded,
+                  builder: (context, snapshot) {
+                    var isExpanded = snapshot.data;
+                    return FediIconButton(
+                      icon: Icon(isExpanded
+                          ? FediIcons.fullscreen_exit
+                          : FediIcons.fullscreen),
+                      color: FediColors.darkGrey,
+                      onPressed: () {
+                        postMessageBloc.toggleExpanded();
+                      },
+                    );
+                  })
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: buildActions(),
+              ),
+              const PostMessagePostActionWidget(),
             ],
           ),
           PostMessageSelectedActionWidget()
@@ -42,21 +65,12 @@ class PostMessageWidget extends StatelessWidget {
     );
   }
 
-  StreamBuilder<String> buildActionWidget(
-    BuildContext context,
-    IPostMessageBloc postMessageBloc,
-  ) =>
-      StreamBuilder<String>(
-          stream: postMessageBloc.inputTextStream,
-          initialData: postMessageBloc.inputText,
-          builder: (context, snapshot) {
-            var inputText = snapshot.data;
-            if (inputText?.trim()?.isNotEmpty == true) {
-              return PostMessageEmojiActionWidget();
-            } else {
-              return PostMessageAttachActionWidget();
-            }
-          });
+  List<Widget> buildActions() {
+    return [
+      PostMessageAttachActionWidget(),
+      PostMessageEmojiActionWidget(),
+    ];
+  }
 
   StreamBuilder<double> buildMediaAttachments(
     BuildContext context,
@@ -69,11 +83,10 @@ class PostMessageWidget extends StatelessWidget {
               (bool isAnySelectedActionVisible,
                   List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs) {
             isAnySelectedActionVisible = isAnySelectedActionVisible ?? false;
-            var mediaBlocs = mediaAttachmentBlocs
-                .where((bloc) => bloc.isMedia);
+            var mediaBlocs = mediaAttachmentBlocs.where((bloc) => bloc.isMedia);
 
-            var nonMediaBlocs = mediaAttachmentBlocs
-                .where((bloc) => !bloc.isMedia);
+            var nonMediaBlocs =
+                mediaAttachmentBlocs.where((bloc) => !bloc.isMedia);
 
             var isSingleMediaVisible = mediaBlocs.length == 1;
 

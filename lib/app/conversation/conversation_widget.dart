@@ -5,10 +5,12 @@ import 'package:fedi/app/conversation/status/context_api/conversation_status_lis
 import 'package:fedi/app/conversation/status/conversation_api/conversation_status_list_conversation_api_bloc_impl.dart';
 import 'package:fedi/app/conversation/status/conversation_status_list_widget.dart';
 import 'package:fedi/app/conversation/status/list/cached/conversation_status_list_bloc_impl.dart';
+import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/message/post_message_widget.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc_impl.dart';
 import 'package:fedi/app/status/pagination/list/status_cached_pagination_list_with_new_items_bloc_impl.dart';
+import 'package:fedi/app/status/post/post_status_widget.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
@@ -34,7 +36,7 @@ class ConversationWidget extends StatelessWidget {
                   StatusCachedPaginationListWithNewItemsBloc.provideToContext(
                 context,
                 mergeNewItemsImmediately: true,
-                child: _buildBody(conversationBloc),
+                child: _buildBody(context, conversationBloc),
                 mergeOwnStatusesImmediately: false,
               ),
             ),
@@ -42,26 +44,43 @@ class ConversationWidget extends StatelessWidget {
         });
   }
 
-  Column _buildBody(IConversationBloc conversationBloc) {
-    return Column(
-      children: <Widget>[
-        Expanded(
-          child: UnfocusOnScrollAreaWidget(
-            child: Padding(
-              padding: FediPadding.horizontalBigPadding,
-              child: ConversationStatusListWidget(
-                key: PageStorageKey(conversationBloc.conversation.remoteId),
-              ),
-            ),
-          ),
-        ),
-        const FediUltraLightGreyDivider(),
-        PostMessageWidget(
-          hintText: tr("app.conversation.post"
-              ".field.content.hint"),
-        )
-      ],
-    );
+  Widget _buildBody(
+    BuildContext context,
+    IConversationBloc conversationBloc,
+  ) {
+    var postMessageBloc = IPostMessageBloc.of(context, listen: false);
+    return StreamBuilder<bool>(
+        stream: postMessageBloc.isExpandedStream,
+        initialData: postMessageBloc.isExpanded,
+        builder: (context, snapshot) {
+          var isPostMessageExpanded = snapshot.data;
+
+          var postMessageWidget = PostStatusWidget(
+            hintText: tr("app.conversation.post.field.content.hint"),
+          );
+
+          if (isPostMessageExpanded) {
+            return postMessageWidget;
+          } else {
+            return Column(
+              children: <Widget>[
+                Expanded(
+                  child: UnfocusOnScrollAreaWidget(
+                    child: Padding(
+                      padding: FediPadding.horizontalBigPadding,
+                      child: ConversationStatusListWidget(
+                        key: PageStorageKey(
+                            conversationBloc.conversation.remoteId),
+                      ),
+                    ),
+                  ),
+                ),
+                const FediUltraLightGreyDivider(),
+                postMessageWidget
+              ],
+            );
+          }
+        });
   }
 
   ConversationStatusListBloc _createStatusListBloc(
