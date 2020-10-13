@@ -1,4 +1,4 @@
-import 'package:fedi/app/account/select/multi/multi_select_account_page.dart';
+import 'package:fedi/app/account/select/single/single_select_account_page.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_colors.dart';
@@ -17,11 +17,11 @@ class PostStatusMentionActionWidget extends StatelessWidget {
         color: FediColors.darkGrey,
       ),
       onPressed: () {
-        goToMultiSelectAccountPage(
+        goToSingleSelectAccountPage(
           context,
           excludeMyAccount: true,
-          accountsListSelectedCallback: (context, accounts) {
-            postStatusBloc.addAccountMentions(accounts);
+          accountSelectedCallback: (context, account) {
+            postStatusBloc.addAccountMentions([account]);
             Navigator.of(context).pop();
           },
           customLocalAccountListLoader: null,

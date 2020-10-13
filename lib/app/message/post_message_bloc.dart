@@ -45,4 +45,10 @@ abstract class IPostMessageBloc implements Disposable {
   void clearSelectedAction();
 
   void onFileSelected();
+
+  Stream<bool> get isExpandedStream;
+
+  bool get isExpanded;
+
+  void toggleExpanded();
 }
