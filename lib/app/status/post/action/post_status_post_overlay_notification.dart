@@ -5,9 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:overlay_support/overlay_support.dart';
 
 OverlaySupportEntry showPostStatusPostOverlayNotification(
-    BuildContext context, IPostStatusBloc postStatusBloc) {
-  var isScheduled = postStatusBloc.isScheduled;
-
+    {@required BuildContext context,
+    @required IPostStatusBloc postStatusBloc,
+    @required bool isScheduled}) {
   return showInfoFediNotificationOverlay(
       contentText: isScheduled
           ? tr("app.status.post.toast.success.schedule")

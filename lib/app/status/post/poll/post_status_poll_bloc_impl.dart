@@ -17,14 +17,9 @@ import 'package:flutter/cupertino.dart';
 class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
   static FormDurationFieldBloc createDurationLengthBloc(
       PleromaInstancePollLimits pollLimits) {
-    Duration pollMinimumExpiration = pollLimits?.minExpiration != null
-        ? Duration(seconds: pollLimits?.minExpiration)
-        : IPostStatusPollBloc.minimumPollExpiration;
+    Duration pollMinimumExpiration = calculatePollMinimumExpiration(pollLimits);
 
-    Duration pollMaximumExpiration = pollLimits?.maxExpiration != null
-        ? Duration(seconds: pollLimits?.maxExpiration)
-        : null;
-
+    Duration pollMaximumExpiration = calculatePollMaximumExpiration(pollLimits);
 
     var originValue = IPostStatusPollBloc.defaultPollExpiration;
     return FormDurationFieldBloc(
@@ -34,6 +29,20 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
     );
   }
 
+  static Duration calculatePollMinimumExpiration(
+      PleromaInstancePollLimits pollLimits) {
+    return pollLimits?.minExpiration != null
+        ? Duration(seconds: pollLimits?.minExpiration)
+        : IPostStatusPollBloc.minimumPollExpiration;
+  }
+
+  static Duration calculatePollMaximumExpiration(
+      PleromaInstancePollLimits pollLimits) {
+    return pollLimits?.maxExpiration != null
+        ? Duration(seconds: pollLimits?.maxExpiration)
+        : null;
+  }
+
   final PleromaInstancePollLimits pollLimits;
 
   int get pollMaximumOptionsCount =>
@@ -41,13 +50,11 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
 
   int get pollMaximumOptionLength => pollLimits?.maxOptionChars;
 
-  Duration get pollMinimumExpiration => pollLimits?.minExpiration != null
-      ? Duration(seconds: pollLimits?.minExpiration)
-      : IPostStatusPollBloc.minimumPollExpiration;
+  Duration get pollMinimumExpiration =>
+      calculatePollMinimumExpiration(pollLimits);
 
-  Duration get pollMaximumExpiration => pollLimits?.maxExpiration != null
-      ? Duration(seconds: pollLimits?.maxExpiration)
-      : null;
+  Duration get pollMaximumExpiration =>
+      calculatePollMaximumExpiration(pollLimits);
 
   PostStatusPollBloc({
     @required this.pollLimits,
