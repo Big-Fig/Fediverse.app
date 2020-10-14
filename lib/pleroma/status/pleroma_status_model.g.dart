@@ -214,13 +214,22 @@ PleromaPostStatusPoll _$PleromaPostStatusPollFromJson(
 }
 
 Map<String, dynamic> _$PleromaPostStatusPollToJson(
-        PleromaPostStatusPoll instance) =>
-    <String, dynamic>{
-      'expires_in': instance.expiresInSeconds,
-      'hide_totals': instance.hideTotals,
-      'multiple': instance.multiple,
-      'options': instance.options,
-    };
+    PleromaPostStatusPoll instance) {
+  final val = <String, dynamic>{
+    'expires_in': instance.expiresInSeconds,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('hide_totals', instance.hideTotals);
+  val['multiple'] = instance.multiple;
+  val['options'] = instance.options;
+  return val;
+}
 
 PleromaPostStatus _$PleromaPostStatusFromJson(Map<String, dynamic> json) {
   return PleromaPostStatus(
@@ -242,22 +251,31 @@ PleromaPostStatus _$PleromaPostStatusFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$PleromaPostStatusToJson(PleromaPostStatus instance) =>
-    <String, dynamic>{
-      'content_type': instance.contentType,
-      'expires_in': instance.expiresInSeconds,
-      'in_reply_to_conversation_id': instance.inReplyToConversationId,
-      'in_reply_to_id': instance.inReplyToId,
-      'language': instance.language,
-      'visibility': instance.visibility,
-      'media_ids': instance.mediaIds,
-      'poll': instance.poll,
-      'preview': instance.preview,
-      'sensitive': instance.sensitive,
-      'spoiler_text': instance.spoilerText,
-      'status': instance.status,
-      'to': instance.to,
-    };
+Map<String, dynamic> _$PleromaPostStatusToJson(PleromaPostStatus instance) {
+  final val = <String, dynamic>{
+    'content_type': instance.contentType,
+    'expires_in': instance.expiresInSeconds,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('in_reply_to_conversation_id', instance.inReplyToConversationId);
+  writeNotNull('in_reply_to_id', instance.inReplyToId);
+  val['language'] = instance.language;
+  val['visibility'] = instance.visibility;
+  val['media_ids'] = instance.mediaIds;
+  val['poll'] = instance.poll;
+  val['preview'] = instance.preview;
+  val['sensitive'] = instance.sensitive;
+  val['spoiler_text'] = instance.spoilerText;
+  val['status'] = instance.status;
+  val['to'] = instance.to;
+  return val;
+}
 
 PleromaScheduleStatus _$PleromaScheduleStatusFromJson(
     Map<String, dynamic> json) {
